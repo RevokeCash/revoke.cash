@@ -35,7 +35,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     const address = (await this.props.provider.listAccounts())[0]
 
     // Retrieve token balances from the Ethplorer and sort them alphabetically
-    const { data: addressInfo } = await axios.get(`http://api.ethplorer.io/getAddressInfo/${address}?apiKey=freekey`)
+    const { data: addressInfo } = await axios.get(`https://api.ethplorer.io/getAddressInfo/${address}?apiKey=freekey`)
     const tokens = addressInfo.tokens.sort((a: any, b: any) => a.tokenInfo.symbol.localeCompare(b.tokenInfo.symbol))
 
     this.setState({ tokens, address })
