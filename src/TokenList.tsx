@@ -36,7 +36,10 @@ class TokenList extends Component<TokenListProps, TokenListState> {
 
     // Retrieve token balances from the Ethplorer and sort them alphabetically
     const { data: addressInfo } = await axios.get(`https://api.ethplorer.io/getAddressInfo/${address}?apiKey=freekey`)
-    const tokens = addressInfo.tokens.sort((a: any, b: any) => a.tokenInfo.symbol.localeCompare(b.tokenInfo.symbol))
+
+    const tokens = addressInfo.tokens
+      ? addressInfo.tokens.sort((a: any, b: any) => a.tokenInfo.symbol.localeCompare(b.tokenInfo.symbol))
+      : []
 
     this.setState({ tokens, address })
   }
@@ -44,8 +47,12 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   render(): ReactNode {
     return (
       <div className="TokenList">
+        <h4>Address: {this.state.address}</h4>
         <ul>
-          {this.state.tokens.map(t => <Token key={t.tokenInfo.symbol} token={t} provider={this.props.provider} address={this.state.address}/>)}
+          {this.state.tokens.length > 0
+            ? this.state.tokens.map(t => <Token key={t.tokenInfo.symbol} token={t} provider={this.props.provider} address={this.state.address}/>)
+            : 'No token balances'
+          }
         </ul>
       </div>
     )

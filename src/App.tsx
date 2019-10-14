@@ -29,9 +29,9 @@ class App extends Component<{}, AppState> {
   render(): ReactNode {
     return (
       <div className="App">
-        {(this.state.provider &&
-          <TokenList provider={this.state.provider} />) ||
-          <p>Please use an Ethereum-enabled browser (like Metamask or Trust Wallet) to use revoke.cash</p>
+        {this.state.provider
+          ? <TokenList provider={this.state.provider} />
+          : <p>Please use an Ethereum-enabled browser (like Metamask or Trust Wallet) to use revoke.cash</p>
         }
       </div>
     );
