@@ -15,17 +15,24 @@ class App extends Component<{}, AppState> {
 
   async componentDidMount() {
     // Create ethers.js provider from web3 instance injected by Metamask
-    if (window.ethereum) {
-      await window.ethereum.enable();
+    try {
+      if (window.ethereum) {
+        await window.ethereum.enable();
+      }
+      const provider = new Web3Provider(web3.currentProvider)
+      this.setState({ provider })
+    } catch {
+
     }
-    const provider = new Web3Provider(web3.currentProvider)
-    this.setState({ provider })
   }
 
   render(): ReactNode {
     return (
       <div className="App">
-        <TokenList provider={this.state.provider} />
+        {(this.state.provider &&
+          <TokenList provider={this.state.provider} />) ||
+          <p>Please use an Ethereum-enabled browser (like Metamask or Trust Wallet) to use revoke.cash</p>
+        }
       </div>
     );
   }
