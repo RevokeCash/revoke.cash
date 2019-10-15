@@ -13,16 +13,27 @@ type AppState = {
 class App extends Component<{}, AppState> {
   state: AppState = {}
 
-  async componentDidMount() {
-    // Create ethers.js provider from web3 instance injected by Metamask
+  componentDidMount() {
+    // Connect web3 if modern Metamask access is already granted or if older Metamask is used
+    // Don't connect if access has not been granted yet
+    if (window.ethereum) {
+      if (window.ethereum.selectedAddress) {
+        this.setState({ provider: new Web3Provider(web3.currentProvider) })
+      }
+    } else if (window.web3) {
+      this.setState({ provider: new Web3Provider(web3.currentProvider) })
+    }
+  }
+
+  async connectWeb3() {
     try {
       if (window.ethereum) {
         await window.ethereum.enable();
       }
       const provider = new Web3Provider(web3.currentProvider)
       this.setState({ provider })
-    } catch {
-
+    } catch(e) {
+      console.log(e)
     }
   }
 
@@ -31,7 +42,10 @@ class App extends Component<{}, AppState> {
       <div className="App">
         {this.state.provider
           ? <TokenList provider={this.state.provider} />
-          : <p>Please use an Ethereum-enabled browser (like Metamask or Trust Wallet) to use revoke.cash</p>
+          : <div>
+              <p>Please use an Ethereum-enabled browser (like Metamask or Trust Wallet) to use revoke.cash</p>
+              <button onClick={() => this.connectWeb3()}>Connect web3</button>
+            </div>
         }
       </div>
     );
