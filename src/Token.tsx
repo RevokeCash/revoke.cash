@@ -54,15 +54,15 @@ class Token extends Component<TokenProps, TokenState> {
 
     // Retrieve allowance values for all Approval events
     let allowances: string[][] = (await Promise.all(approvals.map(async (ev) => {
-      const spender = ethers.utils.hexStripZeros(ev.topics[2])
+      const spender = ethers.utils.hexDataSlice(ev.topics[2], 12)
       const allowance = (await contract.functions.allowance(this.props.address, spender) / (10 ** token.decimals)).toFixed(3)
       return [spender, allowance]
     })))
 
     // Remove duplicates and zero values
     allowances = allowances
-      .filter(all => all[1] !== '0.000')
       .filter((allowance, i) => i === allowances.findIndex(other => JSON.stringify(allowance) === JSON.stringify(other)))
+      .filter(allowance => allowance[1] !== '0.000')
 
     this.setState({
       contract,
@@ -89,11 +89,11 @@ class Token extends Component<TokenProps, TokenState> {
         {this.state.symbol}: {(this.state.balance / (10 ** this.state.decimals)).toFixed(3)}
         {this.state.allowances.length > 0 &&
           <ul>
-            {this.state.allowances.map(all => {
+            {this.state.allowances.map(allowance => {
               return (
-                <li key={all[0]}>
-                  {all[1]} allowance to <a href={`https://etherscan.io/address/${all[0]}`}>{all[0]}</a>
-                  <button onClick={() => this.revoke(all[0] as string)}>Revoke</button>
+                <li key={allowance[0]}>
+                  {allowance[1]} allowance to <a href={`https://etherscan.io/address/${allowance[0]}`}>{allowance[0]}</a>
+                  <button onClick={() => this.revoke(allowance[0] as string)}>Revoke</button>
                 </li>
               )
             })}
