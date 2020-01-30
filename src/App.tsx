@@ -47,7 +47,7 @@ class App extends Component<{}, AppState> {
               <button onClick={() => this.connectWeb3()}>Connect web3</button>
             </div>
         }
-        <p>Site created by <a href="https://kalis.me/">Rosco Kalis</a></p>
+        <p>Site created by <a href="https://kalis.me/">Rosco Kalis</a> (<a href="https://github.com/rkalis/revoke.cash">Source</a>)</p>
       </div>
     );
   }
