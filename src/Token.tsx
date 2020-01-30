@@ -4,6 +4,7 @@ import { JsonRpcProvider } from 'ethers/providers'
 import { ethers, Contract } from 'ethers'
 import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
+import { compareBN } from './util'
 
 type TokenProps = {
   provider?: JsonRpcProvider
@@ -71,6 +72,7 @@ class Token extends Component<TokenProps, TokenState> {
     allowances = allowances
       .filter((allowance, i) => i === allowances.findIndex(other => JSON.stringify(allowance) === JSON.stringify(other)))
       .filter(allowance => allowance.allowance !== '0')
+      .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
 
     this.setState({
       contract,
