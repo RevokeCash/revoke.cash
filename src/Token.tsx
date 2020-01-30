@@ -2,11 +2,12 @@ import './App.css'
 import React, { Component, ReactNode } from 'react'
 import { JsonRpcProvider } from 'ethers/providers'
 import { ethers, Contract } from 'ethers'
-import { ERC20 } from './interfaces'
+import { ERC20 } from './abis'
+import { TokenData } from './interfaces'
 
 type TokenProps = {
   provider?: JsonRpcProvider
-  token: any
+  token: TokenData
   address: string
 }
 
@@ -147,7 +148,7 @@ class Token extends Component<TokenProps, TokenState> {
 
   render(): ReactNode {
     return (
-      <li className="Token" style={{textAlign: 'left'}}>
+      <li className="Token">
         {this.state.symbol}: {this.toFloat(this.state.balance)}
         {this.state.allowances.length > 0 &&
           <ul>

@@ -1,3 +1,18 @@
 .App {
   text-align: center;
 }
+
+@media (min-width: 1200px) {
+  .TokenList {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+.TokenList li {
+  text-align: left;
+}
+
+sup {
+  margin: 0 5px;
+}
