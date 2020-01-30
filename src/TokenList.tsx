@@ -12,6 +12,7 @@ type TokenListProps = {
 
 type TokenListState = {
   address: string
+  ensName?: string
   tokens: TokenData[]
   useT2CR: boolean
 }
@@ -37,6 +38,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
 
     // Get address from Metamask
     const address = (await this.props.provider.listAccounts())[0]
+    const ensName = await this.props.provider.lookupAddress(address)
 
     // Retrieve token balances from the Ethplorer and sort them alphabetically
     const result = await axios.get(`https://api.ethplorer.io/getAddressInfo/${address}?apiKey=freekey`)
@@ -62,7 +64,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   render(): ReactNode {
     return (
       <div className="TokenList">
-        <h4>Address: {this.state.address}</h4>
+        <h4>{this.state.ensName || this.state.address}</h4>
           <p>
           Filter out unregistered tokens
           <sup><a href="https://tokens.kleros.io/tokens" target="_blank" rel="noopener noreferrer">?</a></sup>

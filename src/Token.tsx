@@ -14,6 +14,7 @@ type TokenProps = {
 
 type Allowance = {
   spender: string
+  ensSpender?: string
   allowance: string
   newAllowance: string
 }
@@ -63,9 +64,10 @@ class Token extends Component<TokenProps, TokenState> {
     // Retrieve allowance values for all Approval events
     let allowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
       const spender = ethers.utils.hexDataSlice(ev.topics[2], 12)
+      const ensSpender = await this.props.provider.lookupAddress(spender)
       const allowance = ethers.utils.bigNumberify(await contract.functions.allowance(this.props.address, spender)).toString()
       const newAllowance = '0'
-      return { spender, allowance, newAllowance };
+      return { spender, ensSpender, allowance, newAllowance };
     })))
 
     // Remove duplicates and zero values
@@ -158,7 +160,7 @@ class Token extends Component<TokenProps, TokenState> {
               return (
                 <li key={allowance.spender}>
                   {this.toFloat(Number(allowance.allowance))} allowance to&nbsp;
-                  <a href={`https://etherscan.io/address/${allowance.spender}`}>{allowance.spender}</a>
+                  <a href={`https://etherscan.io/address/${allowance.spender}`}>{allowance.ensSpender || allowance.spender}</a>
                   <button onClick={() => this.revoke(allowance)}>Revoke</button>
                   <input type="text"
                          value={this.state.allowances[i].newAllowance}
