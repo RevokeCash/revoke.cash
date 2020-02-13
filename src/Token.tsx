@@ -159,7 +159,7 @@ class Token extends Component<TokenProps, TokenState> {
             {this.state.allowances.map((allowance, i) => {
               return (
                 <li key={allowance.spender}>
-                  {this.toFloat(Number(allowance.allowance))} allowance to&nbsp
+                  {this.toFloat(Number(allowance.allowance))} allowance to&nbsp;
                   <a href={`https://etherscan.io/address/${allowance.spender}`}>{allowance.ensSpender || allowance.spender}</a>
                   <button onClick={() => this.revoke(allowance)}>Revoke</button>
                   <input type="text"

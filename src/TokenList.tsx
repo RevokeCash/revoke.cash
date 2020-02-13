@@ -37,7 +37,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     if (!this.props.provider) return
 
     // Get address from Metamask
-    const address = (await this.props.provider.listAccounts())[0]
+    const address = await this.props.provider.getSigner().getAddress()
     const ensName = await this.props.provider.lookupAddress(address)
 
     // Retrieve token balances from the Ethplorer and sort them alphabetically
