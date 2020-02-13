@@ -154,7 +154,7 @@ class Token extends Component<TokenProps, TokenState> {
     return (
       <li className="Token">
         {this.state.symbol}: {this.toFloat(this.state.balance)}
-        {this.state.allowances.length > 0 &&
+        {this.state.allowances.length > 0 ?
           <ul>
             {this.state.allowances.map((allowance, i) => {
               return (
@@ -174,7 +174,8 @@ class Token extends Component<TokenProps, TokenState> {
                 </li>
               )
             })}
-          </ul>
+          </ul> :
+          <ul><li>No outstanding allowances</li></ul>
         }
       </li>
     )
