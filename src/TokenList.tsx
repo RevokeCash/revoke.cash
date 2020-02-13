@@ -65,7 +65,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
 
   render(): ReactNode {
     return (
-      <div className="TokenList">
+      <div className="Dashboard">
         <h4>{this.state.ensName || this.state.address}</h4>
           <p>
           Filter out unregistered tokens
@@ -73,7 +73,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
           <input type="checkbox" checked={this.state.useT2CR} onChange={this.handleCheckboxChange} />
         </p>
           {this.state.tokens.length > 0
-          ? <ul>
+          ? <ul className="TokenList">
             {this.state.tokens.map(t => (
               (!this.state.useT2CR || t.registered) &&
               <Token key={t.tokenInfo.symbol} token={t} provider={this.props.provider} signer={this.props.signer} address={this.state.address} />

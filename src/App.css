@@ -1,5 +1,29 @@
+sup {
+  margin: 0 5px;
+}
+
+button {
+  margin: 3px;
+}
+
+.monospace {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
 .App {
   text-align: center;
+}
+
+.logo {
+  width: 40%;
+  max-width: 400px;
+  margin: 20px auto auto auto;
+}
+
+.TokenList {
+  padding: 10px;
+  list-style-type: none;
 }
 
 @media (min-width: 1200px) {
@@ -9,10 +33,26 @@
   }
 }
 
-.TokenList li {
+.Token {
   text-align: left;
+  padding: 3px;
 }
 
-sup {
-  margin: 0 5px;
+.TokenBalance {
+  display: flex;
+  align-items: center;
+}
+
+.TokenBalance img {
+  margin-right: 5px;
+}
+
+.AllowanceList {
+  padding-left: 20px;
+  list-style-type: none;
+}
+
+.NewAllowance {
+  width: 50px;
+  margin-left: 3px;
 }

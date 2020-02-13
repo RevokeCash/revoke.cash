@@ -8,16 +8,5 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.logo {
-  width: 40%;
-  max-width: 400px;
-  margin: 20px auto auto auto;
-}
-
-ul > li > ul {
-  padding-left: 20px;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

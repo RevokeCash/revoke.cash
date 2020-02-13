@@ -1,10 +1,11 @@
 import './App.css'
 import React, { Component, ReactNode } from 'react'
 import { Provider } from 'ethers/providers'
-import { ethers, Contract, Signer } from 'ethers'
+import { ethers, Contract, Signer, utils } from 'ethers'
 import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
 import { compareBN } from './util'
+import { isMobile } from 'react-device-detect'
 
 type TokenProps = {
   provider?: Provider
@@ -28,6 +29,7 @@ type TokenState = {
   balance: number
   decimals: number
   allowances: Allowance[]
+  icon?: string
 }
 
 class Token extends Component<TokenProps, TokenState> {
@@ -53,6 +55,7 @@ class Token extends Component<TokenProps, TokenState> {
     if (!this.props.signer) return
     const token = this.props.token.tokenInfo
     const contract = new Contract(token.address, ERC20, this.props.signer)
+    const icon = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${utils.getAddress(token.address)}/logo.png`
 
     // Retrieve all Approval events
     const approvals = await this.props.provider.getLogs({
@@ -83,7 +86,8 @@ class Token extends Component<TokenProps, TokenState> {
       symbol: token.symbol,
       balance: this.props.token.balance,
       decimals: parseInt(token.decimals),
-      allowances
+      allowances,
+      icon
     })
   }
 
@@ -150,27 +154,42 @@ class Token extends Component<TokenProps, TokenState> {
       : sides[0] + sides[1].padEnd(this.state.decimals, '0')
   }
 
+  formatAddress(address: string): string {
+    return isMobile ? `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}` : address
+  }
+
   render(): ReactNode {
     return (
       <li className="Token">
-        {this.state.symbol}: {this.toFloat(this.state.balance)}
+        <div className="TokenBalance">
+          <img src={this.state.icon}
+               onError={(ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}}
+               alt="Token icon"
+               width="20px" />
+          {this.state.symbol}: {this.toFloat(this.state.balance)}
+        </div>
         {this.state.allowances.length > 0 &&
-          <ul>
+          <ul className="AllowanceList">
             {this.state.allowances.map((allowance, i) => {
               return (
-                <li key={allowance.spender}>
-                  {this.toFloat(Number(allowance.allowance))} allowance to&nbsp;
-                  <a href={`https://etherscan.io/address/${allowance.spender}`}>{allowance.ensSpender || allowance.spender}</a>
-                  <button onClick={() => this.revoke(allowance)}>Revoke</button>
-                  <input type="text"
-                         value={this.state.allowances[i].newAllowance}
-                         onChange={(event) => {
-                           const updatedAllowances = this.state.allowances.slice()
-                           updatedAllowances[i] = { ...allowance, newAllowance: event.target.value }
-                           this.setState({ allowances: updatedAllowances })
-                         }}
-                  ></input>
-                  <button onClick={() => this.update(allowance)}>Update</button>
+                <li key={allowance.spender} className="Allowance">
+                  <div className="AllowanceText">
+                    {this.toFloat(Number(allowance.allowance))} allowance to&nbsp;
+                    <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>
+                      {allowance.ensSpender || this.formatAddress(allowance.spender)}
+                    </a>
+                    <button className="RevokeButton" onClick={() => this.revoke(allowance)}>Revoke</button>
+                    <input type="text"
+                          className="NewAllowance"
+                          value={this.state.allowances[i].newAllowance}
+                          onChange={(event) => {
+                            const updatedAllowances = this.state.allowances.slice()
+                            updatedAllowances[i] = { ...allowance, newAllowance: event.target.value }
+                            this.setState({ allowances: updatedAllowances })
+                            }}
+                            ></input>
+                    <button className="UpdateButton" onClick={() => this.update(allowance)}>Update</button>
+                  </div>
                 </li>
               )
             })}
