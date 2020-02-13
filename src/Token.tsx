@@ -67,7 +67,7 @@ class Token extends Component<TokenProps, TokenState> {
       const ensSpender = await this.props.provider.lookupAddress(spender)
       const allowance = ethers.utils.bigNumberify(await contract.functions.allowance(this.props.address, spender)).toString()
       const newAllowance = '0'
-      return { spender, ensSpender, allowance, newAllowance };
+      return { spender, ensSpender, allowance, newAllowance }
     })))
 
     // Remove duplicates and zero values
@@ -96,7 +96,7 @@ class Token extends Component<TokenProps, TokenState> {
 
     const bnNew = ethers.utils.bigNumberify(this.fromFloat(allowance.newAllowance))
     const bnOld = ethers.utils.bigNumberify(allowance.allowance)
-    let tx;
+    let tx
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
@@ -110,7 +110,7 @@ class Token extends Component<TokenProps, TokenState> {
       console.debug(`failed, code ${e1.code}`)
       if (e1.code === -32000) {
         try {
-          const sub = bnOld.sub(bnNew);
+          const sub = bnOld.sub(bnNew)
           if (sub.gte(0)) {
             console.debug(`Calling contract.decreaseApproval(${allowance.spender}, ${sub.toString()})`)
             tx = await this.state.contract.functions.decreaseApproval(allowance.spender, sub)
@@ -159,7 +159,7 @@ class Token extends Component<TokenProps, TokenState> {
             {this.state.allowances.map((allowance, i) => {
               return (
                 <li key={allowance.spender}>
-                  {this.toFloat(Number(allowance.allowance))} allowance to&nbsp;
+                  {this.toFloat(Number(allowance.allowance))} allowance to&nbsp
                   <a href={`https://etherscan.io/address/${allowance.spender}`}>{allowance.ensSpender || allowance.spender}</a>
                   <button onClick={() => this.revoke(allowance)}>Revoke</button>
                   <input type="text"
@@ -181,4 +181,4 @@ class Token extends Component<TokenProps, TokenState> {
   }
 }
 
-export default Token;
+export default Token

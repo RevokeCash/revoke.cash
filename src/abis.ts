@@ -1174,4 +1174,4 @@ export const Badge = [
     stateMutability: "view",
     type: "function"
   }
-];
+]

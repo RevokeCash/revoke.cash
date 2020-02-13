@@ -1,10 +1,10 @@
-import './App.css';
-import React, { Component, ReactNode } from 'react';
-import { JsonRpcProvider, Web3Provider } from 'ethers/providers';
+import './App.css'
+import React, { Component, ReactNode } from 'react'
+import { JsonRpcProvider, Web3Provider } from 'ethers/providers'
 import TokenList from './TokenList'
 
-declare let window: any;
-declare let web3: any;
+declare let window: any
+declare let web3: any
 
 type AppState = {
   provider?: JsonRpcProvider
@@ -28,7 +28,7 @@ class App extends Component<{}, AppState> {
   async connectWeb3() {
     try {
       if (window.ethereum) {
-        await window.ethereum.enable();
+        await window.ethereum.enable()
       }
       const provider = new Web3Provider(web3.currentProvider)
       this.setState({ provider })
@@ -40,6 +40,7 @@ class App extends Component<{}, AppState> {
   render(): ReactNode {
     return (
       <div className="App">
+        <img src="revoke.png" alt="revoke.cash logo" className="logo" />
         {this.state.provider
           ? <TokenList provider={this.state.provider} />
           : <div>
@@ -49,8 +50,8 @@ class App extends Component<{}, AppState> {
         }
         <p>Site created by <a href="https://kalis.me/">Rosco Kalis</a> (<a href="https://github.com/rkalis/revoke.cash">Source</a>)</p>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

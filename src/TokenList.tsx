@@ -84,4 +84,4 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 }
 
-export default TokenList;
+export default TokenList
