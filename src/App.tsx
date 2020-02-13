@@ -1,48 +1,55 @@
 import './App.css'
 import React, { Component, ReactNode } from 'react'
-import { JsonRpcProvider, Web3Provider } from 'ethers/providers'
+import { Web3Provider, Provider } from 'ethers/providers'
 import TokenList from './TokenList'
+import { Signer, getDefaultProvider } from 'ethers'
 
 declare let window: any
 declare let web3: any
 
 type AppState = {
-  provider?: JsonRpcProvider
+  provider?: Provider,
+  signer?: Signer,
 }
 
 class App extends Component<{}, AppState> {
   state: AppState = {}
 
-  componentDidMount() {
-    // Connect web3 if modern Metamask access is already granted or if older Metamask is used
-    // Don't connect if access has not been granted yet
-    if (window.ethereum) {
-      if (window.ethereum.selectedAddress) {
-        this.setState({ provider: new Web3Provider(web3.currentProvider) })
-      }
-    } else if (window.web3) {
-      this.setState({ provider: new Web3Provider(web3.currentProvider) })
+  async componentDidMount() {
+    // Set default provider for READ operations
+    this.setState({ provider: getDefaultProvider() })
+
+    // Connect with Web3 provider for WRITE opertions if access is already granted
+    if (window.ethereum || window.web3) {
+      try {
+        const signer = new Web3Provider(web3.currentProvider).getSigner()
+        // Check if access is granted
+        await signer.getAddress()
+        this.setState({ signer })
+      } catch (e) {} // ignored
     }
   }
 
   async connectWeb3() {
-    try {
-      if (window.ethereum) {
-        await window.ethereum.enable()
+    if (window.ethereum) {
+      try {
+        // Request account access if needed
+        await window.ethereum.enable();
+      } catch (error) {
+        // User denied account access...
+        return
       }
-      const provider = new Web3Provider(web3.currentProvider)
-      this.setState({ provider })
-    } catch(e) {
-      console.log(e)
     }
+
+    this.setState({ signer: new Web3Provider(web3.currentProvider).getSigner() })
   }
 
   render(): ReactNode {
     return (
       <div className="App">
         <img src="revoke.png" alt="revoke.cash logo" className="logo" />
-        {this.state.provider
-          ? <TokenList provider={this.state.provider} />
+        {this.state.signer
+          ? <TokenList provider={this.state.provider} signer={this.state.signer} />
           : <div>
               <p>Please use an Ethereum-enabled browser (like Metamask or Trust Wallet) to use revoke.cash</p>
               <button onClick={() => this.connectWeb3()}>Connect web3</button>

@@ -1,13 +1,14 @@
 import './App.css'
 import React, { Component, ReactNode } from 'react'
-import { JsonRpcProvider } from 'ethers/providers'
-import { ethers, Contract } from 'ethers'
+import { Provider } from 'ethers/providers'
+import { ethers, Contract, Signer } from 'ethers'
 import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
 import { compareBN } from './util'
 
 type TokenProps = {
-  provider?: JsonRpcProvider
+  provider?: Provider
+  signer?: Signer
   token: TokenData
   address: string
 }
@@ -44,15 +45,14 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   componentDidUpdate(prevProps: TokenProps) {
-    if (this.props.provider === prevProps.provider) return
+    if (this.props.signer === prevProps.signer) return
     this.loadData()
   }
 
   private async loadData() {
-    if (!this.props.provider) return
-
+    if (!this.props.signer) return
     const token = this.props.token.tokenInfo
-    const contract = new Contract(token.address, ERC20, this.props.provider.getSigner())
+    const contract = new Contract(token.address, ERC20, this.props.signer)
 
     // Retrieve all Approval events
     const approvals = await this.props.provider.getLogs({

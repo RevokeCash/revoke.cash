@@ -1,13 +1,15 @@
 import './App.css'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
-import { JsonRpcProvider } from 'ethers/providers'
+import { Provider } from 'ethers/providers'
 import axios from 'axios'
 import Token from './Token'
 import { AddressInfo, TokenData } from './interfaces'
 import { isRegistered } from './util'
+import { Signer } from 'ethers'
 
 type TokenListProps = {
-  provider?: JsonRpcProvider
+  provider?: Provider
+  signer?: Signer
 }
 
 type TokenListState = {
@@ -29,15 +31,15 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 
   componentDidUpdate(prevProps: TokenListProps) {
-    if (this.props.provider === prevProps.provider) return
+    if (this.props.signer === prevProps.signer) return
     this.loadData()
   }
 
   async loadData() {
-    if (!this.props.provider) return
+    if (!this.props.signer) return
 
     // Get address from Metamask
-    const address = await this.props.provider.getSigner().getAddress()
+    const address = await this.props.signer.getAddress()
     const ensName = await this.props.provider.lookupAddress(address)
 
     // Retrieve token balances from the Ethplorer and sort them alphabetically
@@ -70,15 +72,16 @@ class TokenList extends Component<TokenListProps, TokenListState> {
           <sup><a href="https://tokens.kleros.io/tokens" target="_blank" rel="noopener noreferrer">?</a></sup>
           <input type="checkbox" checked={this.state.useT2CR} onChange={this.handleCheckboxChange} />
         </p>
-        <ul>
           {this.state.tokens.length > 0
-            ? this.state.tokens.map(t => (
+          ? <ul>
+            {this.state.tokens.map(t => (
               (!this.state.useT2CR || t.registered) &&
-              <Token key={t.tokenInfo.symbol} token={t} provider={this.props.provider} address={this.state.address} />
+              <Token key={t.tokenInfo.symbol} token={t} provider={this.props.provider} signer={this.props.signer} address={this.state.address} />
             ))
-            : 'No token balances'
+            }
+          </ul>
+          : 'No token balances'
           }
-        </ul>
       </div>
     )
   }

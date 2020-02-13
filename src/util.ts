@@ -1,10 +1,10 @@
-import { JsonRpcProvider } from 'ethers/providers'
+import { Provider } from 'ethers/providers'
 import { Badge } from './abis'
 import { Contract, ethers } from 'ethers'
 import { BigNumberish } from 'ethers/utils'
 
-export async function isRegistered(tokenAddress: string, provider: JsonRpcProvider): Promise<boolean> {
-  const contractT2CR = new Contract('0xCb4Aae35333193232421E86Cd2E9b6C91f3B125F', Badge, provider.getSigner())
+export async function isRegistered(tokenAddress: string, provider: Provider): Promise<boolean> {
+  const contractT2CR = new Contract('0xCb4Aae35333193232421E86Cd2E9b6C91f3B125F', Badge, provider)
   const { status } = await contractT2CR.functions.getAddressInfo(tokenAddress)
   return status === 1
 }
