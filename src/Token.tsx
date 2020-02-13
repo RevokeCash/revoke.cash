@@ -175,7 +175,7 @@ class Token extends Component<TokenProps, TokenState> {
               )
             })}
           </ul> :
-          <ul><li>No outstanding allowances</li></ul>
+          <ul><li>No allowances found</li></ul>
         }
       </li>
     )
