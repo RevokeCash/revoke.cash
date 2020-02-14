@@ -6,6 +6,10 @@ button {
   margin: 3px;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .monospace {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-size: 0.9em;
@@ -23,7 +27,6 @@ button {
 
 .TokenList {
   padding: 10px;
-  list-style-type: none;
 }
 
 @media (min-width: 1200px) {
@@ -49,7 +52,6 @@ button {
 
 .AllowanceList {
   padding-left: 20px;
-  list-style-type: none;
 }
 
 .NewAllowance {
