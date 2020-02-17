@@ -47,7 +47,7 @@ class App extends Component<{}, AppState> {
   render(): ReactNode {
     return (
       <div className="App">
-        <img src="revoke.png" alt="revoke.cash logo" className="logo" />
+        <img src="revoke.svg" alt="revoke.cash logo" className="logo" />
         {this.state.signer
           ? <TokenList provider={this.state.provider} signer={this.state.signer} />
           : <div>
