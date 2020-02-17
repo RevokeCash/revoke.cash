@@ -1,11 +1,12 @@
-import './App.css'
 import React, { Component, ReactNode } from 'react'
+import { isMobile } from 'react-device-detect'
 import { Provider } from 'ethers/providers'
 import { ethers, Contract, Signer, utils } from 'ethers'
+import './App.css'
 import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
 import { compareBN } from './util'
-import { isMobile } from 'react-device-detect'
+import { addressToService } from './services'
 
 type TokenProps = {
   provider?: Provider
@@ -17,6 +18,7 @@ type TokenProps = {
 type Allowance = {
   spender: string
   ensSpender?: string
+  spenderService?: string
   allowance: string
   newAllowance: string
 }
@@ -66,11 +68,12 @@ class Token extends Component<TokenProps, TokenState> {
 
     // Retrieve allowance values for all Approval events
     let allowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
-      const spender = ethers.utils.hexDataSlice(ev.topics[2], 12)
+      const spender = ethers.utils.getAddress(ethers.utils.hexDataSlice(ev.topics[2], 12))
       const ensSpender = await this.props.provider.lookupAddress(spender)
+      const spenderService = addressToService(spender)
       const allowance = ethers.utils.bigNumberify(await contract.functions.allowance(this.props.address, spender)).toString()
       const newAllowance = '0'
-      return { spender, ensSpender, allowance, newAllowance }
+      return { spender, ensSpender, spenderService, allowance, newAllowance }
     })))
 
     // Remove duplicates and zero values
@@ -176,7 +179,7 @@ class Token extends Component<TokenProps, TokenState> {
                   <div className="AllowanceText">
                     {this.toFloat(Number(allowance.allowance))} allowance to&nbsp;
                     <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>
-                      {allowance.ensSpender || this.formatAddress(allowance.spender)}
+                      {allowance.spenderService || allowance.ensSpender || this.formatAddress(allowance.spender)}
                     </a>
                     <button className="RevokeButton" onClick={() => this.revoke(allowance)}>Revoke</button>
                     <input type="text"
