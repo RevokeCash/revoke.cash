@@ -7,6 +7,7 @@ import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
 import { compareBN } from './util'
 import { addressToService } from './services'
+import { bigNumberify } from 'ethers/utils'
 
 type TokenProps = {
   provider?: Provider
@@ -28,6 +29,7 @@ type TokenState = {
   address: string
   name: string
   symbol: string
+  totalSupply: string
   balance: number
   decimals: number
   allowances: Allowance[]
@@ -39,6 +41,7 @@ class Token extends Component<TokenProps, TokenState> {
     address: '',
     name: '',
     symbol: '',
+    totalSupply: '0',
     balance: 0,
     decimals: 0,
     allowances: []
@@ -87,6 +90,7 @@ class Token extends Component<TokenProps, TokenState> {
       address: token.address,
       name: token.name,
       symbol: token.symbol,
+      totalSupply: token.totalSupply,
       balance: this.props.token.balance,
       decimals: parseInt(token.decimals),
       allowances,
@@ -157,7 +161,16 @@ class Token extends Component<TokenProps, TokenState> {
       : sides[0] + sides[1].padEnd(this.state.decimals, '0')
   }
 
-  formatAddress(address: string): string {
+  private formatAllowance(allowance: string) {
+    const allowanceBN = bigNumberify(allowance)
+    const totalSupplyBN = bigNumberify(this.state.totalSupply)
+    if (allowanceBN.gt(totalSupplyBN)) {
+      return 'unlimited'
+    }
+    return this.toFloat(Number(allowanceBN))
+  }
+
+  private formatAddress(address: string): string {
     return isMobile ? `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}` : address
   }
 
@@ -177,7 +190,7 @@ class Token extends Component<TokenProps, TokenState> {
               return (
                 <li key={allowance.spender} className="Allowance">
                   <div className="AllowanceText">
-                    {this.toFloat(Number(allowance.allowance))} allowance to&nbsp;
+                    {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
                     <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>
                       {allowance.spenderService || allowance.ensSpender || this.formatAddress(allowance.spender)}
                     </a>

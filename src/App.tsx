@@ -19,7 +19,7 @@ class App extends Component<{}, AppState> {
     // Set default provider for READ operations
     this.setState({ provider: getDefaultProvider() })
 
-    // Connect with Web3 provider for WRITE opertions if access is already granted
+    // Connect with Web3 provider for WRITE operations if access is already granted
     if (window.ethereum || window.web3) {
       try {
         const signer = new Web3Provider(web3.currentProvider).getSigner()
