@@ -1,5 +1,6 @@
 import './App.css'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
+import ClipLoader from 'react-spinners/ClipLoader';
 import { Provider } from 'ethers/providers'
 import axios from 'axios'
 import Token from './Token'
@@ -17,13 +18,15 @@ type TokenListState = {
   ensName?: string
   tokens: TokenData[]
   useT2CR: boolean
+  loading: boolean
 }
 
 class TokenList extends Component<TokenListProps, TokenListState> {
   state: TokenListState = {
-    address: '0x0000000000000000000000000000000000000000',
+    address: '',
     tokens: [],
     useT2CR: true,
+    loading: true,
   }
 
   componentDidMount() {
@@ -57,7 +60,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
       return token
     }))
 
-    this.setState({ tokens, address, ensName })
+    this.setState({ tokens, address, ensName, loading: false })
   }
 
   handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
@@ -67,12 +70,12 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     return (
       <div className="Dashboard">
         <h4>{this.state.ensName || this.state.address}</h4>
-          <p>
+        <p>
           Filter out unregistered tokens
           <sup><a href="https://tokens.kleros.io/tokens" target="_blank" rel="noopener noreferrer">?</a></sup>
           <input type="checkbox" checked={this.state.useT2CR} onChange={this.handleCheckboxChange} />
         </p>
-          {this.state.tokens.length > 0
+        {this.state.tokens.length > 0
           ? <ul className="TokenList">
             {this.state.tokens.map(t => (
               (!this.state.useT2CR || t.registered) &&
@@ -80,8 +83,8 @@ class TokenList extends Component<TokenListProps, TokenListState> {
             ))
             }
           </ul>
-          : 'No token balances'
-          }
+          : (this.state.loading ? <ClipLoader size={40} color={'#000'} loading={this.state.loading} /> : 'No token balances' )
+        }
       </div>
     )
   }

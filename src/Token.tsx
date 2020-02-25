@@ -1,4 +1,5 @@
 import React, { Component, ReactNode } from 'react'
+import ClipLoader from 'react-spinners/ClipLoader';
 import { isMobile } from 'react-device-detect'
 import { Provider } from 'ethers/providers'
 import { ethers, Contract, Signer, utils } from 'ethers'
@@ -34,6 +35,7 @@ type TokenState = {
   decimals: number
   allowances: Allowance[]
   icon?: string
+  loading: boolean
 }
 
 class Token extends Component<TokenProps, TokenState> {
@@ -44,7 +46,8 @@ class Token extends Component<TokenProps, TokenState> {
     totalSupply: '0',
     balance: 0,
     decimals: 0,
-    allowances: []
+    allowances: [],
+    loading: true,
   }
 
   componentDidMount() {
@@ -94,7 +97,8 @@ class Token extends Component<TokenProps, TokenState> {
       balance: this.props.token.balance,
       decimals: parseInt(token.decimals),
       allowances,
-      icon
+      icon,
+      loading: false,
     })
   }
 
@@ -165,7 +169,7 @@ class Token extends Component<TokenProps, TokenState> {
     const allowanceBN = bigNumberify(allowance)
     const totalSupplyBN = bigNumberify(this.state.totalSupply)
     if (allowanceBN.gt(totalSupplyBN)) {
-      return 'unlimited'
+      return 'Unlimited'
     }
     return this.toFloat(Number(allowanceBN))
   }
@@ -177,39 +181,43 @@ class Token extends Component<TokenProps, TokenState> {
   render(): ReactNode {
     return (
       <li className="Token">
-        <div className="TokenBalance">
-          <img src={this.state.icon}
-               onError={(ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}}
-               alt="Token icon"
-               width="20px" />
-          {this.state.symbol}: {this.toFloat(this.state.balance)}
-        </div>
-        {this.state.allowances.length > 0 &&
-          <ul className="AllowanceList">
-            {this.state.allowances.map((allowance, i) => {
-              return (
-                <li key={allowance.spender} className="Allowance">
-                  <div className="AllowanceText">
-                    {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
-                    <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>
-                      {allowance.spenderService || allowance.ensSpender || this.formatAddress(allowance.spender)}
-                    </a>
-                    <button className="RevokeButton" onClick={() => this.revoke(allowance)}>Revoke</button>
-                    <input type="text"
-                          className="NewAllowance"
-                          value={this.state.allowances[i].newAllowance}
-                          onChange={(event) => {
-                            const updatedAllowances = this.state.allowances.slice()
-                            updatedAllowances[i] = { ...allowance, newAllowance: event.target.value }
-                            this.setState({ allowances: updatedAllowances })
-                            }}
-                            ></input>
-                    <button className="UpdateButton" onClick={() => this.update(allowance)}>Update</button>
-                  </div>
-                </li>
-              )
-            })}
-          </ul>
+        {this.state.loading
+          ? <ClipLoader size={20} color={'#000'} loading={this.state.loading} />
+          : <div>
+            <div className="TokenBalance">
+              <img src={this.state.icon} alt="" width="20px"
+                  onError={(ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}} />
+              {this.state.symbol}: {this.toFloat(this.state.balance)}
+            </div>
+            <ul className="AllowanceList">
+              {this.state.allowances.length > 0
+                ? this.state.allowances.map((allowance, i) => {
+                  return (
+                    <li key={allowance.spender} className="Allowance">
+                      <div className="AllowanceText">
+                        {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
+                        <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>
+                          {allowance.spenderService || allowance.ensSpender || this.formatAddress(allowance.spender)}
+                        </a>
+                        <button className="RevokeButton" onClick={() => this.revoke(allowance)}>Revoke</button>
+                        <input type="text"
+                              className="NewAllowance"
+                              value={this.state.allowances[i].newAllowance}
+                              onChange={(event) => {
+                                const updatedAllowances = this.state.allowances.slice()
+                                updatedAllowances[i] = { ...allowance, newAllowance: event.target.value }
+                                this.setState({ allowances: updatedAllowances })
+                                }}
+                                ></input>
+                        <button className="UpdateButton" onClick={() => this.update(allowance)}>Update</button>
+                      </div>
+                    </li>
+                  )
+                })
+                : <li>No allowances</li>
+              }
+            </ul>
+          </div>
         }
       </li>
     )
