@@ -15,4 +15,4 @@ yarn start
 ```
 
 ## Credits
-Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses the [Ethplorer API](https://github.com/EverexIO/Ethplorer/wiki/ethplorer-api) to retrieve token balance information and [ethers.js](https://github.com/ethers-io/ethers.js) for all other Ethereum-related operations. Built with React and TypeScript.
+Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses the [Ethplorer API](https://github.com/EverexIO/Ethplorer/wiki/ethplorer-api) to retrieve token balance information and [ethers.js](https://github.com/ethers-io/ethers.js) for all other Ethereum-related operations. Filters out unverified tokens using the [Kleros T2CR](https://tokens.kleros.io/tokens). Built with React and TypeScript.
