@@ -1,14 +1,13 @@
-import React, { Component, ReactNode } from 'react'
-import ClipLoader from 'react-spinners/ClipLoader';
-import { isMobile } from 'react-device-detect'
-import { Provider } from 'ethers/providers'
-import { ethers, Contract, Signer, utils } from 'ethers'
 import './App.css'
+import { Contract, Signer } from 'ethers'
+import { Provider } from 'ethers/providers'
+import { bigNumberify, getAddress, hexZeroPad, hexDataSlice } from 'ethers/utils'
+import React, { Component, ReactNode } from 'react'
+import { isMobile } from 'react-device-detect'
+import ClipLoader from 'react-spinners/ClipLoader';
 import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
-import { compareBN } from './util'
-import { addressToService } from './services'
-import { bigNumberify } from 'ethers/utils'
+import { compareBN, addressToAppName } from './util'
 
 type TokenProps = {
   provider?: Provider
@@ -20,7 +19,7 @@ type TokenProps = {
 type Allowance = {
   spender: string
   ensSpender?: string
-  spenderService?: string
+  spenderAppName?: string
   allowance: string
   newAllowance: string
 }
@@ -63,29 +62,33 @@ class Token extends Component<TokenProps, TokenState> {
     if (!this.props.signer) return
     const token = this.props.token.tokenInfo
     const contract = new Contract(token.address, ERC20, this.props.signer)
-    const icon = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${utils.getAddress(token.address)}/logo.png`
+    const icon = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(token.address)}/logo.png`
 
     // Retrieve all Approval events
-    const approvals = await this.props.provider.getLogs({
+    let approvals = await this.props.provider.getLogs({
       fromBlock: 0,
       address: token.address,
-      topics: [contract.interface.events.Approval.topic, ethers.utils.hexZeroPad(this.props.address, 32)]
+      topics: [contract.interface.events.Approval.topic, hexZeroPad(this.props.address, 32)]
     })
 
-    // Retrieve allowance values for all Approval events
+    // Filter out dupplicate spenders
+    approvals = approvals
+      .filter((approval, i) => i === approvals.findIndex(other => approval.topics[2] === other.topics[2]))
+
+    // Retrieve current allowance for these Approval events
     let allowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
-      const spender = ethers.utils.getAddress(ethers.utils.hexDataSlice(ev.topics[2], 12))
+      const spender = getAddress(hexDataSlice(ev.topics[2], 12))
+      const allowance = bigNumberify(await contract.functions.allowance(this.props.address, spender)).toString()
+      if (allowance === '0') return undefined // Filter zero-value allowances early to save bandwidth
       const ensSpender = await this.props.provider.lookupAddress(spender)
-      const spenderService = addressToService(spender)
-      const allowance = ethers.utils.bigNumberify(await contract.functions.allowance(this.props.address, spender)).toString()
+      const spenderAppName = await addressToAppName(spender)
       const newAllowance = '0'
-      return { spender, ensSpender, spenderService, allowance, newAllowance }
+      return { spender, ensSpender, spenderAppName, allowance, newAllowance }
     })))
 
-    // Remove duplicates and zero values
+    // Filter out zero-value allowances and sort
     allowances = allowances
-      .filter((allowance, i) => i === allowances.findIndex(other => JSON.stringify(allowance) === JSON.stringify(other)))
-      .filter(allowance => allowance.allowance !== '0')
+      .filter(allowance => allowance !== undefined)
       .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
 
     this.setState({
@@ -109,8 +112,9 @@ class Token extends Component<TokenProps, TokenState> {
   private async update(allowance: Allowance) {
     if (!this.state.contract) return
 
-    const bnNew = ethers.utils.bigNumberify(this.fromFloat(allowance.newAllowance))
-    const bnOld = ethers.utils.bigNumberify(allowance.allowance)
+    const bnNew = bigNumberify(this.fromFloat(allowance.newAllowance))
+    const bnOld = bigNumberify(allowance.allowance)
+    const contract = this.state.contract
     let tx
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
@@ -120,7 +124,7 @@ class Token extends Component<TokenProps, TokenState> {
     // finally try resetting allowance to 0 and then calling approve with new value
     try {
       console.debug(`Calling contract.approve(${allowance.spender}, ${bnNew.toString()})`)
-      tx = await this.state.contract.functions.approve(allowance.spender, bnNew)
+      tx = await contract.functions.approve(allowance.spender, bnNew)
     } catch (e1) {
       console.debug(`failed, code ${e1.code}`)
       if (e1.code === -32000) {
@@ -128,19 +132,19 @@ class Token extends Component<TokenProps, TokenState> {
           const sub = bnOld.sub(bnNew)
           if (sub.gte(0)) {
             console.debug(`Calling contract.decreaseApproval(${allowance.spender}, ${sub.toString()})`)
-            tx = await this.state.contract.functions.decreaseApproval(allowance.spender, sub)
+            tx = await contract.functions.decreaseApproval(allowance.spender, sub)
           } else {
             console.debug(`Calling contract.increaseApproval(${allowance.spender}, ${sub.abs().toString()})`)
-            tx = await this.state.contract.functions.increaseApproval(allowance.spender, sub.abs())
+            tx = await contract.functions.increaseApproval(allowance.spender, sub.abs())
           }
         } catch (e2) {
           console.debug(`failed, code ${e2.code}`)
           if (e2.code === -32000) {
             console.debug(`Calling contract.approve(${allowance.spender}, 0)`)
-            tx = await this.state.contract.functions.approve(allowance.spender, 0)
+            tx = await contract.functions.approve(allowance.spender, 0)
             await tx.wait(1)
             console.debug(`Calling contract.approve(${allowance.spender}, ${bnNew.toString()})`)
-            tx = await this.state.contract.functions.approve(allowance.spender, bnNew)
+            tx = await contract.functions.approve(allowance.spender, bnNew)
           }
         }
       }
@@ -197,7 +201,7 @@ class Token extends Component<TokenProps, TokenState> {
                       <div className="AllowanceText">
                         {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
                         <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>
-                          {allowance.spenderService || allowance.ensSpender || this.formatAddress(allowance.spender)}
+                          {allowance.spenderAppName || allowance.ensSpender || this.formatAddress(allowance.spender)}
                         </a>
                         <button className="RevokeButton" onClick={() => this.revoke(allowance)}>Revoke</button>
                         <input type="text"

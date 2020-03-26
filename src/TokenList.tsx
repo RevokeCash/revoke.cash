@@ -1,12 +1,12 @@
 import './App.css'
+import axios from 'axios'
+import { Signer } from 'ethers'
+import { Provider } from 'ethers/providers'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader';
-import { Provider } from 'ethers/providers'
-import axios from 'axios'
-import Token from './Token'
 import { AddressInfo, TokenData } from './interfaces'
+import Token from './Token'
 import { isRegistered } from './util'
-import { Signer } from 'ethers'
 
 type TokenListProps = {
   provider?: Provider

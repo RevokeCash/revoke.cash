@@ -1,8 +1,8 @@
 import './App.css'
-import React, { Component, ReactNode } from 'react'
-import { Web3Provider, Provider } from 'ethers/providers'
-import TokenList from './TokenList'
 import { Signer, getDefaultProvider } from 'ethers'
+import { Web3Provider, Provider } from 'ethers/providers'
+import React, { Component, ReactNode } from 'react'
+import TokenList from './TokenList'
 
 declare let window: any
 declare let web3: any
