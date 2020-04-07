@@ -79,7 +79,10 @@ class Token extends Component<TokenProps, TokenState> {
     let allowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
       const spender = getAddress(hexDataSlice(ev.topics[2], 12))
       const allowance = bigNumberify(await contract.functions.allowance(this.props.address, spender)).toString()
-      if (allowance === '0') return undefined // Filter zero-value allowances early to save bandwidth
+
+      // Filter (almost) zero-value allowances early to save bandwidth
+      if (allowance.length < Number(token.decimals) - 3) return undefined
+
       const ensSpender = await this.props.provider.lookupAddress(spender)
       const spenderAppName = await addressToAppName(spender)
       const newAllowance = '0'
