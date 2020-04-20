@@ -2,12 +2,17 @@ import axios from 'axios'
 import { Contract } from 'ethers'
 import { Provider } from 'ethers/providers'
 import { BigNumberish, bigNumberify, getAddress } from 'ethers/utils'
-import { Badge } from './abis'
+import { TokensView } from './abis'
+
+const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000000000000000000000000000'
+// const ERC20_BADGE_ADDRESS = '0xCb4Aae35333193232421E86Cd2E9b6C91f3B125F'
+const T2CR_ADDRESS = '0xEbcf3bcA271B26ae4B162Ba560e243055Af0E679'
+const TOKENS_VIEW_ADDRESS = '0xf9b9b5440340123B21BFf1dDAFE1ad6Feb9D6E7F'
 
 export async function isRegistered(tokenAddress: string, provider: Provider): Promise<boolean> {
-  const contractT2CR = new Contract('0xCb4Aae35333193232421E86Cd2E9b6C91f3B125F', Badge, provider)
-  const { status } = await contractT2CR.functions.getAddressInfo(tokenAddress)
-  return status === 1
+  const tokensViewContract = new Contract(TOKENS_VIEW_ADDRESS, TokensView, provider)
+  const [ tokenID ] = await tokensViewContract.functions.getTokensIDsForAddresses(T2CR_ADDRESS, [tokenAddress])
+  return tokenID && tokenID !== ADDRESS_ZERO
 }
 
 export function compareBN(a: BigNumberish, b: BigNumberish): number {
