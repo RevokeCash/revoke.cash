@@ -1,0 +1,134 @@
+$primary: black;
+$secondary: black;
+@import "bootstrap";
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1;
+}
+
+sup {
+  margin: 0 5px;
+}
+
+a:link {
+  color: blue;
+}
+
+a:visited {
+  color: purple;
+}
+
+.monospace {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.App {
+  text-align: center;
+}
+
+.Header {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.logo {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 4%;
+  margin-bottom: 4%;
+}
+
+.AddressInput {
+  color: black;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .AddressInput {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
+
+.TokenList {
+  padding: 10px;
+}
+
+@media (min-width: 1200px) {
+  .TokenList {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+.Token {
+  text-align: left;
+  padding: 3px;
+}
+
+.TokenBalance {
+  display: flex;
+  align-items: center;
+}
+
+.TokenBalance img {
+  margin-right: 5px;
+}
+
+.AllowanceList {
+  padding-left: 20px;
+}
+
+.Allowance {
+  margin-bottom: 2px;
+}
+
+.AllowanceText {
+  margin-right: 5px;
+}
+
+.NewAllowance {
+  margin-left: 5px;
+}
+
+// Make all buttons just a bit smaller so more information can fit on the screen
+.btn-sm {
+  padding: 0rem 0.4rem;
+  line-height: 1.4;
+}
+
+.input-group-sm > .input-group-append > .btn {
+  padding: 0rem 0.4rem;
+  line-height: 1.4;
+}
+
+.input-group-sm > .form-control:not(textarea) {
+  padding: 0rem 0.5rem;
+  line-height: 1.4;
+  height: calc(1.4em + 0rem + 2px);
+  width: 70px;
+}
+
+// At around 600px the update button does not fit on the same line any more,
+// so move all buttons over to a new line
+@media (max-width: 600px) {
+  .form-inline label {
+    width: 100%;
+    justify-content: start;
+  }
+  .input-group-sm {
+    width: 10rem;
+  }
+}
+
+// Around 850px the full address doesn't fit on the screen any more,
+// so we move to a shortened version of the address
+.AllowanceTextSmallScreen { display: none; }
+.AllowanceTextBigScreen { display: inline; }
+@media (max-width: 850px) {
+  .AllowanceTextSmallScreen { display: inline; }
+  .AllowanceTextBigScreen { display: none; }
+}

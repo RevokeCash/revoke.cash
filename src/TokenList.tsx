@@ -1,4 +1,4 @@
-import './App.css'
+import './App.scss'
 import axios from 'axios'
 import { Signer } from 'ethers'
 import { Provider } from 'ethers/providers'
@@ -11,11 +11,11 @@ import { isRegistered } from './util'
 type TokenListProps = {
   provider?: Provider
   signer?: Signer
+  signerAddress?: string
+  inputAddress?: string
 }
 
 type TokenListState = {
-  address: string
-  ensName?: string
   tokens: TokenData[]
   useT2CR: boolean
   loading: boolean
@@ -23,7 +23,6 @@ type TokenListState = {
 
 class TokenList extends Component<TokenListProps, TokenListState> {
   state: TokenListState = {
-    address: '',
     tokens: [],
     useT2CR: true,
     loading: true,
@@ -34,33 +33,38 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 
   componentDidUpdate(prevProps: TokenListProps) {
-    if (this.props.signer === prevProps.signer) return
+    if (this.props.inputAddress === prevProps.inputAddress) return
     this.loadData()
   }
 
   async loadData() {
-    if (!this.props.signer) return
+    if (!this.props.inputAddress) return
 
-    // Get address from Metamask
-    const address = await this.props.signer.getAddress()
-    const ensName = await this.props.provider.lookupAddress(address)
+    // Reset existing state after update
+    this.setState({ tokens: [], loading: true })
 
-    // Retrieve token balances from the Ethplorer and sort them alphabetically
-    const result = await axios.get(`https://api.ethplorer.io/getAddressInfo/${address}?apiKey=freekey`)
+    // Retrieve token balances from the Ethplorer API
+    const result = await axios.get(`https://api.ethplorer.io/getAddressInfo/${this.props.inputAddress}?apiKey=freekey`)
     const addressInfo: AddressInfo = result.data
 
-    let tokens = !addressInfo.tokens
-      ? []
-      : addressInfo.tokens
-        .filter(t => t.balance > 0)
-        .sort((a: any, b: any) => a.tokenInfo.symbol.localeCompare(b.tokenInfo.symbol))
+    // Return early if no token balances are found
+    if (!addressInfo.tokens) {
+      this.setState({ loading: false })
+      return
+    }
 
+    // Sort token balances alphabetically on token symbol
+    let tokens = addressInfo.tokens
+      .filter(t => t.balance > 0)
+      .sort((a: any, b: any) => a.tokenInfo.symbol.localeCompare(b.tokenInfo.symbol))
+
+    // Check if tokens are registered in Kleros T2CR
     tokens = await Promise.all(tokens.map(async token => {
       token.registered = await isRegistered(token.tokenInfo.address, this.props.provider)
       return token
     }))
 
-    this.setState({ tokens, address, ensName, loading: false })
+    this.setState({ tokens, loading: false })
   }
 
   handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
@@ -69,24 +73,45 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   render(): ReactNode {
     return (
       <div className="Dashboard">
-        <h4>{this.state.ensName || this.state.address}</h4>
-        <p>
-          Filter out unregistered tokens
-          <sup><a href="https://tokens.kleros.io/tokens" target="_blank" rel="noopener noreferrer">?</a></sup>
-          <input type="checkbox" checked={this.state.useT2CR} onChange={this.handleCheckboxChange} />
-        </p>
-        {this.state.tokens.length > 0
-          ? <ul className="TokenList">
-            {this.state.tokens.map(t => (
-              (!this.state.useT2CR || t.registered) &&
-              <Token key={t.tokenInfo.symbol} token={t} provider={this.props.provider} signer={this.props.signer} address={this.state.address} />
-            ))
-            }
-          </ul>
-          : (this.state.loading ? <ClipLoader size={40} color={'#000'} loading={this.state.loading} /> : 'No token balances' )
-        }
+        {this.renderT2CR()}
+        {this.renderTokenList()}
       </div>
     )
+  }
+
+  renderT2CR() {
+    return (
+      <div>
+        Filter out unregistered tokens
+        <sup><a href="https://tokens.kleros.io/tokens" target="_blank" rel="noopener noreferrer">?</a></sup>
+        <input type="checkbox" checked={this.state.useT2CR} onChange={this.handleCheckboxChange} />
+      </div>
+    )
+  }
+
+  renderTokenList() {
+    if (this.state.loading) {
+      return (<ClipLoader size={40} color={'#000'} loading={this.state.loading} />)
+    }
+
+    if (this.state.tokens.length === 0) {
+      return (<div className="TokenList">No token balances</div>)
+    }
+
+    const tokenComponents = this.state.tokens
+      .filter((token) => token.registered || !this.state.useT2CR)
+      .map((token) => (
+        <Token
+          key={token.tokenInfo.address}
+          token={token}
+          provider={this.props.provider}
+          signer={this.props.signer}
+          signerAddress={this.props.signerAddress}
+          inputAddress={this.props.inputAddress}
+        />
+      ))
+
+    return (<div className="TokenList">{tokenComponents}</div>)
   }
 }
 

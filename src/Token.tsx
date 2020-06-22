@@ -1,19 +1,20 @@
-import './App.css'
+import './App.scss'
 import { Contract, Signer } from 'ethers'
 import { Provider } from 'ethers/providers'
 import { bigNumberify, getAddress, hexZeroPad, hexDataSlice } from 'ethers/utils'
 import React, { Component, ReactNode } from 'react'
-import { isMobile } from 'react-device-detect'
 import ClipLoader from 'react-spinners/ClipLoader';
 import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
-import { compareBN, addressToAppName } from './util'
+import { compareBN, addressToAppName, shortenAddress } from './util'
+import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 type TokenProps = {
   provider?: Provider
   signer?: Signer
   token: TokenData
-  address: string
+  signerAddress: string
+  inputAddress: string
 }
 
 type Allowance = {
@@ -54,21 +55,25 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   componentDidUpdate(prevProps: TokenProps) {
-    if (this.props.signer === prevProps.signer) return
+    if (this.props.inputAddress === prevProps.inputAddress) return
     this.loadData()
   }
 
   private async loadData() {
-    if (!this.props.signer) return
+    if (!this.props.token) return
+    if (!this.props.inputAddress) return
+
+    const signerOrProvider = this.props.signer || this.props.provider
+
     const token = this.props.token.tokenInfo
-    const contract = new Contract(token.address, ERC20, this.props.signer)
+    const contract = new Contract(token.address, ERC20, signerOrProvider)
     const icon = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(token.address)}/logo.png`
 
     // Retrieve all Approval events
     let approvals = await this.props.provider.getLogs({
       fromBlock: 0,
       address: token.address,
-      topics: [contract.interface.events.Approval.topic, hexZeroPad(this.props.address, 32)]
+      topics: [contract.interface.events.Approval.topic, hexZeroPad(this.props.inputAddress, 32)]
     })
 
     // Filter out dupplicate spenders
@@ -78,18 +83,21 @@ class Token extends Component<TokenProps, TokenState> {
     // Retrieve current allowance for these Approval events
     let allowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
       const spender = getAddress(hexDataSlice(ev.topics[2], 12))
-      const allowance = bigNumberify(await contract.functions.allowance(this.props.address, spender)).toString()
+      const allowance = bigNumberify(await contract.functions.allowance(this.props.inputAddress, spender)).toString()
 
       // Filter (almost) zero-value allowances early to save bandwidth
       if (allowance.length < Number(token.decimals) - 3) return undefined
 
+      // Retrieve the spender's ENS name and the spender's App name if they exist
       const ensSpender = await this.props.provider.lookupAddress(spender)
       const spenderAppName = await addressToAppName(spender)
+
       const newAllowance = '0'
+
       return { spender, ensSpender, spenderAppName, allowance, newAllowance }
     })))
 
-    // Filter out zero-value allowances and sort
+    // Filter out zero-value allowances and sort from high to low
     allowances = allowances
       .filter(allowance => allowance !== undefined)
       .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
@@ -181,53 +189,113 @@ class Token extends Component<TokenProps, TokenState> {
     return this.toFloat(Number(allowanceBN))
   }
 
-  private formatAddress(address: string): string {
-    return isMobile ? `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}` : address
+  render(): ReactNode {
+    return (<div className="Token">{this.renderTokenOrLoading()}</div>)
   }
 
-  render(): ReactNode {
+  renderTokenOrLoading() {
+    if (this.state.loading) {
+      return (<ClipLoader size={20} color={'#000'} loading={this.state.loading} />)
+    }
+
+    return this.renderToken()
+  }
+
+  renderToken() {
     return (
-      <li className="Token">
-        {this.state.loading
-          ? <ClipLoader size={20} color={'#000'} loading={this.state.loading} />
-          : <div>
-            <div className="TokenBalance">
-              <img src={this.state.icon} alt="" width="20px"
-                  onError={(ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}} />
-              {this.state.symbol}: {this.toFloat(this.state.balance)}
-            </div>
-            <ul className="AllowanceList">
-              {this.state.allowances.length > 0
-                ? this.state.allowances.map((allowance, i) => {
-                  return (
-                    <li key={allowance.spender} className="Allowance">
-                      <div className="AllowanceText">
-                        {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
-                        <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>
-                          {allowance.spenderAppName || allowance.ensSpender || this.formatAddress(allowance.spender)}
-                        </a>
-                        <button className="RevokeButton" onClick={() => this.revoke(allowance)}>Revoke</button>
-                        <input type="text"
-                              className="NewAllowance"
-                              value={this.state.allowances[i].newAllowance}
-                              onChange={(event) => {
-                                const updatedAllowances = this.state.allowances.slice()
-                                updatedAllowances[i] = { ...allowance, newAllowance: event.target.value }
-                                this.setState({ allowances: updatedAllowances })
-                                }}
-                                ></input>
-                        <button className="UpdateButton" onClick={() => this.update(allowance)}>Update</button>
-                      </div>
-                    </li>
-                  )
-                })
-                : <li>No allowances</li>
-              }
-            </ul>
-          </div>
-        }
-      </li>
+      <div>
+        {this.renderTokenBalance()}
+        <div className="AllowanceList">{this.renderAllowanceList()}</div>
+      </div>
     )
+  }
+
+  renderTokenBalance() {
+    const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}
+    const img = (<img src={this.state.icon} alt="" width="20px" onError={backupImage} />)
+    return (<div className="TokenBalance my-auto">{img} {this.state.symbol}: {this.toFloat(this.state.balance)}</div>)
+  }
+
+  renderAllowanceList() {
+    if (this.state.allowances.length === 0) return (<div className="Allowance">No allowances</div>)
+
+    const allowances = this.state.allowances.map((allowance, i) => this.renderAllowance(allowance, i))
+    return allowances
+  }
+
+  renderAllowance(allowance: Allowance, i: number) {
+    return (
+      <Form inline className="Allowance" key={allowance.spender}>
+        {this.renderAllowanceText(allowance)}
+        {this.renderRevokeButton(allowance)}
+        {this.renderUpdateInputGroup(allowance, i)}
+      </Form>
+    )
+  }
+
+  renderAllowanceText(allowance: Allowance) {
+    const spender = allowance.spenderAppName || allowance.ensSpender || allowance.spender
+    const shortenedSpender = allowance.spenderAppName || allowance.ensSpender || shortenAddress(allowance.spender)
+
+    // Display separate spans for the regular and shortened versions of the spender address
+    // The correct one is selected using CSS media-queries
+    return (
+      <Form.Label className="AllowanceText">
+        <span className="AllowanceTextSmallScreen">
+          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
+          <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>{shortenedSpender}</a>
+        </span>
+
+        <span className="AllowanceTextBigScreen">
+          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
+          <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>{spender}</a>
+        </span>
+      </Form.Label>
+    )
+  }
+
+  renderRevokeButton(allowance: Allowance) {
+    const canRevoke = this.props.inputAddress === this.props.signerAddress
+
+    let revokeButton = (<Button
+      size="sm" disabled={!canRevoke}
+      className="RevokeButton"
+      onClick={() => this.revoke(allowance)}
+    >Revoke</Button>)
+
+    // Add tooltip if the button is disabled
+    if (!canRevoke) {
+      const tooltip = (<Tooltip>You can only revoke allowances of the connected account</Tooltip>)
+      revokeButton = (<OverlayTrigger overlay={tooltip}><span>{revokeButton}</span></OverlayTrigger>)
+    }
+
+    return revokeButton;
+  }
+
+  renderUpdateInputGroup(allowance: Allowance, i: number) {
+    const canUpdate = this.props.inputAddress === this.props.signerAddress
+
+    let updateGroup = (<InputGroup size="sm">
+      <Form.Control type="text" size="sm"
+        className="NewAllowance"
+        value={this.state.allowances[i].newAllowance}
+        onChange={(event) => {
+          const updatedAllowances = this.state.allowances.slice()
+          updatedAllowances[i] = { ...allowance, newAllowance: event.target.value }
+          this.setState({ allowances: updatedAllowances })
+        }}/>
+      <InputGroup.Append>
+      <Button disabled={!canUpdate} className="UpdateButton" onClick={() => this.update(allowance)}>Update</Button>
+      </InputGroup.Append>
+    </InputGroup>)
+
+    // Add tooltip if the button is disabled
+    if (!canUpdate) {
+      const tooltip = (<Tooltip>You can only update allowances of the connected account</Tooltip>)
+      updateGroup = (<OverlayTrigger overlay={tooltip}><span>{updateGroup}</span></OverlayTrigger>)
+    }
+
+    return updateGroup
   }
 }
 
