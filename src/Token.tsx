@@ -265,7 +265,7 @@ class Token extends Component<TokenProps, TokenState> {
 
     // Add tooltip if the button is disabled
     if (!canRevoke) {
-      const tooltip = (<Tooltip>You can only revoke allowances of the connected account</Tooltip>)
+      const tooltip = (<Tooltip id={`revoke-tooltip-${this.state.address}`}>You can only revoke allowances of the connected account</Tooltip>)
       revokeButton = (<OverlayTrigger overlay={tooltip}><span>{revokeButton}</span></OverlayTrigger>)
     }
 
@@ -291,7 +291,7 @@ class Token extends Component<TokenProps, TokenState> {
 
     // Add tooltip if the button is disabled
     if (!canUpdate) {
-      const tooltip = (<Tooltip>You can only update allowances of the connected account</Tooltip>)
+      const tooltip = (<Tooltip id={`update-tooltip-${this.state.address}`}>You can only update allowances of the connected account</Tooltip>)
       updateGroup = (<OverlayTrigger overlay={tooltip}><span>{updateGroup}</span></OverlayTrigger>)
     }
 
