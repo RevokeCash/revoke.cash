@@ -56,6 +56,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     // Sort token balances alphabetically on token symbol
     let tokens = addressInfo.tokens
       .filter(t => t.balance > 0)
+      .filter(t => t.tokenInfo.symbol !== undefined)
       .sort((a: any, b: any) => a.tokenInfo.symbol.localeCompare(b.tokenInfo.symbol))
 
     // Check if tokens are registered in Kleros T2CR
