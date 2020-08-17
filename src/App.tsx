@@ -77,10 +77,14 @@ class App extends Component<{}, AppState> {
   }
 
   async parseInputAddress(inputAddressOrName: string): Promise<string | undefined> {
-    // If the input is an ENS name, resolve it
+    // If the input is an ENS name, validate it, resolve it and return it
     if (inputAddressOrName.endsWith('.eth')) {
-      const address = await this.state.provider.resolveName(inputAddressOrName)
-      return address ? address : undefined
+      try {
+        const address = await this.state.provider.resolveName(inputAddressOrName)
+        return address ? address : undefined
+      } catch {
+        return undefined
+      }
     }
 
     // If the input is an address, validate it and return it
