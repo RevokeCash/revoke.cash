@@ -1,3 +1,7 @@
+import { Contract } from 'ethers';
+import { Log } from 'ethers/providers';
+import { BigNumber } from 'ethers/utils';
+
 export interface AddressInfo {
   address: string
   ETH: {
@@ -7,7 +11,7 @@ export interface AddressInfo {
   countTxs: number
   contractInfo?: ContractInfo
   tokenInfo?: TokenInfo
-  tokens?: TokenData[]
+  tokens?: EthplorerTokenData[]
 }
 
 export interface PriceInfo {
@@ -49,10 +53,19 @@ export interface TokenInfo {
   lastUpdated: number
 }
 
-export interface TokenData {
+export interface EthplorerTokenData {
   tokenInfo: TokenInfo
   balance: number
   totalIn?: number
   totalOut?: number
-  registered?: boolean
+}
+
+export interface TokenData {
+  contract: Contract
+  symbol: string
+  decimals: number
+  balance: BigNumber
+  totalSupply: string
+  registered: boolean
+  approvals: Array<Log>
 }

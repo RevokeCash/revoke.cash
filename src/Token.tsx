@@ -1,10 +1,9 @@
 import './App.scss'
-import { Contract, Signer } from 'ethers'
+import { Signer } from 'ethers'
 import { Provider } from 'ethers/providers'
-import { bigNumberify, getAddress, hexZeroPad, hexDataSlice } from 'ethers/utils'
+import { bigNumberify, getAddress, hexDataSlice } from 'ethers/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader';
-import { ERC20 } from './abis'
 import { TokenData } from './interfaces'
 import { compareBN, addressToAppName, shortenAddress } from './util'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
@@ -26,13 +25,6 @@ type Allowance = {
 }
 
 type TokenState = {
-  contract?: Contract
-  address: string
-  name: string
-  symbol: string
-  totalSupply: string
-  balance: number
-  decimals: number
   allowances: Allowance[]
   icon?: string
   loading: boolean
@@ -40,12 +32,6 @@ type TokenState = {
 
 class Token extends Component<TokenProps, TokenState> {
   state: TokenState = {
-    address: '',
-    name: '',
-    symbol: '',
-    totalSupply: '0',
-    balance: 0,
-    decimals: 0,
     allowances: [],
     loading: true,
   }
@@ -63,30 +49,21 @@ class Token extends Component<TokenProps, TokenState> {
     if (!this.props.token) return
     if (!this.props.inputAddress) return
 
-    const signerOrProvider = this.props.signer || this.props.provider
+    const { token } = this.props
 
-    const token = this.props.token.tokenInfo
-    const contract = new Contract(token.address, ERC20, signerOrProvider)
-    const icon = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(token.address)}/logo.png`
-
-    // Retrieve all Approval events
-    let approvals = await this.props.provider.getLogs({
-      fromBlock: 0,
-      address: token.address,
-      topics: [contract.interface.events.Approval.topic, hexZeroPad(this.props.inputAddress, 32)]
-    })
+    const icon = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(token.contract.address)}/logo.png`
 
     // Filter out dupplicate spenders
-    approvals = approvals
-      .filter((approval, i) => i === approvals.findIndex(other => approval.topics[2] === other.topics[2]))
+    const approvals = token.approvals
+      .filter((approval, i) => i === token.approvals.findIndex(other => approval.topics[2] === other.topics[2]))
 
     // Retrieve current allowance for these Approval events
     let allowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
       const spender = getAddress(hexDataSlice(ev.topics[2], 12))
-      const allowance = bigNumberify(await contract.functions.allowance(this.props.inputAddress, spender)).toString()
+      const allowance = bigNumberify(await token.contract.functions.allowance(this.props.inputAddress, spender)).toString()
 
       // Filter (almost) zero-value allowances early to save bandwidth
-      if (allowance.length < Number(token.decimals) - 3) return undefined
+      if (this.formatAllowance(allowance) === '0.000') return undefined
 
       // Retrieve the spender's ENS name and the spender's App name if they exist
       const ensSpender = await this.props.provider.lookupAddress(spender)
@@ -103,13 +80,6 @@ class Token extends Component<TokenProps, TokenState> {
       .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
 
     this.setState({
-      contract,
-      address: token.address,
-      name: token.name,
-      symbol: token.symbol,
-      totalSupply: token.totalSupply,
-      balance: this.props.token.balance,
-      decimals: parseInt(token.decimals),
       allowances,
       icon,
       loading: false,
@@ -121,11 +91,11 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   private async update(allowance: Allowance) {
-    if (!this.state.contract) return
+    if (!this.props.token) return
 
     const bnNew = bigNumberify(this.fromFloat(allowance.newAllowance))
     const bnOld = bigNumberify(allowance.allowance)
-    const contract = this.state.contract
+    const { contract } = this.props.token
     let tx
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
@@ -167,29 +137,38 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   private toFloat(n: number): string {
-    return (n / (10 ** this.state.decimals)).toFixed(3)
+    return (n / (10 ** this.props.token.decimals)).toFixed(3)
   }
 
   private fromFloat(s: string): string {
+    const { decimals } = this.props.token
+
     const sides = s.split('.')
-    if (sides.length === 1) return s.padEnd(this.state.decimals + s.length, '0')
+    if (sides.length === 1) return s.padEnd(decimals + s.length, '0')
     if (sides.length > 2) return '0'
 
-    return sides[1].length > this.state.decimals
-      ? sides[0] + sides[1].slice(0, this.state.decimals)
-      : sides[0] + sides[1].padEnd(this.state.decimals, '0')
+    return sides[1].length > decimals
+      ? sides[0] + sides[1].slice(0, decimals)
+      : sides[0] + sides[1].padEnd(decimals, '0')
   }
 
   private formatAllowance(allowance: string) {
     const allowanceBN = bigNumberify(allowance)
-    const totalSupplyBN = bigNumberify(this.state.totalSupply)
+    const totalSupplyBN = bigNumberify(this.props.token.totalSupply)
+
     if (allowanceBN.gt(totalSupplyBN)) {
       return 'Unlimited'
     }
+
     return this.toFloat(Number(allowanceBN))
   }
 
   render(): ReactNode {
+    // Do not render tokens without balance or allowances
+    const balanceString = this.toFloat(Number(this.props.token.balance))
+    if (balanceString === '0.000' && this.state.allowances.length === 0) return null
+
+    // Render the token
     return (<div className="Token">{this.renderTokenOrLoading()}</div>)
   }
 
@@ -211,9 +190,12 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   renderTokenBalance() {
+    const { symbol, balance } = this.props.token
+
     const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}
     const img = (<img src={this.state.icon} alt="" width="20px" onError={backupImage} />)
-    return (<div className="TokenBalance my-auto">{img} {this.state.symbol}: {this.toFloat(this.state.balance)}</div>)
+
+    return (<div className="TokenBalance my-auto">{img} {symbol}: {this.toFloat(Number(balance))}</div>)
   }
 
   renderAllowanceList() {
@@ -265,7 +247,7 @@ class Token extends Component<TokenProps, TokenState> {
 
     // Add tooltip if the button is disabled
     if (!canRevoke) {
-      const tooltip = (<Tooltip id={`revoke-tooltip-${this.state.address}`}>You can only revoke allowances of the connected account</Tooltip>)
+      const tooltip = (<Tooltip id={`revoke-tooltip-${this.props.token.contract.address}`}>You can only revoke allowances of the connected account</Tooltip>)
       revokeButton = (<OverlayTrigger overlay={tooltip}><span>{revokeButton}</span></OverlayTrigger>)
     }
 
@@ -291,7 +273,7 @@ class Token extends Component<TokenProps, TokenState> {
 
     // Add tooltip if the button is disabled
     if (!canUpdate) {
-      const tooltip = (<Tooltip id={`update-tooltip-${this.state.address}`}>You can only update allowances of the connected account</Tooltip>)
+      const tooltip = (<Tooltip id={`update-tooltip-${this.props.token.contract.address}`}>You can only update allowances of the connected account</Tooltip>)
       updateGroup = (<OverlayTrigger overlay={tooltip}><span>{updateGroup}</span></OverlayTrigger>)
     }
 
