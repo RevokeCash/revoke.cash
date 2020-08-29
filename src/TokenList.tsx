@@ -95,23 +95,33 @@ class TokenList extends Component<TokenListProps, TokenListState> {
           const tokenData = await this.retrieveTokenData(contract)
           return { ...tokenData, contract, registered, approvals: tokenApprovals };
         } catch(e) {
-          // MKR, SAI (and maybe other tokens) use bytes32 for the symbol -_-
-          contract = new Contract(contract.address, ERC20_bytes32, signerOrProvider)
-          const tokenData = await this.retrieveTokenData(contract)
+          try {
+            // If the call to retreiveTokenData() fails we try an alternative
+            // ERC20 interface, since MKR and SAI use bytes32 for the symbol -_-
+            contract = new Contract(contract.address, ERC20_bytes32, signerOrProvider)
 
-          tokenData.symbol = parseBytes32String(tokenData.symbol)
+            const tokenData = await this.retrieveTokenData(contract)
 
-          // Hardcode SAI (real symbol is DAI) for clarity
-          if (contract.address === '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359') {
-            tokenData.symbol = 'SAI'
+            tokenData.symbol = parseBytes32String(tokenData.symbol)
+
+            // Hardcode SAI (real symbol is DAI) for clarity
+            if (contract.address === '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359') {
+              tokenData.symbol = 'SAI'
+            }
+
+            return { ...tokenData, contract, registered, approvals: tokenApprovals };
+          } catch(e) {
+            // If the call to retrieveTokenData() still fails, the token is not
+            // an ERC20 token so we do not include it in the token list
+            // (Ethplorer sometimes includes weird non-ERC20 stuff in their API)
+            return undefined
           }
-
-          return { ...tokenData, contract, registered, approvals: tokenApprovals };
         }
       }))
 
-    // Sort tokens alphabetically on token symbol
+    // Filter undefined tokens and sort tokens alphabetically on token symbol
     const tokens = unsortedTokens
+      .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
     this.setState({ tokens, loading: false })
