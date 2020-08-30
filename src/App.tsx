@@ -50,6 +50,11 @@ class App extends Component<{}, AppState> {
   }
 
   async connectSigner() {
+    if (!window.web3) {
+      alert('Please use a web3 enabled browser to use revoke.cash')
+      return
+    }
+
     // Retrieve signer from web3 object
     const signer = new Web3Provider(web3.currentProvider).getSigner()
 

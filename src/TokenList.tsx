@@ -68,7 +68,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     const addressInfo: AddressInfo = result.data
 
     // Get additional contracts without approvals but with balances from Ethplorer
-    const extraContracts = addressInfo.tokens
+    const extraContracts = (addressInfo.tokens || [])
       .filter(t => t.tokenInfo.symbol !== undefined)
       .map((token) => new Contract(getAddress(token.tokenInfo.address), ERC20, signerOrProvider))
 
