@@ -1,17 +1,17 @@
 import './App.scss'
-import { Signer, getDefaultProvider } from 'ethers'
-import { Web3Provider, Provider } from 'ethers/providers'
+import { Signer, providers } from 'ethers'
+// import { Web3Provider, Provider, InfuraProvider } from 'ethers/lib/providers'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import TokenList from './TokenList'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { shortenAddress } from './util'
-import { getAddress } from 'ethers/utils'
+import { getAddress } from 'ethers/lib/utils'
 
 declare let window: any
 declare let web3: any
 
 type AppState = {
-  provider?: Provider,
+  provider?: providers.Provider,
   signer?: Signer,
   signerAddress?: string,
   signerEnsName?: string,
@@ -23,8 +23,11 @@ class App extends Component<{}, AppState> {
   state: AppState = {}
 
   async componentDidMount() {
-    // Set default provider for READ operations
-    const provider = getDefaultProvider();
+    // Use a default provider with a free Infura key
+    // Note: Going to see how it goes with committing this ID, since I'd prefer
+    //       not to add a server side component to revoke.cash, but if the key
+    //       gets abused, I'll have to move it to a separate backend component.
+    const provider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
     this.setState({ provider })
 
     // Connect with Web3 provider for WRITE operations if access is already granted
@@ -56,7 +59,7 @@ class App extends Component<{}, AppState> {
     }
 
     // Retrieve signer from web3 object
-    const signer = new Web3Provider(web3.currentProvider).getSigner()
+    const signer = new providers.Web3Provider(web3.currentProvider).getSigner()
 
     // Retrieve signer address and ENS name
     const signerAddress = await signer.getAddress()

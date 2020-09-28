@@ -1,7 +1,6 @@
 import './App.scss'
-import { Signer } from 'ethers'
-import { Provider } from 'ethers/providers'
-import { bigNumberify, getAddress, hexDataSlice } from 'ethers/utils'
+import { Signer, providers, BigNumber } from 'ethers'
+import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader';
 import { TokenData } from './interfaces'
@@ -9,7 +8,7 @@ import { compareBN, addressToAppName, shortenAddress } from './util'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 type TokenProps = {
-  provider?: Provider
+  provider?: providers.Provider
   signer?: Signer
   token: TokenData
   signerAddress: string
@@ -60,7 +59,7 @@ class Token extends Component<TokenProps, TokenState> {
     // Retrieve current allowance for these Approval events
     let allowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
       const spender = getAddress(hexDataSlice(ev.topics[2], 12))
-      const allowance = bigNumberify(await token.contract.functions.allowance(this.props.inputAddress, spender)).toString()
+      const allowance = (await token.contract.functions.allowance(this.props.inputAddress, spender)).toString()
 
       // Filter (almost) zero-value allowances early to save bandwidth
       if (this.formatAllowance(allowance) === '0.000') return undefined
@@ -93,8 +92,8 @@ class Token extends Component<TokenProps, TokenState> {
   private async update(allowance: Allowance) {
     if (!this.props.token) return
 
-    const bnNew = bigNumberify(this.fromFloat(allowance.newAllowance))
-    const bnOld = bigNumberify(allowance.allowance)
+    const bnNew = BigNumber.from(this.fromFloat(allowance.newAllowance))
+    const bnOld = BigNumber.from(allowance.allowance)
     const { contract } = this.props.token
     let tx
 
@@ -132,8 +131,11 @@ class Token extends Component<TokenProps, TokenState> {
     }
 
     if (tx) await tx.wait(1)
+
     console.debug('Reloading data')
-    this.loadData()
+
+    const allowances = this.state.allowances.filter(otherAllowance => otherAllowance.spender !== allowance.spender)
+    this.setState({ allowances })
   }
 
   private toFloat(n: number): string {
@@ -153,8 +155,8 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   private formatAllowance(allowance: string) {
-    const allowanceBN = bigNumberify(allowance)
-    const totalSupplyBN = bigNumberify(this.props.token.totalSupply)
+    const allowanceBN = BigNumber.from(allowance)
+    const totalSupplyBN = BigNumber.from(this.props.token.totalSupply)
 
     if (allowanceBN.gt(totalSupplyBN)) {
       return 'Unlimited'

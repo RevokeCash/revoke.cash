@@ -1,6 +1,4 @@
-import { Contract } from 'ethers';
-import { Log } from 'ethers/providers';
-import { BigNumber } from 'ethers/utils';
+import { Contract, BigNumber, providers } from 'ethers';
 
 export interface AddressInfo {
   address: string
@@ -67,5 +65,5 @@ export interface TokenData {
   balance: BigNumber
   totalSupply: string
   registered: boolean
-  approvals: Array<Log>
+  approvals: Array<providers.Log>
 }

@@ -1,17 +1,16 @@
 import './App.scss'
 import axios from 'axios'
-import { Signer, ethers, Contract } from 'ethers'
-import { Provider } from 'ethers/providers'
+import { Signer, Contract, providers } from 'ethers'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader';
 import { AddressInfo, TokenData } from './interfaces'
 import Token from './Token'
 import { isRegistered } from './util'
-import { Interface, getAddress, parseBytes32String } from 'ethers/utils'
+import { Interface, getAddress, parseBytes32String, hexZeroPad } from 'ethers/lib/utils'
 import { ERC20, ERC20_bytes32 } from './abis'
 
 type TokenListProps = {
-  provider?: Provider
+  provider?: providers.Provider
   signer?: Signer
   signerAddress?: string
   inputAddress?: string
@@ -52,10 +51,8 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     const approvals = await this.props.provider.getLogs({
       fromBlock: 'earliest',
       toBlock: 'latest',
-      topics: [
-        erc20Interface.events.Approval.topic,
-        ethers.utils.hexZeroPad(this.props.inputAddress, 32)
-      ]
+      topics: [(erc20Interface.getEventTopic('Approval')), hexZeroPad(this.props.inputAddress, 32)]
+      // erc20Interface.encodeFilterTopics(erc20Interface.events.Approval, [ethers.utils.hexZeroPad(this.props.inputAddress, 32)])
     })
 
     // Filter unique contract addresses and convert all approvals to Contract instances
@@ -130,7 +127,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   async retrieveTokenData(contract: Contract) {
     const symbol = await contract.symbol()
     const decimals = await contract.functions.decimals()
-    const totalSupply = await contract.functions.totalSupply()
+    const totalSupply = (await contract.functions.totalSupply()).toString()
     const balance = await contract.functions.balanceOf(this.props.inputAddress)
 
     return { symbol, decimals, totalSupply, balance }
