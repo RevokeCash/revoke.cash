@@ -1,13 +1,13 @@
 import './App.scss'
 import axios from 'axios'
 import { Signer, Contract, providers } from 'ethers'
+import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader';
 import { AddressInfo, TokenData } from './interfaces'
 import Token from './Token'
 import { isRegistered } from './util'
-import { Interface, getAddress, parseBytes32String, hexZeroPad } from 'ethers/lib/utils'
-import { ERC20, ERC20_bytes32 } from './abis'
+import { ERC20 } from './abis'
 
 type TokenListProps = {
   provider?: providers.Provider
@@ -91,28 +91,11 @@ class TokenList extends Component<TokenListProps, TokenListState> {
         try {
           const tokenData = await this.retrieveTokenData(contract)
           return { ...tokenData, contract, registered, approvals: tokenApprovals };
-        } catch(e) {
-          try {
-            // If the call to retreiveTokenData() fails we try an alternative
-            // ERC20 interface, since MKR and SAI use bytes32 for the symbol -_-
-            contract = new Contract(contract.address, ERC20_bytes32, signerOrProvider)
-
-            const tokenData = await this.retrieveTokenData(contract)
-
-            tokenData.symbol = parseBytes32String(tokenData.symbol)
-
-            // Hardcode SAI (real symbol is DAI) for clarity
-            if (contract.address === '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359') {
-              tokenData.symbol = 'SAI'
-            }
-
-            return { ...tokenData, contract, registered, approvals: tokenApprovals };
-          } catch(e) {
-            // If the call to retrieveTokenData() still fails, the token is not
-            // an ERC20 token so we do not include it in the token list
-            // (Ethplorer sometimes includes weird non-ERC20 stuff in their API)
-            return undefined
-          }
+        } catch {
+          // If the call to retrieveTokenData() fails, the token is not
+          // an ERC20 token so we do not include it in the token list
+          // (Ethplorer sometimes includes weird non-ERC20 stuff in their API)
+          return undefined
         }
       }))
 
@@ -125,12 +108,22 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 
   async retrieveTokenData(contract: Contract) {
-    const symbol = await contract.symbol()
-    const decimals = await contract.functions.decimals()
+    // Retrieve total supply and user balance from Infura
     const totalSupply = (await contract.functions.totalSupply()).toString()
     const balance = await contract.functions.balanceOf(this.props.inputAddress)
 
-    return { symbol, decimals, totalSupply, balance }
+    try {
+      // Try to use the public Ethereum token list on GitHub for symbol and decimals info to reduce the number of Infura calls
+      const { address } = contract
+      const { data } = await axios.get(`https://raw.githubusercontent.com/ethereum-lists/tokens/master/tokens/eth/${address}.json`)
+      const { symbol, decimals } = data
+      return { symbol, decimals, totalSupply, balance }
+    } catch {
+      // If the token is not available on the GitHub list, retrieve the info from Infura
+      const symbol = await contract.symbol()
+      const decimals = await contract.functions.decimals()
+      return { symbol, decimals, totalSupply, balance }
+    }
   }
 
   handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>

@@ -31,7 +31,7 @@ export async function addressToAppName(address: string): Promise<string | undefi
   try {
     const { data } = await axios.get(`https://raw.githubusercontent.com/rkalis/revoke.cash/master/dapp-contract-list/${getAddress(address)}.json`)
     return data.appName
-  } catch (ignored) {
+  } catch {
     return undefined
   }
 }

@@ -1,11 +1,10 @@
 import './App.scss'
 import { Signer, providers } from 'ethers'
-// import { Web3Provider, Provider, InfuraProvider } from 'ethers/lib/providers'
+import { getAddress } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import TokenList from './TokenList'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { shortenAddress } from './util'
-import { getAddress } from 'ethers/lib/utils'
 
 declare let window: any
 declare let web3: any
@@ -35,7 +34,7 @@ class App extends Component<{}, AppState> {
       try {
         // Check if access is granted
         await this.connectSigner()
-      } catch (e) {} // ignored
+      } catch {} // ignored
     }
   }
 
@@ -44,7 +43,7 @@ class App extends Component<{}, AppState> {
       try {
         // Request account access if needed
         await window.ethereum.enable();
-      } catch (error) {
+      } catch {
         // User denied account access...
         return
       }
@@ -98,7 +97,7 @@ class App extends Component<{}, AppState> {
     // If the input is an address, validate it and return it
     try {
       return getAddress(inputAddressOrName)
-    } catch (e) {
+    } catch {
       return undefined
     }
   }
