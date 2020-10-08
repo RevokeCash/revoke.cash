@@ -4,8 +4,12 @@ import { Signer, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import TokenList from './TokenList'
+import DonateButton from './DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { shortenAddress } from './util'
+
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 declare let window: {
   ethereum?: any
@@ -19,10 +23,13 @@ type AppState = {
   signerEnsName?: string,
   inputAddressOrName?: string,
   inputAddress?: string,
+  showDonateModal: boolean,
 }
 
 class App extends Component<{}, AppState> {
-  state: AppState = {}
+  state: AppState = {
+    showDonateModal: false,
+  }
 
   async componentDidMount() {
     if (window.ethereum) {
@@ -61,7 +68,7 @@ class App extends Component<{}, AppState> {
     if (window.ethereum) {
       try {
         // Request account access if needed
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        await window.ethereum.request({ method: 'eth_requestAccounts' })
       } catch {
         // User denied account access...
         return
@@ -130,12 +137,6 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  getTextForConnectButton(): string {
-    return this.state.signerAddress
-      ? this.state.signerEnsName || shortenAddress(this.state.signerAddress)
-      : 'Connect web3'
-  }
-
   render(): ReactNode {
     return (
       <Container fluid className="App">
@@ -143,6 +144,7 @@ class App extends Component<{}, AppState> {
         {this.renderAddressInput()}
         {this.renderTokenList()}
         {this.renderFooter()}
+        {this.renderToastContainer()}
       </Container>
     )
   }
@@ -150,14 +152,29 @@ class App extends Component<{}, AppState> {
   renderHeader() {
     return (
       <Row className="Header">
-        <Col></Col>
+        <Col className="my-auto">
+          <div className="only-mobile" style={{ float: 'left' }}>{this.renderDonateButton()}</div>
+        </Col>
         <Col className="my-auto"><img className="logo" src="revoke.svg" alt="revoke.cash logo"/></Col>
         <Col className="my-auto">
-          <Button style={{ float: 'right' }} variant="outline-primary" onClick={() => this.connectWeb3()}>
-            {this.getTextForConnectButton()}
-          </Button>
+          <div>{this.renderConnectButton()}</div>
+          <div className="only-desktop" style={{ float: 'right', marginRight: '10px' }}>{this.renderDonateButton()}</div>
         </Col>
       </Row>
+    )
+  }
+
+  renderDonateButton() {
+    return <DonateButton signer={this.state.signer} />
+  }
+
+  renderConnectButton() {
+    const text = this.state.signerAddress
+      ? this.state.signerEnsName || shortenAddress(this.state.signerAddress)
+      : 'Connect web3'
+
+    return (
+      <Button style={{ float: 'right' }} variant="outline-primary" onClick={() => this.connectWeb3()}>{text}</Button>
     )
   }
 
@@ -193,9 +210,25 @@ class App extends Component<{}, AppState> {
   }
 
   renderFooter() {
-    return (<p>
-      Site created by <a href="https://kalis.me/">Rosco Kalis</a> (<a href="https://github.com/rkalis/revoke.cash">Source</a>)
-    </p>)
+    return (
+      <p>Site created by <a href="https://kalis.me/">Rosco Kalis</a> (<a href="https://github.com/rkalis/revoke.cash">Source</a>)</p>
+    )
+  }
+
+  renderToastContainer() {
+    return (
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    )
   }
 }
 

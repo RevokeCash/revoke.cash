@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Signer, Contract, providers } from 'ethers'
 import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from 'react-spinners/ClipLoader'
 import { AddressInfo, TokenData } from './interfaces'
 import Token from './Token'
 import { isRegistered } from './util'
@@ -90,7 +90,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
 
         try {
           const tokenData = await this.retrieveTokenData(contract)
-          return { ...tokenData, contract, registered, approvals: tokenApprovals };
+          return { ...tokenData, contract, registered, approvals: tokenApprovals }
         } catch {
           // If the call to retrieveTokenData() fails, the token is not
           // an ERC20 token so we do not include it in the token list

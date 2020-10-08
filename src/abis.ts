@@ -311,4 +311,4 @@ export const TokensView = [
     stateMutability: "view",
     type: "function"
   }
-];
+]

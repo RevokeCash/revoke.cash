@@ -2,7 +2,7 @@ import './App.scss'
 import { Signer, providers, BigNumber } from 'ethers'
 import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData } from './interfaces'
 import { compareBN, addressToAppName, shortenAddress } from './util'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
@@ -253,7 +253,7 @@ class Token extends Component<TokenProps, TokenState> {
       revokeButton = (<OverlayTrigger overlay={tooltip}><span>{revokeButton}</span></OverlayTrigger>)
     }
 
-    return revokeButton;
+    return revokeButton
   }
 
   renderUpdateInputGroup(allowance: Allowance, i: number) {

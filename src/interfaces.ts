@@ -1,4 +1,4 @@
-import { Contract, BigNumber, providers } from 'ethers';
+import { Contract, BigNumber, providers } from 'ethers'
 
 export interface AddressInfo {
   address: string

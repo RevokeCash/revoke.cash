@@ -132,3 +132,10 @@ a:visited {
   .AllowanceTextSmallScreen { display: inline; }
   .AllowanceTextBigScreen { display: none; }
 }
+
+.only-mobile { display: none; }
+.only-desktop { display: inherit; }
+@media (max-width: 850px) {
+  .only-mobile { display: inherit; }
+  .only-desktop { display: none; }
+}
