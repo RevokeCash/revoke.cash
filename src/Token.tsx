@@ -130,12 +130,14 @@ class Token extends Component<TokenProps, TokenState> {
       }
     }
 
-    if (tx) await tx.wait(1)
+    if (tx) {
+      await tx.wait(1)
 
-    console.debug('Reloading data')
+      console.debug('Reloading data')
 
-    const allowances = this.state.allowances.filter(otherAllowance => otherAllowance.spender !== allowance.spender)
-    this.setState({ allowances })
+      const allowances = this.state.allowances.filter(otherAllowance => otherAllowance.spender !== allowance.spender)
+      this.setState({ allowances })
+    }
   }
 
   private toFloat(n: number): string {
