@@ -62,6 +62,7 @@ class DonateButton extends Component<DonateButtonProps, DonateButtonState> {
           <Modal.Header closeButton>
             <Modal.Title>Donate to Revoke.cash</Modal.Title>
           </Modal.Header>
+
           <Modal.Body>
             <InputGroup>
               <Form.Control
@@ -72,12 +73,14 @@ class DonateButton extends Component<DonateButtonProps, DonateButtonState> {
                 <InputGroup.Text>ETH</InputGroup.Text>
               </InputGroup.Append>
               <InputGroup.Append>
-                <Button variant="secondary" onClick={() => this.sendDonation()}>
-                  Send
-                </Button>
+                <Button variant="secondary" onClick={() => this.sendDonation()}>Send</Button>
               </InputGroup.Append>
             </InputGroup>
           </Modal.Body>
+
+          <Modal.Footer>
+            Or contribute to my <a href="https://gitcoin.co/grants/259/rosco-kalis-crypto-software-engineer">Gitcoin Grant</a>
+          </Modal.Footer>
         </Modal>
       </>
     )
