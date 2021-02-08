@@ -68,18 +68,10 @@ export async function reverseLookup(address: string, provider: providers.Provide
 }
 
 export function getTrustWalletName(chainId: number): string | undefined {
-  // These names correspond to the directories in the TrustWallet assets repo.
-  // I manually went over the chains in the repo and checked which had a chain ID
-  // *and* any tokens. This is not an endorsement of any of these projects.
   const mapping = {
     1: 'ethereum',
     56: 'smartchain',
-    60: 'gochain',
     61: 'classic',
-    88: 'tomochain',
-    99: 'poa',
-    100: 'xdai',
-    108: 'thundertoken'
   }
 
   return mapping[chainId]
@@ -87,7 +79,10 @@ export function getTrustWalletName(chainId: number): string | undefined {
 
 export function getDappListName(chainId: number): string | undefined {
   const mapping = {
-    1: 'ethereum'
+    1: 'ethereum',
+    56: 'smartchain',
+    100: 'xdai',
+    137: 'matic',
   }
 
   return mapping[chainId]
