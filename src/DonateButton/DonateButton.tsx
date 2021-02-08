@@ -1,22 +1,32 @@
-import './App.scss'
+import '../App.scss'
 import { Signer, utils } from 'ethers'
 import React, { Component } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
+import { getNativeToken, getDefaultAmount } from './util'
 
 type DonateButtonProps = {
   signer: Signer,
+  chainId: number,
 }
 
 type DonateButtonState = {
   show: boolean,
   amount: string,
+  nativeToken: string,
 }
 
 class DonateButton extends Component<DonateButtonProps, DonateButtonState> {
   state: DonateButtonState = {
     show: false,
-    amount: '0.02',
+    amount: '',
+    nativeToken: ''
+  }
+
+  componentDidMount() {
+    const nativeToken = getNativeToken(this.props.chainId)
+    const amount = getDefaultAmount(nativeToken)
+    this.setState({ amount, nativeToken })
   }
 
   async sendDonation() {
@@ -70,7 +80,7 @@ class DonateButton extends Component<DonateButtonProps, DonateButtonState> {
                 onChange={(event) => (this.setState({ amount: event.target.value }))}
               />
               <InputGroup.Append>
-                <InputGroup.Text>ETH</InputGroup.Text>
+                <InputGroup.Text>{this.state.nativeToken}</InputGroup.Text>
               </InputGroup.Append>
               <InputGroup.Append>
                 <Button variant="secondary" onClick={() => this.sendDonation()}>Send</Button>

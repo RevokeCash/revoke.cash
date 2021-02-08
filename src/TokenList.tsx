@@ -6,11 +6,13 @@ import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData } from './interfaces'
 import Token from './Token'
-import { isRegistered } from './util'
+import { getTrustWalletName, isRegistered } from './util'
 import { ERC20 } from './abis'
+import { TRUSTWALLET_BASE_URL } from './constants'
 
 type TokenListProps = {
-  provider?: providers.Provider
+  provider: providers.Provider
+  chainId: number,
   signer?: Signer
   signerAddress?: string
   inputAddress?: string
@@ -18,14 +20,14 @@ type TokenListProps = {
 
 type TokenListState = {
   tokens: TokenData[]
-  useT2CR: boolean
+  filterTokens: boolean
   loading: boolean
 }
 
 class TokenList extends Component<TokenListProps, TokenListState> {
   state: TokenListState = {
     tokens: [],
-    useT2CR: true,
+    filterTokens: true,
     loading: true,
   }
 
@@ -106,9 +108,13 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     const balance = await contract.functions.balanceOf(this.props.inputAddress)
 
     try {
+      // Skip to the direct calls if no network name was found
+      const networkName = getTrustWalletName(this.props.chainId);
+      if(!networkName) throw new Error('Do not send unneccessary request')
+
       // Try to use the public Ethereum token list on GitHub for symbol and decimals info to reduce the number of Infura calls
       const { address } = contract
-      const { data } = await axios.get(`https://raw.githubusercontent.com/ethereum-lists/tokens/master/tokens/eth/${address}.json`)
+      const { data } = await axios.get(`${TRUSTWALLET_BASE_URL}/${networkName}/assets/${address}/info.json`)
       const { symbol, decimals } = data
       return { symbol, decimals, totalSupply, balance }
     } catch {
@@ -120,7 +126,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 
   handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
-    this.setState({ useT2CR: event.target.checked })
+    this.setState({ filterTokens: event.target.checked })
 
   render(): ReactNode {
     return (
@@ -132,11 +138,21 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 
   renderT2CR() {
+    const networkName = getTrustWalletName(this.props.chainId)
+
+    // If no network name is found, we hide the chekcbox
+    if (!networkName) return
+
+    // Link to Kleros T2CR for Ethereum or TrustWallet for other chains
+    const infoLink = networkName === 'ethereum'
+      ? 'https://tokens.kleros.io/tokens'
+      : 'https://github.com/trustwallet/assets'
+
     return (
       <div>
         Filter out unregistered tokens
-        <sup><a href="https://tokens.kleros.io/tokens" target="_blank" rel="noopener noreferrer">?</a></sup>
-        <input type="checkbox" checked={this.state.useT2CR} onChange={this.handleCheckboxChange} />
+        <sup><a href={infoLink} target="_blank" rel="noopener noreferrer">?</a></sup>
+        <input type="checkbox" checked={this.state.filterTokens} onChange={this.handleCheckboxChange} />
       </div>
     )
   }
@@ -151,12 +167,13 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     }
 
     const tokenComponents = this.state.tokens
-      .filter((token) => token.registered || !this.state.useT2CR)
+      .filter((token) => token.registered || !this.state.filterTokens)
       .map((token) => (
         <Token
           key={token.contract.address}
           token={token}
           provider={this.props.provider}
+          chainId={this.props.chainId}
           signer={this.props.signer}
           signerAddress={this.props.signerAddress}
           inputAddress={this.props.inputAddress}

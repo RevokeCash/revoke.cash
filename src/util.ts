@@ -2,17 +2,38 @@ import axios from 'axios'
 import { Contract, BigNumberish, BigNumber, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { TokensView } from './abis'
+import { ADDRESS_ZERO, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
 
-const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000000000000000000000000000'
-// const ERC20_BADGE_ADDRESS = '0xCb4Aae35333193232421E86Cd2E9b6C91f3B125F'
-const T2CR_ADDRESS = '0xEbcf3bcA271B26ae4B162Ba560e243055Af0E679'
-const TOKENS_VIEW_ADDRESS = '0xf9b9b5440340123B21BFf1dDAFE1ad6Feb9D6E7F'
-
-// Check if a token is registered in the Kleros T2CR
+// Check if a token is registered in the Kleros T2CR (ETH) or TrustWallet/assets (other chains)
 export async function isRegistered(tokenAddress: string, provider: providers.Provider): Promise<boolean> {
+  const { chainId } = await provider.getNetwork()
+  const networkName = getTrustWalletName(chainId)
+
+  // If we don't know about the network, we skip checking registration
+  if (!networkName) return true
+
+  // On mainnet ethereum we use Kleros T2CR as a decentralised registry
+  if (networkName === 'ethereum') return await isRegisteredInKleros(tokenAddress, provider)
+
+  // On other EVM chains we fall back to using TrustWallet/assets as a centralised registry
+  return await isRegisteredInTrustWallet(networkName, tokenAddress);
+}
+
+async function isRegisteredInKleros(tokenAddress: string, provider: providers.Provider): Promise<boolean> {
   const tokensViewContract = new Contract(TOKENS_VIEW_ADDRESS, TokensView, provider)
   const [ tokenID ] = await tokensViewContract.functions.getTokensIDsForAddresses(T2CR_ADDRESS, [tokenAddress])
   return tokenID && tokenID[0] && tokenID[0] !== ADDRESS_ZERO
+}
+
+async function isRegisteredInTrustWallet(tokenAddress: string, networkName?: string): Promise<boolean> {
+  if (!networkName) return false;
+
+  try {
+    await axios.get(`${TRUSTWALLET_BASE_URL}/${networkName}/assets/${tokenAddress}/info.json`)
+    return true
+  } catch {
+    return false
+  }
 }
 
 export function shortenAddress(address: string): string {
@@ -27,11 +48,63 @@ export function compareBN(a: BigNumberish, b: BigNumberish): number {
 }
 
 // Look up an address' App Name using the dapp-contract-list
-export async function addressToAppName(address: string): Promise<string | undefined> {
+export async function addressToAppName(address: string, networkName?: string): Promise<string | undefined> {
+  if (!networkName) return undefined
+
   try {
-    const { data } = await axios.get(`https://raw.githubusercontent.com/rkalis/revoke.cash/master/dapp-contract-list/${getAddress(address)}.json`)
+    const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${networkName}/${getAddress(address)}.json`)
     return data.appName
   } catch {
     return undefined
   }
+}
+
+export function getTrustWalletName(chainId: number): string | undefined {
+  // These names correspond to the directories in the TrustWallet assets repo.
+  // I manually went over the chains in the repo and checked which had a chain ID
+  // *and* any tokens. This is not an endorsement of any of these projects.
+  const mapping = {
+    1: 'ethereum',
+    56: 'smartchain',
+    60: 'gochain',
+    61: 'classic',
+    88: 'tomochain',
+    99: 'poa',
+    100: 'xdai',
+    108: 'thundertoken'
+  }
+
+  return mapping[chainId]
+}
+
+export function getDappListName(chainId: number): string | undefined {
+  const mapping = {
+    1: 'ethereum'
+  }
+
+  return mapping[chainId]
+}
+
+export function getExplorerUrl(chainId: number): string | undefined {
+  // Includes all Etherscan, BScScan, BlockScout, Matic explorers
+  const mapping = {
+    1: 'https://etherscan.io/address',
+    3: 'https://ropsten.etherscan.io/address',
+    4: 'https://rinkeby.etherscan.io/address',
+    5: 'https://goerli.etherscan.io/address',
+    6: 'https://blockscout.com/etc/kotti/address',
+    30: 'https://blockscout.com/rsk/mainnet/address',
+    42: 'https://kovan.etherscan.io/address',
+    56: 'https://bscscan.com/address',
+    61: 'https://blockscout.com/etc/mainnet/address',
+    63: 'https://blockscout.com/etc/mordor/address',
+    77: 'https://blockscout.com/poa/sokol/address',
+    97: 'https://testnet.bscscan.com/address',
+    99: 'https://blockscout.com/poa/core/address',
+    100: 'https://blockscout.com/poa/xdai/address',
+    137: 'https://explorer-mainnet.maticvigil.com/address',
+    80001: 'https://explorer-mumbai.maticvigil.com/address'
+  }
+
+  return mapping[chainId]
 }

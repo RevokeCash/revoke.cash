@@ -4,11 +4,13 @@ import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData } from './interfaces'
-import { compareBN, addressToAppName, shortenAddress } from './util'
+import { compareBN, addressToAppName, shortenAddress, getTrustWalletName, getDappListName, getExplorerUrl } from './util'
+import { TRUSTWALLET_BASE_URL } from './constants'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 type TokenProps = {
-  provider?: providers.Provider
+  provider: providers.Provider
+  chainId: number
   signer?: Signer
   token: TokenData
   signerAddress: string
@@ -50,9 +52,10 @@ class Token extends Component<TokenProps, TokenState> {
 
     const { token } = this.props
 
-    const icon = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${getAddress(token.contract.address)}/logo.png`
+    const trustWalletNetworkName = getTrustWalletName(this.props.chainId)
+    const icon = trustWalletNetworkName && `${TRUSTWALLET_BASE_URL}/${trustWalletNetworkName}/assets/${getAddress(token.contract.address)}/logo.png`
 
-    // Filter out dupplicate spenders
+    // Filter out duplicate spenders
     const approvals = token.approvals
       .filter((approval, i) => i === token.approvals.findIndex(other => approval.topics[2] === other.topics[2]))
 
@@ -64,9 +67,12 @@ class Token extends Component<TokenProps, TokenState> {
       // Filter (almost) zero-value allowances early to save bandwidth
       if (this.formatAllowance(allowance) === '0.000') return undefined
 
-      // Retrieve the spender's ENS name and the spender's App name if they exist
+      // Retrieve the spender's ENS name if it exists
       const ensSpender = await this.props.provider.lookupAddress(spender)
-      const spenderAppName = await addressToAppName(spender)
+
+      // Retrieve the spender's app name if it exists
+      const dappListNetworkName = getDappListName(this.props.chainId)
+      const spenderAppName = await addressToAppName(spender, dappListNetworkName)
 
       const newAllowance = '0'
 
@@ -95,11 +101,12 @@ class Token extends Component<TokenProps, TokenState> {
     const bnNew = BigNumber.from(this.fromFloat(allowance.newAllowance))
     const bnOld = BigNumber.from(allowance.allowance)
     const { contract } = this.props.token
+
     let tx
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-    // So we have to do a few try-catch sattements
+    // So we have to do a few try-catch statements
     // First try calling approve directly, then try increase/decreaseApproval,
     // finally try resetting allowance to 0 and then calling approve with new value
     try {
@@ -122,7 +129,6 @@ class Token extends Component<TokenProps, TokenState> {
           if (e2.code === -32000) {
             console.debug(`Calling contract.approve(${allowance.spender}, 0)`)
             tx = await contract.functions.approve(allowance.spender, 0)
-            await tx.wait(1)
             console.debug(`Calling contract.approve(${allowance.spender}, ${bnNew.toString()})`)
             tx = await contract.functions.approve(allowance.spender, bnNew)
           }
@@ -172,7 +178,6 @@ class Token extends Component<TokenProps, TokenState> {
     const balanceString = this.toFloat(Number(this.props.token.balance))
     if (balanceString === '0.000' && this.state.allowances.length === 0) return null
 
-    // Render the token
     return (<div className="Token">{this.renderTokenOrLoading()}</div>)
   }
 
@@ -197,7 +202,7 @@ class Token extends Component<TokenProps, TokenState> {
     const { symbol, balance } = this.props.token
 
     const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}
-    const img = (<img src={this.state.icon} alt="" width="20px" onError={backupImage} />)
+    const img = (<img src={this.state.icon || 'erc20.png'} alt="" width="20px" onError={backupImage} />)
 
     return (<div className="TokenBalance my-auto">{img} {symbol}: {this.toFloat(Number(balance))}</div>)
   }
@@ -223,18 +228,26 @@ class Token extends Component<TokenProps, TokenState> {
     const spender = allowance.spenderAppName || allowance.ensSpender || allowance.spender
     const shortenedSpender = allowance.spenderAppName || allowance.ensSpender || shortenAddress(allowance.spender)
 
+    const explorerBaseUrl = getExplorerUrl(this.props.chainId)
+
+    const shortenedLink = explorerBaseUrl
+      ? (<a className="monospace" href={`${explorerBaseUrl}/${allowance.spender}`}>{shortenedSpender}</a>)
+      : shortenedSpender
+
+    const regularLink = explorerBaseUrl
+      ? (<a className="monospace" href={`${explorerBaseUrl}/${allowance.spender}`}>{spender}</a>)
+      : spender
+
     // Display separate spans for the regular and shortened versions of the spender address
     // The correct one is selected using CSS media-queries
     return (
       <Form.Label className="AllowanceText">
         <span className="AllowanceTextSmallScreen">
-          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
-          <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>{shortenedSpender}</a>
+          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;{shortenedLink}
         </span>
 
         <span className="AllowanceTextBigScreen">
-          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;
-          <a className="monospace" href={`https://etherscan.io/address/${allowance.spender}`}>{spender}</a>
+          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;{regularLink}
         </span>
       </Form.Label>
     )
