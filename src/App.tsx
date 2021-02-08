@@ -6,7 +6,7 @@ import React, { Component, ReactNode, ChangeEvent } from 'react'
 import TokenList from './TokenList'
 import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
-import { shortenAddress } from './util'
+import { reverseLookup, shortenAddress } from './util'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -102,11 +102,12 @@ class App extends Component<{}, AppState> {
 
     // Retrieve signer from injected provider
     const injectedProvider = window.ethereum ?? window.web3.currentProvider
-    const signer = new providers.Web3Provider(injectedProvider).getSigner()
+    const provider = new providers.Web3Provider(injectedProvider)
+    const signer = provider.getSigner()
 
     // Retrieve signer address and ENS name
     const signerAddress = await signer.getAddress()
-    const signerEnsName = await this.reverseLookup(signerAddress)
+    const signerEnsName = await reverseLookup(signerAddress, provider)
 
     // Prepopulate the input address or ENS name (if they aren't populated yet)
     const inputAddressOrName = this.state.inputAddressOrName || signerEnsName || signerAddress
@@ -124,21 +125,6 @@ class App extends Component<{}, AppState> {
     const inputAddress = await this.parseInputAddress(inputAddressOrName)
     if (inputAddress) {
       this.setState({ inputAddress })
-    }
-  }
-
-  async reverseLookup(address: string): Promise<string | undefined> {
-    // If no provider is set, this means that the browser is not web3 enabled
-    // and the fallback Infura provider is currently rate-limited
-    if (!this.state.provider) {
-      alert('Please use a web3 enabled browser to use revoke.cash')
-      return
-    }
-
-    try {
-      return await this.state.provider.lookupAddress(address)
-    } catch {
-      return undefined
     }
   }
 

@@ -16,7 +16,7 @@ export async function isRegistered(tokenAddress: string, provider: providers.Pro
   if (networkName === 'ethereum') return await isRegisteredInKleros(tokenAddress, provider)
 
   // On other EVM chains we fall back to using TrustWallet/assets as a centralised registry
-  return await isRegisteredInTrustWallet(networkName, tokenAddress);
+  return await isRegisteredInTrustWallet(tokenAddress, networkName);
 }
 
 async function isRegisteredInKleros(tokenAddress: string, provider: providers.Provider): Promise<boolean> {
@@ -54,6 +54,14 @@ export async function addressToAppName(address: string, networkName?: string): P
   try {
     const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${networkName}/${getAddress(address)}.json`)
     return data.appName
+  } catch {
+    return undefined
+  }
+}
+
+export async function reverseLookup(address: string, provider: providers.Provider): Promise<string | undefined> {
+  try {
+    return await provider.lookupAddress(address)
   } catch {
     return undefined
   }
