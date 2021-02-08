@@ -4,7 +4,7 @@ import { Signer, Contract, providers } from 'ethers'
 import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { AddressInfo, TokenData } from './interfaces'
+import { TokenData } from './interfaces'
 import Token from './Token'
 import { isRegistered } from './util'
 import { ERC20 } from './abis'
@@ -51,32 +51,25 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     const approvals = await this.props.provider.getLogs({
       fromBlock: 'earliest',
       toBlock: 'latest',
-      topics: [(erc20Interface.getEventTopic('Approval')), hexZeroPad(this.props.inputAddress, 32)]
-      // erc20Interface.encodeFilterTopics(erc20Interface.events.Approval, [ethers.utils.hexZeroPad(this.props.inputAddress, 32)])
+      topics: [erc20Interface.getEventTopic('Approval'), hexZeroPad(this.props.inputAddress, 32)]
     })
 
-    // Filter unique contract addresses and convert all approvals to Contract instances
-    const contractsWithApprovals = approvals
-      .filter((approval, i) => i === approvals.findIndex(other => approval.address === other.address))
-      .map((approval) => new Contract(getAddress(approval.address), ERC20, signerOrProvider))
+    // Get all transfers sent to the input address
+    const transfers = await this.props.provider.getLogs({
+      fromBlock: 'earliest',
+      toBlock: 'latest',
+      topics: [erc20Interface.getEventTopic('Transfer'), undefined, hexZeroPad(this.props.inputAddress, 32)]
+    })
 
-    // Retrieve token balances from the Ethplorer API
-    const result = await axios.get(`https://api.ethplorer.io/getAddressInfo/${this.props.inputAddress}?apiKey=freekey`)
-    const addressInfo: AddressInfo = result.data
+    const allEvents = [...approvals, ...transfers];
 
-    // Get additional contracts without approvals but with balances from Ethplorer
-    const extraContracts = (addressInfo.tokens || [])
-      .filter(t => t.tokenInfo.symbol !== undefined)
-      .map((token) => new Contract(getAddress(token.tokenInfo.address), ERC20, signerOrProvider))
-
-    // Merge contract lists and filter out duplicates
-    let allContracts = [...contractsWithApprovals, ...extraContracts]
-
-    allContracts = allContracts
-      .filter((contract, i) => i === allContracts.findIndex(other => contract.address === other.address))
+    // Filter unique token contract addresses and convert all events to Contract instances
+    const tokenContracts = allEvents
+      .filter((event, i) => i === allEvents.findIndex((other) => event.address === other.address))
+      .map((event) => new Contract(getAddress(event.address), ERC20, signerOrProvider))
 
     // Return early if no tokens are found
-    if (!allContracts) {
+    if (tokenContracts.length === 0) {
       this.setState({ loading: false })
       return
     }
@@ -84,7 +77,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     // Look up token data for all tokens, add their list of approvals,
     // and check if the token is registered in Kleros T2CR
     const unsortedTokens = await Promise.all(
-      allContracts.map(async (contract) => {
+      tokenContracts.map(async (contract) => {
         const tokenApprovals = approvals.filter(approval => approval.address === contract.address)
         const registered = await isRegistered(contract.address, this.props.provider)
 
@@ -92,12 +85,12 @@ class TokenList extends Component<TokenListProps, TokenListState> {
           const tokenData = await this.retrieveTokenData(contract)
           return { ...tokenData, contract, registered, approvals: tokenApprovals }
         } catch {
-          // If the call to retrieveTokenData() fails, the token is not
-          // an ERC20 token so we do not include it in the token list
-          // (Ethplorer sometimes includes weird non-ERC20 stuff in their API)
+          // If the call to retrieveTokenData() fails, the token is not an ERC20 token so
+          // we do not include it in the token list (should not happen).
           return undefined
         }
-      }))
+      })
+    )
 
     // Filter undefined tokens and sort tokens alphabetically on token symbol
     const tokens = unsortedTokens
