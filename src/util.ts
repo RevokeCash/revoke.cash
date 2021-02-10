@@ -59,7 +59,7 @@ export async function addressToAppName(address: string, networkName?: string): P
   }
 }
 
-export async function reverseLookup(address: string, provider: providers.Provider): Promise<string | undefined> {
+export async function lookupEnsName(address: string, provider: providers.Provider): Promise<string | undefined> {
   try {
     return await provider.lookupAddress(address)
   } catch {

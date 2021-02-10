@@ -4,7 +4,7 @@ import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData } from './interfaces'
-import { compareBN, addressToAppName, shortenAddress, getTrustWalletName, getDappListName, getExplorerUrl, reverseLookup } from './util'
+import { compareBN, addressToAppName, shortenAddress, getTrustWalletName, getDappListName, getExplorerUrl, lookupEnsName } from './util'
 import { TRUSTWALLET_BASE_URL } from './constants'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
@@ -68,7 +68,7 @@ class Token extends Component<TokenProps, TokenState> {
       if (this.formatAllowance(allowance) === '0.000') return undefined
 
       // Retrieve the spender's ENS name if it exists
-      const ensSpender = await await reverseLookup(spender, this.props.provider)
+      const ensSpender = await await lookupEnsName(spender, this.props.provider)
 
       // Retrieve the spender's app name if it exists
       const dappListNetworkName = getDappListName(this.props.chainId)

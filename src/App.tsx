@@ -6,7 +6,7 @@ import React, { Component, ReactNode, ChangeEvent } from 'react'
 import TokenList from './TokenList'
 import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
-import { reverseLookup, shortenAddress } from './util'
+import { lookupEnsName, shortenAddress } from './util'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -107,7 +107,7 @@ class App extends Component<{}, AppState> {
 
     // Retrieve signer address and ENS name
     const signerAddress = await signer.getAddress()
-    const signerEnsName = await reverseLookup(signerAddress, provider)
+    const signerEnsName = await lookupEnsName(signerAddress, provider)
 
     // Prepopulate the input address or ENS name (if they aren't populated yet)
     const inputAddressOrName = this.state.inputAddressOrName || signerEnsName || signerAddress
