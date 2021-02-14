@@ -4,8 +4,7 @@ import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData } from './interfaces'
-import { compareBN, addressToAppName, shortenAddress, getTrustWalletName, getDappListName, getExplorerUrl, lookupEnsName } from './util'
-import { TRUSTWALLET_BASE_URL } from './constants'
+import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName } from './util'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 type TokenProps = {
@@ -52,9 +51,6 @@ class Token extends Component<TokenProps, TokenState> {
 
     const { token } = this.props
 
-    const trustWalletNetworkName = getTrustWalletName(this.props.chainId)
-    const icon = trustWalletNetworkName && `${TRUSTWALLET_BASE_URL}/${trustWalletNetworkName}/assets/${getAddress(token.contract.address)}/logo.png`
-
     // Filter out duplicate spenders
     const approvals = token.approvals
       .filter((approval, i) => i === token.approvals.findIndex(other => approval.topics[2] === other.topics[2]))
@@ -84,11 +80,7 @@ class Token extends Component<TokenProps, TokenState> {
       .filter(allowance => allowance !== undefined)
       .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
 
-    this.setState({
-      allowances,
-      icon,
-      loading: false,
-    })
+    this.setState({ allowances, loading: false })
   }
 
   private async revoke(allowance: Allowance) {
@@ -202,7 +194,7 @@ class Token extends Component<TokenProps, TokenState> {
     const { symbol, balance } = this.props.token
 
     const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}
-    const img = (<img src={this.state.icon || 'erc20.png'} alt="" width="20px" onError={backupImage} />)
+    const img = (<img src={this.props.token.icon} alt="" width="20px" onError={backupImage} />)
 
     return (<div className="TokenBalance my-auto">{img} {symbol}: {this.toFloat(Number(balance))}</div>)
   }

@@ -1,14 +1,12 @@
 import './App.scss'
-import axios from 'axios'
 import { Signer, Contract, providers } from 'ethers'
 import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { TokenData } from './interfaces'
+import { TokenData, TokenMapping } from './interfaces'
 import Token from './Token'
-import { getTrustWalletName, isRegistered } from './util'
+import { getTokenData, getTokenIcon, getTokenMapping, isRegistered } from './util'
 import { ERC20 } from './abis'
-import { TRUSTWALLET_BASE_URL } from './constants'
 
 type TokenListProps = {
   provider: providers.Provider
@@ -22,6 +20,7 @@ type TokenListState = {
   tokens: TokenData[]
   filterTokens: boolean
   loading: boolean
+  tokenMapping?: TokenMapping
 }
 
 class TokenList extends Component<TokenListProps, TokenListState> {
@@ -76,18 +75,21 @@ class TokenList extends Component<TokenListProps, TokenListState> {
       return
     }
 
+    const tokenMapping = await getTokenMapping(this.props.chainId)
+
     // Look up token data for all tokens, add their list of approvals,
     // and check if the token is registered in Kleros T2CR
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
         const tokenApprovals = approvals.filter(approval => approval.address === contract.address)
-        const registered = await isRegistered(contract.address, this.props.provider)
+        const registered = await isRegistered(contract.address, this.props.provider, tokenMapping)
+        const icon = await getTokenIcon(contract.address, this.props.chainId, tokenMapping)
 
         try {
-          const tokenData = await this.retrieveTokenData(contract)
-          return { ...tokenData, contract, registered, approvals: tokenApprovals }
+          const tokenData = await getTokenData(contract, this.props.inputAddress, tokenMapping)
+          return { ...tokenData, icon, contract, registered, approvals: tokenApprovals }
         } catch {
-          // If the call to retrieveTokenData() fails, the token is not an ERC20 token so
+          // If the call to getTokenData() fails, the token is not an ERC20 token so
           // we do not include it in the token list (should not happen).
           return undefined
         }
@@ -99,30 +101,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
       .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
-    this.setState({ tokens, loading: false })
-  }
-
-  async retrieveTokenData(contract: Contract) {
-    // Retrieve total supply and user balance from Infura
-    const totalSupply = (await contract.functions.totalSupply()).toString()
-    const balance = await contract.functions.balanceOf(this.props.inputAddress)
-
-    try {
-      // Skip to the direct calls if no network name was found
-      const networkName = getTrustWalletName(this.props.chainId);
-      if(!networkName) throw new Error('Do not send unneccessary request')
-
-      // Try to use the public Ethereum token list on GitHub for symbol and decimals info to reduce the number of Infura calls
-      const { address } = contract
-      const { data } = await axios.get(`${TRUSTWALLET_BASE_URL}/${networkName}/assets/${address}/info.json`)
-      const { symbol, decimals } = data
-      return { symbol, decimals, totalSupply, balance }
-    } catch {
-      // If the token is not available on the GitHub list, retrieve the info from Infura
-      const symbol = await contract.symbol()
-      const decimals = await contract.functions.decimals()
-      return { symbol, decimals, totalSupply, balance }
-    }
+    this.setState({ tokens, tokenMapping, loading: false })
   }
 
   handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
@@ -138,15 +117,13 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 
   renderT2CR() {
-    const networkName = getTrustWalletName(this.props.chainId)
+    // If no token data mapping is found and we're not on ETH, we hide the checkbox
+    if (!this.state.tokenMapping && this.props.chainId !== 1) return
 
-    // If no network name is found, we hide the chekcbox
-    if (!networkName) return
-
-    // Link to Kleros T2CR for Ethereum or TrustWallet for other chains
-    const infoLink = networkName === 'ethereum'
+    // Link to Kleros T2CR for Ethereum or tokenlists for other chains
+    const infoLink = this.props.chainId === 1
       ? 'https://tokens.kleros.io/tokens'
-      : 'https://github.com/trustwallet/assets'
+      : 'https://tokenlists.org/'
 
     return (
       <div>

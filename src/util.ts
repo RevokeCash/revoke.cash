@@ -3,20 +3,20 @@ import { Contract, BigNumberish, BigNumber, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { TokensView } from './abis'
 import { ADDRESS_ZERO, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
+import { TokenFromList, TokenMapping } from './interfaces'
 
 // Check if a token is registered in the Kleros T2CR (ETH) or TrustWallet/assets (other chains)
-export async function isRegistered(tokenAddress: string, provider: providers.Provider): Promise<boolean> {
+export async function isRegistered(tokenAddress: string, provider: providers.Provider, tokenMapping?: TokenMapping): Promise<boolean> {
   const { chainId } = await provider.getNetwork()
-  const networkName = getTrustWalletName(chainId)
-
-  // If we don't know about the network, we skip checking registration
-  if (!networkName) return true
 
   // On mainnet ethereum we use Kleros T2CR as a decentralised registry
-  if (networkName === 'ethereum') return await isRegisteredInKleros(tokenAddress, provider)
+  if (chainId === 1) return await isRegisteredInKleros(tokenAddress, provider)
 
-  // On other EVM chains we fall back to using TrustWallet/assets as a centralised registry
-  return await isRegisteredInTrustWallet(tokenAddress, networkName);
+  // If we don't know a registered token mapping, we skip checking registration
+  if (!tokenMapping) return true
+
+  // On other EVM chains we fall back to using the specified tokenlist as a semi-centralised registry
+  return isRegisteredInTokenMapping(tokenAddress, tokenMapping);
 }
 
 async function isRegisteredInKleros(tokenAddress: string, provider: providers.Provider): Promise<boolean> {
@@ -25,15 +25,8 @@ async function isRegisteredInKleros(tokenAddress: string, provider: providers.Pr
   return tokenID && tokenID[0] && tokenID[0] !== ADDRESS_ZERO
 }
 
-async function isRegisteredInTrustWallet(tokenAddress: string, networkName?: string): Promise<boolean> {
-  if (!networkName) return false;
-
-  try {
-    await axios.get(`${TRUSTWALLET_BASE_URL}/${networkName}/assets/${tokenAddress}/info.json`)
-    return true
-  } catch {
-    return false
-  }
+function isRegisteredInTokenMapping(tokenAddress: string, tokenMapping: TokenMapping = {}): boolean {
+  return tokenMapping[getAddress(tokenAddress)] !== undefined;
 }
 
 export function shortenAddress(address: string): string {
@@ -67,28 +60,6 @@ export async function lookupEnsName(address: string, provider: providers.Provide
   }
 }
 
-export function getTrustWalletName(chainId: number): string | undefined {
-  const mapping = {
-    1: 'ethereum',
-    56: 'smartchain',
-    61: 'classic',
-  }
-
-  return mapping[chainId]
-}
-
-export function getDappListName(chainId: number): string | undefined {
-  const mapping = {
-    1: 'ethereum',
-    56: 'smartchain',
-    100: 'xdai',
-    137: 'matic',
-    43114: 'avalanche',
-  }
-
-  return mapping[chainId]
-}
-
 export function getExplorerUrl(chainId: number): string | undefined {
   // Includes all Etherscan, BScScan, BlockScout, Matic, Avalanche explorers
   const mapping = {
@@ -113,4 +84,93 @@ export function getExplorerUrl(chainId: number): string | undefined {
   }
 
   return mapping[chainId]
+}
+
+export function getTrustWalletName(chainId: number): string | undefined {
+  const mapping = {
+    1: 'ethereum',
+    56: 'smartchain',
+    61: 'classic',
+  }
+
+  return mapping[chainId]
+}
+
+export function getDappListName(chainId: number): string | undefined {
+  const mapping = {
+    1: 'ethereum',
+    56: 'smartchain',
+    100: 'xdai',
+    137: 'matic',
+    43114: 'avalanche',
+  }
+
+  return mapping[chainId]
+}
+
+export function getTokenListUrl(chainId: number): string | undefined {
+  const mapping = {
+    1: 'https://tokens.1inch.eth.link/',
+    56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
+    100: 'https://tokens.honeyswap.org',
+    137: 'https://unpkg.com/quickswap-default-token-list@1.0.28/build/quickswap-default.tokenlist.json',
+    43114: 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
+  }
+
+  return mapping[chainId]
+}
+
+export async function getTokenMapping(chainId: number): Promise<TokenMapping | undefined> {
+  const url = getTokenListUrl(chainId)
+
+  if (!url) return undefined
+
+  try {
+    const res = await axios.get(url)
+    const tokens: TokenFromList[] = res.data.tokens
+
+    const tokenMapping = {}
+    for (const token of tokens) {
+      tokenMapping[getAddress(token.address)] = token
+    }
+
+    return tokenMapping
+  } catch {
+    return undefined
+  }
+}
+
+export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
+  // Retrieve total supply and user balance from Infura
+  const totalSupply = (await contract.functions.totalSupply()).toString()
+  const balance = await contract.functions.balanceOf(ownerAddress)
+
+  const tokenData = tokenMapping[getAddress(contract.address)]
+
+  if (tokenData) {
+    // Retrieve info from the token mapping if available
+    const { symbol, decimals } = tokenData
+    return { symbol, decimals, totalSupply, balance }
+  } else {
+    // If the token is not available in the token mapping, retrieve the info from Infura
+    const symbol = await contract.symbol()
+    const decimals = await contract.functions.decimals()
+    return { symbol, decimals, totalSupply, balance }
+  }
+}
+
+export async function getTokenIcon(tokenAddress: string, chainId: number, tokenMapping: TokenMapping = {}) {
+  const normalisedAddress = getAddress(tokenAddress)
+
+  // Retrieve a token icon from the token list if specified (filtering relative paths)
+  const tokenData = tokenMapping[normalisedAddress]
+  const iconFromMapping = !tokenData?.logoURI?.startsWith('/') && tokenData?.logoURI
+
+  // Fall back to TrustWallet/assets for logos
+  const networkName = getTrustWalletName(chainId)
+  const iconFromTrust = networkName && `${TRUSTWALLET_BASE_URL}/${networkName}/assets/${normalisedAddress}/logo.png`
+
+  const icon = iconFromMapping || iconFromTrust || 'erc20.png'
+
+  return icon
 }
