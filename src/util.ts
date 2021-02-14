@@ -83,13 +83,14 @@ export function getDappListName(chainId: number): string | undefined {
     56: 'smartchain',
     100: 'xdai',
     137: 'matic',
+    43114: 'avalanche',
   }
 
   return mapping[chainId]
 }
 
 export function getExplorerUrl(chainId: number): string | undefined {
-  // Includes all Etherscan, BScScan, BlockScout, Matic explorers
+  // Includes all Etherscan, BScScan, BlockScout, Matic, Avalanche explorers
   const mapping = {
     1: 'https://etherscan.io/address',
     3: 'https://ropsten.etherscan.io/address',
@@ -106,6 +107,8 @@ export function getExplorerUrl(chainId: number): string | undefined {
     99: 'https://blockscout.com/poa/core/address',
     100: 'https://blockscout.com/poa/xdai/address',
     137: 'https://explorer-mainnet.maticvigil.com/address',
+    43113: 'https://cchain.explorer.avax-test.network/address',
+    43114: 'https://cchain.explorer.avax.network/address',
     80001: 'https://explorer-mumbai.maticvigil.com/address'
   }
 
