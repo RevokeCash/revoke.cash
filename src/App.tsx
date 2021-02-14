@@ -47,6 +47,7 @@ class App extends Component<{}, AppState> {
     // Refresh the page when changing the network in Metamask
     if (window.ethereum) {
       window.ethereum.on('chainChanged', () => window.location.reload(false))
+      window.ethereum.on('accountsChanged', () => window.location.reload(false))
     }
   }
 
