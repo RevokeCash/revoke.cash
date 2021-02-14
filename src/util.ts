@@ -5,7 +5,7 @@ import { TokensView } from './abis'
 import { ADDRESS_ZERO, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping } from './interfaces'
 
-// Check if a token is registered in the Kleros T2CR (ETH) or TrustWallet/assets (other chains)
+// Check if a token is registered in the Kleros T2CR (ETH) or tokenlist (other chains)
 export async function isRegistered(tokenAddress: string, provider: providers.Provider, tokenMapping?: TokenMapping): Promise<boolean> {
   const { chainId } = await provider.getNetwork()
 
