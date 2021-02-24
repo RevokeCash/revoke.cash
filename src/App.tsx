@@ -7,7 +7,7 @@ import TokenList from './TokenList'
 import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { lookupEnsName, shortenAddress } from './util'
-
+import Fathom from 'fathom-react';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -158,13 +158,15 @@ class App extends Component<{}, AppState> {
 
   render(): ReactNode {
     return (
-      <Container fluid className="App">
-        {this.renderHeader()}
-        {this.renderAddressInput()}
-        {this.renderTokenList()}
-        {this.renderFooter()}
-        {this.renderToastContainer()}
-      </Container>
+      <Fathom siteId="AZINUXXI">
+        <Container fluid className="App">
+          {this.renderHeader()}
+          {this.renderAddressInput()}
+          {this.renderTokenList()}
+          {this.renderFooter()}
+          {this.renderToastContainer()}
+        </Container>
+      </Fathom>
     )
   }
 

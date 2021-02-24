@@ -5504,6 +5504,13 @@ fast-levenshtein@~2.0.4, fast-levenshtein@~2.0.6:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
+fathom-react@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/fathom-react/-/fathom-react-1.0.1.tgz#036235eba3b00aa70afb0d8b1fec52ac02b43ada"
+  integrity sha512-/wjkYm7Z4jTg9rWw41H4ybX1spnqLFkPPjSSd3JlvaTQTq7TjKjzDR4ykOe3VVbH9fp7att2adk9ecq1lwepwg==
+  dependencies:
+    prop-types "^15.7.2"
+
 faye-websocket@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.10.0.tgz#4e492f8d04dfb6f89003507f6edbf2d501e7c6f4"
