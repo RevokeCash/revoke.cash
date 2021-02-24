@@ -1,44 +1,39 @@
 import '../App.scss'
 import { Signer, utils } from 'ethers'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
+import { useFathom } from 'fathom-react'
 import { getNativeToken, getDefaultAmount } from './util'
 
-type DonateButtonProps = {
+type Props = {
   signer: Signer,
   chainId: number,
 }
 
-type DonateButtonState = {
-  show: boolean,
-  amount: string,
-  nativeToken: string,
-}
+const DonateButton: React.FC<Props> = ({ signer, chainId }) => {
+  const fathom = useFathom()
+  const nativeToken = getNativeToken(chainId)
 
-class DonateButton extends Component<DonateButtonProps, DonateButtonState> {
-  state: DonateButtonState = {
-    show: false,
-    amount: '',
-    nativeToken: ''
+  const [amount, setAmount] = useState<string>(getDefaultAmount(nativeToken))
+
+  const [show, setShow] = useState<boolean>(false)
+  const handleClose = () => setShow(false)
+  const handleShow = () => {
+    fathom.goal('DPYWAXTX', 0)
+    setShow(true)
   }
 
-  componentDidMount() {
-    const nativeToken = getNativeToken(this.props.chainId)
-    const amount = getDefaultAmount(nativeToken)
-    this.setState({ amount, nativeToken })
-  }
-
-  async sendDonation() {
-    if (!this.props.signer) {
+  const sendDonation = async () => {
+    if (!signer) {
       alert('Please connect your web3 wallet to donate')
     }
 
     try {
-      await this.props.signer.sendTransaction({
+      await signer.sendTransaction({
         to: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
-        from: await this.props.signer.getAddress(),
-        value: utils.parseEther(this.state.amount),
+        from: await signer.getAddress(),
+        value: utils.parseEther(amount),
       })
 
       toast.dark('Thanks for the donation!', {
@@ -51,50 +46,48 @@ class DonateButton extends Component<DonateButtonProps, DonateButtonState> {
         progress: undefined,
       })
 
-      this.setState({ show: false })
+      fathom.goal('QHSEVLIS', 0)
+
+      setShow(false);
     } catch (err) {
       if (err.code && err.code === 'INVALID_ARGUMENT') {
         alert('Input is not a valid number')
       }
+
       console.log(err)
     }
   }
 
-  render() {
-    const handleClose = () => this.setState({ show: false })
-    const handleShow = () => this.setState({ show: true })
+  return (
+    <>
+      <Button variant="outline-primary" onClick={handleShow}>Donate</Button>
 
-    return (
-      <>
-        <Button variant="outline-primary" onClick={handleShow}>Donate</Button>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Donate to Revoke.cash</Modal.Title>
+        </Modal.Header>
 
-        <Modal show={this.state.show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Donate to Revoke.cash</Modal.Title>
-          </Modal.Header>
+        <Modal.Body>
+          <InputGroup>
+            <Form.Control
+              value={amount}
+              onChange={(event) => (setAmount(event.target.value))}
+            />
+            <InputGroup.Append>
+              <InputGroup.Text>{nativeToken}</InputGroup.Text>
+            </InputGroup.Append>
+            <InputGroup.Append>
+              <Button variant="secondary" onClick={sendDonation}>Send</Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </Modal.Body>
 
-          <Modal.Body>
-            <InputGroup>
-              <Form.Control
-                value={this.state.amount}
-                onChange={(event) => (this.setState({ amount: event.target.value }))}
-              />
-              <InputGroup.Append>
-                <InputGroup.Text>{this.state.nativeToken}</InputGroup.Text>
-              </InputGroup.Append>
-              <InputGroup.Append>
-                <Button variant="secondary" onClick={() => this.sendDonation()}>Send</Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Modal.Body>
-
-          <Modal.Footer>
-            Or contribute to my <a href="https://gitcoin.co/grants/259/rosco-kalis-crypto-software-engineer">Gitcoin Grant</a>
-          </Modal.Footer>
-        </Modal>
-      </>
-    )
-  }
+        <Modal.Footer>
+          Or contribute to my <a href="https://gitcoin.co/grants/259/rosco-kalis-crypto-software-engineer">Gitcoin Grant</a>
+        </Modal.Footer>
+      </Modal>
+    </>
+  )
 }
 
 export default DonateButton
