@@ -92,6 +92,15 @@ class App extends Component<{}, AppState> {
 
   async updateProvider(provider: providers.Provider) {
     const { chainId } = await provider.getNetwork()
+
+    // Add a hacky patch to make sure that for Matic we talk to this RPC endpoint
+    // regardless of what is configured in MM since the Matic Vigil endpoint has limited
+    // historic logs.
+    // TODO: Do this in a non-hacky way later
+    if (chainId === 137) {
+      provider = new providers.JsonRpcProvider('https://rpc-mainnet.matic.network');
+    }
+
     this.setState({ provider, chainId })
   }
 

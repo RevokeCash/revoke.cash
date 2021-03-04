@@ -136,7 +136,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
 
   renderTokenList() {
     if (this.state.loading) {
-      return (<ClipLoader size={40} color={'#000'} loading={this.state.loading} />)
+      return (<ClipLoader css="margin-bottom: 10px;" size={40} color={'#000'} loading={this.state.loading} />)
     }
 
     if (this.state.tokens.length === 0) {
