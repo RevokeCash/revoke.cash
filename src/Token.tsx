@@ -64,7 +64,7 @@ class Token extends Component<TokenProps, TokenState> {
       if (this.formatAllowance(allowance) === '0.000') return undefined
 
       // Retrieve the spender's ENS name if it exists
-      const ensSpender = await await lookupEnsName(spender, this.props.provider)
+      const ensSpender = await lookupEnsName(spender, this.props.provider)
 
       // Retrieve the spender's app name if it exists
       const dappListNetworkName = getDappListName(this.props.chainId)

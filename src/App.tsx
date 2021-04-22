@@ -98,7 +98,7 @@ class App extends Component<{}, AppState> {
     // historic logs.
     // TODO: Do this in a non-hacky way later
     if (chainId === 137) {
-      provider = new providers.JsonRpcProvider('https://rpc-mainnet.matic.network');
+      provider = new providers.WebSocketProvider('wss://rpc-mainnet.matic.quiknode.pro');
     }
 
     this.setState({ provider, chainId })
