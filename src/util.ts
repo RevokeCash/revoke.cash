@@ -120,6 +120,12 @@ export function getTokenListUrl(chainId: number): string | undefined {
   return mapping[chainId]
 }
 
+export function isSupportedNetwork(chainId: number): boolean {
+  // Supported for now are only ETH, xDAI and AVAX. Other chains fail on the RPC calls.
+  const supportedNetworks = [1, 3, 4, 5, 42, 100, 43113, 43114]
+  return supportedNetworks.includes(chainId);
+}
+
 export async function getTokenMapping(chainId: number): Promise<TokenMapping | undefined> {
   const url = getTokenListUrl(chainId)
 

@@ -11,7 +11,7 @@ This repository also includes the [`dapp-contract-list`](/public/dapp-contract-l
 - `https://raw.githubusercontent.com/rkalis/revoke.cash/master/public/dapp-contract-list/{chain}/{address}.json`
 - `https://revoke.cash/dapp-contract-list/{chain}/{address}.json`
 
-Revoke.cash and the dapp-contract-list are set up to work with any EVM-based chain that can use Metamask. This includes ETH mainnet and testnets, Binance Smart Chain, Polygon chains (prev. Matic), xDAI and more.
+Revoke.cash currently only works for Ethereum (mainnet and testnets), xDAI and Avalanche.
 
 If you want to learn more about (unlimited) ERC20 allowances, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 

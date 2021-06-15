@@ -5,7 +5,7 @@ import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData, TokenMapping } from './interfaces'
 import Token from './Token'
-import { getTokenData, getTokenIcon, getTokenMapping, isRegistered } from './util'
+import { getTokenData, getTokenIcon, getTokenMapping, isRegistered, isSupportedNetwork } from './util'
 import { ERC20 } from './abis'
 
 type TokenListProps = {
@@ -108,6 +108,14 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     this.setState({ filterTokens: event.target.checked })
 
   render(): ReactNode {
+    if (!isSupportedNetwork(this.props.chainId)) {
+      return (
+        <div style={{ paddingBottom: 10 }}>
+          Network with chainId {this.props.chainId} is not supported`
+        </div>
+      )
+    }
+
     return (
       <div className="Dashboard">
         {this.renderT2CR()}
