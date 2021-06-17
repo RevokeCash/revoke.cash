@@ -3,7 +3,6 @@ import { Signer, utils } from 'ethers'
 import React, { useState } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
-import { useFathom } from 'fathom-react'
 import { getNativeToken, getDefaultAmount } from './util'
 
 type Props = {
@@ -12,17 +11,13 @@ type Props = {
 }
 
 const DonateButton: React.FC<Props> = ({ signer, chainId }) => {
-  const fathom = useFathom()
   const nativeToken = getNativeToken(chainId)
 
   const [amount, setAmount] = useState<string>(getDefaultAmount(nativeToken))
 
   const [show, setShow] = useState<boolean>(false)
   const handleClose = () => setShow(false)
-  const handleShow = () => {
-    fathom.goal('DPYWAXTX', 0)
-    setShow(true)
-  }
+  const handleShow = () => setShow(true)
 
   const sendDonation = async () => {
     if (!signer) {
@@ -45,8 +40,6 @@ const DonateButton: React.FC<Props> = ({ signer, chainId }) => {
         draggable: true,
         progress: undefined,
       })
-
-      fathom.goal('QHSEVLIS', 0)
 
       setShow(false);
     } catch (err) {
