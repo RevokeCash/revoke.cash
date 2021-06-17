@@ -4,7 +4,7 @@ import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData } from './interfaces'
-import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName } from './util'
+import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, toFloat } from './util'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 type TokenProps = {
@@ -138,10 +138,6 @@ class Token extends Component<TokenProps, TokenState> {
     }
   }
 
-  private toFloat(n: number): string {
-    return (n / (10 ** this.props.token.decimals)).toFixed(3)
-  }
-
   private fromFloat(s: string): string {
     const { decimals } = this.props.token
 
@@ -155,19 +151,23 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   private formatAllowance(allowance: string) {
+    const { decimals, totalSupply } = this.props.token
+
     const allowanceBN = BigNumber.from(allowance)
-    const totalSupplyBN = BigNumber.from(this.props.token.totalSupply)
+    const totalSupplyBN = BigNumber.from(totalSupply)
 
     if (allowanceBN.gt(totalSupplyBN)) {
       return 'Unlimited'
     }
 
-    return this.toFloat(Number(allowanceBN))
+    return toFloat(Number(allowanceBN), decimals)
   }
 
   render(): ReactNode {
+    const { balance, decimals } = this.props.token
+
     // Do not render tokens without balance or allowances
-    const balanceString = this.toFloat(Number(this.props.token.balance))
+    const balanceString = toFloat(Number(balance), decimals)
     if (balanceString === '0.000' && this.state.allowances.length === 0) return null
 
     return (<div className="Token">{this.renderTokenOrLoading()}</div>)
@@ -191,12 +191,12 @@ class Token extends Component<TokenProps, TokenState> {
   }
 
   renderTokenBalance() {
-    const { symbol, balance } = this.props.token
+    const { symbol, balance, decimals } = this.props.token
 
     const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}
     const img = (<img src={this.props.token.icon} alt="" width="20px" onError={backupImage} />)
 
-    return (<div className="TokenBalance my-auto">{img} {symbol}: {this.toFloat(Number(balance))}</div>)
+    return (<div className="TokenBalance my-auto">{img} {symbol}: {toFloat(Number(balance), decimals)}</div>)
   }
 
   renderAllowanceList() {

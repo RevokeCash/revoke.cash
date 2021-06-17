@@ -180,3 +180,7 @@ export async function getTokenIcon(tokenAddress: string, chainId: number, tokenM
 
   return icon
 }
+
+export function toFloat(n: number, decimals: number): string {
+  return (n / (10 ** decimals)).toFixed(3)
+}

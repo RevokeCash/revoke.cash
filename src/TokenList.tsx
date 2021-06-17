@@ -5,7 +5,7 @@ import React, { Component, ReactNode, ChangeEvent } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { TokenData, TokenMapping } from './interfaces'
 import Token from './Token'
-import { getTokenData, getTokenIcon, getTokenMapping, isRegistered, isSupportedNetwork } from './util'
+import { getTokenData, getTokenIcon, getTokenMapping, isRegistered, isSupportedNetwork, toFloat } from './util'
 import { ERC20 } from './abis'
 
 type TokenListProps = {
@@ -18,7 +18,8 @@ type TokenListProps = {
 
 type TokenListState = {
   tokens: TokenData[]
-  filterTokens: boolean
+  filterRegisteredTokens: boolean
+  filterZeroBalances: boolean
   loading: boolean
   tokenMapping?: TokenMapping
 }
@@ -26,7 +27,8 @@ type TokenListState = {
 class TokenList extends Component<TokenListProps, TokenListState> {
   state: TokenListState = {
     tokens: [],
-    filterTokens: true,
+    filterRegisteredTokens: true,
+    filterZeroBalances: true,
     loading: true,
   }
 
@@ -104,8 +106,11 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     this.setState({ tokens, tokenMapping, loading: false })
   }
 
-  handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
-    this.setState({ filterTokens: event.target.checked })
+  handleRegisteredCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
+    this.setState({ filterRegisteredTokens: event.target.checked })
+
+  handleZeroBalancesCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
+    this.setState({ filterZeroBalances: event.target.checked })
 
   render(): ReactNode {
     if (!isSupportedNetwork(this.props.chainId)) {
@@ -118,13 +123,14 @@ class TokenList extends Component<TokenListProps, TokenListState> {
 
     return (
       <div className="Dashboard">
-        {this.renderT2CR()}
+        {this.renderRegistrationCheckbox()}
+        {this.renderZeroBalancesCheckbox()}
         {this.renderTokenList()}
       </div>
     )
   }
 
-  renderT2CR() {
+  renderRegistrationCheckbox() {
     // If no token data mapping is found and we're not on ETH, we hide the checkbox
     if (!this.state.tokenMapping && this.props.chainId !== 1) return
 
@@ -137,7 +143,16 @@ class TokenList extends Component<TokenListProps, TokenListState> {
       <div>
         Filter out unregistered tokens
         <sup><a href={infoLink} target="_blank" rel="noopener noreferrer">?</a></sup>
-        <input type="checkbox" checked={this.state.filterTokens} onChange={this.handleCheckboxChange} />
+        <input type="checkbox" checked={this.state.filterRegisteredTokens} onChange={this.handleRegisteredCheckboxChange} />
+      </div>
+    )
+  }
+
+  renderZeroBalancesCheckbox() {
+    return (
+      <div>
+        <span style={{ marginRight: 5 }}>Filter out zero balances</span>
+        <input type="checkbox" checked={this.state.filterZeroBalances} onChange={this.handleZeroBalancesCheckboxChange} />
       </div>
     )
   }
@@ -152,7 +167,8 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     }
 
     const tokenComponents = this.state.tokens
-      .filter((token) => token.registered || !this.state.filterTokens)
+      .filter((token) => !this.state.filterRegisteredTokens || token.registered)
+      .filter((token) => !this.state.filterZeroBalances || !(toFloat(Number(token.balance), token.decimals) === '0.000'))
       .map((token) => (
         <Token
           key={token.contract.address}
