@@ -7,7 +7,8 @@ import TokenList from './TokenList'
 import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { lookupEnsName, shortenAddress } from './util'
-import { toast, ToastContainer } from 'react-toastify'
+import { displayGitcoinToast } from './gitcoin-toast';
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 declare let window: {
@@ -49,27 +50,7 @@ class App extends Component<{}, AppState> {
       window.ethereum.on('accountsChanged', () => window.location.reload(false))
     }
 
-    const toastContent = (
-      <div>
-        <div>
-          Hello friend! <span role="img" aria-label="wave">👋</span>
-        </div>
-
-        <div>
-        Gitcoin Grants Round 10 is now live with $625k in donation matching!
-        Please consider supporting Revoke.cash by donating to the <a href="https://gitcoin.co/grants/259/rosco-kalis-crypto-software-engineer" target="_blank" rel="noopener noreferrer" style={{ color: 'pink' }}>Revoke.cash grant</a>
-        </div>
-      </div>
-    )
-
-    toast.error(toastContent, {
-      position: "top-left",
-      autoClose: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    })
+    displayGitcoinToast();
   }
 
   async connectWeb3() {
