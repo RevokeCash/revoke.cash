@@ -1,34 +1,32 @@
-import './App.scss'
 import { Signer, Contract, providers } from 'ethers'
 import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
-import React, { Component, ReactNode, ChangeEvent } from 'react'
+import React, { Component } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { TokenData, TokenMapping } from './interfaces'
-import Token from './Token'
-import { getTokenData, getTokenIcon, getTokenMapping, isRegistered, isSupportedNetwork, toFloat } from './util'
-import { ERC20 } from './abis'
+import { Erc20TokenData, TokenMapping } from '../common/interfaces'
+import Erc20Token from './Erc20Token'
+import { isRegistered, getTokenIcon, toFloat } from '../common/util'
+import { getTokenData } from './util'
+import { ERC20 } from '../common/abis'
 
-type TokenListProps = {
+type Props = {
   provider: providers.Provider
   chainId: number,
+  filterRegisteredTokens: boolean
+  filterZeroBalances: boolean
+  tokenMapping?: TokenMapping
   signer?: Signer
   signerAddress?: string
   inputAddress?: string
 }
 
-type TokenListState = {
-  tokens: TokenData[]
-  filterRegisteredTokens: boolean
-  filterZeroBalances: boolean
+type State = {
+  tokens: Erc20TokenData[]
   loading: boolean
-  tokenMapping?: TokenMapping
 }
 
-class TokenList extends Component<TokenListProps, TokenListState> {
-  state: TokenListState = {
+class Erc20TokenList extends Component<Props, State> {
+  state: State = {
     tokens: [],
-    filterRegisteredTokens: true,
-    filterZeroBalances: true,
     loading: true,
   }
 
@@ -36,7 +34,7 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     this.loadData()
   }
 
-  componentDidUpdate(prevProps: TokenListProps) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props.inputAddress === prevProps.inputAddress) return
     this.loadData()
   }
@@ -77,18 +75,16 @@ class TokenList extends Component<TokenListProps, TokenListState> {
       return
     }
 
-    const tokenMapping = await getTokenMapping(this.props.chainId)
-
     // Look up token data for all tokens, add their list of approvals,
     // and check if the token is registered in Kleros T2CR
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
         const tokenApprovals = approvals.filter(approval => approval.address === contract.address)
-        const registered = await isRegistered(contract.address, this.props.provider, tokenMapping)
-        const icon = await getTokenIcon(contract.address, this.props.chainId, tokenMapping)
+        const registered = await isRegistered(contract.address, this.props.provider, this.props.tokenMapping)
+        const icon = await getTokenIcon(contract.address, this.props.chainId, this.props.tokenMapping)
 
         try {
-          const tokenData = await getTokenData(contract, this.props.inputAddress, tokenMapping)
+          const tokenData = await getTokenData(contract, this.props.inputAddress, this.props.tokenMapping)
           return { ...tokenData, icon, contract, registered, approvals: tokenApprovals }
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC20 token so
@@ -103,61 +99,10 @@ class TokenList extends Component<TokenListProps, TokenListState> {
       .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
-    this.setState({ tokens, tokenMapping, loading: false })
+    this.setState({ tokens, loading: false })
   }
 
-  handleRegisteredCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
-    this.setState({ filterRegisteredTokens: event.target.checked })
-
-  handleZeroBalancesCheckboxChange = (event: ChangeEvent<HTMLInputElement>) =>
-    this.setState({ filterZeroBalances: event.target.checked })
-
-  render(): ReactNode {
-    if (!isSupportedNetwork(this.props.chainId)) {
-      return (
-        <div style={{ paddingBottom: 10 }}>
-          Network with chainId {this.props.chainId} is not supported`
-        </div>
-      )
-    }
-
-    return (
-      <div className="Dashboard">
-        {this.renderRegistrationCheckbox()}
-        {this.renderZeroBalancesCheckbox()}
-        {this.renderTokenList()}
-      </div>
-    )
-  }
-
-  renderRegistrationCheckbox() {
-    // If no token data mapping is found and we're not on ETH, we hide the checkbox
-    if (!this.state.tokenMapping && this.props.chainId !== 1) return
-
-    // Link to Kleros T2CR for Ethereum or tokenlists for other chains
-    const infoLink = this.props.chainId === 1
-      ? 'https://tokens.kleros.io/tokens'
-      : 'https://tokenlists.org/'
-
-    return (
-      <div>
-        Filter out unregistered tokens
-        <sup><a href={infoLink} target="_blank" rel="noopener noreferrer">?</a></sup>
-        <input type="checkbox" checked={this.state.filterRegisteredTokens} onChange={this.handleRegisteredCheckboxChange} />
-      </div>
-    )
-  }
-
-  renderZeroBalancesCheckbox() {
-    return (
-      <div>
-        <span style={{ marginRight: 5 }}>Filter out zero balances</span>
-        <input type="checkbox" checked={this.state.filterZeroBalances} onChange={this.handleZeroBalancesCheckboxChange} />
-      </div>
-    )
-  }
-
-  renderTokenList() {
+  render() {
     if (this.state.loading) {
       return (<ClipLoader css="margin-bottom: 10px;" size={40} color={'#000'} loading={this.state.loading} />)
     }
@@ -167,10 +112,10 @@ class TokenList extends Component<TokenListProps, TokenListState> {
     }
 
     const tokenComponents = this.state.tokens
-      .filter((token) => !this.state.filterRegisteredTokens || token.registered)
-      .filter((token) => !this.state.filterZeroBalances || !(toFloat(Number(token.balance), token.decimals) === '0.000'))
+      .filter((token) => !this.props.filterRegisteredTokens || token.registered)
+      .filter((token) => !this.props.filterZeroBalances || !(toFloat(Number(token.balance), token.decimals) === '0.000'))
       .map((token) => (
-        <Token
+        <Erc20Token
           key={token.contract.address}
           token={token}
           provider={this.props.provider}
@@ -185,4 +130,4 @@ class TokenList extends Component<TokenListProps, TokenListState> {
   }
 }
 
-export default TokenList
+export default Erc20TokenList

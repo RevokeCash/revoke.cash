@@ -1,6 +1,6 @@
 import { Contract, BigNumber, providers } from 'ethers'
 
-export interface TokenData {
+export interface Erc20TokenData {
   contract: Contract
   icon: string
   symbol: string
@@ -14,12 +14,15 @@ export interface TokenData {
 export interface TokenFromList {
   chainId: number
   address: string
-  decimals: number
   name: string
   symbol: string
   logoURI: string
+  // Only for ERC20
+  decimals?: number
 }
 
 export interface TokenMapping {
   [index: string]: TokenFromList
 }
+
+export type TokenStandard = 'ERC20' | 'ERC721'

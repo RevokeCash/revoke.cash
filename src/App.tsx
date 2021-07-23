@@ -3,11 +3,11 @@ import axios from 'axios'
 import { Signer, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
-import TokenList from './TokenList'
+import Dashboard from './Dashboard'
 import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
-import { lookupEnsName, shortenAddress } from './util'
-import { displayGitcoinToast } from './gitcoin-toast';
+import { lookupEnsName, shortenAddress } from './common/util'
+import { displayGitcoinToast } from './common/gitcoin-toast';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -17,7 +17,7 @@ declare let window: {
   location: any
 }
 
-type AppState = {
+type State = {
   provider?: providers.Provider,
   signer?: Signer,
   chainId?: number,
@@ -28,8 +28,8 @@ type AppState = {
   showDonateModal: boolean,
 }
 
-class App extends Component<{}, AppState> {
-  state: AppState = {
+class App extends Component<{}, State> {
+  state: State = {
     showDonateModal: false,
   }
 
@@ -232,7 +232,7 @@ class App extends Component<{}, AppState> {
   renderTokenList() {
     if (!this.state.inputAddress) return
 
-    return (<TokenList
+    return (<Dashboard
       provider={this.state.provider}
       chainId={this.state.chainId}
       signer={this.state.signer}

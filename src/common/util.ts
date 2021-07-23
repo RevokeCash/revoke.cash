@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { Contract, BigNumberish, BigNumber, providers } from 'ethers'
+import { BigNumberish, BigNumber, providers, Contract } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { TokensView } from './abis'
 import { ADDRESS_ZERO, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
-import { TokenFromList, TokenMapping } from './interfaces'
+import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
 // Check if a token is registered in the Kleros T2CR (ETH) or tokenlist (other chains)
 export async function isRegistered(tokenAddress: string, provider: providers.Provider, tokenMapping?: TokenMapping): Promise<boolean> {
@@ -108,26 +108,24 @@ export function getDappListName(chainId: number): string | undefined {
   return mapping[chainId]
 }
 
-export function getTokenListUrl(chainId: number): string | undefined {
-  const mapping = {
-    1: 'https://tokens.1inch.eth.link/',
-    56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
-    100: 'https://tokens.honeyswap.org',
-    137: 'https://unpkg.com/quickswap-default-token-list@1.0.28/build/quickswap-default.tokenlist.json',
-    43114: 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
-  }
-
-  return mapping[chainId]
-}
-
 export function isSupportedNetwork(chainId: number): boolean {
   // Supported for now are only ETH, xDAI and AVAX. Other chains fail on the RPC calls.
   const supportedNetworks = [1, 3, 4, 5, 42, 100, 43113, 43114]
   return supportedNetworks.includes(chainId);
 }
 
-export async function getTokenMapping(chainId: number): Promise<TokenMapping | undefined> {
-  const url = getTokenListUrl(chainId)
+export async function getFullTokenMapping(chainId: number): Promise<TokenMapping | undefined> {
+  const erc20Mapping = await getTokenMapping(chainId, 'ERC20')
+  const erc721Mapping = await getTokenMapping(chainId, 'ERC721')
+
+  if (erc20Mapping === undefined && erc721Mapping === undefined) return undefined
+
+  const fullMapping = { ...erc721Mapping, ...erc20Mapping }
+  return fullMapping
+}
+
+async function getTokenMapping(chainId: number, standard: TokenStandard = 'ERC20'): Promise<TokenMapping | undefined> {
+  const url = getTokenListUrl(chainId, standard)
 
   if (!url) return undefined
 
@@ -146,23 +144,21 @@ export async function getTokenMapping(chainId: number): Promise<TokenMapping | u
   }
 }
 
-export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
-  // Retrieve total supply and user balance from Infura
-  const totalSupply = (await contract.functions.totalSupply()).toString()
-  const balance = await contract.functions.balanceOf(ownerAddress)
-
-  const tokenData = tokenMapping[getAddress(contract.address)]
-
-  if (tokenData) {
-    // Retrieve info from the token mapping if available
-    const { symbol, decimals } = tokenData
-    return { symbol, decimals, totalSupply, balance }
-  } else {
-    // If the token is not available in the token mapping, retrieve the info from Infura
-    const symbol = await contract.symbol()
-    const decimals = await contract.functions.decimals()
-    return { symbol, decimals, totalSupply, balance }
+function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): string | undefined {
+  const mapping = {
+    ERC20: {
+      1: 'https://tokens.1inch.eth.link/',
+      56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
+      100: 'https://tokens.honeyswap.org',
+      137: 'https://unpkg.com/quickswap-default-token-list@1.0.28/build/quickswap-default.tokenlist.json',
+      43114: 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
+    },
+    ERC721: {
+      1: 'https://raw.githubusercontent.com/0xsequence/token-directory/main/index/mainnet/erc721.json'
+    }
   }
+
+  return mapping[standard][chainId]
 }
 
 export async function getTokenIcon(tokenAddress: string, chainId: number, tokenMapping: TokenMapping = {}) {

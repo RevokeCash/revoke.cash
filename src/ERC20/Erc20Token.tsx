@@ -1,19 +1,24 @@
-import './App.scss'
 import { Signer, providers, BigNumber } from 'ethers'
 import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { TokenData } from './interfaces'
-import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, toFloat } from './util'
+import { Erc20TokenData } from '../common/interfaces'
+import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, toFloat } from '../common/util'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
-type TokenProps = {
+type Props = {
   provider: providers.Provider
   chainId: number
   signer?: Signer
-  token: TokenData
+  token: Erc20TokenData
   signerAddress: string
   inputAddress: string
+}
+
+type State = {
+  allowances: Allowance[]
+  icon?: string
+  loading: boolean
 }
 
 type Allowance = {
@@ -24,14 +29,8 @@ type Allowance = {
   newAllowance: string
 }
 
-type TokenState = {
-  allowances: Allowance[]
-  icon?: string
-  loading: boolean
-}
-
-class Token extends Component<TokenProps, TokenState> {
-  state: TokenState = {
+class Erc20Token extends Component<Props, State> {
+  state: State = {
     allowances: [],
     loading: true,
   }
@@ -40,7 +39,7 @@ class Token extends Component<TokenProps, TokenState> {
     this.loadData()
   }
 
-  componentDidUpdate(prevProps: TokenProps) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props.inputAddress === prevProps.inputAddress) return
     this.loadData()
   }
@@ -290,4 +289,4 @@ class Token extends Component<TokenProps, TokenState> {
   }
 }
 
-export default Token
+export default Erc20Token
