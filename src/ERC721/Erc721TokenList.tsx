@@ -108,8 +108,6 @@ class Erc721TokenList extends Component<Props, State> {
       .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
-    console.log(tokens)
-
     this.setState({ tokens, loading: false })
   }
 

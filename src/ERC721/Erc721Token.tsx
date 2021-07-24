@@ -82,8 +82,6 @@ class Erc721Token extends Component<Props, State> {
     const limitedAllowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
       const index = BigNumber.from(ev.topics[3])
 
-      console.log(token.symbol, index.toNumber())
-
       // Wrap this in a try-catch since it's possible the NFT has been burned
       try {
         const [spender] = await token.contract.functions.getApproved(index)
