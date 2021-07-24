@@ -115,21 +115,35 @@ class Erc721Token extends Component<Props, State> {
 
     const { contract } = this.props.token
 
-    const tx = await contract.functions.setApprovalForAll(allowance.spender, false)
+    let tx
+
+    if (allowance.index === undefined) {
+      tx = await contract.functions.setApprovalForAll(allowance.spender, false)
+    } else {
+      tx = await contract.functions.approve(ADDRESS_ZERO, allowance.index)
+    }
 
     if (tx) {
       await tx.wait(1)
 
       console.debug('Reloading data')
 
-      const allowances = this.state.allowances.filter(otherAllowance => otherAllowance.spender !== allowance.spender)
+      const allowanceEquals = (a: Allowance, b: Allowance) => {
+        if (a.spender !== b.spender) return false
+        if (a.index === undefined && b.index === undefined) return true
+        return String(a.index) === String(b.index)
+      }
+
+      const allowances = this.state.allowances
+        .filter(otherAllowance => !allowanceEquals(otherAllowance, allowance))
+
       this.setState({ allowances })
     }
   }
 
   private formatAllowance(index?: BigNumber) {
-    if (!index) return 'all indices'
-    return `index ${index.toNumber().toFixed(0)}`
+    if (!index) return 'all tokens'
+    return `token ID ${index.toNumber().toFixed(0)}`
   }
 
   render(): ReactNode {
