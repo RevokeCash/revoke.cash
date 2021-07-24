@@ -11,6 +11,16 @@ export interface Erc20TokenData {
   approvals: Array<providers.Log>
 }
 
+export interface Erc721TokenData {
+  contract: Contract
+  icon: string
+  symbol: string
+  balance: BigNumber
+  registered: boolean
+  approvals: Array<providers.Log>
+  approvalsForAll: Array<providers.Log>
+}
+
 export interface TokenFromList {
   chainId: number
   address: string

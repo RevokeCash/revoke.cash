@@ -1,9 +1,10 @@
-import './App.scss'
 import { Signer, providers } from 'ethers'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
-import { TokenMapping } from './common/interfaces'
+import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import { TokenMapping, TokenStandard } from './common/interfaces'
 import { getFullTokenMapping, isSupportedNetwork } from './common/util'
 import Erc20TokenList from './ERC20/Erc20TokenList'
+import Erc721TokenList from './ERC721/Erc721TokenList'
 
 type Props = {
   provider: providers.Provider
@@ -16,12 +17,14 @@ type Props = {
 type State = {
   filterRegisteredTokens: boolean
   filterZeroBalances: boolean
+  tokenStandard: TokenStandard
   loading: boolean
   tokenMapping?: TokenMapping
 }
 
 class Dashboard extends Component<Props, State> {
   state: State = {
+    tokenStandard: 'ERC20',
     filterRegisteredTokens: true,
     filterZeroBalances: true,
     loading: true,
@@ -53,6 +56,7 @@ class Dashboard extends Component<Props, State> {
 
     return (
       <div className="Dashboard">
+        {this.renderSelectionSwitch()}
         {this.renderRegistrationCheckbox()}
         {this.renderZeroBalancesCheckbox()}
         {this.renderErc20TokenList()}
@@ -60,7 +64,34 @@ class Dashboard extends Component<Props, State> {
     )
   }
 
+  renderSelectionSwitch() {
+    return (
+      <div style={{ marginBottom: '10px' }}>
+        <BootstrapSwitchButton
+          checked={this.state.tokenStandard === 'ERC20'}
+          onlabel='ERC20'
+          offlabel='ERC721'
+          onstyle="primary"
+          offstyle="primary"
+          width={100}
+          onChange={(checked: boolean) => this.updateTokenStandard(checked)}
+        />
+      </div>
+    )
+  }
+
+  updateTokenStandard(checked: boolean) {
+    if (checked) {
+      this.setState({ tokenStandard: 'ERC20' })
+    } else {
+      this.setState({ tokenStandard: 'ERC721' })
+    }
+  }
+
   renderRegistrationCheckbox() {
+    // Don't check registration for NFTs
+    if (this.state.tokenStandard === 'ERC721') return;
+
     // If no token data mapping is found and we're not on ETH, we hide the checkbox
     if (!this.state.tokenMapping && this.props.chainId !== 1) return
 
@@ -92,7 +123,8 @@ class Dashboard extends Component<Props, State> {
       return null;
     }
 
-    return (
+    if (this.state.tokenStandard === 'ERC20') {
+      return (
         <Erc20TokenList
           provider={this.props.provider}
           chainId={this.props.chainId}
@@ -103,7 +135,21 @@ class Dashboard extends Component<Props, State> {
           filterZeroBalances={this.state.filterZeroBalances}
           tokenMapping={this.state.tokenMapping}
         />
-    );
+      );
+    } else {
+      return (
+        <Erc721TokenList
+          provider={this.props.provider}
+          chainId={this.props.chainId}
+          signer={this.props.signer}
+          signerAddress={this.props.signerAddress}
+          inputAddress={this.props.inputAddress}
+          filterRegisteredTokens={this.state.filterRegisteredTokens}
+          filterZeroBalances={this.state.filterZeroBalances}
+          tokenMapping={this.state.tokenMapping}
+        />
+      );
+    }
   }
 }
 

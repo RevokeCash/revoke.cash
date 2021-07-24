@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BigNumberish, BigNumber, providers, Contract } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { TokensView } from './abis'
-import { ADDRESS_ZERO, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
+import { ADDRESS_ZERO_PADDED, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
 // Check if a token is registered in the Kleros T2CR (ETH) or tokenlist (other chains)
@@ -22,7 +22,7 @@ export async function isRegistered(tokenAddress: string, provider: providers.Pro
 async function isRegisteredInKleros(tokenAddress: string, provider: providers.Provider): Promise<boolean> {
   const tokensViewContract = new Contract(TOKENS_VIEW_ADDRESS, TokensView, provider)
   const [ tokenID ] = await tokensViewContract.functions.getTokensIDsForAddresses(T2CR_ADDRESS, [tokenAddress])
-  return tokenID && tokenID[0] && tokenID[0] !== ADDRESS_ZERO
+  return tokenID && tokenID[0] && tokenID[0] !== ADDRESS_ZERO_PADDED
 }
 
 function isRegisteredInTokenMapping(tokenAddress: string, tokenMapping: TokenMapping = {}): boolean {
