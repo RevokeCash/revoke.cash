@@ -1,7 +1,9 @@
-import { Contract } from 'ethers'
+import { Contract, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
-import { ADDRESS_ZERO } from '../common/constants'
+import { OPENSEA_REGISTRY } from '../common/abis'
+import { ADDRESS_ZERO, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
 import { TokenMapping } from '../common/interfaces'
+import { addressToAppName as addressToAppNameBase } from '../common/util'
 
 export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
   const balance = await contract.functions.balanceOf(ownerAddress)
@@ -26,4 +28,16 @@ export async function getTokenData(contract: Contract, ownerAddress: string, tok
       return { balance, symbol }
     }
   }
+}
+
+export async function addressToAppName(address: string, networkName?: string, openseaProxyAddress?: string): Promise<string | undefined> {
+  if (address === openseaProxyAddress) return 'OpenSea'
+  return addressToAppNameBase(address, networkName)
+}
+
+export async function getOpenSeaProxyAddress(userAddress: string, provider: providers.Provider): Promise<string | undefined> {
+  const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, provider)
+  const [proxyAddress] = await contract.functions.proxies(userAddress)
+  if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return undefined
+  return proxyAddress
 }

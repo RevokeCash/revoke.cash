@@ -5,7 +5,7 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData, TokenMapping } from '../common/interfaces'
 import Erc721Token from './Erc721Token'
 import { getTokenIcon } from '../common/util'
-import { getTokenData } from './util'
+import { getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
 
 type Props = {
@@ -22,6 +22,7 @@ type Props = {
 type State = {
   tokens: Erc721TokenData[]
   loading: boolean
+  openSeaProxyAddress?: string
 }
 
 class Erc721TokenList extends Component<Props, State> {
@@ -108,7 +109,9 @@ class Erc721TokenList extends Component<Props, State> {
       .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
-    this.setState({ tokens, loading: false })
+    const openSeaProxyAddress = await getOpenSeaProxyAddress(this.props.inputAddress, this.props.provider)
+
+    this.setState({ openSeaProxyAddress, tokens, loading: false })
   }
 
   render() {
@@ -132,6 +135,7 @@ class Erc721TokenList extends Component<Props, State> {
           signer={this.props.signer}
           signerAddress={this.props.signerAddress}
           inputAddress={this.props.inputAddress}
+          openSeaProxyAddress={this.state.openSeaProxyAddress}
         />
       ))
 

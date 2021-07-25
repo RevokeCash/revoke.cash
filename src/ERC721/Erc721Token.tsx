@@ -3,9 +3,10 @@ import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData } from '../common/interfaces'
-import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName } from '../common/util'
+import { shortenAddress, getDappListName, getExplorerUrl, lookupEnsName } from '../common/util'
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { ADDRESS_ZERO } from '../common/constants'
+import { addressToAppName } from './util'
 
 // TODO: Retrieve OpenSea proxy address for the current user and display it as OpenSea
 // TODO: Detect OpenSea Shared Storefront NFTs
@@ -17,6 +18,7 @@ type Props = {
   token: Erc721TokenData
   signerAddress: string
   inputAddress: string
+  openSeaProxyAddress?: string
 }
 
 type State = {
@@ -73,7 +75,7 @@ class Erc721Token extends Component<Props, State> {
 
       // Retrieve the spender's app name if it exists
       const dappListNetworkName = getDappListName(this.props.chainId)
-      const spenderAppName = await addressToAppName(spender, dappListNetworkName)
+      const spenderAppName = await addressToAppName(spender, dappListNetworkName, this.props.openSeaProxyAddress)
 
       return { spender, ensSpender, spenderAppName }
     })))
@@ -97,7 +99,7 @@ class Erc721Token extends Component<Props, State> {
 
         // Retrieve the spender's app name if it exists
         const dappListNetworkName = getDappListName(this.props.chainId)
-        const spenderAppName = await addressToAppName(spender, dappListNetworkName)
+        const spenderAppName = await addressToAppName(spender, dappListNetworkName, this.props.openSeaProxyAddress)
 
         return { spender, ensSpender, spenderAppName, index }
       } catch {
