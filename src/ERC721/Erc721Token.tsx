@@ -148,14 +148,14 @@ class Erc721Token extends Component<Props, State> {
 
   private formatAllowance(index?: BigNumber) {
     if (!index) return 'all tokens'
-    return `token ID ${index.toNumber().toFixed(0)}`
+    return `token ID ${String(index)}`
   }
 
   render(): ReactNode {
     const { balance } = this.props.token
 
     // // Do not render tokens without balance or allowances
-    const balanceString = Number(balance).toFixed(0)
+    const balanceString = String(balance)
     if (balanceString === '0' && this.state.allowances.length === 0) return null
 
     return (<div className="Token">{this.renderTokenOrLoading()}</div>)
@@ -186,7 +186,7 @@ class Erc721Token extends Component<Props, State> {
 
     const explorerUrl = `${getExplorerUrl(this.props.chainId)}/${contract.address}`
 
-    return (<div className="TokenBalance my-auto"><a href={explorerUrl} style={{ color: 'black' }}>{img} {symbol}: {Number(balance).toFixed(0)}</a></div>)
+    return (<div className="TokenBalance my-auto"><a href={explorerUrl} style={{ color: 'black' }}>{img} {symbol}: {String(balance)}</a></div>)
   }
 
   renderAllowanceList() {

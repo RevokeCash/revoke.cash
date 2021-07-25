@@ -125,7 +125,7 @@ class Erc721TokenList extends Component<Props, State> {
 
     const tokenComponents = this.state.tokens
       .filter((token) => !this.props.filterRegisteredTokens || token.registered)
-      .filter((token) => !this.props.filterZeroBalances || ! (Number(token.balance).toFixed(0) === '0'))
+      .filter((token) => !this.props.filterZeroBalances || ! (String(token.balance) === '0'))
       .map((token) => (
         <Erc721Token
           key={token.contract.address}
