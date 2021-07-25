@@ -80,7 +80,6 @@ class Erc721Token extends Component<Props, State> {
 
     // Retrieve current allowance for these Approval events
     const limitedAllowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
-
       // Wrap this in a try-catch since it's possible the NFT has been burned
       try {
         // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
