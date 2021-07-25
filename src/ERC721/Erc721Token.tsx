@@ -80,10 +80,16 @@ class Erc721Token extends Component<Props, State> {
 
     // Retrieve current allowance for these Approval events
     const limitedAllowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
-      const index = BigNumber.from(ev.topics[3])
 
       // Wrap this in a try-catch since it's possible the NFT has been burned
       try {
+        // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
+        // by making tokenId a non-indexed parameter, in which case it needs to be
+        // taken from the event data rather than topics
+        const index = ev.topics.length === 4
+          ? BigNumber.from(ev.topics[3])
+          : BigNumber.from(ev.data)
+
         const [spender] = await token.contract.functions.getApproved(index)
         if (spender === ADDRESS_ZERO) return undefined
 
@@ -174,7 +180,7 @@ class Erc721Token extends Component<Props, State> {
   renderTokenBalance() {
     const { symbol, balance, contract } = this.props.token
 
-    const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}
+    const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc721.png'}
     const img = (<img src={this.props.token.icon} alt="" width="20px" onError={backupImage} />)
 
     const explorerUrl = `${getExplorerUrl(this.props.chainId)}/${contract.address}`
