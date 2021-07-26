@@ -154,7 +154,7 @@ function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): st
       43114: 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
     },
     ERC721: {
-      1: 'https://raw.githubusercontent.com/0xsequence/token-directory/main/index/mainnet/erc721.json'
+      1: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
     }
   }
 
