@@ -8,7 +8,6 @@ import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { ADDRESS_ZERO } from '../common/constants'
 import { addressToAppName } from './util'
 
-// TODO: Retrieve OpenSea proxy address for the current user and display it as OpenSea
 // TODO: Detect OpenSea Shared Storefront NFTs
 
 type Props = {

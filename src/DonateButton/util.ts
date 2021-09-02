@@ -6,6 +6,7 @@ export function getNativeToken(chainId: number): string {
     99: 'POA',
     100: 'xDAI',
     137: 'MATIC',
+    10000: 'BCH',
     43113: 'AVAX',
     43114: 'AVAX',
     80001: 'MATIC',
@@ -18,6 +19,7 @@ export function getDefaultAmount(nativeToken: string): string {
   const mapping = {
     'ETH': '0.01',
     'RBTC': '0.0002',
+    'BCH': '0.02',
     'BNB': '0.2',
     'POA': '300',
     'xDAI': '10',

@@ -34,10 +34,14 @@ export async function addressToAppName(address: string, networkName?: string, op
 }
 
 export async function getOpenSeaProxyAddress(userAddress: string, provider: providers.Provider): Promise<string | undefined> {
-  const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, provider)
-  const [proxyAddress] = await contract.functions.proxies(userAddress)
-  if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return undefined
-  return proxyAddress
+  try {
+    const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, provider)
+    const [proxyAddress] = await contract.functions.proxies(userAddress)
+    if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return undefined
+    return proxyAddress
+  } catch {
+    return undefined
+  }
 }
 
 async function throwIfNotErc721(contract: Contract) {

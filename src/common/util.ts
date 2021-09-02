@@ -78,6 +78,8 @@ export function getExplorerUrl(chainId: number): string | undefined {
     99: 'https://blockscout.com/poa/core/address',
     100: 'https://blockscout.com/poa/xdai/address',
     137: 'https://explorer-mainnet.maticvigil.com/address',
+    10000: 'https://smartscan.cash/address',
+    42161: 'https://arbiscan.io/address',
     43113: 'https://cchain.explorer.avax-test.network/address',
     43114: 'https://cchain.explorer.avax.network/address',
     80001: 'https://explorer-mumbai.maticvigil.com/address'
@@ -102,6 +104,8 @@ export function getDappListName(chainId: number): string | undefined {
     56: 'smartchain',
     100: 'xdai',
     137: 'matic',
+    10000: 'smartbch',
+    42161: 'arbitrum',
     43114: 'avalanche',
   }
 
@@ -109,8 +113,8 @@ export function getDappListName(chainId: number): string | undefined {
 }
 
 export function isSupportedNetwork(chainId: number): boolean {
-  // Supported for now are only ETH, xDAI and AVAX. Other chains fail on the RPC calls.
-  const supportedNetworks = [1, 3, 4, 5, 42, 100, 43113, 43114]
+  // Supported for now are only ETH, xDAI, SmartBCH, Arbitrum & AVAX. Other chains fail on the RPC calls.
+  const supportedNetworks = [1, 3, 4, 5, 42, 100, 10000, 42161, 43113, 43114]
   return supportedNetworks.includes(chainId);
 }
 
@@ -151,6 +155,7 @@ function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): st
       56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
       100: 'https://tokens.honeyswap.org',
       137: 'https://unpkg.com/quickswap-default-token-list@1.0.28/build/quickswap-default.tokenlist.json',
+      42161: 'https://bridge.arbitrum.io/token-list-42161.json',
       43114: 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
     },
     ERC721: {

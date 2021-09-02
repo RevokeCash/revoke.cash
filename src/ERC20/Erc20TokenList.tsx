@@ -48,17 +48,19 @@ class Erc20TokenList extends Component<Props, State> {
     const erc20Interface = new Interface(ERC20)
     const signerOrProvider = this.props.signer || this.props.provider
 
+    const latestBlockNumber = await this.props.provider.getBlockNumber();
+
     // Get all approvals made from the input address
     const approvals = await this.props.provider.getLogs({
-      fromBlock: 'earliest',
-      toBlock: 'latest',
+      fromBlock: 0,
+      toBlock: latestBlockNumber,
       topics: [erc20Interface.getEventTopic('Approval'), hexZeroPad(this.props.inputAddress, 32)]
     })
 
     // Get all transfers sent to the input address
     const transfers = await this.props.provider.getLogs({
-      fromBlock: 'earliest',
-      toBlock: 'latest',
+      fromBlock: 0,
+      toBlock: latestBlockNumber,
       topics: [erc20Interface.getEventTopic('Transfer'), undefined, hexZeroPad(this.props.inputAddress, 32)]
     })
 
