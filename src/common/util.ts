@@ -68,6 +68,7 @@ export function getExplorerUrl(chainId: number): string | undefined {
     4: 'https://rinkeby.etherscan.io/address',
     5: 'https://goerli.etherscan.io/address',
     6: 'https://blockscout.com/etc/kotti/address',
+    10: 'https://optimistic.etherscan.io/address',
     30: 'https://blockscout.com/rsk/mainnet/address',
     42: 'https://kovan.etherscan.io/address',
     56: 'https://bscscan.com/address',
@@ -152,6 +153,7 @@ function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): st
   const mapping = {
     ERC20: {
       1: 'https://tokens.1inch.eth.link/',
+      10: 'https://static.optimism.io/optimism.tokenlist.json',
       56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
       100: 'https://tokens.honeyswap.org',
       137: 'https://unpkg.com/quickswap-default-token-list@1.0.28/build/quickswap-default.tokenlist.json',
