@@ -3,8 +3,9 @@ import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc20TokenData } from '../common/interfaces'
-import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, toFloat } from '../common/util'
+import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, toFloat, fromFloat } from '../common/util'
 import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { formatAllowance } from './util'
 
 type Props = {
   provider: providers.Provider
@@ -60,7 +61,7 @@ class Erc20Token extends Component<Props, State> {
       const allowance = (await token.contract.functions.allowance(this.props.inputAddress, spender)).toString()
 
       // Filter (almost) zero-value allowances early to save bandwidth
-      if (this.formatAllowance(allowance) === '0.000') return undefined
+      if (formatAllowance(allowance, this.props.token.decimals, this.props.token.totalSupply) === '0.000') return undefined
 
       // Retrieve the spender's ENS name if it exists
       const ensSpender = await lookupEnsName(spender, this.props.provider)
@@ -89,7 +90,7 @@ class Erc20Token extends Component<Props, State> {
   private async update(allowance: Allowance) {
     if (!this.props.token) return
 
-    const bnNew = BigNumber.from(this.fromFloat(allowance.newAllowance))
+    const bnNew = BigNumber.from(fromFloat(allowance.newAllowance, this.props.token.decimals))
     const bnOld = BigNumber.from(allowance.allowance)
     const { contract } = this.props.token
 
@@ -135,31 +136,6 @@ class Erc20Token extends Component<Props, State> {
       const allowances = this.state.allowances.filter(otherAllowance => otherAllowance.spender !== allowance.spender)
       this.setState({ allowances })
     }
-  }
-
-  private fromFloat(s: string): string {
-    const { decimals } = this.props.token
-
-    const sides = s.split('.')
-    if (sides.length === 1) return s.padEnd(decimals + s.length, '0')
-    if (sides.length > 2) return '0'
-
-    return sides[1].length > decimals
-      ? sides[0] + sides[1].slice(0, decimals)
-      : sides[0] + sides[1].padEnd(decimals, '0')
-  }
-
-  private formatAllowance(allowance: string) {
-    const { decimals, totalSupply } = this.props.token
-
-    const allowanceBN = BigNumber.from(allowance)
-    const totalSupplyBN = BigNumber.from(totalSupply)
-
-    if (allowanceBN.gt(totalSupplyBN)) {
-      return 'Unlimited'
-    }
-
-    return toFloat(Number(allowanceBN), decimals)
   }
 
   render(): ReactNode {
@@ -234,11 +210,11 @@ class Erc20Token extends Component<Props, State> {
     return (
       <Form.Label className="AllowanceText">
         <span className="AllowanceTextSmallScreen">
-          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;{shortenedLink}
+          {formatAllowance(allowance.allowance, this.props.token.decimals, this.props.token.totalSupply)} allowance to&nbsp;{shortenedLink}
         </span>
 
         <span className="AllowanceTextBigScreen">
-          {this.formatAllowance(allowance.allowance)} allowance to&nbsp;{regularLink}
+          {formatAllowance(allowance.allowance, this.props.token.decimals, this.props.token.totalSupply)} allowance to&nbsp;{regularLink}
         </span>
       </Form.Label>
     )

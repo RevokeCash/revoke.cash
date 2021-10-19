@@ -187,3 +187,13 @@ export async function getTokenIcon(tokenAddress: string, chainId: number, tokenM
 export function toFloat(n: number, decimals: number): string {
   return (n / (10 ** decimals)).toFixed(3)
 }
+
+export function fromFloat(floatString: string, decimals: number): string {
+  const sides = floatString.split('.')
+  if (sides.length === 1) return floatString.padEnd(decimals + floatString.length, '0')
+  if (sides.length > 2) return '0'
+
+  return sides[1].length > decimals
+    ? sides[0] + sides[1].slice(0, decimals)
+    : sides[0] + sides[1].padEnd(decimals, '0')
+}

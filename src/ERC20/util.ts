@@ -1,6 +1,7 @@
-import { Contract } from 'ethers'
+import { BigNumber, Contract } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { TokenMapping } from '../common/interfaces'
+import { toFloat } from '../common/util'
 
 export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
   // Retrieve total supply and user balance from Infura
@@ -19,4 +20,15 @@ export async function getTokenData(contract: Contract, ownerAddress: string, tok
     const decimals = await contract.functions.decimals()
     return { symbol, decimals, totalSupply, balance }
   }
+}
+
+export function formatAllowance(allowance: string, decimals: number, totalSupply: string): string {
+  const allowanceBN = BigNumber.from(allowance)
+  const totalSupplyBN = BigNumber.from(totalSupply)
+
+  if (allowanceBN.gt(totalSupplyBN)) {
+    return 'Unlimited'
+  }
+
+  return toFloat(Number(allowanceBN), decimals)
 }
