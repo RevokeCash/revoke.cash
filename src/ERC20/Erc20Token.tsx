@@ -1,11 +1,11 @@
-import { Signer, providers, BigNumber } from 'ethers'
+import { Signer, providers } from 'ethers'
 import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc20TokenData } from '../common/interfaces'
-import { compareBN, addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, toFloat, fromFloat } from '../common/util'
-import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { compareBN, toFloat } from '../common/util'
 import { formatAllowance } from './util'
+import Erc20Allowance from './Erc20Allowance'
 
 type Props = {
   provider: providers.Provider
@@ -24,10 +24,7 @@ type State = {
 
 type Allowance = {
   spender: string
-  ensSpender?: string
-  spenderAppName?: string
   allowance: string
-  newAllowance: string
 }
 
 class Erc20Token extends Component<Props, State> {
@@ -63,16 +60,7 @@ class Erc20Token extends Component<Props, State> {
       // Filter (almost) zero-value allowances early to save bandwidth
       if (formatAllowance(allowance, this.props.token.decimals, this.props.token.totalSupply) === '0.000') return undefined
 
-      // Retrieve the spender's ENS name if it exists
-      const ensSpender = await lookupEnsName(spender, this.props.provider)
-
-      // Retrieve the spender's app name if it exists
-      const dappListNetworkName = getDappListName(this.props.chainId)
-      const spenderAppName = await addressToAppName(spender, dappListNetworkName)
-
-      const newAllowance = '0'
-
-      return { spender, ensSpender, spenderAppName, allowance, newAllowance }
+      return { spender, allowance }
     })))
 
     // Filter out zero-value allowances and sort from high to low
@@ -81,61 +69,6 @@ class Erc20Token extends Component<Props, State> {
       .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
 
     this.setState({ allowances, loading: false })
-  }
-
-  private async revoke(allowance: Allowance) {
-    this.update({ ...allowance, newAllowance: '0' })
-  }
-
-  private async update(allowance: Allowance) {
-    if (!this.props.token) return
-
-    const bnNew = BigNumber.from(fromFloat(allowance.newAllowance, this.props.token.decimals))
-    const bnOld = BigNumber.from(allowance.allowance)
-    const { contract } = this.props.token
-
-    let tx
-
-    // Not all ERC20 contracts allow for simple changes in approval to be made
-    // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-    // So we have to do a few try-catch statements
-    // First try calling approve directly, then try increase/decreaseApproval,
-    // finally try resetting allowance to 0 and then calling approve with new value
-    try {
-      console.debug(`Calling contract.approve(${allowance.spender}, ${bnNew.toString()})`)
-      tx = await contract.functions.approve(allowance.spender, bnNew)
-    } catch (e1) {
-      console.debug(`failed, code ${e1.code}`)
-      if (e1.code === -32000) {
-        try {
-          const sub = bnOld.sub(bnNew)
-          if (sub.gte(0)) {
-            console.debug(`Calling contract.decreaseApproval(${allowance.spender}, ${sub.toString()})`)
-            tx = await contract.functions.decreaseApproval(allowance.spender, sub)
-          } else {
-            console.debug(`Calling contract.increaseApproval(${allowance.spender}, ${sub.abs().toString()})`)
-            tx = await contract.functions.increaseApproval(allowance.spender, sub.abs())
-          }
-        } catch (e2) {
-          console.debug(`failed, code ${e2.code}`)
-          if (e2.code === -32000) {
-            console.debug(`Calling contract.approve(${allowance.spender}, 0)`)
-            tx = await contract.functions.approve(allowance.spender, 0)
-            console.debug(`Calling contract.approve(${allowance.spender}, ${bnNew.toString()})`)
-            tx = await contract.functions.approve(allowance.spender, bnNew)
-          }
-        }
-      }
-    }
-
-    if (tx) {
-      await tx.wait(1)
-
-      console.debug('Reloading data')
-
-      const allowances = this.state.allowances.filter(otherAllowance => otherAllowance.spender !== allowance.spender)
-      this.setState({ allowances })
-    }
   }
 
   render(): ReactNode {
@@ -177,91 +110,22 @@ class Erc20Token extends Component<Props, State> {
   renderAllowanceList() {
     if (this.state.allowances.length === 0) return (<div className="Allowance">No allowances</div>)
 
-    const allowances = this.state.allowances.map((allowance, i) => this.renderAllowance(allowance, i))
+    const allowances = this.state.allowances.map((allowance, i) => (
+      <Erc20Allowance
+        key={i}
+        provider={this.props.provider}
+        token={this.props.token}
+        spender={allowance.spender}
+        allowance={allowance.allowance}
+        inputAddress={this.props.inputAddress}
+        signerAddress={this.props.signerAddress}
+        chainId={this.props.chainId}
+        onRevoke={() => {
+          this.setState({ allowances: this.state.allowances.filter(filteredAllowance => filteredAllowance.spender !== allowance.spender)})
+        }}
+      />
+    ))
     return allowances
-  }
-
-  renderAllowance(allowance: Allowance, i: number) {
-    return (
-      <Form inline className="Allowance" key={allowance.spender}>
-        {this.renderAllowanceText(allowance)}
-        {this.renderRevokeButton(allowance)}
-        {this.renderUpdateInputGroup(allowance, i)}
-      </Form>
-    )
-  }
-
-  renderAllowanceText(allowance: Allowance) {
-    const spender = allowance.spenderAppName || allowance.ensSpender || allowance.spender
-    const shortenedSpender = allowance.spenderAppName || allowance.ensSpender || shortenAddress(allowance.spender)
-
-    const explorerBaseUrl = getExplorerUrl(this.props.chainId)
-
-    const shortenedLink = explorerBaseUrl
-      ? (<a className="monospace" href={`${explorerBaseUrl}/${allowance.spender}`}>{shortenedSpender}</a>)
-      : shortenedSpender
-
-    const regularLink = explorerBaseUrl
-      ? (<a className="monospace" href={`${explorerBaseUrl}/${allowance.spender}`}>{spender}</a>)
-      : spender
-
-    // Display separate spans for the regular and shortened versions of the spender address
-    // The correct one is selected using CSS media-queries
-    return (
-      <Form.Label className="AllowanceText">
-        <span className="AllowanceTextSmallScreen">
-          {formatAllowance(allowance.allowance, this.props.token.decimals, this.props.token.totalSupply)} allowance to&nbsp;{shortenedLink}
-        </span>
-
-        <span className="AllowanceTextBigScreen">
-          {formatAllowance(allowance.allowance, this.props.token.decimals, this.props.token.totalSupply)} allowance to&nbsp;{regularLink}
-        </span>
-      </Form.Label>
-    )
-  }
-
-  renderRevokeButton(allowance: Allowance) {
-    const canRevoke = this.props.inputAddress === this.props.signerAddress
-
-    let revokeButton = (<Button
-      size="sm" disabled={!canRevoke}
-      className="RevokeButton"
-      onClick={() => this.revoke(allowance)}
-    >Revoke</Button>)
-
-    // Add tooltip if the button is disabled
-    if (!canRevoke) {
-      const tooltip = (<Tooltip id={`revoke-tooltip-${this.props.token.contract.address}`}>You can only revoke allowances of the connected account</Tooltip>)
-      revokeButton = (<OverlayTrigger overlay={tooltip}><span>{revokeButton}</span></OverlayTrigger>)
-    }
-
-    return revokeButton
-  }
-
-  renderUpdateInputGroup(allowance: Allowance, i: number) {
-    const canUpdate = this.props.inputAddress === this.props.signerAddress
-
-    let updateGroup = (<InputGroup size="sm">
-      <Form.Control type="text" size="sm"
-        className="NewAllowance"
-        value={this.state.allowances[i].newAllowance}
-        onChange={(event) => {
-          const updatedAllowances = this.state.allowances.slice()
-          updatedAllowances[i] = { ...allowance, newAllowance: event.target.value }
-          this.setState({ allowances: updatedAllowances })
-        }}/>
-      <InputGroup.Append>
-      <Button disabled={!canUpdate} className="UpdateButton" onClick={() => this.update(allowance)}>Update</Button>
-      </InputGroup.Append>
-    </InputGroup>)
-
-    // Add tooltip if the button is disabled
-    if (!canUpdate) {
-      const tooltip = (<Tooltip id={`update-tooltip-${this.props.token.contract.address}`}>You can only update allowances of the connected account</Tooltip>)
-      updateGroup = (<OverlayTrigger overlay={tooltip}><span>{updateGroup}</span></OverlayTrigger>)
-    }
-
-    return updateGroup
   }
 }
 
