@@ -1,10 +1,13 @@
-import React, { Component, ReactNode } from 'react'
-import { Button, Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Form } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 import { ClipLoader } from 'react-spinners'
 import { providers, BigNumber } from 'ethers'
 import { formatAllowance } from './util'
 import { Erc20TokenData } from '../common/interfaces'
 import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, fromFloat } from '../common/util'
+import RevokeButton from '../common/RevokeButton'
+import UpdateInputGroup from '../common/UpdateInputGroup'
 
 type Props = {
   provider: providers.Provider
@@ -17,85 +20,51 @@ type Props = {
   onRevoke: () => void;
 }
 
-type State = {
-  newAllowance: string
-  loading: boolean
-  ensSpender?: string
-  spenderAppName?: string
-}
+function Erc20Allowance({ provider, spender, allowance, inputAddress, signerAddress, chainId, token, onRevoke}: Props) {
+  const [loading, setLoading] = useState<boolean>(true)
+  const [ensSpender, setEnsSpender] = useState<string | undefined>()
+  const [spenderAppName, setSpenderAppName] = useState<string | undefined>()
+  const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>()
 
-class Erc20Allowance extends Component<Props, State> {
-  state: State = {
-    newAllowance: '0',
-    loading: true,
+  useEffect(() => {
+    loadData()
+  }, [spender, allowance])
+
+  const loadData = async () => {
+    setLoading(true)
+
+    const newEnsSpender = await lookupEnsName(spender, provider)
+    setEnsSpender(newEnsSpender)
+
+    const dappListNetworkName = getDappListName(chainId)
+    const newSpenderAppName = await addressToAppName(spender, dappListNetworkName)
+    setSpenderAppName(newSpenderAppName)
+
+    setLoading(false)
   }
 
-  componentDidMount() {
-    this.loadData()
-  }
+  const revoke = async () => update('0')
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.spender === prevProps.spender && this.props.allowance === prevProps.allowance) return
-    this.loadData()
-  }
-
-  private async loadData() {
-    if (!this.props.inputAddress) return
-
-    this.setState({ loading: true })
-
-    // Retrieve the spender's ENS name if it exists
-    const ensSpender = await lookupEnsName(this.props.spender, this.props.provider)
-
-    // Retrieve the spender's app name if it exists
-    const dappListNetworkName = getDappListName(this.props.chainId)
-    const spenderAppName = await addressToAppName(this.props.spender, dappListNetworkName)
-
-    this.setState({ ensSpender, spenderAppName, loading: false })
-  }
-
-  private async revoke() {
-    this.update('0')
-  }
-
-  private async update(newAllowance: string) {
-    if (!this.props.token) return
-
-    const bnNew = BigNumber.from(fromFloat(newAllowance, this.props.token.decimals))
-    const bnOld = BigNumber.from(this.props.allowance)
-    const { contract } = this.props.token
+  const update = async (newAllowance: string) => {
+    const bnNew = BigNumber.from(fromFloat(newAllowance, token.decimals))
+    const { contract } = token
 
     let tx
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-    // So we have to do a few try-catch statements
-    // First try calling approve directly, then try increase/decreaseApproval,
-    // finally try resetting allowance to 0 and then calling approve with new value
+    // so we tell the user to revoke instead if the contract doesn't allow the simple use
+    // of contract.approve(0)
     try {
-      console.debug(`Calling contract.approve(${this.props.spender}, ${bnNew.toString()})`)
-      tx = await contract.functions.approve(this.props.spender, bnNew)
+      console.debug(`Calling contract.approve(${spender}, ${bnNew.toString()})`)
+      tx = await contract.functions.approve(spender, bnNew)
     } catch (e1) {
-      console.debug(`failed, code ${e1.code}`)
-      if (e1.code === -32000) {
-        try {
-          const sub = bnOld.sub(bnNew)
-          if (sub.gte(0)) {
-            console.debug(`Calling contract.decreaseApproval(${this.props.spender}, ${sub.toString()})`)
-            tx = await contract.functions.decreaseApproval(this.props.spender, sub)
-          } else {
-            console.debug(`Calling contract.increaseApproval(${this.props.spender}, ${sub.abs().toString()})`)
-            tx = await contract.functions.increaseApproval(this.props.spender, sub.abs())
-          }
-        } catch (e2) {
-          console.debug(`failed, code ${e2.code}`)
-          if (e2.code === -32000) {
-            console.debug(`Calling contract.approve(${this.props.spender}, 0)`)
-            tx = await contract.functions.approve(this.props.spender, 0)
-            console.debug(`Calling contract.approve(${this.props.spender}, ${bnNew.toString()})`)
-            tx = await contract.functions.approve(this.props.spender, bnNew)
-          }
-        }
+      const code1 = e1.error?.code ?? e1.code
+      console.debug(`failed, code ${code1}`)
+      if (code1 === -32000) {
+        toast.error("This token does not support updating allowances, please revoke instead", {
+          position: "top-left",
+        })
       }
     }
 
@@ -104,95 +73,50 @@ class Erc20Allowance extends Component<Props, State> {
       console.debug('Reloading data')
 
       if (newAllowance === '0') {
-        this.props.onRevoke()
+        onRevoke()
+      } else {
+        // TODO: Update allowance order after update
+        setUpdatedAllowance(fromFloat(newAllowance, token.decimals))
       }
     }
   }
 
-  render(): ReactNode {
-    if (this.state.loading) {
-      return (<div><ClipLoader size={10} color={'#000'} loading={this.state.loading} /></div>)
-    }
-
-    return (
-      <Form inline className="Allowance" key={this.props.spender}>
-        {this.renderAllowanceText()}
-        {this.renderRevokeButton()}
-        {this.renderUpdateInputGroup()}
-      </Form>
-    )
+  if (loading) {
+    return (<div><ClipLoader size={10} color={'#000'} loading={loading} /></div>)
   }
 
-  renderAllowanceText() {
-    const spender = this.state.spenderAppName || this.state.ensSpender || this.props.spender
-    const shortenedSpender = this.state.spenderAppName || this.state.ensSpender || shortenAddress(this.props.spender)
+  const spenderDisplay = spenderAppName || ensSpender || spender
+  const shortenedSpenderDisplay = spenderAppName || ensSpender || shortenAddress(spender)
 
-    const explorerBaseUrl = getExplorerUrl(this.props.chainId)
+  const explorerBaseUrl = getExplorerUrl(chainId)
 
-    const shortenedLink = explorerBaseUrl
-      ? (<a className="monospace" href={`${explorerBaseUrl}/${this.props.spender}`}>{shortenedSpender}</a>)
-      : shortenedSpender
+  const shortenedLink = explorerBaseUrl
+    ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{shortenedSpenderDisplay}</a>)
+    : shortenedSpenderDisplay
 
-    const regularLink = explorerBaseUrl
-      ? (<a className="monospace" href={`${explorerBaseUrl}/${this.props.spender}`}>{spender}</a>)
-      : spender
+  const regularLink = explorerBaseUrl
+    ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{spenderDisplay}</a>)
+    : spenderDisplay
 
-    // Display separate spans for the regular and shortened versions of the spender address
-    // The correct one is selected using CSS media-queries
-    return (
+  const canUpdate = inputAddress === signerAddress
+
+  return (
+    <Form inline className="Allowance" key={spender}>
+      {/* Display separate spans for the regular and shortened versions of the spender address */}
+      {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">
         <span className="AllowanceTextSmallScreen">
-          {formatAllowance(this.props.allowance, this.props.token.decimals, this.props.token.totalSupply)} allowance to&nbsp;{shortenedLink}
+          {formatAllowance(updatedAllowance ?? allowance, token.decimals, token.totalSupply)} allowance to&nbsp;{shortenedLink}
         </span>
 
         <span className="AllowanceTextBigScreen">
-          {formatAllowance(this.props.allowance, this.props.token.decimals, this.props.token.totalSupply)} allowance to&nbsp;{regularLink}
+          {formatAllowance(updatedAllowance ?? allowance, token.decimals, token.totalSupply)} allowance to&nbsp;{regularLink}
         </span>
       </Form.Label>
-    )
-  }
-
-  renderRevokeButton() {
-    const canRevoke = this.props.inputAddress === this.props.signerAddress
-
-    let revokeButton = (<Button
-      size="sm" disabled={!canRevoke}
-      className="RevokeButton"
-      onClick={() => this.revoke()}
-    >Revoke</Button>)
-
-    // Add tooltip if the button is disabled
-    if (!canRevoke) {
-      const tooltip = (<Tooltip id={`revoke-tooltip-${this.props.token.contract.address}`}>You can only revoke allowances of the connected account</Tooltip>)
-      revokeButton = (<OverlayTrigger overlay={tooltip}><span>{revokeButton}</span></OverlayTrigger>)
-    }
-
-    return revokeButton
-  }
-
-  renderUpdateInputGroup() {
-    const canUpdate = this.props.inputAddress === this.props.signerAddress
-
-    let updateGroup = (<InputGroup size="sm">
-      <Form.Control type="text" size="sm"
-        className="NewAllowance"
-        value={this.state.newAllowance}
-        onChange={(event) => {
-          this.setState({ newAllowance: event.target.value })
-        }}/>
-      <InputGroup.Append>
-      <Button disabled={!canUpdate} className="UpdateButton" onClick={() => this.update(this.state.newAllowance)}>Update</Button>
-      </InputGroup.Append>
-    </InputGroup>)
-
-    // Add tooltip if the button is disabled
-    if (!canUpdate) {
-      const tooltip = (<Tooltip id={`update-tooltip-${this.props.token.contract.address}`}>You can only update allowances of the connected account</Tooltip>)
-      updateGroup = (<OverlayTrigger overlay={tooltip}><span>{updateGroup}</span></OverlayTrigger>)
-    }
-
-    return updateGroup
-  }
+      {<RevokeButton canRevoke={canUpdate} revoke={revoke} id={`revoke-${token.symbol}-${spender}`} />}
+      {<UpdateInputGroup canUpdate={canUpdate} update={update} id={`update-${token.symbol}-${spender}`} />}
+    </Form>
+  )
 }
 
 export default Erc20Allowance

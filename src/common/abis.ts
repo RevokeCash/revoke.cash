@@ -1,7 +1,7 @@
-import ERC20Artifct from '@openzeppelin/contracts/build/contracts/ERC20.json'
+import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json'
 import ERC721MetadataArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json'
 
-export const ERC20 = ERC20Artifct.abi
+export const ERC20 = ERC20Artifact.abi
 export const ERC721Metadata = ERC721MetadataArtifact.abi
 
 export const TokensView = [
