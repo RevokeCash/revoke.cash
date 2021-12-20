@@ -2,7 +2,7 @@ import React from 'react'
 import { BigNumber } from 'ethers'
 import { toFloat } from '../common/util'
 
-type Props = {
+interface Props {
   symbol: string
   icon: string
   balance: BigNumber

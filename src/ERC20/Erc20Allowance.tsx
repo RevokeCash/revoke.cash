@@ -9,7 +9,7 @@ import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, look
 import RevokeButton from '../common/RevokeButton'
 import UpdateInputGroup from '../common/UpdateInputGroup'
 
-type Props = {
+interface Props {
   provider: providers.Provider
   spender: string
   allowance: string

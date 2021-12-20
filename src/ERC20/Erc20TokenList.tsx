@@ -122,7 +122,6 @@ class Erc20TokenList extends Component<Props, State> {
           token={token}
           provider={this.props.provider}
           chainId={this.props.chainId}
-          signer={this.props.signer}
           signerAddress={this.props.signerAddress}
           inputAddress={this.props.inputAddress}
         />

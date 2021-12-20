@@ -5,7 +5,7 @@ import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { getNativeToken, getDefaultAmount } from './util'
 
-type Props = {
+interface Props {
   signer: Signer,
   chainId: number,
 }

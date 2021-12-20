@@ -3,7 +3,7 @@ import { providers } from 'ethers'
 import { Erc20TokenData, Allowance } from '../common/interfaces'
 import Erc20Allowance from './Erc20Allowance'
 
-type Props = {
+interface Props {
   provider: providers.Provider
   inputAddress: string
   signerAddress: string
