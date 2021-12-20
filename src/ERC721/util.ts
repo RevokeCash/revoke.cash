@@ -1,7 +1,7 @@
 import { Contract, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { OPENSEA_REGISTRY } from '../common/abis'
-import { ADDRESS_ZERO, DUMMY_ADDRESS, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
+import { ADDRESS_ZERO, DUMMY_ADDRESS, DUMMY_ADDRESS_2, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
 import { TokenMapping } from '../common/interfaces'
 import { addressToAppName as addressToAppNameBase } from '../common/util'
 
@@ -46,7 +46,7 @@ export async function getOpenSeaProxyAddress(userAddress: string, provider: prov
 
 async function throwIfNotErc721(contract: Contract) {
   // If the function isApprovedForAll does not exist it will throw (and is not ERC721)
-  const [isApprovedForAll] = await contract.functions.isApprovedForAll(ADDRESS_ZERO, DUMMY_ADDRESS)
+  const [isApprovedForAll] = await contract.functions.isApprovedForAll(DUMMY_ADDRESS, DUMMY_ADDRESS_2)
 
   console.log(contract.address, isApprovedForAll)
 
