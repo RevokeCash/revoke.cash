@@ -2,10 +2,11 @@ import { Signer, providers } from 'ethers'
 import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { Erc20TokenData } from '../common/interfaces'
+import { Allowance, Erc20TokenData } from '../common/interfaces'
 import { compareBN, toFloat } from '../common/util'
 import { formatAllowance } from './util'
-import Erc20Allowance from './Erc20Allowance'
+import Erc20AllowanceList from './Erc20AllowanceList'
+import Erc20TokenBalance from './Erc20TokenBalance'
 
 type Props = {
   provider: providers.Provider
@@ -20,11 +21,6 @@ type State = {
   allowances: Allowance[]
   icon?: string
   loading: boolean
-}
-
-type Allowance = {
-  spender: string
-  allowance: string
 }
 
 class Erc20Token extends Component<Props, State> {
@@ -92,40 +88,25 @@ class Erc20Token extends Component<Props, State> {
   renderToken() {
     return (
       <div>
-        {this.renderTokenBalance()}
-        <div className="AllowanceList">{this.renderAllowanceList()}</div>
+        <Erc20TokenBalance
+          symbol={this.props.token.symbol}
+          icon={this.props.token.icon}
+          balance={this.props.token.balance}
+          decimals={this.props.token.decimals}
+        />
+        <Erc20AllowanceList
+          provider={this.props.provider}
+          inputAddress={this.props.inputAddress}
+          signerAddress={this.props.signerAddress}
+          chainId={this.props.chainId}
+          token={this.props.token}
+          allowances={this.state.allowances}
+          onRevoke={(spender) => {
+            this.setState({ allowances: this.state.allowances.filter(allowance => allowance.spender !== spender)})
+          }}
+        />
       </div>
     )
-  }
-
-  renderTokenBalance() {
-    const { symbol, balance, decimals } = this.props.token
-
-    const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc20.png'}
-    const img = (<img src={this.props.token.icon} alt="" width="20px" onError={backupImage} />)
-
-    return (<div className="TokenBalance my-auto">{img} {symbol}: {toFloat(Number(balance), decimals)}</div>)
-  }
-
-  renderAllowanceList() {
-    if (this.state.allowances.length === 0) return (<div className="Allowance">No allowances</div>)
-
-    const allowances = this.state.allowances.map((allowance, i) => (
-      <Erc20Allowance
-        key={i}
-        provider={this.props.provider}
-        token={this.props.token}
-        spender={allowance.spender}
-        allowance={allowance.allowance}
-        inputAddress={this.props.inputAddress}
-        signerAddress={this.props.signerAddress}
-        chainId={this.props.chainId}
-        onRevoke={() => {
-          this.setState({ allowances: this.state.allowances.filter(filteredAllowance => filteredAllowance.spender !== allowance.spender)})
-        }}
-      />
-    ))
-    return allowances
   }
 }
 

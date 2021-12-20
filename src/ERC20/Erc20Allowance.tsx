@@ -17,7 +17,7 @@ type Props = {
   signerAddress: string
   chainId: number
   token: Erc20TokenData
-  onRevoke: () => void;
+  onRevoke: (spender: string) => void;
 }
 
 function Erc20Allowance({ provider, spender, allowance, inputAddress, signerAddress, chainId, token, onRevoke}: Props) {
@@ -73,7 +73,7 @@ function Erc20Allowance({ provider, spender, allowance, inputAddress, signerAddr
       console.debug('Reloading data')
 
       if (newAllowance === '0') {
-        onRevoke()
+        onRevoke(spender)
       } else {
         // TODO: Update allowance order after update
         setUpdatedAllowance(fromFloat(newAllowance, token.decimals))
