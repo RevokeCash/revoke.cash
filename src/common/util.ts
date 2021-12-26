@@ -197,3 +197,13 @@ export function fromFloat(floatString: string, decimals: number): string {
     ? sides[0] + sides[1].slice(0, decimals)
     : sides[0] + sides[1].padEnd(decimals, '0')
 }
+
+export const unpackResult = async (promise: Promise<any>) => (await promise)[0]
+
+export const withFallback = async (promise: Promise<any>, fallback: any) => {
+  try {
+    return await promise
+  } catch {
+    return fallback
+  }
+}

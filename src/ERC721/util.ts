@@ -1,31 +1,23 @@
 import { Contract, providers } from 'ethers'
+import { providers as multicall } from '@0xsequence/multicall'
 import { getAddress } from 'ethers/lib/utils'
-import { OPENSEA_REGISTRY } from '../common/abis'
+import { ERC721Metadata, OPENSEA_REGISTRY } from '../common/abis'
 import { ADDRESS_ZERO, DUMMY_ADDRESS, DUMMY_ADDRESS_2, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
 import { TokenMapping } from '../common/interfaces'
-import { addressToAppName as addressToAppNameBase } from '../common/util'
+import { addressToAppName as addressToAppNameBase, unpackResult, withFallback } from '../common/util'
 
 export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
-  await throwIfNotErc721(contract)
-
-  const balance = await contract.functions.balanceOf(ownerAddress)
   const tokenData = tokenMapping[getAddress(contract.address)]
 
-  if (tokenData && tokenData.name) {
-    // Retrieve info from the token mapping if available
-    const { name } = tokenData
-    return { balance, symbol: name }
-  } else {
-    // Wrap this in a try-catch since not every NFT has a name
-    try {
-      // If the token is not available in the token mapping, retrieve the info from Infura
-      const [symbol] = await contract.functions.name()
-      return { balance, symbol }
-    } catch (e) {
-      const symbol = '???'
-      return { balance, symbol }
-    }
-  }
+  const multicallContract = new Contract(contract.address, ERC721Metadata, new multicall.MulticallProvider(contract.provider))
+  const [balance, symbol] = await Promise.all([
+    unpackResult(multicallContract.functions.balanceOf(ownerAddress)),
+    // Use the tokenlist name if present, fall back to '???' since not every NFT has a name
+    tokenData?.name ?? withFallback(unpackResult(multicallContract.functions.name()), '???'),
+    throwIfNotErc721(multicallContract),
+  ])
+
+  return { symbol, balance }
 }
 
 export async function addressToAppName(address: string, networkName?: string, openseaProxyAddress?: string): Promise<string | undefined> {
@@ -50,7 +42,7 @@ async function throwIfNotErc721(contract: Contract) {
 
   console.log(contract.address, isApprovedForAll)
 
-  // The only acceptable value for checking whether 0x00...00 has an allowance set to 0x00...01 is false
+  // The only acceptable value for checking whether 0x00...01 has an allowance set to 0x00...02 is false
   // This could happen when the contract is not ERC721 but does have a fallback function
   if (isApprovedForAll !== false) {
     throw new Error('Response to isApprovedForAll was not false, indicating that this is not an ERC721 contract')

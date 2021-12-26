@@ -15,6 +15,7 @@
     ]
   },
   "dependencies": {
+    "@0xsequence/multicall": "^0.35.1",
     "@openzeppelin/contracts": "^4.2.0",
     "@types/node": "^13.7.0",
     "@types/react": "^16.9.19",
@@ -24,7 +25,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "bootstrap-switch-button-react": "^1.2.0",
-    "ethers": "^5.0.14",
+    "ethers": "^5.5.2",
     "node-sass": "^4.14.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.1",
@@ -32,7 +33,7 @@
     "react-scripts": "^3.3.1",
     "react-spinners": "^0.8.0",
     "react-toastify": "^6.0.9",
-    "typescript": "^3.7.5"
+    "typescript": "^4.5.4"
   },
   "eslintConfig": {
     "extends": "react-app"
