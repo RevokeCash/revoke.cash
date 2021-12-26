@@ -1,6 +1,7 @@
 import React from 'react'
 import { providers } from 'ethers'
-import { Erc20TokenData, Allowance } from '../common/interfaces'
+import { Erc20TokenData } from '../common/interfaces'
+import { Allowance } from './interfaces'
 import Erc20Allowance from './Erc20Allowance'
 
 interface Props {

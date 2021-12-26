@@ -1,12 +1,12 @@
 import { providers } from 'ethers'
-import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { useEffect, useState } from 'react'
 import { ClipLoader } from 'react-spinners'
-import { Allowance, Erc20TokenData } from '../common/interfaces'
+import { Erc20TokenData } from '../common/interfaces'
+import { Allowance } from './interfaces'
 import { compareBN, toFloat } from '../common/util'
 import Erc20AllowanceList from './Erc20AllowanceList'
 import Erc20TokenBalance from './Erc20TokenBalance'
-import { formatAllowance } from './util'
+import { formatAllowance, getAllowancesFromApprovals } from './util'
 
 interface Props {
   provider: providers.Provider
@@ -15,7 +15,6 @@ interface Props {
   signerAddress: string
   inputAddress: string
 }
-
 
 function Erc20Token({ provider, chainId, token, signerAddress, inputAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([])
@@ -28,24 +27,9 @@ function Erc20Token({ provider, chainId, token, signerAddress, inputAddress }: P
   const loadData = async () => {
     setLoading(true)
 
-    // Filter out duplicate spenders
-    const approvals = token.approvals
-      .filter((approval, i) => i === token.approvals.findIndex(other => approval.topics[2] === other.topics[2]))
-
-    // Retrieve current allowance for these Approval events
-    let loadedAllowances: Allowance[] = await Promise.all(approvals.map(async (ev) => {
-      const spender = getAddress(hexDataSlice(ev.topics[2], 12))
-      const allowance = (await token.contract.functions.allowance(inputAddress, spender)).toString()
-
-      // Filter (almost) zero-value allowances early to save bandwidth
-      if (formatAllowance(allowance, token.decimals, token.totalSupply) === '0.000') return undefined
-
-      return { spender, allowance }
-    }))
-
     // Filter out zero-value allowances and sort from high to low
-    loadedAllowances = loadedAllowances
-      .filter(allowance => allowance !== undefined)
+    const loadedAllowances = (await getAllowancesFromApprovals(token.contract, inputAddress, token.approvals))
+      .filter(({ allowance }) => formatAllowance(allowance, token.decimals, token.totalSupply) !== '0.000')
       .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
 
     setAllowances(loadedAllowances)

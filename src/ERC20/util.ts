@@ -1,26 +1,45 @@
-import { BigNumber, Contract } from 'ethers'
-import { providers as multicall } from '@0xsequence/multicall'
-import { getAddress } from 'ethers/lib/utils'
+import { BigNumber, Contract, providers } from 'ethers'
+import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import { TokenMapping } from '../common/interfaces'
-import { toFloat, unpackResult } from '../common/util'
-import { ERC20 } from '../common/abis'
+import { Allowance } from './interfaces'
+import { toFloat, unpackResult, wrapContractInMulticall } from '../common/util'
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from '../common/constants';
+
+export async function getAllowancesFromApprovals(contract: Contract, ownerAddress: string, approvals: providers.Log[]) {
+  const multicallContract = wrapContractInMulticall(contract)
+
+  const deduplicatedApprovals = approvals
+    .filter((approval, i) => i === approvals.findIndex(other => approval.topics[2] === other.topics[2]))
+
+  let allowances: Allowance[] = await Promise.all(
+    deduplicatedApprovals.map((approval) => getAllowanceFromApproval(multicallContract, ownerAddress, approval))
+  )
+
+  return allowances
+}
+
+async function getAllowanceFromApproval(multicallContract: Contract, ownerAddress: string, approval: providers.Log) {
+  const spender = getAddress(hexDataSlice(approval.topics[2], 12))
+  const allowance = (await unpackResult(multicallContract.functions.allowance(ownerAddress, spender))).toString()
+
+  return { spender, allowance }
+}
 
 export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
   const tokenData = tokenMapping[getAddress(contract.address)]
 
-    const multicallContract = new Contract(contract.address, ERC20, new multicall.MulticallProvider(contract.provider))
-    const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
-      unpackResult(multicallContract.functions.totalSupply()),
-      unpackResult(multicallContract.functions.balanceOf(ownerAddress)),
-      // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
-      tokenData?.symbol ?? unpackResult(multicallContract.functions.symbol()),
-      tokenData?.decimals ?? unpackResult(multicallContract.functions.decimals()),
-      throwIfNotErc20(multicallContract),
-    ])
+  const multicallContract = wrapContractInMulticall(contract)
+  const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
+    unpackResult(multicallContract.functions.totalSupply()),
+    unpackResult(multicallContract.functions.balanceOf(ownerAddress)),
+    // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
+    tokenData?.symbol ?? unpackResult(multicallContract.functions.symbol()),
+    tokenData?.decimals ?? unpackResult(multicallContract.functions.decimals()),
+    throwIfNotErc20(multicallContract),
+  ])
 
-    const totalSupply = totalSupplyBN.toString()
-    return { symbol, decimals, totalSupply, balance }
+  const totalSupply = totalSupplyBN.toString()
+  return { symbol, decimals, totalSupply, balance }
 }
 
 export function formatAllowance(allowance: string, decimals: number, totalSupply: string): string {
@@ -37,8 +56,6 @@ export function formatAllowance(allowance: string, decimals: number, totalSupply
 async function throwIfNotErc20(contract: Contract) {
   // If the function isApprovedForAll does not exist it will throw (and is not ERC721)
   const [allowance] = await contract.functions.allowance(DUMMY_ADDRESS, DUMMY_ADDRESS_2)
-
-  console.log(contract.address, allowance)
 
   // The only acceptable value for checking the allowance from 0x00...01 to 0x00...02 is 0
   // This could happen when the contract is not ERC20 but does have a fallback function

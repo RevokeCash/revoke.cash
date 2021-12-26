@@ -35,9 +35,4 @@ export interface TokenMapping {
   [index: string]: TokenFromList
 }
 
-export interface Allowance {
-  spender: string
-  allowance: string
-}
-
 export type TokenStandard = 'ERC20' | 'ERC721'

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { BigNumberish, BigNumber, providers, Contract } from 'ethers'
+import { providers as multicall } from '@0xsequence/multicall'
 import { getAddress } from 'ethers/lib/utils'
 import { TokensView } from './abis'
 import { ADDRESS_ZERO_PADDED, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
@@ -197,6 +198,9 @@ export function fromFloat(floatString: string, decimals: number): string {
     ? sides[0] + sides[1].slice(0, decimals)
     : sides[0] + sides[1].padEnd(decimals, '0')
 }
+
+export const wrapContractInMulticall = (contract: Contract, options?: any) =>
+  new Contract(contract.address, contract.interface, new multicall.MulticallProvider(contract.provider, options))
 
 export const unpackResult = async (promise: Promise<any>) => (await promise)[0]
 

@@ -1,12 +1,12 @@
 import { Signer, providers, BigNumber } from 'ethers'
-import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData } from '../common/interfaces'
-import { shortenAddress, getDappListName, getExplorerUrl, lookupEnsName } from '../common/util'
+import { shortenAddress, getExplorerUrl } from '../common/util'
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { ADDRESS_ZERO } from '../common/constants'
-import { addressToAppName } from './util'
+import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
+import { Allowance } from './interfaces'
 
 // TODO: Detect OpenSea Shared Storefront NFTs
 
@@ -24,13 +24,6 @@ type State = {
   allowances: Allowance[]
   icon?: string
   loading: boolean
-}
-
-type Allowance = {
-  spender: string
-  ensSpender?: string
-  spenderAppName?: string
-  index?: BigNumber
 }
 
 class Erc721Token extends Component<Props, State> {
@@ -54,62 +47,12 @@ class Erc721Token extends Component<Props, State> {
 
     const { token } = this.props
 
-    // Filter out duplicate indices
-    const approvals = token.approvals
-      .filter((approval, i) => i === token.approvals.findIndex(other => approval.topics[3] === other.topics[3]))
-
-    // Filter out duplicate spenders
-    const approvalsForAll = token.approvalsForAll
-      .filter((approval, i) => i === token.approvalsForAll.findIndex(other => approval.topics[2] === other.topics[2]))
-
-    // Retrieve current allowance for these ApprovalForAll events
-    const unlimitedAllowances: Allowance[] = (await Promise.all(approvalsForAll.map(async (ev) => {
-      const spender = getAddress(hexDataSlice(ev.topics[2], 12))
-
-      const [isApprovedForAll] = await token.contract.functions.isApprovedForAll(this.props.inputAddress, spender)
-      if (!isApprovedForAll) return undefined
-
-      // Retrieve the spender's ENS name if it exists
-      const ensSpender = await lookupEnsName(spender, this.props.provider)
-
-      // Retrieve the spender's app name if it exists
-      const dappListNetworkName = getDappListName(this.props.chainId)
-      const spenderAppName = await addressToAppName(spender, dappListNetworkName, this.props.openSeaProxyAddress)
-
-      return { spender, ensSpender, spenderAppName }
-    })))
-
-    // Retrieve current allowance for these Approval events
-    const limitedAllowances: Allowance[] = (await Promise.all(approvals.map(async (ev) => {
-      // Wrap this in a try-catch since it's possible the NFT has been burned
-      try {
-        // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
-        // by making tokenId a non-indexed parameter, in which case it needs to be
-        // taken from the event data rather than topics
-        const index = ev.topics.length === 4
-          ? BigNumber.from(ev.topics[3])
-          : BigNumber.from(ev.data)
-
-        const [spender] = await token.contract.functions.getApproved(index)
-        if (spender === ADDRESS_ZERO) return undefined
-
-        // Retrieve the spender's ENS name if it exists
-        const ensSpender = await lookupEnsName(spender, this.props.provider)
-
-        // Retrieve the spender's app name if it exists
-        const dappListNetworkName = getDappListName(this.props.chainId)
-        const spenderAppName = await addressToAppName(spender, dappListNetworkName, this.props.openSeaProxyAddress)
-
-        return { spender, ensSpender, spenderAppName, index }
-      } catch {
-        return undefined
-      }
-    })))
-
-    // Filter out undefined allowances
-    // TODO: Sort by index
-    const allowances = [...limitedAllowances, ...unlimitedAllowances]
+    const unlimitedAllowances = await getUnlimitedAllowancesFromApprovals(token.contract, this.props.inputAddress, token.approvalsForAll)
+    const limitedAllowances = await getLimitedAllowancesFromApprovals(token.contract, token.approvals)
+    const allAllowances = [...limitedAllowances, ...unlimitedAllowances]
       .filter(allowance => allowance !== undefined)
+
+    const allowances = await addDisplayAddressesToAllowances(allAllowances, this.props.provider, this.props.chainId, this.props.openSeaProxyAddress)
 
     this.setState({ allowances, loading: false })
   }
