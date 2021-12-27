@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { getNativeToken, getDefaultAmount } from './util'
+import { emitAnalyticsEvent } from '../common/util'
 
 interface Props {
   signer: Signer,
@@ -40,6 +41,8 @@ const DonateButton: React.FC<Props> = ({ signer, chainId }) => {
         draggable: true,
         progress: undefined,
       })
+
+      emitAnalyticsEvent(`donate_${nativeToken}`)
 
       setShow(false);
     } catch (err) {

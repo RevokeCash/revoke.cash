@@ -2,7 +2,7 @@ import { Signer, providers, BigNumber } from 'ethers'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData } from '../common/interfaces'
-import { shortenAddress, getExplorerUrl } from '../common/util'
+import { shortenAddress, getExplorerUrl, emitAnalyticsEvent } from '../common/util'
 import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { ADDRESS_ZERO } from '../common/constants'
 import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
@@ -74,6 +74,12 @@ class Erc721Token extends Component<Props, State> {
       await tx.wait(1)
 
       console.debug('Reloading data')
+
+      if (allowance.index) {
+        emitAnalyticsEvent("erc721_revoke_single")
+      } else {
+        emitAnalyticsEvent("erc721_revoke_all")
+      }
 
       const allowanceEquals = (a: Allowance, b: Allowance) => {
         if (a.spender !== b.spender) return false

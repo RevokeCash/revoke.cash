@@ -18,12 +18,12 @@ export function getNativeToken(chainId: number): string {
 export function getDefaultAmount(nativeToken: string): string {
   const mapping = {
     'ETH': '0.01',
-    'RBTC': '0.0002',
-    'BCH': '0.02',
-    'BNB': '0.2',
-    'POA': '300',
+    'RBTC': '0.001',
+    'BCH': '0.05',
+    'BNB': '0.05',
+    'POA': '200',
     'xDAI': '10',
-    'MATIC': '150',
+    'MATIC': '10',
     'AVAX': '0.25'
   }
 

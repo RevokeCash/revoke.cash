@@ -5,7 +5,7 @@ import { ClipLoader } from 'react-spinners'
 import { providers, BigNumber } from 'ethers'
 import { formatAllowance } from './util'
 import { Erc20TokenData } from '../common/interfaces'
-import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, fromFloat } from '../common/util'
+import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, fromFloat, emitAnalyticsEvent } from '../common/util'
 import RevokeButton from '../common/RevokeButton'
 import UpdateInputGroup from '../common/UpdateInputGroup'
 
@@ -74,9 +74,11 @@ function Erc20Allowance({ provider, spender, allowance, inputAddress, signerAddr
 
       if (newAllowance === '0') {
         onRevoke(spender)
+        emitAnalyticsEvent("erc20_revoke")
       } else {
         // TODO: Update allowance order after update
         setUpdatedAllowance(fromFloat(newAllowance, token.decimals))
+        emitAnalyticsEvent("erc20_update")
       }
     }
   }
