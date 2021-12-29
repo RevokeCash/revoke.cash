@@ -5,7 +5,8 @@ import { Erc721TokenData } from '../common/interfaces'
 import { getExplorerUrl } from '../common/util'
 import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
 import { Allowance } from './interfaces'
-import Erc721Allowance from './Erc721Allowance'
+import Erc721AllowanceList from './Erc721AllowanceList'
+import Erc721TokenBalance from './Erc721TokenBalance'
 
 type Props = {
   provider: providers.Provider
@@ -73,43 +74,29 @@ class Erc721Token extends Component<Props, State> {
   }
 
   renderToken() {
+    const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId
+    const explorerUrl = `${getExplorerUrl(this.props.chainId)}/${this.props.token.contract.address}`
+
     return (
       <div>
-        {this.renderTokenBalance()}
-        <div className="AllowanceList">{this.renderAllowanceList()}</div>
+        <Erc721TokenBalance
+          symbol={this.props.token.symbol}
+          icon={this.props.token.icon}
+          balance={this.props.token.balance}
+          explorerUrl={explorerUrl}
+        />
+        <Erc721AllowanceList
+          token={this.props.token}
+          allowances={this.state.allowances}
+          inputAddress={this.props.inputAddress}
+          signerAddress={this.props.signerAddress}
+          chainId={this.props.chainId}
+          onRevoke={(allowance: Allowance) => {
+            this.setState({ allowances: this.state.allowances.filter(otherAllowance => !allowanceEquals(otherAllowance, allowance))})
+          }}
+        />
       </div>
     )
-  }
-
-  renderTokenBalance() {
-    const { symbol, balance, contract } = this.props.token
-
-    const backupImage = (ev) => { (ev.target as HTMLImageElement).src = 'erc721.png'}
-    const img = (<img src={this.props.token.icon} alt="" width="20px" onError={backupImage} />)
-
-    const explorerUrl = `${getExplorerUrl(this.props.chainId)}/${contract.address}`
-
-    return (<div className="TokenBalance my-auto"><a href={explorerUrl} style={{ color: 'black' }}>{img} {symbol}: {String(balance)}</a></div>)
-  }
-
-  renderAllowanceList() {
-    if (this.state.allowances.length === 0) return (<div className="Allowance">No allowances</div>)
-
-    const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId
-
-    const allowances = this.state.allowances.map((allowance, i) => (
-      <Erc721Allowance
-        token={this.props.token}
-        allowance={allowance}
-        inputAddress={this.props.inputAddress}
-        signerAddress={this.props.signerAddress}
-        chainId={this.props.chainId}
-        onRevoke={() => {
-          this.setState({ allowances: this.state.allowances.filter(otherAllowance => !allowanceEquals(otherAllowance, allowance))})
-        }}
-      />
-    ))
-    return allowances
   }
 }
 

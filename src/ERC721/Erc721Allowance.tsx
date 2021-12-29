@@ -13,7 +13,7 @@ interface Props {
   inputAddress: string
   signerAddress: string
   chainId: number
-  onRevoke: (spender: string, tokenId?: string) => void;
+  onRevoke: (allowance: Allowance) => void;
 }
 
 function Erc721Allowance({ token, allowance, inputAddress, signerAddress, chainId, onRevoke }: Props) {
@@ -33,7 +33,7 @@ function Erc721Allowance({ token, allowance, inputAddress, signerAddress, chainI
         emitAnalyticsEvent("erc721_revoke_single")
       }
 
-      onRevoke(spender)
+      onRevoke(allowance)
     }
   }
 
