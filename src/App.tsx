@@ -6,7 +6,7 @@ import React, { Component, ReactNode, ChangeEvent } from 'react'
 import Dashboard from './Dashboard'
 import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
-import { lookupEnsName, shortenAddress } from './common/util'
+import { emitAnalyticsEvent, lookupEnsName, shortenAddress } from './common/util'
 import { displayGitcoinToast } from './common/gitcoin-toast';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -95,13 +95,7 @@ class App extends Component<{}, State> {
   async updateProvider(provider: providers.Provider) {
     const { chainId } = await provider.getNetwork()
 
-    // Add a hacky patch to make sure that for Matic we talk to this RPC endpoint
-    // regardless of what is configured in MM since the Matic Vigil endpoint has limited
-    // historic logs.
-    // TODO: Do this in a non-hacky way later
-    if (chainId === 137) {
-      provider = new providers.WebSocketProvider('wss://rpc-mainnet.matic.quiknode.pro');
-    }
+    emitAnalyticsEvent(`connect_wallet_${chainId}`)
 
     this.setState({ provider, chainId })
   }
@@ -125,6 +119,10 @@ class App extends Component<{}, State> {
     const inputAddressOrName = this.state.inputAddressOrName || signerEnsName || signerAddress
     const inputAddress = await this.parseInputAddress(inputAddressOrName)
 
+    if (inputAddress && inputAddressOrName !== this.state.inputAddressOrName) {
+      emitAnalyticsEvent('update_address')
+    }
+
     this.setState({ signer, signerAddress, signerEnsName, inputAddressOrName, inputAddress })
   }
 
@@ -136,6 +134,7 @@ class App extends Component<{}, State> {
     // Update input address if it is valid
     const inputAddress = await this.parseInputAddress(inputAddressOrName)
     if (inputAddress) {
+      emitAnalyticsEvent('update_address')
       this.setState({ inputAddress })
     }
   }
