@@ -1,14 +1,11 @@
-import { Signer, providers, BigNumber } from 'ethers'
+import { Signer, providers } from 'ethers'
 import React, { Component, ReactNode } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData } from '../common/interfaces'
-import { shortenAddress, getExplorerUrl, emitAnalyticsEvent } from '../common/util'
-import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { ADDRESS_ZERO } from '../common/constants'
+import { getExplorerUrl } from '../common/util'
 import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
 import { Allowance } from './interfaces'
-
-// TODO: Detect OpenSea Shared Storefront NFTs
+import Erc721Allowance from './Erc721Allowance'
 
 type Props = {
   provider: providers.Provider
@@ -57,48 +54,6 @@ class Erc721Token extends Component<Props, State> {
     this.setState({ allowances, loading: false })
   }
 
-  private async revoke(allowance: Allowance) {
-    if (!this.props.token) return
-
-    const { contract } = this.props.token
-
-    let tx
-
-    if (allowance.index === undefined) {
-      tx = await contract.functions.setApprovalForAll(allowance.spender, false)
-    } else {
-      tx = await contract.functions.approve(ADDRESS_ZERO, allowance.index)
-    }
-
-    if (tx) {
-      await tx.wait(1)
-
-      console.debug('Reloading data')
-
-      if (allowance.index) {
-        emitAnalyticsEvent("erc721_revoke_single")
-      } else {
-        emitAnalyticsEvent("erc721_revoke_all")
-      }
-
-      const allowanceEquals = (a: Allowance, b: Allowance) => {
-        if (a.spender !== b.spender) return false
-        if (a.index === undefined && b.index === undefined) return true
-        return String(a.index) === String(b.index)
-      }
-
-      const allowances = this.state.allowances
-        .filter(otherAllowance => !allowanceEquals(otherAllowance, allowance))
-
-      this.setState({ allowances })
-    }
-  }
-
-  private formatAllowance(index?: BigNumber) {
-    if (!index) return 'all tokens'
-    return `token ID ${String(index)}`
-  }
-
   render(): ReactNode {
     const { balance } = this.props.token
 
@@ -140,68 +95,21 @@ class Erc721Token extends Component<Props, State> {
   renderAllowanceList() {
     if (this.state.allowances.length === 0) return (<div className="Allowance">No allowances</div>)
 
-    const allowances = this.state.allowances.map((allowance, i) => this.renderAllowance(allowance, i))
+    const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId
+
+    const allowances = this.state.allowances.map((allowance, i) => (
+      <Erc721Allowance
+        token={this.props.token}
+        allowance={allowance}
+        inputAddress={this.props.inputAddress}
+        signerAddress={this.props.signerAddress}
+        chainId={this.props.chainId}
+        onRevoke={() => {
+          this.setState({ allowances: this.state.allowances.filter(otherAllowance => !allowanceEquals(otherAllowance, allowance))})
+        }}
+      />
+    ))
     return allowances
-  }
-
-  renderAllowance(allowance: Allowance, i: number) {
-    return (
-      <Form inline className="Allowance" key={allowance.spender}>
-        {this.renderAllowanceText(allowance)}
-        {this.renderRevokeButton(allowance)}
-      </Form>
-    )
-  }
-
-  renderAllowanceText(allowance: Allowance) {
-    const spender = allowance.spenderAppName || allowance.ensSpender || allowance.spender
-    const shortenedSpender = allowance.spenderAppName || allowance.ensSpender || shortenAddress(allowance.spender)
-
-    const explorerBaseUrl = getExplorerUrl(this.props.chainId)
-
-    const shortenedLink = explorerBaseUrl
-      ? (<a className="monospace" href={`${explorerBaseUrl}/${allowance.spender}`}>{shortenedSpender}</a>)
-      : shortenedSpender
-
-    const regularLink = explorerBaseUrl
-      ? (<a className="monospace" href={`${explorerBaseUrl}/${allowance.spender}`}>{spender}</a>)
-      : spender
-
-    // Display separate spans for the regular and shortened versions of the spender address
-    // The correct one is selected using CSS media-queries
-    return (
-      <Form.Label className="AllowanceText">
-        <span className="AllowanceTextSmallScreen">
-          Allowance for {this.formatAllowance(allowance.index)} to&nbsp;{shortenedLink}
-        </span>
-
-        <span className="AllowanceTextBigScreen">
-          Allowance for {this.formatAllowance(allowance.index)} to&nbsp;{regularLink}
-        </span>
-      </Form.Label>
-    )
-  }
-
-  renderRevokeButton(allowance: Allowance) {
-    const canRevoke = this.props.inputAddress === this.props.signerAddress
-
-    let revokeButton = (
-      <Button
-        size="sm" disabled={!canRevoke}
-        className="RevokeButton"
-        onClick={() => this.revoke(allowance)}
-      >
-        Revoke
-      </Button>
-    )
-
-    // Add tooltip if the button is disabled
-    if (!canRevoke) {
-      const tooltip = (<Tooltip id={`revoke-tooltip-${this.props.token.contract.address}`}>You can only revoke allowances of the connected account</Tooltip>)
-      revokeButton = (<OverlayTrigger overlay={tooltip}><span>{revokeButton}</span></OverlayTrigger>)
-    }
-
-    return revokeButton
   }
 }
 

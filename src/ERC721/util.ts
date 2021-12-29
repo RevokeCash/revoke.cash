@@ -25,14 +25,14 @@ async function getLimitedAllowanceFromApproval(multicallContract: Contract, appr
     // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
     // by making tokenId a non-indexed parameter, in which case it needs to be
     // taken from the event data rather than topics
-    const index = approval.topics.length === 4
-      ? BigNumber.from(approval.topics[3])
-      : BigNumber.from(approval.data)
+    const tokenId = approval.topics.length === 4
+      ? BigNumber.from(approval.topics[3]).toString()
+      : BigNumber.from(approval.data).toString()
 
-    const [spender] = await multicallContract.functions.getApproved(index)
+    const [spender] = await multicallContract.functions.getApproved(tokenId)
     if (spender === ADDRESS_ZERO) return undefined
 
-    return { spender, index }
+    return { spender, tokenId }
   } catch {
     return undefined
   }
@@ -114,4 +114,9 @@ async function throwIfNotErc721(contract: Contract) {
   if (isApprovedForAll !== false) {
     throw new Error('Response to isApprovedForAll was not false, indicating that this is not an ERC721 contract')
   }
+}
+
+export function formatAllowance(tokenId?: string) {
+  if (!tokenId) return 'all tokens'
+  return `token ID ${tokenId}`
 }

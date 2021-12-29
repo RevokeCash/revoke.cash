@@ -45,26 +45,26 @@ function Erc20Token({ provider, chainId, token, signerAddress, inputAddress }: P
   }
 
   return (
-      <div className="Token">
-        <Erc20TokenBalance
-          symbol={token.symbol}
-          icon={token.icon}
-          balance={token.balance}
-          decimals={token.decimals}
-        />
-        <Erc20AllowanceList
-          provider={provider}
-          inputAddress={inputAddress}
-          signerAddress={signerAddress}
-          chainId={chainId}
-          token={token}
-          allowances={allowances}
-          onRevoke={(spender) => {
-            setAllowances((previousAllowances) => previousAllowances.filter(allowance => allowance.spender !== spender))
-          }}
-        />
-      </div>
-    )
+    <div className="Token">
+      <Erc20TokenBalance
+        symbol={token.symbol}
+        icon={token.icon}
+        balance={token.balance}
+        decimals={token.decimals}
+      />
+      <Erc20AllowanceList
+        provider={provider}
+        inputAddress={inputAddress}
+        signerAddress={signerAddress}
+        chainId={chainId}
+        token={token}
+        allowances={allowances}
+        onRevoke={(spender) => {
+          setAllowances((previousAllowances) => previousAllowances.filter(allowance => allowance.spender !== spender))
+        }}
+      />
+    </div>
+  )
 }
 
 export default Erc20Token
