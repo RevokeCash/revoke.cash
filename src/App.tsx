@@ -10,6 +10,7 @@ import { emitAnalyticsEvent, lookupEnsName, shortenAddress } from './common/util
 import { displayGitcoinToast } from './common/gitcoin-toast';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { providers as multicall } from '@0xsequence/multicall'
 
 declare let window: {
   ethereum?: any
@@ -18,7 +19,7 @@ declare let window: {
 }
 
 type State = {
-  provider?: providers.Provider,
+  provider?: multicall.MulticallProvider,
   signer?: Signer,
   chainId?: number,
   signerAddress?: string,
@@ -92,10 +93,12 @@ class App extends Component<{}, State> {
     }
   }
 
-  async updateProvider(provider: providers.Provider) {
-    const { chainId } = await provider.getNetwork()
+  async updateProvider(newProvider: providers.Provider) {
+    const { chainId } = await newProvider.getNetwork()
 
     emitAnalyticsEvent(`connect_wallet_${chainId}`)
+
+    const provider = new multicall.MulticallProvider(newProvider, { verbose: true })
 
     this.setState({ provider, chainId })
   }

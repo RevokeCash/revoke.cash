@@ -63,14 +63,12 @@ function Erc20TokenList({
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
       .filter((event, i) => i === allEvents.findIndex((other) => event.address === other.address))
-      .map((event) => new Contract(getAddress(event.address), ERC20, signer ?? provider))
+      .map((event) => new Contract(getAddress(event.address), ERC20, provider))
 
-    // Look up token data for all tokens, add their list of approvals,
-    // and check if the token is registered in Kleros T2CR
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
         const tokenApprovals = approvals.filter(approval => approval.address === contract.address)
-        const registered = await isRegistered(contract.address, provider, tokenMapping)
+        const registered = isRegistered(contract.address, tokenMapping)
         const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
 
         try {
@@ -108,6 +106,7 @@ function Erc20TokenList({
     <Erc20Token
       key={token.contract.address}
       token={token}
+      signer={signer}
       provider={provider}
       chainId={chainId}
       signerAddress={signerAddress}

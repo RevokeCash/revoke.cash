@@ -4,16 +4,14 @@ import { OPENSEA_REGISTRY } from '../common/abis'
 import { ADDRESS_ZERO, DUMMY_ADDRESS, DUMMY_ADDRESS_2, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
 import { TokenMapping } from '../common/interfaces'
 import { Allowance } from './interfaces'
-import { addressToAppName as addressToAppNameBase, getDappListName, lookupEnsName, unpackResult, withFallback, wrapContractInMulticall } from '../common/util'
+import { addressToAppName as addressToAppNameBase, getDappListName, lookupEnsName, unpackResult, withFallback } from '../common/util'
 
 export async function getLimitedAllowancesFromApprovals(contract: Contract, approvals: providers.Log[]) {
-  const multicallContract = wrapContractInMulticall(contract, { verbose: true })
-
   const deduplicatedApprovals = approvals
     .filter((approval, i) => i === approvals.findIndex(other => approval.topics[2] === other.topics[2]))
 
   const allowances: Allowance[] = await Promise.all(
-    deduplicatedApprovals.map((approval) => getLimitedAllowanceFromApproval(multicallContract, approval))
+    deduplicatedApprovals.map((approval) => getLimitedAllowanceFromApproval(contract, approval))
   )
 
   return allowances
@@ -39,13 +37,11 @@ async function getLimitedAllowanceFromApproval(multicallContract: Contract, appr
 }
 
 export async function getUnlimitedAllowancesFromApprovals(contract: Contract, ownerAddress: string, approvals: providers.Log[]) {
-  const multicallContract = wrapContractInMulticall(contract, { verbose: true })
-
   const deduplicatedApprovals = approvals
     .filter((approval, i) => i === approvals.findIndex(other => approval.topics[2] === other.topics[2]))
 
   const allowances: Allowance[] = await Promise.all(
-    deduplicatedApprovals.map((approval) => getUnlimitedAllowanceFromApproval(multicallContract, ownerAddress, approval))
+    deduplicatedApprovals.map((approval) => getUnlimitedAllowanceFromApproval(contract, ownerAddress, approval))
   )
 
   return allowances
@@ -78,12 +74,11 @@ async function addDisplayAddresses(allowance: Allowance, provider: providers.Pro
 export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
   const tokenData = tokenMapping[getAddress(contract.address)]
 
-  const multicallContract = wrapContractInMulticall(contract)
   const [balance, symbol] = await Promise.all([
-    unpackResult(multicallContract.functions.balanceOf(ownerAddress)),
+    unpackResult(contract.functions.balanceOf(ownerAddress)),
     // Use the tokenlist name if present, fall back to '???' since not every NFT has a name
-    tokenData?.name ?? withFallback(unpackResult(multicallContract.functions.name()), '???'),
-    throwIfNotErc721(multicallContract),
+    tokenData?.name ?? withFallback(unpackResult(contract.functions.name()), '???'),
+    throwIfNotErc721(contract),
   ])
 
   return { symbol, balance }

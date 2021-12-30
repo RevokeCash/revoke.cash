@@ -47,7 +47,6 @@ class Erc721TokenList extends Component<Props, State> {
     this.setState({ tokens: [], loading: true })
 
     const erc721Interface = new Interface(ERC721Metadata)
-    const signerOrProvider = this.props.signer || this.props.provider
 
     // Get all "approvals for a specific index" made from the input address
     const approvals = await this.props.provider.getLogs({
@@ -71,17 +70,12 @@ class Erc721TokenList extends Component<Props, State> {
     })
 
     const allEvents = [...approvals, ...approvalsForAll, ...transfers];
+    console.log(allEvents.length, 'events')
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
       .filter((event, i) => i === allEvents.findIndex((other) => event.address === other.address))
-      .map((event) => new Contract(getAddress(event.address), ERC721Metadata, signerOrProvider))
-
-    // Return early if no tokens are found
-    if (tokenContracts.length === 0) {
-      this.setState({ loading: false })
-      return
-    }
+      .map((event) => new Contract(getAddress(event.address), ERC721Metadata, this.props.provider))
 
     // Look up token data for all tokens, add their lists of approvals
     const unsortedTokens = await Promise.all(

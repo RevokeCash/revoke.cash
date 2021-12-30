@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { ClipLoader } from 'react-spinners'
-import { providers, BigNumber } from 'ethers'
+import { providers, BigNumber, Signer, Contract } from 'ethers'
 import { formatAllowance } from './util'
 import { Erc20TokenData } from '../common/interfaces'
 import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, fromFloat, emitAnalyticsEvent } from '../common/util'
@@ -10,6 +10,7 @@ import RevokeButton from '../common/RevokeButton'
 import UpdateInputGroup from '../common/UpdateInputGroup'
 
 interface Props {
+  signer?: Signer
   provider: providers.Provider
   spender: string
   allowance: string
@@ -20,7 +21,7 @@ interface Props {
   onRevoke: (spender: string) => void;
 }
 
-function Erc20Allowance({ provider, spender, allowance, inputAddress, signerAddress, chainId, token, onRevoke}: Props) {
+function Erc20Allowance({ signer, provider, spender, allowance, inputAddress, signerAddress, chainId, token, onRevoke}: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const [ensSpender, setEnsSpender] = useState<string | undefined>()
   const [spenderAppName, setSpenderAppName] = useState<string | undefined>()
@@ -47,25 +48,27 @@ function Erc20Allowance({ provider, spender, allowance, inputAddress, signerAddr
 
   const update = async (newAllowance: string) => {
     const bnNew = BigNumber.from(fromFloat(newAllowance, token.decimals))
-    const { contract } = token
+    const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider)
 
     let tx
-
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     // so we tell the user to revoke instead if the contract doesn't allow the simple use
     // of contract.approve(0)
     try {
       console.debug(`Calling contract.approve(${spender}, ${bnNew.toString()})`)
-      tx = await contract.functions.approve(spender, bnNew)
-    } catch (e1) {
-      const code1 = e1.error?.code ?? e1.code
-      console.debug(`failed, code ${code1}`)
-      if (code1 === -32000) {
+      tx = await writeContract.functions.approve(spender, bnNew)
+    } catch (e) {
+      const code = e.error?.code ?? e.code
+      console.debug(`failed, code ${code}`)
+      if (code === -32000) {
         toast.error("This token does not support updating allowances, please revoke instead", {
           position: "top-left",
         })
       }
+
+      // ignore other errors
+      console.log('Ran into issue while revoking', e)
     }
 
     if (tx) {

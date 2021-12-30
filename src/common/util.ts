@@ -1,32 +1,13 @@
 import axios from 'axios'
-import { BigNumberish, BigNumber, providers, Contract } from 'ethers'
-import { providers as multicall } from '@0xsequence/multicall'
+import { BigNumberish, BigNumber, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
-import { TokensView } from './abis'
-import { ADDRESS_ZERO_PADDED, DAPP_LIST_BASE_URL, T2CR_ADDRESS, TOKENS_VIEW_ADDRESS, TRUSTWALLET_BASE_URL } from './constants'
+import { DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
-// Check if a token is registered in the Kleros T2CR (ETH) or tokenlist (other chains)
-export async function isRegistered(tokenAddress: string, provider: providers.Provider, tokenMapping?: TokenMapping): Promise<boolean> {
-  const { chainId } = await provider.getNetwork()
-
-  // On mainnet ethereum we use Kleros T2CR as a decentralised registry
-  if (chainId === 1) return await isRegisteredInKleros(tokenAddress, provider)
-
+// Check if a token is registered in the token mapping
+export function isRegistered(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
   // If we don't know a registered token mapping, we skip checking registration
   if (!tokenMapping) return true
-
-  // On other EVM chains we fall back to using the specified tokenlist as a semi-centralised registry
-  return isRegisteredInTokenMapping(tokenAddress, tokenMapping);
-}
-
-async function isRegisteredInKleros(tokenAddress: string, provider: providers.Provider): Promise<boolean> {
-  const tokensViewContract = new Contract(TOKENS_VIEW_ADDRESS, TokensView, provider)
-  const [ tokenID ] = await tokensViewContract.functions.getTokensIDsForAddresses(T2CR_ADDRESS, [tokenAddress])
-  return tokenID && tokenID[0] && tokenID[0] !== ADDRESS_ZERO_PADDED
-}
-
-function isRegisteredInTokenMapping(tokenAddress: string, tokenMapping: TokenMapping = {}): boolean {
   return tokenMapping[getAddress(tokenAddress)] !== undefined;
 }
 
@@ -198,9 +179,6 @@ export function fromFloat(floatString: string, decimals: number): string {
     ? sides[0] + sides[1].slice(0, decimals)
     : sides[0] + sides[1].padEnd(decimals, '0')
 }
-
-export const wrapContractInMulticall = (contract: Contract, options?: any) =>
-  new Contract(contract.address, contract.interface, new multicall.MulticallProvider(contract.provider, options))
 
 export const unpackResult = async (promise: Promise<any>) => (await promise)[0]
 

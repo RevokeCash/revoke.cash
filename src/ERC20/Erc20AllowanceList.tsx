@@ -1,10 +1,11 @@
 import React from 'react'
-import { providers } from 'ethers'
+import { providers, Signer } from 'ethers'
 import { Erc20TokenData } from '../common/interfaces'
 import { Allowance } from './interfaces'
 import Erc20Allowance from './Erc20Allowance'
 
 interface Props {
+  signer?: Signer
   provider: providers.Provider
   inputAddress: string
   signerAddress: string
@@ -14,7 +15,7 @@ interface Props {
   onRevoke: (spender: string) => void;
 }
 
-function Erc20AllowanceList({ provider, inputAddress, signerAddress, chainId, token, onRevoke, allowances }: Props) {
+function Erc20AllowanceList({ signer, provider, inputAddress, signerAddress, chainId, token, onRevoke, allowances }: Props) {
   return (
     <div className="AllowanceList">
       {
@@ -23,6 +24,7 @@ function Erc20AllowanceList({ provider, inputAddress, signerAddress, chainId, to
           : allowances.map((allowance, i) => (
             <Erc20Allowance
               key={i}
+              signer={signer}
               provider={provider}
               spender={allowance.spender}
               allowance={allowance.allowance}

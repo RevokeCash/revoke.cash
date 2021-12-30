@@ -1,14 +1,14 @@
-import { Signer, providers } from 'ethers'
-import React, { Component, ReactNode } from 'react'
-import ClipLoader from 'react-spinners/ClipLoader'
+import { providers, Signer } from 'ethers'
+import React, { useEffect, useState } from 'react'
+import { ClipLoader } from 'react-spinners'
 import { Erc721TokenData } from '../common/interfaces'
-import { getExplorerUrl } from '../common/util'
-import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
 import { Allowance } from './interfaces'
 import Erc721AllowanceList from './Erc721AllowanceList'
 import Erc721TokenBalance from './Erc721TokenBalance'
+import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
+import { getExplorerUrl } from '../common/util'
 
-type Props = {
+interface Props {
   provider: providers.Provider
   chainId: number
   signer?: Signer
@@ -18,86 +18,60 @@ type Props = {
   openSeaProxyAddress?: string
 }
 
-type State = {
-  allowances: Allowance[]
-  icon?: string
-  loading: boolean
-}
+function Erc721Token({ signer, provider, chainId, token, signerAddress, inputAddress, openSeaProxyAddress }: Props) {
+  const [allowances, setAllowances] = useState<Allowance[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
-class Erc721Token extends Component<Props, State> {
-  state: State = {
-    allowances: [],
-    loading: true,
-  }
+  useEffect(() => {
+    loadData()
+  }, [inputAddress])
 
-  componentDidMount() {
-    this.loadData()
-  }
+  const loadData = async () => {
+    setLoading(true)
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.inputAddress === prevProps.inputAddress) return
-    this.loadData()
-  }
-
-  private async loadData() {
-    if (!this.props.token) return
-    if (!this.props.inputAddress) return
-
-    const { token } = this.props
-
-    const unlimitedAllowances = await getUnlimitedAllowancesFromApprovals(token.contract, this.props.inputAddress, token.approvalsForAll)
+    const unlimitedAllowances = await getUnlimitedAllowancesFromApprovals(token.contract, inputAddress, token.approvalsForAll)
     const limitedAllowances = await getLimitedAllowancesFromApprovals(token.contract, token.approvals)
     const allAllowances = [...limitedAllowances, ...unlimitedAllowances]
       .filter(allowance => allowance !== undefined)
 
-    const allowances = await addDisplayAddressesToAllowances(allAllowances, this.props.provider, this.props.chainId, this.props.openSeaProxyAddress)
+    const allowancesWithDisplayAddresses = await addDisplayAddressesToAllowances(allAllowances, provider, chainId, openSeaProxyAddress)
 
-    this.setState({ allowances, loading: false })
+    setAllowances(allowancesWithDisplayAddresses)
+    setLoading(false)
   }
 
-  render(): ReactNode {
-    const { balance } = this.props.token
+  // // Do not render tokens without balance or allowances
+  const balanceString = String(token.balance)
+  if (balanceString === '0' && allowances.length === 0) return null
 
-    // // Do not render tokens without balance or allowances
-    const balanceString = String(balance)
-    if (balanceString === '0' && this.state.allowances.length === 0) return null
-
-    return (<div className="Token">{this.renderTokenOrLoading()}</div>)
+  if (loading) {
+    return (<div className="Token"><ClipLoader size={20} color={'#000'} loading={loading} /></div>)
   }
+  const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId
+  const explorerUrl = `${getExplorerUrl(chainId)}/${token.contract.address}`
 
-  renderTokenOrLoading() {
-    if (this.state.loading) {
-      return (<ClipLoader size={20} color={'#000'} loading={this.state.loading} />)
-    }
-
-    return this.renderToken()
-  }
-
-  renderToken() {
-    const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId
-    const explorerUrl = `${getExplorerUrl(this.props.chainId)}/${this.props.token.contract.address}`
-
-    return (
-      <div>
-        <Erc721TokenBalance
-          symbol={this.props.token.symbol}
-          icon={this.props.token.icon}
-          balance={this.props.token.balance}
-          explorerUrl={explorerUrl}
-        />
-        <Erc721AllowanceList
-          token={this.props.token}
-          allowances={this.state.allowances}
-          inputAddress={this.props.inputAddress}
-          signerAddress={this.props.signerAddress}
-          chainId={this.props.chainId}
-          onRevoke={(allowance: Allowance) => {
-            this.setState({ allowances: this.state.allowances.filter(otherAllowance => !allowanceEquals(otherAllowance, allowance))})
-          }}
-        />
-      </div>
-    )
-  }
+  return (
+    <div className="Token">
+      <Erc721TokenBalance
+        symbol={token.symbol}
+        icon={token.icon}
+        balance={token.balance}
+        explorerUrl={explorerUrl}
+      />
+      <Erc721AllowanceList
+        signer={signer}
+        provider={provider}
+        token={token}
+        allowances={allowances}
+        inputAddress={inputAddress}
+        signerAddress={signerAddress}
+        chainId={chainId}
+        onRevoke={(allowance: Allowance) => {
+          setAllowances((previousAllowances) => previousAllowances.filter((other) => !allowanceEquals(other, allowance)))
+        }}
+      />
+    </div>
+  )
 }
 
 export default Erc721Token

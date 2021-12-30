@@ -6,8 +6,11 @@ import { ADDRESS_ZERO } from '../common/constants'
 import RevokeButton from '../common/RevokeButton'
 import { Allowance } from './interfaces'
 import { formatAllowance } from './util'
+import { Contract, providers, Signer } from 'ethers'
 
 interface Props {
+  signer?: Signer
+  provider: providers.Provider
   token: Erc721TokenData
   allowance: Allowance
   inputAddress: string
@@ -16,13 +19,22 @@ interface Props {
   onRevoke: (allowance: Allowance) => void;
 }
 
-function Erc721Allowance({ token, allowance, inputAddress, signerAddress, chainId, onRevoke }: Props) {
+function Erc721Allowance({ signer, provider, token, allowance, inputAddress, signerAddress, chainId, onRevoke }: Props) {
   const { spender, ensSpender, spenderAppName, tokenId } = allowance
 
   const revoke = async () => {
-    const tx = tokenId === undefined
-      ? await token.contract.functions.setApprovalForAll(spender, false)
-      : await token.contract.functions.approve(ADDRESS_ZERO, tokenId)
+    const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider)
+
+    let tx
+    try {
+      tx = tokenId === undefined
+        ? await writeContract.functions.setApprovalForAll(spender, false)
+        : await writeContract.functions.approve(ADDRESS_ZERO, tokenId)
+
+    } catch (e) {
+      // Ignore issues
+      console.log('Ran into issue while revoking', e)
+    }
 
     if (tx) {
       await tx.wait(1)

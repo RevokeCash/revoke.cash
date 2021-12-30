@@ -95,15 +95,10 @@ class Dashboard extends Component<Props, State> {
     // If no token data mapping is found and we're not on ETH, we hide the checkbox
     if (!this.state.tokenMapping && this.props.chainId !== 1) return
 
-    // Link to Kleros T2CR for Ethereum or tokenlists for other chains
-    const infoLink = this.props.chainId === 1
-      ? 'https://tokens.kleros.io/tokens'
-      : 'https://tokenlists.org/'
-
     return (
       <div>
         Filter out unregistered tokens
-        <sup><a href={infoLink} target="_blank" rel="noopener noreferrer">?</a></sup>
+        <sup><a href="https://tokenlists.org/" target="_blank" rel="noopener noreferrer">?</a></sup>
         <input type="checkbox" checked={this.state.filterRegisteredTokens} onChange={this.handleRegisteredCheckboxChange} />
       </div>
     )

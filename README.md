@@ -24,4 +24,4 @@ yarn start
 ```
 
 ## Credits
-Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations. Filters out unverified tokens using the [Kleros T2CR](https://tokens.kleros.io/tokens). Built with React, Bootstrap and TypeScript.
+Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations. Filters out unverified tokens using tokenlists. Built with React, Bootstrap and TypeScript.
