@@ -246,7 +246,7 @@ class App extends Component<{}, State> {
   renderFooter() {
     return (
       <div>
-        <p>Site created by <a href="https://kalis.me/">Rosco Kalis</a> (<a href="https://github.com/rkalis/revoke.cash">Source</a>)</p>
+        <p>Site created by <a href="https://twitter.com/RoscoKalis">Rosco Kalis</a> (<a href="https://github.com/rkalis/revoke.cash">Source</a>)</p>
         <p>Learn more: <a href="https://kalis.me/unlimited-erc20-allowances/">Unlimited ERC20 allowances considered harmful</a></p>
       </div>
     )
