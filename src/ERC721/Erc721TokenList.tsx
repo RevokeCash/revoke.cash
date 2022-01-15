@@ -1,6 +1,6 @@
 import { Signer, Contract, providers } from 'ethers'
 import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData, TokenMapping } from '../common/interfaces'
 import Erc721Token from './Erc721Token'
@@ -8,9 +8,9 @@ import { getTokenIcon } from '../common/util'
 import { getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
 
-type Props = {
+interface Props {
   provider: providers.Provider
-  chainId: number,
+  chainId: number
   filterRegisteredTokens: boolean
   filterZeroBalances: boolean
   tokenMapping?: TokenMapping
@@ -19,77 +19,72 @@ type Props = {
   inputAddress?: string
 }
 
-type State = {
-  tokens: Erc721TokenData[]
-  loading: boolean
-  openSeaProxyAddress?: string
-}
+function Erc721TokenList({
+  provider,
+  chainId,
+  filterRegisteredTokens,
+  filterZeroBalances,
+  tokenMapping,
+  signer,
+  signerAddress,
+  inputAddress
+}: Props) {
+  const [tokens, setTokens] = useState<Erc721TokenData[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [openSeaProxyAddress, setOpenSeaProxyAddress] = useState<string>()
 
-class Erc721TokenList extends Component<Props, State> {
-  state: State = {
-    tokens: [],
-    loading: true,
-  }
+  useEffect(() => {
+    loadData()
+  }, [inputAddress])
 
-  componentDidMount() {
-    this.loadData()
-  }
+  const loadData = async () => {
+    if (!inputAddress) return
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.inputAddress === prevProps.inputAddress) return
-    this.loadData()
-  }
-
-  async loadData() {
-    if (!this.props.inputAddress) return
-
-    // Reset existing state after update
-    this.setState({ tokens: [], loading: true })
+    setLoading(true)
 
     const erc721Interface = new Interface(ERC721Metadata)
 
     // Get all "approvals for a specific index" made from the input address
-    const approvals = await this.props.provider.getLogs({
+    const approvalEvents = await provider.getLogs({
       fromBlock: 'earliest',
       toBlock: 'latest',
-      topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(this.props.inputAddress, 32)]
+      topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)]
     })
 
     // Get all "approvals for all indexes" made from the input address
-    const approvalsForAll = await this.props.provider.getLogs({
+    const approvalForAllEvents = await provider.getLogs({
       fromBlock: 'earliest',
       toBlock: 'latest',
-      topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(this.props.inputAddress, 32)]
+      topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)]
     })
 
     // Get all transfers sent to the input address
-    const transfers = await this.props.provider.getLogs({
+    const transferEvents = await provider.getLogs({
       fromBlock: 'earliest',
       toBlock: 'latest',
-      topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(this.props.inputAddress, 32)]
+      topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)]
     })
 
-    const allEvents = [...approvals, ...approvalsForAll, ...transfers];
-    console.log(allEvents.length, 'events')
+    const allEvents = [...approvalEvents, ...approvalForAllEvents, ...transferEvents];
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
       .filter((event, i) => i === allEvents.findIndex((other) => event.address === other.address))
-      .map((event) => new Contract(getAddress(event.address), ERC721Metadata, this.props.provider))
+      .map((event) => new Contract(getAddress(event.address), ERC721Metadata, provider))
 
     // Look up token data for all tokens, add their lists of approvals
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
-        const tokenApprovalsForAll = approvalsForAll.filter(approval => approval.address === contract.address)
-        const tokenApprovals = approvals.filter(approval => approval.address === contract.address)
-        const icon = await getTokenIcon(contract.address, this.props.chainId, this.props.tokenMapping)
+        const approvalsForAll = approvalForAllEvents.filter(approval => approval.address === contract.address)
+        const approvals = approvalEvents.filter(approval => approval.address === contract.address)
+        const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
 
         // Skip registration checks for NFTs
         const registered = true
 
         try {
-          const tokenData = await getTokenData(contract, this.props.inputAddress, this.props.tokenMapping)
-          return { ...tokenData, icon, contract, registered, approvals: tokenApprovals, approvalsForAll: tokenApprovalsForAll }
+          const tokenData = await getTokenData(contract, inputAddress, tokenMapping)
+          return { ...tokenData, icon, contract, registered, approvals, approvalsForAll }
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC721 token so
           // we do not include it in the token list.
@@ -99,43 +94,42 @@ class Erc721TokenList extends Component<Props, State> {
     )
 
     // Filter undefined tokens and sort tokens alphabetically on token symbol
-    const tokens = unsortedTokens
+    const sortedTokens = unsortedTokens
       .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
-    const openSeaProxyAddress = await getOpenSeaProxyAddress(this.props.inputAddress, this.props.provider)
+    const openSeaProxy = await getOpenSeaProxyAddress(inputAddress, provider)
 
-    this.setState({ openSeaProxyAddress, tokens, loading: false })
+    setTokens(sortedTokens)
+    setOpenSeaProxyAddress(openSeaProxy)
+    setLoading(false)
   }
 
-  render() {
-    if (this.state.loading) {
-      return (<ClipLoader css="margin-bottom: 10px;" size={40} color={'#000'} loading={this.state.loading} />)
-    }
-
-    if (this.state.tokens.length === 0) {
-      return (<div className="TokenList">No token balances</div>)
-    }
-
-    const tokenComponents = this.state.tokens
-      .filter((token) => !this.props.filterRegisteredTokens || token.registered)
-      .filter((token) => !this.props.filterZeroBalances || ! (String(token.balance) === '0'))
-      .map((token) => (
-        <Erc721Token
-          key={token.contract.address}
-          token={token}
-          provider={this.props.provider}
-          chainId={this.props.chainId}
-          signer={this.props.signer}
-          signerAddress={this.props.signerAddress}
-          inputAddress={this.props.inputAddress}
-          openSeaProxyAddress={this.state.openSeaProxyAddress}
-        />
-      ))
-
-    // return (<div className="TokenList">Hello</div>)
-    return (<div className="TokenList">{tokenComponents}</div>)
+  if (loading) {
+    return (<ClipLoader css="margin-bottom: 10px;" size={40} color={'#000'} loading={loading} />)
   }
+
+  if (tokens.length === 0) {
+    return (<div className="TokenList">No token balances</div>)
+  }
+
+  const tokenComponents = tokens
+  .filter((token) => !filterRegisteredTokens || token.registered)
+  .filter((token) => !filterZeroBalances || ! (String(token.balance) === '0'))
+  .map((token) => (
+    <Erc721Token
+      key={token.contract.address}
+      token={token}
+      provider={provider}
+      chainId={chainId}
+      signer={signer}
+      signerAddress={signerAddress}
+      inputAddress={inputAddress}
+      openSeaProxyAddress={openSeaProxyAddress}
+    />
+  ))
+
+return (<div className="TokenList">{tokenComponents}</div>)
 }
 
 export default Erc721TokenList
