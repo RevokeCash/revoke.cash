@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { BigNumberish, BigNumber, providers } from 'ethers'
+import { Filter, Log } from '@ethersproject/abstract-provider'
 import { getAddress } from 'ethers/lib/utils'
 import { DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
@@ -195,3 +196,27 @@ export const emitAnalyticsEvent = (eventName: string) => {
     (window as any).sa_event(eventName)
   }
 }
+
+export const getLogs = async (
+  provider: providers.Provider,
+  baseFilter: Filter,
+  fromBlock: number,
+  toBlock: number
+): Promise<Log[]> => {
+  const filter = { ...baseFilter, fromBlock, toBlock };
+  try {
+    const result = await provider.getLogs(filter);
+    return result;
+  } catch (error) {
+    const errorMessage = error?.error?.message ?? error?.message;
+    if (errorMessage !== 'query returned more than 10000 results') {
+      throw error;
+    }
+
+    const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
+    const leftPromise = getLogs(provider, baseFilter, fromBlock, middle);
+    const rightPromise = getLogs(provider, baseFilter, middle + 1, toBlock);
+    const [left, right] = await Promise.all([leftPromise, rightPromise]);
+    return [...left, ...right];
+  }
+};

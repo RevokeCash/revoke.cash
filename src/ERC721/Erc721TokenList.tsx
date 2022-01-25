@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData, TokenMapping } from '../common/interfaces'
 import Erc721Token from './Erc721Token'
-import { getTokenIcon } from '../common/util'
+import { getLogs, getTokenIcon } from '../common/util'
 import { getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
 
@@ -43,27 +43,25 @@ function Erc721TokenList({
     setLoading(true)
 
     const erc721Interface = new Interface(ERC721Metadata)
+    const latestBlockNumber = await provider.getBlockNumber()
 
     // Get all "approvals for a specific index" made from the input address
-    const approvalEvents = await provider.getLogs({
-      fromBlock: 'earliest',
-      toBlock: 'latest',
+    const approvalFilter = {
       topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)]
-    })
+    }
+    const approvalEvents = await getLogs(provider, approvalFilter, 0, latestBlockNumber)
 
     // Get all "approvals for all indexes" made from the input address
-    const approvalForAllEvents = await provider.getLogs({
-      fromBlock: 'earliest',
-      toBlock: 'latest',
+    const approvalForAllFilter = {
       topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)]
-    })
+    }
+    const approvalForAllEvents = await getLogs(provider, approvalForAllFilter, 0, latestBlockNumber)
 
     // Get all transfers sent to the input address
-    const transferEvents = await provider.getLogs({
-      fromBlock: 'earliest',
-      toBlock: 'latest',
+    const transferFilter = {
       topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)]
-    })
+    }
+    const transferEvents = await getLogs(provider, transferFilter, 0, latestBlockNumber)
 
     const allEvents = [...approvalEvents, ...approvalForAllEvents, ...transferEvents];
 

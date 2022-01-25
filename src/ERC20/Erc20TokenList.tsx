@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc20TokenData, TokenMapping } from '../common/interfaces'
 import Erc20Token from './Erc20Token'
-import { isRegistered, getTokenIcon, toFloat } from '../common/util'
+import { isRegistered, getTokenIcon, toFloat, getLogs } from '../common/util'
 import { getTokenData } from './util'
 import { ERC20 } from '../common/abis'
 
@@ -45,20 +45,18 @@ function Erc20TokenList({
     const latestBlockNumber = await provider.getBlockNumber()
 
     // Get all approvals made from the input address
-    const approvals = await provider.getLogs({
-      fromBlock: 0,
-      toBlock: latestBlockNumber,
+    const approvalFilter = {
       topics: [erc20Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)]
-    })
+    }
+    const approvals = await getLogs(provider, approvalFilter, 0, latestBlockNumber)
 
     // Get all transfers sent to the input address
-    const transfers = await provider.getLogs({
-      fromBlock: 0,
-      toBlock: latestBlockNumber,
+    const transferFilter = {
       topics: [erc20Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)]
-    })
+    }
+    const transfers = await getLogs(provider, transferFilter, 0, latestBlockNumber)
 
-    const allEvents = [...approvals, ...transfers];
+    const allEvents = [...approvals, ...transfers]
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
