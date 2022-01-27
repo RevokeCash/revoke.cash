@@ -3,8 +3,7 @@ import React, { Component, ReactNode, ChangeEvent } from 'react'
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import { TokenMapping, TokenStandard } from './common/interfaces'
 import { getFullTokenMapping, isSupportedNetwork } from './common/util'
-import Erc20TokenList from './ERC20/Erc20TokenList'
-import Erc721TokenList from './ERC721/Erc721TokenList'
+import TokenList from './TokenList'
 
 type Props = {
   provider: providers.Provider
@@ -59,7 +58,7 @@ class Dashboard extends Component<Props, State> {
         {this.renderSelectionSwitch()}
         {this.renderRegistrationCheckbox()}
         {this.renderZeroBalancesCheckbox()}
-        {this.renderErc20TokenList()}
+        {this.renderTokenList()}
       </div>
     )
   }
@@ -113,38 +112,24 @@ class Dashboard extends Component<Props, State> {
     )
   }
 
-  renderErc20TokenList() {
-    if (!this.props.inputAddress || this.state.loading) {
+  renderTokenList() {
+    if (this.state.loading) {
       return null;
     }
 
-    if (this.state.tokenStandard === 'ERC20') {
-      return (
-        <Erc20TokenList
-          provider={this.props.provider}
-          chainId={this.props.chainId}
-          signer={this.props.signer}
-          signerAddress={this.props.signerAddress}
-          inputAddress={this.props.inputAddress}
-          filterRegisteredTokens={this.state.filterRegisteredTokens}
-          filterZeroBalances={this.state.filterZeroBalances}
-          tokenMapping={this.state.tokenMapping}
-        />
-      );
-    } else {
-      return (
-        <Erc721TokenList
-          provider={this.props.provider}
-          chainId={this.props.chainId}
-          signer={this.props.signer}
-          signerAddress={this.props.signerAddress}
-          inputAddress={this.props.inputAddress}
-          filterRegisteredTokens={this.state.filterRegisteredTokens}
-          filterZeroBalances={this.state.filterZeroBalances}
-          tokenMapping={this.state.tokenMapping}
-        />
-      );
-    }
+    return (
+      <TokenList
+        provider={this.props.provider}
+        chainId={this.props.chainId}
+        signer={this.props.signer}
+        tokenStandard={this.state.tokenStandard}
+        signerAddress={this.props.signerAddress}
+        inputAddress={this.props.inputAddress}
+        filterRegisteredTokens={this.state.filterRegisteredTokens}
+        filterZeroBalances={this.state.filterZeroBalances}
+        tokenMapping={this.state.tokenMapping}
+      />
+    )
   }
 }
 
