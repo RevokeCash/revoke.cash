@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Signer, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import React, { Component, ReactNode, ChangeEvent } from 'react'
-import Dashboard from './Dashboard'
+import Dashboard from './Dashboard/Dashboard'
 import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { emitAnalyticsEvent, lookupEnsName, shortenAddress } from './common/util'
@@ -26,13 +26,10 @@ type State = {
   signerEnsName?: string,
   inputAddressOrName?: string,
   inputAddress?: string,
-  showDonateModal: boolean,
 }
 
 class App extends Component<{}, State> {
-  state: State = {
-    showDonateModal: false,
-  }
+  state: State = {}
 
   async componentDidMount() {
     await this.connectProvider()

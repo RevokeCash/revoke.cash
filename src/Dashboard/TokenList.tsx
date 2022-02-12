@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Signer, providers } from 'ethers'
 import { Log } from '@ethersproject/abstract-provider'
-import { TokenMapping } from './common/interfaces'
-import Erc20TokenList from './ERC20/Erc20TokenList'
-import Erc721TokenList from './ERC721/Erc721TokenList'
+import { TokenMapping } from '../common/interfaces'
+import Erc20TokenList from '../ERC20/Erc20TokenList'
+import Erc721TokenList from '../ERC721/Erc721TokenList'
 import { hexZeroPad, Interface } from 'ethers/lib/utils'
-import { ERC721Metadata } from './common/abis'
-import { getLogs } from './common/util'
+import { ERC721Metadata } from '../common/abis'
+import { getLogs } from '../common/util'
 import { ClipLoader } from 'react-spinners'
 
 interface Props {
