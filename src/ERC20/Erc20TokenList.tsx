@@ -1,10 +1,11 @@
 import { Signer, Contract, providers } from 'ethers'
-import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
+import { getAddress } from 'ethers/lib/utils'
+import { Log } from '@ethersproject/abstract-provider'
 import React, { useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc20TokenData, TokenMapping } from '../common/interfaces'
 import Erc20Token from './Erc20Token'
-import { isRegistered, getTokenIcon, toFloat, getLogs } from '../common/util'
+import { isRegistered, getTokenIcon, toFloat } from '../common/util'
 import { getTokenData } from './util'
 import { ERC20 } from '../common/abis'
 
@@ -13,6 +14,8 @@ interface Props {
   chainId: number
   filterRegisteredTokens: boolean
   filterZeroBalances: boolean
+  transferEvents: Log[]
+  approvalEvents: Log[]
   tokenMapping?: TokenMapping
   signer?: Signer
   signerAddress?: string
@@ -24,6 +27,8 @@ function Erc20TokenList({
   chainId,
   filterRegisteredTokens,
   filterZeroBalances,
+  transferEvents,
+  approvalEvents,
   tokenMapping,
   signer,
   signerAddress,
@@ -41,22 +46,7 @@ function Erc20TokenList({
 
     setLoading(true)
 
-    const erc20Interface = new Interface(ERC20)
-    const latestBlockNumber = await provider.getBlockNumber()
-
-    // Get all approvals made from the input address
-    const approvalFilter = {
-      topics: [erc20Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)]
-    }
-    const approvals = await getLogs(provider, approvalFilter, 0, latestBlockNumber)
-
-    // Get all transfers sent to the input address
-    const transferFilter = {
-      topics: [erc20Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)]
-    }
-    const transfers = await getLogs(provider, transferFilter, 0, latestBlockNumber)
-
-    const allEvents = [...approvals, ...transfers]
+    const allEvents = [...approvalEvents, ...transferEvents]
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
@@ -65,7 +55,7 @@ function Erc20TokenList({
 
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
-        const tokenApprovals = approvals.filter(approval => approval.address === contract.address)
+        const tokenApprovals = approvalEvents.filter(approval => approval.address === contract.address)
         const registered = isRegistered(contract.address, tokenMapping)
         const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
 

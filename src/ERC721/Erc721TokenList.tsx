@@ -1,10 +1,11 @@
 import { Signer, Contract, providers } from 'ethers'
-import { Interface, getAddress, hexZeroPad } from 'ethers/lib/utils'
+import { getAddress } from 'ethers/lib/utils'
+import { Log } from '@ethersproject/abstract-provider'
 import React, { useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData, TokenMapping } from '../common/interfaces'
 import Erc721Token from './Erc721Token'
-import { getLogs, getTokenIcon } from '../common/util'
+import { getTokenIcon } from '../common/util'
 import { getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
 
@@ -13,6 +14,9 @@ interface Props {
   chainId: number
   filterRegisteredTokens: boolean
   filterZeroBalances: boolean
+  transferEvents: Log[]
+  approvalEvents: Log[]
+  approvalForAllEvents: Log[]
   tokenMapping?: TokenMapping
   signer?: Signer
   signerAddress?: string
@@ -24,6 +28,9 @@ function Erc721TokenList({
   chainId,
   filterRegisteredTokens,
   filterZeroBalances,
+  transferEvents,
+  approvalEvents,
+  approvalForAllEvents,
   tokenMapping,
   signer,
   signerAddress,
@@ -41,27 +48,6 @@ function Erc721TokenList({
     if (!inputAddress) return
 
     setLoading(true)
-
-    const erc721Interface = new Interface(ERC721Metadata)
-    const latestBlockNumber = await provider.getBlockNumber()
-
-    // Get all "approvals for a specific index" made from the input address
-    const approvalFilter = {
-      topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)]
-    }
-    const approvalEvents = await getLogs(provider, approvalFilter, 0, latestBlockNumber)
-
-    // Get all "approvals for all indexes" made from the input address
-    const approvalForAllFilter = {
-      topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)]
-    }
-    const approvalForAllEvents = await getLogs(provider, approvalForAllFilter, 0, latestBlockNumber)
-
-    // Get all transfers sent to the input address
-    const transferFilter = {
-      topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)]
-    }
-    const transferEvents = await getLogs(provider, transferFilter, 0, latestBlockNumber)
 
     const allEvents = [...approvalEvents, ...approvalForAllEvents, ...transferEvents];
 
