@@ -1,4 +1,5 @@
 import './App.scss'
+import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import { Signer, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
@@ -8,9 +9,8 @@ import DonateButton from './DonateButton/DonateButton'
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { emitAnalyticsEvent, lookupEnsName, shortenAddress } from './common/util'
 import { displayGitcoinToast } from './common/gitcoin-toast';
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { providers as multicall } from '@0xsequence/multicall'
+import Footer from './Footer/Footer'
 
 declare let window: {
   ethereum?: any
@@ -172,8 +172,7 @@ class App extends Component<{}, State> {
         {this.renderHeader()}
         {this.renderAddressInput()}
         {this.renderTokenList()}
-        {this.renderFooter()}
-        {this.renderToastContainer()}
+        <Footer />
       </Container>
     )
   }
@@ -238,31 +237,6 @@ class App extends Component<{}, State> {
       signerAddress={this.state.signerAddress}
       inputAddress={this.state.inputAddress}
     />)
-  }
-
-  renderFooter() {
-    return (
-      <div>
-        <p>Site created by <a href="https://twitter.com/RoscoKalis">Rosco Kalis</a> (<a href="https://github.com/rkalis/revoke.cash">Source</a>)</p>
-        <p>Learn more: <a href="https://kalis.me/unlimited-erc20-allowances/">Unlimited ERC20 allowances considered harmful</a></p>
-      </div>
-    )
-  }
-
-  renderToastContainer() {
-    return (
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-    )
   }
 }
 
