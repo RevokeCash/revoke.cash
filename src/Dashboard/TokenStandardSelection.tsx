@@ -1,6 +1,6 @@
 
 import React from 'react'
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import Switch from 'react-switch'
 import { TokenStandard } from '../common/interfaces'
 
 interface Props {
@@ -9,16 +9,26 @@ interface Props {
 }
 
 const TokenStandardSelection: React.FC<Props> = ({ tokenStandard, setTokenStandard }) => (
-  <div style={{ marginBottom: '10px' }}>
-    <BootstrapSwitchButton
-      checked={tokenStandard === 'ERC20'}
-      onlabel='ERC20'
-      offlabel='ERC721'
-      onstyle="primary"
-      offstyle="primary"
-      width={100}
-      onChange={(checked: boolean) => setTokenStandard(checked ? 'ERC20' : 'ERC721')}
-    />
+  <div style={{
+    marginBottom: '10px',
+    display: 'flex',
+    flexDirection: 'row', gap: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }}>
+    <div>Tokens</div>
+    <div>
+      <Switch
+        checked={tokenStandard === 'ERC721'}
+        onChange={(checked: boolean) => setTokenStandard(checked ? 'ERC721' : 'ERC20')}
+        onColor="#000"
+        offColor="#000"
+        checkedIcon={false}
+        uncheckedIcon={false}
+        activeBoxShadow="0 0 2px 3px #aaa"
+      />
+    </div>
+    <div>NFTs</div>
   </div>
 )
 

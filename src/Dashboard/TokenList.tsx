@@ -46,6 +46,7 @@ function TokenList({
     setLoading(true);
 
     // NOTE: The Transfer and Approval events have a similar signature for ERC20 and ERC721
+    // and the ApprovalForAll event has a similar signature for ERC721 and ERC1155
     // so we only request these events once here and pass them to the other components
 
     // Get all transfers sent to the input address
@@ -77,7 +78,7 @@ function TokenList({
   }
 
   if (loading || [transferEvents, approvalEvents, approvalForAllEvents].includes(undefined)) {
-    return (<ClipLoader css="margin-bottom: 10px;" size={40} color={'#000'} loading={loading} />)
+    return (<ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />)
   }
 
   if (tokenStandard === 'ERC20') {

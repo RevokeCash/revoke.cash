@@ -72,10 +72,10 @@ function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
       {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">
           <span className="AllowanceTextSmallScreen">
-            Allowance for {formatAllowance(tokenId)} to&nbsp;{shortenedLink}
+            {formatAllowance(tokenId)} to&nbsp;{shortenedLink}
           </span>
           <span className="AllowanceTextBigScreen">
-            Allowance for {formatAllowance(tokenId)} to&nbsp;{regularLink}
+            {formatAllowance(tokenId)} to&nbsp;{regularLink}
           </span>
         </Form.Label>
       {<RevokeButton canRevoke={canUpdate} revoke={revoke} id={`revoke-${token.symbol}-${spender}`} />}

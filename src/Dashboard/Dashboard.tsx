@@ -39,7 +39,7 @@ function Dashboard() {
   }
 
   if (loading) {
-    return (<ClipLoader css="margin-bottom: 10px;" size={40} color={'#000'} loading={loading} />)
+    return (<ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />)
   }
 
   return (

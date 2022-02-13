@@ -2,7 +2,7 @@ import { BigNumber, Contract, providers } from 'ethers'
 import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import { TokenMapping } from '../common/interfaces'
 import { Allowance } from './interfaces'
-import { toFloat, unpackResult } from '../common/util'
+import { convertString, toFloat, unpackResult } from '../common/util'
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from '../common/constants';
 
 export async function getAllowancesFromApprovals(contract: Contract, ownerAddress: string, approvals: providers.Log[]) {
@@ -28,7 +28,7 @@ export async function getTokenData(contract: Contract, ownerAddress: string, tok
 
   const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
-    unpackResult(contract.functions.balanceOf(ownerAddress)),
+    convertString(unpackResult(contract.functions.balanceOf(ownerAddress))),
     // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
     tokenData?.symbol ?? unpackResult(contract.functions.symbol()),
     tokenData?.decimals ?? unpackResult(contract.functions.decimals()),

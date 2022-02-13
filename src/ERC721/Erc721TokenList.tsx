@@ -89,7 +89,7 @@ function Erc721TokenList({
   }
 
   if (loading) {
-    return (<ClipLoader css="margin-bottom: 10px;" size={40} color={'#000'} loading={loading} />)
+    return (<ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />)
   }
 
   if (tokens.length === 0) {
@@ -98,7 +98,7 @@ function Erc721TokenList({
 
   const tokenComponents = tokens
   .filter((token) => !filterRegisteredTokens || token.registered)
-  .filter((token) => !filterZeroBalances || ! (String(token.balance) === '0'))
+  .filter((token) => !filterZeroBalances || !(token.balance === '0'))
   .map((token) => (
     <Erc721Token
       key={token.contract.address}

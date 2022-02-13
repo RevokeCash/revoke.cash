@@ -4,7 +4,7 @@ import { OPENSEA_REGISTRY } from '../common/abis'
 import { ADDRESS_ZERO, DUMMY_ADDRESS, DUMMY_ADDRESS_2, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
 import { TokenMapping } from '../common/interfaces'
 import { Allowance } from './interfaces'
-import { addressToAppName as addressToAppNameBase, getDappListName, lookupEnsName, unpackResult, withFallback } from '../common/util'
+import { addressToAppName as addressToAppNameBase, convertString, getDappListName, lookupEnsName, shortenAddress, unpackResult, withFallback } from '../common/util'
 
 export async function getLimitedAllowancesFromApprovals(contract: Contract, approvals: providers.Log[]) {
   const deduplicatedApprovals = approvals
@@ -75,9 +75,9 @@ export async function getTokenData(contract: Contract, ownerAddress: string, tok
   const tokenData = tokenMapping[getAddress(contract.address)]
 
   const [balance, symbol] = await Promise.all([
-    unpackResult(contract.functions.balanceOf(ownerAddress)),
+    withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
     // Use the tokenlist name if present, fall back to '???' since not every NFT has a name
-    tokenData?.name ?? withFallback(unpackResult(contract.functions.name()), '???'),
+    tokenData?.name ?? withFallback(unpackResult(contract.functions.name()), shortenAddress(contract.address)),
     throwIfNotErc721(contract),
   ])
 
@@ -112,6 +112,6 @@ async function throwIfNotErc721(contract: Contract) {
 }
 
 export function formatAllowance(tokenId?: string) {
-  if (!tokenId) return 'all tokens'
-  return `token ID ${tokenId}`
+  if (!tokenId) return 'Unlimited allowance'
+  return `Allowance for token ID ${tokenId}`
 }

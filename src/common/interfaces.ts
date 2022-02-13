@@ -1,11 +1,11 @@
-import { Contract, BigNumber, providers } from 'ethers'
+import { Contract, providers } from 'ethers'
 
 export interface Erc20TokenData {
   contract: Contract
   icon: string
   symbol: string
   decimals: number
-  balance: BigNumber
+  balance: string
   totalSupply: string
   registered: boolean
   approvals: Array<providers.Log>
@@ -15,7 +15,7 @@ export interface Erc721TokenData {
   contract: Contract
   icon: string
   symbol: string
-  balance: BigNumber
+  balance: string
   registered: boolean
   approvals: Array<providers.Log>
   approvalsForAll: Array<providers.Log>

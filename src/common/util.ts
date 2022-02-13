@@ -191,6 +191,8 @@ export const withFallback = async (promise: Promise<any>, fallback: any) => {
   }
 }
 
+export const convertString = async (promise: Promise<any>) => String(await promise)
+
 export const emitAnalyticsEvent = (eventName: string) => {
   if (window && (window as any).sa_event) {
     (window as any).sa_event(eventName)
