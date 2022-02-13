@@ -2,30 +2,33 @@ import React, { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { ClipLoader } from 'react-spinners'
-import { providers, BigNumber, Signer, Contract } from 'ethers'
+import { BigNumber, Contract } from 'ethers'
 import { formatAllowance } from './util'
 import { Erc20TokenData } from '../common/interfaces'
 import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, fromFloat, emitAnalyticsEvent } from '../common/util'
 import RevokeButton from '../common/RevokeButton'
 import UpdateInputGroup from '../common/UpdateInputGroup'
+import { useAccount, useNetwork, useProvider, useSigner } from 'wagmi'
 
 interface Props {
-  signer?: Signer
-  provider: providers.Provider
   spender: string
   allowance: string
   inputAddress: string
-  signerAddress: string
-  chainId: number
   token: Erc20TokenData
   onRevoke: (spender: string) => void;
 }
 
-function Erc20Allowance({ signer, provider, spender, allowance, inputAddress, signerAddress, chainId, token, onRevoke}: Props) {
+function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke}: Props) {
   const [loading, setLoading] = useState<boolean>(true)
   const [ensSpender, setEnsSpender] = useState<string | undefined>()
   const [spenderAppName, setSpenderAppName] = useState<string | undefined>()
   const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>()
+
+  const provider = useProvider()
+  const [{ data: signer }] = useSigner()
+  const [{ data: accountData }] = useAccount()
+  const [{ data: networkData }] = useNetwork()
+  const chainId = networkData?.chain?.id ?? 1
 
   useEffect(() => {
     loadData()
@@ -103,7 +106,7 @@ function Erc20Allowance({ signer, provider, spender, allowance, inputAddress, si
     ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{spenderDisplay}</a>)
     : spenderDisplay
 
-  const canUpdate = inputAddress === signerAddress
+  const canUpdate = inputAddress === accountData?.address
 
   return (
     <Form inline className="Allowance" key={spender}>

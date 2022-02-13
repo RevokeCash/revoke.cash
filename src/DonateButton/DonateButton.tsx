@@ -1,27 +1,30 @@
 import '../App.scss'
-import { Signer, utils } from 'ethers'
-import React, { useState } from 'react'
+import { utils } from 'ethers'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { getNativeToken, getDefaultAmount } from './util'
 import { emitAnalyticsEvent } from '../common/util'
+import { useNetwork, useSigner } from 'wagmi'
 
-interface Props {
-  signer: Signer,
-  chainId: number,
-}
+const DonateButton: React.FC = () => {
+  const [{ data: signer }] = useSigner()
+  const [{ data: networkData}] = useNetwork()
+  const chainId = networkData?.chain?.id ?? 1
 
-const DonateButton: React.FC<Props> = ({ signer, chainId }) => {
   const nativeToken = getNativeToken(chainId)
-
   const [amount, setAmount] = useState<string>(getDefaultAmount(nativeToken))
+
+  useEffect(() => {
+    setAmount(getDefaultAmount(nativeToken))
+  }, [nativeToken])
 
   const [show, setShow] = useState<boolean>(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
   const sendDonation = async () => {
-    if (!signer) {
+    if (!signer || !chainId) {
       alert('Please connect your web3 wallet to donate')
     }
 

@@ -1,4 +1,3 @@
-import { providers, Signer } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { ClipLoader } from 'react-spinners'
 import { Erc20TokenData } from '../common/interfaces'
@@ -9,15 +8,11 @@ import Erc20TokenBalance from './Erc20TokenBalance'
 import { formatAllowance, getAllowancesFromApprovals } from './util'
 
 interface Props {
-  signer?: Signer
-  provider: providers.Provider
-  chainId: number
   token: Erc20TokenData
-  signerAddress: string
   inputAddress: string
 }
 
-function Erc20Token({ signer, provider, chainId, token, signerAddress, inputAddress }: Props) {
+function Erc20Token({ token, inputAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -54,11 +49,7 @@ function Erc20Token({ signer, provider, chainId, token, signerAddress, inputAddr
         decimals={token.decimals}
       />
       <Erc20AllowanceList
-        signer={signer}
-        provider={provider}
         inputAddress={inputAddress}
-        signerAddress={signerAddress}
-        chainId={chainId}
         token={token}
         allowances={allowances}
         onRevoke={(spender) => {

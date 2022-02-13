@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Signer, providers } from 'ethers'
 import { Log } from '@ethersproject/abstract-provider'
 import { TokenMapping } from '../common/interfaces'
 import Erc20TokenList from '../ERC20/Erc20TokenList'
@@ -8,28 +7,22 @@ import { hexZeroPad, Interface } from 'ethers/lib/utils'
 import { ERC721Metadata } from '../common/abis'
 import { getLogs } from '../common/util'
 import { ClipLoader } from 'react-spinners'
+import { useProvider } from 'wagmi'
+import { providers as multicall } from '@0xsequence/multicall'
 
 interface Props {
-  provider: providers.Provider
-  chainId: number
   filterRegisteredTokens: boolean
   filterZeroBalances: boolean
   tokenStandard: string
   tokenMapping?: TokenMapping
-  signer?: Signer
-  signerAddress?: string
   inputAddress?: string
 }
 
 function TokenList({
-  provider,
-  chainId,
   filterRegisteredTokens,
   filterZeroBalances,
   tokenStandard,
   tokenMapping,
-  signer,
-  signerAddress,
   inputAddress,
 }: Props) {
   const [loading, setLoading] = useState<boolean>(true)
@@ -37,12 +30,15 @@ function TokenList({
   const [approvalEvents, setApprovalEvents] = useState<Log[]>()
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>()
 
+  const provider = useProvider()
+
   useEffect(() => {
     loadData()
-  }, [inputAddress])
+  }, [inputAddress, provider])
 
   const loadData = async () => {
-    if (!inputAddress) return;
+    if (!inputAddress) return
+    if (!(provider instanceof multicall.MulticallProvider)) return
 
     const erc721Interface = new Interface(ERC721Metadata)
     const latestBlockNumber = await provider.getBlockNumber()
@@ -85,13 +81,8 @@ function TokenList({
   }
 
   if (tokenStandard === 'ERC20') {
-    console.log('hello')
     return (
       <Erc20TokenList
-        provider={provider}
-        chainId={chainId}
-        signer={signer}
-        signerAddress={signerAddress}
         inputAddress={inputAddress}
         filterRegisteredTokens={filterRegisteredTokens}
         filterZeroBalances={filterZeroBalances}
@@ -103,10 +94,6 @@ function TokenList({
   } else {
     return (
       <Erc721TokenList
-        provider={provider}
-        chainId={chainId}
-        signer={signer}
-        signerAddress={signerAddress}
         inputAddress={inputAddress}
         filterRegisteredTokens={filterRegisteredTokens}
         filterZeroBalances={filterZeroBalances}

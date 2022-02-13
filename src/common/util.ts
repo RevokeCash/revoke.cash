@@ -12,8 +12,8 @@ export function isRegistered(tokenAddress: string, tokenMapping?: TokenMapping):
   return tokenMapping[getAddress(tokenAddress)] !== undefined;
 }
 
-export function shortenAddress(address: string): string {
-  return `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}`
+export function shortenAddress(address?: string): string {
+  return address && `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}`
 }
 
 export function compareBN(a: BigNumberish, b: BigNumberish): number {
@@ -220,3 +220,22 @@ export const getLogs = async (
     return [...left, ...right];
   }
 };
+
+export const parseInputAddress = async (inputAddressOrName: string, provider: providers.Provider): Promise<string | undefined> => {
+  // If the input is an ENS name, validate it, resolve it and return it
+  if (inputAddressOrName.endsWith('.eth')) {
+    try {
+      const address = await provider.resolveName(inputAddressOrName)
+      return address ? address : undefined
+    } catch {
+      return undefined
+    }
+  }
+
+  // If the input is an address, validate it and return it
+  try {
+    return getAddress(inputAddressOrName)
+  } catch {
+    return undefined
+  }
+}

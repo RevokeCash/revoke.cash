@@ -1,4 +1,3 @@
-import { Signer, providers } from 'ethers'
 import React, { useState, useEffect } from 'react'
 import { TokenMapping } from '../common/interfaces'
 import { getFullTokenMapping, isSupportedNetwork } from '../common/util'
@@ -7,31 +6,25 @@ import { ClipLoader } from 'react-spinners'
 import TokenStandardSelection from './TokenStandardSelection'
 import UnregisteredTokensCheckbox from './UnregisteredTokensCheckbox'
 import ZeroBalancesCheckbox from './ZeroBalancesCheckbox'
+import AddressInput from './AddressInput'
+import { useNetwork } from 'wagmi'
 
-interface Props {
-  provider: providers.Provider
-  chainId: number,
-  signer?: Signer
-  signerAddress?: string
-  inputAddress?: string
-}
 
-function Dashboard({
-  provider,
-  chainId,
-  signer,
-  signerAddress,
-  inputAddress,
-}: Props) {
+function Dashboard() {
   const [loading, setLoading] = useState<boolean>(true)
   const [tokenStandard, setTokenStandard] = useState<'ERC20' | 'ERC721'>('ERC20')
   const [includeUnregisteredTokens, setIncludeUnregisteredTokens] = useState<boolean>(false)
   const [includeZeroBalances, setIncludeZeroBalances] = useState<boolean>(false)
   const [tokenMapping, setTokenMapping] = useState<TokenMapping>()
+  const [inputAddress, setInputAddress] = useState<string>()
+
+  const [{ data: networkData }] = useNetwork()
+  const chainId = networkData?.chain?.id ?? 1
+  const networkName = networkData?.chain?.name ?? `Network with chainId ${chainId}`
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [chainId])
 
   const loadData = async () => {
     setLoading(true)
@@ -41,12 +34,8 @@ function Dashboard({
 
   if (!isSupportedNetwork(chainId)) {
     return (
-      <div style={{ paddingBottom: 10 }}>Network with chainId {chainId} is not supported.</div>
+      <div>{networkName} is not supported.</div>
     )
-  }
-
-  if (!inputAddress) {
-    return null;
   }
 
   if (loading) {
@@ -55,15 +44,12 @@ function Dashboard({
 
   return (
     <div className="Dashboard">
+      <AddressInput setInputAddress={setInputAddress} />
       <TokenStandardSelection tokenStandard={tokenStandard} setTokenStandard={setTokenStandard} />
       <UnregisteredTokensCheckbox tokenStandard={tokenStandard} tokenMapping={tokenMapping} checked={includeUnregisteredTokens} update={setIncludeUnregisteredTokens} />
       <ZeroBalancesCheckbox checked={includeZeroBalances} update={setIncludeZeroBalances} />
       <TokenList
-        provider={provider}
-        chainId={chainId}
-        signer={signer}
         tokenStandard={tokenStandard}
-        signerAddress={signerAddress}
         inputAddress={inputAddress}
         filterRegisteredTokens={!includeUnregisteredTokens}
         filterZeroBalances={!includeZeroBalances}

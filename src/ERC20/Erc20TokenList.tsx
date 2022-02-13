@@ -1,4 +1,4 @@
-import { Signer, Contract, providers } from 'ethers'
+import { Contract } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { Log } from '@ethersproject/abstract-provider'
 import React, { useEffect, useState } from 'react'
@@ -8,41 +8,40 @@ import Erc20Token from './Erc20Token'
 import { isRegistered, getTokenIcon, toFloat } from '../common/util'
 import { getTokenData } from './util'
 import { ERC20 } from '../common/abis'
+import { useNetwork, useProvider } from 'wagmi'
+import { providers as multicall } from '@0xsequence/multicall'
 
 interface Props {
-  provider: providers.Provider
-  chainId: number
   filterRegisteredTokens: boolean
   filterZeroBalances: boolean
   transferEvents: Log[]
   approvalEvents: Log[]
   tokenMapping?: TokenMapping
-  signer?: Signer
-  signerAddress?: string
   inputAddress?: string
 }
 
 function Erc20TokenList({
-  provider,
-  chainId,
   filterRegisteredTokens,
   filterZeroBalances,
   transferEvents,
   approvalEvents,
   tokenMapping,
-  signer,
-  signerAddress,
   inputAddress
 }: Props) {
   const [tokens, setTokens] = useState<Erc20TokenData[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
+  const provider = useProvider()
+  const [{ data: networkData }] = useNetwork()
+  const chainId = networkData?.chain?.id ?? 1
+
   useEffect(() => {
     loadData()
-  }, [inputAddress])
+  }, [inputAddress, provider])
 
   const loadData = async () => {
     if (!inputAddress) return
+    if (!(provider instanceof multicall.MulticallProvider)) return
 
     setLoading(true)
 
@@ -94,10 +93,6 @@ function Erc20TokenList({
     <Erc20Token
       key={token.contract.address}
       token={token}
-      signer={signer}
-      provider={provider}
-      chainId={chainId}
-      signerAddress={signerAddress}
       inputAddress={inputAddress}
     />
   ))

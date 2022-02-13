@@ -11,10 +11,10 @@ interface Props {
 
 const UnregisteredTokensCheckbox: React.FC<Props> = ({ tokenStandard, tokenMapping, checked, update }) => {
   // Don't check registration for NFTs
-  if (tokenStandard === 'ERC721') return;
+  if (tokenStandard === 'ERC721') return null;
 
   // If no token data mapping, we hide the checkbox
-  if (!tokenMapping) return
+  if (!tokenMapping) return null
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => update(event.target.checked)
 

@@ -1,4 +1,4 @@
-import { Signer, Contract, providers } from 'ethers'
+import { Contract } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { Log } from '@ethersproject/abstract-provider'
 import React, { useEffect, useState } from 'react'
@@ -8,44 +8,43 @@ import Erc721Token from './Erc721Token'
 import { getTokenIcon } from '../common/util'
 import { getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
+import { useNetwork, useProvider } from 'wagmi'
+import { providers as multicall } from '@0xsequence/multicall'
 
 interface Props {
-  provider: providers.Provider
-  chainId: number
   filterRegisteredTokens: boolean
   filterZeroBalances: boolean
   transferEvents: Log[]
   approvalEvents: Log[]
   approvalForAllEvents: Log[]
   tokenMapping?: TokenMapping
-  signer?: Signer
-  signerAddress?: string
   inputAddress?: string
 }
 
 function Erc721TokenList({
-  provider,
-  chainId,
   filterRegisteredTokens,
   filterZeroBalances,
   transferEvents,
   approvalEvents,
   approvalForAllEvents,
   tokenMapping,
-  signer,
-  signerAddress,
   inputAddress
 }: Props) {
   const [tokens, setTokens] = useState<Erc721TokenData[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [openSeaProxyAddress, setOpenSeaProxyAddress] = useState<string>()
 
+  const provider = useProvider()
+  const [{ data: networkData }] = useNetwork()
+  const chainId = networkData?.chain?.id ?? 1
+
   useEffect(() => {
     loadData()
-  }, [inputAddress])
+  }, [inputAddress, provider])
 
   const loadData = async () => {
     if (!inputAddress) return
+    if (!(provider instanceof multicall.MulticallProvider)) return
 
     setLoading(true)
 
@@ -104,10 +103,6 @@ function Erc721TokenList({
     <Erc721Token
       key={token.contract.address}
       token={token}
-      provider={provider}
-      chainId={chainId}
-      signer={signer}
-      signerAddress={signerAddress}
       inputAddress={inputAddress}
       openSeaProxyAddress={openSeaProxyAddress}
     />

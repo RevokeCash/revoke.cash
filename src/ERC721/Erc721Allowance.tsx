@@ -6,21 +6,24 @@ import { ADDRESS_ZERO } from '../common/constants'
 import RevokeButton from '../common/RevokeButton'
 import { Allowance } from './interfaces'
 import { formatAllowance } from './util'
-import { Contract, providers, Signer } from 'ethers'
+import { Contract } from 'ethers'
+import { useAccount, useNetwork, useProvider, useSigner } from 'wagmi'
 
 interface Props {
-  signer?: Signer
-  provider: providers.Provider
   token: Erc721TokenData
   allowance: Allowance
   inputAddress: string
-  signerAddress: string
-  chainId: number
   onRevoke: (allowance: Allowance) => void;
 }
 
-function Erc721Allowance({ signer, provider, token, allowance, inputAddress, signerAddress, chainId, onRevoke }: Props) {
+function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
   const { spender, ensSpender, spenderAppName, tokenId } = allowance
+
+  const provider = useProvider()
+  const [{ data: signer }] = useSigner()
+  const [{ data: accountData }] = useAccount()
+  const [{ data: networkData }] = useNetwork()
+  const chainId = networkData?.chain?.id ?? 1
 
   const revoke = async () => {
     const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider)
@@ -61,7 +64,7 @@ function Erc721Allowance({ signer, provider, token, allowance, inputAddress, sig
     ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{spenderDisplay}</a>)
     : spenderDisplay
 
-  const canUpdate = inputAddress === signerAddress
+  const canUpdate = inputAddress === accountData?.address
 
   return (
     <Form inline className="Allowance" key={spender}>
