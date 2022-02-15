@@ -66,7 +66,7 @@ a:visited {
 
 .Token {
   text-align: left;
-  padding: 3px;
+  margin: 10px;
 }
 
 .TokenBalance {
@@ -79,14 +79,16 @@ a:visited {
 }
 
 .AllowanceList {
+  margin-top: 2px;
   padding-left: 20px;
 }
 
 .Allowance {
-  margin-bottom: 2px;
+  margin-bottom: 5px;
 }
 
 .AllowanceText {
+  margin-bottom: 2px;
   margin-right: 5px;
 }
 
