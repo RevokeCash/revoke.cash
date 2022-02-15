@@ -43,6 +43,9 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
   // // Do not render tokens without balance or allowances
   if (token.balance === '0' && allowances.length === 0) return null
 
+  // // Do not render ERC1155 tokens without allowances
+  if (token.balance === 'ERC1155' && allowances.length === 0) return null
+
   if (loading) {
     return (<div className="Token"><ClipLoader size={20} color={'#000'} loading={loading} /></div>)
   }
