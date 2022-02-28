@@ -1,16 +1,17 @@
-import './App.scss'
 import 'react-toastify/dist/ReactToastify.css'
+
 import axios from 'axios'
 import { providers } from 'ethers'
 import React, { useEffect, useState } from 'react'
-import Dashboard from './Dashboard/Dashboard'
+import Dashboard from 'components/Dashboard/Dashboard'
 import { Container } from 'react-bootstrap'
-import { emitAnalyticsEvent } from './common/util'
+import { emitAnalyticsEvent } from 'components/common/util'
 import { providers as multicall } from '@0xsequence/multicall'
-import Footer from './Footer/Footer'
-import Header from './Header/Header'
+import Footer from 'components/Footer/Footer'
+import Header from 'components/Header/Header'
 import { WagmiProvider, InjectedConnector } from 'wagmi'
-import { displayGitcoinToast } from './common/gitcoin-toast'
+import { displayGitcoinToast } from 'components/common/gitcoin-toast'
+import { NextPage } from 'next'
 
 declare let window: {
   ethereum?: any
@@ -18,7 +19,7 @@ declare let window: {
   location: any
 }
 
-const App = () => {
+const App: NextPage = () => {
   // Manage a provider separately from wagmi so that we can use the same multicall provider in the entire app
   const [provider, setProvider] = useState<multicall.MulticallProvider>()
 

@@ -1,4 +1,3 @@
-import '../App.scss'
 import { utils } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
