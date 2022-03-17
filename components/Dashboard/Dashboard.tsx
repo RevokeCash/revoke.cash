@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TokenMapping } from '../common/interfaces'
-import { getFullTokenMapping, isSupportedNetwork } from '../common/util'
+import { getFullTokenMapping, isBackendSupportedNetwork, isNativeSupportedNetwork } from '../common/util'
 import TokenList from './TokenList'
 import { ClipLoader } from 'react-spinners'
 import TokenStandardSelection from './TokenStandardSelection'
@@ -8,6 +8,7 @@ import UnregisteredTokensCheckbox from './UnregisteredTokensCheckbox'
 import ZeroBalancesCheckbox from './ZeroBalancesCheckbox'
 import AddressInput from './AddressInput'
 import { useNetwork } from 'wagmi'
+import axios from 'axios'
 
 
 function Dashboard() {
@@ -28,11 +29,12 @@ function Dashboard() {
 
   const loadData = async () => {
     setLoading(true)
+    await axios.post('/api/login')
     setTokenMapping(await getFullTokenMapping(chainId))
     setLoading(false)
   }
 
-  if (!isSupportedNetwork(chainId)) {
+  if (!isNativeSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
     return (
       <div>{networkName} is not supported.</div>
     )
