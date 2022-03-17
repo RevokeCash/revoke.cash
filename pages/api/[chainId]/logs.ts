@@ -5,8 +5,8 @@ import rateLimit from 'express-rate-limit';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import { getAddress } from 'ethers/lib/utils';
-import async from 'async';
 import requestIp from 'request-ip';
+import PQueue from 'p-queue';
 import { IRON_OPTIONS } from 'components/common/constants';
 import { splitBlockRangeInChunks } from 'components/common/util';
 
@@ -14,6 +14,9 @@ const rateLimiter = rateLimit({
   windowMs: 1 * 1000, // 1s
   max: 10, // 10 requests
 });
+
+// Set up a shared queue that limits the global number of requests sent to Covalent to 5 (API rate limit)
+const queue = new PQueue({ concurrency: 5 });
 
 const handler = nc<NextApiRequest, NextApiResponse>()
   .use(requestIp.mw({ attributeName: 'ip' }))
@@ -31,13 +34,16 @@ const handler = nc<NextApiRequest, NextApiResponse>()
   })
 
 // TODO: Currently works with up to 2 topics (and doesn't take topic position into account)
-// TODO: Improve concurrency without running into rate limits
 const getAllEventsFromCovalent = async (chainId: string, filter: Filter) => {
   const blockRangeChunks = splitBlockRangeInChunks([[filter.fromBlock as number, filter.toBlock as number]], 1e6);
-  const results = (await async.mapLimit(blockRangeChunks, 5, async ([from, to]) => (
-    getEventsFromCovalent(chainId, from, to, filter.topics as string[])
-  ))).flat();
-  return results
+
+  const results = await queue.addAll(
+    blockRangeChunks.map(([from, to]) => (
+      () => getEventsFromCovalent(chainId, from, to, filter.topics as string[])
+    ))
+  )
+
+  return results.flat()
 }
 
 const getEventsFromCovalent = async (chainId: string, fromBlock: number, toBlock: number, topics: string[]) => {
