@@ -91,7 +91,6 @@ export function getDappListName(chainId: number): string | undefined {
     100: 'xdai',
     122: 'fuse',
     137: 'matic',
-    1088: 'metis',
     10000: 'smartbch',
     42161: 'arbitrum',
     43114: 'avalanche',
@@ -100,9 +99,19 @@ export function getDappListName(chainId: number): string | undefined {
   return mapping[chainId]
 }
 
-export function isSupportedNetwork(chainId: number): boolean {
-  // Supported for now are only ETH, xDAI, SmartBCH, Arbitrum, Metis & AVAX. Other chains fail on the RPC calls.
-  const supportedNetworks = [1, 3, 4, 5, 42, 100, 122, 1088, 10000, 42161, 43113, 43114]
+// TODO: Optimism, Celo, Cronos, Boba, ETC, Theta, Harmony, BTT, (ThunderCore), (Fuse), (EWT), (KCC),
+// (Fusion), (CoinEx Chain), (Syscoin), (GoChain), (Okex Chain), (Wanchain), (POA)
+// TODO (hard): Terra, Solana, Cardano, Polkadot, Kusama, Cosmos, Near, Tron, ICP, Tezos, Flow,
+
+export function isNativeSupportedNetwork(chainId: number): boolean {
+  // ETH, Ropsten, Rinkeby, Goerli, Kovan, xDAI, Metis, SmartBCH, Arbitrum
+  const supportedNetworks = [1, 3, 4, 5, 40, 42, 100, 122, 1088, 10000, 42161]
+  return supportedNetworks.includes(chainId);
+}
+
+export function isBackendSupportedNetwork(chainId: number): boolean {
+  // RSK, BSC, HECO, Polygon, Fantom, Shiden, Moonbeam, Moonriver, Iotex, Klaytn, Evmos, Avalanche, (Palm)
+  const supportedNetworks = [30, 56, 128, 137, 250, 336, 1284, 1285, 4689, 8217, 9001, 43114, 11297108109]
   return supportedNetworks.includes(chainId);
 }
 
@@ -208,6 +217,20 @@ export const getLogs = async (
   provider: providers.Provider,
   baseFilter: Filter,
   fromBlock: number,
+  toBlock: number,
+  chainId: number
+): Promise<Log[]> => {
+  if (isNativeSupportedNetwork(chainId)) {
+    return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock)
+  }
+
+  return getLogsFromBackend(chainId, { ...baseFilter, fromBlock, toBlock })
+};
+
+export const getLogsFromProvider = async (
+  provider: providers.Provider,
+  baseFilter: Filter,
+  fromBlock: number,
   toBlock: number
 ): Promise<Log[]> => {
   const filter = { ...baseFilter, fromBlock, toBlock };
@@ -215,18 +238,23 @@ export const getLogs = async (
     const result = await provider.getLogs(filter);
     return result;
   } catch (error) {
-    const errorMessage = error?.error?.message ?? error?.message;
+    const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
     if (errorMessage !== 'query returned more than 10000 results') {
       throw error;
     }
 
     const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
-    const leftPromise = getLogs(provider, baseFilter, fromBlock, middle);
-    const rightPromise = getLogs(provider, baseFilter, middle + 1, toBlock);
+    const leftPromise = getLogsFromProvider(provider, baseFilter, fromBlock, middle);
+    const rightPromise = getLogsFromProvider(provider, baseFilter, middle + 1, toBlock);
     const [left, right] = await Promise.all([leftPromise, rightPromise]);
     return [...left, ...right];
   }
 };
+
+export const getLogsFromBackend = async (chainId: number, filter: Filter): Promise<Log[]> => {
+  const { data } = await axios.post(`/api/${chainId}/logs/`, filter)
+  return data
+}
 
 export const parseInputAddress = async (inputAddressOrName: string, provider: providers.Provider): Promise<string | undefined> => {
   // If the input is an ENS name, validate it, resolve it and return it
@@ -246,3 +274,11 @@ export const parseInputAddress = async (inputAddressOrName: string, provider: pr
     return undefined
   }
 }
+
+export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] => (
+  chunks.flatMap(([from, to]) => (
+    to - from < chunkSize
+      ? [[from, to]]
+      : splitBlockRangeInChunks([[from, from + chunkSize - 1], [from + chunkSize, to]], chunkSize)
+  ))
+)
