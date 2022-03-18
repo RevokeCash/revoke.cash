@@ -6,7 +6,7 @@ interface Props {
   update: (checked: boolean) => void
 }
 
-const UnregisteredTokensCheckbox: React.FC<Props> = ({ checked, update }) => {
+const ZeroBalancesCheckbox: React.FC<Props> = ({ checked, update }) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => update(event.target.checked)
 
   return (
@@ -17,4 +17,4 @@ const UnregisteredTokensCheckbox: React.FC<Props> = ({ checked, update }) => {
   )
 }
 
-export default UnregisteredTokensCheckbox
+export default ZeroBalancesCheckbox

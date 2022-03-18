@@ -4,7 +4,7 @@ import { getFullTokenMapping, isBackendSupportedNetwork, isNativeSupportedNetwor
 import TokenList from './TokenList'
 import { ClipLoader } from 'react-spinners'
 import TokenStandardSelection from './TokenStandardSelection'
-import UnregisteredTokensCheckbox from './UnregisteredTokensCheckbox'
+import UnverifiedTokensCheckbox from './UnverifiedTokensCheckbox'
 import ZeroBalancesCheckbox from './ZeroBalancesCheckbox'
 import AddressInput from './AddressInput'
 import { useNetwork } from 'wagmi'
@@ -14,7 +14,7 @@ import axios from 'axios'
 function Dashboard() {
   const [loading, setLoading] = useState<boolean>(true)
   const [tokenStandard, setTokenStandard] = useState<'ERC20' | 'ERC721'>('ERC20')
-  const [includeUnregisteredTokens, setIncludeUnregisteredTokens] = useState<boolean>(false)
+  const [includeUnverifiedTokens, setIncludeVerifiedTokens] = useState<boolean>(false)
   const [includeZeroBalances, setIncludeZeroBalances] = useState<boolean>(false)
   const [tokenMapping, setTokenMapping] = useState<TokenMapping>()
   const [inputAddress, setInputAddress] = useState<string>()
@@ -48,12 +48,12 @@ function Dashboard() {
     <div className="Dashboard">
       <AddressInput setInputAddress={setInputAddress} />
       <TokenStandardSelection tokenStandard={tokenStandard} setTokenStandard={setTokenStandard} />
-      <UnregisteredTokensCheckbox tokenStandard={tokenStandard} tokenMapping={tokenMapping} checked={includeUnregisteredTokens} update={setIncludeUnregisteredTokens} />
+      <UnverifiedTokensCheckbox tokenStandard={tokenStandard} tokenMapping={tokenMapping} checked={includeUnverifiedTokens} update={setIncludeVerifiedTokens} />
       <ZeroBalancesCheckbox checked={includeZeroBalances} update={setIncludeZeroBalances} />
       <TokenList
         tokenStandard={tokenStandard}
         inputAddress={inputAddress}
-        filterRegisteredTokens={!includeUnregisteredTokens}
+        filterUnverifiedTokens={!includeUnverifiedTokens}
         filterZeroBalances={!includeZeroBalances}
         tokenMapping={tokenMapping}
       />

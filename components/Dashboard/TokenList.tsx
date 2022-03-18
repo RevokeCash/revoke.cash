@@ -11,7 +11,7 @@ import { useNetwork, useProvider } from 'wagmi'
 import { providers as multicall } from '@0xsequence/multicall'
 
 interface Props {
-  filterRegisteredTokens: boolean
+  filterUnverifiedTokens: boolean
   filterZeroBalances: boolean
   tokenStandard: string
   tokenMapping?: TokenMapping
@@ -19,7 +19,7 @@ interface Props {
 }
 
 function TokenList({
-  filterRegisteredTokens,
+  filterUnverifiedTokens,
   filterZeroBalances,
   tokenStandard,
   tokenMapping,
@@ -98,7 +98,7 @@ function TokenList({
     return (
       <Erc20TokenList
         inputAddress={inputAddress}
-        filterRegisteredTokens={filterRegisteredTokens}
+        filterUnverifiedTokens={filterUnverifiedTokens}
         filterZeroBalances={filterZeroBalances}
         tokenMapping={tokenMapping}
         transferEvents={transferEvents}
@@ -109,7 +109,7 @@ function TokenList({
     return (
       <Erc721TokenList
         inputAddress={inputAddress}
-        filterRegisteredTokens={filterRegisteredTokens}
+        filterUnverifiedTokens={filterUnverifiedTokens}
         filterZeroBalances={filterZeroBalances}
         tokenMapping={tokenMapping}
         transferEvents={transferEvents}
