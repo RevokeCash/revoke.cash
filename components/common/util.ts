@@ -5,9 +5,9 @@ import { getAddress } from 'ethers/lib/utils'
 import { DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
-// Check if a token is registered in the token mapping
-export function isRegistered(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
-  // If we don't know a registered token mapping, we skip checking registration
+// Check if a token is verified in the token mapping
+export function isVerified(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
+  // If we don't know a verified token mapping, we skip checking verification
   if (!tokenMapping) return true
   return tokenMapping[getAddress(tokenAddress)] !== undefined;
 }
