@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { ClipLoader } from 'react-spinners'
 import { Erc20TokenData } from '../common/interfaces'
 import { Allowance } from './interfaces'
-import { compareBN, toFloat } from '../common/util'
+import { compareBN, getExplorerUrl, toFloat } from '../common/util'
 import Erc20AllowanceList from './Erc20AllowanceList'
 import Erc20TokenBalance from './Erc20TokenBalance'
 import { formatAllowance, getAllowancesFromApprovals } from './util'
+import { useNetwork } from 'wagmi'
 
 interface Props {
   token: Erc20TokenData
@@ -15,6 +16,9 @@ interface Props {
 function Erc20Token({ token, inputAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+
+  const [{ data: networkData }] = useNetwork()
+  const chainId = networkData?.chain?.id ?? 1
 
   useEffect(() => {
     loadData()
@@ -40,6 +44,8 @@ function Erc20Token({ token, inputAddress }: Props) {
     return (<div className="Token"><ClipLoader size={20} color={'#000'} loading={loading} /></div>)
   }
 
+  const explorerUrl = `${getExplorerUrl(chainId)}/${token.contract.address}`
+
   return (
     <div className="Token">
       <Erc20TokenBalance
@@ -47,6 +53,7 @@ function Erc20Token({ token, inputAddress }: Props) {
         icon={token.icon}
         balance={token.balance}
         decimals={token.decimals}
+        explorerUrl={explorerUrl}
       />
       <Erc20AllowanceList
         inputAddress={inputAddress}
