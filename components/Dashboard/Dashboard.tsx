@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TokenMapping } from '../common/interfaces'
-import { getFullTokenMapping, isBackendSupportedNetwork, isNativeSupportedNetwork } from '../common/util'
+import { getFullTokenMapping, isBackendSupportedNetwork, isProviderSupportedNetwork } from '../common/util'
 import TokenList from './TokenList'
 import { ClipLoader } from 'react-spinners'
 import TokenStandardSelection from './TokenStandardSelection'
@@ -34,7 +34,7 @@ function Dashboard() {
     setLoading(false)
   }
 
-  if (!isNativeSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
+  if (!isProviderSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
     return (
       <div>{networkName} is not supported.</div>
     )

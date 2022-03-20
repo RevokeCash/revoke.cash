@@ -103,13 +103,17 @@ export function getDappListName(chainId: number): string | undefined {
 // (Fusion), (CoinEx Chain), (Syscoin), (GoChain), (Okex Chain), (Wanchain), (POA)
 // TODO (hard): Terra, Solana, Cardano, Polkadot, Kusama, Cosmos, Near, Tron, ICP, Tezos, Flow,
 
-export function isNativeSupportedNetwork(chainId: number): boolean {
+export function isProviderSupportedNetwork(chainId: number): boolean {
   // ETH, Ropsten, Rinkeby, Goerli, Kovan, xDAI, Metis, SmartBCH, Arbitrum
   const supportedNetworks = [1, 3, 4, 5, 40, 42, 100, 122, 1088, 10000, 42161]
   return supportedNetworks.includes(chainId);
 }
 
 export function isBackendSupportedNetwork(chainId: number): boolean {
+  return isCovalentSupportedNetwork(chainId)
+}
+
+export function isCovalentSupportedNetwork(chainId: number): boolean {
   // RSK, BSC, HECO, Polygon, Fantom, Shiden, Moonbeam, Moonriver, Iotex, Klaytn, Evmos, Avalanche, (Palm)
   const supportedNetworks = [30, 56, 128, 137, 250, 336, 1284, 1285, 4689, 8217, 9001, 43114, 11297108109]
   return supportedNetworks.includes(chainId);
@@ -220,7 +224,7 @@ export const getLogs = async (
   toBlock: number,
   chainId: number
 ): Promise<Log[]> => {
-  if (isNativeSupportedNetwork(chainId)) {
+  if (isProviderSupportedNetwork(chainId)) {
     return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock)
   }
 
