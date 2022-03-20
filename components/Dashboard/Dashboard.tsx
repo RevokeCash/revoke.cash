@@ -29,7 +29,7 @@ function Dashboard() {
 
   const loadData = async () => {
     setLoading(true)
-    await axios.post('/api/login')
+    if (isBackendSupportedNetwork(chainId)) await axios.post('/api/login')
     setTokenMapping(await getFullTokenMapping(chainId))
     setLoading(false)
   }

@@ -69,9 +69,15 @@ function Erc20TokenList({
       })
     )
 
-    // Filter undefined tokens and sort tokens alphabetically on token symbol
+    const hasBalanceOrApprovals = (token: Erc20TokenData) => (
+      token.approvals.length > 0 || toFloat(Number(token.balance), token.decimals) !== '0.000'
+    );
+
+    // Filter undefined tokens, filter tokens without balance or approvals
+    //  and sort tokens alphabetically on token symbol
     const sortedTokens = unsortedTokens
       .filter((token) => token !== undefined)
+      .filter(hasBalanceOrApprovals)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
     setTokens(sortedTokens)

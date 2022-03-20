@@ -11,7 +11,9 @@ This repository also includes the [`dapp-contract-list`](/public/dapp-contract-l
 - `https://raw.githubusercontent.com/rkalis/revoke.cash/master/public/dapp-contract-list/{chain}/{address}.json`
 - `https://revoke.cash/dapp-contract-list/{chain}/{address}.json`
 
-Revoke.cash currently only works for Ethereum (mainnet and testnets), Arbitrum, xDAI, Avalanche and SmartBCH.
+Revoke.cash natively supports Ethereum (mainnet and testnets), Arbitrum, Gnosis Chain, Telos, Metis and SmartBCH.
+
+It also supports Avalanche, Polygon, BSC, RSK, Fantom, HECO, Moonbeam, Moonriver, Shiden, Iotex, Klaytn, Evmos and Palm through a backend integration with CovalentHQ. Performance for these chains may be slower due to rate limits.
 
 If you want to learn more about (unlimited) ERC20 allowances, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 
@@ -20,8 +22,10 @@ If you want to learn more about (unlimited) ERC20 allowances, I wrote an article
 git clone git@github.com:rkalis/revoke.cash.git
 cd revoke.cash
 yarn
-yarn start
+yarn dev
 ```
 
+If you want to use the extended multichain support through CovalentHQ, you'll also need to copy the `.example.env` file into `.env` and fill it with a random 32-character `IRON_SESSION_PASSWORD` and a `COVALENT_API_KEY` that you can request on their website.
+
 ## Credits
-Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [wagmi](https://github.com/tmm/wagmi) and [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations. Filters out unverified tokens using tokenlists. Built with React, Bootstrap and TypeScript.
+Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [wagmi](https://github.com/tmm/wagmi) and [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations and [CovalentHQ](https://www.covalenthq.com/) for extended multichain support. Filters out unverified tokens using tokenlists. Built with Next.js, Bootstrap and TypeScript.
