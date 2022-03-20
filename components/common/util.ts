@@ -62,13 +62,18 @@ export function getExplorerUrl(chainId: number): string | undefined {
     99: 'https://blockscout.com/poa/core/address',
     100: 'https://blockscout.com/poa/xdai/address',
     122: 'https://explorer.fuse.io/address',
-    137: 'https://explorer-mainnet.maticvigil.com/address',
+    128: 'https://hecoinfo.com/address',
+    137: 'https://polygonscan.com/address',
+    250: 'https://ftmscan.com/address',
     1088: 'https://andromeda-explorer.metis.io/address',
+    1284: 'https://moonbeam.moonscan.io/address',
+    1285: 'https://moonriver.moonscan.io/address',
     10000: 'https://smartscan.cash/address',
     42161: 'https://arbiscan.io/address',
-    43113: 'https://cchain.explorer.avax-test.network/address',
-    43114: 'https://cchain.explorer.avax.network/address',
-    80001: 'https://explorer-mumbai.maticvigil.com/address'
+    43113: 'https://snowtrace.io/address',
+    43114: 'https://testnet.snowtrace.io/address',
+    80001: 'https://mumbai.polygonscan.com/address',
+    11297108109: 'https://explorer.palm.io/address',
   }
 
   return mapping[chainId]
@@ -132,8 +137,6 @@ export async function getFullTokenMapping(chainId: number): Promise<TokenMapping
 async function getTokenMapping(chainId: number, standard: TokenStandard = 'ERC20'): Promise<TokenMapping | undefined> {
   const url = getTokenListUrl(chainId, standard)
 
-  if (!url) return undefined
-
   try {
     const res = await axios.get(url)
     const tokens: TokenFromList[] = res.data.tokens
@@ -145,21 +148,29 @@ async function getTokenMapping(chainId: number, standard: TokenStandard = 'ERC20
 
     return tokenMapping
   } catch {
-    return undefined
+    // Fallback to 1inch token mapping
+    return getTokenMappingFrom1inch(chainId)
+  }
+}
+
+async function getTokenMappingFrom1inch(chainId: number): Promise<TokenMapping | undefined> {
+  try {
+    const { data: mapping } = await axios.get(`https://tokens.1inch.io/v1.1/${chainId}`);
+
+    const tokenMapping = Object.fromEntries(
+      Object.entries(mapping).map(([address, token]) => [getAddress(address), token])
+    )
+
+    return tokenMapping as TokenMapping;
+  } catch {
+    return undefined;
   }
 }
 
 function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): string | undefined {
   const mapping = {
     ERC20: {
-      1: 'https://uniswap.mycryptoapi.com/',
-      10: 'https://static.optimism.io/optimism.tokenlist.json',
-      56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
-      100: 'https://tokens.honeyswap.org',
-      137: 'https://unpkg.com/quickswap-default-token-list@1.0.28/build/quickswap-default.tokenlist.json',
       1088: 'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
-      42161: 'https://bridge.arbitrum.io/token-list-42161.json',
-      43114: 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
     },
     ERC721: {
       1: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
