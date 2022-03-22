@@ -12,6 +12,7 @@
     "@0xsequence/multicall": "^0.36.4",
     "@openzeppelin/contracts": "^4.5.0",
     "axios": "^0.26.0",
+    "axios-retry": "^3.2.4",
     "bootstrap": "^4.5.0",
     "ethers": "^5.5.4",
     "express-rate-limit": "^6.3.0",

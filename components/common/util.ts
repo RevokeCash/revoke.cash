@@ -267,7 +267,7 @@ export const getLogsFromProvider = async (
 };
 
 export const getLogsFromBackend = async (chainId: number, filter: Filter): Promise<Log[]> => {
-  const { data } = await axios.post(`/api/${chainId}/logs/`, filter)
+  const { data } = await axios.post(`/api/${chainId}/logs`, filter)
   return data
 }
 
