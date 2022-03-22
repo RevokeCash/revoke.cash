@@ -7,6 +7,8 @@ import PQueue from 'p-queue';
 import { IRON_OPTIONS } from 'components/common/constants';
 import { getAllEventsFromCovalent } from 'utils/logs/covalent';
 import { isCovalentSupportedNetwork } from 'components/common/util';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 const rateLimiter = rateLimit({
   windowMs: 1 * 1000, // 1s
@@ -15,6 +17,7 @@ const rateLimiter = rateLimit({
 
 // Set up a shared queue that limits the global number of requests sent to Covalent to 5 (API rate limit)
 const queue = new PQueue({ concurrency: 5 });
+axiosRetry(axios, { retries: 3 });
 
 const handler = nc<NextApiRequest, NextApiResponse>()
   .use(requestIp.mw({ attributeName: 'ip' }))
