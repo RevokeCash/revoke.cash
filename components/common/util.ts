@@ -284,7 +284,7 @@ export const parseInputAddress = async (inputAddressOrName: string, provider: pr
 
   // If the input is an address, validate it and return it
   try {
-    return getAddress(inputAddressOrName)
+    return getAddress(inputAddressOrName.toLowerCase())
   } catch {
     return undefined
   }

@@ -30,8 +30,6 @@ function Erc20TokenList({
   const [tokens, setTokens] = useState<Erc20TokenData[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  console.log(approvalEvents, transferEvents)
-
   const provider = useProvider()
   const [{ data: networkData }] = useNetwork()
   const chainId = networkData?.chain?.id ?? 1
