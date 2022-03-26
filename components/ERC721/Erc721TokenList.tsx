@@ -1,4 +1,4 @@
-import { Contract } from 'ethers'
+import { Contract, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { Log } from '@ethersproject/abstract-provider'
 import React, { useEffect, useState } from 'react'
@@ -9,7 +9,6 @@ import { getTokenIcon } from '../common/util'
 import { getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
 import { useNetwork, useProvider } from 'wagmi'
-import { providers as multicall } from '@0xsequence/multicall'
 
 interface Props {
   filterUnverifiedTokens: boolean
@@ -44,7 +43,7 @@ function Erc721TokenList({
 
   const loadData = async () => {
     if (!inputAddress) return
-    if (!(provider instanceof multicall.MulticallProvider)) return
+    if (provider instanceof providers.FallbackProvider) return
 
     setLoading(true)
 

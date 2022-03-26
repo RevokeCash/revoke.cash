@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 import { emitAnalyticsEvent, parseInputAddress } from '../common/util'
 import { useAccount, useProvider } from 'wagmi'
+import { FallbackProvider } from 'ethers/node_modules/@ethersproject/providers'
 
 interface Props {
   setInputAddress: (inputAddress: string) => void
@@ -28,9 +29,9 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
   }, [inputAddressOrName])
 
   const handleFormInputChanged = async (event: ChangeEvent<HTMLInputElement>) => {
-      // If no provider is set, this means that the browser is not web3 enabled
+    // If no provider is set, this means that the browser is not web3 enabled
     // and the fallback Infura provider is currently rate-limited
-    if (!provider) {
+    if (!provider || provider instanceof FallbackProvider) {
       alert('Please use a web3 enabled browser to use revoke.cash')
       return
     }
