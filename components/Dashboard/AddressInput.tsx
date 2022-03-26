@@ -52,9 +52,8 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
 
   return (
     <Row>
-      <Col></Col>
-      <Col className="my-auto" lg="6" md="12" sm="12">
-        <Form.Group>
+      <Col className="my-auto">
+        <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <Form.Control
             className="AddressInput text-center"
             placeholder="Enter Ethereum address or ENS name"
@@ -64,7 +63,6 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
           ></Form.Control>
         </Form.Group>
       </Col>
-      <Col></Col>
     </Row>
   )
 }

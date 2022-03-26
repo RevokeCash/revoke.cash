@@ -54,24 +54,21 @@ a:visited {
   color: black;
   font-size: 1.2rem;
   font-weight: 500;
+  max-width: 800px;
+  width: 100%;
 }
 
 @media (max-width: 600px) {
   .AddressInput {
     font-size: 1rem;
-    font-weight: 400;
   }
 }
 
 .TokenList {
   padding: 10px;
-}
-
-@media (min-width: 1200px) {
-  .TokenList {
-    width: 80%;
-    margin: auto;
-  }
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
 }
 
 .Token {
@@ -139,15 +136,6 @@ a:visited {
   .input-group-sm {
     width: 10rem;
   }
-}
-
-// Around 850px the full address doesn't fit on the screen any more,
-// so we move to a shortened version of the address
-.AllowanceTextSmallScreen { display: none; }
-.AllowanceTextBigScreen { display: inline; }
-@media (max-width: 850px) {
-  .AllowanceTextSmallScreen { display: inline; }
-  .AllowanceTextBigScreen { display: none; }
 }
 
 .only-mobile { display: none; }
