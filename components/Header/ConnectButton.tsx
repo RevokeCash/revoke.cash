@@ -12,7 +12,7 @@ const ConnectButton: React.FC = () => {
   const buttonText = accountData?.ens?.name ?? shortenAddress(accountData?.address) ?? 'Connect wallet'
 
   return (
-    <Button style={{ float: 'right' }} variant="outline-primary" onClick={() => connect(connectData.connectors[0])}>{buttonText}</Button>
+    <Button variant="outline-primary" onClick={() => connect(connectData.connectors[0])}>{buttonText}</Button>
   )
 }
 

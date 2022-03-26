@@ -5,16 +5,22 @@ import ConnectButton from './ConnectButton';
 
 const Header: React.FC = () => {
   return (
-    <Row className="Header">
-      <Col className="my-auto">
-        <div className="only-mobile" style={{ float: 'left' }}><DonateButton /></div>
-      </Col>
-      <Col className="my-auto"><img className="logo" src="/revoke.svg" alt="revoke.cash logo"/></Col>
-      <Col className="my-auto">
-        <ConnectButton />
-        <div className="only-desktop" style={{ float: 'right', marginRight: '10px' }}><DonateButton /></div>
-      </Col>
-    </Row>
+    <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+      <Row>
+        <Col className="my-auto only-desktop" />
+        <Col className="my-auto"><img className="logo" src="/revoke.svg" alt="revoke.cash logo"/></Col>
+        <Col className="my-auto only-desktop-flex" style={{ justifyContent: 'end', gap: '10px' }}>
+          <DonateButton />
+          <ConnectButton />
+        </Col>
+      </Row>
+      <Row>
+        <Col className="my-auto only-mobile-flex" style={{ justifyContent: 'center', gap: '10px', paddingTop: '10px', paddingBottom: '10px' }}>
+          <DonateButton />
+          <ConnectButton />
+        </Col>
+      </Row>
+    </div>
   )
 }
 
