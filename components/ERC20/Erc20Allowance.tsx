@@ -113,11 +113,11 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke}: Pr
       {/* Display separate spans for the regular and shortened versions of the spender address */}
       {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">
-        <span className="AllowanceTextSmallScreen">
+        <span className="only-mobile-inline">
           {formatAllowance(updatedAllowance ?? allowance, token.decimals, token.totalSupply)} allowance to&nbsp;{shortenedLink}
         </span>
 
-        <span className="AllowanceTextBigScreen">
+        <span className="only-desktop-inline">
           {formatAllowance(updatedAllowance ?? allowance, token.decimals, token.totalSupply)} allowance to&nbsp;{regularLink}
         </span>
       </Form.Label>
