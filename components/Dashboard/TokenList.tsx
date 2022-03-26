@@ -8,7 +8,7 @@ import { ERC721Metadata } from '../common/abis'
 import { getLogs } from '../common/util'
 import { ClipLoader } from 'react-spinners'
 import { useNetwork, useProvider } from 'wagmi'
-import { providers as multicall } from '@0xsequence/multicall'
+import { providers } from 'ethers'
 
 interface Props {
   filterUnverifiedTokens: boolean
@@ -31,10 +31,9 @@ function TokenList({
   const [approvalEvents, setApprovalEvents] = useState<Log[]>()
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>()
 
+  const provider = useProvider()
   const [{ data: networkData }] = useNetwork()
   const chainId = networkData?.chain?.id ?? 1
-
-  const provider = useProvider()
 
   useEffect(() => {
     loadData()
@@ -43,12 +42,12 @@ function TokenList({
   const loadData = async () => {
     try {
       if (!inputAddress) return
-      if (!(provider instanceof multicall.MulticallProvider)) return
+      if (provider instanceof providers.FallbackProvider) return
+
+      setLoading(true)
 
       const erc721Interface = new Interface(ERC721Metadata)
       const latestBlockNumber = await provider.getBlockNumber()
-
-      setLoading(true);
 
       // NOTE: The Transfer and Approval events have a similar signature for ERC20 and ERC721
       // and the ApprovalForAll event has a similar signature for ERC721 and ERC1155

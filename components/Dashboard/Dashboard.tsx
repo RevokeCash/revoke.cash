@@ -7,8 +7,9 @@ import TokenStandardSelection from './TokenStandardSelection'
 import UnverifiedTokensCheckbox from './UnverifiedTokensCheckbox'
 import ZeroBalancesCheckbox from './ZeroBalancesCheckbox'
 import AddressInput from './AddressInput'
-import { useNetwork } from 'wagmi'
+import { useNetwork, useProvider } from 'wagmi'
 import axios from 'axios'
+import { FallbackProvider } from '@ethersproject/providers'
 
 
 function Dashboard() {
@@ -19,18 +20,25 @@ function Dashboard() {
   const [tokenMapping, setTokenMapping] = useState<TokenMapping>()
   const [inputAddress, setInputAddress] = useState<string>()
 
+  const provider = useProvider()
   const [{ data: networkData }] = useNetwork()
   const chainId = networkData?.chain?.id ?? 1
   const networkName = networkData?.chain?.name ?? `Network with chainId ${chainId}`
 
   useEffect(() => {
     loadData()
-  }, [chainId])
+  }, [provider])
 
   const loadData = async () => {
+    if (provider instanceof FallbackProvider) return
+
     setLoading(true)
-    if (isBackendSupportedNetwork(chainId)) await axios.post('/api/login')
-    setTokenMapping(await getFullTokenMapping(chainId))
+
+    // Use the provider's chain ID to prevent concurrency issues
+    const { chainId: chainIdFromProvider } = await provider.getNetwork()
+    if (isBackendSupportedNetwork(chainIdFromProvider)) await axios.post('/api/login')
+    setTokenMapping(await getFullTokenMapping(chainIdFromProvider))
+
     setLoading(false)
   }
 
