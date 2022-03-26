@@ -44,16 +44,10 @@ a:visited {
   text-align: center;
 }
 
-.Header {
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-
 .logo {
   width: 100%;
   max-width: 400px;
-  margin-top: 4%;
-  margin-bottom: 4%;
+  min-width: 200px;
 }
 
 .AddressInput {
@@ -157,8 +151,19 @@ a:visited {
 }
 
 .only-mobile { display: none; }
-.only-desktop { display: inherit; }
+.only-mobile-flex { display: none; }
+.only-mobile-inline { display: none; }
+
+.only-desktop { display: block; }
+.only-desktop-flex { display: flex; }
+.only-desktop-inline { display: inline; }
+
 @media (max-width: 850px) {
-  .only-mobile { display: inherit; }
+  .only-mobile { display: block; }
+  .only-mobile-flex { display: flex; }
+  .only-mobile-inline { display: inline; }
+
   .only-desktop { display: none; }
+  .only-desktop-flex { display: none; }
+  .only-desktop-inline { display: none; }
 }
