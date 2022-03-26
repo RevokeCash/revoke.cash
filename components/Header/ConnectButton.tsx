@@ -7,8 +7,6 @@ const ConnectButton: React.FC = () => {
   const [{ data: connectData }, connect] = useConnect()
   const [{ data: accountData }] = useAccount({ fetchEns: true })
 
-  console.log(connectData)
-
   const buttonText = accountData?.ens?.name ?? shortenAddress(accountData?.address) ?? 'Connect wallet'
 
   return (

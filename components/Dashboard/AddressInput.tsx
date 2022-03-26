@@ -9,7 +9,7 @@ interface Props {
 }
 
 const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
-  const [inputAddressOrName, setInputAddressOrName] = useState<string>()
+  const [inputAddressOrName, setInputAddressOrName] = useState<string>('')
 
   const provider = useProvider()
   const [{ data: accountData }] = useAccount({ fetchEns: true })
@@ -19,8 +19,8 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
   // Replace the input with the connected account if nothing was connected before
   // These checks make it so that you can still enter a new input afterwards
   useEffect(() => {
-    if (connectedAddress && (inputAddressOrName === undefined || inputAddressOrName === connectedAddress)) {
-      setInputAddressOrName(connectedEnsName ?? connectedAddress ?? inputAddressOrName)
+    if (connectedAddress && (!inputAddressOrName || inputAddressOrName === connectedAddress)) {
+      setInputAddressOrName(connectedEnsName || connectedAddress || inputAddressOrName)
     }
   }, [connectedEnsName, connectedAddress, inputAddressOrName])
 
@@ -43,7 +43,7 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
 
   const updateInputAddress = async () => {
     // Update input address if it is valid
-    const inputAddress = await parseInputAddress(inputAddressOrName ?? '', provider)
+    const inputAddress = await parseInputAddress(inputAddressOrName, provider)
     if (inputAddress) {
       emitAnalyticsEvent('update_address')
       setInputAddress(inputAddress)
