@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { ClipLoader } from 'react-spinners'
@@ -8,7 +8,8 @@ import { Erc20TokenData } from '../common/interfaces'
 import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, lookupEnsName, fromFloat, emitAnalyticsEvent } from '../common/util'
 import RevokeButton from '../common/RevokeButton'
 import UpdateInputGroup from '../common/UpdateInputGroup'
-import { useAccount, useNetwork, useProvider, useSigner } from 'wagmi'
+import { useAccount, useNetwork, useSigner } from 'wagmi'
+import { ProviderContext } from 'utils/context/ProviderContext'
 
 interface Props {
   spender: string
@@ -24,7 +25,7 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke}: Pr
   const [spenderAppName, setSpenderAppName] = useState<string | undefined>()
   const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>()
 
-  const provider = useProvider()
+  const provider = useContext(ProviderContext)
   const [{ data: signer }] = useSigner()
   const [{ data: accountData }] = useAccount()
   const [{ data: networkData }] = useNetwork()

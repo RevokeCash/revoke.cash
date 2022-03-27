@@ -1,14 +1,15 @@
 import { Contract, providers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { Log } from '@ethersproject/abstract-provider'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData, TokenMapping } from '../common/interfaces'
 import Erc721Token from './Erc721Token'
 import { getTokenIcon } from '../common/util'
 import { getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
-import { useNetwork, useProvider } from 'wagmi'
+import { useNetwork } from 'wagmi'
+import { ProviderContext } from 'utils/context/ProviderContext'
 
 interface Props {
   filterUnverifiedTokens: boolean
@@ -33,7 +34,7 @@ function Erc721TokenList({
   const [loading, setLoading] = useState<boolean>(true)
   const [openSeaProxyAddress, setOpenSeaProxyAddress] = useState<string>()
 
-  const provider = useProvider()
+  const provider = useContext(ProviderContext)
   const [{ data: networkData }] = useNetwork()
   const chainId = networkData?.chain?.id ?? 1
 
@@ -43,7 +44,7 @@ function Erc721TokenList({
 
   const loadData = async () => {
     if (!inputAddress) return
-    if (provider instanceof providers.FallbackProvider) return
+    if (!provider) return
 
     setLoading(true)
 

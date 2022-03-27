@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 import { emitAnalyticsEvent, parseInputAddress } from '../common/util'
-import { useAccount, useProvider } from 'wagmi'
-import { providers } from 'ethers'
+import { useAccount } from 'wagmi'
+import { ProviderContext } from 'utils/context/ProviderContext'
 
 interface Props {
   setInputAddress: (inputAddress: string) => void
@@ -11,7 +11,7 @@ interface Props {
 const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('')
 
-  const provider = useProvider()
+  const provider = useContext(ProviderContext)
   const [{ data: accountData }] = useAccount({ fetchEns: true })
   const connectedAddress = accountData?.address
   const connectedEnsName = accountData?.ens?.name
@@ -31,7 +31,7 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
   const handleFormInputChanged = async (event: ChangeEvent<HTMLInputElement>) => {
     // If no provider is set, this means that the browser is not web3 enabled
     // and the fallback Infura provider is currently rate-limited
-    if (!provider || provider instanceof providers.FallbackProvider) {
+    if (!provider) {
       alert('Please use a web3 enabled browser to use revoke.cash')
       return
     }
