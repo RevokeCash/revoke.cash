@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ClipLoader } from 'react-spinners'
 import { Erc721TokenData } from '../common/interfaces'
 import { Allowance } from './interfaces'
@@ -6,7 +6,8 @@ import Erc721AllowanceList from './Erc721AllowanceList'
 import Erc721TokenBalance from './Erc721TokenBalance'
 import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
 import { getExplorerUrl } from '../common/util'
-import { useNetwork, useProvider } from 'wagmi'
+import { useNetwork } from 'wagmi'
+import { ProviderContext } from 'utils/context/ProviderContext'
 
 interface Props {
   token: Erc721TokenData
@@ -18,7 +19,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  const provider = useProvider()
+  const provider = useContext(ProviderContext)
   const [{ data: networkData }] = useNetwork()
   const chainId = networkData?.chain?.id ?? 1
 

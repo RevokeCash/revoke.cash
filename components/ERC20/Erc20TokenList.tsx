@@ -1,14 +1,15 @@
-import { Contract, providers } from 'ethers'
+import { Contract } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
 import { Log } from '@ethersproject/abstract-provider'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc20TokenData, TokenMapping } from '../common/interfaces'
 import Erc20Token from './Erc20Token'
 import { isVerified, getTokenIcon, toFloat } from '../common/util'
 import { getTokenData } from './util'
 import { ERC20 } from '../common/abis'
-import { useNetwork, useProvider } from 'wagmi'
+import { useNetwork } from 'wagmi'
+import { ProviderContext } from 'utils/context/ProviderContext'
 
 interface Props {
   filterUnverifiedTokens: boolean
@@ -30,7 +31,7 @@ function Erc20TokenList({
   const [tokens, setTokens] = useState<Erc20TokenData[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  const provider = useProvider()
+  const provider = useContext(ProviderContext)
   const [{ data: networkData }] = useNetwork()
   const chainId = networkData?.chain?.id ?? 1
 
@@ -40,7 +41,7 @@ function Erc20TokenList({
 
   const loadData = async () => {
     if (!inputAddress) return
-    if (provider instanceof providers.FallbackProvider) return
+    if (!provider) return
 
     setLoading(true)
 

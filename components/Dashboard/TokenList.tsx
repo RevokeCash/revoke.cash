@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Log } from '@ethersproject/abstract-provider'
 import { TokenMapping } from '../common/interfaces'
 import Erc20TokenList from '../ERC20/Erc20TokenList'
@@ -7,8 +7,8 @@ import { hexZeroPad, Interface } from 'ethers/lib/utils'
 import { ERC721Metadata } from '../common/abis'
 import { getLogs } from '../common/util'
 import { ClipLoader } from 'react-spinners'
-import { useNetwork, useProvider } from 'wagmi'
-import { providers } from 'ethers'
+import { useNetwork } from 'wagmi'
+import { ProviderContext } from 'utils/context/ProviderContext'
 
 interface Props {
   filterUnverifiedTokens: boolean
@@ -31,18 +31,18 @@ function TokenList({
   const [approvalEvents, setApprovalEvents] = useState<Log[]>()
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>()
 
-  const provider = useProvider()
+  const provider = useContext(ProviderContext)
   const [{ data: networkData }] = useNetwork()
   const chainId = networkData?.chain?.id ?? 1
 
   useEffect(() => {
     loadData()
-  }, [inputAddress, provider])
+  }, [inputAddress, chainId])
 
   const loadData = async () => {
     try {
       if (!inputAddress) return
-      if (provider instanceof providers.FallbackProvider) return
+      if (!provider) return
 
       setLoading(true)
 
