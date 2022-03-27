@@ -1,0 +1,168 @@
+diff --git a/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.dev.js b/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.dev.js
+index 8700d17d19ba467d49cdda2a10ed481d1ce49f0b..f4949241ee282b1f716c279e1d6b825a1281eac8 100644
+--- a/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.dev.js
++++ b/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.dev.js
+@@ -30,7 +30,7 @@ class WalletConnectConnector extends base.Connector {
+       provider.on('chainChanged', this.onChainChanged);
+       provider.on('disconnect', this.onDisconnect);
+       const accounts = await provider.enable();
+-      const account = utils.getAddress(accounts[0]);
++      const account = utils.getAddress(accounts[0].toLowerCase());
+       const id = await this.getChainId();
+       const unsupported = this.isChainUnsupported(id); // Not all WalletConnect options support programmatic chain switching
+       // Only enable for wallet options that do
+@@ -64,7 +64,7 @@ class WalletConnectConnector extends base.Connector {
+     const provider = this.getProvider();
+     const accounts = provider.accounts; // return checksum address
+ 
+-    return utils.getAddress(accounts[0]);
++    return utils.getAddress(accounts[0].toLowerCase());
+   }
+ 
+   async getChainId() {
+@@ -114,7 +114,7 @@ class WalletConnectConnector extends base.Connector {
+ 
+   onAccountsChanged = accounts => {
+     if (accounts.length === 0) this.emit('disconnect');else this.emit('change', {
+-      account: utils.getAddress(accounts[0])
++      account: utils.getAddress(accounts[0].toLowerCase())
+     });
+   };
+   onChainChanged = chainId => {
+diff --git a/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.prod.js b/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.prod.js
+index d299a539384d10f2b53e96c6b0879a60cfe98a5f..90993fc049920282a10ab47ad40b42fe7941289b 100644
+--- a/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.prod.js
++++ b/connectors/walletConnect/dist/wagmi-core-connectors-walletConnect.cjs.prod.js
+@@ -30,7 +30,7 @@ class WalletConnectConnector extends base.Connector {
+       provider.on('chainChanged', this.onChainChanged);
+       provider.on('disconnect', this.onDisconnect);
+       const accounts = await provider.enable();
+-      const account = utils.getAddress(accounts[0]);
++      const account = utils.getAddress(accounts[0].toLowerCase());
+       const id = await this.getChainId();
+       const unsupported = this.isChainUnsupported(id); // Not all WalletConnect options support programmatic chain switching
+       // Only enable for wallet options that do
+@@ -64,7 +64,7 @@ class WalletConnectConnector extends base.Connector {
+     const provider = this.getProvider();
+     const accounts = provider.accounts; // return checksum address
+ 
+-    return utils.getAddress(accounts[0]);
++    return utils.getAddress(accounts[0].toLowerCase());
+   }
+ 
+   async getChainId() {
+@@ -114,7 +114,7 @@ class WalletConnectConnector extends base.Connector {
+ 
+   onAccountsChanged = accounts => {
+     if (accounts.length === 0) this.emit('disconnect');else this.emit('change', {
+-      account: utils.getAddress(accounts[0])
++      account: utils.getAddress(accounts[0].toLowerCase())
+     });
+   };
+   onChainChanged = chainId => {
+diff --git a/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.dev.js b/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.dev.js
+index 1543929e1aba523b2c3ab8f90a1e9c70cf644f97..e1995b9606fec1333fc740a95f04cb8403ae333b 100644
+--- a/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.dev.js
++++ b/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.dev.js
+@@ -26,7 +26,7 @@ class WalletLinkConnector extends base.Connector {
+       provider.on('chainChanged', this.onChainChanged);
+       provider.on('disconnect', this.onDisconnect);
+       const accounts = await provider.enable();
+-      const account = utils.getAddress(accounts[0]);
++      const account = utils.getAddress(accounts[0].toLowerCase());
+       const id = await this.getChainId();
+       const unsupported = this.isChainUnsupported(id);
+       return {
+@@ -70,7 +70,7 @@ class WalletLinkConnector extends base.Connector {
+       method: 'eth_accounts'
+     }); // return checksum address
+ 
+-    return utils.getAddress(accounts[0]);
++    return utils.getAddress(accounts[0].toLowerCase());
+   }
+ 
+   async getChainId() {
+@@ -123,7 +123,7 @@ class WalletLinkConnector extends base.Connector {
+ 
+   onAccountsChanged = accounts => {
+     if (accounts.length === 0) this.emit('disconnect');else this.emit('change', {
+-      account: utils.getAddress(accounts[0])
++      account: utils.getAddress(accounts[0].toLowerCase())
+     });
+   };
+   onChainChanged = chainId => {
+diff --git a/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.prod.js b/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.prod.js
+index 54c1afcd65d8eff62e5cc7bd28cbf8b654fab345..6b2f8ad11cad60bf0b2edb2b323ae3f1663defa3 100644
+--- a/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.prod.js
++++ b/connectors/walletLink/dist/wagmi-core-connectors-walletLink.cjs.prod.js
+@@ -26,7 +26,7 @@ class WalletLinkConnector extends base.Connector {
+       provider.on('chainChanged', this.onChainChanged);
+       provider.on('disconnect', this.onDisconnect);
+       const accounts = await provider.enable();
+-      const account = utils.getAddress(accounts[0]);
++      const account = utils.getAddress(accounts[0].toLowerCase());
+       const id = await this.getChainId();
+       const unsupported = this.isChainUnsupported(id);
+       return {
+@@ -70,7 +70,7 @@ class WalletLinkConnector extends base.Connector {
+       method: 'eth_accounts'
+     }); // return checksum address
+ 
+-    return utils.getAddress(accounts[0]);
++    return utils.getAddress(accounts[0].toLowerCase());
+   }
+ 
+   async getChainId() {
+@@ -123,7 +123,7 @@ class WalletLinkConnector extends base.Connector {
+ 
+   onAccountsChanged = accounts => {
+     if (accounts.length === 0) this.emit('disconnect');else this.emit('change', {
+-      account: utils.getAddress(accounts[0])
++      account: utils.getAddress(accounts[0].toLowerCase())
+     });
+   };
+   onChainChanged = chainId => {
+diff --git a/dist/wagmi-core.cjs.dev.js b/dist/wagmi-core.cjs.dev.js
+index 52675d8770ffab4bf27bbba8ad60f29b17e2eb56..8c7d3627429b393ddcb2eae12a33638d2c262221 100644
+--- a/dist/wagmi-core.cjs.dev.js
++++ b/dist/wagmi-core.cjs.dev.js
+@@ -317,7 +317,7 @@ class InjectedConnector extends base.Connector {
+       method: 'eth_requestAccounts'
+     }); // return checksum address
+ 
+-    return utils.getAddress(accounts[0]);
++    return utils.getAddress(accounts[0].toLowerCase());
+   }
+ 
+   async getChainId() {
+@@ -416,7 +416,7 @@ class InjectedConnector extends base.Connector {
+ 
+   onAccountsChanged = accounts => {
+     if (accounts.length === 0) this.emit('disconnect');else this.emit('change', {
+-      account: utils.getAddress(accounts[0])
++      account: utils.getAddress(accounts[0].toLowerCase())
+     });
+   };
+   onChainChanged = chainId => {
+diff --git a/dist/wagmi-core.cjs.prod.js b/dist/wagmi-core.cjs.prod.js
+index b7cac9cb841b2ab415af07e9b181deb38f1ac928..0b5c97d5b9008b6a1074537252ab61df7b86d9ce 100644
+--- a/dist/wagmi-core.cjs.prod.js
++++ b/dist/wagmi-core.cjs.prod.js
+@@ -317,7 +317,7 @@ class InjectedConnector extends base.Connector {
+       method: 'eth_requestAccounts'
+     }); // return checksum address
+ 
+-    return utils.getAddress(accounts[0]);
++    return utils.getAddress(accounts[0].toLowerCase());
+   }
+ 
+   async getChainId() {
+@@ -416,7 +416,7 @@ class InjectedConnector extends base.Connector {
+ 
+   onAccountsChanged = accounts => {
+     if (accounts.length === 0) this.emit('disconnect');else this.emit('change', {
+-      account: utils.getAddress(accounts[0])
++      account: utils.getAddress(accounts[0].toLowerCase())
+     });
+   };
+   onChainChanged = chainId => {
