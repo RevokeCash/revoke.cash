@@ -4561,6 +4561,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"wagmi-core@patch:wagmi-core@npm:0.1.15#.yarn/patches/wagmi-core-npm-0.1.15-4d2b78b777.patch::locator=revoke.cash%40workspace%3A.":
+  version: 0.1.15
+  resolution: "wagmi-core@patch:wagmi-core@npm%3A0.1.15#.yarn/patches/wagmi-core-npm-0.1.15-4d2b78b777.patch::version=0.1.15&hash=d1e98a&locator=revoke.cash%40workspace%3A."
+  dependencies:
+    "@ethersproject/providers": ^5.5.1
+    eventemitter3: ^4.0.7
+  peerDependencies:
+    "@walletconnect/ethereum-provider": 1.7.5
+    ethers: ^5.5.1
+    walletlink: ^2.5.0
+  peerDependenciesMeta:
+    "@walletconnect/ethereum-provider":
+      optional: true
+    walletlink:
+      optional: true
+  checksum: ecfdd5820b00d680d0baa9f77ec7be37b410ba0c0b207a5b7183fcc06b8ad18231f25bedf76f3f2018a8e2fd5352377bab7770177367950b4e885f9e904e43d3
+  languageName: node
+  linkType: hard
+
 "wagmi@npm:^0.2.21":
   version: 0.2.21
   resolution: "wagmi@npm:0.2.21"
