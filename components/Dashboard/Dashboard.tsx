@@ -7,7 +7,7 @@ import TokenStandardSelection from './TokenStandardSelection'
 import UnverifiedTokensCheckbox from './UnverifiedTokensCheckbox'
 import ZeroBalancesCheckbox from './ZeroBalancesCheckbox'
 import AddressInput from './AddressInput'
-import { useNetwork, useSigner } from 'wagmi'
+import { useConnect, useNetwork } from 'wagmi'
 import axios from 'axios'
 import { providers } from 'ethers'
 import { providers as multicall } from '@0xsequence/multicall'
@@ -29,8 +29,10 @@ function Dashboard() {
   const [tokenMapping, setTokenMapping] = useState<TokenMapping>()
   const [inputAddress, setInputAddress] = useState<string>()
 
-  const [{ data: signer }] = useSigner()
   const [{ data: networkData }] = useNetwork()
+  const [{ data: connectData }] = useConnect()
+  const wagmiProvider = connectData.connectors[0]?.getProvider()
+
   const chainId = networkData?.chain?.id ?? 1
   const networkName = networkData?.chain?.name ?? `Network with chainId ${chainId}`
 
@@ -43,8 +45,8 @@ function Dashboard() {
     }
 
     const connectProvider = async () => {
-      if (signer?.provider) {
-        await updateProvider(signer?.provider)
+      if (wagmiProvider) {
+        await updateProvider(new providers.Web3Provider(wagmiProvider))
         console.log('Using injected "wagmi" provider')
       } else if (window.ethereum) {
         const provider = new providers.Web3Provider(window.ethereum)
@@ -70,9 +72,8 @@ function Dashboard() {
       }
     }
 
-    console.log(signer?.provider)
     connectProvider()
-  }, [signer])
+  }, [wagmiProvider])
 
   useEffect(() => {
     loadData()
