@@ -61,6 +61,7 @@ export function getExplorerUrl(chainId: number): string | undefined {
     97: 'https://testnet.bscscan.com/address',
     99: 'https://blockscout.com/poa/core/address',
     100: 'https://blockscout.com/poa/xdai/address',
+    122: 'https://explorer.fuse.io/address',
     137: 'https://explorer-mainnet.maticvigil.com/address',
     1088: 'https://andromeda-explorer.metis.io/address',
     10000: 'https://smartscan.cash/address',
@@ -88,6 +89,7 @@ export function getDappListName(chainId: number): string | undefined {
     1: 'ethereum',
     56: 'smartchain',
     100: 'xdai',
+    122: 'fuse',
     137: 'matic',
     1088: 'metis',
     10000: 'smartbch',
@@ -100,7 +102,7 @@ export function getDappListName(chainId: number): string | undefined {
 
 export function isSupportedNetwork(chainId: number): boolean {
   // Supported for now are only ETH, xDAI, SmartBCH, Arbitrum, Metis & AVAX. Other chains fail on the RPC calls.
-  const supportedNetworks = [1, 3, 4, 5, 42, 100, 1088, 10000, 42161, 43113, 43114]
+  const supportedNetworks = [1, 3, 4, 5, 42, 100, 122, 1088, 10000, 42161, 43113, 43114]
   return supportedNetworks.includes(chainId);
 }
 
