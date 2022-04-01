@@ -3,6 +3,14 @@ import type { AppProps } from 'next/app';
 import { NextSeo } from 'next-seo';
 import Script from 'next/script';
 
+const SafeHydrate = ({ children }) => {
+  return (
+    <div suppressHydrationWarning>
+      {typeof window === 'undefined' ? null : children}
+    </div>
+  )
+}
+
 const App = ({ Component, pageProps }: AppProps) => (
   <>
     <NextSeo
@@ -34,7 +42,9 @@ const App = ({ Component, pageProps }: AppProps) => (
         { rel: 'manifest', href: '/manifest.json' },
       ]}
     />
-    <Component {...pageProps} />
+    <SafeHydrate>
+      <Component {...pageProps} />
+    </SafeHydrate>
     <Script>{`window.sa_event=window.sa_event||function(){var a=[].slice.call(arguments);window.sa_event.q?window.sa_event.q.push(a):window.sa_event.q=[a]};`}</Script>
     <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
   </>

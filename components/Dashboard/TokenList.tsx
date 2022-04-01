@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Log } from '@ethersproject/abstract-provider'
 import { TokenMapping } from '../common/interfaces'
 import Erc20TokenList from '../ERC20/Erc20TokenList'
@@ -7,8 +7,7 @@ import { hexZeroPad, Interface } from 'ethers/lib/utils'
 import { ERC721Metadata } from '../common/abis'
 import { getLogs } from '../common/util'
 import { ClipLoader } from 'react-spinners'
-import { useNetwork } from 'wagmi'
-import { ProviderContext } from 'utils/context/ProviderContext'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
   filterUnverifiedTokens: boolean
@@ -31,9 +30,11 @@ function TokenList({
   const [approvalEvents, setApprovalEvents] = useState<Log[]>()
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>()
 
-  const provider = useContext(ProviderContext)
-  const [{ data: networkData }] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  // Keep track of the last used chain ID + input address to prevent multiple backend calls
+  const [previousChainId, setPreviousChainId] = useState<number>()
+  const [previousInputAddress, setPreviousInputAddress] = useState<string>()
+
+  const { chainId, provider } = useEthereum();
 
   useEffect(() => {
     loadData()
@@ -42,7 +43,12 @@ function TokenList({
   const loadData = async () => {
     try {
       if (!inputAddress) return
-      if (!provider) return
+      if (!provider || !chainId) return
+
+      // Keep track of the last used chain ID + input address to prevent multiple backend calls
+      if (inputAddress === previousInputAddress && previousChainId === chainId) return
+      setPreviousInputAddress(inputAddress)
+      setPreviousChainId(chainId)
 
       setLoading(true)
 
@@ -58,22 +64,25 @@ function TokenList({
         topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)]
       }
       const foundTransferEvents = await getLogs(provider, transferFilter, 0, latestBlockNumber, chainId)
+      setTransferEvents(foundTransferEvents)
+      console.log('Transfer events', foundTransferEvents)
 
       // Get all approvals made from the input address
       const approvalFilter = {
         topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)]
       }
       const foundApprovalEvents = await getLogs(provider, approvalFilter, 0, latestBlockNumber, chainId)
+      setApprovalEvents(foundApprovalEvents)
+      console.log('Approval events', foundApprovalEvents)
 
       // Get all "approvals for all indexes" made from the input address
       const approvalForAllFilter = {
         topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)]
       }
       const foundApprovalForAllEvents = await getLogs(provider, approvalForAllFilter, 0, latestBlockNumber, chainId)
-
-      setTransferEvents(foundTransferEvents)
-      setApprovalEvents(foundApprovalEvents)
       setApprovalForAllEvents(foundApprovalForAllEvents)
+      console.log('ApprovalForAll events', foundApprovalForAllEvents)
+
       setLoading(false)
     } catch (e) {
       console.log(e)
