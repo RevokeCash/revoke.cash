@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Erc721TokenData } from '../common/interfaces'
 import { shortenAddress, getExplorerUrl, emitAnalyticsEvent } from '../common/util'
 import { Form } from 'react-bootstrap'
@@ -7,8 +7,7 @@ import RevokeButton from '../common/RevokeButton'
 import { Allowance } from './interfaces'
 import { formatAllowance } from './util'
 import { Contract } from 'ethers'
-import { useAccount, useNetwork, useSigner } from 'wagmi'
-import { ProviderContext } from 'utils/context/ProviderContext'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
   token: Erc721TokenData
@@ -20,11 +19,7 @@ interface Props {
 function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
   const { spender, ensSpender, spenderAppName, tokenId } = allowance
 
-  const provider = useContext(ProviderContext)
-  const [{ data: signer }] = useSigner()
-  const [{ data: accountData }] = useAccount()
-  const [{ data: networkData }] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  const { signer, provider, account, chainId } = useEthereum();
 
   const revoke = async () => {
     const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider)
@@ -65,7 +60,7 @@ function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
     ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{spenderDisplay}</a>)
     : spenderDisplay
 
-  const canUpdate = inputAddress === accountData?.address
+  const canUpdate = inputAddress === account
 
   return (
     <Form inline className="Allowance" key={spender}>

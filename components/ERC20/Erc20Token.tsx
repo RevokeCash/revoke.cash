@@ -6,7 +6,7 @@ import { compareBN, getExplorerUrl, toFloat } from '../common/util'
 import Erc20AllowanceList from './Erc20AllowanceList'
 import Erc20TokenBalance from './Erc20TokenBalance'
 import { formatAllowance, getAllowancesFromApprovals } from './util'
-import { useNetwork } from 'wagmi'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
   token: Erc20TokenData
@@ -17,8 +17,7 @@ function Erc20Token({ token, inputAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  const [{ data: networkData }] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  const { chainId } = useEthereum();
 
   useEffect(() => {
     loadData()

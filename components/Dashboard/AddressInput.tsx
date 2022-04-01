@@ -1,8 +1,7 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 import { emitAnalyticsEvent, parseInputAddress } from '../common/util'
-import { useAccount } from 'wagmi'
-import { ProviderContext } from 'utils/context/ProviderContext'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
   setInputAddress: (inputAddress: string) => void
@@ -11,18 +10,16 @@ interface Props {
 const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('')
 
-  const provider = useContext(ProviderContext)
-  const [{ data: accountData }] = useAccount({ fetchEns: true })
-  const connectedAddress = accountData?.address
-  const connectedEnsName = accountData?.ens?.name
+  const { account, ensName, provider } = useEthereum();
 
   // Replace the input with the connected account if nothing was connected before
   // These checks make it so that you can still enter a new input afterwards
   useEffect(() => {
-    if (connectedAddress && (!inputAddressOrName || inputAddressOrName === connectedAddress)) {
-      setInputAddressOrName(connectedEnsName || connectedAddress || inputAddressOrName)
-    }
-  }, [connectedEnsName, connectedAddress, inputAddressOrName])
+    if (!account) return
+    if (inputAddressOrName && inputAddressOrName !== account && inputAddressOrName !== ensName) return
+
+    setInputAddressOrName(ensName || account || inputAddressOrName)
+  }, [ensName, account])
 
   useEffect(() => {
     updateInputAddress()

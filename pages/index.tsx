@@ -4,9 +4,9 @@ import Dashboard from 'components/Dashboard/Dashboard'
 import { Container } from 'react-bootstrap'
 import Footer from 'components/Footer/Footer'
 import Header from 'components/Header/Header'
-import { WagmiProvider, InjectedConnector } from 'wagmi'
 import { displayGitcoinToast } from 'components/common/gitcoin-toast'
 import { NextPage } from 'next'
+import { EthereumProvider } from 'utils/hooks/useEthereum'
 
 const App: NextPage = () => {
   useEffect(() => {
@@ -14,13 +14,13 @@ const App: NextPage = () => {
   }, [])
 
   return (
-    <WagmiProvider autoConnect connectors={[new InjectedConnector()]}>
+    <EthereumProvider>
       <Container fluid className="App">
         <Header />
         <Dashboard />
         <Footer />
       </Container>
-    </WagmiProvider>
+    </EthereumProvider>
   )
 }
 
