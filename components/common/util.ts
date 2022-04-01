@@ -139,7 +139,7 @@ async function getTokenMapping(chainId: number, standard: TokenStandard = 'ERC20
 function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): string | undefined {
   const mapping = {
     ERC20: {
-      1: 'https://tokens.1inch.eth.link/',
+      1: 'https://uniswap.mycryptoapi.com/',
       10: 'https://static.optimism.io/optimism.tokenlist.json',
       56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
       100: 'https://tokens.honeyswap.org',
