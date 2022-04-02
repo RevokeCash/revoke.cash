@@ -82,7 +82,7 @@ export const EthereumProvider = ({ children }: Props) => {
       }
 
       window.ethereum.on('accountsChanged', (accounts: string[]) => {
-        console.log('accounts changed', accounts);
+        console.log('accounts changed to', accounts);
         updateAccount(accounts[0]);
       })
 
@@ -105,7 +105,6 @@ export const EthereumProvider = ({ children }: Props) => {
 
 const getConnectedAccount = async (provider: providers.JsonRpcProvider) => {
   try {
-    console.log('getting address')
     return await provider?.getSigner().getAddress();
   } catch (e) {
     return undefined;
