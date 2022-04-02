@@ -30,10 +30,6 @@ function Dashboard() {
     setTokenMapping(await getFullTokenMapping(chainId))
   }
 
-  useEffect(() => {
-    console.log(tokenMapping, chainId)
-  }, [tokenMapping])
-
   if (!isProviderSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
     return (
       <div>{networkName} is not supported.</div>

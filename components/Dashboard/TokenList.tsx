@@ -43,6 +43,7 @@ function TokenList({
       const erc721Interface = new Interface(ERC721Metadata)
       const latestBlockNumber = await provider.getBlockNumber()
 
+      // Create a backend session if needed
       if (isBackendSupportedNetwork(chainId)) await axios.post('/api/login')
 
       // NOTE: The Transfer and Approval events have a similar signature for ERC20 and ERC721
@@ -79,8 +80,6 @@ function TokenList({
       setError(e)
     }
 
-    // We only have inputAddress in the dependency array here because for some reason the input address changes
-    // when the chain ID changes, and we want to prevent multiple backend calls
   }, [inputAddress, chainId])
 
   useEffect(() => {

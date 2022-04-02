@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 interface Props {
   src: string;

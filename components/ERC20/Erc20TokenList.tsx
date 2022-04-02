@@ -53,7 +53,7 @@ function Erc20TokenList({
       tokenContracts.map(async (contract) => {
         const tokenApprovals = approvalEvents.filter(approval => approval.address === contract.address)
         const verified = isVerified(contract.address, tokenMapping)
-        const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
+        const icon = getTokenIcon(contract.address, chainId, tokenMapping)
 
         try {
           const tokenData = await getTokenData(contract, inputAddress, tokenMapping)
