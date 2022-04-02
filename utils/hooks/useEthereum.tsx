@@ -2,7 +2,7 @@ import { providers as multicall } from '@0xsequence/multicall';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import axios from 'axios';
 import { emitAnalyticsEvent, lookupEnsName } from 'components/common/util';
-import { providers } from 'ethers';
+import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook';
 
@@ -26,28 +26,39 @@ interface Props {
   children: ReactNode;
 }
 
+// Note: accounts are converted to lowercase -> getAddress'ed everywhere, because different chains (like RSK)
+// may have other checksums so we normalise it to ETH checksum
 export const EthereumProvider = ({ children }: Props) => {
   const [provider, setProvider] = useState<multicall.MulticallProvider>();
   const [chainId, setChainId] = useState<number>();
   const [account, setAccount] = useState<string>();
+  const [signer, setSigner] = useState<JsonRpcSigner>();
   const { result: ensName } = useAsync(lookupEnsName, [account, provider], { setLoading: (state) => ({ ...state, loading: true }) });
 
-  const signer = ((provider as any)?.provider as Web3Provider)?.getSigner();
+  useEffect(() => {
+    setSigner(((provider as any)?.provider as Web3Provider)?.getSigner(account));
+  }, [account])
+
+  const updateAccount = (newAccount?: string) => {
+    if (newAccount) {
+      setAccount(utils.getAddress(newAccount.toLowerCase()))
+    }
+  }
 
   const connect = async () => {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    setAccount(accounts[0])
+    const [connectedAccount] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    updateAccount(connectedAccount)
   }
 
   useEffect(() => {
     const updateProvider = async (newProvider: providers.JsonRpcProvider) => {
       const { chainId: newChainId } = await newProvider.getNetwork()
-      const newAccount = await getAddress(newProvider);
+      const newAccount = await getConnectedAccount(newProvider);
       emitAnalyticsEvent(`connect_wallet_${newChainId}`)
       const multicallProvider = new multicall.MulticallProvider(newProvider, { verbose: true })
       setProvider(multicallProvider)
       setChainId(newChainId)
-      setAccount(newAccount)
+      updateAccount(newAccount)
     }
 
     const connectProvider = async () => {
@@ -72,7 +83,7 @@ export const EthereumProvider = ({ children }: Props) => {
 
       window.ethereum.on('accountsChanged', (accounts: string[]) => {
         console.log('accounts changed', accounts);
-        setAccount(accounts[0]);
+        updateAccount(accounts[0]);
       })
 
       window.ethereum.on('chainChanged', (chainIdHex: string) => {
@@ -92,7 +103,7 @@ export const EthereumProvider = ({ children }: Props) => {
   );
 }
 
-const getAddress = async (provider: providers.JsonRpcProvider) => {
+const getConnectedAccount = async (provider: providers.JsonRpcProvider) => {
   try {
     console.log('getting address')
     return await provider?.getSigner().getAddress();
