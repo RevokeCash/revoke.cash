@@ -4,10 +4,11 @@ import { emitAnalyticsEvent, parseInputAddress } from '../common/util'
 import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
+  inputAddress: string
   setInputAddress: (inputAddress: string) => void
 }
 
-const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
+const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('')
 
   const { account, ensName, provider } = useEthereum();
@@ -17,13 +18,20 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
   useEffect(() => {
     if (!account) return
     if (inputAddressOrName && inputAddressOrName !== account && inputAddressOrName !== ensName) return
-
     setInputAddressOrName(ensName || account || inputAddressOrName)
   }, [ensName, account])
 
   useEffect(() => {
+    const updateInputAddress = async () => {
+      const newInputAddress = await parseInputAddress(inputAddressOrName, provider)
+      if (newInputAddress && newInputAddress !== inputAddress) {
+        emitAnalyticsEvent('update_address')
+        setInputAddress(newInputAddress)
+      }
+    }
+
     updateInputAddress()
-  }, [inputAddressOrName])
+  }, [inputAddressOrName, inputAddress])
 
   const handleFormInputChanged = async (event: ChangeEvent<HTMLInputElement>) => {
     // If no provider is set, this means that the browser is not web3 enabled
@@ -33,18 +41,7 @@ const AddressInput: React.FC<Props> = ({ setInputAddress }) => {
       return
     }
 
-    // Update input value
-    const newInput = event.target.value
-    setInputAddressOrName(newInput)
-  }
-
-  const updateInputAddress = async () => {
-    // Update input address if it is valid
-    const inputAddress = await parseInputAddress(inputAddressOrName, provider)
-    if (inputAddress) {
-      emitAnalyticsEvent('update_address')
-      setInputAddress(inputAddress)
-    }
+    setInputAddressOrName(event.target.value)
   }
 
   return (

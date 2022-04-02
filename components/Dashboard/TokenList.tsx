@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Log } from '@ethersproject/abstract-provider'
 import { TokenMapping } from '../common/interfaces'
 import Erc20TokenList from '../ERC20/Erc20TokenList'
 import Erc721TokenList from '../ERC721/Erc721TokenList'
 import { hexZeroPad, Interface } from 'ethers/lib/utils'
 import { ERC721Metadata } from '../common/abis'
-import { getLogs } from '../common/util'
+import { getLogs, isBackendSupportedNetwork } from '../common/util'
 import { ClipLoader } from 'react-spinners'
 import { useEthereum } from 'utils/hooks/useEthereum'
+import axios from 'axios'
 
 interface Props {
   filterUnverifiedTokens: boolean
@@ -30,30 +31,19 @@ function TokenList({
   const [approvalEvents, setApprovalEvents] = useState<Log[]>()
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>()
 
-  // Keep track of the last used chain ID + input address to prevent multiple backend calls
-  const [previousChainId, setPreviousChainId] = useState<number>()
-  const [previousInputAddress, setPreviousInputAddress] = useState<string>()
-
   const { chainId, provider } = useEthereum();
 
-  useEffect(() => {
-    loadData()
-  }, [inputAddress, chainId])
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       if (!inputAddress) return
       if (!provider || !chainId) return
-
-      // Keep track of the last used chain ID + input address to prevent multiple backend calls
-      if (inputAddress === previousInputAddress && previousChainId === chainId) return
-      setPreviousInputAddress(inputAddress)
-      setPreviousChainId(chainId)
 
       setLoading(true)
 
       const erc721Interface = new Interface(ERC721Metadata)
       const latestBlockNumber = await provider.getBlockNumber()
+
+      if (isBackendSupportedNetwork(chainId)) await axios.post('/api/login')
 
       // NOTE: The Transfer and Approval events have a similar signature for ERC20 and ERC721
       // and the ApprovalForAll event has a similar signature for ERC721 and ERC1155
@@ -88,7 +78,14 @@ function TokenList({
       console.log(e)
       setError(e)
     }
-  }
+
+    // We only have inputAddress in the dependency array here because for some reason the input address changes
+    // when the chain ID changes, and we want to prevent multiple backend calls
+  }, [inputAddress, chainId])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   if (!inputAddress) {
     return null;

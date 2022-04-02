@@ -11,7 +11,6 @@ import axios from 'axios'
 import { useEthereum } from 'utils/hooks/useEthereum'
 
 function Dashboard() {
-  const [loading, setLoading] = useState<boolean>(true)
   const [tokenStandard, setTokenStandard] = useState<'ERC20' | 'ERC721'>('ERC20')
   const [includeUnverifiedTokens, setIncludeVerifiedTokens] = useState<boolean>(false)
   const [includeZeroBalances, setIncludeZeroBalances] = useState<boolean>(false)
@@ -28,14 +27,12 @@ function Dashboard() {
 
   const loadData = async () => {
     if (!chainId) return
-
-    setLoading(true)
-
-    if (isBackendSupportedNetwork(chainId)) await axios.post('/api/login')
     setTokenMapping(await getFullTokenMapping(chainId))
-
-    setLoading(false)
   }
+
+  useEffect(() => {
+    console.log(tokenMapping, chainId)
+  }, [tokenMapping])
 
   if (!isProviderSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
     return (
@@ -43,13 +40,9 @@ function Dashboard() {
     )
   }
 
-  if (loading) {
-    return (<ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />)
-  }
-
   return (
     <div className="Dashboard">
-      <AddressInput setInputAddress={setInputAddress} />
+      <AddressInput inputAddress={inputAddress} setInputAddress={setInputAddress} />
       <TokenStandardSelection tokenStandard={tokenStandard} setTokenStandard={setTokenStandard} />
       <UnverifiedTokensCheckbox tokenStandard={tokenStandard} tokenMapping={tokenMapping} checked={includeUnverifiedTokens} update={setIncludeVerifiedTokens} />
       <ZeroBalancesCheckbox checked={includeZeroBalances} update={setIncludeZeroBalances} />
