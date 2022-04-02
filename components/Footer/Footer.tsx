@@ -17,19 +17,21 @@ const Footer: React.FC = () => (
       <LogoLink src="/logos/avalanche.png" alt="Avalanche" href="https://www.avax.network/" />
       <LogoLink src="/logos/polygon.png" alt="Polygon" href="https://polygon.technology/" />
       <LogoLink src="/logos/fantom.png" alt="Fantom" href="https://fantom.foundation/" />
-      <LogoLink src="/logos/klaytn.png" alt="Klaytn" href="https://www.klaytn.com/" />
+      <LogoLink src="/logos/harmony.png" alt="Harmony" href="https://harmony.one/" />
+      {/* <LogoLink src="/logos/klaytn.png" alt="Klaytn" href="https://www.klaytn.com/" /> */}
       <LogoLink src="/logos/arbitrum.svg" alt="Arbitrum" href="https://arbitrum.io/" />
       <LogoLink src="/logos/metis.png" alt="Metis" href="https://www.metis.io/" />
       <LogoLink src="/logos/gnosis-chain.png" alt="Gnosis Chain" href="https://www.xdaichain.com/" />
       <LogoLink src="/logos/rootstock.png" alt="Rootstock" href="https://www.rsk.co/" />
       <LogoLink src="/logos/smartbch.png" alt="SmartBCH" href="https://smartbch.org/" />
-      <LogoLink src="/logos/moonbeam.png" alt="Moonbeam" href="https://moonbeam.network/" />
-      <LogoLink src="/logos/moonriver.png" alt="Moonriver" href="https://moonbeam.network/networks/moonriver/" />
+      {/* <LogoLink src="/logos/moonbeam.png" alt="Moonbeam" href="https://moonbeam.network/" /> */}
+      {/* <LogoLink src="/logos/moonriver.png" alt="Moonriver" href="https://moonbeam.network/networks/moonriver/" /> */}
       <LogoLink src="/logos/telos.png" alt="Telos" href="https://www.telos.net/" />
-      <LogoLink src="/logos/heco.png" alt="HECO" href="https://www.hecochain.com/" />
-      <LogoLink src="/logos/iotex.png" alt="IoTeX" href="https://iotex.io/" />
-      <LogoLink src="/logos/shiden.svg" alt="Shiden" href="https://shiden.astar.network/" />
-      <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" />
+      <LogoLink src="/logos/fuse.png" alt="Fuse" href="https://fuse.io/" />
+      {/* <LogoLink src="/logos/heco.png" alt="HECO" href="https://www.hecochain.com/" /> */}
+      {/* <LogoLink src="/logos/iotex.png" alt="IoTeX" href="https://iotex.io/" /> */}
+      {/* <LogoLink src="/logos/shiden.svg" alt="Shiden" href="https://shiden.astar.network/" /> */}
+      {/* <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" /> */}
       {/* <LogoLink src="/logos/palm.jpeg" alt="Palm" href="" /> */}
     </div>
     <ToastContainer

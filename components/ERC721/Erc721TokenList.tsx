@@ -57,7 +57,7 @@ function Erc721TokenList({
       tokenContracts.map(async (contract) => {
         const approvalsForAll = approvalForAllEvents.filter(approval => approval.address === contract.address)
         const approvals = approvalEvents.filter(approval => approval.address === contract.address)
-        const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
+        const icon = getTokenIcon(contract.address, chainId, tokenMapping)
 
         // Skip verification checks for NFTs
         const verified = true

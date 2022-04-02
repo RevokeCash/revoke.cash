@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BigNumberish, BigNumber, providers } from 'ethers'
 import { Filter, Log } from '@ethersproject/abstract-provider'
 import { getAddress } from 'ethers/lib/utils'
-import { DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
+import { ChainIds, DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
 // Check if a token is verified in the token mapping
@@ -46,34 +46,32 @@ export async function lookupEnsName(address: string, provider: providers.Provide
 export function getExplorerUrl(chainId: number): string | undefined {
   // Includes all Etherscan, BScScan, BlockScout, Matic, Avalanche explorers
   const mapping = {
-    1: 'https://etherscan.io/address',
-    3: 'https://ropsten.etherscan.io/address',
-    4: 'https://rinkeby.etherscan.io/address',
-    5: 'https://goerli.etherscan.io/address',
-    6: 'https://blockscout.com/etc/kotti/address',
-    10: 'https://optimistic.etherscan.io/address',
-    30: 'https://blockscout.com/rsk/mainnet/address',
-    42: 'https://kovan.etherscan.io/address',
-    56: 'https://bscscan.com/address',
-    61: 'https://blockscout.com/etc/mainnet/address',
-    63: 'https://blockscout.com/etc/mordor/address',
-    77: 'https://blockscout.com/poa/sokol/address',
-    97: 'https://testnet.bscscan.com/address',
-    99: 'https://blockscout.com/poa/core/address',
-    100: 'https://blockscout.com/poa/xdai/address',
-    122: 'https://explorer.fuse.io/address',
-    128: 'https://hecoinfo.com/address',
-    137: 'https://polygonscan.com/address',
-    250: 'https://ftmscan.com/address',
-    1088: 'https://andromeda-explorer.metis.io/address',
-    1284: 'https://moonbeam.moonscan.io/address',
-    1285: 'https://moonriver.moonscan.io/address',
-    10000: 'https://smartscan.cash/address',
-    42161: 'https://arbiscan.io/address',
-    43113: 'https://snowtrace.io/address',
-    43114: 'https://testnet.snowtrace.io/address',
-    80001: 'https://mumbai.polygonscan.com/address',
-    11297108109: 'https://explorer.palm.io/address',
+    [ChainIds.ETHEREUM]: 'https://etherscan.io/address',
+    [ChainIds.ROPSTEN]: 'https://ropsten.etherscan.io/address',
+    [ChainIds.RINKEBY]: 'https://rinkeby.etherscan.io/address',
+    [ChainIds.GOERLI]: 'https://goerli.etherscan.io/address',
+    [ChainIds.ETC_KOTTI]: 'https://blockscout.com/etc/kotti/address',
+    [ChainIds.OPTIMISM]: 'https://optimistic.etherscan.io/address',
+    [ChainIds.RSK]: 'https://blockscout.com/rsk/mainnet/address',
+    [ChainIds.KOVAN]: 'https://kovan.etherscan.io/address',
+    [ChainIds.BSC]: 'https://bscscan.com/address',
+    [ChainIds.ETHEREUM_CLASSIC]: 'https://blockscout.com/etc/mainnet/address',
+    [ChainIds.ETC_MORDOR]: 'https://blockscout.com/etc/mordor/address',
+    [ChainIds.BSC_TESTNET]: 'https://testnet.bscscan.com/address',
+    [ChainIds.GNOSIS]: 'https://blockscout.com/poa/xdai/address',
+    [ChainIds.FUSE]: 'https://explorer.fuse.io/address',
+    [ChainIds.HECO]: 'https://hecoinfo.com/address',
+    [ChainIds.POLYGON]: 'https://polygonscan.com/address',
+    [ChainIds.FANTOM]: 'https://ftmscan.com/address',
+    [ChainIds.METIS]: 'https://andromeda-explorer.metis.io/address',
+    [ChainIds.MOONBEAM]: 'https://moonbeam.moonscan.io/address',
+    [ChainIds.MOONRIVER]: 'https://moonriver.moonscan.io/address',
+    [ChainIds.SMARTBCH]: 'https://smartscan.cash/address',
+    [ChainIds.ARBITRUM]: 'https://arbiscan.io/address',
+    [ChainIds.AVALANCHE]: 'https://snowtrace.io/address',
+    [ChainIds.AVALANCHE_FUJI]: 'https://testnet.snowtrace.io/address',
+    [ChainIds.POLYGON_MUMBAI]: 'https://mumbai.polygonscan.com/address',
+    [ChainIds.PALM]: 'https://explorer.palm.io/address',
   }
 
   return mapping[chainId]
@@ -81,9 +79,9 @@ export function getExplorerUrl(chainId: number): string | undefined {
 
 export function getTrustWalletName(chainId: number): string | undefined {
   const mapping = {
-    1: 'ethereum',
-    56: 'smartchain',
-    61: 'classic',
+    [ChainIds.ETHEREUM]: 'ethereum',
+    [ChainIds.BSC]: 'smartchain',
+    [ChainIds.ETHEREUM_CLASSIC]: 'classic',
   }
 
   return mapping[chainId]
@@ -91,26 +89,38 @@ export function getTrustWalletName(chainId: number): string | undefined {
 
 export function getDappListName(chainId: number): string | undefined {
   const mapping = {
-    1: 'ethereum',
-    56: 'smartchain',
-    100: 'xdai',
-    122: 'fuse',
-    137: 'matic',
-    10000: 'smartbch',
-    42161: 'arbitrum',
-    43114: 'avalanche',
+    [ChainIds.ETHEREUM]: 'ethereum',
+    [ChainIds.BSC]: 'smartchain',
+    [ChainIds.GNOSIS]: 'xdai',
+    [ChainIds.FUSE]: 'fuse',
+    [ChainIds.POLYGON]: 'matic',
+    [ChainIds.SMARTBCH]: 'smartbch',
+    [ChainIds.ARBITRUM]: 'arbitrum',
+    [ChainIds.AVALANCHE]: 'avalanche',
   }
 
   return mapping[chainId]
 }
 
-// TODO: Optimism, Celo, Cronos, Boba, ETC, Theta, Harmony, BTT, (ThunderCore), (Fuse), (EWT), (KCC),
+// TODO: Optimism, Celo, Cronos, Boba, ETC, Theta, Harmony, BTT, (ThunderCore), (EWT), (KCC),
 // (Fusion), (CoinEx Chain), (Syscoin), (GoChain), (Okex Chain), (Wanchain), (POA)
 // TODO (hard): Terra, Solana, Cardano, Polkadot, Kusama, Cosmos, Near, Tron, ICP, Tezos, Flow,
 
 export function isProviderSupportedNetwork(chainId: number): boolean {
-  // ETH, Ropsten, Rinkeby, Goerli, Kovan, xDAI, Metis, SmartBCH, Arbitrum
-  const supportedNetworks = [1, 3, 4, 5, 40, 42, 100, 122, 1088, 10000, 42161]
+  const supportedNetworks = [
+    ChainIds.ETHEREUM,
+    ChainIds.ROPSTEN,
+    ChainIds.RINKEBY,
+    ChainIds.GOERLI,
+    ChainIds.TELOS,
+    ChainIds.KOVAN,
+    ChainIds.GNOSIS,
+    ChainIds.METIS,
+    ChainIds.SMARTBCH,
+    ChainIds.ARBITRUM,
+    ChainIds.ARBITRUM_TESTNET,
+    ChainIds.FUSE,
+  ]
   return supportedNetworks.includes(chainId);
 }
 
@@ -118,9 +128,25 @@ export function isBackendSupportedNetwork(chainId: number): boolean {
   return isCovalentSupportedNetwork(chainId)
 }
 
+// We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
+// We also disable testnets for the same reason
 export function isCovalentSupportedNetwork(chainId: number): boolean {
-  // RSK, BSC, HECO, Polygon, Fantom, Shiden, Moonbeam, Moonriver, Iotex, Klaytn, Evmos, Avalanche, (Palm)
-  const supportedNetworks = [30, 56, 128, 137, 250, 336, 1284, 1285, 4689, 8217, 9001, 43114, 11297108109]
+  const supportedNetworks = [
+    ChainIds.RSK,
+    ChainIds.BSC,
+    ChainIds.POLYGON,
+    ChainIds.AVALANCHE,
+    ChainIds.FANTOM,
+    ChainIds.HARMONY,
+    // ChainIds.HECO,
+    // ChainIds.SHIDEN,
+    // ChainIds.MOONBEAM,
+    // ChainIds.MOONRIVER,
+    // ChainIds.IOTEX,
+    // ChainIds.KLAYTN,
+    // ChainIds.EVMOS,
+    // ChainIds.PALM,
+  ]
   return supportedNetworks.includes(chainId);
 }
 
@@ -170,17 +196,17 @@ async function getTokenMappingFrom1inch(chainId: number): Promise<TokenMapping |
 function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): string | undefined {
   const mapping = {
     ERC20: {
-      1088: 'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
+      [ChainIds.METIS]: 'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
     },
     ERC721: {
-      1: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
+      [ChainIds.ETHEREUM]: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
     }
   }
 
   return mapping[standard][chainId]
 }
 
-export async function getTokenIcon(tokenAddress: string, chainId: number, tokenMapping: TokenMapping = {}) {
+export function getTokenIcon(tokenAddress: string, chainId: number, tokenMapping: TokenMapping = {}) {
   const normalisedAddress = getAddress(tokenAddress)
 
   // Retrieve a token icon from the token list if specified (filtering relative paths)
