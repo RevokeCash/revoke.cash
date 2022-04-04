@@ -17,9 +17,7 @@ function Dashboard() {
   const [tokenMapping, setTokenMapping] = useState<TokenMapping>()
   const [inputAddress, setInputAddress] = useState<string>()
 
-  const { chainId } = useEthereum();
-
-  const networkName = `Network with chainId ${chainId}`
+  const { chainId, chainName } = useEthereum();
 
   useEffect(() => {
     loadData()
@@ -32,7 +30,7 @@ function Dashboard() {
 
   if (!isProviderSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
     return (
-      <div>{networkName} is not supported.</div>
+      <div>{chainName} is not supported.</div>
     )
   }
 

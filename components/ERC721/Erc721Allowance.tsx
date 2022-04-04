@@ -53,11 +53,11 @@ function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
   const explorerBaseUrl = getExplorerUrl(chainId)
 
   const shortenedLink = explorerBaseUrl
-    ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{shortenedSpenderDisplay}</a>)
+    ? (<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>{shortenedSpenderDisplay}</a>)
     : shortenedSpenderDisplay
 
   const regularLink = explorerBaseUrl
-    ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{spenderDisplay}</a>)
+    ? (<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>{spenderDisplay}</a>)
     : spenderDisplay
 
   const canUpdate = inputAddress === account

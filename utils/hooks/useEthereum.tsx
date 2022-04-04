@@ -2,6 +2,7 @@ import { providers as multicall } from '@0xsequence/multicall';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import axios from 'axios';
 import { emitAnalyticsEvent, lookupEnsName } from 'components/common/util';
+import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook';
@@ -17,6 +18,7 @@ interface EthereumContext {
   account?: string;
   ensName?: string;
   chainId?: number;
+  chainName?: string;
   connect?: () => Promise<void>;
 }
 
@@ -31,9 +33,15 @@ interface Props {
 export const EthereumProvider = ({ children }: Props) => {
   const [provider, setProvider] = useState<multicall.MulticallProvider>();
   const [chainId, setChainId] = useState<number>();
+  const [chainName, setChainName] = useState<string>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
   const { result: ensName } = useAsync(lookupEnsName, [account, provider], { setLoading: (state) => ({ ...state, loading: true }) });
+
+  useEffect(() => {
+    const newChainName = chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
+    if (newChainName) setChainName(newChainName);
+  }, [chainId])
 
   useEffect(() => {
     setSigner(((provider as any)?.provider as Web3Provider)?.getSigner(account));
@@ -97,7 +105,7 @@ export const EthereumProvider = ({ children }: Props) => {
   }, [])
 
   return (
-    <EthereumContext.Provider value={{ provider, chainId, account, ensName, signer, connect }} >
+    <EthereumContext.Provider value={{ provider, chainId, chainName, account, ensName, signer, connect }} >
       {children}
     </EthereumContext.Provider>
   );
