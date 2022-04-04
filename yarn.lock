@@ -2608,6 +2608,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact@npm:^10.7.0":
+  version: 10.7.0
+  resolution: "preact@npm:10.7.0"
+  checksum: fd0c0164379279f1b381c1438ef29bb56aaf55965ff5e72fce6b0d8e06aa1c621f685c17f3e1c969e0c609df6053106e4f0463c737f6dcc1fe98c8e24fa7a012
+  languageName: node
+  linkType: hard
+
 "promise-inflight@npm:^1.0.1":
   version: 1.0.1
   resolution: "promise-inflight@npm:1.0.1"
@@ -2929,6 +2936,7 @@ __metadata:
     next-connect: ^0.12.2
     next-seo: ^5.2.0
     p-queue: ^7.2.0
+    preact: ^10.7.0
     react: ^17.0.2
     react-async-hook: ^4.0.0
     react-bootstrap: ^1.6.4
