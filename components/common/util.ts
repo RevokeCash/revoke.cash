@@ -100,8 +100,6 @@ export function isProviderSupportedNetwork(chainId: number): boolean {
     ChainId.MetisStardustTestnet,
     ChainId.SmartBitcoinCash,
     ChainId.SmartBitcoinCashTestnet,
-    ChainId.ArbitrumOne,
-    ChainId.ArbitrumTestnetRinkeby,
     ChainId.FuseMainnet,
     ChainId.FuseSparknet,
   ]
@@ -128,6 +126,8 @@ export function isCovalentSupportedNetwork(chainId: number): boolean {
     // ChainId.FantomTestnet,
     ChainId.HarmonyMainnetShard0,
     // ChainId.HarmonyTestnetShard0,
+    ChainId.ArbitrumOne,
+    // ChainId.ArbitrumTestnetRinkeby,
     // ChainId.HuobiECOChainMainnet,
     // ChainId.HuobiECOChainTestnet,
     // ChainId.Shiden,
