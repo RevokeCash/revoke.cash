@@ -43,7 +43,7 @@ function Erc20Token({ token, inputAddress }: Props) {
     return (<div className="Token"><ClipLoader size={20} color={'#000'} loading={loading} /></div>)
   }
 
-  const explorerUrl = `${getExplorerUrl(chainId)}/${token.contract.address}`
+  const explorerUrl = `${getExplorerUrl(chainId)}/address/${token.contract.address}`
 
   return (
     <div className="Token">

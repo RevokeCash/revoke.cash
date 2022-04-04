@@ -16,9 +16,10 @@ const UpdateInputGroup = ({ canUpdate, update, id }: Props) => {
       value={value}
       onChange={(event) => {
         setValue(event.target.value)
-      }}/>
+      }}
+    />
     <InputGroup.Append>
-    <Button disabled={!canUpdate} className="UpdateButton" onClick={() => update(value)}>Update</Button>
+      <Button disabled={!canUpdate} className="UpdateButton" onClick={() => update(value)}>Update</Button>
     </InputGroup.Append>
   </InputGroup>)
 

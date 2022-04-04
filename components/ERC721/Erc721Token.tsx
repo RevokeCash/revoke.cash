@@ -48,7 +48,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
     return (<div className="Token"><ClipLoader size={20} color={'#000'} loading={loading} /></div>)
   }
   const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId
-  const explorerUrl = `${getExplorerUrl(chainId)}/${token.contract.address}`
+  const explorerUrl = `${getExplorerUrl(chainId)}/address/${token.contract.address}`
 
   return (
     <div className="Token">

@@ -2,7 +2,8 @@ import axios from 'axios'
 import { BigNumberish, BigNumber, providers } from 'ethers'
 import { Filter, Log } from '@ethersproject/abstract-provider'
 import { getAddress } from 'ethers/lib/utils'
-import { ChainIds, DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
+import { chains, ChainId } from 'eth-chains'
+import { DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
 // Check if a token is verified in the token mapping
@@ -44,59 +45,38 @@ export async function lookupEnsName(address: string, provider: providers.Provide
 }
 
 export function getExplorerUrl(chainId: number): string | undefined {
-  // Includes all Etherscan, BScScan, BlockScout, Matic, Avalanche explorers
-  const mapping = {
-    [ChainIds.ETHEREUM]: 'https://etherscan.io/address',
-    [ChainIds.ROPSTEN]: 'https://ropsten.etherscan.io/address',
-    [ChainIds.RINKEBY]: 'https://rinkeby.etherscan.io/address',
-    [ChainIds.GOERLI]: 'https://goerli.etherscan.io/address',
-    [ChainIds.ETC_KOTTI]: 'https://blockscout.com/etc/kotti/address',
-    [ChainIds.OPTIMISM]: 'https://optimistic.etherscan.io/address',
-    [ChainIds.RSK]: 'https://blockscout.com/rsk/mainnet/address',
-    [ChainIds.KOVAN]: 'https://kovan.etherscan.io/address',
-    [ChainIds.BSC]: 'https://bscscan.com/address',
-    [ChainIds.ETHEREUM_CLASSIC]: 'https://blockscout.com/etc/mainnet/address',
-    [ChainIds.ETC_MORDOR]: 'https://blockscout.com/etc/mordor/address',
-    [ChainIds.BSC_TESTNET]: 'https://testnet.bscscan.com/address',
-    [ChainIds.GNOSIS]: 'https://blockscout.com/poa/xdai/address',
-    [ChainIds.FUSE]: 'https://explorer.fuse.io/address',
-    [ChainIds.HECO]: 'https://hecoinfo.com/address',
-    [ChainIds.POLYGON]: 'https://polygonscan.com/address',
-    [ChainIds.FANTOM]: 'https://ftmscan.com/address',
-    [ChainIds.METIS]: 'https://andromeda-explorer.metis.io/address',
-    [ChainIds.MOONBEAM]: 'https://moonbeam.moonscan.io/address',
-    [ChainIds.MOONRIVER]: 'https://moonriver.moonscan.io/address',
-    [ChainIds.SMARTBCH]: 'https://smartscan.cash/address',
-    [ChainIds.ARBITRUM]: 'https://arbiscan.io/address',
-    [ChainIds.AVALANCHE]: 'https://snowtrace.io/address',
-    [ChainIds.AVALANCHE_FUJI]: 'https://testnet.snowtrace.io/address',
-    [ChainIds.POLYGON_MUMBAI]: 'https://mumbai.polygonscan.com/address',
-    [ChainIds.PALM]: 'https://explorer.palm.io/address',
+  const overrides = {
+    [ChainId.EthereumTestnetRopsten]: 'https://ropsten.etherscan.io',
+    [ChainId.EthereumTestnetKovan]: 'https://kovan.etherscan.io',
+    [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
+    [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
+    [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
   }
 
-  return mapping[chainId]
+  return overrides[chainId] ?? chains.get(chainId)?.explorers?.at(0)?.url;
 }
 
 export function getTrustWalletName(chainId: number): string | undefined {
   const mapping = {
-    [ChainIds.ETHEREUM]: 'ethereum',
-    [ChainIds.BSC]: 'smartchain',
-    [ChainIds.ETHEREUM_CLASSIC]: 'classic',
+    [ChainId.EthereumMainnet]: 'ethereum',
+    [ChainId.BinanceSmartChainMainnet]: 'smartchain',
+    [ChainId.EthereumClassicMainnet]: 'classic',
   }
 
   return mapping[chainId]
 }
 
+// TODO: Replace these with just chain ID rather than name (breaking)
 export function getDappListName(chainId: number): string | undefined {
   const mapping = {
-    [ChainIds.ETHEREUM]: 'ethereum',
-    [ChainIds.BSC]: 'smartchain',
-    [ChainIds.GNOSIS]: 'xdai',
-    [ChainIds.FUSE]: 'fuse',
-    [ChainIds.POLYGON]: 'matic',
-    [ChainIds.SMARTBCH]: 'smartbch',
-    [ChainIds.ARBITRUM]: 'arbitrum',
-    [ChainIds.AVALANCHE]: 'avalanche',
+    [ChainId.EthereumMainnet]: 'ethereum',
+    [ChainId.BinanceSmartChainMainnet]: 'smartchain',
+    [ChainId.XDAIChain]: 'xdai',
+    [ChainId.FuseMainnet]: 'fuse',
+    [ChainId.PolygonMainnet]: 'matic',
+    [ChainId.SmartBitcoinCash]: 'smartbch',
+    [ChainId.ArbitrumOne]: 'arbitrum',
+    [ChainId.AvalancheMainnet]: 'avalanche',
   }
 
   return mapping[chainId]
@@ -108,18 +88,22 @@ export function getDappListName(chainId: number): string | undefined {
 
 export function isProviderSupportedNetwork(chainId: number): boolean {
   const supportedNetworks = [
-    ChainIds.ETHEREUM,
-    ChainIds.ROPSTEN,
-    ChainIds.RINKEBY,
-    ChainIds.GOERLI,
-    ChainIds.TELOS,
-    ChainIds.KOVAN,
-    ChainIds.GNOSIS,
-    ChainIds.METIS,
-    ChainIds.SMARTBCH,
-    ChainIds.ARBITRUM,
-    ChainIds.ARBITRUM_TESTNET,
-    ChainIds.FUSE,
+    ChainId.EthereumMainnet,
+    ChainId.EthereumTestnetRopsten,
+    ChainId.EthereumTestnetRinkeby,
+    ChainId.EthereumTestnetGörli,
+    ChainId.EthereumTestnetKovan,
+    ChainId.TelosEVMMainnet,
+    ChainId.TelosEVMTestnet,
+    ChainId.XDAIChain,
+    ChainId.MetisAndromedaMainnet,
+    ChainId.MetisStardustTestnet,
+    ChainId.SmartBitcoinCash,
+    ChainId.SmartBitcoinCashTestnet,
+    ChainId.ArbitrumOne,
+    ChainId.ArbitrumTestnetRinkeby,
+    ChainId.FuseMainnet,
+    ChainId.FuseSparknet,
   ]
   return supportedNetworks.includes(chainId);
 }
@@ -132,20 +116,32 @@ export function isBackendSupportedNetwork(chainId: number): boolean {
 // We also disable testnets for the same reason
 export function isCovalentSupportedNetwork(chainId: number): boolean {
   const supportedNetworks = [
-    ChainIds.RSK,
-    ChainIds.BSC,
-    ChainIds.POLYGON,
-    ChainIds.AVALANCHE,
-    ChainIds.FANTOM,
-    ChainIds.HARMONY,
-    // ChainIds.HECO,
-    // ChainIds.SHIDEN,
-    // ChainIds.MOONBEAM,
-    // ChainIds.MOONRIVER,
-    // ChainIds.IOTEX,
-    // ChainIds.KLAYTN,
-    // ChainIds.EVMOS,
-    // ChainIds.PALM,
+    ChainId.RSKMainnet,
+    // ChainId.RSKTestnet,
+    ChainId.BinanceSmartChainMainnet,
+    // ChainId.BinanceSmartChainTestnet,
+    ChainId.PolygonMainnet,
+    // ChainId.PolygonTestnetMumbai,
+    ChainId.AvalancheMainnet,
+    // ChainId.AvalancheFujiTestnet,
+    ChainId.FantomOpera,
+    // ChainId.FantomTestnet,
+    ChainId.HarmonyMainnetShard0,
+    // ChainId.HarmonyTestnetShard0,
+    // ChainId.HuobiECOChainMainnet,
+    // ChainId.HuobiECOChainTestnet,
+    // ChainId.Shiden,
+    // ChainId.Moonbeam,
+    // ChainId.Moonriver,
+    // ChainId.MoonbaseAlpha,
+    // ChainId.IoTeXNetworkMainnet,
+    // ChainId.IoTeXNetworkTestnet,
+    // ChainId.KlaytnMainnetCypress,
+    // ChainId.KlaytnTestnetBaobab,
+    // ChainId.EvmosTestnet,
+    // ChainId.PalmMainnet,
+    // ChainId.PalmTestnet,
+    // ChainId.PolyjuiceTestnet,
   ]
   return supportedNetworks.includes(chainId);
 }
@@ -196,10 +192,11 @@ async function getTokenMappingFrom1inch(chainId: number): Promise<TokenMapping |
 function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): string | undefined {
   const mapping = {
     ERC20: {
-      [ChainIds.METIS]: 'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
+      [ChainId.HarmonyMainnetShard0]: 'https://raw.githubusercontent.com/DefiKingdoms/community-token-list/main/src/defikingdoms-default.tokenlist.json',
+      [ChainId.MetisAndromedaMainnet]: 'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
     },
     ERC721: {
-      [ChainIds.ETHEREUM]: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
+      [ChainId.EthereumMainnet]: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
     }
   }
 
