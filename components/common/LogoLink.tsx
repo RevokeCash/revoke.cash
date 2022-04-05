@@ -8,7 +8,7 @@ interface Props {
 
 const LogoLink = ({ src, alt, href }: Props) => (
   <a href={href}>
-    <img src={src} alt={alt} height="24px" style={{ borderRadius: '50%' }} />
+    <img src={src} alt={alt} height="24" style={{ borderRadius: '50%' }} />
   </a>
 );
 

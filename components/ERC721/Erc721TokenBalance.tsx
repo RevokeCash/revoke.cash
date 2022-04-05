@@ -9,7 +9,7 @@ interface Props {
 
 function Erc721TokenBalance({ symbol, icon, balance, explorerUrl }: Props) {
   const backupImage = (ev) => { (ev.target as HTMLImageElement).src = '/erc721.png'}
-  const img = (<img src={icon} alt="" width="20px" onError={backupImage} style={{ borderRadius: '50%' }} />)
+  const img = (<img src={icon} alt={symbol} width="24" onError={backupImage} style={{ borderRadius: '50%' }} />)
 
   const balanceText = balance === 'ERC1155' ? `${symbol} (ERC1155)` : `${symbol}: ${String(balance)}`
 

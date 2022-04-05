@@ -11,7 +11,7 @@ interface Props {
 
 function Erc20TokenBalance({ symbol, icon, balance, decimals, explorerUrl }: Props) {
   const backupImage = (ev) => { (ev.target as HTMLImageElement).src = '/erc20.png'}
-  const img = (<img src={icon} alt={symbol} width="20px" onError={backupImage} style={{ borderRadius: '50%' }} />)
+  const img = (<img src={icon} alt={symbol} width="24" onError={backupImage} style={{ borderRadius: '50%' }} />)
 
   return (
     <div className="TokenBalance">
