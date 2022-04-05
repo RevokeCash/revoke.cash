@@ -22,6 +22,7 @@
     "next-connect": "^0.12.2",
     "next-seo": "^5.2.0",
     "p-queue": "^7.2.0",
+    "preact": "^10.7.0",
     "react": "^17.0.2",
     "react-async-hook": "^4.0.0",
     "react-bootstrap": "^1.6.4",
