@@ -312,11 +312,3 @@ export const parseInputAddress = async (inputAddressOrName: string, provider: pr
     return undefined
   }
 }
-
-export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] => (
-  chunks.flatMap(([from, to]) => (
-    to - from < chunkSize
-      ? [[from, to]]
-      : splitBlockRangeInChunks([[from, from + chunkSize - 1], [from + chunkSize, to]], chunkSize)
-  ))
-)
