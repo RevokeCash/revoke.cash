@@ -16,7 +16,7 @@ const rateLimiter = rateLimit({
 
 axiosRetry(axios, { retries: 3 });
 
-const covalentEventGetter = new CovalentEventGetter()
+const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS))
 
 const handler = nc<NextApiRequest, NextApiResponse>()
   .use(requestIp.mw({ attributeName: 'ip' }))

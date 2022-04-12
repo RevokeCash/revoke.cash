@@ -17,9 +17,9 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
   // These checks make it so that you can still enter a new input afterwards
   useEffect(() => {
     if (!account) return
-    if (inputAddressOrName && inputAddressOrName !== account && inputAddressOrName !== ensName) return
+    if (inputAddress && inputAddress !== account) return
     setInputAddressOrName(ensName || account || inputAddressOrName)
-  }, [ensName, account])
+  }, [ensName, account, inputAddress, inputAddressOrName])
 
   useEffect(() => {
     const updateInputAddress = async () => {

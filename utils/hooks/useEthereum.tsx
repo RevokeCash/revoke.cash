@@ -36,7 +36,7 @@ export const EthereumProvider = ({ children }: Props) => {
   const [chainName, setChainName] = useState<string>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
-  const { result: ensName } = useAsync(lookupEnsName, [account, provider], { setLoading: (state) => ({ ...state, loading: true }) });
+  const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId]);
 
   useEffect(() => {
     const newChainName = chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
