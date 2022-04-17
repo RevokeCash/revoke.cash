@@ -28,4 +28,4 @@ yarn dev
 If you want to use the extended multichain support through CovalentHQ, you'll also need to copy the `.example.env` file into `.env` and fill it with a random 32-character `IRON_SESSION_PASSWORD` and a list of `COVALENT_API_KEYS` that you can request on their website.
 
 ## Credits
-Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [wagmi](https://github.com/tmm/wagmi) and [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations and [CovalentHQ](https://www.covalenthq.com/) for extended multichain support. Filters out unverified tokens using tokenlists. Built with Next.js, Bootstrap and TypeScript.
+Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations and [CovalentHQ](https://www.covalenthq.com/) for extended multichain support. Filters out unverified tokens using tokenlists. Built with Next.js, Bootstrap and TypeScript.
