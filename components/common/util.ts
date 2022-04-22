@@ -107,7 +107,7 @@ export function isProviderSupportedNetwork(chainId: number): boolean {
 }
 
 export function isBackendSupportedNetwork(chainId: number): boolean {
-  return isCovalentSupportedNetwork(chainId)
+  return isCovalentSupportedNetwork(chainId) || isNodeSupportedNetwork(chainId)
 }
 
 // We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
@@ -142,6 +142,13 @@ export function isCovalentSupportedNetwork(chainId: number): boolean {
     ChainId.PalmMainnet,
     // ChainId.PalmTestnet,
     // ChainId.PolyjuiceTestnet,
+  ]
+  return supportedNetworks.includes(chainId);
+}
+
+export function isNodeSupportedNetwork(chainId: number): boolean {
+  const supportedNetworks = [
+    ChainId.OptimisticEthereum,
   ]
   return supportedNetworks.includes(chainId);
 }
