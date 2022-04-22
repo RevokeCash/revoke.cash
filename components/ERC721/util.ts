@@ -1,7 +1,7 @@
-import { BigNumber, Contract, providers } from 'ethers'
+import { BigNumber, Contract, providers, utils } from 'ethers'
 import { getAddress, hexDataSlice } from 'ethers/lib/utils'
 import { OPENSEA_REGISTRY } from '../common/abis'
-import { ADDRESS_ZERO, DUMMY_ADDRESS, DUMMY_ADDRESS_2, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
+import { ADDRESS_ZERO, DUMMY_ADDRESS, DUMMY_ADDRESS_2, MOONBIRDS_ADDRESS, OPENSEA_REGISTRY_ADDRESS } from '../common/constants'
 import { TokenMapping } from '../common/interfaces'
 import { Allowance } from './interfaces'
 import { addressToAppName as addressToAppNameBase, convertString, getDappListName, lookupEnsName, shortenAddress, unpackResult, withFallback } from '../common/util'
@@ -98,6 +98,34 @@ export async function getOpenSeaProxyAddress(userAddress: string, provider: prov
   } catch {
     return undefined
   }
+}
+
+// This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
+// which do not show up normally because of a bug in their contract
+export function generatePatchedAllowanceEvents(userAddress: string, openseaProxyAddress?: string): providers.Log[] {
+  if (!userAddress || !openseaProxyAddress) return [];
+
+  const baseDummyEventLog = {
+    blockNumber: 0,
+    blockHash: '0x',
+    transactionIndex: 0,
+    removed: false,
+    data: '0x',
+    transactionHash: '0x',
+    logIndex: 0,
+  }
+
+  return [
+    {
+      ...baseDummyEventLog,
+      address: MOONBIRDS_ADDRESS,
+      topics: [
+        utils.id('ApprovalForAll(address,address,approved)'),
+        utils.hexZeroPad(userAddress, 32),
+        utils.hexZeroPad(openseaProxyAddress, 32),
+      ]
+    }
+  ]
 }
 
 async function throwIfNotErc721(contract: Contract) {

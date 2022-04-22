@@ -6,7 +6,7 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc721TokenData, TokenMapping } from '../common/interfaces'
 import Erc721Token from './Erc721Token'
 import { getTokenIcon } from '../common/util'
-import { getOpenSeaProxyAddress, getTokenData } from './util'
+import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
 import { useNetwork, useProvider } from 'wagmi'
 import { providers as multicall } from '@0xsequence/multicall'
@@ -48,7 +48,9 @@ function Erc721TokenList({
 
     setLoading(true)
 
-    const allEvents = [...approvalEvents, ...approvalForAllEvents, ...transferEvents];
+    const openSeaProxy = await getOpenSeaProxyAddress(inputAddress, provider)
+    const patchedApprovalForAllEvents = [...approvalForAllEvents, ...generatePatchedAllowanceEvents(inputAddress, openSeaProxy)]
+    const allEvents = [...approvalEvents, ...patchedApprovalForAllEvents, ...transferEvents, ];
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
@@ -58,7 +60,7 @@ function Erc721TokenList({
     // Look up token data for all tokens, add their lists of approvals
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
-        const approvalsForAll = approvalForAllEvents.filter(approval => approval.address === contract.address)
+        const approvalsForAll = patchedApprovalForAllEvents.filter(approval => approval.address === contract.address)
         const approvals = approvalEvents.filter(approval => approval.address === contract.address)
         const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
 
@@ -80,8 +82,6 @@ function Erc721TokenList({
     const sortedTokens = unsortedTokens
       .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
-
-    const openSeaProxy = await getOpenSeaProxyAddress(inputAddress, provider)
 
     setTokens(sortedTokens)
     setOpenSeaProxyAddress(openSeaProxy)
