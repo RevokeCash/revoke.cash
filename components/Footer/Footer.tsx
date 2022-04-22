@@ -20,6 +20,7 @@ const Footer: React.FC = () => (
       <LogoLink src="/logos/harmony.png" alt="Harmony" href="https://harmony.one/" />
       <LogoLink src="/logos/klaytn.png" alt="Klaytn" href="https://www.klaytn.com/" />
       <LogoLink src="/logos/arbitrum.svg" alt="Arbitrum" href="https://arbitrum.io/" />
+      <LogoLink src="/logos/optimism.jpeg" alt="Optimism" href="https://optimism.io/" />
       <LogoLink src="/logos/metis.png" alt="Metis" href="https://www.metis.io/" />
       <LogoLink src="/logos/gnosis-chain.png" alt="Gnosis Chain" href="https://www.xdaichain.com/" />
       <LogoLink src="/logos/rootstock.png" alt="Rootstock" href="https://www.rsk.co/" />
