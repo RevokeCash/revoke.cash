@@ -49,8 +49,15 @@ function Erc721TokenList({
     setLoading(true)
 
     const openSeaProxy = await getOpenSeaProxyAddress(inputAddress, provider)
-    const patchedApprovalForAllEvents = [...approvalForAllEvents, ...generatePatchedAllowanceEvents(inputAddress, openSeaProxy)]
-    const allEvents = [...approvalEvents, ...patchedApprovalForAllEvents, ...transferEvents, ];
+    const patchedApprovalForAllEvents = [
+      ...approvalForAllEvents,
+      ...generatePatchedAllowanceEvents(
+        inputAddress,
+        openSeaProxy,
+        [...approvalEvents, ...approvalForAllEvents, ...transferEvents ]
+      ),
+    ]
+    const allEvents = [...approvalEvents, ...patchedApprovalForAllEvents, ...transferEvents ];
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents

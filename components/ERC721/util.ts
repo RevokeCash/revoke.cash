@@ -102,8 +102,14 @@ export async function getOpenSeaProxyAddress(userAddress: string, provider: prov
 
 // This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
 // which do not show up normally because of a bug in their contract
-export function generatePatchedAllowanceEvents(userAddress: string, openseaProxyAddress?: string): providers.Log[] {
+export function generatePatchedAllowanceEvents(
+  userAddress: string,
+  openseaProxyAddress?: string,
+  allEvents: providers.Log[] = [],
+): providers.Log[] {
   if (!userAddress || !openseaProxyAddress) return [];
+  // Only add the Moonbirds approval event if the account has interacted with Moonbirds at all
+  if (!allEvents.some((ev) => ev.address === MOONBIRDS_ADDRESS)) return [];
 
   const baseDummyEventLog = {
     blockNumber: 0,
