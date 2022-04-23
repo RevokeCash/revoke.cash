@@ -10,6 +10,7 @@ export function getNativeToken(chainId: number): string {
     43113: 'AVAX',
     43114: 'AVAX',
     80001: 'MATIC',
+    1666600000: 'ONE'
   }
 
   return alternatives[chainId] || 'ETH'
@@ -24,7 +25,9 @@ export function getDefaultAmount(nativeToken: string): string {
     'POA': '200',
     'xDAI': '10',
     'MATIC': '10',
-    'AVAX': '0.25'
+    'AVAX': '0.25',
+    'ONE': '0.25'
+
   }
 
   return mapping[nativeToken]
