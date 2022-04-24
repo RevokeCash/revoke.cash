@@ -19,7 +19,7 @@ export class CovalentEventGetter implements EventGetter {
     const results = await Promise.all(
       blockRangeChunks.map(([from, to]) => {
         // Send requests to the "emptiest" queue first
-        const queue = this.queues.sort((a, b) => a.queue.size - b.queue.size).at(0);
+        const [queue] = this.queues.sort((a, b) => a.queue.size - b.queue.size);
         return queue.queue.add(() => this.getEventsInChunk(chainId, from, to, filter.topics as string[], queue.apiKey));
       })
     );
