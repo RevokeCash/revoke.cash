@@ -28,6 +28,12 @@ function Dashboard() {
     setTokenMapping(await getFullTokenMapping(chainId))
   }
 
+  if (!chainId) {
+    return (
+      <div>Please use a Web3 enabled browser to use Revoke.cash.</div>
+    )
+  }
+
   if (!isProviderSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
     return (
       <div>{chainName} is not supported.</div>

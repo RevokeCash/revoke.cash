@@ -73,6 +73,18 @@ export const EthereumProvider = ({ children }: Props) => {
       if (window.ethereum) {
         const provider = new providers.Web3Provider(window.ethereum, 'any')
         await updateProvider(provider)
+
+        window.ethereum.on('accountsChanged', (accounts: string[]) => {
+          console.log('accounts changed to', accounts);
+          updateAccount(accounts[0]);
+        })
+
+        window.ethereum.on('chainChanged', (chainIdHex: string) => {
+          const chainIdDec = Number.parseInt(chainIdHex, 16)
+          console.log('chain changed to', chainIdDec);
+          setChainId(chainIdDec)
+        })
+
         console.log('Using injected "window.ethereum" provider')
       } else {
         try {
@@ -88,17 +100,6 @@ export const EthereumProvider = ({ children }: Props) => {
           console.log('No web3 provider available')
         }
       }
-
-      window.ethereum.on('accountsChanged', (accounts: string[]) => {
-        console.log('accounts changed to', accounts);
-        updateAccount(accounts[0]);
-      })
-
-      window.ethereum.on('chainChanged', (chainIdHex: string) => {
-        const chainIdDec = Number.parseInt(chainIdHex, 16)
-        console.log('chain changed to', chainIdDec);
-        setChainId(chainIdDec)
-      })
     }
 
     connectProvider()
