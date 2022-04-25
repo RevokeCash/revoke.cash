@@ -4,12 +4,10 @@ import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { getNativeToken, getDefaultAmount } from './util'
 import { emitAnalyticsEvent } from '../common/util'
-import { useNetwork, useSigner } from 'wagmi'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 const DonateButton: React.FC = () => {
-  const [{ data: signer }] = useSigner()
-  const [{ data: networkData}] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  const { signer, chainId } = useEthereum();
 
   const nativeToken = getNativeToken(chainId)
   const [amount, setAmount] = useState<string>(getDefaultAmount(nativeToken))

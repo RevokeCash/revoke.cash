@@ -5,14 +5,13 @@ import React, { useEffect, useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { Erc20TokenData, TokenMapping } from '../common/interfaces'
 import Erc20Token from './Erc20Token'
-import { isRegistered, getTokenIcon, toFloat } from '../common/util'
+import { isVerified, getTokenIcon, toFloat } from '../common/util'
 import { getTokenData } from './util'
 import { ERC20 } from '../common/abis'
-import { useNetwork, useProvider } from 'wagmi'
-import { providers as multicall } from '@0xsequence/multicall'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
-  filterRegisteredTokens: boolean
+  filterUnverifiedTokens: boolean
   filterZeroBalances: boolean
   transferEvents: Log[]
   approvalEvents: Log[]
@@ -21,7 +20,7 @@ interface Props {
 }
 
 function Erc20TokenList({
-  filterRegisteredTokens,
+  filterUnverifiedTokens,
   filterZeroBalances,
   transferEvents,
   approvalEvents,
@@ -31,9 +30,7 @@ function Erc20TokenList({
   const [tokens, setTokens] = useState<Erc20TokenData[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  const provider = useProvider()
-  const [{ data: networkData }] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  const { provider, chainId } = useEthereum();
 
   useEffect(() => {
     loadData()
@@ -41,7 +38,7 @@ function Erc20TokenList({
 
   const loadData = async () => {
     if (!inputAddress) return
-    if (!(provider instanceof multicall.MulticallProvider)) return
+    if (!provider) return
 
     setLoading(true)
 
@@ -55,12 +52,12 @@ function Erc20TokenList({
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
         const tokenApprovals = approvalEvents.filter(approval => approval.address === contract.address)
-        const registered = isRegistered(contract.address, tokenMapping)
-        const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
+        const verified = isVerified(contract.address, tokenMapping)
+        const icon = getTokenIcon(contract.address, chainId, tokenMapping)
 
         try {
           const tokenData = await getTokenData(contract, inputAddress, tokenMapping)
-          return { ...tokenData, icon, contract, registered, approvals: tokenApprovals }
+          return { ...tokenData, icon, contract, verified, approvals: tokenApprovals }
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC20 token so
           // we do not include it in the token list (should not happen).
@@ -69,9 +66,15 @@ function Erc20TokenList({
       })
     )
 
-    // Filter undefined tokens and sort tokens alphabetically on token symbol
+    const hasBalanceOrApprovals = (token: Erc20TokenData) => (
+      token.approvals.length > 0 || toFloat(Number(token.balance), token.decimals) !== '0.000'
+    );
+
+    // Filter undefined tokens, filter tokens without balance or approvals
+    //  and sort tokens alphabetically on token symbol
     const sortedTokens = unsortedTokens
       .filter((token) => token !== undefined)
+      .filter(hasBalanceOrApprovals)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol))
 
     setTokens(sortedTokens)
@@ -87,7 +90,7 @@ function Erc20TokenList({
   }
 
   const tokenComponents = tokens
-  .filter((token) => !filterRegisteredTokens || token.registered)
+  .filter((token) => !filterUnverifiedTokens || token.verified)
   .filter((token) => !filterZeroBalances || !(toFloat(Number(token.balance), token.decimals) === '0.000'))
   .map((token) => (
     <Erc20Token

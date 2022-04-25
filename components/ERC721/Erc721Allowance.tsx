@@ -7,7 +7,7 @@ import RevokeButton from '../common/RevokeButton'
 import { Allowance } from './interfaces'
 import { formatAllowance } from './util'
 import { Contract } from 'ethers'
-import { useAccount, useNetwork, useProvider, useSigner } from 'wagmi'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
   token: Erc721TokenData
@@ -19,11 +19,7 @@ interface Props {
 function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
   const { spender, ensSpender, spenderAppName, tokenId } = allowance
 
-  const provider = useProvider()
-  const [{ data: signer }] = useSigner()
-  const [{ data: accountData }] = useAccount()
-  const [{ data: networkData }] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  const { signer, provider, account, chainId } = useEthereum();
 
   const revoke = async () => {
     const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider)
@@ -57,24 +53,24 @@ function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
   const explorerBaseUrl = getExplorerUrl(chainId)
 
   const shortenedLink = explorerBaseUrl
-    ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{shortenedSpenderDisplay}</a>)
+    ? (<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>{shortenedSpenderDisplay}</a>)
     : shortenedSpenderDisplay
 
   const regularLink = explorerBaseUrl
-    ? (<a className="monospace" href={`${explorerBaseUrl}/${spender}`}>{spenderDisplay}</a>)
+    ? (<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>{spenderDisplay}</a>)
     : spenderDisplay
 
-  const canUpdate = inputAddress === accountData?.address
+  const canUpdate = inputAddress === account
 
   return (
     <Form inline className="Allowance" key={spender}>
       {/* Display separate spans for the regular and shortened versions of the spender address */}
       {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">
-          <span className="AllowanceTextSmallScreen">
+          <span className="only-mobile-inline">
             {formatAllowance(tokenId)} to&nbsp;{shortenedLink}
           </span>
-          <span className="AllowanceTextBigScreen">
+          <span className="only-desktop-inline">
             {formatAllowance(tokenId)} to&nbsp;{regularLink}
           </span>
         </Form.Label>

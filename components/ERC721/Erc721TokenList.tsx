@@ -8,11 +8,10 @@ import Erc721Token from './Erc721Token'
 import { getTokenIcon } from '../common/util'
 import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from './util'
 import { ERC721Metadata } from '../common/abis'
-import { useNetwork, useProvider } from 'wagmi'
-import { providers as multicall } from '@0xsequence/multicall'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
-  filterRegisteredTokens: boolean
+  filterUnverifiedTokens: boolean
   filterZeroBalances: boolean
   transferEvents: Log[]
   approvalEvents: Log[]
@@ -22,7 +21,7 @@ interface Props {
 }
 
 function Erc721TokenList({
-  filterRegisteredTokens,
+  filterUnverifiedTokens,
   filterZeroBalances,
   transferEvents,
   approvalEvents,
@@ -34,9 +33,7 @@ function Erc721TokenList({
   const [loading, setLoading] = useState<boolean>(true)
   const [openSeaProxyAddress, setOpenSeaProxyAddress] = useState<string>()
 
-  const provider = useProvider()
-  const [{ data: networkData }] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  const { provider, chainId } = useEthereum();
 
   useEffect(() => {
     loadData()
@@ -44,7 +41,7 @@ function Erc721TokenList({
 
   const loadData = async () => {
     if (!inputAddress) return
-    if (!(provider instanceof multicall.MulticallProvider)) return
+    if (!provider) return
 
     setLoading(true)
 
@@ -69,14 +66,14 @@ function Erc721TokenList({
       tokenContracts.map(async (contract) => {
         const approvalsForAll = patchedApprovalForAllEvents.filter(approval => approval.address === contract.address)
         const approvals = approvalEvents.filter(approval => approval.address === contract.address)
-        const icon = await getTokenIcon(contract.address, chainId, tokenMapping)
+        const icon = getTokenIcon(contract.address, chainId, tokenMapping)
 
-        // Skip registration checks for NFTs
-        const registered = true
+        // Skip verification checks for NFTs
+        const verified = true
 
         try {
           const tokenData = await getTokenData(contract, inputAddress, tokenMapping)
-          return { ...tokenData, icon, contract, registered, approvals, approvalsForAll }
+          return { ...tokenData, icon, contract, verified, approvals, approvalsForAll }
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC721 token so
           // we do not include it in the token list.
@@ -104,7 +101,7 @@ function Erc721TokenList({
   }
 
   const tokenComponents = tokens
-  .filter((token) => !filterRegisteredTokens || token.registered)
+  .filter((token) => !filterUnverifiedTokens || token.verified)
   .filter((token) => !filterZeroBalances || !(token.balance === '0'))
   .map((token) => (
     <Erc721Token

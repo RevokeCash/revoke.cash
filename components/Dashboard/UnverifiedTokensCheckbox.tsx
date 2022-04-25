@@ -9,8 +9,8 @@ interface Props {
   update: (checked: boolean) => void
 }
 
-const UnregisteredTokensCheckbox: React.FC<Props> = ({ tokenStandard, tokenMapping, checked, update }) => {
-  // Don't check registration for NFTs
+const UnverifiedTokensCheckbox: React.FC<Props> = ({ tokenStandard, tokenMapping, checked, update }) => {
+  // Don't check verification for NFTs
   if (tokenStandard === 'ERC721') return null;
 
   // If no token data mapping, we hide the checkbox
@@ -20,11 +20,11 @@ const UnregisteredTokensCheckbox: React.FC<Props> = ({ tokenStandard, tokenMappi
 
   return (
     <div>
-      Include unregistered tokens
+      Include unverified tokens
       <sup><a href="https://tokenlists.org/" target="_blank" rel="noopener noreferrer">?</a></sup>
       <input type="checkbox" checked={checked} onChange={onChange} />
     </div>
   )
 }
 
-export default UnregisteredTokensCheckbox
+export default UnverifiedTokensCheckbox

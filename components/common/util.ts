@@ -2,12 +2,13 @@ import axios from 'axios'
 import { BigNumberish, BigNumber, providers } from 'ethers'
 import { Filter, Log } from '@ethersproject/abstract-provider'
 import { getAddress } from 'ethers/lib/utils'
+import { chains, ChainId } from 'eth-chains'
 import { DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
-// Check if a token is registered in the token mapping
-export function isRegistered(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
-  // If we don't know a registered token mapping, we skip checking registration
+// Check if a token is verified in the token mapping
+export function isVerified(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
+  // If we don't know a verified token mapping, we skip checking verification
   if (!tokenMapping) return true
   return tokenMapping[getAddress(tokenAddress)] !== undefined;
 }
@@ -44,65 +45,111 @@ export async function lookupEnsName(address: string, provider: providers.Provide
 }
 
 export function getExplorerUrl(chainId: number): string | undefined {
-  // Includes all Etherscan, BScScan, BlockScout, Matic, Avalanche explorers
-  const mapping = {
-    1: 'https://etherscan.io/address',
-    3: 'https://ropsten.etherscan.io/address',
-    4: 'https://rinkeby.etherscan.io/address',
-    5: 'https://goerli.etherscan.io/address',
-    6: 'https://blockscout.com/etc/kotti/address',
-    10: 'https://optimistic.etherscan.io/address',
-    30: 'https://blockscout.com/rsk/mainnet/address',
-    42: 'https://kovan.etherscan.io/address',
-    56: 'https://bscscan.com/address',
-    61: 'https://blockscout.com/etc/mainnet/address',
-    63: 'https://blockscout.com/etc/mordor/address',
-    77: 'https://blockscout.com/poa/sokol/address',
-    97: 'https://testnet.bscscan.com/address',
-    99: 'https://blockscout.com/poa/core/address',
-    100: 'https://blockscout.com/poa/xdai/address',
-    122: 'https://explorer.fuse.io/address',
-    137: 'https://explorer-mainnet.maticvigil.com/address',
-    1088: 'https://andromeda-explorer.metis.io/address',
-    10000: 'https://smartscan.cash/address',
-    42161: 'https://arbiscan.io/address',
-    43113: 'https://cchain.explorer.avax-test.network/address',
-    43114: 'https://cchain.explorer.avax.network/address',
-    80001: 'https://explorer-mumbai.maticvigil.com/address'
+  const overrides = {
+    [ChainId.EthereumTestnetRopsten]: 'https://ropsten.etherscan.io',
+    [ChainId.EthereumTestnetKovan]: 'https://kovan.etherscan.io',
+    [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
+    [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
+    [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
   }
 
-  return mapping[chainId]
+  return overrides[chainId] ?? chains.get(chainId)?.explorers?.at(0)?.url;
 }
 
 export function getTrustWalletName(chainId: number): string | undefined {
   const mapping = {
-    1: 'ethereum',
-    56: 'smartchain',
-    61: 'classic',
+    [ChainId.EthereumMainnet]: 'ethereum',
+    [ChainId.BinanceSmartChainMainnet]: 'smartchain',
+    [ChainId.EthereumClassicMainnet]: 'classic',
   }
 
   return mapping[chainId]
 }
 
+// TODO: Replace these with just chain ID rather than name (breaking)
 export function getDappListName(chainId: number): string | undefined {
   const mapping = {
-    1: 'ethereum',
-    56: 'smartchain',
-    100: 'xdai',
-    122: 'fuse',
-    137: 'matic',
-    1088: 'metis',
-    10000: 'smartbch',
-    42161: 'arbitrum',
-    43114: 'avalanche',
+    [ChainId.EthereumMainnet]: 'ethereum',
+    [ChainId.BinanceSmartChainMainnet]: 'smartchain',
+    [ChainId.XDAIChain]: 'xdai',
+    [ChainId.FuseMainnet]: 'fuse',
+    [ChainId.PolygonMainnet]: 'matic',
+    [ChainId.SmartBitcoinCash]: 'smartbch',
+    [ChainId.ArbitrumOne]: 'arbitrum',
+    [ChainId.AvalancheMainnet]: 'avalanche',
   }
 
   return mapping[chainId]
 }
 
-export function isSupportedNetwork(chainId: number): boolean {
-  // Supported for now are only ETH, xDAI, SmartBCH, Arbitrum, Metis & AVAX. Other chains fail on the RPC calls.
-  const supportedNetworks = [1, 3, 4, 5, 42, 100, 122, 1088, 10000, 42161, 43113, 43114]
+// TODO: Optimism, Celo, Cronos, Boba, ETC, Theta, Harmony, BTT, (ThunderCore), (EWT), (KCC),
+// (Fusion), (CoinEx Chain), (Syscoin), (GoChain), (Okex Chain), (Wanchain), (POA)
+// TODO (hard): Terra, Solana, Cardano, Polkadot, Kusama, Cosmos, Near, Tron, ICP, Tezos, Flow,
+
+export function isProviderSupportedNetwork(chainId: number): boolean {
+  const supportedNetworks = [
+    ChainId.EthereumMainnet,
+    ChainId.EthereumTestnetRopsten,
+    ChainId.EthereumTestnetRinkeby,
+    ChainId.EthereumTestnetGörli,
+    ChainId.EthereumTestnetKovan,
+    ChainId.TelosEVMMainnet,
+    ChainId.TelosEVMTestnet,
+    ChainId.XDAIChain,
+    ChainId.MetisAndromedaMainnet,
+    ChainId.MetisStardustTestnet,
+    ChainId.SmartBitcoinCash,
+    ChainId.SmartBitcoinCashTestnet,
+    ChainId.FuseMainnet,
+    ChainId.FuseSparknet,
+  ]
+  return supportedNetworks.includes(chainId);
+}
+
+export function isBackendSupportedNetwork(chainId: number): boolean {
+  return isCovalentSupportedNetwork(chainId) || isNodeSupportedNetwork(chainId)
+}
+
+// We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
+// We also disable testnets for the same reason
+export function isCovalentSupportedNetwork(chainId: number): boolean {
+  const supportedNetworks = [
+    ChainId.RSKMainnet,
+    // ChainId.RSKTestnet,
+    ChainId.BinanceSmartChainMainnet,
+    // ChainId.BinanceSmartChainTestnet,
+    ChainId.PolygonMainnet,
+    // ChainId.PolygonTestnetMumbai,
+    ChainId.AvalancheMainnet,
+    // ChainId.AvalancheFujiTestnet,
+    ChainId.FantomOpera,
+    // ChainId.FantomTestnet,
+    ChainId.HarmonyMainnetShard0,
+    // ChainId.HarmonyTestnetShard0,
+    ChainId.ArbitrumOne,
+    // ChainId.ArbitrumTestnetRinkeby,
+    ChainId.HuobiECOChainMainnet,
+    // ChainId.HuobiECOChainTestnet,
+    ChainId.Shiden,
+    ChainId.Moonbeam,
+    ChainId.Moonriver,
+    // ChainId.MoonbaseAlpha,
+    ChainId.IoTeXNetworkMainnet,
+    // ChainId.IoTeXNetworkTestnet,
+    ChainId.KlaytnMainnetCypress,
+    // ChainId.KlaytnTestnetBaobab,
+    // ChainId.EvmosTestnet,
+    ChainId.PalmMainnet,
+    // ChainId.PalmTestnet,
+    // ChainId.PolyjuiceTestnet,
+  ]
+  return supportedNetworks.includes(chainId);
+}
+
+export function isNodeSupportedNetwork(chainId: number): boolean {
+  const supportedNetworks = [
+    ChainId.OptimisticEthereum,
+  ]
   return supportedNetworks.includes(chainId);
 }
 
@@ -119,8 +166,6 @@ export async function getFullTokenMapping(chainId: number): Promise<TokenMapping
 async function getTokenMapping(chainId: number, standard: TokenStandard = 'ERC20'): Promise<TokenMapping | undefined> {
   const url = getTokenListUrl(chainId, standard)
 
-  if (!url) return undefined
-
   try {
     const res = await axios.get(url)
     const tokens: TokenFromList[] = res.data.tokens
@@ -132,31 +177,40 @@ async function getTokenMapping(chainId: number, standard: TokenStandard = 'ERC20
 
     return tokenMapping
   } catch {
-    return undefined
+    // Fallback to 1inch token mapping
+    return getTokenMappingFrom1inch(chainId)
+  }
+}
+
+async function getTokenMappingFrom1inch(chainId: number): Promise<TokenMapping | undefined> {
+  try {
+    const { data: mapping } = await axios.get(`https://tokens.1inch.io/v1.1/${chainId}`);
+
+    const tokenMapping = Object.fromEntries(
+      Object.entries(mapping).map(([address, token]) => [getAddress(address), token])
+    )
+
+    return tokenMapping as TokenMapping;
+  } catch {
+    return undefined;
   }
 }
 
 function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): string | undefined {
   const mapping = {
     ERC20: {
-      1: 'https://uniswap.mycryptoapi.com/',
-      10: 'https://static.optimism.io/optimism.tokenlist.json',
-      56: 'https://raw.githubusercontent.com/pancakeswap/pancake-swap-interface/master/src/constants/token/pancakeswap.json',
-      100: 'https://tokens.honeyswap.org',
-      137: 'https://unpkg.com/quickswap-default-token-list@1.0.28/build/quickswap-default.tokenlist.json',
-      1088: 'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
-      42161: 'https://bridge.arbitrum.io/token-list-42161.json',
-      43114: 'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json'
+      [ChainId.HarmonyMainnetShard0]: 'https://raw.githubusercontent.com/DefiKingdoms/community-token-list/main/src/defikingdoms-default.tokenlist.json',
+      [ChainId.MetisAndromedaMainnet]: 'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
     },
     ERC721: {
-      1: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
+      [ChainId.EthereumMainnet]: 'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json'
     }
   }
 
   return mapping[standard][chainId]
 }
 
-export async function getTokenIcon(tokenAddress: string, chainId: number, tokenMapping: TokenMapping = {}) {
+export function getTokenIcon(tokenAddress: string, chainId: number, tokenMapping: TokenMapping = {}) {
   const normalisedAddress = getAddress(tokenAddress)
 
   // Retrieve a token icon from the token list if specified (filtering relative paths)
@@ -208,6 +262,20 @@ export const getLogs = async (
   provider: providers.Provider,
   baseFilter: Filter,
   fromBlock: number,
+  toBlock: number,
+  chainId: number
+): Promise<Log[]> => {
+  if (isProviderSupportedNetwork(chainId)) {
+    return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock)
+  }
+
+  return getLogsFromBackend(chainId, { ...baseFilter, fromBlock, toBlock })
+};
+
+export const getLogsFromProvider = async (
+  provider: providers.Provider,
+  baseFilter: Filter,
+  fromBlock: number,
   toBlock: number
 ): Promise<Log[]> => {
   const filter = { ...baseFilter, fromBlock, toBlock };
@@ -215,18 +283,23 @@ export const getLogs = async (
     const result = await provider.getLogs(filter);
     return result;
   } catch (error) {
-    const errorMessage = error?.error?.message ?? error?.message;
+    const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
     if (errorMessage !== 'query returned more than 10000 results') {
       throw error;
     }
 
     const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
-    const leftPromise = getLogs(provider, baseFilter, fromBlock, middle);
-    const rightPromise = getLogs(provider, baseFilter, middle + 1, toBlock);
+    const leftPromise = getLogsFromProvider(provider, baseFilter, fromBlock, middle);
+    const rightPromise = getLogsFromProvider(provider, baseFilter, middle + 1, toBlock);
     const [left, right] = await Promise.all([leftPromise, rightPromise]);
     return [...left, ...right];
   }
 };
+
+export const getLogsFromBackend = async (chainId: number, filter: Filter): Promise<Log[]> => {
+  const { data } = await axios.post(`/api/${chainId}/logs`, filter)
+  return data
+}
 
 export const parseInputAddress = async (inputAddressOrName: string, provider: providers.Provider): Promise<string | undefined> => {
   // If the input is an ENS name, validate it, resolve it and return it
@@ -241,7 +314,7 @@ export const parseInputAddress = async (inputAddressOrName: string, provider: pr
 
   // If the input is an address, validate it and return it
   try {
-    return getAddress(inputAddressOrName)
+    return getAddress(inputAddressOrName.toLowerCase())
   } catch {
     return undefined
   }

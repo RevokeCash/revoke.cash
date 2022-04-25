@@ -7,7 +7,7 @@ export interface Erc20TokenData {
   decimals: number
   balance: string
   totalSupply: string
-  registered: boolean
+  verified: boolean
   approvals: Array<providers.Log>
 }
 
@@ -16,7 +16,7 @@ export interface Erc721TokenData {
   icon: string
   symbol: string
   balance: string
-  registered: boolean
+  verified: boolean
   approvals: Array<providers.Log>
   approvalsForAll: Array<providers.Log>
 }

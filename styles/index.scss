@@ -44,40 +44,31 @@ a:visited {
   text-align: center;
 }
 
-.Header {
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-
 .logo {
   width: 100%;
   max-width: 400px;
-  margin-top: 4%;
-  margin-bottom: 4%;
+  min-width: 200px;
 }
 
 .AddressInput {
   color: black;
   font-size: 1.2rem;
   font-weight: 500;
+  max-width: 800px;
+  width: 100%;
 }
 
 @media (max-width: 600px) {
   .AddressInput {
     font-size: 1rem;
-    font-weight: 400;
   }
 }
 
 .TokenList {
   padding: 10px;
-}
-
-@media (min-width: 1200px) {
-  .TokenList {
-    width: 80%;
-    margin: auto;
-  }
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
 }
 
 .Token {
@@ -86,6 +77,11 @@ a:visited {
 }
 
 .TokenBalance {
+  display: flex;
+  align-items: center;
+}
+
+.TokenBalance a {
   display: flex;
   align-items: center;
 }
@@ -142,18 +138,20 @@ a:visited {
   }
 }
 
-// Around 850px the full address doesn't fit on the screen any more,
-// so we move to a shortened version of the address
-.AllowanceTextSmallScreen { display: none; }
-.AllowanceTextBigScreen { display: inline; }
-@media (max-width: 850px) {
-  .AllowanceTextSmallScreen { display: inline; }
-  .AllowanceTextBigScreen { display: none; }
-}
-
 .only-mobile { display: none; }
-.only-desktop { display: inherit; }
+.only-mobile-flex { display: none; }
+.only-mobile-inline { display: none; }
+
+.only-desktop { display: block; }
+.only-desktop-flex { display: flex; }
+.only-desktop-inline { display: inline; }
+
 @media (max-width: 850px) {
-  .only-mobile { display: inherit; }
+  .only-mobile { display: block; }
+  .only-mobile-flex { display: flex; }
+  .only-mobile-inline { display: inline; }
+
   .only-desktop { display: none; }
+  .only-desktop-flex { display: none; }
+  .only-desktop-inline { display: none; }
 }

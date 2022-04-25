@@ -1,16 +1,15 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { useAccount, useConnect } from 'wagmi'
+import { useEthereum } from "utils/hooks/useEthereum";
 import { shortenAddress } from "../common/util";
 
 const ConnectButton: React.FC = () => {
-  const [{ data: connectData }, connect] = useConnect()
-  const [{ data: accountData }] = useAccount({ fetchEns: true })
+  const { account, ensName, connect } = useEthereum();
 
-  const buttonText = accountData?.ens?.name ?? shortenAddress(accountData?.address) ?? 'Connect wallet'
+  const buttonText = ensName ?? shortenAddress(account) ?? 'Connect wallet'
 
   return (
-    <Button style={{ float: 'right' }} variant="outline-primary" onClick={() => connect(connectData.connectors[0])}>{buttonText}</Button>
+    <Button variant="outline-primary" onClick={connect}>{buttonText}</Button>
   )
 }
 

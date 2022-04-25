@@ -6,7 +6,7 @@ import Erc721AllowanceList from './Erc721AllowanceList'
 import Erc721TokenBalance from './Erc721TokenBalance'
 import { addDisplayAddressesToAllowances, getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util'
 import { getExplorerUrl } from '../common/util'
-import { useNetwork, useProvider } from 'wagmi'
+import { useEthereum } from 'utils/hooks/useEthereum'
 
 interface Props {
   token: Erc721TokenData
@@ -18,9 +18,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  const provider = useProvider()
-  const [{ data: networkData }] = useNetwork()
-  const chainId = networkData?.chain?.id ?? 1
+  const { provider, chainId } = useEthereum();
 
   useEffect(() => {
     loadData()
@@ -50,7 +48,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
     return (<div className="Token"><ClipLoader size={20} color={'#000'} loading={loading} /></div>)
   }
   const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId
-  const explorerUrl = `${getExplorerUrl(chainId)}/${token.contract.address}`
+  const explorerUrl = `${getExplorerUrl(chainId)}/address/${token.contract.address}`
 
   return (
     <div className="Token">
