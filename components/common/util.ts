@@ -53,7 +53,9 @@ export function getExplorerUrl(chainId: number): string | undefined {
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
   }
 
-  return overrides[chainId] ?? chains.get(chainId)?.explorers?.at(0)?.url;
+  const [explorer] = chains.get(chainId)?.explorers;
+
+  return overrides[chainId] ?? explorer?.url;
 }
 
 export function getTrustWalletName(chainId: number): string | undefined {
