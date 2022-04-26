@@ -3,7 +3,7 @@ import { BigNumberish, BigNumber, providers } from 'ethers'
 import { Filter, Log } from '@ethersproject/abstract-provider'
 import { getAddress } from 'ethers/lib/utils'
 import { chains, ChainId } from 'eth-chains'
-import { DAPP_LIST_BASE_URL, TRUSTWALLET_BASE_URL } from './constants'
+import { DAPP_LIST_BASE_URL, ETHEREUM_LISTS_CONTRACTS, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
 // Check if a token is verified in the token mapping
@@ -26,12 +26,30 @@ export function compareBN(a: BigNumberish, b: BigNumberish): number {
 
 // Look up an address' App Name using the dapp-contract-list
 export async function addressToAppName(address: string, chainId?: number): Promise<string | undefined> {
-  const networkName = getDappListName(chainId)
-  if (!networkName) return undefined
+  if (!chainId) return undefined
+  const name = await getNameFromDappList(address, chainId) ?? await getNameFromEthereumList(address, chainId)
+  return name
+}
 
+async function getNameFromDappList(address: string, chainId: number): Promise<string | undefined> {
   try {
-    const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${networkName}/${getAddress(address)}.json`)
+    const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${chainId}/${getAddress(address)}.json`)
     return data.appName
+  } catch {
+    return undefined
+  }
+}
+
+async function getNameFromEthereumList(address: string, chainId: number): Promise<string | undefined> {
+  try {
+    const contractRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${getAddress(address)}.json`)
+
+    try {
+      const projectRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/projects/${contractRes.data.project}.json`)
+      return projectRes.data.name
+    } catch {}
+
+    return contractRes.data.project
   } catch {
     return undefined
   }

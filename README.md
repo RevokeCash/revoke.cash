@@ -8,8 +8,8 @@ Do you ever feel uneasy about the different dapps that you gave approval to spen
 
 This repository also includes the [`dapp-contract-list`](/public/dapp-contract-list/), which is a mapping of smart contract addresses to the corresponding application. This allows revoke.cash to display application names like Aave or Compound instead of their smart contract addresses. This list can be used by any other application. The name mapping for an address can be accessed through either of these URLs:
 
-- `https://raw.githubusercontent.com/rkalis/revoke.cash/master/public/dapp-contract-list/{chain}/{address}.json`
-- `https://revoke.cash/dapp-contract-list/{chain}/{address}.json`
+- `https://raw.githubusercontent.com/rkalis/revoke.cash/master/public/dapp-contract-list/{chainId}/{address}.json`
+- `https://revoke.cash/dapp-contract-list/{chainId}/{address}.json`
 
 Revoke.cash natively supports Ethereum (mainnet and testnets), Gnosis Chain, Telos, Metis, Fuse and SmartBCH.
 
