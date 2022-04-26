@@ -53,7 +53,7 @@ export function getExplorerUrl(chainId: number): string | undefined {
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
   }
 
-  const [explorer] = chains.get(chainId)?.explorers;
+  const [explorer] = chains.get(chainId)?.explorers ?? [];
 
   return overrides[chainId] ?? explorer?.url;
 }
