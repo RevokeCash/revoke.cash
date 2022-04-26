@@ -36,8 +36,7 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke}: Pr
     const newEnsSpender = await lookupEnsName(spender, provider)
     setEnsSpender(newEnsSpender)
 
-    const dappListNetworkName = getDappListName(chainId)
-    const newSpenderAppName = await addressToAppName(spender, dappListNetworkName)
+    const newSpenderAppName = await addressToAppName(spender, chainId)
     setSpenderAppName(newSpenderAppName)
 
     setLoading(false)

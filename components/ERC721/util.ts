@@ -65,8 +65,7 @@ export async function addDisplayAddressesToAllowances(allowances: Allowance[], p
 // TODO: Make this multicall-compatible
 async function addDisplayAddresses(allowance: Allowance, provider: providers.Provider, chainId: number, openSeaProxyAddress?: string) {
   const ensSpender = await lookupEnsName(allowance.spender, provider)
-  const dappListNetworkName = getDappListName(chainId)
-  const spenderAppName = await addressToAppName(allowance.spender, dappListNetworkName, openSeaProxyAddress)
+  const spenderAppName = await addressToAppName(allowance.spender, chainId, openSeaProxyAddress)
 
   return { ...allowance, ensSpender, spenderAppName }
 }
@@ -84,9 +83,9 @@ export async function getTokenData(contract: Contract, ownerAddress: string, tok
   return { symbol, balance }
 }
 
-export async function addressToAppName(address: string, networkName?: string, openseaProxyAddress?: string): Promise<string | undefined> {
+export async function addressToAppName(address: string, chainId?: number, openseaProxyAddress?: string): Promise<string | undefined> {
   if (address === openseaProxyAddress) return 'OpenSea'
-  return addressToAppNameBase(address, networkName)
+  return addressToAppNameBase(address, chainId)
 }
 
 export async function getOpenSeaProxyAddress(userAddress: string, provider: providers.Provider): Promise<string | undefined> {

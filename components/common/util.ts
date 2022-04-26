@@ -25,7 +25,8 @@ export function compareBN(a: BigNumberish, b: BigNumberish): number {
 }
 
 // Look up an address' App Name using the dapp-contract-list
-export async function addressToAppName(address: string, networkName?: string): Promise<string | undefined> {
+export async function addressToAppName(address: string, chainId?: number): Promise<string | undefined> {
+  const networkName = getDappListName(chainId)
   if (!networkName) return undefined
 
   try {
