@@ -37,6 +37,7 @@ const Footer: React.FC = () => (
     </div>
     <ToastContainer
       position="top-right"
+      icon={false}
       autoClose={5000}
       hideProgressBar={false}
       newestOnTop

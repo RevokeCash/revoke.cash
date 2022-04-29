@@ -15,7 +15,7 @@ export const displayGitcoinToast = () => {
   //   </div>
   // )
 
-  // toast.error(toastContent, {
+  // toast.info(toastContent, {
   //   position: "top-left",
   //   autoClose: false,
   //   closeOnClick: true,

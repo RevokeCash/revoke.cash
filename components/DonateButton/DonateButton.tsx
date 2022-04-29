@@ -1,24 +1,35 @@
 import { utils } from 'ethers'
-import React, { useEffect, useState } from 'react'
+import React, { MutableRefObject, ReactText, useEffect, useState } from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { getNativeToken, getDefaultAmount } from './util'
 import { emitAnalyticsEvent } from '../common/util'
 import { useEthereum } from 'utils/hooks/useEthereum'
 
-const DonateButton: React.FC = () => {
+interface Props {
+  size?: 'sm' | 'lg';
+  parentToastRef?: MutableRefObject<ReactText>
+}
+
+const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
   const { signer, chainId } = useEthereum();
 
   const nativeToken = getNativeToken(chainId)
   const [amount, setAmount] = useState<string>(getDefaultAmount(nativeToken))
 
+  const [show, setShow] = useState<boolean>(false)
+  const handleShow = () => {
+    if (parentToastRef) toast.update(parentToastRef.current, { autoClose: false, closeButton: false, draggable: false })
+    setShow(true)
+  }
+  const handleClose = () => {
+    if (parentToastRef) toast.dismiss(parentToastRef.current)
+    setShow(false)
+  }
+
   useEffect(() => {
     setAmount(getDefaultAmount(nativeToken))
   }, [nativeToken])
-
-  const [show, setShow] = useState<boolean>(false)
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
 
   const sendDonation = async () => {
     if (!signer || !chainId) {
@@ -32,19 +43,17 @@ const DonateButton: React.FC = () => {
         value: utils.parseEther(amount),
       })
 
-      toast.dark('Thanks for the donation!', {
+      toast.info('💪 Thanks for the donation!', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       })
 
       emitAnalyticsEvent(`donate_${nativeToken}`)
-
-      setShow(false);
+      handleClose();
     } catch (err) {
       if (err.code && err.code === 'INVALID_ARGUMENT') {
         alert('Input is not a valid number')
@@ -56,7 +65,7 @@ const DonateButton: React.FC = () => {
 
   return (
     <>
-      <Button variant="outline-primary" onClick={handleShow}>Donate</Button>
+      <Button variant="outline-primary" size={size} onClick={handleShow}>Donate</Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

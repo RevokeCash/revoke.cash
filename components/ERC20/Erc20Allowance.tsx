@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { ClipLoader } from 'react-spinners'
@@ -9,6 +9,7 @@ import { addressToAppName, shortenAddress, getDappListName, getExplorerUrl, look
 import RevokeButton from '../common/RevokeButton'
 import UpdateInputGroup from '../common/UpdateInputGroup'
 import { useEthereum } from 'utils/hooks/useEthereum'
+import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast'
 
 interface Props {
   spender: string
@@ -23,6 +24,7 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke}: Pr
   const [ensSpender, setEnsSpender] = useState<string | undefined>()
   const [spenderAppName, setSpenderAppName] = useState<string | undefined>()
   const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>()
+  const toastRef = useRef()
 
   const { signer, chainId, provider, account } = useEthereum();
 
@@ -70,6 +72,8 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke}: Pr
     }
 
     if (tx) {
+      displayTransactionSubmittedToast(toastRef)
+
       await tx.wait(1)
       console.debug('Reloading data')
 
