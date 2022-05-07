@@ -19,7 +19,7 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
     if (!account) return
     if (inputAddress && inputAddress !== account) return
     setInputAddressOrName(ensName || account || inputAddressOrName)
-  }, [ensName, account, inputAddress, inputAddressOrName])
+  }, [ensName, account, inputAddress])
 
   useEffect(() => {
     const updateInputAddress = async () => {
