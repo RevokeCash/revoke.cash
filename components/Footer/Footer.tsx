@@ -46,6 +46,7 @@ const Footer: React.FC = () => (
       pauseOnFocusLoss
       draggable
       pauseOnHover
+      progressStyle={{ backgroundColor: 'black' }}
     />
   </div>
 )

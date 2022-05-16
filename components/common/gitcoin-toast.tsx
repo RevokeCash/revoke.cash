@@ -1,5 +1,5 @@
-// import React from 'react';
-// import { toast } from 'react-toastify';
+import React from 'react';
+import { toast } from 'react-toastify';
 
 export const displayGitcoinToast = () => {
   // const toastContent = (
@@ -15,28 +15,22 @@ export const displayGitcoinToast = () => {
   //   </div>
   // )
 
-  // const toastContent = (
-  //   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-  //     <div>
-  //       Hello friend! <span role="img" aria-label="wave">👋</span>
-  //     </div>
+  // Check that launch has happened + disable on small screens / mobile
+  if (window.innerWidth > 800 && Math.round(Date.now() / 1000) > 1652720400) {
+    const toastContent = (
+      <div style={{ display: "flex", flexDirection: 'column', gap: '10px' }}>
+        <div>
+          My dad and I just launched our generative art project "Imperfections". Check it out on the Art Blocks website or on Twitter (link in footer).
+        </div>
+        <img src="/artblocks.jpeg" style={{ width: '100%' }} />
+      </div>
+    )
 
-  //     <div>
-  //       My dad and I are launching our generative art project on Art Blocks on the 16th of May at 19:00 CET
-  //     </div>
-
-  //     <div>
-  //       <a href="https://www.artblocks.io/project/303" target="_blank" rel="noopener noreferrer" style={{ color: 'red' }}>Check out the project on Art Blocks</a>
-  //     </div>
-  //   </div>
-  // )
-
-  // toast.info(toastContent, {
-  //   position: "top-left",
-  //   autoClose: false,
-  //   closeOnClick: true,
-  //   pauseOnHover: true,
-  //   draggable: true,
-  //   progress: undefined,
-  // })
+    toast.info(toastContent, {
+      position: "top-left",
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    })
+  }
 }
