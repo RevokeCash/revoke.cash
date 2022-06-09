@@ -128,7 +128,7 @@ export function isProviderSupportedNetwork(chainId: number): boolean {
 }
 
 export function isBackendSupportedNetwork(chainId: number): boolean {
-  return isCovalentSupportedNetwork(chainId) || isNodeSupportedNetwork(chainId)
+  return isCovalentSupportedNetwork(chainId) || isEtherscanSupportedNetwork(chainId) || isNodeSupportedNetwork(chainId)
 }
 
 // We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
@@ -137,24 +137,8 @@ export function isCovalentSupportedNetwork(chainId: number): boolean {
   const supportedNetworks = [
     ChainId.RSKMainnet,
     // ChainId.RSKTestnet,
-    ChainId.BinanceSmartChainMainnet,
-    // ChainId.BinanceSmartChainTestnet,
-    ChainId.PolygonMainnet,
-    // ChainId.PolygonTestnetMumbai,
-    ChainId.AvalancheMainnet,
-    // ChainId.AvalancheFujiTestnet,
-    ChainId.FantomOpera,
-    // ChainId.FantomTestnet,
     ChainId.HarmonyMainnetShard0,
     // ChainId.HarmonyTestnetShard0,
-    ChainId.ArbitrumOne,
-    // ChainId.ArbitrumTestnetRinkeby,
-    ChainId.HuobiECOChainMainnet,
-    // ChainId.HuobiECOChainTestnet,
-    ChainId.Shiden,
-    ChainId.Moonbeam,
-    ChainId.Moonriver,
-    // ChainId.MoonbaseAlpha,
     ChainId.IoTeXNetworkMainnet,
     // ChainId.IoTeXNetworkTestnet,
     ChainId.KlaytnMainnetCypress,
@@ -163,6 +147,28 @@ export function isCovalentSupportedNetwork(chainId: number): boolean {
     ChainId.PalmMainnet,
     // ChainId.PalmTestnet,
     // ChainId.PolyjuiceTestnet,
+  ]
+  return supportedNetworks.includes(chainId);
+}
+
+export function isEtherscanSupportedNetwork(chainId: number): boolean {
+  const supportedNetworks = [
+    ChainId.BinanceSmartChainMainnet,
+    ChainId.BinanceSmartChainTestnet,
+    ChainId.PolygonMainnet,
+    ChainId.PolygonTestnetMumbai,
+    ChainId.AvalancheMainnet,
+    ChainId.AvalancheFujiTestnet,
+    ChainId.FantomOpera,
+    ChainId.FantomTestnet,
+    ChainId.ArbitrumOne,
+    ChainId.ArbitrumTestnetRinkeby,
+    ChainId.HuobiECOChainMainnet,
+    ChainId.HuobiECOChainTestnet,
+    ChainId.Moonbeam,
+    ChainId.Moonriver,
+    ChainId.MoonbaseAlpha,
+    ChainId.CronosMainnetBeta,
   ]
   return supportedNetworks.includes(chainId);
 }

@@ -5,10 +5,11 @@ import nc from 'next-connect';
 import requestIp from 'request-ip';
 import { IRON_OPTIONS } from 'components/common/constants';
 import { CovalentEventGetter } from 'utils/logs/CovalentEventGetter';
-import { isCovalentSupportedNetwork, isNodeSupportedNetwork } from 'components/common/util';
+import { isCovalentSupportedNetwork, isEtherscanSupportedNetwork, isNodeSupportedNetwork } from 'components/common/util';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { NodeEventGetter } from 'utils/logs/NodeEventGetter';
+import { EtherscanEventGetter } from 'utils/logs/EtherscanEventGetter';
 
 const rateLimiter = rateLimit({
   windowMs: 1 * 1000, // 1s
@@ -18,6 +19,7 @@ const rateLimiter = rateLimit({
 axiosRetry(axios, { retries: 3 });
 
 const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS))
+const etherscanEventGetter = new EtherscanEventGetter(JSON.parse(process.env.ETHERSCAN_API_KEYS))
 const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS))
 
 const handler = nc<NextApiRequest, NextApiResponse>()
@@ -33,12 +35,17 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     const chainId = Number.parseInt(req.query.chainId as string, 10)
 
     if (isCovalentSupportedNetwork(chainId)) {
-      const events = await covalentEventGetter.getEvents(chainId, req.body)
+      const events = await covalentEventGetter.getEvents(chainId, req.body);
+      return res.send(events);
+    }
+
+    if (isEtherscanSupportedNetwork(chainId)) {
+      const events = await etherscanEventGetter.getEvents(chainId, req.body);
       return res.send(events);
     }
 
     if (isNodeSupportedNetwork(chainId)) {
-      const events = await nodeEventGetter.getEvents(chainId, req.body)
+      const events = await nodeEventGetter.getEvents(chainId, req.body);
       return res.send(events);
     }
 

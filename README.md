@@ -13,7 +13,7 @@ This repository also includes the [`dapp-contract-list`](/public/dapp-contract-l
 
 Revoke.cash natively supports Ethereum (mainnet and testnets), Gnosis Chain, Telos, Metis, Fuse and SmartBCH.
 
-It also supports Avalanche, Polygon, BSC, Arbitrum, Optimism, RSK, Fantom, Harmony, HECO, Moonbeam, Moonriver, Shiden, Iotex, Klaytn and Palm through a backend integration with CovalentHQ & Alchemy. Performance for these chains may be slower due to rate limits.
+It also supports Avalanche, Polygon, BSC, Arbitrum, Optimism, RSK, Fantom, Harmony, HECO, Moonbeam, Moonriver, and Cronos through a backend integration with Etherscan, CovalentHQ & Alchemy. Performance for these chains may be slower due to rate limits.
 
 If you want to learn more about (unlimited) ERC20 allowances, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 
@@ -25,7 +25,7 @@ yarn
 yarn dev
 ```
 
-If you want to use the extended multichain support through CovalentHQ, you'll also need to copy the `.example.env` file into `.env` and fill it with a random 32-character `IRON_SESSION_PASSWORD`, a list of `COVALENT_API_KEYS` that you can request on their website and a mapping of `NODE_URLS` for additional networks.
+If you want to use the extended multichain support, you'll also need to copy the `.example.env` file into `.env` and fill it with a random 32-character `IRON_SESSION_PASSWORD`, a list of `COVALENT_API_KEYS` that you can request on their website, a mapping of `NODE_URLS`, and a mapping of Etherscan-like platform API keys.
 
 ## Credits
-Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations and [CovalentHQ](https://www.covalenthq.com/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Filters out unverified tokens using tokenlists. Built with Next.js, Bootstrap and TypeScript.
+Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations and [Etherscan](https://etherscan.io), [CovalentHQ](https://www.covalenthq.com/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Filters out unverified tokens using tokenlists. Built with Next.js, Bootstrap and TypeScript.
