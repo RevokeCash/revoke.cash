@@ -138,6 +138,9 @@ export const EthereumProvider = ({ children }: Props) => {
   }
 
   useEffect(() => {
+    if(localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')){
+      connect()
+    }
     const connectDefaultProvider = async () => {
       try {
         // Use a default provider with a free Infura key if web3 is not available
