@@ -6,6 +6,10 @@ import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook';
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+
+
 
 declare let window: {
   ethereum?: any
@@ -20,12 +24,24 @@ interface EthereumContext {
   chainId?: number;
   chainName?: string;
   connect?: () => Promise<void>;
+  disconnect?: (window: Window) => Promise<void>;
 }
 
 const EthereumContext = React.createContext<EthereumContext>({});
 
 interface Props {
   children: ReactNode;
+}
+
+const providerOptions = {
+  walletconnect: {
+    package: WalletConnectProvider, // required
+    options: {
+      rpc: {
+        137: 'https://polygon-rpc.com/'
+      }
+    }
+  }
 }
 
 // Note: accounts are converted to lowercase -> getAddress'ed everywhere, because different chains (like RSK)
@@ -37,6 +53,11 @@ export const EthereumProvider = ({ children }: Props) => {
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
   const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId]);
+
+  const web3Modal = new Web3Modal({
+    cacheProvider: false, // optional
+    providerOptions // required
+  });
 
   useEffect(() => {
     const newChainName = chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
@@ -54,11 +75,6 @@ export const EthereumProvider = ({ children }: Props) => {
   }
 
   const connect = async () => {
-    const [connectedAccount] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    updateAccount(connectedAccount)
-  }
-
-  useEffect(() => {
     const updateProvider = async (newProvider: providers.JsonRpcProvider) => {
       const { chainId: newChainId } = await newProvider.getNetwork()
       const newAccount = await getConnectedAccount(newProvider);
@@ -69,44 +85,33 @@ export const EthereumProvider = ({ children }: Props) => {
       updateAccount(newAccount)
     }
 
-    const connectProvider = async () => {
-      if (window.ethereum) {
-        const provider = new providers.Web3Provider(window.ethereum, 'any')
-        await updateProvider(provider)
+    const instance = await web3Modal.connect();
+    const provider = new providers.Web3Provider(instance);
+    await updateProvider(provider);
 
-        window.ethereum.on('accountsChanged', (accounts: string[]) => {
-          console.log('accounts changed to', accounts);
-          updateAccount(accounts[0]);
-        })
+    provider.on("accountsChanged", (accounts: string[]) => {
+      console.log('accounts changed to', accounts);
+      updateAccount(accounts[0]);
+    });
 
-        window.ethereum.on('chainChanged', (chainIdHex: string) => {
-          const chainIdDec = Number.parseInt(chainIdHex, 16)
-          console.log('chain changed to', chainIdDec);
-          setChainId(chainIdDec)
-        })
+    provider.on("chainChanged", (chainId: number) => {
+      console.log('chain changed to', chainId);
+      setChainId(chainId)
+    });
+    const [connectedAccount] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    debugger;
+    // const connectedAccount = 
+    updateAccount(connectedAccount)
+  }
 
-        console.log('Using injected "window.ethereum" provider')
-      } else {
-        try {
-          // Use a default provider with a free Infura key if web3 is not available
-          const newProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`)
-
-          // Check that the provider is available (and not rate-limited) by sending a dummy request
-          const dummyRequest = '{"method":"eth_getCode","params":["0x1f9840a85d5af5bf1d1762f925bdaddc4201f984","latest"],"id":0,"jsonrpc":"2.0"}'
-          await axios.post(newProvider.connection.url, dummyRequest)
-          await updateProvider(newProvider)
-          console.log('Using fallback Infura provider')
-        } catch {
-          console.log('No web3 provider available')
-        }
-      }
-    }
-
-    connectProvider()
-  }, [])
+  const disconnect = async (window: Window) => {
+    web3Modal.clearCachedProvider();
+    localStorage.removeItem('walletconnect');
+    window.location.reload();
+  }
 
   return (
-    <EthereumContext.Provider value={{ provider, chainId, chainName, account, ensName, signer, connect }} >
+    <EthereumContext.Provider value={{ provider, chainId, chainName, account, ensName, signer, connect, disconnect }} >
       {children}
     </EthereumContext.Provider>
   );
