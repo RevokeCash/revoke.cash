@@ -103,21 +103,21 @@ export const EthereumProvider = ({ children }: Props) => {
     }
   }
 
-  const connect = async () => {
-    const updateProvider = async (newProvider: providers.JsonRpcProvider) => {
-      const { chainId: newChainId } = await newProvider.getNetwork()
-      const newAccount = await getConnectedAccount(newProvider);
-      emitAnalyticsEvent(`connect_wallet_${newChainId}`)
-      const multicallProvider = new multicall.MulticallProvider(newProvider, { verbose: true })
-      setProvider(multicallProvider)
-      setChainId(newChainId)
-      updateAccount(newAccount)
-    }
+  const updateProvider = async (newProvider: providers.JsonRpcProvider) => {
+    const { chainId: newChainId } = await newProvider.getNetwork()
+    const newAccount = await getConnectedAccount(newProvider)
+    emitAnalyticsEvent(`connect_wallet_${newChainId}`)
+    const multicallProvider = new multicall.MulticallProvider(newProvider, { verbose: true })
+    setProvider(multicallProvider)
+    setChainId(newChainId)
+    updateAccount(newAccount)
+  }
 
+  const connect = async () => {
     const instance = await web3Modal.connect();
     const provider = new providers.Web3Provider(instance)
-    await updateProvider(provider);
-    const connectedAccount = await getConnectedAccount(provider);
+    await updateProvider(provider)
+    const connectedAccount = await getConnectedAccount(provider)
     updateAccount(connectedAccount)
 
     provider.on("accountsChanged", (accounts: string[]) => {
@@ -129,7 +129,6 @@ export const EthereumProvider = ({ children }: Props) => {
       console.log('chain changed to', chainId);
       setChainId(chainId)
     });
-
   }
 
   const disconnect = async (window: Window) => {
@@ -137,6 +136,24 @@ export const EthereumProvider = ({ children }: Props) => {
     localStorage.removeItem('walletconnect'); //This is needed so a user is not STUCK using walletconnect when they refresh
     window.location.reload();
   }
+
+  useEffect(() => {
+    const connectDefaultProvider = async () => {
+      try {
+        // Use a default provider with a free Infura key if web3 is not available
+        const newProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`)
+  
+        // Check that the provider is available (and not rate-limited) by sending a dummy request
+        const dummyRequest = '{"method":"eth_getCode","params":["0x1f9840a85d5af5bf1d1762f925bdaddc4201f984","latest"],"id":0,"jsonrpc":"2.0"}'
+        await axios.post(newProvider.connection.url, dummyRequest)
+        await updateProvider(newProvider)
+        console.log('Using fallback Infura provider')
+      } catch {
+        console.log('No web3 provider available')
+      }
+    }
+    connectDefaultProvider()
+  }, [])
 
   return (
     <EthereumContext.Provider value={{ provider, chainId, chainName, account, ensName, signer, connect, disconnect }} >
