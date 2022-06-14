@@ -35,10 +35,10 @@ interface Props {
 
 const providerOptions = {
   walletconnect: {
-    package: WalletConnectProvider, // required
+    package: WalletConnectProvider,
     options: {
       rpc: {
-        137: 'https://polygon-rpc.com/'
+        137: 'https://polygon-rpc.com/' // Add more public RPC endpoints here
       }
     }
   }
@@ -86,8 +86,10 @@ export const EthereumProvider = ({ children }: Props) => {
     }
 
     const instance = await web3Modal.connect();
-    const provider = new providers.Web3Provider(instance);
+    const provider = new providers.Web3Provider(instance)
     await updateProvider(provider);
+    const connectedAccount = await getConnectedAccount(provider);
+    updateAccount(connectedAccount)
 
     provider.on("accountsChanged", (accounts: string[]) => {
       console.log('accounts changed to', accounts);
@@ -98,15 +100,12 @@ export const EthereumProvider = ({ children }: Props) => {
       console.log('chain changed to', chainId);
       setChainId(chainId)
     });
-    const [connectedAccount] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    debugger;
-    // const connectedAccount = 
-    updateAccount(connectedAccount)
+
   }
 
   const disconnect = async (window: Window) => {
     web3Modal.clearCachedProvider();
-    localStorage.removeItem('walletconnect');
+    localStorage.removeItem('walletconnect'); //This is needed so a user is not STUCK using walletconnect when they refresh
     window.location.reload();
   }
 
