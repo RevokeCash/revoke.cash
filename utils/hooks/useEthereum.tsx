@@ -8,6 +8,7 @@ import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 
 
 
@@ -34,11 +35,39 @@ interface Props {
 }
 
 const providerOptions = {
+  coinbasewallet:{
+    package: CoinbaseWalletSDK,
+    options: {
+      appName: 'Revoke.cash',
+      infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+    }
+  },
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      rpc: {
-        137: 'https://polygon-rpc.com/' // Add more public RPC endpoints here
+      rpc: { // Public RPC providers https://chainlist.org/
+        1 : 'https://eth-mainnet.public.blastapi.io',
+        10: 'https://mainnet.optimism.io', // Optimism
+        25: 'https://evm.cronos.org', // Chronos
+        30: 'https://public-node.rsk.co', // RSK
+        40: 'https://rpc1.eu.telos.net/evm', // Telos
+        56: 'https://bsc-dataseed4.defibit.io', // BSC
+        100: 'https://gnosis-mainnet.public.blastapi.io', // Gnosis/xDai
+        122: 'https://fuse-rpc.gateway.pokt.network', // Fuse
+        128: 'https://http-mainnet.hecochain.com', // Heco
+        137: 'https://polygon-rpc.com/', // Polygon
+        250: 'https://fantom-mainnet.public.blastapi.io', // Fantom
+        336: 'https://shiden.public.blastapi.io', // Shiden
+        1088: 'https://andromeda.metis.io/?owner=1088', // Metis
+        1284: 'https://moonbeam.public.blastapi.io', // Moonbeam
+        1285: 'https://moonriver.public.blastapi.io', // Moonriver
+        4689: 'https://rpc.ankr.com/iotex', // Iotex
+        8217: 'https://public-node-api.klaytnapi.com/v1/cypress', // Klaytn
+        10000: 'https://smartbch.devops.cash/mainnet', // SmartBCH
+        42161: 'https://arb1.arbitrum.io/rpc', // Arbitrum
+        43114: 'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc', // Avax
+        1666600000: 'https://rpc.heavenswail.one', // Harmony
+        11297108109: 'https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b' // Palm
       }
     }
   }

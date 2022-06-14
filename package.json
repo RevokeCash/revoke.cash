@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@0xsequence/multicall": "^0.36.8",
+    "@coinbase/wallet-sdk": "^3.2.0",
     "@openzeppelin/contracts": "^4.5.0",
     "@walletconnect/web3-provider": "^1.7.8",
     "axios": "^0.26.1",
