@@ -46,7 +46,7 @@ const providerOptions = {
     package: WalletConnectProvider,
     options: {
       rpc: { // Public RPC providers https://chainlist.org/
-        1 : 'https://eth-mainnet.public.blastapi.io',
+        1 : `https://mainnet.infura.io/v3/${'88583771d63544aa'}${'ba1006382275c6f8'}`,
         10: 'https://mainnet.optimism.io', // Optimism
         25: 'https://evm.cronos.org', // Chronos
         30: 'https://public-node.rsk.co', // RSK
@@ -84,7 +84,7 @@ export const EthereumProvider = ({ children }: Props) => {
   const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId]);
 
   const web3Modal = new Web3Modal({
-    cacheProvider: false, // optional
+    cacheProvider: true, // optional
     providerOptions // required
   });
 
