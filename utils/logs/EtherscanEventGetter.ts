@@ -16,7 +16,7 @@ export class EtherscanEventGetter implements EventGetter {
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
     const queue = this.queues[chainId]!
-    const results = await queue.getLogsSafe(filter, filter.fromBlock as number, filter.toBlock as number)
+    const results = await queue.getLogs(filter)
     return results;
   }
 }
@@ -37,26 +37,6 @@ class EtherscanQueue {
     this.queue = this.apiKey
       ? new PQueue({ intervalCap: 5, interval: 1000 })
       : new PQueue({ intervalCap: 1, interval: 5000 })
-  }
-
-  // This code is mostly duplicated from getLogsFromProvider() in components/common/utils.ts, should be made DRYer in the future
-  async getLogsSafe(baseFilter: Filter, fromBlock: number, toBlock: number) {
-    const filter = { ...baseFilter, fromBlock, toBlock };
-    try {
-      const result = await this.getLogs(filter);
-      return result;
-    } catch (error) {
-      const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-      if (errorMessage !== 'query returned more than 10000 results') {
-        throw error;
-      }
-
-      const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
-      const leftPromise = this.getLogsSafe(baseFilter, fromBlock, middle);
-      const rightPromise = this.getLogsSafe(baseFilter, middle + 1, toBlock);
-      const [left, right] = await Promise.all([leftPromise, rightPromise]);
-      return [...left, ...right];
-    }
   }
 
   async getLogs(filter: Filter) {
@@ -80,6 +60,13 @@ class EtherscanQueue {
     }
 
     const { data } = await this.queue.add(() => this.sendRequest(query));
+
+    // If an error occurs or if the limit (1000) is reached, throw an error that is
+    // compatible with the getLogsFromProvider() function to trigger recursive getLogs
+    if (typeof data.result === 'string' || data.result.length === 1000) {
+      throw new Error('query returned more than 10000 results');
+    }
+
     return data.result.map(formatEtherscanEvent);
   }
 

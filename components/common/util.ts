@@ -286,21 +286,21 @@ export const emitAnalyticsEvent = (eventName: string) => {
 }
 
 export const getLogs = async (
-  provider: providers.Provider,
+  provider: Pick<providers.Provider, 'getLogs'>,
   baseFilter: Filter,
   fromBlock: number,
   toBlock: number,
   chainId: number
 ): Promise<Log[]> => {
-  if (isProviderSupportedNetwork(chainId)) {
-    return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock)
+  if (isBackendSupportedNetwork(chainId)) {
+    provider = new BackendProvider(chainId);
   }
 
-  return getLogsFromBackend(chainId, { ...baseFilter, fromBlock, toBlock })
+  return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock)
 };
 
 export const getLogsFromProvider = async (
-  provider: providers.Provider,
+  provider: Pick<providers.Provider, 'getLogs'>,
   baseFilter: Filter,
   fromBlock: number,
   toBlock: number
@@ -323,9 +323,17 @@ export const getLogsFromProvider = async (
   }
 };
 
-export const getLogsFromBackend = async (chainId: number, filter: Filter): Promise<Log[]> => {
-  const { data } = await axios.post(`/api/${chainId}/logs`, filter)
-  return data
+class BackendProvider {
+  constructor(public chainId: number) {}
+
+  async getLogs(filter: Filter): Promise<Log[]> {
+    try {
+      const { data } = await axios.post(`/api/${this.chainId}/logs`, filter)
+      return data
+    } catch (error) {
+      throw new Error(error?.response?.data ?? error?.message)
+    }
+  }
 }
 
 export const parseInputAddress = async (inputAddressOrName: string, provider: providers.Provider): Promise<string | undefined> => {
