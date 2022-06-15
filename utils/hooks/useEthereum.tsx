@@ -8,13 +8,13 @@ import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 
 
 
 declare let window: {
   ethereum?: any
   web3?: any
+  location: any
 }
 
 interface EthereumContext {
@@ -35,13 +35,6 @@ interface Props {
 }
 
 const providerOptions = {
-  coinbasewallet:{
-    package: CoinbaseWalletSDK,
-    options: {
-      appName: 'Revoke.cash',
-      infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
-    }
-  },
   walletconnect: {
     package: WalletConnectProvider,
     options: {
@@ -83,6 +76,16 @@ export const EthereumProvider = ({ children }: Props) => {
   const [signer, setSigner] = useState<JsonRpcSigner>();
   const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId]);
 
+
+  // Deals with the edge case of having previously connected using injected
+  // but there is no longer an injected provider in the browser
+  (() => {
+    const cached = localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
+    if(!window.ethereum && cached === '"injected"'){
+      localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER')
+    }
+  })();
+
   const web3Modal = new Web3Modal({
     cacheProvider: true, // optional
     providerOptions // required
@@ -120,14 +123,25 @@ export const EthereumProvider = ({ children }: Props) => {
     const connectedAccount = await getConnectedAccount(provider)
     updateAccount(connectedAccount)
 
-    provider.on("accountsChanged", (accounts: string[]) => {
+    instance.on("accountsChanged", (accounts: string[]) => {
       console.log('accounts changed to', accounts);
       updateAccount(accounts[0]);
     });
 
-    provider.on("chainChanged", (chainId: number) => {
-      console.log('chain changed to', chainId);
-      setChainId(chainId)
+    instance.on("chainChanged", (id: number) => {
+      const chainNumber = parseInt(id.toString(10));
+      console.log('chain changed to', chainNumber);
+      setChainId(chainNumber)
+      window.location.reload(); // Reload is essential so that metamask gives a working provider
+    });
+
+    instance.on("connect", (info: { chainId: number }) => {
+      console.log(info);
+    });
+    
+    // Subscribe to provider disconnection
+    instance.on("disconnect", (error: { code: number; message: string }) => {
+      console.log(error);
     });
   }
 
@@ -140,12 +154,12 @@ export const EthereumProvider = ({ children }: Props) => {
   useEffect(() => {
     if(localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')){
       connect()
+      return
     }
     const connectDefaultProvider = async () => {
       try {
         // Use a default provider with a free Infura key if web3 is not available
         const newProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`)
-  
         // Check that the provider is available (and not rate-limited) by sending a dummy request
         const dummyRequest = '{"method":"eth_getCode","params":["0x1f9840a85d5af5bf1d1762f925bdaddc4201f984","latest"],"id":0,"jsonrpc":"2.0"}'
         await axios.post(newProvider.connection.url, dummyRequest)
