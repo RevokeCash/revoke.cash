@@ -6,26 +6,26 @@ import { getChainLogo, shortenAddress } from "../common/util";
 const ConnectButton: React.FC = () => {
   const { account, ensName, connect, disconnect, chainId } = useEthereum();
 
-  if (account) {
-    return (
-      <InputGroup style={{ width: 'fit-content' }}>
-        <InputGroup.Prepend>
-          <InputGroup.Text style={{ borderColor: 'black' }}>
-            <img src={getChainLogo(chainId)} height="24" style={{ borderRadius: '50%', minWidth: 16 }}></img>
-          </InputGroup.Text>
-        </InputGroup.Prepend>
+  return (
+    <InputGroup style={{ width: 'fit-content' }}>
+      <InputGroup.Prepend>
+        <InputGroup.Text style={{ borderColor: 'black' }}>
+          <img src={getChainLogo(chainId)} height="24" style={{ borderRadius: '50%', minWidth: 16 }}></img>
+        </InputGroup.Text>
+      </InputGroup.Prepend>
+        {account &&
           <InputGroup.Text style={{ borderRadius: 0, borderColor: 'black' }}>
             {ensName ?? shortenAddress(account)}
           </InputGroup.Text>
-        <InputGroup.Append>
+        }
+      <InputGroup.Append>
+        {account ? (
           <Button variant="outline-primary" onClick={disconnect}>Disconnect</Button>
-        </InputGroup.Append>
-      </InputGroup>
-    )
-  }
-
-  return (
-    <Button variant="outline-primary" onClick={connect}>Connect</Button>
+        ) : (
+          <Button variant="outline-primary" onClick={connect}>Connect</Button>
+        )}
+      </InputGroup.Append>
+    </InputGroup>
   )
 }
 
