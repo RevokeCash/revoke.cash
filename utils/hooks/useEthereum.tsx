@@ -25,7 +25,7 @@ interface EthereumContext {
   chainId?: number;
   chainName?: string;
   connect?: () => Promise<void>;
-  disconnect?: (window: Window) => Promise<void>;
+  disconnect?: () => Promise<void>;
 }
 
 const EthereumContext = React.createContext<EthereumContext>({});
@@ -69,12 +69,16 @@ const providerOptions = {
 // Note: accounts are converted to lowercase -> getAddress'ed everywhere, because different chains (like RSK)
 // may have other checksums so we normalise it to ETH checksum
 export const EthereumProvider = ({ children }: Props) => {
+  const [web3ModalInstance, setWeb3ModalInstance] = useState<any>();
   const [provider, setProvider] = useState<multicall.MulticallProvider>();
   const [chainId, setChainId] = useState<number>();
   const [chainName, setChainName] = useState<string>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
-  const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId]);
+  const { result: ensName } = useAsync(
+    () => lookupEnsName(account, provider), [account, provider, chainId],
+    { setLoading: state => ({ ...state, loading: true }) }
+  );
 
 
   // Deals with the edge case of having previously connected using injected
@@ -97,12 +101,18 @@ export const EthereumProvider = ({ children }: Props) => {
   }, [chainId])
 
   useEffect(() => {
-    setSigner(((provider as any)?.provider as Web3Provider)?.getSigner(account));
+    if (account) {
+      setSigner(((provider as any)?.provider as Web3Provider)?.getSigner(account));
+    } else {
+      setSigner(undefined);
+    }
   }, [account])
 
   const updateAccount = (newAccount?: string) => {
     if (newAccount) {
-      setAccount(utils.getAddress(newAccount.toLowerCase()))
+      setAccount(utils.getAddress(newAccount.toLowerCase()));
+    } else {
+      setAccount(undefined);
     }
   }
 
@@ -118,7 +128,7 @@ export const EthereumProvider = ({ children }: Props) => {
 
   const connect = async () => {
     const instance = await web3Modal.connect();
-    const provider = new providers.Web3Provider(instance)
+    const provider = new providers.Web3Provider(instance, 'any')
     await updateProvider(provider)
     const connectedAccount = await getConnectedAccount(provider)
     updateAccount(connectedAccount)
@@ -129,46 +139,41 @@ export const EthereumProvider = ({ children }: Props) => {
     });
 
     instance.on("chainChanged", (id: number) => {
-      const chainNumber = parseInt(id.toString(10));
-      console.log('chain changed to', chainNumber);
-      setChainId(chainNumber)
-      window.location.reload(); // Reload is essential so that metamask gives a working provider
+      const newChainId = parseInt(id.toString(10));
+      console.log('chain changed to', newChainId);
+      setChainId(newChainId)
     });
 
-    instance.on("connect", (info: { chainId: number }) => {
-      console.log(info);
-    });
-    
-    // Subscribe to provider disconnection
-    instance.on("disconnect", (error: { code: number; message: string }) => {
-      console.log(error);
-    });
-  }
+    setWeb3ModalInstance(instance);
+  };
 
-  const disconnect = async (window: Window) => {
+  const disconnect = async () => {
     web3Modal.clearCachedProvider();
-    localStorage.removeItem('walletconnect'); //This is needed so a user is not STUCK using walletconnect when they refresh
-    window.location.reload();
+    localStorage.removeItem('walletconnect'); // This is needed so a user is not STUCK using walletconnect when they refresh
+    web3ModalInstance?.removeAllListeners();
+    await connectDefaultProvider();
   }
+
+  const connectDefaultProvider = async () => {
+    try {
+      // Use a default provider with a free Infura key if web3 is not available
+      const newProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`)
+      // Check that the provider is available (and not rate-limited) by sending a dummy request
+      const dummyRequest = '{"method":"eth_getCode","params":["0x1f9840a85d5af5bf1d1762f925bdaddc4201f984","latest"],"id":0,"jsonrpc":"2.0"}'
+      await axios.post(newProvider.connection.url, dummyRequest)
+      await updateProvider(newProvider)
+      console.log('Using fallback Infura provider')
+    } catch {
+      console.log('No web3 provider available')
+    }
+  };
 
   useEffect(() => {
-    if(localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')){
+    if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
       connect()
       return
     }
-    const connectDefaultProvider = async () => {
-      try {
-        // Use a default provider with a free Infura key if web3 is not available
-        const newProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`)
-        // Check that the provider is available (and not rate-limited) by sending a dummy request
-        const dummyRequest = '{"method":"eth_getCode","params":["0x1f9840a85d5af5bf1d1762f925bdaddc4201f984","latest"],"id":0,"jsonrpc":"2.0"}'
-        await axios.post(newProvider.connection.url, dummyRequest)
-        await updateProvider(newProvider)
-        console.log('Using fallback Infura provider')
-      } catch {
-        console.log('No web3 provider available')
-      }
-    }
+
     connectDefaultProvider()
   }, [])
 

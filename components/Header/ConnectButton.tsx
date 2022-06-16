@@ -6,7 +6,6 @@ import { getChainLogo, shortenAddress } from "../common/util";
 const ConnectButton: React.FC = () => {
   const { account, ensName, connect, disconnect, chainId } = useEthereum();
 
-  const handleDisconnect = () => disconnect(window)
   if (account) {
     return (
       <InputGroup style={{ width: 'fit-content' }}>
@@ -19,7 +18,7 @@ const ConnectButton: React.FC = () => {
             {ensName ?? shortenAddress(account)}
           </InputGroup.Text>
         <InputGroup.Append>
-          <Button variant="outline-primary" onClick={handleDisconnect}>Disconnect</Button>
+          <Button variant="outline-primary" onClick={disconnect}>Disconnect</Button>
         </InputGroup.Append>
       </InputGroup>
     )
