@@ -346,3 +346,46 @@ export const parseInputAddress = async (inputAddressOrName: string, provider: pr
     return undefined
   }
 }
+
+export const getChainLogo = (chainId: number) => {
+  const mapping = {
+    [ChainId.EthereumMainnet]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetRopsten]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetRinkeby]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetGörli]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetKovan]: '/logos/ethereum.png',
+    [ChainId.TelosEVMMainnet]: '/logos/telos.png',
+    [ChainId.TelosEVMTestnet]: '/logos/telos.png',
+    [ChainId.XDAIChain]: '/logos/gnosis-chain.png',
+    [ChainId.MetisAndromedaMainnet]: '/logos/metis.png',
+    [ChainId.MetisStardustTestnet]: '/logos/metis.png',
+    [ChainId.SmartBitcoinCash]: '/logos/smartbch.png',
+    [ChainId.SmartBitcoinCashTestnet]: '/logos/smartbch.png',
+    [ChainId.FuseMainnet]: '/logos/fuse.png',
+    [ChainId.FuseSparknet]: '/logos/fuse.png',
+    [ChainId.BinanceSmartChainMainnet]: '/logos/binance.png',
+    [ChainId.BinanceSmartChainTestnet]: '/logos/binance.png',
+    [ChainId.PolygonMainnet]: '/logos/polygon.png',
+    [ChainId.PolygonTestnetMumbai]: '/logos/polygon.png',
+    [ChainId.AvalancheMainnet]: '/logos/avalanche.png',
+    [ChainId.AvalancheFujiTestnet]: '/logos/avalanche.png',
+    [ChainId.FantomOpera]: '/logos/fantom.png',
+    [ChainId.FantomTestnet]: '/logos/fantom.png',
+    [ChainId.ArbitrumOne]: '/logos/arbitrum.svg',
+    [ChainId.ArbitrumTestnetRinkeby]: '/logos/arbitrum.svg',
+    [ChainId.HuobiECOChainMainnet]: '/logos/heco.png',
+    [ChainId.HuobiECOChainTestnet]: '/logos/heco.png',
+    [ChainId.Moonbeam]: '/logos/moonbeam.png',
+    [ChainId.Moonriver]: '/logos/moonriver.png',
+    [ChainId.MoonbaseAlpha]: '/logos/moonbeam.png',
+    [ChainId.CronosMainnetBeta]: '/logos/cronos.jpeg',
+    [ChainId.RSKMainnet]: '/logos/rootstock.png',
+    [ChainId.HarmonyMainnetShard0]: '/logos/harmony.png',
+    [ChainId.IoTeXNetworkMainnet]: '/logos/iotex.png',
+    [ChainId.KlaytnMainnetCypress]: '/logos/klaytn.png',
+    [ChainId.PalmMainnet]: '/logos/palm.jpeg',
+    [ChainId.OptimisticEthereum]: '/logos/optimism.jpeg',
+  }
+
+  return mapping[chainId];
+}
