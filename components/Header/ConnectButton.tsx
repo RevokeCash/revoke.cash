@@ -4,13 +4,19 @@ import { useEthereum } from "utils/hooks/useEthereum";
 import { getChainLogo, shortenAddress } from "../common/util";
 
 const ConnectButton: React.FC = () => {
-  const { account, ensName, connect, disconnect, chainId } = useEthereum();
+  const { account, ensName, connect, disconnect, chainId, chainName } = useEthereum();
 
   return (
     <InputGroup style={{ width: 'fit-content' }}>
       <InputGroup.Prepend>
         <InputGroup.Text style={{ borderColor: 'black' }}>
-          <img src={getChainLogo(chainId)} height="24" style={{ borderRadius: '50%', minWidth: 16 }}></img>
+          <img
+            src={getChainLogo(chainId)}
+            title={chainName}
+            alt={chainName}
+            height="24"
+            style={{ borderRadius: '50%', minWidth: 16 }}
+          />
         </InputGroup.Text>
       </InputGroup.Prepend>
         {account &&
