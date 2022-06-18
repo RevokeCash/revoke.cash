@@ -77,7 +77,7 @@ export const COVALENT_SUPPORTED_NETWORKS = [
   ChainId.PalmMainnet,
   // ChainId.PalmTestnet,
   // ChainId.PolyjuiceTestnet,
-  ChainId.AuroraMainNet,
+  // ChainId.AuroraMainNet,
 ];
 
 export const NODE_SUPPORTED_NETWORKS = [
