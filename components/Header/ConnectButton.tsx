@@ -1,15 +1,36 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, FormControl, InputGroup } from "react-bootstrap";
 import { useEthereum } from "utils/hooks/useEthereum";
-import { shortenAddress } from "../common/util";
+import { getChainLogo, shortenAddress } from "../common/util";
 
 const ConnectButton: React.FC = () => {
-  const { account, ensName, connect } = useEthereum();
+  const { account, ensName, connect, disconnect, chainId, chainName } = useEthereum();
 
-  const buttonText = ensName ?? shortenAddress(account) ?? 'Connect wallet'
+  const buttonAction = account ? disconnect : connect;
+  const buttonText = account ? 'Disconnect' : 'Connect Wallet';
 
   return (
-    <Button variant="outline-primary" onClick={connect}>{buttonText}</Button>
+    <InputGroup style={{ width: 'fit-content' }}>
+      <InputGroup.Prepend>
+        <InputGroup.Text style={{ borderColor: 'black' }}>
+          <img
+            src={getChainLogo(chainId)}
+            title={chainName}
+            alt={chainName}
+            height="24"
+            style={{ borderRadius: '50%', minWidth: 16 }}
+          />
+        </InputGroup.Text>
+      </InputGroup.Prepend>
+        {account &&
+          <InputGroup.Text style={{ borderRadius: 0, borderColor: 'black' }}>
+            {ensName ?? shortenAddress(account)}
+          </InputGroup.Text>
+        }
+      <InputGroup.Append style={{ marginLeft: account ? -1 : 0 }}>
+        <Button variant="outline-primary" onClick={buttonAction}>{buttonText}</Button>
+      </InputGroup.Append>
+    </InputGroup>
   )
 }
 

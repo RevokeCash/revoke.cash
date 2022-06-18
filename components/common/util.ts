@@ -3,7 +3,7 @@ import { BigNumberish, BigNumber, providers } from 'ethers'
 import { Filter, Log } from '@ethersproject/abstract-provider'
 import { getAddress } from 'ethers/lib/utils'
 import { chains, ChainId } from 'eth-chains'
-import { DAPP_LIST_BASE_URL, ETHEREUM_LISTS_CONTRACTS, TRUSTWALLET_BASE_URL } from './constants'
+import { COVALENT_SUPPORTED_NETWORKS, DAPP_LIST_BASE_URL, ETHEREUM_LISTS_CONTRACTS, ETHERSCAN_SUPPORTED_NETWORKS, NODE_SUPPORTED_NETWORKS, PROVIDER_SUPPORTED_NETWORKS, TRUSTWALLET_BASE_URL } from './constants'
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces'
 
 // Check if a token is verified in the token mapping
@@ -77,6 +77,20 @@ export function getExplorerUrl(chainId: number): string | undefined {
   return overrides[chainId] ?? explorer?.url;
 }
 
+export function getRpcUrl(chainId: number, infuraKey: string = ''): string | undefined {
+  // These are not in the eth-chains package, so manually got from chainlist.org
+  const overrides = {
+    [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
+    [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
+    [ChainId.PalmMainnet]: 'https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b',
+    [ChainId.EthereumTestnetGörli]: `https://goerli.infura.io/v3/${infuraKey}`,
+    [ChainId.EthereumTestnetKovan]: `https://kovan.infura.io/v3/${infuraKey}`,
+  }
+
+  const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
+  return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
+}
+
 export function getTrustWalletName(chainId: number): string | undefined {
   const mapping = {
     [ChainId.EthereumMainnet]: 'ethereum',
@@ -103,81 +117,24 @@ export function getDappListName(chainId: number): string | undefined {
   return mapping[chainId]
 }
 
-// TODO: Optimism, Celo, Cronos, Boba, ETC, Theta, Harmony, BTT, (ThunderCore), (EWT), (KCC),
-// (Fusion), (CoinEx Chain), (Syscoin), (GoChain), (Okex Chain), (Wanchain), (POA)
-// TODO (hard): Terra, Solana, Cardano, Polkadot, Kusama, Cosmos, Near, Tron, ICP, Tezos, Flow,
-
 export function isProviderSupportedNetwork(chainId: number): boolean {
-  const supportedNetworks = [
-    ChainId.EthereumMainnet,
-    ChainId.EthereumTestnetRopsten,
-    ChainId.EthereumTestnetRinkeby,
-    ChainId.EthereumTestnetGörli,
-    ChainId.EthereumTestnetKovan,
-    ChainId.TelosEVMMainnet,
-    ChainId.TelosEVMTestnet,
-    ChainId.XDAIChain,
-    ChainId.MetisAndromedaMainnet,
-    ChainId.MetisStardustTestnet,
-    ChainId.SmartBitcoinCash,
-    ChainId.SmartBitcoinCashTestnet,
-    ChainId.FuseMainnet,
-    ChainId.FuseSparknet,
-  ]
-  return supportedNetworks.includes(chainId);
+  return PROVIDER_SUPPORTED_NETWORKS.includes(chainId);
 }
 
 export function isBackendSupportedNetwork(chainId: number): boolean {
   return isCovalentSupportedNetwork(chainId) || isEtherscanSupportedNetwork(chainId) || isNodeSupportedNetwork(chainId)
 }
 
-// We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
-// We also disable testnets for the same reason
 export function isCovalentSupportedNetwork(chainId: number): boolean {
-  const supportedNetworks = [
-    ChainId.RSKMainnet,
-    // ChainId.RSKTestnet,
-    ChainId.HarmonyMainnetShard0,
-    // ChainId.HarmonyTestnetShard0,
-    ChainId.IoTeXNetworkMainnet,
-    // ChainId.IoTeXNetworkTestnet,
-    ChainId.KlaytnMainnetCypress,
-    // ChainId.KlaytnTestnetBaobab,
-    // ChainId.EvmosTestnet,
-    ChainId.PalmMainnet,
-    // ChainId.PalmTestnet,
-    // ChainId.PolyjuiceTestnet,
-  ]
-  return supportedNetworks.includes(chainId);
+  return COVALENT_SUPPORTED_NETWORKS.includes(chainId);
 }
 
 export function isEtherscanSupportedNetwork(chainId: number): boolean {
-  const supportedNetworks = [
-    ChainId.BinanceSmartChainMainnet,
-    ChainId.BinanceSmartChainTestnet,
-    ChainId.PolygonMainnet,
-    ChainId.PolygonTestnetMumbai,
-    ChainId.AvalancheMainnet,
-    ChainId.AvalancheFujiTestnet,
-    ChainId.FantomOpera,
-    ChainId.FantomTestnet,
-    ChainId.ArbitrumOne,
-    ChainId.ArbitrumTestnetRinkeby,
-    ChainId.HuobiECOChainMainnet,
-    ChainId.HuobiECOChainTestnet,
-    ChainId.Moonbeam,
-    ChainId.Moonriver,
-    ChainId.MoonbaseAlpha,
-    ChainId.CronosMainnetBeta,
-  ]
-  return supportedNetworks.includes(chainId);
+  return ETHERSCAN_SUPPORTED_NETWORKS.includes(chainId);
 }
 
 export function isNodeSupportedNetwork(chainId: number): boolean {
-  const supportedNetworks = [
-    ChainId.OptimisticEthereum,
-  ]
-  return supportedNetworks.includes(chainId);
+  return NODE_SUPPORTED_NETWORKS.includes(chainId);
 }
 
 export async function getFullTokenMapping(chainId: number): Promise<TokenMapping | undefined> {
@@ -353,4 +310,47 @@ export const parseInputAddress = async (inputAddressOrName: string, provider: pr
   } catch {
     return undefined
   }
+}
+
+export const getChainLogo = (chainId: number) => {
+  const mapping = {
+    [ChainId.EthereumMainnet]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetRopsten]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetRinkeby]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetGörli]: '/logos/ethereum.png',
+    [ChainId.EthereumTestnetKovan]: '/logos/ethereum.png',
+    [ChainId.TelosEVMMainnet]: '/logos/telos.png',
+    [ChainId.TelosEVMTestnet]: '/logos/telos.png',
+    [ChainId.XDAIChain]: '/logos/gnosis-chain.png',
+    [ChainId.MetisAndromedaMainnet]: '/logos/metis.png',
+    [ChainId.MetisStardustTestnet]: '/logos/metis.png',
+    [ChainId.SmartBitcoinCash]: '/logos/smartbch.png',
+    [ChainId.SmartBitcoinCashTestnet]: '/logos/smartbch.png',
+    [ChainId.FuseMainnet]: '/logos/fuse.png',
+    [ChainId.FuseSparknet]: '/logos/fuse.png',
+    [ChainId.BinanceSmartChainMainnet]: '/logos/binance.png',
+    [ChainId.BinanceSmartChainTestnet]: '/logos/binance.png',
+    [ChainId.PolygonMainnet]: '/logos/polygon.png',
+    [ChainId.PolygonTestnetMumbai]: '/logos/polygon.png',
+    [ChainId.AvalancheMainnet]: '/logos/avalanche.png',
+    [ChainId.AvalancheFujiTestnet]: '/logos/avalanche.png',
+    [ChainId.FantomOpera]: '/logos/fantom.png',
+    [ChainId.FantomTestnet]: '/logos/fantom.png',
+    [ChainId.ArbitrumOne]: '/logos/arbitrum.svg',
+    [ChainId.ArbitrumTestnetRinkeby]: '/logos/arbitrum.svg',
+    [ChainId.HuobiECOChainMainnet]: '/logos/heco.png',
+    [ChainId.HuobiECOChainTestnet]: '/logos/heco.png',
+    [ChainId.Moonbeam]: '/logos/moonbeam.png',
+    [ChainId.Moonriver]: '/logos/moonriver.png',
+    [ChainId.MoonbaseAlpha]: '/logos/moonbeam.png',
+    [ChainId.CronosMainnetBeta]: '/logos/cronos.jpeg',
+    [ChainId.RSKMainnet]: '/logos/rootstock.png',
+    [ChainId.HarmonyMainnetShard0]: '/logos/harmony.png',
+    [ChainId.IoTeXNetworkMainnet]: '/logos/iotex.png',
+    [ChainId.KlaytnMainnetCypress]: '/logos/klaytn.png',
+    [ChainId.PalmMainnet]: '/logos/palm.jpeg',
+    [ChainId.OptimisticEthereum]: '/logos/optimism.jpeg',
+  }
+
+  return mapping[chainId];
 }

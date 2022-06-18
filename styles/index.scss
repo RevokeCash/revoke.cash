@@ -58,9 +58,15 @@ a:visited {
   width: 100%;
 }
 
-@media (max-width: 600px) {
+// Fix display issues for very small screens
+@media (max-width: 500px) {
   .AddressInput {
-    font-size: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .input-group-text, .btn {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem
   }
 }
 

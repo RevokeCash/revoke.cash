@@ -39,6 +39,7 @@ function TokenList({
       if (!provider || !chainId) return
 
       setLoading(true)
+      setError(undefined)
 
       const erc721Interface = new Interface(ERC721Metadata)
       const latestBlockNumber = await provider.getBlockNumber()
