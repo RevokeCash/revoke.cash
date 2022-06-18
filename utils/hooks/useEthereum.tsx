@@ -1,12 +1,13 @@
 import { providers as multicall } from '@0xsequence/multicall';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
-import { emitAnalyticsEvent, lookupEnsName } from 'components/common/util';
-import { ChainId, chains } from 'eth-chains';
+import { emitAnalyticsEvent, getRpcUrl, lookupEnsName } from 'components/common/util';
+import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { SUPPORTED_NETWORKS } from 'components/common/constants';
 
 
 declare let window: {
@@ -32,35 +33,14 @@ interface Props {
   children: ReactNode;
 }
 
+const rpc = Object.fromEntries(
+  SUPPORTED_NETWORKS.map((chainId) => ([chainId, getRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)]))
+);
+
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
-    options: {
-      rpc: {
-        [ChainId.EthereumMainnet] : `https://mainnet.infura.io/v3/${'88583771d63544aa'}${'ba1006382275c6f8'}`,
-        [ChainId.OptimisticEthereum]: 'https://mainnet.optimism.io',
-        [ChainId.CronosMainnetBeta]: 'https://evm.cronos.org',
-        [ChainId.RSKMainnet]: 'https://public-node.rsk.co',
-        [ChainId.TelosEVMMainnet]: 'https://rpc1.eu.telos.net/evm',
-        [ChainId.BinanceSmartChainMainnet]: 'https://bsc-dataseed4.defibit.io',
-        [ChainId.XDAIChain]: 'https://gnosis-mainnet.public.blastapi.io',
-        [ChainId.FuseMainnet]: 'https://fuse-rpc.gateway.pokt.network',
-        [ChainId.HuobiECOChainMainnet]: 'https://http-mainnet.hecochain.com',
-        [ChainId.PolygonMainnet]: 'https://polygon-rpc.com/',
-        [ChainId.FantomOpera]: 'https://fantom-mainnet.public.blastapi.io',
-        [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
-        [ChainId.MetisAndromedaMainnet]: 'https://andromeda.metis.io/?owner=1088',
-        [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
-        [ChainId.Moonriver]: 'https://moonriver.public.blastapi.io',
-        [ChainId.IoTeXNetworkMainnet]: 'https://rpc.ankr.com/iotex',
-        [ChainId.KlaytnMainnetCypress]: 'https://public-node-api.klaytnapi.com/v1/cypress',
-        [ChainId.SmartBitcoinCash]: 'https://smartbch.devops.cash/mainnet',
-        [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
-        [ChainId.AvalancheMainnet]: 'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
-        [ChainId.HarmonyMainnetShard0]: 'https://rpc.heavenswail.one',
-        [ChainId.PalmMainnet]: 'https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b',
-      }
-    }
+    options: { rpc }
   }
 }
 
@@ -140,10 +120,10 @@ export const EthereumProvider = ({ children }: Props) => {
       updateAccount(accounts[0]);
     });
 
-    instance.on('chainChanged', (chainIdHex: string) => {
-      const chainIdDec = Number.parseInt(chainIdHex, 16)
-      console.log('chain changed to', chainIdDec);
-      setChainId(chainIdDec)
+    instance.on('chainChanged', (receivedChainId: string | number) => {
+      const newChainId = Number(receivedChainId);
+      console.log('chain changed to', newChainId);
+      setChainId(newChainId)
     })
 
     setWeb3ModalInstance(instance);
@@ -167,10 +147,10 @@ export const EthereumProvider = ({ children }: Props) => {
       await updateProvider(provider, true)
 
       // Make sure that the chain updates when the user changes their network (note that we add no handler for accounts here)
-      window.ethereum.on('chainChanged', (chainIdHex: string) => {
-        const chainIdDec = Number.parseInt(chainIdHex, 16)
-        console.log('chain changed to', chainIdDec);
-        setChainId(chainIdDec)
+      window.ethereum.on('chainChanged', (receivedChainId: string | number) => {
+        const newChainId = Number(receivedChainId);
+        console.log('chain changed to', newChainId);
+        setChainId(newChainId)
       })
 
       console.log('Using injected "window.ethereum" provider')
