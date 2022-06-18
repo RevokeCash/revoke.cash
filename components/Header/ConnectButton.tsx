@@ -6,6 +6,9 @@ import { getChainLogo, shortenAddress } from "../common/util";
 const ConnectButton: React.FC = () => {
   const { account, ensName, connect, disconnect, chainId, chainName } = useEthereum();
 
+  const buttonAction = account ? disconnect : connect;
+  const buttonText = account ? 'Disconnect' : 'Connect Wallet';
+
   return (
     <InputGroup style={{ width: 'fit-content' }}>
       <InputGroup.Prepend>
@@ -25,11 +28,7 @@ const ConnectButton: React.FC = () => {
           </InputGroup.Text>
         }
       <InputGroup.Append style={{ marginLeft: account ? -1 : 0 }}>
-        {account ? (
-          <Button variant="outline-primary" onClick={disconnect}>Disconnect</Button>
-        ) : (
-          <Button variant="outline-primary" onClick={connect}>Connect Wallet</Button>
-        )}
+        <Button variant="outline-primary" onClick={buttonAction}>{buttonText}</Button>
       </InputGroup.Append>
     </InputGroup>
   )
