@@ -18,11 +18,11 @@ const ConnectButton: React.FC = () => {
             {ensName ?? shortenAddress(account)}
           </InputGroup.Text>
         }
-      <InputGroup.Append>
+      <InputGroup.Append style={{ marginLeft: account ? -1 : 0 }}>
         {account ? (
           <Button variant="outline-primary" onClick={disconnect}>Disconnect</Button>
         ) : (
-          <Button variant="outline-primary" onClick={connect}>Connect</Button>
+          <Button variant="outline-primary" onClick={connect}>Connect Wallet</Button>
         )}
       </InputGroup.Append>
     </InputGroup>
