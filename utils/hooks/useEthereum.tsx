@@ -1,8 +1,7 @@
 import { providers as multicall } from '@0xsequence/multicall';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
-import axios from 'axios';
 import { emitAnalyticsEvent, lookupEnsName } from 'components/common/util';
-import { chains } from 'eth-chains';
+import { ChainId, chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook';
@@ -37,29 +36,29 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      rpc: { // Public RPC providers https://chainlist.org/
-        1 : `https://mainnet.infura.io/v3/${'88583771d63544aa'}${'ba1006382275c6f8'}`,
-        10: 'https://mainnet.optimism.io', // Optimism
-        25: 'https://evm.cronos.org', // Chronos
-        30: 'https://public-node.rsk.co', // RSK
-        40: 'https://rpc1.eu.telos.net/evm', // Telos
-        56: 'https://bsc-dataseed4.defibit.io', // BSC
-        100: 'https://gnosis-mainnet.public.blastapi.io', // Gnosis/xDai
-        122: 'https://fuse-rpc.gateway.pokt.network', // Fuse
-        128: 'https://http-mainnet.hecochain.com', // Heco
-        137: 'https://polygon-rpc.com/', // Polygon
-        250: 'https://fantom-mainnet.public.blastapi.io', // Fantom
-        336: 'https://shiden.public.blastapi.io', // Shiden
-        1088: 'https://andromeda.metis.io/?owner=1088', // Metis
-        1284: 'https://moonbeam.public.blastapi.io', // Moonbeam
-        1285: 'https://moonriver.public.blastapi.io', // Moonriver
-        4689: 'https://rpc.ankr.com/iotex', // Iotex
-        8217: 'https://public-node-api.klaytnapi.com/v1/cypress', // Klaytn
-        10000: 'https://smartbch.devops.cash/mainnet', // SmartBCH
-        42161: 'https://arb1.arbitrum.io/rpc', // Arbitrum
-        43114: 'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc', // Avax
-        1666600000: 'https://rpc.heavenswail.one', // Harmony
-        11297108109: 'https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b' // Palm
+      rpc: {
+        [ChainId.EthereumMainnet] : `https://mainnet.infura.io/v3/${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+        [ChainId.OptimisticEthereum]: 'https://mainnet.optimism.io',
+        [ChainId.CronosMainnetBeta]: 'https://evm.cronos.org',
+        [ChainId.RSKMainnet]: 'https://public-node.rsk.co',
+        [ChainId.TelosEVMMainnet]: 'https://rpc1.eu.telos.net/evm',
+        [ChainId.BinanceSmartChainMainnet]: 'https://bsc-dataseed4.defibit.io',
+        [ChainId.XDAIChain]: 'https://gnosis-mainnet.public.blastapi.io',
+        [ChainId.FuseMainnet]: 'https://fuse-rpc.gateway.pokt.network',
+        [ChainId.HuobiECOChainMainnet]: 'https://http-mainnet.hecochain.com',
+        [ChainId.PolygonMainnet]: 'https://polygon-rpc.com/',
+        [ChainId.FantomOpera]: 'https://fantom-mainnet.public.blastapi.io',
+        [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
+        [ChainId.MetisAndromedaMainnet]: 'https://andromeda.metis.io/?owner=1088',
+        [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
+        [ChainId.Moonriver]: 'https://moonriver.public.blastapi.io',
+        [ChainId.IoTeXNetworkMainnet]: 'https://rpc.ankr.com/iotex',
+        [ChainId.KlaytnMainnetCypress]: 'https://public-node-api.klaytnapi.com/v1/cypress',
+        [ChainId.SmartBitcoinCash]: 'https://smartbch.devops.cash/mainnet',
+        [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
+        [ChainId.AvalancheMainnet]: 'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
+        [ChainId.HarmonyMainnetShard0]: 'https://rpc.heavenswail.one',
+        [ChainId.PalmMainnet]: 'https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b',
       }
     }
   }
