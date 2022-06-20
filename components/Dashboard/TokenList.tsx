@@ -92,6 +92,14 @@ function TokenList({
   }
 
   if (error) {
+    if (error.message === 'Internal JSON-RPC error.') {
+      return (
+        <div style={{ marginTop: '20px' }}>
+          Please check your wallet's network configuration and use Metamask's default network configuration where possible.
+        </div>
+      )
+    }
+
     return (<div style={{ marginTop: '20px' }}>{error.message}</div>)
   }
 
