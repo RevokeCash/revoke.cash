@@ -1,4 +1,5 @@
-import React from 'react'
+import React from "react";
+import Image from "next/image";
 
 interface Props {
   src: string;
@@ -8,8 +9,16 @@ interface Props {
 
 const LogoLink = ({ src, alt, href }: Props) => (
   <a href={href}>
-    <img src={src} alt={alt} height="24" style={{ borderRadius: '50%' }} />
+    <Image
+      src={src}
+      alt={alt}
+      objectFit="contain"
+      height="24"
+      width="24"
+      quality="100"
+      style={{ borderRadius: "50%" }}
+    />
   </a>
 );
 
-export default LogoLink
+export default LogoLink;
