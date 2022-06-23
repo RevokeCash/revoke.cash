@@ -61,9 +61,13 @@ class EtherscanQueue {
 
     const { data } = await this.queue.add(() => this.sendRequest(query));
 
+    if (typeof data.result === 'string') {
+      throw new Error(data.result);
+    }
+
     // If an error occurs or if the limit (1000) is reached, throw an error that is
     // compatible with the getLogsFromProvider() function to trigger recursive getLogs
-    if (typeof data.result === 'string' || data.result.length === 1000) {
+    if (data.result.length === 1000) {
       throw new Error('query returned more than 10000 results');
     }
 
