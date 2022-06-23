@@ -10,17 +10,9 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { NodeEventGetter } from 'utils/logs/NodeEventGetter';
 import { EtherscanEventGetter } from 'utils/logs/EtherscanEventGetter';
-
-const rateLimiter = rateLimit({
-  windowMs: 1 * 1000, // 1s
-  max: 10, // 10 requests
-});
+import { covalentEventGetter, etherscanEventGetter, nodeEventGetter, rateLimiter } from 'utils/logs/globals';
 
 axiosRetry(axios, { retries: 3 });
-
-const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS))
-const etherscanEventGetter = new EtherscanEventGetter(JSON.parse(process.env.ETHERSCAN_API_KEYS))
-const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS))
 
 const handler = nc<NextApiRequest, NextApiResponse>()
   .use(requestIp.mw({ attributeName: 'ip' }))
