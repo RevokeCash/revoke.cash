@@ -20,21 +20,28 @@ const handler = nc<NextApiRequest, NextApiResponse>()
       return res.status(403).send({})
     }
 
+    console.log('Request body', req.body)
+
     const chainId = Number.parseInt(req.query.chainId as string, 10)
 
-    if (isCovalentSupportedNetwork(chainId)) {
-      const events = await covalentEventGetter.getEvents(chainId, req.body);
-      return res.send(events);
-    }
+    try {
+      if (isCovalentSupportedNetwork(chainId)) {
+        const events = await covalentEventGetter.getEvents(chainId, req.body);
+        return res.send(events);
+      }
 
-    if (isEtherscanSupportedNetwork(chainId)) {
-      const events = await etherscanEventGetter.getEvents(chainId, req.body);
-      return res.send(events);
-    }
+      if (isEtherscanSupportedNetwork(chainId)) {
+        const events = await etherscanEventGetter.getEvents(chainId, req.body);
+        return res.send(events);
+      }
 
-    if (isNodeSupportedNetwork(chainId)) {
-      const events = await nodeEventGetter.getEvents(chainId, req.body);
-      return res.send(events);
+      if (isNodeSupportedNetwork(chainId)) {
+        const events = await nodeEventGetter.getEvents(chainId, req.body);
+        return res.send(events);
+      }
+    } catch (e) {
+      console.log('Error occurred', e)
+      throw e;
     }
 
     return res.status(404);
