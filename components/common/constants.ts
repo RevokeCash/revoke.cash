@@ -73,7 +73,7 @@ export const COVALENT_SUPPORTED_NETWORKS = [
   // ChainId.IoTeXNetworkTestnet,
   ChainId.KlaytnMainnetCypress,
   // ChainId.KlaytnTestnetBaobab,
-  // ChainId.EvmosTestnet,
+  9001, // Evmos Mainnet (not in the eth-chains library)
   ChainId.PalmMainnet,
   // ChainId.PalmTestnet,
   // ChainId.PolyjuiceTestnet,

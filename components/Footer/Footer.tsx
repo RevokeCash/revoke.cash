@@ -34,7 +34,7 @@ const Footer: React.FC = () => (
       <LogoLink src="/logos/iotex.png" alt="IoTeX" href="https://iotex.io/" />
       <LogoLink src="/logos/shiden.svg" alt="Shiden" href="https://shiden.astar.network/" />
       <LogoLink src="/logos/palm.jpeg" alt="Palm" href="https://palm.io/" />
-      {/* <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" /> */}
+      <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" />
     </div>
     <ToastContainer
       position="top-right"
