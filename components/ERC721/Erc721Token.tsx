@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
+import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc721TokenData } from '../common/interfaces';
-import { Allowance } from './interfaces';
+import { getExplorerUrl } from '../common/util';
 import Erc721AllowanceList from './Erc721AllowanceList';
 import Erc721TokenBalance from './Erc721TokenBalance';
+import { Allowance } from './interfaces';
 import {
   addDisplayAddressesToAllowances,
   getLimitedAllowancesFromApprovals,
   getUnlimitedAllowancesFromApprovals,
 } from './util';
-import { getExplorerUrl } from '../common/util';
-import { useEthereum } from 'utils/hooks/useEthereum';
 
 interface Props {
   token: Erc721TokenData;

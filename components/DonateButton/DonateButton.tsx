@@ -2,9 +2,9 @@ import { utils } from 'ethers';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { getNativeToken, getDefaultAmount } from './util';
-import { emitAnalyticsEvent } from '../common/util';
 import { useEthereum } from 'utils/hooks/useEthereum';
+import { emitAnalyticsEvent } from '../common/util';
+import { getDefaultAmount, getNativeToken } from './util';
 
 interface Props {
   size?: 'sm' | 'lg';

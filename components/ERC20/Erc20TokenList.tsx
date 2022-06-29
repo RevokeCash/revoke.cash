@@ -1,14 +1,14 @@
+import { Log } from '@ethersproject/abstract-provider';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { Log } from '@ethersproject/abstract-provider';
 import React, { useEffect, useState } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { Erc20TokenData, TokenMapping } from '../common/interfaces';
-import Erc20Token from './Erc20Token';
-import { isVerified, getTokenIcon, toFloat } from '../common/util';
-import { getTokenData } from './util';
-import { ERC20 } from '../common/abis';
 import { useEthereum } from 'utils/hooks/useEthereum';
+import { ERC20 } from '../common/abis';
+import { Erc20TokenData, TokenMapping } from '../common/interfaces';
+import { getTokenIcon, isVerified, toFloat } from '../common/util';
+import Erc20Token from './Erc20Token';
+import { getTokenData } from './util';
 
 interface Props {
   filterUnverifiedTokens: boolean;

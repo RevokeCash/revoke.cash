@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
+import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
-import { Allowance } from './interfaces';
 import { compareBN, getExplorerUrl, toFloat } from '../common/util';
 import Erc20AllowanceList from './Erc20AllowanceList';
 import Erc20TokenBalance from './Erc20TokenBalance';
+import { Allowance } from './interfaces';
 import { formatAllowance, getAllowancesFromApprovals } from './util';
-import { useEthereum } from 'utils/hooks/useEthereum';
 
 interface Props {
   token: Erc20TokenData;

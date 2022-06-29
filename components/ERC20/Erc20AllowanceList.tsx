@@ -1,7 +1,7 @@
 import React from 'react';
 import { Erc20TokenData } from '../common/interfaces';
-import { Allowance } from './interfaces';
 import Erc20Allowance from './Erc20Allowance';
+import { Allowance } from './interfaces';
 
 interface Props {
   inputAddress: string;

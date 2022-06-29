@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import { Log } from '@ethersproject/abstract-provider';
-import { TokenMapping } from '../common/interfaces';
-import Erc20TokenList from '../ERC20/Erc20TokenList';
-import Erc721TokenList from '../ERC721/Erc721TokenList';
+import axios from 'axios';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
-import { ERC721Metadata } from '../common/abis';
-import { getLogs, isBackendSupportedNetwork } from '../common/util';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import axios from 'axios';
+import { ERC721Metadata } from '../common/abis';
+import { TokenMapping } from '../common/interfaces';
+import { getLogs, isBackendSupportedNetwork } from '../common/util';
+import Erc20TokenList from '../ERC20/Erc20TokenList';
+import Erc721TokenList from '../ERC721/Erc721TokenList';
 
 interface Props {
   filterUnverifiedTokens: boolean;

@@ -1,23 +1,22 @@
+import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
+import { BigNumber, Contract } from 'ethers';
 import React, { useEffect, useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
-import { BigNumber, Contract } from 'ethers';
-import { formatAllowance } from './util';
+import { toast } from 'react-toastify';
+import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
-import {
-  addressToAppName,
-  shortenAddress,
-  getDappListName,
-  getExplorerUrl,
-  lookupEnsName,
-  fromFloat,
-  emitAnalyticsEvent,
-} from '../common/util';
 import RevokeButton from '../common/RevokeButton';
 import UpdateInputGroup from '../common/UpdateInputGroup';
-import { useEthereum } from 'utils/hooks/useEthereum';
-import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
+import {
+  addressToAppName,
+  emitAnalyticsEvent,
+  fromFloat,
+  getExplorerUrl,
+  lookupEnsName,
+  shortenAddress,
+} from '../common/util';
+import { formatAllowance } from './util';
 
 interface Props {
   spender: string;

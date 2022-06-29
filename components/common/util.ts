@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { BigNumberish, BigNumber, providers } from 'ethers';
 import { Filter, Log } from '@ethersproject/abstract-provider';
+import axios from 'axios';
+import { ChainId, chains } from 'eth-chains';
+import { BigNumber, BigNumberish, providers } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { chains, ChainId } from 'eth-chains';
 import {
   COVALENT_SUPPORTED_NETWORKS,
   DAPP_LIST_BASE_URL,

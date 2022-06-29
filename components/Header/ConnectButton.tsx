@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, FormControl, InputGroup } from 'react-bootstrap';
+import { Button, InputGroup } from 'react-bootstrap';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { getChainLogo, shortenAddress } from '../common/util';
 

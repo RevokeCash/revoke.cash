@@ -9,16 +9,15 @@ import {
   OPENSEA_REGISTRY_ADDRESS,
 } from '../common/constants';
 import { TokenMapping } from '../common/interfaces';
-import { Allowance } from './interfaces';
 import {
   addressToAppName as addressToAppNameBase,
   convertString,
-  getDappListName,
   lookupEnsName,
   shortenAddress,
   unpackResult,
   withFallback,
 } from '../common/util';
+import { Allowance } from './interfaces';
 
 export async function getLimitedAllowancesFromApprovals(contract: Contract, approvals: providers.Log[]) {
   const deduplicatedApprovals = approvals.filter(

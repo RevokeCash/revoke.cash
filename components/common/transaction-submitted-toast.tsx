@@ -1,5 +1,5 @@
 import DonateButton from 'components/DonateButton/DonateButton';
-import React, { MutableRefObject, ReactText, useRef } from 'react';
+import React, { MutableRefObject, ReactText } from 'react';
 import { toast } from 'react-toastify';
 
 export const displayTransactionSubmittedToast = (ref: MutableRefObject<ReactText>) => {

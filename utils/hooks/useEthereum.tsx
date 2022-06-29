@@ -1,13 +1,13 @@
 import { providers as multicall } from '@0xsequence/multicall';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { SUPPORTED_NETWORKS } from 'components/common/constants';
 import { emitAnalyticsEvent, getRpcUrl, lookupEnsName } from 'components/common/util';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import Web3Modal from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import { SUPPORTED_NETWORKS } from 'components/common/constants';
 
 declare let window: {
   ethereum?: any;

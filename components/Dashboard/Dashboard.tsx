@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useEthereum } from 'utils/hooks/useEthereum';
 import { TokenMapping } from '../common/interfaces';
 import { getFullTokenMapping, isBackendSupportedNetwork, isProviderSupportedNetwork } from '../common/util';
+import AddressInput from './AddressInput';
 import TokenList from './TokenList';
-import { ClipLoader } from 'react-spinners';
 import TokenStandardSelection from './TokenStandardSelection';
 import UnverifiedTokensCheckbox from './UnverifiedTokensCheckbox';
 import ZeroBalancesCheckbox from './ZeroBalancesCheckbox';
-import AddressInput from './AddressInput';
-import axios from 'axios';
-import { useEthereum } from 'utils/hooks/useEthereum';
 
 function Dashboard() {
   const [tokenStandard, setTokenStandard] = useState<'ERC20' | 'ERC721'>('ERC20');

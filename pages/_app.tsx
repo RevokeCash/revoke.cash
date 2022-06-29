@@ -1,7 +1,7 @@
-import '../styles/index.scss';
-import type { AppProps } from 'next/app';
 import { NextSeo } from 'next-seo';
+import type { AppProps } from 'next/app';
 import Script from 'next/script';
+import '../styles/index.scss';
 
 const SafeHydrate = ({ children }) => {
   return <div suppressHydrationWarning>{typeof window === 'undefined' ? null : children}</div>;

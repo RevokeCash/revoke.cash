@@ -1,7 +1,7 @@
 import { Filter, Log } from '@ethersproject/abstract-provider';
-import PQueue from 'p-queue';
 import axios from 'axios';
 import { getAddress } from 'ethers/lib/utils';
+import PQueue from 'p-queue';
 import { EventGetter } from './EventGetter';
 
 export class CovalentEventGetter implements EventGetter {

@@ -47,6 +47,7 @@
     "husky": ">=6",
     "lint-staged": "latest",
     "prettier": "^2.7.1",
+    "prettier-plugin-organize-imports": "^3.0.0",
     "typescript": "^4.6.3"
   },
   "packageManager": "yarn@3.2.0",

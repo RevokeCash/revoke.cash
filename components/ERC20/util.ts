@@ -1,9 +1,9 @@
 import { BigNumber, Contract, providers } from 'ethers';
 import { getAddress, hexDataSlice } from 'ethers/lib/utils';
-import { TokenMapping } from '../common/interfaces';
-import { Allowance } from './interfaces';
-import { convertString, toFloat, unpackResult } from '../common/util';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from '../common/constants';
+import { TokenMapping } from '../common/interfaces';
+import { convertString, toFloat, unpackResult } from '../common/util';
+import { Allowance } from './interfaces';
 
 export async function getAllowancesFromApprovals(contract: Contract, ownerAddress: string, approvals: providers.Log[]) {
   const deduplicatedApprovals = approvals.filter(

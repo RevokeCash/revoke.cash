@@ -1,7 +1,7 @@
 import React from 'react';
 import { Erc721TokenData } from '../common/interfaces';
-import { Allowance } from './interfaces';
 import Erc721Allowance from './Erc721Allowance';
+import { Allowance } from './interfaces';
 
 interface Props {
   token: Erc721TokenData;

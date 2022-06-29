@@ -1,13 +1,13 @@
+import { Contract } from 'ethers';
 import React from 'react';
-import { Erc721TokenData } from '../common/interfaces';
-import { shortenAddress, getExplorerUrl, emitAnalyticsEvent } from '../common/util';
 import { Form } from 'react-bootstrap';
+import { useEthereum } from 'utils/hooks/useEthereum';
 import { ADDRESS_ZERO } from '../common/constants';
+import { Erc721TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
+import { emitAnalyticsEvent, getExplorerUrl, shortenAddress } from '../common/util';
 import { Allowance } from './interfaces';
 import { formatAllowance } from './util';
-import { Contract } from 'ethers';
-import { useEthereum } from 'utils/hooks/useEthereum';
 
 interface Props {
   token: Erc721TokenData;

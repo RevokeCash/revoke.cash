@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { emitAnalyticsEvent, parseInputAddress } from '../common/util';
 import { useEthereum } from 'utils/hooks/useEthereum';
+import { emitAnalyticsEvent, parseInputAddress } from '../common/util';
 
 interface Props {
   inputAddress: string;
