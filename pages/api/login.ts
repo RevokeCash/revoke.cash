@@ -19,6 +19,6 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     (req.session as any).ip = (req as any).ip;
     await req.session.save();
     res.send({ ok: true });
-  })
+  });
 
 export default handler;

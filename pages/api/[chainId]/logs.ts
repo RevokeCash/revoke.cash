@@ -5,7 +5,11 @@ import nc from 'next-connect';
 import requestIp from 'request-ip';
 import { IRON_OPTIONS } from 'components/common/constants';
 import { CovalentEventGetter } from 'utils/logs/CovalentEventGetter';
-import { isCovalentSupportedNetwork, isEtherscanSupportedNetwork, isNodeSupportedNetwork } from 'components/common/util';
+import {
+  isCovalentSupportedNetwork,
+  isEtherscanSupportedNetwork,
+  isNodeSupportedNetwork,
+} from 'components/common/util';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { NodeEventGetter } from 'utils/logs/NodeEventGetter';
@@ -18,9 +22,9 @@ const rateLimiter = rateLimit({
 
 axiosRetry(axios, { retries: 3 });
 
-const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS))
-const etherscanEventGetter = new EtherscanEventGetter(JSON.parse(process.env.ETHERSCAN_API_KEYS))
-const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS))
+const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS));
+const etherscanEventGetter = new EtherscanEventGetter(JSON.parse(process.env.ETHERSCAN_API_KEYS));
+const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS));
 
 const handler = nc<NextApiRequest, NextApiResponse>()
   .use(requestIp.mw({ attributeName: 'ip' }))
@@ -29,10 +33,10 @@ const handler = nc<NextApiRequest, NextApiResponse>()
   .post(async (req, res) => {
     // TODO: This can become a middleware
     if (!(req.session as any).ip || (req.session as any).ip !== (req as any).ip) {
-      return res.status(403).send({})
+      return res.status(403).send({});
     }
 
-    const chainId = Number.parseInt(req.query.chainId as string, 10)
+    const chainId = Number.parseInt(req.query.chainId as string, 10);
 
     if (isCovalentSupportedNetwork(chainId)) {
       const events = await covalentEventGetter.getEvents(chainId, req.body);
@@ -50,6 +54,6 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     }
 
     return res.status(404);
-  })
+  });
 
 export default handler;

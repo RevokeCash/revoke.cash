@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postinstall": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -43,7 +44,17 @@
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
     "@types/request-ip": "^0.0.37",
+    "husky": ">=6",
+    "lint-staged": "latest",
+    "prettier": "^2.7.1",
     "typescript": "^4.6.3"
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "lint-staged": {
+    "*": "prettier -u --write"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 120
+  }
 }
