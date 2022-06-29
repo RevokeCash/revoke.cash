@@ -140,12 +140,7 @@ export const OPENSEA_REGISTRY = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-  {
-    inputs: [],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
+  { inputs: [], payable: false, stateMutability: 'nonpayable', type: 'constructor' },
   {
     anonymous: false,
     inputs: [{ indexed: true, name: 'previousOwner', type: 'address' }],

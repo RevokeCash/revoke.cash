@@ -20,11 +20,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
   const [show, setShow] = useState<boolean>(false);
   const handleShow = () => {
     if (parentToastRef)
-      toast.update(parentToastRef.current, {
-        autoClose: false,
-        closeButton: false,
-        draggable: false,
-      });
+      toast.update(parentToastRef.current, { autoClose: false, closeButton: false, draggable: false });
     setShow(true);
   };
   const handleClose = () => {

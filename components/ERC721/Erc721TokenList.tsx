@@ -73,14 +73,7 @@ function Erc721TokenList({
 
         try {
           const tokenData = await getTokenData(contract, inputAddress, tokenMapping);
-          return {
-            ...tokenData,
-            icon,
-            contract,
-            verified,
-            approvals,
-            approvalsForAll,
-          };
+          return { ...tokenData, icon, contract, verified, approvals, approvalsForAll };
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC721 token so
           // we do not include it in the token list.

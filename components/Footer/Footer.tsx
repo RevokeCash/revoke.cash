@@ -13,15 +13,7 @@ const Footer: React.FC = () => (
       Learn more:{' '}
       <a href="https://kalis.me/unlimited-erc20-allowances/">Unlimited ERC20 allowances considered harmful</a>
     </p>
-    <div
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '5px',
-      }}
-    >
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
       <LogoLink src="/logos/ethereum.png" alt="Ethereum" href="https://ethereum.org/" />
       <LogoLink src="/logos/binance.png" alt="Binance Smart Chain" href="https://www.bnbchain.world/" />
       <LogoLink src="/logos/avalanche.png" alt="Avalanche" href="https://www.avax.network/" />
@@ -44,7 +36,7 @@ const Footer: React.FC = () => (
       <LogoLink src="/logos/iotex.png" alt="IoTeX" href="https://iotex.io/" />
       <LogoLink src="/logos/shiden.svg" alt="Shiden" href="https://shiden.astar.network/" />
       <LogoLink src="/logos/palm.jpeg" alt="Palm" href="https://palm.io/" />
-      {/* <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" /> */}
+      <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" />
     </div>
     <ToastContainer
       position="top-right"

@@ -364,6 +364,7 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.KlaytnMainnetCypress]: '/logos/klaytn.png',
     [ChainId.PalmMainnet]: '/logos/palm.jpeg',
     [ChainId.OptimisticEthereum]: '/logos/optimism.jpeg',
+    [9001]: '/logos/evmos.png',
   };
 
   return mapping[chainId];

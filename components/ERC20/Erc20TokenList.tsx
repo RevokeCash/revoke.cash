@@ -57,13 +57,7 @@ function Erc20TokenList({
 
         try {
           const tokenData = await getTokenData(contract, inputAddress, tokenMapping);
-          return {
-            ...tokenData,
-            icon,
-            contract,
-            verified,
-            approvals: tokenApprovals,
-          };
+          return { ...tokenData, icon, contract, verified, approvals: tokenApprovals };
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC20 token so
           // we do not include it in the token list (should not happen).
