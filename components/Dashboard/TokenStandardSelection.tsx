@@ -1,21 +1,23 @@
-
-import React from 'react'
-import Switch from 'react-switch'
-import { TokenStandard } from '../common/interfaces'
+import React from 'react';
+import Switch from 'react-switch';
+import { TokenStandard } from '../common/interfaces';
 
 interface Props {
-  tokenStandard: TokenStandard
-  setTokenStandard: (tokenStandard: TokenStandard) => void
+  tokenStandard: TokenStandard;
+  setTokenStandard: (tokenStandard: TokenStandard) => void;
 }
 
 const TokenStandardSelection: React.FC<Props> = ({ tokenStandard, setTokenStandard }) => (
-  <div style={{
-    marginBottom: '10px',
-    display: 'flex',
-    flexDirection: 'row', gap: 10,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }}>
+  <div
+    style={{
+      marginBottom: '10px',
+      display: 'flex',
+      flexDirection: 'row',
+      gap: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+  >
     <div>Tokens</div>
     <div>
       <Switch
@@ -30,6 +32,6 @@ const TokenStandardSelection: React.FC<Props> = ({ tokenStandard, setTokenStanda
     </div>
     <div>NFTs</div>
   </div>
-)
+);
 
-export default TokenStandardSelection
+export default TokenStandardSelection;

@@ -1,11 +1,15 @@
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
+import { IRON_OPTIONS } from 'components/common/constants';
+import {
+  isCovalentSupportedNetwork,
+  isEtherscanSupportedNetwork,
+  isNodeSupportedNetwork,
+} from 'components/common/util';
 import { ironSession } from 'iron-session/express';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import requestIp from 'request-ip';
-import { IRON_OPTIONS } from 'components/common/constants';
-import { isCovalentSupportedNetwork, isEtherscanSupportedNetwork, isNodeSupportedNetwork } from 'components/common/util';
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
 import { covalentEventGetter, etherscanEventGetter, nodeEventGetter, rateLimiter } from 'utils/logs/globals';
 
 axiosRetry(axios, { retries: 3 });
@@ -17,12 +21,12 @@ const handler = nc<NextApiRequest, NextApiResponse>()
   .post(async (req, res) => {
     // TODO: This can become a middleware
     if (!(req.session as any).ip || (req.session as any).ip !== (req as any).ip) {
-      return res.status(403).send({})
+      return res.status(403).send({});
     }
 
-    console.log('Request body', req.body)
+    console.log('Request body', req.body);
 
-    const chainId = Number.parseInt(req.query.chainId as string, 10)
+    const chainId = Number.parseInt(req.query.chainId as string, 10);
 
     try {
       if (isCovalentSupportedNetwork(chainId)) {
@@ -40,11 +44,11 @@ const handler = nc<NextApiRequest, NextApiResponse>()
         return res.send(events);
       }
     } catch (e) {
-      console.log('Error occurred', e)
+      console.log('Error occurred', e);
       throw e;
     }
 
     return res.status(404);
-  })
+  });
 
 export default handler;

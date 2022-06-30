@@ -1,38 +1,38 @@
-import { Contract, providers } from 'ethers'
+import { Contract, providers } from 'ethers';
 
 export interface Erc20TokenData {
-  contract: Contract
-  icon: string
-  symbol: string
-  decimals: number
-  balance: string
-  totalSupply: string
-  verified: boolean
-  approvals: Array<providers.Log>
+  contract: Contract;
+  icon: string;
+  symbol: string;
+  decimals: number;
+  balance: string;
+  totalSupply: string;
+  verified: boolean;
+  approvals: Array<providers.Log>;
 }
 
 export interface Erc721TokenData {
-  contract: Contract
-  icon: string
-  symbol: string
-  balance: string
-  verified: boolean
-  approvals: Array<providers.Log>
-  approvalsForAll: Array<providers.Log>
+  contract: Contract;
+  icon: string;
+  symbol: string;
+  balance: string;
+  verified: boolean;
+  approvals: Array<providers.Log>;
+  approvalsForAll: Array<providers.Log>;
 }
 
 export interface TokenFromList {
-  chainId: number
-  address: string
-  name: string
-  symbol: string
-  logoURI: string
+  chainId: number;
+  address: string;
+  name: string;
+  symbol: string;
+  logoURI: string;
   // Only for ERC20
-  decimals?: number
+  decimals?: number;
 }
 
 export interface TokenMapping {
-  [index: string]: TokenFromList
+  [index: string]: TokenFromList;
 }
 
-export type TokenStandard = 'ERC20' | 'ERC721'
+export type TokenStandard = 'ERC20' | 'ERC721';

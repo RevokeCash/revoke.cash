@@ -1,49 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import { ClipLoader } from 'react-spinners'
-import { Erc20TokenData } from '../common/interfaces'
-import { Allowance } from './interfaces'
-import { compareBN, getExplorerUrl, toFloat } from '../common/util'
-import Erc20AllowanceList from './Erc20AllowanceList'
-import Erc20TokenBalance from './Erc20TokenBalance'
-import { formatAllowance, getAllowancesFromApprovals } from './util'
-import { useEthereum } from 'utils/hooks/useEthereum'
+import React, { useEffect, useState } from 'react';
+import { ClipLoader } from 'react-spinners';
+import { useEthereum } from 'utils/hooks/useEthereum';
+import { Erc20TokenData } from '../common/interfaces';
+import { compareBN, getExplorerUrl, toFloat } from '../common/util';
+import Erc20AllowanceList from './Erc20AllowanceList';
+import Erc20TokenBalance from './Erc20TokenBalance';
+import { Allowance } from './interfaces';
+import { formatAllowance, getAllowancesFromApprovals } from './util';
 
 interface Props {
-  token: Erc20TokenData
-  inputAddress: string
+  token: Erc20TokenData;
+  inputAddress: string;
 }
 
 function Erc20Token({ token, inputAddress }: Props) {
-  const [allowances, setAllowances] = useState<Allowance[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  const [allowances, setAllowances] = useState<Allowance[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const { chainId } = useEthereum();
 
   useEffect(() => {
-    loadData()
-  }, [inputAddress])
+    loadData();
+  }, [inputAddress]);
 
   const loadData = async () => {
-    setLoading(true)
+    setLoading(true);
 
     // Filter out zero-value allowances and sort from high to low
     const loadedAllowances = (await getAllowancesFromApprovals(token.contract, inputAddress, token.approvals))
       .filter(({ allowance }) => formatAllowance(allowance, token.decimals, token.totalSupply) !== '0.000')
-      .sort((a, b) => -1 * compareBN(a.allowance, b.allowance))
+      .sort((a, b) => -1 * compareBN(a.allowance, b.allowance));
 
-    setAllowances(loadedAllowances)
-    setLoading(false)
-  }
+    setAllowances(loadedAllowances);
+    setLoading(false);
+  };
 
   // Do not render tokens without balance or allowances
-  const balanceString = toFloat(Number(token.balance), token.decimals)
-  if (balanceString === '0.000' && allowances.length === 0) return null
+  const balanceString = toFloat(Number(token.balance), token.decimals);
+  if (balanceString === '0.000' && allowances.length === 0) return null;
 
   if (loading) {
-    return (<div className="Token"><ClipLoader size={20} color={'#000'} loading={loading} /></div>)
+    return (
+      <div className="Token">
+        <ClipLoader size={20} color={'#000'} loading={loading} />
+      </div>
+    );
   }
 
-  const explorerUrl = `${getExplorerUrl(chainId)}/address/${token.contract.address}`
+  const explorerUrl = `${getExplorerUrl(chainId)}/address/${token.contract.address}`;
 
   return (
     <div className="Token">
@@ -59,11 +63,13 @@ function Erc20Token({ token, inputAddress }: Props) {
         token={token}
         allowances={allowances}
         onRevoke={(spender) => {
-          setAllowances((previousAllowances) => previousAllowances.filter(allowance => allowance.spender !== spender))
+          setAllowances((previousAllowances) =>
+            previousAllowances.filter((allowance) => allowance.spender !== spender)
+          );
         }}
       />
     </div>
-  )
+  );
 }
 
-export default Erc20Token
+export default Erc20Token;

@@ -1,22 +1,24 @@
-import { Filter, Log } from '@ethersproject/abstract-provider'
-import PQueue from 'p-queue';
+import { Filter, Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
-import { EventGetter } from './EventGetter';
-import { ChainId } from 'eth-chains'
+import { ChainId } from 'eth-chains';
 import { getAddress } from 'ethers/lib/utils';
+import PQueue from 'p-queue';
+import { EventGetter } from './EventGetter';
 
 export class EtherscanEventGetter implements EventGetter {
   private queues: { [chainId: number]: EtherscanQueue };
 
   constructor(apiKeys: { [platform: string]: string }) {
-    const queueEntries = Object.keys(API_URLS)
-      .map((chainId) => ([chainId, new EtherscanQueue(Number.parseInt(chainId, 10), apiKeys)]))
+    const queueEntries = Object.keys(API_URLS).map((chainId) => [
+      chainId,
+      new EtherscanQueue(Number.parseInt(chainId, 10), apiKeys),
+    ]);
     this.queues = Object.fromEntries(queueEntries);
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
-    const queue = this.queues[chainId]!
-    const results = await queue.getLogs(filter)
+    const queue = this.queues[chainId]!;
+    const results = await queue.getLogs(filter);
     return results;
   }
 }
@@ -26,17 +28,17 @@ class EtherscanQueue {
   apiKey: string;
 
   get apiUrl(): string {
-    return API_URLS[this.chainId]
+    return API_URLS[this.chainId];
   }
 
   constructor(public chainId: number, apiKeys: { [platform: string]: string }) {
     this.apiKey = getApiKey(this.apiUrl, apiKeys);
-    console.log(chainId, this.apiKey)
+    console.log(chainId, this.apiKey);
 
     // If no API key is found we still function, but performance is severely degraded
     this.queue = this.apiKey
       ? new PQueue({ intervalCap: 5, interval: 1000 })
-      : new PQueue({ intervalCap: 1, interval: 5000 })
+      : new PQueue({ intervalCap: 1, interval: 5000 });
   }
 
   async getLogs(filter: Filter) {
@@ -57,7 +59,7 @@ class EtherscanQueue {
       topic1_2_opr: 'and',
       topic1_3_opr: 'and',
       topic2_3_opr: 'and',
-    }
+    };
 
     const { data } = await this.queue.add(() => this.sendRequest(query));
 
@@ -75,15 +77,17 @@ class EtherscanQueue {
   }
 
   async sendRequest(params: any) {
-    return axios.get(this.apiUrl, { params: { ...params, apikey: this.apiKey }});
+    return axios.get(this.apiUrl, {
+      params: { ...params, apikey: this.apiKey },
+    });
   }
 }
 
 const formatEtherscanEvent = (etherscanLog: any) => ({
   address: getAddress(etherscanLog.address),
   topics: etherscanLog.topics,
-  transactionHash: etherscanLog.transactionHash
-})
+  transactionHash: etherscanLog.transactionHash,
+});
 
 const API_URLS = {
   [ChainId.BinanceSmartChainMainnet]: 'https://api.bscscan.com/api',
@@ -102,9 +106,9 @@ const API_URLS = {
   [ChainId.Moonriver]: 'https://api-moonriver.moonscan.io/api',
   [ChainId.MoonbaseAlpha]: 'https://api-moonbase.moonscan.io/api',
   [ChainId.CronosMainnetBeta]: 'https://api.cronoscan.com/api',
-}
+};
 
 const getApiKey = (apiUrl: string, apiKeys: { [platform: string]: string }) => {
   const platform = new URL(apiUrl).hostname.split('.').at(-2);
   return apiKeys[platform];
-}
+};

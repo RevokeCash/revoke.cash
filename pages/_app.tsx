@@ -1,15 +1,11 @@
-import '../styles/index.scss'
-import type { AppProps } from 'next/app';
 import { NextSeo } from 'next-seo';
+import type { AppProps } from 'next/app';
 import Script from 'next/script';
+import '../styles/index.scss';
 
 const SafeHydrate = ({ children }) => {
-  return (
-    <div suppressHydrationWarning>
-      {typeof window === 'undefined' ? null : children}
-    </div>
-  )
-}
+  return <div suppressHydrationWarning>{typeof window === 'undefined' ? null : children}</div>;
+};
 
 const App = ({ Component, pageProps }: AppProps) => (
   <>
@@ -18,19 +14,21 @@ const App = ({ Component, pageProps }: AppProps) => (
       description="Protect your Ethereum token balances by revoking allowances and permissions you granted applications in the past."
       canonical="https://revoke.cash/"
       openGraph={{
-        url: "https://revoke.cash/",
-        images: [{
-          url: "https://revoke.cash/revoke-card.png",
-          width: 1600,
-          height: 900,
-        }],
-        site_name: "Revoke.cash",
-        type: "website",
+        url: 'https://revoke.cash/',
+        images: [
+          {
+            url: 'https://revoke.cash/revoke-card.png',
+            width: 1600,
+            height: 900,
+          },
+        ],
+        site_name: 'Revoke.cash',
+        type: 'website',
       }}
       twitter={{
-        handle: "@RoscoKalis",
-        site: "@RevokeCash",
-        cardType: "summary_large_image",
+        handle: '@RoscoKalis',
+        site: '@RevokeCash',
+        cardType: 'summary_large_image',
       }}
       additionalLinkTags={[
         {

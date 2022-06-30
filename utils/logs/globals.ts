@@ -11,6 +11,6 @@ export const rateLimiter = rateLimit({
   max: 10, // 10 requests
 });
 
-export const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS))
-export const etherscanEventGetter = new EtherscanEventGetter(JSON.parse(process.env.ETHERSCAN_API_KEYS))
-export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS))
+export const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS));
+export const etherscanEventGetter = new EtherscanEventGetter(JSON.parse(process.env.ETHERSCAN_API_KEYS));
+export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS));

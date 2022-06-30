@@ -10,11 +10,10 @@ export const displayGitcoinToast = () => {
   //     </div>
   //   </div>
   // )
-
   // toast.info(toastContent, {
   //   position: "top-left",
   //   closeOnClick: true,
   //   pauseOnHover: true,
   //   draggable: true,
   // })
-}
+};

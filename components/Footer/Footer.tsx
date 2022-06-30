@@ -1,16 +1,18 @@
-import LogoLink from "components/common/LogoLink";
-import React from "react";
-import { ToastContainer } from "react-toastify";
+import LogoLink from 'components/common/LogoLink';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
 
 const Footer: React.FC = () => (
   <div style={{ padding: '20px' }}>
     <p>
-      Site created by{' '}
-      <a href="https://twitter.com/RoscoKalis">Rosco Kalis</a> / {' '}
-      <a href="https://github.com/rkalis/revoke.cash">Source Code</a> / {' '}
+      Site created by <a href="https://twitter.com/RoscoKalis">Rosco Kalis</a> /{' '}
+      <a href="https://github.com/rkalis/revoke.cash">Source Code</a> /{' '}
       <a href="https://twitter.com/RevokeCash">Official Twitter</a>
     </p>
-    <p>Learn more: <a href="https://kalis.me/unlimited-erc20-allowances/">Unlimited ERC20 allowances considered harmful</a></p>
+    <p>
+      Learn more:{' '}
+      <a href="https://kalis.me/unlimited-erc20-allowances/">Unlimited ERC20 allowances considered harmful</a>
+    </p>
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
       <LogoLink src="/logos/ethereum.png" alt="Ethereum" href="https://ethereum.org/" />
       <LogoLink src="/logos/binance.png" alt="Binance Smart Chain" href="https://www.bnbchain.world/" />
@@ -50,6 +52,6 @@ const Footer: React.FC = () => (
       progressStyle={{ backgroundColor: 'black' }}
     />
   </div>
-)
+);
 
-export default Footer
+export default Footer;

@@ -44,3 +44,6 @@ yarn-error.log*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# So folks don't assume npm
+package-lock.json

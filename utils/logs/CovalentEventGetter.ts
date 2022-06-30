@@ -1,7 +1,7 @@
-import { Filter, Log } from '@ethersproject/abstract-provider'
-import PQueue from 'p-queue';
+import { Filter, Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { getAddress } from 'ethers/lib/utils';
+import PQueue from 'p-queue';
 import { EventGetter } from './EventGetter';
 
 export class CovalentEventGetter implements EventGetter {
@@ -9,7 +9,7 @@ export class CovalentEventGetter implements EventGetter {
   private queues: CovalentQueue[];
 
   constructor(apiKeys: string[]) {
-    this.queues = apiKeys.map((key) => new CovalentQueue(key))
+    this.queues = apiKeys.map((key) => new CovalentQueue(key));
   }
 
   // TODO: Currently works with up to 2 topics (and doesn't take topic position into account)
@@ -24,14 +24,20 @@ export class CovalentEventGetter implements EventGetter {
       })
     );
 
-    return results.flat()
+    return results.flat();
   }
 
-  private async getEventsInChunk(chainId: number, fromBlock: number, toBlock: number, topics: string[], apiKey: string) {
+  private async getEventsInChunk(
+    chainId: number,
+    fromBlock: number,
+    toBlock: number,
+    topics: string[],
+    apiKey: string
+  ) {
     const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !!topic);
     const url = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/?key=${apiKey}&starting-block=${fromBlock}&ending-block=${toBlock}&secondary-topics=${secondaryTopics}&page-size=9999999`;
-    const result = await axios.get(url)
-    return result?.data?.data?.items?.map(formatCovalentEvent) ?? []
+    const result = await axios.get(url);
+    return result?.data?.data?.items?.map(formatCovalentEvent) ?? [];
   }
 }
 
@@ -43,13 +49,18 @@ class CovalentQueue {
 const formatCovalentEvent = (covalentLog: any) => ({
   address: getAddress(covalentLog.sender_address),
   topics: covalentLog.raw_log_topics,
-  transactionHash: covalentLog.tx_hash
-})
+  transactionHash: covalentLog.tx_hash,
+});
 
-const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] => (
-  chunks.flatMap(([from, to]) => (
+const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] =>
+  chunks.flatMap(([from, to]) =>
     to - from < chunkSize
       ? [[from, to]]
-      : splitBlockRangeInChunks([[from, from + chunkSize - 1], [from + chunkSize, to]], chunkSize)
-  ))
-)
+      : splitBlockRangeInChunks(
+          [
+            [from, from + chunkSize - 1],
+            [from + chunkSize, to],
+          ],
+          chunkSize
+        )
+  );

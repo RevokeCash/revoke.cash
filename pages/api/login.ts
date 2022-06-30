@@ -1,6 +1,6 @@
 import { IRON_OPTIONS } from 'components/common/constants';
-import { ironSession } from 'iron-session/express';
 import rateLimit from 'express-rate-limit';
+import { ironSession } from 'iron-session/express';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import requestIp from 'request-ip';
@@ -19,6 +19,6 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     (req.session as any).ip = (req as any).ip;
     await req.session.save();
     res.send({ ok: true });
-  })
+  });
 
 export default handler;
