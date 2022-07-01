@@ -1,7 +1,7 @@
 import { Log } from '@ethersproject/abstract-provider';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC721Metadata } from '../common/abis';
@@ -54,7 +54,11 @@ function Erc721TokenList({
         ...transferEvents,
       ]),
     ];
-    const allEvents = [...approvalEvents, ...patchedApprovalForAllEvents, ...transferEvents];
+
+    const filteredApprovalEvents = approvalEvents.filter((ev) => ev.topics.length === 4);
+    const filteredTransferEvents = transferEvents.filter((ev) => ev.topics.length === 4);
+
+    const allEvents = [...filteredApprovalEvents, ...patchedApprovalForAllEvents, ...filteredTransferEvents];
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents

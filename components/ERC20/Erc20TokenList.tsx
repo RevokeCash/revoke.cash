@@ -1,7 +1,7 @@
 import { Log } from '@ethersproject/abstract-provider';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC20 } from '../common/abis';
@@ -42,7 +42,9 @@ function Erc20TokenList({
 
     setLoading(true);
 
-    const allEvents = [...approvalEvents, ...transferEvents];
+    const filteredApprovalEvents = approvalEvents.filter((ev) => ev.topics.length === 3);
+    const filteredTransferEvents = transferEvents.filter((ev) => ev.topics.length === 3);
+    const allEvents = [...filteredApprovalEvents, ...filteredTransferEvents];
 
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
