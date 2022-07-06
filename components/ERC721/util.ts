@@ -122,7 +122,7 @@ export async function addressToAppName(
   chainId?: number,
   openseaProxyAddress?: string
 ): Promise<string | undefined> {
-  if (address === openseaProxyAddress) return 'OpenSea';
+  if (address === openseaProxyAddress) return 'OpenSea (old)';
   return addressToAppNameBase(address, chainId);
 }
 
