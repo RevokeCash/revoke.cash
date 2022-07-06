@@ -205,20 +205,23 @@ function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): st
   return mapping[standard][chainId];
 }
 
-export function getTokenIcon(tokenAddress: string, chainId: number, tokenMapping: TokenMapping = {}) {
+export function getTokenIcon(tokenAddress: string, chainId?: number, tokenMapping: TokenMapping = {}) {
   const normalisedAddress = getAddress(tokenAddress);
 
   // Retrieve a token icon from the token list if specified (filtering relative paths)
   const tokenData = tokenMapping[normalisedAddress];
   const iconFromMapping = !tokenData?.logoURI?.startsWith('/') && tokenData?.logoURI;
 
+  // We pass chainId == udnefined if it's an NFT
+  if (chainId === undefined) {
+    return iconFromMapping || 'erc721.png';
+  }
+
   // Fall back to TrustWallet/assets for logos
   const networkName = getTrustWalletName(chainId);
   const iconFromTrust = networkName && `${TRUSTWALLET_BASE_URL}/${networkName}/assets/${normalisedAddress}/logo.png`;
 
-  const icon = iconFromMapping || iconFromTrust || 'erc20.png';
-
-  return icon;
+  return iconFromMapping || iconFromTrust || 'erc20.png';
 }
 
 export function toFloat(n: number, decimals: number): string {
