@@ -46,10 +46,28 @@ const App = ({ Component, pageProps }: AppProps) => (
     />
     <SafeHydrate>
       <EthereumProvider>
-        <Container fluid className="App" style={{ width: '100%', maxWidth: '1000px', margin: 'auto' }}>
-          <Header />
-          <Component {...pageProps} />
-          <Footer />
+        <Container
+          fluid
+          className="App"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            height: '100%',
+            width: '100%',
+            maxWidth: '1000px',
+            margin: 'auto',
+          }}
+        >
+          <div style={{ flexShrink: '0' }}>
+            <Header />
+          </div>
+          <div style={{ flex: '1 0 auto', height: '100%' }}>
+            <Component {...pageProps} />
+          </div>
+          <div style={{ flexShrink: '0' }}>
+            <Footer />
+          </div>
         </Container>
       </EthereumProvider>
     </SafeHydrate>

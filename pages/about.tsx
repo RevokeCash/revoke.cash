@@ -44,12 +44,20 @@ const About: NextPage = () => {
         To read about Ethereum token allowances in more depth, make sure to read the article{' '}
         <a href="https://kalis.me/unlimited-erc20-allowances/">
           <span style={{ fontStyle: 'italic' }}>Unlimited ERC20 allowances considered harmful</span>
-        </a>{' '}
-        on Kalis.me. Also check out the{' '}
+        </a>
+        . Also check out the{' '}
         <Link href="/faq">
           <a>FAQ</a>
         </Link>{' '}
         for a quick overview of the most frequently asked questions about allowances and Revoke.cash.
+      </div>
+
+      <div>
+        <Heading text="Credits" type="h2" />
+        Revoke.cash was created by <a href="https://twitter.com/RoscoKalis">Rosco Kalis</a> in 2019 and is actively
+        maintained by him. For the Ethereum chain and several other chains allowance data is retrieved directly from the
+        blockchain. For most other chains a combination of <a href="https://etherscan.io/">Etherscan</a> and{' '}
+        <a href="https://www.covalenthq.com/">Covalent</a> APIs are used.
       </div>
     </div>
   );
