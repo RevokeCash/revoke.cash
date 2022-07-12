@@ -46,7 +46,7 @@ const App = ({ Component, pageProps }: AppProps) => (
     />
     <SafeHydrate>
       <EthereumProvider>
-        <Container fluid className="App">
+        <Container fluid className="App" style={{ width: '100%', maxWidth: '1000px', margin: 'auto' }}>
           <Header />
           <Component {...pageProps} />
           <Footer />
