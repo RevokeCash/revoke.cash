@@ -106,6 +106,13 @@ const API_URLS = {
   [ChainId.Moonriver]: 'https://api-moonriver.moonscan.io/api',
   [ChainId.MoonbaseAlpha]: 'https://api-moonbase.moonscan.io/api',
   [ChainId.CronosMainnetBeta]: 'https://api.cronoscan.com/api',
+  [ChainId.CeloMainnet]: 'https://api.celoscan.io/api',
+  [ChainId.CeloAlfajoresTestnet]: 'https://api-alfajores.celoscan.io/api',
+  [ChainId.AuroraMainNet]: 'https://api.aurorascan.dev/api',
+  [ChainId.AuroraTestNet]: 'https://api-testnet.aurorascan.dev/api',
+  [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
+  [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
+  [ChainId.CloverMainnet]: 'https://api.clvscan.com/api',
 };
 
 const getApiKey = (apiUrl: string, apiKeys: { [platform: string]: string }) => {

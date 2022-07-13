@@ -78,6 +78,13 @@ export function getExplorerUrl(chainId: number): string | undefined {
     [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
     [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
+    [ChainId.CeloMainnet]: 'https://celoscan.io',
+    [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
+    [ChainId.AuroraMainNet]: 'https://aurorascan.dev',
+    [ChainId.AuroraTestNet]: 'https://testnet.aurorascan.dev',
+    [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
+    [ChainId.BitTorrentChainTestnet]: 'https://testnet.bttcscan.com',
+    [ChainId.CloverMainnet]: 'https://clvscan.com',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -368,6 +375,13 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.PalmMainnet]: '/logos/palm.jpeg',
     [ChainId.OptimisticEthereum]: '/logos/optimism.jpeg',
     [9001]: '/logos/evmos.png',
+    [ChainId.CeloMainnet]: '/logos/celo.png',
+    [ChainId.CeloAlfajoresTestnet]: '/logos/celo.png',
+    [ChainId.AuroraMainNet]: '/logos/aurora.jpeg',
+    [ChainId.AuroraTestNet]: '/logos/aurora.jpeg',
+    [ChainId.BitTorrentChainMainnet]: '/logos/btt.svg',
+    [ChainId.BitTorrentChainTestnet]: '/logos/btt.svg',
+    [ChainId.CloverMainnet]: '/logos/clover.jpeg',
   };
 
   return mapping[chainId];

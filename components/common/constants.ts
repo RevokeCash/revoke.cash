@@ -20,7 +20,7 @@ export const IRON_OPTIONS = {
   },
 };
 
-// TODO: Celo, Boba, ETC, Theta, BTT, (ThunderCore), (EWT), (KCC),
+// TODO: Boba, ETC, Theta, (ThunderCore), (EWT), (KCC), Kava,
 // (Fusion), (CoinEx Chain), (Syscoin), (GoChain), (Okex Chain), (Wanchain), (POA)
 // TODO (hard): Solana, Cardano, Polkadot, Kusama, Cosmos, Near, Tron, ICP, Tezos, Flow
 
@@ -58,6 +58,13 @@ export const ETHERSCAN_SUPPORTED_NETWORKS = [
   ChainId.Moonriver,
   ChainId.MoonbaseAlpha,
   ChainId.CronosMainnetBeta,
+  ChainId.CeloMainnet,
+  ChainId.CeloAlfajoresTestnet,
+  ChainId.AuroraMainNet,
+  ChainId.AuroraTestNet,
+  ChainId.BitTorrentChainMainnet,
+  ChainId.BitTorrentChainTestnet,
+  ChainId.CloverMainnet,
 ];
 
 // We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
@@ -75,7 +82,6 @@ export const COVALENT_SUPPORTED_NETWORKS = [
   ChainId.PalmMainnet,
   // ChainId.PalmTestnet,
   // ChainId.PolyjuiceTestnet,
-  // ChainId.AuroraMainNet,
 ];
 
 export const NODE_SUPPORTED_NETWORKS = [ChainId.OptimisticEthereum];

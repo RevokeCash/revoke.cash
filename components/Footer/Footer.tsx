@@ -26,12 +26,16 @@ const Footer: React.FC = () => (
         <LogoLink src="/logos/polygon.png" alt="Polygon" href="https://polygon.technology/" />
         <LogoLink src="/logos/cronos.jpeg" alt="Cronos" href="https://cronos.org/" />
         <LogoLink src="/logos/fantom.png" alt="Fantom" href="https://fantom.foundation/" />
-        <LogoLink src="/logos/harmony.png" alt="Harmony" href="https://harmony.one/" />
+        <LogoLink src="/logos/btt.svg" alt="BitTorrent Chain" href="https://www.bittorrent.com/" />
         <LogoLink src="/logos/klaytn.png" alt="Klaytn" href="https://www.klaytn.com/" />
+        <LogoLink src="/logos/celo.png" alt="Celo" href="https://celo.org/" />
+        <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" />
+        <LogoLink src="/logos/harmony.png" alt="Harmony" href="https://harmony.one/" />
         <LogoLink src="/logos/arbitrum.svg" alt="Arbitrum" href="https://arbitrum.io/" />
         <LogoLink src="/logos/optimism.jpeg" alt="Optimism" href="https://optimism.io/" />
         <LogoLink src="/logos/metis.png" alt="Metis" href="https://www.metis.io/" />
         <LogoLink src="/logos/gnosis-chain.png" alt="Gnosis Chain" href="https://www.xdaichain.com/" />
+        <LogoLink src="/logos/aurora.jpeg" alt="Aurora" href="https://aurora.dev/" />
         <LogoLink src="/logos/rootstock.png" alt="Rootstock" href="https://www.rsk.co/" />
         <LogoLink src="/logos/smartbch.png" alt="SmartBCH" href="https://smartbch.org/" />
         <LogoLink src="/logos/moonbeam.png" alt="Moonbeam" href="https://moonbeam.network/" />
@@ -41,8 +45,8 @@ const Footer: React.FC = () => (
         <LogoLink src="/logos/heco.png" alt="HECO" href="https://www.hecochain.com/" />
         <LogoLink src="/logos/iotex.png" alt="IoTeX" href="https://iotex.io/" />
         <LogoLink src="/logos/shiden.svg" alt="Shiden" href="https://shiden.astar.network/" />
+        <LogoLink src="/logos/clover.jpeg" alt="CLV" href="https://clv.org/" />
         <LogoLink src="/logos/palm.jpeg" alt="Palm" href="https://palm.io/" />
-        <LogoLink src="/logos/evmos.png" alt="Evmos" href="https://evmos.org/" />
       </div>
     </div>
     <ToastContainer
