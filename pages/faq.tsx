@@ -69,8 +69,8 @@ const About: NextPage = () => {
       <div>
         <Heading text="How do I know if my funds were stolen through an allowance exploit?" type="h2" />
         If your tokens or NFTs were taken from your wallet without you sending an explicit transaction to do so, it is
-        almost always because of allowances. But if your ETH was also stolen, then it most likely points to a need to
-        migrate to a completely new wallet.
+        almost always because of allowances. But if your ETH was also stolen, then it most likely points to a
+        compromised seed phrase and you need to migrate to a completely new wallet.
       </div>
 
       <div>
