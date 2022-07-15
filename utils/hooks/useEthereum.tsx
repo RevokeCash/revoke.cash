@@ -1,4 +1,5 @@
 import { providers as multicall } from '@0xsequence/multicall';
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
@@ -40,6 +41,13 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: { rpc },
+  },
+  coinbasewallet: {
+    package: CoinbaseWalletSDK,
+    options: {
+      appName: 'Revoke.cash',
+      infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+    },
   },
 };
 
