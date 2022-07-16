@@ -17,7 +17,7 @@ const Footer: React.FC = () => (
     >
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
         <LogoLink src="/logos/github.png" alt="Source Code" href="https://github.com/rkalis/revoke.cash" />
-        <LogoLink src="/logos/twitter.png" alt="Source Code" href="https://github.com/rkalis/revoke.cash" />
+        <LogoLink src="/logos/twitter.png" alt="Official Twitter" href="https://twitter.com/RevokeCash" />
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
         <LogoLink src="/logos/ethereum.png" alt="Ethereum" href="https://ethereum.org/" />
