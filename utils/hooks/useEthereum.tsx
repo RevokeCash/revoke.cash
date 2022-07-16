@@ -112,28 +112,30 @@ export const EthereumProvider = ({ children }: Props) => {
   };
 
   const connect = async () => {
-    const instance = await web3Modal.connect();
+    try {
+      const instance = await web3Modal.connect();
 
-    const provider = new providers.Web3Provider(instance, 'any');
-    await updateProvider(provider);
-    const connectedAccount = await getConnectedAccount(provider);
-    updateAccount(connectedAccount);
+      const provider = new providers.Web3Provider(instance, 'any');
+      await updateProvider(provider);
 
-    // Remove all listeners on 'window.ethereum' in case a default provider was connected earlier
-    window.ethereum?.removeAllListeners();
+      // Remove all listeners on 'window.ethereum' in case a default provider was connected earlier
+      window.ethereum?.removeAllListeners();
 
-    instance.on('accountsChanged', (accounts: string[]) => {
-      console.log('accounts changed to', accounts);
-      updateAccount(accounts[0]);
-    });
+      instance.on('accountsChanged', (accounts: string[]) => {
+        console.log('accounts changed to', accounts);
+        updateAccount(accounts[0]);
+      });
 
-    instance.on('chainChanged', (receivedChainId: string | number) => {
-      const newChainId = Number(receivedChainId);
-      console.log('chain changed to', newChainId);
-      setChainId(newChainId);
-    });
+      instance.on('chainChanged', (receivedChainId: string | number) => {
+        const newChainId = Number(receivedChainId);
+        console.log('chain changed to', newChainId);
+        setChainId(newChainId);
+      });
 
-    setWeb3ModalInstance(instance);
+      setWeb3ModalInstance(instance);
+    } catch {
+      // Ignored
+    }
   };
 
   const disconnect = async () => {
@@ -176,12 +178,14 @@ export const EthereumProvider = ({ children }: Props) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
-      connect();
-      return;
-    }
+    const startup = async () => {
+      await connectDefaultProvider();
+      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
+        await connect();
+      }
+    };
 
-    connectDefaultProvider();
+    startup();
   }, []);
 
   return (
