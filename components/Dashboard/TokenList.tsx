@@ -25,7 +25,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
   const [approvalEvents, setApprovalEvents] = useState<Log[]>();
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>();
 
-  const { chainId, provider } = useEthereum();
+  const { chainId, provider, fallbackProvider } = useEthereum();
 
   const loadData = useCallback(async () => {
     try {
@@ -49,7 +49,14 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
       const transferFilter = {
         topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)],
       };
-      const foundTransferEvents = await getLogs(provider, transferFilter, 0, latestBlockNumber, chainId);
+      const foundTransferEvents = await getLogs(
+        provider,
+        transferFilter,
+        0,
+        latestBlockNumber,
+        chainId,
+        fallbackProvider
+      );
       setTransferEvents(foundTransferEvents);
       console.log('Transfer events', foundTransferEvents);
 
@@ -57,7 +64,14 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
       const approvalFilter = {
         topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)],
       };
-      const foundApprovalEvents = await getLogs(provider, approvalFilter, 0, latestBlockNumber, chainId);
+      const foundApprovalEvents = await getLogs(
+        provider,
+        approvalFilter,
+        0,
+        latestBlockNumber,
+        chainId,
+        fallbackProvider
+      );
       setApprovalEvents(foundApprovalEvents);
       console.log('Approval events', foundApprovalEvents);
 
@@ -65,7 +79,14 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
       const approvalForAllFilter = {
         topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)],
       };
-      const foundApprovalForAllEvents = await getLogs(provider, approvalForAllFilter, 0, latestBlockNumber, chainId);
+      const foundApprovalForAllEvents = await getLogs(
+        provider,
+        approvalForAllFilter,
+        0,
+        latestBlockNumber,
+        chainId,
+        fallbackProvider
+      );
       setApprovalForAllEvents(foundApprovalForAllEvents);
       console.log('ApprovalForAll events', foundApprovalForAllEvents);
 
@@ -85,15 +106,6 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
   }
 
   if (error) {
-    if (error.message === 'Internal JSON-RPC error.') {
-      return (
-        <div style={{ marginTop: '20px' }}>
-          Please check your wallet's network configuration and use Metamask's default network configuration where
-          possible.
-        </div>
-      );
-    }
-
     return <div style={{ marginTop: '20px' }}>{error.message}</div>;
   }
 

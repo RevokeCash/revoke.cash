@@ -18,6 +18,7 @@ declare let window: {
 
 interface EthereumContext {
   provider?: multicall.MulticallProvider;
+  fallbackProvider?: multicall.MulticallProvider;
   signer?: JsonRpcSigner;
   account?: string;
   ensName?: string;
@@ -56,6 +57,7 @@ const providerOptions = {
 export const EthereumProvider = ({ children }: Props) => {
   const [web3ModalInstance, setWeb3ModalInstance] = useState<any>();
   const [provider, setProvider] = useState<multicall.MulticallProvider>();
+  const [fallbackProvider, setFallbackProvider] = useState<multicall.MulticallProvider>();
   const [chainId, setChainId] = useState<number>();
   const [chainName, setChainName] = useState<string>();
   const [account, setAccount] = useState<string>();
@@ -148,6 +150,10 @@ export const EthereumProvider = ({ children }: Props) => {
   };
 
   const connectDefaultProvider = async () => {
+    // Use a default provider with a free Infura key if web3 is not available
+    const newFallbackProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
+    setFallbackProvider(new multicall.MulticallProvider(newFallbackProvider, { verbose: true }));
+
     // If an injected provider exists, we want to use it for READ-ONLY access even if the user is not "connected"
     if (window.ethereum) {
       const provider = new providers.Web3Provider(window.ethereum, 'any');
@@ -165,11 +171,9 @@ export const EthereumProvider = ({ children }: Props) => {
       console.log('Using injected "window.ethereum" provider');
     } else {
       try {
-        // Use a default provider with a free Infura key if web3 is not available
-        const newProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
         // Check that the provider is available (and not rate-limited) by sending a dummy request
-        await newProvider.getCode('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 'latest');
-        await updateProvider(newProvider);
+        await newFallbackProvider.getCode('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 'latest');
+        await updateProvider(newFallbackProvider);
         console.log('Using fallback Infura provider');
       } catch {
         console.log('No web3 provider available');
@@ -199,6 +203,8 @@ export const EthereumProvider = ({ children }: Props) => {
         signer,
         connect,
         disconnect,
+        // A fallback provider is only provided for ETH mainnet + if it is not already using the fallback
+        fallbackProvider: chainId === 1 && provider !== fallbackProvider ? fallbackProvider : undefined,
       }}
     >
       {children}

@@ -268,36 +268,47 @@ export const getLogs = async (
   baseFilter: Filter,
   fromBlock: number,
   toBlock: number,
-  chainId: number
+  chainId: number,
+  fallbackProvider?: Pick<providers.Provider, 'getLogs'>
 ): Promise<Log[]> => {
   if (isBackendSupportedNetwork(chainId)) {
     provider = new BackendProvider(chainId);
   }
 
-  return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock);
+  return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock, fallbackProvider);
 };
 
 export const getLogsFromProvider = async (
   provider: Pick<providers.Provider, 'getLogs'>,
   baseFilter: Filter,
   fromBlock: number,
-  toBlock: number
+  toBlock: number,
+  fallbackProvider?: Pick<providers.Provider, 'getLogs'>
 ): Promise<Log[]> => {
-  const filter = { ...baseFilter, fromBlock, toBlock };
   try {
-    const result = await provider.getLogs(filter);
-    return result;
+    const filter = { ...baseFilter, fromBlock, toBlock };
+    try {
+      const result = await provider.getLogs(filter);
+      return result;
+    } catch (error) {
+      const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
+      if (errorMessage !== 'query returned more than 10000 results') {
+        throw error;
+      }
+
+      const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
+      const leftPromise = getLogsFromProvider(provider, baseFilter, fromBlock, middle);
+      const rightPromise = getLogsFromProvider(provider, baseFilter, middle + 1, toBlock);
+      const [left, right] = await Promise.all([leftPromise, rightPromise]);
+      return [...left, ...right];
+    }
   } catch (error) {
-    const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-    if (errorMessage !== 'query returned more than 10000 results') {
+    // If a fallback provider is available, try again using that provider
+    if (fallbackProvider) {
+      return await getLogsFromProvider(fallbackProvider, baseFilter, fromBlock, toBlock);
+    } else {
       throw error;
     }
-
-    const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
-    const leftPromise = getLogsFromProvider(provider, baseFilter, fromBlock, middle);
-    const rightPromise = getLogsFromProvider(provider, baseFilter, middle + 1, toBlock);
-    const [left, right] = await Promise.all([leftPromise, rightPromise]);
-    return [...left, ...right];
   }
 };
 
