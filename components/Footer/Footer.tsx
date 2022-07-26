@@ -10,7 +10,7 @@ const Footer: React.FC = () => (
         flexDirection: 'column',
         justifyContent: 'start',
         gap: '10px',
-        padding: '25px',
+        padding: '20px',
         width: '100%',
         margin: 'auto',
       }}
@@ -40,6 +40,7 @@ const Footer: React.FC = () => (
         <LogoLink src="/logos/smartbch.png" alt="SmartBCH" href="https://smartbch.org/" />
         <LogoLink src="/logos/moonbeam.png" alt="Moonbeam" href="https://moonbeam.network/" />
         <LogoLink src="/logos/moonriver.png" alt="Moonriver" href="https://moonbeam.network/networks/moonriver/" />
+        <LogoLink src="/logos/syscoin.png" alt="Syscoin" href="https://syscoin.org/" />
         <LogoLink src="/logos/telos.png" alt="Telos" href="https://www.telos.net/" />
         <LogoLink src="/logos/fuse.png" alt="Fuse" href="https://fuse.io/" />
         <LogoLink src="/logos/heco.png" alt="HECO" href="https://www.hecochain.com/" />
@@ -48,6 +49,10 @@ const Footer: React.FC = () => (
         <LogoLink src="/logos/clover.jpeg" alt="CLV" href="https://clv.org/" />
         <LogoLink src="/logos/palm.jpeg" alt="Palm" href="https://palm.io/" />
       </div>
+      {/* <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
+        Learn more:{' '}
+        <a href="https://kalis.me/unlimited-erc20-allowances/">Unlimited ERC20 allowances considered harmful</a>
+      </div> */}
     </div>
     <ToastContainer
       position="top-right"

@@ -39,6 +39,8 @@ export const PROVIDER_SUPPORTED_NETWORKS = [
   ChainId.SmartBitcoinCashTestnet,
   ChainId.FuseMainnet,
   ChainId.FuseSparknet,
+  ChainId.SyscoinTanenbaumTestnet,
+  57, // Syscoin Mainnet
 ];
 
 export const ETHERSCAN_SUPPORTED_NETWORKS = [

@@ -85,6 +85,8 @@ export function getExplorerUrl(chainId: number): string | undefined {
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
     [ChainId.BitTorrentChainTestnet]: 'https://testnet.bttcscan.com',
     [ChainId.CloverMainnet]: 'https://clvscan.com',
+    [ChainId.SyscoinTanenbaumTestnet]: 'https://tanenbaum.io',
+    [57]: 'https://explorer.syscoin.org',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -393,6 +395,8 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.BitTorrentChainMainnet]: '/logos/btt.svg',
     [ChainId.BitTorrentChainTestnet]: '/logos/btt.svg',
     [ChainId.CloverMainnet]: '/logos/clover.jpeg',
+    [ChainId.SyscoinTanenbaumTestnet]: '/logos/syscoin.png',
+    [57]: '/logos/syscoin.png',
   };
 
   return mapping[chainId];
