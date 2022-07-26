@@ -40,13 +40,14 @@ const Footer: React.FC = () => (
         <LogoLink src="/logos/smartbch.png" alt="SmartBCH" href="https://smartbch.org/" />
         <LogoLink src="/logos/moonbeam.png" alt="Moonbeam" href="https://moonbeam.network/" />
         <LogoLink src="/logos/moonriver.png" alt="Moonriver" href="https://moonbeam.network/networks/moonriver/" />
+        <LogoLink src="/logos/astar.png" alt="Astar" href="https://astar.network/" />
+        <LogoLink src="/logos/shiden.svg" alt="Shiden" href="https://shiden.astar.network/" />
+        <LogoLink src="/logos/clover.jpeg" alt="CLV" href="https://clv.org/" />
         <LogoLink src="/logos/syscoin.png" alt="Syscoin" href="https://syscoin.org/" />
         <LogoLink src="/logos/telos.png" alt="Telos" href="https://www.telos.net/" />
         <LogoLink src="/logos/fuse.png" alt="Fuse" href="https://fuse.io/" />
         <LogoLink src="/logos/heco.png" alt="HECO" href="https://www.hecochain.com/" />
         <LogoLink src="/logos/iotex.png" alt="IoTeX" href="https://iotex.io/" />
-        <LogoLink src="/logos/shiden.svg" alt="Shiden" href="https://shiden.astar.network/" />
-        <LogoLink src="/logos/clover.jpeg" alt="CLV" href="https://clv.org/" />
         <LogoLink src="/logos/palm.jpeg" alt="Palm" href="https://palm.io/" />
       </div>
       {/* <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>

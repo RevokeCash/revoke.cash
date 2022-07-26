@@ -21,7 +21,7 @@ const UnverifiedTokensCheckbox: React.FC<Props> = ({ tokenStandard, tokenMapping
     <div>
       Include unverified tokens
       <sup>
-        <a href="https://tokenlists.org/" target="_blank" rel="noopener noreferrer">
+        <a href="https://tokenlists.org/" target="_blank">
           ?
         </a>
       </sup>

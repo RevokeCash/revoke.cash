@@ -17,7 +17,7 @@ function Erc20TokenBalance({ symbol, icon, balance, decimals, explorerUrl }: Pro
 
   return (
     <div className="TokenBalance">
-      <a href={explorerUrl} style={{ color: 'black', margin: 0 }}>
+      <a href={explorerUrl} style={{ color: 'black', margin: 0 }} target="_blank">
         {img}
         {symbol}: {toFloat(Number(balance), decimals)}
       </a>

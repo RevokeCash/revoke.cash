@@ -91,7 +91,9 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
 
         <Modal.Footer>
           Or contribute to my{' '}
-          <a href="https://gitcoin.co/grants/259/rosco-kalis-crypto-software-engineer">Gitcoin Grant</a>
+          <a href="https://gitcoin.co/grants/259/rosco-kalis-crypto-software-engineer" target="_blank">
+            Gitcoin Grant
+          </a>
         </Modal.Footer>
       </Modal>
     </>

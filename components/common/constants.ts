@@ -20,10 +20,6 @@ export const IRON_OPTIONS = {
   },
 };
 
-// TODO: Boba, ETC, Theta, (ThunderCore), (EWT), (KCC), Kava,
-// (Fusion), (CoinEx Chain), (Syscoin), (GoChain), (Okex Chain), (Wanchain), (POA)
-// TODO (hard): Solana, Cardano, Polkadot, Kusama, Cosmos, Near, Tron, ICP, Tezos, Flow
-
 export const PROVIDER_SUPPORTED_NETWORKS = [
   ChainId.EthereumMainnet,
   ChainId.EthereumTestnetRopsten,
@@ -83,6 +79,8 @@ export const COVALENT_SUPPORTED_NETWORKS = [
   9001, // Evmos Mainnet (not in the eth-chains library)
   ChainId.PalmMainnet,
   // ChainId.PalmTestnet,
+  592, // Astar Mainnet
+  ChainId.Shiden,
   // ChainId.PolyjuiceTestnet,
 ];
 

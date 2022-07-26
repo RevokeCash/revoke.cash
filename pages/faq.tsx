@@ -85,16 +85,24 @@ const About: NextPage = () => {
       <div>
         <Heading text="Can you support chain X on Revoke.cash?" type="h2" />
         Potentially. Most EVM-based chains are already supported, but if you would like to see Revoke.cash support any
-        additional chains, please <a href="https://github.com/rkalis/revoke.cash/issues/new">
+        additional chains, please{' '}
+        <a href="https://github.com/rkalis/revoke.cash/issues/new" target="_blank">
           open an issue on GitHub
         </a>{' '}
-        or <a href="https://twitter.com/RevokeCash">reach out on Twitter</a>.
+        or{' '}
+        <a href="https://twitter.com/RevokeCash" target="_blank">
+          reach out on Twitter
+        </a>
+        .
       </div>
 
       <div>
         <Heading text="My question is not listed here" type="h2" />
         If you have any other questions that aren't mentioned in this FAQ, please{' '}
-        <a href="https://twitter.com/RevokeCash">reach out on Twitter</a>.
+        <a href="https://twitter.com/RevokeCash" target="_blank">
+          reach out on Twitter
+        </a>
+        .
       </div>
     </div>
   );

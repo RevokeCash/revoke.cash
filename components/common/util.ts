@@ -87,6 +87,7 @@ export function getExplorerUrl(chainId: number): string | undefined {
     [ChainId.CloverMainnet]: 'https://clvscan.com',
     [ChainId.SyscoinTanenbaumTestnet]: 'https://tanenbaum.io',
     [57]: 'https://explorer.syscoin.org',
+    [592]: 'https://blockscout.com/astar',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -397,6 +398,8 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.CloverMainnet]: '/logos/clover.jpeg',
     [ChainId.SyscoinTanenbaumTestnet]: '/logos/syscoin.png',
     [57]: '/logos/syscoin.png',
+    [592]: '/logos/astar.png',
+    [ChainId.Shiden]: '/logos/shiden.svg',
   };
 
   return mapping[chainId];
