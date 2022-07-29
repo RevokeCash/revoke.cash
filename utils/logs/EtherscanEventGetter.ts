@@ -1,9 +1,18 @@
 import { Filter, Log } from '@ethersproject/abstract-provider';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 import axios from 'axios';
-import { QITE_URL } from 'components/common/constants';
 import { ChainId } from 'eth-chains';
 import { getAddress } from 'ethers/lib/utils';
+import PQueue from 'p-queue';
 import { EventGetter } from './EventGetter';
+
+const upstashRateLimiter =
+  process.env.UPSTASH_REDIS_REST_URL &&
+  new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(4, '1 s'),
+  });
 
 export class EtherscanEventGetter implements EventGetter {
   private queues: { [chainId: number]: EtherscanQueue };
@@ -24,6 +33,7 @@ export class EtherscanEventGetter implements EventGetter {
 }
 
 class EtherscanQueue {
+  queue: PQueue;
   apiKey: string;
 
   get apiUrl(): string {
@@ -33,6 +43,11 @@ class EtherscanQueue {
   constructor(public chainId: number, apiKeys: { [platform: string]: string }) {
     this.apiKey = getApiKey(this.apiUrl, apiKeys);
     console.log(chainId, this.apiKey);
+
+    // If no API key is found we still function, but performance is severely degraded
+    this.queue = this.apiKey
+      ? new PQueue({ intervalCap: 4, interval: 1000 })
+      : new PQueue({ intervalCap: 1, interval: 5000 });
   }
 
   async getLogs(filter: Filter) {
@@ -55,7 +70,10 @@ class EtherscanQueue {
       topic2_3_opr: 'and',
     };
 
-    const { data } = await this.sendRequest(query);
+    // If we have upstash configured, we use it, otherwise fall back to an in-memory p-queue
+    const { data } = upstashRateLimiter
+      ? await this.sendRequestWithUpstashQueue(query)
+      : await this.queue.add(() => this.sendRequest(query));
 
     if (typeof data.result === 'string') {
       throw new Error(data.result);
@@ -70,15 +88,19 @@ class EtherscanQueue {
     return data.result.map(formatEtherscanEvent);
   }
 
+  async sendRequestWithUpstashQueue(params: any) {
+    const { success } = await upstashRateLimiter.blockUntilReady(`etherscan:${this.apiKey}`, 30_000);
+
+    if (!success) {
+      throw new Error('Request timed out');
+    }
+
+    return this.sendRequest(params);
+  }
+
   async sendRequest(params: any) {
-    return axios.get(`${QITE_URL}/${this.apiUrl}`, {
-      params: {
-        ...params,
-        apikey: this.apiKey,
-        _queue: `etherscan:${this.apiKey}`,
-        _interval: 1000,
-        _intervalCap: 5,
-      },
+    return axios.get(this.apiUrl, {
+      params: { ...params, apikey: this.apiKey },
     });
   }
 }

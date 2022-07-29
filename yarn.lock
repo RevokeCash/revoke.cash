@@ -1832,6 +1832,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@upstash/ratelimit@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@upstash/ratelimit@npm:0.1.3"
+  peerDependencies:
+    "@upstash/redis": ^1.3.4
+  checksum: ca7557cc1cf0b64530577f04fd3d6a2b1eeb34ae51ce5462a0c10c7c73a11b77dd936db927c8dbe743935c5df22f267af0d1a09e12b1e02b999f14426bdf3cc1
+  languageName: node
+  linkType: hard
+
+"@upstash/redis@npm:^1.10.2":
+  version: 1.10.2
+  resolution: "@upstash/redis@npm:1.10.2"
+  dependencies:
+    isomorphic-fetch: ^3.0.0
+  checksum: 11ab6f0a17199e5ca5e08ab58f3475f57b7eacbd699621441e03f5782cfca224b1fdb9593a5f1cb9439c55360aea70d84622a7875da8629ae6dc5323a76709ab
+  languageName: node
+  linkType: hard
+
 "@walletconnect/browser-utils@npm:^1.7.8":
   version: 1.7.8
   resolution: "@walletconnect/browser-utils@npm:1.7.8"
@@ -4740,6 +4758,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isomorphic-fetch@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "isomorphic-fetch@npm:3.0.0"
+  dependencies:
+    node-fetch: ^2.6.1
+    whatwg-fetch: ^3.4.1
+  checksum: e5ab79a56ce5af6ddd21265f59312ad9a4bc5a72cebc98b54797b42cb30441d5c5f8d17c5cd84a99e18101c8af6f90c081ecb8d12fd79e332be1778d58486d75
+  languageName: node
+  linkType: hard
+
 "isstream@npm:~0.1.2":
   version: 0.1.2
   resolution: "isstream@npm:0.1.2"
@@ -6469,6 +6497,8 @@ __metadata:
     "@types/react": ^17.0.43
     "@types/react-dom": ^17.0.14
     "@types/request-ip": ^0.0.37
+    "@upstash/ratelimit": ^0.1.3
+    "@upstash/redis": ^1.10.2
     "@walletconnect/web3-provider": ^1.7.8
     axios: ^0.26.1
     axios-retry: ^3.2.4
@@ -7369,6 +7399,13 @@ __metadata:
   version: 2.0.4
   resolution: "whatwg-fetch@npm:2.0.4"
   checksum: de7c65a68d7d62e2f144a6b30293370b3ad82b65ebcd68f2ac8e8bbe7ede90febd98ba9486b78c1cbc950e0e8838fa5c2727f939899ab3fc7b71a04be52d33a5
+  languageName: node
+  linkType: hard
+
+"whatwg-fetch@npm:^3.4.1":
+  version: 3.6.2
+  resolution: "whatwg-fetch@npm:3.6.2"
+  checksum: ee976b7249e7791edb0d0a62cd806b29006ad7ec3a3d89145921ad8c00a3a67e4be8f3fb3ec6bc7b58498724fd568d11aeeeea1f7827e7e1e5eae6c8a275afed
   languageName: node
   linkType: hard
 
