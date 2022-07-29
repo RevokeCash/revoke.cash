@@ -39,6 +39,7 @@ const Header: React.FC = () => {
           <Col className="my-auto" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
             <NavLink to="/about" text="About" matchToHighlight="about" />
             <NavLink to="/faq" text="FAQ" matchToHighlight="faq" />
+            <NavLink to="/extension" text="Extension" matchToHighlight="extension" />
           </Col>
         </Row>
       </div>
