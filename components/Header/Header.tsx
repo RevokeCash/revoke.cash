@@ -12,18 +12,18 @@ const Header: React.FC = () => {
         style={{
           background: 'black',
           color: 'white',
-          paddingTop: '10px',
-          paddingBottom: '10px',
+          padding: '10px',
           width: '100vw',
           left: 0,
           top: 0,
-          right: 0,
           position: 'absolute',
         }}
       >
         Need extra security? Try the new Revoke.cash browser extension.
       </div>
-      <div style={{ background: 'black', color: 'white', padding: '10px', margin: '10px' }} />
+      <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+        Need extra security? Try the new Revoke.cash browser extension.
+      </div>
       <div
         className="Header"
         style={{
