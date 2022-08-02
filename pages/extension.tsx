@@ -1,6 +1,7 @@
-import { EXTENSION_URL } from 'components/common/constants';
+import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'components/common/constants';
+import DownloadButton from 'components/common/DownloadButton';
 import Heading from 'components/common/Heading';
-import LogoLink from 'components/common/LogoLink';
+import Logo from 'components/common/Logo';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import React from 'react';
@@ -41,22 +42,15 @@ const Extension: NextPage = () => {
         including chains that are not supported on the Revoke.cash website.
       </div>
 
-      <div>
-        <Heading text="Supported Browsers" type="h2" />
-        The Revoke.cash browser extension is available for Chrome, Brave, Edge and other Chromium-based browsers through
-        the{' '}
-        <a href={EXTENSION_URL} target="_blank">
-          Chrome Web Store
-        </a>
-        . Support for other browsers such as Firefox and Safari may be added in the future.
-      </div>
-
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
-        <LogoLink src="/logos/chrome.png" alt="Chrome Download Link" href={EXTENSION_URL} size={64} />
-        <LogoLink src="/logos/brave.png" alt="Brave Download Link" href={EXTENSION_URL} size={64} />
-        <LogoLink src="/logos/edge.png" alt="Edge Download Link" href={EXTENSION_URL} size={64} />
-        {/* <LogoLink src="/logos/firefox.png" alt="Firefox Download Link" href="todo" size={64} />
-        <LogoLink src="/logos/safari.png" alt="Safari Download Link" href="todo" size={64} /> */}
+        <DownloadButton href={CHROME_EXTENSION_URL}>
+          <Logo src="/logos/chrome.png" alt="Chrome Logo" />
+          <Logo src="/logos/brave.png" alt="Brave Logo" />
+          <Logo src="/logos/edge.png" alt="Edge Logo" />
+        </DownloadButton>
+        <DownloadButton href={FIREFOX_EXTENSION_URL}>
+          <Logo src="/logos/firefox.png" alt="Firefox Logo" />
+        </DownloadButton>
       </div>
     </div>
   );

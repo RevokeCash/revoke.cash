@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import React from 'react';
+import Logo from './Logo';
 
 interface Props {
   src: string;
@@ -10,15 +10,7 @@ interface Props {
 
 const LogoLink = ({ src, alt, href, size }: Props) => (
   <a href={href} target="_blank">
-    <Image
-      src={src}
-      alt={alt}
-      objectFit="contain"
-      height={size ?? 24}
-      width={size ?? 24}
-      quality="100"
-      style={{ borderRadius: '50%' }}
-    />
+    <Logo src={src} alt={alt} size={size} />
   </a>
 );
 

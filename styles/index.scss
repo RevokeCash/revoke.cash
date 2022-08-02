@@ -43,11 +43,11 @@ sup {
   margin: 0 5px;
 }
 
-a:link {
+a:link:not(.btn) {
   color: blue;
 }
 
-a:visited {
+a:visited:not(.btn) {
   color: purple;
 }
 
