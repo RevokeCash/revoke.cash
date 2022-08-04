@@ -21,7 +21,7 @@ const App = ({ Component, pageProps }: AppProps) => (
         url: 'https://revoke.cash/',
         images: [
           {
-            url: 'https://revoke.cash/revoke-card.png',
+            url: 'https://revoke.cash/assets/images/revoke-card.png',
             width: 1600,
             height: 900,
           },
@@ -40,7 +40,7 @@ const App = ({ Component, pageProps }: AppProps) => (
           type: 'image/x-icon',
           href: '/favicon.ico',
         },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'apple-touch-icon', href: '/assets/images/apple-touch-icon.png' },
         { rel: 'manifest', href: '/manifest.json' },
       ]}
     />

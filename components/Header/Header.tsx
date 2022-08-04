@@ -47,7 +47,7 @@ const Header: React.FC = () => {
             <Col className="my-auto">
               <Link href="/">
                 <a>
-                  <img className="logo" src="/revoke.svg" alt="Revoke.cash logo" />
+                  <img className="logo" src="/assets/images/revoke.svg" alt="Revoke.cash logo" />
                 </a>
               </Link>
             </Col>

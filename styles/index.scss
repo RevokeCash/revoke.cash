@@ -2,16 +2,18 @@
 
 @font-face {
   font-family: 'Futura Condensed';
-  src: url('/FuturaCondensedBold.otf');
+  src: url('/assets/fonts/FuturaCondensedBold.otf');
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Futura Condensed';
-  src: url('/FuturaCondensedBoldOblique.otf');
+  src: url('/assets/fonts/FuturaCondensedBoldOblique.otf');
   font-weight: bold;
   font-style: oblique;
+  font-display: swap;
 }
 
 body {

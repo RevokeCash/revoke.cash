@@ -34,7 +34,7 @@ const Extension: NextPage = () => {
       </div>
 
       <div>
-        <Image src="/extension-screenshot-1.png" height="800" width="1280" />
+        <Image src="/assets/images/extension-screenshot-1.png" height="800" width="1280" />
       </div>
 
       <div>
@@ -44,12 +44,12 @@ const Extension: NextPage = () => {
 
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
         <DownloadButton href={CHROME_EXTENSION_URL}>
-          <Logo src="/logos/chrome.png" alt="Chrome Logo" />
-          <Logo src="/logos/brave.png" alt="Brave Logo" />
-          <Logo src="/logos/edge.png" alt="Edge Logo" />
+          <Logo src="/assets/images/vendor/chrome.png" alt="Chrome Logo" />
+          <Logo src="/assets/images/vendor/brave.png" alt="Brave Logo" />
+          <Logo src="/assets/images/vendor/edge.png" alt="Edge Logo" />
         </DownloadButton>
         <DownloadButton href={FIREFOX_EXTENSION_URL}>
-          <Logo src="/logos/firefox.png" alt="Firefox Logo" />
+          <Logo src="/assets/images/vendor/firefox.png" alt="Firefox Logo" />
         </DownloadButton>
       </div>
     </div>

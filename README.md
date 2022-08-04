@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="400" src="public/revoke.png">
+  <img width="400" src="public/assets/images/revoke.png">
 </p>
 
 > _Do you want to swap 10 DAI for ETH? Sure thing, we'll just need your approval to spend a BAJILLION DOLLARS!_
