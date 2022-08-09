@@ -14,11 +14,10 @@ const Heading = ({ text, type, center }: Props) => {
     textAlign: center ? 'center' : 'left',
   } as const;
 
-  if (type === 'h1') return <h1 style={{ ...style, fontSize: '18px' }}>{text}</h1>;
-  if (type === 'h2') return <h2 style={{ ...style, fontSize: '18px' }}>{text}</h2>;
-  if (type === 'h3') return <h3 style={{ ...style, fontSize: '18px' }}>{text}</h3>;
+  if (type === 'h1') return <h1 style={{ ...style, fontSize: '30px' }}>{text}</h1>;
+  if (type === 'h2') return <h2 style={{ ...style, fontSize: '26px' }}>{text}</h2>;
+  if (type === 'h3') return <h3 style={{ ...style, fontSize: '22px' }}>{text}</h3>;
   if (type === 'h4') return <h4 style={{ ...style, fontSize: '18px' }}>{text}</h4>;
-  if (type === 'h5') return <h5 style={{ ...style, fontSize: '18px' }}>{text}</h5>;
 };
 
 export default Heading;

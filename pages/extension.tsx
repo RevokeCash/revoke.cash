@@ -21,7 +21,7 @@ const Extension: NextPage = () => {
       }}
     >
       <div>
-        <Heading text="Revoke.cash Browser Extension" type="h2" />
+        <Heading text="Revoke.cash Browser Extension" type="h4" />
         In many cases, phishing websites try to make you sign an allowance while they pretend to be an NFT mint or other
         legitimate use cases. When these phishing scams happen, it is recommended to use Revoke.cash to mitigate the
         damage, but it is even better to prevent the scam in the first place.

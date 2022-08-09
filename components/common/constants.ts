@@ -6,6 +6,7 @@ export const ETHEREUM_LISTS_CONTRACTS = 'https://raw.githubusercontent.com/ether
 export const CHROME_EXTENSION_URL =
   'https://chrome.google.com/webstore/detail/revokecash/nmniboccheadcclilkfkonokbcoceced';
 export const FIREFOX_EXTENSION_URL = 'https://addons.mozilla.org/en-US/firefox/addon/revoke-cash/';
+export const DISCORD_URL = 'https://discord.gg/Jh6RTFjRDH';
 
 export const ADDRESS_ZERO_PADDED = '0x0000000000000000000000000000000000000000000000000000000000000000';
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000';

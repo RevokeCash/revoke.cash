@@ -1,3 +1,4 @@
+import { DISCORD_URL } from 'components/common/constants';
 import LogoLink from 'components/common/LogoLink';
 import { getChainLogo } from 'components/common/util';
 import { ChainId } from 'eth-chains';
@@ -28,6 +29,7 @@ const Footer: React.FC = () => (
           alt="Official Twitter"
           href="https://twitter.com/RevokeCash"
         />
+        <LogoLink src="/assets/images/vendor/discord.png" alt="Official Discord" href={DISCORD_URL} />
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
         <LogoLink src={getChainLogo(ChainId.EthereumMainnet)} alt="Ethereum" href="https://ethereum.org/" />
