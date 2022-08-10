@@ -1,5 +1,6 @@
 {
-  "name": "Revoke.cash - Revoke your ERC20 token allowances",
+  "name": "Revoke.cash",
+  "description": "Manage and revoke your token allowances with Revoke.cash",
   "short_name": "Revoke.cash",
   "icons": [
     {
@@ -21,5 +22,6 @@
   "start_url": ".",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "iconPath": "assets/images/android-chrome-512x512.png"
 }
