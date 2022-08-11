@@ -4,6 +4,7 @@ import { getAddress } from 'ethers/lib/utils';
 import PQueue from 'p-queue';
 import { EventGetter } from './EventGetter';
 
+// TODO: Migrate to Upstash
 export class CovalentEventGetter implements EventGetter {
   // Set up a shared queue that limits the global number of requests sent to Covalent to 5/s (API rate limit)
   private queues: CovalentQueue[];
