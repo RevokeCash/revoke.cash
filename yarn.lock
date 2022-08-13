@@ -5433,14 +5433,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-seo@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "next-seo@npm:5.2.0"
+"next-seo@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "next-seo@npm:5.5.0"
   peerDependencies:
     next: ^8.1.1-canary.54 || >=9.0.0
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 392f0b4b9d2d2d6873c163c39ca470580ec0031c3941c8da5bdbce154368ceda10aee97a639d1e209318e4c878bafc9bf4a1600355205eac6ac9ca9102ad1801
+  checksum: 3202c4e84db533ad116d629482e766eb954053d5630275eb75c3e4234cf3ae354e4c2284a7659c0480570670f292b122ee3d11e9b2f23588030d0d5b1f9cb37d
   languageName: node
   linkType: hard
 
@@ -6512,7 +6512,7 @@ __metadata:
     next: ^12.1.4
     next-connect: ^0.12.2
     next-plugin-preact: ^3.0.6
-    next-seo: ^5.2.0
+    next-seo: ^5.5.0
     p-queue: ^7.2.0
     preact: ^10.7.1
     preact-render-to-string: ^5.1.20

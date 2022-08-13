@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import DonateButton from '../DonateButton/DonateButton';
-import ConnectButton from './ConnectButton';
 import NavLink from './NavLink';
 
 const Header: React.FC = () => {
@@ -60,12 +58,6 @@ const Header: React.FC = () => {
             </Col>
           </Row>
         </div>
-        <Row>
-          <Col className="my-auto" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-            <DonateButton />
-            <ConnectButton />
-          </Col>
-        </Row>
       </div>
     </>
   );
