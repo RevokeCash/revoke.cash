@@ -2,6 +2,7 @@ import { DISCORD_URL } from 'components/common/constants';
 import Heading from 'components/common/Heading';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import Link from 'next/link';
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { defaultSEO } from 'utils/next-seo.config';
@@ -94,13 +95,14 @@ const About: NextPage = () => {
         </div>
 
         <div>
-          <Heading text="Can you support chain X on Revoke.cash?" type="h4" />
-          Potentially. Most EVM-based chains are already supported, but if you would like to see Revoke.cash support any
-          additional chains, please{' '}
-          <a href="https://github.com/rkalis/revoke.cash/issues/new" target="_blank">
-            open an issue on GitHub
-          </a>{' '}
-          or reach out on{' '}
+          <Heading text="Which chains does Revoke.cash support?" type="h4" />
+          The Revoke.cash{' '}
+          <Link href="/extension">
+            <a>browser extension</a>
+          </Link>{' '}
+          supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum,
+          BSC, Polygon and Avalanche. The logos in the footer of the website display the full list of supported
+          networks. If there are any other chains that you'd like to see supported, please reach out on{' '}
           <a href="https://twitter.com/RevokeCash" target="_blank">
             Twitter
           </a>{' '}
