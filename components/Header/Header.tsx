@@ -7,22 +7,6 @@ const Header: React.FC = () => {
   return (
     <>
       <div
-        style={{
-          background: 'black',
-          color: 'white',
-          padding: '10px',
-          width: '100vw',
-          left: 0,
-          top: 0,
-          position: 'absolute',
-        }}
-      >
-        Need extra security? Try the new Revoke.cash browser extension.
-      </div>
-      <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
-        Need extra security? Try the new Revoke.cash browser extension.
-      </div>
-      <div
         className="Header"
         style={{
           display: 'flex',
