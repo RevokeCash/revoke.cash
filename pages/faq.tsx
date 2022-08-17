@@ -64,7 +64,8 @@ const About: NextPage = () => {
           <Heading text="My funds were just stolen, can I use Revoke.cash to get them back?" type="h4" />
           No. Revoke.cash is a <span style={{ fontStyle: 'italic' }}>preventative</span> tool that helps you practice
           proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim
-          of allowance exploits. But unfortunately it cannot be used to recover any stolen funds.
+          of allowance exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make
+          sure to revoke the allowances that were used to take your funds so that they cannot steal more in the future.
         </div>
 
         <div>
