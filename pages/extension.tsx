@@ -54,6 +54,12 @@ const Extension: NextPage = () => {
         </div>
 
         <div>
+          The extension also informs you when you are about to list an item for sale on OpenSea (outside of expected
+          websites such as OpenSea, Genie and Gem), as this is also a common scam. These warnings can be configured in
+          the extension settings.
+        </div>
+
+        <div>
           <Image src="/assets/images/extension-screenshot-1.png" height="800" width="1280" />
         </div>
 
