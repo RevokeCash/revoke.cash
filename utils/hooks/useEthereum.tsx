@@ -66,15 +66,6 @@ export const EthereumProvider = ({ children }: Props) => {
     setLoading: (state) => ({ ...state, loading: true }),
   });
 
-  // Deals with the edge case of having previously connected using injected
-  // but there is no longer an injected provider in the browser
-  (() => {
-    const cached = localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
-    if (!window.ethereum && cached === '"injected"') {
-      localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
-    }
-  })();
-
   const web3Modal = new Web3Modal({
     cacheProvider: true, // optional
     providerOptions, // required
@@ -183,6 +174,12 @@ export const EthereumProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const startup = async () => {
+      // Deals with the edge case of having previously connected using injected
+      // but there is no longer an injected provider in the browser
+      if (!window.ethereum && localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
+        localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
+      }
+
       await connectDefaultProvider();
       if ((await web3Modal.isSafeApp()) || localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
         await connect();
