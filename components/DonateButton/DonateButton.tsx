@@ -1,3 +1,4 @@
+import { DONATION_ADDRESS } from 'components/common/constants';
 import { utils } from 'ethers';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
@@ -39,7 +40,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
 
     try {
       await signer.sendTransaction({
-        to: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
+        to: DONATION_ADDRESS,
         from: await signer.getAddress(),
         value: utils.parseEther(amount),
       });
