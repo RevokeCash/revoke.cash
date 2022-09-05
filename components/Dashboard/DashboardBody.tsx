@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useAsync } from 'react-async-hook';
+import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import { TokenMapping } from '../common/interfaces';
 import { getFullTokenMapping, isBackendSupportedNetwork, isProviderSupportedNetwork } from '../common/util';
 import AddressInput from './AddressInput';
 import TokenList from './TokenList';
@@ -12,19 +13,17 @@ function DashboardBody() {
   const [tokenStandard, setTokenStandard] = useState<'ERC20' | 'ERC721'>('ERC20');
   const [includeUnverifiedTokens, setIncludeVerifiedTokens] = useState<boolean>(false);
   const [includeZeroBalances, setIncludeZeroBalances] = useState<boolean>(false);
-  const [tokenMapping, setTokenMapping] = useState<TokenMapping>();
   const [inputAddress, setInputAddress] = useState<string>();
-
   const { chainId, chainName } = useEthereum();
+  const { result: tokenMapping, loading } = useAsync(getFullTokenMapping, [chainId]);
 
-  useEffect(() => {
-    loadData();
-  }, [chainId]);
-
-  const loadData = async () => {
-    if (!chainId) return;
-    setTokenMapping(await getFullTokenMapping(chainId));
-  };
+  if (loading) {
+    return (
+      <div className="Dashboard">
+        <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />
+      </div>
+    );
+  }
 
   if (!chainId) {
     return <div>Please use a Web3 enabled browser to use Revoke.cash.</div>;

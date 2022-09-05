@@ -156,6 +156,8 @@ export function isNodeSupportedNetwork(chainId: number): boolean {
 }
 
 export async function getFullTokenMapping(chainId: number): Promise<TokenMapping | undefined> {
+  if (!chainId) return undefined;
+
   const erc20Mapping = await getTokenMapping(chainId, 'ERC20');
   const erc721Mapping = await getTokenMapping(chainId, 'ERC721');
 
