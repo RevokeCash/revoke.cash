@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useAsync } from 'react-async-hook';
-import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import { getFullTokenMapping, isBackendSupportedNetwork, isProviderSupportedNetwork } from '../common/util';
+import { isBackendSupportedNetwork, isProviderSupportedNetwork } from '../common/util';
 import AddressInput from './AddressInput';
 import TokenList from './TokenList';
 import TokenStandardSelection from './TokenStandardSelection';
@@ -15,15 +13,6 @@ function DashboardBody() {
   const [includeZeroBalances, setIncludeZeroBalances] = useState<boolean>(false);
   const [inputAddress, setInputAddress] = useState<string>();
   const { chainId, chainName } = useEthereum();
-  const { result: tokenMapping, loading } = useAsync(getFullTokenMapping, [chainId]);
-
-  if (loading) {
-    return (
-      <div className="Dashboard">
-        <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />
-      </div>
-    );
-  }
 
   if (!chainId) {
     return <div>Please use a Web3 enabled browser to use Revoke.cash.</div>;
@@ -39,7 +28,6 @@ function DashboardBody() {
       <TokenStandardSelection tokenStandard={tokenStandard} setTokenStandard={setTokenStandard} />
       <UnverifiedTokensCheckbox
         tokenStandard={tokenStandard}
-        tokenMapping={tokenMapping}
         checked={includeUnverifiedTokens}
         update={setIncludeVerifiedTokens}
       />
@@ -49,7 +37,6 @@ function DashboardBody() {
         inputAddress={inputAddress}
         filterUnverifiedTokens={!includeUnverifiedTokens}
         filterZeroBalances={!includeZeroBalances}
-        tokenMapping={tokenMapping}
       />
     </div>
   );

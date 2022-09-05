@@ -1,19 +1,18 @@
 import React, { ChangeEvent } from 'react';
-import { TokenMapping, TokenStandard } from '../common/interfaces';
+import { TokenStandard } from '../common/interfaces';
 
 interface Props {
   tokenStandard: TokenStandard;
-  tokenMapping?: TokenMapping;
   checked: boolean;
   update: (checked: boolean) => void;
 }
 
-const UnverifiedTokensCheckbox: React.FC<Props> = ({ tokenStandard, tokenMapping, checked, update }) => {
+const UnverifiedTokensCheckbox: React.FC<Props> = ({ tokenStandard, checked, update }) => {
   // Don't check verification for NFTs
   if (tokenStandard === 'ERC721') return null;
 
-  // If no token data mapping, we hide the checkbox
-  if (!tokenMapping) return null;
+  // TODO: If no token data mapping, we hide the checkbox
+  // if (!tokenMapping) return null;
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => update(event.target.checked);
 

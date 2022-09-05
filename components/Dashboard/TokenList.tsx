@@ -6,7 +6,7 @@ import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC721Metadata } from '../common/abis';
 import { TokenMapping } from '../common/interfaces';
-import { getLogs, isBackendSupportedNetwork } from '../common/util';
+import { getFullTokenMapping, getLogs, isBackendSupportedNetwork } from '../common/util';
 import Erc20TokenList from '../ERC20/Erc20TokenList';
 import Erc721TokenList from '../ERC721/Erc721TokenList';
 
@@ -14,13 +14,13 @@ interface Props {
   filterUnverifiedTokens: boolean;
   filterZeroBalances: boolean;
   tokenStandard: string;
-  tokenMapping?: TokenMapping;
   inputAddress?: string;
 }
 
-function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, tokenMapping, inputAddress }: Props) {
+function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, inputAddress }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error>(null);
+  const [tokenMapping, setTokenMapping] = useState<TokenMapping>();
   const [transferEvents, setTransferEvents] = useState<Log[]>();
   const [approvalEvents, setApprovalEvents] = useState<Log[]>();
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>();
@@ -35,11 +35,16 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
       setLoading(true);
       setError(undefined);
 
-      const erc721Interface = new Interface(ERC721Metadata);
-      const latestBlockNumber = await provider.getBlockNumber();
+      const [latestBlockNumber, newTokenMapping] = await Promise.all([
+        provider.getBlockNumber(),
+        getFullTokenMapping(chainId),
+        // Create a backend session if needed
+        isBackendSupportedNetwork(chainId) && axios.post('/api/login'),
+      ]);
 
-      // Create a backend session if needed
-      if (isBackendSupportedNetwork(chainId)) await axios.post('/api/login');
+      setTokenMapping(newTokenMapping);
+
+      const erc721Interface = new Interface(ERC721Metadata);
 
       // NOTE: The Transfer and Approval events have a similar signature for ERC20 and ERC721
       // and the ApprovalForAll event has a similar signature for ERC721 and ERC1155
