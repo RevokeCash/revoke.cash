@@ -48,6 +48,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@amplitude/analytics-browser@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@amplitude/analytics-browser@npm:1.2.3"
+  dependencies:
+    "@amplitude/analytics-connector": ^1.4.5
+    "@amplitude/analytics-core": ^0.8.1
+    "@amplitude/analytics-types": ^0.8.1
+    "@amplitude/ua-parser-js": ^0.7.31
+    tslib: ^2.3.1
+  checksum: a89a2b8aeada394d03584afcfe0fd36fce993b257165068e1c9c354a525c315d6c867ff26fd44c312c77b7be0034021a3442e1f89556a4b1b8859961a6856001
+  languageName: node
+  linkType: hard
+
+"@amplitude/analytics-connector@npm:^1.4.5":
+  version: 1.4.5
+  resolution: "@amplitude/analytics-connector@npm:1.4.5"
+  dependencies:
+    "@amplitude/ua-parser-js": 0.7.31
+  checksum: 3c030167b008216bffca9411e0af80c327ec6e2c75b151566d38770abd5c7aa978372e05cebdb180b1e8b6e43753296783c62fef0a234afa26105e9c12a1aadc
+  languageName: node
+  linkType: hard
+
+"@amplitude/analytics-core@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@amplitude/analytics-core@npm:0.8.1"
+  dependencies:
+    "@amplitude/analytics-types": ^0.8.1
+    tslib: ^2.3.1
+  checksum: 544b2cbf9d7b6a27b6fd77613a05b98f10d7875b905f5beff7ee1da249641a29e1a0f3e18f6acbf48f093518269acbd5f64750ae5934c2fd6836a653f0937d7b
+  languageName: node
+  linkType: hard
+
+"@amplitude/analytics-types@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@amplitude/analytics-types@npm:0.8.1"
+  checksum: 150ac59043e5f9f7b9296de06dc58700f2129ad5e16752b890462cc1312234a6536da6766899183f09fc965c320dd3d0d41bd6a51ceb0ca133626f65398499ac
+  languageName: node
+  linkType: hard
+
+"@amplitude/ua-parser-js@npm:0.7.31, @amplitude/ua-parser-js@npm:^0.7.31":
+  version: 0.7.31
+  resolution: "@amplitude/ua-parser-js@npm:0.7.31"
+  checksum: c72e7c8656dd77a6c2ece9e3817929022aeadf731470e53fecddce03232d87977fd5b09d76c570a2a5bed97f5dd463fe6379aac7a6c4b2d2393f14486d385eec
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/code-frame@npm:7.16.7"
@@ -6489,6 +6535,7 @@ __metadata:
   resolution: "revoke.cash@workspace:."
   dependencies:
     "@0xsequence/multicall": ^0.36.8
+    "@amplitude/analytics-browser": ^1.2.3
     "@coinbase/wallet-sdk": ^3.3.0
     "@gnosis.pm/safe-apps-sdk": ^7.6.0
     "@gnosis.pm/safe-apps-web3modal": ^15.0.0
@@ -7182,7 +7229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.1.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.3.1":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113

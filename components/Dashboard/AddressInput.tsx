@@ -1,7 +1,8 @@
+import { track } from '@amplitude/analytics-browser';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import { emitAnalyticsEvent, parseInputAddress } from '../common/util';
+import { parseInputAddress } from '../common/util';
 
 interface Props {
   inputAddress: string;
@@ -25,8 +26,8 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
     const updateInputAddress = async () => {
       const newInputAddress = await parseInputAddress(inputAddressOrName, provider);
       if (newInputAddress && newInputAddress !== inputAddress) {
-        emitAnalyticsEvent('update_address');
         setInputAddress(newInputAddress);
+        track('Updated Address', { address: newInputAddress });
       }
     };
 

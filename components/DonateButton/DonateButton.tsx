@@ -1,10 +1,10 @@
+import { track } from '@amplitude/analytics-browser';
 import { DONATION_ADDRESS } from 'components/common/constants';
 import { utils } from 'ethers';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import { emitAnalyticsEvent } from '../common/util';
 import { getDefaultAmount, getNativeToken } from './util';
 
 interface Props {
@@ -54,7 +54,8 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
         draggable: true,
       });
 
-      emitAnalyticsEvent(`donate_${nativeToken}`);
+      track('Donated', { chainId, amount: Number(amount) });
+
       handleClose();
     } catch (err) {
       if (err.code && err.code === 'INVALID_ARGUMENT') {

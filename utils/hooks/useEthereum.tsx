@@ -1,10 +1,11 @@
 import { providers as multicall } from '@0xsequence/multicall';
+import { track } from '@amplitude/analytics-browser';
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
-import { emitAnalyticsEvent, getRpcUrl, lookupEnsName } from 'components/common/util';
+import { getRpcUrl, lookupEnsName } from 'components/common/util';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
@@ -95,13 +96,15 @@ export const EthereumProvider = ({ children }: Props) => {
   const updateProvider = async (newProvider: providers.JsonRpcProvider, clearAccount: boolean = false) => {
     const { chainId: newChainId } = await newProvider.getNetwork();
     const newAccount = clearAccount ? undefined : await getConnectedAccount(newProvider);
-    emitAnalyticsEvent(`connect_wallet_${newChainId}`);
     const multicallProvider = new multicall.MulticallProvider(newProvider, {
       verbose: true,
     });
     setProvider(multicallProvider);
     setChainId(newChainId);
     updateAccount(newAccount);
+    if (!clearAccount) {
+      track('Connected Wallet', { address: newAccount, chainId: newChainId });
+    }
   };
 
   const connect = async () => {
@@ -180,7 +183,6 @@ export const EthereumProvider = ({ children }: Props) => {
         localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
       }
 
-      await connectDefaultProvider();
       if ((await web3Modal.isSafeApp()) || localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
         await connect();
       }

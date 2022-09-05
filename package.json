@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@0xsequence/multicall": "^0.36.8",
+    "@amplitude/analytics-browser": "^1.2.3",
     "@coinbase/wallet-sdk": "^3.3.0",
     "@gnosis.pm/safe-apps-sdk": "^7.6.0",
     "@gnosis.pm/safe-apps-web3modal": "^15.0.0",

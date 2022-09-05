@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { BigNumber, Contract } from 'ethers';
 import React, { useEffect, useRef, useState } from 'react';
@@ -8,14 +9,7 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
 import UpdateInputGroup from '../common/UpdateInputGroup';
-import {
-  addressToAppName,
-  emitAnalyticsEvent,
-  fromFloat,
-  getExplorerUrl,
-  lookupEnsName,
-  shortenAddress,
-} from '../common/util';
+import { addressToAppName, fromFloat, getExplorerUrl, lookupEnsName, shortenAddress } from '../common/util';
 import { formatAllowance } from './util';
 
 interface Props {
@@ -81,16 +75,20 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
     if (tx) {
       displayTransactionSubmittedToast(toastRef);
 
+      if (newAllowance === '0') {
+        track('Revoked ERC20 allowance', { account, spender, token: token.contract.address });
+      } else {
+        track('Updated ERC20 allowance', { account, spender, token: token.contract.address, amount: newAllowance });
+      }
+
       await tx.wait(1);
       console.debug('Reloading data');
 
       if (newAllowance === '0') {
         onRevoke(spender);
-        emitAnalyticsEvent('erc20_revoke');
       } else {
         // TODO: Update allowance order after update
         setUpdatedAllowance(fromFloat(newAllowance, token.decimals));
-        emitAnalyticsEvent('erc20_update');
       }
     }
   };

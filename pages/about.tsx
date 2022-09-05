@@ -1,3 +1,4 @@
+import Divider from 'components/common/Divider';
 import Heading from 'components/common/Heading';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -75,6 +76,12 @@ const About: NextPage = () => {
             Covalent
           </a>{' '}
           APIs are used.
+        </div>
+
+        <Divider />
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
+          <Link href="/privacy-policy">Privacy Policy</Link>
         </div>
       </div>
     </>

@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import { Contract } from 'ethers';
 import React from 'react';
 import { Form } from 'react-bootstrap';
@@ -5,7 +6,7 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import { ADDRESS_ZERO } from '../common/constants';
 import { Erc721TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
-import { emitAnalyticsEvent, getExplorerUrl, shortenAddress } from '../common/util';
+import { getExplorerUrl, shortenAddress } from '../common/util';
 import { Allowance } from './interfaces';
 import { formatAllowance } from './util';
 
@@ -36,13 +37,9 @@ function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
     }
 
     if (tx) {
-      await tx.wait(1);
+      track('Revoked ERC721 allowance', { account, spender, token: token.contract.address, tokenId });
 
-      if (tokenId === undefined) {
-        emitAnalyticsEvent('erc721_revoke_all');
-      } else {
-        emitAnalyticsEvent('erc721_revoke_single');
-      }
+      await tx.wait(1);
 
       onRevoke(allowance);
     }
