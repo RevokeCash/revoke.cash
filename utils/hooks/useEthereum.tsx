@@ -185,6 +185,8 @@ export const EthereumProvider = ({ children }: Props) => {
 
       if ((await web3Modal.isSafeApp()) || localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
         await connect();
+      } else {
+        await connectDefaultProvider();
       }
     };
 
