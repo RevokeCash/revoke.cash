@@ -16,7 +16,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     if (!router.isReady) return;
     track('Viewed Page', { path: router.asPath });
-  }, [router.isReady]);
+  }, [router.isReady, router.asPath]);
 
   return (
     <>
