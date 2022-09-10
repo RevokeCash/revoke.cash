@@ -6,11 +6,7 @@ import { getChainExplorerUrl } from '../common/util';
 import Erc721AllowanceList from './Erc721AllowanceList';
 import Erc721TokenBalance from './Erc721TokenBalance';
 import { Allowance } from './interfaces';
-import {
-  addDisplayAddressesToAllowances,
-  getLimitedAllowancesFromApprovals,
-  getUnlimitedAllowancesFromApprovals,
-} from './util';
+import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util';
 
 interface Props {
   token: Erc721TokenData;
@@ -22,7 +18,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const { provider, chainId } = useEthereum();
+  const { chainId } = useEthereum();
 
   useEffect(() => {
     loadData();
@@ -39,14 +35,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
     const limitedAllowances = await getLimitedAllowancesFromApprovals(token.contract, token.approvals);
     const allAllowances = [...limitedAllowances, ...unlimitedAllowances].filter((allowance) => allowance !== undefined);
 
-    const allowancesWithDisplayAddresses = await addDisplayAddressesToAllowances(
-      allAllowances,
-      provider,
-      chainId,
-      openSeaProxyAddress
-    );
-
-    setAllowances(allowancesWithDisplayAddresses);
+    setAllowances(allAllowances);
     setLoading(false);
   };
 
@@ -73,6 +62,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
         token={token}
         allowances={allowances}
         inputAddress={inputAddress}
+        openSeaProxyAddress={openSeaProxyAddress}
         onRevoke={(allowance: Allowance) => {
           setAllowances((previousAllowances) =>
             previousAllowances.filter((other) => !allowanceEquals(other, allowance))

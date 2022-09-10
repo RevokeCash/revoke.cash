@@ -1,26 +1,48 @@
 import { track } from '@amplitude/analytics-browser';
 import { Contract } from 'ethers';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
+import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ADDRESS_ZERO } from '../common/constants';
 import { Erc721TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
-import { getChainExplorerUrl, shortenAddress } from '../common/util';
+import { getChainExplorerUrl, lookupEnsName, lookupUnsName, shortenAddress } from '../common/util';
 import { Allowance } from './interfaces';
-import { formatAllowance } from './util';
+import { addressToAppName, formatAllowance } from './util';
 
 interface Props {
   token: Erc721TokenData;
   allowance: Allowance;
   inputAddress: string;
+  openSeaProxyAddress?: string;
   onRevoke: (allowance: Allowance) => void;
 }
 
-function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
-  const { spender, ensSpender, spenderAppName, tokenId } = allowance;
-
+function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, onRevoke }: Props) {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [spenderName, setSpenderName] = useState<string>();
   const { signer, provider, account, chainId } = useEthereum();
+
+  const { spender, tokenId } = allowance;
+
+  useEffect(() => {
+    loadData();
+  }, [spender, allowance]);
+
+  const loadData = async () => {
+    setLoading(true);
+
+    const [ensSpender, unsSpender, spenderAppName] = await Promise.all([
+      lookupEnsName(spender),
+      lookupUnsName(spender),
+      addressToAppName(spender, chainId, openSeaProxyAddress),
+    ]);
+
+    setSpenderName(spenderAppName ?? ensSpender ?? unsSpender);
+
+    setLoading(false);
+  };
 
   const revoke = async () => {
     const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider);
@@ -45,8 +67,16 @@ function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
     }
   };
 
-  const spenderDisplay = spenderAppName || ensSpender || spender;
-  const shortenedSpenderDisplay = spenderAppName || ensSpender || shortenAddress(spender);
+  if (loading) {
+    return (
+      <div>
+        <ClipLoader size={10} color={'#000'} loading={loading} />
+      </div>
+    );
+  }
+
+  const spenderDisplay = spenderName || spender;
+  const shortenedSpenderDisplay = spenderName || shortenAddress(spender);
   const explorerBaseUrl = getChainExplorerUrl(chainId);
 
   const shortenedLink = explorerBaseUrl ? (

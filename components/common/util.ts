@@ -6,6 +6,7 @@ import { getAddress } from 'ethers/lib/utils';
 import {
   COVALENT_SUPPORTED_NETWORKS,
   DAPP_LIST_BASE_URL,
+  ENS_RESOLUTION,
   ETHEREUM_LISTS_CONTRACTS,
   ETHERSCAN_SUPPORTED_NETWORKS,
   NODE_SUPPORTED_NETWORKS,
@@ -64,17 +65,17 @@ async function getNameFromEthereumList(address: string, chainId: number): Promis
   }
 }
 
-export async function lookupEnsName(address: string, provider: providers.Provider): Promise<string | undefined> {
+export async function lookupEnsName(address: string): Promise<string | undefined> {
   try {
-    return await provider.lookupAddress(address);
+    return await ENS_RESOLUTION.lookupAddress(address);
   } catch {
     return undefined;
   }
 }
 
-export async function resolveEnsName(ensName: string, provider: providers.Provider): Promise<string | undefined> {
+export async function resolveEnsName(ensName: string): Promise<string | undefined> {
   try {
-    const address = await provider.resolveName(ensName);
+    const address = await ENS_RESOLUTION.resolveName(ensName);
     return address ? address : undefined;
   } catch {
     return undefined;
@@ -327,13 +328,10 @@ class BackendProvider {
   }
 }
 
-export const parseInputAddress = async (
-  inputAddressOrName: string,
-  provider: providers.Provider
-): Promise<string | undefined> => {
+export const parseInputAddress = async (inputAddressOrName: string): Promise<string | undefined> => {
   // If the input is an ENS name, validate it, resolve it and return it
   if (inputAddressOrName.endsWith('.eth')) {
-    return await resolveEnsName(inputAddressOrName, provider);
+    return await resolveEnsName(inputAddressOrName);
   }
 
   // Other domain-like inputs are interpreted as Unstoppable Domains

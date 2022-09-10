@@ -77,11 +77,11 @@ export const EthereumProvider = ({ children }: Props) => {
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
 
-  const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId], {
+  const { result: ensName } = useAsync(lookupEnsName, [account], {
     setLoading: (state) => ({ ...state, loading: true }),
   });
 
-  const { result: unsName } = useAsync(() => lookupUnsName(account), [account], {
+  const { result: unsName } = useAsync(lookupUnsName, [account], {
     setLoading: (state) => ({ ...state, loading: true }),
   });
 

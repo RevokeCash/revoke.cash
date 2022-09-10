@@ -9,7 +9,14 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
 import UpdateInputGroup from '../common/UpdateInputGroup';
-import { addressToAppName, fromFloat, getChainExplorerUrl, lookupEnsName, shortenAddress } from '../common/util';
+import {
+  addressToAppName,
+  fromFloat,
+  getChainExplorerUrl,
+  lookupEnsName,
+  lookupUnsName,
+  shortenAddress,
+} from '../common/util';
 import { formatAllowance } from './util';
 
 interface Props {
@@ -22,8 +29,7 @@ interface Props {
 
 function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
-  const [ensSpender, setEnsSpender] = useState<string | undefined>();
-  const [spenderAppName, setSpenderAppName] = useState<string | undefined>();
+  const [spenderName, setSpenderName] = useState<string | undefined>();
   const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>();
   const toastRef = useRef();
 
@@ -36,11 +42,13 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
   const loadData = async () => {
     setLoading(true);
 
-    const newEnsSpender = await lookupEnsName(spender, provider);
-    setEnsSpender(newEnsSpender);
+    const [ensSpender, unsSpender, spenderAppName] = await Promise.all([
+      lookupEnsName(spender),
+      lookupUnsName(spender),
+      addressToAppName(spender, chainId),
+    ]);
 
-    const newSpenderAppName = await addressToAppName(spender, chainId);
-    setSpenderAppName(newSpenderAppName);
+    setSpenderName(spenderAppName ?? ensSpender ?? unsSpender);
 
     setLoading(false);
   };
@@ -101,8 +109,8 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
     );
   }
 
-  const spenderDisplay = spenderAppName || ensSpender || spender;
-  const shortenedSpenderDisplay = spenderAppName || ensSpender || shortenAddress(spender);
+  const spenderDisplay = spenderName || spender;
+  const shortenedSpenderDisplay = spenderName || shortenAddress(spender);
 
   const explorerBaseUrl = getChainExplorerUrl(chainId);
 
