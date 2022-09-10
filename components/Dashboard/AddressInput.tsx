@@ -12,14 +12,18 @@ interface Props {
 const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('');
 
-  const { account, ensName, provider } = useEthereum();
+  const { account, ensName, unsName, provider, connectionType } = useEthereum();
 
   // Replace the input with the connected account if nothing was connected before
   // These checks make it so that you can still enter a new input afterwards
   useEffect(() => {
     if (!account) return;
     if (inputAddress && inputAddress !== account) return;
-    setInputAddressOrName(ensName || account || inputAddressOrName);
+
+    // When connected with Unstoppable, we prioritise UNS name over ENS name
+    const domainName = connectionType === 'custom-uauth' ? unsName ?? ensName : ensName ?? unsName;
+
+    setInputAddressOrName(domainName || account || inputAddressOrName);
   }, [ensName, account, inputAddress]);
 
   useEffect(() => {
@@ -51,12 +55,13 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
         <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <Form.Control
             className="AddressInput text-center"
-            placeholder="Enter Ethereum address or ENS name"
+            placeholder="Enter address, ENS name or Unstoppable Domain"
             value={inputAddressOrName}
             onChange={handleFormInputChanged}
             onDoubleClick={() => {
+              // Re-enable double-click to select
               return;
-            }} // Re-enable double-click to select
+            }}
           ></Form.Control>
         </Form.Group>
       </Col>

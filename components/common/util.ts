@@ -11,6 +11,7 @@ import {
   NODE_SUPPORTED_NETWORKS,
   PROVIDER_SUPPORTED_NETWORKS,
   TRUSTWALLET_BASE_URL,
+  UNS_RESOLUTION,
 } from './constants';
 import { TokenFromList, TokenMapping, TokenStandard } from './interfaces';
 
@@ -70,6 +71,33 @@ export async function lookupEnsName(address: string, provider: providers.Provide
     return undefined;
   }
 }
+
+export async function resolveEnsName(ensName: string, provider: providers.Provider): Promise<string | undefined> {
+  try {
+    const address = await provider.resolveName(ensName);
+    return address ? address : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export const resolveUnsName = async (unsName: string) => {
+  try {
+    const address = await UNS_RESOLUTION?.addr(unsName, 'ETH');
+    return getAddress(address?.toLowerCase());
+  } catch {
+    return undefined;
+  }
+};
+
+export const lookupUnsName = async (address: string) => {
+  try {
+    const name = await UNS_RESOLUTION?.reverse(address);
+    return name;
+  } catch {
+    return undefined;
+  }
+};
 
 export function getChainExplorerUrl(chainId: number): string | undefined {
   const overrides = {
@@ -305,12 +333,12 @@ export const parseInputAddress = async (
 ): Promise<string | undefined> => {
   // If the input is an ENS name, validate it, resolve it and return it
   if (inputAddressOrName.endsWith('.eth')) {
-    try {
-      const address = await provider.resolveName(inputAddressOrName);
-      return address ? address : undefined;
-    } catch {
-      return undefined;
-    }
+    return await resolveEnsName(inputAddressOrName, provider);
+  }
+
+  // Other domain-like inputs are interpreted as Unstoppable Domains
+  if (inputAddressOrName.includes('.')) {
+    return await resolveUnsName(inputAddressOrName);
   }
 
   // If the input is an address, validate it and return it

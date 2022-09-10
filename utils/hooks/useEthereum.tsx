@@ -3,13 +3,16 @@ import { track } from '@amplitude/analytics-browser';
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
+import UAuthSPA from '@uauth/js';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
-import { getChainRpcUrl, lookupEnsName } from 'components/common/util';
+import { getChainRpcUrl, lookupEnsName, lookupUnsName } from 'components/common/util';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
+
+const UAuthWeb3Modal = require('@uauth/web3modal');
 
 declare let window: {
   ethereum?: any;
@@ -19,10 +22,12 @@ declare let window: {
 
 interface EthereumContext {
   provider?: multicall.MulticallProvider;
+  connectionType?: string;
   fallbackProvider?: providers.Provider;
   signer?: JsonRpcSigner;
   account?: string;
   ensName?: string;
+  unsName?: string;
   chainId?: number;
   chainName?: string;
   connect?: () => Promise<void>;
@@ -51,6 +56,16 @@ const providerOptions = {
       infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
     },
   },
+  'custom-uauth': {
+    display: UAuthWeb3Modal.display,
+    connector: UAuthWeb3Modal.connector,
+    package: UAuthSPA,
+    options: {
+      clientID: '9947c4eb-3dbf-4910-a82d-e14dc93d3e2a',
+      redirectUri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://revoke.cash',
+      scope: 'openid wallet',
+    },
+  },
 };
 
 // Note: accounts are converted to lowercase -> getAddress'ed everywhere, because different chains (like RSK)
@@ -61,7 +76,12 @@ export const EthereumProvider = ({ children }: Props) => {
   const [chainId, setChainId] = useState<number>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
+
   const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId], {
+    setLoading: (state) => ({ ...state, loading: true }),
+  });
+
+  const { result: unsName } = useAsync(() => lookupUnsName(account), [account], {
     setLoading: (state) => ({ ...state, loading: true }),
   });
 
@@ -80,10 +100,16 @@ export const EthereumProvider = ({ children }: Props) => {
     return rpcProvider;
   }, [chainId ?? 1]);
 
-  const web3Modal = new Web3Modal({
-    cacheProvider: true, // optional
-    providerOptions, // required
-  });
+  const web3Modal = useMemo(() => {
+    const modal = new Web3Modal({
+      cacheProvider: true, // optional
+      providerOptions, // required
+    });
+
+    UAuthWeb3Modal.registerWeb3Modal(modal);
+
+    return modal;
+  }, []);
 
   useEffect(() => {
     if (account) {
@@ -111,7 +137,7 @@ export const EthereumProvider = ({ children }: Props) => {
     setChainId(newChainId);
     updateAccount(newAccount);
     if (!clearAccount) {
-      track('Connected Wallet', { address: newAccount, chainId: newChainId });
+      track('Connected Wallet', { address: newAccount, chainId: newChainId, connectionType: web3Modal.cachedProvider });
     }
   };
 
@@ -183,11 +209,12 @@ export const EthereumProvider = ({ children }: Props) => {
     const startup = async () => {
       // Deals with the edge case of having previously connected using injected
       // but there is no longer an injected provider in the browser
-      if (!window.ethereum && localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
+      if (!window.ethereum && web3Modal.cachedProvider === 'injected') {
         localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
       }
 
-      if ((await web3Modal.isSafeApp()) || localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER')) {
+      // TODO: Detect whether custom-uauth is used and is not able to auto-connect
+      if ((await web3Modal.isSafeApp()) || web3Modal.cachedProvider) {
         await connect();
       } else {
         await connectDefaultProvider();
@@ -201,11 +228,13 @@ export const EthereumProvider = ({ children }: Props) => {
     <EthereumContext.Provider
       value={{
         provider,
+        connectionType: web3Modal.cachedProvider,
         fallbackProvider,
         chainId,
         chainName,
         account,
         ensName,
+        unsName,
         signer,
         connect,
         disconnect,
