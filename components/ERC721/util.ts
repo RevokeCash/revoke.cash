@@ -12,7 +12,6 @@ import { TokenMapping } from '../common/interfaces';
 import {
   addressToAppName as addressToAppNameBase,
   convertString,
-  lookupEnsName,
   shortenAddress,
   unpackResult,
   withFallback,
@@ -78,30 +77,6 @@ async function getUnlimitedAllowanceFromApproval(
   if (!isApprovedForAll) return undefined;
 
   return { spender };
-}
-
-export async function addDisplayAddressesToAllowances(
-  allowances: Allowance[],
-  provider: providers.Provider,
-  chainId: number,
-  openSeaProxyAddress?: string
-) {
-  return await Promise.all(
-    allowances.map((allowance) => addDisplayAddresses(allowance, provider, chainId, openSeaProxyAddress))
-  );
-}
-
-// TODO: Make this multicall-compatible
-async function addDisplayAddresses(
-  allowance: Allowance,
-  provider: providers.Provider,
-  chainId: number,
-  openSeaProxyAddress?: string
-) {
-  const ensSpender = await lookupEnsName(allowance.spender, provider);
-  const spenderAppName = await addressToAppName(allowance.spender, chainId, openSeaProxyAddress);
-
-  return { ...allowance, ensSpender, spenderAppName };
 }
 
 export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {

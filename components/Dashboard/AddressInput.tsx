@@ -14,21 +14,21 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
 
   const { account, ensName, unsName, provider, connectionType } = useEthereum();
 
+  // When connected with Unstoppable, we prioritise UNS name over ENS name
+  const domainName = connectionType === 'custom-uauth' ? unsName ?? ensName : ensName ?? unsName;
+
   // Replace the input with the connected account if nothing was connected before
   // These checks make it so that you can still enter a new input afterwards
   useEffect(() => {
     if (!account) return;
     if (inputAddress && inputAddress !== account) return;
 
-    // When connected with Unstoppable, we prioritise UNS name over ENS name
-    const domainName = connectionType === 'custom-uauth' ? unsName ?? ensName : ensName ?? unsName;
-
     setInputAddressOrName(domainName || account || inputAddressOrName);
-  }, [ensName, account, inputAddress]);
+  }, [domainName, account, inputAddress]);
 
   useEffect(() => {
     const updateInputAddress = async () => {
-      const newInputAddress = await parseInputAddress(inputAddressOrName, provider);
+      const newInputAddress = await parseInputAddress(inputAddressOrName);
       if (newInputAddress && newInputAddress !== inputAddress) {
         setInputAddress(newInputAddress);
         track('Updated Address', { address: newInputAddress });
