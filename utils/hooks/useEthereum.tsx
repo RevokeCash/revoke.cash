@@ -40,34 +40,6 @@ interface Props {
   children: ReactNode;
 }
 
-const rpc = Object.fromEntries(
-  SUPPORTED_NETWORKS.map((chainId) => [chainId, getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
-);
-
-const providerOptions = {
-  walletconnect: {
-    package: WalletConnectProvider,
-    options: { rpc },
-  },
-  coinbasewallet: {
-    package: CoinbaseWalletSDK,
-    options: {
-      appName: 'Revoke.cash',
-      infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
-    },
-  },
-  'custom-uauth': {
-    display: UAuthWeb3Modal.display,
-    connector: UAuthWeb3Modal.connector,
-    package: UAuthSPA,
-    options: {
-      clientID: '9947c4eb-3dbf-4910-a82d-e14dc93d3e2a',
-      redirectUri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://revoke.cash',
-      scope: 'openid wallet',
-    },
-  },
-};
-
 // Note: accounts are converted to lowercase -> getAddress'ed everywhere, because different chains (like RSK)
 // may have other checksums so we normalise it to ETH checksum
 export const EthereumProvider = ({ children }: Props) => {
@@ -101,6 +73,34 @@ export const EthereumProvider = ({ children }: Props) => {
   }, [chainId ?? 1]);
 
   const web3Modal = useMemo(() => {
+    const rpc = Object.fromEntries(
+      SUPPORTED_NETWORKS.map((chainId) => [chainId, getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
+    );
+
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: { rpc },
+      },
+      coinbasewallet: {
+        package: CoinbaseWalletSDK,
+        options: {
+          appName: 'Revoke.cash',
+          infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+        },
+      },
+      'custom-uauth': {
+        display: UAuthWeb3Modal.display,
+        connector: UAuthWeb3Modal.connector,
+        package: UAuthSPA,
+        options: {
+          clientID: '9947c4eb-3dbf-4910-a82d-e14dc93d3e2a',
+          redirectUri: window.location.origin,
+          scope: 'openid wallet',
+        },
+      },
+    };
+
     const modal = new Web3Modal({
       cacheProvider: true, // optional
       providerOptions, // required
