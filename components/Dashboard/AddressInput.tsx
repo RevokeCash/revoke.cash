@@ -1,6 +1,6 @@
 import { track } from '@amplitude/analytics-browser';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { parseInputAddress } from '../common/util';
 
@@ -50,22 +50,20 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
   };
 
   return (
-    <Row>
-      <Col className="my-auto">
-        <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <Form.Control
-            className="AddressInput text-center"
-            placeholder="Enter address, ENS name or Unstoppable Domain"
-            value={inputAddressOrName}
-            onChange={handleFormInputChanged}
-            onDoubleClick={() => {
-              // Re-enable double-click to select
-              return;
-            }}
-          ></Form.Control>
-        </Form.Group>
-      </Col>
-    </Row>
+    <div>
+      <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <Form.Control
+          className="AddressInput text-center"
+          placeholder="Enter address, ENS name or Unstoppable Domain"
+          value={inputAddressOrName}
+          onChange={handleFormInputChanged}
+          onDoubleClick={() => {
+            // Re-enable double-click to select
+            return;
+          }}
+        ></Form.Control>
+      </Form.Group>
+    </div>
   );
 };
 
