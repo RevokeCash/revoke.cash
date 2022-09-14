@@ -15,7 +15,7 @@ function Erc721TokenBalance({ symbol, icon, balance, explorerUrl }: Props) {
   const balanceText = balance === 'ERC1155' ? `${symbol} (ERC1155)` : `${symbol}: ${String(balance)}`;
 
   return (
-    <div className="TokenBalance my-auto">
+    <div className="TokenBalance">
       <a href={explorerUrl} style={{ color: 'black' }}>
         {img} {balanceText}
       </a>
