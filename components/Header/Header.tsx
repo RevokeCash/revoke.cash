@@ -27,7 +27,7 @@ const Header: React.FC = () => {
           <div>
             <Link href="/">
               <a>
-                <img className="logo" src="/assets/images/revoke.svg" alt="Revoke.cash logo" />
+                <img className="logo" src="/assets/images/revoke.png" alt="Revoke.cash logo" />
               </a>
             </Link>
           </div>
