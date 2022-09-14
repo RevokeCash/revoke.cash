@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc721TokenData } from '../common/interfaces';
-import { getExplorerUrl } from '../common/util';
+import { getChainExplorerUrl } from '../common/util';
 import Erc721AllowanceList from './Erc721AllowanceList';
 import Erc721TokenBalance from './Erc721TokenBalance';
 import { Allowance } from './interfaces';
@@ -64,7 +64,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
     );
   }
   const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId;
-  const explorerUrl = `${getExplorerUrl(chainId)}/address/${token.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(chainId)}/address/${token.contract.address}`;
 
   return (
     <div className="Token">

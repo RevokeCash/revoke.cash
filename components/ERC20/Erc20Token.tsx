@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
-import { compareBN, getExplorerUrl, toFloat } from '../common/util';
+import { compareBN, getChainExplorerUrl, toFloat } from '../common/util';
 import Erc20AllowanceList from './Erc20AllowanceList';
 import Erc20TokenBalance from './Erc20TokenBalance';
 import { Allowance } from './interfaces';
@@ -47,7 +47,7 @@ function Erc20Token({ token, inputAddress }: Props) {
     );
   }
 
-  const explorerUrl = `${getExplorerUrl(chainId)}/address/${token.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(chainId)}/address/${token.contract.address}`;
 
   return (
     <div className="Token">

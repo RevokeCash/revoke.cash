@@ -27,13 +27,13 @@ export const IRON_OPTIONS = {
 
 export const PROVIDER_SUPPORTED_NETWORKS = [
   ChainId.EthereumMainnet,
-  ChainId.EthereumTestnetRopsten,
-  ChainId.EthereumTestnetRinkeby,
-  ChainId.EthereumTestnetGörli,
-  ChainId.EthereumTestnetKovan,
+  ChainId.Ropsten,
+  ChainId.Rinkeby,
+  ChainId.Goerli,
+  ChainId.Kovan,
   ChainId.TelosEVMMainnet,
   ChainId.TelosEVMTestnet,
-  ChainId.XDAIChain,
+  ChainId.Gnosis,
   ChainId.MetisAndromedaMainnet,
   ChainId.MetisStardustTestnet,
   ChainId.SmartBitcoinCash,
@@ -48,13 +48,13 @@ export const ETHERSCAN_SUPPORTED_NETWORKS = [
   ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
   ChainId.PolygonMainnet,
-  ChainId.PolygonTestnetMumbai,
-  ChainId.AvalancheMainnet,
+  ChainId.Mumbai,
+  ChainId['AvalancheC-Chain'],
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
   ChainId.ArbitrumOne,
-  ChainId.ArbitrumTestnetRinkeby,
+  ChainId.ArbitrumRinkeby,
   ChainId.HuobiECOChainMainnet,
   ChainId.HuobiECOChainTestnet,
   ChainId.Moonbeam,
@@ -63,11 +63,11 @@ export const ETHERSCAN_SUPPORTED_NETWORKS = [
   ChainId.CronosMainnetBeta,
   ChainId.CeloMainnet,
   ChainId.CeloAlfajoresTestnet,
-  ChainId.AuroraMainNet,
-  ChainId.AuroraTestNet,
+  ChainId.AuroraMainnet,
+  ChainId.AuroraTestnet,
   ChainId.BitTorrentChainMainnet,
   ChainId.BitTorrentChainTestnet,
-  ChainId.CloverMainnet,
+  ChainId.CLVParachain,
 ];
 
 // We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
@@ -81,15 +81,15 @@ export const COVALENT_SUPPORTED_NETWORKS = [
   // ChainId.IoTeXNetworkTestnet,
   ChainId.KlaytnMainnetCypress,
   // ChainId.KlaytnTestnetBaobab,
-  9001, // Evmos Mainnet (not in the eth-chains library)
-  ChainId.PalmMainnet,
+  ChainId.Evmos,
+  ChainId.Palm,
   // ChainId.PalmTestnet,
-  592, // Astar Mainnet
+  ChainId.Astar, // Astar Mainnet
   ChainId.Shiden,
   // ChainId.PolyjuiceTestnet,
 ];
 
-export const NODE_SUPPORTED_NETWORKS = [ChainId.OptimisticEthereum];
+export const NODE_SUPPORTED_NETWORKS = [ChainId.Optimism];
 
 export const SUPPORTED_NETWORKS = [
   ...PROVIDER_SUPPORTED_NETWORKS,

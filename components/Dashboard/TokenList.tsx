@@ -55,12 +55,11 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
         topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)],
       };
       const foundTransferEvents = await getLogs(
-        provider,
+        fallbackProvider ?? provider,
         transferFilter,
         0,
         latestBlockNumber,
-        chainId,
-        fallbackProvider
+        chainId
       );
       setTransferEvents(foundTransferEvents);
       console.log('Transfer events', foundTransferEvents);
@@ -70,12 +69,11 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
         topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)],
       };
       const foundApprovalEvents = await getLogs(
-        provider,
+        fallbackProvider ?? provider,
         approvalFilter,
         0,
         latestBlockNumber,
-        chainId,
-        fallbackProvider
+        chainId
       );
       setApprovalEvents(foundApprovalEvents);
       console.log('Approval events', foundApprovalEvents);
@@ -85,12 +83,11 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
         topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)],
       };
       const foundApprovalForAllEvents = await getLogs(
-        provider,
+        fallbackProvider ?? provider,
         approvalForAllFilter,
         0,
         latestBlockNumber,
-        chainId,
-        fallbackProvider
+        chainId
       );
       setApprovalForAllEvents(foundApprovalForAllEvents);
       console.log('ApprovalForAll events', foundApprovalForAllEvents);

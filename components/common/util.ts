@@ -71,23 +71,23 @@ export async function lookupEnsName(address: string, provider: providers.Provide
   }
 }
 
-export function getExplorerUrl(chainId: number): string | undefined {
+export function getChainExplorerUrl(chainId: number): string | undefined {
   const overrides = {
-    [ChainId.EthereumTestnetRopsten]: 'https://ropsten.etherscan.io',
-    [ChainId.EthereumTestnetKovan]: 'https://kovan.etherscan.io',
+    [ChainId.Ropsten]: 'https://ropsten.etherscan.io',
+    [ChainId.Kovan]: 'https://kovan.etherscan.io',
     [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
     [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
     [ChainId.CeloMainnet]: 'https://celoscan.io',
     [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
-    [ChainId.AuroraMainNet]: 'https://aurorascan.dev',
-    [ChainId.AuroraTestNet]: 'https://testnet.aurorascan.dev',
+    [ChainId.AuroraMainnet]: 'https://aurorascan.dev',
+    [ChainId.AuroraTestnet]: 'https://testnet.aurorascan.dev',
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
     [ChainId.BitTorrentChainTestnet]: 'https://testnet.bttcscan.com',
-    [ChainId.CloverMainnet]: 'https://clvscan.com',
+    [ChainId.CLVParachain]: 'https://clvscan.com',
     [ChainId.SyscoinTanenbaumTestnet]: 'https://tanenbaum.io',
-    [57]: 'https://explorer.syscoin.org',
-    [592]: 'https://blockscout.com/astar',
+    [ChainId.SyscoinMainnet]: 'https://explorer.syscoin.org',
+    [ChainId.Astar]: 'https://blockscout.com/astar',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -95,14 +95,12 @@ export function getExplorerUrl(chainId: number): string | undefined {
   return overrides[chainId] ?? explorer?.url;
 }
 
-export function getRpcUrl(chainId: number, infuraKey: string = ''): string | undefined {
+export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string | undefined {
   // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides = {
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
-    [ChainId.PalmMainnet]: 'https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b',
-    [ChainId.EthereumTestnetGörli]: `https://goerli.infura.io/v3/${infuraKey}`,
-    [ChainId.EthereumTestnetKovan]: `https://kovan.infura.io/v3/${infuraKey}`,
+    [ChainId.Kovan]: `https://kovan.infura.io/v3/${infuraKey}`,
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -114,22 +112,6 @@ export function getTrustWalletName(chainId: number): string | undefined {
     [ChainId.EthereumMainnet]: 'ethereum',
     [ChainId.BinanceSmartChainMainnet]: 'smartchain',
     [ChainId.EthereumClassicMainnet]: 'classic',
-  };
-
-  return mapping[chainId];
-}
-
-// TODO: Replace these with just chain ID rather than name (breaking)
-export function getDappListName(chainId: number): string | undefined {
-  const mapping = {
-    [ChainId.EthereumMainnet]: 'ethereum',
-    [ChainId.BinanceSmartChainMainnet]: 'smartchain',
-    [ChainId.XDAIChain]: 'xdai',
-    [ChainId.FuseMainnet]: 'fuse',
-    [ChainId.PolygonMainnet]: 'matic',
-    [ChainId.SmartBitcoinCash]: 'smartbch',
-    [ChainId.ArbitrumOne]: 'arbitrum',
-    [ChainId.AvalancheMainnet]: 'avalanche',
   };
 
   return mapping[chainId];
@@ -267,22 +249,20 @@ export const getLogs = async (
   baseFilter: Filter,
   fromBlock: number,
   toBlock: number,
-  chainId: number,
-  fallbackProvider?: Pick<providers.Provider, 'getLogs'>
+  chainId: number
 ): Promise<Log[]> => {
   if (isBackendSupportedNetwork(chainId)) {
     provider = new BackendProvider(chainId);
   }
 
-  return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock, fallbackProvider);
+  return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock);
 };
 
 export const getLogsFromProvider = async (
   provider: Pick<providers.Provider, 'getLogs'>,
   baseFilter: Filter,
   fromBlock: number,
-  toBlock: number,
-  fallbackProvider?: Pick<providers.Provider, 'getLogs'>
+  toBlock: number
 ): Promise<Log[]> => {
   try {
     const filter = { ...baseFilter, fromBlock, toBlock };
@@ -302,12 +282,7 @@ export const getLogsFromProvider = async (
       return [...left, ...right];
     }
   } catch (error) {
-    // If a fallback provider is available, try again using that provider
-    if (fallbackProvider) {
-      return await getLogsFromProvider(fallbackProvider, baseFilter, fromBlock, toBlock);
-    } else {
-      throw error;
-    }
+    throw error;
   }
 };
 
@@ -349,13 +324,13 @@ export const parseInputAddress = async (
 export const getChainLogo = (chainId: number) => {
   const mapping = {
     [ChainId.EthereumMainnet]: '/assets/images/vendor/chains/ethereum.png',
-    [ChainId.EthereumTestnetRopsten]: '/assets/images/vendor/chains/ethereum.png',
-    [ChainId.EthereumTestnetRinkeby]: '/assets/images/vendor/chains/ethereum.png',
-    [ChainId.EthereumTestnetGörli]: '/assets/images/vendor/chains/ethereum.png',
-    [ChainId.EthereumTestnetKovan]: '/assets/images/vendor/chains/ethereum.png',
+    [ChainId.Ropsten]: '/assets/images/vendor/chains/ethereum.png',
+    [ChainId.Rinkeby]: '/assets/images/vendor/chains/ethereum.png',
+    [ChainId.Goerli]: '/assets/images/vendor/chains/ethereum.png',
+    [ChainId.Kovan]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.png',
     [ChainId.TelosEVMTestnet]: '/assets/images/vendor/chains/telos.png',
-    [ChainId.XDAIChain]: '/assets/images/vendor/chains/gnosis-chain.png',
+    [ChainId.Gnosis]: '/assets/images/vendor/chains/gnosis-chain.png',
     [ChainId.MetisAndromedaMainnet]: '/assets/images/vendor/chains/metis.png',
     [ChainId.MetisStardustTestnet]: '/assets/images/vendor/chains/metis.png',
     [ChainId.SmartBitcoinCash]: '/assets/images/vendor/chains/smartbch.png',
@@ -365,13 +340,13 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.BinanceSmartChainMainnet]: '/assets/images/vendor/chains/binance.png',
     [ChainId.BinanceSmartChainTestnet]: '/assets/images/vendor/chains/binance.png',
     [ChainId.PolygonMainnet]: '/assets/images/vendor/chains/polygon.png',
-    [ChainId.PolygonTestnetMumbai]: '/assets/images/vendor/chains/polygon.png',
-    [ChainId.AvalancheMainnet]: '/assets/images/vendor/chains/avalanche.png',
+    [ChainId.Mumbai]: '/assets/images/vendor/chains/polygon.png',
+    [ChainId['AvalancheC-Chain']]: '/assets/images/vendor/chains/avalanche.png',
     [ChainId.AvalancheFujiTestnet]: '/assets/images/vendor/chains/avalanche.png',
     [ChainId.FantomOpera]: '/assets/images/vendor/chains/fantom.png',
     [ChainId.FantomTestnet]: '/assets/images/vendor/chains/fantom.png',
     [ChainId.ArbitrumOne]: '/assets/images/vendor/chains/arbitrum.svg',
-    [ChainId.ArbitrumTestnetRinkeby]: '/assets/images/vendor/chains/arbitrum.svg',
+    [ChainId.ArbitrumRinkeby]: '/assets/images/vendor/chains/arbitrum.svg',
     [ChainId.HuobiECOChainMainnet]: '/assets/images/vendor/chains/heco.png',
     [ChainId.HuobiECOChainTestnet]: '/assets/images/vendor/chains/heco.png',
     [ChainId.Moonbeam]: '/assets/images/vendor/chains/moonbeam.png',
@@ -382,23 +357,27 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.HarmonyMainnetShard0]: '/assets/images/vendor/chains/harmony.png',
     [ChainId.IoTeXNetworkMainnet]: '/assets/images/vendor/chains/iotex.png',
     [ChainId.KlaytnMainnetCypress]: '/assets/images/vendor/chains/klaytn.png',
-    [ChainId.PalmMainnet]: '/assets/images/vendor/chains/palm.jpeg',
-    [ChainId.OptimisticEthereum]: '/assets/images/vendor/chains/optimism.jpeg',
-    [9001]: '/assets/images/vendor/chains/evmos.png',
+    [ChainId.Palm]: '/assets/images/vendor/chains/palm.jpeg',
+    [ChainId.Optimism]: '/assets/images/vendor/chains/optimism.jpeg',
+    [ChainId.Evmos]: '/assets/images/vendor/chains/evmos.png',
     [ChainId.CeloMainnet]: '/assets/images/vendor/chains/celo.png',
     [ChainId.CeloAlfajoresTestnet]: '/assets/images/vendor/chains/celo.png',
-    [ChainId.AuroraMainNet]: '/assets/images/vendor/chains/aurora.jpeg',
-    [ChainId.AuroraTestNet]: '/assets/images/vendor/chains/aurora.jpeg',
+    [ChainId.AuroraMainnet]: '/assets/images/vendor/chains/aurora.jpeg',
+    [ChainId.AuroraTestnet]: '/assets/images/vendor/chains/aurora.jpeg',
     [ChainId.BitTorrentChainMainnet]: '/assets/images/vendor/chains/btt.svg',
     [ChainId.BitTorrentChainTestnet]: '/assets/images/vendor/chains/btt.svg',
-    [ChainId.CloverMainnet]: '/assets/images/vendor/chains/clover.jpeg',
+    [ChainId.CLVParachain]: '/assets/images/vendor/chains/clover.jpeg',
     [ChainId.SyscoinTanenbaumTestnet]: '/assets/images/vendor/chains/syscoin.png',
-    [57]: '/assets/images/vendor/chains/syscoin.png',
-    [592]: '/assets/images/vendor/chains/astar.png',
+    [ChainId.SyscoinMainnet]: '/assets/images/vendor/chains/syscoin.png',
+    [ChainId.Astar]: '/assets/images/vendor/chains/astar.png',
     [ChainId.Shiden]: '/assets/images/vendor/chains/shiden.svg',
   };
 
   return mapping[chainId];
+};
+
+export const getChainName = (chainId: number) => {
+  return chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
 };
 
 export const fallbackTokenIconOnError = (ev: any) => {

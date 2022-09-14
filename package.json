@@ -22,7 +22,7 @@
     "axios": "^0.26.1",
     "axios-retry": "^3.2.4",
     "bootstrap": "^4.6.1",
-    "eth-chains": "^0.4.0",
+    "eth-chains": "^1.0.0",
     "ethers": "^5.6.2",
     "express-rate-limit": "^6.3.0",
     "iron-session": "^6.1.1",

@@ -5,10 +5,10 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
-import { getRpcUrl, lookupEnsName } from 'components/common/util';
+import { getChainRpcUrl, lookupEnsName } from 'components/common/util';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 
 declare let window: {
@@ -19,7 +19,7 @@ declare let window: {
 
 interface EthereumContext {
   provider?: multicall.MulticallProvider;
-  fallbackProvider?: multicall.MulticallProvider;
+  fallbackProvider?: providers.Provider;
   signer?: JsonRpcSigner;
   account?: string;
   ensName?: string;
@@ -36,7 +36,7 @@ interface Props {
 }
 
 const rpc = Object.fromEntries(
-  SUPPORTED_NETWORKS.map((chainId) => [chainId, getRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
+  SUPPORTED_NETWORKS.map((chainId) => [chainId, getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
 );
 
 const providerOptions = {
@@ -58,24 +58,32 @@ const providerOptions = {
 export const EthereumProvider = ({ children }: Props) => {
   const [web3ModalInstance, setWeb3ModalInstance] = useState<any>();
   const [provider, setProvider] = useState<multicall.MulticallProvider>();
-  const [fallbackProvider, setFallbackProvider] = useState<multicall.MulticallProvider>();
   const [chainId, setChainId] = useState<number>();
-  const [chainName, setChainName] = useState<string>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
   const { result: ensName } = useAsync(() => lookupEnsName(account, provider), [account, provider, chainId], {
     setLoading: (state) => ({ ...state, loading: true }),
   });
 
+  const chainName = useMemo(() => {
+    return chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
+  }, [chainId]);
+
+  // The "fallback" provider is a wallet-independent provider that is used to retrieve logs
+  // to ensure that custom RPCs don't break Revoke.cash functionality.
+  // TODO: refactor/merge connectDefaultProvider and fallbackProvider
+  const fallbackProvider = useMemo(() => {
+    const rpcProvider = new providers.JsonRpcProvider(
+      getChainRpcUrl(chainId ?? 1, `${'88583771d63544aa'}${'ba1006382275c6f8'}`),
+      'any'
+    );
+    return rpcProvider;
+  }, [chainId ?? 1]);
+
   const web3Modal = new Web3Modal({
     cacheProvider: true, // optional
     providerOptions, // required
   });
-
-  useEffect(() => {
-    const newChainName = chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
-    if (newChainName) setChainName(newChainName);
-  }, [chainId]);
 
   useEffect(() => {
     if (account) {
@@ -144,10 +152,6 @@ export const EthereumProvider = ({ children }: Props) => {
   };
 
   const connectDefaultProvider = async () => {
-    // Use a default provider with a free Infura key if web3 is not available
-    const newFallbackProvider = new providers.InfuraProvider('mainnet', `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
-    setFallbackProvider(new multicall.MulticallProvider(newFallbackProvider, { verbose: true }));
-
     // If an injected provider exists, we want to use it for READ-ONLY access even if the user is not "connected"
     if (window.ethereum) {
       const provider = new providers.Web3Provider(window.ethereum, 'any');
@@ -166,8 +170,8 @@ export const EthereumProvider = ({ children }: Props) => {
     } else {
       try {
         // Check that the provider is available (and not rate-limited) by sending a dummy request
-        await newFallbackProvider.getCode('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 'latest');
-        await updateProvider(newFallbackProvider);
+        await fallbackProvider.getCode('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 'latest');
+        await updateProvider(fallbackProvider);
         console.log('Using fallback Infura provider');
       } catch {
         console.log('No web3 provider available');
@@ -197,6 +201,7 @@ export const EthereumProvider = ({ children }: Props) => {
     <EthereumContext.Provider
       value={{
         provider,
+        fallbackProvider,
         chainId,
         chainName,
         account,
@@ -204,8 +209,6 @@ export const EthereumProvider = ({ children }: Props) => {
         signer,
         connect,
         disconnect,
-        // A fallback provider is only provided for ETH mainnet + if it is not already using the fallback
-        fallbackProvider: chainId === 1 && provider !== fallbackProvider ? fallbackProvider : undefined,
       }}
     >
       {children}

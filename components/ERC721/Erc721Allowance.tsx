@@ -6,7 +6,7 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import { ADDRESS_ZERO } from '../common/constants';
 import { Erc721TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
-import { getExplorerUrl, shortenAddress } from '../common/util';
+import { getChainExplorerUrl, shortenAddress } from '../common/util';
 import { Allowance } from './interfaces';
 import { formatAllowance } from './util';
 
@@ -47,7 +47,7 @@ function Erc721Allowance({ token, allowance, inputAddress, onRevoke }: Props) {
 
   const spenderDisplay = spenderAppName || ensSpender || spender;
   const shortenedSpenderDisplay = spenderAppName || ensSpender || shortenAddress(spender);
-  const explorerBaseUrl = getExplorerUrl(chainId);
+  const explorerBaseUrl = getChainExplorerUrl(chainId);
 
   const shortenedLink = explorerBaseUrl ? (
     <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>

@@ -9,7 +9,7 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
 import UpdateInputGroup from '../common/UpdateInputGroup';
-import { addressToAppName, fromFloat, getExplorerUrl, lookupEnsName, shortenAddress } from '../common/util';
+import { addressToAppName, fromFloat, getChainExplorerUrl, lookupEnsName, shortenAddress } from '../common/util';
 import { formatAllowance } from './util';
 
 interface Props {
@@ -104,7 +104,7 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
   const spenderDisplay = spenderAppName || ensSpender || spender;
   const shortenedSpenderDisplay = spenderAppName || ensSpender || shortenAddress(spender);
 
-  const explorerBaseUrl = getExplorerUrl(chainId);
+  const explorerBaseUrl = getChainExplorerUrl(chainId);
 
   const shortenedLink = explorerBaseUrl ? (
     <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>
