@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import NavLink from './NavLink';
@@ -27,7 +28,13 @@ const Header: React.FC = () => {
           <div>
             <Link href="/">
               <a>
-                <img className="logo" src="/assets/images/revoke.png" alt="Revoke.cash logo" />
+                <Image
+                  className="logo"
+                  src="/assets/images/revoke.svg"
+                  alt="Revoke.cash logo"
+                  height="81"
+                  width="400"
+                />
               </a>
             </Link>
           </div>
