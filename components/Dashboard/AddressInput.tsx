@@ -12,10 +12,8 @@ interface Props {
 const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('');
 
-  const { account, ensName, unsName, provider, connectionType } = useEthereum();
-
-  // When connected with Unstoppable, we prioritise UNS name over ENS name
-  const domainName = connectionType === 'custom-uauth' ? unsName ?? ensName : ensName ?? unsName;
+  const { account, ensName, unsName, provider } = useEthereum();
+  const domainName = ensName ?? unsName;
 
   // Replace the input with the connected account if nothing was connected before
   // These checks make it so that you can still enter a new input afterwards

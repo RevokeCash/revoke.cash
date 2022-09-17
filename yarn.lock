@@ -2031,38 +2031,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uauth/common@npm:2.3.0":
-  version: 2.3.0
-  resolution: "@uauth/common@npm:2.3.0"
-  peerDependencies:
-    "@unstoppabledomains/resolution": ^8.0
-  checksum: 13b49d6a300022e09370cc83851034be244b07e90822082e0452c13c1e5748cfaaa74c5ca8bba3e8e98de8d0b1a39a89ca5ed7aef32813a32ac82c5fc6ed0fe5
-  languageName: node
-  linkType: hard
-
-"@uauth/js@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@uauth/js@npm:2.3.0"
-  dependencies:
-    "@uauth/common": 2.3.0
-    "@unstoppabledomains/resolution": ^8.0
-    global: ^4.4.0
-    jose: ^4.5.0
-  checksum: e99d0aec7d9e4624502e255fc9201610b27b4551322535c9cc82bd41db5edc6b4231bc3354a9a50b558a46b95292a6d4f47bc5e776ad99cdfd4d6a10274c5117
-  languageName: node
-  linkType: hard
-
-"@uauth/web3modal@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@uauth/web3modal@npm:2.2.0"
-  peerDependencies:
-    "@uauth/js": 2.2.0
-    web3modal: ^1.9
-  checksum: 7b48d5fa362491fbf09b22d0c98750dc0ec5f4066b8e7fc21b22f9526017a5ac465c2f9adebe54e14237fe7b6c927c22b1a59a4e7b86de4eb6a170771501fd42
-  languageName: node
-  linkType: hard
-
-"@unstoppabledomains/resolution@npm:^8.0, @unstoppabledomains/resolution@npm:^8.3.3":
+"@unstoppabledomains/resolution@npm:^8.3.3":
   version: 8.3.3
   resolution: "@unstoppabledomains/resolution@npm:8.3.3"
   dependencies:
@@ -4286,7 +4255,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"global@npm:^4.4.0, global@npm:~4.4.0":
+"global@npm:~4.4.0":
   version: 4.4.0
   resolution: "global@npm:4.4.0"
   dependencies:
@@ -4909,13 +4878,6 @@ __metadata:
   version: 0.1.2
   resolution: "isstream@npm:0.1.2"
   checksum: 1eb2fe63a729f7bdd8a559ab552c69055f4f48eb5c2f03724430587c6f450783c8f1cd936c1c952d0a927925180fcc892ebd5b174236cf1065d4bd5bdb37e963
-  languageName: node
-  linkType: hard
-
-"jose@npm:^4.5.0":
-  version: 4.9.2
-  resolution: "jose@npm:4.9.2"
-  checksum: d3950385a6417d988c50bd8ba5407f5960624060aa8e4662c2109f1ebcc40c418e64b721a87065d8197b4aa0ddd7fb4dad5064618956dba8e74dc630916bf40f
   languageName: node
   linkType: hard
 
@@ -6557,8 +6519,6 @@ __metadata:
     "@types/react": ^17.0.43
     "@types/react-dom": ^17.0.14
     "@types/request-ip": ^0.0.37
-    "@uauth/js": ^2.3.0
-    "@uauth/web3modal": ^2.2.0
     "@unstoppabledomains/resolution": ^8.3.3
     "@upstash/ratelimit": ^0.1.3
     "@upstash/redis": ^1.10.2

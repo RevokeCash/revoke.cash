@@ -4,10 +4,8 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import { getChainLogo, shortenAddress } from '../common/util';
 
 const ConnectButton: React.FC = () => {
-  const { account, connectionType, ensName, unsName, connect, disconnect, chainId, chainName } = useEthereum();
-
-  // When connected with Unstoppable, we prioritise UNS name over ENS name
-  const domainName = connectionType === 'custom-uauth' ? unsName ?? ensName : ensName ?? unsName;
+  const { account, ensName, unsName, connect, disconnect, chainId, chainName } = useEthereum();
+  const domainName = ensName ?? unsName;
 
   const buttonAction = account ? disconnect : connect;
   const buttonText = account ? 'Disconnect' : 'Connect Wallet';
