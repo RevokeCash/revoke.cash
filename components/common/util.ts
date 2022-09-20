@@ -67,7 +67,7 @@ async function getNameFromEthereumList(address: string, chainId: number): Promis
 
 export async function lookupEnsName(address: string): Promise<string | undefined> {
   try {
-    return await ENS_RESOLUTION.lookupAddress(address);
+    return await ENS_RESOLUTION?.lookupAddress(address);
   } catch {
     return undefined;
   }
@@ -75,7 +75,7 @@ export async function lookupEnsName(address: string): Promise<string | undefined
 
 export async function resolveEnsName(ensName: string): Promise<string | undefined> {
   try {
-    const address = await ENS_RESOLUTION.resolveName(ensName);
+    const address = await ENS_RESOLUTION?.resolveName(ensName);
     return address ? address : undefined;
   } catch {
     return undefined;

@@ -65,7 +65,7 @@ export const PROVIDER_SUPPORTED_NETWORKS = [
   ChainId.FuseMainnet,
   ChainId.FuseSparknet,
   ChainId.SyscoinTanenbaumTestnet,
-  57, // Syscoin Mainnet
+  ChainId.SyscoinMainnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_NETWORKS = [
