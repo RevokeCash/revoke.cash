@@ -18,27 +18,24 @@ export const OPENSEA_REGISTRY_ADDRESS = '0xa5409ec958C83C3f309868babACA7c86DCB07
 export const MOONBIRDS_ADDRESS = '0x23581767a106ae21c074b2276D25e5C3e136a68b';
 export const DONATION_ADDRESS = '0xfcBf17200C64E860F6639aa12B525015d115F863'; // revoke.kalis.eth
 
-export const ENS_RESOLUTION =
-  process.env.NEXT_PUBLIC_ALCHEMY_API_KEY && new providers.AlchemyProvider(1, process.env.NEXT_PUBLIC_ALCHEMY_API_KEY);
+export const ENS_RESOLUTION = new providers.InfuraProvider(1, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
 
-export const UNS_RESOLUTION =
-  process.env.NEXT_PUBLIC_ALCHEMY_API_KEY &&
-  new Resolution({
-    sourceConfig: {
-      uns: {
-        locations: {
-          Layer1: {
-            url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
-            network: 'mainnet',
-          },
-          Layer2: {
-            url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
-            network: 'polygon-mainnet',
-          },
+export const UNS_RESOLUTION = new Resolution({
+  sourceConfig: {
+    uns: {
+      locations: {
+        Layer1: {
+          url: `https://mainnet.infura.io/v3/${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+          network: 'mainnet',
+        },
+        Layer2: {
+          url: `https://polygon-mainnet.infura.io/v3/${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+          network: 'polygon-mainnet',
         },
       },
     },
-  });
+  },
+});
 
 export const IRON_OPTIONS = {
   cookieName: 'revoke_session',
