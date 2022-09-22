@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button, InputGroup } from 'react-bootstrap';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import { getChainLogo, shortenAddress } from '../common/util';
+import { shortenAddress } from '../common/util';
+import ChainSelectDropdown from './ChainSelectDropdown';
 
 const ConnectButton: React.FC = () => {
-  const { account, ensName, unsName, connect, disconnect, chainId, chainName } = useEthereum();
+  const { account, ensName, unsName, connect, disconnect } = useEthereum();
   const domainName = ensName ?? unsName;
 
   const buttonAction = account ? disconnect : connect;
@@ -13,15 +14,7 @@ const ConnectButton: React.FC = () => {
   return (
     <InputGroup style={{ width: 'fit-content' }}>
       <InputGroup.Prepend>
-        <InputGroup.Text style={{ borderColor: 'black' }}>
-          <img
-            src={getChainLogo(chainId) ?? getChainLogo(1)}
-            title={chainName}
-            alt={chainName}
-            height="24"
-            style={{ borderRadius: '50%', minWidth: 16 }}
-          />
-        </InputGroup.Text>
+        <ChainSelectDropdown />
       </InputGroup.Prepend>
       {account && (
         <InputGroup.Text style={{ borderRadius: 0, borderColor: 'black' }}>

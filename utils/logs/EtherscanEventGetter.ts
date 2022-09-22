@@ -128,6 +128,7 @@ const API_URLS = {
   [ChainId.Moonriver]: 'https://api-moonriver.moonscan.io/api',
   [ChainId.MoonbaseAlpha]: 'https://api-moonbase.moonscan.io/api',
   [ChainId.CronosMainnetBeta]: 'https://api.cronoscan.com/api',
+  [ChainId.CronosTestnet]: 'https://api-testnet.cronoscan.com/api',
   [ChainId.CeloMainnet]: 'https://api.celoscan.io/api',
   [ChainId.CeloAlfajoresTestnet]: 'https://api-alfajores.celoscan.io/api',
   [ChainId.AuroraMainnet]: 'https://api.aurorascan.dev/api',
