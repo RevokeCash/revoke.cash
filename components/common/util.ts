@@ -131,6 +131,7 @@ export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string 
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
     [ChainId.Kovan]: `https://kovan.infura.io/v3/${infuraKey}`,
+    [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -348,13 +349,14 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<str
   }
 };
 
-export const getChainLogo = (chainId: number) => {
+export const getChainLogo = (chainId: number): string => {
   const mapping = {
     [ChainId.EthereumMainnet]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.Ropsten]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.Rinkeby]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.Goerli]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.Kovan]: '/assets/images/vendor/chains/ethereum.png',
+    [ChainId.Sepolia]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.png',
     [ChainId.TelosEVMTestnet]: '/assets/images/vendor/chains/telos.png',
     [ChainId.Gnosis]: '/assets/images/vendor/chains/gnosis-chain.png',
@@ -380,13 +382,17 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.Moonriver]: '/assets/images/vendor/chains/moonriver.png',
     [ChainId.MoonbaseAlpha]: '/assets/images/vendor/chains/moonbeam.png',
     [ChainId.CronosMainnetBeta]: '/assets/images/vendor/chains/cronos.jpeg',
+    [ChainId.CronosTestnet]: '/assets/images/vendor/chains/cronos.jpeg',
     [ChainId.RSKMainnet]: '/assets/images/vendor/chains/rootstock.png',
+    [ChainId.RSKTestnet]: '/assets/images/vendor/chains/rootstock.png',
     [ChainId.HarmonyMainnetShard0]: '/assets/images/vendor/chains/harmony.png',
     [ChainId.IoTeXNetworkMainnet]: '/assets/images/vendor/chains/iotex.png',
     [ChainId.KlaytnMainnetCypress]: '/assets/images/vendor/chains/klaytn.png',
     [ChainId.Palm]: '/assets/images/vendor/chains/palm.jpeg',
     [ChainId.Optimism]: '/assets/images/vendor/chains/optimism.jpeg',
+    [ChainId.OptimisticEthereumTestnetGoerli]: '/assets/images/vendor/chains/optimism.jpeg',
     [ChainId.Evmos]: '/assets/images/vendor/chains/evmos.png',
+    [ChainId.EvmosTestnet]: '/assets/images/vendor/chains/evmos.png',
     [ChainId.CeloMainnet]: '/assets/images/vendor/chains/celo.png',
     [ChainId.CeloAlfajoresTestnet]: '/assets/images/vendor/chains/celo.png',
     [ChainId.AuroraMainnet]: '/assets/images/vendor/chains/aurora.jpeg',
@@ -398,13 +404,61 @@ export const getChainLogo = (chainId: number) => {
     [ChainId.SyscoinMainnet]: '/assets/images/vendor/chains/syscoin.png',
     [ChainId.Astar]: '/assets/images/vendor/chains/astar.png',
     [ChainId.Shiden]: '/assets/images/vendor/chains/shiden.svg',
+    [ChainId.GodwokenMainnet]: '/assets/images/vendor/chains/godwoken.png',
+    [ChainId['GodwokenTestnet(V1.1)']]: '/assets/images/vendor/chains/godwoken.png',
   };
 
-  return mapping[chainId];
+  return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
 };
 
-export const getChainName = (chainId: number) => {
-  return chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
+export const getChainInfoUrl = (chainId: number): string | undefined => {
+  const overrides = {
+    [ChainId.Gnosis]: 'https://www.gnosischain.com/evm',
+    [ChainId.CeloMainnet]: 'https://celo.org',
+  };
+
+  return overrides[chainId] ?? chains.get(chainId)?.infoURL;
+};
+
+export const getChainName = (chainId: number): string => {
+  const overrides = {
+    [ChainId.EthereumMainnet]: 'Ethereum',
+    [ChainId.BinanceSmartChainMainnet]: 'Binance Smart Chain',
+    [ChainId['AvalancheC-Chain']]: 'Avalanche',
+    [ChainId.PolygonMainnet]: 'Polygon',
+    [ChainId.ArbitrumOne]: 'Arbitrum',
+    [ChainId.CronosMainnetBeta]: 'Cronos',
+    [ChainId.FantomOpera]: 'Fantom',
+    [ChainId.KlaytnMainnetCypress]: 'Klaytn',
+    [ChainId.AuroraMainnet]: 'Aurora',
+    [ChainId.CeloMainnet]: 'Celo',
+    [ChainId.HuobiECOChainMainnet]: 'HECO',
+    [ChainId.RSKMainnet]: 'RSK',
+    [ChainId.MetisAndromedaMainnet]: 'Metis',
+    [ChainId.TelosEVMMainnet]: 'Telos',
+    [ChainId.IoTeXNetworkMainnet]: 'IoTeX',
+    [ChainId.HarmonyMainnetShard0]: 'Harmony',
+    [ChainId.GodwokenMainnet]: 'Godwoken',
+    [ChainId.SmartBitcoinCash]: 'SmartBCH',
+    [ChainId.FuseMainnet]: 'Fuse',
+    [ChainId.SyscoinMainnet]: 'Syscoin',
+    [ChainId.CLVParachain]: 'CLV',
+    [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
+    [ChainId.Goerli]: 'Goerli',
+    [ChainId.BinanceSmartChainTestnet]: 'BSC Testnet',
+    [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
+    [ChainId.Mumbai]: 'Polygon Mumbai',
+    [ChainId.OptimisticEthereumTestnetGoerli]: 'Optimism Goerli',
+    [ChainId.CeloAlfajoresTestnet]: 'Celo Alfajores',
+    [ChainId.HuobiECOChainTestnet]: 'HECO Testnet',
+    [ChainId.MetisStardustTestnet]: 'Metis Stardust',
+    [ChainId.TelosEVMTestnet]: 'Telos Testnet',
+    [ChainId.SmartBitcoinCashTestnet]: 'SmartBCH Testnet',
+    [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tenenbaum',
+    [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
+  };
+
+  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
 };
 
 export const fallbackTokenIconOnError = (ev: any) => {
