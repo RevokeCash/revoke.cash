@@ -1,5 +1,6 @@
 // import React from 'react';
 // import { toast } from 'react-toastify';
+// import { GITCOIN_URL } from './constants';
 
 export const displayGitcoinToast = () => {
   // const toastContent = (
@@ -7,13 +8,7 @@ export const displayGitcoinToast = () => {
   //     <div>
   //       Gitcoin Grants Round 15 is now live with over $2M in donation matching! Please consider supporting Revoke.cash
   //       by donating to the{' '}
-  //       <a
-  //         href="https://gitcoin.co/grants/259/revokecash-helping-you-stay-safe-in-web3"
-  //         target="_blank"
-  //         style={{ color: 'black' }}
-  //       >
-  //         Revoke.cash grant
-  //       </a>
+  //       <a href={GITCOIN_URL} target="_blank" style={{ color: 'black' }}>Revoke.cash grant</a>
   //     </div>
   //   </div>
   // );

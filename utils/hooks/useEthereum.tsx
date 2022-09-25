@@ -246,6 +246,4 @@ const getConnectedAccount = async (provider: providers.JsonRpcProvider) => {
   }
 };
 
-export const useEthereum = () => {
-  return useContext(EthereumContext);
-};
+export const useEthereum = () => useContext(EthereumContext);

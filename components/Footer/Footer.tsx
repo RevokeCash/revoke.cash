@@ -3,7 +3,6 @@ import LogoLink from 'components/common/LogoLink';
 import { getChainLogo } from 'components/common/util';
 import { ChainId } from 'eth-chains';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
 
 const Footer: React.FC = () => (
   <>
@@ -75,19 +74,6 @@ const Footer: React.FC = () => (
         <LogoLink src={getChainLogo(ChainId.Palm)} alt="Palm" href="https://palm.io/" />
       </div>
     </div>
-    <ToastContainer
-      position="top-right"
-      icon={false}
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      progressStyle={{ backgroundColor: 'black' }}
-    />
   </>
 );
 

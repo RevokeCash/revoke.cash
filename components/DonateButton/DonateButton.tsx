@@ -1,5 +1,5 @@
 import { track } from '@amplitude/analytics-browser';
-import { DONATION_ADDRESS } from 'components/common/constants';
+import { DONATION_ADDRESS, GITCOIN_URL } from 'components/common/constants';
 import { utils } from 'ethers';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
@@ -20,8 +20,9 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
 
   const [show, setShow] = useState<boolean>(false);
   const handleShow = () => {
-    if (parentToastRef)
+    if (parentToastRef) {
       toast.update(parentToastRef.current, { autoClose: false, closeButton: false, draggable: false });
+    }
     setShow(true);
   };
   const handleClose = () => {
@@ -92,8 +93,8 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          Or contribute to my{' '}
-          <a href="https://gitcoin.co/grants/259/rosco-kalis-crypto-software-engineer" target="_blank">
+          Or contribute to our{' '}
+          <a href={GITCOIN_URL} target="_blank">
             Gitcoin Grant
           </a>
         </Modal.Footer>

@@ -1,4 +1,5 @@
 import { track } from '@amplitude/analytics-browser';
+import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { Contract } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
@@ -59,6 +60,8 @@ function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, 
     }
 
     if (tx) {
+      displayTransactionSubmittedToast(toastRef);
+
       track('Revoked ERC721 allowance', { account, spender, token: token.contract.address, tokenId });
 
       await tx.wait(1);
