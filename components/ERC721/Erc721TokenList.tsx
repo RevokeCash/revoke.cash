@@ -6,7 +6,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC721Metadata } from '../common/abis';
 import { Erc721TokenData, TokenMapping } from '../common/interfaces';
-import { getTokenIcon } from '../common/util';
+import { getTokenIcon, isSpamToken } from '../common/util';
 import Erc721Token from './Erc721Token';
 import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from './util';
 
@@ -105,6 +105,7 @@ function Erc721TokenList({
   }
 
   const tokenComponents = tokens
+    .filter((token) => !isSpamToken(token))
     .filter((token) => !filterUnverifiedTokens || token.verified)
     .filter((token) => !filterZeroBalances || !(token.balance === '0'))
     .map((token) => (

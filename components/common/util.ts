@@ -14,7 +14,7 @@ import {
   TRUSTWALLET_BASE_URL,
   UNS_RESOLUTION,
 } from './constants';
-import { TokenFromList, TokenMapping, TokenStandard } from './interfaces';
+import { Erc20TokenData, Erc721TokenData, TokenFromList, TokenMapping, TokenStandard } from './interfaces';
 
 // Check if a token is verified in the token mapping
 export function isVerified(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
@@ -408,4 +408,11 @@ export const getChainName = (chainId: number) => {
 
 export const fallbackTokenIconOnError = (ev: any) => {
   ev.target.src = '/assets/images/fallback-token-icon.png';
+};
+
+export const isSpamToken = (token: Erc20TokenData | Erc721TokenData) => {
+  const includesHttp = /https?:\/\//i.test(token.symbol);
+  // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
+  const includesTld = /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.vision|\.team/i.test(token.symbol);
+  return includesHttp || includesTld;
 };

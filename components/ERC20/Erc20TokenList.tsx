@@ -6,7 +6,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC20 } from '../common/abis';
 import { Erc20TokenData, TokenMapping } from '../common/interfaces';
-import { getTokenIcon, isVerified, toFloat } from '../common/util';
+import { getTokenIcon, isSpamToken, isVerified, toFloat } from '../common/util';
 import Erc20Token from './Erc20Token';
 import { getTokenData } from './util';
 
@@ -91,6 +91,7 @@ function Erc20TokenList({
   }
 
   const tokenComponents = tokens
+    .filter((token) => !isSpamToken(token))
     .filter((token) => !filterUnverifiedTokens || token.verified)
     .filter((token) => !filterZeroBalances || !(toFloat(Number(token.balance), token.decimals) === '0.000'))
     .map((token) => <Erc20Token key={token.contract.address} token={token} inputAddress={inputAddress} />);
