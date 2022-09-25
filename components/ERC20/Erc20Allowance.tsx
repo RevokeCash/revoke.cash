@@ -1,7 +1,8 @@
 import { track } from '@amplitude/analytics-browser';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { BigNumber, Contract } from 'ethers';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
@@ -9,14 +10,7 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
 import UpdateInputGroup from '../common/UpdateInputGroup';
-import {
-  addressToAppName,
-  fromFloat,
-  getChainExplorerUrl,
-  lookupEnsName,
-  lookupUnsName,
-  shortenAddress,
-} from '../common/util';
+import { addressToAppName, fromFloat, getChainExplorerUrl, shortenAddress } from '../common/util';
 import { formatAllowance } from './util';
 
 interface Props {
@@ -28,30 +22,10 @@ interface Props {
 }
 
 function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: Props) {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [spenderName, setSpenderName] = useState<string | undefined>();
-  const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>();
   const toastRef = useRef();
-
+  const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>();
   const { signer, chainId, provider, account } = useEthereum();
-
-  useEffect(() => {
-    loadData();
-  }, [spender, allowance]);
-
-  const loadData = async () => {
-    setLoading(true);
-
-    const [ensSpender, unsSpender, spenderAppName] = await Promise.all([
-      lookupEnsName(spender),
-      lookupUnsName(spender),
-      addressToAppName(spender, chainId),
-    ]);
-
-    setSpenderName(spenderAppName ?? ensSpender ?? unsSpender);
-
-    setLoading(false);
-  };
+  const { result: spenderName, loading } = useAsync(addressToAppName, [spender, chainId]);
 
   const revoke = async () => update('0');
 

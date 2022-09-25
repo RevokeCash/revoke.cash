@@ -1,14 +1,15 @@
 import { track } from '@amplitude/analytics-browser';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { Contract } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
+import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ADDRESS_ZERO } from '../common/constants';
 import { Erc721TokenData } from '../common/interfaces';
 import RevokeButton from '../common/RevokeButton';
-import { getChainExplorerUrl, lookupEnsName, lookupUnsName, shortenAddress } from '../common/util';
+import { getChainExplorerUrl, shortenAddress } from '../common/util';
 import { Allowance } from './interfaces';
 import { addressToAppName, formatAllowance } from './util';
 
@@ -21,29 +22,11 @@ interface Props {
 }
 
 function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, onRevoke }: Props) {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [spenderName, setSpenderName] = useState<string>();
-  const { signer, provider, account, chainId } = useEthereum();
-
   const { spender, tokenId } = allowance;
 
-  useEffect(() => {
-    loadData();
-  }, [spender, allowance]);
-
-  const loadData = async () => {
-    setLoading(true);
-
-    const [ensSpender, unsSpender, spenderAppName] = await Promise.all([
-      lookupEnsName(spender),
-      lookupUnsName(spender),
-      addressToAppName(spender, chainId, openSeaProxyAddress),
-    ]);
-
-    setSpenderName(spenderAppName ?? ensSpender ?? unsSpender);
-
-    setLoading(false);
-  };
+  const toastRef = useRef();
+  const { signer, provider, account, chainId } = useEthereum();
+  const { result: spenderName, loading } = useAsync(addressToAppName, [spender, chainId, openSeaProxyAddress]);
 
   const revoke = async () => {
     const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider);
