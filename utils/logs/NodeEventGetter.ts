@@ -1,5 +1,5 @@
 import { Filter, Log } from '@ethersproject/abstract-provider';
-import { getLogsFromProvider } from 'components/common/util';
+import { getLogs } from 'components/common/util';
 import { providers } from 'ethers';
 import { EventGetter } from './EventGetter';
 
@@ -18,6 +18,6 @@ export class NodeEventGetter implements EventGetter {
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
     const provider = this.providers[chainId];
     if (!provider) return [];
-    return getLogsFromProvider(provider, filter, filter.fromBlock as number, filter.toBlock as number);
+    return getLogs(provider, filter, filter.fromBlock as number, filter.toBlock as number);
   }
 }

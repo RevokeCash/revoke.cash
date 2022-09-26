@@ -25,7 +25,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
   const [approvalEvents, setApprovalEvents] = useState<Log[]>();
   const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>();
 
-  const { chainId, provider, fallbackProvider } = useEthereum();
+  const { chainId, provider, logsProvider } = useEthereum();
 
   const loadData = useCallback(async () => {
     try {
@@ -54,13 +54,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
       const transferFilter = {
         topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)],
       };
-      const foundTransferEvents = await getLogs(
-        fallbackProvider ?? provider,
-        transferFilter,
-        0,
-        latestBlockNumber,
-        chainId
-      );
+      const foundTransferEvents = await getLogs(logsProvider, transferFilter, 0, latestBlockNumber);
       setTransferEvents(foundTransferEvents);
       console.log('Transfer events', foundTransferEvents);
 
@@ -68,13 +62,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
       const approvalFilter = {
         topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)],
       };
-      const foundApprovalEvents = await getLogs(
-        fallbackProvider ?? provider,
-        approvalFilter,
-        0,
-        latestBlockNumber,
-        chainId
-      );
+      const foundApprovalEvents = await getLogs(logsProvider, approvalFilter, 0, latestBlockNumber);
       setApprovalEvents(foundApprovalEvents);
       console.log('Approval events', foundApprovalEvents);
 
@@ -82,13 +70,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
       const approvalForAllFilter = {
         topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)],
       };
-      const foundApprovalForAllEvents = await getLogs(
-        fallbackProvider ?? provider,
-        approvalForAllFilter,
-        0,
-        latestBlockNumber,
-        chainId
-      );
+      const foundApprovalForAllEvents = await getLogs(logsProvider, approvalForAllFilter, 0, latestBlockNumber);
       setApprovalForAllEvents(foundApprovalForAllEvents);
       console.log('ApprovalForAll events', foundApprovalForAllEvents);
 
