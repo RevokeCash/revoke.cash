@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import { isBackendSupportedNetwork, isProviderSupportedNetwork } from '../common/util';
+import { getChainName, isBackendSupportedNetwork, isProviderSupportedNetwork } from '../common/util';
 import AddressInput from './AddressInput';
 import TokenList from './TokenList';
 import TokenStandardSelection from './TokenStandardSelection';
@@ -12,14 +12,14 @@ function DashboardBody() {
   const [includeUnverifiedTokens, setIncludeVerifiedTokens] = useState<boolean>(false);
   const [includeZeroBalances, setIncludeZeroBalances] = useState<boolean>(false);
   const [inputAddress, setInputAddress] = useState<string>();
-  const { chainId, chainName } = useEthereum();
+  const { chainId } = useEthereum();
 
   if (!chainId) {
     return <div>Please use a Web3 enabled browser to use Revoke.cash.</div>;
   }
 
   if (!isProviderSupportedNetwork(chainId) && !isBackendSupportedNetwork(chainId)) {
-    return <div>{chainName} is not supported.</div>;
+    return <div>{getChainName(chainId)} is not supported.</div>;
   }
 
   return (
