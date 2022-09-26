@@ -117,6 +117,7 @@ export function getChainExplorerUrl(chainId: number): string | undefined {
     [ChainId.SyscoinTanenbaumTestnet]: 'https://tanenbaum.io',
     [ChainId.SyscoinMainnet]: 'https://explorer.syscoin.org',
     [ChainId.Astar]: 'https://blockscout.com/astar',
+    [ChainId.Gnosis]: 'https://gnosisscan.io',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
