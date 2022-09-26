@@ -6,7 +6,6 @@ import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
 import { getChainRpcUrl, lookupEnsName, lookupUnsName } from 'components/common/util';
-import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
@@ -26,7 +25,6 @@ interface EthereumContext {
   ensName?: string;
   unsName?: string;
   chainId?: number;
-  chainName?: string;
   connect?: () => Promise<void>;
   disconnect?: () => Promise<void>;
 }
@@ -53,10 +51,6 @@ export const EthereumProvider = ({ children }: Props) => {
   const { result: unsName } = useAsync(lookupUnsName, [account], {
     setLoading: (state) => ({ ...state, loading: true }),
   });
-
-  const chainName = useMemo(() => {
-    return chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
-  }, [chainId]);
 
   // The "fallback" provider is a wallet-independent provider that is used to retrieve logs
   // to ensure that custom RPCs don't break Revoke.cash functionality.
@@ -224,7 +218,6 @@ export const EthereumProvider = ({ children }: Props) => {
         connectionType: web3Modal.cachedProvider,
         fallbackProvider,
         chainId,
-        chainName,
         account,
         ensName,
         unsName,
