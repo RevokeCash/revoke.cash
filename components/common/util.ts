@@ -279,20 +279,6 @@ export const getLogs = async (
   provider: Pick<providers.Provider, 'getLogs'>,
   baseFilter: Filter,
   fromBlock: number,
-  toBlock: number,
-  chainId: number
-): Promise<Log[]> => {
-  if (isBackendSupportedNetwork(chainId)) {
-    provider = new BackendProvider(chainId);
-  }
-
-  return getLogsFromProvider(provider, baseFilter, fromBlock, toBlock);
-};
-
-export const getLogsFromProvider = async (
-  provider: Pick<providers.Provider, 'getLogs'>,
-  baseFilter: Filter,
-  fromBlock: number,
   toBlock: number
 ): Promise<Log[]> => {
   try {
@@ -307,8 +293,8 @@ export const getLogsFromProvider = async (
       }
 
       const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
-      const leftPromise = getLogsFromProvider(provider, baseFilter, fromBlock, middle);
-      const rightPromise = getLogsFromProvider(provider, baseFilter, middle + 1, toBlock);
+      const leftPromise = getLogs(provider, baseFilter, fromBlock, middle);
+      const rightPromise = getLogs(provider, baseFilter, middle + 1, toBlock);
       const [left, right] = await Promise.all([leftPromise, rightPromise]);
       return [...left, ...right];
     }
@@ -316,19 +302,6 @@ export const getLogsFromProvider = async (
     throw error;
   }
 };
-
-class BackendProvider {
-  constructor(public chainId: number) {}
-
-  async getLogs(filter: Filter): Promise<Log[]> {
-    try {
-      const { data } = await axios.post(`/api/${this.chainId}/logs`, filter);
-      return data;
-    } catch (error) {
-      throw new Error(error?.response?.data ?? error?.message);
-    }
-  }
-}
 
 export const parseInputAddress = async (inputAddressOrName: string): Promise<string | undefined> => {
   // If the input is an ENS name, validate it, resolve it and return it

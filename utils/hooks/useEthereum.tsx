@@ -5,7 +5,8 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
-import { getChainRpcUrl, lookupEnsName, lookupUnsName } from 'components/common/util';
+import { BackendProvider } from 'components/common/providers';
+import { getChainRpcUrl, isBackendSupportedNetwork, lookupEnsName, lookupUnsName } from 'components/common/util';
 import { providers, utils } from 'ethers';
 import React, { ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
@@ -19,7 +20,7 @@ declare let window: {
 interface EthereumContext {
   provider?: multicall.MulticallProvider;
   connectionType?: string;
-  fallbackProvider?: providers.Provider;
+  logsProvider?: Pick<providers.Provider, 'getLogs'>;
   signer?: JsonRpcSigner;
   account?: string;
   ensName?: string;
@@ -52,15 +53,15 @@ export const EthereumProvider = ({ children }: Props) => {
     setLoading: (state) => ({ ...state, loading: true }),
   });
 
-  // The "fallback" provider is a wallet-independent provider that is used to retrieve logs
+  // The "logs provider" is a wallet-independent provider that is used to retrieve logs
   // to ensure that custom RPCs don't break Revoke.cash functionality.
-  // TODO: refactor/merge connectDefaultProvider and fallbackProvider
-  const fallbackProvider = useMemo(() => {
+  const logsProvider = useMemo(() => {
     const rpcProvider = new providers.JsonRpcProvider(
       getChainRpcUrl(chainId ?? 1, `${'88583771d63544aa'}${'ba1006382275c6f8'}`),
       'any'
     );
-    return rpcProvider;
+    const backendProvider = new BackendProvider(chainId);
+    return isBackendSupportedNetwork(chainId) ? backendProvider : rpcProvider;
   }, [chainId ?? 1]);
 
   const providerOptions = useMemo(() => {
@@ -181,9 +182,8 @@ export const EthereumProvider = ({ children }: Props) => {
       console.log('Using injected "window.ethereum" provider');
     } else {
       try {
-        // Check that the provider is available (and not rate-limited) by sending a dummy request
-        await fallbackProvider.getCode('0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 'latest');
-        await updateProvider(fallbackProvider, true);
+        const infuraProvider = new providers.InfuraProvider(1, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
+        await updateProvider(infuraProvider, true);
         console.log('Using fallback Infura provider');
       } catch {
         console.log('No web3 provider available');
@@ -216,7 +216,7 @@ export const EthereumProvider = ({ children }: Props) => {
       value={{
         provider,
         connectionType: web3Modal.cachedProvider,
-        fallbackProvider,
+        logsProvider,
         chainId,
         account,
         ensName,
