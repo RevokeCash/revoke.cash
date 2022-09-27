@@ -6,9 +6,17 @@ import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
 import { BackendProvider } from 'components/common/providers';
-import { getChainRpcUrl, isBackendSupportedNetwork, lookupEnsName, lookupUnsName } from 'components/common/util';
+import {
+  getChainExplorerUrl,
+  getChainName,
+  getChainRpcUrl,
+  isBackendSupportedNetwork,
+  lookupEnsName,
+  lookupUnsName,
+} from 'components/common/util';
+import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
-import React, { ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 
 declare let window: {
@@ -19,6 +27,7 @@ declare let window: {
 
 interface EthereumContext {
   provider?: multicall.MulticallProvider;
+  readProvider?: multicall.MulticallProvider;
   connectionType?: string;
   logsProvider?: Pick<providers.Provider, 'getLogs'>;
   signer?: JsonRpcSigner;
@@ -26,6 +35,9 @@ interface EthereumContext {
   ensName?: string;
   unsName?: string;
   chainId?: number;
+  selectedChainId?: number;
+  selectChain?: (chainId: number) => void;
+  switchInjectedWalletChain?: (chainId: number) => Promise<void>;
   connect?: () => Promise<void>;
   disconnect?: () => Promise<void>;
 }
@@ -36,11 +48,30 @@ interface Props {
   children: ReactNode;
 }
 
+const rpc = Object.fromEntries(
+  SUPPORTED_NETWORKS.map((chainId) => [chainId, getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
+);
+
+const providerOptions = {
+  walletconnect: {
+    package: WalletConnectProvider,
+    options: { rpc },
+  },
+  coinbasewallet: {
+    package: CoinbaseWalletSDK,
+    options: {
+      appName: 'Revoke.cash',
+      infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+    },
+  },
+};
+
 // Note: accounts are converted to lowercase -> getAddress'ed everywhere, because different chains (like RSK)
 // may have other checksums so we normalise it to ETH checksum
 export const EthereumProvider = ({ children }: Props) => {
   const [web3ModalInstance, setWeb3ModalInstance] = useState<any>();
   const [provider, setProvider] = useState<multicall.MulticallProvider>();
+  const [selectedChainId, setSelectedChainId] = useState<number>(1);
   const [chainId, setChainId] = useState<number>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
@@ -56,37 +87,54 @@ export const EthereumProvider = ({ children }: Props) => {
   // The "logs provider" is a wallet-independent provider that is used to retrieve logs
   // to ensure that custom RPCs don't break Revoke.cash functionality.
   const logsProvider = useMemo(() => {
-    const rpcProvider = new providers.JsonRpcProvider(
-      getChainRpcUrl(chainId ?? 1, `${'88583771d63544aa'}${'ba1006382275c6f8'}`),
-      'any'
-    );
-    const backendProvider = new BackendProvider(chainId);
-    return isBackendSupportedNetwork(chainId) ? backendProvider : rpcProvider;
-  }, [chainId ?? 1]);
+    const rpcUrl = getChainRpcUrl(selectedChainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
+    const rpcProvider = new providers.JsonRpcProvider(rpcUrl, selectedChainId);
+    const backendProvider = new BackendProvider(selectedChainId);
+    return isBackendSupportedNetwork(selectedChainId) ? backendProvider : rpcProvider;
+  }, [selectedChainId]);
 
-  const providerOptions = useMemo(() => {
-    const rpc = Object.fromEntries(
-      SUPPORTED_NETWORKS.map((chainId) => [
-        chainId,
-        getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`),
-      ])
-    );
+  const readProvider = useMemo(() => {
+    // if (selectedChainId === chainId) return provider;
+    const rpcUrl = getChainRpcUrl(selectedChainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
+    const rpcProvider = new providers.JsonRpcProvider(rpcUrl, selectedChainId);
+    return new multicall.MulticallProvider(rpcProvider, {
+      verbose: true,
+    });
+  }, [selectedChainId]);
 
-    const providerOptions = {
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: { rpc },
-      },
-      coinbasewallet: {
-        package: CoinbaseWalletSDK,
-        options: {
-          appName: 'Revoke.cash',
-          infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
-        },
-      },
+  // Switching wallet chains only works for injected wallets
+  const switchInjectedWalletChain = useCallback(async (newChainId: number) => {
+    if (chainId === newChainId) return;
+
+    const addEthereumChain = async (newChainId: number) => {
+      const chainInfo = chains.get(newChainId);
+      await window.ethereum?.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: `0x${newChainId.toString(16)}`,
+            chainName: getChainName(newChainId),
+            nativeCurrency: chainInfo.nativeCurrency,
+            rpcUrls: [getChainRpcUrl(newChainId)],
+            blockExplorerUrls: [getChainExplorerUrl(newChainId)],
+            iconUrls: [chainInfo.icon],
+          },
+        ],
+      });
     };
 
-    return providerOptions;
+    const switchEthereumChain = async (newChainId: number) => {
+      await window.ethereum?.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${newChainId.toString(16)}` }],
+      });
+    };
+
+    try {
+      await addEthereumChain(newChainId);
+    } finally {
+      await switchEthereumChain(newChainId);
+    }
   }, []);
 
   const web3Modal = useMemo(() => {
@@ -215,9 +263,13 @@ export const EthereumProvider = ({ children }: Props) => {
     <EthereumContext.Provider
       value={{
         provider,
+        readProvider,
         connectionType: web3Modal.cachedProvider,
         logsProvider,
         chainId,
+        selectedChainId,
+        selectChain: setSelectedChainId,
+        switchInjectedWalletChain,
         account,
         ensName,
         unsName,

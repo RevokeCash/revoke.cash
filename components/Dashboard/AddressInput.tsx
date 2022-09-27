@@ -12,7 +12,7 @@ interface Props {
 const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('');
 
-  const { account, ensName, unsName, provider } = useEthereum();
+  const { account, ensName, unsName } = useEthereum();
   const domainName = ensName ?? unsName;
 
   // Replace the input with the connected account if nothing was connected before
@@ -37,13 +37,6 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
   }, [inputAddressOrName, inputAddress]);
 
   const handleFormInputChanged = async (event: ChangeEvent<HTMLInputElement>) => {
-    // If no provider is set, this means that the browser is not web3 enabled
-    // and the fallback Infura provider is currently rate-limited
-    if (!provider) {
-      alert('Please use a web3 enabled browser to use revoke.cash');
-      return;
-    }
-
     setInputAddressOrName(event.target.value);
   };
 

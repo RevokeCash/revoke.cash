@@ -17,23 +17,23 @@ function Erc20Token({ token, inputAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const { chainId } = useEthereum();
+  const { selectedChainId } = useEthereum();
 
   useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+
+      // Filter out zero-value allowances and sort from high to low
+      const loadedAllowances = (await getAllowancesFromApprovals(token.contract, inputAddress, token.approvals))
+        .filter(({ allowance }) => formatAllowance(allowance, token.decimals, token.totalSupply) !== '0.000')
+        .sort((a, b) => -1 * compareBN(a.allowance, b.allowance));
+
+      setAllowances(loadedAllowances);
+      setLoading(false);
+    };
+
     loadData();
-  }, [inputAddress]);
-
-  const loadData = async () => {
-    setLoading(true);
-
-    // Filter out zero-value allowances and sort from high to low
-    const loadedAllowances = (await getAllowancesFromApprovals(token.contract, inputAddress, token.approvals))
-      .filter(({ allowance }) => formatAllowance(allowance, token.decimals, token.totalSupply) !== '0.000')
-      .sort((a, b) => -1 * compareBN(a.allowance, b.allowance));
-
-    setAllowances(loadedAllowances);
-    setLoading(false);
-  };
+  }, []);
 
   // Do not render tokens without balance or allowances
   const balanceString = toFloat(Number(token.balance), token.decimals);
@@ -47,7 +47,7 @@ function Erc20Token({ token, inputAddress }: Props) {
     );
   }
 
-  const explorerUrl = `${getChainExplorerUrl(chainId)}/address/${token.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
 
   return (
     <div className="Token">
