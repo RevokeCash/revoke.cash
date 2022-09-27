@@ -1,5 +1,6 @@
 import Divider from 'components/common/Divider';
 import Heading from 'components/common/Heading';
+import ImageLink from 'components/common/ImageLink';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
@@ -76,6 +77,33 @@ const About: NextPage = () => {
             Covalent
           </a>{' '}
           APIs are used.
+        </div>
+
+        <div>
+          <Heading text="Sponsors" type="h4" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div>
+              To keep Revoke.cash free, we rely on donations and sponsorships for revenue. If you want to support us
+              with a monthly sponsorship, please reach out through{' '}
+              <a href="https://twitter.com/RevokeCash" target="_blank">
+                Twitter
+              </a>{' '}
+              and join the list of these awesome companies and individuals that have committed to a monthly sponsorship
+              of Revoke.cash:
+            </div>
+            <div
+              style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}
+            >
+              <ImageLink
+                src="/assets/images/vendor/earnifi.png"
+                alt="Earni.fi"
+                href="https://earni.fi/"
+                height={75}
+                width={225}
+                label="Earni.fi"
+              />
+            </div>
+          </div>
         </div>
 
         <Divider />

@@ -35,3 +35,15 @@ For ENS and UNS resolution, you also need to provide a `NEXT_PUBLIC_ALCHEMY_API_
 ## Credits
 
 Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations and [Etherscan](https://etherscan.io), [CovalentHQ](https://www.covalenthq.com/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Filters out unverified tokens using tokenlists. Built with Next.js, Bootstrap and TypeScript. Uses Upstash for queueing.
+
+## Sponsors
+
+To keep Revoke.cash free, we rely on donations and sponsorships for revenue. If you want to support us with a monthly sponsorship, please reach out through [Twitter](https://twitter.com/RevokeCash) and join the list of these awesome companies and individuals that have committed to a monthly sponsorship of Revoke.cash:
+
+<p align="center">
+  <a href="https://earni.fi">
+    <img width="300" src="public/assets/images/vendor/earnifi.png">
+    <br />
+    Earni.fi
+  </a>
+</p>
