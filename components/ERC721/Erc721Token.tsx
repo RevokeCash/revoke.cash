@@ -18,26 +18,28 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
   const [allowances, setAllowances] = useState<Allowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const { chainId } = useEthereum();
+  const { selectedChainId } = useEthereum();
 
   useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+
+      const unlimitedAllowances = await getUnlimitedAllowancesFromApprovals(
+        token.contract,
+        inputAddress,
+        token.approvalsForAll
+      );
+      const limitedAllowances = await getLimitedAllowancesFromApprovals(token.contract, token.approvals);
+      const allAllowances = [...limitedAllowances, ...unlimitedAllowances].filter(
+        (allowance) => allowance !== undefined
+      );
+
+      setAllowances(allAllowances);
+      setLoading(false);
+    };
+
     loadData();
-  }, [inputAddress]);
-
-  const loadData = async () => {
-    setLoading(true);
-
-    const unlimitedAllowances = await getUnlimitedAllowancesFromApprovals(
-      token.contract,
-      inputAddress,
-      token.approvalsForAll
-    );
-    const limitedAllowances = await getLimitedAllowancesFromApprovals(token.contract, token.approvals);
-    const allAllowances = [...limitedAllowances, ...unlimitedAllowances].filter((allowance) => allowance !== undefined);
-
-    setAllowances(allAllowances);
-    setLoading(false);
-  };
+  }, []);
 
   // // Do not render tokens without balance or allowances
   if (token.balance === '0' && allowances.length === 0) return null;
@@ -53,7 +55,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
     );
   }
   const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId;
-  const explorerUrl = `${getChainExplorerUrl(chainId)}/address/${token.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
 
   return (
     <div className="Token">

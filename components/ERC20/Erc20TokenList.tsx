@@ -1,7 +1,7 @@
 import { Log } from '@ethersproject/abstract-provider';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { useEffect, useState } from 'react';
+import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC20 } from '../common/abis';
@@ -27,21 +27,9 @@ function Erc20TokenList({
   tokenMapping,
   inputAddress,
 }: Props) {
-  const [tokens, setTokens] = useState<Erc20TokenData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { readProvider, selectedChainId } = useEthereum();
 
-  const { provider, chainId } = useEthereum();
-
-  useEffect(() => {
-    loadData();
-  }, [inputAddress, provider]);
-
-  const loadData = async () => {
-    if (!inputAddress) return;
-    if (!provider) return;
-
-    setLoading(true);
-
+  const { result: tokens, loading } = useAsync<Erc20TokenData[]>(async () => {
     const filteredApprovalEvents = approvalEvents.filter((ev) => ev.topics.length === 3);
     const filteredTransferEvents = transferEvents.filter((ev) => ev.topics.length === 3);
     const allEvents = [...filteredApprovalEvents, ...filteredTransferEvents];
@@ -49,13 +37,13 @@ function Erc20TokenList({
     // Filter unique token contract addresses and convert all events to Contract instances
     const tokenContracts = allEvents
       .filter((event, i) => i === allEvents.findIndex((other) => event.address === other.address))
-      .map((event) => new Contract(getAddress(event.address), ERC20, provider));
+      .map((event) => new Contract(getAddress(event.address), ERC20, readProvider));
 
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
         const tokenApprovals = approvalEvents.filter((approval) => approval.address === contract.address);
         const verified = isVerified(contract.address, tokenMapping);
-        const icon = getTokenIcon(contract.address, chainId, tokenMapping);
+        const icon = getTokenIcon(contract.address, selectedChainId, tokenMapping);
 
         try {
           const tokenData = await getTokenData(contract, inputAddress, tokenMapping);
@@ -78,9 +66,8 @@ function Erc20TokenList({
       .filter(hasBalanceOrApprovals)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol));
 
-    setTokens(sortedTokens);
-    setLoading(false);
-  };
+    return sortedTokens;
+  }, []);
 
   if (loading) {
     return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;

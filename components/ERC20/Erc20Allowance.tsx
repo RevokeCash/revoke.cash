@@ -1,4 +1,5 @@
 import { track } from '@amplitude/analytics-browser';
+import AllowanceControls from 'components/common/AllowanceControls';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { BigNumber, Contract } from 'ethers';
 import React, { useRef, useState } from 'react';
@@ -8,8 +9,6 @@ import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
-import RevokeButton from '../common/RevokeButton';
-import UpdateInputGroup from '../common/UpdateInputGroup';
 import { addressToAppName, fromFloat, getChainExplorerUrl, shortenAddress } from '../common/util';
 import { formatAllowance } from './util';
 
@@ -24,14 +23,14 @@ interface Props {
 function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: Props) {
   const toastRef = useRef();
   const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>();
-  const { signer, chainId, provider, account } = useEthereum();
-  const { result: spenderName, loading } = useAsync(addressToAppName, [spender, chainId]);
+  const { signer, selectedChainId, account } = useEthereum();
+  const { result: spenderName, loading } = useAsync(() => addressToAppName(spender, selectedChainId), []);
 
   const revoke = async () => update('0');
 
   const update = async (newAllowance: string) => {
     const bnNew = BigNumber.from(fromFloat(newAllowance, token.decimals));
-    const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider);
+    const writeContract = new Contract(token.contract.address, token.contract.interface, signer);
 
     let tx;
     // Not all ERC20 contracts allow for simple changes in approval to be made
@@ -86,7 +85,7 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
   const spenderDisplay = spenderName || spender;
   const shortenedSpenderDisplay = spenderName || shortenAddress(spender);
 
-  const explorerBaseUrl = getChainExplorerUrl(chainId);
+  const explorerBaseUrl = getChainExplorerUrl(selectedChainId);
 
   const shortenedLink = explorerBaseUrl ? (
     <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>
@@ -104,8 +103,6 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
     spenderDisplay
   );
 
-  const canUpdate = inputAddress === account;
-
   return (
     <Form inline className="Allowance" key={spender}>
       {/* Display separate spans for the regular and shortened versions of the spender address */}
@@ -121,8 +118,12 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
           {regularLink}
         </span>
       </Form.Label>
-      {<RevokeButton canRevoke={canUpdate} revoke={revoke} id={`revoke-${token.symbol}-${spender}`} />}
-      {<UpdateInputGroup canUpdate={canUpdate} update={update} id={`update-${token.symbol}-${spender}`} />}
+      <AllowanceControls
+        revoke={revoke}
+        update={update}
+        inputAddress={inputAddress}
+        id={`${token.symbol}-${spender}`}
+      />
     </Form>
   );
 }

@@ -1,4 +1,5 @@
 import { track } from '@amplitude/analytics-browser';
+import AllowanceControls from 'components/common/AllowanceControls';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { Contract } from 'ethers';
 import React, { useRef } from 'react';
@@ -8,7 +9,6 @@ import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ADDRESS_ZERO } from '../common/constants';
 import { Erc721TokenData } from '../common/interfaces';
-import RevokeButton from '../common/RevokeButton';
 import { getChainExplorerUrl, shortenAddress } from '../common/util';
 import { Allowance } from './interfaces';
 import { addressToAppName, formatAllowance } from './util';
@@ -25,11 +25,14 @@ function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, 
   const { spender, tokenId } = allowance;
 
   const toastRef = useRef();
-  const { signer, provider, account, chainId } = useEthereum();
-  const { result: spenderName, loading } = useAsync(addressToAppName, [spender, chainId, openSeaProxyAddress]);
+  const { signer, account, selectedChainId } = useEthereum();
+  const { result: spenderName, loading } = useAsync(
+    () => addressToAppName(spender, selectedChainId, openSeaProxyAddress),
+    []
+  );
 
   const revoke = async () => {
-    const writeContract = new Contract(token.contract.address, token.contract.interface, signer ?? provider);
+    const writeContract = new Contract(token.contract.address, token.contract.interface, signer);
 
     let tx;
     try {
@@ -63,7 +66,7 @@ function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, 
 
   const spenderDisplay = spenderName || spender;
   const shortenedSpenderDisplay = spenderName || shortenAddress(spender);
-  const explorerBaseUrl = getChainExplorerUrl(chainId);
+  const explorerBaseUrl = getChainExplorerUrl(selectedChainId);
 
   const shortenedLink = explorerBaseUrl ? (
     <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>
@@ -95,7 +98,7 @@ function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, 
           {formatAllowance(tokenId)} to&nbsp;{regularLink}
         </span>
       </Form.Label>
-      {<RevokeButton canRevoke={canUpdate} revoke={revoke} id={`revoke-${token.symbol}-${spender}`} />}
+      <AllowanceControls revoke={revoke} inputAddress={inputAddress} id={`${token.symbol}-${spender}`} />
     </Form>
   );
 }

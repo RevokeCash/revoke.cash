@@ -6,7 +6,7 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import ChainSelectDropdownButton from './ChainSelectDropdownButton';
 
 const ChainSelectDropdown: React.FC = () => {
-  const { chainId } = useEthereum();
+  const { selectedChainId } = useEthereum();
 
   return (
     <Dropdown>
@@ -14,7 +14,7 @@ const ChainSelectDropdown: React.FC = () => {
         variant="outline-primary"
         style={{ display: 'flex', alignItems: 'center', borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
       >
-        <ChainLogo chainId={chainId} />
+        <ChainLogo chainId={selectedChainId} />
       </Dropdown.Toggle>
       <Dropdown.Menu style={{ height: '300px', width: '220px', overflowY: 'scroll' }}>
         <Dropdown.Header>Mainnets</Dropdown.Header>

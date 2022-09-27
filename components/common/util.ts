@@ -131,7 +131,7 @@ export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string 
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
     [ChainId.Kovan]: `https://kovan.infura.io/v3/${infuraKey}`,
-    [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
+    [ChainId.Sepolia]: `https://rpc.sepolia.dev`,
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];

@@ -1,6 +1,7 @@
 import ChainLogo from 'components/common/ChainLogo';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { useEthereum } from 'utils/hooks/useEthereum';
 import { getChainName } from '../common/util';
 
 interface Props {
@@ -8,9 +9,12 @@ interface Props {
 }
 
 const ChainSelectDropdownButton = ({ chainId }: Props) => {
+  const { selectChain } = useEthereum();
+
   return (
     <Dropdown.Item
       style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'black', padding: '0.25rem 1rem' }}
+      onSelect={() => selectChain(chainId)}
     >
       <ChainLogo chainId={chainId} />
       {getChainName(chainId)}
