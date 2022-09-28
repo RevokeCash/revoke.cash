@@ -4,6 +4,7 @@ import { useEthereum } from 'utils/hooks/useEthereum';
 import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
 import UpdateControls from './UpdateControls';
+import { getChainName } from './util';
 import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {
@@ -14,14 +15,15 @@ interface Props {
 }
 
 const AllowanceControls = ({ inputAddress, revoke, update, id }: Props) => {
-  const { account, selectedChainId, chainId } = useEthereum();
+  const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
 
   const isConnectedAddress = inputAddress === account;
-  const needsToSwitchChain = selectedChainId !== chainId;
-  const disabled = !isConnectedAddress;
+  const needsToSwitchChain = selectedChainId !== connectedChainId;
+  const canSwitchChain = connectionType === 'injected';
+  const disabled = !isConnectedAddress || (needsToSwitchChain && !canSwitchChain);
 
-  if (needsToSwitchChain) {
-    return <SwitchChainButton id={id} />;
+  if (needsToSwitchChain && canSwitchChain) {
+    return <SwitchChainButton />;
   }
 
   const revokeButton = <RevokeButton revoke={revoke} disabled={disabled} />;
@@ -33,8 +35,19 @@ const AllowanceControls = ({ inputAddress, revoke, update, id }: Props) => {
     </div>
   );
 
-  if (disabled) {
+  if (!isConnectedAddress) {
     const tooltip = <Tooltip id={`revoke-${id}`}>You can only revoke allowances of the connected account</Tooltip>;
+    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+  }
+
+  if (needsToSwitchChain && !canSwitchChain) {
+    const tooltip = (
+      <Tooltip id={`switch-${id}`}>
+        Please switch your connected network to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
+        order to revoke
+      </Tooltip>
+    );
+
     return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
   }
 
