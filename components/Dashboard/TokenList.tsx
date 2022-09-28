@@ -83,7 +83,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
     };
 
     loadData();
-  }, [inputAddress, readProvider]);
+  }, [inputAddress, selectedChainId]);
 
   if (!inputAddress) {
     return null;

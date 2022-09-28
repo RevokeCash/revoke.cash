@@ -13,9 +13,9 @@ interface Props {
 }
 
 const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
-  const { signer, chainId } = useEthereum();
+  const { signer, connectedChainId } = useEthereum();
 
-  const nativeToken = getNativeToken(chainId);
+  const nativeToken = getNativeToken(connectedChainId);
   const [amount, setAmount] = useState<string>(getDefaultAmount(nativeToken));
 
   const [show, setShow] = useState<boolean>(false);
@@ -35,7 +35,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
   }, [nativeToken]);
 
   const sendDonation = async () => {
-    if (!signer || !chainId) {
+    if (!signer || !connectedChainId) {
       alert('Please connect your web3 wallet to donate');
     }
 
@@ -55,7 +55,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
         draggable: true,
       });
 
-      track('Donated', { chainId, amount: Number(amount) });
+      track('Donated', { chainId: connectedChainId, amount: Number(amount) });
 
       handleClose();
     } catch (err) {
