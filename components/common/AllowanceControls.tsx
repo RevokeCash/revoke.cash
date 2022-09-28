@@ -17,8 +17,9 @@ interface Props {
 const AllowanceControls = ({ inputAddress, revoke, update, id }: Props) => {
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
 
-  const isConnectedAddress = inputAddress === account;
-  const needsToSwitchChain = selectedChainId !== connectedChainId;
+  const isConnected = account !== undefined;
+  const isConnectedAddress = isConnected && inputAddress === account;
+  const needsToSwitchChain = isConnected && selectedChainId !== connectedChainId;
   const canSwitchChain = connectionType === 'injected';
   const disabled = !isConnectedAddress || (needsToSwitchChain && !canSwitchChain);
 
@@ -34,6 +35,11 @@ const AllowanceControls = ({ inputAddress, revoke, update, id }: Props) => {
       {update && updateControls}
     </div>
   );
+
+  if (!isConnected) {
+    const tooltip = <Tooltip id={`revoke-${id}`}>Please connect your wallet in order to revoke</Tooltip>;
+    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+  }
 
   if (!isConnectedAddress) {
     const tooltip = <Tooltip id={`revoke-${id}`}>You can only revoke allowances of the connected account</Tooltip>;
