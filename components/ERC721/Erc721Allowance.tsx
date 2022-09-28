@@ -48,7 +48,13 @@ function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, 
     if (tx) {
       displayTransactionSubmittedToast(toastRef);
 
-      track('Revoked ERC721 allowance', { account, spender, token: token.contract.address, tokenId });
+      track('Revoked ERC721 allowance', {
+        chainId: selectedChainId,
+        account,
+        spender,
+        token: token.contract.address,
+        tokenId,
+      });
 
       await tx.wait(1);
 

@@ -96,40 +96,53 @@ export const EthereumProvider = ({ children }: Props) => {
     return new multicall.MulticallProvider(rpcProvider, { verbose: true });
   }, [selectedChainId, connectedChainId]);
 
+  const selectChain = useCallback(
+    (newChainId: number) => {
+      setSelectedChainId(newChainId);
+      track('Selected Chain', { chainId: selectedChainId });
+    },
+    [selectedChainId]
+  );
+
   // Switching wallet chains only works for injected wallets
-  const switchInjectedWalletChain = useCallback(async (newChainId: number) => {
-    if (connectedChainId === newChainId) return;
+  const switchInjectedWalletChain = useCallback(
+    async (newChainId: number) => {
+      if (connectedChainId === newChainId) return;
 
-    const addEthereumChain = async (newChainId: number) => {
-      const chainInfo = chains.get(newChainId);
-      await window.ethereum?.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: `0x${newChainId.toString(16)}`,
-            chainName: getChainName(newChainId),
-            nativeCurrency: chainInfo.nativeCurrency,
-            rpcUrls: [getChainRpcUrl(newChainId)],
-            blockExplorerUrls: [getChainExplorerUrl(newChainId)],
-            iconUrls: [chainInfo.icon],
-          },
-        ],
-      });
-    };
+      const addEthereumChain = async (newChainId: number) => {
+        const chainInfo = chains.get(newChainId);
+        await window.ethereum?.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: `0x${newChainId.toString(16)}`,
+              chainName: getChainName(newChainId),
+              nativeCurrency: chainInfo.nativeCurrency,
+              rpcUrls: [getChainRpcUrl(newChainId)],
+              blockExplorerUrls: [getChainExplorerUrl(newChainId)],
+              iconUrls: [chainInfo.icon],
+            },
+          ],
+        });
+      };
 
-    const switchEthereumChain = async (newChainId: number) => {
-      await window.ethereum?.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${newChainId.toString(16)}` }],
-      });
-    };
+      const switchEthereumChain = async (newChainId: number) => {
+        await window.ethereum?.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: `0x${newChainId.toString(16)}` }],
+        });
+      };
 
-    try {
-      await addEthereumChain(newChainId);
-    } finally {
-      await switchEthereumChain(newChainId);
-    }
-  }, []);
+      try {
+        await addEthereumChain(newChainId);
+      } finally {
+        await switchEthereumChain(newChainId);
+      }
+
+      track('Switch Wallet Chain', { from: connectedChainId, to: selectedChainId });
+    },
+    [connectedChainId, selectedChainId]
+  );
 
   const web3Modal = useMemo(() => {
     const modal = new Web3Modal({
@@ -260,7 +273,7 @@ export const EthereumProvider = ({ children }: Props) => {
         logsProvider,
         connectedChainId,
         selectedChainId,
-        selectChain: setSelectedChainId,
+        selectChain,
         switchInjectedWalletChain,
         account,
         ensName,

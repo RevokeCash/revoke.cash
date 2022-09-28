@@ -57,9 +57,15 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
       displayTransactionSubmittedToast(toastRef);
 
       if (newAllowance === '0') {
-        track('Revoked ERC20 allowance', { account, spender, token: token.contract.address });
+        track('Revoked ERC20 allowance', { chainId: selectedChainId, account, spender, token: token.contract.address });
       } else {
-        track('Updated ERC20 allowance', { account, spender, token: token.contract.address, amount: newAllowance });
+        track('Updated ERC20 allowance', {
+          chainId: selectedChainId,
+          account,
+          spender,
+          token: token.contract.address,
+          amount: newAllowance,
+        });
       }
 
       await tx.wait(1);
