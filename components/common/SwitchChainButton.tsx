@@ -1,14 +1,8 @@
 import React from 'react';
-import { Button, Tooltip } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useEthereum } from 'utils/hooks/useEthereum';
-import { getChainName } from './util';
-import WithHoverTooltip from './WithHoverTooltip';
 
-interface Props {
-  id: string;
-}
-
-const SwitchChainButton = ({ id }: Props) => {
+const SwitchChainButton = () => {
   const { selectedChainId, connectionType, switchInjectedWalletChain } = useEthereum();
   const canSwitchChain = connectionType === 'injected';
 
@@ -22,18 +16,6 @@ const SwitchChainButton = ({ id }: Props) => {
       Switch chain
     </Button>
   );
-
-  // Add tooltip if the button is disabled
-  if (!canSwitchChain) {
-    const tooltip = (
-      <Tooltip id={`switch-${id}`}>
-        Please switch your connected network to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
-        order to revoke
-      </Tooltip>
-    );
-
-    return <WithHoverTooltip tooltip={tooltip}>{button}</WithHoverTooltip>;
-  }
 
   return button;
 };
