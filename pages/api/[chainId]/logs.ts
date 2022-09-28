@@ -19,9 +19,10 @@ const handler = nc<NextApiRequest, NextApiResponse>()
   .use(rateLimiter)
   .use(ironSession(IRON_OPTIONS))
   .post(async (req, res) => {
+    console.log(req.session, (req as any).ip);
     // TODO: This can become a middleware
     if (!(req.session as any).ip || (req.session as any).ip !== (req as any).ip) {
-      return res.status(403).send({});
+      return res.status(403).send({ message: 'No API session is active' });
     }
 
     console.log('Request body', req.body);
@@ -48,7 +49,9 @@ const handler = nc<NextApiRequest, NextApiResponse>()
       throw e;
     }
 
-    return res.status(404);
+    return res.status(404).send({
+      message: `Network with chain ID ${chainId} is unsupported`,
+    });
   });
 
 export default handler;
