@@ -1,6 +1,7 @@
 import Resolution from '@unstoppabledomains/resolution';
 import { ChainId } from 'eth-chains';
 import { providers } from 'ethers';
+import { IronSessionOptions } from 'iron-session';
 
 export const TRUSTWALLET_BASE_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains';
 export const DAPP_LIST_BASE_URL = '/dapp-contract-list';
@@ -41,12 +42,13 @@ export const UNS_RESOLUTION =
     },
   });
 
-export const IRON_OPTIONS = {
+export const IRON_OPTIONS: IronSessionOptions = {
   cookieName: 'revoke_session',
   password: process.env.IRON_SESSION_PASSWORD,
   ttl: 60 * 60 * 24,
   cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
+    sameSite: 'none',
   },
 };
 

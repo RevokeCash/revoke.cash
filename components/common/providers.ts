@@ -9,7 +9,7 @@ export class BackendProvider {
       const { data } = await axios.post(`/api/${this.chainId}/logs`, filter);
       return data;
     } catch (error) {
-      throw new Error(error?.response?.data ?? error?.message);
+      throw new Error(error?.response?.data?.message ?? error?.message);
     }
   }
 }
