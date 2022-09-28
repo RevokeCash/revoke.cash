@@ -441,6 +441,6 @@ export const fallbackTokenIconOnError = (ev: any) => {
 export const isSpamToken = (token: Erc20TokenData | Erc721TokenData) => {
   const includesHttp = /https?:\/\//i.test(token.symbol);
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
-  const includesTld = /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.vision|\.team/i.test(token.symbol);
+  const includesTld = /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team/i.test(token.symbol);
   return includesHttp || includesTld;
 };

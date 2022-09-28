@@ -1,7 +1,7 @@
 import { providers as multicall } from '@0xsequence/multicall';
 import { track } from '@amplitude/analytics-browser';
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { JsonRpcSigner } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { SUPPORTED_NETWORKS } from 'components/common/constants';
@@ -26,7 +26,6 @@ declare let window: {
 };
 
 interface EthereumContext {
-  provider?: multicall.MulticallProvider;
   readProvider?: multicall.MulticallProvider;
   connectionType?: string;
   logsProvider?: Pick<providers.Provider, 'getLogs'>;
@@ -34,7 +33,7 @@ interface EthereumContext {
   account?: string;
   ensName?: string;
   unsName?: string;
-  chainId?: number;
+  connectedChainId?: number;
   selectedChainId?: number;
   selectChain?: (chainId: number) => void;
   switchInjectedWalletChain?: (chainId: number) => Promise<void>;
@@ -70,19 +69,14 @@ const providerOptions = {
 // may have other checksums so we normalise it to ETH checksum
 export const EthereumProvider = ({ children }: Props) => {
   const [web3ModalInstance, setWeb3ModalInstance] = useState<any>();
-  const [provider, setProvider] = useState<multicall.MulticallProvider>();
+  const [connectedProvider, setConnectedProvider] = useState<multicall.MulticallProvider>();
   const [selectedChainId, setSelectedChainId] = useState<number>(1);
-  const [chainId, setChainId] = useState<number>();
+  const [connectedChainId, setConnectedChainId] = useState<number>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
 
-  const { result: ensName } = useAsync(lookupEnsName, [account], {
-    setLoading: (state) => ({ ...state, loading: true }),
-  });
-
-  const { result: unsName } = useAsync(lookupUnsName, [account], {
-    setLoading: (state) => ({ ...state, loading: true }),
-  });
+  const { result: ensName } = useAsync(lookupEnsName, [account]);
+  const { result: unsName } = useAsync(lookupUnsName, [account]);
 
   // The "logs provider" is a wallet-independent provider that is used to retrieve logs
   // to ensure that custom RPCs don't break Revoke.cash functionality.
@@ -94,17 +88,17 @@ export const EthereumProvider = ({ children }: Props) => {
   }, [selectedChainId]);
 
   const readProvider = useMemo(() => {
-    // if (selectedChainId === chainId) return provider;
+    // To keep costs at bay, we use the connected provider if possible
+    if (selectedChainId === connectedChainId) return connectedProvider;
+
     const rpcUrl = getChainRpcUrl(selectedChainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
     const rpcProvider = new providers.JsonRpcProvider(rpcUrl, selectedChainId);
-    return new multicall.MulticallProvider(rpcProvider, {
-      verbose: true,
-    });
-  }, [selectedChainId]);
+    return new multicall.MulticallProvider(rpcProvider, { verbose: true });
+  }, [selectedChainId, connectedChainId]);
 
   // Switching wallet chains only works for injected wallets
   const switchInjectedWalletChain = useCallback(async (newChainId: number) => {
-    if (chainId === newChainId) return;
+    if (connectedChainId === newChainId) return;
 
     const addEthereumChain = async (newChainId: number) => {
       const chainInfo = chains.get(newChainId);
@@ -148,11 +142,11 @@ export const EthereumProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (account) {
-      setSigner(((provider as any)?.provider as Web3Provider)?.getSigner(account));
+      setSigner(((connectedProvider as any)?.provider as providers.Web3Provider)?.getSigner(account));
     } else {
       setSigner(undefined);
     }
-  }, [account]);
+  }, [account, connectedProvider]);
 
   const updateAccount = (newAccount?: string) => {
     if (newAccount) {
@@ -162,26 +156,33 @@ export const EthereumProvider = ({ children }: Props) => {
     }
   };
 
-  const updateProvider = async (newProvider: providers.JsonRpcProvider, clearAccount: boolean = false) => {
-    const { chainId: newChainId } = await newProvider.getNetwork();
-    const newAccount = clearAccount ? undefined : await getConnectedAccount(newProvider);
-    const multicallProvider = new multicall.MulticallProvider(newProvider, {
-      verbose: true,
-    });
-    setProvider(multicallProvider);
-    setChainId(newChainId);
-    updateAccount(newAccount);
-    if (!clearAccount) {
-      track('Connected Wallet', { address: newAccount, chainId: newChainId, connectionType: web3Modal.cachedProvider });
+  const updateProviderAndChainId = async (newProvider?: providers.JsonRpcProvider) => {
+    if (newProvider) {
+      const multicallProvider = new multicall.MulticallProvider(newProvider, { verbose: true });
+      const { chainId } = await newProvider.getNetwork();
+      setConnectedProvider(multicallProvider);
+      setConnectedChainId(chainId);
+    } else {
+      setConnectedProvider(undefined);
+      setConnectedChainId(undefined);
     }
   };
 
   const connect = async () => {
     try {
       const instance = await web3Modal.requestProvider();
-
       const provider = new providers.Web3Provider(instance, 'any');
-      await updateProvider(provider);
+
+      const { chainId } = await provider.getNetwork();
+      const address = await getConnectedAccount(provider);
+
+      updateProviderAndChainId(provider);
+      updateAccount(address);
+
+      // Automatically switch to the wallet's chain when connecting
+      setSelectedChainId(chainId);
+
+      track('Connected Wallet', { address, chainId, connectionType: web3Modal.cachedProvider });
 
       // Remove all listeners on 'window.ethereum' in case a default provider was connected earlier
       window.ethereum?.removeAllListeners();
@@ -194,7 +195,7 @@ export const EthereumProvider = ({ children }: Props) => {
       instance.on('chainChanged', (receivedChainId: string | number) => {
         const newChainId = Number(receivedChainId);
         console.log('chain changed to', newChainId);
-        setChainId(newChainId);
+        setConnectedChainId(newChainId);
       });
 
       setWeb3ModalInstance(instance);
@@ -207,8 +208,10 @@ export const EthereumProvider = ({ children }: Props) => {
     // Clear cached provider and 'walletconnect' localstorage items so that the connection does not get stuck on walletconnect
     web3Modal.clearCachedProvider();
     localStorage.removeItem('walletconnect');
-
     web3ModalInstance?.removeAllListeners();
+    window.ethereum?.removeAllListeners();
+    updateAccount(undefined);
+    updateProviderAndChainId(undefined);
     await connectDefaultProvider();
   };
 
@@ -216,26 +219,16 @@ export const EthereumProvider = ({ children }: Props) => {
     // If an injected provider exists, we want to use it for READ-ONLY access even if the user is not "connected"
     if (window.ethereum) {
       const provider = new providers.Web3Provider(window.ethereum, 'any');
-
-      // Pass a flag to clear the currently connected 'account' since we only want to connect the account when the user clicks 'connect'
-      await updateProvider(provider, true);
+      await updateProviderAndChainId(provider);
 
       // Make sure that the chain updates when the user changes their network (note that we add no handler for accounts here)
       window.ethereum.on('chainChanged', (receivedChainId: string | number) => {
         const newChainId = Number(receivedChainId);
         console.log('chain changed to', newChainId);
-        setChainId(newChainId);
+        setConnectedChainId(newChainId);
       });
 
       console.log('Using injected "window.ethereum" provider');
-    } else {
-      try {
-        const infuraProvider = new providers.InfuraProvider(1, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
-        await updateProvider(infuraProvider, true);
-        console.log('Using fallback Infura provider');
-      } catch {
-        console.log('No web3 provider available');
-      }
     }
   };
 
@@ -262,11 +255,10 @@ export const EthereumProvider = ({ children }: Props) => {
   return (
     <EthereumContext.Provider
       value={{
-        provider,
         readProvider,
         connectionType: web3Modal.cachedProvider,
         logsProvider,
-        chainId,
+        connectedChainId,
         selectedChainId,
         selectChain: setSelectedChainId,
         switchInjectedWalletChain,
