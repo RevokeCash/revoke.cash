@@ -6,7 +6,7 @@ import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC721Metadata } from '../common/abis';
 import { TokenMapping } from '../common/interfaces';
-import { getFullTokenMapping, getLogs, isBackendSupportedNetwork } from '../common/util';
+import { getFullTokenMapping, getLogs, isBackendSupportedChain } from '../common/util';
 import Erc20TokenList from '../ERC20/Erc20TokenList';
 import Erc721TokenList from '../ERC721/Erc721TokenList';
 
@@ -40,7 +40,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
           readProvider.getBlockNumber(),
           getFullTokenMapping(selectedChainId),
           // Create a backend session if needed
-          isBackendSupportedNetwork(selectedChainId) && axios.post('/api/login'),
+          isBackendSupportedChain(selectedChainId) && axios.post('/api/login'),
         ]);
 
         setTokenMapping(newTokenMapping);

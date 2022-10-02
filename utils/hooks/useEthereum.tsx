@@ -4,13 +4,13 @@ import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { SUPPORTED_NETWORKS } from 'components/common/constants';
+import { SUPPORTED_CHAINS } from 'components/common/constants';
 import { BackendProvider } from 'components/common/providers';
 import {
   getChainExplorerUrl,
   getChainName,
   getChainRpcUrl,
-  isBackendSupportedNetwork,
+  isBackendSupportedChain,
   lookupEnsName,
   lookupUnsName,
 } from 'components/common/util';
@@ -48,7 +48,7 @@ interface Props {
 }
 
 const rpc = Object.fromEntries(
-  SUPPORTED_NETWORKS.map((chainId) => [chainId, getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
+  SUPPORTED_CHAINS.map((chainId) => [chainId, getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
 );
 
 const providerOptions = {
@@ -84,7 +84,7 @@ export const EthereumProvider = ({ children }: Props) => {
     const rpcUrl = getChainRpcUrl(selectedChainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
     const rpcProvider = new providers.JsonRpcProvider(rpcUrl, selectedChainId);
     const backendProvider = new BackendProvider(selectedChainId);
-    return isBackendSupportedNetwork(selectedChainId) ? backendProvider : rpcProvider;
+    return isBackendSupportedChain(selectedChainId) ? backendProvider : rpcProvider;
   }, [selectedChainId]);
 
   const readProvider = useMemo(() => {
@@ -234,7 +234,7 @@ export const EthereumProvider = ({ children }: Props) => {
       const provider = new providers.Web3Provider(window.ethereum, 'any');
       await updateProviderAndChainId(provider);
 
-      // Make sure that the chain updates when the user changes their network (note that we add no handler for accounts here)
+      // Make sure that the chain updates when the user changes their chain (note that we add no handler for accounts here)
       window.ethereum.on('chainChanged', (receivedChainId: string | number) => {
         const newChainId = Number(receivedChainId);
         console.log('chain changed to', newChainId);

@@ -64,7 +64,7 @@ const Extension: NextPage = () => {
         </div>
 
         <div>
-          The Revoke.cash browser extension works with every EVM-based network such as Ethereum, Avalanche or Polygon,
+          The Revoke.cash browser extension works with every EVM-based chain such as Ethereum, Avalanche or Polygon,
           including chains that are not supported on the Revoke.cash website.
         </div>
 

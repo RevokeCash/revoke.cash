@@ -1,11 +1,7 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { IRON_OPTIONS } from 'components/common/constants';
-import {
-  isCovalentSupportedNetwork,
-  isEtherscanSupportedNetwork,
-  isNodeSupportedNetwork,
-} from 'components/common/util';
+import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'components/common/util';
 import { ironSession } from 'iron-session/express';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
@@ -30,17 +26,17 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     const chainId = Number.parseInt(req.query.chainId as string, 10);
 
     try {
-      if (isCovalentSupportedNetwork(chainId)) {
+      if (isCovalentSupportedChain(chainId)) {
         const events = await covalentEventGetter.getEvents(chainId, req.body);
         return res.send(events);
       }
 
-      if (isEtherscanSupportedNetwork(chainId)) {
+      if (isEtherscanSupportedChain(chainId)) {
         const events = await etherscanEventGetter.getEvents(chainId, req.body);
         return res.send(events);
       }
 
-      if (isNodeSupportedNetwork(chainId)) {
+      if (isNodeSupportedChain(chainId)) {
         const events = await nodeEventGetter.getEvents(chainId, req.body);
         return res.send(events);
       }
@@ -50,7 +46,7 @@ const handler = nc<NextApiRequest, NextApiResponse>()
     }
 
     return res.status(404).send({
-      message: `Network with chain ID ${chainId} is unsupported`,
+      message: `Chain with ID ${chainId} is unsupported`,
     });
   });
 

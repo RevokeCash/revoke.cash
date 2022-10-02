@@ -52,7 +52,7 @@ export const IRON_OPTIONS: IronSessionOptions = {
   },
 };
 
-export const PROVIDER_SUPPORTED_NETWORKS = [
+export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
   ChainId.Ropsten,
   ChainId.Rinkeby,
@@ -72,7 +72,7 @@ export const PROVIDER_SUPPORTED_NETWORKS = [
   ChainId.SyscoinMainnet,
 ];
 
-export const ETHERSCAN_SUPPORTED_NETWORKS = [
+export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
   ChainId.PolygonMainnet,
@@ -101,7 +101,7 @@ export const ETHERSCAN_SUPPORTED_NETWORKS = [
 
 // We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
 // We also disable testnets for the same reason
-export const COVALENT_SUPPORTED_NETWORKS = [
+export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.RSKMainnet,
   ChainId.RSKTestnet,
   ChainId.HarmonyMainnetShard0,
@@ -121,18 +121,18 @@ export const COVALENT_SUPPORTED_NETWORKS = [
   // ChainId['GodwokenTestnet(V1.1)'],
 ];
 
-export const NODE_SUPPORTED_NETWORKS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
+export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
 
-export const SUPPORTED_NETWORKS = [
-  ...PROVIDER_SUPPORTED_NETWORKS,
-  ...ETHERSCAN_SUPPORTED_NETWORKS,
-  ...COVALENT_SUPPORTED_NETWORKS,
-  ...NODE_SUPPORTED_NETWORKS,
+export const SUPPORTED_CHAINS = [
+  ...PROVIDER_SUPPORTED_CHAINS,
+  ...ETHERSCAN_SUPPORTED_CHAINS,
+  ...COVALENT_SUPPORTED_CHAINS,
+  ...NODE_SUPPORTED_CHAINS,
 ];
 
 // Make sure to update these lists when updating the above lists
 // Order is loosely based on TVL (as per DeFiLlama)
-export const NETWORK_SELECT_MAINNETS = [
+export const CHAIN_SELECT_MAINNETS = [
   ChainId.EthereumMainnet,
   ChainId.BinanceSmartChainMainnet,
   ChainId['AvalancheC-Chain'],
@@ -165,7 +165,7 @@ export const NETWORK_SELECT_MAINNETS = [
   ChainId.Palm,
 ];
 
-export const NETWORK_SELECT_TESTNETS = [
+export const CHAIN_SELECT_TESTNETS = [
   ChainId.Goerli,
   ChainId.Sepolia,
   ChainId.Ropsten,
