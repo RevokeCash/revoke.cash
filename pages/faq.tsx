@@ -102,8 +102,8 @@ const About: NextPage = () => {
             <a>browser extension</a>
           </Link>{' '}
           supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum,
-          BSC, Polygon and Avalanche. The logos in the footer of the website display the full list of supported
-          networks. If there are any other chains that you'd like to see supported, please reach out on{' '}
+          BSC, Polygon and Avalanche. The logos in the footer of the website display the full list of supported chains.
+          If there are any other chains that you'd like to see supported, please reach out on{' '}
           <a href="https://twitter.com/RevokeCash" target="_blank">
             Twitter
           </a>{' '}

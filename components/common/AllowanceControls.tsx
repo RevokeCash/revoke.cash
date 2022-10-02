@@ -49,7 +49,7 @@ const AllowanceControls = ({ inputAddress, revoke, update, id }: Props) => {
   if (needsToSwitchChain && !canSwitchChain) {
     const tooltip = (
       <Tooltip id={`switch-${id}`}>
-        Please switch your connected network to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
+        Please switch your connected chain to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
         order to revoke
       </Tooltip>
     );

@@ -4,13 +4,13 @@ import { ChainId, chains } from 'eth-chains';
 import { BigNumber, BigNumberish, providers } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import {
-  COVALENT_SUPPORTED_NETWORKS,
+  COVALENT_SUPPORTED_CHAINS,
   DAPP_LIST_BASE_URL,
   ENS_RESOLUTION,
   ETHEREUM_LISTS_CONTRACTS,
-  ETHERSCAN_SUPPORTED_NETWORKS,
-  NODE_SUPPORTED_NETWORKS,
-  PROVIDER_SUPPORTED_NETWORKS,
+  ETHERSCAN_SUPPORTED_CHAINS,
+  NODE_SUPPORTED_CHAINS,
+  PROVIDER_SUPPORTED_CHAINS,
   TRUSTWALLET_BASE_URL,
   UNS_RESOLUTION,
 } from './constants';
@@ -148,24 +148,24 @@ export function getTrustWalletName(chainId: number): string | undefined {
   return mapping[chainId];
 }
 
-export function isProviderSupportedNetwork(chainId: number): boolean {
-  return PROVIDER_SUPPORTED_NETWORKS.includes(chainId);
+export function isProviderSupportedChain(chainId: number): boolean {
+  return PROVIDER_SUPPORTED_CHAINS.includes(chainId);
 }
 
-export function isBackendSupportedNetwork(chainId: number): boolean {
-  return isCovalentSupportedNetwork(chainId) || isEtherscanSupportedNetwork(chainId) || isNodeSupportedNetwork(chainId);
+export function isBackendSupportedChain(chainId: number): boolean {
+  return isCovalentSupportedChain(chainId) || isEtherscanSupportedChain(chainId) || isNodeSupportedChain(chainId);
 }
 
-export function isCovalentSupportedNetwork(chainId: number): boolean {
-  return COVALENT_SUPPORTED_NETWORKS.includes(chainId);
+export function isCovalentSupportedChain(chainId: number): boolean {
+  return COVALENT_SUPPORTED_CHAINS.includes(chainId);
 }
 
-export function isEtherscanSupportedNetwork(chainId: number): boolean {
-  return ETHERSCAN_SUPPORTED_NETWORKS.includes(chainId);
+export function isEtherscanSupportedChain(chainId: number): boolean {
+  return ETHERSCAN_SUPPORTED_CHAINS.includes(chainId);
 }
 
-export function isNodeSupportedNetwork(chainId: number): boolean {
-  return NODE_SUPPORTED_NETWORKS.includes(chainId);
+export function isNodeSupportedChain(chainId: number): boolean {
+  return NODE_SUPPORTED_CHAINS.includes(chainId);
 }
 
 export async function getFullTokenMapping(chainId: number): Promise<TokenMapping | undefined> {
@@ -243,8 +243,8 @@ export function getTokenIcon(tokenAddress: string, chainId?: number, tokenMappin
   }
 
   // Fall back to TrustWallet/assets for logos
-  const networkName = getTrustWalletName(chainId);
-  const iconFromTrust = networkName && `${TRUSTWALLET_BASE_URL}/${networkName}/assets/${normalisedAddress}/logo.png`;
+  const chainName = getTrustWalletName(chainId);
+  const iconFromTrust = chainName && `${TRUSTWALLET_BASE_URL}/${chainName}/assets/${normalisedAddress}/logo.png`;
 
   return iconFromMapping || iconFromTrust || 'erc20.png';
 }
@@ -431,7 +431,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
   };
 
-  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Network with chainId ${chainId}`;
+  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
 };
 
 export const fallbackTokenIconOnError = (ev: any) => {

@@ -1,4 +1,4 @@
-import { DISCORD_URL, NETWORK_SELECT_MAINNETS } from 'components/common/constants';
+import { CHAIN_SELECT_MAINNETS, DISCORD_URL } from 'components/common/constants';
 import LogoLink from 'components/common/LogoLink';
 import ChainLogoLink from 'components/Footer/ChainLogoLink';
 import React from 'react';
@@ -30,7 +30,7 @@ const Footer: React.FC = () => (
         <LogoLink src="/assets/images/vendor/discord.png" alt="Official Discord" href={DISCORD_URL} />
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
-        {NETWORK_SELECT_MAINNETS.map((chainId) => (
+        {CHAIN_SELECT_MAINNETS.map((chainId) => (
           <ChainLogoLink chainId={chainId} />
         ))}
       </div>
