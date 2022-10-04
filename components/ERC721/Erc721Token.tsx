@@ -1,10 +1,10 @@
+import TokenBalance from 'components/Dashboard/TokenBalance';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc721TokenData } from '../common/interfaces';
 import { getChainExplorerUrl } from '../common/util';
 import Erc721AllowanceList from './Erc721AllowanceList';
-import Erc721TokenBalance from './Erc721TokenBalance';
 import { Allowance } from './interfaces';
 import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util';
 
@@ -59,7 +59,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
 
   return (
     <div className="Token">
-      <Erc721TokenBalance symbol={token.symbol} icon={token.icon} balance={token.balance} explorerUrl={explorerUrl} />
+      <TokenBalance symbol={token.symbol} icon={token.icon} balance={token.balance} explorerUrl={explorerUrl} />
       <Erc721AllowanceList
         token={token}
         allowances={allowances}

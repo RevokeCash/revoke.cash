@@ -1,10 +1,10 @@
+import TokenBalance from 'components/Dashboard/TokenBalance';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc20TokenData } from '../common/interfaces';
 import { compareBN, getChainExplorerUrl, toFloat } from '../common/util';
 import Erc20AllowanceList from './Erc20AllowanceList';
-import Erc20TokenBalance from './Erc20TokenBalance';
 import { Allowance } from './interfaces';
 import { formatAllowance, getAllowancesFromApprovals } from './util';
 
@@ -51,7 +51,7 @@ function Erc20Token({ token, inputAddress }: Props) {
 
   return (
     <div className="Token">
-      <Erc20TokenBalance
+      <TokenBalance
         symbol={token.symbol}
         icon={token.icon}
         balance={token.balance}
