@@ -1,12 +1,12 @@
 import Divider from 'components/common/Divider';
 import Heading from 'components/common/Heading';
 import ImageLink from 'components/common/ImageLink';
+import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { defaultSEO } from 'utils/next-seo.config';
 
 const About: NextPage = () => {
   return (

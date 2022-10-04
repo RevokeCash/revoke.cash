@@ -1,11 +1,11 @@
 import { DISCORD_URL } from 'components/common/constants';
 import Heading from 'components/common/Heading';
+import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { defaultSEO } from 'utils/next-seo.config';
 
 const About: NextPage = () => {
   return (

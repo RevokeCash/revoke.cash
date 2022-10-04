@@ -1,7 +1,7 @@
 import DashboardHeader from 'components/Header/DashboardHeader';
+import { EthereumProvider } from 'lib/hooks/useEthereum';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
-import { EthereumProvider } from 'utils/hooks/useEthereum';
 import DashboardBody from './DashboardBody';
 
 const SafeHydrate = ({ children }) => {

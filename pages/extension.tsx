@@ -2,12 +2,12 @@ import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'components/common/c
 import DownloadButton from 'components/common/DownloadButton';
 import Heading from 'components/common/Heading';
 import Logo from 'components/common/Logo';
+import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Image from 'next/image';
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { defaultSEO } from 'utils/next-seo.config';
 
 const Extension: NextPage = () => {
   return (

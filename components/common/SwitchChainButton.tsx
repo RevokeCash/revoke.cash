@@ -1,6 +1,6 @@
+import { useEthereum } from 'lib/hooks/useEthereum';
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { useEthereum } from 'utils/hooks/useEthereum';
 
 const SwitchChainButton = () => {
   const { selectedChainId, connectionType, switchInjectedWalletChain } = useEthereum();

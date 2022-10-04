@@ -1,9 +1,9 @@
 import { Log } from '@ethersproject/abstract-provider';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
+import { useEthereum } from 'lib/hooks/useEthereum';
 import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC20 } from '../common/abis';
 import { Erc20TokenData, TokenMapping } from '../common/interfaces';
 import { getTokenIcon, isSpamToken, isVerified, toFloat } from '../common/util';

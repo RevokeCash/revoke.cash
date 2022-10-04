@@ -1,6 +1,6 @@
+import { useEthereum } from 'lib/hooks/useEthereum';
 import React from 'react';
 import { Button, InputGroup } from 'react-bootstrap';
-import { useEthereum } from 'utils/hooks/useEthereum';
 import { shortenAddress } from '../common/util';
 import ChainSelectDropdown from './ChainSelectDropdown';
 

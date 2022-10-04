@@ -1,7 +1,7 @@
 import ChainLogo from 'components/common/ChainLogo';
+import { useEthereum } from 'lib/hooks/useEthereum';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { useEthereum } from 'utils/hooks/useEthereum';
 import { getChainName } from '../common/util';
 
 interface Props {
