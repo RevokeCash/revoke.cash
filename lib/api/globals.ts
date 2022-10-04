@@ -1,7 +1,7 @@
 import rateLimit from 'express-rate-limit';
-import { CovalentEventGetter } from './CovalentEventGetter';
-import { EtherscanEventGetter } from './EtherscanEventGetter';
-import { NodeEventGetter } from './NodeEventGetter';
+import { CovalentEventGetter } from './logs/CovalentEventGetter';
+import { EtherscanEventGetter } from './logs/EtherscanEventGetter';
+import { NodeEventGetter } from './logs/NodeEventGetter';
 
 // These variables should only get initiated once, which is why they live in their own file
 // (would get inintiated once per chain ID if in the /logs route file)

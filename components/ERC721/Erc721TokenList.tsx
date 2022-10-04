@@ -1,14 +1,14 @@
 import { Log } from '@ethersproject/abstract-provider';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
+import { ERC721Metadata } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { Erc721TokenData, TokenMapping } from 'lib/interfaces';
+import { getTokenIcon, isSpamToken } from 'lib/utils';
+import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from 'lib/utils/erc721';
 import { useEffect, useState } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { ERC721Metadata } from '../common/abis';
-import { Erc721TokenData, TokenMapping } from '../common/interfaces';
-import { getTokenIcon, isSpamToken } from '../common/util';
 import Erc721Token from './Erc721Token';
-import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from './util';
 
 interface Props {
   filterUnverifiedTokens: boolean;

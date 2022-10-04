@@ -1,12 +1,11 @@
 import TokenBalance from 'components/Dashboard/TokenBalance';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { Erc20TokenData, IERC20Allowance } from 'lib/interfaces';
+import { compareBN, getChainExplorerUrl, toFloat } from 'lib/utils';
+import { formatAllowance, getAllowancesFromApprovals } from 'lib/utils/erc20';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { Erc20TokenData } from '../common/interfaces';
-import { compareBN, getChainExplorerUrl, toFloat } from '../common/util';
 import Erc20AllowanceList from './Erc20AllowanceList';
-import { Allowance } from './interfaces';
-import { formatAllowance, getAllowancesFromApprovals } from './util';
 
 interface Props {
   token: Erc20TokenData;
@@ -14,7 +13,7 @@ interface Props {
 }
 
 function Erc20Token({ token, inputAddress }: Props) {
-  const [allowances, setAllowances] = useState<Allowance[]>([]);
+  const [allowances, setAllowances] = useState<IERC20Allowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const { selectedChainId } = useEthereum();

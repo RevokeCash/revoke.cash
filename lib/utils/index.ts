@@ -13,8 +13,8 @@ import {
   PROVIDER_SUPPORTED_CHAINS,
   TRUSTWALLET_BASE_URL,
   UNS_RESOLUTION,
-} from './constants';
-import { Erc20TokenData, Erc721TokenData, TokenFromList, TokenMapping, TokenStandard } from './interfaces';
+} from 'lib/constants';
+import { Erc20TokenData, Erc721TokenData, TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
 
 // Check if a token is verified in the token mapping
 export function isVerified(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
@@ -35,8 +35,13 @@ export function compareBN(a: BigNumberish, b: BigNumberish): number {
 }
 
 // Look up an address' App Name using the dapp-contract-list
-export async function addressToAppName(address: string, chainId?: number): Promise<string | undefined> {
+export async function addressToAppName(
+  address: string,
+  chainId?: number,
+  openseaProxyAddress?: string
+): Promise<string | undefined> {
   if (!chainId) return undefined;
+  if (address === openseaProxyAddress) return 'OpenSea (old)';
   const name = (await getNameFromDappList(address, chainId)) ?? (await getNameFromEthereumList(address, chainId));
   return name;
 }
@@ -452,4 +457,32 @@ export const getBalanceText = (symbol: string, balance: string, decimals?: numbe
   if (balance === 'ERC1155') return `${symbol} (ERC1155)`;
   if (decimals !== undefined) return `${symbol}: ${toFloat(Number(balance), decimals)}`;
   return `${symbol}: ${String(balance)}`;
+};
+
+export const getChainNativeToken = (chainId: number): string => chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
+
+export const getDefaultDonationAmount = (nativeToken: string): string => {
+  const mapping = {
+    ETH: '0.01',
+    AETH: '0.01',
+    RBTC: '0.001',
+    BCH: '0.05',
+    BNB: '0.05',
+    xDAI: '25',
+    MATIC: '10',
+    AVAX: '0.25',
+    TLOS: '25',
+    METIS: '0.25',
+    FUSE: '50',
+    FTM: '20',
+    ONE: '100',
+    HT: '5',
+    SDN: '25',
+    GLMR: '5',
+    MOVR: '0.25',
+    IOTX: '250',
+    KLAYTN: '25',
+  };
+
+  return mapping[nativeToken] ?? '1';
 };

@@ -1,6 +1,6 @@
-import { CHAIN_SELECT_MAINNETS, DISCORD_URL } from 'components/common/constants';
 import LogoLink from 'components/common/LogoLink';
 import ChainLogoLink from 'components/Footer/ChainLogoLink';
+import { CHAIN_SELECT_MAINNETS, DISCORD_URL } from 'lib/constants';
 import React from 'react';
 
 const Footer: React.FC = () => (

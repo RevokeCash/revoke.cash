@@ -1,14 +1,13 @@
+import { Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
 import React from 'react';
-import { Erc721TokenData } from '../common/interfaces';
 import Erc721Allowance from './Erc721Allowance';
-import { Allowance } from './interfaces';
 
 interface Props {
   token: Erc721TokenData;
-  allowances: Allowance[];
+  allowances: IERC721Allowance[];
   inputAddress: string;
   openSeaProxyAddress?: string;
-  onRevoke: (allowance: Allowance) => void;
+  onRevoke: (allowance: IERC721Allowance) => void;
 }
 
 function Erc721AllowanceList({ token, allowances, inputAddress, openSeaProxyAddress, onRevoke }: Props) {

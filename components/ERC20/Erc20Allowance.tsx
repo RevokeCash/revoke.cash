@@ -3,14 +3,14 @@ import AllowanceControls from 'components/common/AllowanceControls';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { BigNumber, Contract } from 'ethers';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { Erc20TokenData } from 'lib/interfaces';
+import { addressToAppName, fromFloat, getChainExplorerUrl, shortenAddress } from 'lib/utils';
+import { formatAllowance } from 'lib/utils/erc20';
 import React, { useRef, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
-import { Erc20TokenData } from '../common/interfaces';
-import { addressToAppName, fromFloat, getChainExplorerUrl, shortenAddress } from '../common/util';
-import { formatAllowance } from './util';
 
 interface Props {
   spender: string;

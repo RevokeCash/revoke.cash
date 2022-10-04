@@ -1,12 +1,12 @@
 import { Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
+import { ERC721Metadata } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { TokenMapping } from 'lib/interfaces';
+import { getFullTokenMapping, getLogs, isBackendSupportedChain } from 'lib/utils';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { ERC721Metadata } from '../common/abis';
-import { TokenMapping } from '../common/interfaces';
-import { getFullTokenMapping, getLogs, isBackendSupportedChain } from '../common/util';
 import Erc20TokenList from '../ERC20/Erc20TokenList';
 import Erc721TokenList from '../ERC721/Erc721TokenList';
 

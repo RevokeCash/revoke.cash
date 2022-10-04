@@ -1,6 +1,6 @@
+import { getChainInfoUrl, getChainLogo, getChainName } from 'lib/utils';
 import React from 'react';
 import LogoLink from '../common/LogoLink';
-import { getChainInfoUrl, getChainLogo, getChainName } from '../common/util';
 
 interface Props {
   chainId: number;

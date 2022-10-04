@@ -1,7 +1,7 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { shortenAddress } from 'lib/utils';
 import React from 'react';
 import { Button, InputGroup } from 'react-bootstrap';
-import { shortenAddress } from '../common/util';
 import ChainSelectDropdown from './ChainSelectDropdown';
 
 const ConnectButton: React.FC = () => {

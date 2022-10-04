@@ -1,11 +1,11 @@
 import { track } from '@amplitude/analytics-browser';
-import { DONATION_ADDRESS, GITCOIN_URL } from 'components/common/constants';
 import { utils } from 'ethers';
+import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { getDefaultAmount, getNativeToken } from './util';
 
 interface Props {
   size?: 'sm' | 'lg';
@@ -15,8 +15,8 @@ interface Props {
 const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
   const { signer, connectedChainId } = useEthereum();
 
-  const nativeToken = getNativeToken(connectedChainId);
-  const [amount, setAmount] = useState<string>(getDefaultAmount(nativeToken));
+  const nativeToken = getChainNativeToken(connectedChainId);
+  const [amount, setAmount] = useState<string>(getDefaultDonationAmount(nativeToken));
 
   const [show, setShow] = useState<boolean>(false);
   const handleShow = () => {
@@ -31,7 +31,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
   };
 
   useEffect(() => {
-    setAmount(getDefaultAmount(nativeToken));
+    setAmount(getDefaultDonationAmount(nativeToken));
   }, [nativeToken]);
 
   const sendDonation = async () => {

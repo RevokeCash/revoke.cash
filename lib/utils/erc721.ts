@@ -1,29 +1,22 @@
 import { BigNumber, Contract, providers, utils } from 'ethers';
 import { getAddress, hexDataSlice } from 'ethers/lib/utils';
-import { OPENSEA_REGISTRY } from '../common/abis';
+import { OPENSEA_REGISTRY } from 'lib/abis';
 import {
   ADDRESS_ZERO,
   DUMMY_ADDRESS,
   DUMMY_ADDRESS_2,
   MOONBIRDS_ADDRESS,
   OPENSEA_REGISTRY_ADDRESS,
-} from '../common/constants';
-import { TokenMapping } from '../common/interfaces';
-import {
-  addressToAppName as addressToAppNameBase,
-  convertString,
-  shortenAddress,
-  unpackResult,
-  withFallback,
-} from '../common/util';
-import { Allowance } from './interfaces';
+} from 'lib/constants';
+import { IERC721Allowance, TokenMapping } from 'lib/interfaces';
+import { convertString, shortenAddress, unpackResult, withFallback } from 'lib/utils';
 
 export async function getLimitedAllowancesFromApprovals(contract: Contract, approvals: providers.Log[]) {
   const deduplicatedApprovals = approvals.filter(
     (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
   );
 
-  const allowances: Allowance[] = await Promise.all(
+  const allowances: IERC721Allowance[] = await Promise.all(
     deduplicatedApprovals.map((approval) => getLimitedAllowanceFromApproval(contract, approval))
   );
 
@@ -59,7 +52,7 @@ export async function getUnlimitedAllowancesFromApprovals(
     (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
   );
 
-  const allowances: Allowance[] = await Promise.all(
+  const allowances: IERC721Allowance[] = await Promise.all(
     deduplicatedApprovals.map((approval) => getUnlimitedAllowanceFromApproval(contract, ownerAddress, approval))
   );
 
@@ -90,15 +83,6 @@ export async function getTokenData(contract: Contract, ownerAddress: string, tok
   ]);
 
   return { symbol, balance };
-}
-
-export async function addressToAppName(
-  address: string,
-  chainId?: number,
-  openseaProxyAddress?: string
-): Promise<string | undefined> {
-  if (address === openseaProxyAddress) return 'OpenSea (old)';
-  return addressToAppNameBase(address, chainId);
 }
 
 export async function getOpenSeaProxyAddress(

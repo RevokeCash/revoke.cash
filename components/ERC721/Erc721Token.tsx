@@ -1,12 +1,11 @@
 import TokenBalance from 'components/Dashboard/TokenBalance';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
+import { getChainExplorerUrl } from 'lib/utils';
+import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from 'lib/utils/erc721';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { Erc721TokenData } from '../common/interfaces';
-import { getChainExplorerUrl } from '../common/util';
 import Erc721AllowanceList from './Erc721AllowanceList';
-import { Allowance } from './interfaces';
-import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from './util';
 
 interface Props {
   token: Erc721TokenData;
@@ -15,7 +14,7 @@ interface Props {
 }
 
 function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
-  const [allowances, setAllowances] = useState<Allowance[]>([]);
+  const [allowances, setAllowances] = useState<IERC721Allowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const { selectedChainId } = useEthereum();
@@ -54,7 +53,14 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
       </div>
     );
   }
-  const allowanceEquals = (a: Allowance, b: Allowance) => a.spender === b.spender && a.tokenId === b.tokenId;
+
+  const onRevoke = (allowance: IERC721Allowance) => {
+    const allowanceEquals = (a: IERC721Allowance, b: IERC721Allowance) =>
+      a.spender === b.spender && a.tokenId === b.tokenId;
+
+    setAllowances((previousAllowances) => previousAllowances.filter((other) => !allowanceEquals(other, allowance)));
+  };
+
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
 
   return (
@@ -65,11 +71,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
         allowances={allowances}
         inputAddress={inputAddress}
         openSeaProxyAddress={openSeaProxyAddress}
-        onRevoke={(allowance: Allowance) => {
-          setAllowances((previousAllowances) =>
-            previousAllowances.filter((other) => !allowanceEquals(other, allowance))
-          );
-        }}
+        onRevoke={onRevoke}
       />
     </div>
   );

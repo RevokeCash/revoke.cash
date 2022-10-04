@@ -1,6 +1,6 @@
+import { TokenStandard } from 'lib/interfaces';
 import React from 'react';
 import Switch from 'react-switch';
-import { TokenStandard } from '../common/interfaces';
 
 interface Props {
   tokenStandard: TokenStandard;

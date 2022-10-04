@@ -1,12 +1,11 @@
+import { Erc20TokenData, IERC20Allowance } from 'lib/interfaces';
 import React from 'react';
-import { Erc20TokenData } from '../common/interfaces';
 import Erc20Allowance from './Erc20Allowance';
-import { Allowance } from './interfaces';
 
 interface Props {
   inputAddress: string;
   token: Erc20TokenData;
-  allowances: Allowance[];
+  allowances: IERC20Allowance[];
   onRevoke: (spender: string) => void;
 }
 

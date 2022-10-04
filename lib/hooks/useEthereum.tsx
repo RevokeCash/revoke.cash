@@ -4,8 +4,10 @@ import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { SUPPORTED_CHAINS } from 'components/common/constants';
-import { BackendProvider } from 'components/common/providers';
+import { chains } from 'eth-chains';
+import { providers, utils } from 'ethers';
+import { SUPPORTED_CHAINS } from 'lib/constants';
+import { BackendProvider } from 'lib/providers';
 import {
   getChainExplorerUrl,
   getChainName,
@@ -13,9 +15,7 @@ import {
   isBackendSupportedChain,
   lookupEnsName,
   lookupUnsName,
-} from 'components/common/util';
-import { chains } from 'eth-chains';
-import { providers, utils } from 'ethers';
+} from 'lib/utils';
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 

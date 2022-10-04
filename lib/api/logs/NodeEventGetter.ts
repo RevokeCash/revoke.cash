@@ -1,6 +1,6 @@
 import { Filter, Log } from '@ethersproject/abstract-provider';
-import { getLogs } from 'components/common/util';
 import { providers } from 'ethers';
+import { getLogs } from 'lib/utils';
 import { EventGetter } from './EventGetter';
 
 export class NodeEventGetter implements EventGetter {

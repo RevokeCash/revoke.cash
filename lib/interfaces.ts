@@ -36,3 +36,13 @@ export interface TokenMapping {
 }
 
 export type TokenStandard = 'ERC20' | 'ERC721';
+
+export interface IERC721Allowance {
+  spender: string;
+  tokenId?: string;
+}
+
+export interface IERC20Allowance {
+  spender: string;
+  allowance: string;
+}
