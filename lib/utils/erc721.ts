@@ -9,7 +9,8 @@ import {
   OPENSEA_REGISTRY_ADDRESS,
 } from 'lib/constants';
 import { IERC721Allowance, TokenMapping } from 'lib/interfaces';
-import { convertString, shortenAddress, unpackResult, withFallback } from 'lib/utils';
+import { shortenAddress } from '.';
+import { convertString, unpackResult, withFallback } from './promises';
 
 export async function getLimitedAllowancesFromApprovals(contract: Contract, approvals: providers.Log[]) {
   const deduplicatedApprovals = approvals.filter(

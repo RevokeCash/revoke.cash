@@ -4,8 +4,10 @@ import { displayTransactionSubmittedToast } from 'components/common/transaction-
 import { BigNumber, Contract } from 'ethers';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { Erc20TokenData } from 'lib/interfaces';
-import { addressToAppName, fromFloat, getChainExplorerUrl, shortenAddress } from 'lib/utils';
+import { fromFloat, shortenAddress } from 'lib/utils';
+import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatAllowance } from 'lib/utils/erc20';
+import { addressToAppName } from 'lib/utils/whois';
 import React, { useRef, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';

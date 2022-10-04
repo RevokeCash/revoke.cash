@@ -2,7 +2,7 @@ import { track } from '@amplitude/analytics-browser';
 import { utils } from 'ethers';
 import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils';
+import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';

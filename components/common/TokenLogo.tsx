@@ -1,4 +1,4 @@
-import { fallbackTokenIconOnError } from 'lib/utils';
+import { fallbackTokenIconOnError } from 'lib/utils/tokens';
 import React from 'react';
 
 interface Props {

@@ -4,8 +4,9 @@ import { getAddress } from 'ethers/lib/utils';
 import { ERC20 } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { Erc20TokenData, TokenMapping } from 'lib/interfaces';
-import { getTokenIcon, isSpamToken, isVerified, toFloat } from 'lib/utils';
+import { toFloat } from 'lib/utils';
 import { getTokenData } from 'lib/utils/erc20';
+import { getTokenIcon, isSpamToken, isVerifiedToken } from 'lib/utils/tokens';
 import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Erc20Token from './Erc20Token';
@@ -42,7 +43,7 @@ function Erc20TokenList({
     const unsortedTokens = await Promise.all(
       tokenContracts.map(async (contract) => {
         const tokenApprovals = approvalEvents.filter((approval) => approval.address === contract.address);
-        const verified = isVerified(contract.address, tokenMapping);
+        const verified = isVerifiedToken(contract.address, tokenMapping);
         const icon = getTokenIcon(contract.address, selectedChainId, tokenMapping);
 
         try {
