@@ -441,6 +441,15 @@ export const fallbackTokenIconOnError = (ev: any) => {
 export const isSpamToken = (token: Erc20TokenData | Erc721TokenData) => {
   const includesHttp = /https?:\/\//i.test(token.symbol);
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
-  const includesTld = /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team/i.test(token.symbol);
+  const includesTld =
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance/i.test(
+      token.symbol
+    );
   return includesHttp || includesTld;
+};
+
+export const getBalanceText = (symbol: string, balance: string, decimals?: number) => {
+  if (balance === 'ERC1155') return `${symbol} (ERC1155)`;
+  if (decimals !== undefined) return `${symbol}: ${toFloat(Number(balance), decimals)}`;
+  return `${symbol}: ${String(balance)}`;
 };
