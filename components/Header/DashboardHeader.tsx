@@ -1,5 +1,5 @@
 import React from 'react';
-import DonateButton from '../DonateButton/DonateButton';
+import DonateButton from '../DonateButton';
 import ConnectButton from './ConnectButton';
 
 const DashboardHeader: React.FC = () => {

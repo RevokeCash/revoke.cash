@@ -1,7 +1,7 @@
-import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'components/common/constants';
 import DownloadButton from 'components/common/DownloadButton';
 import Heading from 'components/common/Heading';
 import Logo from 'components/common/Logo';
+import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';

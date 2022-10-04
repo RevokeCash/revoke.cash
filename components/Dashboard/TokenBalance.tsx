@@ -1,4 +1,4 @@
-import { getBalanceText } from 'components/common/util';
+import { getBalanceText } from 'lib/utils';
 import React from 'react';
 import TokenLogo from '../common/TokenLogo';
 

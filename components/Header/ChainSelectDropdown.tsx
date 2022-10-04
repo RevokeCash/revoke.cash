@@ -1,5 +1,5 @@
 import ChainLogo from 'components/common/ChainLogo';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'components/common/constants';
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';

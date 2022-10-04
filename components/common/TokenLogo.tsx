@@ -1,5 +1,5 @@
+import { fallbackTokenIconOnError } from 'lib/utils';
 import React from 'react';
-import { fallbackTokenIconOnError } from './util';
 
 interface Props {
   src: string;

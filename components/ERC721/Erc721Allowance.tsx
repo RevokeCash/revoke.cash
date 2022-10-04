@@ -2,23 +2,22 @@ import { track } from '@amplitude/analytics-browser';
 import AllowanceControls from 'components/common/AllowanceControls';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { Contract } from 'ethers';
+import { ADDRESS_ZERO } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
+import { addressToAppName, getChainExplorerUrl, shortenAddress } from 'lib/utils';
+import { formatAllowance } from 'lib/utils/erc721';
 import React, { useRef } from 'react';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';
-import { ADDRESS_ZERO } from '../common/constants';
-import { Erc721TokenData } from '../common/interfaces';
-import { getChainExplorerUrl, shortenAddress } from '../common/util';
-import { Allowance } from './interfaces';
-import { addressToAppName, formatAllowance } from './util';
 
 interface Props {
   token: Erc721TokenData;
-  allowance: Allowance;
+  allowance: IERC721Allowance;
   inputAddress: string;
   openSeaProxyAddress?: string;
-  onRevoke: (allowance: Allowance) => void;
+  onRevoke: (allowance: IERC721Allowance) => void;
 }
 
 function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, onRevoke }: Props) {

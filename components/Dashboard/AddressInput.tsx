@@ -1,8 +1,8 @@
 import { track } from '@amplitude/analytics-browser';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { parseInputAddress } from 'lib/utils';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { parseInputAddress } from '../common/util';
 
 interface Props {
   inputAddress: string;

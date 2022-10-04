@@ -1,10 +1,10 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { getChainName } from 'lib/utils';
 import React from 'react';
 import { Tooltip } from 'react-bootstrap';
 import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
 import UpdateControls from './UpdateControls';
-import { getChainName } from './util';
 import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {

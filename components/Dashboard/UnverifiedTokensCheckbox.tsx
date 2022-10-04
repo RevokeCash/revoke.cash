@@ -1,5 +1,5 @@
+import { TokenStandard } from 'lib/interfaces';
 import React, { ChangeEvent } from 'react';
-import { TokenStandard } from '../common/interfaces';
 
 interface Props {
   tokenStandard: TokenStandard;
