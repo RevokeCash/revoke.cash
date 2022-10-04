@@ -1,10 +1,10 @@
 import { track } from '@amplitude/analytics-browser';
 import { DONATION_ADDRESS, GITCOIN_URL } from 'components/common/constants';
 import { utils } from 'ethers';
+import { useEthereum } from 'lib/hooks/useEthereum';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { useEthereum } from 'utils/hooks/useEthereum';
 import { getDefaultAmount, getNativeToken } from './util';
 
 interface Props {

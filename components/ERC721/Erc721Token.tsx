@@ -1,7 +1,7 @@
 import TokenBalance from 'components/Dashboard/TokenBalance';
+import { useEthereum } from 'lib/hooks/useEthereum';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { useEthereum } from 'utils/hooks/useEthereum';
 import { Erc721TokenData } from '../common/interfaces';
 import { getChainExplorerUrl } from '../common/util';
 import Erc721AllowanceList from './Erc721AllowanceList';

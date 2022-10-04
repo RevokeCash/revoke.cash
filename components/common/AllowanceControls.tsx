@@ -1,6 +1,6 @@
+import { useEthereum } from 'lib/hooks/useEthereum';
 import React from 'react';
 import { Tooltip } from 'react-bootstrap';
-import { useEthereum } from 'utils/hooks/useEthereum';
 import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
 import UpdateControls from './UpdateControls';

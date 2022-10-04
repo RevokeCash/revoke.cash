@@ -1,9 +1,9 @@
 import { Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
+import { useEthereum } from 'lib/hooks/useEthereum';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { useEthereum } from 'utils/hooks/useEthereum';
 import { ERC721Metadata } from '../common/abis';
 import { TokenMapping } from '../common/interfaces';
 import { getFullTokenMapping, getLogs, isBackendSupportedChain } from '../common/util';
