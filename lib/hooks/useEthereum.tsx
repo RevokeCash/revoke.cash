@@ -8,14 +8,8 @@ import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import { SUPPORTED_CHAINS } from 'lib/constants';
 import { BackendProvider } from 'lib/providers';
-import {
-  getChainExplorerUrl,
-  getChainName,
-  getChainRpcUrl,
-  isBackendSupportedChain,
-  lookupEnsName,
-  lookupUnsName,
-} from 'lib/utils';
+import { getChainExplorerUrl, getChainName, getChainRpcUrl, isBackendSupportedChain } from 'lib/utils/chains';
+import { lookupEnsName, lookupUnsName } from 'lib/utils/whois';
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 

@@ -3,7 +3,7 @@ import axiosRetry from 'axios-retry';
 import { ironSession } from 'iron-session/express';
 import { covalentEventGetter, etherscanEventGetter, nodeEventGetter, rateLimiter } from 'lib/api/globals';
 import { IRON_OPTIONS } from 'lib/constants';
-import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils';
+import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import requestIp from 'request-ip';

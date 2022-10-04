@@ -1,4 +1,4 @@
-import { getChainLogo, getChainName } from 'lib/utils';
+import { getChainLogo, getChainName } from 'lib/utils/chains';
 import React from 'react';
 import Logo from './Logo';
 
