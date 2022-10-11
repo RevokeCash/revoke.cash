@@ -1,4 +1,5 @@
 const withPreact = require('next-plugin-preact');
+const nextTranslate = require('next-translate');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,4 +14,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPreact(nextConfig);
+module.exports = withPreact(nextTranslate(nextConfig));
