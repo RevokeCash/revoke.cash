@@ -1,0 +1,17 @@
+{
+  "nav": {
+    "about": "Sobre",
+    "faq": "FAQ",
+    "extension": "Extensión"
+  },
+  "buttons": {
+    "download": "Descargar",
+    "donate": "Donar",
+    "send": "Enviar",
+    "connect": "Conectar Billetera",
+    "disconnect": "Desconectar",
+    "revoke": "Revocar",
+    "update": "Actualizar",
+    "switchChain": "Cambiar cadena"
+  }
+}

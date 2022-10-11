@@ -3,6 +3,7 @@ import { utils } from 'ethers';
 import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
+import useTranslation from 'next-translate/useTranslation';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
+  const { t } = useTranslation();
   const { signer, connectedChainId } = useEthereum();
 
   const nativeToken = getChainNativeToken(connectedChainId);
@@ -70,7 +72,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
   return (
     <>
       <Button variant="outline-primary" size={size} onClick={handleShow}>
-        Donate
+        {t('common:buttons.donate')}
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -86,7 +88,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
             </InputGroup.Append>
             <InputGroup.Append>
               <Button variant="secondary" onClick={sendDonation}>
-                Send
+                {t('common:buttons.send')}
               </Button>
             </InputGroup.Append>
           </InputGroup>

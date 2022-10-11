@@ -1,9 +1,12 @@
+import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import NavLink from './NavLink';
 
 const Header: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <div
@@ -39,9 +42,9 @@ const Header: React.FC = () => {
             </Link>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-            <NavLink to="/about" text="About" matchToHighlight="about" />
-            <NavLink to="/faq" text="FAQ" matchToHighlight="faq" />
-            <NavLink to="/extension" text="Extension" matchToHighlight="extension" />
+            <NavLink to="/about" text={t('common:nav.about')} matchToHighlight="about" />
+            <NavLink to="/faq" text={t('common:nav.faq')} matchToHighlight="faq" />
+            <NavLink to="/extension" text={t('common:nav.extension')} matchToHighlight="extension" />
           </div>
         </div>
       </div>
