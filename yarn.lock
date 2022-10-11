@@ -1462,9 +1462,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:^18.11.3":
-  version: 18.11.3
-  resolution: "@types/node@npm:18.11.3"
-  checksum: 3a2a9142d891a90a195c296149bf64a69cc0abcc42f543be911ab22b2e0ead85ff077f90af92f0f13f6e3e5e72501469200fd753dfd1101825d4646a89d3ee47
+  version: 18.11.4
+  resolution: "@types/node@npm:18.11.4"
+  checksum: 1de782b4eef4a5115396ae62137f248390ee5d1d9e9eeb49599714554cce1328af43da31bc28e7bab5a0ef859538a584a907b26163a59b42bc87b8317dc00bb8
   languageName: node
   linkType: hard
 
@@ -2850,11 +2850,11 @@ __metadata:
   linkType: hard
 
 "core-js-compat@npm:^3.25.1":
-  version: 3.25.5
-  resolution: "core-js-compat@npm:3.25.5"
+  version: 3.26.0
+  resolution: "core-js-compat@npm:3.26.0"
   dependencies:
     browserslist: ^4.21.4
-  checksum: 30686b750d675b685426ee25e41e30b83aa05ff7b79def94b457529d05c1ad123cd4d0b70d9162b077a15dc9f6f177ee997d846d0a3324176dd3c504e917309c
+  checksum: 120780ec33d441e476810abac9bf57199c2083006b179dc23d0ab0cfea096eff2a2fc3e9cb315d245735df661cfa4b76a8b8c37f5056fd02428a3cd2ea1d9f36
   languageName: node
   linkType: hard
 
@@ -5333,6 +5333,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-translate@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "next-translate@npm:1.6.0"
+  peerDependencies:
+    next: ">= 10.0.0"
+    react: ">= 16.8.0"
+  checksum: 766475bc7362fc8b6a5409586d6248e0c03405d71b5ced2274fefc275803eb68137225952ed9d1651d8bd396fec14fad42ad63b4eca64e2b038dbcc7926a3ddc
+  languageName: node
+  linkType: hard
+
 "next@npm:^12.3.1":
   version: 12.3.1
   resolution: "next@npm:12.3.1"
@@ -5800,13 +5810,13 @@ __metadata:
   linkType: hard
 
 "preact-render-to-string@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "preact-render-to-string@npm:5.2.5"
+  version: 5.2.6
+  resolution: "preact-render-to-string@npm:5.2.6"
   dependencies:
     pretty-format: ^3.8.0
   peerDependencies:
     preact: ">=10"
-  checksum: 42a735274a190577e3a1fc785ab179a8ec422345d0fd24402146aa2e3c2b216b724c94d569677f744e366c2fbbe5619bc4ab8270cb8036c366d524b54e82fd3f
+  checksum: be8d5d8fb502d422c503e68af7bcccb6facd942f3ae9a4d093ebe3f1d4f0b15c540624bdac434d53a2a8e8fb7afa4606383414e937c40933ca43445470a026ff
   languageName: node
   linkType: hard
 
@@ -6407,6 +6417,7 @@ __metadata:
     next-connect: ^0.12.2
     next-plugin-preact: ^3.0.7
     next-seo: ^5.8.0
+    next-translate: ^1.6.0
     p-queue: ^7.3.0
     preact: ^10.11.2
     preact-render-to-string: ^5.2.5

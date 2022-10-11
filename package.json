@@ -33,6 +33,7 @@
     "next-connect": "^0.12.2",
     "next-plugin-preact": "^3.0.7",
     "next-seo": "^5.8.0",
+    "next-translate": "^1.6.0",
     "p-queue": "^7.3.0",
     "preact": "^10.11.2",
     "preact-render-to-string": "^5.2.5",

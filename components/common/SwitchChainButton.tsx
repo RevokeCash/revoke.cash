@@ -1,7 +1,9 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
+import useTranslation from 'next-translate/useTranslation';
 import { Button } from 'react-bootstrap';
 
 const SwitchChainButton = () => {
+  const { t } = useTranslation();
   const { selectedChainId, connectionType, switchInjectedWalletChain } = useEthereum();
   const canSwitchChain = connectionType === 'injected';
 
@@ -12,7 +14,7 @@ const SwitchChainButton = () => {
       className="RevokeButton"
       onClick={() => switchInjectedWalletChain(selectedChainId)}
     >
-      Switch chain
+      {t('common:buttons.switchChain')}
     </Button>
   );
 
