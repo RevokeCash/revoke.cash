@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
@@ -7,9 +8,10 @@ interface Props {
 }
 
 const UpdateControls = ({ disabled, update }: Props) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState<string>('0');
 
-  let inputGroup = (
+  return (
     <InputGroup size="sm">
       <Form.Control
         type="text"
@@ -22,13 +24,11 @@ const UpdateControls = ({ disabled, update }: Props) => {
       />
       <InputGroup.Append>
         <Button disabled={disabled} className="UpdateButton" onClick={() => update(value)}>
-          Update
+          {t('common:buttons.update')}
         </Button>
       </InputGroup.Append>
     </InputGroup>
   );
-
-  return inputGroup;
 };
 
 export default UpdateControls;

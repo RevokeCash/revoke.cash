@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -6,10 +7,14 @@ interface Props {
   disabled: boolean;
 }
 
-const RevokeButton = ({ disabled, revoke }: Props) => (
-  <Button size="sm" disabled={disabled} className="RevokeButton" onClick={revoke}>
-    Revoke
-  </Button>
-);
+const RevokeButton = ({ disabled, revoke }: Props) => {
+  const { t } = useTranslation();
+
+  return (
+    <Button size="sm" disabled={disabled} className="RevokeButton" onClick={revoke}>
+      {t('common:buttons.revoke')}
+    </Button>
+  );
+};
 
 export default RevokeButton;

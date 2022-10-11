@@ -5512,6 +5512,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-translate@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "next-translate@npm:1.6.0"
+  peerDependencies:
+    next: ">= 10.0.0"
+    react: ">= 16.8.0"
+  checksum: 766475bc7362fc8b6a5409586d6248e0c03405d71b5ced2274fefc275803eb68137225952ed9d1651d8bd396fec14fad42ad63b4eca64e2b038dbcc7926a3ddc
+  languageName: node
+  linkType: hard
+
 "next@npm:^12.1.4":
   version: 12.1.4
   resolution: "next@npm:12.1.4"
@@ -6536,6 +6546,7 @@ __metadata:
     next-connect: ^0.12.2
     next-plugin-preact: ^3.0.6
     next-seo: ^5.5.0
+    next-translate: ^1.6.0
     p-queue: ^7.2.0
     preact: ^10.7.1
     preact-render-to-string: ^5.1.20
