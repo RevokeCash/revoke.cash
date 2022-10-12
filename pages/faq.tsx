@@ -80,6 +80,14 @@ const About: NextPage = () => {
         </div>
 
         <div>
+          <Heading text="I want to revoke allowances, but whenever I add ETH to my account it gets stolen." type="h4" />
+          If you have a so-called "sweeper bot" on your account that steals any money as soon as it comes in, your seed
+          phrase was compromised. This means that revoking allowances is not going to help with your wallet security.
+          Unfortunately, there is no way for your wallet to recover from this. You should abandon this wallet and create
+          a new one.
+        </div>
+
+        <div>
           <Heading text="How do I know if my funds were stolen through an allowance exploit?" type="h4" />
           If your tokens or NFTs were taken from your wallet without you sending an explicit transaction to do so, it is
           almost always because of allowances. But if your ETH was also stolen, then it most likely points to a
@@ -102,8 +110,8 @@ const About: NextPage = () => {
             <a>browser extension</a>
           </Link>{' '}
           supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum,
-          BSC, Polygon and Avalanche. The logos in the footer of the website display the full list of supported chains.
-          If there are any other chains that you'd like to see supported, please reach out on{' '}
+          BSC, Polygon and Avalanche. The full list of supported chains can be seen in the chain selectin dropdown. If
+          there are any other chains that you'd like to see supported, please reach out on{' '}
           <a href="https://twitter.com/RevokeCash" target="_blank">
             Twitter
           </a>{' '}
