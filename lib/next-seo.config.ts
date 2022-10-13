@@ -1,8 +1,6 @@
 // For some reason next-seo's DefaultSeo isn't working, so I'll do it like this
 export const defaultSEO = {
-  title: 'Revoke.cash - Revoke your Ethereum token allowances',
-  description:
-    'Protect your Ethereum token balances by revoking allowances and permissions you granted applications in the past.',
+  // title + description are included through next-translate
   openGraph: {
     url: 'https://revoke.cash/',
     images: [
