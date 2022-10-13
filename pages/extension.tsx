@@ -5,17 +5,21 @@ import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
+import Trans from 'next-translate/Trans';
+import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Extension: NextPage = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <NextSeo
         {...defaultSEO}
-        title="Revoke.cash - Browser Extension"
-        description="Protect your Ethereum token balances by getting warnings when you are about to approve allowances."
+        title={t('extension:meta.title')}
+        description={t('extension:meta.description')}
         openGraph={{
           url: 'https://revoke.cash/extension',
           images: [
@@ -40,23 +44,18 @@ const Extension: NextPage = () => {
           margin: 'auto',
         }}
       >
-        <Heading text="Revoke.cash Browser Extension" type="h2" center />
+        <Heading text={t('extension:title')} type="h2" center />
+
         <div>
-          In many cases, phishing websites try to make you sign an allowance while they pretend to be an NFT mint or
-          other legitimate use cases. When these phishing scams happen, it is recommended to use Revoke.cash to mitigate
-          the damage, but it is even better to prevent the scam in the first place.
+          <Trans i18nKey="extension:paragraph_1" />
         </div>
 
         <div>
-          This is where the Revoke.cash Browser Extension comes in. The extension pops up whenever you are about to sign
-          an allowance and will inform you of the allowance details. This can help you prevent signing malicious
-          allowances.
+          <Trans i18nKey="extension:paragraph_2" />
         </div>
 
         <div>
-          The extension also informs you when you are about to list an item for sale on OpenSea (outside of expected
-          websites such as OpenSea, Genie and Gem), as this is also a common scam. These warnings can be configured in
-          the extension settings.
+          <Trans i18nKey="extension:paragraph_3" />
         </div>
 
         <div>
@@ -64,8 +63,7 @@ const Extension: NextPage = () => {
         </div>
 
         <div>
-          The Revoke.cash browser extension works with every EVM-based chain such as Ethereum, Avalanche or Polygon,
-          including chains that are not supported on the Revoke.cash website.
+          <Trans i18nKey="extension:paragraph_4" />
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>

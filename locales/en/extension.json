@@ -1,1 +1,11 @@
-{}
+{
+  "meta": {
+    "title": "Revoke.cash - Browser Extension",
+    "description": "Protect your Ethereum token balances by getting warnings when you are about to anything potentially harmful."
+  },
+  "title": "Revoke.cash Browser Extension",
+  "paragraph_1": "In many cases, phishing websites try to make you sign an allowance while they pretend to be an NFT mint or other legitimate use cases. When these phishing scams happen, it is recommended to use Revoke.cash to mitigate the damage, but it is even better to prevent the scam in the first place.",
+  "paragraph_2": "This is where the Revoke.cash Browser Extension comes in. The extension pops up whenever you are about to sign an allowance and will inform you of the allowance details. This can help you prevent signing malicious allowances.",
+  "paragraph_3": "The extension also informs you when you are about to list an item for sale on OpenSea (outside of expected websites such as OpenSea, Genie and Gem), as this is also a common scam. These warnings can be configured in the extension settings.",
+  "paragraph_4": "The Revoke.cash browser extension works with every EVM-based chain such as Ethereum, Avalanche or Polygon, including chains that are not supported on the Revoke.cash website."
+}

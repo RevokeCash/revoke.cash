@@ -1,1 +1,13 @@
-{}
+{
+  "mainnets": "Mainnets",
+  "testnets": "Testnets",
+  "address_input": "Enter address, ENS name or Unstoppable Domain",
+  "controls": {
+    "tokens": "Tokens",
+    "nfts": "NFTs",
+    "unverified_tokens": "Include unverified tokens",
+    "zero_balances": "Include zero balances"
+  },
+  "allowance_to": "allowance to",
+  "no_allowances": "No allowances"
+}
