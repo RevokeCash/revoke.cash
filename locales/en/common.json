@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Revoke.cash - Revoke your Ethereum token allowances",
+    "description": "Protect your Ethereum token balances by revoking allowances you granted in the past."
+  },
   "nav": {
     "about": "About",
     "faq": "FAQ",
@@ -13,5 +17,6 @@
     "revoke": "Revoke",
     "update": "Update",
     "switchChain": "Switch chain"
-  }
+  },
+  "privacy_policy": "Privacy Policy"
 }
