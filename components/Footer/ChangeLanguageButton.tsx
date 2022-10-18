@@ -13,9 +13,17 @@ const ChangeLanguageButton = ({ locale }: Props) => {
   const { asPath, replace } = useRouter();
   const { lang } = useTranslation();
 
+  const persistLocaleCookie = (locale: string) => {
+    const date = new Date();
+    const expireMs = 7 * 24 * 60 * 60 * 1000; // 7 days
+    date.setTime(date.getTime() + expireMs);
+    document.cookie = `NEXT_LOCALE=${locale};expires=${date.toUTCString()};path=/`;
+  };
+
   const changeLanguage = () => {
     track('Changed language', { from: lang, to: locale });
     replace(asPath, undefined, { locale, scroll: false });
+    persistLocaleCookie(locale);
   };
 
   return (
