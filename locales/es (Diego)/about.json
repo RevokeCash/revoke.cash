@@ -1,0 +1,29 @@
+{
+  "title": "Acerca de",
+  "sections": {
+    "token_allowances": {
+      "heading": "Autorizaciones de tokens",
+      "paragraph_1": "Para usar tokens y NFTs en aplicaciones descentralizadas cmo Uniswap u Opensea tienes que dar permiso a la aplicación de gastar tokens en tu nombre - conocido como \"<0>allowance</0>\" Autorizaciones son una parte importante de usar estas aplicaciones, pero puede ser peligroso si no lo controlas."
+    },
+    "risks": {
+      "heading": "Riesgos de las autorizaciones",
+      "paragraph_1": "Los errores pueden existir y los hacks pueden ocurrir incluso en proyectos ya establecidos, y al aprobar autorizaciones de tokens, estás potencialmente exponiendo tu cartera a estos hacks. Para mantenerte seguro de hacks de autorización es una buena práctica regularmente inspeccionar y revocar tus autorizaciones. Además de revocar también debes tener en cuenta las autorizaciones que apruebas en primer lugar."
+    },
+    "revoke_cash": {
+      "heading": "Revoke.cash",
+      "paragraph_1": "Revoke.cash es una herramienta de prevención para administrar tus autorizaciones de tokens y practicar una higiene adecuada a tu cartera. Al revocar regularmente autorizaciones activas, reduces las posibilidades de convertirte en víctima de hacks de autorizaciones."
+    },
+    "read_more": {
+      "heading": "Leer más",
+      "paragraph_1": "Para leer más a profundidad sobre autorizaciones de tokens en Ethereum, asegúrate de leer el artículo <0>Unlimited ERC20 allowances considered harmful</0>. También echa un vistazo a \\n <1>FAQ</1> para una descripción general de las preguntas más frecuentes sobre autorizaciones y Revoke.cash"
+    },
+    "credits": {
+      "heading": "Créditos",
+      "paragraph_1": "Revoke.cash fue creado por <0>Rosco Kalis</0> en 2019, y desde entonces ha crecido hasta convertirse en un elemento fundamental de la seguridad en web3. Para la red de Ethereum y muchas otras redes, la información de autorización es recuperada directamente del blockchain. Para la mayoría de las otras redes, una combinación de APIs de <1>Etherscan</1> y <2>Covalent</2> son utilizadas."
+    },
+    "sponsors": {
+      "heading": "Patrocinadores",
+      "paragraph_1": "Para mantener Revoke.cash gratis, dependemos de donaciones y patrocinios para obtener ingresos. Si quieres apoyarnos con un patrocinio mensual, por favor, escríbenos a través de <0>Twitter</0> y únete a la lista de estas increíbles compañías e individuos que se han comprometido a un patrocinio mensual de Revoke.cash:"
+    }
+  }
+}

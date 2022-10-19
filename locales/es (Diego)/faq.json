@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "title": "Revoke.cash - Preguntas frecuentes.",
+    "description": "Respuestas a todas tus preguntas sobre autorizaciones, Revoke.cash y seguridad de cartera."
+  },
+  "title": "Preguntas Frecuentes",
+  "questions": {
+    "whole_wallet_at_risk": {
+      "question": "Si tengo una autorización \"ilimitada\", ¿eso quiere decir que toda mi cartera está en riesgo?",
+      "answer": "No. Una autorización \"ilimitada\" solo se aplica al token o colección de NFTs a la que le diste autorización. Así que si diste una autorización ilimitada de tu DAI, entonces <0>todo tu DAI</0> podría estar en riesgo, pero nada de tu USDC. De igual forma, una autorización \"ilimitada\" de tus Bored Apes no afecta a tus Cool Cats."
+    },
+    "enough_to_disconnect": {
+      "question": "¿Es suficiente solo \"desconectar\" mi cartera en lugar de revocar las autorizaciones?",
+      "answer": "No. Desconectar tu cartera (como MetaMask) no hace <0>nada</0> para protegerte de hacks de autorización - o casi cualquier otro hack. La única cosa que pasa cuándo desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas."
+    },
+    "hardware_wallets": {
+      "question": "¿Las carteras hardware me pueden salvar de hacks de autorización?",
+      "answer": "No. En general, las carteras hardware son mucho más seguras que carteras de celular o carteras basadas en navegador porque las llaves de la cartera son guardadas de manera segura en el dispositivo, haciendo que sea imposible robar las llaves sin tener acceso adecuado al dispositivo. Pero con las autorizaciones nadie <0>tiene</0> que robar tus llaves para tomar tus tokens. Debido a eso, las carteras hardware no ofrecen protección adicional contra hacks de autorización."
+    },
+    "multiple_allowances": {
+      "question": "¿Puedo revocar múltiples autorizaciones al mismo tiempo?",
+      "answer": "No. Debido a la forma en la que realmente funcionan las autorizaciones, se <0>requiere</0> de 1 transacción por autorización. Así que es técnicamente imposible revocar múltiples autorizaciones en una sola transacción."
+    },
+    "recover_assets": {
+      "question": "Me acaban de robar mis fondos, ¿puedo usar Revoke.cash para recuperarlos?",
+      "answer": "No. Revoke.cash es una herramienta <0>preventiva</0> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuyes las posibilidades de convertirte en una víctima de hacks de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro."
+    },
+    "wallet_mentions_approve": {
+      "question": "¿Por qué la ventana de mi cartera dice \"aprobar\" o \"aprobar para todos\" al revocar?",
+      "answer": "En los contratos inteligentes del token, las funciones para aprobar y revocar autorizaciones son la misma función. La diferencia es que la estableces en 0 (para tokens ERC20) o \"falso\" (para NFTs) cuando revocas la autorización.\\nPuedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para autorizaciones ERC20), o la pestaña de \"datos\" (para NFTs) en MetaMask."
+    },
+    "sweeper_bot": {
+      "question": "Quiero revocar autorizaciones, pero mi ETH es robado siempre que lo agrego a mi cuenta.",
+      "answer": "Si tienes un \"sweeper bot\" en tu cuenta que roba todo el ETH en cuánto ingresa, tu frase semilla fue comprometida. Esto quiere decir que revocar autorizaciones no te va a ayudar con tu seguridad de cartera. Desafortunadamente, no hay ninguna manera de que tu cartera se recupere de esto. Debes abandonar esta cartera y crear una nueva."
+    },
+    "stolen_through_allowances": {
+      "question": "¿Cómo sé si mis fondos fueron robados a través de un hack de autorización?",
+      "answer": "Si tus token o NFTs fueron tomados de tu cartera sin que enviaras una transacción explícita para hacerlo, casi siempre se debe a las autorizaciones. Pero si tu ETH también fue robado junto con los otros activos, lo más probable es que tu frase semilla haya sido comprometida y tienes que migrar a una cartera completamente nueva."
+    },
+    "which_allowances": {
+      "question": "¿Cuáles autorizaciones tengo que revocar?",
+      "answer": "Elegir qué autorizaciones revocar siempre es un intercambio entre seguridad y conveniencia. Para ciertos protocolos bien conocidos (como Uniswap) lo más probable es que está bien dejar las autorizaciones activas, pero para contratos inteligentes más nuevos y menos conocidos, es más prudente revocar autorizaciones. También considera que algunos casos de uso requieren que mantengas las autorizaciones activas. Por ejemplo, si tienes listados activos en OpenSea tendrás que dejar las autorizaciones activas para mantener activo el listado."
+    },
+    "which_chains": {
+      "question": "¿Con qué redes funciona Revoke.cash?",
+      "answer": "La extensión de navegador Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM incluyendo Ethereum, BSC, Polygon y Avalanche. La lista completa de las redes compatibles puede verse en la sección desplegable de redes. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <1>Twitter</1> o <2>Discord</2>."
+    },
+    "other_question": {
+      "question": "Mi pregunta no está aquí.",
+      "answer": "Si tienes cualquier pregunta que no haya sido mencionada en esta sección, por favor escríbenos en <0>Twitter</0> o <1>Discord</1>."
+    }
+  }
+}
