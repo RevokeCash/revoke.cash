@@ -55,15 +55,27 @@ const Extension: NextPage = () => {
         </div>
 
         <div>
-          <Trans i18nKey="extension:paragraph_3" />
-        </div>
-
-        <div>
           <Image src="/assets/images/extension-screenshot-1.png" height="800" width="1280" />
         </div>
 
         <div>
+          <Trans i18nKey="extension:paragraph_3" />
+        </div>
+
+        <div>
           <Trans i18nKey="extension:paragraph_4" />
+        </div>
+
+        <div>
+          <Image src="/assets/images/extension-screenshot-3.png" height="800" width="1280" />
+        </div>
+
+        <div>
+          <Trans i18nKey="extension:paragraph_5" />
+        </div>
+
+        <div>
+          <Trans i18nKey="extension:paragraph_6" />
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
