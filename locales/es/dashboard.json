@@ -1,1 +1,13 @@
-{}
+{
+  "mainnets": "Redes principales",
+  "testnets": "Redes de prueba",
+  "address_input": "Ingresar dirección, nombre de ENS o Unstoppable Domain",
+  "controls": {
+    "tokens": "Tokens",
+    "nfts": "NFT's",
+    "unverified_tokens": "Incluir tokens no-verificados",
+    "zero_balances": "Incluir saldos cero"
+  },
+  "allowance_to": "autorización a",
+  "no_allowances": "Sin autorizaciones"
+}

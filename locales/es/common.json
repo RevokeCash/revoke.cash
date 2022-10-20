@@ -1,6 +1,10 @@
 {
+  "meta": {
+    "title": "Revoke.cash - Revoca las autorizaciones de tus tokens en Ethereum",
+    "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado"
+  },
   "nav": {
-    "about": "Sobre",
+    "about": "Acerca de",
     "faq": "FAQ",
     "extension": "Extensión"
   },
@@ -8,10 +12,11 @@
     "download": "Descargar",
     "donate": "Donar",
     "send": "Enviar",
-    "connect": "Conectar Billetera",
+    "connect": "Conectar cartera",
     "disconnect": "Desconectar",
     "revoke": "Revocar",
     "update": "Actualizar",
-    "switchChain": "Cambiar cadena"
-  }
+    "switchChain": "Cambiar de red"
+  },
+  "privacy_policy": "Política de privacidad"
 }
