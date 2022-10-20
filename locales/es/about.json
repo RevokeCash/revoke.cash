@@ -15,7 +15,7 @@
     },
     "read_more": {
       "heading": "Leer más",
-      "paragraph_1": "Para leer más a profundidad sobre autorizaciones de tokens en Ethereum, asegúrate de leer el artículo <0>Unlimited ERC20 allowances considered harmful</0>. También echa un vistazo a \\n <1>FAQ</1> para una descripción general de las preguntas más frecuentes sobre autorizaciones y Revoke.cash"
+      "paragraph_1": "Para leer más a profundidad sobre autorizaciones de tokens en Ethereum, asegúrate de leer el artículo <0>Unlimited ERC20 allowances considered harmful</0>. También echa un vistazo a <1>FAQ</1> para una descripción general de las preguntas más frecuentes sobre autorizaciones y Revoke.cash"
     },
     "credits": {
       "heading": "Créditos",

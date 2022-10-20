@@ -27,7 +27,7 @@
     },
     "wallet_mentions_approve": {
       "question": "¿Por qué la ventana de mi cartera dice \"aprobar\" o \"aprobar para todos\" al revocar?",
-      "answer": "En los contratos inteligentes del token, las funciones para aprobar y revocar autorizaciones son la misma función. La diferencia es que la estableces en 0 (para tokens ERC20) o \"falso\" (para NFTs) cuando revocas la autorización.\\nPuedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para autorizaciones ERC20), o la pestaña de \"datos\" (para NFTs) en MetaMask."
+      "answer": "En los contratos inteligentes del token, las funciones para aprobar y revocar autorizaciones son la misma función. La diferencia es que la estableces en 0 (para tokens ERC20) o \"falso\" (para NFTs) cuando revocas la autorización. Puedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para autorizaciones ERC20), o la pestaña de \"datos\" (para NFTs) en MetaMask."
     },
     "sweeper_bot": {
       "question": "Quiero revocar autorizaciones, pero mi ETH es robado siempre que lo agrego a mi cuenta.",
