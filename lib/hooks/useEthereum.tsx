@@ -42,7 +42,7 @@ interface Props {
 }
 
 const rpc = Object.fromEntries(
-  SUPPORTED_CHAINS.map((chainId) => [chainId, getChainRpcUrl(chainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`)])
+  SUPPORTED_CHAINS.map((chainId) => [chainId, getChainRpcUrl(chainId, process.env.NEXT_PUBLIC_INFURA_API_KEY)])
 );
 
 const providerOptions = {
@@ -54,7 +54,7 @@ const providerOptions = {
     package: CoinbaseWalletSDK,
     options: {
       appName: 'Revoke.cash',
-      infuraId: `${'88583771d63544aa'}${'ba1006382275c6f8'}`,
+      infuraId: process.env.NEXT_PUBLIC_INFURA_API_KEY,
     },
   },
 };
@@ -75,7 +75,7 @@ export const EthereumProvider = ({ children }: Props) => {
   // The "logs provider" is a wallet-independent provider that is used to retrieve logs
   // to ensure that custom RPCs don't break Revoke.cash functionality.
   const logsProvider = useMemo(() => {
-    const rpcUrl = getChainRpcUrl(selectedChainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
+    const rpcUrl = getChainRpcUrl(selectedChainId, process.env.NEXT_PUBLIC_INFURA_API_KEY);
     const rpcProvider = new providers.JsonRpcProvider(rpcUrl, selectedChainId);
     const backendProvider = new BackendProvider(selectedChainId);
     return isBackendSupportedChain(selectedChainId) ? backendProvider : rpcProvider;
@@ -85,7 +85,7 @@ export const EthereumProvider = ({ children }: Props) => {
     // To keep costs at bay, we use the connected provider if possible
     if (selectedChainId === connectedChainId) return connectedProvider;
 
-    const rpcUrl = getChainRpcUrl(selectedChainId, `${'88583771d63544aa'}${'ba1006382275c6f8'}`);
+    const rpcUrl = getChainRpcUrl(selectedChainId, process.env.NEXT_PUBLIC_INFURA_API_KEY);
     const rpcProvider = new providers.JsonRpcProvider(rpcUrl, selectedChainId);
     return new multicall.MulticallProvider(rpcProvider, { verbose: true });
   }, [selectedChainId, connectedChainId]);
