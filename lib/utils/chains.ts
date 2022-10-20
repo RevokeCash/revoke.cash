@@ -55,6 +55,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
     [ChainId.Mumbai]: 'Polygon Mumbai',
     [ChainId.OptimisticEthereumTestnetGoerli]: 'Optimism Goerli',
+    [421613]: 'Arbitrum Goerli',
     [ChainId.CeloAlfajoresTestnet]: 'Celo Alfajores',
     [ChainId.HuobiECOChainTestnet]: 'HECO Testnet',
     [ChainId.MetisStardustTestnet]: 'Metis Stardust',
@@ -69,8 +70,6 @@ export const getChainName = (chainId: number): string => {
 
 export function getChainExplorerUrl(chainId: number): string | undefined {
   const overrides = {
-    [ChainId.Ropsten]: 'https://ropsten.etherscan.io',
-    [ChainId.Kovan]: 'https://kovan.etherscan.io',
     [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
     [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
@@ -85,6 +84,7 @@ export function getChainExplorerUrl(chainId: number): string | undefined {
     [ChainId.SyscoinMainnet]: 'https://explorer.syscoin.org',
     [ChainId.Astar]: 'https://blockscout.com/astar',
     [ChainId.Gnosis]: 'https://gnosisscan.io',
+    [421613]: 'https://goerli.arbiscan.io',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -96,9 +96,9 @@ export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string 
   // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides = {
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
+    [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
-    [ChainId.Kovan]: `https://kovan.infura.io/v3/${infuraKey}`,
-    [ChainId.Sepolia]: `https://rpc.sepolia.dev`,
+    [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -139,10 +139,7 @@ export const getChainTrustWalletName = (chainId: number): string | undefined => 
 export const getChainLogo = (chainId: number): string => {
   const mapping = {
     [ChainId.EthereumMainnet]: '/assets/images/vendor/chains/ethereum.png',
-    [ChainId.Ropsten]: '/assets/images/vendor/chains/ethereum.png',
-    [ChainId.Rinkeby]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.Goerli]: '/assets/images/vendor/chains/ethereum.png',
-    [ChainId.Kovan]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.Sepolia]: '/assets/images/vendor/chains/ethereum.png',
     [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.png',
     [ChainId.TelosEVMTestnet]: '/assets/images/vendor/chains/telos.png',
@@ -162,7 +159,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FantomOpera]: '/assets/images/vendor/chains/fantom.png',
     [ChainId.FantomTestnet]: '/assets/images/vendor/chains/fantom.png',
     [ChainId.ArbitrumOne]: '/assets/images/vendor/chains/arbitrum.svg',
-    [ChainId.ArbitrumRinkeby]: '/assets/images/vendor/chains/arbitrum.svg',
+    [421613]: '/assets/images/vendor/chains/arbitrum.svg', // Arbitrum Goerli
     [ChainId.HuobiECOChainMainnet]: '/assets/images/vendor/chains/heco.png',
     [ChainId.HuobiECOChainTestnet]: '/assets/images/vendor/chains/heco.png',
     [ChainId.Moonbeam]: '/assets/images/vendor/chains/moonbeam.png',

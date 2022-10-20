@@ -54,10 +54,7 @@ export const IRON_OPTIONS: IronSessionOptions = {
 
 export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
-  ChainId.Ropsten,
-  ChainId.Rinkeby,
   ChainId.Goerli,
-  ChainId.Kovan,
   ChainId.Sepolia,
   ChainId.TelosEVMMainnet,
   ChainId.TelosEVMTestnet,
@@ -82,7 +79,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
   ChainId.ArbitrumOne,
-  ChainId.ArbitrumRinkeby,
+  421613, // Arbitrum Goerli
   ChainId.HuobiECOChainMainnet,
   ChainId.HuobiECOChainTestnet,
   ChainId.Moonbeam,
@@ -168,13 +165,10 @@ export const CHAIN_SELECT_MAINNETS = [
 export const CHAIN_SELECT_TESTNETS = [
   ChainId.Goerli,
   ChainId.Sepolia,
-  ChainId.Ropsten,
-  ChainId.Rinkeby,
-  ChainId.Kovan,
   ChainId.BinanceSmartChainTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.Mumbai,
-  ChainId.ArbitrumRinkeby,
+  421613, // Arbitrum Goerli
   ChainId.OptimisticEthereumTestnetGoerli,
   ChainId.CronosTestnet,
   ChainId.FantomTestnet,

@@ -121,7 +121,7 @@ const API_URLS = {
   [ChainId.FantomOpera]: 'https://api.ftmscan.com/api',
   [ChainId.FantomTestnet]: 'https://api-testnet.ftmscan.com/api',
   [ChainId.ArbitrumOne]: 'https://api.arbiscan.io/api',
-  [ChainId.ArbitrumRinkeby]: 'https://api-testnet.arbiscan.io/api',
+  [421613]: 'https://api-goerli.arbiscan.io/api',
   [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
   [ChainId.HuobiECOChainTestnet]: 'https://api-testnet.hecoinfo.com/api',
   [ChainId.Moonbeam]: 'https://api-moonbeam.moonscan.io/api',
