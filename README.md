@@ -26,11 +26,13 @@ yarn
 yarn dev
 ```
 
-If you want to use the extended multichain support, you'll also need to copy the `.example.env` file into `.env` and fill it with a random 32-character `IRON_SESSION_PASSWORD`, a list of `COVALENT_API_KEYS` that you can request on their website, a mapping of `NODE_URLS`, and a mapping of Etherscan-like platform API keys.
+### Environment variables
 
-If you need to run the application in a serverless environment, you'll need to configure an [Upstash](https://upstash.com) database and add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` environment variables. If none are configured, rate limiting external API calls will be done with an in-memory queue.
+An `.example.env` file is provided that needs to be copied into a `.env` file and filled out.
 
-For ENS and UNS resolution, you also need to provide a `NEXT_PUBLIC_ALCHEMY_API_KEY` environment variable. To use Amplitude analytics, you also need to provide a `NEXT_PUBLIC_AMPLITUDE_API_KEY` environment variable.
+Some of these variables are integral to the functioning of Revoke.cash. `NEXT_PUBLIC_INFURA_API_KEY` which is used for reading data from Ethereum Mainnet + Testnets. `NODE_URLS` is used for reading data from Optimism Mainnet + Testnet. `COVALENT_API_KEYS` is used for certain chains such as RSK and Harmony. `ETHERSCAN_API_KEYS` is used for many of the other chains such as Polygon or Avalanche. If you omit any of these variables, Revoke.cash will not work for the chains you omitted.
+
+Then there are a few less essential variables. `IRON_SESSION_PASSWORD` is used for encrypting session cookies and can be filled with any random 32-character string. `NEXT_PUBLIC_ALCHEMY_API_KEY` is used for ENS and UNS name resolutions - if omitted those resolutions will not work. `NEXT_PUBLIC_AMPLITUDE_API_KEY` is used for Analytics - if omitted, no Analytics are collected. `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are used for queueing third-party API calls - these are only necessary when hosting in a serverless environment such as Vercel.
 
 ## Credits
 
