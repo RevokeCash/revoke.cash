@@ -1,6 +1,7 @@
 import { track } from '@amplitude/analytics-browser';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { parseInputAddress } from 'lib/utils';
+import useTranslation from 'next-translate/useTranslation';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
+  const { t } = useTranslation();
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('');
 
   const { account, ensName, unsName } = useEthereum();
@@ -45,7 +47,7 @@ const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
       <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <Form.Control
           className="AddressInput text-center"
-          placeholder="Enter address, ENS name or Unstoppable Domain"
+          placeholder={t('dashboard:address_input')}
           value={inputAddressOrName}
           onChange={handleFormInputChanged}
           onDoubleClick={() => {
