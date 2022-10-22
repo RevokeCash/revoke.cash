@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { ERC721Metadata } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { Erc721TokenData, TokenMapping } from 'lib/interfaces';
+import { DashboardSettings, Erc721TokenData, TokenMapping } from 'lib/interfaces';
 import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from 'lib/utils/erc721';
 import { getTokenIcon, isSpamToken } from 'lib/utils/tokens';
 import { useEffect, useState } from 'react';
@@ -11,8 +11,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import Erc721Token from './Erc721Token';
 
 interface Props {
-  filterUnverifiedTokens: boolean;
-  filterZeroBalances: boolean;
+  settings: DashboardSettings;
   transferEvents: Log[];
   approvalEvents: Log[];
   approvalForAllEvents: Log[];
@@ -21,8 +20,7 @@ interface Props {
 }
 
 function Erc721TokenList({
-  filterUnverifiedTokens,
-  filterZeroBalances,
+  settings,
   transferEvents,
   approvalEvents,
   approvalForAllEvents,
@@ -108,14 +106,15 @@ function Erc721TokenList({
 
   const tokenComponents = tokens
     .filter((token) => !isSpamToken(token))
-    .filter((token) => !filterUnverifiedTokens || token.verified)
-    .filter((token) => !filterZeroBalances || !(token.balance === '0'))
+    .filter((token) => settings.includeUnverifiedTokens || token.verified)
+    .filter((token) => settings.includeTokensWithoutBalances || token.balance !== '0')
     .map((token) => (
       <Erc721Token
         key={token.contract.address}
         token={token}
         inputAddress={inputAddress}
         openSeaProxyAddress={openSeaProxyAddress}
+        settings={settings}
       />
     ));
 

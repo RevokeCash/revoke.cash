@@ -1,6 +1,6 @@
 import TokenBalance from 'components/Dashboard/TokenBalance';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { Erc20TokenData, IERC20Allowance } from 'lib/interfaces';
+import { DashboardSettings, Erc20TokenData, IERC20Allowance } from 'lib/interfaces';
 import { compareBN, toFloat } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatAllowance, getAllowancesFromApprovals } from 'lib/utils/erc20';
@@ -11,9 +11,10 @@ import Erc20AllowanceList from './Erc20AllowanceList';
 interface Props {
   token: Erc20TokenData;
   inputAddress: string;
+  settings: DashboardSettings;
 }
 
-function Erc20Token({ token, inputAddress }: Props) {
+function Erc20Token({ token, inputAddress, settings }: Props) {
   const [allowances, setAllowances] = useState<IERC20Allowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -35,10 +36,6 @@ function Erc20Token({ token, inputAddress }: Props) {
     loadData();
   }, []);
 
-  // Do not render tokens without balance or allowances
-  const balanceString = toFloat(Number(token.balance), token.decimals);
-  if (balanceString === '0.000' && allowances.length === 0) return null;
-
   if (loading) {
     return (
       <div className="Token">
@@ -47,7 +44,20 @@ function Erc20Token({ token, inputAddress }: Props) {
     );
   }
 
+  const hasZeroBalance = toFloat(Number(token.balance), token.decimals) === '0.000';
+  const hasNoAllowances = allowances.length === 0;
+
+  // Do not render tokens without balance or allowances
+  if (hasZeroBalance && hasNoAllowances) return null;
+
+  // Do not render tokens without allowances if that is the setting
+  if (!settings.includeTokensWithoutAllowances && hasNoAllowances) return null;
+
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
+
+  const onRevoke = (spender: string) => {
+    setAllowances((previousAllowances) => previousAllowances.filter((allowance) => allowance.spender !== spender));
+  };
 
   return (
     <div className="Token">
@@ -58,16 +68,7 @@ function Erc20Token({ token, inputAddress }: Props) {
         decimals={token.decimals}
         explorerUrl={explorerUrl}
       />
-      <Erc20AllowanceList
-        inputAddress={inputAddress}
-        token={token}
-        allowances={allowances}
-        onRevoke={(spender) => {
-          setAllowances((previousAllowances) =>
-            previousAllowances.filter((allowance) => allowance.spender !== spender)
-          );
-        }}
-      />
+      <Erc20AllowanceList inputAddress={inputAddress} token={token} allowances={allowances} onRevoke={onRevoke} />
     </div>
   );
 }

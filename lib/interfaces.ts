@@ -46,3 +46,9 @@ export interface IERC20Allowance {
   spender: string;
   allowance: string;
 }
+
+export interface DashboardSettings {
+  includeUnverifiedTokens: boolean;
+  includeTokensWithoutBalances: boolean;
+  includeTokensWithoutAllowances: boolean;
+}

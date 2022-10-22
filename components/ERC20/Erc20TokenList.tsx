@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { ERC20 } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { Erc20TokenData, TokenMapping } from 'lib/interfaces';
+import { DashboardSettings, Erc20TokenData, TokenMapping } from 'lib/interfaces';
 import { toFloat } from 'lib/utils';
 import { getTokenData } from 'lib/utils/erc20';
 import { getTokenIcon, isSpamToken, isVerifiedToken } from 'lib/utils/tokens';
@@ -12,22 +12,14 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import Erc20Token from './Erc20Token';
 
 interface Props {
-  filterUnverifiedTokens: boolean;
-  filterZeroBalances: boolean;
+  settings: DashboardSettings;
   transferEvents: Log[];
   approvalEvents: Log[];
   tokenMapping?: TokenMapping;
   inputAddress?: string;
 }
 
-function Erc20TokenList({
-  filterUnverifiedTokens,
-  filterZeroBalances,
-  transferEvents,
-  approvalEvents,
-  tokenMapping,
-  inputAddress,
-}: Props) {
+function Erc20TokenList({ settings, transferEvents, approvalEvents, tokenMapping, inputAddress }: Props) {
   const { readProvider, selectedChainId } = useEthereum();
 
   const { result: tokens, loading } = useAsync<Erc20TokenData[]>(async () => {
@@ -78,11 +70,15 @@ function Erc20TokenList({
     return <div className="TokenList">No token balances</div>;
   }
 
+  const hasZeroBalance = (token: Erc20TokenData) => toFloat(Number(token.balance), token.decimals) !== '0.000';
+
   const tokenComponents = tokens
     .filter((token) => !isSpamToken(token))
-    .filter((token) => !filterUnverifiedTokens || token.verified)
-    .filter((token) => !filterZeroBalances || !(toFloat(Number(token.balance), token.decimals) === '0.000'))
-    .map((token) => <Erc20Token key={token.contract.address} token={token} inputAddress={inputAddress} />);
+    .filter((token) => settings.includeUnverifiedTokens || token.verified)
+    .filter((token) => settings.includeTokensWithoutBalances || hasZeroBalance(token))
+    .map((token) => (
+      <Erc20Token key={token.contract.address} token={token} inputAddress={inputAddress} settings={settings} />
+    ));
 
   return <div className="TokenList">{tokenComponents}</div>;
 }

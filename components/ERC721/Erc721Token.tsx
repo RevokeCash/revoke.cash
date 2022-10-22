@@ -1,6 +1,6 @@
 import TokenBalance from 'components/Dashboard/TokenBalance';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
+import { DashboardSettings, Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from 'lib/utils/erc721';
 import React, { useEffect, useState } from 'react';
@@ -11,9 +11,10 @@ interface Props {
   token: Erc721TokenData;
   inputAddress: string;
   openSeaProxyAddress?: string;
+  settings: DashboardSettings;
 }
 
-function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
+function Erc721Token({ token, inputAddress, openSeaProxyAddress, settings }: Props) {
   const [allowances, setAllowances] = useState<IERC721Allowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -40,12 +41,6 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
     loadData();
   }, []);
 
-  // // Do not render tokens without balance or allowances
-  if (token.balance === '0' && allowances.length === 0) return null;
-
-  // // Do not render ERC1155 tokens without allowances
-  if (token.balance === 'ERC1155' && allowances.length === 0) return null;
-
   if (loading) {
     return (
       <div className="Token">
@@ -53,6 +48,18 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress }: Props) {
       </div>
     );
   }
+
+  const hasZeroBalance = token.balance === '0';
+  const hasNoAllowances = allowances.length === 0;
+
+  // Do not render tokens without balance or allowances
+  if (hasZeroBalance && hasNoAllowances) return null;
+
+  // Do not render ERC1155 tokens without allowances
+  if (token.balance === 'ERC1155' && hasNoAllowances) return null;
+
+  // Do not render tokens without allowances if that is the setting
+  if (!settings.includeTokensWithoutAllowances && hasNoAllowances) return null;
 
   const onRevoke = (allowance: IERC721Allowance) => {
     const allowanceEquals = (a: IERC721Allowance, b: IERC721Allowance) =>

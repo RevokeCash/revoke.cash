@@ -3,7 +3,7 @@ import axios from 'axios';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
 import { ERC721Metadata } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { TokenMapping } from 'lib/interfaces';
+import { DashboardSettings, TokenMapping } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
 import { isBackendSupportedChain } from 'lib/utils/chains';
 import { getFullTokenMapping } from 'lib/utils/tokens';
@@ -13,13 +13,12 @@ import Erc20TokenList from '../ERC20/Erc20TokenList';
 import Erc721TokenList from '../ERC721/Erc721TokenList';
 
 interface Props {
-  filterUnverifiedTokens: boolean;
-  filterZeroBalances: boolean;
+  settings: DashboardSettings;
   tokenStandard: string;
   inputAddress?: string;
 }
 
-function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, inputAddress }: Props) {
+function TokenList({ settings, tokenStandard, inputAddress }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error>(null);
   const [tokenMapping, setTokenMapping] = useState<TokenMapping>();
@@ -103,8 +102,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
     return (
       <Erc20TokenList
         inputAddress={inputAddress}
-        filterUnverifiedTokens={filterUnverifiedTokens}
-        filterZeroBalances={filterZeroBalances}
+        settings={settings}
         tokenMapping={tokenMapping}
         transferEvents={transferEvents}
         approvalEvents={approvalEvents}
@@ -114,8 +112,7 @@ function TokenList({ filterUnverifiedTokens, filterZeroBalances, tokenStandard, 
     return (
       <Erc721TokenList
         inputAddress={inputAddress}
-        filterUnverifiedTokens={filterUnverifiedTokens}
-        filterZeroBalances={filterZeroBalances}
+        settings={settings}
         tokenMapping={tokenMapping}
         transferEvents={transferEvents}
         approvalEvents={approvalEvents}

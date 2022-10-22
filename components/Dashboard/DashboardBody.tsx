@@ -1,31 +1,41 @@
 import React, { useState } from 'react';
+import LabelledCheckbox from '../common/LabelledCheckbox';
 import AddressInput from './AddressInput';
 import TokenList from './TokenList';
 import TokenStandardSelection from './TokenStandardSelection';
-import UnverifiedTokensCheckbox from './UnverifiedTokensCheckbox';
-import ZeroBalancesCheckbox from './ZeroBalancesCheckbox';
 
 function DashboardBody() {
   const [tokenStandard, setTokenStandard] = useState<'ERC20' | 'ERC721'>('ERC20');
   const [includeUnverifiedTokens, setIncludeVerifiedTokens] = useState<boolean>(false);
-  const [includeZeroBalances, setIncludeZeroBalances] = useState<boolean>(false);
+  const [includeTokensWithoutBalances, setIncludeTokensWithoutBalances] = useState<boolean>(false);
+  const [includeTokensWithoutAllowances, setIncludeTokensWithoutAllowances] = useState<boolean>(false);
   const [inputAddress, setInputAddress] = useState<string>();
 
   return (
     <div className="Dashboard">
       <AddressInput inputAddress={inputAddress} setInputAddress={setInputAddress} />
       <TokenStandardSelection tokenStandard={tokenStandard} setTokenStandard={setTokenStandard} />
-      <UnverifiedTokensCheckbox
-        tokenStandard={tokenStandard}
-        checked={includeUnverifiedTokens}
-        update={setIncludeVerifiedTokens}
+      {tokenStandard === 'ERC20' && (
+        <LabelledCheckbox
+          label="Include unverified tokens"
+          checked={includeUnverifiedTokens}
+          update={setIncludeVerifiedTokens}
+        />
+      )}
+      <LabelledCheckbox
+        label="Include tokens without balances"
+        checked={includeTokensWithoutBalances}
+        update={setIncludeTokensWithoutBalances}
       />
-      <ZeroBalancesCheckbox checked={includeZeroBalances} update={setIncludeZeroBalances} />
+      <LabelledCheckbox
+        label="Include tokens without allowances"
+        checked={includeTokensWithoutAllowances}
+        update={setIncludeTokensWithoutAllowances}
+      />
       <TokenList
         tokenStandard={tokenStandard}
         inputAddress={inputAddress}
-        filterUnverifiedTokens={!includeUnverifiedTokens}
-        filterZeroBalances={!includeZeroBalances}
+        settings={{ includeUnverifiedTokens, includeTokensWithoutBalances, includeTokensWithoutAllowances }}
       />
     </div>
   );
