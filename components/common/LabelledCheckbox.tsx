@@ -9,7 +9,7 @@ interface Props {
 
 const LabelledCheckbox: React.FC<Props> = ({ label, checked, update }) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    track('Toggled checkbox', { label, checked });
+    track('Toggled checkbox', { label, checked: event.target.checked });
     update(event.target.checked);
   };
 
