@@ -6,7 +6,8 @@
     "tokens": "Tokens",
     "nfts": "NFT's",
     "unverified_tokens": "Incluir tokens no-verificados",
-    "zero_balances": "Incluir saldos cero"
+    "no_balances": "Incluir tokens sin saldos",
+    "no_allowances": "Incluir tokens sin autorizaciones"
   },
   "allowance_to": "autorización a",
   "no_allowances": "Sin autorizaciones"
