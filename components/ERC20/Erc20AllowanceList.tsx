@@ -17,7 +17,7 @@ function Erc20AllowanceList({ inputAddress, token, onRevoke, allowances }: Props
       ) : (
         allowances.map((allowance, i) => (
           <Erc20Allowance
-            key={i}
+            key={`${allowance.allowance}-${allowance.spender}`}
             spender={allowance.spender}
             allowance={allowance.allowance}
             inputAddress={inputAddress}

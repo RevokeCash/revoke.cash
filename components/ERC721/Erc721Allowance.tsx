@@ -94,7 +94,7 @@ function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, 
   const canUpdate = inputAddress === account;
 
   return (
-    <Form inline className="Allowance" key={spender}>
+    <Form inline className="Allowance">
       {/* Display separate spans for the regular and shortened versions of the spender address */}
       {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">

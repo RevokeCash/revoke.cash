@@ -112,7 +112,7 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
   );
 
   return (
-    <Form inline className="Allowance" key={spender}>
+    <Form inline className="Allowance">
       {/* Display separate spans for the regular and shortened versions of the spender address */}
       {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">

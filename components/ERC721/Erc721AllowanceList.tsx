@@ -18,7 +18,7 @@ function Erc721AllowanceList({ token, allowances, inputAddress, openSeaProxyAddr
       ) : (
         allowances.map((allowance, i) => (
           <Erc721Allowance
-            key={i}
+            key={`${allowance.tokenId}-${allowance.spender}`}
             token={token}
             allowance={allowance}
             inputAddress={inputAddress}
