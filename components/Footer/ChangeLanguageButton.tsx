@@ -15,7 +15,7 @@ const ChangeLanguageButton = ({ locale }: Props) => {
 
   const persistLocaleCookie = (locale: string) => {
     const date = new Date();
-    const expireMs = 7 * 24 * 60 * 60 * 1000; // 7 days
+    const expireMs = 10 * 365 * 24 * 60 * 60 * 1000; // 10 years - i.e. effective no expiration
     date.setTime(date.getTime() + expireMs);
     document.cookie = `NEXT_LOCALE=${locale};expires=${date.toUTCString()};path=/`;
   };
