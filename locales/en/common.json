@@ -11,12 +11,19 @@
   "buttons": {
     "download": "Download",
     "donate": "Donate",
+    "donating": "Donating...",
     "send": "Send",
+    "sending": "Sending...",
     "connect": "Connect Wallet",
+    "connecting": "Connecting...",
     "disconnect": "Disconnect",
+    "disconnecting": "Disconnecting...",
     "revoke": "Revoke",
+    "revoking": "Revoking...",
     "update": "Update",
-    "switchChain": "Switch chain"
+    "updating": "Updating...",
+    "switch_chain": "Switch chain",
+    "switching": "Switching..."
   },
   "privacy_policy": "Privacy Policy"
 }

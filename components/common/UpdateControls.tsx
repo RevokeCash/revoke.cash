@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
+import { useAsyncCallback } from 'react-async-hook';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 const UpdateControls = ({ disabled, update }: Props) => {
   const { t } = useTranslation();
   const [value, setValue] = useState<string>('0');
+  const { execute, loading } = useAsyncCallback(() => update(value));
 
   return (
     <InputGroup size="sm">
@@ -23,8 +25,8 @@ const UpdateControls = ({ disabled, update }: Props) => {
         }}
       />
       <InputGroup.Append>
-        <Button disabled={disabled} className="UpdateButton" onClick={() => update(value)}>
-          {t('common:buttons.update')}
+        <Button disabled={loading || disabled} className="UpdateButton" onClick={execute}>
+          {loading ? t('common:buttons.updating') : t('common:buttons.update')}
         </Button>
       </InputGroup.Append>
     </InputGroup>

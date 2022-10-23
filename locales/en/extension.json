@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Revoke.cash - Browser Extension",
-    "description": "Protect your Ethereum token balances by getting warnings when you are about to anything potentially harmful."
+    "description": "Protect your Ethereum token balances by getting warnings when you are about to do anything potentially harmful."
   },
   "title": "Revoke.cash Browser Extension",
   "paragraph_1": "In many cases, phishing websites try to make you sign an allowance while they pretend to be an NFT mint or other legitimate use cases. When these phishing scams happen, it is recommended to use Revoke.cash to mitigate the damage, but it is even better to prevent the scam in the first place.",
