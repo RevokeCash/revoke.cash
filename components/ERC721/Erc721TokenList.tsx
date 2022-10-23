@@ -6,7 +6,7 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import { DashboardSettings, Erc721TokenData, TokenMapping } from 'lib/interfaces';
 import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from 'lib/utils/erc721';
 import { getTokenIcon, isSpamToken } from 'lib/utils/tokens';
-import { useEffect, useState } from 'react';
+import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Erc721Token from './Erc721Token';
 
@@ -27,74 +27,63 @@ function Erc721TokenList({
   tokenMapping,
   inputAddress,
 }: Props) {
-  const [tokens, setTokens] = useState<Erc721TokenData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [openSeaProxyAddress, setOpenSeaProxyAddress] = useState<string>();
-
   const { readProvider } = useEthereum();
 
-  useEffect(() => {
-    const loadData = async () => {
-      if (!inputAddress) return;
-      if (!readProvider) return;
+  const { result: openSeaProxyAddress, loading: loadingOpenSeaProxyAddress } = useAsync(
+    () => getOpenSeaProxyAddress(inputAddress, readProvider),
+    [inputAddress]
+  );
 
-      setLoading(true);
-
-      const openSeaProxy = await getOpenSeaProxyAddress(inputAddress, readProvider);
-      const patchedApprovalForAllEvents = [
+  const { result: tokens, loading: loadingTokens } = useAsync<Erc721TokenData[]>(async () => {
+    const patchedApprovalForAllEvents = [
+      ...approvalForAllEvents,
+      ...generatePatchedAllowanceEvents(inputAddress, openSeaProxyAddress, [
+        ...approvalEvents,
         ...approvalForAllEvents,
-        ...generatePatchedAllowanceEvents(inputAddress, openSeaProxy, [
-          ...approvalEvents,
-          ...approvalForAllEvents,
-          ...transferEvents,
-        ]),
-      ];
+        ...transferEvents,
+      ]),
+    ];
 
-      const filteredApprovalEvents = approvalEvents.filter((ev) => ev.topics.length === 4);
-      const filteredTransferEvents = transferEvents.filter((ev) => ev.topics.length === 4);
+    const filteredApprovalEvents = approvalEvents.filter((ev) => ev.topics.length === 4);
+    const filteredTransferEvents = transferEvents.filter((ev) => ev.topics.length === 4);
 
-      const allEvents = [...filteredApprovalEvents, ...patchedApprovalForAllEvents, ...filteredTransferEvents];
+    const allEvents = [...filteredApprovalEvents, ...patchedApprovalForAllEvents, ...filteredTransferEvents];
 
-      // Filter unique token contract addresses and convert all events to Contract instances
-      const tokenContracts = allEvents
-        .filter((event, i) => i === allEvents.findIndex((other) => event.address === other.address))
-        .map((event) => new Contract(getAddress(event.address), ERC721Metadata, readProvider));
+    // Filter unique token contract addresses and convert all events to Contract instances
+    const tokenContracts = allEvents
+      .filter((event, i) => i === allEvents.findIndex((other) => event.address === other.address))
+      .map((event) => new Contract(getAddress(event.address), ERC721Metadata, readProvider));
 
-      // Look up token data for all tokens, add their lists of approvals
-      const unsortedTokens = await Promise.all(
-        tokenContracts.map(async (contract) => {
-          const approvalsForAll = patchedApprovalForAllEvents.filter(
-            (approval) => approval.address === contract.address
-          );
-          const approvals = approvalEvents.filter((approval) => approval.address === contract.address);
-          const icon = getTokenIcon(contract.address, undefined, tokenMapping);
+    // Look up token data for all tokens, add their lists of approvals
+    const unsortedTokens = await Promise.all(
+      tokenContracts.map(async (contract) => {
+        const approvalsForAll = patchedApprovalForAllEvents.filter((approval) => approval.address === contract.address);
+        const approvals = approvalEvents.filter((approval) => approval.address === contract.address);
+        const icon = getTokenIcon(contract.address, undefined, tokenMapping);
 
-          // Skip verification checks for NFTs
-          const verified = true;
+        // Skip verification checks for NFTs
+        const verified = true;
 
-          try {
-            const tokenData = await getTokenData(contract, inputAddress, tokenMapping);
-            return { ...tokenData, icon, contract, verified, approvals, approvalsForAll };
-          } catch {
-            // If the call to getTokenData() fails, the token is not an ERC721 token so
-            // we do not include it in the token list.
-            return undefined;
-          }
-        })
-      );
+        try {
+          const tokenData = await getTokenData(contract, inputAddress, tokenMapping);
+          return { ...tokenData, icon, contract, verified, approvals, approvalsForAll };
+        } catch {
+          // If the call to getTokenData() fails, the token is not an ERC721 token so
+          // we do not include it in the token list.
+          return undefined;
+        }
+      })
+    );
 
-      // Filter undefined tokens and sort tokens alphabetically on token symbol
-      const sortedTokens = unsortedTokens
-        .filter((token) => token !== undefined)
-        .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol));
+    // Filter undefined tokens and sort tokens alphabetically on token symbol
+    const sortedTokens = unsortedTokens
+      .filter((token) => token !== undefined)
+      .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol));
 
-      setTokens(sortedTokens);
-      setOpenSeaProxyAddress(openSeaProxy);
-      setLoading(false);
-    };
-
-    loadData();
+    return sortedTokens;
   }, []);
+
+  const loading = loadingOpenSeaProxyAddress || loadingTokens;
 
   if (loading) {
     return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;

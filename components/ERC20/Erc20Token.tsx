@@ -4,7 +4,7 @@ import { DashboardSettings, Erc20TokenData, IERC20Allowance } from 'lib/interfac
 import { compareBN, toFloat } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatAllowance, getAllowancesFromApprovals } from 'lib/utils/erc20';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import Erc20AllowanceList from './Erc20AllowanceList';
 
@@ -55,8 +55,8 @@ function Erc20Token({ token, inputAddress, settings }: Props) {
 
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
 
-  const onRevoke = (spender: string) => {
-    setAllowances((previousAllowances) => previousAllowances.filter((allowance) => allowance.spender !== spender));
+  const onRevoke = (allowance: IERC20Allowance) => {
+    setAllowances((previousAllowances) => previousAllowances.filter((other) => other.spender !== allowance.spender));
   };
 
   return (

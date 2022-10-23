@@ -1,6 +1,7 @@
 import { Filter, Log } from '@ethersproject/abstract-provider';
-import { BigNumber, BigNumberish, providers } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
+import { LogsProvider } from 'lib/interfaces';
 import { resolveEnsName, resolveUnsName } from './whois';
 
 export function shortenAddress(address?: string): string {
@@ -29,7 +30,7 @@ export function fromFloat(floatString: string, decimals: number): string {
 }
 
 export const getLogs = async (
-  provider: Pick<providers.Provider, 'getLogs'>,
+  provider: LogsProvider,
   baseFilter: Filter,
   fromBlock: number,
   toBlock: number

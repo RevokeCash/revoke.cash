@@ -3,12 +3,12 @@ import AllowanceControls from 'components/common/AllowanceControls';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { BigNumber, Contract } from 'ethers';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { Erc20TokenData } from 'lib/interfaces';
+import { Erc20TokenData, IERC20Allowance } from 'lib/interfaces';
 import { fromFloat, shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatAllowance } from 'lib/utils/erc20';
 import { addressToAppName } from 'lib/utils/whois';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';
@@ -19,7 +19,7 @@ interface Props {
   allowance: string;
   inputAddress: string;
   token: Erc20TokenData;
-  onRevoke: (spender: string) => void;
+  onRevoke: (allowance: IERC20Allowance) => void;
 }
 
 function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: Props) {
@@ -74,7 +74,7 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
       console.debug('Reloading data');
 
       if (newAllowance === '0') {
-        onRevoke(spender);
+        onRevoke({ spender, allowance });
       } else {
         // TODO: Update allowance order after update
         setUpdatedAllowance(fromFloat(newAllowance, token.decimals));

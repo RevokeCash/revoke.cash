@@ -7,6 +7,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import { SUPPORTED_CHAINS } from 'lib/constants';
+import { LogsProvider } from 'lib/interfaces';
 import { BackendProvider } from 'lib/providers';
 import {
   getChainExplorerUrl,
@@ -28,7 +29,7 @@ declare let window: {
 interface EthereumContext {
   readProvider?: multicall.MulticallProvider;
   connectionType?: string;
-  logsProvider?: Pick<providers.Provider, 'getLogs'>;
+  logsProvider?: LogsProvider;
   signer?: JsonRpcSigner;
   account?: string;
   ensName?: string;

@@ -52,3 +52,5 @@ export interface DashboardSettings {
   includeTokensWithoutBalances: boolean;
   includeTokensWithoutAllowances: boolean;
 }
+
+export type LogsProvider = Pick<providers.Provider, 'getLogs'>;

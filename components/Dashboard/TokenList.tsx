@@ -3,11 +3,10 @@ import axios from 'axios';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
 import { ERC721Metadata } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { DashboardSettings, TokenMapping } from 'lib/interfaces';
+import { DashboardSettings } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
-import { isBackendSupportedChain } from 'lib/utils/chains';
 import { getFullTokenMapping } from 'lib/utils/tokens';
-import React, { useEffect, useState } from 'react';
+import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
 import Erc20TokenList from '../ERC20/Erc20TokenList';
 import Erc721TokenList from '../ERC721/Erc721TokenList';
@@ -19,83 +18,79 @@ interface Props {
 }
 
 function TokenList({ settings, tokenStandard, inputAddress }: Props) {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error>(null);
-  const [tokenMapping, setTokenMapping] = useState<TokenMapping>();
-  const [transferEvents, setTransferEvents] = useState<Log[]>();
-  const [approvalEvents, setApprovalEvents] = useState<Log[]>();
-  const [approvalForAllEvents, setApprovalForAllEvents] = useState<Log[]>();
-
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        if (!inputAddress) return;
-        if (!readProvider || !selectedChainId) return;
+  const logIn = async () => {
+    await axios.post('/api/login');
+    return true;
+  };
 
-        setLoading(true);
-        setError(undefined);
+  const erc721Interface = new Interface(ERC721Metadata);
 
-        const [latestBlockNumber, newTokenMapping] = await Promise.all([
-          readProvider.getBlockNumber(),
-          getFullTokenMapping(selectedChainId),
-          // Create a backend session if needed
-          isBackendSupportedChain(selectedChainId) && axios.post('/api/login'),
-        ]);
+  const buildGetEventsFunction = (name: string, addressTopicIndex: number) => {
+    // NOTE: these getXxxEvents() functions have an implicit dependency on logsProvider but we do not want to trigger
+    // an update before latestBlockNumber has updated, so we do not add it to the dependency list.
+    // The same goes for latestBlockNumber having a dependency on readProvider, but only triggering on selectedChain
+    return async (inputAddress: string, latestBlockNumber: number, isLoggedIn: boolean): Promise<Log[]> => {
+      if (!inputAddress || !logsProvider || !latestBlockNumber || !isLoggedIn) return undefined;
 
-        setTokenMapping(newTokenMapping);
+      // Start with an array of undefined topic strings and add the event topic + address topic to the right spots
+      const filter = { topics: [undefined, undefined, undefined] };
+      filter.topics[0] = erc721Interface.getEventTopic(name);
+      filter.topics[addressTopicIndex] = hexZeroPad(inputAddress, 32);
 
-        const erc721Interface = new Interface(ERC721Metadata);
-
-        // NOTE: The Transfer and Approval events have a similar signature for ERC20 and ERC721
-        // and the ApprovalForAll event has a similar signature for ERC721 and ERC1155
-        // so we only request these events once here and pass them to the other components
-
-        // Get all transfers sent to the input address
-        const transferFilter = {
-          topics: [erc721Interface.getEventTopic('Transfer'), undefined, hexZeroPad(inputAddress, 32)],
-        };
-        const foundTransferEvents = await getLogs(logsProvider, transferFilter, 0, latestBlockNumber);
-        setTransferEvents(foundTransferEvents);
-        console.log('Transfer events', foundTransferEvents);
-
-        // Get all approvals made from the input address
-        const approvalFilter = {
-          topics: [erc721Interface.getEventTopic('Approval'), hexZeroPad(inputAddress, 32)],
-        };
-        const foundApprovalEvents = await getLogs(logsProvider, approvalFilter, 0, latestBlockNumber);
-        setApprovalEvents(foundApprovalEvents);
-        console.log('Approval events', foundApprovalEvents);
-
-        // Get all "approvals for all indexes" made from the input address
-        const approvalForAllFilter = {
-          topics: [erc721Interface.getEventTopic('ApprovalForAll'), hexZeroPad(inputAddress, 32)],
-        };
-        const foundApprovalForAllEvents = await getLogs(logsProvider, approvalForAllFilter, 0, latestBlockNumber);
-        setApprovalForAllEvents(foundApprovalForAllEvents);
-        console.log('ApprovalForAll events', foundApprovalForAllEvents);
-
-        setLoading(false);
-      } catch (e) {
-        console.log(e);
-        setError(e);
-      }
+      const events = await getLogs(logsProvider, filter, 0, latestBlockNumber);
+      console.log(`${name} events`, events);
+      return events;
     };
+  };
 
-    loadData();
-  }, [inputAddress, selectedChainId]);
+  // NOTE: The Transfer and Approval events have a similar signature for ERC20 and ERC721 and the ApprovalForAll event
+  // has a similar signature for ERC721 and ERC1155 so we only request these events once here and pass them to the
+  // other components
+  const getTransferEvents = buildGetEventsFunction('Transfer', 2);
+  const getApprovalEvents = buildGetEventsFunction('Approval', 1);
+  const getApprovalForAllEvents = buildGetEventsFunction('ApprovalForAll', 1);
+
+  const { result: isLoggedIn, loading: loggingIn, error: loginError } = useAsync(logIn, []);
+  const { result: tokenMapping, loading: loadingTokenMapping } = useAsync(getFullTokenMapping, [selectedChainId]);
+  const {
+    result: latestBlockNumber,
+    loading: loadingLatestBlockNumber,
+    error: latestBlockNumberError,
+  } = useAsync(() => readProvider.getBlockNumber(), [selectedChainId]);
+
+  const {
+    result: transferEvents = [],
+    loading: loadingTransfers,
+    error: transferError,
+  } = useAsync(getTransferEvents, [inputAddress, latestBlockNumber, isLoggedIn]);
+  const {
+    result: approvalEvents = [],
+    loading: loadingApprovals,
+    error: approvalError,
+  } = useAsync(getApprovalEvents, [inputAddress, latestBlockNumber, isLoggedIn]);
+  const {
+    result: approvalForAllEvents = [],
+    loading: loadingApprovalsForAll,
+    error: approvalForAllError,
+  } = useAsync(getApprovalForAllEvents, [inputAddress, latestBlockNumber, isLoggedIn]);
+
+  const error = loginError ?? latestBlockNumberError ?? transferError ?? approvalError ?? approvalForAllError;
+  const loadingEvents = loadingTransfers || loadingApprovals || loadingApprovalsForAll;
+  const loading = loggingIn || loadingTokenMapping || loadingLatestBlockNumber || loadingEvents;
 
   if (!inputAddress) {
     return null;
   }
 
-  if (error) {
-    return <div style={{ marginTop: '20px' }}>{error.message}</div>;
+  if (loading) {
+    return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
   }
 
-  if (loading || [transferEvents, approvalEvents, approvalForAllEvents].includes(undefined)) {
-    return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
+  if (error) {
+    console.log(error);
+    return <div style={{ marginTop: '20px' }}>Error: {error.message}</div>;
   }
 
   if (tokenStandard === 'ERC20') {
