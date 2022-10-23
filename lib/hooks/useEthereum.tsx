@@ -136,8 +136,14 @@ export const EthereumProvider = ({ children }: Props) => {
 
       try {
         await addEthereumChain(newChainId);
-      } finally {
-        await switchEthereumChain(newChainId);
+      } catch (error) {
+        try {
+          if (error?.code !== 4001) {
+            await switchEthereumChain(newChainId);
+          }
+        } catch {
+          // ignored
+        }
       }
 
       track('Switch Wallet Chain', { from: connectedChainId, to: selectedChainId });

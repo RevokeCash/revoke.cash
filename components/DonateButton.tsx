@@ -5,6 +5,7 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
+import { useAsyncCallback } from 'react-async-hook';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
@@ -69,6 +70,8 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
     }
   };
 
+  const { execute, loading } = useAsyncCallback(sendDonation);
+
   return (
     <>
       <Button variant="outline-primary" size={size} onClick={handleShow}>
@@ -87,8 +90,8 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
               <InputGroup.Text>{nativeToken}</InputGroup.Text>
             </InputGroup.Append>
             <InputGroup.Append>
-              <Button variant="secondary" onClick={sendDonation}>
-                {t('common:buttons.send')}
+              <Button disabled={loading} variant="secondary" onClick={execute}>
+                {loading ? t('common:buttons.sending') : t('common:buttons.send')}
               </Button>
             </InputGroup.Append>
           </InputGroup>
