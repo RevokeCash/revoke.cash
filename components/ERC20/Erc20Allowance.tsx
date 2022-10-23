@@ -8,6 +8,8 @@ import { fromFloat, shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatAllowance } from 'lib/utils/erc20';
 import { addressToAppName } from 'lib/utils/whois';
+import Trans from 'next-translate/Trans';
+import useTranslation from 'next-translate/useTranslation';
 import { useRef, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
@@ -24,6 +26,7 @@ interface Props {
 
 function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: Props) {
   const toastRef = useRef();
+  const { t } = useTranslation();
   const [updatedAllowance, setUpdatedAllowance] = useState<string | undefined>();
   const { signer, selectedChainId, account } = useEthereum();
   const { result: spenderName, loading } = useAsync(() => addressToAppName(spender, selectedChainId), []);
@@ -92,24 +95,8 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
 
   const spenderDisplay = spenderName || spender;
   const shortenedSpenderDisplay = spenderName || shortenAddress(spender);
-
+  const formattedAllowance = formatAllowance(updatedAllowance ?? allowance, token.decimals, token.totalSupply);
   const explorerBaseUrl = getChainExplorerUrl(selectedChainId);
-
-  const shortenedLink = explorerBaseUrl ? (
-    <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>
-      {shortenedSpenderDisplay}
-    </a>
-  ) : (
-    shortenedSpenderDisplay
-  );
-
-  const regularLink = explorerBaseUrl ? (
-    <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>
-      {spenderDisplay}
-    </a>
-  ) : (
-    spenderDisplay
-  );
 
   return (
     <Form inline className="Allowance">
@@ -117,13 +104,18 @@ function Erc20Allowance({ spender, allowance, inputAddress, token, onRevoke }: P
       {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">
         <span className="only-mobile-inline">
-          {formatAllowance(updatedAllowance ?? allowance, token.decimals, token.totalSupply)} allowance to&nbsp;
-          {shortenedLink}
+          <Trans
+            i18nKey={formattedAllowance === 'Unlimited' ? 'dashboard:allowance_unlimited' : 'dashboard:allowance'}
+            values={{ amount: formattedAllowance, spender: shortenedSpenderDisplay }}
+            components={[<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`} />]}
+          />
         </span>
-
         <span className="only-desktop-inline">
-          {formatAllowance(updatedAllowance ?? allowance, token.decimals, token.totalSupply)} allowance to&nbsp;
-          {regularLink}
+          <Trans
+            i18nKey={formattedAllowance === 'Unlimited' ? 'dashboard:allowance_unlimited' : 'dashboard:allowance'}
+            values={{ amount: formattedAllowance, spender: spenderDisplay }}
+            components={[<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`} />]}
+          />
         </span>
       </Form.Label>
       <AllowanceControls

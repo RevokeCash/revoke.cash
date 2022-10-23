@@ -144,8 +144,3 @@ async function throwIfNotErc721(contract: Contract) {
     throw new Error('Response to isApprovedForAll was not false, indicating that this is not an ERC721 contract');
   }
 }
-
-export function formatAllowance(tokenId?: string) {
-  if (!tokenId) return 'Unlimited allowance';
-  return `Allowance for token ID ${tokenId}`;
-}
