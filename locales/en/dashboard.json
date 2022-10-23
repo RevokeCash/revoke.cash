@@ -9,6 +9,8 @@
     "no_balances": "Include tokens without balances",
     "no_allowances": "Include tokens without allowances"
   },
-  "allowance_to": "allowance to",
+  "allowance": "{{amount}} allowance to <0>{{spender}}</0>",
+  "allowance_unlimited": "Unlimited allowance to <0>{{spender}}</0>",
+  "allowance_token_id": "Allowance for token ID {{tokenId}} to <0>{{spender}}</0>",
   "no_allowances": "No allowances"
 }

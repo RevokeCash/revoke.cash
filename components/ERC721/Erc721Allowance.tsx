@@ -7,8 +7,8 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import { Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
 import { shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import { formatAllowance } from 'lib/utils/erc721';
 import { addressToAppName } from 'lib/utils/whois';
+import Trans from 'next-translate/Trans';
 import { useRef } from 'react';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
@@ -75,34 +75,24 @@ function Erc721Allowance({ token, allowance, inputAddress, openSeaProxyAddress, 
   const shortenedSpenderDisplay = spenderName || shortenAddress(spender);
   const explorerBaseUrl = getChainExplorerUrl(selectedChainId);
 
-  const shortenedLink = explorerBaseUrl ? (
-    <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>
-      {shortenedSpenderDisplay}
-    </a>
-  ) : (
-    shortenedSpenderDisplay
-  );
-
-  const regularLink = explorerBaseUrl ? (
-    <a className="monospace" href={`${explorerBaseUrl}/address/${spender}`}>
-      {spenderDisplay}
-    </a>
-  ) : (
-    spenderDisplay
-  );
-
-  const canUpdate = inputAddress === account;
-
   return (
     <Form inline className="Allowance">
       {/* Display separate spans for the regular and shortened versions of the spender address */}
       {/* The correct one is selected using CSS media-queries */}
       <Form.Label className="AllowanceText">
         <span className="only-mobile-inline">
-          {formatAllowance(tokenId)} to&nbsp;{shortenedLink}
+          <Trans
+            i18nKey={tokenId === undefined ? 'dashboard:allowance_unlimited' : 'dashboard:allowance_token_id'}
+            values={{ tokenId, spender: shortenedSpenderDisplay }}
+            components={[<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`} />]}
+          />
         </span>
         <span className="only-desktop-inline">
-          {formatAllowance(tokenId)} to&nbsp;{regularLink}
+          <Trans
+            i18nKey={tokenId === undefined ? 'dashboard:allowance_unlimited' : 'dashboard:allowance_token_id'}
+            values={{ tokenId, spender: spenderDisplay }}
+            components={[<a className="monospace" href={`${explorerBaseUrl}/address/${spender}`} />]}
+          />
         </span>
       </Form.Label>
       <AllowanceControls revoke={revoke} inputAddress={inputAddress} id={`${token.symbol}-${spender}`} />
