@@ -6,7 +6,6 @@ import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Image from 'next/image';
-import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Extension: NextPage = () => {

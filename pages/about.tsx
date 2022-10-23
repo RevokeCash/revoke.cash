@@ -5,7 +5,6 @@ import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
-import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const About: NextPage = () => {

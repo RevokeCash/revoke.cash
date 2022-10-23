@@ -1,5 +1,4 @@
 import { getChainInfoUrl, getChainLogo, getChainName } from 'lib/utils/chains';
-import React from 'react';
 import LogoLink from '../common/LogoLink';
 
 interface Props {

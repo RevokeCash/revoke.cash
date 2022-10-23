@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LabelledCheckbox from '../common/LabelledCheckbox';
 import AddressInput from './AddressInput';
 import TokenList from './TokenList';

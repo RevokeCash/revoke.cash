@@ -1,5 +1,4 @@
 import { Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
-import React from 'react';
 import Erc721Allowance from './Erc721Allowance';
 
 interface Props {

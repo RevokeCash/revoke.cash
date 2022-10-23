@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
 import { OverlayChildren } from 'react-bootstrap/esm/Overlay';
 

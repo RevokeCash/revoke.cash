@@ -1,5 +1,4 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
-import React from 'react';
 import { Button } from 'react-bootstrap';
 
 const SwitchChainButton = () => {

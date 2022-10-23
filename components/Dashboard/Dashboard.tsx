@@ -1,6 +1,5 @@
 import DashboardHeader from 'components/Header/DashboardHeader';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
-import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import DashboardBody from './DashboardBody';
 

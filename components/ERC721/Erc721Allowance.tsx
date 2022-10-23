@@ -9,7 +9,7 @@ import { shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatAllowance } from 'lib/utils/erc721';
 import { addressToAppName } from 'lib/utils/whois';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';

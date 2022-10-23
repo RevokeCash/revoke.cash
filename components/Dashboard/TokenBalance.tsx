@@ -1,5 +1,4 @@
 import { getBalanceText } from 'lib/utils';
-import React from 'react';
 import TokenLogo from '../common/TokenLogo';
 
 interface Props {

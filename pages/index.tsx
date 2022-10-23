@@ -3,7 +3,7 @@ import Dashboard from 'components/Dashboard/Dashboard';
 import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App: NextPage = () => {

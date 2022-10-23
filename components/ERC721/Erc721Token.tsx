@@ -3,7 +3,7 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import { DashboardSettings, Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from 'lib/utils/erc721';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import Erc721AllowanceList from './Erc721AllowanceList';
 
