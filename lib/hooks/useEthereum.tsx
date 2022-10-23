@@ -8,7 +8,13 @@ import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import { SUPPORTED_CHAINS } from 'lib/constants';
 import { BackendProvider } from 'lib/providers';
-import { getChainExplorerUrl, getChainName, getChainRpcUrl, isBackendSupportedChain } from 'lib/utils/chains';
+import {
+  getChainExplorerUrl,
+  getChainName,
+  getChainRpcUrl,
+  isBackendSupportedChain,
+  isNodeSupportedChain,
+} from 'lib/utils/chains';
 import { lookupEnsName, lookupUnsName } from 'lib/utils/whois';
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-async-hook';
@@ -187,7 +193,7 @@ export const EthereumProvider = ({ children }: Props) => {
       updateAccount(address);
 
       // Automatically switch to the wallet's chain when connecting
-      setSelectedChainId(chainId);
+      if (isNodeSupportedChain(chainId)) setSelectedChainId(chainId);
 
       track('Connected Wallet', { address, chainId, connectionType: web3Modal.cachedProvider });
 
