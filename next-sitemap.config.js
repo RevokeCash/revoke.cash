@@ -30,7 +30,7 @@ module.exports = {
     // Remove the locale part of the path (e.g. /es/about -> /about)
     const extractLocaleIndependentPath = (path) => {
       const matches = config.alternateRefs.map((alt) =>
-        `${config.siteUrl}${path}`.replace(alt.href, '').replace(/\/$/, '')
+        `${config.siteUrl}${path}/`.replace(`${alt.href}/`, '/').replace(/\/+$/, '')
       );
       return matches.sort((a, b) => a.length - b.length)[0];
     };
