@@ -1,6 +1,5 @@
 import { getLanguageEmoji } from 'lib/utils/languages';
 import useTranslation from 'next-translate/useTranslation';
-import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { locales } from '../../i18n';
 import ChangeLanguageButton from './ChangeLanguageButton';

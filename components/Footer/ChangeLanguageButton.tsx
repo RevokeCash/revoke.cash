@@ -2,7 +2,6 @@ import { track } from '@amplitude/analytics-browser';
 import { getLanguageEmoji, getLanguageNameNative } from 'lib/utils/languages';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 
 interface Props {

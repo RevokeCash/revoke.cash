@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next-sitemap",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
     "lint": "prettier --write .",
@@ -57,6 +57,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "next-bundle-analyzer": "^0.6.5",
+    "next-sitemap": "^3.1.29",
     "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^3.1.1",
     "typescript": "^4.8.4"

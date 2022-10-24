@@ -47,3 +47,6 @@ yarn-error.log*
 
 # So folks don't assume npm
 package-lock.json
+
+# Sitemap will be generated at build
+public/sitemap.xml
