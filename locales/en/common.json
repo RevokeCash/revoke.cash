@@ -25,5 +25,10 @@
     "switch_chain": "Switch chain",
     "switching": "Switching..."
   },
-  "privacy_policy": "Privacy Policy"
+  "privacy_policy": "Privacy Policy",
+  "errors": {
+    "404": {
+      "title": "404 - Page not found"
+    }
+  }
 }
