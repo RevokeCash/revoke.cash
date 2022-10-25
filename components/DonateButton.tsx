@@ -3,6 +3,7 @@ import { utils } from 'ethers';
 import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -80,7 +81,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Donate to Revoke.cash</Modal.Title>
+          <Modal.Title>{t('dashboard:donate_to_revoke')}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -98,10 +99,7 @@ const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          Or contribute to our{' '}
-          <a href={GITCOIN_URL} target="_blank">
-            Gitcoin Grant
-          </a>
+          <Trans i18nKey="dashboard:or_contribute_to_gitcoin" components={[<a href={GITCOIN_URL} target="_blank" />]} />
         </Modal.Footer>
       </Modal>
     </>

@@ -12,5 +12,7 @@
   "no_allowances": "No allowances",
   "allowance": "{{amount}} allowance to <0>{{spender}}</0>",
   "allowance_unlimited": "Unlimited allowance to <0>{{spender}}</0>",
-  "allowance_token_id": "Allowance for token ID {{tokenId}} to <0>{{spender}}</0>"
+  "allowance_token_id": "Allowance for token ID {{tokenId}} to <0>{{spender}}</0>",
+  "donate_to_revoke": "Donate to Revoke.cash",
+  "or_contribute_to_gitcoin": "Or contribute to our <0>Gitcoin Grant</0>"
 }
