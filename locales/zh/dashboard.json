@@ -1,0 +1,17 @@
+{
+  "mainnets": "主网",
+  "testnets": "测试网",
+  "address_input": "输入地址、ENS名称或Unstoppable域名",
+  "controls": {
+    "tokens": "代币",
+    "nfts": "NFTs",
+    "unverified_tokens": "包括未经验证的代币",
+    "no_balances": "包括没有余额的代币",
+    "no_allowances": "包括没有授权的代币"
+  },
+  "allowance_to": "授权给",
+  "no_allowances": "没有授权",
+  "allowance": "{{amount}}授权给<0>{{spender}}</0>",
+  "allowance_unlimited": "无限授权给<0>{{spender}}</0>",
+  "allowance_token_id": "授权代币ID{{tokenId}}到<0>{{spender}}</0>"
+}

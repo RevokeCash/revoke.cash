@@ -16,7 +16,19 @@
     "disconnect": "Desconectar",
     "revoke": "Revocar",
     "update": "Actualizar",
-    "switchChain": "Cambiar de red"
+    "donating": "Donando...",
+    "sending": "Enviando...",
+    "connecting": "Conectando...",
+    "disconnecting": "Desconectando...",
+    "revoking": "Revocando...",
+    "updating": "Actualizando...",
+    "switch_chain": "Cambiar de red",
+    "switching": "Cambiando..."
   },
-  "privacy_policy": "Política de privacidad"
+  "privacy_policy": "Política de privacidad",
+  "errors": {
+    "404": {
+      "title": "404 - Página no encontrada"
+    }
+  }
 }

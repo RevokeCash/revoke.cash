@@ -9,6 +9,8 @@
     "no_balances": "Incluir tokens sin saldos",
     "no_allowances": "Incluir tokens sin autorizaciones"
   },
-  "allowance_to": "autorización a",
-  "no_allowances": "Sin autorizaciones"
+  "no_allowances": "Sin autorizaciones",
+  "allowance": "{{amount}} autorización a <0>{{spender}}</0>",
+  "allowance_unlimited": "Autorización ilimitada a <0>{{spender}}</0>",
+  "allowance_token_id": "Autorización para ID de token {{tokenId}} a <0>{{spender}}</0>"
 }
