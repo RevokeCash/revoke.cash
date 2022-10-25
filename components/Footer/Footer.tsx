@@ -1,7 +1,7 @@
 import LogoLink from 'components/common/LogoLink';
 import { DISCORD_URL } from 'lib/constants';
 import React from 'react';
-import ChangeLanguageDropdown from './ChangeLanguageDropdown';
+import LanguageSelect from './LanguageSelect';
 
 const Footer: React.FC = () => (
   <>
@@ -28,7 +28,7 @@ const Footer: React.FC = () => (
           href="https://twitter.com/RevokeCash"
         />
         <LogoLink src="/assets/images/vendor/discord.png" alt="Official Discord" href={DISCORD_URL} />
-        <ChangeLanguageDropdown />
+        <LanguageSelect />
       </div>
     </div>
   </>
