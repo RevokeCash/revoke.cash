@@ -9,9 +9,10 @@
     "no_balances": "包括没有余额的代币",
     "no_allowances": "包括没有授权的代币"
   },
-  "allowance_to": "授权给",
   "no_allowances": "没有授权",
   "allowance": "{{amount}}授权给<0>{{spender}}</0>",
   "allowance_unlimited": "无限授权给<0>{{spender}}</0>",
-  "allowance_token_id": "授权代币ID{{tokenId}}到<0>{{spender}}</0>"
+  "allowance_token_id": "授权代币ID{{tokenId}}到<0>{{spender}}</0>",
+  "donate_to_revoke": "为Revoke.cash捐款",
+  "or_contribute_to_gitcoin": "或者为我们的<0>Gitcoin Grant</0>捐款"
 }
