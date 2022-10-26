@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap",
+    "build": "next build && next-sitemap && yarn trim-sitemap",
+    "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml > public/sitemap.xml",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
     "lint": "prettier --write .",
