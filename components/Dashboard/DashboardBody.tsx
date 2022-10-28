@@ -1,16 +1,22 @@
+import { DashboardSettings } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
+import useLocalStorage from 'use-local-storage';
 import LabelledCheckbox from '../common/LabelledCheckbox';
 import AddressInput from './AddressInput';
 import TokenList from './TokenList';
 import TokenStandardSelection from './TokenStandardSelection';
 
+const DEFAULT_SETTINGS = {
+  includeUnverifiedTokens: true,
+  includeTokensWithoutBalances: true,
+  includeTokensWithoutAllowances: true,
+};
+
 function DashboardBody() {
   const { t } = useTranslation();
+  const [settings, setSettings] = useLocalStorage<DashboardSettings>('settings', DEFAULT_SETTINGS);
   const [tokenStandard, setTokenStandard] = useState<'ERC20' | 'ERC721'>('ERC20');
-  const [includeUnverifiedTokens, setIncludeVerifiedTokens] = useState<boolean>(false);
-  const [includeTokensWithoutBalances, setIncludeTokensWithoutBalances] = useState<boolean>(false);
-  const [includeTokensWithoutAllowances, setIncludeTokensWithoutAllowances] = useState<boolean>(false);
   const [inputAddress, setInputAddress] = useState<string>();
 
   return (
@@ -20,25 +26,21 @@ function DashboardBody() {
       {tokenStandard === 'ERC20' && (
         <LabelledCheckbox
           label={t('dashboard:controls.unverified_tokens')}
-          checked={includeUnverifiedTokens}
-          update={setIncludeVerifiedTokens}
+          checked={settings.includeUnverifiedTokens}
+          update={(value) => setSettings({ ...settings, includeUnverifiedTokens: value })}
         />
       )}
       <LabelledCheckbox
         label={t('dashboard:controls.no_balances')}
-        checked={includeTokensWithoutBalances}
-        update={setIncludeTokensWithoutBalances}
+        checked={settings.includeTokensWithoutBalances}
+        update={(value) => setSettings({ ...settings, includeTokensWithoutBalances: value })}
       />
       <LabelledCheckbox
         label={t('dashboard:controls.no_allowances')}
-        checked={includeTokensWithoutAllowances}
-        update={setIncludeTokensWithoutAllowances}
+        checked={settings.includeTokensWithoutAllowances}
+        update={(value) => setSettings({ ...settings, includeTokensWithoutAllowances: value })}
       />
-      <TokenList
-        tokenStandard={tokenStandard}
-        inputAddress={inputAddress}
-        settings={{ includeUnverifiedTokens, includeTokensWithoutBalances, includeTokensWithoutAllowances }}
-      />
+      <TokenList tokenStandard={tokenStandard} inputAddress={inputAddress} settings={settings} />
     </div>
   );
 }

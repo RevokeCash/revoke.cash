@@ -49,6 +49,7 @@
     "react-toastify": "^8.2.0",
     "request-ip": "^2.2.0",
     "sass": "^1.55.0",
+    "use-local-storage": "^2.3.6",
     "web3modal": "1.9.9"
   },
   "devDependencies": {
