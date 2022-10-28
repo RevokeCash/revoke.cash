@@ -42,9 +42,7 @@ const LanguageSelect = () => {
         menu: (styles) => ({
           ...styles,
           width: 110,
-          minWidth: 110,
           margin: 0,
-          // fontSize: '0.875rem',
           textAlign: 'left',
           zIndex: 3,
         }),
@@ -77,8 +75,6 @@ const LanguageSelect = () => {
             borderBottomLeftRadius: 4,
             borderBottomRightRadius: 4,
           },
-          // overflow: 'hidden',
-          // backgroundColor: 'inherit'
         }),
       }}
       theme={(theme) => ({

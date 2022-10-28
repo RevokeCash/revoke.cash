@@ -6,6 +6,10 @@ import {
   PROVIDER_SUPPORTED_CHAINS,
 } from 'lib/constants';
 
+export function isSupportedChain(chainId: number): boolean {
+  return isProviderSupportedChain(chainId) || isBackendSupportedChain(chainId);
+}
+
 export function isProviderSupportedChain(chainId: number): boolean {
   return PROVIDER_SUPPORTED_CHAINS.includes(chainId);
 }

@@ -52,7 +52,7 @@ export function formatAllowance(allowance: string, decimals: number, totalSupply
 }
 
 async function throwIfNotErc20(contract: Contract) {
-  // If the function isApprovedForAll does not exist it will throw (and is not ERC721)
+  // If the function allowance does not exist it will throw (and is not ERC20)
   const [allowance] = await contract.functions.allowance(DUMMY_ADDRESS, DUMMY_ADDRESS_2);
 
   // The only acceptable value for checking the allowance from 0x00...01 to 0x00...02 is 0

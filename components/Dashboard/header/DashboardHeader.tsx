@@ -1,6 +1,6 @@
 import React from 'react';
-import DonateButton from '../DonateButton';
 import ConnectButton from './ConnectButton';
+import DonateButton from './DonateButton';
 
 const DashboardHeader: React.FC = () => {
   return (

@@ -1,4 +1,4 @@
-import DonateButton from 'components/DonateButton';
+import DonateButton from 'components/Dashboard/header/DonateButton';
 import { MutableRefObject, ReactText } from 'react';
 import { toast } from 'react-toastify';
 

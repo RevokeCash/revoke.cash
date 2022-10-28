@@ -79,7 +79,7 @@ class EtherscanQueue {
       throw new Error(data.result);
     }
 
-    // If an error occurs or if the limit (1000) is reached, throw an error that is
+    // If the limit (1000) is reached, throw an error that is
     // compatible with the getLogsFromProvider() function to trigger recursive getLogs
     if (data.result.length === 1000) {
       throw new Error('query returned more than 10000 results');

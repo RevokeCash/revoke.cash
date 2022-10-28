@@ -1,7 +1,7 @@
-import DashboardHeader from 'components/Header/DashboardHeader';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
 import { ToastContainer } from 'react-toastify';
 import DashboardBody from './DashboardBody';
+import DashboardHeader from './header/DashboardHeader';
 
 const SafeHydrate = ({ children }) => {
   return <div suppressHydrationWarning>{typeof window === 'undefined' ? null : children}</div>;

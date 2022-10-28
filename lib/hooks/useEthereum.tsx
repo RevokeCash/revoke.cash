@@ -14,7 +14,7 @@ import {
   getChainName,
   getChainRpcUrl,
   isBackendSupportedChain,
-  isNodeSupportedChain,
+  isSupportedChain,
 } from 'lib/utils/chains';
 import { lookupEnsName, lookupUnsName } from 'lib/utils/whois';
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -200,7 +200,7 @@ export const EthereumProvider = ({ children }: Props) => {
       updateAccount(address);
 
       // Automatically switch to the wallet's chain when connecting
-      if (isNodeSupportedChain(chainId)) setSelectedChainId(chainId);
+      if (isSupportedChain(chainId)) setSelectedChainId(chainId);
 
       track('Connected Wallet', { address, chainId, connectionType: web3Modal.cachedProvider });
 
