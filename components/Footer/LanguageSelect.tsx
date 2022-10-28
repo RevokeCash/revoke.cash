@@ -41,16 +41,16 @@ const LanguageSelect = () => {
       styles={{
         menu: (styles) => ({
           ...styles,
-          width: 100,
+          width: 110,
+          minWidth: 110,
           margin: 0,
           // fontSize: '0.875rem',
           textAlign: 'left',
+          zIndex: 3,
         }),
         menuList: (styles) => ({
           ...styles,
-          width: 100,
           padding: 0,
-          zIndex: 3,
         }),
         dropdownIndicator: (styles) => ({
           ...styles,
