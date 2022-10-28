@@ -1,6 +1,6 @@
 import { Filter, Log } from '@ethersproject/abstract-provider';
 import { BigNumber, BigNumberish } from 'ethers';
-import { getAddress } from 'ethers/lib/utils';
+import { getAddress, hexDataSlice } from 'ethers/lib/utils';
 import { LogsProvider } from 'lib/interfaces';
 import { resolveEnsName, resolveUnsName } from './whois';
 
@@ -81,3 +81,5 @@ export const getBalanceText = (symbol: string, balance: string, decimals?: numbe
   if (decimals !== undefined) return `${symbol}: ${toFloat(Number(balance), decimals)}`;
   return `${symbol}: ${String(balance)}`;
 };
+
+export const topicToAddress = (topic: string) => getAddress(hexDataSlice(topic, 12));

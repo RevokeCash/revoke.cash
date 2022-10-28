@@ -1,5 +1,5 @@
 import { BigNumber, Contract, providers, utils } from 'ethers';
-import { getAddress, hexDataSlice } from 'ethers/lib/utils';
+import { getAddress } from 'ethers/lib/utils';
 import { OPENSEA_REGISTRY } from 'lib/abis';
 import {
   ADDRESS_ZERO,
@@ -9,7 +9,7 @@ import {
   OPENSEA_REGISTRY_ADDRESS,
 } from 'lib/constants';
 import { IERC721Allowance, TokenMapping } from 'lib/interfaces';
-import { shortenAddress } from '.';
+import { shortenAddress, topicToAddress } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
 
 export async function getLimitedAllowancesFromApprovals(contract: Contract, approvals: providers.Log[]) {
@@ -35,8 +35,13 @@ async function getLimitedAllowanceFromApproval(multicallContract: Contract, appr
         ? BigNumber.from(approval.topics[3]).toString()
         : BigNumber.from(approval.data).toString();
 
-    const [spender] = await multicallContract.functions.getApproved(tokenId);
-    if (spender === ADDRESS_ZERO) return undefined;
+    const [owner, spender] = await Promise.all([
+      unpackResult(multicallContract.functions.ownerOf(tokenId)),
+      unpackResult(multicallContract.functions.getApproved(tokenId)),
+    ]);
+
+    const expectedOwner = topicToAddress(approval.topics[1]);
+    if (spender === ADDRESS_ZERO || owner !== expectedOwner) return undefined;
 
     return { spender, tokenId };
   } catch {
@@ -65,7 +70,7 @@ async function getUnlimitedAllowanceFromApproval(
   ownerAddress: string,
   approval: providers.Log
 ) {
-  const spender = getAddress(hexDataSlice(approval.topics[2], 12));
+  const spender = topicToAddress(approval.topics[2]);
 
   const [isApprovedForAll] = await multicallContract.functions.isApprovedForAll(ownerAddress, spender);
   if (!isApprovedForAll) return undefined;
