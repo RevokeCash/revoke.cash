@@ -96,26 +96,24 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.CLVParachain,
 ];
 
-// We disable some of these chains because there's not a lot of demand for them, but they are intensive on the backend
-// We also disable testnets for the same reason
 export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.RSKMainnet,
   ChainId.RSKTestnet,
   ChainId.HarmonyMainnetShard0,
-  // ChainId.HarmonyTestnetShard0,
+  ChainId.HarmonyTestnetShard0,
   ChainId.IoTeXNetworkMainnet,
-  // ChainId.IoTeXNetworkTestnet,
+  ChainId.IoTeXNetworkTestnet,
   ChainId.KlaytnMainnetCypress,
-  // ChainId.KlaytnTestnetBaobab,
+  ChainId.KlaytnTestnetBaobab,
   ChainId.Evmos,
   ChainId.EvmosTestnet,
   ChainId.Palm,
-  // ChainId.PalmTestnet,
+  ChainId.PalmTestnet,
   ChainId.Astar,
   ChainId.Shiden,
   ChainId.GodwokenMainnet,
   // ChainId.PolyjuiceTestnet,
-  // ChainId['GodwokenTestnet(V1.1)'],
+  ChainId['GodwokenTestnet(V1.1)'],
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -172,7 +170,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.OptimisticEthereumTestnetGoerli,
   ChainId.CronosTestnet,
   ChainId.FantomTestnet,
-  // ChainId.KlaytnTestnetBaobab,
+  ChainId.KlaytnTestnetBaobab,
   ChainId.AuroraTestnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.HuobiECOChainTestnet,
@@ -180,14 +178,14 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.RSKTestnet,
   ChainId.MetisStardustTestnet,
   ChainId.TelosEVMTestnet,
-  // ChainId.IoTeXNetworkTestnet,
-  // ChainId.HarmonyTestnetShard0,
-  // ChainId['GodwokenTestnet(V1.1)'],
+  ChainId.IoTeXNetworkTestnet,
+  ChainId.HarmonyTestnetShard0,
+  ChainId['GodwokenTestnet(V1.1)'],
   // ChainId.PolyjuiceTestnet,
   ChainId.SmartBitcoinCashTestnet,
   ChainId.FuseSparknet,
   ChainId.EvmosTestnet,
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.BitTorrentChainTestnet,
-  // ChainId.PalmTestnet,
+  ChainId.PalmTestnet,
 ];
