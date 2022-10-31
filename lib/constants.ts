@@ -80,6 +80,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.FantomTestnet,
   ChainId.ArbitrumOne,
   421613, // Arbitrum Goerli
+  42170, // Arbitrum Nova
   ChainId.HuobiECOChainMainnet,
   ChainId.HuobiECOChainTestnet,
   ChainId.Moonbeam,
@@ -135,6 +136,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['AvalancheC-Chain'],
   ChainId.PolygonMainnet,
   ChainId.ArbitrumOne,
+  42170, // Arbitrum Nova
   ChainId.Optimism,
   ChainId.CronosMainnetBeta,
   ChainId.FantomOpera,

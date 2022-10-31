@@ -37,6 +37,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId['AvalancheC-Chain']]: 'Avalanche',
     [ChainId.PolygonMainnet]: 'Polygon',
     [ChainId.ArbitrumOne]: 'Arbitrum',
+    [42170]: 'Arbitrum Nova',
     [ChainId.CronosMainnetBeta]: 'Cronos',
     [ChainId.FantomOpera]: 'Fantom',
     [ChainId.KlaytnMainnetCypress]: 'Klaytn',
@@ -95,6 +96,7 @@ export function getChainExplorerUrl(chainId: number): string | undefined {
     [ChainId.Astar]: 'https://blockscout.com/astar',
     [ChainId.Gnosis]: 'https://gnosisscan.io',
     [421613]: 'https://goerli.arbiscan.io',
+    [42170]: 'https://nova.arbiscan.io',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -107,6 +109,7 @@ export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string 
   const overrides = {
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
+    [42170]: 'https://nova.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
   };
@@ -170,6 +173,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FantomTestnet]: '/assets/images/vendor/chains/fantom.png',
     [ChainId.ArbitrumOne]: '/assets/images/vendor/chains/arbitrum.svg',
     [421613]: '/assets/images/vendor/chains/arbitrum.svg', // Arbitrum Goerli
+    [42170]: '/assets/images/vendor/chains/arbitrum-nova.svg',
     [ChainId.HuobiECOChainMainnet]: '/assets/images/vendor/chains/heco.png',
     [ChainId.HuobiECOChainTestnet]: '/assets/images/vendor/chains/heco.png',
     [ChainId.Moonbeam]: '/assets/images/vendor/chains/moonbeam.png',

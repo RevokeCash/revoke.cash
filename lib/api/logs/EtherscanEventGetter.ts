@@ -122,6 +122,7 @@ const API_URLS = {
   [ChainId.FantomTestnet]: 'https://api-testnet.ftmscan.com/api',
   [ChainId.ArbitrumOne]: 'https://api.arbiscan.io/api',
   [421613]: 'https://api-goerli.arbiscan.io/api',
+  [42170]: 'https://api-nova.arbiscan.io/api',
   [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
   [ChainId.HuobiECOChainTestnet]: 'https://api-testnet.hecoinfo.com/api',
   [ChainId.Moonbeam]: 'https://api-moonbeam.moonscan.io/api',
@@ -142,9 +143,5 @@ const getApiKey = (apiUrl: string, apiKeys: { [platform: string]: string }) => {
   const platform = new URL(apiUrl).hostname.split('.').at(-2);
   const subPlatform = new URL(apiUrl).hostname.split('.').at(-3).split('-').at(-1);
 
-  if (platform === 'moonscan') {
-    return apiKeys[`${subPlatform}.${platform}`];
-  }
-
-  return apiKeys[platform];
+  return apiKeys[`${subPlatform}.${platform}`] ?? apiKeys[platform];
 };
