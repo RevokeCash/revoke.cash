@@ -3,9 +3,8 @@ import axios from 'axios';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
 import { ERC721Metadata } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { DashboardSettings } from 'lib/interfaces';
+import { DashboardSettings, TokenMapping } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
-import { getFullTokenMapping } from 'lib/utils/tokens';
 import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
 import Erc20TokenList from '../ERC20/Erc20TokenList';
@@ -13,11 +12,12 @@ import Erc721TokenList from '../ERC721/Erc721TokenList';
 
 interface Props {
   settings: DashboardSettings;
+  tokenMapping?: TokenMapping;
   tokenStandard: string;
   inputAddress?: string;
 }
 
-function TokenList({ settings, tokenStandard, inputAddress }: Props) {
+function TokenList({ settings, tokenMapping, tokenStandard, inputAddress }: Props) {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
 
   const logIn = async () => {
@@ -53,7 +53,6 @@ function TokenList({ settings, tokenStandard, inputAddress }: Props) {
   const getApprovalForAllEvents = buildGetEventsFunction('ApprovalForAll', 1);
 
   const { result: isLoggedIn, loading: loggingIn, error: loginError } = useAsync(logIn, []);
-  const { result: tokenMapping, loading: loadingTokenMapping } = useAsync(getFullTokenMapping, [selectedChainId]);
   const {
     result: latestBlockNumber,
     loading: loadingLatestBlockNumber,
@@ -78,7 +77,7 @@ function TokenList({ settings, tokenStandard, inputAddress }: Props) {
 
   const error = loginError ?? latestBlockNumberError ?? transferError ?? approvalError ?? approvalForAllError;
   const loadingEvents = loadingTransfers || loadingApprovals || loadingApprovalsForAll;
-  const loading = loggingIn || loadingTokenMapping || loadingLatestBlockNumber || loadingEvents;
+  const loading = loggingIn || loadingLatestBlockNumber || loadingEvents;
 
   if (!inputAddress) {
     return null;
