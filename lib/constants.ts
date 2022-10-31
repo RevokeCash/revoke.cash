@@ -114,6 +114,8 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.GodwokenMainnet,
   // ChainId.PolyjuiceTestnet,
   ChainId['GodwokenTestnet(V1.1)'],
+  ChainId.EmeraldParatimeMainnet,
+  ChainId.EmeraldParatimeTestnet,
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -148,6 +150,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.TelosEVMMainnet,
   ChainId.Astar,
   ChainId.IoTeXNetworkMainnet,
+  ChainId.EmeraldParatimeMainnet,
   ChainId.HarmonyMainnetShard0,
   ChainId.GodwokenMainnet,
   ChainId.SmartBitcoinCash,
@@ -179,6 +182,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.MetisStardustTestnet,
   ChainId.TelosEVMTestnet,
   ChainId.IoTeXNetworkTestnet,
+  ChainId.EmeraldParatimeTestnet,
   ChainId.HarmonyTestnetShard0,
   ChainId['GodwokenTestnet(V1.1)'],
   // ChainId.PolyjuiceTestnet,
