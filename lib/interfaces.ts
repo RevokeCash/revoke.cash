@@ -51,6 +51,7 @@ export interface DashboardSettings {
   includeUnverifiedTokens: boolean;
   includeTokensWithoutBalances: boolean;
   includeTokensWithoutAllowances: boolean;
+  tokenStandard: TokenStandard;
 }
 
 export type LogsProvider = Pick<providers.Provider, 'getLogs'>;

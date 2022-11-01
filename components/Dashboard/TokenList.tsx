@@ -13,11 +13,10 @@ import Erc721TokenList from '../ERC721/Erc721TokenList';
 interface Props {
   settings: DashboardSettings;
   tokenMapping?: TokenMapping;
-  tokenStandard: string;
   inputAddress?: string;
 }
 
-function TokenList({ settings, tokenMapping, tokenStandard, inputAddress }: Props) {
+function TokenList({ settings, tokenMapping, inputAddress }: Props) {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
 
   const logIn = async () => {
@@ -92,7 +91,7 @@ function TokenList({ settings, tokenMapping, tokenStandard, inputAddress }: Prop
     return <div style={{ marginTop: '20px' }}>Error: {error.message}</div>;
   }
 
-  if (tokenStandard === 'ERC20') {
+  if (settings.tokenStandard === 'ERC20') {
     return (
       <Erc20TokenList
         inputAddress={inputAddress}
