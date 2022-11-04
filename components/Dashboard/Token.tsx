@@ -1,45 +1,22 @@
 import AllowanceList from 'components/Dashboard/AllowanceList';
 import TokenBalance from 'components/Dashboard/TokenBalance';
+import { useAllowances } from 'lib/hooks/useAllowances';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { DashboardSettings, Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
+import { DashboardSettings, isERC721Token, TokenData } from 'lib/interfaces';
+import { toFloat } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from 'lib/utils/erc721';
-import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 interface Props {
-  token: Erc721TokenData;
+  token: TokenData;
   inputAddress: string;
   openSeaProxyAddress?: string;
   settings: DashboardSettings;
 }
 
-function Erc721Token({ token, inputAddress, openSeaProxyAddress, settings }: Props) {
-  const [allowances, setAllowances] = useState<IERC721Allowance[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
+function Token({ token, inputAddress, openSeaProxyAddress, settings }: Props) {
   const { selectedChainId } = useEthereum();
-
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-
-      const unlimitedAllowances = await getUnlimitedAllowancesFromApprovals(
-        token.contract,
-        inputAddress,
-        token.approvalsForAll
-      );
-      const limitedAllowances = await getLimitedAllowancesFromApprovals(token.contract, token.approvals);
-      const allAllowances = [...limitedAllowances, ...unlimitedAllowances].filter(
-        (allowance) => allowance !== undefined
-      );
-
-      setAllowances(allAllowances);
-      setLoading(false);
-    };
-
-    loadData();
-  }, []);
+  const { allowances, loading, onRevoke } = useAllowances(token, inputAddress);
 
   if (loading) {
     return (
@@ -49,7 +26,11 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress, settings }: Pro
     );
   }
 
-  const hasZeroBalance = token.balance === '0';
+  // Check whether the token has zero balance (depending on token type)
+  const hasZeroBalance = isERC721Token(token)
+    ? token.balance === '0'
+    : toFloat(Number(token.balance), token.decimals) === '0.000';
+
   const hasNoAllowances = allowances.length === 0;
 
   // Do not render tokens without balance or allowances
@@ -60,13 +41,6 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress, settings }: Pro
 
   // Do not render tokens without allowances if that is the setting
   if (!settings.includeTokensWithoutAllowances && hasNoAllowances) return null;
-
-  const onRevoke = (allowance: IERC721Allowance) => {
-    const allowanceEquals = (a: IERC721Allowance, b: IERC721Allowance) =>
-      a.spender === b.spender && a.tokenId === b.tokenId;
-
-    setAllowances((previousAllowances) => previousAllowances.filter((other) => !allowanceEquals(other, allowance)));
-  };
 
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
 
@@ -84,4 +58,4 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress, settings }: Pro
   );
 }
 
-export default Erc721Token;
+export default Token;

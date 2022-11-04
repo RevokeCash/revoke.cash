@@ -1,4 +1,5 @@
 import { Log } from '@ethersproject/abstract-provider';
+import Token from 'components/Dashboard/Token';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { ERC20 } from 'lib/abis';
@@ -9,7 +10,6 @@ import { getTokenData } from 'lib/utils/erc20';
 import { getTokenIcon, isSpamToken, isVerifiedToken } from 'lib/utils/tokens';
 import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
-import Erc20Token from './Erc20Token';
 
 interface Props {
   settings: DashboardSettings;
@@ -77,7 +77,7 @@ function Erc20TokenList({ settings, transferEvents, approvalEvents, tokenMapping
     .filter((token) => settings.includeUnverifiedTokens || token.verified)
     .filter((token) => settings.includeTokensWithoutBalances || hasZeroBalance(token))
     .map((token) => (
-      <Erc20Token key={token.contract.address} token={token} inputAddress={inputAddress} settings={settings} />
+      <Token key={token.contract.address} token={token} inputAddress={inputAddress} settings={settings} />
     ));
 
   return <div className="TokenList">{tokenComponents}</div>;
