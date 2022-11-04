@@ -1,23 +1,23 @@
-import { Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
-import Erc721Allowance from './Erc721Allowance';
+import Allowance from 'components/Dashboard/Allowance';
+import { isERC20Allowance, ITokenAllowance, TokenData } from 'lib/interfaces';
 
 interface Props {
-  token: Erc721TokenData;
-  allowances: IERC721Allowance[];
+  token: TokenData;
+  allowances: ITokenAllowance[];
   inputAddress: string;
   openSeaProxyAddress?: string;
-  onRevoke: (allowance: IERC721Allowance) => void;
+  onRevoke: (allowance: ITokenAllowance) => void;
 }
 
-function Erc721AllowanceList({ token, allowances, inputAddress, openSeaProxyAddress, onRevoke }: Props) {
+function AllowanceList({ token, allowances, inputAddress, openSeaProxyAddress, onRevoke }: Props) {
   return (
     <div className="AllowanceList">
       {allowances.length === 0 ? (
         <div className="Allowance">No allowances</div>
       ) : (
         allowances.map((allowance) => (
-          <Erc721Allowance
-            key={`${allowance.tokenId}-${allowance.spender}`}
+          <Allowance
+            key={`${allowance.spender}-${isERC20Allowance(allowance) ? allowance.amount : allowance.tokenId}`}
             token={token}
             allowance={allowance}
             inputAddress={inputAddress}
@@ -30,4 +30,4 @@ function Erc721AllowanceList({ token, allowances, inputAddress, openSeaProxyAddr
   );
 }
 
-export default Erc721AllowanceList;
+export default AllowanceList;

@@ -10,7 +10,7 @@ export async function getAllowancesFromApprovals(contract: Contract, ownerAddres
     (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
   );
 
-  let allowances: IERC20Allowance[] = await Promise.all(
+  const allowances: IERC20Allowance[] = await Promise.all(
     deduplicatedApprovals.map((approval) => getAllowanceFromApproval(contract, ownerAddress, approval))
   );
 
@@ -19,9 +19,9 @@ export async function getAllowancesFromApprovals(contract: Contract, ownerAddres
 
 async function getAllowanceFromApproval(multicallContract: Contract, ownerAddress: string, approval: providers.Log) {
   const spender = topicToAddress(approval.topics[2]);
-  const allowance = await convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender)));
+  const amount = await convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender)));
 
-  return { spender, allowance };
+  return { spender, amount };
 }
 
 export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
