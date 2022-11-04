@@ -1,3 +1,4 @@
+import AllowanceList from 'components/Dashboard/AllowanceList';
 import TokenBalance from 'components/Dashboard/TokenBalance';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { DashboardSettings, Erc721TokenData, IERC721Allowance } from 'lib/interfaces';
@@ -5,7 +6,6 @@ import { getChainExplorerUrl } from 'lib/utils/chains';
 import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from 'lib/utils/erc721';
 import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import Erc721AllowanceList from './Erc721AllowanceList';
 
 interface Props {
   token: Erc721TokenData;
@@ -73,7 +73,7 @@ function Erc721Token({ token, inputAddress, openSeaProxyAddress, settings }: Pro
   return (
     <div className="Token">
       <TokenBalance symbol={token.symbol} icon={token.icon} balance={token.balance} explorerUrl={explorerUrl} />
-      <Erc721AllowanceList
+      <AllowanceList
         token={token}
         allowances={allowances}
         inputAddress={inputAddress}
