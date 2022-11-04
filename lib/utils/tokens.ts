@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { ChainId } from 'eth-chains';
+import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { TRUSTWALLET_BASE_URL } from 'lib/constants';
+import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, TRUSTWALLET_BASE_URL } from 'lib/constants';
 import { Erc20TokenData, Erc721TokenData, TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
+import { shortenAddress } from '.';
 import { getChainTrustWalletName } from './chains';
+import { convertString, unpackResult, withFallback } from './promises';
 
 // Check if a token is verified in the token mapping
 export function isVerifiedToken(tokenAddress: string, tokenMapping?: TokenMapping): boolean {
@@ -105,4 +108,55 @@ export function getTokenIcon(tokenAddress: string, chainId?: number, tokenMappin
 
 export const fallbackTokenIconOnError = (ev: any) => {
   ev.target.src = '/assets/images/fallback-token-icon.png';
+};
+
+export const getErc20TokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
+  const tokenData = tokenMapping[getAddress(contract.address)];
+
+  const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
+    unpackResult(contract.functions.totalSupply()),
+    convertString(unpackResult(contract.functions.balanceOf(ownerAddress))),
+    // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
+    tokenData?.symbol ?? unpackResult(contract.functions.symbol()),
+    tokenData?.decimals ?? unpackResult(contract.functions.decimals()),
+    throwIfNotErc20(contract),
+  ]);
+
+  const totalSupply = totalSupplyBN.toString();
+  return { symbol, decimals, totalSupply, balance };
+};
+
+export const getErc721TokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
+  const tokenData = tokenMapping[getAddress(contract.address)];
+
+  const [balance, symbol] = await Promise.all([
+    withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
+    // Use the tokenlist name if present, fall back to 'shortened address since not every NFT has a name
+    tokenData?.name ?? withFallback(unpackResult(contract.functions.name()), shortenAddress(contract.address)),
+    throwIfNotErc721(contract),
+  ]);
+
+  return { symbol, balance };
+};
+
+export const throwIfNotErc20 = async (contract: Contract) => {
+  // If the function allowance does not exist it will throw (and is not ERC20)
+  const [allowance] = await contract.functions.allowance(DUMMY_ADDRESS, DUMMY_ADDRESS_2);
+
+  // The only acceptable value for checking the allowance from 0x00...01 to 0x00...02 is 0
+  // This could happen when the contract is not ERC20 but does have a fallback function
+  if (allowance.toString() !== '0') {
+    throw new Error('Response to allowance was not 0, indicating that this is not an ERC20 contract');
+  }
+};
+
+export const throwIfNotErc721 = async (contract: Contract) => {
+  // If the function isApprovedForAll does not exist it will throw (and is not ERC721)
+  const [isApprovedForAll] = await contract.functions.isApprovedForAll(DUMMY_ADDRESS, DUMMY_ADDRESS_2);
+
+  // The only acceptable value for checking whether 0x00...01 has an allowance set to 0x00...02 is false
+  // This could happen when the contract is not ERC721 but does have a fallback function
+  if (isApprovedForAll !== false) {
+    throw new Error('Response to isApprovedForAll was not false, indicating that this is not an ERC721 contract');
+  }
 };

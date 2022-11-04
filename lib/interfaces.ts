@@ -64,3 +64,5 @@ export interface DashboardSettings {
 }
 
 export type LogsProvider = Pick<providers.Provider, 'getLogs'>;
+
+export type StateSetter<T> = React.Dispatch<React.SetStateAction<T | undefined>>;

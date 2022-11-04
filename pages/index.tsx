@@ -1,5 +1,5 @@
 import { displayGitcoinToast } from 'components/common/gitcoin-toast';
-import Dashboard from 'components/Dashboard/Dashboard';
+import DashboardWrapper from 'components/Dashboard/DashboardWrapper';
 import { defaultSEO } from 'lib/next-seo.config';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -17,7 +17,7 @@ const App: NextPage = () => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <Dashboard />
+      <DashboardWrapper />
     </>
   );
 };

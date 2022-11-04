@@ -3,8 +3,10 @@ import { compareBN } from 'lib/utils';
 import { formatAllowance, getAllowancesFromApprovals } from 'lib/utils/erc20';
 import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from 'lib/utils/erc721';
 import { useEffect, useState } from 'react';
+import { useAppContext } from './useAppContext';
 
-export const useAllowances = (token: TokenData, inputAddress: string) => {
+export const useAllowances = (token: TokenData) => {
+  const { inputAddress } = useAppContext();
   const [allowances, setAllowances] = useState<ITokenAllowance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 

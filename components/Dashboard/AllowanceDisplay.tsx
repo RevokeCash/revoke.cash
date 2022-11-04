@@ -18,8 +18,8 @@ function AllowanceDisplay({ allowance, token, updatedAmount, spenderName }: Prop
 
   const spenderDisplay = spenderName || allowance.spender;
   const shortenedSpenderDisplay = spenderName || shortenAddress(allowance.spender);
-  const explorerBaseUrl = getChainExplorerUrl(selectedChainId);
   const { i18nKey, amount, tokenId } = getAllowanceI18nValues(allowance, token, updatedAmount);
+  const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.spender}`;
 
   return (
     // Display separate spans for the regular and shortened versions of the spender address
@@ -29,14 +29,14 @@ function AllowanceDisplay({ allowance, token, updatedAmount, spenderName }: Prop
         <Trans
           i18nKey={i18nKey}
           values={{ amount, tokenId, spender: shortenedSpenderDisplay }}
-          components={[<a className="monospace" href={`${explorerBaseUrl}/address/${allowance.spender}`} />]}
+          components={[<a className="monospace" href={explorerUrl} />]}
         />
       </span>
       <span className="only-desktop-inline">
         <Trans
           i18nKey={i18nKey}
           values={{ amount, tokenId, spender: spenderDisplay }}
-          components={[<a className="monospace" href={`${explorerBaseUrl}/address/${allowance.spender}`} />]}
+          components={[<a className="monospace" href={explorerUrl} />]}
         />
       </span>
     </Form.Label>

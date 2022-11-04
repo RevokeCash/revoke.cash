@@ -3,24 +3,22 @@ import Token from 'components/Dashboard/Token';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { ERC20 } from 'lib/abis';
+import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { DashboardSettings, Erc20TokenData, TokenMapping } from 'lib/interfaces';
+import { Erc20TokenData } from 'lib/interfaces';
 import { toFloat } from 'lib/utils';
-import { getTokenData } from 'lib/utils/erc20';
-import { getTokenIcon, isSpamToken, isVerifiedToken } from 'lib/utils/tokens';
+import { getErc20TokenData, getTokenIcon, isSpamToken, isVerifiedToken } from 'lib/utils/tokens';
 import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 interface Props {
-  settings: DashboardSettings;
   transferEvents: Log[];
   approvalEvents: Log[];
-  tokenMapping?: TokenMapping;
-  inputAddress?: string;
 }
 
-function Erc20TokenList({ settings, transferEvents, approvalEvents, tokenMapping, inputAddress }: Props) {
+function Erc20TokenList({ transferEvents, approvalEvents }: Props) {
   const { readProvider, selectedChainId } = useEthereum();
+  const { inputAddress, tokenMapping, settings } = useAppContext();
 
   const { result: tokens, loading } = useAsync<Erc20TokenData[]>(async () => {
     const filteredApprovalEvents = approvalEvents.filter((ev) => ev.topics.length === 3);
@@ -39,7 +37,7 @@ function Erc20TokenList({ settings, transferEvents, approvalEvents, tokenMapping
         const icon = getTokenIcon(contract.address, selectedChainId, tokenMapping);
 
         try {
-          const tokenData = await getTokenData(contract, inputAddress, tokenMapping);
+          const tokenData = await getErc20TokenData(contract, inputAddress, tokenMapping);
           return { ...tokenData, icon, contract, verified, approvals: tokenApprovals };
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC20 token so
@@ -76,9 +74,7 @@ function Erc20TokenList({ settings, transferEvents, approvalEvents, tokenMapping
     .filter((token) => !isSpamToken(token))
     .filter((token) => settings.includeUnverifiedTokens || token.verified)
     .filter((token) => settings.includeTokensWithoutBalances || hasZeroBalance(token))
-    .map((token) => (
-      <Token key={token.contract.address} token={token} inputAddress={inputAddress} settings={settings} />
-    ));
+    .map((token) => <Token key={token.contract.address} token={token} />);
 
   return <div className="TokenList">{tokenComponents}</div>;
 }

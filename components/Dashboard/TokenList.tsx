@@ -2,8 +2,8 @@ import { Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
 import { ERC721Metadata } from 'lib/abis';
+import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { DashboardSettings, TokenMapping } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
 import { getChainName } from 'lib/utils/chains';
 import { useAsync } from 'react-async-hook';
@@ -11,14 +11,9 @@ import { ClipLoader } from 'react-spinners';
 import Erc20TokenList from '../ERC20/Erc20TokenList';
 import Erc721TokenList from '../ERC721/Erc721TokenList';
 
-interface Props {
-  settings: DashboardSettings;
-  tokenMapping?: TokenMapping;
-  inputAddress?: string;
-}
-
-function TokenList({ settings, tokenMapping, inputAddress }: Props) {
+function TokenList() {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
+  const { inputAddress, settings } = useAppContext();
 
   const logIn = async () => {
     await axios.post('/api/login');
@@ -96,21 +91,10 @@ function TokenList({ settings, tokenMapping, inputAddress }: Props) {
   }
 
   if (settings.tokenStandard === 'ERC20') {
-    return (
-      <Erc20TokenList
-        inputAddress={inputAddress}
-        settings={settings}
-        tokenMapping={tokenMapping}
-        transferEvents={transferEvents}
-        approvalEvents={approvalEvents}
-      />
-    );
+    return <Erc20TokenList transferEvents={transferEvents} approvalEvents={approvalEvents} />;
   } else {
     return (
       <Erc721TokenList
-        inputAddress={inputAddress}
-        settings={settings}
-        tokenMapping={tokenMapping}
         transferEvents={transferEvents}
         approvalEvents={approvalEvents}
         approvalForAllEvents={approvalForAllEvents}
