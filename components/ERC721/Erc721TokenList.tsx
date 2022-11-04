@@ -8,7 +8,7 @@ import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } 
 import { getTokenIcon, isSpamToken } from 'lib/utils/tokens';
 import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
-import Erc721Token from './Erc721Token';
+import Token from '../Dashboard/Token';
 
 interface Props {
   settings: DashboardSettings;
@@ -98,7 +98,7 @@ function Erc721TokenList({
     .filter((token) => settings.includeUnverifiedTokens || token.verified)
     .filter((token) => settings.includeTokensWithoutBalances || token.balance !== '0')
     .map((token) => (
-      <Erc721Token
+      <Token
         key={token.contract.address}
         token={token}
         inputAddress={inputAddress}
