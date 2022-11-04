@@ -1,7 +1,5 @@
 import { BigNumber, Contract, providers } from 'ethers';
-import { getAddress } from 'ethers/lib/utils';
-import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
-import { IERC20Allowance, TokenMapping } from 'lib/interfaces';
+import { IERC20Allowance } from 'lib/interfaces';
 import { toFloat, topicToAddress } from '.';
 import { convertString, unpackResult } from './promises';
 
@@ -24,22 +22,6 @@ async function getAllowanceFromApproval(multicallContract: Contract, ownerAddres
   return { spender, amount };
 }
 
-export async function getTokenData(contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) {
-  const tokenData = tokenMapping[getAddress(contract.address)];
-
-  const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
-    unpackResult(contract.functions.totalSupply()),
-    convertString(unpackResult(contract.functions.balanceOf(ownerAddress))),
-    // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
-    tokenData?.symbol ?? unpackResult(contract.functions.symbol()),
-    tokenData?.decimals ?? unpackResult(contract.functions.decimals()),
-    throwIfNotErc20(contract),
-  ]);
-
-  const totalSupply = totalSupplyBN.toString();
-  return { symbol, decimals, totalSupply, balance };
-}
-
 export function formatAllowance(allowance: string, decimals: number, totalSupply: string): string {
   const allowanceBN = BigNumber.from(allowance);
   const totalSupplyBN = BigNumber.from(totalSupply);
@@ -49,15 +31,4 @@ export function formatAllowance(allowance: string, decimals: number, totalSupply
   }
 
   return toFloat(Number(allowanceBN), decimals);
-}
-
-async function throwIfNotErc20(contract: Contract) {
-  // If the function allowance does not exist it will throw (and is not ERC20)
-  const [allowance] = await contract.functions.allowance(DUMMY_ADDRESS, DUMMY_ADDRESS_2);
-
-  // The only acceptable value for checking the allowance from 0x00...01 to 0x00...02 is 0
-  // This could happen when the contract is not ERC20 but does have a fallback function
-  if (allowance.toString() !== '0') {
-    throw new Error('Response to allowance was not 0, indicating that this is not an ERC20 contract');
-  }
 }

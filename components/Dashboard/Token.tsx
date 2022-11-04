@@ -1,22 +1,18 @@
 import AllowanceList from 'components/Dashboard/AllowanceList';
 import TokenBalance from 'components/Dashboard/TokenBalance';
 import { useAllowances } from 'lib/hooks/useAllowances';
-import { useEthereum } from 'lib/hooks/useEthereum';
-import { DashboardSettings, isERC721Token, TokenData } from 'lib/interfaces';
+import { useAppContext } from 'lib/hooks/useAppContext';
+import { isERC721Token, TokenData } from 'lib/interfaces';
 import { toFloat } from 'lib/utils';
-import { getChainExplorerUrl } from 'lib/utils/chains';
 import { ClipLoader } from 'react-spinners';
 
 interface Props {
   token: TokenData;
-  inputAddress: string;
-  openSeaProxyAddress?: string;
-  settings: DashboardSettings;
 }
 
-function Token({ token, inputAddress, openSeaProxyAddress, settings }: Props) {
-  const { selectedChainId } = useEthereum();
-  const { allowances, loading, onRevoke } = useAllowances(token, inputAddress);
+function Token({ token }: Props) {
+  const { settings } = useAppContext();
+  const { allowances, loading, onRevoke } = useAllowances(token);
 
   if (loading) {
     return (
@@ -42,18 +38,10 @@ function Token({ token, inputAddress, openSeaProxyAddress, settings }: Props) {
   // Do not render tokens without allowances if that is the setting
   if (!settings.includeTokensWithoutAllowances && hasNoAllowances) return null;
 
-  const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
-
   return (
     <div className="Token">
-      <TokenBalance symbol={token.symbol} icon={token.icon} balance={token.balance} explorerUrl={explorerUrl} />
-      <AllowanceList
-        token={token}
-        allowances={allowances}
-        inputAddress={inputAddress}
-        openSeaProxyAddress={openSeaProxyAddress}
-        onRevoke={onRevoke}
-      />
+      <TokenBalance token={token} />
+      <AllowanceList token={token} allowances={allowances} onRevoke={onRevoke} />
     </div>
   );
 }

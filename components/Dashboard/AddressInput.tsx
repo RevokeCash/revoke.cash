@@ -1,18 +1,15 @@
 import { track } from '@amplitude/analytics-browser';
+import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { parseInputAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 
-interface Props {
-  inputAddress: string;
-  setInputAddress: (inputAddress: string) => void;
-}
-
-const AddressInput: React.FC<Props> = ({ inputAddress, setInputAddress }) => {
+const AddressInput = () => {
   const { t } = useTranslation();
   const [inputAddressOrName, setInputAddressOrName] = useState<string>('');
+  const { inputAddress, setInputAddress } = useAppContext();
 
   const { account, ensName, unsName } = useEthereum();
   const domainName = ensName ?? unsName;

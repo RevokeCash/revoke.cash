@@ -4,12 +4,10 @@ import { isERC20Allowance, ITokenAllowance, TokenData } from 'lib/interfaces';
 interface Props {
   token: TokenData;
   allowances: ITokenAllowance[];
-  inputAddress: string;
-  openSeaProxyAddress?: string;
   onRevoke: (allowance: ITokenAllowance) => void;
 }
 
-function AllowanceList({ token, allowances, inputAddress, openSeaProxyAddress, onRevoke }: Props) {
+function AllowanceList({ token, allowances, onRevoke }: Props) {
   return (
     <div className="AllowanceList">
       {allowances.length === 0 ? (
@@ -20,8 +18,6 @@ function AllowanceList({ token, allowances, inputAddress, openSeaProxyAddress, o
             key={`${allowance.spender}-${isERC20Allowance(allowance) ? allowance.amount : allowance.tokenId}`}
             token={token}
             allowance={allowance}
-            inputAddress={inputAddress}
-            openSeaProxyAddress={openSeaProxyAddress}
             onRevoke={onRevoke}
           />
         ))

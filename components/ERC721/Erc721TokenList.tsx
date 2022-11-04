@@ -2,39 +2,26 @@ import { Log } from '@ethersproject/abstract-provider';
 import { Contract } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { ERC721Metadata } from 'lib/abis';
+import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { DashboardSettings, Erc721TokenData, TokenMapping } from 'lib/interfaces';
-import { generatePatchedAllowanceEvents, getOpenSeaProxyAddress, getTokenData } from 'lib/utils/erc721';
-import { getTokenIcon, isSpamToken } from 'lib/utils/tokens';
+import { Erc721TokenData } from 'lib/interfaces';
+import { generatePatchedAllowanceEvents } from 'lib/utils/erc721';
+import { getErc721TokenData, getTokenIcon, isSpamToken } from 'lib/utils/tokens';
 import { useAsync } from 'react-async-hook';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Token from '../Dashboard/Token';
 
 interface Props {
-  settings: DashboardSettings;
   transferEvents: Log[];
   approvalEvents: Log[];
   approvalForAllEvents: Log[];
-  tokenMapping?: TokenMapping;
-  inputAddress?: string;
 }
 
-function Erc721TokenList({
-  settings,
-  transferEvents,
-  approvalEvents,
-  approvalForAllEvents,
-  tokenMapping,
-  inputAddress,
-}: Props) {
+function Erc721TokenList({ transferEvents, approvalEvents, approvalForAllEvents }: Props) {
   const { readProvider } = useEthereum();
+  const { inputAddress, openSeaProxyAddress, tokenMapping, settings } = useAppContext();
 
-  const { result: openSeaProxyAddress, loading: loadingOpenSeaProxyAddress } = useAsync(
-    () => getOpenSeaProxyAddress(inputAddress, readProvider),
-    [inputAddress]
-  );
-
-  const { result: tokens, loading: loadingTokens } = useAsync<Erc721TokenData[]>(async () => {
+  const { result: tokens, loading } = useAsync<Erc721TokenData[]>(async () => {
     const patchedApprovalForAllEvents = [
       ...approvalForAllEvents,
       ...generatePatchedAllowanceEvents(inputAddress, openSeaProxyAddress, [
@@ -65,7 +52,7 @@ function Erc721TokenList({
         const verified = true;
 
         try {
-          const tokenData = await getTokenData(contract, inputAddress, tokenMapping);
+          const tokenData = await getErc721TokenData(contract, inputAddress, tokenMapping);
           return { ...tokenData, icon, contract, verified, approvals, approvalsForAll };
         } catch {
           // If the call to getTokenData() fails, the token is not an ERC721 token so
@@ -83,8 +70,6 @@ function Erc721TokenList({
     return sortedTokens;
   }, []);
 
-  const loading = loadingOpenSeaProxyAddress || loadingTokens;
-
   if (loading) {
     return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
   }
@@ -97,15 +82,7 @@ function Erc721TokenList({
     .filter((token) => !isSpamToken(token))
     .filter((token) => settings.includeUnverifiedTokens || token.verified)
     .filter((token) => settings.includeTokensWithoutBalances || token.balance !== '0')
-    .map((token) => (
-      <Token
-        key={token.contract.address}
-        token={token}
-        inputAddress={inputAddress}
-        openSeaProxyAddress={openSeaProxyAddress}
-        settings={settings}
-      />
-    ));
+    .map((token) => <Token key={token.contract.address} token={token} />);
 
   return <div className="TokenList">{tokenComponents}</div>;
 }

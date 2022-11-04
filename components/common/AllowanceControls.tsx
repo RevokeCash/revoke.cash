@@ -1,3 +1,4 @@
+import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainName } from 'lib/utils/chains';
 import { Tooltip } from 'react-bootstrap';
@@ -9,12 +10,12 @@ import WithHoverTooltip from './WithHoverTooltip';
 interface Props {
   revoke: () => Promise<void>;
   update?: (newAllowance: string) => Promise<void>;
-  inputAddress: string;
   id: string;
 }
 
-const AllowanceControls = ({ inputAddress, revoke, update, id }: Props) => {
+const AllowanceControls = ({ revoke, update, id }: Props) => {
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
+  const { inputAddress } = useAppContext();
 
   const isConnected = account !== undefined;
   const isConnectedAddress = isConnected && inputAddress === account;
