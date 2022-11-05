@@ -74,6 +74,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
     [ChainId.EmeraldParatimeMainnet]: 'Oasis Emerald',
     [ChainId.EmeraldParatimeTestnet]: 'Oasis Testnet',
+    [ChainId.EthereumClassicMainnet]: 'Ethereum Classic',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -212,6 +213,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId['GodwokenTestnet(V1.1)']]: '/assets/images/vendor/chains/godwoken.png',
     [ChainId.EmeraldParatimeMainnet]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.EmeraldParatimeTestnet]: '/assets/images/vendor/chains/oasis.png',
+    [ChainId.EthereumClassicMainnet]: '/assets/images/vendor/chains/etc.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -249,6 +251,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     SYS: '100',
     ASTR: '300',
     CKB: '1000', // Godwoken
+    ETC: '1',
   };
 
   return mapping[nativeToken] ?? '1';

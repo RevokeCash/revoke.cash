@@ -67,6 +67,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.FuseSparknet,
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.SyscoinMainnet,
+  ChainId.EthereumClassicMainnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -162,6 +163,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FuseMainnet,
   ChainId.Evmos,
   ChainId.SyscoinMainnet,
+  ChainId.EthereumClassicMainnet,
   ChainId.Shiden,
   ChainId.CLVParachain,
   ChainId.BitTorrentChainMainnet,

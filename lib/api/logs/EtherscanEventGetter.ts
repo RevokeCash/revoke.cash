@@ -141,7 +141,7 @@ const API_URLS = {
 
 const getApiKey = (apiUrl: string, apiKeys: { [platform: string]: string }) => {
   const platform = new URL(apiUrl).hostname.split('.').at(-2);
-  const subPlatform = new URL(apiUrl).hostname.split('.').at(-3).split('-').at(-1);
+  const subPlatform = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
 
   return apiKeys[`${subPlatform}.${platform}`] ?? apiKeys[platform];
 };
