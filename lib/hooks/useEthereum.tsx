@@ -199,8 +199,8 @@ export const EthereumProvider = ({ children }: Props) => {
       updateProviderAndChainId(provider);
       updateAccount(address);
 
-      // Automatically switch to the wallet's chain when connecting
-      if (isSupportedChain(chainId)) setSelectedChainId(chainId);
+      // Automatically switch to the wallet's chain when connecting as long as no other chain was selected
+      if (isSupportedChain(chainId) && selectedChainId === 1) setSelectedChainId(chainId);
 
       track('Connected Wallet', { address, chainId, connectionType: web3Modal.cachedProvider });
 
