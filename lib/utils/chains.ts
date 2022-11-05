@@ -112,6 +112,8 @@ export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string 
     [42170]: 'https://nova.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
+    [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
+    [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];

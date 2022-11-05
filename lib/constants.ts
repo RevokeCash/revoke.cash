@@ -81,8 +81,9 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.ArbitrumOne,
   421613, // Arbitrum Goerli
   42170, // Arbitrum Nova
-  ChainId.HuobiECOChainMainnet,
-  ChainId.HuobiECOChainTestnet,
+  // TODO: Check if Etherscan API works for these again
+  // ChainId.HuobiECOChainMainnet,
+  // ChainId.HuobiECOChainTestnet,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.MoonbaseAlpha,
@@ -116,7 +117,9 @@ export const COVALENT_SUPPORTED_CHAINS = [
   // ChainId.PolyjuiceTestnet,
   ChainId['GodwokenTestnet(V1.1)'],
   ChainId.EmeraldParatimeMainnet,
-  ChainId.EmeraldParatimeTestnet,
+  // ChainId.EmeraldParatimeTestnet,
+  ChainId.HuobiECOChainMainnet,
+  ChainId.HuobiECOChainTestnet,
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -184,7 +187,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.MetisStardustTestnet,
   ChainId.TelosEVMTestnet,
   ChainId.IoTeXNetworkTestnet,
-  ChainId.EmeraldParatimeTestnet,
+  // ChainId.EmeraldParatimeTestnet,
   ChainId.HarmonyTestnetShard0,
   ChainId['GodwokenTestnet(V1.1)'],
   // ChainId.PolyjuiceTestnet,

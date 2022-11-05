@@ -5,6 +5,7 @@ import { ERC721Metadata } from 'lib/abis';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { DashboardSettings, TokenMapping } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
+import { getChainName } from 'lib/utils/chains';
 import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
 import Erc20TokenList from '../ERC20/Erc20TokenList';
@@ -88,7 +89,10 @@ function TokenList({ settings, tokenMapping, inputAddress }: Props) {
 
   if (error) {
     console.log(error);
-    return <div style={{ marginTop: '20px' }}>Error: {error.message}</div>;
+    const message = error.message.includes('missing response')
+      ? `Could not connect to the ${getChainName(selectedChainId)} chain`
+      : error.message;
+    return <div style={{ marginTop: '20px' }}>Error: {message}</div>;
   }
 
   if (settings.tokenStandard === 'ERC20') {
