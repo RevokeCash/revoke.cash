@@ -130,28 +130,6 @@ export const getChainInfoUrl = (chainId: number): string | undefined => {
   return overrides[chainId] ?? chains.get(chainId)?.infoURL;
 };
 
-export const getChainTrustWalletName = (chainId: number): string | undefined => {
-  const mapping = {
-    [ChainId.ArbitrumOne]: 'arbitrum',
-    [ChainId.AuroraMainnet]: 'aurora',
-    [ChainId['AvalancheC-Chain']]: 'avalanchec',
-    [ChainId.CeloMainnet]: 'celo',
-    [ChainId.EthereumClassicMainnet]: 'classic',
-    [ChainId.CronosMainnetBeta]: 'cronos',
-    [ChainId.EthereumMainnet]: 'ethereum',
-    [ChainId.FantomOpera]: 'fantom',
-    [ChainId.HarmonyMainnetShard0]: 'harmony',
-    [ChainId.HuobiECOChainMainnet]: 'heco',
-    [ChainId.IoTeXNetworkMainnet]: 'iotex',
-    [ChainId.Optimism]: 'optimism',
-    [ChainId.PolygonMainnet]: 'polygon',
-    [ChainId.BinanceSmartChainMainnet]: 'smartchain',
-    [ChainId.Gnosis]: 'xdai',
-  };
-
-  return mapping[chainId];
-};
-
 export const getChainLogo = (chainId: number): string => {
   const mapping = {
     [ChainId.EthereumMainnet]: '/assets/images/vendor/chains/ethereum.png',
