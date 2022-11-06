@@ -1,9 +1,9 @@
 import { Log } from '@ethersproject/abstract-provider';
+import Error from 'components/common/Error';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { TokenData, TokenStandard } from 'lib/interfaces';
-import { getChainName } from 'lib/utils/chains';
 import {
   createTokenContracts,
   getErc20TokenData,
@@ -83,13 +83,7 @@ function TokenList({ tokenStandard, transferEvents, approvalEvents, approvalForA
     return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
   }
 
-  if (error) {
-    console.log(error);
-    const message = error.message.includes('missing response')
-      ? `Could not connect to the ${getChainName(selectedChainId)} chain`
-      : error.message;
-    return <div style={{ marginTop: '20px' }}>Error: {message}</div>;
-  }
+  if (error) return <Error error={error} />;
 
   if (tokens.length === 0) {
     return <div className="TokenList">No token balances</div>;

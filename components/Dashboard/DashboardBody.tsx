@@ -1,11 +1,11 @@
 import { Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
+import Error from 'components/common/Error';
 import { hexZeroPad, Interface } from 'ethers/lib/utils';
 import { ERC721Metadata } from 'lib/abis';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getLogs } from 'lib/utils';
-import { getChainName } from 'lib/utils/chains';
 import { generatePatchedAllowanceEvents } from 'lib/utils/erc721';
 import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
@@ -93,13 +93,7 @@ function DashboardBody() {
     return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
   }
 
-  if (error) {
-    console.log(error);
-    const message = error.message.includes('missing response')
-      ? `Could not connect to the ${getChainName(selectedChainId)} chain`
-      : error.message;
-    return <div style={{ marginTop: '20px' }}>Error: {message}</div>;
-  }
+  if (error) return <Error error={error} />;
 
   return (
     <TokenList
