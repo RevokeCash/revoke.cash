@@ -1,7 +1,7 @@
 import rateLimit from 'express-rate-limit';
 import { ironSession } from 'iron-session/express';
 import { IRON_OPTIONS } from 'lib/constants';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import requestIp from 'request-ip';
 

@@ -1,4 +1,5 @@
-import { IERC20Allowance, IERC721Allowance, isERC721Token, ITokenAllowance, TokenData } from 'lib/interfaces';
+import type { IERC20Allowance, IERC721Allowance, ITokenAllowance, TokenData } from 'lib/interfaces';
+import { isERC721Token } from 'lib/interfaces';
 import { compareBN } from 'lib/utils';
 import {
   formatErc20Allowance,

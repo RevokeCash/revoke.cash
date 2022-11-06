@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 
 interface Props {

@@ -1,6 +1,6 @@
+import type { Provider } from '@ethersproject/abstract-provider';
 import axios from 'axios';
-import { Contract, providers } from 'ethers';
-import { getAddress } from 'ethers/lib/utils';
+import { Contract, utils } from 'ethers';
 import { OPENSEA_REGISTRY } from 'lib/abis';
 import {
   ADDRESS_ZERO,
@@ -24,7 +24,7 @@ export const addressToAppName = async (
 
 const getNameFromDappList = async (address: string, chainId: number): Promise<string | undefined> => {
   try {
-    const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${chainId}/${getAddress(address)}.json`);
+    const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${chainId}/${utils.getAddress(address)}.json`);
     return data.appName;
   } catch {
     return undefined;
@@ -33,7 +33,9 @@ const getNameFromDappList = async (address: string, chainId: number): Promise<st
 
 const getNameFromEthereumList = async (address: string, chainId: number): Promise<string | undefined> => {
   try {
-    const contractRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${getAddress(address)}.json`);
+    const contractRes = await axios.get(
+      `${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${utils.getAddress(address)}.json`
+    );
 
     try {
       const projectRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/projects/${contractRes.data.project}.json`);
@@ -46,22 +48,22 @@ const getNameFromEthereumList = async (address: string, chainId: number): Promis
   }
 };
 
-export async function lookupEnsName(address: string): Promise<string | undefined> {
+export const lookupEnsName = async (address: string): Promise<string | undefined> => {
   try {
     return await ENS_RESOLUTION?.lookupAddress(address);
   } catch {
     return undefined;
   }
-}
+};
 
-export async function resolveEnsName(ensName: string): Promise<string | undefined> {
+export const resolveEnsName = async (ensName: string): Promise<string | undefined> => {
   try {
     const address = await ENS_RESOLUTION?.resolveName(ensName);
     return address ? address : undefined;
   } catch {
     return undefined;
   }
-}
+};
 
 export const lookupUnsName = async (address: string) => {
   try {
@@ -75,16 +77,13 @@ export const lookupUnsName = async (address: string) => {
 export const resolveUnsName = async (unsName: string) => {
   try {
     const address = await UNS_RESOLUTION?.addr(unsName, 'ETH');
-    return getAddress(address?.toLowerCase());
+    return utils.getAddress(address?.toLowerCase());
   } catch {
     return undefined;
   }
 };
 
-export async function getOpenSeaProxyAddress(
-  userAddress: string,
-  provider: providers.Provider
-): Promise<string | undefined> {
+export const getOpenSeaProxyAddress = async (userAddress: string, provider: Provider): Promise<string | undefined> => {
   try {
     const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, provider);
     const [proxyAddress] = await contract.functions.proxies(userAddress);
@@ -93,4 +92,4 @@ export async function getOpenSeaProxyAddress(
   } catch {
     return undefined;
   }
-}
+};

@@ -1,7 +1,7 @@
 import Resolution from '@unstoppabledomains/resolution';
 import { ChainId } from 'eth-chains';
 import { providers } from 'ethers';
-import { IronSessionOptions } from 'iron-session';
+import type { IronSessionOptions } from 'iron-session';
 
 export const DAPP_LIST_BASE_URL = '/dapp-contract-list';
 export const ETHEREUM_LISTS_CONTRACTS = 'https://raw.githubusercontent.com/ethereum-lists/contracts/main';

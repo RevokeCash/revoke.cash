@@ -1,5 +1,5 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { Erc20TokenData, TokenData } from 'lib/interfaces';
+import type { Erc20TokenData, TokenData } from 'lib/interfaces';
 import { getBalanceText } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import TokenLogo from '../common/TokenLogo';

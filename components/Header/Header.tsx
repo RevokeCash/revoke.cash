@@ -1,10 +1,9 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 import NavLink from './NavLink';
 
-const Header: React.FC = () => {
+const Header = () => {
   const { t } = useTranslation();
 
   return (

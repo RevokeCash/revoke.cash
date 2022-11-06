@@ -1,11 +1,11 @@
-import { Filter, Log } from '@ethersproject/abstract-provider';
+import type { Filter, Log } from '@ethersproject/abstract-provider';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import axios from 'axios';
 import { ChainId } from 'eth-chains';
-import { getAddress } from 'ethers/lib/utils';
+import { utils } from 'ethers';
 import PQueue from 'p-queue';
-import { EventGetter } from './EventGetter';
+import type { EventGetter } from './EventGetter';
 
 const upstashRateLimiter =
   process.env.UPSTASH_REDIS_REST_URL &&
@@ -106,7 +106,7 @@ class EtherscanQueue {
 }
 
 const formatEtherscanEvent = (etherscanLog: any) => ({
-  address: getAddress(etherscanLog.address),
+  address: utils.getAddress(etherscanLog.address),
   topics: etherscanLog.topics,
   transactionHash: etherscanLog.transactionHash,
 });

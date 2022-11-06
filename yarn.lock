@@ -6465,6 +6465,7 @@ __metadata:
     "@0xsequence/multicall": ^0.36.13
     "@amplitude/analytics-browser": ^1.5.5
     "@coinbase/wallet-sdk": ^3.5.3
+    "@ethersproject/abstract-provider": ^5.7.0
     "@gnosis.pm/safe-apps-sdk": ^7.8.0
     "@gnosis.pm/safe-apps-web3modal": ^15.0.0
     "@openzeppelin/contracts": ^4.7.3

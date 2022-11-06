@@ -1,6 +1,6 @@
 import Heading from 'components/common/Heading';
 import { defaultSEO } from 'lib/next-seo.config';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 

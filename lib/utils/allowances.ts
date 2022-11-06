@@ -1,5 +1,8 @@
-import { BigNumber, Contract, providers, utils } from 'ethers';
+import type { Log } from '@ethersproject/abstract-provider';
+import type { Contract } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
+import type { ITokenAllowance, TokenData } from 'lib/interfaces';
 import {
   IERC20Allowance,
   IERC721Allowance,
@@ -7,17 +10,11 @@ import {
   isERC20Token,
   isERC721Allowance,
   isERC721Token,
-  ITokenAllowance,
-  TokenData,
 } from 'lib/interfaces';
 import { toFloat, topicToAddress } from '.';
 import { convertString, unpackResult } from './promises';
 
-export async function getErc20AllowancesFromApprovals(
-  contract: Contract,
-  ownerAddress: string,
-  approvals: providers.Log[]
-) {
+export const getErc20AllowancesFromApprovals = async (contract: Contract, ownerAddress: string, approvals: Log[]) => {
   const deduplicatedApprovals = approvals.filter(
     (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
   );
@@ -27,20 +24,16 @@ export async function getErc20AllowancesFromApprovals(
   );
 
   return allowances;
-}
+};
 
-async function getErc20AllowanceFromApproval(
-  multicallContract: Contract,
-  ownerAddress: string,
-  approval: providers.Log
-) {
+const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerAddress: string, approval: Log) => {
   const spender = topicToAddress(approval.topics[2]);
   const amount = await convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender)));
 
   return { spender, amount };
-}
+};
 
-export async function getLimitedErc721AllowancesFromApprovals(contract: Contract, approvals: providers.Log[]) {
+export const getLimitedErc721AllowancesFromApprovals = async (contract: Contract, approvals: Log[]) => {
   const deduplicatedApprovals = approvals.filter(
     (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
   );
@@ -50,9 +43,9 @@ export async function getLimitedErc721AllowancesFromApprovals(contract: Contract
   );
 
   return allowances;
-}
+};
 
-async function getLimitedErc721AllowanceFromApproval(multicallContract: Contract, approval: providers.Log) {
+const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract, approval: Log) => {
   // Wrap this in a try-catch since it's possible the NFT has been burned
   try {
     // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
@@ -75,13 +68,13 @@ async function getLimitedErc721AllowanceFromApproval(multicallContract: Contract
   } catch {
     return undefined;
   }
-}
+};
 
-export async function getUnlimitedErc721AllowancesFromApprovals(
+export const getUnlimitedErc721AllowancesFromApprovals = async (
   contract: Contract,
   ownerAddress: string,
-  approvals: providers.Log[]
-) {
+  approvals: Log[]
+) => {
   const deduplicatedApprovals = approvals.filter(
     (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
   );
@@ -91,22 +84,22 @@ export async function getUnlimitedErc721AllowancesFromApprovals(
   );
 
   return allowances;
-}
+};
 
-async function getUnlimitedErc721AllowanceFromApproval(
+const getUnlimitedErc721AllowanceFromApproval = async (
   multicallContract: Contract,
   ownerAddress: string,
-  approval: providers.Log
-) {
+  approval: Log
+) => {
   const spender = topicToAddress(approval.topics[2]);
 
   const [isApprovedForAll] = await multicallContract.functions.isApprovedForAll(ownerAddress, spender);
   if (!isApprovedForAll) return undefined;
 
   return { spender };
-}
+};
 
-export function formatErc20Allowance(allowance: string, decimals: number, totalSupply: string): string {
+export const formatErc20Allowance = (allowance: string, decimals: number, totalSupply: string): string => {
   const allowanceBN = BigNumber.from(allowance);
   const totalSupplyBN = BigNumber.from(totalSupply);
 
@@ -115,7 +108,7 @@ export function formatErc20Allowance(allowance: string, decimals: number, totalS
   }
 
   return toFloat(Number(allowanceBN), decimals);
-}
+};
 
 export const getAllowanceI18nValues = (allowance: ITokenAllowance, token: TokenData, updatedAmount?: string) => {
   if (isERC20Allowance(allowance) && isERC20Token(token)) {
@@ -133,11 +126,11 @@ export const getAllowanceI18nValues = (allowance: ITokenAllowance, token: TokenD
 
 // This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
 // which do not show up normally because of a bug in their contract
-export function generatePatchedAllowanceEvents(
+export const generatePatchedAllowanceEvents = (
   userAddress: string,
   openseaProxyAddress?: string,
-  allEvents: providers.Log[] = []
-): providers.Log[] {
+  allEvents: Log[] = []
+): Log[] => {
   if (!userAddress || !openseaProxyAddress) return [];
   // Only add the Moonbirds approval event if the account has interacted with Moonbirds at all
   if (!allEvents.some((ev) => ev.address === MOONBIRDS_ADDRESS)) return [];
@@ -163,4 +156,4 @@ export function generatePatchedAllowanceEvents(
       ],
     },
   ];
-}
+};

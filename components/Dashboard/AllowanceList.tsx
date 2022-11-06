@@ -1,5 +1,6 @@
 import Allowance from 'components/Dashboard/Allowance';
-import { isERC20Allowance, ITokenAllowance, TokenData } from 'lib/interfaces';
+import type { ITokenAllowance, TokenData } from 'lib/interfaces';
+import { isERC20Allowance } from 'lib/interfaces';
 
 interface Props {
   token: TokenData;
@@ -7,7 +8,7 @@ interface Props {
   onRevoke: (allowance: ITokenAllowance) => void;
 }
 
-function AllowanceList({ token, allowances, onRevoke }: Props) {
+const AllowanceList = ({ token, allowances, onRevoke }: Props) => {
   return (
     <div className="AllowanceList">
       {allowances.length === 0 ? (
@@ -24,6 +25,6 @@ function AllowanceList({ token, allowances, onRevoke }: Props) {
       )}
     </div>
   );
-}
+};
 
 export default AllowanceList;

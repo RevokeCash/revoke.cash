@@ -3,14 +3,8 @@ import { displayTransactionSubmittedToast } from 'components/common/transaction-
 import { BigNumber, Contract } from 'ethers';
 import { ADDRESS_ZERO } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import {
-  isERC20Allowance,
-  isERC20Token,
-  isERC721Allowance,
-  isERC721Token,
-  ITokenAllowance,
-  TokenData,
-} from 'lib/interfaces';
+import type { ITokenAllowance, TokenData } from 'lib/interfaces';
+import { isERC20Allowance, isERC20Token, isERC721Allowance, isERC721Token } from 'lib/interfaces';
 import { fromFloat } from 'lib/utils';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';

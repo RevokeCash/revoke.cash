@@ -1,5 +1,4 @@
-import { TokenStandard } from 'lib/interfaces';
-import React from 'react';
+import type { TokenStandard } from 'lib/interfaces';
 import Switch from 'react-switch';
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
   setTokenStandard: (tokenStandard: TokenStandard) => void;
 }
 
-const TokenStandardSelection: React.FC<Props> = ({ tokenStandard, setTokenStandard }) => (
+const TokenStandardSelection = ({ tokenStandard, setTokenStandard }: Props) => (
   <div
     style={{
       marginBottom: '10px',

@@ -1,4 +1,4 @@
-import { Filter, Log } from '@ethersproject/abstract-provider';
+import type { Filter, Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 
 export class BackendProvider {

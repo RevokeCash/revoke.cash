@@ -1,9 +1,8 @@
 import LogoLink from 'components/common/LogoLink';
 import { DISCORD_URL } from 'lib/constants';
-import React from 'react';
 import LanguageSelect from './LanguageSelect';
 
-const Footer: React.FC = () => (
+const Footer = () => (
   <>
     <div
       style={{

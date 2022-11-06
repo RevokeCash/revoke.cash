@@ -1,7 +1,7 @@
-import { Filter, Log } from '@ethersproject/abstract-provider';
+import type { Filter, Log } from '@ethersproject/abstract-provider';
 import { providers } from 'ethers';
 import { getLogs } from 'lib/utils';
-import { EventGetter } from './EventGetter';
+import type { EventGetter } from './EventGetter';
 
 export class NodeEventGetter implements EventGetter {
   private providers: { [chainId: number]: providers.JsonRpcProvider };

@@ -1,8 +1,8 @@
-import { Filter, Log } from '@ethersproject/abstract-provider';
+import type { Filter, Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
-import { getAddress } from 'ethers/lib/utils';
+import { utils } from 'ethers';
 import PQueue from 'p-queue';
-import { EventGetter } from './EventGetter';
+import type { EventGetter } from './EventGetter';
 
 // TODO: Migrate to Upstash
 export class CovalentEventGetter implements EventGetter {
@@ -48,7 +48,7 @@ class CovalentQueue {
 }
 
 const formatCovalentEvent = (covalentLog: any) => ({
-  address: getAddress(covalentLog.sender_address),
+  address: utils.getAddress(covalentLog.sender_address),
   topics: covalentLog.raw_log_topics,
   transactionHash: covalentLog.tx_hash,
 });

@@ -1,7 +1,7 @@
-import { Log } from '@ethersproject/abstract-provider';
+import type { Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import Error from 'components/common/Error';
-import { hexZeroPad, Interface } from 'ethers/lib/utils';
+import { utils } from 'ethers';
 import { ERC721Metadata } from 'lib/abis';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
@@ -11,7 +11,7 @@ import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
 import TokenList from './TokenList';
 
-function DashboardBody() {
+const DashboardBody = () => {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
   const { inputAddress, settings, openSeaProxyAddress } = useAppContext();
 
@@ -20,7 +20,7 @@ function DashboardBody() {
     return true;
   };
 
-  const erc721Interface = new Interface(ERC721Metadata);
+  const erc721Interface = new utils.Interface(ERC721Metadata);
 
   const buildGetEventsFunction = (name: string, addressTopicIndex: number) => {
     // NOTE: these getXxxEvents() functions have an implicit dependency on logsProvider but we do not want to trigger
@@ -32,7 +32,7 @@ function DashboardBody() {
       // Start with an array of undefined topic strings and add the event topic + address topic to the right spots
       const filter = { topics: [undefined, undefined, undefined] };
       filter.topics[0] = erc721Interface.getEventTopic(name);
-      filter.topics[addressTopicIndex] = hexZeroPad(inputAddress, 32);
+      filter.topics[addressTopicIndex] = utils.hexZeroPad(inputAddress, 32);
 
       const events = await getLogs(logsProvider, filter, 0, latestBlockNumber);
       console.log(`${name} events`, events);
@@ -103,6 +103,6 @@ function DashboardBody() {
       approvalForAllEvents={settings.tokenStandard === 'ERC20' ? [] : approvalForAllEvents}
     />
   );
-}
+};
 
 export default DashboardBody;
