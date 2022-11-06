@@ -15,7 +15,6 @@ const handler = nc<NextApiRequest, NextApiResponse>()
   .use(rateLimiter)
   .use(ironSession(IRON_OPTIONS))
   .post(async (req, res) => {
-    console.log(req.session, (req as any).ip);
     // TODO: This can become a middleware
     if (!(req.session as any).ip || (req.session as any).ip !== (req as any).ip) {
       return res.status(403).send({ message: 'No API session is active' });

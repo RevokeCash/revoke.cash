@@ -33,14 +33,12 @@ function TokenList({ tokenStandard, transferEvents, approvalEvents, approvalForA
     loading,
     error,
   } = useAsync<TokenData[]>(async () => {
-    //   console.log('HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
     const expectedTopics = tokenStandard === 'ERC20' ? 3 : 4;
     const filteredApprovalEvents = approvalEvents.filter((ev) => ev.topics.length === expectedTopics);
     const filteredTransferEvents = transferEvents.filter((ev) => ev.topics.length === expectedTopics);
 
     const allEvents = [...filteredTransferEvents, ...filteredApprovalEvents, ...approvalForAllEvents];
     const contracts = createTokenContracts(allEvents, tokenStandard === 'ERC20' ? ERC20 : ERC721Metadata, readProvider);
-    console.log('all', contracts);
 
     // Look up token data for all tokens, add their lists of approvals
     const unsortedTokens = await Promise.all(
@@ -72,8 +70,6 @@ function TokenList({ tokenStandard, transferEvents, approvalEvents, approvalForA
     const sortedTokens = unsortedTokens
       .filter((token) => token !== undefined)
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol));
-
-    console.log('sorted', sortedTokens);
 
     return sortedTokens;
     // return []
