@@ -6,7 +6,7 @@ import { ERC721Metadata } from 'lib/abis';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getLogs } from 'lib/utils';
-import { generatePatchedAllowanceEvents } from 'lib/utils/erc721';
+import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
 import TokenList from './TokenList';

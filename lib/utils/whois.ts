@@ -1,6 +1,15 @@
 import axios from 'axios';
+import { Contract, providers } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { DAPP_LIST_BASE_URL, ENS_RESOLUTION, ETHEREUM_LISTS_CONTRACTS, UNS_RESOLUTION } from 'lib/constants';
+import { OPENSEA_REGISTRY } from 'lib/abis';
+import {
+  ADDRESS_ZERO,
+  DAPP_LIST_BASE_URL,
+  ENS_RESOLUTION,
+  ETHEREUM_LISTS_CONTRACTS,
+  OPENSEA_REGISTRY_ADDRESS,
+  UNS_RESOLUTION,
+} from 'lib/constants';
 
 export const addressToAppName = async (
   address: string,
@@ -71,3 +80,17 @@ export const resolveUnsName = async (unsName: string) => {
     return undefined;
   }
 };
+
+export async function getOpenSeaProxyAddress(
+  userAddress: string,
+  provider: providers.Provider
+): Promise<string | undefined> {
+  try {
+    const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, provider);
+    const [proxyAddress] = await contract.functions.proxies(userAddress);
+    if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return undefined;
+    return proxyAddress;
+  } catch {
+    return undefined;
+  }
+}

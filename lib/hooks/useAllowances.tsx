@@ -1,7 +1,11 @@
 import { IERC20Allowance, IERC721Allowance, isERC721Token, ITokenAllowance, TokenData } from 'lib/interfaces';
 import { compareBN } from 'lib/utils';
-import { formatAllowance, getAllowancesFromApprovals } from 'lib/utils/erc20';
-import { getLimitedAllowancesFromApprovals, getUnlimitedAllowancesFromApprovals } from 'lib/utils/erc721';
+import {
+  formatErc20Allowance,
+  getErc20AllowancesFromApprovals,
+  getLimitedErc721AllowancesFromApprovals,
+  getUnlimitedErc721AllowancesFromApprovals,
+} from 'lib/utils/allowances';
 import { useEffect, useState } from 'react';
 import { useAppContext } from './useAppContext';
 
@@ -15,12 +19,12 @@ export const useAllowances = (token: TokenData) => {
       setLoading(true);
 
       if (isERC721Token(token)) {
-        const unlimitedAllowances = await getUnlimitedAllowancesFromApprovals(
+        const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(
           token.contract,
           inputAddress,
           token.approvalsForAll
         );
-        const limitedAllowances = await getLimitedAllowancesFromApprovals(token.contract, token.approvals);
+        const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(token.contract, token.approvals);
         const allAllowances = [...limitedAllowances, ...unlimitedAllowances].filter(
           (allowance) => allowance !== undefined
         );
@@ -28,8 +32,8 @@ export const useAllowances = (token: TokenData) => {
         setAllowances(allAllowances);
       } else {
         // Filter out zero-value allowances and sort from high to low
-        const loadedAllowances = (await getAllowancesFromApprovals(token.contract, inputAddress, token.approvals))
-          .filter(({ amount }) => formatAllowance(amount, token.decimals, token.totalSupply) !== '0.000')
+        const loadedAllowances = (await getErc20AllowancesFromApprovals(token.contract, inputAddress, token.approvals))
+          .filter(({ amount }) => formatErc20Allowance(amount, token.decimals, token.totalSupply) !== '0.000')
           .sort((a, b) => -1 * compareBN(a.amount, b.amount));
 
         setAllowances(loadedAllowances);
