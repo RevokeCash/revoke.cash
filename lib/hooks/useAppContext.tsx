@@ -1,6 +1,6 @@
 import { DashboardSettings, StateSetter, TokenMapping } from 'lib/interfaces';
-import { getOpenSeaProxyAddress } from 'lib/utils/erc721';
 import { getFullTokenMapping } from 'lib/utils/tokens';
+import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import useLocalStorage from 'use-local-storage';
