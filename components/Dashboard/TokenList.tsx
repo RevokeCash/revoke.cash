@@ -24,7 +24,7 @@ interface Props {
   approvalForAllEvents: Log[];
 }
 
-function TokenTokenList({ tokenStandard, transferEvents, approvalEvents, approvalForAllEvents }: Props) {
+function TokenList({ tokenStandard, transferEvents, approvalEvents, approvalForAllEvents }: Props) {
   const { readProvider, selectedChainId } = useEthereum();
   const { inputAddress, openSeaProxyAddress, tokenMapping, settings } = useAppContext();
 
@@ -104,4 +104,4 @@ function TokenTokenList({ tokenStandard, transferEvents, approvalEvents, approva
   return <div className="TokenList">{tokenComponents}</div>;
 }
 
-export default TokenTokenList;
+export default TokenList;
