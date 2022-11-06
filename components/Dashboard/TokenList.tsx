@@ -1,9 +1,9 @@
-import { Log } from '@ethersproject/abstract-provider';
+import type { Log } from '@ethersproject/abstract-provider';
 import Error from 'components/common/Error';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { TokenData, TokenStandard } from 'lib/interfaces';
+import type { TokenData, TokenStandard } from 'lib/interfaces';
 import {
   createTokenContracts,
   getErc20TokenData,
@@ -24,9 +24,9 @@ interface Props {
   approvalForAllEvents: Log[];
 }
 
-function TokenList({ tokenStandard, transferEvents, approvalEvents, approvalForAllEvents }: Props) {
-  const { readProvider, selectedChainId } = useEthereum();
-  const { inputAddress, openSeaProxyAddress, tokenMapping, settings } = useAppContext();
+const TokenList = ({ tokenStandard, transferEvents, approvalEvents, approvalForAllEvents }: Props) => {
+  const { readProvider } = useEthereum();
+  const { inputAddress, tokenMapping, settings } = useAppContext();
 
   const {
     result: tokens,
@@ -72,7 +72,6 @@ function TokenList({ tokenStandard, transferEvents, approvalEvents, approvalForA
       .sort((a: any, b: any) => a.symbol.localeCompare(b.symbol));
 
     return sortedTokens;
-    // return []
   }, [tokenStandard]);
 
   if (loading) {
@@ -92,6 +91,6 @@ function TokenList({ tokenStandard, transferEvents, approvalEvents, approvalForA
     .map((token) => <Token key={token.contract.address} token={token} />);
 
   return <div className="TokenList">{tokenComponents}</div>;
-}
+};
 
 export default TokenList;

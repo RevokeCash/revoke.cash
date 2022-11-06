@@ -3,7 +3,8 @@ import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { parseInputAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 
 const AddressInput = () => {

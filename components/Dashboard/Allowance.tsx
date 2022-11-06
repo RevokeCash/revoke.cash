@@ -2,7 +2,7 @@ import AllowanceControls from 'components/common/AllowanceControls';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { useRevoke } from 'lib/hooks/useRevoke';
-import { ITokenAllowance, TokenData } from 'lib/interfaces';
+import type { ITokenAllowance, TokenData } from 'lib/interfaces';
 import { addressToAppName } from 'lib/utils/whois';
 import { useAsync } from 'react-async-hook';
 import { Form } from 'react-bootstrap';
@@ -15,7 +15,7 @@ interface Props {
   onRevoke: (allowance: ITokenAllowance) => void;
 }
 
-function Allowance({ allowance, token, onRevoke }: Props) {
+const Allowance = ({ allowance, token, onRevoke }: Props) => {
   const { selectedChainId } = useEthereum();
   const { openSeaProxyAddress } = useAppContext();
   const { revoke, update, updatedAmount } = useRevoke(token, allowance, onRevoke);
@@ -38,6 +38,6 @@ function Allowance({ allowance, token, onRevoke }: Props) {
       <AllowanceControls revoke={revoke} update={update} id={`${token.contract.address}-${allowance.spender}`} />
     </Form>
   );
-}
+};
 
 export default Allowance;

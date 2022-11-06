@@ -1,13 +1,14 @@
 import { AppContextProvider } from 'lib/hooks/useAppContext';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from './Dashboard';
 
 const SafeHydrate = ({ children }) => {
   return <div suppressHydrationWarning>{typeof window === 'undefined' ? null : children}</div>;
 };
 
-function DashboardWrapper() {
+const DashboardWrapper = () => {
   return (
     <SafeHydrate>
       <EthereumProvider>
@@ -30,6 +31,6 @@ function DashboardWrapper() {
       </EthereumProvider>
     </SafeHydrate>
   );
-}
+};
 
 export default DashboardWrapper;

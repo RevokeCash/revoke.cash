@@ -1,4 +1,4 @@
-import { DashboardSettings, StateSetter, TokenMapping } from 'lib/interfaces';
+import type { DashboardSettings, StateSetter, TokenMapping } from 'lib/interfaces';
 import { getFullTokenMapping } from 'lib/utils/tokens';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';

@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
-import { OverlayChildren } from 'react-bootstrap/esm/Overlay';
+import type { OverlayChildren } from 'react-bootstrap/esm/Overlay';
 
 interface Props {
   tooltip: OverlayChildren;

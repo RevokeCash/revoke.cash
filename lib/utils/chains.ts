@@ -6,29 +6,29 @@ import {
   PROVIDER_SUPPORTED_CHAINS,
 } from 'lib/constants';
 
-export function isSupportedChain(chainId: number): boolean {
+export const isSupportedChain = (chainId: number): boolean => {
   return isProviderSupportedChain(chainId) || isBackendSupportedChain(chainId);
-}
+};
 
-export function isProviderSupportedChain(chainId: number): boolean {
+export const isProviderSupportedChain = (chainId: number): boolean => {
   return PROVIDER_SUPPORTED_CHAINS.includes(chainId);
-}
+};
 
-export function isBackendSupportedChain(chainId: number): boolean {
+export const isBackendSupportedChain = (chainId: number): boolean => {
   return isCovalentSupportedChain(chainId) || isEtherscanSupportedChain(chainId) || isNodeSupportedChain(chainId);
-}
+};
 
-export function isCovalentSupportedChain(chainId: number): boolean {
+export const isCovalentSupportedChain = (chainId: number): boolean => {
   return COVALENT_SUPPORTED_CHAINS.includes(chainId);
-}
+};
 
-export function isEtherscanSupportedChain(chainId: number): boolean {
+export const isEtherscanSupportedChain = (chainId: number): boolean => {
   return ETHERSCAN_SUPPORTED_CHAINS.includes(chainId);
-}
+};
 
-export function isNodeSupportedChain(chainId: number): boolean {
+export const isNodeSupportedChain = (chainId: number): boolean => {
   return NODE_SUPPORTED_CHAINS.includes(chainId);
-}
+};
 
 export const getChainName = (chainId: number): string => {
   const overrides = {
@@ -80,7 +80,7 @@ export const getChainName = (chainId: number): string => {
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
 };
 
-export function getChainExplorerUrl(chainId: number): string | undefined {
+export const getChainExplorerUrl = (chainId: number): string | undefined => {
   const overrides = {
     [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
     [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
@@ -103,9 +103,9 @@ export function getChainExplorerUrl(chainId: number): string | undefined {
   const [explorer] = chains.get(chainId)?.explorers ?? [];
 
   return overrides[chainId] ?? explorer?.url;
-}
+};
 
-export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string | undefined {
+export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string | undefined => {
   // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides = {
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
@@ -119,7 +119,7 @@ export function getChainRpcUrl(chainId: number, infuraKey: string = ''): string 
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
-}
+};
 
 export const getChainInfoUrl = (chainId: number): string | undefined => {
   const overrides = {

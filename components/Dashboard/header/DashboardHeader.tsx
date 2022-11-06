@@ -4,7 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import AddressInput from '../AddressInput';
 import TokenStandardSelection from '../TokenStandardSelection';
 
-function DashboardHeader() {
+const DashboardHeader = () => {
   const { t } = useTranslation();
   const { tokenMapping, settings, setSettings } = useAppContext();
 
@@ -34,6 +34,6 @@ function DashboardHeader() {
       />
     </>
   );
-}
+};
 
 export default DashboardHeader;

@@ -5,7 +5,8 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
-import React, { MutableRefObject, ReactText, useEffect, useState } from 'react';
+import type { MutableRefObject, ReactText } from 'react';
+import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -15,7 +16,7 @@ interface Props {
   parentToastRef?: MutableRefObject<ReactText>;
 }
 
-const DonateButton: React.FC<Props> = ({ size, parentToastRef }) => {
+const DonateButton = ({ size, parentToastRef }: Props) => {
   const { t } = useTranslation();
   const { signer, connectedChainId } = useEthereum();
 

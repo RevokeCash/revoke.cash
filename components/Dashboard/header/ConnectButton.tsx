@@ -1,12 +1,11 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
-import React from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { Button, InputGroup } from 'react-bootstrap';
 import ChainSelectDropdown from './ChainSelectDropdown';
 
-const ConnectButton: React.FC = () => {
+const ConnectButton = () => {
   const { t } = useTranslation();
   const { account, ensName, unsName, connect, disconnect } = useEthereum();
   const domainName = ensName ?? unsName;

@@ -1,4 +1,5 @@
-import { Contract, providers } from 'ethers';
+import type { Log, Provider } from '@ethersproject/abstract-provider';
+import type { Contract } from 'ethers';
 
 export interface Erc20TokenData {
   contract: Contract;
@@ -8,7 +9,7 @@ export interface Erc20TokenData {
   balance: string;
   totalSupply: string;
   verified: boolean;
-  approvals: Array<providers.Log>;
+  approvals: Array<Log>;
 }
 
 export interface Erc721TokenData {
@@ -17,8 +18,8 @@ export interface Erc721TokenData {
   symbol: string;
   balance: string;
   verified: boolean;
-  approvals: Array<providers.Log>;
-  approvalsForAll: Array<providers.Log>;
+  approvals: Array<Log>;
+  approvalsForAll: Array<Log>;
 }
 
 export type TokenData = Erc20TokenData | Erc721TokenData;
@@ -63,6 +64,6 @@ export interface DashboardSettings {
   tokenStandard: TokenStandard;
 }
 
-export type LogsProvider = Pick<providers.Provider, 'getLogs'>;
+export type LogsProvider = Pick<Provider, 'getLogs'>;
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T | undefined>>;

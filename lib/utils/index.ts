@@ -1,25 +1,25 @@
-import { Filter, Log } from '@ethersproject/abstract-provider';
-import { BigNumber, BigNumberish } from 'ethers';
-import { getAddress, hexDataSlice } from 'ethers/lib/utils';
-import { LogsProvider } from 'lib/interfaces';
+import type { Filter, Log } from '@ethersproject/abstract-provider';
+import type { BigNumberish } from 'ethers';
+import { BigNumber, utils } from 'ethers';
+import type { LogsProvider } from 'lib/interfaces';
 import { resolveEnsName, resolveUnsName } from './whois';
 
-export function shortenAddress(address?: string): string {
+export const shortenAddress = (address?: string): string => {
   return address && `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}`;
-}
+};
 
-export function compareBN(a: BigNumberish, b: BigNumberish): number {
+export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
   a = BigNumber.from(a);
   b = BigNumber.from(b);
   const diff = a.sub(b);
   return diff.isZero() ? 0 : diff.lt(0) ? -1 : 1;
-}
+};
 
-export function toFloat(n: number, decimals: number): string {
+export const toFloat = (n: number, decimals: number): string => {
   return (n / 10 ** decimals).toFixed(3);
-}
+};
 
-export function fromFloat(floatString: string, decimals: number): string {
+export const fromFloat = (floatString: string, decimals: number): string => {
   const sides = floatString.split('.');
   if (sides.length === 1) return floatString.padEnd(decimals + floatString.length, '0');
   if (sides.length > 2) return '0';
@@ -27,7 +27,7 @@ export function fromFloat(floatString: string, decimals: number): string {
   return sides[1].length > decimals
     ? sides[0] + sides[1].slice(0, decimals)
     : sides[0] + sides[1].padEnd(decimals, '0');
-}
+};
 
 export const getLogs = async (
   provider: LogsProvider,
@@ -70,7 +70,7 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<str
 
   // If the input is an address, validate it and return it
   try {
-    return getAddress(inputAddressOrName.toLowerCase());
+    return utils.getAddress(inputAddressOrName.toLowerCase());
   } catch {
     return undefined;
   }
@@ -82,4 +82,4 @@ export const getBalanceText = (symbol: string, balance: string, decimals?: numbe
   return `${symbol}: ${String(balance)}`;
 };
 
-export const topicToAddress = (topic: string) => getAddress(hexDataSlice(topic, 12));
+export const topicToAddress = (topic: string) => utils.getAddress(utils.hexDataSlice(topic, 12));

@@ -1,8 +1,7 @@
-import React from 'react';
 import ConnectButton from './ConnectButton';
 import DonateButton from './DonateButton';
 
-const ConnectSection: React.FC = () => {
+const ConnectSection = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
       <DonateButton />

@@ -1,5 +1,5 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { ITokenAllowance, TokenData } from 'lib/interfaces';
+import type { ITokenAllowance, TokenData } from 'lib/interfaces';
 import { shortenAddress } from 'lib/utils';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { getChainExplorerUrl } from 'lib/utils/chains';
@@ -13,7 +13,7 @@ interface Props {
   spenderName?: string;
 }
 
-function AllowanceDisplay({ allowance, token, updatedAmount, spenderName }: Props) {
+const AllowanceDisplay = ({ allowance, token, updatedAmount, spenderName }: Props) => {
   const { selectedChainId } = useEthereum();
 
   const spenderDisplay = spenderName || allowance.spender;
@@ -41,6 +41,6 @@ function AllowanceDisplay({ allowance, token, updatedAmount, spenderName }: Prop
       </span>
     </Form.Label>
   );
-}
+};
 
 export default AllowanceDisplay;

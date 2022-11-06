@@ -53,6 +53,7 @@
     "web3modal": "1.9.9"
   },
   "devDependencies": {
+    "@ethersproject/abstract-provider": "^5.7.0",
     "@types/node": "^18.11.3",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",

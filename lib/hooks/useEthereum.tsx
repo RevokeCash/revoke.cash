@@ -1,13 +1,13 @@
 import { providers as multicall } from '@0xsequence/multicall';
 import { track } from '@amplitude/analytics-browser';
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
-import { JsonRpcSigner } from '@ethersproject/providers';
+import type { JsonRpcSigner } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
 import { SUPPORTED_CHAINS } from 'lib/constants';
-import { LogsProvider } from 'lib/interfaces';
+import type { LogsProvider } from 'lib/interfaces';
 import { BackendProvider } from 'lib/providers';
 import {
   getChainExplorerUrl,

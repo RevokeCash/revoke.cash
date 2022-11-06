@@ -1,5 +1,5 @@
 import { track } from '@amplitude/analytics-browser';
-import React, { ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
 interface Props {
   label: string;
@@ -7,7 +7,7 @@ interface Props {
   update: (checked: boolean) => void;
 }
 
-const LabelledCheckbox: React.FC<Props> = ({ label, checked, update }) => {
+const LabelledCheckbox = ({ label, checked, update }: Props) => {
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     track('Toggled checkbox', { label, checked: event.target.checked });
     update(event.target.checked);

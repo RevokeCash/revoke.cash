@@ -2,7 +2,7 @@ import AllowanceList from 'components/Dashboard/AllowanceList';
 import TokenBalance from 'components/Dashboard/TokenBalance';
 import { useAllowances } from 'lib/hooks/useAllowances';
 import { useAppContext } from 'lib/hooks/useAppContext';
-import { TokenData } from 'lib/interfaces';
+import type { TokenData } from 'lib/interfaces';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { ClipLoader } from 'react-spinners';
 
@@ -10,7 +10,7 @@ interface Props {
   token: TokenData;
 }
 
-function Token({ token }: Props) {
+const Token = ({ token }: Props) => {
   const { settings } = useAppContext();
   const { allowances, loading, onRevoke } = useAllowances(token);
 
@@ -39,6 +39,6 @@ function Token({ token }: Props) {
       <AllowanceList token={token} allowances={allowances} onRevoke={onRevoke} />
     </div>
   );
-}
+};
 
 export default Token;

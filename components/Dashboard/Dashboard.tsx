@@ -2,7 +2,7 @@ import DashboardBody from './DashboardBody';
 import ConnectSection from './header/ConnectSection';
 import DashboardHeader from './header/DashboardHeader';
 
-function Dashboard() {
+const Dashboard = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <ConnectSection />
@@ -12,6 +12,6 @@ function Dashboard() {
       </div>
     </div>
   );
-}
+};
 
 export default Dashboard;
