@@ -1,6 +1,6 @@
+import DashboardBody from './DashboardBody';
 import ConnectSection from './header/ConnectSection';
 import DashboardHeader from './header/DashboardHeader';
-import DashboardBody from './TokenList';
 
 function Dashboard() {
   return (
