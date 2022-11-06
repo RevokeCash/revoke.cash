@@ -1,11 +1,18 @@
 import axios from 'axios';
 import { ChainId } from 'eth-chains';
-import { Contract } from 'ethers';
+import { Contract, providers } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, TRUSTWALLET_BASE_URL } from 'lib/constants';
-import { Erc20TokenData, Erc721TokenData, TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
-import { shortenAddress } from '.';
-import { getChainTrustWalletName } from './chains';
+import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
+import {
+  Erc20TokenData,
+  Erc721TokenData,
+  isERC721Token,
+  TokenData,
+  TokenFromList,
+  TokenMapping,
+  TokenStandard,
+} from 'lib/interfaces';
+import { shortenAddress, toFloat } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
 
 // Check if a token is verified in the token mapping
@@ -87,23 +94,14 @@ function getTokenListUrl(chainId: number, standard: TokenStandard = 'ERC20'): st
   return mapping[standard][chainId];
 }
 
-export function getTokenIcon(tokenAddress: string, chainId?: number, tokenMapping: TokenMapping = {}) {
+export function getTokenIcon(tokenAddress: string, tokenMapping: TokenMapping = {}) {
   const normalisedAddress = getAddress(tokenAddress);
 
   // Retrieve a token icon from the token list if specified (filtering relative paths)
   const tokenData = tokenMapping[normalisedAddress];
   const iconFromMapping = !tokenData?.logoURI?.startsWith('/') && tokenData?.logoURI;
 
-  // We pass chainId == udnefined if it's an NFT
-  if (chainId === undefined) {
-    return iconFromMapping || 'erc721.png';
-  }
-
-  // Fall back to TrustWallet/assets for logos
-  const chainName = getChainTrustWalletName(chainId);
-  const iconFromTrust = chainName && `${TRUSTWALLET_BASE_URL}/${chainName}/assets/${normalisedAddress}/logo.png`;
-
-  return iconFromMapping || iconFromTrust || 'erc20.png';
+  return iconFromMapping || 'fallback-token-icon.png';
 }
 
 export const fallbackTokenIconOnError = (ev: any) => {
@@ -159,4 +157,14 @@ export const throwIfNotErc721 = async (contract: Contract) => {
   if (isApprovedForAll !== false) {
     throw new Error('Response to isApprovedForAll was not false, indicating that this is not an ERC721 contract');
   }
+};
+
+export const hasZeroBalance = (token: TokenData) => {
+  return isERC721Token(token) ? token.balance === '0' : toFloat(Number(token.balance), token.decimals) === '0.000';
+};
+
+export const createTokenContracts = (events: providers.Log[], abi: any, provider: providers.Provider) => {
+  return events
+    .filter((event, i) => i === events.findIndex((other) => event.address === other.address))
+    .map((event) => new Contract(getAddress(event.address), abi, provider));
 };

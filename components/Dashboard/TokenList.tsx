@@ -6,14 +6,14 @@ import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getLogs } from 'lib/utils';
 import { getChainName } from 'lib/utils/chains';
+import { generatePatchedAllowanceEvents } from 'lib/utils/erc721';
 import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
-import Erc20TokenList from '../ERC20/Erc20TokenList';
-import Erc721TokenList from '../ERC721/Erc721TokenList';
+import TokenTokenList from './TokenTokenList';
 
 function TokenList() {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
-  const { inputAddress, settings } = useAppContext();
+  const { inputAddress, settings, openSeaProxyAddress } = useAppContext();
 
   const logIn = async () => {
     await axios.post('/api/login');
@@ -65,13 +65,24 @@ function TokenList() {
     error: approvalError,
   } = useAsync(getApprovalEvents, [inputAddress, latestBlockNumber, isLoggedIn]);
   const {
-    result: approvalForAllEvents = [],
+    result: unpatchedApprovalForAllEvents = [],
     loading: loadingApprovalsForAll,
     error: approvalForAllError,
   } = useAsync(getApprovalForAllEvents, [inputAddress, latestBlockNumber, isLoggedIn]);
 
+  // Manually patch the ApprovalForAll events
+  const approvalForAllEvents = [
+    ...unpatchedApprovalForAllEvents,
+    ...generatePatchedAllowanceEvents(inputAddress, openSeaProxyAddress, [
+      ...approvalEvents,
+      ...unpatchedApprovalForAllEvents,
+      ...transferEvents,
+    ]),
+  ];
+
   const error = loginError ?? latestBlockNumberError ?? transferError ?? approvalError ?? approvalForAllError;
-  const loadingEvents = loadingTransfers || loadingApprovals || loadingApprovalsForAll;
+  const loadingEvents =
+    loadingTransfers || loadingApprovals || (settings.tokenStandard === 'ERC721' && loadingApprovalsForAll);
   const loading = loggingIn || loadingLatestBlockNumber || loadingEvents;
 
   if (!inputAddress) {
@@ -90,17 +101,14 @@ function TokenList() {
     return <div style={{ marginTop: '20px' }}>Error: {message}</div>;
   }
 
-  if (settings.tokenStandard === 'ERC20') {
-    return <Erc20TokenList transferEvents={transferEvents} approvalEvents={approvalEvents} />;
-  } else {
-    return (
-      <Erc721TokenList
-        transferEvents={transferEvents}
-        approvalEvents={approvalEvents}
-        approvalForAllEvents={approvalForAllEvents}
-      />
-    );
-  }
+  return (
+    <TokenTokenList
+      tokenStandard={settings.tokenStandard}
+      transferEvents={transferEvents}
+      approvalEvents={approvalEvents}
+      approvalForAllEvents={settings.tokenStandard === 'ERC20' ? [] : approvalForAllEvents}
+    />
+  );
 }
 
 export default TokenList;
