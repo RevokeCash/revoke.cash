@@ -9,7 +9,7 @@ import { getChainName } from 'lib/utils/chains';
 import { generatePatchedAllowanceEvents } from 'lib/utils/erc721';
 import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
-import TokenTokenList from './TokenTokenList';
+import TokenList from './TokenList';
 
 function DashboardBody() {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
@@ -102,7 +102,7 @@ function DashboardBody() {
   }
 
   return (
-    <TokenTokenList
+    <TokenList
       tokenStandard={settings.tokenStandard}
       transferEvents={transferEvents}
       approvalEvents={approvalEvents}
