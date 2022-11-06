@@ -8,7 +8,7 @@ import { useAppContext } from './useAppContext';
 export const useAllowances = (token: TokenData) => {
   const { inputAddress } = useAppContext();
   const [allowances, setAllowances] = useState<ITokenAllowance[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>();
 
   useEffect(() => {
     const loadData = async () => {
