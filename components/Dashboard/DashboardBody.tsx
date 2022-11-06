@@ -11,7 +11,7 @@ import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
 import TokenTokenList from './TokenTokenList';
 
-function TokenList() {
+function DashboardBody() {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
   const { inputAddress, settings, openSeaProxyAddress } = useAppContext();
 
@@ -111,4 +111,4 @@ function TokenList() {
   );
 }
 
-export default TokenList;
+export default DashboardBody;
