@@ -1,3 +1,4 @@
+import { classNames } from 'lib/utils/classNames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -9,21 +10,15 @@ interface Props {
 
 const NavLink = ({ to, text, matchToHighlight }: Props) => {
   const router = useRouter();
-
-  const textColor = matchToHighlight ? (router.asPath.includes(matchToHighlight) ? 'black' : 'grey') : 'grey';
+  const isActivePath = router.asPath.includes(matchToHighlight);
 
   return (
     <Link href={to}>
       <a
-        style={{
-          color: textColor,
-          textTransform: 'uppercase',
-          fontFamily: 'Futura Condensed',
-          textDecoration: 'none',
-          fontWeight: 'bold',
-          fontStyle: 'oblique',
-          fontSize: '18px',
-        }}
+        className={classNames(
+          isActivePath ? 'text-black' : 'text-gray',
+          'font-futura italic font-bold text-lg uppercase'
+        )}
       >
         {text}
       </a>

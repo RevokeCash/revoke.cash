@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 @font-face {
@@ -16,17 +20,17 @@
   font-display: swap;
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+// body {
+//   margin: 0;
+//   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+//     'Droid Sans', 'Helvetica Neue', sans-serif;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
+// code {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+// }
 
 // /////////////////////////////////////////////////////////////////////////////
 
@@ -35,28 +39,28 @@ $secondary: black;
 
 @import 'bootstrap';
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1;
-}
+// body {
+//   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+//     'Droid Sans', 'Helvetica Neue', sans-serif;
+//   line-height: 1;
+// }
 
 sup {
   margin: 0 5px;
 }
 
-a:link:not(.btn) {
-  color: blue;
-}
+// a:link:not(.btn) {
+//   color: blue;
+// }
 
-a:visited:not(.btn) {
-  color: purple;
-}
+// a:visited:not(.btn) {
+//   color: purple;
+// }
 
-.monospace {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-  font-size: 0.9em;
-}
+// .monospace {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+//   font-size: 0.9em;
+// }
 
 .App {
   text-align: center;
@@ -163,44 +167,44 @@ a:visited:not(.btn) {
   }
 }
 
-.only-mobile {
-  display: none;
-}
-.only-mobile-flex {
-  display: none;
-}
-.only-mobile-inline {
-  display: none;
-}
+// .only-mobile {
+//   display: none;
+// }
+// .only-mobile-flex {
+//   display: none;
+// }
+// .only-mobile-inline {
+//   display: none;
+// }
 
-.only-desktop {
-  display: block;
-}
-.only-desktop-flex {
-  display: flex;
-}
-.only-desktop-inline {
-  display: inline;
-}
+// .only-desktop {
+//   display: block;
+// }
+// .only-desktop-flex {
+//   display: flex;
+// }
+// .only-desktop-inline {
+//   display: inline;
+// }
 
-@media (max-width: 850px) {
-  .only-mobile {
-    display: block;
-  }
-  .only-mobile-flex {
-    display: flex;
-  }
-  .only-mobile-inline {
-    display: inline;
-  }
+// @media (max-width: 850px) {
+//   .only-mobile {
+//     display: block;
+//   }
+//   .only-mobile-flex {
+//     display: flex;
+//   }
+//   .only-mobile-inline {
+//     display: inline;
+//   }
 
-  .only-desktop {
-    display: none;
-  }
-  .only-desktop-flex {
-    display: none;
-  }
-  .only-desktop-inline {
-    display: none;
-  }
-}
+//   .only-desktop {
+//     display: none;
+//   }
+//   .only-desktop-flex {
+//     display: none;
+//   }
+//   .only-desktop-inline {
+//     display: none;
+//   }
+// }
