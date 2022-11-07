@@ -1,34 +1,34 @@
 {
-  "meta": {
-    "title": "Revoke.cash— 撤销你的以太坊代币授权",
-    "description": "通过撤销过去的授权来保护用户的以太坊代币余额。"
-  },
-  "nav": {
-    "about": "关于",
-    "faq": "常见问题",
-    "extension": "扩展"
-  },
   "buttons": {
-    "download": "下载",
-    "donate": "捐赠",
-    "send": "发送",
     "connect": "连接钱包",
-    "disconnect": "断开连接",
-    "revoke": "取消",
-    "update": "更新",
-    "donating": "正在捐赠。。。",
-    "sending": "发送给。。。",
     "connecting": "正在连接。。。",
+    "disconnect": "断开连接",
     "disconnecting": "正在断开连接。。。",
+    "donate": "捐赠",
+    "donating": "正在捐赠。。。",
+    "download": "下载",
+    "revoke": "取消",
     "revoking": "正在撤销。。。",
-    "updating": "更新中。。。",
+    "send": "发送",
+    "sending": "发送给。。。",
     "switch_chain": "切换链",
-    "switching": "切换中。。。"
+    "switching": "切换中。。。",
+    "update": "更新",
+    "updating": "更新中。。。"
   },
-  "privacy_policy": "隐私政策",
   "errors": {
     "404": {
       "title": "404 - 找不到网页"
     }
-  }
+  },
+  "meta": {
+    "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
+    "title": "Revoke.cash— 撤销你的以太坊代币授权"
+  },
+  "nav": {
+    "about": "关于",
+    "extension": "扩展",
+    "faq": "常见问题"
+  },
+  "privacy_policy": "隐私政策"
 }

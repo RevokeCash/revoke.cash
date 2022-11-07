@@ -1,34 +1,34 @@
 {
-  "meta": {
-    "title": "Revoke.cash - Revoca las autorizaciones de tus tokens en Ethereum",
-    "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado"
-  },
-  "nav": {
-    "about": "Acerca de",
-    "faq": "FAQ",
-    "extension": "Extensión"
-  },
   "buttons": {
-    "download": "Descargar",
-    "donate": "Donar",
-    "send": "Enviar",
     "connect": "Conectar cartera",
-    "disconnect": "Desconectar",
-    "revoke": "Revocar",
-    "update": "Actualizar",
-    "donating": "Donando...",
-    "sending": "Enviando...",
     "connecting": "Conectando...",
+    "disconnect": "Desconectar",
     "disconnecting": "Desconectando...",
+    "donate": "Donar",
+    "donating": "Donando...",
+    "download": "Descargar",
+    "revoke": "Revocar",
     "revoking": "Revocando...",
-    "updating": "Actualizando...",
+    "send": "Enviar",
+    "sending": "Enviando...",
     "switch_chain": "Cambiar de red",
-    "switching": "Cambiando..."
+    "switching": "Cambiando...",
+    "update": "Actualizar",
+    "updating": "Actualizando..."
   },
-  "privacy_policy": "Política de privacidad",
   "errors": {
     "404": {
       "title": "404 - Página no encontrada"
     }
-  }
+  },
+  "meta": {
+    "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
+    "title": "Revoke.cash - Revoca las autorizaciones de tus tokens en Ethereum"
+  },
+  "nav": {
+    "about": "Acerca de",
+    "extension": "Extensión",
+    "faq": "FAQ"
+  },
+  "privacy_policy": "Política de privacidad"
 }
