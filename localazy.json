@@ -1,0 +1,29 @@
+{
+  "upload": {
+    "type": "json",
+    "files": [
+      {
+        "pattern": "locales/en/*.json",
+        "lang": "inherited"
+      },
+      {
+        "group": "existing",
+        "pattern": "locales/es/*.json",
+        "lang": "es"
+      },
+      {
+        "group": "existing",
+        "pattern": "locales/zh/*.json",
+        "lang": "zh-Hans"
+      }
+    ]
+  },
+
+  "download": {
+    "files": "locales/${lang}/${file}",
+    "includeSourceLang": true,
+    "langAliases": {
+      "zh-Hans": "zh"
+    }
+  }
+}

@@ -1,34 +1,34 @@
 {
-  "meta": {
-    "title": "Revoke.cash - Revoke your Ethereum token allowances",
-    "description": "Protect your Ethereum token balances by revoking allowances you granted in the past."
-  },
-  "nav": {
-    "about": "About",
-    "faq": "FAQ",
-    "extension": "Extension"
-  },
   "buttons": {
-    "download": "Download",
-    "donate": "Donate",
-    "send": "Send",
     "connect": "Connect Wallet",
-    "disconnect": "Disconnect",
-    "revoke": "Revoke",
-    "update": "Update",
-    "donating": "Donating...",
-    "sending": "Sending...",
     "connecting": "Connecting...",
+    "disconnect": "Disconnect",
     "disconnecting": "Disconnecting...",
+    "donate": "Donate",
+    "donating": "Donating...",
+    "download": "Download",
+    "revoke": "Revoke",
     "revoking": "Revoking...",
-    "updating": "Updating...",
+    "send": "Send",
+    "sending": "Sending...",
     "switch_chain": "Switch chain",
-    "switching": "Switching..."
+    "switching": "Switching...",
+    "update": "Update",
+    "updating": "Updating..."
   },
-  "privacy_policy": "Privacy Policy",
   "errors": {
     "404": {
       "title": "404 - Page not found"
     }
-  }
+  },
+  "meta": {
+    "description": "Protect your Ethereum token balances by revoking allowances you granted in the past.",
+    "title": "Revoke.cash - Revoke your Ethereum token allowances"
+  },
+  "nav": {
+    "about": "About",
+    "extension": "Extension",
+    "faq": "FAQ"
+  },
+  "privacy_policy": "Privacy Policy"
 }

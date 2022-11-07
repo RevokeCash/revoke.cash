@@ -1,29 +1,29 @@
 {
-  "title": "About",
   "sections": {
-    "token_allowances": {
-      "heading": "Token allowances",
-      "paragraph_1": "To use tokens and NFTs in decentralised applications such as Uniswap or OpenSea you have to grant the application permission to spend tokens on your behalf - known as an <0>allowance</0>. Allowances are an important part of using these apps, but can be dangerous if left unchecked."
-    },
-    "risks": {
-      "heading": "Risks of allowances",
-      "paragraph_1": "Bugs can exists and exploits can happen even in established projects, and by approving token allowances you are potentially exposing your wallet to these exploits. To keep yourself safe from allowance exploits it is a good practice to regularly inspect and revoke your allowances. Besides revoking you should also be mindful of the allowances that you approve in the first place."
-    },
-    "revoke_cash": {
-      "heading": "Revoke.cash",
-      "paragraph_1": "Revoke.cash comes in as a preventative tool to manage your token allowances and practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits."
+    "credits": {
+      "heading": "Credits",
+      "paragraph_1": "Revoke.cash was created by <0>Rosco Kalis</0> in 2019, and since then it has grown to be a staple in web3 security. For the Ethereum chain and several other chains allowance data is retrieved directly from the blockchain. For most other chains a combination of <1>Etherscan</1> and <2>Covalent</2> APIs are used."
     },
     "read_more": {
       "heading": "Read more",
       "paragraph_1": "To read about Ethereum token allowances in more depth, make sure to read the article <0>Unlimited ERC20 allowances considered harmful</0>. Also check out the <1>FAQ</1> for a quick overview of the most frequently asked questions about allowances and Revoke.cash."
     },
-    "credits": {
-      "heading": "Credits",
-      "paragraph_1": "Revoke.cash was created by <0>Rosco Kalis</0> in 2019, and since then it has grown to be a staple in web3 security. For the Ethereum chain and several other chains allowance data is retrieved directly from the blockchain. For most other chains a combination of <1>Etherscan</1> and <2>Covalent</2> APIs are used."
+    "revoke_cash": {
+      "heading": "Revoke.cash",
+      "paragraph_1": "Revoke.cash comes in as a preventative tool to manage your token allowances and practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits."
+    },
+    "risks": {
+      "heading": "Risks of allowances",
+      "paragraph_1": "Bugs can exists and exploits can happen even in established projects, and by approving token allowances you are potentially exposing your wallet to these exploits. To keep yourself safe from allowance exploits it is a good practice to regularly inspect and revoke your allowances. Besides revoking you should also be mindful of the allowances that you approve in the first place."
     },
     "sponsors": {
       "heading": "Sponsors",
       "paragraph_1": "To keep Revoke.cash free, we rely on donations and sponsorships for revenue. If you want to support us with a monthly sponsorship, please reach out through <0>Twitter</0> and join the list of these awesome companies and individuals that have committed to a monthly sponsorship of Revoke.cash:"
+    },
+    "token_allowances": {
+      "heading": "Token allowances",
+      "paragraph_1": "To use tokens and NFTs in decentralised applications such as Uniswap or OpenSea you have to grant the application permission to spend tokens on your behalf - known as an <0>allowance</0>. Allowances are an important part of using these apps, but can be dangerous if left unchecked."
     }
-  }
+  },
+  "title": "About"
 }

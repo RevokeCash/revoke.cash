@@ -1,18 +1,18 @@
 {
-  "mainnets": "主网",
-  "testnets": "测试网",
   "address_input": "输入地址、ENS名称或Unstoppable域名",
-  "controls": {
-    "tokens": "代币",
-    "nfts": "NFTs",
-    "unverified_tokens": "包括未经验证的代币",
-    "no_balances": "包括没有余额的代币",
-    "no_allowances": "包括没有授权的代币"
-  },
-  "no_allowances": "没有授权",
   "allowance": "{{amount}}授权给<0>{{spender}}</0>",
-  "allowance_unlimited": "无限授权给<0>{{spender}}</0>",
   "allowance_token_id": "授权代币ID{{tokenId}}到<0>{{spender}}</0>",
+  "allowance_unlimited": "无限授权给<0>{{spender}}</0>",
+  "controls": {
+    "nfts": "NFTs",
+    "no_allowances": "包括没有授权的代币",
+    "no_balances": "包括没有余额的代币",
+    "tokens": "代币",
+    "unverified_tokens": "包括未经验证的代币"
+  },
   "donate_to_revoke": "为Revoke.cash捐款",
-  "or_contribute_to_gitcoin": "或者为我们的<0>Gitcoin Grant</0>捐款"
+  "mainnets": "主网",
+  "no_allowances": "没有授权",
+  "or_contribute_to_gitcoin": "或者为我们的<0>Gitcoin Grant</0>捐款",
+  "testnets": "测试网"
 }
