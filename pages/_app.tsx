@@ -21,13 +21,19 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Container>
-        <div style={{ flexShrink: '0' }}>
+        <div
+        // style={{ flexShrink: '0' }}
+        >
           <Header />
         </div>
-        <div style={{ flex: '1 0 auto', height: '100%' }}>
+        <div
+        // style={{ flex: '1 0 auto', height: '100%' }}
+        >
           <Component {...pageProps} />
         </div>
-        <div style={{ flexShrink: '0' }}>
+        <div
+        // style={{ flexShrink: '0' }}
+        >
           <Footer />
         </div>
       </Container>

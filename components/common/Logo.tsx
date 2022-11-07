@@ -10,11 +10,10 @@ const Logo = ({ src, alt, size }: Props) => (
   <Image
     src={src}
     alt={alt}
-    objectFit="contain"
     height={size ?? 24}
     width={size ?? 24}
     quality="100"
-    style={{ borderRadius: '50%' }}
+    // style={{ borderRadius: '50%' }}
   />
 );
 
