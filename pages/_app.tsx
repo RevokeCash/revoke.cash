@@ -1,11 +1,11 @@
 import { init, track } from '@amplitude/analytics-browser';
+import Container from 'components/common/Container';
 import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect } from 'react';
-import { Container } from 'react-bootstrap';
 import '../styles/index.scss';
 
 init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY);
@@ -20,19 +20,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      <Container
-        fluid
-        className="App"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          height: '100%',
-          width: '100%',
-          maxWidth: '1000px',
-          margin: 'auto',
-        }}
-      >
+      <Container>
         <div style={{ flexShrink: '0' }}>
           <Header />
         </div>
