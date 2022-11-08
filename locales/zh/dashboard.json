@@ -8,6 +8,11 @@
     "no_allowances": "包括没有授权的代币",
     "no_balances": "包括没有余额的代币",
     "tokens": "代币",
+    "tooltips": {
+      "connect_wallet": "Please connect your wallet in order to revoke",
+      "connected_account": "You can only revoke allowances of the connected account",
+      "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+    },
     "unverified_tokens": "包括未经验证的代币"
   },
   "donate_to_revoke": "为Revoke.cash捐款",
