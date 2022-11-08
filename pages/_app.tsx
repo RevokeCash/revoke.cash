@@ -20,23 +20,27 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      <Container>
-        <div
-        // style={{ flexShrink: '0' }}
-        >
-          <Header />
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-none">
+          <Container>
+            <Header />
+          </Container>
         </div>
-        <div
-        // style={{ flex: '1 0 auto', height: '100%' }}
-        >
-          <Component {...pageProps} />
+
+        {/* Main component, shoud grow indefinitely */}
+        <div className="flex-grow">
+          <Container>
+            <Component {...pageProps} />
+          </Container>
         </div>
-        <div
-        // style={{ flexShrink: '0' }}
-        >
-          <Footer />
+
+        <div>
+          <Container>
+            <Footer />
+          </Container>
         </div>
-      </Container>
+      </div>
+
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </>
   );

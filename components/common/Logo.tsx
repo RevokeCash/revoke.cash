@@ -10,8 +10,9 @@ const Logo = ({ src, alt, size }: Props) => (
   <Image
     src={src}
     alt={alt}
-    height={size ?? 24}
-    width={size ?? 24}
+    className="h-full"
+    height={size ?? 22}
+    width={size ?? 22}
     quality="100"
     // style={{ borderRadius: '50%' }}
   />

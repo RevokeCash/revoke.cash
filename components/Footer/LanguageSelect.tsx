@@ -60,7 +60,8 @@ const LanguageSelect = () => {
         }),
         control: (styles) => ({
           ...styles,
-          minHeight: 24,
+          minHeight: 4,
+          height: 28,
           cursor: 'pointer',
         }),
         option: (styles) => ({

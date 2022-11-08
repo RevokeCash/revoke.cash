@@ -8,7 +8,7 @@ interface Props {
 }
 
 const LogoLink = ({ src, alt, href, size }: Props) => (
-  <a href={href} target="_blank">
+  <a className="h-full" href={href} target="_blank">
     <Logo src={src} alt={alt} size={size} />
   </a>
 );
