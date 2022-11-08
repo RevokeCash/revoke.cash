@@ -1,5 +1,5 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/javascript-node
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.195.0/containers/javascript-node
 {
   "name": "Node.js",
   "build": {
@@ -7,21 +7,32 @@
     // Update 'VARIANT' to pick a Node version: 16, 14, 12.
     // Append -bullseye or -buster to pin to an OS version.
     // Use -bullseye variants on local arm64/Apple Silicon.
-    "args": { "VARIANT": "16-bullseye" }
+    "args": {
+      "VARIANT": "16-bullseye-slim"
+    }
   },
-
-  // Set *default* container specific settings.json values on container create.
-  "settings": {},
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": ["dbaeumer.vscode-eslint"],
-
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {},
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [],
-
+  // "forwardPorts": [3000],
+  // Use 'portsAttributes' to set default properties for specific forwarded ports. More info: https://code.visualstudio.com/docs/remote/devcontainerjson-reference.
+  "portsAttributes": {
+    "3000": {}
+  },
+  // Use 'otherPortsAttributes' to configure any ports that aren't configured using 'portsAttributes'.
+  // "otherPortsAttributes": {
+  // 		"onAutoForward": "silent"
+  // },
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "yarn install",
-
+  "postCreateCommand": "yarn install",
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "node"
 }
