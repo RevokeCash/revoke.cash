@@ -8,6 +8,11 @@
     "no_allowances": "Incluir tokens sin autorizaciones",
     "no_balances": "Incluir tokens sin saldos",
     "tokens": "Tokens",
+    "tooltips": {
+      "connect_wallet": "Please connect your wallet in order to revoke",
+      "connected_account": "You can only revoke allowances of the connected account",
+      "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+    },
     "unverified_tokens": "Incluir tokens no-verificados"
   },
   "donate_to_revoke": "Donar a Revoke.cash",

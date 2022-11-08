@@ -1,6 +1,8 @@
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainName } from 'lib/utils/chains';
+import Trans from 'next-translate/Trans';
+import useTranslation from 'next-translate/useTranslation';
 import { Tooltip } from 'react-bootstrap';
 import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
@@ -14,6 +16,7 @@ interface Props {
 }
 
 const AllowanceControls = ({ revoke, update, id }: Props) => {
+  const { t } = useTranslation();
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
   const { inputAddress } = useAppContext();
 
@@ -37,20 +40,20 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
   );
 
   if (!isConnected) {
-    const tooltip = <Tooltip id={`revoke-${id}`}>Please connect your wallet in order to revoke</Tooltip>;
+    const tooltip = <Tooltip id={`revoke-${id}`}>{t('dashboard:controls.tooltips.connect_wallet')}</Tooltip>;
     return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
   }
 
   if (!isConnectedAddress) {
-    const tooltip = <Tooltip id={`revoke-${id}`}>You can only revoke allowances of the connected account</Tooltip>;
+    const tooltip = <Tooltip id={`revoke-${id}`}>{t('dashboard:controls.tooltips.connected_account')}</Tooltip>;
     return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
   }
 
   if (needsToSwitchChain && !canSwitchChain) {
+    const chainName = getChainName(selectedChainId);
     const tooltip = (
       <Tooltip id={`switch-${id}`}>
-        Please switch your connected chain to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
-        order to revoke
+        <Trans i18nKey="dashboard:controls.tooltips.switch_chain" values={{ chainName }} components={[<strong />]} />
       </Tooltip>
     );
 
