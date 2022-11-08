@@ -4,6 +4,10 @@
     "title": "Revoke.cash—常见问题"
   },
   "questions": {
+    "costs": {
+      "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. This is usually quite cheap, but when gas fees rise it can get more expensive. If your transactions are not time sensitive, it may be wise to use services like <0>GasHawk</0> to reduce gas fees.",
+      "question": "How much does it cost to use Revoke.cash?"
+    },
     "enough_to_disconnect": {
       "answer": "不可以。断开你的钱包（如MetaMask）并<0>不能</0>保护你免受授权漏洞的影响--或大多数其他漏洞。当从一个网站断开你的钱包时，只是该网站不能再看到你的地址。但你的授权仍然有效。",
       "question": "只 \"断开 \"我的钱包，而不是撤销授权呢？"

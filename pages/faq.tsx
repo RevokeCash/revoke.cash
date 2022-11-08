@@ -59,6 +59,11 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
+          <Heading text={t('faq:questions.costs.question')} type="h4" />
+          <Trans i18nKey="faq:questions.costs.answer" components={[<a href="https://gashawk.io" target="_blank" />]} />
+        </div>
+
+        <div>
           <Heading text={t('faq:questions.recover_assets.question')} type="h4" />
           <Trans
             i18nKey="faq:questions.recover_assets.answer"
