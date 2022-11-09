@@ -87,7 +87,7 @@ const TokenList = ({ tokenStandard, transferEvents, approvalEvents, approvalForA
   const tokenComponents = tokens
     .filter((token) => !isSpamToken(token))
     .filter((token) => settings.includeUnverifiedTokens || token.verified)
-    .filter((token) => settings.includeTokensWithoutBalances || hasZeroBalance(token))
+    .filter((token) => settings.includeTokensWithoutBalances || !hasZeroBalance(token))
     .map((token) => <Token key={token.contract.address} token={token} />);
 
   return <div className="TokenList">{tokenComponents}</div>;
