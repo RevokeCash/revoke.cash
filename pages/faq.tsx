@@ -64,6 +64,11 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
+          <Heading text={t('faq:questions.wallet_mentions_approve.question')} type="h4" />
+          <Trans i18nKey="faq:questions.wallet_mentions_approve.answer" />
+        </div>
+
+        <div>
           <Heading text={t('faq:questions.recover_assets.question')} type="h4" />
           <Trans
             i18nKey="faq:questions.recover_assets.answer"
@@ -72,18 +77,13 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('faq:questions.wallet_mentions_approve.question')} type="h4" />
-          <Trans i18nKey="faq:questions.wallet_mentions_approve.answer" />
+          <Heading text={t('faq:questions.stolen_through_allowances.question')} type="h4" />
+          <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
         </div>
 
         <div>
           <Heading text={t('faq:questions.sweeper_bot.question')} type="h4" />
           <Trans i18nKey="faq:questions.sweeper_bot.answer" />
-        </div>
-
-        <div>
-          <Heading text={t('faq:questions.stolen_through_allowances.question')} type="h4" />
-          <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
         </div>
 
         <div>
