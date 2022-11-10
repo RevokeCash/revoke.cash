@@ -5,8 +5,8 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. This is usually quite cheap, but when gas fees rise it can get more expensive. If your transactions are not time sensitive, it may be wise to use services like <0>GasHawk</0> to reduce gas fees.",
-      "question": "How much does it cost to use Revoke.cash?"
+      "answer": "Revoke.cash se proporciona como un servicio gratuito, pero cada transacción de revocación conlleva pagar un \"gas fee\" como cualquier transacción en blockchain. Usualmente esto es muy barato, pero cuando los gas fees aumentan, podría ser más caro. Si tus transacciones no son urgentes, es buena idea usar servicios como <0>GasHawk</0> para reducir los gas fees.",
+      "question": "¿Cuánto cuesta usar Revoke.cash?"
     },
     "enough_to_disconnect": {
       "answer": "No. Desconectar tu cartera (como MetaMask) no hace <0>nada</0> para protegerte de hacks de autorización - o casi cualquier otro hack. La única cosa que pasa cuándo desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas.",
