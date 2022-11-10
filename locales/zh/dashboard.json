@@ -9,9 +9,9 @@
     "no_balances": "包括没有余额的代币",
     "tokens": "代币",
     "tooltips": {
-      "connect_wallet": "Please connect your wallet in order to revoke",
-      "connected_account": "You can only revoke allowances of the connected account",
-      "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+      "connect_wallet": "请连接钱包再撤销",
+      "connected_account": "您只能撤销已连接账户的授权",
+      "switch_chain": "请切换钱包到目标链 <0>{{chainName}}</0>以便撤销"
     },
     "unverified_tokens": "包括未经验证的代币"
   },
