@@ -9,7 +9,8 @@
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
     "lint": "prettier --write .",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "translations:update": "localazy upload && localazy download && yarn lint"
   },
   "private": true,
   "dependencies": {
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@ethersproject/abstract-provider": "^5.7.0",
+    "@localazy/cli": "^1.6.3",
     "@types/node": "^18.11.3",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
