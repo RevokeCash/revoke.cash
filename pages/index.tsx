@@ -1,9 +1,9 @@
 import { displayGitcoinToast } from 'components/common/gitcoin-toast';
 import DashboardBody from 'components/Dashboard/DashboardBody';
-import ConnectSection from 'components/Dashboard/header/ConnectSection';
+import ConnectButton from 'components/Dashboard/header/ConnectButton';
 import DashboardHeader from 'components/Dashboard/header/DashboardHeader';
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
+import DonateButton from 'components/Dashboard/header/DonateButton';
+import { MainLayout } from 'components/MainLayout';
 import type { NextPage } from 'next';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
@@ -16,23 +16,25 @@ const App: NextPage = () => {
   }, []);
 
   return (
-    <div className="min-h-full">
-      <div className="flex-none">
-        <Header />
-      </div>
+    <MainLayout>
+      <div>
+        <div className="dev py-4 w-1/2">
+          <div className="flex justify-center gap-2">
+            <div>
+              <DonateButton />
+            </div>
+            <div>
+              <ConnectButton />
+            </div>
+          </div>
+        </div>
 
-      <div className="flex-grow">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <ConnectSection />
+        <div>
           <DashboardHeader />
           <DashboardBody />
         </div>
       </div>
-
-      <div>
-        <Footer />
-      </div>
-    </div>
+    </MainLayout>
   );
 };
 

@@ -20,8 +20,14 @@
   font-display: swap;
 }
 
-@layer components {
-  .btn-primary {
-    @apply inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
-  }
+.btn-primary {
+  @apply rounded border border-black bg-white px-2.5 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none duration-100;
+}
+
+.container-primary {
+  @apply mx-auto max-w-5xl px-4 sm:px-6 lg:px-8;
+}
+
+.dev {
+  @apply border border-yellow-500;
 }

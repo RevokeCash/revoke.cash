@@ -1,14 +1,13 @@
 import { track } from '@amplitude/analytics-browser';
 import { utils } from 'ethers';
-import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
+import { DONATION_ADDRESS } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
-import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
-import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
+// import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -76,11 +75,13 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
   return (
     <>
-      <Button variant="outline-primary" size={size} onClick={handleShow}>
+      <button type="button" className="btn-primary" onClick={handleShow}>
         {t('common:buttons.donate')}
-      </Button>
+      </button>
 
-      <Modal show={show} onHide={handleClose}>
+      {/* TODO modal for donations */}
+
+      {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t('dashboard:donate_to_revoke')}</Modal.Title>
         </Modal.Header>
@@ -102,7 +103,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
         <Modal.Footer>
           <Trans i18nKey="dashboard:or_contribute_to_gitcoin" components={[<a href={GITCOIN_URL} target="_blank" />]} />
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

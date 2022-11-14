@@ -22,7 +22,7 @@ const SelectDropdown = <T extends {}>({ items }: Props<T>) => {
       {({ open }) => (
         <>
           <div className="relative text-xs">
-            <Listbox.Button className="border border-black relative min-w-full cursor-default rounded-md rounded-r-none   bg-white py-2 pl-3 pr-8 text-left focus:outline-none focus:ring-1 ">
+            <Listbox.Button className="border border-black relative  cursor-default rounded-md rounded-r-none   bg-white py-2 pl-3 pr-8 text-left focus:outline-none focus:ring-1 ">
               <span className="flex items-center">
                 <img src={selected.img} alt="" className="h-6 w-6 flex-shrink-0 rounded-full" />
               </span>
@@ -38,7 +38,7 @@ const SelectDropdown = <T extends {}>({ items }: Props<T>) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-56 min-w-full overflow-y-auto rounded-md bg-white py-1 shadow-lg ring-1  ring-black ring-opacity-5 focus:outline-none">
+              <Listbox.Options className="absolute z-10 mt-1 max-h-56  overflow-y-auto rounded-md bg-white py-1 shadow-lg ring-1  ring-black ring-opacity-5 focus:outline-none">
                 {items.map((item, idx) => (
                   <Listbox.Option
                     key={idx}

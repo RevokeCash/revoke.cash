@@ -16,7 +16,7 @@ const ConnectButton = () => {
 
   return (
     <>
-      <div className="h-full flex justify-center">
+      <div className="w-72 flex">
         <ChainSelectDropdown />
         <div className="border border-black">{account && shortenAddress(account)}</div>
         <button onClick={buttonAction} className="btn-primary border-black border-l-0 rounded-l-none">

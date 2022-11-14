@@ -7,7 +7,7 @@ const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <header>
       <div className="pt-2 mx-auto">
         <div className="flex place-content-center">
           <div>
@@ -25,7 +25,7 @@ const Header = () => {
           <NavLink to="/extension" text={t('common:nav.extension')} matchToHighlight="extension" />
         </div>
       </div>
-    </>
+    </header>
   );
 };
 

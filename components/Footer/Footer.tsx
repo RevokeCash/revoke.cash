@@ -4,7 +4,7 @@ import LanguageSelect from './LanguageSelect';
 
 const Footer = () => {
   return (
-    <div className="py-2">
+    <footer className="py-2 mt-auto">
       <div className="flex space-x-2 h-12 justify-center align-middle">
         <LogoLink
           src="/assets/images/vendor/github.png"
@@ -22,7 +22,7 @@ const Footer = () => {
 
         <LanguageSelect />
       </div>
-    </div>
+    </footer>
   );
 };
 
