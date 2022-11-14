@@ -8,6 +8,7 @@
     "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml > public/sitemap.xml",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
+    "lint:checksums": "ts-node scripts/lint-checksums.ts && git rm -r --cached -q public/dapp-contract-list && git add --all public/dapp-contract-list",
     "lint": "prettier --write .",
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint"
@@ -66,6 +67,7 @@
     "next-sitemap": "^3.1.29",
     "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^3.1.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   },
   "packageManager": "yarn@3.2.0",
