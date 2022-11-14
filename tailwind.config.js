@@ -3,9 +3,9 @@ module.exports = {
   content: ['./lib/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      colors: {
-        gray: '#808080',
-      },
+      // colors: {
+      //   gray: '#808080',
+      // },
 
       fontFamily: {
         sans: [

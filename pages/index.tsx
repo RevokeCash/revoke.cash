@@ -1,8 +1,8 @@
 import { displayGitcoinToast } from 'components/common/gitcoin-toast';
-import DashboardWrapper from 'components/Dashboard/DashboardWrapper';
-import { defaultSEO } from 'lib/next-seo.config';
+import DashboardBody from 'components/Dashboard/DashboardBody';
+import ConnectSection from 'components/Dashboard/header/ConnectSection';
+import DashboardHeader from 'components/Dashboard/header/DashboardHeader';
 import type { NextPage } from 'next';
-import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
@@ -15,8 +15,11 @@ const App: NextPage = () => {
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <DashboardWrapper />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <ConnectSection />
+        <DashboardHeader />
+        <DashboardBody />
+      </div>
     </>
   );
 };
