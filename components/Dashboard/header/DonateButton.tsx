@@ -75,7 +75,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
   return (
     <>
-      <button type="button" className="btn-primary" onClick={handleShow}>
+      <button type="button" className="btn-primary h-full" onClick={handleShow}>
         {t('common:buttons.donate')}
       </button>
 

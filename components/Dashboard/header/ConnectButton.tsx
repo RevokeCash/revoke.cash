@@ -16,10 +16,17 @@ const ConnectButton = () => {
 
   return (
     <>
-      <div className="w-72 flex">
+      <div className="h-full w-72 flex">
         <ChainSelectDropdown />
-        <div className="border border-black">{account && shortenAddress(account)}</div>
-        <button onClick={buttonAction} className="btn-primary border-black border-l-0 rounded-l-none">
+
+        <div className="h-full border-t border-b border-black flex ">
+          <p className="self-center px-2">{account && shortenAddress(account)}</p>
+        </div>
+
+        <button
+          onClick={buttonAction}
+          className="h-full rounded border border-black rounded-l-none bg-white px-2.5 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none duration-100"
+        >
           {buttonText}
         </button>
       </div>

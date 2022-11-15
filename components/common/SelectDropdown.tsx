@@ -22,12 +22,12 @@ const SelectDropdown = <T extends {}>({ items }: Props<T>) => {
       {({ open }) => (
         <>
           <div className="relative text-xs">
-            <Listbox.Button className="border border-black relative  cursor-default rounded-md rounded-r-none   bg-white py-2 pl-3 pr-8 text-left focus:outline-none focus:ring-1 ">
+            <Listbox.Button className="duration-150 h-full border border-black relative  cursor-default rounded-md rounded-r-none hover:bg-black hover:text-white   bg-white py-1 pl-3 pr-8 text-left focus:outline-none focus:ring-1 ">
               <span className="flex items-center">
-                <img src={selected.img} alt="" className="h-6 w-6 flex-shrink-0 rounded-full" />
+                <img src={selected.img} alt="" className="h-5 w-5  rounded-full" />
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ChevronDownIcon className="h-5 w-5 " aria-hidden="true" />
               </span>
             </Listbox.Button>
 

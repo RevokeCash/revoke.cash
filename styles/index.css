@@ -21,7 +21,7 @@
 }
 
 .btn-primary {
-  @apply rounded border border-black bg-white px-2.5 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none duration-100;
+  @apply duration-150 rounded border border-black bg-white px-4 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none;
 }
 
 .container-primary {

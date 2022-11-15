@@ -18,8 +18,8 @@ const App: NextPage = () => {
   return (
     <MainLayout>
       <div>
-        <div className="dev py-4 w-1/2">
-          <div className="flex justify-center gap-2">
+        <div className="dev py-4">
+          <div className="flex justify-center gap-2 h-8">
             <div>
               <DonateButton />
             </div>

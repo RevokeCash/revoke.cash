@@ -7,7 +7,7 @@ interface Props {
 
 export const MainLayout = ({ children }: Props) => {
   return (
-    <div className="dev container-primary min-h-screen flex flex-col">
+    <div className="dev container-primary min-h-screen flex flex-col duration-300">
       <Header />
 
       <main>{children}</main>
