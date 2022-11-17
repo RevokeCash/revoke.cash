@@ -1,9 +1,9 @@
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainName } from 'lib/utils/chains';
-import { Tooltip } from 'react-bootstrap';
 import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
+import Tooltip from './Tooltip';
 import UpdateControls from './UpdateControls';
 import WithHoverTooltip from './WithHoverTooltip';
 
@@ -57,7 +57,13 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
     return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
   }
 
-  return controls;
+  return (
+    <div className="flex h-6">
+      <RevokeButton revoke={revoke} disabled={disabled} />
+
+      {update && <UpdateControls update={update} disabled={disabled} />}
+    </div>
+  );
 };
 
 export default AllowanceControls;

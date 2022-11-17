@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
-import { Button, Form, InputGroup } from 'react-bootstrap';
 
 interface Props {
   update: (newAllowance: string) => Promise<void>;
@@ -14,23 +13,32 @@ const UpdateControls = ({ disabled, update }: Props) => {
   const { execute, loading } = useAsyncCallback(() => update(value));
 
   return (
-    <InputGroup size="sm">
-      <Form.Control
-        type="text"
-        size="sm"
-        className="NewAllowance"
-        value={value}
-        onChange={(event) => {
-          setValue(event.target.value);
-        }}
-      />
-      <InputGroup.Append>
-        <Button disabled={loading || disabled} className="UpdateButton" onClick={execute}>
-          {loading ? t('common:buttons.updating') : t('common:buttons.update')}
-        </Button>
-      </InputGroup.Append>
-    </InputGroup>
+    <form className="flex gap-2">
+      <input className="border rounded-md w-16" type="text" onChange={(e) => setValue(e.target.value)} />
+      <button className="btn-dark" type="button" onClick={execute}>
+        {loading ? t('common:buttons.updating') : t('common:buttons.update')}
+      </button>
+    </form>
   );
+
+  // return (
+  //   <InputGroup size="sm">
+  //     <Form.Control
+  //       type="text"
+  //       size="sm"
+  //       className="NewAllowance"
+  //       value={value}
+  //       onChange={(event) => {
+  //         setValue(event.target.value);
+  //       }}
+  //     />
+  //     <InputGroup.Append>
+  //       <Button disabled={loading || disabled} className="UpdateButton" onClick={execute}>
+  //         {loading ? t('common:buttons.updating') : t('common:buttons.update')}
+  //       </Button>
+  //     </InputGroup.Append>
+  //   </InputGroup>
+  // );
 };
 
 export default UpdateControls;

@@ -24,6 +24,14 @@
   @apply duration-150 rounded border border-black bg-white px-4 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none;
 }
 
+.btn-dark {
+  @apply duration-150 rounded  bg-black px-4 py-1.5 text-xs font-medium text-white hover:border-black  hover:bg-white hover:text-black focus:outline-none;
+}
+
+.btn-base {
+  @apply duration-150 rounded  bg-black px-4 py-1.5 text-xs font-medium text-white hover:text-white  hover:bg-gray-900 focus:outline-none;
+}
+
 .container-primary {
   @apply mx-auto max-w-5xl px-4 sm:px-6 lg:px-8;
 }

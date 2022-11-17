@@ -10,7 +10,7 @@ const ConnectButton = () => {
   const domainName = ensName ?? unsName;
 
   const { execute, loading } = useAsyncCallback(connect);
-  const buttonAction = account ? disconnect : execute;
+  const buttonAction = account ? disconnect : connect;
   const buttonText = account ? t('common:buttons.disconnect') : t('common:buttons.connect');
   const buttonTextLoading = account ? t('common:buttons.disconnecting') : t('common:buttons.connecting');
 
@@ -19,37 +19,21 @@ const ConnectButton = () => {
       <div className="h-full w-72 flex">
         <ChainSelectDropdown />
 
-        <div className="h-full border-t border-b border-black flex ">
-          <p className="self-center px-2">{account && shortenAddress(account)}</p>
-        </div>
+        {account && (
+          <div className="border-t border-black border-b bg-gray-200 flex ">
+            <p className="self-center px-2 text-gray-500">{domainName ?? shortenAddress(account)}</p>
+          </div>
+        )}
 
         <button
           onClick={buttonAction}
           className="h-full rounded border border-black rounded-l-none bg-white px-2.5 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none duration-100"
         >
-          {buttonText}
+          {loading ? buttonTextLoading : buttonText}
         </button>
       </div>
     </>
   );
-
-  // return (
-  // <InputGroup style={{ width: 'fit-content' }}>
-  //   <InputGroup.Prepend>
-  //     <ChainSelectDropdown />
-  //   </InputGroup.Prepend>
-  //   {account && (
-  //     <InputGroup.Text style={{ borderRadius: 0, borderColor: 'black' }}>
-  //       {domainName ?? shortenAddress(account)}
-  //     </InputGroup.Text>
-  //   )}
-  //   <InputGroup.Append style={{ marginLeft: account ? -1 : 0 }}>
-  //     <Button disabled={loading} variant="outline-primary" onClick={buttonAction}>
-  //       {loading ? buttonTextLoading : buttonText}
-  //     </Button>
-  //   </InputGroup.Append>
-  // </InputGroup>
-  // );
 };
 
 export default ConnectButton;

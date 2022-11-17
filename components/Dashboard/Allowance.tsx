@@ -5,7 +5,6 @@ import { useRevoke } from 'lib/hooks/useRevoke';
 import type { ITokenAllowance, TokenData } from 'lib/interfaces';
 import { addressToAppName } from 'lib/utils/whois';
 import { useAsync } from 'react-async-hook';
-import { Form } from 'react-bootstrap';
 import { ClipLoader } from 'react-spinners';
 import AllowanceDisplay from './AllowanceDisplay';
 
@@ -33,11 +32,18 @@ const Allowance = ({ allowance, token, onRevoke }: Props) => {
   }
 
   return (
-    <Form inline className="Allowance">
+    <div className="text-sm flex justify-between gap-2 py-1">
       <AllowanceDisplay token={token} allowance={allowance} updatedAmount={updatedAmount} spenderName={spenderName} />
       <AllowanceControls revoke={revoke} update={update} id={`${token.contract.address}-${allowance.spender}`} />
-    </Form>
+    </div>
   );
+
+  // return (
+  //   <Form inline className="Allowance">
+  //     <AllowanceDisplay token={token} allowance={allowance} updatedAmount={updatedAmount} spenderName={spenderName} />
+  //     <AllowanceControls revoke={revoke} update={update} id={`${token.contract.address}-${allowance.spender}`} />
+  //   </Form>
+  // );
 };
 
 export default Allowance;

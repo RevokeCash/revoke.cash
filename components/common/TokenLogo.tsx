@@ -12,6 +12,7 @@ const TokenLogo = ({ src, alt, size }: Props) => (
     alt={alt}
     height={size ?? 24}
     width={size ?? 24}
+    className="inline"
     style={{ borderRadius: '50%' }}
     onError={fallbackTokenIconOnError}
   />

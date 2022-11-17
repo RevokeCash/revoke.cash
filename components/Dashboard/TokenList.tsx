@@ -90,7 +90,7 @@ const TokenList = ({ tokenStandard, transferEvents, approvalEvents, approvalForA
     .filter((token) => settings.includeTokensWithoutBalances || hasZeroBalance(token))
     .map((token) => <Token key={token.contract.address} token={token} />);
 
-  return <div className="TokenList">{tokenComponents}</div>;
+  return <div className="">{tokenComponents}</div>;
 };
 
 export default TokenList;

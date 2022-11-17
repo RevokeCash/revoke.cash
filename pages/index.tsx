@@ -19,7 +19,7 @@ const App: NextPage = () => {
     <MainLayout>
       <div>
         <div className="dev py-4">
-          <div className="flex justify-center gap-2 h-8">
+          <div className="flex justify-center gap-2 h-10">
             <div>
               <DonateButton />
             </div>

@@ -5,7 +5,6 @@ import { parseInputAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
 
 const AddressInput = () => {
   const { t } = useTranslation();
@@ -42,9 +41,9 @@ const AddressInput = () => {
 
   return (
     <div>
-      <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-        <Form.Control
-          className="AddressInput text-center"
+      <form className="flex h-10">
+        <input
+          className="border rounded-md mx-auto w-full text-center text-lg font-semibold"
           placeholder={t('dashboard:address_input')}
           value={inputAddressOrName}
           onChange={handleFormInputChanged}
@@ -52,10 +51,27 @@ const AddressInput = () => {
             // Re-enable double-click to select
             return;
           }}
-        ></Form.Control>
-      </Form.Group>
+        ></input>
+      </form>
     </div>
   );
+
+  // return (
+  //   <div>
+  //     <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+  //       <Form.Control
+  //         className="AddressInput text-center"
+  //         placeholder={t('dashboard:address_input')}
+  //         value={inputAddressOrName}
+  //         onChange={handleFormInputChanged}
+  //         onDoubleClick={() => {
+  //           // Re-enable double-click to select
+  //           return;
+  //         }}
+  //       ></Form.Control>
+  //     </Form.Group>
+  //   </div>
+  // );
 };
 
 export default AddressInput;
