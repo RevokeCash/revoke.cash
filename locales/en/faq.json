@@ -38,7 +38,7 @@
     },
     "wallet_mentions_approve": {
       "answer": "In the tokens' smart contracts, the functions for approving and revoking allowances are the same function. The difference is that you set the allowance to 0 (for ERC20 tokens) or \"false\" (for NFTs) when revoking the allowance. You can verify that Revoke.cash is actually revoking the allowance by clicking \"Edit Permission\" (for ERC20 allowances), or the \"data\" tab (for NFTs) in MetaMask.",
-      "question": "Why does my wallet pop-up mention \"approve\" or \"set approval for all\" when revoking?"
+      "question": "Why does my wallet pop-up mention \"give permission\", \"approve\" or \"set approval for all\" when revoking?"
     },
     "which_allowances": {
       "answer": "Choosing which allowances to revoke is always a trade-off between safety and convenience. For certain well-known protocols (e.g. Uniswap) it is most likely fine to leave allowances active, but for newer and unknown smart contracts, it is more prudent to revoke allowances. Also keep in mind that some use cases require you to keep your allowances active. For example, if you have active listings on OpenSea you need to keep the allowances in order for the listings to remain active.",
