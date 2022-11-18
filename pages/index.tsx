@@ -3,8 +3,10 @@ import DashboardBody from 'components/Dashboard/DashboardBody';
 import ConnectButton from 'components/Dashboard/header/ConnectButton';
 import DashboardHeader from 'components/Dashboard/header/DashboardHeader';
 import DonateButton from 'components/Dashboard/header/DonateButton';
-import { MainLayout } from 'components/MainLayout';
+import { PublicLayout } from 'layouts/PublicLayout';
+import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
+import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
@@ -16,11 +18,13 @@ const App: NextPage = () => {
   }, []);
 
   return (
-    <MainLayout>
+    <PublicLayout>
+      <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
+
       <div>
-        <div className="dev py-4">
-          <div className="flex justify-center gap-2 h-10">
-            <div>
+        <div className="py-4">
+          <div className="flex justify-center sm:gap-2 h-10">
+            <div className="hidden sm:block">
               <DonateButton />
             </div>
             <div>
@@ -34,7 +38,7 @@ const App: NextPage = () => {
           <DashboardBody />
         </div>
       </div>
-    </MainLayout>
+    </PublicLayout>
   );
 };
 

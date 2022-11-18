@@ -1,6 +1,6 @@
 import DownloadButton from 'components/common/DownloadButton';
-import Heading from 'components/common/Heading';
 import Logo from 'components/common/Logo';
+import { PublicLayout } from 'layouts/PublicLayout';
 import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
@@ -13,7 +13,7 @@ const Extension: NextPage = () => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <PublicLayout>
       <NextSeo
         {...defaultSEO}
         title={t('extension:meta.title')}
@@ -42,7 +42,7 @@ const Extension: NextPage = () => {
           margin: 'auto',
         }}
       >
-        <Heading text={t('extension:title')} type="h2" center />
+        <h2 className="text-center">{t('extension:title')}</h2>
 
         <div>
           <Trans i18nKey="extension:paragraph_1" />
@@ -87,7 +87,7 @@ const Extension: NextPage = () => {
           </DownloadButton>
         </div>
       </div>
-    </>
+    </PublicLayout>
   );
 };
 

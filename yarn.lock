@@ -1648,6 +1648,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nprogress@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@types/nprogress@npm:0.2.0"
+  checksum: 561384775008ae58111f038f8f9468b3de8987cd753feef9bf6d07af0e1343390d492a078bb08a7b53ac7370208e31e06ac069cb852c435d49f5fe218e9769c4
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -5877,6 +5884,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nprogress@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "nprogress@npm:0.2.0"
+  checksum: 66b7bec5d563ecf2d1c3d2815e6d5eb74ed815eee8563e0afa63d3f185ab1b9cf2ddd97e1ded263b9995c5019d26d600320e849e50f3747984daa033744619dc
+  languageName: node
+  linkType: hard
+
 "oauth-sign@npm:~0.9.0":
   version: 0.9.0
   resolution: "oauth-sign@npm:0.9.0"
@@ -6377,7 +6391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -6661,6 +6675,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-tooltip@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "react-tooltip@npm:4.5.0"
+  dependencies:
+    prop-types: ^15.8.1
+    uuid: ^7.0.3
+  peerDependencies:
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: 94b22b73332fc6b1b4889a3e4103d431b2f067bf2891d76effb54f3ad7fb8d8934f134a3dca50332415d9536ce9b98bdb460732dfa68d046adccca088ee723f7
+  languageName: node
+  linkType: hard
+
 "react-transition-group@npm:^4.3.0, react-transition-group@npm:^4.4.1":
   version: 4.4.5
   resolution: "react-transition-group@npm:4.4.5"
@@ -6902,6 +6929,7 @@ __metadata:
     "@heroicons/react": ^2.0.13
     "@openzeppelin/contracts": ^4.7.3
     "@types/node": ^18.11.3
+    "@types/nprogress": ^0.2.0
     "@types/react": ^18.0.21
     "@types/react-dom": ^18.0.6
     "@types/request-ip": ^0.0.37
@@ -6925,6 +6953,7 @@ __metadata:
     next-seo: ^5.8.0
     next-sitemap: ^3.1.29
     next-translate: ^1.6.0
+    nprogress: ^0.2.0
     p-queue: ^7.3.0
     postcss: ^8.4.18
     preact: ^10.11.2
@@ -6940,6 +6969,7 @@ __metadata:
     react-ssr-prepass: "npm:preact-ssr-prepass@^1.2.0"
     react-switch: ^6.1.0
     react-toastify: ^8.2.0
+    react-tooltip: ^4.5.0
     request-ip: ^2.2.0
     tailwindcss: ^3.2.2
     typescript: ^4.8.4
@@ -7897,6 +7927,15 @@ __metadata:
   bin:
     uuid: ./bin/uuid
   checksum: 58de2feed61c59060b40f8203c0e4ed7fd6f99d42534a499f1741218a1dd0c129f4aa1de797bcf822c8ea5da7e4137aa3673431a96dae729047f7aca7b27866f
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "uuid@npm:7.0.3"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: f5b7b5cc28accac68d5c083fd51cca64896639ebd4cca88c6cfb363801aaa83aa439c86dfc8446ea250a7a98d17afd2ad9e88d9d4958c79a412eccb93bae29de
   languageName: node
   linkType: hard
 

@@ -22,7 +22,7 @@ const SelectDropdown = <T extends {}>({ items }: Props<T>) => {
       {({ open }) => (
         <>
           <div className="relative text-xs">
-            <Listbox.Button className="duration-150 h-full border border-black relative  cursor-default rounded-md rounded-r-none hover:bg-black hover:text-white   bg-white py-1 pl-3 pr-8 text-left focus:outline-none focus:ring-1 ">
+            <Listbox.Button className="duration-100 h-full border border-black relative  cursor-default rounded-md rounded-r-none hover:bg-black hover:text-white   bg-white py-1 pl-3 pr-8 text-left focus:outline-none focus:ring-1 ">
               <span className="flex items-center">
                 <img src={selected.img} alt="" className="h-5 w-5  rounded-full" />
               </span>

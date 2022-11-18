@@ -20,12 +20,17 @@
   font-display: swap;
 }
 
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .btn-primary {
-  @apply duration-150 rounded border border-black bg-white px-4 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none;
+  @apply duration-150 disabled:hover:bg-current rounded border border-black bg-white px-4 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none;
 }
 
 .btn-dark {
-  @apply duration-150 rounded  bg-black px-4 py-1.5 text-xs font-medium text-white hover:border-black  hover:bg-white hover:text-black focus:outline-none;
+  @apply duration-150 rounded disabled:hover:bg-current disabled:hover:text-white  bg-black px-4 py-1.5 text-xs font-medium text-white hover:border-black  hover:bg-white hover:text-black focus:outline-none;
 }
 
 .btn-base {
@@ -38,4 +43,24 @@
 
 .dev {
   @apply border border-yellow-500;
+}
+
+h1 {
+  @apply text-3xl uppercase text-black font-futura font-bold italic;
+}
+
+h2 {
+  @apply text-2xl uppercase text-black font-futura font-bold;
+}
+
+h3 {
+  @apply text-xl uppercase text-black font-futura font-bold;
+}
+
+h4 {
+  @apply text-lg uppercase text-black font-futura italic pt-2 pb-1;
+}
+
+#nprogress .bar {
+  background: black !important;
 }

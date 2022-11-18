@@ -41,9 +41,9 @@ const AddressInput = () => {
 
   return (
     <div>
-      <form className="flex h-10">
+      <form onSubmit={(e) => e.preventDefault()} className="flex h-10">
         <input
-          className="border rounded-md mx-auto w-full text-center text-lg font-semibold"
+          className="border rounded-md mx-auto w-full text-center text-lg font-semibold focus:outline-none"
           placeholder={t('dashboard:address_input')}
           value={inputAddressOrName}
           onChange={handleFormInputChanged}
@@ -55,23 +55,6 @@ const AddressInput = () => {
       </form>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <Form.Group style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-  //       <Form.Control
-  //         className="AddressInput text-center"
-  //         placeholder={t('dashboard:address_input')}
-  //         value={inputAddressOrName}
-  //         onChange={handleFormInputChanged}
-  //         onDoubleClick={() => {
-  //           // Re-enable double-click to select
-  //           return;
-  //         }}
-  //       ></Form.Control>
-  //     </Form.Group>
-  //   </div>
-  // );
 };
 
 export default AddressInput;

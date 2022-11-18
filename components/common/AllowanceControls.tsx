@@ -1,11 +1,9 @@
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { getChainName } from 'lib/utils/chains';
+import ReactTooltip from 'react-tooltip';
 import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
-import Tooltip from './Tooltip';
 import UpdateControls from './UpdateControls';
-import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {
   revoke: () => Promise<void>;
@@ -27,42 +25,52 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
     return <SwitchChainButton />;
   }
 
-  const revokeButton = <RevokeButton revoke={revoke} disabled={disabled} />;
-  const updateControls = <UpdateControls update={update} disabled={disabled} />;
-  const controls = (
-    <div style={{ display: 'flex' }}>
-      {revokeButton}
-      {update && updateControls}
-    </div>
-  );
+  let tooltipText: undefined | string = undefined;
 
-  if (!isConnected) {
-    const tooltip = <Tooltip id={`revoke-${id}`}>Please connect your wallet in order to revoke</Tooltip>;
-    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+  if (account !== inputAddress) {
+    tooltipText = 'You can only revoke allowances of the connected account';
   }
 
-  if (!isConnectedAddress) {
-    const tooltip = <Tooltip id={`revoke-${id}`}>You can only revoke allowances of the connected account</Tooltip>;
-    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+  if (!account) {
+    tooltipText = 'Please connect your wallet in order to revoke';
   }
 
   if (needsToSwitchChain && !canSwitchChain) {
-    const tooltip = (
-      <Tooltip id={`switch-${id}`}>
-        Please switch your connected chain to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
-        order to revoke
-      </Tooltip>
-    );
-
-    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+    tooltipText = `Please switch your connected chain to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
+    order to revoke`;
   }
 
-  return (
-    <div className="flex h-6">
-      <RevokeButton revoke={revoke} disabled={disabled} />
+  // if (!isConnected) {
+  //   const tooltip = <Tooltip id={`revoke-${id}`}>Please connect your wallet in order to revoke</Tooltip>;
+  //   return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+  // }
 
-      {update && <UpdateControls update={update} disabled={disabled} />}
-    </div>
+  // if (!isConnectedAddress) {
+  //   const tooltip = <Tooltip id={`revoke-${id}`}>You can only revoke allowances of the connected account</Tooltip>;
+  //   return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+  // }
+
+  // if (needsToSwitchChain && !canSwitchChain) {
+  //   const tooltip = (
+  //     <Tooltip id={`switch-${id}`}>
+  //       Please switch your connected chain to <strong>{getChainName(selectedChainId)}</strong> inside your wallet in
+  //       order to revoke
+  //     </Tooltip>
+  //   );
+
+  //   return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+  // }
+
+  return (
+    <>
+      <div data-tip={tooltipText} className="flex h-6">
+        <RevokeButton revoke={revoke} disabled={true} />
+
+        {update && <UpdateControls update={update} disabled={disabled} />}
+      </div>
+
+      <ReactTooltip />
+    </>
   );
 };
 

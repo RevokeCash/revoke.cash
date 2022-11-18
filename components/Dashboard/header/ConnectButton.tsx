@@ -1,3 +1,4 @@
+import Spinner from 'components/common/Spinner';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
@@ -10,26 +11,26 @@ const ConnectButton = () => {
   const domainName = ensName ?? unsName;
 
   const { execute, loading } = useAsyncCallback(connect);
-  const buttonAction = account ? disconnect : connect;
+  const buttonAction = account ? disconnect : execute;
   const buttonText = account ? t('common:buttons.disconnect') : t('common:buttons.connect');
   const buttonTextLoading = account ? t('common:buttons.disconnecting') : t('common:buttons.connecting');
 
   return (
     <>
-      <div className="h-full w-72 flex">
+      <div className="h-full  flex">
         <ChainSelectDropdown />
 
-        {account && (
-          <div className="border-t border-black border-b bg-gray-200 flex ">
+        {
+          <div className="border-t grow border-black border-b bg-gray-200 flex ">
             <p className="self-center px-2 text-gray-500">{domainName ?? shortenAddress(account)}</p>
           </div>
-        )}
+        }
 
         <button
           onClick={buttonAction}
           className="h-full rounded border border-black rounded-l-none bg-white px-2.5 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none duration-100"
         >
-          {loading ? buttonTextLoading : buttonText}
+          {loading ? <Spinner /> : buttonText}
         </button>
       </div>
     </>

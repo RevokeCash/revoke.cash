@@ -1,4 +1,4 @@
-import Heading from 'components/common/Heading';
+import { PublicLayout } from 'layouts/PublicLayout';
 import { DISCORD_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
@@ -11,7 +11,7 @@ const Faq: NextPage = () => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <PublicLayout>
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
       <div
         style={{
@@ -24,10 +24,10 @@ const Faq: NextPage = () => {
           margin: 'auto',
         }}
       >
-        <Heading text={t('faq:title')} type="h2" center />
+        <h2 className="text-center">{t('faq:title')}</h2>
 
         <div>
-          <Heading text={t('faq:questions.whole_wallet_at_risk.question')} type="h4" />
+          <h4>{t('faq:questions.whole_wallet_at_risk.question')}</h4>
           <Trans
             i18nKey="faq:questions.whole_wallet_at_risk.answer"
             components={[<span style={{ fontStyle: 'italic' }} />]}
@@ -35,7 +35,7 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('faq:questions.enough_to_disconnect.question')} type="h4" />
+          <h4>{t('faq:questions.enough_to_disconnect.question')}</h4>
           <Trans
             i18nKey="faq:questions.enough_to_disconnect.answer"
             components={[<span style={{ fontStyle: 'italic' }} />]}
@@ -43,7 +43,7 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('faq:questions.hardware_wallets.question')} type="h4" />
+          <h4>{t('faq:questions.hardware_wallets.question')}</h4>
           <Trans
             i18nKey="faq:questions.hardware_wallets.answer"
             components={[<span style={{ fontStyle: 'italic' }} />]}
@@ -51,7 +51,7 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('faq:questions.multiple_allowances.question')} type="h4" />
+          <h4>{t('faq:questions.multiple_allowances.question')}</h4>
           <Trans
             i18nKey="faq:questions.multiple_allowances.answer"
             components={[<span style={{ fontStyle: 'italic' }} />]}
@@ -59,7 +59,7 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('faq:questions.recover_assets.question')} type="h4" />
+          <h4>{t('faq:questions.recover_assets.question')}</h4>
           <Trans
             i18nKey="faq:questions.recover_assets.answer"
             components={[<span style={{ fontStyle: 'italic' }} />]}
@@ -67,27 +67,27 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('faq:questions.wallet_mentions_approve.question')} type="h4" />
+          <h4>{t('faq:questions.wallet_mentions_approve.question')}</h4>
           <Trans i18nKey="faq:questions.wallet_mentions_approve.answer" />
         </div>
 
         <div>
-          <Heading text={t('faq:questions.sweeper_bot.question')} type="h4" />
+          <h4>{t('faq:questions.sweeper_bot.question')}</h4>
           <Trans i18nKey="faq:questions.sweeper_bot.answer" />
         </div>
 
         <div>
-          <Heading text={t('faq:questions.stolen_through_allowances.question')} type="h4" />
+          <h4>{t('faq:questions.stolen_through_allowances.question')}</h4>
           <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
         </div>
 
         <div>
-          <Heading text={t('faq:questions.which_allowances.question')} type="h4" />
+          <h4>{t('faq:questions.which_allowances.question')}</h4>
           <Trans i18nKey="faq:questions.which_allowances.answer" />
         </div>
 
         <div>
-          <Heading text={t('faq:questions.which_chains.question')} type="h4" />
+          <h4>{t('faq:questions.which_chains.question')}</h4>
           <Trans
             i18nKey="faq:questions.which_chains.answer"
             components={[
@@ -101,7 +101,7 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('faq:questions.other_question.question')} type="h4" />
+          <h4>{t('faq:questions.other_question.question')}</h4>
           <Trans
             i18nKey="faq:questions.other_question.answer"
             components={[
@@ -111,7 +111,7 @@ const Faq: NextPage = () => {
           />
         </div>
       </div>
-    </>
+    </PublicLayout>
   );
 };
 

@@ -3,17 +3,20 @@ import { useAsyncCallback } from 'react-async-hook';
 
 interface Props {
   revoke: () => Promise<void>;
+  tooltip?: string;
   disabled: boolean;
 }
 
-const RevokeButton = ({ disabled, revoke }: Props) => {
+const RevokeButton = ({ disabled, revoke, tooltip }: Props) => {
   const { t } = useTranslation();
   const { execute, loading } = useAsyncCallback(revoke);
 
   return (
-    <button type="button" disabled={loading || disabled} className="btn-dark" onClick={execute}>
-      {loading ? t('common:buttons.revoking') : t('common:buttons.revoke')}
-    </button>
+    <>
+      <button type="button" disabled={loading || disabled} className="btn-dark" onClick={execute}>
+        {loading ? t('common:buttons.revoking') : t('common:buttons.revoke')}
+      </button>
+    </>
   );
 };
 

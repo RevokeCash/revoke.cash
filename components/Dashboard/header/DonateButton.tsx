@@ -110,11 +110,10 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
                     e.preventDefault();
                     execute();
                   }}
-                  className="duration-150 w-40 rounded bg-black active:bg-black hover:bg-gray-700 py-1.5 font-medium text-white rounded-l-none    focus:outline-none"
+                  className="duration-100 w-40 rounded bg-black active:bg-black hover:bg-gray-700 py-1.5 font-medium text-white rounded-l-none    focus:outline-none"
                 >
                   {loading ? (
                     <div className="flex justify-center items-center gap-x-2">
-                      <p>{t('common:buttons.sending')}</p>
                       <Spinner />
                     </div>
                   ) : (

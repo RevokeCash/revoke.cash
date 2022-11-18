@@ -75,7 +75,11 @@ const TokenList = ({ tokenStandard, transferEvents, approvalEvents, approvalForA
   }, [tokenStandard]);
 
   if (loading) {
-    return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
+    return (
+      <div className="flex justify-center">
+        <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
+      </div>
+    );
   }
 
   if (error) return <Error error={error} />;

@@ -1,6 +1,6 @@
 import Divider from 'components/common/Divider';
-import Heading from 'components/common/Heading';
 import ImageLink from 'components/common/ImageLink';
+import { PublicLayout } from 'layouts/PublicLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -12,23 +12,13 @@ const About: NextPage = () => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <PublicLayout>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <div
-        style={{
-          textAlign: 'left',
-          fontSize: '18px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          maxWidth: '800px',
-          margin: 'auto',
-        }}
-      >
-        <Heading text={t('about:title')} type="h2" center />
+      <div>
+        <h1 className="text-center">{t('about:title')}</h1>
 
         <div>
-          <Heading text={t('about:sections.token_allowances.heading')} type="h4" />
+          <h4>{t('about:sections.token_allowances.heading')}</h4>
           <Trans
             i18nKey="about:sections.token_allowances.paragraph_1"
             components={[<span style={{ fontStyle: 'italic' }} />]}
@@ -36,17 +26,17 @@ const About: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('about:sections.risks.heading')} type="h4" />
+          <h4>{t('about:sections.risks.heading')}</h4>
           <Trans i18nKey="about:sections.risks.paragraph_1" />
         </div>
 
         <div>
-          <Heading text={t('about:sections.revoke_cash.heading')} type="h4" />
+          <h4>{t('about:sections.revoke_cash.heading')}</h4>
           <Trans i18nKey="about:sections.revoke_cash.paragraph_1" />
         </div>
 
         <div>
-          <Heading text={t('about:sections.read_more.heading')} type="h4" />
+          <h4>{t('about:sections.read_more.heading')}</h4>
           <Trans
             i18nKey="about:sections.read_more.paragraph_1"
             components={[
@@ -61,7 +51,7 @@ const About: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('about:sections.credits.heading')} type="h4" />
+          <h4>{t('about:sections.credits.heading')}</h4>
           <Trans
             i18nKey="about:sections.credits.paragraph_1"
             components={[
@@ -73,7 +63,7 @@ const About: NextPage = () => {
         </div>
 
         <div>
-          <Heading text={t('about:sections.sponsors.heading')} type="h4" />
+          <h4>{t('about:sections.sponsors.heading')}</h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div>
               <Trans
@@ -102,7 +92,7 @@ const About: NextPage = () => {
           <Link href="/privacy-policy">{t('common:privacy_policy')}</Link>
         </div>
       </div>
-    </>
+    </PublicLayout>
   );
 };
 
