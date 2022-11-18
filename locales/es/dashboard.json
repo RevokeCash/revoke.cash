@@ -1,18 +1,23 @@
 {
-  "mainnets": "Redes principales",
-  "testnets": "Redes de prueba",
   "address_input": "Ingresar dirección, nombre de ENS o Unstoppable Domain",
-  "controls": {
-    "tokens": "Tokens",
-    "nfts": "NFT's",
-    "unverified_tokens": "Incluir tokens no-verificados",
-    "no_balances": "Incluir tokens sin saldos",
-    "no_allowances": "Incluir tokens sin autorizaciones"
-  },
-  "no_allowances": "Sin autorizaciones",
   "allowance": "{{amount}} autorización a <0>{{spender}}</0>",
-  "allowance_unlimited": "Autorización ilimitada a <0>{{spender}}</0>",
   "allowance_token_id": "Autorización para ID de token {{tokenId}} a <0>{{spender}}</0>",
+  "allowance_unlimited": "Autorización ilimitada a <0>{{spender}}</0>",
+  "controls": {
+    "nfts": "NFT's",
+    "no_allowances": "Incluir tokens sin autorizaciones",
+    "no_balances": "Incluir tokens sin saldos",
+    "tokens": "Tokens",
+    "tooltips": {
+      "connect_wallet": "Por favor conecta tu cartera para poder revocar",
+      "connected_account": "Solo puedes revocar las autorizaciones de la cuenta conectada",
+      "switch_chain": "Por favor cambia tu red conectada a <0>{{chainName}}</0> dentro de tu cartera para poder revocar"
+    },
+    "unverified_tokens": "Incluir tokens no-verificados"
+  },
   "donate_to_revoke": "Donar a Revoke.cash",
-  "or_contribute_to_gitcoin": "O contribuye a nuestro<0>Grant de Gitcoin </0>"
+  "mainnets": "Redes principales",
+  "no_allowances": "Sin autorizaciones",
+  "or_contribute_to_gitcoin": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
+  "testnets": "Redes de prueba"
 }

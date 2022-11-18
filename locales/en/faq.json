@@ -1,53 +1,57 @@
 {
   "meta": {
-    "title": "Revoke.cash - Frequently asked questions",
-    "description": "Answers to all your questions surrounding allowances, Revoke.cash and wallet security."
+    "description": "Answers to all your questions surrounding allowances, Revoke.cash and wallet security.",
+    "title": "Revoke.cash - Frequently asked questions"
   },
-  "title": "Frequently Asked Questions",
   "questions": {
-    "whole_wallet_at_risk": {
-      "question": "If I have an \"Unlimited\" allowance, does that mean my whole wallet is at risk?",
-      "answer": "No. An \"unlimited\" allowance only applies to the token or NFT collection that you gave an allowance for. So if you gave an unlimited allowance for your DAI, then <0>all your DAI</0> may be at risk, but none of your USDC. Similarly an \"unlimited\" allowance for your Bored Apes does not impact your Cool Cats."
+    "costs": {
+      "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. This is usually quite cheap, but when gas fees rise it can get more expensive. If your transactions are not time sensitive, it may be wise to use services like <0>GasHawk</0> to reduce gas fees.",
+      "question": "How much does it cost to use Revoke.cash?"
     },
     "enough_to_disconnect": {
-      "question": "Is it enough to \"disconnect\" my wallet instead of revoking allowances?",
-      "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <0>anything</0> to protect you from allowance exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address any more. But your allowances stay active."
+      "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <0>anything</0> to protect you from allowance exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address any more. But your allowances stay active.",
+      "question": "Is it enough to \"disconnect\" my wallet instead of revoking allowances?"
     },
     "hardware_wallets": {
-      "question": "Can hardware wallets save me from allowance exploits?",
-      "answer": "No. In general, hardware wallets are much safer than mobile or browser-based wallets because the wallet's keys are securely stored on the device, making it impossible to steal the keys without proper access to the device. But with allowances no one <0>needs</0> to steal your keys to take your tokens. And because of that hardware wallets offer no extra protection against allowance exploits."
+      "answer": "No. In general, hardware wallets are much safer than mobile or browser-based wallets because the wallet's keys are securely stored on the device, making it impossible to steal the keys without proper access to the device. But with allowances no one <0>needs</0> to steal your keys to take your tokens. And because of that hardware wallets offer no extra protection against allowance exploits.",
+      "question": "Can hardware wallets save me from allowance exploits?"
     },
     "multiple_allowances": {
-      "question": "Can I revoke multiple allowances at the same time?",
-      "answer": "No. The way allowances work under the hood <0>requires</0> 1 transaction per allowance. So it is technically impossible to revoke multiple allowances in a single transaction."
-    },
-    "recover_assets": {
-      "question": "My funds were just stolen, can I use Revoke.cash to get them back?",
-      "answer": "No. Revoke.cash is a <0>preventative</0> tool that helps you practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make sure to revoke the allowances that were used to take your funds so that they cannot steal more in the future."
-    },
-    "wallet_mentions_approve": {
-      "question": "Why does my wallet pop-up mention \"approve\" or \"set approval for all\" when revoking?",
-      "answer": "In the tokens' smart contracts, the functions for approving and revoking allowances are the same function. The difference is that you set the allowance to 0 (for ERC20 tokens) or \"false\" (for NFTs) when revoking the allowance. You can verify that Revoke.cash is actually revoking the allowance by clicking \"Edit Permission\" (for ERC20 allowances), or the \"data\" tab (for NFTs) in MetaMask."
-    },
-    "sweeper_bot": {
-      "question": "I want to revoke allowances, but whenever I add ETH to my account it gets stolen.",
-      "answer": "If you have a so-called \"sweeper bot\" on your account that steals any ETH as soon as it comes in, your seed phrase was compromised. This means that revoking allowances is not going to help with your wallet security. Unfortunately, there is no way for your wallet to recover from this. You should abandon this wallet and create a new one."
-    },
-    "stolen_through_allowances": {
-      "question": "How do I know if my funds were stolen through an allowance exploit?",
-      "answer": "If your tokens or NFTs were taken from your wallet without you sending an explicit transaction to do so, it is almost always because of allowances. But if your ETH was also stolen alongside other assets, then it most likely points to a compromised seed phrase and you need to migrate to a completely new wallet."
-    },
-    "which_allowances": {
-      "question": "Which allowances do I need to revoke?",
-      "answer": "Choosing which allowances to revoke is always a trade-off between safety and convenience. For certain well-known protocols (e.g. Uniswap) it is most likely fine to leave allowances active, but for newer and unknown smart contracts, it is more prudent to revoke allowances. Also keep in mind that some use cases require you to keep your allowances active. For example, if you have active listings on OpenSea you need to keep the allowances in order for the listings to remain active."
-    },
-    "which_chains": {
-      "question": "Which chains does Revoke.cash support?",
-      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum, BSC, Polygon and Avalanche. The full list of supported chains can be seen in the chain selectin dropdown. If there are any other chains that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>."
+      "answer": "No. The way allowances work under the hood <0>requires</0> 1 transaction per allowance. So it is technically impossible to revoke multiple allowances in a single transaction.",
+      "question": "Can I revoke multiple allowances at the same time?"
     },
     "other_question": {
-      "question": "My question is not listed here.",
-      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <0>Twitter</0> or <1>Discord</1>."
+      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <0>Twitter</0> or <1>Discord</1>.",
+      "question": "My question is not listed here."
+    },
+    "recover_assets": {
+      "answer": "No. Revoke.cash is a <0>preventative</0> tool that helps you practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make sure to revoke the allowances that were used to take your funds so that they cannot steal more in the future.",
+      "question": "My funds were just stolen, can I use Revoke.cash to get them back?"
+    },
+    "stolen_through_allowances": {
+      "answer": "If your tokens or NFTs were taken from your wallet without you sending an explicit transaction to do so, it is almost always because of allowances. But if your ETH was also stolen alongside other assets, then it most likely points to a compromised seed phrase and you need to migrate to a completely new wallet.",
+      "question": "How do I know if my funds were stolen through an allowance exploit?"
+    },
+    "sweeper_bot": {
+      "answer": "If you have a so-called \"sweeper bot\" on your account that steals any ETH as soon as it comes in, your seed phrase was compromised. This means that revoking allowances is not going to help with your wallet security. Unfortunately, there is no way for your wallet to recover from this. You should abandon this wallet and create a new one.",
+      "question": "I want to revoke allowances, but whenever I add ETH to my account it gets stolen."
+    },
+    "wallet_mentions_approve": {
+      "answer": "In the tokens' smart contracts, the functions for approving and revoking allowances are the same function. The difference is that you set the allowance to 0 (for ERC20 tokens) or \"false\" (for NFTs) when revoking the allowance. You can verify that Revoke.cash is actually revoking the allowance by clicking \"Edit Permission\" (for ERC20 allowances), or the \"data\" tab (for NFTs) in MetaMask.",
+      "question": "Why does my wallet pop-up mention \"give permission\", \"approve\" or \"set approval for all\" when revoking?"
+    },
+    "which_allowances": {
+      "answer": "Choosing which allowances to revoke is always a trade-off between safety and convenience. For certain well-known protocols (e.g. Uniswap) it is most likely fine to leave allowances active, but for newer and unknown smart contracts, it is more prudent to revoke allowances. Also keep in mind that some use cases require you to keep your allowances active. For example, if you have active listings on OpenSea you need to keep the allowances in order for the listings to remain active.",
+      "question": "Which allowances do I need to revoke?"
+    },
+    "which_chains": {
+      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum, BSC, Polygon and Avalanche. The full list of supported chains can be seen in the chain selectin dropdown. If there are any other chains that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
+      "question": "Which chains does Revoke.cash support?"
+    },
+    "whole_wallet_at_risk": {
+      "answer": "No. An \"unlimited\" allowance only applies to the token or NFT collection that you gave an allowance for. So if you gave an unlimited allowance for your DAI, then <0>all your DAI</0> may be at risk, but none of your USDC. Similarly an \"unlimited\" allowance for your Bored Apes does not impact your Cool Cats.",
+      "question": "If I have an \"Unlimited\" allowance, does that mean my whole wallet is at risk?"
     }
-  }
+  },
+  "title": "Frequently Asked Questions"
 }

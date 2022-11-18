@@ -59,11 +59,8 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <h4>{t('faq:questions.recover_assets.question')}</h4>
-          <Trans
-            i18nKey="faq:questions.recover_assets.answer"
-            components={[<span style={{ fontStyle: 'italic' }} />]}
-          />
+          <h4>{t('faq:questions.costs.question')}</h4>
+          <Trans i18nKey="faq:questions.costs.answer" components={[<a href="https://gashawk.io" target="_blank" />]} />
         </div>
 
         <div>
@@ -72,13 +69,21 @@ const Faq: NextPage = () => {
         </div>
 
         <div>
-          <h4>{t('faq:questions.sweeper_bot.question')}</h4>
-          <Trans i18nKey="faq:questions.sweeper_bot.answer" />
+          <h4>{t('faq:questions.recover_assets.question')}</h4>
+          <Trans
+            i18nKey="faq:questions.recover_assets.answer"
+            components={[<span style={{ fontStyle: 'italic' }} />]}
+          />
         </div>
 
         <div>
           <h4>{t('faq:questions.stolen_through_allowances.question')}</h4>
           <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
+        </div>
+
+        <div>
+          <h4>{t('faq:questions.sweeper_bot.question')}</h4>
+          <Trans i18nKey="faq:questions.sweeper_bot.answer" />
         </div>
 
         <div>

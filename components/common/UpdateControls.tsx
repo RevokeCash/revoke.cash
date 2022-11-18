@@ -15,7 +15,7 @@ const UpdateControls = ({ disabled, update }: Props) => {
   return (
     <form className="flex gap-2">
       <input className="border rounded-md w-16" type="text" onChange={(e) => setValue(e.target.value)} />
-      <button className="btn-dark" type="button" onClick={execute}>
+      <button disabled={loading || disabled} className="btn-dark" type="button" onClick={execute}>
         {loading ? t('common:buttons.updating') : t('common:buttons.update')}
       </button>
     </form>

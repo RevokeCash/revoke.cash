@@ -1,18 +1,23 @@
 {
-  "mainnets": "Mainnets",
-  "testnets": "Testnets",
   "address_input": "Enter address, ENS name or Unstoppable Domain",
-  "controls": {
-    "tokens": "Tokens",
-    "nfts": "NFTs",
-    "unverified_tokens": "Include unverified tokens",
-    "no_balances": "Include tokens without balances",
-    "no_allowances": "Include tokens without allowances"
-  },
-  "no_allowances": "No allowances",
   "allowance": "{{amount}} allowance to <0>{{spender}}</0>",
-  "allowance_unlimited": "Unlimited allowance to <0>{{spender}}</0>",
   "allowance_token_id": "Allowance for token ID {{tokenId}} to <0>{{spender}}</0>",
+  "allowance_unlimited": "Unlimited allowance to <0>{{spender}}</0>",
+  "controls": {
+    "nfts": "NFTs",
+    "no_allowances": "Include tokens without allowances",
+    "no_balances": "Include tokens without balances",
+    "tokens": "Tokens",
+    "tooltips": {
+      "connect_wallet": "Please connect your wallet in order to revoke",
+      "connected_account": "You can only revoke allowances of the connected account",
+      "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+    },
+    "unverified_tokens": "Include unverified tokens"
+  },
   "donate_to_revoke": "Donate to Revoke.cash",
-  "or_contribute_to_gitcoin": "Or contribute to our <0>Gitcoin Grant</0>"
+  "mainnets": "Mainnets",
+  "no_allowances": "No allowances",
+  "or_contribute_to_gitcoin": "Or contribute to our <0>Gitcoin Grant</0>",
+  "testnets": "Testnets"
 }

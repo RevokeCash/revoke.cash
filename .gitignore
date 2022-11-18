@@ -50,3 +50,5 @@ package-lock.json
 
 # Sitemap will be generated at build
 public/sitemap.xml
+
+localazy.keys.json
