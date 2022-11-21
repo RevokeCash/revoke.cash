@@ -85,7 +85,7 @@ const TokenList = ({ tokenStandard, transferEvents, approvalEvents, approvalForA
   if (error) return <Error error={error} />;
 
   if (tokens.length === 0) {
-    return <div>No token balances</div>;
+    return <div className="text-center">No token balances</div>;
   }
 
   const tokenComponents = tokens

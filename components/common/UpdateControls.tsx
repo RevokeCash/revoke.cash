@@ -16,7 +16,7 @@ const UpdateControls = ({ disabled, update }: Props) => {
   return (
     <div className="flex">
       <input
-        className="border-y border-l border-black rounded rounded-r-none w-16 px-1.5 focus:outline-none"
+        className="border-y border-l border-black rounded rounded-r-none w-16 px-1.5 focus:outline-black"
         type="text"
         placeholder="0"
         onChange={(e) => setValue(e.target.value)}

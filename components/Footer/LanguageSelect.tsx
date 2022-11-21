@@ -1,7 +1,8 @@
 import { track } from '@amplitude/analytics-browser';
-import StyledSelect from 'components/common/StyledSelect';
+import { setSelectThemeColors } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+import Select from 'react-select';
 
 const LanguageSelect = () => {
   const { asPath, replace } = useRouter();
@@ -31,13 +32,58 @@ const LanguageSelect = () => {
     context === 'menu' ? `${option.emoji} ${option.name}` : option.emoji;
 
   return (
-    <StyledSelect
+    <Select
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
+      styles={{
+        indicatorSeparator: () => ({
+          display: 'none',
+        }),
+        menu: (styles) => ({
+          ...styles,
+          width: 110,
+          margin: 0,
+          textAlign: 'left',
+          zIndex: 3,
+        }),
+        menuList: (styles) => ({
+          ...styles,
+          padding: 0,
+        }),
+        dropdownIndicator: (styles) => ({
+          ...styles,
+          padding: 2,
+          paddingLeft: 0,
+        }),
+        valueContainer: (styles) => ({
+          ...styles,
+          padding: 2,
+          paddingRight: 0,
+        }),
+        control: (styles) => ({
+          ...styles,
+          minHeight: 24,
+          cursor: 'pointer',
+        }),
+        option: (styles) => ({
+          ...styles,
+          cursor: 'pointer',
+          padding: '8px 8px',
+          '&:first-child': {
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+          },
+          '&:last-child': {
+            borderBottomLeftRadius: 4,
+            borderBottomRightRadius: 4,
+          },
+        }),
+      }}
+      theme={setSelectThemeColors}
     />
   );
 };

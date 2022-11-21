@@ -1,4 +1,4 @@
-import { classNames } from 'lib/utils/classNames';
+import { classNames } from 'lib/utils/styles';
 
 interface Props {
   disabled?: boolean;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const Button = ({ disabled, style, size, onClick, href, external, children, className }: Props) => {
-  const commonClasses = 'flex justify-center items-center border border-black rounded focus:outline-none duration-150';
+  const commonClasses = 'flex justify-center items-center border border-black rounded focus:outline-black duration-150';
   const primaryClasses = 'bg-black text-white visited:text-white hover:bg-gray-800';
   const secondaryClasses = 'bg-white text-black visited:text-black hover:bg-gray-200';
   const smallClasses = 'px-1.5 py-0.5 text-xs';

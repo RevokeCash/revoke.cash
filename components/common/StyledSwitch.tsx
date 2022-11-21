@@ -1,5 +1,5 @@
 import { Switch } from '@headlessui/react';
-import { classNames } from 'lib/utils/classNames';
+import { classNames } from 'lib/utils/styles';
 
 interface Props {
   checked: boolean;
@@ -12,7 +12,7 @@ const StyledSwitch = ({ checked, onChange }: Props) => {
       checked={checked}
       onChange={onChange}
       className={classNames(
-        'bg-black relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none '
+        'bg-black relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-gray-500'
       )}
     >
       <span

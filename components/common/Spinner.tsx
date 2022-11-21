@@ -1,4 +1,4 @@
-import { classNames } from 'lib/utils/classNames';
+import { classNames } from 'lib/utils/styles';
 
 interface Props {
   className?: string;

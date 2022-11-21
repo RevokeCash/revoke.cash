@@ -41,7 +41,7 @@ const Modal = ({ open, setOpen, children }: Props) => {
                 <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
                   <button
                     type="button"
-                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
+                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-black"
                     onClick={() => setOpen(false)}
                   >
                     <span className="sr-only">Close</span>

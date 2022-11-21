@@ -4,7 +4,7 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
-import ChainSelectDropdown from './ChainSelectDropdown';
+import ChainSelect from './ChainSelect';
 
 const ConnectButton = () => {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ const ConnectButton = () => {
   return (
     <div className="h-full flex">
       <div className="h-full flex -mr-px">
-        <ChainSelectDropdown />
+        <ChainSelect />
       </div>
       {account && (
         <div className="flex justify-center items-center grow border border-black bg-gray-200 px-3 py-1.5">
