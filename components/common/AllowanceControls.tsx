@@ -32,7 +32,7 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
   }
 
   const controls = (
-    <div className="flex h-6">
+    <div className="flex h-6 gap-1">
       <RevokeButton revoke={revoke} disabled={disabled} />
       {update && <UpdateControls update={update} disabled={disabled} />}
     </div>

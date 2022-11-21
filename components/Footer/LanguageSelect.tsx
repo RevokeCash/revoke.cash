@@ -1,7 +1,7 @@
 import { track } from '@amplitude/analytics-browser';
+import StyledSelect from 'components/common/StyledSelect';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import Select from 'react-select';
 
 const LanguageSelect = () => {
   const { asPath, replace } = useRouter();
@@ -31,71 +31,13 @@ const LanguageSelect = () => {
     context === 'menu' ? `${option.emoji} ${option.name}` : option.emoji;
 
   return (
-    <Select
+    <StyledSelect
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
-      styles={{
-        menu: (styles) => ({
-          ...styles,
-          width: 110,
-          margin: 0,
-          textAlign: 'left',
-          zIndex: 3,
-        }),
-        menuList: (styles) => ({
-          ...styles,
-          padding: 0,
-        }),
-        dropdownIndicator: (styles) => ({
-          ...styles,
-          padding: 2,
-        }),
-        valueContainer: (styles) => ({
-          ...styles,
-          padding: 2,
-        }),
-        control: (styles) => ({
-          ...styles,
-          minHeight: 4,
-          height: 28,
-          cursor: 'pointer',
-        }),
-        option: (styles) => ({
-          ...styles,
-          cursor: 'pointer',
-          padding: '8px 8px',
-          '&:first-child': {
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-          },
-          '&:last-child': {
-            borderBottomLeftRadius: 4,
-            borderBottomRightRadius: 4,
-          },
-        }),
-      }}
-      theme={(theme) => ({
-        ...theme,
-        borderRadius: 4,
-        colors: {
-          ...theme.colors,
-          primary: 'black',
-          primary25: '#ddd',
-          neutral10: 'black',
-          neutral20: 'black',
-          neutral30: 'black',
-          neutral40: 'black',
-          neutral50: 'black',
-          neutral60: 'black',
-          neutral70: 'black',
-          neutral80: 'black',
-          neutral90: 'black',
-        },
-      })}
     />
   );
 };

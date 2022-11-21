@@ -4,22 +4,19 @@ import LanguageSelect from './LanguageSelect';
 
 const Footer = () => {
   return (
-    <footer className="py-2 mt-auto">
-      <div className="flex space-x-2 h-12 justify-center align-middle">
+    <footer className="py-4">
+      <div className="flex gap-1 justify-center items-center">
         <LogoLink
           src="/assets/images/vendor/github.png"
           alt="Source Code"
           href="https://github.com/rkalis/revoke.cash"
         />
-
         <LogoLink
           src="/assets/images/vendor/twitter.png"
           alt="Official Twitter"
           href="https://twitter.com/RevokeCash"
         />
-
         <LogoLink src="/assets/images/vendor/discord.png" alt="Official Discord" href={DISCORD_URL} />
-
         <LanguageSelect />
       </div>
     </footer>

@@ -8,13 +8,13 @@ interface Props {
 
 const Logo = ({ src, alt, size }: Props) => (
   <Image
+    objectFit="contain"
     src={src}
     alt={alt}
-    className="h-full"
-    height={size ?? 22}
-    width={size ?? 22}
+    height={size ?? 24}
+    width={size ?? 24}
     quality="100"
-    // style={{ borderRadius: '50%' }}
+    className="rounded-full"
   />
 );
 

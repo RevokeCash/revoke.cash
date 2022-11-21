@@ -31,18 +31,8 @@ const Extension: NextPage = () => {
           type: 'website',
         }}
       />
-      <div
-        style={{
-          textAlign: 'left',
-          fontSize: '18px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          maxWidth: '800px',
-          margin: 'auto',
-        }}
-      >
-        <h2 className="text-center">{t('extension:title')}</h2>
+      <div className="flex flex-col gap-2 text-lg leading-none">
+        <h1 className="text-center">{t('extension:title')}</h1>
 
         <div>
           <Trans i18nKey="extension:paragraph_1" />

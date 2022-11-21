@@ -23,22 +23,16 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1;
 }
 
-.btn-primary {
-  @apply duration-150 disabled:hover:bg-current rounded border border-black bg-white px-4 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none;
+a {
+  color: blue;
+  text-decoration: none;
 }
 
-.btn-dark {
-  @apply duration-150 rounded disabled:hover:bg-current disabled:hover:text-white  bg-black px-4 py-1.5 text-xs font-medium text-white hover:border-black  hover:bg-white hover:text-black focus:outline-none;
-}
-
-.btn-base {
-  @apply duration-150 rounded  bg-black px-4 py-1.5 text-xs font-medium text-white hover:text-white  hover:bg-gray-900 focus:outline-none;
-}
-
-.container-primary {
-  @apply mx-auto max-w-5xl px-4 sm:px-6 lg:px-8;
+a:visited {
+  color: purple;
 }
 
 .dev {
@@ -58,7 +52,7 @@ h3 {
 }
 
 h4 {
-  @apply text-lg uppercase text-black font-futura italic pt-2 pb-1;
+  @apply text-lg leading-tight uppercase text-black font-futura italic pt-2 pb-1;
 }
 
 #nprogress .bar {

@@ -1,3 +1,4 @@
+import { Button } from 'components/common/Button';
 import Spinner from 'components/common/Spinner';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { shortenAddress } from 'lib/utils';
@@ -13,27 +14,21 @@ const ConnectButton = () => {
   const { execute, loading } = useAsyncCallback(connect);
   const buttonAction = account ? disconnect : execute;
   const buttonText = account ? t('common:buttons.disconnect') : t('common:buttons.connect');
-  const buttonTextLoading = account ? t('common:buttons.disconnecting') : t('common:buttons.connecting');
 
   return (
-    <>
-      <div className="h-full  flex">
+    <div className="h-full flex">
+      <div className="h-full flex -mr-px">
         <ChainSelectDropdown />
-
-        {
-          <div className="border-t grow border-black border-b bg-gray-200 flex ">
-            <p className="self-center px-2 text-gray-500">{domainName ?? shortenAddress(account)}</p>
-          </div>
-        }
-
-        <button
-          onClick={buttonAction}
-          className="h-full rounded border border-black rounded-l-none bg-white px-2.5 py-1.5 text-xs font-medium text-black hover:text-white  hover:bg-gray-900 focus:outline-none duration-100"
-        >
-          {loading ? <Spinner /> : buttonText}
-        </button>
       </div>
-    </>
+      {account && (
+        <div className="flex justify-center items-center grow border border-black bg-gray-200 px-3 py-1.5">
+          {domainName ?? shortenAddress(account)}
+        </div>
+      )}
+      <Button disabled={loading} style="secondary" size="md" onClick={buttonAction} className="rounded-l-none -ml-px">
+        {loading ? <Spinner style="secondary" /> : buttonText}
+      </Button>
+    </div>
   );
 };
 

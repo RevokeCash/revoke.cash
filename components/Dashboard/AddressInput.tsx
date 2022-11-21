@@ -40,20 +40,12 @@ const AddressInput = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={(e) => e.preventDefault()} className="flex h-10">
-        <input
-          className="border rounded-md mx-auto w-full text-center text-lg font-semibold focus:outline-none"
-          placeholder={t('dashboard:address_input')}
-          value={inputAddressOrName}
-          onChange={handleFormInputChanged}
-          onDoubleClick={() => {
-            // Re-enable double-click to select
-            return;
-          }}
-        ></input>
-      </form>
-    </div>
+    <input
+      className="flex h-10 border rounded-md mx-auto w-full max-w-[800px] text-center text-lg font-semibold focus:outline-black"
+      placeholder={t('dashboard:address_input')}
+      value={inputAddressOrName}
+      onChange={handleFormInputChanged}
+    />
   );
 };
 

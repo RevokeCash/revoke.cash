@@ -1,17 +1,16 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { AppContextProvider } from 'lib/hooks/useAppContext';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
-
 import { NoSSR } from 'lib/utils/nossr';
 import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
-import { useEffect } from 'react';
-import '../styles/index.css';
-
-import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../styles/index.css';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -33,6 +32,20 @@ const App = ({ Component, pageProps }: AppProps) => {
       <EthereumProvider>
         <AppContextProvider>
           <Component {...pageProps} />
+          <ToastContainer
+            className="text-center"
+            position="top-right"
+            icon={false}
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            progressStyle={{ backgroundColor: 'black' }}
+          />
         </AppContextProvider>
       </EthereumProvider>
 

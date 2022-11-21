@@ -92,7 +92,7 @@ const DashboardBody = () => {
   if (loading) {
     return (
       <div className="flex justify-center">
-        <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
+        <ClipLoader size={40} color={'#000'} loading={loading} />
       </div>
     );
   }

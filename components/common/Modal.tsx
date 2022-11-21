@@ -1,14 +1,16 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { Fragment, ReactNode, useRef, useState } from 'react';
+import { Fragment, ReactNode, useRef } from 'react';
 
 interface Props {
-  open_state: ReturnType<typeof useState<boolean>>;
+  open: boolean;
+  setOpen: (open: boolean) => void;
   children: ReactNode;
 }
 
-const Modal = ({ open_state: [open, setOpen], children }: Props) => {
+const Modal = ({ open, setOpen, children }: Props) => {
   const cancelButtonRef = useRef(null);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -25,7 +27,7 @@ const Modal = ({ open_state: [open, setOpen], children }: Props) => {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full items-end justify-center p-20 text-center sm:items-start">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -35,8 +37,8 @@ const Modal = ({ open_state: [open, setOpen], children }: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
+              <Dialog.Panel className="border border-black relative transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
                   <button
                     type="button"
                     className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
@@ -46,7 +48,7 @@ const Modal = ({ open_state: [open, setOpen], children }: Props) => {
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="mr-6">{children}</div>
+                <div>{children}</div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

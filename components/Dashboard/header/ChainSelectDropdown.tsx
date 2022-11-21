@@ -23,6 +23,7 @@ const ChainSelectDropdown: React.FC = () => {
     };
   });
 
+  // TODO: Add testnet items
   return <SelectDropdown items={mainnetChainItems} />;
 
   // return (

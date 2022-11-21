@@ -8,17 +8,15 @@ const Header = () => {
 
   return (
     <header>
-      <div className="pt-2 mx-auto">
+      <div className="pt-3 flex flex-col">
         <div className="flex place-content-center">
-          <div>
-            <Link href="/">
-              <a>
-                <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="81" width="400" />
-              </a>
-            </Link>
-          </div>
+          <Link href="/">
+            <a className="flex">
+              <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="81" width="400" />
+            </a>
+          </Link>
         </div>
-        <div className="flex justify-center space-x-2">
+        <div className="flex justify-center gap-2">
           <NavLink to="/about" text={t('common:nav.about')} />
           <NavLink to="/faq" text={t('common:nav.faq')} />
           <NavLink to="/extension" text={t('common:nav.extension')} />

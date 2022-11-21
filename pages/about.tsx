@@ -14,7 +14,7 @@ const About: NextPage = () => {
   return (
     <PublicLayout>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <div>
+      <div className="flex flex-col gap-2 text-lg leading-none">
         <h1 className="text-center">{t('about:title')}</h1>
 
         <div>

@@ -13,18 +13,9 @@ const Faq: NextPage = () => {
   return (
     <PublicLayout>
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
-      <div
-        style={{
-          textAlign: 'left',
-          fontSize: '18px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          maxWidth: '800px',
-          margin: 'auto',
-        }}
-      >
-        <h2 className="text-center">{t('faq:title')}</h2>
+
+      <div className="flex flex-col gap-2 text-lg leading-none">
+        <h1 className="text-center">{t('faq:title')}</h1>
 
         <div>
           <h4>{t('faq:questions.whole_wallet_at_risk.question')}</h4>

@@ -10,18 +10,12 @@ const DashboardHeader = () => {
 
   return (
     <>
-      <div className="py-2">
-        <AddressInput />
-      </div>
-
-      <div className="py-2 flex flex-col">
-        <div className="mx-auto">
-          <TokenStandardSelection
-            tokenStandard={settings.tokenStandard}
-            setTokenStandard={(value) => setSettings({ ...settings, tokenStandard: value })}
-          />
-        </div>
-
+      <AddressInput />
+      <div className="py-2 flex flex-col items-center">
+        <TokenStandardSelection
+          tokenStandard={settings.tokenStandard}
+          setTokenStandard={(value) => setSettings({ ...settings, tokenStandard: value })}
+        />
         <div className="mx-auto py-2">
           {settings.tokenStandard === 'ERC20' && tokenMapping && (
             <LabelledCheckbox

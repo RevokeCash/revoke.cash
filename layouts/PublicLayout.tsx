@@ -7,12 +7,12 @@ interface Props {
 
 export const PublicLayout = ({ children }: Props) => {
   return (
-    <div className="container-primary min-h-screen flex flex-col">
+    <div className="flex flex-col mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 min-h-screen">
       <Header />
-
-      <main className="py-2">{children}</main>
-
-      <Footer />
+      <main>{children}</main>
+      <div className="flex flex-col justify-end grow">
+        <Footer />
+      </div>
     </div>
   );
 };

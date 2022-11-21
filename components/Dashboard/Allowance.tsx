@@ -31,19 +31,13 @@ const Allowance = ({ allowance, token, onRevoke }: Props) => {
     );
   }
 
+  // TODO: fix mobile view
   return (
-    <div className="text-sm flex justify-between gap-2 py-1">
+    <div className="flex justify-between gap-2 p-0.5">
       <AllowanceDisplay token={token} allowance={allowance} updatedAmount={updatedAmount} spenderName={spenderName} />
       <AllowanceControls revoke={revoke} update={update} id={`${token.contract.address}-${allowance.spender}`} />
     </div>
   );
-
-  // return (
-  //   <Form inline className="Allowance">
-  //     <AllowanceDisplay token={token} allowance={allowance} updatedAmount={updatedAmount} spenderName={spenderName} />
-  //     <AllowanceControls revoke={revoke} update={update} id={`${token.contract.address}-${allowance.spender}`} />
-  //   </Form>
-  // );
 };
 
 export default Allowance;

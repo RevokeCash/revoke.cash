@@ -13,14 +13,10 @@ const TokenBalance = ({ token }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${token.contract.address}`;
 
   return (
-    <div className="">
-      <a href={explorerUrl} className="">
-        <TokenLogo src={token.icon} alt={token.symbol} />
-
-        <p className="ml-2 inline">{getBalanceText(token.symbol, token.balance, (token as Erc20TokenData).decimals)}</p>
-      </a>
-      {/* </a> */}
-    </div>
+    <a href={explorerUrl} className="hover:underline text-black visited:text-black">
+      <TokenLogo src={token.icon} alt={token.symbol} />
+      <p className="ml-1 inline">{getBalanceText(token.symbol, token.balance, (token as Erc20TokenData).decimals)}</p>
+    </a>
   );
 };
 
