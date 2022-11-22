@@ -1,14 +1,10 @@
 import { init, track } from '@amplitude/analytics-browser';
-import { AppContextProvider } from 'lib/hooks/useAppContext';
-import { EthereumProvider } from 'lib/hooks/useEthereum';
-import { NoSSR } from 'lib/utils/nossr';
 import type { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { useEffect } from 'react';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/index.css';
 
@@ -29,29 +25,10 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      <EthereumProvider>
-        <AppContextProvider>
-          <Component {...pageProps} />
-          <ToastContainer
-            className="text-center"
-            position="top-right"
-            icon={false}
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            progressStyle={{ backgroundColor: 'black' }}
-          />
-        </AppContextProvider>
-      </EthereumProvider>
-
+      <Component {...pageProps} />
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </>
   );
 };
 
-export default NoSSR(App);
+export default App;

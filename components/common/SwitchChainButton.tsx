@@ -1,4 +1,4 @@
-import { Button } from 'components/common/Button';
+import Button from 'components/common/Button';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';

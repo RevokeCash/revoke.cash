@@ -1,4 +1,4 @@
-import { Button } from 'components/common/Button';
+import Button from 'components/common/Button';
 import Spinner from 'components/common/Spinner';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { shortenAddress } from 'lib/utils';

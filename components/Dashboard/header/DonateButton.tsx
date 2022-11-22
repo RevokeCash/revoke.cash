@@ -1,6 +1,6 @@
 import { track } from '@amplitude/analytics-browser';
 import { Dialog } from '@headlessui/react';
-import { Button } from 'components/common/Button';
+import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import Spinner from 'components/common/Spinner';
 import { utils } from 'ethers';

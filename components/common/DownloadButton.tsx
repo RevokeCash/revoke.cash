@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import type { ReactNode } from 'react';
-import { Button } from './Button';
+import Button from './Button';
 
 interface Props {
   href: string;

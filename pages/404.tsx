@@ -1,4 +1,4 @@
-import { PublicLayout } from 'layouts/PublicLayout';
+import PublicLayout from 'layouts/PublicLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -8,10 +8,12 @@ const Error404: NextPage = () => {
   const { t } = useTranslation();
 
   return (
-    <PublicLayout>
+    <>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <h1 className="text-center">{t('common:errors.404.title')}</h1>
-    </PublicLayout>
+      <PublicLayout>
+        <h1 className="text-center">{t('common:errors.404.title')}</h1>
+      </PublicLayout>
+    </>
   );
 };
 

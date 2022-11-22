@@ -11,7 +11,7 @@ interface Props {
   external?: boolean;
 }
 
-export const Button = ({ disabled, style, size, onClick, href, external, children, className }: Props) => {
+const Button = ({ disabled, style, size, onClick, href, external, children, className }: Props) => {
   const commonClasses = 'flex justify-center items-center border border-black rounded focus:outline-black duration-150';
   const primaryClasses = 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600';
   const secondaryClasses = 'bg-white text-black visited:text-black hover:bg-gray-200 disabled:bg-gray-300';
@@ -40,3 +40,5 @@ export const Button = ({ disabled, style, size, onClick, href, external, childre
     </button>
   );
 };
+
+export default Button;
