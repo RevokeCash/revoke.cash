@@ -15,8 +15,8 @@ const LabelledCheckbox = ({ label, checked, update }: Props) => {
 
   return (
     <div>
-      <span style={{ marginRight: 5 }}>{label}</span>
-      <input type="checkbox" checked={checked} onChange={onChange} />
+      <input id={label} className="mr-2" type="checkbox" checked={checked} onChange={onChange}></input>
+      <label htmlFor={label}>{label}</label>
     </div>
   );
 };

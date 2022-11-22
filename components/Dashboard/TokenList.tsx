@@ -75,13 +75,17 @@ const TokenList = ({ tokenStandard, transferEvents, approvalEvents, approvalForA
   }, [tokenStandard]);
 
   if (loading) {
-    return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;
+    return (
+      <div className="flex justify-center">
+        <ClipLoader size={40} color={'#000'} loading={loading} />
+      </div>
+    );
   }
 
   if (error) return <Error error={error} />;
 
   if (tokens.length === 0) {
-    return <div className="TokenList">No token balances</div>;
+    return <div className="text-center">No token balances</div>;
   }
 
   const tokenComponents = tokens
@@ -90,7 +94,7 @@ const TokenList = ({ tokenStandard, transferEvents, approvalEvents, approvalForA
     .filter((token) => settings.includeTokensWithoutBalances || !hasZeroBalance(token))
     .map((token) => <Token key={token.contract.address} token={token} />);
 
-  return <div className="TokenList">{tokenComponents}</div>;
+  return <div>{tokenComponents}</div>;
 };
 
 export default TokenList;

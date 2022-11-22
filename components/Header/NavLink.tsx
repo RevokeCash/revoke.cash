@@ -1,3 +1,4 @@
+import { classNames } from 'lib/utils/styles';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -7,26 +8,17 @@ interface Props {
   matchToHighlight?: string;
 }
 
-const NavLink = ({ to, text, matchToHighlight }: Props) => {
+const NavLink = ({ to, text }: Props) => {
   const router = useRouter();
 
-  const textColor = matchToHighlight ? (router.asPath.includes(matchToHighlight) ? 'black' : 'grey') : 'grey';
+  const classes = classNames(
+    router.asPath === to ? 'text-black visited:text-black' : 'text-gray-500 visited:text-gray-500',
+    'font-futura italic font-bold text-lg uppercase hover:text-black duration-100'
+  );
 
   return (
     <Link href={to}>
-      <a
-        style={{
-          color: textColor,
-          textTransform: 'uppercase',
-          fontFamily: 'Futura Condensed',
-          textDecoration: 'none',
-          fontWeight: 'bold',
-          fontStyle: 'oblique',
-          fontSize: '18px',
-        }}
-      >
-        {text}
-      </a>
+      <a className={classes}>{text}</a>
     </Link>
   );
 };

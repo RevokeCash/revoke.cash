@@ -1,6 +1,7 @@
+import { Switch } from '@headlessui/react';
+import StyledSwitch from 'components/common/StyledSwitch';
 import type { TokenStandard } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
-import Switch from 'react-switch';
 
 interface Props {
   tokenStandard: TokenStandard;
@@ -11,30 +12,19 @@ const TokenStandardSelection = ({ tokenStandard, setTokenStandard }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div
-      style={{
-        marginBottom: '10px',
-        display: 'flex',
-        flexDirection: 'row',
-        gap: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <div>{t('dashboard:controls.tokens')}</div>
-      <div>
-        <Switch
-          checked={tokenStandard === 'ERC721'}
-          onChange={(checked: boolean) => setTokenStandard(checked ? 'ERC721' : 'ERC20')}
-          onColor="#000"
-          offColor="#000"
-          checkedIcon={false}
-          uncheckedIcon={false}
-          activeBoxShadow="0 0 2px 3px #aaa"
-        />
-      </div>
-      <div>{t('dashboard:controls.nfts')}</div>
-    </div>
+    <Switch.Group as="div" className="flex items-center gap-2">
+      <Switch.Label as="span">
+        <span className="text-sm font-medium text-gray-600">{t('dashboard:controls.tokens')}</span>
+      </Switch.Label>
+      <StyledSwitch
+        checked={tokenStandard === 'ERC721'}
+        onChange={(checked: boolean) => setTokenStandard(checked ? 'ERC721' : 'ERC20')}
+      />
+      <Switch.Label as="span">
+        <span className="text-sm font-medium text-gray-600">{t('dashboard:controls.nfts')}</span>
+      </Switch.Label>
+    </Switch.Group>
   );
 };
+
 export default TokenStandardSelection;

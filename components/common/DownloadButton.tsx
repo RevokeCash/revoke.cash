@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import type { ReactNode } from 'react';
-import { Button } from 'react-bootstrap';
+import Button from './Button';
 
 interface Props {
   href: string;
@@ -11,16 +11,9 @@ const DownloadButton = ({ href, children }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Button
-      href={href}
-      target="_blank"
-      variant="outline-primary"
-      style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '10px' }}
-    >
+    <Button href={href} style="secondary" size="md" className="flex justify-center items-center gap-2" external>
       <div>{t('common:buttons.download')}</div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
-        {children}
-      </div>
+      <div className="flex gap-1">{children}</div>
     </Button>
   );
 };

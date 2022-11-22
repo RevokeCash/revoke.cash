@@ -1,4 +1,5 @@
 import { track } from '@amplitude/analytics-browser';
+import { setSelectThemeColors } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
@@ -39,6 +40,9 @@ const LanguageSelect = () => {
       menuPlacement="top"
       isSearchable={false}
       styles={{
+        indicatorSeparator: () => ({
+          display: 'none',
+        }),
         menu: (styles) => ({
           ...styles,
           width: 110,
@@ -53,10 +57,12 @@ const LanguageSelect = () => {
         dropdownIndicator: (styles) => ({
           ...styles,
           padding: 2,
+          paddingLeft: 0,
         }),
         valueContainer: (styles) => ({
           ...styles,
           padding: 2,
+          paddingRight: 0,
         }),
         control: (styles) => ({
           ...styles,
@@ -77,24 +83,7 @@ const LanguageSelect = () => {
           },
         }),
       }}
-      theme={(theme) => ({
-        ...theme,
-        borderRadius: 4,
-        colors: {
-          ...theme.colors,
-          primary: 'black',
-          primary25: '#ddd',
-          neutral10: 'black',
-          neutral20: 'black',
-          neutral30: 'black',
-          neutral40: 'black',
-          neutral50: 'black',
-          neutral60: 'black',
-          neutral70: 'black',
-          neutral80: 'black',
-          neutral90: 'black',
-        },
-      })}
+      theme={setSelectThemeColors}
     />
   );
 };

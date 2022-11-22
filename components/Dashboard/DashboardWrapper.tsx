@@ -1,20 +1,23 @@
+import NoSSR from 'components/common/NoSSR';
 import { AppContextProvider } from 'lib/hooks/useAppContext';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
+import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Dashboard from './Dashboard';
 
-const SafeHydrate = ({ children }) => {
-  return <div suppressHydrationWarning>{typeof window === 'undefined' ? null : children}</div>;
-};
+interface Props {
+  children: ReactNode;
+}
 
-const DashboardWrapper = () => {
+// We create a separate component because this breaks SSR (no window.ethereum on the server)
+// We don't want to use NoSSR for all of _app because it breaks NextSeo
+const DashboardWrapper = ({ children }: Props) => {
   return (
-    <SafeHydrate>
+    <NoSSR>
       <EthereumProvider>
         <AppContextProvider>
-          <Dashboard />
+          {children}
           <ToastContainer
+            className="text-center"
             position="top-right"
             icon={false}
             autoClose={5000}
@@ -29,7 +32,7 @@ const DashboardWrapper = () => {
           />
         </AppContextProvider>
       </EthereumProvider>
-    </SafeHydrate>
+    </NoSSR>
   );
 };
 

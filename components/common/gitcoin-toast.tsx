@@ -1,15 +1,14 @@
-// import React from 'react';
+// import { GITCOIN_URL } from 'lib/constants';
 // import { toast } from 'react-toastify';
-// import { GITCOIN_URL } from './constants';
 
 export const displayGitcoinToast = () => {
   // const toastContent = (
-  //   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-  //     <div>
-  //       Gitcoin Grants Round 15 is now live with over $2M in donation matching! Please consider supporting Revoke.cash
-  //       by donating to the{' '}
-  //       <a href={GITCOIN_URL} target="_blank" style={{ color: 'black' }}>Revoke.cash grant</a>
-  //     </div>
+  //   <div>
+  //     Gitcoin Grants Round 15 is now live with over $2M in donation matching! Please consider supporting Revoke.cash by
+  //     donating to the{' '}
+  //     <a href={GITCOIN_URL} target="_blank" className='color-black underline' style={{ color: 'black' }}>
+  //       Revoke.cash grant
+  //     </a>
   //   </div>
   // );
   // toast.info(toastContent, {

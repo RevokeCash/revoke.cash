@@ -3,7 +3,6 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
-import { Tooltip } from 'react-bootstrap';
 import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
 import UpdateControls from './UpdateControls';
@@ -20,6 +19,8 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
   const { inputAddress } = useAppContext();
 
+  const chainName = getChainName(selectedChainId);
+
   const isConnected = account !== undefined;
   const isConnectedAddress = isConnected && inputAddress === account;
   const needsToSwitchChain = isConnected && selectedChainId !== connectedChainId;
@@ -30,34 +31,38 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
     return <SwitchChainButton />;
   }
 
-  const revokeButton = <RevokeButton revoke={revoke} disabled={disabled} />;
-  const updateControls = <UpdateControls update={update} disabled={disabled} />;
   const controls = (
-    <div style={{ display: 'flex' }}>
-      {revokeButton}
-      {update && updateControls}
+    <div className="flex h-6 gap-1">
+      <RevokeButton revoke={revoke} disabled={disabled} />
+      {update && <UpdateControls update={update} disabled={disabled} />}
     </div>
   );
 
   if (!isConnected) {
-    const tooltip = <Tooltip id={`revoke-${id}`}>{t('dashboard:controls.tooltips.connect_wallet')}</Tooltip>;
-    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+    return (
+      <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connect_wallet')} disabled>
+        {controls}
+      </WithHoverTooltip>
+    );
   }
 
   if (!isConnectedAddress) {
-    const tooltip = <Tooltip id={`revoke-${id}`}>{t('dashboard:controls.tooltips.connected_account')}</Tooltip>;
-    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+    return (
+      <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connected_account')} disabled>
+        {controls}
+      </WithHoverTooltip>
+    );
   }
 
   if (needsToSwitchChain && !canSwitchChain) {
-    const chainName = getChainName(selectedChainId);
     const tooltip = (
-      <Tooltip id={`switch-${id}`}>
-        <Trans i18nKey="dashboard:controls.tooltips.switch_chain" values={{ chainName }} components={[<strong />]} />
-      </Tooltip>
+      <Trans i18nKey={`dashboard:controls.tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
     );
-
-    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+    return (
+      <WithHoverTooltip tooltip={tooltip} disabled>
+        {controls}
+      </WithHoverTooltip>
+    );
   }
 
   return controls;
