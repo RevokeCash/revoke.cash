@@ -39,18 +39,30 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
   );
 
   if (!isConnected) {
-    return <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connect_wallet')}>{controls}</WithHoverTooltip>;
+    return (
+      <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connect_wallet')} disabled>
+        {controls}
+      </WithHoverTooltip>
+    );
   }
 
   if (!isConnectedAddress) {
-    return <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connected_account')}>{controls}</WithHoverTooltip>;
+    return (
+      <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connected_account')} disabled>
+        {controls}
+      </WithHoverTooltip>
+    );
   }
 
   if (needsToSwitchChain && !canSwitchChain) {
     const tooltip = (
       <Trans i18nKey={`dashboard:controls.tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
     );
-    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
+    return (
+      <WithHoverTooltip tooltip={tooltip} disabled>
+        {controls}
+      </WithHoverTooltip>
+    );
   }
 
   return controls;

@@ -6,14 +6,17 @@ interface Props {
   tooltip: ReactNode;
   children: ReactNode;
   placement?: 'top' | 'bottom' | 'left' | 'right' | 'auto';
+  disabled?: boolean;
 }
 
-const WithHoverTooltip = ({ tooltip, placement, children }: Props) => (
+const WithHoverTooltip = ({ tooltip, placement, disabled, children }: Props) => (
   <div className="relative">
-    <Tippy content={tooltip} placement={placement ?? 'top'}>
-      <div className="absolute inset-0 w-full h-full cursor-not-allowed z-10" />
+    <Tippy content={tooltip} placement={placement ?? 'top'} className="text-center w-60">
+      <div>
+        {disabled && <div className="cursor-not-allowed absolute inset-0 w-full h-full z-10" />}
+        {children}
+      </div>
     </Tippy>
-    {children}
   </div>
 );
 

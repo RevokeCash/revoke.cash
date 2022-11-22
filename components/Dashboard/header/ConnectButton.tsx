@@ -25,7 +25,7 @@ const ConnectButton = () => {
           {domainName ?? shortenAddress(account)}
         </div>
       )}
-      <Button disabled={loading} style="secondary" size="md" onClick={buttonAction} className="rounded-l-none -ml-px">
+      <Button style="secondary" size="md" onClick={buttonAction} className="rounded-l-none -ml-px">
         {loading ? <Spinner style="secondary" /> : buttonText}
       </Button>
     </div>
