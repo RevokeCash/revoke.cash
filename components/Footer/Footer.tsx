@@ -2,20 +2,10 @@ import LogoLink from 'components/common/LogoLink';
 import { DISCORD_URL } from 'lib/constants';
 import LanguageSelect from './LanguageSelect';
 
-const Footer = () => (
-  <>
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'start',
-        gap: '10px',
-        padding: '20px',
-        width: '100%',
-        margin: 'auto',
-      }}
-    >
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
+const Footer = () => {
+  return (
+    <footer className="py-4">
+      <div className="flex gap-1 justify-center items-center">
         <LogoLink
           src="/assets/images/vendor/github.png"
           alt="Source Code"
@@ -29,8 +19,8 @@ const Footer = () => (
         <LogoLink src="/assets/images/vendor/discord.png" alt="Official Discord" href={DISCORD_URL} />
         <LanguageSelect />
       </div>
-    </div>
-  </>
-);
+    </footer>
+  );
+};
 
 export default Footer;

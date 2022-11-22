@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import Button from './Button';
 
 interface Props {
   update: (newAllowance: string) => Promise<void>;
@@ -14,22 +14,17 @@ const UpdateControls = ({ disabled, update }: Props) => {
   const { execute, loading } = useAsyncCallback(() => update(value));
 
   return (
-    <InputGroup size="sm">
-      <Form.Control
+    <div className="flex">
+      <input
+        className="border-y border-l border-black rounded rounded-r-none w-16 px-1.5 focus:outline-black"
         type="text"
-        size="sm"
-        className="NewAllowance"
-        value={value}
-        onChange={(event) => {
-          setValue(event.target.value);
-        }}
+        placeholder="0"
+        onChange={(e) => setValue(e.target.value)}
       />
-      <InputGroup.Append>
-        <Button disabled={loading || disabled} className="UpdateButton" onClick={execute}>
-          {loading ? t('common:buttons.updating') : t('common:buttons.update')}
-        </Button>
-      </InputGroup.Append>
-    </InputGroup>
+      <Button disabled={loading || disabled} style="secondary" size="sm" onClick={execute} className="rounded-l-none">
+        {loading ? t('common:buttons.updating') : t('common:buttons.update')}
+      </Button>
+    </div>
   );
 };
 

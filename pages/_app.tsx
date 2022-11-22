@@ -1,12 +1,17 @@
 import { init, track } from '@amplitude/analytics-browser';
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
 import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 import { useEffect } from 'react';
-import { Container } from 'react-bootstrap';
-import '../styles/index.scss';
+import 'react-toastify/dist/ReactToastify.css';
+import '../styles/index.css';
+
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
+NProgress.configure({ showSpinner: false });
 
 init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, null, {
   trackingOptions: {
@@ -24,29 +29,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      <Container
-        fluid
-        className="App"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          height: '100%',
-          width: '100%',
-          maxWidth: '1000px',
-          margin: 'auto',
-        }}
-      >
-        <div style={{ flexShrink: '0' }}>
-          <Header />
-        </div>
-        <div style={{ flex: '1 0 auto', height: '100%' }}>
-          <Component {...pageProps} />
-        </div>
-        <div style={{ flexShrink: '0' }}>
-          <Footer />
-        </div>
-      </Container>
+      <Component {...pageProps} />
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </>
   );

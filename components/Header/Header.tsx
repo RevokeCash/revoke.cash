@@ -7,47 +7,22 @@ const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <>
-      <div
-        className="Header"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'start',
-          gap: '10px',
-          marginTop: '10px',
-          marginBottom: '10px',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'start',
-            gap: '2px',
-          }}
-        >
-          <div>
-            <Link href="/">
-              <a>
-                <Image
-                  className="logo"
-                  src="/assets/images/revoke.svg"
-                  alt="Revoke.cash logo"
-                  height="81"
-                  width="400"
-                />
-              </a>
-            </Link>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-            <NavLink to="/about" text={t('common:nav.about')} matchToHighlight="about" />
-            <NavLink to="/faq" text={t('common:nav.faq')} matchToHighlight="faq" />
-            <NavLink to="/extension" text={t('common:nav.extension')} matchToHighlight="extension" />
-          </div>
+    <header>
+      <div className="pt-3 flex flex-col">
+        <div className="flex place-content-center">
+          <Link href="/">
+            <a className="flex">
+              <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="81" width="400" />
+            </a>
+          </Link>
+        </div>
+        <div className="flex justify-center gap-2">
+          <NavLink to="/about" text={t('common:nav.about')} />
+          <NavLink to="/faq" text={t('common:nav.faq')} />
+          <NavLink to="/extension" text={t('common:nav.extension')} />
         </div>
       </div>
-    </>
+    </header>
   );
 };
 

@@ -16,7 +16,7 @@ const Token = ({ token }: Props) => {
 
   if (loading) {
     return (
-      <div className="Token">
+      <div>
         <ClipLoader size={20} color={'#000'} loading={loading} />
       </div>
     );
@@ -34,9 +34,11 @@ const Token = ({ token }: Props) => {
   if (!settings.includeTokensWithoutAllowances && hasNoAllowances) return null;
 
   return (
-    <div className="Token">
+    <div className="m-1 text-base">
       <TokenBalance token={token} />
-      <AllowanceList token={token} allowances={allowances} onRevoke={onRevoke} />
+      <div className="ml-4">
+        <AllowanceList token={token} allowances={allowances} onRevoke={onRevoke} />
+      </div>
     </div>
   );
 };

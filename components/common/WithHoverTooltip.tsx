@@ -1,28 +1,22 @@
+import Tippy from '@tippyjs/react';
 import type { ReactNode } from 'react';
-import { OverlayTrigger } from 'react-bootstrap';
-import type { OverlayChildren } from 'react-bootstrap/esm/Overlay';
+import 'tippy.js/dist/tippy.css';
 
 interface Props {
-  tooltip: OverlayChildren;
+  tooltip: ReactNode;
   children: ReactNode;
+  placement?: 'top' | 'bottom' | 'left' | 'right' | 'auto';
+  disabled?: boolean;
 }
 
-const WithHoverTooltip = ({ tooltip, children }: Props) => (
-  <div style={{ position: 'relative' }}>
-    <OverlayTrigger placement="auto" overlay={tooltip}>
-      <div
-        style={{
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-          cursor: 'not-allowed',
-          zIndex: 2,
-        }}
-      />
-    </OverlayTrigger>
-    {children}
+const WithHoverTooltip = ({ tooltip, placement, disabled, children }: Props) => (
+  <div className="relative">
+    <Tippy content={tooltip} placement={placement ?? 'top'} className="text-center w-60">
+      <div>
+        {disabled && <div className="cursor-not-allowed absolute inset-0 w-full h-full z-10" />}
+        {children}
+      </div>
+    </Tippy>
   </div>
 );
 

@@ -1,14 +1,16 @@
 import { track } from '@amplitude/analytics-browser';
+import { Dialog } from '@headlessui/react';
+import Button from 'components/common/Button';
+import Modal from 'components/common/Modal';
+import Spinner from 'components/common/Spinner';
 import { utils } from 'ethers';
-import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
+import { DONATION_ADDRESS } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
-import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
-import { Button, Form, InputGroup, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -23,7 +25,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
   const nativeToken = getChainNativeToken(connectedChainId);
   const [amount, setAmount] = useState<string>(getDefaultDonationAmount(nativeToken));
 
-  const [show, setShow] = useState<boolean>(false);
+  const [show, setShow] = useState(false);
   const handleShow = () => {
     if (parentToastRef) {
       toast.update(parentToastRef.current, { autoClose: false, closeButton: false, draggable: false });
@@ -76,32 +78,40 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
   return (
     <>
-      <Button variant="outline-primary" size={size} onClick={handleShow}>
+      <Button style="secondary" size="md" onClick={handleShow} className="h-full hidden sm:block">
         {t('common:buttons.donate')}
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{t('dashboard:donate_to_revoke')}</Modal.Title>
-        </Modal.Header>
+      <Modal open={show} setOpen={setShow}>
+        <div className="sm:flex sm:items-start">
+          <div className="text-center sm:text-left w-full">
+            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+              {t('dashboard:donate_to_revoke')}
+            </Dialog.Title>
 
-        <Modal.Body>
-          <InputGroup>
-            <Form.Control value={amount} onChange={(event) => setAmount(event.target.value)} />
-            <InputGroup.Append>
-              <InputGroup.Text>{nativeToken}</InputGroup.Text>
-            </InputGroup.Append>
-            <InputGroup.Append>
-              <Button disabled={loading} variant="secondary" onClick={execute}>
-                {loading ? t('common:buttons.sending') : t('common:buttons.send')}
+            <div className="mt-2 h-10 flex">
+              <input
+                type="number"
+                step={0.01}
+                value={amount}
+                onChange={(event) => setAmount(event.target.value)}
+                className="grow rounded rounded-r-none border border-black px-3 py-1.5 text-gray-600 focus:outline-black"
+              />
+              <div className="px-3 py-1.5 border-y border-black bg-gray-300 flex justify-center items-center">
+                {nativeToken}
+              </div>
+              <Button
+                style="primary"
+                size="md"
+                onClick={execute}
+                className="rounded-l-none max-w-16 flex justify-center items-center"
+              >
+                {loading ? <Spinner style="primary" /> : t('common:buttons.send')}
               </Button>
-            </InputGroup.Append>
-          </InputGroup>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Trans i18nKey="dashboard:or_contribute_to_gitcoin" components={[<a href={GITCOIN_URL} target="_blank" />]} />
-        </Modal.Footer>
+            </div>
+            {/* <Trans i18nKey="dashboard:or_contribute_to_gitcoin" components={[<a href={GITCOIN_URL} />]} /> */}
+          </div>
+        </div>
       </Modal>
     </>
   );

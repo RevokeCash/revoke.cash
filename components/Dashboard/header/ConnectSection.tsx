@@ -3,9 +3,11 @@ import DonateButton from './DonateButton';
 
 const ConnectSection = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-      <DonateButton />
-      <ConnectButton />
+    <div className="py-2">
+      <div className="flex justify-center sm:gap-2 h-10">
+        <DonateButton />
+        <ConnectButton />
+      </div>
     </div>
   );
 };

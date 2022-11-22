@@ -10,9 +10,9 @@ interface Props {
 
 const AllowanceList = ({ token, allowances, onRevoke }: Props) => {
   return (
-    <div className="AllowanceList">
+    <div>
       {allowances.length === 0 ? (
-        <div className="Allowance">No allowances</div>
+        <div>No allowances</div>
       ) : (
         allowances.map((allowance) => (
           <Allowance
