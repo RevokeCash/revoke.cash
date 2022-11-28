@@ -51,7 +51,10 @@ class EtherscanQueue {
   }
 
   async getLogs(filter: Filter) {
-    const [topic0, topic1, topic2, topic3] = filter.topics ?? [];
+    const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
+      typeof topic === 'string' ? topic.toLowerCase() : topic
+    );
+
     const query = {
       module: 'logs',
       action: 'getLogs',
@@ -62,12 +65,12 @@ class EtherscanQueue {
       topic1,
       topic2,
       topic3,
-      topic0_1_opr: 'and',
-      topic0_2_opr: 'and',
-      topic0_3_opr: 'and',
-      topic1_2_opr: 'and',
-      topic1_3_opr: 'and',
-      topic2_3_opr: 'and',
+      topic0_1_opr: topic0 && topic1 ? 'and' : undefined,
+      topic0_2_opr: topic0 && topic2 ? 'and' : undefined,
+      topic0_3_opr: topic0 && topic3 ? 'and' : undefined,
+      topic1_2_opr: topic1 && topic2 ? 'and' : undefined,
+      topic1_3_opr: topic1 && topic3 ? 'and' : undefined,
+      topic2_3_opr: topic2 && topic3 ? 'and' : undefined,
     };
 
     // If we have upstash configured, we use it, otherwise fall back to an in-memory p-queue
@@ -107,7 +110,7 @@ class EtherscanQueue {
 
 const formatEtherscanEvent = (etherscanLog: any) => ({
   address: utils.getAddress(etherscanLog.address),
-  topics: etherscanLog.topics,
+  topics: etherscanLog.topics.filter((topic: string) => !!topic),
   transactionHash: etherscanLog.transactionHash,
 });
 
@@ -137,6 +140,11 @@ const API_URLS = {
   [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
   [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
   [ChainId.CLVParachain]: 'https://api.clvscan.com/api',
+  [7700]: 'https://evm.explorer.canto.io/api',
+  [ChainId.KavaEVM]: 'https://explorer.kava.io/api',
+  [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io/api',
+  [2000]: 'https://explorer.dogechain.dog/api',
+  [568]: 'https://explorer-testnet.dogechain.dog/api',
 };
 
 const getApiKey = (apiUrl: string, apiKeys: { [platform: string]: string }) => {

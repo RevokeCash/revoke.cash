@@ -69,6 +69,14 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumClassicMainnet,
 ];
 
+export const BLOCKSCOUT_SUPPORTED_CHAINS = [
+  7700, // Canto
+  ChainId.KavaEVM,
+  ChainId.KavaEVMTestnet,
+  2000, // Dogechain
+  568, // Dogechain Testnet
+];
+
 export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
@@ -81,7 +89,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.ArbitrumOne,
   421613, // Arbitrum Goerli
   42170, // Arbitrum Nova
-  // TODO: Check if Etherscan API works for these again
+  // TODO: Check if HecoInfo API works for these again
   // ChainId.HuobiECOChainMainnet,
   // ChainId.HuobiECOChainTestnet,
   ChainId.Moonbeam,
@@ -94,8 +102,9 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.AuroraMainnet,
   ChainId.AuroraTestnet,
   ChainId.BitTorrentChainMainnet,
-  ChainId.BitTorrentChainTestnet,
+  // ChainId.BitTorrentChainTestnet,
   ChainId.CLVParachain,
+  ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
 
 export const COVALENT_SUPPORTED_CHAINS = [
@@ -143,8 +152,10 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Optimism,
   ChainId.CronosMainnetBeta,
   ChainId.FantomOpera,
+  ChainId.KavaEVM,
   ChainId.KlaytnMainnetCypress,
   ChainId.Gnosis,
+  7700, // Canto
   ChainId.AuroraMainnet,
   ChainId.CeloMainnet,
   ChainId.HuobiECOChainMainnet,
@@ -157,6 +168,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.IoTeXNetworkMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.HarmonyMainnetShard0,
+  2000, // Dogechain
   ChainId.GodwokenMainnet,
   ChainId.SmartBitcoinCash,
   ChainId.FuseMainnet,
@@ -179,7 +191,9 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.OptimisticEthereumTestnetGoerli,
   ChainId.CronosTestnet,
   ChainId.FantomTestnet,
+  ChainId.KavaEVMTestnet,
   ChainId.KlaytnTestnetBaobab,
+  // Canto testnet
   ChainId.AuroraTestnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.HuobiECOChainTestnet,
@@ -190,12 +204,13 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.IoTeXNetworkTestnet,
   // ChainId.EmeraldParatimeTestnet,
   ChainId.HarmonyTestnetShard0,
+  568, // Dogechain Testnet
   ChainId['GodwokenTestnet(V1.1)'],
   // ChainId.PolyjuiceTestnet,
   ChainId.SmartBitcoinCashTestnet,
   ChainId.FuseSparknet,
   ChainId.EvmosTestnet,
   ChainId.SyscoinTanenbaumTestnet,
-  ChainId.BitTorrentChainTestnet,
+  // ChainId.BitTorrentChainTestnet,
   ChainId.PalmTestnet,
 ];

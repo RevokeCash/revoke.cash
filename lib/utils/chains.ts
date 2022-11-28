@@ -75,6 +75,11 @@ export const getChainName = (chainId: number): string => {
     [ChainId.EmeraldParatimeMainnet]: 'Oasis Emerald',
     [ChainId.EmeraldParatimeTestnet]: 'Oasis Testnet',
     [ChainId.EthereumClassicMainnet]: 'Ethereum Classic',
+    [7700]: 'Canto',
+    [ChainId.KavaEVM]: 'Kava',
+    [ChainId.KavaEVMTestnet]: 'Kava Testnet',
+    [2000]: 'Dogechain',
+    [568]: 'Dogechain Testnet',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -98,6 +103,11 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.Gnosis]: 'https://gnosisscan.io',
     [421613]: 'https://goerli.arbiscan.io',
     [42170]: 'https://nova.arbiscan.io',
+    [7700]: 'https://evm.explorer.canto.io',
+    [ChainId.KavaEVM]: 'https://explorer.kava.io',
+    [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io',
+    [2000]: 'https://explorer.dogechain.dog',
+    [568]: 'https://explorer-testnet.dogechain.dog',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -115,19 +125,13 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
+    [7700]: 'https://canto.slingshot.finance',
+    [2000]: 'https://rpc.dogechain.dog',
+    [568]: 'https://rpc-testnet.dogechain.dog',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
-};
-
-export const getChainInfoUrl = (chainId: number): string | undefined => {
-  const overrides = {
-    [ChainId.Gnosis]: 'https://www.gnosischain.com/evm',
-    [ChainId.CeloMainnet]: 'https://celo.org',
-  };
-
-  return overrides[chainId] ?? chains.get(chainId)?.infoURL;
 };
 
 export const getChainLogo = (chainId: number): string => {
@@ -192,12 +196,25 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.EmeraldParatimeMainnet]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.EmeraldParatimeTestnet]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.EthereumClassicMainnet]: '/assets/images/vendor/chains/etc.png',
+    [7700]: '/assets/images/vendor/chains/canto.png',
+    [ChainId.KavaEVM]: '/assets/images/vendor/chains/kava.png',
+    [ChainId.KavaEVMTestnet]: '/assets/images/vendor/chains/kava.png',
+    [2000]: '/assets/images/vendor/chains/dogechain.png',
+    [568]: '/assets/images/vendor/chains/dogechain.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
 };
 
-export const getChainNativeToken = (chainId: number): string => chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
+export const getChainNativeToken = (chainId: number): string => {
+  const overrides = {
+    [7700]: 'CANTO',
+    [2000]: 'DOGE',
+    [568]: 'DOGE',
+  };
+
+  return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
+};
 
 // Target a default of around $10-20
 export const getDefaultDonationAmount = (nativeToken: string): string => {
@@ -230,6 +247,9 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     ASTR: '300',
     CKB: '1000', // Godwoken
     ETC: '1',
+    CANTO: '100',
+    KAVA: '20',
+    DOGE: '250',
   };
 
   return mapping[nativeToken] ?? '1';
