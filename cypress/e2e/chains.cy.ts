@@ -12,7 +12,7 @@ const fixtures = [
   ['Optimism', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Cronos', '0xB8cAD90CBCb2157d68FD72c43766756cB9bA9B52'],
   ['Fantom', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
-  ['Kava', '0xC7a0407186E949222B4D214C89431a33745e8b8C'],
+  // ['Kava', '0xC7a0407186E949222B4D214C89431a33745e8b8C'],
   ['Gnosis', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Canto', '0xc2Dd41A21BC1fE912cc9a6EECd5f62d1c75fdc9F'],
   ['Aurora', '0x1D50A8c3295798fCebdDD0C720BeC4FBEdc3D178'],
@@ -25,7 +25,7 @@ const fixtures = [
   ['IoTeX', '0x936f83c34ba628aa08e54bc8f6f9f357a0f65d80'],
   ['Oasis Emerald', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Harmony', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
-  ['Dogechain', '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc'],
+  // ['Dogechain', '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc'],
   ['Godwoken', '0x8c0f57b0D6a2D0Bfac7fe8fea6a0C4e8DdBbDCB1'],
   ['SmartBCH', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Fuse', '0x291AeAB2C6E8b87A65BE9dF26E174F41864191A3'],
@@ -43,7 +43,7 @@ const fixtures = [
   ['Optimism Goerli', '0x3239a95A9262034ca28b9a03133775f716f119f8'],
   ['Cronos Testnet', '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f'],
   ['Fantom Testnet', '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF'],
-  ['Kava Testnet', '0x35d8688332F22aFfa5508be93aDF2f550D3aac41'],
+  // ['Kava Testnet', '0x35d8688332F22aFfa5508be93aDF2f550D3aac41'],
   ['Aurora Testnet', '0xdcD7e9e12614979A081e6ccD58d696bDcbE4AF55'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
   ['Moonbase Alpha', '0xF1c70b44f61f5a3AA0658cbF33E16f68534dF9D9'],
@@ -54,8 +54,17 @@ const fixtures = [
 ];
 
 describe('Chain Support', () => {
+  it('should have a test for every item in the chain selection dropdown menu', () => {
+    cy.visit('http://localhost:3000', { timeout: 10_000 });
+    cy.get('button.dropdown-toggle').should('exist').click();
+
+    const fixtureChainNames = fixtures.map(([chainName]) => chainName);
+    const appChainNames = cy.get('div.dropdown-menu').should('exist').children('a');
+    appChainNames.each((chain) => cy.wrap(chain).invoke('text').should('be.oneOf', fixtureChainNames));
+  });
+
   fixtures.forEach(([chainName, fixtureAddress]) => {
-    it(`Works for ${chainName}`, () => {
+    it(`should support ${chainName}`, () => {
       cy.visit('http://localhost:3000', { timeout: 10_000 });
 
       cy.get('button.dropdown-toggle').should('exist').click();
