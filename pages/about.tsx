@@ -67,6 +67,7 @@ const About: NextPage = () => {
             components={[
               <a href="https://twitter.com/RoscoKalis" target="_blank" />,
               <a href="https://etherscan.io/" target="_blank" />,
+              <a href="https://blockscout.com/" target="_blank" />,
               <a href="https://covalenthq.com/" target="_blank" />,
             ]}
           />

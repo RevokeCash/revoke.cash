@@ -2,7 +2,7 @@
   "sections": {
     "credits": {
       "heading": "Créditos",
-      "paragraph_1": "Revoke.cash fue creado por <0>Rosco Kalis</0> en 2019, y desde entonces ha crecido hasta convertirse en un elemento fundamental de la seguridad en web3. Para la red de Ethereum y muchas otras redes, la información de autorización es recuperada directamente del blockchain. Para la mayoría de las otras redes, una combinación de APIs de <1>Etherscan</1> y <2>Covalent</2> son utilizadas."
+      "paragraph_1": "Revoke.cash fue creado por <0>Rosco Kalis</0> en 2019, y desde entonces ha crecido hasta convertirse en un elemento fundamental de la seguridad en web3. Para la red de Ethereum y muchas otras redes, la información de autorización es recuperada directamente del blockchain. Para la mayoría de las otras redes, una combinación de APIs de <1>Etherscan</1>, <2>Blockscout</2> y <3>Covalent</3> son utilizadas."
     },
     "read_more": {
       "heading": "Leer más",

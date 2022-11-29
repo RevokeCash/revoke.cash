@@ -13,7 +13,7 @@ This repository also includes the [`dapp-contract-list`](/public/dapp-contract-l
 
 Revoke.cash natively supports Ethereum (mainnet and testnets), Gnosis Chain, Metis, SmartBCH, Syscoin and Ethereum Classic.
 
-It also supports Avalanche, Polygon, BSC, Arbitrum, Optimism, RSK, Fantom, Harmony and several other chains through a backend integration with Etherscan, CovalentHQ & Alchemy. Performance for these chains may be slower due to rate limits.
+It also supports Avalanche, Polygon, BSC, Arbitrum, Optimism, RSK, Fantom, Harmony and several other chains through a backend integration with Etherscan, Blockscout, CovalentHQ & Alchemy. Performance for these chains may be slower due to rate limits.
 
 If you want to learn more about (unlimited) ERC20 allowances, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 

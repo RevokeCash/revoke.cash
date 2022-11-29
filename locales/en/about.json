@@ -2,7 +2,7 @@
   "sections": {
     "credits": {
       "heading": "Credits",
-      "paragraph_1": "Revoke.cash was created by <0>Rosco Kalis</0> in 2019, and since then it has grown to be a staple in web3 security. For the Ethereum chain and several other chains allowance data is retrieved directly from the blockchain. For most other chains a combination of <1>Etherscan</1> and <2>Covalent</2> APIs are used."
+      "paragraph_1": "Revoke.cash was created by <0>Rosco Kalis</0> in 2019, and since then it has grown to be a staple in web3 security. For the Ethereum chain and several other chains allowance data is retrieved directly from the blockchain. For most other chains a combination of <1>Etherscan</1>, <2>Blockscout</2> and <3>Covalent</3> APIs are used."
     },
     "read_more": {
       "heading": "Read more",

@@ -2,7 +2,7 @@
   "sections": {
     "credits": {
       "heading": "致谢",
-      "paragraph_1": "Revoke.cash由<0>Rosco Kalis</0>创建于2019年。从那时起，它已经发展成为web3安全领域的主力军。对于以太坊链和其他几个链的授权数据是直接从区块链上检索的。对于大多数其他链，则使用了<1>Etherscan</1>和<2>Covalent</2>API的组合。"
+      "paragraph_1": "Revoke.cash由<0>Rosco Kalis</0>创建于2019年。从那时起，它已经发展成为web3安全领域的主力军。对于以太坊链和其他几个链的授权数据是直接从区块链上检索的。对于大多数其他链，则使用了<1>Etherscan</1>、<2>Blockscout</2>和<3>Covalent</3>API的组合。"
     },
     "read_more": {
       "heading": "阅读更多",
