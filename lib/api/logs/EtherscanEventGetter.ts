@@ -155,6 +155,7 @@ const API_URLS = {
   [ChainId.Evmos]: 'https://evm.evmos.org/api',
   [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
   [ChainId.Shiden]: 'https://blockscout.com/shiden/api',
+  [ChainId.Astar]: 'https://blockscout.com/astar/api',
   [ChainId.Palm]: 'https://explorer.palm.io/api',
 };
 
