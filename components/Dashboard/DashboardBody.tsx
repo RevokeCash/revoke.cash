@@ -32,7 +32,7 @@ const DashboardBody = () => {
       // Start with an array of undefined topic strings and add the event topic + address topic to the right spots
       const filter = { topics: [undefined, undefined, undefined] };
       filter.topics[0] = erc721Interface.getEventTopic(name);
-      filter.topics[addressTopicIndex] = utils.hexZeroPad(inputAddress, 32);
+      filter.topics[addressTopicIndex] = utils.hexZeroPad(inputAddress.toLowerCase(), 32);
 
       const events = await getLogs(logsProvider, filter, 0, latestBlockNumber);
       console.log(`${name} events`, events);
@@ -82,12 +82,11 @@ const DashboardBody = () => {
 
   const error = loginError ?? latestBlockNumberError ?? transferError ?? approvalError ?? approvalForAllError;
   const loadingEvents =
-    loadingTransfers || loadingApprovals || (settings.tokenStandard === 'ERC721' && loadingApprovalsForAll);
+    loadingTransfers || loadingApprovals || (settings?.tokenStandard === 'ERC721' && loadingApprovalsForAll);
   const loading = loggingIn || loadingLatestBlockNumber || loadingEvents;
 
-  if (!inputAddress) {
-    return null;
-  }
+  if (!inputAddress) return null;
+  if (!settings) return null;
 
   if (loading) {
     return <ClipLoader css="margin: 10px;" size={40} color={'#000'} loading={loading} />;

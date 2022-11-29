@@ -126,8 +126,10 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
     [7700]: 'https://canto.slingshot.finance',
-    [2000]: 'https://rpc.dogechain.dog',
-    [568]: 'https://rpc-testnet.dogechain.dog',
+    [2000]: 'https://dogechain.ankr.com',
+    [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
+    [ChainId.KavaEVMTestnet]: 'https://evm.testnet.kava.io',
+    [ChainId.Evmos]: 'https://evmos-mainnet.public.blastapi.io',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];

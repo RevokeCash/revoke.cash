@@ -55,15 +55,9 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
   ChainId.Goerli,
   ChainId.Sepolia,
-  ChainId.TelosEVMMainnet,
-  ChainId.TelosEVMTestnet,
   ChainId.Gnosis,
   ChainId.MetisAndromedaMainnet,
-  ChainId.MetisStardustTestnet,
   ChainId.SmartBitcoinCash,
-  ChainId.SmartBitcoinCashTestnet,
-  ChainId.FuseMainnet,
-  ChainId.FuseSparknet,
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.SyscoinMainnet,
   ChainId.EthereumClassicMainnet,
@@ -74,7 +68,11 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.KavaEVM,
   ChainId.KavaEVMTestnet,
   2000, // Dogechain
-  568, // Dogechain Testnet
+  ChainId.RSKMainnet,
+  ChainId.Evmos,
+  ChainId.EmeraldParatimeMainnet,
+  ChainId.FuseMainnet,
+  ChainId.Palm,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -89,9 +87,6 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.ArbitrumOne,
   421613, // Arbitrum Goerli
   42170, // Arbitrum Nova
-  // TODO: Check if HecoInfo API works for these again
-  // ChainId.HuobiECOChainMainnet,
-  // ChainId.HuobiECOChainTestnet,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.MoonbaseAlpha,
@@ -102,33 +97,17 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.AuroraMainnet,
   ChainId.AuroraTestnet,
   ChainId.BitTorrentChainMainnet,
-  // ChainId.BitTorrentChainTestnet,
-  ChainId.CLVParachain,
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
 
 export const COVALENT_SUPPORTED_CHAINS = [
-  ChainId.RSKMainnet,
   ChainId.RSKTestnet,
   ChainId.HarmonyMainnetShard0,
-  ChainId.HarmonyTestnetShard0,
   ChainId.IoTeXNetworkMainnet,
-  ChainId.IoTeXNetworkTestnet,
-  ChainId.KlaytnMainnetCypress,
-  ChainId.KlaytnTestnetBaobab,
-  ChainId.Evmos,
-  ChainId.EvmosTestnet,
-  ChainId.Palm,
   ChainId.PalmTestnet,
   ChainId.Astar,
-  ChainId.Shiden,
   ChainId.GodwokenMainnet,
-  // ChainId.PolyjuiceTestnet,
   ChainId['GodwokenTestnet(V1.1)'],
-  ChainId.EmeraldParatimeMainnet,
-  // ChainId.EmeraldParatimeTestnet,
-  ChainId.HuobiECOChainMainnet,
-  ChainId.HuobiECOChainTestnet,
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -153,17 +132,14 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CronosMainnetBeta,
   ChainId.FantomOpera,
   ChainId.KavaEVM,
-  ChainId.KlaytnMainnetCypress,
   ChainId.Gnosis,
   7700, // Canto
   ChainId.AuroraMainnet,
   ChainId.CeloMainnet,
-  ChainId.HuobiECOChainMainnet,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.RSKMainnet,
   ChainId.MetisAndromedaMainnet,
-  ChainId.TelosEVMMainnet,
   ChainId.Astar,
   ChainId.IoTeXNetworkMainnet,
   ChainId.EmeraldParatimeMainnet,
@@ -175,8 +151,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Evmos,
   ChainId.SyscoinMainnet,
   ChainId.EthereumClassicMainnet,
-  ChainId.Shiden,
-  ChainId.CLVParachain,
   ChainId.BitTorrentChainMainnet,
   ChainId.Palm,
 ];
@@ -192,25 +166,11 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.CronosTestnet,
   ChainId.FantomTestnet,
   ChainId.KavaEVMTestnet,
-  ChainId.KlaytnTestnetBaobab,
-  // Canto testnet
   ChainId.AuroraTestnet,
   ChainId.CeloAlfajoresTestnet,
-  ChainId.HuobiECOChainTestnet,
   ChainId.MoonbaseAlpha,
   ChainId.RSKTestnet,
-  ChainId.MetisStardustTestnet,
-  ChainId.TelosEVMTestnet,
-  ChainId.IoTeXNetworkTestnet,
-  // ChainId.EmeraldParatimeTestnet,
-  ChainId.HarmonyTestnetShard0,
-  568, // Dogechain Testnet
   ChainId['GodwokenTestnet(V1.1)'],
-  // ChainId.PolyjuiceTestnet,
-  ChainId.SmartBitcoinCashTestnet,
-  ChainId.FuseSparknet,
-  ChainId.EvmosTestnet,
   ChainId.SyscoinTanenbaumTestnet,
-  // ChainId.BitTorrentChainTestnet,
   ChainId.PalmTestnet,
 ];

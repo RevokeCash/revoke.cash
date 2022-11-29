@@ -82,6 +82,11 @@ class EtherscanQueue {
       throw new Error(data.result);
     }
 
+    if (!Array.isArray(data.result)) {
+      console.log(data);
+      throw new Error('Could not retrieve event logs from the blockchain');
+    }
+
     // If the limit (1000) is reached, throw an error that is
     // compatible with the getLogsFromProvider() function to trigger recursive getLogs
     if (data.result.length === 1000) {
@@ -145,6 +150,12 @@ const API_URLS = {
   [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io/api',
   [2000]: 'https://explorer.dogechain.dog/api',
   [568]: 'https://explorer-testnet.dogechain.dog/api',
+  [ChainId.RSKMainnet]: 'https://blockscout.com/rsk/mainnet/api',
+  [ChainId.EmeraldParatimeMainnet]: 'https://explorer.emerald.oasis.dev/api',
+  [ChainId.Evmos]: 'https://evm.evmos.org/api',
+  [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
+  [ChainId.Shiden]: 'https://blockscout.com/shiden/api',
+  [ChainId.Palm]: 'https://explorer.palm.io/api',
 };
 
 const getApiKey = (apiUrl: string, apiKeys: { [platform: string]: string }) => {

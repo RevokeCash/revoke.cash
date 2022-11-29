@@ -8,6 +8,8 @@ const DashboardHeader = () => {
   const { t } = useTranslation();
   const { tokenMapping, settings, setSettings } = useAppContext();
 
+  if (!settings) return null;
+
   return (
     <>
       <AddressInput />

@@ -11,9 +11,9 @@ This repository also includes the [`dapp-contract-list`](/public/dapp-contract-l
 - `https://raw.githubusercontent.com/rkalis/revoke.cash/master/public/dapp-contract-list/{chainId}/{address}.json`
 - `https://revoke.cash/dapp-contract-list/{chainId}/{address}.json`
 
-Revoke.cash natively supports Ethereum (mainnet and testnets), Gnosis Chain, Telos, Metis, Fuse and SmartBCH.
+Revoke.cash natively supports Ethereum (mainnet and testnets), Gnosis Chain, Metis, SmartBCH, Syscoin and Ethereum Classic.
 
-It also supports Avalanche, Polygon, BSC, Arbitrum, Optimism, RSK, Fantom, Harmony, HECO, Moonbeam, Moonriver, and Cronos through a backend integration with Etherscan, CovalentHQ & Alchemy. Performance for these chains may be slower due to rate limits.
+It also supports Avalanche, Polygon, BSC, Arbitrum, Optimism, RSK, Fantom, Harmony and several other chains through a backend integration with Etherscan, CovalentHQ & Alchemy. Performance for these chains may be slower due to rate limits.
 
 If you want to learn more about (unlimited) ERC20 allowances, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 
