@@ -52,3 +52,7 @@ package-lock.json
 public/sitemap.xml
 
 localazy.keys.json
+
+cypress/videos
+cypress/screenshots
+cypress/downloads

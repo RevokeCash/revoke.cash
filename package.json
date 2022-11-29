@@ -11,7 +11,8 @@
     "lint:checksums": "ts-node scripts/lint-checksums.ts && git rm -r --cached -q public/dapp-contract-list && git add --all public/dapp-contract-list",
     "lint": "prettier --write .",
     "postinstall": "husky install",
-    "translations:update": "localazy upload && localazy download && yarn lint"
+    "translations:update": "localazy upload && localazy download && yarn lint",
+    "test": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "axios": "^0.26.1",
     "axios-retry": "^3.3.1",
     "bootstrap": "^4.6.2",
+    "cypress": "^11.2.0",
     "eth-chains": "^1.0.0",
     "ethers": "^5.7.2",
     "express-rate-limit": "^6.6.0",
