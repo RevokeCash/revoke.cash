@@ -8,7 +8,11 @@ import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import '../styles/index.scss';
 
-init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY);
+init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, null, {
+  trackingOptions: {
+    ipAddress: false,
+  },
+});
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
