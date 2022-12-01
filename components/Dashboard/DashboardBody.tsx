@@ -9,11 +9,11 @@ import { getLogs } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import { useAsync } from 'react-async-hook';
 import { ClipLoader } from 'react-spinners';
-import TokenList from './TokenList';
+import AllowanceTable from './AllowanceTable';
 
 const DashboardBody = () => {
   const { selectedChainId, readProvider, logsProvider } = useEthereum();
-  const { inputAddress, settings, openSeaProxyAddress } = useAppContext();
+  const { inputAddress, openSeaProxyAddress } = useAppContext();
 
   const logIn = async () => {
     await axios.post('/api/login');
@@ -81,12 +81,10 @@ const DashboardBody = () => {
   ];
 
   const error = loginError ?? latestBlockNumberError ?? transferError ?? approvalError ?? approvalForAllError;
-  const loadingEvents =
-    loadingTransfers || loadingApprovals || (settings?.tokenStandard === 'ERC721' && loadingApprovalsForAll);
+  const loadingEvents = loadingTransfers || loadingApprovals || loadingApprovalsForAll;
   const loading = loggingIn || loadingLatestBlockNumber || loadingEvents;
 
   if (!inputAddress) return null;
-  if (!settings) return null;
 
   if (loading) {
     return (
@@ -99,11 +97,10 @@ const DashboardBody = () => {
   if (error) return <Error error={error} />;
 
   return (
-    <TokenList
-      tokenStandard={settings.tokenStandard}
+    <AllowanceTable
       transferEvents={transferEvents}
       approvalEvents={approvalEvents}
-      approvalForAllEvents={settings.tokenStandard === 'ERC20' ? [] : approvalForAllEvents}
+      approvalForAllEvents={approvalForAllEvents}
     />
   );
 };

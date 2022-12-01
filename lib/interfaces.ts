@@ -1,6 +1,22 @@
 import type { Log, Provider } from '@ethersproject/abstract-provider';
 import type { Contract } from 'ethers';
 
+export interface BaseTokenData {
+  symbol: string;
+  balance: string;
+  icon: string;
+  verified: boolean;
+  decimals?: number;
+  totalSupply?: string;
+}
+
+export interface AllowanceData extends BaseTokenData {
+  contract: Contract;
+  spender?: string;
+  amount?: string;
+  tokenId?: string;
+}
+
 export interface Erc20TokenData {
   contract: Contract;
   icon: string;

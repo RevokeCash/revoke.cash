@@ -187,14 +187,9 @@ export const EthereumProvider = ({ children }: Props) => {
   };
 
   const connect = async () => {
-    console.log('Connecting');
     try {
       const instance = await web3Modal.requestProvider();
-      console.log('request provider');
-
       const provider = new providers.Web3Provider(instance, 'any');
-
-      console.log('197');
 
       const { chainId } = await provider.getNetwork();
       const address = await getConnectedAccount(provider);
@@ -300,7 +295,6 @@ export const EthereumProvider = ({ children }: Props) => {
 
 const getConnectedAccount = async (provider: providers.JsonRpcProvider) => {
   try {
-    console.log('here');
     return await provider?.getSigner().getAddress();
   } catch (e) {
     return undefined;
