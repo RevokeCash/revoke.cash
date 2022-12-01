@@ -2,16 +2,10 @@ import type { Log, Provider } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { ChainId } from 'eth-chains';
 import { Contract, utils } from 'ethers';
+import { Interface } from 'ethers/lib/utils';
+import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
-import type {
-  Erc20TokenData,
-  Erc721TokenData,
-  TokenData,
-  TokenFromList,
-  TokenMapping,
-  TokenStandard,
-} from 'lib/interfaces';
-import { isERC721Token } from 'lib/interfaces';
+import type { TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
 import { shortenAddress, toFloat } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
 
@@ -22,11 +16,11 @@ export const isVerifiedToken = (tokenAddress: string, tokenMapping?: TokenMappin
   return tokenMapping[utils.getAddress(tokenAddress)] !== undefined;
 };
 
-export const isSpamToken = (token: Erc20TokenData | Erc721TokenData) => {
+export const isSpamToken = (token: { symbol: string }) => {
   const includesHttp = /https?:\/\//i.test(token.symbol);
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
   const includesTld =
-    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance/i.test(
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc/i.test(
       token.symbol
     );
   return includesHttp || includesTld;
@@ -111,8 +105,15 @@ export const fallbackTokenIconOnError = (ev: any) => {
   ev.target.src = '/assets/images/fallback-token-icon.png';
 };
 
+export const getTokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
+  if (isErc721Contract(contract)) return getErc721TokenData(contract, ownerAddress, tokenMapping);
+  return getErc20TokenData(contract, ownerAddress, tokenMapping);
+};
+
 export const getErc20TokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
   const tokenData = tokenMapping[utils.getAddress(contract.address)];
+  const icon = getTokenIcon(contract.address, tokenMapping);
+  const verified = isVerifiedToken(contract.address, tokenMapping);
 
   const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
@@ -124,11 +125,14 @@ export const getErc20TokenData = async (contract: Contract, ownerAddress: string
   ]);
 
   const totalSupply = totalSupplyBN.toString();
-  return { symbol, decimals, totalSupply, balance };
+  return { symbol, decimals, icon, verified, totalSupply, balance };
 };
 
 export const getErc721TokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
   const tokenData = tokenMapping[utils.getAddress(contract.address)];
+  const icon = getTokenIcon(contract.address, tokenMapping);
+  // Skip verification checks for NFTs
+  const verified = true;
 
   const [balance, symbol] = await Promise.all([
     withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
@@ -137,7 +141,7 @@ export const getErc721TokenData = async (contract: Contract, ownerAddress: strin
     throwIfNotErc721(contract),
   ]);
 
-  return { symbol, balance };
+  return { symbol, balance, icon, verified };
 };
 
 export const throwIfNotErc20 = async (contract: Contract) => {
@@ -162,12 +166,41 @@ export const throwIfNotErc721 = async (contract: Contract) => {
   }
 };
 
-export const hasZeroBalance = (token: TokenData) => {
-  return isERC721Token(token) ? token.balance === '0' : toFloat(Number(token.balance), token.decimals) === '0.000';
+export const hasZeroBalance = (token: { balance: string; decimals?: number }) => {
+  return toFloat(Number(token.balance), token.decimals) === '0.000';
 };
 
-export const createTokenContracts = (events: Log[], abi: any, provider: Provider) => {
+export const createTokenContracts = (events: Log[], provider: Provider): Contract[] => {
   return events
     .filter((event, i) => i === events.findIndex((other) => event.address === other.address))
-    .map((event) => new Contract(utils.getAddress(event.address), abi, provider));
+    .map((event) => createTokenContract(event, provider))
+    .filter((contract) => contract !== undefined);
+};
+
+const createTokenContract = (event: Log, provider: Provider): Contract | undefined => {
+  const tokenInterface = getTokenInterface(event);
+  if (!tokenInterface) return undefined;
+  return new Contract(utils.getAddress(event.address), tokenInterface, provider);
+};
+
+const getTokenInterface = (event: Log): Interface | undefined => {
+  const erc20Interface = new Interface(ERC20);
+  const erc721Interface = new Interface(ERC721Metadata);
+
+  const Topics = {
+    TRANSFER: erc20Interface.getEventTopic('Transfer'),
+    APPROVAL: erc20Interface.getEventTopic('Approval'),
+    APPROVAL_FOR_ALL: erc721Interface.getEventTopic('ApprovalForAll'),
+  };
+
+  if (![Topics.TRANSFER, Topics.APPROVAL, Topics.APPROVAL_FOR_ALL].includes(event.topics[0])) return undefined;
+  if (event.topics[0] === Topics.APPROVAL_FOR_ALL) return erc721Interface;
+  if (event.topics.length === 4) return erc721Interface;
+  if (event.topics.length === 3) return erc20Interface;
+
+  return undefined;
+};
+
+export const isErc721Contract = (contract: Contract) => {
+  return contract.interface.events['ApprovalForAll(address,address,bool)'] !== undefined;
 };

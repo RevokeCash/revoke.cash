@@ -15,7 +15,7 @@ export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
   return diff.isZero() ? 0 : diff.lt(0) ? -1 : 1;
 };
 
-export const toFloat = (n: number, decimals: number): string => {
+export const toFloat = (n: number, decimals: number = 0): string => {
   return (n / 10 ** decimals).toFixed(3);
 };
 

@@ -1,8 +1,8 @@
 import type { Log } from '@ethersproject/abstract-provider';
-import type { Contract } from 'ethers';
+import type { Contract, providers } from 'ethers';
 import { BigNumber, utils } from 'ethers';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
-import type { ITokenAllowance, TokenData } from 'lib/interfaces';
+import type { AllowanceData, BaseTokenData, ITokenAllowance, TokenData, TokenMapping } from 'lib/interfaces';
 import {
   IERC20Allowance,
   IERC721Allowance,
@@ -13,6 +13,86 @@ import {
 } from 'lib/interfaces';
 import { toFloat, topicToAddress } from '.';
 import { convertString, unpackResult } from './promises';
+import { createTokenContracts, getTokenData, isErc721Contract } from './tokens';
+
+export const getAllowancesForAddress = async (
+  userAddress: string,
+  transferEvents: Log[],
+  approvalEvents: Log[],
+  approvalForAllEvents: Log[],
+  readProvider: providers.Provider,
+  tokenMapping: TokenMapping
+): Promise<AllowanceData[]> => {
+  const allEvents = [...transferEvents, ...approvalEvents, ...approvalForAllEvents];
+  const contracts = createTokenContracts(allEvents, readProvider);
+
+  // Look up token data for all tokens, add their lists of approvals
+  const allowances = await Promise.all(
+    contracts.map(async (contract) => {
+      const approvalsForAll = approvalForAllEvents.filter((approval) => approval.address === contract.address);
+      const approvals = approvalEvents.filter((approval) => approval.address === contract.address);
+
+      try {
+        const tokenData: BaseTokenData = await getTokenData(contract, userAddress, tokenMapping);
+        const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, userAddress, tokenData);
+
+        if (allowances.length === 0) {
+          return [mergeAllowanceAndToken(contract, tokenData)];
+        }
+
+        const fullAllowances = allowances.map((allowance) => mergeAllowanceAndToken(contract, tokenData, allowance));
+        return fullAllowances;
+      } catch (e) {
+        console.error(e);
+        // If the call to getTokenData() fails, the token is not a standard-adhering token so
+        // we do not include it in the token list.
+        return [];
+      }
+    })
+  );
+
+  return allowances.flat();
+};
+
+export const getAllowancesForToken = async (
+  contract: Contract,
+  approvalEvents: Log[],
+  approvalForAllEvents: Log[],
+  userAddress: string,
+  tokenData: BaseTokenData
+): Promise<Array<IERC20Allowance | IERC721Allowance>> => {
+  if (isErc721Contract(contract)) {
+    const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(
+      contract,
+      userAddress,
+      approvalForAllEvents
+    );
+    const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, approvalEvents);
+
+    const allowances = [...limitedAllowances, ...unlimitedAllowances].filter((allowance) => !!allowance);
+
+    return allowances;
+  } else {
+    // Filter out zero-value allowances
+    const allowances = (await getErc20AllowancesFromApprovals(contract, userAddress, approvalEvents)).filter(
+      ({ amount }) => formatErc20Allowance(amount, tokenData?.decimals, tokenData?.totalSupply) !== '0.000'
+    );
+
+    return allowances;
+  }
+};
+
+const mergeAllowanceAndToken = (
+  contract: Contract,
+  tokenData: BaseTokenData,
+  allowance?: IERC20Allowance | IERC721Allowance
+): AllowanceData => ({
+  ...tokenData,
+  contract,
+  spender: allowance?.spender,
+  amount: allowance && isERC20Allowance(allowance) ? allowance?.amount : undefined,
+  tokenId: allowance && isERC721Allowance(allowance) ? allowance?.tokenId : undefined,
+});
 
 export const getErc20AllowancesFromApprovals = async (contract: Contract, ownerAddress: string, approvals: Log[]) => {
   const deduplicatedApprovals = approvals.filter(
