@@ -14,7 +14,7 @@ import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 
 interface Props {
-  size?: 'sm' | 'lg';
+  size: 'sm' | 'md' | 'lg';
   parentToastRef?: MutableRefObject<ReactText>;
 }
 
@@ -25,16 +25,18 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
   const nativeToken = getChainNativeToken(connectedChainId);
   const [amount, setAmount] = useState<string>(getDefaultDonationAmount(nativeToken));
 
-  const [show, setShow] = useState(false);
-  const handleShow = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
     if (parentToastRef) {
       toast.update(parentToastRef.current, { autoClose: false, closeButton: false, draggable: false });
     }
-    setShow(true);
+    setOpen(true);
   };
+
   const handleClose = () => {
     if (parentToastRef) toast.dismiss(parentToastRef.current);
-    setShow(false);
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -78,11 +80,11 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
   return (
     <>
-      <Button style="secondary" size="md" onClick={handleShow} className="h-full hidden sm:block">
+      <Button style="secondary" size={size} onClick={handleOpen} className="h-full hidden sm:block">
         {t('common:buttons.donate')}
       </Button>
 
-      <Modal open={show} setOpen={setShow}>
+      <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
           <div className="text-center sm:text-left w-full">
             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">

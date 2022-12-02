@@ -134,8 +134,9 @@ export const getErc721TokenData = async (contract: Contract, ownerAddress: strin
   // Skip verification checks for NFTs
   const verified = true;
 
+  // TOOD: Balance requests for NFTs can be super slow so we need a workaround
   const [balance, symbol] = await Promise.all([
-    withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
+    '0', // withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
     // Use the tokenlist name if present, fall back to 'shortened address since not every NFT has a name
     tokenData?.name ?? withFallback(unpackResult(contract.functions.name()), shortenAddress(contract.address)),
     throwIfNotErc721(contract),

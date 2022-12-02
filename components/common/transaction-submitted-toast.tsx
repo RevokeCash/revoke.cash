@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 export const displayTransactionSubmittedToast = (ref: MutableRefObject<ReactText>) => {
   const toastContent = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+    <div className="flex flex-col justify-center items-center gap-2">
       <div>
         <span role="img" aria-label="check">
           ✅

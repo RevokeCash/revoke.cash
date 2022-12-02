@@ -1,8 +1,11 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import NoSSR from 'components/common/NoSSR';
 import { AppContextProvider } from 'lib/hooks/useAppContext';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
 import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
+
+const queryClient = new QueryClient();
 
 interface Props {
   children: ReactNode;
@@ -13,25 +16,27 @@ interface Props {
 const DashboardWrapper = ({ children }: Props) => {
   return (
     <NoSSR>
-      <EthereumProvider>
-        <AppContextProvider>
-          {children}
-          <ToastContainer
-            className="text-center"
-            position="top-right"
-            icon={false}
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            progressStyle={{ backgroundColor: 'black' }}
-          />
-        </AppContextProvider>
-      </EthereumProvider>
+      <QueryClientProvider client={queryClient}>
+        <EthereumProvider>
+          <AppContextProvider>
+            {children}
+            <ToastContainer
+              className="text-center"
+              position="top-right"
+              icon={false}
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              progressStyle={{ backgroundColor: 'black' }}
+            />
+          </AppContextProvider>
+        </EthereumProvider>
+      </QueryClientProvider>
     </NoSSR>
   );
 };

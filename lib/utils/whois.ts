@@ -15,23 +15,24 @@ export const addressToAppName = async (
   address: string,
   chainId?: number,
   openseaProxyAddress?: string
-): Promise<string | undefined> => {
-  if (!chainId) return undefined;
+): Promise<string | null> => {
+  if (!chainId) return null;
+  if (!address) return null;
   if (address === openseaProxyAddress) return 'OpenSea (old)';
   const name = (await getNameFromDappList(address, chainId)) ?? (await getNameFromEthereumList(address, chainId));
   return name;
 };
 
-const getNameFromDappList = async (address: string, chainId: number): Promise<string | undefined> => {
+const getNameFromDappList = async (address: string, chainId: number): Promise<string | null> => {
   try {
     const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${chainId}/${utils.getAddress(address)}.json`);
     return data.appName;
   } catch {
-    return undefined;
+    return null;
   }
 };
 
-const getNameFromEthereumList = async (address: string, chainId: number): Promise<string | undefined> => {
+const getNameFromEthereumList = async (address: string, chainId: number): Promise<string | null> => {
   try {
     const contractRes = await axios.get(
       `${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${utils.getAddress(address)}.json`
@@ -44,24 +45,24 @@ const getNameFromEthereumList = async (address: string, chainId: number): Promis
 
     return contractRes.data.project;
   } catch {
-    return undefined;
+    return null;
   }
 };
 
-export const lookupEnsName = async (address: string): Promise<string | undefined> => {
+export const lookupEnsName = async (address: string): Promise<string | null> => {
   try {
     return await ENS_RESOLUTION?.lookupAddress(address);
   } catch {
-    return undefined;
+    return null;
   }
 };
 
-export const resolveEnsName = async (ensName: string): Promise<string | undefined> => {
+export const resolveEnsName = async (ensName: string): Promise<string | null> => {
   try {
     const address = await ENS_RESOLUTION?.resolveName(ensName);
-    return address ? address : undefined;
+    return address ? address : null;
   } catch {
-    return undefined;
+    return null;
   }
 };
 
@@ -70,7 +71,7 @@ export const lookupUnsName = async (address: string) => {
     const name = await UNS_RESOLUTION?.reverse(address);
     return name;
   } catch {
-    return undefined;
+    return null;
   }
 };
 
@@ -79,17 +80,17 @@ export const resolveUnsName = async (unsName: string) => {
     const address = await UNS_RESOLUTION?.addr(unsName, 'ETH');
     return utils.getAddress(address?.toLowerCase());
   } catch {
-    return undefined;
+    return null;
   }
 };
 
-export const getOpenSeaProxyAddress = async (userAddress: string, provider: Provider): Promise<string | undefined> => {
+export const getOpenSeaProxyAddress = async (userAddress: string, provider: Provider): Promise<string | null> => {
   try {
     const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, provider);
     const [proxyAddress] = await contract.functions.proxies(userAddress);
-    if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return undefined;
+    if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return null;
     return proxyAddress;
   } catch {
-    return undefined;
+    return null;
   }
 };

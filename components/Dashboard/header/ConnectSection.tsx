@@ -5,7 +5,7 @@ const ConnectSection = () => {
   return (
     <div className="py-2">
       <div className="flex justify-center sm:gap-2 h-10">
-        <DonateButton />
+        <DonateButton size="md" />
         <ConnectButton />
       </div>
     </div>

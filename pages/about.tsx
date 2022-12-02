@@ -20,10 +20,7 @@ const About: NextPage = () => {
 
           <div>
             <h4>{t('about:sections.token_allowances.heading')}</h4>
-            <Trans
-              i18nKey="about:sections.token_allowances.paragraph_1"
-              components={[<span style={{ fontStyle: 'italic' }} />]}
-            />
+            <Trans i18nKey="about:sections.token_allowances.paragraph_1" components={[<span className="italic" />]} />
           </div>
 
           <div>
@@ -42,7 +39,7 @@ const About: NextPage = () => {
               i18nKey="about:sections.read_more.paragraph_1"
               components={[
                 <a href="https://kalis.me/unlimited-erc20-allowances/" target="_blank">
-                  <span style={{ fontStyle: 'italic' }} />
+                  <span className="italic" />
                 </a>,
                 <Link href="/faq">
                   <a />
@@ -66,22 +63,14 @@ const About: NextPage = () => {
 
           <div>
             <h4>{t('about:sections.sponsors.heading')}</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div className="flex flex-col gap-2">
               <div>
                 <Trans
                   i18nKey="about:sections.sponsors.paragraph_1"
                   components={[<a href="https://twitter.com/RevokeCash" target="_blank" />]}
                 />
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '5px',
-                }}
-              >
+              <div className="flex flex-wrap justify-center items-center gap-1">
                 <ImageLink
                   src="/assets/images/vendor/earnifi.png"
                   alt="Earni.fi"
@@ -96,9 +85,7 @@ const About: NextPage = () => {
 
           <Divider />
 
-          <div
-            style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}
-          >
+          <div className="flex flex-wrap justify-center items-center gap-1">
             <Link href="/privacy-policy">{t('common:privacy_policy')}</Link>
           </div>
         </div>

@@ -11,7 +11,7 @@ interface Props {
 
 const WithHoverTooltip = ({ tooltip, placement, disabled, children }: Props) => (
   <div className="relative">
-    <Tippy content={tooltip} placement={placement ?? 'top'} className="text-center w-60">
+    <Tippy content={tooltip} placement={placement ?? 'top'} className="text-center break-words" maxWidth={380}>
       <div>
         {disabled && <div className="cursor-not-allowed absolute inset-0 w-full h-full z-10" />}
         {children}
