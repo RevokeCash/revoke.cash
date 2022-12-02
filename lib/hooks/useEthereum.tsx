@@ -3,6 +3,7 @@ import { track } from '@amplitude/analytics-browser';
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import type { JsonRpcSigner } from '@ethersproject/providers';
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
+import { useQuery } from '@tanstack/react-query';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
@@ -18,7 +19,6 @@ import {
 } from 'lib/utils/chains';
 import { lookupEnsName, lookupUnsName } from 'lib/utils/whois';
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useAsync } from 'react-async-hook';
 
 declare let window: {
   ethereum?: any;
@@ -76,8 +76,19 @@ export const EthereumProvider = ({ children }: Props) => {
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
 
-  const { result: ensName } = useAsync(lookupEnsName, [account]);
-  const { result: unsName } = useAsync(lookupUnsName, [account]);
+  const { data: ensName } = useQuery({
+    queryKey: ['ensName', account],
+    queryFn: () => lookupEnsName(account),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
+
+  const { data: unsName } = useQuery({
+    queryKey: ['unsName', account],
+    queryFn: () => lookupUnsName(account),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
 
   // The "logs provider" is a wallet-independent provider that is used to retrieve logs
   // to ensure that custom RPCs don't break Revoke.cash functionality.

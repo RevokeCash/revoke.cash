@@ -1,8 +1,6 @@
-import LabelledCheckbox from 'components/common/LabelledCheckbox';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import useTranslation from 'next-translate/useTranslation';
 import AddressInput from '../AddressInput';
-import TokenStandardSelection from '../TokenStandardSelection';
 
 const DashboardHeader = () => {
   const { t } = useTranslation();
@@ -13,7 +11,7 @@ const DashboardHeader = () => {
   return (
     <>
       <AddressInput />
-      <div className="py-2 flex flex-col items-center">
+      {/* <div className="py-2 flex flex-col items-center">
         <TokenStandardSelection
           tokenStandard={settings.tokenStandard}
           setTokenStandard={(value) => setSettings({ ...settings, tokenStandard: value })}
@@ -37,7 +35,7 @@ const DashboardHeader = () => {
             update={(value) => setSettings({ ...settings, includeTokensWithoutAllowances: value })}
           />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

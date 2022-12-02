@@ -1,7 +1,7 @@
+import Button from 'components/common/Button';
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
-import Button from './Button';
 
 interface Props {
   update: (newAllowance: string) => Promise<void>;

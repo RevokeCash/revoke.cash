@@ -1,23 +1,25 @@
+import WithHoverTooltip from 'components/common/WithHoverTooltip';
+import RevokeButton from 'components/Dashboard/table/controls/RevokeButton';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
+import { useRevoke } from 'lib/hooks/useRevoke';
+import { AllowanceData } from 'lib/interfaces';
 import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
-import RevokeButton from './RevokeButton';
 import SwitchChainButton from './SwitchChainButton';
 import UpdateControls from './UpdateControls';
-import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {
-  revoke: () => Promise<void>;
-  update?: (newAllowance: string) => Promise<void>;
-  id: string;
+  allowance: AllowanceData;
+  onUpdate: (allowance: AllowanceData, newAmount?: string) => void;
 }
 
-const AllowanceControls = ({ revoke, update, id }: Props) => {
+const ControlsSection = ({ allowance, onUpdate }: Props) => {
   const { t } = useTranslation();
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
   const { inputAddress } = useAppContext();
+  const { revoke, update } = useRevoke(allowance, onUpdate);
 
   const chainName = getChainName(selectedChainId);
 
@@ -27,12 +29,14 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
   const canSwitchChain = connectionType === 'injected';
   const disabled = !isConnectedAddress || (needsToSwitchChain && !canSwitchChain);
 
+  if (!allowance.spender) return null;
+
   if (needsToSwitchChain && canSwitchChain) {
     return <SwitchChainButton />;
   }
 
   const controls = (
-    <div className="flex h-6 gap-1">
+    <div className="flex gap-1">
       <RevokeButton revoke={revoke} disabled={disabled} />
       {update && <UpdateControls update={update} disabled={disabled} />}
     </div>
@@ -68,4 +72,4 @@ const AllowanceControls = ({ revoke, update, id }: Props) => {
   return controls;
 };
 
-export default AllowanceControls;
+export default ControlsSection;

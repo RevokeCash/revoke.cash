@@ -10,8 +10,8 @@ interface Props {
 }
 
 const ImageLink = ({ src, alt, href, height, width, label }: Props) => (
-  <a href={href} target="_blank" style={{ textDecoration: 'none' }}>
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+  <a href={href} target="_blank" className="no-underline">
+    <div className="flex flex-col items-center gap-1">
       <Image src={src} alt={alt} objectFit="contain" height={height} width={width} quality="100" />
       {label && <div>{label}</div>}
     </div>

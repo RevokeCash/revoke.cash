@@ -33,6 +33,7 @@ const LanguageSelect = () => {
 
   return (
     <Select
+      instanceId="language-select"
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}

@@ -3,6 +3,12 @@
   "allowance": "{{amount}} autorización a <0>{{spender}}</0>",
   "allowance_token_id": "Autorización para ID de token {{tokenId}} a <0>{{spender}}</0>",
   "allowance_unlimited": "Autorización ilimitada a <0>{{spender}}</0>",
+  "allowances": {
+    "amount": "{{amount}} {{symbol}}",
+    "none": "Sin autorizaciones",
+    "token_id": "{{symbol}} #{{tokenId}}",
+    "unlimited": "Ilimitada"
+  },
   "controls": {
     "nfts": "NFT's",
     "no_allowances": "Incluir tokens sin autorizaciones",
@@ -16,6 +22,11 @@
     "unverified_tokens": "Incluir tokens no-verificados"
   },
   "donate_to_revoke": "Donar a Revoke.cash",
+  "headers": {
+    "allowance": "Autorización",
+    "spender": "Gastador",
+    "token": "Token"
+  },
   "mainnets": "Redes principales",
   "no_allowances": "Sin autorizaciones",
   "or_contribute_to_gitcoin": "O contribuye a nuestro<0>Grant de Gitcoin</0>",

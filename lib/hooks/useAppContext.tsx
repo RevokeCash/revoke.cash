@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import type { DashboardSettings, StateSetter, TokenMapping } from 'lib/interfaces';
 import { getFullTokenMapping } from 'lib/utils/tokens';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
-import { useAsync } from 'react-async-hook';
 import useLocalStorage from 'use-local-storage';
 import { useEthereum } from './useEthereum';
 
@@ -20,6 +20,7 @@ interface AppContext {
   setInputAddress?: StateSetter<string>;
   settings?: DashboardSettings;
   setSettings?: StateSetter<DashboardSettings>;
+  loading?: boolean;
 }
 
 const AppContext = React.createContext<AppContext>({});
@@ -32,12 +33,19 @@ interface Props {
 export const AppContextProvider = ({ children }: Props) => {
   const { selectedChainId, readProvider } = useEthereum();
   const [inputAddress, setInputAddress] = useState<string>();
-  const { result: tokenMapping } = useAsync(getFullTokenMapping, [selectedChainId]);
+  const { data: tokenMapping, isLoading: loadingTokenMapping } = useQuery({
+    queryKey: ['tokenMapping', selectedChainId],
+    queryFn: () => getFullTokenMapping(selectedChainId),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
 
-  const { result: openSeaProxyAddress } = useAsync(
-    () => getOpenSeaProxyAddress(inputAddress, readProvider),
-    [inputAddress, selectedChainId]
-  );
+  const { data: openSeaProxyAddress, isLoading: loadingOpenSeaProxyAddress } = useQuery({
+    queryKey: ['openSeaProxyAddress', inputAddress, selectedChainId],
+    queryFn: () => getOpenSeaProxyAddress(inputAddress, readProvider),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
 
   const [settings, setSettings] = useLocalStorage<DashboardSettings>('settings', DEFAULT_SETTINGS);
 
@@ -48,6 +56,8 @@ export const AppContextProvider = ({ children }: Props) => {
     setSettings(combinedSettings);
   }, [settings]);
 
+  const loading = loadingTokenMapping || loadingOpenSeaProxyAddress;
+
   return (
     <AppContext.Provider
       value={{
@@ -57,6 +67,7 @@ export const AppContextProvider = ({ children }: Props) => {
         setInputAddress,
         settings,
         setSettings,
+        loading,
       }}
     >
       {children}

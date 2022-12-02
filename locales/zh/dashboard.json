@@ -3,6 +3,12 @@
   "allowance": "{{amount}}授权给<0>{{spender}}</0>",
   "allowance_token_id": "授权代币ID{{tokenId}}到<0>{{spender}}</0>",
   "allowance_unlimited": "无限授权给<0>{{spender}}</0>",
+  "allowances": {
+    "amount": "{{amount}} {{symbol}}",
+    "none": "没有授权",
+    "token_id": "{{symbol}} #{{tokenId}}",
+    "unlimited": "无限"
+  },
   "controls": {
     "nfts": "NFTs",
     "no_allowances": "包括没有授权的代币",
@@ -16,6 +22,11 @@
     "unverified_tokens": "包括未经验证的代币"
   },
   "donate_to_revoke": "为Revoke.cash捐款",
+  "headers": {
+    "allowance": "授权",
+    "spender": "Spender",
+    "token": "代币"
+  },
   "mainnets": "主网",
   "no_allowances": "没有授权",
   "or_contribute_to_gitcoin": "或者为我们的<0>Gitcoin Grant</0>捐款",

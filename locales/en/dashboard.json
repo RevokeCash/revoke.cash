@@ -3,6 +3,12 @@
   "allowance": "{{amount}} allowance to <0>{{spender}}</0>",
   "allowance_token_id": "Allowance for token ID {{tokenId}} to <0>{{spender}}</0>",
   "allowance_unlimited": "Unlimited allowance to <0>{{spender}}</0>",
+  "allowances": {
+    "amount": "{{amount}} {{symbol}}",
+    "none": "No allowances",
+    "token_id": "{{symbol}} #{{tokenId}}",
+    "unlimited": "Unlimited"
+  },
   "controls": {
     "nfts": "NFTs",
     "no_allowances": "Include tokens without allowances",
@@ -16,6 +22,11 @@
     "unverified_tokens": "Include unverified tokens"
   },
   "donate_to_revoke": "Donate to Revoke.cash",
+  "headers": {
+    "allowance": "Allowance",
+    "spender": "Spender",
+    "token": "Token"
+  },
   "mainnets": "Mainnets",
   "no_allowances": "No allowances",
   "or_contribute_to_gitcoin": "Or contribute to our <0>Gitcoin Grant</0>",

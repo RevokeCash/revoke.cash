@@ -19,34 +19,22 @@ const Faq: NextPage = () => {
 
           <div>
             <h4>{t('faq:questions.whole_wallet_at_risk.question')}</h4>
-            <Trans
-              i18nKey="faq:questions.whole_wallet_at_risk.answer"
-              components={[<span style={{ fontStyle: 'italic' }} />]}
-            />
+            <Trans i18nKey="faq:questions.whole_wallet_at_risk.answer" components={[<span className="italic" />]} />
           </div>
 
           <div>
             <h4>{t('faq:questions.enough_to_disconnect.question')}</h4>
-            <Trans
-              i18nKey="faq:questions.enough_to_disconnect.answer"
-              components={[<span style={{ fontStyle: 'italic' }} />]}
-            />
+            <Trans i18nKey="faq:questions.enough_to_disconnect.answer" components={[<span className="italic" />]} />
           </div>
 
           <div>
             <h4>{t('faq:questions.hardware_wallets.question')}</h4>
-            <Trans
-              i18nKey="faq:questions.hardware_wallets.answer"
-              components={[<span style={{ fontStyle: 'italic' }} />]}
-            />
+            <Trans i18nKey="faq:questions.hardware_wallets.answer" components={[<span className="italic" />]} />
           </div>
 
           <div>
             <h4>{t('faq:questions.multiple_allowances.question')}</h4>
-            <Trans
-              i18nKey="faq:questions.multiple_allowances.answer"
-              components={[<span style={{ fontStyle: 'italic' }} />]}
-            />
+            <Trans i18nKey="faq:questions.multiple_allowances.answer" components={[<span className="italic" />]} />
           </div>
 
           <div>
@@ -64,10 +52,7 @@ const Faq: NextPage = () => {
 
           <div>
             <h4>{t('faq:questions.recover_assets.question')}</h4>
-            <Trans
-              i18nKey="faq:questions.recover_assets.answer"
-              components={[<span style={{ fontStyle: 'italic' }} />]}
-            />
+            <Trans i18nKey="faq:questions.recover_assets.answer" components={[<span className="italic" />]} />
           </div>
 
           <div>
