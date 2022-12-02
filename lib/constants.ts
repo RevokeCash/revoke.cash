@@ -65,8 +65,8 @@ export const PROVIDER_SUPPORTED_CHAINS = [
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   7700, // Canto
-  // ChainId.KavaEVM,
-  // ChainId.KavaEVMTestnet,
+  ChainId.KavaEVM,
+  ChainId.KavaEVMTestnet,
   // 2000, // Dogechain
   ChainId.RSKMainnet,
   ChainId.Evmos,
@@ -131,7 +131,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Optimism,
   ChainId.CronosMainnetBeta,
   ChainId.FantomOpera,
-  // ChainId.KavaEVM,
+  ChainId.KavaEVM,
   ChainId.Gnosis,
   7700, // Canto
   ChainId.AuroraMainnet,
@@ -165,7 +165,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.OptimisticEthereumTestnetGoerli,
   ChainId.CronosTestnet,
   ChainId.FantomTestnet,
-  // ChainId.KavaEVMTestnet,
+  ChainId.KavaEVMTestnet,
   ChainId.AuroraTestnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.MoonbaseAlpha,
