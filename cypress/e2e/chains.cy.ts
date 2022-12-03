@@ -53,25 +53,34 @@ const fixtures = [
   ['Palm Testnet', '0xB95088fe34848a7ce5f374de164627D54D231249'],
 ];
 
+const Selectors = {
+  BUTTON: '.chain-select__control',
+  OPTION: '.chain-select__option',
+  LOADER: '.loader',
+  ADDRESS_INPUT: '.address-input',
+};
+
+const URL = 'http://localhost:3000';
+
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
-    cy.visit('http://localhost:3000', { timeout: 10_000 });
-    cy.get('button.dropdown-toggle').should('exist').click();
+    cy.visit(URL, { timeout: 10_000 });
+    cy.get(Selectors.BUTTON).should('exist').click();
 
     const fixtureChainNames = fixtures.map(([chainName]) => chainName);
-    const appChainNames = cy.get('div.dropdown-menu').should('exist').children('a');
+    const appChainNames = cy.get(Selectors.OPTION).should('have.length', fixtureChainNames.length);
     appChainNames.each((chain) => cy.wrap(chain).invoke('text').should('be.oneOf', fixtureChainNames));
   });
 
   fixtures.forEach(([chainName, fixtureAddress]) => {
     it(`should support ${chainName}`, () => {
-      cy.visit('http://localhost:3000', { timeout: 10_000 });
+      cy.visit(URL, { timeout: 10_000 });
 
-      cy.get('button.dropdown-toggle').should('exist').click();
+      cy.get(Selectors.BUTTON).should('exist').click();
       cy.contains(chainName).should('exist').click();
-      cy.get('input[placeholder*="Enter address"]').type(fixtureAddress);
+      cy.get(Selectors.ADDRESS_INPUT).type(fixtureAddress);
 
-      cy.get('span.css-18hzn63', { timeout: 45_000 }).should('not.exist'); // Check that the loading spinner is gone
+      cy.get(Selectors.LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
       cy.contains('Revoke', { timeout: 4000 }).should('exist');
     });
   });

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import SpinLoader from 'components/common/SpinLoader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
@@ -7,7 +8,6 @@ import { shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { classNames } from 'lib/utils/styles';
 import { addressToAppName } from 'lib/utils/whois';
-import { ClipLoader } from 'react-spinners';
 
 interface Props {
   allowance: AllowanceData;
@@ -28,11 +28,7 @@ const SpenderCell = ({ allowance }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.spender}`;
 
   if (isLoading) {
-    return (
-      <div>
-        <ClipLoader size={10} color={'#000'} loading={isLoading} />
-      </div>
-    );
+    return <SpinLoader size={10} />;
   }
 
   return (

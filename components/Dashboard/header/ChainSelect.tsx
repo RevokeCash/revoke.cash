@@ -55,6 +55,7 @@ const ChainSelect = () => {
     <Select
       instanceId="chain-select"
       className="h-full"
+      classNamePrefix="chain-select"
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selectedChainId)}
       options={groups}
       onChange={onChange}
