@@ -5,8 +5,9 @@ import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
+import nftTokenMapping from 'lib/data/nft-token-mapping.json';
 import type { TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
-import { shortenAddress, toFloat } from '.';
+import { toFloat } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
 
 // Check if a token is verified in the token mapping
@@ -30,7 +31,7 @@ export const getFullTokenMapping = async (chainId: number): Promise<TokenMapping
   if (!chainId) return undefined;
 
   const erc20Mapping = await getTokenMapping(chainId, 'ERC20');
-  const erc721Mapping = await getTokenMapping(chainId, 'ERC721');
+  const erc721Mapping = nftTokenMapping;
 
   if (erc20Mapping === undefined && erc721Mapping === undefined) return undefined;
 
@@ -131,14 +132,13 @@ export const getErc20TokenData = async (contract: Contract, ownerAddress: string
 export const getErc721TokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
   const tokenData = tokenMapping[utils.getAddress(contract.address)];
   const icon = getTokenIcon(contract.address, tokenMapping);
-  // Skip verification checks for NFTs
-  const verified = true;
+  const verified = isVerifiedToken(contract.address, tokenMapping);
 
   // TOOD: Balance requests for NFTs can be super slow so we need a workaround
   const [balance, symbol] = await Promise.all([
-    '0', // withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
-    // Use the tokenlist name if present, fall back to 'shortened address since not every NFT has a name
-    tokenData?.name ?? withFallback(unpackResult(contract.functions.name()), shortenAddress(contract.address)),
+    '10', // withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
+    // Use the tokenlist name if present, fall back to address since not every NFT has a name
+    tokenData?.symbol ?? withFallback(unpackResult(contract.functions.name()), contract.address),
     throwIfNotErc721(contract),
   ]);
 

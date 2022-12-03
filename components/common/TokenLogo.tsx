@@ -12,7 +12,7 @@ const TokenLogo = ({ src, alt, size }: Props) => (
     alt={alt}
     height={size ?? 24}
     width={size ?? 24}
-    className="inline rounded-full"
+    className="aspect-square rounded-full object-cover"
     onError={fallbackTokenIconOnError}
   />
 );
