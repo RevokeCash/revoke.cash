@@ -1,10 +1,10 @@
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import Error from 'components/common/Error';
+import SpinLoader from 'components/common/SpinLoader';
 import { columns } from 'components/Dashboard/table/columns';
 import { useAllowances } from 'lib/hooks/useAllowances';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import type { AllowanceData } from 'lib/interfaces';
-import ClipLoader from 'react-spinners/ClipLoader';
 
 const AllowanceTable = () => {
   const { inputAddress } = useAppContext();
@@ -20,11 +20,7 @@ const AllowanceTable = () => {
   });
 
   if (loading) {
-    return (
-      <div className="flex justify-center">
-        <ClipLoader size={40} color={'#000'} loading={loading} />
-      </div>
-    );
+    return <SpinLoader size={40} center />;
   }
 
   if (error) return <Error error={error} />;

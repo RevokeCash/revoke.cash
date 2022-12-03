@@ -41,7 +41,7 @@ const AddressInput = () => {
 
   return (
     <input
-      className="flex h-10 border border-black rounded-md mx-auto w-full max-w-[800px] text-center text-lg font-semibold focus:outline-black mb-2"
+      className="flex h-10 border border-black rounded-md mx-auto w-full max-w-[800px] text-center text-lg font-semibold focus:outline-black mb-2 address-input"
       placeholder={t('dashboard:address_input')}
       value={inputAddressOrName}
       onChange={handleFormInputChanged}

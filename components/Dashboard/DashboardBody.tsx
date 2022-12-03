@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Error from 'components/common/Error';
+import SpinLoader from 'components/common/SpinLoader';
 import { useAppContext } from 'lib/hooks/useAppContext';
-import { ClipLoader } from 'react-spinners';
 import AllowanceTable from './table/AllowanceTable';
 
 const DashboardBody = () => {
@@ -16,11 +16,7 @@ const DashboardBody = () => {
   });
 
   if (loading || loggingIn) {
-    return (
-      <div className="flex justify-center">
-        <ClipLoader size={40} color={'#000'} loading={loading} />
-      </div>
-    );
+    return <SpinLoader size={40} center />;
   }
 
   if (error) return <Error error={error} />;
