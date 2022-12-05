@@ -24,6 +24,7 @@
   "donate_to_revoke": "为Revoke.cash捐款",
   "headers": {
     "allowance": "授权",
+    "last_updated": "Last updated",
     "spender": "Spender",
     "token": "代币"
   },

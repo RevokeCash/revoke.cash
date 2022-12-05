@@ -89,3 +89,37 @@ export const getBalanceText = (symbol: string, balance: string, decimals?: numbe
 };
 
 export const topicToAddress = (topic: string) => utils.getAddress(utils.hexDataSlice(topic, 12));
+
+export const logSorterChronological = (a: Log, b: Log) => {
+  if (a.blockNumber === b.blockNumber) {
+    if (a.transactionIndex === b.transactionIndex) {
+      return a.logIndex - b.logIndex;
+    }
+    return a.transactionIndex - b.transactionIndex;
+  }
+  return a.blockNumber - b.blockNumber;
+};
+
+export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
+
+export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean): T[] => {
+  return array.filter((a, i) => array.findIndex((b) => matcher(a, b)) === i);
+};
+
+export const deduplicateLogsByTopics = (logs: Log[]) => {
+  const matcher = (a: Log, b: Log) => {
+    return (
+      a.address === b.address &&
+      a.topics[0] === b.topics[0] &&
+      a.topics[1] === b.topics[1] &&
+      a.topics[2] === b.topics[2] &&
+      a.topics[3] === b.topics[3]
+    );
+  };
+
+  return deduplicateArray(logs, matcher);
+};
+
+export const filterLogsByAddress = (logs: Log[], address: string) => {
+  return logs.filter((log) => log.address === address);
+};

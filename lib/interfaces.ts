@@ -1,7 +1,8 @@
-import type { Log, Provider } from '@ethersproject/abstract-provider';
+import type { Provider } from '@ethersproject/abstract-provider';
 import type { Contract } from 'ethers';
 
 export interface BaseTokenData {
+  contract: Contract;
   symbol: string;
   balance: string;
   icon: string;
@@ -10,37 +11,21 @@ export interface BaseTokenData {
   totalSupply?: string;
 }
 
-export interface AllowanceData extends BaseTokenData {
-  contract: Contract;
-  spender?: string;
+export interface BaseAllowanceData {
+  spender: string;
+  lastUpdated: number;
+  transactionHash: string;
   amount?: string;
   tokenId?: string;
 }
 
-export interface Erc20TokenData {
-  contract: Contract;
-  icon: string;
-  symbol: string;
-  decimals: number;
-  balance: string;
-  totalSupply: string;
-  verified: boolean;
-  approvals: Array<Log>;
+export interface AllowanceData extends BaseTokenData {
+  spender?: string;
+  lastUpdated?: number;
+  transactionHash?: string;
+  amount?: string;
+  tokenId?: string;
 }
-
-export interface Erc721TokenData {
-  contract: Contract;
-  icon: string;
-  symbol: string;
-  balance: string;
-  verified: boolean;
-  approvals: Array<Log>;
-  approvalsForAll: Array<Log>;
-}
-
-export type TokenData = Erc20TokenData | Erc721TokenData;
-export const isERC721Token = (token: TokenData): token is Erc721TokenData => 'approvalsForAll' in token;
-export const isERC20Token = (token: TokenData): token is Erc20TokenData => !isERC721Token(token);
 
 export interface TokenFromList {
   chainId: number;
@@ -57,21 +42,6 @@ export interface TokenMapping {
 }
 
 export type TokenStandard = 'ERC20' | 'ERC721';
-
-export interface IERC721Allowance {
-  spender: string;
-  tokenId?: string;
-}
-
-export interface IERC20Allowance {
-  spender: string;
-  amount: string;
-}
-
-export type ITokenAllowance = IERC20Allowance | IERC721Allowance;
-export const isERC20Allowance = (allowance: ITokenAllowance): allowance is IERC20Allowance => 'amount' in allowance;
-export const isERC721Allowance = (allowance: ITokenAllowance): allowance is IERC721Allowance =>
-  !isERC20Allowance(allowance);
 
 export interface DashboardSettings {
   includeUnverifiedTokens: boolean;

@@ -33,6 +33,7 @@ export const useAllowances = (userAddress: string) => {
     setAllowances((previousAllowances) => previousAllowances.filter((other) => !allowanceEquals(other, allowance)));
   };
 
+  // TODO: Update last updated time
   const onUpdate = (allowance: AllowanceData, newAmount?: string) => {
     if (!newAmount || newAmount === '0') {
       return onRevoke(allowance);

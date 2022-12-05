@@ -3,6 +3,7 @@ import { AllowanceData } from 'lib/interfaces';
 import AllowanceCell from './AllowanceCell';
 import ControlsCell from './controls/ControlsCell';
 import HeaderCell from './HeaderCell';
+import LastUpdatedCell from './LastUpdatedCell';
 import SpenderCell from './SpenderCell';
 import TokenCell from './TokenCell';
 
@@ -35,6 +36,11 @@ export const columns = [
     id: 'Spender',
     header: () => <HeaderCell i18nKey="dashboard:headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
+  }),
+  columnHelper.accessor('lastUpdated', {
+    id: 'Last Updated',
+    header: () => <HeaderCell i18nKey="dashboard:headers.last_updated" />,
+    cell: (info) => <LastUpdatedCell allowance={info.row.original} />,
   }),
   columnHelper.display({
     id: 'Actions',
