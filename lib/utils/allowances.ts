@@ -38,7 +38,8 @@ export const getAllowancesForAddress = async (
     };
   };
 
-  const [transferEvents, approvalEvents, unpatchedApprovalForAllEvents] = await Promise.all([
+  const [transferFromEvents, transferToEvents, approvalEvents, unpatchedApprovalForAllEvents] = await Promise.all([
+    buildGetEventsFunction('Transfer', 1)(userAddress, latestBlockNumber),
     buildGetEventsFunction('Transfer', 2)(userAddress, latestBlockNumber),
     buildGetEventsFunction('Approval', 1)(userAddress, latestBlockNumber),
     buildGetEventsFunction('ApprovalForAll', 1)(userAddress, latestBlockNumber),
@@ -50,11 +51,12 @@ export const getAllowancesForAddress = async (
     ...generatePatchedAllowanceEvents(userAddress, openSeaProxyAddress, [
       ...approvalEvents,
       ...unpatchedApprovalForAllEvents,
-      ...transferEvents,
+      ...transferFromEvents,
+      ...transferToEvents,
     ]),
   ];
 
-  const allEvents = [...transferEvents, ...approvalEvents, ...approvalForAllEvents];
+  const allEvents = [...transferToEvents, ...approvalEvents, ...approvalForAllEvents];
   const contracts = createTokenContracts(allEvents, readProvider);
 
   // Look up token data for all tokens, add their lists of approvals
@@ -62,9 +64,11 @@ export const getAllowancesForAddress = async (
     contracts.map(async (contract) => {
       const approvalsForAll = approvalForAllEvents.filter((approval) => approval.address === contract.address);
       const approvals = approvalEvents.filter((approval) => approval.address === contract.address);
+      const transfersFrom = transferFromEvents.filter((approval) => approval.address === contract.address);
+      const transfersTo = transferToEvents.filter((approval) => approval.address === contract.address);
 
       try {
-        const tokenData: BaseTokenData = await getTokenData(contract, userAddress, tokenMapping);
+        const tokenData = await getTokenData(contract, userAddress, tokenMapping, transfersFrom, transfersTo);
         const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, userAddress, tokenData);
 
         if (allowances.length === 0) {

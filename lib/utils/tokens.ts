@@ -6,7 +6,7 @@ import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import nftTokenMapping from 'lib/data/nft-token-mapping.json';
-import type { TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
+import type { BaseTokenData, TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
 import { toFloat } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
 
@@ -106,8 +106,17 @@ export const fallbackTokenIconOnError = (ev: any) => {
   ev.target.src = '/assets/images/fallback-token-icon.png';
 };
 
-export const getTokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
-  if (isErc721Contract(contract)) return getErc721TokenData(contract, ownerAddress, tokenMapping);
+export const getTokenData = async (
+  contract: Contract,
+  ownerAddress: string,
+  tokenMapping: TokenMapping = {},
+  transfersFrom: Log[],
+  transfersTo: Log[]
+): Promise<BaseTokenData> => {
+  if (isErc721Contract(contract)) {
+    return getErc721TokenData(contract, ownerAddress, tokenMapping, transfersFrom, transfersTo);
+  }
+
   return getErc20TokenData(contract, ownerAddress, tokenMapping);
 };
 
@@ -129,17 +138,29 @@ export const getErc20TokenData = async (contract: Contract, ownerAddress: string
   return { symbol, decimals, icon, verified, totalSupply, balance };
 };
 
-export const getErc721TokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
+export const getErc721TokenData = async (
+  contract: Contract,
+  ownerAddress: string,
+  tokenMapping: TokenMapping = {},
+  transfersFrom: Log[],
+  transfersTo: Log[]
+) => {
   const tokenData = tokenMapping[utils.getAddress(contract.address)];
   const icon = getTokenIcon(contract.address, tokenMapping);
   const verified = isVerifiedToken(contract.address, tokenMapping);
 
+  const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
+  const calculatedBalance = String(transfersTo.length - transfersFrom.length);
+
   // TOOD: Balance requests for NFTs can be super slow so we need a workaround
   const [balance, symbol] = await Promise.all([
-    '10', // withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155'),
+    shouldFetchBalance
+      ? withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155')
+      : calculatedBalance,
     // Use the tokenlist name if present, fall back to address since not every NFT has a name
     tokenData?.symbol ?? withFallback(unpackResult(contract.functions.name()), contract.address),
     throwIfNotErc721(contract),
+    throwIfSpamNft(contract),
   ]);
 
   return { symbol, balance, icon, verified };
@@ -164,6 +185,15 @@ export const throwIfNotErc721 = async (contract: Contract) => {
   // This could happen when the contract is not ERC721 but does have a fallback function
   if (isApprovedForAll !== false) {
     throw new Error('Response to isApprovedForAll was not false, indicating that this is not an ERC721 contract');
+  }
+};
+
+export const throwIfSpamNft = async (contract: Contract) => {
+  const bytecode = await contract.provider.getCode(contract.address);
+
+  // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
+  if (bytecode.length < 600) {
+    throw new Error('Contract bytecode indicates a "spam" token');
   }
 };
 
