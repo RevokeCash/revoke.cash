@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import Href from 'components/common/Href';
 import SpinLoader from 'components/common/SpinLoader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAppContext } from 'lib/hooks/useAppContext';
@@ -34,9 +35,9 @@ const SpenderCell = ({ allowance }: Props) => {
   return (
     <div className={classNames(!allowance.spender && 'text-gray-400', 'flex justify-start')}>
       <WithHoverTooltip tooltip={allowance.spender}>
-        <a href={explorerUrl} className="underline text-black visited:text-black">
+        <Href href={explorerUrl} external>
           {spenderName ?? shortenAddress(allowance.spender)}
-        </a>
+        </Href>
       </WithHoverTooltip>
     </div>
   );

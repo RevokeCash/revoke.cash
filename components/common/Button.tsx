@@ -28,7 +28,7 @@ const Button = ({ disabled, style, size, onClick, href, external, children, clas
 
   if (href) {
     return (
-      <a href={href} className={classes} target={external ? '_blank' : ''}>
+      <a href={href} className={classes} target={external ? '_blank' : undefined}>
         {children}
       </a>
     );

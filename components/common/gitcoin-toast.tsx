@@ -1,14 +1,15 @@
 // import { GITCOIN_URL } from 'lib/constants';
 // import { toast } from 'react-toastify';
+// import Href from './Href';
 
 export const displayGitcoinToast = () => {
   // const toastContent = (
   //   <div>
   //     Gitcoin Grants Round 15 is now live with over $2M in donation matching! Please consider supporting Revoke.cash by
   //     donating to the{' '}
-  //     <a href={GITCOIN_URL} target="_blank" className='color-black underline'>
+  //     <Href href={GITCOIN_URL} external>
   //       Revoke.cash grant
-  //     </a>
+  //     </Href>
   //   </div>
   // );
   // toast.info(toastContent, {

@@ -1,3 +1,4 @@
+import Href from 'components/common/Href';
 import PublicLayout from 'layouts/PublicLayout';
 import { DISCORD_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
@@ -5,7 +6,6 @@ import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
 
 const Faq: NextPage = () => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ const Faq: NextPage = () => {
             <h4>{t('faq:questions.costs.question')}</h4>
             <Trans
               i18nKey="faq:questions.costs.answer"
-              components={[<a href="https://gashawk.io" target="_blank" />]}
+              components={[<Href href="https://gashawk.io" style="html" external />]}
             />
           </div>
 
@@ -75,11 +75,9 @@ const Faq: NextPage = () => {
             <Trans
               i18nKey="faq:questions.which_chains.answer"
               components={[
-                <Link href="/extension">
-                  <a />
-                </Link>,
-                <a href="https://twitter.com/RevokeCash" target="_blank" />,
-                <a href={DISCORD_URL} target="_blank" />,
+                <Href href="/extension" style="html" router />,
+                <Href href="https://twitter.com/RevokeCash" style="html" external />,
+                <Href href={DISCORD_URL} style="html" external />,
               ]}
             />
           </div>
@@ -89,8 +87,8 @@ const Faq: NextPage = () => {
             <Trans
               i18nKey="faq:questions.other_question.answer"
               components={[
-                <a href="https://twitter.com/RevokeCash" target="_blank" />,
-                <a href={DISCORD_URL} target="_blank" />,
+                <Href href="https://twitter.com/RevokeCash" style="html" external />,
+                <Href href={DISCORD_URL} style="html" external />,
               ]}
             />
           </div>

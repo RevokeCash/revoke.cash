@@ -1,7 +1,8 @@
+import Href from 'components/common/Href';
 import TokenLogo from 'components/common/TokenLogo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import type { AllowanceData, Erc20TokenData } from 'lib/interfaces';
+import type { AllowanceData } from 'lib/interfaces';
 import { getBalanceText, shortenName } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 
@@ -14,9 +15,9 @@ const TokenCell = ({ allowance }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.contract.address}`;
 
   let link = (
-    <a href={explorerUrl} className="hover:underline text-black visited:text-black">
+    <Href href={explorerUrl} className="no-underline hover:underline" external>
       {shortenName(allowance.symbol)}
-    </a>
+    </Href>
   );
 
   if (allowance.symbol.length > 20) {
@@ -29,7 +30,7 @@ const TokenCell = ({ allowance }: Props) => {
       <div className="flex flex-col items-start">
         {link}
         <div className="text-xs text-gray-400">
-          {getBalanceText(allowance.symbol, allowance.balance, (allowance as Erc20TokenData).decimals)}
+          {getBalanceText(allowance.symbol, allowance.balance, allowance.decimals)}
         </div>
       </div>
     </div>

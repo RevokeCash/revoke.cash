@@ -7940,6 +7940,7 @@ __metadata:
     react-toastify: ^8.2.0
     request-ip: ^2.2.0
     tailwindcss: ^3.2.2
+    timeago-react: ^3.0.5
     ts-node: ^10.9.1
     typescript: ^4.8.4
     use-local-storage: ^2.3.6
@@ -8704,6 +8705,24 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: a38c3e059853c494af95d50c072b83f8b676a9ba2818dcc5b108ef252230735c54e0185437618596c790bbba8fcdaef5b290405981ffa09dce67b1f1bf190cbd
+  languageName: node
+  linkType: hard
+
+"timeago-react@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "timeago-react@npm:3.0.5"
+  dependencies:
+    timeago.js: ^4.0.0
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 79a2c9d7ef774d71a1babe15a637bb109fece886af8206c772fb70104a531afecd88449e92489f58ba728761345f4685fee37a44976e60580d779a35f0acbec9
+  languageName: node
+  linkType: hard
+
+"timeago.js@npm:^4.0.0":
+  version: 4.0.2
+  resolution: "timeago.js@npm:4.0.2"
+  checksum: c785a06988717cb5a00bb96b00ebaa56e83f4b5ed5d87c4c3931fb1bb2591a0e13a7ddc4b6c12c6ee7de64b440ed903c7bd4e0edddb37aade9bfc9ceab5d0db3
   languageName: node
   linkType: hard
 

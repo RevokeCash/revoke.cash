@@ -40,7 +40,7 @@ const AllowanceTable = () => {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="border-b border-black h-10">
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="text-left first:pl-4 last:pr-4">
+                <th key={header.id} className="text-left px-4">
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
@@ -49,9 +49,9 @@ const AllowanceTable = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t border-gray-400 px-4">
+            <tr key={row.id} className="border-t border-gray-400">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="h-10 overflow-hidden first:pl-4 last:pr-4">
+                <td key={cell.id} className="h-10 overflow-hidden px-4">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

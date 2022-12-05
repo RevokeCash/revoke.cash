@@ -1,4 +1,5 @@
 import Divider from 'components/common/Divider';
+import Href from 'components/common/Href';
 import ImageLink from 'components/common/ImageLink';
 import PublicLayout from 'layouts/PublicLayout';
 import { defaultSEO } from 'lib/next-seo.config';
@@ -6,7 +7,6 @@ import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
 
 const About: NextPage = () => {
   const { t } = useTranslation();
@@ -38,12 +38,8 @@ const About: NextPage = () => {
             <Trans
               i18nKey="about:sections.read_more.paragraph_1"
               components={[
-                <a href="https://kalis.me/unlimited-erc20-allowances/" target="_blank">
-                  <span className="italic" />
-                </a>,
-                <Link href="/faq">
-                  <a />
-                </Link>,
+                <Href href="https://kalis.me/unlimited-erc20-allowances/" className="italic" style="html" external />,
+                <Href href="/faq" router style="html" />,
               ]}
             />
           </div>
@@ -53,10 +49,10 @@ const About: NextPage = () => {
             <Trans
               i18nKey="about:sections.credits.paragraph_1"
               components={[
-                <a href="https://twitter.com/RoscoKalis" target="_blank" />,
-                <a href="https://etherscan.io/" target="_blank" />,
-                <a href="https://blockscout.com/" target="_blank" />,
-                <a href="https://covalenthq.com/" target="_blank" />,
+                <Href href="https://twitter.com/RoscoKalis" external style="html" />,
+                <Href href="https://etherscan.io/" external style="html" />,
+                <Href href="https://blockscout.com/" external style="html" />,
+                <Href href="https://covalenthq.com/" external style="html" />,
               ]}
             />
           </div>
@@ -67,7 +63,7 @@ const About: NextPage = () => {
               <div>
                 <Trans
                   i18nKey="about:sections.sponsors.paragraph_1"
-                  components={[<a href="https://twitter.com/RevokeCash" target="_blank" />]}
+                  components={[<Href href="https://twitter.com/RevokeCash" external style="html" />]}
                 />
               </div>
               <div className="flex flex-wrap justify-center items-center gap-1">
@@ -86,7 +82,9 @@ const About: NextPage = () => {
           <Divider />
 
           <div className="flex flex-wrap justify-center items-center gap-1">
-            <Link href="/privacy-policy">{t('common:privacy_policy')}</Link>
+            <Href href="/privacy-policy" router style="html">
+              {t('common:privacy_policy')}
+            </Href>
           </div>
         </div>
       </PublicLayout>
