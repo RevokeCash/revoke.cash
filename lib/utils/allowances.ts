@@ -22,8 +22,6 @@ export const getAllowancesForAddress = async (
   tokenMapping: TokenMapping,
   openSeaProxyAddress?: string
 ): Promise<AllowanceData[]> => {
-  console.log('scheduling allowance callss', userAddress);
-
   const latestBlockNumber = await readProvider.getBlockNumber();
 
   const buildGetEventsFunction = (name: string, addressTopicIndex: number) => {
