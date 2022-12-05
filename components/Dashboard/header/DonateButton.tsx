@@ -1,12 +1,14 @@
 import { track } from '@amplitude/analytics-browser';
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
+import Href from 'components/common/Href';
 import Modal from 'components/common/Modal';
 import Spinner from 'components/common/Spinner';
 import { utils } from 'ethers';
-import { DONATION_ADDRESS } from 'lib/constants';
+import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
@@ -86,7 +88,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
-          <div className="text-center sm:text-left w-full">
+          <div className="text-center sm:text-left w-full flex flex-col gap-2">
             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
               {t('dashboard:donate_to_revoke')}
             </Dialog.Title>
@@ -111,7 +113,14 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
                 {loading ? <Spinner style="primary" /> : t('common:buttons.send')}
               </Button>
             </div>
-            {/* <Trans i18nKey="dashboard:or_contribute_to_gitcoin" components={[<a href={GITCOIN_URL} />]} /> */}
+            <div className="flex justify-end">
+              <div>
+                <Trans
+                  i18nKey="dashboard:or_contribute_to_gitcoin"
+                  components={[<Href href={GITCOIN_URL} external />]}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </Modal>

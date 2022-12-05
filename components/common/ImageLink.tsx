@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Href from './Href';
 
 interface Props {
   src: string;
@@ -10,12 +11,12 @@ interface Props {
 }
 
 const ImageLink = ({ src, alt, href, height, width, label }: Props) => (
-  <a href={href} target="_blank" className="no-underline">
+  <Href href={href} style="html" external>
     <div className="flex flex-col items-center gap-1">
       <Image src={src} alt={alt} objectFit="contain" height={height} width={width} quality="100" />
       {label && <div>{label}</div>}
     </div>
-  </a>
+  </Href>
 );
 
 export default ImageLink;
