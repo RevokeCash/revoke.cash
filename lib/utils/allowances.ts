@@ -3,9 +3,15 @@ import type { Contract, providers } from 'ethers';
 import { BigNumber, utils } from 'ethers';
 import { ERC721Metadata } from 'lib/abis';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
-import type { AllowanceData, BaseTokenData, LogsProvider, TokenMapping } from 'lib/interfaces';
-import { IERC20Allowance, IERC721Allowance, isERC20Allowance, isERC721Allowance } from 'lib/interfaces';
-import { getLogs, toFloat, topicToAddress } from '.';
+import type { AllowanceData, BaseAllowanceData, BaseTokenData, LogsProvider, TokenMapping } from 'lib/interfaces';
+import {
+  deduplicateLogsByTopics,
+  filterLogsByAddress,
+  getLogs,
+  sortLogsChronologically,
+  toFloat,
+  topicToAddress,
+} from '.';
 import { convertString, unpackResult } from './promises';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract, isSpamToken } from './tokens';
 
@@ -62,20 +68,20 @@ export const getAllowancesForAddress = async (
   // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
     contracts.map(async (contract) => {
-      const approvalsForAll = approvalForAllEvents.filter((approval) => approval.address === contract.address);
-      const approvals = approvalEvents.filter((approval) => approval.address === contract.address);
-      const transfersFrom = transferFromEvents.filter((approval) => approval.address === contract.address);
-      const transfersTo = transferToEvents.filter((approval) => approval.address === contract.address);
+      const approvalsForAll = filterLogsByAddress(approvalForAllEvents, contract.address);
+      const approvals = filterLogsByAddress(approvalEvents, contract.address);
+      const transfersFrom = filterLogsByAddress(transferFromEvents, contract.address);
+      const transfersTo = filterLogsByAddress(transferToEvents, contract.address);
 
       try {
         const tokenData = await getTokenData(contract, userAddress, tokenMapping, transfersFrom, transfersTo);
         const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, userAddress, tokenData);
 
         if (allowances.length === 0) {
-          return [mergeAllowanceAndToken(contract, tokenData)];
+          return [tokenData as AllowanceData];
         }
 
-        const fullAllowances = allowances.map((allowance) => mergeAllowanceAndToken(contract, tokenData, allowance));
+        const fullAllowances = allowances.map((allowance) => ({ ...tokenData, ...allowance }));
         return fullAllowances;
       } catch (e) {
         console.error(e);
@@ -101,7 +107,7 @@ export const getAllowancesForToken = async (
   approvalForAllEvents: Log[],
   userAddress: string,
   tokenData: BaseTokenData
-): Promise<Array<IERC20Allowance | IERC721Allowance>> => {
+): Promise<BaseAllowanceData[]> => {
   if (isErc721Contract(contract)) {
     const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(
       contract,
@@ -123,24 +129,11 @@ export const getAllowancesForToken = async (
   }
 };
 
-const mergeAllowanceAndToken = (
-  contract: Contract,
-  tokenData: BaseTokenData,
-  allowance?: IERC20Allowance | IERC721Allowance
-): AllowanceData => ({
-  ...tokenData,
-  contract,
-  spender: allowance?.spender,
-  amount: allowance && isERC20Allowance(allowance) ? allowance?.amount : undefined,
-  tokenId: allowance && isERC721Allowance(allowance) ? allowance?.tokenId : undefined,
-});
-
 export const getErc20AllowancesFromApprovals = async (contract: Contract, ownerAddress: string, approvals: Log[]) => {
-  const deduplicatedApprovals = approvals.filter(
-    (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
-  );
+  const sortedApprovals = sortLogsChronologically(approvals).reverse();
+  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
-  const allowances: IERC20Allowance[] = await Promise.all(
+  const allowances = await Promise.all(
     deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, ownerAddress, approval))
   );
 
@@ -149,17 +142,21 @@ export const getErc20AllowancesFromApprovals = async (contract: Contract, ownerA
 
 const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerAddress: string, approval: Log) => {
   const spender = topicToAddress(approval.topics[2]);
-  const amount = await convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender)));
 
-  return { spender, amount };
+  const [amount, lastUpdated, transactionHash] = await Promise.all([
+    convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender))),
+    multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+    approval.transactionHash,
+  ]);
+
+  return { spender, amount, lastUpdated, transactionHash };
 };
 
 export const getLimitedErc721AllowancesFromApprovals = async (contract: Contract, approvals: Log[]) => {
-  const deduplicatedApprovals = approvals.filter(
-    (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
-  );
+  const sortedApprovals = sortLogsChronologically(approvals).reverse();
+  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
-  const allowances: IERC721Allowance[] = await Promise.all(
+  const allowances = await Promise.all(
     deduplicatedApprovals.map((approval) => getLimitedErc721AllowanceFromApproval(contract, approval))
   );
 
@@ -172,20 +169,20 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
     // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
     // by making tokenId a non-indexed parameter, in which case it needs to be
     // taken from the event data rather than topics
-    const tokenId =
-      approval.topics.length === 4
-        ? BigNumber.from(approval.topics[3]).toString()
-        : BigNumber.from(approval.data).toString();
+    const tokenIdEncoded = approval.topics.length === 4 ? approval.topics[3] : approval.data;
+    const tokenId = BigNumber.from(tokenIdEncoded).toString();
 
-    const [owner, spender] = await Promise.all([
+    const [owner, spender, lastUpdated, transactionHash] = await Promise.all([
       unpackResult(multicallContract.functions.ownerOf(tokenId)),
       unpackResult(multicallContract.functions.getApproved(tokenId)),
+      multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+      approval.transactionHash,
     ]);
 
     const expectedOwner = topicToAddress(approval.topics[1]);
     if (spender === ADDRESS_ZERO || owner !== expectedOwner) return undefined;
 
-    return { spender, tokenId };
+    return { spender, tokenId, lastUpdated, transactionHash };
   } catch {
     return undefined;
   }
@@ -196,11 +193,10 @@ export const getUnlimitedErc721AllowancesFromApprovals = async (
   ownerAddress: string,
   approvals: Log[]
 ) => {
-  const deduplicatedApprovals = approvals.filter(
-    (approval, i) => i === approvals.findIndex((other) => approval.topics[2] === other.topics[2])
-  );
+  const sortedApprovals = sortLogsChronologically(approvals).reverse();
+  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
-  const allowances: IERC721Allowance[] = await Promise.all(
+  const allowances = await Promise.all(
     deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, ownerAddress, approval))
   );
 
@@ -214,10 +210,15 @@ const getUnlimitedErc721AllowanceFromApproval = async (
 ) => {
   const spender = topicToAddress(approval.topics[2]);
 
-  const [isApprovedForAll] = await multicallContract.functions.isApprovedForAll(ownerAddress, spender);
+  const [isApprovedForAll, lastUpdated, transactionHash] = await Promise.all([
+    unpackResult(multicallContract.functions.isApprovedForAll(ownerAddress, spender)),
+    multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+    approval.transactionHash,
+  ]);
+
   if (!isApprovedForAll) return undefined;
 
-  return { spender };
+  return { spender, lastUpdated, transactionHash };
 };
 
 export const formatErc20Allowance = (allowance: string, decimals: number, totalSupply: string): string => {

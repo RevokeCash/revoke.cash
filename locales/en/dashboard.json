@@ -24,6 +24,7 @@
   "donate_to_revoke": "Donate to Revoke.cash",
   "headers": {
     "allowance": "Allowance",
+    "last_updated": "Last updated",
     "spender": "Spender",
     "token": "Token"
   },

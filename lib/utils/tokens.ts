@@ -135,7 +135,7 @@ export const getErc20TokenData = async (contract: Contract, ownerAddress: string
   ]);
 
   const totalSupply = totalSupplyBN.toString();
-  return { symbol, decimals, icon, verified, totalSupply, balance };
+  return { contract, symbol, decimals, icon, verified, totalSupply, balance };
 };
 
 export const getErc721TokenData = async (
@@ -163,7 +163,7 @@ export const getErc721TokenData = async (
     throwIfSpamNft(contract),
   ]);
 
-  return { symbol, balance, icon, verified };
+  return { contract, symbol, balance, icon, verified };
 };
 
 export const throwIfNotErc20 = async (contract: Contract) => {
