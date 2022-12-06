@@ -120,7 +120,7 @@ export const getAllowancesForToken = async (
   } else {
     // Filter out zero-value allowances
     const allowances = (await getErc20AllowancesFromApprovals(contract, userAddress, approvalEvents)).filter(
-      ({ amount }) => formatErc20Allowance(amount, tokenData?.decimals, tokenData?.totalSupply) !== '0.000'
+      ({ amount }) => formatErc20Allowance(amount, tokenData?.decimals, tokenData?.totalSupply) !== '0'
     );
 
     return allowances;
@@ -227,7 +227,7 @@ export const formatErc20Allowance = (allowance: string, decimals: number, totalS
     return 'Unlimited';
   }
 
-  return toFloat(Number(allowanceBN), decimals);
+  return toFloat(allowanceBN, decimals);
 };
 
 export const getAllowanceI18nValues = (allowance: AllowanceData) => {

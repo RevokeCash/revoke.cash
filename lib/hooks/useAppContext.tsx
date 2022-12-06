@@ -29,7 +29,6 @@ interface Props {
   children: ReactNode;
 }
 
-// TODO: Do we need to export a "loading" variable to indicate the loading of the async parts?
 export const AppContextProvider = ({ children }: Props) => {
   const { selectedChainId, readProvider } = useEthereum();
   const [inputAddress, setInputAddress] = useState<string>();

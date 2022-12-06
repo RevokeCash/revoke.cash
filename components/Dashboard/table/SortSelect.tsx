@@ -3,10 +3,11 @@ import { AllowanceData } from 'lib/interfaces';
 import { setSelectThemeColors } from 'lib/utils/styles';
 import { useMemo } from 'react';
 import Select from 'react-select';
-import { customSortingFns } from './columns';
+import { ColumnId, customSortingFns } from './columns';
 
 interface Option {
-  id: string;
+  id: ColumnId;
+  value: string;
   column: Column<AllowanceData>;
   desc: boolean;
 }
@@ -15,6 +16,7 @@ interface Props {
   table: Table<AllowanceData>;
 }
 
+// TODO: Translations for sorting
 const SortSelect = ({ table }: Props) => {
   const options = useMemo(() => {
     return table
@@ -58,7 +60,7 @@ const SortSelect = ({ table }: Props) => {
   return (
     <Select
       instanceId="sort-select"
-      className="h-full w-72"
+      className="h-full w-72 flex-shrink-0"
       classNamePrefix="sort-select"
       value={options.find((option) => {
         const [sorting] = table.getState().sorting;
@@ -69,6 +71,7 @@ const SortSelect = ({ table }: Props) => {
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
+      components={{ IndicatorSeparator: null }}
       styles={{
         indicatorSeparator: () => ({
           display: 'none',
@@ -93,6 +96,10 @@ const SortSelect = ({ table }: Props) => {
             backgroundColor: 'rgb(229 231 235)',
           },
           cursor: 'pointer',
+        }),
+        singleValue: (styles) => ({
+          ...styles,
+          margin: 0,
         }),
         option: (styles) => ({
           ...styles,

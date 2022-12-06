@@ -21,8 +21,8 @@ export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
   return diff.isZero() ? 0 : diff.lt(0) ? -1 : 1;
 };
 
-export const toFloat = (n: number, decimals: number = 0): string => {
-  return (n / 10 ** decimals).toFixed(3);
+export const toFloat = (n: BigNumberish, decimals: number = 0): string => {
+  return (Number(n) / 10 ** decimals).toFixed(3).replace(/\.?0+$/, '');
 };
 
 export const fromFloat = (floatString: string, decimals: number): string => {
@@ -84,8 +84,7 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<str
 
 export const getBalanceText = (symbol: string, balance: string, decimals?: number) => {
   if (balance === 'ERC1155') return `(ERC1155)`;
-  if (decimals !== undefined) return `${toFloat(Number(balance), decimals)} ${shortenName(symbol)}`;
-  return `${String(balance)} ${shortenName(symbol)}`;
+  return `${toFloat(balance, decimals)} ${shortenName(symbol)}`;
 };
 
 export const topicToAddress = (topic: string) => utils.getAddress(utils.hexDataSlice(topic, 12));
