@@ -46,6 +46,10 @@ const SortSelect = ({ table }: Props) => {
         desc: 'Newest > Oldest',
         asc: 'Oldest > Newest',
       },
+      [customSortingFns.allowance.name]: {
+        desc: 'High > Low',
+        asc: 'Low > High',
+      },
     };
 
     const sortingFnDisplay = sortingFnDisplays[column.getSortingFn().name]?.[desc ? 'desc' : 'asc'];
