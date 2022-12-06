@@ -15,7 +15,7 @@ export const setSelectThemeColors = (theme: any) => ({
     ...theme.colors,
     primary: 'black',
     primary25: 'rgb(229 231 235)',
-    neutral10: 'black',
+    neutral10: '#6b7280',
     neutral20: 'black',
     neutral30: 'black',
     neutral40: 'black',

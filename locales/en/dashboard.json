@@ -24,12 +24,13 @@
   "donate_to_revoke": "Donate to Revoke.cash",
   "headers": {
     "allowance": "Allowance",
+    "asset": "Asset",
     "last_updated": "Last updated",
     "spender": "Spender",
     "token": "Token"
   },
   "mainnets": "Mainnets",
-  "no_allowances": "No allowances",
+  "no_allowances": "No allowances found",
   "or_contribute_to_gitcoin": "Or contribute to our <0>Gitcoin Grant</0>",
   "testnets": "Testnets"
 }

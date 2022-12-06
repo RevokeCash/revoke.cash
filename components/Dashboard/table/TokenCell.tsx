@@ -1,13 +1,10 @@
 import Href from 'components/common/Href';
-import Label from 'components/common/Label';
 import TokenLogo from 'components/common/TokenLogo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import type { AllowanceData } from 'lib/interfaces';
 import { getBalanceText, shortenName } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import { classNames } from 'lib/utils/styles';
-import { isErc721Contract } from 'lib/utils/tokens';
 
 interface Props {
   allowance: AllowanceData;
@@ -38,14 +35,6 @@ const TokenCell = ({ allowance }: Props) => {
           </div>
         </div>
       </div>
-      <Label
-        className={classNames(
-          'w-12',
-          isErc721Contract(allowance.contract) ? 'bg-blue-500 text-white' : 'bg-yellow-500'
-        )}
-      >
-        {isErc721Contract(allowance.contract) ? 'NFT' : 'token'}
-      </Label>
     </div>
   );
 };

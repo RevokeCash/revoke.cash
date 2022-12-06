@@ -198,7 +198,7 @@ export const throwIfSpamNft = async (contract: Contract) => {
 };
 
 export const hasZeroBalance = (token: { balance: string; decimals?: number }) => {
-  return toFloat(Number(token.balance), token.decimals) === '0.000';
+  return toFloat(token.balance, token.decimals) === '0';
 };
 
 export const createTokenContracts = (events: Log[], provider: Provider): Contract[] => {
