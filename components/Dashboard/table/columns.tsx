@@ -1,4 +1,4 @@
-import { createColumnHelper, Row, RowData, SortingFn, sortingFns } from '@tanstack/react-table';
+import { createColumnHelper, Row, RowData, sortingFns } from '@tanstack/react-table';
 import { AllowanceData } from 'lib/interfaces';
 import { toFloat } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
@@ -29,7 +29,7 @@ export enum ColumnId {
 
 export const accessors = {
   allowance: (allowance: AllowanceData) => {
-    if (!allowance.spender) return 'None';
+    if (!allowance.spender) return undefined;
 
     if (allowance.amount) {
       return formatErc20Allowance(allowance.amount, allowance.decimals, allowance.totalSupply);
@@ -46,9 +46,15 @@ export const accessors = {
   },
 };
 
-export const customSortingFns: Record<'timestamp', SortingFn<AllowanceData>> = {
-  timestamp: (rowA, rowB, columnId) => {
+export const customSortingFns = {
+  timestamp: (rowA: Row<AllowanceData>, rowB: Row<AllowanceData>, columnId: string) => {
     return sortingFns.basic(rowA, rowB, columnId);
+  },
+  allowance: (rowA: Row<AllowanceData>, rowB: Row<AllowanceData>, columnId: string) => {
+    if (rowA.getValue(columnId) === rowB.getValue(columnId)) return 0;
+    if (rowA.getValue(columnId) === 'Unlimited') return 1;
+    if (rowB.getValue(columnId) === 'Unlimited') return -1;
+    return sortingFns.alphanumeric(rowA, rowB, columnId);
   },
 };
 
@@ -71,8 +77,9 @@ export const customFilterFns = {
   allowance: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       if (filterValue === 'Unlimited') return row.getValue(columnId) === 'Unlimited';
-      if (filterValue === 'None') return row.getValue(columnId) === 'None';
-      if (filterValue === 'Limited') return row.getValue(columnId) !== 'Unlimited' && row.getValue(columnId) !== 'None';
+      if (filterValue === 'None') return row.getValue(columnId) === undefined;
+      if (filterValue === 'Limited')
+        return row.getValue(columnId) !== 'Unlimited' && row.getValue(columnId) !== undefined;
       return true;
     });
 
@@ -108,7 +115,9 @@ export const columns = [
     id: ColumnId.ALLOWANCE,
     header: () => <HeaderCell i18nKey="dashboard:headers.allowance" />,
     cell: (info) => <AllowanceCell allowance={info.row.original} />,
-    enableSorting: false,
+    enableSorting: true,
+    sortingFn: customSortingFns.allowance,
+    sortUndefined: 1,
     enableColumnFilter: true,
     filterFn: customFilterFns.allowance,
   }),
