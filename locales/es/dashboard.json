@@ -25,7 +25,7 @@
   "headers": {
     "allowance": "Autorización",
     "asset": "Activo",
-    "last_updated": "Last updated",
+    "last_updated": "Last Updated",
     "spender": "Gastador",
     "token": "Token"
   },

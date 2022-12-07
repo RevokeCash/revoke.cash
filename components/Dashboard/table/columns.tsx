@@ -3,13 +3,13 @@ import { AllowanceData } from 'lib/interfaces';
 import { toFloat } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
-import AllowanceCell from './AllowanceCell';
-import AssetTypeCell from './AssetTypeCell';
-import ControlsCell from './controls/ControlsCell';
-import HeaderCell from './HeaderCell';
-import LastUpdatedCell from './LastUpdatedCell';
-import SpenderCell from './SpenderCell';
-import TokenCell from './TokenCell';
+import AllowanceCell from './cells/AllowanceCell';
+import AssetTypeCell from './cells/AssetTypeCell';
+import ControlsCell from './cells/controls/ControlsCell';
+import HeaderCell from './cells/HeaderCell';
+import LastUpdatedCell from './cells/LastUpdatedCell';
+import SpenderCell from './cells/SpenderCell';
+import TokenCell from './cells/TokenCell';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
@@ -22,7 +22,7 @@ export enum ColumnId {
   ASSET_TYPE = 'Asset Type',
   BALANCE = 'Balance',
   ALLOWANCE = 'Allowance',
-  SPENDER = 'Spender',
+  SPENDER = 'Approved Spender',
   LAST_UPDATED = 'Last Updated',
   ACTIONS = 'Actions',
 }

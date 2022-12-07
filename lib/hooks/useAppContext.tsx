@@ -40,8 +40,8 @@ export const AppContextProvider = ({ children }: Props) => {
   });
 
   const { data: openSeaProxyAddress, isLoading: loadingOpenSeaProxyAddress } = useQuery({
-    queryKey: ['openSeaProxyAddress', inputAddress, selectedChainId],
-    queryFn: () => getOpenSeaProxyAddress(inputAddress, readProvider),
+    queryKey: ['openSeaProxyAddress', inputAddress],
+    queryFn: () => getOpenSeaProxyAddress(inputAddress),
     staleTime: Infinity,
     cacheTime: Infinity,
   });

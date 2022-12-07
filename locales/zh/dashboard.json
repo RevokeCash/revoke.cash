@@ -24,9 +24,9 @@
   "donate_to_revoke": "为Revoke.cash捐款",
   "headers": {
     "allowance": "授权",
-    "asset": "Asset",
-    "last_updated": "Last updated",
-    "spender": "Spender",
+    "asset": "Asset Name & Balance",
+    "last_updated": "Last Updated",
+    "spender": "Approved Spender",
     "token": "代币"
   },
   "mainnets": "主网",
