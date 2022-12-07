@@ -2,8 +2,8 @@ import { classNames } from 'lib/utils/styles';
 
 interface Props {
   disabled?: boolean;
-  style: 'primary' | 'secondary';
-  size: 'sm' | 'md' | 'lg';
+  style: 'primary' | 'secondary' | 'none';
+  size: 'sm' | 'md' | 'lg' | 'none';
   onClick?: () => void;
   href?: string;
   children: React.ReactNode;
@@ -20,7 +20,7 @@ const Button = ({ disabled, style, size, onClick, href, external, children, clas
   const largeClasses = 'px-4 py-2 text-lg';
 
   const classes = classNames(
-    commonClasses,
+    style !== 'none' && commonClasses,
     style === 'primary' ? primaryClasses : style === 'secondary' ? secondaryClasses : undefined,
     size === 'sm' ? smallClasses : size === 'md' ? mediumClasses : size === 'lg' ? largeClasses : undefined,
     className
