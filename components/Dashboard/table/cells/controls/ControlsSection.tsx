@@ -8,18 +8,18 @@ import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import SwitchChainButton from './SwitchChainButton';
-import UpdateControls from './UpdateControls';
 
 interface Props {
   allowance: AllowanceData;
   onUpdate: (allowance: AllowanceData, newAmount?: string) => void;
 }
 
+// TODO: Reconcile this with Update functionality
 const ControlsSection = ({ allowance, onUpdate }: Props) => {
   const { t } = useTranslation();
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
   const { inputAddress } = useAppContext();
-  const { revoke, update } = useRevoke(allowance, onUpdate);
+  const { revoke } = useRevoke(allowance, onUpdate);
 
   const chainName = getChainName(selectedChainId);
 
@@ -38,7 +38,7 @@ const ControlsSection = ({ allowance, onUpdate }: Props) => {
   const controls = (
     <div className="flex gap-1">
       <RevokeButton revoke={revoke} disabled={disabled} />
-      {update && <UpdateControls update={update} disabled={disabled} />}
+      {/* {update && <UpdateControls update={update} disabled={disabled} />} */}
     </div>
   );
 

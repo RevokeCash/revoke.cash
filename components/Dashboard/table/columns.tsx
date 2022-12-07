@@ -114,7 +114,7 @@ export const columns = [
   columnHelper.accessor(accessors.allowance, {
     id: ColumnId.ALLOWANCE,
     header: () => <HeaderCell i18nKey="dashboard:headers.allowance" />,
-    cell: (info) => <AllowanceCell allowance={info.row.original} />,
+    cell: (info) => <AllowanceCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
     enableSorting: true,
     sortingFn: customSortingFns.allowance,
     sortUndefined: 1,

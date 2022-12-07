@@ -12,7 +12,7 @@ const RevokeButton = ({ disabled, revoke }: Props) => {
   const { execute, loading } = useAsyncCallback(revoke);
 
   return (
-    <Button disabled={loading || disabled} style="primary" size="sm" onClick={execute}>
+    <Button disabled={loading || disabled} style="secondary" size="sm" onClick={execute}>
       {loading ? t('common:buttons.revoking') : t('common:buttons.revoke')}
     </Button>
   );
