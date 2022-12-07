@@ -5,8 +5,9 @@ import SpinLoader from 'components/common/SpinLoader';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import AllowanceTable from './table/AllowanceTable';
 
+// TODO: Server-side rendering of account page
 const DashboardBody = () => {
-  const { inputAddress, loading } = useAppContext();
+  const { inputAddress } = useAppContext();
 
   const { isLoading: loggingIn, error } = useQuery<void, Error>({
     queryKey: ['login'],
@@ -15,7 +16,7 @@ const DashboardBody = () => {
     cacheTime: Infinity,
   });
 
-  if (loading || loggingIn) {
+  if (loggingIn) {
     return <SpinLoader size={40} center />;
   }
 

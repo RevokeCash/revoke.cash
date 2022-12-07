@@ -1,5 +1,5 @@
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import RevokeButton from 'components/Dashboard/table/controls/RevokeButton';
+import RevokeButton from 'components/Dashboard/table/cells/controls/RevokeButton';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { useRevoke } from 'lib/hooks/useRevoke';
