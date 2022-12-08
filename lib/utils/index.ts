@@ -10,8 +10,8 @@ export const shortenAddress = (address?: string): string => {
 
 export const shortenName = (name?: string): string | undefined => {
   if (!name) return undefined;
-  if (name.length <= 20) return name;
-  return `${name.substr(0, 16).trim()}...`;
+  if (name.length <= 16) return name;
+  return `${name.substr(0, 13).trim()}...`;
 };
 
 export const compareBN = (a: BigNumberish, b: BigNumberish): number => {

@@ -1,5 +1,6 @@
+import { useRevoke } from 'lib/hooks/useRevoke';
 import { AllowanceData } from 'lib/interfaces';
-import ControlsSection from './ControlsSection';
+import ControlsSection from './controls/ControlsSection';
 
 interface Props {
   allowance: AllowanceData;
@@ -7,9 +8,11 @@ interface Props {
 }
 
 const ControlsCell = ({ allowance, onUpdate }: Props) => {
+  const { revoke } = useRevoke(allowance, onUpdate);
+
   return (
     <div className="flex h-6 w-full justify-end">
-      <ControlsSection allowance={allowance} onUpdate={onUpdate} />
+      <ControlsSection allowance={allowance} revoke={revoke} />
     </div>
   );
 };

@@ -20,7 +20,7 @@ const TokenCell = ({ allowance }: Props) => {
     </Href>
   );
 
-  if (allowance.symbol.length > 20) {
+  if (allowance.symbol.length > 16) {
     link = <WithHoverTooltip tooltip={allowance.symbol}>{link}</WithHoverTooltip>;
   }
 

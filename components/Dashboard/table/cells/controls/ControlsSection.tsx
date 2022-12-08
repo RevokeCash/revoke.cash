@@ -2,24 +2,25 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import RevokeButton from 'components/Dashboard/table/cells/controls/RevokeButton';
 import { useAppContext } from 'lib/hooks/useAppContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { useRevoke } from 'lib/hooks/useRevoke';
 import { AllowanceData } from 'lib/interfaces';
+import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import SwitchChainButton from './SwitchChainButton';
+import UpdateControls from './UpdateControls';
 
 interface Props {
   allowance: AllowanceData;
-  onUpdate: (allowance: AllowanceData, newAmount?: string) => void;
+  update?: (newAmount?: string) => Promise<void>;
+  reset?: () => void;
+  revoke?: () => Promise<void>;
 }
 
-// TODO: Reconcile this with Update functionality
-const ControlsSection = ({ allowance, onUpdate }: Props) => {
+const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   const { t } = useTranslation();
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
   const { inputAddress } = useAppContext();
-  const { revoke } = useRevoke(allowance, onUpdate);
 
   const chainName = getChainName(selectedChainId);
 
@@ -35,10 +36,18 @@ const ControlsSection = ({ allowance, onUpdate }: Props) => {
     return <SwitchChainButton />;
   }
 
+  const { amount } = getAllowanceI18nValues(allowance);
   const controls = (
-    <div className="flex gap-1">
-      <RevokeButton revoke={revoke} disabled={disabled} />
-      {/* {update && <UpdateControls update={update} disabled={disabled} />} */}
+    <div className="flex">
+      {revoke && <RevokeButton revoke={revoke} disabled={disabled} />}
+      {update && reset && (
+        <UpdateControls
+          update={update}
+          disabled={disabled}
+          reset={reset}
+          defaultValue={amount === 'Unlimited' ? '0' : amount ?? '0'}
+        />
+      )}
     </div>
   );
 
@@ -62,6 +71,7 @@ const ControlsSection = ({ allowance, onUpdate }: Props) => {
     const tooltip = (
       <Trans i18nKey={`dashboard:controls.tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
     );
+
     return (
       <WithHoverTooltip tooltip={tooltip} disabled>
         {controls}
