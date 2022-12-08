@@ -5,7 +5,7 @@ import { formatErc20Allowance } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetTypeCell from './cells/AssetTypeCell';
-import ControlsCell from './cells/controls/ControlsCell';
+import ControlsCell from './cells/ControlsCell';
 import HeaderCell from './cells/HeaderCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
 import SpenderCell from './cells/SpenderCell';

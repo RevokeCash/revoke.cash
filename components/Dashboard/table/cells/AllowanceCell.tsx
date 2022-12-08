@@ -6,24 +6,20 @@ import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { classNames } from 'lib/utils/styles';
 import Trans from 'next-translate/Trans';
 import { useState } from 'react';
-import UpdateControls from './controls/UpdateControls';
+import ControlsSection from './controls/ControlsSection';
 
 interface Props {
   allowance: AllowanceData;
   onUpdate: (allowance: AllowanceData, newAmount?: string) => void;
 }
 
-// TODO: Cancel update
-// TODO: Improve all this
 const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const [editing, setEditing] = useState<boolean>();
   const { update } = useRevoke(allowance, onUpdate);
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
 
   if (editing) {
-    return (
-      <UpdateControls update={update} disabled={false} defaultValue={amount === 'Unlimited' ? undefined : amount} />
-    );
+    return <ControlsSection allowance={allowance} update={update} reset={() => setEditing(false)} />;
   }
 
   return (

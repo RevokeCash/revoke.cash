@@ -7,25 +7,36 @@ interface Props {
   update: (newAllowance: string) => Promise<void>;
   disabled: boolean;
   defaultValue?: string;
+  reset: () => void;
 }
 
-const UpdateControls = ({ disabled, update, defaultValue }: Props) => {
+const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
   const { t } = useTranslation();
   const [value, setValue] = useState<string>(defaultValue ?? '0');
   const { execute, loading } = useAsyncCallback(() => update(value));
 
+  const callUpdate = async () => {
+    await execute();
+    reset();
+  };
+
   return (
-    <div className="flex">
+    <div className="flex gap-1">
       <input
-        className="border-y border-l border-black rounded rounded-r-none w-16 px-1.5 focus:outline-black"
+        className="border border-black rounded w-16 px-1.5 focus:outline-black"
         type="text"
         placeholder={defaultValue ?? '0'}
         onChange={(e) => setValue(e.target.value)}
         value={value}
       />
-      <Button disabled={loading || disabled} style="secondary" size="sm" onClick={execute} className="rounded-l-none">
+      <Button disabled={loading || disabled} style="tertiary" size="sm" onClick={callUpdate}>
         {loading ? t('common:buttons.updating') : t('common:buttons.update')}
       </Button>
+      {!loading && (
+        <Button disabled={loading || disabled} style="tertiary" size="sm" onClick={reset}>
+          Cancel
+        </Button>
+      )}
     </div>
   );
 };
