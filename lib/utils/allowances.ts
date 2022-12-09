@@ -3,7 +3,7 @@ import type { Contract, providers } from 'ethers';
 import { BigNumber, utils } from 'ethers';
 import { ERC721Metadata } from 'lib/abis';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
-import type { AllowanceData, BaseAllowanceData, BaseTokenData, LogsProvider, TokenMapping } from 'lib/interfaces';
+import type { AllowanceData, BaseAllowanceData, BaseTokenData, LogsProvider } from 'lib/interfaces';
 import {
   deduplicateLogsByTopics,
   filterLogsByAddress,
@@ -19,7 +19,6 @@ export const getAllowancesForAddress = async (
   userAddress: string,
   logsProvider: LogsProvider,
   readProvider: providers.Provider,
-  tokenMapping: TokenMapping,
   openSeaProxyAddress?: string
 ): Promise<AllowanceData[]> => {
   const latestBlockNumber = await readProvider.getBlockNumber();
@@ -72,7 +71,7 @@ export const getAllowancesForAddress = async (
       const transfersTo = filterLogsByAddress(transferToEvents, contract.address);
 
       try {
-        const tokenData = await getTokenData(contract, userAddress, tokenMapping, transfersFrom, transfersTo);
+        const tokenData = await getTokenData(contract, userAddress, transfersFrom, transfersTo);
         const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, userAddress, tokenData);
 
         if (allowances.length === 0) {

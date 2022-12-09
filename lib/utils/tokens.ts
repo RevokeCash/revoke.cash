@@ -1,21 +1,12 @@
 import type { Log, Provider } from '@ethersproject/abstract-provider';
-import axios from 'axios';
-import { ChainId } from 'eth-chains';
 import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
-import nftTokenMapping from 'lib/data/nft-token-mapping.json';
-import type { BaseTokenData, TokenFromList, TokenMapping, TokenStandard } from 'lib/interfaces';
+import { ALL_TOKENS_MAPPING } from 'lib/data/token-mapping';
+import type { BaseTokenData } from 'lib/interfaces';
 import { toFloat } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
-
-// Check if a token is verified in the token mapping
-export const isVerifiedToken = (tokenAddress: string, tokenMapping?: TokenMapping): boolean => {
-  // If we don't know a verified token mapping, we skip checking verification
-  if (!tokenMapping) return true;
-  return tokenMapping[utils.getAddress(tokenAddress)] !== undefined;
-};
 
 export const isSpamToken = (token: { symbol: string }) => {
   const includesHttp = /https?:\/\//i.test(token.symbol);
@@ -27,79 +18,14 @@ export const isSpamToken = (token: { symbol: string }) => {
   return includesHttp || includesTld;
 };
 
-export const getFullTokenMapping = async (chainId: number): Promise<TokenMapping | undefined> => {
-  if (!chainId) return undefined;
-
-  const erc20Mapping = await getTokenMapping(chainId, 'ERC20');
-  const erc721Mapping = nftTokenMapping;
-
-  if (erc20Mapping === undefined && erc721Mapping === undefined) return undefined;
-
-  const fullMapping = { ...erc721Mapping, ...erc20Mapping };
-  return fullMapping;
-};
-
-const getTokenMapping = async (
-  chainId: number,
-  standard: TokenStandard = 'ERC20'
-): Promise<TokenMapping | undefined> => {
-  const url = getTokenListUrl(chainId, standard);
-
-  try {
-    const res = await axios.get(url);
-    const tokens: TokenFromList[] = res.data.tokens;
-
-    const tokenMapping = {};
-    for (const token of tokens) {
-      tokenMapping[utils.getAddress(token.address)] = token;
-    }
-
-    return tokenMapping;
-  } catch {
-    // Fallback to 1inch token mapping
-    return getTokenMappingFrom1inch(chainId);
-  }
-};
-
-const getTokenMappingFrom1inch = async (chainId: number): Promise<TokenMapping | undefined> => {
-  try {
-    const { data: mapping } = await axios.get(`https://tokens.1inch.io/v1.1/${chainId}`);
-
-    const tokenMapping = Object.fromEntries(
-      Object.entries(mapping).map(([address, token]) => [utils.getAddress(address), token])
-    );
-
-    return tokenMapping as TokenMapping;
-  } catch {
-    return undefined;
-  }
-};
-
-const getTokenListUrl = (chainId: number, standard: TokenStandard = 'ERC20'): string | undefined => {
-  const mapping = {
-    ERC20: {
-      [ChainId.HarmonyMainnetShard0]:
-        'https://raw.githubusercontent.com/DefiKingdoms/community-token-list/main/src/defikingdoms-default.tokenlist.json',
-      [ChainId.MetisAndromedaMainnet]:
-        'https://raw.githubusercontent.com/MetisProtocol/metis/master/tokenlist/toptoken.json',
-    },
-    ERC721: {
-      [ChainId.EthereumMainnet]:
-        'https://raw.githubusercontent.com/vasa-develop/nft-tokenlist/master/mainnet_curated_tokens.json',
-    },
-  };
-
-  return mapping[standard][chainId];
-};
-
-export const getTokenIcon = (tokenAddress: string, tokenMapping: TokenMapping = {}) => {
+export const getTokenIcon = (tokenAddress: string) => {
   const normalisedAddress = utils.getAddress(tokenAddress);
 
   // Retrieve a token icon from the token list if specified (filtering relative paths)
-  const tokenData = tokenMapping[normalisedAddress];
+  const tokenData = ALL_TOKENS_MAPPING[normalisedAddress];
   const iconFromMapping = !tokenData?.logoURI?.startsWith('/') && tokenData?.logoURI;
 
-  return iconFromMapping || 'fallback-token-icon.png';
+  return iconFromMapping || '/assets/images/fallback-token-icon.png';
 };
 
 export const fallbackTokenIconOnError = (ev: any) => {
@@ -109,21 +35,19 @@ export const fallbackTokenIconOnError = (ev: any) => {
 export const getTokenData = async (
   contract: Contract,
   ownerAddress: string,
-  tokenMapping: TokenMapping = {},
   transfersFrom: Log[],
   transfersTo: Log[]
 ): Promise<BaseTokenData> => {
   if (isErc721Contract(contract)) {
-    return getErc721TokenData(contract, ownerAddress, tokenMapping, transfersFrom, transfersTo);
+    return getErc721TokenData(contract, ownerAddress, transfersFrom, transfersTo);
   }
 
-  return getErc20TokenData(contract, ownerAddress, tokenMapping);
+  return getErc20TokenData(contract, ownerAddress);
 };
 
-export const getErc20TokenData = async (contract: Contract, ownerAddress: string, tokenMapping: TokenMapping = {}) => {
-  const tokenData = tokenMapping[utils.getAddress(contract.address)];
-  const icon = getTokenIcon(contract.address, tokenMapping);
-  const verified = isVerifiedToken(contract.address, tokenMapping);
+export const getErc20TokenData = async (contract: Contract, ownerAddress: string) => {
+  const tokenData = ALL_TOKENS_MAPPING[utils.getAddress(contract.address)];
+  const icon = getTokenIcon(contract.address);
 
   const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
@@ -135,19 +59,17 @@ export const getErc20TokenData = async (contract: Contract, ownerAddress: string
   ]);
 
   const totalSupply = totalSupplyBN.toString();
-  return { contract, symbol, decimals, icon, verified, totalSupply, balance };
+  return { contract, symbol, decimals, icon, totalSupply, balance };
 };
 
 export const getErc721TokenData = async (
   contract: Contract,
   ownerAddress: string,
-  tokenMapping: TokenMapping = {},
   transfersFrom: Log[],
   transfersTo: Log[]
 ) => {
-  const tokenData = tokenMapping[utils.getAddress(contract.address)];
-  const icon = getTokenIcon(contract.address, tokenMapping);
-  const verified = isVerifiedToken(contract.address, tokenMapping);
+  const tokenData = ALL_TOKENS_MAPPING[utils.getAddress(contract.address)];
+  const icon = getTokenIcon(contract.address);
 
   const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
   const calculatedBalance = String(transfersTo.length - transfersFrom.length);
@@ -163,7 +85,7 @@ export const getErc721TokenData = async (
     throwIfSpamNft(contract),
   ]);
 
-  return { contract, symbol, balance, icon, verified };
+  return { contract, symbol, balance, icon };
 };
 
 export const throwIfNotErc20 = async (contract: Contract) => {
