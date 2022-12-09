@@ -22,23 +22,14 @@ const symbolOverrides = {
 
 const fullOverrides = {
   '0x059EDD72Cd353dF5106D2B9cC5ab83a52287aC3a': {
-    chainId: 1,
-    address: '0x059EDD72Cd353dF5106D2B9cC5ab83a52287aC3a',
-    name: 'Art Blocks',
     symbol: 'Art Blocks',
     logoURI: 'https://storage.googleapis.com/subgraph-images/1644278294885Squig.blk.circle.800px.png',
   },
   '0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270': {
-    chainId: 1,
-    address: '0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270',
-    name: 'Art Blocks',
     symbol: 'Art Blocks',
     logoURI: 'https://storage.googleapis.com/subgraph-images/1644278294885Squig.blk.circle.800px.png',
   },
   '0xFaC7BEA255a6990f749363002136aF6556b31e04': {
-    chainId: 1,
-    address: '0xFaC7BEA255a6990f749363002136aF6556b31e04',
-    name: 'ENS Names (old)',
     symbol: 'ENS Names (old)',
     logoURI:
       'https://i.seadn.io/gae/0cOqWoYA7xL9CkUjGlxsjreSYBdrUBE0c6EO1COG4XE8UeP-Z30ckqUNiL872zHQHQU5MUNMNhfDpyXIP17hRSC5HQ?w=500&auto=format',
@@ -75,9 +66,6 @@ const updateNftTokenlist = async () => {
       const symbol = symbolOverrides[address] ?? name;
 
       const nft = {
-        chainId: 1,
-        address,
-        name,
         symbol,
         logoURI: image.replace('w=500', 'w=32'),
       };
@@ -89,7 +77,7 @@ const updateNftTokenlist = async () => {
 
     // Write to file at every iteration
     const originalMapping = JSON.parse(fs.readFileSync(NFT_TOKEN_MAPPING_PATH, 'utf8'));
-    const fullMapping = { ...originalMapping, ...mapping };
+    const fullMapping = { '1': { ...originalMapping['1'], ...mapping } };
     fs.writeFileSync(NFT_TOKEN_MAPPING_PATH, JSON.stringify(fullMapping, null, 2));
 
     // Cut off if we're below a certain volume

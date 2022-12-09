@@ -2,18 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowancesForAddress } from 'lib/utils/allowances';
 import { useEffect, useState } from 'react';
-import { useAppContext } from './useAppContext';
 import { useEthereum } from './useEthereum';
 
 export const useAllowances = (userAddress: string) => {
   const [allowances, setAllowances] = useState<AllowanceData[]>();
 
-  const { tokenMapping } = useAppContext();
   const { readProvider, logsProvider, selectedChainId } = useEthereum();
 
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
     queryKey: ['allowances', userAddress, selectedChainId],
-    queryFn: () => getAllowancesForAddress(userAddress, logsProvider, readProvider, tokenMapping),
+    queryFn: () => getAllowancesForAddress(userAddress, logsProvider, readProvider),
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,
     cacheTime: Infinity,

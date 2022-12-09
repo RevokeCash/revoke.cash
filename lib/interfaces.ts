@@ -6,7 +6,6 @@ export interface BaseTokenData {
   symbol: string;
   balance: string;
   icon: string;
-  verified: boolean;
   decimals?: number;
   totalSupply?: string;
 }
@@ -28,27 +27,20 @@ export interface AllowanceData extends BaseTokenData {
 }
 
 export interface TokenFromList {
-  chainId: number;
-  address: string;
-  name: string;
   symbol: string;
-  logoURI: string;
-  // Only for ERC20
   decimals?: number;
+  logoURI?: string;
 }
 
 export interface TokenMapping {
+  [chainId: string]: ChainTokenMapping;
+}
+
+export interface ChainTokenMapping {
   [index: string]: TokenFromList;
 }
 
 export type TokenStandard = 'ERC20' | 'ERC721';
-
-export interface DashboardSettings {
-  includeUnverifiedTokens: boolean;
-  includeTokensWithoutBalances: boolean;
-  includeTokensWithoutAllowances: boolean;
-  tokenStandard: TokenStandard;
-}
 
 export type LogsProvider = Pick<Provider, 'getLogs'>;
 

@@ -6,6 +6,8 @@ import type { AllowanceData } from 'lib/interfaces';
 import AllowanceTableBody from './AllowanceTableBody';
 import AllowanceTableHeader from './AllowanceTableHeader';
 
+// TODO: It's always using the Infura provider, even if it could be using the injected provider
+
 const AllowanceTable = () => {
   const { inputAddress } = useAppContext();
   const { allowances, loading, error, onUpdate } = useAllowances(inputAddress);
