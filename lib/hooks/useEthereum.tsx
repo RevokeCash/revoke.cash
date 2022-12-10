@@ -161,6 +161,8 @@ export const EthereumProvider = ({ children }: Props) => {
   );
 
   const web3Modal = useMemo(() => {
+    if (typeof window === 'undefined') return;
+
     const modal = new Web3Modal({
       cacheProvider: true, // optional
       providerOptions, // required
@@ -285,7 +287,7 @@ export const EthereumProvider = ({ children }: Props) => {
     <EthereumContext.Provider
       value={{
         readProvider,
-        connectionType: web3Modal.cachedProvider,
+        connectionType: web3Modal?.cachedProvider,
         logsProvider,
         connectedChainId,
         selectedChainId,

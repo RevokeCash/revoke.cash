@@ -8,16 +8,16 @@ interface Props {
   className?: string;
   external?: boolean;
   router?: boolean;
-  style?: 'html' | 'black';
+  style: 'html' | 'black' | 'none';
 }
 
 const Href = ({ href, children, external, className, router, style }: Props) => {
-  const classes = classNames(
-    className,
-    style === 'html'
-      ? 'text-blue-700 visited:text-fuchsia-800 no-underline hover:underline'
-      : ' underline text-black visited:text-black'
-  );
+  const classMapping = {
+    html: 'text-blue-700 visited:text-fuchsia-800 no-underline hover:underline',
+    black: 'underline text-black visited:text-black',
+  };
+
+  const classes = classNames(className, classMapping[style]);
 
   const hrefComponent = (
     <a className={classes} href={href} target={external ? '_blank' : undefined}>

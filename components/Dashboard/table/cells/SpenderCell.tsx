@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import Href from 'components/common/Href';
 import SpinLoader from 'components/common/SpinLoader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAppContext } from 'lib/hooks/useAppContext';
+import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import type { AllowanceData } from 'lib/interfaces';
 import { shortenName } from 'lib/utils';
@@ -16,7 +16,7 @@ interface Props {
 
 const SpenderCell = ({ allowance }: Props) => {
   const { selectedChainId } = useEthereum();
-  const { openSeaProxyAddress } = useAppContext();
+  const { openSeaProxyAddress } = useAddressContext();
 
   // TODO: Expose this data to react-table
   const { data: spenderName, isLoading } = useQuery({
@@ -35,7 +35,7 @@ const SpenderCell = ({ allowance }: Props) => {
   return (
     <div className={classNames(!allowance.spender && 'text-gray-400', 'flex justify-start')}>
       <WithHoverTooltip tooltip={allowance.spender}>
-        <Href href={explorerUrl} external>
+        <Href href={explorerUrl} style="black" external>
           {spenderName ?? shortenName(allowance.spender)}
         </Href>
       </WithHoverTooltip>

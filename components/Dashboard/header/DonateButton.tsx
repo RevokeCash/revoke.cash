@@ -117,7 +117,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
               <div>
                 <Trans
                   i18nKey="dashboard:or_contribute_to_gitcoin"
-                  components={[<Href href={GITCOIN_URL} external />]}
+                  components={[<Href href={GITCOIN_URL} style="black" external />]}
                 />
               </div>
             </div>

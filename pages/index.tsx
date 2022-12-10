@@ -1,8 +1,4 @@
 import { displayGitcoinToast } from 'components/common/gitcoin-toast';
-import DashboardBody from 'components/Dashboard/DashboardBody';
-import DashboardWrapper from 'components/Dashboard/DashboardWrapper';
-import ConnectSection from 'components/Dashboard/header/ConnectSection';
-import DashboardHeader from 'components/Dashboard/header/DashboardHeader';
 import PublicLayout from 'layouts/PublicLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
@@ -20,13 +16,7 @@ const App: NextPage = () => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <PublicLayout>
-        <DashboardWrapper>
-          <ConnectSection />
-          <DashboardHeader />
-          <DashboardBody />
-        </DashboardWrapper>
-      </PublicLayout>
+      <PublicLayout>TODO: Add Landing Page Here</PublicLayout>
     </>
   );
 };

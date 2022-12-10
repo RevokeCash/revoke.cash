@@ -19,7 +19,11 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
 
   if (editing) {
-    return <ControlsSection allowance={allowance} update={update} reset={() => setEditing(false)} />;
+    return (
+      <div className="flex">
+        <ControlsSection allowance={allowance} update={update} reset={() => setEditing(false)} />
+      </div>
+    );
   }
 
   return (

@@ -7,5 +7,6 @@ module.exports = {
     '/about': ['about'],
     '/faq': ['faq'],
     '/extension': ['extension'],
+    'rgx:/address/.*': ['dashboard'],
   },
 };
