@@ -13,13 +13,13 @@ interface Props {
 
 const Button = ({ disabled, style, size, onClick, href, external, children, className }: Props) => {
   const classMapping = {
-    common: 'flex justify-center items-center border border-black rounded focus:outline-black duration-150',
+    common: 'flex justify-center items-center border border-black focus:outline-black duration-150',
     primary: 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-gray-200 disabled:bg-gray-300',
     tertiary: 'text-black border-none',
-    sm: 'px-1.5 py-0.5 text-xs',
-    md: 'px-3 py-1.5 text-base',
-    lg: 'px-4 py-2 text-lg',
+    sm: 'px-1.5 py-0.5 text-xs rounded-md',
+    md: 'px-4 py-1.5 text-base rounded-lg',
+    lg: 'px-6 py-2 text-lg rounded-xl',
   };
 
   const classes = classNames(

@@ -155,10 +155,10 @@ const ValueContainer = ({ children, getValue, options }) => {
     <div className="flex items-center px-2 gap-2">
       <span>Filters</span>
       {labels.map((label) => (
-        <Label className="bg-gray-300 text-base rounded-sm px-2 font-normal">{label}</Label>
+        <Label className="bg-gray-300 text-base rounded-md px-2 font-normal">{label}</Label>
       ))}
       {labels.length === 0 && (
-        <Label className="bg-gray-300 text-base rounded-sm px-2 font-normal">Showing everything</Label>
+        <Label className="bg-gray-300 text-base rounded-md px-2 font-normal">Showing everything</Label>
       )}
       {children}
     </div>

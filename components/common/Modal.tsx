@@ -1,6 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { Fragment, ReactNode, useRef } from 'react';
+import Button from './Button';
 
 interface Props {
   open: boolean;
@@ -39,14 +40,15 @@ const Modal = ({ open, setOpen, children }: Props) => {
             >
               <Dialog.Panel className="border border-black relative transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
                 <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
-                  <button
-                    type="button"
-                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-black"
+                  <Button
+                    style="none"
+                    size="none"
+                    className="text-gray-400 hover:text-gray-500 focus:outline-black"
                     onClick={() => setOpen(false)}
                   >
                     <span className="sr-only">Close</span>
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
+                  </Button>
                 </div>
                 <div>{children}</div>
               </Dialog.Panel>

@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
+import DonateButton from './DonateButton';
 import NavLink from './NavLink';
 import SearchBar from './SearchBar';
 
@@ -17,10 +18,11 @@ const Header = () => {
         </div>
         <SearchBar />
       </div>
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-end items-center gap-4">
         <NavLink to="/about" text={t('common:nav.about')} />
         <NavLink to="/faq" text={t('common:nav.faq')} />
         <NavLink to="/extension" text={t('common:nav.extension')} />
+        <DonateButton size="md" />
       </div>
     </header>
   );
