@@ -13,7 +13,7 @@ const NavLink = ({ to, text }: Props) => {
 
   const classes = classNames(
     // router.asPath === to ? 'text-black visited:text-black' : 'text-gray-500 visited:text-gray-500',
-    'font-semibold text-lg text-black visited:text-black'
+    'text-lg text-black visited:text-black'
   );
 
   return (

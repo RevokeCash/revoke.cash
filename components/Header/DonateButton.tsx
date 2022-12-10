@@ -82,7 +82,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
   return (
     <>
-      <Button style="secondary" size={size} onClick={handleOpen} className="h-full hidden sm:block">
+      <Button style="primary" size={size} onClick={handleOpen} className="">
         {t('common:buttons.donate')}
       </Button>
 

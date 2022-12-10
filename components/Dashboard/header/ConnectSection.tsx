@@ -1,5 +1,5 @@
+import DonateButton from '../../Header/DonateButton';
 import ConnectButton from './ConnectButton';
-import DonateButton from './DonateButton';
 
 const ConnectSection = () => {
   return (

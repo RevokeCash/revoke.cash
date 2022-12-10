@@ -23,7 +23,7 @@ const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
   return (
     <div className="flex gap-1">
       <input
-        className="border border-black rounded w-16 px-1.5 focus:outline-black"
+        className="border border-black rounded-md w-16 px-1.5 focus:outline-black"
         type="text"
         placeholder={defaultValue ?? '0'}
         onChange={(e) => setValue(e.target.value)}
