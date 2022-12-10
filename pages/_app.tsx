@@ -1,10 +1,14 @@
 import { init, track } from '@amplitude/analytics-browser';
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { EthereumProvider } from 'lib/hooks/useEthereum';
 import type { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/index.css';
 
@@ -19,6 +23,23 @@ init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, null, {
   },
 });
 
+const queryClient = new QueryClient();
+
+const LogIn = ({ children }) => {
+  const { isLoading: loggingIn } = useQuery<void, Error>({
+    queryKey: ['login'],
+    queryFn: () => axios.post('/api/login'),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
+
+  if (loggingIn) {
+    return null;
+  }
+
+  return children;
+};
+
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
 
@@ -29,7 +50,27 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <EthereumProvider>
+          <LogIn>
+            <Component {...pageProps} />
+          </LogIn>
+          <ToastContainer
+            className="text-center"
+            position="top-right"
+            icon={false}
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            progressStyle={{ backgroundColor: 'black' }}
+          />
+        </EthereumProvider>
+      </QueryClientProvider>
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </>
   );

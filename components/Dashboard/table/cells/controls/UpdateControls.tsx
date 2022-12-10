@@ -33,7 +33,7 @@ const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
         {loading ? t('common:buttons.updating') : t('common:buttons.update')}
       </Button>
       {!loading && (
-        <Button disabled={loading || disabled} style="tertiary" size="sm" onClick={reset}>
+        <Button style="tertiary" size="sm" onClick={reset}>
           Cancel
         </Button>
       )}

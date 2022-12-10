@@ -1,6 +1,6 @@
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import RevokeButton from 'components/Dashboard/table/cells/controls/RevokeButton';
-import { useAppContext } from 'lib/hooks/useAppContext';
+import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
@@ -20,12 +20,12 @@ interface Props {
 const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   const { t } = useTranslation();
   const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
-  const { inputAddress } = useAppContext();
+  const { address } = useAddressContext();
 
   const chainName = getChainName(selectedChainId);
 
   const isConnected = account !== undefined;
-  const isConnectedAddress = isConnected && inputAddress === account;
+  const isConnectedAddress = isConnected && address === account;
   const needsToSwitchChain = isConnected && selectedChainId !== connectedChainId;
   const canSwitchChain = connectionType === 'injected';
   const disabled = !isConnectedAddress || (needsToSwitchChain && !canSwitchChain);
@@ -52,19 +52,11 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   );
 
   if (!isConnected) {
-    return (
-      <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connect_wallet')} disabled>
-        {controls}
-      </WithHoverTooltip>
-    );
+    return <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connect_wallet')}>{controls}</WithHoverTooltip>;
   }
 
   if (!isConnectedAddress) {
-    return (
-      <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connected_account')} disabled>
-        {controls}
-      </WithHoverTooltip>
-    );
+    return <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connected_account')}>{controls}</WithHoverTooltip>;
   }
 
   if (needsToSwitchChain && !canSwitchChain) {
@@ -72,11 +64,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
       <Trans i18nKey={`dashboard:controls.tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
     );
 
-    return (
-      <WithHoverTooltip tooltip={tooltip} disabled>
-        {controls}
-      </WithHoverTooltip>
-    );
+    return <WithHoverTooltip tooltip={tooltip}>{controls}</WithHoverTooltip>;
   }
 
   return controls;

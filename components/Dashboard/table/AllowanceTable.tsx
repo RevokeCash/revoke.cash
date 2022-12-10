@@ -1,7 +1,7 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ColumnId, columns } from 'components/Dashboard/table/columns';
+import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useAllowances } from 'lib/hooks/useAllowances';
-import { useAppContext } from 'lib/hooks/useAppContext';
 import type { AllowanceData } from 'lib/interfaces';
 import AllowanceTableBody from './AllowanceTableBody';
 import AllowanceTableHeader from './AllowanceTableHeader';
@@ -9,8 +9,8 @@ import AllowanceTableHeader from './AllowanceTableHeader';
 // TODO: It's always using the Infura provider, even if it could be using the injected provider
 
 const AllowanceTable = () => {
-  const { inputAddress } = useAppContext();
-  const { allowances, loading, error, onUpdate } = useAllowances(inputAddress);
+  const { address } = useAddressContext();
+  const { allowances, loading, error, onUpdate } = useAllowances(address);
   const table = useReactTable({
     data: allowances,
     columns,
