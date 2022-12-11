@@ -1,5 +1,5 @@
+import AllowanceTable from 'components/allowances/table/AllowanceTable';
 import { displayGitcoinToast } from 'components/common/gitcoin-toast';
-import AllowanceTable from 'components/Dashboard/table/AllowanceTable';
 import PublicLayout from 'layouts/PublicLayout';
 import { AddressContextProvider } from 'lib/hooks/useAddressContext';
 import { defaultSEO } from 'lib/next-seo.config';

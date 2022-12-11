@@ -1,5 +1,5 @@
+import RevokeButton from 'components/allowances/controls/RevokeButton';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import RevokeButton from 'components/Dashboard/table/cells/controls/RevokeButton';
 import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { AllowanceData } from 'lib/interfaces';

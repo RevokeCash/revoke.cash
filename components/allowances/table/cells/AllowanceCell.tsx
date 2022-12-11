@@ -6,7 +6,7 @@ import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { classNames } from 'lib/utils/styles';
 import Trans from 'next-translate/Trans';
 import { useState } from 'react';
-import ControlsSection from './controls/ControlsSection';
+import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
   allowance: AllowanceData;
