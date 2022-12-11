@@ -1,5 +1,5 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ColumnId, columns } from 'components/Dashboard/table/columns';
+import { ColumnId, columns } from 'components/allowances/table/columns';
 import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useAllowances } from 'lib/hooks/useAllowances';
 import type { AllowanceData } from 'lib/interfaces';

@@ -1,7 +1,7 @@
 import { Table } from '@tanstack/react-table';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import type { AllowanceData } from 'lib/interfaces';
-import ChainSelect from '../header/ChainSelect';
+import ChainSelect from '../../common/ChainSelect';
 import FilterSelect from './FilterSelect';
 import SortSelect from './SortSelect';
 

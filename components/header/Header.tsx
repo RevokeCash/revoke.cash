@@ -1,8 +1,8 @@
-import WalletIndicator from 'components/Dashboard/header/WalletIndicator';
+import WalletIndicator from 'components/header/WalletIndicator';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
-import DonateButton from './DonateButton';
+import DonateButton from '../common/DonateButton';
 import NavLink from './NavLink';
 import SearchBar from './SearchBar';
 

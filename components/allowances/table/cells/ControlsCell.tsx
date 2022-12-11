@@ -1,6 +1,6 @@
 import { useRevoke } from 'lib/hooks/useRevoke';
 import { AllowanceData } from 'lib/interfaces';
-import ControlsSection from './controls/ControlsSection';
+import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
   allowance: AllowanceData;

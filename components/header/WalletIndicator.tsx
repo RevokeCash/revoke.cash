@@ -1,5 +1,5 @@
 import { useEthereum } from 'lib/hooks/useEthereum';
-import ChainSelect from './ChainSelect';
+import ChainSelect from '../common/ChainSelect';
 import ConnectButton from './ConnectButton';
 
 const WalletIndicator = () => {

@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
-import Button from '../../../../common/Button';
+import Button from '../../common/Button';
 
 interface Props {
   revoke: () => Promise<void>;
