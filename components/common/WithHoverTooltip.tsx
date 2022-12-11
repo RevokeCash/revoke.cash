@@ -1,23 +1,18 @@
 import Tippy from '@tippyjs/react';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import 'tippy.js/dist/tippy.css';
 
 interface Props {
   tooltip: ReactNode;
-  children: ReactNode;
+  children: ReactElement;
   placement?: 'top' | 'bottom' | 'left' | 'right' | 'auto';
-  disabled?: boolean;
 }
 
-const WithHoverTooltip = ({ tooltip, placement, disabled, children }: Props) => (
-  <div className="relative">
-    <Tippy content={tooltip} placement={placement ?? 'top'} className="text-center break-words" maxWidth={380}>
-      <div>
-        {disabled && <div className="cursor-not-allowed absolute inset-0 w-full h-full z-10" />}
-        {children}
-      </div>
-    </Tippy>
-  </div>
+// Make sure to pass native html elements as children, not React components, or forward the ref
+const WithHoverTooltip = ({ tooltip, placement, children }: Props) => (
+  <Tippy content={tooltip} placement={placement ?? 'top'} className="text-center break-words" maxWidth={380}>
+    {children}
+  </Tippy>
 );
 
 export default WithHoverTooltip;

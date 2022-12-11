@@ -21,7 +21,7 @@ const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
   };
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-2">
       <input
         className="border border-black rounded-md w-16 px-1.5 focus:outline-black"
         type="text"
@@ -29,11 +29,11 @@ const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
         onChange={(e) => setValue(e.target.value)}
         value={value}
       />
-      <Button disabled={loading || disabled} style="tertiary" size="sm" onClick={callUpdate}>
+      <Button disabled={loading || disabled} style="tertiary" size="sm" onClick={callUpdate} className="px-0">
         {loading ? t('common:buttons.updating') : t('common:buttons.update')}
       </Button>
       {!loading && (
-        <Button style="tertiary" size="sm" onClick={reset}>
+        <Button style="tertiary" size="sm" onClick={reset} className="px-0">
           Cancel
         </Button>
       )}

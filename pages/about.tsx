@@ -1,7 +1,7 @@
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import ImageLink from 'components/common/ImageLink';
-import PublicLayout from 'layouts/PublicLayout';
+import ContentPageLayout from 'layouts/ContentPageLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -14,9 +14,9 @@ const About: NextPage = () => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <PublicLayout>
+      <ContentPageLayout>
         <div className="flex flex-col gap-2 text-lg leading-none">
-          <h1 className="text-center">{t('about:title')}</h1>
+          <h1>{t('about:title')}</h1>
 
           <div>
             <h4>{t('about:sections.token_allowances.heading')}</h4>
@@ -87,7 +87,7 @@ const About: NextPage = () => {
             </Href>
           </div>
         </div>
-      </PublicLayout>
+      </ContentPageLayout>
     </>
   );
 };

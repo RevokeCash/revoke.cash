@@ -1,6 +1,6 @@
 import DownloadButton from 'components/common/DownloadButton';
 import Logo from 'components/common/Logo';
-import PublicLayout from 'layouts/PublicLayout';
+import ContentPageLayout from 'layouts/ContentPageLayout';
 import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
@@ -31,9 +31,9 @@ const Extension: NextPage = () => {
           type: 'website',
         }}
       />
-      <PublicLayout>
+      <ContentPageLayout>
         <div className="flex flex-col gap-2 text-lg leading-none">
-          <h1 className="text-center">{t('extension:title')}</h1>
+          <h1>{t('extension:title')}</h1>
 
           <div>
             <Trans i18nKey="extension:paragraph_1" />
@@ -43,8 +43,8 @@ const Extension: NextPage = () => {
             <Trans i18nKey="extension:paragraph_2" />
           </div>
 
-          <div>
-            <Image src="/assets/images/extension-screenshot-1.png" height="800" width="1280" />
+          <div className="mx-auto">
+            <Image src="/assets/images/extension-screenshot-1.png" height="500" width="800" />
           </div>
 
           <div>
@@ -55,8 +55,8 @@ const Extension: NextPage = () => {
             <Trans i18nKey="extension:paragraph_4" />
           </div>
 
-          <div>
-            <Image src="/assets/images/extension-screenshot-3.png" height="800" width="1280" />
+          <div className="mx-auto">
+            <Image src="/assets/images/extension-screenshot-3.png" height="500" width="800" />
           </div>
 
           <div>
@@ -67,7 +67,7 @@ const Extension: NextPage = () => {
             <Trans i18nKey="extension:paragraph_6" />
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-1">
+          <div className="flex flex-wrap items-center justify-center gap-1">
             <DownloadButton href={CHROME_EXTENSION_URL}>
               <Logo src="/assets/images/vendor/chrome.png" alt="Chrome Logo" />
               <Logo src="/assets/images/vendor/brave.png" alt="Brave Logo" />
@@ -78,7 +78,7 @@ const Extension: NextPage = () => {
             </DownloadButton>
           </div>
         </div>
-      </PublicLayout>
+      </ContentPageLayout>
     </>
   );
 };

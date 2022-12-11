@@ -1,5 +1,5 @@
 import Href from 'components/common/Href';
-import PublicLayout from 'layouts/PublicLayout';
+import ContentPageLayout from 'layouts/ContentPageLayout';
 import { DISCORD_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
@@ -13,9 +13,9 @@ const Faq: NextPage = () => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
-      <PublicLayout>
+      <ContentPageLayout>
         <div className="flex flex-col gap-2 text-lg leading-none">
-          <h1 className="text-center">{t('faq:title')}</h1>
+          <h1>{t('faq:title')}</h1>
 
           <div>
             <h4>{t('faq:questions.whole_wallet_at_risk.question')}</h4>
@@ -93,7 +93,7 @@ const Faq: NextPage = () => {
             />
           </div>
         </div>
-      </PublicLayout>
+      </ContentPageLayout>
     </>
   );
 };

@@ -69,6 +69,7 @@ const LanguageSelect = () => {
           ...styles,
           minHeight: 24,
           cursor: 'pointer',
+          borderRadius: 8,
         }),
         option: (styles) => ({
           ...styles,

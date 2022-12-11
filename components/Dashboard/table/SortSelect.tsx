@@ -100,6 +100,7 @@ const SortSelect = ({ table }: Props) => {
             backgroundColor: 'rgb(229 231 235)',
           },
           cursor: 'pointer',
+          borderRadius: 8,
         }),
         singleValue: (styles) => ({
           ...styles,

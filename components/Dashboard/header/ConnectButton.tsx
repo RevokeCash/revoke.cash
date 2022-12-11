@@ -1,33 +1,35 @@
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Button from 'components/common/Button';
-import Spinner from 'components/common/Spinner';
+import DropdownMenu from 'components/common/DropdownMenu';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
-import { useAsyncCallback } from 'react-async-hook';
-import ChainSelect from './ChainSelect';
 
 const ConnectButton = () => {
   const { t } = useTranslation();
   const { account, ensName, unsName, connect, disconnect } = useEthereum();
   const domainName = ensName ?? unsName;
 
-  const { execute, loading } = useAsyncCallback(connect);
-  const buttonAction = account ? disconnect : execute;
-  const buttonText = account ? t('common:buttons.disconnect') : t('common:buttons.connect');
+  const menuButton = (
+    <Button style="secondary" size="md" className="flex gap-1">
+      {domainName ?? shortenAddress(account)}
+      <ChevronDownIcon className="w-5 h-5" />
+    </Button>
+  );
 
   return (
-    <div className="h-full flex">
-      <div className="h-full flex -mr-px">
-        <ChainSelect />
-      </div>
-      {account && (
-        <div className="flex justify-center items-center grow border border-black bg-gray-200 px-3 py-1.5">
-          {domainName ?? shortenAddress(account)}
-        </div>
+    <div className="flex">
+      {account ? (
+        <DropdownMenu menuButton={menuButton}>
+          <Button style="none" size="md" onClick={disconnect}>
+            {t('common:buttons.disconnect')}
+          </Button>
+        </DropdownMenu>
+      ) : (
+        <Button style="secondary" size="md" onClick={connect}>
+          {t('common:buttons.connect')}
+        </Button>
       )}
-      <Button style="secondary" size="md" onClick={buttonAction} className="rounded-l-none -ml-px">
-        {loading ? <Spinner style="secondary" /> : buttonText}
-      </Button>
     </div>
   );
 };
