@@ -1,6 +1,6 @@
 import { classNames } from 'lib/utils/styles';
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ForwardedRef, forwardRef, ReactNode } from 'react';
 
 interface Props {
   href: string;
@@ -11,7 +11,7 @@ interface Props {
   style: 'html' | 'black' | 'none';
 }
 
-const Href = ({ href, children, external, className, router, style }: Props) => {
+const Href = ({ href, children, external, className, router, style }: Props, ref: ForwardedRef<HTMLAnchorElement>) => {
   const classMapping = {
     html: 'text-blue-700 visited:text-fuchsia-800 no-underline hover:underline',
     black: 'underline text-black visited:text-black',
@@ -20,7 +20,7 @@ const Href = ({ href, children, external, className, router, style }: Props) => 
   const classes = classNames(className, classMapping[style]);
 
   const hrefComponent = (
-    <a className={classes} href={href} target={external ? '_blank' : undefined}>
+    <a className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
       {children}
     </a>
   );
@@ -32,4 +32,4 @@ const Href = ({ href, children, external, className, router, style }: Props) => 
   return hrefComponent;
 };
 
-export default Href;
+export default forwardRef(Href);

@@ -22,9 +22,9 @@ const SearchBar = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex h-10 w-full text-center text-lg font-medium max-w-xl">
+    <form onSubmit={handleSubmit} className="flex w-full max-w-xl">
       <input
-        className="border border-black rounded-md mx-auto w-full px-2 py-1 text-lg font-medium focus:outline-black address-input"
+        className="border border-black rounded-lg w-full px-3 py-1 text-lg font-medium focus:outline-black address-input"
         placeholder={t('dashboard:address_input')}
         id="searchBox"
       />

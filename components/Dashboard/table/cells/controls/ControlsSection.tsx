@@ -38,7 +38,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
 
   const { amount } = getAllowanceI18nValues(allowance);
   const controls = (
-    <div className="flex">
+    <div>
       {revoke && <RevokeButton revoke={revoke} disabled={disabled} />}
       {update && reset && (
         <UpdateControls

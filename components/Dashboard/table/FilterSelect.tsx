@@ -130,6 +130,7 @@ const FilterSelect = ({ table }: Props) => {
             backgroundColor: 'rgb(229 231 235)',
           },
           cursor: 'pointer',
+          borderRadius: 8,
         }),
         option: (styles) => ({
           ...styles,

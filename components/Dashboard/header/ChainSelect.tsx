@@ -1,6 +1,5 @@
 import ChainLogo from 'components/common/ChainLogo';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'lib/constants';
-import { useEthereum } from 'lib/hooks/useEthereum';
 import { getChainName } from 'lib/utils/chains';
 import { setSelectThemeColors } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
@@ -11,9 +10,14 @@ interface ChainOption {
   chainId: number;
 }
 
-const ChainSelect = () => {
+interface Props {
+  onSelect: (chainId: number) => void;
+  selected: number;
+  showName?: boolean;
+}
+
+const ChainSelect = ({ onSelect, selected, showName }: Props) => {
   const { t } = useTranslation();
-  const { selectedChainId, selectChain } = useEthereum();
 
   const mainnetOptions = CHAIN_SELECT_MAINNETS.map((chainId) => ({
     value: getChainName(chainId),
@@ -37,7 +41,7 @@ const ChainSelect = () => {
   ];
 
   const onChange = ({ chainId }: ChainOption) => {
-    selectChain(chainId);
+    onSelect(chainId);
   };
 
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {
@@ -46,7 +50,7 @@ const ChainSelect = () => {
     return (
       <div className="flex items-center gap-1">
         <ChainLogo chainId={chainId} />
-        {context === 'menu' && <div>{chainName}</div>}
+        {(context === 'menu' || showName) && <div>{chainName}</div>}
       </div>
     );
   };
@@ -54,9 +58,9 @@ const ChainSelect = () => {
   return (
     <Select
       instanceId="chain-select"
-      className="h-full"
       classNamePrefix="chain-select"
-      value={groups.flatMap((group) => group.options).find((option) => option.chainId === selectedChainId)}
+      className="flex-shrink-0"
+      value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={groups}
       onChange={onChange}
       formatOptionLabel={displayOption}
@@ -86,8 +90,7 @@ const ChainSelect = () => {
           '&:hover': {
             backgroundColor: 'rgb(229 231 235)',
           },
-          borderBottomRightRadius: 0,
-          borderTopRightRadius: 0,
+          borderRadius: 8,
           cursor: 'pointer',
         }),
         option: (styles) => ({

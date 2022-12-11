@@ -1,3 +1,4 @@
+import WalletIndicator from 'components/Dashboard/header/WalletIndicator';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,11 +19,12 @@ const Header = () => {
         </div>
         <SearchBar />
       </div>
-      <div className="flex justify-end items-center gap-4">
+      <div className="flex justify-end items-center gap-3">
         <NavLink to="/about" text={t('common:nav.about')} />
         <NavLink to="/faq" text={t('common:nav.faq')} />
         <NavLink to="/extension" text={t('common:nav.extension')} />
         <DonateButton size="md" />
+        <WalletIndicator />
       </div>
     </header>
   );
