@@ -110,7 +110,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
                 onClick={execute}
                 className="rounded-l-none max-w-16 flex justify-center items-center"
               >
-                {loading ? <Spinner style="primary" /> : t('common:buttons.send')}
+                {loading ? <Spinner /> : t('common:buttons.send')}
               </Button>
             </div>
             <div className="flex justify-end">
