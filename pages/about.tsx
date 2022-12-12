@@ -1,4 +1,3 @@
-import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import ImageLink from 'components/common/ImageLink';
 import ContentPageLayout from 'layouts/ContentPageLayout';
@@ -77,14 +76,6 @@ const About: NextPage = () => {
                 />
               </div>
             </div>
-          </div>
-
-          <Divider />
-
-          <div className="flex flex-wrap justify-center items-center gap-1">
-            <Href href="/privacy-policy" router style="html">
-              {t('common:privacy_policy')}
-            </Href>
           </div>
         </div>
       </ContentPageLayout>
