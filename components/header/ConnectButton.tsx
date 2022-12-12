@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import Button from 'components/common/Button';
 import DropdownMenu from 'components/common/DropdownMenu';
 import { useEthereum } from 'lib/hooks/useEthereum';
@@ -21,7 +21,10 @@ const ConnectButton = () => {
     <div className="flex">
       {account ? (
         <DropdownMenu menuButton={menuButton}>
-          <Button style="none" size="md" onClick={disconnect}>
+          <Button style="none" size="none" href={`/address/${domainName ?? account}`} router>
+            My Profile
+          </Button>
+          <Button style="none" size="none" onClick={disconnect}>
             {t('common:buttons.disconnect')}
           </Button>
         </DropdownMenu>

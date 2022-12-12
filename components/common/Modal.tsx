@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/20/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { Fragment, ReactNode, useRef } from 'react';
 import Button from './Button';
 

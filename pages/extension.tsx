@@ -67,7 +67,7 @@ const Extension: NextPage = () => {
             <Trans i18nKey="extension:paragraph_6" />
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-1">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <DownloadButton href={CHROME_EXTENSION_URL}>
               <Logo src="/assets/images/vendor/chrome.png" alt="Chrome Logo" />
               <Logo src="/assets/images/vendor/brave.png" alt="Brave Logo" />

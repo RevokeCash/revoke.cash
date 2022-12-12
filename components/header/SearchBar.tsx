@@ -1,4 +1,4 @@
-import { CheckIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
 import Spinner from 'components/common/Spinner';
 import { parseInputAddress } from 'lib/utils';
