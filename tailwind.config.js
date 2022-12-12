@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: [
+          // BlinkMacSystemFont messes up datetime formatting
           'Segoe UI',
           'Roboto',
           'Oxygen',

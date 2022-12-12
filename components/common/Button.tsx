@@ -1,4 +1,5 @@
 import { classNames } from 'lib/utils/styles';
+import Spinner from './Spinner';
 
 interface Props {
   disabled?: boolean;
@@ -9,9 +10,10 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   external?: boolean;
+  loading?: boolean;
 }
 
-const Button = ({ disabled, style, size, onClick, href, external, children, className }: Props) => {
+const Button = ({ disabled, style, size, onClick, href, external, children, className, loading }: Props) => {
   const classMapping = {
     common: 'flex justify-center items-center border border-black focus:outline-black duration-150',
     primary: 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600',
@@ -26,6 +28,7 @@ const Button = ({ disabled, style, size, onClick, href, external, children, clas
     style !== 'none' && classMapping.common,
     classMapping[style],
     size !== 'none' && classMapping[size],
+    loading && 'flex gap-1', // TODO: Make this more robust when needed
     className
   );
 
@@ -38,8 +41,9 @@ const Button = ({ disabled, style, size, onClick, href, external, children, clas
   }
 
   return (
-    <button disabled={disabled} onClick={onClick} className={classes}>
+    <button disabled={disabled || loading} onClick={onClick} className={classes}>
       {children}
+      {loading && <Spinner />}
     </button>
   );
 };

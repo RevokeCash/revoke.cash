@@ -27,7 +27,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   }
 
   return (
-    <div className={classNames(!allowance.spender && 'text-gray-400', 'flex items-center gap-2')}>
+    <div className={classNames(!allowance.spender && 'text-gray-400', 'flex items-center gap-2 w-40')}>
       <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
       {allowance.amount && (
         <Button onClick={() => setEditing(!editing)} style="none" size="none">

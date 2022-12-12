@@ -8,10 +8,10 @@ export const shortenAddress = (address?: string): string => {
   return address && `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}`;
 };
 
-export const shortenName = (name?: string): string | undefined => {
+export const shortenString = (name?: string, maxLength: number = 16): string | undefined => {
   if (!name) return undefined;
-  if (name.length <= 16) return name;
-  return `${name.substr(0, 13).trim()}...`;
+  if (name.length <= maxLength) return name;
+  return `${name.substr(0, maxLength - 3).trim()}...`;
 };
 
 export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
@@ -84,7 +84,7 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<str
 
 export const getBalanceText = (symbol: string, balance: string, decimals?: number) => {
   if (balance === 'ERC1155') return `(ERC1155)`;
-  return `${toFloat(balance, decimals)} ${shortenName(symbol)}`;
+  return `${toFloat(balance, decimals)} ${symbol}`;
 };
 
 export const topicToAddress = (topic: string) => utils.getAddress(utils.hexDataSlice(topic, 12));

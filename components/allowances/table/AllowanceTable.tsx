@@ -30,7 +30,7 @@ const AllowanceTable = () => {
   });
 
   return (
-    <div className="flex flex-col justify-start w-fit mx-auto gap-2">
+    <div className="flex flex-col justify-start mx-auto gap-2">
       <AllowanceTableHeader table={table} />
       <AllowanceTableBody table={table} loading={loading} error={error} allowances={allowances} />
     </div>

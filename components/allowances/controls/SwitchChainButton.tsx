@@ -11,7 +11,7 @@ const SwitchChainButton = () => {
   const { execute, loading } = useAsyncCallback(() => switchInjectedWalletChain(selectedChainId));
 
   const button = (
-    <Button style="secondary" size="sm" disabled={loading || !canSwitchChain} onClick={execute}>
+    <Button style="secondary" size="sm" disabled={!canSwitchChain} loading={loading} onClick={execute}>
       {loading ? t('common:buttons.switching') : t('common:buttons.switch_chain')}
     </Button>
   );

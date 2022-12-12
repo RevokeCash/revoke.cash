@@ -9,7 +9,7 @@ const PublicLayout = ({ children }: Props) => {
   return (
     <div className="flex flex-col mx-auto px-8 py-4 min-h-screen gap-4">
       <Header />
-      <main>{children}</main>
+      <main className="max-w-7xl w-full mx-auto">{children}</main>
       <div className="flex flex-col justify-end grow">
         <Footer />
       </div>

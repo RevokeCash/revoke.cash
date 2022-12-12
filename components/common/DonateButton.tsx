@@ -3,7 +3,6 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Href from 'components/common/Href';
 import Modal from 'components/common/Modal';
-import Spinner from 'components/common/Spinner';
 import { utils } from 'ethers';
 import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
 import { useEthereum } from 'lib/hooks/useEthereum';
@@ -105,12 +104,13 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
                 {nativeToken}
               </div>
               <Button
+                loading={loading}
                 style="primary"
                 size="md"
                 onClick={execute}
                 className="rounded-l-none max-w-16 flex justify-center items-center"
               >
-                {loading ? <Spinner /> : t('common:buttons.send')}
+                {loading ? t('common:buttons.sending') : t('common:buttons.send')}
               </Button>
             </div>
             <div className="flex justify-end">

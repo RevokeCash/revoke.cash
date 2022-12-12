@@ -11,7 +11,7 @@ const ControlsCell = ({ allowance, onUpdate }: Props) => {
   const { revoke } = useRevoke(allowance, onUpdate);
 
   return (
-    <div className="flex h-6 w-full justify-end">
+    <div className="flex justify-end">
       <ControlsSection allowance={allowance} revoke={revoke} />
     </div>
   );

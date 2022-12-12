@@ -1,20 +1,20 @@
 {
   "buttons": {
     "connect": "连接钱包",
-    "connecting": "正在连接。。。",
+    "connecting": "正在连接",
     "disconnect": "断开连接",
-    "disconnecting": "正在断开连接。。。",
+    "disconnecting": "正在断开连接",
     "donate": "捐赠",
-    "donating": "正在捐赠。。。",
+    "donating": "正在捐赠",
     "download": "下载",
     "revoke": "取消",
-    "revoking": "正在撤销。。。",
+    "revoking": "正在撤销",
     "send": "发送",
-    "sending": "发送给。。。",
+    "sending": "发送给",
     "switch_chain": "切换链",
-    "switching": "切换中。。。",
+    "switching": "切换中",
     "update": "更新",
-    "updating": "更新中。。。"
+    "updating": "更新中"
   },
   "errors": {
     "404": {
