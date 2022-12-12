@@ -1,20 +1,20 @@
 {
   "buttons": {
     "connect": "Conectar cartera",
-    "connecting": "Conectando...",
+    "connecting": "Conectando",
     "disconnect": "Desconectar",
-    "disconnecting": "Desconectando...",
+    "disconnecting": "Desconectando",
     "donate": "Donar",
-    "donating": "Donando...",
+    "donating": "Donando",
     "download": "Descargar",
     "revoke": "Revocar",
-    "revoking": "Revocando...",
+    "revoking": "Revocando",
     "send": "Enviar",
-    "sending": "Enviando...",
+    "sending": "Enviando",
     "switch_chain": "Cambiar de red",
-    "switching": "Cambiando...",
+    "switching": "Cambiando",
     "update": "Actualizar",
-    "updating": "Actualizando..."
+    "updating": "Actualizando"
   },
   "errors": {
     "404": {

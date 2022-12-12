@@ -1,20 +1,20 @@
 {
   "buttons": {
     "connect": "Connect Wallet",
-    "connecting": "Connecting...",
+    "connecting": "Connecting",
     "disconnect": "Disconnect",
-    "disconnecting": "Disconnecting...",
+    "disconnecting": "Disconnecting",
     "donate": "Donate",
-    "donating": "Donating...",
+    "donating": "Donating",
     "download": "Download",
     "revoke": "Revoke",
-    "revoking": "Revoking...",
+    "revoking": "Revoking",
     "send": "Send",
-    "sending": "Sending...",
+    "sending": "Sending",
     "switch_chain": "Switch chain",
-    "switching": "Switching...",
+    "switching": "Switching",
     "update": "Update",
-    "updating": "Updating..."
+    "updating": "Updating"
   },
   "errors": {
     "404": {

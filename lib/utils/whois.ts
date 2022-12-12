@@ -83,6 +83,15 @@ export const resolveUnsName = async (unsName: string) => {
   }
 };
 
+export const lookupDomainName = async (address: string) => {
+  try {
+    const [unsName, ensName] = await Promise.all([lookupUnsName(address), lookupEnsName(address)]);
+    return ensName ?? unsName;
+  } catch {
+    return null;
+  }
+};
+
 export const getOpenSeaProxyAddress = async (userAddress: string): Promise<string | null> => {
   try {
     // We use the ENS_RESOLUTION provider here because we only need to retrieve the OS proxy address for mainnet

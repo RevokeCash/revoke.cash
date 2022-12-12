@@ -1,4 +1,4 @@
-import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useQuery } from '@tanstack/react-query';
 import Spinner from 'components/common/Spinner';
 import { parseInputAddress } from 'lib/utils';
@@ -29,8 +29,9 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center w-full max-w-xl border border-black rounded-lg px-3 py-1 text-lg font-medium focus-within:ring-1 focus-within:ring-black"
+      className="flex gap-2 items-center w-full max-w-xl border border-black rounded-lg px-3 py-1 text-lg font-medium focus-within:ring-1 focus-within:ring-black"
     >
+      <MagnifyingGlassIcon className="w-6 h-6" />
       <input
         className="w-full focus:outline-none address-input"
         placeholder={t('dashboard:address_input')}

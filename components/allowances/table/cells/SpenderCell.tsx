@@ -5,7 +5,7 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
 import type { AllowanceData } from 'lib/interfaces';
-import { shortenName } from 'lib/utils';
+import { shortenString } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { classNames } from 'lib/utils/styles';
 import { addressToAppName } from 'lib/utils/whois';
@@ -36,7 +36,7 @@ const SpenderCell = ({ allowance }: Props) => {
     <div className={classNames(!allowance.spender && 'text-gray-400', 'flex justify-start')}>
       <WithHoverTooltip tooltip={allowance.spender}>
         <Href href={explorerUrl} style="black" external>
-          {spenderName ?? shortenName(allowance.spender)}
+          {spenderName ?? shortenString(allowance.spender)}
         </Href>
       </WithHoverTooltip>
     </div>
