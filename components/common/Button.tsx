@@ -1,4 +1,5 @@
 import { classNames } from 'lib/utils/styles';
+import Href from './Href';
 import Spinner from './Spinner';
 
 interface Props {
@@ -10,15 +11,16 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   external?: boolean;
+  router?: boolean;
   loading?: boolean;
 }
 
-const Button = ({ disabled, style, size, onClick, href, external, children, className, loading }: Props) => {
+const Button = ({ disabled, style, size, onClick, href, external, router, children, className, loading }: Props) => {
   const classMapping = {
     common: 'flex justify-center items-center border border-black focus:outline-black duration-150',
     primary: 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-gray-200 disabled:bg-gray-300',
-    tertiary: 'text-black border-none',
+    tertiary: 'text-black disabled:text-gray-600 border-none',
     sm: 'px-2 py-0.5 text-xs rounded-md',
     md: 'px-4 py-1.5 text-base rounded-lg',
     lg: 'px-6 py-2 text-lg rounded-xl',
@@ -34,9 +36,9 @@ const Button = ({ disabled, style, size, onClick, href, external, children, clas
 
   if (href) {
     return (
-      <a href={href} className={classes} target={external ? '_blank' : undefined}>
+      <Href href={href} className={classes} external={external} router={router} style="black" underline="none">
         {children}
-      </a>
+      </Href>
     );
   }
 
