@@ -14,10 +14,6 @@ interface Props {
 const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
   const { t } = useTranslation();
 
-  // if (loading) {
-  //   return <SpinLoader size={40} center />;
-  // }
-
   if (error) return <Error error={error} />;
 
   if (!allowances && !loading) return null;
