@@ -10,6 +10,8 @@ export const CHROME_EXTENSION_URL =
 export const FIREFOX_EXTENSION_URL = 'https://addons.mozilla.org/en-US/firefox/addon/revoke-cash/';
 export const DISCORD_URL = 'https://discord.gg/revoke-cash';
 export const GITCOIN_URL = 'https://gitcoin.co/grants/259/revokecash-helping-you-stay-safe-in-web3';
+export const GITHUB_URL = 'https://github.com/RevokeCash/revoke.cash';
+export const TWITTER_URL = 'https://twitter.com/RevokeCash';
 
 export const ADDRESS_ZERO_PADDED = '0x0000000000000000000000000000000000000000000000000000000000000000';
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000';

@@ -9,15 +9,25 @@ interface Props {
   external?: boolean;
   router?: boolean;
   style: 'html' | 'black' | 'none';
+  underline?: 'always' | 'hover' | 'none';
 }
 
-const Href = ({ href, children, external, className, router, style }: Props, ref: ForwardedRef<HTMLAnchorElement>) => {
+const Href = (
+  { href, children, external, className, router, style, underline }: Props,
+  ref: ForwardedRef<HTMLAnchorElement>
+) => {
   const classMapping = {
-    html: 'text-blue-700 visited:text-fuchsia-800 no-underline hover:underline',
+    html: 'text-blue-700 visited:text-fuchsia-800',
     black: 'underline text-black visited:text-black',
   };
 
-  const classes = classNames(className, classMapping[style]);
+  const undelineMapping = {
+    always: 'underline hover:underline',
+    hover: 'no-underline hover:underline',
+    none: 'no-underline hover:no-underline',
+  };
+
+  const classes = classNames(className, classMapping[style], undelineMapping[underline ?? 'always']);
 
   const hrefComponent = (
     <a className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>

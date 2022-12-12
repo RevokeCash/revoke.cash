@@ -15,7 +15,7 @@ const TokenCell = ({ allowance }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.contract.address}`;
 
   let link = (
-    <Href href={explorerUrl} style="black" className="no-underline hover:underline" external>
+    <Href href={explorerUrl} style="black" underline="hover" external>
       {shortenName(allowance.symbol)}
     </Href>
   );
