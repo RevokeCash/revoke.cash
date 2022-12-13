@@ -1,0 +1,22 @@
+{
+  "allowances": {
+    "amount": "{{amount}} {{symbol}}",
+    "none": "Sin autorizaciones",
+    "token_id": "{{symbol}} #{{tokenId}}",
+    "unlimited": "Ilimitada"
+  },
+  "headers": {
+    "actions": "Actions",
+    "allowance": "Autorización",
+    "asset": "Nombre y saldo del activo",
+    "asset_type": "Asset Type",
+    "last_updated": "Last Updated",
+    "spender": "Gastador"
+  },
+  "no_allowances": "Sin autorizaciones",
+  "tooltips": {
+    "connect_wallet": "Por favor conecta tu cartera para poder revocar",
+    "connected_account": "Solo puedes revocar las autorizaciones de la cuenta conectada",
+    "switch_chain": "Por favor cambia tu red conectada a <0>{{chainName}}</0> dentro de tu cartera para poder revocar"
+  }
+}

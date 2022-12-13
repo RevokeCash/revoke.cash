@@ -16,6 +16,14 @@
     "update": "Actualizar",
     "updating": "Actualizando"
   },
+  "chain_select": {
+    "mainnets": "Redes principales",
+    "testnets": "Redes de prueba"
+  },
+  "donate": {
+    "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
+    "title": "Donar a Revoke.cash"
+  },
   "errors": {
     "404": {
       "title": "404 - Página no encontrada"
@@ -28,7 +36,8 @@
   "nav": {
     "about": "Acerca de",
     "extension": "Extensión",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "search": "Ingresar dirección, nombre de ENS o Unstoppable Domain"
   },
   "privacy_policy": "Política de privacidad"
 }

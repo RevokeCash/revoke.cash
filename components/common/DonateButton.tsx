@@ -89,7 +89,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
         <div className="sm:flex sm:items-start">
           <div className="text-center sm:text-left w-full flex flex-col gap-2">
             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-              {t('dashboard:donate_to_revoke')}
+              {t('common:donate.title')}
             </Dialog.Title>
 
             <div className="mt-2 h-10 flex">
@@ -115,10 +115,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
             </div>
             <div className="flex justify-end">
               <div>
-                <Trans
-                  i18nKey="dashboard:or_contribute_to_gitcoin"
-                  components={[<Href href={GITCOIN_URL} external />]}
-                />
+                <Trans i18nKey="common:donate.gitcoin_grants" components={[<Href href={GITCOIN_URL} external />]} />
               </div>
             </div>
           </div>

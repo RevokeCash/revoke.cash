@@ -1,0 +1,22 @@
+{
+  "allowances": {
+    "amount": "{{amount}} {{symbol}}",
+    "none": "No allowances",
+    "token_id": "{{symbol}} #{{tokenId}}",
+    "unlimited": "Unlimited"
+  },
+  "headers": {
+    "actions": "Actions",
+    "allowance": "Allowance",
+    "asset": "Asset Name & Balance",
+    "asset_type": "Asset Type",
+    "last_updated": "Last Updated",
+    "spender": "Approved Spender"
+  },
+  "no_allowances": "No allowances found",
+  "tooltips": {
+    "connect_wallet": "Please connect your wallet in order to revoke",
+    "connected_account": "You can only revoke allowances of the connected account",
+    "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+  }
+}

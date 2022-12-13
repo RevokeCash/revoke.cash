@@ -34,7 +34,7 @@ const SearchBar = () => {
       <MagnifyingGlassIcon className="w-6 h-6" />
       <input
         className="w-full focus:outline-none address-input"
-        placeholder={t('dashboard:address_input')}
+        placeholder={t('common:nav.search')}
         onChange={(ev) => setValue(ev.target.value)}
       />
       {value && validating && <Spinner className="w-4 h-4" />}

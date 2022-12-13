@@ -60,7 +60,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
         )}
       </table>
       {!loading && table.getRowModel().rows.length === 0 && (
-        <div className="flex justify-center p-4 w-full">{t('dashboard:no_allowances')}</div>
+        <div className="flex justify-center p-4 w-full">{t('address:no_allowances')}</div>
       )}
       {loading && (
         <div className="flex justify-center p-2 w-full">
