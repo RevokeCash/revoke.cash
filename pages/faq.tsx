@@ -41,7 +41,7 @@ const Faq: NextPage = () => {
             <h4>{t('faq:questions.costs.question')}</h4>
             <Trans
               i18nKey="faq:questions.costs.answer"
-              components={[<Href href="https://gashawk.io" style="html" external />]}
+              components={[<Href href="https://gashawk.io" html external />]}
             />
           </div>
 
@@ -75,9 +75,9 @@ const Faq: NextPage = () => {
             <Trans
               i18nKey="faq:questions.which_chains.answer"
               components={[
-                <Href href="/extension" style="html" router />,
-                <Href href="https://twitter.com/RevokeCash" style="html" external />,
-                <Href href={DISCORD_URL} style="html" external />,
+                <Href href="/extension" html router />,
+                <Href href="https://twitter.com/RevokeCash" html external />,
+                <Href href={DISCORD_URL} html external />,
               ]}
             />
           </div>
@@ -87,8 +87,8 @@ const Faq: NextPage = () => {
             <Trans
               i18nKey="faq:questions.other_question.answer"
               components={[
-                <Href href="https://twitter.com/RevokeCash" style="html" external />,
-                <Href href={DISCORD_URL} style="html" external />,
+                <Href href="https://twitter.com/RevokeCash" html external />,
+                <Href href={DISCORD_URL} html external />,
               ]}
             />
           </div>

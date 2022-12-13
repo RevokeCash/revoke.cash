@@ -1,4 +1,5 @@
 import ChainLogo from 'components/common/ChainLogo';
+import Option from 'components/common/select/Option';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'lib/constants';
 import { getChainName } from 'lib/utils/chains';
 import { setSelectThemeColors } from 'lib/utils/styles';
@@ -66,10 +67,8 @@ const ChainSelect = ({ onSelect, selected, showName }: Props) => {
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
+      components={{ IndicatorSeparator: null, Option }}
       styles={{
-        indicatorSeparator: () => ({
-          display: 'none',
-        }),
         menu: (styles) => ({
           ...styles,
           width: 200,

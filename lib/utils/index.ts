@@ -1,7 +1,7 @@
-import type { Filter, Log } from '@ethersproject/abstract-provider';
+import type { Filter } from '@ethersproject/abstract-provider';
 import type { BigNumberish } from 'ethers';
 import { BigNumber, utils } from 'ethers';
-import type { LogsProvider } from 'lib/interfaces';
+import type { Log, LogsProvider } from 'lib/interfaces';
 import { resolveEnsName, resolveUnsName } from './whois';
 
 export const shortenAddress = (address?: string): string => {

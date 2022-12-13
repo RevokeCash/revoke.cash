@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ImageLink = ({ src, alt, href, height, width, label }: Props) => (
-  <Href href={href} style="html" underline="none" external>
+  <Href href={href} html underline="none" external>
     <div className="flex flex-col items-center gap-1">
       <Image src={src} alt={alt} objectFit="contain" height={height} width={width} quality="100" />
       {label && <div>{label}</div>}

@@ -8,17 +8,17 @@ interface Props {
   className?: string;
   external?: boolean;
   router?: boolean;
-  style: 'html' | 'black' | 'none';
+  html?: boolean;
   underline?: 'always' | 'hover' | 'none';
 }
 
 const Href = (
-  { href, children, external, className, router, style, underline }: Props,
+  { href, children, external, className, router, underline, html }: Props,
   ref: ForwardedRef<HTMLAnchorElement>
 ) => {
-  const classMapping = {
+  const styleMapping = {
     html: 'text-blue-700 visited:text-fuchsia-800',
-    black: 'underline text-black visited:text-black',
+    inherit: 'text-inherit visited:text-inherit',
   };
 
   const undelineMapping = {
@@ -27,7 +27,11 @@ const Href = (
     none: 'no-underline hover:no-underline',
   };
 
-  const classes = classNames(className, classMapping[style], undelineMapping[underline ?? 'always']);
+  const classes = classNames(
+    className,
+    styleMapping[html ? 'html' : 'inherit'],
+    undelineMapping[underline ?? 'always']
+  );
 
   const hrefComponent = (
     <a className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>

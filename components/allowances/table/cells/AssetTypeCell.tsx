@@ -7,7 +7,7 @@ interface Props {
 
 const AssetTypeCell = ({ assetType }: Props) => {
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-start">
       <Label className={classNames('w-12', assetType === 'NFT' ? 'bg-blue-500 text-white' : 'bg-yellow-500')}>
         {assetType}
       </Label>

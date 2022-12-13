@@ -117,6 +117,8 @@ const formatEtherscanEvent = (etherscanLog: any) => ({
   address: utils.getAddress(etherscanLog.address),
   topics: etherscanLog.topics.filter((topic: string) => !!topic),
   transactionHash: etherscanLog.transactionHash,
+  blockNumber: Number.parseInt(etherscanLog.blockNumber, 16),
+  timestamp: Number.parseInt(etherscanLog.timeStamp, 16),
 });
 
 const API_URLS = {

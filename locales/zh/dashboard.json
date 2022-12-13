@@ -23,8 +23,10 @@
   },
   "donate_to_revoke": "为Revoke.cash捐款",
   "headers": {
+    "actions": "Actions",
     "allowance": "授权",
     "asset": "Asset Name & Balance",
+    "asset_type": "Asset Type",
     "last_updated": "Last Updated",
     "spender": "Approved Spender",
     "token": "代币"

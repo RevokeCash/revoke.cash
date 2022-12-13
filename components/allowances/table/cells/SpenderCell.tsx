@@ -35,7 +35,7 @@ const SpenderCell = ({ allowance }: Props) => {
   return (
     <div className={classNames(!allowance.spender && 'text-gray-400', 'flex justify-start')}>
       <WithHoverTooltip tooltip={allowance.spender}>
-        <Href href={explorerUrl} style="black" external>
+        <Href href={explorerUrl} external>
           {spenderName ?? shortenString(allowance.spender)}
         </Href>
       </WithHoverTooltip>

@@ -1,9 +1,10 @@
 import { Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
+import Option from 'components/common/select/Option';
 import { AllowanceData } from 'lib/interfaces';
 import { setSelectThemeColors } from 'lib/utils/styles';
 import { useCallback } from 'react';
-import Select, { components, FormatOptionLabelMeta } from 'react-select';
+import Select, { FormatOptionLabelMeta } from 'react-select';
 import { ColumnId } from './columns';
 
 interface Option {
@@ -109,11 +110,8 @@ const FilterSelect = ({ table }: Props) => {
       placeholder=""
       menuPlacement="bottom"
       isSearchable={false}
-      components={{ ValueContainer, MultiValue: () => null, Option }}
+      components={{ IndicatorSeparator: null, ValueContainer, MultiValue: () => null, Option }}
       styles={{
-        indicatorSeparator: () => ({
-          display: 'none',
-        }),
         menu: (styles) => ({
           ...styles,
           textAlign: 'left',
@@ -159,14 +157,9 @@ const ValueContainer = ({ children, getValue, options }) => {
         <Label className="bg-gray-300 text-base rounded-md px-2 font-normal">{label}</Label>
       ))}
       {labels.length === 0 && (
-        <Label className="bg-gray-300 text-base rounded-md px-2 font-normal">Showing everything</Label>
+        <Label className="bg-gray-300 text-base rounded-md px-2 font-normal">Showing Everything</Label>
       )}
       {children}
     </div>
   );
-};
-
-// Make sure that the selected option is not highlighted
-const Option = (props) => {
-  return components.Option({ ...props, isSelected: false });
 };

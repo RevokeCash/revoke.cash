@@ -36,7 +36,7 @@ const Button = ({ disabled, style, size, onClick, href, external, router, childr
 
   if (href) {
     return (
-      <Href href={href} className={classes} external={external} router={router} style="black" underline="none">
+      <Href href={href} className={classes} external={external} router={router} underline="none">
         {children}
       </Href>
     );

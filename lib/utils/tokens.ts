@@ -1,10 +1,10 @@
-import type { Log, Provider } from '@ethersproject/abstract-provider';
+import type { Provider } from '@ethersproject/abstract-provider';
 import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import { ALL_TOKENS_MAPPING } from 'lib/data/token-mapping';
-import type { BaseTokenData } from 'lib/interfaces';
+import type { BaseTokenData, Log } from 'lib/interfaces';
 import { toFloat } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
 
