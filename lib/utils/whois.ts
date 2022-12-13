@@ -83,10 +83,12 @@ export const resolveUnsName = async (unsName: string) => {
   }
 };
 
+// Note that we don't wait for the UNS name to resolve before returning the ENS name
 export const lookupDomainName = async (address: string) => {
   try {
-    const [unsName, ensName] = await Promise.all([lookupUnsName(address), lookupEnsName(address)]);
-    return ensName ?? unsName;
+    const unsNamePromise = lookupUnsName(address);
+    const ensName = await lookupEnsName(address);
+    return ensName ?? (await unsNamePromise);
   } catch {
     return null;
   }

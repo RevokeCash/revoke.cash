@@ -38,15 +38,20 @@ const AddressPage: NextPage<Props> = ({ address, domainName, openSeaProxyAddress
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const address = await parseInputAddress(context.query!.address as string);
-  const domainName = await lookupDomainName(address);
-  const openSeaProxyAddress = await getOpenSeaProxyAddress(address);
+  const addressParam = context.query!.address as string;
+  const address = await parseInputAddress(addressParam);
 
   if (!address) {
     return {
       notFound: true,
     };
   }
+
+  // Perform these requests in parallel to speed up the page load
+  const [domainName, openSeaProxyAddress] = await Promise.all([
+    address.toLowerCase() === addressParam ? lookupDomainName(address) : addressParam,
+    getOpenSeaProxyAddress(address),
+  ]);
 
   return {
     props: {
