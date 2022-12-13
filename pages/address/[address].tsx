@@ -27,8 +27,8 @@ const AddressPage: NextPage<Props> = ({ address, domainName, openSeaProxyAddress
     <>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
       <PublicLayout>
-        <h1 className="text-2xl font-bold">{domainName ?? shortenAddress(address)}</h1>
-        <div className="mb-2">TODO: Add some content about the address</div>
+        <h1 className="text-2xl font-bold mt-20">{domainName ?? shortenAddress(address)}</h1>
+        <div className="mb-10">TODO: Add some content about the address</div>
         <AddressContextProvider value={{ address, openSeaProxyAddress }}>
           <AllowanceTable />
         </AddressContextProvider>

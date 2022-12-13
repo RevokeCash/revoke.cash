@@ -13,22 +13,41 @@ interface Props {
   external?: boolean;
   router?: boolean;
   loading?: boolean;
+  asDiv?: boolean;
+  align?: 'left' | 'center' | 'right';
 }
 
-const Button = ({ disabled, style, size, onClick, href, external, router, children, className, loading }: Props) => {
+const Button = ({
+  disabled,
+  style,
+  size,
+  onClick,
+  href,
+  external,
+  router,
+  children,
+  className,
+  loading,
+  asDiv,
+  align,
+}: Props) => {
   const classMapping = {
-    common: 'flex justify-center items-center border border-black focus:outline-black duration-150',
+    common: 'flex items-center border border-black focus:outline-black duration-150',
     primary: 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-gray-200 disabled:bg-gray-300',
     tertiary: 'text-black disabled:text-gray-600 border-none',
     sm: 'px-2 py-0.5 text-xs rounded-md',
     md: 'px-4 py-1.5 text-base rounded-lg',
     lg: 'px-6 py-2 text-lg rounded-xl',
+    left: 'justify-start',
+    center: 'justify-center',
+    right: 'justify-end',
   };
 
   const classes = classNames(
     style !== 'none' && classMapping.common,
     classMapping[style],
+    classMapping[align ?? 'center'],
     size !== 'none' && classMapping[size],
     loading && 'flex gap-1', // TODO: Make this more robust when needed
     className
@@ -39,6 +58,14 @@ const Button = ({ disabled, style, size, onClick, href, external, router, childr
       <Href href={href} className={classes} external={external} router={router} underline="none">
         {children}
       </Href>
+    );
+  }
+
+  if (asDiv) {
+    return (
+      <div className={classes} onClick={onClick}>
+        {children}
+      </div>
     );
   }
 

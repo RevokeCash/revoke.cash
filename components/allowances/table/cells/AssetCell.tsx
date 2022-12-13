@@ -25,14 +25,14 @@ const AssetCell = ({ allowance }: Props) => {
   }
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 py-0.5">
       <div className="flex flex-col items-start">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-base leading-tight">
           <TokenLogo src={allowance.icon} alt={allowance.symbol} size={20} />
           {link}
         </div>
 
-        <div className="text-xs text-gray-400 w-40 truncate">
+        <div className="text-xs leading-tight text-gray-400 w-40 truncate">
           {shortenString(getBalanceText(allowance.symbol, allowance.balance, allowance.decimals), 32)}
         </div>
       </div>
