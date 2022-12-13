@@ -1,9 +1,11 @@
 import { track } from '@amplitude/analytics-browser';
+import Option from 'components/common/select/Option';
 import { setSelectThemeColors } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
 
+// TODO: Update colors
 const LanguageSelect = () => {
   const { asPath, replace } = useRouter();
   const { lang } = useTranslation();
@@ -40,10 +42,8 @@ const LanguageSelect = () => {
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
+      components={{ IndicatorSeparator: null, Option }}
       styles={{
-        indicatorSeparator: () => ({
-          display: 'none',
-        }),
         menu: (styles) => ({
           ...styles,
           width: 110,

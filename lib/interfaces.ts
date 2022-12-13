@@ -1,4 +1,4 @@
-import type { Provider } from '@ethersproject/abstract-provider';
+import type { Log as EthersLog, Provider } from '@ethersproject/abstract-provider';
 import type { Contract } from 'ethers';
 
 export interface BaseTokenData {
@@ -45,3 +45,7 @@ export type TokenStandard = 'ERC20' | 'ERC721';
 export type LogsProvider = Pick<Provider, 'getLogs'>;
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T | undefined>>;
+
+export interface Log extends EthersLog {
+  timestamp?: number;
+}

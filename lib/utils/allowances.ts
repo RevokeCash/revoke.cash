@@ -1,9 +1,8 @@
-import type { Log } from '@ethersproject/abstract-provider';
 import type { Contract, providers } from 'ethers';
 import { BigNumber, utils } from 'ethers';
 import { ERC721Metadata } from 'lib/abis';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
-import type { AllowanceData, BaseAllowanceData, BaseTokenData, LogsProvider } from 'lib/interfaces';
+import type { AllowanceData, BaseAllowanceData, BaseTokenData, Log, LogsProvider } from 'lib/interfaces';
 import {
   deduplicateLogsByTopics,
   filterLogsByAddress,
@@ -142,7 +141,7 @@ const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerA
 
   const [amount, lastUpdated, transactionHash] = await Promise.all([
     convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender))),
-    multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
     approval.transactionHash,
   ]);
 
@@ -172,7 +171,7 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
     const [owner, spender, lastUpdated, transactionHash] = await Promise.all([
       unpackResult(multicallContract.functions.ownerOf(tokenId)),
       unpackResult(multicallContract.functions.getApproved(tokenId)),
-      multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+      approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
       approval.transactionHash,
     ]);
 
@@ -209,7 +208,7 @@ const getUnlimitedErc721AllowanceFromApproval = async (
 
   const [isApprovedForAll, lastUpdated, transactionHash] = await Promise.all([
     unpackResult(multicallContract.functions.isApprovedForAll(ownerAddress, spender)),
-    multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
     approval.transactionHash,
   ]);
 

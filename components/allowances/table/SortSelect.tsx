@@ -1,4 +1,5 @@
 import { Column, sortingFns, Table } from '@tanstack/react-table';
+import Option from 'components/common/select/Option';
 import { AllowanceData } from 'lib/interfaces';
 import { setSelectThemeColors } from 'lib/utils/styles';
 import { useMemo } from 'react';
@@ -75,11 +76,8 @@ const SortSelect = ({ table }: Props) => {
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
-      components={{ IndicatorSeparator: null }}
+      components={{ IndicatorSeparator: null, Option }}
       styles={{
-        indicatorSeparator: () => ({
-          display: 'none',
-        }),
         menu: (styles) => ({
           ...styles,
           textAlign: 'left',

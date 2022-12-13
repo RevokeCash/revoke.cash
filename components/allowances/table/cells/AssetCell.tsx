@@ -10,12 +10,12 @@ interface Props {
   allowance: AllowanceData;
 }
 
-const TokenCell = ({ allowance }: Props) => {
+const AssetCell = ({ allowance }: Props) => {
   const { selectedChainId } = useEthereum();
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.contract.address}`;
 
   let link = (
-    <Href href={explorerUrl} style="black" underline="hover" external className="w-60 truncate">
+    <Href href={explorerUrl} underline="hover" external className="w-40 truncate">
       {shortenString(allowance.symbol, 24)}
     </Href>
   );
@@ -26,10 +26,13 @@ const TokenCell = ({ allowance }: Props) => {
 
   return (
     <div className="flex items-center gap-1">
-      <TokenLogo src={allowance.icon} alt={allowance.symbol} />
       <div className="flex flex-col items-start">
-        {link}
-        <div className="text-xs text-gray-400 w-60 truncate">
+        <div className="flex items-center gap-2">
+          <TokenLogo src={allowance.icon} alt={allowance.symbol} size={20} />
+          {link}
+        </div>
+
+        <div className="text-xs text-gray-400 w-40 truncate">
           {shortenString(getBalanceText(allowance.symbol, allowance.balance, allowance.decimals), 32)}
         </div>
       </div>
@@ -37,4 +40,4 @@ const TokenCell = ({ allowance }: Props) => {
   );
 };
 
-export default TokenCell;
+export default AssetCell;

@@ -22,7 +22,7 @@ const LastUpdatedCell = ({ allowance }: Props) => {
   return (
     <div className="flex justify-start whitespace-nowrap">
       <WithHoverTooltip tooltip={<TimeAgo datetime={lastUpdatedDate} locale={lang} />}>
-        <Href href={`${explorerUrl}/tx/${allowance.transactionHash}`} style="black" external>
+        <Href href={`${explorerUrl}/tx/${allowance.transactionHash}`} external>
           {lastUpdatedDate.toLocaleDateString()} {lastUpdatedDate.toLocaleTimeString()}
         </Href>
       </WithHoverTooltip>

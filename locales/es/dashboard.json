@@ -23,8 +23,10 @@
   },
   "donate_to_revoke": "Donar a Revoke.cash",
   "headers": {
+    "actions": "Actions",
     "allowance": "Autorización",
     "asset": "Activo",
+    "asset_type": "Asset Type",
     "last_updated": "Last Updated",
     "spender": "Gastador",
     "token": "Token"

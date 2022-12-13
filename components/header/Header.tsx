@@ -10,7 +10,7 @@ const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <header className="flex justify-between items-center gap-8">
+    <header className="flex justify-between items-center gap-8 px-8 py-4">
       <div className="flex justify-start items-center gap-8 flex-grow">
         <div className="flex flex-shrink-0 cursor-pointer">
           <Link href="/">

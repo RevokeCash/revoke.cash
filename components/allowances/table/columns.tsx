@@ -4,12 +4,12 @@ import { toFloat } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
 import AllowanceCell from './cells/AllowanceCell';
+import AssetCell from './cells/AssetCell';
 import AssetTypeCell from './cells/AssetTypeCell';
 import ControlsCell from './cells/ControlsCell';
 import HeaderCell from './cells/HeaderCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
 import SpenderCell from './cells/SpenderCell';
-import TokenCell from './cells/TokenCell';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
@@ -92,13 +92,13 @@ export const columns = [
   columnHelper.accessor('symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="dashboard:headers.asset" />,
-    cell: (info) => <TokenCell allowance={info.row.original} />,
+    cell: (info) => <AssetCell allowance={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,
   }),
   columnHelper.accessor(accessors.assetType, {
     id: ColumnId.ASSET_TYPE,
-    header: () => null,
+    header: () => <HeaderCell i18nKey="dashboard:headers.asset_type" />,
     cell: (info) => <AssetTypeCell assetType={info.getValue()} />,
     enableSorting: false,
     enableColumnFilter: true,
@@ -137,6 +137,7 @@ export const columns = [
   }),
   columnHelper.display({
     id: ColumnId.ACTIONS,
+    header: () => <HeaderCell i18nKey="dashboard:headers.actions" align="right" />,
     cell: (info) => <ControlsCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
   }),
 ];

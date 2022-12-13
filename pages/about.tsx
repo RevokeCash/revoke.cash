@@ -37,8 +37,8 @@ const About: NextPage = () => {
             <Trans
               i18nKey="about:sections.read_more.paragraph_1"
               components={[
-                <Href href="https://kalis.me/unlimited-erc20-allowances/" className="italic" style="html" external />,
-                <Href href="/faq" router style="html" />,
+                <Href href="https://kalis.me/unlimited-erc20-allowances/" className="italic" html external />,
+                <Href href="/faq" router html />,
               ]}
             />
           </div>
@@ -48,10 +48,10 @@ const About: NextPage = () => {
             <Trans
               i18nKey="about:sections.credits.paragraph_1"
               components={[
-                <Href href="https://twitter.com/RoscoKalis" external style="html" />,
-                <Href href="https://etherscan.io/" external style="html" />,
-                <Href href="https://blockscout.com/" external style="html" />,
-                <Href href="https://covalenthq.com/" external style="html" />,
+                <Href href="https://twitter.com/RoscoKalis" external html />,
+                <Href href="https://etherscan.io/" external html />,
+                <Href href="https://blockscout.com/" external html />,
+                <Href href="https://covalenthq.com/" external html />,
               ]}
             />
           </div>
@@ -62,7 +62,7 @@ const About: NextPage = () => {
               <div>
                 <Trans
                   i18nKey="about:sections.sponsors.paragraph_1"
-                  components={[<Href href="https://twitter.com/RevokeCash" external style="html" />]}
+                  components={[<Href href="https://twitter.com/RevokeCash" external html />]}
                 />
               </div>
               <div className="flex flex-wrap justify-center items-center gap-1">
