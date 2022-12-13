@@ -22,16 +22,16 @@ const ControlsWrapper = ({ children }: Props) => {
   const needsToSwitchChain = isConnected && selectedChainId !== connectedChainId;
 
   if (!isConnected) {
-    return <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connect_wallet')}>{children}</WithHoverTooltip>;
+    return <WithHoverTooltip tooltip={t('address:tooltips.connect_wallet')}>{children}</WithHoverTooltip>;
   }
 
   if (!isConnectedAddress) {
-    return <WithHoverTooltip tooltip={t('dashboard:controls.tooltips.connected_account')}>{children}</WithHoverTooltip>;
+    return <WithHoverTooltip tooltip={t('address:tooltips.connected_account')}>{children}</WithHoverTooltip>;
   }
 
   if (needsToSwitchChain) {
     const tooltip = (
-      <Trans i18nKey={`dashboard:controls.tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
+      <Trans i18nKey={`address:tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
     );
 
     return <WithHoverTooltip tooltip={tooltip}>{children}</WithHoverTooltip>;

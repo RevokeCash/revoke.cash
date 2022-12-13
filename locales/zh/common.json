@@ -16,6 +16,14 @@
     "update": "更新",
     "updating": "更新中"
   },
+  "chain_select": {
+    "mainnets": "主网",
+    "testnets": "测试网"
+  },
+  "donate": {
+    "gitcoin_grants": "或者为我们的<0>Gitcoin Grant</0>捐款",
+    "title": "为Revoke.cash捐款"
+  },
   "errors": {
     "404": {
       "title": "404 - 找不到网页"
@@ -28,7 +36,8 @@
   "nav": {
     "about": "关于",
     "extension": "扩展",
-    "faq": "常见问题"
+    "faq": "常见问题",
+    "search": "输入地址、ENS名称或Unstoppable域名"
   },
   "privacy_policy": "隐私政策"
 }

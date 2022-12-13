@@ -91,14 +91,14 @@ const columnHelper = createColumnHelper<AllowanceData>();
 export const columns = [
   columnHelper.accessor('symbol', {
     id: ColumnId.SYMBOL,
-    header: () => <HeaderCell i18nKey="dashboard:headers.asset" />,
+    header: () => <HeaderCell i18nKey="address:headers.asset" />,
     cell: (info) => <AssetCell allowance={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,
   }),
   columnHelper.accessor(accessors.assetType, {
     id: ColumnId.ASSET_TYPE,
-    header: () => <HeaderCell i18nKey="dashboard:headers.asset_type" />,
+    header: () => <HeaderCell i18nKey="address:headers.asset_type" />,
     cell: (info) => <AssetTypeCell assetType={info.getValue()} />,
     enableSorting: false,
     enableColumnFilter: true,
@@ -113,7 +113,7 @@ export const columns = [
   }),
   columnHelper.accessor(accessors.allowance, {
     id: ColumnId.ALLOWANCE,
-    header: () => <HeaderCell i18nKey="dashboard:headers.allowance" />,
+    header: () => <HeaderCell i18nKey="address:headers.allowance" />,
     cell: (info) => <AllowanceCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
     enableSorting: true,
     sortingFn: customSortingFns.allowance,
@@ -123,13 +123,13 @@ export const columns = [
   }),
   columnHelper.accessor('spender', {
     id: ColumnId.SPENDER,
-    header: () => <HeaderCell i18nKey="dashboard:headers.spender" />,
+    header: () => <HeaderCell i18nKey="address:headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
     enableSorting: false,
   }),
   columnHelper.accessor('lastUpdated', {
     id: ColumnId.LAST_UPDATED,
-    header: () => <HeaderCell i18nKey="dashboard:headers.last_updated" />,
+    header: () => <HeaderCell i18nKey="address:headers.last_updated" />,
     cell: (info) => <LastUpdatedCell allowance={info.row.original} />,
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,
@@ -137,7 +137,7 @@ export const columns = [
   }),
   columnHelper.display({
     id: ColumnId.ACTIONS,
-    header: () => <HeaderCell i18nKey="dashboard:headers.actions" align="right" />,
+    header: () => <HeaderCell i18nKey="address:headers.actions" align="right" />,
     cell: (info) => <ControlsCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
   }),
 ];

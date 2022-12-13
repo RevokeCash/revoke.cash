@@ -32,11 +32,11 @@ const ChainSelect = ({ onSelect, selected, showName }: Props) => {
 
   const groups = [
     {
-      label: t('dashboard:mainnets'),
+      label: t('common:chain_select.mainnets'),
       options: mainnetOptions,
     },
     {
-      label: t('dashboard:testnets'),
+      label: t('common:chain_select.testnets'),
       options: testnetOptions,
     },
   ];
