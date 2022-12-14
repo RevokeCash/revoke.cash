@@ -71,9 +71,10 @@ const ChainSelect = ({ onSelect, selected, showName }: Props) => {
       styles={{
         menu: (styles) => ({
           ...styles,
-          width: 200,
+          minWidth: 200,
           textAlign: 'left',
           border: '1px solid black',
+          borderRadius: 8,
         }),
         dropdownIndicator: (styles) => ({
           ...styles,
