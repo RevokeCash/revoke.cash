@@ -82,6 +82,11 @@ const SortSelect = ({ table }: Props) => {
           ...styles,
           textAlign: 'left',
           border: '1px solid black',
+          borderRadius: 8,
+        }),
+        menuList: (styles) => ({
+          ...styles,
+          padding: 0,
         }),
         dropdownIndicator: (styles) => ({
           ...styles,
@@ -108,6 +113,14 @@ const SortSelect = ({ table }: Props) => {
           ...styles,
           cursor: 'pointer',
           padding: '8px 8px',
+          '&:first-child': {
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+          },
+          '&:last-child': {
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
+          },
         }),
       }}
       theme={setSelectThemeColors}

@@ -19,7 +19,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
   if (!allowances && !loading) return null;
 
   return (
-    <div className="border border-black rounded-lg">
+    <div className="border border-black rounded-lg overflow-x-scroll whitespace-nowrap">
       <table className="w-full border-collapse">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (

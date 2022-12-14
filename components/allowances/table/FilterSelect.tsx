@@ -116,6 +116,7 @@ const FilterSelect = ({ table }: Props) => {
           ...styles,
           textAlign: 'left',
           border: '1px solid black',
+          borderRadius: 8,
         }),
         dropdownIndicator: (styles) => ({
           ...styles,
