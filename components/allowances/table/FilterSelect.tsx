@@ -1,10 +1,9 @@
 import { Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
-import Option from 'components/common/select/Option';
+import Select from 'components/common/select/Select';
 import { AllowanceData } from 'lib/interfaces';
-import { setSelectThemeColors } from 'lib/utils/styles';
 import { useCallback } from 'react';
-import Select, { FormatOptionLabelMeta } from 'react-select';
+import { FormatOptionLabelMeta } from 'react-select';
 import { ColumnId } from './columns';
 
 interface Option {
@@ -99,7 +98,7 @@ const FilterSelect = ({ table }: Props) => {
   return (
     <Select
       instanceId="filters-select"
-      className="h-full w-full"
+      className="w-full"
       classNamePrefix="filters-select"
       options={options}
       onChange={onChange}
@@ -110,34 +109,7 @@ const FilterSelect = ({ table }: Props) => {
       placeholder=""
       menuPlacement="bottom"
       isSearchable={false}
-      components={{ IndicatorSeparator: null, ValueContainer, MultiValue: () => null, Option }}
-      styles={{
-        menu: (styles) => ({
-          ...styles,
-          textAlign: 'left',
-          border: '1px solid black',
-          borderRadius: 8,
-        }),
-        dropdownIndicator: (styles) => ({
-          ...styles,
-          paddingLeft: 0,
-        }),
-        control: (styles) => ({
-          ...styles,
-          height: '100%',
-          '&:hover': {
-            backgroundColor: 'rgb(229 231 235)',
-          },
-          cursor: 'pointer',
-          borderRadius: 8,
-        }),
-        option: (styles) => ({
-          ...styles,
-          cursor: 'pointer',
-          padding: '8px 8px',
-        }),
-      }}
-      theme={setSelectThemeColors}
+      components={{ ValueContainer, MultiValue: () => null }}
     />
   );
 };
@@ -152,15 +124,15 @@ const ValueContainer = ({ children, getValue, options }) => {
   );
 
   return (
-    <div className="flex items-center px-2 gap-2">
-      <span>Filters</span>
-      {labels.map((label) => (
-        <Label className="bg-gray-300 text-base rounded-md px-2 font-normal">{label}</Label>
-      ))}
-      {labels.length === 0 && (
-        <Label className="bg-gray-300 text-base rounded-md px-2 font-normal">Showing Everything</Label>
-      )}
+    <>
+      <div className="flex items-center gap-2">
+        <span>Filters</span>
+        {labels.map((label) => (
+          <Label className="bg-gray-300 text-sm font-normal">{label}</Label>
+        ))}
+        {labels.length === 0 && <Label className="bg-gray-300 text-sm font-normal">Showing Everything</Label>}
+      </div>
       {children}
-    </div>
+    </>
   );
 };

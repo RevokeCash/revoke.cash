@@ -15,7 +15,7 @@ const AssetCell = ({ allowance }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.contract.address}`;
 
   let link = (
-    <Href href={explorerUrl} underline="hover" external className="w-40 truncate">
+    <Href href={explorerUrl} underline="hover" external className="max-w-[160px] truncate">
       {shortenString(allowance.symbol, 24)}
     </Href>
   );
@@ -32,7 +32,7 @@ const AssetCell = ({ allowance }: Props) => {
           {link}
         </div>
 
-        <div className="text-xs leading-tight text-gray-400 w-40 truncate">
+        <div className="text-xs leading-tight text-gray-400 max-w-[160px] truncate">
           {shortenString(getBalanceText(allowance.symbol, allowance.balance, allowance.decimals), 32)}
         </div>
       </div>
