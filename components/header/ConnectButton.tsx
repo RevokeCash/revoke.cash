@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import Button from 'components/common/Button';
 import DropdownMenu from 'components/common/dropdown/DropdownMenu';
 import { useEthereum } from 'lib/hooks/useEthereum';
@@ -10,17 +9,10 @@ const ConnectButton = () => {
   const { account, ensName, unsName, connect, disconnect } = useEthereum();
   const domainName = ensName ?? unsName;
 
-  const menuButton = (
-    <Button style="secondary" size="md" className="flex gap-1" asDiv>
-      {domainName ?? shortenAddress(account)}
-      <ChevronDownIcon className="w-5 h-5" />
-    </Button>
-  );
-
   return (
     <div className="flex">
       {account ? (
-        <DropdownMenu menuButton={menuButton}>
+        <DropdownMenu menuButton={domainName ?? shortenAddress(account)}>
           <Button
             style="secondary"
             size="md"

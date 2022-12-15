@@ -12,9 +12,11 @@ const Header = () => {
   return (
     <header className="flex justify-between items-center gap-8 px-8 py-4">
       <div className="flex justify-start items-center gap-8 flex-grow">
-        <div className="flex flex-shrink-0 cursor-pointer">
+        <div className="flex shrink-0">
           <Link href="/">
-            <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="40" width="200" />
+            <a className="flex focus:outline-black">
+              <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="36" width="180" />
+            </a>
           </Link>
         </div>
         <SearchBar />

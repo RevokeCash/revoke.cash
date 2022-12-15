@@ -1,9 +1,7 @@
 import { track } from '@amplitude/analytics-browser';
-import Option from 'components/common/select/Option';
-import { setSelectThemeColors } from 'lib/utils/styles';
+import Select from 'components/common/select/Select';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import Select from 'react-select';
 
 // TODO: Update colors
 const LanguageSelect = () => {
@@ -36,56 +34,15 @@ const LanguageSelect = () => {
   return (
     <Select
       instanceId="language-select"
+      className="text-black"
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
-      components={{ IndicatorSeparator: null, Option }}
-      styles={{
-        menu: (styles) => ({
-          ...styles,
-          width: 110,
-          margin: 0,
-          textAlign: 'left',
-          zIndex: 3,
-        }),
-        menuList: (styles) => ({
-          ...styles,
-          padding: 0,
-        }),
-        dropdownIndicator: (styles) => ({
-          ...styles,
-          padding: 2,
-          paddingLeft: 0,
-        }),
-        valueContainer: (styles) => ({
-          ...styles,
-          padding: 2,
-          paddingRight: 0,
-        }),
-        control: (styles) => ({
-          ...styles,
-          minHeight: 24,
-          cursor: 'pointer',
-          borderRadius: 8,
-        }),
-        option: (styles) => ({
-          ...styles,
-          cursor: 'pointer',
-          padding: '8px 8px',
-          '&:first-child': {
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-          },
-          '&:last-child': {
-            borderBottomLeftRadius: 4,
-            borderBottomRightRadius: 4,
-          },
-        }),
-      }}
-      theme={setSelectThemeColors}
+      minMenuWidth={110}
+      size="sm"
     />
   );
 };

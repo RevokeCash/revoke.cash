@@ -1,9 +1,7 @@
 import { Column, sortingFns, Table } from '@tanstack/react-table';
-import Option from 'components/common/select/Option';
+import Select from 'components/common/select/Select';
 import { AllowanceData } from 'lib/interfaces';
-import { setSelectThemeColors } from 'lib/utils/styles';
 import { useMemo } from 'react';
-import Select from 'react-select';
 import { ColumnId, customSortingFns } from './columns';
 
 interface Option {
@@ -65,7 +63,7 @@ const SortSelect = ({ table }: Props) => {
   return (
     <Select
       instanceId="sort-select"
-      className="h-full w-72 flex-shrink-0"
+      className="h-full w-72 shrink-0"
       classNamePrefix="sort-select"
       value={options.find((option) => {
         const [sorting] = table.getState().sorting;
@@ -76,54 +74,6 @@ const SortSelect = ({ table }: Props) => {
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
-      components={{ IndicatorSeparator: null, Option }}
-      styles={{
-        menu: (styles) => ({
-          ...styles,
-          textAlign: 'left',
-          border: '1px solid black',
-          borderRadius: 8,
-        }),
-        menuList: (styles) => ({
-          ...styles,
-          padding: 0,
-        }),
-        dropdownIndicator: (styles) => ({
-          ...styles,
-          paddingLeft: 0,
-        }),
-        valueContainer: (styles) => ({
-          ...styles,
-          paddingRight: 0,
-        }),
-        control: (styles) => ({
-          ...styles,
-          height: '100%',
-          '&:hover': {
-            backgroundColor: 'rgb(229 231 235)',
-          },
-          cursor: 'pointer',
-          borderRadius: 8,
-        }),
-        singleValue: (styles) => ({
-          ...styles,
-          margin: 0,
-        }),
-        option: (styles) => ({
-          ...styles,
-          cursor: 'pointer',
-          padding: '8px 8px',
-          '&:first-child': {
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-          },
-          '&:last-child': {
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8,
-          },
-        }),
-      }}
-      theme={setSelectThemeColors}
     />
   );
 };

@@ -1,10 +1,8 @@
 import ChainLogo from 'components/common/ChainLogo';
-import Option from 'components/common/select/Option';
+import Select from 'components/common/select/Select';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'lib/constants';
 import { getChainName } from 'lib/utils/chains';
-import { setSelectThemeColors } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
-import Select from 'react-select';
 
 interface ChainOption {
   value: string;
@@ -60,46 +58,14 @@ const ChainSelect = ({ onSelect, selected, showName }: Props) => {
     <Select
       instanceId="chain-select"
       classNamePrefix="chain-select"
-      className="flex-shrink-0"
+      className="shrink-0"
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={groups}
       onChange={onChange}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
-      components={{ IndicatorSeparator: null, Option }}
-      styles={{
-        menu: (styles) => ({
-          ...styles,
-          minWidth: 200,
-          textAlign: 'left',
-          border: '1px solid black',
-          borderRadius: 8,
-        }),
-        dropdownIndicator: (styles) => ({
-          ...styles,
-          paddingLeft: 0,
-        }),
-        valueContainer: (styles) => ({
-          ...styles,
-          paddingRight: 0,
-        }),
-        control: (styles) => ({
-          ...styles,
-          height: '100%',
-          '&:hover': {
-            backgroundColor: 'rgb(229 231 235)',
-          },
-          borderRadius: 8,
-          cursor: 'pointer',
-        }),
-        option: (styles) => ({
-          ...styles,
-          cursor: 'pointer',
-          padding: '8px 8px',
-        }),
-      }}
-      theme={setSelectThemeColors}
+      minMenuWidth={200}
     />
   );
 };

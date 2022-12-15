@@ -32,8 +32,12 @@ const SpenderCell = ({ allowance }: Props) => {
     return <SpinLoader size={10} />;
   }
 
+  if (!allowance.spender) {
+    return null;
+  }
+
   return (
-    <div className={classNames(!allowance.spender && 'text-gray-400', 'flex justify-start')}>
+    <div className={classNames('flex justify-start')}>
       <WithHoverTooltip tooltip={allowance.spender}>
         <Href href={explorerUrl} external>
           {spenderName ?? shortenString(allowance.spender)}

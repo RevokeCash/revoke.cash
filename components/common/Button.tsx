@@ -1,4 +1,5 @@
 import { classNames } from 'lib/utils/styles';
+import { MouseEventHandler } from 'react';
 import Href from './Href';
 import Spinner from './Spinner';
 
@@ -6,7 +7,7 @@ interface Props {
   disabled?: boolean;
   style: 'primary' | 'secondary' | 'tertiary' | 'none';
   size: 'sm' | 'md' | 'lg' | 'none';
-  onClick?: () => void;
+  onClick?: MouseEventHandler;
   href?: string;
   children: React.ReactNode;
   className?: string;
@@ -17,6 +18,7 @@ interface Props {
   align?: 'left' | 'center' | 'right';
 }
 
+// TODO: Focus modifier for primary buttons
 const Button = ({
   disabled,
   style,
@@ -32,13 +34,13 @@ const Button = ({
   align,
 }: Props) => {
   const classMapping = {
-    common: 'flex items-center border border-black focus:outline-black duration-150',
+    common: 'flex items-center border border-black focus:outline-black duration-150 cursor-pointer leading-none',
     primary: 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-gray-200 disabled:bg-gray-300',
     tertiary: 'text-black disabled:text-gray-600 border-none',
-    sm: 'px-2 py-0.5 text-xs rounded-md',
-    md: 'px-4 py-1.5 text-base rounded-lg',
-    lg: 'px-6 py-2 text-lg rounded-xl',
+    sm: 'h-6 px-2 text-xs rounded-md',
+    md: 'h-9 px-4 text-base rounded-lg',
+    lg: 'h-12 px-6 text-lg rounded-xl',
     left: 'justify-start',
     center: 'justify-center',
     right: 'justify-end',

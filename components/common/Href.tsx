@@ -30,7 +30,8 @@ const Href = (
   const classes = classNames(
     className,
     styleMapping[html ? 'html' : 'inherit'],
-    undelineMapping[underline ?? 'always']
+    undelineMapping[underline ?? 'always'],
+    'focus:outline-black'
   );
 
   const hrefComponent = (
