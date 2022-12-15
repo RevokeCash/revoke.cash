@@ -1,6 +1,7 @@
 import { init, track } from '@amplitude/analytics-browser';
 import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
+import { SiteThemeContextProvider } from 'lib/hooks/useThemes';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
@@ -23,7 +24,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, [router.isReady, router.asPath]);
 
   return (
-    <>
+    <SiteThemeContextProvider>
       <Container
         fluid
         className="App"
@@ -48,7 +49,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         </div>
       </Container>
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
-    </>
+    </SiteThemeContextProvider>
   );
 };
 

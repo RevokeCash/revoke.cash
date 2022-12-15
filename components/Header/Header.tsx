@@ -1,3 +1,4 @@
+import { useSiteTheme } from 'lib/hooks/useThemes';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -5,6 +6,7 @@ import NavLink from './NavLink';
 
 const Header = () => {
   const { t } = useTranslation();
+  const { darkMode, setDarkMode } = useSiteTheme();
 
   return (
     <>
@@ -39,6 +41,16 @@ const Header = () => {
                 />
               </a>
             </Link>
+            <div
+              onClick={() => setDarkMode(!darkMode)}
+              style={{
+                float: 'right',
+                cursor: 'pointer',
+                filter: 'invert(90%)',
+              }}
+            >
+              💡
+            </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
             <NavLink to="/about" text={t('common:nav.about')} matchToHighlight="about" />

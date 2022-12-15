@@ -62,6 +62,11 @@ a:visited:not(.btn) {
   text-align: center;
 }
 
+:root.dark {
+  background-color: #fefefe;
+  filter: invert(90%);
+}
+
 .logo {
   width: 100%;
   max-width: 400px;
