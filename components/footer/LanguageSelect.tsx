@@ -34,7 +34,7 @@ const LanguageSelect = () => {
   return (
     <Select
       instanceId="language-select"
-      className="text-black"
+      controlTheme="dark"
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}
