@@ -81,7 +81,7 @@ const FilterSelect = ({ table }: Props) => {
     return (
       <div className="flex items-center gap-1">
         <input
-          className="cursor-pointer"
+          className="cursor-pointer accent-black"
           type="checkbox"
           checked={!!selectValue.find((selected) => selected.value === option.value)}
         ></input>

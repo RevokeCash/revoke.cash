@@ -4,6 +4,8 @@ import ReactSelect, { components, OptionProps, Props as ReactSelectProps } from 
 interface Props extends ReactSelectProps {
   minMenuWidth?: number;
   size?: 'sm' | 'md';
+  controlTheme?: 'light' | 'dark';
+  menuTheme?: 'light' | 'dark';
 }
 
 // This component is created to allow us to customise the styles of the react-select component
@@ -20,6 +22,15 @@ const Select = (props: Props) => {
     md: 36, // h-9
   };
 
+  const colors = {
+    primary: 'black', // black
+    secondary: 'white', // white
+    lightest: '#f3f4f6', // gray-100
+    light: '#d4d4d8', // gray-300
+    dark: '#6b7280', // gray-500
+    darkest: '#1f2937', // gray-800
+  };
+
   return (
     <ReactSelect
       {...props}
@@ -31,8 +42,10 @@ const Select = (props: Props) => {
           display: 'flex', // flex
           boxSizing: 'border-box', // border-box
           alignItems: 'center', // align-center
+          color: props.controlTheme === 'dark' ? colors.secondary : colors.primary,
+          backgroundColor: props.controlTheme === 'dark' ? colors.primary : colors.secondary,
           '&:hover': {
-            backgroundColor: '#f3f4f6', // hover:bg-gray-100
+            backgroundColor: props.controlTheme === 'dark' ? colors.darkest : colors.lightest,
           },
           cursor: 'pointer', // cursor-pointer
           height: controlHeight[props.size || 'md'],
@@ -42,7 +55,10 @@ const Select = (props: Props) => {
         menu: (styles) => ({
           ...styles,
           textAlign: 'left', // text-left
-          border: '1px solid black', // border border-black
+          border: '1px solid', // border
+          color: props.menuTheme === 'dark' ? colors.secondary : colors.primary,
+          backgroundColor: props.menuTheme === 'dark' ? colors.primary : colors.secondary,
+          borderColor: props.menuTheme === 'dark' ? colors.secondary : colors.primary,
           overflow: 'hidden', // overflow-hidden
           minWidth: props.minMenuWidth,
         }),
@@ -68,17 +84,21 @@ const Select = (props: Props) => {
         borderRadius: 8, // rounded-lg
         colors: {
           ...theme.colors,
-          primary: 'black',
-          primary25: '#f3f4f6', // gray-100
-          neutral10: '#6b7280', // gray-500
-          neutral20: 'black',
-          neutral30: 'black',
-          neutral40: 'black',
-          neutral50: 'black',
-          neutral60: 'black',
-          neutral70: 'black',
-          neutral80: 'black',
-          neutral90: 'black',
+          primary: props.controlTheme === 'dark' ? colors.secondary : colors.primary, // focus color
+          primary25: props.menuTheme === 'dark' ? colors.darkest : colors.lightest, // option hover color
+          primary50: props.menuTheme === 'dark' ? colors.dark : colors.light, // option click color
+          // primary75: 'red', // ??
+          // neutral0: 'red', // control + menu background color (handled separately above)
+          // neutral5: 'red', // ??
+          // neutral10: 'red', // ??
+          neutral20: props.controlTheme === 'dark' ? colors.secondary : colors.primary, // control border + indicator color
+          // neutral30: 'red', // ??
+          neutral40: props.controlTheme === 'dark' ? colors.secondary : colors.primary, // indicator hover color
+          // neutral50: 'red', // ??
+          neutral60: props.controlTheme === 'dark' ? colors.secondary : colors.primary, // indicator focus color
+          // neutral70: 'red', // ??
+          neutral80: props.controlTheme === 'dark' ? colors.secondary : colors.primary, // control text color
+          // neutral90: 'red', // ??
         },
       })}
     />
