@@ -63,7 +63,7 @@ const SortSelect = ({ table }: Props) => {
   return (
     <Select
       instanceId="sort-select"
-      className="h-full w-72 shrink-0"
+      className="h-full w-full md:w-72 shrink-0"
       classNamePrefix="sort-select"
       value={options.find((option) => {
         const [sorting] = table.getState().sorting;
