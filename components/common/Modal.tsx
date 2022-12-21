@@ -43,11 +43,10 @@ const Modal = ({ open, setOpen, children }: Props) => {
                   <Button
                     style="none"
                     size="none"
-                    className="text-gray-400 hover:text-gray-500 focus:outline-black"
+                    className="text-gray-400 hover:text-gray-500"
                     onClick={() => setOpen(false)}
                   >
-                    <span className="sr-only">Close</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" />
                   </Button>
                 </div>
                 <div>{children}</div>

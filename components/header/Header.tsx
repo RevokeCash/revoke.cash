@@ -1,7 +1,7 @@
+import Href from 'components/common/Href';
 import WalletIndicator from 'components/header/WalletIndicator';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
-import Link from 'next/link';
 import DonateButton from '../common/DonateButton';
 import NavLink from './NavLink';
 import SearchBar from './SearchBar';
@@ -13,11 +13,9 @@ const Header = () => {
     <header className="flex justify-between items-center gap-8 px-8 py-4">
       <div className="flex justify-start items-center gap-8 flex-grow">
         <div className="flex shrink-0">
-          <Link href="/">
-            <a className="flex focus:outline-black">
-              <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="36" width="180" />
-            </a>
-          </Link>
+          <Href href="/" underline="none" className="flex" router>
+            <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="36" width="180" />
+          </Href>
         </div>
         <SearchBar />
       </div>

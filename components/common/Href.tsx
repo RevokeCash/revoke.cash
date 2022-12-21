@@ -21,17 +21,17 @@ const Href = (
     inherit: 'text-inherit visited:text-inherit',
   };
 
-  const undelineMapping = {
+  const underlineMapping = {
     always: 'underline hover:underline',
     hover: 'no-underline hover:underline',
     none: 'no-underline hover:no-underline',
   };
 
   const classes = classNames(
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
     className,
     styleMapping[html ? 'html' : 'inherit'],
-    undelineMapping[underline ?? 'always'],
-    'focus:outline-black'
+    underlineMapping[underline ?? 'always']
   );
 
   const hrefComponent = (

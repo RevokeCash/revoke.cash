@@ -13,6 +13,7 @@ import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
+import Input from './Input';
 
 interface Props {
   size: 'sm' | 'md' | 'lg';
@@ -56,14 +57,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
         value: utils.parseEther(amount),
       });
 
-      toast.info('💪 Thanks for the donation!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      toast.info('💪 Thanks for the donation!');
 
       track('Donated', { chainId: connectedChainId, amount: Number(amount) });
 
@@ -81,7 +75,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
   return (
     <>
-      <Button style="primary" size={size} onClick={handleOpen} className="">
+      <Button style="primary" size={size} onClick={handleOpen}>
         {t('common:buttons.donate')}
       </Button>
 
@@ -93,12 +87,13 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
             </Dialog.Title>
 
             <div className="mt-2 h-9 flex">
-              <input
+              <Input
+                size="md"
                 type="number"
                 step={0.01}
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
-                className="grow rounded-lg rounded-r-none border border-black px-3 py-1.5 text-gray-600 focus:outline-black"
+                className="z-10 rounded-r-none grow text-gray-600"
               />
               <div className="px-3 py-1.5 border-y border-black bg-gray-300 flex justify-center items-center">
                 {nativeToken}

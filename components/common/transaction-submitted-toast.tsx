@@ -18,10 +18,6 @@ export const displayTransactionSubmittedToast = (ref: MutableRefObject<ReactText
   );
 
   ref.current = toast.info(toastContent, {
-    position: 'top-right',
-    autoClose: 5000,
     closeOnClick: false,
-    pauseOnHover: true,
-    draggable: true,
   });
 };

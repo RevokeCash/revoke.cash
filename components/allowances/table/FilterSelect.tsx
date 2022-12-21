@@ -128,15 +128,17 @@ const ValueContainer = ({ children, getValue, options }) => {
     <>
       <div className="flex items-center gap-2">
         <span>Filters</span>
-        <div className="hidden lg:flex items-center gap-2">
-          {labels.map((label) => (
-            <Label className="bg-gray-300 text-sm font-normal">{label}</Label>
-          ))}
-        </div>
         {labels.length > 0 && (
-          <div className="flex lg:hidden items-center gap-2">
-            <Label className="bg-gray-300 text-sm font-normal">Filters Selected</Label>
-          </div>
+          <>
+            <div className="hidden lg:flex items-center gap-2">
+              {labels.map((label) => (
+                <Label className="bg-gray-300 text-sm font-normal">{label}</Label>
+              ))}
+            </div>
+            <div className="flex lg:hidden items-center gap-2">
+              <Label className="bg-gray-300 text-sm font-normal">Filters Selected</Label>
+            </div>
+          </>
         )}
         {labels.length === 0 && <Label className="bg-gray-300 text-sm font-normal">Showing Everything</Label>}
       </div>

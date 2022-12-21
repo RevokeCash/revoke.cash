@@ -1,3 +1,4 @@
+import Href from './Href';
 import Logo from './Logo';
 
 interface Props {
@@ -8,9 +9,9 @@ interface Props {
 }
 
 const LogoLink = ({ src, alt, href, size }: Props) => (
-  <a className="flex" href={href} target="_blank">
+  <Href className="flex" href={href} external>
     <Logo src={src} alt={alt} size={size} />
-  </a>
+  </Href>
 );
 
 export default LogoLink;
