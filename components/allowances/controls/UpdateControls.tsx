@@ -1,4 +1,5 @@
 import Button from 'components/common/Button';
+import Input from 'components/common/Input';
 import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -22,8 +23,9 @@ const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
 
   return (
     <div className="flex gap-2">
-      <input
-        className="border border-black rounded-md w-16 px-1.5 focus:outline-black"
+      <Input
+        size="sm"
+        className="w-16"
         type="text"
         placeholder={defaultValue ?? '0'}
         onChange={(e) => setValue(e.target.value)}

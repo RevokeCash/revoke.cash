@@ -11,17 +11,12 @@ interface Props extends ReactSelectProps {
 // This component is created to allow us to customise the styles of the react-select component
 // the className prop can still be used to customise some of the styles per component
 const Select = (props: Props) => {
-  // vertical padding is technically added by the height of the control
-  const controlPadding = {
-    sm: '0px 4px', // px-1
-    md: '0px 8px', // px-2
+  const controlClassMapping = {
+    sm: 'h-6 px-1',
+    md: 'h-9 px-2',
   };
 
-  const controlHeight = {
-    sm: 24, // h-6
-    md: 36, // h-9
-  };
-
+  // TODO: Manage colors through tailwind / className integration -> move to unstyled react-select
   const colors = {
     primary: 'black', // black
     secondary: 'white', // white
@@ -36,21 +31,27 @@ const Select = (props: Props) => {
       {...props}
       className={classNames(props.className)}
       components={{ IndicatorSeparator: null, Option, ...props.components }}
+      classNames={{
+        control: (state) =>
+          classNames(
+            // Attempt to match the browser's focus-visible behaviour for <select> elements
+            // (only display the focus ring when the element is focused via the keyboard)
+            state.isFocused && '[&:has(:focus-visible)]:ring-1 [&:has(:focus-visible)]:ring-current',
+            state.menuIsOpen && '[&:has(:focus-visible)]:ring-0',
+            'flex items-center box-border',
+            controlClassMapping[props.size || 'md']
+          ),
+      }}
       styles={{
         control: (styles) => ({
           ...styles,
-          display: 'flex', // flex
-          boxSizing: 'border-box', // border-box
-          alignItems: 'center', // align-center
           color: props.controlTheme === 'dark' ? colors.secondary : colors.primary,
           backgroundColor: props.controlTheme === 'dark' ? colors.primary : colors.secondary,
           '&:hover': {
             backgroundColor: props.controlTheme === 'dark' ? colors.darkest : colors.lightest,
           },
-          cursor: 'pointer', // cursor-pointer
-          height: controlHeight[props.size || 'md'],
-          minHeight: controlHeight[props.size || 'md'],
-          padding: controlPadding[props.size || 'md'],
+          minHeight: 0,
+          cursor: 'pointer',
         }),
         menu: (styles) => ({
           ...styles,

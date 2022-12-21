@@ -59,6 +59,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           </LogIn>
           <ToastContainer
             className="text-center"
+            toastClassName="border border-black"
             position="top-right"
             icon={false}
             autoClose={5000}

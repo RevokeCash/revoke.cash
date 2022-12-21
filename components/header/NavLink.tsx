@@ -1,6 +1,5 @@
 import { classNames } from 'lib/utils/styles';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 interface Props {
   to: string;
@@ -9,11 +8,8 @@ interface Props {
 }
 
 const NavLink = ({ to, text }: Props) => {
-  const router = useRouter();
-
   const classes = classNames(
-    // router.asPath === to ? 'text-black visited:text-black' : 'text-gray-500 visited:text-gray-500',
-    'text-lg text-black visited:text-black focus:outline-black'
+    'text-lg text-black visited:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:rounded-md'
   );
 
   return (

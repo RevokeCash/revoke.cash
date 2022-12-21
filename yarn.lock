@@ -7545,9 +7545,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-select@npm:^5.5.6":
-  version: 5.6.0
-  resolution: "react-select@npm:5.6.0"
+"react-select@npm:^5.7.0":
+  version: 5.7.0
+  resolution: "react-select@npm:5.7.0"
   dependencies:
     "@babel/runtime": ^7.12.0
     "@emotion/cache": ^11.4.0
@@ -7561,7 +7561,7 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: d0a51e618168f3f275fbf96e23eb88ac6066006bcca136e293327f6eddd0b419ef02aaa847bf1670c5f07c8e9d9fc4b975fcae833085e11fc41e29e2b802a75b
+  checksum: 3d29f7bb6dd66ad55396d820f05da6112f1d21b67526422a8ff5aa6cd47c783804c1b73042ac2949ba0871056a3dc68c06a73a8281abb61571e475d72bbd80dc
   languageName: node
   linkType: hard
 
@@ -7933,7 +7933,7 @@ __metadata:
     react: ^18.2.0
     react-async-hook: ^4.0.0
     react-dom: ^18.2.0
-    react-select: ^5.5.6
+    react-select: ^5.7.0
     react-spinners: ^0.11.0
     react-ssr-prepass: ^1.5.0
     react-switch: ^6.1.0

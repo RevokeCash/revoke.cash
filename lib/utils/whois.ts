@@ -3,6 +3,7 @@ import { Contract, utils } from 'ethers';
 import { OPENSEA_REGISTRY } from 'lib/abis';
 import {
   ADDRESS_ZERO,
+  ALCHEMY_PROVIDER,
   DAPP_LIST_BASE_URL,
   ENS_RESOLUTION,
   ETHEREUM_LISTS_CONTRACTS,
@@ -96,8 +97,7 @@ export const lookupDomainName = async (address: string) => {
 
 export const getOpenSeaProxyAddress = async (userAddress: string): Promise<string | null> => {
   try {
-    // We use the ENS_RESOLUTION provider here because we only need to retrieve the OS proxy address for mainnet
-    const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, ENS_RESOLUTION);
+    const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, ALCHEMY_PROVIDER);
     const [proxyAddress] = await contract.functions.proxies(userAddress);
     if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return null;
     return proxyAddress;

@@ -21,8 +21,10 @@ export const OPENSEA_REGISTRY_ADDRESS = '0xa5409ec958C83C3f309868babACA7c86DCB07
 export const MOONBIRDS_ADDRESS = '0x23581767a106ae21c074b2276D25e5C3e136a68b';
 export const DONATION_ADDRESS = '0xfcBf17200C64E860F6639aa12B525015d115F863'; // revoke.kalis.eth
 
-export const ENS_RESOLUTION =
+export const ALCHEMY_PROVIDER =
   process.env.NEXT_PUBLIC_ALCHEMY_API_KEY && new providers.AlchemyProvider(1, process.env.NEXT_PUBLIC_ALCHEMY_API_KEY);
+
+export const ENS_RESOLUTION = ALCHEMY_PROVIDER;
 
 export const UNS_RESOLUTION =
   process.env.NEXT_PUBLIC_ALCHEMY_API_KEY &&

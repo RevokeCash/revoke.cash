@@ -29,7 +29,7 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-9 flex gap-2 items-center w-full max-w-xl border border-black rounded-lg px-3 text-lg font-medium focus-within:ring-1 focus-within:ring-black"
+      className="h-9 flex gap-2 items-center w-full max-w-xl border border-black rounded-lg px-3 text-lg font-medium focus-within:ring-1 focus-within:ring-black bg-white"
     >
       <MagnifyingGlassIcon className="w-6 h-6" />
       <input

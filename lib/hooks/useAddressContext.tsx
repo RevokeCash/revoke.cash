@@ -2,6 +2,7 @@ import React, { ReactNode, useContext } from 'react';
 
 interface AddressContext {
   address?: string;
+  domainName?: string;
   openSeaProxyAddress?: string;
 }
 

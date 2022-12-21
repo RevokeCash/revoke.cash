@@ -2,6 +2,7 @@ import type { Filter } from '@ethersproject/abstract-provider';
 import type { BigNumberish } from 'ethers';
 import { BigNumber, utils } from 'ethers';
 import type { Log, LogsProvider } from 'lib/interfaces';
+import { toast } from 'react-toastify';
 import { resolveEnsName, resolveUnsName } from './whois';
 
 export const shortenAddress = (address?: string): string => {
@@ -121,4 +122,15 @@ export const deduplicateLogsByTopics = (logs: Log[]) => {
 
 export const filterLogsByAddress = (logs: Log[], address: string) => {
   return logs.filter((log) => log.address === address);
+};
+
+export const writeToClipBoard = (text: string, displayToast: boolean = true) => {
+  if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
+    toast.info("❌ Couldn't copy to clipboard", { autoClose: 1000 });
+  }
+
+  navigator.clipboard.writeText(text);
+  if (displayToast) {
+    toast.info('✅ Copied to clipboard', { autoClose: 1000 });
+  }
 };

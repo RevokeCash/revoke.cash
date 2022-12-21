@@ -1,0 +1,21 @@
+import { classNames } from 'lib/utils/styles';
+import { InputHTMLAttributes } from 'react';
+
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  size?: 'sm' | 'md' | 'lg' | 'none';
+}
+
+const Input = ({ size, className, ...props }: Props) => {
+  const classMapping = {
+    common: 'border border-black focus:outline-none focus-visible:ring-1 focus-visible:ring-black',
+    sm: 'h-6 px-2 text-xs rounded-md',
+    md: 'h-9 px-3 text-base rounded-lg',
+    lg: 'h-12 px-6 text-lg rounded-xl',
+  };
+
+  const classes = classNames(classMapping.common, size !== 'none' && classMapping[size], className);
+
+  return <input className={classes} {...props} />;
+};
+
+export default Input;

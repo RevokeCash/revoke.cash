@@ -10,7 +10,7 @@ const ConnectButton = () => {
   const domainName = ensName ?? unsName;
 
   return (
-    <div className="flex">
+    <div className="flex whitespace-nowrap">
       {account ? (
         <DropdownMenu menuButton={domainName ?? shortenAddress(account)}>
           <Button
@@ -21,7 +21,7 @@ const ConnectButton = () => {
             href={`/address/${domainName ?? account}`}
             router
           >
-            My Profile
+            My Allowances
           </Button>
           <Button style="secondary" size="md" className="rounded-none border-none" align="left" onClick={disconnect}>
             {t('common:buttons.disconnect')}
