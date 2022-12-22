@@ -3,6 +3,7 @@ import ReactSelect, { components, OptionProps, Props as ReactSelectProps } from 
 
 interface Props extends ReactSelectProps {
   minMenuWidth?: number;
+  menuAlign?: 'left' | 'right';
   size?: 'sm' | 'md';
   controlTheme?: 'light' | 'dark';
   menuTheme?: 'light' | 'dark';
@@ -30,7 +31,7 @@ const Select = (props: Props) => {
     <ReactSelect
       {...props}
       className={classNames(props.className)}
-      components={{ IndicatorSeparator: null, Option, ...props.components }}
+      components={{ IndicatorSeparator: null, ClearIndicator: null, Option, ...props.components }}
       classNames={{
         control: (state) =>
           classNames(
@@ -62,6 +63,8 @@ const Select = (props: Props) => {
           borderColor: props.menuTheme === 'dark' ? colors.secondary : colors.primary,
           overflow: 'hidden', // overflow-hidden
           minWidth: props.minMenuWidth,
+          position: 'absolute',
+          right: props.menuAlign === 'right' ? undefined : 0,
         }),
         groupHeading: (styles) => ({
           ...styles,

@@ -9,7 +9,7 @@ interface Props {
 
 const NavLink = ({ to, text }: Props) => {
   const classes = classNames(
-    'text-lg text-black visited:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:rounded-md'
+    'text-lg text-black visited:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:rounded-md'
   );
 
   return (

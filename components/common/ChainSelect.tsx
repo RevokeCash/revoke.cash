@@ -13,9 +13,10 @@ interface Props {
   onSelect: (chainId: number) => void;
   selected: number;
   showName?: boolean;
+  menuAlign?: 'left' | 'right';
 }
 
-const ChainSelect = ({ onSelect, selected, showName }: Props) => {
+const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
   const { t } = useTranslation();
 
   const mainnetOptions = CHAIN_SELECT_MAINNETS.map((chainId) => ({
@@ -66,6 +67,7 @@ const ChainSelect = ({ onSelect, selected, showName }: Props) => {
       menuPlacement="bottom"
       isSearchable={false}
       minMenuWidth={200}
+      menuAlign={menuAlign}
     />
   );
 };

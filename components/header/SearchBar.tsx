@@ -10,7 +10,7 @@ const SearchBar = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>('');
 
   const { data: isValid, isLoading: validating } = useQuery({
     queryKey: ['validate', value],
@@ -20,21 +20,24 @@ const SearchBar = () => {
     cacheTime: Infinity,
   });
 
+  // TODO: Handle case where submitted while still validating
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     if (!isValid || !value) return;
     router.push(`/address/${value}`);
+    setValue('');
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-9 flex gap-2 items-center w-full max-w-xl border border-black rounded-lg px-3 text-lg font-medium focus-within:ring-1 focus-within:ring-black bg-white"
+      className="h-9 flex gap-2 items-center w-full max-w-3xl border border-black rounded-lg px-3 text-xs sm:text-lg font-medium focus-within:ring-1 focus-within:ring-black bg-white"
     >
       <MagnifyingGlassIcon className="w-6 h-6" />
       <input
-        className="w-full focus:outline-none address-input"
+        className="grow focus-visible:outline-none address-input"
         placeholder={t('common:nav.search')}
+        value={value}
         onChange={(ev) => setValue(ev.target.value)}
       />
       {value && validating && <Spinner className="w-4 h-4" />}

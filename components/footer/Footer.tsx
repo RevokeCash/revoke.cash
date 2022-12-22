@@ -4,7 +4,7 @@ import LanguageSelect from './LanguageSelect';
 
 const Footer = () => {
   return (
-    <footer className="w-full flex flex-col sm:flex-row gap-2 items-center justify-between px-8 py-4 bg-black text-gray-300">
+    <footer className="w-full flex flex-col sm:flex-row gap-2 items-center justify-between p-4 md:px-8 bg-black text-gray-300">
       <div className="flex flex-col sm:flex-row gap-2 items-center">
         <div>© Revoke.cash 2022</div>
         <div className="flex gap-2 items-center">
