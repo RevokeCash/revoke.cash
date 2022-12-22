@@ -11,7 +11,7 @@ const DropdownMenu = ({ menuButton, children }: Props) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="focus:outline-none focus-visible:ring-1 focus-visible:ring-black rounded-lg">
+        <Menu.Button className="focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black rounded-lg">
           {/* For some reason the padding looks off when it's the same on left and right, so I made them different */}
           <Button style="secondary" size="md" className="flex pl-3 pr-2" asDiv>
             {menuButton}

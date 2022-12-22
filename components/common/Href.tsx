@@ -28,7 +28,7 @@ const Href = (
   };
 
   const classes = classNames(
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
     className,
     styleMapping[html ? 'html' : 'inherit'],
     underlineMapping[underline ?? 'always']

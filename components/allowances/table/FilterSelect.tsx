@@ -126,19 +126,16 @@ const ValueContainer = ({ children, getValue, options }) => {
 
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 grow">
         <span>Filters</span>
         {labels.length > 0 && (
-          <>
-            <div className="hidden lg:flex items-center gap-2">
-              {labels.map((label) => (
-                <Label className="bg-gray-300 text-sm font-normal">{label}</Label>
-              ))}
-            </div>
-            <div className="flex lg:hidden items-center gap-2">
-              <Label className="bg-gray-300 text-sm font-normal">Filters Selected</Label>
-            </div>
-          </>
+          <div className="flex items-center gap-2 grow whitespace-nowrap overflow-scroll w-1">
+            {labels.map((label) => (
+              <Label key={label} className="bg-gray-300 font-normal">
+                {label}
+              </Label>
+            ))}
+          </div>
         )}
         {labels.length === 0 && <Label className="bg-gray-300 text-sm font-normal">Showing Everything</Label>}
       </div>

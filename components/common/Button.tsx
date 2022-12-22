@@ -48,7 +48,7 @@ const Button = ({
   };
 
   const classes = classNames(
-    'focus:outline-none focus-visible:ring-1 focus-visible:ring-black',
+    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black',
     (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded',
     style !== 'none' && classMapping.common,
     classMapping[style],
