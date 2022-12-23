@@ -34,6 +34,10 @@ const fullOverrides = {
     logoURI:
       'https://i.seadn.io/gae/0cOqWoYA7xL9CkUjGlxsjreSYBdrUBE0c6EO1COG4XE8UeP-Z30ckqUNiL872zHQHQU5MUNMNhfDpyXIP17hRSC5HQ?w=500&auto=format',
   },
+  '0x942BC2d3e7a589FE5bd4A5C6eF9727DFd82F5C8a': {
+    symbol: 'Art Blocks Explorations',
+    logoURI: 'https://storage.googleapis.com/subgraph-images/1644278294885Squig.blk.circle.800px.png',
+  },
 };
 
 const updateNftTokenlist = async () => {

@@ -22,7 +22,7 @@
     },
     "0x495f947276749Ce646f68AC8c248420045cb7b5e": {
       "symbol": "OS Shared Storefront Collection",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75a1275b6fb80063a2863df3e8a1e1c98d70f2452138e3b00fa10080d3cd6a506530322036d9fb348bc026b62ec8234968257ed41d75c26a78ccc69a325ef3d25877e09706c7c9feb2e29288f438e499a4eb02b33090b91f5af279ac4ea4146495a03168bb6141fe5761db5777e8c3fbf09e1c36adca3539e5ec9b326e73d154fcd9d90547028f7a3eab3abf92c17a43f5a"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6212d2ab73f1ef01deaec61038cfe6832580198df08731e672b336fd5aa0d9128f9e01a0d1534375ff0cf64348fa818f8fd969e393c46079f849f79f96667ce072af3bc0e34fb1639bc282f0f475d8b30bba1ef6fac91422cb5110f3e8d5e01bfb986b9437143255f154ea2381f60fb389"
     },
     "0x49cF6f5d44E70224e2E23fDcdd2C053F30aDA28B": {
       "symbol": "CLONE X",
@@ -254,7 +254,7 @@
     },
     "0x4E1f41613c9084FdB9E34E11fAE9412427480e56": {
       "symbol": "Terraforms by Mathcastles",
-      "logoURI": "https://i.seadn.io/gae/5w8DDjrDhTKLfe-r6erP3yF1m9nfFi-d4b_WbArv17vqatPg0ZwTVrnOGiry3YhQCS00gfxzOEDSbW2Zr4soCTZ0A-u0TZ3Xjln4qA?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/8987b795655076fdf8183a7daee3754a.gif?w=32&auto=format"
     },
     "0x797a48c46Be32aafceDcFD3d8992493D8A1F256b": {
       "symbol": "Inhabitants: MintPass (MetaHero)",
@@ -314,7 +314,7 @@
     },
     "0x199a6B43C14193344542ec431b7CbD7A89a6f9de": {
       "symbol": "GR1M R34P",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75abc7b9085e4c016cf98fdde28eeb8d4c5a229389e8a2dd7a8504c9947deb04236167a84deed0fc6deb308a53a65bcb72d66f91369b398ec5504e8fa01ffb505cb4282034e2ab22adc9ee83fd14d3f6031580366a494376413404b943074d0acc4a7c7dd983276ae072707b97f8dd0307ae1c36adca3539e5ec9b326e73d154fcd9d90547028f7a3eab3abf92c17a43f5a"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75ae7510eae5c344ad24d4da944870a893229e9096168cf4cb34e1350ab91e36494d2c1700b3ccd1cf5d8dc42e7847cde3cfccd64aa326f8e550eb4865eb760ecc79170fb3be413c5fcc6b9743c74426207ed3e74a9a1e7411026fd3ec6df19132884542bd36f8c134ac79e4355e05a7803e1c36adca3539e5ec9b326e73d154fcd9d90547028f7a3eab3abf92c17a43f5a"
     },
     "0x7D8820FA92EB1584636f4F5b8515B5476B75171a": {
       "symbol": "Murakami.Flowers Official",
@@ -438,7 +438,7 @@
     },
     "0x32973908FaeE0Bf825A343000fE412ebE56F802A": {
       "symbol": "Pixelmon - Generation 1",
-      "logoURI": "https://i.seadn.io/gcs/files/86cf56f4ce8e779ad7919febf8503ebe.jpg?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/281a2fe422ac5614e9d32fad1f93b09d.png?w=32&auto=format"
     },
     "0xaAdBA140Ae5e4c8a9eF0Cc86EA3124b446e3E46A": {
       "symbol": "MutantCats",
@@ -537,15 +537,15 @@
       "logoURI": "https://i.seadn.io/gae/NrS4UlK9ZqH2GuH_faBRtH2RIlsHHy3h9OmFpN46S1Y2gH6F3cBgZxZpJ-iuTdFZWsX2MaHNXaigXLaWtgp3zx4SrPDlD0CGj2L2Zs4?w=32&auto=format"
     },
     "0x05da517B1bf9999B7762EaEfa8372341A1a47559": {
-      "symbol": "KPR",
-      "logoURI": "https://i.seadn.io/gcs/files/7374bcc1521d964418b18c4478862686.jpg?w=32&auto=format"
+      "symbol": "fastfoodbabymoon",
+      "logoURI": "https://i.seadn.io/gcs/files/d2a46e862dc1ddd5d5e62b4139f4acf7.png?w=32&auto=format"
     },
     "0x86357A19E5537A8Fba9A004E555713BC943a66C0": {
       "symbol": "Neo Tokyo Identities",
       "logoURI": "https://i.seadn.io/gae/MpVB_fMVj64RvgqdPhbVOuul-QLYrYVFqd65_0hqTTvrHGl_foGn-_NIz7YU5P74oCNIk-CyFi5hb2EqKpb2w-cKZ58-Ds2mqfGPcZ0?w=32&auto=format"
     },
     "0x6d4bbC0387dD4759EEe30f6A482AC6dC2Df3Facf": {
-      "symbol": "RTFKT X NIKE MONOLITH",
+      "symbol": "RTFKT X NIKE Trillium Lace Engine",
       "logoURI": "https://i.seadn.io/gcs/files/5fb32e0351994f9a81a7e381e0d57a4e.png?w=32&auto=format"
     },
     "0x5be99338289909d6dbBC57bb791140Ef85cCbCAB": {
@@ -938,7 +938,7 @@
     },
     "0xc5B52253f5225835cc81C52cdb3d6A22bc3B0c93": {
       "symbol": "mcgoblin.wtf",
-      "logoURI": "https://i.seadn.io/gae/eOXGgBb_YjC-x8F5M1BBc6naEgEc2DgI3y8LIXSkGiBB86gMxhcbNtv8t_VgtMggPdtIXLNHqxbw-NwnAJmZlIgiR74N-6rhVB5Kbg?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/6ba601a6c3f2caa55eabf92ecd9db2fc.png?w=32&auto=format"
     },
     "0x63FA29Fec10C997851CCd2466Dad20E51B17C8aF": {
       "symbol": "FishyFam",
@@ -1262,7 +1262,7 @@
     },
     "0x1dfe7Ca09e99d10835Bf73044a23B73Fc20623DF": {
       "symbol": "More Loot",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=a1133d98e8e74b3d5646ca362b1a4ec481c033066095949b9ac65da19476799ebdaf092372b2d129105f2dad1bf89c4a5a6b57d6d22948fffc0fd989528227d41c78f07a1987f848fd252c07b5ea2601"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=b6bb069aeccb3386730f495da5e31d6243d08e16da7eadbf1445536998a4f5de3a76155a79824c7a32254f28bae32763a6fc0aa6c219970e279b84b5ceed69f9d819d4f41a71446cc44987460040b708"
     },
     "0xBDa2481db91fc0F942eD3F53De378Ba45ba9d17E": {
       "symbol": "Wolf Game - Farmer",
@@ -1314,7 +1314,7 @@
     },
     "0xDBCab7A768EA9a00B2fFA5A2eB387cAD609E2114": {
       "symbol": "Alpha Kongs Club - AKC",
-      "logoURI": "https://i.seadn.io/gae/N6YXi9ZsBkVgOoxsblVJPFKAc1kNwBM8eabxswdAM9Fs9R4ktNhS-1GqEFgGjuyhgL27DQWWclmEgjyetRA_uUXGfChEU2PWI4rTHw?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/2b1a5f6d7cce026d633d6e5b664f7a5b.gif?w=32&auto=format"
     },
     "0x76B3AF5F0f9B89CA5a4f9fe6C58421dbE567062d": {
       "symbol": "NotOkayBears",
@@ -1377,8 +1377,8 @@
       "logoURI": "https://i.seadn.io/gcs/files/b2c0f348ba2970c91117cfede4f90894.jpg?w=32&auto=format"
     },
     "0x942BC2d3e7a589FE5bd4A5C6eF9727DFd82F5C8a": {
-      "symbol": "Friendship Bracelets by Alexis André",
-      "logoURI": "https://i.seadn.io/gcs/files/01de134db029be955aa892ea066c085f.png?w=32&auto=format"
+      "symbol": "Art Blocks Explorations",
+      "logoURI": "https://storage.googleapis.com/subgraph-images/1644278294885Squig.blk.circle.800px.png"
     },
     "0x9F9c171aFdE4cc6bBF6d38aE4012c83633653B85": {
       "symbol": "PGFK",
@@ -1514,7 +1514,7 @@
     },
     "0x0AA7420c43B8C1a7b165d216948870C8eCfe1EE1": {
       "symbol": "Thingdoms",
-      "logoURI": "https://i.seadn.io/gcs/files/19dda22d77e1570b60b0c2df73683f1b.png?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/be8f3ea162e5c8eb77e6ed63c1a2cd24.png?w=32&auto=format"
     },
     "0x87084ec881d5A15C918057F326790dB177D218F2": {
       "symbol": "Fancy Bears Metaverse",
@@ -1526,7 +1526,7 @@
     },
     "0xF75140376D246D8B1E5B8a48E3f00772468b3c0c": {
       "symbol": "uwucrew",
-      "logoURI": "https://i.seadn.io/gcs/files/fad6dc949364d0fae68733f2e92c4474.png?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/06242600722a1da0dadf6c58261d9b48.png?w=32&auto=format"
     },
     "0xD77e17Ecc3942B6E83F67c56999C5230c70A85a4": {
       "symbol": "Hero Galaxy: Heroes",
@@ -2054,7 +2054,7 @@
     },
     "0x7caE7B9b9a235D1D94102598E1f23310A0618914": {
       "symbol": "CROAKZ by McGill!",
-      "logoURI": "https://i.seadn.io/gae/U3owPRJPKaSazF_N14NXEqAbYXQ1oEWoXLMcRgTi6v77av8lGxl7yNrrP5q5n31v7F1Ij0M9G76OAS99cdeZ3u68pJW0JoQEiMo6y5Y?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/d0ab957acf59abd16bce16125f043bef.png?w=32&auto=format"
     },
     "0x9705a7113363A383c8A96689e20286AbE6612bb3": {
       "symbol": "Quantum Key",
@@ -2433,7 +2433,7 @@
       "logoURI": "https://i.seadn.io/gae/SII-3FIDlQ3UvWiBph-LsWAcmh27QI4YabNHSSylQ_VRRonSZxPi_BPdiZdYcMRx2qlu1HruVJqaBN1qBOoelOQjPsCyGh9_DtRJbw?w=32&auto=format"
     },
     "0xBaEEc315F9d7f8DB2645edfD5633360F152279Bc": {
-      "symbol": "Rengoku Legends [Samurai]",
+      "symbol": "Kaidan: The Rengoku Legends [Samurai]",
       "logoURI": "https://i.seadn.io/gae/jdXA3bJl3Vld9aZdhOuKLmlbH1q3Imw2vCqITIOyDdXOmn-fpbU95dj8EwVNlxImAnsyfxgG4tzFZ8iLpZw2hCbd57c7zUmoGXIOux4?w=32&auto=format"
     },
     "0xE34c28c7DC4Fa20cEB7a9268345e83a5C7060136": {
@@ -2450,7 +2450,7 @@
     },
     "0x0E32cEE0445413e118b14d02E0409303D338487a": {
       "symbol": "Tykes",
-      "logoURI": "https://i.seadn.io/gae/FIVTOXvq6laXQrp0B60K6iEW3cNRD-q9FRmpI0bMe7EZ7_spGs6ZlA0gqEnTRkc7xbJhP6lzZQ6l0B0u_QD_GOp4DBF-oQdwPr7P3g?w=32&auto=format"
+      "logoURI": "https://openseauserdata.com/files/1b7560a44fd0280146c49f72db648372.svg"
     },
     "0x8b634B2ae70E338865BF9741b4ae935adf2b4C55": {
       "symbol": "Begin as Nothing",
@@ -2618,7 +2618,7 @@
     },
     "0x7a48E016122B4786E3b96414598Fc608c8DC3aD4": {
       "symbol": "Hype Pass",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75ae32601964f96c7641acb861e22d17a58120d173ba1dcc31a2b5c9ad7b5153cbca22c30a4de8210f0ea1506599befe6b77a8b786a1e75633212950d392a0879a0126c564fa846b5d8a3cd88abe0f23eb7fac8a4a17d8184bd72aa5d8da88209a6b65631664e2ddd3405ab686b684cee3023c5e4198f99eda3f3b783c3322e8c56"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75ad5618727a365b9ff52eba0895f045e91e3ac4d683db6d00152bd925fe87b34926fa6829f2521baac85301b679f8bedffea4ed5a4d740f5709928267c775f4eff2573e7e40288fee9530d283ebd0a413d"
     },
     "0x1e87eE9249Cc647Af9EDEecB73D6b76AF14d8C27": {
       "symbol": "Migrating Do not buy",
@@ -2650,7 +2650,7 @@
     },
     "0x2Cf6BE9AaC1c7630d5A23af88c28275C70eb8819": {
       "symbol": "Bulls and Apes Project - Genesis",
-      "logoURI": "https://i.seadn.io/gae/QI4Jt7EOSxbUDAm6ZMPjelWtVB9_KpNJsVjwjfMWCFyA4LaCgCpyDalVUc-MozD4jPwJqH80MCAKw0gRbpK13wc5HrEkp4JqV4I_Yw?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/208eab9f894c313ae636812ed526cf4d.png?w=32&auto=format"
     },
     "0xe3782B8688ad2b0D5ba42842d400F7AdF310F88d": {
       "symbol": "BCCG",
@@ -3582,7 +3582,7 @@
     },
     "0x916c6AF08BF922Eaf80C05975886c0A421C78A35": {
       "symbol": "Steady Stack Titans Official",
-      "logoURI": "https://i.seadn.io/gcs/files/769f963ce4029e4b5b4edc8df80a4663.gif?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/a306c9c9ec59bf619ba70fdff9362b75.jpg?w=32&auto=format"
     },
     "0x99EcdF17DED4fCb6C5f0fE280d21f832af464f67": {
       "symbol": "Cyber Turtles Genesis",
@@ -4202,7 +4202,7 @@
     },
     "0x3C62e8De798721963B439868D3Ce22a5252A7e03": {
       "symbol": "F1 Delta Time DEP",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=6d79a13540d88e3044863de8817670e4547f2c891b616fe486971d0bd4ced8ef7b21af31544ecc7bfcfd53d0ee5a0e80"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62f33c76769c3589e13335c6a66e93c363f0627e05c59e5c077dde0ff0ecc12666d7f5c0386685734246032eafb07e7819f82250ee16ae975b2bf256cf120a55bc55ca7761aa48453d45010808d79b07e2d0646cbeba574be5dda5505ebaf17b80"
     },
     "0xFDe881c7B76ad10B59a82247E1cD3CBAd0d739F3": {
       "symbol": "Clay Friends",
@@ -4945,8 +4945,8 @@
       "logoURI": "https://i.seadn.io/gcs/files/d7598a7e7640327290d04c72b5296d77.png?w=32&auto=format"
     },
     "0x99a9B7c1116f9ceEB1652de04d5969CcE509B069": {
-      "symbol": "Wabi Sabi by Kazuhiro Tanimoto",
-      "logoURI": "https://media.artblocks.io/375000000.png"
+      "symbol": "Miragem by Third Vision",
+      "logoURI": "https://media.artblocks.io/389000000.png"
     },
     "0xc170384371494b2A8f6ba20F4d085c4DDe763d96": {
       "symbol": "BEEPLE: EVERYDAYS - THE 2020 COLLECTION",
@@ -5002,7 +5002,7 @@
     },
     "0x79f1C4cF7266746698E91034d658E56913E6644f": {
       "symbol": "MetaSamurai - OFFICIAL",
-      "logoURI": "https://i.seadn.io/gcs/files/2c17571c6271942e5fbf5054de40086a.jpg?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/5aee02ad1c5d037504aef439ae7f0bed.png?w=32&auto=format"
     },
     "0x7169887b559F625a81144eeE8AC784d1D8B4920F": {
       "symbol": "YOLO-Cat-Club",
@@ -5529,7 +5529,7 @@
       "logoURI": "https://i.seadn.io/gae/VO2UpUG_KL9sRS1B1aXfmRG39M3Dg22r1mb-dGyPX6iuqOoMcFIecPV8MPaDR2DX0tLEouKgG1pMYIgxf7RRTgDM8kbx5WQMA6jOFQ?w=32&auto=format"
     },
     "0x7e9b9bA1A3B4873279857056279Cef6A4FCDf340": {
-      "symbol": "Noble Cards: Season One",
+      "symbol": "Noble Gallery",
       "logoURI": "https://i.seadn.io/gae/L0q8wSDn-8PTImu8c_Ot9_iU5qN2E6pfs1A9bMjfyNlS3YWnMHToz9BC2cXolb1DeGSiO8qo8BMY9Xb947Tl0TjEUV-eBrhpNcY_jeg?w=32&auto=format"
     },
     "0xB67812ce508b9fC190740871032237C24b6896A0": {
@@ -5553,8 +5553,8 @@
       "logoURI": "https://i.seadn.io/gcs/files/c86b329ab506dc0ede91de046e08026d.gif?w=32&auto=format"
     },
     "0x64780CE53f6e966E18a22Af13a2F97369580Ec11": {
-      "symbol": "QWERTY by Tara Donovan",
-      "logoURI": "https://art-blocks-x-pace-mainnet.s3.amazonaws.com/2000253.png"
+      "symbol": "Petro National by John Gerrard",
+      "logoURI": "https://art-blocks-x-pace-mainnet.s3.amazonaws.com/1.png"
     },
     "0x0C58Ef43fF3032005e472cB5709f8908aCb00205": {
       "symbol": "6529 Gradient",
@@ -5630,7 +5630,7 @@
     },
     "0xaa462106dA447C0440a4bE29614c19387a59A331": {
       "symbol": "ENS Maxis",
-      "logoURI": "https://i.seadn.io/gcs/files/d8952ba88532e51cccd5d683ecb2d723.png?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/143d073ed44901387cda93047a0b5f65.png?w=32&auto=format"
     },
     "0x61DB9Dde04F78fD55B0B4331a3d148073A101850": {
       "symbol": "Ape Harmony Monster Club",
@@ -6102,7 +6102,7 @@
     },
     "0x4BB08998a697d0db666783Ba5B56E85B33ba262f": {
       "symbol": "Frenly Pandas",
-      "logoURI": "https://i.seadn.io/gcs/files/dcef873ec0542a35478c7b3ae53a92a1.gif?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/788b90e69a24d79de8bbc3663d0c8a60.png?w=32&auto=format"
     },
     "0xE8b4f9Fa4Df3F7ddD02202b0744ACe960556D203": {
       "symbol": "Crazy Mars Squirrel",
@@ -6841,8 +6841,8 @@
       "logoURI": "https://i.seadn.io/gae/ua4ltG-TuQuxu09Z_r7PoYCSn2qZX0X7Lz32QO8Kqo5ggyD5IhhHaH50pGJLcOwx-XkuHry75QspC3iTcAPVKSzonUMtEKvFQmg0tw?w=32&auto=format"
     },
     "0xbDdE08BD57e5C9fD563eE7aC61618CB2ECdc0ce0": {
-      "symbol": "Crypto Citizens",
-      "logoURI": "https://i.seadn.io/gae/JyE-yv8E3AoQjBYYzjU2jDnICSmfw8acpK8ILrdh1LaJRk2g6ClTFywPM6_Ht1f5IG1G30uKYMSI9rOB3hwlvuZTxM9eW4d3ZRAMCw?w=32&auto=format"
+      "symbol": "CryptoMexa by Qian Qian",
+      "logoURI": "https://crypto-citizens-mainnet.s3.amazonaws.com/5000094.png"
     },
     "0x603A481580C8cF85Ee169B315653BD9d33c39e52": {
       "symbol": "EVERYBODYS",
@@ -7030,7 +7030,7 @@
     },
     "0x3a921bf2C96Cb60D49afF09110A9f836c295713a": {
       "symbol": "Terra Nullius V2",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=a1133d98e8e74b3d5646ca362b1a4ec481c033066095949b9ac65da19476799ef274ea22897a2c095d27b9342992143bfaa80ec84b0d65875109f98b8fc98a550eac90977a7ef957309f6e0e98b967cc"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=a1133d98e8e74b3d5646ca362b1a4ec481c033066095949b9ac65da19476799e6056b138f39e6ec12db82f4a845375ea0fccd500420d4823e779d8a6b6ccd0aa31e4e1321a3c00fa5bf8668c300cef19"
     },
     "0xd2d2a84f0eB587F70E181A0C4B252c2c053f80cB": {
       "symbol": "Toshimon",
@@ -8666,7 +8666,7 @@
     },
     "0xAd5f6CDDa157694439EF9f6DD409424321C74628": {
       "symbol": "Fewmans",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=a1133d98e8e74b3d5646ca362b1a4ec481c033066095949b9ac65da19476799edcec8d06d3e2b9be62255ba8f249969373ed1d891d48df58a0991c25222243001c1cf89929d1e2ef2d325ba6b326734a"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=a1133d98e8e74b3d5646ca362b1a4ec481c033066095949b9ac65da19476799e22c3b6525397d55e03755683bb769f7fcba9ca02410dd2b90bcbfc27d6877f1780a72fa1998a034381cf74636e60ae78"
     },
     "0x519272821dddb3Afc7aCcD1823B674d30946185E": {
       "symbol": "Quacky Ducks Official NFT",
@@ -8830,7 +8830,7 @@
     },
     "0xA3F5998047579334607c47a6a2889BF87A17Fc02": {
       "symbol": "Wrapped Ether Rock",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b626bebfd1ace65d6b4cc9348a5f27d7f03a53943246b54dc5c0b02cbd2b66c3075bd5045783a76bd175d8ccd8d20851a823ead0f13c022777e64e91dbb741cb363de00571a21db797d41b156b4bf86ad396705908a4ad77622ed062a627b0cf5e2424363dae5647e0b93fd4ae5264c5dc0"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6259444d8f4832dadfc445e19146bc475665b7c2384dc6c2b54edd143a577e96b93913fdc64d9dc04778dfdce9f24039c73fb9f3096be00a5de2e78b475aac64b6a6041c26ecaf54016db207f8d404b120aaa121677aed3bb37f5bdfbc01ab524214710f1f7e8465cca69b8e423d8bf297"
     },
     "0x61CEcE14E222385D5aC83f3d0cbd518f5fEB3559": {
       "symbol": "Vandalz by WhIsBe",
@@ -8910,7 +8910,7 @@
     },
     "0x1CEf785AA885836CeE4f53B6ACe83D187d819639": {
       "symbol": "Wheyfus anonymous 3 V2",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=a1133d98e8e74b3d5646ca362b1a4ec481c033066095949b9ac65da19476799e41fa711da771c74339374a84d2ab767bbffc4bccceacc987ace1bfd25b8b892cbc0107ee141be58fa6180f11ce1c4fee"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=a1133d98e8e74b3d5646ca362b1a4ec481c033066095949b9ac65da19476799e6b99b819ee9412d26caf2a0428cdf1c4775e6a0677076fb097721af7cb3eb26ccb685b9af08978b2a96ea00b8333b6f5"
     },
     "0x61028F622CB6618cAC3DeB9ef0f0D5B9c6369C72": {
       "symbol": "ApeLiquid",
@@ -10154,7 +10154,7 @@
     },
     "0xEd53a9291dC5A1F2183924511402C159A9DbB333": {
       "symbol": "Betty Pop Horror by Deadfellaz",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6260737609eb0e4d132c8edb7e22183cbbd17dedf5f38e68089dda818d6135197b4e4988a827bb8be113274789ec02d16fccf51eb094b7e700012896df5f3b6b830ac2f6a35f231e55a533acfa95147e326195e65ab49cc04a96e0f73a6e22d1234af9da1aff960da49b888177dee05b72"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62018adf99dad7c2e9d0cab0e3a592540444f83e08081f352bdb50cf897c755f15326b6a852a97c22694e6dd2ad3398fa91804f3322aa34ef99743454cbbc96afdd687f11fbf607a44982ba7239758c0abb5beec79ce2527c142f49eddf3f39a5c5ed70684669c7b361605ee4f9923b336"
     },
     "0xF95b19c4a2E8564dfd26a594992d9a6aA984eD47": {
       "symbol": "Machine Hallucinations — NYC by Refik Anadol",
@@ -10337,7 +10337,7 @@
       "logoURI": "https://i.seadn.io/gae/JHs53JRA6f3VcBqqORnoL4_q4kLDeZkDgZkmbY3iziyQQ14IRtP3mQglePCmHpXE_fit88FH8cAFMUA3j54mivAA?w=32&auto=format"
     },
     "0x25aA5ef5685343aD1a1fCCeA3EDD45c5e255a41B": {
-      "symbol": "TinyCourses",
+      "symbol": "TinyCourses Genesis NFT Collection",
       "logoURI": "https://i.seadn.io/gcs/files/3d0b8225e837f1bcfcae3e93c01b4136.jpg?w=32&auto=format"
     },
     "0xb41CfeE86fbD91D47E37816C33DAe626c93dE01A": {
@@ -10386,7 +10386,7 @@
     },
     "0x2a2ce8EbC5aF38A2C0ab7667a24B6db05f285fbA": {
       "symbol": "This Is Murica NFT",
-      "logoURI": "https://i.seadn.io/gcs/files/2b1e8f6160501288122096ab70c3bda4.gif?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/9cda7ece6ca0812c2c94721068ab0cb1.png?w=32&auto=format"
     },
     "0xe437fed69Ec8eC6243d767cbaeA15A105f51875A": {
       "symbol": "THE POPULARS",
@@ -10746,7 +10746,7 @@
     },
     "0x1A23F4713830C625fF535A28182DD23135cBbD4a": {
       "symbol": "FrogFam Batz",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75a0db2eb02e4884377f3e9cb09b988994b0bf4ee0aa5c296f40459f3deffa4b6af09ef473b0ce07116f427bf0da2847e73257afad69339d61eda9507203e98619de01937b09ded977207f8fa3d83e8c046a2b4691d8a60f20c3b98f401f1ffb4dab06377a7eacfc14a7ae2658594fc643423c5e4198f99eda3f3b783c3322e8c56"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62ffa9ef70eada5f2db7a6edf6da798c4204c38ae8cdb21756fb39e99af14b3bdedbc45b0f1e08abc983fb9cc2ec68863e0b409050816ee7847708d1070fe056b7e142d478c3f3ffc0b6ad8970f639ffc505d3d739c0b978c2caaebfa49d12c6b454ab775df51eaace272c5e39a7466e1e"
     },
     "0x28F3aCc53cC541a5E159DdC7c73a29F96679d873": {
       "symbol": "N3D Deprecated",
@@ -11150,7 +11150,7 @@
     },
     "0x96B0C545Bc08a7a9f8C41fB3A49De40b0C8380bc": {
       "symbol": "Labyrinths - Dex4L9E42d",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62cbc96664d63fd839be98a1ba4cb5d9c9ef2403fbcd8c9091d9f608603875414799c5ffc73adbde100d658e22b909c0c52c64d89835b09a818f8559bf3c440404911d29872136a3b8905b5509e8310c24522ea903dec4415b86297e6b51e4a657a3e053548d629c967764a4a342191ef6"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62aba96d4f128ca2d34982b1fa8111dff400e6921eb2fbc304a3a42fe048ec2aa6d2ce7aac3a328ce23eca1ed2f96fff4a9fc7111da2ac62ebb817b61dfa98cf58076f31882a5c2c6443f6af8e4b1f4bde4126c32b79b6735fb9cddcd40780687f131d71391a688c1830e916cb278020e7"
     },
     "0x2ad72ecc13738F50662ea0AF44210c6f7D42DDEf": {
       "symbol": "Project MIP Network",
@@ -11214,7 +11214,7 @@
     },
     "0xf9ffb0c9D3A6f32a54E965882b7E85c77E3bfe74": {
       "symbol": "Crazy Rich Yellows (Do Not Buy or Sell)",
-      "logoURI": "https://i.seadn.io/gcs/files/eea5fc6a9fff0a366d39327bc4b347d3.gif?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/2853a8fb53db4193b8e9b50290d98676.gif?w=32&auto=format"
     },
     "0x5426C860C9e660145Ad09d3FB26427e5Fd4569E9": {
       "symbol": "DOODLE ROOMS",
@@ -11370,7 +11370,7 @@
     },
     "0x580a29FA60B86AaFF102743dE5Cba60Bb5f9de75": {
       "symbol": "RadiCards V2",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75ae13c7d300d52f3ab8f92f5130ea579f272f7a90b3913a400446e58f0b85295080692875ea6e963333bae3d839f75ce1fd9da30e11ad9bcc104a5dce203959566320e6d80959a9a3fd4fe4927080326dba196f86ef413e7fa32bb66e6b22ddb10ea4ed5a4d740f5709928267c775f4eff2573e7e40288fee9530d283ebd0a413d"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=b6bb069aeccb3386730f495da5e31d6221d6835346d969c8c200ae5804d4b2cb667447f09d875586e2fffb2267495cb3439b7531300003a386c456945d967f784400acd5133e2c311d07402b8119ae207ac3ba762bba6679ad0d3cca6a0ede5a"
     },
     "0xe627aeA89a1Faf8f0ff770BF242B1cc9515f1952": {
       "symbol": "EmoHeads by Javirroyo",
@@ -11926,7 +11926,7 @@
     },
     "0x0F4d0cbDd1EF57bD9AE6b4f556EfB94090c378ce": {
       "symbol": "The Girls of Armament V2",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b628d058a810a6d64f0d48f1f0c30ca5abf88af81ef361551dbf563494121d27eae8927c8c8de8acf1eecfc561b4f60a46ceefe2296c3cb2fc6427a18e31f9239d937ef8d5d7829949a41e0918e9de1bb9a418a83b9e28c5acf1e9c7d79270b932a1a3b3b01a440212d03f54ff681ac3077"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62964c861fc271c137f5cefb2a9345c0b474a731c06ac24a94a19eb5acbbee5436883f14032af1bcde2a29a5561ce77bee837b0ac6ecc6426978cd17f1090ff25ba4e0e48d203ac779ab15637bcf08dee0687a9f0d5ce4723b831b06ff222316d4433f3b3dc874bcb72791f5e9ed39bec9"
     },
     "0x9011CF11924e83A0391B4096D5F054ea1712ba4b": {
       "symbol": "Ancient Cats Club",
@@ -12457,8 +12457,8 @@
       "logoURI": "https://i.seadn.io/gae/kkm2fXYCLfD-7hZbfb-g6xdOZiuzCJcSR5-sOAl4Dz0tBOw9hLdgeiayPeiyuEjnZ72OK091c0M7AthiBALQ5rqF7o51icWoskFF?w=32&auto=format"
     },
     "0x3df25F701c97f8f95590c8dD7b0cE34D61E3B590": {
-      "symbol": "Ethernity's Master Collection",
-      "logoURI": "https://i.seadn.io/gae/GId53RudYB4l7e6Irj3_5JGyC3bwybdotwXAEgGaq4KCqjtfQChbolTQSJRYzb1bYrHM_G9xH4Il9vh_CM3ZPtMTwSgtkU5Wu7RVVQ?w=32&auto=format"
+      "symbol": "Lionel Messi: The King Piece",
+      "logoURI": "https://i.seadn.io/gcs/files/b7a372dc8638870c090be7c126f99218.jpg?w=32&auto=format"
     },
     "0x7885584a108E7996f415585a094E6914B169d87C": {
       "symbol": "Narcissus by Pak",
@@ -12674,7 +12674,7 @@
     },
     "0x8935C97EC10c7E8daB5B9c794E3dA6a76aB50108": {
       "symbol": "WulfBoySocialClub",
-      "logoURI": "https://i.seadn.io/gcs/files/209354d1220ea233d3033f4e7fb4d193.gif?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/c85678cd59930dc1995ccaf25f2f6bae.gif?w=32&auto=format"
     },
     "0x62D46D36e2b20AF50fBC7FD9AC7C9356795C9e5f": {
       "symbol": "FAEBL",
@@ -12698,7 +12698,7 @@
     },
     "0xA0529c325e2594dcc599BA6E39aA4d6b28834c53": {
       "symbol": "MetaZoo Games",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6299cbf9332503b73ac0aabf47153f1d949f2b6dae324357e6146f989f1ea7fc4e8b92acbc74b1828d5f98f098cf6dd19ac667fec1ba3f0ea05b554f655ac85853bef4aaf32045011fce0065e2f216e1268c26292534fb614cd6002542b0ffc28bb35eb78cd2c986af84503ec48080ab10"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=ffeecc549a473368706f685957806aee15893cd7f15dc7b60cdb0b15207c88c7df1b8d3bff8c9682fc369b4358f0657827b89364e8007277314276e36bde9e826b2bbe4b6ffc5ee24001e0780f5a318054f554caf0a607e0daf3e7fe8e279c919cca7e95ffa0b7d895de94eedf2e2991d2eb9613e40d99d9544c79b96a0472606cf2c9399e9a4b83337cd01df7069c27"
     },
     "0xE9Ab13482Aeab3727e976257D8e1f026e12e9ecD": {
       "symbol": "MEE6 Genesis Pass",
@@ -13450,7 +13450,7 @@
     },
     "0xC4E0f3Ec24972C75dF7c716922096F4270b7bB4e": {
       "symbol": "Crowdfunded Mirror Editions",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=bec3df6eb746eadef9c88b5682bfeb4d26822138561cda34a06e360306bbd25abb9cdf4a1cbc07315e29a8fd83db484bdbb51fef4096796b93d06e162beaf9606fa0f8198d3dad1f9f0b21e8419dba5fdb18a014e2ecf528fc9fe6602ed7746ce6927d55e0a695af45598ecfc4f006db"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=bec3df6eb746eadef9c88b5682bfeb4d26822138561cda34a06e360306bbd25abb9cdf4a1cbc07315e29a8fd83db484b3e1f8f41b0162b5263affd35b793a19a0a9dd45c2ff034d9caa8a5ac763925e18bc708efcb6e8447e21f96a72220012724e3a27116632767541ab4ed95286e72"
     },
     "0x028E6F37b1830BD62AecF5faB3325DF6dF7E0a44": {
       "symbol": "Rekt Ape Cope Club",
@@ -13682,7 +13682,7 @@
     },
     "0x7a704a89eb4B1051C1d93C2017C9BF362869bF6d": {
       "symbol": "Moon Money Wolf Warrior Collection",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6258773438ae215115444185ab9286270b4d25e0339bd7064a6d583410ccd189e963c105246e7335160ae6c649a19fe3f32d8a13d6d888f7f2a6b6b123af6a438479619022368e5db5ba9b52e3d05790c0430a6dbe1062e216e869cc513dbdc6db260502a927a02dfd1b91e7940f346261"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75a8623542ec937cb5bd2f34adcf76f70ee570f6c47cb870c99ad1ed575233b6b169856d7759aacd82aa08a4f6309ba9ac65789c7baa65df20098564458b14aac15f26f97f0056ffc4073625814f0a2344074cdc0edd16666c34d8f17fdd3a8a8309982d0cc43d13dd57601716ea08979df23c5e4198f99eda3f3b783c3322e8c56"
     },
     "0xBe2C9c8a00951662dF3a978b25F448968F0595AE": {
       "symbol": "Paradise Ticket - Pepo Paradise",
@@ -13938,7 +13938,7 @@
     },
     "0x705690d86496F1be06c996a91894D7240B9DADce": {
       "symbol": "Wonder - zsyZ9X7dQs",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62423eda49994a9099dbb80243083f0720ce32978e46e77fde7825a54dac7b4f6814ddf6b63ebaff770b3b6bf2c6af92ab7c9b1b204ea946c796e429143086d2a16e830d8ddc9ea36abd147636ce81dd530e88c9cb15a0eb10335a742f5b1d7c4a6f4a50ed7f2b7d58e02df32e2ee325ea"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6296098c9b5c73f562a2811881be218a5db456f41d38824956d72ee91a388f553ecddc2a1cc9d197c947264478933afa0b144de3e9f202a641871c3908c24ef90fb8affed2c5a81b03e0f6f99b795af7fcfff58648a7cfbd783242a752d6710eae413c24bb05737d6ec4967cb97e2aa39e"
     },
     "0x1178d1DA81cA8c128c5E81d4295f65dd51E1e3Dc": {
       "symbol": "NeonTools | Node",
@@ -14050,7 +14050,7 @@
     },
     "0xB89A71F1abe992Dc71349FC782b393dA2b6FB4C2": {
       "symbol": "LootCreatures",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=b6bb069aeccb3386730f495da5e31d6243d08e16da7eadbf1445536998a4f5deb776767ce47f58d5c7d6e15f4f7b56a26f86f59d628c014ef53f4bec677c0e6af2784e1ff94dae5460d2c23d9b415ddb"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=cbc2a3ef77f6407753f8e726f002019135fb4cef8523e9a42448535fb217e067672799a77430e43b7cf781240810c20a49883ee19427e73cd57e54adc97e74466a470a736aa0d2530a80d00626e1bb0a58bd88950e511804fa5be0d9a5906673a4803a56b585e691d8b448d9df8d54393503f686416ce3c77495a652ecd5a95b116b8526d371543066f7b14ab5586f3b9d90547028f7a3eab3abf92c17a43f5a"
     },
     "0xe48D260feB10EF136C21E7871fB7ABBD07cC2662": {
       "symbol": "SOFTSTAR RichMan Heroes",
@@ -14434,7 +14434,7 @@
     },
     "0x2C3b2aF5CA4fc71f25f25D1d9292AFdEde5963E1": {
       "symbol": "Etchings of Latentscaux",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75ae72eb040b0903123e9ceb23ee7f3dfb82a73c81af2e55ca4fecd17d3a47dde8c8cc8e9be2e39241463869dd2c84b1fa7f8f087f6068f3e25faa7391c9143e39b6a4d8c91af249f71905b12c2a0b262989915017ca7bc9a1fe58735022f19c8971e75eef42742bf359a0d06eb6a5e1a1de1c36adca3539e5ec9b326e73d154fcd9d90547028f7a3eab3abf92c17a43f5a"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75ab827db48e07097d250772f91693aaa3f3abd9574c7e0fb4391d68fef92a78b51c8d0b123127ee7689525f6c41805c4009a255db4b4fb08921d4d4fd33b401a15d688d8c3c1f7faf00c2b026d146b7bdf78be00e759955b4a54e7202cb19b2bd1bd42c4e4ff6d0be05ab9f5f71cb648f9058ed9feecb44e991ea6b299d1f7ae6c"
     },
     "0xBE65296688723dde4D977D22588b5f50aFa7070B": {
       "symbol": "Pixel Doods NFT",
@@ -14866,7 +14866,7 @@
     },
     "0x8b28cf72fC6F47ef4D585C47B54CCC1b691356A5": {
       "symbol": "Love Is More Than Just A Kiss",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62552f885aa29c99131ee8129e7b2ab6dcbd0a7e354f353b71fa7c7050832539ef51b65d0a43ce097dee77c42e75f096e7dd567d39a87f818c3e592dcb09fdc32efd5c36330f65a2c696a00ae994c40ba7708488a2cd60ec589a0a6a1a489b7a2a8400f5d9990153fe85c0f64c39d671f1"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75aca985213609024da5f78b41186283f958e6bd4ae3ce4b54c6ab011d46da9eadd4e47a463429ef527d0ac056ee64995a59a3045b5480eb200229a7aa5a13ad270068b9321533e978cf446723aac328f03af68331199647421ad77d99f634c644e24d6d8331f853d0f4702bb97b1bd085d23c5e4198f99eda3f3b783c3322e8c56"
     },
     "0x107723316D5a353B0E8FeF6584FC4A57690D22DF": {
       "symbol": "FoundersToken",
@@ -15090,7 +15090,7 @@
     },
     "0x3adA16E9337355dD525ac95Ea835567b8C5D0074": {
       "symbol": "Cozy Frens - Snf8U4Bg37",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75aacfeeafd11191748e80ab22db2d9e2b7b9ad9991604c67130ca6b7a4bff09b53aabebbc1e7b3329210043afa35931f6d650b5f9adab001f38ce04b5bb2982c5f23d679d9ca51c8a09bb4848d6207811b796fc1d0094b1b6e2de03ad13385c366928362f59829d443bf02fea0c2dcc2c323c5e4198f99eda3f3b783c3322e8c56"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75a65712a75deec80243698b1da3186eb27925f3358bfb1ea625ebe775e7d29735773be108329cf87cd880bb10f6af1a3f655dd4b6db74cb84eda9565fa46fc50f101b2f98819f288841d52fbc27d7f112ef2ca7bb6d127789d097f355e9ae08310b23498f443feb8a78ef05a8bc7e5e55223c5e4198f99eda3f3b783c3322e8c56"
     },
     "0x9f803635A5af311d9A3B73132482a95Eb540F71A": {
       "symbol": "The Great Color Study",
@@ -15282,7 +15282,7 @@
     },
     "0x7c9C6E39E6d1D539acC2ec1DE5CC4Ab30C6Bfe0e": {
       "symbol": "THING - xIOkMhmQ0N",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62eb94923f85bd62dd2841b74eafdf0bf76deb956789736b0d0c2f0ac9b68dee40151024b38510edf21189aaadee342782b8e4612c7ea4b2a1583eee7047f27f4223b7b1e55cac7b6888431bad72f08597d0b1f4f05d89a77fe9b73b6fa3aafd6d0a6bd3dddffb5a6eb0febd39f90a2af3"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62af83b737734a7065243803c4e451ee1e299d2d44a9f3522564f73e12191f6ecbb7b1a1949f327f6f7f36d7258f0be823ef3089c712b036724350ea1686101d710ae00139c6ea000252c1e3633bbbea0025296a8c32fdb05dbd02202b0868fd9ecbdb2248b933e7189ff044ac70da138d"
     },
     "0x97f66251C3DCaD07c373cd46d6287959fe6698CF": {
       "symbol": "Ghouls By Dead Birds Society",
@@ -15650,7 +15650,7 @@
     },
     "0xe1e546e25A5eD890DFf8b8D005537c0d373497F8": {
       "symbol": "BADGERNFT",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6254373c1616ab972532337800ffd81f3989aa7bfc8b4100c35ee9bfc9f54abbb5079585e60e7b6c408a6ec6bc8e16f9d5316ea8801189711e13254cb3038d9e8222a9900e6f89a3a3b9b4fd5eddccdce74c95b6a680c03909b11f4e7be18a0746489c2b1c7d6feed02ada7d7d985fb8ad"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75ae15580a185bf79e818f805a423258fbf66472eca939fd23e52e8a0156acddca309d405ca63d7777317aa117a30e9f37f152cd322aa45d9b0772952f6a58226451df982c02e4ed49b5d9dfc21d23c60395decc14012b0fefebed36dccba8608af9db099095af618ffee3d786ac46fd793058ed9feecb44e991ea6b299d1f7ae6c"
     },
     "0xeaF6aD945a94331b1295299F08648A0aE236Fd26": {
       "symbol": "The Fleur by Ondrej Zunka",
@@ -15794,7 +15794,7 @@
     },
     "0x667D28Ca8a8F4391Fe13c92d36e60c7615D2f8db": {
       "symbol": "Cosmic Bloom by Leo Villareal",
-      "logoURI": "https://i.seadn.io/gcs/files/6b33549cdacaa8e08474b2fa8017f182.png?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/b20cfff7d2d84f171d16a729d9a944cd.jpg?w=32&auto=format"
     },
     "0xBDFB17884DcaEfD9923c17D7035583B7B129296E": {
       "symbol": "The Mutant Mushies",
@@ -16146,7 +16146,7 @@
     },
     "0x461a5e25B41395E15ac80a523E7Edf763c908982": {
       "symbol": "NOT A HOTEL - MEMBERSHIP S",
-      "logoURI": "https://i.seadn.io/gcs/files/00ca4d7a09a902af1d6635570e72c9dd.png?w=32&auto=format"
+      "logoURI": "https://i.seadn.io/gcs/files/064aebdb51ef100fc878029cd0854842.png?w=32&auto=format"
     },
     "0x8Bf3A40EA2337e6E4F6E540680eA6390cB3B4E11": {
       "symbol": "Highrise LAND",
@@ -16730,7 +16730,7 @@
     },
     "0xAf488234796CA27DBa8ECF17f803Ea1f4Ab33E15": {
       "symbol": "Legacy 0xmons",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6259383697ef7f344a55e889c47b2f2a651154c9db85ccc932cad7042ffec20b5fc54f49e08e44b0245185ab7384609a6b42e3138f09ec5f72fc86e59dce77d3979a83fd6a40e093813df826a19b2f641df19d00995c9abc409876ec90e8adf1a8"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b62b9af6a8fa223028e8e6877ed532bfe19a2ca1b12b883ffd15010af1e9f399d5a09de50501a90be03348529beb3bbd595e01e4c07ab9c976319e4b493334dc51971020c5b77382f53c77e56cc711c1c1e29515a2f339ade81432e30a4c86a5151"
     },
     "0x65f2E558Ce981a15541571Be8188524ad75cAD8A": {
       "symbol": "5KM Sneaker",
@@ -16822,7 +16822,7 @@
     },
     "0x83d8b0C8adBfC889fec4Ef6bFA9517e4965E564e": {
       "symbol": "Invincible Summer V2",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=36109e01a0f463f89d0054dfb865c355814e73000779cff19c745153c0940b6278ccbb7caf8addf9af88eb80c86e571810f3dd6cbdd96adf0bb6143f8dee60e88a0465c66ad54a3b1817c9079ecc0bcf2c6a75a4b9d7a4bccc78bad247219caa5308f43e42b18e3355dc7101296845a9c9f9e3bdbc1dc47f9bcf0f9096eaf373ce0904494c6a28ca984a8995dc5a23b3"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75aa4cb95ba1ab8482a9272281f834c7ae51386fc9ec2cac591a43570cd8954aa8057779c7f1e3f1b3503e43ce7750be936f7f1cf0a668e4965b90873a5ba0c720d562ea9fb7e5a97e9adeeb0a59134e3d97ac8bf502b0d7594d20ba2aead5361193729c87a0d2f54934403a22ce14aed6c23c5e4198f99eda3f3b783c3322e8c56"
     },
     "0x6825e917B4bdDF17574405E95970180c1D742428": {
       "symbol": "Matthew Ball Metaverse Essays",
@@ -16834,11 +16834,315 @@
     },
     "0x41A35De7D589F174F6D2C9F5Aeb5Fd9199c61b7A": {
       "symbol": "Aikebana",
-      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75a9e66eac00e8eb42cbc5975fed2aee34e7a8a92b3adf22217ee422e3802f5ef9b014392c8c0869f464e6fa56ef113d519fd96dc94c6eecca53d604419c360d6744163034e69410acfbd8ff7a3f76c79709fe488fa73603bc61882e4cb85173b189a9c4b06b39e56e361495dc64c88e97323c5e4198f99eda3f3b783c3322e8c56"
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75a3d4b8a132212e7d1eca7d69251b58884261d5aada38224ddd0ef87b81d1a3b0643a7ef7f5372acd196d6ce005eb1cf9be9453436483fca528da5f7694de50d02c8e91a4969ad4435921401e5bc53974a6ae320d4b6b9763cff140125c1770a20ff72d1ef5ac057bb19278db6ee1449fce1c36adca3539e5ec9b326e73d154fcd9d90547028f7a3eab3abf92c17a43f5a"
     },
     "0x413bc42f7955a7ED79f7D0AB70E1B13bC55AD676": {
       "symbol": "KowloonKingSyan",
       "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75abc97051d5d3edcbec5f758d0b69432727e68e8c85d6b9ea3d5e548d194afed24403c95576c839a60b2a84f37fd69f185809e98c4d40ae15edc10dbd29090d49eeb5a3f616ba51b4c42bee585f61877380abe8b63a3699718e71030c1a67db04ff8ea6ac9d1f9e2431871d1b8bde456b523c5e4198f99eda3f3b783c3322e8c56"
+    },
+    "0xaE99a698156eE8F8d07Cbe7F271c31EeaaC07087": {
+      "symbol": "Mutant Hound Collars",
+      "logoURI": "https://i.seadn.io/gcs/files/9617c138dee52ff098742ce9e25f5d8a.png?w=32&auto=format"
+    },
+    "0xe1d7a7C25d6BACD2aF454a7e863e7B611248C3e5": {
+      "symbol": "JUUNI Grimoire",
+      "logoURI": "https://i.seadn.io/gcs/files/b737366b957e7e9d600ed185a1a85a84.jpg?w=32&auto=format"
+    },
+    "0x7fda36c8daEDcc55B73E964c2831D6161eF60a75": {
+      "symbol": "Yaypegs",
+      "logoURI": "https://i.seadn.io/gcs/files/ee104b0dd28221376cb7ea889baddf01.gif?w=32&auto=format"
+    },
+    "0xF8C72628bd822E54e1fb2Bf0C3484C10d1963E28": {
+      "symbol": "MNTGE Pass",
+      "logoURI": "https://i.seadn.io/gcs/files/6d2e9d056be58730a4fc969a83b4b03c.png?w=32&auto=format"
+    },
+    "0x6fdc11CA6DF2975E88d5F03c335476990DE331cC": {
+      "symbol": "Lil Kami",
+      "logoURI": "https://i.seadn.io/gcs/files/2491ef33b7163325c3d80a1782d2b681.png?w=32&auto=format"
+    },
+    "0xf36C296E87Dd2D7aDcEf251a542561D4BBe07714": {
+      "symbol": "Lascaux Editions",
+      "logoURI": "https://i.seadn.io/gcs/files/860c139ac3d3ce30b93b7a8363c8b3f8.gif?w=32&auto=format"
+    },
+    "0x61E3D1C26802DF805e9Fc22Dc26342e29eCFe860": {
+      "symbol": "Savage Nation",
+      "logoURI": "https://i.seadn.io/gcs/files/498b0e830344cd420b80c3ae1161c3ca.png?w=32&auto=format"
+    },
+    "0x595787ffbC575619f1E22f9f0E4Cd069E93d228c": {
+      "symbol": "HELIX - PARALLEL CITY LAND",
+      "logoURI": "https://i.seadn.io/gcs/files/84aeda61734ec5126c8eedd88872ebb8.png?w=32&auto=format"
+    },
+    "0x32eDD2f7437665Af088347791521f454831Aaa29": {
+      "symbol": "ShikibuWorld",
+      "logoURI": "https://i.seadn.io/gcs/files/bc16d84cae95b2539041e03a738d0110.jpg?w=32&auto=format"
+    },
+    "0x7A7A47bFb1cCA6eE90b8e3BB8a7e56Ce3B097f90": {
+      "symbol": "SleepyJoe Digital Trading Cards",
+      "logoURI": "https://i.seadn.io/gcs/files/324623c91964aaf34b86d2cc77ef5f78.png?w=32&auto=format"
+    },
+    "0xd1B68763C7170B963Ac6cA6B1C2EA25796A18a17": {
+      "symbol": "Valhalla Reserve",
+      "logoURI": "https://i.seadn.io/gcs/files/860f8205ba7ddbf2234b87694c26e7ad.png?w=32&auto=format"
+    },
+    "0x9388d669902aD11e18a0723fFB8B2d915434be9b": {
+      "symbol": "Feel Art Muse",
+      "logoURI": "https://i.seadn.io/gcs/files/39cb97671b68806020a6f0fc932f4548.gif?w=32&auto=format"
+    },
+    "0x57c4d987431A4582a5e3cE9A3a9A5F1E9F55757c": {
+      "symbol": "inBetweeners  x  Dolce&Gabbana Drip",
+      "logoURI": "https://i.seadn.io/gcs/files/8b09a7b5bec8aeda903e6f02cfb71e35.jpg?w=32&auto=format"
+    },
+    "0x21aE0bc1Ba69e26eA1BE4bc3213A965Dc0A6CB05": {
+      "symbol": "FATES Evacuation Pods",
+      "logoURI": "https://i.seadn.io/gae/_8lba6sJy2CM1auxmaxGzTOfbPBZZStYCsRliIM2qtX6oyLv5cB7octd5jz_7gNQOldDIkW90iIvxRBXVBdQkQEDtcTFhav2CcPTKQ?w=32&auto=format"
+    },
+    "0xAc5Aeb3b4Ac8797c2307320Ed00a84B869ab9333": {
+      "symbol": "90's Kids",
+      "logoURI": "https://storage.googleapis.com/opensea-prod.appspot.com/files/primary-drop-files/nineties-fvckrender/90skids_collection_page_logo.png"
+    },
+    "0xC3cE480376A6340e0A4CDd3E4843BDC0bc765a45": {
+      "symbol": "CW Females",
+      "logoURI": "https://i.seadn.io/gcs/files/86ec1e5132e56020a60f88826e711d36.png?w=32&auto=format"
+    },
+    "0x447E836E22275D1766f2003706c6D58C4d108a0d": {
+      "symbol": "Scottie Pippen SP33",
+      "logoURI": "https://i.seadn.io/gcs/files/aeddf4d49cffa92356448919bb8ef20e.jpg?w=32&auto=format"
+    },
+    "0x0CeE5E34D9e9D722fAdB02f47bDc438632b8437A": {
+      "symbol": "KAKUTA",
+      "logoURI": "https://i.seadn.io/gcs/files/1aee2d9e3053e2f21c928372117956e6.png?w=32&auto=format"
+    },
+    "0x8306FBF07C1Bc59393dD9d3AFc2A0EF97DFC7473": {
+      "symbol": "Apollo by Asaf Slook",
+      "logoURI": "https://i.seadn.io/gcs/files/33854183aaf120577af178e5f234af69.jpg?w=32&auto=format"
+    },
+    "0xEcA22C0FD4ac62D81a5633eB547e6797C9579462": {
+      "symbol": "Digi Miners NFT",
+      "logoURI": "https://i.seadn.io/gcs/files/7c9d299699f623035a1d91412f52708b.png?w=32&auto=format"
+    },
+    "0xBd9cF2C86a4798d3626749f83df5c235Aad20c9b": {
+      "symbol": "The Argentinians Official",
+      "logoURI": "https://i.seadn.io/gcs/files/763e016153144edab90ee832360d4c90.png?w=32&auto=format"
+    },
+    "0xfE4CB03F2A4Cf5A4074F6C8F77894A814782FdBA": {
+      "symbol": "Football Ape Fan Club",
+      "logoURI": "https://i.seadn.io/gcs/files/a954353468a5c371bf91ff627df61f4b.gif?w=32&auto=format"
+    },
+    "0x48dB94c563115CB0E17C360D609Aa5Cb72BbC624": {
+      "symbol": "TREY RATCLIFF: 1K1K PROJECT - 1,000 Stories from 1,000 Places Around the World",
+      "logoURI": "https://i.seadn.io/gcs/files/cd7e091c5a2d6cc9fba9423f347c8610.png?w=32&auto=format"
+    },
+    "0x75aFa588CC4e97736bF51E3Bb542252FbD6b879f": {
+      "symbol": "KURENAI -HOOZUKI-",
+      "logoURI": "https://i.seadn.io/gcs/files/8347173f9e5bce705308c8705e5f42aa.jpg?w=32&auto=format"
+    },
+    "0xb59b35f2891226Cb576c964e85FCf5415972401d": {
+      "symbol": "Field Trip by Andrew McWhae",
+      "logoURI": "https://i.seadn.io/gcs/files/cff2b39c78a67495e6e30630b5f83b1d.png?w=32&auto=format"
+    },
+    "0x3E84607606b25F8A3c75B6Db4a8A6683D1e40284": {
+      "symbol": "Murakami.Flowers Coin",
+      "logoURI": "https://i.seadn.io/gcs/files/aca1565e67b943ea590691a5a4b2e5b7.png?w=32&auto=format"
+    },
+    "0xaC3c15Fe919f146D48E2dAdDFAD0a3ec85D87934": {
+      "symbol": "Oldeus: Origins",
+      "logoURI": "https://i.seadn.io/gcs/files/907833e3bca5145f2e1e85de84198851.png?w=32&auto=format"
+    },
+    "0x78fb31FFc7402fADdF4fD518357a7e93bfF21d72": {
+      "symbol": "Art Basel Apes",
+      "logoURI": "https://i.seadn.io/gcs/files/5377dc7519f3ce5043b7a5b534e4b0b7.png?w=32&auto=format"
+    },
+    "0x80CF09232719E563613fdE10E70f0dDc244271a2": {
+      "symbol": "ETHIOPIA - Collector's Edition",
+      "logoURI": "https://api.reservoir.tools/assets/v1?asset=d13dd00e722beffaf6c818fc35b7e75add736ed14f61bf5dd44cae0978d2f4bdcd42836d1fa2a529ddc1312c268daf3a23ca54bf46df78c560bad06320620dced318524169044e642f6d5acfc3f4fca6b12f6cd23c66f1c0961f298da1b19028d9314ed44cb1ef67d8a43744e606da291eb85ad9978dcee97903638e7eb7b05523c5e4198f99eda3f3b783c3322e8c56"
+    },
+    "0x299dDAF037a800D4b7C02555851c7C294c5Ad386": {
+      "symbol": "Departed Apes: G Collection",
+      "logoURI": "https://i.seadn.io/gcs/files/3018ec86b670e9f55a908cf20a9363e0.png?w=32&auto=format"
+    },
+    "0xb058A347C9E7381A10572201c1381BFbf856b417": {
+      "symbol": "Elon Digital Trading Cards (DTC)",
+      "logoURI": "https://i.seadn.io/gcs/files/dbe6ca5b763dba22a4e489e9142540a2.png?w=32&auto=format"
+    },
+    "0xdf0F0A5508Aa4f506e5bDC8C45C8879E6E80d3e4": {
+      "symbol": "HelpMeDebugThis",
+      "logoURI": "https://i.seadn.io/gcs/files/fd003479b421d0286acf5e79e51bf455.png?w=32&auto=format"
+    },
+    "0xFF72F37aA4EAe3B7e1752e25DB85b209f12c1A33": {
+      "symbol": "TABZ NFT",
+      "logoURI": "https://i.seadn.io/gcs/files/e92562cf2e8382bd3d3db5baf6812d87.png?w=32&auto=format"
+    },
+    "0xC9041F80DcE73721A5f6a779672Ec57Ef255d27c": {
+      "symbol": "Skulls of Luci",
+      "logoURI": "https://i.seadn.io/gae/0JydAxWUHqBS446xWtYWtcwHi6yTddzqVSZr6S2mCQNmuvZj-d1Savid5-nhmraeU6HKVmyBa02ATCCC1BzSOvpV3YKHBp1DbR0jzw?w=32&auto=format"
+    },
+    "0x4c33397611F0974eAd4e0072221933bECdE79436": {
+      "symbol": "PassengersNft Official",
+      "logoURI": "https://i.seadn.io/gcs/files/d5cbd186a4a9981e48ff71807a9daea2.jpg?w=32&auto=format"
+    },
+    "0x22B757dcA42DBb1BFc02105F3818E372DC66845f": {
+      "symbol": "Untitled - By Amber Vittoria",
+      "logoURI": "https://i.seadn.io/gcs/files/7972cad00322f6cbfdd682b7941b4c55.png?w=32&auto=format"
+    },
+    "0x082dcab372505Ae56EaFde58204ba5b12Ff3F3F5": {
+      "symbol": "Light Years by Dmitri Cherniak",
+      "logoURI": "https://i.seadn.io/gcs/files/e9fdb2e5786a9810770dd158744a6921.jpg?w=32&auto=format"
+    },
+    "0xA212D101ad32dc86C61FE0e48e90ABc185A3b9DA": {
+      "symbol": "Ecotars 3D",
+      "logoURI": "https://i.seadn.io/gcs/files/96d898c8e160cd388b03b6e509e65eba.gif?w=32&auto=format"
+    },
+    "0x3dbe6054376bdcdD0fADcae004c7dB3BE2Ed2707": {
+      "symbol": "Gemesis by Johnathan Schultz",
+      "logoURI": "https://i.seadn.io/gcs/files/72125a3b70f69efc97af1027792e34d7.png?w=32&auto=format"
+    },
+    "0x5aF696307963dCEa7cd56F504C8C609BCd9E4502": {
+      "symbol": "Mindblown by LSD",
+      "logoURI": "https://i.seadn.io/gcs/files/9c676f6415b7592133ca9ea8eeeae183.png?w=32&auto=format"
+    },
+    "0x83EC6EfB1bc4f479CB4161eB8217AC6ea7759135": {
+      "symbol": "Impasto by M.J. Lindow",
+      "logoURI": "https://i.seadn.io/gcs/files/bd1ebb8dadb784641a6dbff744068c98.png?w=32&auto=format"
+    },
+    "0xe58C45236b4ab47A824F245852B381f1A1B9aC9E": {
+      "symbol": "Hangyaku",
+      "logoURI": "https://i.seadn.io/gcs/files/a78dcc88fe5903ac9a22f5e409f81e78.gif?w=32&auto=format"
+    },
+    "0xFdb192FB0213d48eCDf580C1821008d8c46bdBd7": {
+      "symbol": "RELICS by VORTEX",
+      "logoURI": "https://i.seadn.io/gcs/files/06aca2a9a875316ad3d026114cd1a09d.jpg?w=32&auto=format"
+    },
+    "0x4aF790223169a8621095871375f79425725d22C9": {
+      "symbol": "HypeSaints",
+      "logoURI": "https://i.seadn.io/gcs/files/fea46f6a3abd0d86af01613b07415773.jpg?w=32&auto=format"
+    },
+    "0xd75994086BA3b7ca0BED5eb95C3F7a499AAC5B60": {
+      "symbol": "9dcc ITERATION-02 Proof of Mint",
+      "logoURI": "https://i.seadn.io/gcs/files/9663613e4020e57dcc1c0ca01b06f4fd.png?w=32&auto=format"
+    },
+    "0x3B1FbE997c2253cfFA975c066Fa3FeeC326337Dd": {
+      "symbol": "Donald Trump Yacht Club",
+      "logoURI": "https://i.seadn.io/gcs/files/ebee46f6435376bd5ec6d0ba01977fc9.png?w=32&auto=format"
+    },
+    "0x7FF5601B0A434b52345c57A01A28d63f3E892aC0": {
+      "symbol": "Oh Ottie!",
+      "logoURI": "https://i.seadn.io/gcs/files/b00ac40b1be4c491b46a65a98fa21480.gif?w=32&auto=format"
+    },
+    "0x42dfB3dED3Cdc7D8d41BCE0A670F7912e75B3C74": {
+      "symbol": "Ganja Guruz (BudBlockz)",
+      "logoURI": "https://i.seadn.io/gcs/files/e12d216ed0ca1a5362d7025866522fad.png?w=32&auto=format"
+    },
+    "0xAA94D963Bd7b6C8DDDe07A4b4cf13e26C2650899": {
+      "symbol": "VOX Collectibles: DreamWorks Trolls",
+      "logoURI": "https://i.seadn.io/gcs/files/ad5c27bf2b98f235b34a1a88ec3418d9.gif?w=32&auto=format"
+    },
+    "0x4126AD8C9A4e3E1FeC4082b8c7Bc9F3e75aC062D": {
+      "symbol": "Metabatch",
+      "logoURI": "https://i.seadn.io/gcs/files/2280b44dcf1fe7f19112f59974a91370.gif?w=32&auto=format"
+    },
+    "0xD3214Ef2Ae5327468521be8d567e587b38E8aD79": {
+      "symbol": "[ Ledger ] Market – Ledger Stax",
+      "logoURI": "https://i.seadn.io/gae/s8q1CTjjhDAFHyK35h0qVqO8UTgB1mW64vJP9yu-F4V2KbIHgBmBPMLE8OkUgjpFa11Z87pvfliYf5vZtDmvIEa890dH7VoT26T6Jw?w=32&auto=format"
+    },
+    "0x313DFa45D14c8C765DB55DE38Ff9734b62bF90d9": {
+      "symbol": "Big Bear Syndicate",
+      "logoURI": "https://i.seadn.io/gcs/files/187d45ea7062164dacc44ab10994b5f7.gif?w=32&auto=format"
+    },
+    "0x10B708169907dBf007045Df6D3A68c2a797f1Ba3": {
+      "symbol": "Feel Art Essence",
+      "logoURI": "https://i.seadn.io/gcs/files/dc1773d739d6b6d30338a2e3d8a0a8bd.gif?w=32&auto=format"
+    },
+    "0xAEe0a67634447a2498f82867518EaB7cecac07Ef": {
+      "symbol": "BURNER by crashblossom",
+      "logoURI": "https://i.seadn.io/gcs/files/2db467cca0b6993376b2da287aa7971c.jpg?w=32&auto=format"
+    },
+    "0xb20e024da94fEf84B5dbDE3a639048952De58169": {
+      "symbol": "Humankind Collectibles",
+      "logoURI": "https://i.seadn.io/gcs/files/8b8fdba56496d0f5ce65ad9c21515340.png?w=32&auto=format"
+    },
+    "0x0fF1458cab4A4673b913040E011c14B81d656ceb": {
+      "symbol": "N.T.P. Canisters by Toxic Skulls Club",
+      "logoURI": "https://i.seadn.io/gcs/files/a3e2e0561e82c346ee0468c19c6ace04.jpg?w=32&auto=format"
+    },
+    "0xA75689d2a5329AcFc70DC6F8F2DE7DdFbB4Eadb9": {
+      "symbol": "Beanstalker",
+      "logoURI": "https://i.seadn.io/gcs/files/05fe52a104571aac2bff044fdfd25739.png?w=32&auto=format"
+    },
+    "0x94CCe07F299945CFE80e309c85cb0A784B3ee6C2": {
+      "symbol": "TwitFi Official",
+      "logoURI": "https://i.seadn.io/gcs/files/e64f3121f221f5754547f5c092567b35.png?w=32&auto=format"
+    },
+    "0xD537C17A30B9F9C74F88f0f0A1D143f8b915Ea02": {
+      "symbol": "GreenPowerN-Genesis",
+      "logoURI": "https://i.seadn.io/gcs/files/3883f219c0ab5775040004c56fea5080.jpg?w=32&auto=format"
+    },
+    "0xd13E468e0A526B5042521b0Fd658454242472EA7": {
+      "symbol": "Happy Goat Genesis",
+      "logoURI": "https://i.seadn.io/gae/WtHy6BCVi26xDT4FR2r7XD21qGryOo962Bc4FaSztoUOl4D7H9Kyn0ZW-PKrnqXnP0yv9qVdvcd-7BlQTdURGjqVwkrxuk8Z3lmoow?w=32&auto=format"
+    },
+    "0x0c64E67e2F4c155906295d22569C147a108a376D": {
+      "symbol": "Who i am is not important, the art is",
+      "logoURI": "https://i.seadn.io/gcs/files/57975df3f7a233df676831a6d40d0512.gif?w=32&auto=format"
+    },
+    "0xE7868D575CC12917053E767d7fE07C2E4859739F": {
+      "symbol": "JUNK FOOD PARTY -by JUNKeeeeS-",
+      "logoURI": "https://i.seadn.io/gcs/files/2269dc5187ad137fa1c224d4582e3b6c.jpg?w=32&auto=format"
+    },
+    "0x5F53f9f5DcF76757f7CbF35C2e47164C65b9b5eD": {
+      "symbol": "Wrapped Historic DADA Collections",
+      "logoURI": "https://i.seadn.io/gae/QSg_1x79qG7iaRRRTWe-FbcB05SYE8qKeMF5waHjTHT78hIoGDP51ajcrPYC1l849ZxGThmuJFu1wu4VGJAaLFc1YhHQ8M0at6jh?w=32&auto=format"
+    },
+    "0x598C038b10e22Bb8fA4d1900435712e6Dbe4C1D1": {
+      "symbol": "Wolf Game - Merch",
+      "logoURI": "https://i.seadn.io/gae/Ai3sOi9JlUeajrZwmHmh8Nup3QwtagSl7AtO7w7k2OKdda9i4_98vJTsa0xBUNXfEbh4XCLYInOtStnQYJ2vbpOnk5ykZleHIBQi?w=32&auto=format"
+    },
+    "0xa518286D66f3699BA4F546F3AddB75F2B838C307": {
+      "symbol": "Non-Fungible Moons",
+      "logoURI": "https://i.seadn.io/gcs/files/8375e58e2946157292a5310907611d86.png?w=32&auto=format"
+    },
+    "0xE42caD6fC883877A76A26A16ed92444ab177E306": {
+      "symbol": "The Merge: Regenesis",
+      "logoURI": "https://i.seadn.io/gcs/files/6ae69eaefbf70905a975423ad9e16607.jpg?w=32&auto=format"
+    },
+    "0xf1ae9123aE2d3900a2e19aE25e3F86D7f2CF334b": {
+      "symbol": "Ena Official",
+      "logoURI": "https://i.seadn.io/gcs/files/c1982d2591a45b570d48768e922e5e21.jpg?w=32&auto=format"
+    },
+    "0x9db76501e0E433851f9b4A907c449576a6155545": {
+      "symbol": "The Asylum Halls - The Sylvesters",
+      "logoURI": "https://i.seadn.io/gcs/files/8c18411fb8112ee637894212c24f345a.png?w=32&auto=format"
+    },
+    "0xE185F44B1e212B396aee139C2c902d60e275c334": {
+      "symbol": "Makimono: Origins",
+      "logoURI": "https://i.seadn.io/gcs/files/e4bb00b9777556fdb04a0be19e3e8701.png?w=32&auto=format"
+    },
+    "0x87acAE6dF21385A74ed4FB55A1a29354E9bdc6c1": {
+      "symbol": "Voyager Pass",
+      "logoURI": "https://i.seadn.io/gae/PQF9aKWM55R--r2PNMSVk8H3DgkrDKu8GjluLEvPvoitZGSkJVYp6Ju7gfJADieWUwNukqKHSnU0C0F2ILQVLvwGfwM3FK7dsx7KGQ?w=32&auto=format"
+    },
+    "0x8F5Be6eE538c8E4B2BCfbF51D824Cb9d294D1567": {
+      "symbol": "Mini KOYE",
+      "logoURI": "https://i.seadn.io/gcs/files/afe3e8b8d0e478d9ca7618fefa10490e.png?w=32&auto=format"
+    },
+    "0x0be5dd8Dc316a936942B1f58667c9ea1Ebb71E07": {
+      "symbol": "Kishuverse",
+      "logoURI": "https://i.seadn.io/gae/ieMEAmQyKMW2txOB_qJXjjpmS0Xan0npurn-6CRRh3y52W8AS983pTl0drQUcTc7sM6iSMnlyGQAJJEv95oDepPQBopLjoeuItAcjg?w=32&auto=format"
+    },
+    "0xa626F0c2d01281D9f82bfb47Eb39f5Ef66a92d17": {
+      "symbol": "WZKD Official",
+      "logoURI": "https://i.seadn.io/gcs/files/1e47c213b5a2bc427c76e0d087fbbd0b.jpg?w=32&auto=format"
+    },
+    "0x6A288E6D3f40bA0e019b61488f4ece5CAe5fd13d": {
+      "symbol": "Hero Galaxy Anti-Heroes",
+      "logoURI": "https://i.seadn.io/gcs/files/c2397ffc1f74d8894d4211f4a66c53eb.png?w=32&auto=format"
+    },
+    "0x03C3f46E05835693DC93d6374b6Bb36c979c9ac6": {
+      "symbol": "BBRC - IVY LEAGUE",
+      "logoURI": "https://i.seadn.io/gcs/files/1806a2f683e6183ddbb70704eb813ae2.gif?w=32&auto=format"
+    },
+    "0x42026c4dbF2EaD2ba951cCB3C321C49B7738cAb4": {
+      "symbol": "Hyakki-Official",
+      "logoURI": "https://i.seadn.io/gcs/files/cd916c4b5bf59f09983c9081ff95fbfb.png?w=32&auto=format"
     }
   }
 }
