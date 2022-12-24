@@ -80,6 +80,8 @@ export const getChainName = (chainId: number): string => {
     [ChainId.KavaEVMTestnet]: 'Kava Testnet',
     [2000]: 'Dogechain',
     [568]: 'Dogechain Testnet',
+    [ChainId.CallistoMainnet]: 'Callisto',
+    [ChainId.NahmiiMainnet]: 'Nahmii',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -130,6 +132,8 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
     [ChainId.KavaEVMTestnet]: 'https://evm.testnet.kava.io',
     [ChainId.Evmos]: 'https://evmos-mainnet.public.blastapi.io',
+    [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
+    [ChainId.Astar]: 'https://evm.astar.network',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -203,6 +207,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.KavaEVMTestnet]: '/assets/images/vendor/chains/kava.png',
     [2000]: '/assets/images/vendor/chains/dogechain.png',
     [568]: '/assets/images/vendor/chains/dogechain.png',
+    [ChainId.CallistoMainnet]: '/assets/images/vendor/chains/callisto.png',
+    [ChainId.NahmiiMainnet]: '/assets/images/vendor/chains/nahmii.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';

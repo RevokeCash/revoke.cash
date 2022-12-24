@@ -27,7 +27,7 @@ const MobileMenu = () => {
         {open && <XMarkIcon className="h-8 w-8" />}
       </Button>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="absolute inset-0 top-[60px]" initialFocus={null} onClose={setOpen}>
+        <Dialog as="div" className="absolute inset-0 top-[72px]" initialFocus={null} onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

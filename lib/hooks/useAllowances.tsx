@@ -15,6 +15,7 @@ export const useAllowances = (userAddress: string) => {
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,
     cacheTime: Infinity,
+    retry: false,
   });
 
   useEffect(() => {

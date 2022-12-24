@@ -3,7 +3,8 @@
 // allowances on these chains. Because these addresses were chosen randomly it is possible that some allowances may
 // get revoked, causing the tests to fail. In that case we need to replace the address with a new one.
 const fixtures = [
-  ['Ethereum', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
+  // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
+  ['Ethereum', '0xA9a3D92C3aA8CfDA6C5139eCE02401432b91cbB2'],
   ['Binance Smart Chain', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Avalanche', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Polygon', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
@@ -31,8 +32,11 @@ const fixtures = [
   ['Fuse', '0x291AeAB2C6E8b87A65BE9dF26E174F41864191A3'],
   ['Evmos', '0x8d354807f14fd6f006ac959AB4A2A9c13FA5484a'],
   ['Syscoin', '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044'],
+  ['Callisto', '0x3Ce5AE5E6762D568fcddB5Beef8B9B666CBa29Bb'],
+  ['Nahmii', '0xd342d75FE943AD8b92594BAeC3A7f86E5dF0BEb6'],
   ['Ethereum Classic', '0x8163dB62D6294bA66261644EcCD5FD5269451495'],
   ['BTT Chain', '0x2d850d18B0617077585F1D0Cba043168dc90954D'],
+  ['Shiden', '0xD377cFFCc52C16bF6e9840E77F78F42Ddb946568'],
   ['Palm', '0x77564a60d4a1577Ff911B8c24eC5D8a04a71B658'],
   ['Goerli', '0xFCBD25BB345765192fFC2f2E35F1F5348badC3F6'],
   ['Sepolia', '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a'],
@@ -47,10 +51,7 @@ const fixtures = [
   ['Aurora Testnet', '0xdcD7e9e12614979A081e6ccD58d696bDcbE4AF55'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
   ['Moonbase Alpha', '0xF1c70b44f61f5a3AA0658cbF33E16f68534dF9D9'],
-  ['RSK Testnet', '0xD5E6bFC7e5d982c1f7bac4d9c7E769beB0A6F626'], // Some weird behavior with this one
-  ['Godwoken Testnet', '0xcC0aF0aF911dD40853B8C8DFEE90b32f8D1eCAd6'],
   ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
-  ['Palm Testnet', '0xB95088fe34848a7ce5f374de164627D54D231249'],
 ];
 
 const Selectors = {
@@ -64,7 +65,7 @@ const URL = 'http://localhost:3000';
 
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
-    cy.visit(URL, { timeout: 10_000 });
+    cy.visit(`${URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
     cy.get(Selectors.BUTTON).should('exist').click();
 
     const fixtureChainNames = fixtures.map(([chainName]) => chainName);
@@ -74,11 +75,10 @@ describe('Chain Support', () => {
 
   fixtures.forEach(([chainName, fixtureAddress]) => {
     it(`should support ${chainName}`, () => {
-      cy.visit(URL, { timeout: 10_000 });
+      cy.visit(`${URL}/address/${fixtureAddress}`, { timeout: 10_000 });
 
       cy.get(Selectors.BUTTON).should('exist').click();
       cy.contains(chainName).should('exist').click();
-      cy.get(Selectors.ADDRESS_INPUT).type(fixtureAddress);
 
       cy.get(Selectors.LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
       cy.contains('Revoke', { timeout: 4000 }).should('exist');

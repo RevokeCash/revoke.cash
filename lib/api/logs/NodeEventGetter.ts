@@ -1,5 +1,6 @@
-import type { Filter, Log } from '@ethersproject/abstract-provider';
+import type { Filter } from '@ethersproject/abstract-provider';
 import { providers } from 'ethers';
+import type { Log } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
 import type { EventGetter } from './EventGetter';
 

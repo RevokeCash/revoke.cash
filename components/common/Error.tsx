@@ -15,7 +15,7 @@ const Error = ({ error }: Props) => {
 
   const chainConnectionMessage = `Could not connect to the ${getChainName(selectedChainId)} chain`;
   const message = error.message.includes('missing response') ? chainConnectionMessage : error.message;
-  return <div className="mt-2">Error: {message}</div>;
+  return <div>Error: {message}</div>;
 };
 
 export default Error;

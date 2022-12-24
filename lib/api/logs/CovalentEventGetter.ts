@@ -1,6 +1,7 @@
-import type { Filter, Log } from '@ethersproject/abstract-provider';
+import type { Filter } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { utils } from 'ethers';
+import type { Log } from 'lib/interfaces';
 import PQueue from 'p-queue';
 import type { EventGetter } from './EventGetter';
 
