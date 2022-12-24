@@ -20,7 +20,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const [editing, setEditing] = useState<boolean>();
   const { update } = useRevoke(allowance, onUpdate);
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
-  const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
+  const { account, selectedChainId, connectedChainId } = useEthereum();
   const { address } = useAddressContext();
 
   const disabled = address !== account || selectedChainId !== connectedChainId;

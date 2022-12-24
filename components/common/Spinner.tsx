@@ -7,7 +7,8 @@ interface Props {
 const Spinner = ({ className }: Props) => {
   const classes = classNames(
     className ?? 'w-4 h-4',
-    'animate-spin mx-1' // Compensate for formatting with other HeroIcons
+    'animate-spin mx-1', // Compensate for formatting with other HeroIcons
+    'loader'
   );
 
   return (

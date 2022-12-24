@@ -14,9 +14,7 @@ interface Props {
 const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
   const { t } = useTranslation();
 
-  if (error) return <Error error={error} />;
-
-  if (!allowances && !loading) return null;
+  if (!allowances && !loading && !error) return null;
 
   return (
     <div className="border border-black rounded-lg overflow-x-scroll whitespace-nowrap">
@@ -32,7 +30,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
             </tr>
           ))}
         </thead>
-        {!loading && (
+        {!loading && !error && (
           <>
             <tbody>
               {table.getRowModel().rows.map((row) => (
@@ -59,12 +57,17 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
           </>
         )}
       </table>
-      {!loading && table.getRowModel().rows.length === 0 && (
+      {!loading && !error && table.getRowModel().rows.length === 0 && (
         <div className="flex justify-center p-4 w-full">{t('address:no_allowances')}</div>
       )}
       {loading && (
         <div className="flex justify-center p-2 w-full">
           <SpinLoader size={34} center />
+        </div>
+      )}
+      {error && (
+        <div className="flex justify-center p-2 w-full">
+          <Error error={error} />
         </div>
       )}
     </div>

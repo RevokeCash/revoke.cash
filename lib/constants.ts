@@ -77,6 +77,10 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.EmeraldParatimeMainnet,
   ChainId.FuseMainnet,
   ChainId.Palm,
+  ChainId.CallistoMainnet,
+  ChainId.Astar,
+  ChainId.Shiden,
+  ChainId.NahmiiMainnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -105,13 +109,9 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
 ];
 
 export const COVALENT_SUPPORTED_CHAINS = [
-  ChainId.RSKTestnet,
   ChainId.HarmonyMainnetShard0,
   ChainId.IoTeXNetworkMainnet,
-  ChainId.PalmTestnet,
-  ChainId.Astar,
   ChainId.GodwokenMainnet,
-  ChainId['GodwokenTestnet(V1.1)'],
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -154,8 +154,11 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FuseMainnet,
   ChainId.Evmos,
   ChainId.SyscoinMainnet,
+  ChainId.CallistoMainnet,
+  ChainId.NahmiiMainnet,
   ChainId.EthereumClassicMainnet,
   ChainId.BitTorrentChainMainnet,
+  ChainId.Shiden,
   ChainId.Palm,
 ];
 
@@ -173,8 +176,5 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AuroraTestnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.MoonbaseAlpha,
-  ChainId.RSKTestnet,
-  ChainId['GodwokenTestnet(V1.1)'],
   ChainId.SyscoinTanenbaumTestnet,
-  ChainId.PalmTestnet,
 ];

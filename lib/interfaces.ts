@@ -46,6 +46,10 @@ export type LogsProvider = Pick<Provider, 'getLogs'>;
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T | undefined>>;
 
-export interface Log extends EthersLog {
+export interface Log
+  extends Pick<
+    EthersLog,
+    'address' | 'topics' | 'data' | 'transactionHash' | 'blockNumber' | 'transactionIndex' | 'logIndex'
+  > {
   timestamp?: number;
 }
