@@ -138,6 +138,14 @@ export const getErc20AllowancesFromApprovals = async (contract: Contract, ownerA
 
 const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerAddress: string, approval: Log) => {
   const spender = topicToAddress(approval.topics[2]);
+  const lastApprovedAmount = BigNumber.from(approval.data);
+
+  // If the most recent approval event was for 0, then we know for sure that the allowance is 0
+  // If not, we need to check the current allowance because we cannot determine the allowance from the event
+  // since it may have been partially used (through transferFrom)
+  if (lastApprovedAmount.isZero()) {
+    return { spender, amount: '0', lastUpdated: 0, transactionHash: approval.transactionHash };
+  }
 
   const [amount, lastUpdated, transactionHash] = await Promise.all([
     convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender))),
@@ -167,6 +175,15 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
     // taken from the event data rather than topics
     const tokenIdEncoded = approval.topics.length === 4 ? approval.topics[3] : approval.data;
     const tokenId = BigNumber.from(tokenIdEncoded).toString();
+    const lastApproved = topicToAddress(approval.topics[2]);
+
+    // If the most recent approval was a REVOKE, we know for sure that the allowance is revoked
+    // If not, we need to check the current allowance because we cannot determine the allowance from the event
+    // since it may have been "revoked" by transferring the NFT to another address
+    // TODO: We can probably join Approve and Transfer events to get the actual approved status from just events
+    if (lastApproved === ADDRESS_ZERO) {
+      return undefined;
+    }
 
     const [owner, spender, lastUpdated, transactionHash] = await Promise.all([
       unpackResult(multicallContract.functions.ownerOf(tokenId)),
@@ -206,13 +223,17 @@ const getUnlimitedErc721AllowanceFromApproval = async (
 ) => {
   const spender = topicToAddress(approval.topics[2]);
 
-  const [isApprovedForAll, lastUpdated, transactionHash] = await Promise.all([
-    unpackResult(multicallContract.functions.isApprovedForAll(ownerAddress, spender)),
+  // For ApprovalForAll events, we can determine the allowance (true/false) from *only* the event
+  // so we do not have to check the chain for the current allowance
+  const isApprovedForAll = !BigNumber.from(approval.data).isZero();
+
+  // If the allwoance if already revoked, we dont need to make any more requests
+  if (!isApprovedForAll) return undefined;
+
+  const [lastUpdated, transactionHash] = await Promise.all([
     approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
     approval.transactionHash,
   ]);
-
-  if (!isApprovedForAll) return undefined;
 
   return { spender, lastUpdated, transactionHash };
 };
