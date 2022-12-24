@@ -53,7 +53,7 @@ export const getErc20TokenData = async (contract: Contract, ownerAddress: string
     unpackResult(contract.functions.totalSupply()),
     convertString(unpackResult(contract.functions.balanceOf(ownerAddress))),
     // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
-    tokenData?.symbol ?? unpackResult(contract.functions.symbol()),
+    tokenData?.symbol ?? withFallback(unpackResult(contract.functions.symbol()), contract.address),
     tokenData?.decimals ?? unpackResult(contract.functions.decimals()),
     throwIfNotErc20(contract),
   ]);

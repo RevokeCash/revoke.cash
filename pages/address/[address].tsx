@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import AddressHeader from 'components/address/AddressHeader';
 import AllowanceTable from 'components/allowances/table/AllowanceTable';
 import PublicLayout from 'layouts/PublicLayout';
@@ -11,12 +12,29 @@ import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
   address: string;
-  domainName?: string;
+  ssrDomainName?: string;
   openSeaProxyAddress?: string;
 }
 
-const AddressPage: NextPage<Props> = ({ address, domainName, openSeaProxyAddress }) => {
+const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
   const { t } = useTranslation();
+
+  // We do these calls client-side rather than server-side because it's safe to assume that this will finish
+  // before getting all the allowances, and this will make the allowances page load faster.
+
+  const { data: openSeaProxyAddress } = useQuery({
+    queryKey: ['openSeaProxyAddress', address],
+    queryFn: () => getOpenSeaProxyAddress(address),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
+
+  const { data: domainName } = useQuery({
+    queryKey: ['domainName', address, ssrDomainName],
+    queryFn: () => ssrDomainName ?? lookupDomainName(address),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
 
   return (
     <>
@@ -41,17 +59,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     };
   }
 
-  // Perform these requests in parallel to speed up the page load
-  const [domainName, openSeaProxyAddress] = await Promise.all([
-    address.toLowerCase() === addressParam ? lookupDomainName(address) : addressParam,
-    getOpenSeaProxyAddress(address),
-  ]);
+  const ssrDomainName = address.toLowerCase() === addressParam ? null : addressParam;
 
   return {
     props: {
       address,
-      domainName,
-      openSeaProxyAddress,
+      ssrDomainName,
     },
   };
 };
