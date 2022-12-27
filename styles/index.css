@@ -24,6 +24,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @apply leading-tight;
+  @apply text-gray-900;
+}
+
+h1 {
+  @apply text-3xl font-bold tracking-tight;
+}
+
+h2 {
+  @apply text-2xl font-bold tracking-tight;
+}
+
+h3 {
+  @apply text-xl font-bold;
+}
+
+h4 {
+  @apply text-lg font-bold;
 }
 
 a {
@@ -37,22 +54,6 @@ a:visited {
 
 .dev {
   @apply border border-yellow-500;
-}
-
-h1 {
-  @apply text-3xl uppercase text-black font-futura font-bold italic;
-}
-
-h2 {
-  @apply text-2xl uppercase text-black font-futura font-bold;
-}
-
-h3 {
-  @apply text-xl uppercase text-black font-futura font-bold;
-}
-
-h4 {
-  @apply text-lg leading-tight uppercase text-black font-futura italic pt-2 pb-1;
 }
 
 #nprogress .bar {

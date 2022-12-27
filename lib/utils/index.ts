@@ -124,6 +124,7 @@ export const filterLogsByAddress = (logs: Log[], address: string) => {
   return logs.filter((log) => log.address === address);
 };
 
+// TODO: Translate toasts
 export const writeToClipBoard = (text: string, displayToast: boolean = true) => {
   if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
     toast.info("❌ Couldn't copy to clipboard", { autoClose: 1000 });
@@ -133,4 +134,8 @@ export const writeToClipBoard = (text: string, displayToast: boolean = true) => 
   if (displayToast) {
     toast.info('✅ Copied to clipboard', { autoClose: 1000 });
   }
+};
+
+export const normaliseLabel = (label: string) => {
+  return label.toLowerCase().replace(/[ -]/g, '_');
 };

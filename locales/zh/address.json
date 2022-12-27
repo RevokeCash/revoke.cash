@@ -5,6 +5,31 @@
     "token_id": "{{symbol}} #{{tokenId}}",
     "unlimited": "无限"
   },
+  "filters": {
+    "allowances": {
+      "label": "Allowances",
+      "options": {
+        "limited": "Limited",
+        "none": "None",
+        "unlimited": "Unlimited"
+      }
+    },
+    "asset_balance": {
+      "label": "Asset Balance",
+      "options": {
+        "non_zero": "Non-Zero",
+        "zero": "Zero"
+      }
+    },
+    "asset_type": {
+      "label": "Asset Type",
+      "options": {
+        "nft": "NFT",
+        "token": "Token"
+      }
+    },
+    "label": "Filters"
+  },
   "headers": {
     "actions": "Actions",
     "allowance": "授权",
@@ -13,7 +38,37 @@
     "last_updated": "Last Updated",
     "spender": "Approved Spender"
   },
+  "labels": {
+    "nft": "NFT",
+    "token": "Token"
+  },
+  "meta": {
+    "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
+    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+  },
   "no_allowances": "没有授权",
+  "sorting": {
+    "columns": {
+      "allowance": "Allowance",
+      "asset_name": "Asset Name",
+      "last_updated": "Last Updated"
+    },
+    "fns": {
+      "date": {
+        "asc": "Oldest to Newest",
+        "desc": "Newest to Oldest"
+      },
+      "number": {
+        "asc": "Low to High",
+        "desc": "High to Low"
+      },
+      "text": {
+        "asc": "A to Z",
+        "desc": "Z to A"
+      }
+    },
+    "label": "Sort"
+  },
   "tooltips": {
     "connect_wallet": "请连接钱包再撤销",
     "connected_account": "您只能撤销已连接账户的授权",

@@ -38,7 +38,11 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
+      <NextSeo
+        {...defaultSEO}
+        title={t('address:meta.title', { address: ssrDomainName ?? address })}
+        description={t('address:meta.description')}
+      />
       <PublicLayout>
         <AddressContextProvider value={{ address, domainName, openSeaProxyAddress }}>
           <AddressHeader />

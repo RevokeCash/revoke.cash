@@ -36,7 +36,7 @@ const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
       </Button>
       {!loading && (
         <Button style="tertiary" size="sm" onClick={reset} className="px-0">
-          Cancel
+          {t('common:buttons.cancel')}
         </Button>
       )}
     </div>

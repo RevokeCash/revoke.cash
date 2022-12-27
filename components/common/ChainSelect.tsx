@@ -1,5 +1,5 @@
 import ChainLogo from 'components/common/ChainLogo';
-import Select from 'components/common/select/Select';
+import Select from 'components/common/Select';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'lib/constants';
 import { getChainName } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';

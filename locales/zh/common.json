@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "cancel": "Cancel",
     "connect": "连接钱包",
     "connecting": "正在连接",
     "disconnect": "断开连接",
@@ -7,6 +8,8 @@
     "donate": "捐赠",
     "donating": "正在捐赠",
     "download": "下载",
+    "get_started": "Get Started",
+    "my_allowances": "My Allowances",
     "revoke": "取消",
     "revoking": "正在撤销",
     "send": "发送",
@@ -26,18 +29,38 @@
   },
   "errors": {
     "404": {
+      "go_home": "Or go back home",
+      "subtitle": "The page you are looking for could not be found.",
+      "suggested_pages": {
+        "extension": {
+          "description": "Download the Revoke.cash browser extension.",
+          "title": "Extension"
+        },
+        "faq": {
+          "description": "Answers to all your questions.",
+          "title": "FAQ"
+        },
+        "title": "Are you looking for one of these?",
+        "your_allowances": {
+          "description": "Inspect your own allowances.",
+          "title": "Your Allowances"
+        }
+      },
       "title": "404 - 找不到网页"
     }
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "sponsors": "Sponsors:",
+    "terms": "Terms"
   },
   "meta": {
     "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
     "title": "Revoke.cash— 撤销你的以太坊代币授权"
   },
   "nav": {
-    "about": "关于",
     "extension": "扩展",
     "faq": "常见问题",
     "search": "输入地址、ENS名称或Unstoppable域名"
-  },
-  "privacy_policy": "隐私政策"
+  }
 }

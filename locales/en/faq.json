@@ -8,6 +8,10 @@
       "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. This is usually quite cheap, but when gas fees rise it can get more expensive. If your transactions are not time sensitive, it may be wise to use services like <0>GasHawk</0> to reduce gas fees.",
       "question": "How much does it cost to use Revoke.cash?"
     },
+    "deposited_tokens": {
+      "answer": "Revoking allowances has no impact on your deposited or staked tokens. These tokens will stay deposited and you will still be able to withdraw them. However, if you want add more tokens to your deposited position, you will need to grant an allowance again.",
+      "question": "What happens to my deposited or staked tokens when I revoke allowances?"
+    },
     "enough_to_disconnect": {
       "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <0>anything</0> to protect you from allowance exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address any more. But your allowances stay active.",
       "question": "Is it enough to \"disconnect\" my wallet instead of revoking allowances?"
@@ -21,7 +25,7 @@
       "question": "Can I revoke multiple allowances at the same time?"
     },
     "other_question": {
-      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <0>Twitter</0> or <1>Discord</1>.",
+      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <0>Twitter</0> or <1>Discord</1>. You can also read about allowances in more detail in Rosco Kalis' blog post <2>Unlimited ERC20 allowances considered harmful</2>.",
       "question": "My question is not listed here."
     },
     "recover_assets": {
@@ -29,7 +33,7 @@
       "question": "My funds were just stolen, can I use Revoke.cash to get them back?"
     },
     "stolen_through_allowances": {
-      "answer": "If your tokens or NFTs were taken from your wallet without you sending an explicit transaction to do so, it is almost always because of allowances. But if your ETH was also stolen alongside other assets, then it most likely points to a compromised seed phrase and you need to migrate to a completely new wallet.",
+      "answer": "It is always hard to determine how exactly your funds were stolen. To help you diagnose the cause and mitigations, we developed an infographic that shows the most common ways that funds are stolen, which has been included below. Note that you may need to zoom in to see the details.",
       "question": "How do I know if my funds were stolen through an allowance exploit?"
     },
     "sweeper_bot": {

@@ -7,7 +7,7 @@ interface Props {
 const ContentPageLayout = ({ children }: Props) => {
   return (
     <PublicLayout>
-      <div className="max-w-4xl mx-auto">{children}</div>
+      <div className="max-w-3xl mx-auto">{children}</div>
     </PublicLayout>
   );
 };

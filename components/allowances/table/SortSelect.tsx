@@ -1,6 +1,9 @@
 import { Column, sortingFns, Table } from '@tanstack/react-table';
-import Select from 'components/common/select/Select';
+import Label from 'components/common/Label';
+import Select from 'components/common/Select';
 import { AllowanceData } from 'lib/interfaces';
+import { normaliseLabel } from 'lib/utils';
+import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 import { ColumnId, customSortingFns } from './columns';
 
@@ -15,8 +18,9 @@ interface Props {
   table: Table<AllowanceData>;
 }
 
-// TODO: Translations for sorting
 const SortSelect = ({ table }: Props) => {
+  const { t } = useTranslation();
+
   const options = useMemo(() => {
     return table
       .getAllColumns()
@@ -31,31 +35,38 @@ const SortSelect = ({ table }: Props) => {
     table.setSorting(() => [{ id, desc }]);
   };
 
-  const displayOption = ({ column, desc }: Option) => {
+  const displayOption = ({ column, desc }: Option, { context }: any) => {
     const sortingFnDisplays = {
       [sortingFns.basic.name]: {
-        desc: 'High > Low',
-        asc: 'Low > High',
+        asc: t('address:sorting.fns.number.asc'),
+        desc: t('address:sorting.fns.number.desc'),
       },
       [sortingFns.text.name]: {
-        desc: 'Z > A',
-        asc: 'A > Z',
+        asc: t('address:sorting.fns.text.asc'),
+        desc: t('address:sorting.fns.text.desc'),
       },
       [customSortingFns.timestamp.name]: {
-        desc: 'Newest > Oldest',
-        asc: 'Oldest > Newest',
+        asc: t('address:sorting.fns.date.asc'),
+        desc: t('address:sorting.fns.date.desc'),
       },
       [customSortingFns.allowance.name]: {
-        desc: 'High > Low',
-        asc: 'Low > High',
+        asc: t('address:sorting.fns.number.asc'),
+        desc: t('address:sorting.fns.number.desc'),
       },
     };
 
     const sortingFnDisplay = sortingFnDisplays[column.getSortingFn().name]?.[desc ? 'desc' : 'asc'];
 
+    const sortDisplay = `${t(`address:sorting.columns.${normaliseLabel(column.id)}`)}: ${sortingFnDisplay}`;
+
+    if (context === 'menu') {
+      return <div className="flex items-center gap-1">{sortDisplay}</div>;
+    }
+
     return (
-      <div className="flex items-center gap-1">
-        {column.id}: {sortingFnDisplay}
+      <div className="flex items-center gap-2">
+        {context !== 'menu' && <div>{t('address:sorting.label')}</div>}
+        <Label className="flex items-center gap-1 bg-gray-300 font-normal">{sortDisplay}</Label>
       </div>
     );
   };

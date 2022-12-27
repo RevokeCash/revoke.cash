@@ -1,12 +1,16 @@
 import { displayGitcoinToast } from 'components/common/gitcoin-toast';
-import PublicLayout from 'layouts/PublicLayout';
+import HeroSection from 'components/landing/HeroSection';
+import HowTo from 'components/landing/HowTo';
+import LandingPageFaq from 'components/landing/LandingPageFaq';
+import WhyRevokeCash from 'components/landing/WhyRevokeCash';
+import LandingLayout from 'layouts/LandingLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
-const App: NextPage = () => {
+const Landing: NextPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -16,9 +20,16 @@ const App: NextPage = () => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
-      <PublicLayout>TODO: Add Landing Page Here</PublicLayout>
+      <LandingLayout>
+        <div className="flex flex-col items-center gap-8">
+          <HeroSection />
+          <HowTo />
+          <WhyRevokeCash />
+          <LandingPageFaq />
+        </div>
+      </LandingLayout>
     </>
   );
 };
 
-export default App;
+export default Landing;

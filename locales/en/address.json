@@ -5,6 +5,31 @@
     "token_id": "{{symbol}} #{{tokenId}}",
     "unlimited": "Unlimited"
   },
+  "filters": {
+    "allowances": {
+      "label": "Allowances",
+      "options": {
+        "limited": "Limited",
+        "none": "None",
+        "unlimited": "Unlimited"
+      }
+    },
+    "asset_balance": {
+      "label": "Asset Balance",
+      "options": {
+        "non_zero": "Non-Zero",
+        "zero": "Zero"
+      }
+    },
+    "asset_type": {
+      "label": "Asset Type",
+      "options": {
+        "nft": "NFT",
+        "token": "Token"
+      }
+    },
+    "label": "Filters"
+  },
   "headers": {
     "actions": "Actions",
     "allowance": "Allowance",
@@ -13,7 +38,37 @@
     "last_updated": "Last Updated",
     "spender": "Approved Spender"
   },
+  "labels": {
+    "nft": "NFT",
+    "token": "Token"
+  },
+  "meta": {
+    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
+    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+  },
   "no_allowances": "No allowances found",
+  "sorting": {
+    "columns": {
+      "allowance": "Allowance",
+      "asset_name": "Asset Name",
+      "last_updated": "Last Updated"
+    },
+    "fns": {
+      "date": {
+        "asc": "Oldest to Newest",
+        "desc": "Newest to Oldest"
+      },
+      "number": {
+        "asc": "Low to High",
+        "desc": "High to Low"
+      },
+      "text": {
+        "asc": "A to Z",
+        "desc": "Z to A"
+      }
+    },
+    "label": "Sort"
+  },
   "tooltips": {
     "connect_wallet": "Please connect your wallet in order to revoke",
     "connected_account": "You can only revoke allowances of the connected account",

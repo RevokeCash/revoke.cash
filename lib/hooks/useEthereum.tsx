@@ -38,7 +38,7 @@ interface EthereumContext {
   selectedChainId?: number;
   selectChain?: (chainId: number) => void;
   switchInjectedWalletChain?: (chainId: number) => Promise<void>;
-  connect?: () => Promise<void>;
+  connect?: () => Promise<string>;
   disconnect?: () => Promise<void>;
 }
 
@@ -230,6 +230,8 @@ export const EthereumProvider = ({ children }: Props) => {
       });
 
       setWeb3ModalInstance(instance);
+
+      return address;
     } catch {
       // Ignored
     }

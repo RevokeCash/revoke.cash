@@ -1,6 +1,6 @@
 import { Menu } from '@headlessui/react';
-import Button from '../Button';
-import Chevron from '../Chevron';
+import Button from './Button';
+import Chevron from './Chevron';
 
 interface Props {
   menuButton: React.ReactNode;

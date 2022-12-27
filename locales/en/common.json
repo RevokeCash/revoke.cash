@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "cancel": "Cancel",
     "connect": "Connect Wallet",
     "connecting": "Connecting",
     "disconnect": "Disconnect",
@@ -7,6 +8,8 @@
     "donate": "Donate",
     "donating": "Donating",
     "download": "Download",
+    "get_started": "Get Started",
+    "my_allowances": "My Allowances",
     "revoke": "Revoke",
     "revoking": "Revoking",
     "send": "Send",
@@ -26,18 +29,38 @@
   },
   "errors": {
     "404": {
-      "title": "404 - Page not found"
+      "go_home": "Or go back home",
+      "subtitle": "The page you are looking for could not be found.",
+      "suggested_pages": {
+        "extension": {
+          "description": "Download the Revoke.cash browser extension.",
+          "title": "Extension"
+        },
+        "faq": {
+          "description": "Answers to all your questions.",
+          "title": "FAQ"
+        },
+        "title": "Are you looking for one of these?",
+        "your_allowances": {
+          "description": "Inspect your own allowances.",
+          "title": "Your Allowances"
+        }
+      },
+      "title": "This page does not exist."
     }
   },
+  "footer": {
+    "privacy": "Privacy",
+    "sponsors": "Sponsors:",
+    "terms": "Terms"
+  },
   "meta": {
-    "description": "Protect your Ethereum token balances by revoking allowances you granted in the past.",
+    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
     "title": "Revoke.cash - Revoke your Ethereum token allowances"
   },
   "nav": {
-    "about": "About",
     "extension": "Extension",
     "faq": "FAQ",
     "search": "Enter address, ENS name or Unstoppable Domain"
-  },
-  "privacy_policy": "Privacy Policy"
+  }
 }
