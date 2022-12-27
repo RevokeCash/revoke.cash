@@ -38,7 +38,7 @@
     },
     "sweeper_bot": {
       "answer": "If you have a so-called \"sweeper bot\" on your account that steals any ETH as soon as it comes in, your seed phrase was compromised. This means that revoking allowances is not going to help with your wallet security. Unfortunately, there is no way for your wallet to recover from this. You should abandon this wallet and create a new one.",
-      "question": "I want to revoke allowances, but whenever I add ETH to my account it gets stolen."
+      "question": "I want to revoke allowances, but when I add ETH to my account it gets stolen."
     },
     "wallet_mentions_approve": {
       "answer": "In the tokens' smart contracts, the functions for approving and revoking allowances are the same function. The difference is that you set the allowance to 0 (for ERC20 tokens) or \"false\" (for NFTs) when revoking the allowance. You can verify that Revoke.cash is actually revoking the allowance by clicking \"Edit Permission\" (for ERC20 allowances), or the \"data\" tab (for NFTs) in MetaMask.",
