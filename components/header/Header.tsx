@@ -11,7 +11,7 @@ const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <header className="flex flex-col relative p-4 md:px-8 gap-2">
+    <header className="flex flex-col relative p-4 md:px-8 gap-4">
       <div className="flex justify-between items-center gap-8">
         <div className="hidden md:flex justify-start items-center gap-4 w-1/3">
           <DonateButton size="md" />

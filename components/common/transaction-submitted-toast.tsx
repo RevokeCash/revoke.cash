@@ -2,6 +2,7 @@ import DonateButton from 'components/common/DonateButton';
 import type { MutableRefObject, ReactText } from 'react';
 import { toast } from 'react-toastify';
 
+// TODO: Translate toasts
 export const displayTransactionSubmittedToast = (ref: MutableRefObject<ReactText>) => {
   const toastContent = (
     <div className="flex flex-col justify-center items-center gap-2">

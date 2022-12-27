@@ -1,5 +1,5 @@
 import { track } from '@amplitude/analytics-browser';
-import Select from 'components/common/select/Select';
+import Select from 'components/common/Select';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 

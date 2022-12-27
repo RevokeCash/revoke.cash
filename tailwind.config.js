@@ -10,6 +10,20 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: [
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Oxygen',
+          'Ubuntu',
+          'Cantarell',
+          'Fira Sans',
+          'Droid Sans',
+          'Helvetica Neue',
+          'sans-serif',
+        ],
+        monosans: [
           // BlinkMacSystemFont messes up datetime formatting
           'Segoe UI',
           'Roboto',
@@ -20,7 +34,7 @@ module.exports = {
           'Droid Sans',
           'Helvetica Neue',
           'sans-serif',
-        ], // sans is the default font-family
+        ],
         futura: ['Futura Condensed'],
         code: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
         monospace: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],

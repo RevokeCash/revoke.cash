@@ -18,7 +18,7 @@ const Href = (
 ) => {
   const styleMapping = {
     html: 'text-blue-700 visited:text-fuchsia-800',
-    inherit: 'text-inherit visited:text-inherit',
+    inherit: 'text-current visited:text-current',
   };
 
   const underlineMapping = {

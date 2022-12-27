@@ -5,6 +5,31 @@
     "token_id": "{{symbol}} #{{tokenId}}",
     "unlimited": "Ilimitada"
   },
+  "filters": {
+    "allowances": {
+      "label": "Allowances",
+      "options": {
+        "limited": "Limited",
+        "none": "None",
+        "unlimited": "Unlimited"
+      }
+    },
+    "asset_balance": {
+      "label": "Asset Balance",
+      "options": {
+        "non_zero": "Non-Zero",
+        "zero": "Zero"
+      }
+    },
+    "asset_type": {
+      "label": "Asset Type",
+      "options": {
+        "nft": "NFT",
+        "token": "Token"
+      }
+    },
+    "label": "Filters"
+  },
   "headers": {
     "actions": "Actions",
     "allowance": "Autorización",
@@ -13,7 +38,37 @@
     "last_updated": "Last Updated",
     "spender": "Gastador"
   },
+  "labels": {
+    "nft": "NFT",
+    "token": "Token"
+  },
+  "meta": {
+    "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
+    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+  },
   "no_allowances": "Sin autorizaciones",
+  "sorting": {
+    "columns": {
+      "allowance": "Allowance",
+      "asset_name": "Asset Name",
+      "last_updated": "Last Updated"
+    },
+    "fns": {
+      "date": {
+        "asc": "Oldest to Newest",
+        "desc": "Newest to Oldest"
+      },
+      "number": {
+        "asc": "Low to High",
+        "desc": "High to Low"
+      },
+      "text": {
+        "asc": "A to Z",
+        "desc": "Z to A"
+      }
+    },
+    "label": "Sort"
+  },
   "tooltips": {
     "connect_wallet": "Por favor conecta tu cartera para poder revocar",
     "connected_account": "Solo puedes revocar las autorizaciones de la cuenta conectada",

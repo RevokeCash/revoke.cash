@@ -1,0 +1,40 @@
+{
+  "faq": {
+    "subtitle": "These are some of the most common questions we get asked. For a full list of FAQs please visit our <0>FAQ page</0>.",
+    "title": "Frequently Asked Questions"
+  },
+  "hero_section": {
+    "paragraph_1": "When using dapps like Uniswap or OpenSea you have to grant them permission to spend your tokens and NFTs. This is called an allowance. If you don't revoke these allowances, the dapp can spend your tokens forever. Take back control by revoking your allowances.",
+    "title": "Take back control of your wallet."
+  },
+  "how_to": {
+    "paragraph_1": {
+      "description": "Click <0>Connect Wallet</0> on the top right or enter an address in the search bar.",
+      "title": "1. Connect"
+    },
+    "paragraph_2": {
+      "description": "Inspect your allowances by using the network selection, sorting and filtering options.",
+      "title": "2. Inspect"
+    },
+    "paragraph_3": {
+      "description": "Revoke the allowances that you no longer use to prevent unwanted access to your funds.",
+      "title": "3. Revoke"
+    },
+    "title": "How to revoke your allowances."
+  },
+  "why_revoke": {
+    "paragraph_1": {
+      "description": "It is always good to limit your allowances whenever you are not actively using a dapp, especially for NFT marketplaces. This reduces the risk of losing your funds to hacks or exploits and can also help mitigate the damage of phishing scams.",
+      "title": "1. Use Revoke.cash periodically"
+    },
+    "paragraph_2": {
+      "description": "Very often, scammers try to trick you into granting them an allowance to your funds. Sort your allowances by most recent to find out which allowances are to blame and revoke them to prevent further damage. Unfortunately it is not possible to <0>recover</0> funds that have already been stolen.",
+      "title": "2. Use Revoke.cash after getting scammed"
+    },
+    "paragraph_3": {
+      "description": "Prevention is better than mitigation. The Revoke.cash browser extension warns you when you're about to sign something potentially harmful. This can help prevent you from losing funds to phishing scams.",
+      "title": "3. Use the Revoke.cash browser extension"
+    },
+    "title": "Why should you use Revoke.cash?"
+  }
+}

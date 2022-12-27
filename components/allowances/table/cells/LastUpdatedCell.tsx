@@ -20,7 +20,7 @@ const LastUpdatedCell = ({ allowance }: Props) => {
   const explorerUrl = getChainExplorerUrl(selectedChainId);
 
   return (
-    <div className="flex justify-start">
+    <div className="flex justify-start font-monosans">
       <WithHoverTooltip tooltip={<TimeAgo datetime={lastUpdatedDate} locale={lang} />}>
         <Href href={`${explorerUrl}/tx/${allowance.transactionHash}`} external>
           {lastUpdatedDate.toLocaleDateString()} {lastUpdatedDate.toLocaleTimeString()}

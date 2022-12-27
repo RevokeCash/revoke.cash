@@ -3,7 +3,7 @@ module.exports = {
   locales: ['en', 'es', 'zh'],
   pages: {
     '*': ['common'],
-    '/about': ['about'],
+    '/': ['landing', 'faq'],
     '/faq': ['faq'],
     '/extension': ['extension'],
     'rgx:/address/.*': ['address'],
