@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import AddressHeader from 'components/address/AddressHeader';
 import AllowanceTable from 'components/allowances/table/AllowanceTable';
+import LogIn from 'components/common/LogIn';
 import PublicLayout from 'layouts/PublicLayout';
 import { AddressContextProvider } from 'lib/hooks/useAddressContext';
 import { defaultSEO } from 'lib/next-seo.config';
@@ -44,10 +45,12 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
         description={t('address:meta.description')}
       />
       <PublicLayout>
-        <AddressContextProvider value={{ address, domainName, openSeaProxyAddress }}>
-          <AddressHeader />
-          <AllowanceTable />
-        </AddressContextProvider>
+        <LogIn>
+          <AddressContextProvider value={{ address, domainName, openSeaProxyAddress }}>
+            <AddressHeader />
+            <AllowanceTable />
+          </AddressContextProvider>
+        </LogIn>
       </PublicLayout>
     </>
   );
