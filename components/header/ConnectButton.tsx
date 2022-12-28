@@ -25,14 +25,20 @@ const ConnectButton = () => {
           <Button
             style="secondary"
             size="md"
-            className="rounded-none border-none"
+            className="rounded-none border-none font-normal"
             align="left"
             href={`/address/${domainName ?? account}`}
             router
           >
             {t('common:buttons.my_allowances')}
           </Button>
-          <Button style="secondary" size="md" className="rounded-none border-none" align="left" onClick={disconnect}>
+          <Button
+            style="secondary"
+            size="md"
+            className="rounded-none border-none font-normal"
+            align="left"
+            onClick={disconnect}
+          >
             {t('common:buttons.disconnect')}
           </Button>
         </DropdownMenu>

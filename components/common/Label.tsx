@@ -6,13 +6,12 @@ interface Props {
 }
 
 const Label = ({ children, className }: Props) => {
-  return (
-    <div
-      className={classNames(className, 'text-xs font-semibold flex items-center justify-center py-0.5 px-1 rounded-md')}
-    >
-      {children}
-    </div>
+  const classes = classNames(
+    className,
+    'text-xs font-semibold flex items-center justify-center py-0.5 px-1.5 rounded-md'
   );
+
+  return <div className={classes}>{children}</div>;
 };
 
 export default Label;

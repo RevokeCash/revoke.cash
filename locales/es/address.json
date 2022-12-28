@@ -11,7 +11,7 @@
       "options": {
         "limited": "Limited",
         "none": "None",
-        "unlimited": "Unlimited"
+        "unlimited": "Ilimitada"
       }
     },
     "asset_balance": {
@@ -34,12 +34,14 @@
     "actions": "Actions",
     "allowance": "Autorización",
     "asset": "Nombre y saldo del activo",
-    "asset_type": "Asset Type",
+    "asset_type": "Type",
     "last_updated": "Last Updated",
     "spender": "Gastador"
   },
   "labels": {
+    "connected": "Connected",
     "nft": "NFT",
+    "not_connected": "Not Connected",
     "token": "Token"
   },
   "meta": {
@@ -49,7 +51,7 @@
   "no_allowances": "Sin autorizaciones",
   "sorting": {
     "columns": {
-      "allowance": "Allowance",
+      "allowance": "Autorización",
       "asset_name": "Asset Name",
       "last_updated": "Last Updated"
     },

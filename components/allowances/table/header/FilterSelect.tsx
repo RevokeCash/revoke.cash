@@ -6,7 +6,7 @@ import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import { useCallback } from 'react';
 import { FormatOptionLabelMeta } from 'react-select';
-import { ColumnId } from './columns';
+import { ColumnId } from '../columns';
 
 interface Option {
   group: string;
