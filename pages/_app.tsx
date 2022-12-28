@@ -1,6 +1,5 @@
 import { init, track } from '@amplitude/analytics-browser';
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
 import type { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
@@ -25,23 +24,6 @@ init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, null, {
 
 const queryClient = new QueryClient();
 
-const TWELVE_HOURS = 12 * 60 * 60 * 1000;
-
-const LogIn = ({ children }) => {
-  const { isLoading: loggingIn } = useQuery<void, Error>({
-    queryKey: ['login'],
-    queryFn: () => axios.post('/api/login'),
-    staleTime: TWELVE_HOURS,
-    cacheTime: TWELVE_HOURS,
-  });
-
-  if (loggingIn) {
-    return null;
-  }
-
-  return children;
-};
-
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
 
@@ -54,9 +36,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <QueryClientProvider client={queryClient}>
         <EthereumProvider>
-          <LogIn>
-            <Component {...pageProps} />
-          </LogIn>
+          <Component {...pageProps} />
           <ToastContainer
             className="text-center"
             toastClassName="border border-black"
