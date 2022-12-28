@@ -35,7 +35,7 @@ const Button = ({
 }: Props) => {
   const classMapping = {
     common:
-      'flex items-center border border-black duration-150 cursor-pointer disabled:cursor-not-allowed leading-none',
+      'flex items-center border border-black duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium',
     primary: 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-gray-200 disabled:bg-gray-300',
     tertiary: 'text-black disabled:text-gray-600 border-none',

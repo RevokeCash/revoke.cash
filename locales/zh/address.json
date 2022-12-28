@@ -11,7 +11,7 @@
       "options": {
         "limited": "Limited",
         "none": "None",
-        "unlimited": "Unlimited"
+        "unlimited": "无限"
       }
     },
     "asset_balance": {
@@ -33,13 +33,15 @@
   "headers": {
     "actions": "Actions",
     "allowance": "授权",
-    "asset": "Asset Name & Balance",
-    "asset_type": "Asset Type",
+    "asset": "Asset",
+    "asset_type": "Type",
     "last_updated": "Last Updated",
     "spender": "Approved Spender"
   },
   "labels": {
+    "connected": "Connected",
     "nft": "NFT",
+    "not_connected": "Not Connected",
     "token": "Token"
   },
   "meta": {
@@ -49,7 +51,7 @@
   "no_allowances": "没有授权",
   "sorting": {
     "columns": {
-      "allowance": "Allowance",
+      "allowance": "授权",
       "asset_name": "Asset Name",
       "last_updated": "Last Updated"
     },

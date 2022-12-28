@@ -5,7 +5,7 @@ import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
-import { ColumnId, customSortingFns } from './columns';
+import { ColumnId, customSortingFns } from '../columns';
 
 interface Option {
   id: ColumnId;

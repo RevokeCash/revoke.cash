@@ -33,13 +33,15 @@
   "headers": {
     "actions": "Actions",
     "allowance": "Allowance",
-    "asset": "Asset Name & Balance",
-    "asset_type": "Asset Type",
+    "asset": "Asset",
+    "asset_type": "Type",
     "last_updated": "Last Updated",
     "spender": "Approved Spender"
   },
   "labels": {
+    "connected": "Connected",
     "nft": "NFT",
+    "not_connected": "Not Connected",
     "token": "Token"
   },
   "meta": {

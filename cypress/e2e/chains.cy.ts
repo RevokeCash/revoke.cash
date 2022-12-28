@@ -61,7 +61,7 @@ const Selectors = {
   ADDRESS_INPUT: '.address-input',
 };
 
-const URL = 'http://localhost:3000';
+const URL = Cypress.env('url') ?? 'http://localhost:3000';
 
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
