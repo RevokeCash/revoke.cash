@@ -29,7 +29,9 @@ const AddressHeader = () => {
             <div className="leading-none">&bull;</div>
             <AddressDisplay address={address} className="" copy />
           </div>
-          <Label className={classNames(address === account ? 'bg-green-400' : 'bg-red-400', 'text-gray-900')}>
+          <Label
+            className={classNames(address === account ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-900', '')}
+          >
             {address === account ? t('address:labels.connected') : t('address:labels.not_connected')}
           </Label>
         </div>
