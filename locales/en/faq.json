@@ -49,7 +49,7 @@
       "question": "Which allowances do I need to revoke?"
     },
     "which_chains": {
-      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum, BSC, Polygon and Avalanche. The full list of supported chains can be seen in the chain selectin dropdown. If there are any other chains that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
+      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum, BSC, Polygon and Avalanche. The full list of supported chains can be seen in the chain selection dropdown. If there are any other chains that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
       "question": "Which chains does Revoke.cash support?"
     },
     "whole_wallet_at_risk": {
