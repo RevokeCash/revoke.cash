@@ -27,7 +27,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
 
   if (editing) {
     return (
-      <div className="flex">
+      <div className="flex items-center gap-2 w-40">
         <ControlsSection allowance={allowance} update={update} reset={() => setEditing(false)} />
       </div>
     );
