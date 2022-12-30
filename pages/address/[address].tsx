@@ -45,12 +45,12 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
         description={t('address:meta.description')}
       />
       <PublicLayout>
-        <LogIn>
-          <AddressContextProvider value={{ address, domainName, openSeaProxyAddress }}>
-            <AddressHeader />
+        <AddressContextProvider value={{ address, domainName, openSeaProxyAddress }}>
+          <AddressHeader />
+          <LogIn>
             <AllowanceTable />
-          </AddressContextProvider>
-        </LogIn>
+          </LogIn>
+        </AddressContextProvider>
       </PublicLayout>
     </>
   );

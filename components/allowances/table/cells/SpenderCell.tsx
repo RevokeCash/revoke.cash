@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Href from 'components/common/Href';
-import SpinLoader from 'components/common/SpinLoader';
+import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
@@ -29,7 +29,7 @@ const SpenderCell = ({ allowance }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.spender}`;
 
   if (isLoading) {
-    return <SpinLoader size={10} />;
+    return <Spinner className="w-4 h-4" />;
   }
 
   if (!allowance.spender) {
