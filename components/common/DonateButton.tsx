@@ -16,11 +16,13 @@ import { toast } from 'react-toastify';
 import Input from './Input';
 
 interface Props {
-  size: 'sm' | 'md' | 'lg';
+  size: 'sm' | 'md' | 'lg' | 'none';
+  style?: 'primary' | 'secondary' | 'tertiary' | 'none';
+  className?: string;
   parentToastRef?: MutableRefObject<ReactText>;
 }
 
-const DonateButton = ({ size, parentToastRef }: Props) => {
+const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   const { t } = useTranslation();
   const { signer, connectedChainId } = useEthereum();
 
@@ -75,7 +77,7 @@ const DonateButton = ({ size, parentToastRef }: Props) => {
 
   return (
     <>
-      <Button style="primary" size={size} onClick={handleOpen}>
+      <Button style={style ?? 'primary'} size={size} className={className} onClick={handleOpen}>
         {t('common:buttons.donate')}
       </Button>
 

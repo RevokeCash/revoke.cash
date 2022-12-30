@@ -4,9 +4,12 @@ import ConnectButton from './ConnectButton';
 
 interface Props {
   menuAlign?: 'left' | 'right';
+  size?: 'sm' | 'md' | 'lg' | 'none';
+  style?: 'primary' | 'secondary' | 'tertiary' | 'none';
+  className?: string;
 }
 
-const WalletIndicator = ({ menuAlign }: Props) => {
+const WalletIndicator = ({ menuAlign, size, style, className }: Props) => {
   const { switchInjectedWalletChain, connectedChainId, account } = useEthereum();
 
   return (
@@ -14,7 +17,7 @@ const WalletIndicator = ({ menuAlign }: Props) => {
       {account && (
         <ChainSelect onSelect={switchInjectedWalletChain} selected={connectedChainId} menuAlign={menuAlign} />
       )}
-      <ConnectButton />
+      <ConnectButton size={size} style={style} className={className} />
     </div>
   );
 };

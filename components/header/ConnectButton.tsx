@@ -5,7 +5,13 @@ import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-const ConnectButton = () => {
+interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'none';
+  style?: 'primary' | 'secondary' | 'tertiary' | 'none';
+  className?: string;
+}
+
+const ConnectButton = ({ size, style, className }: Props) => {
   const router = useRouter();
   const { t } = useTranslation();
   const { account, ensName, unsName, connect, disconnect } = useEthereum();
@@ -43,7 +49,7 @@ const ConnectButton = () => {
           </Button>
         </DropdownMenu>
       ) : (
-        <Button style="primary" size="md" onClick={connectAndRedirect}>
+        <Button style={style ?? 'primary'} size={size ?? 'md'} className={className} onClick={connectAndRedirect}>
           {t('common:buttons.connect')}
         </Button>
       )}

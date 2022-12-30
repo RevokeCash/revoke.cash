@@ -1,8 +1,8 @@
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
-import LandingPageFaqItem from 'components/faq/LandingPageFaqItem';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
+import LandingPageFaqItem from './LandingPageFaqItem';
 import LandingSection from './LandingSection';
 
 const LandingPageFaq = () => {
