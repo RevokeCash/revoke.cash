@@ -25,12 +25,6 @@ const Footer = () => {
           <LanguageSelect />
         </div>
       </div>
-      <div className="flex gap-2 items-center ">
-        <div>{t('common:footer.sponsors')}</div>
-        <Href href="https://earni.fi/" underline="hover" external>
-          Earni.fi
-        </Href>
-      </div>
     </footer>
   );
 };

@@ -1,6 +1,6 @@
 import { flexRender, Table } from '@tanstack/react-table';
 import Error from 'components/common/Error';
-import SpinLoader from 'components/common/SpinLoader';
+import Spinner from 'components/common/Spinner';
 import type { AllowanceData } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -62,7 +62,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
       )}
       {loading && (
         <div className="flex justify-center p-2 w-full">
-          <SpinLoader size={34} center />
+          <Spinner className="w-6 h-6" />
         </div>
       )}
       {error && (
