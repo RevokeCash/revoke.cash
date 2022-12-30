@@ -3,7 +3,6 @@ import Select from 'components/common/Select';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-// TODO: Update colors
 const LanguageSelect = () => {
   const { asPath, replace } = useRouter();
   const { lang } = useTranslation();

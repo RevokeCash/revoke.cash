@@ -59,3 +59,16 @@ a:visited {
 #nprogress .bar {
   background: black !important;
 }
+
+.animate-spin-fast {
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

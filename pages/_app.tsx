@@ -1,5 +1,6 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import LogIn from 'components/common/LogIn';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
 import type { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
@@ -36,6 +37,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <QueryClientProvider client={queryClient}>
         <EthereumProvider>
+          <LogIn />
           <Component {...pageProps} />
           <ToastContainer
             className="text-center"

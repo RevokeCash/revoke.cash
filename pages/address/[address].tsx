@@ -47,7 +47,7 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
       <PublicLayout>
         <AddressContextProvider value={{ address, domainName, openSeaProxyAddress }}>
           <AddressHeader />
-          <LogIn>
+          <LogIn showSpinner>
             <AllowanceTable />
           </LogIn>
         </AddressContextProvider>
@@ -56,6 +56,7 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
   );
 };
 
+// TODO: ChainId query param
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const addressParam = (context.query!.address as string).toLowerCase();
   const address = await parseInputAddress(addressParam);

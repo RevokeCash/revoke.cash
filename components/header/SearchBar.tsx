@@ -1,5 +1,7 @@
-import { CheckIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
+import Button from 'components/common/Button';
 import Spinner from 'components/common/Spinner';
 import { parseInputAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
@@ -42,7 +44,11 @@ const SearchBar = () => {
       />
       {value && validating && <Spinner className="w-4 h-4" />}
       {value && !validating && !isValid && <XMarkIcon className="w-6 h-6 text-red-500" />}
-      {value && !validating && isValid && <CheckIcon className="w-6 h-6 text-green-500" />}
+      {value && !validating && isValid && (
+        <Button style="tertiary" size="none">
+          <ArrowRightCircleIcon className="w-6 h-6" />
+        </Button>
+      )}
     </form>
   );
 };
