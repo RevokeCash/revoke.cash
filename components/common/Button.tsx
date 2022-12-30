@@ -18,7 +18,6 @@ interface Props {
   align?: 'left' | 'center' | 'right';
 }
 
-// TODO: Focus modifier for primary buttons
 const Button = ({
   disabled,
   style,
@@ -54,7 +53,7 @@ const Button = ({
     classMapping[style],
     classMapping[align ?? 'center'],
     size !== 'none' && classMapping[size],
-    loading && 'flex gap-1', // TODO: Make this more robust when needed
+    loading && 'flex gap-1',
     className
   );
 
@@ -69,6 +68,8 @@ const Button = ({
     if (router) {
       return <Link href={href}>{hrefComponent}</Link>;
     }
+
+    return hrefComponent;
   }
 
   if (asDiv) {

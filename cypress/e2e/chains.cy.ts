@@ -77,8 +77,8 @@ describe('Chain Support', () => {
     it(`should support ${chainName}`, () => {
       cy.visit(`${URL}/address/${fixtureAddress}`, { timeout: 10_000 });
 
-      cy.get(Selectors.BUTTON).should('exist').click();
-      cy.contains(chainName).should('exist').click();
+      cy.get(Selectors.BUTTON).click();
+      cy.get(Selectors.OPTION).contains(chainName).click();
 
       cy.get(Selectors.LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
       cy.contains('Revoke', { timeout: 4000 }).should('exist');
