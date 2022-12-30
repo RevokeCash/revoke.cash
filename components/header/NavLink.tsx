@@ -1,21 +1,15 @@
-import { classNames } from 'lib/utils/styles';
-import Link from 'next/link';
+import Button from 'components/common/Button';
 
 interface Props {
   to: string;
   text: string;
-  matchToHighlight?: string;
 }
 
 const NavLink = ({ to, text }: Props) => {
-  const classes = classNames(
-    'text-lg text-black visited:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:rounded-md'
-  );
-
   return (
-    <Link href={to}>
-      <a className={classes}>{text}</a>
-    </Link>
+    <Button href={to} size="none" style="tertiary" className="text-lg" router>
+      {text}
+    </Button>
   );
 };
 

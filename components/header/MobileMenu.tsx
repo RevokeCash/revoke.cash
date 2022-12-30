@@ -38,11 +38,11 @@ const MobileMenu = () => {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <Dialog.Panel className="z-10 overflow-y-auto bg-white w-full h-full">
-              <div className="flex flex-col items-center gap-2 p-4">
-                <DonateButton size="md" />
+              <div className="flex flex-col items-center gap-6 p-12">
+                <DonateButton size="none" style="tertiary" className="text-lg" />
                 <NavLink to="/faq" text={t('common:nav.faq')} />
                 <NavLink to="/extension" text={t('common:nav.extension')} />
-                <WalletIndicator menuAlign="right" />
+                <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
               </div>
             </Dialog.Panel>
           </Transition.Child>
