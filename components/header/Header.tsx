@@ -20,10 +20,16 @@ const Header = () => {
         </div>
         <div className="flex md:justify-center grow w-1/3">
           <Href href="/" underline="none" className="flex" router>
-            <Image src="/assets/images/revoke.svg" alt="Revoke.cash logo" height="48" width="240" />
+            <Image
+              src="/assets/images/revoke.svg"
+              alt="Revoke.cash logo"
+              height="48"
+              width="240"
+              className="filter dark:invert"
+            />
           </Href>
         </div>
-        <div className="hidden md:flex justify-end w-1/3">
+        <div className="hidden md:flex justify-end w-1/3 gap-2">
           <WalletIndicator />
         </div>
         <div className="flex md:hidden justify-end">

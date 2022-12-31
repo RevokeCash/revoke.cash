@@ -36,7 +36,7 @@ const Extension: NextPage = () => {
         <div className="flex flex-col gap-2 text-lg leading-none">
           <h1>{t('extension:title')}</h1>
 
-          <Divider className="my-2 border-gray-200" />
+          <Divider className="my-2" />
 
           <div>
             <Trans i18nKey="extension:paragraph_1" />

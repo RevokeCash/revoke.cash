@@ -21,13 +21,13 @@ const MobileMenu = () => {
   }, [router.asPath]);
 
   return (
-    <header className="flex flex-col">
+    <div className="flex flex-col">
       <Button style="none" size="none" onClick={toggleOpen}>
         {!open && <Bars3Icon className="h-8 w-8" />}
         {open && <XMarkIcon className="h-8 w-8" />}
       </Button>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="absolute inset-0 top-[72px]" initialFocus={null} onClose={setOpen}>
+        <Dialog as="div" className="absolute inset-0 top-[4.5rem]" initialFocus={null} onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -37,7 +37,7 @@ const MobileMenu = () => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <Dialog.Panel className="z-10 overflow-y-auto bg-white w-full h-full">
+            <Dialog.Panel className="z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
               <div className="flex flex-col items-center gap-6 p-12">
                 <DonateButton size="none" style="tertiary" className="text-lg" />
                 <NavLink to="/faq" text={t('common:nav.faq')} />
@@ -48,7 +48,7 @@ const MobileMenu = () => {
           </Transition.Child>
         </Dialog>
       </Transition.Root>
-    </header>
+    </div>
   );
 };
 

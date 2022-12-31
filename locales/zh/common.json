@@ -23,6 +23,11 @@
     "mainnets": "主网",
     "testnets": "测试网"
   },
+  "color_themes": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
   "donate": {
     "gitcoin_grants": "或者为我们的<0>Gitcoin Grant</0>捐款",
     "title": "为Revoke.cash捐款"

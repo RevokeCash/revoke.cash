@@ -1,3 +1,4 @@
+import { classNames } from 'lib/utils/styles';
 import { fallbackTokenIconOnError } from 'lib/utils/tokens';
 
 interface Props {
@@ -12,7 +13,10 @@ const TokenLogo = ({ src, alt, size }: Props) => (
     alt={alt}
     height={size ?? 24}
     width={size ?? 24}
-    className="aspect-square rounded-full object-cover"
+    className={classNames(
+      'aspect-square rounded-full object-cover',
+      src === '/assets/images/fallback-token-icon.png' && 'filter dark:invert'
+    )}
     onError={fallbackTokenIconOnError}
   />
 );

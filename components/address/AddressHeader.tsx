@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import ChainSelect from 'components/common/ChainSelect';
-import Label from 'components/common/Label';
 import { useAddressContext } from 'lib/hooks/useAddressContext';
 import { useEthereum } from 'lib/hooks/useEthereum';
-import { classNames } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
+import ConnectedLabel from './ConnectedLabel';
 
 const AddressHeader = () => {
   const { t } = useTranslation();
@@ -20,20 +19,16 @@ const AddressHeader = () => {
   });
 
   return (
-    <div className="mb-2 flex flex-col sm:flex-row justify-between items-center gap-2 border border-black rounded-lg px-4 py-3">
+    <div className="mb-2 flex flex-col sm:flex-row justify-between items-center gap-2 border border-black dark:border-white rounded-lg px-4 py-3">
       <div className="flex flex-col gap-2 items-center sm:items-start">
         <AddressDisplay address={address} domainName={domainName} className="text-2xl font-bold" />
         <div className="flex flex-col sm:flex-row items-center gap-2">
-          <div className="flex items-center gap-1 text-sm text-gray-500">
+          <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
             <BalanceDisplay balance={balance} />
             <div className="leading-none">&bull;</div>
             <AddressDisplay address={address} className="" copy />
           </div>
-          <Label
-            className={classNames(address === account ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-900', '')}
-          >
-            {address === account ? t('address:labels.connected') : t('address:labels.not_connected')}
-          </Label>
+          <ConnectedLabel address={address} />
         </div>
       </div>
       <div className="flex items-center gap-6">

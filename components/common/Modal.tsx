@@ -24,7 +24,7 @@ const Modal = ({ open, setOpen, children }: Props) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -38,12 +38,12 @@ const Modal = ({ open, setOpen, children }: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="border border-black relative transform overflow-hidden rounded-lg bg-white p-4 text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+              <Dialog.Panel className="border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
                 <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
                   <Button
                     style="none"
                     size="none"
-                    className="text-gray-400 hover:text-gray-500"
+                    className="text-gray-400 hover:text-gray-500 dark:text-gray-600 dark:hover:text-gray-500"
                     onClick={() => setOpen(false)}
                   >
                     <XMarkIcon className="h-6 w-6" />

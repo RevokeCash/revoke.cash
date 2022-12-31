@@ -1,11 +1,13 @@
 import { track } from '@amplitude/analytics-browser';
 import Select from 'components/common/Select';
+import { useColorTheme } from 'lib/hooks/useColorTheme';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
 const LanguageSelect = () => {
   const { asPath, replace } = useRouter();
   const { lang } = useTranslation();
+  const { darkMode } = useColorTheme();
 
   const options = [
     { value: 'en', name: 'English', emoji: '🇬🇧' },
@@ -27,21 +29,21 @@ const LanguageSelect = () => {
     persistLocaleCookie(locale);
   };
 
-  const displayOption = (option: any, { context }: any) =>
-    context === 'menu' ? `${option.emoji} ${option.name}` : option.emoji;
+  const displayOption = (option: typeof options[number]) => `${option.emoji} ${option.name}`;
 
   return (
     <Select
       instanceId="language-select"
-      controlTheme="dark"
+      className="w-30"
+      controlTheme={darkMode ? 'light' : 'dark'}
+      menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
-      minMenuWidth={110}
-      size="sm"
+      size="md"
     />
   );
 };
