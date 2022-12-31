@@ -25,7 +25,7 @@
       "question": "¿Puedo revocar múltiples autorizaciones al mismo tiempo?"
     },
     "other_question": {
-      "answer": "Si tienes cualquier pregunta que no haya sido mencionada en esta sección, por favor escríbenos en <0>Twitter</0> o <1>Discord</1>.",
+      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <0>Twitter</0> or <1>Discord</1>. You can also read about allowances in more detail in Rosco Kalis' blog post <2>Unlimited ERC20 allowances considered harmful</2>.",
       "question": "Mi pregunta no está aquí."
     },
     "recover_assets": {
@@ -33,7 +33,7 @@
       "question": "Me acaban de robar mis fondos, ¿puedo usar Revoke.cash para recuperarlos?"
     },
     "stolen_through_allowances": {
-      "answer": "Si tus token o NFTs fueron tomados de tu cartera sin que enviaras una transacción explícita para hacerlo, casi siempre se debe a las autorizaciones. Pero si tu ETH también fue robado junto con los otros activos, lo más probable es que tu frase semilla haya sido comprometida y tienes que migrar a una cartera completamente nueva.",
+      "answer": "It is always hard to determine how exactly your funds were stolen. To help you diagnose the cause and mitigations, we developed an infographic that shows the most common ways that funds are stolen, which has been included below. Note that you may need to zoom in to see the details.",
       "question": "¿Cómo sé si mis fondos fueron robados a través de un hack de autorización?"
     },
     "sweeper_bot": {

@@ -9,8 +9,8 @@
       "question": "使用 Revoke.cash 需要多少钱？"
     },
     "deposited_tokens": {
-      "answer": "Revoking allowances has no impact on your deposited or staked tokens. These tokens will stay deposited and you will still be able to withdraw them. However, if you want add more tokens to your deposited position, you will need to grant an allowance again.",
-      "question": "What happens to my deposited or staked tokens when I revoke allowances?"
+      "answer": "撤销授权对你存入或质押的代币没有影响。这些代币仍在你地址里，你可以提现。但是，如果你想往地址中添加更多代币，则需要再次授权。",
+      "question": "撤销授权后，我存入或质押的代币会怎样？"
     },
     "enough_to_disconnect": {
       "answer": "不可以。断开你的钱包（如MetaMask）并<0>不能</0>保护你免受授权漏洞的影响--或大多数其他漏洞。当从一个网站断开你的钱包时，只是该网站不能再看到你的地址。但你的授权仍然有效。",
@@ -25,7 +25,7 @@
       "question": "我可以同时撤销多项授权吗？"
     },
     "other_question": {
-      "answer": "如果在FAQ中没有提到你的问题，请在<0>Twitter</0>或<1>Discord</1>上联系我们。",
+      "answer": "如果你有任何未在本常见问题解答中提及的问题，请通过 <0>Twitter</0> 或 <1>Discord 联系我们</1>。你也可以在 Rosco Kalis 的博客文章中更详细地了解授权，<2>无限的 ERC20 津贴是有害</2>的。",
       "question": "这里找不到我的问题。"
     },
     "recover_assets": {
@@ -33,7 +33,7 @@
       "question": "我的资金刚刚被盗，我可以使用Revoke.cash来找回它们吗？"
     },
     "stolen_through_allowances": {
-      "answer": "如果你的代币或NFT从你的钱包中被盗，而你没有发送明确的交易，这几乎总是因为授权。但如果你的ETH也和其他资产一起被盗，那么就很可能是因为备份词组泄露，你需要创建一个全新的钱包。",
+      "answer": "It is always hard to determine how exactly your funds were stolen. To help you diagnose the cause and mitigations, we developed an infographic that shows the most common ways that funds are stolen, which has been included below. Note that you may need to zoom in to see the details.",
       "question": "我如何知道资金是否是通过授权漏洞被盗的？"
     },
     "sweeper_bot": {
