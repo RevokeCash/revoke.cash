@@ -7,69 +7,69 @@
   },
   "filters": {
     "allowances": {
-      "label": "Allowances",
+      "label": "授权",
       "options": {
-        "limited": "Limited",
-        "none": "None",
+        "limited": "有限的",
+        "none": "没有",
         "unlimited": "无限"
       }
     },
     "asset_balance": {
-      "label": "Asset Balance",
+      "label": "资产余额",
       "options": {
-        "non_zero": "Non-Zero",
-        "zero": "Zero"
+        "non_zero": "非零",
+        "zero": "零"
       }
     },
     "asset_type": {
-      "label": "Asset Type",
+      "label": "资产类型",
       "options": {
         "nft": "NFT",
-        "token": "Token"
+        "token": "代币"
       }
     },
-    "label": "Filters"
+    "label": "筛选"
   },
   "headers": {
-    "actions": "Actions",
+    "actions": "操作",
     "allowance": "授权",
-    "asset": "Asset",
-    "asset_type": "Type",
-    "last_updated": "Last Updated",
-    "spender": "Approved Spender"
+    "asset": "资产",
+    "asset_type": "类型",
+    "last_updated": "上次更新",
+    "spender": "已经授权的项目"
   },
   "labels": {
-    "connected": "Connected",
+    "connected": "已连接",
     "nft": "NFT",
-    "not_connected": "Not Connected",
-    "token": "Token"
+    "not_connected": "未连接",
+    "token": "代币"
   },
   "meta": {
     "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
-    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+    "title": "Revoke.cash-检查并撤销 {{address}} 的授权"
   },
   "no_allowances": "没有授权",
   "sorting": {
     "columns": {
       "allowance": "授权",
-      "asset_name": "Asset Name",
-      "last_updated": "Last Updated"
+      "asset_name": "资产名称",
+      "last_updated": "上次更新"
     },
     "fns": {
       "date": {
-        "asc": "Oldest to Newest",
-        "desc": "Newest to Oldest"
+        "asc": "从旧到新",
+        "desc": "从新到旧"
       },
       "number": {
-        "asc": "Low to High",
-        "desc": "High to Low"
+        "asc": "从低到高",
+        "desc": "从高到低"
       },
       "text": {
-        "asc": "A to Z",
-        "desc": "Z to A"
+        "asc": "A 到 Z",
+        "desc": "Z 到 A"
       }
     },
-    "label": "Sort"
+    "label": "排序"
   },
   "tooltips": {
     "connect_wallet": "请连接钱包再撤销",

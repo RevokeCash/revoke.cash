@@ -33,7 +33,7 @@
   "headers": {
     "actions": "Actions",
     "allowance": "Autorización",
-    "asset": "Nombre y saldo del activo",
+    "asset": "Activo",
     "asset_type": "Type",
     "last_updated": "Last Updated",
     "spender": "Gastador"
