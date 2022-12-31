@@ -1,6 +1,8 @@
 import { Table } from '@tanstack/react-table';
+import Checkbox from 'components/common/Checkbox';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
+import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
@@ -57,15 +59,12 @@ const options = [
 
 const FilterSelect = ({ table }: Props) => {
   const { t } = useTranslation();
+  const { darkMode } = useColorTheme();
 
   const displayOption = useCallback((option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {
     return (
       <div className="flex items-center gap-1">
-        <input
-          className="cursor-pointer accent-black"
-          type="checkbox"
-          checked={!!selectValue.find((selected) => selected.value === option.value)}
-        ></input>
+        <Checkbox checked={!!selectValue.find((selected) => selected.value === option.value)} />
         <span>{t(`address:filters.${normaliseLabel(option.group)}.options.${normaliseLabel(option.value)}`)}</span>
       </div>
     );
@@ -85,6 +84,8 @@ const FilterSelect = ({ table }: Props) => {
       instanceId="filters-select"
       className="w-full"
       classNamePrefix="filters-select"
+      controlTheme={darkMode ? 'dark' : 'light'}
+      menuTheme={darkMode ? 'dark' : 'light'}
       options={options}
       onChange={onChange}
       formatOptionLabel={displayOption}
@@ -122,13 +123,15 @@ const ValueContainer = ({ children, getValue, options }) => {
         {labels.length > 0 && (
           <div className="flex items-center gap-2 grow whitespace-nowrap overflow-scroll w-1">
             {labels.map((label) => (
-              <Label key={label} className="bg-gray-300 font-normal">
+              <Label key={label} className="bg-gray-300 dark:bg-gray-600 font-normal">
                 {label}
               </Label>
             ))}
           </div>
         )}
-        {labels.length === 0 && <Label className="bg-gray-300 text-sm font-normal">Showing Everything</Label>}
+        {labels.length === 0 && (
+          <Label className="bg-gray-300 dark:bg-gray-600 text-sm font-normal">Showing Everything</Label>
+        )}
       </div>
       {children}
     </>

@@ -33,11 +33,11 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-9 flex gap-2 items-center w-full max-w-3xl border border-black rounded-lg px-3 text-xs sm:text-lg font-medium focus-within:ring-1 focus-within:ring-black bg-white"
+      className="h-9 flex gap-2 items-center w-full max-w-3xl border border-black dark:border-white rounded-lg px-3 text-xs sm:text-lg font-medium focus-within:ring-1 focus-within:ring-black"
     >
       <MagnifyingGlassIcon className="w-6 h-6" />
       <input
-        className="grow focus-visible:outline-none address-input"
+        className="grow focus-visible:outline-none address-input bg-transparent"
         placeholder={t('common:nav.search')}
         value={value}
         onChange={(ev) => setValue(ev.target.value)}

@@ -23,6 +23,11 @@
     "mainnets": "Redes principales",
     "testnets": "Redes de prueba"
   },
+  "color_themes": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
     "title": "Donar a Revoke.cash"

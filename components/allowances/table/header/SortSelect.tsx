@@ -1,6 +1,7 @@
 import { Column, sortingFns, Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
+import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
@@ -20,6 +21,7 @@ interface Props {
 
 const SortSelect = ({ table }: Props) => {
   const { t } = useTranslation();
+  const { darkMode } = useColorTheme();
 
   const options = useMemo(() => {
     return table
@@ -66,7 +68,7 @@ const SortSelect = ({ table }: Props) => {
     return (
       <div className="flex items-center gap-2">
         {context !== 'menu' && <div>{t('address:sorting.label')}</div>}
-        <Label className="flex items-center gap-1 bg-gray-300 font-normal">{sortDisplay}</Label>
+        <Label className="flex items-center gap-1 bg-gray-300 dark:bg-gray-600 font-normal">{sortDisplay}</Label>
       </div>
     );
   };
@@ -76,6 +78,8 @@ const SortSelect = ({ table }: Props) => {
       instanceId="sort-select"
       className="h-full w-full md:w-72 shrink-0"
       classNamePrefix="sort-select"
+      controlTheme={darkMode ? 'dark' : 'light'}
+      menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => {
         const [sorting] = table.getState().sorting;
         return option.id === sorting.id && option.desc === sorting.desc;

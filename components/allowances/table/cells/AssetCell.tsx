@@ -15,7 +15,7 @@ const AssetCell = ({ allowance }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.contract.address}`;
 
   let link = (
-    <Href href={explorerUrl} underline="hover" external className="max-w-[160px] truncate">
+    <Href href={explorerUrl} underline="hover" external className="max-w-[10rem] truncate">
       {shortenString(allowance.symbol, 24)}
     </Href>
   );
@@ -25,14 +25,14 @@ const AssetCell = ({ allowance }: Props) => {
   }
 
   return (
-    <div className="flex items-center gap-1 py-0.5">
-      <div className="flex flex-col items-start">
+    <div className="flex items-center gap-1 py-1">
+      <div className="flex flex-col items-start gap-0.5">
         <div className="flex items-center gap-2 text-base leading-tight">
           <TokenLogo src={allowance.icon} alt={allowance.symbol} size={20} />
           {link}
         </div>
 
-        <div className="text-xs leading-tight text-gray-400 max-w-[160px] truncate">
+        <div className="text-xs leading-tight text-gray-400 dark:text-gray-500 max-w-[10rem] truncate">
           {shortenString(getBalanceText(allowance.symbol, allowance.balance, allowance.decimals), 32)}
         </div>
       </div>

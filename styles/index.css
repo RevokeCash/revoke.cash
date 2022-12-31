@@ -24,7 +24,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @apply leading-tight;
-  @apply text-gray-900;
+  @apply bg-white dark:bg-black;
+  @apply text-gray-900 dark:text-gray-100;
 }
 
 h1 {
@@ -57,7 +58,11 @@ a:visited {
 }
 
 #nprogress .bar {
-  background: black !important;
+  @apply bg-black dark:bg-white;
+}
+
+#nprogress .peg {
+  @apply shadow-black dark:shadow-white shadow-lg;
 }
 
 .animate-spin-fast {

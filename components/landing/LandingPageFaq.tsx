@@ -24,8 +24,8 @@ const LandingPageFaq = () => {
           <Trans i18nKey="faq:questions.sweeper_bot.answer" />
         </LandingPageFaqItem>
       </dl>
-      <Divider className="border-gray-200" />
-      <p className="text-gray-700">
+      <Divider />
+      <p className="text-gray-700 dark:text-gray-300">
         <Trans
           i18nKey="landing:faq.subtitle"
           components={[<Href href="/faq" className="font-medium" html underline="hover" />]}

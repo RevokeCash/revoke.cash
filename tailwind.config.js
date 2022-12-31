@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './lib/**/*.{js,ts,jsx,tsx}',
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -8,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      spacing: {
+        30: '7.5rem',
+      },
       fontFamily: {
         sans: [
           'system-ui',

@@ -1,6 +1,7 @@
 import ChainLogo from 'components/common/ChainLogo';
 import Select from 'components/common/Select';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'lib/constants';
+import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { getChainName } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -18,6 +19,7 @@ interface Props {
 
 const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
   const { t } = useTranslation();
+  const { darkMode } = useColorTheme();
 
   const mainnetOptions = CHAIN_SELECT_MAINNETS.map((chainId) => ({
     value: getChainName(chainId),
@@ -60,6 +62,8 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
       instanceId="chain-select"
       classNamePrefix="chain-select"
       className="shrink-0"
+      controlTheme={darkMode ? 'dark' : 'light'}
+      menuTheme={darkMode ? 'dark' : 'light'}
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={groups}
       onChange={onChange}

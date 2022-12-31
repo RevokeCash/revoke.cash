@@ -17,11 +17,11 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
   if (!allowances && !loading && !error) return null;
 
   return (
-    <div className="border border-black rounded-lg overflow-x-scroll whitespace-nowrap">
+    <div className="border border-black dark:border-white rounded-lg overflow-x-scroll whitespace-nowrap">
       <table className="w-full border-collapse">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="border-b border-black h-10">
+            <tr key={headerGroup.id} className="border-b border-black dark:border-white h-10">
               {headerGroup.headers.map((header) => (
                 <th key={header.id} className="text-left px-2 whitespace-nowrap">
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
@@ -34,7 +34,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
           <>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-t border-gray-300">
+                <tr key={row.id} className="border-t border-gray-300 dark:border-gray-500">
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="overflow-hidden px-2">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

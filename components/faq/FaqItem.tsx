@@ -19,7 +19,7 @@ const FaqItem = ({ question, children }: Props) => {
               <ChevronDownIcon className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')} />
             </Disclosure.Button>
           </dt>
-          <Disclosure.Panel as="dd" className="mt-2 pr-8 text-base text-gray-700">
+          <Disclosure.Panel as="dd" className="mt-2 pr-8 text-base text-gray-700 dark:text-gray-300">
             {children}
           </Disclosure.Panel>
         </>

@@ -15,11 +15,13 @@ const Error404 = () => {
         <div className="text-center flex flex-col gap-2">
           <p className="text-base font-semibold">404</p>
           <h1 className="text-4xl sm:text-5xl">{t('common:errors.404.title')}</h1>
-          <p className="text-lg text-gray-500">{t('common:errors.404.subtitle')}</p>
+          <p className="text-lg text-gray-500 dark:text-gray-400">{t('common:errors.404.subtitle')}</p>
         </div>
         <div className="flex flex-col gap-4">
-          <h3 className="text-base font-semibold text-gray-500">{t('common:errors.404.suggested_pages.title')}</h3>
-          <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
+          <h3 className="text-base font-semibold text-gray-500 dark:text-gray-400">
+            {t('common:errors.404.suggested_pages.title')}
+          </h3>
+          <div className="divide-y divide-gray-200 dark:divide-gray-800 border-y border-gray-200 dark:border-gray-800">
             <NotFoundLink
               title={t('common:errors.404.suggested_pages.faq.title')}
               href="/faq"
@@ -41,7 +43,7 @@ const Error404 = () => {
               />
             )}
           </div>
-          <div className="text-gray-700">
+          <div className="text-gray-700 dark:text-gray-300">
             <Href href="/" className="text-base font-medium" underline="none">
               {t('common:errors.404.go_home')} &rarr;
             </Href>

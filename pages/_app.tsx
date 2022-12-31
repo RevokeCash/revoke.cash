@@ -1,6 +1,7 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import LogIn from 'components/common/LogIn';
+import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
 import type { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
@@ -37,23 +38,25 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <QueryClientProvider client={queryClient}>
         <EthereumProvider>
-          <LogIn />
-          <Component {...pageProps} />
-          <ToastContainer
-            className="text-center"
-            toastClassName="border border-black"
-            position="top-right"
-            icon={false}
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            progressStyle={{ backgroundColor: 'black' }}
-          />
+          <ColorThemeProvider>
+            <LogIn />
+            <Component {...pageProps} />
+            <ToastContainer
+              className="text-center"
+              toastClassName="border border-black"
+              position="top-right"
+              icon={false}
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              progressStyle={{ backgroundColor: 'black' }}
+            />
+          </ColorThemeProvider>
         </EthereumProvider>
       </QueryClientProvider>
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />

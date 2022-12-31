@@ -9,11 +9,11 @@ interface Props {
 const AssetTypeCell = ({ assetType }: Props) => {
   const { t } = useTranslation();
 
+  const classes = classNames('w-12', assetType === 'NFT' ? 'bg-blue-500 text-gray-100' : 'bg-yellow-500 text-gray-900');
+
   return (
     <div className="flex justify-start">
-      <Label className={classNames('w-12', assetType === 'NFT' ? 'bg-blue-500 text-white' : 'bg-yellow-500')}>
-        {t(`address:labels.${assetType.toLowerCase()}`)}
-      </Label>
+      <Label className={classes}>{t(`address:labels.${assetType.toLowerCase()}`)}</Label>
     </div>
   );
 };
