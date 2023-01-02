@@ -28,7 +28,8 @@
         "token": "代币"
       }
     },
-    "label": "筛选"
+    "label": "筛选",
+    "showing_everything": "Showing Everything"
   },
   "headers": {
     "actions": "操作",

@@ -2,7 +2,7 @@ import { classNames } from 'lib/utils/styles';
 import ReactSelect, { components, OptionProps, Props as ReactSelectProps } from 'react-select';
 
 interface Props extends ReactSelectProps {
-  minMenuWidth?: number;
+  minMenuWidth?: number | string;
   menuAlign?: 'left' | 'right';
   size?: 'sm' | 'md';
   controlTheme?: 'light' | 'dark';
@@ -65,13 +65,17 @@ const Select = (props: Props) => {
           minWidth: props.minMenuWidth,
           position: 'absolute',
           right: props.menuAlign === 'right' ? undefined : 0,
+          // height: 400,
         }),
         groupHeading: (styles) => ({
           ...styles,
-          paddingTop: 12, // pt-3
+          paddingTop: '0.75rem', // pt-3
         }),
         group: removeSpacing,
-        menuList: removeSpacing,
+        menuList: (styles) => ({
+          ...removeSpacing(styles),
+          maxHeight: '22rem',
+        }),
         dropdownIndicator: removeSpacing,
         clearIndicator: removeSpacing,
         valueContainer: removeSpacing,
@@ -80,7 +84,7 @@ const Select = (props: Props) => {
         option: (styles) => ({
           ...styles,
           cursor: 'pointer', // cursor-pointer
-          padding: '8px 8px', // p-2
+          padding: '0.5rem', // p-2
         }),
       }}
       theme={(theme) => ({

@@ -25,7 +25,7 @@ const ColorThemeSelect = () => {
     <Select
       instanceId="color-theme-select"
       className="w-30"
-      controlTheme={darkMode ? 'light' : 'dark'}
+      controlTheme="dark"
       menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => option.value === theme)}
       options={options}
