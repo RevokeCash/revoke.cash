@@ -33,7 +33,7 @@
       "question": "我的资金刚刚被盗，我可以使用Revoke.cash来找回它们吗？"
     },
     "stolen_through_allowances": {
-      "answer": "It is always hard to determine how exactly your funds were stolen. To help you diagnose the cause and mitigations, we developed an infographic that shows the most common ways that funds are stolen, which has been included below. Note that you may need to zoom in to see the details.",
+      "answer": "资金被盗的具体细节是很难被说得清的。为了帮助你诊断原因并提供减少损失的办法，我们开发了一张信息图，显示了最常见的资金被盗方式，详情如下。请注意，你需要放大才能查看详细信息。",
       "question": "我如何知道资金是否是通过授权漏洞被盗的？"
     },
     "sweeper_bot": {

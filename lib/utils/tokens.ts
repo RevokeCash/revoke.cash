@@ -25,11 +25,7 @@ export const getTokenIcon = (tokenAddress: string) => {
   const tokenData = ALL_TOKENS_MAPPING[normalisedAddress];
   const iconFromMapping = !tokenData?.logoURI?.startsWith('/') && tokenData?.logoURI;
 
-  return iconFromMapping || '/assets/images/fallback-token-icon.png';
-};
-
-export const fallbackTokenIconOnError = (ev: any) => {
-  ev.target.src = '/assets/images/fallback-token-icon.png';
+  return iconFromMapping;
 };
 
 export const getTokenData = async (

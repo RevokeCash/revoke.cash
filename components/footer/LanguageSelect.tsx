@@ -35,7 +35,7 @@ const LanguageSelect = () => {
     <Select
       instanceId="language-select"
       className="w-30"
-      controlTheme={darkMode ? 'light' : 'dark'}
+      controlTheme="dark"
       menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => option.value === lang)}
       options={options}

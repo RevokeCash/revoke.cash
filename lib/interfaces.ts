@@ -5,7 +5,7 @@ export interface BaseTokenData {
   contract: Contract;
   symbol: string;
   balance: string;
-  icon: string;
+  icon?: string;
   decimals?: number;
   totalSupply?: string;
 }

@@ -8,7 +8,7 @@ const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="w-full flex flex-col sm:flex-row gap-2 items-center justify-between p-4 bg-black dark:bg-white text-gray-300 dark:text-gray-900">
+    <footer className="w-full flex flex-col sm:flex-row gap-2 items-center justify-between p-4 bg-black dark:bg-gray-800 text-gray-300">
       <div className="flex flex-col sm:flex-row gap-2 md:gap-4 items-center">
         <div>© Revoke.cash 2022</div>
         <div className="flex gap-2 items-center">

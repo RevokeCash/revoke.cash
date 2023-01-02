@@ -6,7 +6,6 @@ import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
-import { useCallback } from 'react';
 import { FormatOptionLabelMeta } from 'react-select';
 import { ColumnId } from '../columns';
 
@@ -61,18 +60,18 @@ const FilterSelect = ({ table }: Props) => {
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
 
-  const displayOption = useCallback((option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {
+  const displayOption = (option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {
     return (
       <div className="flex items-center gap-1">
         <Checkbox checked={!!selectValue.find((selected) => selected.value === option.value)} />
         <span>{t(`address:filters.${normaliseLabel(option.group)}.options.${normaliseLabel(option.value)}`)}</span>
       </div>
     );
-  }, []);
+  };
 
-  const displayGroupLabel = useCallback((group: OptionGroup) => {
+  const displayGroupLabel = (group: OptionGroup) => {
     return <span>{t(`address:filters.${normaliseLabel(group.label)}.label`)}</span>;
-  }, []);
+  };
 
   const onChange = (allSelected: Option[]) => {
     const tableFilters = generateTableFilters(options, allSelected);
@@ -130,7 +129,9 @@ const ValueContainer = ({ children, getValue, options }) => {
           </div>
         )}
         {labels.length === 0 && (
-          <Label className="bg-gray-300 dark:bg-gray-600 text-sm font-normal">Showing Everything</Label>
+          <Label className="bg-gray-300 dark:bg-gray-600 text-sm font-normal">
+            {t('address:filters.showing_everything')}
+          </Label>
         )}
       </div>
       {children}

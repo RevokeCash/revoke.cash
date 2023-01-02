@@ -70,7 +70,7 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
-      minMenuWidth={200}
+      minMenuWidth="12.5rem"
       menuAlign={menuAlign}
     />
   );

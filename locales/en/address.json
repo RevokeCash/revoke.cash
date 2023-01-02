@@ -28,7 +28,8 @@
         "token": "Token"
       }
     },
-    "label": "Filters"
+    "label": "Filters",
+    "showing_everything": "Showing Everything"
   },
   "headers": {
     "actions": "Actions",
