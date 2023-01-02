@@ -33,7 +33,7 @@ const ConnectButton = ({ size, style, className }: Props) => {
             size="md"
             className="rounded-none border-none font-normal"
             align="left"
-            href={`/address/${domainName ?? account}`}
+            href={`/address/${account}`}
             router
           >
             {t('common:buttons.my_allowances')}

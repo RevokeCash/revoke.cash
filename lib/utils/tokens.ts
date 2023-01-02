@@ -23,9 +23,7 @@ export const getTokenIcon = (tokenAddress: string) => {
 
   // Retrieve a token icon from the token list if specified (filtering relative paths)
   const tokenData = ALL_TOKENS_MAPPING[normalisedAddress];
-  const iconFromMapping = !tokenData?.logoURI?.startsWith('/') && tokenData?.logoURI;
-
-  return iconFromMapping;
+  return tokenData?.logoURI;
 };
 
 export const getTokenData = async (

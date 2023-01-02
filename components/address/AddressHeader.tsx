@@ -26,7 +26,7 @@ const AddressHeader = () => {
           <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
             <BalanceDisplay balance={balance} />
             <div className="leading-none">&bull;</div>
-            <AddressDisplay address={address} className="" copy />
+            <AddressDisplay address={address} withCopyButton withTooltip />
           </div>
           <ConnectedLabel address={address} />
         </div>
