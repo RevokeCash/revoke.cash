@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowancesForAddress } from 'lib/utils/allowances';
+import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { useEffect, useState } from 'react';
 import { useEthereum } from './useEthereum';
 
@@ -9,9 +10,22 @@ export const useAllowances = (userAddress: string) => {
 
   const { readProvider, logsProvider, selectedChainId } = useEthereum();
 
+  // This is required because we need to get the OpenSea proxy address before we can get the allowances (due to Moonbirds patches)
+  // This can be improved, but at the same time, this also means that the "readProvider" has had the time to be set to connectedProvider if needed
+  // TODO: Hopefully move to wagmi-sh at some point and remove hacky stuff like this
+  const { data: openSeaProxyAddress, isLoading: openSeaProxyLoading } = useQuery({
+    queryKey: ['openSeaProxyAddress', userAddress],
+    queryFn: () => getOpenSeaProxyAddress(userAddress),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
+
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
-    queryKey: ['allowances', userAddress, selectedChainId],
-    queryFn: () => getAllowancesForAddress(userAddress, logsProvider, readProvider),
+    queryKey: ['allowances', userAddress, selectedChainId, openSeaProxyAddress, openSeaProxyLoading],
+    queryFn: async () => {
+      if (openSeaProxyLoading) return [];
+      return getAllowancesForAddress(userAddress, logsProvider, readProvider, openSeaProxyAddress);
+    },
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,
     cacheTime: Infinity,
@@ -48,5 +62,5 @@ export const useAllowances = (userAddress: string) => {
     });
   };
 
-  return { allowances, loading: isLoading, error, onUpdate };
+  return { allowances, loading: isLoading || openSeaProxyLoading, error, onUpdate };
 };
