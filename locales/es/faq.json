@@ -9,8 +9,8 @@
       "question": "¿Cuánto cuesta usar Revoke.cash?"
     },
     "deposited_tokens": {
-      "answer": "Revoking allowances has no impact on your deposited or staked tokens. These tokens will stay deposited and you will still be able to withdraw them. However, if you want add more tokens to your deposited position, you will need to grant an allowance again.",
-      "question": "What happens to my deposited or staked tokens when I revoke allowances?"
+      "answer": "Revocar autorizaciones no afecta tus tokens depositados o en staking. Estos tokens permanecerán depositados y podrás seguir retirándolos. Sin embargo, si quieres añadir más tokens a tu posición depositada, tendrás que volver a dar una autorización.",
+      "question": "¿Qué pasa con mis tokens depositadas o en staking cuando revoco las autorizaciones?"
     },
     "enough_to_disconnect": {
       "answer": "No. Desconectar tu cartera (como MetaMask) no hace <0>nada</0> para protegerte de hacks de autorización - o casi cualquier otro hack. La única cosa que pasa cuándo desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas.",
@@ -25,7 +25,7 @@
       "question": "¿Puedo revocar múltiples autorizaciones al mismo tiempo?"
     },
     "other_question": {
-      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <0>Twitter</0> or <1>Discord</1>. You can also read about allowances in more detail in Rosco Kalis' blog post <2>Unlimited ERC20 allowances considered harmful</2>.",
+      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, ponte en contacto con nosotros en <0>Twitter</0> o <1>Discord</1>. También puedes leer más información sobre las autorizaciones en la entrada del blog de Rosco Kalis. <2>Las autorizaciones de ERC20 ilimitadas se consideran dañinas</2>.",
       "question": "Mi pregunta no está aquí."
     },
     "recover_assets": {
@@ -33,7 +33,7 @@
       "question": "Me acaban de robar mis fondos, ¿puedo usar Revoke.cash para recuperarlos?"
     },
     "stolen_through_allowances": {
-      "answer": "It is always hard to determine how exactly your funds were stolen. To help you diagnose the cause and mitigations, we developed an infographic that shows the most common ways that funds are stolen, which has been included below. Note that you may need to zoom in to see the details.",
+      "answer": "Siempre es difícil determinar exactamente cómo se robaron tus fondos. Para ayudarte a diagnosticar la causa y las mitigaciones, desarrollamos una infografía que muestra las formas más comunes de robo de fondos, que se incluye a continuación. Ten en cuenta que necesitas ampliar la imagen para ver los detalles.",
       "question": "¿Cómo sé si mis fondos fueron robados a través de un hack de autorización?"
     },
     "sweeper_bot": {
@@ -49,7 +49,7 @@
       "question": "¿Cuáles autorizaciones tengo que revocar?"
     },
     "which_chains": {
-      "answer": "La extensión de navegador Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM incluyendo Ethereum, BSC, Polygon y Avalanche. La lista completa de las redes compatibles puede verse en la sección desplegable de redes. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <1>Twitter</1> o <2>Discord</2>.",
+      "answer": "<0>La extensión de navegador </0> Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM incluyendo Ethereum, BSC, Polygon y Avalanche. La lista completa de las redes compatibles puede verse en la sección desplegable de redes. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <1>Twitter</1> o <2>Discord</2>.",
       "question": "¿Con qué redes funciona Revoke.cash?"
     },
     "whole_wallet_at_risk": {

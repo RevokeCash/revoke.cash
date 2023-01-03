@@ -7,70 +7,70 @@
   },
   "filters": {
     "allowances": {
-      "label": "Allowances",
+      "label": "Autorizaciones",
       "options": {
-        "limited": "Limited",
-        "none": "None",
+        "limited": "Limitado",
+        "none": "Ninguna",
         "unlimited": "Ilimitada"
       }
     },
     "asset_balance": {
-      "label": "Asset Balance",
+      "label": "Balance de Activos",
       "options": {
-        "non_zero": "Non-Zero",
-        "zero": "Zero"
+        "non_zero": "No es Cero",
+        "zero": "Cero"
       }
     },
     "asset_type": {
-      "label": "Asset Type",
+      "label": "Tipo de Activo",
       "options": {
         "nft": "NFT",
         "token": "Token"
       }
     },
-    "label": "Filters",
-    "showing_everything": "Showing Everything"
+    "label": "Filtros",
+    "showing_everything": "Mostrando Todo"
   },
   "headers": {
-    "actions": "Actions",
+    "actions": "Acciones",
     "allowance": "Autorización",
     "asset": "Activo",
-    "asset_type": "Type",
-    "last_updated": "Last Updated",
+    "asset_type": "Tipo",
+    "last_updated": "Última Actualización",
     "spender": "Gastador"
   },
   "labels": {
-    "connected": "Connected",
+    "connected": "Conectado",
     "nft": "NFT",
-    "not_connected": "Not Connected",
+    "not_connected": "No Conectado",
     "token": "Token"
   },
   "meta": {
     "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
-    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+    "title": "Revoke.cash: Examina y revoca las autorizaciones para {{address}}"
   },
   "no_allowances": "Sin autorizaciones",
   "sorting": {
     "columns": {
       "allowance": "Autorización",
-      "asset_name": "Asset Name",
-      "last_updated": "Last Updated"
+      "asset_name": "Nombre del Activo",
+      "last_updated": "Última Actualización"
     },
     "fns": {
       "date": {
-        "asc": "Oldest to Newest",
-        "desc": "Newest to Oldest"
+        "asc": "De Más Antiguo a Más Reciente",
+        "desc": "De Más Reciente a Más Antiguo"
       },
       "number": {
-        "asc": "Low to High",
-        "desc": "High to Low"
+        "asc": "De Bajo a Alto",
+        "desc": "De Alto a Bajo"
       },
       "text": {
-        "asc": "A to Z",
-        "desc": "Z to A"
+        "asc": "A - Z",
+        "desc": "Z - A"
       }
     },
-    "label": "Sort"
+    "label": "Ordenar"
   },
   "tooltips": {
     "connect_wallet": "Por favor conecta tu cartera para poder revocar",
