@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import { useQuery } from '@tanstack/react-query';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowancesForAddress } from 'lib/utils/allowances';
@@ -24,7 +25,9 @@ export const useAllowances = (userAddress: string) => {
     queryKey: ['allowances', userAddress, selectedChainId, openSeaProxyAddress, openSeaProxyLoading],
     queryFn: async () => {
       if (openSeaProxyLoading) return [];
-      return getAllowancesForAddress(userAddress, logsProvider, readProvider, openSeaProxyAddress);
+      const allowances = getAllowancesForAddress(userAddress, logsProvider, readProvider, openSeaProxyAddress);
+      track('Fetched Allowances', { account: userAddress, chainId: selectedChainId });
+      return allowances;
     },
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,

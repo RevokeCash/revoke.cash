@@ -12,7 +12,7 @@ interface Props {
 
 const ControlsWrapper = ({ children }: Props) => {
   const { t } = useTranslation();
-  const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
+  const { account, selectedChainId, connectedChainId } = useEthereum();
   const { address } = useAddressContext();
 
   const chainName = getChainName(selectedChainId);

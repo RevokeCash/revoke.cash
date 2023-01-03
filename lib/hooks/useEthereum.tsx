@@ -111,7 +111,7 @@ export const EthereumProvider = ({ children }: Props) => {
   const selectChain = useCallback(
     (newChainId: number) => {
       setSelectedChainId(newChainId);
-      track('Selected Chain', { chainId: selectedChainId });
+      track('Selected Chain', { chainId: newChainId });
     },
     [selectedChainId]
   );

@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import { Table } from '@tanstack/react-table';
 import Checkbox from 'components/common/Checkbox';
 import Label from 'components/common/Label';
@@ -76,6 +77,7 @@ const FilterSelect = ({ table }: Props) => {
   const onChange = (allSelected: Option[]) => {
     const tableFilters = generateTableFilters(options, allSelected);
     table.setColumnFilters(() => tableFilters);
+    track('Updated Filters', { filters: tableFilters });
   };
 
   return (
