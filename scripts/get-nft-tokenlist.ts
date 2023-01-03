@@ -3,11 +3,11 @@ import { getAddress } from 'ethers/lib/utils';
 import fs from 'fs';
 import path from 'path';
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // Inspired by https://github.com/verynifty/RolodETH/blob/main/sources/reservoir/index.js
 
 const NFT_TOKEN_MAPPING_PATH = path.join(__dirname, '..', 'lib', 'data', 'nft-token-mapping.json');
-
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const RESERVOIR_API_URL =
   'https://api.reservoir.tools/collections/v5?includeTopBid=false&sortBy=allTimeVolume&limit=20';

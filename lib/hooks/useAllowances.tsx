@@ -25,7 +25,13 @@ export const useAllowances = (userAddress: string) => {
     queryKey: ['allowances', userAddress, selectedChainId, openSeaProxyAddress, openSeaProxyLoading],
     queryFn: async () => {
       if (openSeaProxyLoading) return [];
-      const allowances = getAllowancesForAddress(userAddress, logsProvider, readProvider, openSeaProxyAddress);
+      const allowances = getAllowancesForAddress(
+        userAddress,
+        logsProvider,
+        readProvider,
+        selectedChainId,
+        openSeaProxyAddress
+      );
       track('Fetched Allowances', { account: userAddress, chainId: selectedChainId });
       return allowances;
     },

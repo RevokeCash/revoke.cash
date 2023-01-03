@@ -3,7 +3,7 @@ import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
-import { ALL_TOKENS_MAPPING } from 'lib/data/token-mapping';
+import { TOKEN_MAPPING } from 'lib/data/token-mapping';
 import type { BaseTokenData, Log } from 'lib/interfaces';
 import { toFloat } from '.';
 import { convertString, unpackResult, withFallback } from './promises';
@@ -18,30 +18,27 @@ export const isSpamToken = (token: { symbol: string }) => {
   return includesHttp || includesTld;
 };
 
-export const getTokenIcon = (tokenAddress: string) => {
-  const normalisedAddress = utils.getAddress(tokenAddress);
-
-  // Retrieve a token icon from the token list if specified (filtering relative paths)
-  const tokenData = ALL_TOKENS_MAPPING[normalisedAddress];
-  return tokenData?.logoURI;
-};
-
 export const getTokenData = async (
   contract: Contract,
   ownerAddress: string,
   transfersFrom: Log[],
-  transfersTo: Log[]
+  transfersTo: Log[],
+  chainId: number
 ): Promise<BaseTokenData> => {
   if (isErc721Contract(contract)) {
-    return getErc721TokenData(contract, ownerAddress, transfersFrom, transfersTo);
+    return getErc721TokenData(contract, ownerAddress, transfersFrom, transfersTo, chainId);
   }
 
-  return getErc20TokenData(contract, ownerAddress);
+  return getErc20TokenData(contract, ownerAddress, chainId);
 };
 
-export const getErc20TokenData = async (contract: Contract, ownerAddress: string) => {
-  const tokenData = ALL_TOKENS_MAPPING[utils.getAddress(contract.address)];
-  const icon = getTokenIcon(contract.address);
+export const getErc20TokenData = async (
+  contract: Contract,
+  ownerAddress: string,
+  chainId: number
+): Promise<BaseTokenData> => {
+  const tokenData = TOKEN_MAPPING[chainId]?.[utils.getAddress(contract.address)];
+  const icon = tokenData?.logoURI;
 
   const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
@@ -60,10 +57,11 @@ export const getErc721TokenData = async (
   contract: Contract,
   ownerAddress: string,
   transfersFrom: Log[],
-  transfersTo: Log[]
-) => {
-  const tokenData = ALL_TOKENS_MAPPING[utils.getAddress(contract.address)];
-  const icon = getTokenIcon(contract.address);
+  transfersTo: Log[],
+  chainId: number
+): Promise<BaseTokenData> => {
+  const tokenData = TOKEN_MAPPING[chainId]?.[utils.getAddress(contract.address)];
+  const icon = tokenData?.logoURI;
 
   const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
   const calculatedBalance = String(transfersTo.length - transfersFrom.length);
