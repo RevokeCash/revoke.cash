@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { chains } from 'eth-chains';
 import { providers, utils } from 'ethers';
-import { SUPPORTED_CHAINS } from 'lib/constants';
 import type { LogsProvider } from 'lib/interfaces';
 import { BackendProvider } from 'lib/providers';
 import {
@@ -16,6 +15,7 @@ import {
   getChainRpcUrl,
   isBackendSupportedChain,
   isSupportedChain,
+  SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
 import { lookupEnsName, lookupUnsName } from 'lib/utils/whois';
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
