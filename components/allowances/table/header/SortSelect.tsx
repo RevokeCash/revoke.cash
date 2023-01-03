@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import { Column, sortingFns, Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
@@ -35,6 +36,7 @@ const SortSelect = ({ table }: Props) => {
 
   const onChange = ({ id, desc }: Option) => {
     table.setSorting(() => [{ id, desc }]);
+    track('Updated Sorting', { column: id, desc });
   };
 
   const displayOption = ({ column, desc }: Option, { context }: any) => {

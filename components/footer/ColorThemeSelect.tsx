@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
@@ -13,7 +14,10 @@ const ColorThemeSelect = () => {
     { value: 'light', icon: <SunIcon className="w-4 h-4" /> },
   ] as const;
 
-  const selectTheme = (option: typeof options[number]) => setTheme(option.value);
+  const selectTheme = (option: typeof options[number]) => {
+    track('Changed Color Theme', { theme: option.value });
+    setTheme(option.value);
+  };
 
   const displayOption = (option: typeof options[number]) => (
     <div className="flex gap-1 items-center" suppressHydrationWarning>

@@ -11,7 +11,7 @@ import ConnectedLabel from './ConnectedLabel';
 const AddressHeader = () => {
   const { t } = useTranslation();
   const { address, domainName } = useAddressContext();
-  const { selectedChainId, selectChain, readProvider, account } = useEthereum();
+  const { selectedChainId, selectChain, readProvider } = useEthereum();
 
   const { data: balance } = useQuery({
     queryKey: ['balance', address, selectedChainId],
