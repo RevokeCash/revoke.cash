@@ -11,7 +11,13 @@ import 'nprogress/nprogress.css';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as timeago from 'timeago.js';
+import timeagoEs from 'timeago.js/lib/lang/es';
+import timeagoZh from 'timeago.js/lib/lang/zh_CN';
 import '../styles/index.css';
+
+timeago.register('es', timeagoEs);
+timeago.register('zh', timeagoZh);
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
