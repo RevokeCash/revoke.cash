@@ -1,40 +1,40 @@
 {
   "faq": {
-    "subtitle": "These are some of the most common questions we get asked. For a full list of FAQs please visit our <0>FAQ page</0>.",
+    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, visite nuestra <0>página de preguntas frecuentes</0>.",
     "title": "Preguntas Frecuentes"
   },
   "hero_section": {
-    "paragraph_1": "When using dapps like Uniswap or OpenSea you have to grant them permission to spend your tokens and NFTs. This is called an allowance. If you don't revoke these allowances, the dapp can spend your tokens forever. Take back control by revoking your allowances.",
-    "title": "Take Back Control of Your Wallet."
+    "paragraph_1": "Cuando utilices dapps como Uniswap u OpenSea, debes darles permiso para gastar tus tokens y NFTs. Esto es llamado una Autorización, si no revocas estas autorizaciones, la app puede gastar tus tokens para siempre. Recupera el control revocando tus autorizaciones.",
+    "title": "Recupera el Control de Tu Cartera."
   },
   "how_to": {
     "paragraph_1": {
-      "description": "Click <0>Connect Wallet</0> on the top right or enter an address in the search bar.",
-      "title": "1. Connect"
+      "description": "Haz clic en <0>Conectar Cartera</0> en la parte superior derecha o introduce una dirección en la barra de búsqueda.",
+      "title": "1. Conectar"
     },
     "paragraph_2": {
-      "description": "Inspect your allowances by using the network selection, sorting and filtering options.",
-      "title": "2. Inspect"
+      "description": "Revisa tus autorizaciones usando las opciones de selección de red, y opciones de clasificación y filtrado.",
+      "title": "2. Revisa"
     },
     "paragraph_3": {
-      "description": "Revoke the allowances that you no longer use to prevent unwanted access to your funds.",
-      "title": "3. Revoke"
+      "description": "Revoca las autorizaciones que ya no utilices para evitar acceso no deseado a tus fondos.",
+      "title": "3. Revoca"
     },
-    "title": "How To Revoke Your Allowances."
+    "title": "¿Cómo Revocar Tus Autorizaciones?"
   },
   "why_revoke": {
     "paragraph_1": {
-      "description": "It is always good to limit your allowances whenever you are not actively using a dapp, especially for NFT marketplaces. This reduces the risk of losing your funds to hacks or exploits and can also help mitigate the damage of phishing scams.",
-      "title": "1. Use Revoke.cash periodically."
+      "description": "Siempre es bueno limitar tus autorizaciones cuando no utilices activamente una dapp, especialmente en los mercados de NFTs. Esto reduce el riesgo de perder tus fondos a causa de hackeos y también puede ayudar a mitigar el daño de las estafas de phishing.",
+      "title": "1. Utiliza Revoke.cash periódicamente."
     },
     "paragraph_2": {
-      "description": "Very often, scammers try to trick you into granting them an allowance to your funds. Sort your allowances by most recent to find out which allowances are to blame and revoke them to prevent further damage. Unfortunately it is not possible to <0>recover</0> funds that have already been stolen.",
-      "title": "2. Use Revoke.cash after getting scammed."
+      "description": "Muy seguido, los estafadores intentan engañarte para que que les des una autorización para usar tus fondos. Ordena tus autorizaciones por las más recientes para averiguar cuáles son las culpables y revocarlas para evitar mayores daños. Desafortunadamente, no es posible <0>recuperar</0> los fondos que ya han sido robados.",
+      "title": "2. Usa Revoke.cash después de ser estafado."
     },
     "paragraph_3": {
-      "description": "Prevention is better than mitigation. The Revoke.cash browser extension warns you when you're about to sign something potentially harmful. This can save you from phishing scams by making you think twice about what you're doing.",
-      "title": "3. Use the Revoke.cash browser extension."
+      "description": "Prevenir es mejor que mitigar. La extensión del navegador Revoke.cash te avisa cuando estás a punto de firmar algo potencialmente dañino. Esto puede salvarte de las estafas de phishing al ayudarte a pensar dos veces antes de hacer lo que estás haciendo.",
+      "title": "3. Usa la extensión de navegador Revoke.cash."
     },
-    "title": "Why You Should Use Revoke.cash."
+    "title": "¿Por Qué Deberías Usar Revoke.cash?"
   }
 }

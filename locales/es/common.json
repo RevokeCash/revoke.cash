@@ -1,15 +1,15 @@
 {
   "buttons": {
-    "cancel": "Cancel",
-    "connect": "Conectar cartera",
+    "cancel": "Cancelar",
+    "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "disconnect": "Desconectar",
     "disconnecting": "Desconectando",
     "donate": "Donar",
     "donating": "Donando",
     "download": "Descargar",
-    "get_started": "Get Started",
-    "my_allowances": "My Allowances",
+    "get_started": "Empezar",
+    "my_allowances": "Mis Autorizaciones",
     "revoke": "Revocar",
     "revoking": "Revocando",
     "send": "Enviar",
@@ -24,9 +24,9 @@
     "testnets": "Redes de prueba"
   },
   "color_themes": {
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System"
+    "dark": "Oscuro",
+    "light": "Claro",
+    "system": "Sistema"
   },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
@@ -34,30 +34,30 @@
   },
   "errors": {
     "404": {
-      "go_home": "Or go back home",
-      "subtitle": "The page you are looking for could not be found.",
+      "go_home": "Volver a la página principal",
+      "subtitle": "No se pudo encontrar la página que buscas",
       "suggested_pages": {
         "extension": {
-          "description": "Download the Revoke.cash browser extension.",
+          "description": "Descarga la extensión de navegador Revoke.cash.",
           "title": "Extensión"
         },
         "faq": {
-          "description": "Answers to all your questions.",
+          "description": "Respuestas a todas tus preguntas.",
           "title": "FAQ"
         },
-        "title": "Are you looking for one of these?",
+        "title": "¿Estás buscando uno de estos?",
         "your_allowances": {
-          "description": "Inspect your own allowances.",
-          "title": "Your Allowances"
+          "description": "Revisa tus propias autorizaciones.",
+          "title": "Tus Autorizaciones"
         }
       },
-      "title": "This page does not exist."
+      "title": "Esta página no existe."
     }
   },
   "footer": {
-    "privacy": "Privacy",
-    "sponsors": "Sponsors:",
-    "terms": "Terms"
+    "privacy": "Privacidad",
+    "sponsors": "Patrocinadores:",
+    "terms": "Términos"
   },
   "meta": {
     "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
