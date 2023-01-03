@@ -108,10 +108,8 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
                 {loading ? t('common:buttons.sending') : t('common:buttons.send')}
               </Button>
             </div>
-            <div className="flex justify-end">
-              <div>
-                <Trans i18nKey="common:donate.gitcoin_grants" components={[<Href href={GITCOIN_URL} external />]} />
-              </div>
+            <div className="flex justify-end gap-1">
+              <Trans i18nKey="common:donate.gitcoin_grants" components={[<Href href={GITCOIN_URL} external />]} />
             </div>
           </div>
         </div>
