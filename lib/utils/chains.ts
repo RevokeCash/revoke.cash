@@ -1,10 +1,128 @@
 import { ChainId, chains } from 'eth-chains';
-import {
-  COVALENT_SUPPORTED_CHAINS,
-  ETHERSCAN_SUPPORTED_CHAINS,
-  NODE_SUPPORTED_CHAINS,
-  PROVIDER_SUPPORTED_CHAINS,
-} from 'lib/constants';
+
+export const PROVIDER_SUPPORTED_CHAINS = [
+  ChainId.EthereumMainnet,
+  ChainId.Goerli,
+  ChainId.Sepolia,
+  ChainId.Gnosis,
+  ChainId.MetisAndromedaMainnet,
+  ChainId.SmartBitcoinCash,
+  ChainId.SyscoinTanenbaumTestnet,
+  ChainId.SyscoinMainnet,
+  ChainId.EthereumClassicMainnet,
+];
+
+export const BLOCKSCOUT_SUPPORTED_CHAINS = [
+  7700, // Canto
+  ChainId.KavaEVM,
+  ChainId.KavaEVMTestnet,
+  2000, // Dogechain
+  ChainId.RSKMainnet,
+  ChainId.Evmos,
+  ChainId.EmeraldParatimeMainnet,
+  ChainId.FuseMainnet,
+  ChainId.Palm,
+  ChainId.CallistoMainnet,
+  ChainId.Astar,
+  ChainId.Shiden,
+  ChainId.NahmiiMainnet,
+];
+
+export const ETHERSCAN_SUPPORTED_CHAINS = [
+  ChainId.BinanceSmartChainMainnet,
+  ChainId.BinanceSmartChainTestnet,
+  ChainId.PolygonMainnet,
+  ChainId.Mumbai,
+  ChainId['AvalancheC-Chain'],
+  ChainId.AvalancheFujiTestnet,
+  ChainId.FantomOpera,
+  ChainId.FantomTestnet,
+  ChainId.ArbitrumOne,
+  421613, // Arbitrum Goerli
+  42170, // Arbitrum Nova
+  ChainId.Moonbeam,
+  ChainId.Moonriver,
+  ChainId.MoonbaseAlpha,
+  ChainId.CronosMainnetBeta,
+  ChainId.CronosTestnet,
+  ChainId.CeloMainnet,
+  ChainId.CeloAlfajoresTestnet,
+  ChainId.AuroraMainnet,
+  ChainId.AuroraTestnet,
+  ChainId.BitTorrentChainMainnet,
+  ...BLOCKSCOUT_SUPPORTED_CHAINS,
+];
+
+export const COVALENT_SUPPORTED_CHAINS = [
+  ChainId.HarmonyMainnetShard0,
+  ChainId.IoTeXNetworkMainnet,
+  ChainId.GodwokenMainnet,
+];
+
+export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
+
+export const SUPPORTED_CHAINS = [
+  ...PROVIDER_SUPPORTED_CHAINS,
+  ...ETHERSCAN_SUPPORTED_CHAINS,
+  ...COVALENT_SUPPORTED_CHAINS,
+  ...NODE_SUPPORTED_CHAINS,
+];
+
+// Make sure to update these lists when updating the above lists
+// Order is loosely based on TVL (as per DeFiLlama)
+export const CHAIN_SELECT_MAINNETS = [
+  ChainId.EthereumMainnet,
+  ChainId.BinanceSmartChainMainnet,
+  ChainId.PolygonMainnet,
+  ChainId.ArbitrumOne,
+  42170, // Arbitrum Nova
+  ChainId.Optimism,
+  ChainId['AvalancheC-Chain'],
+  ChainId.FantomOpera,
+  ChainId.CronosMainnetBeta,
+  ChainId.KavaEVM,
+  ChainId.CeloMainnet,
+  ChainId.Moonbeam,
+  ChainId.Moonriver,
+  7700, // Canto
+  ChainId.AuroraMainnet,
+  ChainId.Gnosis,
+  ChainId.RSKMainnet,
+  ChainId.MetisAndromedaMainnet,
+  ChainId.Astar,
+  ChainId.IoTeXNetworkMainnet,
+  ChainId.EmeraldParatimeMainnet,
+  ChainId.BitTorrentChainMainnet,
+  2000, // Dogechain
+  ChainId.HarmonyMainnetShard0,
+  ChainId.GodwokenMainnet,
+  ChainId.SmartBitcoinCash,
+  ChainId.Evmos,
+  ChainId.FuseMainnet,
+  ChainId.SyscoinMainnet,
+  ChainId.CallistoMainnet,
+  ChainId.NahmiiMainnet,
+  ChainId.Shiden,
+  ChainId.EthereumClassicMainnet,
+  ChainId.Palm,
+];
+
+export const CHAIN_SELECT_TESTNETS = [
+  ChainId.Goerli,
+  ChainId.Sepolia,
+  ChainId.BinanceSmartChainTestnet,
+  ChainId.Mumbai,
+  421613, // Arbitrum Goerli
+  ChainId.OptimisticEthereumTestnetGoerli,
+  ChainId.AvalancheFujiTestnet,
+  ChainId.FantomTestnet,
+  ChainId.CronosTestnet,
+  ChainId.KavaEVMTestnet,
+  ChainId.CeloAlfajoresTestnet,
+  ChainId.AuroraTestnet,
+  ChainId.MoonbaseAlpha,
+  ChainId.SyscoinTanenbaumTestnet,
+];
 
 export const isSupportedChain = (chainId: number): boolean => {
   return isProviderSupportedChain(chainId) || isBackendSupportedChain(chainId);

@@ -1,8 +1,7 @@
 import ChainLogo from 'components/common/ChainLogo';
 import Select from 'components/common/Select';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS } from 'lib/constants';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { getChainName } from 'lib/utils/chains';
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 
 interface ChainOption {
@@ -71,6 +70,7 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
       menuPlacement="bottom"
       isSearchable={false}
       minMenuWidth="12.5rem"
+      placeholder={<div className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center">?</div>}
       menuAlign={menuAlign}
     />
   );

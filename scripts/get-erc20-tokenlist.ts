@@ -4,7 +4,7 @@ import { utils } from 'ethers';
 import fs from 'fs';
 import { ChainTokenMapping } from 'lib/interfaces';
 import path from 'path';
-import { SUPPORTED_CHAINS } from '../lib/constants';
+import { SUPPORTED_CHAINS } from '../lib/utils/chains';
 
 const TOKEN_MAPPING_PATH = path.join(__dirname, '..', 'lib', 'data', 'erc20-token-mapping.json');
 
