@@ -12,7 +12,7 @@ interface Props {
 
 const AssetCell = ({ allowance }: Props) => {
   const { selectedChainId } = useEthereum();
-  const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/token/${allowance.contract.address}`;
 
   let link = (
     <Href href={explorerUrl} underline="hover" external className="max-w-[10rem] truncate">

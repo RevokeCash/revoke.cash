@@ -18,6 +18,7 @@ export const getAllowancesForAddress = async (
   userAddress: string,
   logsProvider: LogsProvider,
   readProvider: providers.Provider,
+  chainId: number,
   openSeaProxyAddress?: string
 ): Promise<AllowanceData[]> => {
   const latestBlockNumber = await readProvider.getBlockNumber();
@@ -70,7 +71,7 @@ export const getAllowancesForAddress = async (
       const transfersTo = filterLogsByAddress(transferToEvents, contract.address);
 
       try {
-        const tokenData = await getTokenData(contract, userAddress, transfersFrom, transfersTo);
+        const tokenData = await getTokenData(contract, userAddress, transfersFrom, transfersTo, chainId);
         const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, userAddress, tokenData);
 
         if (allowances.length === 0) {
