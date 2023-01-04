@@ -24,7 +24,7 @@ export const useAllowances = (userAddress: string) => {
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
     queryKey: ['allowances', userAddress, selectedChainId, openSeaProxyAddress, openSeaProxyLoading],
     queryFn: async () => {
-      if (openSeaProxyLoading) return [];
+      if (openSeaProxyLoading) return null;
       const allowances = getAllowancesForAddress(
         userAddress,
         logsProvider,

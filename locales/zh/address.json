@@ -2,7 +2,7 @@
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
     "none": "没有授权",
-    "token_id": "{{symbol}} #{{tokenId}}",
+    "token_id": "代币 #{{tokenId}}",
     "unlimited": "无限"
   },
   "filters": {
@@ -29,7 +29,7 @@
       }
     },
     "label": "筛选",
-    "showing_everything": "Showing Everything"
+    "showing_everything": "显示一切"
   },
   "headers": {
     "actions": "操作",

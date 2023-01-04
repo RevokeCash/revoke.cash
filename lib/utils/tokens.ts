@@ -66,7 +66,6 @@ export const getErc721TokenData = async (
   const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
   const calculatedBalance = String(transfersTo.length - transfersFrom.length);
 
-  // TOOD: Balance requests for NFTs can be super slow so we need a workaround
   const [balance, symbol] = await Promise.all([
     shouldFetchBalance
       ? withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155')
@@ -106,7 +105,7 @@ export const throwIfSpamNft = async (contract: Contract) => {
   const bytecode = await contract.provider.getCode(contract.address);
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
-  if (bytecode.length < 600) {
+  if (bytecode.length < 1000) {
     throw new Error('Contract bytecode indicates a "spam" token');
   }
 };

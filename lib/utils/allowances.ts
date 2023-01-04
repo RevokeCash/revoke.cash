@@ -226,7 +226,7 @@ const getUnlimitedErc721AllowanceFromApproval = async (
 
   // For ApprovalForAll events, we can determine the allowance (true/false) from *only* the event
   // so we do not have to check the chain for the current allowance
-  const isApprovedForAll = !BigNumber.from(approval.data).isZero();
+  const isApprovedForAll = approval.data !== '0x' && !BigNumber.from(approval.data).isZero();
 
   // If the allwoance if already revoked, we dont need to make any more requests
   if (!isApprovedForAll) return undefined;
@@ -276,28 +276,25 @@ export const generatePatchedAllowanceEvents = (
   allEvents: Log[] = []
 ): Log[] => {
   if (!userAddress || !openseaProxyAddress) return [];
+
   // Only add the Moonbirds approval event if the account has interacted with Moonbirds at all
   if (!allEvents.some((ev) => ev.address === MOONBIRDS_ADDRESS)) return [];
 
-  const baseDummyEventLog = {
-    blockNumber: 0,
-    blockHash: '0x',
-    transactionIndex: 0,
-    removed: false,
-    data: '0x',
-    transactionHash: '0x',
-    logIndex: 0,
-  };
-
   return [
     {
-      ...baseDummyEventLog,
+      // We use the deployment transaction hash as a placeholder for the approval transaction hash
+      transactionHash: '0xd4547dc336dd4a0655f11267537964d7641f115ef3d5440d71514e3efba9d210',
+      blockNumber: 14591056,
+      transactionIndex: 145,
+      logIndex: 0,
       address: MOONBIRDS_ADDRESS,
       topics: [
         utils.id('ApprovalForAll(address,address,approved)'),
         utils.hexZeroPad(userAddress, 32),
         utils.hexZeroPad(openseaProxyAddress, 32),
       ],
+      data: '0x1',
+      timestamp: 1649997510,
     },
   ];
 };
