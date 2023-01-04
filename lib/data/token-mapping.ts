@@ -18,4 +18,4 @@ const mergeTokenMappings = (mappings: TokenMapping[]): TokenMapping => {
   return mergedMapping;
 };
 
-export const TOKEN_MAPPING = mergeTokenMappings([nftTokenMapping, erc20TokenMapping]);
+export const TOKEN_MAPPING = mergeTokenMappings([erc20TokenMapping, nftTokenMapping]);

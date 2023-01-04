@@ -2,7 +2,7 @@
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
     "none": "Sin autorizaciones",
-    "token_id": "{{symbol}} #{{tokenId}}",
+    "token_id": "Token #{{tokenId}}",
     "unlimited": "Ilimitada"
   },
   "filters": {
@@ -37,7 +37,7 @@
     "asset": "Activo",
     "asset_type": "Tipo",
     "last_updated": "Última Actualización",
-    "spender": "Gastador"
+    "spender": "Gastador Autorizado"
   },
   "labels": {
     "connected": "Conectado",

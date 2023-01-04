@@ -1,4 +1,3 @@
-// TODO: Reduce the size of the video file somehow
 const DemoVideo = () => {
   return (
     <div className="border border-black w-full max-w-5xl">

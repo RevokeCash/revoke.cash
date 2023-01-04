@@ -43,30 +43,19 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
                 </tr>
               ))}
             </tbody>
-            <tfoot>
-              {table.getFooterGroups().map((footerGroup) => (
-                <tr key={footerGroup.id}>
-                  {footerGroup.headers.map((header) => (
-                    <th key={header.id}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </tfoot>
           </>
         )}
       </table>
       {!loading && !error && table.getRowModel().rows.length === 0 && (
-        <div className="flex justify-center p-4 w-full">{t('address:no_allowances')}</div>
+        <div className="flex justify-center items-center h-12 w-full">{t('address:no_allowances')}</div>
       )}
       {loading && (
-        <div className="flex justify-center p-2 w-full">
+        <div className="flex justify-center items-center h-12 w-full">
           <Spinner className="w-6 h-6" />
         </div>
       )}
       {error && (
-        <div className="flex justify-center p-2 w-full">
+        <div className="flex justify-center items-center h-12 w-full">
           <Error error={error} />
         </div>
       )}

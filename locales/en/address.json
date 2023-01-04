@@ -2,7 +2,7 @@
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
     "none": "No allowances",
-    "token_id": "{{symbol}} #{{tokenId}}",
+    "token_id": "Token #{{tokenId}}",
     "unlimited": "Unlimited"
   },
   "filters": {
@@ -37,7 +37,7 @@
     "asset": "Asset",
     "asset_type": "Type",
     "last_updated": "Last Updated",
-    "spender": "Approved Spender"
+    "spender": "Authorized Spender"
   },
   "labels": {
     "connected": "Connected",

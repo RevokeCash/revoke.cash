@@ -10,7 +10,7 @@
     "download": "下载",
     "get_started": "开始使用",
     "my_allowances": "我的授权",
-    "revoke": "取消",
+    "revoke": "撤销",
     "revoking": "正在撤销",
     "send": "发送",
     "sending": "发送给",
@@ -24,9 +24,9 @@
     "testnets": "测试网"
   },
   "color_themes": {
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System"
+    "dark": "暗色",
+    "light": "明亮",
+    "system": "系统"
   },
   "donate": {
     "gitcoin_grants": "或者为我们的<0>Gitcoin Grant</0>捐款",
