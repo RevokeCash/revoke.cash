@@ -4,18 +4,19 @@ import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import { TOKEN_MAPPING } from 'lib/data/token-mapping';
-import type { BaseTokenData, Log } from 'lib/interfaces';
+import type { AllowanceData, BaseTokenData, Log } from 'lib/interfaces';
 import { toFloat } from '.';
+import spamTokens from '../data/spam-tokens.json';
 import { convertString, unpackResult, withFallback } from './promises';
 
-export const isSpamToken = (token: { symbol: string }) => {
-  const includesHttp = /https?:\/\//i.test(token.symbol);
+export const isSpamToken = (allowance: AllowanceData) => {
+  const includesHttp = /https?:\/\//i.test(allowance.symbol);
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
   const includesTld =
-    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city/i.test(
-      token.symbol
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i.test(
+      allowance.symbol
     );
-  return includesHttp || includesTld;
+  return includesHttp || includesTld || spamTokens.includes(allowance.contract.address);
 };
 
 export const getTokenData = async (

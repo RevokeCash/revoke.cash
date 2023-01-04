@@ -66,6 +66,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/request-ip": "^0.0.37",
     "autoprefixer": "^10.4.13",
+    "dotenv": "^16.0.3",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "next-bundle-analyzer": "^0.6.5",
