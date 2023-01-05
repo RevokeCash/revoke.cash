@@ -1,5 +1,6 @@
 import { classNames } from 'lib/utils/styles';
 import { useState } from 'react';
+import PlaceholderIcon from './PlaceholderIcon';
 
 interface Props {
   src?: string;
@@ -11,9 +12,7 @@ const TokenLogo = ({ src, alt, size }: Props) => {
   const [error, setError] = useState(false);
 
   if (error || !src) {
-    return (
-      <div style={{ width: size, height: size }} className="bg-gray-300 dark:bg-gray-600 aspect-square rounded-full" />
-    );
+    return <PlaceholderIcon size={size} />;
   }
 
   return (

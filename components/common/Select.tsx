@@ -71,6 +71,7 @@ const Select = (props: Props) => {
           ...styles,
           paddingTop: '0.75rem', // pt-3
         }),
+        placeholder: removeSpacing,
         group: removeSpacing,
         menuList: (styles) => ({
           ...removeSpacing(styles),

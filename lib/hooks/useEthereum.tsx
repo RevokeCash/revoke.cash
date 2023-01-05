@@ -71,7 +71,7 @@ const providerOptions = {
 export const EthereumProvider = ({ children }: Props) => {
   const [web3ModalInstance, setWeb3ModalInstance] = useState<any>();
   const [connectedProvider, setConnectedProvider] = useState<multicall.MulticallProvider>();
-  const [selectedChainId, setSelectedChainId] = useState<number>(1);
+  const [selectedChainId, setSelectedChainId] = useState<number>();
   const [connectedChainId, setConnectedChainId] = useState<number>();
   const [account, setAccount] = useState<string>();
   const [signer, setSigner] = useState<JsonRpcSigner>();
@@ -193,6 +193,15 @@ export const EthereumProvider = ({ children }: Props) => {
       const { chainId } = await newProvider.getNetwork();
       setConnectedProvider(multicallProvider);
       setConnectedChainId(chainId);
+
+      // Automatically switch to the wallet's chain when connecting as long as no other chain was selected
+      if (!selectedChainId) {
+        if (isSupportedChain(chainId)) {
+          setSelectedChainId(chainId);
+        } else {
+          setSelectedChainId(1);
+        }
+      }
     } else {
       setConnectedProvider(undefined);
       setConnectedChainId(undefined);
@@ -209,9 +218,6 @@ export const EthereumProvider = ({ children }: Props) => {
 
       updateProviderAndChainId(provider);
       updateAccount(address);
-
-      // Automatically switch to the wallet's chain when connecting as long as no other chain was selected
-      if (isSupportedChain(chainId) && selectedChainId === 1) setSelectedChainId(chainId);
 
       track('Connected Wallet', { address, chainId, connectionType: web3Modal.cachedProvider });
 
@@ -262,6 +268,8 @@ export const EthereumProvider = ({ children }: Props) => {
       });
 
       console.log('Using injected "window.ethereum" provider');
+    } else {
+      setSelectedChainId(1);
     }
   };
 

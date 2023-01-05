@@ -11,9 +11,21 @@ export const useAllowances = (userAddress: string) => {
 
   const { readProvider, logsProvider, selectedChainId } = useEthereum();
 
+  // When changing networks, we need to make sure that the *readProvider* is set to the *connectedProvider* if it's not already
+  // TODO: This is super hacky and I hate it, would love to move everything over to wagmi.sh and hopefully get rid of this
+  const [safeChainId, setSafeChainId] = useState<number>();
+  useEffect(() => {
+    const updateSafeChainId = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      setSafeChainId(selectedChainId);
+    };
+
+    if (selectedChainId && selectedChainId !== safeChainId) {
+      updateSafeChainId();
+    }
+  }, [selectedChainId, safeChainId]);
+
   // This is required because we need to get the OpenSea proxy address before we can get the allowances (due to Moonbirds patches)
-  // This can be improved, but at the same time, this also means that the "readProvider" has had the time to be set to connectedProvider if needed
-  // TODO: Hopefully move to wagmi-sh at some point and remove hacky stuff like this
   const { data: openSeaProxyAddress, isLoading: openSeaProxyLoading } = useQuery({
     queryKey: ['openSeaProxyAddress', userAddress],
     queryFn: () => getOpenSeaProxyAddress(userAddress),
@@ -22,17 +34,17 @@ export const useAllowances = (userAddress: string) => {
   });
 
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
-    queryKey: ['allowances', userAddress, selectedChainId, openSeaProxyAddress, openSeaProxyLoading],
+    queryKey: ['allowances', userAddress, safeChainId, openSeaProxyAddress, openSeaProxyLoading],
     queryFn: async () => {
-      if (openSeaProxyLoading) return null;
+      if (openSeaProxyLoading || safeChainId === undefined) return null;
       const allowances = getAllowancesForAddress(
         userAddress,
         logsProvider,
         readProvider,
-        selectedChainId,
+        safeChainId,
         openSeaProxyAddress
       );
-      track('Fetched Allowances', { account: userAddress, chainId: selectedChainId });
+      track('Fetched Allowances', { account: userAddress, chainId: safeChainId });
       return allowances;
     },
     refetchOnWindowFocus: false,

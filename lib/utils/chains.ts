@@ -252,6 +252,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.Evmos]: 'https://evmos-mainnet.public.blastapi.io',
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
+    [ChainId.Optimism]: 'https://optimism-mainnet.public.blastapi.io',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];

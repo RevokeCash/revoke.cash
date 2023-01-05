@@ -3,6 +3,7 @@ import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
+import PlaceholderIcon from './PlaceholderIcon';
 
 interface ChainOption {
   value: string;
@@ -70,7 +71,7 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
       menuPlacement="bottom"
       isSearchable={false}
       minMenuWidth="12.5rem"
-      placeholder={<div className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center">?</div>}
+      placeholder={<PlaceholderIcon size={24} />}
       menuAlign={menuAlign}
     />
   );
