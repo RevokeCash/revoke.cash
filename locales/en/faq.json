@@ -9,11 +9,11 @@
       "question": "How much does it cost to use Revoke.cash?"
     },
     "deposited_tokens": {
-      "answer": "Revoking allowances has no impact on your deposited or staked tokens. These tokens will stay deposited and you will still be able to withdraw them. However, if you want add more tokens to your deposited position, you will need to grant an allowance again.",
+      "answer": "Revoking allowances has no impact on your deposited or staked tokens. These tokens will stay deposited and you will still be able to withdraw them. However, if you want to add more tokens to your deposited position, you will need to grant an allowance again.",
       "question": "What happens to my deposited or staked tokens when I revoke allowances?"
     },
     "enough_to_disconnect": {
-      "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <0>anything</0> to protect you from allowance exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address any more. But your allowances stay active.",
+      "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <0>anything</0> to protect you from allowance exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address anymore. But your allowances stay active.",
       "question": "Is it enough to \"disconnect\" my wallet instead of revoking allowances?"
     },
     "hardware_wallets": {
