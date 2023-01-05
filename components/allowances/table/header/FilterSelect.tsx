@@ -122,7 +122,7 @@ const ValueContainer = ({ children, getValue, options }) => {
       <div className="flex items-center gap-2 grow">
         <span>{t('address:filters.label')}</span>
         {labels.length > 0 && (
-          <div className="flex items-center gap-2 grow whitespace-nowrap overflow-scroll w-1">
+          <div className="flex items-center gap-2 grow whitespace-nowrap overflow-scroll w-1 scrollbar-hide">
             {labels.map((label) => (
               <Label key={label} className="bg-gray-300 dark:bg-gray-600 font-normal">
                 {label}
