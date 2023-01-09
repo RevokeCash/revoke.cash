@@ -1,6 +1,7 @@
 import { ShareIcon } from '@heroicons/react/24/solid';
 import Button from 'components/common/Button';
 import LogoLink from 'components/common/LogoLink';
+import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { writeToClipBoard } from 'lib/utils';
 
 interface Props {
@@ -8,11 +9,13 @@ interface Props {
 }
 
 const AddressSocialShareButtons = ({ address }: Props) => {
+  const { darkMode } = useColorTheme();
+
   return (
     <div className="flex items-center gap-2">
       <LogoLink src="/assets/images/vendor/opensea.svg" alt="OpenSea Link" href={`https://opensea.io/${address}`} />
       <LogoLink
-        src="/assets/images/vendor/etherscan.svg"
+        src={darkMode ? '/assets/images/vendor/etherscan-light.svg' : '/assets/images/vendor/etherscan.svg'}
         alt="Etherscan Link"
         href={`https://etherscan.io/address/${address}`}
       />
