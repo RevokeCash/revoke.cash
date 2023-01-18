@@ -289,9 +289,9 @@ export const generatePatchedAllowanceEvents = (
       logIndex: 0,
       address: MOONBIRDS_ADDRESS,
       topics: [
-        utils.id('ApprovalForAll(address,address,approved)'),
-        utils.hexZeroPad(userAddress, 32),
-        utils.hexZeroPad(openseaProxyAddress, 32),
+        utils.id('ApprovalForAll(address,address,bool)'),
+        utils.hexZeroPad(userAddress, 32).toLowerCase(),
+        utils.hexZeroPad(openseaProxyAddress, 32).toLowerCase(),
       ],
       data: '0x1',
       timestamp: 1649997510,
