@@ -15,7 +15,7 @@ const AddressHeader = () => {
 
   const { data: balance } = useQuery({
     queryKey: ['balance', address, selectedChainId],
-    queryFn: () => readProvider.getBalance(address).then((balance) => balance.toString()),
+    queryFn: () => (selectedChainId ? readProvider.getBalance(address).then((balance) => balance.toString()) : null),
   });
 
   return (

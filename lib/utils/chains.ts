@@ -18,7 +18,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.KavaEVMTestnet,
   2000, // Dogechain
   ChainId.RSKMainnet,
-  ChainId.Evmos,
   ChainId.EmeraldParatimeMainnet,
   ChainId.FuseMainnet,
   ChainId.Palm,
@@ -56,6 +55,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
 export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.HarmonyMainnetShard0,
   ChainId.IoTeXNetworkMainnet,
+  ChainId.Evmos,
   ChainId.GodwokenMainnet,
 ];
 

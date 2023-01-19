@@ -14,9 +14,12 @@ export class CovalentEventGetter implements EventGetter {
     this.queues = apiKeys.map((key) => new CovalentQueue(key));
   }
 
-  // TODO: Currently works with up to 2 topics (and doesn't take topic position into account)
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
-    const blockRangeChunks = splitBlockRangeInChunks([[filter.fromBlock as number, filter.toBlock as number]], 1e6);
+    const fromBlock = filter.fromBlock as number;
+    // Covalent has some issues with being up to date for recent blocks, so we'll use an older block
+    // TODO: Don't use Covalent anymore
+    const toBlock = (filter.toBlock as number) - 50;
+    const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
     const results = await Promise.all(
       blockRangeChunks.map(([from, to]) => {
@@ -26,7 +29,7 @@ export class CovalentEventGetter implements EventGetter {
       })
     );
 
-    return results.flat();
+    return filterLogs(results.flat(), filter);
   }
 
   private async getEventsInChunk(
@@ -51,9 +54,35 @@ class CovalentQueue {
 const formatCovalentEvent = (covalentLog: any) => ({
   address: utils.getAddress(covalentLog.sender_address),
   topics: covalentLog.raw_log_topics,
+  data: covalentLog.raw_log_data,
   transactionHash: covalentLog.tx_hash,
+  blockNumber: covalentLog.block_height,
+  transactionIndex: covalentLog.tx_offset,
+  logIndex: covalentLog.log_offset,
+  timestamp: Math.floor(new Date(covalentLog.block_signed_at).getTime() / 1000),
 });
 
+const filterLogs = (logs: Log[], filter: Filter): Log[] => {
+  const fromBlock = filter.fromBlock as number;
+  const toBlock = filter.toBlock as number;
+  const topics = (filter.topics as string[]).map((topic) => topic?.toLowerCase());
+  const address = filter.address;
+
+  const filteredLogs = logs.filter((event) => {
+    if (address && event.address !== address) return false;
+    if (fromBlock && event.blockNumber < fromBlock) return false;
+    if (toBlock && event.blockNumber > toBlock) return false;
+    if (topics) {
+      if (topics[0] && event.topics[0] !== topics[0]) return false;
+      if (topics[1] && event.topics[1] !== topics[1]) return false;
+      if (topics[2] && event.topics[2] !== topics[2]) return false;
+      if (topics[3] && event.topics[3] !== topics[3]) return false;
+    }
+    return true;
+  });
+
+  return filteredLogs;
+};
 const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] =>
   chunks.flatMap(([from, to]) =>
     to - from < chunkSize
