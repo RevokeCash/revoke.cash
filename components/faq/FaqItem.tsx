@@ -16,7 +16,9 @@ const FaqItem = ({ question, children }: Props) => {
           <dt className="text-lg">
             <Disclosure.Button className="flex gap-2 w-full items-center justify-between text-left">
               <h4>{question}</h4>
-              <ChevronDownIcon className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')} />
+              <ChevronDownIcon
+                className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform shrink-0')}
+              />
             </Disclosure.Button>
           </dt>
           <Disclosure.Panel as="dd" className="mt-2 pr-8 text-base text-gray-700 dark:text-gray-300">
