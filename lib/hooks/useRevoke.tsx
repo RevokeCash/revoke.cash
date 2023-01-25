@@ -34,7 +34,14 @@ export const useRevoke = (
           tx = await writeContract.functions.approve(ADDRESS_ZERO, tokenId);
         }
       } catch (e) {
-        // Ignore issues
+        const code = e.error?.code ?? e.code;
+        const message = e.error?.message ?? e.message;
+        console.debug(`failed, code ${code}`);
+        if (code === -32000) {
+          toast.info(`❌ Revoking allowance failed: ${message}`);
+        }
+
+        // ignore other errors
         console.log('Ran into issue while revoking', e);
       }
 
@@ -72,11 +79,15 @@ export const useRevoke = (
         tx = await writeContract.functions.approve(spender, bnNew);
       } catch (e) {
         const code = e.error?.code ?? e.code;
+        const message = e.error?.message ?? e.message;
         console.debug(`failed, code ${code}`);
         if (code === -32000) {
-          toast.error('This token does not support updating allowances, please revoke instead', {
-            position: 'top-left',
-          });
+          const toastMessage =
+            newAmount === '0'
+              ? `Revoking allowance failed: ${message}`
+              : 'This token does not support updating allowances, please revoke instead';
+
+          toast.info(`❌ ${toastMessage}`);
         }
 
         // ignore other errors
