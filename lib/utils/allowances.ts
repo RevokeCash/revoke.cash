@@ -150,7 +150,7 @@ const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerA
 
   const [amount, lastUpdated, transactionHash] = await Promise.all([
     convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender))),
-    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block?.timestamp),
     approval.transactionHash,
   ]);
 
@@ -189,7 +189,7 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
     const [owner, spender, lastUpdated, transactionHash] = await Promise.all([
       unpackResult(multicallContract.functions.ownerOf(tokenId)),
       unpackResult(multicallContract.functions.getApproved(tokenId)),
-      approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+      approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block?.timestamp),
       approval.transactionHash,
     ]);
 
@@ -232,7 +232,7 @@ const getUnlimitedErc721AllowanceFromApproval = async (
   if (!isApprovedForAll) return undefined;
 
   const [lastUpdated, transactionHash] = await Promise.all([
-    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block.timestamp),
+    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block?.timestamp),
     approval.transactionHash,
   ]);
 
