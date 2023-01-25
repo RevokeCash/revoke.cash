@@ -10,6 +10,8 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.SyscoinMainnet,
   ChainId.EthereumClassicMainnet,
+  ChainId.CoinExSmartChainMainnet,
+  ChainId.CoinExSmartChainTestnet,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -97,6 +99,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.HarmonyMainnetShard0,
   ChainId.GodwokenMainnet,
   ChainId.SmartBitcoinCash,
+  ChainId.CoinExSmartChainMainnet,
   ChainId.Evmos,
   ChainId.FuseMainnet,
   ChainId.SyscoinMainnet,
@@ -121,6 +124,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.CeloAlfajoresTestnet,
   ChainId.AuroraTestnet,
   ChainId.MoonbaseAlpha,
+  ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
 ];
 
@@ -200,6 +204,8 @@ export const getChainName = (chainId: number): string => {
     [568]: 'Dogechain Testnet',
     [ChainId.CallistoMainnet]: 'Callisto',
     [ChainId.NahmiiMainnet]: 'Nahmii',
+    [ChainId.CoinExSmartChainMainnet]: 'CoinEx Smart Chain',
+    [ChainId.CoinExSmartChainTestnet]: 'CoinEx Testnet',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -328,6 +334,8 @@ export const getChainLogo = (chainId: number): string => {
     [568]: '/assets/images/vendor/chains/dogechain.png',
     [ChainId.CallistoMainnet]: '/assets/images/vendor/chains/callisto.png',
     [ChainId.NahmiiMainnet]: '/assets/images/vendor/chains/nahmii.png',
+    [ChainId.CoinExSmartChainMainnet]: '/assets/images/vendor/chains/coinex.png',
+    [ChainId.CoinExSmartChainTestnet]: '/assets/images/vendor/chains/coinex.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -338,6 +346,8 @@ export const getChainNativeToken = (chainId: number): string => {
     [7700]: 'CANTO',
     [2000]: 'DOGE',
     [568]: 'DOGE',
+    [ChainId.CoinExSmartChainMainnet]: 'CET',
+    [ChainId.CoinExSmartChainTestnet]: 'CETT',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -377,6 +387,8 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     CANTO: '100',
     KAVA: '20',
     DOGE: '250',
+    CLO: '5000',
+    CET: '250',
   };
 
   return mapping[nativeToken] ?? '1';

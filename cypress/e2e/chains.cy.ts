@@ -30,6 +30,7 @@ const fixtures = [
   ['Godwoken', '0x8c0f57b0D6a2D0Bfac7fe8fea6a0C4e8DdBbDCB1'],
   ['SmartBCH', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Fuse', '0x291AeAB2C6E8b87A65BE9dF26E174F41864191A3'],
+  ['CoinEx Smart Chain', '0x3eC67Dd5060F8657720915B890A36E66B48D36d1'],
   ['Evmos', '0x8d354807f14fd6f006ac959AB4A2A9c13FA5484a'],
   ['Syscoin', '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044'],
   ['Callisto', '0x3Ce5AE5E6762D568fcddB5Beef8B9B666CBa29Bb'],
@@ -51,6 +52,7 @@ const fixtures = [
   ['Aurora Testnet', '0xdcD7e9e12614979A081e6ccD58d696bDcbE4AF55'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
   ['Moonbase Alpha', '0xF1c70b44f61f5a3AA0658cbF33E16f68534dF9D9'],
+  ['CoinEx Testnet', '0x5B82588003Ac9db7510702171b94f4acAF87Ca72'],
   ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
 ];
 
