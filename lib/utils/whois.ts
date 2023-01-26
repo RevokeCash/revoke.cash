@@ -98,7 +98,6 @@ export const resolveAvvyName = async (avvyName: string) => {
   try {
     return await AVVY_RESOLUTION?.name(avvyName).resolve(AVVY_RESOLUTION.RECORDS.EVM);
   } catch (err) {
-    alert(err);
     return null;
   }
 };
