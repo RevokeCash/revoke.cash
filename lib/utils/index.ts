@@ -3,7 +3,7 @@ import type { BigNumberish } from 'ethers';
 import { BigNumber, utils } from 'ethers';
 import type { Log, LogsProvider } from 'lib/interfaces';
 import { toast } from 'react-toastify';
-import { resolveEnsName, resolveUnsName } from './whois';
+import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
 
 export const shortenAddress = (address?: string): string => {
   return address && `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}`;
@@ -68,6 +68,11 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<str
   // If the input is an ENS name, validate it, resolve it and return it
   if (inputAddressOrName.endsWith('.eth')) {
     return await resolveEnsName(inputAddressOrName);
+  }
+
+  // If the input is an Avvy Domains name..
+  if (inputAddressOrName.endsWith('.avax')) {
+    return await resolveAvvyName(inputAddressOrName);
   }
 
   // Other domain-like inputs are interpreted as Unstoppable Domains

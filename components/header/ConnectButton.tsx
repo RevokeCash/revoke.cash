@@ -14,8 +14,8 @@ interface Props {
 const ConnectButton = ({ size, style, className }: Props) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { account, ensName, unsName, connect, disconnect } = useEthereum();
-  const domainName = ensName ?? unsName;
+  const { account, ensName, unsName, avvyName, connect, disconnect } = useEthereum();
+  const domainName = ensName ?? unsName ?? avvyName;
 
   const connectAndRedirect = async () => {
     const address = await connect();
