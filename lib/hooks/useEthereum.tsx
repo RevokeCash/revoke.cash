@@ -12,6 +12,7 @@ import { BackendProvider } from 'lib/providers';
 import {
   getChainExplorerUrl,
   getChainName,
+  getChainNativeToken,
   getChainRpcUrl,
   isBackendSupportedChain,
   isSupportedChain,
@@ -123,16 +124,18 @@ export const EthereumProvider = ({ children }: Props) => {
 
       const addEthereumChain = async (newChainId: number) => {
         const chainInfo = chains.get(newChainId);
+        const chainName = getChainName(newChainId);
+        const fallbackNativeCurrency = { name: chainName, symbol: getChainNativeToken(newChainId), decimals: 18 };
         await window.ethereum?.request({
           method: 'wallet_addEthereumChain',
           params: [
             {
               chainId: `0x${newChainId.toString(16)}`,
-              chainName: getChainName(newChainId),
-              nativeCurrency: chainInfo.nativeCurrency,
+              chainName,
+              nativeCurrency: chainInfo?.nativeCurrency ?? fallbackNativeCurrency,
               rpcUrls: [getChainRpcUrl(newChainId)],
               blockExplorerUrls: [getChainExplorerUrl(newChainId)],
-              iconUrls: [chainInfo.icon],
+              iconUrls: chainInfo?.icon ? [chainInfo.icon] : undefined,
             },
           ],
         });
