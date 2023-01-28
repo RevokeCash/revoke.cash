@@ -124,14 +124,14 @@ const ValueContainer = ({ children, getValue, options }) => {
         {labels.length > 0 && (
           <div className="flex items-center gap-2 grow whitespace-nowrap overflow-scroll w-1 scrollbar-hide">
             {labels.map((label) => (
-              <Label key={label} className="bg-gray-300 dark:bg-gray-600 font-normal">
+              <Label key={label} className="bg-zinc-300 dark:bg-zinc-600 font-normal">
                 {label}
               </Label>
             ))}
           </div>
         )}
         {labels.length === 0 && (
-          <Label className="bg-gray-300 dark:bg-gray-600 text-sm font-normal">
+          <Label className="bg-zinc-300 dark:bg-zinc-600 text-sm font-normal">
             {t('address:filters.showing_everything')}
           </Label>
         )}

@@ -12,7 +12,7 @@ const ConnectedLabel = ({ address }: Props) => {
   const { account } = useEthereum();
 
   const classes = classNames(
-    address === account ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-900 dark:bg-gray-600 dark:text-gray-100'
+    address === account ? 'bg-green-500 text-white' : 'bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100'
   );
 
   return (

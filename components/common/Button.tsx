@@ -41,10 +41,10 @@ const Button = ({
   const classMapping = {
     common:
       'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium',
-    primary: 'bg-black text-white visited:text-white hover:bg-gray-800 disabled:bg-gray-600',
-    secondary: 'bg-white text-black visited:text-black hover:bg-gray-200 disabled:bg-gray-300',
+    primary: 'bg-black text-white visited:text-white hover:bg-zinc-800 disabled:bg-zinc-600',
+    secondary: 'bg-white text-black visited:text-black hover:bg-zinc-200 disabled:bg-zinc-300',
     tertiary:
-      'text-black visited:text-black dark:text-white dark:visited:text-white disabled:text-gray-600 dark:disabled:text-gray-400 border-none',
+      'text-black visited:text-black dark:text-white dark:visited:text-white disabled:text-zinc-600 dark:disabled:text-zinc-400 border-none',
     sm: 'h-6 px-2 text-xs rounded-md',
     md: 'h-9 px-4 text-base rounded-lg',
     lg: 'h-12 px-6 text-lg rounded-xl',

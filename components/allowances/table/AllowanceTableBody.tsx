@@ -34,7 +34,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
           <>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-t border-gray-300 dark:border-gray-500">
+                <tr key={row.id} className="border-t border-zinc-300 dark:border-zinc-500">
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="overflow-hidden px-2">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

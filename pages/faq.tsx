@@ -19,7 +19,7 @@ const FaqPage: NextPage = () => {
         <h1>{t('faq:title')}</h1>
         <Divider className="mt-4" />
 
-        <dl className="divide-y divide-gray-200 dark:divide-gray-800">
+        <dl className="divide-y divide-zinc-200 dark:divide-zinc-800">
           <FaqItem question={t('faq:questions.whole_wallet_at_risk.question')}>
             <Trans i18nKey="faq:questions.whole_wallet_at_risk.answer" components={[<span className="italic" />]} />
           </FaqItem>

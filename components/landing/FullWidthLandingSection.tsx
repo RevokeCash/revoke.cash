@@ -10,7 +10,7 @@ interface Props {
 const FullWidthLandingSection = ({ title, children, inverted }: Props) => {
   const classes = classNames(
     'w-full px-4',
-    inverted && 'bg-black dark:bg-white text-gray-100 dark:text-gray-900 pt-8 pb-16'
+    inverted && 'bg-black dark:bg-white text-zinc-100 dark:text-zinc-900 pt-8 pb-16'
   );
   return (
     <div className={classes}>

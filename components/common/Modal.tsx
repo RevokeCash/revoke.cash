@@ -43,7 +43,7 @@ const Modal = ({ open, setOpen, children }: Props) => {
                   <Button
                     style="none"
                     size="none"
-                    className="text-gray-400 hover:text-gray-500 dark:text-gray-600 dark:hover:text-gray-500"
+                    className="text-zinc-400 hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-500"
                     onClick={() => setOpen(false)}
                   >
                     <XMarkIcon className="h-6 w-6" />

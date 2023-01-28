@@ -21,7 +21,7 @@ const FaqItem = ({ question, children }: Props) => {
               />
             </Disclosure.Button>
           </dt>
-          <Disclosure.Panel as="dd" className="mt-2 pr-8 text-base text-gray-700 dark:text-gray-300">
+          <Disclosure.Panel as="dd" className="mt-2 pr-8 text-base text-zinc-700 dark:text-zinc-300">
             {children}
           </Disclosure.Panel>
         </>

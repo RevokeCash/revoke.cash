@@ -21,10 +21,10 @@ const Select = (props: Props) => {
   const colors = {
     primary: 'black', // black
     secondary: 'white', // white
-    lightest: '#f3f4f6', // gray-100
-    light: '#d4d4d8', // gray-300
-    dark: '#6b7280', // gray-500
-    darkest: '#1f2937', // gray-800
+    lightest: '#f4f4f5', // zinc-100
+    light: '#d4d4d8', // zinc-300
+    dark: '#71717a', // zinc-500
+    darkest: '#27272a', // zinc-800
   };
 
   return (

@@ -25,7 +25,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   @apply leading-tight;
   @apply bg-white dark:bg-black;
-  @apply text-gray-900 dark:text-gray-100;
+  @apply text-zinc-900 dark:text-zinc-100;
 }
 
 h1 {

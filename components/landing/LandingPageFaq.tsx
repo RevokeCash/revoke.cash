@@ -25,7 +25,7 @@ const LandingPageFaq = () => {
         </LandingPageFaqItem>
       </dl>
       <Divider />
-      <p className="text-gray-700 dark:text-gray-300">
+      <p className="text-zinc-700 dark:text-zinc-300">
         <Trans
           i18nKey="landing:faq.subtitle"
           components={[<Href href="/faq" className="font-medium" html underline="hover" />]}
