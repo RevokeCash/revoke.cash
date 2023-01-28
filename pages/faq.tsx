@@ -17,7 +17,6 @@ const FaqPage: NextPage = () => {
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
       <ContentPageLayout>
         <h1>{t('faq:title')}</h1>
-
         <Divider className="mt-4" />
 
         <dl className="divide-y divide-gray-200 dark:divide-gray-800">
