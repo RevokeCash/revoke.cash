@@ -33,7 +33,7 @@ const Extension: NextPage = () => {
         }}
       />
       <ContentPageLayout>
-        <div className="flex flex-col gap-2 text-lg leading-none">
+        <div className="flex flex-col gap-3 text-lg leading-none">
           <h1>{t('extension:title')}</h1>
 
           <Divider className="my-2" />

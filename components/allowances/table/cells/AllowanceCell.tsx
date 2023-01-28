@@ -37,7 +37,9 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
 
   return (
     <div className={classes}>
-      <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
+      <div className="truncate">
+        <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
+      </div>
       {allowance.amount && (
         <ControlsWrapper>
           <div>

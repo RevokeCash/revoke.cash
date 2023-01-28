@@ -110,7 +110,8 @@ export const throwIfSpamNft = async (contract: Contract) => {
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 800) {
     // Minimal proxies should not be marked as spam
-    if (bytecode.match(/^0x363d3d373d3d3d363d[0-9a-f]{2}[0-9a-f]{0,40}5af43d82803e903d91602b57fd5bf3$/i)) return;
+    if (bytecode.match(/^0x363d3d373d3d3d363d[0-9a-f]{2}[0-9a-f]{0,40}5af43d82803e903d9160[0-9a-f]{2}57fd5bf3$/i))
+      return;
 
     throw new Error('Contract bytecode indicates a "spam" token');
   }

@@ -17,7 +17,7 @@ const Href = (
   ref: ForwardedRef<HTMLAnchorElement>
 ) => {
   const styleMapping = {
-    html: 'text-blue-700 visited:text-fuchsia-800 dark:text-blue-300 dark:visited:text-fuchsia-600',
+    html: 'text-blue-700 visited:text-fuchsia-800 dark:text-blue-400 dark:visited:text-fuchsia-600',
     inherit: 'text-current visited:text-current',
   };
 
