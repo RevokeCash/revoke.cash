@@ -12,6 +12,8 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumClassicMainnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
+  2109, // Exosama
+  18159, // Proof of Memes
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -27,6 +29,8 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.Astar,
   ChainId.Shiden,
   ChainId.NahmiiMainnet,
+  ChainId.FlareMainnet,
+  ChainId['SongbirdCanary-Network'],
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -59,6 +63,7 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.IoTeXNetworkMainnet,
   ChainId.Evmos,
   ChainId.GodwokenMainnet,
+  ChainId.BobaNetwork,
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -99,15 +104,20 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.HarmonyMainnetShard0,
   ChainId.GodwokenMainnet,
   ChainId.SmartBitcoinCash,
-  ChainId.CoinExSmartChainMainnet,
+  ChainId['SongbirdCanary-Network'],
+  ChainId.BobaNetwork,
   ChainId.Evmos,
   ChainId.FuseMainnet,
   ChainId.SyscoinMainnet,
   ChainId.CallistoMainnet,
   ChainId.NahmiiMainnet,
+  ChainId.CoinExSmartChainMainnet,
+  ChainId.FlareMainnet,
   ChainId.Shiden,
   ChainId.EthereumClassicMainnet,
   ChainId.Palm,
+  2109, // Exosama
+  18159, // Proof of Memes
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -206,6 +216,11 @@ export const getChainName = (chainId: number): string => {
     [ChainId.NahmiiMainnet]: 'Nahmii',
     [ChainId.CoinExSmartChainMainnet]: 'CoinEx Smart Chain',
     [ChainId.CoinExSmartChainTestnet]: 'CoinEx Testnet',
+    [2109]: 'Exosama',
+    [18159]: 'Proof of Memes',
+    [ChainId.FlareMainnet]: 'Flare',
+    [ChainId['SongbirdCanary-Network']]: 'Songbird',
+    [ChainId.BobaNetwork]: 'Boba',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -234,6 +249,10 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io',
     [2000]: 'https://explorer.dogechain.dog',
     [568]: 'https://explorer-testnet.dogechain.dog',
+    [2109]: 'https://explorer.exosama.com',
+    [18159]: 'https://memescan.io',
+    [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network',
+    [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -259,6 +278,10 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
     [ChainId.Optimism]: 'https://optimism-mainnet.public.blastapi.io',
+    [2109]: 'https://rpc.exosama.com',
+    [18159]: 'https://mainnet-rpc.memescan.io',
+    [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
+    [ChainId['SongbirdCanary-Network']]: 'https://songbird-api.flare.network/ext/C/rpc',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -336,6 +359,11 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.NahmiiMainnet]: '/assets/images/vendor/chains/nahmii.png',
     [ChainId.CoinExSmartChainMainnet]: '/assets/images/vendor/chains/coinex.png',
     [ChainId.CoinExSmartChainTestnet]: '/assets/images/vendor/chains/coinex.png',
+    [2109]: '/assets/images/vendor/chains/exosama.png',
+    [18159]: '/assets/images/vendor/chains/proof-of-memes.jpeg',
+    [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.png',
+    [ChainId['SongbirdCanary-Network']]: '/assets/images/vendor/chains/songbird.webp',
+    [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpeg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -348,6 +376,8 @@ export const getChainNativeToken = (chainId: number): string => {
     [568]: 'DOGE',
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
+    [2109]: 'SAMA',
+    [18159]: 'POM',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -389,6 +419,10 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     DOGE: '250',
     CLO: '5000',
     CET: '250',
+    SAMA: '500',
+    POM: '2500',
+    SGB: '1000',
+    FLR: '500',
   };
 
   return mapping[nativeToken] ?? '1';
