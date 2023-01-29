@@ -2,9 +2,9 @@ import type { Filter } from '@ethersproject/abstract-provider';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import axios from 'axios';
-import { ChainId } from 'eth-chains';
 import { utils } from 'ethers';
 import type { Log } from 'lib/interfaces';
+import { ETHERSCAN_SUPPORTED_CHAINS, getChainApiKey, getChainApiUrl } from 'lib/utils/chains';
 import PQueue from 'p-queue';
 import type { EventGetter } from './EventGetter';
 
@@ -18,11 +18,8 @@ const upstashRateLimiter =
 export class EtherscanEventGetter implements EventGetter {
   private queues: { [chainId: number]: EtherscanQueue };
 
-  constructor(apiKeys: { [platform: string]: string }) {
-    const queueEntries = Object.keys(API_URLS).map((chainId) => [
-      chainId,
-      new EtherscanQueue(Number.parseInt(chainId, 10), apiKeys),
-    ]);
+  constructor() {
+    const queueEntries = ETHERSCAN_SUPPORTED_CHAINS.map((chainId) => [chainId, new EtherscanQueue(chainId)]);
     this.queues = Object.fromEntries(queueEntries);
   }
 
@@ -37,12 +34,8 @@ class EtherscanQueue {
   queue: PQueue;
   apiKey: string;
 
-  get apiUrl(): string {
-    return API_URLS[this.chainId];
-  }
-
-  constructor(public chainId: number, apiKeys: { [platform: string]: string }) {
-    this.apiKey = getApiKey(this.apiUrl, apiKeys);
+  constructor(public chainId: number) {
+    this.apiKey = getChainApiKey(chainId);
     console.log(chainId, this.apiKey);
 
     // If no API key is found we still function, but performance is severely degraded
@@ -108,7 +101,7 @@ class EtherscanQueue {
   }
 
   async sendRequest(params: any) {
-    return axios.get(this.apiUrl, {
+    return axios.get(getChainApiUrl(this.chainId), {
       params: { ...params, apikey: this.apiKey },
     });
   }
@@ -151,53 +144,3 @@ const formatEtherscanEvent = (etherscanLog: any) => ({
   logIndex: Number.parseInt(etherscanLog.logIndex, 16),
   timestamp: Number.parseInt(etherscanLog.timeStamp, 16),
 });
-
-const API_URLS = {
-  [ChainId.EthereumMainnet]: 'https://api.etherscan.io/api',
-  [ChainId.BinanceSmartChainMainnet]: 'https://api.bscscan.com/api',
-  [ChainId.BinanceSmartChainTestnet]: 'https://api-testnet.bscscan.com/api',
-  [ChainId.PolygonMainnet]: 'https://api.polygonscan.com/api',
-  [ChainId.Mumbai]: 'https://api-testnet.polygonscan.com/api',
-  [ChainId['AvalancheC-Chain']]: 'https://api.snowtrace.io/api',
-  [ChainId.AvalancheFujiTestnet]: 'https://api-testnet.snowtrace.io/api',
-  [ChainId.FantomOpera]: 'https://api.ftmscan.com/api',
-  [ChainId.FantomTestnet]: 'https://api-testnet.ftmscan.com/api',
-  [ChainId.ArbitrumOne]: 'https://api.arbiscan.io/api',
-  [421613]: 'https://api-goerli.arbiscan.io/api',
-  [42170]: 'https://api-nova.arbiscan.io/api',
-  [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
-  [ChainId.HuobiECOChainTestnet]: 'https://api-testnet.hecoinfo.com/api',
-  [ChainId.Moonbeam]: 'https://api-moonbeam.moonscan.io/api',
-  [ChainId.Moonriver]: 'https://api-moonriver.moonscan.io/api',
-  [ChainId.MoonbaseAlpha]: 'https://api-moonbase.moonscan.io/api',
-  [ChainId.CronosMainnetBeta]: 'https://api.cronoscan.com/api',
-  [ChainId.CronosTestnet]: 'https://api-testnet.cronoscan.com/api',
-  [ChainId.CeloMainnet]: 'https://api.celoscan.io/api',
-  [ChainId.CeloAlfajoresTestnet]: 'https://api-alfajores.celoscan.io/api',
-  [ChainId.AuroraMainnet]: 'https://api.aurorascan.dev/api',
-  [ChainId.AuroraTestnet]: 'https://api-testnet.aurorascan.dev/api',
-  [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
-  [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
-  [ChainId.CLVParachain]: 'https://api.clvscan.com/api',
-  [7700]: 'https://evm.explorer.canto.io/api',
-  [ChainId.KavaEVM]: 'https://explorer.kava.io/api',
-  [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io/api',
-  [2000]: 'https://explorer.dogechain.dog/api',
-  [568]: 'https://explorer-testnet.dogechain.dog/api',
-  [ChainId.RSKMainnet]: 'https://blockscout.com/rsk/mainnet/api',
-  [ChainId.EmeraldParatimeMainnet]: 'https://explorer.emerald.oasis.dev/api',
-  [ChainId.Evmos]: 'https://evm.evmos.org/api',
-  [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
-  [ChainId.Shiden]: 'https://blockscout.com/shiden/api',
-  [ChainId.Astar]: 'https://blockscout.com/astar/api',
-  [ChainId.Palm]: 'https://explorer.palm.io/api',
-  [ChainId.CallistoMainnet]: 'https://explorer.callisto.network/api',
-  [ChainId.NahmiiMainnet]: 'https://explorer.nahmii.io/api',
-};
-
-const getApiKey = (apiUrl: string, apiKeys: { [platform: string]: string }) => {
-  const platform = new URL(apiUrl).hostname.split('.').at(-2);
-  const subPlatform = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
-
-  return apiKeys[`${subPlatform}.${platform}`] ?? apiKeys[platform];
-};

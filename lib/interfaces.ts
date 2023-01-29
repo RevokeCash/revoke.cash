@@ -53,3 +53,8 @@ export interface Log
   > {
   timestamp?: number;
 }
+
+export interface RateLimit {
+  interval: number;
+  intervalCap: number;
+}

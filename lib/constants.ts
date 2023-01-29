@@ -53,3 +53,5 @@ export const IRON_OPTIONS: IronSessionOptions = {
     sameSite: 'none',
   },
 };
+
+export const ETHERSCAN_API_KEYS = JSON.parse(process.env.ETHERSCAN_API_KEYS ?? '{}');
