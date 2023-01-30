@@ -57,4 +57,5 @@ export interface Log
 export interface RateLimit {
   interval: number;
   intervalCap: number;
+  timeout?: number;
 }

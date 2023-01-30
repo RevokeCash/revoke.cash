@@ -1,52 +1,34 @@
 import type { Filter } from '@ethersproject/abstract-provider';
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
 import axios from 'axios';
 import { utils } from 'ethers';
 import type { Log } from 'lib/interfaces';
-import { ETHERSCAN_SUPPORTED_CHAINS, getChainApiKey, getChainApiUrl } from 'lib/utils/chains';
-import PQueue from 'p-queue';
+import {
+  ETHERSCAN_SUPPORTED_CHAINS,
+  getChainApiIdentifer,
+  getChainApiKey,
+  getChainApiRateLimit,
+  getChainApiUrl,
+} from 'lib/utils/chains';
 import type { EventGetter } from './EventGetter';
-
-const upstashRateLimiter =
-  process.env.UPSTASH_REDIS_REST_URL &&
-  new Ratelimit({
-    redis: Redis.fromEnv(),
-    limiter: Ratelimit.slidingWindow(4, '1 s'),
-  });
+import { RequestQueue } from './RequestQueue';
 
 export class EtherscanEventGetter implements EventGetter {
-  private queues: { [chainId: number]: EtherscanQueue };
+  private queues: { [chainId: number]: RequestQueue };
 
   constructor() {
-    const queueEntries = ETHERSCAN_SUPPORTED_CHAINS.map((chainId) => [chainId, new EtherscanQueue(chainId)]);
+    const queueEntries = ETHERSCAN_SUPPORTED_CHAINS.map((chainId) => [
+      chainId,
+      new RequestQueue(getChainApiIdentifer(chainId), getChainApiRateLimit(chainId)),
+    ]);
     this.queues = Object.fromEntries(queueEntries);
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
+    const apiUrl = getChainApiUrl(chainId);
+    const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
-    const results = await queue.getLogs(filter);
-    return results;
-  }
-}
 
-class EtherscanQueue {
-  queue: PQueue;
-  apiKey: string;
-
-  constructor(public chainId: number) {
-    this.apiKey = getChainApiKey(chainId);
-    console.log(chainId, this.apiKey);
-
-    // If no API key is found we still function, but performance is severely degraded
-    this.queue = this.apiKey
-      ? new PQueue({ intervalCap: 4, interval: 1000 })
-      : new PQueue({ intervalCap: 1, interval: 5000 });
-  }
-
-  // TODO: Refactor this to have less nesting and be more readable
-  async getLogs(filter: Filter) {
-    const baseQuery = prepareBaseEtherscanGetLogsQuery(filter);
+    const baseQuery = prepareBaseEtherscanGetLogsQuery(filter, apiKey);
 
     const results = [];
 
@@ -56,10 +38,8 @@ class EtherscanQueue {
     for (let page = 1; page < 100; page++) {
       const query = { ...baseQuery, page };
 
-      // If we have upstash configured, we use it, otherwise fall back to an in-memory p-queue
-      const { data } = upstashRateLimiter
-        ? await this.sendRequestWithUpstashQueue(query)
-        : await this.queue.add(() => this.sendRequest(query));
+      // Send the request to Etherscan
+      const { data } = await queue.add(() => axios.get(apiUrl, { params: query }));
 
       // Throw an error that is compatible with the recursive getLogs retrying client-side
       if (typeof data.message === 'string' && data.message.includes('Result window is too large')) {
@@ -89,25 +69,9 @@ class EtherscanQueue {
 
     return results.map(formatEtherscanEvent);
   }
-
-  async sendRequestWithUpstashQueue(params: any) {
-    const { success } = await upstashRateLimiter.blockUntilReady(`etherscan:${this.apiKey}`, 30_000);
-
-    if (!success) {
-      throw new Error('Request timed out');
-    }
-
-    return this.sendRequest(params);
-  }
-
-  async sendRequest(params: any) {
-    return axios.get(getChainApiUrl(this.chainId), {
-      params: { ...params, apikey: this.apiKey },
-    });
-  }
 }
 
-const prepareBaseEtherscanGetLogsQuery = (filter: Filter) => {
+const prepareBaseEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
     typeof topic === 'string' ? topic.toLowerCase() : topic
   );
@@ -129,6 +93,7 @@ const prepareBaseEtherscanGetLogsQuery = (filter: Filter) => {
     topic1_3_opr: topic1 && topic3 ? 'and' : undefined,
     topic2_3_opr: topic2 && topic3 ? 'and' : undefined,
     offset: 1000,
+    apiKey,
   };
 
   return query;
