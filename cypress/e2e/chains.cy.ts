@@ -62,9 +62,10 @@ const fixtures = [
 ];
 
 const Selectors = {
-  BUTTON: '.chain-select__control',
-  OPTION: '.chain-select__option',
-  LOADER: '.loader',
+  CHAIN_SELECT_BUTTON: '.chain-select__control',
+  CHAIN_SELECT_OPTION: '.chain-select__option',
+  ALLOWANCES_LOADER: '.allowances-loader',
+  CONTROLS_SECTION: '.controls-section',
   ADDRESS_INPUT: '.address-input',
 };
 
@@ -73,10 +74,10 @@ const URL = Cypress.env('url') ?? 'http://localhost:3000';
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
     cy.visit(`${URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
-    cy.get(Selectors.BUTTON).should('exist').click();
+    cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
 
     const fixtureChainNames = fixtures.map(([chainName]) => chainName);
-    const appChainNames = cy.get(Selectors.OPTION).should('have.length', fixtureChainNames.length);
+    const appChainNames = cy.get(Selectors.CHAIN_SELECT_OPTION).should('have.length', fixtureChainNames.length);
     appChainNames.each((chain) => cy.wrap(chain).invoke('text').should('be.oneOf', fixtureChainNames));
   });
 
@@ -84,11 +85,11 @@ describe('Chain Support', () => {
     it(`should support ${chainName}`, () => {
       cy.visit(`${URL}/address/${fixtureAddress}`, { timeout: 10_000 });
 
-      cy.get(Selectors.BUTTON).click();
-      cy.get(Selectors.OPTION).contains(chainName).click();
+      cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
+      cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
 
-      cy.get(Selectors.LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
-      cy.contains('Revoke', { timeout: 4000 }).should('exist');
+      cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
+      cy.get(Selectors.CONTROLS_SECTION, { timeout: 4000 }).should('exist');
     });
   });
 });

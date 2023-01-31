@@ -51,7 +51,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
       )}
       {loading && (
         <div className="flex justify-center items-center h-12 w-full">
-          <Spinner className="w-6 h-6" />
+          <Spinner className="w-6 h-6 allowances-loader" />
         </div>
       )}
       {error && (
