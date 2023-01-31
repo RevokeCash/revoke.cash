@@ -30,6 +30,7 @@
     "@unstoppabledomains/resolution": "^8.3.3",
     "@upstash/ratelimit": "^0.1.5",
     "@upstash/redis": "^1.15.0",
+    "@vercel/analytics": "^0.1.8",
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^0.26.1",
     "axios-retry": "^3.3.1",
