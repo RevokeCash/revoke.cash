@@ -6,7 +6,6 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
   ChainId.Goerli,
   ChainId.Sepolia,
-  ChainId.Gnosis,
   ChainId.MetisAndromedaMainnet,
   ChainId.SmartBitcoinCash,
   ChainId.SyscoinTanenbaumTestnet,
@@ -21,15 +20,12 @@ export const PROVIDER_SUPPORTED_CHAINS = [
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   7700, // Canto
   ChainId.KavaEVM,
-  ChainId.KavaEVMTestnet,
   2000, // Dogechain
   ChainId.RSKMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.FuseMainnet,
   ChainId.Palm,
   ChainId.CallistoMainnet,
-  ChainId.Astar,
-  ChainId.Shiden,
   ChainId.NahmiiMainnet,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
@@ -39,6 +35,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
   ChainId.PolygonMainnet,
+  ChainId.Gnosis,
   ChainId.Mumbai,
   ChainId['AvalancheC-Chain'],
   ChainId.AvalancheFujiTestnet,
@@ -66,6 +63,8 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.Evmos,
   ChainId.GodwokenMainnet,
   ChainId.BobaNetwork,
+  ChainId.Astar,
+  ChainId.Shiden,
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -132,7 +131,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
-  ChainId.KavaEVMTestnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.AuroraTestnet,
   ChainId.MoonbaseAlpha,
@@ -272,7 +270,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
     [42170]: 'https://nova.arbitrum.io/rpc',
-    [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
+    [ChainId.Moonbeam]: 'https://rpc.api.moonbeam.network',
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
@@ -280,7 +278,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [2000]: 'https://dogechain.ankr.com',
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
     [ChainId.KavaEVMTestnet]: 'https://evm.testnet.kava.io',
-    [ChainId.Evmos]: 'https://evmos-mainnet.public.blastapi.io',
+    [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
     [ChainId.Optimism]: 'https://optimism-mainnet.public.blastapi.io',
@@ -288,6 +286,8 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [18159]: 'https://mainnet-rpc.memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-api.flare.network/ext/C/rpc',
+    [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
+    [ChainId.Mumbai]: 'https://matic-testnet-archive-rpc.bwarelabs.com',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -478,6 +478,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.NahmiiMainnet]: 'https://explorer.nahmii.io/api',
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network/api',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
+    [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
   };
 
   return apiUrls[chainId];
