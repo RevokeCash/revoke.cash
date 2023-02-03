@@ -48,12 +48,11 @@ const fixtures = [
   ['Sepolia', '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a'],
   ['BSC Testnet', '0x40FE4911704f14f409ebEE40475377720C732803'],
   ['Avalanche Fuji', '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6'],
-  ['Polygon Mumbai', '0xBC5C85F774f202232B8E97e42D0B9D46308C94BF'],
+  ['Polygon Mumbai', '0x61bEE7b65F860Fe5a22958421b0a344a0F146983'],
   ['Arbitrum Goerli', '0x3383A622FA7a30fC83527d6ce1820af928455EA8'],
   ['Optimism Goerli', '0x3239a95A9262034ca28b9a03133775f716f119f8'],
   ['Cronos Testnet', '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f'],
   ['Fantom Testnet', '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF'],
-  ['Kava Testnet', '0x35d8688332F22aFfa5508be93aDF2f550D3aac41'],
   ['Aurora Testnet', '0xdcD7e9e12614979A081e6ccD58d696bDcbE4AF55'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
   ['Moonbase Alpha', '0xF1c70b44f61f5a3AA0658cbF33E16f68534dF9D9'],
@@ -64,6 +63,7 @@ const fixtures = [
 const Selectors = {
   CHAIN_SELECT_BUTTON: '.chain-select__control',
   CHAIN_SELECT_OPTION: '.chain-select__option',
+  ALLOWANCES_TABLE: '.allowances-table',
   ALLOWANCES_LOADER: '.allowances-loader',
   CONTROLS_SECTION: '.controls-section',
   ADDRESS_INPUT: '.address-input',
@@ -88,6 +88,7 @@ describe('Chain Support', () => {
       cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
       cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
 
+      cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4000 }).should('exist');
       cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
       cy.get(Selectors.CONTROLS_SECTION, { timeout: 4000 }).should('exist');
     });

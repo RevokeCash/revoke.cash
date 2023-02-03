@@ -1877,12 +1877,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@upstash/redis@npm:^1.15.0":
-  version: 1.16.0
-  resolution: "@upstash/redis@npm:1.16.0"
+"@upstash/redis@npm:^1.19.3":
+  version: 1.19.3
+  resolution: "@upstash/redis@npm:1.19.3"
   dependencies:
     isomorphic-fetch: ^3.0.0
-  checksum: d16c28aaf34021bd81ac23e47872b481ca54d62a7acc309afde81554db0dbdd403f632047f89ba9dda2622b49be26c8fdd92e1b1e4f85675a3c37e0533e45c5d
+  checksum: 5c3642ac161b9062e9859c4d465c77d4949af28ebd32d9f7462875ae26ad4c49cb3869a9da3630e13bd0a099ea212cc7d768cbcf008dca5bca1391ee16d6316e
   languageName: node
   linkType: hard
 
@@ -4372,7 +4372,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter3@npm:4.0.7, eventemitter3@npm:^4.0.7":
+"eventemitter3@npm:4.0.7, eventemitter3@npm:^4.0.4, eventemitter3@npm:^4.0.7":
   version: 4.0.7
   resolution: "eventemitter3@npm:4.0.7"
   checksum: 1875311c42fcfe9c707b2712c32664a245629b42bb0a5a84439762dd0fd637fc54d078155ea83c2af9e0323c9ac13687e03cfba79b03af9f40c89b4960099374
@@ -6872,6 +6872,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"p-finally@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "p-finally@npm:1.0.0"
+  checksum: 93a654c53dc805dd5b5891bab16eb0ea46db8f66c4bfd99336ae929323b1af2b70a8b0654f8f1eae924b2b73d037031366d645f1fd18b3d30cbd15950cc4b1d4
+  languageName: node
+  linkType: hard
+
 "p-limit@npm:^2.0.0":
   version: 2.3.0
   resolution: "p-limit@npm:2.3.0"
@@ -6899,20 +6906,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-queue@npm:^7.3.0":
-  version: 7.3.0
-  resolution: "p-queue@npm:7.3.0"
+"p-queue@npm:^6.6.2":
+  version: 6.6.2
+  resolution: "p-queue@npm:6.6.2"
   dependencies:
-    eventemitter3: ^4.0.7
-    p-timeout: ^5.0.2
-  checksum: eda8b8d4dac9456d1722c8ee0892bbb2e7f7b79d1f90b6cc1bac5fb9dcf3120285f90c28a68dc2f66bc9e46c7d7d42ad206a2c4d83e7aad27a0226ae042081ee
+    eventemitter3: ^4.0.4
+    p-timeout: ^3.2.0
+  checksum: 832642fcc4ab6477b43e6d7c30209ab10952969ed211c6d6f2931be8a4f9935e3578c72e8cce053dc34f2eb6941a408a2c516a54904e989851a1a209cf19761c
   languageName: node
   linkType: hard
 
-"p-timeout@npm:^5.0.2":
-  version: 5.1.0
-  resolution: "p-timeout@npm:5.1.0"
-  checksum: f5cd4e17301ff1ff1d8dbf2817df0ad88c6bba99349fc24d8d181827176ad4f8aca649190b8a5b1a428dfd6ddc091af4606835d3e0cb0656e04045da5c9e270c
+"p-timeout@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "p-timeout@npm:3.2.0"
+  dependencies:
+    p-finally: ^1.0.0
+  checksum: 3dd0eaa048780a6f23e5855df3dd45c7beacff1f820476c1d0d1bcd6648e3298752ba2c877aa1c92f6453c7dd23faaf13d9f5149fc14c0598a142e2c5e8d649c
   languageName: node
   linkType: hard
 
@@ -7832,7 +7841,7 @@ __metadata:
     "@types/request-ip": ^0.0.37
     "@unstoppabledomains/resolution": ^8.3.3
     "@upstash/ratelimit": ^0.1.5
-    "@upstash/redis": ^1.15.0
+    "@upstash/redis": ^1.19.3
     "@vercel/analytics": ^0.1.8
     "@walletconnect/web3-provider": ^1.8.0
     autoprefixer: ^10.4.13
@@ -7853,7 +7862,7 @@ __metadata:
     next-sitemap: ^3.1.29
     next-translate: ^1.6.0
     nprogress: ^0.2.0
-    p-queue: ^7.3.0
+    p-queue: ^6.6.2
     postcss: ^8.4.18
     prettier: ^2.7.1
     prettier-plugin-organize-imports: ^3.1.1

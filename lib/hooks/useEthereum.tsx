@@ -109,13 +109,10 @@ export const EthereumProvider = ({ children }: Props) => {
     return new multicall.MulticallProvider(rpcProvider, { verbose: true });
   }, [selectedChainId, connectedChainId]);
 
-  const selectChain = useCallback(
-    (newChainId: number) => {
-      setSelectedChainId(newChainId);
-      track('Selected Chain', { chainId: newChainId });
-    },
-    [selectedChainId]
-  );
+  const selectChain = useCallback((newChainId: number) => {
+    setSelectedChainId(newChainId);
+    track('Selected Chain', { chainId: newChainId });
+  }, []);
 
   // Switching wallet chains only works for injected wallets
   const switchInjectedWalletChain = useCallback(
@@ -190,6 +187,7 @@ export const EthereumProvider = ({ children }: Props) => {
     }
   };
 
+  // TODO: Better useCallback / useEffect usage here to prevent overwriting selectedChainId
   const updateProviderAndChainId = async (newProvider?: providers.JsonRpcProvider) => {
     if (newProvider) {
       const multicallProvider = new multicall.MulticallProvider(newProvider, { verbose: true });

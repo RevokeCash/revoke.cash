@@ -2,19 +2,20 @@ import type { Filter } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { utils } from 'ethers';
 import type { Log } from 'lib/interfaces';
-import PQueue from 'p-queue';
 import type { EventGetter } from './EventGetter';
+import { RequestQueue } from './RequestQueue';
 
-// TODO: Migrate to Upstash
 export class CovalentEventGetter implements EventGetter {
-  // Set up a shared queue that limits the global number of requests sent to Covalent to 5/s (API rate limit)
-  private queues: CovalentQueue[];
+  private queue: RequestQueue;
 
-  constructor(apiKeys: string[]) {
-    this.queues = apiKeys.map((key) => new CovalentQueue(key));
+  constructor(private apiKey: string, isPremium: boolean) {
+    // Covalent's premium API has a rate limit of 50 (normal = 5) requests per second, which we underestimate to be safe
+    // TODO: Upstash is somehow having issues with higher rate limits, so we use 4/100ms rather than 40/1000ms
+    this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: isPremium ? 100 : 1000, intervalCap: 4 });
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
+    const topics = filter.topics as string[];
     const fromBlock = filter.fromBlock as number;
     // Covalent has some issues with being up to date for recent blocks, so we'll use an older block
     // TODO: Don't use Covalent anymore
@@ -22,33 +23,30 @@ export class CovalentEventGetter implements EventGetter {
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
     const results = await Promise.all(
-      blockRangeChunks.map(([from, to]) => {
-        // Send requests to the "emptiest" queue first
-        const [queue] = this.queues.sort((a, b) => a.queue.size - b.queue.size);
-        return queue.queue.add(() => this.getEventsInChunk(chainId, from, to, filter.topics as string[], queue.apiKey));
-      })
+      blockRangeChunks.map(([from, to]) => this.queue.add(() => this.getEventsInChunk(chainId, from, to, topics)))
     );
 
     return filterLogs(results.flat(), filter);
   }
 
-  private async getEventsInChunk(
-    chainId: number,
-    fromBlock: number,
-    toBlock: number,
-    topics: string[],
-    apiKey: string
-  ) {
+  private async getEventsInChunk(chainId: number, fromBlock: number, toBlock: number, topics: string[]) {
     const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !!topic);
-    const url = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/?key=${apiKey}&starting-block=${fromBlock}&ending-block=${toBlock}&secondary-topics=${secondaryTopics}&page-size=9999999`;
-    const result = await axios.get(url);
+    const params = {
+      'starting-block': fromBlock,
+      'ending-block': toBlock,
+      'secondary-topics': secondaryTopics.join(','),
+      'page-size': 9999999,
+    };
+
+    const auth = {
+      username: this.apiKey,
+      password: '',
+    };
+
+    const url = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
+    const result = await axios.get(url, { params, auth });
     return result?.data?.data?.items?.map(formatCovalentEvent) ?? [];
   }
-}
-
-class CovalentQueue {
-  queue: PQueue = new PQueue({ intervalCap: 5, interval: 1000 });
-  constructor(public apiKey: string) {}
 }
 
 const formatCovalentEvent = (covalentLog: any) => ({
@@ -83,6 +81,7 @@ const filterLogs = (logs: Log[], filter: Filter): Log[] => {
 
   return filteredLogs;
 };
+
 const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] =>
   chunks.flatMap(([from, to]) =>
     to - from < chunkSize

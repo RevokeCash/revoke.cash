@@ -18,7 +18,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
 
   return (
     <div className="border border-black dark:border-white rounded-lg overflow-x-scroll whitespace-nowrap scrollbar-hide">
-      <table className="w-full border-collapse">
+      <table className="w-full border-collapse allowances-table">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="border-b border-black dark:border-white h-10">
