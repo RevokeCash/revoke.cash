@@ -1,12 +1,13 @@
 import { track } from '@amplitude/analytics-browser';
-import { Column, sortingFns, Table } from '@tanstack/react-table';
+import { Column, ColumnSort, sortingFns, Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import useLocalStorage from 'use-local-storage';
 import { ColumnId, customSortingFns } from '../columns';
 
 interface Option {
@@ -23,6 +24,15 @@ interface Props {
 const SortSelect = ({ table }: Props) => {
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
+  const [selectedSort, setSelectedSort] = useLocalStorage<ColumnSort>('allowances-table.sorting', {
+    id: ColumnId.SYMBOL,
+    desc: false,
+  });
+
+  useEffect(() => {
+    table.setSorting(() => [selectedSort]);
+    track('Updated Sorting', { column: selectedSort.id, desc: selectedSort.desc });
+  }, [selectedSort]);
 
   const options = useMemo(() => {
     return table
@@ -33,11 +43,6 @@ const SortSelect = ({ table }: Props) => {
         { value: `${column.id}-true`, id: column.id, column, desc: true },
       ]);
   }, [table]);
-
-  const onChange = ({ id, desc }: Option) => {
-    table.setSorting(() => [{ id, desc }]);
-    track('Updated Sorting', { column: id, desc });
-  };
 
   const displayOption = ({ column, desc }: Option, { context }: any) => {
     const sortingFnDisplays = {
@@ -87,10 +92,11 @@ const SortSelect = ({ table }: Props) => {
         return option.id === sorting.id && option.desc === sorting.desc;
       })}
       options={options}
-      onChange={onChange}
+      onChange={(option) => setSelectedSort({ id: option.id, desc: option.desc })}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
+      isMulti={false}
     />
   );
 };

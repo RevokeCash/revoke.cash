@@ -7,7 +7,9 @@ import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
+import { useEffect } from 'react';
 import { FormatOptionLabelMeta } from 'react-select';
+import useLocalStorage from 'use-local-storage';
 import { ColumnId } from '../columns';
 
 interface Option {
@@ -60,6 +62,13 @@ const options = [
 const FilterSelect = ({ table }: Props) => {
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
+  const [selectedFilters, setSelectedFilters] = useLocalStorage<Option[]>('allowances-table.filters', []);
+
+  useEffect(() => {
+    const tableFilters = generateTableFilters(options, selectedFilters);
+    table.setColumnFilters(() => tableFilters);
+    track('Updated Filters', { filters: tableFilters });
+  }, [selectedFilters]);
 
   const displayOption = (option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {
     return (
@@ -74,12 +83,6 @@ const FilterSelect = ({ table }: Props) => {
     return <span>{t(`address:filters.${normaliseLabel(group.label)}.label`)}</span>;
   };
 
-  const onChange = (allSelected: Option[]) => {
-    const tableFilters = generateTableFilters(options, allSelected);
-    table.setColumnFilters(() => tableFilters);
-    track('Updated Filters', { filters: tableFilters });
-  };
-
   return (
     <Select
       instanceId="filters-select"
@@ -88,7 +91,8 @@ const FilterSelect = ({ table }: Props) => {
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
       options={options}
-      onChange={onChange}
+      value={selectedFilters}
+      onChange={(options) => setSelectedFilters(options as Option[])}
       formatOptionLabel={displayOption}
       formatGroupLabel={displayGroupLabel}
       isMulti

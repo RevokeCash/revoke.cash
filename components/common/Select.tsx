@@ -1,7 +1,7 @@
 import { classNames } from 'lib/utils/styles';
-import ReactSelect, { components, OptionProps, Props as ReactSelectProps } from 'react-select';
+import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
 
-interface Props extends ReactSelectProps {
+interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
   minMenuWidth?: number | string;
   menuAlign?: 'left' | 'right';
   size?: 'sm' | 'md';
@@ -11,7 +11,7 @@ interface Props extends ReactSelectProps {
 
 // This component is created to allow us to customise the styles of the react-select component
 // the className prop can still be used to customise some of the styles per component
-const Select = (props: Props) => {
+const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
   const controlClassMapping = {
     sm: 'h-6 px-1',
     md: 'h-9 px-2',
