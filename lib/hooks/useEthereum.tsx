@@ -18,7 +18,7 @@ import {
   isSupportedChain,
   SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
-import { lookupEnsName, lookupUnsName } from 'lib/utils/whois';
+import { lookupAvvyName, lookupEnsName, lookupUnsName } from 'lib/utils/whois';
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 declare let window: {
@@ -35,6 +35,7 @@ interface EthereumContext {
   account?: string;
   ensName?: string;
   unsName?: string;
+  avvyName?: string;
   connectedChainId?: number;
   selectedChainId?: number;
   selectChain?: (chainId: number) => void;
@@ -87,6 +88,13 @@ export const EthereumProvider = ({ children }: Props) => {
   const { data: unsName } = useQuery({
     queryKey: ['unsName', account],
     queryFn: () => lookupUnsName(account),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
+
+  const { data: avvyName } = useQuery({
+    queryKey: ['avvyName', account],
+    queryFn: () => lookupAvvyName(account),
     staleTime: Infinity,
     cacheTime: Infinity,
   });
@@ -307,6 +315,7 @@ export const EthereumProvider = ({ children }: Props) => {
         account,
         ensName,
         unsName,
+        avvyName,
         signer,
         connect,
         disconnect,

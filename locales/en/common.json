@@ -66,6 +66,6 @@
   "nav": {
     "extension": "Extension",
     "faq": "FAQ",
-    "search": "Enter address, ENS name or Unstoppable Domain"
+    "search": "Enter address, ENS name, Unstoppable Domain or Avvy Domain"
   }
 }

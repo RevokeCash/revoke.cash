@@ -4,6 +4,7 @@ import { OPENSEA_REGISTRY } from 'lib/abis';
 import {
   ADDRESS_ZERO,
   ALCHEMY_PROVIDER,
+  AVVY_RESOLUTION,
   DAPP_LIST_BASE_URL,
   ENS_RESOLUTION,
   ETHEREUM_LISTS_CONTRACTS,
@@ -84,12 +85,30 @@ export const resolveUnsName = async (unsName: string) => {
   }
 };
 
+export const lookupAvvyName = async (address: string) => {
+  try {
+    const output = await AVVY_RESOLUTION?.batch([address]).reverseToNames(AVVY_RESOLUTION.RECORDS.EVM);
+    return output.length === 0 ? null : output[0];
+  } catch (err) {
+    return null;
+  }
+};
+
+export const resolveAvvyName = async (avvyName: string) => {
+  try {
+    return await AVVY_RESOLUTION?.name(avvyName).resolve(AVVY_RESOLUTION.RECORDS.EVM);
+  } catch (err) {
+    return null;
+  }
+};
+
 // Note that we don't wait for the UNS name to resolve before returning the ENS name
 export const lookupDomainName = async (address: string) => {
   try {
     const unsNamePromise = lookupUnsName(address);
+    const avvyNamePromise = lookupAvvyName(address);
     const ensName = await lookupEnsName(address);
-    return ensName ?? (await unsNamePromise);
+    return ensName ?? (await unsNamePromise) ?? (await avvyNamePromise);
   } catch {
     return null;
   }

@@ -1,3 +1,4 @@
+import AVVY from '@avvy/client';
 import Resolution from '@unstoppabledomains/resolution';
 import { providers } from 'ethers';
 import type { IronSessionOptions } from 'iron-session';
@@ -43,6 +44,8 @@ export const UNS_RESOLUTION =
       },
     },
   });
+
+export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'));
 
 export const IRON_OPTIONS: IronSessionOptions = {
   cookieName: 'revoke_session',
