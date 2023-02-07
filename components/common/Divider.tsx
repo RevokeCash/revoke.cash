@@ -5,7 +5,7 @@ interface Props {
 }
 
 const Divider = ({ className }: Props) => (
-  <div className={classNames('border w-full border-gray-200 dark:border-gray-800', className)} />
+  <div className={classNames('border w-full border-zinc-200 dark:border-zinc-800', className)} />
 );
 
 export default Divider;

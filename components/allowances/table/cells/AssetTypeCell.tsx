@@ -9,7 +9,7 @@ interface Props {
 const AssetTypeCell = ({ assetType }: Props) => {
   const { t } = useTranslation();
 
-  const classes = classNames('w-12', assetType === 'NFT' ? 'bg-blue-500 text-gray-100' : 'bg-yellow-500 text-gray-900');
+  const classes = classNames('w-12', assetType === 'NFT' ? 'bg-blue-500 text-zinc-100' : 'bg-yellow-500 text-zinc-900');
 
   return (
     <div className="flex justify-start">

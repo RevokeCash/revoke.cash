@@ -29,26 +29,30 @@ const fixtures = [
   ['Dogechain', '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc'],
   ['Godwoken', '0x8c0f57b0D6a2D0Bfac7fe8fea6a0C4e8DdBbDCB1'],
   ['SmartBCH', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
+  ['Songbird', '0x4E8De52271D3bE18cC972af892198103C1e6AfE8'],
+  ['Boba', '0x164EA2CDE6f59F5Fcb76E78d292679B2521C54C2'],
   ['Fuse', '0x291AeAB2C6E8b87A65BE9dF26E174F41864191A3'],
-  ['CoinEx Smart Chain', '0x3eC67Dd5060F8657720915B890A36E66B48D36d1'],
   ['Evmos', '0x8d354807f14fd6f006ac959AB4A2A9c13FA5484a'],
   ['Syscoin', '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044'],
   ['Callisto', '0x3Ce5AE5E6762D568fcddB5Beef8B9B666CBa29Bb'],
   ['Nahmii', '0xd342d75FE943AD8b92594BAeC3A7f86E5dF0BEb6'],
   ['Ethereum Classic', '0x8163dB62D6294bA66261644EcCD5FD5269451495'],
   ['BTT Chain', '0x2d850d18B0617077585F1D0Cba043168dc90954D'],
+  ['CoinEx Smart Chain', '0x3eC67Dd5060F8657720915B890A36E66B48D36d1'],
+  ['Flare', '0xDDB43EEeA9B5BAe08F4CaB101CB9BEe56D763738'],
   ['Shiden', '0xD377cFFCc52C16bF6e9840E77F78F42Ddb946568'],
   ['Palm', '0x77564a60d4a1577Ff911B8c24eC5D8a04a71B658'],
+  ['Exosama', '0xf0dB619363881ceb6bA06b9AE3dd4886652Aa896'],
+  ['Proof of Memes', '0xe8509b1F74f2024AB52f423A6568ed5aaCE87C32'],
   ['Goerli', '0xFCBD25BB345765192fFC2f2E35F1F5348badC3F6'],
   ['Sepolia', '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a'],
   ['BSC Testnet', '0x40FE4911704f14f409ebEE40475377720C732803'],
   ['Avalanche Fuji', '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6'],
-  ['Polygon Mumbai', '0xBC5C85F774f202232B8E97e42D0B9D46308C94BF'],
+  ['Polygon Mumbai', '0x61bEE7b65F860Fe5a22958421b0a344a0F146983'],
   ['Arbitrum Goerli', '0x3383A622FA7a30fC83527d6ce1820af928455EA8'],
   ['Optimism Goerli', '0x3239a95A9262034ca28b9a03133775f716f119f8'],
   ['Cronos Testnet', '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f'],
   ['Fantom Testnet', '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF'],
-  ['Kava Testnet', '0x35d8688332F22aFfa5508be93aDF2f550D3aac41'],
   ['Aurora Testnet', '0xdcD7e9e12614979A081e6ccD58d696bDcbE4AF55'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
   ['Moonbase Alpha', '0xF1c70b44f61f5a3AA0658cbF33E16f68534dF9D9'],
@@ -57,9 +61,11 @@ const fixtures = [
 ];
 
 const Selectors = {
-  BUTTON: '.chain-select__control',
-  OPTION: '.chain-select__option',
-  LOADER: '.loader',
+  CHAIN_SELECT_BUTTON: '.chain-select__control',
+  CHAIN_SELECT_OPTION: '.chain-select__option',
+  ALLOWANCES_TABLE: '.allowances-table',
+  ALLOWANCES_LOADER: '.allowances-loader',
+  CONTROLS_SECTION: '.controls-section',
   ADDRESS_INPUT: '.address-input',
 };
 
@@ -68,10 +74,10 @@ const URL = Cypress.env('url') ?? 'http://localhost:3000';
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
     cy.visit(`${URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
-    cy.get(Selectors.BUTTON).should('exist').click();
+    cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
 
     const fixtureChainNames = fixtures.map(([chainName]) => chainName);
-    const appChainNames = cy.get(Selectors.OPTION).should('have.length', fixtureChainNames.length);
+    const appChainNames = cy.get(Selectors.CHAIN_SELECT_OPTION).should('have.length', fixtureChainNames.length);
     appChainNames.each((chain) => cy.wrap(chain).invoke('text').should('be.oneOf', fixtureChainNames));
   });
 
@@ -79,11 +85,12 @@ describe('Chain Support', () => {
     it(`should support ${chainName}`, () => {
       cy.visit(`${URL}/address/${fixtureAddress}`, { timeout: 10_000 });
 
-      cy.get(Selectors.BUTTON).click();
-      cy.get(Selectors.OPTION).contains(chainName).click();
+      cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
+      cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
 
-      cy.get(Selectors.LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
-      cy.contains('Revoke', { timeout: 4000 }).should('exist');
+      cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4000 }).should('exist');
+      cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
+      cy.get(Selectors.CONTROLS_SECTION, { timeout: 4000 }).should('exist');
     });
   });
 });

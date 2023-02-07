@@ -24,7 +24,7 @@ const Modal = ({ open, setOpen, children }: Props) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-zinc-500 dark:bg-zinc-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -43,7 +43,7 @@ const Modal = ({ open, setOpen, children }: Props) => {
                   <Button
                     style="none"
                     size="none"
-                    className="text-gray-400 hover:text-gray-500 dark:text-gray-600 dark:hover:text-gray-500"
+                    className="text-zinc-400 hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-500"
                     onClick={() => setOpen(false)}
                   >
                     <XMarkIcon className="h-6 w-6" />

@@ -35,7 +35,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
 
   return (
     <ControlsWrapper>
-      <div>
+      <div className="controls-section">
         {revoke && <RevokeButton revoke={revoke} disabled={disabled} />}
         {update && reset && (
           <UpdateControls

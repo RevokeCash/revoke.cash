@@ -10,6 +10,8 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
+        12: '3rem',
+        20: '5rem',
         30: '7.5rem',
       },
       fontFamily: {

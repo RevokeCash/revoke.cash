@@ -1,5 +1,6 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Analytics } from '@vercel/analytics/react';
 import LogIn from 'components/common/LogIn';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import { EthereumProvider } from 'lib/hooks/useEthereum';
@@ -66,6 +67,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         </EthereumProvider>
       </QueryClientProvider>
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
+      <Analytics />
     </>
   );
 };

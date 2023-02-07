@@ -23,7 +23,7 @@ const AddressHeader = () => {
       <div className="flex flex-col gap-2 items-center sm:items-start">
         <AddressDisplay address={address} domainName={domainName} className="text-2xl font-bold" />
         <div className="flex flex-col sm:flex-row items-center gap-2">
-          <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
             <BalanceDisplay balance={balance} />
             <div className="leading-none">&bull;</div>
             <AddressDisplay address={address} withCopyButton withTooltip />

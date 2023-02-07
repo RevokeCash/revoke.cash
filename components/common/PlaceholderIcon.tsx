@@ -4,7 +4,7 @@ interface Props {
 
 const PlaceholderIcon = ({ size }: Props) => {
   return (
-    <div style={{ width: size, height: size }} className="bg-gray-300 dark:bg-gray-600 aspect-square rounded-full" />
+    <div style={{ width: size, height: size }} className="bg-zinc-300 dark:bg-zinc-600 aspect-square rounded-full" />
   );
 };
 

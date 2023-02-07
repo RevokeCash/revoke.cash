@@ -33,11 +33,13 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
     );
   }
 
-  const classes = classNames(!allowance.spender && 'text-gray-400 dark:text-gray-500', 'flex items-center gap-2 w-40');
+  const classes = classNames(!allowance.spender && 'text-zinc-400 dark:text-zinc-500', 'flex items-center gap-2 w-40');
 
   return (
     <div className={classes}>
-      <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
+      <div className="truncate">
+        <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
+      </div>
       {allowance.amount && (
         <ControlsWrapper>
           <div>

@@ -9,6 +9,9 @@ import { NodeEventGetter } from './logs/NodeEventGetter';
 // Rate limiting max 20 requests per second
 export const rateLimiter = rateLimit({ windowMs: 1 * 1000, max: 20 });
 
-export const covalentEventGetter = new CovalentEventGetter(JSON.parse(process.env.COVALENT_API_KEYS));
-export const etherscanEventGetter = new EtherscanEventGetter(JSON.parse(process.env.ETHERSCAN_API_KEYS));
+export const covalentEventGetter = new CovalentEventGetter(
+  process.env.COVALENT_API_KEY,
+  process.env.COVALENT_IS_PREMIUM === 'true'
+);
+export const etherscanEventGetter = new EtherscanEventGetter();
 export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS));

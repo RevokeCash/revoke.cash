@@ -70,7 +70,7 @@ const SortSelect = ({ table }: Props) => {
     return (
       <div className="flex items-center gap-2">
         {context !== 'menu' && <div>{t('address:sorting.label')}</div>}
-        <Label className="flex items-center gap-1 bg-gray-300 dark:bg-gray-600 font-normal">{sortDisplay}</Label>
+        <Label className="flex items-center gap-1 bg-zinc-300 dark:bg-zinc-600 font-normal">{sortDisplay}</Label>
       </div>
     );
   };

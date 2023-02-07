@@ -1,10 +1,11 @@
 import { ChainId, chains } from 'eth-chains';
+import { ETHERSCAN_API_KEYS } from 'lib/constants';
+import { RateLimit } from 'lib/interfaces';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
   ChainId.Goerli,
   ChainId.Sepolia,
-  ChainId.Gnosis,
   ChainId.MetisAndromedaMainnet,
   ChainId.SmartBitcoinCash,
   ChainId.SyscoinTanenbaumTestnet,
@@ -12,27 +13,29 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumClassicMainnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
+  2109, // Exosama
+  18159, // Proof of Memes
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   7700, // Canto
   ChainId.KavaEVM,
-  ChainId.KavaEVMTestnet,
   2000, // Dogechain
   ChainId.RSKMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.FuseMainnet,
   ChainId.Palm,
   ChainId.CallistoMainnet,
-  ChainId.Astar,
-  ChainId.Shiden,
   ChainId.NahmiiMainnet,
+  ChainId.FlareMainnet,
+  ChainId['SongbirdCanary-Network'],
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
   ChainId.PolygonMainnet,
+  ChainId.Gnosis,
   ChainId.Mumbai,
   ChainId['AvalancheC-Chain'],
   ChainId.AvalancheFujiTestnet,
@@ -59,6 +62,9 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.IoTeXNetworkMainnet,
   ChainId.Evmos,
   ChainId.GodwokenMainnet,
+  ChainId.BobaNetwork,
+  ChainId.Astar,
+  ChainId.Shiden,
 ];
 
 export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
@@ -99,15 +105,20 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.HarmonyMainnetShard0,
   ChainId.GodwokenMainnet,
   ChainId.SmartBitcoinCash,
-  ChainId.CoinExSmartChainMainnet,
+  ChainId['SongbirdCanary-Network'],
+  ChainId.BobaNetwork,
   ChainId.Evmos,
   ChainId.FuseMainnet,
   ChainId.SyscoinMainnet,
   ChainId.CallistoMainnet,
   ChainId.NahmiiMainnet,
+  ChainId.CoinExSmartChainMainnet,
+  ChainId.FlareMainnet,
   ChainId.Shiden,
   ChainId.EthereumClassicMainnet,
   ChainId.Palm,
+  2109, // Exosama
+  18159, // Proof of Memes
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -120,7 +131,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
-  ChainId.KavaEVMTestnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.AuroraTestnet,
   ChainId.MoonbaseAlpha,
@@ -142,6 +152,10 @@ export const isBackendSupportedChain = (chainId: number): boolean => {
 
 export const isCovalentSupportedChain = (chainId: number): boolean => {
   return COVALENT_SUPPORTED_CHAINS.includes(chainId);
+};
+
+export const isBlockscoutSupportedChain = (chainId: number): boolean => {
+  return BLOCKSCOUT_SUPPORTED_CHAINS.includes(chainId);
 };
 
 export const isEtherscanSupportedChain = (chainId: number): boolean => {
@@ -206,6 +220,11 @@ export const getChainName = (chainId: number): string => {
     [ChainId.NahmiiMainnet]: 'Nahmii',
     [ChainId.CoinExSmartChainMainnet]: 'CoinEx Smart Chain',
     [ChainId.CoinExSmartChainTestnet]: 'CoinEx Testnet',
+    [2109]: 'Exosama',
+    [18159]: 'Proof of Memes',
+    [ChainId.FlareMainnet]: 'Flare',
+    [ChainId['SongbirdCanary-Network']]: 'Songbird',
+    [ChainId.BobaNetwork]: 'Boba',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -234,6 +253,10 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io',
     [2000]: 'https://explorer.dogechain.dog',
     [568]: 'https://explorer-testnet.dogechain.dog',
+    [2109]: 'https://explorer.exosama.com',
+    [18159]: 'https://memescan.io',
+    [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network',
+    [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -247,7 +270,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
     [42170]: 'https://nova.arbitrum.io/rpc',
-    [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
+    [ChainId.Moonbeam]: 'https://rpc.api.moonbeam.network',
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
@@ -255,10 +278,16 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [2000]: 'https://dogechain.ankr.com',
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
     [ChainId.KavaEVMTestnet]: 'https://evm.testnet.kava.io',
-    [ChainId.Evmos]: 'https://evmos-mainnet.public.blastapi.io',
+    [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
     [ChainId.Optimism]: 'https://optimism-mainnet.public.blastapi.io',
+    [2109]: 'https://rpc.exosama.com',
+    [18159]: 'https://mainnet-rpc.memescan.io',
+    [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
+    [ChainId['SongbirdCanary-Network']]: 'https://songbird-api.flare.network/ext/C/rpc',
+    [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
+    [ChainId.Mumbai]: 'https://matic-testnet-archive-rpc.bwarelabs.com',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -336,6 +365,11 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.NahmiiMainnet]: '/assets/images/vendor/chains/nahmii.png',
     [ChainId.CoinExSmartChainMainnet]: '/assets/images/vendor/chains/coinex.png',
     [ChainId.CoinExSmartChainTestnet]: '/assets/images/vendor/chains/coinex.png',
+    [2109]: '/assets/images/vendor/chains/exosama.png',
+    [18159]: '/assets/images/vendor/chains/proof-of-memes.jpeg',
+    [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.png',
+    [ChainId['SongbirdCanary-Network']]: '/assets/images/vendor/chains/songbird.webp',
+    [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpeg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -348,6 +382,8 @@ export const getChainNativeToken = (chainId: number): string => {
     [568]: 'DOGE',
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
+    [2109]: 'SAMA',
+    [18159]: 'POM',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -389,7 +425,97 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     DOGE: '250',
     CLO: '5000',
     CET: '250',
+    SAMA: '500',
+    POM: '2500',
+    SGB: '1000',
+    FLR: '500',
   };
 
   return mapping[nativeToken] ?? '1';
+};
+
+export const getChainApiUrl = (chainId: number): string | undefined => {
+  const apiUrls = {
+    [ChainId.EthereumMainnet]: 'https://api.etherscan.io/api',
+    [ChainId.BinanceSmartChainMainnet]: 'https://api.bscscan.com/api',
+    [ChainId.BinanceSmartChainTestnet]: 'https://api-testnet.bscscan.com/api',
+    [ChainId.PolygonMainnet]: 'https://api.polygonscan.com/api',
+    [ChainId.Mumbai]: 'https://api-testnet.polygonscan.com/api',
+    [ChainId['AvalancheC-Chain']]: 'https://api.snowtrace.io/api',
+    [ChainId.AvalancheFujiTestnet]: 'https://api-testnet.snowtrace.io/api',
+    [ChainId.FantomOpera]: 'https://api.ftmscan.com/api',
+    [ChainId.FantomTestnet]: 'https://api-testnet.ftmscan.com/api',
+    [ChainId.ArbitrumOne]: 'https://api.arbiscan.io/api',
+    [421613]: 'https://api-goerli.arbiscan.io/api',
+    [42170]: 'https://api-nova.arbiscan.io/api',
+    [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
+    [ChainId.HuobiECOChainTestnet]: 'https://api-testnet.hecoinfo.com/api',
+    [ChainId.Moonbeam]: 'https://api-moonbeam.moonscan.io/api',
+    [ChainId.Moonriver]: 'https://api-moonriver.moonscan.io/api',
+    [ChainId.MoonbaseAlpha]: 'https://api-moonbase.moonscan.io/api',
+    [ChainId.CronosMainnetBeta]: 'https://api.cronoscan.com/api',
+    [ChainId.CronosTestnet]: 'https://api-testnet.cronoscan.com/api',
+    [ChainId.CeloMainnet]: 'https://api.celoscan.io/api',
+    [ChainId.CeloAlfajoresTestnet]: 'https://api-alfajores.celoscan.io/api',
+    [ChainId.AuroraMainnet]: 'https://api.aurorascan.dev/api',
+    [ChainId.AuroraTestnet]: 'https://api-testnet.aurorascan.dev/api',
+    [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
+    [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
+    [ChainId.CLVParachain]: 'https://api.clvscan.com/api',
+    [7700]: 'https://evm.explorer.canto.io/api',
+    [ChainId.KavaEVM]: 'https://explorer.kava.io/api',
+    [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io/api',
+    [2000]: 'https://explorer.dogechain.dog/api',
+    [568]: 'https://explorer-testnet.dogechain.dog/api',
+    [ChainId.RSKMainnet]: 'https://blockscout.com/rsk/mainnet/api',
+    [ChainId.EmeraldParatimeMainnet]: 'https://explorer.emerald.oasis.dev/api',
+    [ChainId.Evmos]: 'https://evm.evmos.org/api',
+    [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
+    [ChainId.Shiden]: 'https://blockscout.com/shiden/api',
+    [ChainId.Astar]: 'https://blockscout.com/astar/api',
+    [ChainId.Palm]: 'https://explorer.palm.io/api',
+    [ChainId.CallistoMainnet]: 'https://explorer.callisto.network/api',
+    [ChainId.NahmiiMainnet]: 'https://explorer.nahmii.io/api',
+    [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network/api',
+    [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
+    [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
+  };
+
+  return apiUrls[chainId];
+};
+
+export const getChainEtherscanPlatformNames = (
+  chainId: number
+): { platform: string; subPlatform?: string } | undefined => {
+  const apiUrl = getChainApiUrl(chainId);
+  if (!apiUrl) return undefined;
+
+  const platform = new URL(apiUrl).hostname.split('.').at(-2);
+  const subPlatform = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
+  return { platform, subPlatform };
+};
+
+export const getChainApiKey = (chainId: number): string | undefined => {
+  const { platform, subPlatform } = getChainEtherscanPlatformNames(chainId);
+  return ETHERSCAN_API_KEYS[`${subPlatform}.${platform}`] ?? ETHERSCAN_API_KEYS[platform];
+};
+
+export const getChainApiRateLimit = (chainId: number): RateLimit => {
+  // Etherscan has a rate limit of 1 request per 5 seconds if no API key is provided
+  // Note that we exclude Blockscout chains here because they require no API key
+  if (isEtherscanSupportedChain(chainId) && !isBlockscoutSupportedChain(chainId) && !getChainApiKey(chainId)) {
+    return { interval: 5000, intervalCap: 1 };
+  }
+
+  // For all other chains we assume a rate limit of 5 requests per second (which we underestimate as 4/s to be safe)
+  return { interval: 1000, intervalCap: 4 };
+};
+
+// TODO: Blockscout-hosted chains will all get identified as 'blockscout:undefined'. It is unclear if Blockscout
+// has a single rate limit for all chains or if each chain has its own rate limit. If the former, we're all good,
+// if the latter, we need to add a special case for these chains.
+export const getChainApiIdentifer = (chainId: number): string => {
+  const { platform } = getChainEtherscanPlatformNames(chainId);
+  const apiKey = getChainApiKey(chainId);
+  return `${platform}:${apiKey}`;
 };

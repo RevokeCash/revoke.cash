@@ -93,9 +93,9 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
                 step={0.01}
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
-                className="z-10 rounded-r-none grow text-gray-600 dark:text-gray-400"
+                className="z-10 rounded-r-none grow text-zinc-600 dark:text-zinc-400"
               />
-              <div className="px-3 py-1.5 border-y border-black dark:border-white bg-gray-300 dark:bg-gray-700 flex justify-center items-center">
+              <div className="px-3 py-1.5 border-y border-black dark:border-white bg-zinc-300 dark:bg-zinc-700 flex justify-center items-center">
                 {nativeToken}
               </div>
               <Button

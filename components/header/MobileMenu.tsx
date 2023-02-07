@@ -4,13 +4,14 @@ import Button from 'components/common/Button';
 import WalletIndicator from 'components/header/WalletIndicator';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import DonateButton from '../common/DonateButton';
 import NavLink from './NavLink';
 
 const MobileMenu = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const focusRef = useRef(null);
 
   const [open, setOpen] = useState(false);
   const toggleOpen = () => setOpen(!open);
@@ -27,7 +28,7 @@ const MobileMenu = () => {
         {open && <XMarkIcon className="h-8 w-8" />}
       </Button>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="absolute inset-0 top-[4.5rem]" initialFocus={null} onClose={setOpen}>
+        <Dialog as="div" className="absolute inset-0 top-[4.5rem]" initialFocus={focusRef} onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -39,6 +40,7 @@ const MobileMenu = () => {
           >
             <Dialog.Panel className="z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
               <div className="flex flex-col items-center gap-6 p-12">
+                <button ref={focusRef} /> {/* Focus trap */}
                 <DonateButton size="none" style="tertiary" className="text-lg" />
                 <NavLink to="/faq" text={t('common:nav.faq')} />
                 <NavLink to="/extension" text={t('common:nav.extension')} />
