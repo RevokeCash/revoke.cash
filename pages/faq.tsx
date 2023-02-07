@@ -71,6 +71,16 @@ const FaqPage: NextPage = () => {
               ]}
             />
           </FaqItem>
+          <FaqItem question={t('faq:questions.which_domains.question')}>
+            <Trans
+              i18nKey="faq:questions.which_domains.answer"
+              components={[
+                <Href href="https://ens.domains" className="font-medium" underline="hover" html external />,
+                <Href href="https://unstoppabledomains.com" className="font-medium" underline="hover" html external />,
+                <Href href="https://avvy.domains" className="font-medium" underline="hover" html external />,
+              ]}
+            />
+          </FaqItem>
           <FaqItem question={t('faq:questions.other_question.question')}>
             <Trans
               i18nKey="faq:questions.other_question.answer"

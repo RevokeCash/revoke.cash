@@ -52,6 +52,10 @@
       "answer": "Revoke.cash<0>浏览器扩展</0>支持所有的EVM链。Revoke.cash网站支持大量的EVM链，包括Ethereum、BSC、Polygon和Avalanche。完整名单可以在支持的链菜单中查看。如果有任何其他你想支持的链，请在<1>Twitter</1>或<2>Discord</2>上联系。",
       "question": "Revoke.cash支持哪些链？"
     },
+    "which_domains": {
+      "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <0>ENS</0>, <1>Unstoppable Domains</1> and <2>Avvy Domains</2>. We may add other domain name services in the future.",
+      "question": "Which kinds of domains does Revoke.cash support?"
+    },
     "whole_wallet_at_risk": {
       "answer": "“无限”授权只局限于你给予授权的代币或NFT。比如你为你的DAI提供了一个无限授权，那么<0>你所有的DAI</0>都可能会有风险，但你的USDC没有。同样，你对无聊猿提供的 \"无限 \"授权并不影响你的酷猫。",
       "question": "如果我有一个 \"无限 \"授权，这是否意味着我的整个钱包都有风险？"

@@ -52,6 +52,10 @@
       "answer": "<0>La extensión de navegador </0> Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM incluyendo Ethereum, BSC, Polygon y Avalanche. La lista completa de las redes compatibles puede verse en la sección desplegable de redes. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <1>Twitter</1> o <2>Discord</2>.",
       "question": "¿Con qué redes funciona Revoke.cash?"
     },
+    "which_domains": {
+      "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <0>ENS</0>, <1>Unstoppable Domains</1> and <2>Avvy Domains</2>. We may add other domain name services in the future.",
+      "question": "Which kinds of domains does Revoke.cash support?"
+    },
     "whole_wallet_at_risk": {
       "answer": "No. Una autorización \"ilimitada\" solo se aplica al token o colección de NFTs a la que le diste autorización. Así que si diste una autorización ilimitada de tu DAI, entonces <0>todo tu DAI</0> podría estar en riesgo, pero nada de tu USDC. De igual forma, una autorización \"ilimitada\" de tus Bored Apes no afecta a tus Cool Cats.",
       "question": "Si tengo una autorización \"ilimitada\", ¿eso quiere decir que toda mi cartera está en riesgo?"
