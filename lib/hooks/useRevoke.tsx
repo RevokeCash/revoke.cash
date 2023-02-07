@@ -6,15 +6,16 @@ import { useEthereum } from 'lib/hooks/useEthereum';
 import type { AllowanceData } from 'lib/interfaces';
 import { fromFloat } from 'lib/utils';
 import { isErc721Contract } from 'lib/utils/tokens';
+import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
 
-export const useRevoke = (
-  allowance: AllowanceData,
-  onUpdate: (allowance: AllowanceData, newAmount?: string) => void = () => {}
-) => {
+type OnUpdate = (allowance: AllowanceData, newAmount?: string) => void;
+
+export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {}) => {
   const toastRef = useRef();
   const { signer, selectedChainId, account } = useEthereum();
+  const { t } = useTranslation();
 
   const { spender, tokenId, contract, decimals } = allowance;
 
@@ -38,7 +39,7 @@ export const useRevoke = (
         const message = e.error?.message ?? e.message;
         console.debug(`failed, code ${code}`);
         if (code === -32000) {
-          toast.info(`❌ Revoking allowance failed: ${message}`);
+          toast.info(t('common:toasts.revoke_failed', { message }));
         }
 
         // ignore other errors
@@ -46,7 +47,7 @@ export const useRevoke = (
       }
 
       if (tx) {
-        displayTransactionSubmittedToast(toastRef);
+        displayTransactionSubmittedToast(toastRef, t);
 
         track('Revoked ERC721 allowance', {
           chainId: selectedChainId,
@@ -82,12 +83,9 @@ export const useRevoke = (
         const message = e.error?.message ?? e.message;
         console.debug(`failed, code ${code}`);
         if (code === -32000) {
-          const toastMessage =
-            newAmount === '0'
-              ? `Revoking allowance failed: ${message}`
-              : 'This token does not support updating allowances, please revoke instead';
-
-          toast.info(`❌ ${toastMessage}`);
+          const revokeFailed = t('common:toasts.revoke_failed', { message });
+          const updateFailed = t('common:toasts.update_failed');
+          toast.info(newAmount === '0' ? revokeFailed : updateFailed);
         }
 
         // ignore other errors
@@ -95,7 +93,7 @@ export const useRevoke = (
       }
 
       if (tx) {
-        displayTransactionSubmittedToast(toastRef);
+        displayTransactionSubmittedToast(toastRef, t);
 
         track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
           chainId: selectedChainId,

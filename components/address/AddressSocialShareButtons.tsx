@@ -3,6 +3,7 @@ import Button from 'components/common/Button';
 import LogoLink from 'components/common/LogoLink';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { writeToClipBoard } from 'lib/utils';
+import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
   address: string;
@@ -10,6 +11,7 @@ interface Props {
 
 const AddressSocialShareButtons = ({ address }: Props) => {
   const { darkMode } = useColorTheme();
+  const { t } = useTranslation();
 
   return (
     <div className="flex items-center gap-2">
@@ -19,7 +21,7 @@ const AddressSocialShareButtons = ({ address }: Props) => {
         alt="Etherscan Link"
         href={`https://etherscan.io/address/${address}`}
       />
-      <Button style="tertiary" size="none" onClick={() => writeToClipBoard(location.href)}>
+      <Button style="tertiary" size="none" onClick={() => writeToClipBoard(location.href, t)}>
         <ShareIcon className="w-5 h-5" />
       </Button>
     </div>

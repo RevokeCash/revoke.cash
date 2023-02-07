@@ -67,5 +67,13 @@
     "extension": "Extensión",
     "faq": "FAQ",
     "search": "Ingresar dirección, nombre de ENS o Unstoppable Domain"
+  },
+  "toasts": {
+    "clipboard_failed": "❌ Couldn't copy to clipboard",
+    "clipboard_success": "✅ Copied to clipboard",
+    "donation_sent": "💪 Thanks for the donation!",
+    "revoke_failed": "❌ Revoking allowance failed: {{message}}",
+    "transaction_submitted": "✅ Transaction submitted!",
+    "update_failed": "❌ This token does not support updating allowances, please revoke instead"
   }
 }

@@ -2,6 +2,7 @@ import type { Filter } from '@ethersproject/abstract-provider';
 import type { BigNumberish } from 'ethers';
 import { BigNumber, utils } from 'ethers';
 import type { Log, LogsProvider } from 'lib/interfaces';
+import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
 
@@ -129,15 +130,14 @@ export const filterLogsByAddress = (logs: Log[], address: string) => {
   return logs.filter((log) => log.address === address);
 };
 
-// TODO: Translate toasts
-export const writeToClipBoard = (text: string, displayToast: boolean = true) => {
+export const writeToClipBoard = (text: string, t: Translate, displayToast: boolean = true) => {
   if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
-    toast.info("❌ Couldn't copy to clipboard", { autoClose: 1000 });
+    toast.info(t('common:toasts.clipboard_failed'), { autoClose: 1000 });
   }
 
   navigator.clipboard.writeText(text);
   if (displayToast) {
-    toast.info('✅ Copied to clipboard', { autoClose: 1000 });
+    toast.info(t('common:toasts.clipboard_success'), { autoClose: 1000 });
   }
 };
 

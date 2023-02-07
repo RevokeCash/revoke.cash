@@ -59,7 +59,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
         value: utils.parseEther(amount),
       });
 
-      toast.info('💪 Thanks for the donation!');
+      toast.info(t('common:toasts.donation_sent'));
 
       track('Donated', { chainId: connectedChainId, amount: Number(amount) });
 

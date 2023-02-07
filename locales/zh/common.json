@@ -67,5 +67,13 @@
     "extension": "扩展",
     "faq": "常见问题",
     "search": "输入地址、ENS名称或Unstoppable域名"
+  },
+  "toasts": {
+    "clipboard_failed": "❌ Couldn't copy to clipboard",
+    "clipboard_success": "✅ Copied to clipboard",
+    "donation_sent": "💪 Thanks for the donation!",
+    "revoke_failed": "❌ Revoking allowance failed: {{message}}",
+    "transaction_submitted": "✅ Transaction submitted!",
+    "update_failed": "❌ This token does not support updating allowances, please revoke instead"
   }
 }

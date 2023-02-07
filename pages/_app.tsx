@@ -1,4 +1,5 @@
 import { init, track } from '@amplitude/analytics-browser';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Analytics } from '@vercel/analytics/react';
 import LogIn from 'components/common/LogIn';
@@ -50,7 +51,9 @@ const App = ({ Component, pageProps }: AppProps) => {
             <Component {...pageProps} />
             <ToastContainer
               className="text-center"
-              toastClassName="border border-black"
+              toastClassName="border border-black bg-white text-zinc-900 dark:bg-black dark:border-white dark:text-zinc-100"
+              progressClassName="bg-black dark:bg-white"
+              closeButton={<XMarkIcon className="w-6 h-6 text-zinc-500 hover:text-black dark:hover:text-white" />}
               position="top-right"
               icon={false}
               autoClose={5000}
@@ -61,7 +64,6 @@ const App = ({ Component, pageProps }: AppProps) => {
               pauseOnFocusLoss
               draggable
               pauseOnHover
-              progressStyle={{ backgroundColor: 'black' }}
             />
           </ColorThemeProvider>
         </EthereumProvider>
