@@ -21,7 +21,7 @@ export const ColorThemeProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (theme === 'system') {
-      setDarkMode(typeof window === 'undefined' ? false : window.matchMedia('(prefers-color-scheme: dark)').matches);
+      setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
     } else {
       setDarkMode(theme === 'dark');
     }
