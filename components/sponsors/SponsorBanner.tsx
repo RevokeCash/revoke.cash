@@ -2,6 +2,7 @@ import Href from 'components/common/Href';
 import Label from 'components/common/Label';
 import { classNames } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 import { useState } from 'react';
 
 interface Props {
@@ -17,55 +18,59 @@ const SponsorBanner = ({ name, banner, url, tier }: Props) => {
 
   if (error) return null;
 
-  const classMapping = {
+  const mapping = {
     common: {
-      container: 'relative',
-      label: 'absolute -top-1 left-2 bg-black border font-semibold flex items-center justify-center rounded-md',
+      label:
+        'absolute -top-1 left-2 z-10 border border-black text-black font-semibold flex items-center justify-center rounded-md',
       banner: 'flex flex-col items-center',
-      image: 'rounded-lg border border-black dark:border-white object-cover aspect-[3/1]',
-      name: '',
+      image: 'rounded-lg border border-black dark:border-white object-cover aspect-[3/1] overflow-hidden',
     },
     bronze: {
-      container: '',
-      label: 'border-amber-600 text-amber-600 text-[0.6rem] px-0.5 py-0',
+      label: 'bg-amber-600 text-[0.65rem] px-1 py-px',
       banner: '',
       image: 'w-48',
-      name: '',
+      img: {
+        width: 192,
+        height: 64,
+      },
     },
     silver: {
-      container: '',
-      label: 'border-slate-400 text-slate-400',
+      label: 'bg-slate-300',
       banner: '',
-      image: 'w-60',
-      name: '',
+      image: 'w-64',
+      img: {
+        width: 256,
+        height: 85,
+      },
     },
     gold: {
-      container: '',
-      label: 'border-yellow-500 text-yellow-500',
+      label: 'bg-yellow-500',
       banner: '',
-      image: 'w-80',
-      name: '',
+      image: 'w-96',
+      img: {
+        width: 384,
+        height: 128,
+      },
     },
   };
 
   return (
-    <div className={classNames(classMapping.common.container, classMapping[tier].container)}>
-      <Label className={classNames(classMapping.common.label, classMapping[tier].label)}>
+    <div className="relative">
+      <Label className={classNames(mapping.common.label, mapping[tier].label)}>
         {t(`landing:sponsors.tiers.${tier}`)}
       </Label>
-      <Href
-        href={url}
-        external
-        className={classNames(classMapping.common.banner, classMapping[tier].banner)}
-        underline="hover"
-      >
-        <img
-          src={banner}
-          alt={name}
-          className={classNames(classMapping.common.image, classMapping[tier].image)}
-          onError={() => setError(true)}
-        />
-        <div className={classNames(classMapping.common.name, classMapping[tier].name)}>{name}</div>
+      <Href href={url} external className={classNames(mapping.common.banner, mapping[tier].banner)} underline="hover">
+        <div className={classNames(mapping.common.image, mapping[tier].image)}>
+          <Image
+            src={banner}
+            alt={name}
+            className="object-cover"
+            onError={() => setError(true)}
+            width={mapping[tier].img.width}
+            height={mapping[tier].img.height}
+          />
+        </div>
+        <div>{name}</div>
       </Href>
     </div>
   );
