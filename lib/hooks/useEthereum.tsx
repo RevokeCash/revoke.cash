@@ -248,7 +248,8 @@ export const EthereumProvider = ({ children }: Props) => {
 
       return address;
     } catch {
-      // Ignored
+      // Clean up anything that might have been set while connecting
+      await disconnect();
     }
   };
 
