@@ -20,20 +20,14 @@ const Sponsors = () => {
       </div>
 
       <div className="flex flex-col items-center gap-4 max-w-5xl px-2">
-        {/* <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-4">
-        <SponsorBanner
-            name="Vulcan"
-            banner="/assets/images/vendor/sponsors/vulcan.png"
-            url="https://vulcan.xyz"
-            tier="gold"
-          />
+        <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-4">
           <SponsorBanner
-            name="PREMINT"
-            banner="/assets/images/vendor/sponsors/premint.png"
-            url="https://vulcan.xyz"
+            name="Boring Security"
+            banner="/assets/images/vendor/sponsors/boring-security.png"
+            url="https://boringsecurity.com"
             tier="gold"
           />
-        </div> */}
+        </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4">
           <SponsorBanner
             name="Vulcan"
