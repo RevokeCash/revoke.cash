@@ -154,11 +154,11 @@ export const EthereumProvider = ({ children }: Props) => {
       };
 
       try {
-        await addEthereumChain(newChainId);
+        await switchEthereumChain(newChainId);
       } catch (error) {
         try {
           if (error?.code !== 4001) {
-            await switchEthereumChain(newChainId);
+            await addEthereumChain(newChainId);
           }
         } catch {}
       }
