@@ -1,7 +1,8 @@
 import { track } from '@amplitude/analytics-browser';
 import { useQuery } from '@tanstack/react-query';
 import type { AllowanceData } from 'lib/interfaces';
-import { getAllowancesForAddress } from 'lib/utils/allowances';
+import { getAllowancesForAddress, stripAllowanceData } from 'lib/utils/allowances';
+import { hasZeroBalance } from 'lib/utils/tokens';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { useEffect, useState } from 'react';
 import { useEthereum } from './useEthereum';
@@ -59,12 +60,26 @@ export const useAllowances = (userAddress: string) => {
     }
   }, [data]);
 
+  const contractEquals = (a: AllowanceData, b: AllowanceData) => {
+    return a.contract.address === b.contract.address;
+  };
+
   const allowanceEquals = (a: AllowanceData, b: AllowanceData) => {
-    return a.contract.address === b.contract.address && a.spender === b.spender && a.tokenId === b.tokenId;
+    return contractEquals(a, b) && a.spender === b.spender && a.tokenId === b.tokenId;
   };
 
   const onRevoke = (allowance: AllowanceData) => {
-    setAllowances((previousAllowances) => previousAllowances.filter((other) => !allowanceEquals(other, allowance)));
+    setAllowances((previousAllowances) => {
+      const newAllowances = previousAllowances.filter((other) => !allowanceEquals(other, allowance));
+
+      // If the token has a balance and we just revoked the last allowance, we need to add the token back to the list
+      // TODO: This is kind of ugly, ideally this should be reactive
+      if (!hasZeroBalance(allowance) && !newAllowances.find((other) => contractEquals(other, allowance))) {
+        newAllowances.push(stripAllowanceData(allowance));
+      }
+
+      return newAllowances;
+    });
   };
 
   // TODO: Update last updated time
