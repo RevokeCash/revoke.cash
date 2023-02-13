@@ -26,6 +26,13 @@ const Sponsors = () => {
             banner="/assets/images/vendor/sponsors/boring-security.png"
             url="https://boringsecurity.com"
             tier="gold"
+            overlay={{
+              url: 'https://discord.gg/boringsecurity',
+              top: 6,
+              left: 317,
+              width: 61,
+              height: 116,
+            }}
           />
         </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4">

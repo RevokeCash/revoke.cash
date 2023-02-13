@@ -10,9 +10,18 @@ interface Props {
   banner: string;
   url: string;
   tier: 'gold' | 'silver' | 'bronze';
+  overlay?: Overlay;
 }
 
-const SponsorBanner = ({ name, banner, url, tier }: Props) => {
+interface Overlay {
+  url: string;
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
+const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
   const { t } = useTranslation();
   const [error, setError] = useState<boolean>(false);
 
@@ -72,6 +81,11 @@ const SponsorBanner = ({ name, banner, url, tier }: Props) => {
         </div>
         <div>{name}</div>
       </Href>
+      {overlay && (
+        <Href href={overlay.url} external>
+          <div style={overlay} className="absolute" />
+        </Href>
+      )}
     </div>
   );
 };
