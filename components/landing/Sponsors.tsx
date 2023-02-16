@@ -38,13 +38,13 @@ const Sponsors = () => {
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4">
           <SponsorBanner
             name="Vulcan"
-            banner="/assets/images/vendor/sponsors/vulcan.png"
+            banner="/assets/images/vendor/sponsors/vulcan.jpg"
             url="https://vulcan.xyz"
             tier="silver"
           />
           <SponsorBanner
             name="PREMINT"
-            banner="/assets/images/vendor/sponsors/premint.png"
+            banner="/assets/images/vendor/sponsors/premint.jpg"
             url="https://premint.xyz"
             tier="silver"
           />
