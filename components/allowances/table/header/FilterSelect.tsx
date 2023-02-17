@@ -65,6 +65,7 @@ const FilterSelect = ({ table }: Props) => {
   const [selectedFilters, setSelectedFilters] = useLocalStorage<Option[]>('allowances-table.filters', []);
 
   useEffect(() => {
+    if (!selectedFilters) return;
     const tableFilters = generateTableFilters(options, selectedFilters);
     table.setColumnFilters(() => tableFilters);
     track('Updated Filters', { filters: tableFilters });

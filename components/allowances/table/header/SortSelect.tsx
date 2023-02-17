@@ -30,6 +30,7 @@ const SortSelect = ({ table }: Props) => {
   });
 
   useEffect(() => {
+    if (!selectedSort) return;
     table.setSorting(() => [selectedSort]);
     track('Updated Sorting', { column: selectedSort.id, desc: selectedSort.desc });
   }, [selectedSort]);

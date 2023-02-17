@@ -54,7 +54,7 @@ const fixtures = [
   ['Cronos Testnet', '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f'],
   ['Fantom Testnet', '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
-  ['Moonbase Alpha', '0xF1c70b44f61f5a3AA0658cbF33E16f68534dF9D9'],
+  ['Moonbase Alpha', '0xeE146d0808D6a874237701E06A118f444dB13D73'],
   ['CoinEx Testnet', '0x5B82588003Ac9db7510702171b94f4acAF87Ca72'],
   ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
 ];
@@ -88,6 +88,7 @@ describe('Chain Support', () => {
       cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
 
       cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4000 }).should('exist');
+      cy.wait(100); // Wait for the loading spinner to appear
       cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
       cy.get(Selectors.CONTROLS_SECTION, { timeout: 4000 }).should('exist');
     });

@@ -272,7 +272,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
     [7700]: 'https://canto.slingshot.finance',
-    [2000]: 'https://dogechain.ankr.com',
+    [2000]: 'https://rpc.dogechain.dog',
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
     [ChainId.KavaEVMTestnet]: 'https://evm.testnet.kava.io',
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
@@ -284,7 +284,8 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-api.flare.network/ext/C/rpc',
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
-    [ChainId.Mumbai]: 'https://matic-testnet-archive-rpc.bwarelabs.com',
+    [ChainId.CronosTestnet]: 'https://evm-t3.cronos.org',
+    [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
