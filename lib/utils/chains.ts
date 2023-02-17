@@ -29,6 +29,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.NahmiiMainnet,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
+  ChainId.AuroraMainnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -51,8 +52,6 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.CronosTestnet,
   ChainId.CeloMainnet,
   ChainId.CeloAlfajoresTestnet,
-  ChainId.AuroraMainnet,
-  ChainId.AuroraTestnet,
   ChainId.BitTorrentChainMainnet,
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
@@ -132,7 +131,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
   ChainId.CeloAlfajoresTestnet,
-  ChainId.AuroraTestnet,
   ChainId.MoonbaseAlpha,
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
@@ -237,8 +235,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
     [ChainId.CeloMainnet]: 'https://celoscan.io',
     [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
-    [ChainId.AuroraMainnet]: 'https://aurorascan.dev',
-    [ChainId.AuroraTestnet]: 'https://testnet.aurorascan.dev',
+    [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev',
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
     [ChainId.BitTorrentChainTestnet]: 'https://testnet.bttcscan.com',
     [ChainId.CLVParachain]: 'https://clvscan.com',
@@ -343,7 +340,6 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.CeloMainnet]: '/assets/images/vendor/chains/celo.png',
     [ChainId.CeloAlfajoresTestnet]: '/assets/images/vendor/chains/celo.png',
     [ChainId.AuroraMainnet]: '/assets/images/vendor/chains/aurora.jpeg',
-    [ChainId.AuroraTestnet]: '/assets/images/vendor/chains/aurora.jpeg',
     [ChainId.BitTorrentChainMainnet]: '/assets/images/vendor/chains/bttc.png',
     [ChainId.BitTorrentChainTestnet]: '/assets/images/vendor/chains/bttc.png',
     [ChainId.CLVParachain]: '/assets/images/vendor/chains/clover.jpeg',
@@ -457,8 +453,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.CronosTestnet]: 'https://api-testnet.cronoscan.com/api',
     [ChainId.CeloMainnet]: 'https://api.celoscan.io/api',
     [ChainId.CeloAlfajoresTestnet]: 'https://api-alfajores.celoscan.io/api',
-    [ChainId.AuroraMainnet]: 'https://api.aurorascan.dev/api',
-    [ChainId.AuroraTestnet]: 'https://api-testnet.aurorascan.dev/api',
+    [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev/api',
     [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
     [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
     [ChainId.CLVParachain]: 'https://api.clvscan.com/api',
