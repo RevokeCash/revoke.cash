@@ -1,10 +1,10 @@
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressContext } from 'lib/hooks/useAddressContext';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import { ReactElement } from 'react';
+import { useAccount, useNetwork } from 'wagmi';
 
 interface Props {
   children?: ReactElement;
@@ -12,14 +12,15 @@ interface Props {
 
 const ControlsWrapper = ({ children }: Props) => {
   const { t } = useTranslation();
-  const { account, selectedChainId, connectedChainId } = useEthereum();
-  const { address } = useAddressContext();
+  const { address: account } = useAccount();
+  const { chain } = useNetwork();
+  const { address, selectedChainId } = useAddressPageContext();
 
   const chainName = getChainName(selectedChainId);
 
   const isConnected = account !== undefined;
   const isConnectedAddress = isConnected && address === account;
-  const needsToSwitchChain = isConnected && selectedChainId !== connectedChainId;
+  const needsToSwitchChain = isConnected && selectedChainId !== chain?.id;
 
   if (!isConnected) {
     return <WithHoverTooltip tooltip={t('address:tooltips.connect_wallet')}>{children}</WithHoverTooltip>;

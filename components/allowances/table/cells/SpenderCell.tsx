@@ -2,8 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import Href from 'components/common/Href';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressContext } from 'lib/hooks/useAddressContext';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { shortenString } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
@@ -15,8 +14,7 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  const { selectedChainId } = useEthereum();
-  const { openSeaProxyAddress } = useAddressContext();
+  const { openSeaProxyAddress, selectedChainId } = useAddressPageContext();
 
   // TODO: Expose this data to react-table
   const { data: spenderName, isLoading } = useQuery({

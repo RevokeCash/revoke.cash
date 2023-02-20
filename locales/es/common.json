@@ -28,6 +28,9 @@
     "light": "Claro",
     "system": "Sistema"
   },
+  "connect_wallet": {
+    "title": "Connect Your Wallet"
+  },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
     "title": "Donar a Revoke.cash"
@@ -52,6 +55,9 @@
         }
       },
       "title": "Esta página no existe."
+    },
+    "messages": {
+      "chain_could_not_connect": "Could not connect to the {{chainName}} chain"
     }
   },
   "footer": {

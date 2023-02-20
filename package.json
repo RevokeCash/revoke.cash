@@ -16,7 +16,7 @@
   },
   "private": true,
   "dependencies": {
-    "@0xsequence/multicall": "^0.36.13",
+    "@0xsequence/multicall": "^0.43.15",
     "@amplitude/analytics-browser": "^1.5.5",
     "@avvy/client": "^3.3.2",
     "@coinbase/wallet-sdk": "^3.5.3",
@@ -25,7 +25,10 @@
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@openzeppelin/contracts": "^4.7.3",
-    "@tanstack/react-query": "^4.19.0",
+    "@rainbow-me/rainbowkit": "^0.11.0",
+    "@tanstack/query-sync-storage-persister": "^4.24.6",
+    "@tanstack/react-query": "^4.24.6",
+    "@tanstack/react-query-persist-client": "^4.24.6",
     "@tanstack/react-table": "^8.6.0",
     "@tippyjs/react": "^4.2.6",
     "@unstoppabledomains/resolution": "^8.3.3",
@@ -56,6 +59,7 @@
     "request-ip": "^2.2.0",
     "timeago-react": "^3.0.5",
     "use-local-storage": "^2.3.6",
+    "wagmi": "^0.11.6",
     "web3modal": "1.9.9"
   },
   "devDependencies": {

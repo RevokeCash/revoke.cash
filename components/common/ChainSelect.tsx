@@ -1,6 +1,7 @@
 import ChainLogo from 'components/common/ChainLogo';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { useMounted } from 'lib/hooks/useMounted';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 import PlaceholderIcon from './PlaceholderIcon';
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
+  const isMounted = useMounted();
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
 
@@ -48,6 +50,8 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
 
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {
     const chainName = getChainName(chainId);
+
+    if (!isMounted) return null;
 
     return (
       <div className="flex items-center gap-1">

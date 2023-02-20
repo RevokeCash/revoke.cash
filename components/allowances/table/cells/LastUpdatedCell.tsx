@@ -1,6 +1,6 @@
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const LastUpdatedCell = ({ allowance }: Props) => {
-  const { selectedChainId } = useEthereum();
+  const { selectedChainId } = useAddressPageContext();
   const { lang } = useTranslation();
 
   if (!allowance.lastUpdated) return null;

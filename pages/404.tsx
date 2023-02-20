@@ -2,12 +2,12 @@ import { GlobeEuropeAfricaIcon, QuestionMarkCircleIcon, UserCircleIcon } from '@
 import Href from 'components/common/Href';
 import NotFoundLink from 'components/common/NotFoundLink';
 import ContentPageLayout from 'layouts/ContentPageLayout';
-import { useEthereum } from 'lib/hooks/useEthereum';
 import useTranslation from 'next-translate/useTranslation';
+import { useAccount } from 'wagmi';
 
 const Error404 = () => {
   const { t } = useTranslation();
-  const { account } = useEthereum();
+  const { address: account } = useAccount();
 
   return (
     <ContentPageLayout>

@@ -2,19 +2,22 @@ import { track } from '@amplitude/analytics-browser';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { BigNumber, Contract } from 'ethers';
 import { ADDRESS_ZERO } from 'lib/constants';
-import { useEthereum } from 'lib/hooks/useEthereum';
 import type { AllowanceData } from 'lib/interfaces';
 import { fromFloat } from 'lib/utils';
 import { isErc721Contract } from 'lib/utils/tokens';
 import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
+import { useAccount, useSigner } from 'wagmi';
+import { useAddressPageContext } from './useAddressContext';
 
 type OnUpdate = (allowance: AllowanceData, newAmount?: string) => void;
 
 export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {}) => {
   const toastRef = useRef();
-  const { signer, selectedChainId, account } = useEthereum();
+  const { selectedChainId } = useAddressPageContext();
+  const { data: signer } = useSigner();
+  const { address: account } = useAccount();
   const { t } = useTranslation();
 
   const { spender, tokenId, contract, decimals } = allowance;

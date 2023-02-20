@@ -1,10 +1,10 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Analytics } from '@vercel/analytics/react';
 import LogIn from 'components/common/LogIn';
+import { EthereumProvider } from 'lib/hooks/EthereumProvider';
+import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
-import { EthereumProvider } from 'lib/hooks/useEthereum';
 import type { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
@@ -32,8 +32,6 @@ init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, null, {
   },
 });
 
-const queryClient = new QueryClient();
-
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
 
@@ -44,7 +42,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
+      <QueryProvider>
         <EthereumProvider>
           <ColorThemeProvider>
             <LogIn />
@@ -67,7 +65,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             />
           </ColorThemeProvider>
         </EthereumProvider>
-      </QueryClientProvider>
+      </QueryProvider>
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
       <Analytics />
     </>

@@ -1,6 +1,7 @@
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useMounted } from 'lib/hooks/useMounted';
+import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import ChainSelect from '../common/ChainSelect';
-import ConnectButton from './ConnectButton';
+import WalletIndicatorDropdown from './WalletIndicatorDropdown';
 
 interface Props {
   menuAlign?: 'left' | 'right';
@@ -10,14 +11,17 @@ interface Props {
 }
 
 const WalletIndicator = ({ menuAlign, size, style, className }: Props) => {
-  const { switchInjectedWalletChain, connectedChainId, account } = useEthereum();
+  const isMounted = useMounted();
+  const { address: account } = useAccount();
+  const { switchNetwork } = useSwitchNetwork();
+  const { chain } = useNetwork();
+
+  if (!isMounted) return null;
 
   return (
     <div className="flex gap-2">
-      {account && (
-        <ChainSelect onSelect={switchInjectedWalletChain} selected={connectedChainId} menuAlign={menuAlign} />
-      )}
-      <ConnectButton size={size} style={style} className={className} />
+      {account && chain && <ChainSelect onSelect={switchNetwork} selected={chain.id} menuAlign={menuAlign} />}
+      <WalletIndicatorDropdown size={size} style={style} className={className} />
     </div>
   );
 };

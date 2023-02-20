@@ -1,14 +1,14 @@
 import { PencilIcon } from '@heroicons/react/24/outline';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
-import { useAddressContext } from 'lib/hooks/useAddressContext';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import { useRevoke } from 'lib/hooks/useRevoke';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { classNames } from 'lib/utils/styles';
 import Trans from 'next-translate/Trans';
 import { useState } from 'react';
+import { useAccount, useNetwork } from 'wagmi';
 import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
@@ -20,10 +20,11 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const [editing, setEditing] = useState<boolean>();
   const { update } = useRevoke(allowance, onUpdate);
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
-  const { account, selectedChainId, connectedChainId } = useEthereum();
-  const { address } = useAddressContext();
+  const { address: account } = useAccount();
+  const { chain } = useNetwork();
+  const { address, selectedChainId } = useAddressPageContext();
 
-  const disabled = address !== account || selectedChainId !== connectedChainId;
+  const disabled = address !== account || selectedChainId !== chain?.id;
 
   if (editing) {
     return (

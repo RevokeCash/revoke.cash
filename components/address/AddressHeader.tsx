@@ -1,22 +1,29 @@
 import { useQuery } from '@tanstack/react-query';
 import ChainSelect from 'components/common/ChainSelect';
-import { useAddressContext } from 'lib/hooks/useAddressContext';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useMounted } from 'lib/hooks/useMounted';
+import { useNameLookup } from 'lib/hooks/useNameLookup';
 import useTranslation from 'next-translate/useTranslation';
+import { useProvider } from 'wagmi';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
 import ConnectedLabel from './ConnectedLabel';
 
 const AddressHeader = () => {
+  const isMounted = useMounted();
   const { t } = useTranslation();
-  const { address, domainName } = useAddressContext();
-  const { selectedChainId, selectChain, readProvider } = useEthereum();
+  const { address, selectedChainId, selectChain } = useAddressPageContext();
+  const { domainName } = useNameLookup(address);
+  const readProvider = useProvider({ chainId: selectedChainId });
 
   const { data: balance } = useQuery({
-    queryKey: ['balance', address, selectedChainId],
-    queryFn: () => (selectedChainId ? readProvider.getBalance(address).then((balance) => balance.toString()) : null),
+    queryKey: ['balance', address, readProvider.network],
+    queryFn: () =>
+      readProvider.network ? readProvider.getBalance(address).then((balance) => balance.toString()) : null,
   });
+
+  if (!isMounted) return null;
 
   return (
     <div className="mb-2 flex flex-col sm:flex-row justify-between items-center gap-2 border border-black dark:border-white rounded-lg px-4 py-3">

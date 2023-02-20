@@ -2,17 +2,13 @@ import { track } from '@amplitude/analytics-browser';
 import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { useMounted } from 'lib/hooks/useMounted';
 import useTranslation from 'next-translate/useTranslation';
-import { useEffect, useState } from 'react';
 
 const ColorThemeSelect = () => {
-  const [domLoaded, setDomLoaded] = useState(false);
+  const isMounted = useMounted();
   const { darkMode, theme, setTheme } = useColorTheme();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setDomLoaded(true);
-  }, []);
 
   const options = [
     { value: 'system', icon: <ComputerDesktopIcon className="w-4 h-4" /> },
@@ -26,7 +22,7 @@ const ColorThemeSelect = () => {
   };
 
   const displayOption = (option: (typeof options)[number]) =>
-    domLoaded && (
+    isMounted && (
       <div className="flex gap-1 items-center" suppressHydrationWarning>
         {option.icon} {t(`common:color_themes.${option.value}`)}
       </div>

@@ -1,7 +1,7 @@
 import Href from 'components/common/Href';
-import TokenLogo from 'components/common/TokenLogo';
+import Logo from 'components/common/Logo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { getBalanceText } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
@@ -14,7 +14,7 @@ interface Props {
 const AssetCell = ({ allowance }: Props) => {
   const ref = useRef(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const { selectedChainId } = useEthereum();
+  const { selectedChainId } = useAddressPageContext();
 
   useLayoutEffect(() => {
     if (ref.current.clientWidth < ref.current.scrollWidth) {
@@ -38,7 +38,7 @@ const AssetCell = ({ allowance }: Props) => {
     <div className="flex items-center gap-1 py-1">
       <div className="flex flex-col items-start gap-0.5">
         <div className="flex items-center gap-2 text-base leading-tight">
-          <TokenLogo src={allowance.icon} alt={allowance.symbol} size={20} />
+          <Logo src={allowance.icon} alt={allowance.symbol} size={20} />
           {link}
         </div>
 
