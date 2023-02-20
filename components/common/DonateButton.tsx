@@ -87,14 +87,14 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
           <div className="text-center sm:text-left w-full flex flex-col gap-2">
             <Dialog.Title as="h3">{t('common:donate.title')}</Dialog.Title>
 
-            <div className="mt-2 h-9 flex">
+            <div className="h-9 flex">
               <Input
                 size="md"
                 type="number"
                 step={0.01}
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
-                className="z-10 rounded-r-none grow text-zinc-600 dark:text-zinc-400"
+                className="z-10 rounded-r-none text-zinc-600 dark:text-zinc-400 w-full"
               />
               <div className="px-3 py-1.5 border-y border-black dark:border-white bg-zinc-300 dark:bg-zinc-700 flex justify-center items-center">
                 {nativeToken}
