@@ -70,7 +70,7 @@ const ConnectButton = ({ size, style, className, text }: Props) => {
                     key={connector.id}
                     onClick={() => connectAndRedirect(connector)}
                   >
-                    <Logo src={getWalletIcon(connector.name)} alt={connector.name} size={64} />
+                    <Logo src={getWalletIcon(connector.name)} alt={connector.name} size={64} square />
                     {connector.name}
                   </Button>
                 ))}
