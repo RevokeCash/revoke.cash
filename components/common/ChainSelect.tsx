@@ -12,8 +12,8 @@ interface ChainOption {
 }
 
 interface Props {
-  onSelect: (chainId: number) => void;
   selected: number;
+  onSelect?: (chainId: number) => void;
   showName?: boolean;
   menuAlign?: 'left' | 'right';
 }
@@ -45,7 +45,7 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
   ];
 
   const onChange = ({ chainId }: ChainOption) => {
-    onSelect(chainId);
+    onSelect && onSelect(chainId);
   };
 
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {
