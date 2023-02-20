@@ -3,55 +3,31 @@ import { useQuery } from '@tanstack/react-query';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowancesForAddress, stripAllowanceData } from 'lib/utils/allowances';
 import { hasZeroBalance } from 'lib/utils/tokens';
-import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { useEffect, useState } from 'react';
-import { useEthereum } from './useEthereum';
+import { useProvider } from 'wagmi';
+import { useAddressPageContext } from './useAddressContext';
 
 export const useAllowances = (userAddress: string) => {
   const [allowances, setAllowances] = useState<AllowanceData[]>();
-
-  const { readProvider, logsProvider, selectedChainId } = useEthereum();
-
-  // When changing networks, we need to make sure that the *readProvider* is set to the *connectedProvider* if it's not already
-  // TODO: This is super hacky and I hate it, would love to move everything over to wagmi.sh and hopefully get rid of this
-  const [safeChainId, setSafeChainId] = useState<number>();
-  useEffect(() => {
-    const updateSafeChainId = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      setSafeChainId(selectedChainId);
-    };
-
-    if (selectedChainId && selectedChainId !== safeChainId) {
-      updateSafeChainId();
-    }
-  }, [selectedChainId, safeChainId]);
-
-  // This is required because we need to get the OpenSea proxy address before we can get the allowances (due to Moonbirds patches)
-  const { data: openSeaProxyAddress, isLoading: openSeaProxyLoading } = useQuery({
-    queryKey: ['openSeaProxyAddress', userAddress],
-    queryFn: () => getOpenSeaProxyAddress(userAddress),
-    staleTime: Infinity,
-    cacheTime: Infinity,
-  });
+  const { selectedChainId, logsProvider, openSeaProxyAddress, isLoading: isAddressLoading } = useAddressPageContext();
+  const readProvider = useProvider({ chainId: selectedChainId });
 
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
-    queryKey: ['allowances', userAddress, safeChainId, openSeaProxyAddress, openSeaProxyLoading],
+    queryKey: ['allowances', userAddress, readProvider?.network?.chainId, openSeaProxyAddress, isAddressLoading],
     queryFn: async () => {
-      if (openSeaProxyLoading || safeChainId === undefined) return null;
+      if (isAddressLoading || readProvider?.network?.chainId === undefined) return null;
       const allowances = getAllowancesForAddress(
         userAddress,
         logsProvider,
         readProvider,
-        safeChainId,
+        readProvider?.network?.chainId,
         openSeaProxyAddress
       );
-      track('Fetched Allowances', { account: userAddress, chainId: safeChainId });
+      track('Fetched Allowances', { account: userAddress, chainId: readProvider?.network?.chainId });
       return allowances;
     },
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,
-    cacheTime: Infinity,
-    retry: false,
   });
 
   useEffect(() => {
@@ -98,5 +74,5 @@ export const useAllowances = (userAddress: string) => {
     });
   };
 
-  return { allowances, loading: isLoading || openSeaProxyLoading, error, onUpdate };
+  return { allowances, loading: isLoading || isAddressLoading, error, onUpdate };
 };

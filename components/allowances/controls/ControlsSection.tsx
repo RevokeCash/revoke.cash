@@ -1,8 +1,8 @@
 import RevokeButton from 'components/allowances/controls/RevokeButton';
-import { useAddressContext } from 'lib/hooks/useAddressContext';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
+import { useAccount, useNetwork } from 'wagmi';
 import ControlsWrapper from './ControlsWrapper';
 import SwitchChainButton from './SwitchChainButton';
 import UpdateControls from './UpdateControls';
@@ -15,14 +15,16 @@ interface Props {
 }
 
 const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
-  const { account, selectedChainId, connectedChainId, connectionType } = useEthereum();
-  const { address } = useAddressContext();
+  const { address, selectedChainId } = useAddressPageContext();
+
+  const { address: account, connector } = useAccount();
+  const { chain } = useNetwork();
 
   // TODO: Remove this WET code (alwo in ControlsWrapper.tsx)
   const isConnected = account !== undefined;
   const isConnectedAddress = isConnected && address === account;
-  const needsToSwitchChain = isConnected && selectedChainId !== connectedChainId;
-  const canSwitchChain = connectionType === 'injected';
+  const needsToSwitchChain = isConnected && selectedChainId !== chain?.id;
+  const canSwitchChain = connector?.id === 'injected';
   const disabled = !isConnectedAddress || (needsToSwitchChain && !canSwitchChain);
 
   if (!allowance.spender) return null;

@@ -10,11 +10,11 @@ interface Props {
 }
 
 const Modal = ({ open, setOpen, children }: Props) => {
-  const cancelButtonRef = useRef(null);
+  const focusRef = useRef(null);
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+      <Dialog as="div" className="relative z-10" initialFocus={focusRef} onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -28,7 +28,7 @@ const Modal = ({ open, setOpen, children }: Props) => {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center py-32 text-center sm:items-start">
+          <div className="flex min-h-full items-end justify-center py-32 px-4 text-center sm:items-start">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -38,8 +38,9 @@ const Modal = ({ open, setOpen, children }: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+              <Dialog.Panel className="border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all w-full sm:max-w-lg">
                 <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
+                  <button ref={focusRef} /> {/* Focus trap */}
                   <Button
                     style="none"
                     size="none"

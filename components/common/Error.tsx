@@ -1,5 +1,6 @@
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import { getChainName } from 'lib/utils/chains';
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
 interface Props {
@@ -7,15 +8,17 @@ interface Props {
 }
 
 const Error = ({ error }: Props) => {
-  const { selectedChainId } = useEthereum();
+  const { t } = useTranslation();
+  const { selectedChainId } = useAddressPageContext();
 
   useEffect(() => {
     console.log(error);
   }, []);
 
+  const chainName = getChainName(selectedChainId);
+  const chainConnectionMessage = t('common:errors.messages.chain_could_not_connect', { chainName });
   const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-  const chainConnectionMessage = `Could not connect to the ${getChainName(selectedChainId)} chain`;
-  const message = errorMessage.includes('missing response') ? chainConnectionMessage : errorMessage;
+  const message = error.message.includes('missing response') ? chainConnectionMessage : errorMessage;
   return <div>Error: {message}</div>;
 };
 

@@ -1,5 +1,5 @@
 import Spinner from 'components/common/Spinner';
-import { useEthereum } from 'lib/hooks/useEthereum';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import { toFloat } from 'lib/utils';
 import { getChainNativeToken } from 'lib/utils/chains';
 import { classNames } from 'lib/utils/styles';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const BalanceDisplay = ({ balance, className }: Props) => {
-  const { selectedChainId } = useEthereum();
+  const { selectedChainId } = useAddressPageContext();
   const classes = classNames('flex gap-0.5 items-center leading-none', className);
   const nativeToken = getChainNativeToken(selectedChainId);
 

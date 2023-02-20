@@ -28,6 +28,9 @@
     "light": "明亮",
     "system": "系统"
   },
+  "connect_wallet": {
+    "title": "Connect Your Wallet"
+  },
   "donate": {
     "gitcoin_grants": "或者为我们的<0>Gitcoin Grant</0>捐款",
     "title": "为Revoke.cash捐款"
@@ -52,6 +55,9 @@
         }
       },
       "title": "此页面不存在。"
+    },
+    "messages": {
+      "chain_could_not_connect": "Could not connect to the {{chainName}} chain"
     }
   },
   "footer": {

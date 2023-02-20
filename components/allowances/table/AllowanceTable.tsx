@@ -1,13 +1,13 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ColumnId, columns } from 'components/allowances/table/columns';
-import { useAddressContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/useAddressContext';
 import { useAllowances } from 'lib/hooks/useAllowances';
 import type { AllowanceData } from 'lib/interfaces';
 import AllowanceTableBody from './AllowanceTableBody';
 import AllowanceTableHeader from './header/AllowanceTableHeader';
 
 const AllowanceTable = () => {
-  const { address } = useAddressContext();
+  const { address } = useAddressPageContext();
   const { allowances, loading, error, onUpdate } = useAllowances(address);
   const table = useReactTable({
     data: allowances,
