@@ -59,7 +59,7 @@ const ConnectButton = ({ size, style, className, text }: Props) => {
               {t('common:connect_wallet.title')}
             </Dialog.Title>
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center pb-2">
               {connectors
                 .filter((connector) => connector.ready)
                 .map((connector) => (
