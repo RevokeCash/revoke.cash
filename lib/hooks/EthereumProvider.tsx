@@ -7,7 +7,8 @@ import {
   SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
 import { revokeProvider } from 'lib/utils/revokeProvider';
-import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect } from 'react';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
@@ -60,5 +61,26 @@ const wagmiClient = createClient({
 });
 
 export const EthereumProvider = ({ children }: Props) => {
+  const router = useRouter();
+
+  // Smooth migration between web3modal and wagmi by migrating the localstorage from web3modal to wagmi
+  // Would be nicer without the reload, but it's not a big deal since it's only for the migration
+  useEffect(() => {
+    const WEB3MODAL_CONNECTOR = window.localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
+    if (WEB3MODAL_CONNECTOR) {
+      const replacementConnectors = {
+        '"injected"': '"injected"',
+        '"walletconnect"': '"walletConnect"',
+        '"coinbasewallet"': '"coinbaseWallet"',
+      };
+
+      window.localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
+      window.localStorage.setItem('wagmi.wallet', replacementConnectors[WEB3MODAL_CONNECTOR]);
+      window.localStorage.setItem('wagmi.connected', 'true');
+      if (WEB3MODAL_CONNECTOR === '"injected"') window.localStorage.setItem('wagmi.injected.shimDisconnect', 'true');
+      router.reload();
+    }
+  }, []);
+
   return <WagmiConfig client={wagmiClient}>{children}</WagmiConfig>;
 };
