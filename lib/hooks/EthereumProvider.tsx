@@ -7,9 +7,8 @@ import {
   SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
 import { revokeProvider } from 'lib/utils/revokeProvider';
-import { useRouter } from 'next/router';
 import { ReactNode, useEffect } from 'react';
-import { configureChains, createClient, WagmiConfig } from 'wagmi';
+import { configureChains, createClient, useConnect, WagmiConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { LedgerConnector } from 'wagmi/connectors/ledger';
@@ -61,26 +60,42 @@ const wagmiClient = createClient({
 });
 
 export const EthereumProvider = ({ children }: Props) => {
-  const router = useRouter();
+  return (
+    <WagmiConfig client={wagmiClient}>
+      <EthereumProviderChild>{children}</EthereumProviderChild>
+    </WagmiConfig>
+  );
+};
 
-  // Smooth migration between web3modal and wagmi by migrating the localstorage from web3modal to wagmi
-  // Would be nicer without the reload, but it's not a big deal since it's only for the migration
+const EthereumProviderChild = ({ children }: Props) => {
+  const { connect, connectors } = useConnect();
+
+  // Add a migration from web3modal to wagmi so users don't need to reconnect
+  // TODO: Remove this around May 2023, when people have migrated
   useEffect(() => {
-    const WEB3MODAL_CONNECTOR = window.localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
-    if (WEB3MODAL_CONNECTOR) {
+    if (!connectors) return;
+
+    const migrateWeb3Modal = async (connectorKey: string) => {
+      // Sleep for 500ms to prevent weird bugs (this is OK since this is only for migration)
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const replacementConnectors = {
-        '"injected"': '"injected"',
-        '"walletconnect"': '"walletConnect"',
-        '"coinbasewallet"': '"coinbaseWallet"',
+        '"injected"': 'injected',
+        '"walletconnect"': 'walletConnect',
+        '"coinbasewallet"': 'coinbaseWallet',
       };
 
-      window.localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
-      window.localStorage.setItem('wagmi.wallet', replacementConnectors[WEB3MODAL_CONNECTOR]);
-      window.localStorage.setItem('wagmi.connected', 'true');
-      if (WEB3MODAL_CONNECTOR === '"injected"') window.localStorage.setItem('wagmi.injected.shimDisconnect', 'true');
-      router.reload();
-    }
-  }, []);
+      const connector = connectors.find((connector) => connector.id === replacementConnectors[connectorKey]);
+      connect({ connector });
 
-  return <WagmiConfig client={wagmiClient}>{children}</WagmiConfig>;
+      window.localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
+    };
+
+    const WEB3MODAL_CONNECTOR = window.localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
+    if (WEB3MODAL_CONNECTOR) {
+      migrateWeb3Modal(WEB3MODAL_CONNECTOR);
+    }
+  }, [connectors]);
+
+  return <>{children}</>;
 };
