@@ -50,7 +50,7 @@ export const getLogs = async (
       return result;
     } catch (error) {
       const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-      if (errorMessage !== 'query returned more than 10000 results') {
+      if (!errorMessage.includes('query returned more than 10000 results')) {
         throw error;
       }
 
