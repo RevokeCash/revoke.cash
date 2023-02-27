@@ -53,8 +53,8 @@
       "question": "¿Con qué redes funciona Revoke.cash?"
     },
     "which_domains": {
-      "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <0>ENS</0>, <1>Unstoppable Domains</1> and <2>Avvy Domains</2>. We may add other domain name services in the future.",
-      "question": "Which kinds of domains does Revoke.cash support?"
+      "answer": "Al buscar cuentas en la barra de búsqueda, puedes usar varios servicios de dominios diferentes. Actualmente puedes usar <0>ENS</0>, <1>Unstoppable Domains</1> y <2>Avvy Domains</2>. Es posible que agreguemos otros servicios de dominios en el futuro.",
+      "question": "¿Qué tipos de dominios admite Revoke.cash?"
     },
     "whole_wallet_at_risk": {
       "answer": "No. Una autorización \"ilimitada\" solo se aplica al token o colección de NFTs a la que le diste autorización. Así que si diste una autorización ilimitada de tu DAI, entonces <0>todo tu DAI</0> podría estar en riesgo, pero nada de tu USDC. De igual forma, una autorización \"ilimitada\" de tus Bored Apes no afecta a tus Cool Cats.",

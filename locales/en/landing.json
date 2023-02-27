@@ -22,6 +22,15 @@
     },
     "title": "How To Revoke Your Allowances."
   },
+  "sponsors": {
+    "description": "The continued development of Revoke.cash is made possible by donations and sponsorships. These are the people and organizations that have supported us with monthly sponsorships so far. If you would like to join them in sponsoring Revoke.cash, please take a look at our <0>Sponsorships page</0>.",
+    "tiers": {
+      "bronze": "Bronze Sponsor",
+      "gold": "Gold Sponsor",
+      "silver": "Silver Sponsor"
+    },
+    "title": "Sponsors"
+  },
   "why_revoke": {
     "paragraph_1": {
       "description": "It is always good to limit your allowances whenever you are not actively using a dapp, especially for NFT marketplaces. This reduces the risk of losing your funds to hacks or exploits and can also help mitigate the damage of phishing scams.",

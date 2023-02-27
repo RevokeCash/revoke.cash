@@ -22,14 +22,14 @@ const LanguageSelect = () => {
     document.cookie = `NEXT_LOCALE=${locale};expires=${date.toUTCString()};path=/`;
   };
 
-  const selectLanguage = (option: typeof options[number]) => {
+  const selectLanguage = (option: (typeof options)[number]) => {
     const locale = option.value;
     track('Changed language', { from: lang, to: locale });
     replace(asPath, undefined, { locale, scroll: false });
     persistLocaleCookie(locale);
   };
 
-  const displayOption = (option: typeof options[number]) => `${option.emoji} ${option.name}`;
+  const displayOption = (option: (typeof options)[number]) => `${option.emoji} ${option.name}`;
 
   return (
     <Select
