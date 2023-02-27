@@ -263,7 +263,7 @@ export const getAllowanceI18nValues = (allowance: AllowanceData) => {
     return { amount, i18nKey, symbol };
   }
 
-  const i18nKey = allowance.tokenId === undefined ? 'address:allowances.unlimited' : 'address:allowances:token_id';
+  const i18nKey = allowance.tokenId === undefined ? 'address:allowances.unlimited' : 'address:allowances.token_id';
   const { tokenId } = allowance;
   return { tokenId, i18nKey };
 };
