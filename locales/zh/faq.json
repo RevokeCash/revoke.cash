@@ -53,8 +53,8 @@
       "question": "Revoke.cash支持哪些链？"
     },
     "which_domains": {
-      "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <0>ENS</0>, <1>Unstoppable Domains</1> and <2>Avvy Domains</2>. We may add other domain name services in the future.",
-      "question": "Which kinds of domains does Revoke.cash support?"
+      "answer": "在搜索栏中搜索帐户时，您可以使用多种不同的域名服务。目前，我们支持 <0>ENS</0>、<1>Unstoppable Domains</1>和 <2>Avvy</2>。将来我们可能会添加其他域名服务。",
+      "question": "Revoke.cash支持哪些类型的域名？"
     },
     "whole_wallet_at_risk": {
       "answer": "“无限”授权只局限于你给予授权的代币或NFT。比如你为你的DAI提供了一个无限授权，那么<0>你所有的DAI</0>都可能会有风险，但你的USDC没有。同样，你对无聊猿提供的 \"无限 \"授权并不影响你的酷猫。",
