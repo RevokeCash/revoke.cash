@@ -46,7 +46,12 @@ const Extension: NextPage = () => {
           </div>
 
           <div className="mx-auto">
-            <Image src="/assets/images/extension-screenshot-1.png" height="500" width="800" />
+            <Image
+              src="/assets/images/extension-screenshot-1.png"
+              alt="Extension: Unexpected Allowance"
+              height="500"
+              width="800"
+            />
           </div>
 
           <div>
@@ -58,7 +63,12 @@ const Extension: NextPage = () => {
           </div>
 
           <div className="mx-auto">
-            <Image src="/assets/images/extension-screenshot-3.png" height="500" width="800" />
+            <Image
+              src="/assets/images/extension-screenshot-3.png"
+              alt="Extension: Unexpected Listing"
+              height="500"
+              width="800"
+            />
           </div>
 
           <div>
