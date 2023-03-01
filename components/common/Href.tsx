@@ -34,17 +34,19 @@ const Href = (
     underlineMapping[underline ?? 'always']
   );
 
-  const hrefComponent = (
+  if (router) {
+    return (
+      <Link className={classes} href={href} ref={ref}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
     <a className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
       {children}
     </a>
   );
-
-  if (router) {
-    return <Link href={href}>{hrefComponent}</Link>;
-  }
-
-  return hrefComponent;
 };
 
 export default forwardRef(Href);

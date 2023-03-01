@@ -66,17 +66,19 @@ const Button = ({
 
   // Note: This code is repeated in Href.tsx for styling reasons
   if (href) {
-    const hrefComponent = (
+    if (router) {
+      return (
+        <Link className={classes} href={href}>
+          {children}
+        </Link>
+      );
+    }
+
+    return (
       <a className={classes} href={href} target={external ? '_blank' : undefined}>
         {children}
       </a>
     );
-
-    if (router) {
-      return <Link href={href}>{hrefComponent}</Link>;
-    }
-
-    return hrefComponent;
   }
 
   if (asDiv) {

@@ -37,7 +37,7 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
     bronze: {
       label: 'bg-amber-600 text-[0.65rem] px-1 py-px',
       banner: '',
-      image: 'w-48',
+      image: '',
       img: {
         width: 192,
         height: 64,
@@ -46,7 +46,7 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
     silver: {
       label: 'bg-slate-300',
       banner: '',
-      image: 'w-64',
+      image: '',
       img: {
         width: 256,
         height: 85,
@@ -55,7 +55,7 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
     gold: {
       label: 'bg-yellow-500',
       banner: '',
-      image: 'w-96',
+      image: '',
       img: {
         width: 384,
         height: 128,
