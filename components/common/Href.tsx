@@ -1,8 +1,8 @@
 import { classNames } from 'lib/utils/styles';
 import Link from 'next/link';
-import { ForwardedRef, forwardRef, ReactNode } from 'react';
+import { ForwardedRef, forwardRef, HTMLProps, ReactNode } from 'react';
 
-interface Props {
+interface Props extends HTMLProps<HTMLAnchorElement> {
   href: string;
   children?: ReactNode;
   className?: string;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Href = (
-  { href, children, external, className, router, underline, html }: Props,
+  { href, children, external, className, router, underline, html, ...props }: Props,
   ref: ForwardedRef<HTMLAnchorElement>
 ) => {
   const styleMapping = {
@@ -36,14 +36,14 @@ const Href = (
 
   if (router) {
     return (
-      <Link className={classes} href={href} ref={ref}>
+      <Link {...props} className={classes} href={href} ref={ref}>
         {children}
       </Link>
     );
   }
 
   return (
-    <a className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
+    <a {...props} className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
       {children}
     </a>
   );

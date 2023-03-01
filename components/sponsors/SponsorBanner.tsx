@@ -15,10 +15,10 @@ interface Props {
 
 interface Overlay {
   url: string;
-  top: number;
-  left: number;
-  width: number;
-  height: number;
+  top: number | string;
+  left: number | string;
+  width: number | string;
+  height: number | string;
 }
 
 const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
@@ -32,7 +32,7 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
       label:
         'absolute -top-1 left-2 z-10 border border-black text-black font-semibold flex items-center justify-center rounded-md',
       banner: 'flex flex-col items-center',
-      image: 'rounded-lg border border-black dark:border-white object-cover aspect-[3/1] overflow-hidden',
+      image: 'rounded-lg border border-black dark:border-white object-cover aspect-[3/1] overflow-hidden w-full',
     },
     bronze: {
       label: 'bg-amber-600 text-[0.65rem] px-1 py-px',
@@ -65,11 +65,11 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
 
   return (
     <div className="relative">
-      <Label className={classNames(mapping.common.label, mapping[tier].label)}>
-        {t(`landing:sponsors.tiers.${tier}`)}
-      </Label>
       <Href href={url} external className={classNames(mapping.common.banner, mapping[tier].banner)} underline="hover">
         <div className={classNames(mapping.common.image, mapping[tier].image)}>
+          <Label className={classNames(mapping.common.label, mapping[tier].label)}>
+            {t(`landing:sponsors.tiers.${tier}`)}
+          </Label>
           <Image
             src={banner}
             alt={name}
@@ -81,11 +81,7 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
         </div>
         <div>{name}</div>
       </Href>
-      {overlay && (
-        <Href href={overlay.url} external>
-          <div style={overlay} className="absolute" />
-        </Href>
-      )}
+      {overlay && <Href href={overlay.url} style={overlay} className="absolute" external />}
     </div>
   );
 };

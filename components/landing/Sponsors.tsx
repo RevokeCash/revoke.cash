@@ -19,7 +19,7 @@ const Sponsors = () => {
         </LandingParagraph>
       </div>
 
-      <div className="flex flex-col items-center gap-4 max-w-5xl px-2">
+      <div className="flex flex-col items-center gap-4 max-w-5xl">
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-4">
           <SponsorBanner
             name="Boring Security"
@@ -28,10 +28,10 @@ const Sponsors = () => {
             tier="gold"
             overlay={{
               url: 'https://discord.gg/boringsecurity',
-              top: 6,
-              left: 317,
-              width: 61,
-              height: 116,
+              top: '4.7%',
+              left: '82.7%',
+              width: '15.8%',
+              height: '78.2%',
             }}
           />
         </div>
