@@ -26,7 +26,7 @@ const fixtures = [
   ['IoTeX', '0x936f83c34ba628aa08e54bc8f6f9f357a0f65d80'],
   ['Oasis Emerald', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Harmony', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
-  ['Dogechain', '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc'],
+  // ['Dogechain', '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc'],
   ['Godwoken', '0x8c0f57b0D6a2D0Bfac7fe8fea6a0C4e8DdBbDCB1'],
   ['SmartBCH', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Songbird', '0x4E8De52271D3bE18cC972af892198103C1e6AfE8'],

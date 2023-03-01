@@ -20,7 +20,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   7700, // Canto
   ChainId.KavaEVM,
-  2000, // Dogechain
+  // 2000, // Dogechain
   ChainId.RSKMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.FuseMainnet,
@@ -100,7 +100,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.IoTeXNetworkMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.BitTorrentChainMainnet,
-  2000, // Dogechain
+  // 2000, // Dogechain
   ChainId.HarmonyMainnetShard0,
   ChainId.GodwokenMainnet,
   ChainId.SmartBitcoinCash,
