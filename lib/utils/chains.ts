@@ -281,7 +281,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [42170]: 'https://nova.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://rpc.api.moonbeam.network',
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
-    [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
+    [ChainId.Shiden]: 'https://shiden.api.onfinality.io/public',
     [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
     [7700]: 'https://canto.slingshot.finance',
     [2000]: 'https://rpc.dogechain.dog',
