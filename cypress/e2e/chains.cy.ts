@@ -51,12 +51,14 @@ const fixtures = [
   ['Polygon Mumbai', '0x61bEE7b65F860Fe5a22958421b0a344a0F146983'],
   ['Arbitrum Goerli', '0x3383A622FA7a30fC83527d6ce1820af928455EA8'],
   ['Optimism Goerli', '0x3239a95A9262034ca28b9a03133775f716f119f8'],
+  ['zkSync Era Goerli', '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24'],
   ['Cronos Testnet', '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f'],
   ['Fantom Testnet', '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
   ['Moonbase Alpha', '0xeE146d0808D6a874237701E06A118f444dB13D73'],
   ['CoinEx Testnet', '0x5B82588003Ac9db7510702171b94f4acAF87Ca72'],
   ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
+  ['Horizen Yuma', '0xA54FE4eDa4B288B9dDC40EBA35f3730c7D55f898'],
 ];
 
 const Selectors = {

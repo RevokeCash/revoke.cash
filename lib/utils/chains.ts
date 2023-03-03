@@ -15,6 +15,8 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.CoinExSmartChainTestnet,
   2109, // Exosama
   18159, // Proof of Memes
+  // 324, // zkSync Era
+  280, // zkSync Era Goerli
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -30,6 +32,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.AuroraMainnet,
+  1662, // Horizen Yuma Testnet
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -84,6 +87,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ArbitrumOne,
   42170, // Arbitrum Nova
   ChainId.Optimism,
+  // 324, // zkSync Era
   ChainId['AvalancheC-Chain'],
   ChainId.FantomOpera,
   ChainId.CronosMainnetBeta,
@@ -127,6 +131,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.Mumbai,
   421613, // Arbitrum Goerli
   ChainId.OptimisticEthereumTestnetGoerli,
+  280, // zkSync Goerli
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
@@ -134,6 +139,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.MoonbaseAlpha,
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
+  1662, // Horizen Yuma Testnet
 ];
 
 export const isSupportedChain = (chainId: number): boolean => {
@@ -223,6 +229,9 @@ export const getChainName = (chainId: number): string => {
     [ChainId.FlareMainnet]: 'Flare',
     [ChainId['SongbirdCanary-Network']]: 'Songbird',
     [ChainId.BobaNetwork]: 'Boba',
+    [1662]: 'Horizen Yuma',
+    [324]: 'zkSync Era',
+    [280]: 'zkSync Era Goerli',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -254,6 +263,9 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [18159]: 'https://memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network',
+    [1662]: 'https://yuma-explorer.horizen.io',
+    [324]: 'https://explorer.zksync.io',
+    [280]: 'https://goerli.explorer.zksync.io',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -286,6 +298,9 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
     [ChainId.CronosTestnet]: 'https://evm-t3.cronos.org',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
+    [1662]: 'https://yuma-testnet.horizenlabs.io/ethv1', // Horizen Dune Testnet
+    [324]: 'https://zksync2-mainnet.zksync.io',
+    [280]: 'https://zksync2-testnet.zksync.dev',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -367,6 +382,9 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.png',
     [ChainId['SongbirdCanary-Network']]: '/assets/images/vendor/chains/songbird.webp',
     [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpeg',
+    [1662]: '/assets/images/vendor/chains/horizen.png',
+    [324]: '/assets/images/vendor/chains/zksync.jpeg',
+    [280]: '/assets/images/vendor/chains/zksync.jpeg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -381,6 +399,7 @@ export const getChainNativeToken = (chainId: number): string => {
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
     [2109]: 'SAMA',
     [18159]: 'POM',
+    [1662]: 'TZEN',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -475,6 +494,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network/api',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
+    [1662]: 'https://yuma-explorer.horizen.io/api',
   };
 
   return apiUrls[chainId];
