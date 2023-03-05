@@ -28,50 +28,34 @@ export class EtherscanEventGetter implements EventGetter {
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const baseQuery = prepareBaseEtherscanGetLogsQuery(filter, apiKey);
+    const query = prepareEtherscanGetLogsQuery(filter, apiKey);
+    const { data } = await queue.add(() => axios.get(apiUrl, { params: query }));
 
-    const results = [];
-
-    // Etherscan returns pages of 1000 results, so we need to loop through all pages
-    // It also has a limit of 10000 results total, so at that point we throw,
-    // so it gets picked up by the recursive getLogs retrying client-side
-    for (let page = 1; page < 100; page++) {
-      const query = { ...baseQuery, page };
-
-      // Send the request to Etherscan
-      const { data } = await queue.add(() => axios.get(apiUrl, { params: query }));
-
-      // Throw an error that is compatible with the recursive getLogs retrying client-side
-      if (typeof data.message === 'string' && data.message.includes('Result window is too large')) {
-        throw new Error('query returned more than 10000 results');
-      }
-
-      if (typeof data.result === 'string') {
-        // If we hit the rate limit, we try again
-        if (data.result.includes('Max rate limit reached')) {
-          console.error('Rate limit reached, retrying...');
-          page--;
-          continue;
-        }
-        throw new Error(data.result);
-      }
-
-      if (!Array.isArray(data.result)) {
-        console.log(data);
-        throw new Error('Could not retrieve event logs from the blockchain');
-      }
-
-      results.push(...data.result);
-
-      // If the query returned less than 1000 results, there are no more results
-      if (data.result.length < 1000) break;
+    // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
+    if (data.result?.length === 1000) {
+      throw new Error('query returned more than 10000 results');
     }
 
-    return results.map(formatEtherscanEvent);
+    if (typeof data.result === 'string') {
+      // If we somehow hit the rate limit, we try again
+      if (data.result.includes('Max rate limit reached')) {
+        console.error('Rate limit reached, retrying...');
+        return this.getEvents(chainId, filter);
+      }
+
+      throw new Error(data.result);
+    }
+
+    if (!Array.isArray(data.result)) {
+      console.log(data);
+      throw new Error('Could not retrieve event logs from the blockchain');
+    }
+
+    return data.result.map(formatEtherscanEvent);
   }
 }
 
-const prepareBaseEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
+const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
     typeof topic === 'string' ? topic.toLowerCase() : topic
   );
