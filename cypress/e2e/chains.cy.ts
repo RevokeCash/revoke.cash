@@ -49,6 +49,7 @@ const fixtures = [
   ['BSC Testnet', '0x40FE4911704f14f409ebEE40475377720C732803'],
   ['Avalanche Fuji', '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6'],
   ['Polygon Mumbai', '0x61bEE7b65F860Fe5a22958421b0a344a0F146983'],
+  ['Polygon Test-zkEVM', '0xe9Cc1396bcbB6e1168d731347F376A2d5709B42a'],
   ['Arbitrum Goerli', '0x3383A622FA7a30fC83527d6ce1820af928455EA8'],
   ['Optimism Goerli', '0x3239a95A9262034ca28b9a03133775f716f119f8'],
   ['zkSync Era Goerli', '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24'],

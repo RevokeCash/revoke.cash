@@ -33,6 +33,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId['SongbirdCanary-Network'],
   ChainId.AuroraMainnet,
   1662, // Horizen Yuma Testnet
+  1442, // Polygon zkEVM Testnet
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -129,6 +130,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.Sepolia,
   ChainId.BinanceSmartChainTestnet,
   ChainId.Mumbai,
+  1442, // Polygon zkEVM Testnet
   421613, // Arbitrum Goerli
   ChainId.OptimisticEthereumTestnetGoerli,
   280, // zkSync Goerli
@@ -232,6 +234,7 @@ export const getChainName = (chainId: number): string => {
     [1662]: 'Horizen Yuma',
     [324]: 'zkSync Era',
     [280]: 'zkSync Era Goerli',
+    [1442]: 'Polygon Test-zkEVM',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -266,6 +269,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [1662]: 'https://yuma-explorer.horizen.io',
     [324]: 'https://explorer.zksync.io',
     [280]: 'https://goerli.explorer.zksync.io',
+    [1442]: 'https://explorer.public.zkevm-test.net',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -301,6 +305,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [1662]: 'https://yuma-testnet.horizenlabs.io/ethv1', // Horizen Dune Testnet
     [324]: 'https://zksync2-mainnet.zksync.io',
     [280]: 'https://zksync2-testnet.zksync.dev',
+    [1442]: 'https://rpc.public.zkevm-test.net',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -385,6 +390,7 @@ export const getChainLogo = (chainId: number): string => {
     [1662]: '/assets/images/vendor/chains/horizen.png',
     [324]: '/assets/images/vendor/chains/zksync.jpeg',
     [280]: '/assets/images/vendor/chains/zksync.jpeg',
+    [1442]: '/assets/images/vendor/chains/polygon.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -495,6 +501,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
     [1662]: 'https://yuma-explorer.horizen.io/api',
+    [1442]: 'https://explorer.public.zkevm-test.net/api',
   };
 
   return apiUrls[chainId];
