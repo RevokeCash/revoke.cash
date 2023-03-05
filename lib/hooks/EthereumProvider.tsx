@@ -44,6 +44,12 @@ const chainList = SUPPORTED_CHAINS.map((chainId) => {
 
 const { chains: wagmiChains, provider } = configureChains(chainList, [revokeProvider()]);
 
+// We don't want to auto-disconnect the user when they switch to certain networks
+// https://github.com/MetaMask/metamask-extension/issues/13375#issuecomment-1027663334
+class InjectedConnectorNoDisconnectListener extends InjectedConnector {
+  protected onDisconnect = () => {};
+}
+
 const wagmiClient = createClient({
   autoConnect: true,
   connectors: [
@@ -51,7 +57,7 @@ const wagmiClient = createClient({
       chains: wagmiChains,
       options: { allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/], debug: false },
     }),
-    new InjectedConnector({ chains: wagmiChains }),
+    new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
     new WalletConnectConnector({ chains: wagmiChains, options: { qrcode: true } }),
     new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
     new LedgerConnector({ chains: wagmiChains }),
