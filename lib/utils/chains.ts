@@ -1,5 +1,5 @@
 import { ChainId, chains } from 'eth-chains';
-import { ETHERSCAN_API_KEYS } from 'lib/constants';
+import { ETHERSCAN_API_KEYS, RPC_OVERRIDES } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
@@ -306,6 +306,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [324]: 'https://zksync2-mainnet.zksync.io',
     [280]: 'https://zksync2-testnet.zksync.dev',
     [1442]: 'https://rpc.public.zkevm-test.net',
+    ...RPC_OVERRIDES,
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
