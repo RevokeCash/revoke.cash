@@ -37,7 +37,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
-  ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
   ChainId.PolygonMainnet,
   ChainId.Gnosis,
@@ -61,6 +60,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
 ];
 
 export const COVALENT_SUPPORTED_CHAINS = [
+  ChainId.BinanceSmartChainMainnet,
   ChainId.HarmonyMainnetShard0,
   ChainId.IoTeXNetworkMainnet,
   ChainId.Evmos,
