@@ -29,7 +29,7 @@
     "system": "系统"
   },
   "connect_wallet": {
-    "title": "Connect Your Wallet"
+    "title": "连接钱包"
   },
   "donate": {
     "gitcoin_grants": "或者为我们的<0>Gitcoin Grant</0>捐款",
@@ -57,7 +57,7 @@
       "title": "此页面不存在。"
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to the {{chainName}} chain"
+      "chain_could_not_connect": "无法连接到{{chainName}} 链"
     }
   },
   "footer": {
@@ -72,14 +72,15 @@
   "nav": {
     "extension": "扩展",
     "faq": "常见问题",
-    "search": "输入地址、ENS名称或Unstoppable域名"
+    "search": "通过输入地址或域名来搜索账户"
   },
   "toasts": {
-    "clipboard_failed": "❌ Couldn't copy to clipboard",
-    "clipboard_success": "✅ Copied to clipboard",
-    "donation_sent": "💪 Thanks for the donation!",
-    "revoke_failed": "❌ Revoking allowance failed: {{message}}",
-    "transaction_submitted": "✅ Transaction submitted!",
-    "update_failed": "❌ This token does not support updating allowances, please revoke instead"
+    "clipboard_failed": "❌ 无法复制到剪贴板",
+    "clipboard_success": "✅ 已复制到剪贴板",
+    "donation_sent": "💪 感谢捐赠！",
+    "revoke_failed": "❌ 撤销授权许可失败：{{message}}",
+    "revoke_failed_revert": "❌ Revoking allowance failed: This token does not allow you to revoke this allowance, please reach out to the team behind this token to resolve this issue",
+    "transaction_submitted": "✅ 交易已提交！",
+    "update_failed": "❌ 此代币不支持更新授权，请改为撤销"
   }
 }

@@ -29,7 +29,7 @@
     "system": "Sistema"
   },
   "connect_wallet": {
-    "title": "Connect Your Wallet"
+    "title": "Conecta tu billetera"
   },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
@@ -57,7 +57,7 @@
       "title": "Esta página no existe."
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to the {{chainName}} chain"
+      "chain_could_not_connect": "No se pudo conectar a la red de {{chainName}}"
     }
   },
   "footer": {
@@ -72,14 +72,15 @@
   "nav": {
     "extension": "Extensión",
     "faq": "FAQ",
-    "search": "Ingresar dirección, nombre de ENS o Unstoppable Domain"
+    "search": "Buscar cuentas por dirección o dominio"
   },
   "toasts": {
-    "clipboard_failed": "❌ Couldn't copy to clipboard",
-    "clipboard_success": "✅ Copied to clipboard",
-    "donation_sent": "💪 Thanks for the donation!",
-    "revoke_failed": "❌ Revoking allowance failed: {{message}}",
-    "transaction_submitted": "✅ Transaction submitted!",
-    "update_failed": "❌ This token does not support updating allowances, please revoke instead"
+    "clipboard_failed": "❌ No se pudo copiar al portapapeles",
+    "clipboard_success": "✅ Copiado al portapapeles",
+    "donation_sent": "💪 ¡Gracias por la donación!",
+    "revoke_failed": "❌ No se pudo revocar la autorización: {{message}}",
+    "revoke_failed_revert": "❌ Revoking allowance failed: This token does not allow you to revoke this allowance, please reach out to the team behind this token to resolve this issue",
+    "transaction_submitted": "✅ ¡Transacción enviada!",
+    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revóquelo porfavor"
   }
 }

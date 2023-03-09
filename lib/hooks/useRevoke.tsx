@@ -34,9 +34,9 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
     // Don't show error toasts for user denied transactions, but do show them for other errors
     if (!message.includes('User denied transaction signature') && !message.includes('user rejected transaction')) {
-      const revokeFailed = t('common:toasts.revoke_failed', { message });
-      const updateFailed = t('common:toasts.update_failed');
-      toast.info(isUpdate ? updateFailed : revokeFailed);
+      if (isUpdate) return toast.info(t('common:toasts.update_failed'));
+      if (message.includes('execution reverted')) return toast.info(t('common:toasts.revoke_failed_revert'));
+      return toast.info(t('common:toasts.revoke_failed', { message }));
     }
   };
 
