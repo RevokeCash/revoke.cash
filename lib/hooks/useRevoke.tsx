@@ -28,7 +28,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
   const checkError = (e: any, isUpdate: boolean) => {
     const code = e.error?.code ?? e.code;
-    const message = e.error?.reason ?? e.error?.message ?? e.reason ?? e.message;
+    const message = e.error?.reason ?? e.reason ?? e.error?.message ?? e.message;
     console.debug(`Ran into issue while revoking, message: ${message} (${code})`);
     console.debug(JSON.stringify(e));
 
@@ -36,7 +36,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     if (!message.includes('User denied transaction signature') && !message.includes('user rejected transaction')) {
       const revokeFailed = t('common:toasts.revoke_failed', { message });
       const updateFailed = t('common:toasts.update_failed');
-      toast.info(isUpdate ? revokeFailed : updateFailed);
+      toast.info(isUpdate ? updateFailed : revokeFailed);
     }
   };
 
