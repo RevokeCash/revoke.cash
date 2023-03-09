@@ -26,6 +26,20 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     return { revoke: undefined };
   }
 
+  const checkError = (e: any, isUpdate: boolean) => {
+    const code = e.error?.code ?? e.code;
+    const message = e.error?.reason ?? e.error?.message ?? e.reason ?? e.message;
+    console.debug(`Ran into issue while revoking, message: ${message} (${code})`);
+    console.debug(JSON.stringify(e));
+
+    // Don't show error toasts for user denied transactions, but do show them for other errors
+    if (!message.includes('User denied transaction signature') && !message.includes('user rejected transaction')) {
+      const revokeFailed = t('common:toasts.revoke_failed', { message });
+      const updateFailed = t('common:toasts.update_failed');
+      toast.info(isUpdate ? revokeFailed : updateFailed);
+    }
+  };
+
   if (isErc721Contract(contract)) {
     const revoke = async () => {
       const writeContract = new Contract(contract.address, contract.interface, signer);
@@ -38,15 +52,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
           tx = await writeContract.functions.approve(ADDRESS_ZERO, tokenId);
         }
       } catch (e) {
-        const code = e.error?.code ?? e.code;
-        const message = e.error?.message ?? e.message;
-        console.debug(`failed, code ${code}`);
-        if (code === -32000) {
-          toast.info(t('common:toasts.revoke_failed', { message }));
-        }
-
-        // ignore other errors
-        console.log('Ran into issue while revoking', e);
+        checkError(e, false);
       }
 
       if (tx) {
@@ -82,17 +88,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
         console.debug(`Calling contract.approve(${spender}, ${bnNew.toString()})`);
         tx = await writeContract.functions.approve(spender, bnNew);
       } catch (e) {
-        const code = e.error?.code ?? e.code;
-        const message = e.error?.message ?? e.message;
-        console.debug(`failed, code ${code}`);
-        if (code === -32000) {
-          const revokeFailed = t('common:toasts.revoke_failed', { message });
-          const updateFailed = t('common:toasts.update_failed');
-          toast.info(newAmount === '0' ? revokeFailed : updateFailed);
-        }
-
-        // ignore other errors
-        console.log('Ran into issue while revoking', e);
+        checkError(e, newAmount === '0');
       }
 
       if (tx) {
