@@ -1,5 +1,5 @@
-import type { Filter, Log } from '@ethersproject/abstract-provider';
 import axios from 'axios';
+import type { Filter, Log } from './interfaces';
 
 export class BackendProvider {
   constructor(public chainId: number) {}

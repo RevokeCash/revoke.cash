@@ -1,74 +1,27 @@
 import type { Contract, providers } from 'ethers';
 import { BigNumber, utils } from 'ethers';
-import { ERC721Metadata } from 'lib/abis';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
-import type { AllowanceData, BaseAllowanceData, BaseTokenData, Log, LogsProvider } from 'lib/interfaces';
-import {
-  deduplicateLogsByTopics,
-  filterLogsByAddress,
-  getLogs,
-  sortLogsChronologically,
-  toFloat,
-  topicToAddress,
-} from '.';
+import type { AddressEvents, AllowanceData, BaseAllowanceData, BaseTokenData, Log } from 'lib/interfaces';
+import { deduplicateLogsByTopics, filterLogsByAddress, sortLogsChronologically, toFloat, topicToAddress } from '.';
 import { convertString, unpackResult } from './promises';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract, isSpamToken } from './tokens';
 
-export const getAllowancesForAddress = async (
+export const getAllowancesFromEvents = async (
   userAddress: string,
-  logsProvider: LogsProvider,
+  events: AddressEvents,
   readProvider: providers.Provider,
-  chainId: number,
-  openSeaProxyAddress?: string
+  chainId: number
 ): Promise<AllowanceData[]> => {
-  const latestBlockNumber = await readProvider.getBlockNumber();
-
-  const buildGetEventsFunction = (name: string, addressTopicIndex: number) => {
-    const erc721Interface = new utils.Interface(ERC721Metadata);
-    const expectedTopic0 = erc721Interface.getEventTopic(name);
-
-    return async (userAddress: string, latestBlockNumber: number): Promise<Log[]> => {
-      if (!userAddress || !logsProvider || !latestBlockNumber) return undefined;
-
-      // Start with an array of undefined topic strings and add the event topic + address topic to the right spots
-      const filter = { topics: [undefined, undefined, undefined] };
-      filter.topics[0] = expectedTopic0;
-      filter.topics[addressTopicIndex] = utils.hexZeroPad(userAddress, 32);
-
-      const events = await getLogs(logsProvider, filter, 0, latestBlockNumber);
-      console.log(`${name} events`, events);
-      return events;
-    };
-  };
-
-  const [transferFromEvents, transferToEvents, approvalEvents, unpatchedApprovalForAllEvents] = await Promise.all([
-    buildGetEventsFunction('Transfer', 1)(userAddress, latestBlockNumber),
-    buildGetEventsFunction('Transfer', 2)(userAddress, latestBlockNumber),
-    buildGetEventsFunction('Approval', 1)(userAddress, latestBlockNumber),
-    buildGetEventsFunction('ApprovalForAll', 1)(userAddress, latestBlockNumber),
-  ]);
-
-  // Manually patch the ApprovalForAll events
-  const approvalForAllEvents = [
-    ...unpatchedApprovalForAllEvents,
-    ...generatePatchedAllowanceEvents(userAddress, openSeaProxyAddress, [
-      ...approvalEvents,
-      ...unpatchedApprovalForAllEvents,
-      ...transferFromEvents,
-      ...transferToEvents,
-    ]),
-  ];
-
-  const allEvents = [...transferToEvents, ...approvalEvents, ...approvalForAllEvents];
+  const allEvents = [...events.transferTo, ...events.approval, ...events.approvalForAll];
   const contracts = createTokenContracts(allEvents, readProvider);
 
   // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
     contracts.map(async (contract) => {
-      const approvalsForAll = filterLogsByAddress(approvalForAllEvents, contract.address);
-      const approvals = filterLogsByAddress(approvalEvents, contract.address);
-      const transfersFrom = filterLogsByAddress(transferFromEvents, contract.address);
-      const transfersTo = filterLogsByAddress(transferToEvents, contract.address);
+      const approvalsForAll = filterLogsByAddress(events.approvalForAll, contract.address);
+      const approvals = filterLogsByAddress(events.approval, contract.address);
+      const transfersFrom = filterLogsByAddress(events.transferFrom, contract.address);
+      const transfersTo = filterLogsByAddress(events.transferTo, contract.address);
 
       try {
         const tokenData = await getTokenData(contract, userAddress, transfersFrom, transfersTo, chainId);

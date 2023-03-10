@@ -1,29 +1,21 @@
 import { track } from '@amplitude/analytics-browser';
 import { useQuery } from '@tanstack/react-query';
-import type { AllowanceData } from 'lib/interfaces';
-import { getAllowancesForAddress, stripAllowanceData } from 'lib/utils/allowances';
+import type { AddressEvents, AllowanceData } from 'lib/interfaces';
+import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowances';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useEffect, useState } from 'react';
 import { useProvider } from 'wagmi';
-import { useAddressPageContext } from './useAddressContext';
 
-export const useAllowances = (userAddress: string) => {
+export const useAllowances = (address: string, events: AddressEvents, chainId: number) => {
   const [allowances, setAllowances] = useState<AllowanceData[]>();
-  const { selectedChainId, logsProvider, openSeaProxyAddress, isLoading: isAddressLoading } = useAddressPageContext();
-  const readProvider = useProvider({ chainId: selectedChainId });
+  const readProvider = useProvider({ chainId });
 
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
-    queryKey: ['allowances', userAddress, readProvider?.network?.chainId, openSeaProxyAddress, isAddressLoading],
+    queryKey: ['allowances', address, chainId, events],
     queryFn: async () => {
-      if (isAddressLoading || readProvider?.network?.chainId === undefined) return null;
-      const allowances = getAllowancesForAddress(
-        userAddress,
-        logsProvider,
-        readProvider,
-        readProvider?.network?.chainId,
-        openSeaProxyAddress
-      );
-      track('Fetched Allowances', { account: userAddress, chainId: readProvider?.network?.chainId });
+      if (chainId === undefined || events === undefined) return null;
+      const allowances = getAllowancesFromEvents(address, events, readProvider, chainId);
+      track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
     refetchOnWindowFocus: false,
@@ -74,5 +66,5 @@ export const useAllowances = (userAddress: string) => {
     });
   };
 
-  return { allowances, loading: isLoading || isAddressLoading, error, onUpdate };
+  return { allowances, isLoading, error, onUpdate };
 };

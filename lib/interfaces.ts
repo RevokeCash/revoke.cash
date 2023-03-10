@@ -1,4 +1,4 @@
-import type { Log as EthersLog, Provider } from '@ethersproject/abstract-provider';
+import type { Filter as EthersFilter, Log as EthersLog } from '@ethersproject/abstract-provider';
 import type { Contract } from 'ethers';
 
 export interface BaseTokenData {
@@ -42,7 +42,9 @@ export interface ChainTokenMapping {
 
 export type TokenStandard = 'ERC20' | 'ERC721';
 
-export type LogsProvider = Pick<Provider, 'getLogs'>;
+export interface LogsProvider {
+  getLogs(filter: Filter): Promise<Array<Log>>;
+}
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T | undefined>>;
 
@@ -58,4 +60,16 @@ export interface RateLimit {
   interval: number;
   intervalCap: number;
   timeout?: number;
+}
+
+export interface AddressEvents {
+  transferFrom: Log[];
+  transferTo: Log[];
+  approval: Log[];
+  approvalForAll: Log[];
+}
+
+export interface Filter extends EthersFilter {
+  fromBlock: number;
+  toBlock: number;
 }

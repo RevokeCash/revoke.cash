@@ -1,5 +1,5 @@
 import RevokeButton from 'components/allowances/controls/RevokeButton';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { useAccount, useNetwork } from 'wagmi';
