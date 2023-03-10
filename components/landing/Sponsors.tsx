@@ -48,12 +48,24 @@ const Sponsors = () => {
             url="https://premint.xyz"
             tier="silver"
           />
+          <SponsorBanner
+            name="Mintify"
+            banner="/assets/images/vendor/sponsors/mintify.png"
+            url="https://mintify.xyz"
+            tier="silver"
+          />
         </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-1.5 gap-y-4">
           <SponsorBanner
             name="Earni.fi"
             banner="/assets/images/vendor/sponsors/earnifi.png"
             url="https://earni.fi"
+            tier="bronze"
+          />
+          <SponsorBanner
+            name="Swap.kiwi"
+            banner="/assets/images/vendor/sponsors/swap-kiwi.png"
+            url="https://swap.kiwi"
             tier="bronze"
           />
         </div>

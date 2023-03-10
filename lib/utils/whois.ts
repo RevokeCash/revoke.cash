@@ -26,7 +26,7 @@ export const addressToAppName = async (
   const ethereumListsPromise = getNameFromEthereumList(address, chainId);
 
   // Check Harpie only if the other two sources don't have a name, because this is a rate-limited API
-  const name = (await dappListPromise) ?? (await ethereumListsPromise) ?? (await getNameFromHarpie(address));
+  const name = (await dappListPromise) ?? (await ethereumListsPromise) ?? (await getNameFromHarpie(address, chainId));
 
   return name;
 };
@@ -57,16 +57,15 @@ const getNameFromEthereumList = async (address: string, chainId: number): Promis
   }
 };
 
-const getNameFromHarpie = async (address: string): Promise<string | null> => {
+const getNameFromHarpie = async (address: string, chainId: number): Promise<string | null> => {
   const apiKey = process.env.NEXT_PUBLIC_HARPIE_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey || chainId !== 1) return null;
 
   try {
     const { data } = await axios.post('https://api.harpie.io/getprotocolfromcontract', { apiKey, address });
     if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
     return data.contractOwner;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
