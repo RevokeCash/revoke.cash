@@ -2,7 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import Href from 'components/common/Href';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useOpenSeaProxyAddress } from 'lib/hooks/useOpenSeaProxyAddress';
 import type { AllowanceData } from 'lib/interfaces';
 import { shortenString } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
@@ -14,11 +15,12 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  const { openSeaProxyAddress, selectedChainId } = useAddressPageContext();
+  const { address, selectedChainId } = useAddressPageContext();
+  const { openSeaProxyAddress } = useOpenSeaProxyAddress(address);
 
   // TODO: Expose this data to react-table
   const { data: spenderName, isLoading } = useQuery({
-    queryKey: ['spenderName', allowance.spender],
+    queryKey: ['spenderName', allowance.spender, selectedChainId, openSeaProxyAddress],
     queryFn: () => addressToAppName(allowance.spender, selectedChainId, openSeaProxyAddress),
     staleTime: Infinity,
     cacheTime: Infinity,

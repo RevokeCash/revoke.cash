@@ -1,5 +1,5 @@
 import Spinner from 'components/common/Spinner';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { toFloat } from 'lib/utils';
 import { getChainNativeToken } from 'lib/utils/chains';
 import { classNames } from 'lib/utils/styles';

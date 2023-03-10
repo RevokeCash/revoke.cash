@@ -2,7 +2,7 @@ import AddressHeader from 'components/address/AddressHeader';
 import AllowanceTable from 'components/allowances/table/AllowanceTable';
 import LogIn from 'components/common/LogIn';
 import PublicLayout from 'layouts/PublicLayout';
-import { AddressPageContextProvider } from 'lib/hooks/useAddressContext';
+import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import { defaultSEO } from 'lib/next-seo.config';
 import { parseInputAddress } from 'lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';

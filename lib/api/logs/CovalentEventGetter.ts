@@ -1,7 +1,6 @@
-import type { Filter } from '@ethersproject/abstract-provider';
 import axios from 'axios';
 import { utils } from 'ethers';
-import type { Log } from 'lib/interfaces';
+import type { Filter, Log } from 'lib/interfaces';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
 
@@ -18,7 +17,6 @@ export class CovalentEventGetter implements EventGetter {
     const topics = filter.topics as string[];
     const fromBlock = filter.fromBlock as number;
     // Covalent has some issues with being up to date for recent blocks, so we'll use an older block
-    // TODO: Don't use Covalent anymore
     const toBlock = (filter.toBlock as number) - 50;
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 

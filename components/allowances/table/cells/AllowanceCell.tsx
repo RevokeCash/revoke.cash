@@ -1,7 +1,7 @@
 import { PencilIcon } from '@heroicons/react/24/outline';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useRevoke } from 'lib/hooks/useRevoke';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';

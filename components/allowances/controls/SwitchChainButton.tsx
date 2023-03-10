@@ -1,5 +1,5 @@
 import Button from 'components/common/Button';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
 import { useAccount, useSwitchNetwork } from 'wagmi';

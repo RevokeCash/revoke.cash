@@ -1,7 +1,6 @@
-import type { Filter } from '@ethersproject/abstract-provider';
 import type { BigNumberish } from 'ethers';
 import { BigNumber, utils } from 'ethers';
-import type { Log, LogsProvider } from 'lib/interfaces';
+import type { Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
@@ -37,14 +36,8 @@ export const fromFloat = (floatString: string, decimals: number): string => {
     : sides[0] + sides[1].padEnd(decimals, '0');
 };
 
-export const getLogs = async (
-  provider: LogsProvider,
-  baseFilter: Filter,
-  fromBlock: number,
-  toBlock: number
-): Promise<Log[]> => {
+export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<Log[]> => {
   try {
-    const filter = { ...baseFilter, fromBlock, toBlock };
     try {
       const result = await provider.getLogs(filter);
       return result;
@@ -54,9 +47,9 @@ export const getLogs = async (
         throw error;
       }
 
-      const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
-      const leftPromise = getLogs(provider, baseFilter, fromBlock, middle);
-      const rightPromise = getLogs(provider, baseFilter, middle + 1, toBlock);
+      const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
+      const leftPromise = getLogs(provider, { ...filter, toBlock: middle });
+      const rightPromise = getLogs(provider, { ...filter, fromBlock: middle + 1 });
       const [left, right] = await Promise.all([leftPromise, rightPromise]);
       return [...left, ...right];
     }

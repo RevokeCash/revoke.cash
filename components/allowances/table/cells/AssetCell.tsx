@@ -1,7 +1,7 @@
 import Href from 'components/common/Href';
 import Logo from 'components/common/Logo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { getBalanceText } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';

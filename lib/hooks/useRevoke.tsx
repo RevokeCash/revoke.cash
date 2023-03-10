@@ -9,7 +9,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useAccount, useSigner } from 'wagmi';
-import { useAddressPageContext } from './useAddressContext';
+import { useAddressPageContext } from './page-context/AddressPageContext';
 
 type OnUpdate = (allowance: AllowanceData, newAmount?: string) => void;
 

@@ -1,14 +1,13 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ColumnId, columns } from 'components/allowances/table/columns';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
-import { useAllowances } from 'lib/hooks/useAllowances';
+import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import AllowanceTableBody from './AllowanceTableBody';
 import AllowanceTableHeader from './header/AllowanceTableHeader';
 
 const AllowanceTable = () => {
-  const { address } = useAddressPageContext();
-  const { allowances, loading, error, onUpdate } = useAllowances(address);
+  const { allowances, isLoading, error, onUpdate } = useAddressAllowances();
+
   const table = useReactTable({
     data: allowances,
     columns,
@@ -22,7 +21,7 @@ const AllowanceTable = () => {
     initialState: {
       sorting: [{ id: ColumnId.SYMBOL, desc: false }],
       columnVisibility: {
-        Balance: false,
+        [ColumnId.BALANCE]: false,
       },
     },
   });
@@ -30,7 +29,7 @@ const AllowanceTable = () => {
   return (
     <div className="flex flex-col justify-start mx-auto gap-2">
       <AllowanceTableHeader table={table} />
-      <AllowanceTableBody table={table} loading={loading} error={error} allowances={allowances} />
+      <AllowanceTableBody table={table} loading={isLoading} error={error} allowances={allowances} />
     </div>
   );
 };
