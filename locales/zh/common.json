@@ -79,7 +79,7 @@
     "clipboard_success": "✅ 已复制到剪贴板",
     "donation_sent": "💪 感谢捐赠！",
     "revoke_failed": "❌ 撤销授权许可失败：{{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: This token does not allow you to revoke this allowance, please reach out to the team behind this token to resolve this issue",
+    "revoke_failed_revert": "❌ Revoking allowance failed: Execution reverted. Please reach out to token's team to resolve this issue.",
     "transaction_submitted": "✅ 交易已提交！",
     "update_failed": "❌ 此代币不支持更新授权，请改为撤销"
   }

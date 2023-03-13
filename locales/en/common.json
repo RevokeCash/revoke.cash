@@ -79,8 +79,8 @@
     "clipboard_success": "✅ Copied to clipboard",
     "donation_sent": "💪 Thanks for the donation!",
     "revoke_failed": "❌ Revoking allowance failed: {{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: This token does not allow you to revoke this allowance, please reach out to the team behind this token to resolve this issue",
+    "revoke_failed_revert": "❌ Revoking allowance failed: Execution reverted. Please reach out to token's team to resolve this issue.",
     "transaction_submitted": "✅ Transaction submitted!",
-    "update_failed": "❌ This token does not support updating allowances, please revoke instead"
+    "update_failed": "❌ This token does not support updating allowances, please revoke instead."
   }
 }
