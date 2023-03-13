@@ -1,6 +1,6 @@
 import Button from 'components/common/Button';
 import DropdownMenu from 'components/common/DropdownMenu';
-import { useNameLookup } from 'lib/hooks/useNameLookup';
+import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import { useAccount, useDisconnect } from 'wagmi';
