@@ -2,7 +2,7 @@ import { init, track } from '@amplitude/analytics-browser';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { Analytics } from '@vercel/analytics/react';
 import LogIn from 'components/common/LogIn';
-import { EthereumProvider } from 'lib/hooks/EthereumProvider';
+import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import type { AppProps } from 'next/app';

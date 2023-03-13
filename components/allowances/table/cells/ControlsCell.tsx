@@ -1,4 +1,4 @@
-import { useRevoke } from 'lib/hooks/useRevoke';
+import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
 import { AllowanceData } from 'lib/interfaces';
 import ControlsSection from '../../controls/ControlsSection';
 

@@ -2,9 +2,9 @@ import { providers } from 'ethers';
 import { LogsProvider } from 'lib/interfaces';
 import React, { ReactNode, useContext, useState } from 'react';
 import { useNetwork, useProvider } from 'wagmi';
-import { useAllowances } from '../useAllowances';
-import { useEvents } from '../useEvents';
-import { useLogsProvider } from '../useLogsProvider';
+import { useAllowances } from '../ethereum/useAllowances';
+import { useEvents } from '../ethereum/useEvents';
+import { useLogsProvider } from '../ethereum/useLogsProvider';
 
 interface AddressContext {
   address?: string;
