@@ -15,6 +15,9 @@ const LogIn = ({ children, showSpinner }: Props) => {
     queryFn: () => axios.post('/api/login'),
     staleTime: TWELVE_HOURS,
     cacheTime: TWELVE_HOURS,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
   });
 
   if (loggingIn) {

@@ -14,10 +14,11 @@ export class CovalentEventGetter implements EventGetter {
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
-    const topics = filter.topics as string[];
-    const fromBlock = filter.fromBlock as number;
+    const topics = filter.topics;
     // Covalent has some issues with being up to date for recent blocks, so we'll use an older block
-    const toBlock = (filter.toBlock as number) - 50;
+    // Note that we also reduce the fromBlock, due to the way events are indexed client-side using IndexedDB
+    const fromBlock = Math.max(0, filter.fromBlock - 50);
+    const toBlock = filter.toBlock - 50;
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
     const results = await Promise.all(
@@ -59,13 +60,10 @@ const formatCovalentEvent = (covalentLog: any) => ({
 });
 
 const filterLogs = (logs: Log[], filter: Filter): Log[] => {
-  const fromBlock = filter.fromBlock as number;
-  const toBlock = filter.toBlock as number;
-  const topics = (filter.topics as string[]).map((topic) => topic?.toLowerCase());
-  const address = filter.address;
+  const { fromBlock, toBlock } = filter;
+  const topics = filter.topics.map((topic) => topic?.toLowerCase());
 
   const filteredLogs = logs.filter((event) => {
-    if (address && event.address !== address) return false;
     if (fromBlock && event.blockNumber < fromBlock) return false;
     if (toBlock && event.blockNumber > toBlock) return false;
     if (topics) {

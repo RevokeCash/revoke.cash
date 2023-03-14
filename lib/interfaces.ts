@@ -1,4 +1,4 @@
-import type { Filter as EthersFilter, Log as EthersLog } from '@ethersproject/abstract-provider';
+import type { Log as EthersLog } from '@ethersproject/abstract-provider';
 import type { Contract } from 'ethers';
 
 export interface BaseTokenData {
@@ -69,7 +69,8 @@ export interface AddressEvents {
   approvalForAll: Log[];
 }
 
-export interface Filter extends EthersFilter {
+export interface Filter {
+  topics: string[];
   fromBlock: number;
   toBlock: number;
 }

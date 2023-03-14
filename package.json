@@ -37,6 +37,7 @@
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^0.26.1",
     "axios-retry": "^3.4.0",
+    "dexie": "^3.2.3",
     "eth-chains": "^1.0.0",
     "ethers": "^5.7.2",
     "express-rate-limit": "^6.7.0",
