@@ -8,7 +8,7 @@ import {
 } from 'lib/utils/chains';
 import { revokeProvider } from 'lib/utils/revokeProvider';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { configureChains, createClient, useConnect, WagmiConfig } from 'wagmi';
+import { configureChains, createClient, useAccount, useConnect, WagmiConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { LedgerConnector } from 'wagmi/connectors/ledger';
@@ -92,6 +92,7 @@ export const EthereumProvider = ({ children }: Props) => {
 
 const EthereumProviderChild = ({ children }: Props) => {
   const { connect, connectors } = useConnect();
+  const { connector } = useAccount();
 
   // Add a migration from web3modal to wagmi so users don't need to reconnect
   // TODO: Remove this around May 2023, when people have migrated
@@ -119,6 +120,14 @@ const EthereumProviderChild = ({ children }: Props) => {
       migrateWeb3Modal(WEB3MODAL_CONNECTOR);
     }
   }, [connectors]);
+
+  // If the Safe connector is available, connect to it even if other connectors are available
+  // (if another connector auto-connects (or user disconnects), we still override it with the Safe connector)
+  useEffect(() => {
+    const safeConnector = connectors?.find((connector) => connector.id === 'safe' && connector.ready);
+    if (!safeConnector || connector === safeConnector) return;
+    connect({ connector: safeConnector });
+  }, [connectors, connector]);
 
   return <>{children}</>;
 };
