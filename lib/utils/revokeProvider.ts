@@ -20,14 +20,6 @@ export const createMulticallProviderProxy = (
   return new Proxy(multicallProvider, handler);
 };
 
-// TODO: Use injected provider if available
-// const getInjectedProvider = (chain: Chain) => {
-//   if (typeof window === 'undefined') return undefined;
-//   if (!window.ethereum) return undefined;
-//   if (Number((window as any).ethereum.chainId) !== chain.id) return undefined;
-//   return new providers.Web3Provider(window.ethereum, chain.id);
-// }
-
 export function revokeProvider<TChain extends Chain = Chain>({
   priority,
   stallTimeout,
@@ -37,10 +29,8 @@ export function revokeProvider<TChain extends Chain = Chain>({
     return {
       chain,
       provider: () => {
-        // const web3Provider = getInjectedProvider(chain);
-
         const rpcUrl = getChainRpcUrl(chain.id, process.env.NEXT_PUBLIC_INFURA_API_KEY);
-        const rpcProvider = new providers.JsonRpcProvider(rpcUrl, chain.id);
+        const rpcProvider = new providers.StaticJsonRpcProvider(rpcUrl, chain.id);
 
         const multicallProvider = new multicall.MulticallProvider(rpcProvider, { verbose: true });
         const providerProxy = createMulticallProviderProxy(multicallProvider);

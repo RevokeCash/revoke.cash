@@ -10,7 +10,7 @@ export const useLogs = (name: string, chainId: number, filter: Filter) => {
   const result = useQuery<Log[], Error>({
     queryKey: ['logs', logsProvider, filter, chainId],
     queryFn: async () => {
-      if (!logsProvider || !filter) return null;
+      if (!logsProvider || !filter || !chainId) return null;
       if (filter?.fromBlock === undefined || filter?.toBlock === undefined || filter?.topics === undefined) return null;
       const logs = await eventsDB.getLogs(logsProvider, filter, chainId);
       return logs;

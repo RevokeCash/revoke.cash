@@ -2,7 +2,6 @@ import { Provider } from '@ethersproject/abstract-provider';
 import Dexie, { Table } from 'dexie';
 
 interface Block {
-  id: string;
   chainId: number;
   blockNumber: number;
   timestamp: number;
@@ -14,23 +13,18 @@ class BlocksDB extends Dexie {
   constructor() {
     super('Blocks');
     this.version(2023_03_14).stores({
-      blocks: 'id, chainId, blockNumber, timestamp',
+      blocks: '[chainId+blockNumber], timestamp',
     });
-  }
-
-  private getId(chainId: number, blockNumber: number) {
-    return JSON.stringify({ chainId, blockNumber });
   }
 
   async getBlockTimestamp(provider: Provider, blockNumber: number) {
     try {
       const { chainId } = await provider.getNetwork();
-      const id = this.getId(chainId, blockNumber);
-      const storedBlock = await this.blocks.get(id);
+      const storedBlock = await this.blocks.get([chainId, blockNumber]);
       if (storedBlock) return storedBlock.timestamp;
 
       const block = await provider.getBlock(blockNumber);
-      await this.blocks.put({ id, chainId, blockNumber, timestamp: block?.timestamp });
+      await this.blocks.put({ chainId, blockNumber, timestamp: block?.timestamp });
       return block.timestamp;
     } catch (e) {
       console.log(e);
