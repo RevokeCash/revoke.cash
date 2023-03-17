@@ -54,7 +54,7 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
           <Spinner className="w-6 h-6 allowances-loader" />
         </div>
       )}
-      {error && (
+      {error && !loading && (
         <div className="flex justify-center items-center h-12 w-full">
           <Error error={error} />
         </div>
