@@ -3,8 +3,8 @@ import { Filter, Log, LogsProvider } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
 
 interface Events {
-  id: string;
   chainId: number;
+  topicsKey: string;
   topics: string[];
   toBlock: number;
   logs: Log[];
@@ -16,7 +16,7 @@ class EventsDB extends Dexie {
   constructor() {
     super('Events');
     this.version(2023_03_14).stores({
-      events: 'id, chainId, *topics, toBlock',
+      events: '[chainId+topicsKey], topics, toBlock',
     });
 
     // We can use this method to force clear the events table if we need to
@@ -25,19 +25,15 @@ class EventsDB extends Dexie {
     // });
   }
 
-  private getId(chainId: number, filter: Filter) {
-    return JSON.stringify({ chainId, topics: filter.topics });
-  }
-
   // Note: It is always assumed that this function is called to get logs for the entire chain (i.e. from block 0 to 'latest')
   // So we assume that the filter.fromBlock is always 0, and we only need to retrieve events between the last stored event and 'latest'
   // This means that we can't use this function to get logs for a specific block range
   async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number) {
     try {
-      const id = this.getId(chainId, filter);
-      const { topics, toBlock } = filter;
+      const { toBlock, topics } = filter;
+      const topicsKey = topics.join(',');
 
-      const storedEvents = await this.events.get(id);
+      const storedEvents = await this.events.get([chainId, topicsKey]);
 
       // If we already have events stored, we only need to get events from the last stored event to the latest block
       const fromBlock = storedEvents?.toBlock ? storedEvents.toBlock + 1 : filter.fromBlock;
@@ -51,7 +47,7 @@ class EventsDB extends Dexie {
 
       const logs = [...(storedEvents?.logs || []), ...newLogs];
 
-      await this.events.put({ id, chainId, topics, toBlock, logs });
+      await this.events.put({ chainId, topicsKey, topics, toBlock, logs });
 
       return logs;
     } catch (e) {
