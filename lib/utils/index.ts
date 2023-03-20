@@ -38,23 +38,19 @@ export const fromFloat = (floatString: string, decimals: number): string => {
 
 export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<Log[]> => {
   try {
-    try {
-      const result = await provider.getLogs(filter);
-      return result;
-    } catch (error) {
-      const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-      if (!errorMessage.includes('query returned more than 10000 results')) {
-        throw error;
-      }
-
-      const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-      const leftPromise = getLogs(provider, { ...filter, toBlock: middle });
-      const rightPromise = getLogs(provider, { ...filter, fromBlock: middle + 1 });
-      const [left, right] = await Promise.all([leftPromise, rightPromise]);
-      return [...left, ...right];
-    }
+    const result = await provider.getLogs(filter);
+    return result;
   } catch (error) {
-    throw error;
+    const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
+    if (!errorMessage.includes('query returned more than 10000 results')) {
+      throw error;
+    }
+
+    const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
+    const leftPromise = getLogs(provider, { ...filter, toBlock: middle });
+    const rightPromise = getLogs(provider, { ...filter, fromBlock: middle + 1 });
+    const [left, right] = await Promise.all([leftPromise, rightPromise]);
+    return [...left, ...right];
   }
 };
 

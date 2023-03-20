@@ -88,7 +88,8 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
         console.debug(`Calling contract.approve(${spender}, ${bnNew.toString()})`);
         tx = await writeContract.functions.approve(spender, bnNew);
       } catch (e) {
-        checkError(e, newAmount === '0');
+        const isUpdate = newAmount !== '0';
+        checkError(e, isUpdate);
       }
 
       if (tx) {
