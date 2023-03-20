@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "pages/api/**/*.ts": {
+      "memory": 512
+    }
+  }
+}
