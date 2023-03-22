@@ -16,7 +16,7 @@ interface Props {
 const AddressDisplay = ({ address, domainName, className, withCopyButton, withTooltip }: Props) => {
   const { t } = useTranslation();
 
-  const classes = twMerge('flex gap-1 items-center leading-none', className);
+  const classes = twMerge('flex gap-1 items-center', className, 'leading-none');
 
   return (
     <div className={classes}>
