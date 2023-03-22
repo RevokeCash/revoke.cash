@@ -26,7 +26,7 @@ const updateSpamTokens = async () => {
   );
 
   const originalList = JSON.parse(fs.readFileSync(SPAM_TOKENS_PATH, 'utf8'));
-  const fullList = Array.from(new Set([...originalList, ...results.flat().map(getAddress)]));
+  const fullList = Array.from(new Set([...originalList, ...results.flat().map(getAddress)])).sort();
   fs.writeFileSync(SPAM_TOKENS_PATH, JSON.stringify(fullList, null, 2));
 };
 

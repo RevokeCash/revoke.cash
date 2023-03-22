@@ -1,5 +1,3 @@
-import AVVY from '@avvy/client';
-import Resolution from '@unstoppabledomains/resolution';
 import { providers } from 'ethers';
 import type { IronSessionOptions } from 'iron-session';
 
@@ -23,29 +21,6 @@ export const DONATION_ADDRESS = '0xfcBf17200C64E860F6639aa12B525015d115F863'; //
 
 export const ALCHEMY_PROVIDER =
   process.env.NEXT_PUBLIC_ALCHEMY_API_KEY && new providers.AlchemyProvider(1, process.env.NEXT_PUBLIC_ALCHEMY_API_KEY);
-
-export const ENS_RESOLUTION = ALCHEMY_PROVIDER;
-
-export const UNS_RESOLUTION =
-  process.env.NEXT_PUBLIC_ALCHEMY_API_KEY &&
-  new Resolution({
-    sourceConfig: {
-      uns: {
-        locations: {
-          Layer1: {
-            url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
-            network: 'mainnet',
-          },
-          Layer2: {
-            url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
-            network: 'polygon-mainnet',
-          },
-        },
-      },
-    },
-  });
-
-export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'));
 
 export const IRON_OPTIONS: IronSessionOptions = {
   cookieName: 'revoke_session',

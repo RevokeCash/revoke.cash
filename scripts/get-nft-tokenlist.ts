@@ -71,6 +71,8 @@ const updateNftTokenlist = async () => {
   let shouldContinue = true;
   let url = RESERVOIR_API_URL;
 
+  let retrievedMapping = { ...fullOverrides };
+
   while (shouldContinue) {
     console.log(url);
     const { data } = await axios.get(url);
@@ -95,12 +97,9 @@ const updateNftTokenlist = async () => {
       return [address, nft];
     });
 
+    // Merge the new entries with the existing ones (prefer the old ones = highest volume)
     const mapping = Object.fromEntries(entries.filter((entry) => !!entry));
-
-    // Write to file at every iteration
-    const originalMapping = JSON.parse(fs.readFileSync(NFT_TOKEN_MAPPING_PATH, 'utf8'));
-    const fullMapping = { '1': { ...originalMapping['1'], ...mapping } };
-    fs.writeFileSync(NFT_TOKEN_MAPPING_PATH, JSON.stringify(fullMapping, null, 2));
+    retrievedMapping = { ...mapping, ...retrievedMapping };
 
     // Cut off if we're below a certain volume
     if (continuation && currentVolume > 100) {
@@ -111,9 +110,9 @@ const updateNftTokenlist = async () => {
     }
   }
 
-  // Add overrides
+  // Merge with the existing mapping and write to file (prefer the new data)
   const originalMapping = JSON.parse(fs.readFileSync(NFT_TOKEN_MAPPING_PATH, 'utf8'));
-  const fullMapping = { '1': { ...originalMapping['1'], ...fullOverrides } };
+  const fullMapping = { '1': { ...originalMapping['1'], ...retrievedMapping } };
   fs.writeFileSync(NFT_TOKEN_MAPPING_PATH, JSON.stringify(fullMapping, null, 2));
 };
 

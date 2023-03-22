@@ -1,16 +1,38 @@
+import AVVY from '@avvy/client';
+import { Resolution } from '@unstoppabledomains/resolution';
 import axios from 'axios';
-import { Contract, utils } from 'ethers';
+import { Contract, providers, utils } from 'ethers';
 import { OPENSEA_REGISTRY } from 'lib/abis';
 import {
   ADDRESS_ZERO,
   ALCHEMY_PROVIDER,
-  AVVY_RESOLUTION,
   DAPP_LIST_BASE_URL,
-  ENS_RESOLUTION,
   ETHEREUM_LISTS_CONTRACTS,
   OPENSEA_REGISTRY_ADDRESS,
-  UNS_RESOLUTION,
 } from 'lib/constants';
+
+export const ENS_RESOLUTION = ALCHEMY_PROVIDER;
+
+export const UNS_RESOLUTION =
+  process.env.NEXT_PUBLIC_ALCHEMY_API_KEY &&
+  new Resolution({
+    sourceConfig: {
+      uns: {
+        locations: {
+          Layer1: {
+            url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            network: 'mainnet',
+          },
+          Layer2: {
+            url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            network: 'polygon-mainnet',
+          },
+        },
+      },
+    },
+  });
+
+export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'));
 
 export const addressToAppName = async (
   address: string,
