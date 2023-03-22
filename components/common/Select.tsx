@@ -1,5 +1,5 @@
-import { classNames } from 'lib/utils/styles';
 import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
+import { twMerge } from 'tailwind-merge';
 
 interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
   minMenuWidth?: number | string;
@@ -30,11 +30,11 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   return (
     <ReactSelect
       {...props}
-      className={classNames(props.className)}
+      className={twMerge(props.className)}
       components={{ IndicatorSeparator: null, ClearIndicator: null, Option, ...props.components }}
       classNames={{
         control: (state) =>
-          classNames(
+          twMerge(
             // Attempt to match the browser's focus-visible behaviour for <select> elements
             // (only display the focus ring when the element is focused via the keyboard)
             state.isFocused && '[&:has(:focus-visible)]:ring-1 [&:has(:focus-visible)]:ring-current',

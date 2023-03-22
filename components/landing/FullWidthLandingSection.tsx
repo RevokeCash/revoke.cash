@@ -1,5 +1,5 @@
-import { classNames } from 'lib/utils/styles';
 import { ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   title?: string;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const FullWidthLandingSection = ({ title, children, inverted }: Props) => {
-  const classes = classNames('w-full px-4', inverted && 'bg-black dark:bg-zinc-800 text-zinc-100 pt-8 pb-16');
+  const classes = twMerge('w-full px-4', inverted && 'bg-black dark:bg-zinc-800 text-zinc-100 pt-8 pb-16');
   return (
     <div className={classes}>
       <div className="flex flex-col items-center">

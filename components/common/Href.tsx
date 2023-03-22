@@ -1,6 +1,6 @@
-import { classNames } from 'lib/utils/styles';
 import Link from 'next/link';
 import { ForwardedRef, forwardRef, HTMLProps, ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props extends HTMLProps<HTMLAnchorElement> {
   href: string;
@@ -27,11 +27,11 @@ const Href = (
     none: 'no-underline hover:no-underline',
   };
 
-  const classes = classNames(
+  const classes = twMerge(
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
-    className,
     styleMapping[html ? 'html' : 'inherit'],
-    underlineMapping[underline ?? 'always']
+    underlineMapping[underline ?? 'always'],
+    className
   );
 
   if (router) {

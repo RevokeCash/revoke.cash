@@ -1,9 +1,9 @@
 import Href from 'components/common/Href';
 import Label from 'components/common/Label';
-import { classNames } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   name: string;
@@ -65,9 +65,9 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
 
   return (
     <div className="relative">
-      <Href href={url} external className={classNames(mapping.common.banner, mapping[tier].banner)} underline="hover">
-        <div className={classNames(mapping.common.image, mapping[tier].image)}>
-          <Label className={classNames(mapping.common.label, mapping[tier].label)}>
+      <Href href={url} external className={twMerge(mapping.common.banner, mapping[tier].banner)} underline="hover">
+        <div className={twMerge(mapping.common.image, mapping[tier].image)}>
+          <Label className={twMerge(mapping.common.label, mapping[tier].label)}>
             {t(`landing:sponsors.tiers.${tier}`)}
           </Label>
           <Image

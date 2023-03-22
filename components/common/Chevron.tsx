@@ -1,4 +1,4 @@
-import { classNames } from 'lib/utils/styles';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   className?: string;
@@ -6,7 +6,7 @@ interface Props {
 
 // Prefer this Chevron look (taken from react-select) over HeroIcons
 const Chevron = ({ className }: Props) => {
-  const classes = classNames(className ?? 'w-4 h-4');
+  const classes = twMerge(className ?? 'w-4 h-4');
 
   return (
     <svg className={classes} viewBox="0 0 20 20" aria-hidden="true" focusable="false">

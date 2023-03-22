@@ -1,4 +1,4 @@
-import { classNames } from 'lib/utils/styles';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   children: React.ReactNode;
@@ -6,10 +6,7 @@ interface Props {
 }
 
 const Label = ({ children, className }: Props) => {
-  const classes = classNames(
-    className,
-    'text-xs font-semibold flex items-center justify-center py-0.5 px-1.5 rounded-md'
-  );
+  const classes = twMerge('text-xs font-semibold flex items-center justify-center py-0.5 px-1.5 rounded-md', className);
 
   return <div className={classes}>{children}</div>;
 };

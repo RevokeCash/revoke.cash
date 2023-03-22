@@ -1,6 +1,6 @@
-import { classNames } from 'lib/utils/styles';
 import Image from 'next/image';
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 import PlaceholderIcon from './PlaceholderIcon';
 
 interface Props {
@@ -24,7 +24,7 @@ const Logo = ({ src, alt, size, square }: Props) => {
         alt={alt}
         height={size ?? 24}
         width={size ?? 24}
-        className={classNames('aspect-square object-cover', square ? 'rounded-lg' : 'rounded-full')}
+        className={twMerge('aspect-square object-cover', square ? 'rounded-lg' : 'rounded-full')}
         onError={() => setError(true)}
       />
     );
@@ -38,7 +38,7 @@ const Logo = ({ src, alt, size, square }: Props) => {
       height={size ?? 24}
       width={size ?? 24}
       quality="100"
-      className={classNames('aspect-square object-cover', square ? 'rounded-lg' : 'rounded-full')}
+      className={twMerge('aspect-square object-cover', square ? 'rounded-lg' : 'rounded-full')}
       onError={() => setError(true)}
     />
   );

@@ -1,5 +1,5 @@
-import { classNames } from 'lib/utils/styles';
 import { ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   title?: string;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const LandingSection = ({ title, size, children }: Props) => {
-  const titleClasses = classNames(size === 'md' ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl');
+  const titleClasses = twMerge(size === 'md' ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl');
 
   return (
     <div className="w-full px-4">

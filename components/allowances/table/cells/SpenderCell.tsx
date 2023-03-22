@@ -7,8 +7,8 @@ import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext
 import type { AllowanceData } from 'lib/interfaces';
 import { shortenString } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import { classNames } from 'lib/utils/styles';
 import { addressToAppName } from 'lib/utils/whois';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   allowance: AllowanceData;
@@ -37,7 +37,7 @@ const SpenderCell = ({ allowance }: Props) => {
   }
 
   return (
-    <div className={classNames('flex justify-start')}>
+    <div className={twMerge('flex justify-start')}>
       <WithHoverTooltip tooltip={allowance.spender}>
         <Href href={explorerUrl} underline="hover" external>
           {spenderName ?? shortenString(allowance.spender, 17)}

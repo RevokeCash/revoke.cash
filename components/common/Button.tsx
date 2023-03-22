@@ -1,7 +1,7 @@
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { classNames } from 'lib/utils/styles';
 import Link from 'next/link';
 import { MouseEventHandler } from 'react';
+import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
 interface Props {
@@ -53,7 +53,7 @@ const Button = ({
     right: 'justify-end',
   };
 
-  const classes = classNames(
+  const classes = twMerge(
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
     (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded',
     style !== 'none' && classMapping.common,

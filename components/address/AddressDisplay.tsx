@@ -2,8 +2,8 @@ import { DocumentDuplicateIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { shortenAddress, writeToClipBoard } from 'lib/utils';
-import { classNames } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   address: string;
@@ -16,7 +16,7 @@ interface Props {
 const AddressDisplay = ({ address, domainName, className, withCopyButton, withTooltip }: Props) => {
   const { t } = useTranslation();
 
-  const classes = classNames('flex gap-1 items-center leading-none', className);
+  const classes = twMerge('flex gap-1 items-center leading-none', className);
 
   return (
     <div className={classes}>

@@ -9325,6 +9325,7 @@ __metadata:
     react-ssr-prepass: ^1.5.0
     react-toastify: ^9.1.1
     request-ip: ^3.3.0
+    tailwind-merge: ^1.10.0
     tailwindcss: ^3.2.7
     timeago-react: ^3.0.5
     ts-node: ^10.9.1
@@ -9989,6 +9990,13 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "tailwind-merge@npm:1.10.0"
+  checksum: 80eb30d0300ca912b4b910460497a1d5fb4e697c3aedb01513e633973328684fa7ddf9bfb8550dca28176971c93bcb7ecb7eec3097c01d9c55c191563c693aab
   languageName: node
   linkType: hard
 

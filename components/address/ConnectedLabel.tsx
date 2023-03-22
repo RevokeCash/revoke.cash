@@ -1,7 +1,7 @@
 import Label from 'components/common/Label';
 import { useMounted } from 'lib/hooks/useMounted';
-import { classNames } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
+import { twMerge } from 'tailwind-merge';
 import { useAccount } from 'wagmi';
 
 interface Props {
@@ -15,7 +15,7 @@ const ConnectedLabel = ({ address }: Props) => {
 
   if (!isMounted) return null;
 
-  const classes = classNames(
+  const classes = twMerge(
     address === account ? 'bg-green-500 text-white' : 'bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100'
   );
 

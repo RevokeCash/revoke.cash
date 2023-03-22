@@ -5,9 +5,9 @@ import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
-import { classNames } from 'lib/utils/styles';
 import Trans from 'next-translate/Trans';
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 import { useAccount, useNetwork } from 'wagmi';
 import ControlsSection from '../../controls/ControlsSection';
 
@@ -28,13 +28,13 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
 
   if (editing) {
     return (
-      <div className="flex items-center gap-2 w-40">
+      <div className="flex items-center w-40">
         <ControlsSection allowance={allowance} update={update} reset={() => setEditing(false)} />
       </div>
     );
   }
 
-  const classes = classNames(!allowance.spender && 'text-zinc-400 dark:text-zinc-500', 'flex items-center gap-2 w-40');
+  const classes = twMerge(!allowance.spender && 'text-zinc-400 dark:text-zinc-500', 'flex items-center gap-2 w-40');
 
   return (
     <div className={classes}>
