@@ -18,8 +18,8 @@ const SearchBar = () => {
     queryKey: ['validate', value],
     queryFn: async () => !!(await parseInputAddress(value)),
     enabled: !!value,
+    // Chances of this data changing while the user is on the page are very slim
     staleTime: Infinity,
-    cacheTime: Infinity,
   });
 
   // TODO: Handle case where submitted while still validating
@@ -40,7 +40,7 @@ const SearchBar = () => {
         className="grow focus-visible:outline-none address-input bg-transparent"
         placeholder={t('common:nav.search')}
         value={value}
-        onChange={(ev) => setValue(ev.target.value)}
+        onChange={(ev) => setValue(ev.target.value.trim())}
       />
       {value && validating && <Spinner className="w-4 h-4" />}
       {value && !validating && !isValid && <XMarkIcon className="w-6 h-6 text-red-500" />}

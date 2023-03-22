@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { HOUR } from 'lib/utils/time';
 import { ReactNode } from 'react';
 import Spinner from './Spinner';
 
@@ -9,12 +10,10 @@ interface Props {
 }
 
 const LogIn = ({ children, showSpinner }: Props) => {
-  const TWELVE_HOURS = 12 * 60 * 60 * 1000;
   const { isLoading: loggingIn } = useQuery<void, Error>({
     queryKey: ['login'],
     queryFn: () => axios.post('/api/login'),
-    staleTime: TWELVE_HOURS,
-    cacheTime: TWELVE_HOURS,
+    staleTime: 12 * HOUR,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     refetchOnMount: true,

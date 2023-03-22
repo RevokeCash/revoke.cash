@@ -18,7 +18,7 @@ const ControlsWrapper = ({ children }: Props) => {
 
   const chainName = getChainName(selectedChainId);
 
-  const isConnected = account !== undefined;
+  const isConnected = !!account;
   const isConnectedAddress = isConnected && address === account;
   const needsToSwitchChain = isConnected && selectedChainId !== chain?.id;
 

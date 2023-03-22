@@ -3,6 +3,7 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
+import { formatDateNormalised, SECOND } from 'lib/utils/time';
 import useTranslation from 'next-translate/useTranslation';
 import TimeAgo from 'timeago-react';
 
@@ -16,15 +17,14 @@ const LastUpdatedCell = ({ allowance }: Props) => {
 
   if (!allowance.lastUpdated) return null;
 
-  const lastUpdatedDate = new Date(allowance.lastUpdated * 1000);
+  const lastUpdatedDate = new Date(allowance.lastUpdated * SECOND);
   const explorerUrl = getChainExplorerUrl(selectedChainId);
 
   return (
     <div className="flex justify-start font-monosans">
       <WithHoverTooltip tooltip={<TimeAgo datetime={lastUpdatedDate} locale={lang} />}>
         <Href underline="hover" href={`${explorerUrl}/tx/${allowance.transactionHash}`} external>
-          {lastUpdatedDate.toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' })}{' '}
-          {lastUpdatedDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+          {formatDateNormalised(lastUpdatedDate)}
         </Href>
       </WithHoverTooltip>
     </div>

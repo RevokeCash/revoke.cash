@@ -22,8 +22,8 @@ const SpenderCell = ({ allowance }: Props) => {
   const { data: spenderName, isLoading } = useQuery({
     queryKey: ['spenderName', allowance.spender, selectedChainId, openSeaProxyAddress],
     queryFn: () => addressToAppName(allowance.spender, selectedChainId, openSeaProxyAddress),
+    // Chances of this data changing while the user is on the page are very slim
     staleTime: Infinity,
-    cacheTime: Infinity,
   });
 
   const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.spender}`;

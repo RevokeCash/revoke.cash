@@ -21,7 +21,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   const { chain } = useNetwork();
 
   // TODO: Remove this WET code (alwo in ControlsWrapper.tsx)
-  const isConnected = account !== undefined;
+  const isConnected = !!account;
   const isConnectedAddress = isConnected && address === account;
   const needsToSwitchChain = isConnected && selectedChainId !== chain?.id;
   const canSwitchChain = connector?.id === 'injected';

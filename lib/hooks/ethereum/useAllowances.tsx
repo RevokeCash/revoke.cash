@@ -5,6 +5,7 @@ import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowance
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useEffect, useState } from 'react';
 import { useProvider } from 'wagmi';
+import { queryClient } from '../QueryProvider';
 
 export const useAllowances = (address: string, events: AddressEvents, chainId: number) => {
   const [allowances, setAllowances] = useState<AllowanceData[]>();
@@ -13,13 +14,15 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
     queryKey: ['allowances', address, chainId, events],
     queryFn: async () => {
-      if (chainId === undefined || events === undefined) return null;
+      if (!chainId || !events) return null;
       const allowances = getAllowancesFromEvents(address, events, readProvider, chainId);
       track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
     refetchOnWindowFocus: false,
-    staleTime: 60 * 1000,
+    // If events (transfers + approvals) don't change, derived allowances also shouldn't change, even if allowances
+    // are used on-chain. The only exception would be incorrectly implemented tokens that don't emit correct events
+    staleTime: Infinity,
   });
 
   useEffect(() => {
@@ -51,7 +54,15 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
   };
 
   // TODO: Update last updated time
-  const onUpdate = (allowance: AllowanceData, newAmount?: string) => {
+  const onUpdate = async (allowance: AllowanceData, newAmount?: string) => {
+    // Invalidate blockNumber query, which triggers a refetch of the events, which in turn triggers a refetch of the allowances
+    // We do not immediately refetch the allowances here, but we want to make sure that allowances will be refetched when
+    // users navigate to the allowances page again
+    await queryClient.invalidateQueries({
+      queryKey: ['blockNumber', chainId],
+      refetchType: 'none',
+    });
+
     if (!newAmount || newAmount === '0') {
       return onRevoke(allowance);
     }

@@ -2,13 +2,13 @@ import { utils } from 'ethers';
 import { ERC721Metadata } from 'lib/abis';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import { useMemo } from 'react';
-import { useBlockNumber } from 'wagmi';
+import { useBlockNumber } from './useBlockNumber';
 import { useLogs } from './useLogs';
 import { useOpenSeaProxyAddress } from './useOpenSeaProxyAddress';
 
 export const useEvents = (address: string, chainId: number) => {
   const { openSeaProxyAddress, isLoading: isOpenSeaProxyAddressLoading } = useOpenSeaProxyAddress(address);
-  const { data: blockNumber, isLoading: isBlockNumberLoading } = useBlockNumber({ chainId });
+  const { data: blockNumber, isLoading: isBlockNumberLoading } = useBlockNumber(chainId);
 
   const erc721Interface = new utils.Interface(ERC721Metadata);
   const addressTopic = utils.hexZeroPad(address, 32);
