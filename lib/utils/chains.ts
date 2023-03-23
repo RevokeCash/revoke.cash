@@ -6,6 +6,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
   ChainId.Goerli,
   ChainId.Sepolia,
+  ChainId.ArbitrumOne,
   ChainId.MetisAndromedaMainnet,
   ChainId.SmartBitcoinCash,
   ChainId.SyscoinTanenbaumTestnet,
@@ -46,7 +47,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
-  ChainId.ArbitrumOne,
+  // ChainId.ArbitrumOne,
   421613, // Arbitrum Goerli
   42170, // Arbitrum Nova
   ChainId.Moonbeam,
@@ -280,7 +281,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
 export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string | undefined => {
   // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides = {
-    [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
+    [ChainId.ArbitrumOne]: `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
     [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
     [42170]: 'https://nova.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://rpc.api.moonbeam.network',
