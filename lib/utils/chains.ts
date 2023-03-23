@@ -6,11 +6,18 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
   ChainId.Goerli,
   ChainId.Sepolia,
+  ChainId.PolygonMainnet,
+  ChainId.Mumbai,
+  ChainId.Optimism,
+  ChainId.OptimisticEthereumTestnetGoerli,
   ChainId.ArbitrumOne,
+  421613, // Arbitrum Goerli
+  ChainId['AvalancheC-Chain'],
+  ChainId.AvalancheFujiTestnet,
   ChainId.MetisAndromedaMainnet,
   ChainId.SmartBitcoinCash,
-  ChainId.SyscoinTanenbaumTestnet,
   ChainId.SyscoinMainnet,
+  ChainId.SyscoinTanenbaumTestnet,
   ChainId.EthereumClassicMainnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
@@ -40,15 +47,9 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
 export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
-  ChainId.PolygonMainnet,
   ChainId.Gnosis,
-  ChainId.Mumbai,
-  ChainId['AvalancheC-Chain'],
-  ChainId.AvalancheFujiTestnet,
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
-  // ChainId.ArbitrumOne,
-  421613, // Arbitrum Goerli
   42170, // Arbitrum Nova
   ChainId.Moonbeam,
   ChainId.Moonriver,
@@ -71,7 +72,7 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.Shiden,
 ];
 
-export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
+export const NODE_SUPPORTED_CHAINS = [];
 
 export const SUPPORTED_CHAINS = [
   ...PROVIDER_SUPPORTED_CHAINS,
@@ -312,6 +313,23 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
+};
+
+// We should always use Infura for logs, even if we use a different RPC URL for other purposes
+export const getChainLogsRpcUrl = (chainId: number, infuraKey: string = ''): string | undefined => {
+  const overrides = {
+    [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
+    [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
+    [ChainId.PolygonMainnet]: `https://polygon-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.Mumbai]: `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
+    [ChainId.ArbitrumOne]: `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
+    [421613]: `https://arbitrum-goerli.infura.io/v3/${infuraKey}`,
+    [ChainId['AvalancheC-Chain']]: `https://avalanche-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.AvalancheFujiTestnet]: `https://avalanche-fuji.infura.io/v3/${infuraKey}`,
+  };
+
+  return overrides[chainId] ?? getChainRpcUrl(chainId, infuraKey);
 };
 
 export const getChainLogo = (chainId: number): string => {
