@@ -294,7 +294,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
-    [ChainId.Optimism]: 'https://optimism-mainnet.public.blastapi.io',
+    [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     [2109]: 'https://rpc.exosama.com',
     [18159]: 'https://mainnet-rpc.memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
