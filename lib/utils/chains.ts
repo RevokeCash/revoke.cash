@@ -51,6 +51,8 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
   42170, // Arbitrum Nova
+  ChainId['AvalancheC-Chain'],
+  ChainId.AvalancheFujiTestnet,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.MoonbaseAlpha,
@@ -279,10 +281,12 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
   return overrides[chainId] ?? explorer?.url;
 };
 
-export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string | undefined => {
+export const getChainRpcUrl = (chainId: number): string | undefined => {
+  const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
+
   // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides = {
-    [ChainId.ArbitrumOne]: `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
     [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
     [42170]: 'https://nova.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://rpc.api.moonbeam.network',
@@ -296,7 +300,8 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
-    [ChainId.Optimism]: 'https://optimism-mainnet.public.blastapi.io',
+    [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.OptimisticEthereumTestnetGoerli]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [2109]: 'https://rpc.exosama.com',
     [18159]: 'https://mainnet-rpc.memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
@@ -316,20 +321,23 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
 };
 
 // We should always use Infura for logs, even if we use a different RPC URL for other purposes
-export const getChainLogsRpcUrl = (chainId: number, infuraKey: string = ''): string | undefined => {
+export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
+  const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
+  const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+
   const overrides = {
     [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
-    [ChainId.PolygonMainnet]: `https://polygon-mainnet.infura.io/v3/${infuraKey}`,
-    [ChainId.Mumbai]: `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
-    [ChainId.ArbitrumOne]: `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
-    [421613]: `https://arbitrum-goerli.infura.io/v3/${infuraKey}`,
-    [ChainId['AvalancheC-Chain']]: `https://avalanche-mainnet.infura.io/v3/${infuraKey}`,
-    [ChainId.AvalancheFujiTestnet]: `https://avalanche-fuji.infura.io/v3/${infuraKey}`,
+    [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.Mumbai]: `https://polygon-mumbai.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.Optimism]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.OptimisticEthereumTestnetGoerli]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.ArbitrumOne]: `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [421613]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
   };
 
-  return overrides[chainId] ?? getChainRpcUrl(chainId, infuraKey);
+  return overrides[chainId] ?? getChainRpcUrl(chainId);
 };
 
 export const getChainLogo = (chainId: number): string => {

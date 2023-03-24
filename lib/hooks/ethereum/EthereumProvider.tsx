@@ -30,8 +30,8 @@ const chainList = SUPPORTED_CHAINS.map((chainId) => {
     name: chainName,
     nativeCurrency: chainInfo?.nativeCurrency ?? fallbackNativeCurrency,
     rpcUrls: {
-      default: { http: [getChainRpcUrl(chainId, process.env.NEXT_PUBLIC_INFURA_API_KEY)] },
-      public: { http: [getChainRpcUrl(chainId, process.env.NEXT_PUBLIC_INFURA_API_KEY)] },
+      default: { http: [getChainRpcUrl(chainId)] },
+      public: { http: [getChainRpcUrl(chainId)] },
     },
     blockExplorers: {
       default: {

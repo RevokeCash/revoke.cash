@@ -29,7 +29,7 @@ export function revokeProvider<TChain extends Chain = Chain>({
     return {
       chain,
       provider: () => {
-        const rpcUrl = getChainRpcUrl(chain.id, process.env.NEXT_PUBLIC_INFURA_API_KEY);
+        const rpcUrl = getChainRpcUrl(chain.id);
         const rpcProvider = new providers.StaticJsonRpcProvider(rpcUrl, chain.id);
 
         const multicallProvider = new multicall.MulticallProvider(rpcProvider, { verbose: true });
