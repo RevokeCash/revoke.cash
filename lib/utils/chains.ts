@@ -21,7 +21,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.CoinExSmartChainTestnet,
   2109, // Exosama
   18159, // Proof of Memes
-  // 324, // zkSync Era
+  324, // zkSync Era
   280, // zkSync Era Goerli
 ];
 
@@ -91,7 +91,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ArbitrumOne,
   42170, // Arbitrum Nova
   ChainId.Optimism,
-  // 324, // zkSync Era
+  324, // zkSync Era
   ChainId['AvalancheC-Chain'],
   ChainId.FantomOpera,
   ChainId.CronosMainnetBeta,
