@@ -11,8 +11,8 @@ interface Props {
 
 const LogIn = ({ children, showSpinner }: Props) => {
   const { isLoading: loggingIn } = useQuery<void, Error>({
-    queryKey: ['login'],
-    queryFn: () => axios.post('/api/login'),
+    queryKey: ['login', { persist: true }],
+    queryFn: () => axios.post('/api/login').then((res) => res.data),
     staleTime: 12 * HOUR,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
