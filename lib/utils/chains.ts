@@ -6,10 +6,16 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
   ChainId.Goerli,
   ChainId.Sepolia,
+  ChainId.PolygonMainnet,
+  ChainId.Mumbai,
+  ChainId.Optimism,
+  ChainId.OptimisticEthereumTestnetGoerli,
+  ChainId.ArbitrumOne,
+  421613, // Arbitrum Goerli
   ChainId.MetisAndromedaMainnet,
   ChainId.SmartBitcoinCash,
-  ChainId.SyscoinTanenbaumTestnet,
   ChainId.SyscoinMainnet,
+  ChainId.SyscoinTanenbaumTestnet,
   ChainId.EthereumClassicMainnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
@@ -34,21 +40,18 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.AuroraMainnet,
   1662, // Horizen Yuma Testnet
   1442, // Polygon zkEVM Testnet
+  ChainId.PulseChainTestnetv3,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.BinanceSmartChainMainnet,
   ChainId.BinanceSmartChainTestnet,
-  ChainId.PolygonMainnet,
   ChainId.Gnosis,
-  ChainId.Mumbai,
-  ChainId['AvalancheC-Chain'],
-  ChainId.AvalancheFujiTestnet,
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
-  ChainId.ArbitrumOne,
-  421613, // Arbitrum Goerli
   42170, // Arbitrum Nova
+  ChainId['AvalancheC-Chain'],
+  ChainId.AvalancheFujiTestnet,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.MoonbaseAlpha,
@@ -70,7 +73,7 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.Shiden,
 ];
 
-export const NODE_SUPPORTED_CHAINS = [ChainId.Optimism, ChainId.OptimisticEthereumTestnetGoerli];
+export const NODE_SUPPORTED_CHAINS = [];
 
 export const SUPPORTED_CHAINS = [
   ...PROVIDER_SUPPORTED_CHAINS,
@@ -142,6 +145,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
   1662, // Horizen Yuma Testnet
+  ChainId.PulseChainTestnetv3,
 ];
 
 export const isSupportedChain = (chainId: number): boolean => {
@@ -235,6 +239,7 @@ export const getChainName = (chainId: number): string => {
     [324]: 'zkSync Era',
     [280]: 'zkSync Era Goerli',
     [1442]: 'Polygon Test-zkEVM',
+    [ChainId.PulseChainTestnetv3]: 'PulseChain Testnet',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -277,10 +282,12 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
   return overrides[chainId] ?? explorer?.url;
 };
 
-export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string | undefined => {
+export const getChainRpcUrl = (chainId: number): string | undefined => {
+  const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
+
   // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides = {
-    [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
+    [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
     [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
     [42170]: 'https://nova.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://rpc.api.moonbeam.network',
@@ -295,6 +302,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
     [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.OptimisticEthereumTestnetGoerli]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [2109]: 'https://rpc.exosama.com',
     [18159]: 'https://mainnet-rpc.memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
@@ -306,11 +314,32 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
     [324]: 'https://zksync2-mainnet.zksync.io',
     [280]: 'https://zksync2-testnet.zksync.dev',
     [1442]: 'https://rpc.public.zkevm-test.net',
+    [ChainId.PulseChainTestnetv3]: 'https://rpc.v3.testnet.pulsechain.com',
     ...RPC_OVERRIDES,
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
+};
+
+// We should always use Infura for logs, even if we use a different RPC URL for other purposes
+export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
+  const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
+  const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+
+  const overrides = {
+    [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
+    [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
+    [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.Mumbai]: `https://polygon-mumbai.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.Optimism]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.OptimisticEthereumTestnetGoerli]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.ArbitrumOne]: `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [421613]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
+  };
+
+  return overrides[chainId] ?? getChainRpcUrl(chainId);
 };
 
 export const getChainLogo = (chainId: number): string => {
@@ -392,6 +421,7 @@ export const getChainLogo = (chainId: number): string => {
     [324]: '/assets/images/vendor/chains/zksync.jpeg',
     [280]: '/assets/images/vendor/chains/zksync.jpeg',
     [1442]: '/assets/images/vendor/chains/polygon.png',
+    [ChainId.PulseChainTestnetv3]: '/assets/images/vendor/chains/pulsechain.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -503,6 +533,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
     [1662]: 'https://yuma-explorer.horizen.io/api',
     [1442]: 'https://explorer.public.zkevm-test.net/api',
+    [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com/api',
   };
 
   return apiUrls[chainId];
