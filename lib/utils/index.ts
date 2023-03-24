@@ -41,10 +41,7 @@ export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<L
     const result = await provider.getLogs(filter);
     return result;
   } catch (error) {
-    const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-    if (!errorMessage.includes('query returned more than 10000 results')) {
-      throw error;
-    }
+    if (isLogResponseSizeError(error)) throw error;
 
     const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
     const leftPromise = getLogs(provider, { ...filter, toBlock: middle });
@@ -52,6 +49,14 @@ export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<L
     const [left, right] = await Promise.all([leftPromise, rightPromise]);
     return [...left, ...right];
   }
+};
+
+export const isLogResponseSizeError = (error: any) => {
+  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
+  if (!errorMessage) return false;
+  if (errorMessage.includes('query returned more than 10000 results')) return true;
+  if (errorMessage.includes('Log response size exceeded')) return true;
+  return false;
 };
 
 export const parseInputAddress = async (inputAddressOrName: string): Promise<string | undefined> => {

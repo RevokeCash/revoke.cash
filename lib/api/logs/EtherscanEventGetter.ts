@@ -32,7 +32,7 @@ export class EtherscanEventGetter implements EventGetter {
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
     if (data.result?.length === 1000) {
-      throw new Error('query returned more than 10000 results');
+      throw new Error('Log response size exceeded');
     }
 
     if (typeof data.result === 'string') {
