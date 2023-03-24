@@ -12,8 +12,6 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.OptimisticEthereumTestnetGoerli,
   ChainId.ArbitrumOne,
   421613, // Arbitrum Goerli
-  ChainId['AvalancheC-Chain'],
-  ChainId.AvalancheFujiTestnet,
   ChainId.MetisAndromedaMainnet,
   ChainId.SmartBitcoinCash,
   ChainId.SyscoinMainnet,
