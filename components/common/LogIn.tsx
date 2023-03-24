@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useMounted } from 'lib/hooks/useMounted';
 import { HOUR } from 'lib/utils/time';
 import { ReactNode } from 'react';
 import Spinner from './Spinner';
@@ -11,18 +10,14 @@ interface Props {
 }
 
 const LogIn = ({ children, showSpinner }: Props) => {
-  const isMounted = useMounted();
-
   const { isLoading: loggingIn } = useQuery<void, Error>({
-    queryKey: ['login', { persist: true }],
-    queryFn: () => axios.post('/api/login').then((res) => res.data),
+    queryKey: ['login'],
+    queryFn: () => axios.post('/api/login'),
     staleTime: 12 * HOUR,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     refetchOnMount: true,
   });
-
-  if (!isMounted) return null;
 
   if (loggingIn) {
     if (showSpinner) {
