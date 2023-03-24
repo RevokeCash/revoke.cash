@@ -275,6 +275,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [324]: 'https://explorer.zksync.io',
     [280]: 'https://goerli.explorer.zksync.io',
     [1442]: 'https://explorer.public.zkevm-test.net',
+    [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];

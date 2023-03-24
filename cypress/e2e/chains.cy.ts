@@ -60,6 +60,7 @@ const fixtures = [
   ['CoinEx Testnet', '0x5B82588003Ac9db7510702171b94f4acAF87Ca72'],
   ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
   ['Horizen Yuma', '0xA54FE4eDa4B288B9dDC40EBA35f3730c7D55f898'],
+  ['PulseChain Testnet', '0xc068aEAdc48427fde985866DAa3e52D4d63935C3'],
 ];
 
 const Selectors = {
