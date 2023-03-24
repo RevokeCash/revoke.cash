@@ -42,6 +42,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.AuroraMainnet,
   1662, // Horizen Yuma Testnet
   1442, // Polygon zkEVM Testnet
+  ChainId.PulseChainTestnetv3,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -146,6 +147,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
   1662, // Horizen Yuma Testnet
+  ChainId.PulseChainTestnetv3,
 ];
 
 export const isSupportedChain = (chainId: number): boolean => {
@@ -239,6 +241,7 @@ export const getChainName = (chainId: number): string => {
     [324]: 'zkSync Era',
     [280]: 'zkSync Era Goerli',
     [1442]: 'Polygon Test-zkEVM',
+    [ChainId.PulseChainTestnetv3]: 'PulseChain Testnet',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -313,6 +316,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [324]: 'https://zksync2-mainnet.zksync.io',
     [280]: 'https://zksync2-testnet.zksync.dev',
     [1442]: 'https://rpc.public.zkevm-test.net',
+    [ChainId.PulseChainTestnetv3]: 'https://rpc.v3.testnet.pulsechain.com',
     ...RPC_OVERRIDES,
   };
 
@@ -419,6 +423,7 @@ export const getChainLogo = (chainId: number): string => {
     [324]: '/assets/images/vendor/chains/zksync.jpeg',
     [280]: '/assets/images/vendor/chains/zksync.jpeg',
     [1442]: '/assets/images/vendor/chains/polygon.png',
+    [ChainId.PulseChainTestnetv3]: '/assets/images/vendor/chains/pulsechain.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.png';
@@ -530,6 +535,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
     [1662]: 'https://yuma-explorer.horizen.io/api',
     [1442]: 'https://explorer.public.zkevm-test.net/api',
+    [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com/api',
   };
 
   return apiUrls[chainId];
