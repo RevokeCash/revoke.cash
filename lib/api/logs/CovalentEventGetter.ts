@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { utils } from 'ethers';
 import type { Filter, Log } from 'lib/interfaces';
+import { isRateLimitError } from 'lib/utils/errors';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
 
@@ -10,7 +11,7 @@ export class CovalentEventGetter implements EventGetter {
   constructor(private apiKey: string, isPremium: boolean) {
     // Covalent's premium API has a rate limit of 50 (normal = 5) requests per second, which we underestimate to be safe
     // TODO: Upstash is somehow having issues with higher rate limits, so we use 4/100ms rather than 40/1000ms
-    this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: isPremium ? 100 : 1000, intervalCap: 4 });
+    this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
@@ -22,7 +23,7 @@ export class CovalentEventGetter implements EventGetter {
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
     const results = await Promise.all(
-      blockRangeChunks.map(([from, to]) => this.queue.add(() => this.getEventsInChunk(chainId, from, to, topics)))
+      blockRangeChunks.map(([from, to]) => this.getEventsInChunk(chainId, from, to, topics))
     );
 
     return filterLogs(results.flat(), filter);
@@ -30,6 +31,8 @@ export class CovalentEventGetter implements EventGetter {
 
   private async getEventsInChunk(chainId: number, fromBlock: number, toBlock: number, topics: string[]) {
     const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !!topic);
+    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
+
     const params = {
       'starting-block': fromBlock,
       'ending-block': toBlock,
@@ -42,9 +45,17 @@ export class CovalentEventGetter implements EventGetter {
       password: '',
     };
 
-    const url = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
-    const result = await axios.get(url, { params, auth });
-    return result?.data?.data?.items?.map(formatCovalentEvent) ?? [];
+    try {
+      const result = await this.queue.add(() => axios.get(apiUrl, { params, auth }));
+      return result?.data?.data?.items?.map(formatCovalentEvent) ?? [];
+    } catch (e) {
+      if (isRateLimitError(e)) {
+        console.error('Rate limit reached, retrying...');
+        return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
+      }
+
+      throw e;
+    }
   }
 }
 

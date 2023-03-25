@@ -4,6 +4,7 @@ import { BigNumber, Contract } from 'ethers';
 import { ADDRESS_ZERO } from 'lib/constants';
 import type { AllowanceData } from 'lib/interfaces';
 import { fromFloat } from 'lib/utils';
+import { isRevertedError, isUserRejectionError } from 'lib/utils/errors';
 import { isErc721Contract } from 'lib/utils/tokens';
 import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
@@ -24,18 +25,18 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     return { revoke: undefined };
   }
 
-  const checkError = (e: any, isUpdate: boolean) => {
+  const checkError = (e: any, isUpdate: boolean): void => {
     const code = e.error?.code ?? e.code;
     const message = e.error?.reason ?? e.reason ?? e.error?.message ?? e.message;
     console.debug(`Ran into issue while revoking, message: ${message} (${code})`);
     console.debug(JSON.stringify(e));
 
-    // Don't show error toasts for user denied transactions, but do show them for other errors
-    if (!message.includes('User denied transaction signature') && !message.includes('user rejected transaction')) {
-      if (isUpdate) return toast.info(t('common:toasts.update_failed'));
-      if (message.includes('execution reverted')) return toast.info(t('common:toasts.revoke_failed_revert'));
-      return toast.info(t('common:toasts.revoke_failed', { message }));
-    }
+    // Don't show error toasts for user denied transactions
+    if (isUserRejectionError(e)) return;
+
+    if (isUpdate) void toast.info(t('common:toasts.update_failed'));
+    if (isRevertedError(e)) void toast.info(t('common:toasts.revoke_failed_revert'));
+    void toast.info(t('common:toasts.revoke_failed', { message }));
   };
 
   if (isErc721Contract(contract)) {
