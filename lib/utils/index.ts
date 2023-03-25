@@ -41,7 +41,7 @@ export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<L
     const result = await provider.getLogs(filter);
     return result;
   } catch (error) {
-    if (isLogResponseSizeError(error)) throw error;
+    if (!isLogResponseSizeError(error)) throw error;
 
     const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
     const leftPromise = getLogs(provider, { ...filter, toBlock: middle });
