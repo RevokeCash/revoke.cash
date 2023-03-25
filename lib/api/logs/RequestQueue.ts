@@ -22,7 +22,7 @@ export class RequestQueue {
   async add<T>(fn: () => Promise<T>): Promise<T> {
     // Use Upstash if it's available
     if (this.upstashQueue) {
-      const { success } = await this.upstashQueue.blockUntilReady(this.identifier, this.rateLimit.timeout ?? 30_000);
+      const { success } = await this.upstashQueue.blockUntilReady(this.identifier, this.rateLimit.timeout ?? 10_000);
 
       if (!success) {
         throw new Error('Request timed out');
