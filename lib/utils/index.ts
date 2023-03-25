@@ -43,6 +43,9 @@ export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<L
   } catch (error) {
     if (!isLogResponseSizeError(error)) throw error;
 
+    // If the block range is already a single block, we re-throw the error since we can't split it further
+    if (filter.fromBlock === filter.toBlock) throw error;
+
     const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
     const leftPromise = getLogs(provider, { ...filter, toBlock: middle });
     const rightPromise = getLogs(provider, { ...filter, fromBlock: middle + 1 });
@@ -53,9 +56,8 @@ export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<L
 
 export const isLogResponseSizeError = (error: any) => {
   const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-  if (!errorMessage) return false;
-  if (errorMessage.includes('query returned more than 10000 results')) return true;
-  if (errorMessage.includes('Log response size exceeded')) return true;
+  if (errorMessage?.includes('query returned more than 10000 results')) return true;
+  if (errorMessage?.includes('Log response size exceeded')) return true;
   return false;
 };
 
