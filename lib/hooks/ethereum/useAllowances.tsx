@@ -32,7 +32,7 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
   }, [data]);
 
   const contractEquals = (a: AllowanceData, b: AllowanceData) => {
-    return a.contract.address === b.contract.address;
+    return a.contract.address === b.contract.address && a.chainId === b.chainId;
   };
 
   const allowanceEquals = (a: AllowanceData, b: AllowanceData) => {

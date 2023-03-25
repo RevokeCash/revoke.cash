@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddressPageContext();
 
   const { address: account, connector } = useAccount();
   const { chain } = useNetwork();
@@ -23,20 +23,20 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   // TODO: Remove this WET code (alwo in ControlsWrapper.tsx)
   const isConnected = !!account;
   const isConnectedAddress = isConnected && address === account;
-  const needsToSwitchChain = isConnected && selectedChainId !== chain?.id;
+  const needsToSwitchChain = isConnected && allowance.chainId !== chain?.id;
   const canSwitchChain = connector?.id === 'injected';
   const disabled = !isConnectedAddress || (needsToSwitchChain && !canSwitchChain);
 
   if (!allowance.spender) return null;
 
   if (needsToSwitchChain && canSwitchChain) {
-    return <SwitchChainButton />;
+    return <SwitchChainButton chainId={allowance.chainId} />;
   }
 
   const { amount } = getAllowanceI18nValues(allowance);
 
   return (
-    <ControlsWrapper>
+    <ControlsWrapper allowance={allowance}>
       <div className="controls-section">
         {revoke && <RevokeButton revoke={revoke} disabled={disabled} />}
         {update && reset && (

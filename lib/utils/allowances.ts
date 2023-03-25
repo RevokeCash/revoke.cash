@@ -254,6 +254,6 @@ export const generatePatchedAllowanceEvents = (
 };
 
 export const stripAllowanceData = (allowance: AllowanceData): BaseTokenData => {
-  const { contract, symbol, balance, icon, decimals, totalSupply } = allowance;
-  return { contract, symbol, balance, icon, decimals, totalSupply };
+  const { contract, chainId, symbol, balance, icon, decimals, totalSupply } = allowance;
+  return { contract, chainId, symbol, balance, icon, decimals, totalSupply };
 };

@@ -3,6 +3,7 @@ import type { Contract } from 'ethers';
 
 export interface BaseTokenData {
   contract: Contract;
+  chainId: number;
   symbol: string;
   balance: string;
   icon?: string;

@@ -15,18 +15,18 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddressPageContext();
   const { openSeaProxyAddress } = useOpenSeaProxyAddress(address);
 
   // TODO: Expose this data to react-table
   const { data: spenderName, isLoading } = useQuery({
-    queryKey: ['spenderName', allowance.spender, selectedChainId, openSeaProxyAddress],
-    queryFn: () => addressToAppName(allowance.spender, selectedChainId, openSeaProxyAddress),
+    queryKey: ['spenderName', allowance.spender, allowance.chainId, openSeaProxyAddress],
+    queryFn: () => addressToAppName(allowance.spender, allowance.chainId, openSeaProxyAddress),
     // Chances of this data changing while the user is on the page are very slim
     staleTime: Infinity,
   });
 
-  const explorerUrl = `${getChainExplorerUrl(selectedChainId)}/address/${allowance.spender}`;
+  const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.spender}`;
 
   if (isLoading) {
     return <Spinner className="w-4 h-4" />;

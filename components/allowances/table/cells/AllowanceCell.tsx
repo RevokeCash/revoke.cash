@@ -22,9 +22,9 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
   const { address: account } = useAccount();
   const { chain } = useNetwork();
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddressPageContext();
 
-  const disabled = address !== account || selectedChainId !== chain?.id;
+  const disabled = address !== account || allowance.chainId !== chain?.id;
 
   if (editing) {
     return (
@@ -42,7 +42,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
         <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
       </div>
       {allowance.amount && (
-        <ControlsWrapper>
+        <ControlsWrapper allowance={allowance}>
           <div>
             <Button disabled={disabled} onClick={() => setEditing(!editing)} style="tertiary" size="none">
               <PencilIcon className="w-3 h-3" />

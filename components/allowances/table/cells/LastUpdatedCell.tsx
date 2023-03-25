@@ -1,6 +1,5 @@
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatDateNormalised, SECOND } from 'lib/utils/time';
@@ -12,13 +11,12 @@ interface Props {
 }
 
 const LastUpdatedCell = ({ allowance }: Props) => {
-  const { selectedChainId } = useAddressPageContext();
   const { lang } = useTranslation();
 
   if (!allowance.lastUpdated) return null;
 
   const lastUpdatedDate = new Date(allowance.lastUpdated * SECOND);
-  const explorerUrl = getChainExplorerUrl(selectedChainId);
+  const explorerUrl = getChainExplorerUrl(allowance.chainId);
 
   return (
     <div className="flex justify-start font-monosans">

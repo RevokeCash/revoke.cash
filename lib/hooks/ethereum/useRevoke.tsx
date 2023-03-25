@@ -9,13 +9,11 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useAccount, useSigner } from 'wagmi';
-import { useAddressPageContext } from '../page-context/AddressPageContext';
 
 type OnUpdate = (allowance: AllowanceData, newAmount?: string) => void;
 
 export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {}) => {
   const toastRef = useRef();
-  const { selectedChainId } = useAddressPageContext();
   const { data: signer } = useSigner();
   const { address: account } = useAccount();
   const { t } = useTranslation();
@@ -59,7 +57,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
         displayTransactionSubmittedToast(toastRef, t);
 
         track('Revoked ERC721 allowance', {
-          chainId: selectedChainId,
+          chainId: allowance.chainId,
           account,
           spender,
           token: contract.address,
@@ -96,7 +94,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
         displayTransactionSubmittedToast(toastRef, t);
 
         track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
-          chainId: selectedChainId,
+          chainId: allowance.chainId,
           account,
           spender,
           token: contract.address,
