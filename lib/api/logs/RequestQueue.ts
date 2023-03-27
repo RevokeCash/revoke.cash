@@ -9,7 +9,7 @@ export class RequestQueue {
   pQueue: PQueue;
   upstashQueue?: Ratelimit;
 
-  constructor(public identifier: string, public rateLimit: RateLimit) {
+  constructor(public identifier: string, public rateLimit: RateLimit, private preferredQueue?: 'upstash' | 'p-queue') {
     this.pQueue = new PQueue(rateLimit);
     this.upstashQueue =
       process.env.UPSTASH_REDIS_REST_URL &&
@@ -21,7 +21,7 @@ export class RequestQueue {
 
   async add<T>(fn: () => Promise<T>): Promise<T> {
     // Use Upstash if it's available
-    if (this.upstashQueue) {
+    if (this.upstashQueue && this.preferredQueue !== 'p-queue') {
       const { success } = await this.upstashQueue.blockUntilReady(this.identifier, this.rateLimit.timeout ?? 10_000);
 
       if (!success) {
