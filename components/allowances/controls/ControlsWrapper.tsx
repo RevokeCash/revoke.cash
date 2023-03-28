@@ -1,5 +1,4 @@
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData } from 'lib/interfaces';
 import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
@@ -16,12 +15,11 @@ const ControlsWrapper = ({ allowance, children }: Props) => {
   const { t } = useTranslation();
   const { address: account } = useAccount();
   const { chain } = useNetwork();
-  const { address } = useAddressPageContext();
 
   const chainName = getChainName(allowance.chainId);
 
   const isConnected = !!account;
-  const isConnectedAddress = isConnected && address === account;
+  const isConnectedAddress = isConnected && allowance.owner === account;
   const needsToSwitchChain = isConnected && allowance.chainId !== chain?.id;
 
   if (!isConnected) {

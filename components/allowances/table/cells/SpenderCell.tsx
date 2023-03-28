@@ -3,7 +3,6 @@ import Href from 'components/common/Href';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddress';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { shortenString } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
@@ -15,8 +14,7 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  const { address } = useAddressPageContext();
-  const { openSeaProxyAddress } = useOpenSeaProxyAddress(address);
+  const { openSeaProxyAddress } = useOpenSeaProxyAddress(allowance.owner);
 
   // TODO: Expose this data to react-table
   const { data: spenderName, isLoading } = useQuery({

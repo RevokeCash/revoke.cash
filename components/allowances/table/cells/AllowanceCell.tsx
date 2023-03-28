@@ -2,7 +2,6 @@ import { PencilIcon } from '@heroicons/react/24/outline';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import Trans from 'next-translate/Trans';
@@ -22,9 +21,8 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
   const { address: account } = useAccount();
   const { chain } = useNetwork();
-  const { address } = useAddressPageContext();
 
-  const disabled = address !== account || allowance.chainId !== chain?.id;
+  const disabled = allowance.owner !== account || allowance.chainId !== chain?.id;
 
   if (editing) {
     return (

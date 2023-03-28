@@ -6,12 +6,13 @@ import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
   loading: boolean;
+  loadingMessage?: string;
   table: Table<AllowanceData>;
   error?: Error;
   allowances?: AllowanceData[];
 }
 
-const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
+const AllowanceTableBody = ({ loading, loadingMessage, error, table, allowances }: Props) => {
   const { t } = useTranslation();
 
   if (!allowances && !loading && !error) return null;
@@ -50,7 +51,8 @@ const AllowanceTableBody = ({ loading, error, table, allowances }: Props) => {
         <div className="flex justify-center items-center h-12 w-full">{t('address:no_allowances')}</div>
       )}
       {loading && (
-        <div className="flex justify-center items-center h-12 w-full">
+        <div className="flex flex-col justify-center items-center p-3 gap-2 w-full">
+          {loadingMessage}
           <Spinner className="w-6 h-6 allowances-loader" />
         </div>
       )}

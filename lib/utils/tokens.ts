@@ -21,29 +21,25 @@ export const isSpamToken = (allowance: AllowanceData) => {
 
 export const getTokenData = async (
   contract: Contract,
-  ownerAddress: string,
+  owner: string,
   transfersFrom: Log[],
   transfersTo: Log[],
   chainId: number
 ): Promise<BaseTokenData> => {
   if (isErc721Contract(contract)) {
-    return getErc721TokenData(contract, ownerAddress, transfersFrom, transfersTo, chainId);
+    return getErc721TokenData(contract, owner, transfersFrom, transfersTo, chainId);
   }
 
-  return getErc20TokenData(contract, ownerAddress, chainId);
+  return getErc20TokenData(contract, owner, chainId);
 };
 
-export const getErc20TokenData = async (
-  contract: Contract,
-  ownerAddress: string,
-  chainId: number
-): Promise<BaseTokenData> => {
+export const getErc20TokenData = async (contract: Contract, owner: string, chainId: number): Promise<BaseTokenData> => {
   const tokenData = TOKEN_MAPPING[chainId]?.[utils.getAddress(contract.address)];
   const icon = tokenData?.logoURI;
 
   const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
-    convertString(unpackResult(contract.functions.balanceOf(ownerAddress))),
+    convertString(unpackResult(contract.functions.balanceOf(owner))),
     // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
     tokenData?.symbol ?? withFallback(unpackResult(contract.functions.symbol()), contract.address),
     tokenData?.decimals ?? unpackResult(contract.functions.decimals()),
@@ -51,12 +47,12 @@ export const getErc20TokenData = async (
   ]);
 
   const totalSupply = totalSupplyBN.toString();
-  return { contract, chainId, symbol, decimals, icon, totalSupply, balance };
+  return { contract, chainId, symbol, owner, decimals, icon, totalSupply, balance };
 };
 
 export const getErc721TokenData = async (
   contract: Contract,
-  ownerAddress: string,
+  owner: string,
   transfersFrom: Log[],
   transfersTo: Log[],
   chainId: number
@@ -69,7 +65,7 @@ export const getErc721TokenData = async (
 
   const [balance, symbol] = await Promise.all([
     shouldFetchBalance
-      ? withFallback(convertString(unpackResult(contract.functions.balanceOf(ownerAddress))), 'ERC1155')
+      ? withFallback(convertString(unpackResult(contract.functions.balanceOf(owner))), 'ERC1155')
       : calculatedBalance,
     // Use the tokenlist name if present, fall back to address since not every NFT has a name
     tokenData?.symbol ?? withFallback(unpackResult(contract.functions.name()), contract.address),
@@ -77,7 +73,7 @@ export const getErc721TokenData = async (
     throwIfSpamNft(contract),
   ]);
 
-  return { contract, chainId, symbol, balance, icon };
+  return { contract, chainId, symbol, owner, balance, icon };
 };
 
 export const throwIfNotErc20 = async (contract: Contract) => {

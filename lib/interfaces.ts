@@ -5,6 +5,7 @@ export interface BaseTokenData {
   contract: Contract;
   chainId: number;
   symbol: string;
+  owner: string;
   balance: string;
   icon?: string;
   decimals?: number;

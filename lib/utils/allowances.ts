@@ -8,7 +8,7 @@ import { convertString, unpackResult } from './promises';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract, isSpamToken } from './tokens';
 
 export const getAllowancesFromEvents = async (
-  userAddress: string,
+  owner: string,
   events: AddressEvents,
   readProvider: providers.Provider,
   chainId: number
@@ -25,8 +25,8 @@ export const getAllowancesFromEvents = async (
       const transfersTo = filterLogsByAddress(events.transferTo, contract.address);
 
       try {
-        const tokenData = await getTokenData(contract, userAddress, transfersFrom, transfersTo, chainId);
-        const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, userAddress, tokenData);
+        const tokenData = await getTokenData(contract, owner, transfersFrom, transfersTo, chainId);
+        const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, owner, tokenData);
 
         if (allowances.length === 0) {
           return [tokenData as AllowanceData];
@@ -80,18 +80,18 @@ export const getAllowancesForToken = async (
   }
 };
 
-export const getErc20AllowancesFromApprovals = async (contract: Contract, ownerAddress: string, approvals: Log[]) => {
+export const getErc20AllowancesFromApprovals = async (contract: Contract, owner: string, approvals: Log[]) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, ownerAddress, approval))
+    deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval))
   );
 
   return allowances;
 };
 
-const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerAddress: string, approval: Log) => {
+const getErc20AllowanceFromApproval = async (multicallContract: Contract, owner: string, approval: Log) => {
   const spender = topicToAddress(approval.topics[2]);
   const lastApprovedAmount = BigNumber.from(approval.data);
 
@@ -103,7 +103,7 @@ const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerA
   }
 
   const [amount, lastUpdated, transactionHash] = await Promise.all([
-    convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender))),
+    convertString(unpackResult(multicallContract.functions.allowance(owner, spender))),
     approval.timestamp ?? blocksDB.getBlockTimestamp(multicallContract.provider, approval.blockNumber),
     approval.transactionHash,
   ]);
@@ -158,24 +158,20 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
 
 export const getUnlimitedErc721AllowancesFromApprovals = async (
   contract: Contract,
-  ownerAddress: string,
+  owner: string,
   approvals: Log[]
 ) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, ownerAddress, approval))
+    deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, owner, approval))
   );
 
   return allowances;
 };
 
-const getUnlimitedErc721AllowanceFromApproval = async (
-  multicallContract: Contract,
-  ownerAddress: string,
-  approval: Log
-) => {
+const getUnlimitedErc721AllowanceFromApproval = async (multicallContract: Contract, owner: string, approval: Log) => {
   const spender = topicToAddress(approval.topics[2]);
 
   // For ApprovalForAll events, we can determine the allowance (true/false) from *only* the event
@@ -254,6 +250,6 @@ export const generatePatchedAllowanceEvents = (
 };
 
 export const stripAllowanceData = (allowance: AllowanceData): BaseTokenData => {
-  const { contract, chainId, symbol, balance, icon, decimals, totalSupply } = allowance;
-  return { contract, chainId, symbol, balance, icon, decimals, totalSupply };
+  const { contract, chainId, symbol, owner, balance, icon, decimals, totalSupply } = allowance;
+  return { contract, chainId, symbol, owner, balance, icon, decimals, totalSupply };
 };
