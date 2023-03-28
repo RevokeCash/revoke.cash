@@ -1,5 +1,6 @@
 import { providers } from 'ethers';
 import { LogsProvider } from 'lib/interfaces';
+import { isSupportedChain } from 'lib/utils/chains';
 import React, { ReactNode, useContext, useState } from 'react';
 import { useNetwork, useProvider } from 'wagmi';
 import { useAllowances } from '../ethereum/useAllowances';
@@ -26,7 +27,7 @@ const AddressPageContext = React.createContext<AddressContext>({});
 export const AddressPageContextProvider = ({ children, address }: Props) => {
   const { chain } = useNetwork();
 
-  const [selectedChainId, selectChain] = useState<number>(chain?.id ?? 1);
+  const [selectedChainId, selectChain] = useState<number>(isSupportedChain(chain?.id) ? chain?.id : 1);
 
   const eventContext = useEvents(address, selectedChainId);
   const allowanceContext = useAllowances(address, eventContext?.events, selectedChainId);

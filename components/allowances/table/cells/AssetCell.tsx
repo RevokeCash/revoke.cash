@@ -1,5 +1,5 @@
+import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
-import Logo from 'components/common/Logo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { AllowanceData } from 'lib/interfaces';
 import { getBalanceText } from 'lib/utils';
@@ -13,6 +13,9 @@ interface Props {
 const AssetCell = ({ allowance }: Props) => {
   const ref = useRef(null);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  // This is pretty hacky, but it works to detect that we're on the address page, so single chain usage
+  const isOnAddressPage = typeof window !== 'undefined' && window.location.pathname.includes('/address/');
 
   useLayoutEffect(() => {
     if (ref.current.clientWidth < ref.current.scrollWidth) {
@@ -36,7 +39,13 @@ const AssetCell = ({ allowance }: Props) => {
     <div className="flex items-center gap-1 py-1">
       <div className="flex flex-col items-start gap-0.5">
         <div className="flex items-center gap-2 text-base leading-tight">
-          <Logo src={allowance.icon} alt={allowance.symbol} size={20} />
+          <ChainOverlayLogo
+            src={allowance.icon}
+            alt={allowance.symbol}
+            chainId={isOnAddressPage ? undefined : allowance.chainId}
+            size={24}
+            overlaySize={16}
+          />
           {link}
         </div>
 

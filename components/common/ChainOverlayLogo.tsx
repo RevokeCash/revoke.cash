@@ -12,10 +12,12 @@ interface Props {
 const ChainOverlayLogo = ({ src, alt, chainId, size, overlaySize }: Props) => {
   return (
     <div className="relative">
-      <Logo src={src} alt={alt} size={size} />
-      <div className="absolute inset-0 -left-1">
-        <ChainLogo chainId={chainId} size={overlaySize ?? 12} />
-      </div>
+      <Logo src={src} alt={alt} size={size} border />
+      {chainId && (
+        <div className="absolute inset-0 -left-1">
+          <ChainLogo chainId={chainId} size={overlaySize ?? 16} />
+        </div>
+      )}
     </div>
   );
 };

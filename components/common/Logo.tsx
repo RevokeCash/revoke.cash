@@ -8,14 +8,21 @@ interface Props {
   alt: string;
   size?: number;
   square?: boolean;
+  border?: boolean;
 }
 
-const Logo = ({ src, alt, size, square }: Props) => {
+const Logo = ({ src, alt, size, square, border }: Props) => {
   const [error, setError] = useState(false);
 
   if (error || !src) {
-    return <PlaceholderIcon size={size} />;
+    return <PlaceholderIcon size={size} border={border} />;
   }
+
+  const classes = twMerge(
+    'aspect-square object-cover',
+    square ? 'rounded-lg' : 'rounded-full',
+    border && 'border border-black dark:border-white'
+  );
 
   if (!src.startsWith('/')) {
     return (
@@ -24,7 +31,7 @@ const Logo = ({ src, alt, size, square }: Props) => {
         alt={alt}
         height={size ?? 24}
         width={size ?? 24}
-        className={twMerge('aspect-square object-cover', square ? 'rounded-lg' : 'rounded-full')}
+        className={classes}
         onError={() => setError(true)}
       />
     );
@@ -38,7 +45,7 @@ const Logo = ({ src, alt, size, square }: Props) => {
       height={size ?? 24}
       width={size ?? 24}
       quality="100"
-      className={twMerge('aspect-square object-cover', square ? 'rounded-lg' : 'rounded-full')}
+      className={classes}
       onError={() => setError(true)}
     />
   );

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const ChainLogo = ({ chainId, size }: Props) => (
-  <Logo src={getChainLogo(chainId)} alt={getChainName(chainId)} size={size} />
+  <Logo src={getChainLogo(chainId)} alt={getChainName(chainId)} size={size} border />
 );
 
 export default ChainLogo;
