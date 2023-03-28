@@ -42,6 +42,11 @@ export class EtherscanEventGetter implements EventGetter {
         return this.getEvents(chainId, filter);
       }
 
+      // If the query times out, this indicates that we should try again with a smaller block range
+      if (data.result.includes('Query Timeout occured')) {
+        throw new Error('Log response size exceeded');
+      }
+
       throw new Error(data.result);
     }
 
