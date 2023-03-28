@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import { isLogResponseSizeError } from './errors';
 import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
 
-export const shortenAddress = (address?: string): string => {
-  return address && `${address.substr(0, 8)}...${address.substr(address.length - 6, 6)}`;
+export const shortenAddress = (address?: string, characters: number = 6): string => {
+  return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
 };
 
 export const shortenString = (name?: string, maxLength: number = 16): string | undefined => {

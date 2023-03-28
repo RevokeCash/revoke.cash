@@ -39,7 +39,7 @@ const SpenderCell = ({ allowance }: Props) => {
       <WithHoverTooltip tooltip={allowance.spender}>
         <div className="flex justify-start gap-1">
           <Href href={explorerUrl} underline="hover" external>
-            {spenderName ?? shortenAddress(allowance.spender)}
+            {spenderName ?? shortenAddress(allowance.spender, 6)}
           </Href>
           <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
         </div>

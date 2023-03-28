@@ -22,7 +22,7 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
   return (
     <div className="flex whitespace-nowrap">
       {account ? (
-        <DropdownMenu menuButton={domainName ?? shortenAddress(account)}>
+        <DropdownMenu menuButton={domainName ?? shortenAddress(account, 4)}>
           <Button
             style="secondary"
             size="md"
