@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
+import CopyButton from 'components/common/CopyButton';
 import Href from 'components/common/Href';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddress';
 import type { AllowanceData } from 'lib/interfaces';
-import { shortenString } from 'lib/utils';
+import { shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { addressToAppName } from 'lib/utils/whois';
-import { twMerge } from 'tailwind-merge';
 
 interface Props {
   allowance: AllowanceData;
@@ -35,11 +35,14 @@ const SpenderCell = ({ allowance }: Props) => {
   }
 
   return (
-    <div className={twMerge('flex justify-start')}>
+    <div className="flex justify-start gap-1">
       <WithHoverTooltip tooltip={allowance.spender}>
-        <Href href={explorerUrl} underline="hover" external>
-          {spenderName ?? shortenString(allowance.spender, 17)}
-        </Href>
+        <div className="flex justify-start gap-1">
+          <Href href={explorerUrl} underline="hover" external>
+            {spenderName ?? shortenAddress(allowance.spender)}
+          </Href>
+          <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+        </div>
       </WithHoverTooltip>
     </div>
   );

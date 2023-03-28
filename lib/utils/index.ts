@@ -7,7 +7,7 @@ import { isLogResponseSizeError } from './errors';
 import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
 
 export const shortenAddress = (address?: string): string => {
-  return address && `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}`;
+  return address && `${address.substr(0, 8)}...${address.substr(address.length - 6, 6)}`;
 };
 
 export const shortenString = (name?: string, maxLength: number = 16): string | undefined => {

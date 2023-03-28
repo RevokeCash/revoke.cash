@@ -1,7 +1,6 @@
-import { DocumentDuplicateIcon } from '@heroicons/react/24/outline';
-import Button from 'components/common/Button';
+import CopyButton from 'components/common/CopyButton';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { shortenAddress, writeToClipBoard } from 'lib/utils';
+import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import { twMerge } from 'tailwind-merge';
 
@@ -27,11 +26,7 @@ const AddressDisplay = ({ address, domainName, className, withCopyButton, withTo
       ) : (
         domainName ?? shortenAddress(address)
       )}
-      {withCopyButton && (
-        <Button style="none" size="none" onClick={() => writeToClipBoard(address, t)}>
-          <DocumentDuplicateIcon className="w-4 h-4" />
-        </Button>
-      )}
+      {withCopyButton && <CopyButton content={address} />}
     </div>
   );
 };
