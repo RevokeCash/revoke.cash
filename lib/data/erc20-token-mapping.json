@@ -568,7 +568,7 @@
     "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4": {
       "symbol": "cWBTC",
@@ -643,7 +643,7 @@
     "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0xdB25f211AB05b1c97D595516F45794528a807ad8": {
       "symbol": "EURS",
@@ -1708,7 +1708,7 @@
     "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0x111111111117dC0aa78b770fA6A738034120C302": {
       "symbol": "1INCH",
@@ -1788,7 +1788,7 @@
     "0x853d955aCEf822Db058eb8505911ED77F175b99e": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30": {
       "symbol": "INJ",
@@ -2913,7 +2913,7 @@
     "0x8B39B70E39Aa811b69365398e0aACe9bee238AEb": {
       "symbol": "PKF",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/14422/small/LOGO_FB.png?1669460464"
+      "logoURI": "https://assets.coingecko.com/coins/images/14422/small/red_kite.png?1679564335"
     },
     "0xb20043F149817bff5322F1b928e89aBFC65A9925": {
       "symbol": "EXRT",
@@ -3413,7 +3413,7 @@
     "0x389999216860AB8E0175387A0c90E5c52522C945": {
       "symbol": "FEG",
       "decimals": 9,
-      "logoURI": "https://assets.coingecko.com/coins/images/13878/small/F-Icon-FEG-200x200-288dpi-01_%281%29.png?1665641152"
+      "logoURI": "https://tokens.1inch.io/0x389999216860ab8e0175387a0c90e5c52522c945.png"
     },
     "0xEe9801669C6138E84bD50dEB500827b776777d28": {
       "symbol": "O3",
@@ -3733,7 +3733,7 @@
     "0xe1030B48b2033314979143766d7dC1F40ef8CE11": {
       "symbol": "PEEPS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/16777/small/200x200.png?1679484420"
+      "logoURI": "https://tokens.1inch.io/0xe1030b48b2033314979143766d7dc1f40ef8ce11.png"
     },
     "0x515d7E9D75E2b76DB60F8a051Cd890eBa23286Bc": {
       "symbol": "GDAO",
@@ -3918,7 +3918,7 @@
     "0xf14b9ADF84812bA463799357f4dc716b4384010B": {
       "symbol": "PP",
       "decimals": 8,
-      "logoURI": "https://assets.coingecko.com/coins/images/19670/small/pensionplan-logo-200CG2.png?1635738403"
+      "logoURI": "https://tokens.1inch.io/0xf14b9adf84812ba463799357f4dc716b4384010b.png"
     },
     "0xfb40e79E56cc7D406707B66C4Fd175E07EB2Ae3C": {
       "symbol": "ROTTS",
@@ -4563,7 +4563,7 @@
     "0xD23367155B55d67492DFDC0FC7f8bB1dF7114fD9": {
       "symbol": "AMPLIFI",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/26869/small/amplifi.jpg?1662611752"
+      "logoURI": "https://tokens.1inch.io/0xd23367155b55d67492dfdc0fc7f8bb1df7114fd9.png"
     },
     "0xB0B195aEFA3650A6908f15CdaC7D92F8a5791B0B": {
       "symbol": "BOB",
@@ -4893,7 +4893,7 @@
     "0xC5a9BC46A7dbe1c6dE493E84A18f02E70E2c5A32": {
       "symbol": "WCI",
       "decimals": 9,
-      "logoURI": "https://assets.coingecko.com/coins/images/27489/small/2022-09-26_20.55.02-removebg-preview.png?1664253723"
+      "logoURI": "https://tokens.1inch.io/0xc5a9bc46a7dbe1c6de493e84a18f02e70e2c5a32.png"
     },
     "0xc55126051B22eBb829D00368f4B12Bde432de5Da": {
       "symbol": "BTRFLY",
@@ -6972,7 +6972,7 @@
     "0xc2544A32872A91F4A553b404C6950e89De901fdb": {
       "symbol": "FPIS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/24944/small/fpis.png?1649485832"
+      "logoURI": "https://assets.coingecko.com/coins/images/24944/small/FPIS_icon.png?1679886817"
     },
     "0xd7C9F0e536dC865Ae858b0C0453Fe76D13c3bEAc": {
       "symbol": "XAI",
@@ -9065,7 +9065,7 @@
     "0xac3E018457B222d93114458476f3E3416Abbe38F": {
       "symbol": "SFRXETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/28285/small/JjqQ9ROz_400x400.jpeg?1669170466"
+      "logoURI": "https://assets.coingecko.com/coins/images/28285/small/sfrxETH_icon.png?1679886768"
     },
     "0xFb444c1f2B718dDfC385cB8Fd9f2D1D776b24668": {
       "symbol": "ELAMA",
@@ -9125,7 +9125,7 @@
     "0xDA0c94c73D127eE191955FB46bACd7FF999b2bcd": {
       "symbol": "STANDARD",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/20119/small/stquY-WB_400x400.jpg?1636522705"
+      "logoURI": "https://assets.coingecko.com/coins/images/20119/small/construct200px.png?1680074839"
     },
     "0xF5a56bD9Ee4a3E2D493ab8e072658794B38b6d19": {
       "symbol": "SHFT",
@@ -11080,7 +11080,7 @@
     "0xb8919522331C59f5C16bDfAA6A121a6E03A91F62": {
       "symbol": "HOME",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/26185/small/homecoin_200.png?1656384254"
+      "logoURI": "https://assets.coingecko.com/coins/images/26185/small/homecoin-icon-200.png?1679727328"
     },
     "0x71E368Ed06814Bf35d4E663eFf946400a5BC8115": {
       "symbol": "DGRN",
@@ -14873,7 +14873,7 @@
     "0x5Ca135cB8527d76e932f34B5145575F9d8cbE08E": {
       "symbol": "FPI",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/24945/small/fpi.png?1649485834"
+      "logoURI": "https://assets.coingecko.com/coins/images/24945/small/FPI_icon.png?1679886853"
     },
     "0xB90cb79B72EB10c39CbDF86e50B1C89F6a235f2e": {
       "symbol": "AUDT",
@@ -15168,7 +15168,7 @@
     "0x9559Aaa82d9649C7A7b220E7c461d2E74c9a3593": {
       "symbol": "RETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/14452/small/rETH.png?1616660903"
+      "logoURI": "https://assets.coingecko.com/coins/images/14452/small/rETH.png?1680074713"
     },
     "0xda4Dd9586D27202A338843Dd6B9824d267006783": {
       "symbol": "ECT",
@@ -17153,7 +17153,7 @@
     "0x5E8422345238F34275888049021821E8E08CAa1f": {
       "symbol": "FRXETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/JjqQ9ROz_400x400.jpeg?1669170320"
+      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/frxETH_icon.png?1679886981"
     },
     "0x667088b212ce3d06a1b553a7221E1fD19000d9aF": {
       "symbol": "WINGS",
@@ -25581,7 +25581,7 @@
       "logoURI": "https://assets.coingecko.com/coins/images/28673/small/ONIGI.png?1673157596"
     },
     "0x5c8190b76E90B4DD0702740cF6Eb0F7eE01Ab5E9": {
-      "symbol": "ARCHAI",
+      "symbol": "ARCAI",
       "decimals": 9,
       "logoURI": "https://assets.coingecko.com/coins/images/28939/small/pp.JPG?1675841452"
     },
@@ -26101,7 +26101,7 @@
     "0x60c7AEa107EA3cDAb21455e187cFB7e54E09b760": {
       "symbol": "MEME",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/12140/small/ICON.png?1679371662"
+      "logoURI": "https://assets.coingecko.com/coins/images/12140/small/ICON_%281%29.png?1679627816"
     },
     "0x745407c86DF8DB893011912d3aB28e68B62E49B0": {
       "symbol": "MAHA",
@@ -27107,6 +27107,149 @@
       "symbol": "BTCBR",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/21205/small/btcbr.png?1661666691"
+    },
+    "0x79d4f0232A66c4c91b89c76362016A1707CFBF4f": {
+      "symbol": "VCHF",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29547/small/VNXCHF_%282%29.png?1679561328"
+    },
+    "0x822f1A51E534723ec1305E6EB5C96AEcfeb4c629": {
+      "symbol": "MTU",
+      "decimals": 18
+    },
+    "0x3DBB00c9bE5A327E25CAf4f650844C5DbA81E34B": {
+      "symbol": "RMATIC",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29610/small/rMATIC.png?1680074998"
+    },
+    "0x2C5BC2Ba3614fD27FCc7022eA71d9172E2632c16": {
+      "symbol": "SOV",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29601/small/photo_2023-03-19_19-07-40_2.png?1679985063"
+    },
+    "0x5919DeA604631016c15c805e3D948A0384879892": {
+      "symbol": "PEEPS",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/16777/small/peeps.png?1679504939"
+    },
+    "0x9Ce115f0341ae5daBC8B477b74E83db2018A6f42": {
+      "symbol": "HAIR",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29620/small/LinkedIn_Logo.jpg?1680061629"
+    },
+    "0x1C9A2d6b33B4826757273D47ebEe0e2DddcD978B": {
+      "symbol": "FFRAX",
+      "decimals": 8,
+      "logoURI": "https://assets.coingecko.com/coins/images/29580/small/fFRAX-320.png?1679813767"
+    },
+    "0x81994b9607e06ab3d5cF3AffF9a67374f05F27d7": {
+      "symbol": "FUSDT",
+      "decimals": 8,
+      "logoURI": "https://assets.coingecko.com/coins/images/29581/small/fUSDT-320.png?1679813769"
+    },
+    "0xb186035490C8602EaD853EC98bE05E3461521Ab2": {
+      "symbol": "PACK",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29556/small/Pack.png?1679642286"
+    },
+    "0xbfC66D8cCE39E668fd5d3C10fd1B1eAbB82c27B7": {
+      "symbol": "OVO",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29514/small/ovotoken200.png?1679725585"
+    },
+    "0x1AA51bc7eb181ce48CE626Bf62f8956Fa9555136": {
+      "symbol": "PAW",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29598/small/PAW_Token_Logo.png?1679966715"
+    },
+    "0xEef66125BfcFfdb1642C7E85a432cD1B78038399": {
+      "symbol": "POOLX",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29625/small/logomark-black_%282%29.png?1680079914"
+    },
+    "0x5bBe36152d3CD3eB7183A82470b39b29EedF068B": {
+      "symbol": "HETH",
+      "decimals": 18
+    },
+    "0xff8C479134A18918059493243943150776cF8CF2": {
+      "symbol": "RENQ",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29603/small/Renq.png?1679994056"
+    },
+    "0x9E7e87608A34Bc66396D53e69B9495Bd8f5414DF": {
+      "symbol": "BARD",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/29546/small/logo.png?1679560980"
+    },
+    "0xbededDf2eF49E87037c4fb2cA34d1FF3D3992A11": {
+      "symbol": "FEG",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/13878/small/F-Icon-FEG-200x200-288dpi-01_%281%29.png?1665641152"
+    },
+    "0xE22910D04bDc9d55570f3BC52E786b49DddF37b4": {
+      "symbol": "",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29585/small/BtaWbSsQ_400x400.jpg?1679883686"
+    },
+    "0x6ef460EB3563CfCc73F8147B0A77DAFFeE71F867": {
+      "symbol": "ZEUS",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29593/small/ZEUS.png?1679887650"
+    },
+    "0x9eEC1A4814323a7396c938bc86aeC46b97F1BD82": {
+      "symbol": "TOKU",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29590/small/Toku.jpeg?1679886201"
+    },
+    "0xA7fBd9254f10F8e20a31a593C9E8BC0D041e15F6": {
+      "symbol": "ORBN",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/29566/small/logo_%281%29.png?1679736737"
+    },
+    "0x819c1A1568934Ee59d9F3C8B9640908556c44140": {
+      "symbol": "HOBBES",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29541/small/Hobbes.png?1679558955"
+    },
+    "0x6Aa40D02115090D40Dc33C7C5F3Cf05112fA4f83": {
+      "symbol": "PWRC",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29571/small/our_logo.png?1679738240"
+    },
+    "0x09637E374Ec5baB8C9e9654a97C9593e3038c5B3": {
+      "symbol": "ZKP",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/29592/small/200.png?1679886934"
+    },
+    "0x02c3296C6eb50249f290AE596F2bE9454bFfadaB": {
+      "symbol": "RJV",
+      "decimals": 6,
+      "logoURI": "https://assets.coingecko.com/coins/images/29366/small/2023_Rejuve_Logo_-_Square_-_Teal.jpg?1678345338"
+    },
+    "0xd23Ed8cA350CE2631F7EcDC5E6bf80D0A1DeBB7B": {
+      "symbol": "PLQ",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29100/small/Planq_256x256-circle.png?1676604362"
+    },
+    "0x0fAD86Cc1b412b330494E350Bf1dC1994AC55c9e": {
+      "symbol": "ATC",
+      "decimals": 6,
+      "logoURI": "https://assets.coingecko.com/coins/images/27308/small/ATC.png?1665646737"
+    },
+    "0xB50721BCf8d664c30412Cfbc6cf7a15145234ad1": {
+      "symbol": "ARB",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/16547/small/AF_logomark.png?1679671868"
+    },
+    "0x77F2BE773CA0887ba2b3Ef8344C8CF13C98d8ca7": {
+      "symbol": "FYT",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29078/small/flora.png?1676438723"
+    },
+    "0xa89Bf95c5f15a847c8Eb8D348cd7feD719AD7D80": {
+      "symbol": "AI",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29441/small/200.png?1678865520"
     }
   },
   "10": {
@@ -27118,7 +27261,7 @@
     "0x4200000000000000000000000000000000000006": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x8700dAec35aF8Ff88c16BdF0418774CB3D7599B4": {
       "symbol": "SNX",
@@ -27133,7 +27276,7 @@
     "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x68f180fcCe6836688e9084f035309E29Bf0A2095": {
       "symbol": "WBTC",
@@ -27323,7 +27466,7 @@
     "0x2E3D870790dC77A83DD1d18184Acc7439A53f475": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0xFf733b2A3557a7ed6697007ab5D11B79FdD1b76B": {
       "symbol": "ACX",
@@ -27619,6 +27762,31 @@
       "symbol": "TRB",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/9644/small/Blk_icon_current.png?1584980686"
+    },
+    "0x47536F17F4fF30e64A96a7555826b8f9e66ec468": {
+      "symbol": "MMY",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28547/small/Logo_MMY.png?1671599329"
+    },
+    "0x7Da25Bc4cFAed3F29414C6779676e53B19a356f5": {
+      "symbol": "KOKO",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29572/small/Logo_%282%29.png?1679738524"
+    },
+    "0x6806411765Af15Bddd26f8f544A34cC40cb9838B": {
+      "symbol": "FRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/frxETH_icon.png?1679886981"
+    },
+    "0xB153FB3d196A8eB25522705560ac152eeEc57901": {
+      "symbol": "MIM",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/16786/small/mimlogopng.png?1624979612"
+    },
+    "0x484c2D6e3cDd945a8B2DF735e079178C1036578c": {
+      "symbol": "SFRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28285/small/sfrxETH_icon.png?1679886768"
     }
   },
   "25": {
@@ -28030,7 +28198,7 @@
     "0xe44Fd7fCb2b1581822D0c862B68222998a0c299a": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xe6801928061CDbE32AC5AD0634427E140EFd05F9": {
       "symbol": "BIFI",
@@ -28065,7 +28233,7 @@
     "0x66e428c3f67a68878562e79A0234c1F83c208770": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x2Ae35c8E3D4bD57e8898FF7cd2bBff87166EF8cb": {
       "symbol": "MIMATIC",
@@ -28216,7 +28384,7 @@
     "0x55d398326f99059fF775485246999027B3197955": {
       "symbol": "USDT",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82": {
       "symbol": "CAKE",
@@ -28231,7 +28399,7 @@
     "0x2170Ed0880ac9A755fd29B2688956BD959F933F8": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c": {
       "symbol": "BTCB",
@@ -29751,7 +29919,7 @@
     "0xDFcF44e9a6D99717FC04AddD57Fb667286Bb7DC0": {
       "symbol": "INCOME",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/21740/small/income.png?1639973462"
+      "logoURI": "https://tokens.1inch.io/0xdfcf44e9a6d99717fc04addd57fb667286bb7dc0.png"
     },
     "0xAEf0a177c8c329CBC8508292Bb7E06c00786BBfC": {
       "symbol": "PULI",
@@ -29806,7 +29974,7 @@
     "0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0x00f97C17f4Dc4F3BFD2DD9cE5E67f3A339A8a261": {
       "symbol": "SHIELD",
@@ -30226,7 +30394,7 @@
     "0xE68b79e51bf826534Ff37AA9CeE71a3842ee9c70": {
       "symbol": "CZUSD",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/24048/small/czusd-200.png?1663151013"
+      "logoURI": "https://assets.coingecko.com/coins/images/24048/small/czusd200.png?1679984442"
     },
     "0xe60eaf5A997DFAe83739e035b005A33AfdCc6df5": {
       "symbol": "DERI",
@@ -35492,7 +35660,7 @@
     "0x1894251aEBCfF227133575eD3069Be9670E25dB0": {
       "symbol": "HALO",
       "decimals": 9,
-      "logoURI": "https://assets.coingecko.com/coins/images/27758/small/coingeckoq.png?1665656946"
+      "logoURI": "https://assets.coingecko.com/coins/images/27758/small/200.png?1680070591"
     },
     "0x7403802c0FFeE2d83FB13513e23aAF4a3a9C69f0": {
       "symbol": "GREEN",
@@ -37531,7 +37699,7 @@
     "0x6Ad2B6d5d8F96c8E581D3100C12878b2151A0423": {
       "symbol": "WOLFIES",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/25133/small/wolfies.png?1650426815"
+      "logoURI": "https://assets.coingecko.com/coins/images/25133/small/wolfies.png?1679899948"
     },
     "0x36b24B2F78725495e858AF9e72f7Df69DaDE3dca": {
       "symbol": "SEACHAIN",
@@ -37946,7 +38114,7 @@
     "0x1236a887ef31B4d32E1F0a2b5e4531F52CeC7E75": {
       "symbol": "GAMI",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/19841/small/GAMI_B.png?1664069716"
+      "logoURI": "https://assets.coingecko.com/coins/images/19841/small/GAMI_LOGO_200x200.png?1679725601"
     },
     "0xb7F2bca9b034f8cc143339Dd12bb31D3D50Cf27a": {
       "symbol": "GDT",
@@ -42379,7 +42547,7 @@
     "0x4c2a5a1A4B01d293aFfaA4739F884d7a905A5A8f": {
       "symbol": "APES",
       "decimals": 9,
-      "logoURI": "https://assets.coingecko.com/coins/images/22073/small/npOIT79d_400x400.png?1640751823"
+      "logoURI": "https://assets.coingecko.com/coins/images/22073/small/fd399626-aac7-41f0-86d3-66b02f633e47.png?1679887122"
     },
     "0xcD9442d70Eb0E6ecf26919E62278Fc4Fd24C3Ed2": {
       "symbol": "DRV",
@@ -50646,7 +50814,7 @@
     "0xe48A3d7d0Bc88d552f730B62c006bC925eadB9eE": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0x33A3d962955A3862C8093D1273344719f03cA17C": {
       "symbol": "SPORE",
@@ -53691,7 +53859,7 @@
     "0xA3276b9366a3aA6f76fA3b39173577718012d7dA": {
       "symbol": "EVR",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/29529/small/sdazxczxczc.png?1679477273"
+      "logoURI": "https://assets.coingecko.com/coins/images/29529/small/eneftitoken.logo-removebg-preview-1.png?1679545416"
     },
     "0x58ED5ff234EFd928A66e84dd3D61bD809AC07A7F": {
       "symbol": "FLOKIDASH",
@@ -53925,7 +54093,7 @@
     "0x68dE53b47BE0Dc566BF4673c748d58Bbbad3deB1": {
       "symbol": "DGR",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/29532/small/IMG-20230321-WA0009.jpg?1679478426"
+      "logoURI": "https://assets.coingecko.com/coins/images/29532/small/IMG_20230323_110317_093.jpg?1679561556"
     },
     "0x72fF5742319eF07061836F5C924aC6D72c919080": {
       "symbol": "GFT",
@@ -54049,7 +54217,7 @@
     "0x5Dc2085Fe510Bbaaba2119d71B09c25098caCa3F": {
       "symbol": "RYIU",
       "decimals": 9,
-      "logoURI": "https://assets.coingecko.com/coins/images/14512/small/photo_2023-01-12_18-09-12.jpg?1676792890"
+      "logoURI": "https://assets.coingecko.com/coins/images/14512/small/4.png?1679725611"
     },
     "0xcAE4F3977c084aB12B73a920e670e1665B3fA7D5": {
       "symbol": "DIA",
@@ -54862,7 +55030,7 @@
     "0x06DF77854793849F770b6AF0AF4b22511df53A11": {
       "symbol": "CATCOIN",
       "decimals": 9,
-      "logoURI": "https://assets.coingecko.com/coins/images/25279/small/catcoin200.png?1674437188"
+      "logoURI": "https://assets.coingecko.com/coins/images/25279/small/cat5.png?1679887181"
     },
     "0x5b52bfB8062Ce664D74bbCd4Cd6DC7Df53Fd7233": {
       "symbol": "ZENIQ",
@@ -55167,7 +55335,7 @@
     "0x64048A7eEcF3a2F1BA9e144aAc3D7dB6e58F555e": {
       "symbol": "FRXETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/JjqQ9ROz_400x400.jpeg?1669170320"
+      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/frxETH_icon.png?1679886981"
     },
     "0xAAA9214F675316182Eaa21C85f0Ca99160CC3AAA": {
       "symbol": "QANX",
@@ -55178,6 +55346,185 @@
       "symbol": "WFDP",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/23758/small/wfdp.png?1647695338"
+    },
+    "0x9334e37faD7c41Cd6C9565Bff3A97CE31CEE52a3": {
+      "symbol": "SWYCH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29594/small/6brcelg1_400x400.png?1679887806"
+    },
+    "0x5C7bb1e6C45B055A7831f0c82740f9677bbf6D43": {
+      "symbol": "INTER",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29587/small/Pfp_Transparent_1.png?1679885064"
+    },
+    "0x0733618Ab62eEEC815f2d1739b7a50bF9E74d8a2": {
+      "symbol": "PMG",
+      "decimals": 18
+    },
+    "0x39dC1F91fee49C03a0Db558254707116101518bf": {
+      "symbol": "UT",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29539/small/ut.png?1679544389"
+    },
+    "0x3Cf04A59b7BfD6299be4A2104B6E1ca1334750e3": {
+      "symbol": "PROTON",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29586/small/logo.png?1679884460"
+    },
+    "0x8303A44C770c666b8A45Eebab0879c1A880d39e7": {
+      "symbol": "LEONS",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29560/small/leons.png?1679725351"
+    },
+    "0xCeaEBCE0CD2B0075EAA13C972F60e7Dc449Cd2df": {
+      "symbol": "THX",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29602/small/thx.png?1679993511"
+    },
+    "0xF027E525D491ef6ffCC478555FBb3CFabB3406a6": {
+      "symbol": "RBNB",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29613/small/rBNB.png?1680069749"
+    },
+    "0x7082ff3a22E707136c80A9eFcB215Ec4c1fDa810": {
+      "symbol": "METT",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/29552/small/Mettlogo200x200.png?1679622255"
+    },
+    "0xbededDf2eF49E87037c4fb2cA34d1FF3D3992A11": {
+      "symbol": "FEG",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/14533/small/F-FEG-avatar-Light-03_4x-400x400-01_%281%29.png?1665915066"
+    },
+    "0x3Aa6B9A5306d1Cd48B0466cfb130b08a70257e12": {
+      "symbol": "GORILLA",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29567/small/IMG_20230322_210428_858.png?1679736987"
+    },
+    "0xED0353560c43f3E0336D197e4081c81e1015dd51": {
+      "symbol": "3CEO",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29599/small/24108.png?1679983586"
+    },
+    "0x459FAb6Be3b07558E28FEcB07B64A481D0E8C6a3": {
+      "symbol": "FAI",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29568/small/FlokiTerOfficialLogo-removebg.png?1679737276"
+    },
+    "0x4238E5Ccc619dCC8c00ADE4cfc5d3D9020b24898": {
+      "symbol": "AIT",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29618/small/ait.png?1680058786"
+    },
+    "0x8aBfa6a4F4B9865b0e7ACfDCe1839A2584636d06": {
+      "symbol": "MGKL",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29584/small/magikal.png?1679883085"
+    },
+    "0x0fc0B3f6F5C769C138088266aC21760ab33f76CA": {
+      "symbol": "CRA",
+      "decimals": 5,
+      "logoURI": "https://assets.coingecko.com/coins/images/29621/small/logo.jpg?1680076988"
+    },
+    "0x888Ed27C3Ab248868C29dABE3D1B3D7Cc5C89C5b": {
+      "symbol": "ARCS",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29550/small/arcs_200.png?1679621539"
+    },
+    "0xD3513dc0DF25f60c71822E7bacaC14f9391845ff": {
+      "symbol": "REELFI",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29447/small/logo_200x200.png?1678867912"
+    },
+    "0xbFdfa2143d1aa3EFEA094E5177295df9E77202a8": {
+      "symbol": "HOKA",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/29595/small/HOKKA.png?1679887935"
+    },
+    "0xF97C30F0b31aeE9B1Ab087F8ccf5B14BF354d29F": {
+      "symbol": "R3T",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29569/small/R3T.png?1679737424"
+    },
+    "0x859aC2100b85868bf7387D27e339da502FD1Eabc": {
+      "symbol": "BAIT",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29588/small/Logo_200_white.jpg?1679885373"
+    },
+    "0xC3137c696796D69F783CD0Be4aB4bB96814234Aa": {
+      "symbol": "PEPA",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/29557/small/IMG_20230324_010229_652.jpg?1679642907"
+    },
+    "0xB350aEBAEDB1eD3269b0E25D5E593a9bB4b9f9d5": {
+      "symbol": "RYOSHI",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/16394/small/RyoshiLogo.png.jpg?1626869344"
+    },
+    "0xee7f7C9459d8e910209849ed010C96F2Dfe39d3b": {
+      "symbol": "ALMR",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29562/small/Untitled_design_%282%29.png?1679735867"
+    },
+    "0x17C8C198c06f16a8dB68148d9ac460F5aED029d8": {
+      "symbol": "CORAI",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29591/small/Untitled_design_%281%29.png?1679886568"
+    },
+    "0x0aec1e4CE3cD3ccEe64FF1A2eE47770fd2B0d8d3": {
+      "symbol": "CAPY",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29563/small/logo200.png?1679735973"
+    },
+    "0x510Ca7D22A84599e7d0f15F09E674056a6255389": {
+      "symbol": "LABSV2",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/14401/small/CMC_logo.jpg?1664964940"
+    },
+    "0x7D4984490c4C68F8eAD9dddcA6d04C514Ef77324": {
+      "symbol": "GOLDEN",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/29583/small/200x200_logo_golden_inu.png?1679818052"
+    },
+    "0x20dd734594DAdc69DF313CD143B34a70a3D9214E": {
+      "symbol": "ORIGEN",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29561/small/200x200.png?1679725478"
+    },
+    "0xEAbD23c12fa39f270d8C819B2E0A6ece5cbeF3C5": {
+      "symbol": "POOLX",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29625/small/logomark-black_%282%29.png?1680079914"
+    },
+    "0x1135883a1bC6776bF90c97845adc491922106dFb": {
+      "symbol": "RJV",
+      "decimals": 6,
+      "logoURI": "https://assets.coingecko.com/coins/images/29366/small/2023_Rejuve_Logo_-_Square_-_Teal.jpg?1678345338"
+    },
+    "0x3Cd55356433C89E50DC51aB07EE0fa0A95623D53": {
+      "symbol": "SFRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28285/small/sfrxETH_icon.png?1679886768"
+    },
+    "0x117EefDdE5e5Aed6626fFEdBb5D2Ac955f64dBf3": {
+      "symbol": "RMATIC",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29610/small/rMATIC.png?1680074998"
+    },
+    "0x2Dd1B4D4548aCCeA497050619965f91f78b3b532": {
+      "symbol": "FPI",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/24945/small/FPI_icon.png?1679886853"
+    },
+    "0xD1738eB733A636d1b8665f48bC8a24dA889c2562": {
+      "symbol": "FPIS",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/24944/small/FPIS_icon.png?1679886817"
+    },
+    "0xf7DE7E8A6bd59ED41a4b5fe50278b3B7f31384dF": {
+      "symbol": "RDNT",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/26536/small/Radiant-Logo-200x200.png?1658715865"
     }
   },
   "57": {
@@ -55199,7 +55546,7 @@
     "0x7C598c96D02398d89FbCb9d41Eab3DF0C16F227D": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055": {
       "symbol": "WBTC",
@@ -55209,7 +55556,7 @@
     "0x922D641a426DcFFaeF11680e5358F34d97d112E1": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0xeFAeeE334F0Fd1712f9a8cc375f427D9Cdd40d73": {
       "symbol": "DAI",
@@ -55386,7 +55733,7 @@
     "0x4ECaBa5870353805a9F068101A40E0f32ed605C6": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x8e5bBbb09Ed1ebdE8674Cda39A0c169401db4252": {
       "symbol": "WBTC",
@@ -55396,7 +55743,7 @@
     "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d": {
       "symbol": "WXDAI",
@@ -56880,7 +57227,7 @@
     "0x512a2Eb0277573ae9Be0d48c782590b624048fdF": {
       "symbol": "MEME",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/12140/small/ICON.png?1679371662"
+      "logoURI": "https://assets.coingecko.com/coins/images/12140/small/ICON_%281%29.png?1679627816"
     },
     "0xdfc20AE04ED70bd9c7D720F449eEDAe19F659D65": {
       "symbol": "BADGER",
@@ -57032,7 +57379,7 @@
     "0xa722c13135930332Eb3d749B2F0906559D2C5b99": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629": {
       "symbol": "FUSE",
@@ -57062,7 +57409,7 @@
     "0xFaDbBF8Ce7D5b7041bE672561bbA99f79c532e10": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0xeEeEEb57642040bE42185f49C52F7E9B38f8eeeE": {
       "symbol": "ELK",
@@ -57099,7 +57446,7 @@
     "0xc2132D05D31c914a87C6611C10748AEb04B58e8F": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063": {
       "symbol": "DAI",
@@ -57174,7 +57521,7 @@
     "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7": {
       "symbol": "GHST",
@@ -57479,7 +57826,7 @@
     "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0x5314bA045a459f63906Aa7C76d9F337DcB7d6995": {
       "symbol": "FODL",
@@ -60189,7 +60536,7 @@
     "0x1a3acf6D19267E2d3e7f898f42803e90C9219062": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0x2727Ab1c2D22170ABc9b595177B2D5C6E1Ab7B7B": {
       "symbol": "CTSI",
@@ -62264,7 +62611,7 @@
     "0xEe327F889d5947c1dc1934Bb208a1E792F953E96": {
       "symbol": "FRXETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/JjqQ9ROz_400x400.jpeg?1669170320"
+      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/frxETH_icon.png?1679886981"
     },
     "0x38029C62DfA30D9FD3CaDf4C64e9b2ab21DbDa17": {
       "symbol": "DUBBZ",
@@ -62450,6 +62797,45 @@
       "symbol": "BTCBR",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/21205/small/btcbr.png?1661666691"
+    },
+    "0xCCE87C5b269C94b31Ec437b1d7D85bF1413b7804": {
+      "symbol": "OORT",
+      "decimals": 18
+    },
+    "0x38A232CABb8A7f745c7D6E0A5bf300E3499aa8A6": {
+      "symbol": "PIVN",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29617/small/pivn.png?1680056941"
+    },
+    "0x19CcfE396006ffe7A92Ab667b0ef90CE61B66f9f": {
+      "symbol": "REELT",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29559/small/reelt-logo.png?1679712415"
+    },
+    "0x77f56cf9365955486B12C4816992388eE8606f0E": {
+      "symbol": "C98",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/17117/small/logo.png?1626412904"
+    },
+    "0x34ad6A664B4112a9C6Bac7B54B4094a05E3ff775": {
+      "symbol": "MCOIN",
+      "decimals": 3,
+      "logoURI": "https://assets.coingecko.com/coins/images/29600/small/01_logoMARICOIN_TM_%281%29_%281%29_%281%29.png?1679983834"
+    },
+    "0xb541a306DD240EF04Fb5E7e0Db9a3C6CB7DdBb07": {
+      "symbol": "WFDP",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/23758/small/wfdp.png?1647695338"
+    },
+    "0x6d1FdBB266fCc09A16a22016369210A15bb95761": {
+      "symbol": "SFRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28285/small/sfrxETH_icon.png?1679886768"
+    },
+    "0x9f28e2455f9FFcFac9EBD6084853417362bc5dBb": {
+      "symbol": "RMATIC",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29610/small/rMATIC.png?1680074998"
     }
   },
   "199": {
@@ -62498,7 +62884,7 @@
     "0x049d68029688eAbF473097a2fC38ef61633A3C7A": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0xf16e81dce15B08F326220742020379B855B87DF9": {
       "symbol": "ICE",
@@ -62528,7 +62914,7 @@
     "0x74b23882a30290451A17c44f4F05243b6b58C76d": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83": {
       "symbol": "WFTM",
@@ -62573,7 +62959,7 @@
     "0xdc301622e621166BD8E82f2cA0A26c13Ad0BE355": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0x82f0B8B456c1A451378467398982d4834b6829c1": {
       "symbol": "MIM",
@@ -63593,7 +63979,7 @@
     "0x7d016eec9c25232b01F23EF992D98ca97fc2AF5a": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0x6a545f9c64d8f7B957D8D2e6410B52095A9E6c29": {
       "symbol": "CFI",
@@ -64179,6 +64565,21 @@
       "symbol": "ANKR",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/4324/small/U85xTl2.png?1608111978"
+    },
+    "0xCfC785741Dc0e98ad4c9F6394Bb9d43Cd1eF5179": {
+      "symbol": "ANKRFTM",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/26031/small/a-ftm-c-54cdd766209f469501af5a25f86bb443.png?1655350183"
+    },
+    "0x9E73F99EE061C8807F69f9c6CCc44ea3d8c373ee": {
+      "symbol": "FRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/frxETH_icon.png?1679886981"
+    },
+    "0xb90CCD563918fF900928dc529aA01046795ccb4A": {
+      "symbol": "SFRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28285/small/sfrxETH_icon.png?1679886768"
     }
   },
   "288": {
@@ -64205,7 +64606,7 @@
     "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xe1E2ec9a85C607092668789581251115bCBD20de": {
       "symbol": "OMG",
@@ -64225,7 +64626,7 @@
     "0x5DE1677344D3Cb0D7D465c10b72A8f60699C062d": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0xa18bF3994C0Cc6E3b63ac420308E5383f53120D7": {
       "symbol": "BOBA",
@@ -64238,6 +64639,18 @@
       "logoURI": "https://assets.coingecko.com/coins/images/13178/small/unidx.png?1634888975"
     }
   },
+  "324": {
+    "0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91": {
+      "symbol": "WETH",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+    },
+    "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4": {
+      "symbol": "USDC",
+      "decimals": 6,
+      "logoURI": "https://tokens.1inch.io/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png"
+    }
+  },
   "1088": {
     "0xEA32A96608495e54156Ae48931A7c20f0dcc1a21": {
       "symbol": "USDC",
@@ -64247,7 +64660,7 @@
     "0xbB06DCA3AE6887fAbF931640f67cab3e3a16F4dC": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x5CE34d9abe4bF239cbc08B89287c87f4CD6d80B7": {
       "symbol": "WOW",
@@ -64262,7 +64675,7 @@
     "0x420000000000000000000000000000000000000A": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x68D97B7A961a5239B9F911DA8dEb57F6eF6e5e28": {
       "symbol": "AAVE",
@@ -64519,7 +64932,7 @@
     "0x30D2a9F5FDf90ACe8c17952cbb4eE48a55D916A7": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x3405A1bd46B85c5C029483FbECf2F3E611026e45": {
       "symbol": "MATIC",
@@ -64539,7 +64952,7 @@
     "0xeFAeeE334F0Fd1712f9a8cc375f427D9Cdd40d73": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x765277EebeCA2e31912C9946eAe1021199B39C61": {
       "symbol": "DAI",
@@ -64624,7 +65037,17 @@
     "0x322E86852e492a7Ee17f28a78c663da38FB33bfb": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
+    },
+    "0x82bbd1b6f6De2B7bb63D3e1546e6b1553508BE99": {
+      "symbol": "FRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28284/small/frxETH_icon.png?1679886981"
+    },
+    "0xecf91116348aF1cfFe335e9807f0051332BE128D": {
+      "symbol": "SFRXETH",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/28285/small/sfrxETH_icon.png?1679886768"
     }
   },
   "1285": {
@@ -64761,12 +65184,12 @@
     "0x1A93B23281CC1CDE4C4741353F3064709A16197d": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0x6f1D1Ee50846Fcbc3de91723E61cb68CFa6D0E98": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0xFd301Ca82D007880e678bB750a771550C5104Ff2": {
       "symbol": "ANKR",
@@ -64816,12 +65239,12 @@
     "0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xB44a9B6905aF7c801311e8F4E76932ee959c663C": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0xD86E3F7B2Ff4e803f90c799D702955003bcA9875": {
       "symbol": "TEM",
@@ -64878,7 +65301,7 @@
     "0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265": {
       "symbol": "ATOM",
@@ -64893,7 +65316,7 @@
     "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x826551890Dc65655a0Aceca109aB11AbDbD7a07B": {
       "symbol": "CANTO",
@@ -65045,12 +65468,12 @@
     "0xd8176865DD0D672c6Ab4A427572f80A72b4B4A9C": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0xE03494D0033687543a80c9B1ca7D6237F2EA8BD8": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82": {
       "symbol": "USDC",
@@ -65253,7 +65676,7 @@
     "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8": {
       "symbol": "USDC",
@@ -65268,7 +65691,7 @@
     "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x0F61B24272AF65EACF6adFe507028957698e032F": {
       "symbol": "ZIPT",
@@ -66108,7 +66531,7 @@
     "0x912CE59144191C1204E64559FE8253a0e49E6548": {
       "symbol": "ARB",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/16547/small/arbitrium.png?1624418103"
+      "logoURI": "https://assets.coingecko.com/coins/images/16547/small/AF_logomark.png?1679671868"
     },
     "0x17afc249db786fC300f2d26381Fec5CF0C3913Fb": {
       "symbol": "PESOS",
@@ -66412,7 +66835,7 @@
     "0xD77B108d4f6cefaa0Cae9506A934e825BEccA46E": {
       "symbol": "WINR",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/29340/small/winr_logo.jpg?1678177562"
+      "logoURI": "https://assets.coingecko.com/coins/images/29340/small/WINR.png?1679561562"
     },
     "0x7241bC8035b65865156DDb5EdEf3eB32874a3AF6": {
       "symbol": "JGLP",
@@ -66718,6 +67141,36 @@
       "symbol": "GRT",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/13397/small/Graph_Token.png?1608145566"
+    },
+    "0xC7D91EC2B29CD22C45c15760Abc189c4e78E8036": {
+      "symbol": "MAKI",
+      "decimals": 9,
+      "logoURI": "https://assets.coingecko.com/coins/images/28909/small/Maki_Logo.png?1675308275"
+    },
+    "0xB7cD6C8C4600AeD9985d2c0Eb174e0BEe56E8854": {
+      "symbol": "ONYX",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29503/small/Onyx_Token_White_Transparent_Background_wBorder_%28200_%C3%97_200_px%29.png?1679380486"
+    },
+    "0x9eb6299e4Bb6669E42cb295a254c8492F67AE2C6": {
+      "symbol": "BET",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29545/small/200.png?1679560843"
+    },
+    "0xD6E7c8af05d2d06A76811D44917613BDd258B995": {
+      "symbol": "BRR",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29558/small/BRR_Protocol.png?1679644136"
+    },
+    "0xE85B662Fe97e8562f4099d8A1d5A92D4B453bF30": {
+      "symbol": "THALES",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/18388/small/CLVZJN_C_400x400.png?1631758808"
+    },
+    "0x6cc5B1fB8C2fD7AF1d2858f916F274B8faAC82E1": {
+      "symbol": "OJA",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/18947/small/ojamu-icon-PNK.png?1634006741"
     }
   },
   "42170": {
@@ -66734,7 +67187,7 @@
     "0x722E8BdD2ce80A4422E880164f2079488e115365": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1": {
       "symbol": "DAI",
@@ -66750,6 +67203,11 @@
       "symbol": "ECG",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/25967/small/ECG200X200.png?1671346623"
+    },
+    "0xf823C3cD3CeBE0a1fA952ba88Dc9EEf8e0Bf46AD": {
+      "symbol": "ARB",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/16547/small/AF_logomark.png?1679671868"
     }
   },
   "42220": {
@@ -66890,7 +67348,7 @@
     "0x2DEf4285787d58a2f811AF24755A8150622f4361": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xD15EC721C2A896512Ad29C671997DD68f9593226": {
       "symbol": "SUSHI",
@@ -66926,6 +67384,11 @@
       "symbol": "TFBX",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/8842/small/5rd7a55q_400x400.png?1562902557"
+    },
+    "0xae978582DE8cA83A53Eb1d8f879Ba854895f96b1": {
+      "symbol": "TGS",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29576/small/tgs.png?1679741086"
     }
   },
   "42262": {
@@ -66959,7 +67422,7 @@
     "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7": {
       "symbol": "WAVAX",
@@ -66974,7 +67437,7 @@
     "0xc7198437980c041c805A1EDcbA50c1Ce5db95118": {
       "symbol": "USDTE",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/24189/small/Usdt.e.png?1646819144"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x50b7545627a5162F82A992c33b87aDc75187B218": {
       "symbol": "WBTC",
@@ -67184,7 +67647,7 @@
     "0x214DB107654fF987AD859F34125307783fC8e387": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0xb2a85C5ECea99187A977aC34303b80AcbDdFa208": {
       "symbol": "ROCO",
@@ -67364,7 +67827,7 @@
     "0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0x026187BdbC6b751003517bcb30Ac7817D5B766f8": {
       "symbol": "H2O",
@@ -67404,7 +67867,7 @@
     "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x75739a693459f33B1FBcC02099eea3eBCF150cBe": {
       "symbol": "TIC",
@@ -69100,6 +69563,16 @@
       "symbol": "BTCBR",
       "decimals": 18,
       "logoURI": "https://assets.coingecko.com/coins/images/21205/small/btcbr.png?1661666691"
+    },
+    "0xDBabd6c54D43361E457A06D677341049AC23EFac": {
+      "symbol": "FLUUS",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29554/small/fluus-token-logo.png?1679626137"
+    },
+    "0x916aBa115F5162960E48a2675Ad4d8cBD09CE8E4": {
+      "symbol": "MCV",
+      "decimals": 18,
+      "logoURI": "https://assets.coingecko.com/coins/images/29564/small/mcv-token-logo-200x200.png?1679736111"
     }
   },
   "80001": {},
@@ -69112,7 +69585,7 @@
     "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0xe3520349F477A5F6EB06107066048508498A291b": {
       "symbol": "DAI",
@@ -69182,7 +69655,7 @@
     "0x4988a896b1227218e4A686fdE5EabdcAbd91571f": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x09C9D464b58d96837f8d8b6f4d9fE4aD408d3A4f": {
       "symbol": "PLY",
@@ -69409,7 +69882,7 @@
     "0x6983D1E6DEf3690C4d616b13597A09e6193EA013": {
       "symbol": "WETH",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/2518/small/weth.png?1628852295"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
     },
     "0x90D81749da8867962c760414C1C25ec926E889b6": {
       "symbol": "UNI",
@@ -69424,7 +69897,7 @@
     "0x3C2B8Be99c50593081EAA2A724F0B8285F5aba8f": {
       "symbol": "USDT",
       "decimals": 6,
-      "logoURI": "https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+      "logoURI": "https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
     },
     "0x3095c7557bCb296ccc6e363DE01b760bA031F2d9": {
       "symbol": "WBTC",
@@ -69989,7 +70462,7 @@
     "0x43ba3c1eb73FfECFbF22c44C21b26CdE1012353a": {
       "symbol": "MEME",
       "decimals": 8,
-      "logoURI": "https://assets.coingecko.com/coins/images/12140/small/ICON.png?1679371662"
+      "logoURI": "https://assets.coingecko.com/coins/images/12140/small/ICON_%281%29.png?1679627816"
     },
     "0xC7eaAa7FC41Fa4D814192979f267D80CB48fB760": {
       "symbol": "FEG",
@@ -70029,12 +70502,12 @@
     "0xFa7191D292d5633f702B0bd7E3E3BcCC0e633200": {
       "symbol": "FRAX",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/ethCanonicalFRAX.png?1669277108"
+      "logoURI": "https://assets.coingecko.com/coins/images/13422/small/FRAX_icon.png?1679886922"
     },
     "0x0767D8E1b05eFA8d6A301a65b324B6b66A1CC14c": {
       "symbol": "FXS",
       "decimals": 18,
-      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/ethCanonicalFXS.png?1669276861"
+      "logoURI": "https://assets.coingecko.com/coins/images/13423/small/Frax_Shares_icon.png?1679886947"
     },
     "0xBD3E698b51D340Cc53B0CC549b598c13e0172B7c": {
       "symbol": "LPT",

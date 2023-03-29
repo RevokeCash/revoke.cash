@@ -17,7 +17,7 @@ const getTokenMapping = async (chainId: number): Promise<ChainTokenMapping | und
     return undefined;
   }
 
-  return { ...oneInchMapping, ...coingeckoMapping };
+  return applyOverrides({ ...oneInchMapping, ...coingeckoMapping });
 };
 
 const coingeckoChainsPromise = axios.get('https://api.coingecko.com/api/v3/asset_platforms');
@@ -74,6 +74,23 @@ const getTokenMappingFrom1inch = async (chainId: number): Promise<ChainTokenMapp
     }
     return undefined;
   }
+};
+
+const applyOverrides = (tokenMapping: ChainTokenMapping) => {
+  // Override USDT and WETH logos
+  const USDT_LOGO =
+    'https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png';
+  const WETH_LOGO =
+    'https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png';
+
+  return Object.fromEntries(
+    Object.entries(tokenMapping).map(([address, token]) => {
+      if (token.symbol === 'USDT') return [address, { ...token, logoURI: USDT_LOGO }];
+      if (token.symbol === 'USDTE') return [address, { ...token, logoURI: USDT_LOGO }];
+      if (token.symbol === 'WETH') return [address, { ...token, logoURI: WETH_LOGO }];
+      return [address, token];
+    })
+  );
 };
 
 const updateErc20Tokenlist = async () => {
