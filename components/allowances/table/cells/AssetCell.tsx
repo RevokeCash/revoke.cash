@@ -23,7 +23,7 @@ const AssetCell = ({ allowance }: Props) => {
     }
   }, [ref]);
 
-  const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/token/${allowance.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.contract.address}`;
 
   let link = (
     <Href href={explorerUrl} underline="hover" external className="max-w-[8rem] lg:max-w-[12rem] truncate" ref={ref}>

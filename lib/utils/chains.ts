@@ -23,6 +23,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   18159, // Proof of Memes
   324, // zkSync Era
   280, // zkSync Era Goerli
+  84531, // Base Goerli
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -41,6 +42,11 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   1662, // Horizen Yuma Testnet
   1442, // Polygon zkEVM Testnet
   ChainId.PulseChainTestnetv3,
+  59140, // Linea Goerli Testnet
+  534353, // Scroll Alpha Testnet
+  2611, // Redlight
+  // ChainId.GatherMainnetNetwork,
+  ChainId.GatherTestnetNetwork,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -126,6 +132,8 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Palm,
   2109, // Exosama
   18159, // Proof of Memes
+  2611, // Redlight
+  // ChainId.GatherMainnetNetwork,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -137,6 +145,9 @@ export const CHAIN_SELECT_TESTNETS = [
   421613, // Arbitrum Goerli
   ChainId.OptimisticEthereumTestnetGoerli,
   280, // zkSync Goerli
+  59140, // Linea Testnet
+  534353, // Scroll Alpha Testnet
+  84531, // Base Goerli
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
@@ -146,6 +157,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.SyscoinTanenbaumTestnet,
   1662, // Horizen Yuma Testnet
   ChainId.PulseChainTestnetv3,
+  ChainId.GatherTestnetNetwork,
 ];
 
 export const isSupportedChain = (chainId: number): boolean => {
@@ -191,7 +203,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.AuroraMainnet]: 'Aurora',
     [ChainId.CeloMainnet]: 'Celo',
     [ChainId.HuobiECOChainMainnet]: 'HECO',
-    [ChainId.RSKMainnet]: 'RSK',
+    [ChainId.RSKMainnet]: 'Rootstock',
     [ChainId.MetisAndromedaMainnet]: 'Metis',
     [ChainId.TelosEVMMainnet]: 'Telos',
     [ChainId.IoTeXNetworkMainnet]: 'IoTeX',
@@ -240,6 +252,12 @@ export const getChainName = (chainId: number): string => {
     [280]: 'zkSync Era Goerli',
     [1442]: 'Polygon Test-zkEVM',
     [ChainId.PulseChainTestnetv3]: 'PulseChain Testnet',
+    [59140]: 'Linea Goerli',
+    [534353]: 'Scroll Alpha',
+    [84531]: 'Base Goerli',
+    [2611]: 'Redlight',
+    [ChainId.GatherMainnetNetwork]: 'Gather',
+    [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -276,6 +294,10 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [280]: 'https://goerli.explorer.zksync.io',
     [1442]: 'https://explorer.public.zkevm-test.net',
     [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com',
+    [59140]: 'https://explorer.goerli.linea.build',
+    [534353]: 'https://blockscout.scroll.io',
+    [84531]: 'https://goerli.basescan.org',
+    [2611]: 'https://redlightscan.finance',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -311,11 +333,15 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
     [ChainId.CronosTestnet]: 'https://evm-t3.cronos.org',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
-    [1662]: 'https://yuma-testnet.horizenlabs.io/ethv1', // Horizen Dune Testnet
+    [1662]: 'https://yuma-testnet.horizenlabs.io/ethv1',
     [324]: 'https://zksync2-mainnet.zksync.io',
     [280]: 'https://zksync2-testnet.zksync.dev',
     [1442]: 'https://rpc.public.zkevm-test.net',
     [ChainId.PulseChainTestnetv3]: 'https://rpc.v3.testnet.pulsechain.com',
+    [59140]: 'https://consensys-zkevm-goerli-prealpha.infura.io/v3/4372a37c341846f0b2ce479dd29a429b', // TODO: Replace
+    [534353]: 'https://alpha-rpc.scroll.io/l2',
+    [84531]: 'https://goerli.base.org',
+    [2611]: 'https://dataseed2.redlightscan.finance',
     ...RPC_OVERRIDES,
   };
 
@@ -371,8 +397,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.MoonbaseAlpha]: '/assets/images/vendor/chains/moonbeam.svg',
     [ChainId.CronosMainnetBeta]: '/assets/images/vendor/chains/cronos.svg',
     [ChainId.CronosTestnet]: '/assets/images/vendor/chains/cronos.svg',
-    [ChainId.RSKMainnet]: '/assets/images/vendor/chains/rsk.svg',
-    [ChainId.RSKTestnet]: '/assets/images/vendor/chains/rsk.svg',
+    [ChainId.RSKMainnet]: '/assets/images/vendor/chains/rootstock.jpg',
+    [ChainId.RSKTestnet]: '/assets/images/vendor/chains/rootstock.jpg',
     [ChainId.HarmonyMainnetShard0]: '/assets/images/vendor/chains/harmony.svg',
     [ChainId.HarmonyTestnetShard0]: '/assets/images/vendor/chains/harmony.svg',
     [ChainId.IoTeXNetworkMainnet]: '/assets/images/vendor/chains/iotex.png',
@@ -416,6 +442,12 @@ export const getChainLogo = (chainId: number): string => {
     [280]: '/assets/images/vendor/chains/zksync.jpeg',
     [1442]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PulseChainTestnetv3]: '/assets/images/vendor/chains/pulsechain.png',
+    [59140]: '/assets/images/vendor/chains/linea.svg',
+    [534353]: '/assets/images/vendor/chains/scroll.png',
+    [84531]: '/assets/images/vendor/chains/base.svg',
+    [2611]: '/assets/images/vendor/chains/redlight.png',
+    [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
+    [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -431,6 +463,7 @@ export const getChainNativeToken = (chainId: number): string => {
     [2109]: 'SAMA',
     [18159]: 'POM',
     [1662]: 'TZEN',
+    [2611]: 'REDLC',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -476,6 +509,8 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     POM: '2500',
     SGB: '1000',
     FLR: '500',
+    REDLC: '100',
+    GTH: '2500',
   };
 
   return mapping[nativeToken] ?? '1';
@@ -528,6 +563,11 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [1662]: 'https://yuma-explorer.horizen.io/api',
     [1442]: 'https://explorer.public.zkevm-test.net/api',
     [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com/api',
+    [59140]: 'https://explorer.goerli.linea.build/api',
+    [534353]: 'https://blockscout.scroll.io/api',
+    [2611]: 'https://redlightscan.finance/api',
+    [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
+    [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
   };
 
   return apiUrls[chainId];
