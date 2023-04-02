@@ -8,6 +8,7 @@ const fixtures = [
   ['Binance Smart Chain', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Avalanche', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Polygon', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
+  ['Polygon zkEVM', '0x16959Ac6E43f509F9d16De76B3B6f60D908BF816'],
   ['Arbitrum', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Arbitrum Nova', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Optimism', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],

@@ -51,9 +51,9 @@ const App = ({ Component, pageProps }: AppProps) => {
               className="text-center"
               toastClassName="border border-black bg-white text-zinc-900 dark:bg-black dark:border-white dark:text-zinc-100"
               progressClassName="bg-black dark:bg-white"
-              closeButton={
+              closeButton={() => (
                 <XMarkIcon className="w-6 h-6 text-zinc-500 hover:text-black dark:hover:text-white shrink-0" />
-              }
+              )}
               position="top-right"
               icon={false}
               autoClose={5000}

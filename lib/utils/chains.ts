@@ -24,6 +24,8 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   324, // zkSync Era
   280, // zkSync Era Goerli
   84531, // Base Goerli
+  1101, // Polygon zkEVM
+  1442, // Polygon zkEVM Testnet
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -40,7 +42,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId['SongbirdCanary-Network'],
   ChainId.AuroraMainnet,
   1662, // Horizen Yuma Testnet
-  1442, // Polygon zkEVM Testnet
   ChainId.PulseChainTestnetv3,
   59140, // Linea Goerli Testnet
   534353, // Scroll Alpha Testnet
@@ -94,6 +95,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.EthereumMainnet,
   ChainId.BinanceSmartChainMainnet,
   ChainId.PolygonMainnet,
+  1101, // Polygon zkEVM
   ChainId.ArbitrumOne,
   42170, // Arbitrum Nova
   ChainId.Optimism,
@@ -251,6 +253,7 @@ export const getChainName = (chainId: number): string => {
     [324]: 'zkSync Era',
     [280]: 'zkSync Era Goerli',
     [1442]: 'Polygon Test-zkEVM',
+    [1101]: 'Polygon zkEVM',
     [ChainId.PulseChainTestnetv3]: 'PulseChain Testnet',
     [59140]: 'Linea Goerli',
     [534353]: 'Scroll Alpha',
@@ -292,7 +295,8 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [1662]: 'https://yuma-explorer.horizen.io',
     [324]: 'https://explorer.zksync.io',
     [280]: 'https://goerli.explorer.zksync.io',
-    [1442]: 'https://explorer.public.zkevm-test.net',
+    [1442]: 'https://testnet-zkevm.polygonscan.com',
+    [1101]: 'https://zkevm.polygonscan.com',
     [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com',
     [59140]: 'https://explorer.goerli.linea.build',
     [534353]: 'https://blockscout.scroll.io',
@@ -337,6 +341,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [324]: 'https://zksync2-mainnet.zksync.io',
     [280]: 'https://zksync2-testnet.zksync.dev',
     [1442]: 'https://rpc.public.zkevm-test.net',
+    [1101]: 'https://zkevm-rpc.com',
     [ChainId.PulseChainTestnetv3]: 'https://rpc.v3.testnet.pulsechain.com',
     [59140]: 'https://consensys-zkevm-goerli-prealpha.infura.io/v3/4372a37c341846f0b2ce479dd29a429b', // TODO: Replace
     [534353]: 'https://alpha-rpc.scroll.io/l2',
@@ -364,6 +369,8 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
     [ChainId.OptimisticEthereumTestnetGoerli]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.ArbitrumOne]: `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [421613]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
+    [1442]: `https://polygonzkevm-testnet.g.alchemy.com/v2/${alchemyKey}`,
+    [1101]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   };
 
   return overrides[chainId] ?? getChainRpcUrl(chainId);
@@ -441,6 +448,7 @@ export const getChainLogo = (chainId: number): string => {
     [324]: '/assets/images/vendor/chains/zksync.jpeg',
     [280]: '/assets/images/vendor/chains/zksync.jpeg',
     [1442]: '/assets/images/vendor/chains/polygon.svg',
+    [1101]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PulseChainTestnetv3]: '/assets/images/vendor/chains/pulsechain.png',
     [59140]: '/assets/images/vendor/chains/linea.svg',
     [534353]: '/assets/images/vendor/chains/scroll.png',
@@ -561,7 +569,6 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
     [1662]: 'https://yuma-explorer.horizen.io/api',
-    [1442]: 'https://explorer.public.zkevm-test.net/api',
     [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com/api',
     [59140]: 'https://explorer.goerli.linea.build/api',
     [534353]: 'https://blockscout.scroll.io/api',
