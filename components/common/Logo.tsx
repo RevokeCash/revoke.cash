@@ -9,9 +9,10 @@ interface Props {
   size?: number;
   square?: boolean;
   border?: boolean;
+  className?: string;
 }
 
-const Logo = ({ src, alt, size, square, border }: Props) => {
+const Logo = ({ src, alt, size, square, border, className }: Props) => {
   const [error, setError] = useState(false);
 
   if (error || !src) {
@@ -21,7 +22,8 @@ const Logo = ({ src, alt, size, square, border }: Props) => {
   const classes = twMerge(
     'aspect-square object-cover bg-white',
     square ? 'rounded-lg' : 'rounded-full',
-    border && 'border border-black dark:border-white'
+    border && 'border border-black dark:border-white',
+    className
   );
 
   if (!src.startsWith('/')) {
