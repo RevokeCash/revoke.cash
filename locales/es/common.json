@@ -79,8 +79,8 @@
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
     "revoke_failed": "❌ No se pudo revocar la autorización: {{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: Execution reverted. Please reach out to token's team to resolve this issue.",
+    "revoke_failed_revert": "❌ Revoking allowance failed: {{message}}. Please reach out to this token's team to resolve this issue.",
     "transaction_submitted": "✅ ¡Transacción enviada!",
-    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revóquelo porfavor"
+    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revóquelo por favor."
   }
 }
