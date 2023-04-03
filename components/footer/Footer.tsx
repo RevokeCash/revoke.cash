@@ -3,6 +3,7 @@ import ColorThemeSelect from 'components/footer/ColorThemeSelect';
 import { DISCORD_URL, GITHUB_URL, TWITTER_URL } from 'lib/constants';
 import useTranslation from 'next-translate/useTranslation';
 import LanguageSelect from './LanguageSelect';
+import NotCommonBadge from './NotCommonBadge';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="flex gap-2 shrink-0">
+        <NotCommonBadge />
         <LanguageSelect />
         <ColorThemeSelect />
       </div>
