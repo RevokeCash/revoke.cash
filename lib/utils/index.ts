@@ -24,7 +24,7 @@ export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
 };
 
 export const toFloat = (n: BigNumberish, decimals: number = 0): string => {
-  return (Number(n) / 10 ** decimals).toFixed(3).replace(/\.?0+$/, '');
+  return (Number(n) / 10 ** decimals).toFixed(6).replace(/\.?0+$/, '');
 };
 
 export const fromFloat = (floatString: string, decimals: number): string => {
