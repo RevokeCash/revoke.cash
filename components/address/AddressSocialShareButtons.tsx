@@ -25,6 +25,7 @@ const AddressSocialShareButtons = ({ address }: Props) => {
         src={darkMode ? '/assets/images/vendor/etherscan-light.svg' : '/assets/images/vendor/etherscan.svg'}
         alt="Block Explorer Link"
         href={`${explorerUrl}/address/${address}`}
+        className="dark:bg-black"
       />
       <Button style="tertiary" size="none" onClick={() => writeToClipBoard(location.href, t)}>
         <ShareIcon className="w-5 h-5" />
