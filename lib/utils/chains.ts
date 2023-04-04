@@ -48,6 +48,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   2611, // Redlight
   // ChainId.GatherMainnetNetwork,
   ChainId.GatherTestnetNetwork,
+  167004, // Taiko Alpha Testnet
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -150,6 +151,7 @@ export const CHAIN_SELECT_TESTNETS = [
   59140, // Linea Testnet
   534353, // Scroll Alpha Testnet
   84531, // Base Goerli
+  167004, // Taiko Alpha Testnet
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
@@ -261,6 +263,7 @@ export const getChainName = (chainId: number): string => {
     [2611]: 'Redlight',
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
+    [167004]: 'Taiko Alpha',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -302,6 +305,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [534353]: 'https://blockscout.scroll.io',
     [84531]: 'https://goerli.basescan.org',
     [2611]: 'https://redlightscan.finance',
+    [167004]: 'https://explorer.a2.taiko.xyz',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -347,6 +351,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [534353]: 'https://alpha-rpc.scroll.io/l2',
     [84531]: 'https://goerli.base.org',
     [2611]: 'https://dataseed2.redlightscan.finance',
+    [167004]: 'https://rpc.a2.taiko.xyz',
     ...RPC_OVERRIDES,
   };
 
@@ -456,6 +461,7 @@ export const getChainLogo = (chainId: number): string => {
     [2611]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
+    [167004]: '/assets/images/vendor/chains/taiko.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -575,6 +581,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [2611]: 'https://redlightscan.finance/api',
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
+    [167004]: 'https://explorer.a2.taiko.xyz/api',
   };
 
   return apiUrls[chainId];
