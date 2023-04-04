@@ -7,7 +7,7 @@ import {
   SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
 import { revokeProvider } from 'lib/utils/revokeProvider';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { configureChains, createClient, useAccount, useConnect, WagmiConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
@@ -50,39 +50,24 @@ class InjectedConnectorNoDisconnectListener extends InjectedConnector {
   protected onDisconnect = () => {};
 }
 
+export const connectors = [
+  new SafeConnector({
+    chains: wagmiChains,
+    options: { allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/], debug: false },
+  }),
+  new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
+  new WalletConnectConnector({ chains: wagmiChains, options: { qrcode: true } }),
+  new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
+  new LedgerConnector({ chains: wagmiChains }),
+];
+
+export const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
+
 export const EthereumProvider = ({ children }: Props) => {
-  // We need to use a state variable here because we need to dynamically add the injected connector later
-  // This is because a new Phantom update messes with the window.ethereum object and causes it to be undefined on page load
-  // So we wait for 100ms before adding the injected connector
-  // TODO: Go back to normal once Phantom fixes their bug
-  const [connectors, setConnectors] = useState<any[]>([
-    new SafeConnector({
-      chains: wagmiChains,
-      options: { allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/], debug: false },
-    }),
-    // new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
-    new WalletConnectConnector({ chains: wagmiChains, options: { qrcode: true } }),
-    new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
-    new LedgerConnector({ chains: wagmiChains }),
-  ]);
-
-  // See comment above
-  useEffect(() => {
-    setTimeout(() => {
-      setConnectors(() => [new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }), ...connectors]);
-    }, 100);
-  }, []);
-
-  const wagmiClient = useMemo(
-    () =>
-      createClient({
-        autoConnect: true,
-        connectors,
-        provider,
-      }),
-    [connectors]
-  );
-
   return (
     <WagmiConfig client={wagmiClient}>
       <EthereumProviderChild>{children}</EthereumProviderChild>
