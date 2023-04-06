@@ -92,7 +92,7 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
         </div>
         <div>{name}</div>
       </Href>
-      {overlay && <Href href={overlay.url} style={overlay} className="absolute" external />}
+      {overlay && <Href href={overlay.url} style={overlay} className="absolute" external onClick={trackClick} />}
     </div>
   );
 };
