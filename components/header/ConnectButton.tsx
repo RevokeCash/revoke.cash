@@ -71,7 +71,7 @@ const ConnectButton = ({ size, style, className, text }: Props) => {
                     onClick={() => connectAndRedirect(connector)}
                   >
                     <Logo src={getWalletIcon(connector.name)} alt={connector.name} size={64} square border />
-                    {connector.name}
+                    {connector.name === 'WalletConnectLegacy' ? 'WalletConnect' : connector.name}
                   </Button>
                 ))}
             </div>

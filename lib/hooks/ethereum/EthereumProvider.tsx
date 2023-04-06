@@ -13,7 +13,7 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { LedgerConnector } from 'wagmi/connectors/ledger';
 import { SafeConnector } from 'wagmi/connectors/safe';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy';
 
 interface Props {
   children: ReactNode;
@@ -47,7 +47,7 @@ const { chains: wagmiChains, provider } = configureChains(chainList, [revokeProv
 // We don't want to auto-disconnect the user when they switch to certain networks
 // https://github.com/MetaMask/metamask-extension/issues/13375#issuecomment-1027663334
 class InjectedConnectorNoDisconnectListener extends InjectedConnector {
-  protected onDisconnect = () => {};
+  protected onDisconnect = async () => {};
 }
 
 export const connectors = [
@@ -56,7 +56,7 @@ export const connectors = [
     options: { allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/], debug: false },
   }),
   new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
-  new WalletConnectConnector({ chains: wagmiChains, options: { qrcode: true } }),
+  new WalletConnectLegacyConnector({ chains: wagmiChains, options: { qrcode: true } }),
   new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
   new LedgerConnector({ chains: wagmiChains }),
 ];

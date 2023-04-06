@@ -19,6 +19,7 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     metamask: `${BASE_URL}/metaMaskWallet/metaMaskWallet.svg`,
     // Other connectors
     walletconnect: `${BASE_URL}/walletConnectWallet/walletConnectWallet.svg`,
+    walletconnectlegacy: `${BASE_URL}/walletConnectWallet/walletConnectWallet.svg`,
     'coinbase wallet': `${BASE_URL}/coinbaseWallet/coinbaseWallet.svg`, // Also its own connector
     ledger: `${BASE_URL}/ledgerWallet/ledgerWallet.svg`,
   };
