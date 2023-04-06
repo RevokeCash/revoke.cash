@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import Href from 'components/common/Href';
 import Label from 'components/common/Label';
 import useTranslation from 'next-translate/useTranslation';
@@ -63,9 +64,19 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
     },
   };
 
+  const trackClick = () => {
+    track('Sponsor Link Clicked', { name, tier, url });
+  };
+
   return (
     <div className="relative">
-      <Href href={url} external className={twMerge(mapping.common.banner, mapping[tier].banner)} underline="hover">
+      <Href
+        href={url}
+        external
+        className={twMerge(mapping.common.banner, mapping[tier].banner)}
+        underline="hover"
+        onClick={trackClick}
+      >
         <div className={twMerge(mapping.common.image, mapping[tier].image)}>
           <Label className={twMerge(mapping.common.label, mapping[tier].label)}>
             {t(`landing:sponsors.tiers.${tier}`)}
