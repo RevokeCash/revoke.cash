@@ -26,6 +26,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   84531, // Base Goerli
   1101, // Polygon zkEVM
   1442, // Polygon zkEVM Testnet
+  1116, // CORE
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -117,6 +118,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.IoTeXNetworkMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.BitTorrentChainMainnet,
+  1116, // CORE
   // 2000, // Dogechain
   ChainId.HarmonyMainnetShard0,
   ChainId.GodwokenMainnet,
@@ -264,6 +266,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
     [167004]: 'Taiko Alpha',
+    [1116]: 'CORE',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -306,6 +309,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [84531]: 'https://goerli.basescan.org',
     [2611]: 'https://redlightscan.finance',
     [167004]: 'https://explorer.a2.taiko.xyz',
+    [1116]: 'https://scan.coredao.org',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -352,6 +356,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [84531]: 'https://goerli.base.org',
     [2611]: 'https://dataseed2.redlightscan.finance',
     [167004]: 'https://rpc.a2.taiko.xyz',
+    [1116]: 'https://rpc.coredao.org',
     ...RPC_OVERRIDES,
   };
 
@@ -462,6 +467,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [167004]: '/assets/images/vendor/chains/taiko.svg',
+    [1116]: '/assets/images/vendor/chains/core.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -478,6 +484,7 @@ export const getChainNativeToken = (chainId: number): string => {
     [18159]: 'POM',
     [1662]: 'TZEN',
     [2611]: 'REDLC',
+    [1116]: 'CORE',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -525,6 +532,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     FLR: '500',
     REDLC: '100',
     GTH: '2500',
+    CORE: '10',
   };
 
   return mapping[nativeToken] ?? '1';
