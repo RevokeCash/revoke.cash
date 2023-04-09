@@ -18,6 +18,7 @@ const AllowanceTable = () => {
           allowances.filter((item) => item.spender && item.spender.toLowerCase() === contractFilter.toLowerCase())
         );
       }
+      // Reset to full alllowances on clear
       if (contractFilter === null && filteredAllowances.length !== allowances.length) {
         setFilteredAllowances(allowances);
       }
@@ -25,6 +26,8 @@ const AllowanceTable = () => {
   }, [contractFilter]);
 
   useEffect(() => {
+    // Initial set necessary, giving allowances as default state to filteredAllowances
+    // directly in the hook does not work with useReactTable()
     if (allowances && allowances.length > 0 && filteredAllowances.length === 0) {
       setFilteredAllowances(allowances);
     }
