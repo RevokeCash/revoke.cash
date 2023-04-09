@@ -1,5 +1,5 @@
 import { ChainId, chains } from 'eth-chains';
-import { ETHERSCAN_API_KEYS, RPC_OVERRIDES } from 'lib/constants';
+import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
@@ -604,6 +604,13 @@ export const getChainApiKey = (chainId: number): string | undefined => {
 };
 
 export const getChainApiRateLimit = (chainId: number): RateLimit => {
+  const { platform, subPlatform } = getChainEtherscanPlatformNames(chainId);
+  const customRateLimit = ETHERSCAN_RATE_LIMITS[`${subPlatform}.${platform}`] ?? ETHERSCAN_RATE_LIMITS[platform];
+
+  if (customRateLimit) {
+    return { interval: 1000, intervalCap: customRateLimit };
+  }
+
   // Etherscan has a rate limit of 1 request per 5 seconds if no API key is provided
   // Note that we exclude Blockscout chains here because they require no API key
   if (isEtherscanSupportedChain(chainId) && !isBlockscoutSupportedChain(chainId) && !getChainApiKey(chainId)) {
