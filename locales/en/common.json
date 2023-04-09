@@ -23,6 +23,9 @@
     "mainnets": "Mainnets",
     "testnets": "Testnets"
   },
+  "allowance_search": {
+    "title": "Search a contract"
+  },
   "color_themes": {
     "dark": "Dark",
     "light": "Light",

@@ -23,6 +23,9 @@
     "mainnets": "Redes principales",
     "testnets": "Redes de prueba"
   },
+  "allowance_search": {
+    "title": "Buscar un contrato"
+  },
   "color_themes": {
     "dark": "Oscuro",
     "light": "Claro",
