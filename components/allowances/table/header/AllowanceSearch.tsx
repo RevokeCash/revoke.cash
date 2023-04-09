@@ -1,6 +1,9 @@
 import { ArrowRightCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { useQuery } from '@tanstack/react-query';
 import Button from 'components/common/Button';
+import Spinner from 'components/common/Spinner';
+import { parseInputAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
 import { FormEventHandler, useState } from 'react';
 
@@ -13,9 +16,17 @@ const AllowanceSearch = ({ filterByContract }: Props) => {
 
   const [value, setValue] = useState<string>('');
 
+  const { data: isValid, isLoading: validating } = useQuery({
+    queryKey: ['validate', value],
+    queryFn: async () => !!(await parseInputAddress(value)),
+    enabled: !!value,
+    // Chances of this data changing while the user is on the page are very slim
+    staleTime: Infinity,
+  });
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
-    if (!value) return;
+    if (!value || !isValid) return;
     filterByContract(value);
   };
 
@@ -31,6 +42,8 @@ const AllowanceSearch = ({ filterByContract }: Props) => {
         value={value}
         onChange={(ev) => setValue(ev.target.value.trim())}
       />
+      {value && validating && <Spinner className="w-4 h-4" />}
+      {value && !validating && !isValid && <XMarkIcon className="w-6 h-6 text-red-500" />}
       {value && (
         <Button
           style="tertiary"
