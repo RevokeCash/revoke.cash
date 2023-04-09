@@ -8,7 +8,7 @@ import { useOpenSeaProxyAddress } from './useOpenSeaProxyAddress';
 
 export const useEvents = (address: string, chainId: number) => {
   const { openSeaProxyAddress, isLoading: isOpenSeaProxyAddressLoading } = useOpenSeaProxyAddress(address);
-  const { data: blockNumber, isLoading: isBlockNumberLoading } = useBlockNumber(chainId);
+  const { data: blockNumber, isLoading: isBlockNumberLoading, error: blockNumberError } = useBlockNumber(chainId);
 
   const erc721Interface = new utils.Interface(ERC721Metadata);
   const addressTopic = utils.hexZeroPad(address, 32);
@@ -60,7 +60,7 @@ export const useEvents = (address: string, chainId: number) => {
 
   const isEventsLoading = isTransferFromLoading || isTransferToLoading || isApprovalLoading || isApprovalForAllLoading;
   const isLoading = isOpenSeaProxyAddressLoading || isBlockNumberLoading || isEventsLoading;
-  const error = transferFromError || transferToError || approvalError || approvalForAllError;
+  const error = blockNumberError || transferFromError || transferToError || approvalError || approvalForAllError;
 
   const events = useMemo(() => {
     if (!transferFrom || !transferTo || !approval || !approvalForAll) return undefined;

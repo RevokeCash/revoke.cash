@@ -17,9 +17,23 @@ const Error = ({ error }: Props) => {
 
   const chainName = getChainName(selectedChainId);
   const chainConnectionMessage = t('common:errors.messages.chain_could_not_connect', { chainName });
-  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-  const message = error.message.includes('missing response') ? chainConnectionMessage : errorMessage;
+  const errorMessage = parseErrorMessage(error);
+  const message = errorMessage.includes('missing response') ? chainConnectionMessage : errorMessage;
   return <div>Error: {message}</div>;
+};
+
+const parseErrorMessage = (error: any) => {
+  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message ?? error;
+
+  if (typeof errorMessage === 'object') {
+    try {
+      return JSON.stringify(errorMessage);
+    } catch {
+      return String(errorMessage);
+    }
+  }
+
+  return errorMessage;
 };
 
 export default Error;
