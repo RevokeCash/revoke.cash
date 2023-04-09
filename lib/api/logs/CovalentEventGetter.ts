@@ -10,16 +10,11 @@ export class CovalentEventGetter implements EventGetter {
 
   constructor(private apiKey: string, isPremium: boolean) {
     // Covalent's premium API has a rate limit of 50 (normal = 5) requests per second, which we underestimate to be safe
-    // TODO: Upstash is somehow having issues with higher rate limits, so we use 4/100ms rather than 40/1000ms
     this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
-    const topics = filter.topics;
-    // Covalent has some issues with being up to date for recent blocks, so we'll use an older block
-    // Note that we also reduce the fromBlock, due to the way events are indexed client-side using IndexedDB
-    const fromBlock = Math.max(0, filter.fromBlock - 50);
-    const toBlock = filter.toBlock - 50;
+    const { topics, fromBlock, toBlock } = filter;
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
     const results = await Promise.all(

@@ -1,6 +1,7 @@
 import Dexie, { Table } from 'dexie';
 import { Filter, Log, LogsProvider } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
+import { isCovalentSupportedChain } from 'lib/utils/chains';
 
 interface Events {
   chainId: number;
@@ -19,10 +20,22 @@ class EventsDB extends Dexie {
       events: '[chainId+topicsKey], topics, toBlock',
     });
 
-    // We can use this method to force clear the events table if we need to
-    // this.version(2023_03_15).upgrade(() => {
-    //   this.events.clear();
-    // });
+    // Add key for chainId
+    this.version(2023_04_10.1).stores({
+      events: '[chainId+topicsKey], chainId, topics, toBlock',
+    });
+
+    // On 2023-04-10, We moved the "-50" calculation from the backend to the frontend (for flexibility)
+    // We need to subtract 50 blocks from the fromBlock and toBlock for Covalent supported chains to make up for this
+    this.version(2023_04_10.2).upgrade((tx) => {
+      const affectedChains = [1666600000, 4689, 9001, 71402, 288, 592, 336]; // Covalent supported chains (2023-04-10)
+      tx.table<Events>('events')
+        .where('chainId')
+        .anyOf(affectedChains)
+        .modify((entry) => {
+          entry.toBlock -= 50;
+        });
+    });
   }
 
   // Note: It is always assumed that this function is called to get logs for the entire chain (i.e. from block 0 to 'latest')
@@ -30,8 +43,11 @@ class EventsDB extends Dexie {
   // This means that we can't use this function to get logs for a specific block range
   async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number) {
     try {
-      const { toBlock, topics } = filter;
+      const { topics } = filter;
       const topicsKey = topics.join(',');
+
+      // For Covalent supported chains, we need to subtract 50 blocks from the toBlock (due to issues with Covalent)
+      const toBlock = isCovalentSupportedChain(chainId) ? Math.max(filter.toBlock - 50, 0) : filter.toBlock;
 
       const storedEvents = await this.events.get([chainId, topicsKey]);
 
