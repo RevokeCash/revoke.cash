@@ -11,7 +11,7 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     '1inchw1allet': '/assets/images/vendor/wallets/1inch.svg',
     // 'apex wallet': '',
     backpack: '/assets/images/vendor/wallets/backpack.svg',
-    bitkeep: '/assets/images/vendor/wallets/xdefi.svg',
+    bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
     'bifrost wallet': `/assets/images/vendor/wallets/bifrost.svg`,
     bitski: `${BASE_URL}/bitskiWallet/bitskiWallet.svg`,
     'brave wallet': `${BASE_URL}/braveWallet/braveWallet.svg`,
