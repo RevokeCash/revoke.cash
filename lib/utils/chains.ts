@@ -323,9 +323,9 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
 
   // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides = {
-    [ChainId.EthereumMainnet]: `https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`,
-    [ChainId.Goerli]: `https://eth-goerli.g.alchemy.com/v2/${alchemyKey}`,
-    [ChainId.Sepolia]: `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
+    [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
     [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
     [42170]: 'https://nova.arbitrum.io/rpc',
@@ -339,8 +339,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
-    [ChainId.Optimism]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
-    [ChainId.OptimisticEthereumTestnetGoerli]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.OptimisticEthereumTestnetGoerli]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [2109]: 'https://rpc.exosama.com',
     [18159]: 'https://mainnet-rpc.memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
