@@ -15,6 +15,8 @@ import { ColumnId } from '../columns';
 interface Option {
   group: string;
   value: string;
+  isCustom?: boolean;
+  filterValues?: string[];
 }
 
 interface OptionGroup {
@@ -62,7 +64,47 @@ const options = [
 const FilterSelect = ({ table }: Props) => {
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
+
+  const hashStr = typeof window !== 'undefined' && window.location.hash;
+  const customSpenderFilters = [];
+  if (hashStr) {
+    try {
+      const data = JSON.parse(decodeURIComponent(hashStr.slice(1)));
+      // extract custom spender filters from location hash
+      if (data.spender) {
+        customSpenderFilters.push({
+          group: 'Spender',
+          value: data.spender.name,
+          filterValues: data.spender.values,
+          isCustom: true,
+        });
+      }
+    } catch {
+      // Skip errors
+    }
+  }
+
+  // append custom spender filter options
+  if (!options.find((c) => c.label === 'Spender')) {
+    options.push({
+      label: 'Spender',
+      id: ColumnId.SPENDER,
+      options: customSpenderFilters,
+    });
+  }
+
   const [selectedFilters, setSelectedFilters] = useLocalStorage<Option[]>('allowances-table.filters', []);
+
+  useEffect(() => {
+    // Force use custom filters
+    if (customSpenderFilters.length) {
+      setSelectedFilters(customSpenderFilters);
+      if (typeof window !== 'undefined') {
+        // clear hash
+        window.location.hash = '';
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (!selectedFilters) return;
@@ -75,7 +117,11 @@ const FilterSelect = ({ table }: Props) => {
     return (
       <div className="flex items-center gap-1">
         <Checkbox checked={!!selectValue.find((selected) => selected.value === option.value)} />
-        <span>{t(`address:filters.${normaliseLabel(option.group)}.options.${normaliseLabel(option.value)}`)}</span>
+        <span>
+          {option.isCustom
+            ? option.value
+            : t(`address:filters.${normaliseLabel(option.group)}.options.${normaliseLabel(option.value)}`)}
+        </span>
       </div>
     );
   };
@@ -118,7 +164,9 @@ const ValueContainer = ({ children, getValue, options }) => {
 
   const labels = groupsWithSelected.map((group) => {
     const commonKey = `address:filters.${normaliseLabel(group.label)}`;
-    const options = group.selected.map((option) => t(`${commonKey}.options.${normaliseLabel(option.value)}`));
+    const options = group.selected.map((option) =>
+      option.isCustom ? option.value : t(`${commonKey}.options.${normaliseLabel(option.value)}`)
+    );
     return `${t(`${commonKey}.label`)}: ${options.join(', ')}`;
   });
 
@@ -148,7 +196,8 @@ const getGroupsWithSelected = (groups: OptionGroup[], selected: Option[]): Optio
   const groupsWithSelected = groups.map((group) => {
     const groupSelected = selected.filter((option) => option.group === group.label);
     // If all are selected, then none are selected
-    const groupSelectedRefined = groupSelected.length === group.options.length ? [] : groupSelected;
+    const groupSelectedRefined =
+      groupSelected.length === group.options.length && group.options.length != 1 ? [] : groupSelected;
     return { ...group, selected: groupSelectedRefined };
   });
 
@@ -160,7 +209,9 @@ const generateTableFilters = (groups: OptionGroup[], selected: Option[]) => {
 
   const tableFilters = groupsWithSelected.map((group) => ({
     id: group.id,
-    value: group.selected.map(({ value }) => value),
+    value: group.selected.map((option) => {
+      return option.isCustom && option.filterValues ? option.filterValues.join(',') : option.value;
+    }),
   }));
 
   return tableFilters;

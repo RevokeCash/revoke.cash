@@ -28,6 +28,9 @@
         "token": "代币"
       }
     },
+    "spender": {
+      "label": "已经授权的项目"
+    },
     "label": "筛选",
     "showing_everything": "显示一切"
   },

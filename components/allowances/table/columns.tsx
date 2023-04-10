@@ -74,6 +74,18 @@ export const customFilterFns = {
 
     return results.some((result) => result);
   },
+  spender: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
+    const filterSpenders = filterValues
+      .map((_) => _.split(','))
+      .reduce((all, item) => {
+        return all.concat(item);
+      }, [])
+      .map((c) => c.toLowerCase());
+
+    if (!row.original.spender && filterSpenders.length) return false;
+    const spender = row.original.spender.toLowerCase();
+    return filterSpenders.includes(spender);
+  },
   allowance: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       if (filterValue === 'Unlimited') return row.getValue(columnId) === 'Unlimited';
@@ -126,6 +138,8 @@ export const columns = [
     header: () => <HeaderCell i18nKey="address:headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
     enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.spender,
   }),
   columnHelper.accessor('lastUpdated', {
     id: ColumnId.LAST_UPDATED,

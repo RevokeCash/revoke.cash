@@ -28,6 +28,9 @@
         "token": "Token"
       }
     },
+    "spender": {
+      "label": "Authorized Spender"
+    },
     "label": "Filters",
     "showing_everything": "Showing Everything"
   },
