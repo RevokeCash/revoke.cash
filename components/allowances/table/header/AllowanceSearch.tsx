@@ -33,9 +33,9 @@ const AllowanceSearch = ({ filterByContract }: Props) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="h-9 flex gap-2 items-center w-full max-w-3xl border border-black dark:border-white rounded-lg px-3 text-base sm:text-lg font-medium focus-within:ring-1 focus-within:ring-black dark:focus-within:ring-white"
+      className="flex gap-2 items-center w-full  border border-black dark:border-white rounded-lg px-3 text-base sm:text-lg font-small focus-within:ring-1 focus-within:ring-black dark:focus-within:ring-white"
     >
-      <MagnifyingGlassIcon className="w-6 h-6" />
+      <MagnifyingGlassIcon className="w-5 h-5" />
       <input
         className="grow focus-visible:outline-none address-input bg-transparent"
         placeholder={t('common:allowance_search.title')}
