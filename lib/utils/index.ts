@@ -24,7 +24,9 @@ export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
 };
 
 export const toFloat = (n: BigNumberish, decimals: number = 0): string => {
-  return (Number(n) / 10 ** decimals).toFixed(6).replace(/\.?0+$/, '');
+  const float = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, '');
+  const floatStr = float.startsWith('0.000') ? '< 0.001' : float.slice(0, 5);
+  return floatStr;
 };
 
 export const fromFloat = (floatString: string, decimals: number): string => {
