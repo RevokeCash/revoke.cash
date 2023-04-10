@@ -24,9 +24,16 @@ export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
 };
 
 export const toFloat = (n: BigNumberish, decimals: number = 0): string => {
-  const float = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, '');
-  const floatStr = float.startsWith('0.000') ? '< 0.001' : float.slice(0, 5);
-  return floatStr;
+  const full = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, '');
+
+  const MAX_DISPLAY_DECIMALS = 3;
+  const tooSmallPrefix = `0.${'0'.repeat(MAX_DISPLAY_DECIMALS)}`; // 3 decimals -> '0.000'
+  const tooSmallReplacement = `< ${tooSmallPrefix.replace(/.$/, '1')}`; // 3 decimals -> '< 0.001'
+  const rounded = Number(full)
+    .toFixed(MAX_DISPLAY_DECIMALS)
+    .replace(/\.?0+$/, '');
+
+  return full.startsWith(tooSmallPrefix) ? tooSmallReplacement : rounded;
 };
 
 export const fromFloat = (floatString: string, decimals: number): string => {
