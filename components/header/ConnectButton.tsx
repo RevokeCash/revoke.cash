@@ -2,7 +2,7 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
-import { getWalletIcon } from 'lib/utils/wallet';
+import { getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -70,8 +70,14 @@ const ConnectButton = ({ size, style, className, text }: Props) => {
                     key={connector.id}
                     onClick={() => connectAndRedirect(connector)}
                   >
-                    <Logo src={getWalletIcon(connector.name)} alt={connector.name} size={64} square border />
-                    {connector.name === 'WalletConnectLegacy' ? 'WalletConnect' : connector.name}
+                    <Logo
+                      src={getWalletIcon(getConnectorName(connector))}
+                      alt={getConnectorName(connector)}
+                      size={64}
+                      square
+                      border
+                    />
+                    {getConnectorName(connector)}
                   </Button>
                 ))}
             </div>
