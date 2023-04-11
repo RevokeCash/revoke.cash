@@ -15,15 +15,15 @@ const AllowanceSearchBox = ({ table }: Props) => {
   const [searchValues, setSearchValues] = useState<string[]>([]);
 
   useEffect(() => {
-    const tableFilter = { id: ColumnId.SPENDER, value: searchValues };
-    const tableFilters = searchValues.length > 0 ? [tableFilter] : [];
+    const tableFilter = { id: ColumnId.SPENDER, value: searchValues.filter((value) => value !== '') };
+    const tableFilters = tableFilter.value.length > 0 ? [tableFilter] : [];
     const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
     updateTableFilters(table, tableFilters, ignoreIds);
   }, [searchValues]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const values = event.target.value.trim().split(',');
-    setSearchValues(values.length === 1 && values[0] === '' ? [] : values);
+    setSearchValues(values);
   };
 
   return (
