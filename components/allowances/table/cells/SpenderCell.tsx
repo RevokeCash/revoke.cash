@@ -35,15 +35,18 @@ const SpenderCell = ({ allowance }: Props) => {
   }
 
   return (
-    <div className="flex justify-start gap-1">
-      <WithHoverTooltip tooltip={allowance.spender}>
-        <div className="flex justify-start gap-1">
+    <div className="flex gap-2">
+      <div className="flex flex-col justify-start items-start">
+        <WithHoverTooltip tooltip={allowance.spender}>
           <Href href={explorerUrl} underline="hover" external>
-            {spenderName ?? shortenAddress(allowance.spender, 6)}
+            <div>{spenderName ?? shortenAddress(allowance.spender, 6)}</div>
+            <div className="text-xs text-zinc-400 dark:text-zinc-500">
+              {spenderName ? shortenAddress(allowance.spender, 6) : null}
+            </div>
           </Href>
-          <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
-        </div>
-      </WithHoverTooltip>
+        </WithHoverTooltip>
+      </div>
+      <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
     </div>
   );
 };
