@@ -1,7 +1,8 @@
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
 import Button from 'components/common/Button';
+import SearchBox from 'components/common/SearchBox';
 import Spinner from 'components/common/Spinner';
 import { parseInputAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
@@ -31,17 +32,13 @@ const SearchBar = () => {
   };
 
   return (
-    <form
+    <SearchBox
       onSubmit={handleSubmit}
-      className="h-9 flex gap-2 items-center w-full max-w-3xl border border-black dark:border-white rounded-lg px-3 text-base sm:text-lg font-medium focus-within:ring-1 focus-within:ring-black dark:focus-within:ring-white"
+      onChange={(ev) => setValue(ev.target.value.trim())}
+      value={value}
+      placeholder={t('common:nav.search')}
+      className="w-full max-w-3xl text-base sm:text-lg"
     >
-      <MagnifyingGlassIcon className="w-6 h-6" />
-      <input
-        className="grow focus-visible:outline-none address-input bg-transparent"
-        placeholder={t('common:nav.search')}
-        value={value}
-        onChange={(ev) => setValue(ev.target.value.trim())}
-      />
       {value && validating && <Spinner className="w-4 h-4" />}
       {value && !validating && !isValid && <XMarkIcon className="w-6 h-6 text-red-500" />}
       {value && !validating && isValid && (
@@ -49,7 +46,7 @@ const SearchBar = () => {
           <ArrowRightCircleIcon className="w-6 h-6" />
         </Button>
       )}
-    </form>
+    </SearchBox>
   );
 };
 

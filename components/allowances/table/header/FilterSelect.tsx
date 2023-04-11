@@ -1,11 +1,12 @@
 import { track } from '@amplitude/analytics-browser';
-import { Table } from '@tanstack/react-table';
+import { ColumnFiltersState, Table } from '@tanstack/react-table';
 import Checkbox from 'components/common/Checkbox';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
+import { updateTableFilters } from 'lib/utils/table';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 import { FormatOptionLabelMeta } from 'react-select';
@@ -67,7 +68,8 @@ const FilterSelect = ({ table }: Props) => {
   useEffect(() => {
     if (!selectedFilters) return;
     const tableFilters = generateTableFilters(options, selectedFilters);
-    table.setColumnFilters(() => tableFilters);
+    const ignoreIds = [ColumnId.SPENDER];
+    updateTableFilters(table, tableFilters, ignoreIds);
     track('Updated Filters', { filters: tableFilters });
   }, [selectedFilters]);
 
@@ -155,7 +157,7 @@ const getGroupsWithSelected = (groups: OptionGroup[], selected: Option[]): Optio
   return groupsWithSelected.filter((group) => group.selected.length > 0);
 };
 
-const generateTableFilters = (groups: OptionGroup[], selected: Option[]) => {
+const generateTableFilters = (groups: OptionGroup[], selected: Option[]): ColumnFiltersState => {
   const groupsWithSelected = getGroupsWithSelected(groups, selected);
 
   const tableFilters = groupsWithSelected.map((group) => ({

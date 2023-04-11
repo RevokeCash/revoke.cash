@@ -23,9 +23,6 @@
     "mainnets": "Mainnets",
     "testnets": "Testnets"
   },
-  "allowance_search": {
-    "title": "Search a contract"
-  },
   "color_themes": {
     "dark": "Dark",
     "light": "Light",
@@ -75,7 +72,7 @@
   "nav": {
     "extension": "Extension",
     "faq": "FAQ",
-    "search": "Search accounts by address or domain"
+    "search": "Search Accounts by Address or Domain"
   },
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",

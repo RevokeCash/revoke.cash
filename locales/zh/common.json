@@ -23,9 +23,6 @@
     "mainnets": "主网",
     "testnets": "测试网"
   },
-  "allowance_search": {
-    "title": "搜索合同"
-  },
   "color_themes": {
     "dark": "暗色",
     "light": "明亮",

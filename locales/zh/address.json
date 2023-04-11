@@ -50,6 +50,9 @@
     "title": "Revoke.cash-检查并撤销 {{address}} 的授权"
   },
   "no_allowances": "没有授权",
+  "search": {
+    "spender": "Search by Spender Address"
+  },
   "sorting": {
     "columns": {
       "allowance": "授权",

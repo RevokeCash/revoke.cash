@@ -50,6 +50,9 @@
     "title": "Revoke.cash: Examina y revoca las autorizaciones para {{address}}"
   },
   "no_allowances": "Sin autorizaciones",
+  "search": {
+    "spender": "Search by Spender Address"
+  },
   "sorting": {
     "columns": {
       "allowance": "Autorización",
