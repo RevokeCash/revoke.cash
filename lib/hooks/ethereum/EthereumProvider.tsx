@@ -53,7 +53,7 @@ class InjectedConnectorNoDisconnectListener extends InjectedConnector {
 export const connectors = [
   new SafeConnector({
     chains: wagmiChains,
-    options: { allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/, /wallet\.ambire\.com(\/.*)?$/], debug: false },
+    options: { debug: false },
   }),
   new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
   new WalletConnectLegacyConnector({ chains: wagmiChains, options: { qrcode: true } }),
