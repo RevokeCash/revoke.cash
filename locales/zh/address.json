@@ -51,12 +51,13 @@
   },
   "no_allowances": "没有授权",
   "search": {
-    "spender": "Search by Spender Address"
+    "spender": "Search by Authorized Spender Address"
   },
   "sorting": {
     "columns": {
       "allowance": "授权",
       "asset_name": "资产名称",
+      "authorized_spender": "Authorized Spender",
       "last_updated": "上次更新"
     },
     "fns": {

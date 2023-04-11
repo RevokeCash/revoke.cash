@@ -22,7 +22,7 @@ export enum ColumnId {
   ASSET_TYPE = 'Asset Type',
   BALANCE = 'Balance',
   ALLOWANCE = 'Allowance',
-  SPENDER = 'Approved Spender',
+  SPENDER = 'Authorized Spender',
   LAST_UPDATED = 'Last Updated',
   ACTIONS = 'Actions',
 }
