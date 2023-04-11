@@ -50,6 +50,9 @@
     "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
   },
   "no_allowances": "No allowances found",
+  "search": {
+    "spender": "Search by Spender Address"
+  },
   "sorting": {
     "columns": {
       "allowance": "Allowance",

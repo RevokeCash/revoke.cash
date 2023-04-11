@@ -1,4 +1,4 @@
-import { createColumnHelper, Row, RowData, sortingFns } from '@tanstack/react-table';
+import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
 import { AllowanceData } from 'lib/interfaces';
 import { toFloat } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
@@ -85,6 +85,13 @@ export const customFilterFns = {
 
     return results.some((result) => result);
   },
+  spender: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
+    const results = filterValues.map((filterValue) => {
+      return filterFns.includesString(row, columnId, filterValue, () => {});
+    });
+
+    return results.some((result) => result);
+  },
 };
 
 const columnHelper = createColumnHelper<AllowanceData>();
@@ -126,6 +133,8 @@ export const columns = [
     header: () => <HeaderCell i18nKey="address:headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
     enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.spender,
   }),
   columnHelper.accessor('lastUpdated', {
     id: ColumnId.LAST_UPDATED,

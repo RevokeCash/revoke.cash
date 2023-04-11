@@ -23,9 +23,6 @@
     "mainnets": "Redes principales",
     "testnets": "Redes de prueba"
   },
-  "allowance_search": {
-    "title": "Buscar un contrato"
-  },
   "color_themes": {
     "dark": "Oscuro",
     "light": "Claro",
@@ -75,7 +72,7 @@
   "nav": {
     "extension": "Extensión",
     "faq": "FAQ",
-    "search": "Buscar cuentas por dirección o dominio"
+    "search": "Buscar Cuentas por Dirección o Dominio"
   },
   "toasts": {
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
