@@ -32,7 +32,7 @@ const AllowanceSearchBox = ({ table }: Props) => {
   }, [router.query]);
 
   useEffect(() => {
-    const tableFilter = { id: ColumnId.SPENDER, value: searchValues.filter(Boolean) };
+    const tableFilter = { id: ColumnId.SPENDER, value: searchValues.filter(Boolean).map((value) => value.trim()) };
     const tableFilters = tableFilter.value.length > 0 ? [tableFilter] : [];
     const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
     updateTableFilters(table, tableFilters, ignoreIds);
