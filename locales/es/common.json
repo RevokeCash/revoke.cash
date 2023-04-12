@@ -1,6 +1,7 @@
 {
   "buttons": {
     "cancel": "Cancelar",
+    "clear_filters": "Clear Filters",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "disconnect": "Desconectar",

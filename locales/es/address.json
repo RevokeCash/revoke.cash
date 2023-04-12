@@ -2,6 +2,8 @@
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
     "none": "Sin autorizaciones",
+    "none_found": "Sin autorizaciones",
+    "none_found_filtered": "No allowances found for the selected filters",
     "token_id": "Token #{{tokenId}}",
     "unlimited": "Ilimitada"
   },
@@ -49,7 +51,6 @@
     "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
     "title": "Revoke.cash: Examina y revoca las autorizaciones para {{address}}"
   },
-  "no_allowances": "Sin autorizaciones",
   "search": {
     "spender": "Search by Authorized Spender Address"
   },
@@ -57,7 +58,7 @@
     "columns": {
       "allowance": "Autorización",
       "asset_name": "Nombre del Activo",
-      "authorized_spender": "Authorized Spender",
+      "authorized_spender": "Gastador Autorizado",
       "last_updated": "Última Actualización"
     },
     "fns": {

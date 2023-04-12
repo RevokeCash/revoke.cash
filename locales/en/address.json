@@ -2,6 +2,8 @@
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
     "none": "No allowances",
+    "none_found": "No allowances found",
+    "none_found_filtered": "No allowances found for the selected filters",
     "token_id": "Token #{{tokenId}}",
     "unlimited": "Unlimited"
   },
@@ -49,7 +51,6 @@
     "description": "Take back control of your wallet by revoking allowances you granted in the past.",
     "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
   },
-  "no_allowances": "No allowances found",
   "search": {
     "spender": "Search by Authorized Spender Address"
   },

@@ -2,6 +2,8 @@
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
     "none": "没有授权",
+    "none_found": "没有授权",
+    "none_found_filtered": "No allowances found for the selected filters",
     "token_id": "代币 #{{tokenId}}",
     "unlimited": "无限"
   },
@@ -49,7 +51,6 @@
     "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
     "title": "Revoke.cash-检查并撤销 {{address}} 的授权"
   },
-  "no_allowances": "没有授权",
   "search": {
     "spender": "Search by Authorized Spender Address"
   },
@@ -57,7 +58,7 @@
     "columns": {
       "allowance": "授权",
       "asset_name": "资产名称",
-      "authorized_spender": "Authorized Spender",
+      "authorized_spender": "已经授权的项目",
       "last_updated": "上次更新"
     },
     "fns": {

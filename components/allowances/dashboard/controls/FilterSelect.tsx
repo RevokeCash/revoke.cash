@@ -73,6 +73,11 @@ const FilterSelect = ({ table }: Props) => {
     track('Updated Filters', { filters: tableFilters });
   }, [selectedFilters]);
 
+  // If filters are cleared externally then we update the search box to match that
+  useEffect(() => {
+    if (table.getState().columnFilters.length === 0 && selectedFilters.length > 0) setSelectedFilters([]);
+  }, [table.getState()]);
+
   const displayOption = (option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {
     return (
       <div className="flex items-center gap-1">

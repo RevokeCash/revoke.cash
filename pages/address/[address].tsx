@@ -1,5 +1,5 @@
 import AddressHeader from 'components/address/AddressHeader';
-import AllowanceTable from 'components/allowances/table/AllowanceTable';
+import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
 import LogIn from 'components/common/LogIn';
 import PublicLayout from 'layouts/PublicLayout';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
@@ -29,7 +29,7 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
         <AddressPageContextProvider address={address}>
           <AddressHeader />
           <LogIn showSpinner>
-            <AllowanceTable />
+            <AllowanceDashboard />
           </LogIn>
         </AddressPageContextProvider>
       </PublicLayout>

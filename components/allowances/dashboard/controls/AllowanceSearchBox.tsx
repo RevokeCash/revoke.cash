@@ -38,6 +38,11 @@ const AllowanceSearchBox = ({ table }: Props) => {
     updateTableFilters(table, tableFilters, ignoreIds);
   }, [searchValues]);
 
+  // If filters are cleared externally then we update the search box to match that
+  useEffect(() => {
+    if (table.getState().columnFilters.length === 0 && searchValues.length > 0) setSearchValues([]);
+  }, [table.getState()]);
+
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const values = event.target.value.trim().split(',');
     setSearchValues(values);

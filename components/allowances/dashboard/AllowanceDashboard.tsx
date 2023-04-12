@@ -1,11 +1,11 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ColumnId, columns } from 'components/allowances/table/columns';
+import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
-import AllowanceTableBody from './AllowanceTableBody';
-import AllowanceTableHeader from './header/AllowanceTableHeader';
+import AllowanceTableControls from './controls/AllowanceTableControls';
+import AllowanceTable from './table/AllowanceTable';
 
-const AllowanceTable = () => {
+const AllowanceDashboard = () => {
   const { allowances, isLoading, error, onUpdate } = useAddressAllowances();
 
   const table = useReactTable({
@@ -28,10 +28,10 @@ const AllowanceTable = () => {
 
   return (
     <div className="flex flex-col justify-start mx-auto gap-2">
-      <AllowanceTableHeader table={table} />
-      <AllowanceTableBody table={table} loading={isLoading} error={error} allowances={allowances} />
+      <AllowanceTableControls table={table} />
+      <AllowanceTable table={table} loading={isLoading} error={error} allowances={allowances} />
     </div>
   );
 };
 
-export default AllowanceTable;
+export default AllowanceDashboard;
