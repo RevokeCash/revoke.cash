@@ -10,9 +10,11 @@ interface Props {
 
 const AllowanceTableHeader = ({ table }: Props) => {
   return (
-    <div className="flex justify-start gap-2 flex-col lg:flex-row">
-      <SortSelect table={table} />
-      <FilterSelect table={table} />
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-start gap-2 flex-col lg:flex-row">
+        <SortSelect table={table} />
+        <FilterSelect table={table} />
+      </div>
       <AllowanceSearchBox table={table} />
     </div>
   );
