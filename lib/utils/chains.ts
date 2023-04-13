@@ -20,13 +20,13 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
   2109, // Exosama
-  18159, // Proof of Memes
   324, // zkSync Era
   280, // zkSync Era Goerli
   84531, // Base Goerli
   1101, // Polygon zkEVM
   1442, // Polygon zkEVM Testnet
   1116, // CORE
+  ChainId.KCCMainnet,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -50,6 +50,8 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   // ChainId.GatherMainnetNetwork,
   ChainId.GatherTestnetNetwork,
   167004, // Taiko Alpha Testnet
+  1071, // Shimmer Testnet
+  248, // Oasys Mainnet
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -113,6 +115,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.AuroraMainnet,
   ChainId.Gnosis,
   ChainId.RSKMainnet,
+  ChainId.KCCMainnet,
   ChainId.MetisAndromedaMainnet,
   ChainId.Astar,
   ChainId.IoTeXNetworkMainnet,
@@ -134,9 +137,9 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FlareMainnet,
   ChainId.Shiden,
   ChainId.EthereumClassicMainnet,
+  248, // Oasys Mainnet
   ChainId.Palm,
   2109, // Exosama
-  18159, // Proof of Memes
   2611, // Redlight
   // ChainId.GatherMainnetNetwork,
 ];
@@ -164,6 +167,7 @@ export const CHAIN_SELECT_TESTNETS = [
   1662, // Horizen Yuma Testnet
   ChainId.PulseChainTestnetv3,
   ChainId.GatherTestnetNetwork,
+  1071, // Shimmer Testnet
 ];
 
 export const isSupportedChain = (chainId: number): boolean => {
@@ -249,7 +253,6 @@ export const getChainName = (chainId: number): string => {
     [ChainId.CoinExSmartChainMainnet]: 'CoinEx Smart Chain',
     [ChainId.CoinExSmartChainTestnet]: 'CoinEx Testnet',
     [2109]: 'Exosama',
-    [18159]: 'Proof of Memes',
     [ChainId.FlareMainnet]: 'Flare',
     [ChainId['SongbirdCanary-Network']]: 'Songbird',
     [ChainId.BobaNetwork]: 'Boba',
@@ -267,6 +270,9 @@ export const getChainName = (chainId: number): string => {
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
     [167004]: 'Taiko Alpha',
     [1116]: 'CORE',
+    [ChainId.KCCMainnet]: 'KCC',
+    [1071]: 'Shimmer Testnet',
+    [248]: 'Oasys',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -295,7 +301,6 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [2000]: 'https://explorer.dogechain.dog',
     [568]: 'https://explorer-testnet.dogechain.dog',
     [2109]: 'https://explorer.exosama.com',
-    [18159]: 'https://memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network',
     [1662]: 'https://yuma-explorer.horizen.io',
@@ -310,6 +315,8 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [2611]: 'https://redlightscan.finance',
     [167004]: 'https://explorer.a2.taiko.xyz',
     [1116]: 'https://scan.coredao.org',
+    [1071]: 'https://json-rpc.evm.testnet.shimmer.network',
+    [248]: 'https://scan.oasys.games',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -342,7 +349,6 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.OptimisticEthereumTestnetGoerli]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [2109]: 'https://rpc.exosama.com',
-    [18159]: 'https://mainnet-rpc.memescan.io',
     [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-api.flare.network/ext/C/rpc',
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
@@ -360,6 +366,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [2611]: 'https://dataseed2.redlightscan.finance',
     [167004]: 'https://rpc.a2.taiko.xyz',
     [1116]: 'https://rpc.coredao.org',
+    [1071]: 'https://json-rpc.evm.testnet.shimmer.network',
+    [248]: 'https://rpc.mainnet.oasys.games',
     ...RPC_OVERRIDES,
   };
 
@@ -453,7 +461,6 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.CoinExSmartChainMainnet]: '/assets/images/vendor/chains/coinex.svg',
     [ChainId.CoinExSmartChainTestnet]: '/assets/images/vendor/chains/coinex.svg',
     [2109]: '/assets/images/vendor/chains/exosama.png',
-    [18159]: '/assets/images/vendor/chains/proof-of-memes.svg',
     [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.svg',
     [ChainId['SongbirdCanary-Network']]: '/assets/images/vendor/chains/songbird.svg',
     [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpeg',
@@ -471,6 +478,9 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [167004]: '/assets/images/vendor/chains/taiko.svg',
     [1116]: '/assets/images/vendor/chains/core.png',
+    [ChainId.KCCMainnet]: '/assets/images/vendor/chains/kcc.svg',
+    [248]: '/assets/images/vendor/chains/oasys.png',
+    [1071]: '/assets/images/vendor/chains/shimmer.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -484,10 +494,11 @@ export const getChainNativeToken = (chainId: number): string => {
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
     [2109]: 'SAMA',
-    [18159]: 'POM',
     [1662]: 'TZEN',
     [2611]: 'REDLC',
     [1116]: 'CORE',
+    [1071]: 'SMR',
+    [248]: 'OAS',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -530,12 +541,14 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     CLO: '5000',
     CET: '250',
     SAMA: '500',
-    POM: '2500',
     SGB: '1000',
     FLR: '500',
     REDLC: '100',
     GTH: '2500',
     CORE: '10',
+    KCS: '2',
+    SMR: '250',
+    OAS: '100',
   };
 
   return mapping[nativeToken] ?? '1';
@@ -593,6 +606,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
     [167004]: 'https://explorer.a2.taiko.xyz/api',
+    [1071]: 'https://explorer.evm.testnet.shimmer.network/api',
+    [248]: 'https://scan.oasys.games/api',
   };
 
   return apiUrls[chainId];
