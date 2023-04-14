@@ -31,8 +31,8 @@ export const AddressPageContextProvider = ({ children, address }: Props) => {
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
   const queryChainId = parseInt(router.query.chainId as string);
-  const defaultChainId = queryChainId || chain?.id || 1;
-  const [selectedChainId, selectChain] = useState<number>(isSupportedChain(defaultChainId) ? defaultChainId : 1);
+  const defaultChainId = isSupportedChain(queryChainId) ? queryChainId : isSupportedChain(chain?.id) ? chain?.id : 1;
+  const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 
   useEffect(() => {
     router.replace({ query: { ...router.query, chainId: selectedChainId } });
