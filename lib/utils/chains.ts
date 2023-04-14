@@ -108,37 +108,36 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FantomOpera,
   ChainId.CronosMainnetBeta,
   ChainId.KavaEVM,
+  ChainId.Gnosis,
+  7700, // Canto
   ChainId.CeloMainnet,
+  ChainId.RSKMainnet,
+  ChainId.Astar,
   ChainId.Moonbeam,
   ChainId.Moonriver,
-  7700, // Canto
-  ChainId.AuroraMainnet,
-  ChainId.Gnosis,
-  ChainId.RSKMainnet,
   ChainId.KCCMainnet,
   ChainId.MetisAndromedaMainnet,
-  ChainId.Astar,
+  ChainId.AuroraMainnet,
   ChainId.IoTeXNetworkMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.BitTorrentChainMainnet,
   1116, // CORE
-  // 2000, // Dogechain
-  ChainId.HarmonyMainnetShard0,
-  ChainId.GodwokenMainnet,
-  ChainId.SmartBitcoinCash,
   ChainId['SongbirdCanary-Network'],
+  ChainId.SmartBitcoinCash,
+  ChainId.HarmonyMainnetShard0,
   ChainId.BobaNetwork,
   ChainId.Evmos,
+  ChainId.CoinExSmartChainMainnet,
   ChainId.FuseMainnet,
   ChainId.SyscoinMainnet,
-  ChainId.CallistoMainnet,
   ChainId.NahmiiMainnet,
-  ChainId.CoinExSmartChainMainnet,
+  ChainId.GodwokenMainnet,
+  ChainId.CallistoMainnet,
   ChainId.FlareMainnet,
   ChainId.Shiden,
   ChainId.EthereumClassicMainnet,
-  248, // Oasys Mainnet
   ChainId.Palm,
+  248, // Oasys Mainnet
   2109, // Exosama
   2611, // Redlight
   // ChainId.GatherMainnetNetwork,
