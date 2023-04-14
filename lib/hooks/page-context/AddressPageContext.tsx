@@ -2,7 +2,7 @@ import { providers } from 'ethers';
 import { LogsProvider } from 'lib/interfaces';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { useNetwork, useProvider } from 'wagmi';
 import { useAllowances } from '../ethereum/useAllowances';
 import { useEvents } from '../ethereum/useEvents';
@@ -33,6 +33,10 @@ export const AddressPageContextProvider = ({ children, address }: Props) => {
   const queryChainId = parseInt(router.query.chainId as string);
   const defaultChainId = queryChainId || chain?.id || 1;
   const [selectedChainId, selectChain] = useState<number>(isSupportedChain(defaultChainId) ? defaultChainId : 1);
+
+  useEffect(() => {
+    router.replace({ query: { ...router.query, chainId: selectedChainId } });
+  }, [selectedChainId]);
 
   const eventContext = useEvents(address, selectedChainId);
   const allowanceContext = useAllowances(address, eventContext?.events, selectedChainId);
