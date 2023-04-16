@@ -52,6 +52,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   167004, // Taiko Alpha Testnet
   1071, // Shimmer Testnet
   248, // Oasys Mainnet
+  119, // ENULS
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -76,7 +77,6 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
 
 export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.HarmonyMainnetShard0,
-  ChainId.IoTeXNetworkMainnet,
   ChainId.Evmos,
   ChainId.GodwokenMainnet,
   ChainId.BobaNetwork,
@@ -118,7 +118,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.KCCMainnet,
   ChainId.MetisAndromedaMainnet,
   ChainId.AuroraMainnet,
-  ChainId.IoTeXNetworkMainnet,
   ChainId.EmeraldParatimeMainnet,
   ChainId.BitTorrentChainMainnet,
   1116, // CORE
@@ -141,6 +140,7 @@ export const CHAIN_SELECT_MAINNETS = [
   2109, // Exosama
   2611, // Redlight
   // ChainId.GatherMainnetNetwork,
+  119, // ENULS
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -272,6 +272,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.KCCMainnet]: 'KCC',
     [1071]: 'Shimmer Testnet',
     [248]: 'Oasys',
+    [119]: 'ENULS',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
@@ -316,6 +317,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [1116]: 'https://scan.coredao.org',
     [1071]: 'https://json-rpc.evm.testnet.shimmer.network',
     [248]: 'https://scan.oasys.games',
+    [119]: 'https://evmscan.nuls.io',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -367,6 +369,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [1116]: 'https://rpc.coredao.org',
     [1071]: 'https://json-rpc.evm.testnet.shimmer.network',
     [248]: 'https://rpc.mainnet.oasys.games',
+    [119]: 'https://evmapi.nuls.io',
     ...RPC_OVERRIDES,
   };
 
@@ -480,6 +483,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.KCCMainnet]: '/assets/images/vendor/chains/kcc.svg',
     [248]: '/assets/images/vendor/chains/oasys.png',
     [1071]: '/assets/images/vendor/chains/shimmer.svg',
+    [119]: '/assets/images/vendor/chains/enuls.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -498,6 +502,7 @@ export const getChainNativeToken = (chainId: number): string => {
     [1116]: 'CORE',
     [1071]: 'SMR',
     [248]: 'OAS',
+    [119]: 'NULS',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -548,6 +553,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     KCS: '2',
     SMR: '250',
     OAS: '100',
+    NULS: '50',
   };
 
   return mapping[nativeToken] ?? '1';
@@ -607,6 +613,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [167004]: 'https://explorer.a2.taiko.xyz/api',
     [1071]: 'https://explorer.evm.testnet.shimmer.network/api',
     [248]: 'https://scan.oasys.games/api',
+    [119]: 'https://evmscan.nuls.io/api',
   };
 
   return apiUrls[chainId];
