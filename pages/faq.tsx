@@ -8,6 +8,7 @@ import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 
 const FaqPage: NextPage = () => {
   const { t } = useTranslation();
@@ -32,14 +33,19 @@ const FaqPage: NextPage = () => {
           <FaqItem question={t('faq:questions.sweeper_bot.question')}>
             <Trans i18nKey="faq:questions.sweeper_bot.answer" />
           </FaqItem>
-          {/* <FaqItem question={t('faq:questions.stolen_through_allowances.question')}>
-            <div className="flex flex-col items-center">
+          <FaqItem question={t('faq:questions.stolen_through_allowances.question')}>
+            <div className="flex flex-col items-center gap-2">
               <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
               <div className="flex border border-black">
-                <Image src="/assets/images/how-did-i-get-scammed-light.png" width={1024} height={977} />
+                <Image
+                  src="/assets/images/how-did-i-get-scammed-light.png"
+                  alt="How Did I Get Scammed?"
+                  width="1024"
+                  height="977"
+                />
               </div>
             </div>
-          </FaqItem> */}
+          </FaqItem>
           <FaqItem question={t('faq:questions.hardware_wallets.question')}>
             <Trans i18nKey="faq:questions.hardware_wallets.answer" components={[<span className="italic" />]} />
           </FaqItem>
