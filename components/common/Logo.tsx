@@ -16,7 +16,7 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
   const [error, setError] = useState(false);
 
   if (error || !src) {
-    return <PlaceholderIcon size={size} border={border} square={square} />;
+    return <PlaceholderIcon size={size ?? 24} border={border} square={square} />;
   }
 
   const classes = twMerge(

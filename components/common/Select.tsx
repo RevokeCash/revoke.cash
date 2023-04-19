@@ -31,7 +31,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
     <ReactSelect
       {...props}
       className={twMerge(props.className)}
-      components={{ IndicatorSeparator: null, ClearIndicator: null, Option, ...props.components }}
+      components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
       classNames={{
         control: (state) =>
           twMerge(
@@ -123,6 +123,6 @@ const removeSpacing = (styles: any) => ({
 });
 
 // Make sure that the selected option is not highlighted
-const Option = (props: OptionProps) => {
+const Option = <O, I extends boolean, G extends GroupBase<O>>(props: OptionProps<O, I, G>) => {
   return components.Option({ ...props, isSelected: false });
 };

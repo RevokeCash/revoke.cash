@@ -198,7 +198,7 @@ export const isNodeSupportedChain = (chainId: number): boolean => {
 };
 
 export const getChainName = (chainId: number): string => {
-  const overrides = {
+  const overrides: Record<number, string> = {
     [ChainId.EthereumMainnet]: 'Ethereum',
     [ChainId.BinanceSmartChainMainnet]: 'Binance Smart Chain',
     [ChainId['AvalancheC-Chain']]: 'Avalanche',
@@ -275,11 +275,11 @@ export const getChainName = (chainId: number): string => {
     [119]: 'ENULS',
   };
 
-  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain with ID ${chainId}`;
+  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
 };
 
 export const getChainExplorerUrl = (chainId: number): string | undefined => {
-  const overrides = {
+  const overrides: Record<number, string> = {
     [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
     [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
@@ -330,7 +330,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
   // These are not in the eth-chains package, so manually got from chainlist.org
-  const overrides = {
+  const overrides: Record<number, string> = {
     [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
