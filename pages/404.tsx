@@ -2,12 +2,14 @@ import { GlobeEuropeAfricaIcon, QuestionMarkCircleIcon, UserCircleIcon } from '@
 import Href from 'components/common/Href';
 import NotFoundLink from 'components/common/NotFoundLink';
 import ContentPageLayout from 'layouts/ContentPageLayout';
+import { useMounted } from 'lib/hooks/useMounted';
 import useTranslation from 'next-translate/useTranslation';
 import { useAccount } from 'wagmi';
 
 const Error404 = () => {
   const { t } = useTranslation();
   const { address: account } = useAccount();
+  const isMounted = useMounted();
 
   return (
     <ContentPageLayout>
@@ -34,7 +36,7 @@ const Error404 = () => {
               description={t('common:errors.404.suggested_pages.extension.description')}
               icon={<GlobeEuropeAfricaIcon className="h-6 w-6" />}
             />
-            {account && (
+            {isMounted && account && (
               <NotFoundLink
                 title={t('common:errors.404.suggested_pages.your_allowances.title')}
                 href={`/address/${account}`}
