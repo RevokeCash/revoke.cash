@@ -1,6 +1,5 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import LogIn from 'components/common/LogIn';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
@@ -44,7 +43,6 @@ const App = ({ Component, pageProps }: AppProps) => {
       <QueryProvider>
         <EthereumProvider>
           <ColorThemeProvider>
-            <LogIn />
             <Component {...pageProps} />
             <ToastContainer
               className="text-center"

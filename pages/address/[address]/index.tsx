@@ -1,5 +1,4 @@
 import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
-import LogIn from 'components/common/LogIn';
 import AddressPageLayout from 'layouts/AddressPageLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import { parseInputAddress } from 'lib/utils';
@@ -10,7 +9,6 @@ import useTranslation from 'next-translate/useTranslation';
 interface Props {
   address: string;
   ssrDomainName?: string;
-  openSeaProxyAddress?: string;
 }
 
 const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
@@ -24,9 +22,7 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
         description={t('address:meta.description')}
       />
       <AddressPageLayout address={address}>
-        <LogIn showSpinner>
-          <AllowanceDashboard />
-        </LogIn>
+        <AllowanceDashboard />
       </AddressPageLayout>
     </>
   );
