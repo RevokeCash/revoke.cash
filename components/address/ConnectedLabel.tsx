@@ -13,11 +13,12 @@ const ConnectedLabel = ({ address }: Props) => {
   const { t } = useTranslation();
   const { address: account } = useAccount();
 
-  if (!isMounted) return null;
-
   const classes = twMerge(
     address === account ? 'bg-green-500 text-white' : 'bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100'
   );
+
+  // Add placeholder label to prevent layout shift
+  if (!isMounted) return <Label className="bg-transparent">&nbsp;</Label>;
 
   return (
     <Label className={classes}>

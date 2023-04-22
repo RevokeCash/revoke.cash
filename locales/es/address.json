@@ -51,6 +51,11 @@
     "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
     "title": "Revoke.cash: Examina y revoca las autorizaciones para {{address}}"
   },
+  "navigation": {
+    "allowances": "Autorizaciones",
+    "history": "History",
+    "more": "More"
+  },
   "search": {
     "spender": "Search by Authorized Spender Address"
   },

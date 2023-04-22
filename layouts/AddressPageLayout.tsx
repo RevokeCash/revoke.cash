@@ -7,7 +7,7 @@ interface Props {
   address: string;
 }
 
-// TODO: This will become less wasteful in terms of resources when we switch to Next.js App Directory (nested layouts)
+// TODO: This will become better when we switch to Next.js App Directory (nested layouts)
 const AddressPageLayout = ({ children, address }: Props) => {
   return (
     <PublicLayout>

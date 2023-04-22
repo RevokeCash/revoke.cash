@@ -9,6 +9,7 @@ import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
 import ConnectedLabel from './ConnectedLabel';
+import AddressNavigation from './navigation/AddressNavigation';
 
 const AddressHeader = () => {
   const isMounted = useMounted();
@@ -23,25 +24,30 @@ const AddressHeader = () => {
       readProvider.network ? readProvider.getBalance(address).then((balance) => balance.toString()) : null,
   });
 
-  if (!isMounted) return null;
-
   return (
-    <div className="mb-2 flex flex-col sm:flex-row justify-between items-center gap-2 border border-black dark:border-white rounded-lg px-4 py-3">
-      <div className="flex flex-col gap-2 items-center sm:items-start">
-        <AddressDisplay address={address} domainName={domainName} className="text-2xl font-bold" />
-        <div className="flex flex-col sm:flex-row items-center gap-2">
-          <div className="flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
-            <BalanceDisplay balance={balance} />
-            <div className="leading-none">&bull;</div>
-            <AddressDisplay address={address} withCopyButton withTooltip />
+    <div className="flex flex-col gap-2 mb-2 border border-black dark:border-white rounded-lg px-4 pt-3">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div className="flex flex-col gap-2 items-center sm:items-start">
+          <AddressDisplay
+            address={address}
+            domainName={isMounted ? domainName : '\xa0'}
+            className="text-2xl font-bold"
+          />
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <div className="flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
+              <BalanceDisplay balance={balance} />
+              <div className="leading-none">&bull;</div>
+              <AddressDisplay address={address} withCopyButton withTooltip />
+            </div>
+            <ConnectedLabel address={address} />
           </div>
-          <ConnectedLabel address={address} />
+        </div>
+        <div className="flex items-center gap-6">
+          <AddressSocialShareButtons address={address} />
+          <ChainSelect selected={selectedChainId} onSelect={selectChain} />
         </div>
       </div>
-      <div className="flex items-center gap-6">
-        <AddressSocialShareButtons address={address} />
-        <ChainSelect selected={selectedChainId} onSelect={selectChain} />
-      </div>
+      <AddressNavigation />
     </div>
   );
 };
