@@ -81,12 +81,16 @@ const Extension: NextPage = () => {
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <DownloadButton href={CHROME_EXTENSION_URL}>
-              <Logo src="/assets/images/vendor/chrome.png" alt="Chrome Logo" />
-              <Logo src="/assets/images/vendor/brave.png" alt="Brave Logo" />
-              <Logo src="/assets/images/vendor/edge.png" alt="Edge Logo" />
+              <Logo src="/assets/images/vendor/chrome.svg" alt="Chrome Logo" className="rounded-none bg-transparent" />
+              <Logo src="/assets/images/vendor/brave.svg" alt="Brave Logo" className="rounded-none bg-transparent" />
+              <Logo src="/assets/images/vendor/edge.svg" alt="Edge Logo" className="rounded-none bg-transparent" />
             </DownloadButton>
             <DownloadButton href={FIREFOX_EXTENSION_URL}>
-              <Logo src="/assets/images/vendor/firefox.png" alt="Firefox Logo" />
+              <Logo
+                src="/assets/images/vendor/firefox.svg"
+                alt="Firefox Logo"
+                className="rounded-none bg-transparent"
+              />
             </DownloadButton>
           </div>
         </div>
