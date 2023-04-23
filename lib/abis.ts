@@ -1,4 +1,4 @@
-import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
+import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20Permit.json';
 import ERC721MetadataArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 
 export const ERC20 = ERC20Artifact.abi;
