@@ -10,6 +10,7 @@ export interface BaseTokenData {
   icon?: string;
   decimals?: number;
   totalSupply?: string;
+  supportsPermit?: boolean;
 }
 
 export interface BaseAllowanceData {

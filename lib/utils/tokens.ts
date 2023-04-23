@@ -1,8 +1,8 @@
 import type { Provider } from '@ethersproject/abstract-provider';
-import { Contract, utils } from 'ethers';
+import { BigNumber, Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
-import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
+import { ADDRESS_ZERO_PADDED, DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import { TOKEN_MAPPING } from 'lib/data/token-mapping';
 import type { AllowanceData, BaseTokenData, Log } from 'lib/interfaces';
 import { toFloat } from '.';
@@ -12,10 +12,9 @@ import { convertString, unpackResult, withFallback } from './promises';
 export const isSpamToken = (allowance: AllowanceData) => {
   const includesHttp = /https?:\/\//i.test(allowance.symbol);
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
-  const includesTld =
-    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i.test(
-      allowance.symbol
-    );
+  const tldRegex =
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i;
+  const includesTld = tldRegex.test(allowance.symbol);
   return includesHttp || includesTld || spamTokens.includes(allowance.contract.address);
 };
 
@@ -37,17 +36,18 @@ export const getErc20TokenData = async (contract: Contract, owner: string, chain
   const tokenData = TOKEN_MAPPING[chainId]?.[utils.getAddress(contract.address)];
   const icon = tokenData?.logoURI;
 
-  const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
+  const [totalSupplyBN, balance, symbol, decimals, supportsPermit] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
     convertString(unpackResult(contract.functions.balanceOf(owner))),
     // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
     tokenData?.symbol ?? withFallback(unpackResult(contract.functions.symbol()), contract.address),
     tokenData?.decimals ?? unpackResult(contract.functions.decimals()),
+    hasSupportForPermit(contract),
     throwIfNotErc20(contract),
   ]);
 
   const totalSupply = totalSupplyBN.toString();
-  return { contract, chainId, symbol, owner, decimals, icon, totalSupply, balance };
+  return { contract, chainId, symbol, owner, decimals, icon, totalSupply, balance, supportsPermit };
 };
 
 export const getErc721TokenData = async (
@@ -150,4 +150,20 @@ const getTokenInterface = (event: Log): Interface | undefined => {
 
 export const isErc721Contract = (contract: Contract) => {
   return contract.interface.events['ApprovalForAll(address,address,bool)'] !== undefined;
+};
+
+export const hasSupportForPermit = async (contract: Contract) => {
+  try {
+    const [nonce, separator] = await Promise.all([
+      unpackResult(contract.functions.nonces(DUMMY_ADDRESS)),
+      unpackResult(contract.functions.DOMAIN_SEPARATOR()),
+    ]);
+
+    if (nonce === undefined || separator === undefined) return false;
+
+    // We expect the nonce to be 0 (for DUMMY_ADDRESS) and the domain separator to be non-zero
+    return BigNumber.from(nonce).isZero() && separator !== '0x' && separator !== ADDRESS_ZERO_PADDED;
+  } catch {
+    return false;
+  }
 };
