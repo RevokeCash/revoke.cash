@@ -6,7 +6,7 @@ import { useApiSession } from '../useApiSession';
 import { useLogsProvider } from './useLogsProvider';
 
 export const useLogs = (name: string, chainId: number, filter: Filter) => {
-  const { isLoggedIn } = useApiSession();
+  const { isLoggedIn, loggingIn } = useApiSession();
 
   const logsProvider = useLogsProvider({ chainId });
 
@@ -27,5 +27,5 @@ export const useLogs = (name: string, chainId: number, filter: Filter) => {
     if (result.data) console.log(`${name} events`, result.data);
   }, [result.data]);
 
-  return result;
+  return { ...result, isLoading: result.isLoading || loggingIn };
 };
