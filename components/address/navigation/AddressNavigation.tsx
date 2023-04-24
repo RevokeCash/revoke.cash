@@ -8,13 +8,13 @@ const AddressNavigation = () => {
   const { t } = useTranslation();
 
   const basePath = `/address/${router.query.address}`;
-  const morePath = `${basePath}/more`;
+  const signaturesPath = `${basePath}/signatures`;
 
   return (
     <div className="flex overflow-x-scroll overflow-y-hidden w-full justify-center sm:justify-start">
       <nav className="flex gap-4">
         <AddressNavigationTab name={t('address:navigation.allowances')} href={basePath} />
-        <AddressNavigationTab name={t('address:navigation.more')} href={morePath} />
+        <AddressNavigationTab name={t('address:navigation.signatures')} href={signaturesPath} />
       </nav>
     </div>
   );

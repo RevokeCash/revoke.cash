@@ -1,4 +1,4 @@
-import MoreDashboard from 'components/more/MoreDashboard';
+import SignaturesDashboard from 'components/signatures/SignaturesDashboard';
 import AddressPageLayout from 'layouts/AddressPageLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import { parseInputAddress } from 'lib/utils';
@@ -11,7 +11,7 @@ interface Props {
   ssrDomainName?: string;
 }
 
-const AddressMorePage: NextPage<Props> = ({ address, ssrDomainName }) => {
+const AddressSignaturesPage: NextPage<Props> = ({ address, ssrDomainName }) => {
   const { t } = useTranslation();
 
   return (
@@ -22,7 +22,7 @@ const AddressMorePage: NextPage<Props> = ({ address, ssrDomainName }) => {
         description={t('address:meta.description')}
       />
       <AddressPageLayout address={address}>
-        <MoreDashboard />
+        <SignaturesDashboard />
       </AddressPageLayout>
     </>
   );
@@ -48,4 +48,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   };
 };
 
-export default AddressMorePage;
+export default AddressSignaturesPage;
