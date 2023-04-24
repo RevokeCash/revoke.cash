@@ -157,3 +157,15 @@ export const OPENSEA_REGISTRY = [
     type: 'event',
   },
 ];
+
+export const OPENSEA_SEAPORT = [
+  {
+    constant: false,
+    inputs: [],
+    name: 'incrementCounter',
+    outputs: [{ name: 'newCounter', type: 'uint256' }],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];

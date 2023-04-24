@@ -1,5 +1,5 @@
-import type { Log as EthersLog } from '@ethersproject/abstract-provider';
-import type { Contract } from 'ethers';
+import type { Log as EthersLog, TransactionResponse } from '@ethersproject/abstract-provider';
+import type { Contract, Signer } from 'ethers';
 
 export interface BaseTokenData {
   contract: Contract;
@@ -82,4 +82,11 @@ export enum TransactionType {
   REVOKE = 'revoke',
   UPDATE = 'update',
   OTHER = 'other',
+}
+
+export interface Marketplace {
+  name: string;
+  logo: string;
+  chains: number[];
+  cancelSignatures: (signer: Signer) => Promise<TransactionResponse>;
 }

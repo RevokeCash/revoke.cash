@@ -1,3 +1,4 @@
+import MoreDashboard from 'components/more/MoreDashboard';
 import AddressPageLayout from 'layouts/AddressPageLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import { parseInputAddress } from 'lib/utils';
@@ -21,9 +22,7 @@ const AddressMorePage: NextPage<Props> = ({ address, ssrDomainName }) => {
         description={t('address:meta.description')}
       />
       <AddressPageLayout address={address}>
-        <div className="w-full border border-black dark:border-white rounded-lg px-2 py-2">
-          Hello {address} ({ssrDomainName})
-        </div>
+        <MoreDashboard />
       </AddressPageLayout>
     </>
   );
