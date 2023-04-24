@@ -1,6 +1,6 @@
 import NftMarketplacePanel from './NftMarketplacePanel';
 
-const MoreDashboard = () => {
+const SignaturesDashboard = () => {
   return (
     <div className="flex flex-col gap-2">
       <NftMarketplacePanel />
@@ -9,4 +9,4 @@ const MoreDashboard = () => {
   );
 };
 
-export default MoreDashboard;
+export default SignaturesDashboard;

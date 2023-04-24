@@ -54,7 +54,8 @@
   "navigation": {
     "allowances": "授权",
     "history": "History",
-    "more": "More"
+    "more": "More",
+    "signatures": "Signatures"
   },
   "search": {
     "spender": "Search by Authorized Spender Address"
