@@ -7,7 +7,6 @@ import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import Trans from 'next-translate/Trans';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { useAccount, useNetwork } from 'wagmi';
 import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
@@ -19,10 +18,6 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const [editing, setEditing] = useState<boolean>();
   const { update } = useRevoke(allowance, onUpdate);
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
-  const { address: account } = useAccount();
-  const { chain } = useNetwork();
-
-  const disabled = allowance.owner !== account || allowance.chainId !== chain?.id;
 
   if (editing) {
     return (
@@ -40,12 +35,14 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
         <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
       </div>
       {allowance.amount && (
-        <ControlsWrapper allowance={allowance}>
-          <div>
-            <Button disabled={disabled} onClick={() => setEditing(!editing)} style="tertiary" size="none">
-              <PencilIcon className="w-3 h-3" />
-            </Button>
-          </div>
+        <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize={undefined}>
+          {(disabled) => (
+            <div>
+              <Button disabled={disabled} onClick={() => setEditing(!editing)} style="tertiary" size="none">
+                <PencilIcon className="w-3 h-3" />
+              </Button>
+            </div>
+          )}
         </ControlsWrapper>
       )}
     </div>

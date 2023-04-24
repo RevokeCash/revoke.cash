@@ -83,8 +83,8 @@
     "label": "Sort"
   },
   "tooltips": {
-    "connect_wallet": "Please connect your wallet in order to revoke",
-    "connected_account": "You can only revoke allowances of the connected account",
-    "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+    "connect_wallet": "Please connect your wallet to continue",
+    "connected_account": "You can only perform actions for the connected account",
+    "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet to continue"
   }
 }

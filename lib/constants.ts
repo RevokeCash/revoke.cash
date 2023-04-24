@@ -27,7 +27,7 @@ export const IRON_OPTIONS: IronSessionOptions = {
   password: process.env.IRON_SESSION_PASSWORD,
   ttl: 60 * 60 * 24,
   cookieOptions: {
-    secure: process.env.NODE_ENV !== 'development',
+    secure: true, // Change this to false when locally testing on Safari
     sameSite: 'none',
   },
 };

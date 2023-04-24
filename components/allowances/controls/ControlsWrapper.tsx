@@ -1,33 +1,43 @@
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { AllowanceData } from 'lib/interfaces';
 import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import { ReactElement } from 'react';
 import { useAccount, useNetwork } from 'wagmi';
+import SwitchChainButton from './SwitchChainButton';
 
 interface Props {
-  allowance: AllowanceData;
-  children?: ReactElement;
+  chainId: number;
+  address: string;
+  switchChainSize?: 'sm' | 'md' | 'lg';
+  children?: (disabled: boolean) => ReactElement;
 }
 
-const ControlsWrapper = ({ allowance, children }: Props) => {
+const ControlsWrapper = ({ chainId, address, switchChainSize, children }: Props) => {
   const { t } = useTranslation();
-  const { address: account } = useAccount();
+  const { address: account, connector } = useAccount();
   const { chain } = useNetwork();
 
-  const chainName = getChainName(allowance.chainId);
+  const chainName = getChainName(chainId);
 
   const isConnected = !!account;
-  const isConnectedAddress = isConnected && allowance.owner === account;
-  const needsToSwitchChain = isConnected && allowance.chainId !== chain?.id;
+  const isConnectedAddress = isConnected && address === account;
+  const needsToSwitchChain = isConnected && chainId !== chain?.id;
+  const canSwitchChain = connector?.id === 'injected';
+  const isChainSwitchEnabled = switchChainSize !== undefined;
+  const shouldRenderSwitchChainButton = needsToSwitchChain && canSwitchChain && isChainSwitchEnabled;
+  const disabled = !isConnectedAddress || (needsToSwitchChain && !shouldRenderSwitchChainButton);
+
+  if (shouldRenderSwitchChainButton) {
+    return <SwitchChainButton chainId={chainId} size={switchChainSize} />;
+  }
 
   if (!isConnected) {
-    return <WithHoverTooltip tooltip={t('address:tooltips.connect_wallet')}>{children}</WithHoverTooltip>;
+    return <WithHoverTooltip tooltip={t('address:tooltips.connect_wallet')}>{children(disabled)}</WithHoverTooltip>;
   }
 
   if (!isConnectedAddress) {
-    return <WithHoverTooltip tooltip={t('address:tooltips.connected_account')}>{children}</WithHoverTooltip>;
+    return <WithHoverTooltip tooltip={t('address:tooltips.connected_account')}>{children(disabled)}</WithHoverTooltip>;
   }
 
   if (needsToSwitchChain) {
@@ -35,10 +45,10 @@ const ControlsWrapper = ({ allowance, children }: Props) => {
       <Trans i18nKey={`address:tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
     );
 
-    return <WithHoverTooltip tooltip={tooltip}>{children}</WithHoverTooltip>;
+    return <WithHoverTooltip tooltip={tooltip}>{children(disabled)}</WithHoverTooltip>;
   }
 
-  return children;
+  return <>{children(disabled)}</>;
 };
 
 export default ControlsWrapper;
