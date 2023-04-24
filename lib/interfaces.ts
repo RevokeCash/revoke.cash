@@ -77,3 +77,9 @@ export interface Filter {
   fromBlock: number;
   toBlock: number;
 }
+
+export enum TransactionType {
+  REVOKE = 'revoke',
+  UPDATE = 'update',
+  OTHER = 'other',
+}

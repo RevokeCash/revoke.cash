@@ -81,6 +81,7 @@
     "donation_sent": "💪 感谢捐赠！",
     "revoke_failed": "❌ 撤销授权许可失败：{{message}}",
     "revoke_failed_revert": "❌ Revoking allowance failed: {{message}}. Please reach out to this token's team to resolve this issue.",
+    "transaction_failed": "❌ Transaction failed: {{message}}",
     "transaction_submitted": "✅ 交易已提交！",
     "update_failed": "❌ 此代币不支持更新授权，请改为撤销。"
   }
