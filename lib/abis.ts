@@ -169,3 +169,15 @@ export const OPENSEA_SEAPORT = [
     type: 'function',
   },
 ];
+
+export const BLUR = [
+  {
+    constant: false,
+    inputs: [],
+    name: 'incrementNonce',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
