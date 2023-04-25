@@ -20,7 +20,7 @@ const MarketplacePanel = () => {
   const title = (
     <div className="flex items-center gap-2">
       <div>Marketplace Signatures</div>
-      <WithHoverTooltip tooltip="Marketplace Signatures can be used to access all assets that are actively approved to the marketplace">
+      <WithHoverTooltip tooltip="Marketplace Signatures can be used to access all assets that are approved to the marketplace. You should only cancel these if you signed a Marketplace listing signature on a scam website.">
         <div>
           <InformationCircleIcon className="w-4 h-4" />
         </div>
