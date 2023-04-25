@@ -1,6 +1,6 @@
 import { ChainId } from 'eth-chains';
 import { Contract, Signer } from 'ethers';
-import { OPENSEA_SEAPORT } from 'lib/abis';
+import { BLUR, OPENSEA_SEAPORT } from 'lib/abis';
 import { Marketplace, TransactionType } from 'lib/interfaces';
 import { useMemo } from 'react';
 import { useHandleTransaction } from './useHandleTransaction';
@@ -35,6 +35,17 @@ export const useMarketplaces = (chainId: number) => {
       cancelSignatures: async (signer: Signer) => {
         const seaportContract = new Contract('0x00000000000001ad428e4906aE43D8F9852d0dD6', OPENSEA_SEAPORT, signer);
         const transactionPromise = seaportContract.functions.incrementCounter();
+        return handleTransaction(transactionPromise, TransactionType.OTHER);
+      },
+    },
+    {
+      name: 'Blur',
+      logo: '/assets/images/vendor/blur.png',
+      tooltip: 'This will cancel all current listings and offers on Blur.',
+      chains: [ChainId.EthereumMainnet],
+      cancelSignatures: async (signer: Signer) => {
+        const blurContract = new Contract('0x000000000000Ad05Ccc4F10045630fb830B95127', BLUR, signer);
+        const transactionPromise = blurContract.functions.incrementNonce();
         return handleTransaction(transactionPromise, TransactionType.OTHER);
       },
     },
