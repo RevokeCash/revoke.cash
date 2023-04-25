@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
   minMenuWidth?: number | string;
   menuAlign?: 'left' | 'right';
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'full';
   controlTheme?: 'light' | 'dark';
   menuTheme?: 'light' | 'dark';
 }
@@ -15,6 +15,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   const controlClassMapping = {
     sm: 'h-6 px-1',
     md: 'h-9 px-2',
+    full: 'h-full px-2',
   };
 
   // TODO: Manage colors through tailwind / className integration -> move to unstyled react-select
@@ -39,7 +40,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
             // (only display the focus ring when the element is focused via the keyboard)
             state.isFocused && '[&:has(:focus-visible)]:ring-1 [&:has(:focus-visible)]:ring-current',
             state.menuIsOpen && '[&:has(:focus-visible)]:ring-0',
-            'flex items-center box-border',
+            'flex items-center box-border ',
             controlClassMapping[props.size || 'md']
           ),
       }}

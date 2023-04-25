@@ -7,7 +7,11 @@ import MobileMenu from './MobileMenu';
 import NavLink from './NavLink';
 import SearchBar from './SearchBar';
 
-const Header = () => {
+type Props = {
+  searchBar?: boolean;
+};
+
+const Header = ({ searchBar = true }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -36,9 +40,11 @@ const Header = () => {
           <MobileMenu />
         </div>
       </div>
-      <div className="flex justify-center">
-        <SearchBar />
-      </div>
+      {searchBar && (
+        <div className="flex justify-center">
+          <SearchBar />
+        </div>
+      )}
     </header>
   );
 };
