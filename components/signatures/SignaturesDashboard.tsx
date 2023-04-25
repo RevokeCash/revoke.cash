@@ -1,10 +1,10 @@
-import NftMarketplacePanel from './NftMarketplacePanel';
-import PermitsPanel from './PermitsPanel';
+import MarketplacePanel from './marketplace/MarketplacePanel';
+import PermitsPanel from './permit/PermitsPanel';
 
 const SignaturesDashboard = () => {
   return (
     <div className="flex flex-col gap-2">
-      <NftMarketplacePanel />
+      <MarketplacePanel />
       <PermitsPanel />
     </div>
   );
