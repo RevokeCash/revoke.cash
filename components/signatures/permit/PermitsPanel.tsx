@@ -19,7 +19,7 @@ const PermitsPanel = () => {
   const title = (
     <div className="flex items-center gap-2">
       <div>Permit Signatures</div>
-      <WithHoverTooltip tooltip="Permit Signatures can be used to grant an allowance without sending an approval transaction">
+      <WithHoverTooltip tooltip="Permit Signatures are used to approve allowances without a transaction. You should only cancel these if you signed a Permit signature on a scam website.">
         <div>
           <InformationCircleIcon className="w-4 h-4" />
         </div>

@@ -17,11 +17,6 @@ const PermitsEntry = ({ token }: Props) => {
     <div className="px-4 border-t first:border-none border-zinc-300 dark:border-zinc-500">
       <div className="flex items-center justify-between w-full">
         <AssetCell allowance={token} />
-        {/* <div className="flex items-center gap-2 text-base leading-tight py-2">
-          <ChainOverlayLogo src={token.icon} alt={token.symbol} chainId={undefined} size={24} overlaySize={16} />
-          {token.symbol}
-        </div> */}
-
         <div className="flex justify-end">
           <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
             {(disabled) => (

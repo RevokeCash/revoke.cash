@@ -32,7 +32,6 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
             </div>
           </WithHoverTooltip>
         </div>
-
         <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
           {(disabled) => (
             <div>
