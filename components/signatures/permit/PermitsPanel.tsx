@@ -1,4 +1,6 @@
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Spinner from 'components/common/Spinner';
+import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import { deduplicateArray } from 'lib/utils';
 import { hasZeroBalance } from 'lib/utils/tokens';
@@ -14,9 +16,20 @@ const PermitsPanel = () => {
     return deduplicateArray(filtered, (a, b) => a.contract.address === b.contract.address);
   }, [allowances]);
 
-  if (isLoading) {
+  const title = (
+    <div className="flex items-center gap-2">
+      <div>Permit Signatures</div>
+      <WithHoverTooltip tooltip="Permit Signatures can be used to grant an allowance without sending an approval transaction">
+        <div>
+          <InformationCircleIcon className="w-4 h-4" />
+        </div>
+      </WithHoverTooltip>
+    </div>
+  );
+
+  if (isLoading || permitTokens.length === 0) {
     return (
-      <DashboardPanel title="Permit Signatures" className="w-full flex justify-center items-center h-12">
+      <DashboardPanel title={title} className="w-full flex justify-center items-center h-12">
         <Spinner className="w-6 h-6" />
       </DashboardPanel>
     );
@@ -24,14 +37,14 @@ const PermitsPanel = () => {
 
   if (permitTokens.length === 0) {
     return (
-      <DashboardPanel title="Permit Signatures" className="w-full flex justify-center items-center h-12">
+      <DashboardPanel title={title} className="w-full flex justify-center items-center h-12">
         <p className="text-center">No tokens with Permit support found.</p>
       </DashboardPanel>
     );
   }
 
   return (
-    <DashboardPanel title="Permit Signatures" className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+    <DashboardPanel title={title} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
       <div className="w-full">
         {permitTokens.map((token) => (
           <PermitsEntry key={token.contract.address} token={token} />

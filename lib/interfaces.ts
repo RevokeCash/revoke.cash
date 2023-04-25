@@ -87,6 +87,7 @@ export enum TransactionType {
 export interface Marketplace {
   name: string;
   logo: string;
+  tooltip: string;
   chains: number[];
   cancelSignatures: (signer: Signer) => Promise<TransactionResponse>;
 }

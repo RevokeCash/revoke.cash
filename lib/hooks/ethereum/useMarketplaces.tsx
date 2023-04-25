@@ -11,6 +11,7 @@ export const useMarketplaces = (chainId: number) => {
     {
       name: 'OpenSea',
       logo: '/assets/images/vendor/opensea.svg',
+      tooltip: 'This will cancel all current listings and offers on OpenSea.',
       chains: [
         // See https://github.com/ProjectOpenSea/seaport
         ChainId.EthereumMainnet,
