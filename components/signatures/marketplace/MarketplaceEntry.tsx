@@ -1,6 +1,8 @@
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
+import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import type { Marketplace } from 'lib/interfaces';
@@ -23,7 +25,12 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-2 text-base leading-tight">
           <Logo src={marketplace.logo} alt={marketplace.name} size={24} border />
-          {marketplace.name}
+          <div>{marketplace.name}</div>
+          <WithHoverTooltip tooltip={marketplace.tooltip}>
+            <div>
+              <InformationCircleIcon className="w-4 h-h-4" />
+            </div>
+          </WithHoverTooltip>
         </div>
 
         <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
