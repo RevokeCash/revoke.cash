@@ -9,7 +9,11 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { FormEventHandler, useState } from 'react';
 
-const SearchBar = () => {
+type Props = {
+  onSubmit?: (address: string) => void;
+};
+
+const SearchBar = (props: Props) => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -27,7 +31,9 @@ const SearchBar = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     if (!isValid || !value) return;
-    router.push(`/address/${value}`);
+
+    props.onSubmit ? props.onSubmit(value) : router.push(`/address/${value}`);
+
     setValue('');
   };
 

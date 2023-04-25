@@ -13,17 +13,18 @@ interface ChainOption {
 
 interface Props {
   selected: number;
+  chainIds?: number[];
   onSelect?: (chainId: number) => void;
   showName?: boolean;
   menuAlign?: 'left' | 'right';
 }
 
-const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
+const ChainSelect = ({ onSelect, selected, showName, menuAlign, chainIds }: Props) => {
   const isMounted = useMounted();
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
 
-  const mainnetOptions = CHAIN_SELECT_MAINNETS.map((chainId) => ({
+  const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
     value: getChainName(chainId),
     chainId,
   }));
@@ -63,11 +64,12 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
     <Select
       instanceId="chain-select"
       classNamePrefix="chain-select"
-      className="shrink-0"
+      size="full"
+      className="shrink-0 "
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
-      options={groups}
+      options={chainIds ? mainnetOptions : groups}
       onChange={onChange}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"

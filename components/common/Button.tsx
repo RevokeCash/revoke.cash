@@ -1,10 +1,10 @@
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import Link from 'next/link';
-import { MouseEventHandler } from 'react';
+import { ButtonHTMLAttributes, MouseEventHandler } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
-interface Props {
+type Props = {
   disabled?: boolean;
   style: 'primary' | 'secondary' | 'tertiary' | 'none';
   size: 'sm' | 'md' | 'lg' | 'none';
@@ -17,7 +17,8 @@ interface Props {
   loading?: boolean;
   asDiv?: boolean;
   align?: 'left' | 'center' | 'right';
-}
+  icon?: React.ExoticComponent<React.SVGProps<SVGSVGElement>>;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({
   disabled,
@@ -32,6 +33,7 @@ const Button = ({
   loading,
   asDiv,
   align,
+  ...props
 }: Props) => {
   const { darkMode } = useColorTheme();
 
@@ -92,6 +94,8 @@ const Button = ({
   return (
     <button disabled={disabled || loading} onClick={onClick} className={classes}>
       {children}
+      {props.icon && <props.icon className="w-4 h-4 ml-2 " />}
+
       {loading && <Spinner />}
     </button>
   );
