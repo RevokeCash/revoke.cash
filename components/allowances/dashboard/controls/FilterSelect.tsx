@@ -4,6 +4,7 @@ import Checkbox from 'components/common/Checkbox';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import { updateTableFilters } from 'lib/utils/table';
@@ -115,6 +116,7 @@ export default FilterSelect;
 // We disable MultiValue and implement our own ValueContainer to display the selected options in a more compact way
 const ValueContainer = ({ children, getValue, options }) => {
   const { t } = useTranslation();
+  const isMounted = useMounted();
 
   const groupsWithSelected = getGroupsWithSelected(options, getValue());
 
@@ -128,7 +130,7 @@ const ValueContainer = ({ children, getValue, options }) => {
     <>
       <div className="flex items-center gap-2 grow">
         <span>{t('address:filters.label')}</span>
-        {labels.length > 0 && (
+        {isMounted && labels.length > 0 && (
           <div className="flex items-center gap-2 grow whitespace-nowrap overflow-scroll w-1 scrollbar-hide">
             {labels.map((label) => (
               <Label key={label} className="bg-zinc-300 dark:bg-zinc-600">
@@ -137,11 +139,11 @@ const ValueContainer = ({ children, getValue, options }) => {
             ))}
           </div>
         )}
-        {labels.length === 0 && (
+        {isMounted && labels.length === 0 && (
           <Label className="bg-zinc-300 dark:bg-zinc-600">{t('address:filters.showing_everything')}</Label>
         )}
       </div>
-      {children}
+      {isMounted && children}
     </>
   );
 };
