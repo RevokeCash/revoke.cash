@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { ForwardedRef, forwardRef, HTMLProps, ReactNode } from 'react';
+import { AnchorHTMLAttributes, ForwardedRef, forwardRef, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-interface Props extends HTMLProps<HTMLAnchorElement> {
+interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
   children?: ReactNode;
   className?: string;
@@ -43,7 +43,14 @@ const Href = (
   }
 
   return (
-    <a {...props} className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
+    <a
+      {...props}
+      className={classes}
+      href={href}
+      target={external ? '_blank' : undefined}
+      ref={ref}
+      referrerPolicy="origin"
+    >
       {children}
     </a>
   );

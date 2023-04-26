@@ -49,9 +49,9 @@ const Sponsors = () => {
             tier="silver"
           />
           <SponsorBanner
-            name="Mintify"
-            banner="/assets/images/vendor/sponsors/mintify.png"
-            url="https://mintify.xyz"
+            name="Layer3"
+            banner="/assets/images/vendor/sponsors/layer3.jpg"
+            url="https://layer3.xyz"
             tier="silver"
           />
         </div>
