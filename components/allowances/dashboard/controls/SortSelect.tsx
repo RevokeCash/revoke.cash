@@ -3,6 +3,7 @@ import { Column, ColumnSort, sortingFns, Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
@@ -23,6 +24,7 @@ interface Props {
 
 const SortSelect = ({ table }: Props) => {
   const { t } = useTranslation();
+  const isMounted = useMounted();
   const { darkMode } = useColorTheme();
   const [selectedSort, setSelectedSort] = useLocalStorage<ColumnSort>('allowances-table.sorting', {
     id: ColumnId.SYMBOL,
@@ -76,7 +78,7 @@ const SortSelect = ({ table }: Props) => {
     return (
       <div className="flex items-center gap-2">
         {context !== 'menu' && <div>{t('address:sorting.label')}</div>}
-        <Label className="flex items-center gap-1 bg-zinc-300 dark:bg-zinc-600">{sortDisplay}</Label>
+        {isMounted && <Label className="flex items-center gap-1 bg-zinc-300 dark:bg-zinc-600">{sortDisplay}</Label>}
       </div>
     );
   };
