@@ -27,7 +27,7 @@ const Sponsorships: NextPage = () => {
             </div>
 
             <div>
-              Revoke.cash averages 250k+ page views per month and is used by beginners and seasoned crypto users alike.
+              Revoke.cash averages 350k+ page views per month and is used by beginners and seasoned crypto users alike.
               So displaying your banner in the Sponsors section of our landing page will get you valuable exposure.
             </div>
 
