@@ -1,5 +1,4 @@
-import type { Contract, providers } from 'ethers';
-import { BigNumber, utils } from 'ethers';
+import { BigNumber, Contract, providers, utils } from 'ethers';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type { AddressEvents, AllowanceData, BaseAllowanceData, BaseTokenData, Log } from 'lib/interfaces';

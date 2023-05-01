@@ -181,3 +181,24 @@ export const BLUR = [
     type: 'function',
   },
 ];
+
+export const DAI_PERMIT = [
+  {
+    constant: false,
+    inputs: [
+      { internalType: 'address', name: 'holder', type: 'address' },
+      { internalType: 'address', name: 'spender', type: 'address' },
+      { internalType: 'uint256', name: 'nonce', type: 'uint256' },
+      { internalType: 'uint256', name: 'expiry', type: 'uint256' },
+      { internalType: 'bool', name: 'allowed', type: 'bool' },
+      { internalType: 'uint8', name: 'v', type: 'uint8' },
+      { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+      { internalType: 'bytes32', name: 's', type: 'bytes32' },
+    ],
+    name: 'permit',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];

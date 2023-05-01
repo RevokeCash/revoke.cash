@@ -5077,6 +5077,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eth-permit@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "eth-permit@npm:0.2.3"
+  dependencies:
+    utf8: ^3.0.0
+  checksum: 9bf3eed8ecb8c914aadfff97d6c3d19fc432928c72fbe205075153e84289ea95f3a101f77e2dae78ad629e09682700241f207b5436b575ca7d4fbae68eacd3f6
+  languageName: node
+  linkType: hard
+
 "eth-query@npm:^2.1.0, eth-query@npm:^2.1.2":
   version: 2.1.2
   resolution: "eth-query@npm:2.1.2"
@@ -9124,6 +9133,7 @@ __metadata:
     cypress: ^12.9.0
     dexie: ^3.2.3
     dotenv: ^16.0.3
+    eth-permit: ^0.2.3
     ethers: ^5.7.2
     express-rate-limit: ^6.7.0
     husky: ^8.0.3
@@ -10357,6 +10367,13 @@ __metadata:
     node-gyp: latest
     node-gyp-build: ^4.3.0
   checksum: 5579350a023c66a2326752b6c8804cc7b39dcd251bb088241da38db994b8d78352e388dcc24ad398ab98385ba3c5ffcadb6b5b14b2637e43f767869055e46ba6
+  languageName: node
+  linkType: hard
+
+"utf8@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "utf8@npm:3.0.0"
+  checksum: cb89a69ad9ab393e3eae9b25305b3ff08bebca9adc839191a34f90777eb2942f86a96369d2839925fea58f8f722f7e27031d697f10f5f39690f8c5047303e62d
   languageName: node
   linkType: hard
 

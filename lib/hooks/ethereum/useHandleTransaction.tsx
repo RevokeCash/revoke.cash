@@ -15,6 +15,7 @@ export const useHandleTransaction = () => {
     const message = e.error?.reason ?? e.reason ?? e.error?.message ?? e.message;
     console.debug(`Ran into transaction issue, message: ${message} (${code})`);
     console.debug(JSON.stringify(e));
+    console.debug(e);
 
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(e)) return;

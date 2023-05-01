@@ -1,12 +1,13 @@
 import type { Provider } from '@ethersproject/abstract-provider';
-import { BigNumber, Contract, utils } from 'ethers';
+import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
-import { ADDRESS_ZERO_PADDED, DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
+import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import { TOKEN_MAPPING } from 'lib/data/token-mapping';
 import type { AllowanceData, BaseTokenData, Log } from 'lib/interfaces';
 import { toFloat } from '.';
 import spamTokens from '../data/spam-tokens.json';
+import { getPermitDomain } from './permit';
 import { convertString, unpackResult, withFallback } from './promises';
 
 export const isSpamToken = (allowance: AllowanceData) => {
@@ -153,17 +154,13 @@ export const isErc721Contract = (contract: Contract) => {
 };
 
 export const hasSupportForPermit = async (contract: Contract) => {
+  // If we can properly retrieve the EIP712 domain and nonce, it supports permit
   try {
-    const [nonce, separator] = await Promise.all([
-      unpackResult(contract.functions.nonces(DUMMY_ADDRESS)),
-      unpackResult(contract.functions.DOMAIN_SEPARATOR()),
-    ]);
-
-    if (nonce === undefined || separator === undefined) return false;
-
-    // We expect the nonce to be 0 (for DUMMY_ADDRESS) and the domain separator to be non-zero
-    return BigNumber.from(nonce).isZero() && separator !== '0x' && separator !== ADDRESS_ZERO_PADDED;
-  } catch {
-    return false;
+    await Promise.all([getPermitDomain(contract), contract.functions.nonces(DUMMY_ADDRESS)]);
+    return true;
+  } catch (e) {
+    if (e.message.includes('Could not determine Permit Signature data')) {
+      return false;
+    }
   }
 };
