@@ -19,7 +19,6 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
       track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
-    refetchOnWindowFocus: false,
     // If events (transfers + approvals) don't change, derived allowances also shouldn't change, even if allowances
     // are used on-chain. The only exception would be incorrectly implemented tokens that don't emit correct events
     staleTime: Infinity,

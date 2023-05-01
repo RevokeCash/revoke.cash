@@ -37,18 +37,17 @@ export const getErc20TokenData = async (contract: Contract, owner: string, chain
   const tokenData = TOKEN_MAPPING[chainId]?.[utils.getAddress(contract.address)];
   const icon = tokenData?.logoURI;
 
-  const [totalSupplyBN, balance, symbol, decimals, supportsPermit] = await Promise.all([
+  const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
     convertString(unpackResult(contract.functions.balanceOf(owner))),
     // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
     tokenData?.symbol ?? withFallback(unpackResult(contract.functions.symbol()), contract.address),
     tokenData?.decimals ?? unpackResult(contract.functions.decimals()),
-    hasSupportForPermit(contract),
     throwIfNotErc20(contract),
   ]);
 
   const totalSupply = totalSupplyBN.toString();
-  return { contract, chainId, symbol, owner, decimals, icon, totalSupply, balance, supportsPermit };
+  return { contract, chainId, symbol, owner, decimals, icon, totalSupply, balance };
 };
 
 export const getErc721TokenData = async (
@@ -154,13 +153,13 @@ export const isErc721Contract = (contract: Contract) => {
 };
 
 export const hasSupportForPermit = async (contract: Contract) => {
+  if (isErc721Contract(contract)) return false;
+
   // If we can properly retrieve the EIP712 domain and nonce, it supports permit
   try {
     await Promise.all([getPermitDomain(contract), contract.functions.nonces(DUMMY_ADDRESS)]);
     return true;
   } catch (e) {
-    if (e.message.includes('Could not determine Permit Signature data')) {
-      return false;
-    }
+    return false;
   }
 };

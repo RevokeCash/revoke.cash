@@ -1,20 +1,39 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { useQuery } from '@tanstack/react-query';
+import Error from 'components/common/Error';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import { deduplicateArray } from 'lib/utils';
-import { hasZeroBalance } from 'lib/utils/tokens';
-import { useMemo } from 'react';
+import { stripAllowanceData } from 'lib/utils/allowances';
+import { filterAsync } from 'lib/utils/promises';
+import { hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
 import DashboardPanel from '../DashboardPanel';
 import PermitsEntry from './PermitsEntry';
 
 const PermitsPanel = () => {
-  const { allowances, isLoading } = useAddressAllowances();
+  const { allowances, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
 
-  const permitTokens = useMemo(() => {
-    const filtered = (allowances ?? []).filter((allowance) => allowance.supportsPermit && !hasZeroBalance(allowance));
-    return deduplicateArray(filtered, (a, b) => a.contract.address === b.contract.address);
-  }, [allowances]);
+  const {
+    data: permitTokens,
+    error: permitsError,
+    isLoading: isPermitsLoading,
+  } = useQuery({
+    queryKey: ['permitTokens', allowances?.map((token) => token.contract.address)],
+    queryFn: async () => {
+      if (!allowances) return null;
+
+      const ownedTokens = deduplicateArray(allowances, (a, b) => a.contract.address === b.contract.address)
+        .filter((token) => !hasZeroBalance(token))
+        .map(stripAllowanceData);
+
+      return filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract));
+    },
+    staleTime: Infinity,
+  });
+
+  const isLoading = isAllowancesLoading || isPermitsLoading || !permitTokens;
+  const error = allowancesError || permitsError;
 
   const title = (
     <div className="flex items-center gap-2">
@@ -26,6 +45,14 @@ const PermitsPanel = () => {
       </WithHoverTooltip>
     </div>
   );
+
+  if (error) {
+    return (
+      <DashboardPanel title={title} className="w-full flex justify-center items-center h-12">
+        <Error error={error} />
+      </DashboardPanel>
+    );
+  }
 
   if (isLoading) {
     return (
