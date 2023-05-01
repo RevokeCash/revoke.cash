@@ -19,7 +19,7 @@ const PermitsPanel = () => {
   const title = (
     <div className="flex items-center gap-2">
       <div>Permit Signatures</div>
-      <WithHoverTooltip tooltip="Permit Signatures are used to approve allowances without a transaction. You should only cancel these if you signed a Permit signature on a scam website.">
+      <WithHoverTooltip tooltip="Permit Signatures are used to approve allowances without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.">
         <div>
           <InformationCircleIcon className="w-4 h-4" />
         </div>
@@ -27,7 +27,7 @@ const PermitsPanel = () => {
     </div>
   );
 
-  if (isLoading || permitTokens.length === 0) {
+  if (isLoading) {
     return (
       <DashboardPanel title={title} className="w-full flex justify-center items-center h-12">
         <Spinner className="w-6 h-6" />

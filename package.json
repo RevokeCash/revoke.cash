@@ -37,6 +37,7 @@
     "axios": "^0.26.1",
     "axios-retry": "^3.4.0",
     "dexie": "^3.2.3",
+    "eth-permit": "^0.2.3",
     "ethers": "^5.7.2",
     "express-rate-limit": "^6.7.0",
     "iron-session": "^6.3.1",
