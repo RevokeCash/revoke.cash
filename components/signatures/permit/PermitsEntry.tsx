@@ -8,6 +8,7 @@ import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext
 import { AllowanceData, TransactionType } from 'lib/interfaces';
 import { permit } from 'lib/utils/permit';
 import useTranslation from 'next-translate/useTranslation';
+import { useAsyncCallback } from 'react-async-hook';
 import { useSigner } from 'wagmi';
 
 interface Props {
@@ -20,11 +21,12 @@ const PermitsEntry = ({ token }: Props) => {
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction();
 
-  const onClick = async () => {
+  const { execute: onClick, loading } = useAsyncCallback(async () => {
     const writeContract = new Contract(token.contract.address, token.contract.interface, signer);
     const transactionPromise = permit(signer, writeContract, DUMMY_ADDRESS, '0');
-    await handleTransaction(transactionPromise, TransactionType.OTHER);
-  };
+    const transaction = await handleTransaction(transactionPromise, TransactionType.OTHER);
+    await transaction.wait(1);
+  });
 
   return (
     <div className="px-4 border-t first:border-none border-zinc-300 dark:border-zinc-500">
@@ -34,8 +36,8 @@ const PermitsEntry = ({ token }: Props) => {
           <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
             {(disabled) => (
               <div>
-                <Button disabled={disabled} size="sm" style="secondary" onClick={onClick}>
-                  {t('common:buttons.cancel_signatures')}
+                <Button loading={loading} disabled={disabled} size="sm" style="secondary" onClick={onClick}>
+                  {loading ? t('common:buttons.cancelling') : t('common:buttons.cancel_signatures')}
                 </Button>
               </div>
             )}

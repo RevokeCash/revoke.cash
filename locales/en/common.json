@@ -2,6 +2,7 @@
   "buttons": {
     "cancel": "Cancel",
     "cancel_signatures": "Cancel Signatures",
+    "cancelling": "Cancelling",
     "clear_filters": "Clear Filters",
     "connect": "Connect Wallet",
     "connecting": "Connecting",

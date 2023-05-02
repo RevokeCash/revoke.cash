@@ -2,6 +2,7 @@
   "buttons": {
     "cancel": "取消",
     "cancel_signatures": "Cancel Signatures",
+    "cancelling": "Cancelling",
     "clear_filters": "Clear Filters",
     "connect": "连接钱包",
     "connecting": "正在连接",
