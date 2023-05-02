@@ -7,6 +7,7 @@ import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext
 import { useMounted } from 'lib/hooks/useMounted';
 import type { Marketplace } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
+import { useAsyncCallback } from 'react-async-hook';
 import { useSigner } from 'wagmi';
 
 interface Props {
@@ -19,8 +20,10 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
 
   const { address, selectedChainId } = useAddressPageContext();
   const { data: signer } = useSigner();
-
-  const onClick = () => marketplace?.cancelSignatures(signer);
+  const { execute: onClick, loading } = useAsyncCallback(async () => {
+    const transaction = await marketplace?.cancelSignatures(signer);
+    await transaction.wait(1);
+  });
 
   return (
     <div className="px-4 py-2 border-t first:border-none border-zinc-300 dark:border-zinc-500">
@@ -37,8 +40,8 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
         <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
           {(disabled) => (
             <div>
-              <Button disabled={isMounted && disabled} size="sm" style="secondary" onClick={onClick}>
-                {t('common:buttons.cancel_signatures')}
+              <Button loading={loading} disabled={isMounted && disabled} size="sm" style="secondary" onClick={onClick}>
+                {loading ? t('common:buttons.cancelling') : t('common:buttons.cancel_signatures')}
               </Button>
             </div>
           )}
