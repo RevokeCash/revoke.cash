@@ -1,6 +1,7 @@
 {
   "buttons": {
     "cancel": "Cancelar",
+    "cancel_signatures": "Cancel Signatures",
     "clear_filters": "Clear Filters",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",

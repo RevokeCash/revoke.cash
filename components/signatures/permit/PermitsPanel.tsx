@@ -8,10 +8,12 @@ import { deduplicateArray } from 'lib/utils';
 import { stripAllowanceData } from 'lib/utils/allowances';
 import { filterAsync } from 'lib/utils/promises';
 import { hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
+import useTranslation from 'next-translate/useTranslation';
 import DashboardPanel from '../DashboardPanel';
 import PermitsEntry from './PermitsEntry';
 
 const PermitsPanel = () => {
+  const { t } = useTranslation();
   const { allowances, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
 
   const {
@@ -37,8 +39,8 @@ const PermitsPanel = () => {
 
   const title = (
     <div className="flex items-center gap-2">
-      <div>Permit Signatures</div>
-      <WithHoverTooltip tooltip="Permit Signatures are used to approve allowances without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.">
+      <div>{t('address:signatures.permit.title')}</div>
+      <WithHoverTooltip tooltip={t('address:tooltips.permit_signatures')}>
         <div>
           <InformationCircleIcon className="w-4 h-4" />
         </div>
@@ -65,7 +67,7 @@ const PermitsPanel = () => {
   if (permitTokens.length === 0) {
     return (
       <DashboardPanel title={title} className="w-full flex justify-center items-center h-12">
-        <p className="text-center">No tokens with Permit support found.</p>
+        <p className="text-center">{t('address:signatures.permit.none_found')}</p>
       </DashboardPanel>
     );
   }
