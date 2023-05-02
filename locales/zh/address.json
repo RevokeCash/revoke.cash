@@ -60,6 +60,16 @@
   "search": {
     "spender": "Search by Authorized Spender Address"
   },
+  "signatures": {
+    "marketplaces": {
+      "none_found": "No marketplaces found for this chain.",
+      "title": "Marketplace Signatures"
+    },
+    "permit": {
+      "none_found": "No tokens with Permit support found.",
+      "title": "Permit Signatures"
+    }
+  },
   "sorting": {
     "columns": {
       "allowance": "授权",
@@ -86,6 +96,9 @@
   "tooltips": {
     "connect_wallet": "请连接钱包再撤销",
     "connected_account": "您只能撤销已连接账户的授权",
+    "marketplace_listings": "This will cancel all current listings and offers on {{marketplace}}.",
+    "marketplace_signatures": "Once approved, marketplaces are able to move assets on your behalf. Bad actors exploit these approvals to create zero-priced listings on third party websites. Cancel these if you signed a marketplace signature on a phishing website.",
+    "permit_signatures": "Permit Signatures are used to approve allowances without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
     "switch_chain": "请切换钱包到目标链 <0>{{chainName}}</0>以便撤销"
   }
 }

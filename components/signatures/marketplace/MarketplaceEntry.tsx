@@ -6,6 +6,7 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import type { Marketplace } from 'lib/interfaces';
+import useTranslation from 'next-translate/useTranslation';
 import { useSigner } from 'wagmi';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const MarketplaceEntry = ({ marketplace }: Props) => {
+  const { t } = useTranslation();
   const isMounted = useMounted();
 
   const { address, selectedChainId } = useAddressPageContext();
@@ -36,7 +38,7 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
           {(disabled) => (
             <div>
               <Button disabled={isMounted && disabled} size="sm" style="secondary" onClick={onClick}>
-                Cancel Signatures
+                {t('common:buttons.cancel_signatures')}
               </Button>
             </div>
           )}

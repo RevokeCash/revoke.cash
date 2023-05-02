@@ -7,6 +7,7 @@ import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
 import { permit } from 'lib/utils/permit';
+import useTranslation from 'next-translate/useTranslation';
 import { useSigner } from 'wagmi';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const PermitsEntry = ({ token }: Props) => {
+  const { t } = useTranslation();
   const { data: signer } = useSigner();
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction();
@@ -33,7 +35,7 @@ const PermitsEntry = ({ token }: Props) => {
             {(disabled) => (
               <div>
                 <Button disabled={disabled} size="sm" style="secondary" onClick={onClick}>
-                  Cancel Signatures
+                  {t('common:buttons.cancel_signatures')}
                 </Button>
               </div>
             )}
