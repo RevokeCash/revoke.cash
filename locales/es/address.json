@@ -61,6 +61,9 @@
     "spender": "Search by Authorized Spender Address"
   },
   "signatures": {
+    "info": {
+      "description": "Because signatures are not stored on the blockchain, there is no way for Revoke.cash to check if you actually signed any signatures. So this page contains a list of <0>potential</0> signatures. You only need to cancel these signatures if you are sure that you signed one on a phishing website. After cancelling a signature, the entry will remain in the list for next time."
+    },
     "marketplaces": {
       "none_found": "No marketplaces found for this chain.",
       "title": "Marketplace Signatures"
