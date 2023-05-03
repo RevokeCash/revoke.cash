@@ -1,6 +1,9 @@
 // This is a list of chain name + address tuples. The chain name will be selected in the dropdown, and the address
 // entered in the input field. These addresses are either my own address or random addresses that I've found to have
 // allowances on these chains. Because these addresses were chosen randomly it is possible that some allowances may
+
+import { Selectors, TEST_URL } from 'cypress/support/utils';
+
 // get revoked, causing the tests to fail. In that case we need to replace the address with a new one.
 const fixtures = [
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
@@ -74,21 +77,9 @@ const fixtures = [
   ['Shimmer Testnet', '0x6e18ACee6fa8EF7Daf13D32B2424152662c9e07a'],
 ];
 
-const Selectors = {
-  CHAIN_SELECT_BUTTON: '.chain-select__control',
-  CHAIN_SELECT_OPTION: '.chain-select__option',
-  ALLOWANCES_TABLE: '.allowances-table',
-  ALLOWANCES_LOADER: '.allowances-loader',
-  CONTROLS_SECTION: '.controls-section',
-  ADDRESS_INPUT: '.address-input',
-  LAST_UPDATED_LINK: '.tx-link',
-};
-
-const URL = Cypress.env('url') ?? 'http://localhost:3000';
-
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
-    cy.visit(`${URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
+    cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
 
     const fixtureChainNames = fixtures.map(([chainName]) => chainName);
@@ -98,7 +89,7 @@ describe('Chain Support', () => {
 
   fixtures.forEach(([chainName, fixtureAddress]) => {
     it(`should support ${chainName}`, () => {
-      cy.visit(`${URL}/address/${fixtureAddress}`, { timeout: 10_000 });
+      cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
 
       cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
       cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
