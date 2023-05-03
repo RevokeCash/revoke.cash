@@ -1,0 +1,87 @@
+{
+  "buttons": {
+    "cancel": "Cancel",
+    "clear_filters": "Clear Filters",
+    "connect": "Connect Wallet",
+    "connecting": "Connecting",
+    "disconnect": "Disconnect",
+    "disconnecting": "Disconnecting",
+    "donate": "Donate",
+    "donating": "Donating",
+    "download": "Download",
+    "get_started": "Get Started",
+    "my_allowances": "My Allowances",
+    "revoke": "Revoke",
+    "revoking": "Revoking",
+    "send": "Send",
+    "sending": "Sending",
+    "switch_chain": "Switch chain",
+    "switching": "Switching",
+    "update": "Update",
+    "updating": "Updating"
+  },
+  "chain_select": {
+    "mainnets": "Mainnets",
+    "testnets": "Testnets"
+  },
+  "color_themes": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
+  "connect_wallet": {
+    "title": "Connect Your Wallet"
+  },
+  "donate": {
+    "gitcoin_grants": "Or contribute to our <0>Gitcoin Grant</0>",
+    "title": "Donate to Revoke.cash"
+  },
+  "errors": {
+    "404": {
+      "go_home": "Or go back home",
+      "subtitle": "The page you are looking for could not be found.",
+      "suggested_pages": {
+        "extension": {
+          "description": "Download the Revoke.cash browser extension.",
+          "title": "Extension"
+        },
+        "faq": {
+          "description": "Answers to all your questions.",
+          "title": "FAQ"
+        },
+        "title": "Are you looking for one of these?",
+        "your_allowances": {
+          "description": "Inspect your own allowances.",
+          "title": "Your Allowances"
+        }
+      },
+      "title": "This page does not exist."
+    },
+    "messages": {
+      "chain_could_not_connect": "Could not connect to the {{chainName}} chain"
+    }
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "sponsors": "Sponsors:",
+    "terms": "Terms"
+  },
+  "meta": {
+    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
+    "title": "Revoke.cash - Revoke your Ethereum token allowances"
+  },
+  "nav": {
+    "extension": "Extension",
+    "faq": "FAQ",
+    "search": "Search Accounts by Address or Domain"
+  },
+  "toasts": {
+    "clipboard_failed": "❌ Couldn't copy to clipboard",
+    "clipboard_success": "✅ Copied to clipboard",
+    "donation_sent": "💪 Thanks for the donation!",
+    "revoke_failed": "❌ Revoking allowance failed: {{message}}",
+    "revoke_failed_revert": "❌ Revoking allowance failed: {{message}}. Please reach out to this token's team to resolve this issue.",
+    "transaction_submitted": "✅ Transaction submitted!",
+    "update_failed": "❌ This token does not support updating allowances, please revoke instead."
+  }
+}

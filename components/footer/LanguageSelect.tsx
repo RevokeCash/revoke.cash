@@ -20,6 +20,7 @@ const LanguageSelect = () => {
     { value: 'en', name: 'English' },
     { value: 'zh', name: '中文' },
     { value: 'es', name: 'Español' },
+    { value: 'ru', name: 'Russian' },
   ];
 
   const persistLocaleCookie = (locale: string) => {

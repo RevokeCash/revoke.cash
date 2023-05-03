@@ -1,0 +1,85 @@
+{
+  "allowances": {
+    "amount": "{{amount}} {{symbol}}",
+    "none": "No allowances",
+    "none_found": "No allowances found",
+    "none_found_filtered": "No allowances found for the selected filters",
+    "token_id": "Token #{{tokenId}}",
+    "unlimited": "Unlimited"
+  },
+  "filters": {
+    "allowances": {
+      "label": "Allowances",
+      "options": {
+        "limited": "Limited",
+        "none": "None",
+        "unlimited": "Unlimited"
+      }
+    },
+    "asset_balance": {
+      "label": "Asset Balance",
+      "options": {
+        "non_zero": "Non-Zero",
+        "zero": "Zero"
+      }
+    },
+    "asset_type": {
+      "label": "Asset Type",
+      "options": {
+        "nft": "NFT",
+        "token": "Token"
+      }
+    },
+    "label": "Filters",
+    "showing_everything": "Showing Everything"
+  },
+  "headers": {
+    "actions": "Actions",
+    "allowance": "Allowance",
+    "asset": "Asset",
+    "asset_type": "Type",
+    "last_updated": "Last Updated",
+    "spender": "Authorized Spender"
+  },
+  "labels": {
+    "connected": "Connected",
+    "nft": "NFT",
+    "not_connected": "Not Connected",
+    "token": "Token"
+  },
+  "meta": {
+    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
+    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+  },
+  "search": {
+    "spender": "Search by Authorized Spender Address"
+  },
+  "sorting": {
+    "columns": {
+      "allowance": "Allowance",
+      "asset_name": "Asset Name",
+      "authorized_spender": "Authorized Spender",
+      "last_updated": "Last Updated"
+    },
+    "fns": {
+      "date": {
+        "asc": "Oldest to Newest",
+        "desc": "Newest to Oldest"
+      },
+      "number": {
+        "asc": "Low to High",
+        "desc": "High to Low"
+      },
+      "text": {
+        "asc": "A to Z",
+        "desc": "Z to A"
+      }
+    },
+    "label": "Sort"
+  },
+  "tooltips": {
+    "connect_wallet": "Please connect your wallet in order to revoke",
+    "connected_account": "You can only revoke allowances of the connected account",
+    "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+  }
+}
