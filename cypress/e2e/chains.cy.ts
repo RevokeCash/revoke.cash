@@ -68,7 +68,7 @@ const fixtures = [
   ['Moonbase Alpha', '0xeE146d0808D6a874237701E06A118f444dB13D73'],
   ['CoinEx Testnet', '0x5B82588003Ac9db7510702171b94f4acAF87Ca72'],
   ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
-  ['Horizen Yuma', '0xA54FE4eDa4B288B9dDC40EBA35f3730c7D55f898'],
+  ['Horizen Gobi', '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32'],
   ['PulseChain Testnet', '0xc068aEAdc48427fde985866DAa3e52D4d63935C3'],
   ['Gather Testnet', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
   ['Shimmer Testnet', '0x6e18ACee6fa8EF7Daf13D32B2424152662c9e07a'],
@@ -81,6 +81,7 @@ const Selectors = {
   ALLOWANCES_LOADER: '.allowances-loader',
   CONTROLS_SECTION: '.controls-section',
   ADDRESS_INPUT: '.address-input',
+  LAST_UPDATED_LINK: '.tx-link',
 };
 
 const URL = Cypress.env('url') ?? 'http://localhost:3000';
@@ -102,10 +103,26 @@ describe('Chain Support', () => {
       cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
       cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
 
-      cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4000 }).should('exist');
+      cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4_000 }).should('exist');
       cy.wait(100); // Wait for the loading spinner to appear
       cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
-      cy.get(Selectors.CONTROLS_SECTION, { timeout: 4000 }).should('exist');
+      cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
+
+      const shouldCheckExplorer = Boolean(Cypress.env('checkExplorer'));
+      if (shouldCheckExplorer) {
+        // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
+        const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
+        linkElement.invoke('attr', 'href').then((href) => {
+          console.log('aaaaaaaaa', href);
+          cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
+            // Supress errors on the explorer page
+            cy.on('uncaught:exception', () => false);
+
+            cy.visit(href);
+            cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
+          });
+        });
+      }
     });
   });
 });

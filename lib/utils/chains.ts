@@ -1,4 +1,4 @@
-import { ChainId, chains } from 'eth-chains';
+import { ChainId, chains } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 
@@ -9,9 +9,9 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.PolygonMainnet,
   ChainId.Mumbai,
   ChainId.Optimism,
-  ChainId.OptimisticEthereumTestnetGoerli,
+  ChainId.OptimismGoerliTestnet,
   ChainId.ArbitrumOne,
-  421613, // Arbitrum Goerli
+  ChainId.ArbitrumGoerli,
   ChainId.MetisAndromedaMainnet,
   ChainId.SmartBitcoinCash,
   ChainId.SyscoinMainnet,
@@ -19,22 +19,21 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumClassicMainnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
-  2109, // Exosama
-  324, // zkSync Era
-  280, // zkSync Era Goerli
-  84531, // Base Goerli
-  1101, // Polygon zkEVM
-  1442, // Polygon zkEVM Testnet
-  1116, // CORE
+  ChainId.ExosamaNetwork,
+  ChainId.ZkSyncEraMainnet,
+  ChainId.ZkSyncEraTestnet,
+  ChainId.BaseGoerliTestnet,
+  ChainId.PolygonzkEVM,
+  ChainId.PolygonzkEVMTestnet,
+  ChainId.CoreBlockchainMainnet,
   ChainId.KCCMainnet,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
-  7700, // Canto
+  ChainId.Canto,
   ChainId.KavaEVM,
-  // 2000, // Dogechain
   ChainId.RSKMainnet,
-  ChainId.EmeraldParatimeMainnet,
+  ChainId.OasisEmerald,
   ChainId.FuseMainnet,
   ChainId.Palm,
   ChainId.CallistoMainnet,
@@ -42,17 +41,17 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.AuroraMainnet,
-  1662, // Horizen Yuma Testnet
+  ChainId.HorizenGobiTestnet,
   ChainId.PulseChainTestnetv3,
-  59140, // Linea Goerli Testnet
-  534353, // Scroll Alpha Testnet
-  2611, // Redlight
+  ChainId.LineaTestnet,
+  ChainId.ScrollAlphaTestnet,
+  ChainId.RedlightChainMainnet,
   // ChainId.GatherMainnetNetwork,
   ChainId.GatherTestnetNetwork,
-  167004, // Taiko Alpha Testnet
-  1071, // Shimmer Testnet
-  248, // Oasys Mainnet
-  119, // ENULS
+  ChainId['Taiko(Alpha-2Testnet)'],
+  ChainId.ShimmerEVMTestnet,
+  ChainId.OasysMainnet,
+  ChainId.ENULSMainnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -61,7 +60,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.Gnosis,
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
-  42170, // Arbitrum Nova
+  ChainId.ArbitrumNova,
   ChainId['AvalancheC-Chain'],
   ChainId.AvalancheFujiTestnet,
   ChainId.Moonbeam,
@@ -99,17 +98,17 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.EthereumMainnet,
   ChainId.BinanceSmartChainMainnet,
   ChainId.PolygonMainnet,
-  1101, // Polygon zkEVM
+  ChainId.PolygonzkEVM,
   ChainId.ArbitrumOne,
-  42170, // Arbitrum Nova
+  ChainId.ArbitrumNova,
   ChainId.Optimism,
-  324, // zkSync Era
+  ChainId.ZkSyncEraMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.FantomOpera,
   ChainId.CronosMainnetBeta,
   ChainId.KavaEVM,
   ChainId.Gnosis,
-  7700, // Canto
+  ChainId.Canto,
   ChainId.CeloMainnet,
   ChainId.RSKMainnet,
   ChainId.Astar,
@@ -118,9 +117,9 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.KCCMainnet,
   ChainId.MetisAndromedaMainnet,
   ChainId.AuroraMainnet,
-  ChainId.EmeraldParatimeMainnet,
+  ChainId.OasisEmerald,
   ChainId.BitTorrentChainMainnet,
-  1116, // CORE
+  ChainId.CoreBlockchainMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.SmartBitcoinCash,
   ChainId.HarmonyMainnetShard0,
@@ -136,11 +135,11 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Shiden,
   ChainId.EthereumClassicMainnet,
   ChainId.Palm,
-  248, // Oasys Mainnet
-  2109, // Exosama
-  2611, // Redlight
+  ChainId.OasysMainnet,
+  ChainId.ExosamaNetwork,
+  ChainId.RedlightChainMainnet,
   // ChainId.GatherMainnetNetwork,
-  119, // ENULS
+  ChainId.ENULSMainnet,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -148,14 +147,14 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.Sepolia,
   ChainId.BinanceSmartChainTestnet,
   ChainId.Mumbai,
-  1442, // Polygon zkEVM Testnet
-  421613, // Arbitrum Goerli
-  ChainId.OptimisticEthereumTestnetGoerli,
-  280, // zkSync Goerli
-  59140, // Linea Testnet
-  534353, // Scroll Alpha Testnet
-  84531, // Base Goerli
-  167004, // Taiko Alpha Testnet
+  ChainId.PolygonzkEVMTestnet,
+  ChainId.ArbitrumGoerli,
+  ChainId.OptimismGoerliTestnet,
+  ChainId.ZkSyncEraTestnet,
+  ChainId.LineaTestnet,
+  ChainId.ScrollAlphaTestnet,
+  ChainId.BaseGoerliTestnet,
+  ChainId['Taiko(Alpha-2Testnet)'],
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
@@ -163,10 +162,10 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.MoonbaseAlpha,
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
-  1662, // Horizen Yuma Testnet
+  ChainId.HorizenGobiTestnet,
   ChainId.PulseChainTestnetv3,
   ChainId.GatherTestnetNetwork,
-  1071, // Shimmer Testnet
+  ChainId.ShimmerEVMTestnet,
 ];
 
 export const isSupportedChain = (chainId: number): boolean => {
@@ -204,7 +203,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId['AvalancheC-Chain']]: 'Avalanche',
     [ChainId.PolygonMainnet]: 'Polygon',
     [ChainId.ArbitrumOne]: 'Arbitrum',
-    [42170]: 'Arbitrum Nova',
+    [ChainId.ArbitrumNova]: 'Arbitrum Nova',
     [ChainId.CronosMainnetBeta]: 'Cronos',
     [ChainId.FantomOpera]: 'Fantom',
     [ChainId.KlaytnMainnetCypress]: 'Klaytn',
@@ -230,8 +229,8 @@ export const getChainName = (chainId: number): string => {
     [ChainId.BinanceSmartChainTestnet]: 'BSC Testnet',
     [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
     [ChainId.Mumbai]: 'Polygon Mumbai',
-    [ChainId.OptimisticEthereumTestnetGoerli]: 'Optimism Goerli',
-    [421613]: 'Arbitrum Goerli',
+    [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
+    [ChainId.ArbitrumGoerli]: 'Arbitrum Goerli',
     [ChainId.CeloAlfajoresTestnet]: 'Celo Alfajores',
     [ChainId.HuobiECOChainTestnet]: 'HECO Testnet',
     [ChainId.MetisStardustTestnet]: 'Metis Stardust',
@@ -239,40 +238,40 @@ export const getChainName = (chainId: number): string => {
     [ChainId.SmartBitcoinCashTestnet]: 'SmartBCH Testnet',
     [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tenenbaum',
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
-    [ChainId.EmeraldParatimeMainnet]: 'Oasis Emerald',
-    [ChainId.EmeraldParatimeTestnet]: 'Oasis Testnet',
+    [ChainId.OasisEmerald]: 'Oasis Emerald',
+    [ChainId.OasisEmeraldTestnet]: 'Oasis Testnet',
     [ChainId.EthereumClassicMainnet]: 'Ethereum Classic',
-    [7700]: 'Canto',
+    [ChainId.Canto]: 'Canto',
     [ChainId.KavaEVM]: 'Kava',
     [ChainId.KavaEVMTestnet]: 'Kava Testnet',
-    [2000]: 'Dogechain',
-    [568]: 'Dogechain Testnet',
+    [ChainId.DogechainMainnet]: 'Dogechain',
+    [ChainId.DogechainTestnet]: 'Dogechain Testnet',
     [ChainId.CallistoMainnet]: 'Callisto',
     [ChainId.NahmiiMainnet]: 'Nahmii',
     [ChainId.CoinExSmartChainMainnet]: 'CoinEx Smart Chain',
     [ChainId.CoinExSmartChainTestnet]: 'CoinEx Testnet',
-    [2109]: 'Exosama',
+    [ChainId.ExosamaNetwork]: 'Exosama',
     [ChainId.FlareMainnet]: 'Flare',
     [ChainId['SongbirdCanary-Network']]: 'Songbird',
     [ChainId.BobaNetwork]: 'Boba',
-    [1662]: 'Horizen Yuma',
-    [324]: 'zkSync Era',
-    [280]: 'zkSync Era Goerli',
-    [1442]: 'Polygon Test-zkEVM',
-    [1101]: 'Polygon zkEVM',
+    [ChainId.HorizenGobiTestnet]: 'Horizen Gobi',
+    [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
+    [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
+    [ChainId.PolygonzkEVM]: 'Polygon zkEVM',
+    [ChainId.PolygonzkEVMTestnet]: 'Polygon Test-zkEVM',
     [ChainId.PulseChainTestnetv3]: 'PulseChain Testnet',
-    [59140]: 'Linea Goerli',
-    [534353]: 'Scroll Alpha',
-    [84531]: 'Base Goerli',
-    [2611]: 'Redlight',
+    [ChainId.LineaTestnet]: 'Linea Goerli',
+    [ChainId.ScrollAlphaTestnet]: 'Scroll Alpha',
+    [ChainId.BaseGoerliTestnet]: 'Base Goerli',
+    [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
-    [167004]: 'Taiko Alpha',
-    [1116]: 'CORE',
+    [ChainId['Taiko(Alpha-2Testnet)']]: 'Taiko Alpha',
+    [ChainId.CoreBlockchainMainnet]: 'CORE',
     [ChainId.KCCMainnet]: 'KCC',
-    [1071]: 'Shimmer Testnet',
-    [248]: 'Oasys',
-    [119]: 'ENULS',
+    [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
+    [ChainId.OasysMainnet]: 'Oasys',
+    [ChainId.ENULSMainnet]: 'ENULS',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -281,43 +280,25 @@ export const getChainName = (chainId: number): string => {
 export const getChainExplorerUrl = (chainId: number): string | undefined => {
   const overrides: Record<number, string> = {
     [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
-    [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
-    [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
-    [ChainId.CeloMainnet]: 'https://celoscan.io',
     [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
     [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev',
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
     [ChainId.BitTorrentChainTestnet]: 'https://testnet.bttcscan.com',
     [ChainId.CLVParachain]: 'https://clvscan.com',
-    [ChainId.SyscoinTanenbaumTestnet]: 'https://tanenbaum.io',
-    [ChainId.SyscoinMainnet]: 'https://explorer.syscoin.org',
     [ChainId.Astar]: 'https://blockscout.com/astar',
     [ChainId.Gnosis]: 'https://gnosisscan.io',
-    [421613]: 'https://goerli.arbiscan.io',
-    [42170]: 'https://nova.arbiscan.io',
-    [7700]: 'https://evm.explorer.canto.io',
-    [ChainId.KavaEVM]: 'https://explorer.kava.io',
+    [ChainId.ArbitrumGoerli]: 'https://goerli.arbiscan.io',
+    [ChainId.ArbitrumNova]: 'https://nova.arbiscan.io',
     [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io',
-    [2000]: 'https://explorer.dogechain.dog',
-    [568]: 'https://explorer-testnet.dogechain.dog',
-    [2109]: 'https://explorer.exosama.com',
-    [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network',
-    [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network',
-    [1662]: 'https://yuma-explorer.horizen.io',
-    [324]: 'https://explorer.zksync.io',
-    [280]: 'https://goerli.explorer.zksync.io',
-    [1442]: 'https://testnet-zkevm.polygonscan.com',
-    [1101]: 'https://zkevm.polygonscan.com',
+    [ChainId.PolygonzkEVM]: 'https://zkevm.polygonscan.com',
+    [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com',
-    [59140]: 'https://explorer.goerli.linea.build',
-    [534353]: 'https://blockscout.scroll.io',
-    [84531]: 'https://goerli.basescan.org',
-    [2611]: 'https://redlightscan.finance',
-    [167004]: 'https://explorer.a2.taiko.xyz',
-    [1116]: 'https://scan.coredao.org',
-    [1071]: 'https://json-rpc.evm.testnet.shimmer.network',
-    [248]: 'https://scan.oasys.games',
-    [119]: 'https://evmscan.nuls.io',
+    [ChainId.LineaTestnet]: 'https://explorer.goerli.linea.build',
+    [ChainId.OasysMainnet]: 'https://scan.oasys.games',
+    [ChainId.OptimismGoerliTestnet]: 'https://goerli-optimism.etherscan.io',
+    [ChainId.FuseMainnet]: 'https://explorer.fuse.io',
+    [ChainId.CallistoMainnet]: 'https://explorer.callisto.network',
+    [ChainId.GodwokenMainnet]: 'https://www.gwscan.com',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -329,47 +310,19 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
   const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
-  // These are not in the eth-chains package, so manually got from chainlist.org
   const overrides: Record<number, string> = {
     [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
-    [421613]: 'https://goerli-rollup.arbitrum.io/rpc',
-    [42170]: 'https://nova.arbitrum.io/rpc',
-    [ChainId.Moonbeam]: 'https://rpc.api.moonbeam.network',
-    [ChainId.Shiden]: 'https://shiden.api.onfinality.io/public',
-    [ChainId.GodwokenMainnet]: 'https://v1.mainnet.godwoken.io/rpc',
-    [7700]: 'https://canto.slingshot.finance',
-    [2000]: 'https://rpc.dogechain.dog',
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
-    [ChainId.KavaEVMTestnet]: 'https://evm.testnet.kava.io',
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
-    [ChainId.CallistoMainnet]: 'https://rpc.callisto.network',
     [ChainId.Astar]: 'https://evm.astar.network',
     [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
-    [ChainId.OptimisticEthereumTestnetGoerli]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
-    [2109]: 'https://rpc.exosama.com',
-    [ChainId.FlareMainnet]: 'https://flare-api.flare.network/ext/C/rpc',
-    [ChainId['SongbirdCanary-Network']]: 'https://songbird-api.flare.network/ext/C/rpc',
+    [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
-    [ChainId.CronosTestnet]: 'https://evm-t3.cronos.org',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
-    [1662]: 'https://yuma-testnet.horizenlabs.io/ethv1',
-    [324]: 'https://zksync2-mainnet.zksync.io',
-    [280]: 'https://zksync2-testnet.zksync.dev',
-    [1442]: 'https://rpc.public.zkevm-test.net',
-    [1101]: 'https://zkevm-rpc.com',
-    [ChainId.PulseChainTestnetv3]: 'https://rpc.v3.testnet.pulsechain.com',
-    [59140]: 'https://consensys-zkevm-goerli-prealpha.infura.io/v3/4372a37c341846f0b2ce479dd29a429b', // TODO: Replace
-    [534353]: 'https://alpha-rpc.scroll.io/l2',
-    [84531]: 'https://goerli.base.org',
-    [2611]: 'https://dataseed2.redlightscan.finance',
-    [167004]: 'https://rpc.a2.taiko.xyz',
-    [1116]: 'https://rpc.coredao.org',
-    [1071]: 'https://json-rpc.evm.testnet.shimmer.network',
-    [248]: 'https://rpc.mainnet.oasys.games',
-    [119]: 'https://evmapi.nuls.io',
+    [ChainId.LineaTestnet]: 'https://consensys-zkevm-goerli-prealpha.infura.io/v3/4372a37c341846f0b2ce479dd29a429b', // TODO: Replace
     ...RPC_OVERRIDES,
   };
 
@@ -389,11 +342,11 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.Mumbai]: `https://polygon-mumbai.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.Optimism]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
-    [ChainId.OptimisticEthereumTestnetGoerli]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.OptimismGoerliTestnet]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.ArbitrumOne]: `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`,
-    [421613]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
-    [1442]: `https://polygonzkevm-testnet.g.alchemy.com/v2/${alchemyKey}`,
-    [1101]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.ArbitrumGoerli]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.PolygonzkEVM]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.PolygonzkEVMTestnet]: `https://polygonzkevm-testnet.g.alchemy.com/v2/${alchemyKey}`,
   };
 
   return overrides[chainId] ?? getChainRpcUrl(chainId);
@@ -420,8 +373,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FantomOpera]: '/assets/images/vendor/chains/fantom.svg',
     [ChainId.FantomTestnet]: '/assets/images/vendor/chains/fantom.svg',
     [ChainId.ArbitrumOne]: '/assets/images/vendor/chains/arbitrum.svg',
-    [421613]: '/assets/images/vendor/chains/arbitrum.svg', // Arbitrum Goerli
-    [42170]: '/assets/images/vendor/chains/arbitrum-nova.svg',
+    [ChainId.ArbitrumGoerli]: '/assets/images/vendor/chains/arbitrum.svg',
+    [ChainId.ArbitrumNova]: '/assets/images/vendor/chains/arbitrum-nova.svg',
     [ChainId.Moonbeam]: '/assets/images/vendor/chains/moonbeam.svg',
     [ChainId.Moonriver]: '/assets/images/vendor/chains/moonriver.svg',
     [ChainId.MoonbaseAlpha]: '/assets/images/vendor/chains/moonbeam.svg',
@@ -438,7 +391,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.Palm]: '/assets/images/vendor/chains/palm.svg',
     [ChainId.PalmTestnet]: '/assets/images/vendor/chains/palm.svg',
     [ChainId.Optimism]: '/assets/images/vendor/chains/optimism.svg',
-    [ChainId.OptimisticEthereumTestnetGoerli]: '/assets/images/vendor/chains/optimism.svg',
+    [ChainId.OptimismGoerliTestnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.Evmos]: '/assets/images/vendor/chains/evmos.svg',
     [ChainId.EvmosTestnet]: '/assets/images/vendor/chains/evmos.svg',
     [ChainId.CeloMainnet]: '/assets/images/vendor/chains/celo.svg',
@@ -452,38 +405,38 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.Astar]: '/assets/images/vendor/chains/astar.svg',
     [ChainId.Shiden]: '/assets/images/vendor/chains/shiden.svg',
     [ChainId.GodwokenMainnet]: '/assets/images/vendor/chains/godwoken.png',
-    [ChainId.EmeraldParatimeMainnet]: '/assets/images/vendor/chains/oasis.png',
-    [ChainId.EmeraldParatimeTestnet]: '/assets/images/vendor/chains/oasis.png',
+    [ChainId.OasisEmerald]: '/assets/images/vendor/chains/oasis.png',
+    [ChainId.OasisEmeraldTestnet]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.EthereumClassicMainnet]: '/assets/images/vendor/chains/etc.png',
-    [7700]: '/assets/images/vendor/chains/canto.svg',
+    [ChainId.Canto]: '/assets/images/vendor/chains/canto.svg',
     [ChainId.KavaEVM]: '/assets/images/vendor/chains/kava.svg',
     [ChainId.KavaEVMTestnet]: '/assets/images/vendor/chains/kava.svg',
     [ChainId.CallistoMainnet]: '/assets/images/vendor/chains/callisto.png',
     [ChainId.NahmiiMainnet]: '/assets/images/vendor/chains/nahmii.svg',
     [ChainId.CoinExSmartChainMainnet]: '/assets/images/vendor/chains/coinex.svg',
     [ChainId.CoinExSmartChainTestnet]: '/assets/images/vendor/chains/coinex.svg',
-    [2109]: '/assets/images/vendor/chains/exosama.png',
+    [ChainId.ExosamaNetwork]: '/assets/images/vendor/chains/exosama.png',
     [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.svg',
     [ChainId['SongbirdCanary-Network']]: '/assets/images/vendor/chains/songbird.svg',
     [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpeg',
-    [1662]: '/assets/images/vendor/chains/horizen.png',
-    [324]: '/assets/images/vendor/chains/zksync.jpeg',
-    [280]: '/assets/images/vendor/chains/zksync.jpeg',
-    [1442]: '/assets/images/vendor/chains/polygon.svg',
-    [1101]: '/assets/images/vendor/chains/polygon.svg',
+    [ChainId.HorizenGobiTestnet]: '/assets/images/vendor/chains/horizen.png',
+    [ChainId.ZkSyncEraMainnet]: '/assets/images/vendor/chains/zksync.jpeg',
+    [ChainId.ZkSyncEraTestnet]: '/assets/images/vendor/chains/zksync.jpeg',
+    [ChainId.PolygonzkEVM]: '/assets/images/vendor/chains/polygon.svg',
+    [ChainId.PolygonzkEVMTestnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PulseChainTestnetv3]: '/assets/images/vendor/chains/pulsechain.png',
-    [59140]: '/assets/images/vendor/chains/linea.svg',
-    [534353]: '/assets/images/vendor/chains/scroll.png',
-    [84531]: '/assets/images/vendor/chains/base.svg',
-    [2611]: '/assets/images/vendor/chains/redlight.png',
+    [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.svg',
+    [ChainId.ScrollAlphaTestnet]: '/assets/images/vendor/chains/scroll.png',
+    [ChainId.BaseGoerliTestnet]: '/assets/images/vendor/chains/base.svg',
+    [ChainId.RedlightChainMainnet]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
-    [167004]: '/assets/images/vendor/chains/taiko.svg',
-    [1116]: '/assets/images/vendor/chains/core.png',
+    [ChainId['Taiko(Alpha-2Testnet)']]: '/assets/images/vendor/chains/taiko.svg',
+    [ChainId.CoreBlockchainMainnet]: '/assets/images/vendor/chains/core.png',
     [ChainId.KCCMainnet]: '/assets/images/vendor/chains/kcc.svg',
-    [248]: '/assets/images/vendor/chains/oasys.png',
-    [1071]: '/assets/images/vendor/chains/shimmer.svg',
-    [119]: '/assets/images/vendor/chains/enuls.svg',
+    [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.png',
+    [ChainId.ShimmerEVMTestnet]: '/assets/images/vendor/chains/shimmer.svg',
+    [ChainId.ENULSMainnet]: '/assets/images/vendor/chains/enuls.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -491,18 +444,8 @@ export const getChainLogo = (chainId: number): string => {
 
 export const getChainNativeToken = (chainId: number): string => {
   const overrides = {
-    [7700]: 'CANTO',
-    [2000]: 'DOGE',
-    [568]: 'DOGE',
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
-    [2109]: 'SAMA',
-    [1662]: 'TZEN',
-    [2611]: 'REDLC',
-    [1116]: 'CORE',
-    [1071]: 'SMR',
-    [248]: 'OAS',
-    [119]: 'NULS',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -571,8 +514,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.FantomOpera]: 'https://api.ftmscan.com/api',
     [ChainId.FantomTestnet]: 'https://api-testnet.ftmscan.com/api',
     [ChainId.ArbitrumOne]: 'https://api.arbiscan.io/api',
-    [421613]: 'https://api-goerli.arbiscan.io/api',
-    [42170]: 'https://api-nova.arbiscan.io/api',
+    [ChainId.ArbitrumGoerli]: 'https://api-goerli.arbiscan.io/api',
+    [ChainId.ArbitrumNova]: 'https://api-nova.arbiscan.io/api',
     [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
     [ChainId.HuobiECOChainTestnet]: 'https://api-testnet.hecoinfo.com/api',
     [ChainId.Moonbeam]: 'https://api-moonbeam.moonscan.io/api',
@@ -586,13 +529,11 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
     [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
     [ChainId.CLVParachain]: 'https://api.clvscan.com/api',
-    [7700]: 'https://evm.explorer.canto.io/api',
+    [ChainId.Canto]: 'https://evm.explorer.canto.io/api',
     [ChainId.KavaEVM]: 'https://explorer.kava.io/api',
     [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io/api',
-    [2000]: 'https://explorer.dogechain.dog/api',
-    [568]: 'https://explorer-testnet.dogechain.dog/api',
     [ChainId.RSKMainnet]: 'https://blockscout.com/rsk/mainnet/api',
-    [ChainId.EmeraldParatimeMainnet]: 'https://explorer.emerald.oasis.dev/api',
+    [ChainId.OasisEmerald]: 'https://explorer.emerald.oasis.dev/api',
     [ChainId.Evmos]: 'https://evm.evmos.org/api',
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
     [ChainId.Shiden]: 'https://blockscout.com/shiden/api',
@@ -603,17 +544,17 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network/api',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
-    [1662]: 'https://yuma-explorer.horizen.io/api',
+    [ChainId.HorizenGobiTestnet]: 'https://gobi-explorer.horizen.io/api',
     [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com/api',
-    [59140]: 'https://explorer.goerli.linea.build/api',
-    [534353]: 'https://blockscout.scroll.io/api',
-    [2611]: 'https://redlightscan.finance/api',
+    [ChainId.LineaTestnet]: 'https://explorer.goerli.linea.build/api',
+    [ChainId.ScrollAlphaTestnet]: 'https://blockscout.scroll.io/api',
+    [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
-    [167004]: 'https://explorer.a2.taiko.xyz/api',
-    [1071]: 'https://explorer.evm.testnet.shimmer.network/api',
-    [248]: 'https://scan.oasys.games/api',
-    [119]: 'https://evmscan.nuls.io/api',
+    [ChainId['Taiko(Alpha-2Testnet)']]: 'https://explorer.a2.taiko.xyz/api',
+    [ChainId.ShimmerEVMTestnet]: 'https://explorer.evm.testnet.shimmer.network/api',
+    [ChainId.OasysMainnet]: 'https://scan.oasys.games/api',
+    [ChainId.ENULSMainnet]: 'https://evmscan.nuls.io/api',
   };
 
   return apiUrls[chainId];

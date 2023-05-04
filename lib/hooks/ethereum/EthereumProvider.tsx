@@ -1,4 +1,4 @@
-import { chains } from 'eth-chains';
+import { chains } from '@revoke.cash/chains';
 import {
   getChainExplorerUrl,
   getChainName,
