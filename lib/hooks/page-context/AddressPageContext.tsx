@@ -35,7 +35,15 @@ export const AddressPageContextProvider = ({ children, address }: Props) => {
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 
   useEffect(() => {
-    router.replace({ query: { ...router.query, chainId: selectedChainId } });
+    if (!router.query.chainId) {
+      router.replace({ query: { ...router.query, chainId: selectedChainId } });
+    }
+  }, [router.query.chainId]);
+
+  useEffect(() => {
+    if (selectedChainId) {
+      router.replace({ query: { ...router.query, chainId: selectedChainId } });
+    }
   }, [selectedChainId]);
 
   const eventContext = useEvents(address, selectedChainId);
