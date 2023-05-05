@@ -31,7 +31,7 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
         <div className="flex items-center gap-2 text-base leading-tight">
           <Logo src={marketplace.logo} alt={marketplace.name} size={24} border />
           <div>{marketplace.name}</div>
-          <WithHoverTooltip tooltip={marketplace.tooltip}>
+          <WithHoverTooltip tooltip={t('address:tooltips.marketplace_listings', { marketplace: marketplace.name })}>
             <div>
               <InformationCircleIcon className="w-4 h-h-4" />
             </div>
