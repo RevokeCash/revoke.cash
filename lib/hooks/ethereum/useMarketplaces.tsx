@@ -1,4 +1,4 @@
-import { ChainId } from 'eth-chains';
+import { ChainId } from '@revoke.cash/chains';
 import { Contract, Signer } from 'ethers';
 import { BLUR, OPENSEA_SEAPORT } from 'lib/abis';
 import { Marketplace, TransactionType } from 'lib/interfaces';
@@ -22,18 +22,20 @@ export const useMarketplaces = (chainId: number) => {
         ChainId.Sepolia,
         ChainId.PolygonMainnet,
         ChainId.Mumbai,
-        ChainId.KlaytnMainnetCypress,
-        ChainId.KlaytnTestnetBaobab,
         ChainId.Optimism,
-        ChainId.OptimisticEthereumTestnetGoerli,
+        ChainId.OptimismGoerliTestnet,
         ChainId.ArbitrumOne,
-        421613, // Arbitrum Goerli
-        42170, // Arbitrum Nova
+        ChainId.ArbitrumGoerli,
+        ChainId.ArbitrumNova,
         ChainId['AvalancheC-Chain'],
         ChainId.AvalancheFujiTestnet,
         ChainId.Gnosis,
         ChainId.BinanceSmartChainMainnet,
         ChainId.BinanceSmartChainTestnet,
+        ChainId.KlaytnMainnetCypress,
+        ChainId.KlaytnTestnetBaobab,
+        ChainId.Moonbeam,
+        ChainId.Moonriver,
       ],
       cancelSignatures: async (signer: Signer) => {
         const seaportContract = new Contract('0x00000000000001ad428e4906aE43D8F9852d0dD6', OPENSEA_SEAPORT, signer);
