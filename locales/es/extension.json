@@ -1,13 +1,13 @@
 {
   "meta": {
     "description": "Protege tus saldos de tokens de Ethereum recibiendo advertencias cuando estás a punto de hacer cualquier cosa posiblemente dañina.",
-    "title": "Revoke.cash - Extensión de navegador"
+    "title": "Revoke.cash - Extensión de Navegador"
   },
   "paragraph_1": "En muchos casos, los sitios web de phishing intentan que firmes una autorización mientras fingen ser un minteo de NFT u otros casos de usos legítimos. Cuando ocurren estas estafas de phishing, se recomienda usar Revoke.cash para mitigar el daño, pero es mejor prevenir la estafa en primer lugar.",
   "paragraph_2": "Aquí es donde entra en juego la extensión Revoke.cash. La extensión aparece cada vez que estás a punto de firmar una autorización y te informará los detalles de esta. Esto puede ayudarte a prevenir firmar autorizaciones maliciosas.",
   "paragraph_3": "La extensión también te informa cuando estás a punto de publicar un artículo en venta en mercados populares como OpenSea y LooksRare, o cuándo estás a punto de firmar un hash. Estos hashes son usados por ciertos mercados como X2Y2 para publicar NFTs en venta.",
-  "paragraph_4": "Una estafa común es intentar engañarte para que firmes una de esas firmas que no requieren pagar gas en un sitio de phishing, permitiendo que los estafadores roben tus NFTs. Los sitios web oficiales de OpenSea, LooksRare, X2Y2, Genie y Gem, están incluidos en la lista de permitidos para estas acciones, de modo que la extensión de navegador Revoke.cash no interrumpe tu flujo normal.",
+  "paragraph_4": "Una estafa común es intentar engañarte para que firmes una de esas firmas que no requieren pagar gas en un sitio de phishing, permitiendo que los estafadores roben tus NFTs. Los sitios web oficiales de OpenSea, LooksRare, X2Y2, Uniswap y Blur, están incluidos en la lista de permitidos para estas acciones, de modo que la extensión de navegador Revoke.cash no interrumpe tu flujo normal.",
   "paragraph_5": "Las diferentes categorías de advertencias pueden ser activadas y desactivadas en la configuración de la extensión.",
   "paragraph_6": "La extensión de navegador Revoke.cash funciona con todas las blockchains basadas en la EVM; como Ethereum, Avalanche o Polygon.",
-  "title": "Extensión de navegador Revoke.cash"
+  "title": "Extensión de Navegador Revoke.cash"
 }

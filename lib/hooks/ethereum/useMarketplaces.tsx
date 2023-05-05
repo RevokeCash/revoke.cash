@@ -2,19 +2,16 @@ import { ChainId } from '@revoke.cash/chains';
 import { Contract, Signer } from 'ethers';
 import { BLUR, OPENSEA_SEAPORT } from 'lib/abis';
 import { Marketplace, TransactionType } from 'lib/interfaces';
-import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 import { useHandleTransaction } from './useHandleTransaction';
 
 export const useMarketplaces = (chainId: number) => {
-  const { t } = useTranslation();
   const handleTransaction = useHandleTransaction();
 
   const allMarketplaces: Marketplace[] = [
     {
       name: 'OpenSea',
       logo: '/assets/images/vendor/opensea.svg',
-      tooltip: t('address:tooltips.marketplace_listings', { marketplace: 'OpenSea' }),
       chains: [
         // See https://github.com/ProjectOpenSea/seaport
         ChainId.EthereumMainnet,
@@ -46,7 +43,6 @@ export const useMarketplaces = (chainId: number) => {
     {
       name: 'Blur',
       logo: '/assets/images/vendor/blur.png',
-      tooltip: t('address:tooltips.marketplace_listings', { marketplace: 'Blur' }),
       chains: [ChainId.EthereumMainnet],
       cancelSignatures: async (signer: Signer) => {
         const blurContract = new Contract('0x000000000000Ad05Ccc4F10045630fb830B95127', BLUR, signer);
