@@ -1,6 +1,5 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import { Analytics } from '@vercel/analytics/react';
 import LogIn from 'components/common/LogIn';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
@@ -69,7 +68,6 @@ const App = ({ Component, pageProps }: AppProps) => {
         </EthereumProvider>
       </QueryProvider>
       <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
-      <Analytics />
     </>
   );
 };

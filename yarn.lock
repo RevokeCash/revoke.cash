@@ -2348,15 +2348,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/analytics@npm:^0.1.11":
-  version: 0.1.11
-  resolution: "@vercel/analytics@npm:0.1.11"
-  peerDependencies:
-    react: ^16.8||^17||^18
-  checksum: 05b8180ac6e23ebe7c09d74c43f8ee78c408cd0b6546e676389cbf4fba44dfeeae3648c9b52e2421be64fe3aeee8b026e6ea4bdfc0589fb5780670f2b090a167
-  languageName: node
-  linkType: hard
-
 "@wagmi/chains@npm:0.2.15":
   version: 0.2.15
   resolution: "@wagmi/chains@npm:0.2.15"
@@ -9126,7 +9117,6 @@ __metadata:
     "@unstoppabledomains/resolution": ^9.0.0
     "@upstash/ratelimit": ^0.4.1
     "@upstash/redis": ^1.20.2
-    "@vercel/analytics": ^0.1.11
     "@walletconnect/web3-provider": ^1.8.0
     autoprefixer: ^10.4.14
     axios: ^0.26.1
