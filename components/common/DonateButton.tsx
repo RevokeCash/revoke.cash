@@ -60,13 +60,13 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
         value: utils.parseEther(amount),
       });
 
-      toast.info(t('common:toasts.donation_sent'));
+      toast.info(t<string>('common:toasts.donation_sent'));
 
       track('Donated', { chainId: chain?.id, amount: Number(amount) });
 
       handleClose();
-    } catch (err) {
-      if (err.code && err.code === 'INVALID_ARGUMENT') {
+    } catch (err: any) {
+      if (err?.code === 'INVALID_ARGUMENT') {
         alert('Input is not a valid number');
       }
 

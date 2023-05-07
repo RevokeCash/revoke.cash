@@ -9,7 +9,7 @@ import { normaliseLabel } from 'lib/utils';
 import { updateTableFilters } from 'lib/utils/table';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
-import { FormatOptionLabelMeta } from 'react-select';
+import { FormatOptionLabelMeta, ValueContainerProps } from 'react-select';
 import useLocalStorage from 'use-local-storage';
 import { ColumnId } from '../columns';
 
@@ -113,10 +113,10 @@ const FilterSelect = ({ table }: Props) => {
 export default FilterSelect;
 
 // We disable MultiValue and implement our own ValueContainer to display the selected options in a more compact way
-const ValueContainer = ({ children, getValue, options }) => {
+const ValueContainer = ({ children, getValue, options }: ValueContainerProps<Option, true, OptionGroup>) => {
   const { t } = useTranslation();
 
-  const groupsWithSelected = getGroupsWithSelected(options, getValue());
+  const groupsWithSelected = getGroupsWithSelected(options as OptionGroup[], getValue());
 
   const labels = groupsWithSelected.map((group) => {
     const commonKey = `address:filters.${normaliseLabel(group.label)}`;
@@ -146,7 +146,7 @@ const ValueContainer = ({ children, getValue, options }) => {
   );
 };
 
-const getGroupsWithSelected = (groups: OptionGroup[], selected: Option[]): OptionGroupWithSelected[] => {
+const getGroupsWithSelected = (groups: OptionGroup[], selected: readonly Option[]): OptionGroupWithSelected[] => {
   const groupsWithSelected = groups.map((group) => {
     const groupSelected = selected.filter((option) => option.group === group.label);
     // If all are selected, then none are selected

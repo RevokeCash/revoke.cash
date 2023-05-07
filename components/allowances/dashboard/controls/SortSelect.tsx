@@ -11,7 +11,7 @@ import useLocalStorage from 'use-local-storage';
 import { ColumnId, customSortingFns } from '../columns';
 
 interface Option {
-  id: ColumnId;
+  id: string;
   value: string;
   column: Column<AllowanceData>;
   desc: boolean;

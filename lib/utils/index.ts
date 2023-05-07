@@ -131,12 +131,12 @@ export const filterLogsByAddress = (logs: Log[], address: string) => {
 
 export const writeToClipBoard = (text: string, t: Translate, displayToast: boolean = true) => {
   if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
-    toast.info(t('common:toasts.clipboard_failed'), { autoClose: 1000 });
+    toast.info(t<string>('common:toasts.clipboard_failed'), { autoClose: 1000 });
   }
 
   navigator.clipboard.writeText(text);
   if (displayToast) {
-    toast.info(t('common:toasts.clipboard_success'), { autoClose: 1000 });
+    toast.info(t<string>('common:toasts.clipboard_success'), { autoClose: 1000 });
   }
 };
 

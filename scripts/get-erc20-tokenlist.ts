@@ -33,7 +33,7 @@ const getTokenMappingFromCoinGecko = async (chainId: number): Promise<ChainToken
     const res = await axios.get(url);
     const { tokens } = res.data;
 
-    const tokenMapping = {};
+    const tokenMapping: ChainTokenMapping = {};
     for (const token of tokens) {
       try {
         tokenMapping[utils.getAddress(token.address)] = {
@@ -47,7 +47,7 @@ const getTokenMappingFromCoinGecko = async (chainId: number): Promise<ChainToken
     }
 
     return tokenMapping;
-  } catch (e) {
+  } catch (e: any) {
     console.log('              CoinGecko Error:', e.message);
     return undefined;
   }
@@ -57,7 +57,7 @@ const getTokenMappingFrom1inch = async (chainId: number): Promise<ChainTokenMapp
   try {
     const res = await axios.get(`https://tokens.1inch.io/v1.1/${chainId}`);
 
-    const tokenMapping = {};
+    const tokenMapping: ChainTokenMapping = {};
     for (const token of Object.values<any>(res.data)) {
       tokenMapping[utils.getAddress(token.address)] = {
         symbol: token.symbol,
@@ -67,7 +67,7 @@ const getTokenMappingFrom1inch = async (chainId: number): Promise<ChainTokenMapp
     }
 
     return tokenMapping as ChainTokenMapping;
-  } catch (e) {
+  } catch (e: any) {
     // 404 and 500 errors are expected when the chain is not supported
     if (!e?.message?.includes('404') && !e?.message?.includes('500')) {
       console.log('              1inch Error:', e.message);
