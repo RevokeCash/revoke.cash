@@ -8,7 +8,10 @@ const InfoPanel = () => {
       <div className="flex items-center gap-4">
         <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500 shrink-0" />
         <div>
-          <Trans i18nKey="address:signatures.info.description" components={[<span className="italic" />]} />
+          <Trans
+            i18nKey="address:signatures.info.description"
+            components={[<span className="italic" />, <span className="font-bold" />]}
+          />
         </div>
       </div>
     </DashboardPanel>
