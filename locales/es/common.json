@@ -1,7 +1,9 @@
 {
   "buttons": {
     "cancel": "Cancelar",
-    "clear_filters": "Clear Filters",
+    "cancel_signatures": "Cancelar Firmas",
+    "cancelling": "Cancelando",
+    "clear_filters": "Quitar Filtros",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "disconnect": "Desconectar",
@@ -15,14 +17,14 @@
     "revoking": "Revocando",
     "send": "Enviar",
     "sending": "Enviando",
-    "switch_chain": "Cambiar de red",
+    "switch_chain": "Cambiar de Red",
     "switching": "Cambiando",
     "update": "Actualizar",
     "updating": "Actualizando"
   },
   "chain_select": {
-    "mainnets": "Redes principales",
-    "testnets": "Redes de prueba"
+    "mainnets": "Redes Principales",
+    "testnets": "Redes de Prueba"
   },
   "color_themes": {
     "dark": "Oscuro",
@@ -30,7 +32,7 @@
     "system": "Sistema"
   },
   "connect_wallet": {
-    "title": "Conecta tu billetera"
+    "title": "Conecta tu Billetera"
   },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
@@ -80,7 +82,8 @@
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
     "revoke_failed": "❌ No se pudo revocar la autorización: {{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: {{message}}. Please reach out to this token's team to resolve this issue.",
+    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Ponte en contacto con el equipo de este token para resolver este problema.",
+    "transaction_failed": "❌ Transacción fallida: {{message}}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
     "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revóquelo por favor."
   }

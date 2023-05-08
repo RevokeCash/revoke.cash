@@ -1,6 +1,9 @@
 // This is a list of chain name + address tuples. The chain name will be selected in the dropdown, and the address
 // entered in the input field. These addresses are either my own address or random addresses that I've found to have
 // allowances on these chains. Because these addresses were chosen randomly it is possible that some allowances may
+
+import { Selectors, TEST_URL } from 'cypress/support/utils';
+
 // get revoked, causing the tests to fail. In that case we need to replace the address with a new one.
 const fixtures = [
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
@@ -68,26 +71,15 @@ const fixtures = [
   ['Moonbase Alpha', '0xeE146d0808D6a874237701E06A118f444dB13D73'],
   ['CoinEx Testnet', '0x5B82588003Ac9db7510702171b94f4acAF87Ca72'],
   ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
-  ['Horizen Yuma', '0xA54FE4eDa4B288B9dDC40EBA35f3730c7D55f898'],
+  ['Horizen Gobi', '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32'],
   ['PulseChain Testnet', '0xc068aEAdc48427fde985866DAa3e52D4d63935C3'],
   ['Gather Testnet', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
   ['Shimmer Testnet', '0x6e18ACee6fa8EF7Daf13D32B2424152662c9e07a'],
 ];
 
-const Selectors = {
-  CHAIN_SELECT_BUTTON: '.chain-select__control',
-  CHAIN_SELECT_OPTION: '.chain-select__option',
-  ALLOWANCES_TABLE: '.allowances-table',
-  ALLOWANCES_LOADER: '.allowances-loader',
-  CONTROLS_SECTION: '.controls-section',
-  ADDRESS_INPUT: '.address-input',
-};
-
-const URL = Cypress.env('url') ?? 'http://localhost:3000';
-
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
-    cy.visit(`${URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
+    cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
 
     const fixtureChainNames = fixtures.map(([chainName]) => chainName);
@@ -97,15 +89,31 @@ describe('Chain Support', () => {
 
   fixtures.forEach(([chainName, fixtureAddress]) => {
     it(`should support ${chainName}`, () => {
-      cy.visit(`${URL}/address/${fixtureAddress}`, { timeout: 10_000 });
+      cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
 
       cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
       cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
 
-      cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4000 }).should('exist');
+      cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4_000 }).should('exist');
       cy.wait(100); // Wait for the loading spinner to appear
       cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
-      cy.get(Selectors.CONTROLS_SECTION, { timeout: 4000 }).should('exist');
+      cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
+
+      const shouldCheckExplorer = Boolean(Cypress.env('checkExplorer'));
+      if (shouldCheckExplorer) {
+        // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
+        const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
+        linkElement.invoke('attr', 'href').then((href) => {
+          console.log('aaaaaaaaa', href);
+          cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
+            // Supress errors on the explorer page
+            cy.on('uncaught:exception', () => false);
+
+            cy.visit(href);
+            cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
+          });
+        });
+      }
     });
   });
 });

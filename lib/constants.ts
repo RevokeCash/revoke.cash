@@ -7,7 +7,6 @@ export const CHROME_EXTENSION_URL =
   'https://chrome.google.com/webstore/detail/revokecash/nmniboccheadcclilkfkonokbcoceced';
 export const FIREFOX_EXTENSION_URL = 'https://addons.mozilla.org/en-US/firefox/addon/revoke-cash/';
 export const DISCORD_URL = 'https://discord.gg/revoke-cash';
-export const GITCOIN_URL = 'https://gitcoin.co/grants/259/revokecash-helping-you-stay-safe-in-web3';
 export const GITHUB_URL = 'https://github.com/RevokeCash/revoke.cash';
 export const TWITTER_URL = 'https://twitter.com/RevokeCash';
 
@@ -27,7 +26,7 @@ export const IRON_OPTIONS: IronSessionOptions = {
   password: process.env.IRON_SESSION_PASSWORD,
   ttl: 60 * 60 * 24,
   cookieOptions: {
-    secure: true, // Change this to false when locally testing on Safari, must be true for locally testing Gnosis Safe
+    secure: true, // Change this to false when locally testing on Safari
     sameSite: 'none',
   },
 };

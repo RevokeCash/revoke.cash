@@ -1,4 +1,4 @@
-import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
+import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20Permit.json';
 import ERC721MetadataArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 
 export const ERC20 = ERC20Artifact.abi;
@@ -155,5 +155,50 @@ export const OPENSEA_REGISTRY = [
     ],
     name: 'OwnershipTransferred',
     type: 'event',
+  },
+];
+
+export const OPENSEA_SEAPORT = [
+  {
+    constant: false,
+    inputs: [],
+    name: 'incrementCounter',
+    outputs: [{ name: 'newCounter', type: 'uint256' }],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
+
+export const BLUR = [
+  {
+    constant: false,
+    inputs: [],
+    name: 'incrementNonce',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
+
+export const DAI_PERMIT = [
+  {
+    constant: false,
+    inputs: [
+      { internalType: 'address', name: 'holder', type: 'address' },
+      { internalType: 'address', name: 'spender', type: 'address' },
+      { internalType: 'uint256', name: 'nonce', type: 'uint256' },
+      { internalType: 'uint256', name: 'expiry', type: 'uint256' },
+      { internalType: 'bool', name: 'allowed', type: 'bool' },
+      { internalType: 'uint8', name: 'v', type: 'uint8' },
+      { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+      { internalType: 'bytes32', name: 's', type: 'bytes32' },
+    ],
+    name: 'permit',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
 ];

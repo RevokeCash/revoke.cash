@@ -7,15 +7,15 @@ import { TOKEN_MAPPING } from 'lib/data/token-mapping';
 import type { AllowanceData, BaseTokenData, Log } from 'lib/interfaces';
 import { toFloat } from '.';
 import spamTokens from '../data/spam-tokens.json';
+import { getPermitDomain } from './permit';
 import { convertString, unpackResult, withFallback } from './promises';
 
 export const isSpamToken = (allowance: AllowanceData) => {
   const includesHttp = /https?:\/\//i.test(allowance.symbol);
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
-  const includesTld =
-    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i.test(
-      allowance.symbol
-    );
+  const tldRegex =
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i;
+  const includesTld = tldRegex.test(allowance.symbol);
   return includesHttp || includesTld || spamTokens.includes(allowance.contract.address);
 };
 
@@ -150,4 +150,16 @@ const getTokenInterface = (event: Log): Interface | undefined => {
 
 export const isErc721Contract = (contract: Contract) => {
   return contract.interface.events['ApprovalForAll(address,address,bool)'] !== undefined;
+};
+
+export const hasSupportForPermit = async (contract: Contract) => {
+  if (isErc721Contract(contract)) return false;
+
+  // If we can properly retrieve the EIP712 domain and nonce, it supports permit
+  try {
+    await Promise.all([getPermitDomain(contract), contract.functions.nonces(DUMMY_ADDRESS)]);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };

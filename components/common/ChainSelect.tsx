@@ -51,11 +51,9 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {
     const chainName = getChainName(chainId);
 
-    if (!isMounted) return null;
-
     return (
       <div className="flex items-center gap-1">
-        <ChainLogo chainId={chainId} />
+        {isMounted ? <ChainLogo chainId={chainId} /> : <PlaceholderIcon size={24} border className="bg-transparent" />}
         {(context === 'menu' || showName) && <div>{chainName}</div>}
       </div>
     );

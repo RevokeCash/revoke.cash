@@ -1,5 +1,5 @@
-import type { Log as EthersLog } from '@ethersproject/abstract-provider';
-import type { Contract } from 'ethers';
+import type { Log as EthersLog, TransactionResponse } from '@ethersproject/abstract-provider';
+import type { Contract, Signer } from 'ethers';
 
 export interface BaseTokenData {
   contract: Contract;
@@ -10,6 +10,7 @@ export interface BaseTokenData {
   icon?: string;
   decimals?: number;
   totalSupply?: string;
+  supportsPermit?: boolean;
 }
 
 export interface BaseAllowanceData {
@@ -75,4 +76,17 @@ export interface Filter {
   topics: string[];
   fromBlock: number;
   toBlock: number;
+}
+
+export enum TransactionType {
+  REVOKE = 'revoke',
+  UPDATE = 'update',
+  OTHER = 'other',
+}
+
+export interface Marketplace {
+  name: string;
+  logo: string;
+  chains: number[];
+  cancelSignatures: (signer: Signer) => Promise<TransactionResponse>;
 }

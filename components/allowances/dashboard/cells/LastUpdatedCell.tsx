@@ -21,7 +21,7 @@ const LastUpdatedCell = ({ allowance }: Props) => {
   return (
     <div className="flex justify-start font-monosans">
       <WithHoverTooltip tooltip={<TimeAgo datetime={lastUpdatedDate} locale={lang} />}>
-        <Href underline="hover" href={`${explorerUrl}/tx/${allowance.transactionHash}`} external>
+        <Href underline="hover" href={`${explorerUrl}/tx/${allowance.transactionHash}`} external className="tx-link">
           {formatDateNormalised(lastUpdatedDate)}
         </Href>
       </WithHoverTooltip>

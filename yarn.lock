@@ -1552,6 +1552,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@revoke.cash/chains@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@revoke.cash/chains@npm:1.0.0"
+  checksum: a0c1481128f5be06ae61f7dc0cd69ffaa3b8df8affb0829ff8ca92a3de25e11e89d488ae8422b5c72c806dc3d27f5a23c820b31670c55436256a6881885d4db3
+  languageName: node
+  linkType: hard
+
 "@safe-global/safe-apps-provider@npm:^0.15.2":
   version: 0.15.2
   resolution: "@safe-global/safe-apps-provider@npm:0.15.2"
@@ -2338,15 +2345,6 @@ __metadata:
   dependencies:
     isomorphic-fetch: ^3.0.0
   checksum: 14998cf8bda76530bfa80383b0aae53c3fa031826ee18707d0f03d065907c351c08a7d83d568519fb4b16ed5ada14153e1ae9d82800558a7624436a4e58c1150
-  languageName: node
-  linkType: hard
-
-"@vercel/analytics@npm:^0.1.11":
-  version: 0.1.11
-  resolution: "@vercel/analytics@npm:0.1.11"
-  peerDependencies:
-    react: ^16.8||^17||^18
-  checksum: 05b8180ac6e23ebe7c09d74c43f8ee78c408cd0b6546e676389cbf4fba44dfeeae3648c9b52e2421be64fe3aeee8b026e6ea4bdfc0589fb5780670f2b090a167
   languageName: node
   linkType: hard
 
@@ -5021,13 +5019,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eth-chains@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "eth-chains@npm:1.0.0"
-  checksum: 8680c38d16be3031ff14d423d9e3bf3fda941ee4ff0982fb1fac3cc858ae6807ade4cf01b0e49575b44ba57f3eebf3097e5016a744d8ba6ecf5856de62d7d0ba
-  languageName: node
-  linkType: hard
-
 "eth-json-rpc-filters@npm:5.1.0":
   version: 5.1.0
   resolution: "eth-json-rpc-filters@npm:5.1.0"
@@ -5083,6 +5074,15 @@ __metadata:
     pify: ^3.0.0
     safe-event-emitter: ^1.0.1
   checksum: d4ef8c6ba85cc0060c09ded79152d46cdd1a85124c655f40bb8ca72a4b52dfe7ef101b45dae1ac04558900ccb10b98e5c9570be22715a7dc158e822728e159b5
+  languageName: node
+  linkType: hard
+
+"eth-permit@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "eth-permit@npm:0.2.3"
+  dependencies:
+    utf8: ^3.0.0
+  checksum: 9bf3eed8ecb8c914aadfff97d6c3d19fc432928c72fbe205075153e84289ea95f3a101f77e2dae78ad629e09682700241f207b5436b575ca7d4fbae68eacd3f6
   languageName: node
   linkType: hard
 
@@ -9112,6 +9112,7 @@ __metadata:
     "@heroicons/react": ^2.0.17
     "@localazy/cli": ^1.7.1
     "@openzeppelin/contracts": ^4.8.2
+    "@revoke.cash/chains": ^1.0.0
     "@tanstack/query-sync-storage-persister": ^4.27.1
     "@tanstack/react-query": ^4.28.0
     "@tanstack/react-query-persist-client": ^4.28.0
@@ -9125,7 +9126,6 @@ __metadata:
     "@unstoppabledomains/resolution": ^9.0.0
     "@upstash/ratelimit": ^0.4.1
     "@upstash/redis": ^1.20.2
-    "@vercel/analytics": ^0.1.11
     "@walletconnect/web3-provider": ^1.8.0
     autoprefixer: ^10.4.14
     axios: ^0.26.1
@@ -9133,7 +9133,7 @@ __metadata:
     cypress: ^12.9.0
     dexie: ^3.2.3
     dotenv: ^16.0.3
-    eth-chains: ^1.0.0
+    eth-permit: ^0.2.3
     ethers: ^5.7.2
     express-rate-limit: ^6.7.0
     husky: ^8.0.3
@@ -10367,6 +10367,13 @@ __metadata:
     node-gyp: latest
     node-gyp-build: ^4.3.0
   checksum: 5579350a023c66a2326752b6c8804cc7b39dcd251bb088241da38db994b8d78352e388dcc24ad398ab98385ba3c5ffcadb6b5b14b2637e43f767869055e46ba6
+  languageName: node
+  linkType: hard
+
+"utf8@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "utf8@npm:3.0.0"
+  checksum: cb89a69ad9ab393e3eae9b25305b3ff08bebca9adc839191a34f90777eb2942f86a96369d2839925fea58f8f722f7e27031d697f10f5f39690f8c5047303e62d
   languageName: node
   linkType: hard
 

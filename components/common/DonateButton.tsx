@@ -1,12 +1,10 @@
 import { track } from '@amplitude/analytics-browser';
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
-import Href from 'components/common/Href';
 import Modal from 'components/common/Modal';
 import { utils } from 'ethers';
-import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
+import { DONATION_ADDRESS } from 'lib/constants';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
-import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
@@ -84,8 +82,10 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
 
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
-          <div className="text-center sm:text-left w-full flex flex-col gap-2">
-            <Dialog.Title as="h3">{t('common:donate.title')}</Dialog.Title>
+          <div className="w-full flex flex-col gap-2 pb-2">
+            <Dialog.Title as="h3" className="text-center">
+              {t('common:donate.title')}
+            </Dialog.Title>
 
             <div className="h-9 flex">
               <Input
@@ -108,9 +108,6 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
               >
                 {loading ? t('common:buttons.sending') : t('common:buttons.send')}
               </Button>
-            </div>
-            <div className="flex justify-end gap-1">
-              <Trans i18nKey="common:donate.gitcoin_grants" components={[<Href href={GITCOIN_URL} external />]} />
             </div>
           </div>
         </div>

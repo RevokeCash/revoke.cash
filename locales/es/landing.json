@@ -25,9 +25,9 @@
   "sponsors": {
     "description": "El desarrollo continuo de Revoke.cash es posible gracias a las donaciones y patrocinios. Estas son las personas y organizaciones que nos han apoyado con patrocinios mensuales hasta ahora. Si quieres unirte a ellos para patrocinar Revoke.cash, echa un vistazo a nuestra <0>página de patrocinios</0>.",
     "tiers": {
-      "bronze": "Patrocinador de bronce",
+      "bronze": "Patrocinador de Bronce",
       "gold": "Patrocinador de Oro",
-      "silver": "Patrocinador de plata"
+      "silver": "Patrocinador de Plata"
     },
     "title": "Patrocinadores"
   },

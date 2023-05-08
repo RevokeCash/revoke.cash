@@ -3,7 +3,7 @@
     "amount": "{{amount}} {{symbol}}",
     "none": "没有授权",
     "none_found": "没有授权",
-    "none_found_filtered": "No allowances found for the selected filters",
+    "none_found_filtered": "所选过滤条件下未找到授权",
     "token_id": "代币 #{{tokenId}}",
     "unlimited": "无限"
   },
@@ -51,8 +51,28 @@
     "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
     "title": "Revoke.cash-检查并撤销 {{address}} 的授权"
   },
+  "navigation": {
+    "allowances": "授权",
+    "history": "历史",
+    "more": "更多",
+    "settings": "设置",
+    "signatures": "签名"
+  },
   "search": {
-    "spender": "Search by Authorized Spender Address"
+    "spender": "按授权的花费地址搜索"
+  },
+  "signatures": {
+    "info": {
+      "description": "由于区块链不存储签名，因此Revoke.cash无法检查您是否签署了任何签名。因此，此页面包含<0>潜在</0>签名列表。只有在确定自己在钓鱼网站上签名时，才需要取消这些签名。取消签名后，该条目将保留在列表中供下次使用。"
+    },
+    "marketplaces": {
+      "none_found": "未找到该链的消费市场。",
+      "title": "市场签名"
+    },
+    "permit": {
+      "none_found": "未找到支持许可的代币。",
+      "title": "允许签名"
+    }
   },
   "sorting": {
     "columns": {
@@ -78,8 +98,11 @@
     "label": "排序"
   },
   "tooltips": {
-    "connect_wallet": "请连接钱包再撤销",
-    "connected_account": "您只能撤销已连接账户的授权",
-    "switch_chain": "请切换钱包到目标链 <0>{{chainName}}</0>以便撤销"
+    "connect_wallet": "请连接钱包继续下一步",
+    "connected_account": "您只能操作已连接的账户",
+    "marketplace_listings": "这将取消 {{marketplace}} 上的所有当前列出的产品和报价。",
+    "marketplace_signatures": "一旦获得批准，市场可以代表您转移资产。骗子可利用这些批准在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",
+    "permit_signatures": "许可签名用于在无需发送交易的情况下批准花费。如果您在钓鱼网站上签署了许可签名，请取消。",
+    "switch_chain": "请切换钱包到目标链 <0>{{chainName}}</0>以继续操作"
   }
 }

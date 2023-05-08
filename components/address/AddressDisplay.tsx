@@ -1,7 +1,6 @@
 import CopyButton from 'components/common/CopyButton';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { shortenAddress } from 'lib/utils';
-import useTranslation from 'next-translate/useTranslation';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -13,8 +12,6 @@ interface Props {
 }
 
 const AddressDisplay = ({ address, domainName, className, withCopyButton, withTooltip }: Props) => {
-  const { t } = useTranslation();
-
   const classes = twMerge('flex gap-1 items-center', className, 'leading-none');
 
   return (

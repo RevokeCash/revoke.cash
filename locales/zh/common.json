@@ -1,7 +1,9 @@
 {
   "buttons": {
     "cancel": "取消",
-    "clear_filters": "Clear Filters",
+    "cancel_signatures": "取消签名",
+    "cancelling": "正在取消",
+    "clear_filters": "清除筛选条件",
     "connect": "连接钱包",
     "connecting": "正在连接",
     "disconnect": "断开连接",
@@ -80,7 +82,8 @@
     "clipboard_success": "✅ 已复制到剪贴板",
     "donation_sent": "💪 感谢捐赠！",
     "revoke_failed": "❌ 撤销授权许可失败：{{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: {{message}}. Please reach out to this token's team to resolve this issue.",
+    "revoke_failed_revert": "❌ 撤销授权失败：{{message}}。请联系该代币团队来解决这个问题。",
+    "transaction_failed": "交易失败{{message}}",
     "transaction_submitted": "✅ 交易已提交！",
     "update_failed": "❌ 此代币不支持更新授权，请改为撤销。"
   }

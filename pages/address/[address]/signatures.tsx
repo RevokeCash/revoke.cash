@@ -1,8 +1,5 @@
-import AddressHeader from 'components/address/AddressHeader';
-import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
-import LogIn from 'components/common/LogIn';
-import PublicLayout from 'layouts/PublicLayout';
-import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
+import SignaturesDashboard from 'components/signatures/SignaturesDashboard';
+import AddressPageLayout from 'layouts/AddressPageLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import { parseInputAddress } from 'lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';
@@ -12,10 +9,9 @@ import useTranslation from 'next-translate/useTranslation';
 interface Props {
   address: string;
   ssrDomainName?: string;
-  openSeaProxyAddress?: string;
 }
 
-const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
+const AddressSignaturesPage: NextPage<Props> = ({ address, ssrDomainName }) => {
   const { t } = useTranslation();
 
   return (
@@ -25,19 +21,13 @@ const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
         title={t('address:meta.title', { address: ssrDomainName ?? address })}
         description={t('address:meta.description')}
       />
-      <PublicLayout>
-        <AddressPageContextProvider address={address}>
-          <AddressHeader />
-          <LogIn showSpinner>
-            <AllowanceDashboard />
-          </LogIn>
-        </AddressPageContextProvider>
-      </PublicLayout>
+      <AddressPageLayout address={address}>
+        <SignaturesDashboard />
+      </AddressPageLayout>
     </>
   );
 };
 
-// TODO: ChainId query param
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const addressParam = (context.query!.address as string).toLowerCase();
   const address = await parseInputAddress(addressParam);
@@ -58,4 +48,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   };
 };
 
-export default AddressPage;
+export default AddressSignaturesPage;

@@ -17,6 +17,7 @@ export const isLogResponseSizeError = (error: any) => {
   const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
   if (errorMessage?.includes('query returned more than 10000 results')) return true;
   if (errorMessage?.includes('Log response size exceeded')) return true;
+  if (errorMessage?.includes('Query timeout exceeded')) return true;
   return false;
 };
 
