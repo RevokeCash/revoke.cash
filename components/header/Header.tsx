@@ -13,12 +13,12 @@ const Header = () => {
   return (
     <header className="flex flex-col relative p-4 md:px-8 gap-4">
       <div className="flex justify-between items-center gap-8">
-        <div className="hidden md:flex justify-start items-center gap-4 w-1/3">
+        <div className="hidden lg:flex justify-start items-center gap-4 w-1/3">
           <DonateButton size="md" />
           <NavLink to="/faq" text={t('common:nav.faq')} />
           <NavLink to="/extension" text={t('common:nav.extension')} />
         </div>
-        <div className="flex md:justify-center grow w-1/3">
+        <div className="flex lg:justify-center grow w-1/3">
           <Href href="/" underline="none" className="flex" router>
             <Image
               src="/assets/images/revoke.svg"
@@ -29,10 +29,10 @@ const Header = () => {
             />
           </Href>
         </div>
-        <div className="hidden md:flex justify-end w-1/3 gap-2">
+        <div className="hidden lg:flex justify-end w-1/3 gap-2">
           <WalletIndicator />
         </div>
-        <div className="flex md:hidden justify-end">
+        <div className="flex lg:hidden justify-end">
           <MobileMenu />
         </div>
       </div>

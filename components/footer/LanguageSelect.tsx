@@ -19,8 +19,8 @@ const LanguageSelect = () => {
   const options: Option[] = [
     { value: 'en', name: 'English' },
     { value: 'zh', name: '中文' },
+    { value: 'ru', name: 'Русский' },
     { value: 'es', name: 'Español' },
-    { value: 'ru', name: 'Russian' },
   ];
 
   const persistLocaleCookie = (locale: string) => {

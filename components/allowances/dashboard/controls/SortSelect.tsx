@@ -86,7 +86,7 @@ const SortSelect = ({ table }: Props) => {
   return (
     <Select
       instanceId="sort-select"
-      className="h-full w-full lg:w-72 shrink-0"
+      className="h-full w-full shrink-0"
       classNamePrefix="sort-select"
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
