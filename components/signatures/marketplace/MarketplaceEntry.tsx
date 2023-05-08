@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
@@ -22,6 +23,11 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
   const { data: signer } = useSigner();
   const { execute: onClick, loading } = useAsyncCallback(async () => {
     const transaction = await marketplace?.cancelSignatures(signer);
+    track('Cancelled Marketplace Signatures', {
+      chainId: selectedChainId,
+      account: address,
+      marketplace: marketplace.name,
+    });
     await transaction.wait(1);
   });
 

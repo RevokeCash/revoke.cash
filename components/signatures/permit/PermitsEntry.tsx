@@ -1,3 +1,4 @@
+import { track } from '@amplitude/analytics-browser';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import Button from 'components/common/Button';
@@ -25,6 +26,7 @@ const PermitsEntry = ({ token }: Props) => {
     const writeContract = new Contract(token.contract.address, token.contract.interface, signer);
     const transactionPromise = permit(signer, writeContract, DUMMY_ADDRESS, '0');
     const transaction = await handleTransaction(transactionPromise, TransactionType.OTHER);
+    track('Cancelled Permit Signatures', { chainId: selectedChainId, account: address, token: token.contract.address });
     await transaction.wait(1);
   });
 
