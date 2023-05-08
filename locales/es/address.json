@@ -63,7 +63,7 @@
   },
   "signatures": {
     "info": {
-      "description": "Como las firmas no se almacenan en la blockchain, Revoke.cash no tiene forma de comprobar si realmente has firmado alguna firma. Por lo tanto, esta página contiene una lista de <0>posibles</0> firmas. Solo tienes que cancelar estas firmas si estás seguro de haber firmado una en un sitio web de phishing. Tras cancelar una firma, la entrada permanecerá en la lista para la próxima vez."
+      "description": "Como las firmas no se almacenan en la blockchain, Revoke.cash no tiene forma de comprobar si realmente has firmado alguna firma. Por lo tanto, esta página contiene una lista de <0>posibles</0> firmas. <1>Solo tienes que cancelar estas firmas si estás seguro de haber firmado una en un sitio web de phishing</1>. Tras cancelar una firma, la entrada permanecerá en la lista para la próxima vez."
     },
     "marketplaces": {
       "none_found": "No se encontraron mercados para esta red.",
