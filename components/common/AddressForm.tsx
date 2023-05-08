@@ -8,6 +8,8 @@ import ChainSelect from './ChainSelect';
 type Props = {
   chainIds?: number[];
   onSubmit: (data: { address: string; chainId: number }) => void;
+
+  isSubmitting?: boolean;
 };
 
 export const AddressForm = (props: Props) => {
@@ -26,7 +28,7 @@ export const AddressForm = (props: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-4 ">
+    <form onSubmit={handleSubmit} className="flex gap-2 sm:gap-4  ">
       <Input
         className="w-full rounded-lg"
         size="lg"
@@ -37,8 +39,15 @@ export const AddressForm = (props: Props) => {
 
       <ChainSelect chainIds={props.chainIds} selected={selectedChainId} onSelect={setSelectedChainId} />
 
-      <Button icon={ChevronRightIcon} style="primary" size="lg" type="submit">
-        Check
+      <Button
+        loading={props.isSubmitting}
+        icon={ChevronRightIcon}
+        className="rounded-lg"
+        style="primary"
+        size="lg"
+        type="submit"
+      >
+        <span className="hidden sm:block">Check</span>
       </Button>
     </form>
   );
