@@ -1,85 +1,108 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "none": "No allowances",
-    "none_found": "No allowances found",
-    "none_found_filtered": "No allowances found for the selected filters",
-    "token_id": "Token #{{tokenId}}",
-    "unlimited": "Unlimited"
+    "none": "Доступы отсутствуют",
+    "none_found": "Доступы не найдены",
+    "none_found_filtered": "Для выбранных фильтров не найдено доступов.",
+    "token_id": "Токен #{{tokenId}}",
+    "unlimited": "Неограниченный"
   },
   "filters": {
     "allowances": {
-      "label": "Allowances",
+      "label": "Доступы",
       "options": {
-        "limited": "Limited",
-        "none": "None",
-        "unlimited": "Unlimited"
+        "limited": "Ограничено",
+        "none": "Нет",
+        "unlimited": "Неограниченный"
       }
     },
     "asset_balance": {
-      "label": "Asset Balance",
+      "label": "Баланс активов",
       "options": {
-        "non_zero": "Non-Zero",
-        "zero": "Zero"
+        "non_zero": "Ненулевое",
+        "zero": "Ноль"
       }
     },
     "asset_type": {
-      "label": "Asset Type",
+      "label": "Тип актива",
       "options": {
         "nft": "NFT",
-        "token": "Token"
+        "token": "Токен"
       }
     },
-    "label": "Filters",
-    "showing_everything": "Showing Everything"
+    "label": "Фильтры",
+    "showing_everything": "Показать все"
   },
   "headers": {
-    "actions": "Actions",
-    "allowance": "Allowance",
-    "asset": "Asset",
-    "asset_type": "Type",
-    "last_updated": "Last Updated",
-    "spender": "Authorized Spender"
+    "actions": "Действия",
+    "allowance": "Доступ",
+    "asset": "Aктив",
+    "asset_type": "Тип",
+    "last_updated": "Последнее обновление",
+    "spender": "Авторизованный доступ"
   },
   "labels": {
-    "connected": "Connected",
+    "connected": "Поключено",
     "nft": "NFT",
-    "not_connected": "Not Connected",
-    "token": "Token"
+    "not_connected": "Не подключено",
+    "token": "Токен"
   },
   "meta": {
-    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
-    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+    "description": "Верните себе контроль над своим кошельком, отменив доступы, которые вы предоставляли в прошлом.",
+    "title": "Revoke.cash — проверяйте и контролируйте доступы для {{address}}"
+  },
+  "navigation": {
+    "allowances": "Доступы",
+    "history": "История",
+    "more": "Больше",
+    "settings": "Настройки",
+    "signatures": "Подписи"
   },
   "search": {
-    "spender": "Search by Authorized Spender Address"
+    "spender": "Поиск по адресу авторизованных"
+  },
+  "signatures": {
+    "info": {
+      "description": "Поскольку подписи не хранятся в блокчейне, Revoke.cash не может проверить, действительно ли вы подписали какие-либо подписи. Итак, эта страница содержит список <0>потенциальных</0> подписей. Вам нужно отменить эти подписи только в том случае, если вы уверены, что подписали их на фишинговом веб-сайте. После отмены подписи запись останется в списке в следующий раз."
+    },
+    "marketplaces": {
+      "none_found": "Торговые площадки для этой сети не найдены.",
+      "title": "Подписи на торговой площадке"
+    },
+    "permit": {
+      "none_found": "Токенов с поддержкой Permit не найдено.",
+      "title": "Подписи разрешений"
+    }
   },
   "sorting": {
     "columns": {
-      "allowance": "Allowance",
-      "asset_name": "Asset Name",
-      "authorized_spender": "Authorized Spender",
-      "last_updated": "Last Updated"
+      "allowance": "Доступ",
+      "asset_name": "Название актива",
+      "authorized_spender": "Авторизованный доступ",
+      "last_updated": "Последнее обновление"
     },
     "fns": {
       "date": {
-        "asc": "Oldest to Newest",
-        "desc": "Newest to Oldest"
+        "asc": "От старых к новым",
+        "desc": "От новых к старым"
       },
       "number": {
-        "asc": "Low to High",
-        "desc": "High to Low"
+        "asc": "От низкого к высокому",
+        "desc": "От высокого к низкому"
       },
       "text": {
-        "asc": "A to Z",
-        "desc": "Z to A"
+        "asc": "От А до Я",
+        "desc": "от Я до А"
       }
     },
-    "label": "Sort"
+    "label": "Сортировать"
   },
   "tooltips": {
-    "connect_wallet": "Please connect your wallet in order to revoke",
-    "connected_account": "You can only revoke allowances of the connected account",
-    "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+    "connect_wallet": "Пожалуйста, подключите свой кошелек, чтобы продолжить",
+    "connected_account": "Вы можете выполнять действия только для подключенного аккаунта",
+    "marketplace_listings": "Это аннулирует все текущие объявления и предложения на {{marketplace}}.",
+    "marketplace_signatures": "После одобрения торговые площадки смогут перемещать активы от вашего имени. Злоумышленники используют эти доступы для создания объявлений по нулевой цене на сторонних веб-сайтах. Отмените их, если вы дали доступ к торговой площадке на фишинговом сайте.",
+    "permit_signatures": "Разрешающие подписи используются для утверждения доступов без отправки транзакции. Отмените их, если вы подписали Разрешительную подпись на фишинговом веб-сайте.",
+    "switch_chain": "Пожалуйста, переключите сеть на <0>{{chainName}}</0> в вашем кошельке, чтобы продолжить"
   }
 }

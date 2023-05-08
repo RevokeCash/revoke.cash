@@ -13,6 +13,11 @@
       },
       {
         "group": "existing",
+        "pattern": "locales/ru/*.json",
+        "lang": "ru"
+      },
+      {
+        "group": "existing",
         "pattern": "locales/zh/*.json",
         "lang": "zh-Hans"
       }

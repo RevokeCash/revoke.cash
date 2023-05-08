@@ -48,7 +48,7 @@
     "token": "代币"
   },
   "meta": {
-    "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
+    "description": "通过撤销你过去的授权，来掌控自己的钱包。",
     "title": "Revoke.cash-检查并撤销 {{address}} 的授权"
   },
   "navigation": {
