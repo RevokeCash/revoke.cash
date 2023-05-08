@@ -40,7 +40,6 @@ const ColorThemeSelect = () => {
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
-      isMulti={false}
     />
   );
 };

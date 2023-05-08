@@ -1,22 +1,7 @@
 import axios from 'axios';
 import { getAddress } from 'ethers/lib/utils';
 import fs from 'fs';
-import { TokenFromList } from 'lib/interfaces';
 import path from 'path';
-
-interface Collection {
-  primaryContract: string;
-  name: string;
-  image: string;
-  volume?: {
-    allTime: number;
-  };
-}
-
-interface CollectionsResult {
-  collections: Collection[];
-  continuation?: string;
-}
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -27,7 +12,7 @@ const NFT_TOKEN_MAPPING_PATH = path.join(__dirname, '..', 'lib', 'data', 'nft-to
 const RESERVOIR_API_URL =
   'https://api.reservoir.tools/collections/v5?includeTopBid=false&sortBy=allTimeVolume&limit=20';
 
-const symbolOverrides: Record<string, string> = {
+const symbolOverrides = {
   '0x34d85c9CDeB23FA97cb08333b511ac86E1C4E258': 'Otherdeeds',
   '0x49cF6f5d44E70224e2E23fDcdd2C053F30aDA28B': 'CLONE X',
   '0x1A92f7381B9F03921564a437210bB9396471050C': 'Cool Cats',
@@ -35,7 +20,7 @@ const symbolOverrides: Record<string, string> = {
 };
 
 // Lots of shared collections have the same address, so we need to override the symbol and logo
-const fullOverrides: Record<string, TokenFromList> = {
+const fullOverrides = {
   '0x059EDD72Cd353dF5106D2B9cC5ab83a52287aC3a': {
     symbol: 'Art Blocks',
     logoURI: 'https://storage.googleapis.com/subgraph-images/1644278294885Squig.blk.circle.800px.png',
@@ -90,7 +75,7 @@ const updateNftTokenlist = async () => {
 
   while (shouldContinue) {
     console.log(url);
-    const { data } = await axios.get<CollectionsResult>(url);
+    const { data } = await axios.get(url);
     const { collections, continuation } = data;
 
     let currentVolume = Infinity;

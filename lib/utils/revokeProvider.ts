@@ -1,7 +1,8 @@
 import { providers as multicall } from '@0xsequence/multicall';
 import type { ChainProviderFn, FallbackProviderConfig } from '@wagmi/core';
+import { providers } from 'ethers';
 import type { Chain } from 'wagmi/chains';
-import { getChainProvider } from './chains';
+import { getChainRpcUrl } from './chains';
 
 export const createMulticallProviderProxy = (
   multicallProvider: multicall.MulticallProvider
@@ -28,7 +29,9 @@ export function revokeProvider<TChain extends Chain = Chain>({
     return {
       chain,
       provider: () => {
-        const rpcProvider = getChainProvider(chain.id);
+        const rpcUrl = getChainRpcUrl(chain.id);
+        const rpcProvider = new providers.StaticJsonRpcProvider(rpcUrl, chain.id);
+
         const multicallProvider = new multicall.MulticallProvider(rpcProvider, { verbose: true });
         const providerProxy = createMulticallProviderProxy(multicallProvider);
 

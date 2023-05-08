@@ -88,7 +88,7 @@ const EthereumProviderChild = ({ children }: Props) => {
       // Sleep for 500ms to prevent weird bugs (this is OK since this is only for migration)
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      const replacementConnectors: Record<string, string> = {
+      const replacementConnectors = {
         '"injected"': 'injected',
         '"walletconnect"': 'walletConnect',
         '"coinbasewallet"': 'coinbaseWallet',

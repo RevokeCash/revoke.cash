@@ -38,7 +38,7 @@ const Button = ({
   // In dark mode, we swap the primary and secondary styles
   const variant = style === 'secondary' && darkMode ? 'primary' : style === 'primary' && darkMode ? 'secondary' : style;
 
-  const classMapping: Record<string, string> = {
+  const classMapping = {
     common:
       'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium',
     primary: 'bg-black text-white visited:text-white hover:bg-zinc-800 disabled:bg-zinc-600',

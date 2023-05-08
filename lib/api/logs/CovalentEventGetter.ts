@@ -24,12 +24,7 @@ export class CovalentEventGetter implements EventGetter {
     return filterLogs(results.flat(), filter);
   }
 
-  private async getEventsInChunk(
-    chainId: number,
-    fromBlock: number,
-    toBlock: number,
-    topics: string[]
-  ): Promise<Log[]> {
+  private async getEventsInChunk(chainId: number, fromBlock: number, toBlock: number, topics: string[]) {
     const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !!topic);
     const apiUrl = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
 

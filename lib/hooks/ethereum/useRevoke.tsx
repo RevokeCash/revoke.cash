@@ -34,9 +34,9 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(e)) return;
 
-    if (isUpdate) return void toast.info(t<string>('common:toasts.update_failed'));
-    if (isRevertedError(e)) return void toast.info(t<string>('common:toasts.revoke_failed_revert', { message }));
-    return void toast.info(t<string>('common:toasts.revoke_failed', { message }));
+    if (isUpdate) return void toast.info(t('common:toasts.update_failed'));
+    if (isRevertedError(e)) return void toast.info(t('common:toasts.revoke_failed_revert', { message }));
+    return void toast.info(t('common:toasts.revoke_failed', { message }));
   };
 
   if (isErc721Contract(contract)) {

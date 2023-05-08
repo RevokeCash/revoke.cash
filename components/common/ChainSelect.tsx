@@ -77,7 +77,6 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
       minMenuWidth="13.5rem"
       placeholder={<PlaceholderIcon size={24} border />}
       menuAlign={menuAlign}
-      isMulti={false}
     />
   );
 };

@@ -59,7 +59,6 @@ const LanguageSelect = () => {
       menuPlacement="top"
       isSearchable={false}
       size="md"
-      isMulti={false}
     />
   );
 };

@@ -1,5 +1,4 @@
 import { ChainId, chains } from '@revoke.cash/chains';
-import { providers } from 'ethers';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 
@@ -220,7 +219,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.HarmonyMainnetShard0]: 'Harmony',
     [ChainId.HarmonyTestnetShard0]: 'Harmony Testnet',
     [ChainId.GodwokenMainnet]: 'Godwoken',
-    [ChainId.GodwokenTestnetv1]: 'Godwoken Testnet',
+    [ChainId['GodwokenTestnet(V1.1)']]: 'Godwoken Testnet',
     [ChainId.SmartBitcoinCash]: 'SmartBCH',
     [ChainId.FuseMainnet]: 'Fuse',
     [ChainId.SyscoinMainnet]: 'Syscoin',
@@ -331,17 +330,12 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
 };
 
-export const getChainProvider = (chainId: number): providers.Provider => {
-  const rpcUrl = getChainRpcUrl(chainId) ?? getChainRpcUrl(1);
-  return new providers.StaticJsonRpcProvider(rpcUrl, chainId);
-};
-
 // We should always use Infura for logs, even if we use a different RPC URL for other purposes
 export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
   const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
   const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
-  const overrides: Record<number, string> = {
+  const overrides = {
     // [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     // [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
     // [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
@@ -359,7 +353,7 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
 };
 
 export const getChainLogo = (chainId: number): string => {
-  const mapping: Record<number, string> = {
+  const mapping = {
     [ChainId.EthereumMainnet]: '/assets/images/vendor/chains/ethereum.svg',
     [ChainId.Goerli]: '/assets/images/vendor/chains/ethereum.svg',
     [ChainId.Sepolia]: '/assets/images/vendor/chains/ethereum.svg',
@@ -449,7 +443,7 @@ export const getChainLogo = (chainId: number): string => {
 };
 
 export const getChainNativeToken = (chainId: number): string => {
-  const overrides: Record<number, string> = {
+  const overrides = {
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
   };
@@ -459,7 +453,7 @@ export const getChainNativeToken = (chainId: number): string => {
 
 // Target a default of around $10-20
 export const getDefaultDonationAmount = (nativeToken: string): string => {
-  const mapping: Record<string, string> = {
+  const mapping = {
     ETH: '0.01',
     RBTC: '0.001',
     BCH: '0.1',
@@ -509,7 +503,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
 };
 
 export const getChainApiUrl = (chainId: number): string | undefined => {
-  const apiUrls: Record<number, string> = {
+  const apiUrls = {
     [ChainId.EthereumMainnet]: 'https://api.etherscan.io/api',
     [ChainId.BinanceSmartChainMainnet]: 'https://api.bscscan.com/api',
     [ChainId.BinanceSmartChainTestnet]: 'https://api-testnet.bscscan.com/api',

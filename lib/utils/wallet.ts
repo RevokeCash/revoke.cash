@@ -6,7 +6,7 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     'https://raw.githubusercontent.com/rainbow-me/rainbowkit/0d5640929326d65673596a11cd018a9c6524ff8c/packages/rainbowkit/src/wallets/walletConnectors/';
   const walletNameLowerCase = walletName.toLowerCase();
 
-  const mapping: Record<string, string> = {
+  const mapping = {
     // Injected wallets
     '1inchw1allet': '/assets/images/vendor/wallets/1inch.svg',
     // 'apex wallet': '',
