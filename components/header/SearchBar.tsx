@@ -9,9 +9,9 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { FormEventHandler, useState } from 'react';
 
-type Props = {
+interface Props {
   onSubmit?: (address: string) => void;
-};
+}
 
 const SearchBar = (props: Props) => {
   const { t } = useTranslation();

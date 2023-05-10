@@ -44,6 +44,7 @@ const MobileMenu = () => {
                 <DonateButton size="none" style="tertiary" className="text-lg" />
                 <NavLink to="/faq" text={t('common:nav.faq')} />
                 <NavLink to="/extension" text={t('common:nav.extension')} />
+                <NavLink to="/exploits" text={t('common:nav.exploits')} />
                 <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
               </div>
             </Dialog.Panel>

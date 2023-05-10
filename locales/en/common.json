@@ -76,7 +76,8 @@
   "nav": {
     "extension": "Extension",
     "faq": "FAQ",
-    "search": "Search Accounts by Address or Domain"
+    "search": "Search Accounts by Address or Domain",
+    "exploits": "Exploits"
   },
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",
