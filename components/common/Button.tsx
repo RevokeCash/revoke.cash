@@ -4,7 +4,7 @@ import { ButtonHTMLAttributes, MouseEventHandler } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
-type Props = {
+interface Props {
   disabled?: boolean;
   style: 'primary' | 'secondary' | 'tertiary' | 'none';
   size: 'sm' | 'md' | 'lg' | 'none';
@@ -18,7 +18,8 @@ type Props = {
   asDiv?: boolean;
   align?: 'left' | 'center' | 'right';
   icon?: React.ExoticComponent<React.SVGProps<SVGSVGElement>>;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+}
 
 const Button = ({
   disabled,

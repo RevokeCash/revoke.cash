@@ -5,12 +5,12 @@ import { useState } from 'react';
 import Button from './Button';
 import ChainSelect from './ChainSelect';
 
-type Props = {
+interface Props {
   chainIds?: number[];
   onSubmit: (data: { address: string; chainId: number }) => void;
 
   isSubmitting?: boolean;
-};
+}
 
 export const AddressForm = (props: Props) => {
   const [selectedChainId, setSelectedChainId] = useState<number>(1);

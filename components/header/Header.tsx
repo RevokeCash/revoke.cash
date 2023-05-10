@@ -7,9 +7,9 @@ import MobileMenu from './MobileMenu';
 import NavLink from './NavLink';
 import SearchBar from './SearchBar';
 
-type Props = {
+interface Props {
   searchBar?: boolean;
-};
+}
 
 const Header = ({ searchBar = true }: Props) => {
   const { t } = useTranslation();
@@ -21,6 +21,7 @@ const Header = ({ searchBar = true }: Props) => {
           <DonateButton size="md" />
           <NavLink to="/faq" text={t('common:nav.faq')} />
           <NavLink to="/extension" text={t('common:nav.extension')} />
+          <NavLink className="hidden lg:inline-flex" to="/exploits" text={t('common:nav.exploits')} />
         </div>
         <div className="flex md:justify-center grow w-1/3">
           <Href href="/" underline="none" className="flex" router>

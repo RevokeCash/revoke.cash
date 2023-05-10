@@ -37,6 +37,7 @@
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^0.26.1",
     "axios-retry": "^3.4.0",
+    "clsx": "^1.2.1",
     "dexie": "^3.2.3",
     "eth-permit": "^0.2.3",
     "ethers": "^5.7.2",
