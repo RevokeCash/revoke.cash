@@ -3,6 +3,7 @@ import { LogsProvider } from 'lib/interfaces';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import useLocalStorage from 'use-local-storage';
 import { useNetwork, useProvider } from 'wagmi';
 import { useAllowances } from '../ethereum/useAllowances';
 import { useEvents } from '../ethereum/useEvents';
@@ -16,6 +17,8 @@ interface AddressContext {
   logsProvider?: LogsProvider;
   eventContext?: ReturnType<typeof useEvents>;
   allowanceContext?: ReturnType<typeof useAllowances>;
+  signatureNoticeAcknowledged?: boolean;
+  acknowledgeSignatureNotice?: () => void;
 }
 
 interface Props {
@@ -54,6 +57,9 @@ export const AddressPageContextProvider = ({ children, address }: Props) => {
   const logsProvider = useLogsProvider({ chainId: selectedChainId });
   const readProvider = useProvider({ chainId: selectedChainId });
 
+  const [signatureNoticeAcknowledged, setAcknowledged] = useLocalStorage('signature-notice-acknowledged', false);
+  const acknowledgeSignatureNotice = () => setAcknowledged(true);
+
   return (
     <AddressPageContext.Provider
       value={{
@@ -64,6 +70,8 @@ export const AddressPageContextProvider = ({ children, address }: Props) => {
         logsProvider,
         eventContext,
         allowanceContext,
+        signatureNoticeAcknowledged,
+        acknowledgeSignatureNotice,
       }}
     >
       {children}

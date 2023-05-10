@@ -98,6 +98,7 @@
     "label": "Sort"
   },
   "tooltips": {
+    "acknowledge_signature_notice": "Please acknowledge the notice before checking your signatures.",
     "connect_wallet": "Please connect your wallet to continue",
     "connected_account": "You can only perform actions for the connected account",
     "marketplace_listings": "This will cancel all current listings and offers on {{marketplace}}.",
