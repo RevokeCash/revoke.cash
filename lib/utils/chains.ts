@@ -311,7 +311,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
   const overrides: Record<number, string> = {
-    [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.EthereumMainnet]: `https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    // [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
