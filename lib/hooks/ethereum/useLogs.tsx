@@ -12,15 +12,15 @@ export const useLogs = (name: string, chainId: number, filter: Filter) => {
 
   const result = useQuery<Log[], Error>({
     queryKey: ['logs', logsProvider, filter, chainId, isLoggedIn],
-    queryFn: async () => {
-      if (!logsProvider || !filter || !chainId || !isLoggedIn) return null;
-      if (filter?.fromBlock === undefined || filter?.toBlock === undefined || filter?.topics === undefined) return null;
-      const logs = await eventsDB.getLogs(logsProvider, filter, chainId);
-      return logs;
-    },
+    queryFn: () => eventsDB.getLogs(logsProvider, filter, chainId),
     refetchOnWindowFocus: false,
     // The same filter should always return the same logs
     staleTime: Infinity,
+    enabled:
+      !!logsProvider &&
+      !!chainId &&
+      !!isLoggedIn &&
+      ![filter?.fromBlock, filter?.toBlock, filter?.topics].includes(undefined),
   });
 
   useEffect(() => {

@@ -5,6 +5,7 @@ export const useOpenSeaProxyAddress = (address: string) => {
   const { data: openSeaProxyAddress, isLoading } = useQuery({
     queryKey: ['openSeaProxyAddress', address, { persist: true }],
     queryFn: () => getOpenSeaProxyAddress(address),
+    enabled: !!address,
   });
 
   return { openSeaProxyAddress, isLoading };

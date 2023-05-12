@@ -2,7 +2,7 @@ import ChainLogo from 'components/common/ChainLogo';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 import PlaceholderIcon from './PlaceholderIcon';
 
@@ -15,11 +15,10 @@ interface Props {
   selected: number;
   chainIds?: number[];
   onSelect?: (chainId: number) => void;
-  showName?: boolean;
   menuAlign?: 'left' | 'right';
 }
 
-const ChainSelect = ({ onSelect, selected, showName, menuAlign, chainIds }: Props) => {
+const ChainSelect = ({ onSelect, selected, menuAlign, chainIds }: Props) => {
   const isMounted = useMounted();
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
@@ -50,12 +49,12 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign, chainIds }: Prop
   };
 
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {
-    const chainName = getChainName(chainId);
+    const chainName = getChainName(chainId) + (isSupportedChain(chainId) ? '' : ' (Unsupported)');
 
     return (
       <div className="flex items-center gap-1">
         {isMounted ? <ChainLogo chainId={chainId} /> : <PlaceholderIcon size={24} border className="bg-transparent" />}
-        {(context === 'menu' || showName) && <div>{chainName}</div>}
+        {context === 'menu' && <div>{chainName}</div>}
       </div>
     );
   };
@@ -64,12 +63,13 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign, chainIds }: Prop
     <Select
       instanceId="chain-select"
       classNamePrefix="chain-select"
-      size="full"
-      className="shrink-0 "
+      size="md"
+      className="shrink-0"
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={chainIds ? mainnetOptions : groups}
+      isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
       onChange={onChange}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"

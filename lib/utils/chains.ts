@@ -277,7 +277,12 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ENULSMainnet]: 'ENULS',
   };
 
-  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
+  const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
+  if (!isSupportedChain(chainId)) {
+    return `${name} (Unsupported)`;
+  }
+
+  return name;
 };
 
 export const getChainExplorerUrl = (chainId: number): string | undefined => {
@@ -443,6 +448,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.png',
     [ChainId.ShimmerEVMTestnet]: '/assets/images/vendor/chains/shimmer.svg',
     [ChainId.ENULSMainnet]: '/assets/images/vendor/chains/enuls.svg',
+    [ChainId.HuobiECOChainMainnet]: '/assets/images/vendor/chains/heco.svg',
+    [ChainId.HuobiECOChainTestnet]: '/assets/images/vendor/chains/heco.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';

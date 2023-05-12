@@ -22,6 +22,7 @@ module.exports = {
       hreflang: 'zh',
     },
   ],
+  exclude: ['/**404'],
   // Custom transform function to de-duplicate path locale strings in alternateRefs
   // Without this we get things like https://<domain>/es/es/about rather than https://<domain>/es/about
   // NOTE: This is made to work for path-based localisation scheme (https://<domain>/<locale>/<path>). It may not

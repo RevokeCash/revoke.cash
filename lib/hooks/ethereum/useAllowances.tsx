@@ -14,7 +14,6 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
     queryKey: ['allowances', address, chainId, events],
     queryFn: async () => {
-      if (!chainId || !events) return null;
       const allowances = getAllowancesFromEvents(address, events, readProvider, chainId);
       track('Fetched Allowances', { account: address, chainId });
       return allowances;
@@ -22,6 +21,7 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
     // If events (transfers + approvals) don't change, derived allowances also shouldn't change, even if allowances
     // are used on-chain. The only exception would be incorrectly implemented tokens that don't emit correct events
     staleTime: Infinity,
+    enabled: !!address && !!chainId && !!events,
   });
 
   useEffect(() => {

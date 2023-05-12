@@ -11,14 +11,14 @@ export const useEvents = (address: string, chainId: number) => {
   const { data: blockNumber, isLoading: isBlockNumberLoading, error: blockNumberError } = useBlockNumber(chainId);
 
   const erc721Interface = new utils.Interface(ERC721Metadata);
-  const addressTopic = utils.hexZeroPad(address, 32);
+  const addressTopic = address ? utils.hexZeroPad(address, 32) : undefined;
 
   const baseFilter = { fromBlock: 0, toBlock: blockNumber };
 
-  const transferToTopics = [erc721Interface.getEventTopic('Transfer'), null, addressTopic];
-  const transferFromTopics = [erc721Interface.getEventTopic('Transfer'), addressTopic];
-  const approvalTopics = [erc721Interface.getEventTopic('Approval'), addressTopic];
-  const approvalForAllTopics = [erc721Interface.getEventTopic('ApprovalForAll'), addressTopic];
+  const transferToTopics = addressTopic && [erc721Interface.getEventTopic('Transfer'), null, addressTopic];
+  const transferFromTopics = addressTopic && [erc721Interface.getEventTopic('Transfer'), addressTopic];
+  const approvalTopics = addressTopic && [erc721Interface.getEventTopic('Approval'), addressTopic];
+  const approvalForAllTopics = addressTopic && [erc721Interface.getEventTopic('ApprovalForAll'), addressTopic];
 
   const {
     data: transferTo,

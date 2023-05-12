@@ -1,11 +1,8 @@
-import { ShareIcon } from '@heroicons/react/24/solid';
-import Button from 'components/common/Button';
 import LogoLink from 'components/common/LogoLink';
+import ShareButton from 'components/common/ShareButton';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { writeToClipBoard } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
   address: string;
@@ -13,7 +10,6 @@ interface Props {
 
 const AddressSocialShareButtons = ({ address }: Props) => {
   const { darkMode } = useColorTheme();
-  const { t } = useTranslation();
   const { selectedChainId } = useAddressPageContext();
 
   const explorerUrl = getChainExplorerUrl(selectedChainId);
@@ -27,9 +23,7 @@ const AddressSocialShareButtons = ({ address }: Props) => {
         href={`${explorerUrl}/address/${address}`}
         className="dark:bg-black"
       />
-      <Button style="tertiary" size="none" onClick={() => writeToClipBoard(location.href, t)}>
-        <ShareIcon className="w-5 h-5" />
-      </Button>
+      <ShareButton />
     </div>
   );
 };

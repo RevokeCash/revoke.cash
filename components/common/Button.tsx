@@ -17,7 +17,6 @@ interface Props {
   loading?: boolean;
   asDiv?: boolean;
   align?: 'left' | 'center' | 'right';
-  icon?: React.ExoticComponent<React.SVGProps<SVGSVGElement>>;
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
 }
 
@@ -95,7 +94,6 @@ const Button = ({
   return (
     <button disabled={disabled || loading} onClick={onClick} className={classes}>
       {children}
-      {props.icon && <props.icon className="w-4 h-4 ml-2 " />}
 
       {loading && <Spinner />}
     </button>

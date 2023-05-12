@@ -24,17 +24,18 @@ interface AddressContext {
 interface Props {
   children: ReactNode;
   address: string;
+  initialChainId?: number;
 }
 
 const AddressPageContext = React.createContext<AddressContext>({});
 
-export const AddressPageContextProvider = ({ children, address }: Props) => {
+export const AddressPageContextProvider = ({ children, address, initialChainId }: Props) => {
   const router = useRouter();
   const { chain } = useNetwork();
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
   const queryChainId = parseInt(router.query.chainId as string);
-  const defaultChainId = isSupportedChain(queryChainId) ? queryChainId : isSupportedChain(chain?.id) ? chain?.id : 1;
+  const defaultChainId = [initialChainId, queryChainId, chain?.id, 1].find((chainId) => isSupportedChain(chainId));
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 
   useEffect(() => {
