@@ -22,6 +22,7 @@ const SpenderCell = ({ allowance }: Props) => {
     queryFn: () => addressToAppName(allowance.spender, allowance.chainId, openSeaProxyAddress),
     // Chances of this data changing while the user is on the page are very slim
     staleTime: Infinity,
+    enabled: !!allowance.spender && !!allowance.chainId,
   });
 
   const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.spender}`;

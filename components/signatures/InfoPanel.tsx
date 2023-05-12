@@ -1,9 +1,9 @@
 import Button from 'components/common/Button';
+import Card from 'components/common/Card';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
-import DashboardPanel from './DashboardPanel';
 
 const InfoPanel = () => {
   const { t } = useTranslation();
@@ -11,7 +11,7 @@ const InfoPanel = () => {
   const { signatureNoticeAcknowledged, acknowledgeSignatureNotice } = useAddressPageContext();
 
   return (
-    <DashboardPanel>
+    <Card>
       <div className="flex flex-col sm:flex-row sm:items-center gap-2">
         <div>
           <Trans
@@ -25,7 +25,7 @@ const InfoPanel = () => {
           </Button>
         )}
       </div>
-    </DashboardPanel>
+    </Card>
   );
 };
 

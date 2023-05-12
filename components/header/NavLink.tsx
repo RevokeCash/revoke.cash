@@ -1,6 +1,6 @@
-import clsx from 'clsx';
 import Button from 'components/common/Button';
 import { useRouter } from 'next/router';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   to: string;
@@ -22,7 +22,7 @@ const NavLink = ({ to, text, className }: Props) => {
       href={to}
       size="none"
       style="tertiary"
-      className={clsx('text-lg', isCurrent && 'underline underline-offset-8', className)}
+      className={twMerge('text-lg', isCurrent && 'underline underline-offset-8 decoration-2', className)}
       router
     >
       {text}

@@ -83,10 +83,11 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
         valueContainer: removeSpacing,
         indicatorsContainer: removeSpacing,
         singleValue: removeSpacing,
-        option: (styles) => ({
+        option: (styles, props) => ({
           ...styles,
           cursor: 'pointer', // cursor-pointer
           padding: '0.5rem', // p-2
+          backgroundColor: props.isDisabled ? colors.light : styles.backgroundColor,
         }),
       }}
       theme={(theme) => ({

@@ -20,8 +20,8 @@ const AddressHeader = () => {
 
   const { data: balance } = useQuery({
     queryKey: ['balance', address, readProvider.network],
-    queryFn: () =>
-      readProvider.network ? readProvider.getBalance(address).then((balance) => balance.toString()) : null,
+    queryFn: () => readProvider.getBalance(address).then((balance) => balance.toString()),
+    enabled: !!address && !!readProvider.network,
   });
 
   return (

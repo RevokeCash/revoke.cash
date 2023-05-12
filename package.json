@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap && yarn trim-sitemap",
-    "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml > public/sitemap.xml",
+    "build": "next build && next-sitemap",
+    "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
     "lint:checksums": "ts-node scripts/lint-checksums.ts && git rm -r --cached -q public/dapp-contract-list && git add --all public/dapp-contract-list",
@@ -37,7 +37,6 @@
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^0.26.1",
     "axios-retry": "^3.4.0",
-    "clsx": "^1.2.1",
     "dexie": "^3.2.3",
     "eth-permit": "^0.2.3",
     "ethers": "^5.7.2",
