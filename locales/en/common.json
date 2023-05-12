@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
     "cancel_signatures": "Cancel Signatures",
     "cancelling": "Cancelling",
@@ -74,10 +75,10 @@
     "title": "Revoke.cash - Revoke your Ethereum token allowances"
   },
   "nav": {
+    "exploits": "Exploits",
     "extension": "Extension",
     "faq": "FAQ",
-    "search": "Search Accounts by Address or Domain",
-    "exploits": "Exploits"
+    "search": "Search Accounts by Address or Domain"
   },
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",

@@ -49,7 +49,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds }: Props) => {
   };
 
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {
-    const chainName = getChainName(chainId) + (isSupportedChain(chainId) ? '' : ' (Unsupported)');
+    const chainName = getChainName(chainId);
 
     return (
       <div className="flex items-center gap-1">
