@@ -12,20 +12,18 @@ const InfoPanel = () => {
 
   return (
     <DashboardPanel>
-      <div className="flex flex-col items-center gap-2">
-        <div className="flex flex-col sm:flex-row items-center gap-2">
-          <div>
-            <Trans
-              i18nKey="address:signatures.info.description"
-              components={[<span className="italic" />, <span className="font-bold" />]}
-            />
-          </div>
-          {isMounted && !signatureNoticeAcknowledged && (
-            <Button size="md" style="primary" className="shrink-0" onClick={acknowledgeSignatureNotice}>
-              {t('common:buttons.understand')}
-            </Button>
-          )}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        <div>
+          <Trans
+            i18nKey="address:signatures.info.description"
+            components={[<span className="italic" />, <span className="font-bold" />]}
+          />
         </div>
+        {isMounted && !signatureNoticeAcknowledged && (
+          <Button size="md" style="primary" className="shrink-0" onClick={acknowledgeSignatureNotice}>
+            {t('common:buttons.understand')}
+          </Button>
+        )}
       </div>
     </DashboardPanel>
   );
