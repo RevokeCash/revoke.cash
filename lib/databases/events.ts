@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import Dexie, { Table } from 'dexie';
 import { Filter, Log, LogsProvider } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
@@ -42,6 +43,9 @@ class EventsDB extends Dexie {
   // So we assume that the filter.fromBlock is always 0, and we only need to retrieve events between the last stored event and 'latest'
   // This means that we can't use this function to get logs for a specific block range
   async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number) {
+    // For PulseChain we don't store events for now, because it seems like their events are not indexed properly
+    if (chainId === ChainId.PulseChain) return getLogs(logsProvider, filter);
+
     try {
       const { topics } = filter;
       const topicsKey = topics.join(',');
