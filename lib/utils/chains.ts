@@ -27,6 +27,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.PolygonzkEVMTestnet,
   ChainId.CoreBlockchainMainnet,
   ChainId.KCCMainnet,
+  ChainId.PulseChain,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -42,7 +43,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId['SongbirdCanary-Network'],
   ChainId.AuroraMainnet,
   ChainId.HorizenGobiTestnet,
-  ChainId.PulseChain,
   ChainId.PulseChainTestnetv4,
   ChainId.LineaTestnet,
   ChainId.ScrollAlphaTestnet,
