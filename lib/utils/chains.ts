@@ -28,6 +28,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.CoreBlockchainMainnet,
   ChainId.KCCMainnet,
   ChainId.PulseChain,
+  ChainId.LineaTestnet,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -44,7 +45,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.AuroraMainnet,
   ChainId.HorizenGobiTestnet,
   ChainId.PulseChainTestnetv4,
-  ChainId.LineaTestnet,
   ChainId.ScrollAlphaTestnet,
   ChainId.RedlightChainMainnet,
   // ChainId.GatherMainnetNetwork,
@@ -332,7 +332,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
-    [ChainId.LineaTestnet]: 'https://consensys-zkevm-goerli-prealpha.infura.io/v3/4372a37c341846f0b2ce479dd29a429b', // TODO: Replace
+    [ChainId.LineaTestnet]: `https://consensys-zkevm-goerli-prealpha.infura.io/v3/${infuraKey}`,
     ...RPC_OVERRIDES,
   };
 
