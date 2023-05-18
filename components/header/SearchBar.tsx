@@ -3,11 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-interface Props {
-  onSubmit?: (address: string) => void;
-}
-
-const SearchBar = (props: Props) => {
+const SearchBar = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [value, setValue] = useState<string>('');

@@ -6,7 +6,7 @@ import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import { deduplicateArray } from 'lib/utils';
-import { stripAllowanceData } from 'lib/utils/allowances';
+import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
 import { filterAsync } from 'lib/utils/promises';
 import { hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
 import useTranslation from 'next-translate/useTranslation';
@@ -21,7 +21,7 @@ const PermitsPanel = () => {
     error: permitsError,
     isLoading: isPermitsLoading,
   } = useQuery({
-    queryKey: ['permitTokens', allowances?.map((token) => token.contract.address)],
+    queryKey: ['permitTokens', allowances?.map(getAllowanceKey)],
     queryFn: async () => {
       const ownedTokens = deduplicateArray(allowances, (a, b) => a.contract.address === b.contract.address)
         .filter((token) => !hasZeroBalance(token))

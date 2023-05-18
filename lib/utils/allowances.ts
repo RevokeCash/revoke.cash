@@ -252,3 +252,7 @@ export const stripAllowanceData = (allowance: AllowanceData): BaseTokenData => {
   const { contract, chainId, symbol, owner, balance, icon, decimals, totalSupply } = allowance;
   return { contract, chainId, symbol, owner, balance, icon, decimals, totalSupply };
 };
+
+export const getAllowanceKey = (allowance: AllowanceData) => {
+  return `${allowance.contract.address}-${allowance.spender}-${allowance.tokenId}-${allowance.chainId}-${allowance.owner}`;
+};
