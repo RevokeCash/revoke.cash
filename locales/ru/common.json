@@ -1,8 +1,11 @@
 {
   "buttons": {
+    "back_to_exploits": "Назад к Эксплойтам",
     "cancel": "Отмена",
     "cancel_signatures": "Отменить подписи",
     "cancelling": "Отмена…",
+    "check": "Проверить",
+    "check_connected_address": "Проверьте подключенный адрес",
     "clear_filters": "Очистить фильтры",
     "connect": "Подключить кошелек",
     "connecting": "Подключение…",
@@ -13,12 +16,14 @@
     "download": "Скачать",
     "get_started": "Начать",
     "my_allowances": "Мои доступы",
+    "report_exploit": "Сообщить об эксплойте",
     "revoke": "Отозвать",
     "revoking": "Отмена",
     "send": "Отправить",
     "sending": "Отправка…",
     "switch_chain": "Сменить сеть",
     "switching": "Переключение...",
+    "understand": "Я понимаю",
     "update": "Обновить",
     "updating": "Обновление…"
   },
@@ -73,6 +78,7 @@
     "title": "Revoke.cash - Отмените доступы к токенам Ethereum"
   },
   "nav": {
+    "exploits": "Эксплойты",
     "extension": "Расширение",
     "faq": "ЧаВо",
     "search": "Поиск учетных записей по адресу или домену"
