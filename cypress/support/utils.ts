@@ -6,6 +6,5 @@ export const Selectors = {
   ALLOWANCES_TABLE: '.allowances-table',
   ALLOWANCES_LOADER: '.allowances-loader',
   CONTROLS_SECTION: '.controls-section',
-  ADDRESS_INPUT: '.address-input',
   LAST_UPDATED_LINK: '.tx-link',
 };

@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import Dexie, { Table } from 'dexie';
 import { Filter, Log, LogsProvider } from 'lib/interfaces';
 import { getLogs } from 'lib/utils';
@@ -10,6 +11,9 @@ interface Events {
   toBlock: number;
   logs: Log[];
 }
+
+// Certain chains lack proper infrastructure, so we don't index events for them
+const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet];
 
 class EventsDB extends Dexie {
   private events!: Table<Events>;
@@ -42,6 +46,8 @@ class EventsDB extends Dexie {
   // So we assume that the filter.fromBlock is always 0, and we only need to retrieve events between the last stored event and 'latest'
   // This means that we can't use this function to get logs for a specific block range
   async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number) {
+    if (DO_NOT_INDEX.includes(chainId)) return getLogs(logsProvider, filter);
+
     try {
       const { topics } = filter;
       const topicsKey = topics.join(',');

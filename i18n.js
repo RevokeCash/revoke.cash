@@ -7,5 +7,6 @@ module.exports = {
     '/faq': ['faq'],
     '/extension': ['extension'],
     'rgx:/address/.*': ['address'],
+    'rgx:/exploits.*': ['exploits'],
   },
 };

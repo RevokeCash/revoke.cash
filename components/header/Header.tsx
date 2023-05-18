@@ -7,16 +7,21 @@ import MobileMenu from './MobileMenu';
 import NavLink from './NavLink';
 import SearchBar from './SearchBar';
 
-const Header = () => {
+interface Props {
+  searchBar?: boolean;
+}
+
+const Header = ({ searchBar = true }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <header className="flex flex-col relative p-4 md:px-8 gap-4">
+    <header className="flex flex-col relative p-4 lg:px-8 gap-4">
       <div className="flex justify-between items-center gap-8">
         <div className="hidden lg:flex justify-start items-center gap-4 w-1/3">
           <DonateButton size="md" />
           <NavLink to="/faq" text={t('common:nav.faq')} />
           <NavLink to="/extension" text={t('common:nav.extension')} />
+          <NavLink to="/exploits" text={t('common:nav.exploits')} />
         </div>
         <div className="flex lg:justify-center grow w-1/3">
           <Href href="/" underline="none" className="flex" router>
@@ -36,9 +41,11 @@ const Header = () => {
           <MobileMenu />
         </div>
       </div>
-      <div className="flex justify-center">
-        <SearchBar />
-      </div>
+      {searchBar && (
+        <div className="flex justify-center">
+          <SearchBar />
+        </div>
+      )}
     </header>
   );
 };

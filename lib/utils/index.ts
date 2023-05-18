@@ -107,7 +107,7 @@ export const logSorterChronological = (a: Log, b: Log) => {
 
 export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
 
-export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean): T[] => {
+export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
   return array.filter((a, i) => array.findIndex((b) => matcher(a, b)) === i);
 };
 

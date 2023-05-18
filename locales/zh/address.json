@@ -98,6 +98,7 @@
     "label": "排序"
   },
   "tooltips": {
+    "acknowledge_signature_notice": "检查签名前，请确认该通知。",
     "connect_wallet": "请连接钱包继续下一步",
     "connected_account": "您只能操作已连接的账户",
     "marketplace_listings": "这将取消 {{marketplace}} 上的所有当前列出的产品和报价。",

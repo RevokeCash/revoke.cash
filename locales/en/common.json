@@ -1,8 +1,11 @@
 {
   "buttons": {
+    "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
     "cancel_signatures": "Cancel Signatures",
     "cancelling": "Cancelling",
+    "check": "Check",
+    "check_connected_address": "Check Connected Address",
     "clear_filters": "Clear Filters",
     "connect": "Connect Wallet",
     "connecting": "Connecting",
@@ -13,12 +16,14 @@
     "download": "Download",
     "get_started": "Get Started",
     "my_allowances": "My Allowances",
+    "report_exploit": "Report Exploit",
     "revoke": "Revoke",
     "revoking": "Revoking",
     "send": "Send",
     "sending": "Sending",
     "switch_chain": "Switch Chain",
     "switching": "Switching",
+    "understand": "I Understand",
     "update": "Update",
     "updating": "Updating"
   },
@@ -73,6 +78,7 @@
     "title": "Revoke.cash - Revoke your Ethereum token allowances"
   },
   "nav": {
+    "exploits": "Exploits",
     "extension": "Extension",
     "faq": "FAQ",
     "search": "Search Accounts by Address or Domain"

@@ -3,6 +3,7 @@ import { LogsProvider } from 'lib/interfaces';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import useLocalStorage from 'use-local-storage';
 import { useNetwork, useProvider } from 'wagmi';
 import { useAllowances } from '../ethereum/useAllowances';
 import { useEvents } from '../ethereum/useEvents';
@@ -16,22 +17,25 @@ interface AddressContext {
   logsProvider?: LogsProvider;
   eventContext?: ReturnType<typeof useEvents>;
   allowanceContext?: ReturnType<typeof useAllowances>;
+  signatureNoticeAcknowledged?: boolean;
+  acknowledgeSignatureNotice?: () => void;
 }
 
 interface Props {
   children: ReactNode;
   address: string;
+  initialChainId?: number;
 }
 
 const AddressPageContext = React.createContext<AddressContext>({});
 
-export const AddressPageContextProvider = ({ children, address }: Props) => {
+export const AddressPageContextProvider = ({ children, address, initialChainId }: Props) => {
   const router = useRouter();
   const { chain } = useNetwork();
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
   const queryChainId = parseInt(router.query.chainId as string);
-  const defaultChainId = isSupportedChain(queryChainId) ? queryChainId : isSupportedChain(chain?.id) ? chain?.id : 1;
+  const defaultChainId = [initialChainId, queryChainId, chain?.id, 1].find((chainId) => isSupportedChain(chainId));
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 
   useEffect(() => {
@@ -54,6 +58,9 @@ export const AddressPageContextProvider = ({ children, address }: Props) => {
   const logsProvider = useLogsProvider({ chainId: selectedChainId });
   const readProvider = useProvider({ chainId: selectedChainId });
 
+  const [signatureNoticeAcknowledged, setAcknowledged] = useLocalStorage('signature-notice-acknowledged', false);
+  const acknowledgeSignatureNotice = () => setAcknowledged(true);
+
   return (
     <AddressPageContext.Provider
       value={{
@@ -64,6 +71,8 @@ export const AddressPageContextProvider = ({ children, address }: Props) => {
         logsProvider,
         eventContext,
         allowanceContext,
+        signatureNoticeAcknowledged,
+        acknowledgeSignatureNotice,
       }}
     >
       {children}

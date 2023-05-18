@@ -1,8 +1,11 @@
 {
   "buttons": {
+    "back_to_exploits": "返回漏洞",
     "cancel": "取消",
     "cancel_signatures": "取消签名",
     "cancelling": "正在取消",
+    "check": "检查",
+    "check_connected_address": "检查连接地址",
     "clear_filters": "清除筛选条件",
     "connect": "连接钱包",
     "connecting": "正在连接",
@@ -13,12 +16,14 @@
     "download": "下载",
     "get_started": "开始使用",
     "my_allowances": "我的授权",
+    "report_exploit": "举报漏洞",
     "revoke": "撤销",
     "revoking": "正在撤销",
     "send": "发送",
     "sending": "发送给",
     "switch_chain": "切换链",
     "switching": "切换中",
+    "understand": "我理解",
     "update": "更新",
     "updating": "更新中"
   },
@@ -73,6 +78,7 @@
     "title": "Revoke.cash— 撤销你的以太坊代币授权"
   },
   "nav": {
+    "exploits": "漏洞",
     "extension": "扩展",
     "faq": "常见问题",
     "search": "通过输入地址或域名来搜索账户"

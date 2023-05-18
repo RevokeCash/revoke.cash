@@ -1,8 +1,11 @@
 {
   "buttons": {
+    "back_to_exploits": "Volver a Hacks",
     "cancel": "Cancelar",
     "cancel_signatures": "Cancelar Firmas",
     "cancelling": "Cancelando",
+    "check": "Comprobar",
+    "check_connected_address": "Comprobar Dirección Conectada",
     "clear_filters": "Quitar Filtros",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
@@ -13,12 +16,14 @@
     "download": "Descargar",
     "get_started": "Empezar",
     "my_allowances": "Mis Autorizaciones",
+    "report_exploit": "Informar de un Hack",
     "revoke": "Revocar",
     "revoking": "Revocando",
     "send": "Enviar",
     "sending": "Enviando",
     "switch_chain": "Cambiar de Red",
     "switching": "Cambiando",
+    "understand": "Entiendo",
     "update": "Actualizar",
     "updating": "Actualizando"
   },
@@ -32,7 +37,7 @@
     "system": "Sistema"
   },
   "connect_wallet": {
-    "title": "Conecta tu Billetera"
+    "title": "Conecta Tu Billetera"
   },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
@@ -73,6 +78,7 @@
     "title": "Revoke.cash - Revoca las autorizaciones de tus tokens en Ethereum"
   },
   "nav": {
+    "exploits": "Hacks",
     "extension": "Extensión",
     "faq": "FAQ",
     "search": "Buscar Cuentas por Dirección o Dominio"
@@ -85,6 +91,6 @@
     "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Ponte en contacto con el equipo de este token para resolver este problema.",
     "transaction_failed": "❌ Transacción fallida: {{message}}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
-    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revóquelo por favor."
+    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revocala por favor."
   }
 }
