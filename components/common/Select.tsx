@@ -85,7 +85,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
         singleValue: removeSpacing,
         option: (styles, props) => ({
           ...styles,
-          cursor: 'pointer', // cursor-pointer
+          cursor: props.isDisabled ? 'not-allowed' : 'pointer',
           padding: '0.5rem', // p-2
           backgroundColor: props.isDisabled ? colors.light : styles.backgroundColor,
         }),

@@ -1,8 +1,8 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import { ChangeEventHandler, FormEventHandler, ReactNode } from 'react';
+import { ChangeEventHandler, FormEventHandler, HTMLAttributes, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-interface Props {
+interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
   onSubmit: FormEventHandler<HTMLFormElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
   value: string;
@@ -11,7 +11,7 @@ interface Props {
   className?: string;
 }
 
-const SearchBox = ({ onSubmit, onChange, value, placeholder, children, className }: Props) => {
+const SearchBox = ({ onSubmit, onChange, value, placeholder, children, className, ...props }: Props) => {
   const classes = twMerge(
     'h-9 flex gap-2 items-center border border-black dark:border-white rounded-lg px-2 font-medium',
     'focus-within:ring-1 focus-within:ring-black dark:focus-within:ring-white',
@@ -26,6 +26,7 @@ const SearchBox = ({ onSubmit, onChange, value, placeholder, children, className
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        {...props}
       />
       {children}
     </form>

@@ -1,6 +1,6 @@
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import Link from 'next/link';
-import { ButtonHTMLAttributes, MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
@@ -17,7 +17,6 @@ interface Props {
   loading?: boolean;
   asDiv?: boolean;
   align?: 'left' | 'center' | 'right';
-  type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
 }
 
 const Button = ({
@@ -33,7 +32,6 @@ const Button = ({
   loading,
   asDiv,
   align,
-  ...props
 }: Props) => {
   const { darkMode } = useColorTheme();
 
@@ -94,7 +92,6 @@ const Button = ({
   return (
     <button disabled={disabled || loading} onClick={onClick} className={classes}>
       {children}
-
       {loading && <Spinner />}
     </button>
   );
