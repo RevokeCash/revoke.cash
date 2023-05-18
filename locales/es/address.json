@@ -98,7 +98,7 @@
     "label": "Ordenar"
   },
   "tooltips": {
-    "acknowledge_signature_notice": "Please acknowledge the notice before checking your signatures.",
+    "acknowledge_signature_notice": "Por favor da acuse de recibo del aviso antes de comprobar tus firmas.",
     "connect_wallet": "Por favor conecta tu cartera para continuar",
     "connected_account": "Solo puedes revocar las autorizaciones de la cuenta conectada",
     "marketplace_listings": "Esto cancelará todos los listados y ofertas actuales en {{marketplace}}.",

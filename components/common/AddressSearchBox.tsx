@@ -2,12 +2,12 @@ import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
 import { parseInputAddress } from 'lib/utils';
-import { ChangeEventHandler, FormEventHandler } from 'react';
+import { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
 import Button from './Button';
 import SearchBox from './SearchBox';
 import Spinner from './Spinner';
 
-interface Props {
+interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
   onSubmit: FormEventHandler<HTMLFormElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
   value: string;
@@ -15,7 +15,7 @@ interface Props {
   className?: string;
 }
 
-const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className }: Props) => {
+const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, ...props }: Props) => {
   const { data: isValid, isLoading: validating } = useQuery({
     queryKey: ['validate', value],
     queryFn: async () => !!(await parseInputAddress(value)),
@@ -38,6 +38,7 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className }:
       value={value}
       placeholder={placeholder}
       className={className}
+      {...props}
     >
       {value && validating && <Spinner className="w-4 h-4" />}
       {value && !validating && !isValid && <XMarkIcon className="w-6 h-6 text-red-500" />}

@@ -9,16 +9,16 @@
       "question": "¿Cuánto cuesta usar Revoke.cash?"
     },
     "deposited_tokens": {
-      "answer": "Revocar autorizaciones no afecta tus tokens depositados o en staking. Estos tokens permanecerán depositados y podrás seguir retirándolos. Sin embargo, si quieres añadir más tokens a tu posición depositada, tendrás que volver a dar una autorización.",
+      "answer": "Revocar autorizaciones no afecta tus tokens depositados o en staking. Estos tokens permanecerán depositados y podrá seguir retirándolos. Sin embargo, si quieres añadir más tokens a tu posición depositada, tendrás que volver a dar una autorización.",
       "question": "¿Qué pasa con mis tokens depositadas o en staking cuando revoco las autorizaciones?"
     },
     "enough_to_disconnect": {
-      "answer": "No. Desconectar tu cartera (como MetaMask) no hace <0>nada</0> para protegerte de hacks de autorización - o casi cualquier otro hack. La única cosa que pasa cuándo desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas.",
+      "answer": "No. Desconectar tu cartera (como MetaMask) no hace <0>nada</0> para protegerte de vulnerabilidades de autorización - o casi cualquier otra vulnerabilidad. La única cosa que pasa cuándo desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas.",
       "question": "¿Es suficiente solo \"desconectar\" mi cartera en lugar de revocar las autorizaciones?"
     },
     "hardware_wallets": {
-      "answer": "No. En general, las carteras hardware son mucho más seguras que carteras de celular o carteras basadas en navegador porque las llaves de la cartera son guardadas de manera segura en el dispositivo, haciendo que sea imposible robar las llaves sin tener acceso adecuado al dispositivo. Pero con las autorizaciones nadie <0>tiene</0> que robar tus llaves para tomar tus tokens. Debido a eso, las carteras hardware no ofrecen protección adicional contra hacks de autorización.",
-      "question": "¿Las carteras hardware me pueden salvar de hacks de autorización?"
+      "answer": "No. En general, las carteras de hardware son mucho más seguras que carteras de celular o carteras basadas en navegador porque las llaves de la cartera son guardadas de manera segura en el dispositivo, haciendo que sea imposible robar las llaves sin tener acceso adecuado al dispositivo. Pero con las autorizaciones nadie <0>tiene</0> que robar tus llaves para tomar tus tokens. Debido a eso, las carteras de hardware no ofrecen protección adicional contra vulnerabilidades de autorización.",
+      "question": "¿Pueden los carteras de hardware salvarme de las vulnerabilidades de autorización?"
     },
     "multiple_allowances": {
       "answer": "No. Debido a la forma en la que realmente funcionan las autorizaciones, se <0>requiere</0> de 1 transacción por autorización. Así que es técnicamente imposible revocar múltiples autorizaciones en una sola transacción.",
@@ -29,7 +29,7 @@
       "question": "Mi pregunta no está aquí."
     },
     "recover_assets": {
-      "answer": "No. Revoke.cash es una herramienta <0>preventiva</0> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuyes las posibilidades de convertirte en una víctima de hacks de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro.",
+      "answer": "No. Revoke.cash es una herramienta <0>preventiva</0> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuye las posibilidades de convertirte en una víctima de hacks de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro.",
       "question": "Me acaban de robar mis fondos, ¿puedo usar Revoke.cash para recuperarlos?"
     },
     "stolen_through_allowances": {
@@ -37,7 +37,7 @@
       "question": "¿Cómo sé si mis fondos fueron robados a través de un hack de autorización?"
     },
     "sweeper_bot": {
-      "answer": "Si tienes un \"sweeper bot\" en tu cuenta que roba todo el ETH en cuánto ingresa, tu frase semilla fue comprometida. Esto quiere decir que revocar autorizaciones no te va a ayudar con tu seguridad de cartera. Desafortunadamente, no hay ninguna manera de que tu cartera se recupere de esto. Debes abandonar esta cartera y crear una nueva.",
+      "answer": "Si tienes un \"sweeper bot\" en tu cuenta que roba todo el ETH en cuánto ingresas, tu frase semilla fue comprometida. Esto quiere decir que revocar autorizaciones no te va a ayudar con tu seguridad de cartera. Desafortunadamente, no hay ninguna manera de que tu cartera se recupere de esto. Debes abandonar esta cartera y crear una nueva.",
       "question": "Quiero revocar autorizaciones, pero mi ETH es robado siempre que lo agrego a mi cuenta."
     },
     "wallet_mentions_approve": {
