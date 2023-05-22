@@ -65,7 +65,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           </ColorThemeProvider>
         </EthereumProvider>
       </QueryProvider>
-      <Script async defer src="https://scripts.simpleanalyticscdn.com/latest.js" />
+      <Script async defer src="https://sa.revoke.cash/latest.js" />
     </>
   );
 };
