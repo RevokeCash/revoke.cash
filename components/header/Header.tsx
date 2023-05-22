@@ -17,24 +17,24 @@ const Header = ({ searchBar = true }: Props) => {
   return (
     <header className="flex flex-col relative p-4 lg:px-8 gap-4">
       <div className="flex justify-between items-center gap-8">
-        <div className="hidden lg:flex justify-start items-center gap-4 w-1/3">
+        <div className="hidden lg:flex justify-start items-center gap-4 w-2/5 flex-wrap">
           <DonateButton size="md" />
           <NavLink to="/faq" text={t('common:nav.faq')} />
           <NavLink to="/extension" text={t('common:nav.extension')} />
           <NavLink to="/exploits" text={t('common:nav.exploits')} />
         </div>
-        <div className="flex lg:justify-center grow w-1/3">
+        <div className="flex lg:justify-center grow shrink-0">
           <Href href="/" underline="none" className="flex" router>
             <Image
               src="/assets/images/revoke.svg"
               alt="Revoke.cash logo"
               height="49"
               width="240"
-              className="filter dark:invert"
+              className="filter dark:invert shrink-0"
             />
           </Href>
         </div>
-        <div className="hidden lg:flex justify-end w-1/3 gap-2">
+        <div className="hidden lg:flex justify-end w-2/5 gap-2">
           <WalletIndicator />
         </div>
         <div className="flex lg:hidden justify-end">

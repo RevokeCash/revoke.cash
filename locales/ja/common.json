@@ -17,8 +17,8 @@
     "get_started": "開始する",
     "my_allowances": "私の許可一覧",
     "report_exploit": "エクスプロイトを報告する",
-    "revoke": "リボーク(取消)する",
-    "revoking": "リボーク(取消)中",
+    "revoke": "取り消す",
+    "revoking": "取り消中",
     "send": "送信する",
     "sending": "送信中",
     "switch_chain": "チェーンを切り替える",
@@ -54,7 +54,7 @@
         },
         "faq": {
           "description": "すべての質問にお答えします。",
-          "title": "よくあるご質問"
+          "title": "よくある質問"
         },
         "title": "この中からお探しですか？",
         "your_allowances": {
@@ -74,23 +74,23 @@
     "terms": "利用規約"
   },
   "meta": {
-    "description": "過去に付与した許可をリボーク(取消)することで、ウォレットのコントロールを取り戻しましょう。",
-    "title": "Revoke.cash - Ethereumトークンの許可をリボーク(取消)します"
+    "description": "過去に付与した許可を取り消することで、ウォレットのコントロールを取り戻しましょう。",
+    "title": "Revoke.cash - Ethereumトークンの許可を取り消します"
   },
   "nav": {
     "exploits": "エクスプロイト",
     "extension": "ブラウザ拡張機能",
-    "faq": "よくあるご質問",
+    "faq": "よくある質問",
     "search": "アドレスまたはドメインでアカウントを検索する"
   },
   "toasts": {
     "clipboard_failed": "❌ クリップボードにコピーできませんでした。",
     "clipboard_success": "✅ クリップボードにコピーされました",
     "donation_sent": "💪 寄付いただき、ありがとうございます！",
-    "revoke_failed": "❌ 許可のリボーク(取消)に失敗しました:{{message}}",
-    "revoke_failed_revert": "❌ 許可のリボーク(取消)に失敗しました:{{message}}。この問題を解決するには、トークンチームに問い合わせください。",
+    "revoke_failed": "❌ 許可の取り消しに失敗しました: {{message}}",
+    "revoke_failed_revert": "❌ 許可の取り消しに失敗しました: {{message}}。この問題を解決するには、トークンチームに問い合わせください。",
     "transaction_failed": "❌ トランザクションが失敗しました:{{message}}",
     "transaction_submitted": "✅ トランザクションを送信しました！",
-    "update_failed": "❌ このトークンは許可の更新についてサポートしていません、リボーク(取消)してください。"
+    "update_failed": "❌ このトークンは許可の更新についてサポートしていません、取り消してください。"
   }
 }

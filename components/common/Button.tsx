@@ -40,7 +40,7 @@ const Button = ({
 
   const classMapping = {
     common:
-      'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium',
+      'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium shrink-0',
     primary: 'bg-black text-white visited:text-white hover:bg-zinc-800 disabled:bg-zinc-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-zinc-200 disabled:bg-zinc-300',
     tertiary:

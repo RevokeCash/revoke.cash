@@ -7,9 +7,12 @@ interface Props {
 }
 
 const AssetTypeCell = ({ assetType }: Props) => {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
-  const classes = twMerge('w-12', assetType === 'NFT' ? 'bg-blue-500 text-zinc-100' : 'bg-yellow-500 text-zinc-900');
+  const classes = twMerge(
+    lang === 'ja' ? 'w-16' : 'w-12',
+    assetType === 'NFT' ? 'bg-blue-500 text-zinc-100' : 'bg-yellow-500 text-zinc-900'
+  );
 
   return (
     <div className="flex justify-start">

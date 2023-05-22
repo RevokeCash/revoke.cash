@@ -5,6 +5,7 @@ import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
 import type { AllowanceData } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import Trans from 'next-translate/Trans';
+import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import ControlsSection from '../../controls/ControlsSection';
@@ -15,19 +16,24 @@ interface Props {
 }
 
 const AllowanceCell = ({ allowance, onUpdate }: Props) => {
+  const { lang } = useTranslation();
   const [editing, setEditing] = useState<boolean>();
   const { update } = useRevoke(allowance, onUpdate);
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
 
+  const classes = twMerge(
+    !allowance.spender && 'text-zinc-400 dark:text-zinc-500',
+    'flex items-center gap-2',
+    ['ru', 'es'].includes(lang) ? 'w-48' : 'w-40'
+  );
+
   if (editing) {
     return (
-      <div className="flex items-center w-40">
+      <div className={classes}>
         <ControlsSection allowance={allowance} update={update} reset={() => setEditing(false)} />
       </div>
     );
   }
-
-  const classes = twMerge(!allowance.spender && 'text-zinc-400 dark:text-zinc-500', 'flex items-center gap-2 w-40');
 
   return (
     <div className={classes}>
