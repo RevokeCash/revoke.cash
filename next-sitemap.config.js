@@ -14,16 +14,20 @@ module.exports = {
       hreflang: 'en',
     },
     {
-      href: `${SITE_URL}/es`,
-      hreflang: 'es',
+      href: `${SITE_URL}/zh`,
+      hreflang: 'zh',
     },
     {
       href: `${SITE_URL}/ru`,
-      hreflang: 'zh',
+      hreflang: 'ru',
     },
     {
-      href: `${SITE_URL}/zh`,
-      hreflang: 'zh',
+      href: `${SITE_URL}/ja`,
+      hreflang: 'ja',
+    },
+    {
+      href: `${SITE_URL}/es`,
+      hreflang: 'es',
     },
   ],
   exclude: ['/**404'],
