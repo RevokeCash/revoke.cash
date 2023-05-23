@@ -14,6 +14,10 @@ const Sponsorships: NextPage = () => {
         {...defaultSEO}
         title="Revoke.cash Sponsorships"
         description="Sponsor Revoke.cash to help us grow and improve the platform."
+        additionalLinkTags={[
+          ...defaultSEO.additionalLinkTags,
+          { rel: 'canonical', href: 'https://revoke.cash/sponsorships' },
+        ]}
       />
       <ContentPageLayout>
         <h1>Become a Sponsor</h1>
