@@ -8,7 +8,7 @@ interface Props {
 const LandingParagraph = ({ title, children }: Props) => {
   return (
     <div>
-      {title && <h4>{title}</h4>}
+      {title && <h3 className="text-xl">{title}</h3>}
       <div className="text-zinc-700 dark:text-zinc-300">{children}</div>
     </div>
   );

@@ -39,13 +39,13 @@ const Sponsors = () => {
           <SponsorBanner
             name="Vulcan"
             banner="/assets/images/vendor/sponsors/vulcan.jpg"
-            url="https://vulcan.xyz"
+            url="https://www.vulcan.xyz"
             tier="silver"
           />
           <SponsorBanner
             name="PREMINT"
             banner="/assets/images/vendor/sponsors/premint.jpg"
-            url="https://premint.xyz"
+            url="https://www.premint.xyz"
             tier="silver"
           />
           <SponsorBanner

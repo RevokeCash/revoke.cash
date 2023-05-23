@@ -7,7 +7,7 @@ const WhyRevokeCash = () => {
   const { t } = useTranslation();
 
   return (
-    <LandingSection title={t('landing:why_revoke.title')} size="md">
+    <LandingSection title={t('landing:why_revoke.title')} size="h2">
       <LandingParagraph title={t('landing:why_revoke.paragraph_1.title')}>
         <Trans i18nKey="landing:why_revoke.paragraph_1.description" />
       </LandingParagraph>

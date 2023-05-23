@@ -83,7 +83,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
           <div className="w-full flex flex-col gap-2 pb-2">
-            <Dialog.Title as="h3" className="text-center">
+            <Dialog.Title as="h2" className="text-center">
               {t('common:donate.title')}
             </Dialog.Title>
 

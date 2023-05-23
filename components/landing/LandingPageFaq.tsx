@@ -9,7 +9,7 @@ const LandingPageFaq = () => {
   const { t } = useTranslation();
 
   return (
-    <LandingSection title={t('landing:faq.title')} size="md">
+    <LandingSection title={t('landing:faq.title')} size="h2">
       <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
         <LandingPageFaqItem question={t('faq:questions.whole_wallet_at_risk.question')}>
           <Trans i18nKey="faq:questions.whole_wallet_at_risk.answer" components={[<span className="italic" />]} />

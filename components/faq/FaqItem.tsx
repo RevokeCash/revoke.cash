@@ -15,7 +15,7 @@ const FaqItem = ({ question, children }: Props) => {
         <>
           <dt className="text-lg">
             <Disclosure.Button className="flex gap-2 w-full items-center justify-between text-left">
-              <h4>{question}</h4>
+              <h2 className="text-lg">{question}</h2>
               <ChevronDownIcon className={twMerge(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform shrink-0')} />
             </Disclosure.Button>
           </dt>

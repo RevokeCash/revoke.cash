@@ -14,9 +14,9 @@ const Card = ({ title, subtitle, children, className, ...props }: Props) => {
     <div className="w-full border border-black dark:border-white rounded-lg">
       {(title || subtitle) && (
         <div className="w-full border-b border-black dark:border-white py-2 px-4">
-          <h3 className="flex gap-2 items-center">
+          <h2 className="flex gap-2 items-center">
             {props.icon && <props.icon className="h-6 w-6" />} {title}
-          </h3>
+          </h2>
           <p>{subtitle}</p>
         </div>
       )}
