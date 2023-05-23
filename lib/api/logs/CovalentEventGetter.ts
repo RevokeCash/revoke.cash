@@ -49,7 +49,7 @@ export class CovalentEventGetter implements EventGetter {
         return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
       }
 
-      throw e;
+      throw new Error(e.response?.data?.error_message ?? e.message);
     }
   }
 }

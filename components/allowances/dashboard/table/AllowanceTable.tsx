@@ -28,8 +28,8 @@ const AllowanceTable = ({ loading, loadingMessage, error, table, allowances }: P
       </table>
       <div className="flex flex-col justify-center items-center p-3 gap-2 w-full empty:hidden">
         {!loading && !error && table.getRowModel().rows.length === 0 && <NoAllowancesFound allowances={allowances} />}
-        {loading && <AllowancesLoading loadingMessage={loadingMessage} />}
-        {error && !loading && <Error error={error} />}
+        {error && <Error error={error} />}
+        {loading && !error && <AllowancesLoading loadingMessage={loadingMessage} />}
       </div>
     </div>
   );
