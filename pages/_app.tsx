@@ -13,10 +13,12 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as timeago from 'timeago.js';
 import timeagoEs from 'timeago.js/lib/lang/es';
+import timeagoRu from 'timeago.js/lib/lang/ru';
 import timeagoZh from 'timeago.js/lib/lang/zh_CN';
 import '../styles/index.css';
 
 timeago.register('es', timeagoEs);
+timeago.register('ru', timeagoRu);
 timeago.register('zh', timeagoZh);
 
 Router.events.on('routeChangeStart', () => NProgress.start());

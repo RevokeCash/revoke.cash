@@ -18,6 +18,10 @@ module.exports = {
       hreflang: 'es',
     },
     {
+      href: `${SITE_URL}/ru`,
+      hreflang: 'zh',
+    },
+    {
       href: `${SITE_URL}/zh`,
       hreflang: 'zh',
     },

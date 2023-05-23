@@ -8,13 +8,23 @@
       },
       {
         "group": "existing",
-        "pattern": "locales/es/*.json",
-        "lang": "es"
+        "pattern": "locales/zh/*.json",
+        "lang": "zh-Hans"
       },
       {
         "group": "existing",
-        "pattern": "locales/zh/*.json",
-        "lang": "zh-Hans"
+        "pattern": "locales/ru/*.json",
+        "lang": "ru"
+      },
+      {
+        "group": "existing",
+        "pattern": "locales/ja/*.json",
+        "lang": "ja"
+      },
+      {
+        "group": "existing",
+        "pattern": "locales/es/*.json",
+        "lang": "es"
       }
     ]
   },

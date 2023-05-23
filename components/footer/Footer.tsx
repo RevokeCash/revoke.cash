@@ -9,8 +9,8 @@ const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="w-full flex flex-col md:flex-row gap-2 items-center justify-between py-8 px-4 md:py-4 md:px-8 bg-black dark:bg-zinc-800 text-zinc-300">
-      <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center">
+    <footer className="w-full flex flex-col lg:flex-row gap-2 items-center justify-between py-8 px-4 lg:py-4 lg:px-8 bg-black dark:bg-zinc-800 text-zinc-300">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 items-center">
         <div>© Revoke.cash 2023</div>
         <div className="flex gap-2 items-center">
           <Href href="/privacy-policy" underline="hover" router>
