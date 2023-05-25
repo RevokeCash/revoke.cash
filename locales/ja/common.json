@@ -74,23 +74,25 @@
     "terms": "利用規約"
   },
   "meta": {
-    "description": "過去に付与した許可を取り消することで、ウォレットのコントロールを取り戻しましょう。",
-    "title": "Revoke.cash - Ethereumトークンの許可を取り消します"
+    "description": "過去に付与した許可をリボークすることで、ウォレットのコントロールを取り戻しましょう。",
+    "title": "Revoke.cash - Ethereumトークンの許可をリボークします"
   },
   "nav": {
     "exploits": "エクスプロイト",
     "extension": "ブラウザ拡張機能",
     "faq": "よくある質問",
+    "learn": "学ぶ",
+    "more": "その他",
     "search": "アドレスまたはドメインでアカウントを検索する"
   },
   "toasts": {
     "clipboard_failed": "❌ クリップボードにコピーできませんでした。",
     "clipboard_success": "✅ クリップボードにコピーされました",
     "donation_sent": "💪 寄付いただき、ありがとうございます！",
-    "revoke_failed": "❌ 許可の取り消しに失敗しました: {{message}}",
-    "revoke_failed_revert": "❌ 許可の取り消しに失敗しました: {{message}}。この問題を解決するには、トークンチームに問い合わせください。",
+    "revoke_failed": "❌ 許可のリボークに失敗しました: {{message}}",
+    "revoke_failed_revert": "❌ 許可のリボークに失敗しました: {{message}}。この問題を解決するには、トークンチームに問い合わせください。",
     "transaction_failed": "❌ トランザクションが失敗しました:{{message}}",
     "transaction_submitted": "✅ トランザクションを送信しました！",
-    "update_failed": "❌ このトークンは許可の更新についてサポートしていません、取り消してください。"
+    "update_failed": "❌ このトークンは許可の更新についてサポートしていません、リボークしてください。"
   }
 }
