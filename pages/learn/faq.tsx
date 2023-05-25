@@ -1,7 +1,6 @@
-import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import FaqItem from 'components/faq/FaqItem';
-import ContentPageLayout from 'layouts/ContentPageLayout';
+import LearnLayout from 'layouts/LearnLayout';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
@@ -16,11 +15,10 @@ const FaqPage: NextPage = () => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
-      <ContentPageLayout>
-        <h1>{t('faq:title')}</h1>
-        <Divider className="mt-4" />
+      <LearnLayout>
+        <h1 className="text-5xl">{t('faq:title')}</h1>
 
-        <dl className="divide-y divide-zinc-200 dark:divide-zinc-800">
+        <dl className="w-full divide-y divide-zinc-200 dark:divide-zinc-800">
           <FaqItem question={t('faq:questions.whole_wallet_at_risk.question')}>
             <Trans i18nKey="faq:questions.whole_wallet_at_risk.answer" components={[<span className="italic" />]} />
           </FaqItem>
@@ -104,7 +102,7 @@ const FaqPage: NextPage = () => {
             />
           </FaqItem>
         </dl>
-      </ContentPageLayout>
+      </LearnLayout>
     </>
   );
 };

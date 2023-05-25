@@ -10,7 +10,7 @@ interface Props {
 
 const FaqItem = ({ question, children }: Props) => {
   return (
-    <Disclosure as="div" className="py-4">
+    <Disclosure as="div" className="py-4 w-full">
       {({ open }) => (
         <>
           <dt className="text-lg">

@@ -8,7 +8,7 @@ import Spinner from './Spinner';
 interface Props extends Record<string, any> {
   disabled?: boolean;
   style: 'primary' | 'secondary' | 'tertiary' | 'none';
-  size: 'sm' | 'md' | 'lg' | 'none';
+  size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   onClick?: MouseEventHandler;
   href?: string;
   children: React.ReactNode;
@@ -42,11 +42,12 @@ const Button = ({
 
   const classMapping = {
     common:
-      'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium shrink-0',
+      'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium shrink-0 whitespace-nowrap',
     primary: 'bg-black text-white visited:text-white hover:bg-zinc-800 disabled:bg-zinc-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-zinc-200 disabled:bg-zinc-300',
     tertiary:
       'text-black visited:text-black dark:text-white dark:visited:text-white disabled:text-zinc-600 dark:disabled:text-zinc-400 border-none',
+    menu: 'h-9 px-4 rounded-none border-none font-normal text-base justify-start',
     sm: 'h-6 px-2 text-xs rounded-md',
     md: 'h-9 px-4 text-base rounded-lg',
     lg: 'h-12 px-6 text-lg rounded-xl',

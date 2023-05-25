@@ -1,10 +1,18 @@
 {
+  "transformations": [
+    {
+      "name": "contentPathWithoutLang",
+      "source": "${path}",
+      "operations": "removePrefix: content/en/"
+    }
+  ],
   "upload": {
     "files": [
       {
-        "pattern": "locales/en/*.json",
+        "pattern": "content/en/**.md",
         "lang": "inherited",
-        "type": "json",
+        "type": "text",
+        "path": "${contentPathWithoutLang}",
         "file": "${file}"
       }
     ]

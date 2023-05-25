@@ -34,7 +34,7 @@ const Error404 = () => {
           <div className="divide-y divide-zinc-200 dark:divide-zinc-800 border-y border-zinc-200 dark:border-zinc-800">
             <NotFoundLink
               title={t('common:errors.404.suggested_pages.faq.title')}
-              href="/faq"
+              href="/learn/faq"
               description={t('common:errors.404.suggested_pages.faq.description')}
               icon={<QuestionMarkCircleIcon className="h-6 w-6" />}
             />

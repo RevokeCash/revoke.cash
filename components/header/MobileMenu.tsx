@@ -41,11 +41,12 @@ const MobileMenu = () => {
             <Dialog.Panel className="z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
               <div className="flex flex-col items-center gap-6 p-12">
                 <button ref={focusRef} /> {/* Focus trap */}
+                <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
                 <DonateButton size="none" style="tertiary" className="text-lg" />
-                <NavLink to="/faq" text={t('common:nav.faq')} />
                 <NavLink to="/extension" text={t('common:nav.extension')} />
                 <NavLink to="/exploits" text={t('common:nav.exploits')} />
-                <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
+                <NavLink to="/learn" text={t('common:nav.learn')} />
+                <NavLink to="/learn/faq" text={t('common:nav.faq')} />
               </div>
             </Dialog.Panel>
           </Transition.Child>
