@@ -30,7 +30,14 @@ module.exports = {
       hreflang: 'es',
     },
   ],
-  exclude: ['/**404'],
+  exclude: [
+    // 404 pages should not be in the sitemap
+    '/**404',
+    // Locale pages (/es/sponsorships) should not be in the sitemap, because they use canonical URLs
+    '/*/sponsorships',
+    '/*/learn**',
+    '/*/blog**',
+  ],
   // Custom transform function to de-duplicate path locale strings in alternateRefs
   // Without this we get things like https://<domain>/es/es/about rather than https://<domain>/es/about
   // NOTE: This is made to work for path-based localisation scheme (https://<domain>/<locale>/<path>). It may not

@@ -14,7 +14,7 @@ import { useNetwork, useSigner } from 'wagmi';
 import Input from './Input';
 
 interface Props {
-  size: 'sm' | 'md' | 'lg' | 'none';
+  size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
   parentToastRef?: MutableRefObject<ReactText>;

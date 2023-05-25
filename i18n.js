@@ -4,7 +4,7 @@ module.exports = {
   pages: {
     '*': ['common'],
     '/': ['landing', 'faq'],
-    '/faq': ['faq'],
+    '/learn/faq': ['faq'],
     '/extension': ['extension'],
     'rgx:/address/.*': ['address'],
     'rgx:/exploits.*': ['exploits'],

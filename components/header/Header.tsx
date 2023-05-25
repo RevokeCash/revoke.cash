@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import DonateButton from '../common/DonateButton';
 import MobileMenu from './MobileMenu';
+import MoreDropdown from './MoreDropdown';
 import NavLink from './NavLink';
 import SearchBar from './SearchBar';
 
@@ -19,9 +20,9 @@ const Header = ({ searchBar = true }: Props) => {
       <div className="flex justify-between items-center gap-8">
         <div className="hidden lg:flex justify-start items-center gap-4 w-2/5 flex-wrap">
           <DonateButton size="md" />
-          <NavLink to="/faq" text={t('common:nav.faq')} />
           <NavLink to="/extension" text={t('common:nav.extension')} />
           <NavLink to="/exploits" text={t('common:nav.exploits')} />
+          <MoreDropdown />
         </div>
         <div className="flex lg:justify-center grow shrink-0">
           <Href href="/" underline="none" className="flex" router>

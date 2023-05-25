@@ -11,6 +11,14 @@ const nextConfig = {
         source: '/privacy-policy',
         destination: '/privacy-policy.html',
       },
+      {
+        source: '/learn',
+        destination: '/learn/basics/what-is-a-crypto-wallet',
+      },
+      {
+        source: '/faq',
+        destination: '/learn/faq',
+      },
     ];
   },
   redirects: async () => {
@@ -27,6 +35,10 @@ const nextConfig = {
         permanent: true,
       },
     ];
+  },
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false };
+    return config;
   },
 };
 

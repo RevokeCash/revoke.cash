@@ -12,10 +12,7 @@ interface Props {
 const NavLink = ({ to, text, className }: Props) => {
   const router = useRouter();
 
-  const currentRootPath = router.asPath.split('/')[1];
-  const currentToPath = to.split('/')[1];
-
-  const isCurrent = currentRootPath === currentToPath;
+  const isCurrent = router.asPath.startsWith(to) && !(to === '/learn' && router.asPath === '/learn/faq');
 
   return (
     <Button
