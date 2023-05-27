@@ -333,6 +333,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
     [ChainId.LineaTestnet]: `https://consensys-zkevm-goerli-prealpha.infura.io/v3/${infuraKey}`,
+    [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
     ...RPC_OVERRIDES,
   };
 
@@ -510,6 +511,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     SMR: '250',
     OAS: '100',
     NULS: '50',
+    PLS: '100000',
   };
 
   return mapping[nativeToken] ?? '1';
