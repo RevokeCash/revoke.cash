@@ -41,7 +41,6 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
 
   return (
     <Image
-      objectFit="contain"
       src={src}
       alt={alt}
       height={size ?? 24}
