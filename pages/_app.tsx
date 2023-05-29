@@ -1,8 +1,8 @@
-import { init, track } from '@amplitude/analytics-browser';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
+import { init, track } from 'lib/utils/analytics';
 import type { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
@@ -26,11 +26,7 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 NProgress.configure({ showSpinner: false });
 
-init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, null, {
-  trackingOptions: {
-    ipAddress: false,
-  },
-});
+init();
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();

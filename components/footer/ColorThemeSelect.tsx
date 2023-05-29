@@ -1,8 +1,8 @@
-import { track } from '@amplitude/analytics-browser';
 import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
+import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 
 const ColorThemeSelect = () => {

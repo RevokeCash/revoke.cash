@@ -1,4 +1,3 @@
-import { track } from '@amplitude/analytics-browser';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import Button from 'components/common/Button';
@@ -7,6 +6,7 @@ import { DUMMY_ADDRESS } from 'lib/constants';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
+import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';

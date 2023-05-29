@@ -2114,6 +2114,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mixpanel-browser@npm:^2.38.1":
+  version: 2.38.1
+  resolution: "@types/mixpanel-browser@npm:2.38.1"
+  checksum: ff32a3ca24d62a7e71d68f943b15e825899627c94b107df99196ed12321f9f3eaa4c717fed900627e1d377e3e5b44cffa503317ac0f6f9b89eb906dddc1aebbb
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 18.11.18
   resolution: "@types/node@npm:18.11.18"
@@ -7619,6 +7626,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mixpanel-browser@npm:^2.47.0":
+  version: 2.47.0
+  resolution: "mixpanel-browser@npm:2.47.0"
+  checksum: f44e0e0ac70b3772ed1be7c826d3cb0ffbf2dda35e6b927a3f7167795283745ae16573ae6ba303238bf776e3a5ed72c98c3c3f97e2a3c72bcbada15b956e9e9d
+  languageName: node
+  linkType: hard
+
 "mkdirp@npm:^1.0.3, mkdirp@npm:^1.0.4":
   version: 1.0.4
   resolution: "mkdirp@npm:1.0.4"
@@ -9242,6 +9256,7 @@ __metadata:
     "@tanstack/react-query-persist-client": ^4.28.0
     "@tanstack/react-table": ^8.8.5
     "@tippyjs/react": ^4.2.6
+    "@types/mixpanel-browser": ^2.38.1
     "@types/node": ^18.15.11
     "@types/nprogress": ^0.2.0
     "@types/react": ^18.0.33
@@ -9264,6 +9279,7 @@ __metadata:
     husky: ^8.0.3
     iron-session: ^6.3.1
     lint-staged: ^13.2.0
+    mixpanel-browser: ^2.47.0
     next: ^13.2.4
     next-bundle-analyzer: ^0.6.7
     next-connect: ^0.13.0

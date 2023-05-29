@@ -1,4 +1,3 @@
-import { track } from '@amplitude/analytics-browser';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
@@ -7,6 +6,7 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import type { Marketplace } from 'lib/interfaces';
+import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
 import { useSigner } from 'wagmi';

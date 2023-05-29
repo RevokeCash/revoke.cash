@@ -1,7 +1,7 @@
-import { track } from '@amplitude/analytics-browser';
 import { signERC2612Permit } from 'eth-permit';
 import { Contract, Signer, utils } from 'ethers';
 import { DAI_PERMIT } from 'lib/abis';
+import { track } from './analytics';
 import { signDaiPermit } from './eth-permit';
 import { unpackResult } from './promises';
 

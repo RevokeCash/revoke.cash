@@ -1,8 +1,8 @@
-import { track } from '@amplitude/analytics-browser';
 import { BigNumber, Contract } from 'ethers';
 import { ADDRESS_ZERO } from 'lib/constants';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
 import { fromFloat } from 'lib/utils';
+import { track } from 'lib/utils/analytics';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { useAccount, useSigner } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';

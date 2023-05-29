@@ -1,7 +1,7 @@
-import { track } from '@amplitude/analytics-browser';
 import { useQuery } from '@tanstack/react-query';
 import type { AddressEvents, AllowanceData } from 'lib/interfaces';
 import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowances';
+import { track } from 'lib/utils/analytics';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useEffect, useState } from 'react';
 import { useProvider } from 'wagmi';

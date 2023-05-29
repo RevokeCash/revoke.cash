@@ -1,4 +1,3 @@
-import { track } from '@amplitude/analytics-browser';
 import { Column, ColumnSort, sortingFns, Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/Select';
@@ -6,6 +5,7 @@ import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
+import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useMemo } from 'react';
 import useLocalStorage from 'use-local-storage';

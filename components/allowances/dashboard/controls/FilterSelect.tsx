@@ -1,4 +1,3 @@
-import { track } from '@amplitude/analytics-browser';
 import { ColumnFiltersState, Table } from '@tanstack/react-table';
 import Checkbox from 'components/common/Checkbox';
 import Label from 'components/common/Label';
@@ -7,6 +6,7 @@ import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
+import { track } from 'lib/utils/analytics';
 import { updateTableFilters } from 'lib/utils/table';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';

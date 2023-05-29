@@ -1,7 +1,7 @@
-import { track } from '@amplitude/analytics-browser';
 import Logo from 'components/common/Logo';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { FormatOptionLabelMeta } from 'react-select';

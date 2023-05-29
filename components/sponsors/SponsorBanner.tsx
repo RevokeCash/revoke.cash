@@ -1,6 +1,6 @@
-import { track } from '@amplitude/analytics-browser';
 import Href from 'components/common/Href';
 import Label from 'components/common/Label';
+import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useState } from 'react';

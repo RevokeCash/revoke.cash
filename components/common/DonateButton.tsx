@@ -1,9 +1,9 @@
-import { track } from '@amplitude/analytics-browser';
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { utils } from 'ethers';
 import { DONATION_ADDRESS } from 'lib/constants';
+import { track } from 'lib/utils/analytics';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 import type { MutableRefObject, ReactText } from 'react';
