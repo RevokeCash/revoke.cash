@@ -56,3 +56,5 @@ localazy.keys.json
 cypress/videos
 cypress/screenshots
 cypress/downloads
+
+scripts/chainid-lookup.csv
