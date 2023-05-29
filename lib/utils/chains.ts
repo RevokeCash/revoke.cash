@@ -29,6 +29,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.KCCMainnet,
   ChainId.PulseChain,
   ChainId.LineaTestnet,
+  ChainId.Wanchain,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -108,9 +109,10 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FantomOpera,
   ChainId.CronosMainnetBeta,
   ChainId.KavaEVM,
-  ChainId.Canto,
+  ChainId.PulseChain,
   ChainId.CeloMainnet,
   ChainId.RSKMainnet,
+  ChainId.Canto,
   ChainId.Gnosis,
   ChainId.Moonbeam,
   ChainId.Moonriver,
@@ -121,22 +123,22 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['SongbirdCanary-Network'],
   ChainId.BitTorrentChainMainnet,
   ChainId.CoreBlockchainMainnet,
+  ChainId.Wanchain,
   ChainId.OasisEmerald,
   ChainId.SmartBitcoinCash,
   ChainId.HarmonyMainnetShard0,
   ChainId.BobaNetwork,
+  ChainId.Evmos,
   ChainId.CoinExSmartChainMainnet,
   ChainId.FuseMainnet,
   ChainId.OasysMainnet,
-  ChainId.Evmos,
   ChainId.SyscoinMainnet,
   ChainId.NahmiiMainnet,
   ChainId.GodwokenMainnet,
   ChainId.CallistoMainnet,
+  ChainId.EthereumClassicMainnet,
   ChainId.FlareMainnet,
   ChainId.Shiden,
-  ChainId.EthereumClassicMainnet,
-  ChainId.PulseChain,
   ChainId.ENULSMainnet,
   ChainId.Palm,
   ChainId.ExosamaNetwork,
@@ -160,11 +162,11 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
+  ChainId.PulseChainTestnetv4,
   ChainId.CeloAlfajoresTestnet,
   ChainId.MoonbaseAlpha,
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
-  ChainId.PulseChainTestnetv4,
   ChainId.HorizenGobiTestnet,
   ChainId.GatherTestnetNetwork,
   ChainId.ShimmerEVMTestnet,
@@ -308,6 +310,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io',
     [ChainId.CallistoMainnet]: 'https://explorer.callisto.network',
     [ChainId.GodwokenMainnet]: 'https://www.gwscan.com',
+    [ChainId.Wanchain]: 'https://www.wanscan.org',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -451,6 +454,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.ENULSMainnet]: '/assets/images/vendor/chains/enuls.svg',
     [ChainId.HuobiECOChainMainnet]: '/assets/images/vendor/chains/heco.svg',
     [ChainId.HuobiECOChainTestnet]: '/assets/images/vendor/chains/heco.svg',
+    [ChainId.Wanchain]: '/assets/images/vendor/chains/wanchain.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -512,6 +516,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     OAS: '100',
     NULS: '50',
     PLS: '100000',
+    WAN: '100',
   };
 
   return mapping[nativeToken] ?? '1';
