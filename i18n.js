@@ -8,5 +8,6 @@ module.exports = {
     '/extension': ['extension'],
     'rgx:/address/.*': ['address'],
     'rgx:/exploits.*': ['exploits'],
+    'rgx:/learn/.*': ['learn'],
   },
 };

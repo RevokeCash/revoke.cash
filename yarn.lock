@@ -8670,13 +8670,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-translate@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "next-translate@npm:2.0.4"
+"next-translate@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "next-translate@npm:2.0.5"
   peerDependencies:
     next: ">= 10.0.0"
     react: ">= 16.8.0"
-  checksum: a3452b07fd50c2709411fbe0648f0adcfb2b8b78f76fab3f84b6cca2ec1b4569e0fc6ca04b870a0a04b1c3313d4c838fd28fde988f4d5b1e6fb3878586ee6585
+  checksum: c357033fe7fd260dc5c7175fa69635e75bdf4c59a7b90a094d06f94beaee48908069b8f8ea5acce08e239a667242dfc9c0313dbfc1e5f587aa553b4ad917939f
   languageName: node
   linkType: hard
 
@@ -10248,7 +10248,7 @@ __metadata:
     next-connect: ^0.13.0
     next-seo: ^6.0.0
     next-sitemap: ^3.1.55
-    next-translate: ^2.0.4
+    next-translate: ^2.0.5
     next-translate-plugin: ^2.0.4
     nprogress: ^0.2.0
     p-queue: ^6.6.2

@@ -11,18 +11,20 @@ const nextConfig = {
         source: '/privacy-policy',
         destination: '/privacy-policy.html',
       },
-      {
-        source: '/learn',
-        destination: '/learn/basics/what-is-a-crypto-wallet',
-      },
-      {
-        source: '/faq',
-        destination: '/learn/faq',
-      },
     ];
   },
   redirects: async () => {
     return [
+      {
+        source: '/learn',
+        destination: '/learn/basics/what-is-a-crypto-wallet',
+        permanent: true,
+      },
+      {
+        source: '/faq',
+        destination: '/learn/faq',
+        permanent: true,
+      },
       // Some images are somehow being requested (probably by other websites). We redirect them to a placeholder image.
       {
         source: '/erc20.png',

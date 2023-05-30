@@ -47,7 +47,7 @@
     "next": "^13.2.4",
     "next-connect": "^0.13.0",
     "next-seo": "^6.0.0",
-    "next-translate": "^2.0.4",
+    "next-translate": "^2.0.5",
     "nprogress": "^0.2.0",
     "p-queue": "^6.6.2",
     "react": "^18.2.0",

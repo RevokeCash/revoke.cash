@@ -2,20 +2,26 @@ import Href from 'components/common/Href';
 import FaqItem from 'components/faq/FaqItem';
 import LearnLayout from 'layouts/LearnLayout';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
+import { ISidebarEntry } from 'lib/interfaces';
 import { defaultSEO } from 'lib/next-seo.config';
-import type { NextPage } from 'next';
+import { getSidebar } from 'lib/utils/markdown';
+import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 
-const FaqPage: NextPage = () => {
+interface Props {
+  sidebar: ISidebarEntry[];
+}
+
+const FaqPage: NextPage = ({ sidebar }: Props) => {
   const { t } = useTranslation();
 
   return (
     <>
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
-      <LearnLayout>
+      <LearnLayout sidebarEntries={sidebar}>
         <h1 className="text-5xl">{t('faq:title')}</h1>
 
         <dl className="w-full divide-y divide-zinc-200 dark:divide-zinc-800">
@@ -105,6 +111,14 @@ const FaqPage: NextPage = () => {
       </LearnLayout>
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+  const sidebar = await getSidebar(locale, 'learn');
+
+  return {
+    props: { sidebar },
+  };
 };
 
 export default FaqPage;
