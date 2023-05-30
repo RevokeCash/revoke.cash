@@ -91,3 +91,9 @@ export interface Marketplace {
   chains: number[];
   cancelSignatures: (signer: Signer) => Promise<TransactionResponse>;
 }
+
+export interface ISidebarEntry {
+  title: string;
+  path: string;
+  children?: ISidebarEntry[];
+}
