@@ -18,7 +18,7 @@ const Sidebar = ({ entries }: Props) => {
           {entries.map((entry) => (
             <SidebarEntry key={entry.path} {...entry} />
           ))}
-          <SidebarSection title={t('common:nav.faq')} path="/learn/faq" href="/learn/faq" />
+          <SidebarSection title={t('learn:sidebar.faq')} path="/learn/faq" href="/learn/faq" />
         </ul>
       </StickyBox>
     </aside>

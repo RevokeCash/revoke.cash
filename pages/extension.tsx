@@ -10,7 +10,7 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 
-const Extension: NextPage = () => {
+const ExtensionPage: NextPage = () => {
   const { t } = useTranslation();
 
   return (
@@ -99,4 +99,4 @@ const Extension: NextPage = () => {
   );
 };
 
-export default Extension;
+export default ExtensionPage;

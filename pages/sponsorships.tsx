@@ -7,7 +7,7 @@ import { NextSeo } from 'next-seo';
 import Image from 'next/image';
 
 // No need to translate this page tbh
-const Sponsorships: NextPage = () => {
+const SponsorshipsPage: NextPage = () => {
   return (
     <>
       <NextSeo
@@ -59,4 +59,4 @@ const Sponsorships: NextPage = () => {
   );
 };
 
-export default Sponsorships;
+export default SponsorshipsPage;

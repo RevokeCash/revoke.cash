@@ -8,7 +8,7 @@ import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 
-const Error404 = () => {
+const ErrorPage404 = () => {
   const { t } = useTranslation();
   const { address: account } = useAccount();
   const isMounted = useMounted();
@@ -64,4 +64,4 @@ const Error404 = () => {
   );
 };
 
-export default Error404;
+export default ErrorPage404;

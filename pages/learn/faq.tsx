@@ -21,7 +21,7 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
-      <LearnLayout sidebarEntries={sidebar}>
+      <LearnLayout sidebarEntries={sidebar} slug={['faq']} title={t('learn:sidebar.faq')}>
         <h1 className="text-5xl">{t('faq:title')}</h1>
 
         <dl className="w-full divide-y divide-zinc-200 dark:divide-zinc-800">
