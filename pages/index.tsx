@@ -9,7 +9,7 @@ import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 
-const Landing: NextPage = () => {
+const LandingPage: NextPage = () => {
   const { t } = useTranslation();
 
   return (
@@ -28,4 +28,4 @@ const Landing: NextPage = () => {
   );
 };
 
-export default Landing;
+export default LandingPage;

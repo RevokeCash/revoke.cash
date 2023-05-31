@@ -4,7 +4,7 @@ import Href from './Href';
 interface Props {
   pages: {
     name: string;
-    href: string;
+    href?: string;
   }[];
 }
 
@@ -26,9 +26,13 @@ const Breadcrumb = ({ pages }: Props) => {
         {pages.map((page) => (
           <li key={page.name} className="flex items-center gap-2">
             <ChevronRightIcon className="h-5 w-5 shrink-0" />
-            <Href underline="hover" href={page.href} className="text-md font-medium" router>
-              {page.name}
-            </Href>
+            {page.href ? (
+              <Href underline="hover" href={page.href} className="text-md font-medium" router>
+                {page.name}
+              </Href>
+            ) : (
+              <span className="text-md font-medium">{page.name}</span>
+            )}
           </li>
         ))}
       </ol>
