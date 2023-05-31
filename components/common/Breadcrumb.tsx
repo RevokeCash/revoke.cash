@@ -11,7 +11,7 @@ interface Props {
 const Breadcrumb = ({ pages }: Props) => {
   return (
     <nav className="flex mb-5">
-      <ol role="list" className="flex items-center gap-2">
+      <ol role="list" className="flex items-center gap-2 flex-wrap">
         <li>
           <Href
             underline="none"
