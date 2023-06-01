@@ -14,7 +14,7 @@ export const useNameLookup = (address: string) => {
     enabled: !!address,
   });
 
-  const { data: avvyName } = useQuery({
+  const { data: avvyName } = useQuery<string>({
     queryKey: ['avvyName', address, { persist: true }],
     queryFn: () => lookupAvvyName(address),
     enabled: !!address,

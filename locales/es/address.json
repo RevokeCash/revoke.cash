@@ -48,8 +48,8 @@
     "token": "Token"
   },
   "meta": {
-    "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
-    "title": "Revoke.cash: Examina y revoca las autorizaciones para {{address}}"
+    "title": "Revoke.cash: Examina y revoca las autorizaciones para {{address}}",
+    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
   },
   "navigation": {
     "allowances": "Autorizaciones",
