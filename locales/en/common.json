@@ -15,7 +15,7 @@
     "donating": "Donating",
     "download": "Download",
     "get_started": "Get Started",
-    "my_allowances": "My Allowances",
+    "my_allowances": "My Approvals",
     "report_exploit": "Report Exploit",
     "revoke": "Revoke",
     "revoking": "Revoking",
@@ -58,8 +58,8 @@
         },
         "title": "Are you looking for one of these?",
         "your_allowances": {
-          "description": "Inspect your own allowances.",
-          "title": "Your Allowances"
+          "description": "Inspect your own approvals.",
+          "title": "Your Approvals"
         }
       },
       "title": "This page does not exist."
@@ -90,10 +90,10 @@
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",
     "donation_sent": "💪 Thanks for the donation!",
-    "revoke_failed": "❌ Revoking allowance failed: {{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: {{message}}. Please reach out to this token's team to resolve this issue.",
+    "revoke_failed": "❌ Revoking failed: {{message}}",
+    "revoke_failed_revert": "❌ Revoking failed: {{message}}. Please reach out to this token's team to resolve this issue.",
     "transaction_failed": "❌ Transaction failed: {{message}}",
     "transaction_submitted": "✅ Transaction submitted!",
-    "update_failed": "❌ This token does not support updating allowances, please revoke instead."
+    "update_failed": "❌ This token does not support updating approvals, please revoke instead."
   }
 }
