@@ -1,15 +1,15 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "none": "No allowances",
-    "none_found": "No allowances found",
-    "none_found_filtered": "No allowances found for the selected filters",
+    "none": "No approvals",
+    "none_found": "No approvals found",
+    "none_found_filtered": "No approvals found for the selected filters",
     "token_id": "Token #{{tokenId}}",
     "unlimited": "Unlimited"
   },
   "filters": {
     "allowances": {
-      "label": "Allowances",
+      "label": "Approved Amount",
       "options": {
         "limited": "Limited",
         "none": "None",
@@ -35,7 +35,7 @@
   },
   "headers": {
     "actions": "Actions",
-    "allowance": "Allowance",
+    "allowance": "Approved Amount",
     "asset": "Asset",
     "asset_type": "Type",
     "last_updated": "Last Updated",
@@ -52,7 +52,7 @@
     "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
   },
   "navigation": {
-    "allowances": "Allowances",
+    "allowances": "Approvals",
     "history": "History",
     "more": "More",
     "settings": "Settings",
@@ -76,7 +76,7 @@
   },
   "sorting": {
     "columns": {
-      "allowance": "Allowance",
+      "allowance": "Approved Amount",
       "asset_name": "Asset Name",
       "authorized_spender": "Authorized Spender",
       "last_updated": "Last Updated"
@@ -103,7 +103,7 @@
     "connected_account": "You can only perform actions for the connected account",
     "marketplace_listings": "This will cancel all current listings and offers on {{marketplace}}.",
     "marketplace_signatures": "Once approved, marketplaces are able to move assets on your behalf. Bad actors exploit these approvals to create zero-priced listings on third party websites. Cancel these if you signed a marketplace signature on a phishing website.",
-    "permit_signatures": "Permit Signatures are used to approve allowances without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
+    "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
     "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet to continue"
   }
 }

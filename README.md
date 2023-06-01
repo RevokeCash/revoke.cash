@@ -12,7 +12,7 @@ This repository also includes a [list of spender addresses`](/data/spenders), wh
 
 Revoke.cash supports many different chains using different methods, including direct RPC calls, Etherscan and CovalentHQ.
 
-If you want to learn more about (unlimited) ERC20 allowances, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
+If you want to learn more about (unlimited) token approvals, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 
 ## Running locally
 

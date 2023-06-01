@@ -1,6 +1,6 @@
 {
   "name": "revoke.cash",
-  "description": "Protect your Ethereum token balances by revoking allowances and permissions you granted applications in the past.",
+  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 40 other chains.",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",

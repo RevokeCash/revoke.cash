@@ -48,7 +48,7 @@
     "token": "トークン"
   },
   "meta": {
-    "title": "Revoke.cash - {{address}}の検査と許可のリボークを行います",
+    "title": "Address {{addressDisplay}}'s Approvals",
     "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
   },
   "navigation": {
