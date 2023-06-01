@@ -17,13 +17,13 @@ const MoreDropdown = () => {
 
   return (
     <DropdownMenu menuButton={menuButton} style="nav" align="left">
-      <Button size="menu" style="secondary" href="/learn" className="text-lg">
+      <Button size="menu" style="secondary" href="/learn" className="text-lg" router>
         {t('common:nav.learn')}
       </Button>
-      <Button size="menu" style="secondary" href="/learn/faq" className="text-lg">
+      <Button size="menu" style="secondary" href="/learn/faq" className="text-lg" router>
         {t('common:nav.faq')}
       </Button>
-      <Button size="menu" style="secondary" href="/about" className="text-lg">
+      <Button size="menu" style="secondary" href="/about" className="text-lg" router>
         {t('common:nav.about')}
       </Button>
     </DropdownMenu>

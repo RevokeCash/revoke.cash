@@ -16,12 +16,13 @@ interface Props {
 }
 
 const FaqPage: NextPage = ({ sidebar }: Props) => {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const meta = { title: t('learn:sidebar.faq'), description: t('faq:meta.description'), language: lang };
 
   return (
     <>
       <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
-      <LearnLayout sidebarEntries={sidebar} slug={['faq']} title={t('learn:sidebar.faq')}>
+      <LearnLayout sidebarEntries={sidebar} slug={['faq']} meta={meta}>
         <h1 className="text-5xl">{t('faq:title')}</h1>
 
         <dl className="w-full divide-y divide-zinc-200 dark:divide-zinc-800">

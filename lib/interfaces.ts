@@ -97,3 +97,9 @@ export interface ISidebarEntry {
   path: string;
   children?: ISidebarEntry[];
 }
+
+export interface ContentMeta extends Record<string, any> {
+  title: string;
+  description: string;
+  language: string;
+}

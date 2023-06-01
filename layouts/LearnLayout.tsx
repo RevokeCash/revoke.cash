@@ -1,8 +1,9 @@
 import Breadcrumb from 'components/common/Breadcrumb';
+import TranslateButton from 'components/common/TranslateButton';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
 import Sidebar from 'components/learn/Sidebar';
-import { ISidebarEntry } from 'lib/interfaces';
+import { ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
@@ -10,10 +11,10 @@ interface Props {
   searchBar?: boolean;
   sidebarEntries: ISidebarEntry[];
   slug: string[];
-  title: string;
+  meta: ContentMeta;
 }
 
-const LearnLayout = ({ children, searchBar, sidebarEntries, slug, title }: Props) => {
+const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -28,9 +29,10 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, title }: Props
                 pages={[
                   { name: t('common:nav.learn') },
                   ...slug.slice(0, slug.length - 1).map((slug) => ({ name: t(`learn:sidebar.${slug}`) })),
-                  { name: title },
+                  { name: meta.title },
                 ]}
               />
+              <TranslateButton language={meta.language} />
             </div>
             {children}
           </div>
