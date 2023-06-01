@@ -1,7 +1,8 @@
 {
   "sidebar": {
-    "approvals": "Token Approvals",
-    "basics": "Basics",
-    "faq": "FAQ"
+    "approvals": "Одобрения токенов",
+    "basics": "Основы",
+    "faq": "ЧаВо",
+    "mobile_header": "Browse Articles"
   }
 }
