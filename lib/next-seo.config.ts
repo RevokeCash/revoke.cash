@@ -3,6 +3,7 @@ import type { NextSeoProps } from 'next-seo';
 // For some reason next-seo's DefaultSeo isn't working, so I'll do it like this
 export const defaultSEO: NextSeoProps = {
   // title + description are included through next-translate
+  titleTemplate: '%s | Revoke.cash',
   openGraph: {
     url: 'https://revoke.cash/',
     images: [

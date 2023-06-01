@@ -67,9 +67,7 @@ const getSidebarEntry = (slug: string | string[], locale: string, directory: str
   const content = readContentFile(slug, locale, directory);
   if (!content) return null;
 
-  const frontMatter = matter(content).data;
-  const title = frontMatter.sidebar_title || frontMatter.title;
-
+  const { title } = matter(content).data;
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 

@@ -1,5 +1,6 @@
 import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
 import AddressPageLayout from 'layouts/AddressPageLayout';
+import { useAddressPageTitle } from 'lib/hooks/page-context/useAddressPageTitle';
 import { defaultSEO } from 'lib/next-seo.config';
 import { parseInputAddress } from 'lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';
@@ -13,14 +14,11 @@ interface Props {
 
 const AddressPage: NextPage<Props> = ({ address, ssrDomainName }) => {
   const { t } = useTranslation();
+  const title = useAddressPageTitle(ssrDomainName, address);
 
   return (
     <>
-      <NextSeo
-        {...defaultSEO}
-        title={t('address:meta.title', { address: ssrDomainName ?? address })}
-        description={t('address:meta.description')}
-      />
+      <NextSeo {...defaultSEO} title={title} description={t('common:meta.description')} />
       <AddressPageLayout address={address}>
         <AllowanceDashboard />
       </AddressPageLayout>

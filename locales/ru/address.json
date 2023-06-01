@@ -48,8 +48,8 @@
     "token": "Токен"
   },
   "meta": {
-    "description": "Верните себе контроль над своим кошельком, отменив доступы, которые вы предоставляли в прошлом.",
-    "title": "Revoke.cash — проверяйте и контролируйте доступы для {{address}}"
+    "title": "Revoke.cash — проверяйте и контролируйте доступы для {{address}}",
+    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
   },
   "navigation": {
     "allowances": "Доступы",

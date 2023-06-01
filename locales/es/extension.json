@@ -1,7 +1,7 @@
 {
   "meta": {
     "description": "Protege tus saldos de tokens de Ethereum recibiendo advertencias cuando estás a punto de hacer cualquier cosa posiblemente dañina.",
-    "title": "Revoke.cash - Extensión de Navegador"
+    "title": "Extensión de Navegador Revoke.cash"
   },
   "paragraph_1": "En muchos casos, los sitios web de phishing intentan que firmes una autorización mientras fingen ser un minteo de NFT u otros casos de usos legítimos. Cuando ocurren estas estafas de phishing, se recomienda usar Revoke.cash para mitigar el daño, pero es mejor prevenir la estafa en primer lugar.",
   "paragraph_2": "Aquí es donde entra en juego la extensión Revoke.cash. La extensión aparece cada vez que estás a punto de firmar una autorización y te informará los detalles de esta. Esto puede ayudarte a prevenir firmar autorizaciones maliciosas.",

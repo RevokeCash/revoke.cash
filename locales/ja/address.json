@@ -48,8 +48,8 @@
     "token": "トークン"
   },
   "meta": {
-    "description": "過去に付与した許可をリボークすることで、ウォレットのコントロールを取り戻しましょう。",
-    "title": "Revoke.cash - {{address}}の検査と許可のリボークを行います"
+    "title": "Revoke.cash - {{address}}の検査と許可のリボークを行います",
+    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
   },
   "navigation": {
     "allowances": "許可",

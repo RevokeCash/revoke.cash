@@ -48,8 +48,8 @@
     "token": "Token"
   },
   "meta": {
-    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
-    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+    "title": "Address {{addressDisplay}}'s Approvals",
+    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
   },
   "navigation": {
     "allowances": "Allowances",
