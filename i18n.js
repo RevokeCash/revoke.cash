@@ -6,6 +6,7 @@ module.exports = {
     '/': ['landing', 'faq'],
     '/learn/faq': ['faq'],
     '/extension': ['extension'],
+    '/about': ['about'],
     'rgx:/address/.*': ['address'],
     'rgx:/exploits.*': ['exploits'],
     'rgx:/learn/.*': ['learn'],

@@ -1,7 +1,8 @@
 {
   "sidebar": {
-    "approvals": "Token Approvals",
-    "basics": "Basics",
-    "faq": "FAQ"
+    "approvals": "代币批准",
+    "basics": "基础",
+    "faq": "常见问题",
+    "mobile_header": "Browse Articles"
   }
 }
