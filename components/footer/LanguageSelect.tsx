@@ -53,7 +53,7 @@ const LanguageSelect = () => {
     <Select
       instanceId="language-select"
       aria-label="Select Language"
-      className="w-30"
+      className="w-32"
       controlTheme="dark"
       menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => option.value === lang)}

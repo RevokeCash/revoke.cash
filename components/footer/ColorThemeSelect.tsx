@@ -11,9 +11,9 @@ const ColorThemeSelect = () => {
   const { t } = useTranslation();
 
   const options = [
-    { value: 'system', icon: <ComputerDesktopIcon className="w-4 h-4" /> },
-    { value: 'dark', icon: <MoonIcon className="w-4 h-4" /> },
-    { value: 'light', icon: <SunIcon className="w-4 h-4" /> },
+    { value: 'system', icon: ComputerDesktopIcon },
+    { value: 'dark', icon: MoonIcon },
+    { value: 'light', icon: SunIcon },
   ] as const;
 
   const selectTheme = (option: (typeof options)[number]) => {
@@ -24,7 +24,7 @@ const ColorThemeSelect = () => {
   const displayOption = (option: (typeof options)[number]) =>
     isMounted && (
       <div className="flex gap-1 items-center" suppressHydrationWarning>
-        {option.icon} {t(`common:color_themes.${option.value}`)}
+        <option.icon className="w-4 h-4 shrink-0" /> {t(`common:color_themes.${option.value}`)}
       </div>
     );
 
@@ -32,7 +32,7 @@ const ColorThemeSelect = () => {
     <Select
       instanceId="color-theme-select"
       aria-label="Select Color Theme"
-      className="w-30"
+      className="w-32"
       controlTheme="dark"
       menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => option.value === theme)}
