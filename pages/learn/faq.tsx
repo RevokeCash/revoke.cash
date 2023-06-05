@@ -4,7 +4,7 @@ import LearnLayout from 'layouts/LearnLayout';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
 import { ISidebarEntry } from 'lib/interfaces';
 import { defaultSEO } from 'lib/next-seo.config';
-import { getSidebar } from 'lib/utils/markdown';
+import { getSidebar } from 'lib/utils/markdown-content';
 import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Trans from 'next-translate/Trans';

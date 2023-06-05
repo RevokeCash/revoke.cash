@@ -17,7 +17,7 @@ const Sidebar = ({ entries }: Props) => {
   const { t } = useTranslation();
 
   const sidebarContent = (
-    <ul className="flex flex-col gap-1 text-zinc-600 dark:text-zinc-400">
+    <ul className="flex flex-col gap-1 text-zinc-500 dark:text-zinc-400">
       {entries.map((entry) => (
         <SidebarEntry key={entry.path} {...entry} />
       ))}

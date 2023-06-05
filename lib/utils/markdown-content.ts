@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
 import { ISidebarEntry } from 'lib/interfaces';
@@ -84,4 +85,49 @@ export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {
     .map((path: string) => path.split('/'));
 
   return slugs;
+};
+
+export const getTranslationUrl = async (
+  slug: string | string[],
+  locale: string,
+  directory: string = 'learn'
+): Promise<string | null> => {
+  if (!process.env.LOCALAZY_API_KEY || locale === 'en') return null;
+
+  const normalisedSlug = Array.isArray(slug) ? slug : [slug];
+
+  const baseUrl = 'https://api.localazy.com/projects/_a7784910611832258237';
+
+  const { data: files } = await axios.get(`${baseUrl}/files`, {
+    headers: {
+      Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
+    },
+  });
+
+  const targetFileName = `${normalisedSlug.at(-1)}.md`;
+  const targetPath = `${directory}/${normalisedSlug.slice(0, -1).join('/')}`;
+  const file = files.find((file) => file.name === targetFileName && file.path === targetPath);
+
+  if (!file) {
+    throw new Error(`Could not find translation file for ${targetPath}/${targetFileName}`);
+  }
+
+  const {
+    data: {
+      keys: [key],
+    },
+  } = await axios.get(`${baseUrl}/files/${file.id}/keys/en`, {
+    headers: {
+      Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
+    },
+  });
+
+  const languageCodes = {
+    zh: 1,
+    ru: 1105,
+    ja: 717,
+    es: 458,
+  };
+
+  return `https://localazy.com/p/revoke-cash-markdown-content/phrases/${languageCodes[locale]}/edit/${key.id}`;
 };

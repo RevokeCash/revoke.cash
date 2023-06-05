@@ -46,6 +46,7 @@ Then there are a few less essential variables:
 - `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are used for queueing third-party API calls - these are only necessary when hosting in a serverless environment such as Vercel.
 - `NEXT_PUBLIC_HARPIE_API_KEY` is used to call Harpie's API for getting contract address labels - if omitted it only uses public label data sources.
 - `NODE_URLS` is currently unused, but can be used for certain networks in the future.
+- `LOCALAZY_API_KEY` is used for generating "Help Us Translate This Page" links - if omitted, those links will not work.
 
 ## Credits
 
