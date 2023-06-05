@@ -35,7 +35,7 @@ const Sponsors = () => {
             }}
           />
         </div>
-        <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4 max-w-3xl">
           <SponsorBanner
             name="Vulcan"
             banner="/assets/images/vendor/sponsors/vulcan.jpg"
@@ -54,14 +54,14 @@ const Sponsors = () => {
             url="https://layer3.xyz"
             tier="silver"
           />
+          <SponsorBanner
+            name="Brave Wallet"
+            banner="/assets/images/vendor/sponsors/brave.png"
+            url="https://brave.com/wallet/?mtm_campaign=q2&mtm_kwd=revokecash"
+            tier="silver"
+          />
         </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-1.5 gap-y-4">
-          <SponsorBanner
-            name="Earni.fi"
-            banner="/assets/images/vendor/sponsors/earnifi.png"
-            url="https://earni.fi"
-            tier="bronze"
-          />
           <SponsorBanner
             name="Swap.kiwi"
             banner="/assets/images/vendor/sponsors/swap-kiwi.png"
