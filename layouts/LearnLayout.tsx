@@ -12,9 +12,10 @@ interface Props {
   sidebarEntries: ISidebarEntry[];
   slug: string[];
   meta: ContentMeta;
+  translationUrl?: string;
 }
 
-const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta }: Props) => {
+const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translationUrl }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -32,7 +33,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta }: Props)
                   { name: meta.title },
                 ]}
               />
-              <TranslateButton language={meta.language} />
+              <TranslateButton language={meta.language} translationUrl={translationUrl} />
             </div>
             {children}
           </div>
