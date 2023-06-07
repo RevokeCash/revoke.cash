@@ -311,6 +311,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.CallistoMainnet]: 'https://explorer.callisto.network',
     [ChainId.GodwokenMainnet]: 'https://www.gwscan.com',
     [ChainId.Wanchain]: 'https://www.wanscan.org',
+    [ChainId.Canto]: 'https://tuber.build',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -476,7 +477,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     RBTC: '0.001',
     BCH: '0.1',
     BNB: '0.05',
-    xDAI: '15',
+    XDAI: '15',
     MATIC: '15',
     AVAX: '1',
     TLOS: '100',
@@ -549,7 +550,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
     [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
     [ChainId.CLVParachain]: 'https://api.clvscan.com/api',
-    [ChainId.Canto]: 'https://evm.explorer.canto.io/api',
+    [ChainId.Canto]: 'https://tuber.build/api',
     [ChainId.KavaEVM]: 'https://explorer.kava.io/api',
     [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io/api',
     [ChainId.RSKMainnet]: 'https://blockscout.com/rsk/mainnet/api',
