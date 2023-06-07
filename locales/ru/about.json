@@ -1,16 +1,16 @@
 {
   "body": {
-    "growth": "For several years Rosco maintained Revoke.cash as a side project while he worked for different companies in the web3 space. But in the past years web3 has grown and the need for proper security tools has become more apparent. That is why Rosco decided to focus on Revoke.cash full-time in 2022. Since then he has expanded the Revoke.cash toolset with the <0>Revoke.cash browser extension</0> and launched a completely overhauled version of the approvals dashboard.",
-    "intro": "Revoke.cash was created in 2019 by <0>Rosco Kalis</0>. Back then DeFi and smart contracts were still in their infancy, but there was a lot of active development in the space. One thing that projects had in common was that they required users to grant an approval to spend their tokens – and often the amount was unlimited. There were no established tools to revoke these approvals, which is how Revoke.cash was born.",
-    "learn_more": "If you want to learn more about Revoke.cash and wallet security, check out our <0>Learn section</0>.",
-    "team": "Today Revoke.cash is maintained and developed by Rosco and a small team of independent contractors and is funded by donations, grants and sponsorships. We see Revoke.cash as a piece of essential web3 infrastructure, which is why our tools are open source and free to use. We also value sustainability and independence, so we are looking to generate sustainable revenue without raising VC funding or launching a token."
+    "growth": "В течение нескольких лет Роско поддерживал Revoke.cash в качестве side-проекта, пока он работал в различных компаниях в сфере web3. Но в последние годы web3 вырос, и необходимость в надлежащих инструментах безопасности стала еще более очевидной. Поэтому Роско решил полностью сосредоточиться на Revoke.cash в 2022 году. С тех пор он расширил набор инструментов Revoke.cash <0>расширением для браузера Revoke.cash</0> и запустил полностью обновленную версию панели управления доступами.",
+    "intro": "Revoke.cash был создан в 2019 году <0>Роско Калисом</0>. В то время DeFi и смарт-контракты все еще находились в зачаточном состоянии, но сфера активно развивалась. Общим для проектов было то, что они требовали от пользователей доступы на использование своих токенов, и часто их количество было неограничено. Единого инструмента для отмены этих доступов не существовало, поэтому и появился Revoke.cash.",
+    "learn_more": "Если вы хотите узнать больше о Revoke.cash и безопасности кошельков, ознакомьтесь с нашим разделом <0>Обучение</0>.",
+    "team": "Сегодня Revoke.cash поддерживается и развивается Роско и небольшой командой разработчиков и финансируется за счет пожертвований, грантов и спонсорства. Revoke.cash является важным инструментом в web3-безопасности, поэтому он имеет открытый исходный код и бесплатен для использования. Также мы ценим стабильность и независимость, поэтому стремимся получать стабильный доход без привлечения венчурного капитала или запуска токена."
   },
   "captions": {
-    "first_tweet": "How It All Started",
-    "team": "The Revoke.cash Team"
+    "first_tweet": "Как всё начиналось",
+    "team": "Команда Revoke.cash"
   },
   "meta": {
-    "description": "Revoke.cash was created in 2019 by Rosco Kalis as a tool to manage your token approvals. Since then it has grown to be a staple in web3 security.",
+    "description": "Revoke.cash был создан в 2019 году Роско Калисом как инструмент для управления доступами к вашим токенам. С тех пор Revoke.cash стал одним из основных продуктов в web3-безопасности.",
     "title": "О нас"
   },
   "title": "О нас"
