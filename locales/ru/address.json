@@ -9,7 +9,7 @@
   },
   "filters": {
     "allowances": {
-      "label": "Доступы",
+      "label": "Утверждённая сумма",
       "options": {
         "limited": "Ограничено",
         "none": "Нет",
@@ -35,7 +35,7 @@
   },
   "headers": {
     "actions": "Действия",
-    "allowance": "Доступ",
+    "allowance": "Утвержденная сумма",
     "asset": "Aктив",
     "asset_type": "Тип",
     "last_updated": "Последнее обновление",
@@ -48,8 +48,8 @@
     "token": "Токен"
   },
   "meta": {
-    "title": "Revoke.cash — проверяйте и контролируйте доступы для {{address}}",
-    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
+    "title": "Доступы к адресу {{addressDisplay}}",
+    "title_chain": "Доступы к {{addressDisplay}} в {{chainName}}"
   },
   "navigation": {
     "allowances": "Доступы",
@@ -76,7 +76,7 @@
   },
   "sorting": {
     "columns": {
-      "allowance": "Доступ",
+      "allowance": "Утвержденная сумма",
       "asset_name": "Название актива",
       "authorized_spender": "Авторизованный доступ",
       "last_updated": "Последнее обновление"
