@@ -6,14 +6,11 @@
 
 Do you ever feel uneasy about the different dapps that you gave approval to spend ERC20 tokens from your account? [revoke.cash](https://revoke.cash) allows you to inspect all the contracts you've approved to spend money on your behalf, and revoke their access for the ones you no longer need. If you don't want to completely revoke access, it's also possible to update the amount they are allowed to spend instead.
 
-This repository also includes the [`dapp-contract-list`](/public/dapp-contract-list/), which is a mapping of smart contract addresses to the corresponding application. This allows revoke.cash to display application names like Aave or Compound instead of their smart contract addresses. This list can be used by any other application. The name mapping for an address can be accessed through either of these URLs:
+This repository also includes a [list of spender addresses`](/public/data/spenders), which is a mapping of smart contract addresses to the corresponding application. This allows revoke.cash to display application names like Aave or Compound instead of their smart contract addresses. This list can be used by any other application. The name mapping for an address can be accessed through this URL:
 
-- `https://raw.githubusercontent.com/rkalis/revoke.cash/master/public/dapp-contract-list/{chainId}/{address}.json`
-- `https://revoke.cash/dapp-contract-list/{chainId}/{address}.json`
+- `https://raw.githubusercontent.com/RevokeCash/revoke.cash/master/public/data/spenders/{chainId}/{address}.json`
 
-Revoke.cash natively supports Ethereum (mainnet and testnets), Gnosis Chain, Metis, SmartBCH, Syscoin and Ethereum Classic.
-
-It also supports Avalanche, Polygon, BSC, Arbitrum, Optimism, RSK, Fantom, Harmony and several other chains through a backend integration with Etherscan, Blockscout, CovalentHQ & Alchemy. Performance for these chains may be slower due to rate limits.
+Revoke.cash supports many different chains using different methods, including direct RPC calls, Etherscan and CovalentHQ.
 
 If you want to learn more about (unlimited) ERC20 allowances, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 
@@ -51,4 +48,4 @@ Then there are a few less essential variables:
 
 ## Credits
 
-Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) for all Ethereum-related operations and [Etherscan](https://etherscan.io), [CovalentHQ](https://www.covalenthq.com/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Built with Next.js, Tailwind and TypeScript. Uses Upstash for queueing.
+Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) and [wagmi](https://github.com/wagmi-dev/wagmi) for all Ethereum-related operations and [Etherscan](https://etherscan.io), [CovalentHQ](https://www.covalenthq.com/), [Infura](https://infura.io/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Built with Next.js, Tailwind and TypeScript. Uses Upstash for queueing.

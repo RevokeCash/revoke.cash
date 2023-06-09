@@ -2,7 +2,7 @@ import { utils } from 'ethers';
 import fs from 'fs/promises';
 import path from 'path';
 
-const dappListPath = path.join(__dirname, '..', 'public', 'dapp-contract-list');
+const dappListPath = path.join(__dirname, '..', 'public', 'data', 'spenders');
 
 const lintChecksums = async () => {
   const chainIds = await fs.readdir(dappListPath);
