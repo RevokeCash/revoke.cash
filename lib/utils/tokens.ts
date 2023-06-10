@@ -36,7 +36,7 @@ export const getErc20TokenData = async (contract: Contract, owner: string, chain
   const tokenData = await getTokenDataFromMapping(contract, chainId);
   const icon = tokenData?.logoURI;
 
-  if (tokenData.isSpam) throw new Error('Token is marked as spam');
+  if (tokenData?.isSpam) throw new Error('Token is marked as spam');
 
   const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
@@ -61,7 +61,7 @@ export const getErc721TokenData = async (
   const tokenData = await getTokenDataFromMapping(contract, chainId);
   const icon = tokenData?.logoURI;
 
-  if (tokenData.isSpam) throw new Error('Token is marked as spam');
+  if (tokenData?.isSpam) throw new Error('Token is marked as spam');
 
   const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
   const calculatedBalance = String(transfersTo.length - transfersFrom.length);
