@@ -1,13 +1,15 @@
 import axios from 'axios';
+import { utils } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import fs from 'fs';
+import fs from 'fs/promises';
+import { TokenFromList } from 'lib/interfaces';
 import path from 'path';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Inspired by https://github.com/verynifty/RolodETH/blob/main/sources/reservoir/index.js
 
-const NFT_TOKEN_MAPPING_PATH = path.join(__dirname, '..', 'lib', 'data', 'nft-token-mapping.json');
+const TOKENS_BASE_PATH = path.join(__dirname, '..', 'public', 'data', 'tokens');
 
 const RESERVOIR_API_URL =
   'https://api.reservoir.tools/collections/v5?includeTopBid=false&sortBy=allTimeVolume&limit=20';
@@ -64,10 +66,6 @@ const fullOverrides = {
 };
 
 const updateNftTokenlist = async () => {
-  if (!fs.existsSync(NFT_TOKEN_MAPPING_PATH)) {
-    fs.writeFileSync(NFT_TOKEN_MAPPING_PATH, JSON.stringify({}), {});
-  }
-
   let shouldContinue = true;
   let url = RESERVOIR_API_URL;
 
@@ -111,9 +109,22 @@ const updateNftTokenlist = async () => {
   }
 
   // Merge with the existing mapping and write to file (prefer the new data)
-  const originalMapping = JSON.parse(fs.readFileSync(NFT_TOKEN_MAPPING_PATH, 'utf8'));
-  const fullMapping = { '1': { ...originalMapping['1'], ...retrievedMapping } };
-  fs.writeFileSync(NFT_TOKEN_MAPPING_PATH, JSON.stringify(fullMapping, null, 2));
+  await Promise.all(Object.entries(retrievedMapping).map(([address, token]) => writeToken(token, address, 1)));
 };
 
 updateNftTokenlist();
+
+// TODO: Update code to merge this with the earlier code
+const writeToken = async (token: TokenFromList, address: string, chainId: number) => {
+  const chainPath = path.join(TOKENS_BASE_PATH, String(chainId));
+  const tokenPath = path.join(chainPath, `${utils.getAddress(address)}.json`);
+  await fs.mkdir(chainPath, { recursive: true });
+  await fs.writeFile(tokenPath, JSON.stringify(sanitiseToken(token)));
+};
+
+const sanitiseToken = (token: TokenFromList) => {
+  return {
+    symbol: token.symbol,
+    logoURI: token.logoURI?.replace('w=500', 'w=32'),
+  };
+};

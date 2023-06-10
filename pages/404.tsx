@@ -4,12 +4,20 @@ import NotFoundLink from 'components/common/NotFoundLink';
 import ContentPageLayout from 'layouts/ContentPageLayout';
 import { useMounted } from 'lib/hooks/useMounted';
 import useTranslation from 'next-translate/useTranslation';
+import Error from 'next/error';
+import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 
 const Error404 = () => {
   const { t } = useTranslation();
   const { address: account } = useAccount();
   const isMounted = useMounted();
+  const router = useRouter();
+
+  // Make /data 404 errors use up less bandwidth (TODO: Find a way to reduce it even more - still 2.4kb, should be like 0.2kb)
+  if (router.asPath.startsWith('/data')) {
+    return <Error statusCode={404} />;
+  }
 
   return (
     <ContentPageLayout>

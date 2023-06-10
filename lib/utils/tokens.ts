@@ -1,12 +1,11 @@
 import type { Provider } from '@ethersproject/abstract-provider';
+import axios from 'axios';
 import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
-import { TOKEN_MAPPING } from 'lib/data/token-mapping';
-import type { AllowanceData, BaseTokenData, Log } from 'lib/interfaces';
+import type { AllowanceData, BaseTokenData, Log, TokenFromList } from 'lib/interfaces';
 import { toFloat } from '.';
-import spamTokens from '../data/spam-tokens.json';
 import { getPermitDomain } from './permit';
 import { convertString, unpackResult, withFallback } from './promises';
 
@@ -16,7 +15,7 @@ export const isSpamToken = (allowance: AllowanceData) => {
   const tldRegex =
     /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i;
   const includesTld = tldRegex.test(allowance.symbol);
-  return includesHttp || includesTld || spamTokens.includes(allowance.contract.address);
+  return includesHttp || includesTld;
 };
 
 export const getTokenData = async (
@@ -34,8 +33,10 @@ export const getTokenData = async (
 };
 
 export const getErc20TokenData = async (contract: Contract, owner: string, chainId: number): Promise<BaseTokenData> => {
-  const tokenData = TOKEN_MAPPING[chainId]?.[utils.getAddress(contract.address)];
+  const tokenData = await getTokenDataFromMapping(contract, chainId);
   const icon = tokenData?.logoURI;
+
+  if (tokenData.isSpam) throw new Error('Token is marked as spam');
 
   const [totalSupplyBN, balance, symbol, decimals] = await Promise.all([
     unpackResult(contract.functions.totalSupply()),
@@ -57,8 +58,10 @@ export const getErc721TokenData = async (
   transfersTo: Log[],
   chainId: number
 ): Promise<BaseTokenData> => {
-  const tokenData = TOKEN_MAPPING[chainId]?.[utils.getAddress(contract.address)];
+  const tokenData = await getTokenDataFromMapping(contract, chainId);
   const icon = tokenData?.logoURI;
+
+  if (tokenData.isSpam) throw new Error('Token is marked as spam');
 
   const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
   const calculatedBalance = String(transfersTo.length - transfersFrom.length);
@@ -74,6 +77,15 @@ export const getErc721TokenData = async (
   ]);
 
   return { contract, chainId, symbol, owner, balance, icon };
+};
+
+const getTokenDataFromMapping = async (contract: Contract, chainId: number): Promise<TokenFromList | undefined> => {
+  try {
+    const tokenData = await axios.get(`/data/tokens/${chainId}/${utils.getAddress(contract.address)}.json`);
+    return tokenData.data;
+  } catch {
+    return undefined;
+  }
 };
 
 export const throwIfNotErc20 = async (contract: Contract) => {

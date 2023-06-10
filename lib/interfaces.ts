@@ -33,6 +33,7 @@ export interface TokenFromList {
   symbol: string;
   decimals?: number;
   logoURI?: string;
+  isSpam?: boolean;
 }
 
 export interface TokenMapping {
