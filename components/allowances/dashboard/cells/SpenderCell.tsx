@@ -35,7 +35,7 @@ const SpenderCell = ({ allowance }: Props) => {
   }
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 w-46">
       <div className="flex flex-col justify-start items-start">
         <WithHoverTooltip tooltip={allowance.spender}>
           <Href href={explorerUrl} underline="hover" external>

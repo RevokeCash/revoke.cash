@@ -36,7 +36,7 @@ const AssetCell = ({ allowance }: Props) => {
   }
 
   return (
-    <div className="flex items-center gap-1 py-1">
+    <div className="flex items-center gap-1 py-1 w-40 lg:w-56">
       <div className="flex flex-col items-start gap-0.5">
         <div className="flex items-center gap-2 text-base leading-tight">
           <ChainOverlayLogo

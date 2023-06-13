@@ -13,6 +13,8 @@ module.exports = {
         12: '3rem',
         20: '5rem',
         30: '7.5rem',
+        38: '9.5rem',
+        46: '11.5rem',
       },
       fontFamily: {
         sans: [
