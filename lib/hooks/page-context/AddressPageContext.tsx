@@ -52,8 +52,8 @@ export const AddressPageContextProvider = ({ children, address, initialChainId }
 
   const eventContext = useEvents(address, selectedChainId);
   const allowanceContext = useAllowances(address, eventContext?.events, selectedChainId);
-  allowanceContext.isLoading = allowanceContext?.isLoading || eventContext?.isLoading;
   allowanceContext.error = allowanceContext?.error || eventContext?.error;
+  allowanceContext.isLoading = (allowanceContext?.isLoading || eventContext?.isLoading) && !allowanceContext?.error;
 
   const logsProvider = useLogsProvider({ chainId: selectedChainId });
   const readProvider = useProvider({ chainId: selectedChainId });
