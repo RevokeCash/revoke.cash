@@ -1,15 +1,8 @@
 import DangerousProse from 'components/common/DangerousProse';
-import matter from 'gray-matter';
 import LearnLayout from 'layouts/LearnLayout';
 import { ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import { defaultSEO } from 'lib/next-seo.config';
-import {
-  getAllContentSlugs,
-  getSidebar,
-  getTranslationUrl,
-  markdownToHtml,
-  readContentFile,
-} from 'lib/utils/markdown-content';
+import { getAllContentSlugs, getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 
@@ -33,10 +26,7 @@ const LearnDocumentPage: NextPage<Props> = ({ meta, content, sidebar, slug, tran
 };
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
-  console.log(params);
-  const fileContent = readContentFile(params.slug, locale);
-  const { data: meta, content: markdown } = matter(fileContent);
-  const content = markdownToHtml(markdown);
+  const { content, meta } = readAndParseContentFile(params.slug, locale, 'learn');
   const sidebar = await getSidebar(locale, 'learn');
   const translationUrl = await getTranslationUrl(params.slug, locale, 'learn');
 
