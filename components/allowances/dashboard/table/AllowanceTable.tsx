@@ -25,7 +25,7 @@ const AllowanceTable = ({ loading, loadingMessage, error, table, allowances }: P
   if (!allowances && !loading && !error) return null;
 
   return (
-    <Loader isLoading={loading} loadingMessage={loadingMessage}>
+    <Loader isLoading={loading} loadingMessage={loadingMessage} className="allowances-loader">
       <div className={classes.container}>
         <table className={classes.table}>
           <AllowanceTableHeader table={table} />
