@@ -21,7 +21,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
   return (
     <div className="flex flex-col mx-auto min-h-screen gap-4">
       <Header searchBar={searchBar} />
-      <main className="max-w-7xl w-full mx-auto px-4 lg:px-8">
+      <main className="max-w-6xl w-full mx-auto px-4 lg:px-8">
         <div className="flex flex-col min-w-0 lg:flex-row gap-4">
           <Sidebar entries={sidebarEntries} />
           <div className="min-w-0 w-full">
