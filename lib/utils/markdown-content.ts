@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
-import { ISidebarEntry } from 'lib/interfaces';
+import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
 import getT from 'next-translate/getT';
 import { join } from 'path';
 import rehypeStringify from 'rehype-stringify';
@@ -22,17 +22,38 @@ export const readContentFile = (
   slug: string | string[],
   locale: string,
   directory: string = 'learn'
-): string | null => {
+): RawContentFile | null => {
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   try {
-    return readFileSync(join(contentDirectory, locale, directory, `${normalisedSlug}.md`), 'utf8');
+    const content = readFileSync(join(contentDirectory, locale, directory, `${normalisedSlug}.md`), 'utf8');
+    return { content, language: locale };
   } catch {
     try {
-      return readFileSync(join(contentDirectory, 'en', directory, `${normalisedSlug}.md`), 'utf8');
+      const content = readFileSync(join(contentDirectory, 'en', directory, `${normalisedSlug}.md`), 'utf8');
+      return { content, language: 'en' };
     } catch {
       return null;
     }
   }
+};
+
+export const readAndParseContentFile = (
+  slug: string | string[],
+  locale: string,
+  directory: string = 'learn'
+): ContentFile | null => {
+  const { content: rawContent, language } = readContentFile(slug, locale, directory) ?? {};
+  if (!rawContent) return null;
+
+  const { content: markdown, data } = matter(rawContent);
+  const content = markdownToHtml(markdown);
+  const meta = {
+    title: data.title,
+    description: data.description,
+    language,
+  };
+
+  return { content, meta };
 };
 
 export const getSidebar = async (locale: string, directory: string = 'learn'): Promise<ISidebarEntry[] | null> => {
@@ -65,14 +86,13 @@ export const getSidebar = async (locale: string, directory: string = 'learn'): P
 };
 
 const getSidebarEntry = (slug: string | string[], locale: string, directory: string = 'learn'): ISidebarEntry => {
-  const content = readContentFile(slug, locale, directory);
-  if (!content) return null;
+  const { meta } = readAndParseContentFile(slug, locale, directory) ?? {};
+  if (!meta) return null;
 
-  const { title } = matter(content).data;
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 
-  return { title, path };
+  return { title: meta.title, path };
 };
 
 export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {

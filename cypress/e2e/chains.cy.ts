@@ -106,7 +106,6 @@ describe('Chain Support', () => {
         // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
         const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
         linkElement.invoke('attr', 'href').then((href) => {
-          console.log('aaaaaaaaa', href);
           cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
             // Supress errors on the explorer page
             cy.on('uncaught:exception', () => false);

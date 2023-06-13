@@ -103,3 +103,13 @@ export interface ContentMeta extends Record<string, any> {
   description: string;
   language: string;
 }
+
+export interface RawContentFile {
+  content: string;
+  language: string;
+}
+
+export interface ContentFile {
+  content: string;
+  meta: ContentMeta;
+}
