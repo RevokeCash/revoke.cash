@@ -29,6 +29,7 @@ const Href = (
 
   const classes = twMerge(
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
+    'font-medium',
     styleMapping[html ? 'html' : 'inherit'],
     underlineMapping[underline ?? 'always'],
     className

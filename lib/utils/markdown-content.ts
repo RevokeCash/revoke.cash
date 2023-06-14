@@ -4,17 +4,8 @@ import matter from 'gray-matter';
 import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
 import getT from 'next-translate/getT';
 import { join } from 'path';
-import rehypeStringify from 'rehype-stringify';
-import { remark } from 'remark';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
 
 const walk = require('walkdir');
-
-export const markdownToHtml = (markdown: string) => {
-  const result = remark().use(remarkGfm).use(remarkRehype).use(rehypeStringify).processSync(markdown);
-  return result.toString();
-};
 
 export const contentDirectory = join(process.cwd(), 'content');
 
@@ -45,8 +36,7 @@ export const readAndParseContentFile = (
   const { content: rawContent, language } = readContentFile(slug, locale, directory) ?? {};
   if (!rawContent) return null;
 
-  const { content: markdown, data } = matter(rawContent);
-  const content = markdownToHtml(markdown);
+  const { content, data } = matter(rawContent);
   const meta = {
     title: data.title,
     description: data.description,
