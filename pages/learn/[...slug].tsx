@@ -1,4 +1,4 @@
-import DangerousProse from 'components/common/DangerousProse';
+import MarkdownProse from 'components/common/MarkdownProse';
 import LearnLayout from 'layouts/LearnLayout';
 import { ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import { defaultSEO } from 'lib/next-seo.config';
@@ -19,7 +19,7 @@ const LearnDocumentPage: NextPage<Props> = ({ meta, content, sidebar, slug, tran
     <>
       <NextSeo {...defaultSEO} title={meta.title} description={meta.description} />
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta} translationUrl={translationUrl}>
-        <DangerousProse content={content} />
+        <MarkdownProse content={content} />
       </LearnLayout>
     </>
   );
