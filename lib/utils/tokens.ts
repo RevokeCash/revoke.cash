@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
-import { DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
+import { DATA_BASE_URL, DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import type { AllowanceData, BaseTokenData, Log, TokenFromList } from 'lib/interfaces';
 import { toFloat } from '.';
 import { getPermitDomain } from './permit';
@@ -81,7 +81,7 @@ export const getErc721TokenData = async (
 
 const getTokenDataFromMapping = async (contract: Contract, chainId: number): Promise<TokenFromList | undefined> => {
   try {
-    const tokenData = await axios.get(`/data/tokens/${chainId}/${utils.getAddress(contract.address)}.json`);
+    const tokenData = await axios.get(`${DATA_BASE_URL}/tokens/${chainId}/${utils.getAddress(contract.address)}.json`);
     return tokenData.data;
   } catch {
     return undefined;

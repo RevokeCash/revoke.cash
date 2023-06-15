@@ -6,7 +6,7 @@ import { OPENSEA_REGISTRY } from 'lib/abis';
 import {
   ADDRESS_ZERO,
   ALCHEMY_PROVIDER,
-  DAPP_LIST_BASE_URL,
+  DATA_BASE_URL,
   ETHEREUM_LISTS_CONTRACTS,
   OPENSEA_REGISTRY_ADDRESS,
 } from 'lib/constants';
@@ -55,7 +55,7 @@ export const addressToAppName = async (
 
 const getNameFromDappList = async (address: string, chainId: number): Promise<string | null> => {
   try {
-    const { data } = await axios.get(`${DAPP_LIST_BASE_URL}/${chainId}/${utils.getAddress(address)}.json`);
+    const { data } = await axios.get(`${DATA_BASE_URL}/spenders/${chainId}/${utils.getAddress(address)}.json`);
     return data.appName;
   } catch {
     return null;

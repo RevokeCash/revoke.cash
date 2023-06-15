@@ -1,7 +1,8 @@
 import { providers } from 'ethers';
 import type { IronSessionOptions } from 'iron-session';
 
-export const DAPP_LIST_BASE_URL = '/data/spenders';
+export const DATA_BASE_URL = 'https://raw.githubusercontent.com/RevokeCash/revoke.cash/master/data';
+
 export const ETHEREUM_LISTS_CONTRACTS = 'https://raw.githubusercontent.com/ethereum-lists/contracts/main';
 export const CHROME_EXTENSION_URL =
   'https://chrome.google.com/webstore/detail/revokecash/nmniboccheadcclilkfkonokbcoceced';

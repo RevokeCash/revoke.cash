@@ -8,7 +8,7 @@ import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as timeago from 'timeago.js';
@@ -25,6 +25,9 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 NProgress.configure({ showSpinner: false });
+
+// suppress useLayoutEffect warnings when running outside a browser
+if (typeof window === 'undefined') React.useLayoutEffect = React.useEffect;
 
 init();
 
