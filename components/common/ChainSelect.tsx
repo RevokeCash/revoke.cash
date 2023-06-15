@@ -17,9 +17,10 @@ interface Props {
   onSelect?: (chainId: number) => void;
   menuAlign?: 'left' | 'right';
   instanceId?: string;
+  showNames?: boolean;
 }
 
-const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId }: Props) => {
+const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, showNames }: Props) => {
   const isMounted = useMounted();
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
@@ -55,7 +56,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId }: Pr
     return (
       <div className="flex items-center gap-1">
         {isMounted ? <ChainLogo chainId={chainId} /> : <PlaceholderIcon size={24} border className="bg-transparent" />}
-        {context === 'menu' && <div>{chainName}</div>}
+        {(context === 'menu' || showNames) && <div>{chainName}</div>}
       </div>
     );
   };
@@ -76,7 +77,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId }: Pr
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
-      minMenuWidth="13.5rem"
+      minMenuWidth="14.5rem"
       placeholder={<PlaceholderIcon size={24} border />}
       menuAlign={menuAlign}
     />

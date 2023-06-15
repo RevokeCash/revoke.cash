@@ -13,7 +13,7 @@ const HeroSection = () => {
     <LandingSection title={t('landing:hero_section.title')} size="h1">
       <LandingParagraph>{t('landing:hero_section.paragraph_1')}</LandingParagraph>
       <DemoVideo />
-      <ConnectButton style="primary" size="lg" className="font-bold mx-auto" text={t('common:buttons.get_started')} />
+      <ConnectButton style="primary" size="lg" className="mx-auto" text={t('common:buttons.get_started')} redirect />
     </LandingSection>
   );
 };

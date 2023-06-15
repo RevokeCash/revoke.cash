@@ -1,17 +1,17 @@
 {
   "body": {
-    "growth": "For several years Rosco maintained Revoke.cash as a side project while he worked for different companies in the web3 space. But in the past years web3 has grown and the need for proper security tools has become more apparent. That is why Rosco decided to focus on Revoke.cash full-time in 2022. Since then he has expanded the Revoke.cash toolset with the <0>Revoke.cash browser extension</0> and launched a completely overhauled version of the approvals dashboard.",
-    "intro": "Revoke.cash was created in 2019 by <0>Rosco Kalis</0>. Back then DeFi and smart contracts were still in their infancy, but there was a lot of active development in the space. One thing that projects had in common was that they required users to grant an approval to spend their tokens – and often the amount was unlimited. There were no established tools to revoke these approvals, which is how Revoke.cash was born.",
-    "learn_more": "If you want to learn more about Revoke.cash and wallet security, check out our <0>Learn section</0>.",
-    "team": "Today Revoke.cash is maintained and developed by Rosco and a small team of independent contractors and is funded by donations, grants and sponsorships. We see Revoke.cash as a piece of essential web3 infrastructure, which is why our tools are open source and free to use. We also value sustainability and independence, so we are looking to generate sustainable revenue without raising VC funding or launching a token."
+    "growth": "Roscoは数年間、Web3分野の様々な企業で働いている間、サイドプロジェクトとしてRevoke.cashをメンテナンスしておりました。しかし、ここ数年でweb3分野は急成長し、適切なセキュリティツールを利用する必要性がますます明確になってきました。その為、Roscoは2022年にフルタイムでRevoke.cashに注力することを決めました。それ以来、<0>Revoke.cashのブラウザ拡張機能</0>でRevoke.cashツールセットを拡張し、全面的に刷新した承認のダッシュボードをリリース致しました。",
+    "intro": "Revoke.cashは、<0>Rosco Kalis</0>氏によって2019年に開発されました。当時、DeFiとスマートコントラクトはまだ黎明期でしたが、積極的に多くの開発が行われていました。プロジェクトに共通していることの1つは、トークンを使用するにはユーザー側で承認をする必要があるということでした。多くの場合、その承認する値は無制限となっていました。当時、一度行われた承認を取り消すツールは確立されておらず、それがRevoke.cash誕生のきっかけとなりました。",
+    "learn_more": "Revoke.cashとウォレットセキュリティについてより詳しく知りたい場合は、<0>学習</0>セクションをご覧ください。",
+    "team": "現在Revoke.cashは、Roscoと独立コントラクターによる小さなチームによって管理・開発されており、それは寄付、助成金、スポンサーシップによる資金調達により成り立っています。我々は、Revoke.cashがWeb3のインフラストラクチャとして不可欠なものの一つであると考えています。そのため、当社のツールはオープンソースで無料で使用できるものとなっています。また、持続可能性と独立性も重視しているため、VCによる資金調達やトークンの立ち上げを行わずに、持続可能な収益を生み出すことを目指しています。"
   },
   "captions": {
-    "first_tweet": "How It All Started",
-    "team": "The Revoke.cash Team"
+    "first_tweet": "はじまりの経緯",
+    "team": "Revoke.cashチーム"
   },
   "meta": {
-    "description": "Revoke.cash was created in 2019 by Rosco Kalis as a tool to manage your token approvals. Since then it has grown to be a staple in web3 security.",
-    "title": "About Us"
+    "description": "Revoke.cashは、2019年にトークンの承認を管理するためのツールとしてRosco Kalis氏によって開発されました。それ以来、Revoke.cashはweb3セキュリティの定番ツールとなっています。",
+    "title": "私たちについて"
   },
-  "title": "About Us"
+  "title": "私たちについて"
 }

@@ -52,7 +52,7 @@ export const getSidebar = async (locale: string, directory: string = 'learn'): P
   if (directory === 'learn') {
     const sidebar: ISidebarEntry[] = [
       {
-        title: t('sidebar.basics'),
+        title: t('learn:sidebar.basics'),
         path: '/learn/basics',
         children: [
           getSidebarEntry('basics/what-is-a-crypto-wallet', locale, directory),
@@ -61,12 +61,17 @@ export const getSidebar = async (locale: string, directory: string = 'learn'): P
         ],
       },
       {
-        title: t('sidebar.approvals'),
+        title: t('learn:sidebar.approvals'),
         path: '/learn/approvals',
         children: [
           getSidebarEntry('approvals/what-are-token-approvals', locale, directory),
           getSidebarEntry('approvals/how-to-revoke-token-approvals', locale, directory),
         ],
+      },
+      {
+        title: t('learn:sidebar.wallets'),
+        path: '/learn/wallets',
+        children: [{ title: t('learn:add_network.sidebar_title'), path: '/learn/wallets/add-network' }],
       },
     ];
 

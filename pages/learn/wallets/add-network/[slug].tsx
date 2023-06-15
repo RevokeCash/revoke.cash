@@ -1,0 +1,149 @@
+import Button from 'components/common/Button';
+import ChainSelect from 'components/common/ChainSelect';
+import CopyButton from 'components/common/CopyButton';
+import Prose from 'components/common/Prose';
+import ConnectButton from 'components/header/ConnectButton';
+import LearnLayout from 'layouts/LearnLayout';
+import { useMounted } from 'lib/hooks/useMounted';
+import { ISidebarEntry } from 'lib/interfaces';
+import { defaultSEO } from 'lib/next-seo.config';
+import {
+  SUPPORTED_CHAINS,
+  getChainExplorerUrl,
+  getChainFreeRpcUrl,
+  getChainIdFromSlug,
+  getChainName,
+  getChainNativeToken,
+  getChainSlug,
+} from 'lib/utils/chains';
+import { getSidebar } from 'lib/utils/markdown-content';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { NextSeo } from 'next-seo';
+import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useAccount, useSwitchNetwork } from 'wagmi';
+
+interface Props {
+  sidebar: ISidebarEntry[];
+  chainId: number;
+}
+
+const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
+  const { t, lang } = useTranslation();
+  const router = useRouter();
+  const { switchNetwork } = useSwitchNetwork({ chainId });
+  const { isConnected } = useAccount();
+  const isMounted = useMounted();
+
+  const chainName = getChainName(chainId);
+  const slug = ['wallets', 'add-network'];
+
+  const meta = {
+    title: t('learn:add_network.title', { chainName }),
+    description: t('learn:add_network.description', { chainName }),
+    language: lang,
+  };
+
+  return (
+    <>
+      <NextSeo {...defaultSEO} title={meta.title} description={meta.description} />
+      <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta}>
+        <Prose>
+          <h1>{meta.title}</h1>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 my-4">
+            <p className="m-0">{t('learn:add_network.select_network')}</p>
+            <div className="not-prose shrink-0">
+              <ChainSelect
+                selected={chainId}
+                onSelect={(selected) => router.push(`/learn/wallets/add-network/${getChainSlug(selected)}`)}
+                showNames
+              />
+            </div>
+          </div>
+          {/* TODO: If we are running into issues due to duplicate content, we'll need to add some custom content abouot the networks */}
+          <p>{t('learn:add_network.intro_paragraph')}</p>
+          <h2>{t('learn:add_network.step_1.title')}</h2>
+          <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
+            <div>
+              <Image
+                src="/assets/images/learn/wallets/add-network/metamask-add-network-1.png"
+                alt="MetaMask Add Network 1"
+                width={712}
+                height={784}
+              />
+            </div>
+            <div>
+              <Image
+                src="/assets/images/learn/wallets/add-network/metamask-add-network-2.png"
+                alt="MetaMask Add Network 2"
+                width={712}
+                height={784}
+              />
+            </div>
+          </div>
+          <h2>{t('learn:add_network.step_2.title')}</h2>
+          <p>{t('learn:add_network.step_2.paragraph_1', { chainName })}</p>
+          <div className="flex flex-col gap-1 my-4">
+            <FormElement label="Network name" content={chainName} />
+            <FormElement label="New RPC URL" content={getChainFreeRpcUrl(chainId)} />
+            <FormElement label="Chain ID" content={String(chainId)} />
+            <FormElement label="Currency symbol" content={getChainNativeToken(chainId)} />
+            <FormElement label="Block explorer URL (Optional)" content={getChainExplorerUrl(chainId)} />
+          </div>
+          <p>{t('learn:add_network.step_2.paragraph_2')}</p>
+          {isConnected && isMounted ? (
+            <Button style="primary" size="md" onClick={() => switchNetwork()}>
+              {meta.title}
+            </Button>
+          ) : (
+            <ConnectButton style="primary" size="md" />
+          )}
+          <div></div>
+        </Prose>
+      </LearnLayout>
+    </>
+  );
+};
+
+const FormElement = ({ label, content }: { label: string; content: string }) => {
+  return (
+    <>
+      <div className="font-bold">{label}</div>
+      <div className="w-full max-w-sm border px-2 py-2 border-zinc-400 dark:border-zinc-500 rounded-md text-sm flex justify-between gap-4">
+        <span className="truncate">{content}</span>
+        <CopyButton content={content} />
+      </div>
+    </>
+  );
+};
+
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+  const sidebar = await getSidebar(locale, 'learn');
+  const chainId = getChainIdFromSlug(params.slug as string);
+
+  return {
+    props: {
+      sidebar,
+      chainId,
+    },
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
+  const slugs = SUPPORTED_CHAINS.map(getChainSlug);
+
+  const paths = locales.flatMap((locale) =>
+    slugs.map((slug) => ({
+      params: { slug },
+      locale,
+    }))
+  );
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export default AddNewChainPage;

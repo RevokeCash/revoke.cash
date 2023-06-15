@@ -3,6 +3,18 @@
 // allowances on these chains. Because these addresses were chosen randomly it is possible that some allowances may
 
 import { Selectors, TEST_URL } from 'cypress/support/utils';
+import {
+  ETHERSCAN_SUPPORTED_CHAINS,
+  SUPPORTED_CHAINS,
+  getChainApiUrl,
+  getChainExplorerUrl,
+  getChainLogo,
+  getChainLogsRpcUrl,
+  getChainName,
+  getChainNativeToken,
+  getChainRpcUrl,
+  getChainSlug,
+} from 'lib/utils/chains';
 
 // get revoked, causing the tests to fail. In that case we need to replace the address with a new one.
 const fixtures = [
@@ -59,7 +71,7 @@ const fixtures = [
   ['BSC Testnet', '0x40FE4911704f14f409ebEE40475377720C732803'],
   ['Avalanche Fuji', '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6'],
   ['Polygon Mumbai', '0x61bEE7b65F860Fe5a22958421b0a344a0F146983'],
-  ['Polygon Test-zkEVM', '0xe9Cc1396bcbB6e1168d731347F376A2d5709B42a'],
+  ['Polygon zkEVM Testnet', '0xe9Cc1396bcbB6e1168d731347F376A2d5709B42a'],
   ['Arbitrum Goerli', '0x3383A622FA7a30fC83527d6ce1820af928455EA8'],
   ['Optimism Goerli', '0x3239a95A9262034ca28b9a03133775f716f119f8'],
   ['zkSync Era Goerli', '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24'],
@@ -80,6 +92,22 @@ const fixtures = [
 ];
 
 describe('Chain Support', () => {
+  it('should have full data for every supported chain', () => {
+    SUPPORTED_CHAINS.forEach((chainId) => {
+      cy.wrap(getChainName(chainId)).should('not.be.empty');
+      cy.wrap(getChainExplorerUrl(chainId)).should('not.be.empty');
+      cy.wrap(getChainRpcUrl(chainId)).should('not.be.empty');
+      cy.wrap(getChainLogsRpcUrl(chainId)).should('not.be.empty');
+      cy.wrap(getChainLogo(chainId)).should('not.be.empty');
+      cy.wrap(getChainNativeToken(chainId)).should('not.be.empty');
+      cy.wrap(getChainSlug(chainId)).should('not.be.empty');
+    });
+
+    ETHERSCAN_SUPPORTED_CHAINS.forEach((chainId) => {
+      cy.wrap(getChainApiUrl(chainId)).should('not.be.empty');
+    });
+  });
+
   it('should have a test for every item in the chain selection dropdown menu', () => {
     cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();

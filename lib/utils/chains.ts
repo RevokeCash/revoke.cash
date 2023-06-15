@@ -262,7 +262,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
     [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
     [ChainId.PolygonzkEVM]: 'Polygon zkEVM',
-    [ChainId.PolygonzkEVMTestnet]: 'Polygon Test-zkEVM',
+    [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
     [ChainId.PulseChain]: 'PulseChain',
     [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
     [ChainId.LineaTestnet]: 'Linea Goerli',
@@ -285,6 +285,17 @@ export const getChainName = (chainId: number): string => {
   }
 
   return name;
+};
+
+export const getChainSlug = (chainId: number): string => {
+  const chainName = getChainName(chainId);
+  return chainName.toLowerCase().replace(/\s/g, '-');
+};
+
+export const getChainIdFromSlug = (slug: string): number | undefined => {
+  // Note: this doesn't have to be efficient, since it's only used in getStaticProps
+  const chainId = Object.keys(chains.all()).find((chainId) => getChainSlug(Number(chainId)) === slug);
+  return Number(chainId);
 };
 
 export const getChainExplorerUrl = (chainId: number): string | undefined => {
@@ -317,6 +328,19 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
   const [explorer] = chains.get(chainId)?.explorers ?? [];
 
   return overrides[chainId] ?? explorer?.url;
+};
+
+// This is used on the "Add a network" page
+export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
+  const overrides: Record<number, string> = {
+    [ChainId.EthereumMainnet]: 'https://eth.llamarpc.com',
+    [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
+    [ChainId.Palm]: 'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    [ChainId.Goerli]: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+  };
+
+  const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
+  return overrides[chainId] ?? rpcUrl;
 };
 
 export const getChainRpcUrl = (chainId: number): string | undefined => {
