@@ -44,7 +44,7 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
           </Button>
         </DropdownMenu>
       ) : (
-        <ConnectButton size={size} style={style} className={className} />
+        <ConnectButton size={size} style={style} className={className} redirect />
       )}
     </div>
   );

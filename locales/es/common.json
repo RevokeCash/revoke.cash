@@ -23,7 +23,7 @@
     "sending": "Enviando",
     "switch_chain": "Cambiar de Red",
     "switching": "Cambiando",
-    "translate": "Help Us Translate This Page",
+    "translate": "Ayúdanos a traducir esta página",
     "understand": "Entiendo",
     "update": "Actualizar",
     "updating": "Actualizando"
@@ -75,11 +75,11 @@
     "terms": "Términos"
   },
   "meta": {
-    "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
-    "title": "Revoke.cash - Revoca las autorizaciones de tus tokens en Ethereum"
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en Ethereum y 40 redes más.",
+    "title": "Revoca las autorizaciones de tus tokens en más de 40 redes"
   },
   "nav": {
-    "about": "About Us",
+    "about": "Sobre nosotros",
     "exploits": "Hacks",
     "extension": "Extensión",
     "faq": "FAQ",

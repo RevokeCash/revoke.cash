@@ -9,7 +9,7 @@
   },
   "filters": {
     "allowances": {
-      "label": "Autorizaciones",
+      "label": "Cantidad Autorizada",
       "options": {
         "limited": "Limitado",
         "none": "Ninguna",
@@ -35,7 +35,7 @@
   },
   "headers": {
     "actions": "Acciones",
-    "allowance": "Autorización",
+    "allowance": "Cantidad Autorizada",
     "asset": "Activo",
     "asset_type": "Tipo",
     "last_updated": "Última Actualización",
@@ -48,8 +48,8 @@
     "token": "Token"
   },
   "meta": {
-    "title": "Revoke.cash: Examina y revoca las autorizaciones para {{address}}",
-    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
+    "title": "Autorizaciones de dirección {{addressDisplay}}",
+    "title_chain": "Autorizaciones de Dirección {{addressDisplay}} en la red {{chainName}}"
   },
   "navigation": {
     "allowances": "Autorizaciones",
@@ -76,7 +76,7 @@
   },
   "sorting": {
     "columns": {
-      "allowance": "Autorización",
+      "allowance": "Cantidad Autorizada",
       "asset_name": "Nombre del Activo",
       "authorized_spender": "Gastador Autorizado",
       "last_updated": "Última Actualización"

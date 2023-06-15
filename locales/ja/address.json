@@ -9,7 +9,7 @@
   },
   "filters": {
     "allowances": {
-      "label": "許可",
+      "label": "許可したもの",
       "options": {
         "limited": "制限",
         "none": "無し",
@@ -35,7 +35,7 @@
   },
   "headers": {
     "actions": "アクション",
-    "allowance": "許可",
+    "allowance": "許可したもの",
     "asset": "資産",
     "asset_type": "種類",
     "last_updated": "最終更新日",
@@ -48,8 +48,8 @@
     "token": "トークン"
   },
   "meta": {
-    "title": "Address {{addressDisplay}}'s Approvals",
-    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
+    "title": "アドレス {{addressDisplay}}の承認",
+    "title_chain": "{{chainName}}におけるアドレス {{addressDisplay}} の承認"
   },
   "navigation": {
     "allowances": "許可",
@@ -76,7 +76,7 @@
   },
   "sorting": {
     "columns": {
-      "allowance": "許可",
+      "allowance": "許可したもの",
       "asset_name": "資産名",
       "authorized_spender": "権限を持つ支出者",
       "last_updated": "最終更新日"

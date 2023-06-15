@@ -36,6 +36,14 @@ module.exports = {
         code: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
         monospace: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
       },
+      typography: (theme) => ({
+        zinc: {
+          css: {
+            '--tw-prose-body': theme('colors.zinc.900'),
+            '--tw-prose-invert-body': theme('colors.zinc.100'),
+          },
+        },
+      }),
     },
   },
   plugins: [require('@tailwindcss/typography')],

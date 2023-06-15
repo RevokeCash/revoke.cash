@@ -25,6 +25,11 @@ const nextConfig = {
         destination: '/learn/faq',
         permanent: true,
       },
+      {
+        source: '/learn/wallets/add-network',
+        destination: '/learn/wallets/add-network/ethereum',
+        permanent: true,
+      },
       // Some images are somehow being requested (probably by other websites). We redirect them to a placeholder image.
       {
         source: '/erc20.png',
