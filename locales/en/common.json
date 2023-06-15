@@ -21,7 +21,7 @@
     "revoking": "Revoking",
     "send": "Send",
     "sending": "Sending",
-    "switch_chain": "Switch Chain",
+    "switch_chain": "Switch Network",
     "switching": "Switching",
     "translate": "Help Us Translate This Page",
     "understand": "I Understand",
@@ -66,7 +66,7 @@
       "title": "This page does not exist."
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to the {{chainName}} chain"
+      "chain_could_not_connect": "Could not connect to the {{chainName}} network"
     }
   },
   "footer": {
@@ -75,8 +75,8 @@
     "terms": "Terms"
   },
   "meta": {
-    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 40 other chains.",
-    "title": "Revoke Your Token Approvals on Over 40 Chains"
+    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 40 other networks.",
+    "title": "Revoke Your Token Approvals on Over 40 Networks"
   },
   "nav": {
     "about": "About Us",

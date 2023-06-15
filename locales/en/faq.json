@@ -49,8 +49,8 @@
       "question": "Which approvals do I need to revoke?"
     },
     "which_chains": {
-      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM chain. The Revoke.cash website supports a large number of EVM chains including Ethereum, BSC, Polygon and Avalanche. The full list of supported chains can be seen in the chain selection dropdown. If there are any other chains that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
-      "question": "Which chains does Revoke.cash support?"
+      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM network. The Revoke.cash website supports a large number of EVM networks including Ethereum, BSC, Polygon and Avalanche. The full list of supported networks can be seen in the network selection dropdown. If there are any other networks that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
+      "question": "Which networks does Revoke.cash support?"
     },
     "which_domains": {
       "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <0>ENS</0>, <1>Unstoppable Domains</1> and <2>Avvy Domains</2>. We may add other domain name services in the future.",
