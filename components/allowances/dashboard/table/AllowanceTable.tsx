@@ -17,6 +17,7 @@ interface Props {
 
 const AllowanceTable = ({ loading, loadingMessage, error, table, allowances }: Props) => {
   const classes = {
+    loader: 'allowances-loader h-screen',
     container: 'border border-black dark:border-white rounded-lg overflow-x-scroll whitespace-nowrap scrollbar-hide',
     table: 'w-full border-collapse allowances-table',
     label: twMerge('flex flex-col justify-center items-center p-3 gap-2 w-full h-10', !loading && 'empty:hidden'),
@@ -25,7 +26,7 @@ const AllowanceTable = ({ loading, loadingMessage, error, table, allowances }: P
   if (!allowances && !loading && !error) return null;
 
   return (
-    <Loader isLoading={loading} loadingMessage={loadingMessage} className="allowances-loader">
+    <Loader isLoading={loading} loadingMessage={loadingMessage} className={classes.loader}>
       <div className={classes.container}>
         <table className={classes.table}>
           <AllowanceTableHeader table={table} />

@@ -3,7 +3,7 @@ import type { AddressEvents, AllowanceData } from 'lib/interfaces';
 import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
 import { hasZeroBalance } from 'lib/utils/tokens';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useProvider } from 'wagmi';
 import { queryClient } from '../QueryProvider';
 
@@ -24,7 +24,7 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
     enabled: !!address && !!chainId && !!events,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (data) {
       setAllowances(data);
     }

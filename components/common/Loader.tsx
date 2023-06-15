@@ -3,14 +3,17 @@ import { twMerge } from 'tailwind-merge';
 
 interface Props {
   isLoading: boolean;
-  children: ReactNode;
+  children?: ReactNode;
   loadingChildren?: ReactNode;
   className?: string;
   loadingMessage?: string;
 }
 
 const Loader = ({ isLoading, children, loadingChildren, className, loadingMessage }: Props) => {
-  const classes = twMerge('animate-pulse bg-zinc-300 dark:bg-zinc-700 rounded-lg', className);
+  const classes = twMerge(
+    'animate-pulse bg-zinc-300 dark:bg-zinc-700 rounded-lg border border-zinc-400 dark:border-zinc-500',
+    className
+  );
 
   if (isLoading) {
     return (

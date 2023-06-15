@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
+import Loader from './Loader';
 
 interface Props {
   title?: ReactNode;
@@ -7,6 +8,7 @@ interface Props {
   children: ReactNode;
   icon?: React.ExoticComponent<React.SVGProps<SVGSVGElement>>;
   className?: string;
+  isLoading?: boolean;
 }
 
 const Card = ({ title, subtitle, children, className, ...props }: Props) => {
@@ -20,7 +22,9 @@ const Card = ({ title, subtitle, children, className, ...props }: Props) => {
           <p>{subtitle}</p>
         </div>
       )}
-      <div className={twMerge('w-full py-2 px-4', className)}>{children}</div>
+      <Loader isLoading={props.isLoading} className="rounded-t-none border-none">
+        <div className={twMerge('w-full py-2 px-4', className)}>{children}</div>
+      </Loader>
     </div>
   );
 };

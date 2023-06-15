@@ -2,7 +2,6 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import Card from 'components/common/Card';
 import Error from 'components/common/Error';
-import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import { deduplicateArray } from 'lib/utils';
@@ -57,8 +56,8 @@ const PermitsPanel = () => {
 
   if (isLoading) {
     return (
-      <Card title={title} className="w-full flex justify-center items-center h-12">
-        <Spinner className="w-6 h-6" />
+      <Card title={title} className="w-full h-screen" isLoading>
+        <></>
       </Card>
     );
   }
