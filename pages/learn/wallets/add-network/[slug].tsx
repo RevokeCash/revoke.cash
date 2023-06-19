@@ -37,6 +37,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
   const isMounted = useMounted();
 
   const chainName = getChainName(chainId);
+  const chainSlug = getChainSlug(chainId);
   const slug = ['wallets', 'add-network'];
 
   const meta = {
@@ -61,8 +62,8 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
               />
             </div>
           </div>
-          {/* TODO: If we are running into issues due to duplicate content, we'll need to add some custom content abouot the networks */}
-          <p>{t('learn:add_network.intro_paragraph')}</p>
+          <p>{t(`learn:add_network.networks.${chainSlug}`, null, { default: null })}</p>
+          <p>{t('learn:add_network.intro_paragraph', { chainName })}</p>
           <h2>{t('learn:add_network.step_1.title')}</h2>
           <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
             <div>

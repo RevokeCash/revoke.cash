@@ -20,7 +20,7 @@ import {
 const fixtures = [
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
   ['Ethereum', '0xA9a3D92C3aA8CfDA6C5139eCE02401432b91cbB2'],
-  ['Binance Smart Chain', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
+  ['BNB Chain', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Avalanche', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Polygon', '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a'],
   ['Polygon zkEVM', '0x16959Ac6E43f509F9d16De76B3B6f60D908BF816'],
@@ -68,7 +68,7 @@ const fixtures = [
   // ['Gather', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
   ['Goerli', '0xFCBD25BB345765192fFC2f2E35F1F5348badC3F6'],
   ['Sepolia', '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a'],
-  ['BSC Testnet', '0x40FE4911704f14f409ebEE40475377720C732803'],
+  ['BNB Chain Testnet', '0x40FE4911704f14f409ebEE40475377720C732803'],
   ['Avalanche Fuji', '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6'],
   ['Polygon Mumbai', '0x61bEE7b65F860Fe5a22958421b0a344a0F146983'],
   ['Polygon zkEVM Testnet', '0xe9Cc1396bcbB6e1168d731347F376A2d5709B42a'],
@@ -84,7 +84,7 @@ const fixtures = [
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
   ['Moonbase Alpha', '0xeE146d0808D6a874237701E06A118f444dB13D73'],
   ['CoinEx Testnet', '0x5B82588003Ac9db7510702171b94f4acAF87Ca72'],
-  ['Syscoin Tenenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
+  ['Syscoin Tanenbaum', '0x2FB7aB1E0357D595877209e74a715D0F5816cC29'],
   ['Horizen Gobi', '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32'],
   ['PulseChain Testnet', '0xc068aEAdc48427fde985866DAa3e52D4d63935C3'],
   ['Gather Testnet', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
