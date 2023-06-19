@@ -11,7 +11,7 @@ There are multiple definitions of what a _token_ is in cryptocurrency, but the p
 
 Tokens generally have a specific purpose, and can be categorized into different types. The most common types of tokens are:
 
-- **Utility Tokens**: Utility tokens are tokens that serve a certain role in an ecosystem. For example, [Binance](https://www.binance.com/) has a utility token called BNB, which is used to pay for transaction fees on their exchange.
+- **Utility Tokens**: Utility tokens are tokens that serve a certain role in an ecosystem. For example, the [Brave Browser](https://brave.com/) has a utility token called BAT, which is used to pay for certain services within the Brave exosystem.
 
 - **Governance Tokens**: Governance tokens are tokens that are used to vote on proposals within an ecosystem. For example, the ENS token is used to vote on proposals that affect the [Ethereum Name Service](https://ens.domains/).
 
