@@ -10,18 +10,20 @@ interface Props {
 }
 
 const Loader = ({ isLoading, children, loadingChildren, className, loadingMessage }: Props) => {
-  const classes = twMerge(
-    'animate-pulse bg-zinc-300 dark:bg-zinc-700 rounded-lg border border-zinc-400 dark:border-zinc-500',
-    className
-  );
+  const classes = {
+    container: twMerge('animate-pulse bg-zinc-300 dark:bg-zinc-700 rounded-lg', className),
+    border: 'absolute inset-0 border border-zinc-400 dark:border-zinc-500 rounded-lg animate-pulse',
+    message: 'absolute inset-0 flex justify-center items-center',
+  };
 
   if (isLoading) {
     return (
       <div className="relative">
-        <div className={classes}>
+        <div className={classes.container}>
           <div className="invisible">{loadingChildren || children}</div>
         </div>
-        <div className="absolute inset-0 flex justify-center items-center">{loadingMessage}</div>
+        <div className={classes.border} />
+        <div className={classes.message}>{loadingMessage} Hello</div>
       </div>
     );
   }
