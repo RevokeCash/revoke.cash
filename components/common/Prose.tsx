@@ -18,7 +18,9 @@ const Prose = ({ children, className }: Props) => {
     'prose-p:leading-tight prose-p:min-w-0',
     'prose-p:min-w-0 min-w-0',
     'prose-img:rounded-lg prose-img:border prose-img:border-black dark:prose-img:border-white prose-img:mx-auto prose-img:my-4',
-    'prose-li:-my-2 marker:prose-li:text-zinc-500',
+    'prose-li:-my-2 marker:prose-li:text-zinc-600 dark:marker:prose-li:text-zinc-400',
+    'prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:bg-zinc-200 dark:prose-code:bg-zinc-800 prose-code:font-normal',
+    'prose-code:before:content-none prose-code:after:content-none',
     className
   );
 
