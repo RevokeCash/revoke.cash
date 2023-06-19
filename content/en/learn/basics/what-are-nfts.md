@@ -21,7 +21,7 @@ There are many different use cases for NFTs, and they can be categorized into di
 
 ## NFT Standards
 
-All popular NFTs adhere to a certain NFT standard. An NFT standard is a set of rules that defines how an NFT should be implemented. By using these standards, NFTs can be easily integrated into applications such as wallets, DeFi applications, and Revoke.cash. The prevalent NFT standard is [ERC721](https://eips.ethereum.org/EIPS/eip-721), but another popular standard is [ERC1155](https://eips.ethereum.org/EIPS/eip-1155).
+All popular NFTs adhere to a certain NFT standard. An NFT standard is a set of rules that defines how an NFT should be implemented. By using these standards, NFTs can be easily integrated into applications such as wallets, DeFi applications, and Revoke.cash. The prevalent NFT standard is [ERC721](https://eips.ethereum.org/EIPS/eip-721), but another popular standard is the "semi-fungible" [ERC1155](https://eips.ethereum.org/EIPS/eip-1155).
 
 The concept of NFTs already existed before they were standardized. Because of this, there are several older NFT collections that do not adhere to any standard. For example, [CryptoKitties](https://www.cryptokitties.co/) only partially adheres to ERC721, even though their creators were one of the main driving forces behind the creation of the ERC721 standard. [CryptoPunks](https://www.larvalabs.com/cryptopunks) is even older, and therefore does not adhere to any standard.
 
