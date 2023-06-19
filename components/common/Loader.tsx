@@ -23,7 +23,7 @@ const Loader = ({ isLoading, children, loadingChildren, className, loadingMessag
           <div className="invisible">{loadingChildren || children}</div>
         </div>
         <div className={classes.border} />
-        <div className={classes.message}>{loadingMessage} Hello</div>
+        <div className={classes.message}>{loadingMessage}</div>
       </div>
     );
   }
