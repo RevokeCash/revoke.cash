@@ -203,7 +203,7 @@ export const isNodeSupportedChain = (chainId: number): boolean => {
 export const getChainName = (chainId: number): string => {
   const overrides: Record<number, string> = {
     [ChainId.EthereumMainnet]: 'Ethereum',
-    [ChainId.BinanceSmartChainMainnet]: 'Binance Smart Chain',
+    [ChainId.BinanceSmartChainMainnet]: 'BNB Chain',
     [ChainId['AvalancheC-Chain']]: 'Avalanche',
     [ChainId.PolygonMainnet]: 'Polygon',
     [ChainId.ArbitrumOne]: 'Arbitrum',
@@ -230,7 +230,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.CLVParachain]: 'CLV',
     [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
     [ChainId.Goerli]: 'Goerli',
-    [ChainId.BinanceSmartChainTestnet]: 'BSC Testnet',
+    [ChainId.BinanceSmartChainTestnet]: 'BNB Chain Testnet',
     [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
     [ChainId.Mumbai]: 'Polygon Mumbai',
     [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
@@ -240,7 +240,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.MetisStardustTestnet]: 'Metis Stardust',
     [ChainId.TelosEVMTestnet]: 'Telos Testnet',
     [ChainId.SmartBitcoinCashTestnet]: 'SmartBCH Testnet',
-    [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tenenbaum',
+    [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tanenbaum',
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
     [ChainId.OasisEmerald]: 'Oasis Emerald',
     [ChainId.OasisEmeraldTestnet]: 'Oasis Testnet',
