@@ -29,7 +29,7 @@ export class CovalentEventGetter implements EventGetter {
     const apiUrl = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
 
     const params = {
-      'starting-block': fromBlock,
+      'starting-block': fromBlock === 0 ? 'earliest' : fromBlock,
       'ending-block': toBlock,
       'secondary-topics': secondaryTopics.join(','),
       'page-size': 9999999,

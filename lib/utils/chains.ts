@@ -289,7 +289,7 @@ export const getChainName = (chainId: number): string => {
 
 export const getChainExplorerUrl = (chainId: number): string | undefined => {
   const overrides: Record<number, string> = {
-    [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
+    [ChainId.SmartBitcoinCash]: 'https://www.smartscan.cash',
     [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
     [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev',
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
