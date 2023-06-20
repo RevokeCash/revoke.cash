@@ -336,7 +336,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
-    [ChainId.LineaTestnet]: `https://consensys-zkevm-goerli-prealpha.infura.io/v3/${infuraKey}`,
+    [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
     ...RPC_OVERRIDES,
   };
