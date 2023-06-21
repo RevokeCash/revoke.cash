@@ -9,6 +9,7 @@ import Script from 'next/script';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import React, { useEffect } from 'react';
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as timeago from 'timeago.js';

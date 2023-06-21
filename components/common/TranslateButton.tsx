@@ -10,13 +10,6 @@ interface Props {
 const TranslateButton = ({ language, translationUrl }: Props) => {
   const { t, lang } = useTranslation();
 
-  const languageCodes = {
-    zh: 1,
-    ru: 1105,
-    ja: 717,
-    es: 458,
-  };
-
   if (lang === language || !translationUrl) {
     return null;
   }
