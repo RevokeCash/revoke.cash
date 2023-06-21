@@ -1,6 +1,6 @@
 {
   "add_network": {
-    "description": "Learn how you can easily add {{chainName}} and other networks to a cryptocurrency wallets like MetaMask.",
+    "description": "Learn how you can easily add {{chainName}} and other networks to cryptocurrency wallets like MetaMask.",
     "intro_paragraph": "The process of adding {{chainName}} to your wallet may be slightly different depending on the wallet you are using. The steps below are for MetaMask. If you are using a different wallet, there is most likely a similar process that you can follow.",
     "select_network": "Select the network that you want to add:",
     "sidebar_title": "Add a Network to Your Wallet",
@@ -13,6 +13,13 @@
       "title": "2. Enter the required details and click \"Save\"."
     },
     "title": "Add {{chainName}} to MetaMask"
+  },
+  "home": {
+    "intro_paragraph": "We created the Revoke.cash Learn section to help you understand how you can stay safe in the world of web3. It covers the very basics of web3 and then moves on to more advanced topics. We'll be adding more articles over time so be sure to check back regularly."
+  },
+  "meta": {
+    "description": "The world of web3 can be confusing, but it doesn't have to be. We've put together a collection of resources to help you learn about web3, wallet security and more.",
+    "title": "Learn About Web3, Wallet Security and More"
   },
   "sidebar": {
     "approvals": "Token Approvals",

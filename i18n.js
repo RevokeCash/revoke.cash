@@ -9,6 +9,6 @@ module.exports = {
     '/about': ['about'],
     'rgx:/address/.*': ['address'],
     'rgx:/exploits.*': ['exploits'],
-    'rgx:/learn/.*': ['learn'],
+    'rgx:/learn.*': ['learn'],
   },
 };

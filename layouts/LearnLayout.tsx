@@ -3,7 +3,7 @@ import TranslateButton from 'components/common/TranslateButton';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
 import Sidebar from 'components/learn/Sidebar';
-import { ContentMeta, ISidebarEntry } from 'lib/interfaces';
+import { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
@@ -11,12 +11,20 @@ interface Props {
   searchBar?: boolean;
   sidebarEntries: ISidebarEntry[];
   slug: string[];
-  meta: ContentMeta;
+  meta: Partial<ContentMeta>;
   translationUrl?: string;
 }
 
 const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translationUrl }: Props) => {
   const { t } = useTranslation();
+
+  const breadcrumbs: BreadcrumbEntry[] = [{ name: t('common:nav.learn'), href: '/learn' }];
+
+  slug.slice(0, slug.length - 1).forEach((slug) => {
+    breadcrumbs.push({ name: t(`learn:sidebar.${slug}`) });
+  });
+
+  if (meta.title) breadcrumbs.push({ name: meta.title });
 
   return (
     <div className="flex flex-col mx-auto min-h-screen gap-4">
@@ -26,13 +34,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
           <Sidebar entries={sidebarEntries} />
           <div className="min-w-0 w-full">
             <div className="pl-2 pt-2">
-              <Breadcrumb
-                pages={[
-                  { name: t('common:nav.learn') },
-                  ...slug.slice(0, slug.length - 1).map((slug) => ({ name: t(`learn:sidebar.${slug}`) })),
-                  { name: meta.title },
-                ]}
-              />
+              <Breadcrumb pages={breadcrumbs} />
               <TranslateButton language={meta.language} translationUrl={translationUrl} />
             </div>
             {children}

@@ -94,6 +94,7 @@ export interface Marketplace {
 
 export interface ISidebarEntry {
   title: string;
+  description?: string;
   path: string;
   children?: ISidebarEntry[];
 }
@@ -112,4 +113,9 @@ export interface RawContentFile {
 export interface ContentFile {
   content: string;
   meta: ContentMeta;
+}
+
+export interface BreadcrumbEntry {
+  name: string;
+  href?: string;
 }

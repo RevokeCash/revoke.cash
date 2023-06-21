@@ -46,7 +46,11 @@ export const readAndParseContentFile = (
   return { content, meta };
 };
 
-export const getSidebar = async (locale: string, directory: string = 'learn'): Promise<ISidebarEntry[] | null> => {
+export const getSidebar = async (
+  locale: string,
+  directory: string = 'learn',
+  extended: boolean = false
+): Promise<ISidebarEntry[] | null> => {
   const t = await getT(locale, directory);
 
   if (directory === 'learn') {
@@ -55,39 +59,54 @@ export const getSidebar = async (locale: string, directory: string = 'learn'): P
         title: t('learn:sidebar.basics'),
         path: '/learn/basics',
         children: [
-          getSidebarEntry('basics/what-is-a-crypto-wallet', locale, directory),
-          getSidebarEntry('basics/what-are-tokens', locale, directory),
-          getSidebarEntry('basics/what-are-nfts', locale, directory),
+          getSidebarEntry('basics/what-is-a-crypto-wallet', locale, directory, extended),
+          getSidebarEntry('basics/what-are-tokens', locale, directory, extended),
+          getSidebarEntry('basics/what-are-nfts', locale, directory, extended),
         ],
       },
       {
         title: t('learn:sidebar.approvals'),
         path: '/learn/approvals',
         children: [
-          getSidebarEntry('approvals/what-are-token-approvals', locale, directory),
-          getSidebarEntry('approvals/how-to-revoke-token-approvals', locale, directory),
+          getSidebarEntry('approvals/what-are-token-approvals', locale, directory, extended),
+          getSidebarEntry('approvals/how-to-revoke-token-approvals', locale, directory, extended),
         ],
       },
       {
         title: t('learn:sidebar.wallets'),
         path: '/learn/wallets',
-        children: [{ title: t('learn:add_network.sidebar_title'), path: '/learn/wallets/add-network' }],
+        children: [
+          {
+            title: t('learn:add_network.sidebar_title'),
+            description: extended ? t('learn:add_network.description', { chainName: 'Ethereum' }) : null,
+            path: '/learn/wallets/add-network',
+          },
+        ],
       },
     ];
 
     return sidebar;
   }
+
   return null;
 };
 
-const getSidebarEntry = (slug: string | string[], locale: string, directory: string = 'learn'): ISidebarEntry => {
+const getSidebarEntry = (
+  slug: string | string[],
+  locale: string,
+  directory: string = 'learn',
+  extended: boolean = false
+): ISidebarEntry => {
   const { meta } = readAndParseContentFile(slug, locale, directory) ?? {};
   if (!meta) return null;
 
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 
-  return { title: meta.title, path };
+  const entry: ISidebarEntry = { title: meta.title, path };
+  if (extended) entry.description = meta.description;
+
+  return entry;
 };
 
 export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {

@@ -13,7 +13,7 @@ interface Props {
 
 const Card = ({ title, subtitle, children, className, ...props }: Props) => {
   return (
-    <div className="w-full border border-black dark:border-white rounded-lg">
+    <div className="h-full w-full border border-black dark:border-white rounded-lg">
       {(title || subtitle) && (
         <div className="w-full border-b border-black dark:border-white py-2 px-4">
           <h2 className="flex gap-2 items-center">
