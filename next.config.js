@@ -16,11 +16,6 @@ const nextConfig = {
   redirects: async () => {
     return [
       {
-        source: '/learn',
-        destination: '/learn/basics/what-is-a-crypto-wallet',
-        permanent: true,
-      },
-      {
         source: '/faq',
         destination: '/learn/faq',
         permanent: true,

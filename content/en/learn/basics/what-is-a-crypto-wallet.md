@@ -1,6 +1,6 @@
 ---
 title: What Is a Crypto Wallet?
-description: A crypto wallet is used to manage your crypto assets. Learn more about crypto wallets.
+description: A crypto wallet is used to send, receive and store crypto assets. It is often also used to interact with smart contracts. Learn more about crypto wallets.
 ---
 
 # What Is a Crypto Wallet?

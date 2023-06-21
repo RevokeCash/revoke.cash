@@ -114,7 +114,7 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const sidebar = await getSidebar(locale, 'learn');
 
   return {
