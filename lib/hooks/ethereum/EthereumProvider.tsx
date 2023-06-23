@@ -13,6 +13,7 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { LedgerConnector } from 'wagmi/connectors/ledger';
 import { SafeConnector } from 'wagmi/connectors/safe';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy';
 
 interface Props {
@@ -56,9 +57,28 @@ export const connectors = [
     options: { debug: false },
   }),
   new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
-  new WalletConnectLegacyConnector({ chains: wagmiChains, options: { qrcode: true } }),
+  new WalletConnectConnector({
+    chains: wagmiChains,
+    options: {
+      projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+      metadata: {
+        name: 'Revoke.cash',
+        description:
+          'Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 40 other networks.',
+        url: 'https://revoke.cash',
+        icons: [
+          'https://revoke.cash/assets/images/revoke-icon.svg',
+          'https://revoke.cash/assets/images/apple-touch-icon.png',
+        ],
+      },
+    },
+  }),
   new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
   new LedgerConnector({ chains: wagmiChains }),
+  new WalletConnectLegacyConnector({
+    chains: wagmiChains,
+    options: {},
+  }),
 ];
 
 export const wagmiClient = createClient({
@@ -78,33 +98,6 @@ export const EthereumProvider = ({ children }: Props) => {
 const EthereumProviderChild = ({ children }: Props) => {
   const { connect, connectors } = useConnect();
   const { connector } = useAccount();
-
-  // Add a migration from web3modal to wagmi so users don't need to reconnect
-  // TODO: Remove this around May 2023, when people have migrated
-  useEffect(() => {
-    if (!connectors) return;
-
-    const migrateWeb3Modal = async (connectorKey: string) => {
-      // Sleep for 500ms to prevent weird bugs (this is OK since this is only for migration)
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const replacementConnectors = {
-        '"injected"': 'injected',
-        '"walletconnect"': 'walletConnect',
-        '"coinbasewallet"': 'coinbaseWallet',
-      };
-
-      const connector = connectors.find((connector) => connector.id === replacementConnectors[connectorKey]);
-      connect({ connector });
-
-      window.localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
-    };
-
-    const WEB3MODAL_CONNECTOR = window.localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER');
-    if (WEB3MODAL_CONNECTOR) {
-      migrateWeb3Modal(WEB3MODAL_CONNECTOR);
-    }
-  }, [connectors]);
 
   // If the Safe connector is available, connect to it even if other connectors are available
   // (if another connector auto-connects (or user disconnects), we still override it with the Safe connector)
