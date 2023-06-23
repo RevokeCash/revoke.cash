@@ -1,6 +1,7 @@
 ---
 title: What Are NFTs?
 description: NFTs are unique digital assets that can be bought and sold. Each NFT is unique, and cannot be replaced by another NFT. Learn more about NFTs.
+translator: <Your Name Here (or remove)>
 ---
 
 # What Are NFTs (Non-Fungible Tokens)?

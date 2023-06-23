@@ -49,7 +49,7 @@
   },
   "meta": {
     "title": "Revoke.cash-检查并撤销 {{address}} 的授权",
-    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
+    "title_chain": "地址{{addressDisplay}}在{{chainName}}上的批准情况"
   },
   "navigation": {
     "allowances": "授权",

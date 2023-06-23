@@ -14,6 +14,10 @@
     },
     "title": "Add {{chainName}} to MetaMask"
   },
+  "article_meta": {
+    "author": "Written by <0>{{author}}</0>",
+    "translator": "Translated by <0>{{translator}}</0>"
+  },
   "home": {
     "intro_paragraph": "We created the Revoke.cash Learn section to help you understand how you can stay safe in the world of web3. It covers the very basics of web3 and then moves on to more advanced topics. We'll be adding more articles over time so be sure to check back regularly."
   },

@@ -1,16 +1,16 @@
 {
   "body": {
-    "growth": "For several years Rosco maintained Revoke.cash as a side project while he worked for different companies in the web3 space. But in the past years web3 has grown and the need for proper security tools has become more apparent. That is why Rosco decided to focus on Revoke.cash full-time in 2022. Since then he has expanded the Revoke.cash toolset with the <0>Revoke.cash browser extension</0> and launched a completely overhauled version of the approvals dashboard.",
-    "intro": "Revoke.cash was created in 2019 by <0>Rosco Kalis</0>. Back then DeFi and smart contracts were still in their infancy, but there was a lot of active development in the space. One thing that projects had in common was that they required users to grant an approval to spend their tokens – and often the amount was unlimited. There were no established tools to revoke these approvals, which is how Revoke.cash was born.",
-    "learn_more": "If you want to learn more about Revoke.cash and wallet security, check out our <0>Learn section</0>.",
-    "team": "Today Revoke.cash is maintained and developed by Rosco and a small team of independent contractors and is funded by donations, grants and sponsorships. We see Revoke.cash as a piece of essential web3 infrastructure, which is why our tools are open source and free to use. We also value sustainability and independence, so we are looking to generate sustainable revenue without raising VC funding or launching a token."
+    "growth": "多年来，Rosco在为web3领域的不同公司工作时，将Revoke.cash作为副业来维护。但在过去几年中，web3的发展和对适当的安全工具的需求变得更加强烈。这就是为什么Rosco决定在2022年全职专注于Revoke.cash。从那时起，他用<0>Revoke.cash浏览器扩展</0>扩展了Revoke.cash工具集，并推出了完全大修版的审批仪表板。",
+    "intro": "Revoke.cash是2019年由<0>Rosco Kalis</0>创建。那时，DeFi和智能合约仍处于发展初期，但有很多活跃的项目。这些项目的一个共同点是都要求用户授权批准花费他们的代币--而且往往是无限制的金额。当时没有既定的工具来撤销这些批准，这就是Revoke.cash的诞生背景。",
+    "learn_more": "如果你想了解更多关于Revoke.cash和钱包安全的信息，请查看我们的<0>学习资源</0>。",
+    "team": "Revoke.cash现在由Rosco和一个独立承包商小团队维护和开发，资金来自捐款、赠款和赞助。我们视Revoke.cash为一个重要的web3基础设施，这就是为什么我们的工具是开放源代码和免费使用的。我们也重视可持续性和独立性，所以希望在不筹集风投或推出代币的情况下产生可持续收入。"
   },
   "captions": {
-    "first_tweet": "How It All Started",
-    "team": "The Revoke.cash Team"
+    "first_tweet": "这一切是如何开始的",
+    "team": "Revoke.cash团队"
   },
   "meta": {
-    "description": "Revoke.cash was created in 2019 by Rosco Kalis as a tool to manage your token approvals. Since then it has grown to be a staple in web3 security.",
+    "description": "Revoke.cash是由Rosco Kalis在2019年创建的，是一个管理用户代币审批的工具。从那时起，它已经发展成为web3安全领域的主力军。",
     "title": "关于我们"
   },
   "title": "关于我们"

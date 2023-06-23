@@ -49,8 +49,8 @@
       "question": "どの許可をリボークすべきですか？"
     },
     "which_chains": {
-      "answer": "Revoke.cash <0>ブラウザ拡張機能</0>は、全てのEVMチェーンをサポートしています。Revoke.cashのウェブサイトは、Ethereum、BSC、Polygon、Avalancheを含む多数のEVMチェーンをサポートしています。サポートしているチェーンの全リストは、チェーン選択のドロップダウン内でご確認いただけます。サポートしてほしいチェーンが他にある場合は、<1>Twitter</1>または<2>Discord</2>にてご連絡ください。",
-      "question": "Revoke.cashはどのチェーンに対応していますか？"
+      "answer": "Revoke.cash <0>ブラウザ拡張機能</0>は、全てのEVMネットワークをサポートしています。Revoke.cashのウェブサイトは、Ethereum、BSC、Polygon、Avalancheを含む多数のEVMネットワークをサポートしています。サポートしているネットワークの全リストは、ネットワーク選択のドロップダウン内でご確認いただけます。サポートしてほしいネットワークが他にある場合は、<1>Twitter</1>または<2>Discord</2>にてご連絡ください。",
+      "question": "Revoke.cashはどのネットワークに対応していますか？"
     },
     "which_domains": {
       "answer": "検索バーにてアカウント検索する場合、いくつかのドメインネームサービスを利用することが可能です。現状では、<0>ENS</0>、<1>Unstoppable Domains</1>、<2>Avvy Domains</2>をサポートしています。今後、他のドメインネームサービスも追加の可能性があります。",
