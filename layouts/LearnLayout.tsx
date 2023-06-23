@@ -2,6 +2,7 @@ import Breadcrumb from 'components/common/Breadcrumb';
 import TranslateButton from 'components/common/TranslateButton';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
+import ArticleMeta from 'components/learn/ArticleMeta';
 import Sidebar from 'components/learn/Sidebar';
 import { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
@@ -11,7 +12,7 @@ interface Props {
   searchBar?: boolean;
   sidebarEntries: ISidebarEntry[];
   slug: string[];
-  meta: Partial<ContentMeta>;
+  meta: Partial<ContentMeta> & Pick<ContentMeta, 'language'>;
   translationUrl?: string;
 }
 
@@ -38,6 +39,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
               <TranslateButton language={meta.language} translationUrl={translationUrl} />
             </div>
             {children}
+            <ArticleMeta meta={meta} />
           </div>
         </div>
       </main>

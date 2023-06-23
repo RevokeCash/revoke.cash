@@ -1,31 +1,35 @@
 {
   "add_network": {
-    "description": "Learn how you can easily add {{chainName}} and other networks to cryptocurrency wallets like MetaMask.",
-    "intro_paragraph": "The process of adding {{chainName}} to your wallet may be slightly different depending on the wallet you are using. The steps below are for MetaMask. If you are using a different wallet, there is most likely a similar process that you can follow.",
-    "select_network": "Select the network that you want to add:",
-    "sidebar_title": "Add a Network to Your Wallet",
+    "description": "MetaMaskのような暗号資産ウォレットに {{chainName}}やその他のネットワークを簡単に追加する方法を学ぶ。",
+    "intro_paragraph": "{{chainName}}をウォレットに追加するプロセスは、使用しているウォレットによって若干異なる場合があります。以下の手順はメタマスク用です。別のウォレットを使用している場合でも、おそらく同様の手順となります。",
+    "select_network": "追加したいネットワークを選択する：",
+    "sidebar_title": "ウォレットにネットワークを追加する",
     "step_1": {
-      "title": "1. Open your wallet and go to the \"Add network\" page."
+      "title": "1. ウォレットを開き、「ネットワークの追加」ページに移動します。"
     },
     "step_2": {
-      "paragraph_1": "After entering all the required details, you can click \"Save\" to add {{chainName}} to MetaMask.",
-      "paragraph_2": "Alternatively, you can use our one-click button so you don't need to enter the required details manually.",
-      "title": "2. Enter the required details and click \"Save\"."
+      "paragraph_1": "必要な情報をすべて入力したら、「保存」をクリックすることで MetaMaskに{{chainName}}を追加できます。",
+      "paragraph_2": "また、ワンクリックボタンを使用できるので、必要な詳細情報を手入力する必要がありません。",
+      "title": "2. 必要な情報を入力し、「保存」をクリックします。"
     },
-    "title": "Add {{chainName}} to MetaMask"
+    "title": "{{chainName}}をメタマスクに追加"
+  },
+  "article_meta": {
+    "author": "Written by <0>{{author}}</0>",
+    "translator": "Translated by <0>{{translator}}</0>"
   },
   "home": {
-    "intro_paragraph": "We created the Revoke.cash Learn section to help you understand how you can stay safe in the world of web3. It covers the very basics of web3 and then moves on to more advanced topics. We'll be adding more articles over time so be sure to check back regularly."
+    "intro_paragraph": "web3 の世界で安全に過ごす方法をご理解いただくため、Revoke.cash Learnセクションを作成しました。 web3 の基本を説明した上で、より高度なトピックにも触れています。今後も記事を追加していきますので、定期的にチェックしてください。"
   },
   "meta": {
-    "description": "The world of web3 can be confusing, but it doesn't have to be. We've put together a collection of resources to help you learn about web3, wallet security and more.",
-    "title": "Learn About Web3, Wallet Security and More"
+    "description": "web3 の世界ではよく混乱が起きますが、それはずっと続くものではありません。web3、ウォレットセキュリティ等について学ぶのに役立つリソースを纏めました。",
+    "title": "Web3、ウォレットセキュリティ等について学ぼう"
   },
   "sidebar": {
     "approvals": "トークンの承認",
     "basics": "基本について",
     "faq": "よくある質問",
     "mobile_header": "記事一覧",
-    "wallets": "Wallets"
+    "wallets": "ウォレット"
   }
 }

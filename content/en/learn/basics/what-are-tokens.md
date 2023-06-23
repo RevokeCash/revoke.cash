@@ -1,6 +1,7 @@
 ---
 title: What Are Tokens?
 description: Tokens are digital assets that can be bought and sold. There are different kinds of tokens, like governance tokens or stablecoins. Learn more about tokens.
+translator: <Your Name Here (or remove)>
 ---
 
 # What Are Tokens?

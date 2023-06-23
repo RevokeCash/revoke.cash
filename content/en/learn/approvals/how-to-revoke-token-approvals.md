@@ -1,6 +1,7 @@
 ---
 title: How to Revoke Token Approvals
 description: Revoking token approvals is essential to maintaining proper wallet hygiene. Learn how to revoke token approvals using Revoke.cash and other tools.
+translator: <Your Name Here (or remove)>
 ---
 
 # How to Revoke Token Approvals and Permissions

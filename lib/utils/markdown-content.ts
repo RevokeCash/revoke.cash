@@ -41,6 +41,8 @@ export const readAndParseContentFile = (
     title: data.title,
     description: data.description,
     language,
+    author: data.author ?? null,
+    translator: data.translator ?? null,
   };
 
   return { content, meta };
