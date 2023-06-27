@@ -23,7 +23,7 @@ const MobileMenu = () => {
 
   return (
     <div className="flex flex-col">
-      <Button style="none" size="none" onClick={toggleOpen}>
+      <Button style="none" size="none" onClick={toggleOpen} aria-label="Toggle Menu">
         {!open && <Bars3Icon className="h-8 w-8" />}
         {open && <XMarkIcon className="h-8 w-8" />}
       </Button>

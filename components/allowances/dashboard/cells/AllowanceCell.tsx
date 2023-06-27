@@ -22,7 +22,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
 
   const classes = twMerge(
-    !allowance.spender && 'text-zinc-400 dark:text-zinc-500',
+    !allowance.spender && 'text-zinc-500 dark:text-zinc-400',
     'flex items-center gap-2',
     ['ru', 'es'].includes(lang) ? 'w-48' : 'w-40'
   );
