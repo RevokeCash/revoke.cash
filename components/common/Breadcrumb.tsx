@@ -18,6 +18,7 @@ const Breadcrumb = ({ pages }: Props) => {
             href="/"
             className="hover:cursor-pointer hover:opacity-50 hover:bg-zinc-100 duration-100"
             router
+            aria-label="Home"
           >
             <HomeIcon className="h-5 w-5 flex-shrink-0" />
           </Href>

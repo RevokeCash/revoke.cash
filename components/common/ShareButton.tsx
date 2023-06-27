@@ -6,7 +6,12 @@ import Button from './Button';
 const ShareButton = () => {
   const { t } = useTranslation();
   return (
-    <Button style="tertiary" size="none" onClick={() => writeToClipBoard(location.href, t)}>
+    <Button
+      style="tertiary"
+      size="none"
+      onClick={() => writeToClipBoard(location.href, t)}
+      aria-label="Share This Page On Social Media"
+    >
       <ShareIcon className="w-5 h-5" />
     </Button>
   );

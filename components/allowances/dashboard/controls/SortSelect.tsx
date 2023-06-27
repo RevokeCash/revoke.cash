@@ -86,6 +86,7 @@ const SortSelect = ({ table }: Props) => {
   return (
     <Select
       instanceId="sort-select"
+      aria-label="Sort By"
       className="h-full w-full shrink-0"
       classNamePrefix="sort-select"
       controlTheme={darkMode ? 'dark' : 'light'}

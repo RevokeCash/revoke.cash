@@ -14,7 +14,7 @@ const CopyButton = ({ content, tooltip, className }: Props) => {
   const { t } = useTranslation();
 
   const button = (
-    <Button style="none" size="none" onClick={() => writeToClipBoard(content, t)}>
+    <Button style="none" size="none" onClick={() => writeToClipBoard(content, t)} aria-label="Copy To Clipboard">
       <DocumentDuplicateIcon className={className ?? 'w-4 h-4'} />
     </Button>
   );

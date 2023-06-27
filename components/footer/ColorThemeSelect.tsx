@@ -31,6 +31,7 @@ const ColorThemeSelect = () => {
   return (
     <Select
       instanceId="color-theme-select"
+      aria-label="Select Color Theme"
       className="w-30"
       controlTheme="dark"
       menuTheme={darkMode ? 'dark' : 'light'}

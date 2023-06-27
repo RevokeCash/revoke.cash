@@ -49,7 +49,7 @@ const AssetCell = ({ allowance }: Props) => {
           {link}
         </div>
 
-        <div className="text-xs leading-tight text-zinc-400 dark:text-zinc-500 max-w-[10rem] lg:max-w-[14rem] truncate">
+        <div className="text-xs leading-tight text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
           {getBalanceText(allowance.symbol, allowance.balance, allowance.decimals)}
         </div>
       </div>

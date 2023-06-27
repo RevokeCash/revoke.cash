@@ -16,9 +16,10 @@ interface Props {
   chainIds?: number[];
   onSelect?: (chainId: number) => void;
   menuAlign?: 'left' | 'right';
+  instanceId?: string;
 }
 
-const ChainSelect = ({ onSelect, selected, menuAlign, chainIds }: Props) => {
+const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId }: Props) => {
   const isMounted = useMounted();
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
@@ -61,8 +62,9 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds }: Props) => {
 
   return (
     <Select
-      instanceId="chain-select"
+      instanceId={instanceId ?? 'chain-select'}
       classNamePrefix="chain-select"
+      aria-label="Select Network"
       size="md"
       className="shrink-0"
       controlTheme={darkMode ? 'dark' : 'light'}

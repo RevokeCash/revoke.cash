@@ -44,7 +44,13 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
         <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize={undefined}>
           {(disabled) => (
             <div>
-              <Button disabled={disabled} onClick={() => setEditing(!editing)} style="tertiary" size="none">
+              <Button
+                disabled={disabled}
+                onClick={() => setEditing(!editing)}
+                style="tertiary"
+                size="none"
+                aria-label="Edit Token Approval"
+              >
                 <PencilIcon className="w-3 h-3" />
               </Button>
             </div>

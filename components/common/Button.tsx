@@ -4,7 +4,8 @@ import { MouseEventHandler } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
-interface Props {
+// TODO: Proper extended ty[es for this component]
+interface Props extends Record<string, any> {
   disabled?: boolean;
   style: 'primary' | 'secondary' | 'tertiary' | 'none';
   size: 'sm' | 'md' | 'lg' | 'none';
@@ -32,6 +33,7 @@ const Button = ({
   loading,
   asDiv,
   align,
+  ...props
 }: Props) => {
   const { darkMode } = useColorTheme();
 
@@ -68,14 +70,14 @@ const Button = ({
   if (href) {
     if (router) {
       return (
-        <Link className={classes} href={href}>
+        <Link {...props} className={classes} href={href}>
           {children}
         </Link>
       );
     }
 
     return (
-      <a className={classes} href={href} target={external ? '_blank' : undefined}>
+      <a {...props} className={classes} href={href} target={external ? '_blank' : undefined}>
         {children}
       </a>
     );
@@ -83,14 +85,14 @@ const Button = ({
 
   if (asDiv) {
     return (
-      <div className={classes} onClick={onClick}>
+      <div {...props} className={classes} onClick={onClick}>
         {children}
       </div>
     );
   }
 
   return (
-    <button disabled={disabled || loading} onClick={onClick} className={classes}>
+    <button {...props} disabled={disabled || loading} onClick={onClick} className={classes}>
       {children}
       {loading && <Spinner />}
     </button>

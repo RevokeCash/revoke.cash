@@ -44,7 +44,7 @@ const AddressHeader = () => {
         </div>
         <div className="flex items-center gap-6">
           <AddressSocialShareButtons address={address} />
-          <ChainSelect selected={selectedChainId} onSelect={selectChain} />
+          <ChainSelect instanceId="address-chain-select" selected={selectedChainId} onSelect={selectChain} />
         </div>
       </div>
       <AddressNavigation />

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Label = ({ children, className }: Props, ref: ForwardedRef<HTMLDivElement>) => {
-  const classes = twMerge('text-xs font-semibold flex items-center justify-center py-0.5 px-1.5 rounded-md', className);
+  const classes = twMerge('text-xs font-semibold flex items-center justify-center py-0.5 px-2 rounded-md', className);
 
   return (
     <div className={classes} ref={ref}>

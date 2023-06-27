@@ -40,7 +40,7 @@ const SpenderCell = ({ allowance }: Props) => {
         <WithHoverTooltip tooltip={allowance.spender}>
           <Href href={explorerUrl} underline="hover" external>
             <div className="max-w-[10rem] truncate">{spenderName ?? shortenAddress(allowance.spender, 6)}</div>
-            <div className="text-xs text-zinc-400 dark:text-zinc-500">
+            <div className="text-xs text-zinc-500 dark:text-zinc-400">
               {spenderName ? shortenAddress(allowance.spender, 6) : null}
             </div>
           </Href>

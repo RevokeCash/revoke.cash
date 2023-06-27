@@ -95,6 +95,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
                 className="z-10 rounded-r-none text-zinc-600 dark:text-zinc-400 w-full"
+                aria-label="Input Donation Amount"
               />
               <div className="px-3 py-1.5 border-y border-black dark:border-white bg-zinc-300 dark:bg-zinc-700 flex justify-center items-center">
                 {nativeToken}

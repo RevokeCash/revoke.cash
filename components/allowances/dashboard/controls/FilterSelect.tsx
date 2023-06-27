@@ -90,6 +90,7 @@ const FilterSelect = ({ table }: Props) => {
   return (
     <Select
       instanceId="filters-select"
+      aria-label="Select Filters"
       className="w-full"
       classNamePrefix="filters-select"
       controlTheme={darkMode ? 'dark' : 'light'}

@@ -31,12 +31,12 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
   const mapping = {
     common: {
       label:
-        'absolute -top-1 left-2 z-10 border border-black text-black font-semibold flex items-center justify-center rounded-md',
+        'absolute -top-1 left-2 z-10 border border-black text-zinc-900 font-semibold flex items-center justify-center rounded-md',
       banner: 'flex flex-col items-center',
       image: 'rounded-lg border border-black dark:border-white object-cover aspect-[3/1] overflow-hidden w-full',
     },
     bronze: {
-      label: 'bg-amber-600 text-[0.65rem] px-1 py-px',
+      label: 'bg-amber-600 text-[0.65rem] px-1.5 py-px',
       banner: '',
       image: '',
       img: {
@@ -92,7 +92,16 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
         </div>
         <div>{name}</div>
       </Href>
-      {overlay && <Href href={overlay.url} style={overlay} className="absolute" external onClick={trackClick} />}
+      {overlay && (
+        <Href
+          href={overlay.url}
+          style={overlay}
+          className="absolute"
+          external
+          onClick={trackClick}
+          aria-label={`${name} Overlay Link`}
+        />
+      )}
     </div>
   );
 };

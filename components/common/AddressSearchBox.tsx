@@ -43,7 +43,7 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, .
       {value && validating && <Spinner className="w-4 h-4" />}
       {value && !validating && !isValid && <XMarkIcon className="w-6 h-6 text-red-500" />}
       {value && !validating && isValid && (
-        <Button style="tertiary" size="none">
+        <Button style="tertiary" size="none" aria-label="Check Address">
           <ArrowRightCircleIcon className="w-6 h-6" />
         </Button>
       )}
