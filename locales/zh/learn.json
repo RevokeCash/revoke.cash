@@ -15,8 +15,8 @@
     "title": "添加{{chainName}}到MetaMask"
   },
   "article_meta": {
-    "author": "Written by <0>{{author}}</0>",
-    "translator": "Translated by <0>{{translator}}</0>"
+    "author": "作者：<0>{{author}}</0>",
+    "translator": "翻译：<0>{{translator}}</0>"
   },
   "home": {
     "intro_paragraph": "我们创建了Revoke.cash学习部分，以帮助你了解如何在web3的世界中保持安全。它涵盖了web3的基本知识和更高阶的主题。随着时间的推移，我们将增加更多的文章，所以一定要定期回来查看。"

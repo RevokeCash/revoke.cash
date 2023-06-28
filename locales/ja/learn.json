@@ -15,8 +15,8 @@
     "title": "{{chainName}}をメタマスクに追加"
   },
   "article_meta": {
-    "author": "Written by <0>{{author}}</0>",
-    "translator": "Translated by <0>{{translator}}</0>"
+    "author": "著者 <0>{{author}}</0>",
+    "translator": "翻訳者：<0>{{translator}}</0>"
   },
   "home": {
     "intro_paragraph": "web3 の世界で安全に過ごす方法をご理解いただくため、Revoke.cash Learnセクションを作成しました。 web3 の基本を説明した上で、より高度なトピックにも触れています。今後も記事を追加していきますので、定期的にチェックしてください。"

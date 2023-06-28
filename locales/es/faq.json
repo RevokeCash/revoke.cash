@@ -49,7 +49,7 @@
       "question": "¿Cuáles autorizaciones tengo que revocar?"
     },
     "which_chains": {
-      "answer": "<0>La extensión de navegador </0> Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM incluyendo Ethereum, BSC, Polygon y Avalanche. La lista completa de las redes compatibles puede verse en la sección desplegable de redes. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <1>Twitter</1> o <2>Discord</2>.",
+      "answer": "<0>La extensión de navegador</0> Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM incluyendo Ethereum, BSC, Polygon y Avalanche. La lista completa de las redes compatibles puede verse en la sección desplegable de redes. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <1>Twitter</1> o <2>Discord</2>.",
       "question": "¿Con qué redes funciona Revoke.cash?"
     },
     "which_domains": {

@@ -1,35 +1,35 @@
 {
   "add_network": {
-    "description": "Learn how you can easily add {{chainName}} and other networks to cryptocurrency wallets like MetaMask.",
-    "intro_paragraph": "The process of adding {{chainName}} to your wallet may be slightly different depending on the wallet you are using. The steps below are for MetaMask. If you are using a different wallet, there is most likely a similar process that you can follow.",
-    "select_network": "Select the network that you want to add:",
-    "sidebar_title": "Add a Network to Your Wallet",
+    "description": "Descubre cómo puedes añadir fácilmente {{chainName}} y otras redes a carteras de criptomonedas como MetaMask.",
+    "intro_paragraph": "El proceso de añadir {{chainName}} a tu cartera puede variar ligeramente según la cartera que uses. Los siguientes pasos son para MetaMask. Si utilizas una cartera diferente, lo más probable es que puedas seguir un proceso similar.",
+    "select_network": "Selecciona la red que quieres añadir:",
+    "sidebar_title": "Agregue una red a su cartera",
     "step_1": {
-      "title": "1. Open your wallet and go to the \"Add network\" page."
+      "title": "1. Abre tu cartera y ve a la página «Añadir red»."
     },
     "step_2": {
-      "paragraph_1": "After entering all the required details, you can click \"Save\" to add {{chainName}} to MetaMask.",
-      "paragraph_2": "Alternatively, you can use our one-click button so you don't need to enter the required details manually.",
-      "title": "2. Enter the required details and click \"Save\"."
+      "paragraph_1": "Después de introducir todos los datos necesarios, haz clic en \"Guardar\" para añadir {{chainName}} a MetaMask.",
+      "paragraph_2": "Como alternativa, puedes utilizar nuestro botón de un solo clic para no tener que introducir los detalles requeridos manualmente.",
+      "title": "2. Introduce los datos necesarios y haz clic en \"Guardar\"."
     },
-    "title": "Add {{chainName}} to MetaMask"
+    "title": "Agregar {{chainName}} a MetaMask"
   },
   "article_meta": {
-    "author": "Written by <0>{{author}}</0>",
-    "translator": "Translated by <0>{{translator}}</0>"
+    "author": "Escrito por <0>{{author}}</0>",
+    "translator": "Traducido por <0>{{translator}}</0>"
   },
   "home": {
-    "intro_paragraph": "We created the Revoke.cash Learn section to help you understand how you can stay safe in the world of web3. It covers the very basics of web3 and then moves on to more advanced topics. We'll be adding more articles over time so be sure to check back regularly."
+    "intro_paragraph": "Creamos la sección de aprendizaje de Revoke.cash para ayudarlo a comprender cómo puede mantenerse seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente."
   },
   "meta": {
-    "description": "The world of web3 can be confusing, but it doesn't have to be. We've put together a collection of resources to help you learn about web3, wallet security and more.",
-    "title": "Learn About Web3, Wallet Security and More"
+    "description": "El mundo de web3 puede resultar confuso, pero no tiene por qué serlo. Hemos reunido una colección de recursos para ayudarte a aprender sobre web3, la seguridad de las carteras y mucho más.",
+    "title": "Aprende sobre Web3, Seguridad de cartera y más"
   },
   "sidebar": {
     "approvals": "Autorizaciones de Tokens",
     "basics": "Conceptos Básicos",
     "faq": "FAQ",
     "mobile_header": "Explorar artículos",
-    "wallets": "Wallets"
+    "wallets": "Carteras"
   }
 }
