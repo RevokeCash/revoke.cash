@@ -8,6 +8,6 @@
   "paragraph_3": "この拡張機能では、OpenSeaやLooksRare等の人気のマーケットプレイスに出品しようとしている商品や、ハッシュに署名しようとしているときも通知してくれます。これらのハッシュは、X2Y2などの特定のマーケットプレイスでNFTをリストする際に使用されます。",
   "paragraph_4": "よくある詐欺は、フィッシングサイト上でユーザーを騙して、ガス代無しの署名に署名させ、ユーザーのNFTを盗めるようにすることです。OpenSea、LookSare、X2Y2、Uniswap、Blur等の公式ウェブサイトは、これらのアクションをアローリストに登録しているため、Revoke.cashのブラウザ拡張機能を使用してもフローを止めることができません。",
   "paragraph_5": "拡張機能の設定で、カテゴリ毎の警告のオンとオフを切り替えることができます。",
-  "paragraph_6": "Revoke.cashのブラウザ拡張機能は、Ethereum、Polygon、Avalancheを含む全てのEVMベースのチェーンで動作します。",
+  "paragraph_6": "Revoke.cashのブラウザ拡張機能は、Ethereum、Polygon、Avalancheを含む全てのEVMベースのネットワークで動作します。",
   "title": "Revoke.cash ブラウザ拡張機能"
 }
