@@ -6,7 +6,6 @@ import { getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { twMerge } from 'tailwind-merge';
 import { Connector, useAccount, useConnect } from 'wagmi';
 
 interface Props {
@@ -78,7 +77,6 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
                       size={64}
                       square
                       border
-                      className={twMerge(getConnectorName(connector) === 'WalletConnect v1' && 'grayscale')}
                     />
                     {getConnectorName(connector)}
                   </Button>

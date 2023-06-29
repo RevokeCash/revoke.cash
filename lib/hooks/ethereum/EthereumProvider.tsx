@@ -14,7 +14,6 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 import { LedgerConnector } from 'wagmi/connectors/ledger';
 import { SafeConnector } from 'wagmi/connectors/safe';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy';
 
 interface Props {
   children: ReactNode;
@@ -75,10 +74,6 @@ export const connectors = [
   }),
   new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
   new LedgerConnector({ chains: wagmiChains }),
-  new WalletConnectLegacyConnector({
-    chains: wagmiChains,
-    options: {},
-  }),
 ];
 
 export const wagmiClient = createClient({

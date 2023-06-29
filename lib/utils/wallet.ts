@@ -41,7 +41,6 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     zerion: `${BASE_URL}/zerionWallet/zerionWallet.svg`,
     // Other connectors
     walletconnect: `${BASE_URL}/walletConnectWallet/walletConnectWallet.svg`,
-    'walletconnect v1': `${BASE_URL}/walletConnectWallet/walletConnectWallet.svg`,
     'coinbase wallet': `${BASE_URL}/coinbaseWallet/coinbaseWallet.svg`, // Also its own connector
     ledger: `${BASE_URL}/ledgerWallet/ledgerWallet.svg`,
   };
@@ -50,10 +49,6 @@ export const getWalletIcon = (walletName: string): string | undefined => {
 };
 
 export const getConnectorName = (connector: Connector): string => {
-  if (connector.name === 'WalletConnectLegacy') {
-    return 'WalletConnect v1';
-  }
-
   // It's confusing if there are multiple 'Coinbase Wallet' connectors. You can always connect to the Coinbase Wallet
   // extension using the dedicated connector
   if (connector.name === 'Coinbase Wallet' && connector.id === 'injected') {
