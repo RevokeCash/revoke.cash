@@ -480,6 +480,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.HuobiECOChainMainnet]: '/assets/images/vendor/chains/heco.svg',
     [ChainId.HuobiECOChainTestnet]: '/assets/images/vendor/chains/heco.svg',
     [ChainId.Wanchain]: '/assets/images/vendor/chains/wanchain.svg',
+    [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.webp',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
