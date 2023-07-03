@@ -7,24 +7,25 @@ import { join } from 'path';
 
 const walk = require('walkdir');
 
-export const contentDirectory = join(process.cwd(), 'content');
-
 export const readContentFile = (
   slug: string | string[],
   locale: string,
   directory: string = 'learn'
 ): RawContentFile | null => {
-  const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   try {
-    const content = readFileSync(join(contentDirectory, locale, directory, `${normalisedSlug}.md`), 'utf8');
-    return { content, language: locale };
-  } catch {
+    const contentDirectory = join(process.cwd(), 'content');
+
+    const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
     try {
-      const content = readFileSync(join(contentDirectory, 'en', directory, `${normalisedSlug}.md`), 'utf8');
-      return { content, language: 'en' };
+      const content = readFileSync(join(contentDirectory, locale, directory, `${normalisedSlug}.md`), 'utf8');
+      return { content, language: locale };
     } catch {
-      return null;
+      if (locale === 'en') return null;
+
+      return readContentFile(slug, 'en', directory);
     }
+  } catch {
+    return null;
   }
 };
 
@@ -112,6 +113,8 @@ const getSidebarEntry = (
 };
 
 export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {
+  const contentDirectory = join(process.cwd(), 'content');
+
   const subdirectory = join(contentDirectory, 'en', directory);
   const slugs: string[][] = walk
     .sync(subdirectory)
