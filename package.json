@@ -13,7 +13,8 @@
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json",
-    "test": "cypress run"
+    "test": "cypress run",
+    "exploits:update": "ts-node scripts/update-exploits.ts ../approval-exploit-list && prettier -w ../approval-exploit-list"
   },
   "private": true,
   "dependencies": {
@@ -34,7 +35,7 @@
     "@unstoppabledomains/resolution": "^9.0.0",
     "@upstash/ratelimit": "^0.4.1",
     "@upstash/redis": "^1.20.2",
-    "@vercel/og": "^0.5.4",
+    "@vercel/og": "^0.5.8",
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^0.26.1",
     "axios-retry": "^3.4.0",
