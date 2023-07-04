@@ -21,8 +21,8 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
 
   const breadcrumbs: BreadcrumbEntry[] = [{ name: t('common:nav.learn'), href: '/learn' }];
 
-  slug.slice(0, slug.length - 1).forEach((slug) => {
-    breadcrumbs.push({ name: t(`learn:sidebar.${slug}`) });
+  slug.slice(0, slug.length - 1).forEach((slugPart, i) => {
+    breadcrumbs.push({ name: t(`learn:sidebar.${slugPart}`), href: `/learn/${slug.slice(0, i + 1).join('/')}` });
   });
 
   if (meta.title) breadcrumbs.push({ name: meta.title });
