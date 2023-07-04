@@ -25,7 +25,11 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
       <LearnLayout sidebarEntries={sidebar} slug={['faq']} meta={meta}>
         <h1 className="text-5xl">{t('faq:title')}</h1>
 
-        <dl className="w-full divide-y divide-zinc-200 dark:divide-zinc-800">
+        <dl
+          className="w-full divide-y divide-zinc-200 dark:divide-zinc-800"
+          vocab="https://schema.org/"
+          typeof="FAQPage"
+        >
           <FaqItem question={t('faq:questions.whole_wallet_at_risk.question')}>
             <Trans i18nKey="faq:questions.whole_wallet_at_risk.answer" components={[<span className="italic" />]} />
           </FaqItem>

@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
 }
 
-const Prose = ({ children, className }: Props) => {
+const Prose = ({ children, className, ...props }: Props) => {
   const classes = twMerge(
     'prose prose-zinc dark:prose-invert max-w-none',
     'prose-h1:text-5xl prose-h1:font-bold prose-h1:tracking-tight prose-h1:m-0',
@@ -24,7 +24,11 @@ const Prose = ({ children, className }: Props) => {
     className
   );
 
-  return <div className={classes}>{children}</div>;
+  return (
+    <div {...props} className={classes}>
+      {children}
+    </div>
+  );
 };
 
 export default Prose;

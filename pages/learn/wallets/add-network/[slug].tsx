@@ -50,8 +50,9 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
     <>
       <NextSeo {...defaultSEO} title={meta.title} description={meta.description} />
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta}>
-        <Prose>
-          <h1>{meta.title}</h1>
+        <Prose vocab="https://schema.org/" typeof="HowTo">
+          <h1 property="name">{meta.title}</h1>
+          <meta property="description" content={meta.description} />
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 my-4">
             <p className="m-0">{t('learn:add_network.select_network')}</p>
             <div className="not-prose shrink-0">
@@ -64,43 +65,51 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
           </div>
           <p>{t(`learn:add_network.networks.${chainSlug}`, null, { default: null })}</p>
           <p>{t('learn:add_network.intro_paragraph', { chainName })}</p>
-          <h2>{t('learn:add_network.step_1.title')}</h2>
-          <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
-            <div>
-              <Image
-                src="/assets/images/learn/wallets/add-network/metamask-add-network-1.png"
-                alt="MetaMask Add Network 1"
-                width={712}
-                height={784}
-              />
-            </div>
-            <div>
-              <Image
-                src="/assets/images/learn/wallets/add-network/metamask-add-network-2.png"
-                alt="MetaMask Add Network 2"
-                width={712}
-                height={784}
-              />
+          <div property="step" typeof="HowToStep">
+            <h2 property="name">{t('learn:add_network.step_1.title')}</h2>
+            <meta property="text" content={t('learn:add_network.step_1.title')} />
+            <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
+              <div>
+                <Image
+                  src="/assets/images/learn/wallets/add-network/metamask-add-network-1.png"
+                  alt="MetaMask Add Network 1"
+                  width={712}
+                  height={784}
+                  property="image"
+                />
+              </div>
+              <div>
+                <Image
+                  src="/assets/images/learn/wallets/add-network/metamask-add-network-2.png"
+                  alt="MetaMask Add Network 2"
+                  width={712}
+                  height={784}
+                  property="image"
+                />
+              </div>
             </div>
           </div>
-          <h2>{t('learn:add_network.step_2.title')}</h2>
-          <p>{t('learn:add_network.step_2.paragraph_1', { chainName })}</p>
-          <div className="flex flex-col gap-1 my-4">
-            <FormElement label="Network name" content={chainName} />
-            <FormElement label="New RPC URL" content={getChainFreeRpcUrl(chainId)} />
-            <FormElement label="Chain ID" content={String(chainId)} />
-            <FormElement label="Currency symbol" content={getChainNativeToken(chainId)} />
-            <FormElement label="Block explorer URL (Optional)" content={getChainExplorerUrl(chainId)} />
+          <div property="step" typeof="HowToStep">
+            <h2 property="name">{t('learn:add_network.step_2.title')}</h2>
+            <div property="text">
+              <p>{t('learn:add_network.step_2.paragraph_1', { chainName })}</p>
+              <div className="flex flex-col gap-1 my-4">
+                <FormElement label="Network name" content={chainName} />
+                <FormElement label="New RPC URL" content={getChainFreeRpcUrl(chainId)} />
+                <FormElement label="Chain ID" content={String(chainId)} />
+                <FormElement label="Currency symbol" content={getChainNativeToken(chainId)} />
+                <FormElement label="Block explorer URL (Optional)" content={getChainExplorerUrl(chainId)} />
+              </div>
+              <p>{t('learn:add_network.step_2.paragraph_2')}</p>
+              {isConnected && isMounted ? (
+                <Button style="primary" size="md" onClick={() => switchNetwork()}>
+                  {meta.title}
+                </Button>
+              ) : (
+                <ConnectButton style="primary" size="md" />
+              )}
+            </div>
           </div>
-          <p>{t('learn:add_network.step_2.paragraph_2')}</p>
-          {isConnected && isMounted ? (
-            <Button style="primary" size="md" onClick={() => switchNetwork()}>
-              {meta.title}
-            </Button>
-          ) : (
-            <ConnectButton style="primary" size="md" />
-          )}
-          <div></div>
         </Prose>
       </LearnLayout>
     </>
