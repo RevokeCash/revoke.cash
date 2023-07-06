@@ -1,9 +1,11 @@
+import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
 import FaqItem from 'components/faq/FaqItem';
 import LearnLayout from 'layouts/LearnLayout';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
 import { ISidebarEntry } from 'lib/interfaces';
 import { defaultSEO } from 'lib/next-seo.config';
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
 import { getSidebar } from 'lib/utils/markdown-content';
 import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
@@ -85,6 +87,24 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
                 <Href href={DISCORD_URL} className="font-medium" underline="hover" html external />,
               ]}
             />
+            <h3 className="mt-2">{t('common:chain_select.mainnets')}</h3>
+            <ul className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 gap-2">
+              {CHAIN_SELECT_MAINNETS.map((chainId) => (
+                <li key={chainId} className="flex items-center gap-1">
+                  {<ChainLogo chainId={chainId} />}
+                  <div className="shrink-0 truncate max-sm:w-32">{getChainName(chainId)}</div>
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-2">{t('common:chain_select.testnets')}</h3>
+            <ul className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 gap-2">
+              {CHAIN_SELECT_TESTNETS.map((chainId) => (
+                <li key={chainId} className="flex items-center gap-1">
+                  {<ChainLogo chainId={chainId} />}
+                  <div className="shrink-0 truncate max-sm:w-32">{getChainName(chainId)}</div>
+                </li>
+              ))}
+            </ul>
           </FaqItem>
           <FaqItem question={t('faq:questions.which_domains.question')}>
             <Trans

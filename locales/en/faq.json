@@ -49,7 +49,7 @@
       "question": "Which approvals do I need to revoke?"
     },
     "which_chains": {
-      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM network. The Revoke.cash website supports a large number of EVM networks including Ethereum, BSC, Polygon and Avalanche. The full list of supported networks can be seen in the network selection dropdown. If there are any other networks that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
+      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM network. The Revoke.cash website supports a large number of EVM networks, the full list is included below. If there are any other networks that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
       "question": "Which networks does Revoke.cash support?"
     },
     "which_domains": {
