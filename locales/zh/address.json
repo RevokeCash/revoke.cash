@@ -101,6 +101,7 @@
     "acknowledge_signature_notice": "检查签名前，请确认该通知。",
     "connect_wallet": "请连接钱包继续下一步",
     "connected_account": "您只能操作已连接的账户",
+    "involved_in_exploits": "This address is involved in the following exploits:",
     "marketplace_listings": "这将取消 {{marketplace}} 上的所有当前列出的产品和报价。",
     "marketplace_signatures": "一旦获得批准，市场可以代表您转移资产。骗子可利用这些批准在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",
     "permit_signatures": "许可签名用于在无需发送交易的情况下批准花费。如果您在钓鱼网站上签署了许可签名，请取消。",

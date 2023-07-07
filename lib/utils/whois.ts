@@ -10,6 +10,7 @@ import {
   ETHEREUM_LISTS_CONTRACTS,
   OPENSEA_REGISTRY_ADDRESS,
 } from 'lib/constants';
+import { SpenderData } from 'lib/interfaces';
 
 export const ENS_RESOLUTION = ALCHEMY_PROVIDER;
 
@@ -34,35 +35,36 @@ export const UNS_RESOLUTION =
 
 export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'));
 
-export const spenderAddressToName = async (
+export const getSpenderData = async (
   address: string,
   chainId?: number,
   openseaProxyAddress?: string
-): Promise<string | null> => {
+): Promise<SpenderData | null> => {
   if (!chainId) return null;
   if (!address) return null;
-  if (address === openseaProxyAddress) return 'OpenSea (old)';
+  if (address === openseaProxyAddress) return { name: 'OpenSea (old)' };
 
   // Request dapplist and ethereumlists in parallel since they're both just GitHub repos
-  const dappListPromise = getNameFromDappList(address, chainId);
-  const ethereumListsPromise = getNameFromEthereumList(address, chainId);
+  const internalPromise = getSpenderDataFromInternal(address, chainId);
+  const ethereumListsPromise = getSpenderDataFromEthereumList(address, chainId);
 
   // Check Harpie only if the other two sources don't have a name, because this is a rate-limited API
-  const name = (await dappListPromise) ?? (await ethereumListsPromise) ?? (await getNameFromHarpie(address, chainId));
+  const data =
+    (await internalPromise) ?? (await ethereumListsPromise) ?? (await getSpenderDataFromHarpie(address, chainId));
 
-  return name;
+  return data;
 };
 
-const getNameFromDappList = async (address: string, chainId: number): Promise<string | null> => {
+const getSpenderDataFromInternal = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
     const { data } = await axios.get(`${DATA_BASE_URL}/spenders/${chainId}/${utils.getAddress(address)}.json`);
-    return data.name;
+    return data;
   } catch {
     return null;
   }
 };
 
-const getNameFromEthereumList = async (address: string, chainId: number): Promise<string | null> => {
+const getSpenderDataFromEthereumList = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
     const contractRes = await axios.get(
       `${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${utils.getAddress(address)}.json`
@@ -70,23 +72,23 @@ const getNameFromEthereumList = async (address: string, chainId: number): Promis
 
     try {
       const projectRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/projects/${contractRes.data.project}.json`);
-      return projectRes.data.name;
+      return { name: projectRes.data.name };
     } catch {}
 
-    return contractRes.data.project;
+    return { name: contractRes.data.project };
   } catch {
     return null;
   }
 };
 
-const getNameFromHarpie = async (address: string, chainId: number): Promise<string | null> => {
+const getSpenderDataFromHarpie = async (address: string, chainId: number): Promise<SpenderData | null> => {
   const apiKey = process.env.NEXT_PUBLIC_HARPIE_API_KEY;
   if (!apiKey || chainId !== 1) return null;
 
   try {
     const { data } = await axios.post('https://api.harpie.io/getprotocolfromcontract', { apiKey, address });
     if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
-    return data.contractOwner;
+    return { name: data.contractOwner };
   } catch (e) {
     return null;
   }

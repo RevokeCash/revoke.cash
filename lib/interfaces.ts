@@ -121,3 +121,8 @@ export interface BreadcrumbEntry {
   name: string;
   href?: string;
 }
+
+export interface SpenderData {
+  name: string;
+  exploits?: string[];
+}
