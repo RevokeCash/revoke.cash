@@ -3,41 +3,49 @@ import { Connector } from 'wagmi';
 export const getWalletIcon = (walletName: string): string | undefined => {
   // Take logos from rainbowkit
   const BASE_URL =
-    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/0d5640929326d65673596a11cd018a9c6524ff8c/packages/rainbowkit/src/wallets/walletConnectors/';
+    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/47e578f82efafda1e7127755105141c4a6b61c66/packages/rainbowkit/src/wallets/walletConnectors';
   const walletNameLowerCase = walletName.toLowerCase();
 
   const mapping = {
     // Injected wallets
-    '1inchw1allet': '/assets/images/vendor/wallets/1inch.svg',
-    // 'apex wallet': '',
+    '1inchwallet': '/assets/images/vendor/wallets/1inch.svg',
+    // 'apex wallet': 'TODO: Can't find good logo ',
     backpack: '/assets/images/vendor/wallets/backpack.svg',
-    bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
     'bifrost wallet': `/assets/images/vendor/wallets/bifrost.svg`,
+    bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
     bitski: `${BASE_URL}/bitskiWallet/bitskiWallet.svg`,
+    blockwallet: '/assets/images/vendor/wallets/block-wallet.jpg',
     'brave wallet': `${BASE_URL}/braveWallet/braveWallet.svg`,
     'core wallet': '/assets/images/vendor/wallets/core-wallet.svg',
     'dawn wallet': `${BASE_URL}/dawnWallet/dawnWallet.svg`,
+    defiant: '/assets/images/vendor/wallets/defiant.svg',
+    enkrypt: '/assets/images/vendor/wallets/enkrypt.svg',
     exodus: '/assets/images/vendor/wallets/exodus.svg',
     frame: '/assets/images/vendor/wallets/frame.svg',
     'frontier wallet': '/assets/images/vendor/wallets/frontier.svg',
     'gamestop wallet': '/assets/images/vendor/wallets/gamestop.svg',
+    'haqq wallet': '/assets/images/vendor/wallets/haqq.webp',
+    'halo wallet': '/assets/images/vendor/wallets/halo.jpg', // Note: this used to be KuCoin Wallet
     'hyperpay wallet': '/assets/images/vendor/wallets/hyperpay.svg',
-    // 'kucoin wallet': '',
+    imtoken: `${BASE_URL}/imTokenWallet/imTokenWallet.svg`,
     mathwallet: '/assets/images/vendor/wallets/mathwallet.svg',
     metamask: `${BASE_URL}/metaMaskWallet/metaMaskWallet.svg`,
-    'okx wallet': '/assets/images/vendor/wallets/okx.svg',
+    'nova wallet': '/assets/images/vendor/wallets/nova.webp',
+    'okx wallet': `${BASE_URL}/okxWallet/okxWallet.svg`,
     opera: '/assets/images/vendor/wallets/opera.svg',
-    phantom: '/assets/images/vendor/wallets/phantom.svg',
+    phantom: `${BASE_URL}/phantomWallet/phantom.svg`,
+    // 'ripio portal': 'TODO: Can't find good logo',
+    rabby: `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
+    'rabby wallet': `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
     rainbow: `${BASE_URL}/rainbowWallet/rainbowWallet.svg`,
-    // 'ripio portal': '',
-    rabby: '/assets/images/vendor/wallets/rabby.svg',
     status: '/assets/images/vendor/wallets/status.svg',
-    tally: `/assets/images/vendor/wallets/taho.svg`,
-    taho: `/assets/images/vendor/wallets/taho.svg`,
-    // tokenary: '',
+    taho: `${BASE_URL}/tahoWallet/tahoWallet.svg`,
+    talisman: '/assets/images/vendor/wallets/talisman.svg',
+    // tokenary: 'TODO: Can't find good logo',
     tokenpocket: '/assets/images/vendor/wallets/tokenpocket.svg',
     'trust wallet': `${BASE_URL}/trustWallet/trustWallet.svg`,
-    'xdefi wallet': '/assets/images/vendor/wallets/xdefi.svg',
+    ttwallet: '/assets/images/vendor/wallets/ttwallet.webp',
+    'xdefi wallet': `${BASE_URL}/xdefiWallet/xdefiWallet.svg`,
     zerion: `${BASE_URL}/zerionWallet/zerionWallet.svg`,
     // Other connectors
     walletconnect: `${BASE_URL}/walletConnectWallet/walletConnectWallet.svg`,
