@@ -63,5 +63,10 @@ export const getConnectorName = (connector: Connector): string => {
     return 'Browser Wallet';
   }
 
+  // imToken is branded with 'im' instead of 'Im'
+  if (connector.name === 'ImToken') {
+    return 'imToken';
+  }
+
   return connector.name;
 };
