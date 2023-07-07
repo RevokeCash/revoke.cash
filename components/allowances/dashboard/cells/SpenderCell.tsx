@@ -7,7 +7,7 @@ import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddres
 import type { AllowanceData } from 'lib/interfaces';
 import { shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import { addressToAppName } from 'lib/utils/whois';
+import { spenderAddressToName } from 'lib/utils/whois';
 
 interface Props {
   allowance: AllowanceData;
@@ -19,7 +19,7 @@ const SpenderCell = ({ allowance }: Props) => {
   // TODO: Expose this data to react-table
   const { data: spenderName, isLoading } = useQuery({
     queryKey: ['spenderName', allowance.spender, allowance.chainId, openSeaProxyAddress],
-    queryFn: () => addressToAppName(allowance.spender, allowance.chainId, openSeaProxyAddress),
+    queryFn: () => spenderAddressToName(allowance.spender, allowance.chainId, openSeaProxyAddress),
     // Chances of this data changing while the user is on the page are very slim
     staleTime: Infinity,
   });

@@ -1,4 +1,5 @@
 {
-  "appName": "Multichain",
-  "label": "Multichain: Router v6 (AnySwap)"
+  "name": "Multichain",
+  "label": "Multichain: Router v6 (AnySwap)",
+  "exploits": ["2023 Multichain Hack"]
 }

@@ -1,4 +1,5 @@
 {
-  "appName": "Furucombo",
-  "label": "Furucombo: Proxy v1.0.0"
+  "name": "Furucombo",
+  "label": "Furucombo: Proxy v1.0.0",
+  "exploits": ["Furucombo Hack"]
 }

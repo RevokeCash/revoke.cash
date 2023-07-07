@@ -34,7 +34,7 @@ export const UNS_RESOLUTION =
 
 export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'));
 
-export const addressToAppName = async (
+export const spenderAddressToName = async (
   address: string,
   chainId?: number,
   openseaProxyAddress?: string
@@ -56,7 +56,7 @@ export const addressToAppName = async (
 const getNameFromDappList = async (address: string, chainId: number): Promise<string | null> => {
   try {
     const { data } = await axios.get(`${DATA_BASE_URL}/spenders/${chainId}/${utils.getAddress(address)}.json`);
-    return data.appName;
+    return data.name;
   } catch {
     return null;
   }

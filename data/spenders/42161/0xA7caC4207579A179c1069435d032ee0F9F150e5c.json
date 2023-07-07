@@ -1,4 +1,5 @@
 {
-  "appName": "Sushi (exploited)",
-  "label": "Sushi: RouterProcessor 2"
+  "name": "SushiSwap",
+  "label": "SushiSwap: RouterProcessor 2",
+  "exploits": ["SushiSwap Hack"]
 }
