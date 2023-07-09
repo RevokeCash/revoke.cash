@@ -90,8 +90,8 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 };
 
 const throwIfExcessiveGas = (estimatedGas: BigNumber) => {
-  // This value was chosen arbitrarily, most revoke transactions use ~30k gas, so 10x that seems like a reasonable limit
-  const EXCESSIVE_GAS = 300_000;
+  // Initially I chose 300k, but apparently zkSync does some weird stuff that estimates it at 500k gas, so we're a bit higher now
+  const EXCESSIVE_GAS = 1_000_000;
 
   // TODO: Translate this error message
   if (estimatedGas.gt(EXCESSIVE_GAS)) {
