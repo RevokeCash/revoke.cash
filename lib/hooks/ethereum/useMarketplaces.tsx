@@ -24,18 +24,23 @@ export const useMarketplaces = (chainId: number) => {
         ChainId.ArbitrumOne,
         ChainId.ArbitrumGoerli,
         ChainId.ArbitrumNova,
+        ChainId.BaseGoerliTestnet,
         ChainId['AvalancheC-Chain'],
         ChainId.AvalancheFujiTestnet,
         ChainId.Gnosis,
+        ChainId.GnosisChiadoTestnet,
         ChainId.BinanceSmartChainMainnet,
         ChainId.BinanceSmartChainTestnet,
         ChainId.KlaytnMainnetCypress,
         ChainId.KlaytnTestnetBaobab,
         ChainId.Moonbeam,
         ChainId.Moonriver,
+        ChainId.Canto,
+        ChainId.FantomOpera,
+        ChainId.CeloMainnet,
       ],
       cancelSignatures: async (signer: Signer) => {
-        const seaportContract = new Contract('0x00000000000001ad428e4906aE43D8F9852d0dD6', OPENSEA_SEAPORT, signer);
+        const seaportContract = new Contract('0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC', OPENSEA_SEAPORT, signer);
         const transactionPromise = seaportContract.functions.incrementCounter();
         return handleTransaction(transactionPromise, TransactionType.OTHER);
       },
