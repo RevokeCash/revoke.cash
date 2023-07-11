@@ -41,14 +41,14 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     };
 
     const executeRevokeSingle = async () => {
+      await contract.estimateGas.approve(ADDRESS_ZERO, tokenId).then(throwIfExcessiveGas);
       const writeContract = new Contract(contract.address, contract.interface, signer);
-      await writeContract.estimateGas.approve(ADDRESS_ZERO, tokenId).then(throwIfExcessiveGas);
       return writeContract.functions.approve(ADDRESS_ZERO, tokenId);
     };
 
     const executeRevokeForAll = async () => {
+      await contract.estimateGas.setApprovalForAll(spender, false).then(throwIfExcessiveGas);
       const writeContract = new Contract(contract.address, contract.interface, signer);
-      await writeContract.estimateGas.setApprovalForAll(spender, false).then(throwIfExcessiveGas);
       return writeContract.functions.setApprovalForAll(spender, false);
     };
 
@@ -61,7 +61,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
       console.debug(`Calling contract.approve(${spender}, ${bnNew.toString()})`);
 
-      const transactionPromise = writeContract.estimateGas
+      const transactionPromise = contract.estimateGas
         .approve(spender, bnNew)
         .then(throwIfExcessiveGas)
         .then(() => writeContract.functions.approve(spender, bnNew));
