@@ -12,7 +12,7 @@ export const useHandleTransaction = () => {
 
   const checkError = (e: any, type: TransactionType): void => {
     const code = e.error?.code ?? e.code;
-    const message = e.error?.reason ?? e.reason ?? e.error?.message ?? e.message;
+    const message = e.reason ?? e.error?.reason ?? e.error?.message ?? e.message;
     console.debug(`Ran into transaction issue, message: ${message} (${code})`);
     console.debug(JSON.stringify(e));
     console.debug(e);
