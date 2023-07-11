@@ -1,11 +1,32 @@
 import { flexRender, Table } from '@tanstack/react-table';
+import TableBodyLoader from 'components/common/TableBodyLoader';
 import type { AllowanceData } from 'lib/interfaces';
+import { useLayoutEffect, useState } from 'react';
 
 interface Props {
+  isLoading?: boolean;
   table: Table<AllowanceData>;
 }
 
-const AllowanceTableBody = ({ table }: Props) => {
+const AllowanceTableBody = ({ isLoading, table }: Props) => {
+  const ROW_HEIGHT = 52;
+  const [loaderHeight, setLoaderHeight] = useState<number>(ROW_HEIGHT * 12);
+
+  useLayoutEffect(() => {
+    // 436 is around the size of the headers and controls (and at least 1 row also on small screens)
+    setLoaderHeight(Math.max(window.innerHeight - 436, ROW_HEIGHT + 68));
+  }, []);
+
+  if (isLoading) {
+    return (
+      // Compensate for the different height of the address header on small screens
+      <>
+        <TableBodyLoader columns={6} rows={Math.floor(loaderHeight / ROW_HEIGHT)} className="max-sm:hidden" />
+        <TableBodyLoader columns={6} rows={Math.floor((loaderHeight - 68) / ROW_HEIGHT)} className="sm:hidden" />
+      </>
+    );
+  }
+
   return (
     <tbody>
       {table.getRowModel().rows.map((row) => (

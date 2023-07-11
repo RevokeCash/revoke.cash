@@ -24,12 +24,12 @@ const Header = ({ searchBar = true }: Props) => {
           <NavLink to="/exploits" text={t('common:nav.exploits')} />
           <MoreDropdown />
         </div>
-        <div className="flex lg:justify-center grow shrink-0">
+        <div className="flex lg:justify-center grow shrink-0 h-12">
           <Href href="/" underline="none" className="flex" router>
             <Image
               src="/assets/images/revoke.svg"
               alt="Revoke.cash logo"
-              height="49"
+              height="48"
               width="240"
               className="filter dark:invert shrink-0"
               priority

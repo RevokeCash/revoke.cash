@@ -2,7 +2,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import CopyButton from 'components/common/CopyButton';
 import Href from 'components/common/Href';
-import Spinner from 'components/common/Spinner';
+import Loader from 'components/common/Loader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddress';
 import type { AllowanceData } from 'lib/interfaces';
@@ -29,10 +29,6 @@ const SpenderCell = ({ allowance }: Props) => {
 
   const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.spender}`;
 
-  if (isLoading) {
-    return <Spinner className="w-4 h-4" />;
-  }
-
   if (!allowance.spender) {
     return null;
   }
@@ -49,24 +45,26 @@ const SpenderCell = ({ allowance }: Props) => {
   );
 
   return (
-    <div className="flex items-center gap-2 w-46">
-      {spenderData?.exploits && (
-        <WithHoverTooltip tooltip={exploitsTooltip}>
-          <ExclamationTriangleIcon className="w-6 h-6 text-red-500 focus:outline-black" />
-        </WithHoverTooltip>
-      )}
-      <div className="flex flex-col justify-start items-start">
-        <WithHoverTooltip tooltip={allowance.spender}>
-          <Href href={explorerUrl} underline="hover" external>
-            <div className="max-w-[10rem] truncate">{spenderData?.name ?? shortenAddress(allowance.spender, 6)}</div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">
-              {spenderData?.name ? shortenAddress(allowance.spender, 6) : null}
-            </div>
-          </Href>
-        </WithHoverTooltip>
+    <Loader isLoading={isLoading}>
+      <div className="flex items-center gap-2 w-46">
+        {spenderData?.exploits && (
+          <WithHoverTooltip tooltip={exploitsTooltip}>
+            <ExclamationTriangleIcon className="w-6 h-6 text-red-500 focus:outline-black" />
+          </WithHoverTooltip>
+        )}
+        <div className="flex flex-col justify-start items-start">
+          <WithHoverTooltip tooltip={allowance.spender}>
+            <Href href={explorerUrl} underline="hover" external>
+              <div className="max-w-[10rem] truncate">{spenderData?.name ?? shortenAddress(allowance.spender, 6)}</div>
+              <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                {spenderData?.name ? shortenAddress(allowance.spender, 6) : null}
+              </div>
+            </Href>
+          </WithHoverTooltip>
+        </div>
+        <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
       </div>
-      <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
-    </div>
+    </Loader>
   );
 };
 
