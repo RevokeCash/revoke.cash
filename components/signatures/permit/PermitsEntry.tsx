@@ -32,7 +32,7 @@ const PermitsEntry = ({ token }: Props) => {
 
   return (
     <div className="px-4 border-t first:border-none border-zinc-300 dark:border-zinc-500">
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between w-full py-px">
         <AssetCell allowance={token} />
         <div className="flex justify-end">
           <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">

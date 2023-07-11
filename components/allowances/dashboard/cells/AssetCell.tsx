@@ -38,7 +38,7 @@ const AssetCell = ({ allowance }: Props) => {
   return (
     <div className="flex items-center gap-1 py-1 w-40 lg:w-56">
       <div className="flex flex-col items-start gap-0.5">
-        <div className="flex items-center gap-2 text-base leading-tight">
+        <div className="flex items-center gap-2 text-base">
           <ChainOverlayLogo
             src={allowance.icon}
             alt={allowance.symbol}
@@ -49,7 +49,7 @@ const AssetCell = ({ allowance }: Props) => {
           {link}
         </div>
 
-        <div className="text-xs leading-tight text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
+        <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
           {getBalanceText(allowance.symbol, allowance.balance, allowance.decimals)}
         </div>
       </div>

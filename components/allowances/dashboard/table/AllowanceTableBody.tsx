@@ -13,8 +13,8 @@ const AllowanceTableBody = ({ isLoading, table }: Props) => {
   const [loaderHeight, setLoaderHeight] = useState<number>(ROW_HEIGHT * 12);
 
   useLayoutEffect(() => {
-    // 436 is around the size of the headers and controls (and at least 1 row also on small screens)
-    setLoaderHeight(Math.max(window.innerHeight - 436, ROW_HEIGHT + 68));
+    // 436 is around the size of the headers and controls (and at least 2 row also on small screens)
+    setLoaderHeight(Math.max(window.innerHeight - 436, 2 * ROW_HEIGHT + 68));
   }, []);
 
   if (isLoading) {
