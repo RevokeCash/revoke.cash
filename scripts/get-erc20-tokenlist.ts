@@ -8,7 +8,7 @@ import { SUPPORTED_CHAINS, getChainName } from '../lib/utils/chains';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const TOKENS_BASE_PATH = path.join(__dirname, '..', 'public', 'data', 'tokens');
+const TOKENS_BASE_PATH = path.join(__dirname, '..', 'data', 'tokens');
 
 const getTokenMapping = async (chainId: number): Promise<ChainTokenMapping | undefined> => {
   const coingeckoMapping = await getTokenMappingFromCoinGecko(chainId);

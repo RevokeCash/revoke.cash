@@ -9,7 +9,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Inspired by https://github.com/verynifty/RolodETH/blob/main/sources/reservoir/index.js
 
-const TOKENS_BASE_PATH = path.join(__dirname, '..', 'public', 'data', 'tokens');
+const TOKENS_BASE_PATH = path.join(__dirname, '..', 'data', 'tokens');
 
 const RESERVOIR_API_URL =
   'https://api.reservoir.tools/collections/v5?includeTopBid=false&sortBy=allTimeVolume&limit=20';
