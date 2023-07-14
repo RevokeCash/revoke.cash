@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import { BigNumber, Contract } from 'ethers';
 import { ADDRESS_ZERO } from 'lib/constants';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
@@ -41,14 +42,18 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     };
 
     const executeRevokeSingle = async () => {
-      await contract.estimateGas.approve(ADDRESS_ZERO, tokenId, { from: allowance.owner }).then(throwIfExcessiveGas);
+      const estimatedGas = await contract.estimateGas.approve(ADDRESS_ZERO, tokenId, { from: allowance.owner });
+      throwIfExcessiveGas(allowance.chainId, estimatedGas);
+
       const writeContract = new Contract(contract.address, contract.interface, signer);
       return writeContract.functions.approve(ADDRESS_ZERO, tokenId);
     };
 
     const executeRevokeForAll = async () => {
+      const estimatedGas = await contract.estimateGas.setApprovalForAll(spender, false, { from: allowance.owner });
+      throwIfExcessiveGas(allowance.chainId, estimatedGas);
+
       const writeContract = new Contract(contract.address, contract.interface, signer);
-      await contract.estimateGas.setApprovalForAll(spender, false, { from: allowance.owner }).then(throwIfExcessiveGas);
       return writeContract.functions.setApprovalForAll(spender, false);
     };
 
@@ -63,7 +68,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
       const transactionPromise = contract.estimateGas
         .approve(spender, bnNew, { from: allowance.owner })
-        .then(throwIfExcessiveGas)
+        .then((estimatedGas) => throwIfExcessiveGas(allowance.chainId, estimatedGas))
         .then(() => writeContract.functions.approve(spender, bnNew));
 
       const transactionType = newAmount === '0' ? TransactionType.REVOKE : TransactionType.UPDATE;
@@ -89,9 +94,9 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
   }
 };
 
-const throwIfExcessiveGas = (estimatedGas: BigNumber) => {
-  // Initially I chose 300k, but apparently zkSync does some weird stuff that estimates it at 500k gas, so we're a bit higher now
-  const EXCESSIVE_GAS = 1_000_000;
+const throwIfExcessiveGas = (chainId: number, estimatedGas: BigNumber) => {
+  // zkSync does some weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
+  const EXCESSIVE_GAS = [ChainId.ZkSyncEraMainnet, ChainId.ZkSyncEraTestnet].includes(chainId) ? 10_000_000 : 1_000_000;
 
   // TODO: Translate this error message
   if (estimatedGas.gt(EXCESSIVE_GAS)) {
