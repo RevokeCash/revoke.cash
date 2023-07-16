@@ -78,7 +78,7 @@ const fixtures = [
   ['Linea Goerli', '0x444111CD376893AFCd7405239CE72b64d5A22958'],
   ['Scroll Alpha', '0x444111CD376893AFCd7405239CE72b64d5A22958'],
   ['Base Goerli', '0xDEA7DBE814dc0B13C57ed78ff2b3B3cc8Efab4be'],
-  // ['Taiko Alpha', '0xaB19695C07599b0ea5074AAD059F109d9d51fa19'],
+  ['Taiko Alpha', '0xc3f86b0181e7E2bdf8224271839f8DdaC56574F0'],
   ['Cronos Testnet', '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f'],
   ['Fantom Testnet', '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF'],
   ['Celo Alfajores', '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618'],
@@ -89,6 +89,7 @@ const fixtures = [
   ['PulseChain Testnet', '0xc068aEAdc48427fde985866DAa3e52D4d63935C3'],
   ['Gather Testnet', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
   ['Shimmer Testnet', '0x6e18ACee6fa8EF7Daf13D32B2424152662c9e07a'],
+  ['ZetaChain Athens', '0xdE3453E7006EA93172f0A20a1f7bF90fA52Ad601'],
 ];
 
 describe('Chain Support', () => {

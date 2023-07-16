@@ -21,8 +21,16 @@ const AllowanceTableBody = ({ isLoading, table }: Props) => {
     return (
       // Compensate for the different height of the address header on small screens
       <>
-        <TableBodyLoader columns={6} rows={Math.floor(loaderHeight / ROW_HEIGHT)} className="max-sm:hidden" />
-        <TableBodyLoader columns={6} rows={Math.floor((loaderHeight - 68) / ROW_HEIGHT)} className="sm:hidden" />
+        <TableBodyLoader
+          columns={6}
+          rows={Math.floor(loaderHeight / ROW_HEIGHT)}
+          className="allowances-loader max-sm:hidden"
+        />
+        <TableBodyLoader
+          columns={6}
+          rows={Math.floor((loaderHeight - 68) / ROW_HEIGHT)}
+          className="allowances-loader sm:hidden"
+        />
       </>
     );
   }

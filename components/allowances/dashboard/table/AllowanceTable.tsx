@@ -14,7 +14,6 @@ interface Props {
 
 const AllowanceTable = ({ loading, error, table, allowances }: Props) => {
   const classes = {
-    loader: 'allowances-loader h-screen',
     container: 'border border-black dark:border-white rounded-lg overflow-x-scroll whitespace-nowrap scrollbar-hide',
     table: 'w-full border-collapse allowances-table',
     label: 'flex flex-col justify-center items-center p-3 gap-2 w-full h-10 empty:hidden',

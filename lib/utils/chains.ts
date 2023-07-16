@@ -23,6 +23,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.ZkSyncEraMainnet,
   ChainId.ZkSyncEraTestnet,
   ChainId.BaseGoerliTestnet,
+  // ChainId.Base,
   ChainId.PolygonzkEVM,
   ChainId.PolygonzkEVMTestnet,
   ChainId.CoreBlockchainMainnet,
@@ -50,10 +51,11 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.RedlightChainMainnet,
   // ChainId.GatherMainnetNetwork,
   ChainId.GatherTestnetNetwork,
-  ChainId['Taiko(Alpha-2Testnet)'],
+  ChainId['Taiko(Alpha-3Testnet)'],
   ChainId.ShimmerEVMTestnet,
   ChainId.OasysMainnet,
   ChainId.ENULSMainnet,
+  ChainId.ZetaChainAthensTestnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -105,6 +107,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ArbitrumNova,
   ChainId.Optimism,
   ChainId.ZkSyncEraMainnet,
+  // ChainId.Base,
   ChainId['AvalancheC-Chain'],
   ChainId.FantomOpera,
   ChainId.CronosMainnetBeta,
@@ -158,7 +161,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.LineaTestnet,
   ChainId.ScrollAlphaTestnet,
   ChainId.BaseGoerliTestnet,
-  // ChainId['Taiko(Alpha-2Testnet)'],
+  ChainId['Taiko(Alpha-3Testnet)'],
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
@@ -170,6 +173,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.HorizenGobiTestnet,
   ChainId.GatherTestnetNetwork,
   ChainId.ShimmerEVMTestnet,
+  ChainId.ZetaChainAthensTestnet,
 ];
 
 export const isSupportedChain = (chainId: number): boolean => {
@@ -271,12 +275,13 @@ export const getChainName = (chainId: number): string => {
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
-    [ChainId['Taiko(Alpha-2Testnet)']]: 'Taiko Alpha',
+    [ChainId['Taiko(Alpha-3Testnet)']]: 'Taiko Alpha',
     [ChainId.CoreBlockchainMainnet]: 'CORE',
     [ChainId.KCCMainnet]: 'KCC',
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
     [ChainId.OasysMainnet]: 'Oasys',
     [ChainId.ENULSMainnet]: 'ENULS',
+    [ChainId.ZetaChainAthensTestnet]: 'ZetaChain Athens',
   };
 
   const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -362,6 +367,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
     [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
+    [ChainId.Base]: 'https://developer-access-mainnet.base.org',
     ...RPC_OVERRIDES,
   };
 
@@ -467,11 +473,12 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.PulseChainTestnetv4]: '/assets/images/vendor/chains/pulsechain.png',
     [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.svg',
     [ChainId.ScrollAlphaTestnet]: '/assets/images/vendor/chains/scroll.png',
+    [ChainId.Base]: '/assets/images/vendor/chains/base.svg',
     [ChainId.BaseGoerliTestnet]: '/assets/images/vendor/chains/base.svg',
     [ChainId.RedlightChainMainnet]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
-    [ChainId['Taiko(Alpha-2Testnet)']]: '/assets/images/vendor/chains/taiko.svg',
+    [ChainId['Taiko(Alpha-3Testnet)']]: '/assets/images/vendor/chains/taiko.svg',
     [ChainId.CoreBlockchainMainnet]: '/assets/images/vendor/chains/core.png',
     [ChainId.KCCMainnet]: '/assets/images/vendor/chains/kcc.svg',
     [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.png',
@@ -481,6 +488,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.HuobiECOChainTestnet]: '/assets/images/vendor/chains/heco.svg',
     [ChainId.Wanchain]: '/assets/images/vendor/chains/wanchain.svg',
     [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.png',
+    [ChainId.ZetaChainAthensTestnet]: '/assets/images/vendor/chains/zetachain.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -598,10 +606,12 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
-    [ChainId['Taiko(Alpha-2Testnet)']]: 'https://explorer.a2.taiko.xyz/api',
+    [ChainId['Taiko(Alpha-3Testnet)']]: 'https://explorer.test.taiko.xyz/api',
     [ChainId.ShimmerEVMTestnet]: 'https://explorer.evm.testnet.shimmer.network/api',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games/api',
     [ChainId.ENULSMainnet]: 'https://evmscan.nuls.io/api',
+    [ChainId.ZkSyncEraMainnet]: 'https://zksync2-mainnet.zkscan.io/api',
+    [ChainId.ZetaChainAthensTestnet]: 'https://blockscout.athens2.zetachain.com/api',
   };
 
   return apiUrls[chainId];
