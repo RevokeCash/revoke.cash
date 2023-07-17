@@ -3,7 +3,7 @@
     "description": "Descubre cómo puedes añadir fácilmente {{chainName}} y otras redes a carteras de criptomonedas como MetaMask.",
     "intro_paragraph": "El proceso de añadir {{chainName}} a tu cartera puede variar ligeramente según la cartera que uses. Los siguientes pasos son para MetaMask. Si utilizas una cartera diferente, lo más probable es que puedas seguir un proceso similar.",
     "select_network": "Selecciona la red que quieres añadir:",
-    "sidebar_title": "Agregue una red a su cartera",
+    "sidebar_title": "Agrega una red a tu cartera",
     "step_1": {
       "title": "1. Abre tu cartera y ve a la página «Añadir red»."
     },

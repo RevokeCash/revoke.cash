@@ -15,8 +15,8 @@
     "title": "Добавьте {{chainName}} в MetaMask"
   },
   "article_meta": {
-    "author": "Written by <0>{{author}}</0>",
-    "translator": "Translated by <0>{{translator}}</0>"
+    "author": "Автор <0>{{author}}</0>",
+    "translator": "Переводчик <0>{{translator}}</0>"
   },
   "home": {
     "intro_paragraph": "Мы создали раздел Revoke.cash Learn, чтобы помочь вам понять, как оставаться в безопасности в мире web3. Он охватывает самые основы web3, а затем переходит к более сложным темам. Со временем мы будем добавлять новые статьи, поэтому не забывайте регулярно заходить сюда."

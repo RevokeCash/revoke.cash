@@ -9,7 +9,7 @@
   },
   "filters": {
     "allowances": {
-      "label": "授权",
+      "label": "授权金额",
       "options": {
         "limited": "有限的",
         "none": "没有",
@@ -35,7 +35,7 @@
   },
   "headers": {
     "actions": "操作",
-    "allowance": "授权",
+    "allowance": "授权金额",
     "asset": "资产",
     "asset_type": "类型",
     "last_updated": "上次更新",
@@ -48,7 +48,7 @@
     "token": "代币"
   },
   "meta": {
-    "title": "Revoke.cash-检查并撤销 {{address}} 的授权",
+    "title": "地址 {{addressDisplay}} 授权情况",
     "title_chain": "地址{{addressDisplay}}在{{chainName}}上的批准情况"
   },
   "navigation": {
@@ -63,10 +63,10 @@
   },
   "signatures": {
     "info": {
-      "description": "由于区块链不存储签名，因此Revoke.cash无法检查您是否签署了任何签名。因此，此页面包含<0>潜在</0>签名列表。<1>只有在确定自己在钓鱼网站上签名时，才需要取消这些签名</1>。取消签名后，该条目将保留在列表中供下次使用。"
+      "description": "由于区块链不存储签名，因此 Revoke.cash 无法核实您是否真的进行了签名。此页面包含了<0>可能的</0>签名列表。<1>只有当您确定自己在钓鱼网站上进行了签名时，才需要取消这些签名</1>。即使您已取消签名，该条目仍将保存在本列表中。"
     },
     "marketplaces": {
-      "none_found": "未找到该链的消费市场。",
+      "none_found": "未找到该链的市场。",
       "title": "市场签名"
     },
     "permit": {
@@ -76,7 +76,7 @@
   },
   "sorting": {
     "columns": {
-      "allowance": "授权",
+      "allowance": "授权金额",
       "asset_name": "资产名称",
       "authorized_spender": "已经授权的项目",
       "last_updated": "上次更新"
@@ -101,10 +101,10 @@
     "acknowledge_signature_notice": "检查签名前，请确认该通知。",
     "connect_wallet": "请连接钱包继续下一步",
     "connected_account": "您只能操作已连接的账户",
-    "involved_in_exploits": "This address is involved in the following exploits:",
+    "involved_in_exploits": "此地址涉及以下漏洞：",
     "marketplace_listings": "这将取消 {{marketplace}} 上的所有当前列出的产品和报价。",
     "marketplace_signatures": "一旦获得批准，市场可以代表您转移资产。骗子可利用这些批准在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",
     "permit_signatures": "许可签名用于在无需发送交易的情况下批准花费。如果您在钓鱼网站上签署了许可签名，请取消。",
-    "switch_chain": "请切换钱包到目标链 <0>{{chainName}}</0>以继续操作"
+    "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
   }
 }

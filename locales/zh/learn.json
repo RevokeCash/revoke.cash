@@ -1,11 +1,11 @@
 {
   "add_network": {
-    "description": "了解如何在MetaMask等加密货币钱包中轻松添加{{chainName}}和其他网络。",
+    "description": "了解如何在MetaMask等加密货币钱包中轻松添加{{chainName}}和其他区块链。",
     "intro_paragraph": "向钱包添加{{chainName}}的过程可能略有不同，这取决于你使用的钱包。下面的步骤是针对MetaMask的。如果你使用其他钱包，很可能有一个类似的过程，你可以参考。",
-    "select_network": "选择你想添加的网络：",
-    "sidebar_title": "为你的钱包添加一个网络",
+    "select_network": "选择想添加的区块链：",
+    "sidebar_title": "为钱包添加区块链",
     "step_1": {
-      "title": "1.打开你的钱包，进入 \"添加网络 \"页面。"
+      "title": "1.打开你的钱包，进入 \"添加区块链 \"页面。"
     },
     "step_2": {
       "paragraph_1": "输入所需细节后，您可以点击 \"保存\"，将{{chainName}}添加到MetaMask。",

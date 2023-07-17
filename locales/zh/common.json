@@ -21,7 +21,7 @@
     "revoking": "正在撤销",
     "send": "发送",
     "sending": "发送给",
-    "switch_chain": "切换链",
+    "switch_chain": "切换区块链",
     "switching": "切换中",
     "translate": "帮助我们翻译这个页面",
     "understand": "我理解",
@@ -66,7 +66,7 @@
       "title": "此页面不存在。"
     },
     "messages": {
-      "chain_could_not_connect": "无法连接到{{chainName}} 链"
+      "chain_could_not_connect": "无法链接到 {{chainName}}"
     }
   },
   "footer": {
@@ -75,8 +75,8 @@
     "terms": "条款"
   },
   "meta": {
-    "description": "通过撤销你过去的授权，来掌控自己的钱包。",
-    "title": "Revoke.cash— 撤销你的以太坊代币授权"
+    "description": "撤销在以太坊和其他 40+ 区块链的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "title": "撤销 40+ 区块链上的代币授权"
   },
   "nav": {
     "about": "关于我们",
