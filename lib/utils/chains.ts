@@ -8,7 +8,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.Sepolia,
   ChainId.PolygonMainnet,
   ChainId.Mumbai,
-  ChainId.Optimism,
+  ChainId.OPMainnet,
   ChainId.OptimismGoerliTestnet,
   ChainId.ArbitrumOne,
   ChainId.ArbitrumGoerli,
@@ -59,8 +59,8 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
-  ChainId.BinanceSmartChainMainnet,
-  ChainId.BinanceSmartChainTestnet,
+  ChainId.BNBSmartChainMainnet,
+  ChainId.BNBSmartChainTestnet,
   ChainId.Gnosis,
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
@@ -100,12 +100,12 @@ export const SUPPORTED_CHAINS = [
 // Order is loosely based on TVL (as per DeFiLlama)
 export const CHAIN_SELECT_MAINNETS = [
   ChainId.EthereumMainnet,
-  ChainId.BinanceSmartChainMainnet,
+  ChainId.BNBSmartChainMainnet,
   ChainId.PolygonMainnet,
   ChainId.PolygonzkEVM,
   ChainId.ArbitrumOne,
   ChainId.ArbitrumNova,
-  ChainId.Optimism,
+  ChainId.OPMainnet,
   ChainId.ZkSyncEraMainnet,
   // ChainId.Base,
   ChainId['AvalancheC-Chain'],
@@ -152,7 +152,7 @@ export const CHAIN_SELECT_MAINNETS = [
 export const CHAIN_SELECT_TESTNETS = [
   ChainId.Goerli,
   ChainId.Sepolia,
-  ChainId.BinanceSmartChainTestnet,
+  ChainId.BNBSmartChainMainnet,
   ChainId.Mumbai,
   ChainId.PolygonzkEVMTestnet,
   ChainId.ArbitrumGoerli,
@@ -207,7 +207,7 @@ export const isNodeSupportedChain = (chainId: number): boolean => {
 export const getChainName = (chainId: number): string => {
   const overrides: Record<number, string> = {
     [ChainId.EthereumMainnet]: 'Ethereum',
-    [ChainId.BinanceSmartChainMainnet]: 'BNB Chain',
+    [ChainId.BNBSmartChainMainnet]: 'BNB Chain',
     [ChainId['AvalancheC-Chain']]: 'Avalanche',
     [ChainId.PolygonMainnet]: 'Polygon',
     [ChainId.ArbitrumOne]: 'Arbitrum',
@@ -234,7 +234,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.CLVParachain]: 'CLV',
     [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
     [ChainId.Goerli]: 'Goerli',
-    [ChainId.BinanceSmartChainTestnet]: 'BNB Chain Testnet',
+    [ChainId.BNBSmartChainTestnet]: 'BNB Chain Testnet',
     [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
     [ChainId.Mumbai]: 'Polygon Mumbai',
     [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
@@ -282,6 +282,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.OasysMainnet]: 'Oasys',
     [ChainId.ENULSMainnet]: 'ENULS',
     [ChainId.ZetaChainAthensTestnet]: 'ZetaChain Athens',
+    [ChainId.OPMainnet]: 'Optimism',
   };
 
   const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -361,7 +362,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.Astar]: 'https://evm.astar.network',
-    [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.OPMainnet]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
@@ -386,7 +387,7 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
     // [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.Mumbai]: `https://polygon-mumbai.g.alchemy.com/v2/${alchemyKey}`,
-    [ChainId.Optimism]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.OPMainnet]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.ArbitrumOne]: `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.ArbitrumGoerli]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
@@ -409,8 +410,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.SmartBitcoinCashTestnet]: '/assets/images/vendor/chains/smartbch.svg',
     [ChainId.FuseMainnet]: '/assets/images/vendor/chains/fuse.png',
     [ChainId.FuseSparknet]: '/assets/images/vendor/chains/fuse.png',
-    [ChainId.BinanceSmartChainMainnet]: '/assets/images/vendor/chains/bsc.svg',
-    [ChainId.BinanceSmartChainTestnet]: '/assets/images/vendor/chains/bsc.svg',
+    [ChainId.BNBSmartChainMainnet]: '/assets/images/vendor/chains/bsc.svg',
+    [ChainId.BNBSmartChainTestnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.PolygonMainnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.Mumbai]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId['AvalancheC-Chain']]: '/assets/images/vendor/chains/avalanche.svg',
@@ -435,7 +436,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.KlaytnTestnetBaobab]: '/assets/images/vendor/chains/klaytn.svg',
     [ChainId.Palm]: '/assets/images/vendor/chains/palm.svg',
     [ChainId.PalmTestnet]: '/assets/images/vendor/chains/palm.svg',
-    [ChainId.Optimism]: '/assets/images/vendor/chains/optimism.svg',
+    [ChainId.OPMainnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.OptimismGoerliTestnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.Evmos]: '/assets/images/vendor/chains/evmos.svg',
     [ChainId.EvmosTestnet]: '/assets/images/vendor/chains/evmos.svg',
@@ -559,8 +560,8 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
 export const getChainApiUrl = (chainId: number): string | undefined => {
   const apiUrls = {
     [ChainId.EthereumMainnet]: 'https://api.etherscan.io/api',
-    [ChainId.BinanceSmartChainMainnet]: 'https://api.bscscan.com/api',
-    [ChainId.BinanceSmartChainTestnet]: 'https://api-testnet.bscscan.com/api',
+    [ChainId.BNBSmartChainMainnet]: 'https://api.bscscan.com/api',
+    [ChainId.BNBSmartChainTestnet]: 'https://api-testnet.bscscan.com/api',
     [ChainId.PolygonMainnet]: 'https://api.polygonscan.com/api',
     [ChainId.Mumbai]: 'https://api-testnet.polygonscan.com/api',
     [ChainId['AvalancheC-Chain']]: 'https://api.snowtrace.io/api',

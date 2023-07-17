@@ -26,7 +26,7 @@
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.17",
     "@openzeppelin/contracts": "^4.8.2",
-    "@revoke.cash/chains": "^5.0.0",
+    "@revoke.cash/chains": "^8.0.0",
     "@tanstack/query-sync-storage-persister": "^4.27.1",
     "@tanstack/react-query": "^4.28.0",
     "@tanstack/react-query-persist-client": "^4.28.0",
