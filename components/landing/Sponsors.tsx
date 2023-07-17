@@ -57,7 +57,7 @@ const Sponsors = () => {
           <SponsorBanner
             name="Brave Wallet"
             banner="/assets/images/vendor/sponsors/brave.png"
-            url="https://brave.com/wallet/?mtm_campaign=q2&mtm_kwd=revokecash"
+            url="https://brave.com/wallet/?mtm_source=revoke.cash&mtm_medium=paid&mtm_campaign=q3wallet"
             tier="silver"
           />
         </div>
