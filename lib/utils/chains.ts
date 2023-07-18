@@ -368,6 +368,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
     [ChainId.Base]: 'https://developer-access-mainnet.base.org',
+    [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
     ...RPC_OVERRIDES,
   };
 
