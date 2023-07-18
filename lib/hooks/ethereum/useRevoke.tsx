@@ -95,11 +95,20 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 };
 
 const throwIfExcessiveGas = (chainId: number, estimatedGas: BigNumber) => {
-  // zkSync does some weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
-  const EXCESSIVE_GAS = [ChainId.ZkSyncEraMainnet, ChainId.ZkSyncEraTestnet].includes(chainId) ? 10_000_000 : 1_000_000;
+  // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
+  const WEIRD_NETWORKS = [
+    ChainId.ZkSyncEraMainnet,
+    ChainId.ZkSyncEraTestnet,
+    ChainId.ArbitrumOne,
+    ChainId.ArbitrumGoerli,
+    ChainId.ArbitrumNova,
+  ];
+
+  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(chainId) ? 10_000_000 : 1_000_000;
 
   // TODO: Translate this error message
   if (estimatedGas.gt(EXCESSIVE_GAS)) {
+    console.error(`Gas limit of ${estimatedGas.toString()} is excessive`);
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.'
     );
