@@ -29,6 +29,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.CoreBlockchainMainnet,
   ChainId.KCCMainnet,
   ChainId.PulseChain,
+  59144, // Linea Mainnet
   ChainId.LineaTestnet,
   ChainId.Wanchain,
 ];
@@ -107,6 +108,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ArbitrumNova,
   ChainId.OPMainnet,
   ChainId.ZkSyncEraMainnet,
+  59144, // Linea Mainnet
   ChainId.Base,
   ChainId['AvalancheC-Chain'],
   ChainId.FantomOpera,
@@ -268,6 +270,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
     [ChainId.PulseChain]: 'PulseChain',
     [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
+    [59144]: 'Linea',
     [ChainId.LineaTestnet]: 'Linea Goerli',
     [ChainId.ScrollAlphaTestnet]: 'Scroll Alpha',
     [ChainId.BaseGoerliTestnet]: 'Base Goerli',
@@ -320,7 +323,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com',
-    [ChainId.LineaTestnet]: 'https://explorer.goerli.linea.build',
+    [ChainId.LineaTestnet]: 'https://lineascan.build',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games',
     [ChainId.OptimismGoerliTestnet]: 'https://goerli-optimism.etherscan.io',
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io',
@@ -328,6 +331,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.GodwokenMainnet]: 'https://www.gwscan.com',
     [ChainId.Wanchain]: 'https://www.wanscan.org',
     [ChainId.Canto]: 'https://tuber.build',
+    [59144]: 'https://lineascan.build',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -369,6 +373,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
     [ChainId.Base]: 'https://developer-access-mainnet.base.org',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
+    [59144]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
     ...RPC_OVERRIDES,
   };
 
@@ -472,7 +477,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PulseChain]: '/assets/images/vendor/chains/pulsechain.png',
     [ChainId.PulseChainTestnetv4]: '/assets/images/vendor/chains/pulsechain.png',
-    [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.svg',
+    [59144]: '/assets/images/vendor/chains/linea.png',
+    [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.png',
     [ChainId.ScrollAlphaTestnet]: '/assets/images/vendor/chains/scroll.png',
     [ChainId.Base]: '/assets/images/vendor/chains/base.svg',
     [ChainId.BaseGoerliTestnet]: '/assets/images/vendor/chains/base.svg',
@@ -499,6 +505,7 @@ export const getChainNativeToken = (chainId: number): string => {
   const overrides = {
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
+    [59144]: 'ETH',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -602,7 +609,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.HorizenGobiTestnet]: 'https://gobi-explorer.horizen.io/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
-    [ChainId.LineaTestnet]: 'https://explorer.goerli.linea.build/api',
+    [59144]: 'https://lineascan.build/api',
+    [ChainId.LineaTestnet]: 'https://goerli.lineascan.build/api',
     [ChainId.ScrollAlphaTestnet]: 'https://blockscout.scroll.io/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
