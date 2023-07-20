@@ -301,6 +301,8 @@ export const getChainSlug = (chainId: number): string => {
 };
 
 export const getChainIdFromSlug = (slug: string): number | undefined => {
+  if (slug === 'linea') return 59144; // Linea is not in chainlist yet
+
   // Note: this doesn't have to be efficient, since it's only used in getStaticProps
   const chainId = Object.keys(chains.all()).find((chainId) => getChainSlug(Number(chainId)) === slug);
   return Number(chainId);
@@ -346,6 +348,7 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [ChainId.Palm]: 'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     [ChainId.Goerli]: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    [59144]: 'https://linea-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
