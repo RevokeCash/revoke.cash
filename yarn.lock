@@ -1547,10 +1547,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@revoke.cash/chains@npm:8.0.0"
-  checksum: 336ba9afe41df1dc2b10c1c3adeec83259bbdba20059a7b9aae553c080b9db98416801b7635a3b8209d59a89362417b0cfa9b372ffecd2cc09f6ef7944eb38c5
+"@revoke.cash/chains@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@revoke.cash/chains@npm:9.0.0"
+  checksum: 5a0c342c6d33f10ee176b29862d1e65e61afabb99bc9501a40748f14d2bdfeb1025503e971db6bc10b078eb3929733a01941c22dddb0d7444ccb6b0d3d8c59b3
   languageName: node
   linkType: hard
 
@@ -9798,7 +9798,7 @@ __metadata:
     "@heroicons/react": ^2.0.17
     "@localazy/cli": ^1.7.1
     "@openzeppelin/contracts": ^4.8.2
-    "@revoke.cash/chains": ^8.0.0
+    "@revoke.cash/chains": ^9.0.0
     "@tailwindcss/typography": ^0.5.9
     "@tanstack/query-sync-storage-persister": ^4.27.1
     "@tanstack/react-query": ^4.28.0

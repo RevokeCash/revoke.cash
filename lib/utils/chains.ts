@@ -29,7 +29,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.CoreBlockchainMainnet,
   ChainId.KCCMainnet,
   ChainId.PulseChain,
-  59144, // Linea Mainnet
+  ChainId.Linea,
   ChainId.LineaTestnet,
   ChainId.Wanchain,
 ];
@@ -52,11 +52,12 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.RedlightChainMainnet,
   // ChainId.GatherMainnetNetwork,
   ChainId.GatherTestnetNetwork,
-  ChainId['Taiko(Alpha-3Testnet)'],
+  ChainId.TaikoGrimsvotnL2,
   ChainId.ShimmerEVMTestnet,
   ChainId.OasysMainnet,
   ChainId.ENULSMainnet,
   ChainId.ZetaChainAthensTestnet,
+  ChainId.DogechainMainnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -108,7 +109,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ArbitrumNova,
   ChainId.OPMainnet,
   ChainId.ZkSyncEraMainnet,
-  59144, // Linea Mainnet
+  ChainId.Linea,
   ChainId.Base,
   ChainId['AvalancheC-Chain'],
   ChainId.FantomOpera,
@@ -117,34 +118,35 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PulseChain,
   ChainId.CeloMainnet,
   ChainId.RSKMainnet,
-  ChainId.Canto,
   ChainId.Gnosis,
+  ChainId.Canto,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.KCCMainnet,
-  ChainId.Astar,
   ChainId.MetisAndromedaMainnet,
+  ChainId.Astar,
   ChainId.AuroraMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.BitTorrentChainMainnet,
-  ChainId.CoreBlockchainMainnet,
-  ChainId.Wanchain,
-  ChainId.OasisEmerald,
   ChainId.SmartBitcoinCash,
+  ChainId.Wanchain,
+  ChainId.CoreBlockchainMainnet,
+  ChainId.Evmos,
+  ChainId.DogechainMainnet,
+  ChainId.OasisEmerald,
   ChainId.HarmonyMainnetShard0,
   ChainId.BobaNetwork,
-  ChainId.Evmos,
   ChainId.CoinExSmartChainMainnet,
   ChainId.FuseMainnet,
   ChainId.OasysMainnet,
-  ChainId.SyscoinMainnet,
   ChainId.NahmiiMainnet,
   ChainId.GodwokenMainnet,
   ChainId.CallistoMainnet,
-  ChainId.EthereumClassicMainnet,
-  ChainId.FlareMainnet,
-  ChainId.Shiden,
   ChainId.ENULSMainnet,
+  ChainId.EthereumClassicMainnet,
+  ChainId.SyscoinMainnet,
+  ChainId.Shiden,
+  ChainId.FlareMainnet,
   ChainId.Palm,
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
@@ -163,7 +165,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.LineaTestnet,
   ChainId.ScrollAlphaTestnet,
   ChainId.BaseGoerliTestnet,
-  ChainId['Taiko(Alpha-3Testnet)'],
+  ChainId.TaikoGrimsvotnL2,
   ChainId.AvalancheFujiTestnet,
   ChainId.FantomTestnet,
   ChainId.CronosTestnet,
@@ -270,14 +272,14 @@ export const getChainName = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
     [ChainId.PulseChain]: 'PulseChain',
     [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
-    [59144]: 'Linea',
+    [ChainId.Linea]: 'Linea',
     [ChainId.LineaTestnet]: 'Linea Goerli',
     [ChainId.ScrollAlphaTestnet]: 'Scroll Alpha',
     [ChainId.BaseGoerliTestnet]: 'Base Goerli',
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
-    [ChainId['Taiko(Alpha-3Testnet)']]: 'Taiko Alpha',
+    [ChainId.TaikoGrimsvotnL2]: 'Taiko Grimsvotn',
     [ChainId.CoreBlockchainMainnet]: 'CORE',
     [ChainId.KCCMainnet]: 'KCC',
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
@@ -301,8 +303,6 @@ export const getChainSlug = (chainId: number): string => {
 };
 
 export const getChainIdFromSlug = (slug: string): number | undefined => {
-  if (slug === 'linea') return 59144; // Linea is not in chainlist yet
-
   // Note: this doesn't have to be efficient, since it's only used in getStaticProps
   const chainId = Object.keys(chains.all()).find((chainId) => getChainSlug(Number(chainId)) === slug);
   return Number(chainId);
@@ -333,7 +333,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.GodwokenMainnet]: 'https://www.gwscan.com',
     [ChainId.Wanchain]: 'https://www.wanscan.org',
     [ChainId.Canto]: 'https://tuber.build',
-    [59144]: 'https://lineascan.build',
+    [ChainId.Linea]: 'https://lineascan.build',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -348,7 +348,7 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [ChainId.Palm]: 'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     [ChainId.Goerli]: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-    [59144]: 'https://linea-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    [ChainId.Linea]: 'https://linea-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
@@ -376,7 +376,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
     [ChainId.Base]: 'https://developer-access-mainnet.base.org',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
-    [59144]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.Linea]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
     ...RPC_OVERRIDES,
   };
 
@@ -480,7 +480,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PulseChain]: '/assets/images/vendor/chains/pulsechain.png',
     [ChainId.PulseChainTestnetv4]: '/assets/images/vendor/chains/pulsechain.png',
-    [59144]: '/assets/images/vendor/chains/linea.png',
+    [ChainId.Linea]: '/assets/images/vendor/chains/linea.png',
     [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.png',
     [ChainId.ScrollAlphaTestnet]: '/assets/images/vendor/chains/scroll.png',
     [ChainId.Base]: '/assets/images/vendor/chains/base.svg',
@@ -488,7 +488,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.RedlightChainMainnet]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
-    [ChainId['Taiko(Alpha-3Testnet)']]: '/assets/images/vendor/chains/taiko.svg',
+    [ChainId.TaikoGrimsvotnL2]: '/assets/images/vendor/chains/taiko.svg',
     [ChainId.CoreBlockchainMainnet]: '/assets/images/vendor/chains/core.png',
     [ChainId.KCCMainnet]: '/assets/images/vendor/chains/kcc.svg',
     [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.png',
@@ -499,6 +499,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.Wanchain]: '/assets/images/vendor/chains/wanchain.svg',
     [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.png',
     [ChainId.ZetaChainAthensTestnet]: '/assets/images/vendor/chains/zetachain.svg',
+    [ChainId.DogechainMainnet]: '/assets/images/vendor/chains/dogechain.jpg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -508,7 +509,7 @@ export const getChainNativeToken = (chainId: number): string => {
   const overrides = {
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
-    [59144]: 'ETH',
+    [ChainId.Linea]: 'ETH',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -612,18 +613,19 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.HorizenGobiTestnet]: 'https://gobi-explorer.horizen.io/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
-    [59144]: 'https://lineascan.build/api',
+    [ChainId.Linea]: 'https://lineascan.build/api',
     [ChainId.LineaTestnet]: 'https://goerli.lineascan.build/api',
     [ChainId.ScrollAlphaTestnet]: 'https://blockscout.scroll.io/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
-    [ChainId['Taiko(Alpha-3Testnet)']]: 'https://explorer.test.taiko.xyz/api',
+    [ChainId.TaikoGrimsvotnL2]: 'https://explorer.test.taiko.xyz/api',
     [ChainId.ShimmerEVMTestnet]: 'https://explorer.evm.testnet.shimmer.network/api',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games/api',
     [ChainId.ENULSMainnet]: 'https://evmscan.nuls.io/api',
     [ChainId.ZkSyncEraMainnet]: 'https://zksync2-mainnet.zkscan.io/api',
     [ChainId.ZetaChainAthensTestnet]: 'https://blockscout.athens2.zetachain.com/api',
+    [ChainId.DogechainMainnet]: 'https://explorer.dogechain.dog/api',
   };
 
   return apiUrls[chainId];
