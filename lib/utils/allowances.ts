@@ -12,7 +12,8 @@ export const getAllowancesFromEvents = async (
   readProvider: providers.Provider,
   chainId: number
 ): Promise<AllowanceData[]> => {
-  const allEvents = [...events.transferTo, ...events.approval, ...events.approvalForAll];
+  // We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
+  const allEvents = [...events.approvalForAll, ...events.approval, ...events.transferTo];
   const contracts = createTokenContracts(allEvents, readProvider);
 
   // Look up token data for all tokens, add their lists of approvals
