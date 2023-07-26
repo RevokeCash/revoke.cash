@@ -325,7 +325,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com',
-    [ChainId.LineaTestnet]: 'https://lineascan.build',
+    [ChainId.LineaTestnet]: 'https://goerli.lineascan.build',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games',
     [ChainId.OptimismGoerliTestnet]: 'https://goerli-optimism.etherscan.io',
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io',
