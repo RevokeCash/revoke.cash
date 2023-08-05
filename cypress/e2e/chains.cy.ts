@@ -68,6 +68,8 @@ const fixtures = [
   ['Redlight', '0xfE294d4CfA1F3b57b902d60c17B583DED8C519bb'],
   ['Wanchain', '0x208B907d345c0E79cEAfF30BBe925c29da1D78C0'],
   ['ENULS', '0x71396287EeDa50fdE667E8c53771682fd74De1Ac'],
+  ['Horizen EON', '0x8b157B3fFEAD48C8a4CDC6bddBE1C1D170049Da4'],
+  ['Mantle', '0xEF12EAA20882A33487Ab069C2E27855aF49D9B16'],
   // ['Gather', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
   ['Goerli', '0xFCBD25BB345765192fFC2f2E35F1F5348badC3F6'],
   ['Sepolia', '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a'],
@@ -93,6 +95,7 @@ const fixtures = [
   ['Gather Testnet', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
   ['Shimmer Testnet', '0x6e18ACee6fa8EF7Daf13D32B2424152662c9e07a'],
   ['ZetaChain Athens', '0xdE3453E7006EA93172f0A20a1f7bF90fA52Ad601'],
+  ['Mantle Testnet', '0xe84A9ca2327f80C7374cba01897264E2545366d1'],
 ];
 
 describe('Chain Support', () => {
