@@ -43,7 +43,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
     const executeRevokeSingle = async () => {
       const estimatedGas = await contract.estimateGas.approve(ADDRESS_ZERO, tokenId, { from: allowance.owner });
-      throwIfExcessiveGas(allowance.chainId, estimatedGas);
+      throwIfExcessiveGas(allowance, estimatedGas);
 
       const writeContract = new Contract(contract.address, contract.interface, signer);
       return writeContract.functions.approve(ADDRESS_ZERO, tokenId);
@@ -51,7 +51,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
     const executeRevokeForAll = async () => {
       const estimatedGas = await contract.estimateGas.setApprovalForAll(spender, false, { from: allowance.owner });
-      throwIfExcessiveGas(allowance.chainId, estimatedGas);
+      throwIfExcessiveGas(allowance, estimatedGas);
 
       const writeContract = new Contract(contract.address, contract.interface, signer);
       return writeContract.functions.setApprovalForAll(spender, false);
@@ -68,7 +68,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
       const transactionPromise = contract.estimateGas
         .approve(spender, bnNew, { from: allowance.owner })
-        .then((estimatedGas) => throwIfExcessiveGas(allowance.chainId, estimatedGas))
+        .then((estimatedGas) => throwIfExcessiveGas(allowance, estimatedGas))
         .then(() => writeContract.functions.approve(spender, bnNew));
 
       const transactionType = newAmount === '0' ? TransactionType.REVOKE : TransactionType.UPDATE;
@@ -94,7 +94,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
   }
 };
 
-const throwIfExcessiveGas = (chainId: number, estimatedGas: BigNumber) => {
+const throwIfExcessiveGas = (allowance: Pick<AllowanceData, 'chainId' | 'contract'>, estimatedGas: BigNumber) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const WEIRD_NETWORKS = [
     ChainId.ZkSyncEraMainnet,
@@ -104,11 +104,20 @@ const throwIfExcessiveGas = (chainId: number, estimatedGas: BigNumber) => {
     ChainId.ArbitrumNova,
   ];
 
-  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(chainId) ? 10_000_000 : 1_000_000;
+  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(allowance.chainId) ? 10_000_000 : 1_000_000;
 
   // TODO: Translate this error message
   if (estimatedGas.gt(EXCESSIVE_GAS)) {
     console.error(`Gas limit of ${estimatedGas.toString()} is excessive`);
+
+    // Track excessive gas usage so we can blacklist tokens
+    // TODO: Use a different tool than analytics for this
+    track('Excessive gas limit', {
+      chainId: allowance.chainId,
+      address: allowance.contract.address,
+      estimatedGas: estimatedGas.toString(),
+    });
+
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.'
     );

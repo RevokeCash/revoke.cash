@@ -88,7 +88,7 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
               ]}
             />
             <h3 className="mt-2">{t('common:chain_select.mainnets')}</h3>
-            <ul className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 gap-2">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {CHAIN_SELECT_MAINNETS.map((chainId) => (
                 <li key={chainId} className="flex items-center gap-1">
                   {<ChainLogo chainId={chainId} />}
@@ -97,7 +97,7 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
               ))}
             </ul>
             <h3 className="mt-2">{t('common:chain_select.testnets')}</h3>
-            <ul className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 gap-2">
+            <ul className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-3 gap-2">
               {CHAIN_SELECT_TESTNETS.map((chainId) => (
                 <li key={chainId} className="flex items-center gap-1">
                   {<ChainLogo chainId={chainId} />}
