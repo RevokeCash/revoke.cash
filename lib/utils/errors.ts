@@ -1,13 +1,11 @@
-export const isUserRejectionError = (error: any): boolean => {
-  const message = error.error?.reason ?? error.reason ?? error.error?.message ?? error.message;
+export const isUserRejectionError = (message?: string): boolean => {
   const lowercaseMessage = message?.toLowerCase();
   if (lowercaseMessage?.includes('user denied')) return true;
   if (lowercaseMessage?.includes('user rejected')) return true;
   return false;
 };
 
-export const isRevertedError = (error: any): boolean => {
-  const message = error.error?.reason ?? error.reason ?? error.error?.message ?? error.message;
+export const isRevertedError = (message?: string): boolean => {
   const lowercaseMessage = message?.toLowerCase();
   if (lowercaseMessage?.includes('revert')) return true;
   return false;

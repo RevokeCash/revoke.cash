@@ -18,7 +18,7 @@ export const useHandleTransaction = () => {
     console.debug(e);
 
     // Don't show error toasts for user denied transactions
-    if (isUserRejectionError(e)) return;
+    if (isUserRejectionError(message)) return;
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
@@ -29,7 +29,7 @@ export const useHandleTransaction = () => {
     }
 
     if (type === TransactionType.REVOKE) {
-      if (isRevertedError(e)) {
+      if (isRevertedError(message)) {
         return void toast.info(t('common:toasts.revoke_failed_revert', { message }));
       }
 
