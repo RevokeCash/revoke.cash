@@ -73,6 +73,8 @@ export const getSidebar = async (
         children: [
           getSidebarEntry('approvals/what-are-token-approvals', locale, directory, extended),
           getSidebarEntry('approvals/how-to-revoke-token-approvals', locale, directory, extended),
+          getSidebarEntry('approvals/what-are-permit-signatures', locale, directory, extended),
+          getSidebarEntry('approvals/what-is-permit2', locale, directory, extended),
         ],
       },
       {
