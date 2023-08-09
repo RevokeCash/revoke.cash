@@ -1,10 +1,28 @@
+import { ChainId } from '@revoke.cash/chains';
 import { BigNumber, Contract, providers, utils } from 'ethers';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type { AddressEvents, AllowanceData, BaseAllowanceData, BaseTokenData, Log } from 'lib/interfaces';
-import { deduplicateLogsByTopics, filterLogsByAddress, sortLogsChronologically, toFloat, topicToAddress } from '.';
+import {
+  addressToTopic,
+  deduplicateLogsByTopics,
+  filterLogsByAddress,
+  filterLogsByTopics,
+  sortLogsChronologically,
+  toFloat,
+  topicToAddress,
+} from '.';
+import { track } from './analytics';
+import { getPermit2AllowancesFromApprovals } from './permit2';
 import { convertString, unpackResult } from './promises';
-import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract, isSpamToken } from './tokens';
+import {
+  createTokenContracts,
+  getTokenData,
+  hasZeroAllowance,
+  hasZeroBalance,
+  isErc721Contract,
+  isSpamToken,
+} from './tokens';
 
 export const getAllowancesFromEvents = async (
   owner: string,
@@ -23,10 +41,19 @@ export const getAllowancesFromEvents = async (
       const approvals = filterLogsByAddress(events.approval, contract.address);
       const transfersFrom = filterLogsByAddress(events.transferFrom, contract.address);
       const transfersTo = filterLogsByAddress(events.transferTo, contract.address);
+      const permit2TopicFilter = [null, null, addressToTopic(contract.address)];
+      const permit2Approval = filterLogsByTopics(events.permit2Approval, permit2TopicFilter);
 
       try {
         const tokenData = await getTokenData(contract, owner, transfersFrom, transfersTo, chainId);
-        const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, owner, tokenData);
+        const allowances = await getAllowancesForToken(
+          contract,
+          approvals,
+          approvalsForAll,
+          permit2Approval,
+          owner,
+          tokenData
+        );
 
         if (allowances.length === 0) {
           return [tokenData as AllowanceData];
@@ -56,6 +83,7 @@ export const getAllowancesForToken = async (
   contract: Contract,
   approvalEvents: Log[],
   approvalForAllEvents: Log[],
+  permit2ApprovalEvents: Log[],
   userAddress: string,
   tokenData: BaseTokenData
 ): Promise<BaseAllowanceData[]> => {
@@ -71,12 +99,14 @@ export const getAllowancesForToken = async (
 
     return allowances;
   } else {
-    // Filter out zero-value allowances
-    const allowances = (await getErc20AllowancesFromApprovals(contract, userAddress, approvalEvents)).filter(
-      ({ amount }) => formatErc20Allowance(amount, tokenData?.decimals, tokenData?.totalSupply) !== '0'
-    );
+    const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, approvalEvents);
+    const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, permit2ApprovalEvents);
+    const allAllowances = [...regularAllowances, ...permit2Allowances];
 
-    return allowances;
+    // Filter out zero-value allowances
+    const filteredAllowance = allAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
+
+    return filteredAllowance;
   }
 };
 
@@ -240,8 +270,8 @@ export const generatePatchedAllowanceEvents = (
       address: MOONBIRDS_ADDRESS,
       topics: [
         utils.id('ApprovalForAll(address,address,bool)'),
-        utils.hexZeroPad(userAddress, 32).toLowerCase(),
-        utils.hexZeroPad(openseaProxyAddress, 32).toLowerCase(),
+        addressToTopic(userAddress),
+        addressToTopic(openseaProxyAddress),
       ],
       data: '0x1',
       timestamp: 1649997510,
@@ -256,4 +286,37 @@ export const stripAllowanceData = (allowance: AllowanceData): BaseTokenData => {
 
 export const getAllowanceKey = (allowance: AllowanceData) => {
   return `${allowance.contract.address}-${allowance.spender}-${allowance.tokenId}-${allowance.chainId}-${allowance.owner}`;
+};
+
+export const throwIfExcessiveGas = (
+  allowance: Pick<AllowanceData, 'chainId' | 'contract'>,
+  estimatedGas: BigNumber
+) => {
+  // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
+  const WEIRD_NETWORKS = [
+    ChainId.ZkSyncEraMainnet,
+    ChainId.ZkSyncEraTestnet,
+    ChainId.ArbitrumOne,
+    ChainId.ArbitrumGoerli,
+    ChainId.ArbitrumNova,
+  ];
+
+  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(allowance.chainId) ? 10_000_000 : 500_000;
+
+  // TODO: Translate this error message
+  if (estimatedGas.gt(EXCESSIVE_GAS)) {
+    console.error(`Gas limit of ${estimatedGas.toString()} is excessive`);
+
+    // Track excessive gas usage so we can blacklist tokens
+    // TODO: Use a different tool than analytics for this
+    track('Excessive gas limit', {
+      chainId: allowance.chainId,
+      address: allowance.contract.address,
+      estimatedGas: estimatedGas.toString(),
+    });
+
+    throw new Error(
+      'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.'
+    );
+  }
 };

@@ -61,6 +61,7 @@
     "request-ip": "^3.3.0",
     "tailwind-merge": "^1.12.0",
     "timeago-react": "^3.0.6",
+    "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
     "wagmi": "^0.12.18"
   },

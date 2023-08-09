@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
 import { useNetwork, useProvider } from 'wagmi';
+import { useEvents } from '../ethereum/events/useEvents';
 import { useAllowances } from '../ethereum/useAllowances';
-import { useEvents } from '../ethereum/useEvents';
 import { useLogsProvider } from '../ethereum/useLogsProvider';
 
 interface AddressContext {

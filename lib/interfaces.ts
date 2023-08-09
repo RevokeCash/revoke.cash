@@ -10,23 +10,24 @@ export interface BaseTokenData {
   icon?: string;
   decimals?: number;
   totalSupply?: string;
-  supportsPermit?: boolean;
 }
 
 export interface BaseAllowanceData {
   spender: string;
   lastUpdated: number;
   transactionHash: string;
-  amount?: string;
-  tokenId?: string;
+  amount?: string; // Only for ERC20 tokens
+  tokenId?: string; // Only for ERC721 tokens (single token)
+  expiration?: number; // Only for Permit2 allowances
 }
 
 export interface AllowanceData extends BaseTokenData {
   spender?: string;
   lastUpdated?: number;
   transactionHash?: string;
-  amount?: string;
-  tokenId?: string;
+  amount?: string; // Only for ERC20 tokens
+  tokenId?: string; // Only for ERC721 tokens (single token)
+  expiration?: number; // Only for Permit2 allowances
 }
 
 export interface TokenFromList {
@@ -71,6 +72,7 @@ export interface AddressEvents {
   transferTo: Log[];
   approval: Log[];
   approvalForAll: Log[];
+  permit2Approval: Log[]; // Note that this combines Approval, Permit and Lockdown events
 }
 
 export interface Filter {

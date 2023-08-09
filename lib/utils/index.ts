@@ -94,6 +94,7 @@ export const getBalanceText = (symbol: string, balance: string, decimals?: numbe
 };
 
 export const topicToAddress = (topic: string) => utils.getAddress(utils.hexDataSlice(topic, 12));
+export const addressToTopic = (address: string) => utils.hexZeroPad(address, 32).toLowerCase();
 
 export const logSorterChronological = (a: Log, b: Log) => {
   if (a.blockNumber === b.blockNumber) {
@@ -111,15 +112,9 @@ export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean
   return array.filter((a, i) => array.findIndex((b) => matcher(a, b)) === i);
 };
 
-export const deduplicateLogsByTopics = (logs: Log[]) => {
+export const deduplicateLogsByTopics = (logs: Log[], consideredIndexes: Array<0 | 1 | 2 | 3> = [0, 1, 2, 3]) => {
   const matcher = (a: Log, b: Log) => {
-    return (
-      a.address === b.address &&
-      a.topics[0] === b.topics[0] &&
-      a.topics[1] === b.topics[1] &&
-      a.topics[2] === b.topics[2] &&
-      a.topics[3] === b.topics[3]
-    );
+    return a.address === b.address && consideredIndexes.every((index) => a.topics[index] === b.topics[index]);
   };
 
   return deduplicateArray(logs, matcher);
@@ -127,6 +122,12 @@ export const deduplicateLogsByTopics = (logs: Log[]) => {
 
 export const filterLogsByAddress = (logs: Log[], address: string) => {
   return logs.filter((log) => log.address === address);
+};
+
+export const filterLogsByTopics = (logs: Log[], topics: string[]) => {
+  return logs.filter((log) => {
+    return topics.every((topic, index) => !topic || topic === log.topics[index]);
+  });
 };
 
 export const writeToClipBoard = (text: string, t: Translate, displayToast: boolean = true) => {

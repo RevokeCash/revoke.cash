@@ -8404,6 +8404,7 @@ __metadata:
     tailwind-merge: ^1.12.0
     tailwindcss: ^3.3.2
     timeago-react: ^3.0.6
+    timeago.js: ^4.0.2
     ts-node: ^10.9.1
     tsconfig-paths: ^4.2.0
     typescript: ^5.0.3
@@ -9169,7 +9170,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"timeago.js@npm:^4.0.0":
+"timeago.js@npm:^4.0.0, timeago.js@npm:^4.0.2":
   version: 4.0.2
   resolution: "timeago.js@npm:4.0.2"
   checksum: c785a06988717cb5a00bb96b00ebaa56e83f4b5ed5d87c4c3931fb1bb2591a0e13a7ddc4b6c12c6ee7de64b440ed903c7bd4e0edddb37aade9bfc9ceab5d0db3

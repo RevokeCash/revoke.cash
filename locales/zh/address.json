@@ -1,6 +1,7 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
+    "expiration": "Expires {{inTime}}",
     "none": "没有授权",
     "none_found": "没有授权",
     "none_found_filtered": "所选过滤条件下未找到授权",
@@ -104,6 +105,7 @@
     "involved_in_exploits": "此地址涉及以下漏洞：",
     "marketplace_listings": "这将取消 {{marketplace}} 上的所有当前列出的产品和报价。",
     "marketplace_signatures": "一旦获得批准，市场可以代表您转移资产。骗子可利用这些批准在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",
+    "permit2_expiration": "This is a Permit2 approval that will expire {{inTime}}",
     "permit_signatures": "许可签名用于在无需发送交易的情况下批准花费。如果您在钓鱼网站上签署了许可签名，请取消。",
     "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
   }
