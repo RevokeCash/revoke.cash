@@ -1,9 +1,10 @@
-import { ChainId } from '@revoke.cash/chains';
 import { BigNumber, Contract } from 'ethers';
 import { ADDRESS_ZERO } from 'lib/constants';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
 import { fromFloat } from 'lib/utils';
+import { throwIfExcessiveGas } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
+import { permit2Approve } from 'lib/utils/permit2';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { useAccount, useSigner } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
@@ -15,7 +16,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
   const { address: account } = useAccount();
   const handleTransaction = useHandleTransaction();
 
-  const { spender, tokenId, contract, decimals } = allowance;
+  const { spender, tokenId, contract, decimals, expiration } = allowance;
 
   if (!spender) {
     return { revoke: undefined };
@@ -66,10 +67,16 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
 
       console.debug(`Calling contract.approve(${spender}, ${bnNew.toString()})`);
 
-      const transactionPromise = contract.estimateGas
-        .approve(spender, bnNew, { from: allowance.owner })
-        .then((estimatedGas) => throwIfExcessiveGas(allowance, estimatedGas))
-        .then(() => writeContract.functions.approve(spender, bnNew));
+      const executeUpdate = async () => {
+        return contract.estimateGas
+          .approve(spender, bnNew, { from: allowance.owner })
+          .then((estimatedGas) => throwIfExcessiveGas(allowance, estimatedGas))
+          .then(() => writeContract.functions.approve(spender, bnNew));
+      };
+
+      // If this is a permit2 approval, then we need to update it through Permit2
+      const transactionPromise =
+        expiration === undefined ? executeUpdate() : permit2Approve(writeContract, spender, bnNew, expiration);
 
       const transactionType = newAmount === '0' ? TransactionType.REVOKE : TransactionType.UPDATE;
       const transaction = await handleTransaction(transactionPromise, transactionType);
@@ -81,6 +88,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
           spender,
           token: contract.address,
           amount: newAmount === '0' ? undefined : newAmount,
+          permit2: expiration !== undefined,
         });
 
         await transaction.wait(1);
@@ -91,35 +99,5 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     };
 
     return { revoke, update };
-  }
-};
-
-const throwIfExcessiveGas = (allowance: Pick<AllowanceData, 'chainId' | 'contract'>, estimatedGas: BigNumber) => {
-  // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
-  const WEIRD_NETWORKS = [
-    ChainId.ZkSyncEraMainnet,
-    ChainId.ZkSyncEraTestnet,
-    ChainId.ArbitrumOne,
-    ChainId.ArbitrumGoerli,
-    ChainId.ArbitrumNova,
-  ];
-
-  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(allowance.chainId) ? 10_000_000 : 500_000;
-
-  // TODO: Translate this error message
-  if (estimatedGas.gt(EXCESSIVE_GAS)) {
-    console.error(`Gas limit of ${estimatedGas.toString()} is excessive`);
-
-    // Track excessive gas usage so we can blacklist tokens
-    // TODO: Use a different tool than analytics for this
-    track('Excessive gas limit', {
-      chainId: allowance.chainId,
-      address: allowance.contract.address,
-      estimatedGas: estimatedGas.toString(),
-    });
-
-    throw new Error(
-      'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.'
-    );
   }
 };

@@ -4,8 +4,9 @@ import { Contract, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { ERC20, ERC721Metadata } from 'lib/abis';
 import { DATA_BASE_URL, DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
-import type { AllowanceData, BaseTokenData, Log, TokenFromList } from 'lib/interfaces';
+import type { AllowanceData, BaseAllowanceData, BaseTokenData, Log, TokenFromList } from 'lib/interfaces';
 import { toFloat } from '.';
+import { formatErc20Allowance } from './allowances';
 import { getPermitDomain } from './permit';
 import { convertString, unpackResult, withFallback } from './promises';
 
@@ -127,6 +128,10 @@ export const throwIfSpamNft = async (contract: Contract) => {
 
 export const hasZeroBalance = (token: { balance: string; decimals?: number }) => {
   return toFloat(token.balance, token.decimals) === '0';
+};
+
+export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTokenData) => {
+  return formatErc20Allowance(allowance.amount, tokenData?.decimals, tokenData?.totalSupply) === '0';
 };
 
 export const createTokenContracts = (events: Log[], provider: Provider): Contract[] => {
