@@ -1,7 +1,6 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "expiration": "Expires {{inTime}}",
     "none": "没有授权",
     "none_found": "没有授权",
     "none_found_filtered": "所选过滤条件下未找到授权",
@@ -58,6 +57,9 @@
     "more": "更多",
     "settings": "设置",
     "signatures": "签名"
+  },
+  "permit2": {
+    "expiration": "Expires {{inTime}}"
   },
   "search": {
     "spender": "按授权的花费地址搜索"

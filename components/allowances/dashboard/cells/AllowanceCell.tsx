@@ -49,7 +49,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
         {allowance.expiration && (
           <WithHoverTooltip tooltip={t('address:tooltips.permit2_expiration', { inTime })}>
             <div className="flex items-center gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-              {t('address:allowances.expiration', { inTime })}
+              {t('address:permit2.expiration', { inTime })}
             </div>
           </WithHoverTooltip>
         )}

@@ -1,7 +1,6 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "expiration": "Expires {{inTime}}",
     "none": "No approvals",
     "none_found": "No approvals found",
     "none_found_filtered": "No approvals found for the selected filters",
@@ -58,6 +57,9 @@
     "more": "More",
     "settings": "Settings",
     "signatures": "Signatures"
+  },
+  "permit2": {
+    "expiration": "Expires {{inTime}}"
   },
   "search": {
     "spender": "Search by Authorized Spender Address"

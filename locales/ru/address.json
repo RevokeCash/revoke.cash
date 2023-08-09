@@ -1,7 +1,6 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "expiration": "Expires {{inTime}}",
     "none": "Доступы отсутствуют",
     "none_found": "Доступы не найдены",
     "none_found_filtered": "Для выбранных фильтров не найдено доступов.",
@@ -58,6 +57,9 @@
     "more": "Больше",
     "settings": "Настройки",
     "signatures": "Подписи"
+  },
+  "permit2": {
+    "expiration": "Expires {{inTime}}"
   },
   "search": {
     "spender": "Поиск по адресу авторизованных"

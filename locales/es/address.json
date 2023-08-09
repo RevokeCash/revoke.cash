@@ -1,7 +1,6 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "expiration": "Expires {{inTime}}",
     "none": "Sin autorizaciones",
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
@@ -58,6 +57,9 @@
     "more": "Más",
     "settings": "Configuración",
     "signatures": "Firmas"
+  },
+  "permit2": {
+    "expiration": "Expires {{inTime}}"
   },
   "search": {
     "spender": "Buscar por Dirección de Gastador Autorizado"
