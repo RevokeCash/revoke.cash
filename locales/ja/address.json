@@ -1,7 +1,6 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "expiration": "Expires {{inTime}}",
     "none": "許可がありません",
     "none_found": "許可がされていません",
     "none_found_filtered": "選択したフィルタに対しての許可がありません",
@@ -58,6 +57,9 @@
     "more": "その他",
     "settings": "設定",
     "signatures": "署名"
+  },
+  "permit2": {
+    "expiration": "Expires {{inTime}}"
   },
   "search": {
     "spender": "権限を持つ支出者アドレスによる検索"
