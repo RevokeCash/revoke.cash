@@ -16,7 +16,6 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.SmartBitcoinCash,
   ChainId.SyscoinMainnet,
   ChainId.SyscoinTanenbaumTestnet,
-  ChainId.EthereumClassicMainnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
   ChainId.ExosamaNetwork,
@@ -59,6 +58,10 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.DogechainMainnet,
   ChainId.Mantle,
   ChainId.MantleTestnet,
+  ChainId.EthereumClassicMainnet,
+  ChainId.Shiden,
+  ChainId.CronosMainnet,
+  ChainId.CronosTestnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -75,8 +78,6 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.MoonbaseAlpha,
-  ChainId.CronosMainnet,
-  ChainId.CronosTestnet,
   ChainId.CeloMainnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.BitTorrentChainMainnet,
@@ -89,7 +90,6 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.GodwokenMainnet,
   ChainId.BobaNetwork,
   ChainId.Astar,
-  ChainId.Shiden,
 ];
 
 export const NODE_SUPPORTED_CHAINS: number[] = [];
@@ -384,6 +384,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Base]: 'https://mainnet.base.org',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
     [ChainId.Linea]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
+    [ChainId.ZetaChainAthensTestnet]: 'https://rpc.ankr.com/zetachain_evm_athens_testnet',
     ...RPC_OVERRIDES,
   };
 
@@ -598,8 +600,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.Moonbeam]: 'https://api-moonbeam.moonscan.io/api',
     [ChainId.Moonriver]: 'https://api-moonriver.moonscan.io/api',
     [ChainId.MoonbaseAlpha]: 'https://api-moonbase.moonscan.io/api',
-    [ChainId.CronosMainnet]: 'https://api.cronoscan.com/api',
-    [ChainId.CronosTestnet]: 'https://api-testnet.cronoscan.com/api',
+    [ChainId.CronosMainnet]: 'https://cronos.org/explorer/api',
+    [ChainId.CronosTestnet]: 'https://cronos.org/explorer/testnet3/api',
     [ChainId.CeloMainnet]: 'https://api.celoscan.io/api',
     [ChainId.CeloAlfajoresTestnet]: 'https://api-alfajores.celoscan.io/api',
     [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev/api',
@@ -627,7 +629,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
     [ChainId.Linea]: 'https://lineascan.build/api',
     [ChainId.LineaTestnet]: 'https://goerli.lineascan.build/api',
-    [ChainId.ScrollAlphaTestnet]: 'https://blockscout.scroll.io/api',
+    [ChainId.ScrollAlphaTestnet]: 'https://alpha-blockscout.scroll.io/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
@@ -636,12 +638,13 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.OasysMainnet]: 'https://scan.oasys.games/api',
     [ChainId.ENULSMainnet]: 'https://evmscan.nuls.io/api',
     [ChainId.ZkSyncEraMainnet]: 'https://zksync2-mainnet.zkscan.io/api',
-    [ChainId.ZetaChainAthensTestnet]: 'https://blockscout.athens2.zetachain.com/api',
+    [ChainId.ZetaChainAthensTestnet]: 'https://zetachain-athens-3.blockscout.com/api',
     [ChainId.DogechainMainnet]: 'https://explorer.dogechain.dog/api',
     [ChainId.Mantle]: 'https://explorer.mantle.xyz/api',
     [ChainId.MantleTestnet]: 'https://explorer.testnet.mantle.xyz/api',
     [ChainId.Base]: 'https://api.basescan.org/api',
     [ChainId.BaseGoerliTestnet]: 'https://api-goerli.basescan.org/api',
+    [ChainId.EthereumClassicMainnet]: 'https://blockscout.com/etc/mainnet/api',
   };
 
   return apiUrls[chainId];

@@ -93,9 +93,9 @@ const fixtures = [
   ['Horizen Gobi', '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32'],
   ['PulseChain Testnet', '0xc068aEAdc48427fde985866DAa3e52D4d63935C3'],
   ['Gather Testnet', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
-  ['Shimmer Testnet', '0x6e18ACee6fa8EF7Daf13D32B2424152662c9e07a'],
-  ['ZetaChain Athens', '0xdE3453E7006EA93172f0A20a1f7bF90fA52Ad601'],
-  ['Mantle Testnet', '0xe84A9ca2327f80C7374cba01897264E2545366d1'],
+  ['Shimmer Testnet', '0xecaF55B79fdCf39EF23715cD8dE539C8E58e9119'],
+  ['ZetaChain Athens', '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131'],
+  ['Mantle Testnet', '0xa1E86151382Ec8B34821444FECC10f7D054EdE6E'],
 ];
 
 describe('Chain Support', () => {
