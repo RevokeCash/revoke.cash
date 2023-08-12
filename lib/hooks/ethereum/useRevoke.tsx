@@ -104,7 +104,7 @@ const throwIfExcessiveGas = (allowance: Pick<AllowanceData, 'chainId' | 'contrac
     ChainId.ArbitrumNova,
   ];
 
-  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(allowance.chainId) ? 10_000_000 : 1_000_000;
+  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(allowance.chainId) ? 10_000_000 : 500_000;
 
   // TODO: Translate this error message
   if (estimatedGas.gt(EXCESSIVE_GAS)) {
