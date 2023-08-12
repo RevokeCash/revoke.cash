@@ -16,7 +16,7 @@ Because of the gas fees involved, many applications have opted to ask for unlimi
 
 EIP2612 is an extension of the ERC20 token standard, which means that ERC20 tokens can choose to implement this additional functionality, but most tokens do not support it. Permit signatures are based on the [EIP712](https://eips.ethereum.org/EIPS/eip-712) standard, which defines a standardised way to sign structured data. The data that you have to sign for Permit signatures contains the same information as for granting onchain approvals: the authorised spender address and amount of tokens.
 
-![Permit Approve USDC](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit.png)
+![Permit Approve USDC on Etherscan](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit.png)
 
 Then this data and the corresponding signature can be passed into the token's `permit()` function, which checks that the signature approval and "activates" the approval onchain, after which it is the same as a regular onchain approval. While this kind of signature needs to be "activated" onchain, the onchain activation can be combined with the transaction for which you need the approval, so you don't need to send a separate approval transaction.
 
@@ -32,6 +32,8 @@ As mentioned above, the main problem that Permit signatures solve is that you ca
 
 While Permit signatures offer some important benefits, they also have some drawbacks. One drawback is that they are not supported by most tokens, so you can't rely on them being available. Because of their limited support in ERC20 tokens, they are also not supported by many smart contract applications. For smart contracts to support Permit signatures, they need to specifically implement this support, which adds additional friction for developers.
 
+![Permit Approve USDC MetaMask Popup](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-request.png)
+
 Because Permit signatures are offchain signatures, they are also often used by scammers to trick users into granting approvals. Many wallets, such as MetaMask, now display a warning when you sign an onchain approval, but for Permit signatures, these kinds of warnings are absent. So it may look like you're simply signing into a website, but you're actually granting an approval.
 
 ## Cancelling Permit Signatures
@@ -40,6 +42,6 @@ If you suspect you may have signed a Permit signature on a scam website, you may
 
 If you want to try cancelling a potential scam signature, you can do so on the _Signatures_ tab on your account page.
 
-![Permit Signatures](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-signatures.png)
+![Permit Signatures on Revoke.cash](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-signatures.png)
 
 One important thing to note once again is that Permit signatures are offchain, which means that a platform like Revoke.cash can never determine which signatures you've signed. So everything you see on the _Signatures_ tab on Revoke.cash is only a _potential_ signature, and you should only attempt to cancel them if you are very sure that you signed a scam Permit signature. Cancelling signatures needlessly is not dangerous, but it is a waste of gas.
