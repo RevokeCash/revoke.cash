@@ -62,6 +62,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.Shiden,
   ChainId.CronosMainnet,
   ChainId.CronosTestnet,
+  ChainId.Zora,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -152,6 +153,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Shiden,
   ChainId.FlareMainnet,
   ChainId.Palm,
+  ChainId.Zora,
   ChainId.HorizenEON,
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
@@ -380,7 +382,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.CronosMainnet]: 'https://node.croswap.com/rpc',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
     [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
-    [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
+    [ChainId.CoreBlockchainMainnet]: 'https://rpc.coredao.org',
     [ChainId.Base]: 'https://mainnet.base.org',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
     [ChainId.Linea]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
@@ -512,6 +514,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.DogechainMainnet]: '/assets/images/vendor/chains/dogechain.jpg',
     [ChainId.Mantle]: '/assets/images/vendor/chains/mantle.svg',
     [ChainId.MantleTestnet]: '/assets/images/vendor/chains/mantle.svg',
+    [ChainId.Zora]: '/assets/images/vendor/chains/zora.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -645,6 +648,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.Base]: 'https://api.basescan.org/api',
     [ChainId.BaseGoerliTestnet]: 'https://api-goerli.basescan.org/api',
     [ChainId.EthereumClassicMainnet]: 'https://blockscout.com/etc/mainnet/api',
+    [ChainId.Zora]: 'https://explorer.zora.energy/api',
   };
 
   return apiUrls[chainId];
