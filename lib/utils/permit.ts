@@ -1,6 +1,7 @@
 import { signERC2612Permit } from 'eth-permit';
 import { Contract, Signer, utils } from 'ethers';
 import { DAI_PERMIT } from 'lib/abis';
+import { throwIfExcessiveGas } from './allowances';
 import { track } from './analytics';
 import { signDaiPermit } from './eth-permit';
 import { unpackResult } from './promises';
@@ -25,7 +26,12 @@ export const permit = async (signer: Signer, contract: Contract, spender: string
   }
 
   const { deadline, v, r, s } = await signERC2612Permit(signer, domain, address, spender, value);
-  return contract.functions.permit(address, spender, value, deadline, v, r, s);
+
+  const estimatedGas = await contract.estimateGas.permit(address, spender, value, deadline, v, r, s, { from: address });
+  throwIfExcessiveGas({ chainId: domain.chainId, contract }, estimatedGas);
+
+  const writeContract = new Contract(contract.address, contract.interface, signer);
+  return writeContract.functions.permit(address, spender, value, deadline, v, r, s);
 };
 
 export const getPermitDomain = async (contract: Contract) => {
