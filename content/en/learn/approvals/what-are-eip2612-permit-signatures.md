@@ -1,5 +1,5 @@
 ---
-title: What Are EIP2612 Permit Signatures?
+title: What Are Permit Signatures?
 description: Permit Signatures are a way to grant approvals through gasless signatures. This has some important benefits, but also some drawbacks.
 translator: <Your Name Here (or remove)>
 ---

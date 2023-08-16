@@ -1,6 +1,6 @@
 ---
 title: What Is Permit2?
-description: Permit2 is a system that was developed by the Uniswap team to enable gasless approvals for every token. Learn more about Permit2.
+description: Permit2 is a system that was developed by the Uniswap team to enable gasless approvals for every token. This brings benefits but also risks.
 translator: <Your Name Here (or remove)>
 ---
 
