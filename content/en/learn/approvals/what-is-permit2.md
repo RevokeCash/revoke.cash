@@ -28,7 +28,7 @@ While Permit2 does have important benefits it is also important to note that it 
 
 ![Permit2 Batch MetaMask Popup](/assets/images/learn/approvals/what-is-permit2/permit-batch.png)
 
-The Permit2 system is very flexible and allows for granting approvals for multiple tokens at once, to multiple smart contracts at once. Because of this flexibility, it is harder for users to understand what they are approving. This can be abused by phishing websites to trick users into granting approvals that they don't understand.
+The Permit2 system is very flexible and allows for granting approvals for multiple tokens at once. Because of this flexibility, it is harder for users to understand what they are approving. This can be abused by phishing websites to trick users into granting approvals that they don't understand.
 
 Besides these added risks for users, there is also added friction for application developers. It is more work to integrate with Permit2 than to use regular approvals or even EIP2612 Permit signatures. This drawback is mitigated by the fact that Permit2 does support every token, so the effort may be easier to justify than for EIP2612 Permit signatures.
 
