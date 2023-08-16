@@ -14,7 +14,9 @@ const ConnectedLabel = ({ address }: Props) => {
   const { address: account } = useAccount();
 
   const classes = twMerge(
-    address === account ? 'bg-green-400 text-zinc-900' : 'bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100'
+    address === account
+      ? 'bg-green-400 text-zinc-900'
+      : 'bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100',
   );
 
   // Add placeholder label to prevent layout shift

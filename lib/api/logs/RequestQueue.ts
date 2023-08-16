@@ -9,7 +9,11 @@ export class RequestQueue {
   pQueue: PQueue;
   upstashQueue?: Ratelimit;
 
-  constructor(public identifier: string, public rateLimit: RateLimit, private preferredQueue?: 'upstash' | 'p-queue') {
+  constructor(
+    public identifier: string,
+    public rateLimit: RateLimit,
+    private preferredQueue?: 'upstash' | 'p-queue',
+  ) {
     this.pQueue = new PQueue(rateLimit);
     this.upstashQueue =
       process.env.UPSTASH_REDIS_REST_URL &&

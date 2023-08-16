@@ -147,7 +147,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
     slugs.map((slug) => ({
       params: { slug },
       locale,
-    }))
+    })),
   );
 
   return {

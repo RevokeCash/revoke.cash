@@ -18,7 +18,7 @@ const AddressNavigationTab = ({ name, href }: Props) => {
     'whitespace-nowrap border-b-2 pb-1 text-sm font-medium border-transparent',
     'text-zinc-500 visited:text-zinc-500 dark:text-zinc-400 dark:visited:text-zinc-400',
     selected && 'border-black text-black visited:text-black dark:border-white dark:text-white dark:visited:text-white',
-    !selected && 'hover:border-zinc-300 hover:text-zinc-700 dark:hover:border-zinc-400 dark:hover:text-zinc-300'
+    !selected && 'hover:border-zinc-300 hover:text-zinc-700 dark:hover:border-zinc-400 dark:hover:text-zinc-300',
   );
 
   const onClick = () => {

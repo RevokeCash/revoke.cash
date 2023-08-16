@@ -21,7 +21,7 @@ const Prose = ({ children, className, ...props }: Props) => {
     'prose-li:-my-2 marker:prose-li:text-zinc-600 dark:marker:prose-li:text-zinc-400',
     'prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:bg-zinc-200 dark:prose-code:bg-zinc-800 prose-code:font-normal',
     'prose-code:before:content-none prose-code:after:content-none',
-    className
+    className,
   );
 
   return (

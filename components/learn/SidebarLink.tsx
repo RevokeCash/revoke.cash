@@ -15,7 +15,7 @@ const SidebarLink = ({ title, href }: Props) => {
       <Href
         href={href}
         className={twMerge(
-          router.asPath.startsWith(href) && 'text-black visited:text-black dark:text-white dark:visited:text-white'
+          router.asPath.startsWith(href) && 'text-black visited:text-black dark:text-white dark:visited:text-white',
         )}
         underline="hover"
         router

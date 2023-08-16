@@ -24,7 +24,7 @@ export const getTokenData = async (
   owner: string,
   transfersFrom: Log[],
   transfersTo: Log[],
-  chainId: number
+  chainId: number,
 ): Promise<BaseTokenData> => {
   if (isErc721Contract(contract)) {
     return getErc721TokenData(contract, owner, transfersFrom, transfersTo, chainId);
@@ -57,7 +57,7 @@ export const getErc721TokenData = async (
   owner: string,
   transfersFrom: Log[],
   transfersTo: Log[],
-  chainId: number
+  chainId: number,
 ): Promise<BaseTokenData> => {
   const tokenData = await getTokenDataFromMapping(contract, chainId);
   const icon = tokenData?.logoURI;

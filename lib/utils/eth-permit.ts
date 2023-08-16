@@ -56,7 +56,7 @@ export const signDaiPermit = async (
   spender: string,
   allowed: boolean = true,
   expiry?: number,
-  nonce?: number
+  nonce?: number,
 ): Promise<DaiPermitMessage & RSV> => {
   const tokenAddress = domain.verifyingContract;
 

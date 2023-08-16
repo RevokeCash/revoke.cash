@@ -27,7 +27,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const classes = twMerge(
     !allowance.spender && 'text-zinc-500 dark:text-zinc-400',
     'flex items-center gap-2',
-    ['ru', 'es'].includes(lang) ? 'w-48' : 'w-40'
+    ['ru', 'es'].includes(lang) ? 'w-48' : 'w-40',
   );
 
   if (editing) {

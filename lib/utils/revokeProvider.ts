@@ -5,7 +5,7 @@ import type { Chain } from 'wagmi/chains';
 import { getChainRpcUrl } from './chains';
 
 export const createMulticallProviderProxy = (
-  multicallProvider: multicall.MulticallProvider
+  multicallProvider: multicall.MulticallProvider,
 ): multicall.MulticallProvider => {
   const handler = {
     get: (target: any, prop: string) => {

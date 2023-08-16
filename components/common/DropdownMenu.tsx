@@ -14,7 +14,7 @@ const DropdownMenu = ({ menuButton, children, style, align }: Props) => {
   const classes = {
     items: twMerge(
       align === 'left' ? 'origin-top-left left-0' : 'origin-top-right right-0',
-      'absolute mt-2 rounded-lg shadow-lg bg-white border border-black dark:border-white overflow-hidden z-10 flex flex-col focus:outline-none shrink-0'
+      'absolute mt-2 rounded-lg shadow-lg bg-white border border-black dark:border-white overflow-hidden z-10 flex flex-col focus:outline-none shrink-0',
     ),
     button: twMerge('flex items-center', style === 'nav' ? 'font-medium text-lg' : 'pl-3 pr-2 font-normal'),
   };

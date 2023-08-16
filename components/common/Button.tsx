@@ -64,7 +64,7 @@ const Button = ({
     classMapping[align ?? 'center'],
     size !== 'none' && classMapping[size],
     loading && 'flex gap-1',
-    className
+    className,
   );
 
   // Note: This code is repeated in Href.tsx for styling reasons

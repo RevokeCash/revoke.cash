@@ -12,14 +12,14 @@ interface Props {
 
 const PlaceholderIcon = (
   { size, className, color, border, square, children }: Props,
-  ref: ForwardedRef<HTMLDivElement>
+  ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const classes = twMerge(
     'aspect-square rounded-full',
     color ?? 'bg-zinc-300 dark:bg-zinc-600',
     square ? 'rounded-lg' : 'rounded-full',
     border && 'border border-black dark:border-white',
-    className
+    className,
   );
 
   return (

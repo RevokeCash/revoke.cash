@@ -61,7 +61,7 @@ export class EtherscanEventGetter implements EventGetter {
 
 const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
-    typeof topic === 'string' ? topic.toLowerCase() : topic
+    typeof topic === 'string' ? topic.toLowerCase() : topic,
   );
 
   const query = {

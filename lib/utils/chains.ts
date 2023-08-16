@@ -655,7 +655,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
 };
 
 export const getChainEtherscanPlatformNames = (
-  chainId: number
+  chainId: number,
 ): { platform: string; subPlatform?: string } | undefined => {
   const apiUrl = getChainApiUrl(chainId);
   if (!apiUrl) return undefined;

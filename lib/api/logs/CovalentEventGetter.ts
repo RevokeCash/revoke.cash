@@ -8,7 +8,10 @@ import { RequestQueue } from './RequestQueue';
 export class CovalentEventGetter implements EventGetter {
   private queue: RequestQueue;
 
-  constructor(private apiKey: string, isPremium: boolean) {
+  constructor(
+    private apiKey: string,
+    isPremium: boolean,
+  ) {
     // Covalent's premium API has a rate limit of 50 (normal = 5) requests per second, which we underestimate to be safe
     this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
   }
@@ -18,7 +21,7 @@ export class CovalentEventGetter implements EventGetter {
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
     const results = await Promise.all(
-      blockRangeChunks.map(([from, to]) => this.getEventsInChunk(chainId, from, to, topics))
+      blockRangeChunks.map(([from, to]) => this.getEventsInChunk(chainId, from, to, topics)),
     );
 
     return filterLogs(results.flat(), filter);
@@ -93,6 +96,6 @@ const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number):
             [from, from + chunkSize - 1],
             [from + chunkSize, to],
           ],
-          chunkSize
-        )
+          chunkSize,
+        ),
   );

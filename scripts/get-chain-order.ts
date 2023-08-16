@@ -8,7 +8,7 @@ const getChainOrder = async () => {
       (chain) =>
         chain.chainId === chainId ||
         chain.name === getChainName(chainId) ||
-        chain.gecko_id === getChainName(chainId).toLowerCase()
+        chain.gecko_id === getChainName(chainId).toLowerCase(),
     );
     return [getChainName(chainId), chainId, Math.round(chainData?.tvl ?? 0)] as const;
   });

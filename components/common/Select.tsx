@@ -41,7 +41,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
             state.isFocused && '[&:has(:focus-visible)]:ring-1 [&:has(:focus-visible)]:ring-current',
             state.menuIsOpen && '[&:has(:focus-visible)]:ring-0',
             'flex items-center box-border ',
-            controlClassMapping[props.size || 'md']
+            controlClassMapping[props.size || 'md'],
           ),
       }}
       styles={{

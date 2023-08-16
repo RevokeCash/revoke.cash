@@ -11,7 +11,7 @@ export const rateLimiter = rateLimit({ windowMs: 1 * 1000, max: 20 });
 
 export const covalentEventGetter = new CovalentEventGetter(
   process.env.COVALENT_API_KEY,
-  process.env.COVALENT_IS_PREMIUM === 'true'
+  process.env.COVALENT_IS_PREMIUM === 'true',
 );
 export const etherscanEventGetter = new EtherscanEventGetter();
 export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS));

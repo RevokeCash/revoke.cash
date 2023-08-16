@@ -38,7 +38,7 @@ export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://a
 export const getSpenderData = async (
   address: string,
   chainId?: number,
-  openseaProxyAddress?: string
+  openseaProxyAddress?: string,
 ): Promise<SpenderData | null> => {
   if (!chainId) return null;
   if (!address) return null;
@@ -67,7 +67,7 @@ const getSpenderDataFromInternal = async (address: string, chainId: number): Pro
 const getSpenderDataFromEthereumList = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
     const contractRes = await axios.get(
-      `${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${utils.getAddress(address)}.json`
+      `${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${utils.getAddress(address)}.json`,
     );
 
     try {

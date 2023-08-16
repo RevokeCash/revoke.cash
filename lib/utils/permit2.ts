@@ -17,7 +17,7 @@ export const getPermit2AllowancesFromApprovals = async (contract: Contract, owne
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals, [1, 2, 3]);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getPermit2AllowanceFromApproval(contract, owner, approval))
+    deduplicatedApprovals.map((approval) => getPermit2AllowanceFromApproval(contract, owner, approval)),
   );
 
   return allowances;
@@ -50,7 +50,7 @@ export const permit2Approve = async (
   tokenContract: Contract,
   spender: string,
   amount: BigNumberish,
-  expiration: BigNumberish
+  expiration: BigNumberish,
 ) => {
   const permit2Contract = new Contract(PERMIT2_ADDRESS, PERMIT2, tokenContract.signer);
   return permit2Contract.functions.approve(tokenContract.address, spender, amount, expiration);

@@ -18,7 +18,7 @@ const testCovalentRateLimits = async (chainId: number, rps: number) => {
     console.log(i);
     return await axios.get(
       `https://api.covalenthq.com/v1/${chainId}/events/topics/0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef/`,
-      { params, auth }
+      { params, auth },
     );
   };
 

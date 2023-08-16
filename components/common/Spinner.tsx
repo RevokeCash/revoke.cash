@@ -8,7 +8,7 @@ const Spinner = ({ className }: Props) => {
   const classes = twMerge(
     className ?? 'w-4 h-4',
     'animate-spin-fast mx-1', // Compensate for formatting with other HeroIcons
-    'loader'
+    'loader',
   );
 
   return (

@@ -23,7 +23,7 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
     'aspect-square object-cover bg-white shrink-0',
     square ? 'rounded-lg' : 'rounded-full',
     border && 'border border-black dark:border-white',
-    className
+    className,
   );
 
   if (!src.startsWith('/')) {

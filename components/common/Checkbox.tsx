@@ -13,7 +13,7 @@ const Checkbox = ({ checked }: Props) => {
   const classes = twMerge(
     'w-4 h-4 border border-black dark:border-white flex justify-center rounded items-center',
     darkMode && checked && 'bg-white text-black',
-    !darkMode && checked && 'bg-black text-white'
+    !darkMode && checked && 'bg-black text-white',
   );
 
   return <div className={classes}>{checked && <Check />}</div>;

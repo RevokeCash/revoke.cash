@@ -59,7 +59,7 @@ export const useMarketplaces = (chainId: number) => {
 
   const marketplaces = useMemo(
     () => allMarketplaces.filter((marketplace) => marketplace.chains.includes(chainId)),
-    [chainId]
+    [chainId],
   );
 
   return marketplaces;

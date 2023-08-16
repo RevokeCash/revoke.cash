@@ -5,7 +5,7 @@ import { deduplicateArray } from '.';
 export const updateTableFilters = (
   table: Table<AllowanceData>,
   newFilters: ColumnFiltersState,
-  ignoreIds: string[] = []
+  ignoreIds: string[] = [],
 ) => {
   table.setColumnFilters((oldFilters) => {
     const keepOldFilters = oldFilters.filter((filter) => ignoreIds.includes(filter.id));

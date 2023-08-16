@@ -37,9 +37,7 @@ const SpenderCell = ({ allowance }: Props) => {
     <div>
       {t('address:tooltips.involved_in_exploits')}
       <ul className="list-disc list-inside">
-        {spenderData?.exploits?.map((exploit) => (
-          <li key={exploit}>{exploit}</li>
-        ))}
+        {spenderData?.exploits?.map((exploit) => <li key={exploit}>{exploit}</li>)}
       </ul>
     </div>
   );

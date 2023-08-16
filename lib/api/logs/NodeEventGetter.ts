@@ -11,7 +11,7 @@ export class NodeEventGetter implements EventGetter {
       Object.entries(nodeUrls).map(([chainId, nodeUrl]) => [
         Number(chainId),
         new providers.JsonRpcProvider(nodeUrl as string),
-      ])
+      ]),
     );
   }
 

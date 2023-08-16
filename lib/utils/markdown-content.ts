@@ -10,7 +10,7 @@ const walk = require('walkdir');
 export const readContentFile = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn'
+  directory: string = 'learn',
 ): RawContentFile | null => {
   try {
     const contentDirectory = join(process.cwd(), 'content');
@@ -32,7 +32,7 @@ export const readContentFile = (
 export const readAndParseContentFile = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn'
+  directory: string = 'learn',
 ): ContentFile | null => {
   const { content: rawContent, language } = readContentFile(slug, locale, directory) ?? {};
   if (!rawContent) return null;
@@ -52,7 +52,7 @@ export const readAndParseContentFile = (
 export const getSidebar = async (
   locale: string,
   directory: string = 'learn',
-  extended: boolean = false
+  extended: boolean = false,
 ): Promise<ISidebarEntry[] | null> => {
   const t = await getT(locale, directory);
 
@@ -100,7 +100,7 @@ const getSidebarEntry = (
   slug: string | string[],
   locale: string,
   directory: string = 'learn',
-  extended: boolean = false
+  extended: boolean = false,
 ): ISidebarEntry => {
   const { meta } = readAndParseContentFile(slug, locale, directory) ?? {};
   if (!meta) return null;
@@ -131,7 +131,7 @@ export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {
 export const getTranslationUrl = async (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn'
+  directory: string = 'learn',
 ): Promise<string | null> => {
   if (!process.env.LOCALAZY_API_KEY || locale === 'en') return null;
 

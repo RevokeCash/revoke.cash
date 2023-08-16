@@ -16,9 +16,9 @@ const lintChecksums = async (dataPath: string) => {
           const checksummedAddress = utils.getAddress(address.toLowerCase());
 
           await fs.rename(path.join(chainPath, file), path.join(chainPath, `${checksummedAddress}.json`));
-        })
+        }),
       );
-    })
+    }),
   );
 };
 

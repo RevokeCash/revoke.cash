@@ -18,7 +18,7 @@ const SidebarSection = ({ title, href, path, children }: Props) => {
     'text-lg font-bold',
     isMounted &&
       router.asPath.startsWith(path) &&
-      'text-black visited:text-black dark:text-white dark:visited:text-white'
+      'text-black visited:text-black dark:text-white dark:visited:text-white',
   );
 
   return (

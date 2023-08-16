@@ -28,7 +28,7 @@ export const getAllowancesFromEvents = async (
   owner: string,
   events: AddressEvents,
   readProvider: providers.Provider,
-  chainId: number
+  chainId: number,
 ): Promise<AllowanceData[]> => {
   // We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
   const allEvents = [...events.approvalForAll, ...events.approval, ...events.transferTo];
@@ -52,7 +52,7 @@ export const getAllowancesFromEvents = async (
           approvalsForAll,
           permit2Approval,
           owner,
-          tokenData
+          tokenData,
         );
 
         if (allowances.length === 0) {
@@ -67,7 +67,7 @@ export const getAllowancesFromEvents = async (
         // we do not include it in the token list.
         return [];
       }
-    })
+    }),
   );
 
   // Filter out any spam tokens and zero-balance + zero-allowance tokens
@@ -85,13 +85,13 @@ export const getAllowancesForToken = async (
   approvalForAllEvents: Log[],
   permit2ApprovalEvents: Log[],
   userAddress: string,
-  tokenData: BaseTokenData
+  tokenData: BaseTokenData,
 ): Promise<BaseAllowanceData[]> => {
   if (isErc721Contract(contract)) {
     const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(
       contract,
       userAddress,
-      approvalForAllEvents
+      approvalForAllEvents,
     );
     const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, approvalEvents);
 
@@ -115,7 +115,7 @@ export const getErc20AllowancesFromApprovals = async (contract: Contract, owner:
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval))
+    deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval)),
   );
 
   return allowances;
@@ -146,7 +146,7 @@ export const getLimitedErc721AllowancesFromApprovals = async (contract: Contract
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getLimitedErc721AllowanceFromApproval(contract, approval))
+    deduplicatedApprovals.map((approval) => getLimitedErc721AllowanceFromApproval(contract, approval)),
   );
 
   return allowances;
@@ -189,13 +189,13 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
 export const getUnlimitedErc721AllowancesFromApprovals = async (
   contract: Contract,
   owner: string,
-  approvals: Log[]
+  approvals: Log[],
 ) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, owner, approval))
+    deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, owner, approval)),
   );
 
   return allowances;
@@ -253,7 +253,7 @@ export const getAllowanceI18nValues = (allowance: AllowanceData) => {
 export const generatePatchedAllowanceEvents = (
   userAddress: string,
   openseaProxyAddress?: string,
-  allEvents: Log[] = []
+  allEvents: Log[] = [],
 ): Log[] => {
   if (!userAddress || !openseaProxyAddress) return [];
 
@@ -290,7 +290,7 @@ export const getAllowanceKey = (allowance: AllowanceData) => {
 
 export const throwIfExcessiveGas = (
   allowance: Pick<AllowanceData, 'chainId' | 'contract'>,
-  estimatedGas: BigNumber
+  estimatedGas: BigNumber,
 ) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const WEIRD_NETWORKS = [
@@ -316,7 +316,7 @@ export const throwIfExcessiveGas = (
     });
 
     throw new Error(
-      'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.'
+      'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
     );
   }
 };

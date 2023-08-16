@@ -14,7 +14,7 @@ interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
 
 const Href = (
   { href, children, external, className, router, underline, html, ...props }: Props,
-  ref: ForwardedRef<HTMLAnchorElement>
+  ref: ForwardedRef<HTMLAnchorElement>,
 ) => {
   const styleMapping = {
     html: 'text-blue-700 visited:text-fuchsia-800 dark:text-blue-400 dark:visited:text-fuchsia-600',
@@ -31,7 +31,7 @@ const Href = (
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
     styleMapping[html ? 'html' : 'inherit'],
     underlineMapping[underline ?? 'always'],
-    className
+    className,
   );
 
   if (router) {
