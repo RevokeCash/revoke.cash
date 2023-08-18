@@ -83,6 +83,7 @@ const updateNftTokenlist = async () => {
       currentVolume = volume?.allTime;
 
       if (currentVolume < 100 || !image || !primaryContract || !name) return undefined;
+      if (name === 'Slokh') return undefined; // For some reason 'Slokh' is returned for certain incorrect NFTs
 
       const address = getAddress(primaryContract);
       const symbol = symbolOverrides[address] ?? name;
