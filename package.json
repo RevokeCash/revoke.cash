@@ -94,7 +94,7 @@
     "typescript": "^5.0.3",
     "walkdir": "^0.4.1"
   },
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.6.2",
   "lint-staged": {
     "*": "prettier -u --write"
   }
