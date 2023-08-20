@@ -51,7 +51,10 @@ export const DropdownMenuItem = (props: Omit<ButtonProps, 'style' | 'size'>) => 
           style="secondary"
           size="menu"
           {...props}
-          className={twMerge(props.className, active ? 'bg-zinc-200 dark:bg-zinc-800' : 'bg-white dark:bg-black')}
+          className={twMerge(
+            props.className,
+            active ? 'bg-zinc-200 dark:bg-zinc-800' : 'bg-white dark:bg-black hover:bg-white hover:dark:bg-black',
+          )}
         />
       )}
     </Menu.Item>
