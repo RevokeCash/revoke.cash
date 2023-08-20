@@ -1,5 +1,4 @@
-import Button from 'components/common/Button';
-import DropdownMenu from 'components/common/DropdownMenu';
+import DropdownMenu, { DropdownMenuItem } from 'components/common/DropdownMenu';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { shortenAddress } from 'lib/utils';
 import useTranslation from 'next-translate/useTranslation';
@@ -23,25 +22,10 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
     <div className="flex whitespace-nowrap">
       {account ? (
         <DropdownMenu menuButton={domainName ?? shortenAddress(account, 4)}>
-          <Button
-            style="secondary"
-            size="md"
-            className="rounded-none border-none font-normal"
-            align="left"
-            href={`/address/${account}`}
-            router
-          >
+          <DropdownMenuItem href={`/address/${account}`} router>
             {t('common:buttons.my_allowances')}
-          </Button>
-          <Button
-            style="secondary"
-            size="md"
-            className="rounded-none border-none font-normal"
-            align="left"
-            onClick={() => disconnect()}
-          >
-            {t('common:buttons.disconnect')}
-          </Button>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => disconnect()}>{t('common:buttons.disconnect')}</DropdownMenuItem>
         </DropdownMenu>
       ) : (
         <ConnectButton size={size} style={style} className={className} redirect />

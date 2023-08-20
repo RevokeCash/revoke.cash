@@ -1,6 +1,6 @@
 import { Menu } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
-import Button from './Button';
+import Button, { Props as ButtonProps } from './Button';
 import Chevron from './Chevron';
 
 interface Props {
@@ -20,21 +20,41 @@ const DropdownMenu = ({ menuButton, children, style, align }: Props) => {
   };
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black rounded-lg">
-          <Button
-            style={style === 'nav' ? 'none' : 'secondary'}
-            size={style === 'nav' ? 'none' : 'md'}
-            className={classes.button}
-            asDiv
-          >
-            {menuButton}
-            <Chevron className="w-5 h-5 fill-black dark:fill-white" />
-          </Button>
-        </Menu.Button>
-      </div>
-      <Menu.Items className={classes.items}>{children}</Menu.Items>
+      <Menu.Button
+        className={twMerge(
+          'focus-visible:outline-none focus-visible:ring-black focus-visible:dark:ring-white',
+          style === 'nav' ? 'focus-visible:ring-2 rounded' : 'focus-visible:ring-1 rounded-lg',
+        )}
+      >
+        <Button
+          style={style === 'nav' ? 'none' : 'secondary'}
+          size={style === 'nav' ? 'none' : 'md'}
+          className={classes.button}
+          asDiv
+        >
+          {menuButton}
+          <Chevron className="w-5 h-5 fill-black dark:fill-white" />
+        </Button>
+      </Menu.Button>
+      <Menu.Items className={classes.items} unmount={false}>
+        {children}
+      </Menu.Items>
     </Menu>
+  );
+};
+
+export const DropdownMenuItem = (props: Omit<ButtonProps, 'style' | 'size'>) => {
+  return (
+    <Menu.Item>
+      {({ active }) => (
+        <Button
+          style="secondary"
+          size="menu"
+          {...props}
+          className={twMerge(props.className, active ? 'bg-zinc-200 dark:bg-zinc-800' : 'bg-white dark:bg-black')}
+        />
+      )}
+    </Menu.Item>
   );
 };
 

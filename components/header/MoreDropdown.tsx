@@ -1,5 +1,5 @@
 import Button from 'components/common/Button';
-import DropdownMenu from 'components/common/DropdownMenu';
+import DropdownMenu, { DropdownMenuItem } from 'components/common/DropdownMenu';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { twMerge } from 'tailwind-merge';
@@ -17,15 +17,15 @@ const MoreDropdown = () => {
 
   return (
     <DropdownMenu menuButton={menuButton} style="nav" align="left">
-      <Button size="menu" style="secondary" href="/learn" className="text-lg" router>
+      <DropdownMenuItem href="/learn" router className="text-lg">
         {t('common:nav.learn')}
-      </Button>
-      <Button size="menu" style="secondary" href="/learn/faq" className="text-lg" router>
+      </DropdownMenuItem>
+      <DropdownMenuItem href="/learn/faq" router className="text-lg">
         {t('common:nav.faq')}
-      </Button>
-      <Button size="menu" style="secondary" href="/about" className="text-lg" router>
+      </DropdownMenuItem>
+      <DropdownMenuItem href="/about" router className="text-lg">
         {t('common:nav.about')}
-      </Button>
+      </DropdownMenuItem>
     </DropdownMenu>
   );
 };
