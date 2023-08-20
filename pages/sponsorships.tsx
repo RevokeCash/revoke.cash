@@ -31,7 +31,13 @@ const SponsorshipsPage: NextPage = () => {
               So displaying your banner in the Sponsors section of our landing page will get you valuable exposure.
             </div>
 
-            <Image src="/assets/images/pageviews.png" alt="Revoke.cash Pageview Graph" width="768" height="336" />
+            <Image
+              src="/assets/images/pageviews.png"
+              alt="Revoke.cash Pageview Graph"
+              width="1985"
+              height="736"
+              className="rounded-lg border border-black dark:border-white"
+            />
 
             <div>
               We have three different sponsorship tiers, each of which gets to display their banner on our landing page.

@@ -36,6 +36,7 @@ const AboutPage: NextPage = () => {
                 height="1000"
                 width="1500"
                 className="rounded-2xl border border-black dark:border-white"
+                priority
               />
             </Href>
             <figcaption className="text-base leading-none text-zinc-600 dark:text-zinc-400">

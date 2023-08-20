@@ -76,6 +76,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
                   width={712}
                   height={784}
                   property="image"
+                  priority
                 />
               </div>
               <div>
@@ -85,6 +86,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
                   width={712}
                   height={784}
                   property="image"
+                  priority
                 />
               </div>
             </div>

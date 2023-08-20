@@ -51,6 +51,7 @@ const ExtensionPage: NextPage = () => {
               alt="Extension: Unexpected Allowance"
               height="500"
               width="800"
+              priority
             />
           </div>
 

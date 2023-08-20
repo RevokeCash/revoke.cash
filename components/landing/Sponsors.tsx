@@ -14,7 +14,7 @@ const Sponsors = () => {
         <LandingParagraph>
           <Trans
             i18nKey="landing:sponsors.description"
-            components={[<Href href="/sponsorships" html underline="hover" router />]}
+            components={[<Href href="/sponsorships" html underline="hover" router className="font-medium" />]}
           />
         </LandingParagraph>
       </div>
