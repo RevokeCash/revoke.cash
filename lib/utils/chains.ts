@@ -311,10 +311,12 @@ export const getChainSlug = (chainId: number): string => {
   return chainName.toLowerCase().replace(/\s/g, '-');
 };
 
+const REVERSE_CHAIN_SLUGS: Record<string, number> = Object.fromEntries(
+  SUPPORTED_CHAINS.map((chainId) => [getChainSlug(chainId), chainId]),
+);
+
 export const getChainIdFromSlug = (slug: string): number | undefined => {
-  // Note: this doesn't have to be efficient, since it's only used in getStaticProps
-  const chainId = Object.keys(chains.all()).find((chainId) => getChainSlug(Number(chainId)) === slug);
-  return Number(chainId);
+  return REVERSE_CHAIN_SLUGS[slug];
 };
 
 export const getChainExplorerUrl = (chainId: number): string | undefined => {

@@ -1,5 +1,6 @@
 import Button from 'components/common/Button';
 import ChainSelect from 'components/common/ChainSelect';
+import ChainSelectHref from 'components/common/ChainSelectHref';
 import CopyButton from 'components/common/CopyButton';
 import Prose from 'components/common/Prose';
 import ConnectButton from 'components/header/ConnectButton';
@@ -53,13 +54,12 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
         <Prose vocab="https://schema.org/" typeof="HowTo">
           <h1 property="name">{meta.title}</h1>
           <meta property="description" content={meta.description} />
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 my-4">
+          <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
             <p className="m-0">{t('learn:add_network.select_network')}</p>
             <div className="not-prose shrink-0">
-              <ChainSelect
+              <ChainSelectHref
                 selected={chainId}
-                onSelect={(selected) => router.push(`/learn/wallets/add-network/${getChainSlug(selected)}`)}
-                showNames
+                getUrl={(chainId) => `/learn/wallets/add-network/${getChainSlug(chainId)}`}
               />
             </div>
           </div>

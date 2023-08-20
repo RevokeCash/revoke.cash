@@ -22,7 +22,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   const colors = {
     primary: 'black', // black
     secondary: 'white', // white
-    lightest: '#f4f4f5', // zinc-100
+    lightest: '#e4e4e7', // zinc-200
     light: '#d4d4d8', // zinc-300
     dark: '#71717a', // zinc-500
     darkest: '#27272a', // zinc-800
