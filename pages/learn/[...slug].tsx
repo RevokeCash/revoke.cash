@@ -14,6 +14,7 @@ interface Props {
   translationUrl: string;
 }
 
+// TODO: Add Article JSON-LD
 const LearnDocumentPage: NextPage<Props> = ({ meta, content, sidebar, slug, translationUrl }) => {
   return (
     <>

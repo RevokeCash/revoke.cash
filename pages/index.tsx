@@ -6,7 +6,7 @@ import WhyRevokeCash from 'components/landing/WhyRevokeCash';
 import LandingLayout from 'layouts/LandingLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import type { NextPage } from 'next';
-import { NextSeo } from 'next-seo';
+import { LogoJsonLd, NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 
 const LandingPage: NextPage = () => {
@@ -15,6 +15,7 @@ const LandingPage: NextPage = () => {
   return (
     <>
       <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
+      <LogoJsonLd logo="https://revoke.cash/assets/images/revoke-icon.svg" url="https://revoke.cash" />
       <LandingLayout>
         <div className="flex flex-col items-center gap-8">
           <HeroSection />

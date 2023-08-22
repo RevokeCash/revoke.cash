@@ -13,7 +13,7 @@ const SponsorshipsPage: NextPage = () => {
       <NextSeo
         {...defaultSEO}
         title="Revoke.cash Sponsorships"
-        description="Sponsor Revoke.cash to help us grow and improve the platform."
+        description="Consider sponsoring Revoke.cash to help us grow and improve the platform. There are three tiers of sponsorships available: Gold, Silver & Bronze."
       />
       <ContentPageLayout>
         <h1>Become a Sponsor</h1>

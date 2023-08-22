@@ -45,6 +45,7 @@ const ChainSelectHref = ({ selected, chainIds, getUrl }: Props) => {
             <DropdownMenuItem
               key={option.chainId}
               href={getUrl(option.chainId)}
+              router
               className={twMerge(
                 'flex items-center gap-1 p-2 h-10',
                 option.chainId === selected && 'bg-zinc-200 dark:bg-zinc-800',

@@ -33,7 +33,7 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     'nova wallet': '/assets/images/vendor/wallets/nova.webp',
     'okx wallet': `${BASE_URL}/okxWallet/okxWallet.svg`,
     opera: '/assets/images/vendor/wallets/opera.svg',
-    phantom: `${BASE_URL}/phantomWallet/phantom.svg`,
+    phantom: `${BASE_URL}/phantomWallet/phantomWallet.svg`,
     // 'ripio portal': 'TODO: Can't find good logo',
     rabby: `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
     'rabby wallet': `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
@@ -53,7 +53,7 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     ledger: `${BASE_URL}/ledgerWallet/ledgerWallet.svg`,
   };
 
-  return mapping[walletNameLowerCase] ?? `${BASE_URL}/injectedWallet/injectedWallet.svg`;
+  return mapping[walletNameLowerCase] ?? `/assets/images/vendor/wallets/injected.svg`;
 };
 
 export const getConnectorName = (connector: Connector): string => {
