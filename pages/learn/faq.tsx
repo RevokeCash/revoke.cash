@@ -28,23 +28,23 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
         <h1 className="text-5xl">{t('faq:title')}</h1>
 
         <dl
-          className="w-full divide-y divide-zinc-200 dark:divide-zinc-800"
+          className="w-full divide-y divide-zinc-200 dark:divide-zinc-800 pr-6 lg:pr-4"
           vocab="https://schema.org/"
           typeof="FAQPage"
         >
-          <FaqItem question={t('faq:questions.whole_wallet_at_risk.question')}>
+          <FaqItem question={t('faq:questions.whole_wallet_at_risk.question')} slug="whole_wallet_at_risk">
             <Trans i18nKey="faq:questions.whole_wallet_at_risk.answer" components={[<span className="italic" />]} />
           </FaqItem>
-          <FaqItem question={t('faq:questions.enough_to_disconnect.question')}>
+          <FaqItem question={t('faq:questions.enough_to_disconnect.question')} slug="enough_to_disconnect">
             <Trans i18nKey="faq:questions.enough_to_disconnect.answer" components={[<span className="italic" />]} />
           </FaqItem>
-          <FaqItem question={t('faq:questions.recover_assets.question')}>
+          <FaqItem question={t('faq:questions.recover_assets.question')} slug="recover_assets">
             <Trans i18nKey="faq:questions.recover_assets.answer" components={[<span className="italic" />]} />
           </FaqItem>
-          <FaqItem question={t('faq:questions.sweeper_bot.question')}>
+          <FaqItem question={t('faq:questions.sweeper_bot.question')} slug="sweeper_bot">
             <Trans i18nKey="faq:questions.sweeper_bot.answer" />
           </FaqItem>
-          <FaqItem question={t('faq:questions.stolen_through_allowances.question')}>
+          <FaqItem question={t('faq:questions.stolen_through_allowances.question')} slug="stolen_through_allowances">
             <div className="flex flex-col items-center gap-2">
               <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
               <div className="flex border border-black">
@@ -57,28 +57,28 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
               </div>
             </div>
           </FaqItem>
-          <FaqItem question={t('faq:questions.hardware_wallets.question')}>
+          <FaqItem question={t('faq:questions.hardware_wallets.question')} slug="hardware_wallets">
             <Trans i18nKey="faq:questions.hardware_wallets.answer" components={[<span className="italic" />]} />
           </FaqItem>
-          <FaqItem question={t('faq:questions.multiple_allowances.question')}>
+          <FaqItem question={t('faq:questions.multiple_allowances.question')} slug="multiple_allowances">
             <Trans i18nKey="faq:questions.multiple_allowances.answer" components={[<span className="italic" />]} />
           </FaqItem>
-          <FaqItem question={t('faq:questions.costs.question')}>
+          <FaqItem question={t('faq:questions.costs.question')} slug="costs">
             <Trans
               i18nKey="faq:questions.costs.answer"
               components={[<Href href="https://gashawk.io" className="font-medium" underline="hover" html external />]}
             />
           </FaqItem>
-          <FaqItem question={t('faq:questions.wallet_mentions_approve.question')}>
+          <FaqItem question={t('faq:questions.wallet_mentions_approve.question')} slug="wallet_mentions_approve">
             <Trans i18nKey="faq:questions.wallet_mentions_approve.answer" />
           </FaqItem>
-          <FaqItem question={t('faq:questions.deposited_tokens.question')}>
+          <FaqItem question={t('faq:questions.deposited_tokens.question')} slug="deposited_tokens">
             <Trans i18nKey="faq:questions.deposited_tokens.answer" />
           </FaqItem>
-          <FaqItem question={t('faq:questions.which_allowances.question')}>
+          <FaqItem question={t('faq:questions.which_allowances.question')} slug="which_allowances">
             <Trans i18nKey="faq:questions.which_allowances.answer" />
           </FaqItem>
-          <FaqItem question={t('faq:questions.which_chains.question')}>
+          <FaqItem question={t('faq:questions.which_chains.question')} slug="which_chains">
             <Trans
               i18nKey="faq:questions.which_chains.answer"
               components={[
@@ -120,7 +120,7 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
               ))}
             </ul>
           </FaqItem>
-          <FaqItem question={t('faq:questions.which_domains.question')}>
+          <FaqItem question={t('faq:questions.which_domains.question')} slug="which_domains">
             <Trans
               i18nKey="faq:questions.which_domains.answer"
               components={[
@@ -130,7 +130,7 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
               ]}
             />
           </FaqItem>
-          <FaqItem question={t('faq:questions.other_question.question')}>
+          <FaqItem question={t('faq:questions.other_question.question')} slug="other_question">
             <Trans
               i18nKey="faq:questions.other_question.answer"
               components={[
