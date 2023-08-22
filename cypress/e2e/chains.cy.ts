@@ -96,7 +96,7 @@ const fixtures = [
   ['Gather Testnet', '0x50c302E717552C1a199cD5a2f304781C03E24804'],
   ['Shimmer Testnet', '0xecaF55B79fdCf39EF23715cD8dE539C8E58e9119'],
   ['ZetaChain Athens', '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131'],
-  ['Mantle Testnet', '0xa1E86151382Ec8B34821444FECC10f7D054EdE6E'],
+  ['Mantle Testnet', '0x868A8Da54f817A1FDf4cE2ba8dBa3ef61e9DE610'],
 ];
 
 describe('Chain Support', () => {
