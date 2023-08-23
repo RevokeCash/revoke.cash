@@ -60,23 +60,24 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
               {t('common:connect_wallet.title')}
             </Dialog.Title>
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center pb-2">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">
               {connectors
                 .filter((connector) => connector.ready)
                 .map((connector) => (
                   <Button
                     style="secondary"
                     size="none"
-                    className="flex flex-col justify-center items-center gap-2 p-2 border border-black rounded-lg w-full sm:w-48"
+                    className="flex justify-start items-center gap-2 p-2 border border-black rounded-lg w-full text-lg"
                     key={connector.id}
                     onClick={() => connectAndRedirect(connector)}
                   >
                     <Logo
                       src={getWalletIcon(getConnectorName(connector))}
                       alt={getConnectorName(connector)}
-                      size={64}
+                      size={48}
                       square
                       border
+                      className="rounded-md"
                     />
                     {getConnectorName(connector)}
                   </Button>

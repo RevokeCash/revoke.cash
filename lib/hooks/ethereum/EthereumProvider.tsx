@@ -56,6 +56,7 @@ export const connectors = [
     options: { debug: false },
   }),
   new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
+  new InjectedConnectorNoDisconnectListener({ chains: wagmiChains, options: { name: 'Browser Wallet' } }),
   new WalletConnectConnector({
     chains: wagmiChains,
     options: {
