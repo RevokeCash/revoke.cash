@@ -68,7 +68,7 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
                     style="secondary"
                     size="none"
                     className="flex justify-start items-center gap-2 p-2 border border-black rounded-lg w-full text-lg"
-                    key={connector.id}
+                    key={`${connector.id} / ${connector.name}`}
                     onClick={() => connectAndRedirect(connector)}
                   >
                     <Logo
