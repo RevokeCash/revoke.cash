@@ -1,4 +1,4 @@
-import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+import { ERC20_ABI, ERC721_ABI, UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
 import { DATA_BASE_URL, DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import type {
   BaseTokenData,
@@ -15,6 +15,7 @@ import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
 import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
 import { deserialize } from 'wagmi';
+import { calculateTokenPrice, getTokensPerThousand } from './price';
 
 export const isSpamToken = (symbol: string) => {
   const includesHttp = /https?:\/\//i.test(symbol);
@@ -112,17 +113,20 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     return { ...metadataFromMapping, symbol };
   }
 
-  const [totalSupply, symbol, decimals] = await Promise.all([
+  const [totalSupply, symbol, decimals, tokensPerThousand] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
+    getTokensPerThousand(chainId, contract),
     throwIfNotErc20(contract),
   ]);
 
+  const price = calculateTokenPrice(tokensPerThousand, decimals);
+
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
-  return { ...metadataFromMapping, totalSupply, symbol, decimals };
+  return { ...metadataFromMapping, totalSupply, symbol, decimals, price };
 };
 
 export const throwIfNotErc20 = async (contract: Erc20TokenContract) => {

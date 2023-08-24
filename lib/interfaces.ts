@@ -1,5 +1,5 @@
 import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
-import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+import { ERC20_ABI, ERC721_ABI, UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
 
 export type Balance = bigint | 'ERC1155';
 
@@ -148,12 +148,34 @@ export interface Erc721TokenContract extends Contract {
   abi: typeof ERC721_ABI;
 }
 
+export type DexContract = UniswapV2Contract;
+
+
+export interface UniswapV2Contract extends Contract {
+  abi: typeof UNISWAP_V2_ROUTER_ABI;
+}
+
+export const isUniswapV2Contract = (contract: DexContract): contract is UniswapV2Contract => {
+  return contract.abi === UNISWAP_V2_ROUTER_ABI;
+};
+
 export interface TokenMetadata {
   // name: string;
   symbol: string;
   icon?: string;
   decimals?: number;
   totalSupply?: bigint;
+  price?: number;
 }
 
 export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;
+
+export enum PriceStrategyType {
+  UNISWAP_V2 = 'Uniswap v2',
+}
+
+export type PriceStrategy = {
+  type: PriceStrategyType;
+  dex: Address;
+  path: Address[]; // Can only end with tokens with 18 decimals for simplicity
+}
