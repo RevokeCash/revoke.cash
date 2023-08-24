@@ -3,25 +3,30 @@ import ChainSelect from 'components/common/ChainSelect';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
-import useTranslation from 'next-translate/useTranslation';
 import { usePublicClient } from 'wagmi';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
 import ConnectedLabel from './ConnectedLabel';
 import AddressNavigation from './navigation/AddressNavigation';
+import { getNativeTokenPrice } from 'lib/utils/price';
 
 const AddressHeader = () => {
   const isMounted = useMounted();
-  const { t } = useTranslation();
   const { address, selectedChainId, selectChain } = useAddressPageContext();
   const { domainName } = useNameLookup(address);
   const publicClient = usePublicClient({ chainId: selectedChainId });
 
-  const { data: balance } = useQuery({
+  const { data: balance, isLoading: balanceIsLoading } = useQuery({
     queryKey: ['balance', address, publicClient.chain?.id],
     queryFn: () => publicClient.getBalance({ address }),
     enabled: !!address && !!publicClient.chain,
+  });
+
+  const { data: nativeAssetPrice, isLoading: nativeAssetPriceIsLoading } = useQuery({
+    queryKey: ['nativeAssetPrice', publicClient.chain.id],
+    queryFn: () => getNativeTokenPrice(publicClient.chain.id, publicClient),
+    enabled: !!publicClient,
   });
 
   return (
@@ -35,7 +40,11 @@ const AddressHeader = () => {
           />
           <div className="flex flex-col sm:flex-row items-center gap-2">
             <div className="flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
-              <BalanceDisplay balance={balance} />
+              <BalanceDisplay
+                balance={balance}
+                price={nativeAssetPrice}
+                isLoading={balanceIsLoading || nativeAssetPriceIsLoading}
+              />
               <div className="leading-none">&bull;</div>
               <AddressDisplay address={address} withCopyButton withTooltip />
             </div>

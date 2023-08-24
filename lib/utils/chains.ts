@@ -1,6 +1,6 @@
 import { ChainId, chains } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
-import { RateLimit } from 'lib/interfaces';
+import { PriceStrategy, PriceStrategyType, RateLimit } from 'lib/interfaces';
 import { Chain, PublicClient, createPublicClient, defineChain, http } from 'viem';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
@@ -810,4 +810,29 @@ export const createViemPublicClientForChain = (chainId: number, url?: string): P
     chain: getViemChainConfig(chainId),
     transport: http(url ?? getChainRpcUrl(chainId)),
   });
+};
+
+export const getChainPriceStrategies = (chainId: number): PriceStrategy[] => {
+  const mapping: Record<number, PriceStrategy[]> = {
+    [ChainId.EthereumMainnet]: [
+      {
+        type: PriceStrategyType.UNISWAP_V2,
+        dex: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // Uniswap v2
+        path: [
+          '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+          '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+        ], // WETH -> DAI
+      },
+      {
+        type: PriceStrategyType.UNISWAP_V2,
+        dex: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Sushiswap
+        path: [
+          '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+          '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+        ], // WETH -> DAI
+      },
+    ],
+  };
+
+  return mapping[chainId] ?? [];
 };

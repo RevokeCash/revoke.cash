@@ -31,17 +31,16 @@ export const shortenString = (name?: string, maxLength: number = 16): string | u
   return `${name.substr(0, maxLength - 3).trim()}...`;
 };
 
-export const toFloat = (n: bigint, decimals: number = 0): string => {
+export const toFloat = (n: bigint, decimals: number = 0, minDisplayDecimals: number = 0, maxDisplayDecimals: number = 3): string => {
   const full = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, ''); // TODO: formatUnits
 
-  const MAX_DISPLAY_DECIMALS = 3;
-  const tooSmallPrefix = `0.${'0'.repeat(MAX_DISPLAY_DECIMALS)}`; // 3 decimals -> '0.000'
+  const tooSmallPrefix = `0.${'0'.repeat(maxDisplayDecimals)}`; // 3 decimals -> '0.000'
   const tooSmallReplacement = `< ${tooSmallPrefix.replace(/.$/, '1')}`; // 3 decimals -> '< 0.001'
   const rounded = Number(full)
-    .toFixed(MAX_DISPLAY_DECIMALS)
-    .replace(/\.?0+$/, '');
+    .toFixed(maxDisplayDecimals)
+    .replace(new RegExp(`\.?\w{${minDisplayDecimals}}0+$`), '');
 
-  return full.startsWith(tooSmallPrefix) ? tooSmallReplacement : rounded;
+  return full.startsWith(tooSmallPrefix) ? tooSmallReplacement : addThousandsSeparators(rounded);
 };
 
 export const fromFloat = (floatString: string, decimals: number): bigint => {
@@ -99,7 +98,24 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<Add
 
 export const getBalanceText = (symbol: string, balance: Balance, decimals?: number) => {
   if (balance === 'ERC1155') return `(ERC1155)`;
-  return `${toFloat(BigInt(balance), decimals)} ${symbol}`;
+  return `${toFloat(balance, decimals)} ${symbol}`;
+};
+
+export const getFiatBalanceText = (balance: Balance, price?: number, decimals?: number, fiatSign: string = '$') => {
+  if (balance === 'ERC1155') return null;
+  if (price === null || price === undefined) return null;
+
+  const float = toFloat(fixedPointMultiply(balance, price, decimals ?? 18), decimals, 2, 2);
+
+  if (float.startsWith('<')) return `< ${fiatSign}${float.slice(2)}`;
+
+  return `${fiatSign}${float}`;
+};
+
+export const addThousandsSeparators = (number: string) => {
+  const [integer, decimal] = number.split('.');
+  const integerWithSeparators = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return decimal ? `${integerWithSeparators}.${decimal}` : integerWithSeparators;
 };
 
 export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));
@@ -159,6 +175,10 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
   return address;
 };
 
+export const fixedPointMultiply = (a: bigint, b: number, decimals: number): bigint => {
+  return (a * BigInt(Math.round(b * 10 ** decimals))) / BigInt(10 ** decimals);
+}
+
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const WEIRD_NETWORKS = [
@@ -208,3 +228,4 @@ type ContractTransactionRequest<
   dataSuffix?: Hex;
 } & UnionOmit<FormattedTransactionRequest<Chain>, 'from' | 'to' | 'data' | 'value'> &
   GetValue<TAbi, TFunctionName>;
+

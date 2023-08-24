@@ -83,3 +83,14 @@ export const PERMIT2_ABI = parseAbi([
   'struct PermitBatch { PermitDetails[] details; address spender; uint256 sigDeadline; }',
   'struct PermitDetails { address token; uint160 amount; uint48 expiration; uint48 nonce; }',
 ]);
+
+export const UNISWAP_V2_ROUTER_ABI = parseAbi([
+  'function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)',
+  'function getAmountsIn(uint amountOut, address[] memory path) public view returns (uint[] memory amounts)',
+  'function swapExactTokensForTokens(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external',
+  'function swapTokensForExactTokens(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external',
+  'function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable',
+  'function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external',
+  'function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external',
+  'function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable',
+]);

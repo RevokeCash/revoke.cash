@@ -2,7 +2,7 @@ import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { AllowanceData } from 'lib/interfaces';
-import { getBalanceText } from 'lib/utils';
+import { getBalanceText, getFiatBalanceText } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { useLayoutEffect, useRef, useState } from 'react';
 
@@ -35,6 +35,9 @@ const AssetCell = ({ allowance }: Props) => {
     link = <WithHoverTooltip tooltip={allowance.metadata.symbol}>{link}</WithHoverTooltip>;
   }
 
+  const balanceText = getBalanceText(allowance.metadata.symbol, allowance.balance, allowance.metadata.decimals);
+  const fiatBalanceText = getFiatBalanceText(allowance.balance, allowance.metadata.price, allowance.metadata.decimals);
+
   return (
     <div className="flex items-center gap-1 py-1 w-40 lg:w-56">
       <div className="flex flex-col items-start gap-0.5">
@@ -50,7 +53,7 @@ const AssetCell = ({ allowance }: Props) => {
         </div>
 
         <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
-          {getBalanceText(allowance.metadata.symbol, allowance.balance, allowance.metadata.decimals)}
+          {balanceText} {fiatBalanceText && `(${fiatBalanceText})`}
         </div>
       </div>
     </div>
