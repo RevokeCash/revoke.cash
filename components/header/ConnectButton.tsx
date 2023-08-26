@@ -2,6 +2,7 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
+import { deduplicateArray } from 'lib/utils';
 import { getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
@@ -61,7 +62,7 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
             </Dialog.Title>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">
-              {connectors
+              {deduplicateArray(connectors, (a, b) => getConnectorName(a) === getConnectorName(b))
                 .filter((connector) => connector.ready)
                 .map((connector) => (
                   <Button
