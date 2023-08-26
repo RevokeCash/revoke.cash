@@ -33,6 +33,7 @@ const Header = ({ searchBar = true }: Props) => {
               width="240"
               className="filter dark:invert shrink-0"
               priority
+              fetchPriority="high"
             />
           </Href>
         </div>

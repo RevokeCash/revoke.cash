@@ -39,7 +39,7 @@ const ChainSelectHref = ({ selected, chainIds, getUrl }: Props) => {
   return (
     <DropdownMenu menuButton={<ChainDisplay chainId={selected} />} buttonClassName="px-2 h-9" itemsClassName="w-58">
       {groups.map((group) => (
-        <div key={group.label}>
+        <div key={group.label} className="bg-white dark:bg-black">
           <div className="uppercase text-xs leading-tight p-3 pb-0 mb-[3px] font-medium">{group.label}</div>
           {group.options.map((option) => (
             <DropdownMenuItem

@@ -52,6 +52,7 @@ const ExtensionPage: NextPage = () => {
               height="500"
               width="800"
               priority
+              fetchPriority="high"
             />
           </div>
 
