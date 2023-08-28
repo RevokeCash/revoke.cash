@@ -22,16 +22,6 @@ export const DONATION_ADDRESS = '0xfcBf17200C64E860F6639aa12B525015d115F863'; //
 export const ALCHEMY_PROVIDER =
   process.env.NEXT_PUBLIC_ALCHEMY_API_KEY && new providers.AlchemyProvider(1, process.env.NEXT_PUBLIC_ALCHEMY_API_KEY);
 
-export const IRON_OPTIONS: IronSessionOptions = {
-  cookieName: 'revoke_session',
-  password: process.env.IRON_SESSION_PASSWORD,
-  ttl: 60 * 60 * 24,
-  cookieOptions: {
-    secure: true, // Change this to false when locally testing on Safari
-    sameSite: 'none',
-  },
-};
-
 export const ETHERSCAN_API_KEYS = JSON.parse(process.env.ETHERSCAN_API_KEYS ?? '{}');
 export const ETHERSCAN_RATE_LIMITS = JSON.parse(process.env.ETHERSCAN_RATE_LIMITS ?? '{}');
 
