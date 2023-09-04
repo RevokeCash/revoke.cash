@@ -1,9 +1,10 @@
 import { ChainId } from '@revoke.cash/chains';
-import { Contract, Signer } from 'ethers';
-import { BLUR, OPENSEA_SEAPORT } from 'lib/abis';
+import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
 import { Marketplace, TransactionType } from 'lib/interfaces';
 import { useMemo } from 'react';
 import { useHandleTransaction } from './useHandleTransaction';
+import { WalletClient } from 'viem';
+import { getWalletAddress } from 'lib/utils';
 
 export const useMarketplaces = (chainId: number) => {
   const handleTransaction = useHandleTransaction();
@@ -39,9 +40,15 @@ export const useMarketplaces = (chainId: number) => {
         ChainId.FantomOpera,
         ChainId.CeloMainnet,
       ],
-      cancelSignatures: async (signer: Signer) => {
-        const seaportContract = new Contract('0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC', OPENSEA_SEAPORT, signer);
-        const transactionPromise = seaportContract.functions.incrementCounter();
+      cancelSignatures: async (walletClient: WalletClient) => {
+        const transactionPromise = walletClient.writeContract({
+          address: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
+          abi: OPENSEA_SEAPORT_ABI,
+          account: await getWalletAddress(walletClient),
+          functionName: 'incrementCounter',
+          chain: walletClient.chain,
+        });
+
         return handleTransaction(transactionPromise, TransactionType.OTHER);
       },
     },
@@ -49,9 +56,15 @@ export const useMarketplaces = (chainId: number) => {
       name: 'Blur',
       logo: '/assets/images/vendor/blur.png',
       chains: [ChainId.EthereumMainnet],
-      cancelSignatures: async (signer: Signer) => {
-        const blurContract = new Contract('0x000000000000Ad05Ccc4F10045630fb830B95127', BLUR, signer);
-        const transactionPromise = blurContract.functions.incrementNonce();
+      cancelSignatures: async (walletClient: WalletClient) => {
+        const transactionPromise = walletClient.writeContract({
+          address: '0x000000000000Ad05Ccc4F10045630fb830B95127',
+          abi: BLUR_ABI,
+          account: await getWalletAddress(walletClient),
+          functionName: 'incrementNonce',
+          chain: walletClient.chain,
+        });
+
         return handleTransaction(transactionPromise, TransactionType.OTHER);
       },
     },

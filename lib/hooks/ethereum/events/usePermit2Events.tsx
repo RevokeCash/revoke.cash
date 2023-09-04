@@ -1,22 +1,25 @@
-import { utils } from 'ethers';
-import { PERMIT2 } from 'lib/abis';
+import { PERMIT2_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { PERMIT2_ADDRESS } from 'lib/utils/permit2';
 import { useMemo } from 'react';
 import { useBlockNumber } from '../useBlockNumber';
 import { useLogs } from '../useLogs';
+import { Address, getAbiItem, getEventSelector } from 'viem';
 
-export const usePermit2Events = (address: string, chainId: number) => {
+export const usePermit2Events = (address: Address, chainId: number) => {
   const { data: blockNumber, isLoading: isBlockNumberLoading, error: blockNumberError } = useBlockNumber(chainId);
 
-  const permit2Interface = new utils.Interface(PERMIT2);
+  const getPermit2EventSelector = (eventName: 'Permit' | 'Approval' | 'Lockdown') => {
+    return getEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: eventName }));
+  };
+
   const addressTopic = address ? addressToTopic(address) : undefined;
 
-  const baseFilter = { address: PERMIT2_ADDRESS, fromBlock: 0, toBlock: blockNumber };
+  const approvalTopics = addressTopic && [getPermit2EventSelector('Approval'), addressTopic];
+  const permitTopics = addressTopic && [getPermit2EventSelector('Permit'), addressTopic];
+  const lockdownTopics = addressTopic && [getPermit2EventSelector('Lockdown'), addressTopic];
 
-  const approvalTopics = addressTopic && [permit2Interface.getEventTopic('Approval'), addressTopic];
-  const permitTopics = addressTopic && [permit2Interface.getEventTopic('Permit'), addressTopic];
-  const lockdownTopics = addressTopic && [permit2Interface.getEventTopic('Lockdown'), addressTopic];
+  const baseFilter = { address: PERMIT2_ADDRESS, fromBlock: 0, toBlock: blockNumber };
 
   const {
     data: approval,

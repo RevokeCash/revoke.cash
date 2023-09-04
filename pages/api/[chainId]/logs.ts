@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (e) {
     console.log('Error occurred', e);
-    throw e;
+    return res.status(500).send({ message: e.message });
   }
 
   return res.status(404).send({

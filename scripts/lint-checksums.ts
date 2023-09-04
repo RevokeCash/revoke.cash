@@ -1,6 +1,6 @@
-import { utils } from 'ethers';
 import fs from 'fs/promises';
 import path from 'path';
+import { getAddress } from 'viem';
 
 const lintChecksums = async (dataPath: string) => {
   const chainIds = await fs.readdir(dataPath);
@@ -13,7 +13,7 @@ const lintChecksums = async (dataPath: string) => {
       await Promise.all(
         files.map(async (file) => {
           const address = file.replace('.json', '');
-          const checksummedAddress = utils.getAddress(address.toLowerCase());
+          const checksummedAddress = getAddress(address.toLowerCase());
 
           await fs.rename(path.join(chainPath, file), path.join(chainPath, `${checksummedAddress}.json`));
         }),

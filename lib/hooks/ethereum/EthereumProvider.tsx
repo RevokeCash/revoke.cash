@@ -1,48 +1,22 @@
-import { chains } from '@revoke.cash/chains';
-import {
-  getChainExplorerUrl,
-  getChainName,
-  getChainNativeToken,
-  getChainRpcUrl,
-  SUPPORTED_CHAINS,
-} from 'lib/utils/chains';
-import { revokeProvider } from 'lib/utils/revokeProvider';
+import { getViemChainConfig, SUPPORTED_CHAINS } from 'lib/utils/chains';
 import { ReactNode, useEffect } from 'react';
-import { configureChains, createClient, useAccount, useConnect, WagmiConfig } from 'wagmi';
+import { configureChains, createConfig, useAccount, useConnect, WagmiConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { LedgerConnector } from 'wagmi/connectors/ledger';
 import { SafeConnector } from 'wagmi/connectors/safe';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { publicProvider } from 'wagmi/providers/public';
 
 interface Props {
   children: ReactNode;
 }
 
-// TODO: make this better
-const chainList = SUPPORTED_CHAINS.map((chainId) => {
-  const chainInfo = chains.get(chainId);
-  const chainName = getChainName(chainId);
-  const fallbackNativeCurrency = { name: chainName, symbol: getChainNativeToken(chainId), decimals: 18 };
-  return {
-    id: chainId,
-    network: chainName.toLowerCase().replaceAll(' ', '-'),
-    name: chainName,
-    nativeCurrency: chainInfo?.nativeCurrency ?? fallbackNativeCurrency,
-    rpcUrls: {
-      default: { http: [getChainRpcUrl(chainId)] },
-      public: { http: [getChainRpcUrl(chainId)] },
-    },
-    blockExplorers: {
-      default: {
-        name: chainName + ' Explorer',
-        url: getChainExplorerUrl(chainId),
-      },
-    },
-  };
-});
-
-const { chains: wagmiChains, provider } = configureChains(chainList, [revokeProvider()]);
+const { chains: wagmiChains, publicClient } = configureChains(
+  SUPPORTED_CHAINS.map(getViemChainConfig),
+  [publicProvider()],
+  { batch: { multicall: true } },
+);
 
 // We don't want to auto-disconnect the user when they switch to certain networks
 // https://github.com/MetaMask/metamask-extension/issues/13375#issuecomment-1027663334
@@ -74,18 +48,21 @@ export const connectors = [
     },
   }),
   new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
-  new LedgerConnector({ chains: wagmiChains }),
+  new LedgerConnector({
+    chains: wagmiChains,
+    options: { walletConnectVersion: 2, projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID },
+  }),
 ];
 
-export const wagmiClient = createClient({
+export const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  provider,
+  publicClient,
 });
 
 export const EthereumProvider = ({ children }: Props) => {
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiConfig}>
       <EthereumProviderChild>{children}</EthereumProviderChild>
     </WagmiConfig>
   );

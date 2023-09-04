@@ -1,18 +1,19 @@
-import AVVY from '@avvy/client';
 import { Resolution } from '@unstoppabledomains/resolution';
 import axios from 'axios';
-import { Contract, providers, utils } from 'ethers';
-import { OPENSEA_REGISTRY } from 'lib/abis';
-import {
-  ADDRESS_ZERO,
-  ALCHEMY_PROVIDER,
-  DATA_BASE_URL,
-  ETHEREUM_LISTS_CONTRACTS,
-  OPENSEA_REGISTRY_ADDRESS,
-} from 'lib/constants';
+import { OPENSEA_REGISTRY_ABI } from 'lib/abis';
+import { ADDRESS_ZERO, DATA_BASE_URL, ETHEREUM_LISTS_CONTRACTS, OPENSEA_REGISTRY_ADDRESS } from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
+import { Address, createPublicClient, getAddress, http } from 'viem';
+import { getViemChainConfig } from './chains';
+import AVVY from '@avvy/client';
+import { providers } from 'ethers';
 
-export const ENS_RESOLUTION = ALCHEMY_PROVIDER;
+export const GLOBAL_ETH_MAINNET_CLIENT = createPublicClient({
+  chain: getViemChainConfig(1),
+  transport: http(`https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
+});
+
+export const ENS_RESOLUTION = GLOBAL_ETH_MAINNET_CLIENT;
 
 export const UNS_RESOLUTION =
   process.env.NEXT_PUBLIC_ALCHEMY_API_KEY &&
@@ -33,7 +34,7 @@ export const UNS_RESOLUTION =
     },
   });
 
-export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'));
+export const AVVY_RESOLUTION = new AVVY(new providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc'), {});
 
 export const getSpenderData = async (
   address: string,
@@ -57,7 +58,7 @@ export const getSpenderData = async (
 
 const getSpenderDataFromInternal = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    const { data } = await axios.get(`${DATA_BASE_URL}/spenders/${chainId}/${utils.getAddress(address)}.json`);
+    const { data } = await axios.get(`${DATA_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`);
     return data;
   } catch {
     return null;
@@ -66,9 +67,7 @@ const getSpenderDataFromInternal = async (address: string, chainId: number): Pro
 
 const getSpenderDataFromEthereumList = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    const contractRes = await axios.get(
-      `${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${utils.getAddress(address)}.json`,
-    );
+    const contractRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${getAddress(address)}.json`);
 
     try {
       const projectRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/projects/${contractRes.data.project}.json`);
@@ -94,60 +93,62 @@ const getSpenderDataFromHarpie = async (address: string, chainId: number): Promi
   }
 };
 
-export const lookupEnsName = async (address: string): Promise<string | null> => {
+export const lookupEnsName = async (address: Address): Promise<string | null> => {
   try {
-    return await ENS_RESOLUTION?.lookupAddress(address);
+    const name = await ENS_RESOLUTION?.getEnsName({ address });
+    return name ?? null;
   } catch {
     return null;
   }
 };
 
-export const resolveEnsName = async (ensName: string): Promise<string | null> => {
+export const resolveEnsName = async (name: string): Promise<Address | null> => {
   try {
-    const address = await ENS_RESOLUTION?.resolveName(ensName);
-    return address ? address : null;
+    const address = await ENS_RESOLUTION?.getEnsAddress({ name });
+    return address ?? null;
   } catch {
     return null;
   }
 };
 
-export const lookupUnsName = async (address: string) => {
+export const lookupUnsName = async (address: Address) => {
   try {
     const name = await UNS_RESOLUTION?.reverse(address);
-    return name;
+    return name ?? null;
   } catch {
     return null;
   }
 };
 
-export const resolveUnsName = async (unsName: string) => {
+export const resolveUnsName = async (unsName: string): Promise<Address | null> => {
   try {
     const address = await UNS_RESOLUTION?.addr(unsName, 'ETH');
-    return utils.getAddress(address?.toLowerCase());
+    return address ? getAddress(address?.toLowerCase()) : null;
   } catch {
     return null;
   }
 };
 
-export const lookupAvvyName = async (address: string) => {
+export const lookupAvvyName = async (address: Address) => {
   try {
-    const output = await AVVY_RESOLUTION?.batch([address]).reverseToNames(AVVY_RESOLUTION.RECORDS.EVM);
-    return output.length === 0 ? null : output[0];
+    const hash = await AVVY_RESOLUTION?.reverse((AVVY.RECORDS as any).EVM, address);
+    const { name } = await hash.lookup();
+    return name || null;
   } catch (err) {
     return null;
   }
 };
 
-export const resolveAvvyName = async (avvyName: string) => {
+export const resolveAvvyName = async (avvyName: string): Promise<Address | null> => {
   try {
-    return await AVVY_RESOLUTION?.name(avvyName).resolve(AVVY_RESOLUTION.RECORDS.EVM);
+    return await AVVY_RESOLUTION?.name(avvyName).resolve((AVVY.RECORDS as any).EVM);
   } catch (err) {
     return null;
   }
 };
 
 // Note that we don't wait for the UNS name to resolve before returning the ENS name
-export const lookupDomainName = async (address: string) => {
+export const lookupDomainName = async (address: Address) => {
   try {
     const unsNamePromise = lookupUnsName(address);
     const avvyNamePromise = lookupAvvyName(address);
@@ -158,10 +159,15 @@ export const lookupDomainName = async (address: string) => {
   }
 };
 
-export const getOpenSeaProxyAddress = async (userAddress: string): Promise<string | null> => {
+export const getOpenSeaProxyAddress = async (userAddress: Address): Promise<Address | null> => {
   try {
-    const contract = new Contract(OPENSEA_REGISTRY_ADDRESS, OPENSEA_REGISTRY, ALCHEMY_PROVIDER);
-    const [proxyAddress] = await contract.functions.proxies(userAddress);
+    const proxyAddress = await GLOBAL_ETH_MAINNET_CLIENT.readContract({
+      address: OPENSEA_REGISTRY_ADDRESS,
+      abi: OPENSEA_REGISTRY_ABI,
+      functionName: 'proxies',
+      args: [userAddress],
+    });
+
     if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return null;
     return proxyAddress;
   } catch {

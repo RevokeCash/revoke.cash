@@ -1,8 +1,16 @@
 import { ChainId } from '@revoke.cash/chains';
-import { BigNumber, Contract, providers, utils } from 'ethers';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import type { AddressEvents, AllowanceData, BaseAllowanceData, BaseTokenData, Log } from 'lib/interfaces';
+import type {
+  AddressEvents,
+  AllowanceData,
+  BaseAllowanceData,
+  BaseTokenData,
+  Erc20TokenContract,
+  Erc721TokenContract,
+  Log,
+  TokenContract,
+} from 'lib/interfaces';
 import {
   addressToTopic,
   deduplicateLogsByTopics,
@@ -14,7 +22,6 @@ import {
 } from '.';
 import { track } from './analytics';
 import { getPermit2AllowancesFromApprovals } from './permit2';
-import { convertString, unpackResult } from './promises';
 import {
   createTokenContracts,
   getTokenData,
@@ -23,16 +30,17 @@ import {
   isErc721Contract,
   isSpamToken,
 } from './tokens';
+import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 
 export const getAllowancesFromEvents = async (
-  owner: string,
+  owner: Address,
   events: AddressEvents,
-  readProvider: providers.Provider,
+  publicClient: PublicClient,
   chainId: number,
 ): Promise<AllowanceData[]> => {
   // We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
   const allEvents = [...events.approvalForAll, ...events.approval, ...events.transferTo];
-  const contracts = createTokenContracts(allEvents, readProvider);
+  const contracts = createTokenContracts(allEvents, publicClient);
 
   // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
@@ -74,17 +82,17 @@ export const getAllowancesFromEvents = async (
   return allowances
     .flat()
     .filter((allowance) => !isSpamToken(allowance))
-    .filter((allowance) => allowance.spender || !hasZeroBalance(allowance))
     .filter((allowance) => allowance.spender || allowance.balance !== 'ERC1155')
-    .sort((a, b) => a.symbol.localeCompare(b.symbol));
+    .filter((allowance) => allowance.spender || !hasZeroBalance(allowance.balance, allowance.metadata.decimals))
+    .sort((a, b) => a.metadata.symbol.localeCompare(b.metadata.symbol));
 };
 
 export const getAllowancesForToken = async (
-  contract: Contract,
+  contract: TokenContract,
   approvalEvents: Log[],
   approvalForAllEvents: Log[],
   permit2ApprovalEvents: Log[],
-  userAddress: string,
+  userAddress: Address,
   tokenData: BaseTokenData,
 ): Promise<BaseAllowanceData[]> => {
   if (isErc721Contract(contract)) {
@@ -110,7 +118,11 @@ export const getAllowancesForToken = async (
   }
 };
 
-export const getErc20AllowancesFromApprovals = async (contract: Contract, owner: string, approvals: Log[]) => {
+export const getErc20AllowancesFromApprovals = async (
+  contract: Erc20TokenContract,
+  owner: Address,
+  approvals: Log[],
+) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
@@ -121,27 +133,35 @@ export const getErc20AllowancesFromApprovals = async (contract: Contract, owner:
   return allowances;
 };
 
-const getErc20AllowanceFromApproval = async (multicallContract: Contract, owner: string, approval: Log) => {
+const getErc20AllowanceFromApproval = async (
+  contract: Erc20TokenContract,
+  owner: Address,
+  approval: Log,
+): Promise<BaseAllowanceData> => {
   const spender = topicToAddress(approval.topics[2]);
-  const lastApprovedAmount = BigNumber.from(approval.data);
+  const lastApprovedAmount = fromHex(approval.data, 'bigint');
 
   // If the most recent approval event was for 0, then we know for sure that the allowance is 0
   // If not, we need to check the current allowance because we cannot determine the allowance from the event
   // since it may have been partially used (through transferFrom)
-  if (lastApprovedAmount.isZero()) {
-    return { spender, amount: '0', lastUpdated: 0, transactionHash: approval.transactionHash };
+  if (lastApprovedAmount === 0n) {
+    return { spender, amount: 0n, lastUpdated: 0, transactionHash: approval.transactionHash };
   }
 
   const [amount, lastUpdated, transactionHash] = await Promise.all([
-    convertString(unpackResult(multicallContract.functions.allowance(owner, spender))),
-    approval.timestamp ?? blocksDB.getBlockTimestamp(multicallContract.provider, approval.blockNumber),
+    contract.publicClient.readContract({
+      ...contract,
+      functionName: 'allowance',
+      args: [owner, spender],
+    }),
+    approval.timestamp ?? blocksDB.getBlockTimestamp(contract.publicClient, approval.blockNumber),
     approval.transactionHash,
   ]);
 
   return { spender, amount, lastUpdated, transactionHash };
 };
 
-export const getLimitedErc721AllowancesFromApprovals = async (contract: Contract, approvals: Log[]) => {
+export const getLimitedErc721AllowancesFromApprovals = async (contract: Erc721TokenContract, approvals: Log[]) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
@@ -152,14 +172,14 @@ export const getLimitedErc721AllowancesFromApprovals = async (contract: Contract
   return allowances;
 };
 
-const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract, approval: Log) => {
+const getLimitedErc721AllowanceFromApproval = async (contract: Erc721TokenContract, approval: Log) => {
   // Wrap this in a try-catch since it's possible the NFT has been burned
   try {
     // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
     // by making tokenId a non-indexed parameter, in which case it needs to be
     // taken from the event data rather than topics
     const tokenIdEncoded = approval.topics.length === 4 ? approval.topics[3] : approval.data;
-    const tokenId = BigNumber.from(tokenIdEncoded).toString();
+    const tokenId = fromHex(tokenIdEncoded, 'bigint');
     const lastApproved = topicToAddress(approval.topics[2]);
 
     // If the most recent approval was a REVOKE, we know for sure that the allowance is revoked
@@ -171,9 +191,13 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
     }
 
     const [owner, spender, lastUpdated, transactionHash] = await Promise.all([
-      unpackResult(multicallContract.functions.ownerOf(tokenId)),
-      unpackResult(multicallContract.functions.getApproved(tokenId)),
-      approval.timestamp ?? blocksDB.getBlockTimestamp(multicallContract.provider, approval.blockNumber),
+      contract.publicClient.readContract({ ...contract, functionName: 'ownerOf', args: [tokenId] }),
+      contract.publicClient.readContract({
+        ...contract,
+        functionName: 'getApproved',
+        args: [tokenId],
+      }),
+      approval.timestamp ?? blocksDB.getBlockTimestamp(contract.publicClient, approval.blockNumber),
       approval.transactionHash,
     ]);
 
@@ -187,7 +211,7 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
 };
 
 export const getUnlimitedErc721AllowancesFromApprovals = async (
-  contract: Contract,
+  contract: Erc721TokenContract,
   owner: string,
   approvals: Log[],
 ) => {
@@ -201,33 +225,34 @@ export const getUnlimitedErc721AllowancesFromApprovals = async (
   return allowances;
 };
 
-const getUnlimitedErc721AllowanceFromApproval = async (multicallContract: Contract, owner: string, approval: Log) => {
+const getUnlimitedErc721AllowanceFromApproval = async (
+  contract: Erc721TokenContract,
+  _owner: string,
+  approval: Log,
+) => {
   const spender = topicToAddress(approval.topics[2]);
 
   // For ApprovalForAll events, we can determine the allowance (true/false) from *only* the event
   // so we do not have to check the chain for the current allowance
-  const isApprovedForAll = approval.data !== '0x' && !BigNumber.from(approval.data).isZero();
+  const isApprovedForAll = approval.data !== '0x' && fromHex(approval.data, 'bigint') !== 0n;
 
   // If the allwoance if already revoked, we dont need to make any more requests
   if (!isApprovedForAll) return undefined;
 
   const [lastUpdated, transactionHash] = await Promise.all([
-    approval.timestamp ?? blocksDB.getBlockTimestamp(multicallContract.provider, approval.blockNumber),
+    approval.timestamp ?? blocksDB.getBlockTimestamp(contract.publicClient, approval.blockNumber),
     approval.transactionHash,
   ]);
 
   return { spender, lastUpdated, transactionHash };
 };
 
-export const formatErc20Allowance = (allowance: string, decimals: number, totalSupply: string): string => {
-  const allowanceBN = BigNumber.from(allowance);
-  const totalSupplyBN = BigNumber.from(totalSupply);
-
-  if (allowanceBN.gt(totalSupplyBN)) {
+export const formatErc20Allowance = (allowance: bigint, decimals: number, totalSupply: bigint): string => {
+  if (allowance > totalSupply) {
     return 'Unlimited';
   }
 
-  return toFloat(allowanceBN, decimals);
+  return toFloat(allowance, decimals);
 };
 
 export const getAllowanceI18nValues = (allowance: AllowanceData) => {
@@ -237,9 +262,9 @@ export const getAllowanceI18nValues = (allowance: AllowanceData) => {
   }
 
   if (allowance.amount) {
-    const amount = formatErc20Allowance(allowance.amount, allowance.decimals, allowance.totalSupply);
+    const amount = formatErc20Allowance(allowance.amount, allowance.metadata.decimals, allowance.metadata.totalSupply);
     const i18nKey = amount === 'Unlimited' ? 'address:allowances.unlimited' : 'address:allowances.amount';
-    const { symbol } = allowance;
+    const { symbol } = allowance.metadata;
     return { amount, i18nKey, symbol };
   }
 
@@ -251,8 +276,8 @@ export const getAllowanceI18nValues = (allowance: AllowanceData) => {
 // This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
 // which do not show up normally because of a bug in their contract
 export const generatePatchedAllowanceEvents = (
-  userAddress: string,
-  openseaProxyAddress?: string,
+  userAddress: Address,
+  openseaProxyAddress?: Address,
   allEvents: Log[] = [],
 ): Log[] => {
   if (!userAddress || !openseaProxyAddress) return [];
@@ -269,7 +294,7 @@ export const generatePatchedAllowanceEvents = (
       logIndex: 0,
       address: MOONBIRDS_ADDRESS,
       topics: [
-        utils.id('ApprovalForAll(address,address,bool)'),
+        getEventSelector('ApprovalForAll(address,address,bool)'),
         addressToTopic(userAddress),
         addressToTopic(openseaProxyAddress),
       ],
@@ -280,43 +305,10 @@ export const generatePatchedAllowanceEvents = (
 };
 
 export const stripAllowanceData = (allowance: AllowanceData): BaseTokenData => {
-  const { contract, chainId, symbol, owner, balance, icon, decimals, totalSupply } = allowance;
-  return { contract, chainId, symbol, owner, balance, icon, decimals, totalSupply };
+  const { contract, metadata, chainId, owner, balance } = allowance;
+  return { contract, metadata, chainId, owner, balance };
 };
 
 export const getAllowanceKey = (allowance: AllowanceData) => {
   return `${allowance.contract.address}-${allowance.spender}-${allowance.tokenId}-${allowance.chainId}-${allowance.owner}`;
-};
-
-export const throwIfExcessiveGas = (
-  allowance: Pick<AllowanceData, 'chainId' | 'contract'>,
-  estimatedGas: BigNumber,
-) => {
-  // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
-  const WEIRD_NETWORKS = [
-    ChainId.ZkSyncEraMainnet,
-    ChainId.ZkSyncEraTestnet,
-    ChainId.ArbitrumOne,
-    ChainId.ArbitrumGoerli,
-    ChainId.ArbitrumNova,
-  ];
-
-  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(allowance.chainId) ? 10_000_000 : 500_000;
-
-  // TODO: Translate this error message
-  if (estimatedGas.gt(EXCESSIVE_GAS)) {
-    console.error(`Gas limit of ${estimatedGas.toString()} is excessive`);
-
-    // Track excessive gas usage so we can blacklist tokens
-    // TODO: Use a different tool than analytics for this
-    track('Excessive gas limit', {
-      chainId: allowance.chainId,
-      address: allowance.contract.address,
-      estimatedGas: estimatedGas.toString(),
-    });
-
-    throw new Error(
-      'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
-    );
-  }
 };

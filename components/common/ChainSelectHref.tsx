@@ -11,7 +11,7 @@ interface Props {
 }
 
 // This component is designed to match the styling of the ChainSelect component,
-// byt it uses a HeadlessUI DropdownMenu instead of a Select component.
+// byt it uses a HeadlessUI DropdownMenu together with links instead of a Select component.
 const ChainSelectHref = ({ selected, chainIds, getUrl }: Props) => {
   const { t } = useTranslation();
 

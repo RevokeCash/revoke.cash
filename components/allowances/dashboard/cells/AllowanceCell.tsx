@@ -3,7 +3,7 @@ import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import type { AllowanceData } from 'lib/interfaces';
+import type { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { SECOND } from 'lib/utils/time';
 import Trans from 'next-translate/Trans';
@@ -15,7 +15,7 @@ import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
   allowance: AllowanceData;
-  onUpdate: (allowance: AllowanceData, newAmount?: string) => void;
+  onUpdate: OnUpdate;
 }
 
 const AllowanceCell = ({ allowance, onUpdate }: Props) => {

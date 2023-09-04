@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { RequestQueue } from './api/logs/RequestQueue';
 import type { Filter, Log } from './interfaces';
+import { PublicClient, createPublicClient, getAddress, http } from 'viem';
+import { getChainLogsRpcUrl, getViemChainConfig, isBackendSupportedChain } from './utils/chains';
 
-export class BackendProvider {
+export class BackendLogsProvider {
   queue: RequestQueue;
 
   constructor(public chainId: number) {
@@ -19,3 +21,43 @@ export class BackendProvider {
     }
   }
 }
+
+export class ViemLogsProvider {
+  private client: PublicClient;
+
+  constructor(
+    public chainId: number,
+    url?: string,
+  ) {
+    this.client = createPublicClient({
+      chain: getViemChainConfig(this.chainId),
+      transport: http(url ?? getChainLogsRpcUrl(this.chainId)),
+    });
+  }
+
+  async getLogs(filter: Filter): Promise<Log[]> {
+    const logs = await this.client.request({
+      method: 'eth_getLogs',
+      params: [
+        { ...filter, fromBlock: `0x${filter.fromBlock.toString(16)}`, toBlock: `0x${filter.toBlock.toString(16)}` },
+      ],
+    });
+
+    return (logs as any[]).map((log) => this.formatEvent(log)) as Log[];
+  }
+
+  private formatEvent(log: any): Log {
+    return {
+      ...log,
+      address: getAddress(log.address),
+      blockNumber: Number(log.blockNumber),
+      logIndex: Number(log.logIndex),
+      transactionIndex: Number(log.transactionIndex),
+    };
+  }
+}
+
+export const getLogsProvider = (chainId: number, url?: string): BackendLogsProvider | ViemLogsProvider => {
+  if (isBackendSupportedChain(chainId)) return new BackendLogsProvider(chainId);
+  return new ViemLogsProvider(chainId, url);
+};

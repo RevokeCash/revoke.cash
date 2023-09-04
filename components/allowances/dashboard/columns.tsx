@@ -1,5 +1,5 @@
 import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
-import { AllowanceData } from 'lib/interfaces';
+import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { toFloat } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -13,7 +13,7 @@ import SpenderCell from './cells/SpenderCell';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
-    onUpdate: (allowance: AllowanceData, newAmount?: string) => void;
+    onUpdate: OnUpdate;
   }
 }
 
@@ -32,13 +32,13 @@ export const accessors = {
     if (!allowance.spender) return undefined;
 
     if (allowance.amount) {
-      return formatErc20Allowance(allowance.amount, allowance.decimals, allowance.totalSupply);
+      return formatErc20Allowance(allowance.amount, allowance.metadata.decimals, allowance.metadata.totalSupply);
     }
 
     return allowance.tokenId ?? 'Unlimited';
   },
   balance: (allowance: AllowanceData) => {
-    return toFloat(allowance.balance, allowance.decimals);
+    return allowance.balance === 'ERC1155' ? 'ERC1155' : toFloat(allowance.balance, allowance.metadata.decimals);
   },
   assetType: (allowance: AllowanceData) => {
     if (isErc721Contract(allowance.contract)) return 'NFT';
@@ -96,7 +96,7 @@ export const customFilterFns = {
 
 const columnHelper = createColumnHelper<AllowanceData>();
 export const columns = [
-  columnHelper.accessor('symbol', {
+  columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address:headers.asset" />,
     cell: (info) => <AssetCell allowance={info.row.original} />,

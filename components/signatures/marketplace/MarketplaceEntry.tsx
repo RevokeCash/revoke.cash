@@ -9,7 +9,7 @@ import type { Marketplace } from 'lib/interfaces';
 import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
-import { useSigner } from 'wagmi';
+import { usePublicClient, useWalletClient } from 'wagmi';
 
 interface Props {
   marketplace: Marketplace;
@@ -20,15 +20,17 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
   const isMounted = useMounted();
 
   const { address, selectedChainId } = useAddressPageContext();
-  const { data: signer } = useSigner();
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
   const { execute: onClick, loading } = useAsyncCallback(async () => {
-    const transaction = await marketplace?.cancelSignatures(signer);
+    const hash = await marketplace?.cancelSignatures(walletClient);
     track('Cancelled Marketplace Signatures', {
       chainId: selectedChainId,
       account: address,
       marketplace: marketplace.name,
     });
-    await transaction.wait(1);
+
+    await publicClient.waitForTransactionReceipt({ hash });
   });
 
   return (

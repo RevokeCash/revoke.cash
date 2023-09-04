@@ -1,26 +1,28 @@
-import { utils } from 'ethers';
-import { ERC721Metadata } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useBlockNumber } from '../useBlockNumber';
 import { useLogs } from '../useLogs';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';
+import { Address, getAbiItem, getEventSelector } from 'viem';
+import { ERC721_ABI } from 'lib/abis';
 
-export const useEvents = (address: string, chainId: number) => {
+export const useEvents = (address: Address, chainId: number) => {
   const { openSeaProxyAddress, isLoading: isOpenSeaProxyAddressLoading } = useOpenSeaProxyAddress(address);
   const { data: blockNumber, isLoading: isBlockNumberLoading, error: blockNumberError } = useBlockNumber(chainId);
 
-  const erc721Interface = new utils.Interface(ERC721Metadata);
+  const getErc721EventSelector = (eventName: 'Transfer' | 'Approval' | 'ApprovalForAll') => {
+    return getEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
+  };
+
   const addressTopic = address ? addressToTopic(address) : undefined;
+  const transferToTopics = addressTopic && [getErc721EventSelector('Transfer'), null, addressTopic];
+  const transferFromTopics = addressTopic && [getErc721EventSelector('Transfer'), addressTopic];
+  const approvalTopics = addressTopic && [getErc721EventSelector('Approval'), addressTopic];
+  const approvalForAllTopics = addressTopic && [getErc721EventSelector('ApprovalForAll'), addressTopic];
 
   const baseFilter = { fromBlock: 0, toBlock: blockNumber };
-
-  const transferToTopics = addressTopic && [erc721Interface.getEventTopic('Transfer'), null, addressTopic];
-  const transferFromTopics = addressTopic && [erc721Interface.getEventTopic('Transfer'), addressTopic];
-  const approvalTopics = addressTopic && [erc721Interface.getEventTopic('Approval'), addressTopic];
-  const approvalForAllTopics = addressTopic && [erc721Interface.getEventTopic('ApprovalForAll'), addressTopic];
 
   const {
     data: transferTo,

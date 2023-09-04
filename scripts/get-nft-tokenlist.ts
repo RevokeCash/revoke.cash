@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { utils } from 'ethers';
-import { getAddress } from 'ethers/lib/utils';
 import fs from 'fs/promises';
 import { TokenFromList } from 'lib/interfaces';
 import path from 'path';
+import { getAddress } from 'viem';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -118,7 +117,7 @@ updateNftTokenlist();
 // TODO: Update code to merge this with the earlier code
 const writeToken = async (token: TokenFromList, address: string, chainId: number) => {
   const chainPath = path.join(TOKENS_BASE_PATH, String(chainId));
-  const tokenPath = path.join(chainPath, `${utils.getAddress(address)}.json`);
+  const tokenPath = path.join(chainPath, `${getAddress(address)}.json`);
   await fs.mkdir(chainPath, { recursive: true });
   await fs.writeFile(tokenPath, JSON.stringify(sanitiseToken(token)));
 };

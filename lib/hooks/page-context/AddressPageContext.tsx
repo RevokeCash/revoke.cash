@@ -1,20 +1,16 @@
-import { providers } from 'ethers';
-import { LogsProvider } from 'lib/interfaces';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
-import { useNetwork, useProvider } from 'wagmi';
+import { useNetwork } from 'wagmi';
 import { useEvents } from '../ethereum/events/useEvents';
 import { useAllowances } from '../ethereum/useAllowances';
-import { useLogsProvider } from '../ethereum/useLogsProvider';
+import { Address } from 'viem';
 
 interface AddressContext {
-  address?: string;
+  address?: Address;
   selectedChainId?: number;
   selectChain?: (chainId: number) => void;
-  readProvider?: providers.BaseProvider;
-  logsProvider?: LogsProvider;
   eventContext?: ReturnType<typeof useEvents>;
   allowanceContext?: ReturnType<typeof useAllowances>;
   signatureNoticeAcknowledged?: boolean;
@@ -23,7 +19,7 @@ interface AddressContext {
 
 interface Props {
   children: ReactNode;
-  address: string;
+  address: Address;
   initialChainId?: number;
 }
 
@@ -55,9 +51,6 @@ export const AddressPageContextProvider = ({ children, address, initialChainId }
   allowanceContext.error = allowanceContext?.error || eventContext?.error;
   allowanceContext.isLoading = (allowanceContext?.isLoading || eventContext?.isLoading) && !allowanceContext?.error;
 
-  const logsProvider = useLogsProvider({ chainId: selectedChainId });
-  const readProvider = useProvider({ chainId: selectedChainId });
-
   const [signatureNoticeAcknowledged, setAcknowledged] = useLocalStorage('signature-notice-acknowledged', false);
   const acknowledgeSignatureNotice = () => setAcknowledged(true);
 
@@ -67,8 +60,6 @@ export const AddressPageContextProvider = ({ children, address, initialChainId }
         address,
         selectedChainId,
         selectChain,
-        readProvider,
-        logsProvider,
         eventContext,
         allowanceContext,
         signatureNoticeAcknowledged,

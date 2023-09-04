@@ -1,21 +1,18 @@
-import type { TransactionResponse } from '@ethersproject/abstract-provider';
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { TransactionType } from 'lib/interfaces';
 import { isRevertedError, isUserRejectionError } from 'lib/utils/errors';
 import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
+import { Hash } from 'viem';
 
 export const useHandleTransaction = () => {
   const toastRef = useRef();
   const { t } = useTranslation();
 
   const checkError = (e: any, type: TransactionType): void => {
-    const code = e.error?.code ?? e.code;
-    const message = e.reason ?? e.error?.reason ?? e.error?.message ?? e.message;
-    console.debug(`Ran into transaction issue, message: ${message} (${code})`);
-    console.debug(JSON.stringify(e));
-    console.debug(e);
+    const message = e.shortMessage ?? e.message;
+    console.debug(`Ran into transaction issue, message: \n${message}`);
 
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(message)) return;
@@ -39,15 +36,15 @@ export const useHandleTransaction = () => {
     return void toast.info(t('common:toasts.transaction_failed', { message }));
   };
 
-  const handleTransaction = async (transactionPromise: Promise<TransactionResponse>, type: TransactionType) => {
+  const handleTransaction = async (transactionPromise: Promise<Hash>, type: TransactionType) => {
     try {
-      const transaction = await transactionPromise;
+      const transactionHash = await transactionPromise;
 
-      if (transaction) {
+      if (transactionHash) {
         displayTransactionSubmittedToast(toastRef, t);
       }
 
-      return transaction;
+      return transactionHash;
     } catch (e) {
       checkError(e, type);
       return undefined;

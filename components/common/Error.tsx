@@ -18,7 +18,7 @@ const Error = ({ error }: Props) => {
   const chainName = getChainName(selectedChainId);
   const chainConnectionMessage = t('common:errors.messages.chain_could_not_connect', { chainName });
   const errorMessage = parseErrorMessage(error);
-  const message = errorMessage.includes('missing response') ? chainConnectionMessage : errorMessage;
+  const message = errorMessage.includes('HTTP request failed') ? chainConnectionMessage : errorMessage;
   return <div>Error: {message}</div>;
 };
 
