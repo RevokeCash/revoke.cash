@@ -33,7 +33,7 @@ const PermitsPanel = () => {
     queryKey: ['permitTokens', allowances?.map(getAllowanceKey)],
     queryFn: async () => {
       const ownedTokens = deduplicateArray(allowances, (a, b) => a.contract.address === b.contract.address)
-        .filter((token) => !hasZeroBalance(token))
+        .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals))
         .map(stripAllowanceData);
 
       return filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract));

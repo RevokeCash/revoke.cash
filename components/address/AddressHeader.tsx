@@ -4,7 +4,7 @@ import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import useTranslation from 'next-translate/useTranslation';
-import { useProvider } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
@@ -16,12 +16,12 @@ const AddressHeader = () => {
   const { t } = useTranslation();
   const { address, selectedChainId, selectChain } = useAddressPageContext();
   const { domainName } = useNameLookup(address);
-  const readProvider = useProvider({ chainId: selectedChainId });
+  const publicClient = usePublicClient({ chainId: selectedChainId });
 
   const { data: balance } = useQuery({
-    queryKey: ['balance', address, readProvider.network],
-    queryFn: () => readProvider.getBalance(address).then((balance) => balance.toString()),
-    enabled: !!address && !!readProvider.network,
+    queryKey: ['balance', address, publicClient.chain?.id],
+    queryFn: () => publicClient.getBalance({ address }),
+    enabled: !!address && !!publicClient.chain,
   });
 
   return (

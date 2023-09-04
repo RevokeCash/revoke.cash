@@ -1,10 +1,11 @@
 import AddressHeader from 'components/address/AddressHeader';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import PublicLayout from './PublicLayout';
+import { Address } from 'viem';
 
 interface Props {
   children: React.ReactNode;
-  address: string;
+  address: Address;
 }
 
 // TODO: This will become better when we switch to Next.js App Directory (nested layouts)

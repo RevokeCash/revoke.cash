@@ -13,7 +13,12 @@ interface Events {
 }
 
 // Certain chains lack proper infrastructure, so we don't index events for them
-const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet];
+const DO_NOT_INDEX = [
+  ChainId.PulseChain,
+  ChainId.BitTorrentChainMainnet,
+  ChainId.SmartBitcoinCash,
+  ChainId.RedlightChainMainnet,
+];
 
 class EventsDB extends Dexie {
   private events!: Table<Events>;
@@ -64,13 +69,11 @@ class EventsDB extends Dexie {
       if (fromBlock > toBlock) {
         return storedEvents.logs;
       }
-
       const newLogs = await getLogs(logsProvider, { ...filter, fromBlock, toBlock });
 
       const logs = [...(storedEvents?.logs || []), ...newLogs];
 
       await this.events.put({ chainId, topicsKey, topics, toBlock, logs });
-
       return logs;
     } catch (e) {
       console.log(e);

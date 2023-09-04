@@ -1,10 +1,10 @@
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import { AllowanceData } from 'lib/interfaces';
+import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
   allowance: AllowanceData;
-  onUpdate: (allowance: AllowanceData, newAmount?: string) => void;
+  onUpdate: OnUpdate;
 }
 
 const ControlsCell = ({ allowance, onUpdate }: Props) => {

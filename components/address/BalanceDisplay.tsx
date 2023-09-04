@@ -5,7 +5,7 @@ import { getChainNativeToken } from 'lib/utils/chains';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  balance: string;
+  balance: bigint;
   className?: string;
 }
 
@@ -16,7 +16,7 @@ const BalanceDisplay = ({ balance, className }: Props) => {
 
   return (
     <div className={classes}>
-      <span>{balance ? toFloat(balance, 18) : <Spinner className="w-3 h-3" />}</span>
+      <span>{balance !== undefined ? toFloat(balance, 18) : <Spinner className="w-3 h-3" />}</span>
       <span className="font-bold">{nativeToken}</span>
     </div>
   );

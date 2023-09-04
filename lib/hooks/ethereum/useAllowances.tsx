@@ -4,17 +4,18 @@ import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowance
 import { track } from 'lib/utils/analytics';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
-import { useProvider } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
+import { Address } from 'viem';
 
-export const useAllowances = (address: string, events: AddressEvents, chainId: number) => {
+export const useAllowances = (address: Address, events: AddressEvents, chainId: number) => {
   const [allowances, setAllowances] = useState<AllowanceData[]>();
-  const readProvider = useProvider({ chainId });
+  const publicClient = usePublicClient({ chainId });
 
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
     queryKey: ['allowances', address, chainId, events],
     queryFn: async () => {
-      const allowances = getAllowancesFromEvents(address, events, readProvider, chainId);
+      const allowances = getAllowancesFromEvents(address, events, publicClient, chainId);
       track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
@@ -44,7 +45,9 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
 
       // If the token has a balance and we just revoked the last allowance, we need to add the token back to the list
       // TODO: This is kind of ugly, ideally this should be reactive
-      if (!hasZeroBalance(allowance) && !newAllowances.find((other) => contractEquals(other, allowance))) {
+      const hasBalance = hasZeroBalance(allowance.balance, allowance.metadata.decimals);
+      const wasLastAllowanceForToken = !newAllowances.find((other) => contractEquals(other, allowance));
+      if (hasBalance && wasLastAllowanceForToken) {
         newAllowances.push(stripAllowanceData(allowance));
       }
 
@@ -53,7 +56,7 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
   };
 
   // TODO: Update last updated time
-  const onUpdate = async (allowance: AllowanceData, newAmount?: string) => {
+  const onUpdate = async (allowance: AllowanceData, newAmount?: bigint) => {
     // Invalidate blockNumber query, which triggers a refetch of the events, which in turn triggers a refetch of the allowances
     // We do not immediately refetch the allowances here, but we want to make sure that allowances will be refetched when
     // users navigate to the allowances page again
@@ -62,7 +65,7 @@ export const useAllowances = (address: string, events: AddressEvents, chainId: n
       refetchType: 'none',
     });
 
-    if (!newAmount || newAmount === '0') {
+    if (!newAmount || newAmount === 0n) {
       return onRevoke(allowance);
     }
 

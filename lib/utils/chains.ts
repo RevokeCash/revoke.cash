@@ -1,6 +1,7 @@
 import { ChainId, chains } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
+import { Chain, defineChain } from 'viem';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
@@ -63,6 +64,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.CronosMainnet,
   ChainId.CronosTestnet,
   ChainId.Zora,
+  ChainId.Astar,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -85,13 +87,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
 
-export const COVALENT_SUPPORTED_CHAINS = [
-  ChainId.HarmonyMainnetShard0,
-  ChainId.Evmos,
-  ChainId.GodwokenMainnet,
-  ChainId.BobaNetwork,
-  ChainId.Astar,
-];
+export const COVALENT_SUPPORTED_CHAINS = [ChainId.HarmonyMainnetShard0, ChainId.Evmos, ChainId.BobaNetwork];
 
 export const NODE_SUPPORTED_CHAINS: number[] = [];
 
@@ -145,7 +141,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FuseMainnet,
   ChainId.OasysMainnet,
   ChainId.NahmiiMainnet,
-  ChainId.GodwokenMainnet,
   ChainId.CallistoMainnet,
   ChainId.ENULSMainnet,
   ChainId.EthereumClassicMainnet,
@@ -697,4 +692,108 @@ export const getChainApiIdentifer = (chainId: number): string => {
   const { platform } = getChainEtherscanPlatformNames(chainId);
   const apiKey = getChainApiKey(chainId);
   return `${platform}:${apiKey}`;
+};
+
+export const getChainDeployedContracts = (chainId: number): any | undefined => {
+  const MULTICALL = {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    },
+  };
+
+  const mapping = {
+    [ChainId.EthereumMainnet]: {
+      ...MULTICALL,
+      ensRegistry: { address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e' },
+      ensUniversalResolver: { address: '0xc0497E381f536Be9ce14B0dD3817cBcAe57d2F62' },
+    },
+    [ChainId.Goerli]: { ...MULTICALL },
+    [ChainId.Sepolia]: { ...MULTICALL },
+    [ChainId.ArbitrumOne]: { ...MULTICALL },
+    [ChainId.ArbitrumGoerli]: { ...MULTICALL },
+    [ChainId.ArbitrumNova]: { ...MULTICALL },
+    [ChainId.AuroraMainnet]: { ...MULTICALL },
+    [ChainId.Astar]: { ...MULTICALL },
+    [ChainId['AvalancheC-Chain']]: { ...MULTICALL },
+    [ChainId.AvalancheFujiTestnet]: { ...MULTICALL },
+    [ChainId.Base]: { ...MULTICALL },
+    [ChainId.BaseGoerliTestnet]: { ...MULTICALL },
+    [ChainId.BobaNetwork]: { ...MULTICALL },
+    [ChainId.BNBSmartChainMainnet]: { ...MULTICALL },
+    [ChainId.BNBSmartChainTestnet]: { ...MULTICALL },
+    [ChainId.Canto]: { ...MULTICALL },
+    [ChainId.CeloMainnet]: { ...MULTICALL },
+    [ChainId.CeloAlfajoresTestnet]: { ...MULTICALL },
+    [ChainId.CronosMainnet]: { ...MULTICALL },
+    [ChainId.CronosTestnet]: { ...MULTICALL },
+    [ChainId.DogechainMainnet]: { ...MULTICALL },
+    [ChainId.FantomOpera]: { ...MULTICALL },
+    [ChainId.FantomTestnet]: { ...MULTICALL },
+    [ChainId.GodwokenMainnet]: { ...MULTICALL },
+    [ChainId.Gnosis]: { ...MULTICALL },
+    [ChainId.HarmonyMainnetShard0]: { ...MULTICALL },
+    [ChainId.IoTeXNetworkMainnet]: { ...MULTICALL },
+    [ChainId.Kava]: { ...MULTICALL },
+    [ChainId.KCCMainnet]: { ...MULTICALL },
+    [ChainId.Linea]: { ...MULTICALL },
+    [ChainId.LineaTestnet]: { ...MULTICALL },
+    [ChainId.Mantle]: { ...MULTICALL },
+    [ChainId.MetisAndromedaMainnet]: { ...MULTICALL },
+    [ChainId.MetisGoerliTestnet]: { ...MULTICALL },
+    [ChainId.MoonbaseAlpha]: { ...MULTICALL },
+    [ChainId.Moonbeam]: { ...MULTICALL },
+    [ChainId.Moonriver]: { ...MULTICALL },
+    [ChainId.OasisEmerald]: { ...MULTICALL },
+    [ChainId.OPMainnet]: { ...MULTICALL },
+    [ChainId.OptimismGoerliTestnet]: { ...MULTICALL },
+    [ChainId.PolygonMainnet]: { ...MULTICALL },
+    [ChainId.Mumbai]: { ...MULTICALL },
+    [ChainId.PolygonzkEVM]: { ...MULTICALL },
+    [ChainId.PolygonzkEVMTestnet]: { ...MULTICALL },
+    [ChainId.PulseChain]: { ...MULTICALL },
+    [ChainId.PulseChainTestnetv4]: { ...MULTICALL },
+    [ChainId.RSKMainnet]: { ...MULTICALL },
+    [ChainId.RSKTestnet]: { ...MULTICALL },
+    [ChainId['SongbirdCanary-Network']]: { ...MULTICALL },
+    [ChainId.SyscoinMainnet]: { ...MULTICALL },
+    [ChainId.SyscoinTanenbaumTestnet]: { ...MULTICALL },
+    [ChainId.TelosEVMMainnet]: { ...MULTICALL },
+    [ChainId.Wanchain]: {
+      multicall3: { address: '0xcDF6A1566e78EB4594c86Fe73Fcdc82429e97fbB' },
+    },
+    [ChainId.ZkSyncEraMainnet]: {
+      multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
+    },
+    [ChainId.ZkSyncEraTestnet]: {
+      multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
+    },
+    [ChainId.Zora]: { ...MULTICALL },
+  };
+
+  return mapping[chainId];
+};
+
+export const getViemChainConfig = (chainId: number): Chain | undefined => {
+  const chainInfo = chains.get(chainId);
+  const chainName = getChainName(chainId);
+  const fallbackNativeCurrency = { name: chainName, symbol: getChainNativeToken(chainId), decimals: 18 };
+
+  return defineChain({
+    id: chainId,
+    name: chainName,
+    network: chainName.toLowerCase().replaceAll(' ', '-'),
+    nativeCurrency: chainInfo?.nativeCurrency ?? fallbackNativeCurrency,
+    rpcUrls: {
+      default: { http: [getChainRpcUrl(chainId)] },
+      public: { http: [getChainRpcUrl(chainId)] },
+    },
+    blockExplorers: {
+      default: {
+        name: chainName + ' Explorer',
+        url: getChainExplorerUrl(chainId),
+      },
+    },
+    contracts: getChainDeployedContracts(chainId),
+    testnet: CHAIN_SELECT_TESTNETS.includes(chainId),
+  });
 };

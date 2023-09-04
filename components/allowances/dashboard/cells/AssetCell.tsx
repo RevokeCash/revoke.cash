@@ -27,12 +27,12 @@ const AssetCell = ({ allowance }: Props) => {
 
   let link = (
     <Href href={explorerUrl} underline="hover" external className="max-w-[8rem] lg:max-w-[12rem] truncate" ref={ref}>
-      {allowance.symbol}
+      {allowance.metadata.symbol}
     </Href>
   );
 
   if (showTooltip) {
-    link = <WithHoverTooltip tooltip={allowance.symbol}>{link}</WithHoverTooltip>;
+    link = <WithHoverTooltip tooltip={allowance.metadata.symbol}>{link}</WithHoverTooltip>;
   }
 
   return (
@@ -40,8 +40,8 @@ const AssetCell = ({ allowance }: Props) => {
       <div className="flex flex-col items-start gap-0.5">
         <div className="flex items-center gap-2 text-base">
           <ChainOverlayLogo
-            src={allowance.icon}
-            alt={allowance.symbol}
+            src={allowance.metadata.icon}
+            alt={allowance.metadata.symbol}
             chainId={isOnAddressPage ? undefined : allowance.chainId}
             size={24}
             overlaySize={16}
@@ -50,7 +50,7 @@ const AssetCell = ({ allowance }: Props) => {
         </div>
 
         <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
-          {getBalanceText(allowance.symbol, allowance.balance, allowance.decimals)}
+          {getBalanceText(allowance.metadata.symbol, allowance.balance, allowance.metadata.decimals)}
         </div>
       </div>
     </div>

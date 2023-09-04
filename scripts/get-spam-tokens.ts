@@ -1,9 +1,9 @@
 import { ChainId } from '@revoke.cash/chains';
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { getAddress } from 'ethers/lib/utils';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import { getAddress } from 'viem';
 
 dotenv.config();
 

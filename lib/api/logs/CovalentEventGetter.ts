@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { utils } from 'ethers';
 import type { Filter, Log } from 'lib/interfaces';
 import { isRateLimitError } from 'lib/utils/errors';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
+import { getAddress } from 'viem';
 
 export class CovalentEventGetter implements EventGetter {
   private queue: RequestQueue;
@@ -58,7 +58,7 @@ export class CovalentEventGetter implements EventGetter {
 }
 
 const formatCovalentEvent = (covalentLog: any) => ({
-  address: utils.getAddress(covalentLog.sender_address),
+  address: getAddress(covalentLog.sender_address),
   topics: covalentLog.raw_log_topics,
   data: covalentLog.raw_log_data,
   transactionHash: covalentLog.tx_hash,

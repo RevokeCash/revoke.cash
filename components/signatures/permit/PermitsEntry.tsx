@@ -7,9 +7,10 @@ import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext
 import { AllowanceData, TransactionType } from 'lib/interfaces';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
+import { isErc721Contract } from 'lib/utils/tokens';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
-import { useSigner } from 'wagmi';
+import { usePublicClient, useWalletClient } from 'wagmi';
 
 interface Props {
   token: AllowanceData;
@@ -17,15 +18,21 @@ interface Props {
 
 const PermitsEntry = ({ token }: Props) => {
   const { t } = useTranslation();
-  const { data: signer } = useSigner();
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction();
 
   const { execute: onClick, loading } = useAsyncCallback(async () => {
-    const transactionPromise = permit(signer, token.contract, DUMMY_ADDRESS, '0');
-    const transaction = await handleTransaction(transactionPromise, TransactionType.OTHER);
+    if (isErc721Contract(token.contract)) return;
+    const transactionPromise = permit(walletClient, token.contract, DUMMY_ADDRESS, 0n);
+
+    const hash = await handleTransaction(transactionPromise, TransactionType.OTHER);
+    if (!hash) return;
+
     track('Cancelled Permit Signatures', { chainId: selectedChainId, account: address, token: token.contract.address });
-    await transaction.wait(1);
+
+    await publicClient.waitForTransactionReceipt({ hash });
   });
 
   return (

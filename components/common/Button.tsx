@@ -4,7 +4,7 @@ import { ForwardedRef, MouseEventHandler, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
-// TODO: Proper extended ty[es for this component]
+// TODO: Proper extended styles for this component
 export interface Props extends Record<string, any> {
   disabled?: boolean;
   style: 'primary' | 'secondary' | 'tertiary' | 'none';

@@ -1,10 +1,25 @@
-import type { BigNumberish } from 'ethers';
-import { BigNumber, utils } from 'ethers';
-import type { Filter, Log, LogsProvider } from 'lib/interfaces';
+import type { Balance, Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import { isLogResponseSizeError } from './errors';
 import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
+import {
+  Abi,
+  Address,
+  ContractFunctionConfig,
+  FormattedTransactionRequest,
+  GetValue,
+  Hex,
+  PublicClient,
+  WalletClient,
+  getAddress,
+  pad,
+  slice,
+} from 'viem';
+import { Chain } from 'wagmi';
+import { UnionOmit } from 'viem/dist/types/types/utils';
+import { ChainId } from '@revoke.cash/chains';
+import { track } from './analytics';
 
 export const shortenAddress = (address?: string, characters: number = 6): string => {
   return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
@@ -16,15 +31,8 @@ export const shortenString = (name?: string, maxLength: number = 16): string | u
   return `${name.substr(0, maxLength - 3).trim()}...`;
 };
 
-export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
-  a = BigNumber.from(a);
-  b = BigNumber.from(b);
-  const diff = a.sub(b);
-  return diff.isZero() ? 0 : diff.lt(0) ? -1 : 1;
-};
-
-export const toFloat = (n: BigNumberish, decimals: number = 0): string => {
-  const full = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, '');
+export const toFloat = (n: bigint, decimals: number = 0): string => {
+  const full = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, ''); // TODO: formatUnits
 
   const MAX_DISPLAY_DECIMALS = 3;
   const tooSmallPrefix = `0.${'0'.repeat(MAX_DISPLAY_DECIMALS)}`; // 3 decimals -> '0.000'
@@ -36,19 +44,20 @@ export const toFloat = (n: BigNumberish, decimals: number = 0): string => {
   return full.startsWith(tooSmallPrefix) ? tooSmallReplacement : rounded;
 };
 
-export const fromFloat = (floatString: string, decimals: number): string => {
+export const fromFloat = (floatString: string, decimals: number): bigint => {
   const sides = floatString.split('.');
-  if (sides.length === 1) return floatString.padEnd(decimals + floatString.length, '0');
-  if (sides.length > 2) return '0';
+  if (sides.length === 1) return BigInt(floatString.padEnd(decimals + floatString.length, '0'));
+  if (sides.length > 2) return 0n;
 
-  return sides[1].length > decimals
-    ? sides[0] + sides[1].slice(0, decimals)
-    : sides[0] + sides[1].padEnd(decimals, '0');
+  const numberAsString =
+    sides[1].length > decimals ? sides[0] + sides[1].slice(0, decimals) : sides[0] + sides[1].padEnd(decimals, '0');
+
+  return BigInt(numberAsString);
 };
 
-export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<Log[]> => {
+export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promise<Log[]> => {
   try {
-    const result = await provider.getLogs(filter);
+    const result = await logsProvider.getLogs(filter);
     return result;
   } catch (error) {
     if (!isLogResponseSizeError(error)) throw error;
@@ -57,14 +66,14 @@ export const getLogs = async (provider: LogsProvider, filter: Filter): Promise<L
     if (filter.fromBlock === filter.toBlock) throw error;
 
     const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-    const leftPromise = getLogs(provider, { ...filter, toBlock: middle });
-    const rightPromise = getLogs(provider, { ...filter, fromBlock: middle + 1 });
+    const leftPromise = getLogs(logsProvider, { ...filter, toBlock: middle });
+    const rightPromise = getLogs(logsProvider, { ...filter, fromBlock: middle + 1 });
     const [left, right] = await Promise.all([leftPromise, rightPromise]);
     return [...left, ...right];
   }
 };
 
-export const parseInputAddress = async (inputAddressOrName: string): Promise<string | undefined> => {
+export const parseInputAddress = async (inputAddressOrName: string): Promise<Address | undefined> => {
   // If the input is an ENS name, validate it, resolve it and return it
   if (inputAddressOrName.endsWith('.eth')) {
     return await resolveEnsName(inputAddressOrName);
@@ -82,28 +91,28 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<str
 
   // If the input is an address, validate it and return it
   try {
-    return utils.getAddress(inputAddressOrName.toLowerCase());
+    return getAddress(inputAddressOrName.toLowerCase());
   } catch {
     return undefined;
   }
 };
 
-export const getBalanceText = (symbol: string, balance: string, decimals?: number) => {
+export const getBalanceText = (symbol: string, balance: Balance, decimals?: number) => {
   if (balance === 'ERC1155') return `(ERC1155)`;
-  return `${toFloat(balance, decimals)} ${symbol}`;
+  return `${toFloat(BigInt(balance), decimals)} ${symbol}`;
 };
 
-export const topicToAddress = (topic: string) => utils.getAddress(utils.hexDataSlice(topic, 12));
-export const addressToTopic = (address: string) => utils.hexZeroPad(address, 32).toLowerCase();
+export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));
+export const addressToTopic = (address: Address) => pad(address, { size: 32 }).toLowerCase() as Hex;
 
 export const logSorterChronological = (a: Log, b: Log) => {
   if (a.blockNumber === b.blockNumber) {
     if (a.transactionIndex === b.transactionIndex) {
-      return a.logIndex - b.logIndex;
+      return Number(a.logIndex - b.logIndex);
     }
-    return a.transactionIndex - b.transactionIndex;
+    return Number(a.transactionIndex - b.transactionIndex);
   }
-  return a.blockNumber - b.blockNumber;
+  return Number(a.blockNumber - b.blockNumber);
 };
 
 export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
@@ -144,3 +153,58 @@ export const writeToClipBoard = (text: string, t: Translate, displayToast: boole
 export const normaliseLabel = (label: string) => {
   return label.toLowerCase().replace(/[ -]/g, '_');
 };
+
+export const getWalletAddress = async (walletClient: WalletClient) => {
+  const [address] = await walletClient.requestAddresses();
+  return address;
+};
+
+export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
+  // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
+  const WEIRD_NETWORKS = [
+    ChainId.ZkSyncEraMainnet,
+    ChainId.ZkSyncEraTestnet,
+    ChainId.ArbitrumOne,
+    ChainId.ArbitrumGoerli,
+    ChainId.ArbitrumNova,
+  ];
+
+  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(chainId) ? 10_000_000n : 500_000n;
+
+  // TODO: Translate this error message
+  if (estimatedGas > EXCESSIVE_GAS) {
+    console.error(`Gas limit of ${estimatedGas} is excessive`);
+
+    // Track excessive gas usage so we can blacklist tokens
+    // TODO: Use a different tool than analytics for this
+    track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
+
+    throw new Error(
+      'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
+    );
+  }
+};
+
+export const writeContractUnlessExcessiveGas = async <
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+>(
+  publicCLient: PublicClient,
+  walletClient: WalletClient,
+  transactionRequest: ContractTransactionRequest<TAbi, TFunctionName>,
+) => {
+  const estimatedGas = await publicCLient.estimateGas(transactionRequest);
+  throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
+  return walletClient.writeContract(transactionRequest);
+};
+
+// This is as "simple" as I was able to get this generic to be, considering it needs to work with viem's type inference
+type ContractTransactionRequest<
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+> = ContractFunctionConfig<TAbi, TFunctionName, 'payable' | 'nonpayable'> & {
+  account: Address;
+  chain: Chain;
+  dataSuffix?: Hex;
+} & UnionOmit<FormattedTransactionRequest<Chain>, 'from' | 'to' | 'data' | 'value'> &
+  GetValue<TAbi, TFunctionName>;

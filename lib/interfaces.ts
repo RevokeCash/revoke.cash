@@ -1,32 +1,31 @@
-import type { Log as EthersLog, TransactionResponse } from '@ethersproject/abstract-provider';
-import type { Contract, Signer } from 'ethers';
+import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
+import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+
+export type Balance = bigint | 'ERC1155';
 
 export interface BaseTokenData {
-  contract: Contract;
+  contract: Erc20TokenContract | Erc721TokenContract;
+  metadata: TokenMetadata;
   chainId: number;
-  symbol: string;
-  owner: string;
-  balance: string;
-  icon?: string;
-  decimals?: number;
-  totalSupply?: string;
+  owner: Address;
+  balance: Balance;
 }
 
 export interface BaseAllowanceData {
-  spender: string;
+  spender: Address;
   lastUpdated: number;
-  transactionHash: string;
-  amount?: string; // Only for ERC20 tokens
-  tokenId?: string; // Only for ERC721 tokens (single token)
+  transactionHash: Hash;
+  amount?: bigint; // Only for ERC20 tokens
+  tokenId?: bigint; // Only for ERC721 tokens (single token)
   expiration?: number; // Only for Permit2 allowances
 }
 
 export interface AllowanceData extends BaseTokenData {
-  spender?: string;
+  spender?: Address;
   lastUpdated?: number;
-  transactionHash?: string;
-  amount?: string; // Only for ERC20 tokens
-  tokenId?: string; // Only for ERC721 tokens (single token)
+  transactionHash?: Hash;
+  amount?: bigint; // Only for ERC20 tokens
+  tokenId?: bigint; // Only for ERC721 tokens (single token)
   expiration?: number; // Only for Permit2 allowances
 }
 
@@ -53,11 +52,14 @@ export interface LogsProvider {
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T | undefined>>;
 
-export interface Log
-  extends Pick<
-    EthersLog,
-    'address' | 'topics' | 'data' | 'transactionHash' | 'blockNumber' | 'transactionIndex' | 'logIndex'
-  > {
+export interface Log {
+  address: Address;
+  topics: [topic0: Hex, ...rest: Hex[]];
+  data: Hex;
+  transactionHash: Hash;
+  blockNumber: number;
+  transactionIndex: number;
+  logIndex: number;
   timestamp?: number;
 }
 
@@ -91,7 +93,7 @@ export interface Marketplace {
   name: string;
   logo: string;
   chains: number[];
-  cancelSignatures: (signer: Signer) => Promise<TransactionResponse>;
+  cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
 }
 
 export interface ISidebarEntry {
@@ -128,3 +130,29 @@ export interface SpenderData {
   name: string;
   exploits?: string[];
 }
+
+export interface Contract {
+  address: Address;
+  abi: Abi;
+  publicClient: PublicClient;
+}
+
+export type TokenContract = Erc20TokenContract | Erc721TokenContract;
+
+export interface Erc20TokenContract extends Contract {
+  abi: typeof ERC20_ABI;
+}
+
+export interface Erc721TokenContract extends Contract {
+  abi: typeof ERC721_ABI;
+}
+
+export interface TokenMetadata {
+  // name: string;
+  symbol: string;
+  icon?: string;
+  decimals?: number;
+  totalSupply?: bigint;
+}
+
+export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;

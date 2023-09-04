@@ -1,5 +1,5 @@
-import { Provider } from '@ethersproject/abstract-provider';
 import Dexie, { Table } from 'dexie';
+import { PublicClient } from 'viem';
 
 interface Block {
   chainId: number;
@@ -17,21 +17,22 @@ class BlocksDB extends Dexie {
     });
   }
 
-  async getBlockTimestamp(provider: Provider, blockNumber: number) {
+  async getBlockTimestamp(publicClient: PublicClient, blockNumber: number): Promise<number> {
     try {
-      const { chainId } = await provider.getNetwork();
+      const chainId = publicClient.chain.id;
       const storedBlock = await this.blocks.get([chainId, blockNumber]);
       if (storedBlock) return storedBlock.timestamp;
 
-      const block = await provider.getBlock(blockNumber);
-      await this.blocks.put({ chainId, blockNumber, timestamp: block?.timestamp });
-      return block.timestamp;
+      const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
+      const timestamp = Number(block?.timestamp);
+      await this.blocks.put({ chainId, blockNumber, timestamp });
+      return timestamp;
     } catch (e) {
       console.log(e);
-      // If there is an error, we just return the block timestamp from the provider (may be the case if IndexedDB is not supported)
+      // If there is an error, we just return the block timestamp from the public client (may be the case if IndexedDB is not supported)
       if (e instanceof Dexie.DexieError) {
-        const block = await provider.getBlock(blockNumber);
-        return block?.timestamp;
+        const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
+        return Number(block?.timestamp);
       }
 
       throw e;

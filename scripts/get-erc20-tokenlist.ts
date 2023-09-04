@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { utils } from 'ethers';
 import fs from 'fs/promises';
 import path from 'path';
 import type { ChainTokenMapping } from '../lib/interfaces';
 import { TokenFromList } from '../lib/interfaces';
 import { SUPPORTED_CHAINS, getChainName } from '../lib/utils/chains';
+import { getAddress } from 'viem';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -37,7 +37,7 @@ const getTokenMappingFromCoinGecko = async (chainId: number): Promise<ChainToken
     const tokenMapping = {};
     for (const token of tokens) {
       try {
-        tokenMapping[utils.getAddress(token.address)] = token;
+        tokenMapping[getAddress(token.address)] = token;
       } catch {
         // Ignore invalid addresses
       }
@@ -56,7 +56,7 @@ const getTokenMappingFrom1inch = async (chainId: number): Promise<ChainTokenMapp
 
     const tokenMapping = {};
     for (const token of Object.values<any>(res.data)) {
-      tokenMapping[utils.getAddress(token.address)] = token;
+      tokenMapping[getAddress(token.address)] = token;
     }
 
     return tokenMapping as ChainTokenMapping;
@@ -71,7 +71,7 @@ const getTokenMappingFrom1inch = async (chainId: number): Promise<ChainTokenMapp
 // TODO: Update code to merge this with the earlier code
 const writeToken = async (token: TokenFromList, address: string, chainId: number) => {
   const chainPath = path.join(TOKENS_BASE_PATH, String(chainId));
-  const tokenPath = path.join(chainPath, `${utils.getAddress(address)}.json`);
+  const tokenPath = path.join(chainPath, `${getAddress(address)}.json`);
   await fs.mkdir(chainPath, { recursive: true });
   await fs.writeFile(tokenPath, JSON.stringify(sanitiseToken(token)));
 };

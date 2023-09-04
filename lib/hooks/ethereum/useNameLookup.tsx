@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { lookupAvvyName, lookupEnsName, lookupUnsName } from 'lib/utils/whois';
+import { Address } from 'viem';
 
-export const useNameLookup = (address: string) => {
+export const useNameLookup = (address: Address) => {
   const { data: ensName } = useQuery({
     queryKey: ['ensName', address, { persist: true }],
     queryFn: () => lookupEnsName(address),

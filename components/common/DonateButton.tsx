@@ -1,7 +1,6 @@
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import { utils } from 'ethers';
 import { DONATION_ADDRESS } from 'lib/constants';
 import { track } from 'lib/utils/analytics';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
@@ -10,8 +9,10 @@ import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
-import { useNetwork, useSigner } from 'wagmi';
+import { useNetwork, useWalletClient } from 'wagmi';
 import Input from './Input';
+import { parseEther } from 'viem';
+import { getWalletAddress } from 'lib/utils';
 
 interface Props {
   size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
@@ -23,7 +24,7 @@ interface Props {
 const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   const { t } = useTranslation();
   const { chain } = useNetwork();
-  const { data: signer } = useSigner();
+  const { data: walletClient } = useWalletClient();
 
   const nativeToken = getChainNativeToken(chain?.id);
   const [amount, setAmount] = useState<string>(getDefaultDonationAmount(nativeToken));
@@ -47,15 +48,16 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   }, [nativeToken]);
 
   const sendDonation = async () => {
-    if (!signer || !chain?.id) {
+    if (!walletClient || !chain?.id) {
       alert('Please connect your web3 wallet to donate');
     }
 
     try {
-      await signer.sendTransaction({
+      await walletClient.sendTransaction({
+        account: await getWalletAddress(walletClient),
         to: DONATION_ADDRESS,
-        from: await signer.getAddress(),
-        value: utils.parseEther(amount),
+        value: parseEther(amount),
+        chain: chain,
       });
 
       toast.info(t('common:toasts.donation_sent'));

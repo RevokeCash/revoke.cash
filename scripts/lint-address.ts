@@ -1,4 +1,4 @@
-import { utils } from 'ethers';
+import { getAddress } from 'viem';
 
 const address = process.argv[2];
-console.log(utils.getAddress(address));
+console.log(getAddress(address));

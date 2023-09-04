@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { utils } from 'ethers';
 import type { Filter, Log } from 'lib/interfaces';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
@@ -10,6 +9,7 @@ import {
 } from 'lib/utils/chains';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
+import { getAddress } from 'viem';
 
 export class EtherscanEventGetter implements EventGetter {
   private queues: { [chainId: number]: RequestQueue };
@@ -28,7 +28,8 @@ export class EtherscanEventGetter implements EventGetter {
     const queue = this.queues[chainId]!;
 
     const query = prepareEtherscanGetLogsQuery(filter, apiKey);
-    const { data } = await queue.add(() => axios.get(apiUrl, { params: query }));
+
+    const { data } = await retryOn429(() => queue.add(() => axios.get(apiUrl, { params: query })));
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
     if (data.result?.length === 1000) {
@@ -67,7 +68,7 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
   const query = {
     module: 'logs',
     action: 'getLogs',
-    address: undefined,
+    // address: undefined,
     fromBlock: filter.fromBlock ?? 0,
     toBlock: filter.toBlock ?? 'latest',
     topic0,
@@ -88,7 +89,7 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
 };
 
 const formatEtherscanEvent = (etherscanLog: any) => ({
-  address: utils.getAddress(etherscanLog.address),
+  address: getAddress(etherscanLog.address),
   topics: etherscanLog.topics.filter((topic: string) => !!topic),
   data: etherscanLog.data,
   transactionHash: etherscanLog.transactionHash,
@@ -97,3 +98,15 @@ const formatEtherscanEvent = (etherscanLog: any) => ({
   logIndex: Number.parseInt(etherscanLog.logIndex, 16),
   timestamp: Number.parseInt(etherscanLog.timeStamp, 16),
 });
+
+// Certain Blockscout instances will return a 429 error if we hit the rate limit instead of a 200 response with the error message
+const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
+  try {
+    return await fn();
+  } catch (e) {
+    if (e.message.includes('429')) {
+      console.error('Rate limit reached, retrying...');
+      return retryOn429(fn);
+    }
+  }
+};

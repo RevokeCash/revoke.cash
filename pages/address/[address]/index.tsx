@@ -6,9 +6,10 @@ import { parseInputAddress } from 'lib/utils';
 import type { GetServerSideProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
+import { Address } from 'viem';
 
 interface Props {
-  address: string;
+  address: Address;
   ssrDomainName?: string;
 }
 
