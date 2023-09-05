@@ -81,7 +81,7 @@ const fixtures = [
   ['Optimism Goerli', '0x3239a95A9262034ca28b9a03133775f716f119f8'],
   ['zkSync Era Goerli', '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24'],
   ['Linea Goerli', '0x444111CD376893AFCd7405239CE72b64d5A22958'],
-  ['Scroll Alpha', '0x444111CD376893AFCd7405239CE72b64d5A22958'],
+  ['Scroll Sepolia', '0xBF1E9dc0f7c2186346544BF985321e179c3d186c'],
   ['Base Goerli', '0xDEA7DBE814dc0B13C57ed78ff2b3B3cc8Efab4be'],
   ['Taiko Grimsvotn', '0xc3f86b0181e7E2bdf8224271839f8DdaC56574F0'],
   ['Cronos Testnet', '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f'],
