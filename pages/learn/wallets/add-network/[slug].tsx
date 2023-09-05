@@ -32,7 +32,6 @@ interface Props {
 
 const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
   const { t, lang } = useTranslation();
-  const router = useRouter();
   const { switchNetwork } = useSwitchNetwork({ chainId });
   const { isConnected } = useAccount();
   const isMounted = useMounted();
@@ -43,6 +42,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
 
   const meta = {
     title: t('learn:add_network.title', { chainName }),
+    sidebarTitle: t('learn:add_network.title', { chainName }),
     description: t('learn:add_network.description', { chainName }),
     language: lang,
   };

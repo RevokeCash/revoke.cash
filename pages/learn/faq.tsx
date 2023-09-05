@@ -19,7 +19,12 @@ interface Props {
 
 const FaqPage: NextPage = ({ sidebar }: Props) => {
   const { t, lang } = useTranslation();
-  const meta = { title: t('learn:sidebar.faq'), description: t('faq:meta.description'), language: lang };
+  const meta = {
+    title: t('learn:sidebar.faq'),
+    sidebarTitle: t('learn:sidebar.faq'),
+    description: t('faq:meta.description'),
+    language: lang,
+  };
 
   return (
     <>

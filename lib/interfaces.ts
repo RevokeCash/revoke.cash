@@ -103,8 +103,9 @@ export interface ISidebarEntry {
   children?: ISidebarEntry[];
 }
 
-export interface ContentMeta extends Record<string, any> {
+export interface ContentMeta {
   title: string;
+  sidebarTitle?: string;
   description: string;
   language: string;
   author?: string;

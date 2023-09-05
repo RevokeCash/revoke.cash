@@ -25,7 +25,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
     breadcrumbs.push({ name: t(`learn:sidebar.${slugPart}`), href: `/learn/${slug.slice(0, i + 1).join('/')}` });
   });
 
-  if (meta.title) breadcrumbs.push({ name: meta.title });
+  if (meta.sidebarTitle) breadcrumbs.push({ name: meta.sidebarTitle });
 
   return (
     <div className="flex flex-col mx-auto min-h-screen gap-4">
