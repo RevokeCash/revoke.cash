@@ -193,9 +193,9 @@ export const writeContractUnlessExcessiveGas = async <
   walletClient: WalletClient,
   transactionRequest: ContractTransactionRequest<TAbi, TFunctionName>,
 ) => {
-  const estimatedGas = await publicCLient.estimateGas(transactionRequest);
+  const estimatedGas = await publicCLient.estimateContractGas(transactionRequest);
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
-  return walletClient.writeContract(transactionRequest);
+  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
 
 // This is as "simple" as I was able to get this generic to be, considering it needs to work with viem's type inference

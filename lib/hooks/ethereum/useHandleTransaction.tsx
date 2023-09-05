@@ -4,18 +4,19 @@ import { isRevertedError, isUserRejectionError } from 'lib/utils/errors';
 import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
-import { Hash } from 'viem';
+import { Hash, stringify } from 'viem';
 
 export const useHandleTransaction = () => {
   const toastRef = useRef();
   const { t } = useTranslation();
 
   const checkError = (e: any, type: TransactionType): void => {
-    const message = e.shortMessage ?? e.message;
+    const message = e.details ?? e.shortMessage ?? e.message;
     console.debug(`Ran into transaction issue, message: \n${message}`);
-
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(message)) return;
+
+    console.debug(stringify(e, null, 2));
 
     // Not all ERC20 contracts allow for simple changes in approval to be made
     // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
