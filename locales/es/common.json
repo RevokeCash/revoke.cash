@@ -78,6 +78,9 @@
     "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en Ethereum y 40 redes más.",
     "title": "Revoca las autorizaciones de tus tokens en más de 40 redes"
   },
+  "misc": {
+    "powered_by": "Powered by <0>{{name}}</0>"
+  },
   "nav": {
     "about": "Sobre nosotros",
     "exploits": "Hacks",

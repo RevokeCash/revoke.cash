@@ -113,5 +113,13 @@
     "permit2_expiration": "Esta es una aprobación de Permit2 que caducará en {{inTime}}",
     "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
     "switch_chain": "Por favor cambia tu red conectada a <0>{{chainName}}</0> dentro de tu cartera para continuar"
+  },
+  "wallet_health": {
+    "categories": {
+      "high": "Good",
+      "low": "Bad",
+      "medium": "Moderate"
+    },
+    "description": "Wallet Health"
   }
 }

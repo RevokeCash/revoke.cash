@@ -113,5 +113,13 @@
     "permit2_expiration": "This is a Permit2 approval that will expire {{inTime}}",
     "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
     "switch_chain": "Please switch your connected network to <0>{{chainName}}</0> inside your wallet to continue"
+  },
+  "wallet_health": {
+    "categories": {
+      "high": "Good",
+      "low": "Bad",
+      "medium": "Moderate"
+    },
+    "description": "Wallet Health"
   }
 }

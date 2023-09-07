@@ -10,7 +10,7 @@ interface Props {
 }
 
 const LogoLink = ({ src, alt, href, size, className }: Props) => (
-  <Href className="flex" href={href} external>
+  <Href className="flex shrink-0" href={href} external>
     <Logo src={src} alt={alt} size={size} className={className} />
   </Href>
 );

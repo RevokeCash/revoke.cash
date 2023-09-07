@@ -112,5 +112,13 @@
     "permit2_expiration": "这是 Permit2 授权，将于 {{inTime}} 到期。",
     "permit_signatures": "许可签名用于在无需发送交易的情况下批准花费。如果您在钓鱼网站上签署了许可签名，请取消。",
     "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
+  },
+  "wallet_health": {
+    "categories": {
+      "high": "Good",
+      "low": "Bad",
+      "medium": "Moderate"
+    },
+    "description": "Wallet Health"
   }
 }

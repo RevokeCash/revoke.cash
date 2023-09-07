@@ -19,11 +19,11 @@
     "translator": "Traducido por <0>{{translator}}</0>"
   },
   "home": {
-    "intro_paragraph": "Creamos la sección de aprendizaje de Revoke.cash para ayudarlo a comprender cómo puede mantenerse seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente."
+    "intro_paragraph": "Creamos la sección de aprendizaje de Revoke.cash para ayudarte a comprender cómo puedes mantenerte seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente."
   },
   "meta": {
-    "description": "El mundo de web3 puede resultar confuso, pero no tiene por qué serlo. Hemos reunido una colección de recursos para ayudarte a aprender sobre web3, la seguridad de las carteras y mucho más.",
-    "title": "Aprende sobre Web3, Seguridad de cartera y más"
+    "description": "El mundo de la web3 puede resultar confuso, pero no tiene por qué serlo. Hemos reunido una colección de recursos para ayudarte a aprender sobre la web3, la seguridad y mucho más.",
+    "title": "Aprender Sobre Web3, Seguridad y Más"
   },
   "sidebar": {
     "approvals": "Autorizaciones de Tokens",

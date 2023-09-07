@@ -23,6 +23,8 @@ import { getPermit2AllowancesFromApprovals } from './permit2';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
 import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 import { isNetworkError, parseErrorMessage } from './errors';
+import axios from 'axios';
+import delay from 'delay';
 
 export const getAllowancesFromEvents = async (
   owner: Address,
@@ -308,4 +310,17 @@ export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTo
   return (
     formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
   );
+};
+export const getNeftureRiskScore = async (address: Address) => {
+  const { data } = await axios.post('https://api-scan-wallet.nefture.com/getScore', { address });
+  if (data.status === 'pending') {
+    await delay(5_000);
+    return getNeftureRiskScore(address);
+  }
+
+  if (data.status !== 'success') {
+    throw new Error('Nefture API error');
+  }
+
+  return data.score;
 };
