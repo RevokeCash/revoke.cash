@@ -45,7 +45,7 @@ export const getErc20TokenData = async (
   chainId: number,
 ): Promise<BaseTokenData> => {
   const [metadata, balance] = await Promise.all([
-    getTokenMetadata(contract, chainId),
+    getTokenMetadataFromBackend(contract, chainId),
     contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
   ]);
 
@@ -63,7 +63,7 @@ export const getErc721TokenData = async (
   const calculatedBalance = BigInt(transfersTo.length - transfersFrom.length);
 
   const [metadata, balance] = await Promise.all([
-    getTokenMetadata(contract, chainId),
+    getTokenMetadataFromBackend(contract, chainId),
     shouldFetchBalance
       ? withFallback<Balance>(
           contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
@@ -93,6 +93,21 @@ const getTokenDataFromMapping = async (
     icon: metadata?.logoURI,
     isSpam: metadata?.isSpam,
   };
+};
+
+export const getTokenMetadataFromBackend = async (
+  contract: TokenContract,
+  chainId: number,
+): Promise<TokenMetadata | undefined> => {
+  const result = await fetch(
+    `/api/${chainId}/tokens/${getAddress(contract.address)}?type=${isErc721Contract(contract) ? 'ERC721' : 'ERC20'}`,
+  );
+
+  if (!result.ok) {
+    throw new Error(await result.text());
+  }
+
+  return deserialize(await result.text());
 };
 
 export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
