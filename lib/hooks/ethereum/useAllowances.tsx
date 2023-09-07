@@ -65,6 +65,11 @@ export const useAllowances = (address: Address, events: AddressEvents, chainId: 
       refetchType: 'none',
     });
 
+    await queryClient.invalidateQueries({
+      queryKey: ['walletHealthScore', chainId, allowance.owner],
+      refetchType: 'none',
+    });
+
     if (!newAmount || newAmount === 0n) {
       return onRevoke(allowance);
     }

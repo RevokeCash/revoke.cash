@@ -113,5 +113,13 @@
     "permit2_expiration": "これは{{inTime}}で期限が切れる許可2の承認です。",
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
     "switch_chain": "続行するには、ウォレット内の接続ネットワークを <0>{{chainName}}</0>に切り替えてください"
+  },
+  "wallet_health": {
+    "categories": {
+      "high": "Good",
+      "low": "Bad",
+      "medium": "Moderate"
+    },
+    "description": "Wallet Health"
   }
 }

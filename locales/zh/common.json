@@ -78,6 +78,9 @@
     "description": "撤销在以太坊和其他 40+ 区块链的代币授权，重新掌控自己的钱包，确保资金安全。",
     "title": "撤销 40+ 区块链上的代币授权"
   },
+  "misc": {
+    "powered_by": "Powered by <0>{{name}}</0>"
+  },
   "nav": {
     "about": "关于我们",
     "exploits": "漏洞",

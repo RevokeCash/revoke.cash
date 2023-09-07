@@ -4361,6 +4361,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"delay@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "delay@npm:6.0.0"
+  checksum: e00190cf6e56e3f746af6664a9b7a837a582a70b96ce18d83b86a97300cc9f727189b9f6a7082557134223c0bd23eee88e681cab54cb4e5d8f6b2f4054e7b49a
+  languageName: node
+  linkType: hard
+
 "delayed-stream@npm:~1.0.0":
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
@@ -8310,6 +8317,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-circular-progressbar@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "react-circular-progressbar@npm:2.1.0"
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: dc118010a8f94733daafac586c969f7e889ad0736d96a0fda79406ee62e9410848abfd3dee4887bb0ff46b99e1f8c86ee1afabc88dfbf4dcb95107b22de1d6d7
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
@@ -8733,6 +8749,7 @@ __metadata:
     axios: ^0.26.1
     axios-retry: ^3.7.0
     cypress: ^12.17.4
+    delay: ^6.0.0
     dexie: ^3.2.4
     dotenv: ^16.3.1
     ethers: ^5.7.2
@@ -8756,6 +8773,7 @@ __metadata:
     rate-limiter-flexible: ^2.4.2
     react: ^18.2.0
     react-async-hook: ^4.0.0
+    react-circular-progressbar: ^2.1.0
     react-dom: ^18.2.0
     react-lite-youtube-embed: ^2.3.52
     react-markdown: ^8.0.7
