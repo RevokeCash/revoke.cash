@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { RequestQueue } from './api/logs/RequestQueue';
 import type { Filter, Log } from './interfaces';
-import { PublicClient, createPublicClient, getAddress, http } from 'viem';
-import { getChainLogsRpcUrl, getViemChainConfig, isBackendSupportedChain } from './utils/chains';
+import { PublicClient, getAddress } from 'viem';
+import { createViemPublicClientForChain, getChainLogsRpcUrl, isBackendSupportedChain } from './utils/chains';
 
 export class BackendLogsProvider {
   queue: RequestQueue;
@@ -29,10 +29,7 @@ export class ViemLogsProvider {
     public chainId: number,
     url?: string,
   ) {
-    this.client = createPublicClient({
-      chain: getViemChainConfig(this.chainId),
-      transport: http(url ?? getChainLogsRpcUrl(this.chainId)),
-    });
+    this.client = createViemPublicClientForChain(chainId, url ?? getChainLogsRpcUrl(chainId));
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {

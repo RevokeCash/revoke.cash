@@ -1,30 +1,27 @@
-import axios from 'axios';
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DATA_BASE_URL, DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
 import type {
-  AllowanceData,
-  BaseAllowanceData,
   BaseTokenData,
   TokenContract,
   Log,
-  TokenFromList,
   Erc20TokenContract,
   Erc721TokenContract,
   Contract,
   Balance,
+  TokenMetadata,
 } from 'lib/interfaces';
 import { toFloat } from '.';
-import { formatErc20Allowance } from './allowances';
 import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
-import { Abi, Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
+import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
+import { deserialize } from 'wagmi';
 
-export const isSpamToken = (allowance: AllowanceData) => {
-  const includesHttp = /https?:\/\//i.test(allowance.metadata.symbol);
+export const isSpamToken = (symbol: string) => {
+  const includesHttp = /https?:\/\//i.test(symbol);
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
   const tldRegex =
     /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i;
-  const includesTld = tldRegex.test(allowance.metadata.symbol);
+  const includesTld = tldRegex.test(symbol);
   return includesHttp || includesTld;
 };
 
@@ -47,22 +44,11 @@ export const getErc20TokenData = async (
   owner: Address,
   chainId: number,
 ): Promise<BaseTokenData> => {
-  const tokenData = await getTokenDataFromMapping(contract, chainId);
-  const icon = tokenData?.logoURI;
-
-  if (tokenData?.isSpam) throw new Error('Token is marked as spam');
-
-  const [totalSupply, balance, symbol, decimals] = await Promise.all([
-    contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
+  const [metadata, balance] = await Promise.all([
+    getTokenMetadata(contract, chainId),
     contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
-    // Use the tokenlist symbol + decimals if present (simplifies handing MKR et al)
-    tokenData?.symbol ??
-      withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
-    tokenData?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    throwIfNotErc20(contract),
   ]);
 
-  const metadata = { symbol, icon, decimals, totalSupply };
   return { contract, metadata, chainId, owner, balance };
 };
 
@@ -73,29 +59,18 @@ export const getErc721TokenData = async (
   transfersTo: Log[],
   chainId: number,
 ): Promise<BaseTokenData> => {
-  const tokenData = await getTokenDataFromMapping(contract, chainId);
-  const icon = tokenData?.logoURI;
-
-  if (tokenData?.isSpam) throw new Error('Token is marked as spam');
-
   const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
   const calculatedBalance = BigInt(transfersTo.length - transfersFrom.length);
 
-  const [balance, symbol] = await Promise.all([
+  const [metadata, balance] = await Promise.all([
+    getTokenMetadata(contract, chainId),
     shouldFetchBalance
       ? withFallback<Balance>(
           contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
           'ERC1155',
         )
       : calculatedBalance,
-    // Use the tokenlist name if present, fall back to address since not every NFT has a name
-    tokenData?.symbol ??
-      withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
-    throwIfNotErc721(contract),
-    throwIfSpamNft(contract),
   ]);
-
-  const metadata = { symbol, icon };
 
   return { contract, metadata, chainId, owner, balance };
 };
@@ -103,13 +78,51 @@ export const getErc721TokenData = async (
 const getTokenDataFromMapping = async (
   contract: TokenContract,
   chainId: number,
-): Promise<TokenFromList | undefined> => {
-  try {
-    const tokenData = await axios.get(`${DATA_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`);
-    return tokenData.data;
-  } catch {
+): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
+  const result = await fetch(`${DATA_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`);
+
+  if (!result.ok) {
     return undefined;
   }
+
+  const metadata = deserialize(await result.text());
+
+  return {
+    symbol: metadata?.symbol,
+    decimals: metadata?.decimals,
+    icon: metadata?.logoURI,
+    isSpam: metadata?.isSpam,
+  };
+};
+
+export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
+  const metadataFromMapping = await getTokenDataFromMapping(contract, chainId);
+  if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
+
+  if (isErc721Contract(contract)) {
+    const [symbol] = await Promise.all([
+      metadataFromMapping?.symbol ??
+        withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
+      throwIfNotErc721(contract),
+      throwIfSpamNft(contract),
+    ]);
+
+    if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
+
+    return { ...metadataFromMapping, symbol };
+  }
+
+  const [totalSupply, symbol, decimals] = await Promise.all([
+    contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
+    metadataFromMapping?.symbol ??
+      withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
+    metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
+    throwIfNotErc20(contract),
+  ]);
+
+  if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
+
+  return { ...metadataFromMapping, totalSupply, symbol, decimals };
 };
 
 export const throwIfNotErc20 = async (contract: Erc20TokenContract) => {
@@ -159,12 +172,6 @@ export const throwIfSpamNft = async (contract: Contract) => {
 
 export const hasZeroBalance = (balance: Balance, decimals?: number) => {
   return balance !== 'ERC1155' && toFloat(balance, decimals) === '0';
-};
-
-export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTokenData) => {
-  return (
-    formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
-  );
 };
 
 export const createTokenContracts = (events: Log[], publicClient: PublicClient): TokenContract[] => {

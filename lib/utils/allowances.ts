@@ -20,17 +20,10 @@ import {
   toFloat,
   topicToAddress,
 } from '.';
-import { track } from './analytics';
 import { getPermit2AllowancesFromApprovals } from './permit2';
-import {
-  createTokenContracts,
-  getTokenData,
-  hasZeroAllowance,
-  hasZeroBalance,
-  isErc721Contract,
-  isSpamToken,
-} from './tokens';
+import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
 import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
+import axios from 'axios';
 
 export const getAllowancesFromEvents = async (
   owner: Address,
@@ -78,10 +71,9 @@ export const getAllowancesFromEvents = async (
     }),
   );
 
-  // Filter out any spam tokens and zero-balance + zero-allowance tokens
+  // Filter out any zero-balance + zero-allowance tokens
   return allowances
     .flat()
-    .filter((allowance) => !isSpamToken(allowance))
     .filter((allowance) => allowance.spender || allowance.balance !== 'ERC1155')
     .filter((allowance) => allowance.spender || !hasZeroBalance(allowance.balance, allowance.metadata.decimals))
     .sort((a, b) => a.metadata.symbol.localeCompare(b.metadata.symbol));
@@ -311,4 +303,10 @@ export const stripAllowanceData = (allowance: AllowanceData): BaseTokenData => {
 
 export const getAllowanceKey = (allowance: AllowanceData) => {
   return `${allowance.contract.address}-${allowance.spender}-${allowance.tokenId}-${allowance.chainId}-${allowance.owner}`;
+};
+
+export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTokenData) => {
+  return (
+    formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
+  );
 };

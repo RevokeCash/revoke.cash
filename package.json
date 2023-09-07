@@ -93,6 +93,6 @@
   },
   "packageManager": "yarn@3.6.2",
   "lint-staged": {
-    "*": "yarn prettier --write"
+    "*": "yarn prettier -u --write"
   }
 }

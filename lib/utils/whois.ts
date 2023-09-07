@@ -3,15 +3,15 @@ import axios from 'axios';
 import { OPENSEA_REGISTRY_ABI } from 'lib/abis';
 import { ADDRESS_ZERO, DATA_BASE_URL, ETHEREUM_LISTS_CONTRACTS, OPENSEA_REGISTRY_ADDRESS } from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
-import { Address, createPublicClient, getAddress, http } from 'viem';
-import { getViemChainConfig } from './chains';
+import { Address, getAddress } from 'viem';
+import { createViemPublicClientForChain } from './chains';
 import AVVY from '@avvy/client';
 import { providers } from 'ethers';
 
-export const GLOBAL_ETH_MAINNET_CLIENT = createPublicClient({
-  chain: getViemChainConfig(1),
-  transport: http(`https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
-});
+export const GLOBAL_ETH_MAINNET_CLIENT = createViemPublicClientForChain(
+  1,
+  `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+);
 
 export const ENS_RESOLUTION = GLOBAL_ETH_MAINNET_CLIENT;
 

@@ -1,7 +1,7 @@
 import { ChainId, chains } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
-import { Chain, defineChain } from 'viem';
+import { Chain, PublicClient, createPublicClient, defineChain, http } from 'viem';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
@@ -362,7 +362,7 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
 };
 
 export const getChainRpcUrl = (chainId: number): string | undefined => {
-  const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
+  const infuraKey = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
   const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
   const overrides: Record<number, string> = {
@@ -795,5 +795,12 @@ export const getViemChainConfig = (chainId: number): Chain | undefined => {
     },
     contracts: getChainDeployedContracts(chainId),
     testnet: CHAIN_SELECT_TESTNETS.includes(chainId),
+  });
+};
+
+export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient => {
+  return createPublicClient({
+    chain: getViemChainConfig(chainId),
+    transport: http(url ?? getChainRpcUrl(chainId)),
   });
 };
