@@ -48,6 +48,39 @@ Then there are a few less essential variables:
 - `NODE_URLS` is currently unused, but can be used for certain networks in the future.
 - `LOCALAZY_API_KEY` is used for generating "Help Us Translate This Page" links - if omitted, those links will not work.
 
+## Contributing
+
+### Adding a new chain
+
+Adding a new chain is relatively straightforward as you only need to change two files: `lib/utils/chains.ts` and `cypress/e2e/chains.cy.ts`.
+
+#### Prerequisites
+
+To add a new chain, one of the following needs to be available:
+
+- A (public or private) RPC endpoint that supports `eth_getLogs` requests for the entire history of the chain.
+- Support in [CovalentHQ](https://www.covalenthq.com/) for the chain.
+- A block explorer with an exposed API that is compatible with Etherscan's API (such as Blockscout).
+
+Also make sure that your chain is listed in [ethereum-lists/chains](https://github.com/ethereum-lists/chains) (and that is has subsequently been included in [@revoke.cash/chains](https://github.com/RevokeCash/chains)). Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive.
+
+#### Adding the chain
+
+In `lib/utils/chains.ts`:
+
+- Add the chain to `PROVIDER_SUPPORTED_CHAINS`, `BLOCKSCOUT_SUPPORTED_CHAINS`, `ETHERSCAN_SUPPORTED_CHAINS` or `COVALENT_SUPPORTED_CHAINS`.
+- Add the chain to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn ts-node scripts/get-chain-order.ts` to determine its position in the chain selection dropdown.
+- Find a logo (preferably svg) for the chain, add it to `public/assets/images/vendor/chains` add the path to `getChainLogo()`.
+- If `multicall3` is deployed on the chain, add it to `getChainDeployedContracts()`.
+- If a price source (Uniswap v2 fork) is available for the chain, add it to `getChainPriceStrategies()`.
+- If it uses a block explorer API such as Etherscan's or Blockscout's, add the chain to `getChainApiUrl()` and if it requires an API key, this should be added to the environment variable `ETHERSCAN_API_KEYS` in `.env`.
+- If the data in `ethereum-lists/chains` is different than what should be used by Revoke.cash, add the chain to `getChainName()`, `getChainExplorerUrl()`, `getChainRpcUrl()`, `getChainFreeRpcUrl()`, `getChainLogsRpcUrl()`, `getChainNativeToken()`
+- Add an amount to `getDefaultDonationAmount()` that corresponds to around $10-20 in the native token of the chain.
+
+In `cypress/e2e/chains.cy.ts`:
+
+- Find a wallet that has active approvals and add it to `fixtures`.
+
 ## Credits
 
 Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) and [wagmi](https://github.com/wagmi-dev/wagmi) for all Ethereum-related operations and [Etherscan](https://etherscan.io), [CovalentHQ](https://www.covalenthq.com/), [Infura](https://infura.io/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Built with Next.js, Tailwind and TypeScript. Uses Upstash for queueing.
