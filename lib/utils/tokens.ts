@@ -15,7 +15,7 @@ import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
 import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
 import { deserialize } from 'wagmi';
-import { calculateTokenPrice, getTokensPerThousand } from './price';
+import { calculateTokenPrice, getTokensPerBase } from './price';
 
 export const isSpamToken = (symbol: string) => {
   const includesHttp = /https?:\/\//i.test(symbol);
@@ -118,7 +118,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    getTokensPerThousand(chainId, contract),
+    getTokensPerBase(chainId, contract),
     throwIfNotErc20(contract),
   ]);
 
