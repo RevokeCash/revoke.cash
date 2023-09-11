@@ -23,7 +23,7 @@ import {
 import { getPermit2AllowancesFromApprovals } from './permit2';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
 import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
-import axios from 'axios';
+import { isNetworkError, parseErrorMessage } from './errors';
 
 export const getAllowancesFromEvents = async (
   owner: Address,
@@ -63,7 +63,7 @@ export const getAllowancesFromEvents = async (
         const fullAllowances = allowances.map((allowance) => ({ ...tokenData, ...allowance }));
         return fullAllowances;
       } catch (e) {
-        console.error(e);
+        if (isNetworkError(parseErrorMessage(e))) throw e;
         // If the call to getTokenData() fails, the token is not a standard-adhering token so
         // we do not include it in the token list.
         return [];

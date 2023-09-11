@@ -1,7 +1,7 @@
 import type { Balance, Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
-import { isLogResponseSizeError } from './errors';
+import { isLogResponseSizeError, parseErrorMessage } from './errors';
 import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
 import {
   Abi,
@@ -60,7 +60,7 @@ export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promi
     const result = await logsProvider.getLogs(filter);
     return result;
   } catch (error) {
-    if (!isLogResponseSizeError(error)) throw error;
+    if (!isLogResponseSizeError(parseErrorMessage(error))) throw error;
 
     // If the block range is already a single block, we re-throw the error since we can't split it further
     if (filter.fromBlock === filter.toBlock) throw error;

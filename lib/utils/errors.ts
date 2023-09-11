@@ -1,3 +1,5 @@
+import { stringify } from 'viem';
+
 export const isUserRejectionError = (message?: string): boolean => {
   const lowercaseMessage = message?.toLowerCase();
   if (lowercaseMessage?.includes('user denied')) return true;
@@ -11,18 +13,38 @@ export const isRevertedError = (message?: string): boolean => {
   return false;
 };
 
-export const isLogResponseSizeError = (error: any) => {
-  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-  if (errorMessage?.includes('query returned more than 10000 results')) return true;
-  if (errorMessage?.includes('Log response size exceeded')) return true;
-  if (errorMessage?.includes('Query timeout exceeded')) return true;
+export const isLogResponseSizeError = (message?: string) => {
+  const lowercaseMessage = message?.toLowerCase();
+  if (lowercaseMessage?.includes('query returned more than 10000 results')) return true;
+  if (lowercaseMessage?.includes('log response size exceeded')) return true;
+  if (lowercaseMessage?.includes('query timeout exceeded')) return true;
   return false;
 };
 
-export const isRateLimitError = (error: any) => {
-  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-  if (errorMessage?.includes('Max rate limit reached')) return true;
-  if (errorMessage?.includes('Request failed with status code 429')) return true;
-  if (errorMessage?.includes('429 Too Many Requests')) return true;
+export const isRateLimitError = (message?: string) => {
+  const lowercaseMessage = message?.toLowerCase();
+  if (lowercaseMessage?.includes('max rate limit reached')) return true;
+  if (lowercaseMessage?.includes('request failed with status code 429')) return true;
+  if (lowercaseMessage?.includes('429 too many requests')) return true;
   return false;
+};
+
+export const isNetworkError = (message?: string) => {
+  const lowercaseMessage = message?.toLowerCase();
+  if (lowercaseMessage?.includes('http request failed')) return true;
+  return false;
+};
+
+export const parseErrorMessage = (error: any): string => {
+  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message ?? error;
+
+  if (typeof errorMessage === 'object') {
+    try {
+      return stringify(errorMessage).toLowerCase();
+    } catch {
+      return String(errorMessage).toLowerCase();
+    }
+  }
+
+  return String(errorMessage).toLowerCase();
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { Filter, Log } from 'lib/interfaces';
-import { isRateLimitError } from 'lib/utils/errors';
+import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
 import { getAddress } from 'viem';
@@ -47,7 +47,7 @@ export class CovalentEventGetter implements EventGetter {
       const result = await this.queue.add(() => axios.get(apiUrl, { params, auth }));
       return result?.data?.data?.items?.map(formatCovalentEvent) ?? [];
     } catch (e) {
-      if (isRateLimitError(e)) {
+      if (isRateLimitError(parseErrorMessage(e))) {
         console.error('Rate limit reached, retrying...');
         return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
       }

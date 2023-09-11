@@ -370,6 +370,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
+    [ChainId.PolygonMainnet]: `https://polygon.llamarpc.com`,
     [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
