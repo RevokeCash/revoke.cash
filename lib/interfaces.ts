@@ -150,7 +150,6 @@ export interface Erc721TokenContract extends Contract {
 
 export type DexContract = UniswapV2Contract;
 
-
 export interface UniswapV2Contract extends Contract {
   abi: typeof UNISWAP_V2_ROUTER_ABI;
 }
@@ -177,5 +176,6 @@ export enum PriceStrategyType {
 export type PriceStrategy = {
   type: PriceStrategyType;
   dex: Address;
-  path: Address[]; // Can only end with tokens with 18 decimals for simplicity
-}
+  path: Address[];
+  decimals?: number;
+};

@@ -31,14 +31,25 @@ export const shortenString = (name?: string, maxLength: number = 16): string | u
   return `${name.substr(0, maxLength - 3).trim()}...`;
 };
 
-export const toFloat = (n: bigint, decimals: number = 0, minDisplayDecimals: number = 0, maxDisplayDecimals: number = 3): string => {
+export const toFloat = (
+  n: bigint,
+  decimals: number = 0,
+  minDisplayDecimals: number = 0,
+  maxDisplayDecimals: number = 3,
+): string => {
   const full = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, ''); // TODO: formatUnits
+  if (full.startsWith('30.5')) console.log(full);
+
+  const roundedWithMaxDecimals = Number(full)
+    .toFixed(maxDisplayDecimals)
+    .replace(/\.?0+$/, '');
+
+  const rounded = Number(roundedWithMaxDecimals).toFixed(
+    Math.max(minDisplayDecimals, roundedWithMaxDecimals.split('.')[1]?.length ?? 0),
+  );
 
   const tooSmallPrefix = `0.${'0'.repeat(maxDisplayDecimals)}`; // 3 decimals -> '0.000'
   const tooSmallReplacement = `< ${tooSmallPrefix.replace(/.$/, '1')}`; // 3 decimals -> '< 0.001'
-  const rounded = Number(full)
-    .toFixed(maxDisplayDecimals)
-    .replace(new RegExp(`\.?\w{${minDisplayDecimals}}0+$`), '');
 
   return full.startsWith(tooSmallPrefix) ? tooSmallReplacement : addThousandsSeparators(rounded);
 };
@@ -177,7 +188,7 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
 
 export const fixedPointMultiply = (a: bigint, b: number, decimals: number): bigint => {
   return (a * BigInt(Math.round(b * 10 ** decimals))) / BigInt(10 ** decimals);
-}
+};
 
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
@@ -228,4 +239,3 @@ type ContractTransactionRequest<
   dataSuffix?: Hex;
 } & UnionOmit<FormattedTransactionRequest<Chain>, 'from' | 'to' | 'data' | 'value'> &
   GetValue<TAbi, TFunctionName>;
-
