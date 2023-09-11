@@ -1,4 +1,3 @@
-import { ChainId } from '@revoke.cash/chains';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type {

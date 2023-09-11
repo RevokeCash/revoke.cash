@@ -46,7 +46,9 @@ const getTokensPerBaseUsingStrategy = async (
   tokenContract: TokenContract,
   priceStrategy: PriceStrategy,
 ): Promise<bigint> => {
-  if (tokenContract.address === priceStrategy.path.at(-1)) return parseUnits(String(PRICE_BASE_AMOUNT), 18);
+  if (tokenContract.address === priceStrategy.path.at(-1)) {
+    return parseUnits(String(PRICE_BASE_AMOUNT), priceStrategy.decimals);
+  }
 
   const contract = getDexContract(priceStrategy, tokenContract.publicClient);
   const path = deduplicateArray([tokenContract.address, ...priceStrategy.path]);
@@ -58,12 +60,12 @@ const getTokensPerBaseUsingStrategy = async (
       contract.publicClient.readContract({
         ...contract,
         functionName: 'getAmountsIn',
-        args: [parseUnits(String(PRICE_BASE_AMOUNT), 18), path],
+        args: [parseUnits(String(PRICE_BASE_AMOUNT), priceStrategy.decimals), path],
       }),
       contract.publicClient.readContract({
         ...contract,
         functionName: 'getAmountsIn',
-        args: [parseUnits(String(PRICE_BASE_AMOUNT * LIQUIDITY_CHECK_RATIO), 18), path],
+        args: [parseUnits(String(PRICE_BASE_AMOUNT * LIQUIDITY_CHECK_RATIO), priceStrategy.decimals), path],
       }),
     ]);
 
