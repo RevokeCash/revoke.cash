@@ -26,7 +26,7 @@ export const getPermit2AllowancesFromApprovals = async (
 };
 
 const getPermit2AllowanceFromApproval = async (
-  contract: Erc20TokenContract,
+  tokenContract: Erc20TokenContract,
   owner: Address,
   approval: Log,
 ): Promise<BaseAllowanceData> => {
@@ -40,15 +40,18 @@ const getPermit2AllowanceFromApproval = async (
     return { spender, amount: 0n, lastUpdated: 0, transactionHash: approval.transactionHash };
   }
 
-  const [amount, lastUpdated, transactionHash] = await Promise.all([
-    contract.publicClient.readContract({
-      ...contract,
+  const [permit2Allowance, lastUpdated, transactionHash] = await Promise.all([
+    tokenContract.publicClient.readContract({
+      address: PERMIT2_ADDRESS,
+      abi: PERMIT2_ABI,
       functionName: 'allowance',
-      args: [owner, spender],
+      args: [owner, tokenContract.address, spender],
     }),
-    approval.timestamp ?? blocksDB.getBlockTimestamp(contract.publicClient, approval.blockNumber),
+    approval.timestamp ?? blocksDB.getBlockTimestamp(tokenContract.publicClient, approval.blockNumber),
     approval.transactionHash,
   ]);
+
+  const [amount] = permit2Allowance;
 
   return { spender, amount, lastUpdated, transactionHash, expiration };
 };
@@ -62,7 +65,7 @@ export const permit2Approve = async (
   expiration: number,
 ) => {
   return walletClient.writeContract({
-    ...tokenContract,
+    address: PERMIT2_ADDRESS,
     abi: PERMIT2_ABI,
     functionName: 'approve',
     args: [tokenContract.address, spender, amount, expiration],
