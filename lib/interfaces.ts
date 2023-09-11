@@ -1,5 +1,5 @@
 import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
-import { ERC20_ABI, ERC721_ABI, UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
+import { ERC20_ABI, ERC721_ABI, UNISWAP_V2_ROUTER_ABI, UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
 
 export type Balance = bigint | 'ERC1155';
 
@@ -148,14 +148,22 @@ export interface Erc721TokenContract extends Contract {
   abi: typeof ERC721_ABI;
 }
 
-export type DexContract = UniswapV2Contract;
+export type DexContract = UniswapV2Contract | UniswapV3Contract;
 
 export interface UniswapV2Contract extends Contract {
   abi: typeof UNISWAP_V2_ROUTER_ABI;
 }
 
+export interface UniswapV3Contract extends Contract {
+  abi: typeof UNISWAP_V3_QUOTER_ABI;
+}
+
 export const isUniswapV2Contract = (contract: DexContract): contract is UniswapV2Contract => {
-  return contract.abi === UNISWAP_V2_ROUTER_ABI;
+  return contract?.abi === UNISWAP_V2_ROUTER_ABI;
+};
+
+export const isUniswapV3Contract = (contract: DexContract): contract is UniswapV3Contract => {
+  return contract?.abi === UNISWAP_V3_QUOTER_ABI;
 };
 
 export interface TokenMetadata {
@@ -171,6 +179,7 @@ export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;
 
 export enum PriceStrategyType {
   UNISWAP_V2 = 'Uniswap v2',
+  UNISWAP_V3 = 'Uniswap v3',
 }
 
 export type PriceStrategy = {

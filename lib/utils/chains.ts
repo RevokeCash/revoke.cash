@@ -1,7 +1,7 @@
 import { ChainId, chains } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import { PriceStrategy, PriceStrategyType, RateLimit } from 'lib/interfaces';
-import { Chain, PublicClient, createPublicClient, defineChain, http } from 'viem';
+import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.EthereumMainnet,
@@ -818,18 +818,25 @@ export const getChainPriceStrategies = (chainId: number): PriceStrategy[] => {
       {
         type: PriceStrategyType.UNISWAP_V2,
         dex: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // Uniswap v2
-        path: [
-          '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-          '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-        ], // WETH -> DAI
+        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
+        decimals: 6,
       },
       {
         type: PriceStrategyType.UNISWAP_V2,
         dex: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Sushiswap
+        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
+        decimals: 6,
+      },
+      {
+        type: PriceStrategyType.UNISWAP_V3,
+        dex: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e', // Uniswap v3
         path: [
+          toHex(3000, { size: 3 }),
           '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-          '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-        ], // WETH -> DAI
+          toHex(500, { size: 3 }),
+          '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        ], // (0.3%) WETH -> (0.05%) USDC
+        decimals: 6,
       },
     ],
   };

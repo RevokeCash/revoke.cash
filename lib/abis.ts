@@ -94,3 +94,7 @@ export const UNISWAP_V2_ROUTER_ABI = parseAbi([
   'function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external',
   'function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable',
 ]);
+
+export const UNISWAP_V3_QUOTER_ABI = parseAbi([
+  'function quoteExactOutput(bytes memory path, uint256 amountOut) external returns (uint256 amountIn, uint160[] memory sqrtPriceX96AfterList, uint32[] memory initializedTicksCrossedList, uint256 gasEstimate)',
+]);

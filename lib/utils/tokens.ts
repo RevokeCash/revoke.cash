@@ -10,7 +10,7 @@ import type {
   Balance,
   TokenMetadata,
 } from 'lib/interfaces';
-import { toFloat } from '.';
+import { deduplicateArray, toFloat } from '.';
 import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
 import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
@@ -113,7 +113,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     return { ...metadataFromMapping, symbol };
   }
 
-  const [totalSupply, symbol, decimals, tokensPerThousand] = await Promise.all([
+  const [totalSupply, symbol, decimals, tokensPerBase] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
@@ -122,7 +122,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     throwIfNotErc20(contract),
   ]);
 
-  const price = calculateTokenPrice(tokensPerThousand, decimals);
+  const price = calculateTokenPrice(tokensPerBase, decimals);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
@@ -179,8 +179,7 @@ export const hasZeroBalance = (balance: Balance, decimals?: number) => {
 };
 
 export const createTokenContracts = (events: Log[], publicClient: PublicClient): TokenContract[] => {
-  return events
-    .filter((event, i) => i === events.findIndex((other) => event.address === other.address))
+  return deduplicateArray(events, (a, b) => a.address === b.address)
     .map((event) => createTokenContract(event, publicClient))
     .filter((contract) => contract !== undefined);
 };
