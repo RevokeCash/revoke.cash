@@ -108,5 +108,7 @@ const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
       console.error('Rate limit reached, retrying...');
       return retryOn429(fn);
     }
+
+    throw e;
   }
 };

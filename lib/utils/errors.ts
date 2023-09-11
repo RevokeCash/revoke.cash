@@ -36,15 +36,22 @@ export const isNetworkError = (message?: string) => {
 };
 
 export const parseErrorMessage = (error: any): string => {
-  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message ?? error;
+  const errorMessage =
+    error?.error?.message ??
+    error?.data?.message ??
+    error?.response?.data?.message ??
+    error?.details ??
+    error?.shortMessage ??
+    error?.message ??
+    error;
 
   if (typeof errorMessage === 'object') {
     try {
-      return stringify(errorMessage).toLowerCase();
+      return stringify(errorMessage);
     } catch {
-      return String(errorMessage).toLowerCase();
+      return String(errorMessage);
     }
   }
 
-  return String(errorMessage).toLowerCase();
+  return String(errorMessage);
 };

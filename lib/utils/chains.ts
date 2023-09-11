@@ -65,6 +65,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.CronosTestnet,
   ChainId.Zora,
   ChainId.Astar,
+  ChainId.MaxxChainMainnet,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -152,6 +153,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.HorizenEON,
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
+  ChainId.MaxxChainMainnet,
   // ChainId.GatherMainnetNetwork,
 ];
 
@@ -291,6 +293,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZetaChainAthens3Testnet]: 'ZetaChain Athens',
     [ChainId.OPMainnet]: 'Optimism',
     [ChainId.HorizenEON]: 'Horizen EON',
+    [ChainId.MaxxChainMainnet]: 'MaxxChain',
   };
 
   const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -513,6 +516,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.Mantle]: '/assets/images/vendor/chains/mantle.svg',
     [ChainId.MantleTestnet]: '/assets/images/vendor/chains/mantle.svg',
     [ChainId.Zora]: '/assets/images/vendor/chains/zora.svg',
+    [ChainId.MaxxChainMainnet]: '/assets/images/vendor/chains/maxxchain.png',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -577,6 +581,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     WAN: '100',
     ZEN: '1',
     MNT: '25',
+    PWR: '1000',
   };
 
   return mapping[nativeToken] ?? '1';
@@ -647,6 +652,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.BaseGoerliTestnet]: 'https://api-goerli.basescan.org/api',
     [ChainId.EthereumClassicMainnet]: 'https://blockscout.com/etc/mainnet/api',
     [ChainId.Zora]: 'https://explorer.zora.energy/api',
+    [ChainId.MaxxChainMainnet]: 'https://explorer.maxxchain.org/api',
   };
 
   return apiUrls[chainId];

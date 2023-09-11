@@ -3,6 +3,7 @@ import axiosRetry from 'axios-retry';
 import { checkActiveSession, checkRateLimitAllowed, wrapIronSessionApiRoute } from 'lib/api/auth';
 import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
 import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
+import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 axiosRetry(axios, { retries: 3 });
@@ -32,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (e) {
     console.log('Error occurred', e);
-    return res.status(500).send({ message: e.message });
+    return res.status(500).send({ message: parseErrorMessage(e) });
   }
 
   return res.status(404).send({
