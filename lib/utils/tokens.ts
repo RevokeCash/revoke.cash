@@ -80,20 +80,24 @@ const getTokenDataFromMapping = async (
   contract: TokenContract,
   chainId: number,
 ): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
-  const result = await fetch(`${DATA_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`);
+  try {
+    const result = await fetch(`${DATA_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`);
 
-  if (!result.ok) {
+    if (!result.ok) {
+      return undefined;
+    }
+
+    const metadata = deserialize(await result.text());
+
+    return {
+      symbol: metadata?.symbol,
+      decimals: metadata?.decimals,
+      icon: metadata?.logoURI,
+      isSpam: metadata?.isSpam,
+    };
+  } catch (e) {
     return undefined;
   }
-
-  const metadata = deserialize(await result.text());
-
-  return {
-    symbol: metadata?.symbol,
-    decimals: metadata?.decimals,
-    icon: metadata?.logoURI,
-    isSpam: metadata?.isSpam,
-  };
 };
 
 export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {

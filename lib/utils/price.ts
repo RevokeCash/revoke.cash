@@ -45,10 +45,11 @@ export const getTokensPerBase = async (chainId: number, tokenContract: TokenCont
   if (!priceStrategies || priceStrategies.length === 0) return null;
   if (isErc721Contract(tokenContract)) return null;
 
-  const results = await Promise.all(
-    priceStrategies.map((strategy) => getTokensPerBaseUsingStrategy(tokenContract, strategy)),
-  );
-  return bigintMax(...results.filter((price) => price !== null));
+  try {
+    return await Promise.any(priceStrategies.map((strategy) => getTokensPerBaseUsingStrategy(tokenContract, strategy)));
+  } catch {
+    return null;
+  }
 };
 
 const getTokensPerBaseUsingStrategy = async (
@@ -61,19 +62,15 @@ const getTokensPerBaseUsingStrategy = async (
 
   const contract = getDexContract(priceStrategy, tokenContract.publicClient);
 
-  try {
-    if (isUniswapV2Contract(contract)) {
-      return await getTokensPerBaseUniswapV2(contract, priceStrategy, tokenContract.address);
-    }
-
-    if (isUniswapV3Contract(contract)) {
-      return await getTokensPerBaseUniswapV3(contract, priceStrategy, tokenContract.address);
-    }
-
-    return null;
-  } catch (e) {
-    return null;
+  if (isUniswapV2Contract(contract)) {
+    return getTokensPerBaseUniswapV2(contract, priceStrategy, tokenContract.address);
   }
+
+  if (isUniswapV3Contract(contract)) {
+    return getTokensPerBaseUniswapV3(contract, priceStrategy, tokenContract.address);
+  }
+
+  throw new Error('Invalid price strategy');
 };
 
 const getTokensPerBaseUniswapV2 = async (
@@ -111,21 +108,17 @@ const getTokensPerBaseUniswapV3 = async (
   const path =
     tokenAddress === priceStrategy.path.at(1) ? priceStrategy.path.slice(1) : [tokenAddress, ...priceStrategy.path];
 
-  try {
-    const results = await contract.publicClient.simulateContract({
-      ...contract,
-      functionName: 'quoteExactOutput',
-      args: [concat(path.reverse()), parseUnits(String(PRICE_BASE_AMOUNT), priceStrategy.decimals)],
-    });
+  const results = await contract.publicClient.simulateContract({
+    ...contract,
+    functionName: 'quoteExactOutput',
+    args: [concat(path.reverse()), parseUnits(String(PRICE_BASE_AMOUNT), priceStrategy.decimals)],
+  });
 
-    const [amountIn, sqrtPriceX96AfterList] = results.result;
+  const [amountIn, sqrtPriceX96AfterList] = results.result;
 
-    if (!hasEnoughLiquidityUniswapV3(sqrtPriceX96AfterList)) return null;
+  if (!hasEnoughLiquidityUniswapV3(sqrtPriceX96AfterList)) return null;
 
-    return amountIn;
-  } catch (e) {
-    return null;
-  }
+  return amountIn;
 };
 
 const getDexContract = (priceStrategy: PriceStrategy, publicClient: PublicClient): DexContract | null => {

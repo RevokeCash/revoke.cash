@@ -32,6 +32,8 @@ export const isRateLimitError = (message?: string) => {
 export const isNetworkError = (message?: string) => {
   const lowercaseMessage = message?.toLowerCase();
   if (lowercaseMessage?.includes('http request failed')) return true;
+  if (lowercaseMessage?.includes('request timed out')) return true;
+  if (lowercaseMessage?.includes('request took too long to respond')) return true;
   return false;
 };
 
