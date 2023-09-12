@@ -53,11 +53,14 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
       pairs.push(pair);
     }
 
-    console.log('aaa pairs', pairs);
-
     const pairResults = await Promise.all(
       pairs.map(async (pair) => {
         const pairAddress = this.calculatePairAddress(pair.token0, pair.token1, pair.fee);
+        if (
+          pair.token0 === '0x2C31b10ca416b82Cec4c5E93c615ca851213d48D' ||
+          pair.token1 === '0x2C31b10ca416b82Cec4c5E93c615ca851213d48D'
+        )
+          console.log('aaa pairad', pairAddress);
 
         const [liquidity, slot0] = await Promise.all([
           publicClient.readContract({
@@ -83,15 +86,10 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
       const ratio = tokenSortsBefore(pair.token0, pair.token1)
         ? 2 ** 192 / Number(sqrtPriceX96) ** 2
         : Number(sqrtPriceX96) ** 2 / 2 ** 192;
-      // const token0price = Number(sqrtPriceX96) ** 2 / 2 ** 192; // Ratio between token0 and token1
-      // const token1price = 2 ** 192 / Number(sqrtPriceX96) ** 2; // Ratio between token1 and token0
-      console.log('aaa ratio', ratio);
-      // console.log('aaa token1price', token1price);
 
       return acc * ratio;
     }, 1);
 
-    console.log('aaa res', result);
     return BigInt(Math.round(result * 10 ** this.decimals));
   }
 
@@ -103,10 +101,9 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
   }
 }
 
-// TODO: Check more than just > 10 liquidity
-// TODO: We may need to solve the liquidity issue better in general for this star
+// TODO: We may need to solve the liquidity issue better in general for this strategy
 const hasEnoughLiquidity = (liquidity: bigint): boolean => {
-  return liquidity > 10n;
+  return liquidity > 10n ** 17n;
 };
 
 const tokenSortsBefore = (token0: Address, token1: Address): boolean => {
