@@ -5,6 +5,7 @@ import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePric
 import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3PriceStrategy } from 'lib/price/UniswapV3PriceStrategy';
+import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
@@ -824,26 +825,31 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   [ChainId.EthereumMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
-      new UniswapV2PriceStrategy({
-        address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // Uniswap v2
-        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        path: [
+          toHex(3000, { size: 3 }),
+          '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+          toHex(500, { size: 3 }),
+          '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        ], // (0.3%) WETH -> (0.05%) USDC
+        decimals: 6,
+      }),
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        path: [
+          toHex(10000, { size: 3 }),
+          '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+          toHex(500, { size: 3 }),
+          '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        ], // (1%) WETH -> (0.05%) USDC
         decimals: 6,
       }),
       new UniswapV2PriceStrategy({
-        address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Sushiswap
+        address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Sushiswap (Router)
         path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
         decimals: 6,
       }),
-      // new UniswapV3PriceStrategy({
-      //   address: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e', // Uniswap v3
-      //   path: [
-      //     toHex(3000, { size: 3 }),
-      //     '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-      //     toHex(500, { size: 3 }),
-      //     '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-      //   ], // (0.3%) WETH -> (0.05%) USDC
-      //   decimals: 6,
-      // }),
     ],
   }),
   [ChainId.BNBSmartChainMainnet]: new AggregatePriceStrategy({
