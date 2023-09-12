@@ -98,3 +98,8 @@ export const UNISWAP_V2_ROUTER_ABI = parseAbi([
 export const UNISWAP_V3_QUOTER_ABI = parseAbi([
   'function quoteExactOutput(bytes memory path, uint256 amountOut) external returns (uint256 amountIn, uint160[] memory sqrtPriceX96AfterList, uint32[] memory initializedTicksCrossedList, uint256 gasEstimate)',
 ]);
+
+export const UNISWAP_V3_POOL_ABI = parseAbi([
+  'function liquidity() external view returns (uint128)',
+  'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)',
+]);
