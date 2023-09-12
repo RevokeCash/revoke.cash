@@ -120,6 +120,8 @@
       "low": "Bad",
       "medium": "Moderate"
     },
-    "description": "Wallet Health"
+    "description": "Wallet Health",
+    "total_allowances": "Total Approvals",
+    "total_value_at_risk": "Total Value at Risk"
   }
 }

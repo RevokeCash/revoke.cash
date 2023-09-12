@@ -23,10 +23,9 @@ const WalletHealth = ({ address, chainId }: Props) => {
   });
 
   if (chainId !== ChainId.EthereumMainnet) return null;
-  if (error) return null;
 
   return (
-    <div className="flex items-center border border-black dark:border-white rounded-lg py-3 px-2 gap-2">
+    <div className="flex items-center justify-center gap-2">
       <WalletHealthScore score={score} error={error} isLoading={isLoading} />
       <WalletHealthDescription score={score} error={error} isLoading={isLoading} />
     </div>
