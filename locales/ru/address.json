@@ -39,7 +39,8 @@
     "asset": "Aктив",
     "asset_type": "Тип",
     "last_updated": "Последнее обновление",
-    "spender": "Авторизованный доступ"
+    "spender": "Авторизованный доступ",
+    "value_at_risk": "Value at Risk"
   },
   "labels": {
     "connected": "Поключено",
@@ -82,7 +83,8 @@
       "allowance": "Утвержденная сумма",
       "asset_name": "Название актива",
       "authorized_spender": "Авторизованный доступ",
-      "last_updated": "Последнее обновление"
+      "last_updated": "Последнее обновление",
+      "value_at_risk": "Value at Risk"
     },
     "fns": {
       "date": {

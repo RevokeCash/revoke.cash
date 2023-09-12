@@ -1,4 +1,4 @@
-import type { Balance, Filter, Log, LogsProvider } from 'lib/interfaces';
+import type { AllowanceData, Balance, Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import { isLogResponseSizeError, parseErrorMessage } from './errors';
@@ -11,6 +11,7 @@ import {
   Hex,
   PublicClient,
   WalletClient,
+  formatUnits,
   getAddress,
   pad,
   slice,
@@ -19,7 +20,7 @@ import { Chain } from 'wagmi';
 import { UnionOmit } from 'viem/dist/types/types/utils';
 import { ChainId } from '@revoke.cash/chains';
 import { track } from './analytics';
-import { fixedPointMultiply } from './math';
+import { bigintMin, fixedPointMultiply } from './math';
 
 export const shortenAddress = (address?: string, characters: number = 6): string => {
   return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
@@ -31,14 +32,21 @@ export const shortenString = (name?: string, maxLength: number = 16): string | u
   return `${name.substr(0, maxLength - 3).trim()}...`;
 };
 
+export const isNullish = (value: unknown): value is null | undefined => {
+  return value === null || value === undefined;
+};
+
 export const toFloat = (
   n: bigint,
   decimals: number = 0,
   minDisplayDecimals: number = 0,
   maxDisplayDecimals: number = 3,
 ): string => {
-  const full = (Number(n) / 10 ** decimals).toFixed(18).replace(/\.?0+$/, ''); // TODO: formatUnits
-  if (full.startsWith('30.5')) console.log(full);
+  if (isNullish(n)) return null;
+
+  const full = Number(formatUnits(n, decimals))
+    .toFixed(18)
+    .replace(/\.?0+$/, '');
 
   const roundedWithMaxDecimals = Number(full)
     .toFixed(maxDisplayDecimals)
@@ -97,6 +105,26 @@ export const getFiatBalanceText = (balance: Balance, price?: number, decimals?: 
   if (float.startsWith('<')) return `< ${fiatSign}${float.slice(2)}`;
 
   return `${fiatSign}${float}`;
+};
+
+export const getValueAtRisk = (allowance: AllowanceData): number => {
+  if (!allowance.spender) return null;
+  if (allowance.balance === 'ERC1155') return null;
+
+  if (allowance.balance === 0n) return 0;
+  if (isNullish(allowance.metadata.price)) return null;
+
+  const amount = bigintMin(allowance.balance, allowance.amount);
+  const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
+  const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
+
+  return float;
+};
+
+export const formatFiatAmount = (amount?: number, decimals: number = 2, fiatSign: string = '$'): string | null => {
+  if (isNullish(amount)) return null;
+  if (amount < 0.01 && amount > 0) return `< ${fiatSign}0.01`;
+  return `${fiatSign}${addThousandsSeparators(amount.toFixed(decimals))}`;
 };
 
 export const addThousandsSeparators = (number: string) => {

@@ -1,6 +1,6 @@
 import Loader from 'components/common/Loader';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { getFiatBalanceText, toFloat } from 'lib/utils';
+import { getFiatBalanceText, isNullish, toFloat } from 'lib/utils';
 import { getChainNativeToken } from 'lib/utils/chains';
 import { twMerge } from 'tailwind-merge';
 
@@ -17,14 +17,14 @@ const BalanceDisplay = ({ isLoading, balance, price, className }: Props) => {
   const nativeToken = getChainNativeToken(selectedChainId);
 
   const fiatBalanceText =
-    !isLoading && balance !== undefined && price !== undefined && getFiatBalanceText(balance, price, 18);
+    !isLoading && !isNullish(balance) && !isNullish(price) && getFiatBalanceText(balance, price, 18);
 
   return (
     <Loader isLoading={isLoading || balance === undefined} loadingChildren={<div>0.000 {nativeToken} ($1,000.00)</div>}>
       <div className={classes}>
         <span>{toFloat(balance, 18)}</span>
         <span className="font-bold">{nativeToken}</span>
-        {fiatBalanceText && <span>({fiatBalanceText})</span>}
+        {fiatBalanceText ? <span>({fiatBalanceText})</span> : null}
       </div>
     </Loader>
   );
