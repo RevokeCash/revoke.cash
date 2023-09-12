@@ -1,10 +1,12 @@
 const withBundleAnalyzer = require('next-bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
 const nextTranslate = require('next-translate-plugin');
+const withNextCircularDeps = require('next-circular-dependency');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
+  exclude: /a\.js|node_modules/, // exclude node_modules for checking circular dependencies
   rewrites: async () => {
     return [
       {
@@ -59,4 +61,6 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(nextTranslate(nextConfig));
+const wrappedConfig = withBundleAnalyzer(nextTranslate(nextConfig));
+
+module.exports = process.env.CHECK_CIRCULAR_DEPS ? withNextCircularDeps(wrappedConfig) : wrappedConfig;

@@ -15,7 +15,7 @@ import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
 import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
 import { deserialize } from 'wagmi';
-import { calculateTokenPrice, getTokensPerBase } from './price';
+import { calculateTokenPrice, getInverseTokenPrice } from 'lib/price/utils';
 
 export const isSpamToken = (symbol: string) => {
   const includesHttp = /https?:\/\//i.test(symbol);
@@ -117,16 +117,16 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     return { ...metadataFromMapping, symbol };
   }
 
-  const [totalSupply, symbol, decimals, tokensPerBase] = await Promise.all([
+  const [totalSupply, symbol, decimals, inversePrice] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    getTokensPerBase(chainId, contract),
+    getInverseTokenPrice(chainId, contract),
     throwIfNotErc20(contract),
   ]);
 
-  const price = calculateTokenPrice(tokensPerBase, decimals);
+  const price = calculateTokenPrice(inversePrice, decimals);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 

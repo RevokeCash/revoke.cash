@@ -3824,6 +3824,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"circular-dependency-plugin@npm:^5.2.0":
+  version: 5.2.2
+  resolution: "circular-dependency-plugin@npm:5.2.2"
+  peerDependencies:
+    webpack: ">=4.0.1"
+  checksum: d1a51e7f86e72d9e7a08c47234511cc7a5c3050781c2d6dcc77c0b22214f94f272702488c952e59b2af589c67944160ad1c9c0b7b3e0d4f89222f2a27ebf085e
+  languageName: node
+  linkType: hard
+
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -7237,6 +7246,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-circular-dependency@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "next-circular-dependency@npm:1.0.1"
+  dependencies:
+    circular-dependency-plugin: ^5.2.0
+  checksum: b8f22d2698cc962747982ab330cf2c54c2f080a9f5dd4593a40bd49fea850f863709a7543564bab7aa3ca6dfa5434eebbeb83016dc674602601f30b892e93b04
+  languageName: node
+  linkType: hard
+
 "next-seo@npm:^6.1.0":
   version: 6.1.0
   resolution: "next-seo@npm:6.1.0"
@@ -8725,6 +8743,7 @@ __metadata:
     mixpanel-browser: ^2.47.0
     next: 13.4.9
     next-bundle-analyzer: ^0.6.7
+    next-circular-dependency: ^1.0.1
     next-seo: ^6.1.0
     next-sitemap: ^3.1.55
     next-translate: ^2.5.3

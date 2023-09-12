@@ -1,6 +1,10 @@
 import { ChainId, chains } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
-import { PriceStrategy, PriceStrategyType, RateLimit } from 'lib/interfaces';
+import { RateLimit } from 'lib/interfaces';
+import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
+import { PriceStrategy } from 'lib/price/PriceStrategy';
+import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
+import { UniswapV3PriceStrategy } from 'lib/price/UniswapV3PriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
@@ -812,64 +816,62 @@ export const createViemPublicClientForChain = (chainId: number, url?: string): P
   });
 };
 
-export const getChainPriceStrategies = (chainId: number): PriceStrategy[] => {
-  const mapping: Record<number, PriceStrategy[]> = {
-    [ChainId.EthereumMainnet]: [
-      {
-        type: PriceStrategyType.UNISWAP_V2,
-        dex: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // Uniswap v2
-        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
-        decimals: 6,
-      },
-      {
-        type: PriceStrategyType.UNISWAP_V2,
-        dex: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Sushiswap
-        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
-        decimals: 6,
-      },
-      // {
-      //   type: PriceStrategyType.UNISWAP_V3,
-      //   dex: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e', // Uniswap v3
-      //   path: [
-      //     toHex(3000, { size: 3 }),
-      //     '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-      //     toHex(500, { size: 3 }),
-      //     '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-      //   ], // (0.3%) WETH -> (0.05%) USDC
-      //   decimals: 6,
-      // },
-    ],
-    // [ChainId.BNBSmartChainMainnet]: [
-    //   // TODO: Can be improved with a Uni v3 strategy
-    //   {
-    //     type: PriceStrategyType.UNISWAP_V2,
-    //     dex: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // Pancakeswap
-    //     path: ['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'], // WBNB -> BUSD
-    //   },
-    //   {
-    //     type: PriceStrategyType.UNISWAP_V2,
-    //     dex: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // Pancakeswap
-    //     path: ['0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'], // direct to BUSD
-    //   },
-    // ],
-    // [ChainId.PolygonMainnet]: [
-    //   // TODO: Can be improved with a Uni v3 strategy
-    //   {
-    //     type: PriceStrategyType.UNISWAP_V2,
-    //     dex: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff', // Quickswap
-    //     path: ['0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'], // WMATIC -> USDC
-    //     decimals: 6,
-    //   },
-    //   {
-    //     type: PriceStrategyType.UNISWAP_V2,
-    //     dex: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff', // Quickswap
-    //     path: ['0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'], // direct to USDC
-    //     decimals: 6,
-    //   },
-    // ],
-    // [ChainId.PolygonzkEVM]: [], // TODO: Requires Uni v3 strategy
-    // [ChainId.ArbitrumOne]: [], // TODO: Requires Uni v3 strategy (or low + fragmented liquidity)
-  };
+export const getChainPriceStrategy = (chainId: number): PriceStrategy | undefined => {
+  return PRICE_STRATEGIES[chainId];
+};
 
-  return mapping[chainId] ?? [];
+const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
+  [ChainId.EthereumMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV2PriceStrategy({
+        address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // Uniswap v2
+        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
+        decimals: 6,
+      }),
+      new UniswapV2PriceStrategy({
+        address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Sushiswap
+        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
+        decimals: 6,
+      }),
+      new UniswapV3PriceStrategy({
+        address: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e', // Uniswap v3
+        path: [
+          toHex(3000, { size: 3 }),
+          '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+          toHex(500, { size: 3 }),
+          '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        ], // (0.3%) WETH -> (0.05%) USDC
+        decimals: 6,
+      }),
+    ],
+  }),
+  [ChainId.BNBSmartChainMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV2PriceStrategy({
+        address: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // Pancakeswap
+        path: ['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'], // WBNB -> BUSD
+      }),
+      new UniswapV2PriceStrategy({
+        address: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // Pancakeswap
+        path: ['0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'], // direct to BUSD
+      }),
+    ],
+  }),
+  [ChainId.PolygonMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV2PriceStrategy({
+        address: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff', // Quickswap
+        path: ['0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'], // WMATIC -> USDC
+        decimals: 6,
+      }),
+      new UniswapV2PriceStrategy({
+        address: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff', // Quickswap
+        path: ['0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'], // direct to USDC
+        decimals: 6,
+      }),
+    ],
+  }),
 };

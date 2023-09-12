@@ -1,11 +1,11 @@
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
-import { parseInputAddress } from 'lib/utils';
 import { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
 import Button from './Button';
 import SearchBox from './SearchBox';
 import Spinner from './Spinner';
+import { parseInputAddress } from 'lib/utils/whois';
 
 interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
   onSubmit: FormEventHandler<HTMLFormElement>;
