@@ -1,6 +1,6 @@
 import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
 import { AllowanceData, OnUpdate } from 'lib/interfaces';
-import { toFloat } from 'lib/utils';
+import { getValueAtRisk, isNullish, toFloat } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
 import AllowanceCell from './cells/AllowanceCell';
@@ -10,6 +10,7 @@ import ControlsCell from './cells/ControlsCell';
 import HeaderCell from './cells/HeaderCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
 import SpenderCell from './cells/SpenderCell';
+import ValueAtRiskCell from './cells/ValueAtRiskCell';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
@@ -22,6 +23,7 @@ export enum ColumnId {
   ASSET_TYPE = 'Asset Type',
   BALANCE = 'Balance',
   ALLOWANCE = 'Allowance',
+  VALUE_AT_RISK = 'Value at Risk',
   SPENDER = 'Authorized Spender',
   LAST_UPDATED = 'Last Updated',
   ACTIONS = 'Actions',
@@ -43,6 +45,19 @@ export const accessors = {
   assetType: (allowance: AllowanceData) => {
     if (isErc721Contract(allowance.contract)) return 'NFT';
     return 'Token';
+  },
+  valueAtRisk: (allowance: AllowanceData) => {
+    // No approvals should be sorted separately through `sortUndefined`
+    if (!allowance.spender) return undefined;
+
+    // No balance means no risk (even if we don't know the price)
+    if (allowance.balance === 0n) return 0;
+
+    // If we don't know the price, we can't calculate the value at risk, but we want to it to be sorted before "no approvals"
+    if (allowance.balance === 'ERC1155') return -1;
+    if (isNullish(allowance.metadata.price)) return -1;
+
+    return getValueAtRisk(allowance);
   },
 };
 
@@ -127,6 +142,14 @@ export const columns = [
     sortUndefined: 1,
     enableColumnFilter: true,
     filterFn: customFilterFns.allowance,
+  }),
+  columnHelper.accessor(accessors.valueAtRisk, {
+    id: ColumnId.VALUE_AT_RISK,
+    header: () => <HeaderCell i18nKey="address:headers.value_at_risk" align="left" />,
+    cell: (info) => <ValueAtRiskCell allowance={info.row.original} />,
+    enableSorting: true,
+    sortingFn: sortingFns.basic,
+    sortUndefined: 1,
   }),
   columnHelper.accessor('spender', {
     id: ColumnId.SPENDER,

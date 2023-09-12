@@ -834,16 +834,16 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
         decimals: 6,
       }),
-      new UniswapV3PriceStrategy({
-        address: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e', // Uniswap v3
-        path: [
-          toHex(3000, { size: 3 }),
-          '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-          toHex(500, { size: 3 }),
-          '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-        ], // (0.3%) WETH -> (0.05%) USDC
-        decimals: 6,
-      }),
+      // new UniswapV3PriceStrategy({
+      //   address: '0x61fFE014bA17989E743c5F6cB21bF9697530B21e', // Uniswap v3
+      //   path: [
+      //     toHex(3000, { size: 3 }),
+      //     '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+      //     toHex(500, { size: 3 }),
+      //     '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+      //   ], // (0.3%) WETH -> (0.05%) USDC
+      //   decimals: 6,
+      // }),
     ],
   }),
   [ChainId.BNBSmartChainMainnet]: new AggregatePriceStrategy({
