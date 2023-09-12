@@ -148,24 +148,6 @@ export interface Erc721TokenContract extends Contract {
   abi: typeof ERC721_ABI;
 }
 
-export type DexContract = UniswapV2Contract | UniswapV3Contract;
-
-export interface UniswapV2Contract extends Contract {
-  abi: typeof UNISWAP_V2_ROUTER_ABI;
-}
-
-export interface UniswapV3Contract extends Contract {
-  abi: typeof UNISWAP_V3_QUOTER_ABI;
-}
-
-export const isUniswapV2Contract = (contract: DexContract): contract is UniswapV2Contract => {
-  return contract?.abi === UNISWAP_V2_ROUTER_ABI;
-};
-
-export const isUniswapV3Contract = (contract: DexContract): contract is UniswapV3Contract => {
-  return contract?.abi === UNISWAP_V3_QUOTER_ABI;
-};
-
 export interface TokenMetadata {
   // name: string;
   symbol: string;
@@ -176,15 +158,3 @@ export interface TokenMetadata {
 }
 
 export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;
-
-export enum PriceStrategyType {
-  UNISWAP_V2 = 'Uniswap v2',
-  UNISWAP_V3 = 'Uniswap v3',
-}
-
-export type PriceStrategy = {
-  type: PriceStrategyType;
-  dex: Address;
-  path: Address[];
-  decimals?: number;
-};

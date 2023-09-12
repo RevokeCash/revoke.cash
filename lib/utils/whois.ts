@@ -174,3 +174,27 @@ export const getOpenSeaProxyAddress = async (userAddress: Address): Promise<Addr
     return null;
   }
 };
+
+export const parseInputAddress = async (inputAddressOrName: string): Promise<Address | undefined> => {
+  // If the input is an ENS name, validate it, resolve it and return it
+  if (inputAddressOrName.endsWith('.eth')) {
+    return await resolveEnsName(inputAddressOrName);
+  }
+
+  // If the input is an Avvy Domains name..
+  if (inputAddressOrName.endsWith('.avax')) {
+    return await resolveAvvyName(inputAddressOrName);
+  }
+
+  // Other domain-like inputs are interpreted as Unstoppable Domains
+  if (inputAddressOrName.includes('.')) {
+    return await resolveUnsName(inputAddressOrName);
+  }
+
+  // If the input is an address, validate it and return it
+  try {
+    return getAddress(inputAddressOrName.toLowerCase());
+  } catch {
+    return undefined;
+  }
+};

@@ -9,7 +9,7 @@ import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
 import ConnectedLabel from './ConnectedLabel';
 import AddressNavigation from './navigation/AddressNavigation';
-import { getNativeTokenPrice } from 'lib/utils/price';
+import { getNativeTokenPrice } from 'lib/price/utils';
 
 const AddressHeader = () => {
   const isMounted = useMounted();

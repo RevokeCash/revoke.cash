@@ -2,7 +2,6 @@ import type { Balance, Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import { isLogResponseSizeError, parseErrorMessage } from './errors';
-import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
 import {
   Abi,
   Address,
@@ -20,6 +19,7 @@ import { Chain } from 'wagmi';
 import { UnionOmit } from 'viem/dist/types/types/utils';
 import { ChainId } from '@revoke.cash/chains';
 import { track } from './analytics';
+import { fixedPointMultiply } from './math';
 
 export const shortenAddress = (address?: string, characters: number = 6): string => {
   return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
@@ -80,30 +80,6 @@ export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promi
     const rightPromise = getLogs(logsProvider, { ...filter, fromBlock: middle + 1 });
     const [left, right] = await Promise.all([leftPromise, rightPromise]);
     return [...left, ...right];
-  }
-};
-
-export const parseInputAddress = async (inputAddressOrName: string): Promise<Address | undefined> => {
-  // If the input is an ENS name, validate it, resolve it and return it
-  if (inputAddressOrName.endsWith('.eth')) {
-    return await resolveEnsName(inputAddressOrName);
-  }
-
-  // If the input is an Avvy Domains name..
-  if (inputAddressOrName.endsWith('.avax')) {
-    return await resolveAvvyName(inputAddressOrName);
-  }
-
-  // Other domain-like inputs are interpreted as Unstoppable Domains
-  if (inputAddressOrName.includes('.')) {
-    return await resolveUnsName(inputAddressOrName);
-  }
-
-  // If the input is an address, validate it and return it
-  try {
-    return getAddress(inputAddressOrName.toLowerCase());
-  } catch {
-    return undefined;
   }
 };
 
@@ -184,10 +160,6 @@ export const normaliseLabel = (label: string) => {
 export const getWalletAddress = async (walletClient: WalletClient) => {
   const [address] = await walletClient.requestAddresses();
   return address;
-};
-
-export const fixedPointMultiply = (a: bigint, b: number, decimals: number): bigint => {
-  return (a * BigInt(Math.round(b * 10 ** decimals))) / BigInt(10 ** decimals);
 };
 
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
