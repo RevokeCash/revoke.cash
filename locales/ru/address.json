@@ -116,10 +116,12 @@
   },
   "wallet_health": {
     "categories": {
-      "high": "Good",
-      "low": "Bad",
-      "medium": "Moderate"
+      "high": "Хорошо",
+      "low": "Плохо",
+      "medium": "Умеренно"
     },
-    "description": "Wallet Health"
+    "description": "Здоровье кошелька",
+    "total_allowances": "Total Approvals",
+    "total_value_at_risk": "Total Value at Risk"
   }
 }

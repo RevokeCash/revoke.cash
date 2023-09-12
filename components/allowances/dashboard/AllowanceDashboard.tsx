@@ -4,7 +4,7 @@ import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-cont
 import type { AllowanceData } from 'lib/interfaces';
 import AllowanceTableControls from './controls/AllowanceTableControls';
 import AllowanceTable from './table/AllowanceTable';
-import WalletHealth from './wallet-health/WalletHealth';
+import WalletHealthSection from './wallet-health/WalletHealthSection';
 
 const AllowanceDashboard = () => {
   const { address, selectedChainId } = useAddressPageContext();
@@ -30,7 +30,7 @@ const AllowanceDashboard = () => {
 
   return (
     <div className="flex flex-col justify-start mx-auto gap-2">
-      <WalletHealth address={address} chainId={selectedChainId} />
+      <WalletHealthSection address={address} chainId={selectedChainId} />
       <AllowanceTableControls table={table} />
       <AllowanceTable table={table} loading={isLoading} error={error} allowances={allowances} />
     </div>

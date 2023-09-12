@@ -116,10 +116,12 @@
   },
   "wallet_health": {
     "categories": {
-      "high": "Good",
-      "low": "Bad",
-      "medium": "Moderate"
+      "high": "Buena",
+      "low": "Mala",
+      "medium": "Moderado"
     },
-    "description": "Wallet Health"
+    "description": "Salud de la Cartera",
+    "total_allowances": "Total Approvals",
+    "total_value_at_risk": "Total Value at Risk"
   }
 }

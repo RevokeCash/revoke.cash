@@ -5,6 +5,7 @@
     "none_found": "没有授权",
     "none_found_filtered": "所选过滤条件下未找到授权",
     "token_id": "代币 #{{tokenId}}",
+    "unknown": "Unknown",
     "unlimited": "无限"
   },
   "filters": {
@@ -115,10 +116,12 @@
   },
   "wallet_health": {
     "categories": {
-      "high": "Good",
-      "low": "Bad",
-      "medium": "Moderate"
+      "high": "良好",
+      "low": "较差",
+      "medium": "一般"
     },
-    "description": "Wallet Health"
+    "description": "钱包健康",
+    "total_allowances": "Total Approvals",
+    "total_value_at_risk": "Total Value at Risk"
   }
 }

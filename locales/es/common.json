@@ -38,7 +38,7 @@
     "system": "Sistema"
   },
   "connect_wallet": {
-    "title": "Conecta Tu Billetera"
+    "title": "Conecta Tu Cartera"
   },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
@@ -79,7 +79,7 @@
     "title": "Revoca las autorizaciones de tus tokens en más de 40 redes"
   },
   "misc": {
-    "powered_by": "Powered by <0>{{name}}</0>"
+    "powered_by": "Desarrollado por <0>{{name}}</0>"
   },
   "nav": {
     "about": "Sobre nosotros",
