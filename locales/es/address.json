@@ -5,6 +5,7 @@
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
     "token_id": "Token #{{tokenId}}",
+    "unknown": "Unknown",
     "unlimited": "Ilimitada"
   },
   "filters": {
