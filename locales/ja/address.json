@@ -5,6 +5,7 @@
     "none_found": "許可がされていません",
     "none_found_filtered": "選択したフィルタに対しての許可がありません",
     "token_id": "トークン #{{tokenId}}",
+    "unknown": "Unknown",
     "unlimited": "無制限"
   },
   "filters": {
