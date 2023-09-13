@@ -18,7 +18,7 @@ const WalletHealthSection = ({ address, chainId }: Props) => {
   return (
     <div className={classes}>
       <WalletHealth address={address} chainId={chainId} />
-      <AllowancesSummary address={address} chainId={chainId} />
+      <AllowancesSummary chainId={chainId} />
     </div>
   );
 };

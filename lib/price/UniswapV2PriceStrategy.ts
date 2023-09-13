@@ -9,11 +9,14 @@ export interface UniswapV2PriceStrategyOptions {
   address: Address;
   path: Address[];
   decimals?: number;
+  liquidityParameters?: LiquidityParameters;
 }
 
-const PRICE_BASE_AMOUNT = 1000n;
-const LIQUIDITY_CHECK_RATIO = 10n;
-const ACCEPTABLE_SLIPPAGE = 0.4;
+export interface LiquidityParameters {
+  baseAmount?: bigint;
+  checkRatio?: bigint;
+  acceptableSlippage?: number;
+}
 
 export class UniswapV2PriceStrategy implements PriceStrategy {
   abi: Abi = UNISWAP_V2_ROUTER_ABI;
@@ -21,11 +24,18 @@ export class UniswapV2PriceStrategy implements PriceStrategy {
   path: Address[];
   decimals: number;
 
+  baseAmount: bigint;
+  checkRatio: bigint;
+  acceptableSlippage: number;
+
   // Note: the first address in the path is assumed to be the wrapped native token
   constructor(options: UniswapV2PriceStrategyOptions) {
     this.address = options.address;
     this.path = options.path;
     this.decimals = options.decimals ?? 18;
+    this.baseAmount = options.liquidityParameters?.baseAmount ?? 1000n;
+    this.checkRatio = options.liquidityParameters?.checkRatio ?? 10n;
+    this.acceptableSlippage = options.liquidityParameters?.acceptableSlippage ?? 0.4;
   }
 
   public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
@@ -52,24 +62,24 @@ export class UniswapV2PriceStrategy implements PriceStrategy {
         address: this.address,
         abi: this.abi,
         functionName: 'getAmountsIn',
-        args: [parseUnits(String(PRICE_BASE_AMOUNT), this.decimals), path],
+        args: [parseUnits(String(this.baseAmount), this.decimals), path],
       }),
       publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getAmountsIn',
-        args: [parseUnits(String(PRICE_BASE_AMOUNT * LIQUIDITY_CHECK_RATIO), this.decimals), path],
+        args: [parseUnits(String(this.checkRatio * this.baseAmount), this.decimals), path],
       }),
     ]);
 
-    if (!hasEnoughLiquidity(results[0], liquidityCheckResults[0])) throw new Error('Not enough liquidity');
+    if (!this.hasEnoughLiquidity(results[0], liquidityCheckResults[0])) throw new Error('Not enough liquidity');
 
-    return results[0] / PRICE_BASE_AMOUNT;
+    return results[0] / this.baseAmount;
   }
-}
 
-// The liquidity check is to prevent the price from being too volatile. If there is more than X% slippage,
-// we assume that the price is too volatile and we don't use it.
-const hasEnoughLiquidity = (normalValue: bigint, checkValue: bigint): boolean => {
-  return normalValue * LIQUIDITY_CHECK_RATIO >= fixedPointMultiply(checkValue, 1 - ACCEPTABLE_SLIPPAGE, 18);
-};
+  // The liquidity check is to prevent the price from being too volatile. If there is more than X% slippage,
+  // we assume that the price is too volatile and we don't use it.
+  hasEnoughLiquidity = (normalValue: bigint, checkValue: bigint): boolean => {
+    return normalValue * this.checkRatio >= fixedPointMultiply(checkValue, 1 - this.acceptableSlippage, 18);
+  };
+}
