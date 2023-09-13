@@ -2,8 +2,8 @@ import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { AllowanceData } from 'lib/interfaces';
-import { getBalanceText, getFiatBalanceText } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
+import { formatBalance, formatFiatBalance } from 'lib/utils/formatting';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {
@@ -35,8 +35,8 @@ const AssetCell = ({ allowance }: Props) => {
     link = <WithHoverTooltip tooltip={allowance.metadata.symbol}>{link}</WithHoverTooltip>;
   }
 
-  const balanceText = getBalanceText(allowance.metadata.symbol, allowance.balance, allowance.metadata.decimals);
-  const fiatBalanceText = getFiatBalanceText(allowance.balance, allowance.metadata.price, allowance.metadata.decimals);
+  const balanceText = formatBalance(allowance.metadata.symbol, allowance.balance, allowance.metadata.decimals);
+  const fiatBalanceText = formatFiatBalance(allowance.balance, allowance.metadata.price, allowance.metadata.decimals);
 
   return (
     <div className="flex items-center gap-1 py-1 w-40 lg:w-56">

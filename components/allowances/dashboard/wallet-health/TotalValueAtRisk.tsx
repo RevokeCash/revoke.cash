@@ -1,9 +1,10 @@
-import { deduplicateArray, formatFiatAmount, getValueAtRisk } from 'lib/utils';
+import { deduplicateArray, calculateValueAtRisk } from 'lib/utils';
 import Loader from 'components/common/Loader';
 import useTranslation from 'next-translate/useTranslation';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { AllowanceData } from 'lib/interfaces';
+import { formatFiatAmount } from 'lib/utils/formatting';
 
 interface Props {
   chainId: number;
@@ -20,7 +21,7 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
   const totalValueAtRisk = deduplicateArray(
     (allowances ?? []).sort((a, b) => (a.amount > b.amount ? -1 : 1)),
     (a, b) => a.contract.address === b.contract.address,
-  ).reduce((acc, allowance) => acc + getValueAtRisk(allowance) || 0, 0);
+  ).reduce((acc, allowance) => acc + calculateValueAtRisk(allowance) || 0, 0);
 
   const hasNftsAtRisk = allowances?.some(
     (allowance) =>

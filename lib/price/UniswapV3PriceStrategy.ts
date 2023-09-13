@@ -55,13 +55,13 @@ export class UniswapV3PriceStrategy implements PriceStrategy {
 
     const [amountIn, sqrtPriceX96AfterList] = results.result;
 
-    if (!hasEnoughLiquidity(sqrtPriceX96AfterList)) throw new Error('Not enough liquidity');
+    if (!this.hasEnoughLiquidity(sqrtPriceX96AfterList)) throw new Error('Not enough liquidity');
 
     return amountIn / 1000n;
   }
-}
 
-// TODO: Figure out how to interpret the sqrtPriceX96AfterList
-const hasEnoughLiquidity = (sqrtPriceX96AfterList: readonly bigint[]): boolean => {
-  return true;
-};
+  // TODO: Figure out how to interpret the sqrtPriceX96AfterList
+  private hasEnoughLiquidity(sqrtPriceX96AfterList: readonly bigint[]): boolean {
+    return true;
+  }
+}

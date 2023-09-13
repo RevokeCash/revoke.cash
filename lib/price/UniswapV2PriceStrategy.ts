@@ -79,7 +79,7 @@ export class UniswapV2PriceStrategy implements PriceStrategy {
 
   // The liquidity check is to prevent the price from being too volatile. If there is more than X% slippage,
   // we assume that the price is too volatile and we don't use it.
-  hasEnoughLiquidity = (normalValue: bigint, checkValue: bigint): boolean => {
+  private hasEnoughLiquidity(normalValue: bigint, checkValue: bigint): boolean {
     return normalValue * this.checkRatio >= fixedPointMultiply(checkValue, 1 - this.acceptableSlippage, 18);
-  };
+  }
 }

@@ -1,6 +1,6 @@
 import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
 import { TransactionType } from 'lib/interfaces';
-import { isRevertedError, isUserRejectionError } from 'lib/utils/errors';
+import { isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import useTranslation from 'next-translate/useTranslation';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -11,8 +11,9 @@ export const useHandleTransaction = () => {
   const { t } = useTranslation();
 
   const checkError = (e: any, type: TransactionType): void => {
-    const message = e.details ?? e.shortMessage ?? e.message;
+    const message = parseErrorMessage(e);
     console.debug(`Ran into transaction issue, message: \n${message}`);
+
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(message)) return;
 

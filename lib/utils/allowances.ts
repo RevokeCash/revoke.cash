@@ -16,7 +16,6 @@ import {
   filterLogsByAddress,
   filterLogsByTopics,
   sortLogsChronologically,
-  toFloat,
   topicToAddress,
 } from '.';
 import { getPermit2AllowancesFromApprovals } from './permit2';
@@ -25,6 +24,7 @@ import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 import { isNetworkError, parseErrorMessage } from './errors';
 import axios from 'axios';
 import delay from 'delay';
+import { formatFixedPointBigInt } from './formatting';
 
 export const getAllowancesFromEvents = async (
   owner: Address,
@@ -245,7 +245,7 @@ export const formatErc20Allowance = (allowance: bigint, decimals: number, totalS
     return 'Unlimited';
   }
 
-  return toFloat(allowance, decimals);
+  return formatFixedPointBigInt(allowance, decimals);
 };
 
 export const getAllowanceI18nValues = (allowance: AllowanceData) => {

@@ -10,12 +10,13 @@ import type {
   Balance,
   TokenMetadata,
 } from 'lib/interfaces';
-import { deduplicateArray, toFloat } from '.';
+import { deduplicateArray } from '.';
 import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
 import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
 import { deserialize } from 'wagmi';
 import { calculateTokenPrice, getInverseTokenPrice } from 'lib/price/utils';
+import { formatFixedPointBigInt } from './formatting';
 
 export const isSpamToken = (symbol: string) => {
   const includesHttp = /https?:\/\//i.test(symbol);
@@ -179,7 +180,7 @@ export const throwIfSpamNft = async (contract: Contract) => {
 };
 
 export const hasZeroBalance = (balance: Balance, decimals?: number) => {
-  return balance !== 'ERC1155' && toFloat(balance, decimals) === '0';
+  return balance !== 'ERC1155' && formatFixedPointBigInt(balance, decimals) === '0';
 };
 
 export const createTokenContracts = (events: Log[], publicClient: PublicClient): TokenContract[] => {

@@ -6,8 +6,8 @@ import Loader from 'components/common/Loader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddress';
 import type { AllowanceData } from 'lib/interfaces';
-import { shortenAddress } from 'lib/utils';
 import { getChainExplorerUrl } from 'lib/utils/chains';
+import { shortenAddress } from 'lib/utils/formatting';
 import { getSpenderData } from 'lib/utils/whois';
 import useTranslation from 'next-translate/useTranslation';
 

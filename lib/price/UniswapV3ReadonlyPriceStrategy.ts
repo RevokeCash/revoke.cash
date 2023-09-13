@@ -32,9 +32,6 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
   }
 
   public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
-    // if (tokenContract.address !== '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' && tokenContract.address !== '0x6B175474E89094C44Da98b954EedeAC495271d0F') throw new Error('Not WETH');
-    // console.log('aaa', 'hello')
-
     if (tokenContract.address === this.path.at(-1)) {
       return parseUnits(String(1), this.decimals);
     }
@@ -43,7 +40,7 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     const path =
       tokenContract.address === this.path.at(1) ? this.path.slice(1) : ([tokenContract.address, ...this.path] as Hex[]);
 
-    const pairs: { token0: Address; token1: Address; fee: number }[] = [];
+    const pairs: Array<{ token0: Address; token1: Address; fee: number }> = [];
 
     for (let i = 0; i < path.length - 1; i++) {
       if (path[i].length !== 42) continue;
@@ -56,11 +53,6 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     const pairResults = await Promise.all(
       pairs.map(async (pair) => {
         const pairAddress = this.calculatePairAddress(pair.token0, pair.token1, pair.fee);
-        if (
-          pair.token0 === '0x2C31b10ca416b82Cec4c5E93c615ca851213d48D' ||
-          pair.token1 === '0x2C31b10ca416b82Cec4c5E93c615ca851213d48D'
-        )
-          console.log('aaa pairad', pairAddress);
 
         const [liquidity, slot0] = await Promise.all([
           publicClient.readContract({

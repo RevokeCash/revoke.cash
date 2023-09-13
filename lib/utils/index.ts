@@ -1,4 +1,4 @@
-import type { AllowanceData, Balance, Filter, Log, LogsProvider } from 'lib/interfaces';
+import type { AllowanceData, Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import { isLogResponseSizeError, parseErrorMessage } from './errors';
@@ -22,55 +22,8 @@ import { ChainId } from '@revoke.cash/chains';
 import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
 
-export const shortenAddress = (address?: string, characters: number = 6): string => {
-  return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
-};
-
-export const shortenString = (name?: string, maxLength: number = 16): string | undefined => {
-  if (!name) return undefined;
-  if (name.length <= maxLength) return name;
-  return `${name.substr(0, maxLength - 3).trim()}...`;
-};
-
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
-};
-
-export const toFloat = (
-  n: bigint,
-  decimals: number = 0,
-  minDisplayDecimals: number = 0,
-  maxDisplayDecimals: number = 3,
-): string => {
-  if (isNullish(n)) return null;
-
-  const full = Number(formatUnits(n, decimals))
-    .toFixed(18)
-    .replace(/\.?0+$/, '');
-
-  const roundedWithMaxDecimals = Number(full)
-    .toFixed(maxDisplayDecimals)
-    .replace(/\.?0+$/, '');
-
-  const rounded = Number(roundedWithMaxDecimals).toFixed(
-    Math.max(minDisplayDecimals, roundedWithMaxDecimals.split('.')[1]?.length ?? 0),
-  );
-
-  const tooSmallPrefix = `0.${'0'.repeat(maxDisplayDecimals)}`; // 3 decimals -> '0.000'
-  const tooSmallReplacement = `< ${tooSmallPrefix.replace(/.$/, '1')}`; // 3 decimals -> '< 0.001'
-
-  return full.startsWith(tooSmallPrefix) ? tooSmallReplacement : addThousandsSeparators(rounded);
-};
-
-export const fromFloat = (floatString: string, decimals: number): bigint => {
-  const sides = floatString.split('.');
-  if (sides.length === 1) return BigInt(floatString.padEnd(decimals + floatString.length, '0'));
-  if (sides.length > 2) return 0n;
-
-  const numberAsString =
-    sides[1].length > decimals ? sides[0] + sides[1].slice(0, decimals) : sides[0] + sides[1].padEnd(decimals, '0');
-
-  return BigInt(numberAsString);
 };
 
 export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promise<Log[]> => {
@@ -91,23 +44,7 @@ export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promi
   }
 };
 
-export const getBalanceText = (symbol: string, balance: Balance, decimals?: number) => {
-  if (balance === 'ERC1155') return `(ERC1155)`;
-  return `${toFloat(balance, decimals)} ${symbol}`;
-};
-
-export const getFiatBalanceText = (balance: Balance, price?: number, decimals?: number, fiatSign: string = '$') => {
-  if (balance === 'ERC1155') return null;
-  if (price === null || price === undefined) return null;
-
-  const float = toFloat(fixedPointMultiply(balance, price, decimals ?? 18), decimals, 2, 2);
-
-  if (float.startsWith('<')) return `< ${fiatSign}${float.slice(2)}`;
-
-  return `${fiatSign}${float}`;
-};
-
-export const getValueAtRisk = (allowance: AllowanceData): number => {
+export const calculateValueAtRisk = (allowance: AllowanceData): number => {
   if (!allowance.spender) return null;
   if (allowance.balance === 'ERC1155') return null;
 
@@ -119,18 +56,6 @@ export const getValueAtRisk = (allowance: AllowanceData): number => {
   const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
 
   return float;
-};
-
-export const formatFiatAmount = (amount?: number, decimals: number = 2, fiatSign: string = '$'): string | null => {
-  if (isNullish(amount)) return null;
-  if (amount < 0.01 && amount > 0) return `< ${fiatSign}0.01`;
-  return `${fiatSign}${addThousandsSeparators(amount.toFixed(decimals))}`;
-};
-
-export const addThousandsSeparators = (number: string) => {
-  const [integer, decimal] = number.split('.');
-  const integerWithSeparators = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  return decimal ? `${integerWithSeparators}.${decimal}` : integerWithSeparators;
 };
 
 export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));

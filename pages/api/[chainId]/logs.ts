@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send(events);
     }
   } catch (e) {
-    console.log('Error occurred', e);
+    console.error('Error occurred', parseErrorMessage(e));
     return res.status(500).send({ message: parseErrorMessage(e) });
   }
 
