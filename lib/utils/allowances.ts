@@ -312,15 +312,24 @@ export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTo
   );
 };
 export const getNeftureRiskScore = async (address: Address) => {
-  const { data } = await axios.post('https://api-scan-wallet.nefture.com/getScore', { address });
-  if (data.status === 'pending') {
-    await delay(5_000);
-    return getNeftureRiskScore(address);
-  }
+  try {
+    const { data } = await axios.post('https://api-scan-wallet.nefture.com/getScore', { address });
+    if (data.status === 'pending') {
+      await delay(5_000);
+      return getNeftureRiskScore(address);
+    }
 
-  if (data.status !== 'success') {
-    throw new Error('Nefture API error');
-  }
+    if (data.status !== 'success') {
+      throw new Error('Nefture API error');
+    }
 
-  return data.score;
+    return data.score;
+  } catch (e) {
+    if (e?.response?.status === 500) {
+      await delay(5_000);
+      return getNeftureRiskScore(address);
+    }
+
+    throw e;
+  }
 };
