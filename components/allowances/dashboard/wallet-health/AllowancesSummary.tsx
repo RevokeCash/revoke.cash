@@ -10,7 +10,7 @@ const AllowancesSummary = ({ chainId }: Props) => {
   const { allowances, isLoading, error } = useAddressAllowances();
 
   return (
-    <div className="flex items-center justify-around gap-4 h-16">
+    <div className="flex items-center justify-around gap-4 h-16 only:w-full only:justify-center">
       <AllowancesCount allowances={allowances} isLoading={isLoading} error={error} />
       <TotalValueAtRisk chainId={chainId} allowances={allowances} isLoading={isLoading} error={error} />
     </div>
