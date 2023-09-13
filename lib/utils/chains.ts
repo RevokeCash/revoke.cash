@@ -880,4 +880,105 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  // [ChainId.PolygonzkEVM]: TODO
+  [ChainId.ArbitrumOne]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        path: [
+          toHex(3000, { size: 3 }),
+          '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toHex(500, { size: 3 }),
+          '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+        ], // (0.3%) WETH -> (0.05%) USDC
+        decimals: 6,
+      }),
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        path: [
+          toHex(10000, { size: 3 }),
+          '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toHex(500, { size: 3 }),
+          '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+        ], // (1%) WETH -> (0.05%) USDC
+        decimals: 6,
+      }),
+    ],
+  }),
+  [ChainId.ArbitrumNova]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV2PriceStrategy({
+        address: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', // Sushiswap (Router)
+        path: ['0x722E8BdD2ce80A4422E880164f2079488e115365', '0x750ba8b76187092B0D1E87E28daaf484d1b5273b'], // WETH -> USDC
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // TODO: Look at integrating Velodrome for OP
+  [ChainId.OPMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        path: [
+          toHex(3000, { size: 3 }),
+          '0x4200000000000000000000000000000000000006',
+          toHex(500, { size: 3 }),
+          '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+        ], // (0.3%) WETH -> (0.05%) USDC
+        decimals: 6,
+      }),
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        path: [
+          toHex(10000, { size: 3 }),
+          '0x4200000000000000000000000000000000000006',
+          toHex(500, { size: 3 }),
+          '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+        ], // (1%) WETH -> (0.05%) USDC
+        decimals: 6,
+      }),
+    ],
+  }),
+  // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
+  [ChainId.Base]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD', // Uniswap v3 (Factory)
+        path: [
+          toHex(3000, { size: 3 }),
+          '0x4200000000000000000000000000000000000006',
+          toHex(500, { size: 3 }),
+          '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
+        ], // (0.3%) WETH -> (0.05%) USDbC
+        decimals: 6,
+      }),
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD', // Uniswap v3 (Factory)
+        path: [
+          toHex(10000, { size: 3 }),
+          '0x4200000000000000000000000000000000000006',
+          toHex(500, { size: 3 }),
+          '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
+        ], // (1%) WETH -> (0.05%) USDbC
+        decimals: 6,
+      }),
+    ],
+  }),
+  // [ChainId.ZkSyncEraMainnet]: TODO (Need SyncSwap Strategy)
+  // [ChainId.Linea]: TODO (Need SyncSwap Strategy)
+  [ChainId['AvalancheC-Chain']]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV2PriceStrategy({
+        address: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4', // Trader JOE (Router)
+        path: ['0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'], // WAVAX -> USDC
+        decimals: 6,
+      }),
+    ],
+  }),
 };
