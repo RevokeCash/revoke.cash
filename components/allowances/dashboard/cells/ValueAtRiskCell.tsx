@@ -1,5 +1,6 @@
 import type { AllowanceData } from 'lib/interfaces';
-import { formatFiatAmount, getValueAtRisk } from 'lib/utils';
+import { calculateValueAtRisk } from 'lib/utils';
+import { formatFiatAmount } from 'lib/utils/formatting';
 import useTranslation from 'next-translate/useTranslation';
 import { twMerge } from 'tailwind-merge';
 
@@ -12,7 +13,7 @@ const ValueAtRiskCell = ({ allowance }: Props) => {
 
   if (!allowance.spender) return null;
 
-  const valueAtRisk = getValueAtRisk(allowance);
+  const valueAtRisk = calculateValueAtRisk(allowance);
   const fiatBalanceText = formatFiatAmount(valueAtRisk);
 
   const classes = twMerge(

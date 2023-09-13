@@ -1,10 +1,11 @@
 import { TokenContract } from 'lib/interfaces';
+import { isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { PublicClient, formatUnits } from 'viem';
 
 export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: number): number => {
-  return inversePrice !== null ? 1 / Number.parseFloat(formatUnits(inversePrice, tokenDecimals)) : null;
+  return !isNullish(inversePrice) ? 1 / Number.parseFloat(formatUnits(inversePrice, tokenDecimals)) : null;
 };
 
 export const getNativeTokenPrice = async (chainId: number, publicClient: PublicClient): Promise<number | null> => {

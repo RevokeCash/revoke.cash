@@ -1,11 +1,12 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';
-import { fromFloat, writeContractUnlessExcessiveGas } from 'lib/utils';
+import { writeContractUnlessExcessiveGas } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit2Approve } from 'lib/utils/permit2';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { useAccount, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
+import { parseFixedPointBigInt } from 'lib/utils/formatting';
 
 export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {}) => {
   const { data: walletClient } = useWalletClient();
@@ -62,7 +63,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
   } else {
     const revoke = async () => update('0');
     const update = async (newAmount: string) => {
-      const newAmountParsed = fromFloat(newAmount, metadata.decimals);
+      const newAmountParsed = parseFixedPointBigInt(newAmount, metadata.decimals);
 
       console.debug(`Calling contract.approve(${spender}, ${newAmountParsed})`);
 

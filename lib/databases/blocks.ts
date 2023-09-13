@@ -28,7 +28,6 @@ class BlocksDB extends Dexie {
       await this.blocks.put({ chainId, blockNumber, timestamp });
       return timestamp;
     } catch (e) {
-      console.log(e);
       // If there is an error, we just return the block timestamp from the public client (may be the case if IndexedDB is not supported)
       if (e instanceof Dexie.DexieError) {
         const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });

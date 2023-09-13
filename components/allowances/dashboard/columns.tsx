@@ -1,6 +1,6 @@
 import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
 import { AllowanceData, OnUpdate } from 'lib/interfaces';
-import { getValueAtRisk, isNullish, toFloat } from 'lib/utils';
+import { calculateValueAtRisk, isNullish } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
 import AllowanceCell from './cells/AllowanceCell';
@@ -11,6 +11,7 @@ import HeaderCell from './cells/HeaderCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
 import SpenderCell from './cells/SpenderCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
+import { formatFixedPointBigInt } from 'lib/utils/formatting';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
@@ -40,7 +41,9 @@ export const accessors = {
     return allowance.tokenId ?? 'Unlimited';
   },
   balance: (allowance: AllowanceData) => {
-    return allowance.balance === 'ERC1155' ? 'ERC1155' : toFloat(allowance.balance, allowance.metadata.decimals);
+    return allowance.balance === 'ERC1155'
+      ? 'ERC1155'
+      : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
   assetType: (allowance: AllowanceData) => {
     if (isErc721Contract(allowance.contract)) return 'NFT';
@@ -57,7 +60,7 @@ export const accessors = {
     if (allowance.balance === 'ERC1155') return -1;
     if (isNullish(allowance.metadata.price)) return -1;
 
-    return getValueAtRisk(allowance);
+    return calculateValueAtRisk(allowance);
   },
 };
 

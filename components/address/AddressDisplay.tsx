@@ -1,6 +1,6 @@
 import CopyButton from 'components/common/CopyButton';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { shortenAddress } from 'lib/utils';
+import { shortenAddress } from 'lib/utils/formatting';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
