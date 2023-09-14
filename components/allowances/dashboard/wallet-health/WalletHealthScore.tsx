@@ -18,15 +18,17 @@ const WalletHealthScore = ({ score, error, isLoading }: Props) => {
 
   return (
     <Loader isLoading={isLoading} className="rounded-full">
-      <CircularProgressbarWithChildren
-        value={score}
-        styles={{ path: { stroke: color }, trail: { stroke: 'transparent' } }}
-        className="h-16 rounded-full bg-zinc-300 dark:bg-zinc-700"
-        circleRatio={1}
-        strokeWidth={10}
-      >
-        <div className="text-lg font-bold">{score}</div>
-      </CircularProgressbarWithChildren>
+      <div className="w-16 h-16">
+        <CircularProgressbarWithChildren
+          value={score}
+          styles={{ path: { stroke: color }, trail: { stroke: 'transparent' } }}
+          className="h-16 w-16 rounded-full bg-zinc-300 dark:bg-zinc-700"
+          circleRatio={1}
+          strokeWidth={10}
+        >
+          <div className="text-lg font-bold">{score}</div>
+        </CircularProgressbarWithChildren>
+      </div>
     </Loader>
   );
 };
