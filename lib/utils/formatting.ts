@@ -14,27 +14,30 @@ export const shortenString = (name?: string, maxLength: number = 16): string | u
 };
 
 export const formatFixedPointBigInt = (
-  n: bigint,
+  fixedPointBigInt: bigint,
   decimals: number = 0,
   minDisplayDecimals: number = 0,
   maxDisplayDecimals: number = 3,
 ): string | undefined => {
-  if (isNullish(n)) return undefined;
+  if (isNullish(fixedPointBigInt)) return undefined;
 
-  const roundedNumberWithMaxDisplayDecimals = Number(formatUnits(n, decimals))
-    .toFixed(maxDisplayDecimals)
+  const float = Number(formatUnits(fixedPointBigInt, decimals))
+    .toFixed(decimals)
     .replace(/\.?0+$/, '');
-
-  const roundedNumberWithMinDisplayDecimals = Number(roundedNumberWithMaxDisplayDecimals).toFixed(
-    Math.max(minDisplayDecimals, roundedNumberWithMaxDisplayDecimals.split('.')[1]?.length ?? 0),
-  );
 
   const tooSmallPrefix = `0.${'0'.repeat(maxDisplayDecimals)}`; // 3 decimals -> '0.000'
   const tooSmallReplacement = `< ${tooSmallPrefix.replace(/.$/, '1')}`; // 3 decimals -> '< 0.001'
+  if (float.startsWith(tooSmallPrefix)) return tooSmallReplacement;
 
-  return roundedNumberWithMaxDisplayDecimals.startsWith(tooSmallPrefix)
-    ? tooSmallReplacement
-    : addThousandsSeparators(roundedNumberWithMinDisplayDecimals);
+  return addThousandsSeparators(constrainDisplayedDecimals(float, minDisplayDecimals, maxDisplayDecimals));
+};
+
+const constrainDisplayedDecimals = (float: string, minDecimals: number, maxDecimals: number): string => {
+  const floatWithMaxDecimals = Number(float)
+    .toFixed(maxDecimals)
+    .replace(/\.?0+$/, '');
+  const fractionalPart = floatWithMaxDecimals.split('.')[1];
+  return Number(floatWithMaxDecimals).toFixed(Math.max(minDecimals, fractionalPart?.length ?? 0));
 };
 
 export const parseFixedPointBigInt = (floatString: string, decimals: number): bigint => {
