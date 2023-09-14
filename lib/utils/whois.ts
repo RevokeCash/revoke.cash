@@ -104,7 +104,7 @@ export const lookupEnsName = async (address: Address): Promise<string | null> =>
 
 export const resolveEnsName = async (name: string): Promise<Address | null> => {
   try {
-    const address = await ENS_RESOLUTION?.getEnsAddress({ name });
+    const address = await ENS_RESOLUTION?.getEnsAddress({ name: name.toLowerCase() });
     return address ?? null;
   } catch {
     return null;
@@ -122,7 +122,7 @@ export const lookupUnsName = async (address: Address) => {
 
 export const resolveUnsName = async (unsName: string): Promise<Address | null> => {
   try {
-    const address = await UNS_RESOLUTION?.addr(unsName, 'ETH');
+    const address = await UNS_RESOLUTION?.addr(unsName.toLowerCase(), 'ETH');
     return address ? getAddress(address?.toLowerCase()) : null;
   } catch {
     return null;
@@ -141,7 +141,7 @@ export const lookupAvvyName = async (address: Address) => {
 
 export const resolveAvvyName = async (avvyName: string): Promise<Address | null> => {
   try {
-    return await AVVY_RESOLUTION?.name(avvyName).resolve((AVVY.RECORDS as any).EVM);
+    return await AVVY_RESOLUTION?.name(avvyName.toLowerCase()).resolve((AVVY.RECORDS as any).EVM);
   } catch (err) {
     return null;
   }
