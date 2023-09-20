@@ -51,15 +51,14 @@ class EventsDB extends Dexie {
   // So we assume that the filter.fromBlock is always 0, and we only need to retrieve events between the last stored event and 'latest'
   // This means that we can't use this function to get logs for a specific block range
   async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number) {
-    if (DO_NOT_INDEX.includes(chainId)) return getLogs(logsProvider, filter);
+    // For Covalent supported chains, we need to subtract 50 blocks from the toBlock (due to issues with Covalent)
+    const toBlock = isCovalentSupportedChain(chainId) ? Math.max(filter.toBlock - 50, 0) : filter.toBlock;
+
+    if (DO_NOT_INDEX.includes(chainId)) return getLogs(logsProvider, { ...filter, toBlock });
 
     try {
       const { topics } = filter;
       const topicsKey = topics.join(',');
-
-      // For Covalent supported chains, we need to subtract 50 blocks from the toBlock (due to issues with Covalent)
-      const toBlock = isCovalentSupportedChain(chainId) ? Math.max(filter.toBlock - 50, 0) : filter.toBlock;
-
       const storedEvents = await this.events.get([chainId, topicsKey]);
 
       // If we already have events stored, we only need to get events from the last stored event to the latest block

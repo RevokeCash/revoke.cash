@@ -5,7 +5,7 @@
     "none_found": "Доступы не найдены",
     "none_found_filtered": "Для выбранных фильтров не найдено доступов.",
     "token_id": "Токен #{{tokenId}}",
-    "unknown": "Unknown",
+    "unknown": "Неизвестно",
     "unlimited": "Неограниченный"
   },
   "filters": {
@@ -41,7 +41,7 @@
     "asset_type": "Тип",
     "last_updated": "Последнее обновление",
     "spender": "Авторизованный доступ",
-    "value_at_risk": "Value at Risk"
+    "value_at_risk": "Ценность, подверженная риску"
   },
   "labels": {
     "connected": "Поключено",
@@ -85,7 +85,7 @@
       "asset_name": "Название актива",
       "authorized_spender": "Авторизованный доступ",
       "last_updated": "Последнее обновление",
-      "value_at_risk": "Value at Risk"
+      "value_at_risk": "Ценность, подверженная риску"
     },
     "fns": {
       "date": {
@@ -121,7 +121,7 @@
       "medium": "Умеренно"
     },
     "description": "Здоровье кошелька",
-    "total_allowances": "Total Approvals",
-    "total_value_at_risk": "Total Value at Risk"
+    "total_allowances": "Общее количество одобрений",
+    "total_value_at_risk": "Общая стоимость, подверженная риску"
   }
 }

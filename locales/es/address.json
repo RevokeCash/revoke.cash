@@ -5,7 +5,7 @@
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
     "token_id": "Token #{{tokenId}}",
-    "unknown": "Unknown",
+    "unknown": "Desconocido",
     "unlimited": "Ilimitada"
   },
   "filters": {
@@ -41,7 +41,7 @@
     "asset_type": "Tipo",
     "last_updated": "Última Actualización",
     "spender": "Gastador Autorizado",
-    "value_at_risk": "Value at Risk"
+    "value_at_risk": "Valor en Riesgo"
   },
   "labels": {
     "connected": "Conectado",
@@ -85,7 +85,7 @@
       "asset_name": "Nombre del Activo",
       "authorized_spender": "Gastador Autorizado",
       "last_updated": "Última Actualización",
-      "value_at_risk": "Value at Risk"
+      "value_at_risk": "Valor en Riesgo"
     },
     "fns": {
       "date": {
@@ -121,7 +121,7 @@
       "medium": "Moderado"
     },
     "description": "Salud de la Cartera",
-    "total_allowances": "Total Approvals",
-    "total_value_at_risk": "Total Value at Risk"
+    "total_allowances": "Total de Aprobaciones",
+    "total_value_at_risk": "Valor Total en Riesgo"
   }
 }

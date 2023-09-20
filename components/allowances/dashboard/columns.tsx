@@ -56,9 +56,10 @@ export const accessors = {
     // No balance means no risk (even if we don't know the price)
     if (allowance.balance === 0n) return 0;
 
-    // If we don't know the price, we can't calculate the value at risk, but we want to it to be sorted before "no approvals"
-    if (allowance.balance === 'ERC1155') return -1;
-    if (isNullish(allowance.metadata.price)) return -1;
+    // If we don't know the price, we can't calculate the value at risk, but we want to it to be sorted
+    // before "no approvals" and before the < $0.01 threshold
+    if (allowance.balance === 'ERC1155') return 0.01;
+    if (isNullish(allowance.metadata.price)) return 0.01;
 
     return calculateValueAtRisk(allowance);
   },

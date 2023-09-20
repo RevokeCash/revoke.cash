@@ -5,7 +5,7 @@
     "none_found": "没有授权",
     "none_found_filtered": "所选过滤条件下未找到授权",
     "token_id": "代币 #{{tokenId}}",
-    "unknown": "Unknown",
+    "unknown": "未知",
     "unlimited": "无限"
   },
   "filters": {
@@ -41,7 +41,7 @@
     "asset_type": "类型",
     "last_updated": "上次更新",
     "spender": "已经授权的项目",
-    "value_at_risk": "Value at Risk"
+    "value_at_risk": "存在风险金额"
   },
   "labels": {
     "connected": "已连接",
@@ -85,7 +85,7 @@
       "asset_name": "资产名称",
       "authorized_spender": "已经授权的项目",
       "last_updated": "上次更新",
-      "value_at_risk": "Value at Risk"
+      "value_at_risk": "存在风险金额"
     },
     "fns": {
       "date": {
@@ -121,7 +121,7 @@
       "medium": "一般"
     },
     "description": "钱包健康",
-    "total_allowances": "Total Approvals",
-    "total_value_at_risk": "Total Value at Risk"
+    "total_allowances": "全部授权",
+    "total_value_at_risk": "全部存在风险金额"
   }
 }
