@@ -34,6 +34,7 @@ export const isNetworkError = (message?: string) => {
   if (lowercaseMessage?.includes('http request failed')) return true;
   if (lowercaseMessage?.includes('request timed out')) return true;
   if (lowercaseMessage?.includes('request took too long to respond')) return true;
+  if (lowercaseMessage?.includes('failed to fetch')) return true;
   return false;
 };
 

@@ -5,7 +5,7 @@
     "none_found": "許可がされていません",
     "none_found_filtered": "選択したフィルタに対しての許可がありません",
     "token_id": "トークン #{{tokenId}}",
-    "unknown": "Unknown",
+    "unknown": "不明",
     "unlimited": "無制限"
   },
   "filters": {
@@ -41,7 +41,7 @@
     "asset_type": "種類",
     "last_updated": "最終更新日",
     "spender": "権限を持つ支出者",
-    "value_at_risk": "Value at Risk"
+    "value_at_risk": "リスクがある価値"
   },
   "labels": {
     "connected": "接続中",
@@ -85,7 +85,7 @@
       "asset_name": "資産名",
       "authorized_spender": "権限を持つ支出者",
       "last_updated": "最終更新日",
-      "value_at_risk": "Value at Risk"
+      "value_at_risk": "リスクがある価値"
     },
     "fns": {
       "date": {
@@ -116,12 +116,12 @@
   },
   "wallet_health": {
     "categories": {
-      "high": "Good",
-      "low": "Bad",
-      "medium": "Moderate"
+      "high": "良い",
+      "low": "悪い",
+      "medium": "中程度"
     },
-    "description": "Wallet Health",
-    "total_allowances": "Total Approvals",
-    "total_value_at_risk": "Total Value at Risk"
+    "description": "ウォレットヘルス",
+    "total_allowances": "承認総数",
+    "total_value_at_risk": "リスクがある総価値"
   }
 }

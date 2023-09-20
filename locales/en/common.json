@@ -66,7 +66,7 @@
       "title": "This page does not exist."
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to the {{chainName}} network"
+      "chain_could_not_connect": "Could not connect to {{chainName}}"
     }
   },
   "footer": {
