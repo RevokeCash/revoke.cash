@@ -50,32 +50,32 @@ Then there are a few less essential variables:
 
 ## Contributing
 
-### Adding a new chain
+### Adding a new network
 
-Adding a new chain is relatively straightforward as you only need to change two files: `lib/utils/chains.ts` and `cypress/e2e/chains.cy.ts`.
+Adding a new network is relatively straightforward as you only need to change two files: `lib/utils/chains.ts` and `cypress/e2e/chains.cy.ts`.
 
 #### Prerequisites
 
-To add a new chain, one of the following needs to be available:
+To add a new network, one of the following needs to be available:
 
-- A (public or private) RPC endpoint that supports `eth_getLogs` requests for the entire history of the chain.
-- Support in [CovalentHQ](https://www.covalenthq.com/) for the chain.
+- A (public or private) RPC endpoint that supports `eth_getLogs` requests for the entire history of the network.
+- Support in [CovalentHQ](https://www.covalenthq.com/) for the network.
 - A block explorer with an exposed API that is compatible with Etherscan's API (such as Blockscout).
 
-Also make sure that your chain is listed in [ethereum-lists/chains](https://github.com/ethereum-lists/chains) (and that is has subsequently been included in [@revoke.cash/chains](https://github.com/RevokeCash/chains)). Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive.
+Also make sure that your network is listed in [ethereum-lists/chains](https://github.com/ethereum-lists/chains) (and that is has subsequently been included in [@revoke.cash/chains](https://github.com/RevokeCash/chains)). Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive. It is also helpful if your network is listed (with TVL and volume stats) on DeFiLlama, but this is not required.
 
-#### Adding the chain
+#### Adding the network
 
 In `lib/utils/chains.ts`:
 
-- Add the chain to `PROVIDER_SUPPORTED_CHAINS`, `BLOCKSCOUT_SUPPORTED_CHAINS`, `ETHERSCAN_SUPPORTED_CHAINS` or `COVALENT_SUPPORTED_CHAINS`.
-- Add the chain to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn ts-node scripts/get-chain-order.ts` to determine its position in the chain selection dropdown.
-- Find a logo (preferably svg) for the chain, add it to `public/assets/images/vendor/chains` add the path to `getChainLogo()`.
-- If `multicall3` is deployed on the chain, add it to `getChainDeployedContracts()`.
-- If a price source (Uniswap v2 fork) is available for the chain, add it to `getChainPriceStrategies()`.
-- If it uses a block explorer API such as Etherscan's or Blockscout's, add the chain to `getChainApiUrl()` and if it requires an API key, this should be added to the environment variable `ETHERSCAN_API_KEYS` in `.env`.
-- If the data in `ethereum-lists/chains` is different than what should be used by Revoke.cash, add the chain to `getChainName()`, `getChainExplorerUrl()`, `getChainRpcUrl()`, `getChainFreeRpcUrl()`, `getChainLogsRpcUrl()`, `getChainNativeToken()`
-- Add an amount to `getDefaultDonationAmount()` that corresponds to around $10-20 in the native token of the chain.
+- Add the network to `PROVIDER_SUPPORTED_CHAINS`, `BLOCKSCOUT_SUPPORTED_CHAINS`, `ETHERSCAN_SUPPORTED_CHAINS` or `COVALENT_SUPPORTED_CHAINS`.
+- Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn ts-node scripts/get-chain-order.ts` to determine its position in the network selection dropdown.
+- Find a logo (preferably svg) for the network, add it to `public/assets/images/vendor/chains` add the path to `getChainLogo()`.
+- If `multicall3` is deployed on the network, add it to `getChainDeployedContracts()`.
+- If a price source (Uniswap v2 or Uniswap v3 fork) is available for the network, add it to `getChainPriceStrategies()`.
+- If it uses a block explorer API such as Etherscan's or Blockscout's, add the network to `getChainApiUrl()` and if it requires an API key, this should be added to the environment variable `ETHERSCAN_API_KEYS` in `.env`.
+- If the data in `ethereum-lists/chains` is different than what should be used by Revoke.cash, add the network to `getChainName()`, `getChainExplorerUrl()`, `getChainRpcUrl()`, `getChainFreeRpcUrl()`, `getChainLogsRpcUrl()`, `getChainNativeToken()`
+- Add an amount to `getDefaultDonationAmount()` that corresponds to around $10-20 in the native token of the network.
 
 In `cypress/e2e/chains.cy.ts`:
 
