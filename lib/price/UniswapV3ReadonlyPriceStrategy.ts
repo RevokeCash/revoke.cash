@@ -16,6 +16,18 @@ import { UniswapV3PriceStrategy, UniswapV3PriceStrategyOptions } from './Uniswap
 
 export interface UniswapV3ReadonlyPriceStrategyOptions extends UniswapV3PriceStrategyOptions {
   poolBytecodeHash?: Hex;
+  liquidityParameters?: LiquidityParameters;
+}
+
+// TODO: This is a stopgap solution, need to fix liquidity stuff better
+export interface LiquidityParameters {
+  minLiquidity?: bigint;
+}
+
+interface Pair {
+  token0: Address;
+  token1: Address;
+  fee: number;
 }
 
 // This strategy uses the "spot" price rather than getting a quote like the other UniswapV3PriceStrategy. This is
@@ -23,12 +35,14 @@ export interface UniswapV3ReadonlyPriceStrategyOptions extends UniswapV3PriceStr
 // account the liquidity of the pool.
 export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
   poolBytecodeHash: Hex;
+  minLiquidity: bigint;
 
   // Note that this strategy expects the "Factory contract" to be passed in the address field
   constructor(options: UniswapV3ReadonlyPriceStrategyOptions) {
     super(options);
     this.poolBytecodeHash =
       options.poolBytecodeHash ?? '0xe34f199b19b2b4f47f68442619d555527d244f78a3297ea89325f843f87b8b54';
+    this.minLiquidity = options.liquidityParameters?.minLiquidity ?? 10n ** 17n;
   }
 
   public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
@@ -40,8 +54,7 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     const path =
       tokenContract.address === this.path.at(1) ? this.path.slice(1) : ([tokenContract.address, ...this.path] as Hex[]);
 
-    const pairs: Array<{ token0: Address; token1: Address; fee: number }> = [];
-
+    const pairs: Pair[] = [];
     for (let i = 0; i < path.length - 1; i++) {
       if (path[i].length !== 42) continue;
       if (i > path.length - 3) break;
@@ -72,7 +85,7 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     );
 
     const result = pairResults.reduce((acc, { pair, liquidity, slot0 }) => {
-      if (!hasEnoughLiquidity(liquidity)) throw new Error('Not enough liquidity');
+      if (!this.hasEnoughLiquidity(liquidity)) throw new Error('Not enough liquidity');
 
       const [sqrtPriceX96] = slot0;
       const ratio = tokenSortsBefore(pair.token0, pair.token1)
@@ -91,12 +104,14 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     const salt = keccak256(encodeAbiParameters(parseAbiParameters('address, address, uint24'), [tokenA, tokenB, fee]));
     return getAddress(slice(keccak256(concat(['0xff', this.address, salt, this.poolBytecodeHash])), 12));
   }
-}
 
-// TODO: We may need to solve the liquidity issue better in general for this strategy
-const hasEnoughLiquidity = (liquidity: bigint): boolean => {
-  return liquidity > 10n ** 17n;
-};
+  // TODO: We may need to solve the liquidity issue better in general for this strategy
+  // TODO: I think we should be able to do something like dividing by the price
+  // @ts-ignore I just want to be able to override this function with the same name (should be fine)
+  private hasEnoughLiquidity = (liquidity: bigint): boolean => {
+    return liquidity > this.minLiquidity;
+  };
+}
 
 const tokenSortsBefore = (token0: Address, token1: Address): boolean => {
   return token0.toLowerCase() < token1.toLowerCase();

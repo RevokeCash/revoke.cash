@@ -2,9 +2,9 @@ import { ChainId, chains } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
+import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
-import { UniswapV3PriceStrategy } from 'lib/price/UniswapV3PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
 
@@ -830,83 +830,95 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   [ChainId.EthereumMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
+      // Uniswap v3 (Factory) | (0.3%) WETH -> (0.05%) USDC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
         path: [
           toHex(3000, { size: 3 }),
           '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
           toHex(500, { size: 3 }),
           '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-        ], // (0.3%) WETH -> (0.05%) USDC
+        ],
         decimals: 6,
       }),
+      // Uniswap v3 (Factory) | (1%) WETH -> (0.05%) USDC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
         path: [
           toHex(10000, { size: 3 }),
           '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
           toHex(500, { size: 3 }),
           '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-        ], // (1%) WETH -> (0.05%) USDC
+        ],
         decimals: 6,
       }),
+      // SushiSwap (Router) | WETH -> USDC
       new UniswapV2PriceStrategy({
-        address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Sushiswap (Router)
-        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'], // WETH -> USDC
+        address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
+        path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
         decimals: 6,
       }),
     ],
   }),
   [ChainId.BNBSmartChainMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
+    // TODO: Maybe add Pancakeswap v3 (Uniswap v3)
     strategies: [
+      // PancakeSwap v2 | WBNB -> BUSD
       new UniswapV2PriceStrategy({
-        address: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // Pancakeswap
-        path: ['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'], // WBNB -> BUSD
+        address: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
+        path: ['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'],
       }),
+      // PancakeSwap v2 | direct to BUSD
       new UniswapV2PriceStrategy({
-        address: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // Pancakeswap
-        path: ['0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'], // direct to BUSD
+        address: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
+        path: ['0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'],
       }),
     ],
   }),
   [ChainId.PolygonMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
+    // Note: QuickSwap v3 is forked from Algebra, so we need to create a strategy for it
     strategies: [
+      // QuickSwap v2 | WMATIC -> USDC
       new UniswapV2PriceStrategy({
-        address: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff', // Quickswap
-        path: ['0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'], // WMATIC -> USDC
+        address: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
+        path: ['0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'],
         decimals: 6,
       }),
+      // QuickSwap v2 | direct USDC
       new UniswapV2PriceStrategy({
-        address: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff', // Quickswap
-        path: ['0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'], // direct to USDC
+        address: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
+        path: ['0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'],
         decimals: 6,
       }),
     ],
   }),
-  // [ChainId.PolygonzkEVM]: TODO
+  // TODO: Add Algebra strategy (probably slightly amended from Uniswap v3) to support zkEVM
+  [ChainId.PolygonzkEVM]: undefined,
   [ChainId.ArbitrumOne]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
+      // Uniswap v3 (Factory) | (0.3%) WETH -> (0.05%) USDC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
         path: [
           toHex(3000, { size: 3 }),
           '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
           toHex(500, { size: 3 }),
           '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
-        ], // (0.3%) WETH -> (0.05%) USDC
+        ],
         decimals: 6,
       }),
+      // Uniswap v3 (Factory) | (1%) WETH -> (0.05%) USDC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
         path: [
           toHex(10000, { size: 3 }),
           '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
           toHex(500, { size: 3 }),
           '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
-        ], // (1%) WETH -> (0.05%) USDC
+        ],
         decimals: 6,
       }),
     ],
@@ -914,9 +926,10 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   [ChainId.ArbitrumNova]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
+      // SushiSwap (Router) | WETH -> USDC
       new UniswapV2PriceStrategy({
-        address: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', // Sushiswap (Router)
-        path: ['0x722E8BdD2ce80A4422E880164f2079488e115365', '0x750ba8b76187092B0D1E87E28daaf484d1b5273b'], // WETH -> USDC
+        address: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
+        path: ['0x722E8BdD2ce80A4422E880164f2079488e115365', '0x750ba8b76187092B0D1E87E28daaf484d1b5273b'],
         decimals: 6,
         liquidityParameters: { baseAmount: 100n },
       }),
@@ -926,64 +939,470 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   [ChainId.OPMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
+      // Uniswap v3 (Factory) | (0.3%) WETH -> (0.05%) USDbC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
         path: [
           toHex(3000, { size: 3 }),
           '0x4200000000000000000000000000000000000006',
           toHex(500, { size: 3 }),
           '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
-        ], // (0.3%) WETH -> (0.05%) USDC
+        ],
         decimals: 6,
       }),
+      // Uniswap v3 (Factory) | (1%) WETH -> (0.05%) USDbC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Uniswap v3 (Factory)
+        address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
         path: [
           toHex(10000, { size: 3 }),
           '0x4200000000000000000000000000000000000006',
           toHex(500, { size: 3 }),
           '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
-        ], // (1%) WETH -> (0.05%) USDC
+        ],
         decimals: 6,
       }),
     ],
   }),
   // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
+  // TODO: Can also add BaseSwap (Unsiwap v2)
   [ChainId.Base]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
+      // Uniswap v3 (Factory) | (0.3%) WETH -> (0.05%) USDbC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD', // Uniswap v3 (Factory)
+        address: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',
         path: [
           toHex(3000, { size: 3 }),
           '0x4200000000000000000000000000000000000006',
           toHex(500, { size: 3 }),
           '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
-        ], // (0.3%) WETH -> (0.05%) USDbC
+        ],
         decimals: 6,
       }),
+      // Uniswap v3 (Factory) | (1%) WETH -> (0.05%) USDbC
       new UniswapV3ReadonlyPriceStrategy({
-        address: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD', // Uniswap v3 (Factory)
+        address: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',
         path: [
           toHex(10000, { size: 3 }),
           '0x4200000000000000000000000000000000000006',
           toHex(500, { size: 3 }),
           '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
-        ], // (1%) WETH -> (0.05%) USDbC
+        ],
         decimals: 6,
       }),
     ],
   }),
-  // [ChainId.ZkSyncEraMainnet]: TODO (Need SyncSwap Strategy)
-  // [ChainId.Linea]: TODO (Need SyncSwap Strategy)
+  // TODO: Add SyncSwap strategy to support ZkSync and Linea
+  [ChainId.ZkSyncEraMainnet]: undefined,
+  [ChainId.Linea]: undefined,
   [ChainId['AvalancheC-Chain']]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
+      // Trader JOE (Router) | WAVAX -> USDC
       new UniswapV2PriceStrategy({
-        address: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4', // Trader JOE (Router)
-        path: ['0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'], // WAVAX -> USDC
+        address: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4',
+        path: ['0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'],
         decimals: 6,
       }),
     ],
   }),
+  [ChainId.CronosMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // VVS Finance (Router) | WCRO -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0x145863Eb42Cf62847A6Ca784e6416C1682b1b2Ae',
+        path: ['0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23', '0xc21223249CA28397B4B6541dfFaEcC539BfF0c59'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // TODO: Potentially add Curve.fi strategy to support KAVA
+  [ChainId.Kava]: undefined,
+  [ChainId.PulseChain]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    // PulseX (Router) | WPLS -> DAI
+    strategies: [
+      new UniswapV2PriceStrategy({
+        address: '0x98bf93ebf5c380C0e6Ae8e192A7e2AE08edAcc02',
+        path: ['0xA1077a294dDE1B09bB078844df40758a5D0f9a27', '0xefD766cCb38EaF1dfd701853BFCe31359239F305'],
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // TODO: Could benefit from a Curve.fi strategy
+  [ChainId.CeloMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Uniswap v3 (Factory) | (0.3%) CELO -> (0.3%) cUSD
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
+        path: [
+          toHex(3000, { size: 3 }),
+          '0x471EcE3750Da237f93B8E339c536989b8978a438',
+          toHex(3000, { size: 3 }),
+          '0x765DE816845861e75A25fCA122bb6898B8B1282a',
+        ],
+      }),
+      // Uniswap v3 (Factory) | direct (0.3%) cUSD
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
+        path: [toHex(3000, { size: 3 }), '0x765DE816845861e75A25fCA122bb6898B8B1282a'],
+      }),
+    ],
+  }),
+  [ChainId.Gnosis]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // HoneySwap (Router) | direct to WXDAI
+      new UniswapV2PriceStrategy({
+        address: '0x1C232F01118CB8B424793ae03F870aa7D0ac7f77',
+        path: ['0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'],
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // Note: Rootstock only has Sovryn, which is not similar to e.g. Uniswap, so we will probably never support Rootstock
+  [ChainId.RSKMainnet]: undefined,
+  [ChainId.FantomOpera]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // SpookySwap (Router) | WFTM -> lzUSDC
+      new UniswapV2PriceStrategy({
+        address: '0x31F63A33141fFee63D4B26755430a390ACdD8a4d',
+        path: ['0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', '0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.Astar]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // ArthSwap (Router) | WASTR -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0xE915D2393a08a00c5A463053edD31bAe2199b9e7',
+        path: ['0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720', '0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // TODO: Canto DEX is not fully compatible with Uniswap v2, but it might be partially compatible, so we can look into
+  // amending the Uniswap v2 strategy to work with it (https://tuber.build/address/0xa252eEE9BDe830Ca4793F054B506587027825a8e)
+  [ChainId.Canto]: undefined,
+  // TODO: Add Algebra (StellaSwap) strategy to support Moonbeam
+  [ChainId.Moonbeam]: undefined,
+  [ChainId.Moonriver]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Solarbeam (Router) | WMOVR -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0xAA30eF758139ae4a7f798112902Bf6d65612045f',
+        path: ['0x98878B06940aE243284CA214f92Bb71a2b032B8A', '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+        feeParameters: { fee: 0n },
+      }),
+      // BUSD and USDT (don't have a Uniswap v2-compatible pair on Solarbeam)
+      new HardcodedPriceStrategy({
+        tokens: ['0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818', '0xB44a9B6905aF7c801311e8F4E76932ee959c663C'],
+      }),
+    ],
+  }),
+  [ChainId.Mantle]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Note: Agni Finance has a separate "Pool Deployer" contract, which is why using the "Factory" address does
+      // not work for generating pool addresses. Most likely the Quoter also doesn't work for the same reason.
+      // Agni Finance (Pool Deployer) | (0.25%) WMNT -> (0.05%) USDC
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0xe9827B4EBeB9AE41FC57efDdDd79EDddC2EA4d03',
+        path: [
+          toHex(2500, { size: 3 }),
+          '0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8',
+          toHex(500, { size: 3 }),
+          '0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9',
+        ],
+        decimals: 6,
+        poolBytecodeHash: '0xaf9bd540c3449b723624376f906d8d3a0e6441ff18b847f05f4f85789ab64d9a',
+      }),
+      // Agni Finance (Pool Deployer) | direct to (0.25%) USDT
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0xe9827B4EBeB9AE41FC57efDdDd79EDddC2EA4d03',
+        path: [toHex(2500, { size: 3 }), '0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE'],
+        decimals: 6,
+        poolBytecodeHash: '0xaf9bd540c3449b723624376f906d8d3a0e6441ff18b847f05f4f85789ab64d9a',
+        liquidityParameters: { minLiquidity: 10n ** 9n }, // TODO: This is astopgap to make WBTC prices work, fix later
+      }),
+    ],
+  }),
+  [ChainId.MetisAndromedaMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // NetSwap (Router) | METIS -> m.USDC
+      new UniswapV2PriceStrategy({
+        address: '0x1E876cCe41B7b844FDe09E38Fa1cf00f213bFf56',
+        path: ['0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000', '0xEA32A96608495e54156Ae48931A7c20f0dcc1a21'],
+        decimals: 6,
+      }),
+      // NetSwap (Router) | direct to m.USDC
+      new UniswapV2PriceStrategy({
+        address: '0x1E876cCe41B7b844FDe09E38Fa1cf00f213bFf56',
+        path: ['0xEA32A96608495e54156Ae48931A7c20f0dcc1a21'],
+        decimals: 6,
+      }),
+    ],
+  }),
+  [ChainId.FlareMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // FLRX (Router) | WFLR -> eUSDT
+      new UniswapV2PriceStrategy({
+        address: '0x088EeCB467B3968Da36c71F05023A1d3133B2B83',
+        path: ['0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d', '0x96B41289D90444B8adD57e6F265DB5aE8651DF29'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId['SongbirdCanary-Network']]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // FLRX (Router) | WSGB -> exUSDT
+      new UniswapV2PriceStrategy({
+        address: '0x40fe25Fc866794d468685Bb8AD2E61757400338f',
+        path: ['0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED', '0x1a7b46656B2b8b29B1694229e122d066020503D0'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // BTT Chain only has Sushi Trident and KyberSwap as DEXes, so we likely will never support it
+  [ChainId.BitTorrentChainMainnet]: undefined,
+  [ChainId.AuroraMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Trisolaris (Router) | NEAR -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B',
+        path: ['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802'],
+        decimals: 6,
+        nativeAsset: '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.Wanchain]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // WanSwap (Router) | WWAN -> wanUSDT
+      new UniswapV2PriceStrategy({
+        address: '0xeA300406FE2eED9CD2bF5c47D01BECa8Ad294Ec1',
+        path: ['0xdabD997aE5E4799BE47d6E69D9431615CBa28f48', '0x11e77E27Af5539872efEd10abaA0b408cfd9fBBD'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.XinFinXDCNetwork]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // XSPSwap (Router) | WXDC -> xUSDT
+      new UniswapV2PriceStrategy({
+        address: '0xf9c5E4f6E627201aB2d6FB6391239738Cf4bDcf9',
+        path: ['0x951857744785E80e2De051c32EE7b25f9c458C42', '0xD4B5f10D61916Bd6E0860144a91Ac658dE8a1437'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+      // Globiance (Router) | GBEX -> USDG
+      new UniswapV2PriceStrategy({
+        address: '0x90055EdC794e839567a5631d42752dB732E10C8F',
+        path: ['0x34514748F86A8dA01Ef082306b6d6e738F777f5A', '0x9C1eb1Ea34e70AC05B5EE5515212e9Ec201Cfc5d'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // Note: CORE apparently has like 5 competing "USDT" coins trading on different DEXes, so for now we added 3
+  // different strategies for different DEXes, making sure to use different USDTs for each.
+  [ChainId.CoreBlockchainMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // ArcherSwap (Router) | WCORE -> USDT (1)
+      new UniswapV2PriceStrategy({
+        address: '0x74F56a7560eF0C72Cf6D677e3f5f51C2D579fF15',
+        path: ['0x40375C92d9FAf44d2f9db9Bd9ba41a3317a2404f', '0x900101d06A7426441Ae63e9AB3B9b0F63Be145F1'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 50n },
+      }),
+      // IcecreamSwap (Router) | WCORE -> USDT (2)
+      new UniswapV2PriceStrategy({
+        address: '0xBb5e1777A331ED93E07cF043363e48d320eb96c4',
+        path: ['0x40375C92d9FAf44d2f9db9Bd9ba41a3317a2404f', '0x81bCEa03678D1CEF4830942227720D542Aa15817'],
+        liquidityParameters: { baseAmount: 50n },
+      }),
+      // LFGSwap (Router) | WCORE -> USDT (3)
+      new UniswapV2PriceStrategy({
+        address: '0x42a0F91973536f85B06B310fa9C70215784F35a1',
+        path: ['0x40375C92d9FAf44d2f9db9Bd9ba41a3317a2404f', '0x9Ebab27608bD64AFf36f027049aECC69102a0D1e'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 50n },
+      }),
+    ],
+  }),
+  // Note: The "regular" USDC is depegged on Harmony, so we have to be careful to use the "new" USDC
+  [ChainId.HarmonyMainnetShard0]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Tranquil Finance (Router) | WONE -> USDC (pegged)
+      new UniswapV2PriceStrategy({
+        address: '0x3C8BF7e25EbfAaFb863256A4380A8a93490d8065',
+        path: ['0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a', '0xbc594cabd205bd993e7ffa6f3e9cea75c1110da5'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  // Note: Essentially all stablecoins on Dogechain are depegged
+  [ChainId.DogechainMainnet]: undefined,
+  [ChainId.Evmos]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Forge (Factory) | (0.05%) stEVMOS -> (0.05%) axlUSDC
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0xf544365e7065966f190155F629cE0182fC68Eaa2',
+        path: [
+          toHex(500, { size: 3 }),
+          '0x2C68D1d6aB986Ff4640b51e1F14C716a076E44C4',
+          toHex(500, { size: 3 }),
+          '0x15C3Eb3B621d1Bff62CbA1c9536B7c1AE9149b57',
+        ],
+        decimals: 6,
+        nativeAsset: '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517',
+      }),
+      // Forge (Factory) | (0.05%) stATOM -> (0.05%) stEVMOS -> (0.05%) axlUSDC
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0xf544365e7065966f190155F629cE0182fC68Eaa2',
+        path: [
+          toHex(500, { size: 3 }),
+          '0xB5124FA2b2cF92B2D469b249433BA1c96BDF536D',
+          toHex(500, { size: 3 }),
+          '0x2C68D1d6aB986Ff4640b51e1F14C716a076E44C4',
+          toHex(500, { size: 3 }),
+          '0x15C3Eb3B621d1Bff62CbA1c9536B7c1AE9149b57',
+        ],
+        decimals: 6,
+        liquidityParameters: { minLiquidity: 10n ** 9n }, // TODO: This is a stopgap to make prices work, fix later
+      }),
+    ],
+  }),
+  [ChainId.BobaNetwork]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // OolongSwap (Router) | WETH -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0x17C83E2B96ACfb5190d63F5E46d93c107eC0b514',
+        path: ['0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000', '0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 10n },
+      }),
+    ],
+  }),
+  [ChainId.KCCMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // MojitoSwap (Router) | WKCS -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0x8c8067ed3bC19ACcE28C1953bfC18DC85A2127F7',
+        path: ['0x4446Fc4eb47f2f6586f9fAAb68B3498F86C07521', '0x980a5AfEf3D17aD98635F6C5aebCBAedEd3c3430'],
+        liquidityParameters: { baseAmount: 10n },
+      }),
+      // KuSwap (Router) | WKCS -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0x8c8067ed3bC19ACcE28C1953bfC18DC85A2127F7',
+        path: ['0x4446Fc4eb47f2f6586f9fAAb68B3498F86C07521', '0x0039f574eE5cC39bdD162E9A88e3EB1f111bAF48'],
+        liquidityParameters: { baseAmount: 10n },
+      }),
+    ],
+  }),
+  [ChainId.OasisEmerald]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // YuzuSwap (Router) | WROSE -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0x250d48C5E78f1E85F7AB07FEC61E93ba703aE668',
+        path: ['0x21C718C22D52d0F3a789b752D4c2fD5908a8A733', '0xdC19A122e268128B5eE20366299fc7b5b199C8e3'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.OasysMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // TealSwap (Router) | WOAS -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0x5200000000000000000000000000000000000019',
+        path: ['0x5200000000000000000000000000000000000001', '0xDc3af65eCBD339309Ec55F109CB214E0325c5eD4'],
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.CoinExSmartChainMainnet]: undefined, // No liquid stablecoins
+  [ChainId.FuseMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Voltage (Router) | WFUSE -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0xE3F85aAd0c8DD7337427B9dF5d0fB741d65EEEB5',
+        path: ['0x0BE9e53fd7EDaC9F859882AfdDa116645287C629', '0xFaDbBF8Ce7D5b7041bE672561bbA99f79c532e10'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.NahmiiMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // NiiFi (Router) | WETH -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0x01dF38E20738c58aF8141504aa6C88013d3D6C5A',
+        path: ['0x4200000000000000000000000000000000000006', '0xBe5c622cBbF7F9c326D70f795890661FeB5BF2e6'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.ENULSMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // PheasantSwap (Router) | WNULS -> USDTN
+      new UniswapV2PriceStrategy({
+        address: '0x3653d15A4Ed7E9acAA9AC7C5DB812e8A7a90DF9e',
+        path: ['0x217dffF57E3b855803CE88a1374C90759Ea071bD', '0x9e5d124Cd49671f3f7B54d4aef43b3930BcF6dE7'],
+        liquidityParameters: { baseAmount: 1n }, // Super low liquidity DEX
+      }),
+    ],
+  }),
+  [ChainId.EthereumClassicMainnet]: undefined, // No liquid stablecoins
+  [ChainId.CallistoMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      new UniswapV2PriceStrategy({
+        address: '0xeB5B468fAacC6bBdc14c4aacF0eec38ABCCC13e7',
+        path: ['0xF5AD6F6EDeC824C7fD54A66d241a227F6503aD3a', '0xbf6c50889d3a620eb42C0F188b65aDe90De958c4'],
+        liquidityParameters: { baseAmount: 10n }, // Super low liquidity DEX
+      }),
+    ],
+  }),
+  [ChainId.Shiden]: undefined, // <$100k Liquidity
+  [ChainId.SyscoinMainnet]: undefined, // <$100k Liquidity
+  [ChainId.Palm]: undefined, // <$100k Liquidity
+  [ChainId.Zora]: undefined, // <$100k Liquidity
+  [ChainId.HorizenEON]: undefined, // <$100k Liquidity
+  [ChainId.ExosamaNetwork]: undefined, // <$100k Liquidity
+  [ChainId.RedlightChainMainnet]: undefined, // <$100k Liquidity
+  [ChainId.MaxxChainMainnet]: undefined, // <$100k Liquidity
 };
