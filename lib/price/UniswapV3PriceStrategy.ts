@@ -1,43 +1,32 @@
-import { ERC20_ABI, UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
+import { UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
 import { TokenContract } from 'lib/interfaces';
-import { Address, Hex, PublicClient, concat, parseUnits } from 'viem';
+import { Address, concat, parseUnits } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
-import { calculateTokenPrice } from './utils';
+import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 
-export interface UniswapV3PriceStrategyOptions {
+export interface UniswapV3PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
   address: Address;
   path: Address[];
   decimals?: number;
-  nativeAsset?: Address;
 }
 
 const PRICE_BASE_AMOUNT = 1000n;
 const LIQUIDITY_CHECK_RATIO = 10n;
 const ACCEPTABLE_SLIPPAGE = 0.4;
 
-export class UniswapV3PriceStrategy implements PriceStrategy {
+export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   abi = UNISWAP_V3_QUOTER_ABI;
   address: Address;
   path: Address[];
   decimals: number;
-  nativeAsset: Address;
 
   constructor(options: UniswapV3PriceStrategyOptions) {
+    // Note: the first address (so second entry) in the path is assumed to be the wrapped native token
+    super({ nativeAsset: options.nativeAsset ?? options.path[1] });
+
     this.address = options.address;
     this.path = options.path;
     this.decimals = options.decimals ?? 18;
-    // Note: the first address (so second entry) in the path is assumed to be the wrapped native token
-    this.nativeAsset = options.nativeAsset ?? options.path[1];
-  }
-
-  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
-    const inversePrice = await this.calculateInversePrice({
-      address: this.nativeAsset,
-      abi: ERC20_ABI,
-      publicClient,
-    });
-    const price = calculateTokenPrice(inversePrice, 18);
-    return price;
   }
 
   public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {

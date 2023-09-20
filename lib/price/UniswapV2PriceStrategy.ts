@@ -1,17 +1,16 @@
-import { ERC20_ABI, UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
+import { UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
 import { TokenContract } from 'lib/interfaces';
-import { Abi, Address, PublicClient, parseUnits } from 'viem';
+import { Address, parseUnits } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
-import { calculateTokenPrice } from './utils';
 import { fixedPointMultiply } from 'lib/utils/math';
+import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 
-export interface UniswapV2PriceStrategyOptions {
+export interface UniswapV2PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
   address: Address;
   path: Address[];
   decimals?: number;
   liquidityParameters?: LiquidityParameters;
   feeParameters?: FeeParameters;
-  nativeAsset?: Address;
 }
 
 export interface LiquidityParameters {
@@ -24,12 +23,11 @@ export interface FeeParameters {
   fee?: bigint;
 }
 
-export class UniswapV2PriceStrategy implements PriceStrategy {
+export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   abi = UNISWAP_V2_ROUTER_ABI;
   address: Address;
   path: Address[];
   decimals: number;
-  nativeAsset: Address;
 
   baseAmount: bigint;
   checkRatio: bigint;
@@ -40,6 +38,8 @@ export class UniswapV2PriceStrategy implements PriceStrategy {
 
   // Note: the first address in the path is assumed to be the wrapped native token
   constructor(options: UniswapV2PriceStrategyOptions) {
+    super({ nativeAsset: options.nativeAsset ?? options.path[0] });
+
     this.address = options.address;
     this.path = options.path;
     this.decimals = options.decimals ?? 18;
@@ -47,17 +47,6 @@ export class UniswapV2PriceStrategy implements PriceStrategy {
     this.checkRatio = options.liquidityParameters?.checkRatio ?? 10n;
     this.acceptableSlippage = options.liquidityParameters?.acceptableSlippage ?? 0.4;
     this.fee = options.feeParameters?.fee ?? [];
-    this.nativeAsset = options.nativeAsset ?? options.path[0];
-  }
-
-  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
-    const inversePrice = await this.calculateInversePrice({
-      address: this.nativeAsset,
-      abi: ERC20_ABI,
-      publicClient,
-    });
-    const price = calculateTokenPrice(inversePrice, 18);
-    return price;
   }
 
   public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
