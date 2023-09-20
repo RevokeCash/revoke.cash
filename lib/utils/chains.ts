@@ -19,7 +19,6 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.ArbitrumOne,
   ChainId.ArbitrumGoerli,
   ChainId.MetisAndromedaMainnet,
-  ChainId.SmartBitcoinCash,
   ChainId.SyscoinMainnet,
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.CoinExSmartChainMainnet,
@@ -30,11 +29,12 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.PolygonzkEVM,
   ChainId.PolygonzkEVMTestnet,
   ChainId.CoreBlockchainMainnet,
-  ChainId.KCCMainnet,
   ChainId.PulseChain,
+  ChainId.KCCMainnet,
   ChainId.Linea,
   ChainId.LineaTestnet,
   ChainId.Wanchain,
+  ChainId.XinFinXDCNetwork,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -121,38 +121,38 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CronosMainnet,
   ChainId.Kava,
   ChainId.PulseChain,
-  ChainId.CeloMainnet,
   ChainId.Gnosis,
+  ChainId.CeloMainnet,
   ChainId.RSKMainnet,
   ChainId.FantomOpera,
-  ChainId.Astar,
   ChainId.Canto,
+  ChainId.Astar,
+  ChainId.Mantle,
   ChainId.Moonbeam,
   ChainId.Moonriver,
-  ChainId.Mantle,
   ChainId.MetisAndromedaMainnet,
-  ChainId['SongbirdCanary-Network'],
   ChainId.BitTorrentChainMainnet,
   ChainId.AuroraMainnet,
-  ChainId.SmartBitcoinCash,
-  ChainId.CoreBlockchainMainnet,
+  ChainId.FlareMainnet,
+  ChainId['SongbirdCanary-Network'],
   ChainId.Wanchain,
+  ChainId.XinFinXDCNetwork,
+  ChainId.CoreBlockchainMainnet,
+  ChainId.Evmos,
   ChainId.HarmonyMainnetShard0,
   ChainId.DogechainMainnet,
-  ChainId.Evmos,
   ChainId.BobaNetwork,
-  ChainId.CoinExSmartChainMainnet,
   ChainId.KCCMainnet,
-  ChainId.OasisEmerald,
   ChainId.OasysMainnet,
+  ChainId.OasisEmerald,
+  ChainId.CoinExSmartChainMainnet,
   ChainId.FuseMainnet,
   ChainId.NahmiiMainnet,
-  ChainId.ENULSMainnet,
   ChainId.EthereumClassicMainnet,
+  ChainId.ENULSMainnet,
   ChainId.CallistoMainnet,
   ChainId.Shiden,
   ChainId.SyscoinMainnet,
-  ChainId.FlareMainnet,
   ChainId.Palm,
   ChainId.Zora,
   ChainId.HorizenEON,
@@ -299,6 +299,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.OPMainnet]: 'Optimism',
     [ChainId.HorizenEON]: 'Horizen EON',
     [ChainId.MaxxChainMainnet]: 'MaxxChain',
+    [ChainId.XinFinXDCNetwork]: 'XDC',
   };
 
   const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -394,6 +395,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Linea]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
+    [ChainId.XinFinXDCNetwork]: 'https://erpc.xdcrpc.com',
     ...RPC_OVERRIDES,
   };
 
@@ -522,6 +524,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.MantleTestnet]: '/assets/images/vendor/chains/mantle.svg',
     [ChainId.Zora]: '/assets/images/vendor/chains/zora.svg',
     [ChainId.MaxxChainMainnet]: '/assets/images/vendor/chains/maxxchain.png',
+    [ChainId.XinFinXDCNetwork]: '/assets/images/vendor/chains/xdc.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -587,6 +590,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     ZEN: '1',
     MNT: '25',
     PWR: '1000',
+    XDC: '300',
   };
 
   return mapping[nativeToken] ?? '1';
@@ -762,7 +766,8 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Mumbai]: { ...MULTICALL },
     [ChainId.PolygonzkEVM]: { ...MULTICALL },
     [ChainId.PolygonzkEVMTestnet]: { ...MULTICALL },
-    [ChainId.PulseChain]: { ...MULTICALL },
+    // Although multicall is deployed on Pulsechain, it is causing issues
+    // [ChainId.PulseChain]: { ...MULTICALL },
     [ChainId.PulseChainTestnetv4]: { ...MULTICALL },
     [ChainId.RSKMainnet]: { ...MULTICALL },
     [ChainId.RSKTestnet]: { ...MULTICALL },
