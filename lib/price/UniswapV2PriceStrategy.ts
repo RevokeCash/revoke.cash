@@ -10,6 +10,8 @@ export interface UniswapV2PriceStrategyOptions {
   path: Address[];
   decimals?: number;
   liquidityParameters?: LiquidityParameters;
+  feeParameters?: FeeParameters;
+  nativeAsset?: Address;
 }
 
 export interface LiquidityParameters {
@@ -18,15 +20,23 @@ export interface LiquidityParameters {
   acceptableSlippage?: number;
 }
 
+export interface FeeParameters {
+  fee?: bigint;
+}
+
 export class UniswapV2PriceStrategy implements PriceStrategy {
-  abi: Abi = UNISWAP_V2_ROUTER_ABI;
+  abi = UNISWAP_V2_ROUTER_ABI;
   address: Address;
   path: Address[];
   decimals: number;
+  nativeAsset: Address;
 
   baseAmount: bigint;
   checkRatio: bigint;
   acceptableSlippage: number;
+
+  // Certain Uniswap v2 forks (notably Solarbeam on Moonriver) have a different signature for getAmountsIn
+  fee: bigint | [];
 
   // Note: the first address in the path is assumed to be the wrapped native token
   constructor(options: UniswapV2PriceStrategyOptions) {
@@ -36,12 +46,13 @@ export class UniswapV2PriceStrategy implements PriceStrategy {
     this.baseAmount = options.liquidityParameters?.baseAmount ?? 1000n;
     this.checkRatio = options.liquidityParameters?.checkRatio ?? 10n;
     this.acceptableSlippage = options.liquidityParameters?.acceptableSlippage ?? 0.4;
+    this.fee = options.feeParameters?.fee ?? [];
+    this.nativeAsset = options.nativeAsset ?? options.path[0];
   }
 
   public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
-    const wrappedNativeToken = this.path.at(0);
     const inversePrice = await this.calculateInversePrice({
-      address: wrappedNativeToken,
+      address: this.nativeAsset,
       abi: ERC20_ABI,
       publicClient,
     });
@@ -62,13 +73,13 @@ export class UniswapV2PriceStrategy implements PriceStrategy {
         address: this.address,
         abi: this.abi,
         functionName: 'getAmountsIn',
-        args: [parseUnits(String(this.baseAmount), this.decimals), path],
+        args: [parseUnits(String(this.baseAmount), this.decimals), path].concat(this.fee) as any,
       }),
       publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getAmountsIn',
-        args: [parseUnits(String(this.checkRatio * this.baseAmount), this.decimals), path],
+        args: [parseUnits(String(this.checkRatio * this.baseAmount), this.decimals), path].concat(this.fee) as any,
       }),
     ]);
 

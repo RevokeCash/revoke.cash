@@ -8,6 +8,7 @@ export interface UniswapV3PriceStrategyOptions {
   address: Address;
   path: Address[];
   decimals?: number;
+  nativeAsset?: Address;
 }
 
 const PRICE_BASE_AMOUNT = 1000n;
@@ -19,18 +20,19 @@ export class UniswapV3PriceStrategy implements PriceStrategy {
   address: Address;
   path: Address[];
   decimals: number;
+  nativeAsset: Address;
 
-  // Note: the first address (so second entry) in the path is assumed to be the wrapped native token
   constructor(options: UniswapV3PriceStrategyOptions) {
     this.address = options.address;
     this.path = options.path;
     this.decimals = options.decimals ?? 18;
+    // Note: the first address (so second entry) in the path is assumed to be the wrapped native token
+    this.nativeAsset = options.nativeAsset ?? options.path[1];
   }
 
   public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
-    const wrappedNativeToken = this.path.at(1); // First entry is the fee, then the wrapped native token
     const inversePrice = await this.calculateInversePrice({
-      address: wrappedNativeToken,
+      address: this.nativeAsset,
       abi: ERC20_ABI,
       publicClient,
     });
