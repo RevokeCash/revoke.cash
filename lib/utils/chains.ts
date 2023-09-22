@@ -372,7 +372,7 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
 
 export const getChainRpcUrl = (chainId: number): string | undefined => {
   const infuraKey = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
-  const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+  const alchemyKey = process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
   const overrides: Record<number, string> = {
     // [ChainId.EthereumMainnet]: `https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`,
@@ -405,8 +405,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
 
 // We should always use Infura for logs, even if we use a different RPC URL for other purposes
 export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
-  const infuraKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
-  const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+  const infuraKey = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
+  const alchemyKey = process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 
   const overrides = {
     // [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,

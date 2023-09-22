@@ -10,7 +10,7 @@ import { providers } from 'ethers';
 
 export const GLOBAL_ETH_MAINNET_CLIENT = createViemPublicClientForChain(
   1,
-  `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+  `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
 );
 
 export const ENS_RESOLUTION = GLOBAL_ETH_MAINNET_CLIENT;
