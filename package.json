@@ -1,6 +1,6 @@
 {
   "name": "revoke.cash",
-  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 40 other chains.",
+  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 60 other networks.",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
@@ -23,7 +23,7 @@
     "@coinbase/wallet-sdk": "canary",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@revoke.cash/chains": "^13.0.0",
+    "@revoke.cash/chains": "^16.0.0",
     "@tanstack/query-sync-storage-persister": "^4.33.0",
     "@tanstack/react-query": "^4.33.0",
     "@tanstack/react-query-persist-client": "^4.33.0",

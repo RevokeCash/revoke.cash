@@ -66,7 +66,7 @@
       "title": "Esta página no existe."
     },
     "messages": {
-      "chain_could_not_connect": "No se pudo conectar a la red de {{chainName}}"
+      "chain_could_not_connect": "No se ha podido conectar a {{chainName}}"
     }
   },
   "footer": {
@@ -75,8 +75,8 @@
     "terms": "Términos"
   },
   "meta": {
-    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en Ethereum y 40 redes más.",
-    "title": "Revoca las autorizaciones de tus tokens en más de 40 redes"
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en Ethereum y 60 redes más.",
+    "title": "Revoca las autorizaciones de tus tokens en más de 60 redes"
   },
   "misc": {
     "powered_by": "Desarrollado por <0>{{name}}</0>"

@@ -35,6 +35,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.LineaTestnet,
   ChainId.Wanchain,
   ChainId.XinFinXDCNetwork,
+  ChainId.Shibarium,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -49,7 +50,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.AuroraMainnet,
-  ChainId.HorizenEON,
+  ChainId.HorizenEONMainnet,
   ChainId.HorizenGobiTestnet,
   ChainId.PulseChainTestnetv4,
   ChainId.ScrollSepoliaTestnet,
@@ -71,6 +72,13 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.Zora,
   ChainId.Astar,
   ChainId.MaxxChainMainnet,
+  ChainId.BitgertMainnet,
+  ChainId.RolluxMainnet,
+  ChainId.MilkomedaC1Mainnet,
+  ChainId.ElastosSmartChain,
+  ChainId.VelasEVMMainnet,
+  ChainId.KardiaChainMainnet,
+  ChainId.PegoNetwork,
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
@@ -90,6 +98,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.CeloMainnet,
   ChainId.CeloAlfajoresTestnet,
   ChainId.BitTorrentChainMainnet,
+  ChainId['WEMIX3.0Mainnet'],
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
 
@@ -131,10 +140,13 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.MetisAndromedaMainnet,
+  ChainId.PegoNetwork,
+  ChainId['WEMIX3.0Mainnet'],
   ChainId.BitTorrentChainMainnet,
   ChainId.AuroraMainnet,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
+  ChainId.KardiaChainMainnet,
   ChainId.Wanchain,
   ChainId.XinFinXDCNetwork,
   ChainId.CoreBlockchainMainnet,
@@ -143,19 +155,25 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.DogechainMainnet,
   ChainId.BobaNetwork,
   ChainId.KCCMainnet,
+  ChainId.VelasEVMMainnet,
   ChainId.OasysMainnet,
+  ChainId.ElastosSmartChain,
   ChainId.OasisEmerald,
   ChainId.CoinExSmartChainMainnet,
   ChainId.FuseMainnet,
+  ChainId.MilkomedaC1Mainnet,
   ChainId.NahmiiMainnet,
+  ChainId.Shibarium,
+  ChainId.SyscoinMainnet,
+  ChainId.RolluxMainnet,
+  ChainId.BitgertMainnet,
   ChainId.EthereumClassicMainnet,
   ChainId.ENULSMainnet,
   ChainId.CallistoMainnet,
   ChainId.Shiden,
-  ChainId.SyscoinMainnet,
   ChainId.Palm,
   ChainId.Zora,
-  ChainId.HorizenEON,
+  ChainId.HorizenEONMainnet,
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
   ChainId.MaxxChainMainnet,
@@ -297,9 +315,18 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ENULSMainnet]: 'ENULS',
     [ChainId.ZetaChainAthens3Testnet]: 'ZetaChain Athens',
     [ChainId.OPMainnet]: 'Optimism',
-    [ChainId.HorizenEON]: 'Horizen EON',
+    [ChainId.HorizenEONMainnet]: 'Horizen EON',
     [ChainId.MaxxChainMainnet]: 'MaxxChain',
     [ChainId.XinFinXDCNetwork]: 'XDC',
+    [ChainId.BitgertMainnet]: 'Bitgert',
+    [ChainId.RolluxMainnet]: 'Rollux',
+    [ChainId.MilkomedaC1Mainnet]: 'Milkomeda C1',
+    [ChainId.ElastosSmartChain]: 'Elastos',
+    [ChainId.Shibarium]: 'Shibarium',
+    [ChainId.VelasEVMMainnet]: 'Velas',
+    [ChainId.KardiaChainMainnet]: 'KardiaChain',
+    [ChainId.PegoNetwork]: 'Pego',
+    [ChainId['WEMIX3.0Mainnet']]: 'WEMIX',
   };
 
   const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -396,6 +423,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
     [ChainId.XinFinXDCNetwork]: 'https://erpc.xdcrpc.com',
+    [ChainId.HorizenEONMainnet]: 'https://eon-rpc.horizenlabs.io/ethv1',
     ...RPC_OVERRIDES,
   };
 
@@ -492,7 +520,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.svg',
     [ChainId['SongbirdCanary-Network']]: '/assets/images/vendor/chains/songbird.svg',
     [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpeg',
-    [ChainId.HorizenEON]: '/assets/images/vendor/chains/horizen.png',
+    [ChainId.HorizenEONMainnet]: '/assets/images/vendor/chains/horizen.png',
     [ChainId.HorizenGobiTestnet]: '/assets/images/vendor/chains/horizen.png',
     [ChainId.ZkSyncEraMainnet]: '/assets/images/vendor/chains/zksync.jpeg',
     [ChainId.ZkSyncEraTestnet]: '/assets/images/vendor/chains/zksync.jpeg',
@@ -525,6 +553,15 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.Zora]: '/assets/images/vendor/chains/zora.svg',
     [ChainId.MaxxChainMainnet]: '/assets/images/vendor/chains/maxxchain.png',
     [ChainId.XinFinXDCNetwork]: '/assets/images/vendor/chains/xdc.svg',
+    [ChainId.BitgertMainnet]: '/assets/images/vendor/chains/bitgert.svg',
+    [ChainId.RolluxMainnet]: '/assets/images/vendor/chains/rollux.svg',
+    [ChainId.MilkomedaC1Mainnet]: '/assets/images/vendor/chains/milkomeda.svg',
+    [ChainId.ElastosSmartChain]: '/assets/images/vendor/chains/elastos.jpg',
+    [ChainId.Shibarium]: '/assets/images/vendor/chains/shibarium.svg',
+    [ChainId.VelasEVMMainnet]: '/assets/images/vendor/chains/velas.svg',
+    [ChainId.KardiaChainMainnet]: '/assets/images/vendor/chains/kardiachain.svg',
+    [ChainId.PegoNetwork]: '/assets/images/vendor/chains/pego.jpg',
+    [ChainId['WEMIX3.0Mainnet']]: '/assets/images/vendor/chains/wemix.svg',
   };
 
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
@@ -534,6 +571,7 @@ export const getChainNativeToken = (chainId: number): string => {
   const overrides = {
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
+    [ChainId.BitgertMainnet]: 'BRISE',
   };
 
   return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
@@ -591,6 +629,14 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     MNT: '25',
     PWR: '1000',
     XDC: '300',
+    BRISE: '100000000',
+    mADA: '50',
+    ELA: '10',
+    BONE: '20',
+    VLX: '2000',
+    KAI: '5000',
+    PG: '20',
+    WEMIX: '20',
   };
 
   return mapping[nativeToken] ?? '1';
@@ -638,7 +684,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network/api',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
-    [ChainId.HorizenEON]: 'https://eon-explorer.horizenlabs.io/api',
+    [ChainId.HorizenEONMainnet]: 'https://eon-explorer.horizenlabs.io/api',
     [ChainId.HorizenGobiTestnet]: 'https://gobi-explorer.horizen.io/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
@@ -662,6 +708,14 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.EthereumClassicMainnet]: 'https://blockscout.com/etc/mainnet/api',
     [ChainId.Zora]: 'https://explorer.zora.energy/api',
     [ChainId.MaxxChainMainnet]: 'https://explorer.maxxchain.org/api',
+    [ChainId.BitgertMainnet]: 'https://brisescan.com/api',
+    [ChainId.RolluxMainnet]: 'https://explorer.rollux.com/api',
+    [ChainId.MilkomedaC1Mainnet]: 'https://explorer-mainnet-cardano-evm.c1.milkomeda.com/api',
+    [ChainId.ElastosSmartChain]: 'https://esc.elastos.io/api',
+    [ChainId.VelasEVMMainnet]: 'https://evmexplorer.velas.com/api',
+    [ChainId.KardiaChainMainnet]: 'https://explorer.kardiachain.io/api',
+    [ChainId.PegoNetwork]: 'https://scan.pego.network/api',
+    [ChainId['WEMIX3.0Mainnet']]: 'https://api.wemixscan.com/api',
   };
 
   return apiUrls[chainId];
@@ -735,6 +789,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Base]: { ...MULTICALL },
     [ChainId.BaseGoerliTestnet]: { ...MULTICALL },
     [ChainId.BobaNetwork]: { ...MULTICALL },
+    [ChainId.BitgertMainnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainMainnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainTestnet]: { ...MULTICALL },
     [ChainId.Canto]: { ...MULTICALL },
@@ -756,6 +811,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Mantle]: { ...MULTICALL },
     [ChainId.MetisAndromedaMainnet]: { ...MULTICALL },
     [ChainId.MetisGoerliTestnet]: { ...MULTICALL },
+    [ChainId.MilkomedaC1Mainnet]: { ...MULTICALL },
     [ChainId.MoonbaseAlpha]: { ...MULTICALL },
     [ChainId.Moonbeam]: { ...MULTICALL },
     [ChainId.Moonriver]: { ...MULTICALL },
@@ -769,12 +825,14 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     // Although multicall is deployed on Pulsechain, it is causing issues
     // [ChainId.PulseChain]: { ...MULTICALL },
     [ChainId.PulseChainTestnetv4]: { ...MULTICALL },
+    [ChainId.RolluxMainnet]: { ...MULTICALL },
     [ChainId.RSKMainnet]: { ...MULTICALL },
     [ChainId.RSKTestnet]: { ...MULTICALL },
     [ChainId['SongbirdCanary-Network']]: { ...MULTICALL },
     [ChainId.SyscoinMainnet]: { ...MULTICALL },
     [ChainId.SyscoinTanenbaumTestnet]: { ...MULTICALL },
     [ChainId.TelosEVMMainnet]: { ...MULTICALL },
+    [ChainId.VelasEVMMainnet]: { ...MULTICALL },
     [ChainId.Wanchain]: {
       multicall3: { address: '0xcDF6A1566e78EB4594c86Fe73Fcdc82429e97fbB' },
     },
@@ -1134,7 +1192,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         path: [toHex(2500, { size: 3 }), '0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE'],
         decimals: 6,
         poolBytecodeHash: '0xaf9bd540c3449b723624376f906d8d3a0e6441ff18b847f05f4f85789ab64d9a',
-        liquidityParameters: { minLiquidity: 10n ** 9n }, // TODO: This is astopgap to make WBTC prices work, fix later
+        liquidityParameters: { minLiquidity: 10n ** 9n }, // TODO: This is a stopgap to make WBTC prices work, fix later
       }),
     ],
   }),
@@ -1146,12 +1204,37 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         address: '0x1E876cCe41B7b844FDe09E38Fa1cf00f213bFf56',
         path: ['0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000', '0xEA32A96608495e54156Ae48931A7c20f0dcc1a21'],
         decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
       }),
       // NetSwap (Router) | direct to m.USDC
       new UniswapV2PriceStrategy({
         address: '0x1E876cCe41B7b844FDe09E38Fa1cf00f213bFf56',
         path: ['0xEA32A96608495e54156Ae48931A7c20f0dcc1a21'],
         decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.PegoNetwork]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // W3swap (Router) | WPG -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0xE9d6f80028671279a28790bb4007B10B0595Def1',
+        path: ['0x0cF4071940782b640d0b595Cb17bDf3E90869d70', '0x02F9Bebf5E54968D8Cc2562356C91ECDE135801B'],
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId['WEMIX3.0Mainnet']]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // WEMIX.FI (Router) | WEMIX -> mUSDC
+      new UniswapV2PriceStrategy({
+        address: '0x80a5A916FB355A8758f0a3e47891dc288DAC2665',
+        path: ['0x7D72b22a74A216Af4a002a1095C8C707d6eC1C5f', '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
       }),
     ],
   }),
@@ -1194,6 +1277,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.KardiaChainMainnet]: undefined, // No liquid stablecoins
   [ChainId.Wanchain]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
@@ -1327,6 +1411,25 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.ElastosSmartChain]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Glide Finance (Router) | WELA -> ethUSDC
+      new UniswapV2PriceStrategy({
+        address: '0xec2f2b94465Ee0a7436beB4E38FC8Cf631ECf7DF',
+        path: ['0x517E9e5d46C1EA8aB6f78677d6114Ef47F71f6c4', '0xA06be0F5950781cE28D965E5EFc6996e88a8C141'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+      // Glide Finance (Router) | direct to ethUSDC
+      new UniswapV2PriceStrategy({
+        address: '0xec2f2b94465Ee0a7436beB4E38FC8Cf631ECf7DF',
+        path: ['0xA06be0F5950781cE28D965E5EFc6996e88a8C141'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
   [ChainId.OasisEmerald]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
@@ -1334,6 +1437,18 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       new UniswapV2PriceStrategy({
         address: '0x250d48C5E78f1E85F7AB07FEC61E93ba703aE668',
         path: ['0x21C718C22D52d0F3a789b752D4c2fD5908a8A733', '0xdC19A122e268128B5eE20366299fc7b5b199C8e3'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.VelasEVMMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // WagyuSwap (Router) | WVLX -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0x3D1c58B6d4501E34DF37Cf0f664A58059a188F00',
+        path: ['0xc579D1f3CF86749E05CD06f7ADe17856c2CE3126', '0x01445C31581c354b7338AC35693AB2001B50b9aE'],
         decimals: 6,
         liquidityParameters: { baseAmount: 100n },
       }),
@@ -1363,6 +1478,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.MilkomedaC1Mainnet]: undefined, // No liquid stablecoins
   [ChainId.NahmiiMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
@@ -1375,6 +1491,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.Shibarium]: undefined, // No liquid stablecoins
   [ChainId.ENULSMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
@@ -1386,10 +1503,12 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.BitgertMainnet]: undefined, // No liquid stablecoins
   [ChainId.EthereumClassicMainnet]: undefined, // No liquid stablecoins
   [ChainId.CallistoMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
+      // Soy Finance (Router) | WCLO -> BUSDT
       new UniswapV2PriceStrategy({
         address: '0xeB5B468fAacC6bBdc14c4aacF0eec38ABCCC13e7',
         path: ['0xF5AD6F6EDeC824C7fD54A66d241a227F6503aD3a', '0xbf6c50889d3a620eb42C0F188b65aDe90De958c4'],
@@ -1399,9 +1518,27 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   }),
   [ChainId.Shiden]: undefined, // <$100k Liquidity
   [ChainId.SyscoinMainnet]: undefined, // <$100k Liquidity
+  [ChainId.RolluxMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // PegaSys v3 (Factory) | (0.3%) WSYS -> (0.3%) USDC
+      new UniswapV3ReadonlyPriceStrategy({
+        address: '0xeAa20BEA58979386A7d37BAeb4C1522892c74640',
+        path: [
+          toHex(3000, { size: 3 }),
+          '0x4200000000000000000000000000000000000006',
+          toHex(3000, { size: 3 }),
+          '0x368433CaC2A0B8D76E64681a9835502a1f2A8A30',
+        ],
+        decimals: 6,
+        poolBytecodeHash: '0x4a995152ad4a45ce61f15e514146bc642453130f5c3ef14b85098e9c6266c43d',
+        liquidityParameters: { minLiquidity: 10n ** 9n }, // TODO: This is a stopgap to make prices work, fix later
+      }),
+    ],
+  }),
   [ChainId.Palm]: undefined, // <$100k Liquidity
   [ChainId.Zora]: undefined, // <$100k Liquidity
-  [ChainId.HorizenEON]: undefined, // <$100k Liquidity
+  [ChainId.HorizenEONMainnet]: undefined, // <$100k Liquidity
   [ChainId.ExosamaNetwork]: undefined, // <$100k Liquidity
   [ChainId.RedlightChainMainnet]: undefined, // <$100k Liquidity
   [ChainId.MaxxChainMainnet]: undefined, // <$100k Liquidity

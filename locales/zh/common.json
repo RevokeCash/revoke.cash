@@ -66,7 +66,7 @@
       "title": "此页面不存在。"
     },
     "messages": {
-      "chain_could_not_connect": "无法链接到 {{chainName}}"
+      "chain_could_not_connect": "无法链接到{{chainName}}"
     }
   },
   "footer": {
@@ -75,8 +75,8 @@
     "terms": "条款"
   },
   "meta": {
-    "description": "撤销在以太坊和其他 40+ 区块链的代币授权，重新掌控自己的钱包，确保资金安全。",
-    "title": "撤销 40+ 区块链上的代币授权"
+    "description": "撤销在以太坊等 60+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "title": "撤销 60+ 区块链上的代币授权"
   },
   "misc": {
     "powered_by": "由<0>{{name}}</0>提供技术支持"

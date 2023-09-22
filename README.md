@@ -62,7 +62,7 @@ To add a new network, one of the following needs to be available:
 - Support in [CovalentHQ](https://www.covalenthq.com/) for the network.
 - A block explorer with an exposed API that is compatible with Etherscan's API (such as Blockscout).
 
-Also make sure that your network is listed in [ethereum-lists/chains](https://github.com/ethereum-lists/chains) (and that is has subsequently been included in [@revoke.cash/chains](https://github.com/RevokeCash/chains)). Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive. It is also helpful if your network is listed (with TVL and volume stats) on DeFiLlama, but this is not required.
+Also make sure that your network is listed in [ethereum-lists/chains](https://github.com/ethereum-lists/chains) (and that it has subsequently been included in [@revoke.cash/chains](https://github.com/RevokeCash/chains)). Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive. It is also helpful if your network is listed (with TVL and volume stats) on DeFiLlama, but this is not required.
 
 #### Adding the network
 
@@ -70,7 +70,7 @@ In `lib/utils/chains.ts`:
 
 - Add the network to `PROVIDER_SUPPORTED_CHAINS`, `BLOCKSCOUT_SUPPORTED_CHAINS`, `ETHERSCAN_SUPPORTED_CHAINS` or `COVALENT_SUPPORTED_CHAINS`.
 - Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn ts-node scripts/get-chain-order.ts` to determine its position in the network selection dropdown.
-- Find a logo (preferably svg) for the network, add it to `public/assets/images/vendor/chains` add the path to `getChainLogo()`.
+- Find a logo (preferably svg) for the network, add it to `public/assets/images/vendor/chains` and add the path to `getChainLogo()`.
 - If `multicall3` is deployed on the network, add it to `getChainDeployedContracts()`.
 - If a price source (Uniswap v2 or Uniswap v3 fork) is available for the network, add it to `getChainPriceStrategies()`.
 - If it uses a block explorer API such as Etherscan's or Blockscout's, add the network to `getChainApiUrl()` and if it requires an API key, this should be added to the environment variable `ETHERSCAN_API_KEYS` in `.env`.
