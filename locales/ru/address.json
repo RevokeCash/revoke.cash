@@ -36,12 +36,12 @@
   },
   "headers": {
     "actions": "Действия",
-    "allowance": "Утвержденная сумма",
+    "allowance": "Утв. сумма",
     "asset": "Aктив",
     "asset_type": "Тип",
-    "last_updated": "Последнее обновление",
-    "spender": "Авторизованный доступ",
-    "value_at_risk": "Ценность, подверженная риску"
+    "last_updated": "Посл. обнов.",
+    "spender": "Авториз. дост.",
+    "value_at_risk": "Значение риска"
   },
   "labels": {
     "connected": "Поключено",
@@ -81,11 +81,11 @@
   },
   "sorting": {
     "columns": {
-      "allowance": "Утвержденная сумма",
+      "allowance": "Утв. сумма",
       "asset_name": "Название актива",
-      "authorized_spender": "Авторизованный доступ",
-      "last_updated": "Последнее обновление",
-      "value_at_risk": "Ценность, подверженная риску"
+      "authorized_spender": "Авториз. дост.",
+      "last_updated": "Посл. обнов.",
+      "value_at_risk": "Значение риска"
     },
     "fns": {
       "date": {

@@ -66,7 +66,7 @@
       "title": "このページは存在しません。"
     },
     "messages": {
-      "chain_could_not_connect": "{{chainName}} ネットワークに接続できませんでした"
+      "chain_could_not_connect": "{{chainName}}に接続できませんでした"
     }
   },
   "footer": {

@@ -21,13 +21,11 @@ export const formatFixedPointBigInt = (
 ): string | undefined => {
   if (isNullish(fixedPointBigInt)) return undefined;
 
-  const float = Number(formatUnits(fixedPointBigInt, decimals))
-    .toFixed(decimals)
-    .replace(/\.?0+$/, '');
+  const float = Number(formatUnits(fixedPointBigInt, decimals)).toFixed(decimals);
 
   const tooSmallPrefix = `0.${'0'.repeat(maxDisplayDecimals)}`; // 3 decimals -> '0.000'
   const tooSmallReplacement = `< ${tooSmallPrefix.replace(/.$/, '1')}`; // 3 decimals -> '< 0.001'
-  if (float.startsWith(tooSmallPrefix)) return tooSmallReplacement;
+  if (float.replace(/\.?0+$/, '').startsWith(tooSmallPrefix)) return tooSmallReplacement;
 
   return addThousandsSeparators(constrainDisplayedDecimals(float, minDisplayDecimals, maxDisplayDecimals));
 };
