@@ -5,9 +5,8 @@
 import { ChainId } from '@revoke.cash/chains';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
 import {
-  CHAIN_SELECT_MAINNETS,
-  CHAIN_SELECT_TESTNETS,
   ETHERSCAN_SUPPORTED_CHAINS,
+  ORDERED_CHAINS,
   SUPPORTED_CHAINS,
   getChainApiUrl,
   getChainExplorerUrl,
@@ -142,7 +141,7 @@ describe('Chain Support', () => {
     });
   });
 
-  [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS].forEach((chainId) => {
+  ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
     const fixtureAddress = TEST_ADDRESSES[chainId];
 

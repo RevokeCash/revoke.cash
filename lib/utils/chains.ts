@@ -206,6 +206,8 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ZetaChainAthens3Testnet,
 ];
 
+export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
+
 export const isSupportedChain = (chainId: number): boolean => {
   return isProviderSupportedChain(chainId) || isBackendSupportedChain(chainId);
 };
