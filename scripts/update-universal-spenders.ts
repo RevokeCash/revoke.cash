@@ -1,9 +1,9 @@
 import fs from 'fs/promises';
-import { CHAIN_SELECT_MAINNETS } from 'lib/utils/chains';
+import { SUPPORTED_CHAINS } from 'lib/utils/chains';
 import path from 'path';
 import { getAddress } from 'viem';
 
-// Universal Spenders should be added to every mainnet chain (e.g. Permit2)
+// Universal Spenders should be added to every chain (e.g. Permit2)
 const UNIVERSAL_SPENDERS = {
   '0x000000000022D473030F116dDEE9F6B43aC78BA3': {
     name: 'Permit2',
@@ -13,7 +13,7 @@ const UNIVERSAL_SPENDERS = {
 
 const SPENDERS_BASE_PATH = path.join(__dirname, '..', 'data', 'spenders');
 
-CHAIN_SELECT_MAINNETS.forEach((chainId) => {
+SUPPORTED_CHAINS.forEach((chainId) => {
   Object.entries(UNIVERSAL_SPENDERS).forEach(async ([address, spender]) => {
     const chainPath = path.join(SPENDERS_BASE_PATH, `${chainId}`);
     await fs.mkdir(chainPath, { recursive: true });
