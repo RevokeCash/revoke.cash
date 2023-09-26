@@ -2,6 +2,7 @@ import { ChainId } from '@revoke.cash/chains';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { writeFile } from 'fs/promises';
+import { ALCHEMY_API_KEY } from 'lib/constants';
 import path from 'path';
 import { getAddress } from 'viem';
 
@@ -18,8 +19,8 @@ const updateSpamTokens = async () => {
 
 const updateSpamTokensForChain = async (chainId: number) => {
   const urls = {
-    [ChainId.EthereumMainnet]: `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.ALCHEMY_API_KEY}/getSpamContracts`,
-    [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/nft/v2/${process.env.ALCHEMY_API_KEY}/getSpamContracts`,
+    [ChainId.EthereumMainnet]: `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getSpamContracts`,
+    [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/getSpamContracts`,
   };
 
   const { data: spamTokens } = await axios.get(urls[chainId]);

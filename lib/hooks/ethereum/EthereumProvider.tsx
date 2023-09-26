@@ -1,4 +1,5 @@
 import { getViemChainConfig, SUPPORTED_CHAINS } from 'lib/utils/chains';
+import { SECOND } from 'lib/utils/time';
 import { ReactNode, useEffect } from 'react';
 import { configureChains, createConfig, useAccount, useConnect, WagmiConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
@@ -15,7 +16,7 @@ interface Props {
 const { chains: wagmiChains, publicClient } = configureChains(
   SUPPORTED_CHAINS.map(getViemChainConfig),
   [publicProvider()],
-  { batch: { multicall: true } },
+  { batch: { multicall: true }, pollingInterval: 60 * SECOND },
 );
 
 // We don't want to auto-disconnect the user when they switch to certain networks

@@ -1,5 +1,11 @@
 import { ChainId, chains } from '@revoke.cash/chains';
-import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
+import {
+  ALCHEMY_API_KEY,
+  ETHERSCAN_API_KEYS,
+  ETHERSCAN_RATE_LIMITS,
+  INFURA_API_KEY,
+  RPC_OVERRIDES,
+} from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
@@ -7,6 +13,7 @@ import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
+import { SECOND } from './time';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.ArbitrumOne,
@@ -399,8 +406,8 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
 };
 
 export const getChainRpcUrl = (chainId: number): string | undefined => {
-  const infuraKey = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
-  const alchemyKey = process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+  const infuraKey = INFURA_API_KEY;
+  const alchemyKey = ALCHEMY_API_KEY;
 
   const overrides: Record<number, string> = {
     [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
@@ -434,8 +441,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
 
 // We should always use Infura for logs, even if we use a different RPC URL for other purposes
 export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
-  const infuraKey = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
-  const alchemyKey = process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+  const infuraKey = INFURA_API_KEY;
+  const alchemyKey = ALCHEMY_API_KEY;
 
   const overrides = {
     [ChainId.ArbitrumGoerli]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
@@ -871,6 +878,7 @@ export const getViemChainConfig = (chainId: number): Chain | undefined => {
 
 export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient => {
   return createPublicClient({
+    pollingInterval: 60 * SECOND,
     chain: getViemChainConfig(chainId),
     transport: http(url ?? getChainRpcUrl(chainId)),
   });

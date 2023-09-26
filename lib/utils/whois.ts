@@ -1,32 +1,38 @@
 import { Resolution } from '@unstoppabledomains/resolution';
 import axios from 'axios';
 import { OPENSEA_REGISTRY_ABI } from 'lib/abis';
-import { ADDRESS_ZERO, DATA_BASE_URL, ETHEREUM_LISTS_CONTRACTS, OPENSEA_REGISTRY_ADDRESS } from 'lib/constants';
+import {
+  ADDRESS_ZERO,
+  ALCHEMY_API_KEY,
+  DATA_BASE_URL,
+  ETHEREUM_LISTS_CONTRACTS,
+  OPENSEA_REGISTRY_ADDRESS,
+} from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
-import { Address, getAddress } from 'viem';
+import { Address, getAddress, isAddress } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 import AVVY from '@avvy/client';
 import { providers } from 'ethers';
 
 export const GLOBAL_ETH_MAINNET_CLIENT = createViemPublicClientForChain(
   1,
-  `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+  `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
 );
 
 export const ENS_RESOLUTION = GLOBAL_ETH_MAINNET_CLIENT;
 
 export const UNS_RESOLUTION =
-  process.env.NEXT_PUBLIC_ALCHEMY_API_KEY &&
+  ALCHEMY_API_KEY &&
   new Resolution({
     sourceConfig: {
       uns: {
         locations: {
           Layer1: {
-            url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            url: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
             network: 'mainnet',
           },
           Layer2: {
-            url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
             network: 'polygon-mainnet',
           },
         },
@@ -176,25 +182,13 @@ export const getOpenSeaProxyAddress = async (userAddress: Address): Promise<Addr
 };
 
 export const parseInputAddress = async (inputAddressOrName: string): Promise<Address | undefined> => {
-  // If the input is an ENS name, validate it, resolve it and return it
-  if (inputAddressOrName.endsWith('.eth')) {
-    return await resolveEnsName(inputAddressOrName);
-  }
+  const sanitisedInput = inputAddressOrName.trim().toLowerCase();
 
-  // If the input is an Avvy Domains name..
-  if (inputAddressOrName.endsWith('.avax')) {
-    return await resolveAvvyName(inputAddressOrName);
-  }
+  // We support ENS .eth and Avvy .avax domains, other domain-like inputs are interpreted as Unstoppable Domains
+  if (sanitisedInput.endsWith('.eth')) return resolveEnsName(sanitisedInput);
+  if (sanitisedInput.endsWith('.avax')) return resolveAvvyName(sanitisedInput);
+  if (sanitisedInput.includes('.')) await resolveUnsName(sanitisedInput);
+  if (isAddress(sanitisedInput)) return getAddress(sanitisedInput);
 
-  // Other domain-like inputs are interpreted as Unstoppable Domains
-  if (inputAddressOrName.includes('.')) {
-    return await resolveUnsName(inputAddressOrName);
-  }
-
-  // If the input is an address, validate it and return it
-  try {
-    return getAddress(inputAddressOrName.toLowerCase());
-  } catch {
-    return undefined;
-  }
+  return undefined;
 };
