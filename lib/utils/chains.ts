@@ -69,9 +69,10 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.PulseChainTestnetv4,
   ChainId.RedlightChainMainnet,
   ChainId.RolluxMainnet,
-  ChainId.RSKMainnet,
+  ChainId.RootstockMainnet,
   ChainId.ScrollSepoliaTestnet,
   ChainId.Shiden,
+  ChainId.ShimmerEVMMainnet,
   ChainId.ShimmerEVMTestnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.TaikoGrimsvotnL2,
@@ -131,7 +132,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PulseChain,
   ChainId.Gnosis,
   ChainId.CeloMainnet,
-  ChainId.RSKMainnet,
+  ChainId.RootstockMainnet,
   ChainId.FantomOpera,
   ChainId.Canto,
   ChainId.Astar,
@@ -173,6 +174,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Palm,
   ChainId.Zora,
   ChainId.HorizenEONMainnet,
+  ChainId.ShimmerEVMMainnet,
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
   ChainId.MaxxChainMainnet,
@@ -308,9 +310,10 @@ export const getChainName = (chainId: number): string => {
     [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.RolluxMainnet]: 'Rollux',
-    [ChainId.RSKMainnet]: 'Rootstock',
+    [ChainId.RootstockMainnet]: 'Rootstock',
     [ChainId.ScrollSepoliaTestnet]: 'Scroll Sepolia',
     [ChainId.Shibarium]: 'Shibarium',
+    [ChainId.ShimmerEVMMainnet]: 'Shimmer',
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
     [ChainId.SmartBitcoinCash]: 'SmartBCH',
     [ChainId['SongbirdCanary-Network']]: 'Songbird',
@@ -536,12 +539,12 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.PulseChainTestnetv4]: '/assets/images/vendor/chains/pulsechain.png',
     [ChainId.RedlightChainMainnet]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.RolluxMainnet]: '/assets/images/vendor/chains/rollux.svg',
-    [ChainId.RSKMainnet]: '/assets/images/vendor/chains/rootstock.jpg',
-    [ChainId.RSKTestnet]: '/assets/images/vendor/chains/rootstock.jpg',
+    [ChainId.RootstockMainnet]: '/assets/images/vendor/chains/rootstock.jpg',
     [ChainId.ScrollSepoliaTestnet]: '/assets/images/vendor/chains/scroll.png',
     [ChainId.Sepolia]: '/assets/images/vendor/chains/ethereum.svg',
     [ChainId.Shibarium]: '/assets/images/vendor/chains/shibarium.svg',
     [ChainId.Shiden]: '/assets/images/vendor/chains/shiden.svg',
+    [ChainId.ShimmerEVMMainnet]: '/assets/images/vendor/chains/shimmer.svg',
     [ChainId.ShimmerEVMTestnet]: '/assets/images/vendor/chains/shimmer.svg',
     [ChainId.SmartBitcoinCash]: '/assets/images/vendor/chains/smartbch.svg',
     [ChainId.SmartBitcoinCashTestnet]: '/assets/images/vendor/chains/smartbch.svg',
@@ -698,9 +701,10 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.RolluxMainnet]: 'https://explorer.rollux.com/api',
-    [ChainId.RSKMainnet]: 'https://blockscout.com/rsk/mainnet/api',
+    [ChainId.RootstockMainnet]: 'https://blockscout.com/rsk/mainnet/api',
     [ChainId.ScrollSepoliaTestnet]: 'https://sepolia-blockscout.scroll.io/api',
     [ChainId.Shiden]: 'https://blockscout.com/shiden/api',
+    [ChainId.ShimmerEVMMainnet]: 'https://explorer.evm.shimmer.network/api',
     [ChainId.ShimmerEVMTestnet]: 'https://explorer.evm.testnet.shimmer.network/api',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
     [ChainId.TaikoGrimsvotnL2]: 'https://explorer.test.taiko.xyz/api',
@@ -817,9 +821,9 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     // [ChainId.PulseChain]: { ...MULTICALL },
     // [ChainId.PulseChainTestnetv4]: { ...MULTICALL },
     [ChainId.RolluxMainnet]: { ...MULTICALL },
-    [ChainId.RSKMainnet]: { ...MULTICALL },
-    [ChainId.RSKTestnet]: { ...MULTICALL },
+    [ChainId.RootstockMainnet]: { ...MULTICALL },
     [ChainId.Sepolia]: { ...MULTICALL },
+    [ChainId.ShimmerEVMMainnet]: { ...MULTICALL },
     [ChainId['SongbirdCanary-Network']]: { ...MULTICALL },
     [ChainId.SyscoinMainnet]: { ...MULTICALL },
     [ChainId.SyscoinTanenbaumTestnet]: { ...MULTICALL },
@@ -982,8 +986,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
     ],
   }),
   [ChainId.BitgertMainnet]: undefined, // No liquid stablecoins
-  // BTT Chain only has Sushi Trident and KyberSwap as DEXes, so we likely will never support it
-  [ChainId.BitTorrentChainMainnet]: undefined,
+  [ChainId.BitTorrentChainMainnet]: undefined, // No DEXes that are compatible with other popular DEXes
   [ChainId.BNBSmartChainMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     // TODO: Maybe add Pancakeswap v3 (Uniswap v3)
@@ -1087,8 +1090,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
-  // Note: Essentially all stablecoins on Dogechain are depegged
-  [ChainId.DogechainMainnet]: undefined,
+  [ChainId.DogechainMainnet]: undefined, // All stablecoins on Dogechain are depegged
   [ChainId.ElastosSmartChain]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
@@ -1460,8 +1462,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
-  // Note: Rootstock only has Sovryn, which is not similar to e.g. Uniswap, so we will probably never support Rootstock
-  [ChainId.RSKMainnet]: undefined,
+  [ChainId.RootstockMainnet]: undefined, // No DEXes that are compatible with other popular DEXes
   [ChainId.Shibarium]: undefined, // No liquid stablecoins
   [ChainId.Shiden]: undefined, // <$100k Liquidity
   [ChainId['SongbirdCanary-Network']]: new AggregatePriceStrategy({
@@ -1476,6 +1477,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.ShimmerEVMMainnet]: undefined, // TODO: Check back later when the network is more mature
   [ChainId.SyscoinMainnet]: undefined, // <$100k Liquidity
   [ChainId.VelasEVMMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
