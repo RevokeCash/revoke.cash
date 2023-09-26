@@ -1,5 +1,5 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
-import { DATA_BASE_URL, DUMMY_ADDRESS, DUMMY_ADDRESS_2 } from 'lib/constants';
+import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type {
   BaseTokenData,
   TokenContract,
@@ -81,7 +81,7 @@ const getTokenDataFromMapping = async (
   chainId: number,
 ): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
   try {
-    const result = await fetch(`${DATA_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`);
+    const result = await fetch(`${WHOIS_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`);
 
     if (!result.ok) {
       return undefined;

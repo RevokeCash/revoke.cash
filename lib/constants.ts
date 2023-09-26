@@ -1,6 +1,5 @@
-export const DATA_BASE_URL = 'https://raw.githubusercontent.com/RevokeCash/revoke.cash/master/data';
+export const WHOIS_BASE_URL = 'https://raw.githubusercontent.com/RevokeCash/whois/master/data/generated';
 
-export const ETHEREUM_LISTS_CONTRACTS = 'https://raw.githubusercontent.com/ethereum-lists/contracts/main';
 export const CHROME_EXTENSION_URL =
   'https://chrome.google.com/webstore/detail/revokecash/nmniboccheadcclilkfkonokbcoceced';
 export const FIREFOX_EXTENSION_URL = 'https://addons.mozilla.org/en-US/firefox/addon/revoke-cash/';

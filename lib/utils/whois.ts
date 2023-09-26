@@ -1,13 +1,7 @@
 import { Resolution } from '@unstoppabledomains/resolution';
 import axios from 'axios';
 import { OPENSEA_REGISTRY_ABI } from 'lib/abis';
-import {
-  ADDRESS_ZERO,
-  ALCHEMY_API_KEY,
-  DATA_BASE_URL,
-  ETHEREUM_LISTS_CONTRACTS,
-  OPENSEA_REGISTRY_ADDRESS,
-} from 'lib/constants';
+import { ADDRESS_ZERO, ALCHEMY_API_KEY, OPENSEA_REGISTRY_ADDRESS, WHOIS_BASE_URL } from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
 import { Address, getAddress, isAddress } from 'viem';
 import { createViemPublicClientForChain } from './chains';
@@ -51,36 +45,16 @@ export const getSpenderData = async (
   if (!address) return null;
   if (address === openseaProxyAddress) return { name: 'OpenSea (old)' };
 
-  // Request dapplist and ethereumlists in parallel since they're both just GitHub repos
-  const internalPromise = getSpenderDataFromInternal(address, chainId);
-  const ethereumListsPromise = getSpenderDataFromEthereumList(address, chainId);
-
-  // Check Harpie only if the other two sources don't have a name, because this is a rate-limited API
-  const data =
-    (await internalPromise) ?? (await ethereumListsPromise) ?? (await getSpenderDataFromHarpie(address, chainId));
+  // Check Harpie only if the whois doesn't have a name, because this is a rate-limited API
+  const data = (await getSpenderDataFromWhois(address, chainId)) ?? (await getSpenderDataFromHarpie(address, chainId));
 
   return data;
 };
 
-const getSpenderDataFromInternal = async (address: string, chainId: number): Promise<SpenderData | null> => {
+const getSpenderDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    const { data } = await axios.get(`${DATA_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`);
+    const { data } = await axios.get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`);
     return data;
-  } catch {
-    return null;
-  }
-};
-
-const getSpenderDataFromEthereumList = async (address: string, chainId: number): Promise<SpenderData | null> => {
-  try {
-    const contractRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/contracts/${chainId}/${getAddress(address)}.json`);
-
-    try {
-      const projectRes = await axios.get(`${ETHEREUM_LISTS_CONTRACTS}/projects/${contractRes.data.project}.json`);
-      return { name: projectRes.data.name };
-    } catch {}
-
-    return { name: contractRes.data.project };
   } catch {
     return null;
   }

@@ -4,13 +4,7 @@
 
 > _Do you want to swap 10 DAI for ETH? Sure thing, we'll just need your approval to spend a BAJILLION DOLLARS!_
 
-Do you ever feel uneasy about the different dapps that you gave approval to spend ERC20 tokens from your account? [revoke.cash](https://revoke.cash) allows you to inspect all the contracts you've approved to spend money on your behalf, and revoke their access for the ones you no longer need. If you don't want to completely revoke access, it's also possible to update the amount they are allowed to spend instead.
-
-This repository also includes a [list of spender addresses`](/data/spenders), which is a mapping of smart contract addresses to the corresponding application. This allows revoke.cash to display application names like Aave or Compound instead of their smart contract addresses. This list can be used by any other application. The name mapping for an address can be accessed through this URL:
-
-- `https://raw.githubusercontent.com/RevokeCash/revoke.cash/master/data/spenders/{chainId}/{address}.json`
-
-Revoke.cash supports many different chains using different methods, including direct RPC calls, Etherscan and CovalentHQ.
+Do you ever feel worried about the different apps that have access to the tokens in your wallet? [revoke.cash](https://revoke.cash) allows you to inspect all the contracts you've approved to spend money on your behalf, and revoke their access for the ones you no longer need. If you don't want to completely revoke access, it's also possible to update the amount they are allowed to spend instead.
 
 If you want to learn more about (unlimited) token approvals, I wrote an article on my blog: [Unlimited ERC20 allowances considered harmful](https://kalis.me/unlimited-erc20-allowances/).
 
