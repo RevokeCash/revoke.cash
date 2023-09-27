@@ -18,7 +18,9 @@ const AllowancesCount = ({ allowances, isLoading, error }: Props) => {
   return (
     <Loader isLoading={isLoading}>
       <div className="flex flex-col items-center gap-0.5">
-        <div className="text-zinc-600 dark:text-zinc-400">{t('address:wallet_health.total_allowances')}</div>
+        <div className="text-zinc-600 dark:text-zinc-400 text-center">
+          {t('address:wallet_health.total_allowances')}
+        </div>
         <div className="font-bold">{isLoading ? '000' : actualAllowances?.length}</div>
       </div>
     </Loader>

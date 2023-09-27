@@ -121,7 +121,7 @@
       "medium": "Умеренно"
     },
     "description": "Здоровье кошелька",
-    "total_allowances": "Общее количество одобрений",
-    "total_value_at_risk": "Общая стоимость, подверженная риску"
+    "total_allowances": "Общ. кол-во одобрений",
+    "total_value_at_risk": "Общ. значен. риска"
   }
 }
