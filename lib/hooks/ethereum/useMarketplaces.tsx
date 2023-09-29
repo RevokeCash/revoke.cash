@@ -1,10 +1,10 @@
 import { ChainId } from '@revoke.cash/chains';
 import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
 import { Marketplace, TransactionType } from 'lib/interfaces';
-import { useMemo } from 'react';
-import { useHandleTransaction } from './useHandleTransaction';
-import { WalletClient } from 'viem';
 import { getWalletAddress } from 'lib/utils';
+import { useMemo } from 'react';
+import { WalletClient } from 'viem';
+import { useHandleTransaction } from './useHandleTransaction';
 
 export const useMarketplaces = (chainId: number) => {
   const handleTransaction = useHandleTransaction();

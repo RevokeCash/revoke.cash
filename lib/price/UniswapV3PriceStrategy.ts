@@ -1,8 +1,8 @@
 import { UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
 import { TokenContract } from 'lib/interfaces';
 import { Address, concat, parseUnits } from 'viem';
-import { PriceStrategy } from './PriceStrategy';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
+import { PriceStrategy } from './PriceStrategy';
 
 export interface UniswapV3PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
   address: Address;

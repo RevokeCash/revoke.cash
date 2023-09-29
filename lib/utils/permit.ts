@@ -1,4 +1,4 @@
-import { track } from './analytics';
+import { DAI_PERMIT_ABI } from 'lib/abis';
 import { Erc20TokenContract } from 'lib/interfaces';
 import {
   Address,
@@ -11,8 +11,8 @@ import {
   pad,
   toHex,
 } from 'viem';
-import { DAI_PERMIT_ABI } from 'lib/abis';
 import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
+import { track } from './analytics';
 
 export const permit = async (
   walletClient: WalletClient,

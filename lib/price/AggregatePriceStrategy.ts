@@ -1,7 +1,7 @@
 import { TokenContract } from 'lib/interfaces';
-import { PriceStrategy } from './PriceStrategy';
-import { PublicClient } from 'viem';
 import { bigintMax } from 'lib/utils/math';
+import { PublicClient } from 'viem';
+import { PriceStrategy } from './PriceStrategy';
 
 export enum AggregationType {
   ANY = 'ANY',

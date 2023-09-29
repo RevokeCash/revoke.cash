@@ -1,7 +1,7 @@
 import type { Filter, Log, LogsProvider } from 'lib/interfaces';
+import { ViemLogsProvider } from 'lib/providers';
 import { getLogs } from 'lib/utils';
 import type { EventGetter } from './EventGetter';
-import { ViemLogsProvider } from 'lib/providers';
 
 export class NodeEventGetter implements EventGetter {
   private logsProviders: { [chainId: number]: LogsProvider };

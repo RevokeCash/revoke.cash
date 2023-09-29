@@ -1,8 +1,7 @@
-import { Address } from 'viem';
-import { ChainId } from '@revoke.cash/chains';
-import WalletHealth from './WalletHealth';
-import AllowancesSummary from './AllowancesSummary';
 import { twMerge } from 'tailwind-merge';
+import { Address } from 'viem';
+import AllowancesSummary from './AllowancesSummary';
+import WalletHealth from './WalletHealth';
 
 interface Props {
   address: Address;

@@ -2,9 +2,9 @@ import { PERMIT2_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { PERMIT2_ADDRESS } from 'lib/utils/permit2';
 import { useMemo } from 'react';
+import { Address, getAbiItem, getEventSelector } from 'viem';
 import { useBlockNumber } from '../useBlockNumber';
 import { useLogs } from '../useLogs';
-import { Address, getAbiItem, getEventSelector } from 'viem';
 
 export const usePermit2Events = (address: Address, chainId: number) => {
   const { data: blockNumber, isLoading: isBlockNumberLoading, error: blockNumberError } = useBlockNumber(chainId);

@@ -1,7 +1,7 @@
+import { ChainId } from '@revoke.cash/chains';
 import type { AllowanceData, Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
-import { isLogResponseSizeError, parseErrorMessage } from './errors';
 import {
   Abi,
   Address,
@@ -16,10 +16,10 @@ import {
   pad,
   slice,
 } from 'viem';
+import { UnionOmit } from 'viem/types/utils';
 import { Chain } from 'wagmi';
-import { UnionOmit } from 'viem/dist/types/types/utils';
-import { ChainId } from '@revoke.cash/chains';
 import { track } from './analytics';
+import { isLogResponseSizeError, parseErrorMessage } from './errors';
 import { bigintMin, fixedPointMultiply } from './math';
 
 export const isNullish = (value: unknown): value is null | undefined => {

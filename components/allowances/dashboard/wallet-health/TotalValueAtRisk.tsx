@@ -1,10 +1,10 @@
-import { deduplicateArray, calculateValueAtRisk } from 'lib/utils';
 import Loader from 'components/common/Loader';
-import useTranslation from 'next-translate/useTranslation';
-import { getChainPriceStrategy } from 'lib/utils/chains';
-import { isErc721Contract } from 'lib/utils/tokens';
 import { AllowanceData } from 'lib/interfaces';
+import { calculateValueAtRisk, deduplicateArray } from 'lib/utils';
+import { getChainPriceStrategy } from 'lib/utils/chains';
 import { formatFiatAmount } from 'lib/utils/formatting';
+import { isErc721Contract } from 'lib/utils/tokens';
+import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
   chainId: number;

@@ -1,12 +1,12 @@
+import { ERC721_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
+import { Address, getAbiItem, getEventSelector } from 'viem';
 import { useBlockNumber } from '../useBlockNumber';
 import { useLogs } from '../useLogs';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';
-import { Address, getAbiItem, getEventSelector } from 'viem';
-import { ERC721_ABI } from 'lib/abis';
 
 export const useEvents = (address: Address, chainId: number) => {
   const { openSeaProxyAddress, isLoading: isOpenSeaProxyAddressLoading } = useOpenSeaProxyAddress(address);

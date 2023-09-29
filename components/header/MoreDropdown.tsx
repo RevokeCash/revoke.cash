@@ -1,4 +1,3 @@
-import Button from 'components/common/Button';
 import DropdownMenu, { DropdownMenuItem } from 'components/common/DropdownMenu';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';

@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import type { Filter, Log } from './interfaces';
-import { PublicClient, getAddress } from 'viem';
 import { createViemPublicClientForChain, getChainLogsRpcUrl, isBackendSupportedChain } from './utils/chains';
 
 export class BackendLogsProvider {

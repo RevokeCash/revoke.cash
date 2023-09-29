@@ -2,6 +2,7 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { DONATION_ADDRESS } from 'lib/constants';
+import { getWalletAddress } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
@@ -9,10 +10,9 @@ import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
+import { parseEther } from 'viem';
 import { useNetwork, useWalletClient } from 'wagmi';
 import Input from './Input';
-import { parseEther } from 'viem';
-import { getWalletAddress } from 'lib/utils';
 
 interface Props {
   size: 'sm' | 'md' | 'lg' | 'none' | 'menu';

@@ -3,13 +3,13 @@ import ChainSelect from 'components/common/ChainSelect';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
+import { getNativeTokenPrice } from 'lib/price/utils';
 import { usePublicClient } from 'wagmi';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
 import ConnectedLabel from './ConnectedLabel';
 import AddressNavigation from './navigation/AddressNavigation';
-import { getNativeTokenPrice } from 'lib/price/utils';
 
 const AddressHeader = () => {
   const isMounted = useMounted();

@@ -4,9 +4,9 @@ import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowance
 import { track } from 'lib/utils/analytics';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
+import { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
-import { Address } from 'viem';
 
 export const useAllowances = (address: Address, events: AddressEvents, chainId: number) => {
   const [allowances, setAllowances] = useState<AllowanceData[]>();

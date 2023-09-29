@@ -2,11 +2,11 @@ import { ADDRESS_ZERO } from 'lib/constants';
 import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';
 import { writeContractUnlessExcessiveGas } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
+import { parseFixedPointBigInt } from 'lib/utils/formatting';
 import { permit2Approve } from 'lib/utils/permit2';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { useAccount, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
-import { parseFixedPointBigInt } from 'lib/utils/formatting';
 
 export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {}) => {
   const { data: walletClient } = useWalletClient();

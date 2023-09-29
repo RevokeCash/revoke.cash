@@ -1,9 +1,9 @@
 import axios from 'axios';
 import type { Filter, Log } from 'lib/interfaces';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
+import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
-import { getAddress } from 'viem';
 
 export class CovalentEventGetter implements EventGetter {
   private queue: RequestQueue;

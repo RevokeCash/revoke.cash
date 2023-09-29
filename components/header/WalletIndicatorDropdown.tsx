@@ -1,9 +1,9 @@
 import DropdownMenu, { DropdownMenuItem } from 'components/common/DropdownMenu';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
+import { shortenAddress } from 'lib/utils/formatting';
 import useTranslation from 'next-translate/useTranslation';
 import { useAccount, useDisconnect } from 'wagmi';
 import ConnectButton from './ConnectButton';
-import { shortenAddress } from 'lib/utils/formatting';
 
 interface Props {
   size?: 'sm' | 'md' | 'lg' | 'none';

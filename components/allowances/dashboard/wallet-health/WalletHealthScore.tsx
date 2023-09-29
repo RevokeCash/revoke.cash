@@ -1,6 +1,6 @@
+import Loader from 'components/common/Loader';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Loader from 'components/common/Loader';
 
 interface Props {
   score: number;

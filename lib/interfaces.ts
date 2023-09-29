@@ -1,5 +1,5 @@
+import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
-import { ERC20_ABI, ERC721_ABI, UNISWAP_V2_ROUTER_ABI, UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
 
 export type Balance = bigint | 'ERC1155';
 

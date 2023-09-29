@@ -2,10 +2,10 @@ import { isSupportedChain } from 'lib/utils/chains';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
+import { Address } from 'viem';
 import { useNetwork } from 'wagmi';
 import { useEvents } from '../ethereum/events/useEvents';
 import { useAllowances } from '../ethereum/useAllowances';
-import { Address } from 'viem';
 
 interface AddressContext {
   address?: Address;

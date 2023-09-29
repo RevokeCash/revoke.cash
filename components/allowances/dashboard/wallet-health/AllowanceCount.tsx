@@ -1,6 +1,6 @@
 import Loader from 'components/common/Loader';
-import useTranslation from 'next-translate/useTranslation';
 import { AllowanceData } from 'lib/interfaces';
+import useTranslation from 'next-translate/useTranslation';
 
 interface Props {
   allowances: AllowanceData[];

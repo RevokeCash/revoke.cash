@@ -1,9 +1,9 @@
 import { UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
 import { TokenContract } from 'lib/interfaces';
-import { Address, parseUnits } from 'viem';
-import { PriceStrategy } from './PriceStrategy';
 import { fixedPointMultiply } from 'lib/utils/math';
+import { Address, parseUnits } from 'viem';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
+import { PriceStrategy } from './PriceStrategy';
 
 export interface UniswapV2PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
   address: Address;

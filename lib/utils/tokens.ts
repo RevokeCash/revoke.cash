@@ -1,21 +1,21 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type {
+  Balance,
   BaseTokenData,
-  TokenContract,
-  Log,
+  Contract,
   Erc20TokenContract,
   Erc721TokenContract,
-  Contract,
-  Balance,
+  Log,
+  TokenContract,
   TokenMetadata,
 } from 'lib/interfaces';
+import { calculateTokenPrice, getInverseTokenPrice } from 'lib/price/utils';
+import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
 import { deduplicateArray } from '.';
+import { formatFixedPointBigInt } from './formatting';
 import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
-import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
-import { calculateTokenPrice, getInverseTokenPrice } from 'lib/price/utils';
-import { formatFixedPointBigInt } from './formatting';
 
 export const isSpamToken = (symbol: string) => {
   const includesHttp = /https?:\/\//i.test(symbol);

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import eventsDB from 'lib/databases/events';
 import type { Filter, Log } from 'lib/interfaces';
+import { getLogsProvider } from 'lib/providers';
 import { useEffect } from 'react';
 import { useApiSession } from '../useApiSession';
-import { getLogsProvider } from 'lib/providers';
 
 export const useLogs = (name: string, chainId: number, filter: Filter) => {
   const { isLoggedIn, loggingIn } = useApiSession();

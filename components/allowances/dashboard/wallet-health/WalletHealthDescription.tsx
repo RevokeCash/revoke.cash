@@ -1,8 +1,8 @@
-import Loader from 'components/common/Loader';
-import { twMerge } from 'tailwind-merge';
 import Href from 'components/common/Href';
-import useTranslation from 'next-translate/useTranslation';
+import Loader from 'components/common/Loader';
 import Trans from 'next-translate/Trans';
+import useTranslation from 'next-translate/useTranslation';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   score: number;

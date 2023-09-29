@@ -1,7 +1,7 @@
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import ReactMarkdown, { Components } from 'react-markdown';
-import { AllowElement } from 'react-markdown/lib/rehype-filter';
-import rehypeRaw from 'rehype-raw';
+import remarkDirective from 'remark-directive';
+import remarkDirectiveRehype from 'remark-directive-rehype';
 import Href from './Href';
 import Prose from './Prose';
 
@@ -32,24 +32,13 @@ const MarkdownProse = ({ content, className }: Props) => {
     },
   };
 
-  const allowElement: AllowElement = ({ tagName, children }) => {
-    // Including YouTube videos in paragraphs causes hydration errors, so we "disallow" <p> tags that contain a
-    // <youtube-video> tag. Combined with unwrapDisallowed, this will remove the <p> tag and only render the video.
-    if (tagName === 'p' && children.some((child) => child.type === 'element' && child.tagName === 'youtube-video')) {
-      return false;
-    }
-
-    return true;
-  };
-
   return (
     <Prose className={className}>
       <ReactMarkdown
         children={content}
         components={components}
-        rehypePlugins={[rehypeRaw]}
-        allowElement={allowElement}
-        unwrapDisallowed
+        remarkPlugins={[remarkDirective, remarkDirectiveRehype]}
+        skipHtml
       />
     </Prose>
   );

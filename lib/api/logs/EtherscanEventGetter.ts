@@ -7,9 +7,9 @@ import {
   getChainApiRateLimit,
   getChainApiUrl,
 } from 'lib/utils/chains';
+import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
-import { getAddress } from 'viem';
 
 export class EtherscanEventGetter implements EventGetter {
   private queues: { [chainId: number]: RequestQueue };

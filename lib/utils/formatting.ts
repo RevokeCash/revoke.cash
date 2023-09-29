@@ -1,6 +1,6 @@
+import { Balance } from 'lib/interfaces';
 import { formatUnits } from 'viem';
 import { isNullish } from '.';
-import { Balance } from 'lib/interfaces';
 import { fixedPointMultiply } from './math';
 
 export const shortenAddress = (address?: string, characters: number = 6): string => {

@@ -1,5 +1,5 @@
 import ChainLogo from 'components/common/ChainLogo';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 import { twMerge } from 'tailwind-merge';
 import DropdownMenu, { DropdownMenuItem } from './DropdownMenu';

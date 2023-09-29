@@ -3,14 +3,12 @@ import { TokenContract } from 'lib/interfaces';
 import {
   Address,
   Hex,
-  concat,
   encodeAbiParameters,
-  getAddress,
+  getCreate2Address,
   hexToNumber,
   keccak256,
   parseAbiParameters,
   parseUnits,
-  slice,
 } from 'viem';
 import { UniswapV3PriceStrategy, UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
 
@@ -100,9 +98,8 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
 
   private calculatePairAddress(token0: Address, token1: Address, fee: number): Address {
     const [tokenA, tokenB] = tokenSortsBefore(token0, token1) ? [token0, token1] : [token1, token0];
-
     const salt = keccak256(encodeAbiParameters(parseAbiParameters('address, address, uint24'), [tokenA, tokenB, fee]));
-    return getAddress(slice(keccak256(concat(['0xff', this.address, salt, this.poolBytecodeHash])), 12));
+    return getCreate2Address({ from: this.address, salt, bytecodeHash: this.poolBytecodeHash });
   }
 
   // TODO: We may need to solve the liquidity issue better in general for this strategy

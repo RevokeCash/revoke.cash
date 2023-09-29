@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import axios from 'axios';
 import { AVVY_DOMAINS_ABI, OPENSEA_REGISTRY_ABI, UNSTOPPABLE_DOMAINS_ABI } from 'lib/abis';
 import {
@@ -12,7 +13,6 @@ import {
 import { SpenderData } from 'lib/interfaces';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
 import { createViemPublicClientForChain } from './chains';
-import { ChainId } from '@revoke.cash/chains';
 
 // Note that we do not use the official UD or Avvy resolution libraries below because they are big and use Ethers.js
 

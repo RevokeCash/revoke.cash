@@ -1,5 +1,4 @@
 import Button from 'components/common/Button';
-import ChainSelect from 'components/common/ChainSelect';
 import ChainSelectHref from 'components/common/ChainSelectHref';
 import CopyButton from 'components/common/CopyButton';
 import Prose from 'components/common/Prose';
@@ -22,7 +21,6 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useAccount, useSwitchNetwork } from 'wagmi';
 
 interface Props {

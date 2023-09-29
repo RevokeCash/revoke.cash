@@ -1,7 +1,7 @@
 import AddressHeader from 'components/address/AddressHeader';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
-import PublicLayout from './PublicLayout';
 import { Address } from 'viem';
+import PublicLayout from './PublicLayout';
 
 interface Props {
   children: React.ReactNode;

@@ -1,9 +1,9 @@
 import { getChainName } from 'lib/utils/chains';
+import { shortenAddress } from 'lib/utils/formatting';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useNameLookup } from '../ethereum/useNameLookup';
 import { Address } from 'viem';
-import { shortenAddress } from 'lib/utils/formatting';
+import { useNameLookup } from '../ethereum/useNameLookup';
 
 export const useAddressPageTitle = (ssrDomainName: string, address: Address) => {
   const { t } = useTranslation();

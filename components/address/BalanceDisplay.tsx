@@ -2,7 +2,7 @@ import Loader from 'components/common/Loader';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { isNullish } from 'lib/utils';
 import { getChainNativeToken } from 'lib/utils/chains';
-import { formatFixedPointBigInt, formatFiatBalance } from 'lib/utils/formatting';
+import { formatFiatBalance, formatFixedPointBigInt } from 'lib/utils/formatting';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {

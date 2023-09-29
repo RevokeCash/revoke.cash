@@ -2,6 +2,7 @@ import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tansta
 import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { calculateValueAtRisk, isNullish } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
+import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
@@ -11,7 +12,6 @@ import HeaderCell from './cells/HeaderCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
 import SpenderCell from './cells/SpenderCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
-import { formatFixedPointBigInt } from 'lib/utils/formatting';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {

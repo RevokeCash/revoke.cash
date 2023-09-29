@@ -1,9 +1,9 @@
+import { ChainId } from '@revoke.cash/chains';
 import { useQuery } from '@tanstack/react-query';
 import { getNeftureRiskScore } from 'lib/utils/allowances';
 import { Address } from 'viem';
-import WalletHealthScore from './WalletHealthScore';
 import WalletHealthDescription from './WalletHealthDescription';
-import { ChainId } from '@revoke.cash/chains';
+import WalletHealthScore from './WalletHealthScore';
 
 interface Props {
   address: Address;

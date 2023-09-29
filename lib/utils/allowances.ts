@@ -1,3 +1,5 @@
+import axios from 'axios';
+import delay from 'delay';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type {
@@ -10,6 +12,7 @@ import type {
   Log,
   TokenContract,
 } from 'lib/interfaces';
+import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
   deduplicateLogsByTopics,
@@ -18,13 +21,10 @@ import {
   sortLogsChronologically,
   topicToAddress,
 } from '.';
+import { isNetworkError, parseErrorMessage } from './errors';
+import { formatFixedPointBigInt } from './formatting';
 import { getPermit2AllowancesFromApprovals } from './permit2';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
-import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
-import { isNetworkError, parseErrorMessage } from './errors';
-import axios from 'axios';
-import delay from 'delay';
-import { formatFixedPointBigInt } from './formatting';
 
 export const getAllowancesFromEvents = async (
   owner: Address,

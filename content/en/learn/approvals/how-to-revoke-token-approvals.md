@@ -29,7 +29,7 @@ After applying these options, you can find the approval you want to revoke and c
 
 If you prefer learning through video content, our friend [WiiMee](https://twitter.com/Wii_Mee) has created an excellent video tutorial on how to use Revoke.cash.
 
-<youtube-video id="XfojTY30d8M" title="How To Revoke Token Approvals on Revoke.cash by WiiMee"></youtube-video>
+::youtube-video{title="How To Revoke Token Approvals on Revoke.cash by WiiMee" id="XfojTY30d8M"}
 
 ## Revoke Token Approvals Using Etherscan
 
@@ -45,4 +45,4 @@ If you want to revoke token approvals on other chains like BNB Chain or Polygon,
 
 Again our friend [WiiMee](https://twitter.com/Wii_Mee) has created a video tutorial on how to use Etherscan to revoke token approvals if you prefer learning by video.
 
-<youtube-video id="RJ2ufhFnK1U" title="How To Revoke Token Approvals on Etherscan by WiiMee"></youtube-video>
+::youtube-video{title="How To Revoke Token Approvals on Etherscan by WiiMee" id="RJ2ufhFnK1U"}
