@@ -15,8 +15,7 @@ export const getNativeTokenPrice = async (chainId: number, publicClient: PublicC
 
   try {
     return await strategy.calculateNativeTokenPrice(publicClient);
-  } catch (e) {
-    console.error(e);
+  } catch {
     return null;
   }
 };
@@ -29,8 +28,7 @@ export const getInverseTokenPrice = async (chainId: number, tokenContract: Token
 
   try {
     return await strategy.calculateInversePrice(tokenContract);
-  } catch (e) {
-    console.error(e?.errors);
+  } catch {
     return null;
   }
 };

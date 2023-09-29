@@ -882,6 +882,7 @@ export const createViemPublicClientForChain = (chainId: number, url?: string): P
     pollingInterval: 60 * SECOND,
     chain: getViemChainConfig(chainId),
     transport: http(url ?? getChainRpcUrl(chainId)),
+    batch: { multicall: true },
   });
 };
 

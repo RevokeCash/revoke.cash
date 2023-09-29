@@ -98,3 +98,13 @@ export const UNISWAP_V3_POOL_ABI = parseAbi([
   'function liquidity() external view returns (uint128)',
   'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)',
 ]);
+
+export const UNSTOPPABLE_DOMAINS_ABI = parseAbi([
+  'function getMany(string[] calldata keys, uint256 tokenId) external view returns (string[] memory)',
+  'function reverseNameOf(address addr) external view returns (string memory)',
+]);
+
+export const AVVY_DOMAINS_ABI = parseAbi([
+  'function resolveStandard(string calldata name, uint256 key) external view returns (string memory)',
+  'function reverseResolveEVMToName(address addy) external view returns (string memory preimage)',
+]);
