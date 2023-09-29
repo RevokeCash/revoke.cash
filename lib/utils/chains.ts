@@ -397,7 +397,6 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [ChainId.EthereumMainnet]: 'https://eth.llamarpc.com',
     [ChainId.Goerli]: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-    [ChainId.Linea]: 'https://linea-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     [ChainId.Palm]: 'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   };
 
@@ -410,8 +409,10 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   const alchemyKey = ALCHEMY_API_KEY;
 
   const overrides: Record<number, string> = {
-    [ChainId.ArbitrumOne]: `https://arb1.arbitrum.io/rpc`,
+    [ChainId.ArbitrumOne]: `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Astar]: 'https://evm.astar.network',
+    [ChainId['AvalancheC-Chain']]: `https://avalanche-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.AvalancheFujiTestnet]: `https://avalanche-fuji.infura.io/v3/${infuraKey}`,
     [ChainId.Base]: 'https://mainnet.base.org',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
     [ChainId.CoreBlockchainMainnet]: 'https://rpc.coredao.org',
@@ -424,10 +425,10 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.HorizenEONMainnet]: 'https://eon-rpc.horizenlabs.io/ethv1',
     [ChainId.Linea]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
-    [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
+    [ChainId.Mumbai]: `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
     [ChainId.OPMainnet]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
-    [ChainId.PolygonMainnet]: `https://polygon.llamarpc.com`,
+    [ChainId.PolygonMainnet]: `https://polygon-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.XinFinXDCNetwork]: 'https://erpc.xdcrpc.com',
