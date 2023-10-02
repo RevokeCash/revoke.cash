@@ -76,7 +76,7 @@ export const lookupEnsName = async (address: Address): Promise<string | null> =>
 
 export const resolveEnsName = async (name: string): Promise<Address | null> => {
   try {
-    const address = await GlobalClients.POLYGON?.getEnsAddress({ name: name.toLowerCase() });
+    const address = await GlobalClients.ETHEREUM?.getEnsAddress({ name: name.toLowerCase() });
     return address ?? null;
   } catch {
     return null;
