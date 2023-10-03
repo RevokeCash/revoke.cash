@@ -7,4 +7,6 @@ export const Selectors = {
   ALLOWANCES_LOADER: '.allowances-loader',
   CONTROLS_SECTION: '.controls-section',
   LAST_UPDATED_LINK: '.tx-link',
+  SEARCH_WALLET_INPUT: '[aria-label="Search Accounts by Address or Domain"]',
+  SEARCH_WALLET_BUTTON: '[aria-label="Check Address"]',
 };

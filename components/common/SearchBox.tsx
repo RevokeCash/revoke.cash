@@ -24,6 +24,7 @@ const SearchBox = ({ onSubmit, onChange, value, placeholder, children, className
       <input
         className="grow focus-visible:outline-none bg-transparent"
         placeholder={placeholder}
+        aria-label={placeholder}
         value={value}
         onChange={onChange}
         {...props}
