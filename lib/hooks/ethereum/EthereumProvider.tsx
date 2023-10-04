@@ -16,7 +16,8 @@ interface Props {
 const { chains: wagmiChains, publicClient } = configureChains(
   SUPPORTED_CHAINS.map(getViemChainConfig),
   [publicProvider()],
-  { batch: { multicall: true }, pollingInterval: 60 * SECOND },
+  // TODO: Fix cacheTime independent of pollingInterval
+  { batch: { multicall: true }, pollingInterval: 4 * SECOND },
 );
 
 // We don't want to auto-disconnect the user when they switch to certain networks

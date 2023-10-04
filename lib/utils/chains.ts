@@ -879,7 +879,7 @@ export const getViemChainConfig = (chainId: number): Chain | undefined => {
 
 export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient => {
   return createPublicClient({
-    pollingInterval: 60 * SECOND,
+    pollingInterval: 4 * SECOND,
     chain: getViemChainConfig(chainId),
     transport: http(url ?? getChainRpcUrl(chainId)),
     batch: { multicall: true },

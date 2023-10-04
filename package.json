@@ -60,8 +60,8 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^1.14.0",
-    "wagmi": "^1.4.2"
+    "viem": "^1.15.1",
+    "wagmi": "^1.4.3"
   },
   "devDependencies": {
     "@cypress/grep": "^4.0.0",

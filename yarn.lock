@@ -198,32 +198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@coinbase/wallet-sdk@npm:^3.6.6":
-  version: 3.7.1
-  resolution: "@coinbase/wallet-sdk@npm:3.7.1"
-  dependencies:
-    "@metamask/safe-event-emitter": 2.0.0
-    "@solana/web3.js": ^1.70.1
-    bind-decorator: ^1.0.11
-    bn.js: ^5.1.1
-    buffer: ^6.0.3
-    clsx: ^1.1.0
-    eth-block-tracker: 6.1.0
-    eth-json-rpc-filters: 5.1.0
-    eth-rpc-errors: 4.0.2
-    json-rpc-engine: 6.1.0
-    keccak: ^3.0.1
-    preact: ^10.5.9
-    qs: ^6.10.3
-    rxjs: ^6.6.3
-    sha.js: ^2.4.11
-    stream-browserify: ^3.0.0
-    util: ^0.12.4
-  checksum: e88c656d08c06d42dcd03006c62162705a7c7dc27171ee721910f76c15c995f0482a314057a582af6e9548e6f49e4a1aff22f33685a33535c9b2550a615efbaf
-  languageName: node
-  linkType: hard
-
-"@coinbase/wallet-sdk@npm:^3.7.2":
+"@coinbase/wallet-sdk@npm:^3.6.6, @coinbase/wallet-sdk@npm:^3.7.2":
   version: 3.7.2
   resolution: "@coinbase/wallet-sdk@npm:3.7.2"
   dependencies:
@@ -1271,13 +1246,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.27.0":
-  version: 4.27.0
-  resolution: "@tanstack/query-core@npm:4.27.0"
-  checksum: 914b4f01ac75632f4603b650e9105f64c739b79250baf76aad16cee216f7bad6060c04eda0c70838fe61a5f6c17883e19fcc3075b2433a906539da95ce785796
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:4.35.3":
   version: 4.35.3
   resolution: "@tanstack/query-core@npm:4.35.3"
@@ -1285,12 +1253,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-persist-client-core@npm:4.27.0":
-  version: 4.27.0
-  resolution: "@tanstack/query-persist-client-core@npm:4.27.0"
-  dependencies:
-    "@tanstack/query-core": 4.27.0
-  checksum: 9a2df41744269d666bc0c1a5684a1d9d327e7994b57f9c1a71ea86d169dbde94f9d4af4b4ebe258d0085e0aa2cd563460b06513eccc4b016c0c5d416122d0275
+"@tanstack/query-core@npm:4.35.7":
+  version: 4.35.7
+  resolution: "@tanstack/query-core@npm:4.35.7"
+  checksum: b82600ee0b2cea085eb6065d36bf944f4fff72b3fa575b5aa55590498fa431f951c5557a4e7ee36ae5b5de5fd5856cb841b974ff6f78cf773199f0f8c860b6c8
   languageName: node
   linkType: hard
 
@@ -1303,12 +1269,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-sync-storage-persister@npm:^4.27.1":
-  version: 4.27.1
-  resolution: "@tanstack/query-sync-storage-persister@npm:4.27.1"
+"@tanstack/query-persist-client-core@npm:4.35.7":
+  version: 4.35.7
+  resolution: "@tanstack/query-persist-client-core@npm:4.35.7"
   dependencies:
-    "@tanstack/query-persist-client-core": 4.27.0
-  checksum: 16cdef50af43cf854ec1244f43609c04f9a9fcb7bbb36c763ce3146aeb85095c62da098fb4c4876d76496fa5830d54c6e79691d2b353919b1e5f274a3c34a97e
+    "@tanstack/query-core": 4.35.7
+  checksum: 9a5a5b4a32285c11a7776f6d7fc5b256a0fd218e1e7f8d9ea120e2ac60addab58e573f225d472ed82754a1678aa1de3d6514a99698d5e7c9c3a396037077bf9c
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-sync-storage-persister@npm:^4.27.1":
+  version: 4.35.7
+  resolution: "@tanstack/query-sync-storage-persister@npm:4.35.7"
+  dependencies:
+    "@tanstack/query-persist-client-core": 4.35.7
+  checksum: 1db9b34a64787768e545a417ce95e137b442e428e2150db2ac771b60ed13a7847836880110b38597bd4844cf702c43538a69bee9cb95f7a5fc482e2e23ac0d43
   languageName: node
   linkType: hard
 
@@ -1322,13 +1297,13 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-query-persist-client@npm:^4.28.0":
-  version: 4.28.0
-  resolution: "@tanstack/react-query-persist-client@npm:4.28.0"
+  version: 4.35.7
+  resolution: "@tanstack/react-query-persist-client@npm:4.35.7"
   dependencies:
-    "@tanstack/query-persist-client-core": 4.27.0
+    "@tanstack/query-persist-client-core": 4.35.7
   peerDependencies:
-    "@tanstack/react-query": 4.28.0
-  checksum: 8177b41ae644774f380154ec09588cce21b6bf75f45d58691cc86fd58002927989f47e278170a1ae9c3c02638a7e26d67a29106c768d325a54cef9219115839d
+    "@tanstack/react-query": ^4.35.7
+  checksum: efc61333950a6d06ef7a7b0f09e919542fb7c60fda438703f5f4ec49961b15a6d1c1c6d2d5b6708db521c1af9175689c02e646678e50f606fb64977d17b77cb1
   languageName: node
   linkType: hard
 
@@ -1344,10 +1319,10 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-query@npm:^4.28.0":
-  version: 4.28.0
-  resolution: "@tanstack/react-query@npm:4.28.0"
+  version: 4.35.7
+  resolution: "@tanstack/react-query@npm:4.35.7"
   dependencies:
-    "@tanstack/query-core": 4.27.0
+    "@tanstack/query-core": 4.35.7
     use-sync-external-store: ^1.2.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -1358,7 +1333,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 7baa70d22b55cfa22f8a1d92ba9f8379c5436ee81fce3f0e7df4a8c29bb26bfef4a83759cf10f752b40ae2940099fcce88ce91a773240f4999ae91136980c6e3
+  checksum: ba4e1aa883a42424085c81d44816fb7ee8efdc8c8d1c190320e78818ce8a45cfcafd2a9c0e217d19ff25b0ec58592c98f5286b5a9b738a799c3ee016a02f9447
   languageName: node
   linkType: hard
 
@@ -1910,9 +1885,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wagmi/core@npm:1.4.2":
-  version: 1.4.2
-  resolution: "@wagmi/core@npm:1.4.2"
+"@wagmi/core@npm:1.4.3":
+  version: 1.4.3
+  resolution: "@wagmi/core@npm:1.4.3"
   dependencies:
     "@wagmi/connectors": 3.1.2
     abitype: 0.8.7
@@ -1924,7 +1899,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 0a349d643153a1b966bf0a4198c1b5a06defdfff9b0686c3ffcd3e514f0301b03a58ee9de09e8e7323a70c5550691170bc296a3023046f8caeaacd2213c9ffe8
+  checksum: a8a0622324076bc3087eb05eb1d74652511433bc68e1972e24f699018140508e56473760c5de0a56c92f621aed52ef7e683f3e0aca34aec5428464d28559c27f
   languageName: node
   linkType: hard
 
@@ -2029,19 +2004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/jsonrpc-http-connection@npm:^1.0.4":
-  version: 1.0.6
-  resolution: "@walletconnect/jsonrpc-http-connection@npm:1.0.6"
-  dependencies:
-    "@walletconnect/jsonrpc-utils": ^1.0.6
-    "@walletconnect/safe-json": ^1.0.1
-    cross-fetch: ^3.1.4
-    tslib: 1.14.1
-  checksum: 156f2871e10803ec40ec2e19363109efdeecd16db74c8e39a933e9a41647f59d8cecfcda2058c8a3737a4a78d50b903b68fbf6e86f63cd56100157f146334281
-  languageName: node
-  linkType: hard
-
-"@walletconnect/jsonrpc-http-connection@npm:^1.0.7":
+"@walletconnect/jsonrpc-http-connection@npm:^1.0.4, @walletconnect/jsonrpc-http-connection@npm:^1.0.7":
   version: 1.0.7
   resolution: "@walletconnect/jsonrpc-http-connection@npm:1.0.7"
   dependencies:
@@ -2053,7 +2016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/jsonrpc-provider@npm:1.0.13, @walletconnect/jsonrpc-provider@npm:^1.0.13":
+"@walletconnect/jsonrpc-provider@npm:1.0.13, @walletconnect/jsonrpc-provider@npm:^1.0.13, @walletconnect/jsonrpc-provider@npm:^1.0.6":
   version: 1.0.13
   resolution: "@walletconnect/jsonrpc-provider@npm:1.0.13"
   dependencies:
@@ -2061,17 +2024,6 @@ __metadata:
     "@walletconnect/safe-json": ^1.0.2
     tslib: 1.14.1
   checksum: 497dfdd9f988432f171bc98336f3583c679059f0a166f95d6e51c8e1937c17abd9a5fd3aadfcebf6964bae14edd1e05fb0453e370d6e3bbc7ff4919fcad7c478
-  languageName: node
-  linkType: hard
-
-"@walletconnect/jsonrpc-provider@npm:^1.0.6":
-  version: 1.0.8
-  resolution: "@walletconnect/jsonrpc-provider@npm:1.0.8"
-  dependencies:
-    "@walletconnect/jsonrpc-utils": ^1.0.6
-    "@walletconnect/safe-json": ^1.0.1
-    tslib: 1.14.1
-  checksum: b166070ee10dc84dfa806d75b9aea4b4dd10ab18e3ce924e3f00c9df5cf32d796847bdea69738ae97d642846c63e18a97909724d6b15452dcf87ddd7120bec96
   languageName: node
   linkType: hard
 
@@ -2095,7 +2047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/jsonrpc-utils@npm:1.0.8, @walletconnect/jsonrpc-utils@npm:^1.0.7, @walletconnect/jsonrpc-utils@npm:^1.0.8":
+"@walletconnect/jsonrpc-utils@npm:1.0.8, @walletconnect/jsonrpc-utils@npm:^1.0.4, @walletconnect/jsonrpc-utils@npm:^1.0.7, @walletconnect/jsonrpc-utils@npm:^1.0.8":
   version: 1.0.8
   resolution: "@walletconnect/jsonrpc-utils@npm:1.0.8"
   dependencies:
@@ -2106,7 +2058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/jsonrpc-utils@npm:^1.0.4, @walletconnect/jsonrpc-utils@npm:^1.0.6":
+"@walletconnect/jsonrpc-utils@npm:^1.0.6":
   version: 1.0.6
   resolution: "@walletconnect/jsonrpc-utils@npm:1.0.6"
   dependencies:
@@ -7370,9 +7322,9 @@ __metadata:
   linkType: hard
 
 "preact@npm:^10.12.0":
-  version: 10.13.2
-  resolution: "preact@npm:10.13.2"
-  checksum: 3bc98aa09bcd297eb59abd7e4f3a4d499b8e345bd68b922f7678ef105ba4721dc9b9940b221e6e3443f957d51402fe407bb96ccaa0a4b65d6808ca8a3be76bfa
+  version: 10.18.1
+  resolution: "preact@npm:10.18.1"
+  checksum: 691030149fdbd026cac7c07147756f48c6cb8cdea6a8af8c0f383e4c31f5bce48cdc751e4bccf8826560a0d2db77ada401c0308f2bcae2961d16972c26c95607
   languageName: node
   linkType: hard
 
@@ -7557,7 +7509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qrcode@npm:1.5.3":
+"qrcode@npm:1.5.3, qrcode@npm:^1.5.1":
   version: 1.5.3
   resolution: "qrcode@npm:1.5.3"
   dependencies:
@@ -7568,20 +7520,6 @@ __metadata:
   bin:
     qrcode: bin/qrcode
   checksum: 9a8a20a0a9cb1d15de8e7b3ffa214e8b6d2a8b07655f25bd1b1d77f4681488f84d7bae569870c0652872d829d5f8ac4922c27a6bd14c13f0e197bf07b28dead7
-  languageName: node
-  linkType: hard
-
-"qrcode@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "qrcode@npm:1.5.1"
-  dependencies:
-    dijkstrajs: ^1.0.1
-    encode-utf8: ^1.0.3
-    pngjs: ^5.0.0
-    yargs: ^15.3.1
-  bin:
-    qrcode: bin/qrcode
-  checksum: 842f899d95caaad2ac507408b5498be3197e1df16bc6b537b20069d2cb1330e4588b50f672ce4a9ccf01338f7c97b5732ff9b5caaa6eb2338187d3c25a973e79
   languageName: node
   linkType: hard
 
@@ -8169,8 +8107,8 @@ __metadata:
     tsconfig-paths: ^4.2.0
     typescript: ^5.2.2
     use-local-storage: ^3.0.0
-    viem: ^1.14.0
-    wagmi: ^1.4.2
+    viem: ^1.15.1
+    wagmi: ^1.4.3
     walkdir: ^0.4.1
   languageName: unknown
   linkType: soft
@@ -9601,9 +9539,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^1.14.0":
-  version: 1.14.0
-  resolution: "viem@npm:1.14.0"
+"viem@npm:^1.15.1":
+  version: 1.15.1
+  resolution: "viem@npm:1.15.1"
   dependencies:
     "@adraffy/ens-normalize": 1.9.4
     "@noble/curves": 1.2.0
@@ -9619,18 +9557,18 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 7467f48e2f50aa4533fae3ab327e90f593f51b6f5b31ed213a93b93f3f97e6b4ae33064eecb85582aac596436edfd9ef125c421dd6a5de18649e388ec88ffeb6
+  checksum: 5e65803c976a236491b57b95630069fc7bb0cf2152a620a75a419a04a0616cdede5321b0c7cc084d639008eb8c4755f713d73d06c1f96fc5a1bbd226741f0ec0
   languageName: node
   linkType: hard
 
-"wagmi@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "wagmi@npm:1.4.2"
+"wagmi@npm:^1.4.3":
+  version: 1.4.3
+  resolution: "wagmi@npm:1.4.3"
   dependencies:
     "@tanstack/query-sync-storage-persister": ^4.27.1
     "@tanstack/react-query": ^4.28.0
     "@tanstack/react-query-persist-client": ^4.28.0
-    "@wagmi/core": 1.4.2
+    "@wagmi/core": 1.4.3
     abitype: 0.8.7
     use-sync-external-store: ^1.2.0
   peerDependencies:
@@ -9640,7 +9578,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: c663eb342d2dac5117bdac0cd7c9d93cb4f95254997348ac17cfc39424faffb71a8dfeae8900e1e9ab1a0b7b4c843d85288f9b2c0880131bb5d7e52d78de635d
+  checksum: df0dfddb898a59246c14e7053caeeea313801340d589e5545bad631ec47fc66e2cc1dafaaa7880c9947931efad442f834ed3d3c6b2d0952b586f6da575c3293f
   languageName: node
   linkType: hard
 
@@ -9984,19 +9922,22 @@ __metadata:
   linkType: hard
 
 "zustand@npm:^4.3.1":
-  version: 4.3.5
-  resolution: "zustand@npm:4.3.5"
+  version: 4.4.2
+  resolution: "zustand@npm:4.4.2"
   dependencies:
     use-sync-external-store: 1.2.0
   peerDependencies:
+    "@types/react": ">=16.8"
     immer: ">=9.0"
     react: ">=16.8"
   peerDependenciesMeta:
+    "@types/react":
+      optional: true
     immer:
       optional: true
     react:
       optional: true
-  checksum: 166099ecadd870e5e0f51b5b443b71145149447b2bfe557d73254891dd0fe603d55c93e560649a7c31a30b4a180dd6d4f4d90463636fd54c3393ace3b68dbc67
+  checksum: ca10785e144561c52888578d1a04272ea5b2e6dad8ac6d9ae43b8de9bad5e4864ed8688c277eb4e2f68efd23a59db5e4c6f846eaf874f4f61c9c8271727380b4
   languageName: node
   linkType: hard
 
