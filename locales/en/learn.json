@@ -4,6 +4,7 @@
     "intro_paragraph": "The process of adding {{chainName}} to your wallet may be slightly different depending on the wallet you are using. The steps below are for MetaMask. If you are using a different wallet, there is most likely a similar process that you can follow.",
     "select_network": "Select the network that you want to add:",
     "sidebar_title": "Add a Network to Your Wallet",
+    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
     "step_1": {
       "title": "1. Open your wallet and go to the \"Add network\" page."
     },

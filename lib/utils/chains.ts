@@ -354,6 +354,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZetaChainMainnet]: 'ZetaChain',
     [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
     [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
+    [1234567890]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
   };
 
   const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -498,7 +499,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.BitTorrentChainTestnet]: '/assets/images/vendor/chains/bttc.svg',
     [ChainId.BNBSmartChainMainnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.BNBSmartChainTestnet]: '/assets/images/vendor/chains/bsc.svg',
-    [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpeg',
+    [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpg',
     [ChainId.CallistoMainnet]: '/assets/images/vendor/chains/callisto.png',
     [ChainId.Canto]: '/assets/images/vendor/chains/canto.svg',
     [ChainId.CeloAlfajoresTestnet]: '/assets/images/vendor/chains/celo.svg',
@@ -555,13 +556,12 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.NahmiiMainnet]: '/assets/images/vendor/chains/nahmii.svg',
     [ChainId.OasisEmerald]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.OasisEmeraldTestnet]: '/assets/images/vendor/chains/oasis.png',
-    [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.png',
+    [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.svg',
     [ChainId.OctaSpace]: '/assets/images/vendor/chains/octaspace.png',
     [ChainId.OpBNBMainnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.OPMainnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.OptimismGoerliTestnet]: '/assets/images/vendor/chains/optimism.svg',
-    [ChainId.Palm]: '/assets/images/vendor/chains/palm.svg',
-    [ChainId.PalmTestnet]: '/assets/images/vendor/chains/palm.svg',
+    [ChainId.Palm]: '/assets/images/vendor/chains/palm.png',
     [ChainId.PegoNetwork]: '/assets/images/vendor/chains/pego.jpg',
     [ChainId.PolygonMainnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PolygonzkEVM]: '/assets/images/vendor/chains/polygon.svg',
@@ -793,6 +793,44 @@ export const getChainApiIdentifer = (chainId: number): string => {
   const { platform } = getChainEtherscanPlatformNames(chainId);
   const apiKey = getChainApiKey(chainId);
   return `${platform}:${apiKey}`;
+};
+
+export const getCorrespondingMainnetChainId = (chainId: number): number | undefined => {
+  const testnets = {
+    [ChainId.ArbitrumGoerli]: ChainId.ArbitrumOne,
+    [ChainId.AvalancheFujiTestnet]: ChainId['AvalancheC-Chain'],
+    [ChainId.BaseGoerliTestnet]: ChainId.Base,
+    [ChainId.BNBSmartChainTestnet]: ChainId.BNBSmartChainMainnet,
+    [ChainId.CeloAlfajoresTestnet]: ChainId.CeloMainnet,
+    [ChainId.CoinExSmartChainTestnet]: ChainId.CoinExSmartChainMainnet,
+    [ChainId.CronosTestnet]: ChainId.CronosMainnet,
+    [ChainId.FantomTestnet]: ChainId.FantomOpera,
+    [ChainId.GatherTestnetNetwork]: ChainId.GatherMainnetNetwork,
+    [ChainId.Goerli]: ChainId.EthereumMainnet,
+    [ChainId.HorizenGobiTestnet]: ChainId.HorizenEONMainnet,
+    [ChainId.LineaTestnet]: ChainId.Linea,
+    [ChainId.MantleTestnet]: ChainId.Mantle,
+    [ChainId.MoonbaseAlpha]: ChainId.Moonbeam,
+    [ChainId.Mumbai]: ChainId.PolygonMainnet,
+    [ChainId.OptimismGoerliTestnet]: ChainId.OPMainnet,
+    [ChainId.PolygonzkEVMTestnet]: ChainId.PolygonzkEVM,
+    [ChainId.PulseChainTestnetv4]: ChainId.PulseChain,
+    [ChainId.ScrollSepoliaTestnet]: ChainId.Scroll,
+    [ChainId.Sepolia]: ChainId.EthereumMainnet,
+    [ChainId.ShimmerEVMTestnet]: ChainId.ShimmerEVMMainnet,
+    [ChainId.SyscoinTanenbaumTestnet]: ChainId.SyscoinMainnet,
+    [ChainId.TaikoJolnirL2]: 1234567890, // TODO: This is a placeholder so we can add a description for Taiko
+    [ChainId.ZetaChainAthens3Testnet]: ChainId.ZetaChainMainnet,
+    [ChainId.ZkSyncEraTestnet]: ChainId.ZkSyncEraMainnet,
+  };
+
+  const canaryNetworks = {
+    [ChainId.Moonriver]: ChainId.Moonbeam,
+    [ChainId.Shiden]: ChainId.Astar,
+    [ChainId['SongbirdCanary-Network']]: ChainId.FlareMainnet,
+  };
+
+  return testnets[chainId] ?? canaryNetworks[chainId];
 };
 
 export const getChainDeployedContracts = (chainId: number): any | undefined => {
