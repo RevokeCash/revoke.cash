@@ -7,7 +7,6 @@ import { Selectors, TEST_URL } from 'cypress/support/utils';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
   ORDERED_CHAINS,
-  SUPPORTED_CHAINS,
   getChainApiUrl,
   getChainExplorerUrl,
   getChainLogo,
@@ -16,7 +15,9 @@ import {
   getChainNativeToken,
   getChainRpcUrl,
   getChainSlug,
+  getCorrespondingMainnetChainId,
 } from 'lib/utils/chains';
+import networkDescriptions from 'locales/en/networks.json';
 
 const TEST_ADDRESSES = {
   // Mainnets
@@ -116,31 +117,15 @@ const TEST_ADDRESSES = {
 } as const;
 
 describe('Chain Support', () => {
-  it('should have full data for every supported chain', () => {
-    SUPPORTED_CHAINS.forEach((chainId) => {
-      cy.wrap(getChainName(chainId)).should('not.be.empty');
-      cy.wrap(getChainExplorerUrl(chainId)).should('not.be.empty');
-      cy.wrap(getChainRpcUrl(chainId)).should('not.be.empty');
-      cy.wrap(getChainLogsRpcUrl(chainId)).should('not.be.empty');
-      cy.wrap(getChainLogo(chainId)).should('not.be.empty');
-      cy.wrap(getChainNativeToken(chainId)).should('not.be.empty');
-      cy.wrap(getChainSlug(chainId)).should('not.be.empty');
-    });
-
-    ETHERSCAN_SUPPORTED_CHAINS.forEach((chainId) => {
-      cy.wrap(getChainApiUrl(chainId)).should('not.be.empty');
-    });
-  });
-
   it('should have a test for every item in the chain selection dropdown menu', () => {
     cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
 
-    const fixtureChainNames = SUPPORTED_CHAINS.map((chainId) => getChainName(chainId));
+    const fixtureChainNames = ORDERED_CHAINS.map((chainId) => getChainName(chainId));
     const appChainNames = cy.get(Selectors.CHAIN_SELECT_OPTION).should('have.length', fixtureChainNames.length);
     appChainNames.each((chain) => cy.wrap(chain).invoke('text').should('be.oneOf', fixtureChainNames));
 
-    SUPPORTED_CHAINS.forEach((chainId) => {
+    ORDERED_CHAINS.forEach((chainId) => {
       cy.wrap(getChainName(chainId)).should('not.be.empty');
       cy.wrap(TEST_ADDRESSES[chainId]).should('not.be.empty');
     });
@@ -150,31 +135,58 @@ describe('Chain Support', () => {
     const chainName = getChainName(chainId);
     const fixtureAddress = TEST_ADDRESSES[chainId];
 
-    it(`should support ${chainName}`, () => {
-      cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
-
-      cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
-      cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
-
-      cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4_000 }).should('exist');
-      cy.wait(100); // Wait for the loading spinner to appear
-      cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
-      cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
-
-      const shouldCheckExplorer = Boolean(Cypress.env('checkExplorer'));
-      if (shouldCheckExplorer) {
-        // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
-        const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
-        linkElement.invoke('attr', 'href').then((href) => {
-          cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
-            // Supress errors on the explorer page
-            cy.on('uncaught:exception', () => false);
-
-            cy.visit(href);
-            cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
-          });
+    describe(chainName, () => {
+      describe('Chain Data', () => {
+        it('should have base chain data', () => {
+          cy.wrap(getChainName(chainId)).should('not.be.empty');
+          cy.wrap(getChainExplorerUrl(chainId)).should('not.be.empty');
+          cy.wrap(getChainRpcUrl(chainId)).should('not.be.empty');
+          cy.wrap(getChainLogsRpcUrl(chainId)).should('not.be.empty');
+          cy.wrap(getChainLogo(chainId)).should('not.be.empty');
+          cy.wrap(getChainNativeToken(chainId)).should('not.be.empty');
+          cy.wrap(getChainSlug(chainId)).should('not.be.empty');
         });
-      }
+
+        if (ETHERSCAN_SUPPORTED_CHAINS.includes(chainId)) {
+          it('should have an Etherscan API URL', () => {
+            cy.wrap(getChainApiUrl(chainId)).should('not.be.empty');
+          });
+        }
+
+        const mainnetChainId = getCorrespondingMainnetChainId(chainId) ?? chainId;
+        it('should have a description', () => {
+          cy.wrap(networkDescriptions.networks[getChainSlug(mainnetChainId)]).should('not.be.empty');
+        });
+      });
+
+      describe('Chain Approval Checking', () => {
+        it('should be able to check approvals', () => {
+          cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
+
+          cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
+          cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
+
+          cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4_000 }).should('exist');
+          cy.wait(100); // Wait for the loading spinner to appear
+          cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
+          cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
+
+          const shouldCheckExplorer = Boolean(Cypress.env('checkExplorer'));
+          if (shouldCheckExplorer) {
+            // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
+            const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
+            linkElement.invoke('attr', 'href').then((href) => {
+              cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
+                // Supress errors on the explorer page
+                cy.on('uncaught:exception', () => false);
+
+                cy.visit(href);
+                cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
+              });
+            });
+          }
+        });
+      });
     });
   });
 });
