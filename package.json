@@ -14,7 +14,7 @@
     "translations:update": "localazy upload && localazy download && yarn lint",
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json",
     "test": "cypress run",
-    "exploits:update": "ts-node scripts/update-exploits.ts ../approval-exploit-list && prettier -w ../approval-exploit-list && prettier -w ."
+    "exploits:update": "ts-node scripts/update-exploits.ts ../approval-exploit-list ../whois"
   },
   "private": true,
   "dependencies": {
