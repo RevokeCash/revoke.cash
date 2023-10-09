@@ -3,6 +3,7 @@
   "is_testnet": "{{chainName}} is a testnet for {{mainnetChainName}}.",
   "native_token": "The native token of {{chainName}} is {{nativeToken}}.",
   "canary_network": "{{chainName}} is the canary network for {{mainnetChainName}}. New updates get rolled out on {{chainName}} first, and only get activated on {{mainnetChainName}} after a successful testing period on {{chainName}}. Using this canary network, developers can test their applications in an incentivized, production-like environment instead of having to rely on test networks.",
+  "learn_more": "Learn more about {{chainName}} on <0>their website</0>.",
   "networks": {
     "arbitrum": "Arbitrum is a Layer 2 scaling solution for Ethereum. Arbitrum is an optimistic rollup, which means that it periodically submits batches of transaction data to the Ethereum mainnet. This results in cheaper and faster transactions than if the transactions would be executed on Ethereum directly. It one of the most popular Layer 2 solutions for Ethereum, and its adoption has skyrocketed in 2023.",
     "arbitrum-nova": "Arbitrum Nova is the more centralized sibling of Arbitrum. While Arbitrum submits batches of transaction data to the Ethereum main chain, Arbitrum Nova only submits certificates of this data. These certificates are created by a set of validators, known as the Data Availability Committee (DAC). Because of this, the network is much cheaper to use, but also much more centralized.",
