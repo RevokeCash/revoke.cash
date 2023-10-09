@@ -46,7 +46,7 @@ Then there are a few less essential variables:
 
 ### Adding a new network
 
-Adding a new network is relatively straightforward as you only need to change two files: `lib/utils/chains.ts` and `cypress/e2e/chains.cy.ts`.
+Adding a new network is relatively straightforward as you only need to change three files: `lib/utils/chains.ts`, `cypress/e2e/chains.cy.ts` and `locales/en/networks.json`.
 
 #### Prerequisites
 
@@ -74,6 +74,11 @@ In `lib/utils/chains.ts`:
 In `cypress/e2e/chains.cy.ts`:
 
 - Find a wallet that has active approvals and add it to `fixtures`.
+
+In `locales/en/networks.json`:
+
+- Add a one-paragraph description for the network in the `"networks"` object under the correct slug.
+- An admin will then need to run `yarn translations:update` to make sure this description gets forwarded to translators.
 
 ## Credits
 
