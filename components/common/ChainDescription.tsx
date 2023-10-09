@@ -1,12 +1,15 @@
 import {
   CHAIN_SELECT_TESTNETS,
+  getChainInfoUrl,
   getChainName,
   getChainNativeToken,
   getChainSlug,
   getCorrespondingMainnetChainId,
 } from 'lib/utils/chains';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import { createElement } from 'react';
+import Href from './Href';
 
 interface Props {
   chainId: number;
@@ -25,8 +28,7 @@ const ChainDescription = ({ chainId, headingElement }: Props) => {
   const mainnetChainName = getChainName(mainnetChainId).replace(' (Unsupported)', '');
   const chainName = getChainName(chainId).replace(' (Unsupported)', '');
   const nativeToken = getChainNativeToken(chainId);
-
-  console.log('mainnetChainSlug', mainnetChainSlug);
+  const infoUrl = getChainInfoUrl(chainId);
 
   const hasDescription = !!t(`networks:networks.${mainnetChainSlug}`, null, { default: null });
   if (!hasDescription) return null;
@@ -41,6 +43,16 @@ const ChainDescription = ({ chainId, headingElement }: Props) => {
             ? t('networks:canary_network', { chainName, mainnetChainName })
             : t(`networks:networks.${mainnetChainSlug}`)}{' '}
           {t(`networks:native_token`, { chainName, nativeToken })}
+          {infoUrl && (
+            <>
+              {' '}
+              <Trans
+                i18nKey="networks:learn_more"
+                values={{ chainName }}
+                components={[<Href href={infoUrl} underline="hover" html />]}
+              />
+            </>
+          )}
         </span>
       </p>
     </>

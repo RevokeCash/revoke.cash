@@ -598,6 +598,10 @@ export const getChainLogo = (chainId: number): string => {
   return mapping[chainId] ?? '/assets/images/vendor/chains/ethereum.svg';
 };
 
+export const getChainInfoUrl = (chainId: number): string | undefined => {
+  return chains.get(chainId)?.infoURL;
+};
+
 export const getChainNativeToken = (chainId: number): string => {
   const overrides = {
     [ChainId.BitgertMainnet]: 'BRISE',
