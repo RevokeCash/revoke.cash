@@ -49,7 +49,7 @@ const ChainDescription = ({ chainId, headingElement }: Props) => {
               <Trans
                 i18nKey="networks:learn_more"
                 values={{ chainName }}
-                components={[<Href href={infoUrl} underline="hover" html />]}
+                components={[<Href href={infoUrl} underline="hover" html external />]}
               />
             </>
           )}

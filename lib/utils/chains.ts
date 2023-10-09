@@ -599,7 +599,19 @@ export const getChainLogo = (chainId: number): string => {
 };
 
 export const getChainInfoUrl = (chainId: number): string | undefined => {
-  return chains.get(chainId)?.infoURL;
+  const overrides = {
+    [ChainId.MantaPacificMainnet]: 'https://pacific.manta.network/',
+    [ChainId.Moonriver]: 'https://moonbeam.network/networks/moonriver/',
+    [ChainId.Shiden]: 'https://shiden.astar.network/',
+    [ChainId['SongbirdCanary-Network']]: 'https://flare.network/songbird/',
+    [ChainId.Wanchain]: 'https://www.wanchain.org/',
+    [ChainId.XinFinXDCNetwork]: 'https://xdc.org/',
+  };
+
+  const mainnetChainId = getCorrespondingMainnetChainId(chainId);
+  const mainnetChainInfoUrl = mainnetChainId ? getChainInfoUrl(mainnetChainId) : undefined;
+
+  return overrides[chainId] ?? mainnetChainInfoUrl ?? chains.get(chainId)?.infoURL;
 };
 
 export const getChainNativeToken = (chainId: number): string => {
