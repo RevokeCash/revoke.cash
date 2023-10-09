@@ -43,7 +43,7 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     this.minLiquidity = options.liquidityParameters?.minLiquidity ?? 10n ** 17n;
   }
 
-  public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
     if (tokenContract.address === this.path.at(-1)) {
       return parseUnits(String(1), this.decimals);
     }

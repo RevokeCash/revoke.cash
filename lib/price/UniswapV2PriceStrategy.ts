@@ -38,7 +38,7 @@ export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements Pri
 
   // Note: the first address in the path is assumed to be the wrapped native token
   constructor(options: UniswapV2PriceStrategyOptions) {
-    super({ nativeAsset: options.nativeAsset ?? options.path[0] });
+    super({ nativeAsset: options.nativeAsset ?? options.path[0], supportedAssets: ['ERC20'] });
 
     this.address = options.address;
     this.path = options.path;
@@ -49,7 +49,7 @@ export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements Pri
     this.fee = options.feeParameters?.fee ?? [];
   }
 
-  public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
     if (tokenContract.address === this.path.at(-1)) {
       return parseUnits(String(1), this.decimals);
     }

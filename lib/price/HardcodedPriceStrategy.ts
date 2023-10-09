@@ -1,4 +1,4 @@
-import { TokenContract } from 'lib/interfaces';
+import { TokenContract, TokenStandard } from 'lib/interfaces';
 import { Address, PublicClient, parseUnits } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
 
@@ -14,6 +14,7 @@ export interface TokenPriceDetails {
 
 export class HardcodedPriceStrategy implements PriceStrategy {
   tokens: Array<TokenPriceDetails>;
+  supportedAssets: TokenStandard[] = ['ERC20'];
 
   constructor(options: HardcodedPriceStrategyOptions) {
     this.tokens = (options.tokens ?? []).map((token) =>

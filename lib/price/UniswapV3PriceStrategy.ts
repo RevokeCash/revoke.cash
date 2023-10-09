@@ -22,14 +22,14 @@ export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements Pri
 
   constructor(options: UniswapV3PriceStrategyOptions) {
     // Note: the first address (so second entry) in the path is assumed to be the wrapped native token
-    super({ nativeAsset: options.nativeAsset ?? options.path[1] });
+    super({ nativeAsset: options.nativeAsset ?? options.path[1], supportedAssets: ['ERC20'] });
 
     this.address = options.address;
     this.path = options.path;
     this.decimals = options.decimals ?? 18;
   }
 
-  public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
     if (tokenContract.address === this.path.at(-1)) {
       return parseUnits(String(1), this.decimals);
     }
