@@ -13,12 +13,12 @@ const InfoPanel = () => {
   return (
     <Card>
       <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-        <div>
+        <p>
           <Trans
             i18nKey="address:signatures.info.description"
             components={[<span className="italic" />, <span className="font-bold" />]}
           />
-        </div>
+        </p>
         {isMounted && !signatureNoticeAcknowledged && (
           <Button size="md" style="primary" className="shrink-0" onClick={acknowledgeSignatureNotice}>
             {t('common:buttons.understand')}

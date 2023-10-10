@@ -23,8 +23,8 @@ const ErrorPage404 = () => {
     <ContentPageLayout>
       <div className="flex flex-col gap-8 mx-auto max-w-xl">
         <div className="text-center flex flex-col gap-2">
-          <p className="text-base font-semibold">404</p>
-          <h1 className="text-4xl md:text-5xl">{t('common:errors.404.title')}</h1>
+          <p className="text-zinc-900 font-semibold">404</p>
+          <h1>{t('common:errors.404.title')}</h1>
           <p className="text-lg text-zinc-500 dark:text-zinc-400">{t('common:errors.404.subtitle')}</p>
         </div>
         <div className="flex flex-col gap-4">
@@ -53,11 +53,11 @@ const ErrorPage404 = () => {
               />
             )}
           </div>
-          <div className="text-zinc-700 dark:text-zinc-300">
-            <Href href="/" className="text-base font-medium" underline="none">
+          <p>
+            <Href href="/" className="font-medium" underline="none">
               {t('common:errors.404.go_home')} &rarr;
             </Href>
-          </div>
+          </p>
         </div>
       </div>
     </ContentPageLayout>
