@@ -47,6 +47,7 @@ export const useMarketplaces = (chainId: number) => {
           account: await getWalletAddress(walletClient),
           functionName: 'incrementCounter',
           chain: walletClient.chain,
+          value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
         });
 
         return handleTransaction(transactionPromise, TransactionType.OTHER);
@@ -63,6 +64,7 @@ export const useMarketplaces = (chainId: number) => {
           account: await getWalletAddress(walletClient),
           functionName: 'incrementNonce',
           chain: walletClient.chain,
+          value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
         });
 
         return handleTransaction(transactionPromise, TransactionType.OTHER);

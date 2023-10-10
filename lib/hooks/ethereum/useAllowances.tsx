@@ -45,7 +45,7 @@ export const useAllowances = (address: Address, events: AddressEvents, chainId: 
 
       // If the token has a balance and we just revoked the last allowance, we need to add the token back to the list
       // TODO: This is kind of ugly, ideally this should be reactive
-      const hasBalance = hasZeroBalance(allowance.balance, allowance.metadata.decimals);
+      const hasBalance = !hasZeroBalance(allowance.balance, allowance.metadata.decimals);
       const wasLastAllowanceForToken = !newAllowances.find((other) => contractEquals(other, allowance));
       if (hasBalance && wasLastAllowanceForToken) {
         newAllowances.push(stripAllowanceData(allowance));

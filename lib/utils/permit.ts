@@ -56,6 +56,7 @@ export const permit = async (
     functionName: 'permit',
     args: [address, spender, value, deadline, Number(v), r, s],
     chain: walletClient.chain,
+    value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   });
 };
 

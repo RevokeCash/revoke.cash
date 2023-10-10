@@ -5,6 +5,7 @@ import { DUMMY_ADDRESS } from 'lib/constants';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
+import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -32,7 +33,7 @@ const PermitsEntry = ({ token }: Props) => {
 
     track('Cancelled Permit Signatures', { chainId: selectedChainId, account: address, token: token.contract.address });
 
-    await publicClient.waitForTransactionReceipt({ hash });
+    await waitForTransactionConfirmation(hash, publicClient);
   });
 
   return (

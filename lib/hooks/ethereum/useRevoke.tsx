@@ -1,6 +1,6 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';
-import { writeContractUnlessExcessiveGas } from 'lib/utils';
+import { waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { parseFixedPointBigInt } from 'lib/utils/formatting';
 import { permit2Approve } from 'lib/utils/permit2';
@@ -33,7 +33,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
           tokenId,
         });
 
-        await contract.publicClient.waitForTransactionReceipt({ hash });
+        await waitForTransactionConfirmation(hash, contract.publicClient);
 
         onUpdate(allowance, undefined);
       }
@@ -46,6 +46,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
         args: [ADDRESS_ZERO, tokenId],
         account: allowance.owner,
         chain: walletClient.chain,
+        value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
       });
     };
 
@@ -56,6 +57,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
         args: [spender, false],
         account: allowance.owner,
         chain: walletClient.chain,
+        value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
       });
     };
 
@@ -74,6 +76,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
           args: [spender, newAmountParsed],
           account: allowance.owner,
           chain: walletClient.chain,
+          value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
         });
       };
 
@@ -94,7 +97,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
           permit2: expiration !== undefined,
         });
 
-        await contract.publicClient.waitForTransactionReceipt({ hash });
+        await waitForTransactionConfirmation(hash, contract.publicClient);
         console.debug('Reloading data');
 
         onUpdate(allowance, newAmountParsed);

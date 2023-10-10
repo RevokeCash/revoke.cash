@@ -1800,7 +1800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ws@npm:^8.5.4, @types/ws@npm:^8.5.5":
+"@types/ws@npm:^8.5.4":
   version: 8.5.5
   resolution: "@types/ws@npm:8.5.5"
   dependencies:
@@ -5392,6 +5392,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isows@npm:1.0.3":
+  version: 1.0.3
+  resolution: "isows@npm:1.0.3"
+  peerDependencies:
+    ws: "*"
+  checksum: 9cacd5cf59f67deb51e825580cd445ab1725ecb05a67c704050383fb772856f3cd5e7da8ad08f5a3bd2823680d77d099459d0c6a7037972a74d6429af61af440
+  languageName: node
+  linkType: hard
+
 "isstream@npm:~0.1.2":
   version: 0.1.2
   resolution: "isstream@npm:0.1.2"
@@ -8107,7 +8116,7 @@ __metadata:
     tsconfig-paths: ^4.2.0
     typescript: ^5.2.2
     use-local-storage: ^3.0.0
-    viem: ^1.15.1
+    viem: ^1.16.2
     wagmi: ^1.4.3
     walkdir: ^0.4.1
   languageName: unknown
@@ -9539,25 +9548,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^1.15.1":
-  version: 1.15.1
-  resolution: "viem@npm:1.15.1"
+"viem@npm:^1.16.2":
+  version: 1.16.2
+  resolution: "viem@npm:1.16.2"
   dependencies:
     "@adraffy/ens-normalize": 1.9.4
     "@noble/curves": 1.2.0
     "@noble/hashes": 1.3.2
     "@scure/bip32": 1.3.2
     "@scure/bip39": 1.2.1
-    "@types/ws": ^8.5.5
     abitype: 0.9.8
-    isomorphic-ws: 5.0.0
+    isows: 1.0.3
     ws: 8.13.0
   peerDependencies:
     typescript: ">=5.0.4"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 5e65803c976a236491b57b95630069fc7bb0cf2152a620a75a419a04a0616cdede5321b0c7cc084d639008eb8c4755f713d73d06c1f96fc5a1bbd226741f0ec0
+  checksum: 579ed4ab4f4e623f90f21d1c52696a81d06c4cf11557a784019c314add34b0626870d35ecc8947fea1b65b9c414b1816dd556e11e1e76b2b989fefde7d7747c6
   languageName: node
   linkType: hard
 

@@ -4,6 +4,7 @@ export const isUserRejectionError = (message?: string): boolean => {
   const lowercaseMessage = message?.toLowerCase();
   if (lowercaseMessage?.includes('user denied')) return true;
   if (lowercaseMessage?.includes('user rejected')) return true;
+  if (lowercaseMessage?.includes('transaction was rejected')) return true;
   return false;
 };
 

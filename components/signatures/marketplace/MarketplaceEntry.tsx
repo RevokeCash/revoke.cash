@@ -6,6 +6,7 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import type { Marketplace } from 'lib/interfaces';
+import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
@@ -30,7 +31,7 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
       marketplace: marketplace.name,
     });
 
-    await publicClient.waitForTransactionReceipt({ hash });
+    await waitForTransactionConfirmation(hash, publicClient);
   });
 
   return (

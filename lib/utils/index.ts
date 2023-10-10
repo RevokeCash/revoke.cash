@@ -8,8 +8,11 @@ import {
   ContractFunctionConfig,
   FormattedTransactionRequest,
   GetValue,
+  Hash,
   Hex,
   PublicClient,
+  TransactionNotFoundError,
+  TransactionReceiptNotFoundError,
   WalletClient,
   formatUnits,
   getAddress,
@@ -164,3 +167,13 @@ type ContractTransactionRequest<
   dataSuffix?: Hex;
 } & UnionOmit<FormattedTransactionRequest<Chain>, 'from' | 'to' | 'data' | 'value'> &
   GetValue<TAbi, TFunctionName>;
+
+export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient): Promise<void> => {
+  try {
+    return void (await publicClient.waitForTransactionReceipt({ hash }));
+  } catch (e) {
+    // Workaround for Safe Apps, somehow they don't return the transaction receipt -- TODO: remove when fixed
+    if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;
+    throw e;
+  }
+};

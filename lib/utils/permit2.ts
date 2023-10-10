@@ -71,5 +71,6 @@ export const permit2Approve = async (
     args: [tokenContract.address, spender, amount, expiration],
     account: await getWalletAddress(walletClient),
     chain: walletClient.chain,
+    value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   });
 };
