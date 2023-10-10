@@ -19,7 +19,7 @@ const AddressSignaturesPage: NextPage<Props> = ({ address, ssrDomainName }) => {
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={title} description={t('common:meta.description')} />
+      <NextSeo {...defaultSEO} title={title} description={t('common:meta.description', { chainName: 'Ethereum' })} />
       <AddressPageLayout address={address}>
         <SignaturesDashboard />
       </AddressPageLayout>
