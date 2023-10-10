@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "{{chainName}} Token Approval Checker"
+  },
+  "title": "{{chainName}} Token Approval Checker",
+  "different_chain": "Or check your token approvals on a different chain",
+  "what_are_token_approvals": {
+    "title": "What Are {{chainName}} Token Approvals?",
+    "content": "Token approvals are used to give permission to a smart contract to spend your tokens on your behalf. This is a common pattern used by decentralized exchanges and other decentralized applications. This is an important feature for the functioning of decentralized applications on {{chainName}} and other blockchain networks, but it can also be dangerous if left unchecked. Learn more about token approvals in our <0>Learn article</0>."
+  },
+  "how_to_revoke": {
+    "title": "How to Revoke {{chainName}} Token Approvals.",
+    "content": "When you enter your address above, you will see a list of all your {{chainName}} token approvals. The list will contain all the token approval details, such as the date, amount and spender. You can sort the list and filter it by any of these properties. You can then revoke any token approval by clicking the revoke button, which will prompt your wallet to confirm the revoke transaction, costing a small gas fee. Besides {{chainName}} you can also check your approvals on 60+ other networks by using the dropdown menu. Learn more about revoking token approvals in our <0>Learn article</0>."
+  }
+}
