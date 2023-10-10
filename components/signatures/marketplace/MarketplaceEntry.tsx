@@ -37,7 +37,7 @@ const MarketplaceEntry = ({ marketplace }: Props) => {
   return (
     <div className="px-4 py-2 border-t first:border-none border-zinc-300 dark:border-zinc-500">
       <div className="w-full flex items-center justify-between">
-        <div className="flex items-center gap-2 text-base leading-tight">
+        <div className="flex items-center gap-2">
           <Logo src={marketplace.logo} alt={marketplace.name} size={24} border />
           <div>{marketplace.name}</div>
           <WithHoverTooltip tooltip={t('address:tooltips.marketplace_listings', { marketplace: marketplace.name })}>

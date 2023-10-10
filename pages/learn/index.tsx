@@ -48,7 +48,7 @@ const Section = ({ title, children }: ISidebarEntry) => (
 const Entry = ({ title, description, path }: ISidebarEntry) => (
   <Href href={path} router underline="none" className="h-full">
     <Card title={title} className="h-full">
-      {description}
+      <p>{description}</p>
     </Card>
   </Href>
 );
