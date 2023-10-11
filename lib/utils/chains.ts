@@ -39,6 +39,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.Shibarium,
   ChainId.SyscoinMainnet,
   ChainId.SyscoinTanenbaumTestnet,
+  ChainId.TaikoJolnirL2,
   ChainId.Wanchain,
   ChainId.XinFinXDCNetwork,
   ChainId.ZkSyncEraMainnet,
@@ -64,6 +65,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.HorizenGobiTestnet,
   ChainId.KardiaChainMainnet,
   ChainId.Kava,
+  ChainId.MantaPacificMainnet,
   ChainId.Mantle,
   ChainId.MantleTestnet,
   ChainId.MaxxChainMainnet,
@@ -82,7 +84,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.ShimmerEVMMainnet,
   ChainId.ShimmerEVMTestnet,
   ChainId['SongbirdCanary-Network'],
-  ChainId.TaikoGrimsvotnL2,
   ChainId.VelasEVMMainnet,
   ChainId.ZetaChainAthens3Testnet,
   ChainId.Zora,
@@ -153,6 +154,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.AuroraMainnet,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
+  ChainId.MantaPacificMainnet,
   ChainId.KardiaChainMainnet,
   ChainId.Wanchain,
   ChainId.XinFinXDCNetwork,
@@ -199,7 +201,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ZkSyncEraTestnet,
   ChainId.LineaTestnet,
   ChainId.ScrollSepoliaTestnet,
-  ChainId.TaikoGrimsvotnL2,
+  ChainId.TaikoJolnirL2,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
   ChainId.PulseChainTestnetv4,
@@ -280,8 +282,9 @@ export const getChainName = (chainId: number): string => {
     [ChainId.FuseMainnet]: 'Fuse',
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
+    [ChainId.Gnosis]: 'Gnosis Chain',
     [ChainId.GodwokenMainnet]: 'Godwoken',
-    [ChainId.Goerli]: 'Goerli',
+    [ChainId.Goerli]: 'Ethereum Goerli',
     [ChainId.HarmonyMainnetShard0]: 'Harmony',
     [ChainId.HarmonyTestnetShard0]: 'Harmony Testnet',
     [ChainId.HorizenEONMainnet]: 'Horizen EON',
@@ -298,6 +301,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.KlaytnTestnetBaobab]: 'Klaytn Baobab',
     [ChainId.Linea]: 'Linea',
     [ChainId.LineaTestnet]: 'Linea Goerli',
+    [ChainId.MantaPacificMainnet]: 'Manta Pacific',
     [ChainId.MaxxChainMainnet]: 'MaxxChain',
     [ChainId.MetisAndromedaMainnet]: 'Metis',
     [ChainId.MetisStardustTestnet]: 'Metis Stardust',
@@ -319,6 +323,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.RolluxMainnet]: 'Rollux',
     [ChainId.RootstockMainnet]: 'Rootstock',
     [ChainId.ScrollSepoliaTestnet]: 'Scroll Sepolia',
+    [ChainId.Sepolia]: 'Ethereum Sepolia',
     [ChainId.Shibarium]: 'Shibarium',
     [ChainId.ShimmerEVMMainnet]: 'Shimmer',
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
@@ -326,13 +331,14 @@ export const getChainName = (chainId: number): string => {
     [ChainId['SongbirdCanary-Network']]: 'Songbird',
     [ChainId.SyscoinMainnet]: 'Syscoin',
     [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tanenbaum',
-    [ChainId.TaikoGrimsvotnL2]: 'Taiko Grimsvotn',
+    [ChainId.TaikoJolnirL2]: 'Taiko Jolnir',
     [ChainId.TelosEVMMainnet]: 'Telos',
     [ChainId.TelosEVMTestnet]: 'Telos Testnet',
     [ChainId.VelasEVMMainnet]: 'Velas',
     [ChainId['WEMIX3.0Mainnet']]: 'WEMIX',
     [ChainId.XinFinXDCNetwork]: 'XDC',
     [ChainId.ZetaChainAthens3Testnet]: 'ZetaChain Athens',
+    [ChainId.ZetaChainMainnet]: 'ZetaChain',
     [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
     [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
   };
@@ -347,7 +353,7 @@ export const getChainName = (chainId: number): string => {
 
 export const getChainSlug = (chainId: number): string => {
   const chainName = getChainName(chainId);
-  return chainName.toLowerCase().replace(/\s/g, '-');
+  return chainName.toLowerCase().replace(' (unsupported)', '').replace(/\s/g, '-');
 };
 
 const REVERSE_CHAIN_SLUGS: Record<string, number> = Object.fromEntries(
@@ -521,6 +527,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.KlaytnTestnetBaobab]: '/assets/images/vendor/chains/klaytn.svg',
     [ChainId.Linea]: '/assets/images/vendor/chains/linea.png',
     [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.png',
+    [ChainId.MantaPacificMainnet]: '/assets/images/vendor/chains/manta-pacific.svg',
     [ChainId.Mantle]: '/assets/images/vendor/chains/mantle.svg',
     [ChainId.MantleTestnet]: '/assets/images/vendor/chains/mantle.svg',
     [ChainId.MaxxChainMainnet]: '/assets/images/vendor/chains/maxxchain.png',
@@ -559,7 +566,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId['SongbirdCanary-Network']]: '/assets/images/vendor/chains/songbird.svg',
     [ChainId.SyscoinMainnet]: '/assets/images/vendor/chains/syscoin.svg',
     [ChainId.SyscoinTanenbaumTestnet]: '/assets/images/vendor/chains/syscoin.svg',
-    [ChainId.TaikoGrimsvotnL2]: '/assets/images/vendor/chains/taiko.svg',
+    [ChainId.TaikoJolnirL2]: '/assets/images/vendor/chains/taiko.svg',
     [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.png',
     [ChainId.VelasEVMMainnet]: '/assets/images/vendor/chains/velas.svg',
     [ChainId.Wanchain]: '/assets/images/vendor/chains/wanchain.svg',
@@ -691,6 +698,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.KavaTestnet]: 'https://explorer.testnet.kava.io/api',
     [ChainId.Linea]: 'https://lineascan.build/api',
     [ChainId.LineaTestnet]: 'https://goerli.lineascan.build/api',
+    [ChainId.MantaPacificMainnet]: 'https://manta-pacific.calderaexplorer.xyz/api',
     [ChainId.Mantle]: 'https://explorer.mantle.xyz/api',
     [ChainId.MantleTestnet]: 'https://explorer.testnet.mantle.xyz/api',
     [ChainId.MaxxChainMainnet]: 'https://explorer.maxxchain.org/api',
@@ -715,7 +723,6 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.ShimmerEVMMainnet]: 'https://explorer.evm.shimmer.network/api',
     [ChainId.ShimmerEVMTestnet]: 'https://explorer.evm.testnet.shimmer.network/api',
     [ChainId['SongbirdCanary-Network']]: 'https://songbird-explorer.flare.network/api',
-    [ChainId.TaikoGrimsvotnL2]: 'https://explorer.test.taiko.xyz/api',
     [ChainId.VelasEVMMainnet]: 'https://evmexplorer.velas.com/api',
     [ChainId['WEMIX3.0Mainnet']]: 'https://api.wemixscan.com/api',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-3.blockscout.com/api',
@@ -1280,6 +1287,24 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   }),
   // TODO: Add SyncSwap strategy to support Linea
   [ChainId.Linea]: undefined,
+  // [ChainId.MantaPacificMainnet]: new AggregatePriceStrategy({
+  //   aggregationType: AggregationType.ANY,
+  //   strategies: [
+  //     // TODO: Check back later to see if this is still the best strategy
+  //     // ApertureSwap (Factory) | (0.05%) WETH -> (0.05%) USDC
+  //     new UniswapV3ReadonlyPriceStrategy({
+  //       address: '0x5bd1F6735B80e58aAC88B8A94836854d3068a13a',
+  //       path: [
+  //         toHex(500, { size: 3 }),
+  //         '0x0Dc808adcE2099A9F62AA87D9670745AbA741746',
+  //         toHex(500, { size: 3 }),
+  //         '0xb73603C5d87fA094B7314C74ACE2e64D165016fb',
+  //       ],
+  //       decimals: 6,
+  //       liquidityParameters: { minLiquidity: 10n ** 15n }, // TODO: This is a stopgap to make prices work, fix later
+  //     })
+  //   ]
+  // }),
   [ChainId.Mantle]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
