@@ -22,17 +22,25 @@ export class EtherscanEventGetter implements EventGetter {
     this.queues = Object.fromEntries(queueEntries);
   }
 
-  async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
+  async getEvents(chainId: number, filter: Filter, page: number = 1): Promise<Log[]> {
     const apiUrl = getChainApiUrl(chainId);
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const query = prepareEtherscanGetLogsQuery(filter, apiKey);
+    const query = prepareEtherscanGetLogsQuery(filter, page, apiKey);
 
     const { data } = await retryOn429(() => queue.add(() => axios.get(apiUrl, { params: query })));
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
     if (data.result?.length === 1000) {
+      console.log(data);
+
+      // If we cannot split this block range further, we use Etherscan's pagination in the hope that it does not exceed
+      // 10 pages of results
+      if (filter.fromBlock === filter.toBlock) {
+        return [...data.result.map(formatEtherscanEvent), ...(await this.getEvents(chainId, filter, page + 1))];
+      }
+
       throw new Error('Log response size exceeded');
     }
 
@@ -60,7 +68,7 @@ export class EtherscanEventGetter implements EventGetter {
   }
 }
 
-const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
+const prepareEtherscanGetLogsQuery = (filter: Filter, page: number, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
     typeof topic === 'string' ? topic.toLowerCase() : topic,
   );
@@ -83,6 +91,7 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
     topic2_3_opr: topic2 && topic3 ? 'and' : undefined,
     offset: 1000,
     apiKey,
+    page,
   };
 
   return query;
