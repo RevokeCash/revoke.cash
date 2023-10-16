@@ -1,10 +1,33 @@
 import axios from 'axios';
 import { PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
-import type { Filter, Log } from './interfaces';
+import type { Filter, Log, LogsProvider } from './interfaces';
 import { createViemPublicClientForChain, getChainLogsRpcUrl, isBackendSupportedChain } from './utils/chains';
+import { isLogResponseSizeError, parseErrorMessage } from './utils/errors';
 
-export class BackendLogsProvider {
+export class DivideAndConquerLogsProvider implements LogsProvider {
+  constructor(private underlyingProvider: LogsProvider) {}
+
+  async getLogs(filter: Filter): Promise<Log[]> {
+    try {
+      const result = await this.underlyingProvider.getLogs(filter);
+      return result;
+    } catch (error) {
+      if (!isLogResponseSizeError(parseErrorMessage(error))) throw error;
+
+      // If the block range is already a single block, we re-throw the error since we can't split it further
+      if (filter.fromBlock === filter.toBlock) throw error;
+
+      const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
+      const leftPromise = this.getLogs({ ...filter, toBlock: middle });
+      const rightPromise = this.getLogs({ ...filter, fromBlock: middle + 1 });
+      const [left, right] = await Promise.all([leftPromise, rightPromise]);
+      return [...left, ...right];
+    }
+  }
+}
+
+export class BackendLogsProvider implements LogsProvider {
   queue: RequestQueue;
 
   constructor(public chainId: number) {
@@ -22,7 +45,7 @@ export class BackendLogsProvider {
   }
 }
 
-export class ViemLogsProvider {
+export class ViemLogsProvider implements LogsProvider {
   private client: PublicClient;
 
   constructor(
@@ -54,7 +77,11 @@ export class ViemLogsProvider {
   }
 }
 
-export const getLogsProvider = (chainId: number, url?: string): BackendLogsProvider | ViemLogsProvider => {
+const getUnderlyingLogsProvider = (chainId: number, url?: string): BackendLogsProvider | ViemLogsProvider => {
   if (isBackendSupportedChain(chainId)) return new BackendLogsProvider(chainId);
   return new ViemLogsProvider(chainId, url);
+};
+
+export const getLogsProvider = (chainId: number, url?: string): DivideAndConquerLogsProvider => {
+  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId, url));
 };

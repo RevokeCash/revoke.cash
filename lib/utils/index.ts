@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { AllowanceData, Filter, Log, LogsProvider } from 'lib/interfaces';
+import type { AllowanceData, Log } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import {
@@ -22,29 +22,10 @@ import {
 import { UnionOmit } from 'viem/types/utils';
 import { Chain } from 'wagmi';
 import { track } from './analytics';
-import { isLogResponseSizeError, parseErrorMessage } from './errors';
 import { bigintMin, fixedPointMultiply } from './math';
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
-};
-
-export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promise<Log[]> => {
-  try {
-    const result = await logsProvider.getLogs(filter);
-    return result;
-  } catch (error) {
-    if (!isLogResponseSizeError(parseErrorMessage(error))) throw error;
-
-    // If the block range is already a single block, we re-throw the error since we can't split it further
-    if (filter.fromBlock === filter.toBlock) throw error;
-
-    const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-    const leftPromise = getLogs(logsProvider, { ...filter, toBlock: middle });
-    const rightPromise = getLogs(logsProvider, { ...filter, fromBlock: middle + 1 });
-    const [left, right] = await Promise.all([leftPromise, rightPromise]);
-    return [...left, ...right];
-  }
 };
 
 export const calculateValueAtRisk = (allowance: AllowanceData): number => {
