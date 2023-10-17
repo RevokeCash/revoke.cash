@@ -1,0 +1,103 @@
+{
+  "buttons": {
+    "back_to_exploits": "エクスプロイトの項目に戻る",
+    "cancel": "キャンセル",
+    "cancel_signatures": "署名を取り消す",
+    "cancelling": "キャンセル中",
+    "check": "確認",
+    "check_connected_address": "接続したアドレスの確認",
+    "clear_filters": "フィルターをクリア",
+    "connect": "ウォレットを接続する",
+    "connecting": "接続中",
+    "disconnect": "接続解除",
+    "disconnecting": "接続解除中",
+    "donate": "寄付する",
+    "donating": "寄付をしています",
+    "download": "ダウンロードする",
+    "get_started": "開始する",
+    "my_allowances": "私の許可一覧",
+    "report_exploit": "エクスプロイトを報告する",
+    "revoke": "取り消す",
+    "revoking": "取り消中",
+    "send": "送信する",
+    "sending": "送信中",
+    "switch_chain": "ネットワークを切り替える",
+    "switching": "切り替え中",
+    "translate": "このページの翻訳にご協力ください",
+    "understand": "理解しました",
+    "update": "更新",
+    "updating": "更新中"
+  },
+  "chain_select": {
+    "mainnets": "メインネット",
+    "testnets": "テストネット"
+  },
+  "color_themes": {
+    "dark": "ダーク",
+    "light": "ライト",
+    "system": "システム"
+  },
+  "connect_wallet": {
+    "title": "ウォレットを接続する"
+  },
+  "donate": {
+    "gitcoin_grants": "または、<0>Gitcoin Grant</0> に寄付をお願いします。",
+    "title": "Revoke.cashに寄付をする"
+  },
+  "errors": {
+    "404": {
+      "go_home": "もしくは、ホーム画面に戻る",
+      "subtitle": "お探しのページは見つかりませんでした。",
+      "suggested_pages": {
+        "extension": {
+          "description": "Revoke.cashブラウザ拡張機能をダウンロードします。",
+          "title": "ブラウザ拡張機能"
+        },
+        "faq": {
+          "description": "すべての質問にお答えします。",
+          "title": "よくある質問"
+        },
+        "title": "この中からお探しですか？",
+        "your_allowances": {
+          "description": "自分の許可を確認する。",
+          "title": "あなたの許可一覧"
+        }
+      },
+      "title": "このページは存在しません。"
+    },
+    "messages": {
+      "chain_could_not_connect": "{{chainName}}に接続できませんでした"
+    }
+  },
+  "footer": {
+    "privacy": "プライバシー",
+    "sponsors": "スポンサー：",
+    "terms": "利用規約"
+  },
+  "meta": {
+    "description": "Ethereumとその他60以上のネットワークで、過去に付与した承認や許可をリボークすることにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
+    "title": "60を超えるネットワークで、あなたの承認をリボークしましょう。"
+  },
+  "misc": {
+    "powered_by": "<0>{{name}}</0>によって提供されます"
+  },
+  "nav": {
+    "about": "私たちについて",
+    "exploits": "エクスプロイト",
+    "extension": "ブラウザ拡張機能",
+    "faq": "よくある質問",
+    "learn": "学ぶ",
+    "more": "その他",
+    "search": "アドレスまたはドメインでアカウントを検索する"
+  },
+  "toasts": {
+    "clipboard_failed": "❌ クリップボードにコピーできませんでした。",
+    "clipboard_success": "✅ クリップボードにコピーされました",
+    "donation_sent": "💪 寄付いただき、ありがとうございます！",
+    "revoke_failed": "❌ 許可のリボークに失敗しました: {{message}}",
+    "revoke_failed_revert": "❌ 許可のリボークに失敗しました: {{message}}。この問題を解決するには、トークンチームに問い合わせください。",
+    "transaction_failed": "❌ トランザクションが失敗しました:{{message}}",
+    "transaction_submitted": "✅ トランザクションを送信しました！",
+    "update_failed": "❌ このトークンは許可の更新についてサポートしていません、リボークしてください。"
+  }
+}

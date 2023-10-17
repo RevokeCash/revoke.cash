@@ -1,9 +1,7 @@
-import { DocumentDuplicateIcon } from '@heroicons/react/24/outline';
-import Button from 'components/common/Button';
+import CopyButton from 'components/common/CopyButton';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { shortenAddress, writeToClipBoard } from 'lib/utils';
-import { classNames } from 'lib/utils/styles';
-import useTranslation from 'next-translate/useTranslation';
+import { shortenAddress } from 'lib/utils/formatting';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   address: string;
@@ -14,24 +12,18 @@ interface Props {
 }
 
 const AddressDisplay = ({ address, domainName, className, withCopyButton, withTooltip }: Props) => {
-  const { t } = useTranslation();
-
-  const classes = classNames('flex gap-1 items-center leading-none', className);
+  const classes = twMerge('flex gap-1 items-center', className, 'leading-none');
 
   return (
     <div className={classes}>
       {withTooltip ? (
         <WithHoverTooltip tooltip={address}>
-          <span>{domainName ?? shortenAddress(address)}</span>
+          <span>{domainName ?? shortenAddress(address, 6)}</span>
         </WithHoverTooltip>
       ) : (
-        domainName ?? shortenAddress(address)
+        domainName ?? shortenAddress(address, 6)
       )}
-      {withCopyButton && (
-        <Button style="none" size="none" onClick={() => writeToClipBoard(address, t)}>
-          <DocumentDuplicateIcon className="w-4 h-4" />
-        </Button>
-      )}
+      {withCopyButton && <CopyButton content={address} />}
     </div>
   );
 };

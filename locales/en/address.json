@@ -1,13 +1,16 @@
 {
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
-    "none": "No allowances",
+    "none": "No approvals",
+    "none_found": "No approvals found",
+    "none_found_filtered": "No approvals found for the selected filters",
     "token_id": "Token #{{tokenId}}",
+    "unknown": "Unknown",
     "unlimited": "Unlimited"
   },
   "filters": {
     "allowances": {
-      "label": "Allowances",
+      "label": "Approved Amount",
       "options": {
         "limited": "Limited",
         "none": "None",
@@ -33,11 +36,12 @@
   },
   "headers": {
     "actions": "Actions",
-    "allowance": "Allowance",
+    "allowance": "Approved Amount",
     "asset": "Asset",
     "asset_type": "Type",
     "last_updated": "Last Updated",
-    "spender": "Authorized Spender"
+    "spender": "Authorized Spender",
+    "value_at_risk": "Value at Risk"
   },
   "labels": {
     "connected": "Connected",
@@ -46,15 +50,42 @@
     "token": "Token"
   },
   "meta": {
-    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
-    "title": "Revoke.cash - Inspect and revoke allowances for {{address}}"
+    "title": "Address {{addressDisplay}}'s Approvals",
+    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
   },
-  "no_allowances": "No allowances found",
+  "navigation": {
+    "allowances": "Approvals",
+    "history": "History",
+    "more": "More",
+    "settings": "Settings",
+    "signatures": "Signatures"
+  },
+  "permit2": {
+    "expiration": "Expires {{inTime}}"
+  },
+  "search": {
+    "spender": "Search by Authorized Spender Address"
+  },
+  "signatures": {
+    "info": {
+      "description": "Because signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you actually signed any signatures. So this page contains a list of <0>potential</0> signatures. <1>You only need to cancel these signatures if you are sure that you signed one on a phishing website</1>. Because of this, the potential signature will remain in the list, even after cancelling it."
+    },
+    "marketplaces": {
+      "none_found": "No marketplaces found for this network.",
+      "title": "Marketplace Signatures"
+    },
+    "permit": {
+      "none_found": "No tokens with Permit support found.",
+      "title": "Permit Signatures"
+    }
+  },
   "sorting": {
     "columns": {
-      "allowance": "Allowance",
+      "allowance": "Approved Amount",
       "asset_name": "Asset Name",
-      "last_updated": "Last Updated"
+      "authorized_spender": "Authorized Spender",
+      "last_updated": "Last Updated",
+      "value_at_risk": "Value at Risk"
     },
     "fns": {
       "date": {
@@ -73,8 +104,24 @@
     "label": "Sort"
   },
   "tooltips": {
-    "connect_wallet": "Please connect your wallet in order to revoke",
-    "connected_account": "You can only revoke allowances of the connected account",
-    "switch_chain": "Please switch your connected chain to <0>{{chainName}}</0> inside your wallet in order to revoke"
+    "acknowledge_signature_notice": "Please acknowledge the notice before checking your signatures.",
+    "connect_wallet": "Please connect your wallet to continue",
+    "connected_account": "You can only perform actions for the connected account",
+    "involved_in_exploits": "This address is involved in the following exploits:",
+    "marketplace_listings": "This will cancel all current listings and offers on {{marketplace}}.",
+    "marketplace_signatures": "Once approved, marketplaces are able to move assets on your behalf. Bad actors exploit these approvals to create zero-priced listings on third party websites. Cancel these if you signed a marketplace signature on a phishing website.",
+    "permit2_expiration": "This is a Permit2 approval that will expire {{inTime}}",
+    "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
+    "switch_chain": "Please switch your connected network to <0>{{chainName}}</0> inside your wallet to continue"
+  },
+  "wallet_health": {
+    "categories": {
+      "high": "Good",
+      "low": "Bad",
+      "medium": "Moderate"
+    },
+    "description": "Wallet Health",
+    "total_allowances": "Total Approvals",
+    "total_value_at_risk": "Total Value at Risk"
   }
 }

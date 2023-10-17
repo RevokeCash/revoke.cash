@@ -10,7 +10,7 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 
-const Extension: NextPage = () => {
+const ExtensionPage: NextPage = () => {
   const { t } = useTranslation();
 
   return (
@@ -51,6 +51,8 @@ const Extension: NextPage = () => {
               alt="Extension: Unexpected Allowance"
               height="500"
               width="800"
+              priority
+              fetchPriority="high"
             />
           </div>
 
@@ -81,12 +83,16 @@ const Extension: NextPage = () => {
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <DownloadButton href={CHROME_EXTENSION_URL}>
-              <Logo src="/assets/images/vendor/chrome.png" alt="Chrome Logo" />
-              <Logo src="/assets/images/vendor/brave.png" alt="Brave Logo" />
-              <Logo src="/assets/images/vendor/edge.png" alt="Edge Logo" />
+              <Logo src="/assets/images/vendor/chrome.svg" alt="Chrome Logo" className="rounded-none bg-transparent" />
+              <Logo src="/assets/images/vendor/brave.svg" alt="Brave Logo" className="rounded-none bg-transparent" />
+              <Logo src="/assets/images/vendor/edge.svg" alt="Edge Logo" className="rounded-none bg-transparent" />
             </DownloadButton>
             <DownloadButton href={FIREFOX_EXTENSION_URL}>
-              <Logo src="/assets/images/vendor/firefox.png" alt="Firefox Logo" />
+              <Logo
+                src="/assets/images/vendor/firefox.svg"
+                alt="Firefox Logo"
+                className="rounded-none bg-transparent"
+              />
             </DownloadButton>
           </div>
         </div>
@@ -95,4 +101,4 @@ const Extension: NextPage = () => {
   );
 };
 
-export default Extension;
+export default ExtensionPage;

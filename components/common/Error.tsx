@@ -1,5 +1,6 @@
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { getChainName } from 'lib/utils/chains';
+import { isNetworkError, parseErrorMessage } from 'lib/utils/errors';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect } from 'react';
 
@@ -17,8 +18,8 @@ const Error = ({ error }: Props) => {
 
   const chainName = getChainName(selectedChainId);
   const chainConnectionMessage = t('common:errors.messages.chain_could_not_connect', { chainName });
-  const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-  const message = error.message.includes('missing response') ? chainConnectionMessage : errorMessage;
+  const errorMessage = parseErrorMessage(error);
+  const message = isNetworkError(errorMessage) ? chainConnectionMessage : errorMessage;
   return <div>Error: {message}</div>;
 };
 

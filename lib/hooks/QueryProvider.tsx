@@ -1,6 +1,7 @@
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
+import { DAY } from 'lib/utils/time';
 import { ReactNode } from 'react';
 
 // Note: the query persister stuff is based on wagmi (https://github.com/wagmi-dev/wagmi/blob/main/packages/react/src/client.ts)
@@ -8,7 +9,8 @@ import { ReactNode } from 'react';
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      cacheTime: 1_000 * 60 * 60 * 24, // 24 hours
+      // Persisted queries will be refetched every 24 hours
+      cacheTime: 1 * DAY,
       networkMode: 'offlineFirst',
       refetchOnWindowFocus: false,
       retry: 0,

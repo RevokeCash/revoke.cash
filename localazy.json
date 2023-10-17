@@ -1,26 +1,23 @@
 {
   "upload": {
-    "type": "json",
     "files": [
       {
         "pattern": "locales/en/*.json",
-        "lang": "inherited"
-      },
-      {
-        "group": "existing",
-        "pattern": "locales/es/*.json",
-        "lang": "es"
-      },
-      {
-        "group": "existing",
-        "pattern": "locales/zh/*.json",
-        "lang": "zh-Hans"
+        "lang": "inherited",
+        "type": "json",
+        "file": "${file}"
       }
     ]
   },
-
   "download": {
-    "files": "locales/${lang}/${file}",
+    "files": [
+      {
+        "conditions": "!empty: ${path}",
+        "stop": true,
+        "output": "content/${lang}/${path}/${file}"
+      },
+      "locales/${lang}/${file}"
+    ],
     "includeSourceLang": true,
     "langAliases": {
       "zh-Hans": "zh"

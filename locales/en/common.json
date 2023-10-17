@@ -1,6 +1,12 @@
 {
   "buttons": {
+    "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
+    "cancel_signatures": "Cancel Signatures",
+    "cancelling": "Cancelling",
+    "check": "Check",
+    "check_connected_address": "Check Connected Address",
+    "clear_filters": "Clear Filters",
     "connect": "Connect Wallet",
     "connecting": "Connecting",
     "disconnect": "Disconnect",
@@ -9,13 +15,16 @@
     "donating": "Donating",
     "download": "Download",
     "get_started": "Get Started",
-    "my_allowances": "My Allowances",
+    "my_allowances": "My Approvals",
+    "report_exploit": "Report Exploit",
     "revoke": "Revoke",
     "revoking": "Revoking",
     "send": "Send",
     "sending": "Sending",
-    "switch_chain": "Switch chain",
+    "switch_chain": "Switch Network",
     "switching": "Switching",
+    "translate": "Help Us Translate This Page",
+    "understand": "I Understand",
     "update": "Update",
     "updating": "Updating"
   },
@@ -50,14 +59,14 @@
         },
         "title": "Are you looking for one of these?",
         "your_allowances": {
-          "description": "Inspect your own allowances.",
-          "title": "Your Allowances"
+          "description": "Inspect your own approvals.",
+          "title": "Your Approvals"
         }
       },
       "title": "This page does not exist."
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to the {{chainName}} chain"
+      "chain_could_not_connect": "Could not connect to {{chainName}}"
     }
   },
   "footer": {
@@ -66,21 +75,29 @@
     "terms": "Terms"
   },
   "meta": {
-    "description": "Take back control of your wallet by revoking allowances you granted in the past.",
-    "title": "Revoke.cash - Revoke your Ethereum token allowances"
+    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 60 other networks.",
+    "title": "Revoke Your Token Approvals on Over 60 Networks"
+  },
+  "misc": {
+    "powered_by": "Powered by <0>{{name}}</0>"
   },
   "nav": {
+    "about": "About Us",
+    "exploits": "Exploits",
     "extension": "Extension",
     "faq": "FAQ",
-    "search": "Search accounts by address or domain"
+    "learn": "Learn",
+    "more": "More",
+    "search": "Search Accounts by Address or Domain"
   },
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",
     "donation_sent": "💪 Thanks for the donation!",
-    "revoke_failed": "❌ Revoking allowance failed: {{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: This token does not allow you to revoke this allowance, please reach out to the team behind this token to resolve this issue",
+    "revoke_failed": "❌ Revoking failed: {{message}}",
+    "revoke_failed_revert": "❌ Revoking failed: {{message}}. Please reach out to this token's team to resolve this issue.",
+    "transaction_failed": "❌ Transaction failed: {{message}}",
     "transaction_submitted": "✅ Transaction submitted!",
-    "update_failed": "❌ This token does not support updating allowances, please revoke instead"
+    "update_failed": "❌ This token does not support updating approvals, please revoke instead."
   }
 }

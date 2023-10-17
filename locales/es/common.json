@@ -1,6 +1,12 @@
 {
   "buttons": {
+    "back_to_exploits": "Volver a Hacks",
     "cancel": "Cancelar",
+    "cancel_signatures": "Cancelar Firmas",
+    "cancelling": "Cancelando",
+    "check": "Comprobar",
+    "check_connected_address": "Comprobar Dirección Conectada",
+    "clear_filters": "Quitar Filtros",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "disconnect": "Desconectar",
@@ -10,18 +16,21 @@
     "download": "Descargar",
     "get_started": "Empezar",
     "my_allowances": "Mis Autorizaciones",
+    "report_exploit": "Informar de un Hack",
     "revoke": "Revocar",
     "revoking": "Revocando",
     "send": "Enviar",
     "sending": "Enviando",
-    "switch_chain": "Cambiar de red",
+    "switch_chain": "Cambiar de Red",
     "switching": "Cambiando",
+    "translate": "Ayúdanos a traducir esta página",
+    "understand": "Entiendo",
     "update": "Actualizar",
     "updating": "Actualizando"
   },
   "chain_select": {
-    "mainnets": "Redes principales",
-    "testnets": "Redes de prueba"
+    "mainnets": "Redes Principales",
+    "testnets": "Redes de Prueba"
   },
   "color_themes": {
     "dark": "Oscuro",
@@ -29,7 +38,7 @@
     "system": "Sistema"
   },
   "connect_wallet": {
-    "title": "Conecta tu billetera"
+    "title": "Conecta Tu Cartera"
   },
   "donate": {
     "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
@@ -57,7 +66,7 @@
       "title": "Esta página no existe."
     },
     "messages": {
-      "chain_could_not_connect": "No se pudo conectar a la red de {{chainName}}"
+      "chain_could_not_connect": "No se ha podido conectar a {{chainName}}"
     }
   },
   "footer": {
@@ -66,21 +75,29 @@
     "terms": "Términos"
   },
   "meta": {
-    "description": "Protege tus saldos de tokens en Ethereum revocando las autorizaciones que diste en el pasado",
-    "title": "Revoke.cash - Revoca las autorizaciones de tus tokens en Ethereum"
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en Ethereum y 60 redes más.",
+    "title": "Revoca las autorizaciones de tus tokens en más de 60 redes"
+  },
+  "misc": {
+    "powered_by": "Desarrollado por <0>{{name}}</0>"
   },
   "nav": {
+    "about": "Sobre nosotros",
+    "exploits": "Hacks",
     "extension": "Extensión",
     "faq": "FAQ",
-    "search": "Buscar cuentas por dirección o dominio"
+    "learn": "Aprender",
+    "more": "Más",
+    "search": "Buscar Cuentas por Dirección o Dominio"
   },
   "toasts": {
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
     "revoke_failed": "❌ No se pudo revocar la autorización: {{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: This token does not allow you to revoke this allowance, please reach out to the team behind this token to resolve this issue",
+    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Ponte en contacto con el equipo de este token para resolver este problema.",
+    "transaction_failed": "❌ Transacción fallida: {{message}}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
-    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revóquelo porfavor"
+    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revocala por favor."
   }
 }

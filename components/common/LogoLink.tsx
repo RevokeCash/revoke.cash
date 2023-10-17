@@ -6,11 +6,12 @@ interface Props {
   alt: string;
   href: string;
   size?: number;
+  className?: string;
 }
 
-const LogoLink = ({ src, alt, href, size }: Props) => (
-  <Href className="flex" href={href} external>
-    <Logo src={src} alt={alt} size={size} />
+const LogoLink = ({ src, alt, href, size, className }: Props) => (
+  <Href className="flex shrink-0" href={href} external>
+    <Logo src={src} alt={alt} size={size} className={className} />
   </Href>
 );
 

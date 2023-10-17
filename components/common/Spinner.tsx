@@ -1,14 +1,14 @@
-import { classNames } from 'lib/utils/styles';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   className?: string;
 }
 
 const Spinner = ({ className }: Props) => {
-  const classes = classNames(
+  const classes = twMerge(
     className ?? 'w-4 h-4',
     'animate-spin-fast mx-1', // Compensate for formatting with other HeroIcons
-    'loader'
+    'loader',
   );
 
   return (

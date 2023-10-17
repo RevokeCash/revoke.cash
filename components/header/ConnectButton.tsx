@@ -2,7 +2,8 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
-import { getWalletIcon } from 'lib/utils/wallet';
+import { deduplicateArray } from 'lib/utils';
+import { getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -13,9 +14,10 @@ interface Props {
   size: 'sm' | 'md' | 'lg' | 'none';
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
+  redirect?: boolean;
 }
 
-const ConnectButton = ({ size, style, className, text }: Props) => {
+const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const router = useRouter();
@@ -38,7 +40,7 @@ const ConnectButton = ({ size, style, className, text }: Props) => {
     handleClose();
     try {
       const { account } = await connectAsync({ connector });
-      if (account) {
+      if (account && redirect) {
         router.push(`/address/${account}`);
       }
     } catch {
@@ -55,23 +57,30 @@ const ConnectButton = ({ size, style, className, text }: Props) => {
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
           <div className="text-center sm:text-left w-full flex flex-col gap-2">
-            <Dialog.Title as="h3" className="text-center">
+            <Dialog.Title as="h2" className="text-center">
               {t('common:connect_wallet.title')}
             </Dialog.Title>
 
-            <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center pb-2">
-              {connectors
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">
+              {deduplicateArray(connectors, (a, b) => getConnectorName(a) === getConnectorName(b))
                 .filter((connector) => connector.ready)
                 .map((connector) => (
                   <Button
                     style="secondary"
                     size="none"
-                    className="flex flex-col justify-center items-center gap-2 p-2 border border-black rounded-lg w-full sm:w-48"
-                    key={connector.id}
+                    className="flex justify-start items-center gap-2 p-2 border border-black rounded-lg w-full text-lg"
+                    key={`${connector.id} / ${connector.name}`}
                     onClick={() => connectAndRedirect(connector)}
                   >
-                    <Logo src={getWalletIcon(connector.name)} alt={connector.name} size={64} square />
-                    {connector.name}
+                    <Logo
+                      src={getWalletIcon(getConnectorName(connector))}
+                      alt={getConnectorName(connector)}
+                      size={48}
+                      square
+                      border
+                      className="rounded-md"
+                    />
+                    {getConnectorName(connector)}
                   </Button>
                 ))}
             </div>

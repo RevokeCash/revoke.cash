@@ -1,22 +1,21 @@
-import { track } from '@amplitude/analytics-browser';
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
-import Href from 'components/common/Href';
 import Modal from 'components/common/Modal';
-import { utils } from 'ethers';
-import { DONATION_ADDRESS, GITCOIN_URL } from 'lib/constants';
+import { DONATION_ADDRESS } from 'lib/constants';
+import { getWalletAddress } from 'lib/utils';
+import { track } from 'lib/utils/analytics';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
-import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
-import { useNetwork, useSigner } from 'wagmi';
+import { parseEther } from 'viem';
+import { useNetwork, useWalletClient } from 'wagmi';
 import Input from './Input';
 
 interface Props {
-  size: 'sm' | 'md' | 'lg' | 'none';
+  size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
   parentToastRef?: MutableRefObject<ReactText>;
@@ -25,7 +24,7 @@ interface Props {
 const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   const { t } = useTranslation();
   const { chain } = useNetwork();
-  const { data: signer } = useSigner();
+  const { data: walletClient } = useWalletClient();
 
   const nativeToken = getChainNativeToken(chain?.id);
   const [amount, setAmount] = useState<string>(getDefaultDonationAmount(nativeToken));
@@ -49,15 +48,16 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   }, [nativeToken]);
 
   const sendDonation = async () => {
-    if (!signer || !chain?.id) {
+    if (!walletClient || !chain?.id) {
       alert('Please connect your web3 wallet to donate');
     }
 
     try {
-      await signer.sendTransaction({
+      await walletClient.sendTransaction({
+        account: await getWalletAddress(walletClient),
         to: DONATION_ADDRESS,
-        from: await signer.getAddress(),
-        value: utils.parseEther(amount),
+        value: parseEther(amount),
+        chain: chain,
       });
 
       toast.info(t('common:toasts.donation_sent'));
@@ -84,8 +84,10 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
 
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
-          <div className="text-center sm:text-left w-full flex flex-col gap-2">
-            <Dialog.Title as="h3">{t('common:donate.title')}</Dialog.Title>
+          <div className="w-full flex flex-col gap-2 pb-2">
+            <Dialog.Title as="h2" className="text-center">
+              {t('common:donate.title')}
+            </Dialog.Title>
 
             <div className="h-9 flex">
               <Input
@@ -95,6 +97,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
                 className="z-10 rounded-r-none text-zinc-600 dark:text-zinc-400 w-full"
+                aria-label="Input Donation Amount"
               />
               <div className="px-3 py-1.5 border-y border-black dark:border-white bg-zinc-300 dark:bg-zinc-700 flex justify-center items-center">
                 {nativeToken}
@@ -108,9 +111,6 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
               >
                 {loading ? t('common:buttons.sending') : t('common:buttons.send')}
               </Button>
-            </div>
-            <div className="flex justify-end gap-1">
-              <Trans i18nKey="common:donate.gitcoin_grants" components={[<Href href={GITCOIN_URL} external />]} />
             </div>
           </div>
         </div>

@@ -1,78 +1,61 @@
-import type { Contract, providers } from 'ethers';
-import { BigNumber, utils } from 'ethers';
-import { ERC721Metadata } from 'lib/abis';
+import axios from 'axios';
+import delay from 'delay';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
-import type { AllowanceData, BaseAllowanceData, BaseTokenData, Log, LogsProvider } from 'lib/interfaces';
+import blocksDB from 'lib/databases/blocks';
+import type {
+  AddressEvents,
+  AllowanceData,
+  BaseAllowanceData,
+  BaseTokenData,
+  Erc20TokenContract,
+  Erc721TokenContract,
+  Log,
+  TokenContract,
+} from 'lib/interfaces';
+import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 import {
+  addressToTopic,
   deduplicateLogsByTopics,
   filterLogsByAddress,
-  getLogs,
+  filterLogsByTopics,
   sortLogsChronologically,
-  toFloat,
   topicToAddress,
 } from '.';
-import { convertString, unpackResult } from './promises';
-import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract, isSpamToken } from './tokens';
+import { isNetworkError, parseErrorMessage } from './errors';
+import { formatFixedPointBigInt } from './formatting';
+import { getPermit2AllowancesFromApprovals } from './permit2';
+import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
 
-export const getAllowancesForAddress = async (
-  userAddress: string,
-  logsProvider: LogsProvider,
-  readProvider: providers.Provider,
+export const getAllowancesFromEvents = async (
+  owner: Address,
+  events: AddressEvents,
+  publicClient: PublicClient,
   chainId: number,
-  openSeaProxyAddress?: string
 ): Promise<AllowanceData[]> => {
-  const latestBlockNumber = await readProvider.getBlockNumber();
-
-  const buildGetEventsFunction = (name: string, addressTopicIndex: number) => {
-    const erc721Interface = new utils.Interface(ERC721Metadata);
-    const expectedTopic0 = erc721Interface.getEventTopic(name);
-
-    return async (userAddress: string, latestBlockNumber: number): Promise<Log[]> => {
-      if (!userAddress || !logsProvider || !latestBlockNumber) return undefined;
-
-      // Start with an array of undefined topic strings and add the event topic + address topic to the right spots
-      const filter = { topics: [undefined, undefined, undefined] };
-      filter.topics[0] = expectedTopic0;
-      filter.topics[addressTopicIndex] = utils.hexZeroPad(userAddress, 32);
-
-      const events = await getLogs(logsProvider, filter, 0, latestBlockNumber);
-      console.log(`${name} events`, events);
-      return events;
-    };
-  };
-
-  const [transferFromEvents, transferToEvents, approvalEvents, unpatchedApprovalForAllEvents] = await Promise.all([
-    buildGetEventsFunction('Transfer', 1)(userAddress, latestBlockNumber),
-    buildGetEventsFunction('Transfer', 2)(userAddress, latestBlockNumber),
-    buildGetEventsFunction('Approval', 1)(userAddress, latestBlockNumber),
-    buildGetEventsFunction('ApprovalForAll', 1)(userAddress, latestBlockNumber),
-  ]);
-
-  // Manually patch the ApprovalForAll events
-  const approvalForAllEvents = [
-    ...unpatchedApprovalForAllEvents,
-    ...generatePatchedAllowanceEvents(userAddress, openSeaProxyAddress, [
-      ...approvalEvents,
-      ...unpatchedApprovalForAllEvents,
-      ...transferFromEvents,
-      ...transferToEvents,
-    ]),
-  ];
-
-  const allEvents = [...transferToEvents, ...approvalEvents, ...approvalForAllEvents];
-  const contracts = createTokenContracts(allEvents, readProvider);
+  // We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
+  const allEvents = [...events.approvalForAll, ...events.approval, ...events.transferTo];
+  const contracts = createTokenContracts(allEvents, publicClient);
 
   // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
     contracts.map(async (contract) => {
-      const approvalsForAll = filterLogsByAddress(approvalForAllEvents, contract.address);
-      const approvals = filterLogsByAddress(approvalEvents, contract.address);
-      const transfersFrom = filterLogsByAddress(transferFromEvents, contract.address);
-      const transfersTo = filterLogsByAddress(transferToEvents, contract.address);
+      const approvalsForAll = filterLogsByAddress(events.approvalForAll, contract.address);
+      const approvals = filterLogsByAddress(events.approval, contract.address);
+      const transfersFrom = filterLogsByAddress(events.transferFrom, contract.address);
+      const transfersTo = filterLogsByAddress(events.transferTo, contract.address);
+      const permit2TopicFilter = [null, null, addressToTopic(contract.address)];
+      const permit2Approval = filterLogsByTopics(events.permit2Approval, permit2TopicFilter);
 
       try {
-        const tokenData = await getTokenData(contract, userAddress, transfersFrom, transfersTo, chainId);
-        const allowances = await getAllowancesForToken(contract, approvals, approvalsForAll, userAddress, tokenData);
+        const tokenData = await getTokenData(contract, owner, transfersFrom, transfersTo, chainId);
+        const allowances = await getAllowancesForToken(
+          contract,
+          approvals,
+          approvalsForAll,
+          permit2Approval,
+          owner,
+          tokenData,
+        );
 
         if (allowances.length === 0) {
           return [tokenData as AllowanceData];
@@ -81,35 +64,35 @@ export const getAllowancesForAddress = async (
         const fullAllowances = allowances.map((allowance) => ({ ...tokenData, ...allowance }));
         return fullAllowances;
       } catch (e) {
-        console.error(e);
+        if (isNetworkError(parseErrorMessage(e))) throw e;
         // If the call to getTokenData() fails, the token is not a standard-adhering token so
         // we do not include it in the token list.
         return [];
       }
-    })
+    }),
   );
 
-  // Filter out any spam tokens and zero-balance + zero-allowance tokens
+  // Filter out any zero-balance + zero-allowance tokens
   return allowances
     .flat()
-    .filter((allowance) => !isSpamToken(allowance))
-    .filter((allowance) => allowance.spender || !hasZeroBalance(allowance))
     .filter((allowance) => allowance.spender || allowance.balance !== 'ERC1155')
-    .sort((a, b) => a.symbol.localeCompare(b.symbol));
+    .filter((allowance) => allowance.spender || !hasZeroBalance(allowance.balance, allowance.metadata.decimals))
+    .sort((a, b) => a.metadata.symbol.localeCompare(b.metadata.symbol));
 };
 
 export const getAllowancesForToken = async (
-  contract: Contract,
+  contract: TokenContract,
   approvalEvents: Log[],
   approvalForAllEvents: Log[],
-  userAddress: string,
-  tokenData: BaseTokenData
+  permit2ApprovalEvents: Log[],
+  userAddress: Address,
+  tokenData: BaseTokenData,
 ): Promise<BaseAllowanceData[]> => {
   if (isErc721Contract(contract)) {
     const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(
       contract,
       userAddress,
-      approvalForAllEvents
+      approvalForAllEvents,
     );
     const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, approvalEvents);
 
@@ -117,65 +100,79 @@ export const getAllowancesForToken = async (
 
     return allowances;
   } else {
-    // Filter out zero-value allowances
-    const allowances = (await getErc20AllowancesFromApprovals(contract, userAddress, approvalEvents)).filter(
-      ({ amount }) => formatErc20Allowance(amount, tokenData?.decimals, tokenData?.totalSupply) !== '0'
-    );
+    const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, approvalEvents);
+    const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, permit2ApprovalEvents);
+    const allAllowances = [...regularAllowances, ...permit2Allowances];
 
-    return allowances;
+    // Filter out zero-value allowances
+    const filteredAllowance = allAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
+
+    return filteredAllowance;
   }
 };
 
-export const getErc20AllowancesFromApprovals = async (contract: Contract, ownerAddress: string, approvals: Log[]) => {
+export const getErc20AllowancesFromApprovals = async (
+  contract: Erc20TokenContract,
+  owner: Address,
+  approvals: Log[],
+) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, ownerAddress, approval))
+    deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval)),
   );
 
   return allowances;
 };
 
-const getErc20AllowanceFromApproval = async (multicallContract: Contract, ownerAddress: string, approval: Log) => {
+const getErc20AllowanceFromApproval = async (
+  contract: Erc20TokenContract,
+  owner: Address,
+  approval: Log,
+): Promise<BaseAllowanceData> => {
   const spender = topicToAddress(approval.topics[2]);
-  const lastApprovedAmount = BigNumber.from(approval.data);
+  const lastApprovedAmount = fromHex(approval.data, 'bigint');
 
   // If the most recent approval event was for 0, then we know for sure that the allowance is 0
   // If not, we need to check the current allowance because we cannot determine the allowance from the event
   // since it may have been partially used (through transferFrom)
-  if (lastApprovedAmount.isZero()) {
-    return { spender, amount: '0', lastUpdated: 0, transactionHash: approval.transactionHash };
+  if (lastApprovedAmount === 0n) {
+    return { spender, amount: 0n, lastUpdated: 0, transactionHash: approval.transactionHash };
   }
 
   const [amount, lastUpdated, transactionHash] = await Promise.all([
-    convertString(unpackResult(multicallContract.functions.allowance(ownerAddress, spender))),
-    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block?.timestamp),
+    contract.publicClient.readContract({
+      ...contract,
+      functionName: 'allowance',
+      args: [owner, spender],
+    }),
+    approval.timestamp ?? blocksDB.getBlockTimestamp(contract.publicClient, approval.blockNumber),
     approval.transactionHash,
   ]);
 
   return { spender, amount, lastUpdated, transactionHash };
 };
 
-export const getLimitedErc721AllowancesFromApprovals = async (contract: Contract, approvals: Log[]) => {
+export const getLimitedErc721AllowancesFromApprovals = async (contract: Erc721TokenContract, approvals: Log[]) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getLimitedErc721AllowanceFromApproval(contract, approval))
+    deduplicatedApprovals.map((approval) => getLimitedErc721AllowanceFromApproval(contract, approval)),
   );
 
   return allowances;
 };
 
-const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract, approval: Log) => {
+const getLimitedErc721AllowanceFromApproval = async (contract: Erc721TokenContract, approval: Log) => {
   // Wrap this in a try-catch since it's possible the NFT has been burned
   try {
     // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
     // by making tokenId a non-indexed parameter, in which case it needs to be
     // taken from the event data rather than topics
     const tokenIdEncoded = approval.topics.length === 4 ? approval.topics[3] : approval.data;
-    const tokenId = BigNumber.from(tokenIdEncoded).toString();
+    const tokenId = fromHex(tokenIdEncoded, 'bigint');
     const lastApproved = topicToAddress(approval.topics[2]);
 
     // If the most recent approval was a REVOKE, we know for sure that the allowance is revoked
@@ -187,9 +184,13 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
     }
 
     const [owner, spender, lastUpdated, transactionHash] = await Promise.all([
-      unpackResult(multicallContract.functions.ownerOf(tokenId)),
-      unpackResult(multicallContract.functions.getApproved(tokenId)),
-      approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block?.timestamp),
+      contract.publicClient.readContract({ ...contract, functionName: 'ownerOf', args: [tokenId] }),
+      contract.publicClient.readContract({
+        ...contract,
+        functionName: 'getApproved',
+        args: [tokenId],
+      }),
+      approval.timestamp ?? blocksDB.getBlockTimestamp(contract.publicClient, approval.blockNumber),
       approval.transactionHash,
     ]);
 
@@ -203,51 +204,48 @@ const getLimitedErc721AllowanceFromApproval = async (multicallContract: Contract
 };
 
 export const getUnlimitedErc721AllowancesFromApprovals = async (
-  contract: Contract,
-  ownerAddress: string,
-  approvals: Log[]
+  contract: Erc721TokenContract,
+  owner: string,
+  approvals: Log[],
 ) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
   const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, ownerAddress, approval))
+    deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, owner, approval)),
   );
 
   return allowances;
 };
 
 const getUnlimitedErc721AllowanceFromApproval = async (
-  multicallContract: Contract,
-  ownerAddress: string,
-  approval: Log
+  contract: Erc721TokenContract,
+  _owner: string,
+  approval: Log,
 ) => {
   const spender = topicToAddress(approval.topics[2]);
 
   // For ApprovalForAll events, we can determine the allowance (true/false) from *only* the event
   // so we do not have to check the chain for the current allowance
-  const isApprovedForAll = approval.data !== '0x' && !BigNumber.from(approval.data).isZero();
+  const isApprovedForAll = approval.data !== '0x' && fromHex(approval.data, 'bigint') !== 0n;
 
   // If the allwoance if already revoked, we dont need to make any more requests
   if (!isApprovedForAll) return undefined;
 
   const [lastUpdated, transactionHash] = await Promise.all([
-    approval.timestamp ?? multicallContract.provider.getBlock(approval.blockNumber).then((block) => block?.timestamp),
+    approval.timestamp ?? blocksDB.getBlockTimestamp(contract.publicClient, approval.blockNumber),
     approval.transactionHash,
   ]);
 
   return { spender, lastUpdated, transactionHash };
 };
 
-export const formatErc20Allowance = (allowance: string, decimals: number, totalSupply: string): string => {
-  const allowanceBN = BigNumber.from(allowance);
-  const totalSupplyBN = BigNumber.from(totalSupply);
-
-  if (allowanceBN.gt(totalSupplyBN)) {
+export const formatErc20Allowance = (allowance: bigint, decimals: number, totalSupply: bigint): string => {
+  if (allowance > totalSupply) {
     return 'Unlimited';
   }
 
-  return toFloat(allowanceBN, decimals);
+  return formatFixedPointBigInt(allowance, decimals);
 };
 
 export const getAllowanceI18nValues = (allowance: AllowanceData) => {
@@ -257,9 +255,9 @@ export const getAllowanceI18nValues = (allowance: AllowanceData) => {
   }
 
   if (allowance.amount) {
-    const amount = formatErc20Allowance(allowance.amount, allowance.decimals, allowance.totalSupply);
+    const amount = formatErc20Allowance(allowance.amount, allowance.metadata.decimals, allowance.metadata.totalSupply);
     const i18nKey = amount === 'Unlimited' ? 'address:allowances.unlimited' : 'address:allowances.amount';
-    const { symbol } = allowance;
+    const { symbol } = allowance.metadata;
     return { amount, i18nKey, symbol };
   }
 
@@ -271,9 +269,9 @@ export const getAllowanceI18nValues = (allowance: AllowanceData) => {
 // This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
 // which do not show up normally because of a bug in their contract
 export const generatePatchedAllowanceEvents = (
-  userAddress: string,
-  openseaProxyAddress?: string,
-  allEvents: Log[] = []
+  userAddress: Address,
+  openseaProxyAddress?: Address,
+  allEvents: Log[] = [],
 ): Log[] => {
   if (!userAddress || !openseaProxyAddress) return [];
 
@@ -289,9 +287,9 @@ export const generatePatchedAllowanceEvents = (
       logIndex: 0,
       address: MOONBIRDS_ADDRESS,
       topics: [
-        utils.id('ApprovalForAll(address,address,bool)'),
-        utils.hexZeroPad(userAddress, 32).toLowerCase(),
-        utils.hexZeroPad(openseaProxyAddress, 32).toLowerCase(),
+        getEventSelector('ApprovalForAll(address,address,bool)'),
+        addressToTopic(userAddress),
+        addressToTopic(openseaProxyAddress),
       ],
       data: '0x1',
       timestamp: 1649997510,
@@ -300,6 +298,38 @@ export const generatePatchedAllowanceEvents = (
 };
 
 export const stripAllowanceData = (allowance: AllowanceData): BaseTokenData => {
-  const { contract, symbol, balance, icon, decimals, totalSupply } = allowance;
-  return { contract, symbol, balance, icon, decimals, totalSupply };
+  const { contract, metadata, chainId, owner, balance } = allowance;
+  return { contract, metadata, chainId, owner, balance };
+};
+
+export const getAllowanceKey = (allowance: AllowanceData) => {
+  return `${allowance.contract.address}-${allowance.spender}-${allowance.tokenId}-${allowance.chainId}-${allowance.owner}`;
+};
+
+export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTokenData) => {
+  return (
+    formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
+  );
+};
+export const getNeftureRiskScore = async (address: Address) => {
+  try {
+    const { data } = await axios.post('https://api-scan-wallet.nefture.com/getScore', { address });
+    if (data.status === 'pending') {
+      await delay(5_000);
+      return getNeftureRiskScore(address);
+    }
+
+    if (data.status !== 'success') {
+      throw new Error('Nefture API error');
+    }
+
+    return data.score;
+  } catch (e) {
+    if (e?.response?.status === 500) {
+      await delay(5_000);
+      return getNeftureRiskScore(address);
+    }
+
+    throw e;
+  }
 };

@@ -1,35 +1,39 @@
-import type { Log as EthersLog, Provider } from '@ethersproject/abstract-provider';
-import type { Contract } from 'ethers';
+import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
+
+export type Balance = bigint | 'ERC1155';
 
 export interface BaseTokenData {
-  contract: Contract;
-  symbol: string;
-  balance: string;
-  icon?: string;
-  decimals?: number;
-  totalSupply?: string;
+  contract: Erc20TokenContract | Erc721TokenContract;
+  metadata: TokenMetadata;
+  chainId: number;
+  owner: Address;
+  balance: Balance;
 }
 
 export interface BaseAllowanceData {
-  spender: string;
+  spender: Address;
   lastUpdated: number;
-  transactionHash: string;
-  amount?: string;
-  tokenId?: string;
+  transactionHash: Hash;
+  amount?: bigint; // Only for ERC20 tokens
+  tokenId?: bigint; // Only for ERC721 tokens (single token)
+  expiration?: number; // Only for Permit2 allowances
 }
 
 export interface AllowanceData extends BaseTokenData {
-  spender?: string;
+  spender?: Address;
   lastUpdated?: number;
-  transactionHash?: string;
-  amount?: string;
-  tokenId?: string;
+  transactionHash?: Hash;
+  amount?: bigint; // Only for ERC20 tokens
+  tokenId?: bigint; // Only for ERC721 tokens (single token)
+  expiration?: number; // Only for Permit2 allowances
 }
 
 export interface TokenFromList {
   symbol: string;
   decimals?: number;
   logoURI?: string;
+  isSpam?: boolean;
 }
 
 export interface TokenMapping {
@@ -42,15 +46,20 @@ export interface ChainTokenMapping {
 
 export type TokenStandard = 'ERC20' | 'ERC721';
 
-export type LogsProvider = Pick<Provider, 'getLogs'>;
+export interface LogsProvider {
+  getLogs(filter: Filter): Promise<Array<Log>>;
+}
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T | undefined>>;
 
-export interface Log
-  extends Pick<
-    EthersLog,
-    'address' | 'topics' | 'data' | 'transactionHash' | 'blockNumber' | 'transactionIndex' | 'logIndex'
-  > {
+export interface Log {
+  address: Address;
+  topics: [topic0: Hex, ...rest: Hex[]];
+  data: Hex;
+  transactionHash: Hash;
+  blockNumber: number;
+  transactionIndex: number;
+  logIndex: number;
   timestamp?: number;
 }
 
@@ -59,3 +68,93 @@ export interface RateLimit {
   intervalCap: number;
   timeout?: number;
 }
+
+export interface AddressEvents {
+  transferFrom: Log[];
+  transferTo: Log[];
+  approval: Log[];
+  approvalForAll: Log[];
+  permit2Approval: Log[]; // Note that this combines Approval, Permit and Lockdown events
+}
+
+export interface Filter {
+  topics: string[];
+  fromBlock: number;
+  toBlock: number;
+}
+
+export enum TransactionType {
+  REVOKE = 'revoke',
+  UPDATE = 'update',
+  OTHER = 'other',
+}
+
+export interface Marketplace {
+  name: string;
+  logo: string;
+  chains: number[];
+  cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
+}
+
+export interface ISidebarEntry {
+  title: string;
+  description?: string;
+  path: string;
+  children?: ISidebarEntry[];
+}
+
+export interface ContentMeta {
+  title: string;
+  sidebarTitle?: string;
+  description: string;
+  language: string;
+  author?: string;
+  translator?: string;
+}
+
+export interface RawContentFile {
+  content: string;
+  language: string;
+}
+
+export interface ContentFile {
+  content: string;
+  meta: ContentMeta;
+}
+
+export interface BreadcrumbEntry {
+  name: string;
+  href?: string;
+}
+
+export interface SpenderData {
+  name: string;
+  exploits?: string[];
+}
+
+export interface Contract {
+  address: Address;
+  abi: Abi;
+  publicClient: PublicClient;
+}
+
+export type TokenContract = Erc20TokenContract | Erc721TokenContract;
+
+export interface Erc20TokenContract extends Contract {
+  abi: typeof ERC20_ABI;
+}
+
+export interface Erc721TokenContract extends Contract {
+  abi: typeof ERC721_ABI;
+}
+
+export interface TokenMetadata {
+  // name: string;
+  symbol: string;
+  icon?: string;
+  decimals?: number;
+  totalSupply?: bigint;
+  price?: number;
+}
+
+export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;

@@ -1,0 +1,35 @@
+{
+  "add_network": {
+    "description": "Descubre cómo puedes añadir fácilmente {{chainName}} y otras redes a carteras de criptomonedas como MetaMask.",
+    "intro_paragraph": "El proceso de añadir {{chainName}} a tu cartera puede variar ligeramente según la cartera que uses. Los siguientes pasos son para MetaMask. Si utilizas una cartera diferente, lo más probable es que puedas seguir un proceso similar.",
+    "select_network": "Selecciona la red que quieres añadir:",
+    "sidebar_title": "Agrega una red a tu cartera",
+    "step_1": {
+      "title": "1. Abre tu cartera y ve a la página «Añadir red»."
+    },
+    "step_2": {
+      "paragraph_1": "Después de introducir todos los datos necesarios, haz clic en \"Guardar\" para añadir {{chainName}} a MetaMask.",
+      "paragraph_2": "Como alternativa, puedes utilizar nuestro botón de un solo clic para no tener que introducir los detalles requeridos manualmente.",
+      "title": "2. Introduce los datos necesarios y haz clic en \"Guardar\"."
+    },
+    "title": "Agregar {{chainName}} a MetaMask"
+  },
+  "article_meta": {
+    "author": "Escrito por <0>{{author}}</0>",
+    "translator": "Traducido por <0>{{translator}}</0>"
+  },
+  "home": {
+    "intro_paragraph": "Creamos la sección de aprendizaje de Revoke.cash para ayudarte a comprender cómo puedes mantenerte seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente."
+  },
+  "meta": {
+    "description": "El mundo de la web3 puede resultar confuso, pero no tiene por qué serlo. Hemos reunido una colección de recursos para ayudarte a aprender sobre la web3, la seguridad y mucho más.",
+    "title": "Aprender Sobre Web3, Seguridad y Más"
+  },
+  "sidebar": {
+    "approvals": "Autorizaciones de Tokens",
+    "basics": "Conceptos Básicos",
+    "faq": "FAQ",
+    "mobile_header": "Explorar artículos",
+    "wallets": "Carteras"
+  }
+}

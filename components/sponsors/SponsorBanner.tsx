@@ -1,9 +1,10 @@
 import Href from 'components/common/Href';
 import Label from 'components/common/Label';
-import { classNames } from 'lib/utils/styles';
+import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   name: string;
@@ -30,12 +31,12 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
   const mapping = {
     common: {
       label:
-        'absolute -top-1 left-2 z-10 border border-black text-black font-semibold flex items-center justify-center rounded-md',
+        'absolute -top-1 left-2 z-10 border border-black text-zinc-900 font-semibold flex items-center justify-center rounded-md',
       banner: 'flex flex-col items-center',
       image: 'rounded-lg border border-black dark:border-white object-cover aspect-[3/1] overflow-hidden w-full',
     },
     bronze: {
-      label: 'bg-amber-600 text-[0.65rem] px-1 py-px',
+      label: 'bg-amber-600 text-[0.65rem] px-1.5 py-px',
       banner: '',
       image: '',
       img: {
@@ -63,11 +64,21 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
     },
   };
 
+  const trackClick = () => {
+    track('Sponsor Link Clicked', { name, tier, url });
+  };
+
   return (
     <div className="relative">
-      <Href href={url} external className={classNames(mapping.common.banner, mapping[tier].banner)} underline="hover">
-        <div className={classNames(mapping.common.image, mapping[tier].image)}>
-          <Label className={classNames(mapping.common.label, mapping[tier].label)}>
+      <Href
+        href={url}
+        external
+        className={twMerge(mapping.common.banner, mapping[tier].banner)}
+        underline="hover"
+        onClick={trackClick}
+      >
+        <div className={twMerge(mapping.common.image, mapping[tier].image)}>
+          <Label className={twMerge(mapping.common.label, mapping[tier].label)}>
             {t(`landing:sponsors.tiers.${tier}`)}
           </Label>
           <Image
@@ -81,7 +92,16 @@ const SponsorBanner = ({ name, banner, url, tier, overlay }: Props) => {
         </div>
         <div>{name}</div>
       </Href>
-      {overlay && <Href href={overlay.url} style={overlay} className="absolute" external />}
+      {overlay && (
+        <Href
+          href={overlay.url}
+          style={overlay}
+          className="absolute"
+          external
+          onClick={trackClick}
+          aria-label={`${name} Overlay Link`}
+        />
+      )}
     </div>
   );
 };

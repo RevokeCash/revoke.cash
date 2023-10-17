@@ -1,126 +1,88 @@
-import type { Filter } from '@ethersproject/abstract-provider';
-import type { BigNumberish } from 'ethers';
-import { BigNumber, utils } from 'ethers';
-import type { Log, LogsProvider } from 'lib/interfaces';
+import { ChainId } from '@revoke.cash/chains';
+import type { AllowanceData, Filter, Log, LogsProvider } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
-import { resolveAvvyName, resolveEnsName, resolveUnsName } from './whois';
+import {
+  Abi,
+  Address,
+  ContractFunctionConfig,
+  FormattedTransactionRequest,
+  GetValue,
+  Hash,
+  Hex,
+  PublicClient,
+  TransactionNotFoundError,
+  TransactionReceiptNotFoundError,
+  WalletClient,
+  formatUnits,
+  getAddress,
+  pad,
+  slice,
+} from 'viem';
+import { UnionOmit } from 'viem/types/utils';
+import { Chain } from 'wagmi';
+import { track } from './analytics';
+import { isLogResponseSizeError, parseErrorMessage } from './errors';
+import { bigintMin, fixedPointMultiply } from './math';
 
-export const shortenAddress = (address?: string): string => {
-  return address && `${address.substr(0, 6)}...${address.substr(address.length - 4, 4)}`;
+export const isNullish = (value: unknown): value is null | undefined => {
+  return value === null || value === undefined;
 };
 
-export const shortenString = (name?: string, maxLength: number = 16): string | undefined => {
-  if (!name) return undefined;
-  if (name.length <= maxLength) return name;
-  return `${name.substr(0, maxLength - 3).trim()}...`;
-};
-
-export const compareBN = (a: BigNumberish, b: BigNumberish): number => {
-  a = BigNumber.from(a);
-  b = BigNumber.from(b);
-  const diff = a.sub(b);
-  return diff.isZero() ? 0 : diff.lt(0) ? -1 : 1;
-};
-
-export const toFloat = (n: BigNumberish, decimals: number = 0): string => {
-  return (Number(n) / 10 ** decimals).toFixed(3).replace(/\.?0+$/, '');
-};
-
-export const fromFloat = (floatString: string, decimals: number): string => {
-  const sides = floatString.split('.');
-  if (sides.length === 1) return floatString.padEnd(decimals + floatString.length, '0');
-  if (sides.length > 2) return '0';
-
-  return sides[1].length > decimals
-    ? sides[0] + sides[1].slice(0, decimals)
-    : sides[0] + sides[1].padEnd(decimals, '0');
-};
-
-export const getLogs = async (
-  provider: LogsProvider,
-  baseFilter: Filter,
-  fromBlock: number,
-  toBlock: number
-): Promise<Log[]> => {
+export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promise<Log[]> => {
   try {
-    const filter = { ...baseFilter, fromBlock, toBlock };
-    try {
-      const result = await provider.getLogs(filter);
-      return result;
-    } catch (error) {
-      const errorMessage = error?.error?.message ?? error?.data?.message ?? error?.message;
-      if (!errorMessage.includes('query returned more than 10000 results')) {
-        throw error;
-      }
-
-      const middle = fromBlock + Math.floor((toBlock - fromBlock) / 2);
-      const leftPromise = getLogs(provider, baseFilter, fromBlock, middle);
-      const rightPromise = getLogs(provider, baseFilter, middle + 1, toBlock);
-      const [left, right] = await Promise.all([leftPromise, rightPromise]);
-      return [...left, ...right];
-    }
+    const result = await logsProvider.getLogs(filter);
+    return result;
   } catch (error) {
-    throw error;
+    if (!isLogResponseSizeError(parseErrorMessage(error))) throw error;
+
+    // If the block range is already a single block, we re-throw the error since we can't split it further
+    if (filter.fromBlock === filter.toBlock) throw error;
+
+    const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
+    const leftPromise = getLogs(logsProvider, { ...filter, toBlock: middle });
+    const rightPromise = getLogs(logsProvider, { ...filter, fromBlock: middle + 1 });
+    const [left, right] = await Promise.all([leftPromise, rightPromise]);
+    return [...left, ...right];
   }
 };
 
-export const parseInputAddress = async (inputAddressOrName: string): Promise<string | undefined> => {
-  // If the input is an ENS name, validate it, resolve it and return it
-  if (inputAddressOrName.endsWith('.eth')) {
-    return await resolveEnsName(inputAddressOrName);
-  }
+export const calculateValueAtRisk = (allowance: AllowanceData): number => {
+  if (!allowance.spender) return null;
+  if (allowance.balance === 'ERC1155') return null;
 
-  // If the input is an Avvy Domains name..
-  if (inputAddressOrName.endsWith('.avax')) {
-    return await resolveAvvyName(inputAddressOrName);
-  }
+  if (allowance.balance === 0n) return 0;
+  if (isNullish(allowance.metadata.price)) return null;
 
-  // Other domain-like inputs are interpreted as Unstoppable Domains
-  if (inputAddressOrName.includes('.')) {
-    return await resolveUnsName(inputAddressOrName);
-  }
+  const amount = bigintMin(allowance.balance, allowance.amount);
+  const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
+  const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
 
-  // If the input is an address, validate it and return it
-  try {
-    return utils.getAddress(inputAddressOrName.toLowerCase());
-  } catch {
-    return undefined;
-  }
+  return float;
 };
 
-export const getBalanceText = (symbol: string, balance: string, decimals?: number) => {
-  if (balance === 'ERC1155') return `(ERC1155)`;
-  return `${toFloat(balance, decimals)} ${symbol}`;
-};
-
-export const topicToAddress = (topic: string) => utils.getAddress(utils.hexDataSlice(topic, 12));
+export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));
+export const addressToTopic = (address: Address) => pad(address, { size: 32 }).toLowerCase() as Hex;
 
 export const logSorterChronological = (a: Log, b: Log) => {
   if (a.blockNumber === b.blockNumber) {
     if (a.transactionIndex === b.transactionIndex) {
-      return a.logIndex - b.logIndex;
+      return Number(a.logIndex - b.logIndex);
     }
-    return a.transactionIndex - b.transactionIndex;
+    return Number(a.transactionIndex - b.transactionIndex);
   }
-  return a.blockNumber - b.blockNumber;
+  return Number(a.blockNumber - b.blockNumber);
 };
 
 export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
 
-export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean): T[] => {
+export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
   return array.filter((a, i) => array.findIndex((b) => matcher(a, b)) === i);
 };
 
-export const deduplicateLogsByTopics = (logs: Log[]) => {
+export const deduplicateLogsByTopics = (logs: Log[], consideredIndexes: Array<0 | 1 | 2 | 3> = [0, 1, 2, 3]) => {
   const matcher = (a: Log, b: Log) => {
-    return (
-      a.address === b.address &&
-      a.topics[0] === b.topics[0] &&
-      a.topics[1] === b.topics[1] &&
-      a.topics[2] === b.topics[2] &&
-      a.topics[3] === b.topics[3]
-    );
+    return a.address === b.address && consideredIndexes.every((index) => a.topics[index] === b.topics[index]);
   };
 
   return deduplicateArray(logs, matcher);
@@ -128,6 +90,12 @@ export const deduplicateLogsByTopics = (logs: Log[]) => {
 
 export const filterLogsByAddress = (logs: Log[], address: string) => {
   return logs.filter((log) => log.address === address);
+};
+
+export const filterLogsByTopics = (logs: Log[], topics: string[]) => {
+  return logs.filter((log) => {
+    return topics.every((topic, index) => !topic || topic === log.topics[index]);
+  });
 };
 
 export const writeToClipBoard = (text: string, t: Translate, displayToast: boolean = true) => {
@@ -143,4 +111,69 @@ export const writeToClipBoard = (text: string, t: Translate, displayToast: boole
 
 export const normaliseLabel = (label: string) => {
   return label.toLowerCase().replace(/[ -]/g, '_');
+};
+
+export const getWalletAddress = async (walletClient: WalletClient) => {
+  const [address] = await walletClient.requestAddresses();
+  return address;
+};
+
+export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
+  // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
+  const WEIRD_NETWORKS = [
+    ChainId.ZkSyncEraMainnet,
+    ChainId.ZkSyncEraTestnet,
+    ChainId.ArbitrumOne,
+    ChainId.ArbitrumGoerli,
+    ChainId.ArbitrumNova,
+  ];
+
+  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(chainId) ? 10_000_000n : 500_000n;
+
+  // TODO: Translate this error message
+  if (estimatedGas > EXCESSIVE_GAS) {
+    console.error(`Gas limit of ${estimatedGas} is excessive`);
+
+    // Track excessive gas usage so we can blacklist tokens
+    // TODO: Use a different tool than analytics for this
+    track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
+
+    throw new Error(
+      'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
+    );
+  }
+};
+
+export const writeContractUnlessExcessiveGas = async <
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+>(
+  publicCLient: PublicClient,
+  walletClient: WalletClient,
+  transactionRequest: ContractTransactionRequest<TAbi, TFunctionName>,
+) => {
+  const estimatedGas = await publicCLient.estimateContractGas(transactionRequest);
+  throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
+  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
+};
+
+// This is as "simple" as I was able to get this generic to be, considering it needs to work with viem's type inference
+type ContractTransactionRequest<
+  TAbi extends Abi | readonly unknown[] = Abi,
+  TFunctionName extends string = string,
+> = ContractFunctionConfig<TAbi, TFunctionName, 'payable' | 'nonpayable'> & {
+  account: Address;
+  chain: Chain;
+  dataSuffix?: Hex;
+} & UnionOmit<FormattedTransactionRequest<Chain>, 'from' | 'to' | 'data' | 'value'> &
+  GetValue<TAbi, TFunctionName>;
+
+export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient): Promise<void> => {
+  try {
+    return void (await publicClient.waitForTransactionReceipt({ hash }));
+  } catch (e) {
+    // Workaround for Safe Apps, somehow they don't return the transaction receipt -- TODO: remove when fixed
+    if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;
+    throw e;
+  }
 };

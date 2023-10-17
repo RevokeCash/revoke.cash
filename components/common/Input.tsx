@@ -1,5 +1,5 @@
-import { classNames } from 'lib/utils/styles';
 import { InputHTMLAttributes } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   size?: 'sm' | 'md' | 'lg' | 'none';
@@ -14,7 +14,7 @@ const Input = ({ size, className, ...props }: Props) => {
     lg: 'h-12 px-6 text-lg rounded-xl',
   };
 
-  const classes = classNames(classMapping.common, size !== 'none' && classMapping[size], className);
+  const classes = twMerge(classMapping.common, size !== 'none' && classMapping[size], className);
 
   return <input className={classes} {...props} />;
 };

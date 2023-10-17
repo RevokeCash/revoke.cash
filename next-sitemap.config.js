@@ -14,13 +14,25 @@ module.exports = {
       hreflang: 'en',
     },
     {
-      href: `${SITE_URL}/es`,
-      hreflang: 'es',
-    },
-    {
       href: `${SITE_URL}/zh`,
       hreflang: 'zh',
     },
+    {
+      href: `${SITE_URL}/ru`,
+      hreflang: 'ru',
+    },
+    {
+      href: `${SITE_URL}/ja`,
+      hreflang: 'ja',
+    },
+    {
+      href: `${SITE_URL}/es`,
+      hreflang: 'es',
+    },
+  ],
+  exclude: [
+    // 404 pages should not be in the sitemap
+    '/**404',
   ],
   // Custom transform function to de-duplicate path locale strings in alternateRefs
   // Without this we get things like https://<domain>/es/es/about rather than https://<domain>/es/about
@@ -30,7 +42,7 @@ module.exports = {
     // Remove the locale part of the path (e.g. /es/about -> /about)
     const extractLocaleIndependentPath = (path) => {
       const matches = config.alternateRefs.map((alt) =>
-        `${config.siteUrl}${path}/`.replace(`${alt.href}/`, '/').replace(/\/+$/, '')
+        `${config.siteUrl}${path}/`.replace(`${alt.href}/`, '/').replace(/\/+$/, ''),
       );
       return matches.sort((a, b) => a.length - b.length)[0];
     };

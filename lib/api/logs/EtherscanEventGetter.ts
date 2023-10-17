@@ -1,7 +1,5 @@
-import type { Filter } from '@ethersproject/abstract-provider';
 import axios from 'axios';
-import { utils } from 'ethers';
-import type { Log } from 'lib/interfaces';
+import type { Filter, Log } from 'lib/interfaces';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
   getChainApiIdentifer,
@@ -9,6 +7,7 @@ import {
   getChainApiRateLimit,
   getChainApiUrl,
 } from 'lib/utils/chains';
+import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
 
@@ -23,17 +22,26 @@ export class EtherscanEventGetter implements EventGetter {
     this.queues = Object.fromEntries(queueEntries);
   }
 
-  async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
+  async getEvents(chainId: number, filter: Filter, page: number = 1): Promise<Log[]> {
     const apiUrl = getChainApiUrl(chainId);
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const query = prepareEtherscanGetLogsQuery(filter, apiKey);
-    const { data } = await queue.add(() => axios.get(apiUrl, { params: query }));
+    const query = prepareEtherscanGetLogsQuery(filter, page, apiKey);
+
+    const { data } = await retryOn429(() => queue.add(() => axios.get(apiUrl, { params: query })));
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
     if (data.result?.length === 1000) {
-      throw new Error('query returned more than 10000 results');
+      console.log(data);
+
+      // If we cannot split this block range further, we use Etherscan's pagination in the hope that it does not exceed
+      // 10 pages of results
+      if (filter.fromBlock === filter.toBlock) {
+        return [...data.result.map(formatEtherscanEvent), ...(await this.getEvents(chainId, filter, page + 1))];
+      }
+
+      throw new Error('Log response size exceeded');
     }
 
     if (typeof data.result === 'string') {
@@ -41,6 +49,11 @@ export class EtherscanEventGetter implements EventGetter {
       if (data.result.includes('Max rate limit reached')) {
         console.error('Rate limit reached, retrying...');
         return this.getEvents(chainId, filter);
+      }
+
+      // If the query times out, this indicates that we should try again with a smaller block range
+      if (data.result.includes('Query Timeout occured')) {
+        throw new Error('Log response size exceeded');
       }
 
       throw new Error(data.result);
@@ -55,15 +68,15 @@ export class EtherscanEventGetter implements EventGetter {
   }
 }
 
-const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
+const prepareEtherscanGetLogsQuery = (filter: Filter, page: number, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
-    typeof topic === 'string' ? topic.toLowerCase() : topic
+    typeof topic === 'string' ? topic.toLowerCase() : topic,
   );
 
   const query = {
     module: 'logs',
     action: 'getLogs',
-    address: filter.address,
+    // address: undefined,
     fromBlock: filter.fromBlock ?? 0,
     toBlock: filter.toBlock ?? 'latest',
     topic0,
@@ -78,13 +91,14 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, apiKey?: string) => {
     topic2_3_opr: topic2 && topic3 ? 'and' : undefined,
     offset: 1000,
     apiKey,
+    page,
   };
 
   return query;
 };
 
 const formatEtherscanEvent = (etherscanLog: any) => ({
-  address: utils.getAddress(etherscanLog.address),
+  address: getAddress(etherscanLog.address),
   topics: etherscanLog.topics.filter((topic: string) => !!topic),
   data: etherscanLog.data,
   transactionHash: etherscanLog.transactionHash,
@@ -93,3 +107,17 @@ const formatEtherscanEvent = (etherscanLog: any) => ({
   logIndex: Number.parseInt(etherscanLog.logIndex, 16),
   timestamp: Number.parseInt(etherscanLog.timeStamp, 16),
 });
+
+// Certain Blockscout instances will return a 429 error if we hit the rate limit instead of a 200 response with the error message
+const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
+  try {
+    return await fn();
+  } catch (e) {
+    if (e.message.includes('429')) {
+      console.error('Rate limit reached, retrying...');
+      return retryOn429(fn);
+    }
+
+    throw e;
+  }
+};

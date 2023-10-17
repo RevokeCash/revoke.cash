@@ -2,12 +2,15 @@
   "allowances": {
     "amount": "{{amount}} {{symbol}}",
     "none": "没有授权",
+    "none_found": "没有授权",
+    "none_found_filtered": "所选过滤条件下未找到授权",
     "token_id": "代币 #{{tokenId}}",
+    "unknown": "未知",
     "unlimited": "无限"
   },
   "filters": {
     "allowances": {
-      "label": "授权",
+      "label": "授权金额",
       "options": {
         "limited": "有限的",
         "none": "没有",
@@ -33,11 +36,12 @@
   },
   "headers": {
     "actions": "操作",
-    "allowance": "授权",
+    "allowance": "授权金额",
     "asset": "资产",
     "asset_type": "类型",
     "last_updated": "上次更新",
-    "spender": "已经授权的项目"
+    "spender": "已经授权的项目",
+    "value_at_risk": "存在风险金额"
   },
   "labels": {
     "connected": "已连接",
@@ -46,15 +50,42 @@
     "token": "代币"
   },
   "meta": {
-    "description": "通过撤销过去的授权来保护用户的以太坊代币余额。",
-    "title": "Revoke.cash-检查并撤销 {{address}} 的授权"
+    "title": "地址 {{addressDisplay}} 授权情况",
+    "title_chain": "地址{{addressDisplay}}在{{chainName}}上的批准情况"
   },
-  "no_allowances": "没有授权",
+  "navigation": {
+    "allowances": "授权",
+    "history": "历史",
+    "more": "更多",
+    "settings": "设置",
+    "signatures": "签名"
+  },
+  "permit2": {
+    "expiration": "于 {{inTime}} 过期"
+  },
+  "search": {
+    "spender": "按授权的花费地址搜索"
+  },
+  "signatures": {
+    "info": {
+      "description": "由于区块链不存储签名，因此 Revoke.cash 无法核实您是否真的进行了签名。此页面包含了<0>可能的</0>签名列表。<1>只有当您确定自己在钓鱼网站上进行了签名时，才需要取消这些签名</1>。即使您已取消签名，该条目仍将保存在本列表中。"
+    },
+    "marketplaces": {
+      "none_found": "未找到该链的市场。",
+      "title": "市场签名"
+    },
+    "permit": {
+      "none_found": "未找到支持许可的代币。",
+      "title": "允许签名"
+    }
+  },
   "sorting": {
     "columns": {
-      "allowance": "授权",
+      "allowance": "授权金额",
       "asset_name": "资产名称",
-      "last_updated": "上次更新"
+      "authorized_spender": "已经授权的项目",
+      "last_updated": "上次更新",
+      "value_at_risk": "存在风险金额"
     },
     "fns": {
       "date": {
@@ -73,8 +104,24 @@
     "label": "排序"
   },
   "tooltips": {
-    "connect_wallet": "请连接钱包再撤销",
-    "connected_account": "您只能撤销已连接账户的授权",
-    "switch_chain": "请切换钱包到目标链 <0>{{chainName}}</0>以便撤销"
+    "acknowledge_signature_notice": "检查签名前，请确认该通知。",
+    "connect_wallet": "请连接钱包继续下一步",
+    "connected_account": "您只能操作已连接的账户",
+    "involved_in_exploits": "此地址涉及以下漏洞：",
+    "marketplace_listings": "这将取消 {{marketplace}} 上的所有当前列出的产品和报价。",
+    "marketplace_signatures": "一旦获得批准，市场可以代表您转移资产。骗子可利用这些批准在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",
+    "permit2_expiration": "这是 Permit2 授权，将于 {{inTime}} 到期。",
+    "permit_signatures": "许可签名用于在无需发送交易的情况下批准花费。如果您在钓鱼网站上签署了许可签名，请取消。",
+    "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
+  },
+  "wallet_health": {
+    "categories": {
+      "high": "良好",
+      "low": "较差",
+      "medium": "一般"
+    },
+    "description": "钱包健康",
+    "total_allowances": "全部授权",
+    "total_value_at_risk": "全部存在风险金额"
   }
 }

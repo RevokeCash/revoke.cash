@@ -14,7 +14,7 @@ const Sponsors = () => {
         <LandingParagraph>
           <Trans
             i18nKey="landing:sponsors.description"
-            components={[<Href href="/sponsorships" html underline="hover" />]}
+            components={[<Href href="/sponsorships" html underline="hover" router className="font-medium" />]}
           />
         </LandingParagraph>
       </div>
@@ -35,33 +35,33 @@ const Sponsors = () => {
             }}
           />
         </div>
-        <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4 max-w-3xl">
           <SponsorBanner
             name="Vulcan"
             banner="/assets/images/vendor/sponsors/vulcan.jpg"
-            url="https://vulcan.xyz"
+            url="https://www.vulcan.xyz"
             tier="silver"
           />
           <SponsorBanner
             name="PREMINT"
             banner="/assets/images/vendor/sponsors/premint.jpg"
-            url="https://premint.xyz"
+            url="https://www.premint.xyz"
             tier="silver"
           />
           <SponsorBanner
-            name="Mintify"
-            banner="/assets/images/vendor/sponsors/mintify.png"
-            url="https://mintify.xyz"
+            name="Layer3"
+            banner="/assets/images/vendor/sponsors/layer3.jpg"
+            url="https://layer3.xyz"
+            tier="silver"
+          />
+          <SponsorBanner
+            name="Brave Wallet"
+            banner="/assets/images/vendor/sponsors/brave.png"
+            url="https://brave.com/wallet/?mtm_source=revoke.cash&mtm_medium=paid&mtm_campaign=q3wallet"
             tier="silver"
           />
         </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-1.5 gap-y-4">
-          <SponsorBanner
-            name="Earni.fi"
-            banner="/assets/images/vendor/sponsors/earnifi.png"
-            url="https://earni.fi"
-            tier="bronze"
-          />
           <SponsorBanner
             name="Swap.kiwi"
             banner="/assets/images/vendor/sponsors/swap-kiwi.png"

@@ -1,52 +1,44 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import { ironSession } from 'iron-session/express';
-import { covalentEventGetter, etherscanEventGetter, nodeEventGetter, rateLimiter } from 'lib/api/globals';
-import { IRON_OPTIONS } from 'lib/constants';
+import { checkActiveSession, checkRateLimitAllowed, wrapIronSessionApiRoute } from 'lib/api/auth';
+import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
 import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
+import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import nc from 'next-connect';
-import requestIp from 'request-ip';
 
 axiosRetry(axios, { retries: 3 });
 
-const handler = nc<NextApiRequest, NextApiResponse>()
-  .use(requestIp.mw({ attributeName: 'ip' }))
-  .use(rateLimiter)
-  .use(ironSession(IRON_OPTIONS))
-  .post(async (req, res) => {
-    // TODO: This can become a middleware
-    if (!(req.session as any).ip || (req.session as any).ip !== (req as any).ip) {
-      return res.status(403).send({ message: 'No API session is active' });
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== 'POST') return res.status(405).end();
+  if (!checkActiveSession(req)) return res.status(403).send({ message: 'No API session is active' });
+  if (!(await checkRateLimitAllowed(req)))
+    return res.status(429).send({ message: 'Too many requests, please try again later.' });
+
+  const chainId = Number.parseInt(req.query.chainId as string, 10);
+
+  try {
+    if (isCovalentSupportedChain(chainId)) {
+      const events = await covalentEventGetter.getEvents(chainId, req.body);
+      return res.send(events);
     }
 
-    console.log('Request body', req.body);
-
-    const chainId = Number.parseInt(req.query.chainId as string, 10);
-
-    try {
-      if (isCovalentSupportedChain(chainId)) {
-        const events = await covalentEventGetter.getEvents(chainId, req.body);
-        return res.send(events);
-      }
-
-      if (isEtherscanSupportedChain(chainId)) {
-        const events = await etherscanEventGetter.getEvents(chainId, req.body);
-        return res.send(events);
-      }
-
-      if (isNodeSupportedChain(chainId)) {
-        const events = await nodeEventGetter.getEvents(chainId, req.body);
-        return res.send(events);
-      }
-    } catch (e) {
-      console.log('Error occurred', e);
-      throw e;
+    if (isEtherscanSupportedChain(chainId)) {
+      const events = await etherscanEventGetter.getEvents(chainId, req.body);
+      return res.send(events);
     }
 
-    return res.status(404).send({
-      message: `Chain with ID ${chainId} is unsupported`,
-    });
+    if (isNodeSupportedChain(chainId)) {
+      const events = await nodeEventGetter.getEvents(chainId, req.body);
+      return res.send(events);
+    }
+  } catch (e) {
+    console.error('Error occurred', parseErrorMessage(e));
+    return res.status(500).send({ message: parseErrorMessage(e) });
+  }
+
+  return res.status(404).send({
+    message: `Chain with ID ${chainId} is unsupported`,
   });
+};
 
-export default handler;
+export default wrapIronSessionApiRoute(handler);

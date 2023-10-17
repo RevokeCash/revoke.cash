@@ -1,0 +1,35 @@
+{
+  "add_network": {
+    "description": "了解如何在MetaMask等加密货币钱包中轻松添加{{chainName}}和其他区块链。",
+    "intro_paragraph": "向钱包添加{{chainName}}的过程可能略有不同，这取决于你使用的钱包。下面的步骤是针对MetaMask的。如果你使用其他钱包，很可能有一个类似的过程，你可以参考。",
+    "select_network": "选择想添加的区块链：",
+    "sidebar_title": "为钱包添加区块链",
+    "step_1": {
+      "title": "1.打开你的钱包，进入 \"添加区块链 \"页面。"
+    },
+    "step_2": {
+      "paragraph_1": "输入所需细节后，您可以点击 \"保存\"，将{{chainName}}添加到MetaMask。",
+      "paragraph_2": "或者，你可以使用我们的一键式按钮，这样你就不需要手动输入所需的细节。",
+      "title": "2.输入所需的细节并点击 \"保存\"。"
+    },
+    "title": "添加{{chainName}}到MetaMask"
+  },
+  "article_meta": {
+    "author": "作者：<0>{{author}}</0>",
+    "translator": "翻译：<0>{{translator}}</0>"
+  },
+  "home": {
+    "intro_paragraph": "我们创建了Revoke.cash学习部分，以帮助你了解如何在web3的世界中保持安全。它涵盖了web3的基本知识和更高阶的主题。随着时间的推移，我们将增加更多的文章，所以一定要定期回来查看。"
+  },
+  "meta": {
+    "description": "web3 世界可能让人疑惑不解，但也不必如此。我们已经收集了一些资源，以帮助你了解 web3、钱包安全等信息。",
+    "title": "了解 Web3、钱包安全和更多信息"
+  },
+  "sidebar": {
+    "approvals": "代币批准",
+    "basics": "基础",
+    "faq": "常见问题",
+    "mobile_header": "浏览文章",
+    "wallets": "钱包"
+  }
+}

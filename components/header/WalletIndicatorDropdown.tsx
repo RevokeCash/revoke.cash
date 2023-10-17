@@ -1,7 +1,6 @@
-import Button from 'components/common/Button';
-import DropdownMenu from 'components/common/DropdownMenu';
-import { useNameLookup } from 'lib/hooks/useNameLookup';
-import { shortenAddress } from 'lib/utils';
+import DropdownMenu, { DropdownMenuItem } from 'components/common/DropdownMenu';
+import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
+import { shortenAddress } from 'lib/utils/formatting';
 import useTranslation from 'next-translate/useTranslation';
 import { useAccount, useDisconnect } from 'wagmi';
 import ConnectButton from './ConnectButton';
@@ -22,29 +21,14 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
   return (
     <div className="flex whitespace-nowrap">
       {account ? (
-        <DropdownMenu menuButton={domainName ?? shortenAddress(account)}>
-          <Button
-            style="secondary"
-            size="md"
-            className="rounded-none border-none font-normal"
-            align="left"
-            href={`/address/${account}`}
-            router
-          >
+        <DropdownMenu menuButton={domainName ?? shortenAddress(account, 4)}>
+          <DropdownMenuItem href={`/address/${account}`} router>
             {t('common:buttons.my_allowances')}
-          </Button>
-          <Button
-            style="secondary"
-            size="md"
-            className="rounded-none border-none font-normal"
-            align="left"
-            onClick={() => disconnect()}
-          >
-            {t('common:buttons.disconnect')}
-          </Button>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => disconnect()}>{t('common:buttons.disconnect')}</DropdownMenuItem>
         </DropdownMenu>
       ) : (
-        <ConnectButton size={size} style={style} className={className} />
+        <ConnectButton size={size} style={style} className={className} redirect />
       )}
     </div>
   );

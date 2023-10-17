@@ -38,14 +38,15 @@ const Modal = ({ open, setOpen, children }: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all w-full sm:max-w-lg">
+              <Dialog.Panel className="border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all w-full sm:max-w-md">
                 <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
-                  <button ref={focusRef} /> {/* Focus trap */}
+                  <button ref={focusRef} aria-label="Focus Trap" />
                   <Button
                     style="none"
                     size="none"
                     className="text-zinc-400 hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-500"
                     onClick={() => setOpen(false)}
+                    aria-label="Close"
                   >
                     <XMarkIcon className="h-6 w-6" />
                   </Button>

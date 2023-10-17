@@ -1,6 +1,9 @@
+import type { NextSeoProps } from 'next-seo';
+
 // For some reason next-seo's DefaultSeo isn't working, so I'll do it like this
-export const defaultSEO = {
+export const defaultSEO: NextSeoProps = {
   // title + description are included through next-translate
+  titleTemplate: '%s | Revoke.cash',
   openGraph: {
     url: 'https://revoke.cash/',
     images: [
@@ -27,4 +30,5 @@ export const defaultSEO = {
     { rel: 'apple-touch-icon', href: '/assets/images/apple-touch-icon.png' },
     { rel: 'manifest', href: '/manifest.json' },
   ],
+  additionalMetaTags: [{ name: 'theme-color' as const, content: '#000000' }],
 };

@@ -1,7 +1,7 @@
 import Label from 'components/common/Label';
 import { useMounted } from 'lib/hooks/useMounted';
-import { classNames } from 'lib/utils/styles';
 import useTranslation from 'next-translate/useTranslation';
+import { twMerge } from 'tailwind-merge';
 import { useAccount } from 'wagmi';
 
 interface Props {
@@ -13,11 +13,14 @@ const ConnectedLabel = ({ address }: Props) => {
   const { t } = useTranslation();
   const { address: account } = useAccount();
 
-  if (!isMounted) return null;
-
-  const classes = classNames(
-    address === account ? 'bg-green-500 text-white' : 'bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100'
+  const classes = twMerge(
+    address === account
+      ? 'bg-green-400 text-zinc-900'
+      : 'bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100',
   );
+
+  // Add placeholder label to prevent layout shift
+  if (!isMounted) return <Label className="bg-transparent">&nbsp;</Label>;
 
   return (
     <Label className={classes}>

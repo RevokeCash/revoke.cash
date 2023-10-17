@@ -10,9 +10,14 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
+        2.75: '0.6875rem',
         12: '3rem',
         20: '5rem',
         30: '7.5rem',
+        38: '9.5rem',
+        46: '11.5rem',
+        58: '14.5rem',
+        88: '22rem',
       },
       fontFamily: {
         sans: [
@@ -34,7 +39,15 @@ module.exports = {
         code: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
         monospace: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
       },
+      typography: (theme) => ({
+        zinc: {
+          css: {
+            '--tw-prose-body': theme('colors.zinc.900'),
+            '--tw-prose-invert-body': theme('colors.zinc.100'),
+          },
+        },
+      }),
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };

@@ -1,13 +1,14 @@
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { classNames } from 'lib/utils/styles';
 import Link from 'next/link';
-import { MouseEventHandler } from 'react';
+import { ForwardedRef, MouseEventHandler, forwardRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
-interface Props {
+// TODO: Proper extended styles for this component
+export interface Props extends Record<string, any> {
   disabled?: boolean;
   style: 'primary' | 'secondary' | 'tertiary' | 'none';
-  size: 'sm' | 'md' | 'lg' | 'none';
+  size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   onClick?: MouseEventHandler;
   href?: string;
   children: React.ReactNode;
@@ -19,20 +20,24 @@ interface Props {
   align?: 'left' | 'center' | 'right';
 }
 
-const Button = ({
-  disabled,
-  style,
-  size,
-  onClick,
-  href,
-  external,
-  router,
-  children,
-  className,
-  loading,
-  asDiv,
-  align,
-}: Props) => {
+const Button = (
+  {
+    disabled,
+    style,
+    size,
+    onClick,
+    href,
+    external,
+    router,
+    children,
+    className,
+    loading,
+    asDiv,
+    align,
+    ...props
+  }: Props,
+  ref: ForwardedRef<any>,
+) => {
   const { darkMode } = useColorTheme();
 
   // In dark mode, we swap the primary and secondary styles
@@ -40,11 +45,12 @@ const Button = ({
 
   const classMapping = {
     common:
-      'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium',
+      'flex items-center border border-black dark:border-white duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium shrink-0 whitespace-nowrap',
     primary: 'bg-black text-white visited:text-white hover:bg-zinc-800 disabled:bg-zinc-600',
     secondary: 'bg-white text-black visited:text-black hover:bg-zinc-200 disabled:bg-zinc-300',
     tertiary:
       'text-black visited:text-black dark:text-white dark:visited:text-white disabled:text-zinc-600 dark:disabled:text-zinc-400 border-none',
+    menu: 'h-9 px-4 rounded-none border-none font-normal text-base justify-start',
     sm: 'h-6 px-2 text-xs rounded-md',
     md: 'h-9 px-4 text-base rounded-lg',
     lg: 'h-12 px-6 text-lg rounded-xl',
@@ -53,7 +59,7 @@ const Button = ({
     right: 'justify-end',
   };
 
-  const classes = classNames(
+  const classes = twMerge(
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
     (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded',
     style !== 'none' && classMapping.common,
@@ -61,21 +67,21 @@ const Button = ({
     classMapping[align ?? 'center'],
     size !== 'none' && classMapping[size],
     loading && 'flex gap-1',
-    className
+    className,
   );
 
   // Note: This code is repeated in Href.tsx for styling reasons
   if (href) {
     if (router) {
       return (
-        <Link className={classes} href={href}>
+        <Link {...props} className={classes} href={href} ref={ref}>
           {children}
         </Link>
       );
     }
 
     return (
-      <a className={classes} href={href} target={external ? '_blank' : undefined}>
+      <a {...props} className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
         {children}
       </a>
     );
@@ -83,18 +89,18 @@ const Button = ({
 
   if (asDiv) {
     return (
-      <div className={classes} onClick={onClick}>
+      <div {...props} className={classes} onClick={onClick} ref={ref}>
         {children}
       </div>
     );
   }
 
   return (
-    <button disabled={disabled || loading} onClick={onClick} className={classes}>
+    <button {...props} disabled={disabled || loading} onClick={onClick} className={classes} ref={ref}>
       {children}
       {loading && <Spinner />}
     </button>
   );
 };
 
-export default Button;
+export default forwardRef(Button);

@@ -1,6 +1,12 @@
 {
   "buttons": {
+    "back_to_exploits": "返回漏洞",
     "cancel": "取消",
+    "cancel_signatures": "取消签名",
+    "cancelling": "正在取消",
+    "check": "检查",
+    "check_connected_address": "检查连接地址",
+    "clear_filters": "清除筛选条件",
     "connect": "连接钱包",
     "connecting": "正在连接",
     "disconnect": "断开连接",
@@ -10,12 +16,15 @@
     "download": "下载",
     "get_started": "开始使用",
     "my_allowances": "我的授权",
+    "report_exploit": "举报漏洞",
     "revoke": "撤销",
     "revoking": "正在撤销",
     "send": "发送",
     "sending": "发送给",
-    "switch_chain": "切换链",
+    "switch_chain": "切换区块链",
     "switching": "切换中",
+    "translate": "帮助我们翻译这个页面",
+    "understand": "我理解",
     "update": "更新",
     "updating": "更新中"
   },
@@ -57,7 +66,7 @@
       "title": "此页面不存在。"
     },
     "messages": {
-      "chain_could_not_connect": "无法连接到{{chainName}} 链"
+      "chain_could_not_connect": "无法链接到{{chainName}}"
     }
   },
   "footer": {
@@ -66,12 +75,19 @@
     "terms": "条款"
   },
   "meta": {
-    "description": "通过撤销你过去的授权，来掌控自己的钱包。",
-    "title": "Revoke.cash— 撤销你的以太坊代币授权"
+    "description": "撤销在以太坊等 60+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "title": "撤销 60+ 区块链上的代币授权"
+  },
+  "misc": {
+    "powered_by": "由<0>{{name}}</0>提供技术支持"
   },
   "nav": {
+    "about": "关于我们",
+    "exploits": "漏洞",
     "extension": "扩展",
     "faq": "常见问题",
+    "learn": "学习资源",
+    "more": "更多",
     "search": "通过输入地址或域名来搜索账户"
   },
   "toasts": {
@@ -79,8 +95,9 @@
     "clipboard_success": "✅ 已复制到剪贴板",
     "donation_sent": "💪 感谢捐赠！",
     "revoke_failed": "❌ 撤销授权许可失败：{{message}}",
-    "revoke_failed_revert": "❌ Revoking allowance failed: This token does not allow you to revoke this allowance, please reach out to the team behind this token to resolve this issue",
+    "revoke_failed_revert": "❌ 撤销授权失败：{{message}}。请联系该代币团队来解决这个问题。",
+    "transaction_failed": "交易失败{{message}}",
     "transaction_submitted": "✅ 交易已提交！",
-    "update_failed": "❌ 此代币不支持更新授权，请改为撤销"
+    "update_failed": "❌ 此代币不支持更新授权，请改为撤销。"
   }
 }

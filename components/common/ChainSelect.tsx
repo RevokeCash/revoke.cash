@@ -2,7 +2,7 @@ import ChainLogo from 'components/common/ChainLogo';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 import PlaceholderIcon from './PlaceholderIcon';
 
@@ -13,17 +13,19 @@ interface ChainOption {
 
 interface Props {
   selected: number;
+  chainIds?: number[];
   onSelect?: (chainId: number) => void;
-  showName?: boolean;
   menuAlign?: 'left' | 'right';
+  instanceId?: string;
+  showNames?: boolean;
 }
 
-const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
+const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, showNames }: Props) => {
   const isMounted = useMounted();
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
 
-  const mainnetOptions = CHAIN_SELECT_MAINNETS.map((chainId) => ({
+  const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
     value: getChainName(chainId),
     chainId,
   }));
@@ -51,31 +53,32 @@ const ChainSelect = ({ onSelect, selected, showName, menuAlign }: Props) => {
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {
     const chainName = getChainName(chainId);
 
-    if (!isMounted) return null;
-
     return (
       <div className="flex items-center gap-1">
-        <ChainLogo chainId={chainId} />
-        {(context === 'menu' || showName) && <div>{chainName}</div>}
+        {isMounted ? <ChainLogo chainId={chainId} /> : <PlaceholderIcon size={24} border className="bg-transparent" />}
+        {(context === 'menu' || showNames) && <div>{chainName}</div>}
       </div>
     );
   };
 
   return (
     <Select
-      instanceId="chain-select"
+      instanceId={instanceId ?? 'chain-select'}
       classNamePrefix="chain-select"
+      aria-label="Select Network"
+      size="md"
       className="shrink-0"
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
-      options={groups}
+      options={chainIds ? mainnetOptions : groups}
+      isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
       onChange={onChange}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}
-      minMenuWidth="13.5rem"
-      placeholder={<PlaceholderIcon size={24} />}
+      minMenuWidth="14.5rem"
+      placeholder={<PlaceholderIcon size={24} border />}
       menuAlign={menuAlign}
     />
   );

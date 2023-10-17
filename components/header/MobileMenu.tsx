@@ -23,7 +23,7 @@ const MobileMenu = () => {
 
   return (
     <div className="flex flex-col">
-      <Button style="none" size="none" onClick={toggleOpen}>
+      <Button style="none" size="none" onClick={toggleOpen} aria-label="Toggle Menu">
         {!open && <Bars3Icon className="h-8 w-8" />}
         {open && <XMarkIcon className="h-8 w-8" />}
       </Button>
@@ -41,10 +41,13 @@ const MobileMenu = () => {
             <Dialog.Panel className="z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
               <div className="flex flex-col items-center gap-6 p-12">
                 <button ref={focusRef} /> {/* Focus trap */}
-                <DonateButton size="none" style="tertiary" className="text-lg" />
-                <NavLink to="/faq" text={t('common:nav.faq')} />
-                <NavLink to="/extension" text={t('common:nav.extension')} />
                 <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
+                <DonateButton size="none" style="tertiary" className="text-lg" />
+                <NavLink to="/extension" text={t('common:nav.extension')} />
+                <NavLink to="/exploits" text={t('common:nav.exploits')} />
+                <NavLink to="/learn" text={t('common:nav.learn')} />
+                <NavLink to="/learn/faq" text={t('common:nav.faq')} />
+                <NavLink to="/about" text={t('common:nav.about')} />
               </div>
             </Dialog.Panel>
           </Transition.Child>

@@ -1,17 +1,19 @@
-import { classNames } from 'lib/utils/styles';
+import { ForwardedRef, forwardRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   children: React.ReactNode;
   className: string;
 }
 
-const Label = ({ children, className }: Props) => {
-  const classes = classNames(
-    className,
-    'text-xs font-semibold flex items-center justify-center py-0.5 px-1.5 rounded-md'
-  );
+const Label = ({ children, className }: Props, ref: ForwardedRef<HTMLDivElement>) => {
+  const classes = twMerge('text-xs font-semibold flex items-center justify-center py-0.5 px-2 rounded-md', className);
 
-  return <div className={classes}>{children}</div>;
+  return (
+    <div className={classes} ref={ref}>
+      {children}
+    </div>
+  );
 };
 
-export default Label;
+export default forwardRef(Label);

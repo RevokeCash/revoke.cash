@@ -20,7 +20,14 @@ const WalletIndicator = ({ menuAlign, size, style, className }: Props) => {
 
   return (
     <div className="flex gap-2">
-      {account && chain && <ChainSelect onSelect={switchNetwork} selected={chain.id} menuAlign={menuAlign} />}
+      {account && chain && (
+        <ChainSelect
+          instanceId="global-chain-select"
+          onSelect={switchNetwork}
+          selected={chain.id}
+          menuAlign={menuAlign}
+        />
+      )}
       <WalletIndicatorDropdown size={size} style={style} className={className} />
     </div>
   );

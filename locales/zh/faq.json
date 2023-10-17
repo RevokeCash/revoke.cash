@@ -1,7 +1,7 @@
 {
   "meta": {
     "description": "关于授权、Revoke.cash和钱包安全问题的答案。",
-    "title": "Revoke.cash—常见问题"
+    "title": "常见问题"
   },
   "questions": {
     "costs": {
@@ -49,8 +49,8 @@
       "question": "我需要撤销哪些授权？"
     },
     "which_chains": {
-      "answer": "Revoke.cash<0>浏览器扩展</0>支持所有的EVM链。Revoke.cash网站支持大量的EVM链，包括Ethereum、BSC、Polygon和Avalanche。完整名单可以在支持的链菜单中查看。如果有任何其他你想支持的链，请在<1>Twitter</1>或<2>Discord</2>上联系。",
-      "question": "Revoke.cash支持哪些链？"
+      "answer": "Revoke.cash<0>浏览器扩展</0>支持所有 EVM 链。Revoke.cash 网站支持大量 EVM 链，包括 Ethereum、BSC、Polygon 和 Avalanche。完整名单请见下方。如果有任何其他想添加的链，请通过<1>Twitter</1>或<2>Discord</2>联系我们。",
+      "question": "Revoke.cash 支持哪些区块链？"
     },
     "which_domains": {
       "answer": "在搜索栏中搜索帐户时，您可以使用多种不同的域名服务。目前，我们支持 <0>ENS</0>、<1>Unstoppable Domains</1>和 <2>Avvy</2>。将来我们可能会添加其他域名服务。",

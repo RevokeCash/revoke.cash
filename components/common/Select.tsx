@@ -1,10 +1,10 @@
-import { classNames } from 'lib/utils/styles';
 import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
+import { twMerge } from 'tailwind-merge';
 
 interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
   minMenuWidth?: number | string;
   menuAlign?: 'left' | 'right';
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'full';
   controlTheme?: 'light' | 'dark';
   menuTheme?: 'light' | 'dark';
 }
@@ -15,13 +15,14 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   const controlClassMapping = {
     sm: 'h-6 px-1',
     md: 'h-9 px-2',
+    full: 'h-full px-2',
   };
 
   // TODO: Manage colors through tailwind / className integration -> move to unstyled react-select
   const colors = {
     primary: 'black', // black
     secondary: 'white', // white
-    lightest: '#f4f4f5', // zinc-100
+    lightest: '#e4e4e7', // zinc-200
     light: '#d4d4d8', // zinc-300
     dark: '#71717a', // zinc-500
     darkest: '#27272a', // zinc-800
@@ -30,17 +31,17 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   return (
     <ReactSelect
       {...props}
-      className={classNames(props.className)}
-      components={{ IndicatorSeparator: null, ClearIndicator: null, Option, ...props.components }}
+      className={twMerge(props.className)}
+      components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
       classNames={{
         control: (state) =>
-          classNames(
+          twMerge(
             // Attempt to match the browser's focus-visible behaviour for <select> elements
             // (only display the focus ring when the element is focused via the keyboard)
             state.isFocused && '[&:has(:focus-visible)]:ring-1 [&:has(:focus-visible)]:ring-current',
             state.menuIsOpen && '[&:has(:focus-visible)]:ring-0',
-            'flex items-center box-border',
-            controlClassMapping[props.size || 'md']
+            'flex items-center box-border ',
+            controlClassMapping[props.size || 'md'],
           ),
       }}
       styles={{
@@ -82,10 +83,11 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
         valueContainer: removeSpacing,
         indicatorsContainer: removeSpacing,
         singleValue: removeSpacing,
-        option: (styles) => ({
+        option: (styles, props) => ({
           ...styles,
-          cursor: 'pointer', // cursor-pointer
+          cursor: props.isDisabled ? 'not-allowed' : 'pointer',
           padding: '0.5rem', // p-2
+          backgroundColor: props.isDisabled ? colors.light : styles.backgroundColor,
         }),
       }}
       theme={(theme) => ({
@@ -123,6 +125,6 @@ const removeSpacing = (styles: any) => ({
 });
 
 // Make sure that the selected option is not highlighted
-const Option = (props: OptionProps) => {
+const Option = <O, I extends boolean, G extends GroupBase<O>>(props: OptionProps<O, I, G>) => {
   return components.Option({ ...props, isSelected: false });
 };

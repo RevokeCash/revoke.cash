@@ -1,11 +1,14 @@
 module.exports = {
   defaultLocale: 'en',
-  locales: ['en', 'es', 'zh'],
+  locales: ['en', 'zh', 'ru', 'ja', 'es'],
   pages: {
     '*': ['common'],
     '/': ['landing', 'faq'],
-    '/faq': ['faq'],
+    '/learn/faq': ['faq'],
     '/extension': ['extension'],
+    '/about': ['about'],
     'rgx:/address/.*': ['address'],
+    'rgx:/exploits.*': ['exploits'],
+    'rgx:/learn.*': ['learn'],
   },
 };

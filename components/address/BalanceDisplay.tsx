@@ -1,24 +1,35 @@
-import Spinner from 'components/common/Spinner';
-import { useAddressPageContext } from 'lib/hooks/useAddressContext';
-import { toFloat } from 'lib/utils';
+import Loader from 'components/common/Loader';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { isNullish } from 'lib/utils';
 import { getChainNativeToken } from 'lib/utils/chains';
-import { classNames } from 'lib/utils/styles';
+import { formatFiatBalance, formatFixedPointBigInt } from 'lib/utils/formatting';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  balance: string;
+  isLoading: boolean;
+  balance: bigint;
+  price?: number;
   className?: string;
 }
 
-const BalanceDisplay = ({ balance, className }: Props) => {
+const BalanceDisplay = ({ isLoading, balance, price, className }: Props) => {
   const { selectedChainId } = useAddressPageContext();
-  const classes = classNames('flex gap-0.5 items-center leading-none', className);
+  const classes = twMerge('flex gap-0.5 items-center leading-none', className);
   const nativeToken = getChainNativeToken(selectedChainId);
 
+  const fiatBalanceText =
+    !isLoading && !isNullish(balance) && !isNullish(price) && formatFiatBalance(balance, price, 18);
+
+  const placeholder = <div>X.XXX {nativeToken} ($X,XXX.XX)</div>;
+
   return (
-    <div className={classes}>
-      <span>{balance ? toFloat(balance, 18) : <Spinner className="w-3 h-3" />}</span>
-      <span className="font-bold">{nativeToken}</span>
-    </div>
+    <Loader isLoading={isLoading || isNullish(balance)} loadingChildren={placeholder}>
+      <div className={classes}>
+        <span>{formatFixedPointBigInt(balance, 18)}</span>
+        <span className="font-bold">{nativeToken}</span>
+        {fiatBalanceText ? <span>({fiatBalanceText})</span> : null}
+      </div>
+    </Loader>
   );
 };
 

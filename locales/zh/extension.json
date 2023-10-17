@@ -1,13 +1,13 @@
 {
   "meta": {
-    "description": "在你要做任何潜在有害的事情时，通过获得警告来保护你的以太坊代币余额。",
-    "title": "Revoke.cash — 浏览器扩展"
+    "description": "如果出现可能不利加密钱包安全的行为，将收到警告，从而保护以太坊资金安全。",
+    "title": "Revoke.cash 浏览器扩展"
   },
   "paragraph_1": "钓鱼网站有时会假装是要你铸造NFT或其他正当操作来骗取授权。当这些网络钓鱼骗局发生时，建议使用Revoke.cash来减轻损失，但最好还是预防此类骗局的发生。",
   "paragraph_2": "这就是Revoke.cash浏览器扩展的用处。每当你要签署一项许可时，该扩展就会弹出，并会告知你许可的细节。这可以帮助你防止签署恶意的许可。",
   "paragraph_3": "当你准备在OpenSea和LooksRare等主流市场上挂出作品进行销售，或者当你准备签署哈希时，Revoke.cash也会通知你。这些哈希值被X2Y2等市场用于列出NFTs。",
-  "paragraph_4": "一种钓鱼网站常见的骗局是诱骗你签名无GAS限制的交易，以便骗子盗取你的NFT。OpenSea、LooksRare、X2Y2、Genie和Gem的官方网站属于白名单，允许进行这些操作，因此Revoke.cash浏览器扩展不会干扰你的正常交易行为。",
+  "paragraph_4": "一种钓鱼网站常见的骗局是诱骗你签名无GAS限制的交易，以便骗子盗取你的NFT。OpenSea、LooksRare、X2Y2、Uniswap和Blur的官方网站属于白名单，允许进行这些操作，因此Revoke.cash浏览器扩展不会干扰你的正常交易行为。",
   "paragraph_5": "不同类别的警告可在扩展设置中打开或关闭。",
-  "paragraph_6": "Revoke.cash浏览器扩展适用于所有基于EVM的链，如Ethereum、Polygon和Avalanche。",
+  "paragraph_6": "Revoke.cash 浏览器扩展适用于所有基于 EVM 的链，如 Ethereum、Polygon 和 Avalanche。",
   "title": "Revoke.cash 浏览器扩展"
 }

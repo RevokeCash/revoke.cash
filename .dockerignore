@@ -1,6 +1,0 @@
-node_modules
-build
-.github
-dapp-contract-list
-Dockerfile
-.dockerignore

@@ -1,0 +1,34 @@
+{
+  "transformations": [
+    {
+      "name": "contentPathWithoutLang",
+      "source": "${path}",
+      "operations": "removePrefix: content/en/"
+    }
+  ],
+  "upload": {
+    "files": [
+      {
+        "pattern": "content/en/**.md",
+        "lang": "inherited",
+        "type": "text",
+        "path": "${contentPathWithoutLang}",
+        "file": "${file}"
+      }
+    ]
+  },
+  "download": {
+    "files": [
+      {
+        "conditions": "!empty: ${path}",
+        "stop": true,
+        "output": "content/${lang}/${path}/${file}"
+      },
+      "locales/${lang}/${file}"
+    ],
+    "includeSourceLang": true,
+    "langAliases": {
+      "zh-Hans": "zh"
+    }
+  }
+}
