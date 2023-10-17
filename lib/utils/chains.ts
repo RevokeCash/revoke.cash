@@ -79,6 +79,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.RedlightChainMainnet,
   ChainId.RolluxMainnet,
   ChainId.RootstockMainnet,
+  ChainId.Scroll,
   ChainId.ScrollSepoliaTestnet,
   ChainId.Shiden,
   ChainId.ShimmerEVMMainnet,
@@ -134,6 +135,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Base,
   ChainId.ZkSyncEraMainnet,
   ChainId.Linea,
+  ChainId.Scroll,
   ChainId['AvalancheC-Chain'],
   ChainId.CronosMainnet,
   ChainId.Kava,
@@ -322,6 +324,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.RolluxMainnet]: 'Rollux',
     [ChainId.RootstockMainnet]: 'Rootstock',
+    [ChainId.Scroll]: 'Scroll',
     [ChainId.ScrollSepoliaTestnet]: 'Scroll Sepolia',
     [ChainId.Sepolia]: 'Ethereum Sepolia',
     [ChainId.Shibarium]: 'Shibarium',
@@ -555,6 +558,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.RedlightChainMainnet]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.RolluxMainnet]: '/assets/images/vendor/chains/rollux.svg',
     [ChainId.RootstockMainnet]: '/assets/images/vendor/chains/rootstock.jpg',
+    [ChainId.Scroll]: '/assets/images/vendor/chains/scroll.png',
     [ChainId.ScrollSepoliaTestnet]: '/assets/images/vendor/chains/scroll.png',
     [ChainId.Sepolia]: '/assets/images/vendor/chains/ethereum.svg',
     [ChainId.Shibarium]: '/assets/images/vendor/chains/shibarium.svg',
@@ -718,6 +722,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.RolluxMainnet]: 'https://explorer.rollux.com/api',
     [ChainId.RootstockMainnet]: 'https://blockscout.com/rsk/mainnet/api',
+    [ChainId.Scroll]: 'https://blockscout.scroll.io/api',
     [ChainId.ScrollSepoliaTestnet]: 'https://sepolia-blockscout.scroll.io/api',
     [ChainId.Shiden]: 'https://blockscout.com/shiden/api',
     [ChainId.ShimmerEVMMainnet]: 'https://explorer.evm.shimmer.network/api',
@@ -1498,6 +1503,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
     ],
   }),
   [ChainId.RootstockMainnet]: undefined, // No DEXes that are compatible with other popular DEXes
+  [ChainId.Scroll]: undefined, // TODO: Add DEX when Scroll is live for a bit longer
   [ChainId.Shibarium]: undefined, // No liquid stablecoins
   [ChainId.Shiden]: undefined, // <$100k Liquidity
   [ChainId['SongbirdCanary-Network']]: new AggregatePriceStrategy({
