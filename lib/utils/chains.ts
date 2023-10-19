@@ -51,7 +51,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.AuroraMainnet,
   ChainId.BitgertMainnet,
   ChainId.CallistoMainnet,
-  ChainId.Canto,
   ChainId.CronosMainnet,
   ChainId.CronosTestnet,
   ChainId.DogechainMainnet,
@@ -111,7 +110,13 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
 
-export const COVALENT_SUPPORTED_CHAINS = [ChainId.BobaNetwork, ChainId.Evmos, ChainId.HarmonyMainnetShard0];
+export const COVALENT_SUPPORTED_CHAINS = [
+  ChainId.BobaNetwork,
+  ChainId.Evmos,
+  ChainId.HarmonyMainnetShard0,
+  ChainId.OpBNBMainnet,
+  ChainId.Canto,
+];
 
 export const NODE_SUPPORTED_CHAINS: number[] = [];
 
@@ -127,6 +132,7 @@ export const SUPPORTED_CHAINS = [
 export const CHAIN_SELECT_MAINNETS = [
   ChainId.EthereumMainnet,
   ChainId.BNBSmartChainMainnet,
+  ChainId.OpBNBMainnet,
   ChainId.PolygonMainnet,
   ChainId.PolygonzkEVM,
   ChainId.ArbitrumOne,
@@ -313,6 +319,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.OasisEmerald]: 'Oasis Emerald',
     [ChainId.OasisEmeraldTestnet]: 'Oasis Testnet',
     [ChainId.OasysMainnet]: 'Oasys',
+    [ChainId.OpBNBMainnet]: 'opBNB',
     [ChainId.OPMainnet]: 'Optimism',
     [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
     [ChainId.PegoNetwork]: 'Pego',
@@ -545,6 +552,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.OasisEmerald]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.OasisEmeraldTestnet]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.png',
+    [ChainId.OpBNBMainnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.OPMainnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.OptimismGoerliTestnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.Palm]: '/assets/images/vendor/chains/palm.svg',
@@ -832,6 +840,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Moonriver]: { ...MULTICALL },
     [ChainId.Mumbai]: { ...MULTICALL },
     [ChainId.OasisEmerald]: { ...MULTICALL },
+    [ChainId.OpBNBMainnet]: { ...MULTICALL },
     [ChainId.OPMainnet]: { ...MULTICALL },
     [ChainId.OptimismGoerliTestnet]: { ...MULTICALL },
     [ChainId.PolygonMainnet]: { ...MULTICALL },
@@ -842,6 +851,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     // [ChainId.PulseChainTestnetv4]: { ...MULTICALL },
     [ChainId.RolluxMainnet]: { ...MULTICALL },
     [ChainId.RootstockMainnet]: { ...MULTICALL },
+    [ChainId.Scroll]: { ...MULTICALL },
     [ChainId.Sepolia]: { ...MULTICALL },
     [ChainId.ShimmerEVMMainnet]: { ...MULTICALL },
     [ChainId['SongbirdCanary-Network']]: { ...MULTICALL },
@@ -1409,6 +1419,20 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         address: '0x5200000000000000000000000000000000000019',
         path: ['0x5200000000000000000000000000000000000001', '0xDc3af65eCBD339309Ec55F109CB214E0325c5eD4'],
         liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
+  [ChainId.OpBNBMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Cubiswap (Router) | WBNB -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0x1D7DB8a021c81C7BF4df12cACF279B918F2c4337',
+        path: ['0x4200000000000000000000000000000000000006', '0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3'],
+      }),
+      // FDUSD (no pair on Cubiswap)
+      new HardcodedPriceStrategy({
+        tokens: ['0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb'],
       }),
     ],
   }),
