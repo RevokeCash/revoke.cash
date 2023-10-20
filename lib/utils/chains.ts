@@ -72,6 +72,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.NahmiiMainnet,
   ChainId.OasisEmerald,
   ChainId.OasysMainnet,
+  ChainId.OctaSpace,
   ChainId.Palm,
   ChainId.PegoNetwork,
   ChainId.PulseChainTestnetv4,
@@ -195,6 +196,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
   ChainId.MaxxChainMainnet,
+  ChainId.OctaSpace,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -319,6 +321,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.OasisEmerald]: 'Oasis Emerald',
     [ChainId.OasisEmeraldTestnet]: 'Oasis Testnet',
     [ChainId.OasysMainnet]: 'Oasys',
+    [ChainId.OctaSpace]: 'OctaSpace',
     [ChainId.OpBNBMainnet]: 'opBNB',
     [ChainId.OPMainnet]: 'Optimism',
     [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
@@ -397,6 +400,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com',
+    [ChainId.Scroll]: 'https://scrollscan.com',
     [ChainId.SmartBitcoinCash]: 'https://www.smartscan.cash',
     [ChainId.Wanchain]: 'https://www.wanscan.org',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-3.blockscout.com',
@@ -552,6 +556,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.OasisEmerald]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.OasisEmeraldTestnet]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.png',
+    [ChainId.OctaSpace]: '/assets/images/vendor/chains/octaspace.png',
     [ChainId.OpBNBMainnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.OPMainnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.OptimismGoerliTestnet]: '/assets/images/vendor/chains/optimism.svg',
@@ -722,6 +727,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.NahmiiMainnet]: 'https://explorer.nahmii.io/api',
     [ChainId.OasisEmerald]: 'https://explorer.emerald.oasis.dev/api',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games/api',
+    [ChainId.OctaSpace]: 'https://explorer.octa.space/api',
     [ChainId.Palm]: 'https://explorer.palm.io/api',
     [ChainId.PegoNetwork]: 'https://scan.pego.network/api',
     [ChainId.PolygonMainnet]: 'https://api.polygonscan.com/api',
@@ -1422,6 +1428,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.OctaSpace]: undefined, // <$100k Liquidity
   [ChainId.OpBNBMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
