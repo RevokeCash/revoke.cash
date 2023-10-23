@@ -16,6 +16,7 @@ export const ERC20_ABI = parseAbi([
   'function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s) external',
   'function nonces(address owner) public view returns (uint256)',
   'function DOMAIN_SEPARATOR() external view returns (bytes32)',
+  'function version() external view returns (string)', // This is not part of the standard but is used by some tokens
 ]);
 
 export const ERC721_ABI = parseAbi([
