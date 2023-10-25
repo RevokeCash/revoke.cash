@@ -12,6 +12,7 @@
       "paragraph_2": "或者，你可以使用我们的一键式按钮，这样你就不需要手动输入所需的细节。",
       "title": "2.输入所需的细节并点击 \"保存\"。"
     },
+    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
     "title": "添加{{chainName}}到MetaMask"
   },
   "article_meta": {

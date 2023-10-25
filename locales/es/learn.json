@@ -12,6 +12,7 @@
       "paragraph_2": "Como alternativa, puedes utilizar nuestro botón de un solo clic para no tener que introducir los detalles requeridos manualmente.",
       "title": "2. Introduce los datos necesarios y haz clic en \"Guardar\"."
     },
+    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
     "title": "Agregar {{chainName}} a MetaMask"
   },
   "article_meta": {

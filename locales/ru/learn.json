@@ -12,6 +12,7 @@
       "paragraph_2": "Вы можете подставить всё в один клик и не вводить данные вручную.",
       "title": "2. Введите необходимые данные и нажмите «Сохранить»."
     },
+    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
     "title": "Добавьте {{chainName}} в MetaMask"
   },
   "article_meta": {

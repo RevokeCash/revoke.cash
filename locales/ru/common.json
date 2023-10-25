@@ -70,12 +70,24 @@
     }
   },
   "footer": {
-    "privacy": "Конфиденциальность",
-    "sponsors": "Спонсоры:",
-    "terms": "Условия"
+    "about": "О нас",
+    "brand_assets": "Brand Assets",
+    "community": "Community",
+    "company": "Company",
+    "exploit_checker": "Exploit Checker",
+    "extension": "Browser Extension",
+    "faq": "ЧаВо",
+    "knowledgebase": "Knowledgebase",
+    "learn": "Учить",
+    "privacy": "Политика конфиденциальности",
+    "product": "Product",
+    "sponsors": "Спонсоры",
+    "terms": "Условия",
+    "token_approval_checker": "Token Approval Checker",
+    "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
-    "description": "Обеспечьте безопасность своего кошелька, отменив доступы к токенам, предоставленные вами в Ethereum и в более чем 60 других сетях.",
+    "description": "Обеспечьте безопасность своего кошелька, отменив доступы к токенам, предоставленные вами в {{chainName}} и в более чем 60 других сетях.",
     "title": "Отмените доступы к вашим токенам в более чем 60 сетях"
   },
   "misc": {

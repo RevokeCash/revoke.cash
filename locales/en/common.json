@@ -70,21 +70,21 @@
     }
   },
   "footer": {
+    "about": "About Us",
+    "brand_assets": "Brand Assets",
+    "community": "Community",
+    "company": "Company",
+    "exploit_checker": "Exploit Checker",
+    "extension": "Browser Extension",
+    "faq": "FAQ",
+    "knowledgebase": "Knowledgebase",
+    "learn": "Learn",
     "privacy": "Privacy Policy",
+    "product": "Product",
     "sponsors": "Sponsors",
     "terms": "Terms",
     "token_approval_checker": "Token Approval Checker",
-    "extension": "Browser Extension",
-    "exploit_checker": "Exploit Checker",
-    "knowledgebase": "Knowledgebase",
-    "what_are_token_approvals": "What Are Token Approvals?",
-    "faq": "FAQ",
-    "about": "About Us",
-    "brand_assets": "Brand Assets",
-    "product": "Product",
-    "learn": "Learn",
-    "company": "Company",
-    "community": "Community"
+    "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
     "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {{chainName}} and over 60 other networks.",
