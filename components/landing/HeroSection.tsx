@@ -1,4 +1,4 @@
-import ConnectButton from 'components/header/ConnectButton';
+import Button from 'components/common/Button';
 import useTranslation from 'next-translate/useTranslation';
 import DemoVideo from './DemoVideo';
 import LandingParagraph from './LandingParagraph';
@@ -11,7 +11,9 @@ const HeroSection = () => {
     <LandingSection title={t('landing:hero_section.title')} size="h1">
       <LandingParagraph>{t('landing:hero_section.paragraph_1')}</LandingParagraph>
       <DemoVideo />
-      <ConnectButton style="primary" size="lg" className="mx-auto" text={t('common:buttons.get_started')} redirect />
+      <Button href="/token-approval-checker/ethereum" style="primary" size="lg" className="mx-auto" router>
+        {t('common:buttons.get_started')}
+      </Button>
     </LandingSection>
   );
 };

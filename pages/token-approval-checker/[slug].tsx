@@ -36,7 +36,7 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
         description={t('common:meta.description', { chainName })}
       />
       <LandingLayout searchBar={false}>
-        <div vocab="https://schema.org/" typeof="HowTo" className="flex flex-col items-center m-auto gap-8 px-4">
+        <div className="flex flex-col items-center m-auto gap-4 px-4">
           <div className="flex flex-col items-center w-full">
             <h1 className="text-4xl md:text-5xl not-prose items-center gap-2 mb-12 text-center">
               <ChainLogo chainId={chainId} size={36} className="inline align-middle" />{' '}
