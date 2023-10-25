@@ -14,7 +14,7 @@ interface Props {
 
 const BalanceDisplay = ({ isLoading, balance, price, className }: Props) => {
   const { selectedChainId } = useAddressPageContext();
-  const classes = twMerge('flex gap-0.5 items-center leading-none', className);
+  const classes = twMerge('flex gap-0.5 items-center leading-none shrink-0', className);
   const nativeToken = getChainNativeToken(selectedChainId);
 
   const fiatBalanceText =

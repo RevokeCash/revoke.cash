@@ -55,7 +55,7 @@ const LanguageSelect = () => {
       aria-label="Select Language"
       className="w-32"
       controlTheme="dark"
-      menuTheme={darkMode ? 'dark' : 'light'}
+      menuTheme="dark"
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}
