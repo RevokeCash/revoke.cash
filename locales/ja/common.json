@@ -70,12 +70,24 @@
     }
   },
   "footer": {
-    "privacy": "プライバシー",
-    "sponsors": "スポンサー：",
-    "terms": "利用規約"
+    "about": "私たちについて",
+    "brand_assets": "Brand Assets",
+    "community": "Community",
+    "company": "Company",
+    "exploit_checker": "Exploit Checker",
+    "extension": "Browser Extension",
+    "faq": "よくある質問",
+    "knowledgebase": "Knowledgebase",
+    "learn": "学ぶ",
+    "privacy": "プライバシー ポリシー",
+    "product": "Product",
+    "sponsors": "スポンサー",
+    "terms": "利用規約",
+    "token_approval_checker": "Token Approval Checker",
+    "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
-    "description": "Ethereumとその他60以上のネットワークで、過去に付与した承認や許可をリボークすることにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
+    "description": "{{chainName}}とその他60以上のネットワークで、過去に付与した承認や許可をリボークすることにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
     "title": "60を超えるネットワークで、あなたの承認をリボークしましょう。"
   },
   "misc": {

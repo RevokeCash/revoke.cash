@@ -70,12 +70,24 @@
     }
   },
   "footer": {
-    "privacy": "Privacidad",
-    "sponsors": "Patrocinadores:",
-    "terms": "Términos"
+    "about": "Sobre nosotros",
+    "brand_assets": "Brand Assets",
+    "community": "Community",
+    "company": "Company",
+    "exploit_checker": "Exploit Checker",
+    "extension": "Browser Extension",
+    "faq": "FAQ",
+    "knowledgebase": "Knowledgebase",
+    "learn": "Aprender",
+    "privacy": "Política de privacidad",
+    "product": "Product",
+    "sponsors": "Patrocinadores",
+    "terms": "Términos",
+    "token_approval_checker": "Token Approval Checker",
+    "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
-    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en Ethereum y 60 redes más.",
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {{chainName}} y 60 redes más.",
     "title": "Revoca las autorizaciones de tus tokens en más de 60 redes"
   },
   "misc": {

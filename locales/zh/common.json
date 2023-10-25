@@ -70,12 +70,24 @@
     }
   },
   "footer": {
-    "privacy": "隐私",
-    "sponsors": "赞助商：",
-    "terms": "条款"
+    "about": "关于我们",
+    "brand_assets": "Brand Assets",
+    "community": "Community",
+    "company": "Company",
+    "exploit_checker": "Exploit Checker",
+    "extension": "Browser Extension",
+    "faq": "常见问题",
+    "knowledgebase": "Knowledgebase",
+    "learn": "学习资源",
+    "privacy": "隐私政策",
+    "product": "Product",
+    "sponsors": "赞助商",
+    "terms": "条款",
+    "token_approval_checker": "Token Approval Checker",
+    "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
-    "description": "撤销在以太坊等 60+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "description": "撤销在{{chainName}}等 60+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
     "title": "撤销 60+ 区块链上的代币授权"
   },
   "misc": {
