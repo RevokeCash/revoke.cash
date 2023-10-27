@@ -1,16 +1,23 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { Fragment, ReactNode, useRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
   children: ReactNode;
+  className?: string;
 }
 
-const Modal = ({ open, setOpen, children }: Props) => {
+const Modal = ({ open, setOpen, children, className }: Props) => {
   const focusRef = useRef(null);
+
+  const panelClasses = twMerge(
+    'border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all w-full sm:max-w-md',
+    className,
+  );
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -38,7 +45,7 @@ const Modal = ({ open, setOpen, children }: Props) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all w-full sm:max-w-md">
+              <Dialog.Panel className={panelClasses}>
                 <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
                   <button ref={focusRef} aria-label="Focus Trap" />
                   <Button

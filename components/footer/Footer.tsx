@@ -67,7 +67,7 @@ const Footer = () => {
             </FooterSection>
           </div>
         </div>
-        <Divider className="my-16 border-zinc-700 dark:border-zinc-700" />
+        <Divider className="my-16 border-zinc-900 dark:border-zinc-800" />
         <div className="my-16 flex flex-col md:flex-row items-center gap-4 justify-between">
           <div className="flex flex-col gap-px text-center md:text-left">
             <p className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2023 Revoke.cash</p>
