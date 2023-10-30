@@ -69,7 +69,9 @@ export class ViemLogsProvider implements LogsProvider {
   private formatEvent(log: any): Log {
     return {
       ...log,
-      address: getAddress(log.address),
+      // XDC Network uses a different address format than other EVM networks
+      // And somehow there's a bug onn some chains that causes the address to be returned as 00x... instead of 0x00...
+      address: getAddress(log.address.replace('xdc', '0x').replace('00x', '0x00')),
       blockNumber: Number(log.blockNumber),
       logIndex: Number(log.logIndex),
       transactionIndex: Number(log.transactionIndex),
