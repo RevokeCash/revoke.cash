@@ -41,7 +41,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.TaikoJolnirL2,
   ChainId.Wanchain,
-  ChainId.XinFinXDCNetwork,
+  ChainId.XDCNetwork,
   ChainId.ZkSyncEraMainnet,
   ChainId.ZkSyncEraTestnet,
 ];
@@ -75,6 +75,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.OctaSpace,
   ChainId.Palm,
   ChainId.PegoNetwork,
+  ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.PulseChainTestnetv4,
   ChainId.RedlightChainMainnet,
   ChainId.RolluxMainnet,
@@ -143,6 +144,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZkSyncEraMainnet,
   ChainId.Linea,
   ChainId.Scroll,
+  ChainId['PGN(PublicGoodsNetwork)'],
   ChainId['AvalancheC-Chain'],
   ChainId.CronosMainnet,
   ChainId.Kava,
@@ -166,7 +168,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MantaPacificMainnet,
   ChainId.KardiaChainMainnet,
   ChainId.Wanchain,
-  ChainId.XinFinXDCNetwork,
+  ChainId.XDCNetwork,
   ChainId.CoreBlockchainMainnet,
   ChainId.Evmos,
   ChainId.HarmonyMainnetShard0,
@@ -326,6 +328,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.OPMainnet]: 'Optimism',
     [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
     [ChainId.PegoNetwork]: 'Pego',
+    [ChainId['PGN(PublicGoodsNetwork)']]: 'PGN',
     [ChainId.PolygonMainnet]: 'Polygon',
     [ChainId.PolygonzkEVM]: 'Polygon zkEVM',
     [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
@@ -349,7 +352,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.TelosEVMTestnet]: 'Telos Testnet',
     [ChainId.VelasEVMMainnet]: 'Velas',
     [ChainId['WEMIX3.0Mainnet']]: 'WEMIX',
-    [ChainId.XinFinXDCNetwork]: 'XDC',
+    [ChainId.XDCNetwork]: 'XDC',
     [ChainId.ZetaChainAthens3Testnet]: 'ZetaChain Athens',
     [ChainId.ZetaChainMainnet]: 'ZetaChain',
     [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
@@ -452,7 +455,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonMainnet]: `https://polygon-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
-    [ChainId.XinFinXDCNetwork]: 'https://erpc.xdcrpc.com',
+    [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
     ...RPC_OVERRIDES,
   };
@@ -563,6 +566,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.OptimismGoerliTestnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.Palm]: '/assets/images/vendor/chains/palm.png',
     [ChainId.PegoNetwork]: '/assets/images/vendor/chains/pego.jpg',
+    [ChainId['PGN(PublicGoodsNetwork)']]: '/assets/images/vendor/chains/pgn.svg',
     [ChainId.PolygonMainnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PolygonzkEVM]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PolygonzkEVMTestnet]: '/assets/images/vendor/chains/polygon.svg',
@@ -588,7 +592,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.VelasEVMMainnet]: '/assets/images/vendor/chains/velas.svg',
     [ChainId.Wanchain]: '/assets/images/vendor/chains/wanchain.svg',
     [ChainId['WEMIX3.0Mainnet']]: '/assets/images/vendor/chains/wemix.svg',
-    [ChainId.XinFinXDCNetwork]: '/assets/images/vendor/chains/xdc.svg',
+    [ChainId.XDCNetwork]: '/assets/images/vendor/chains/xdc.svg',
     [ChainId.ZetaChainAthens3Testnet]: '/assets/images/vendor/chains/zetachain.svg',
     [ChainId.ZkSyncEraMainnet]: '/assets/images/vendor/chains/zksync.jpeg',
     [ChainId.ZkSyncEraTestnet]: '/assets/images/vendor/chains/zksync.jpeg',
@@ -605,7 +609,7 @@ export const getChainInfoUrl = (chainId: number): string | undefined => {
     [ChainId.Shiden]: 'https://shiden.astar.network/',
     [ChainId['SongbirdCanary-Network']]: 'https://flare.network/songbird/',
     [ChainId.Wanchain]: 'https://www.wanchain.org/',
-    [ChainId.XinFinXDCNetwork]: 'https://xdc.org/',
+    [ChainId.XDCNetwork]: 'https://xdc.org/',
   };
 
   const mainnetChainId = getCorrespondingMainnetChainId(chainId);
@@ -746,6 +750,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.OctaSpace]: 'https://explorer.octa.space/api',
     [ChainId.Palm]: 'https://explorer.palm.io/api',
     [ChainId.PegoNetwork]: 'https://scan.pego.network/api',
+    [ChainId['PGN(PublicGoodsNetwork)']]: 'https://explorer.publicgoods.network/api',
     [ChainId.PolygonMainnet]: 'https://api.polygonscan.com/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
@@ -903,6 +908,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.OpBNBMainnet]: { ...MULTICALL },
     [ChainId.OPMainnet]: { ...MULTICALL },
     [ChainId.OptimismGoerliTestnet]: { ...MULTICALL },
+    [ChainId['PGN(PublicGoodsNetwork)']]: { ...MULTICALL },
     [ChainId.PolygonMainnet]: { ...MULTICALL },
     [ChainId.PolygonzkEVM]: { ...MULTICALL },
     [ChainId.PolygonzkEVMTestnet]: { ...MULTICALL },
@@ -1537,6 +1543,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId['PGN(PublicGoodsNetwork)']]: undefined, // <$100k Liquidity
   [ChainId.PolygonMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     // Note: QuickSwap v3 is forked from Algebra, so we need to create a strategy for it
@@ -1641,7 +1648,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
-  [ChainId.XinFinXDCNetwork]: new AggregatePriceStrategy({
+  [ChainId.XDCNetwork]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
       // XSPSwap (Router) | WXDC -> xUSDT
