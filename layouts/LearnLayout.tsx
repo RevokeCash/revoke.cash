@@ -28,9 +28,9 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
   if (meta.sidebarTitle) breadcrumbs.push({ name: meta.sidebarTitle });
 
   return (
-    <div className="flex flex-col mx-auto min-h-screen gap-4">
+    <div className="flex flex-col mx-auto min-h-screen">
       <Header searchBar={searchBar} />
-      <main className="max-w-6xl w-full mx-auto px-4 lg:px-8 grow mb-16">
+      <main className="max-w-6xl w-full mx-auto px-4 lg:px-8 grow">
         <div className="flex flex-col min-w-0 lg:flex-row gap-4">
           <Sidebar entries={sidebarEntries} />
           <div className="min-w-0 w-full">
@@ -43,9 +43,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
           </div>
         </div>
       </main>
-      <div className="flex flex-col justify-end">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
