@@ -11,7 +11,7 @@ const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-black dark:bg-zinc-900" aria-labelledby="footer-heading">
+    <footer className="bg-black dark:bg-zinc-900 mt-24" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -91,7 +91,7 @@ interface FooterSectionProps {
 
 const FooterSection = ({ heading, children }: FooterSectionProps) => {
   return (
-    <div className="mt-10 flex flex-col gap-4">
+    <div className="mt-8 flex flex-col gap-4">
       <h3 className="text-sm font-semibold leading-6 text-zinc-100">{heading}</h3>
       <ul role="list" className="space-y-2">
         {children}

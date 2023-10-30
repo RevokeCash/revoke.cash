@@ -16,7 +16,7 @@ const Header = ({ searchBar = true }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <header className="flex flex-col relative p-4 lg:px-8 gap-4">
+    <header className="flex flex-col relative p-4 lg:px-8 gap-4 mb-4">
       <div className="flex justify-between items-center gap-8">
         <div className="hidden lg:flex justify-start items-center gap-4 w-2/5 flex-wrap">
           <DonateButton size="md" />
