@@ -39,7 +39,7 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
         <div className="flex flex-col items-center m-auto gap-4 px-4">
           <div className="flex flex-col items-center w-full">
             <h1 className="text-4xl md:text-5xl not-prose items-center gap-2 mb-12 text-center">
-              <ChainLogo chainId={chainId} size={36} className="inline align-middle" />{' '}
+              <ChainLogo chainId={chainId} size={56} className="inline align-middle" />{' '}
               <div className="inline align-middle">{t('token_approval_checker:title', { chainName })}</div>
             </h1>
             <AddressSearchBox
@@ -59,32 +59,26 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
               </div>
             </div>
           </div>
-          <Prose className="flex flex-col items-center max-w-3xl">
-            <div>
-              <ChainDescription chainId={chainId} headingElement="h2" />
-            </div>
-            <div>
-              <h2>{t('token_approval_checker:what_are_token_approvals.title', { chainName })}</h2>
-              <p>
-                <Trans
-                  i18nKey="token_approval_checker:what_are_token_approvals.content"
-                  values={{ chainName }}
-                  components={[<Href href="/learn/approvals/what-are-token-approvals" html underline="hover" router />]}
-                />
-              </p>
-            </div>
-            <div>
-              <h2>{t('token_approval_checker:how_to_revoke.title', { chainName })}</h2>
-              <p>
-                <Trans
-                  i18nKey="token_approval_checker:how_to_revoke.content"
-                  values={{ chainName }}
-                  components={[
-                    <Href href="/learn/approvals/how-to-revoke-token-approvals" html underline="hover" router />,
-                  ]}
-                />
-              </p>
-            </div>
+          <Prose className="max-w-3xl">
+            <ChainDescription chainId={chainId} headingElement="h2" />
+            <h2 className="text-left">{t('token_approval_checker:what_are_token_approvals.title', { chainName })}</h2>
+            <p>
+              <Trans
+                i18nKey="token_approval_checker:what_are_token_approvals.content"
+                values={{ chainName }}
+                components={[<Href href="/learn/approvals/what-are-token-approvals" html underline="hover" router />]}
+              />
+            </p>
+            <h2>{t('token_approval_checker:how_to_revoke.title', { chainName })}</h2>
+            <p>
+              <Trans
+                i18nKey="token_approval_checker:how_to_revoke.content"
+                values={{ chainName }}
+                components={[
+                  <Href href="/learn/approvals/how-to-revoke-token-approvals" html underline="hover" router />,
+                ]}
+              />
+            </p>
           </Prose>
         </div>
       </LandingLayout>
