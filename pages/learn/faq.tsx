@@ -29,7 +29,15 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
+      <NextSeo
+        {...defaultSEO}
+        title={t('faq:meta.title')}
+        description={t('faq:meta.description')}
+        openGraph={{
+          ...defaultSEO.openGraph,
+          images: [{ url: `https://revoke.cash/assets/images/learn/faq/cover.jpg`, width: 1600, height: 900 }],
+        }}
+      />
       <LearnLayout sidebarEntries={sidebar} slug={['faq']} meta={meta}>
         <h1>{t('faq:title')}</h1>
 
