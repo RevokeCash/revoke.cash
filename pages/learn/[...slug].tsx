@@ -18,7 +18,17 @@ interface Props {
 const LearnDocumentPage: NextPage<Props> = ({ meta, content, sidebar, slug, translationUrl }) => {
   return (
     <>
-      <NextSeo {...defaultSEO} title={meta.title} description={meta.description} />
+      <NextSeo
+        {...defaultSEO}
+        title={meta.title}
+        description={meta.description}
+        openGraph={{
+          ...defaultSEO.openGraph,
+          images: meta.coverImage
+            ? [{ url: `https://revoke.cash${meta.coverImage}`, width: 1600, height: 900 }]
+            : defaultSEO.openGraph.images,
+        }}
+      />
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta} translationUrl={translationUrl}>
         <MarkdownProse content={content} />
       </LearnLayout>

@@ -110,6 +110,7 @@ export interface ContentMeta {
   language: string;
   author?: string;
   translator?: string;
+  coverImage?: string;
 }
 
 export interface RawContentFile {

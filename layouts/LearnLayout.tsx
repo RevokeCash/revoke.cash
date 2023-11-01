@@ -1,4 +1,5 @@
 import Breadcrumb from 'components/common/Breadcrumb';
+import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
@@ -6,6 +7,7 @@ import ArticleMeta from 'components/learn/ArticleMeta';
 import Sidebar from 'components/learn/Sidebar';
 import { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 
 interface Props {
   children: React.ReactNode;
@@ -38,6 +40,9 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
               <Breadcrumb pages={breadcrumbs} />
               <TranslateButton language={meta.language} translationUrl={translationUrl} />
             </div>
+            <Prose className="mb-4">
+              {meta.coverImage ? <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} /> : null}
+            </Prose>
             {children}
             <ArticleMeta meta={meta} />
           </div>

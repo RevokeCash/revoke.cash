@@ -10,7 +10,7 @@ interface Props {
 
 const Breadcrumb = ({ pages }: Props) => {
   return (
-    <nav className="flex mb-5">
+    <nav className="flex mb-4">
       <ol className="flex items-center gap-2 flex-wrap" vocab="https://schema.org/" typeof="BreadcrumbList">
         <li>
           <Href

@@ -43,11 +43,20 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
     sidebarTitle: t('learn:add_network.title', { chainName }),
     description: t('learn:add_network.description', { chainName }),
     language: lang,
+    coverImage: `/api/og/learn/wallets/add-network/${getChainSlug(chainId)}`,
   };
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={meta.title} description={meta.description} />
+      <NextSeo
+        {...defaultSEO}
+        title={meta.title}
+        description={meta.description}
+        openGraph={{
+          ...defaultSEO.openGraph,
+          images: [{ url: `https://revoke.cash${meta.coverImage}`, width: 1600, height: 900 }],
+        }}
+      />
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta}>
         <Prose vocab="https://schema.org/" typeof="HowTo">
           <h1 property="name">{meta.title}</h1>

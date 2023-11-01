@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import matter from 'gray-matter';
 import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
 import getT from 'next-translate/getT';
@@ -45,6 +45,7 @@ export const readAndParseContentFile = (
     language,
     author: data.author ?? null,
     translator: data.translator ?? null,
+    coverImage: getCoverImage(slug, directory),
   };
 
   return { content, meta };
@@ -172,4 +173,10 @@ export const getTranslationUrl = async (
   };
 
   return `https://localazy.com/p/revoke-cash-markdown-content/phrases/${languageCodes[locale]}/edit/${key.id}`;
+};
+
+export const getCoverImage = (slug: string | string[], directory: string = 'learn'): string | null => {
+  const coverImage = join('/', 'assets', 'images', directory, [slug].flat().join('/'), 'cover.jpg');
+  if (existsSync(join(process.cwd(), 'public', coverImage))) return coverImage;
+  return null;
 };
