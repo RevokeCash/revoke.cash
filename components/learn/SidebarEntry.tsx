@@ -11,7 +11,7 @@ interface Props {
 const SidebarEntry = ({ title, path, children }: Props) => {
   if (children && children.length > 0) {
     return (
-      <SidebarSection title={title} path={path} href={children[0].path}>
+      <SidebarSection title={title} path={path} href={path}>
         {children.map((child) => (
           <SidebarEntry key={child.path} {...child} />
         ))}
