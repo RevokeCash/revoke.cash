@@ -25,7 +25,7 @@ const MarkdownProse = ({ content, className }: Props) => {
     // We create a custom component for YouTube videos because we want to use the lite-youtube-embed package
     'youtube-video': (props: any) => {
       return (
-        <div className="my-5 border border-black rounded-lg overflow-hidden">
+        <div className="my-5 border border-black dark:border-white rounded-lg overflow-hidden">
           <LiteYouTubeEmbed poster="maxresdefault" noCookie={true} {...props} />
         </div>
       );
