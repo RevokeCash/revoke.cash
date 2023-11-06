@@ -77,7 +77,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
             <h3 property="name">{t('learn:add_network.step_1.title')}</h3>
             <meta property="text" content={t('learn:add_network.step_1.title')} />
             <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
-              <div>
+              <p>
                 <Image
                   src="/assets/images/learn/wallets/add-network/metamask-add-network-1.png"
                   alt="MetaMask Add Network 1"
@@ -87,8 +87,8 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
                   priority
                   fetchPriority="high"
                 />
-              </div>
-              <div>
+              </p>
+              <p>
                 <Image
                   src="/assets/images/learn/wallets/add-network/metamask-add-network-2.png"
                   alt="MetaMask Add Network 2"
@@ -98,7 +98,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
                   priority
                   fetchPriority="high"
                 />
-              </div>
+              </p>
             </div>
           </div>
           <div property="step" typeof="HowToStep">
