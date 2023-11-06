@@ -43,7 +43,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
     sidebarTitle: t('learn:add_network.title', { chainName }),
     description: t('learn:add_network.description', { chainName }),
     language: lang,
-    coverImage: `/api/og/learn/wallets/add-network/${getChainSlug(chainId)}`,
+    coverImage: encodeURI(`/api/og?background=ADD_NETWORK&text=${t('learn:add_network.title', { chainName })}`),
   };
 
   return (
