@@ -1,15 +1,15 @@
 {
-  "different_chain": "Or check your token approvals on a different chain",
+  "different_chain": "または、別のネットワークでトークンの承認を確認してください",
   "how_to_revoke": {
-    "content": "When you enter your address above, you will see a list of all your {{chainName}} token approvals. The list will contain all the token approval details, such as the date, amount and spender. You can sort the list and filter it by any of these properties. You can then revoke any token approval by clicking the revoke button, which will prompt your wallet to confirm the revoke transaction, costing a small gas fee. Besides {{chainName}} you can also check your approvals on 60+ other networks by using the dropdown menu. Learn more about revoking token approvals in our <0>Learn article</0>.",
-    "title": "How to Revoke {{chainName}} Token Approvals."
+    "content": "上記のアドレスを入力すると、すべての{{chainName}}トークン承認のリストが表示されます。リストには、日付、金額、支出者など、トークン承認の詳細がすべて含まれます。リストを並べ替えたり、これらのプロパティーで絞り込んだりすることができます。その後、取り消しボタンをクリックしてトークンの承認を取り消すことができます。これにより、ウォレットに取消取引の確認を求められますが、少額のガス料金がかかります。{{chainName}}以外には、ドロップダウンメニューを使って60以上の他のネットワークでの承認状況を確認することもできます。トークンの承認を取り消す方法について詳しくは、<0>学習記事</0>をご覧ください。",
+    "title": "{{chainName}}トークンの承認を取り消す方法。"
   },
   "meta": {
-    "title": "{{chainName}} Token Approval Checker"
+    "title": "{{chainName}}トークン承認チェッカー"
   },
-  "title": "{{chainName}} Token Approval Checker",
+  "title": "{{chainName}}トークン承認チェッカー",
   "what_are_token_approvals": {
-    "content": "Token approvals are used to give permission to a smart contract to spend your tokens on your behalf. This is a common pattern used by decentralized exchanges and other decentralized applications. This is an important feature for the functioning of decentralized applications on {{chainName}} and other blockchain networks, but it can also be dangerous if left unchecked. Learn more about token approvals in our <0>Learn article</0>.",
-    "title": "What Are {{chainName}} Token Approvals?"
+    "content": "トークン承認は、スマートコントラクトがユーザーに代わってトークンを使用する許可を与えるために使用されます。これは分散型取引所やその他の分散型アプリケーションでよく使われるパターンです。これは、{{chainName}}と他のブロックチェーンネットワーク上の分散型アプリケーションが機能するためには重要な機能ですが、チェックしないままにしておくと危険な場合もあります。トークンの承認について詳しくは、<0>学習記事</0>をご覧ください。",
+    "title": "{{chainName}}トークン承認とは？"
   }
 }
