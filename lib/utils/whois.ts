@@ -1,10 +1,10 @@
 import { ChainId } from '@revoke.cash/chains';
-import axios from 'axios';
 import { AVVY_DOMAINS_ABI, OPENSEA_REGISTRY_ABI, UNSTOPPABLE_DOMAINS_ABI } from 'lib/abis';
 import {
   ADDRESS_ZERO,
   ALCHEMY_API_KEY,
   AVVY_DOMAINS_ADDRESS,
+  HARPIE_API_KEY,
   OPENSEA_REGISTRY_ADDRESS,
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
@@ -45,19 +45,25 @@ export const getSpenderData = async (
 
 const getSpenderDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    const { data } = await axios.get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`);
-    return data;
+    const response = await fetch(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`);
+    if (!response.ok) return null;
+    return await response.json();
   } catch {
     return null;
   }
 };
 
 const getSpenderDataFromHarpie = async (address: string, chainId: number): Promise<SpenderData | null> => {
-  const apiKey = process.env.NEXT_PUBLIC_HARPIE_API_KEY;
+  const apiKey = HARPIE_API_KEY;
   if (!apiKey || chainId !== 1) return null;
 
   try {
-    const { data } = await axios.post('https://api.harpie.io/getprotocolfromcontract', { apiKey, address });
+    const response = await fetch('https://api.harpie.io/getprotocolfromcontract', {
+      method: 'POST',
+      body: JSON.stringify({ apiKey, address }),
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
     if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
     return { name: data.contractOwner };
   } catch (e) {
