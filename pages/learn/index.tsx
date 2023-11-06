@@ -15,14 +15,19 @@ interface Props {
 const LearnPage: NextPage<Props> = ({ sidebar }: Props) => {
   const { t, lang } = useTranslation();
 
-  const meta = { language: lang, coverImage: '/assets/images/learn/cover.jpg' };
+  const meta = {
+    title: t('learn:meta.title'),
+    description: t('learn:meta.description'),
+    language: lang,
+    coverImage: '/assets/images/learn/cover.jpg',
+  };
 
   return (
     <>
       <NextSeo
         {...defaultSEO}
-        title={t('learn:meta.title')}
-        description={t('learn:meta.description')}
+        title={meta.title}
+        description={meta.description}
         openGraph={{
           ...defaultSEO.openGraph,
           images: [{ url: `https://revoke.cash${meta.coverImage}`, width: 1600, height: 900 }],

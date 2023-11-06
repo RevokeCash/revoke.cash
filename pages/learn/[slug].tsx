@@ -18,6 +18,8 @@ const LearnSectionPage: NextPage<Props> = ({ sidebar, slug }: Props) => {
   const { t, lang } = useTranslation();
 
   const meta = {
+    title: t(`learn:sections.${slug}.title`),
+    description: t('learn:meta.description'),
     language: lang,
     sidebarTitle: t(`learn:sidebar.${slug}`),
     coverImage: `/assets/images/learn/${slug}/cover.jpg`,
@@ -27,8 +29,8 @@ const LearnSectionPage: NextPage<Props> = ({ sidebar, slug }: Props) => {
     <>
       <NextSeo
         {...defaultSEO}
-        title={t(`learn:sections.${slug}.title`)}
-        description={t('learn:meta.description')}
+        title={meta.title}
+        description={meta.description}
         openGraph={{
           ...defaultSEO.openGraph,
           images: [{ url: `https://revoke.cash${meta.coverImage}`, width: 1600, height: 900 }],
