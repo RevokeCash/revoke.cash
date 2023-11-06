@@ -24,6 +24,9 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
   const [value, setValue] = useState<string>('');
 
   const chainName = getChainName(chainId);
+  const coverImage = encodeURI(
+    `/api/og?background=APPROVAL_CHECKER&text=${t('token_approval_checker:meta.title', { chainName })}`,
+  );
 
   const query: any = { ...router.query, chainId };
   delete query.slug;
@@ -34,6 +37,10 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
         {...defaultSEO}
         title={t('token_approval_checker:meta.title', { chainName })}
         description={t('common:meta.description', { chainName })}
+        openGraph={{
+          ...defaultSEO.openGraph,
+          images: [{ url: `https://revoke.cash${coverImage}`, width: 1600, height: 900 }],
+        }}
       />
       <LandingLayout searchBar={false}>
         <div className="flex flex-col items-center m-auto gap-4 px-4">
