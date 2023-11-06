@@ -12,22 +12,37 @@
       "paragraph_2": "或者，你可以使用我们的一键式按钮，这样你就不需要手动输入所需的细节。",
       "title": "2.输入所需的细节并点击 \"保存\"。"
     },
-    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
+    "steps_heading": "添加{{chainName}}到MetaMask的步骤",
     "title": "添加{{chainName}}到MetaMask"
   },
   "article_meta": {
     "author": "作者：<0>{{author}}</0>",
     "translator": "翻译：<0>{{translator}}</0>"
   },
-  "home": {
-    "intro_paragraph": "我们创建了Revoke.cash学习部分，以帮助你了解如何在web3的世界中保持安全。它涵盖了web3的基本知识和更高阶的主题。随着时间的推移，我们将增加更多的文章，所以一定要定期回来查看。"
-  },
   "meta": {
     "description": "web3 世界可能让人疑惑不解，但也不必如此。我们已经收集了一些资源，以帮助你了解 web3、钱包安全等信息。",
     "title": "了解 Web3、钱包安全和更多信息"
   },
+  "sections": {
+    "approvals": {
+      "intro_paragraph": "在代币授权部分，您可以了解所有关于代币授权的知识。您将了解代币授权是什么，以及如何管理。另外，该部分也涵盖了一些替代方案，例如许可签名。",
+      "title": "了解代币授权"
+    },
+    "basics": {
+      "intro_paragraph": "在基础知识部分，您将了解加密的基本组成部分，例如代币、NFT 和钱包。您可以熟悉 web3 世界中常见的术语和概念。",
+      "title": "了解加密基础知识"
+    },
+    "home": {
+      "intro_paragraph": "我们创建了Revoke.cash学习部分，以帮助你了解如何在web3的世界中保持安全。它涵盖了web3的基本知识和更高阶的主题。随着时间的推移，我们将增加更多的文章，所以一定要定期回来查看。",
+      "title": "了解 Web3、钱包安全和更多信息"
+    },
+    "wallets": {
+      "intro_paragraph": "在钱包部分，您可以了解有关钱包的所有信息，包括现有钱包的不同类型，以及如何使用钱包与不同区块链网络上的应用程序进行交互。",
+      "title": "了解钱包"
+    }
+  },
   "sidebar": {
-    "approvals": "代币批准",
+    "approvals": "代币授权",
     "basics": "基础",
     "faq": "常见问题",
     "mobile_header": "浏览文章",

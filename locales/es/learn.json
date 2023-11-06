@@ -3,28 +3,43 @@
     "description": "Descubre cómo puedes añadir fácilmente {{chainName}} y otras redes a carteras de criptomonedas como MetaMask.",
     "intro_paragraph": "El proceso de añadir {{chainName}} a tu cartera puede variar ligeramente según la cartera que uses. Los siguientes pasos son para MetaMask. Si utilizas una cartera diferente, lo más probable es que puedas seguir un proceso similar.",
     "select_network": "Selecciona la red que quieres añadir:",
-    "sidebar_title": "Agrega una red a tu cartera",
+    "sidebar_title": "Añadir una Red a tu Cartera",
     "step_1": {
-      "title": "1. Abre tu cartera y ve a la página «Añadir red»."
+      "title": "1. Abre tu cartera y ve a la página \"Añadir red\"."
     },
     "step_2": {
       "paragraph_1": "Después de introducir todos los datos necesarios, haz clic en \"Guardar\" para añadir {{chainName}} a MetaMask.",
       "paragraph_2": "Como alternativa, puedes utilizar nuestro botón de un solo clic para no tener que introducir los detalles requeridos manualmente.",
       "title": "2. Introduce los datos necesarios y haz clic en \"Guardar\"."
     },
-    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
-    "title": "Agregar {{chainName}} a MetaMask"
+    "steps_heading": "Pasos para añadir {{chainName}} a MetaMask",
+    "title": "Añadir {{chainName}} a MetaMask"
   },
   "article_meta": {
     "author": "Escrito por <0>{{author}}</0>",
     "translator": "Traducido por <0>{{translator}}</0>"
   },
-  "home": {
-    "intro_paragraph": "Creamos la sección de aprendizaje de Revoke.cash para ayudarte a comprender cómo puedes mantenerte seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente."
-  },
   "meta": {
     "description": "El mundo de la web3 puede resultar confuso, pero no tiene por qué serlo. Hemos reunido una colección de recursos para ayudarte a aprender sobre la web3, la seguridad y mucho más.",
     "title": "Aprender Sobre Web3, Seguridad y Más"
+  },
+  "sections": {
+    "approvals": {
+      "intro_paragraph": "En la sección Autorizaciones de Token, puedes obtener más información sobre las autorizaciones de token. Esto te ayudará a entender qué son las autorizaciones de token y cómo puedes gestionarlas. También cubre algunos esquemas de autorización alternativa, como las firmas de Permisos.",
+      "title": "Más información sobre la Autorización de Tokens"
+    },
+    "basics": {
+      "intro_paragraph": "En las secciones Conceptos básicos, puedes aprender todo sobre los componentes básicos de las criptomonedas, como los tokens, las NFT y las carteras. Esto te permitirá familiarizarte con la terminología y los conceptos que encontrarás en el mundo de web3.",
+      "title": "Más información sobre los Conceptos Básicos de las Criptomonedas"
+    },
+    "home": {
+      "intro_paragraph": "Creamos la sección Aprender de Revoke.cash para ayudarte a comprender cómo puedes mantenerte seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente.",
+      "title": "Aprender Sobre Web3, Seguridad y Más"
+    },
+    "wallets": {
+      "intro_paragraph": "En la sección Carteras, puedes aprender todo sobre las carteras. Esto te ayudará a entender los diferentes tipos de carteras que existen y cómo puedes usarlas para interactuar con aplicaciones en diferentes redes de blockchains.",
+      "title": "Más información sobre las Carteras"
+    }
   },
   "sidebar": {
     "approvals": "Autorizaciones de Tokens",
