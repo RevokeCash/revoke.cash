@@ -27,7 +27,7 @@ After applying these options, you can find the approval you want to revoke and c
 
 ![Revoke.cash](/assets/images/learn/approvals/how-to-revoke-token-approvals/revoke-cash.png)
 
-If you prefer learning through video content, our friend [WiiMee](https://twitter.com/Wii_Mee) has created an excellent video tutorial on how to use Revoke.cash.
+If you prefer learning through video content, our friend [WiiMee](https://twitter.com/Wii_Mee) has created an excellent video tutorial on how to use Revoke.cash. If you want to read more from other sources, [Bankless Academy](https://app.banklessacademy.com/lessons/managing-token-allowances) has also written a great article on the topic.
 
 ::youtube-video{title="How To Revoke Token Approvals on Revoke.cash by WiiMee" id="XfojTY30d8M"}
 
