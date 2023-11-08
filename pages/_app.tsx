@@ -4,10 +4,9 @@ import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import { init, track } from 'lib/utils/analytics';
 import type { AppProps } from 'next/app';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import NextTopLoader from 'nextjs-toploader';
 import React, { useEffect } from 'react';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import { ToastContainer } from 'react-toastify';
@@ -23,11 +22,6 @@ timeago.register('es', timeagoEs);
 timeago.register('ja', timeagoJa);
 timeago.register('ru', timeagoRu);
 timeago.register('zh', timeagoZh);
-
-Router.events.on('routeChangeStart', () => NProgress.start());
-Router.events.on('routeChangeComplete', () => NProgress.done());
-Router.events.on('routeChangeError', () => NProgress.done());
-NProgress.configure({ showSpinner: false });
 
 // suppress useLayoutEffect warnings when running outside a browser
 if (typeof window === 'undefined') React.useLayoutEffect = React.useEffect;
@@ -48,6 +42,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <EthereumProvider>
           <ColorThemeProvider>
             <Component {...pageProps} />
+            <NextTopLoader height={2} color="#000" showSpinner={false} shadow={false} />
             <ToastContainer
               className="text-center"
               toastClassName="border border-black bg-white text-zinc-900 dark:bg-black dark:border-white dark:text-zinc-100"

@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { existsSync, readFileSync } from 'fs';
 import matter from 'gray-matter';
 import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
+import ky from 'lib/ky';
 import getT from 'next-translate/getT';
 import { join } from 'path';
 
@@ -141,11 +141,11 @@ export const getTranslationUrl = async (
 
   const baseUrl = 'https://api.localazy.com/projects/_a7784910611832258237';
 
-  const { data: files } = await axios.get(`${baseUrl}/files`, {
-    headers: {
-      Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
-    },
-  });
+  const headers = {
+    Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
+  };
+
+  const files = await ky.get(`${baseUrl}/files`, { headers }).json<any[]>();
 
   const targetFileName = `${normalisedSlug.at(-1)}.md`;
   const targetPath = `${directory}/${normalisedSlug.slice(0, -1).join('/')}`;
@@ -156,14 +156,8 @@ export const getTranslationUrl = async (
   }
 
   const {
-    data: {
-      keys: [key],
-    },
-  } = await axios.get(`${baseUrl}/files/${file.id}/keys/en`, {
-    headers: {
-      Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
-    },
-  });
+    keys: [key],
+  } = await ky.get(`${baseUrl}/files/${file.id}/keys/en`, { headers }).json<any>();
 
   const languageCodes = {
     zh: 1,

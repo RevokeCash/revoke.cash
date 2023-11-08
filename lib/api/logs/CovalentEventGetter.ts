@@ -1,5 +1,5 @@
-import axios from 'axios';
 import type { Filter, Log } from 'lib/interfaces';
+import ky from 'lib/ky';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
@@ -31,28 +31,29 @@ export class CovalentEventGetter implements EventGetter {
     const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !!topic);
     const apiUrl = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
 
-    const params = {
+    const searchParams = {
       'starting-block': fromBlock === 0 ? 'earliest' : fromBlock,
       'ending-block': toBlock,
       'secondary-topics': secondaryTopics.join(','),
       'page-size': 9999999,
     };
 
-    const auth = {
-      username: this.apiKey,
-      password: '',
+    const headers = {
+      Authorization: `Basic ${Buffer.from(`${this.apiKey}:`).toString('base64')}`,
     };
 
     try {
-      const result = await this.queue.add(() => axios.get(apiUrl, { params, auth }));
-      return result?.data?.data?.items?.map(formatCovalentEvent) ?? [];
+      const result = await this.queue.add(() =>
+        ky.get(apiUrl, { searchParams, headers, retry: 3, timeout: false }).json<any>(),
+      );
+      return result?.data?.items?.map(formatCovalentEvent) ?? [];
     } catch (e) {
       if (isRateLimitError(parseErrorMessage(e))) {
         console.error('Rate limit reached, retrying...');
         return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
       }
 
-      throw new Error(e.response?.data?.error_message ?? e.message);
+      throw new Error(e.data?.error_message ?? e.message);
     }
   }
 }

@@ -11,6 +11,7 @@ import {
   WHOIS_BASE_URL,
 } from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
+import ky from 'lib/ky';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 
@@ -45,9 +46,7 @@ export const getSpenderData = async (
 
 const getSpenderDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    const response = await fetch(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`);
-    if (!response.ok) return null;
-    return await response.json();
+    return await ky.get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`).json<SpenderData>();
   } catch {
     return null;
   }
@@ -58,12 +57,12 @@ const getSpenderDataFromHarpie = async (address: string, chainId: number): Promi
   if (!apiKey || chainId !== 1) return null;
 
   try {
-    const response = await fetch('https://api.harpie.io/getprotocolfromcontract', {
-      method: 'POST',
-      body: JSON.stringify({ apiKey, address }),
-    });
-    if (!response.ok) return null;
-    const data = await response.json();
+    const data = await ky
+      .post('https://api.harpie.io/getprotocolfromcontract', {
+        json: { apiKey, address },
+      })
+      .json<any>();
+
     if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
     return { name: data.contractOwner };
   } catch (e) {

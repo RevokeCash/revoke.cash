@@ -1,4 +1,3 @@
-import axios from 'axios';
 import delay from 'delay';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
@@ -12,6 +11,7 @@ import type {
   Log,
   TokenContract,
 } from 'lib/interfaces';
+import ky from 'lib/ky';
 import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
@@ -313,7 +313,7 @@ export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTo
 };
 export const getNeftureRiskScore = async (address: Address) => {
   try {
-    const { data } = await axios.post('https://api-scan-wallet.nefture.com/getScore', { address });
+    const data = await ky.post('https://api-scan-wallet.nefture.com/getScore', { json: { address } }).json<any>();
     if (data.status === 'pending') {
       await delay(5_000);
       return getNeftureRiskScore(address);

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import ky from 'lib/ky';
 import { PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import type { Filter, Log, LogsProvider } from './interfaces';
@@ -37,10 +37,11 @@ export class BackendLogsProvider implements LogsProvider {
 
   async getLogs(filter: Filter): Promise<Log[]> {
     try {
-      const { data } = await this.queue.add(() => axios.post(`/api/${this.chainId}/logs`, filter));
-      return data;
+      return await this.queue.add(() =>
+        ky.post(`/api/${this.chainId}/logs`, { json: filter, timeout: false }).json<any>(),
+      );
     } catch (error) {
-      throw new Error(error?.response?.data?.message ?? error?.response?.data ?? error?.message);
+      throw new Error(error?.data?.message ?? error?.message);
     }
   }
 }

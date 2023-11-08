@@ -1,12 +1,8 @@
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
 import { checkActiveSession, checkRateLimitAllowed, wrapIronSessionApiRoute } from 'lib/api/auth';
 import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
 import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-axiosRetry(axios, { retries: 3 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();

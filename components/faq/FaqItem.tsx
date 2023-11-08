@@ -1,6 +1,7 @@
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon, HashtagIcon } from '@heroicons/react/24/outline';
 import Href from 'components/common/Href';
+import Prose from 'components/common/Prose';
 import { useMounted } from 'lib/hooks/useMounted';
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -49,7 +50,9 @@ const FaqItem = ({ question, slug, children }: Props) => {
             </div>
           </dt>
           <Disclosure.Panel as="dd" className="mt-2" unmount={false} property="acceptedAnswer" typeof="Answer">
-            <p property="text">{children}</p>
+            <Prose>
+              <p property="text">{children}</p>
+            </Prose>
           </Disclosure.Panel>
           {/* Add this absolute positioned div to align the "group" position with the hash link */}
           <div className="absolute top-0 -right-8 h-full w-8" />

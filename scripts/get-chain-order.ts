@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { CHAIN_SELECT_MAINNETS, getChainName } from 'lib/utils/chains';
+import ky from 'lib/ky';
+import { CHAIN_SELECT_MAINNETS, getChainName, getChainPriceStrategy } from 'lib/utils/chains';
 
 const getChainOrder = async () => {
-  const { data: llamaData } = await axios.get('https://api.llama.fi/chains');
+  const llamaData = await ky.get('https://api.llama.fi/chains').json<any>();
   const chains = CHAIN_SELECT_MAINNETS.map((chainId) => {
     const chainData = llamaData.find(
       (chain) =>
@@ -15,8 +15,8 @@ const getChainOrder = async () => {
 
   chains.sort(([, , a], [, , b]) => b - a);
 
-  chains.forEach((chain) => {
-    console.log(chain[0], chain[2]);
+  chains.forEach(([chainName, chainId, tvl]) => {
+    console.log(getChainPriceStrategy(chainId) ? '✅' : '❌', chainName, tvl);
   });
 };
 

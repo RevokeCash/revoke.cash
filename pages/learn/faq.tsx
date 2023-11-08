@@ -1,6 +1,5 @@
 import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
-import Prose from 'components/common/Prose';
 import FaqItem from 'components/faq/FaqItem';
 import LearnLayout from 'layouts/LearnLayout';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
@@ -59,17 +58,13 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
             <Trans i18nKey="faq:questions.sweeper_bot.answer" />
           </FaqItem>
           <FaqItem question={t('faq:questions.stolen_through_allowances.question')} slug="stolen_through_allowances">
-            <Prose>
-              <p className="flex flex-col items-center">
-                <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
-                <Image
-                  src="/assets/images/how-did-i-get-scammed-light.png"
-                  alt="How Did I Get Scammed?"
-                  width="1024"
-                  height="977"
-                />
-              </p>
-            </Prose>
+            <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
+            <Image
+              src="/assets/images/how-did-i-get-scammed-light.png"
+              alt="How Did I Get Scammed?"
+              width="1024"
+              height="977"
+            />
           </FaqItem>
           <FaqItem question={t('faq:questions.hardware_wallets.question')} slug="hardware_wallets">
             <Trans i18nKey="faq:questions.hardware_wallets.answer" components={[<span className="italic" />]} />
@@ -101,8 +96,8 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
                 <Href href={DISCORD_URL} className="font-medium" underline="hover" html external />,
               ]}
             />
-            <h3 className="text-xl mt-4 mb-2">{t('common:chain_select.mainnets')}</h3>
-            <ul className="text-base grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <h3 className="text-xl mt-4 mb-2 not-prose">{t('common:chain_select.mainnets')}</h3>
+            <ul className="text-base grid grid-cols-2 sm:grid-cols-3 gap-2 not-prose">
               {CHAIN_SELECT_MAINNETS.map((chainId) => (
                 <li key={chainId}>
                   <Href
@@ -117,8 +112,8 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
                 </li>
               ))}
             </ul>
-            <h3 className="text-xl mt-4 mb-2">{t('common:chain_select.testnets')}</h3>
-            <ul className="text-base grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <h3 className="text-xl mt-4 mb-2 not-prose">{t('common:chain_select.testnets')}</h3>
+            <ul className="text-base grid grid-cols-2 sm:grid-cols-3 gap-2 not-prose">
               {CHAIN_SELECT_TESTNETS.map((chainId) => (
                 <li key={chainId}>
                   <Href

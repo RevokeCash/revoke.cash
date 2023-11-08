@@ -1,4 +1,4 @@
-import { ChainId, chains } from '@revoke.cash/chains';
+import { ChainId, getChain } from '@revoke.cash/chains';
 import {
   ALCHEMY_API_KEY,
   ETHERSCAN_API_KEYS,
@@ -114,10 +114,10 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
 
 export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.BobaNetwork,
+  ChainId.Canto,
   ChainId.Evmos,
   ChainId.HarmonyMainnetShard0,
   ChainId.OpBNBMainnet,
-  ChainId.Canto,
 ];
 
 export const NODE_SUPPORTED_CHAINS: number[] = [];
@@ -360,7 +360,7 @@ export const getChainName = (chainId: number): string => {
     [1234567890]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
   };
 
-  const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
+  const name = overrides[chainId] ?? getChain(chainId)?.name ?? `Chain ID ${chainId}`;
   if (!isSupportedChain(chainId)) {
     return `${name} (Unsupported)`;
   }
@@ -410,7 +410,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-3.blockscout.com',
   };
 
-  const [explorer] = chains.get(chainId)?.explorers ?? [];
+  const [explorer] = getChain(chainId)?.explorers ?? [];
 
   return overrides[chainId] ?? explorer?.url;
 };
@@ -424,7 +424,7 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Palm]: 'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   };
 
-  const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
+  const [rpcUrl] = getChain(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl;
 };
 
@@ -453,6 +453,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.OPMainnet]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.PolygonMainnet]: `https://polygon-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.PolygonzkEVM]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.PolygonzkEVMTestnet]: `https://polygonzkevm-testnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
@@ -460,7 +462,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     ...RPC_OVERRIDES,
   };
 
-  const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
+  const [rpcUrl] = getChain(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
 };
 
@@ -478,8 +480,6 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
     [ChainId.OPMainnet]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/v2/${alchemyKey}`,
-    [ChainId.PolygonzkEVM]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
-    [ChainId.PolygonzkEVMTestnet]: `https://polygonzkevm-testnet.g.alchemy.com/v2/${alchemyKey}`,
     // [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
   };
 
@@ -615,7 +615,7 @@ export const getChainInfoUrl = (chainId: number): string | undefined => {
   const mainnetChainId = getCorrespondingMainnetChainId(chainId);
   const mainnetChainInfoUrl = mainnetChainId ? getChainInfoUrl(mainnetChainId) : undefined;
 
-  return overrides[chainId] ?? mainnetChainInfoUrl ?? chains.get(chainId)?.infoURL;
+  return overrides[chainId] ?? mainnetChainInfoUrl ?? getChain(chainId)?.infoURL;
 };
 
 export const getChainNativeToken = (chainId: number): string => {
@@ -625,7 +625,7 @@ export const getChainNativeToken = (chainId: number): string => {
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
   };
 
-  return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
+  return overrides[chainId] ?? getChain(chainId)?.nativeCurrency?.symbol ?? 'ETH';
 };
 
 // Target a default of around $10-20
@@ -941,7 +941,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
 };
 
 export const getViemChainConfig = (chainId: number): Chain | undefined => {
-  const chainInfo = chains.get(chainId);
+  const chainInfo = getChain(chainId);
   const chainName = getChainName(chainId);
   const fallbackNativeCurrency = { name: chainName, symbol: getChainNativeToken(chainId), decimals: 18 };
 

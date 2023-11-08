@@ -1,5 +1,5 @@
-import axios from 'axios';
 import type { Filter, Log } from 'lib/interfaces';
+import ky from 'lib/ky';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
   getChainApiIdentifer,
@@ -27,9 +27,17 @@ export class EtherscanEventGetter implements EventGetter {
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const query = prepareEtherscanGetLogsQuery(filter, page, apiKey);
+    const searchParams = prepareEtherscanGetLogsQuery(filter, page, apiKey);
 
-    const { data } = await retryOn429(() => queue.add(() => axios.get(apiUrl, { params: query })));
+    let data: any;
+    try {
+      data = await retryOn429(() =>
+        queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<any>()),
+      );
+    } catch (e) {
+      console.log(e);
+      throw new Error('Could not retrieve event logs from the blockchain');
+    }
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
     if (data.result?.length === 1000) {
@@ -76,25 +84,26 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, page: number, apiKey?: str
   const query = {
     module: 'logs',
     action: 'getLogs',
-    // address: undefined,
-    fromBlock: filter.fromBlock ?? 0,
-    toBlock: filter.toBlock ?? 'latest',
-    topic0,
-    topic1,
-    topic2,
-    topic3,
+    address: undefined,
+    fromBlock: String(filter.fromBlock ?? 0),
+    toBlock: String(filter.toBlock ?? 'latest'),
+    topic0: topic0 ?? undefined,
+    topic1: topic1 ?? undefined,
+    topic2: topic2 ?? undefined,
+    topic3: topic3 ?? undefined,
     topic0_1_opr: topic0 && topic1 ? 'and' : undefined,
     topic0_2_opr: topic0 && topic2 ? 'and' : undefined,
     topic0_3_opr: topic0 && topic3 ? 'and' : undefined,
     topic1_2_opr: topic1 && topic2 ? 'and' : undefined,
     topic1_3_opr: topic1 && topic3 ? 'and' : undefined,
     topic2_3_opr: topic2 && topic3 ? 'and' : undefined,
-    offset: 1000,
+    offset: String(1000),
     apiKey,
-    page,
+    page: String(page),
   };
 
-  return query;
+  // Remove 'undefined' values from the query
+  return JSON.parse(JSON.stringify(query));
 };
 
 const formatEtherscanEvent = (etherscanLog: any) => ({
