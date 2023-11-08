@@ -23,6 +23,7 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.CoreBlockchainMainnet,
   ChainId.EthereumMainnet,
   ChainId.ExosamaNetwork,
+  ChainId.FrameTestnet,
   ChainId.Goerli,
   ChainId.KCCMainnet,
   ChainId.Linea,
@@ -64,6 +65,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.HorizenGobiTestnet,
   ChainId.KardiaChainMainnet,
   ChainId.Kava,
+  ChainId.LightlinkPhoenixMainnet,
   ChainId.MantaPacificMainnet,
   ChainId.Mantle,
   ChainId.MantleTestnet,
@@ -73,7 +75,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.OasisEmerald,
   ChainId.OasysMainnet,
   ChainId.OctaSpace,
-  ChainId.Palm,
   ChainId.PegoNetwork,
   ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.PulseChainTestnetv4,
@@ -118,6 +119,7 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.Evmos,
   ChainId.HarmonyMainnetShard0,
   ChainId.OpBNBMainnet,
+  ChainId.Palm,
 ];
 
 export const NODE_SUPPORTED_CHAINS: number[] = [];
@@ -195,6 +197,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Zora,
   ChainId.HorizenEONMainnet,
   ChainId.ShimmerEVMMainnet,
+  ChainId.LightlinkPhoenixMainnet,
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
   ChainId.MaxxChainMainnet,
@@ -214,6 +217,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.LineaTestnet,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoJolnirL2,
+  ChainId.FrameTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
   ChainId.PulseChainTestnetv4,
@@ -311,6 +315,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.KCCMainnet]: 'KCC',
     [ChainId.KlaytnMainnetCypress]: 'Klaytn',
     [ChainId.KlaytnTestnetBaobab]: 'Klaytn Baobab',
+    [ChainId.LightlinkPhoenixMainnet]: 'Lightlink',
     [ChainId.Linea]: 'Linea',
     [ChainId.LineaTestnet]: 'Linea Goerli',
     [ChainId.MantaPacificMainnet]: 'Manta Pacific',
@@ -357,7 +362,8 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZetaChainMainnet]: 'ZetaChain',
     [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
     [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
-    [1234567890]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
+    [12345678901]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
+    [12345678902]: 'Frame', // TODO: This is a placeholder so we can add a description for Frame
   };
 
   const name = overrides[chainId] ?? getChain(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -523,6 +529,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FantomOpera]: '/assets/images/vendor/chains/fantom.svg',
     [ChainId.FantomTestnet]: '/assets/images/vendor/chains/fantom.svg',
     [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.svg',
+    [ChainId.FrameTestnet]: '/assets/images/vendor/chains/frame.svg',
     [ChainId.FuseMainnet]: '/assets/images/vendor/chains/fuse.png',
     [ChainId.FuseSparknet]: '/assets/images/vendor/chains/fuse.png',
     [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
@@ -543,6 +550,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.KCCMainnet]: '/assets/images/vendor/chains/kcc.svg',
     [ChainId.KlaytnMainnetCypress]: '/assets/images/vendor/chains/klaytn.svg',
     [ChainId.KlaytnTestnetBaobab]: '/assets/images/vendor/chains/klaytn.svg',
+    [ChainId.LightlinkPhoenixMainnet]: '/assets/images/vendor/chains/lightlink.jpg',
     [ChainId.Linea]: '/assets/images/vendor/chains/linea.png',
     [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.png',
     [ChainId.MantaPacificMainnet]: '/assets/images/vendor/chains/manta-pacific.svg',
@@ -722,6 +730,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.FantomOpera]: 'https://api.ftmscan.com/api',
     [ChainId.FantomTestnet]: 'https://api-testnet.ftmscan.com/api',
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network/api',
+    [ChainId.FrameTestnet]: 'https://explorer.testnet.frame.xyz/api',
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
@@ -733,6 +742,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.KardiaChainMainnet]: 'https://explorer.kardiachain.io/api',
     [ChainId.Kava]: 'https://explorer.kava.io/api',
     [ChainId.KavaTestnet]: 'https://explorer.testnet.kava.io/api',
+    [ChainId.LightlinkPhoenixMainnet]: 'https://phoenix.lightlink.io/api',
     [ChainId.Linea]: 'https://lineascan.build/api',
     [ChainId.LineaTestnet]: 'https://goerli.lineascan.build/api',
     [ChainId.MantaPacificMainnet]: 'https://manta-pacific.calderaexplorer.xyz/api',
@@ -826,6 +836,7 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.CoinExSmartChainTestnet]: ChainId.CoinExSmartChainMainnet,
     [ChainId.CronosTestnet]: ChainId.CronosMainnet,
     [ChainId.FantomTestnet]: ChainId.FantomOpera,
+    [ChainId.FrameTestnet]: 12345678902, // TODO: This is a placeholder so we can add a description for Frame
     [ChainId.GatherTestnetNetwork]: ChainId.GatherMainnetNetwork,
     [ChainId.Goerli]: ChainId.EthereumMainnet,
     [ChainId.HorizenGobiTestnet]: ChainId.HorizenEONMainnet,
@@ -840,7 +851,7 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.Sepolia]: ChainId.EthereumMainnet,
     [ChainId.ShimmerEVMTestnet]: ChainId.ShimmerEVMMainnet,
     [ChainId.SyscoinTanenbaumTestnet]: ChainId.SyscoinMainnet,
-    [ChainId.TaikoJolnirL2]: 1234567890, // TODO: This is a placeholder so we can add a description for Taiko
+    [ChainId.TaikoJolnirL2]: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
     [ChainId.ZetaChainAthens3Testnet]: ChainId.ZetaChainMainnet,
     [ChainId.ZkSyncEraTestnet]: ChainId.ZkSyncEraMainnet,
   };
@@ -1366,6 +1377,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.LightlinkPhoenixMainnet]: undefined, // <$100k Liquidity
   // TODO: Add SyncSwap strategy to support Linea
   [ChainId.Linea]: undefined,
   // [ChainId.MantaPacificMainnet]: new AggregatePriceStrategy({
