@@ -15,7 +15,7 @@ const ArticleMeta = ({ slug, meta, sidebarEntries }: Props) => {
 
   const path = `/learn/${slug.join('/')}`;
 
-  const sidebarPages = sidebarEntries.flatMap((entry) => (entry.children?.length > 0 ? entry.children : [entry]));
+  const sidebarPages = sidebarEntries.flatMap((entry) => [entry, ...entry.children]);
   const currentPageIndex = sidebarPages.findIndex((page) => page.path === path);
   const previousPage = sidebarPages[currentPageIndex - 1];
   const nextPage = sidebarPages[currentPageIndex + 1];
