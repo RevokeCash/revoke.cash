@@ -90,6 +90,11 @@ export const getSidebar = async (
           },
         ],
       },
+      {
+        title: t('learn:sidebar.faq'),
+        path: '/learn/faq',
+        children: [],
+      },
     ];
 
     return sidebar;

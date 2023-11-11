@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import StickyBox from 'react-sticky-box';
 import { twMerge } from 'tailwind-merge';
 import SidebarEntry from './SidebarEntry';
-import SidebarSection from './SidebarSection';
 
 interface Props {
   entries: ISidebarEntry[];
@@ -21,7 +20,6 @@ const Sidebar = ({ entries }: Props) => {
       {entries.map((entry) => (
         <SidebarEntry key={entry.path} {...entry} />
       ))}
-      <SidebarSection title={t('learn:sidebar.faq')} path="/learn/faq" href="/learn/faq" />
     </ul>
   );
 

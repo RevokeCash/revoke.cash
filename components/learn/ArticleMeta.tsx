@@ -1,20 +1,29 @@
 import Divider from 'components/common/Divider';
-import { ContentMeta } from 'lib/interfaces';
+import PageNavigation from 'components/common/PageNavigation';
+import { ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import Trans from 'next-translate/Trans';
 
 interface Props {
+  slug: string[];
   meta: Pick<ContentMeta, 'author' | 'translator' | 'language'>;
+  sidebarEntries: ISidebarEntry[];
 }
 
-const ArticleMeta = ({ meta }: Props) => {
+const ArticleMeta = ({ slug, meta, sidebarEntries }: Props) => {
   const shouldDisplayAuthor = !!meta.author;
   const shouldDisplayTranslator = !!meta.translator && meta.language !== 'en';
 
-  if (!shouldDisplayAuthor && !shouldDisplayTranslator) return null;
+  const path = `/learn/${slug.join('/')}`;
+
+  const sidebarPages = sidebarEntries.flatMap((entry) => (entry.children?.length > 0 ? entry.children : [entry]));
+  const currentPageIndex = sidebarPages.findIndex((page) => page.path === path);
+  const previousPage = sidebarPages[currentPageIndex - 1];
+  const nextPage = sidebarPages[currentPageIndex + 1];
 
   return (
     <>
       <Divider className="my-6" />
+      <PageNavigation previousPage={previousPage} nextPage={nextPage} />
       <div className="w-full flex justify-end gap-2">
         {shouldDisplayAuthor && (
           <div>

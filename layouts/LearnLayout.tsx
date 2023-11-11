@@ -44,7 +44,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
               {meta.coverImage ? <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} /> : null}
             </Prose>
             {children}
-            <ArticleMeta meta={meta} />
+            <ArticleMeta slug={slug} meta={meta} sidebarEntries={sidebarEntries} />
           </div>
         </div>
       </main>

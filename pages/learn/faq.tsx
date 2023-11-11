@@ -87,15 +87,17 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
           <FaqItem question={t('faq:questions.which_allowances.question')} slug="which_allowances">
             <Trans i18nKey="faq:questions.which_allowances.answer" />
           </FaqItem>
-          <FaqItem question={t('faq:questions.which_chains.question')} slug="which_chains">
-            <Trans
-              i18nKey="faq:questions.which_chains.answer"
-              components={[
-                <Href href="/extension" className="font-medium" underline="hover" html router />,
-                <Href href={TWITTER_URL} className="font-medium" underline="hover" html external />,
-                <Href href={DISCORD_URL} className="font-medium" underline="hover" html external />,
-              ]}
-            />
+          <FaqItem question={t('faq:questions.which_chains.question')} slug="which_chains" wrapper="div">
+            <p>
+              <Trans
+                i18nKey="faq:questions.which_chains.answer"
+                components={[
+                  <Href href="/extension" className="font-medium" underline="hover" html router />,
+                  <Href href={TWITTER_URL} className="font-medium" underline="hover" html external />,
+                  <Href href={DISCORD_URL} className="font-medium" underline="hover" html external />,
+                ]}
+              />
+            </p>
             <h3 className="text-xl mt-4 mb-2 not-prose">{t('common:chain_select.mainnets')}</h3>
             <ul className="text-base grid grid-cols-2 sm:grid-cols-3 gap-2 not-prose">
               {CHAIN_SELECT_MAINNETS.map((chainId) => (
