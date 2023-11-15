@@ -57,7 +57,7 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
           <div className="text-center sm:text-left w-full flex flex-col gap-2">
-            <Dialog.Title as="h2" className="text-center">
+            <Dialog.Title as="h2" className="text-2xl text-center">
               {t('common:connect_wallet.title')}
             </Dialog.Title>
 
