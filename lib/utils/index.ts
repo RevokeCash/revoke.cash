@@ -5,22 +5,18 @@ import { toast } from 'react-toastify';
 import {
   Abi,
   Address,
-  ContractFunctionConfig,
-  FormattedTransactionRequest,
-  GetValue,
   Hash,
   Hex,
   PublicClient,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
   WalletClient,
+  WriteContractParameters,
   formatUnits,
   getAddress,
   pad,
   slice,
 } from 'viem';
-import { UnionOmit } from 'viem/types/utils';
-import { Chain } from 'wagmi';
 import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
 
@@ -131,23 +127,12 @@ export const writeContractUnlessExcessiveGas = async <
 >(
   publicCLient: PublicClient,
   walletClient: WalletClient,
-  transactionRequest: ContractTransactionRequest<TAbi, TFunctionName>,
+  transactionRequest: WriteContractParameters<TAbi, TFunctionName>,
 ) => {
   const estimatedGas = await publicCLient.estimateContractGas(transactionRequest);
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
-  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
+  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas } as any);
 };
-
-// This is as "simple" as I was able to get this generic to be, considering it needs to work with viem's type inference
-type ContractTransactionRequest<
-  TAbi extends Abi | readonly unknown[] = Abi,
-  TFunctionName extends string = string,
-> = ContractFunctionConfig<TAbi, TFunctionName, 'payable' | 'nonpayable'> & {
-  account: Address;
-  chain: Chain;
-  dataSuffix?: Hex;
-} & UnionOmit<FormattedTransactionRequest<Chain>, 'from' | 'to' | 'data' | 'value'> &
-  GetValue<TAbi, TFunctionName>;
 
 export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient): Promise<void> => {
   try {
