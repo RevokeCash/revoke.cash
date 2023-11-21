@@ -26,7 +26,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
               update={update}
               disabled={disabled}
               reset={reset}
-              defaultValue={amount === 'Unlimited' ? '0' : amount ?? '0'}
+              defaultValue={amount === 'Unlimited' ? '0' : amount?.replace(/,/, '') ?? '0'}
             />
           )}
         </div>
