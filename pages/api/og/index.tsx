@@ -10,13 +10,13 @@ export const config = {
 
 const Backgrounds = {
   // @ts-ignore
-  APPROVAL_CHECKER: fetch(new URL('/public/assets/images/token-approval-checker/cover.jpg', import.meta.url)).then(
-    (res) => res.arrayBuffer(),
-  ),
+  APPROVAL_CHECKER: fetch(
+    new URL('/public/assets/images/token-approval-checker/cover-template.jpg', import.meta.url),
+  ).then((res) => res.arrayBuffer()),
   // @ts-ignore
-  ADD_NETWORK: fetch(new URL('/public/assets/images/learn/wallets/add-network/cover.jpg', import.meta.url)).then(
-    (res) => res.arrayBuffer(),
-  ),
+  ADD_NETWORK: fetch(
+    new URL('/public/assets/images/learn/wallets/add-network/cover-template.jpg', import.meta.url),
+  ).then((res) => res.arrayBuffer()),
 };
 
 // @ts-ignore
