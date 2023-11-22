@@ -531,7 +531,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FantomOpera]: '/assets/images/vendor/chains/fantom.svg',
     [ChainId.FantomTestnet]: '/assets/images/vendor/chains/fantom.svg',
     [ChainId.FlareMainnet]: '/assets/images/vendor/chains/flare.svg',
-    [ChainId.FrameTestnet]: '/assets/images/vendor/chains/frame.svg',
+    [ChainId.FrameTestnet]: '/assets/images/vendor/chains/frame.jpg',
     [ChainId.FuseMainnet]: '/assets/images/vendor/chains/fuse.png',
     [ChainId.FuseSparknet]: '/assets/images/vendor/chains/fuse.png',
     [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
