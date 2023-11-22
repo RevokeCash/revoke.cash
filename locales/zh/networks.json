@@ -48,6 +48,7 @@
     "moonbeam": "Moonbeam 是在波卡（ Polkadot）上运行的与以太坊兼容的平行链。作为波卡平行链，Moonbeam 可以和其他基于波卡生态的网络很好地集成。最重要的是，这也意味着可以结合以太坊、Cosmos 和波卡的功能，提高跨链应用的可用性。",
     "nahmii": "Nahmii 是以太坊的第 2 层（Layer 2）扩展解决方案，旨在通过低廉、可预测费用提供高交易吞吐量。目前，Nahmii 采用中心化运营商来验证交易，但计划将来会转向更加分散的模式。 ",
     "oasis-emerald": "Oasis是第 1 层（Layer 1）区块链，旨在打造可扩展的多功能网络平台。为了实现这一目标，Oasis 将其架构拆分为顶级共识层和较低级别的执行层，因此可以支持多个不同的执行层，其中包括与 EVM 兼容的执行层，Oasis Emerald。",
+    "oasis-sapphire": "Oasis Sapphire is an EVM-compatible Oasis ParaTime network, similar to Oasis Emerald. Like Oasis Emerald, Oasis Sapphire is built to offer low fees and high throughput. But it expands this by adding support for confidential smart contracts, which is something that it takes from the non-EVM Oasis Cipher network.",
     "oasys": "Oasys 是专为游戏行业设计的第 1 层（Layer 1）区块链，采用权益证明（PoS）共识机制，提供快速的免汽油交易。Oasys 的架构使用中央集成链（central hub chain），每个游戏应用可以第 2 层（Layer 2）链并链接到中央集成链，让每个游戏应用都可以独立进行扩展。",
     "octaspace": "OctaSpace 是一个去中心化的计算平台，提供全球节点运营商提供的计算资源。这可以用于云处理或 VPN。节点运营商可以出租闲置资源来获得奖励。",
     "opbnb": "OpBnb 是 BNB 链的第 2 层（Layer 2）扩展解决方案，采用 Optimism 的开源 OP Stack，因此与 Optimism 一样，使用了 Optimistic Rollup 技术。OpBnb 是首个 BNB 链的第 2 层链，旨在提供更低的费用和更高的吞吐量。",

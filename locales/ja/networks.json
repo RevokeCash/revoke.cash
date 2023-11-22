@@ -48,6 +48,7 @@
     "moonbeam": "Moonbeamは、Polkadot上で動作するEthereum互換のパラチェーンです。Polkadotのパラチェーンであるため、Polkadot上に構築された他のネットワークとうまく統合できます。さらに、Ethereum、Cosmos、Polkadotの機能を組み合わせて、クロスチェーンアプリの使いやすさを向上させることも目的としています。",
     "nahmii": "Nahmiiは、低く予測可能な料金で高い取引スループットを提供することを目的とした、Ethereumのレイヤー2のスケーリングソリューションです。現在、Nahmiiは取引を検証する中央集権型のオペレーターを使用していますが、将来的にはより分散型のモデルに移行する予定です。 ",
     "oasis-emerald": "Oasisは、スケーラブルで汎用性の高いネットワークとして設計されたレイヤー1のブロックチェーンです。これを実現するために、Oasisはアーキテクチャーをトップレベルのコンセンサスレイヤーと下位レベルの実行レイヤーに分割しました。これにより、OasisはEVM互換の実行レイヤーであるOasis Emeraldを含め、複数の異なる実行レイヤーをサポートできるようになりました。",
+    "oasis-sapphire": "Oasis Sapphire is an EVM-compatible Oasis ParaTime network, similar to Oasis Emerald. Like Oasis Emerald, Oasis Sapphire is built to offer low fees and high throughput. But it expands this by adding support for confidential smart contracts, which is something that it takes from the non-EVM Oasis Cipher network.",
     "oasys": "Oasysは、ゲーム業界向けに設計されたレイヤー1のブロックチェーンです。プルーフ・オブ・ステークに基づくコンセンサスメカニズムを採用し、迅速でガスレスな取引を実現します。そのアーキテクチャーは中央のハブチェーンを使用しており、個々のゲームアプリケーションはハブチェーンに接続されたレイヤー2のチェーンを作成できるため、すべてのゲームアプリケーションを個別にスケーリングできます。",
     "octaspace": "OctaSpaceは、世界中のノードオペレーターが提供するコンピューティングリソーセスを提供する分散型コンピューティングプラットフォームです。これはクラウド処理やVPNの目的で使用できます。ノードオペレーターは、使用していないリソーセスを貸し出して報酬を獲得できます。",
     "opbnb": "opBNBはBNBチェーンのレイヤー2のスケーリングソリューションです。opBNBはOptimismのオープンソースOPスタック上に構築されているため、Optimismと同様にオプティミスティック・ロールアップ技術を使用しています。opBNBはBNBチェーンの最初のレイヤー2であり、手数料の削減とスループットの向上を目的として開発されました。",

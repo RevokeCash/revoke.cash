@@ -73,6 +73,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.MilkomedaC1Mainnet,
   ChainId.NahmiiMainnet,
   ChainId.OasisEmerald,
+  ChainId.OasisSapphire,
   ChainId.OasysMainnet,
   ChainId.OctaSpace,
   ChainId.PegoNetwork,
@@ -181,6 +182,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OasysMainnet,
   ChainId.ElastosSmartChain,
   ChainId.OasisEmerald,
+  ChainId.OasisSapphire,
   ChainId.CoinExSmartChainMainnet,
   ChainId.FuseMainnet,
   ChainId.MilkomedaC1Mainnet,
@@ -567,6 +569,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.NahmiiMainnet]: '/assets/images/vendor/chains/nahmii.svg',
     [ChainId.OasisEmerald]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.OasisEmeraldTestnet]: '/assets/images/vendor/chains/oasis.png',
+    [ChainId.OasisSapphire]: '/assets/images/vendor/chains/oasis.png',
     [ChainId.OasysMainnet]: '/assets/images/vendor/chains/oasys.svg',
     [ChainId.OctaSpace]: '/assets/images/vendor/chains/octaspace.png',
     [ChainId.OpBNBMainnet]: '/assets/images/vendor/chains/bsc.svg',
@@ -756,6 +759,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.Mumbai]: 'https://api-testnet.polygonscan.com/api',
     [ChainId.NahmiiMainnet]: 'https://explorer.nahmii.io/api',
     [ChainId.OasisEmerald]: 'https://explorer.emerald.oasis.dev/api',
+    [ChainId.OasisSapphire]: 'https://explorer.sapphire.oasis.io/api',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games/api',
     [ChainId.OctaSpace]: 'https://explorer.octa.space/api',
     [ChainId.Palm]: 'https://explorer.palm.io/api',
@@ -916,6 +920,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Moonriver]: { ...MULTICALL },
     [ChainId.Mumbai]: { ...MULTICALL },
     [ChainId.OasisEmerald]: { ...MULTICALL },
+    [ChainId.OasisSapphire]: { ...MULTICALL },
     [ChainId.OpBNBMainnet]: { ...MULTICALL },
     [ChainId.OPMainnet]: { ...MULTICALL },
     [ChainId.OptimismGoerliTestnet]: { ...MULTICALL },
@@ -1489,6 +1494,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.OasisSapphire]: undefined, // <$100k Liquidity
   [ChainId.OasysMainnet]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [

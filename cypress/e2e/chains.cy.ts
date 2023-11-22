@@ -7,6 +7,7 @@ import { Selectors, TEST_URL } from 'cypress/support/utils';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
   ORDERED_CHAINS,
+  SUPPORTED_CHAINS,
   getChainApiUrl,
   getChainExplorerUrl,
   getChainLogo,
@@ -65,6 +66,7 @@ const TEST_ADDRESSES = {
   [ChainId.Moonriver]: '0x8107b00171a02f83D7a17f62941841C29c3ae60F',
   [ChainId.NahmiiMainnet]: '0xd342d75FE943AD8b92594BAeC3A7f86E5dF0BEb6',
   [ChainId.OasisEmerald]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
+  [ChainId.OasisSapphire]: '0x2433e002Ed10B5D6a3d8d1e0C5D2083BE9E37f1D',
   [ChainId.OasysMainnet]: '0xf04820Bbc0D6B7F7B1f2fE888E5fc60DF6B61262',
   [ChainId.OctaSpace]: '0x8a6681fb319d009d775FdD7b1b15ad4f2Aad003c',
   [ChainId.OpBNBMainnet]: '0x9bE0B370ECf45528F435c023c92a608b3EbB4A9b',
@@ -132,6 +134,8 @@ describe('Chain Support', () => {
       cy.wrap(getChainName(chainId)).should('not.be.empty');
       cy.wrap(TEST_ADDRESSES[chainId]).should('not.be.empty');
     });
+
+    cy.wrap(SUPPORTED_CHAINS.sort()).should('deep.equal', ORDERED_CHAINS.sort());
   });
 
   ORDERED_CHAINS.forEach((chainId) => {
