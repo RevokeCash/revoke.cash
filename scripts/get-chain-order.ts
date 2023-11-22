@@ -15,8 +15,12 @@ const getChainOrder = async () => {
 
   chains.sort(([, , a], [, , b]) => b - a);
 
-  chains.forEach(([chainName, chainId, tvl]) => {
-    console.log(getChainPriceStrategy(chainId) ? '✅' : '❌', chainName, tvl);
+  chains.forEach(([chainName, chainId, tvl], index) => {
+    const hasPriceStrategyIcon = getChainPriceStrategy(chainId) ? '✅' : '❌';
+    const indexDiff = String(index - CHAIN_SELECT_MAINNETS.indexOf(chainId))
+      .padStart(3, ' ')
+      .padEnd(4, ' ');
+    console.log(hasPriceStrategyIcon, indexDiff, chainName.padEnd(18), tvl);
   });
 };
 
