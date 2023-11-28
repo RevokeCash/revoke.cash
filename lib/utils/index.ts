@@ -103,6 +103,7 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
     ChainId.ArbitrumOne,
     ChainId.ArbitrumGoerli,
     ChainId.ArbitrumNova,
+    ChainId.FrameTestnet,
   ];
 
   const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(chainId) ? 10_000_000n : 500_000n;
