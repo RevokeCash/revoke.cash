@@ -10,6 +10,7 @@ const SearchBar = () => {
 
   return (
     <AddressSearchBox
+      id="global-search"
       onSubmit={() => router.push(`/address/${value}`)}
       onChange={(ev) => setValue(ev.target.value.trim())}
       value={value}

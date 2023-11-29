@@ -19,7 +19,7 @@ interface Props {
 }
 
 const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const [value, setValue] = useState<string>('');
 
@@ -50,6 +50,7 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
               <div className="inline align-middle">{t('token_approval_checker:title', { chainName })}</div>
             </h1>
             <AddressSearchBox
+              id="local-search"
               onSubmit={() => router.push({ pathname: `/address/${value}`, query })}
               onChange={(ev) => setValue(ev.target.value.trim())}
               value={value}

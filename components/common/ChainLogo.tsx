@@ -19,7 +19,7 @@ const ChainLogo = ({ chainId, size, tooltip, className }: Props) => {
     return (
       <WithHoverTooltip tooltip={name} placement="top">
         <div>
-          <Logo src={src} alt={name} size={size} border className={classes} />
+          <Logo src={src} alt={`${name} Logo`} size={size} border className={classes} />
         </div>
       </WithHoverTooltip>
     );

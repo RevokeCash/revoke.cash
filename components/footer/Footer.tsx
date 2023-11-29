@@ -71,7 +71,9 @@ const Footer = () => {
         <div className="my-16 flex flex-col md:flex-row items-center gap-4 justify-between">
           <div className="flex flex-col gap-px text-center md:text-left">
             <p className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2023 Revoke.cash</p>
-            <FooterLink href="/privacy-policy">{t('common:footer.privacy')}</FooterLink>
+            <ul>
+              <FooterLink href="/privacy-policy">{t('common:footer.privacy')}</FooterLink>
+            </ul>
           </div>
           <div className="flex gap-2 shrink-0">
             <NotCommonBadge />
