@@ -68,6 +68,15 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
           </div>
           <Prose className="max-w-3xl">
             <ChainDescription chainId={chainId} headingElement="h2" />
+            <p>
+              <Trans
+                i18nKey="networks:learn_how_to_add_to_wallet"
+                values={{ chainName }}
+                components={[
+                  <Href href={`/learn/wallets/add-network/${getChainSlug(chainId)}`} underline="hover" html router />,
+                ]}
+              />
+            </p>
             <h2 className="text-left">{t('token_approval_checker:what_are_token_approvals.title', { chainName })}</h2>
             <p>
               <Trans

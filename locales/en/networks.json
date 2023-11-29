@@ -1,6 +1,7 @@
 {
   "canary_network": "{{chainName}} is the canary network for {{mainnetChainName}}. New updates get rolled out on {{chainName}} first, and only get activated on {{mainnetChainName}} after a successful testing period on {{chainName}}. Using this canary network, developers can test their applications in an incentivized, production-like environment instead of having to rely on test networks.",
   "is_testnet": "{{chainName}} is a testnet for {{mainnetChainName}}.",
+  "learn_how_to_add_to_wallet": "Learn how to add {{chainName}} to your wallet on our <0>Learn page</0>.",
   "learn_more": "Learn more about {{chainName}} on <0>its website</0>.",
   "native_token": "The native token of {{chainName}} is {{nativeToken}}.",
   "networks": {
