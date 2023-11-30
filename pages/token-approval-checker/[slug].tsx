@@ -50,7 +50,7 @@ const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
               <div className="inline align-middle">{t('token_approval_checker:title', { chainName })}</div>
             </h1>
             <AddressSearchBox
-              id="local-search"
+              id="tac-search"
               onSubmit={() => router.push({ pathname: `/address/${value}`, query })}
               onChange={(ev) => setValue(ev.target.value.trim())}
               value={value}
