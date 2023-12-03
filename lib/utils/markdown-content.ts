@@ -46,6 +46,7 @@ export const readAndParseContentFile = (
     author: data.author ?? null,
     translator: data.translator ?? null,
     coverImage: getCoverImage(slug, directory),
+    date: data.date?.toISOString() ?? null,
   };
 
   return { content, meta };
@@ -115,7 +116,7 @@ const getSidebarEntry = (
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 
-  const entry: ISidebarEntry = { title: meta.sidebarTitle, path };
+  const entry: ISidebarEntry = { title: meta.sidebarTitle, path, date: meta.date };
   if (extended) entry.description = meta.description;
 
   return entry;

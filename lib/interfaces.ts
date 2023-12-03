@@ -101,6 +101,7 @@ export interface ISidebarEntry {
   description?: string;
   path: string;
   children?: ISidebarEntry[];
+  date?: string;
 }
 
 export interface ContentMeta {
@@ -111,6 +112,7 @@ export interface ContentMeta {
   author?: string;
   translator?: string;
   coverImage?: string;
+  date?: string;
 }
 
 export interface RawContentFile {

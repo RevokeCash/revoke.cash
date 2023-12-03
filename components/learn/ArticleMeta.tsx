@@ -7,15 +7,16 @@ interface Props {
   slug: string[];
   meta: Pick<ContentMeta, 'author' | 'translator' | 'language'>;
   sidebarEntries: ISidebarEntry[];
+  basePath: string;
 }
 
-const ArticleMeta = ({ slug, meta, sidebarEntries }: Props) => {
+const ArticleMeta = ({ slug, meta, sidebarEntries, basePath }: Props) => {
   const shouldDisplayAuthor = !!meta.author;
   const shouldDisplayTranslator = !!meta.translator && meta.language !== 'en';
 
-  const path = `/learn/${slug.join('/')}`;
+  const path = `/${basePath}/${slug.join('/')}`;
 
-  const sidebarPages = sidebarEntries.flatMap((entry) => [entry, ...entry.children]);
+  const sidebarPages = sidebarEntries.flatMap((entry) => [entry, ...(entry?.children ?? [])]);
   const currentPageIndex = sidebarPages.findIndex((page) => page.path === path);
   const previousPage = sidebarPages[currentPageIndex - 1];
   const nextPage = sidebarPages[currentPageIndex + 1];

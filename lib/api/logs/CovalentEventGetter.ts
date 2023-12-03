@@ -1,5 +1,6 @@
 import type { Filter, Log } from 'lib/interfaces';
 import ky from 'lib/ky';
+import { splitBlockRangeInChunks } from 'lib/utils';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
@@ -87,16 +88,3 @@ const filterLogs = (logs: Log[], filter: Filter): Log[] => {
 
   return filteredLogs;
 };
-
-const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] =>
-  chunks.flatMap(([from, to]) =>
-    to - from < chunkSize
-      ? [[from, to]]
-      : splitBlockRangeInChunks(
-          [
-            [from, from + chunkSize - 1],
-            [from + chunkSize, to],
-          ],
-          chunkSize,
-        ),
-  );

@@ -14,7 +14,7 @@ interface Props {
 
 const Card = ({ title, subtitle, children, className, image, ...props }: Props) => {
   return (
-    <div className="h-full w-full border border-black dark:border-white rounded-lg">
+    <div className="h-full w-full border border-black dark:border-white rounded-lg flex flex-col">
       {(title || subtitle) && (
         <div className="w-full border-b border-black dark:border-white py-2 px-4">
           <h2 className="text-xl flex gap-2 items-center">
@@ -25,7 +25,7 @@ const Card = ({ title, subtitle, children, className, image, ...props }: Props) 
       )}
       {image ? <div className="border-b border-black dark:border-white">{image}</div> : null}
       <Loader isLoading={props.isLoading} className="rounded-t-none border-none">
-        <div className={twMerge('w-full py-2 px-4', className)}>{children}</div>
+        <div className={twMerge('h-full w-full py-2 px-4 flex-grow', className)}>{children}</div>
       </Loader>
     </div>
   );
