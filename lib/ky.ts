@@ -1,4 +1,5 @@
 import kyBase, { HTTPError, NormalizedOptions } from 'ky';
+import PQueue from 'p-queue';
 
 export class KyHttpError extends HTTPError {
   data?: any;
@@ -9,7 +10,10 @@ export class KyHttpError extends HTTPError {
   }
 }
 
+const kyQueue = new PQueue({ concurrency: 500 });
+
 const ky = kyBase.extend({
+  fetch: (input, options) => kyQueue.add(() => fetch(input, options)),
   hooks: {
     beforeError: [
       async (error) => {
