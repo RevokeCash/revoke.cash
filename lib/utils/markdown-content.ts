@@ -101,6 +101,13 @@ export const getSidebar = async (
     return sidebar;
   }
 
+  if (directory === 'blog') {
+    const allSlugs = getAllContentSlugs(directory);
+    const sidebar: ISidebarEntry[] = allSlugs.map((slug) => getSidebarEntry(slug, locale, directory, extended));
+    sidebar.sort((a, b) => (a.date > b.date ? -1 : 1));
+    return sidebar;
+  }
+
   return null;
 };
 

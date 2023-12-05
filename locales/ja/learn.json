@@ -15,10 +15,6 @@
     "steps_heading": "メタマスクに{{chainName}}を追加する手順",
     "title": "{{chainName}}をメタマスクに追加"
   },
-  "article_meta": {
-    "author": "著者 <0>{{author}}</0>",
-    "translator": "翻訳者：<0>{{translator}}</0>"
-  },
   "meta": {
     "description": "web3の世界では混乱が起きますが、そうである必要はありません。web3、セキュリティー等について学ぶのに役立つリソースを纏めました。",
     "title": "Web3、セキュリティー等について学ぼう"

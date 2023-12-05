@@ -1,7 +1,7 @@
 {
   "canary_network": "{{chainName}} es la red canaria de {{mainnetChainName}}. Las nuevas actualizaciones se despliegan primero en {{chainName}}, y sólo se activan en {{mainnetChainName}} tras un periodo de prueba satisfactorio en {{chainName}}. Utilizando esta red canaria, los desarrolladores pueden probar sus aplicaciones en un entorno incentivado, similar al de producción, en lugar de tener que depender de las redes de prueba.",
   "is_testnet": "{{chainName}} es una red de pruebas para {{mainnetChainName}}.",
-  "learn_how_to_add_to_wallet": "Learn how to add {{chainName}} to your wallet on our <0>Learn page</0>.",
+  "learn_how_to_add_to_wallet": "Aprende a añadir {{chainName}} a tu cartera en nuestra página <0>Aprender</0>.",
   "learn_more": "Obtén más información {{chainName}} en <0>su sitio web</0>.",
   "native_token": "El token nativo de {{chainName}} es {{nativeToken}}.",
   "networks": {

@@ -1,7 +1,7 @@
 {
   "canary_network": "{{chainName}} это канарейская сеть для {{mainnetChainName}}. Новые обновления выпускаются в {{chainName}} первыми и активируются только в {{mainnetChainName}} после успешного периода тестирования в {{chainName}}. Используя эту канарейскую сеть, разработчики могут тестировать свои приложения в стимулированной рабочей среде, вместо того чтобы полагаться на тестовые сети.",
   "is_testnet": "{{chainName}} это тестовая сеть для {{mainnetChainName}}.",
-  "learn_how_to_add_to_wallet": "Learn how to add {{chainName}} to your wallet on our <0>Learn page</0>.",
+  "learn_how_to_add_to_wallet": "Узнайте как добавить {{chainName}} в свой кошелек на нашей странице <0>Страница обучения</0>.",
   "learn_more": "Узнайте больше о {{chainName}} на <0>этом сайте</0>.",
   "native_token": "Нативный токен {{chainName}} это {{nativeToken}}.",
   "networks": {

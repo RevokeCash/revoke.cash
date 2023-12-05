@@ -15,10 +15,6 @@
     "steps_heading": "添加{{chainName}}到MetaMask的步骤",
     "title": "添加{{chainName}}到MetaMask"
   },
-  "article_meta": {
-    "author": "作者：<0>{{author}}</0>",
-    "translator": "翻译：<0>{{translator}}</0>"
-  },
   "meta": {
     "description": "web3 世界可能让人疑惑不解，但也不必如此。我们已经收集了一些资源，以帮助你了解 web3、钱包安全等信息。",
     "title": "了解 Web3、钱包安全和更多信息"

@@ -1,4 +1,8 @@
 {
+  "article_meta": {
+    "author": "作者：<0>{{author}}</0>",
+    "translator": "翻译：<0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "返回漏洞",
     "cancel": "取消",
@@ -97,6 +101,7 @@
   },
   "nav": {
     "about": "关于我们",
+    "blog": "Blog",
     "exploits": "漏洞",
     "extension": "扩展",
     "faq": "常见问题",

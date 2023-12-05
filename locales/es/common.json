@@ -1,4 +1,8 @@
 {
+  "article_meta": {
+    "author": "Escrito por <0>{{author}}</0>",
+    "translator": "Traducido por <0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "Volver a Hacks",
     "cancel": "Cancelar",
@@ -97,6 +101,7 @@
   },
   "nav": {
     "about": "Sobre nosotros",
+    "blog": "Blog",
     "exploits": "Hacks",
     "extension": "Extensión",
     "faq": "FAQ",
@@ -109,9 +114,9 @@
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
     "revoke_failed": "❌ No se pudo revocar la autorización: {{message}}",
-    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Ponte en contacto con el equipo de este token para resolver este problema.",
+    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Por favor ponte en contacto con el equipo de este token para resolver este problema.",
     "transaction_failed": "❌ Transacción fallida: {{message}}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
-    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revocala por favor."
+    "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."
   }
 }

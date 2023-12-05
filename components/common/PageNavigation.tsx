@@ -5,11 +5,16 @@ import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 
 interface Props {
-  previousPage?: Pick<ISidebarEntry, 'title' | 'path'>;
-  nextPage?: Pick<ISidebarEntry, 'title' | 'path'>;
+  currentPath: string;
+  pages: Array<ISidebarEntry>;
 }
 
-const PageNavigation = ({ previousPage, nextPage }: Props) => {
+const PageNavigation = ({ currentPath, pages }: Props) => {
+  const sidebarPages = pages.flatMap((entry) => [entry, ...(entry?.children ?? [])]);
+  const currentPageIndex = sidebarPages.findIndex((page) => page.path === currentPath);
+  const previousPage = sidebarPages[currentPageIndex - 1];
+  const nextPage = sidebarPages[currentPageIndex + 1];
+
   return (
     <div className="grid grid-cols-2 gap-2 items-stretch my-6">
       <PageButton page={previousPage} direction="previous" />

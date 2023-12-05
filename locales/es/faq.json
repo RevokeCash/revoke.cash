@@ -25,7 +25,7 @@
       "question": "¿Puedo revocar múltiples autorizaciones al mismo tiempo?"
     },
     "other_question": {
-      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, ponte en contacto con nosotros en <0>Twitter</0> o <1>Discord</1>. También puedes leer más información sobre las autorizaciones en la entrada del blog de Rosco Kalis. <2>Las autorizaciones de ERC20 ilimitadas se consideran dañinas</2>.",
+      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, por favor ponte en contacto con nosotros en <0>Twitter</0> o <1>Discord</1>. También puedes leer más información sobre las autorizaciones en la entrada del blog de Rosco Kalis. <2>Las autorizaciones de ERC20 ilimitadas se consideran dañinas</2>.",
       "question": "Mi pregunta no está aquí."
     },
     "recover_assets": {

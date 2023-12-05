@@ -1,4 +1,8 @@
 {
+  "article_meta": {
+    "author": "Written by <0>{{author}}</0>",
+    "translator": "Translated by <0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
@@ -97,6 +101,7 @@
   },
   "nav": {
     "about": "About Us",
+    "blog": "Blog",
     "exploits": "Exploits",
     "extension": "Extension",
     "faq": "FAQ",

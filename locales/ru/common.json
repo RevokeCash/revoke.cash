@@ -1,4 +1,8 @@
 {
+  "article_meta": {
+    "author": "Автор <0>{{author}}</0>",
+    "translator": "Переводчик <0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "Назад к Эксплойтам",
     "cancel": "Отмена",
@@ -97,6 +101,7 @@
   },
   "nav": {
     "about": "О нас",
+    "blog": "Blog",
     "exploits": "Эксплойты",
     "extension": "Расширение",
     "faq": "ЧаВо",

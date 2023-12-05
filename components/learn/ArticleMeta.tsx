@@ -1,48 +1,53 @@
-import Divider from 'components/common/Divider';
-import PageNavigation from 'components/common/PageNavigation';
-import { ContentMeta, ISidebarEntry } from 'lib/interfaces';
+import { ContentMeta } from 'lib/interfaces';
+import { formatArticleDate } from 'lib/utils/time';
 import Trans from 'next-translate/Trans';
 
 interface Props {
-  slug: string[];
-  meta: Pick<ContentMeta, 'author' | 'translator' | 'language'>;
-  sidebarEntries: ISidebarEntry[];
-  basePath: string;
+  meta: ContentMeta;
 }
 
-const ArticleMeta = ({ slug, meta, sidebarEntries, basePath }: Props) => {
-  const shouldDisplayAuthor = !!meta.author;
-  const shouldDisplayTranslator = !!meta.translator && meta.language !== 'en';
+const ArticleMeta = ({ meta }: Props) => {
+  const properties = [
+    !!meta.author ? 'author' : undefined,
+    !!meta.translator && meta.language !== 'en' ? 'translator' : undefined,
+    !!meta.date ? 'date' : undefined,
+  ].filter((property) => !!property);
 
-  const path = `/${basePath}/${slug.join('/')}`;
-
-  const sidebarPages = sidebarEntries.flatMap((entry) => [entry, ...(entry?.children ?? [])]);
-  const currentPageIndex = sidebarPages.findIndex((page) => page.path === path);
-  const previousPage = sidebarPages[currentPageIndex - 1];
-  const nextPage = sidebarPages[currentPageIndex + 1];
+  if (properties.length === 0) return null;
 
   return (
-    <>
-      <Divider className="my-6" />
-      <PageNavigation previousPage={previousPage} nextPage={nextPage} />
-      <div className="w-full flex justify-end gap-2">
-        {shouldDisplayAuthor && (
-          <div>
-            <Trans i18nKey="learn:article_meta.author" values={meta} components={[<span className="font-bold" />]} />
-          </div>
-        )}
-        {shouldDisplayAuthor && shouldDisplayTranslator && <div>•</div>}
-        {shouldDisplayTranslator && (
-          <div>
-            <Trans
-              i18nKey="learn:article_meta.translator"
-              values={meta}
-              components={[<span className="font-bold" />]}
-            />
-          </div>
-        )}
-      </div>
-    </>
+    <div className="flex justify-center gap-2 flex-wrap max-sm:text-sm text-center">
+      {properties.map((property, i) => (
+        <MetaProperty key={property} property={property} meta={meta} separator={i < properties.length - 1} />
+      ))}
+    </div>
+  );
+};
+
+interface MetaPropertyProps {
+  property: string;
+  meta: ContentMeta;
+  separator?: boolean;
+}
+
+const MetaProperty = ({ property, meta, separator }: MetaPropertyProps) => {
+  if (!property) return null;
+
+  return (
+    <div key={property} className="flex gap-2">
+      {property === 'date' ? (
+        <div>{formatArticleDate(meta.date)}</div>
+      ) : (
+        <div>
+          <Trans
+            i18nKey={`common:article_meta.${property}`}
+            values={meta}
+            components={[<span className="font-bold" />]}
+          />
+        </div>
+      )}
+      {separator && <div>•</div>}
+    </div>
   );
 };
 

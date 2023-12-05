@@ -1,4 +1,6 @@
 import Breadcrumb from 'components/common/Breadcrumb';
+import Divider from 'components/common/Divider';
+import PageNavigation from 'components/common/PageNavigation';
 import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
 import Footer from 'components/footer/Footer';
@@ -14,7 +16,7 @@ interface Props {
   searchBar?: boolean;
   sidebarEntries: ISidebarEntry[];
   slug: string[];
-  meta: Partial<ContentMeta> & Pick<ContentMeta, 'language'>;
+  meta: ContentMeta;
   translationUrl?: string;
 }
 
@@ -44,7 +46,9 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
               {meta.coverImage ? <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} /> : null}
             </Prose>
             {children}
-            <ArticleMeta slug={slug} meta={meta} sidebarEntries={sidebarEntries} />
+            <Divider className="my-6" />
+            <ArticleMeta meta={meta} />
+            <PageNavigation currentPath={`/learn/${slug.join('/')}`} pages={sidebarEntries} />
           </div>
         </div>
       </main>

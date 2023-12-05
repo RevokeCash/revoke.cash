@@ -15,10 +15,6 @@
     "steps_heading": "Steps To Add {{chainName}} to MetaMask",
     "title": "Add {{chainName}} to MetaMask"
   },
-  "article_meta": {
-    "author": "Written by <0>{{author}}</0>",
-    "translator": "Translated by <0>{{translator}}</0>"
-  },
   "meta": {
     "description": "The world of web3 can be confusing, but it doesn't have to be. We put together a collection of resources to help you learn about web3, security and more.",
     "title": "Learn About Web3, Security and More"

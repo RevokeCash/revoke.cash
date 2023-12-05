@@ -11,3 +11,7 @@ export const formatDateNormalised = (date: Date) => {
   const timeString = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   return `${dateString} ${timeString}`;
 };
+
+export const formatArticleDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+};

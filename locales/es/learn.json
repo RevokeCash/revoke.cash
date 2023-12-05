@@ -15,10 +15,6 @@
     "steps_heading": "Pasos para añadir {{chainName}} a MetaMask",
     "title": "Añadir {{chainName}} a MetaMask"
   },
-  "article_meta": {
-    "author": "Escrito por <0>{{author}}</0>",
-    "translator": "Traducido por <0>{{translator}}</0>"
-  },
   "meta": {
     "description": "El mundo de la web3 puede resultar confuso, pero no tiene por qué serlo. Hemos reunido una colección de recursos para ayudarte a aprender sobre la web3, la seguridad y mucho más.",
     "title": "Aprender Sobre Web3, Seguridad y Más"
@@ -26,7 +22,7 @@
   "sections": {
     "approvals": {
       "intro_paragraph": "En la sección Autorizaciones de Token, puedes obtener más información sobre las autorizaciones de token. Esto te ayudará a entender qué son las autorizaciones de token y cómo puedes gestionarlas. También cubre algunos esquemas de autorización alternativa, como las firmas de Permisos.",
-      "title": "Más información sobre la Autorización de Tokens"
+      "title": "Más Información Sobre la Autorización de Tokens"
     },
     "basics": {
       "intro_paragraph": "En las secciones Conceptos básicos, puedes aprender todo sobre los componentes básicos de las criptomonedas, como los tokens, las NFT y las carteras. Esto te permitirá familiarizarte con la terminología y los conceptos que encontrarás en el mundo de web3.",
