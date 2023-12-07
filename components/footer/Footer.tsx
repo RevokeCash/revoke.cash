@@ -44,14 +44,14 @@ const Footer = () => {
           </div>
           <div className="md:grid md:grid-cols-2 md:gap-8">
             <FooterSection heading={t('common:footer.company')}>
+              <FooterLink href="/blog" router>
+                {t('common:footer.blog')}
+              </FooterLink>
               <FooterLink href="/about" router>
                 {t('common:footer.about')}
               </FooterLink>
               <FooterLink href="https://github.com/RevokeCash/brand-assets" external>
                 {t('common:footer.brand_assets')}
-              </FooterLink>
-              <FooterLink href="/sponsorships" router>
-                {t('common:footer.sponsors')}
               </FooterLink>
             </FooterSection>
             <FooterSection heading={t('common:footer.community')}>

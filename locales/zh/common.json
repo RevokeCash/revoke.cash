@@ -77,6 +77,7 @@
   },
   "footer": {
     "about": "关于我们",
+    "blog": "Blog",
     "brand_assets": "品牌资产",
     "community": "社区",
     "company": "公司",
@@ -101,7 +102,7 @@
   },
   "nav": {
     "about": "关于我们",
-    "blog": "Blog",
+    "blog": "博客",
     "exploits": "漏洞",
     "extension": "扩展",
     "faq": "常见问题",

@@ -1,15 +1,1 @@
-<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 880" width="880" height="880">
-	<title>CoinEx logo_no text (default color)-svg</title>
-	<defs>
-		<image  width="880" height="880" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3AAAANwAQMAAABUJBqUAAAAAXNSR0IB2cksfwAAAANQTFRF////p8QbyAAAAHZJREFUeJztwTEBAAAAwqD1T20ND6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4NcAfZ8AAV8ohqcAAAAASUVORK5CYII="/>
-		<linearGradient id="g1" x1="820.6" y1="441.2" x2="53.9" y2="441.2" gradientUnits="userSpaceOnUse">
-			<stop offset="0" stop-color="#22e6b8"/>
-			<stop offset="1" stop-color="#00c1ce"/>
-		</linearGradient>
-	</defs>
-	<style>
-		.s0 { fill: url(#g1) } 
-	</style>
-	<use id="Layer 1" href="#img1" x="0" y="0"/>
-	<path id="Shape-Copy-14" class="s0" d="m568.1 336.4c-61.7-60.4-159.6-60.4-221 0-61.1 61.4-60 161.3 0.7 222.7 60.7 61.4 160.2 62.1 221.3 0.7 1-1 5.3-5.6 13.1-13.9l-73.5-74.2c-7.3 9-11.7 13.6-12.1 13.6-20.8 20.8-54.4 20.8-75.2 0-20.8-20.8-20.8-54.8-0.7-75.2 20.1-20.1 53.8-20.1 74.8 0.7 0 0 65.8 65.8 197 197.7-54 78.3-144.5 127.8-241.9 127.8-161.3 0-292.4-132.2-292.4-295.5 0-163.3 131.2-295.3 292.4-295.3 94.2 0 180.7 45.4 234.4 119.6-8.7 10-30.8 35.4-66.5 76.2l72.8 72.8 120.6-136.6c-62.8-142.1-203.6-236.4-361.7-236.4-218.7 0-396.3 179.3-396.3 399.9 0 220.6 177.2 400.3 396.3 400.3 99.5 0 182-31.5 262.5-100.5 73.1-62.4 107.8-149.2 107.8-149.2z"/>
-</svg>
+<svg height="880" viewBox="0 0 880 880" width="880" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><linearGradient id="a" gradientUnits="userSpaceOnUse" x1="820.6" x2="53.9" y1="441.2" y2="441.2"><stop offset="0" stop-color="#22e6b8"/><stop offset="1" stop-color="#00c1ce"/></linearGradient><path d="m568.1 336.4c-61.7-60.4-159.6-60.4-221 0-61.1 61.4-60 161.3.7 222.7s160.2 62.1 221.3.7c1-1 5.3-5.6 13.1-13.9l-73.5-74.2c-7.3 9-11.7 13.6-12.1 13.6-20.8 20.8-54.4 20.8-75.2 0s-20.8-54.8-.7-75.2c20.1-20.1 53.8-20.1 74.8.7 0 0 65.8 65.8 197 197.7-54 78.3-144.5 127.8-241.9 127.8-161.3 0-292.4-132.2-292.4-295.5s131.2-295.3 292.4-295.3c94.2 0 180.7 45.4 234.4 119.6-8.7 10-30.8 35.4-66.5 76.2l72.8 72.8 120.6-136.6c-62.8-142.1-203.6-236.4-361.7-236.4-218.7 0-396.3 179.3-396.3 399.9s177.2 400.3 396.3 400.3c99.5 0 182-31.5 262.5-100.5 73.1-62.4 107.8-149.2 107.8-149.2z" fill="url(#a)"/></svg>
