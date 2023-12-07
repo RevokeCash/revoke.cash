@@ -17,8 +17,10 @@ const ArticleCard = ({ title, description, path, date }: ISidebarEntry) => (
         />
       }
     >
-      <h2 className="text-xl leading-none">{title}</h2>
-      <p>{description}</p>
+      <div className="flex flex-col gap-2">
+        <h2 className="text-xl leading-none">{title}</h2>
+        <p>{description}</p>
+      </div>
       {date && (
         <p className="text-sm text-right text-zinc-500 dark:text-zinc-400">
           {new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
