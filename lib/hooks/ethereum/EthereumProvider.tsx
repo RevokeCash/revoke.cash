@@ -1,4 +1,4 @@
-import { getViemChainConfig, SUPPORTED_CHAINS } from 'lib/utils/chains';
+import { getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { SECOND } from 'lib/utils/time';
 import { ReactNode, useEffect } from 'react';
 import { configureChains, createConfig, useAccount, useConnect, WagmiConfig } from 'wagmi';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { chains: wagmiChains, publicClient } = configureChains(
-  SUPPORTED_CHAINS.map(getViemChainConfig),
+  ORDERED_CHAINS.map(getViemChainConfig),
   [publicProvider()],
   // TODO: Fix cacheTime independent of pollingInterval
   { batch: { multicall: true }, pollingInterval: 4 * SECOND },
