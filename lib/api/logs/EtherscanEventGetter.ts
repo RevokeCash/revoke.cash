@@ -41,8 +41,6 @@ export class EtherscanEventGetter implements EventGetter {
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
     if (data.result?.length === 1000) {
-      console.log(data);
-
       // If we cannot split this block range further, we use Etherscan's pagination in the hope that it does not exceed
       // 10 pages of results
       if (filter.fromBlock === filter.toBlock) {
