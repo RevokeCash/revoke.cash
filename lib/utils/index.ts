@@ -53,8 +53,9 @@ export const logSorterChronological = (a: Log, b: Log) => {
 
 export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
 
-// This is O(n*m) complexity, but it's unlikely to be a problem in practice in most cases m is way smaller than n.
-// The previous version of this function was O(n^2), which was a problem for accounts with many transfers.
+// This is O(n*m) complexity, but it's unlikely to be a problem in practice in most cases m (unique contracts) is way
+// smaller than n (total logs). The previous version of this function was O(n^2), which was a problem for accounts with
+// many transfers.
 export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
   const result: T[] = [];
 
