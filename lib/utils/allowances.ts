@@ -35,6 +35,7 @@ export const getAllowancesFromEvents = async (
   // We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
   const allEvents = [...events.approvalForAll, ...events.approval, ...events.transferTo];
   const contracts = createTokenContracts(allEvents, publicClient);
+  console.log('created', contracts.length);
 
   // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
