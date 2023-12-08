@@ -10,7 +10,7 @@ export class KyHttpError extends HTTPError {
   }
 }
 
-const kyQueue = new PQueue({ concurrency: 500 });
+const kyQueue = new PQueue({ concurrency: 100 });
 
 const ky = kyBase.extend({
   fetch: (input, options) => kyQueue.add(() => fetch(input, options)),
