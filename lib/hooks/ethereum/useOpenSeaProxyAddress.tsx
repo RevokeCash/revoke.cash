@@ -9,7 +9,7 @@ export const useOpenSeaProxyAddress = (address: Address) => {
     queryFn: () => getOpenSeaProxyAddress(address),
     enabled: !!address,
     // This data is very unlikely to ever change
-    cacheTime: 7 * DAY,
+    gcTime: 7 * DAY,
     staleTime: 5 * DAY,
   });
 

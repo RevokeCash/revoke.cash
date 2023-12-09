@@ -10,7 +10,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // Persisted queries will be refetched every 24 hours
-      cacheTime: 1 * DAY,
+      gcTime: 1 * DAY,
       networkMode: 'offlineFirst',
       refetchOnWindowFocus: false,
       retry: 0,
@@ -25,7 +25,7 @@ if (typeof window !== 'undefined') {
     dehydrateOptions: {
       // Note: adding a `persist` flag to a query key will instruct the
       // persister whether or not to persist the response of the query.
-      shouldDehydrateQuery: (query) => query.cacheTime !== 0 && (query.queryKey.at(-1) as any)?.persist,
+      shouldDehydrateQuery: (query) => query.gcTime !== 0 && (query.queryKey.at(-1) as any)?.persist,
     },
   });
 }
