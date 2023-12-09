@@ -1,7 +1,8 @@
 // Note: this file contains TypeScript errors, but these errors are incorrect. I'm not sure how to fix them.
 
 import OgHeaderText from 'components/common/og/OgHeaderText';
-import { ImageResponse, NextRequest } from 'next/server';
+import { ImageResponse } from 'next/og';
+import { NextRequest } from 'next/server';
 
 export const config = {
   runtime: 'edge',
