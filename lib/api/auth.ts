@@ -1,16 +1,13 @@
-import { IronSessionOptions } from 'iron-session';
-import { withIronSessionApiRoute } from 'iron-session/next';
-import { NextApiHandler, NextApiRequest } from 'next';
+import { SessionOptions, getIronSession } from 'iron-session';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import requestIp from 'request-ip';
 
-declare module 'iron-session' {
-  interface IronSessionData {
-    ip?: string;
-  }
+export interface RevokeSession {
+  ip?: string;
 }
 
-export const IRON_OPTIONS: IronSessionOptions = {
+export const IRON_OPTIONS: SessionOptions = {
   cookieName: 'revoke_session',
   password: process.env.IRON_SESSION_PASSWORD,
   ttl: 60 * 60 * 24,
@@ -18,10 +15,6 @@ export const IRON_OPTIONS: IronSessionOptions = {
     secure: true, // Change this to false when locally testing on Safari
     sameSite: 'none',
   },
-};
-
-export const wrapIronSessionApiRoute = (handler: NextApiHandler) => {
-  return withIronSessionApiRoute(handler, IRON_OPTIONS);
 };
 
 // Rate limiting max 20 requests per second
@@ -39,6 +32,14 @@ export const checkRateLimitAllowed = async (req: NextApiRequest) => {
   }
 };
 
-export const checkActiveSession = (req: NextApiRequest) => {
-  return req.session.ip && req.session.ip === requestIp.getClientIp(req);
+export const storeSession = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+  // Store the user's IP as an identifier
+  session.ip = requestIp.getClientIp(req);
+  await session.save();
+};
+
+export const checkActiveSession = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+  return session.ip && session.ip === requestIp.getClientIp(req);
 };
