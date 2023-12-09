@@ -36,6 +36,6 @@ export class RequestQueue {
     }
 
     // Fallback to p-queue
-    return this.pQueue.add(fn);
+    return this.pQueue.add(fn, { throwOnTimeout: true });
   }
 }

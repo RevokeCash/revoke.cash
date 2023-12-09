@@ -13,7 +13,7 @@ export class KyHttpError extends HTTPError {
 const kyQueue = new PQueue({ concurrency: 100 });
 
 const ky = kyBase.extend({
-  fetch: (input, options) => kyQueue.add(() => fetch(input, options)),
+  fetch: (input, options) => kyQueue.add(() => fetch(input, options), { throwOnTimeout: true }),
   hooks: {
     beforeError: [
       async (error) => {
