@@ -2174,12 +2174,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/request-ip@npm:^0.0.39":
-  version: 0.0.39
-  resolution: "@types/request-ip@npm:0.0.39"
+"@types/request-ip@npm:^0.0.41":
+  version: 0.0.41
+  resolution: "@types/request-ip@npm:0.0.41"
   dependencies:
     "@types/node": "*"
-  checksum: 70fb8615af604744c512e0208e3b3b8c8a0c750b6a5f7b24e897f0b5e65963d102084cd2e81b0b5648f9ea7e26b946703e1e073bc1f47ec241da6c38357957be
+  checksum: d8579b7c9b739bd417eadc83d01fce52b10014733ab0f17f9e922c19013ebe5c745c9b267dc2adf48b26738dfb1a9c6b09184cb8b3e85fc490933966b005748c
   languageName: node
   linkType: hard
 
@@ -2294,12 +2294,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@upstash/ratelimit@npm:^0.4.4":
-  version: 0.4.4
-  resolution: "@upstash/ratelimit@npm:0.4.4"
+"@upstash/ratelimit@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@upstash/ratelimit@npm:1.0.0"
   dependencies:
     "@upstash/core-analytics": ^0.0.6
-  checksum: 3d80c14dacf137089662757a0ee29ddb88d4074d9a662ee405b766943d1b2215d76a4244b88b85dd93eff0ccd0e4b1157a68990195215431b89f5b42c0d6aeb8
+  checksum: cd5db96c1972e06d416195bb72418ee18309b82513cf9880018aa9238cdfa061dd15bc9126c987d0042f424009fdadf6eee4ab6698e3ddb522ee12d18f85deca
   languageName: node
   linkType: hard
 
@@ -2312,12 +2312,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@upstash/redis@npm:^1.22.1":
-  version: 1.22.1
-  resolution: "@upstash/redis@npm:1.22.1"
+"@upstash/redis@npm:^1.25.1":
+  version: 1.25.1
+  resolution: "@upstash/redis@npm:1.25.1"
   dependencies:
-    isomorphic-fetch: ^3.0.0
-  checksum: 0b7db14197ef4ed7d793de3c4e52902a98ba82d1034f5fe4e5adba934760e06cd137c25287fd78beba9e94e77962dabcc525f4dd0bc00356401a7f0d80ad7e5c
+    crypto-js: ^4.2.0
+  checksum: 694d9ff33b0a4bce95fa72effaface1b9c41cab7093d726fc1a9ef29eb5ac6eda3d4d0cc59c130bc6e62bf20eaa60a8ef423c257bac1484d3d76e73c56a3ea7e
   languageName: node
   linkType: hard
 
@@ -4089,6 +4089,13 @@ __metadata:
     shebang-command: ^2.0.0
     which: ^2.0.1
   checksum: 671cc7c7288c3a8406f3c69a3ae2fc85555c04169e9d611def9a675635472614f1c0ed0ef80955d5b6d4e724f6ced67f0ad1bb006c2ea643488fcfef994d7f52
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: f051666dbc077c8324777f44fbd3aaea2986f198fe85092535130d17026c7c2ccf2d23ee5b29b36f7a4a07312db2fae23c9094b644cc35f7858b1b4fcaf27774
   languageName: node
   linkType: hard
 
@@ -8376,10 +8383,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "rate-limiter-flexible@npm:3.0.4"
-  checksum: d7af8a07e13e53704b35bef274f9293e40986cc3f92898098b650fe0466f686f0fb01778694e852107e2c2cf45192c0e43fb47ee2e01096e09621a9232dfccd3
+"rate-limiter-flexible@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "rate-limiter-flexible@npm:3.0.6"
+  checksum: 65cf8edacde55b78255d5de0286b1297ec897fee128f4f18734f36a230297d75433fa599ea423f7726b61b8f8ebf108d66ee09e7155e37aa25f506015b5166a4
   languageName: node
   linkType: hard
 
@@ -8841,9 +8848,9 @@ __metadata:
     "@types/nprogress": ^0.2.3
     "@types/react": 18.2.42
     "@types/react-dom": ^18.2.17
-    "@types/request-ip": ^0.0.39
-    "@upstash/ratelimit": ^0.4.4
-    "@upstash/redis": ^1.22.1
+    "@types/request-ip": ^0.0.41
+    "@upstash/ratelimit": ^1.0.0
+    "@upstash/redis": ^1.25.1
     autoprefixer: ^10.4.16
     cypress: ^13.6.1
     delay: ^6.0.0
@@ -8867,7 +8874,7 @@ __metadata:
     postcss: ^8.4.32
     prettier: ^3.1.0
     prettier-plugin-organize-imports: ^3.2.4
-    rate-limiter-flexible: ^3.0.4
+    rate-limiter-flexible: ^3.0.6
     react: ^18.2.0
     react-async-hook: ^4.0.0
     react-circular-progressbar: ^2.1.0
