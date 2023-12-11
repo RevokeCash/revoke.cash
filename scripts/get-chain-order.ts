@@ -22,6 +22,9 @@ const getChainOrder = async () => {
       .padEnd(4, ' ');
     console.log(hasPriceStrategyIcon, indexDiff, chainName.padEnd(18), tvl);
   });
+
+  console.log();
+  console.log('Total chains:', chains.length);
 };
 
 getChainOrder();
