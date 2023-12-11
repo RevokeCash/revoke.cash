@@ -110,11 +110,11 @@ export interface ContentMeta {
   sidebarTitle?: string;
   description: string;
   language: string;
-  readingTime: number;
   author?: string;
   translator?: string;
   coverImage?: string;
   date?: string;
+  readingTime?: number;
 }
 
 export interface RawContentFile {

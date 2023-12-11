@@ -28,6 +28,10 @@ const LearnDocumentPage: NextPage<Props> = ({ meta, content, sidebar, slug, tran
             : defaultSEO.openGraph.images,
         }}
       />
+      <div vocab="https://schema.org/" typeof="Article">
+        <meta property="headline" content={meta.title} />
+        {meta.coverImage && <meta property="image" content={`https://revoke.cash${meta.coverImage}`} />}
+      </div>
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta} translationUrl={translationUrl}>
         <MarkdownProse content={content} />
       </LearnLayout>

@@ -27,7 +27,7 @@ const ArticleCard = ({ title, description, path, date, readingTime }: ISidebarEn
           <h2 className="text-xl leading-none">{title}</h2>
           <p>{description}</p>
         </div>
-        {date && (
+        {date && readingTime && (
           <p className="text-sm text-right text-zinc-500 dark:text-zinc-400 flex gap-1 justify-end">
             {new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
             <span>•</span>

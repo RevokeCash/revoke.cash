@@ -28,6 +28,16 @@ const BlogPostPage: NextPage<Props> = ({ meta, content, posts, slug, translation
             : defaultSEO.openGraph.images,
         }}
       />
+      <div vocab="https://schema.org/" typeof="Article">
+        <meta property="headline" content={meta.title} />
+        {meta.author && (
+          <div property="author" typeof="Person">
+            <meta property="name" content={meta.author} />
+          </div>
+        )}
+        <meta property="datePublished" content={meta.date} />
+        {meta.coverImage && <meta property="image" content={`https://revoke.cash${meta.coverImage}`} />}
+      </div>
       <BlogLayout posts={posts} slug={slug} meta={meta} translationUrl={translationUrl} searchBar={false}>
         <MarkdownProse content={content} />
       </BlogLayout>
