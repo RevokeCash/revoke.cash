@@ -43,8 +43,8 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.TaikoJolnirL2,
   ChainId.Wanchain,
   ChainId.XDCNetwork,
-  ChainId.ZkSyncEraMainnet,
-  ChainId.ZkSyncEraTestnet,
+  ChainId.ZkSyncMainnet,
+  ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -145,7 +145,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OPMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.Base,
-  ChainId.ZkSyncEraMainnet,
+  ChainId.ZkSyncMainnet,
   ChainId.Linea,
   ChainId.Scroll,
   ChainId['PGN(PublicGoodsNetwork)'],
@@ -215,7 +215,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ArbitrumGoerli,
   ChainId.OptimismGoerliTestnet,
   ChainId.BaseGoerliTestnet,
-  ChainId.ZkSyncEraTestnet,
+  ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
   ChainId.LineaTestnet,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoJolnirL2,
@@ -362,8 +362,8 @@ export const getChainName = (chainId: number): string => {
     [ChainId.XDCNetwork]: 'XDC',
     [ChainId.ZetaChainAthens3Testnet]: 'ZetaChain Athens',
     [ChainId.ZetaChainMainnet]: 'ZetaChain',
-    [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
-    [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
+    [ChainId.ZkSyncMainnet]: 'zkSync Era',
+    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'zkSync Goerli',
     [12345678901]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
     [12345678902]: 'Frame', // TODO: This is a placeholder so we can add a description for Frame
   };
@@ -468,6 +468,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
+    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'https://testnet.era.zksync.dev',
     ...RPC_OVERRIDES,
   };
 
@@ -606,8 +607,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId['WEMIX3.0Mainnet']]: '/assets/images/vendor/chains/wemix.svg',
     [ChainId.XDCNetwork]: '/assets/images/vendor/chains/xdc.svg',
     [ChainId.ZetaChainAthens3Testnet]: '/assets/images/vendor/chains/zetachain.svg',
-    [ChainId.ZkSyncEraMainnet]: '/assets/images/vendor/chains/zksync.jpeg',
-    [ChainId.ZkSyncEraTestnet]: '/assets/images/vendor/chains/zksync.jpeg',
+    [ChainId.ZkSyncMainnet]: '/assets/images/vendor/chains/zksync.jpeg',
+    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: '/assets/images/vendor/chains/zksync.jpeg',
     [ChainId.Zora]: '/assets/images/vendor/chains/zora.svg',
   };
 
@@ -781,7 +782,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.VelasEVMMainnet]: 'https://evmexplorer.velas.com/api',
     [ChainId['WEMIX3.0Mainnet']]: 'https://api.wemixscan.com/api',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-3.blockscout.com/api',
-    [ChainId.ZkSyncEraMainnet]: 'https://zksync2-mainnet.zkscan.io/api',
+    [ChainId.ZkSyncMainnet]: 'https://zksync2-mainnet.zkscan.io/api',
     [ChainId.Zora]: 'https://explorer.zora.energy/api',
   };
 
@@ -858,7 +859,7 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.SyscoinTanenbaumTestnet]: ChainId.SyscoinMainnet,
     [ChainId.TaikoJolnirL2]: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
     [ChainId.ZetaChainAthens3Testnet]: ChainId.ZetaChainMainnet,
-    [ChainId.ZkSyncEraTestnet]: ChainId.ZkSyncEraMainnet,
+    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: ChainId.ZkSyncMainnet,
   };
 
   const canaryNetworks = {
@@ -980,10 +981,10 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     // [ChainId['WEMIX3.0Mainnet']]: { ...MULTICALL },
     // [ChainId.XDCNetwork]: { ...MULTICALL },
     // [ChainId.ZetaChainAthens3Testnet]: { ...MULTICALL },
-    [ChainId.ZkSyncEraMainnet]: {
+    [ChainId.ZkSyncMainnet]: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
-    [ChainId.ZkSyncEraTestnet]: {
+    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
     [ChainId.Zora]: { ...MULTICALL },
@@ -1722,6 +1723,6 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
     ],
   }),
   // TODO: Add SyncSwap strategy to support ZkSync
-  [ChainId.ZkSyncEraMainnet]: undefined,
+  [ChainId.ZkSyncMainnet]: undefined,
   [ChainId.Zora]: undefined, // <$100k Liquidity
 };

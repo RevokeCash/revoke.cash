@@ -21,7 +21,7 @@
     "@amplitude/analytics-browser": "1.9.3",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@revoke.cash/chains": "^25.0.0",
+    "@revoke.cash/chains": "^26.0.0",
     "@tanstack/query-sync-storage-persister": "^5.13.4",
     "@tanstack/react-query": "^5.13.4",
     "@tanstack/react-query-persist-client": "^5.13.4",

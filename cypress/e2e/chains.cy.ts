@@ -90,7 +90,7 @@ const TEST_ADDRESSES = {
   [ChainId.Wanchain]: '0x208B907d345c0E79cEAfF30BBe925c29da1D78C0',
   [ChainId['WEMIX3.0Mainnet']]: '0x77B7bAC5413F52fbc6db2E8C0a177F8b69Dcbf02',
   [ChainId.XDCNetwork]: '0x87dB6eA45E2F960A4DDFCfcef86264CdA78fF5E5',
-  [ChainId.ZkSyncEraMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
+  [ChainId.ZkSyncMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
   [ChainId.Zora]: '0x061EFb2DF7767D6e63529BA99394037d4dCa39D6',
   // Testnets
   [ChainId.ArbitrumGoerli]: '0x3383A622FA7a30fC83527d6ce1820af928455EA8',
@@ -118,7 +118,7 @@ const TEST_ADDRESSES = {
   [ChainId.SyscoinTanenbaumTestnet]: '0x2FB7aB1E0357D595877209e74a715D0F5816cC29',
   [ChainId.TaikoJolnirL2]: '0xe5fC964C4b03BC7B84adc3A18Fc93bfe54c6EabB',
   [ChainId.ZetaChainAthens3Testnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
-  [ChainId.ZkSyncEraTestnet]: '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24',
+  [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24',
 } as const;
 
 describe('Chain Support', () => {
