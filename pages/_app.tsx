@@ -1,4 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/24/solid';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
@@ -73,6 +74,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           </ColorThemeProvider>
         </EthereumProvider>
       </QueryProvider>
+      <SpeedInsights sampleRate={0.1} />
       <Script async defer src="https://sa.revoke.cash/latest.js" />
     </>
   );
