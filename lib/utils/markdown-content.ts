@@ -4,7 +4,7 @@ import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import getT from 'next-translate/getT';
 import { join } from 'path';
-import readingTime from 'reading-time';
+import { readingTime } from 'reading-time-estimator';
 
 const walk = require('walkdir');
 
@@ -48,7 +48,7 @@ export const readAndParseContentFile = (
     translator: data.translator ?? null,
     coverImage: getCoverImage(slug, directory),
     date: data.date?.toISOString() ?? null,
-    readingTime: Math.round(readingTime(content).minutes),
+    readingTime: Math.round(Math.max(readingTime(content, 200).minutes, 1)),
   };
 
   return { content, meta };
