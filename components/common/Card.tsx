@@ -10,11 +10,17 @@ interface Props {
   icon?: React.ExoticComponent<React.SVGProps<SVGSVGElement>>;
   className?: string;
   isLoading?: boolean;
+  hover?: 'scale';
 }
 
-const Card = ({ title, subtitle, children, className, image, ...props }: Props) => {
+const Card = ({ title, subtitle, children, className, image, hover, ...props }: Props) => {
+  const outerClass = twMerge(
+    'h-full w-full border border-black dark:border-white rounded-lg flex flex-col',
+    hover === 'scale' ? 'hover:scale-105 transition' : null,
+  );
+
   return (
-    <div className="h-full w-full border border-black dark:border-white rounded-lg flex flex-col">
+    <div className={outerClass}>
       {(title || subtitle) && (
         <div className="w-full border-b border-black dark:border-white py-2 px-4">
           <h2 className="text-xl flex gap-2 items-center">

@@ -1,19 +1,21 @@
 import Card from 'components/common/Card';
 import Href from 'components/common/Href';
+import ImageWithFallback from 'components/common/ImageWithFallback';
 import { ISidebarEntry } from 'lib/interfaces';
-import Image from 'next/image';
 
 const ArticleCard = ({ title, description, path, date }: ISidebarEntry) => (
   <Href href={path} router underline="none">
     <Card
+      hover="scale"
       className="flex flex-col justify-between gap-4"
       image={
-        <Image
+        <ImageWithFallback
           src={`/assets/images${path}/cover.jpg`}
           alt={`${title} Cover Image`}
           width={1600}
           height={900}
           className="rounded-t-[calc(theme(borderRadius.lg)-1px)]"
+          fallbackSrc="/assets/images/revoke-og-image.jpg"
         />
       }
     >

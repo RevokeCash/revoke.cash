@@ -39,7 +39,7 @@ const BlogPage: NextPage<Props> = ({ posts }: Props) => {
         </div>
         <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-4">
           {posts.map((entry) => (
-            <div className="md:max-w-xs" key={entry.title}>
+            <div className="max-w-md md:max-w-xs" key={entry.title}>
               <ArticleCard {...entry} />
             </div>
           ))}
