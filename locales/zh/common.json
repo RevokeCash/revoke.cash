@@ -1,6 +1,7 @@
 {
   "article_meta": {
     "author": "作者：<0>{{author}}</0>",
+    "reading_time": "{{readingTime}} min read",
     "translator": "翻译：<0>{{translator}}</0>"
   },
   "buttons": {
@@ -77,7 +78,7 @@
   },
   "footer": {
     "about": "关于我们",
-    "blog": "Blog",
+    "blog": "博客",
     "brand_assets": "品牌资产",
     "community": "社区",
     "company": "公司",

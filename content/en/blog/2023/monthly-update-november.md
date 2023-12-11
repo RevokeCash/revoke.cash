@@ -46,7 +46,7 @@ November was an important month for many bootstrapped projects in the Ethereum e
 
 We ended Gitcoin Grants 19 with close to $26,000 in donations from over 12,000 individual donors. And while Optimism's RetroPGF 3 is still ongoing, we've already passed the threshold to receive funding in this round. We're very grateful for all the support we've received from the community, and we're excited to continue building Revoke.cash.
 
-## New Networks Supported
+## New Supported Networks
 
 While we support 60+ different blockchain networks already, we're always looking to add more. And in November we added support for 6 new networks.
 

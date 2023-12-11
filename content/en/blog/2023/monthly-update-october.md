@@ -16,7 +16,7 @@ In September we did some very big refactoring of the codebase to make it easier 
 
 Last month we implemented pricing information to help users understand the actual value at risk of their approvals. This functionality currently only works for tokens, but we're working on extending this to NFTs as well. So we've been doing some ground work to prepare for this. We look forward to releasing this functionality in the coming months.
 
-## New Exploits Registered
+## New Exploits
 
 October was a busy month for hackers, who targeted not one, but two different Telegram trading bots: Maestro and Unibot. Together these two exploits resulted in over a million dollar in losses. The teams behind these popular trading bots mitigated the issues and reimbursed their users. Check if you're affected by these exploits below:
 
@@ -27,7 +27,7 @@ Hackers also targeted Galxe, a popular Web3 community building platform. Malicio
 
 - [Galxe Frontend Hack](/exploits/galxe)
 
-## New Networks Supported
+## New Supported Networks
 
 While we support 60+ different blockchain networks already, we're always looking to add more. And in October we added support for 4 new networks.
 

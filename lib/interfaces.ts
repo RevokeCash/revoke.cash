@@ -102,6 +102,7 @@ export interface ISidebarEntry {
   path: string;
   children?: ISidebarEntry[];
   date?: string;
+  readingTime?: number;
 }
 
 export interface ContentMeta {
@@ -109,6 +110,7 @@ export interface ContentMeta {
   sidebarTitle?: string;
   description: string;
   language: string;
+  readingTime: number;
   author?: string;
   translator?: string;
   coverImage?: string;

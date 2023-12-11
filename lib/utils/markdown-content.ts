@@ -4,6 +4,7 @@ import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import getT from 'next-translate/getT';
 import { join } from 'path';
+import readingTime from 'reading-time';
 
 const walk = require('walkdir');
 
@@ -47,6 +48,7 @@ export const readAndParseContentFile = (
     translator: data.translator ?? null,
     coverImage: getCoverImage(slug, directory),
     date: data.date?.toISOString() ?? null,
+    readingTime: Math.round(readingTime(content).minutes),
   };
 
   return { content, meta };
@@ -125,6 +127,7 @@ const getSidebarEntry = (
 
   const entry: ISidebarEntry = { title: meta.sidebarTitle, path, date: meta.date };
   if (extended) entry.description = meta.description;
+  if (directory === 'blog') entry.readingTime = meta.readingTime;
 
   return entry;
 };

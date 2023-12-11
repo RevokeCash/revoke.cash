@@ -24,9 +24,9 @@ Revoke.cash has been using [Wagmi](https://wagmi.sh/) for quite some time, which
 
 Migrating our entire codebase to Viem and the latest version of Wagmi was a big undertaking, but it will make it easier for us to add new features in the future and should bring performance improvements as well. In the process of moving to Viem we also refactored a lot of other parts of our code, which was also focused on bringing performance improvements and improving the developer experience.
 
-## New Networks Supported
+## New Supported Networks
 
-While we support close to 50 different blockchain networks already, we're always looking to add more. And in October we added support for 12 new networks, bringing the total over 60.
+While we support close to 50 different blockchain networks already, we're always looking to add more. And in September we added support for 12 new networks, bringing the total over 60.
 
 New Mainnets:
 

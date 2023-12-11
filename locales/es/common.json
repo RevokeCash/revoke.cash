@@ -1,6 +1,7 @@
 {
   "article_meta": {
     "author": "Escrito por <0>{{author}}</0>",
+    "reading_time": "{{readingTime}} min read",
     "translator": "Traducido por <0>{{translator}}</0>"
   },
   "buttons": {

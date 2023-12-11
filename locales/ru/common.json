@@ -1,6 +1,7 @@
 {
   "article_meta": {
     "author": "Автор <0>{{author}}</0>",
+    "reading_time": "{{readingTime}} min read",
     "translator": "Переводчик <0>{{translator}}</0>"
   },
   "buttons": {
@@ -77,7 +78,7 @@
   },
   "footer": {
     "about": "О нас",
-    "blog": "Blog",
+    "blog": "Блог",
     "brand_assets": "Активы бренда",
     "community": "Сообщество",
     "company": "Компания",

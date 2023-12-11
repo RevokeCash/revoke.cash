@@ -1,6 +1,7 @@
 {
   "article_meta": {
     "author": "著者 <0>{{author}}</0>",
+    "reading_time": "{{readingTime}} min read",
     "translator": "翻訳者：<0>{{translator}}</0>"
   },
   "buttons": {
@@ -77,7 +78,7 @@
   },
   "footer": {
     "about": "私たちについて",
-    "blog": "Blog",
+    "blog": "ブログ",
     "brand_assets": "ブランド資産",
     "community": "コミュニティー",
     "company": "会社",
@@ -102,7 +103,7 @@
   },
   "nav": {
     "about": "私たちについて",
-    "blog": "Blog",
+    "blog": "ブログ",
     "exploits": "エクスプロイト",
     "extension": "ブラウザ拡張機能",
     "faq": "よくある質問",
