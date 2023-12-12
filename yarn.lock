@@ -1940,13 +1940,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nprogress@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "@types/nprogress@npm:0.2.1"
-  checksum: fe9db499f3d9cff90bad9f49336ff82ea444a51ca336a25ec401d18cc8fb12e546b622bdc11379491475c22cd4d9fb1195c805055cacb365627c667e52d618b1
-  languageName: node
-  linkType: hard
-
 "@types/nprogress@npm:^0.2.3":
   version: 0.2.3
   resolution: "@types/nprogress@npm:0.2.3"
@@ -5323,6 +5316,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"holy-loader@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "holy-loader@npm:2.0.0"
+  dependencies:
+    react: ^18.2.0
+  checksum: 5a9b5c0136a41c85c4390ef8cb38820556d29bbb506102847e3cb53c61e298e0c1f0fa193c53c119a675896fb1f0ac6ab21b087c97045bc90ef88806ecc1c9d3
+  languageName: node
+  linkType: hard
+
 "html-url-attributes@npm:^3.0.0":
   version: 3.0.0
   resolution: "html-url-attributes@npm:3.0.0"
@@ -7265,21 +7267,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nextjs-toploader@npm:^1.6.4":
-  version: 1.6.4
-  resolution: "nextjs-toploader@npm:1.6.4"
-  dependencies:
-    "@types/nprogress": ^0.2.1
-    nprogress: ^0.2.0
-    prop-types: ^15.8.1
-  peerDependencies:
-    next: ">= 6.0.0"
-    react: ">= 16.0.0"
-    react-dom: ">= 16.0.0"
-  checksum: 43801c844494f508b31a02e202dc3f063e9ded5968edff0ed298118b2c5ad3f2bc200712ca3c693fe27fe5acb5363646c10e937710e3a27ba2fe284fd31a0665
-  languageName: node
-  linkType: hard
-
 "node-addon-api@npm:^2.0.0":
   version: 2.0.2
   resolution: "node-addon-api@npm:2.0.2"
@@ -7437,13 +7424,6 @@ __metadata:
     gauge: ^4.0.3
     set-blocking: ^2.0.0
   checksum: ae238cd264a1c3f22091cdd9e2b106f684297d3c184f1146984ecbe18aaa86343953f26b9520dedd1b1372bc0316905b736c1932d778dbeb1fcf5a1001390e2a
-  languageName: node
-  linkType: hard
-
-"nprogress@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "nprogress@npm:0.2.0"
-  checksum: 66b7bec5d563ecf2d1c3d2815e6d5eb74ed815eee8563e0afa63d3f185ab1b9cf2ddd97e1ded263b9995c5019d26d600320e849e50f3747984daa033744619dc
   languageName: node
   linkType: hard
 
@@ -8015,7 +7995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -8662,6 +8642,7 @@ __metadata:
     dexie: ^3.2.4
     dotenv: ^16.3.1
     gray-matter: ^4.0.3
+    holy-loader: ^2.0.0
     husky: ^8.0.3
     iron-session: ^8.0.1
     ky: ^1.1.3
@@ -8674,7 +8655,6 @@ __metadata:
     next-sitemap: ^4.2.3
     next-translate: ^2.6.2
     next-translate-plugin: ^2.6.2
-    nextjs-toploader: ^1.6.4
     p-queue: ^8.0.0
     postcss: ^8.4.32
     prettier: ^3.1.0

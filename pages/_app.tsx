@@ -1,5 +1,6 @@
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import HolyLoader from 'holy-loader';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
@@ -7,7 +8,6 @@ import { init, track } from 'lib/utils/analytics';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import NextTopLoader from 'nextjs-toploader';
 import React, { useEffect } from 'react';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import { ToastContainer } from 'react-toastify';
@@ -43,7 +43,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <EthereumProvider>
           <ColorThemeProvider>
             <Component {...pageProps} />
-            <NextTopLoader height={2} color="#000" showSpinner={false} shadow={false} />
+            <HolyLoader color="#000" height={2} />
             <ToastContainer
               className="text-center"
               toastClassName="border border-black bg-white text-zinc-900 dark:bg-black dark:border-white dark:text-zinc-100"
