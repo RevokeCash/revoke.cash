@@ -10,7 +10,13 @@ interface Props {
 
 // Make sure to pass native html elements as children, not React components, or forward the ref
 const WithHoverTooltip = ({ tooltip, placement, children }: Props) => (
-  <Tippy content={tooltip} placement={placement ?? 'top'} className="text-center break-words" maxWidth={380}>
+  <Tippy
+    interactive
+    content={tooltip}
+    placement={placement ?? 'top'}
+    className="text-center break-words"
+    maxWidth={380}
+  >
     {children}
   </Tippy>
 );
