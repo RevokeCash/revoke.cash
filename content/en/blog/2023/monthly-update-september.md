@@ -24,6 +24,18 @@ Revoke.cash has been using [Wagmi](https://wagmi.sh/) for quite some time, which
 
 Migrating our entire codebase to Viem and the latest version of Wagmi was a big undertaking, but it will make it easier for us to add new features in the future and should bring performance improvements as well. In the process of moving to Viem we also refactored a lot of other parts of our code, which was also focused on bringing performance improvements and improving the developer experience.
 
+## New Scam: Network Masking
+
+This month we found out about a new scam that tries to steal user funds by "masking" the selected network in a wallet. Scammers would send an "add network" request for existing networks, but with a different name.
+
+![Add a Scam Network](/assets/images/blog/2023/monthly-update-september/add-scam-network.jpg)
+
+Then they would send a transaction request to the wallet for this new network, essentially making it seem like the user was sending an inconsequential transaction, while in reality they may be sending their entire ETH or BNB balance to the scammer.
+
+![Scam Transaction](/assets/images/blog/2023/monthly-update-september/scam-transaction.jpg)
+
+This scam is something to be aware of, but it can be avoided by always checking the network name in your wallet before sending a transaction. And wallets can also help prevent this scam by showing proper warnings when a network is added for an existing network with a different name.
+
 ## New Supported Networks
 
 While we support close to 50 different blockchain networks already, we're always looking to add more. And in September we added support for 12 new networks, bringing the total over 60.

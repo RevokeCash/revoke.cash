@@ -40,8 +40,8 @@ To make it easier to see if you're affected by exploits, we also added warning i
 
 This month saw two big smart contracts exploits in which approved funds may be at risk. Crypto fund CivFund was exploited for close to $200k, which drained its users' approved funds. But this smaller hack was overshadowed by the much larger exploit of the popular cross-chain bridge Multichain (previously known as AnySwap). This exploit resulted in over $100 million in losses. And although no approved funds were stolen, it seems that the admin keys of the Multichain bridge were compromised, which means that approved funds may be at risk. You can check if you're affected by these exploits below:
 
-- [CivFund](/exploits/civfund)
-- [Multichain](/exploits/multichain-2023)
+- [CivFund Hack](/exploits/civfund)
+- [Multichain Hack](/exploits/multichain-2023)
 
 ## New Supported Networks
 
