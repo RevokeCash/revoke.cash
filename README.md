@@ -63,7 +63,7 @@ Also make sure that your network is listed in [ethereum-lists/chains](https://gi
 In `lib/utils/chains.ts`:
 
 - Add the network to `PROVIDER_SUPPORTED_CHAINS`, `BLOCKSCOUT_SUPPORTED_CHAINS`, `ETHERSCAN_SUPPORTED_CHAINS` or `COVALENT_SUPPORTED_CHAINS`.
-- Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn ts-node scripts/get-chain-order.ts` to determine its position in the network selection dropdown.
+- Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn tsx scripts/get-chain-order.ts` to determine its position in the network selection dropdown.
 - Find a logo (preferably svg) for the network, add it to `public/assets/images/vendor/chains` and add the path to `getChainLogo()`.
 - If `multicall3` is deployed on the network, add it to `getChainDeployedContracts()`.
 - If a price source (Uniswap v2 or Uniswap v3 fork) is available for the network, add it to `getChainPriceStrategies()`.

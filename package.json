@@ -8,13 +8,13 @@
     "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
-    "lint:checksums": "ts-node scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
+    "lint:checksums": "tsx scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
     "lint": "prettier --write .",
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json",
     "test": "cypress run",
-    "exploits:update": "ts-node scripts/update-exploits.ts ../approval-exploit-list ../whois"
+    "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois"
   },
   "private": true,
   "dependencies": {
