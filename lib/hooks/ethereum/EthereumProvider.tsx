@@ -4,7 +4,7 @@ import { ReactNode, useEffect } from 'react';
 import { configureChains, createConfig, useAccount, useConnect, WagmiConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { LedgerConnector } from 'wagmi/connectors/ledger';
+// import { LedgerConnector } from 'wagmi/connectors/ledger';
 import { SafeConnector } from 'wagmi/connectors/safe';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { publicProvider } from 'wagmi/providers/public';
@@ -50,10 +50,10 @@ export const connectors = [
     },
   }),
   new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
-  new LedgerConnector({
-    chains: wagmiChains,
-    options: { walletConnectVersion: 2, projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID },
-  }),
+  // new LedgerConnector({
+  //   chains: wagmiChains,
+  //   options: { walletConnectVersion: 2, projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID },
+  // }),
 ];
 
 export const wagmiConfig = createConfig({
