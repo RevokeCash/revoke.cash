@@ -40,7 +40,7 @@ The section above explains how this exploit was able to propagate to so many web
 
 In general, companies that develop software have a process in place to ensure that only authorized people can publish new versions of their software, and employ mandatory 2FA (Two Factor Authentication) on their deployment systems. This ensures that even if a developer's account is compromised, the attacker cannot publish a malicious version of the software.
 
-Ledger did not _properly_ have these practices in place. Instead, they allowed developers to publish new versions of their software without 2FA. This meant that if a developer's account was compromised, the attacker could publish a malicious version of the software. And that is exactly what happened.
+It seems like Ledger did not _properly_ have these practices in place. Instead, they allowed developers to publish new versions of their software without 2FA. This meant that if a developer's account was compromised, the attacker could publish a malicious version of the software. And that is exactly what happened.
 
 In addition to the lack of 2FA, Ledger also failed to properly revoke publishing rights from developers that no longer worked for them. This meant that even if a developer left the company, they could still publish new versions of the software. And that is exactly what happened.
 
@@ -68,9 +68,9 @@ And while Ledger should not have published their library in this way, we should 
 
 The biggest lesson to learn here is to be very very careful about the libraries that we use. And while it is very hard to completely prevent supply chain attacks, there are things that developers can do to mitigate the risk. And the most important of those is to pin the versions of dependencies that we use.
 
-But as we mentioned before, Ledger's library was not pinnable because it was loaded from a CDN. So we need to take it a step further: we need to avoid using libraries that are distributed in this way. And that means that we will not re-add the `ledger-connect-kit` library to Revoke.cash until we can do so without using the CDN.
+But because this specific library was loaded from a CDN instead of bundled with the pplication, we need to take it a step further: we need to avoid using libraries that are distributed in this way. And that means that we will not re-add the `ledger-connect-kit` library to Revoke.cash until we can do so without using the CDN.
 
-We are currently working to thoroughly audit our list of dependencies to ensure that we do not use any libraries that could be compromised in the same way, making sure that all our dependencies are bundled with the rest of our code. And we will continue to do this in the future to ensure that we are not vulnerable to supply chain attacks.
+We are currently working to thoroughly audit the rest of our dependencies so we do not use any libraries that could be compromised in the same way, making sure that all our dependencies are bundled with the rest of our code. And we will continue to do this in the future to ensure that we are not vulnerable to supply chain attacks.
 
 ## Impacted Users
 
