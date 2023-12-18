@@ -8447,13 +8447,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"request-ip@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "request-ip@npm:3.3.0"
-  checksum: 9ca26f814201da19cb6f1a18da4f036803b770665ec0e7c556ea975ba553321922a5f04909f6dfc2371f695ca8aaa3c66f02c00a5e902c76435029804cdc4964
-  languageName: node
-  linkType: hard
-
 "request-progress@npm:^3.0.0":
   version: 3.0.0
   resolution: "request-progress@npm:3.0.0"
@@ -8655,7 +8648,6 @@ __metadata:
     reading-time-estimator: ^1.9.2
     remark-directive: ^3.0.0
     remark-directive-rehype: ^0.4.2
-    request-ip: ^3.3.0
     sharp: ^0.33.0
     tailwind-merge: ^2.1.0
     tailwindcss: ^3.3.6

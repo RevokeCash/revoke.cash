@@ -3,7 +3,11 @@ import ky from 'lib/ky';
 import { HOUR } from 'lib/utils/time';
 
 export const useApiSession = () => {
-  const { data: isLoggedIn, isLoading: loggingIn } = useQuery({
+  const {
+    data: isLoggedIn,
+    isLoading: loggingIn,
+    error,
+  } = useQuery({
     queryKey: ['login'],
     queryFn: () =>
       ky
@@ -17,5 +21,5 @@ export const useApiSession = () => {
     retry: 5,
   });
 
-  return { isLoggedIn, loggingIn };
+  return { isLoggedIn, loggingIn, error };
 };
