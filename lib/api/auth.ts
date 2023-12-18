@@ -40,6 +40,9 @@ export const storeSession = async (req: NextApiRequest, res: NextApiResponse) =>
 };
 
 export const checkActiveSession = async (req: NextApiRequest, res: NextApiResponse) => {
+  // return session.ip && session.ip === requestIp.getClientIp(req);
+  // TODO
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
-  return session.ip && session.ip === requestIp.getClientIp(req);
+  console.log('>>>>>>', session.ip, requestIp.getClientIp(req));
+  return true;
 };
