@@ -18,7 +18,6 @@
   },
   "private": true,
   "dependencies": {
-    "@amplitude/analytics-browser": "1.9.3",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@revoke.cash/chains": "^26.0.0",

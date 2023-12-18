@@ -26,88 +26,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@amplitude/analytics-browser@npm:1.9.3":
-  version: 1.9.3
-  resolution: "@amplitude/analytics-browser@npm:1.9.3"
-  dependencies:
-    "@amplitude/analytics-client-common": ^0.6.2
-    "@amplitude/analytics-core": ^0.12.1
-    "@amplitude/analytics-types": ^0.17.1
-    "@amplitude/plugin-page-view-tracking-browser": ^0.6.3
-    "@amplitude/plugin-web-attribution-browser": ^0.6.3
-    "@amplitude/ua-parser-js": ^0.7.31
-    tslib: ^2.4.1
-  checksum: d585e800d5e4b8b5229cd5152ce3ebf380d232ad46e0f53d27cde222c71b0916aae60550c2c4d5b37c3848f735a61d57c41d4cb3091cfc292129886cd93fcc86
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-client-common@npm:^0.6.2":
-  version: 0.6.2
-  resolution: "@amplitude/analytics-client-common@npm:0.6.2"
-  dependencies:
-    "@amplitude/analytics-connector": ^1.4.5
-    "@amplitude/analytics-core": ^0.12.1
-    "@amplitude/analytics-types": ^0.17.1
-    tslib: ^2.4.1
-  checksum: 42833c923249e1624897dbcd8c153cdf97514816a8370db3c09e581c09ea5ff7307bc09db158b043b9fa0bf65ec8b0fd4b681163c2e0a1e597ea462ee6015563
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-connector@npm:^1.4.5":
-  version: 1.4.6
-  resolution: "@amplitude/analytics-connector@npm:1.4.6"
-  dependencies:
-    "@amplitude/ua-parser-js": 0.7.31
-  checksum: 0a2acfa54e02b405e1b66ec522aa5802f938f525ad0e81a864f9370b53a3a18f166962d891a5372c12938ec7c3fbbb3453304261845bd57e5617963c8285c2dc
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-core@npm:^0.12.1":
-  version: 0.12.1
-  resolution: "@amplitude/analytics-core@npm:0.12.1"
-  dependencies:
-    "@amplitude/analytics-types": ^0.17.1
-    tslib: ^2.4.1
-  checksum: a177cf3e41db73dc74e94d6e5e9966b1ca5a53aa160c2cfc0739fbc9949af0da8fa810cec7909ed36cbd560d9b8fcfbf7a01665e6e0ad0a0e5587fa3dfb2ffbb
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-types@npm:^0.17.1":
-  version: 0.17.1
-  resolution: "@amplitude/analytics-types@npm:0.17.1"
-  checksum: bffbb2ae65fde3b18ae0a9efd0fb5ba4c2e36512f9f4bca8e0999129664b85064174a3178a59f3631b1e4b19f810b49afe28ab2eb082017ec0d0fa42f02a12ec
-  languageName: node
-  linkType: hard
-
-"@amplitude/plugin-page-view-tracking-browser@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "@amplitude/plugin-page-view-tracking-browser@npm:0.6.3"
-  dependencies:
-    "@amplitude/analytics-client-common": ^0.6.2
-    "@amplitude/analytics-types": ^0.17.1
-    tslib: ^2.4.1
-  checksum: dca73a081dac3e31881f8f30f1a3772390479e375859d7faecfa01fd42b48a45e64b008726c1bedb7a4fdadfa0cd3ed301c04f95c32a758598bea0e0e901bba5
-  languageName: node
-  linkType: hard
-
-"@amplitude/plugin-web-attribution-browser@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "@amplitude/plugin-web-attribution-browser@npm:0.6.3"
-  dependencies:
-    "@amplitude/analytics-client-common": ^0.6.2
-    "@amplitude/analytics-types": ^0.17.1
-    tslib: ^2.4.1
-  checksum: fc6e6dc29f3e6b06b9370f61b05ef505939966b42b9dd18fa931f31fb1237c2813d2a6d3ba26b57b9aac0c5dd79212cca6cddbeb5b4bcef326a790fe8eb04f68
-  languageName: node
-  linkType: hard
-
-"@amplitude/ua-parser-js@npm:0.7.31, @amplitude/ua-parser-js@npm:^0.7.31":
-  version: 0.7.31
-  resolution: "@amplitude/ua-parser-js@npm:0.7.31"
-  checksum: c72e7c8656dd77a6c2ece9e3817929022aeadf731470e53fecddce03232d87977fd5b09d76c570a2a5bed97f5dd463fe6379aac7a6c4b2d2393f14486d385eec
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0":
   version: 7.18.6
   resolution: "@babel/code-frame@npm:7.18.6"
@@ -8590,7 +8508,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "revoke.cash@workspace:."
   dependencies:
-    "@amplitude/analytics-browser": 1.9.3
     "@cypress/grep": ^4.0.1
     "@headlessui/react": ^1.7.17
     "@heroicons/react": ^2.0.18
@@ -9610,7 +9527,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1":
+"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.4.0":
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
   checksum: 19480d6e0313292bd6505d4efe096a6b31c70e21cf08b5febf4da62e95c265c8f571f7b36fcc3d1a17e068032f59c269fab3459d6cd3ed6949eafecf64315fca
