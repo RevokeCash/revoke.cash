@@ -17,6 +17,9 @@ export const ERC20_ABI = parseAbi([
   'function nonces(address owner) public view returns (uint256)',
   'function DOMAIN_SEPARATOR() external view returns (bytes32)',
   'function version() external view returns (string)', // This is not part of the standard but is used by some tokens
+  // increase/decrease allowance (non standard)
+  'function increaseAllowance(address spender, uint256 addedValue) public returns (bool)',
+  'function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool)',
 ]);
 
 export const ERC721_ABI = parseAbi([

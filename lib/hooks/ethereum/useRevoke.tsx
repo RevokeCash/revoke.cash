@@ -2,6 +2,7 @@ import { ADDRESS_ZERO } from 'lib/constants';
 import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
+import { isRevertedError, parseErrorMessage } from 'lib/utils/errors';
 import { parseFixedPointBigInt } from 'lib/utils/formatting';
 import { permit2Approve } from 'lib/utils/permit2';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -66,18 +67,44 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
     const revoke = async () => update('0');
     const update = async (newAmount: string) => {
       const newAmountParsed = parseFixedPointBigInt(newAmount, metadata.decimals);
-
-      console.debug(`Calling contract.approve(${spender}, ${newAmountParsed})`);
+      const differenceAmount = newAmountParsed - allowance.amount;
+      if (differenceAmount === 0n) return;
 
       const executeUpdate = async () => {
-        return writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
+        const baseRequest = {
           ...contract,
-          functionName: 'approve',
-          args: [spender, newAmountParsed],
           account: allowance.owner,
           chain: walletClient.chain,
           value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
-        });
+        };
+
+        try {
+          console.debug(`Calling contract.approve(${spender}, ${newAmountParsed})`);
+          return await writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
+            ...baseRequest,
+            functionName: 'approve',
+            args: [spender, newAmountParsed],
+          });
+        } catch (e) {
+          if (!isRevertedError(parseErrorMessage(e))) throw e;
+
+          // Some tokens can only cahnge approval with {increase|decrease}Approval
+          if (differenceAmount > 0n) {
+            console.debug(`Calling contract.increaseAllowance(${spender}, ${differenceAmount})`);
+            return await writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
+              ...baseRequest,
+              functionName: 'increaseAllowance',
+              args: [spender, differenceAmount],
+            });
+          } else {
+            console.debug(`Calling contract.decreaseAllowance(${spender}, ${-differenceAmount})`);
+            return await writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
+              ...baseRequest,
+              functionName: 'decreaseAllowance',
+              args: [spender, -differenceAmount],
+            });
+          }
+        }
       };
 
       // If this is a permit2 approval, then we need to update it through Permit2
