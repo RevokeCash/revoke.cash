@@ -8,6 +8,7 @@ import {
 } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
+import { AlchemyPricingStrategy } from 'lib/price/AlchemyPricingStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
@@ -1303,6 +1304,10 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
         path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
         decimals: 6,
+      }),
+
+      new AlchemyPricingStrategy({
+        //
       }),
     ],
   }),

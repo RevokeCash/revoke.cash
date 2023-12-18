@@ -103,16 +103,19 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
 
   if (isErc721Contract(contract)) {
-    const [symbol] = await Promise.all([
+    const [symbol, inversePrice] = await Promise.all([
       metadataFromMapping?.symbol ??
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
+      getInverseTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
       throwIfSpamNft(contract),
     ]);
 
+    const price = calculateTokenPrice(inversePrice, 0);
+
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
-    return { ...metadataFromMapping, symbol };
+    return { ...metadataFromMapping, symbol, price };
   }
 
   const [totalSupply, symbol, decimals, inversePrice] = await Promise.all([
