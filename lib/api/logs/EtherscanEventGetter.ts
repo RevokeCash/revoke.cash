@@ -1,5 +1,6 @@
 import type { Filter, Log } from 'lib/interfaces';
 import ky from 'lib/ky';
+import { isNullish } from 'lib/utils';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
   getChainApiIdentifer,
@@ -63,6 +64,11 @@ export class EtherscanEventGetter implements EventGetter {
       }
 
       throw new Error(data.result);
+    }
+
+    // Routescan / Snowtrace will report a timeout if the range is too large
+    if (isNullish(data?.result) && typeof data.message === 'string' && data.message.includes('Timeout reached')) {
+      throw new Error('Log response size exceeded');
     }
 
     if (!Array.isArray(data.result)) {

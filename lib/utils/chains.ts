@@ -94,6 +94,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
 ];
 
 export const ETHERSCAN_SUPPORTED_CHAINS = [
+  ChainId['AvalancheC-Chain'],
   ChainId.ArbitrumNova,
   ChainId.AvalancheFujiTestnet,
   ChainId.Base,
@@ -114,7 +115,6 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
 ];
 
 export const COVALENT_SUPPORTED_CHAINS = [
-  ChainId['AvalancheC-Chain'],
   ChainId.BobaNetwork,
   ChainId.Canto,
   ChainId.Evmos,
