@@ -29,7 +29,7 @@ export class RequestQueue {
       const { success } = await this.upstashQueue.blockUntilReady(this.identifier, this.rateLimit.timeout ?? 10_000);
 
       if (!success) {
-        throw new Error('Request timed out');
+        throw new Error('Queued request timed out');
       }
 
       return fn();

@@ -19,6 +19,8 @@ export const isLogResponseSizeError = (message?: string) => {
   if (lowercaseMessage?.includes('query returned more than 10000 results')) return true;
   if (lowercaseMessage?.includes('log response size exceeded')) return true;
   if (lowercaseMessage?.includes('query timeout exceeded')) return true;
+  // This is also a partial match for a network error, but the checks for these two error categories are mutually exclusive
+  if (lowercaseMessage?.includes('queued request timed out')) return true;
   return false;
 };
 
