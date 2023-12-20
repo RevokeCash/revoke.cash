@@ -18,7 +18,7 @@ Revoke.cash uses the popular [Wagmi](https://wagmi.sh/) library to connect to us
 
 This malicious version of `ledger-connect-kit` injected a script into the websites that used it. Upon connecting your wallet, this script would send malicious transaction or signature requests to users' wallets. If those users then approved these requests in their wallets, they would lose their funds to the scammer.
 
-Ledger has released [a statement](https://www.ledger.com/blog/a-letter-from-ledger-chairman-ceo-pascal-gauthier-regarding-ledger-connect-kit-exploit) of their accounts of the events on the Ledger website. In the explanation below, we use the information from that statement to explain what happened.
+Ledger has released [a statement](https://www.ledger.com/blog/a-letter-from-ledger-chairman-ceo-pascal-gauthier-regarding-ledger-connect-kit-exploit) of their accounts of the events on the Ledger website. In the explanation below, we use the information from that statement to explain what happened. **Update**: Ledger has released [a more detailed explanation](https://www.ledger.com/blog/ledger-connect-kit-exploit-technical-explanation) of the exploit. We have updated the explanation below to reflect this new information and to correct some inaccuracies about Ledger's development practices.
 
 ### Supply Chain Attack
 
@@ -40,9 +40,9 @@ The section above explains how this exploit was able to propagate to so many web
 
 In general, companies that develop software have a process in place to ensure that only authorized people can publish new versions of their software, and employ mandatory 2FA (Two Factor Authentication) on their deployment systems. This ensures that even if a developer's account is compromised, the attacker cannot publish a malicious version of the software.
 
-It seems like Ledger did not _properly_ have these practices in place. Instead, they allowed developers to publish new versions of their software without 2FA. This meant that if a developer's account was compromised, the attacker could publish a malicious version of the software. And that is exactly what happened.
+Ledger has confirmed in their most recent statement that have these practices in place. However, they also used API keys for deployment to NPM, which circumvent the 2FA requirement. This meant that if such an API key was compromised, the attacker could publish a malicious version of the software without requiring 2FA.
 
-In addition to the lack of 2FA, Ledger also failed to properly revoke publishing rights from developers that no longer worked for them. This meant that even if a developer left the company, they could still publish new versions of the software. And that is exactly what happened.
+In this case, the attacker was able to obtain such an API key by compromising an API key belonging to a developer that no longer worked for Ledger. This means that Ledger failed to properly revoke the API key when the developer left the company, which allowed the attacker to publish a malicious version of the software using this ex-employee's API key.
 
 ## Lessons Learned
 
@@ -68,7 +68,7 @@ And while Ledger should not have published their library in this way, we should 
 
 The biggest lesson to learn here is to be very very careful about the libraries that we use. And while it is very hard to completely prevent supply chain attacks, there are things that developers can do to mitigate the risk. And the most important of those is to pin the versions of dependencies that we use.
 
-But because this specific library was loaded from a CDN instead of bundled with the pplication, we need to take it a step further: we need to avoid using libraries that are distributed in this way. And that means that we will not re-add the `ledger-connect-kit` library to Revoke.cash until we can do so without using the CDN.
+But because this specific library was loaded from a CDN instead of bundled with the pplication, we need to take it a step further: we need to avoid using libraries that are distributed in this way. And that means that we will not re-add the `ledger-connect-kit` library to Revoke.cash until we can do so without using the CDN. Ledger has confirmed that they are working on a solution for this.
 
 We are currently working to thoroughly audit the rest of our dependencies so we do not use any libraries that could be compromised in the same way, making sure that all our dependencies are bundled with the rest of our code. And we will continue to do this in the future to ensure that we are not vulnerable to supply chain attacks.
 
@@ -84,7 +84,7 @@ If you want to check if the scammers _still_ have access to your funds, you can 
 
 Due to the widespread nature of the exploit, it is impossible to determine which of the victims of the exploit got compromised on Revoke.cash and which got compromised on other websites. This is why we unfortunately do not see it as a feasible solution for Revoke.cash or other affected websites to directly compensate impacted users.
 
-The only possible solution that we see for victims to be made whole is for Ledger to compensate them from their own funds. It is currently unclear if Ledger plans to do this. Regardless, we recommend affected users to [contact Ledger support](https://support.ledger.com/hc/en-us/articles/4423020306705-Contact-Us?support=true) about this matter.
+**Ledger has stated that they will compensate all victims of the exploit**, and we commend them for doing so. We recommend affected users to [contact Ledger support](https://support.ledger.com/hc/en-us/articles/4423020306705-Contact-Us?support=true) about this matter.
 
 ## Conclusion
 
