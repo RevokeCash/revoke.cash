@@ -16,7 +16,11 @@ interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
 }
 
 const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, ...props }: Props) => {
-  const { data: isValid, isLoading: validating } = useQuery({
+  const {
+    data: isValid,
+    isLoading: validating,
+    refetch,
+  } = useQuery({
     queryKey: ['validate', value],
     queryFn: async () => !!(await parseInputAddress(value)),
     enabled: !!value,
@@ -27,6 +31,15 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, .
   // TODO: Handle case where submitted while still validating
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+
+    await new Promise<void>((resolve) => {
+      while (validating) {
+        setTimeout(resolve, 100);
+      }
+
+      resolve();
+    });
+
     if (!isValid || !value) return;
     onSubmit(event);
   };
