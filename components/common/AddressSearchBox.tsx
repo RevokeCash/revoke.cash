@@ -16,11 +16,7 @@ interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
 }
 
 const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, ...props }: Props) => {
-  const {
-    data: isValid,
-    isLoading: validating,
-    refetch,
-  } = useQuery({
+  const { data: isValid, isLoading: validating } = useQuery({
     queryKey: ['validate', value],
     queryFn: async () => !!(await parseInputAddress(value)),
     enabled: !!value,
