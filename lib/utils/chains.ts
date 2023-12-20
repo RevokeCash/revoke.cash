@@ -1,4 +1,6 @@
 import { ChainId, getChain } from '@revoke.cash/chains';
+import { AlchemyNFTSalesGetter } from 'lib/api/nft/AlchemySalesGetter';
+import { NFTSalesGetter } from 'lib/api/nft/NFTSalesGetter';
 import {
   ALCHEMY_API_KEY,
   ETHERSCAN_API_KEYS,
@@ -495,6 +497,14 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
   };
 
   return overrides[chainId] ?? getChainRpcUrl(chainId);
+};
+
+export const getChainNFTSalesGetter = (chainId: number): NFTSalesGetter | undefined => {
+  const mapping = {
+    [ChainId.EthereumMainnet]: AlchemyNFTSalesGetter,
+  };
+
+  return mapping[chainId];
 };
 
 export const getChainLogo = (chainId: number): string => {
@@ -1307,7 +1317,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
 
       new AlchemyPricingStrategy({
-        //
+        apiKey: ALCHEMY_API_KEY,
       }),
     ],
   }),

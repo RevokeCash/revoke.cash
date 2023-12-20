@@ -1,4 +1,4 @@
-import { SessionOptions, getIronSession } from 'iron-session';
+import { SessionOptions, getIronSession, unsealData } from 'iron-session';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 
@@ -31,6 +31,15 @@ export const checkRateLimitAllowed = async (req: NextApiRequest) => {
   }
 };
 
+export const checkRateLimitAllowedByIp = async (ip: string) => {
+  try {
+    await rateLimiter.consume(ip);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 export const storeSession = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
   // Store the user's IP as an identifier
@@ -41,6 +50,11 @@ export const storeSession = async (req: NextApiRequest, res: NextApiResponse) =>
 export const checkActiveSession = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
   return session.ip && session.ip === getClientIp(req);
+};
+
+export const unsealSession = async (sealedSession: string) => {
+  const { password, ttl } = IRON_OPTIONS;
+  return unsealData<RevokeSession>(sealedSession, { password, ttl });
 };
 
 // Note: if ever moving to a different hosting / reverse proxy, then we need to update this
