@@ -7,6 +7,7 @@ interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelec
   size?: 'sm' | 'md' | 'full';
   controlTheme?: 'light' | 'dark';
   menuTheme?: 'light' | 'dark';
+  isSearchable: boolean;
 }
 
 // This component is created to allow us to customise the styles of the react-select component
@@ -32,7 +33,12 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
     <ReactSelect
       {...props}
       className={twMerge(props.className)}
-      components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
+      components={{
+        IndicatorSeparator: null,
+        ClearIndicator: () => null,
+        Option,
+        ...props.components,
+      }}
       classNames={{
         control: (state) =>
           twMerge(
@@ -54,6 +60,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
           },
           minHeight: 0,
           cursor: 'pointer',
+          maxWidth: props.isSearchable && '120px',
         }),
         menu: (styles) => ({
           ...styles,

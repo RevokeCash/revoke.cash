@@ -97,3 +97,8 @@ a:visited {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.chain-select input {
+  width: 100px !important;
+  border-bottom: 1px solid #000 !important;
+}

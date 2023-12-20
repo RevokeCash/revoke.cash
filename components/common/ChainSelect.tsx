@@ -1,9 +1,9 @@
-import ChainLogo from 'components/common/ChainLogo';
 import Select from 'components/common/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
+import ChainLogo from './ChainLogo';
 import PlaceholderIcon from './PlaceholderIcon';
 
 interface ChainOption {
@@ -54,8 +54,12 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
     const chainName = getChainName(chainId);
 
     return (
-      <div className="flex items-center gap-1">
-        {isMounted ? <ChainLogo chainId={chainId} /> : <PlaceholderIcon size={24} border className="bg-transparent" />}
+      <div className="flex items-center gap-1 mb-1">
+        {isMounted ? (
+          <ChainLogo chainId={chainId} size={20} />
+        ) : (
+          <PlaceholderIcon size={24} border className="bg-transparent" />
+        )}
         {(context === 'menu' || showNames) && <div>{chainName}</div>}
       </div>
     );
@@ -67,7 +71,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       classNamePrefix="chain-select"
       aria-label="Select Network"
       size="md"
-      className="shrink-0"
+      className="shrink-0 chain-select"
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
@@ -76,8 +80,8 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       onChange={onChange}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
-      isSearchable={false}
-      minMenuWidth="14.5rem"
+      isSearchable={true}
+      minMenuWidth="10.5rem"
       placeholder={<PlaceholderIcon size={24} border />}
       menuAlign={menuAlign}
     />

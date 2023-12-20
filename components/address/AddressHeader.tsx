@@ -51,7 +51,7 @@ const AddressHeader = () => {
             <ConnectedLabel address={address} />
           </div>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col items-center gap-6">
           <AddressSocialShareButtons address={address} />
           <ChainSelect instanceId="address-chain-select" selected={selectedChainId} onSelect={selectChain} />
         </div>
