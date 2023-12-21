@@ -1,7 +1,7 @@
 {
   "article_meta": {
     "author": "Автор <0>{{author}}</0>",
-    "reading_time": "{{readingTime}} min read",
+    "reading_time": "{{readingTime}} мин. чтения",
     "translator": "Переводчик <0>{{translator}}</0>"
   },
   "buttons": {

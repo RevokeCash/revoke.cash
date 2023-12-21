@@ -72,11 +72,11 @@
     },
     "marketplaces": {
       "none_found": "No marketplaces found for this network.",
-      "title": "Marketplace Signatures"
+      "title": "Potential Marketplace Signatures"
     },
     "permit": {
       "none_found": "No tokens with Permit support found.",
-      "title": "Permit Signatures"
+      "title": "Potential Permit Signatures"
     }
   },
   "sorting": {

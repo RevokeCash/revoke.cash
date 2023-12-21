@@ -1,7 +1,7 @@
 {
   "article_meta": {
     "author": "作者：<0>{{author}}</0>",
-    "reading_time": "{{readingTime}} min read",
+    "reading_time": "{{readingTime}} 分钟阅读时间",
     "translator": "翻译：<0>{{translator}}</0>"
   },
   "buttons": {
