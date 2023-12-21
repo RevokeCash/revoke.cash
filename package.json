@@ -29,7 +29,6 @@
     "@upstash/ratelimit": "^1.0.0",
     "@upstash/redis": "^1.25.1",
     "@vercel/speed-insights": "^1.0.1",
-    "delay": "^6.0.0",
     "dexie": "^3.2.4",
     "holy-loader": "^2.0.0",
     "iron-session": "^8.0.1",

@@ -18,7 +18,7 @@ interface Props {
   chainId: number;
 }
 
-const AddNewChainPage: NextPage<Props> = ({ chainId }) => {
+const TokenApprovalCheckerPage: NextPage<Props> = ({ chainId }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [value, setValue] = useState<string>('');
@@ -129,4 +129,4 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
   };
 };
 
-export default AddNewChainPage;
+export default TokenApprovalCheckerPage;
