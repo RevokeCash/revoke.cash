@@ -1,4 +1,3 @@
-import delay from 'delay';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type {
@@ -16,6 +15,7 @@ import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
   deduplicateLogsByTopics,
+  delay,
   filterLogsByAddress,
   filterLogsByTopics,
   sortLogsChronologically,

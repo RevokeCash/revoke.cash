@@ -21,6 +21,8 @@ import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
 import { isErc721Contract } from './tokens';
 
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
 };
