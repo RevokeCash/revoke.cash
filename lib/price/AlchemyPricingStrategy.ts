@@ -1,3 +1,4 @@
+import ky from 'ky';
 import { AlchemyNFTSalesGetter } from 'lib/api/nft/AlchemySalesGetter';
 import { NFTSalesGetter } from 'lib/api/nft/NFTSalesGetter';
 import { TokenContract } from 'lib/interfaces';
@@ -18,15 +19,18 @@ export class AlchemyPricingStrategy extends AbstractPriceStrategy implements Pri
   }
 
   protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
-    console.log('calculateInversePriceInternal', tokenContract);
+    const start = Date.now();
+    const alchemyNFTSales = await ky
+      .get(`/api/${tokenContract.publicClient.chain.id}/floorPrice?contractAddress=${tokenContract.address}`, {
+        retry: 3,
+      })
+      .json<{
+        floorPrice: bigint;
+        decimals: number;
+      }>();
 
-    const alchemyNFTSales = await this.nftSalesGetter.getNFTSales(tokenContract.address, 'desc', 1);
-    const mostRecentSale = alchemyNFTSales[0];
+    console.log('duration', Date.now() - start);
 
-    if (!mostRecentSale) {
-      throw new Error(`No Alchemy NFT sales found for address: ${tokenContract.address}`);
-    }
-
-    return BigInt(mostRecentSale.price);
+    return alchemyNFTSales.floorPrice;
   }
 }

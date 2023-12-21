@@ -23,8 +23,6 @@ const AllowanceTable = ({ loading, error, table, allowances }: Props) => {
 
   return (
     <div className={classes.container}>
-      <pre>{allowances?.map((a) => `\n ${a.metadata.price}`)}</pre>
-
       <table className={classes.table}>
         <AllowanceTableHeader table={table} />
         {!error && <AllowanceTableBody table={table} isLoading={loading} />}

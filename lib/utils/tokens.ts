@@ -111,7 +111,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
       throwIfSpamNft(contract),
     ]);
 
-    const price = calculateTokenPrice(inversePrice, 0);
+    const price = calculateTokenPrice(inversePrice, 6);
 
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 

@@ -1,5 +1,6 @@
 import ky from 'ky';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
+import { parseUnits } from 'viem';
 import { RequestQueue } from '../logs/RequestQueue';
 import { NFTSale, NFTSalesGetter } from './NFTSalesGetter';
 
@@ -20,7 +21,6 @@ export class AlchemyNFTSalesGetter implements NFTSalesGetter {
   private queue: RequestQueue;
   constructor(private apiKey: string) {
     const requestsPerMinute = Math.floor(ALCHEMY_CU_PER_MINUTE / ALCHEMY_NFTSALES_COST);
-    console.log('Request per minute', requestsPerMinute);
 
     this.queue = new RequestQueue(`alchemy:${apiKey}`, { interval: 60 * 1_000, intervalCap: requestsPerMinute });
   }
@@ -56,7 +56,7 @@ export class AlchemyNFTSalesGetter implements NFTSalesGetter {
     }
   }
 
-  async getNFTFloorPrice(chainId: number, contractAddress: string): Promise<bigint> {
+  public async getNFTFloorPrice(chainId: number, contractAddress: string): Promise<bigint> {
     if (chainId !== 1) {
       throw new Error('Only Ethereum mainnet is supported');
     }
@@ -72,9 +72,11 @@ export class AlchemyNFTSalesGetter implements NFTSalesGetter {
         ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<AlchemyNFTFloorPriceResponse>(),
       );
 
+      console.log('result', result);
+
       const averageFloorPrice = calculateAverageFloorPrice(result);
 
-      return BigInt(averageFloorPrice);
+      return parseUnits(String(averageFloorPrice), 6);
     } catch (e) {
       if (isRateLimitError(parseErrorMessage(e))) {
         console.error('Rate limit reached, retrying...');
@@ -88,7 +90,7 @@ export class AlchemyNFTSalesGetter implements NFTSalesGetter {
 
 const calculateAverageFloorPrice = (floorPrice: AlchemyNFTFloorPriceResponse) => {
   const floorPrices = Object.values(floorPrice).map((fp) => fp.floorPrice);
-  return Math.min(...floorPrices);
+  return floorPrices.reduce((a, b) => a + b, 0) / floorPrices.length;
 };
 
 const formatAlchemyNFTSale = (sale: AlchemyNFTSale): NFTSale => {

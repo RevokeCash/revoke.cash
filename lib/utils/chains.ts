@@ -501,7 +501,7 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
 
 export const getChainNFTSalesGetter = (chainId: number): NFTSalesGetter | undefined => {
   const mapping = {
-    [ChainId.EthereumMainnet]: AlchemyNFTSalesGetter,
+    [ChainId.EthereumMainnet]: new AlchemyNFTSalesGetter(ALCHEMY_API_KEY),
   };
 
   return mapping[chainId];

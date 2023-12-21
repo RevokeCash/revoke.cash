@@ -39,9 +39,16 @@ const handler = async (req: NextRequest, context: NextFetchEvent) => {
     .then((floorPrice) => {
       return new Response(
         JSON.stringify({
-          floorPrice,
+          floorPrice: floorPrice.toString(),
+          decimals: 6,
         }),
-        { status: 200 },
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Vercel-CDN-Cache-Control': 's-maxage=3600',
+          },
+        },
       );
     });
 };

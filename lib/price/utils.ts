@@ -12,10 +12,6 @@ export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: 
 export const getNativeTokenPrice = async (chainId: number, publicClient: PublicClient): Promise<number | null> => {
   const strategy = getChainPriceStrategy(chainId);
 
-  console.log(`getNativeTokenPrice: ${chainId} ${strategy}`);
-
-  if (!strategy) return 20;
-
   try {
     return await strategy.calculateNativeTokenPrice(publicClient);
   } catch {
@@ -26,7 +22,6 @@ export const getNativeTokenPrice = async (chainId: number, publicClient: PublicC
 export const getInverseTokenPrice = async (chainId: number, tokenContract: TokenContract): Promise<bigint | null> => {
   const strategy = getChainPriceStrategy(chainId);
   if (!strategy || !strategySupportsToken(strategy, tokenContract)) return null;
-  console.log(`getInverseTokenPrice: ${chainId} ${tokenContract.address}`);
 
   try {
     return await strategy.calculateInversePrice(tokenContract);

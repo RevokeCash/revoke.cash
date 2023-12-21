@@ -21,7 +21,7 @@ import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
 
 export const isNullish = (value: unknown): value is null | undefined => {
-  return value === null || value === undefined;
+  return value === null || value === undefined || Number.isNaN(value);
 };
 
 export const calculateValueAtRisk = (allowance: AllowanceData): number => {
