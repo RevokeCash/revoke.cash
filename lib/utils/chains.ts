@@ -1,15 +1,18 @@
 import { ChainId, getChain } from '@revoke.cash/chains';
+import { NFTGetter, ResevoirNFT } from 'lib/api/nft/Resevoir';
 import {
   ALCHEMY_API_KEY,
   ETHERSCAN_API_KEYS,
   ETHERSCAN_RATE_LIMITS,
   INFURA_API_KEY,
+  RESEVOIR_API_KEY,
   RPC_OVERRIDES,
 } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
+import { ResevoirPriceStrategy } from 'lib/price/ResevoirPriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
@@ -494,6 +497,14 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
   };
 
   return overrides[chainId] ?? getChainRpcUrl(chainId);
+};
+
+export const getNFTGetter = (chainId: number): NFTGetter | undefined => {
+  const mapping = {
+    [ChainId.EthereumMainnet]: new ResevoirNFT(RESEVOIR_API_KEY),
+  };
+
+  return mapping[chainId] ?? undefined;
 };
 
 export const getChainLogo = (chainId: number): string => {
@@ -1305,6 +1316,8 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
         decimals: 6,
       }),
+
+      new ResevoirPriceStrategy({}),
     ],
   }),
   [ChainId.Evmos]: new AggregatePriceStrategy({
