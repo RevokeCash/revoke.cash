@@ -30,6 +30,8 @@ const AllowanceDashboard = () => {
 
   return (
     <div className="flex flex-col justify-start mx-auto gap-2">
+      <div>Amount: {allowances?.length}</div>
+
       <WalletHealthSection address={address} chainId={selectedChainId} />
       <AllowanceTableControls table={table} />
       <AllowanceTable table={table} loading={isLoading} error={error} allowances={allowances} />

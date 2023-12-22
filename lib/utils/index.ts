@@ -19,6 +19,7 @@ import {
 } from 'viem';
 import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
+import { isErc721Contract } from './tokens';
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
@@ -31,17 +32,14 @@ export const calculateValueAtRisk = (allowance: AllowanceData): number => {
   if (allowance.balance === 0n) return 0;
   if (isNullish(allowance.metadata.price)) return null;
 
-  try {
-    const amount = bigintMin(allowance.balance, allowance.amount);
-    const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
-    const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
+  const allowanceAmount = isErc721Contract(allowance.contract) ? 1n : allowance.amount;
 
-    return float;
-  } catch (e) {
-    console.error(`Error calculating value at risk for ${allowance.spender}`, e);
-    console.log(allowance);
-    return null;
-  }
+  const amount = bigintMin(allowance.balance, allowanceAmount);
+  console.log('ammount', amount);
+  const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
+  const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
+
+  return float;
 };
 
 export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));

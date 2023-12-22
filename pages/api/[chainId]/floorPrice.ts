@@ -52,7 +52,7 @@ const handler = async (req: NextRequest) => {
     .catch((e) => {
       console.error(`Error occurred while fetching floor price for ${contractAddress}`, e);
 
-      return new Response('Error occurred', { status: 500 });
+      return new Response('No collection found for contractAddress', { status: 400 });
     });
 };
 
