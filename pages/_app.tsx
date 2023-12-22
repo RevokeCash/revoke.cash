@@ -47,7 +47,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             <ToastContainer
               className="text-center"
               toastClassName="border border-black bg-white text-zinc-900 dark:bg-black dark:border-white dark:text-zinc-100"
-              progressClassName="bg-black dark:bg-white"
+              progressClassName="!bg-black dark:!bg-white"
               closeButton={({ closeToast, ariaLabel }) => (
                 <button
                   onClick={(e) => {

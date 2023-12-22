@@ -92,6 +92,7 @@ export const writeToClipBoard = (text: string, t: Translate, displayToast: boole
   }
 
   navigator.clipboard.writeText(text);
+
   if (displayToast) {
     toast.info(t('common:toasts.clipboard_success'), { autoClose: 1000 });
   }
