@@ -18,7 +18,7 @@ Revoke.cash uses the popular [Wagmi](https://wagmi.sh/) library to connect to us
 
 This malicious version of `ledger-connect-kit` injected a script into the websites that used it. Upon connecting your wallet, this script would send malicious transaction or signature requests to users' wallets. If those users then approved these requests in their wallets, they would lose their funds to the scammer.
 
-Ledger has released [a statement](https://www.ledger.com/blog/a-letter-from-ledger-chairman-ceo-pascal-gauthier-regarding-ledger-connect-kit-exploit) of their accounts of the events on the Ledger website. In the explanation below, we use the information from that statement to explain what happened. **Update**: Ledger has released [a more detailed explanation](https://www.ledger.com/blog/ledger-connect-kit-exploit-technical-explanation) of the exploit. We have updated the explanation below to reflect this new information and to correct some inaccuracies about Ledger's development practices.
+Ledger has released [a statement](https://www.ledger.com/blog/a-letter-from-ledger-chairman-ceo-pascal-gauthier-regarding-ledger-connect-kit-exploit) of their accounts of the events on the Ledger website. In the explanation below, we use the information from that statement to explain what happened. **Update**: Ledger has released [a more detailed explanation](https://www.ledger.com/blog/security-incident-report) of the exploit. We have updated the explanation below to reflect this new information and to correct some inaccuracies about Ledger's development practices.
 
 ### Supply Chain Attack
 
