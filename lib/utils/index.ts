@@ -31,11 +31,17 @@ export const calculateValueAtRisk = (allowance: AllowanceData): number => {
   if (allowance.balance === 0n) return 0;
   if (isNullish(allowance.metadata.price)) return null;
 
-  const amount = bigintMin(allowance.balance, allowance.amount);
-  const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
-  const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
+  try {
+    const amount = bigintMin(allowance.balance, allowance.amount);
+    const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
+    const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
 
-  return float;
+    return float;
+  } catch (e) {
+    console.error(`Error calculating value at risk for ${allowance.spender}`, e);
+    console.log(allowance);
+    return null;
+  }
 };
 
 export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));

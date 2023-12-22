@@ -111,9 +111,9 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
       throwIfSpamNft(contract),
     ]);
 
-    const tokenPrice = calculateTokenPrice(price, 18);
-
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
+
+    const tokenPrice = calculateTokenPrice(price, 18);
 
     return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 18 };
   }

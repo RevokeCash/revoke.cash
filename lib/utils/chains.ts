@@ -1,5 +1,5 @@
 import { ChainId, getChain } from '@revoke.cash/chains';
-import { NFTGetter, ResevoirNFT } from 'lib/api/nft/Resevoir';
+import { NFTGetter, ResevoirNFT } from 'lib/api/nft';
 import {
   ALCHEMY_API_KEY,
   ETHERSCAN_API_KEYS,

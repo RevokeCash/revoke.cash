@@ -15,6 +15,8 @@ export class ResevoirPriceStrategy extends AbstractPriceStrategy implements Pric
       .get(`/api/${1}/floorPrice?contractAddress=${tokenContract.address}`)
       .json<{ floorPrice: number }>();
 
-    return BigInt(result.floorPrice * 10 ** 18);
+    const floorPriceBigInt = BigInt(result.floorPrice * 10 ** 18);
+
+    return floorPriceBigInt;
   }
 }

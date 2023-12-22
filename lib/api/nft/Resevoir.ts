@@ -2,11 +2,8 @@
 
 import ky, { SearchParamsOption } from 'ky';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
+import { NFTGetter } from '.';
 import { RequestQueue } from '../logs/RequestQueue';
-
-export interface NFTGetter {
-  getFloorPriceUSD: (contractAddress: string) => Promise<number>;
-}
 
 export class ResevoirNFT implements NFTGetter {
   private queue: RequestQueue;
@@ -25,8 +22,6 @@ export class ResevoirNFT implements NFTGetter {
     }
 
     const floorPriceUSD = collection.floorAsk.price.amount.usd;
-
-    console.log(`Resevoir floor price for ${contractAddress} is ${floorPriceUSD}`);
 
     return floorPriceUSD;
   }

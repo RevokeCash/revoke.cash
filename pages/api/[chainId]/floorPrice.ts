@@ -31,12 +31,11 @@ const handler = async (req: NextRequest) => {
 
   return getter
     .getFloorPriceUSD(contractAddress)
-    .catch((e) => {
-      console.error(`Error occurred while fetching floor price for ${contractAddress}`, e);
-
-      return new Response('Error occurred', { status: 500 });
-    })
     .then((floorPrice) => {
+      if (floorPrice < 0.01) return new Response('Not found', { status: 404 });
+
+      console.log(`Floor price for ${contractAddress} is ${floorPrice}`);
+
       return new Response(
         JSON.stringify({
           floorPrice,
@@ -49,6 +48,11 @@ const handler = async (req: NextRequest) => {
           },
         },
       );
+    })
+    .catch((e) => {
+      console.error(`Error occurred while fetching floor price for ${contractAddress}`, e);
+
+      return new Response('Error occurred', { status: 500 });
     });
 };
 
