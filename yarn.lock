@@ -8565,7 +8565,7 @@ __metadata:
     tsx: ^4.6.2
     typescript: ^5.3.3
     use-local-storage: ^3.0.0
-    viem: ^1.19.11
+    viem: ^1.20.3
     wagmi: ^1.4.12
     walkdir: ^0.4.1
   languageName: unknown
@@ -10071,9 +10071,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^1.19.11":
-  version: 1.19.11
-  resolution: "viem@npm:1.19.11"
+"viem@npm:^1.20.3":
+  version: 1.20.3
+  resolution: "viem@npm:1.20.3"
   dependencies:
     "@adraffy/ens-normalize": 1.10.0
     "@noble/curves": 1.2.0
@@ -10088,7 +10088,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 33a26f361bb2597fe0b02dc98382eb66b83473c3a9765833969a45ac7b4017fa62d7ddc42f9d4d0f3473bec7096eb081651851473b4d0ff4ab56f71a2f6378a2
+  checksum: 92fffbc1715482969b6af7ac6df51cbd4cfe4e6d55226562eb0658a16b9a9b3df743c1ec1aebb63221b5117d4956fb2f71788bc06f6316d054ac402406614b31
   languageName: node
   linkType: hard
 

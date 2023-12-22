@@ -57,7 +57,7 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^1.19.11",
+    "viem": "^1.20.3",
     "wagmi": "^1.4.12"
   },
   "devDependencies": {
