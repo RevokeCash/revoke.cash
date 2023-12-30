@@ -75,7 +75,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         </EthereumProvider>
       </QueryProvider>
       <SpeedInsights sampleRate={0.1} />
-      <Script async defer src="https://sa.revoke.cash/latest.js" />
+      <Script async defer src="/assets/js/sa-v11.js" />
     </>
   );
 };

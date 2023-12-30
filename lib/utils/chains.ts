@@ -110,6 +110,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.MoonbaseAlpha,
   ChainId.Moonbeam,
   ChainId.Moonriver,
+  ChainId.OpBNBMainnet,
   ChainId['WEMIX3.0Mainnet'],
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
@@ -119,7 +120,6 @@ export const COVALENT_SUPPORTED_CHAINS = [
   ChainId.Canto,
   ChainId.Evmos,
   ChainId.HarmonyMainnetShard0,
-  ChainId.OpBNBMainnet,
   ChainId.Palm,
 ];
 
@@ -764,6 +764,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.OasisSapphire]: 'https://explorer.sapphire.oasis.io/api',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games/api',
     [ChainId.OctaSpace]: 'https://explorer.octa.space/api',
+    [ChainId.OpBNBMainnet]: 'https://api-opbnb.bscscan.com/api',
     [ChainId.Palm]: 'https://explorer.palm.io/api',
     [ChainId.PegoNetwork]: 'https://scan.pego.network/api',
     [ChainId['PGN(PublicGoodsNetwork)']]: 'https://explorer.publicgoods.network/api',
