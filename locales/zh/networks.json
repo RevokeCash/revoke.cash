@@ -73,6 +73,7 @@
     "wemix": "WEMIX 是第 1 层（Layer 1）区块链，使用基于权益的权威证明共识机制，有 40 位验证者，融合了权益证明（PoS）和权威证明（PoA）的特色。WEMIX 在链上部署了许多官方应用程序，包括官方稳定币和游戏平台。",
     "xdc": "XDC 是第 1 层（Layer 1）区块链，其共识机制基于委托权益证明（DPoS）。XDC 致力于提供快速和低成本的交易，促进现实资产和企业用例的代币化。",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
+    "zkfair": "ZKFair is a Layer 2 scaling solution for Ethereum that is built using Polygon's Chain Development Kit (CDK) and Celestia's Data Availability layer. As the name suggests, ZKFair places an emphasis on \"fairness\" and aims to create an ecosystem in which users of the network share in the rewards of the network that usually would go to its operators.",
     "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术可在保证非常低成本的同时，利用零知识证明来进行强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。",
     "zora": "Zora 网络是以太坊的第 2 层（Layer 2）扩展解决方案，采用 Optimism 的开源 OP Stack，与 Optimism 一样，使用了 Optimism Rollup 技术。由于 Zora 网络是由 Zora NFT 交易所开发的，因此主要用于铸造和交易 NFT。"
   },
