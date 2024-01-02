@@ -7,7 +7,7 @@ const getChainOrder = async () => {
     const chainData = llamaData.find(
       (chain) =>
         chain.chainId === chainId ||
-        chain.name === getChainName(chainId) ||
+        chain.name?.toLowerCase() === getChainName(chainId)?.toLowerCase() ||
         chain.gecko_id === getChainName(chainId).toLowerCase(),
     );
     return [getChainName(chainId), chainId, Math.round(chainData?.tvl ?? 0)] as const;
