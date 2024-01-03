@@ -6,7 +6,7 @@ translator: <Your Name Here (or remove)>
 
 # What Are Tokens?
 
-There are multiple definitions of what a _token_ is in cryptocurrency, but the prevaling definition in the context of Ethereum and other EVM chains is any crypto-asset that lives on top of Ethereum or other blockchains, without having its own dedicated blockchain.
+There are multiple definitions of what a _token_ is in cryptocurrency, but the prevailing definition in the context of Ethereum and other EVM chains is any crypto-asset that lives on top of Ethereum or other blockchains, without having its own dedicated blockchain.
 
 ## Types of Tokens
 
