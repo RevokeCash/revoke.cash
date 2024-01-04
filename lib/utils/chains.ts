@@ -529,6 +529,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.CronosMainnet]: '/assets/images/vendor/chains/cronos.svg',
     [ChainId.CronosTestnet]: '/assets/images/vendor/chains/cronos.svg',
     [ChainId.DogechainMainnet]: '/assets/images/vendor/chains/dogechain.jpg',
+    [ChainId.EOSEVMNetwork]: '/assets/images/vendor/chains/eos.svg',
     [ChainId.ElastosSmartChain]: '/assets/images/vendor/chains/elastos.jpg',
     [ChainId.ENULSMainnet]: '/assets/images/vendor/chains/enuls.svg',
     [ChainId.EthereumClassic]: '/assets/images/vendor/chains/etc.png',
