@@ -28,7 +28,7 @@ const AboutPage: NextPage = () => {
         <div className="mx-auto max-w-2xl my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
           <Href href="https://twitter.com/RoscoKalis/status/1183412994375503872" underline="none" external>
             <Image
-              src="/assets/images/revoke-tweet.png"
+              src="/assets/images/about/revoke-tweet.png"
               alt="Initial Revoke.cash Tweet"
               height="1000"
               width="1500"
@@ -49,16 +49,16 @@ const AboutPage: NextPage = () => {
           />
         </p>
 
-        {/* <div className="mx-auto max-w-2xl my-4 md:my-8 flex flex-col items-center gap-2">
-            <Image
-              src="/assets/images/revoke-team.png"
-              alt="Initial Revoke.cash Tweet"
-              height="900"
-              width="1400"
-              className="rounded-2xl border border-black dark:border-white"
-            />
-            <figcaption className="text-zinc-600 dark:text-zinc-400">{t('about:captions.team')}</figcaption>
-          </div> */}
+        <div className="mx-auto max-w-2xl my-4 md:my-8 flex flex-col items-center gap-2">
+          <Image
+            src="/assets/images/about/revoke-team.png"
+            alt="Revoke.cash Team"
+            height="900"
+            width="1400"
+            className="rounded-2xl border border-black dark:border-white"
+          />
+          <figcaption className="text-zinc-600 dark:text-zinc-400">{t('about:captions.team')}</figcaption>
+        </div>
 
         <p>
           <Trans i18nKey="about:body.team" />
