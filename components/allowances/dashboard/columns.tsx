@@ -25,7 +25,7 @@ export enum ColumnId {
   BALANCE = 'Balance',
   ALLOWANCE = 'Allowance',
   VALUE_AT_RISK = 'Value at Risk',
-  SPENDER = 'Authorized Spender',
+  SPENDER = 'Approved Spender',
   LAST_UPDATED = 'Last Updated',
   ACTIONS = 'Actions',
 }

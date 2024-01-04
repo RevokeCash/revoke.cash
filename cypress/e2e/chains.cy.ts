@@ -41,6 +41,7 @@ const TEST_ADDRESSES = {
   [ChainId.DogechainMainnet]: '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc',
   [ChainId.ElastosSmartChain]: '0xA52B02C68cB65083788c46F2c08c6935f0aB19C1',
   [ChainId.ENULSMainnet]: '0x71396287EeDa50fdE667E8c53771682fd74De1Ac',
+  [ChainId.EOSEVMNetwork]: '0x74Ab5D0CcDB5A8b8BE357bF395F121E5BcAeB86f',
   [ChainId.EthereumClassic]: '0x8163dB62D6294bA66261644EcCD5FD5269451495',
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
   [ChainId.EthereumMainnet]: '0xA9a3D92C3aA8CfDA6C5139eCE02401432b91cbB2',
