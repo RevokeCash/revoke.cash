@@ -23,7 +23,7 @@ const ExtensionPage: NextPage = () => {
           url: 'https://revoke.cash/extension',
           images: [
             {
-              url: 'https://revoke.cash/assets/images/extension-card.png',
+              url: 'https://revoke.cash/assets/images/extension/card.png',
               width: 1600,
               height: 900,
             },
@@ -46,7 +46,7 @@ const ExtensionPage: NextPage = () => {
 
         <p className="mx-auto not-prose">
           <Image
-            src="/assets/images/extension-screenshot-1.png"
+            src="/assets/images/extension/screenshot-1.png"
             alt="Extension: Unexpected Allowance"
             height="500"
             width="800"
@@ -65,7 +65,7 @@ const ExtensionPage: NextPage = () => {
 
         <p className="mx-auto not-prose">
           <Image
-            src="/assets/images/extension-screenshot-3.png"
+            src="/assets/images/extension/screenshot-3.png"
             alt="Extension: Unexpected Listing"
             height="500"
             width="800"
