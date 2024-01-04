@@ -57,6 +57,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.DogechainMainnet,
   ChainId.ElastosSmartChain,
   ChainId.ENULSMainnet,
+  ChainId.EOSEVMNetwork,
   ChainId.EthereumClassic,
   ChainId.FlareMainnet,
   ChainId.FuseMainnet,
@@ -185,11 +186,12 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.KCCMainnet,
   ChainId.MilkomedaC1Mainnet,
   ChainId.ElastosSmartChain,
+  ChainId.EOSEVMNetwork,
   ChainId.FuseMainnet,
-  ChainId.BitTorrentChainMainnet,
-  ChainId.CoinExSmartChainMainnet,
   ChainId.OasisEmerald,
   ChainId.OasisSapphire,
+  ChainId.BitTorrentChainMainnet,
+  ChainId.CoinExSmartChainMainnet,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
   ChainId.EthereumClassic,
@@ -293,6 +295,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.DogechainMainnet]: 'Dogechain',
     [ChainId.DogechainTestnet]: 'Dogechain Testnet',
     [ChainId.ElastosSmartChain]: 'Elastos',
+    [ChainId.EOSEVMNetwork]: 'EOS EVM',
     [ChainId.ENULSMainnet]: 'ENULS',
     [ChainId.EthereumClassic]: 'Ethereum Classic',
     [ChainId.EthereumMainnet]: 'Ethereum',
@@ -663,6 +666,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     CRO: '100',
     DOGE: '250',
     ELA: '10',
+    EOS: '20',
     ETC: '1',
     ETH: '0.01',
     EVMOS: '10',
@@ -734,6 +738,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.DogechainMainnet]: 'https://explorer.dogechain.dog/api',
     [ChainId.ElastosSmartChain]: 'https://esc.elastos.io/api',
     [ChainId.ENULSMainnet]: 'https://evmscan.nuls.io/api',
+    [ChainId.EOSEVMNetwork]: 'https://explorer.evm.eosnetwork.com/api',
     [ChainId.EthereumClassic]: 'https://blockscout.com/etc/mainnet/api',
     [ChainId.EthereumMainnet]: 'https://api.etherscan.io/api',
     [ChainId.Evmos]: 'https://evm.evmos.org/api',
@@ -1249,6 +1254,18 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
     ],
   }),
   [ChainId.DogechainMainnet]: undefined, // All stablecoins on Dogechain are depegged
+  [ChainId.EOSEVMNetwork]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Noah Swap (Router) | WEOS -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0x1c8f68e8AdBD75c23281e5c88E44D0b7023a4238',
+        path: ['0xc00592aA41D32D137dC480d9f6d0Df19b860104F', '0x33B57dC70014FD7AA6e1ed3080eeD2B619632B8e'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
+      }),
+    ],
+  }),
   [ChainId.ElastosSmartChain]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
