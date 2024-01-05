@@ -295,8 +295,8 @@ export const getChainName = (chainId: number): string => {
     [ChainId.DogechainMainnet]: 'Dogechain',
     [ChainId.DogechainTestnet]: 'Dogechain Testnet',
     [ChainId.ElastosSmartChain]: 'Elastos',
-    [ChainId.EOSEVMNetwork]: 'EOS EVM',
     [ChainId.ENULSMainnet]: 'ENULS',
+    [ChainId.EOSEVMNetwork]: 'EOS EVM',
     [ChainId.EthereumClassic]: 'Ethereum Classic',
     [ChainId.EthereumMainnet]: 'Ethereum',
     [ChainId.ExosamaNetwork]: 'Exosama',
@@ -529,9 +529,9 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.CronosMainnet]: '/assets/images/vendor/chains/cronos.svg',
     [ChainId.CronosTestnet]: '/assets/images/vendor/chains/cronos.svg',
     [ChainId.DogechainMainnet]: '/assets/images/vendor/chains/dogechain.jpg',
-    [ChainId.EOSEVMNetwork]: '/assets/images/vendor/chains/eos.svg',
     [ChainId.ElastosSmartChain]: '/assets/images/vendor/chains/elastos.jpg',
     [ChainId.ENULSMainnet]: '/assets/images/vendor/chains/enuls.svg',
+    [ChainId.EOSEVMNetwork]: '/assets/images/vendor/chains/eos.svg',
     [ChainId.EthereumClassic]: '/assets/images/vendor/chains/etc.png',
     [ChainId.EthereumMainnet]: '/assets/images/vendor/chains/ethereum.svg',
     [ChainId.Evmos]: '/assets/images/vendor/chains/evmos.svg',
@@ -1255,18 +1255,6 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
     ],
   }),
   [ChainId.DogechainMainnet]: undefined, // All stablecoins on Dogechain are depegged
-  [ChainId.EOSEVMNetwork]: new AggregatePriceStrategy({
-    aggregationType: AggregationType.ANY,
-    strategies: [
-      // Noah Swap (Router) | WEOS -> USDT
-      new UniswapV2PriceStrategy({
-        address: '0x1c8f68e8AdBD75c23281e5c88E44D0b7023a4238',
-        path: ['0xc00592aA41D32D137dC480d9f6d0Df19b860104F', '0x33B57dC70014FD7AA6e1ed3080eeD2B619632B8e'],
-        decimals: 6,
-        liquidityParameters: { baseAmount: 100n },
-      }),
-    ],
-  }),
   [ChainId.ElastosSmartChain]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
     strategies: [
@@ -1294,6 +1282,18 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         address: '0x3653d15A4Ed7E9acAA9AC7C5DB812e8A7a90DF9e',
         path: ['0x217dffF57E3b855803CE88a1374C90759Ea071bD', '0x9e5d124Cd49671f3f7B54d4aef43b3930BcF6dE7'],
         liquidityParameters: { baseAmount: 1n }, // Super low liquidity DEX
+      }),
+    ],
+  }),
+  [ChainId.EOSEVMNetwork]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Noah Swap (Router) | WEOS -> USDT
+      new UniswapV2PriceStrategy({
+        address: '0x1c8f68e8AdBD75c23281e5c88E44D0b7023a4238',
+        path: ['0xc00592aA41D32D137dC480d9f6d0Df19b860104F', '0x33B57dC70014FD7AA6e1ed3080eeD2B619632B8e'],
+        decimals: 6,
+        liquidityParameters: { baseAmount: 100n },
       }),
     ],
   }),

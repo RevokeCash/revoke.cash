@@ -24,6 +24,7 @@
     "dogechain": "Dogechainは、スマートコントラクトをDogecoinエコシステムに導入することに焦点を当てたプロジェクトです。公式には承認されていませんが、DogechainはDogecoinのサイドチェーンで、Dogecoinのメインネットとの間でDOGEを転送するためのブリッジを備えています。これにより、Dogecoinエコシステムの人々は、EVMをベースにしたスマート・コントラクトをDOGEと橋渡しして使用することができます。",
     "elastos": "Elastosは、ブロックチェーンのスマートコントラクトを現代のウェブの他の部分と統合することを目的としたレイヤー1のブロックチェーンです。そのために、Elastosはブロックチェーンとサイドチェーンネットワークのほか、ピアツーピアネットワークや分散型アイデンティティーなどの他の関連コンポーネントも開発しました。Elastosのビジョンは、これらのソリューションを統合して、Elastos SmartWebと呼ばれるものに統合することです。",
     "enuls": "ENULSは、NULSブロックチェーンインフラストラクチャー上に構築されたレイヤー1のEVM互換チェーンです。NULSエコシステムの一部でもある兄弟ネットワークのNerve Networkを通じたクロスチェーン相互運用性に重点を置いています。",
+    "eos-evm": "EOS EVM is a Layer 1 blockchain that focuses on providing high throughput and lwo transaction fees. It is built on top of the same technology used in the EOS blockchain, but with the addition of EVM compatibility. This makes it easier for EVM developers to build applications for EOS EVM.",
     "ethereum": "Ethereumはオリジナルのスマートコントラクトブロックチェーンで、2015年に作成されました。DeFiやNFTで最も人気のあるブロックチェーンであり、ユーザーと開発者が最も多いです。新しいブロックチェーンの多くはEthereumバーチャルマシン（EVM）上に構築されており、Ethereumのウォレットやツールと互換性があります。",
     "ethereum-classic": "Ethereum Classicは、2016年のDAOハッキングから生まれたEthereumのフォークです。Ethereum Classicは、ハッキングで盗まれた資金を回収する措置を拒否し、「元の」チェーンを継続しました。Ethereum Classicには、Ethashに基づくプルーフ・オブ・ワークのコンセンサスメカニズムなど、Ethereumが過去に持っていた多くの特性があります。",
     "evmos": "Evmosは、Cosmos SDKを使用して構築されたEVM互換のレイヤー1のチェーンです。これは、豊富なEVMエコシステムをCosmosにもたらす一方で、EVMコミュニティーがCosmosエコシステムに参加するための入り口を提供するために作成されました。EvmosはCosmosエコシステムの一部として、通常の「サイロ化された」ブロックチェーンのアプローチとは対照的に、クロスチェーンの相互運用性に重点を置いています。",
