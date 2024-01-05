@@ -24,6 +24,7 @@
     "dogechain": "Dogechain（狗狗链）是一个致力于将智能合约引入狗狗币生态系统的项目。狗狗链是狗狗币的非官方侧链，可桥接狗狗币主网，将狗狗币转入和转出，让狗狗币生态系统用户能够使用狗狗币桥接并使用基于 EVM 的智能合约。",
     "elastos": "Elastos（亦来云）是第 1 层（Layer 1）区块链，旨在推动区块链智能合约与现代网络世界的融合。为此，Elastos 创建了区块链和侧链网络，以及其他相关组件，例如点对点网络和去中心化身份。Elastos 的愿景构建 Elastos SmartWeb 智能互联网并整合各种解决方案。",
     "enuls": "ENULS 是建立在 NULS 区块链基础设施之上的第 1 层（Layer 1）EVM 兼容链。ENULS 致力于通过其兄弟网络——Nerve 网络，实现跨链互操作性。Nerve 网络同样属于 NULS 生态系统。",
+    "eos-evm": "EOS EVM is a Layer 1 blockchain that focuses on providing high throughput and lwo transaction fees. It is built on top of the same technology used in the EOS blockchain, but with the addition of EVM compatibility. This makes it easier for EVM developers to build applications for EOS EVM.",
     "ethereum": "以太坊创建于 2015 年，是最早的智能合约区块链，也是最受欢迎的去中心化金融（DeFi）和非同质化代币（NFT）区块链平台，拥有最多的用户和开发人员。许多较新的区块链是建立在以太坊虚拟机（EVM）之上的，与以太坊钱包和工具兼容。",
     "ethereum-classic": "以太坊经典（Ethereum Classic ）是以太坊的分支，是在 2016 年 The DAO 黑客事件之后诞生。以太坊经典拒绝了追回黑客事件中被盗资金的措施，继续在“原始”链上运行。以太坊经典仍然具备以太坊过去拥有的许多属性，例如基于 Ethash 的工作量证明（PoW）共识机制。",
     "evmos": "Evmos 是兼容 EVM 的第 1 层（Layer 1）链，使用 Cosmos SDK 搭建，旨在将丰富的 EVM 生态引入 Cosmos，同时为 EVM 社区提供一个进入 Cosmos 生态的入口。作为 Cosmos 生态的一部分，Evmos 致力于提升跨链互操作性，打破常见的“孤岛式”区块链现象。",
