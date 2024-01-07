@@ -68,7 +68,7 @@ And while Ledger should not have published their library in this way, we should 
 
 The biggest lesson to learn here is to be very very careful about the libraries that we use. And while it is very hard to completely prevent supply chain attacks, there are things that developers can do to mitigate the risk. And the most important of those is to pin the versions of dependencies that we use.
 
-But because this specific library was loaded from a CDN instead of bundled with the pplication, we need to take it a step further: we need to avoid using libraries that are distributed in this way. And that means that we will not re-add the `ledger-connect-kit` library to Revoke.cash until we can do so without using the CDN. Ledger has confirmed that they are working on a solution for this.
+But because this specific library was loaded from a CDN instead of bundled with the application, we need to take it a step further: we need to avoid using libraries that are distributed in this way. And that means that we will not re-add the `ledger-connect-kit` library to Revoke.cash until we can do so without using the CDN. Ledger has confirmed that they are working on a solution for this.
 
 We are currently working to thoroughly audit the rest of our dependencies so we do not use any libraries that could be compromised in the same way, making sure that all our dependencies are bundled with the rest of our code. And we will continue to do this in the future to ensure that we are not vulnerable to supply chain attacks.
 
