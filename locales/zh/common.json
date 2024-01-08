@@ -1,7 +1,7 @@
 {
   "article_meta": {
     "author": "作者：<0>{{author}}</0>",
-    "reading_time": "{{readingTime}} min read",
+    "reading_time": "{{readingTime}} 分钟阅读时间",
     "translator": "翻译：<0>{{translator}}</0>"
   },
   "buttons": {
@@ -95,8 +95,8 @@
     "what_are_token_approvals": "什么是代币授权？"
   },
   "meta": {
-    "description": "撤销在{{chainName}}等 60+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
-    "title": "撤销 60+ 区块链上的代币授权"
+    "description": "撤销在{{chainName}}等 70+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "title": "撤销 70+ 区块链上的代币授权"
   },
   "misc": {
     "powered_by": "由<0>{{name}}</0>提供技术支持"

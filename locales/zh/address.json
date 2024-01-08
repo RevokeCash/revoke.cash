@@ -72,11 +72,11 @@
     },
     "marketplaces": {
       "none_found": "未找到该链的市场。",
-      "title": "市场签名"
+      "title": "潜在的市场签名"
     },
     "permit": {
       "none_found": "未找到支持许可的代币。",
-      "title": "允许签名"
+      "title": "潜在的许可签名"
     }
   },
   "sorting": {

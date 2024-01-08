@@ -1,6 +1,6 @@
 {
   "name": "revoke.cash",
-  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 60 other networks.",
+  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 70 other networks.",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@revoke.cash/chains": "^26.0.0",
+    "@revoke.cash/chains": "^27.0.0",
     "@tanstack/query-sync-storage-persister": "^5.13.4",
     "@tanstack/react-query": "^5.13.4",
     "@tanstack/react-query-persist-client": "^5.13.4",
@@ -29,7 +29,6 @@
     "@upstash/ratelimit": "^1.0.0",
     "@upstash/redis": "^1.25.1",
     "@vercel/speed-insights": "^1.0.1",
-    "delay": "^6.0.0",
     "dexie": "^3.2.4",
     "holy-loader": "^2.0.0",
     "iron-session": "^8.0.1",
@@ -58,7 +57,7 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^1.19.11",
+    "viem": "^1.20.3",
     "wagmi": "^1.4.12"
   },
   "devDependencies": {

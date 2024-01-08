@@ -24,6 +24,7 @@
     "dogechain": "Dogechainは、スマートコントラクトをDogecoinエコシステムに導入することに焦点を当てたプロジェクトです。公式には承認されていませんが、DogechainはDogecoinのサイドチェーンで、Dogecoinのメインネットとの間でDOGEを転送するためのブリッジを備えています。これにより、Dogecoinエコシステムの人々は、EVMをベースにしたスマート・コントラクトをDOGEと橋渡しして使用することができます。",
     "elastos": "Elastosは、ブロックチェーンのスマートコントラクトを現代のウェブの他の部分と統合することを目的としたレイヤー1のブロックチェーンです。そのために、Elastosはブロックチェーンとサイドチェーンネットワークのほか、ピアツーピアネットワークや分散型アイデンティティーなどの他の関連コンポーネントも開発しました。Elastosのビジョンは、これらのソリューションを統合して、Elastos SmartWebと呼ばれるものに統合することです。",
     "enuls": "ENULSは、NULSブロックチェーンインフラストラクチャー上に構築されたレイヤー1のEVM互換チェーンです。NULSエコシステムの一部でもある兄弟ネットワークのNerve Networkを通じたクロスチェーン相互運用性に重点を置いています。",
+    "eos-evm": "EOS EVM is a Layer 1 blockchain that focuses on providing high throughput and lwo transaction fees. It is built on top of the same technology used in the EOS blockchain, but with the addition of EVM compatibility. This makes it easier for EVM developers to build applications for EOS EVM.",
     "ethereum": "Ethereumはオリジナルのスマートコントラクトブロックチェーンで、2015年に作成されました。DeFiやNFTで最も人気のあるブロックチェーンであり、ユーザーと開発者が最も多いです。新しいブロックチェーンの多くはEthereumバーチャルマシン（EVM）上に構築されており、Ethereumのウォレットやツールと互換性があります。",
     "ethereum-classic": "Ethereum Classicは、2016年のDAOハッキングから生まれたEthereumのフォークです。Ethereum Classicは、ハッキングで盗まれた資金を回収する措置を拒否し、「元の」チェーンを継続しました。Ethereum Classicには、Ethashに基づくプルーフ・オブ・ワークのコンセンサスメカニズムなど、Ethereumが過去に持っていた多くの特性があります。",
     "evmos": "Evmosは、Cosmos SDKを使用して構築されたEVM互換のレイヤー1のチェーンです。これは、豊富なEVMエコシステムをCosmosにもたらす一方で、EVMコミュニティーがCosmosエコシステムに参加するための入り口を提供するために作成されました。EvmosはCosmosエコシステムの一部として、通常の「サイロ化された」ブロックチェーンのアプローチとは対照的に、クロスチェーンの相互運用性に重点を置いています。",
@@ -73,6 +74,7 @@
     "wemix": "WEMIXは、ステークベースのプルーフ・オブ・オーソリティーと呼ばれるコンセンサスメカニズムを使用するレイヤー1のブロックチェーンです。これは、プルーフ・オブ・ステークとプルーフ・オブ・オーソリティーの機能を組み合わせた40のバリデーターを備えたメカニズムです。WEMIXには、公式のステーブルコインやゲームプラットフォームなど、多数の公式アプリケーションがチェーン上にデプロイされています。",
     "xdc": "XDCは、委任型プルーフ・オブ・ステークに基づくコンセンサスメカニズムを備えたレイヤー1のブロックチェーンです。現実世界の資産や企業の使用ケースをトークン化するために、高速で低コストの取引を提供することに重点を置いています。",
     "zetachain": "ZetaChainは、現在開発中のプルーフ・オブ・ステークに基づくコンセンサスメカニズムを備えたレイヤー1のブロックチェーンです。開発者が他のEVMチェーンや非EVMチェーンに接続するクロスチェーンアプリケーションを構築するためのインフラストラクチャーを提供することを目的としています。",
+    "zkfair": "ZKFair is a Layer 2 scaling solution for Ethereum that is built using Polygon's Chain Development Kit (CDK) and Celestia's Data Availability layer. As the name suggests, ZKFair places an emphasis on \"fairness\" and aims to create an ecosystem in which users of the network share in the rewards of the network that usually would go to its operators.",
     "zksync-era": "zkSync Eraはレイヤー2のスケーリングソリューションであり、新しいzkEVMテクノロジーを使用した最初のプロジェクトの1つです。このテクノロジーは、ゼロ知識証明の使用による強力なセキュリティー保証を維持しながら、非常に低い料金で提供されます。zkSyncは以前、まだEVMとの互換性がないzkRollupテクノロジーの初期バージョンであるzkSync Liteを開発しました。zkSync Eraは次のイテレーションであり、EVMを完全にサポートしています。",
     "zora": "Zora NetworkはEthereumのレイヤー2のスケーリングソリューションです。OptimismのオープンソースのOPスタック上に構築されているため、Optimismと同様にオプティミスティック・ロールアップ・テクノロジーを使用しています。Zora NetworkはZora NFT取引所によって開発されているため、その主な用途はNFTの作成と取引にあります。"
   },

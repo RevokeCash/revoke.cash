@@ -41,7 +41,8 @@ const TEST_ADDRESSES = {
   [ChainId.DogechainMainnet]: '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc',
   [ChainId.ElastosSmartChain]: '0xA52B02C68cB65083788c46F2c08c6935f0aB19C1',
   [ChainId.ENULSMainnet]: '0x71396287EeDa50fdE667E8c53771682fd74De1Ac',
-  [ChainId.EthereumClassicMainnet]: '0x8163dB62D6294bA66261644EcCD5FD5269451495',
+  [ChainId.EOSEVMNetwork]: '0x74Ab5D0CcDB5A8b8BE357bF395F121E5BcAeB86f',
+  [ChainId.EthereumClassic]: '0x8163dB62D6294bA66261644EcCD5FD5269451495',
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
   [ChainId.EthereumMainnet]: '0xA9a3D92C3aA8CfDA6C5139eCE02401432b91cbB2',
   [ChainId.Evmos]: '0x8d354807f14fd6f006ac959AB4A2A9c13FA5484a',
@@ -118,6 +119,7 @@ const TEST_ADDRESSES = {
   [ChainId.SyscoinTanenbaumTestnet]: '0x2FB7aB1E0357D595877209e74a715D0F5816cC29',
   [ChainId.TaikoJolnirL2]: '0xe5fC964C4b03BC7B84adc3A18Fc93bfe54c6EabB',
   [ChainId.ZetaChainAthens3Testnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
+  [ChainId.ZKFairMainnet]: '0xb0240794108Fd89C99BB828C9eBc0e7d9703C2f8',
   [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24',
 } as const;
 
@@ -184,7 +186,7 @@ describe('Chain Support', () => {
             const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
             linkElement.invoke('attr', 'href').then((href) => {
               cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
-                // Supress errors on the explorer page
+                // Suppress errors on the explorer page
                 cy.on('uncaught:exception', () => false);
 
                 cy.visit(href);

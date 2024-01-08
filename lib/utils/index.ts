@@ -20,6 +20,8 @@ import {
 import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
 
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
 };
@@ -90,6 +92,7 @@ export const writeToClipBoard = (text: string, t: Translate, displayToast: boole
   }
 
   navigator.clipboard.writeText(text);
+
   if (displayToast) {
     toast.info(t('common:toasts.clipboard_success'), { autoClose: 1000 });
   }

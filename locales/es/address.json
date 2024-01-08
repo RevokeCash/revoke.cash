@@ -72,11 +72,11 @@
     },
     "marketplaces": {
       "none_found": "No se encontraron mercados para esta red.",
-      "title": "Firmas de Mercados"
+      "title": "Posibles Firmas del Mercado"
     },
     "permit": {
       "none_found": "No se encontró ningún token compatible con firmas de permiso.",
-      "title": "Firmas de Permisos"
+      "title": "Posibles Firmas de Permisos"
     }
   },
   "sorting": {
