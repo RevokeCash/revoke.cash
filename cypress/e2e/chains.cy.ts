@@ -186,7 +186,7 @@ describe('Chain Support', () => {
             const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
             linkElement.invoke('attr', 'href').then((href) => {
               cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
-                // Supress errors on the explorer page
+                // Suppress errors on the explorer page
                 cy.on('uncaught:exception', () => false);
 
                 cy.visit(href);

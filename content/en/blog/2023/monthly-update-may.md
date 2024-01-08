@@ -28,7 +28,7 @@ A popular question we get is whether it's possible to cancel offchain signatures
 
 Our new signatures tab on the Approvals Dashboard allows you to cancel two kinds of signatures that are often-used by phishing websites. The first is the _Permit_ signature, which can be used to grant token approvals with a gasless signature. The second are marketplace signatures, which authorise asset transfers for tokens and NFTs with active approvals on marketplaces like OpenSea and Blur.
 
-Even though we added this feature, we cna unfortunately still not provide an overview of all the signatures that you've signed, because they are not available onchain. So you will need to determine by yourself whether you signed any of these signatures. We recommend only using this functionality if you're sure that you signed a signature that you want to cancel. While it is not dangerous to cancel signatures needlessly, it does cost gas every time you do it.
+Even though we added this feature, we can unfortunately still not provide an overview of all the signatures that you've signed, because they are not available onchain. So you will need to determine by yourself whether you signed any of these signatures. We recommend only using this functionality if you're sure that you signed a signature that you want to cancel. While it is not dangerous to cancel signatures needlessly, it does cost gas every time you do it.
 
 ## Russian and Japanese translations
 
