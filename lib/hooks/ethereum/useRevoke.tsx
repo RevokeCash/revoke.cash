@@ -88,7 +88,7 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
         } catch (e) {
           if (!isRevertedError(parseErrorMessage(e))) throw e;
 
-          // Some tokens can only cahnge approval with {increase|decrease}Approval
+          // Some tokens can only change approval with {increase|decrease}Approval
           if (differenceAmount > 0n) {
             console.debug(`Calling contract.increaseAllowance(${spender}, ${differenceAmount})`);
             return await writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
