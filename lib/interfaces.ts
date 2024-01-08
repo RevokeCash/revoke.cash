@@ -93,6 +93,7 @@ export interface Marketplace {
   name: string;
   logo: string;
   chains: number[];
+  filterAddress: Address;
   cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
 }
 

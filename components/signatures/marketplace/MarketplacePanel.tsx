@@ -5,7 +5,7 @@ import { useMarketplaces } from 'lib/hooks/ethereum/useMarketplaces';
 import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { getSpenderData } from '../../../lib/utils/whois';
+import { Address } from 'viem';
 import Error from '../../common/Error';
 import TableBodyLoader from '../../common/TableBodyLoader';
 import MarketplaceEntry from './MarketplaceEntry';
@@ -23,31 +23,19 @@ const MarketplacePanel = () => {
   const { selectedChainId } = useAddressPageContext();
   const marketplaces = useMarketplaces(selectedChainId);
   const { allowances, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
-  const [spenderNames, setSpenderNames] = useState<string[]>([]);
-  const [namesFetched, setNamesFetched] = useState(false); // New state variable
+  const [spendersFetched, setSpendersFetched] = useState(false);
+  const [spenders, setSpenders] = useState<Address[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const names = await Promise.all(
-          allowances.map(async (allowance) => {
-            try {
-              const spenderData = await getSpenderData(allowance.spender, selectedChainId);
-              return spenderData?.name || null;
-            } catch (error) {
-              console.error('Error fetching spender names:', error);
-              return null;
-            }
-          }),
-        );
-
-        setSpenderNames(names.filter((name) => name !== null) as string[]);
-        setNamesFetched(true); // New state variable
+        setSpenders(allowances.map((allowance) => allowance.spender));
+        setSpendersFetched(true);
       } catch (error) {
-        console.error('Error fetching spender names:', error);
+        console.error('Error fetching spender addresses:', error);
       }
     })();
-  }, [allowances, selectedChainId]);
+  }, [allowances]);
 
   const title = (
     <div className="flex items-center gap-2">
@@ -68,8 +56,8 @@ const MarketplacePanel = () => {
     );
   }
 
-  const isLoading = isAllowancesLoading || (!namesFetched && spenderNames.length === 0);
-  const filteredMarketplaces = marketplaces.filter((marketplace) => spenderNames.includes(marketplace.name));
+  const isLoading = isAllowancesLoading || !spendersFetched;
+  const filteredMarketplaces = marketplaces.filter((marketplace) => spenders.includes(marketplace.filterAddress));
 
   if (isLoading) {
     return (
@@ -82,6 +70,7 @@ const MarketplacePanel = () => {
     );
   }
 
+  // This case probably needs to be split into two: when marketplaces is empty and when filteredMarketplaces is empty.
   if (filteredMarketplaces.length === 0) {
     return (
       <Card title={title} className="w-full flex justify-center items-center h-12">

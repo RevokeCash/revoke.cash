@@ -40,6 +40,7 @@ export const useMarketplaces = (chainId: number) => {
         ChainId.FantomOpera,
         ChainId.CeloMainnet,
       ],
+      filterAddress: '0x1E0049783F008A0085193E00003D00cd54003c71',
       cancelSignatures: async (walletClient: WalletClient) => {
         const transactionPromise = walletClient.writeContract({
           address: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
@@ -57,6 +58,7 @@ export const useMarketplaces = (chainId: number) => {
       name: 'Blur',
       logo: '/assets/images/vendor/blur.png',
       chains: [ChainId.EthereumMainnet],
+      filterAddress: '0x2f18F339620a63e43f0839Eeb18D7de1e1Be4DfB',
       cancelSignatures: async (walletClient: WalletClient) => {
         const transactionPromise = walletClient.writeContract({
           address: '0x000000000000Ad05Ccc4F10045630fb830B95127',
