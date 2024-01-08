@@ -110,6 +110,7 @@
     "involved_in_exploits": "Esta dirección está involucrada en los siguientes hacks:",
     "marketplace_listings": "Esto cancelará todos los listados y ofertas actuales en {{marketplace}}.",
     "marketplace_signatures": "Una vez autorizados, los mercados pueden mover activos en tu nombre. Los malos actores se aprovechan de estas autorizaciones para crear listados a precio cero en sitios web de terceros. Cancela estas autorizaciones si firmaste una firma de mercado en un sitio web de phishing.",
+    "old_approval": "This approval is over a year old",
     "permit2_expiration": "Esta es una autorización de Permit2 que caducará en {{inTime}}",
     "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
     "switch_chain": "Por favor cambia tu red conectada a <0>{{chainName}}</0> dentro de tu cartera para continuar"
