@@ -2,7 +2,7 @@ import { ERC20_ABI } from 'lib/abis';
 import { TokenContract, TokenStandard } from 'lib/interfaces';
 import { Address, PublicClient } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
-import { calculateTokenPrice, strategySupportsToken } from './utils';
+import { strategySupportsToken } from './utils';
 
 export interface AbstractPriceStrategyOptions {
   nativeAsset: Address;
@@ -19,24 +19,22 @@ export abstract class AbstractPriceStrategy implements PriceStrategy {
   }
 
   public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
-    const inversePrice = await this.calculateInversePrice({
+    const tokenPrice = await this.calculateTokenPrice({
       address: this.nativeAsset,
       abi: ERC20_ABI,
       publicClient,
     });
 
-    const price = calculateTokenPrice(inversePrice, 18);
-
-    return price;
+    return tokenPrice;
   }
 
-  public calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
+  public calculateTokenPrice(tokenContract: TokenContract): Promise<number> {
     if (!strategySupportsToken(this, tokenContract)) {
       throw new Error('Token type is not supported by this price strategy');
     }
 
-    return this.calculateInversePriceInternal(tokenContract);
+    return this.calculateTokenPriceInternal(tokenContract);
   }
 
-  protected abstract calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint>;
+  protected abstract calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number>;
 }

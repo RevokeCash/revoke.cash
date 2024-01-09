@@ -4,5 +4,6 @@ import { PublicClient } from 'viem';
 export interface PriceStrategy {
   supportedAssets: TokenStandard[];
   calculateNativeTokenPrice: (publicClient: PublicClient) => Promise<number>;
-  calculateInversePrice: (tokenContract: TokenContract) => Promise<bigint>;
+
+  calculateTokenPrice: (tokenContract: TokenContract) => Promise<number>;
 }
