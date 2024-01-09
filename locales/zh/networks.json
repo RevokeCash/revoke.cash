@@ -12,6 +12,7 @@
     "avalanche": "Avalanche 是一个使用 Avalanche 共识机制的区块链，结合了经典和中本聪共识机制的特点，可以实现快速交易终结和高吞吐量。Avalanche 网络的核心包括三条不同的链：交易链（X 链）、合约链（C 链）和平台链（P 链）。这些链在系统中扮演不同的角色，其中合约链支持与 EVM 兼容的智能合约。",
     "base": "Base 是 Coinbase 为以太坊开发的第 2 层扩展（Layer 2）解决方案。Base 基于 Optimism 的 OP Stack，因此与 Optimism 一样，采用了 Optimistic Rollup 技术。Base 于 2023 年的“链上夏季”期间推出，目前已经得到广泛使用。由于得到了头部加密货币公司的支持，很可能还会继续增长。",
     "bitgert": "Bitgert 链是 Bitgert 交易所创建的第 1 层（Layer 1）区块链，采用权威证明（PoA）共识机制，能够以低成本快速确认交易，缺点是去中心化程度较低。Bitgert 还提供其他区块链相关服务，例如 P2P 交易和支付网关。",
+    "bitrock": "Bitrock is a sidechain of Ethereum that uses a Proof of Authority consensus mechanism. It was built to offer high throughput and low fees and it achieves that by using the more centralized Proof of Authority consensus mechanism. Bitrock also plans to build a multichain DEX, allowing users to swap tokens between different networks.",
     "bnb-chain": "BNB 链是币安在 2020 年开发的知名智能合约区块链，是最早提供比以太坊更快交易速度、更低交易成本的新公链（Alt L1）之一。BNB 链采用了权益权威证明（PoSA）共识机制，相比权益证明（PoS）共识，中心化程度更高。",
     "boba": "Boba 是建立在多个不同的以太坊虚拟机（EVM）区块链之上的第 2 层扩展（Layer 2）解决方案，包括以太坊、BNB 链和 Avalanche，旨在成为所有区块链的通用扩展平台。为了实现这一目标，Boba 使用了流行的 Optimic Rollup 技术，在将成本控制得极低的同时还能提供强大的安全保障。",
     "btt-chain": "BitTorrent 链（BTTC）是一个跨链互操作扩容协议，可兼容以太坊、TRON 和其他 EVM 链。BTTC 采用权益证明（PoS）共识机制，验证者需质押 BTT 代币来验证交易。验证者还需定期向以太坊、BNB 链和 TRON 链提交检查点。",
