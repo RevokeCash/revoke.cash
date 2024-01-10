@@ -3,6 +3,7 @@ import { TokenContract } from 'lib/interfaces';
 import { Address, concat, parseUnits } from 'viem';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 import { PriceStrategy } from './PriceStrategy';
+import { calculateTokenPrice } from './utils';
 
 export interface UniswapV3PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
   address: Address;
@@ -29,26 +30,30 @@ export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements Pri
     this.decimals = options.decimals ?? 18;
   }
 
-  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number> {
     if (tokenContract.address === this.path.at(-1)) {
-      return parseUnits(String(1), this.decimals);
+      // return parseUnits(String(1), this.decimals);
+
+      return 1;
     }
 
     const { publicClient } = tokenContract;
     const path = tokenContract.address === this.path.at(1) ? this.path.slice(1) : [tokenContract.address, ...this.path];
 
-    const results = await publicClient.simulateContract({
+    const simulated = await publicClient.simulateContract({
       address: this.address,
       abi: this.abi,
       functionName: 'quoteExactOutput',
       args: [concat(path.reverse()), parseUnits(String(PRICE_BASE_AMOUNT), this.decimals)],
     });
 
-    const [amountIn, sqrtPriceX96AfterList] = results.result;
+    const [amountIn, sqrtPriceX96AfterList] = simulated.result;
 
     if (!this.hasEnoughLiquidity(sqrtPriceX96AfterList)) throw new Error('Not enough liquidity');
 
-    return amountIn / 1000n;
+    // return amountIn / 1000n;
+
+    return calculateTokenPrice(amountIn, this.decimals);
   }
 
   // TODO: Figure out how to interpret the sqrtPriceX96AfterList

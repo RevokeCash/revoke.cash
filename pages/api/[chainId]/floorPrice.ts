@@ -6,6 +6,8 @@ export const config = {
   runtime: 'edge',
 };
 
+const maxAge = 60 * 60 * 24; // 24 hours
+
 const handler = async (req: NextRequest) => {
   if (req.method !== 'GET') return new Response('Method not allowed', { status: 405 });
 
@@ -44,7 +46,7 @@ const handler = async (req: NextRequest) => {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'CDN-Cache-Control': 's-maxage=3600',
+            'CDN-Cache-Control': `s-maxage=${maxAge}`,
           },
         },
       );
