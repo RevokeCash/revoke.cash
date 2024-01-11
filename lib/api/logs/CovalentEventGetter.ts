@@ -50,7 +50,7 @@ export class CovalentEventGetter implements EventGetter {
       return result?.data?.items?.map(formatCovalentEvent) ?? [];
     } catch (e) {
       if (isRateLimitError(parseErrorMessage(e))) {
-        console.error('Rate limit reached, retrying...');
+        console.error('Etherscan: Rate limit reached, retrying...');
         return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
       }
 

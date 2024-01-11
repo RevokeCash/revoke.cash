@@ -51,12 +51,12 @@ export class ResevoirNFT implements NFTGetter {
 
     try {
       const result = await this.queue.add(() =>
-        ky.get(url, { headers, searchParams, retry: 3, timeout: false }).json<any>(),
+        ky.get(url, { headers, searchParams, retry: 0, timeout: false }).json<any>(),
       );
       return result;
     } catch (e) {
       if (isRateLimitError(parseErrorMessage(e))) {
-        console.error('Rate limit reached, retrying...');
+        console.error('Resevoir: Rate limit reached, retrying...');
 
         return this.makeGetRequest<T>(url, searchParams);
       }
