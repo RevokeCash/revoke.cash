@@ -36,8 +36,6 @@ const handler = async (req: NextRequest) => {
     .then((floorPrice) => {
       if (floorPrice < 0.01) return new Response('Not found', { status: 404 });
 
-      console.log(`Floor price for ${contractAddress} is ${floorPrice}`);
-
       return new Response(
         JSON.stringify({
           floorPrice,

@@ -10,13 +10,11 @@ export class ResevoirPriceStrategy extends AbstractPriceStrategy implements Pric
     super({ nativeAsset: options.nativeAsset, supportedAssets: ['ERC721'] });
   }
 
-  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number> {
     const result = await ky
       .get(`/api/${1}/floorPrice?contractAddress=${tokenContract.address}`)
       .json<{ floorPrice: number }>();
 
-    const floorPriceBigInt = BigInt(result.floorPrice * 10 ** 18);
-
-    return floorPriceBigInt;
+    return result.floorPrice;
   }
 }
