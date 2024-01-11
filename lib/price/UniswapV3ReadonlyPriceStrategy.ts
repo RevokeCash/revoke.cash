@@ -1,16 +1,8 @@
 import { UNISWAP_V3_POOL_ABI } from 'lib/abis';
 import { TokenContract } from 'lib/interfaces';
-import {
-  Address,
-  Hex,
-  encodeAbiParameters,
-  getCreate2Address,
-  hexToNumber,
-  keccak256,
-  parseAbiParameters,
-  parseUnits,
-} from 'viem';
+import { Address, Hex, encodeAbiParameters, getCreate2Address, hexToNumber, keccak256, parseAbiParameters } from 'viem';
 import { UniswapV3PriceStrategy, UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
+import { calculateTokenPrice } from './utils';
 
 export interface UniswapV3ReadonlyPriceStrategyOptions extends UniswapV3PriceStrategyOptions {
   poolBytecodeHash?: Hex;
@@ -43,9 +35,9 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     this.minLiquidity = options.liquidityParameters?.minLiquidity ?? 10n ** 17n;
   }
 
-  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number> {
     if (tokenContract.address === this.path.at(-1)) {
-      return parseUnits(String(1), this.decimals);
+      return 1;
     }
 
     const { publicClient } = tokenContract;
@@ -93,7 +85,9 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
       return acc * ratio;
     }, 1);
 
-    return BigInt(Math.round(result * 10 ** this.decimals));
+    const inverseTokenPrice = BigInt(Math.round(result * 10 ** this.decimals));
+
+    return calculateTokenPrice(inverseTokenPrice, this.decimals);
   }
 
   private calculatePairAddress(token0: Address, token1: Address, fee: number): Address {
