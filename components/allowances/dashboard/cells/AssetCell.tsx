@@ -53,7 +53,7 @@ const AssetCell = ({ allowance }: Props) => {
         </div>
 
         <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
-          {balanceText} {fiatBalanceText && `(${fiatBalanceText})`}
+          {fiatBalanceText && `(${fiatBalanceText})`} {balanceText}
         </div>
       </div>
     </div>

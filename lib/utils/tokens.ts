@@ -115,7 +115,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
 
     const tokenPrice = price;
 
-    return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 18 };
+    return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 0 };
   }
 
   const [totalSupply, symbol, decimals, price] = await Promise.all([

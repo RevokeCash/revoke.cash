@@ -44,7 +44,8 @@ const handler = async (req: NextRequest) => {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'CDN-Cache-Control': `s-maxage=${maxAge}`,
+            'Cache-Control': `s-maxage=${0}`,
+            'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`,
           },
         },
       );
@@ -52,7 +53,8 @@ const handler = async (req: NextRequest) => {
     .catch((e) => {
       console.error(`Error occurred while fetching floor price for ${contractAddress}`, e);
 
-      return new Response('No collection found for contractAddress', { status: 400 });
+      // We have to check if this response is getting cached by Vercel.
+      return new Response('No collection found for contractAddress', { status: 404 });
     });
 };
 

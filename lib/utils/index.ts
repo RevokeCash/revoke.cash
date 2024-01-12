@@ -19,12 +19,22 @@ import {
 } from 'viem';
 import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
-import { isErc721Contract } from './tokens';
 
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
+};
+
+const calculateMaxAllowanceAmount = (allowance: AllowanceData) => {
+  if (allowance.balance === 'ERC1155') {
+    throw new Error('ERC1155 tokens are not supported');
+  }
+
+  if (allowance.amount) return allowance.amount;
+  if (allowance.tokenId) return 1n;
+
+  return allowance.balance;
 };
 
 export const calculateValueAtRisk = (allowance: AllowanceData): number => {
@@ -34,10 +44,9 @@ export const calculateValueAtRisk = (allowance: AllowanceData): number => {
   if (allowance.balance === 0n) return 0;
   if (isNullish(allowance.metadata.price)) return null;
 
-  const allowanceAmount = isErc721Contract(allowance.contract) ? 1n : allowance.amount;
+  const allowanceAmount = calculateMaxAllowanceAmount(allowance);
 
   const amount = bigintMin(allowance.balance, allowanceAmount);
-  console.log('ammount', amount);
   const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
   const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
 
