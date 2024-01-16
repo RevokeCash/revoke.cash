@@ -6,7 +6,7 @@ import {
   INFURA_API_KEY,
   RPC_OVERRIDES,
 } from 'lib/constants';
-import { RateLimit } from 'lib/interfaces';
+import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
@@ -33,8 +33,6 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.OPMainnet,
   ChainId.OptimismGoerliTestnet,
   ChainId.PolygonMainnet,
-  ChainId.PolygonzkEVM,
-  ChainId.PolygonzkEVMTestnet,
   ChainId.PulseChain,
   ChainId.Sepolia,
   ChainId.Shibarium,
@@ -63,6 +61,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.FlareMainnet,
   ChainId.FuseMainnet,
   ChainId.GatherTestnetNetwork,
+  ChainId.GoldXChainMainnet,
   ChainId.HorizenEONMainnet,
   ChainId.HorizenGobiTestnet,
   ChainId.KardiaChainMainnet,
@@ -114,6 +113,8 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.OpBNBMainnet,
+  ChainId.PolygonzkEVM,
+  ChainId.PolygonzkEVMTestnet,
   ChainId['WEMIX3.0Mainnet'],
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
@@ -210,6 +211,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RedlightChainMainnet,
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
+  ChainId.GoldXChainMainnet,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -311,6 +313,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.Gnosis]: 'Gnosis Chain',
     [ChainId.GodwokenMainnet]: 'Godwoken',
     [ChainId.Goerli]: 'Ethereum Goerli',
+    [ChainId.GoldXChainMainnet]: 'GoldX',
     [ChainId.HarmonyMainnetShard0]: 'Harmony',
     [ChainId.HarmonyTestnetShard0]: 'Harmony Testnet',
     [ChainId.HorizenEONMainnet]: 'Horizen EON',
@@ -551,6 +554,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [ChainId.Gnosis]: '/assets/images/vendor/chains/gnosis.svg',
     [ChainId.Goerli]: '/assets/images/vendor/chains/ethereum.svg',
+    [ChainId.GoldXChainMainnet]: '/assets/images/vendor/chains/goldx.jpg',
     [ChainId.HarmonyMainnetShard0]: '/assets/images/vendor/chains/harmony.svg',
     [ChainId.HarmonyTestnetShard0]: '/assets/images/vendor/chains/harmony.svg',
     [ChainId.HorizenEONMainnet]: '/assets/images/vendor/chains/horizen.png',
@@ -757,6 +761,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
     [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
+    [ChainId.GoldXChainMainnet]: 'https://explorer.goldxchain.io/api',
     [ChainId.HorizenEONMainnet]: 'https://eon-explorer.horizenlabs.io/api',
     [ChainId.HorizenGobiTestnet]: 'https://gobi-explorer.horizen.io/api',
     [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
@@ -786,6 +791,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.PegoNetwork]: 'https://scan.pego.network/api',
     [ChainId['PGN(PublicGoodsNetwork)']]: 'https://explorer.publicgoods.network/api',
     [ChainId.PolygonMainnet]: 'https://api.polygonscan.com/api',
+    [ChainId.PolygonzkEVM]: 'https://api-zkevm.polygonscan.com/api',
+    [ChainId.PolygonzkEVMTestnet]: 'https://api-testnet-zkevm.polygonscan.com/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
@@ -808,25 +815,24 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
   return apiUrls[chainId];
 };
 
-export const getChainEtherscanPlatformNames = (
-  chainId: number,
-): { platform: string; subPlatform?: string } | undefined => {
+export const getChainEtherscanPlatformNames = (chainId: number): EtherscanPlatform | undefined => {
   const apiUrl = getChainApiUrl(chainId);
   if (!apiUrl) return undefined;
 
-  const platform = new URL(apiUrl).hostname.split('.').at(-2);
-  const subPlatform = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
-  return { platform, subPlatform };
+  const domain = new URL(apiUrl).hostname.split('.').at(-2);
+  const subdomain = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
+  return { domain, subdomain };
 };
 
 export const getChainApiKey = (chainId: number): string | undefined => {
-  const { platform, subPlatform } = getChainEtherscanPlatformNames(chainId);
-  return ETHERSCAN_API_KEYS[`${subPlatform}.${platform}`] ?? ETHERSCAN_API_KEYS[platform];
+  const platform = getChainEtherscanPlatformNames(chainId);
+  return ETHERSCAN_API_KEYS[`${platform?.subdomain}.${platform?.domain}`] ?? ETHERSCAN_API_KEYS[platform?.domain];
 };
 
 export const getChainApiRateLimit = (chainId: number): RateLimit => {
-  const { platform, subPlatform } = getChainEtherscanPlatformNames(chainId);
-  const customRateLimit = ETHERSCAN_RATE_LIMITS[`${subPlatform}.${platform}`] ?? ETHERSCAN_RATE_LIMITS[platform];
+  const platform = getChainEtherscanPlatformNames(chainId);
+  const customRateLimit =
+    ETHERSCAN_RATE_LIMITS[`${platform?.subdomain}.${platform?.domain}`] ?? ETHERSCAN_RATE_LIMITS[platform?.domain];
 
   if (customRateLimit) {
     return { interval: 1000, intervalCap: customRateLimit };
@@ -846,9 +852,9 @@ export const getChainApiRateLimit = (chainId: number): RateLimit => {
 // has a single rate limit for all chains or if each chain has its own rate limit. If the former, we're all good,
 // if the latter, we need to add a special case for these chains.
 export const getChainApiIdentifer = (chainId: number): string => {
-  const { platform } = getChainEtherscanPlatformNames(chainId);
+  const platform = getChainEtherscanPlatformNames(chainId);
   const apiKey = getChainApiKey(chainId);
-  return `${platform}:${apiKey}`;
+  return `${platform?.domain}:${apiKey}`;
 };
 
 export const getCorrespondingMainnetChainId = (chainId: number): number | undefined => {
@@ -1417,6 +1423,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.GoldXChainMainnet]: undefined, // < $100k Liquidity
   // Note: The "regular" USDC is depegged on Harmony, so we have to be careful to use the "new" USDC
   [ChainId.HarmonyMainnetShard0]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,

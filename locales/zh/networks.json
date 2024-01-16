@@ -36,6 +36,7 @@
     "fuse": "Fuse 是第 1 层（Layer 1）区块链，采用了基于委托权益证明（DPoS）共识机制，致力于为去中心化应用打造经济实惠的高性能基础设施，服务现实业务。Fuse 将终端用户和企业用户进行了区分，终端用户不会直接使用区块链，而企业用户则是区块链的主要用户，将代表终端用户使用区块链。",
     "gather": "Gather 是第 1 层（Layer 1）区块链，致力于将用户的闲置处理能力货币化。它为企业提供了一种解决方案，可将其用户闲置的处理能力货币化，并将其作为云计算能力出售给其他企业。",
     "gnosis-chain": "Gnosis 链创建于 2018 年，是首批以太坊侧链之一。作为侧链，它在去中心化方面有所妥协，以便让交易成本更低，速度更快。Gnosis 链的原生代币是 xDai，这是 DAI 稳定币的桥接版本，允许用户使用稳定资产支付汽油费。Gnosis 链上最受欢迎的应用之一是出勤证明协议（POAP）。",
+    "goldx": "GoldX is a Layer 1 blockchain created by fuse.gold, a platform and stablecoin that is pegged to the price of gold. The GOLDX token is used as a reward token in the fuse.gold ecosystem.",
     "harmony": "Harmony 是基于权益证明（PoS）共识构建的第 1 层（Layer 1）区块链，旨在通过状态分片技术提供快速、低成本的交易，这种技术本质上是将整个网络的状态和验证分成多个子区块链。",
     "horizen-eon": "Horizen 是主要关注隐私的区块链网络，特色在于工作量证明（PoW）链和 Zendoo 框架，该框架可创建能连接到 Horizen 主链的权益证明（PoS）侧链。Horizen EON 是 Horizen 生态系统中与 EVM 兼容的侧链。",
     "kardiachain": "KardiaChain 是第 1 层（Layer 1）区块链，基于委托权益证明共识机制（DPoS），致力于为物理数字（物理+数字）应用提供解决方案，并提升不同区块链之间的互操作性。KardiaChain 主要关注越南和东南亚市场。",
