@@ -2,6 +2,7 @@ import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkDirective from 'remark-directive';
 import remarkDirectiveRehype from 'remark-directive-rehype';
+import remarkGfm from 'remark-gfm';
 import Href from './Href';
 import Prose from './Prose';
 
@@ -37,7 +38,7 @@ const MarkdownProse = ({ content, className }: Props) => {
       <ReactMarkdown
         children={content}
         components={components}
-        remarkPlugins={[remarkDirective, remarkDirectiveRehype]}
+        remarkPlugins={[remarkGfm, remarkDirective, remarkDirectiveRehype]}
         skipHtml
       />
     </Prose>

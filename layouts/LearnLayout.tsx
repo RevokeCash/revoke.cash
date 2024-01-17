@@ -43,7 +43,9 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
               <TranslateButton language={meta.language} translationUrl={translationUrl} />
             </div>
             <Prose className="mb-4">
-              {meta.coverImage ? <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} /> : null}
+              {meta.coverImage ? (
+                <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} priority />
+              ) : null}
             </Prose>
             <ArticleMeta meta={meta} />
             {children}

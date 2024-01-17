@@ -71,8 +71,10 @@ const Footer = () => {
         <div className="my-16 flex flex-col md:flex-row items-center gap-4 justify-between">
           <div className="flex flex-col gap-px text-center md:text-left">
             <p className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2023 Revoke.cash</p>
-            <ul>
+            <ul className="flex justify-center md:justify-start items-center gap-1">
               <FooterLink href="/privacy-policy">{t('common:footer.privacy')}</FooterLink>
+              <span className="text-zinc-400 dark:text-zinc-400 visited:text-zinc-400">•</span>
+              <FooterLink href="/terms">{t('common:footer.terms')}</FooterLink>
             </ul>
           </div>
           <div className="flex gap-2 shrink-0">
