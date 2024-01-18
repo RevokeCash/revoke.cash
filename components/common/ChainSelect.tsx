@@ -155,7 +155,7 @@ const SelectOverlay = ({ isOpen, target, children, onClose }: SelectOverlayProps
     <div className="relative">
       {target}
       {isOpen && <div className="fixed z-10 inset-0" onClick={onClose} />}
-      {isOpen && <div className="absolute z-20 mt-2">{children}</div>}
+      {isOpen && <div className="absolute z-20 mt-2 right-0">{children}</div>}
     </div>
   );
 };
