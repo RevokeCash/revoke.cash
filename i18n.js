@@ -10,5 +10,8 @@ module.exports = {
     'rgx:/address/.*': ['address'],
     'rgx:/exploits.*': ['exploits'],
     'rgx:/learn.*': ['learn'],
+    'rgx:/learn/wallets/add-network/.*': ['networks'],
+    'rgx:/token-approval-checker/.*': ['networks', 'token_approval_checker'],
+    'rgx:/blog.*': ['blog'],
   },
 };

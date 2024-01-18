@@ -28,9 +28,17 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={t('faq:meta.title')} description={t('faq:meta.description')} />
+      <NextSeo
+        {...defaultSEO}
+        title={t('faq:meta.title')}
+        description={t('faq:meta.description')}
+        openGraph={{
+          ...defaultSEO.openGraph,
+          images: [{ url: `https://revoke.cash/assets/images/learn/faq/cover.jpg`, width: 1600, height: 900 }],
+        }}
+      />
       <LearnLayout sidebarEntries={sidebar} slug={['faq']} meta={meta}>
-        <h1 className="text-5xl">{t('faq:title')}</h1>
+        <h1>{t('faq:title')}</h1>
 
         <dl
           className="w-full divide-y divide-zinc-200 dark:divide-zinc-800 pr-6 lg:pr-4"
@@ -50,17 +58,13 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
             <Trans i18nKey="faq:questions.sweeper_bot.answer" />
           </FaqItem>
           <FaqItem question={t('faq:questions.stolen_through_allowances.question')} slug="stolen_through_allowances">
-            <div className="flex flex-col items-center gap-2">
-              <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
-              <div className="flex border border-black">
-                <Image
-                  src="/assets/images/how-did-i-get-scammed-light.png"
-                  alt="How Did I Get Scammed?"
-                  width="1024"
-                  height="977"
-                />
-              </div>
-            </div>
+            <Trans i18nKey="faq:questions.stolen_through_allowances.answer" />
+            <Image
+              src="/assets/images/how-did-i-get-scammed-light.png"
+              alt="How Did I Get Scammed?"
+              width="1024"
+              height="977"
+            />
           </FaqItem>
           <FaqItem question={t('faq:questions.hardware_wallets.question')} slug="hardware_wallets">
             <Trans i18nKey="faq:questions.hardware_wallets.answer" components={[<span className="italic" />]} />
@@ -83,21 +87,23 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
           <FaqItem question={t('faq:questions.which_allowances.question')} slug="which_allowances">
             <Trans i18nKey="faq:questions.which_allowances.answer" />
           </FaqItem>
-          <FaqItem question={t('faq:questions.which_chains.question')} slug="which_chains">
-            <Trans
-              i18nKey="faq:questions.which_chains.answer"
-              components={[
-                <Href href="/extension" className="font-medium" underline="hover" html router />,
-                <Href href={TWITTER_URL} className="font-medium" underline="hover" html external />,
-                <Href href={DISCORD_URL} className="font-medium" underline="hover" html external />,
-              ]}
-            />
-            <h3 className="mt-2">{t('common:chain_select.mainnets')}</h3>
-            <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <FaqItem question={t('faq:questions.which_chains.question')} slug="which_chains" wrapper="div">
+            <p>
+              <Trans
+                i18nKey="faq:questions.which_chains.answer"
+                components={[
+                  <Href href="/extension" className="font-medium" underline="hover" html router />,
+                  <Href href={TWITTER_URL} className="font-medium" underline="hover" html external />,
+                  <Href href={DISCORD_URL} className="font-medium" underline="hover" html external />,
+                ]}
+              />
+            </p>
+            <h3 className="text-xl mt-4 mb-2 not-prose">{t('common:chain_select.mainnets')}</h3>
+            <ul className="text-base grid grid-cols-2 sm:grid-cols-3 gap-2 not-prose">
               {CHAIN_SELECT_MAINNETS.map((chainId) => (
                 <li key={chainId}>
                   <Href
-                    href={`/learn/wallets/add-network/${getChainSlug(chainId)}`}
+                    href={`/token-approval-checker/${getChainSlug(chainId)}`}
                     router
                     underline="hover"
                     className="flex items-center gap-1"
@@ -108,12 +114,12 @@ const FaqPage: NextPage = ({ sidebar }: Props) => {
                 </li>
               ))}
             </ul>
-            <h3 className="mt-2">{t('common:chain_select.testnets')}</h3>
-            <ul className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-3 gap-2">
+            <h3 className="text-xl mt-4 mb-2 not-prose">{t('common:chain_select.testnets')}</h3>
+            <ul className="text-base grid grid-cols-2 sm:grid-cols-3 gap-2 not-prose">
               {CHAIN_SELECT_TESTNETS.map((chainId) => (
                 <li key={chainId}>
                   <Href
-                    href={`/learn/wallets/add-network/${getChainSlug(chainId)}`}
+                    href={`/token-approval-checker/${getChainSlug(chainId)}`}
                     router
                     underline="hover"
                     className="flex items-center gap-1"

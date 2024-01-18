@@ -34,7 +34,7 @@ const ColorThemeSelect = () => {
       aria-label="Select Color Theme"
       className="w-32"
       controlTheme="dark"
-      menuTheme={darkMode ? 'dark' : 'light'}
+      menuTheme="dark"
       value={options.find((option) => option.value === theme)}
       options={options}
       onChange={selectTheme}

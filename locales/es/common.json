@@ -1,4 +1,9 @@
 {
+  "article_meta": {
+    "author": "Escrito por <0>{{author}}</0>",
+    "reading_time": "{{readingTime}} min de lectura",
+    "translator": "Traducido por <0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "Volver a Hacks",
     "cancel": "Cancelar",
@@ -16,6 +21,8 @@
     "download": "Descargar",
     "get_started": "Empezar",
     "my_allowances": "Mis Autorizaciones",
+    "next": "Siguiente",
+    "previous": "Anterior",
     "report_exploit": "Informar de un Hack",
     "revoke": "Revocar",
     "revoking": "Revocando",
@@ -70,19 +77,33 @@
     }
   },
   "footer": {
-    "privacy": "Privacidad",
-    "sponsors": "Patrocinadores:",
-    "terms": "Términos"
+    "about": "Sobre nosotros",
+    "blog": "Blog",
+    "brand_assets": "Activos de Marca",
+    "community": "Comunidad",
+    "company": "Empresa",
+    "exploit_checker": "Comprobador de Exploits",
+    "extension": "Extensión del Navegador",
+    "faq": "FAQ",
+    "knowledgebase": "Base de Conocimiento",
+    "learn": "Aprender",
+    "privacy": "Política de privacidad",
+    "product": "Producto",
+    "sponsors": "Patrocinadores",
+    "terms": "Términos",
+    "token_approval_checker": "Comprobador de Autorización de Tokens",
+    "what_are_token_approvals": "¿Qué son las Autorizaciones de Tokens?"
   },
   "meta": {
-    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en Ethereum y 60 redes más.",
-    "title": "Revoca las autorizaciones de tus tokens en más de 60 redes"
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {{chainName}} y 70 redes más.",
+    "title": "Revoca las autorizaciones de tus tokens en más de 70 redes"
   },
   "misc": {
     "powered_by": "Desarrollado por <0>{{name}}</0>"
   },
   "nav": {
     "about": "Sobre nosotros",
+    "blog": "Blog",
     "exploits": "Hacks",
     "extension": "Extensión",
     "faq": "FAQ",
@@ -95,9 +116,9 @@
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
     "revoke_failed": "❌ No se pudo revocar la autorización: {{message}}",
-    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Ponte en contacto con el equipo de este token para resolver este problema.",
+    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Por favor ponte en contacto con el equipo de este token para resolver este problema.",
     "transaction_failed": "❌ Transacción fallida: {{message}}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
-    "update_failed": "❌ Este token no admite actualización de autorizaciones; en su lugar, revocala por favor."
+    "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."
   }
 }

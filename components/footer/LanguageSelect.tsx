@@ -43,7 +43,7 @@ const LanguageSelect = () => {
     const src = `/assets/images/flags/${option.value}.svg`;
     return (
       <div className="flex gap-1 items-center">
-        <Logo src={src} alt={option.name} size={16} border className={context === 'value' ? 'border-white' : ''} />
+        <Logo src={src} alt={option.name} size={16} border className="border-white" />
         <div>{option.name}</div>
       </div>
     );
@@ -55,7 +55,7 @@ const LanguageSelect = () => {
       aria-label="Select Language"
       className="w-32"
       controlTheme="dark"
-      menuTheme={darkMode ? 'dark' : 'light'}
+      menuTheme="dark"
       value={options.find((option) => option.value === lang)}
       options={options}
       onChange={selectLanguage}

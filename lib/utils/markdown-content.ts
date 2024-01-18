@@ -1,9 +1,10 @@
-import axios from 'axios';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import matter from 'gray-matter';
 import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
+import ky from 'lib/ky';
 import getT from 'next-translate/getT';
 import { join } from 'path';
+import { readingTime } from 'reading-time-estimator';
 
 const walk = require('walkdir');
 
@@ -45,6 +46,9 @@ export const readAndParseContentFile = (
     language,
     author: data.author ?? null,
     translator: data.translator ?? null,
+    coverImage: getCoverImage(slug, directory),
+    date: data.date?.toISOString() ?? null,
+    readingTime: Math.round(Math.max(readingTime(content, 200).minutes, 1)),
   };
 
   return { content, meta };
@@ -89,8 +93,20 @@ export const getSidebar = async (
           },
         ],
       },
+      {
+        title: t('learn:sidebar.faq'),
+        path: '/learn/faq',
+        children: [],
+      },
     ];
 
+    return sidebar;
+  }
+
+  if (directory === 'blog') {
+    const allSlugs = getAllContentSlugs(directory);
+    const sidebar: ISidebarEntry[] = allSlugs.map((slug) => getSidebarEntry(slug, locale, directory, extended));
+    sidebar.sort((a, b) => (a.date > b.date ? -1 : 1));
     return sidebar;
   }
 
@@ -109,8 +125,9 @@ const getSidebarEntry = (
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 
-  const entry: ISidebarEntry = { title: meta.sidebarTitle, path };
+  const entry: ISidebarEntry = { title: meta.sidebarTitle, path, date: meta.date };
   if (extended) entry.description = meta.description;
+  if (directory === 'blog') entry.readingTime = meta.readingTime;
 
   return entry;
 };
@@ -140,11 +157,11 @@ export const getTranslationUrl = async (
 
   const baseUrl = 'https://api.localazy.com/projects/_a7784910611832258237';
 
-  const { data: files } = await axios.get(`${baseUrl}/files`, {
-    headers: {
-      Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
-    },
-  });
+  const headers = {
+    Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
+  };
+
+  const files = await ky.get(`${baseUrl}/files`, { headers }).json<any[]>();
 
   const targetFileName = `${normalisedSlug.at(-1)}.md`;
   const targetPath = `${directory}/${normalisedSlug.slice(0, -1).join('/')}`;
@@ -155,14 +172,8 @@ export const getTranslationUrl = async (
   }
 
   const {
-    data: {
-      keys: [key],
-    },
-  } = await axios.get(`${baseUrl}/files/${file.id}/keys/en`, {
-    headers: {
-      Authorization: `Bearer ${process.env.LOCALAZY_API_KEY}`,
-    },
-  });
+    keys: [key],
+  } = await ky.get(`${baseUrl}/files/${file.id}/keys/en`, { headers }).json<any>();
 
   const languageCodes = {
     zh: 1,
@@ -172,4 +183,10 @@ export const getTranslationUrl = async (
   };
 
   return `https://localazy.com/p/revoke-cash-markdown-content/phrases/${languageCodes[locale]}/edit/${key.id}`;
+};
+
+export const getCoverImage = (slug: string | string[], directory: string = 'learn'): string | null => {
+  const coverImage = join('/', 'assets', 'images', directory, [slug].flat().join('/'), 'cover.jpg');
+  if (existsSync(join(process.cwd(), 'public', coverImage))) return coverImage;
+  return null;
 };

@@ -6,20 +6,16 @@ translator: <Your Name Here (or remove)>
 
 # What Are Tokens?
 
-There are multiple definitions of what a _token_ is in cryptocurrency, but the prevaling definition in the context of Ethereum and other EVM chains is any crypto-asset that lives on top of Ethereum or other blockchains, without having its own dedicated blockchain.
+There are multiple definitions of what a _token_ is in cryptocurrency, but the prevailing definition in the context of Ethereum and other EVM chains is any crypto-asset that lives on top of Ethereum or other blockchains, without having its own dedicated blockchain.
 
 ## Types of Tokens
 
 Tokens generally have a specific purpose, and can be categorized into different types. The most common types of tokens are:
 
 - **Utility Tokens**: Utility tokens are tokens that serve a certain role in an ecosystem. For example, the [Brave Browser](https://brave.com/) has a utility token called BAT, which is used to pay for certain services within the Brave exosystem.
-
 - **Governance Tokens**: Governance tokens are tokens that are used to vote on proposals within an ecosystem. For example, the ENS token is used to vote on proposals that affect the [Ethereum Name Service](https://ens.domains/).
-
 - **Stablecoins**: Stablecoins are tokens that are pegged to a certain value, usually the US Dollar. For example, the [DAI](https://makerdao.com/) stablecoin is pegged to the US Dollar through a system of smart contracts.
-
 - **Memecoins**: Memecoins are tokens that are created for fun, and usually have no real value. For example, [SHIB](https://shibatoken.com/) is a memecoin that was created to be the "Dogecoin Killer".
-
 - **Non-Fungible Tokens**: [Non-Fungible Tokens (NFTs)](/learn/basics/what-are-nfts) are unique tokens that can be bought and sold. For example, [Bored Ape Yacht Club](https://boredapeyachtclub.com/) is a collection of 10,000 unique NFTs that can be bought and sold.
 
 While NFTs are technically tokens, they are very different from their fungible counterpart. So it can be useful to make the distinction between _fungible_ tokens and NFTs. On Revoke.cash, we use the term _token_ to refer only to fungible tokens, and the term _NFT_ to refer to non-fungible tokens.

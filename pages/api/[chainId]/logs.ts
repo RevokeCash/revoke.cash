@@ -1,18 +1,19 @@
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
-import { checkActiveSession, checkRateLimitAllowed, wrapIronSessionApiRoute } from 'lib/api/auth';
+import { checkActiveSession, checkRateLimitAllowed } from 'lib/api/auth';
 import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
 import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-axiosRetry(axios, { retries: 3 });
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end();
-  if (!checkActiveSession(req)) return res.status(403).send({ message: 'No API session is active' });
-  if (!(await checkRateLimitAllowed(req)))
+
+  if (!(await checkActiveSession(req, res))) {
+    return res.status(403).send({ message: 'No API session is active' });
+  }
+
+  if (!(await checkRateLimitAllowed(req))) {
     return res.status(429).send({ message: 'Too many requests, please try again later.' });
+  }
 
   const chainId = Number.parseInt(req.query.chainId as string, 10);
 
@@ -41,4 +42,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 };
 
-export default wrapIronSessionApiRoute(handler);
+export default handler;

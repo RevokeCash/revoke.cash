@@ -40,7 +40,7 @@
     "asset": "Asset",
     "asset_type": "Type",
     "last_updated": "Last Updated",
-    "spender": "Authorized Spender",
+    "spender": "Approved Spender",
     "value_at_risk": "Value at Risk"
   },
   "labels": {
@@ -64,7 +64,7 @@
     "expiration": "Expires {{inTime}}"
   },
   "search": {
-    "spender": "Search by Authorized Spender Address"
+    "spender": "Search by Approved Spender Address"
   },
   "signatures": {
     "info": {
@@ -72,18 +72,18 @@
     },
     "marketplaces": {
       "none_found": "No marketplaces found for this network.",
-      "title": "Marketplace Signatures"
+      "title": "Potential Marketplace Signatures"
     },
     "permit": {
       "none_found": "No tokens with Permit support found.",
-      "title": "Permit Signatures"
+      "title": "Potential Permit Signatures"
     }
   },
   "sorting": {
     "columns": {
       "allowance": "Approved Amount",
       "asset_name": "Asset Name",
-      "authorized_spender": "Authorized Spender",
+      "authorized_spender": "Approved Spender",
       "last_updated": "Last Updated",
       "value_at_risk": "Value at Risk"
     },

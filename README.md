@@ -42,7 +42,7 @@ If you omit any of these variables, Revoke.cash will not work for the chains you
 Then there are a few less essential variables:
 
 - `IRON_SESSION_PASSWORD` is used for encrypting session cookies and can be filled with any random 32-character string - if omitted many chains will not work.
-- `NEXT_PUBLIC_AMPLITUDE_API_KEY` is used for Analytics - if omitted, no Analytics are collected.
+- `NEXT_PUBLIC_MIXPANEL_API_KEY` is used for Analytics - if omitted, no Analytics are collected.
 - `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are used for queueing third-party API calls - these are only necessary when hosting in a serverless environment such as Vercel.
 - `NEXT_PUBLIC_HARPIE_API_KEY` is used to call Harpie's API for getting contract address labels - if omitted it only uses public label data sources.
 - `NODE_URLS` is currently unused, but can be used for certain networks in the future.
@@ -52,7 +52,7 @@ Then there are a few less essential variables:
 
 ### Adding a new network
 
-Adding a new network is relatively straightforward as you only need to change two files: `lib/utils/chains.ts` and `cypress/e2e/chains.cy.ts`.
+Adding a new network is relatively straightforward as you only need to change three files: `lib/utils/chains.ts`, `cypress/e2e/chains.cy.ts` and `locales/en/networks.json`.
 
 #### Prerequisites
 
@@ -69,7 +69,7 @@ Also make sure that your network is listed in [ethereum-lists/chains](https://gi
 In `lib/utils/chains.ts`:
 
 - Add the network to `PROVIDER_SUPPORTED_CHAINS`, `BLOCKSCOUT_SUPPORTED_CHAINS`, `ETHERSCAN_SUPPORTED_CHAINS` or `COVALENT_SUPPORTED_CHAINS`.
-- Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn ts-node scripts/get-chain-order.ts` to determine its position in the network selection dropdown.
+- Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn tsx scripts/get-chain-order.ts` to determine its position in the network selection dropdown.
 - Find a logo (preferably svg) for the network, add it to `public/assets/images/vendor/chains` and add the path to `getChainLogo()`.
 - If `multicall3` is deployed on the network, add it to `getChainDeployedContracts()`.
 - If a price source (Uniswap v2 or Uniswap v3 fork) is available for the network, add it to `getChainPriceStrategies()`.
@@ -81,6 +81,11 @@ In `cypress/e2e/chains.cy.ts`:
 
 - Find a wallet that has active approvals and add it to `fixtures`.
 
+In `locales/en/networks.json`:
+
+- Add a one-paragraph description for the network in the `"networks"` object under the correct slug.
+- An admin will then need to run `yarn translations:update` to make sure this description gets forwarded to translators.
+
 ## Credits
 
-Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [ethers.js](https://github.com/ethers-io/ethers.js) and [wagmi](https://github.com/wagmi-dev/wagmi) for all Ethereum-related operations and [Etherscan](https://etherscan.io), [CovalentHQ](https://www.covalenthq.com/), [Infura](https://infura.io/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Built with Next.js, Tailwind and TypeScript. Uses Upstash for queueing.
+Website created by Rosco Kalis after discussing the idea with Paul Berg at Devcon 5 in Osaka. Uses [viem](https://github.com/wagmi-dev/viem) and [wagmi](https://github.com/wagmi-dev/wagmi) for all Ethereum-related operations and [Etherscan](https://etherscan.io), [CovalentHQ](https://www.covalenthq.com/), [Infura](https://infura.io/) & [Alchemy](https://www.alchemy.com/) for extended multichain support. Built with Next.js, Tailwind and TypeScript. Uses Upstash for queueing.

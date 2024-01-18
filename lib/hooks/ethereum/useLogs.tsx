@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useApiSession } from '../useApiSession';
 
 export const useLogs = (name: string, chainId: number, filter: Filter) => {
-  const { isLoggedIn, loggingIn } = useApiSession();
+  const { isLoggedIn, loggingIn, error: loginError } = useApiSession();
 
   const result = useQuery<Log[], Error>({
     queryKey: ['logs', filter, chainId, isLoggedIn],
@@ -21,5 +21,7 @@ export const useLogs = (name: string, chainId: number, filter: Filter) => {
     if (result.data) console.log(`${name} events`, result.data);
   }, [result.data]);
 
-  return { ...result, isLoading: result.isLoading || loggingIn };
+  const error = loginError ? new Error('Failed to create API session') : result.error;
+
+  return { ...result, isLoading: result.isLoading || loggingIn, error };
 };

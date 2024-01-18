@@ -8,7 +8,7 @@ export const useBlockNumber = (chainId: number) => {
     queryKey: ['blockNumber', chainId],
     queryFn: async () => fetchBlockNumber({ chainId }).then(Number),
     // Don't refresh the block number too often to avoid refreshing events too often, to avoid backend API rate limiting
-    cacheTime: 1 * MINUTE,
+    gcTime: 1 * MINUTE,
     staleTime: 1 * MINUTE,
   });
 };

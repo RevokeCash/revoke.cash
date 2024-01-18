@@ -8,7 +8,7 @@ export const defaultSEO: NextSeoProps = {
     url: 'https://revoke.cash/',
     images: [
       {
-        url: 'https://revoke.cash/assets/images/revoke-card.png',
+        url: 'https://revoke.cash/assets/images/revoke-og-image.jpg',
         width: 1600,
         height: 900,
       },

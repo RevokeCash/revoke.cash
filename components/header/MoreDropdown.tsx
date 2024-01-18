@@ -8,7 +8,8 @@ const MoreDropdown = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const isCurrent = router.asPath.startsWith('/learn') || router.asPath.startsWith('/about');
+  const isCurrent =
+    router.asPath.startsWith('/learn') || router.asPath.startsWith('/about') || router.asPath.startsWith('/blog');
 
   const menuButton = (
     <div className={twMerge(isCurrent && 'underline underline-offset-8 decoration-2')}>{t('common:nav.more')}</div>
@@ -16,6 +17,9 @@ const MoreDropdown = () => {
 
   return (
     <DropdownMenu menuButton={menuButton} style="nav" align="left">
+      <DropdownMenuItem href="/blog" router className="text-lg">
+        {t('common:nav.blog')}
+      </DropdownMenuItem>
       <DropdownMenuItem href="/learn" router className="text-lg">
         {t('common:nav.learn')}
       </DropdownMenuItem>

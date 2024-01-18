@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "Respuestas a todas tus preguntas sobre autorizaciones, Revoke.cash y seguridad de cartera.",
+    "description": "Respuestas a todas tus preguntas sobre autorizaciones, Revoke.cash y seguridad de la cartera.",
     "title": "Preguntas Frecuentes"
   },
   "questions": {
@@ -25,7 +25,7 @@
       "question": "¿Puedo revocar múltiples autorizaciones al mismo tiempo?"
     },
     "other_question": {
-      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, ponte en contacto con nosotros en <0>Twitter</0> o <1>Discord</1>. También puedes leer más información sobre las autorizaciones en la entrada del blog de Rosco Kalis. <2>Las autorizaciones de ERC20 ilimitadas se consideran dañinas</2>.",
+      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, por favor ponte en contacto con nosotros en <0>Twitter</0> o <1>Discord</1>. También puedes leer más información sobre las autorizaciones en la entrada del blog de Rosco Kalis. <2>Las autorizaciones de ERC20 ilimitadas se consideran dañinas</2>.",
       "question": "Mi pregunta no está aquí."
     },
     "recover_assets": {
@@ -38,11 +38,11 @@
     },
     "sweeper_bot": {
       "answer": "Si tienes un \"sweeper bot\" en tu cuenta que roba todo el ETH en cuánto ingresas, tu frase semilla fue comprometida. Esto quiere decir que revocar autorizaciones no te va a ayudar con tu seguridad de cartera. Desafortunadamente, no hay ninguna manera de que tu cartera se recupere de esto. Debes abandonar esta cartera y crear una nueva.",
-      "question": "Quiero revocar autorizaciones, pero mi ETH es robado siempre que lo agrego a mi cuenta."
+      "question": "Quiero revocar las autorizaciones, pero cuando añado ETH a mi cuenta me lo roban."
     },
     "wallet_mentions_approve": {
-      "answer": "En los contratos inteligentes del token, las funciones para aprobar y revocar autorizaciones son la misma función. La diferencia es que la estableces en 0 (para tokens ERC20) o \"falso\" (para NFTs) cuando revocas la autorización. Puedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para autorizaciones ERC20), o la pestaña de \"datos\" (para NFTs) en MetaMask.",
-      "question": "¿Por qué la ventana de mi cartera dice \"aprobar\" o \"aprobar para todos\" al revocar?"
+      "answer": "En los contratos inteligentes del token, las funciones para autorizar y revocar autorizaciones son la misma función. La diferencia es que la estableces en 0 (para tokens ERC20) o \"falso\" (para NFTs) cuando revocas la autorización. Puedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para autorizaciones ERC20), o la pestaña de \"datos\" (para NFTs) en MetaMask.",
+      "question": "¿Por qué la ventana emergente de mi cartera menciona \"dar permiso\", \"autorizar\" o \"establecer autorización para todos\" al revocar?"
     },
     "which_allowances": {
       "answer": "Elegir qué autorizaciones revocar siempre es un intercambio entre seguridad y conveniencia. Para ciertos protocolos bien conocidos (como Uniswap) lo más probable es que está bien dejar las autorizaciones activas, pero para contratos inteligentes más nuevos y menos conocidos, es más prudente revocar autorizaciones. También considera que algunos casos de uso requieren que mantengas las autorizaciones activas. Por ejemplo, si tienes listados activos en OpenSea tendrás que dejar las autorizaciones activas para mantener activo el listado.",

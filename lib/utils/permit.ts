@@ -62,15 +62,15 @@ export const permit = async (
 
 export const getPermitDomain = async (contract: Erc20TokenContract): Promise<TypedDataDomain> => {
   const verifyingContract = contract.address;
-  const version = getPermitDomainVersion(verifyingContract);
-
   const chainId = contract.publicClient.chain.id;
 
-  const [name, symbol, contractDomainSeparator] = await Promise.all([
+  const [version, name, symbol, contractDomainSeparator] = await Promise.all([
+    getPermitDomainVersion(contract),
     contract.publicClient.readContract({ ...contract, functionName: 'name' }),
     contract.publicClient.readContract({ ...contract, functionName: 'symbol' }),
     contract.publicClient.readContract({ ...contract, functionName: 'DOMAIN_SEPARATOR' }),
   ]);
+
   const salt = pad(toHex(chainId), { size: 32 });
 
   // Given the potential fields of a domain, we try to find the one that matches the domain separator
@@ -111,13 +111,21 @@ export const getPermitDomain = async (contract: Erc20TokenContract): Promise<Typ
   return domain;
 };
 
-export const getPermitDomainVersion = (verifyingContract: string) => {
+export const getPermitDomainVersion = async (contract: Erc20TokenContract) => {
   const knownDomainVersions: Record<string, string> = {
     '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': '2', // USDC on Ethereum
     '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1': '2', // DAI on Arbitrum and Optimism (perhaps other chains too)
   };
 
-  return knownDomainVersions[verifyingContract] ?? '1';
+  if (contract.address in knownDomainVersions) {
+    return knownDomainVersions[contract.address];
+  }
+
+  try {
+    return await contract.publicClient.readContract({ ...contract, functionName: 'version' });
+  } catch {
+    return '1';
+  }
 };
 
 export const signEIP2612Permit = async (

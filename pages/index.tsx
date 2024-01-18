@@ -14,7 +14,11 @@ const LandingPage: NextPage = () => {
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={t('common:meta.title')} description={t('common:meta.description')} />
+      <NextSeo
+        {...defaultSEO}
+        title={t('common:meta.title')}
+        description={t('common:meta.description', { chainName: 'Ethereum' })}
+      />
       <LogoJsonLd logo="https://revoke.cash/assets/images/revoke-icon.svg" url="https://revoke.cash" />
       <LandingLayout>
         <div className="flex flex-col items-center gap-8">

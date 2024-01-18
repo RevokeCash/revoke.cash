@@ -1,10 +1,33 @@
-import axios from 'axios';
+import ky from 'lib/ky';
 import { PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
-import type { Filter, Log } from './interfaces';
+import type { Filter, Log, LogsProvider } from './interfaces';
 import { createViemPublicClientForChain, getChainLogsRpcUrl, isBackendSupportedChain } from './utils/chains';
+import { isLogResponseSizeError, parseErrorMessage } from './utils/errors';
 
-export class BackendLogsProvider {
+export class DivideAndConquerLogsProvider implements LogsProvider {
+  constructor(private underlyingProvider: LogsProvider) {}
+
+  async getLogs(filter: Filter): Promise<Log[]> {
+    try {
+      const result = await this.underlyingProvider.getLogs(filter);
+      return result;
+    } catch (error) {
+      if (!isLogResponseSizeError(parseErrorMessage(error))) throw error;
+
+      // If the block range is already a single block, we re-throw the error since we can't split it further
+      if (filter.fromBlock === filter.toBlock) throw error;
+
+      const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
+      const leftPromise = this.getLogs({ ...filter, toBlock: middle });
+      const rightPromise = this.getLogs({ ...filter, fromBlock: middle + 1 });
+      const [left, right] = await Promise.all([leftPromise, rightPromise]);
+      return [...left, ...right];
+    }
+  }
+}
+
+export class BackendLogsProvider implements LogsProvider {
   queue: RequestQueue;
 
   constructor(public chainId: number) {
@@ -14,15 +37,16 @@ export class BackendLogsProvider {
 
   async getLogs(filter: Filter): Promise<Log[]> {
     try {
-      const { data } = await this.queue.add(() => axios.post(`/api/${this.chainId}/logs`, filter));
-      return data;
+      return await this.queue.add(() =>
+        ky.post(`/api/${this.chainId}/logs`, { json: filter, timeout: false }).json<any>(),
+      );
     } catch (error) {
-      throw new Error(error?.response?.data?.message ?? error?.response?.data ?? error?.message);
+      throw new Error(error?.data?.message ?? error?.message);
     }
   }
 }
 
-export class ViemLogsProvider {
+export class ViemLogsProvider implements LogsProvider {
   private client: PublicClient;
 
   constructor(
@@ -46,7 +70,9 @@ export class ViemLogsProvider {
   private formatEvent(log: any): Log {
     return {
       ...log,
-      address: getAddress(log.address),
+      // XDC Network uses a different address format than other EVM networks
+      // And somehow there's a bug onn some chains that causes the address to be returned as 00x... instead of 0x00...
+      address: getAddress(log.address.replace('xdc', '0x').replace('00x', '0x00')),
       blockNumber: Number(log.blockNumber),
       logIndex: Number(log.logIndex),
       transactionIndex: Number(log.transactionIndex),
@@ -54,7 +80,11 @@ export class ViemLogsProvider {
   }
 }
 
-export const getLogsProvider = (chainId: number, url?: string): BackendLogsProvider | ViemLogsProvider => {
+const getUnderlyingLogsProvider = (chainId: number, url?: string): BackendLogsProvider | ViemLogsProvider => {
   if (isBackendSupportedChain(chainId)) return new BackendLogsProvider(chainId);
   return new ViemLogsProvider(chainId, url);
+};
+
+export const getLogsProvider = (chainId: number, url?: string): DivideAndConquerLogsProvider => {
+  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId, url));
 };

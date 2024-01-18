@@ -1,4 +1,9 @@
 {
+  "article_meta": {
+    "author": "Written by <0>{{author}}</0>",
+    "reading_time": "{{readingTime}} min read",
+    "translator": "Translated by <0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
@@ -16,6 +21,8 @@
     "download": "Download",
     "get_started": "Get Started",
     "my_allowances": "My Approvals",
+    "next": "Next",
+    "previous": "Previous",
     "report_exploit": "Report Exploit",
     "revoke": "Revoke",
     "revoking": "Revoking",
@@ -70,19 +77,33 @@
     }
   },
   "footer": {
-    "privacy": "Privacy",
-    "sponsors": "Sponsors:",
-    "terms": "Terms"
+    "about": "About Us",
+    "blog": "Blog",
+    "brand_assets": "Brand Assets",
+    "community": "Community",
+    "company": "Company",
+    "exploit_checker": "Exploit Checker",
+    "extension": "Browser Extension",
+    "faq": "FAQ",
+    "knowledgebase": "Knowledgebase",
+    "learn": "Learn",
+    "privacy": "Privacy Policy",
+    "product": "Product",
+    "sponsors": "Sponsors",
+    "terms": "Terms",
+    "token_approval_checker": "Token Approval Checker",
+    "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
-    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 60 other networks.",
-    "title": "Revoke Your Token Approvals on Over 60 Networks"
+    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {{chainName}} and over 70 other networks.",
+    "title": "Revoke Your Token Approvals on Over 70 Networks"
   },
   "misc": {
     "powered_by": "Powered by <0>{{name}}</0>"
   },
   "nav": {
     "about": "About Us",
+    "blog": "Blog",
     "exploits": "Exploits",
     "extension": "Extension",
     "faq": "FAQ",

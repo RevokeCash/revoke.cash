@@ -14,11 +14,24 @@ interface Props {
   translationUrl: string;
 }
 
-// TODO: Add Article JSON-LD
 const LearnDocumentPage: NextPage<Props> = ({ meta, content, sidebar, slug, translationUrl }) => {
   return (
     <>
-      <NextSeo {...defaultSEO} title={meta.title} description={meta.description} />
+      <NextSeo
+        {...defaultSEO}
+        title={meta.title}
+        description={meta.description}
+        openGraph={{
+          ...defaultSEO.openGraph,
+          images: meta.coverImage
+            ? [{ url: `https://revoke.cash${meta.coverImage}`, width: 1600, height: 900 }]
+            : defaultSEO.openGraph.images,
+        }}
+      />
+      <div vocab="https://schema.org/" typeof="Article">
+        <meta property="headline" content={meta.title} />
+        {meta.coverImage && <meta property="image" content={`https://revoke.cash${meta.coverImage}`} />}
+      </div>
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta} translationUrl={translationUrl}>
         <MarkdownProse content={content} />
       </LearnLayout>

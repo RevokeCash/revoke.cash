@@ -19,6 +19,8 @@ export const isLogResponseSizeError = (message?: string) => {
   if (lowercaseMessage?.includes('query returned more than 10000 results')) return true;
   if (lowercaseMessage?.includes('log response size exceeded')) return true;
   if (lowercaseMessage?.includes('query timeout exceeded')) return true;
+  // This is also a partial match for a network error, but the checks for these two error categories are mutually exclusive
+  if (lowercaseMessage?.includes('queued request timed out')) return true;
   return false;
 };
 
@@ -32,7 +34,7 @@ export const isRateLimitError = (message?: string) => {
 
 export const isNetworkError = (message?: string) => {
   const lowercaseMessage = message?.toLowerCase();
-  if (lowercaseMessage?.includes('http request failed')) return true;
+  if (lowercaseMessage?.includes('request failed')) return true;
   if (lowercaseMessage?.includes('request timed out')) return true;
   if (lowercaseMessage?.includes('request took too long to respond')) return true;
   if (lowercaseMessage?.includes('failed to fetch')) return true;
@@ -41,12 +43,12 @@ export const isNetworkError = (message?: string) => {
 
 export const parseErrorMessage = (error: any): string => {
   const errorMessage =
-    error?.error?.message ??
-    error?.data?.message ??
-    error?.response?.data?.message ??
-    error?.details ??
-    error?.shortMessage ??
-    error?.message ??
+    error?.error?.message ||
+    error?.data?.message ||
+    error?.response?.data?.message ||
+    error?.details ||
+    error?.shortMessage ||
+    error?.message ||
     error;
 
   if (typeof errorMessage === 'object') {

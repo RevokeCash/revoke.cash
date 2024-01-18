@@ -7,24 +7,25 @@ interface Props {
   chainId: number;
   size?: number;
   tooltip?: boolean;
+  className?: string;
 }
 
-const ChainLogo = ({ chainId, size, tooltip }: Props) => {
+const ChainLogo = ({ chainId, size, tooltip, className }: Props) => {
   const name = getChainName(chainId);
   const src = getChainLogo(chainId);
-  const className = twMerge(!isSupportedChain(chainId) && 'grayscale');
+  const classes = twMerge(!isSupportedChain(chainId) && 'grayscale', className);
 
   if (tooltip) {
     return (
       <WithHoverTooltip tooltip={name} placement="top">
         <div>
-          <Logo src={src} alt={name} size={size} border className={className} />
+          <Logo src={src} alt={`${name} Logo`} size={size} border className={classes} />
         </div>
       </WithHoverTooltip>
     );
   }
 
-  return <Logo src={src} alt={name} size={size} border className={className} />;
+  return <Logo src={src} alt={name} size={size} border className={classes} />;
 };
 
 export default ChainLogo;

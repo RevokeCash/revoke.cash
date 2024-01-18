@@ -1,4 +1,7 @@
 import Breadcrumb from 'components/common/Breadcrumb';
+import Divider from 'components/common/Divider';
+import PageNavigation from 'components/common/PageNavigation';
+import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
@@ -6,13 +9,14 @@ import ArticleMeta from 'components/learn/ArticleMeta';
 import Sidebar from 'components/learn/Sidebar';
 import { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
+import Image from 'next/image';
 
 interface Props {
   children: React.ReactNode;
   searchBar?: boolean;
   sidebarEntries: ISidebarEntry[];
   slug: string[];
-  meta: Partial<ContentMeta> & Pick<ContentMeta, 'language'>;
+  meta: ContentMeta;
   translationUrl?: string;
 }
 
@@ -28,9 +32,9 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
   if (meta.sidebarTitle) breadcrumbs.push({ name: meta.sidebarTitle });
 
   return (
-    <div className="flex flex-col mx-auto min-h-screen gap-4">
+    <div className="flex flex-col mx-auto min-h-screen">
       <Header searchBar={searchBar} />
-      <main className="max-w-6xl w-full mx-auto px-4 lg:px-8 grow mb-8">
+      <main className="max-w-6xl w-full mx-auto px-4 lg:px-8 grow">
         <div className="flex flex-col min-w-0 lg:flex-row gap-4">
           <Sidebar entries={sidebarEntries} />
           <div className="min-w-0 w-full">
@@ -38,14 +42,19 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
               <Breadcrumb pages={breadcrumbs} />
               <TranslateButton language={meta.language} translationUrl={translationUrl} />
             </div>
-            {children}
+            <Prose className="mb-4">
+              {meta.coverImage ? (
+                <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} priority />
+              ) : null}
+            </Prose>
             <ArticleMeta meta={meta} />
+            {children}
+            <Divider className="my-6" />
+            <PageNavigation currentPath={`/learn/${slug.join('/')}`} pages={sidebarEntries} />
           </div>
         </div>
       </main>
-      <div className="flex flex-col justify-end">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

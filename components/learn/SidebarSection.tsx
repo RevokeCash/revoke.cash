@@ -26,7 +26,7 @@ const SidebarSection = ({ title, href, path, children }: Props) => {
       <Href href={href} className={classes} underline="none" router color="inherit">
         {title}
       </Href>
-      <ul className="flex flex-col pl-2 gap-1">{children}</ul>
+      {children && <ul className="flex flex-col pl-2 gap-1">{children}</ul>}
     </li>
   );
 };

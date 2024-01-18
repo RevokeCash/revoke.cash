@@ -7,34 +7,11 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   exclude: /a\.js|node_modules/, // exclude node_modules for checking circular dependencies
-  rewrites: async () => {
-    return [
-      {
-        source: '/privacy-policy',
-        destination: '/privacy-policy.html',
-      },
-    ];
-  },
   redirects: async () => {
     return [
       {
         source: '/faq',
         destination: '/learn/faq',
-        permanent: true,
-      },
-      {
-        source: '/learn/basics',
-        destination: '/learn/basics/what-is-a-crypto-wallet',
-        permanent: true,
-      },
-      {
-        source: '/learn/approvals',
-        destination: '/learn/approvals/what-are-token-approvals',
-        permanent: true,
-      },
-      {
-        source: '/learn/wallets',
-        destination: '/learn/wallets/add-network/ethereum',
         permanent: true,
       },
       {

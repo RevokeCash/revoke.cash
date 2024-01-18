@@ -1,6 +1,6 @@
 {
   "faq": {
-    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, visite nuestra <0>página de preguntas frecuentes</0>.",
+    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra página de <0>Preguntas Frecuentes</0>.",
     "title": "Preguntas Frecuentes"
   },
   "hero_section": {
@@ -23,7 +23,7 @@
     "title": "¿Cómo Revocar Tus Autorizaciones?"
   },
   "sponsors": {
-    "description": "El desarrollo continuo de Revoke.cash es posible gracias a las donaciones y patrocinios. Estas son las personas y organizaciones que nos han apoyado con patrocinios mensuales hasta ahora. Si quieres unirte a ellos para patrocinar Revoke.cash, echa un vistazo a nuestra <0>página de patrocinios</0>.",
+    "description": "El desarrollo continuo de Revoke.cash es posible gracias a las donaciones y patrocinios. Estas son las personas y organizaciones que nos han apoyado con patrocinios mensuales hasta ahora.",
     "tiers": {
       "bronze": "Patrocinador de Bronce",
       "gold": "Patrocinador de Oro",

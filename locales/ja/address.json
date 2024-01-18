@@ -40,7 +40,7 @@
     "asset": "資産",
     "asset_type": "種類",
     "last_updated": "最終更新日",
-    "spender": "権限を持つ支出者",
+    "spender": "承認済みの支出者",
     "value_at_risk": "リスクがある価値"
   },
   "labels": {
@@ -72,18 +72,18 @@
     },
     "marketplaces": {
       "none_found": "このネットワークにマーケットプレイスが見つかりません。",
-      "title": "マーケットプレイスの署名"
+      "title": "可能なマーケットプレイスの署名"
     },
     "permit": {
       "none_found": "許可されたトークンは見つかりませんでした。",
-      "title": "許可の署名"
+      "title": "可能な許可署名"
     }
   },
   "sorting": {
     "columns": {
       "allowance": "許可したもの",
       "asset_name": "資産名",
-      "authorized_spender": "権限を持つ支出者",
+      "authorized_spender": "承認済みの支出者",
       "last_updated": "最終更新日",
       "value_at_risk": "リスクがある価値"
     },

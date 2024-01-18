@@ -12,24 +12,37 @@
       "paragraph_2": "Alternatively, you can use our one-click button so you don't need to enter the required details manually.",
       "title": "2. Enter the required details and click \"Save\"."
     },
+    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
     "title": "Add {{chainName}} to MetaMask"
-  },
-  "article_meta": {
-    "author": "Written by <0>{{author}}</0>",
-    "translator": "Translated by <0>{{translator}}</0>"
-  },
-  "home": {
-    "intro_paragraph": "We created the Revoke.cash Learn section to help you understand how you can stay safe in the world of web3. It covers the very basics of web3 and then moves on to more advanced topics. We'll be adding more articles over time so be sure to check back regularly."
   },
   "meta": {
     "description": "The world of web3 can be confusing, but it doesn't have to be. We put together a collection of resources to help you learn about web3, security and more.",
     "title": "Learn About Web3, Security and More"
+  },
+  "sections": {
+    "approvals": {
+      "intro_paragraph": "In the Token Approvals section, you can learn all about token approvals. This will help you understand what token approvals are and how you can manage them. It also covers some alternative approval schemes such as Permit signatures.",
+      "title": "Learn About Token Approvals"
+    },
+    "basics": {
+      "intro_paragraph": "In the Basics sections, you can learn all about the basic building blocks of crypto, such as tokens, NFTs and wallets. This will get you familiarized with the terminology and concepts that you'll encounter in the world of web3.",
+      "title": "Learn About Crypto Basics"
+    },
+    "home": {
+      "intro_paragraph": "We created the Revoke.cash Learn section to help you understand how you can stay safe in the world of web3. It covers the very basics of web3 and then moves on to more advanced topics. We'll be adding more articles over time so be sure to check back regularly.",
+      "title": "Learn About Web3, Security and More"
+    },
+    "wallets": {
+      "intro_paragraph": "In the Wallets section, you can learn all about wallets. This will help you understand the different types of wallets that exist, and how you can use them to interact with applications on different blockchain networks.",
+      "title": "Learn About Wallets"
+    }
   },
   "sidebar": {
     "approvals": "Token Approvals",
     "basics": "Basics",
     "faq": "FAQ",
     "mobile_header": "Browse Articles",
+    "security": "Security",
     "wallets": "Wallets"
   }
 }

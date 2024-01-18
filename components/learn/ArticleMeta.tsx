@@ -1,38 +1,54 @@
-import Divider from 'components/common/Divider';
 import { ContentMeta } from 'lib/interfaces';
+import { formatArticleDate } from 'lib/utils/time';
 import Trans from 'next-translate/Trans';
 
 interface Props {
-  meta: Pick<ContentMeta, 'author' | 'translator' | 'language'>;
+  meta: ContentMeta;
 }
 
 const ArticleMeta = ({ meta }: Props) => {
-  const shouldDisplayAuthor = !!meta.author;
-  const shouldDisplayTranslator = !!meta.translator && meta.language !== 'en';
+  const properties = [
+    !!meta.author ? 'author' : undefined,
+    !!meta.translator && meta.language !== 'en' ? 'translator' : undefined,
+    !!meta.date ? 'date' : undefined,
+    !!meta.readingTime ? 'reading_time' : undefined,
+  ].filter((property) => !!property);
 
-  if (!shouldDisplayAuthor && !shouldDisplayTranslator) return null;
+  if (properties.length === 0 || !properties.includes('author')) return null;
 
   return (
-    <>
-      <Divider className="my-6" />
-      <div className="w-full flex justify-end gap-2">
-        {shouldDisplayAuthor && (
-          <div>
-            <Trans i18nKey="learn:article_meta.author" values={meta} components={[<span className="font-bold" />]} />
-          </div>
-        )}
-        {shouldDisplayAuthor && shouldDisplayTranslator && <div>•</div>}
-        {shouldDisplayTranslator && (
-          <div>
-            <Trans
-              i18nKey="learn:article_meta.translator"
-              values={meta}
-              components={[<span className="font-bold" />]}
-            />
-          </div>
-        )}
-      </div>
-    </>
+    <div className="flex justify-center gap-2 flex-wrap max-sm:text-sm text-center my-4 text-zinc-500 dark:text-zinc-400">
+      {properties.map((property, i) => (
+        <MetaProperty key={property} property={property} meta={meta} separator={i < properties.length - 1} />
+      ))}
+    </div>
+  );
+};
+
+interface MetaPropertyProps {
+  property: string;
+  meta: ContentMeta;
+  separator?: boolean;
+}
+
+const MetaProperty = ({ property, meta, separator }: MetaPropertyProps) => {
+  if (!property) return null;
+
+  return (
+    <div key={property} className="flex gap-2">
+      {property === 'date' ? (
+        <div>{formatArticleDate(meta.date)}</div>
+      ) : (
+        <div>
+          <Trans
+            i18nKey={`common:article_meta.${property}`}
+            values={meta}
+            components={[<span className="font-bold" />]}
+          />
+        </div>
+      )}
+      {separator && <div>•</div>}
+    </div>
   );
 };
 

@@ -101,6 +101,8 @@ export interface ISidebarEntry {
   description?: string;
   path: string;
   children?: ISidebarEntry[];
+  date?: string;
+  readingTime?: number;
 }
 
 export interface ContentMeta {
@@ -110,6 +112,9 @@ export interface ContentMeta {
   language: string;
   author?: string;
   translator?: string;
+  coverImage?: string;
+  date?: string;
+  readingTime?: number;
 }
 
 export interface RawContentFile {
@@ -158,3 +163,8 @@ export interface TokenMetadata {
 }
 
 export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;
+
+export interface EtherscanPlatform {
+  domain: string;
+  subdomain?: string;
+}

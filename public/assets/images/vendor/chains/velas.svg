@@ -1,10 +1,1 @@
-<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 230" width="230" height="230">
-    <defs>
-        <image width="230" height="230" id="img1"
-            href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOYAAADmAQMAAAD7pGv4AAAAAXNSR0IB2cksfwAAAANQTFRFC/+3bQ4JZgAAAB5JREFUeJztwQENAAAAwqD3T20ON6AAAAAAAADg2wAa9AABWYyIEwAAAABJRU5ErkJggg==" />
-    </defs>
-    <style>.a{fill:#0037c1}</style>
-    <use href="#img1" x="0" y="0" />
-    <path fill-rule="evenodd" class="a"
-        d="m177.2 89.9l-62.2 107.8-62.3-107.8h124.5zm-93.3 17.9l31.1 53.9 31.1-53.9zm114-53.8l-10.3 18h-145.2l-10.4-18z" />
-</svg>
+<svg height="230" viewBox="0 0 230 230" width="230" xmlns="http://www.w3.org/2000/svg"><path d="m177.2 89.9-62.2 107.8-62.3-107.8zm-93.3 17.9 31.1 53.9 31.1-53.9zm114-53.8-10.3 18h-145.2l-10.4-18z" fill="#0037c1" fill-rule="evenodd"/></svg>

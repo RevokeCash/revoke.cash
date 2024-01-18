@@ -3,13 +3,14 @@ import Header from 'components/header/Header';
 
 interface Props {
   children: React.ReactNode;
+  searchBar?: boolean;
 }
 
-const LandingLayout = ({ children }: Props) => {
+const LandingLayout = ({ children, searchBar }: Props) => {
   return (
     <div className="flex flex-col mx-auto min-h-screen">
-      <Header />
-      <main className="w-full pt-4 pb-8">{children}</main>
+      <Header searchBar={searchBar} />
+      <main className="w-full">{children}</main>
       <div className="flex flex-col justify-end grow">
         <Footer />
       </div>

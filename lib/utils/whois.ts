@@ -1,16 +1,17 @@
 import { ChainId } from '@revoke.cash/chains';
-import axios from 'axios';
 import { AVVY_DOMAINS_ABI, OPENSEA_REGISTRY_ABI, UNSTOPPABLE_DOMAINS_ABI } from 'lib/abis';
 import {
   ADDRESS_ZERO,
   ALCHEMY_API_KEY,
   AVVY_DOMAINS_ADDRESS,
+  HARPIE_API_KEY,
   OPENSEA_REGISTRY_ADDRESS,
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
   WHOIS_BASE_URL,
 } from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
+import ky from 'lib/ky';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 
@@ -45,19 +46,23 @@ export const getSpenderData = async (
 
 const getSpenderDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    const { data } = await axios.get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`);
-    return data;
+    return await ky.get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`).json<SpenderData>();
   } catch {
     return null;
   }
 };
 
 const getSpenderDataFromHarpie = async (address: string, chainId: number): Promise<SpenderData | null> => {
-  const apiKey = process.env.NEXT_PUBLIC_HARPIE_API_KEY;
+  const apiKey = HARPIE_API_KEY;
   if (!apiKey || chainId !== 1) return null;
 
   try {
-    const { data } = await axios.post('https://api.harpie.io/getprotocolfromcontract', { apiKey, address });
+    const data = await ky
+      .post('https://api.harpie.io/getprotocolfromcontract', {
+        json: { apiKey, address },
+      })
+      .json<any>();
+
     if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
     return { name: data.contractOwner };
   } catch (e) {

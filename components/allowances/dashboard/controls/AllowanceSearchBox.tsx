@@ -51,6 +51,7 @@ const AllowanceSearchBox = ({ table }: Props) => {
 
   return (
     <SearchBox
+      id="spender-search"
       onSubmit={(event) => event.preventDefault()}
       onChange={handleChange}
       value={searchValues.join(',')}

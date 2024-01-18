@@ -1,50 +1,29 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { AllowanceData, Filter, Log, LogsProvider } from 'lib/interfaces';
+import type { AllowanceData, Log } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import {
   Abi,
   Address,
-  ContractFunctionConfig,
-  FormattedTransactionRequest,
-  GetValue,
   Hash,
   Hex,
   PublicClient,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
   WalletClient,
+  WriteContractParameters,
   formatUnits,
   getAddress,
   pad,
   slice,
 } from 'viem';
-import { UnionOmit } from 'viem/types/utils';
-import { Chain } from 'wagmi';
 import { track } from './analytics';
-import { isLogResponseSizeError, parseErrorMessage } from './errors';
 import { bigintMin, fixedPointMultiply } from './math';
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
-};
-
-export const getLogs = async (logsProvider: LogsProvider, filter: Filter): Promise<Log[]> => {
-  try {
-    const result = await logsProvider.getLogs(filter);
-    return result;
-  } catch (error) {
-    if (!isLogResponseSizeError(parseErrorMessage(error))) throw error;
-
-    // If the block range is already a single block, we re-throw the error since we can't split it further
-    if (filter.fromBlock === filter.toBlock) throw error;
-
-    const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-    const leftPromise = getLogs(logsProvider, { ...filter, toBlock: middle });
-    const rightPromise = getLogs(logsProvider, { ...filter, fromBlock: middle + 1 });
-    const [left, right] = await Promise.all([leftPromise, rightPromise]);
-    return [...left, ...right];
-  }
 };
 
 export const calculateValueAtRisk = (allowance: AllowanceData): number => {
@@ -76,8 +55,17 @@ export const logSorterChronological = (a: Log, b: Log) => {
 
 export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
 
+// This is O(n*m) complexity, but it's unlikely to be a problem in practice in most cases m (unique contracts) is way
+// smaller than n (total logs). The previous version of this function was O(n^2), which was a problem for accounts with
+// many transfers.
 export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
-  return array.filter((a, i) => array.findIndex((b) => matcher(a, b)) === i);
+  const result: T[] = [];
+
+  for (const item of array) {
+    if (!result.some((existingItem) => matcher(existingItem, item))) result.push(item);
+  }
+
+  return result;
 };
 
 export const deduplicateLogsByTopics = (logs: Log[], consideredIndexes: Array<0 | 1 | 2 | 3> = [0, 1, 2, 3]) => {
@@ -104,6 +92,7 @@ export const writeToClipBoard = (text: string, t: Translate, displayToast: boole
   }
 
   navigator.clipboard.writeText(text);
+
   if (displayToast) {
     toast.info(t('common:toasts.clipboard_success'), { autoClose: 1000 });
   }
@@ -121,11 +110,12 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const WEIRD_NETWORKS = [
-    ChainId.ZkSyncEraMainnet,
-    ChainId.ZkSyncEraTestnet,
+    ChainId.ZkSyncMainnet,
+    ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
     ChainId.ArbitrumOne,
     ChainId.ArbitrumGoerli,
     ChainId.ArbitrumNova,
+    ChainId.FrameTestnet,
   ];
 
   const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(chainId) ? 10_000_000n : 500_000n;
@@ -150,23 +140,12 @@ export const writeContractUnlessExcessiveGas = async <
 >(
   publicCLient: PublicClient,
   walletClient: WalletClient,
-  transactionRequest: ContractTransactionRequest<TAbi, TFunctionName>,
+  transactionRequest: WriteContractParameters<TAbi, TFunctionName>,
 ) => {
   const estimatedGas = await publicCLient.estimateContractGas(transactionRequest);
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
-  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
+  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas } as any);
 };
-
-// This is as "simple" as I was able to get this generic to be, considering it needs to work with viem's type inference
-type ContractTransactionRequest<
-  TAbi extends Abi | readonly unknown[] = Abi,
-  TFunctionName extends string = string,
-> = ContractFunctionConfig<TAbi, TFunctionName, 'payable' | 'nonpayable'> & {
-  account: Address;
-  chain: Chain;
-  dataSuffix?: Hex;
-} & UnionOmit<FormattedTransactionRequest<Chain>, 'from' | 'to' | 'data' | 'value'> &
-  GetValue<TAbi, TFunctionName>;
 
 export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient): Promise<void> => {
   try {
@@ -177,3 +156,16 @@ export const waitForTransactionConfirmation = async (hash: Hash, publicClient: P
     throw e;
   }
 };
+
+export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] =>
+  chunks.flatMap(([from, to]) =>
+    to - from < chunkSize
+      ? [[from, to]]
+      : splitBlockRangeInChunks(
+          [
+            [from, from + chunkSize - 1],
+            [from + chunkSize, to],
+          ],
+          chunkSize,
+        ),
+  );

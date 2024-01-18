@@ -8,8 +8,10 @@ import type {
   Erc721TokenContract,
   Log,
   TokenContract,
+  TokenFromList,
   TokenMetadata,
 } from 'lib/interfaces';
+import ky from 'lib/ky';
 import { calculateTokenPrice, getInverseTokenPrice } from 'lib/price/utils';
 import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
 import { deduplicateArray } from '.';
@@ -81,13 +83,9 @@ const getTokenDataFromMapping = async (
   chainId: number,
 ): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
   try {
-    const result = await fetch(`${WHOIS_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`);
-
-    if (!result.ok) {
-      return undefined;
-    }
-
-    const metadata = await result.json();
+    const metadata = await ky
+      .get(`${WHOIS_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`)
+      .json<TokenFromList>();
 
     return {
       symbol: metadata?.symbol,

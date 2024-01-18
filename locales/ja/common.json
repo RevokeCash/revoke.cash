@@ -1,4 +1,9 @@
 {
+  "article_meta": {
+    "author": "著者 <0>{{author}}</0>",
+    "reading_time": "読み取る時間：{{readingTime}}分",
+    "translator": "翻訳者：<0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "エクスプロイトの項目に戻る",
     "cancel": "キャンセル",
@@ -16,6 +21,8 @@
     "download": "ダウンロードする",
     "get_started": "開始する",
     "my_allowances": "私の許可一覧",
+    "next": "次へ",
+    "previous": "前へ",
     "report_exploit": "エクスプロイトを報告する",
     "revoke": "取り消す",
     "revoking": "取り消中",
@@ -70,19 +77,33 @@
     }
   },
   "footer": {
-    "privacy": "プライバシー",
-    "sponsors": "スポンサー：",
-    "terms": "利用規約"
+    "about": "私たちについて",
+    "blog": "ブログ",
+    "brand_assets": "ブランド資産",
+    "community": "コミュニティー",
+    "company": "会社",
+    "exploit_checker": "エクスプロイトチェッカー",
+    "extension": "ブラウザ拡張機能",
+    "faq": "よくある質問",
+    "knowledgebase": "ナレッジベース",
+    "learn": "学ぶ",
+    "privacy": "プライバシー ポリシー",
+    "product": "製品",
+    "sponsors": "スポンサー",
+    "terms": "利用規約",
+    "token_approval_checker": "トークン承認チェッカー",
+    "what_are_token_approvals": "トークン承認とは？"
   },
   "meta": {
-    "description": "Ethereumとその他60以上のネットワークで、過去に付与した承認や許可をリボークすることにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
-    "title": "60を超えるネットワークで、あなたの承認をリボークしましょう。"
+    "description": "{{chainName}}とその他70以上のネットワークで、過去に付与した承認や許可をリボークすることにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
+    "title": "70を超えるネットワークで、あなたの承認をリボークしましょう。"
   },
   "misc": {
     "powered_by": "<0>{{name}}</0>によって提供されます"
   },
   "nav": {
     "about": "私たちについて",
+    "blog": "ブログ",
     "exploits": "エクスプロイト",
     "extension": "ブラウザ拡張機能",
     "faq": "よくある質問",

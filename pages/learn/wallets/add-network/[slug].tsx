@@ -1,4 +1,5 @@
 import Button from 'components/common/Button';
+import ChainDescription from 'components/common/ChainDescription';
 import ChainSelectHref from 'components/common/ChainSelectHref';
 import CopyButton from 'components/common/CopyButton';
 import Prose from 'components/common/Prose';
@@ -35,7 +36,6 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
   const isMounted = useMounted();
 
   const chainName = getChainName(chainId);
-  const chainSlug = getChainSlug(chainId);
   const slug = ['wallets', 'add-network'];
 
   const meta = {
@@ -43,11 +43,20 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
     sidebarTitle: t('learn:add_network.title', { chainName }),
     description: t('learn:add_network.description', { chainName }),
     language: lang,
+    coverImage: encodeURI(`/api/og?background=ADD_NETWORK&text=${t('learn:add_network.title', { chainName })}`),
   };
 
   return (
     <>
-      <NextSeo {...defaultSEO} title={meta.title} description={meta.description} />
+      <NextSeo
+        {...defaultSEO}
+        title={meta.title}
+        description={meta.description}
+        openGraph={{
+          ...defaultSEO.openGraph,
+          images: [{ url: `https://revoke.cash${meta.coverImage}`, width: 1600, height: 900 }],
+        }}
+      />
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta}>
         <Prose vocab="https://schema.org/" typeof="HowTo">
           <h1 property="name">{meta.title}</h1>
@@ -61,13 +70,14 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
               />
             </div>
           </div>
-          <p>{t(`learn:add_network.networks.${chainSlug}`, null, { default: null })}</p>
+          <ChainDescription chainId={chainId} headingElement="h2" />
+          <h2>{t('learn:add_network.steps_heading', { chainName })}</h2>
           <p>{t('learn:add_network.intro_paragraph', { chainName })}</p>
           <div property="step" typeof="HowToStep">
-            <h2 property="name">{t('learn:add_network.step_1.title')}</h2>
+            <h3 property="name">{t('learn:add_network.step_1.title')}</h3>
             <meta property="text" content={t('learn:add_network.step_1.title')} />
             <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
-              <div>
+              <p>
                 <Image
                   src="/assets/images/learn/wallets/add-network/metamask-add-network-1.png"
                   alt="MetaMask Add Network 1"
@@ -77,8 +87,8 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
                   priority
                   fetchPriority="high"
                 />
-              </div>
-              <div>
+              </p>
+              <p>
                 <Image
                   src="/assets/images/learn/wallets/add-network/metamask-add-network-2.png"
                   alt="MetaMask Add Network 2"
@@ -88,11 +98,11 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
                   priority
                   fetchPriority="high"
                 />
-              </div>
+              </p>
             </div>
           </div>
           <div property="step" typeof="HowToStep">
-            <h2 property="name">{t('learn:add_network.step_2.title')}</h2>
+            <h3 property="name">{t('learn:add_network.step_2.title')}</h3>
             <div property="text">
               <p>{t('learn:add_network.step_2.paragraph_1', { chainName })}</p>
               <div className="flex flex-col gap-1 my-4">

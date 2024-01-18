@@ -26,3 +26,4 @@ export const RPC_OVERRIDES = JSON.parse(process.env.NEXT_PUBLIC_NODE_URLS ?? '{}
 
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 export const INFURA_API_KEY = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
+export const HARPIE_API_KEY = process.env.HARPIE_API_KEY ?? process.env.NEXT_PUBLIC_HARPIE_API_KEY;

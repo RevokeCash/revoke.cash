@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 @font-face {
   font-family: 'Futura Condensed';
@@ -29,19 +29,28 @@ body {
 }
 
 h1 {
-  @apply text-4xl font-bold tracking-tight;
+  @apply text-4xl md:text-5xl font-bold tracking-tight m-0;
 }
 
 h2 {
-  @apply text-xl font-bold;
+  @apply text-3xl md:text-4xl font-bold m-0;
 }
 
 h3 {
-  @apply text-lg font-bold;
+  @apply text-2xl font-bold m-0;
 }
 
 h4 {
-  @apply text-base font-bold;
+  @apply text-xl font-bold m-0;
+}
+
+h5,
+h6 {
+  @apply text-lg font-bold m-0;
+}
+
+p {
+  @apply text-base leading-normal text-zinc-700 dark:text-zinc-300;
 }
 
 a {

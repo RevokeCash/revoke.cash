@@ -1,17 +1,19 @@
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon, HashtagIcon } from '@heroicons/react/24/outline';
 import Href from 'components/common/Href';
+import Prose from 'components/common/Prose';
 import { useMounted } from 'lib/hooks/useMounted';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
   question: string;
   slug: string;
   children: ReactNode;
+  wrapper?: 'p' | 'div';
 }
 
-const FaqItem = ({ question, slug, children }: Props) => {
+const FaqItem = ({ question, slug, children, wrapper }: Props) => {
   const isMounted = useMounted();
 
   return (
@@ -28,7 +30,7 @@ const FaqItem = ({ question, slug, children }: Props) => {
     >
       {({ open }) => (
         <>
-          <dt className="relative text-lg">
+          <dt className="relative">
             <Disclosure.Button className="flex gap-2 w-full items-center justify-between text-left">
               <h2 className="text-lg" property="name">
                 {question}
@@ -48,14 +50,8 @@ const FaqItem = ({ question, slug, children }: Props) => {
               </Href>
             </div>
           </dt>
-          <Disclosure.Panel
-            as="dd"
-            className="mt-2 text-base text-zinc-700 dark:text-zinc-300"
-            unmount={false}
-            property="acceptedAnswer"
-            typeof="Answer"
-          >
-            <div property="text">{children}</div>
+          <Disclosure.Panel as="dd" className="mt-2" unmount={false} property="acceptedAnswer" typeof="Answer">
+            <Prose>{React.createElement(wrapper ?? 'p', { property: 'text' }, children)}</Prose>
           </Disclosure.Panel>
           {/* Add this absolute positioned div to align the "group" position with the hash link */}
           <div className="absolute top-0 -right-8 h-full w-8" />

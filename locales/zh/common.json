@@ -1,4 +1,9 @@
 {
+  "article_meta": {
+    "author": "作者：<0>{{author}}</0>",
+    "reading_time": "{{readingTime}} 分钟阅读时间",
+    "translator": "翻译：<0>{{translator}}</0>"
+  },
   "buttons": {
     "back_to_exploits": "返回漏洞",
     "cancel": "取消",
@@ -16,7 +21,9 @@
     "download": "下载",
     "get_started": "开始使用",
     "my_allowances": "我的授权",
-    "report_exploit": "举报漏洞",
+    "next": "下一个",
+    "previous": "上一个",
+    "report_exploit": "报告漏洞",
     "revoke": "撤销",
     "revoking": "正在撤销",
     "send": "发送",
@@ -70,19 +77,33 @@
     }
   },
   "footer": {
-    "privacy": "隐私",
-    "sponsors": "赞助商：",
-    "terms": "条款"
+    "about": "关于我们",
+    "blog": "博客",
+    "brand_assets": "品牌资产",
+    "community": "社区",
+    "company": "公司",
+    "exploit_checker": "漏洞检查器",
+    "extension": "浏览器扩展",
+    "faq": "常见问题",
+    "knowledgebase": "知识库",
+    "learn": "学习资源",
+    "privacy": "隐私政策",
+    "product": "产品",
+    "sponsors": "赞助商",
+    "terms": "条款",
+    "token_approval_checker": "代币授权检查器",
+    "what_are_token_approvals": "什么是代币授权？"
   },
   "meta": {
-    "description": "撤销在以太坊等 60+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
-    "title": "撤销 60+ 区块链上的代币授权"
+    "description": "撤销在{{chainName}}等 70+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "title": "撤销 70+ 区块链上的代币授权"
   },
   "misc": {
     "powered_by": "由<0>{{name}}</0>提供技术支持"
   },
   "nav": {
     "about": "关于我们",
+    "blog": "博客",
     "exploits": "漏洞",
     "extension": "扩展",
     "faq": "常见问题",

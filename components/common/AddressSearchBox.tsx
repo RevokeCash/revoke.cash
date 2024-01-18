@@ -16,7 +16,11 @@ interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
 }
 
 const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, ...props }: Props) => {
-  const { data: isValid, isLoading: validating } = useQuery({
+  const {
+    data: isValid,
+    isLoading: validating,
+    refetch,
+  } = useQuery({
     queryKey: ['validate', value],
     queryFn: async () => !!(await parseInputAddress(value)),
     enabled: !!value,
@@ -24,9 +28,13 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, .
     staleTime: Infinity,
   });
 
-  // TODO: Handle case where submitted while still validating
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+
+    // If the validation is still loading, then we await it so that the submit happens immediately after validation
+    // Note: since the validation is cached, this does not cause an extra network request
+    const isValid = await refetch();
+
     if (!isValid || !value) return;
     onSubmit(event);
   };
