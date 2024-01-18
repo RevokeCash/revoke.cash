@@ -2,12 +2,6 @@
   <img width="400" src="public/assets/images/revoke.png">
 </p>
 
-<div align="center">
-
-[![Twitter Follow](https://img.shields.io/twitter/follow/RevokeCash)](https://twitter.com/RevokeCash)
-
-</div>
-
 > _Do you want to swap 10 DAI for ETH? Sure thing, we'll just need your approval to spend a BAJILLION DOLLARS!_
 
 Do you ever feel worried about the different apps that have access to the tokens in your wallet? [revoke.cash](https://revoke.cash) allows you to inspect all the contracts you've approved to spend money on your behalf, and revoke their access for the ones you no longer need. If you don't want to completely revoke access, it's also possible to update the amount they are allowed to spend instead.
