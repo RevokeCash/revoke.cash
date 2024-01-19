@@ -1,7 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ReactNode, useState } from 'react';
-import { OptionProps } from 'react-select';
-import { twMerge } from 'tailwind-merge';
+import { OptionProps, components } from 'react-select';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
@@ -126,19 +125,14 @@ const CustomDropdownIndicator = () => {
 
 // Custom Option component for React Select to display Chain logo and name
 const CustomOption = (props: OptionProps<ChainOption>) => {
-  const { data, innerProps, isDisabled, isSelected } = props;
+  const { data } = props;
   return (
-    <div
-      className={twMerge(
-        isSelected ? 'bg-zinc-800' : '',
-        'flex items-center gap-1 p-2  hover:bg-zinc-800',
-        isDisabled ? 'cursor-not-allowed bg-zinc-300' : 'cursor-pointer',
-      )}
-      {...innerProps}
-    >
-      <ChainLogoMounted chainId={data.chainId} />
-      <div>{data.value}</div>
-    </div>
+    <components.Option {...props}>
+      <div className="flex items-center gap-1">
+        <ChainLogoMounted chainId={data.chainId} />
+        <div>{data.value}</div>
+      </div>
+    </components.Option>
   );
 };
 
