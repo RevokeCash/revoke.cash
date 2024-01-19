@@ -1,6 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { OptionProps, components } from 'react-select';
+import { twMerge } from 'tailwind-merge';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
@@ -13,7 +14,6 @@ import PlaceholderIcon from './PlaceholderIcon';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
-import { twMerge } from 'tailwind-merge';
 
 interface ChainOption {
   value: string;
@@ -146,6 +146,15 @@ interface SelectOverlayProps {
 
 // Overlay component to wrap React select to achieve text filtering on dropdown
 const SelectOverlay = ({ isOpen, target, children, onClose }: SelectOverlayProps) => {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+
+    if (isOpen) window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   return (
     <div className="relative">
       {target}
