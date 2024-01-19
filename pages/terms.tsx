@@ -13,7 +13,7 @@ const TermsAndConditionsPage: NextPage<Props> = ({ content }) => {
   return (
     <>
       <NextSeo {...defaultSEO} title="Terms and Conditions" description="Terms and Conditions for Revoke.cash" />
-      <ContentPageLayout searchBar={false}>
+      <ContentPageLayout>
         <MarkdownProse content={content} />
       </ContentPageLayout>
     </>

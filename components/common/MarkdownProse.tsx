@@ -3,6 +3,7 @@ import ReactMarkdown, { Components } from 'react-markdown';
 import remarkDirective from 'remark-directive';
 import remarkDirectiveRehype from 'remark-directive-rehype';
 import remarkGfm from 'remark-gfm';
+import Divider from './Divider';
 import Href from './Href';
 import Prose from './Prose';
 
@@ -13,6 +14,14 @@ interface Props {
 
 const MarkdownProse = ({ content, className }: Props) => {
   const components: Components & Record<string, any> = {
+    h1: ({ children }) => {
+      return (
+        <>
+          <h1>{children}</h1>
+          <Divider className="my-4" />
+        </>
+      );
+    },
     a: ({ href, children }) => {
       return (
         <Href href={href} underline="hover" external={!href.startsWith('/')} router={href.startsWith('/')} html>

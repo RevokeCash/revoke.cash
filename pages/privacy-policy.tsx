@@ -13,7 +13,7 @@ const PrivacyPolicyPage: NextPage<Props> = ({ content }) => {
   return (
     <>
       <NextSeo {...defaultSEO} title="Privacy Policy" description="Privacy Policy for Revoke.cash" />
-      <ContentPageLayout searchBar={false}>
+      <ContentPageLayout>
         <MarkdownProse content={content} />
       </ContentPageLayout>
     </>
