@@ -14,6 +14,7 @@ import PlaceholderIcon from './PlaceholderIcon';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
+import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 
 interface ChainOption {
   value: string;
@@ -66,6 +67,11 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId }: Pr
     handleSelectClose();
   };
 
+  const handleFiltering = (option: FilterOptionOption<ChainOption>, inputValue: string) => {
+    const lowerCaseValue = inputValue.toLowerCase();
+    return option.value.toLowerCase().includes(lowerCaseValue);
+  };
+
   return (
     <SelectOverlay
       isOpen={isSelectOpen}
@@ -84,6 +90,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId }: Pr
         menuIsOpen={isSelectOpen}
         aria-label="Select Network"
         classNamePrefix="chain-select"
+        filterOption={handleFiltering}
         menuTheme={darkMode ? 'dark' : 'light'}
         instanceId={instanceId ?? 'chain-select'}
         controlTheme={darkMode ? 'dark' : 'light'}
