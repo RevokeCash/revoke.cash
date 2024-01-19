@@ -13,6 +13,7 @@ import PlaceholderIcon from './PlaceholderIcon';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
+import { twMerge } from 'tailwind-merge';
 
 interface ChainOption {
   value: string;
@@ -125,10 +126,10 @@ const CustomDropdownIndicator = () => {
 
 // Custom Option component for React Select to display Chain logo and name
 const CustomOption = (props: OptionProps<ChainOption>) => {
-  const { data } = props;
+  const { data, isSelected } = props;
   return (
     <components.Option {...props}>
-      <div className="flex items-center gap-1">
+      <div className={twMerge('flex items-center gap-1', isSelected ? 'dark:text-black' : '')}>
         <ChainLogoMounted chainId={data.chainId} />
         <div>{data.value}</div>
       </div>
