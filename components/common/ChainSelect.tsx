@@ -12,7 +12,6 @@ import Chevron from './Chevron';
 import PlaceholderIcon from './PlaceholderIcon';
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { useMounted } from 'lib/hooks/useMounted';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 
@@ -109,35 +108,30 @@ export default ChainSelect;
 // Component to display the selected Chain and toggle the Select
 const TargetButton = ({ ontoggle, chainId }: { ontoggle: () => void; chainId: number }) => (
   <Button
+    size="none"
+    style="secondary"
     onClick={ontoggle}
-    className="flex items-center pl-3 pr-2 px-2 h-9 font-normal rounded-lg focus-visible:outline-none focus-visible:ring-black focus-visible:dark:ring-white focus-visible:ring-1"
+    className="flex items-center px-2 h-9 font-normal rounded-lg"
   >
     <div className="flex items-center gap-1">
-      <ChainLogoMounted chainId={chainId} />
+      <ChainLogo chainId={chainId} checkMounted />
     </div>
     <Chevron className="w-5 h-5 fill-black dark:fill-white" />
   </Button>
 );
 
-// Suggestion: Is it better to place this logic in the main file, ChainLogo.tsx?
-const ChainLogoMounted = ({ chainId }: { chainId: number }) => {
-  const isMounted = useMounted();
-  if (isMounted) return <ChainLogo chainId={chainId} />;
-  else return <PlaceholderIcon size={24} border className="bg-transparent" />;
-};
-
 // Custom DropdownIndicator component for React Select to display a Search Icon
 const CustomDropdownIndicator = () => {
-  return <MagnifyingGlassIcon className="w-5 h-5 dark:text-white" />;
+  return <MagnifyingGlassIcon className="w-5 h-5 text-black dark:text-white" />;
 };
 
 // Custom Option component for React Select to display Chain logo and name
 const CustomOption = (props: OptionProps<ChainOption>) => {
-  const { data, isSelected } = props;
+  const { data } = props;
   return (
-    <components.Option {...props}>
-      <div className={twMerge('flex items-center gap-1', isSelected ? 'dark:text-black' : '')}>
-        <ChainLogoMounted chainId={data.chainId} />
+    <components.Option {...props} isSelected={false}>
+      <div className={twMerge('flex items-center gap-1')}>
+        <ChainLogo chainId={data.chainId} checkMounted />
         <div>{data.value}</div>
       </div>
     </components.Option>
@@ -163,7 +157,7 @@ const SelectOverlay = ({ isOpen, target, children, onClose }: SelectOverlayProps
   }, [isOpen]);
 
   return (
-    <div className="relative">
+    <div className="relative shrink-0">
       {target}
       {isOpen && <div className="fixed z-10 inset-0" onClick={onClose} />}
       {isOpen && <div className="absolute z-20 mt-2 right-0">{children}</div>}
