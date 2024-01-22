@@ -8,7 +8,7 @@ import {
   RESEVOIR_API_KEY,
   RPC_OVERRIDES,
 } from 'lib/constants';
-import { RateLimit } from 'lib/interfaces';
+import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
@@ -19,8 +19,9 @@ import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } fro
 import { SECOND } from './time';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
-  ChainId.ArbitrumOne,
   ChainId.ArbitrumGoerli,
+  ChainId.ArbitrumOne,
+  ChainId.ArbitrumSepolia,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
   ChainId.CoreBlockchainMainnet,
@@ -34,10 +35,9 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.MetisAndromedaMainnet,
   ChainId.Mumbai,
   ChainId.OPMainnet,
+  ChainId.OPSepoliaTestnet,
   ChainId.OptimismGoerliTestnet,
   ChainId.PolygonMainnet,
-  ChainId.PolygonzkEVM,
-  ChainId.PolygonzkEVMTestnet,
   ChainId.PulseChain,
   ChainId.Sepolia,
   ChainId.Shibarium,
@@ -65,7 +65,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.EthereumClassic,
   ChainId.FlareMainnet,
   ChainId.FuseMainnet,
-  ChainId.GatherTestnetNetwork,
+  ChainId.GoldXChainMainnet,
   ChainId.HorizenEONMainnet,
   ChainId.HorizenGobiTestnet,
   ChainId.KardiaChainMainnet,
@@ -113,10 +113,14 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
   ChainId.Gnosis,
+  ChainId.Kroma,
+  ChainId.KromaSepolia,
   ChainId.MoonbaseAlpha,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.OpBNBMainnet,
+  ChainId.PolygonzkEVM,
+  ChainId.PolygonzkEVMTestnet,
   ChainId['WEMIX3.0Mainnet'],
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
@@ -198,6 +202,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CoinExSmartChainMainnet,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
+  ChainId.Kroma,
   ChainId.EthereumClassic,
   ChainId.NahmiiMainnet,
   ChainId.Shibarium,
@@ -213,15 +218,18 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RedlightChainMainnet,
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
+  ChainId.GoldXChainMainnet,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
-  ChainId.Goerli,
   ChainId.Sepolia,
+  ChainId.Goerli,
   ChainId.BNBSmartChainTestnet,
   ChainId.Mumbai,
   ChainId.PolygonzkEVMTestnet,
+  ChainId.ArbitrumSepolia,
   ChainId.ArbitrumGoerli,
+  ChainId.OPSepoliaTestnet,
   ChainId.OptimismGoerliTestnet,
   ChainId.BaseGoerliTestnet,
   ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
@@ -238,8 +246,8 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.MantleTestnet,
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
+  ChainId.KromaSepolia,
   ChainId.HorizenGobiTestnet,
-  ChainId.GatherTestnetNetwork,
   ChainId.ShimmerEVMTestnet,
   ChainId.ZetaChainAthens3Testnet,
 ];
@@ -277,6 +285,7 @@ export const isNodeSupportedChain = (chainId: number): boolean => {
 export const getChainName = (chainId: number): string => {
   const overrides: Record<number, string> = {
     [ChainId.ArbitrumGoerli]: 'Arbitrum Goerli',
+    [ChainId.ArbitrumSepolia]: 'Arbitrum Sepolia',
     [ChainId.ArbitrumNova]: 'Arbitrum Nova',
     [ChainId.ArbitrumOne]: 'Arbitrum',
     [ChainId.AuroraMainnet]: 'Aurora',
@@ -309,11 +318,10 @@ export const getChainName = (chainId: number): string => {
     [ChainId.FantomOpera]: 'Fantom',
     [ChainId.FlareMainnet]: 'Flare',
     [ChainId.FuseMainnet]: 'Fuse',
-    [ChainId.GatherMainnetNetwork]: 'Gather',
-    [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
     [ChainId.Gnosis]: 'Gnosis Chain',
     [ChainId.GodwokenMainnet]: 'Godwoken',
     [ChainId.Goerli]: 'Ethereum Goerli',
+    [ChainId.GoldXChainMainnet]: 'GoldX',
     [ChainId.HarmonyMainnetShard0]: 'Harmony',
     [ChainId.HarmonyTestnetShard0]: 'Harmony Testnet',
     [ChainId.HorizenEONMainnet]: 'Horizen EON',
@@ -344,6 +352,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.OctaSpace]: 'OctaSpace',
     [ChainId.OpBNBMainnet]: 'opBNB',
     [ChainId.OPMainnet]: 'Optimism',
+    [ChainId.OPSepoliaTestnet]: 'Optimism Sepolia',
     [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
     [ChainId.PegoNetwork]: 'Pego',
     [ChainId['PGN(PublicGoodsNetwork)']]: 'PGN',
@@ -454,7 +463,9 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   const alchemyKey = ALCHEMY_API_KEY;
 
   const overrides: Record<number, string> = {
+    [ChainId.ArbitrumGoerli]: `https://arbitrum-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.ArbitrumOne]: `https://arbitrum-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.ArbitrumSepolia]: `https://arbitrum-sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.Astar]: 'https://evm.astar.network',
     [ChainId['AvalancheC-Chain']]: `https://avalanche-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.AvalancheFujiTestnet]: `https://avalanche-fuji.infura.io/v3/${infuraKey}`,
@@ -472,6 +483,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.Mumbai]: `https://polygon-mumbai.infura.io/v3/${infuraKey}`,
     [ChainId.OPMainnet]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.OPSepoliaTestnet]: `https://optimism-sepolia.infura.io/v3/${infuraKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.PolygonMainnet]: `https://polygon-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.PolygonzkEVM]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
@@ -496,10 +508,12 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
   const overrides = {
     [ChainId.ArbitrumGoerli]: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.ArbitrumOne]: `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.ArbitrumSepolia]: `https://arb-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     // [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     // [ChainId.Goerli]: `https://goerli.infura.io/v3/${infuraKey}`,
     [ChainId.Mumbai]: `https://polygon-mumbai.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.OPMainnet]: `https://opt-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+    [ChainId.OPSepoliaTestnet]: `https://opt-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://opt-goerli.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.PolygonMainnet]: `https://polygon-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     // [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
@@ -521,6 +535,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.ArbitrumGoerli]: '/assets/images/vendor/chains/arbitrum.svg',
     [ChainId.ArbitrumNova]: '/assets/images/vendor/chains/arbitrum-nova.svg',
     [ChainId.ArbitrumOne]: '/assets/images/vendor/chains/arbitrum.svg',
+    [ChainId.ArbitrumSepolia]: '/assets/images/vendor/chains/arbitrum.svg',
     [ChainId.Astar]: '/assets/images/vendor/chains/astar.svg',
     [ChainId.AuroraMainnet]: '/assets/images/vendor/chains/aurora.svg',
     [ChainId['AvalancheC-Chain']]: '/assets/images/vendor/chains/avalanche.svg',
@@ -558,10 +573,9 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FrameTestnet]: '/assets/images/vendor/chains/frame.jpg',
     [ChainId.FuseMainnet]: '/assets/images/vendor/chains/fuse.png',
     [ChainId.FuseSparknet]: '/assets/images/vendor/chains/fuse.png',
-    [ChainId.GatherMainnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
-    [ChainId.GatherTestnetNetwork]: '/assets/images/vendor/chains/gather.jpg',
     [ChainId.Gnosis]: '/assets/images/vendor/chains/gnosis.svg',
     [ChainId.Goerli]: '/assets/images/vendor/chains/ethereum.svg',
+    [ChainId.GoldXChainMainnet]: '/assets/images/vendor/chains/goldx.jpg',
     [ChainId.HarmonyMainnetShard0]: '/assets/images/vendor/chains/harmony.svg',
     [ChainId.HarmonyTestnetShard0]: '/assets/images/vendor/chains/harmony.svg',
     [ChainId.HorizenEONMainnet]: '/assets/images/vendor/chains/horizen.png',
@@ -576,6 +590,8 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.KCCMainnet]: '/assets/images/vendor/chains/kcc.svg',
     [ChainId.KlaytnMainnetCypress]: '/assets/images/vendor/chains/klaytn.svg',
     [ChainId.KlaytnTestnetBaobab]: '/assets/images/vendor/chains/klaytn.svg',
+    [ChainId.Kroma]: '/assets/images/vendor/chains/kroma.svg',
+    [ChainId.KromaSepolia]: '/assets/images/vendor/chains/kroma.svg',
     [ChainId.LightlinkPhoenixMainnet]: '/assets/images/vendor/chains/lightlink.jpg',
     [ChainId.Linea]: '/assets/images/vendor/chains/linea.png',
     [ChainId.LineaTestnet]: '/assets/images/vendor/chains/linea.png',
@@ -598,6 +614,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.OctaSpace]: '/assets/images/vendor/chains/octaspace.png',
     [ChainId.OpBNBMainnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.OPMainnet]: '/assets/images/vendor/chains/optimism.svg',
+    [ChainId.OPSepoliaTestnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.OptimismGoerliTestnet]: '/assets/images/vendor/chains/optimism.svg',
     [ChainId.Palm]: '/assets/images/vendor/chains/palm.png',
     [ChainId.PegoNetwork]: '/assets/images/vendor/chains/pego.jpg',
@@ -765,9 +782,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.FlareMainnet]: 'https://flare-explorer.flare.network/api',
     [ChainId.FrameTestnet]: 'https://explorer.testnet.frame.xyz/api',
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
-    [ChainId.GatherMainnetNetwork]: 'https://explorer.gather.network/api',
-    [ChainId.GatherTestnetNetwork]: 'https://testnet-explorer.gather.network/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
+    [ChainId.GoldXChainMainnet]: 'https://explorer.goldxchain.io/api',
     [ChainId.HorizenEONMainnet]: 'https://eon-explorer.horizenlabs.io/api',
     [ChainId.HorizenGobiTestnet]: 'https://gobi-explorer.horizen.io/api',
     [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
@@ -775,6 +791,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.KardiaChainMainnet]: 'https://explorer.kardiachain.io/api',
     [ChainId.Kava]: 'https://explorer.kava.io/api',
     [ChainId.KavaTestnet]: 'https://explorer.testnet.kava.io/api',
+    [ChainId.Kroma]: 'https://api.kromascan.com/api',
+    [ChainId.KromaSepolia]: 'https://api-sepolia.kromascan.com/api',
     [ChainId.LightlinkPhoenixMainnet]: 'https://phoenix.lightlink.io/api',
     [ChainId.Linea]: 'https://lineascan.build/api',
     [ChainId.LineaTestnet]: 'https://goerli.lineascan.build/api',
@@ -797,6 +815,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.PegoNetwork]: 'https://scan.pego.network/api',
     [ChainId['PGN(PublicGoodsNetwork)']]: 'https://explorer.publicgoods.network/api',
     [ChainId.PolygonMainnet]: 'https://api.polygonscan.com/api',
+    [ChainId.PolygonzkEVM]: 'https://api-zkevm.polygonscan.com/api',
+    [ChainId.PolygonzkEVMTestnet]: 'https://api-testnet-zkevm.polygonscan.com/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
@@ -819,25 +839,24 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
   return apiUrls[chainId];
 };
 
-export const getChainEtherscanPlatformNames = (
-  chainId: number,
-): { platform: string; subPlatform?: string } | undefined => {
+export const getChainEtherscanPlatformNames = (chainId: number): EtherscanPlatform | undefined => {
   const apiUrl = getChainApiUrl(chainId);
   if (!apiUrl) return undefined;
 
-  const platform = new URL(apiUrl).hostname.split('.').at(-2);
-  const subPlatform = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
-  return { platform, subPlatform };
+  const domain = new URL(apiUrl).hostname.split('.').at(-2);
+  const subdomain = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
+  return { domain, subdomain };
 };
 
 export const getChainApiKey = (chainId: number): string | undefined => {
-  const { platform, subPlatform } = getChainEtherscanPlatformNames(chainId);
-  return ETHERSCAN_API_KEYS[`${subPlatform}.${platform}`] ?? ETHERSCAN_API_KEYS[platform];
+  const platform = getChainEtherscanPlatformNames(chainId);
+  return ETHERSCAN_API_KEYS[`${platform?.subdomain}.${platform?.domain}`] ?? ETHERSCAN_API_KEYS[platform?.domain];
 };
 
 export const getChainApiRateLimit = (chainId: number): RateLimit => {
-  const { platform, subPlatform } = getChainEtherscanPlatformNames(chainId);
-  const customRateLimit = ETHERSCAN_RATE_LIMITS[`${subPlatform}.${platform}`] ?? ETHERSCAN_RATE_LIMITS[platform];
+  const platform = getChainEtherscanPlatformNames(chainId);
+  const customRateLimit =
+    ETHERSCAN_RATE_LIMITS[`${platform?.subdomain}.${platform?.domain}`] ?? ETHERSCAN_RATE_LIMITS[platform?.domain];
 
   if (customRateLimit) {
     return { interval: 1000, intervalCap: customRateLimit };
@@ -857,14 +876,15 @@ export const getChainApiRateLimit = (chainId: number): RateLimit => {
 // has a single rate limit for all chains or if each chain has its own rate limit. If the former, we're all good,
 // if the latter, we need to add a special case for these chains.
 export const getChainApiIdentifer = (chainId: number): string => {
-  const { platform } = getChainEtherscanPlatformNames(chainId);
+  const platform = getChainEtherscanPlatformNames(chainId);
   const apiKey = getChainApiKey(chainId);
-  return `${platform}:${apiKey}`;
+  return `${platform?.domain}:${apiKey}`;
 };
 
 export const getCorrespondingMainnetChainId = (chainId: number): number | undefined => {
   const testnets = {
     [ChainId.ArbitrumGoerli]: ChainId.ArbitrumOne,
+    [ChainId.ArbitrumSepolia]: ChainId.ArbitrumOne,
     [ChainId.AvalancheFujiTestnet]: ChainId['AvalancheC-Chain'],
     [ChainId.BaseGoerliTestnet]: ChainId.Base,
     [ChainId.BNBSmartChainTestnet]: ChainId.BNBSmartChainMainnet,
@@ -873,13 +893,14 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.CronosTestnet]: ChainId.CronosMainnet,
     [ChainId.FantomTestnet]: ChainId.FantomOpera,
     [ChainId.FrameTestnet]: 12345678902, // TODO: This is a placeholder so we can add a description for Frame
-    [ChainId.GatherTestnetNetwork]: ChainId.GatherMainnetNetwork,
     [ChainId.Goerli]: ChainId.EthereumMainnet,
     [ChainId.HorizenGobiTestnet]: ChainId.HorizenEONMainnet,
+    [ChainId.KromaSepolia]: ChainId.Kroma,
     [ChainId.LineaTestnet]: ChainId.Linea,
     [ChainId.MantleTestnet]: ChainId.Mantle,
     [ChainId.MoonbaseAlpha]: ChainId.Moonbeam,
     [ChainId.Mumbai]: ChainId.PolygonMainnet,
+    [ChainId.OPSepoliaTestnet]: ChainId.OPMainnet,
     [ChainId.OptimismGoerliTestnet]: ChainId.OPMainnet,
     [ChainId.PolygonzkEVMTestnet]: ChainId.PolygonzkEVM,
     [ChainId.PulseChainTestnetv4]: ChainId.PulseChain,
@@ -919,28 +940,24 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Base]: { ...MULTICALL },
     [ChainId.BaseGoerliTestnet]: { ...MULTICALL },
     [ChainId.BitgertMainnet]: { ...MULTICALL },
-    // [ChainId.BitTorrentChainMainnet]: { ...MULTICALL },
+    [ChainId.BitTorrentChainMainnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainMainnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainTestnet]: { ...MULTICALL },
     [ChainId.BobaNetwork]: { ...MULTICALL },
-    // [ChainId.CallistoMainnet]: { ...MULTICALL },
+    [ChainId.CallistoMainnet]: { ...MULTICALL },
     [ChainId.Canto]: { ...MULTICALL },
     [ChainId.CeloMainnet]: { ...MULTICALL },
     [ChainId.CeloAlfajoresTestnet]: { ...MULTICALL },
-    // [ChainId.CoinExSmartChainMainnet]: { ...MULTICALL },
-    // [ChainId.CoinExSmartChainTestnet]: { ...MULTICALL },
     [ChainId.CoreBlockchainMainnet]: { ...MULTICALL },
     [ChainId.CronosMainnet]: { ...MULTICALL },
     [ChainId.CronosTestnet]: { ...MULTICALL },
     [ChainId.DogechainMainnet]: { ...MULTICALL },
-    // [ChainId.ElastosSmartChain]: { ...MULTICALL },
-    // [ChainId.ENULSMainnet]: { ...MULTICALL },
+    [ChainId.EOSEVMNetwork]: { ...MULTICALL },
     [ChainId.EthereumMainnet]: {
       ...MULTICALL,
       ensRegistry: { address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e' },
       ensUniversalResolver: { address: '0xc0497E381f536Be9ce14B0dD3817cBcAe57d2F62' },
     },
-    // [ChainId.ExosamaNetwork]: { ...MULTICALL },
     [ChainId.EthereumClassic]: { ...MULTICALL },
     [ChainId.Evmos]: { ...MULTICALL },
     [ChainId.FantomOpera]: { ...MULTICALL },
@@ -948,23 +965,17 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.FlareMainnet]: { ...MULTICALL },
     [ChainId.FrameTestnet]: { ...MULTICALL },
     [ChainId.FuseMainnet]: { ...MULTICALL },
-    // [ChainId.GatherTestnetNetwork]: { ...MULTICALL },
     [ChainId.Goerli]: { ...MULTICALL },
     [ChainId.Gnosis]: { ...MULTICALL },
     [ChainId.HarmonyMainnetShard0]: { ...MULTICALL },
-    // [ChainId.HorizenEONMainnet]: { ...MULTICALL },
-    // [ChainId.HorizenGobiTestnet]: { ...MULTICALL },
     [ChainId.IoTeXNetworkMainnet]: { ...MULTICALL },
-    // [ChainId.KardiaChainMainnet]: { ...MULTICALL },
     [ChainId.Kava]: { ...MULTICALL },
     [ChainId.KCCMainnet]: { ...MULTICALL },
-    // [ChainId.LightlinkPhoenixMainnet]: { ...MULTICALL },
     [ChainId.Linea]: { ...MULTICALL },
     [ChainId.LineaTestnet]: { ...MULTICALL },
     [ChainId.MantaPacificMainnet]: { ...MULTICALL },
     [ChainId.Mantle]: { ...MULTICALL },
     [ChainId.MantleTestnet]: { ...MULTICALL },
-    // [ChainId.MaxxChainMainnet]: { ...MULTICALL },
     [ChainId.MetisAndromedaMainnet]: { ...MULTICALL },
     [ChainId.MetisGoerliTestnet]: { ...MULTICALL },
     [ChainId.MilkomedaC1Mainnet]: { ...MULTICALL },
@@ -972,16 +983,12 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Moonbeam]: { ...MULTICALL },
     [ChainId.Moonriver]: { ...MULTICALL },
     [ChainId.Mumbai]: { ...MULTICALL },
-    // [ChainId.NahmiiMainnet]: { ...MULTICALL },
     [ChainId.OasisEmerald]: { ...MULTICALL },
     [ChainId.OasisSapphire]: { ...MULTICALL },
-    // [ChainId.OasysMainnet]: { ...MULTICALL },
-    // [ChainId.OctaSpace]: { ...MULTICALL },
     [ChainId.OpBNBMainnet]: { ...MULTICALL },
     [ChainId.OPMainnet]: { ...MULTICALL },
     [ChainId.OptimismGoerliTestnet]: { ...MULTICALL },
-    // [ChainId.Palm]: { ...MULTICALL },
-    // [ChainId.PegoNetwork]: { ...MULTICALL },
+    [ChainId.Palm]: { ...MULTICALL },
     [ChainId['PGN(PublicGoodsNetwork)']]: { ...MULTICALL },
     [ChainId.PolygonMainnet]: { ...MULTICALL },
     [ChainId.PolygonzkEVM]: { ...MULTICALL },
@@ -989,16 +996,12 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     // Although multicall is deployed on Pulsechain, it is causing issues
     // [ChainId.PulseChain]: { ...MULTICALL },
     // [ChainId.PulseChainTestnetv4]: { ...MULTICALL },
-    // [ChainId.RedlightChainMainnet]: { ...MULTICALL },
     [ChainId.RolluxMainnet]: { ...MULTICALL },
     [ChainId.RootstockMainnet]: { ...MULTICALL },
     [ChainId.Scroll]: { ...MULTICALL },
     [ChainId.ScrollSepoliaTestnet]: { ...MULTICALL },
     [ChainId.Sepolia]: { ...MULTICALL },
-    // [ChainId.Shibarium]: { ...MULTICALL },
-    // [ChainId.Shiden]: { ...MULTICALL },
     [ChainId.ShimmerEVM]: { ...MULTICALL },
-    // [ChainId.ShimmerEVMTestnet]: { ...MULTICALL },
     [ChainId['SongbirdCanary-Network']]: { ...MULTICALL },
     [ChainId.SyscoinMainnet]: { ...MULTICALL },
     [ChainId.SyscoinTanenbaumTestnet]: { ...MULTICALL },
@@ -1008,9 +1011,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Wanchain]: {
       multicall3: { address: '0xcDF6A1566e78EB4594c86Fe73Fcdc82429e97fbB' },
     },
-    // [ChainId['WEMIX3.0Mainnet']]: { ...MULTICALL },
-    // [ChainId.XDCNetwork]: { ...MULTICALL },
-    // [ChainId.ZetaChainAthens3Testnet]: { ...MULTICALL },
+    [ChainId.ZKFairMainnet]: { ...MULTICALL },
     [ChainId.ZkSyncMainnet]: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
@@ -1430,6 +1431,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.GoldXChainMainnet]: undefined, // < $100k Liquidity
   // Note: The "regular" USDC is depegged on Harmony, so we have to be careful to use the "new" USDC
   [ChainId.HarmonyMainnetShard0]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
@@ -1464,6 +1466,8 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  // TODO: Add iZiSwap strategy to support Kroma
+  [ChainId.Kroma]: undefined,
   [ChainId.LightlinkPhoenixMainnet]: undefined, // <$100k Liquidity
   // TODO: Add SyncSwap strategy to support Linea
   [ChainId.Linea]: undefined,

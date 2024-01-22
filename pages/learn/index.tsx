@@ -1,3 +1,4 @@
+import Divider from 'components/common/Divider';
 import Prose from 'components/common/Prose';
 import ArticleCardSection from 'components/learn/ArticleCardSection';
 import LearnLayout from 'layouts/LearnLayout';
@@ -36,6 +37,7 @@ const LearnPage: NextPage<Props> = ({ sidebar }: Props) => {
       <LearnLayout sidebarEntries={sidebar} slug={[]} meta={meta}>
         <Prose>
           <h1>{t('learn:sections.home.title')}</h1>
+          <Divider className="my-4" />
           <p>
             {t('learn:meta.description')} {t('learn:sections.home.intro_paragraph')}
           </p>

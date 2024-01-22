@@ -1,5 +1,5 @@
 import Logo from 'components/common/Logo';
-import Select from 'components/common/Select';
+import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { track } from 'lib/utils/analytics';
 import useTranslation from 'next-translate/useTranslation';

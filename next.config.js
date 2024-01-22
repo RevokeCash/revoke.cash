@@ -7,14 +7,6 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   exclude: /a\.js|node_modules/, // exclude node_modules for checking circular dependencies
-  rewrites: async () => {
-    return [
-      {
-        source: '/privacy-policy',
-        destination: '/privacy-policy.html',
-      },
-    ];
-  },
   redirects: async () => {
     return [
       {

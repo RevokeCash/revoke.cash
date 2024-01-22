@@ -1,4 +1,3 @@
-import Href from 'components/common/Href';
 import SponsorBanner from 'components/sponsors/SponsorBanner';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -12,10 +11,7 @@ const Sponsors = () => {
     <FullWidthLandingSection title={t('landing:sponsors.title')}>
       <div className="pt-4 pb-6 max-w-3xl mx-auto">
         <LandingParagraph>
-          <Trans
-            i18nKey="landing:sponsors.description"
-            components={[<Href href="/sponsorships" html underline="hover" router className="font-medium" />]}
-          />
+          <Trans i18nKey="landing:sponsors.description" />
         </LandingParagraph>
       </div>
 

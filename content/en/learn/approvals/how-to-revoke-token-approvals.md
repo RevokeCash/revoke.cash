@@ -21,7 +21,7 @@ Revoke.cash is the biggest and most popular tool for revoking token approvals. I
 
 To revoke token approvals, you can enter your wallet address (or ENS name / other alias) in the search bar or connect your wallet, as can be seen at (1) in the image below. From there you can select the network for which you want to revoke approvals (2).
 
-After the loading is finished, you will see a list of all the token approvals you have on that network. You can sort this list (3), apply filters (4) or search by the authorized spender address (5). If you suspect that you signed a malicious approval, it is recommended to sort by "Newest to Oldest" so that you see the most recently signed approvals first.
+After the loading is finished, you will see a list of all the token approvals you have on that network. You can sort this list (3), apply filters (4) or search by the approved spender address (5). If you suspect that you signed a malicious approval, it is recommended to sort by "Newest to Oldest" so that you see the most recently signed approvals first.
 
 After applying these options, you can find the approval you want to revoke and click the _Revoke_ button (7). Alternatively, it's also possible to update the approval to a different amount by clicking the pencil icon next to the approved amount (6). This can be useful if you want to reduce your risk, but still need the approval in the future.
 

@@ -1,6 +1,8 @@
+import { useMounted } from 'lib/hooks/useMounted';
 import { getChainLogo, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { twMerge } from 'tailwind-merge';
 import Logo from './Logo';
+import PlaceholderIcon from './PlaceholderIcon';
 import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {
@@ -8,12 +10,18 @@ interface Props {
   size?: number;
   tooltip?: boolean;
   className?: string;
+  checkMounted?: boolean;
 }
 
-const ChainLogo = ({ chainId, size, tooltip, className }: Props) => {
+const ChainLogo = ({ chainId, size, tooltip, className, checkMounted }: Props) => {
+  const isMounted = useMounted();
   const name = getChainName(chainId);
   const src = getChainLogo(chainId);
   const classes = twMerge(!isSupportedChain(chainId) && 'grayscale', className);
+
+  if (checkMounted && !isMounted) {
+    return <PlaceholderIcon size={size ?? 24} border className={twMerge('bg-transparent', classes)} />;
+  }
 
   if (tooltip) {
     return (

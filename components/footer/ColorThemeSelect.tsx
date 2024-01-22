@@ -1,5 +1,5 @@
 import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline';
-import Select from 'components/common/Select';
+import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { track } from 'lib/utils/analytics';

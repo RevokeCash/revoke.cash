@@ -163,3 +163,8 @@ export interface TokenMetadata {
 }
 
 export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;
+
+export interface EtherscanPlatform {
+  domain: string;
+  subdomain?: string;
+}

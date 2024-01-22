@@ -1,8 +1,9 @@
 import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
-interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
+export interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
   minMenuWidth?: number | string;
+  minControlWidth?: number | string;
   menuAlign?: 'left' | 'right';
   size?: 'sm' | 'md' | 'full';
   controlTheme?: 'light' | 'dark';
@@ -53,6 +54,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
             backgroundColor: props.controlTheme === 'dark' ? colors.darkest : colors.lightest,
           },
           minHeight: 0,
+          minWidth: props.minControlWidth,
           cursor: 'pointer',
         }),
         menu: (styles) => ({
@@ -83,11 +85,15 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
         valueContainer: removeSpacing,
         indicatorsContainer: removeSpacing,
         singleValue: removeSpacing,
-        option: (styles, props) => ({
+        option: (styles, optionProps) => ({
           ...styles,
-          cursor: props.isDisabled ? 'not-allowed' : 'pointer',
+          cursor: optionProps.isDisabled ? 'not-allowed' : 'pointer',
           padding: '0.5rem', // p-2
-          backgroundColor: props.isDisabled ? colors.light : styles.backgroundColor,
+          backgroundColor: optionProps.isDisabled
+            ? props.menuTheme === 'light'
+              ? colors.light
+              : colors.dark
+            : styles.backgroundColor,
         }),
       }}
       theme={(theme) => ({

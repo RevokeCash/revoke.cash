@@ -1,8 +1,9 @@
 import Button from 'components/common/Button';
 import ChainDescription from 'components/common/ChainDescription';
-import ChainSelectHref from 'components/common/ChainSelectHref';
 import CopyButton from 'components/common/CopyButton';
+import Divider from 'components/common/Divider';
 import Prose from 'components/common/Prose';
+import ChainSelectHref from 'components/common/select/ChainSelectHref';
 import ConnectButton from 'components/header/ConnectButton';
 import LearnLayout from 'layouts/LearnLayout';
 import { useMounted } from 'lib/hooks/useMounted';
@@ -60,6 +61,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta}>
         <Prose vocab="https://schema.org/" typeof="HowTo">
           <h1 property="name">{meta.title}</h1>
+          <Divider className="my-4" />
           <meta property="description" content={meta.description} />
           <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
             <p className="m-0">{t('learn:add_network.select_network')}</p>

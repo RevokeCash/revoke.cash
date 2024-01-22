@@ -1,10 +1,9 @@
 import ChainLogo from 'components/common/ChainLogo';
-import Select from 'components/common/Select';
+import SearchableSelect from 'components/common/select/SearchableSelect';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { useMounted } from 'lib/hooks/useMounted';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
-import PlaceholderIcon from './PlaceholderIcon';
+import PlaceholderIcon from '../PlaceholderIcon';
 
 interface ChainOption {
   value: string;
@@ -21,7 +20,6 @@ interface Props {
 }
 
 const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, showNames }: Props) => {
-  const isMounted = useMounted();
   const { t } = useTranslation();
   const { darkMode } = useColorTheme();
 
@@ -55,14 +53,14 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
 
     return (
       <div className="flex items-center gap-1">
-        {isMounted ? <ChainLogo chainId={chainId} /> : <PlaceholderIcon size={24} border className="bg-transparent" />}
+        {<ChainLogo chainId={chainId} checkMounted />}
         {(context === 'menu' || showNames) && <div>{chainName}</div>}
       </div>
     );
   };
 
   return (
-    <Select
+    <SearchableSelect
       instanceId={instanceId ?? 'chain-select'}
       classNamePrefix="chain-select"
       aria-label="Select Network"
@@ -76,7 +74,6 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       onChange={onChange}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
-      isSearchable={false}
       minMenuWidth="14.5rem"
       placeholder={<PlaceholderIcon size={24} border />}
       menuAlign={menuAlign}

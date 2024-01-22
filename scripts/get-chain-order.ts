@@ -1,8 +1,16 @@
 import ky from 'lib/ky';
-import { CHAIN_SELECT_MAINNETS, getChainName, getChainPriceStrategy } from 'lib/utils/chains';
+import {
+  CHAIN_SELECT_MAINNETS,
+  getChainDeployedContracts,
+  getChainName,
+  getChainPriceStrategy,
+} from 'lib/utils/chains';
 
 const getChainOrder = async () => {
-  const llamaData = await ky.get('https://api.llama.fi/chains').json<any>();
+  const multicallData = await ky
+    .get('https://raw.githubusercontent.com/mds1/multicall/main/deployments.json')
+    .json<any[]>();
+  const llamaData = await ky.get('https://api.llama.fi/chains').json<any[]>();
   const chains = CHAIN_SELECT_MAINNETS.map((chainId) => {
     const chainData = llamaData.find(
       (chain) =>
@@ -21,6 +29,10 @@ const getChainOrder = async () => {
       .padStart(3, ' ')
       .padEnd(4, ' ');
     console.log(hasPriceStrategyIcon, indexDiff, chainName.padEnd(18), tvl);
+
+    if (multicallData.find((data) => data.chainId === chainId) && !getChainDeployedContracts(chainId)) {
+      console.log('>>>>>>>>>>>> ADD MULTICALL');
+    }
   });
 
   console.log();

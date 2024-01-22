@@ -64,7 +64,7 @@
     "expiration": "Expires {{inTime}}"
   },
   "search": {
-    "spender": "Search by Authorized Spender Address"
+    "spender": "Search by Approved Spender Address"
   },
   "signatures": {
     "info": {
