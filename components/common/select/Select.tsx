@@ -1,4 +1,4 @@
-import { ForwardedRef, RefAttributes, forwardRef } from 'react';
+import { Ref } from 'react';
 import ReactSelect, {
   GroupBase,
   OptionProps,
@@ -16,14 +16,12 @@ export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Rea
   controlTheme?: 'light' | 'dark';
   menuTheme?: 'light' | 'dark';
   keepMounted?: boolean;
+  selectRef?: Ref<SelectInstance<O, I, G>>;
 }
 
 // This component is created to allow us to customise the styles of the react-select component
 // the className prop can still be used to customise some of the styles per component
-const Select = <O, I extends boolean, G extends GroupBase<O>>(
-  props: Props<O, I, G> & RefAttributes<SelectInstance<O, I, G>>,
-  ref: ForwardedRef<SelectInstance<O, I, G>>,
-) => {
+const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
   const controlClassMapping = {
     sm: 'h-6 px-1',
     md: 'h-9 px-2',
@@ -43,7 +41,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(
   return (
     <ReactSelect
       {...props}
-      ref={ref}
+      ref={props.selectRef}
       className={twMerge(props.className)}
       components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
       classNames={{
@@ -134,7 +132,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(
   );
 };
 
-export default forwardRef(Select);
+export default Select;
 
 const removeSpacing = (styles: any) => ({
   ...styles,

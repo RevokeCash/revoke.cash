@@ -62,7 +62,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
     >
       <Select
         {...props}
-        ref={selectRef}
+        selectRef={selectRef}
         size="md"
         autoFocus
         onChange={onChange}
