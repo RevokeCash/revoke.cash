@@ -6,8 +6,6 @@ export const config = {
   runtime: 'edge',
 };
 
-const maxAge = 60 * 60 * 24; // 24 hours
-
 const handler = async (req: NextRequest) => {
   if (req.method !== 'GET') return new Response('Method not allowed', { status: 405 });
 
@@ -31,31 +29,21 @@ const handler = async (req: NextRequest) => {
     return new Response(`Chain with ID ${chainId} is unsupported`, { status: 404 });
   }
 
-  return getter
-    .getFloorPriceUSD(contractAddress)
-    .then((floorPrice) => {
-      if (floorPrice < 0.01) return new Response('Not found', { status: 404 });
+  const floorPrice = await getter.getFloorPriceUSD(contractAddress).catch(() => 0);
 
-      return new Response(
-        JSON.stringify({
-          floorPrice,
-        }),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': `s-maxage=${0}`,
-            'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`,
-          },
-        },
-      );
-    })
-    .catch((e) => {
-      console.error(`Error occurred while fetching floor price for ${contractAddress}`, e);
-
-      // We have to check if this response is getting cached by Vercel.
-      return new Response('No collection found for contractAddress', { status: 404 });
-    });
+  return new Response(
+    JSON.stringify({
+      floorPrice,
+    }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': `s-maxage=${0}`,
+        'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day
+      },
+    },
+  );
 };
 
 export default handler;
