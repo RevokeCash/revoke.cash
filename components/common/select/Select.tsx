@@ -1,4 +1,11 @@
-import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
+import { ForwardedRef, RefAttributes, forwardRef } from 'react';
+import ReactSelect, {
+  GroupBase,
+  OptionProps,
+  Props as ReactSelectProps,
+  SelectInstance,
+  components,
+} from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
 export interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
@@ -8,11 +15,15 @@ export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Rea
   size?: 'sm' | 'md' | 'full';
   controlTheme?: 'light' | 'dark';
   menuTheme?: 'light' | 'dark';
+  keepMounted?: boolean;
 }
 
 // This component is created to allow us to customise the styles of the react-select component
 // the className prop can still be used to customise some of the styles per component
-const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
+const Select = <O, I extends boolean, G extends GroupBase<O>>(
+  props: Props<O, I, G> & RefAttributes<SelectInstance<O, I, G>>,
+  ref: ForwardedRef<SelectInstance<O, I, G>>,
+) => {
   const controlClassMapping = {
     sm: 'h-6 px-1',
     md: 'h-9 px-2',
@@ -32,6 +43,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   return (
     <ReactSelect
       {...props}
+      ref={ref}
       className={twMerge(props.className)}
       components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
       classNames={{
@@ -122,7 +134,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   );
 };
 
-export default Select;
+export default forwardRef(Select);
 
 const removeSpacing = (styles: any) => ({
   ...styles,

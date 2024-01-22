@@ -1,19 +1,31 @@
 import ChainLogo from 'components/common/ChainLogo';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
+import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
-import { twMerge } from 'tailwind-merge';
-import DropdownMenu, { DropdownMenuItem } from '../DropdownMenu';
+import { useRouter } from 'next/router';
+import Button from '../Button';
+import PlaceholderIcon from '../PlaceholderIcon';
+import SearchableSelect from './SearchableSelect';
+
+interface ChainOption {
+  value: string;
+  chainId: number;
+}
 
 interface Props {
   selected: number;
-  getUrl: (chainId: number) => string;
   chainIds?: number[];
+  getUrl: (chainId: number) => string;
+  menuAlign?: 'left' | 'right';
+  instanceId?: string;
+  showNames?: boolean;
 }
 
-// This component is designed to match the styling of the ChainSelect component,
-// byt it uses a HeadlessUI DropdownMenu together with links instead of a Select component.
-const ChainSelectHref = ({ selected, chainIds, getUrl }: Props) => {
+// This component is designed to match the styling of the ChainSelect component, but with links instead
+const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, showNames }: Props) => {
   const { t } = useTranslation();
+  const { darkMode } = useColorTheme();
+  const router = useRouter();
 
   const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
     value: getChainName(chainId),
@@ -36,36 +48,46 @@ const ChainSelectHref = ({ selected, chainIds, getUrl }: Props) => {
     },
   ];
 
-  return (
-    <DropdownMenu menuButton={<ChainDisplay chainId={selected} />} buttonClassName="px-2 h-9" itemsClassName="w-58">
-      {groups.map((group) => (
-        <div key={group.label} className="bg-white dark:bg-black">
-          <div className="uppercase text-xs leading-tight p-3 pb-0 mb-[3px] font-medium">{group.label}</div>
-          {group.options.map((option) => (
-            <DropdownMenuItem
-              key={option.chainId}
-              href={getUrl(option.chainId)}
-              router
-              className={twMerge(
-                'flex items-center gap-1 p-2 h-10',
-                option.chainId === selected && 'bg-zinc-200 dark:bg-zinc-800',
-              )}
-            >
-              <ChainDisplay chainId={option.chainId} />
-            </DropdownMenuItem>
-          ))}
-        </div>
-      ))}
-    </DropdownMenu>
-  );
-};
+  const displayOption = ({ chainId }: ChainOption, { context }: any) => {
+    const chainName = getChainName(chainId);
 
-const ChainDisplay = ({ chainId }: { chainId: number }) => {
+    return (
+      <Button
+        style="none"
+        size="none"
+        className="flex items-center gap-1 text-black visited:text-black dark:text-white dark:visited:text-white"
+        href={context === 'menu' ? getUrl(chainId) : undefined}
+        router
+        align="left"
+        asDiv={context !== 'menu'}
+      >
+        {<ChainLogo chainId={chainId} checkMounted />}
+        {(context === 'menu' || showNames) && <div>{chainName}</div>}
+      </Button>
+    );
+  };
+
   return (
-    <div className={twMerge('flex items-center gap-1')}>
-      <ChainLogo size={24} chainId={chainId} />
-      <div>{getChainName(chainId)}</div>
-    </div>
+    <SearchableSelect
+      instanceId={instanceId ?? 'chain-select'}
+      classNamePrefix="chain-select"
+      aria-label="Select Network"
+      size="md"
+      className="shrink-0"
+      controlTheme={darkMode ? 'dark' : 'light'}
+      menuTheme={darkMode ? 'dark' : 'light'}
+      value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
+      options={chainIds ? mainnetOptions : groups}
+      isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
+      onChange={(option) => router.push(getUrl((option as any).chainId))}
+      formatOptionLabel={displayOption}
+      menuPlacement="bottom"
+      minMenuWidth="14.5rem"
+      placeholder={<PlaceholderIcon size={24} border />} // TODO: Add full placeholder
+      menuAlign={menuAlign}
+      isMulti={false}
+      keepMounted
+    />
   );
 };
 

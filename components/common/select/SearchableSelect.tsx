@@ -1,19 +1,35 @@
-import { ReactNode, useEffect, useState } from 'react';
-import { ActionMeta, FormatOptionLabelMeta, GroupBase, OnChangeValue } from 'react-select';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ActionMeta, FormatOptionLabelMeta, GroupBase, OnChangeValue, SelectInstance } from 'react-select';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-import Select, { Props } from 'components/common/select/Select';
+import Select, { Props as SelectProps } from 'components/common/select/Select';
 import Button from '../Button';
 import Chevron from '../Chevron';
 
 import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
+import { twMerge } from 'tailwind-merge';
+
+interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProps<O, I, G> {
+  // TODO: Support 'keepMounted' for regular Select component (currently impossible without a wrapper + controlled state)
+  keepMounted?: boolean;
+}
 
 const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
+  const selectRef = useRef<SelectInstance<O, I, G> | null>(null);
+
   // Track whether the React Select is open or not
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
   const handleSelectClose = () => setSelectOpen(false);
-  const toggleSelectClose = () => setSelectOpen((prev) => !prev);
+  const toggleSelectOpen = () => setSelectOpen((prev) => !prev);
+
+  useEffect(() => {
+    if (isSelectOpen) {
+      selectRef.current?.focus();
+    } else {
+      selectRef.current?.blur();
+    }
+  }, [isSelectOpen]);
 
   const onChange = (option: OnChangeValue<O, I>, actionMeta: ActionMeta<O>) => {
     props?.onChange?.(option, actionMeta);
@@ -33,27 +49,30 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
 
   return (
     <SelectOverlay
-      isOpen={isSelectOpen}
-      onClose={handleSelectClose}
+      isSelectOpen={isSelectOpen}
+      handleSelectClose={handleSelectClose}
       target={
         <TargetButton
-          toggleSelectClose={toggleSelectClose}
+          toggleSelectClose={toggleSelectOpen}
           option={props.value}
           formatOptionLabel={props.formatOptionLabel}
         />
       }
+      selectProps={props}
     >
       <Select
         {...props}
+        ref={selectRef}
         size="md"
         autoFocus
         onChange={onChange}
         className="shrink-0"
-        menuIsOpen={isSelectOpen}
+        menuIsOpen={props.keepMounted ? true : isSelectOpen}
         filterOption={handleFiltering}
         minControlWidth={props.minMenuWidth}
         formatOptionLabel={props.formatOptionLabel ? formatOptionLabel : undefined}
-        components={{ DropdownIndicator: CustomDropdownIndicator }}
+        components={{ DropdownIndicator: CustomDropdownIndicator, ...props.components }}
+        isSearchable
       />
     </SelectOverlay>
   );
@@ -65,29 +84,33 @@ const CustomDropdownIndicator = () => {
   return <MagnifyingGlassIcon className="w-5 h-5 text-black dark:text-white" />;
 };
 
-interface SelectOverlayProps {
-  isOpen: boolean;
+interface SelectOverlayProps<O, I extends boolean, G extends GroupBase<O>> {
+  isSelectOpen: boolean;
   target: ReactNode;
   children: ReactNode;
-  onClose: () => void;
+  handleSelectClose: () => void;
+  selectProps: Props<O, I, G>;
 }
 
 // Overlay component to wrap React select to achieve text filtering on dropdown
-const SelectOverlay = ({ isOpen, target, children, onClose }: SelectOverlayProps) => {
+const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: SelectOverlayProps<O, I, G>) => {
+  const { isSelectOpen, target, children, handleSelectClose, selectProps } = props;
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') handleSelectClose();
     };
 
-    if (isOpen) window.addEventListener('keydown', handleKeyDown);
+    if (isSelectOpen) window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+  }, [isSelectOpen]);
 
   return (
-    <div className="relative shrink-0">
+    <div className={twMerge('relative shrink-0', selectProps.className)}>
       {target}
-      {isOpen && <div className="fixed z-10 inset-0" onClick={onClose} />}
-      {isOpen && <div className="absolute z-20 mt-2 right-0">{children}</div>}
+      {isSelectOpen && <div className="fixed z-10 inset-0" onClick={handleSelectClose} />}
+      {isSelectOpen || selectProps.keepMounted ? (
+        <div className={twMerge('absolute z-20 mt-2 right-0', !isSelectOpen && 'hidden')}>{children}</div>
+      ) : null}
     </div>
   );
 };
