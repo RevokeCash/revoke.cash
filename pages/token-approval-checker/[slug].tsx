@@ -1,9 +1,9 @@
 import AddressSearchBox from 'components/common/AddressSearchBox';
 import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
-import ChainSelectHref from 'components/common/ChainSelectHref';
 import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
+import ChainSelectHref from 'components/common/select/ChainSelectHref';
 import LandingLayout from 'layouts/LandingLayout';
 import { defaultSEO } from 'lib/next-seo.config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';

@@ -1,6 +1,6 @@
 import { Column, ColumnSort, sortingFns, Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
-import Select from 'components/common/Select';
+import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import ChainSelect from 'components/common/ChainSelect';
+import ChainSelect from 'components/common/select/ChainSelect';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';

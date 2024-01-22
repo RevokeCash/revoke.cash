@@ -1,9 +1,9 @@
 import Button from 'components/common/Button';
 import ChainDescription from 'components/common/ChainDescription';
-import ChainSelectHref from 'components/common/ChainSelectHref';
 import CopyButton from 'components/common/CopyButton';
 import Divider from 'components/common/Divider';
 import Prose from 'components/common/Prose';
+import ChainSelectHref from 'components/common/select/ChainSelectHref';
 import ConnectButton from 'components/header/ConnectButton';
 import LearnLayout from 'layouts/LearnLayout';
 import { useMounted } from 'lib/hooks/useMounted';

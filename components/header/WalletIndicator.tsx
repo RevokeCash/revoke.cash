@@ -1,6 +1,6 @@
 import { useMounted } from 'lib/hooks/useMounted';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
-import ChainSelect from '../common/ChainSelect';
+import ChainSelect from '../common/select/ChainSelect';
 import WalletIndicatorDropdown from './WalletIndicatorDropdown';
 
 interface Props {

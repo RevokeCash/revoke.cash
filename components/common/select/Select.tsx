@@ -1,7 +1,7 @@
 import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
-interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
+export interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
   minMenuWidth?: number | string;
   minControlWidth?: number | string;
   menuAlign?: 'left' | 'right';

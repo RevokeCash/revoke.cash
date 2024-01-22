@@ -1,7 +1,7 @@
 import { ColumnFiltersState, Table } from '@tanstack/react-table';
 import Checkbox from 'components/common/Checkbox';
 import Label from 'components/common/Label';
-import Select from 'components/common/Select';
+import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';
