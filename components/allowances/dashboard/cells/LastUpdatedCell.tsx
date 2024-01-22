@@ -23,16 +23,16 @@ const LastUpdatedCell = ({ allowance }: Props) => {
 
   return (
     <div className="flex justify-start items-center font-monosans gap-2 w-41">
-      {oldApproval && (
-        <WithHoverTooltip tooltip={t('address:tooltips.old_approval')}>
-          <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500 focus:outline-black" />
-        </WithHoverTooltip>
-      )}
       <WithHoverTooltip tooltip={<TimeAgo datetime={lastUpdatedDate} locale={lang} />}>
         <Href underline="hover" href={`${explorerUrl}/tx/${allowance.transactionHash}`} external className="tx-link">
           {formatDateNormalised(lastUpdatedDate)}
         </Href>
       </WithHoverTooltip>
+      {oldApproval && (
+        <WithHoverTooltip tooltip={t('address:tooltips.old_approval')}>
+          <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500 focus:outline-black" />
+        </WithHoverTooltip>
+      )}
     </div>
   );
 };
