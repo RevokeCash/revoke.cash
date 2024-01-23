@@ -46,7 +46,11 @@ export const getSpenderData = async (
 
 const getSpenderDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    return await ky.get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`).json<SpenderData>();
+    const spenderData = await ky
+      .get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`)
+      .json<SpenderData>();
+    if (!spenderData || Object.keys(spenderData).length === 0) return null;
+    return spenderData;
   } catch {
     return null;
   }

@@ -87,11 +87,13 @@ const getTokenDataFromMapping = async (
       .get(`${WHOIS_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`)
       .json<TokenFromList>();
 
+    if (!metadata || Object.keys(metadata).length === 0) return undefined;
+
     return {
-      symbol: metadata?.symbol,
-      decimals: metadata?.decimals,
-      icon: metadata?.logoURI,
-      isSpam: metadata?.isSpam,
+      symbol: metadata.symbol,
+      decimals: metadata.decimals,
+      icon: metadata.logoURI,
+      isSpam: metadata.isSpam,
     };
   } catch (e) {
     return undefined;
