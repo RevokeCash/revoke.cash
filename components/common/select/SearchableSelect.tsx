@@ -43,7 +43,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
 
   const formatOptionLabel = (option: O, formatOptionLabelMeta: FormatOptionLabelMeta<O>) => {
     // 'value' context is handled separately in TargetButton
-    if (formatOptionLabelMeta.context === 'value') return null;
+    if (formatOptionLabelMeta.context !== 'menu') return null;
     return props.formatOptionLabel(option, formatOptionLabelMeta);
   };
 
@@ -51,13 +51,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
     <SelectOverlay
       isSelectOpen={isSelectOpen}
       handleSelectClose={handleSelectClose}
-      target={
-        <TargetButton
-          toggleSelectClose={toggleSelectOpen}
-          option={props.value}
-          formatOptionLabel={props.formatOptionLabel}
-        />
-      }
+      target={<TargetButton toggleSelectClose={toggleSelectOpen} selectProps={props} />}
       selectProps={props}
     >
       <Select
@@ -72,6 +66,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
         minControlWidth={props.minMenuWidth}
         formatOptionLabel={props.formatOptionLabel ? formatOptionLabel : undefined}
         components={{ DropdownIndicator: CustomDropdownIndicator, ...props.components }}
+        placeholder={null}
         isSearchable
       />
     </SelectOverlay>
@@ -95,6 +90,7 @@ interface SelectOverlayProps<O, I extends boolean, G extends GroupBase<O>> {
 // Overlay component to wrap React select to achieve text filtering on dropdown
 const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: SelectOverlayProps<O, I, G>) => {
   const { isSelectOpen, target, children, handleSelectClose, selectProps } = props;
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') handleSelectClose();
@@ -115,21 +111,24 @@ const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: Sele
   );
 };
 
-interface TargetButtonProps<O> {
+interface TargetButtonProps<O, I extends boolean, G extends GroupBase<O>> {
   toggleSelectClose: () => void;
-  option: O;
-  formatOptionLabel: (option: O, formatOptionLabelMeta: FormatOptionLabelMeta<O>) => ReactNode;
+  selectProps: Props<O, I, G>;
 }
 
-const TargetButton = <O,>({ toggleSelectClose, option, formatOptionLabel }: TargetButtonProps<O>) => {
+const TargetButton = <O, I extends boolean, G extends GroupBase<O>>(props: TargetButtonProps<O, I, G>) => {
+  const { toggleSelectClose, selectProps } = props;
+
   const formatControlOptionLabel = (option: O) => {
-    if (typeof formatOptionLabel === 'undefined') {
+    if (!option) return selectProps.placeholder ?? null;
+
+    if (typeof selectProps.formatOptionLabel === 'undefined') {
       return ((option as any).label as string) ?? ((option as any).value as string);
     }
 
-    return formatOptionLabel(option, {
+    return selectProps.formatOptionLabel(option, {
       context: 'value',
-      inputValue: (option as any).label as string,
+      inputValue: (option as any)?.label as string,
       selectValue: [option],
     });
   };
@@ -141,7 +140,7 @@ const TargetButton = <O,>({ toggleSelectClose, option, formatOptionLabel }: Targ
       onClick={toggleSelectClose}
       className="flex items-center px-2 h-9 font-normal rounded-lg"
     >
-      {formatControlOptionLabel(option)}
+      {formatControlOptionLabel(selectProps.value as O)}
       <Chevron className="w-5 h-5 fill-black dark:fill-white" />
     </Button>
   );
