@@ -61,8 +61,10 @@ const TokenApprovalCheckerPage: NextPage<Props> = ({ chainId }) => {
               <p className="m-0">{t('token_approval_checker:different_chain')}:</p>
               <div className="not-prose shrink-0">
                 <ChainSelectHref
+                  instanceId="tac-chain-select"
                   selected={chainId}
                   getUrl={(chainId) => `/token-approval-checker/${getChainSlug(chainId)}`}
+                  showNames
                 />
               </div>
             </div>

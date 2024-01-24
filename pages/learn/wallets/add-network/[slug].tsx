@@ -67,8 +67,10 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
             <p className="m-0">{t('learn:add_network.select_network')}</p>
             <div className="not-prose shrink-0">
               <ChainSelectHref
+                instanceId="add-network-chain-select"
                 selected={chainId}
                 getUrl={(chainId) => `/learn/wallets/add-network/${getChainSlug(chainId)}`}
+                showNames
               />
             </div>
           </div>

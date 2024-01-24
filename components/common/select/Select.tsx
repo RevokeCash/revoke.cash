@@ -1,4 +1,11 @@
-import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
+import { Ref } from 'react';
+import ReactSelect, {
+  GroupBase,
+  OptionProps,
+  Props as ReactSelectProps,
+  SelectInstance,
+  components,
+} from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
 export interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
@@ -8,6 +15,8 @@ export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Rea
   size?: 'sm' | 'md' | 'full';
   controlTheme?: 'light' | 'dark';
   menuTheme?: 'light' | 'dark';
+  keepMounted?: boolean;
+  selectRef?: Ref<SelectInstance<O, I, G>>;
 }
 
 // This component is created to allow us to customise the styles of the react-select component
@@ -32,6 +41,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
   return (
     <ReactSelect
       {...props}
+      ref={props.selectRef}
       className={twMerge(props.className)}
       components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
       classNames={{

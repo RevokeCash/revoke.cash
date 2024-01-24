@@ -45,11 +45,6 @@ const SpenderCell = ({ allowance }: Props) => {
   return (
     <Loader isLoading={isLoading}>
       <div className="flex items-center gap-2 w-46">
-        {spenderData?.exploits && (
-          <WithHoverTooltip tooltip={exploitsTooltip}>
-            <ExclamationTriangleIcon className="w-6 h-6 text-red-500 focus:outline-black" />
-          </WithHoverTooltip>
-        )}
         <div className="flex flex-col justify-start items-start">
           <WithHoverTooltip tooltip={allowance.spender}>
             <Href href={explorerUrl} underline="hover" external>
@@ -61,6 +56,11 @@ const SpenderCell = ({ allowance }: Props) => {
           </WithHoverTooltip>
         </div>
         <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+        {spenderData?.exploits && (
+          <WithHoverTooltip tooltip={exploitsTooltip}>
+            <ExclamationTriangleIcon className="w-6 h-6 text-red-500 focus:outline-black" />
+          </WithHoverTooltip>
+        )}
       </div>
     </Loader>
   );
