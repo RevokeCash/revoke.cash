@@ -41,10 +41,13 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.SyscoinMainnet,
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.TaikoJolnirL2,
+  ChainId.TaikoKatlaL2,
   ChainId.Wanchain,
   ChainId.XDCNetwork,
+  ChainId.ZKFairMainnet,
   ChainId.ZkSyncMainnet,
   ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
+  ChainId.ZkSyncSepoliaTestnet,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -92,7 +95,6 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId['SongbirdCanary-Network'],
   ChainId.VelasEVMMainnet,
   ChainId.ZetaChainAthens3Testnet,
-  ChainId.ZKFairMainnet,
   ChainId.Zora,
 ];
 
@@ -110,6 +112,7 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.FantomOpera,
   ChainId.FantomTestnet,
   ChainId.Gnosis,
+  ChainId.Holesky,
   ChainId.Kroma,
   ChainId.KromaSepolia,
   ChainId.MoonbaseAlpha,
@@ -221,6 +224,7 @@ export const CHAIN_SELECT_MAINNETS = [
 export const CHAIN_SELECT_TESTNETS = [
   ChainId.Sepolia,
   ChainId.Goerli,
+  ChainId.Holesky,
   ChainId.BNBSmartChainTestnet,
   ChainId.Mumbai,
   ChainId.PolygonzkEVMTestnet,
@@ -229,10 +233,12 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.OPSepoliaTestnet,
   ChainId.OptimismGoerliTestnet,
   ChainId.BaseGoerliTestnet,
+  ChainId.ZkSyncSepoliaTestnet,
   ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
   ChainId.LineaTestnet,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoJolnirL2,
+  ChainId.TaikoKatlaL2,
   ChainId.FrameTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
@@ -279,6 +285,9 @@ export const isNodeSupportedChain = (chainId: number): boolean => {
   return NODE_SUPPORTED_CHAINS.includes(chainId);
 };
 
+export const isMainnetChain = (chainId: number): boolean => CHAIN_SELECT_MAINNETS.includes(chainId);
+export const isTestnetChain = (chainId: number): boolean => CHAIN_SELECT_TESTNETS.includes(chainId);
+
 export const getChainName = (chainId: number): string => {
   const overrides: Record<number, string> = {
     [ChainId.ArbitrumGoerli]: 'Arbitrum Goerli',
@@ -318,6 +327,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.Gnosis]: 'Gnosis Chain',
     [ChainId.GodwokenMainnet]: 'Godwoken',
     [ChainId.Goerli]: 'Ethereum Goerli',
+    [ChainId.Holesky]: 'Ethereum Holesky',
     [ChainId.GoldXChainMainnet]: 'GoldX',
     [ChainId.HarmonyMainnetShard0]: 'Harmony',
     [ChainId.HarmonyTestnetShard0]: 'Harmony Testnet',
@@ -372,6 +382,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.SyscoinMainnet]: 'Syscoin',
     [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tanenbaum',
     [ChainId.TaikoJolnirL2]: 'Taiko Jolnir',
+    [ChainId.TaikoKatlaL2]: 'Taiko Katla',
     [ChainId.TelosEVMMainnet]: 'Telos',
     [ChainId.TelosEVMTestnet]: 'Telos Testnet',
     [ChainId.VelasEVMMainnet]: 'Velas',
@@ -382,6 +393,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZKFairMainnet]: 'ZKFair',
     [ChainId.ZkSyncMainnet]: 'zkSync Era',
     [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'zkSync Goerli',
+    [ChainId.ZkSyncSepoliaTestnet]: 'zkSync Sepolia',
     [12345678901]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
     [12345678902]: 'Frame', // TODO: This is a placeholder so we can add a description for Frame
   };
@@ -490,6 +502,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
     [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'https://testnet.era.zksync.dev',
+    [ChainId.ZkSyncSepoliaTestnet]: 'https://sepolia.era.zksync.dev',
     ...RPC_OVERRIDES,
   };
 
@@ -564,6 +577,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.FuseSparknet]: '/assets/images/vendor/chains/fuse.png',
     [ChainId.Gnosis]: '/assets/images/vendor/chains/gnosis.svg',
     [ChainId.Goerli]: '/assets/images/vendor/chains/ethereum.svg',
+    [ChainId.Holesky]: '/assets/images/vendor/chains/ethereum.svg',
     [ChainId.GoldXChainMainnet]: '/assets/images/vendor/chains/goldx.jpg',
     [ChainId.HarmonyMainnetShard0]: '/assets/images/vendor/chains/harmony.svg',
     [ChainId.HarmonyTestnetShard0]: '/assets/images/vendor/chains/harmony.svg',
@@ -629,6 +643,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.SyscoinMainnet]: '/assets/images/vendor/chains/syscoin.svg',
     [ChainId.SyscoinTanenbaumTestnet]: '/assets/images/vendor/chains/syscoin.svg',
     [ChainId.TaikoJolnirL2]: '/assets/images/vendor/chains/taiko.svg',
+    [ChainId.TaikoKatlaL2]: '/assets/images/vendor/chains/taiko.svg',
     [ChainId.TelosEVMMainnet]: '/assets/images/vendor/chains/telos.png',
     [ChainId.VelasEVMMainnet]: '/assets/images/vendor/chains/velas.svg',
     [ChainId.Wanchain]: '/assets/images/vendor/chains/wanchain.svg',
@@ -638,6 +653,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.ZKFairMainnet]: '/assets/images/vendor/chains/zkfair.svg',
     [ChainId.ZkSyncMainnet]: '/assets/images/vendor/chains/zksync.jpeg',
     [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: '/assets/images/vendor/chains/zksync.jpeg',
+    [ChainId.ZkSyncSepoliaTestnet]: '/assets/images/vendor/chains/zksync.jpeg',
     [ChainId.Zora]: '/assets/images/vendor/chains/zora.svg',
   };
 
@@ -773,6 +789,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io/api',
     [ChainId.Gnosis]: 'https://api.gnosisscan.io/api',
     [ChainId.GoldXChainMainnet]: 'https://explorer.goldxchain.io/api',
+    [ChainId.Holesky]: 'https://api-holesky.etherscan.io/api',
     [ChainId.HorizenEONMainnet]: 'https://eon-explorer.horizenlabs.io/api',
     [ChainId.HorizenGobiTestnet]: 'https://gobi-explorer.horizen.io/api',
     [ChainId.HuobiECOChainMainnet]: 'https://api.hecoinfo.com/api',
@@ -883,6 +900,7 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.FantomTestnet]: ChainId.FantomOpera,
     [ChainId.FrameTestnet]: 12345678902, // TODO: This is a placeholder so we can add a description for Frame
     [ChainId.Goerli]: ChainId.EthereumMainnet,
+    [ChainId.Holesky]: ChainId.EthereumMainnet,
     [ChainId.HorizenGobiTestnet]: ChainId.HorizenEONMainnet,
     [ChainId.KromaSepolia]: ChainId.Kroma,
     [ChainId.LineaTestnet]: ChainId.Linea,
@@ -898,8 +916,10 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.ShimmerEVMTestnet]: ChainId.ShimmerEVM,
     [ChainId.SyscoinTanenbaumTestnet]: ChainId.SyscoinMainnet,
     [ChainId.TaikoJolnirL2]: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
+    [ChainId.TaikoKatlaL2]: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
     [ChainId.ZetaChainAthens3Testnet]: ChainId.ZetaChainMainnet,
     [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: ChainId.ZkSyncMainnet,
+    [ChainId.ZkSyncSepoliaTestnet]: ChainId.ZkSyncMainnet,
   };
 
   const canaryNetworks = {
@@ -957,6 +977,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Goerli]: { ...MULTICALL },
     [ChainId.Gnosis]: { ...MULTICALL },
     [ChainId.HarmonyMainnetShard0]: { ...MULTICALL },
+    [ChainId.Holesky]: { ...MULTICALL },
     [ChainId.IoTeXNetworkMainnet]: { ...MULTICALL },
     [ChainId.Kava]: { ...MULTICALL },
     [ChainId.KCCMainnet]: { ...MULTICALL },
@@ -995,6 +1016,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.SyscoinMainnet]: { ...MULTICALL },
     [ChainId.SyscoinTanenbaumTestnet]: { ...MULTICALL },
     [ChainId.TaikoJolnirL2]: { ...MULTICALL },
+    // [ChainId.TaikoKatlaL2]: { ...MULTICALL },
     [ChainId.TelosEVMMainnet]: { ...MULTICALL },
     [ChainId.VelasEVMMainnet]: { ...MULTICALL },
     [ChainId.Wanchain]: {
@@ -1005,6 +1027,9 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
     [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: {
+      multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
+    },
+    [ChainId.ZkSyncSepoliaTestnet]: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
     [ChainId.Zora]: { ...MULTICALL },

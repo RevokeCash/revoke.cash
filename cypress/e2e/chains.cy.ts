@@ -108,6 +108,7 @@ const TEST_ADDRESSES = {
   [ChainId.FrameTestnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.FantomTestnet]: '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF',
   [ChainId.Goerli]: '0xFCBD25BB345765192fFC2f2E35F1F5348badC3F6',
+  [ChainId.Holesky]: '0x5A8ec40549AebF0E3Fb9d59bCE57b2AfE4d5eDda',
   [ChainId.HorizenGobiTestnet]: '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32',
   [ChainId.KromaSepolia]: '0x9c9eCFf9f7a4A15BA3554e1c10E576441267063b',
   [ChainId.LineaTestnet]: '0x444111CD376893AFCd7405239CE72b64d5A22958',
@@ -123,8 +124,10 @@ const TEST_ADDRESSES = {
   [ChainId.ShimmerEVMTestnet]: '0xecaF55B79fdCf39EF23715cD8dE539C8E58e9119',
   [ChainId.SyscoinTanenbaumTestnet]: '0x2FB7aB1E0357D595877209e74a715D0F5816cC29',
   [ChainId.TaikoJolnirL2]: '0xe5fC964C4b03BC7B84adc3A18Fc93bfe54c6EabB',
+  [ChainId.TaikoKatlaL2]: '0x3E866039DD8EdACDF24165Ce022Ace2A6eb3c400',
   [ChainId.ZetaChainAthens3Testnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
   [ChainId.ZKFairMainnet]: '0xb0240794108Fd89C99BB828C9eBc0e7d9703C2f8',
+  [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
   [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24',
 } as const;
 
