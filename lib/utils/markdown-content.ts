@@ -70,6 +70,7 @@ export const getSidebar = async (
           getSidebarEntry('basics/what-is-a-crypto-wallet', locale, directory, extended),
           getSidebarEntry('basics/what-are-tokens', locale, directory, extended),
           getSidebarEntry('basics/what-are-nfts', locale, directory, extended),
+          getSidebarEntry('basics/what-are-hot-wallets', locale, directory, extended),
         ],
       },
       {
