@@ -1,4 +1,4 @@
-import { IRON_OPTIONS, checkRateLimitAllowedByIp, unsealSession } from 'lib/api/auth';
+import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
 import { getNFTGetter } from 'lib/utils/chains';
 import { NextRequest } from 'next/server';
 
@@ -9,14 +9,12 @@ export const config = {
 const handler = async (req: NextRequest) => {
   if (req.method !== 'GET') return new Response('Method not allowed', { status: 405 });
 
-  const cookie = req.cookies.get(IRON_OPTIONS.cookieName);
-  if (!cookie) return new Response('No API session is active', { status: 403 });
+  if (!(await checkActiveSessionEdge(req))) {
+    return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
+  }
 
-  const session = await unsealSession(cookie.value);
-  if (!session.ip) return new Response('No API session is active', { status: 403 });
-
-  if (!(await checkRateLimitAllowedByIp(session.ip))) {
-    return new Response('Rate limit exceeded', { status: 429 });
+  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PRICE))) {
+    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   }
 
   const query = new URL(req.url).searchParams;
@@ -39,8 +37,8 @@ const handler = async (req: NextRequest) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': `s-maxage=${0}`,
-        'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day
+        'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
+        'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
       },
     },
   );

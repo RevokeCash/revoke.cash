@@ -2,6 +2,7 @@
 
 import ky, { SearchParamsOption } from 'ky';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
+import { SECOND } from 'lib/utils/time';
 import { NFTGetter } from '.';
 import { RequestQueue } from '../logs/RequestQueue';
 
@@ -11,7 +12,7 @@ export class ResevoirNFT implements NFTGetter {
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.queue = new RequestQueue(`resevoir:${apiKey}`, { interval: 1000, intervalCap: 40 });
+    this.queue = new RequestQueue(`resevoir:${apiKey}`, { interval: 1000, intervalCap: 80 });
   }
 
   public async getFloorPriceUSD(contractAddress: string): Promise<number> {
@@ -51,7 +52,7 @@ export class ResevoirNFT implements NFTGetter {
 
     try {
       const result = await this.queue.add(() =>
-        ky.get(url, { headers, searchParams, retry: 0, timeout: false }).json<any>(),
+        ky.get(url, { headers, searchParams, retry: 3, timeout: 2 * SECOND }).json<any>(),
       );
       return result;
     } catch (e) {

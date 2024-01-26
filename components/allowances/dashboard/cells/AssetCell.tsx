@@ -39,7 +39,7 @@ const AssetCell = ({ allowance }: Props) => {
   const fiatBalanceText = formatFiatBalance(allowance.balance, allowance.metadata.price, allowance.metadata.decimals);
 
   return (
-    <div className="flex items-center gap-1 py-1 w-40 lg:w-56">
+    <div className="flex items-center gap-1 py-1 w-48 lg:w-56">
       <div className="flex flex-col items-start gap-0.5">
         <div className="flex items-center gap-2 text-base">
           <ChainOverlayLogo
@@ -52,8 +52,9 @@ const AssetCell = ({ allowance }: Props) => {
           {link}
         </div>
 
-        <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
-          {fiatBalanceText && `(${fiatBalanceText})`} {balanceText}
+        <div className="text-xs text-zinc-500 dark:text-zinc-400 flex gap-1">
+          <div className="max-w-[7rem] lg:max-w-[12rem] truncate">{balanceText}</div>
+          {fiatBalanceText ? <div>({fiatBalanceText})</div> : null}
         </div>
       </div>
     </div>
