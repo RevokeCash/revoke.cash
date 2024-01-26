@@ -38,7 +38,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
     );
   }
 
-  const inTime = timeago.format((allowance.expiration ?? 0) * SECOND, lang);
+  const inTime = allowance.expiration > 0 ? timeago.format(allowance.expiration * SECOND, lang) : null;
 
   return (
     <div className={classes}>
@@ -46,13 +46,13 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
         <div className="truncate">
           <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
         </div>
-        {allowance.expiration && (
+        {inTime ? (
           <WithHoverTooltip tooltip={t('address:tooltips.permit2_expiration', { inTime })}>
             <div className="flex items-center gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">
               {t('address:permit2.expiration', { inTime })}
             </div>
           </WithHoverTooltip>
-        )}
+        ) : null}
       </div>
       {allowance.amount && (
         <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize={undefined}>
