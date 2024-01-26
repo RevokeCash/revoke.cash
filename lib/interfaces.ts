@@ -23,6 +23,7 @@ export interface BaseAllowanceData {
 export interface AllowanceData extends BaseTokenData {
   spender?: Address;
   lastUpdated?: number;
+  lastCancelled?: number; // Updated to track LastCancelled
   transactionHash?: Hash;
   amount?: bigint; // Only for ERC20 tokens
   tokenId?: bigint; // Only for ERC721 tokens (single token)

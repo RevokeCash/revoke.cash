@@ -1,9 +1,10 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
+import { filterLastCancelled } from 'components/allowances/dashboard/cells/LastCancelledCell';
 import Button from 'components/common/Button';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddressEvents, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
@@ -23,6 +24,8 @@ const PermitsEntry = ({ token }: Props) => {
   const publicClient = usePublicClient();
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction();
+
+  const isPreviouslyCancelled = filterLastCancelled(useAddressEvents().events, token).alreadyCancelled;
 
   const { execute: onClick, loading } = useAsyncCallback(async () => {
     if (isErc721Contract(token.contract)) return;
@@ -44,7 +47,13 @@ const PermitsEntry = ({ token }: Props) => {
           <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
             {(disabled) => (
               <div>
-                <Button loading={loading} disabled={disabled} size="sm" style="secondary" onClick={onClick}>
+                <Button
+                  loading={loading}
+                  disabled={disabled || isPreviouslyCancelled}
+                  size="sm"
+                  style="secondary"
+                  onClick={onClick}
+                >
                   {loading ? t('common:buttons.cancelling') : t('common:buttons.cancel_signatures')}
                 </Button>
               </div>

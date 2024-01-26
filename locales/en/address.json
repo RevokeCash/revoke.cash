@@ -40,6 +40,7 @@
     "asset": "Asset",
     "asset_type": "Type",
     "last_updated": "Last Updated",
+    "last_cancelled": "Last Cancelled",
     "spender": "Approved Spender",
     "value_at_risk": "Value at Risk"
   },
@@ -85,6 +86,7 @@
       "asset_name": "Asset Name",
       "authorized_spender": "Approved Spender",
       "last_updated": "Last Updated",
+      "last_cancelled": "Last Cancelled",
       "value_at_risk": "Value at Risk"
     },
     "fns": {
