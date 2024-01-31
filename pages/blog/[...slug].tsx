@@ -32,7 +32,7 @@ const BlogPostPage: NextPage<Props> = ({ meta, content, posts, slug, translation
         <meta property="headline" content={meta.title} />
         {meta.author && (
           <div property="author" typeof="Person">
-            <meta property="name" content={meta.author} />
+            <meta property="name" content={meta.author.name} />
           </div>
         )}
         <meta property="datePublished" content={meta.date} />
