@@ -56,7 +56,7 @@ export const readAndParseContentFile = (
 
 const parsePerson = (person?: string): Person | null => {
   // Placeholders are denoted with < ... >
-  if (person.match(/^<.*>$/)) return null;
+  if (person?.match(/^<.*>$/)) return null;
 
   const split = person?.split('|');
 
