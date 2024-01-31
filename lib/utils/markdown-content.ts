@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs';
 import matter from 'gray-matter';
-import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
+import { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import getT from 'next-translate/getT';
 import { join } from 'path';
@@ -44,15 +44,31 @@ export const readAndParseContentFile = (
     sidebarTitle: data.sidebarTitle ?? data.title,
     description: data.description,
     language,
-    author: data.author ?? null,
-    translator: data.translator ?? null,
+    author: parsePerson(data.author),
+    translator: parsePerson(data.translator),
     coverImage: getCoverImage(slug, directory),
     date: data.date?.toISOString() ?? null,
-    readingTime: Math.round(Math.max(readingTime(content, 200).minutes, 1)),
+    readingTime: calculateReadingTime(content),
   };
 
   return { content, meta };
 };
+
+const parsePerson = (person?: string): Person | null => {
+  // Placeholders are denoted with < ... >
+  if (person.match(/^<.*>$/)) return null;
+
+  const split = person?.split('|');
+
+  if (!split) return null;
+
+  return {
+    name: split?.at(0)?.trim() ?? null,
+    url: split?.at(1)?.trim() ?? null,
+  };
+};
+
+const calculateReadingTime = (content: string): number => Math.round(Math.max(readingTime(content, 200).minutes, 1));
 
 export const getSidebar = async (
   locale: string,
