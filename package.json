@@ -12,7 +12,7 @@
     "lint": "prettier --write .",
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
-    "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json",
+    "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
     "test": "cypress run",
     "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois"
   },
