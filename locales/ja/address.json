@@ -40,7 +40,7 @@
     "asset": "資産",
     "asset_type": "種類",
     "last_updated": "最終更新日",
-    "spender": "承認済みの支出者",
+    "spender": "認定支出者",
     "value_at_risk": "リスクがある価値"
   },
   "labels": {
@@ -64,7 +64,7 @@
     "expiration": "{{inTime}}で期限が切れます"
   },
   "search": {
-    "spender": "承認された支出者アドレスによる検索"
+    "spender": "公認支出者アドレスによる検索"
   },
   "signatures": {
     "info": {
@@ -83,7 +83,7 @@
     "columns": {
       "allowance": "許可したもの",
       "asset_name": "資産名",
-      "authorized_spender": "承認済みの支出者",
+      "authorized_spender": "認定支出者",
       "last_updated": "最終更新日",
       "value_at_risk": "リスクがある価値"
     },
@@ -110,7 +110,7 @@
     "involved_in_exploits": "このアドレスは、以下のエクスプロイトに関与しています：",
     "marketplace_listings": "これにより、{{marketplace}}上の全てのリスティングとオファーがキャンセルされます。",
     "marketplace_signatures": "承認されると、マーケットプレイスはユーザーに代わってアセットを移動できるようになります。悪意のある攻撃者は、これらの承認を悪用し、サードパーティーのWeb サイト上に、無償のリスティングを作成します。フィッシングサイト上でマーケットプレイスの署名をした場合、承認をキャンセルしてください。",
-    "old_approval": "This approval is over a year old. Consider revoking it if you no longer need it.",
+    "old_approval": "この承認は1年以上前のものです。不要になった場合は、取り消すことを検討してください。",
     "permit2_expiration": "これは{{inTime}}で期限が切れる許可2の承認です。",
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
     "switch_chain": "続行するには、ウォレット内の接続ネットワークを <0>{{chainName}}</0>に切り替えてください"

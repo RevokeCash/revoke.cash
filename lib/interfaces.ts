@@ -111,11 +111,16 @@ export interface ContentMeta {
   sidebarTitle?: string;
   description: string;
   language: string;
-  author?: string;
-  translator?: string;
+  author?: Person;
+  translator?: Person;
   coverImage?: string;
   date?: string;
   readingTime?: number;
+}
+
+export interface Person {
+  name: string;
+  url?: string;
 }
 
 export interface RawContentFile {

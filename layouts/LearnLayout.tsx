@@ -47,10 +47,10 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
                 <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} priority />
               ) : null}
             </Prose>
-            <ArticleMeta meta={meta} />
             {children}
             <Divider className="my-6" />
             <PageNavigation currentPath={`/learn/${slug.join('/')}`} pages={sidebarEntries} />
+            <ArticleMeta meta={meta} />
           </div>
         </div>
       </main>
