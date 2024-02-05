@@ -16,6 +16,7 @@ import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } fro
 import { SECOND } from './time';
 
 export const PROVIDER_SUPPORTED_CHAINS = [
+  ChainId.Mode,
   ChainId.ArbitrumGoerli,
   ChainId.ArbitrumOne,
   ChainId.ArbitrumSepolia,
@@ -174,8 +175,9 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Canto,
   ChainId.Moonbeam,
   ChainId.Moonriver,
-  ChainId.AuroraMainnet,
   ChainId['WEMIX3.0Mainnet'],
+  ChainId.Mode,
+  ChainId.AuroraMainnet,
   ChainId.PegoNetwork,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
@@ -608,6 +610,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.MetisAndromedaMainnet]: '/assets/images/vendor/chains/metis.svg',
     [ChainId.MetisStardustTestnet]: '/assets/images/vendor/chains/metis.svg',
     [ChainId.MilkomedaC1Mainnet]: '/assets/images/vendor/chains/milkomeda.svg',
+    [ChainId.Mode]: '/assets/images/vendor/chains/mode.jpg',
     [ChainId.MoonbaseAlpha]: '/assets/images/vendor/chains/moonbeam.svg',
     [ChainId.Moonbeam]: '/assets/images/vendor/chains/moonbeam.svg',
     [ChainId.Moonriver]: '/assets/images/vendor/chains/moonriver.svg',
@@ -995,6 +998,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.MetisAndromedaMainnet]: { ...MULTICALL },
     [ChainId.MetisGoerliTestnet]: { ...MULTICALL },
     [ChainId.MilkomedaC1Mainnet]: { ...MULTICALL },
+    [ChainId.Mode]: { ...MULTICALL },
     [ChainId.MoonbaseAlpha]: { ...MULTICALL },
     [ChainId.Moonbeam]: { ...MULTICALL },
     [ChainId.Moonriver]: { ...MULTICALL },

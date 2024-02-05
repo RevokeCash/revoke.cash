@@ -49,6 +49,7 @@
     "maxxchain": "MaxxChain 是第 1 层（Layer 1）区块链，采用了基于 Ethash 的工作量证明（PoW）共识机制，旨在通过其桥接，实现跨链互操作性。除了主要的 MaxxChain 区块链外，MaxxChain 还开发了其他几种产品，例如去中心化交易所。",
     "metis": "Metis 是以太坊的第 2 层（Layer 2）扩展解决方案，最初是 Optimism 的分支，但自 2021 年成立以来一直朝着自己的方向发展。Metis 通过为创建多个互联链提供支持，以支持创建去中心化自治公司（DAC）。虽然Metis 是兼容 EVM 的第 2 层链，但可以使用自己的原生代币来支付第 2 层的汽油费。",
     "milkomeda-c1": "Milkomeda 是一个协议，旨在为非 EVM 生态系统提供 EVM 和第 2 层（Layer 2） Rollup 技术。它的第一次迭代是 Milkomeda C1，是卡尔达诺（Cardano）平台与 EVM 兼容的第 2 层链。继 Milkomeda C1 之后，Milkomeda 计划将这项技术扩展到其他非 EVM 生态系统，例如 Algorand 和 Solana。",
+    "mode": "Mode is a Layer 2 scaling solution for Ethereum. It is built on Optimism's Open Source OP Stack, so just like Optimism it uses optimistic rollup technology. Mode aims to incentivise growing the network's usage by rewarding developers with part of the sequencer revenue and rewarding users for referrals.",
     "moonbeam": "Moonbeam 是在波卡（ Polkadot）上运行的与以太坊兼容的平行链。作为波卡平行链，Moonbeam 可以和其他基于波卡生态的网络很好地集成。最重要的是，这也意味着可以结合以太坊、Cosmos 和波卡的功能，提高跨链应用的可用性。",
     "nahmii": "Nahmii 是以太坊的第 2 层（Layer 2）扩展解决方案，旨在通过低廉、可预测费用提供高交易吞吐量。目前，Nahmii 采用中心化运营商来验证交易，但计划将来会转向更加分散的模式。 ",
     "oasis-emerald": "Oasis是第 1 层（Layer 1）区块链，旨在打造可扩展的多功能网络平台。为了实现这一目标，Oasis 将其架构拆分为顶级共识层和较低级别的执行层，因此可以支持多个不同的执行层，其中包括与 EVM 兼容的执行层，Oasis Emerald。",
