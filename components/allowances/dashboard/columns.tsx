@@ -9,7 +9,6 @@ import AssetCell from './cells/AssetCell';
 import AssetTypeCell from './cells/AssetTypeCell';
 import ControlsCell from './cells/ControlsCell';
 import HeaderCell from './cells/HeaderCell';
-import LastCancelledCell from './cells/LastCancelledCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
 import SpenderCell from './cells/SpenderCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
@@ -28,7 +27,6 @@ export enum ColumnId {
   VALUE_AT_RISK = 'Value at Risk',
   SPENDER = 'Approved Spender',
   LAST_UPDATED = 'Last Updated',
-  LAST_CANCELLED = 'Last Cancelled',
   ACTIONS = 'Actions',
 }
 
@@ -62,7 +60,6 @@ export const accessors = {
     // before "no approvals" and before the < $0.01 threshold
     if (allowance.balance === 'ERC1155') return 0.01;
     if (isNullish(allowance.metadata.price)) return 0.01;
-
     return calculateValueAtRisk(allowance);
   },
 };
@@ -169,14 +166,6 @@ export const columns = [
     id: ColumnId.LAST_UPDATED,
     header: () => <HeaderCell i18nKey="address:headers.last_updated" />,
     cell: (info) => <LastUpdatedCell allowance={info.row.original} />,
-    enableSorting: true,
-    sortingFn: customSortingFns.timestamp,
-    sortUndefined: 1,
-  }),
-  columnHelper.accessor('lastCancelled', {
-    id: ColumnId.LAST_CANCELLED,
-    header: () => <HeaderCell i18nKey="address:headers.last_cancelled" />,
-    cell: (info) => <LastCancelledCell allowance={info.row.original} />,
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,
     sortUndefined: 1,

@@ -1,10 +1,11 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
+import { filterLastCancelled } from 'components/allowances/dashboard/cells/LastCancelledCell';
 import Card from 'components/common/Card';
 import Error from 'components/common/Error';
 import TableBodyLoader from 'components/common/TableBodyLoader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddressAllowances, useAddressEvents } from 'lib/hooks/page-context/AddressPageContext';
 import { deduplicateArray } from 'lib/utils';
 import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
 import { filterAsync } from 'lib/utils/promises';
@@ -24,7 +25,7 @@ const PermitsPanel = () => {
 
   const { t } = useTranslation();
   const { allowances, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
-
+  const { events } = useAddressEvents();
   const {
     data: permitTokens,
     error: permitsError,
@@ -33,8 +34,12 @@ const PermitsPanel = () => {
     queryKey: ['permitTokens', allowances?.map(getAllowanceKey)],
     queryFn: async () => {
       const ownedTokens = deduplicateArray(allowances, (a, b) => a.contract.address === b.contract.address)
-        .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals))
+        .filter(async (token) => {
+          const alreadyCancelled = (await filterLastCancelled(events, token)).alreadyCancelled;
+          return !hasZeroBalance(token.balance, token.metadata.decimals) && !alreadyCancelled && token;
+        })
         .map(stripAllowanceData);
+      // console.log("ownedTokens", ownedTokens)
 
       return filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract));
     },

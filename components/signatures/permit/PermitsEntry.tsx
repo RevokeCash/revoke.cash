@@ -1,10 +1,10 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
-import { filterLastCancelled } from 'components/allowances/dashboard/cells/LastCancelledCell';
+import LastCancelledCell from 'components/allowances/dashboard/cells/LastCancelledCell';
 import Button from 'components/common/Button';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
-import { useAddressEvents, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
@@ -25,7 +25,7 @@ const PermitsEntry = ({ token }: Props) => {
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction();
 
-  const isPreviouslyCancelled = filterLastCancelled(useAddressEvents().events, token).alreadyCancelled;
+  // const isPreviouslyCancelled = filterLastCancelled(useAddressEvents().events, token).alreadyCancelled;
 
   const { execute: onClick, loading } = useAsyncCallback(async () => {
     if (isErc721Contract(token.contract)) return;
@@ -44,16 +44,13 @@ const PermitsEntry = ({ token }: Props) => {
       <div className="flex items-center justify-between w-full py-px">
         <AssetCell allowance={token} />
         <div className="flex justify-end">
+          <LastCancelledCell allowance={token} />
+        </div>
+        <div className="flex justify-end">
           <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
             {(disabled) => (
               <div>
-                <Button
-                  loading={loading}
-                  disabled={disabled || isPreviouslyCancelled}
-                  size="sm"
-                  style="secondary"
-                  onClick={onClick}
-                >
+                <Button loading={loading} disabled={disabled} size="sm" style="secondary" onClick={onClick}>
                   {loading ? t('common:buttons.cancelling') : t('common:buttons.cancel_signatures')}
                 </Button>
               </div>
