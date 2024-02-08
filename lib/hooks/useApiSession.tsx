@@ -9,11 +9,8 @@ export const useApiSession = () => {
     error,
   } = useQuery({
     queryKey: ['login'],
-    queryFn: () =>
-      ky
-        .post('/api/login')
-        .json<any>()
-        .then((res) => !!res?.ok),
+    queryFn: () => ky.post('/api/login').json<any>(),
+    // .then((res) => !!res?.ok),
     staleTime: 12 * HOUR,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,

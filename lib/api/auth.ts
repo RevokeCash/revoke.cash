@@ -1,9 +1,11 @@
 import { SessionOptions, getIronSession } from 'iron-session';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
+import { SiweMessage } from 'siwe';
 
 export interface RevokeSession {
   ip?: string;
+  siwe?: {};
 }
 
 export const IRON_OPTIONS: SessionOptions = {
@@ -31,11 +33,20 @@ export const checkRateLimitAllowed = async (req: NextApiRequest) => {
   }
 };
 
-export const storeSession = async (req: NextApiRequest, res: NextApiResponse) => {
+export const storeSession = async (req: NextApiRequest, res: NextApiResponse, siwe?: SiweMessage) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
   // Store the user's IP as an identifier
   session.ip = getClientIp(req);
+
+  // Store the verified SiweMessage
+  if (siwe) session.siwe = siwe;
+
   await session.save();
+};
+
+export const getSession = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+  return session;
 };
 
 export const checkActiveSession = async (req: NextApiRequest, res: NextApiResponse) => {

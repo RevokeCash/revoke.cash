@@ -1,3 +1,4 @@
+import Button from 'components/common/Button';
 import Href from 'components/common/Href';
 import WalletIndicator from 'components/header/WalletIndicator';
 import useTranslation from 'next-translate/useTranslation';
@@ -39,7 +40,12 @@ const Header = ({ searchBar = true }: Props) => {
         </div>
         <div className="hidden lg:flex justify-end w-2/5 gap-2">
           <WalletIndicator />
+
+          <Href href="/profile" underline="none" className="flex" router>
+            <Button size="md">Profile (beta)</Button>
+          </Href>
         </div>
+
         <div className="flex lg:hidden justify-end">
           <MobileMenu />
         </div>

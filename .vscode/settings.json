@@ -1,0 +1,4 @@
+{
+  // https://stackoverflow.com/questions/41702815/how-to-make-visual-studio-code-check-entire-project-for-errors
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true
+}
