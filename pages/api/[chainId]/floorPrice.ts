@@ -27,7 +27,7 @@ const handler = async (req: NextRequest) => {
     return new Response(`Chain with ID ${chainId} is unsupported`, { status: 404 });
   }
 
-  const floorPrice = await getter.getFloorPriceUSD(contractAddress).catch(() => 0);
+  const floorPrice = await getter.getFloorPriceUSD(contractAddress).catch(() => null);
 
   return new Response(
     JSON.stringify({

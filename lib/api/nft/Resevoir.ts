@@ -6,6 +6,11 @@ import { SECOND } from 'lib/utils/time';
 import { NFTGetter } from '.';
 import { RequestQueue } from '../logs/RequestQueue';
 
+// Don't return a price if the collection is on the ignore list
+const IGNORE_LIST = [
+  '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85', // ENS Names
+];
+
 export class ResevoirNFT implements NFTGetter {
   private queue: RequestQueue;
   private apiKey: string;
@@ -16,33 +21,45 @@ export class ResevoirNFT implements NFTGetter {
   }
 
   public async getFloorPriceUSD(contractAddress: string): Promise<number> {
-    const collection = await this.getCollection(contractAddress);
-
-    if (!collection.floorAsk?.price?.amount?.usd) {
-      throw new Error(`No floor price found for ${contractAddress}`);
+    if (IGNORE_LIST.includes(contractAddress)) {
+      throw new Error(`Collection ${contractAddress} is on the ignore list`);
     }
 
-    const floorPriceUSD = collection.floorAsk.price.amount.usd;
+    const collection = await this.getCollection(contractAddress);
+
+    const weeklyVolume = collection.volume?.['7day'];
+    const floorPriceUSD = collection.floorAsk?.price?.amount?.usd;
+
+    // TODO: Do we want to require a higher weekly volume than just *any*?
+    if (!weeklyVolume) {
+      throw new Error(`Not enough volume for ${contractAddress}`);
+    }
+
+    if (!floorPriceUSD) {
+      throw new Error(`No floor price found for ${contractAddress}`);
+    }
 
     return floorPriceUSD;
   }
 
+  // TODO: For collections like Art Blocks, we should identify token ranges
+  // (`{artblocksContractAddress}:{startTokenId}:{endTokenId}`) - for now we just pick the cheapest subcollection
   private async getCollection(contractAddress: string): Promise<ResevoirNFTCollection> {
     const url = `https://api.reservoir.tools/collections/v7`;
     const searchParams = {
-      id: contractAddress,
+      contract: contractAddress,
+      sortBy: 'floorAskPrice',
+      sortDirection: 'asc',
     };
 
-    const collections = await this.makeGetRequest<{
-      collections: ResevoirNFTCollection[];
-    }>(url, searchParams);
+    const result = await this.makeGetRequest<{ collections: ResevoirNFTCollection[] }>(url, searchParams);
 
-    if (collections.collections.length === 0) {
+    if (result.collections.length === 0) {
       throw new Error(`No collection found for contract address ${contractAddress}`);
     }
 
-    // TODO: Check if using the first collection is correct.
-    return collections.collections[0];
+    // Fall back to the first collection if no viable subcollection is found
+    return pickCheapestSubcollectionWithVolume(result.collections) ?? result.collections[0];
   }
 
   private async makeGetRequest<T>(url: string, searchParams: SearchParamsOption): Promise<T> {
@@ -66,6 +83,19 @@ export class ResevoirNFT implements NFTGetter {
     }
   }
 }
+
+const pickCheapestSubcollectionWithVolume = (collections: ResevoirNFTCollection[]): ResevoirNFTCollection => {
+  const viableCollections = collections
+    .filter((collection) => !!collection.volume['7day'])
+    .filter((collection) => !!collection.floorAsk?.price?.amount?.usd)
+    .sort((a, b) => a.floorAsk?.price?.amount?.usd - b.floorAsk?.price?.amount?.usd);
+
+  if (collections[0].primaryContract === '0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270') {
+    console.log(viableCollections);
+  }
+
+  return viableCollections[0];
+};
 
 interface ResevoirNFTCollection {
   chainId: number;
@@ -95,6 +125,7 @@ interface ResevoirNFTCollection {
   royalties: ResevoirRoyalties;
   allRoyalties: ResevoirAllRoyalties;
   floorAsk?: ResevoirFloorAsk;
+  volume?: ResevoirVolume;
 }
 
 interface ResevoirFloorAsk {
@@ -131,4 +162,11 @@ interface ResevoirRoyaltyRecipient {
   recipient: string;
   breakdown: { bps: number; recipient: string }[];
   bps: number;
+}
+
+interface ResevoirVolume {
+  '1day': number;
+  '7day': number;
+  '30day': number;
+  alltime: number;
 }
