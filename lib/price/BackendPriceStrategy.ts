@@ -3,10 +3,10 @@ import { TokenContract } from 'lib/interfaces';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 import { PriceStrategy } from './PriceStrategy';
 
-interface ResevoirPriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {}
+interface BackendPriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {}
 
-export class ResevoirPriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
-  constructor(options: ResevoirPriceStrategyOptions) {
+export class BackendPriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
+  constructor(options: BackendPriceStrategyOptions) {
     super({ nativeAsset: options.nativeAsset, supportedAssets: ['ERC721'] });
   }
 

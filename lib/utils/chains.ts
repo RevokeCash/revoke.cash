@@ -10,9 +10,9 @@ import {
 } from 'lib/constants';
 import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
+import { BackendPriceStrategy } from 'lib/price/BackendPriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
-import { ResevoirPriceStrategy } from 'lib/price/ResevoirPriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
@@ -1374,7 +1374,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         decimals: 6,
       }),
 
-      new ResevoirPriceStrategy({}),
+      new BackendPriceStrategy({}),
     ],
   }),
   [ChainId.Evmos]: new AggregatePriceStrategy({
