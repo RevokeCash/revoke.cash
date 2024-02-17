@@ -34,7 +34,7 @@ The end of the year is always a good time to work on squashing some extra bugs, 
 
 ## Ledger Connect Kit Hack
 
-On December 14th, malicious actors were able to compromise a popular library used to connect with Leedger wallets. This library was used by many applications, including SushiSwap and Revoke.cash. As soon as we were made aware of the exploit, we took our website offline and were able to remove the affected library from our website.
+On December 14th, malicious actors were able to compromise a popular library used to connect with Ledger wallets. This library was used by many applications, including SushiSwap and Revoke.cash. As soon as we were made aware of the exploit, we took our website offline and were able to remove the affected library from our website.
 
 Most affected websites were able to move swiftly and remove the affected library. Ledger was also quick to respond and released a new version of the library that fixed the exploit. However, crypto users still lost about $600k in the exploit. We've released a full [statement on our blog](/blog/2023/ledger-connect-kit-hack-retrospective) that explains in detail what happened, and what lessons can be learned from this event.
 
