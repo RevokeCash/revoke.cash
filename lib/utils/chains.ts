@@ -4,7 +4,7 @@ import {
   ETHERSCAN_API_KEYS,
   ETHERSCAN_RATE_LIMITS,
   INFURA_API_KEY,
-  RESEVOIR_API_KEY,
+  RESERVOIR_API_KEY,
   RPC_OVERRIDES,
 } from 'lib/constants';
 import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
@@ -1809,5 +1809,5 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
 };
 
 const BACKEND_PRICE_STRATEGIES: Record<number, PriceStrategy> = {
-  [ChainId.EthereumMainnet]: new ReservoirNftPriceStrategy({ apiKey: RESEVOIR_API_KEY }),
+  [ChainId.EthereumMainnet]: new ReservoirNftPriceStrategy({ apiKey: RESERVOIR_API_KEY }),
 };

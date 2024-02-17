@@ -49,7 +49,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
 
   // TODO: For collections like Art Blocks, we should identify token ranges
   // (`{artblocksContractAddress}:{startTokenId}:{endTokenId}`) - for now we just pick the cheapest subcollection
-  private async getCollection(contractAddress: string): Promise<ResevoirNFTCollection> {
+  private async getCollection(contractAddress: string): Promise<ReservoirNFTCollection> {
     const url = `https://api.reservoir.tools/collections/v7`;
     const searchParams = {
       contract: contractAddress,
@@ -57,7 +57,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
       sortDirection: 'asc',
     };
 
-    const result = await this.makeGetRequest<{ collections: ResevoirNFTCollection[] }>(url, searchParams);
+    const result = await this.makeGetRequest<{ collections: ReservoirNFTCollection[] }>(url, searchParams);
 
     if (result.collections.length === 0) {
       throw new Error(`No collection found for contract address ${contractAddress}`);
@@ -79,7 +79,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
       return result;
     } catch (e) {
       if (isRateLimitError(parseErrorMessage(e))) {
-        console.error('Resevoir: Rate limit reached, retrying...');
+        console.error('Reservoir: Rate limit reached, retrying...');
 
         return this.makeGetRequest<T>(url, searchParams);
       }
@@ -90,7 +90,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
 }
 
 // TODO: Should we perform this volume check here? Or take the volume across subcollections?
-const pickCheapestSubcollectionWithVolume = (collections: ResevoirNFTCollection[]): ResevoirNFTCollection => {
+const pickCheapestSubcollectionWithVolume = (collections: ReservoirNFTCollection[]): ReservoirNFTCollection => {
   const viableCollections = collections
     .filter((collection) => !!collection.volume['7day'])
     .filter((collection) => !!collection.floorAsk?.price?.amount?.usd)
@@ -99,7 +99,7 @@ const pickCheapestSubcollectionWithVolume = (collections: ResevoirNFTCollection[
   return viableCollections[0];
 };
 
-interface ResevoirNFTCollection {
+interface ReservoirNFTCollection {
   chainId: number;
   id: string;
   slug: string;
@@ -124,13 +124,13 @@ interface ResevoirNFTCollection {
   primaryContract: string;
   tokenSetId: string;
   creator: string;
-  royalties: ResevoirRoyalties;
-  allRoyalties: ResevoirAllRoyalties;
-  floorAsk?: ResevoirFloorAsk;
-  volume?: ResevoirVolume;
+  royalties: ReservoirRoyalties;
+  allRoyalties: ReservoirAllRoyalties;
+  floorAsk?: ReservoirFloorAsk;
+  volume?: ReservoirVolume;
 }
 
-interface ResevoirFloorAsk {
+interface ReservoirFloorAsk {
   id: string;
   sourceDomain: string;
   price?: {
@@ -148,25 +148,25 @@ interface ResevoirFloorAsk {
   };
 }
 
-interface ResevoirRoyalties {
+interface ReservoirRoyalties {
   recipient: string;
   breakdown: { bps: number; recipient: string }[];
   bps: number;
 }
 
-interface ResevoirAllRoyalties {
-  eip2981: ResevoirRoyaltyRecipient[];
-  onchain: ResevoirRoyaltyRecipient[];
-  opensea: ResevoirRoyaltyRecipient[];
+interface ReservoirAllRoyalties {
+  eip2981: ReservoirRoyaltyRecipient[];
+  onchain: ReservoirRoyaltyRecipient[];
+  opensea: ReservoirRoyaltyRecipient[];
 }
 
-interface ResevoirRoyaltyRecipient {
+interface ReservoirRoyaltyRecipient {
   recipient: string;
   breakdown: { bps: number; recipient: string }[];
   bps: number;
 }
 
-interface ResevoirVolume {
+interface ReservoirVolume {
   '1day': number;
   '7day': number;
   '30day': number;
