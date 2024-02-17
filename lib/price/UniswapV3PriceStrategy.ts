@@ -1,5 +1,5 @@
 import { UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
-import { TokenContract } from 'lib/interfaces';
+import { Erc20TokenContract } from 'lib/interfaces';
 import { Address, concat, parseUnits } from 'viem';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 import { PriceStrategy } from './PriceStrategy';
@@ -30,7 +30,7 @@ export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements Pri
     this.decimals = options.decimals ?? 18;
   }
 
-  protected async calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number> {
     if (tokenContract.address === this.path.at(-1)) {
       // return parseUnits(String(1), this.decimals);
 

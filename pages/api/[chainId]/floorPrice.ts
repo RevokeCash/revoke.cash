@@ -1,11 +1,15 @@
+import { ERC721_ABI } from 'lib/abis';
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import { getNFTGetter } from 'lib/utils/chains';
+import { Erc721TokenContract } from 'lib/interfaces';
+import { createViemPublicClientForChain, getChainBackendPriceStrategy } from 'lib/utils/chains';
 import { NextRequest } from 'next/server';
+import { Address } from 'viem';
 
 export const config = {
   runtime: 'edge',
 };
 
+// TODO: Support ERC20 token prices in this route as well
 const handler = async (req: NextRequest) => {
   if (req.method !== 'GET') return new Response('Method not allowed', { status: 405 });
 
@@ -19,15 +23,20 @@ const handler = async (req: NextRequest) => {
 
   const query = new URL(req.url).searchParams;
   const chainId = Number.parseInt(query.get('chainId') as string, 10);
-  const contractAddress = query.get('contractAddress') as string;
 
-  const getter = getNFTGetter(chainId);
+  const contract: Erc721TokenContract = {
+    abi: ERC721_ABI,
+    address: query.get('contractAddress') as Address,
+    publicClient: createViemPublicClientForChain(chainId),
+  };
 
-  if (!getter) {
+  const backendPriceStrategy = getChainBackendPriceStrategy(chainId);
+
+  if (!backendPriceStrategy) {
     return new Response(`Chain with ID ${chainId} is unsupported`, { status: 404 });
   }
 
-  const floorPrice = await getter.getFloorPriceUSD(contractAddress).catch(() => null);
+  const floorPrice = await backendPriceStrategy.calculateTokenPrice(contract).catch(() => null);
 
   return new Response(
     JSON.stringify({

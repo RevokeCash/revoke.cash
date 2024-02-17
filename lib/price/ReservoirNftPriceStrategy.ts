@@ -1,42 +1,47 @@
-// API call to Resevoir.tools go here
-
 import ky, { SearchParamsOption } from 'ky';
+import { Erc721TokenContract } from 'lib/interfaces';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
-import { NFTGetter } from '.';
-import { RequestQueue } from '../logs/RequestQueue';
+import { RequestQueue } from '../api/logs/RequestQueue';
+import { AbstractPriceStrategy } from './AbstractPriceStrategy';
+import { PriceStrategy } from './PriceStrategy';
 
 // Don't return a price if the collection is on the ignore list
 const IGNORE_LIST = [
   '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85', // ENS Names
 ];
 
-export class ResevoirNFT implements NFTGetter {
+interface ReservoirNftPriceStrategyOptions {
+  apiKey: string;
+}
+
+export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   private queue: RequestQueue;
   private apiKey: string;
 
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
-    this.queue = new RequestQueue(`resevoir:${apiKey}`, { interval: 1000, intervalCap: 80 });
+  constructor(options: ReservoirNftPriceStrategyOptions) {
+    super({ supportedAssets: ['ERC721'] });
+    this.apiKey = options.apiKey;
+    this.queue = new RequestQueue(`reservoir:${options.apiKey}`, { interval: 1000, intervalCap: 80 });
   }
 
-  public async getFloorPriceUSD(contractAddress: string): Promise<number> {
-    if (IGNORE_LIST.includes(contractAddress)) {
-      throw new Error(`Collection ${contractAddress} is on the ignore list`);
+  public async calculateTokenPriceInternal(contract: Erc721TokenContract): Promise<number> {
+    if (IGNORE_LIST.includes(contract.address)) {
+      throw new Error(`Collection ${contract.address} is on the ignore list`);
     }
 
-    const collection = await this.getCollection(contractAddress);
+    const collection = await this.getCollection(contract.address);
 
     const weeklyVolume = collection.volume?.['7day'];
     const floorPriceUSD = collection.floorAsk?.price?.amount?.usd;
 
     // TODO: Do we want to require a higher weekly volume than just *any*?
     if (!weeklyVolume) {
-      throw new Error(`Not enough volume for ${contractAddress}`);
+      throw new Error(`Not enough volume for ${contract.address}`);
     }
 
     if (!floorPriceUSD) {
-      throw new Error(`No floor price found for ${contractAddress}`);
+      throw new Error(`No floor price found for ${contract.address}`);
     }
 
     return floorPriceUSD;
@@ -69,7 +74,7 @@ export class ResevoirNFT implements NFTGetter {
 
     try {
       const result = await this.queue.add(() =>
-        ky.get(url, { headers, searchParams, retry: 3, timeout: 2 * SECOND }).json<any>(),
+        ky.get(url, { headers, searchParams, retry: 0, timeout: 5 * SECOND }).json<any>(),
       );
       return result;
     } catch (e) {
@@ -84,15 +89,12 @@ export class ResevoirNFT implements NFTGetter {
   }
 }
 
+// TODO: Should we perform this volume check here? Or take the volume across subcollections?
 const pickCheapestSubcollectionWithVolume = (collections: ResevoirNFTCollection[]): ResevoirNFTCollection => {
   const viableCollections = collections
     .filter((collection) => !!collection.volume['7day'])
     .filter((collection) => !!collection.floorAsk?.price?.amount?.usd)
     .sort((a, b) => a.floorAsk?.price?.amount?.usd - b.floorAsk?.price?.amount?.usd);
-
-  if (collections[0].primaryContract === '0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270') {
-    console.log(viableCollections);
-  }
 
   return viableCollections[0];
 };

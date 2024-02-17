@@ -5,12 +5,12 @@ import { PriceStrategy } from './PriceStrategy';
 import { strategySupportsToken } from './utils';
 
 export interface AbstractPriceStrategyOptions {
-  nativeAsset: Address;
+  nativeAsset?: Address;
   supportedAssets: TokenStandard[];
 }
 
 export abstract class AbstractPriceStrategy implements PriceStrategy {
-  nativeAsset: Address;
+  nativeAsset?: Address;
   supportedAssets: TokenStandard[];
 
   constructor(options: AbstractPriceStrategyOptions) {
@@ -19,6 +19,10 @@ export abstract class AbstractPriceStrategy implements PriceStrategy {
   }
 
   public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
+    if (!this.nativeAsset) {
+      throw new Error('Native token type is not supported by this price strategy');
+    }
+
     const tokenPrice = await this.calculateTokenPrice({
       address: this.nativeAsset,
       abi: ERC20_ABI,

@@ -1,5 +1,4 @@
 import { ChainId, getChain } from '@revoke.cash/chains';
-import { NFTGetter, ResevoirNFT } from 'lib/api/nft';
 import {
   ALCHEMY_API_KEY,
   ETHERSCAN_API_KEYS,
@@ -13,6 +12,7 @@ import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePric
 import { BackendPriceStrategy } from 'lib/price/BackendPriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
+import { ReservoirNftPriceStrategy } from 'lib/price/ReservoirNftPriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
@@ -533,14 +533,6 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
   };
 
   return overrides[chainId] ?? getChainRpcUrl(chainId);
-};
-
-export const getNFTGetter = (chainId: number): NFTGetter | undefined => {
-  const mapping = {
-    [ChainId.EthereumMainnet]: new ResevoirNFT(RESEVOIR_API_KEY),
-  };
-
-  return mapping[chainId] ?? undefined;
 };
 
 export const getChainLogo = (chainId: number): string => {
@@ -1085,6 +1077,10 @@ export const createViemPublicClientForChain = (chainId: number, url?: string): P
 
 export const getChainPriceStrategy = (chainId: number): PriceStrategy | undefined => {
   return PRICE_STRATEGIES[chainId];
+};
+
+export const getChainBackendPriceStrategy = (chainId: number): PriceStrategy | undefined => {
+  return BACKEND_PRICE_STRATEGIES[chainId];
 };
 
 const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
@@ -1810,4 +1806,8 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   // TODO: Add SyncSwap strategy to support ZkSync
   [ChainId.ZkSyncMainnet]: undefined,
   [ChainId.Zora]: undefined, // <$100k Liquidity
+};
+
+const BACKEND_PRICE_STRATEGIES: Record<number, PriceStrategy> = {
+  [ChainId.EthereumMainnet]: new ReservoirNftPriceStrategy({ apiKey: RESEVOIR_API_KEY }),
 };
