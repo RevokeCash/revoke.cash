@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, Ref, forwardRef, useEffect, useRef, useState } from 'react';
 import { ActionMeta, FormatOptionLabelMeta, GroupBase, OnChangeValue, SelectInstance } from 'react-select';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -17,6 +17,7 @@ interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProp
 
 const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
   const selectRef = useRef<SelectInstance<O, I, G> | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   // Track whether the React Select is open or not
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
@@ -28,6 +29,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
       selectRef.current?.focus();
     } else {
       selectRef.current?.blur();
+      buttonRef.current?.focus();
     }
   }, [isSelectOpen]);
 
@@ -51,7 +53,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
     <SelectOverlay
       isSelectOpen={isSelectOpen}
       handleSelectClose={handleSelectClose}
-      target={<TargetButton toggleSelectClose={toggleSelectOpen} selectProps={props} />}
+      target={<TargetButton ref={buttonRef} toggleSelectClose={toggleSelectOpen} selectProps={props} />}
       selectProps={props}
     >
       <Select
@@ -116,32 +118,35 @@ interface TargetButtonProps<O, I extends boolean, G extends GroupBase<O>> {
   selectProps: Props<O, I, G>;
 }
 
-const TargetButton = <O, I extends boolean, G extends GroupBase<O>>(props: TargetButtonProps<O, I, G>) => {
-  const { toggleSelectClose, selectProps } = props;
+const TargetButton = forwardRef(
+  <O, I extends boolean, G extends GroupBase<O>>(props: TargetButtonProps<O, I, G>, ref: Ref<HTMLButtonElement>) => {
+    const { toggleSelectClose, selectProps } = props;
 
-  const formatControlOptionLabel = (option: O) => {
-    if (!option) return selectProps.placeholder ?? null;
+    const formatControlOptionLabel = (option: O) => {
+      if (!option) return selectProps.placeholder ?? null;
 
-    if (typeof selectProps.formatOptionLabel === 'undefined') {
-      return ((option as any).label as string) ?? ((option as any).value as string);
-    }
+      if (typeof selectProps.formatOptionLabel === 'undefined') {
+        return ((option as any).label as string) ?? ((option as any).value as string);
+      }
 
-    return selectProps.formatOptionLabel(option, {
-      context: 'value',
-      inputValue: (option as any)?.label as string,
-      selectValue: [option],
-    });
-  };
+      return selectProps.formatOptionLabel(option, {
+        context: 'value',
+        inputValue: (option as any)?.label as string,
+        selectValue: [option],
+      });
+    };
 
-  return (
-    <Button
-      size="none"
-      style="secondary"
-      onClick={toggleSelectClose}
-      className="flex items-center px-2 h-9 font-normal rounded-lg control-button-wrapper"
-    >
-      {formatControlOptionLabel(selectProps.value as O)}
-      <Chevron className="w-5 h-5 fill-black dark:fill-white" />
-    </Button>
-  );
-};
+    return (
+      <Button
+        ref={ref}
+        size="none"
+        style="secondary"
+        onClick={toggleSelectClose}
+        className="flex items-center px-2 h-9 font-normal rounded-lg control-button-wrapper"
+      >
+        {formatControlOptionLabel(selectProps.value as O)}
+        <Chevron className="w-5 h-5 fill-black dark:fill-white" />
+      </Button>
+    );
+  },
+);
