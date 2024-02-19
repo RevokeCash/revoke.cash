@@ -15,7 +15,7 @@ interface ReservoirNftPriceStrategyOptions {
   apiKey: string;
 }
 
-const TIMEOUT = 5 * SECOND;
+const TIMEOUT = 1 * SECOND;
 
 export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   private queue: RequestQueue;
