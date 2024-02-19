@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: revoke_local
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '127.0.0.1:25432:5432'
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data

@@ -59,3 +59,6 @@ cypress/screenshots
 cypress/downloads
 
 scripts/chainid-lookup.csv
+
+# Docker
+/volumes
