@@ -33,6 +33,25 @@ export const checkRateLimitAllowed = async (req: NextApiRequest) => {
   }
 };
 
+/**
+ * Wraps an API route with a session, ensuring that the session is available to the handler.
+ */
+export const withSession = (handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>) => {
+  return async (req: NextApiRequest, res: NextApiResponse) => {
+    const session = await getSession(req, res);
+
+    req.session = session;
+
+    await handler(req, res);
+  };
+};
+
+declare module 'next' {
+  interface NextApiRequest {
+    session: RevokeSession;
+  }
+}
+
 export const storeSession = async (req: NextApiRequest, res: NextApiResponse, siwe?: SiweMessage) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
   // Store the user's IP as an identifier
