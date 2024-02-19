@@ -1,4 +1,4 @@
-import ky, { SearchParamsOption } from 'ky';
+import ky, { SearchParamsOption, TimeoutError } from 'ky';
 import { Erc721TokenContract } from 'lib/interfaces';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
@@ -15,6 +15,8 @@ interface ReservoirNftPriceStrategyOptions {
   apiKey: string;
 }
 
+const TIMEOUT = 5 * SECOND;
+
 export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   private queue: RequestQueue;
   private apiKey: string;
@@ -22,7 +24,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
   constructor(options: ReservoirNftPriceStrategyOptions) {
     super({ supportedAssets: ['ERC721'] });
     this.apiKey = options.apiKey;
-    this.queue = new RequestQueue(`reservoir:${options.apiKey}`, { interval: 1000, intervalCap: 80 });
+    this.queue = new RequestQueue(`reservoir:${options.apiKey}`, { interval: 1000, intervalCap: 80, timeout: TIMEOUT });
   }
 
   public async calculateTokenPriceInternal(contract: Erc721TokenContract): Promise<number> {
@@ -74,10 +76,23 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
 
     try {
       const result = await this.queue.add(() =>
-        ky.get(url, { headers, searchParams, retry: 0, timeout: 5 * SECOND }).json<any>(),
+        ky
+          .get(url, {
+            headers,
+            searchParams,
+            retry: 0,
+            timeout: TIMEOUT,
+          })
+          .json<any>(),
       );
       return result;
     } catch (e) {
+      // See (https://github.com/sindresorhus/ky#readme) and search for TimoutError
+      if (e instanceof TimeoutError) {
+        console.error('Reservoir: Request timed out, will not retry');
+
+        throw new Error(`Request timed out for ${e.request.url} with search params ${JSON.stringify(searchParams)}`);
+      }
       if (isRateLimitError(parseErrorMessage(e))) {
         console.error('Reservoir: Rate limit reached, retrying...');
 
