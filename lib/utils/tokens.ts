@@ -216,8 +216,12 @@ export const isErc721Contract = (contract: TokenContract): contract is Erc721Tok
   return getAbiItem<any, string>({ ...contract, name: 'ApprovalForAll' }) !== undefined;
 };
 
+// MEME does not *actually* support permit. TODO: Somehow fix this in the RevokeCash/whois repo instead
+const IGNORE_LIST = ['0xb131f4A55907B10d1F0A50d8ab8FA09EC342cd74'];
+
 export const hasSupportForPermit = async (contract: TokenContract) => {
   if (isErc721Contract(contract)) return false;
+  if (IGNORE_LIST.includes(contract.address)) return false;
 
   // If we can properly retrieve the EIP712 domain and nonce, it supports permit
   try {

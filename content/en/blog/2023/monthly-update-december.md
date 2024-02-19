@@ -30,7 +30,7 @@ Dries has previously done freelance work for Revoke.cash, and he was the one who
 
 ## Fixes and Improvements
 
-The end of the year is always a good time to work on squashing some extra bugs, and that is exactly what we did. Among other fixes, we fixed longer-standing issues with our Avalanche, long-standing issues with very active wallets, and issues with certain tokens that don't properly follow token standards. We also moved our DNS to Cloudflare, which will help with caching and performance going forward.
+The end of the year is always a good time to work on squashing some extra bugs, and that is exactly what we did. Among other fixes, we fixed longer-standing issues with our Avalanche integration, long-standing issues with very active wallets, and issues with certain tokens that don't properly follow token standards. We also moved our DNS to Cloudflare, which will help with caching and performance going forward.
 
 ## Ledger Connect Kit Hack
 

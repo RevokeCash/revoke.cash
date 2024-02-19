@@ -12,7 +12,7 @@
     "lint": "prettier --write .",
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
-    "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json",
+    "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
     "test": "cypress run",
     "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois"
   },
@@ -20,7 +20,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@revoke.cash/chains": "^29.0.0",
+    "@revoke.cash/chains": "^31.0.0",
     "@tanstack/query-sync-storage-persister": "^5.13.4",
     "@tanstack/react-query": "^5.13.4",
     "@tanstack/react-query-persist-client": "^5.13.4",

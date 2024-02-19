@@ -40,7 +40,7 @@
     "asset": "资产",
     "asset_type": "类型",
     "last_updated": "上次更新",
-    "spender": "已经授权的项目",
+    "spender": "被授权人（Spender）",
     "value_at_risk": "存在风险金额"
   },
   "labels": {
@@ -64,7 +64,7 @@
     "expiration": "于 {{inTime}} 过期"
   },
   "search": {
-    "spender": "按授权的花费地址搜索"
+    "spender": "按授权的消费者地址搜索"
   },
   "signatures": {
     "info": {
@@ -83,7 +83,7 @@
     "columns": {
       "allowance": "授权金额",
       "asset_name": "资产名称",
-      "authorized_spender": "已经授权的项目",
+      "authorized_spender": "被授权人（Spender）",
       "last_updated": "上次更新",
       "value_at_risk": "存在风险金额"
     },
@@ -110,7 +110,7 @@
     "involved_in_exploits": "此地址涉及以下漏洞：",
     "marketplace_listings": "这将取消 {{marketplace}} 上的所有当前列出的产品和报价。",
     "marketplace_signatures": "一旦获得授权，市场可以代表您转移资产。骗子可利用这些授权在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",
-    "old_approval": "This approval is over a year old. Consider revoking it if you no longer need it.",
+    "old_approval": "该授权已有一年多了。如果不再需要，可以考虑将其撤销。",
     "permit2_expiration": "这是 Permit2 授权，将于 {{inTime}} 到期。",
     "permit_signatures": "许可签名用于在无需发送交易的情况下授权消费。如果您在钓鱼网站上签署了许可签名，请取消。",
     "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
