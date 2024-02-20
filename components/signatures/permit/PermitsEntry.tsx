@@ -5,17 +5,18 @@ import Button from 'components/common/Button';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { AllowanceData, TransactionType } from 'lib/interfaces';
+import { PermitTokenData, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
+import { HOUR, SECOND } from 'lib/utils/time';
 import { isErc721Contract } from 'lib/utils/tokens';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
 import { usePublicClient, useWalletClient } from 'wagmi';
 
 interface Props {
-  token: AllowanceData;
+  token: PermitTokenData;
 }
 
 const PermitsEntry = ({ token }: Props) => {
@@ -24,8 +25,6 @@ const PermitsEntry = ({ token }: Props) => {
   const publicClient = usePublicClient();
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction();
-
-  // const isPreviouslyCancelled = filterLastCancelled(useAddressEvents().events, token).alreadyCancelled;
 
   const { execute: onClick, loading } = useAsyncCallback(async () => {
     if (isErc721Contract(token.contract)) return;
@@ -39,26 +38,34 @@ const PermitsEntry = ({ token }: Props) => {
     await waitForTransactionConfirmation(hash, publicClient);
   });
 
+  const recentlyCancelled = token.lastCancelled?.timestamp * SECOND > Date.now() - 24 * HOUR;
+
   return (
-    <div className="px-4 border-t first:border-none border-zinc-300 dark:border-zinc-500">
-      <div className="flex items-center justify-between w-full py-px">
+    <tr className="px-4 border-t first:border-none border-zinc-300 dark:border-zinc-500">
+      <td className="px-4">
         <AssetCell allowance={token} />
-        <div className="flex justify-end">
-          <LastCancelledCell allowance={token} />
-        </div>
-        <div className="flex justify-end">
-          <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="sm">
-            {(disabled) => (
-              <div>
-                <Button loading={loading} disabled={disabled} size="sm" style="secondary" onClick={onClick}>
-                  {loading ? t('common:buttons.cancelling') : t('common:buttons.cancel_signatures')}
-                </Button>
-              </div>
-            )}
-          </ControlsWrapper>
-        </div>
-      </div>
-    </div>
+      </td>
+      <td>
+        <LastCancelledCell token={token} />
+      </td>
+      <td className="w-28 mr-0 px-4">
+        <ControlsWrapper
+          chainId={selectedChainId}
+          address={address}
+          switchChainSize="sm"
+          overrideDisabled={recentlyCancelled}
+          disabledReason={t('address:tooltips.recently_cancelled')}
+        >
+          {(disabled) => (
+            <div>
+              <Button loading={loading} disabled={disabled} size="sm" style="secondary" onClick={onClick}>
+                {loading ? t('common:buttons.cancelling') : t('common:buttons.cancel_signatures')}
+              </Button>
+            </div>
+          )}
+        </ControlsWrapper>
+      </td>
+    </tr>
   );
 };
 

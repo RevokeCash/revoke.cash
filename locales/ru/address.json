@@ -39,6 +39,7 @@
     "allowance": "Утв. сумма",
     "asset": "Aктив",
     "asset_type": "Тип",
+    "last_cancelled": "Last Cancelled",
     "last_updated": "Посл. обнов.",
     "spender": "Авториз. дост.",
     "value_at_risk": "Значение риска"
@@ -113,6 +114,7 @@
     "old_approval": "Этому разрешению уже больше года. Отзовите его, если оно вам больше не нужно.",
     "permit2_expiration": "Это разрешение Permit2, срок действия которого истекает {{inTime}}",
     "permit_signatures": "Разрешающие подписи используются для утверждения доступов без отправки транзакции. Отмените их, если вы подписали Разрешительную подпись на фишинговом веб-сайте.",
+    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "switch_chain": "Пожалуйста, переключите сеть на <0>{{chainName}}</0> в вашем кошельке, чтобы продолжить"
   },
   "wallet_health": {
