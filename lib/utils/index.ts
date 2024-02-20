@@ -147,9 +147,14 @@ export const writeContractUnlessExcessiveGas = async <
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas } as any);
 };
 
-export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient): Promise<void> => {
+// TODO: Remove type assertion after migrating to viem v2 (waitForTransactionHash will be properly typed)
+export const waitForTransactionConfirmation = async (
+  hash: Hash,
+  publicClient: PublicClient,
+): Promise<{ blockNumber: bigint }> => {
   try {
-    return void (await publicClient.waitForTransactionReceipt({ hash }));
+    const transactionReceipt = (await publicClient.waitForTransactionReceipt({ hash })) as { blockNumber: bigint };
+    return transactionReceipt;
   } catch (e) {
     // Workaround for Safe Apps, somehow they don't return the transaction receipt -- TODO: remove when fixed
     if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;
