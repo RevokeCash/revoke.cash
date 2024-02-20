@@ -1,6 +1,6 @@
 ---
 title: 'Monthly Update: August 2023'
-description: In August we added support for Permit2 Approvals, a novel way of enabling gasless Permit signatures for all ERC20 tokens. We also extended our Learn Section with artciles that explain how gasless Permit signatures work, and where Permit2 fits in.
+description: In August we added support for Permit2 Approvals, a novel way of enabling gasless Permit signatures for all ERC20 tokens. We also extended our Learn Section with articles that explain how gasless Permit signatures work, and where Permit2 fits in.
 date: 2023-08-31
 author: Rosco Kalis
 translator: <Your Name Here (or remove)>
@@ -8,7 +8,7 @@ translator: <Your Name Here (or remove)>
 
 # Monthly Update: August 2023
 
-In August we added support for Permit2 Approvals, a novel way of enabling gasless Permit signatures for all ERC20 tokens, developed by Uniswap. We also extended our Learn Section with artciles that explain how gasless Permit signatures work, and where Permit2 fits in. And we've made some more overall fixes and improvements. Read on to learn more about what we've been up to in August.
+In August we added support for Permit2 Approvals, a novel way of enabling gasless Permit signatures for all ERC20 tokens, developed by Uniswap. We also extended our Learn Section with articles that explain how gasless Permit signatures work, and where Permit2 fits in. And we've made some more overall fixes and improvements. Read on to learn more about what we've been up to in August.
 
 ## Support for Permit2 Approvals
 
