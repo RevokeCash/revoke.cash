@@ -21,7 +21,10 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
 
   // Track whether the React Select is open or not
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
-  const handleSelectClose = () => setSelectOpen(false);
+  const handleSelectClose = () => {
+    buttonRef.current?.focus();
+    setSelectOpen(false);
+  };
   const toggleSelectOpen = () => setSelectOpen((prev) => !prev);
 
   useEffect(() => {
@@ -29,7 +32,6 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
       selectRef.current?.focus();
     } else {
       selectRef.current?.blur();
-      buttonRef.current?.focus();
     }
   }, [isSelectOpen]);
 
