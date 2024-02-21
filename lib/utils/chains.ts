@@ -20,9 +20,11 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.ArbitrumGoerli,
   ChainId.ArbitrumOne,
   ChainId.ArbitrumSepolia,
+  ChainId.CrabNetwork,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
   ChainId.CoreBlockchainMainnet,
+  ChainId.DarwiniaNetwork,
   ChainId.EthereumMainnet,
   ChainId.ExosamaNetwork,
   ChainId.FrameTestnet,
@@ -206,6 +208,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
   ChainId.Kroma,
+  ChainId.CrabNetwork,
   ChainId.ZetaChainMainnet,
   ChainId.EthereumClassic,
   ChainId.NahmiiMainnet,
@@ -223,6 +226,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
+  ChainId.DarwiniaNetwork,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -563,8 +567,10 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.CoinExSmartChainMainnet]: '/assets/images/vendor/chains/coinex.svg',
     [ChainId.CoinExSmartChainTestnet]: '/assets/images/vendor/chains/coinex.svg',
     [ChainId.CoreBlockchainMainnet]: '/assets/images/vendor/chains/core.png',
+    [ChainId.CrabNetwork]: '/assets/images/vendor/chains/crab.svg',
     [ChainId.CronosMainnet]: '/assets/images/vendor/chains/cronos.svg',
     [ChainId.CronosTestnet]: '/assets/images/vendor/chains/cronos.svg',
+    [ChainId.DarwiniaNetwork]: '/assets/images/vendor/chains/darwinia.svg',
     [ChainId.DogechainMainnet]: '/assets/images/vendor/chains/dogechain.jpg',
     [ChainId.ElastosSmartChain]: '/assets/images/vendor/chains/elastos.jpg',
     [ChainId.ENULSMainnet]: '/assets/images/vendor/chains/enuls.svg',
@@ -740,6 +746,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     PWR: '1000',
     RBTC: '0.001',
     REDLC: '100',
+    RING: '2462',
     ROSE: '100',
     SAMA: '500',
     SDN: '50',
@@ -1297,6 +1304,8 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.CrabNetwork]: undefined,
+  [ChainId.DarwiniaNetwork]: undefined,
   [ChainId.DogechainMainnet]: undefined, // All stablecoins on Dogechain are depegged
   [ChainId.ElastosSmartChain]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
