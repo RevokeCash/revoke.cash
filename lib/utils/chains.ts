@@ -1304,6 +1304,8 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.CrabNetwork]: undefined,
+  [ChainId.DarwiniaNetwork]: undefined,
   [ChainId.DogechainMainnet]: undefined, // All stablecoins on Dogechain are depegged
   [ChainId.ElastosSmartChain]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
