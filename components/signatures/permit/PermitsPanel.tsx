@@ -4,10 +4,11 @@ import Card from 'components/common/Card';
 import Error from 'components/common/Error';
 import TableBodyLoader from 'components/common/TableBodyLoader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddressAllowances, useAddressEvents } from 'lib/hooks/page-context/AddressPageContext';
 import { deduplicateArray } from 'lib/utils';
 import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
-import { filterAsync } from 'lib/utils/promises';
+import { getLastCancelled } from 'lib/utils/permit';
+import { filterAsync, mapAsync } from 'lib/utils/promises';
 import { hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
 import useTranslation from 'next-translate/useTranslation';
 import { useLayoutEffect, useState } from 'react';
@@ -24,7 +25,7 @@ const PermitsPanel = () => {
 
   const { t } = useTranslation();
   const { allowances, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
-
+  const { events } = useAddressEvents();
   const {
     data: permitTokens,
     error: permitsError,
@@ -33,10 +34,15 @@ const PermitsPanel = () => {
     queryKey: ['permitTokens', allowances?.map(getAllowanceKey)],
     queryFn: async () => {
       const ownedTokens = deduplicateArray(allowances, (a, b) => a.contract.address === b.contract.address)
-        .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals))
+        .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals) && token)
         .map(stripAllowanceData);
 
-      return filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract));
+      const permitTokens = await mapAsync(
+        filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract)),
+        async (token) => ({ ...token, lastCancelled: await getLastCancelled(events.approval, token) }),
+      );
+
+      return permitTokens;
     },
     enabled: !!allowances,
     staleTime: Infinity,
@@ -85,11 +91,20 @@ const PermitsPanel = () => {
 
   return (
     <Card title={title} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
-      <div className="w-full">
-        {permitTokens.map((token) => (
-          <PermitsEntry key={token.contract.address} token={token} />
-        ))}
-      </div>
+      <table className="w-full">
+        <thead>
+          <tr className="border-b border-black dark:border-white h-10">
+            <th className="text-left px-4 whitespace-nowrap">{t('address:headers.asset')}</th>
+            <th className="text-left whitespace-nowrap">{t('address:headers.last_cancelled')}</th>
+            <th className="text-right px-4 whitespace-nowrap">{t('address:headers.actions')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {permitTokens.map((token) => (
+            <PermitsEntry key={token.contract.address} token={token} />
+          ))}
+        </tbody>
+      </table>
     </Card>
   );
 };
