@@ -60,7 +60,6 @@ export const accessors = {
     // before "no approvals" and before the < $0.01 threshold
     if (allowance.balance === 'ERC1155') return 0.01;
     if (isNullish(allowance.metadata.price)) return 0.01;
-
     return calculateValueAtRisk(allowance);
   },
 };

@@ -39,6 +39,7 @@
     "allowance": "授权金额",
     "asset": "资产",
     "asset_type": "类型",
+    "last_cancelled": "Last Cancelled",
     "last_updated": "上次更新",
     "spender": "被授权人（Spender）",
     "value_at_risk": "存在风险金额"
@@ -113,6 +114,7 @@
     "old_approval": "该授权已有一年多了。如果不再需要，可以考虑将其撤销。",
     "permit2_expiration": "这是 Permit2 授权，将于 {{inTime}} 到期。",
     "permit_signatures": "许可签名用于在无需发送交易的情况下授权消费。如果您在钓鱼网站上签署了许可签名，请取消。",
+    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
   },
   "wallet_health": {

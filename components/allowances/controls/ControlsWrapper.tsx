@@ -11,9 +11,11 @@ interface Props {
   address: string;
   switchChainSize?: 'sm' | 'md' | 'lg';
   children?: (disabled: boolean) => ReactElement;
+  overrideDisabled?: boolean;
+  disabledReason?: string;
 }
 
-const ControlsWrapper = ({ chainId, address, switchChainSize, children }: Props) => {
+const ControlsWrapper = ({ chainId, address, switchChainSize, children, overrideDisabled, disabledReason }: Props) => {
   const { t } = useTranslation();
   const { address: account, connector } = useAccount();
   const { chain } = useNetwork();
@@ -26,7 +28,7 @@ const ControlsWrapper = ({ chainId, address, switchChainSize, children }: Props)
   const canSwitchChain = connector?.id === 'injected';
   const isChainSwitchEnabled = switchChainSize !== undefined;
   const shouldRenderSwitchChainButton = needsToSwitchChain && canSwitchChain && isChainSwitchEnabled;
-  const disabled = !isConnectedAddress || (needsToSwitchChain && !shouldRenderSwitchChainButton);
+  const disabled = !isConnectedAddress || (needsToSwitchChain && !shouldRenderSwitchChainButton) || overrideDisabled;
 
   if (shouldRenderSwitchChainButton) {
     return <SwitchChainButton chainId={chainId} size={switchChainSize} />;
@@ -46,6 +48,10 @@ const ControlsWrapper = ({ chainId, address, switchChainSize, children }: Props)
     );
 
     return <WithHoverTooltip tooltip={tooltip}>{children(disabled)}</WithHoverTooltip>;
+  }
+
+  if (overrideDisabled && disabledReason) {
+    return <WithHoverTooltip tooltip={disabledReason}>{children(disabled)}</WithHoverTooltip>;
   }
 
   return <>{children(disabled)}</>;

@@ -30,6 +30,10 @@ export interface AllowanceData extends BaseTokenData {
   expiration?: number; // Only for Permit2 allowances
 }
 
+export interface PermitTokenData extends BaseTokenData {
+  lastCancelled?: Log;
+}
+
 export interface TokenFromList {
   symbol: string;
   decimals?: number;
