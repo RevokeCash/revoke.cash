@@ -1,11 +1,10 @@
 import { PERMIT2_ABI } from 'lib/abis';
-import blocksDB from 'lib/databases/blocks';
 import { BaseAllowanceData, Erc20TokenContract, Log } from 'lib/interfaces';
 import { Address, WalletClient, decodeEventLog } from 'viem';
-import { deduplicateLogsByTopics, getWalletAddress, sortLogsChronologically } from '.';
+import { deduplicateLogsByTopics, getLogTimestamp, getWalletAddress, sortLogsChronologically } from '.';
 import { SECOND } from './time';
 
-export const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
+export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
 
 // Note that we merge all Permit2 related events (Approval, Permit, Lockdown) before calling this function
 export const getPermit2AllowancesFromApprovals = async (
@@ -47,7 +46,7 @@ const getPermit2AllowanceFromApproval = async (
       functionName: 'allowance',
       args: [owner, tokenContract.address, spender],
     }),
-    approval.timestamp ?? blocksDB.getBlockTimestamp(tokenContract.publicClient, approval.blockNumber),
+    getLogTimestamp(tokenContract.publicClient, approval),
     approval.transactionHash,
   ]);
 

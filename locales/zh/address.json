@@ -41,6 +41,7 @@
     "asset_type": "类型",
     "last_cancelled": "Last Cancelled",
     "last_updated": "上次更新",
+    "marketplace": "Marketplace",
     "spender": "被授权人（Spender）",
     "value_at_risk": "存在风险金额"
   },

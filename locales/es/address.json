@@ -41,6 +41,7 @@
     "asset_type": "Tipo",
     "last_cancelled": "Last Cancelled",
     "last_updated": "Última Actualización",
+    "marketplace": "Marketplace",
     "spender": "Gastador Autorizado",
     "value_at_risk": "Valor en Riesgo"
   },

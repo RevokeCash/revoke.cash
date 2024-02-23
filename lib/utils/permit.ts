@@ -1,6 +1,5 @@
 import { DAI_PERMIT_ABI } from 'lib/abis';
 import { ADDRESS_ZERO_PADDED, DUMMY_ADDRESS_PADDED } from 'lib/constants';
-import blocksDB from 'lib/databases/blocks';
 import { BaseTokenData, Erc20TokenContract, Log } from 'lib/interfaces';
 import {
   Address,
@@ -13,7 +12,7 @@ import {
   pad,
   toHex,
 } from 'viem';
-import { getWalletAddress, logSorterChronological, writeContractUnlessExcessiveGas } from '.';
+import { getLogTimestamp, getWalletAddress, logSorterChronological, writeContractUnlessExcessiveGas } from '.';
 import { track } from './analytics';
 
 export const permit = async (
@@ -202,9 +201,7 @@ export const getLastCancelled = async (approvalEvents: Log[], token: BaseTokenDa
 
   if (!lastCancelledEvent) return null;
 
-  const timestamp =
-    lastCancelledEvent.timestamp ??
-    (await blocksDB.getBlockTimestamp(token.contract.publicClient, lastCancelledEvent.blockNumber));
+  const timestamp = await getLogTimestamp(token.contract.publicClient, lastCancelledEvent);
 
   return { ...lastCancelledEvent, timestamp };
 };
