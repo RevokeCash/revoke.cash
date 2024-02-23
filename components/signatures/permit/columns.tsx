@@ -1,14 +1,14 @@
 import { createColumnHelper, RowData } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import { AllowanceData, OnUpdate, PermitTokenData } from 'lib/interfaces';
+import { AllowanceData, OnCancel, PermitTokenData } from 'lib/interfaces';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import CancelPermitCell from '../cells/CancelPermitCell';
 import LastCancelledCell from '../cells/LastCancelledCell';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
-    onUpdate: OnUpdate;
+    onCancel: OnCancel<TData>;
   }
 }
 
@@ -48,6 +48,6 @@ export const columns = [
   columnHelper.display({
     id: ColumnId.ACTIONS,
     header: () => <HeaderCell i18nKey="address:headers.actions" align="right" />,
-    cell: (info) => <CancelPermitCell token={info.row.original} />,
+    cell: (info) => <CancelPermitCell token={info.row.original} onCancel={info.table.options.meta.onCancel} />,
   }),
 ];

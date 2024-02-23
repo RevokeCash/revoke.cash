@@ -1,7 +1,7 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import { useMounted } from 'lib/hooks/useMounted';
-import { Log } from 'lib/interfaces';
+import { TimeLog } from 'lib/interfaces';
 import { HOUR, SECOND } from 'lib/utils/time';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
@@ -9,7 +9,7 @@ import { useAsyncCallback } from 'react-async-hook';
 interface Props {
   chainId: number;
   address: string;
-  lastCancelled?: Log;
+  lastCancelled?: TimeLog;
   cancel: () => Promise<void>;
 }
 

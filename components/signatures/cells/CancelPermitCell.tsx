@@ -1,8 +1,8 @@
 import { DUMMY_ADDRESS } from 'lib/constants';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { PermitTokenData, TransactionType } from 'lib/interfaces';
-import { waitForTransactionConfirmation } from 'lib/utils';
+import { OnCancel, PermitTokenData, TransactionType } from 'lib/interfaces';
+import { getLogTimestamp, waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -11,9 +11,10 @@ import CancelCell from './CancelCell';
 
 interface Props {
   token: PermitTokenData;
+  onCancel: OnCancel<PermitTokenData>;
 }
 
-const CancelPermitCell = ({ token }: Props) => {
+const CancelPermitCell = ({ token, onCancel }: Props) => {
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
   const { address, selectedChainId } = useAddressPageContext();
@@ -28,7 +29,16 @@ const CancelPermitCell = ({ token }: Props) => {
 
     track('Cancelled Permit Signatures', { chainId: selectedChainId, account: address, token: token.contract.address });
 
-    await waitForTransactionConfirmation(hash, publicClient);
+    // TODO: Deduplicate this with the CancelMarketplaceCell
+    const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
+
+    const lastCancelled = {
+      transactionHash: hash,
+      blockNumber: Number(transactionReceipt.blockNumber),
+      timestamp: await getLogTimestamp(publicClient, { blockNumber: Number(transactionReceipt.blockNumber) }),
+    };
+
+    await onCancel(token, lastCancelled);
   };
 
   return <CancelCell chainId={selectedChainId} address={address} lastCancelled={token.lastCancelled} cancel={cancel} />;

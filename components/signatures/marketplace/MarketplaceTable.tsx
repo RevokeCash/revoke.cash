@@ -12,7 +12,7 @@ import { columns } from './columns';
 const MarketplaceTable = () => {
   const { t } = useTranslation();
   const { selectedChainId, address } = useAddressPageContext();
-  const { data: marketplaces, isLoading, error } = useMarketplaces(selectedChainId, address);
+  const { marketplaces, isLoading, error, onCancel } = useMarketplaces(selectedChainId, address);
 
   const title = (
     <div className="flex items-center gap-2">
@@ -36,7 +36,9 @@ const MarketplaceTable = () => {
     getRowId(row) {
       return `${row.name}`;
     },
-    // meta: { onUpdate },
+    // TODO: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any
+    // See https://github.com/TanStack/table/discussions/4220
+    meta: { onCancel } as any,
   });
 
   return (
