@@ -176,6 +176,6 @@ export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: n
         ),
   );
 
-export const getLogTimestamp = async (publicClient: PublicClient, log: Log) => {
+export const getLogTimestamp = async (publicClient: PublicClient, log: Pick<Log, 'timestamp' | 'blockNumber'>) => {
   return log.timestamp ?? blocksDB.getBlockTimestamp(publicClient, log.blockNumber);
 };

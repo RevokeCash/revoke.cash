@@ -31,7 +31,7 @@ export interface AllowanceData extends BaseTokenData {
 }
 
 export interface PermitTokenData extends BaseTokenData {
-  lastCancelled?: Log;
+  lastCancelled?: TimeLog;
 }
 
 export interface TokenFromList {
@@ -67,6 +67,8 @@ export interface Log {
   logIndex: number;
   timestamp?: number;
 }
+
+export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
 
 export interface RateLimit {
   interval: number;
@@ -107,7 +109,7 @@ export interface Marketplace {
   name: string;
   logo: string;
   chainId: number;
-  lastCancelled?: Log;
+  lastCancelled?: TimeLog;
   cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
 }
 
@@ -183,6 +185,7 @@ export interface TokenMetadata {
 }
 
 export type OnUpdate = ReturnType<typeof useAllowances>['onUpdate'];
+export type OnCancel<T> = (data: T, lastCancelled: TimeLog) => Promise<void>;
 
 export interface EtherscanPlatform {
   domain: string;

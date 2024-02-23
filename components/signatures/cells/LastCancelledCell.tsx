@@ -1,6 +1,6 @@
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { Log } from 'lib/interfaces';
+import type { TimeLog } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { SECOND, formatDateNormalised } from 'lib/utils/time';
 import useTranslation from 'next-translate/useTranslation';
@@ -8,7 +8,7 @@ import TimeAgo from 'timeago-react';
 
 interface Props {
   chainId: number;
-  lastCancelled?: Log;
+  lastCancelled?: TimeLog;
 }
 
 const LastCancelledCell = ({ chainId, lastCancelled }: Props) => {

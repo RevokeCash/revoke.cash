@@ -20,7 +20,9 @@ const AllowanceDashboard = () => {
     getRowId(row) {
       return `${row.contract.address}-${row.spender}-${row.tokenId}`;
     },
-    meta: { onUpdate },
+    // TODO: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any
+    // See https://github.com/TanStack/table/discussions/4220
+    meta: { onUpdate } as any,
     initialState: {
       sorting: [{ id: ColumnId.SYMBOL, desc: false }],
       columnVisibility: {
