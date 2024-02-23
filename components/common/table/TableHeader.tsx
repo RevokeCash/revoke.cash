@@ -1,11 +1,10 @@
 import { flexRender, Table } from '@tanstack/react-table';
-import type { AllowanceData } from 'lib/interfaces';
 
-interface Props {
-  table: Table<AllowanceData>;
+interface Props<T> {
+  table: Table<T>;
 }
 
-const AllowanceTableHeader = ({ table }: Props) => {
+const TableHeader = <T,>({ table }: Props<T>) => {
   return (
     <thead>
       {table.getHeaderGroups().map((headerGroup) => (
@@ -21,4 +20,4 @@ const AllowanceTableHeader = ({ table }: Props) => {
   );
 };
 
-export default AllowanceTableHeader;
+export default TableHeader;
