@@ -1,14 +1,14 @@
 import { flexRender, Table } from '@tanstack/react-table';
 import TableBodyLoader from 'components/common/TableBodyLoader';
-import type { AllowanceData } from 'lib/interfaces';
 import { useLayoutEffect, useState } from 'react';
 
-interface Props {
+interface Props<T> {
   isLoading?: boolean;
-  table: Table<AllowanceData>;
+  table: Table<T>;
+  loaderRows?: number;
 }
 
-const AllowanceTableBody = ({ isLoading, table }: Props) => {
+const TableBody = <T,>({ table, isLoading, loaderRows }: Props<T>) => {
   const ROW_HEIGHT = 52;
   const [loaderHeight, setLoaderHeight] = useState<number>(ROW_HEIGHT * 12);
 
@@ -23,13 +23,13 @@ const AllowanceTableBody = ({ isLoading, table }: Props) => {
       // Compensate for the different height of the address header on small screens
       <>
         <TableBodyLoader
-          columns={7}
-          rows={Math.floor(loaderHeight / ROW_HEIGHT)}
+          columns={table.getVisibleFlatColumns().length}
+          rows={loaderRows ?? Math.floor(loaderHeight / ROW_HEIGHT)}
           className="allowances-loader max-sm:hidden"
         />
         <TableBodyLoader
-          columns={7}
-          rows={Math.floor((loaderHeight - 68) / ROW_HEIGHT)}
+          columns={table.getVisibleFlatColumns().length}
+          rows={loaderRows ?? Math.floor((loaderHeight - 68) / ROW_HEIGHT)}
           className="allowances-loader sm:hidden"
         />
       </>
@@ -51,4 +51,4 @@ const AllowanceTableBody = ({ isLoading, table }: Props) => {
   );
 };
 
-export default AllowanceTableBody;
+export default TableBody;
