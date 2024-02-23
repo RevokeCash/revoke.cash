@@ -41,6 +41,7 @@
     "asset_type": "Тип",
     "last_cancelled": "Last Cancelled",
     "last_updated": "Посл. обнов.",
+    "marketplace": "Marketplace",
     "spender": "Авториз. дост.",
     "value_at_risk": "Значение риска"
   },

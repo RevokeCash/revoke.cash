@@ -59,9 +59,15 @@ export const OPENSEA_REGISTRY_ABI = parseAbi([
   'event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)',
 ]);
 
-export const OPENSEA_SEAPORT_ABI = parseAbi(['function incrementCounter() public returns (uint256)']);
+export const OPENSEA_SEAPORT_ABI = parseAbi([
+  'function incrementCounter() public returns (uint256)',
+  'event CounterIncremented(uint256, address indexed)',
+]);
 
-export const BLUR_ABI = parseAbi(['function incrementNonce() public']);
+export const BLUR_ABI = parseAbi([
+  'function incrementNonce() public',
+  'event NonceIncremented(address indexed, uint256)',
+]);
 
 export const DAI_PERMIT_ABI = parseAbi([
   'function permit(address holder, address spender, uint256 nonce, uint256 expiry, bool allowed, uint8 v, bytes32 r, bytes32 s) public',

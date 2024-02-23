@@ -83,6 +83,7 @@ export interface AddressEvents {
 }
 
 export interface Filter {
+  address?: Address;
   topics: string[];
   fromBlock: number;
   toBlock: number;
@@ -94,10 +95,19 @@ export enum TransactionType {
   OTHER = 'other',
 }
 
-export interface Marketplace {
+export interface MarketplaceConfig {
   name: string;
   logo: string;
   chains: number[];
+  cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
+  getFilter: (address: Address) => Pick<Filter, 'address' | 'topics'>;
+}
+
+export interface Marketplace {
+  name: string;
+  logo: string;
+  chainId: number;
+  lastCancelled?: Log;
   cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
 }
 
