@@ -103,6 +103,7 @@ export interface MarketplaceConfig {
   chains: number[];
   cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
   getFilter: (address: Address) => Pick<Filter, 'address' | 'topics'>;
+  approvalFilterAddress: Address;
 }
 
 export interface Marketplace {
@@ -111,6 +112,7 @@ export interface Marketplace {
   chainId: number;
   lastCancelled?: TimeLog;
   cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
+  allowances: AllowanceData[];
 }
 
 export interface ISidebarEntry {

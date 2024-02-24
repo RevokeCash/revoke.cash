@@ -73,6 +73,10 @@
       "description": "Como las firmas no se almacenan en la blockchain, Revoke.cash no tiene forma de comprobar si realmente has firmado alguna firma. Por lo tanto, esta página contiene una lista de <0>firmas potenciales</0>. <1>Solo tienes que cancelar estas firmas si estás seguro de haber firmado una en un sitio web de phishing</1>. Por ello, la firma potencial permanecerá en la lista, incluso después de cancelarla."
     },
     "marketplaces": {
+      "active_approvals": {
+        "one": "1 active approval",
+        "other": "{{count}} active approvals"
+      },
       "none_found": "No se encontraron mercados para esta red.",
       "title": "Posibles Firmas del Mercado"
     },

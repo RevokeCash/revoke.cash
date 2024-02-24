@@ -2,9 +2,11 @@ import { ChainId } from '@revoke.cash/chains';
 import Dexie, { Table } from 'dexie';
 import { Filter, Log, LogsProvider } from 'lib/interfaces';
 import { isCovalentSupportedChain } from 'lib/utils/chains';
+import { Address } from 'viem';
 
 interface Events {
   chainId: number;
+  address?: Address;
   topicsKey: string;
   topics: string[];
   toBlock: number;
@@ -65,8 +67,12 @@ class EventsDB extends Dexie {
     if (DO_NOT_INDEX.includes(chainId)) return logsProvider.getLogs({ ...filter, toBlock });
 
     try {
-      const { topics } = filter;
-      const topicsKey = topics.join(',');
+      // We add the filter address to topicsKey because we cannot update the primary key of the table in Dexie (yet),
+      // so this is the only backwards-compatible way to add the address to the primary key. Note that this causes
+      // no change for filters without address because we don't change the topicsKey for those.
+      // TODO: Properly update the primary key of the table in Dexie when it is supported.
+      const { address, topics } = filter;
+      const topicsKey = topics.join(',') + (address ? `/${address}` : '');
       const storedEvents = await this.events.get([chainId, topicsKey]);
 
       // If we already have events stored, we only need to get events from the last stored event to the latest block
@@ -82,7 +88,7 @@ class EventsDB extends Dexie {
 
       const logs = [...(storedEvents?.logs || []), ...newLogs];
 
-      await this.events.put({ chainId, topicsKey, topics, toBlock, logs });
+      await this.events.put({ chainId, address, topicsKey, topics, toBlock, logs });
       return logs;
     } catch (e) {
       console.error(e);

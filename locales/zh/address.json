@@ -73,6 +73,10 @@
       "description": "由于区块链不存储签名，因此 Revoke.cash 无法核实您是否真的进行了签名。此页面包含了<0>可能的</0>签名列表。<1>只有当您确定自己在钓鱼网站上进行了签名时，才需要取消这些签名</1>。即使您已取消签名，该条目仍将保存在本列表中。"
     },
     "marketplaces": {
+      "active_approvals": {
+        "one": "1 active approval",
+        "other": "{{count}} active approvals"
+      },
       "none_found": "未找到该链的市场。",
       "title": "潜在的市场签名"
     },

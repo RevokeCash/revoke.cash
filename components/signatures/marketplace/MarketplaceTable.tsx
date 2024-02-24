@@ -4,15 +4,13 @@ import Card from 'components/common/Card';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import Table from 'components/common/table/Table';
 import { useMarketplaces } from 'lib/hooks/ethereum/useMarketplaces';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { Marketplace } from 'lib/interfaces';
 import useTranslation from 'next-translate/useTranslation';
 import { columns } from './columns';
 
 const MarketplaceTable = () => {
   const { t } = useTranslation();
-  const { selectedChainId, address } = useAddressPageContext();
-  const { marketplaces, isLoading, error, onCancel } = useMarketplaces(selectedChainId, address);
+  const { marketplaces, isLoading, error, onCancel } = useMarketplaces();
 
   const title = (
     <div className="flex items-center gap-2">
