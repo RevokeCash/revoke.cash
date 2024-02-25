@@ -1,4 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
+import blocksDB from 'lib/databases/blocks';
 import type { AllowanceData, Log } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
@@ -147,9 +148,14 @@ export const writeContractUnlessExcessiveGas = async <
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas } as any);
 };
 
-export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient): Promise<void> => {
+// TODO: Remove type assertion after migrating to viem v2 (waitForTransactionHash will be properly typed)
+export const waitForTransactionConfirmation = async (
+  hash: Hash,
+  publicClient: PublicClient,
+): Promise<{ blockNumber: bigint }> => {
   try {
-    return void (await publicClient.waitForTransactionReceipt({ hash }));
+    const transactionReceipt = (await publicClient.waitForTransactionReceipt({ hash })) as { blockNumber: bigint };
+    return transactionReceipt;
   } catch (e) {
     // Workaround for Safe Apps, somehow they don't return the transaction receipt -- TODO: remove when fixed
     if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;
@@ -169,3 +175,7 @@ export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: n
           chunkSize,
         ),
   );
+
+export const getLogTimestamp = async (publicClient: PublicClient, log: Pick<Log, 'timestamp' | 'blockNumber'>) => {
+  return log.timestamp ?? blocksDB.getBlockTimestamp(publicClient, log.blockNumber);
+};

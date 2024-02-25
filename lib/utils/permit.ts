@@ -1,5 +1,6 @@
 import { DAI_PERMIT_ABI } from 'lib/abis';
-import { Erc20TokenContract } from 'lib/interfaces';
+import { ADDRESS_ZERO_PADDED, DUMMY_ADDRESS_PADDED } from 'lib/constants';
+import { BaseTokenData, Erc20TokenContract, Log } from 'lib/interfaces';
 import {
   Address,
   Hex,
@@ -11,7 +12,7 @@ import {
   pad,
   toHex,
 } from 'viem';
-import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
+import { getLogTimestamp, getWalletAddress, logSorterChronological, writeContractUnlessExcessiveGas } from '.';
 import { track } from './analytics';
 
 export const permit = async (
@@ -190,4 +191,23 @@ export const signDaiPermit = async (
   });
 
   return hexToSignature(signatureHex);
+};
+
+export const getLastCancelled = async (approvalEvents: Log[], token: BaseTokenData): Promise<Log> => {
+  const lastCancelledEvent = approvalEvents
+    .filter((event) => event.address === token.contract.address && isCancelPermitEvent(event))
+    .sort(logSorterChronological)
+    .at(-1);
+
+  if (!lastCancelledEvent) return null;
+
+  const timestamp = await getLogTimestamp(token.contract.publicClient, lastCancelledEvent);
+
+  return { ...lastCancelledEvent, timestamp };
+};
+
+const isCancelPermitEvent = (event: Log) => {
+  const hasDummySpender = event.topics[2] === DUMMY_ADDRESS_PADDED;
+  const hasZeroValue = event.data === ADDRESS_ZERO_PADDED || event.data === '0x';
+  return hasDummySpender && hasZeroValue;
 };

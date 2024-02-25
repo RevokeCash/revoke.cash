@@ -39,7 +39,9 @@
     "allowance": "Утв. сумма",
     "asset": "Aктив",
     "asset_type": "Тип",
+    "last_cancelled": "Last Cancelled",
     "last_updated": "Посл. обнов.",
+    "marketplace": "Marketplace",
     "spender": "Авториз. дост.",
     "value_at_risk": "Значение риска"
   },
@@ -71,6 +73,10 @@
       "description": "Поскольку подписи не хранятся в блокчейне, Revoke.cash не может проверить, действительно ли вы подписали что-либо. Поэтому эта страница содержит список <0>потенциальных</0> подписей. <1>Вам нужно отменить эти подписи только в том случае, если вы уверены, что подписали их на фишинговом веб-сайте</1>. Потенциальная подпись останется в списке даже после её отмены."
     },
     "marketplaces": {
+      "active_approvals": {
+        "one": "1 active approval",
+        "other": "{{count}} active approvals"
+      },
       "none_found": "Торговые площадки для этой сети не найдены.",
       "title": "Потенциальные подписи на рынке"
     },
@@ -113,6 +119,7 @@
     "old_approval": "Этому разрешению уже больше года. Отзовите его, если оно вам больше не нужно.",
     "permit2_expiration": "Это разрешение Permit2, срок действия которого истекает {{inTime}}",
     "permit_signatures": "Разрешающие подписи используются для утверждения доступов без отправки транзакции. Отмените их, если вы подписали Разрешительную подпись на фишинговом веб-сайте.",
+    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "switch_chain": "Пожалуйста, переключите сеть на <0>{{chainName}}</0> в вашем кошельке, чтобы продолжить"
   },
   "wallet_health": {

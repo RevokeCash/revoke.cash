@@ -39,7 +39,9 @@
     "allowance": "Approved Amount",
     "asset": "Asset",
     "asset_type": "Type",
+    "last_cancelled": "Last Cancelled",
     "last_updated": "Last Updated",
+    "marketplace": "Marketplace",
     "spender": "Approved Spender",
     "value_at_risk": "Value at Risk"
   },
@@ -71,7 +73,11 @@
       "description": "Because signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you actually signed any signatures. So this page contains a list of <0>potential</0> signatures. <1>You only need to cancel these signatures if you are sure that you signed one on a phishing website</1>. Because of this, the potential signature will remain in the list, even after cancelling it."
     },
     "marketplaces": {
-      "none_found": "No marketplaces found for this network.",
+      "active_approvals": {
+        "one": "1 active approval",
+        "other": "{{count}} active approvals"
+      },
+      "none_found": "No marketplaces with active approvals found.",
       "title": "Potential Marketplace Signatures"
     },
     "permit": {
@@ -113,6 +119,7 @@
     "old_approval": "This approval is over a year old. Consider revoking it if you no longer need it.",
     "permit2_expiration": "This is a Permit2 approval that will expire {{inTime}}",
     "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
+    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "switch_chain": "Please switch your connected network to <0>{{chainName}}</0> inside your wallet to continue"
   },
   "wallet_health": {

@@ -39,7 +39,9 @@
     "allowance": "Cantidad Autorizada",
     "asset": "Activo",
     "asset_type": "Tipo",
+    "last_cancelled": "Last Cancelled",
     "last_updated": "Última Actualización",
+    "marketplace": "Marketplace",
     "spender": "Gastador Autorizado",
     "value_at_risk": "Valor en Riesgo"
   },
@@ -71,6 +73,10 @@
       "description": "Como las firmas no se almacenan en la blockchain, Revoke.cash no tiene forma de comprobar si realmente has firmado alguna firma. Por lo tanto, esta página contiene una lista de <0>firmas potenciales</0>. <1>Solo tienes que cancelar estas firmas si estás seguro de haber firmado una en un sitio web de phishing</1>. Por ello, la firma potencial permanecerá en la lista, incluso después de cancelarla."
     },
     "marketplaces": {
+      "active_approvals": {
+        "one": "1 active approval",
+        "other": "{{count}} active approvals"
+      },
       "none_found": "No se encontraron mercados para esta red.",
       "title": "Posibles Firmas del Mercado"
     },
@@ -113,6 +119,7 @@
     "old_approval": "Esta aprobación tiene más de un año. Considera revocarla si ya no la necesitas.",
     "permit2_expiration": "Esta es una autorización de Permit2 que caducará en {{inTime}}",
     "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
+    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "switch_chain": "Por favor cambia tu red conectada a <0>{{chainName}}</0> dentro de tu cartera para continuar"
   },
   "wallet_health": {
