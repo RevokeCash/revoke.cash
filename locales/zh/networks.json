@@ -22,6 +22,7 @@
     "coinex-smart-chain": "CoinEX 智能链（CSC）是 CoinEx 交易所开发的第 1 层（Layer 1）区块链，旨在提供比以太坊更低廉的交易费用和更快捷的交易速度。为达成这一目标，CSC 采用了更为中心化的共识机制，整合了权益证明（PoS）和权威证明（PoA）的特点。",
     "core": "CORE 是第 1 层（Layer 1）区块链，采用了名为中本聪+（Satoshi Plus）的全新共识机制，该机制在利用比特币哈希率的同时还融合了工作量证明（PoW）和委托权益证明（DPoS）的特色。除了提供自己的区块链网络，CORE DAO 还致力于将中本聪+（Satoshi Plus）技术推广至其他区块链。",
     "cronos": "Cronos 是 Crypto.org 区块链上与 EVM 兼容的侧链。Cronos 采用权威证明（PoA）共识机制，使用便捷、成本低廉，缺点是去中心化程度方面有所妥协。该链还使用跨链通信协议（IBC）来实现与其他区块链之间的互操作性。",
+    "darwinia": "Darwinia is an Ethereum-compatible parachain running on Polkadot. As a Polkadot parachain it integrates well with other networks built on Polkadot as aims to provide cross-chain interoperability between different blockchains using its Darwinia MsgPort technology.",
     "dogechain": "Dogechain（狗狗链）是一个致力于将智能合约引入狗狗币生态系统的项目。狗狗链是狗狗币的非官方侧链，可桥接狗狗币主网，将狗狗币转入和转出，让狗狗币生态系统用户能够使用狗狗币桥接并使用基于 EVM 的智能合约。",
     "elastos": "Elastos（亦来云）是第 1 层（Layer 1）区块链，旨在推动区块链智能合约与现代网络世界的融合。为此，Elastos 创建了区块链和侧链网络，以及其他相关组件，例如点对点网络和去中心化身份。Elastos 的愿景构建 Elastos SmartWeb 智能互联网并整合各种解决方案。",
     "enuls": "ENULS 是建立在 NULS 区块链基础设施之上的第 1 层（Layer 1）EVM 兼容链。ENULS 致力于通过其兄弟网络——Nerve 网络，实现跨链互操作性。Nerve 网络同样属于 NULS 生态系统。",
