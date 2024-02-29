@@ -702,7 +702,7 @@ export const getChainNativeToken = (chainId: number): string => {
   return overrides[chainId] ?? getChain(chainId)?.nativeCurrency?.symbol ?? 'ETH';
 };
 
-// Target a default of around $10-20
+// Target a default of a round-ish number of tokens, worth around $10-20
 export const getDefaultDonationAmount = (nativeToken: string): string => {
   const mapping = {
     ASTR: '300',
@@ -749,7 +749,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     PWR: '1000',
     RBTC: '0.001',
     REDLC: '100',
-    RING: '2462',
+    RING: '2500',
     ROSE: '100',
     SAMA: '500',
     SDN: '50',
