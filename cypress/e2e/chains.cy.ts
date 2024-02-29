@@ -31,6 +31,7 @@ const TEST_ADDRESSES = {
   [ChainId.BitgertMainnet]: '0x6AC875A1C4E12c25265B01C9A2d1112fbb2AdfaF',
   [ChainId.BitTorrentChainMainnet]: '0x2d850d18B0617077585F1D0Cba043168dc90954D',
   [ChainId.BitrockMainnet]: '0x818416066d4a69c05046F6f2d43d50E50E46B6cE',
+  [ChainId.Blast]: '0x4ff8ff73C5a485ca231Bc79bEd276c162e360C2e',
   [ChainId.BNBSmartChainMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.BobaNetwork]: '0x164EA2CDE6f59F5Fcb76E78d292679B2521C54C2',
   [ChainId.CallistoMainnet]: '0x3Ce5AE5E6762D568fcddB5Beef8B9B666CBa29Bb',
