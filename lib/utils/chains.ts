@@ -54,8 +54,10 @@ export const PROVIDER_SUPPORTED_CHAINS = [
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.Astar,
   ChainId.AuroraMainnet,
+  ChainId.BerachainArtio,
   ChainId.BitgertMainnet,
   ChainId.BitrockMainnet,
+  ChainId.BlastSepoliaTestnet,
   ChainId.CallistoMainnet,
   ChainId.CronosMainnet,
   ChainId.CronosTestnet,
@@ -85,6 +87,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.PegoNetwork,
   ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.PulseChainTestnetv4,
+  1380012617, // RARI Chain
   ChainId.RedlightChainMainnet,
   ChainId.RolluxMainnet,
   ChainId.RootstockMainnet,
@@ -216,6 +219,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Shiden,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.Palm,
+  1380012617, // RARI Chain
   ChainId.BitrockMainnet,
   ChainId.Zora,
   ChainId.ExosamaNetwork,
@@ -244,6 +248,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.TaikoJolnirL2,
   ChainId.TaikoKatlaL2,
   ChainId.FrameTestnet,
+  ChainId.BlastSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
   ChainId.PulseChainTestnetv4,
@@ -257,6 +262,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.HorizenGobiTestnet,
   ChainId.ShimmerEVMTestnet,
   ChainId.ZetaChainAthens3Testnet,
+  ChainId.BerachainArtio,
 ];
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
@@ -306,6 +312,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.BitrockMainnet]: 'Bitrock',
     [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
+    [ChainId.BlastSepoliaTestnet]: 'Blast Sepolia',
     [ChainId.BNBSmartChainMainnet]: 'BNB Chain',
     [ChainId.BNBSmartChainTestnet]: 'BNB Chain Testnet',
     [ChainId.BobaNetwork]: 'Boba',
@@ -372,6 +379,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
     [ChainId.PulseChain]: 'PulseChain',
     [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
+    [1380012617]: 'RARI Chain',
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.RolluxMainnet]: 'Rollux',
     [ChainId.RootstockMainnet]: 'Rootstock',
@@ -400,6 +408,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZkSyncSepoliaTestnet]: 'zkSync Sepolia',
     [12345678901]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
     [12345678902]: 'Frame', // TODO: This is a placeholder so we can add a description for Frame
+    [12345678903]: 'Berachain', // TODO: This is a placeholder so we can add a description for Berachain
   };
 
   const name = overrides[chainId] ?? getChain(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -447,6 +456,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com',
+    [1380012617]: 'https://mainnet.explorer.rarichain.org',
     [ChainId.Scroll]: 'https://scrollscan.com',
     [ChainId.SmartBitcoinCash]: 'https://www.smartscan.cash',
     [ChainId.Wanchain]: 'https://www.wanscan.org',
@@ -468,7 +478,7 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
   };
 
   const [rpcUrl] = getChain(chainId)?.rpc ?? [];
-  return overrides[chainId] ?? rpcUrl;
+  return overrides[chainId] ?? rpcUrl ?? getChainRpcUrl(chainId);
 };
 
 export const getChainRpcUrl = (chainId: number): string | undefined => {
@@ -502,6 +512,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVM]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.PolygonzkEVMTestnet]: `https://polygonzkevm-testnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
+    [1380012617]: 'https://mainnet.rpc.rarichain.org/http',
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
@@ -549,10 +560,12 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.AvalancheFujiTestnet]: '/assets/images/vendor/chains/avalanche.svg',
     [ChainId.Base]: '/assets/images/vendor/chains/base.svg',
     [ChainId.BaseGoerliTestnet]: '/assets/images/vendor/chains/base.svg',
+    [ChainId.BerachainArtio]: '/assets/images/vendor/chains/berachain.jpg',
     [ChainId.BitgertMainnet]: '/assets/images/vendor/chains/bitgert.svg',
     [ChainId.BitrockMainnet]: '/assets/images/vendor/chains/bitrock.svg',
     [ChainId.BitTorrentChainMainnet]: '/assets/images/vendor/chains/bttc.svg',
     [ChainId.BitTorrentChainTestnet]: '/assets/images/vendor/chains/bttc.svg',
+    [ChainId.BlastSepoliaTestnet]: '/assets/images/vendor/chains/blast.jpg',
     [ChainId.BNBSmartChainMainnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.BNBSmartChainTestnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpg',
@@ -633,6 +646,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PulseChain]: '/assets/images/vendor/chains/pulsechain.png',
     [ChainId.PulseChainTestnetv4]: '/assets/images/vendor/chains/pulsechain.png',
+    [1380012617]: '/assets/images/vendor/chains/rari.svg',
     [ChainId.RedlightChainMainnet]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.RolluxMainnet]: '/assets/images/vendor/chains/rollux.svg',
     [ChainId.RootstockMainnet]: '/assets/images/vendor/chains/rootstock.jpg',
@@ -675,6 +689,7 @@ export const getChainInfoUrl = (chainId: number): string | undefined => {
     [ChainId['SongbirdCanary-Network']]: 'https://flare.network/songbird/',
     [ChainId.Wanchain]: 'https://www.wanchain.org/',
     [ChainId.XDCNetwork]: 'https://xdc.org/',
+    [1380012617]: 'https://rarichain.org/',
   };
 
   const mainnetChainId = getCorrespondingMainnetChainId(chainId);
@@ -771,10 +786,12 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.AvalancheFujiTestnet]: 'https://api-testnet.snowtrace.io/api',
     [ChainId.Base]: 'https://api.basescan.org/api',
     [ChainId.BaseGoerliTestnet]: 'https://api-goerli.basescan.org/api',
+    [ChainId.BerachainArtio]: 'https://api.routescan.io/v2/network/testnet/evm/80085/etherscan/api',
     [ChainId.BitgertMainnet]: 'https://brisescan.com/api',
     [ChainId.BitrockMainnet]: 'https://explorer.bit-rock.io/api',
     [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
     [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
+    [ChainId.BlastSepoliaTestnet]: 'https://api.routescan.io/v2/network/testnet/evm/168587773/etherscan/api',
     [ChainId.BNBSmartChainMainnet]: 'https://api.bscscan.com/api',
     [ChainId.BNBSmartChainTestnet]: 'https://api-testnet.bscscan.com/api',
     [ChainId.CallistoMainnet]: 'https://explorer.callisto.network/api',
@@ -833,6 +850,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://api-testnet-zkevm.polygonscan.com/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
+    [1380012617]: 'https://mainnet.explorer.rarichain.org/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.RolluxMainnet]: 'https://explorer.rollux.com/api',
     [ChainId.RootstockMainnet]: 'https://blockscout.com/rsk/mainnet/api',
@@ -902,6 +920,8 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.ArbitrumSepolia]: ChainId.ArbitrumOne,
     [ChainId.AvalancheFujiTestnet]: ChainId['AvalancheC-Chain'],
     [ChainId.BaseGoerliTestnet]: ChainId.Base,
+    [ChainId.BerachainArtio]: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
+    [ChainId.BlastSepoliaTestnet]: ChainId.Blast,
     [ChainId.BNBSmartChainTestnet]: ChainId.BNBSmartChainMainnet,
     [ChainId.CeloAlfajoresTestnet]: ChainId.CeloMainnet,
     [ChainId.CoinExSmartChainTestnet]: ChainId.CoinExSmartChainMainnet,
@@ -959,6 +979,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.BaseGoerliTestnet]: { ...MULTICALL },
     [ChainId.BitgertMainnet]: { ...MULTICALL },
     [ChainId.BitTorrentChainMainnet]: { ...MULTICALL },
+    [ChainId.BlastSepoliaTestnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainMainnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainTestnet]: { ...MULTICALL },
     [ChainId.BobaNetwork]: { ...MULTICALL },
