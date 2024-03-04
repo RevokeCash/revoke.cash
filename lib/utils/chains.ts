@@ -54,11 +54,16 @@ export const PROVIDER_SUPPORTED_CHAINS = [
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.Astar,
   ChainId.AuroraMainnet,
+  ChainId.BerachainArtio,
   ChainId.BitgertMainnet,
   ChainId.BitrockMainnet,
+  ChainId.Blast,
+  ChainId.BlastSepoliaTestnet,
   ChainId.CallistoMainnet,
+  ChainId.CrabNetwork,
   ChainId.CronosMainnet,
   ChainId.CronosTestnet,
+  ChainId.DarwiniaNetwork,
   ChainId.DogechainMainnet,
   ChainId.ElastosSmartChain,
   ChainId.ENULSMainnet,
@@ -85,6 +90,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = [
   ChainId.PegoNetwork,
   ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.PulseChainTestnetv4,
+  1380012617, // RARI Chain
   ChainId.RedlightChainMainnet,
   ChainId.RolluxMainnet,
   ChainId.RootstockMainnet,
@@ -161,6 +167,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZkSyncMainnet,
   ChainId.Linea,
   ChainId.Scroll,
+  ChainId.Blast,
   ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.PulseChain,
   ChainId.CronosMainnet,
@@ -172,16 +179,18 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FantomOpera,
   ChainId.Astar,
   ChainId.MetisAndromedaMainnet,
+  ChainId.Mode,
+  ChainId.ZKFairMainnet,
   ChainId.Canto,
+  ChainId.Kroma,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId['WEMIX3.0Mainnet'],
-  ChainId.Mode,
   ChainId.AuroraMainnet,
   ChainId.PegoNetwork,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
-  ChainId.EOSEVMNetwork,
+  ChainId.ZetaChainMainnet,
   ChainId.OasysMainnet,
   ChainId.ShimmerEVM,
   ChainId.HarmonyMainnetShard0,
@@ -191,7 +200,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.BobaNetwork,
   ChainId.CoreBlockchainMainnet,
   ChainId.HorizenEONMainnet,
-  ChainId.ZKFairMainnet,
   ChainId.VelasEVMMainnet,
   ChainId.DogechainMainnet,
   ChainId.XDCNetwork,
@@ -199,23 +207,25 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MilkomedaC1Mainnet,
   ChainId.ElastosSmartChain,
   ChainId.FuseMainnet,
+  ChainId.EOSEVMNetwork,
   ChainId.OasisEmerald,
   ChainId.OasisSapphire,
   ChainId.BitTorrentChainMainnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
-  ChainId.Kroma,
-  ChainId.ZetaChainMainnet,
   ChainId.EthereumClassic,
   ChainId.NahmiiMainnet,
   ChainId.Shibarium,
+  ChainId.CrabNetwork,
+  ChainId.DarwiniaNetwork,
   ChainId.BitgertMainnet,
   ChainId.ENULSMainnet,
   ChainId.CallistoMainnet,
   ChainId.Shiden,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.Palm,
+  1380012617, // RARI Chain
   ChainId.BitrockMainnet,
   ChainId.Zora,
   ChainId.ExosamaNetwork,
@@ -232,10 +242,10 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BNBSmartChainTestnet,
   ChainId.Mumbai,
   ChainId.PolygonzkEVMTestnet,
-  ChainId.ArbitrumSepolia,
-  ChainId.ArbitrumGoerli,
   ChainId.OPSepoliaTestnet,
   ChainId.OptimismGoerliTestnet,
+  ChainId.ArbitrumSepolia,
+  ChainId.ArbitrumGoerli,
   ChainId.BaseGoerliTestnet,
   ChainId.ZkSyncSepoliaTestnet,
   ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
@@ -244,6 +254,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.TaikoJolnirL2,
   ChainId.TaikoKatlaL2,
   ChainId.FrameTestnet,
+  ChainId.BlastSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
   ChainId.PulseChainTestnetv4,
@@ -257,6 +268,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.HorizenGobiTestnet,
   ChainId.ShimmerEVMTestnet,
   ChainId.ZetaChainAthens3Testnet,
+  ChainId.BerachainArtio,
 ];
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
@@ -306,6 +318,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.BitrockMainnet]: 'Bitrock',
     [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
+    [ChainId.BlastSepoliaTestnet]: 'Blast Sepolia',
     [ChainId.BNBSmartChainMainnet]: 'BNB Chain',
     [ChainId.BNBSmartChainTestnet]: 'BNB Chain Testnet',
     [ChainId.BobaNetwork]: 'Boba',
@@ -316,7 +329,9 @@ export const getChainName = (chainId: number): string => {
     [ChainId.CoinExSmartChainMainnet]: 'CoinEx Smart Chain',
     [ChainId.CoinExSmartChainTestnet]: 'CoinEx Testnet',
     [ChainId.CoreBlockchainMainnet]: 'CORE',
+    [ChainId.CrabNetwork]: 'Crab',
     [ChainId.CronosMainnet]: 'Cronos',
+    [ChainId.DarwiniaNetwork]: 'Darwinia',
     [ChainId.DogechainMainnet]: 'Dogechain',
     [ChainId.DogechainTestnet]: 'Dogechain Testnet',
     [ChainId.ElastosSmartChain]: 'Elastos',
@@ -372,6 +387,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
     [ChainId.PulseChain]: 'PulseChain',
     [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
+    [1380012617]: 'RARI Chain',
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.RolluxMainnet]: 'Rollux',
     [ChainId.RootstockMainnet]: 'Rootstock',
@@ -400,6 +416,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZkSyncSepoliaTestnet]: 'zkSync Sepolia',
     [12345678901]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
     [12345678902]: 'Frame', // TODO: This is a placeholder so we can add a description for Frame
+    [12345678903]: 'Berachain', // TODO: This is a placeholder so we can add a description for Berachain
   };
 
   const name = overrides[chainId] ?? getChain(chainId)?.name ?? `Chain ID ${chainId}`;
@@ -431,6 +448,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev',
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
     [ChainId.BitTorrentChainTestnet]: 'https://testnet.bttcscan.com',
+    [ChainId.Blast]: 'https://blastscan.io',
     [ChainId.CallistoMainnet]: 'https://explorer.callisto.network',
     [ChainId.Canto]: 'https://tuber.build',
     [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
@@ -447,6 +465,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com',
+    [1380012617]: 'https://mainnet.explorer.rarichain.org',
     [ChainId.Scroll]: 'https://scrollscan.com',
     [ChainId.SmartBitcoinCash]: 'https://www.smartscan.cash',
     [ChainId.Wanchain]: 'https://www.wanscan.org',
@@ -468,7 +487,7 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
   };
 
   const [rpcUrl] = getChain(chainId)?.rpc ?? [];
-  return overrides[chainId] ?? rpcUrl;
+  return overrides[chainId] ?? rpcUrl ?? getChainRpcUrl(chainId);
 };
 
 export const getChainRpcUrl = (chainId: number): string | undefined => {
@@ -483,8 +502,10 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId['AvalancheC-Chain']]: `https://avalanche-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.AvalancheFujiTestnet]: `https://avalanche-fuji.infura.io/v3/${infuraKey}`,
     [ChainId.Base]: 'https://mainnet.base.org',
+    [ChainId.Blast]: 'https://blast.blockpi.network/v1/rpc/public',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
     [ChainId.CoreBlockchainMainnet]: 'https://rpc.coredao.org',
+    [ChainId.CrabNetwork]: 'https://crab-rpc.darwiniacommunitydao.xyz',
     [ChainId.CronosMainnet]: 'https://evm.cronos.org',
     // [ChainId.EthereumMainnet]: `https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
@@ -502,6 +523,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVM]: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.PolygonzkEVMTestnet]: `https://polygonzkevm-testnet.g.alchemy.com/v2/${alchemyKey}`,
     [ChainId.Sepolia]: `https://sepolia.infura.io/v3/${infuraKey}`,
+    [1380012617]: 'https://mainnet.rpc.rarichain.org/http',
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
@@ -549,10 +571,13 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.AvalancheFujiTestnet]: '/assets/images/vendor/chains/avalanche.svg',
     [ChainId.Base]: '/assets/images/vendor/chains/base.svg',
     [ChainId.BaseGoerliTestnet]: '/assets/images/vendor/chains/base.svg',
+    [ChainId.BerachainArtio]: '/assets/images/vendor/chains/berachain.jpg',
     [ChainId.BitgertMainnet]: '/assets/images/vendor/chains/bitgert.svg',
     [ChainId.BitrockMainnet]: '/assets/images/vendor/chains/bitrock.svg',
     [ChainId.BitTorrentChainMainnet]: '/assets/images/vendor/chains/bttc.svg',
     [ChainId.BitTorrentChainTestnet]: '/assets/images/vendor/chains/bttc.svg',
+    [ChainId.Blast]: '/assets/images/vendor/chains/blast.jpg',
+    [ChainId.BlastSepoliaTestnet]: '/assets/images/vendor/chains/blast.jpg',
     [ChainId.BNBSmartChainMainnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.BNBSmartChainTestnet]: '/assets/images/vendor/chains/bsc.svg',
     [ChainId.BobaNetwork]: '/assets/images/vendor/chains/boba.jpg',
@@ -563,8 +588,10 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.CoinExSmartChainMainnet]: '/assets/images/vendor/chains/coinex.svg',
     [ChainId.CoinExSmartChainTestnet]: '/assets/images/vendor/chains/coinex.svg',
     [ChainId.CoreBlockchainMainnet]: '/assets/images/vendor/chains/core.png',
+    [ChainId.CrabNetwork]: '/assets/images/vendor/chains/crab.svg',
     [ChainId.CronosMainnet]: '/assets/images/vendor/chains/cronos.svg',
     [ChainId.CronosTestnet]: '/assets/images/vendor/chains/cronos.svg',
+    [ChainId.DarwiniaNetwork]: '/assets/images/vendor/chains/darwinia.svg',
     [ChainId.DogechainMainnet]: '/assets/images/vendor/chains/dogechain.jpg',
     [ChainId.ElastosSmartChain]: '/assets/images/vendor/chains/elastos.jpg',
     [ChainId.ENULSMainnet]: '/assets/images/vendor/chains/enuls.svg',
@@ -633,6 +660,7 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: '/assets/images/vendor/chains/polygon.svg',
     [ChainId.PulseChain]: '/assets/images/vendor/chains/pulsechain.png',
     [ChainId.PulseChainTestnetv4]: '/assets/images/vendor/chains/pulsechain.png',
+    [1380012617]: '/assets/images/vendor/chains/rari.svg',
     [ChainId.RedlightChainMainnet]: '/assets/images/vendor/chains/redlight.png',
     [ChainId.RolluxMainnet]: '/assets/images/vendor/chains/rollux.svg',
     [ChainId.RootstockMainnet]: '/assets/images/vendor/chains/rootstock.jpg',
@@ -675,6 +703,7 @@ export const getChainInfoUrl = (chainId: number): string | undefined => {
     [ChainId['SongbirdCanary-Network']]: 'https://flare.network/songbird/',
     [ChainId.Wanchain]: 'https://www.wanchain.org/',
     [ChainId.XDCNetwork]: 'https://xdc.org/',
+    [1380012617]: 'https://rarichain.org/',
   };
 
   const mainnetChainId = getCorrespondingMainnetChainId(chainId);
@@ -693,7 +722,7 @@ export const getChainNativeToken = (chainId: number): string => {
   return overrides[chainId] ?? getChain(chainId)?.nativeCurrency?.symbol ?? 'ETH';
 };
 
-// Target a default of around $10-20
+// Target a default of a round-ish number of tokens, worth around $10-20
 export const getDefaultDonationAmount = (nativeToken: string): string => {
   const mapping = {
     ASTR: '300',
@@ -740,6 +769,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     PWR: '1000',
     RBTC: '0.001',
     REDLC: '100',
+    RING: '2500',
     ROSE: '100',
     SAMA: '500',
     SDN: '50',
@@ -771,18 +801,23 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.AvalancheFujiTestnet]: 'https://api-testnet.snowtrace.io/api',
     [ChainId.Base]: 'https://api.basescan.org/api',
     [ChainId.BaseGoerliTestnet]: 'https://api-goerli.basescan.org/api',
+    [ChainId.BerachainArtio]: 'https://api.routescan.io/v2/network/testnet/evm/80085/etherscan/api',
     [ChainId.BitgertMainnet]: 'https://brisescan.com/api',
     [ChainId.BitrockMainnet]: 'https://explorer.bit-rock.io/api',
     [ChainId.BitTorrentChainMainnet]: 'https://api.bttcscan.com/api',
     [ChainId.BitTorrentChainTestnet]: 'https://api-testnet.bttcscan.com/api',
+    [ChainId.Blast]: 'https://api.routescan.io/v2/network/mainnet/evm/81457/etherscan/api',
+    [ChainId.BlastSepoliaTestnet]: 'https://api.routescan.io/v2/network/testnet/evm/168587773/etherscan/api',
     [ChainId.BNBSmartChainMainnet]: 'https://api.bscscan.com/api',
     [ChainId.BNBSmartChainTestnet]: 'https://api-testnet.bscscan.com/api',
     [ChainId.CallistoMainnet]: 'https://explorer.callisto.network/api',
     [ChainId.Canto]: 'https://tuber.build/api',
     [ChainId.CeloAlfajoresTestnet]: 'https://api-alfajores.celoscan.io/api',
     [ChainId.CeloMainnet]: 'https://api.celoscan.io/api',
+    [ChainId.CrabNetwork]: 'https://crab.subview.xyz/api',
     [ChainId.CronosMainnet]: 'https://cronos.org/explorer/api',
     [ChainId.CronosTestnet]: 'https://cronos.org/explorer/testnet3/api',
+    [ChainId.DarwiniaNetwork]: 'https://darwinia.subview.xyz/api',
     [ChainId.DogechainMainnet]: 'https://explorer.dogechain.dog/api',
     [ChainId.ElastosSmartChain]: 'https://esc.elastos.io/api',
     [ChainId.ENULSMainnet]: 'https://evmscan.nuls.io/api',
@@ -833,6 +868,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://api-testnet-zkevm.polygonscan.com/api',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com/api',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com/api',
+    [1380012617]: 'https://mainnet.explorer.rarichain.org/api',
     [ChainId.RedlightChainMainnet]: 'https://redlightscan.finance/api',
     [ChainId.RolluxMainnet]: 'https://explorer.rollux.com/api',
     [ChainId.RootstockMainnet]: 'https://blockscout.com/rsk/mainnet/api',
@@ -902,6 +938,8 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.ArbitrumSepolia]: ChainId.ArbitrumOne,
     [ChainId.AvalancheFujiTestnet]: ChainId['AvalancheC-Chain'],
     [ChainId.BaseGoerliTestnet]: ChainId.Base,
+    [ChainId.BerachainArtio]: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
+    [ChainId.BlastSepoliaTestnet]: ChainId.Blast,
     [ChainId.BNBSmartChainTestnet]: ChainId.BNBSmartChainMainnet,
     [ChainId.CeloAlfajoresTestnet]: ChainId.CeloMainnet,
     [ChainId.CoinExSmartChainTestnet]: ChainId.CoinExSmartChainMainnet,
@@ -932,6 +970,7 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
   };
 
   const canaryNetworks = {
+    [ChainId.CrabNetwork]: ChainId.DarwiniaNetwork,
     [ChainId.Moonriver]: ChainId.Moonbeam,
     [ChainId.Shiden]: ChainId.Astar,
     [ChainId['SongbirdCanary-Network']]: ChainId.FlareMainnet,
@@ -949,6 +988,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
 
   const mapping = {
     [ChainId.ArbitrumGoerli]: { ...MULTICALL },
+    [ChainId.ArbitrumSepolia]: { ...MULTICALL },
     [ChainId.ArbitrumNova]: { ...MULTICALL },
     [ChainId.ArbitrumOne]: { ...MULTICALL },
     [ChainId.Astar]: { ...MULTICALL },
@@ -957,8 +997,11 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.AvalancheFujiTestnet]: { ...MULTICALL },
     [ChainId.Base]: { ...MULTICALL },
     [ChainId.BaseGoerliTestnet]: { ...MULTICALL },
+    [ChainId.BerachainArtio]: { ...MULTICALL },
     [ChainId.BitgertMainnet]: { ...MULTICALL },
     [ChainId.BitTorrentChainMainnet]: { ...MULTICALL },
+    [ChainId.Blast]: { ...MULTICALL },
+    [ChainId.BlastSepoliaTestnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainMainnet]: { ...MULTICALL },
     [ChainId.BNBSmartChainTestnet]: { ...MULTICALL },
     [ChainId.BobaNetwork]: { ...MULTICALL },
@@ -967,8 +1010,10 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.CeloMainnet]: { ...MULTICALL },
     [ChainId.CeloAlfajoresTestnet]: { ...MULTICALL },
     [ChainId.CoreBlockchainMainnet]: { ...MULTICALL },
+    [ChainId.CrabNetwork]: { ...MULTICALL },
     [ChainId.CronosMainnet]: { ...MULTICALL },
     [ChainId.CronosTestnet]: { ...MULTICALL },
+    [ChainId.DarwiniaNetwork]: { ...MULTICALL },
     [ChainId.DogechainMainnet]: { ...MULTICALL },
     [ChainId.EOSEVMNetwork]: { ...MULTICALL },
     [ChainId.EthereumMainnet]: {
@@ -990,6 +1035,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.IoTeXNetworkMainnet]: { ...MULTICALL },
     [ChainId.Kava]: { ...MULTICALL },
     [ChainId.KCCMainnet]: { ...MULTICALL },
+    [ChainId.KromaSepolia]: { ...MULTICALL },
     [ChainId.Linea]: { ...MULTICALL },
     [ChainId.LineaTestnet]: { ...MULTICALL },
     [ChainId.MantaPacificMainnet]: { ...MULTICALL },
@@ -1007,6 +1053,7 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.OasisSapphire]: { ...MULTICALL },
     [ChainId.OpBNBMainnet]: { ...MULTICALL },
     [ChainId.OPMainnet]: { ...MULTICALL },
+    [ChainId.OPSepoliaTestnet]: { ...MULTICALL },
     [ChainId.OptimismGoerliTestnet]: { ...MULTICALL },
     [ChainId.Palm]: { ...MULTICALL },
     [ChainId['PGN(PublicGoodsNetwork)']]: { ...MULTICALL },
@@ -1021,17 +1068,21 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.Scroll]: { ...MULTICALL },
     [ChainId.ScrollSepoliaTestnet]: { ...MULTICALL },
     [ChainId.Sepolia]: { ...MULTICALL },
+    [ChainId.Shibarium]: { ...MULTICALL },
     [ChainId.ShimmerEVM]: { ...MULTICALL },
     [ChainId['SongbirdCanary-Network']]: { ...MULTICALL },
     [ChainId.SyscoinMainnet]: { ...MULTICALL },
     [ChainId.SyscoinTanenbaumTestnet]: { ...MULTICALL },
     [ChainId.TaikoJolnirL2]: { ...MULTICALL },
-    // [ChainId.TaikoKatlaL2]: { ...MULTICALL },
+    [ChainId.TaikoKatlaL2]: { ...MULTICALL },
     [ChainId.TelosEVMMainnet]: { ...MULTICALL },
     [ChainId.VelasEVMMainnet]: { ...MULTICALL },
     [ChainId.Wanchain]: {
       multicall3: { address: '0xcDF6A1566e78EB4594c86Fe73Fcdc82429e97fbB' },
     },
+    [ChainId.XDCNetwork]: { ...MULTICALL },
+    [ChainId.ZetaChainAthens3Testnet]: { ...MULTICALL },
+    [ChainId.ZetaChainMainnet]: { ...MULTICALL },
     [ChainId.ZKFairMainnet]: { ...MULTICALL },
     [ChainId.ZkSyncMainnet]: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
@@ -1297,6 +1348,8 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
       }),
     ],
   }),
+  [ChainId.CrabNetwork]: undefined,
+  [ChainId.DarwiniaNetwork]: undefined,
   [ChainId.DogechainMainnet]: undefined, // All stablecoins on Dogechain are depegged
   [ChainId.ElastosSmartChain]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
