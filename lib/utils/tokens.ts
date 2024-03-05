@@ -21,11 +21,16 @@ import { withFallback } from './promises';
 
 export const isSpamToken = (symbol: string) => {
   const includesHttp = /https?:\/\//i.test(symbol);
+
   // This is not exhaustive, but we can add more TLDs to the list as needed, better than nothing
   const tldRegex =
-    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events/i;
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events|\.to|\.us|www\./i;
   const includesTld = tldRegex.test(symbol);
-  return includesHttp || includesTld;
+
+  const miscRegex = /visit .+ to claim|free claim/i;
+  const includesMisc = miscRegex.test(symbol);
+
+  return includesHttp || includesTld || includesMisc;
 };
 
 export const getTokenData = async (
