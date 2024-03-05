@@ -18,6 +18,14 @@ We've already received a few pull requests from new contributors with some great
 
 The 30 Days of Web3 challenge extends into February so we hope to merge a few more pull requests in the coming month. And we hope to continue to attract new contributors to our repository in the rest of 2024, so we'll be working on supporting new developers on their first contributions. If you want to get involved, check out our [GitHub repo](https://github.com/RevokeCash/revoke.cash).
 
+## Optimism RetroPGF Results
+
+In November we participated in the Optimism RetroPGF grants program. Hundreds of projects applied and over 100 separate judges (or badgeholders) reviewed the applications to allocate the grants. We ended up in the top 50 of all projects and we received a grant of close to 150k OP tokens.
+
+![Optimism RetroPGF Grant](/assets/images/blog/2024/monthly-update-january/optimism-retropgf.jpg)
+
+Programs like Optimism RetroPGF are a huge blessing to free and open source public goods projects like ours. We're very grateful for the support and this grant will help us to continue building Revoke.cash while keeping it free for everyone to use.
+
 ## Fixes and Improvements
 
 Besides guiding our newest contributors, we also made some improvements to our website and our backend services. One of the more important updates that we did is that we moved a big part of our spender labels and token information to a new cloud hosting that allows for better caching and performance. This should make our website faster and more reliable.
