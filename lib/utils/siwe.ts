@@ -1,22 +1,19 @@
-import { SiweMessage } from 'siwe';
-import { getURL } from './env';
+import { SiweMessage } from 'siwe-viem';
 
 export const siweGetNonce = async () => {
-  const response = await fetch('/api/siwe/nonce');
+  const response = await fetch('/api/auth/siwe/nonce');
   return response.text();
 };
 
 export const siweCreateMessage = async (address: string, statement = 'Sign in with Ethereum to Revoke.cash.') => {
   const nonce = await siweGetNonce();
 
-  const url = getURL();
-
   // Create the SIWE message
   const message = new SiweMessage({
-    domain: url.host,
+    domain: window.location.hostname,
     address,
     statement,
-    uri: url.origin,
+    uri: window.origin,
     version: '1',
     chainId: 1,
     nonce,
@@ -25,7 +22,7 @@ export const siweCreateMessage = async (address: string, statement = 'Sign in wi
 };
 
 export const siweVerifyMessage = async (message: string, signature: string) => {
-  const verifyResponse = await fetch('/api/siwe/verify', {
+  const verifyResponse = await fetch('/api/auth/siwe/verify', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -10,19 +10,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    String @id @default(uuid())
-  email String @unique
-
-  wallet Wallet[]
+model user {
+  id             String       @id @default(uuid())
+  siwe_address   String       @unique
+  email_address  String?      @unique
+  email_verified Boolean?     @default(false)
+  alert_rules    alert_rule[]
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
 }
 
-model Wallet {
-  address String  @id
-  chainId Int
-  userId  String?
+model alert_rule {
+  id         String          @id @default(uuid())
+  trigger    alert_trigger   @default(NEW_APROVAL)
+  transport  alert_transport @default(EMAIL)
+  wallet     wallet          @relation(fields: [wallet_id], references: [id])
+  wallet_id  String
+  user       user            @relation(fields: [user_id], references: [id])
+  user_id    String
+  created_at DateTime        @default(now())
+  updated_at DateTime        @updatedAt
+}
 
-  User User? @relation(fields: [userId], references: [id])
+model wallet {
+  id          String       @id @default(uuid())
+  address     String
+  chain_id    Int
+  is_verified Boolean      @default(false)
+  alert_rule  alert_rule[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
 
-  @@unique([address, chainId])
+  @@unique([address, chain_id])
+}
+
+enum alert_trigger {
+  NEW_APROVAL
+}
+
+enum alert_transport {
+  EMAIL
 }

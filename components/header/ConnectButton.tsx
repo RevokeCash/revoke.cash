@@ -15,9 +15,10 @@ interface Props {
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
   redirect?: boolean;
+  onConnect?: (account: string) => void;
 }
 
-const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
+const ConnectButton = ({ size, style, className, text, redirect, onConnect }: Props) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const router = useRouter();
@@ -40,6 +41,9 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
     handleClose();
     try {
       const { account } = await connectAsync({ connector });
+      if (account && onConnect) {
+        onConnect(account);
+      }
       if (account && redirect) {
         router.push(`/address/${account}`);
       }

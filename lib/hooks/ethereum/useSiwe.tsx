@@ -1,34 +1,54 @@
+import { user } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import { siweCreateMessage, siweVerifyMessage } from 'lib/utils/siwe';
+import { toast } from 'react-toastify';
 import { useSignMessage } from 'wagmi';
 
-export const useSiwe = (address: string) => {
+const handleWagmiError = (error: Error) => {
+  switch (error.name) {
+    case 'UserRejectedRequestError':
+      console.error('User rejected request', error);
+      break;
+
+    default:
+      console.error('Error signing message', error);
+      toast.error(`Error signing message: ${error.message}`);
+      break;
+  }
+};
+
+export const useSiwe = () => {
   const wagmi = useSignMessage();
 
-  const signIn = async () => {
+  const meQuery = useQuery<user | undefined>({
+    queryKey: ['account'],
+    queryFn: async () => {
+      const res = await fetch('/api/profile');
+      if (res.status !== 200) return undefined;
+
+      return res.json();
+    },
+    enabled: true,
+  });
+
+  const signIn = async (address: string) => {
     //  Create the SIWE message
     const message = await siweCreateMessage(address);
 
-    // Sign the SIWE message using the wallet
-    const signature = await wagmi.signMessageAsync({ message });
-
-    // Verify the SIWE message using our backend
-    await siweVerifyMessage(message, signature);
+    return wagmi
+      .signMessageAsync({ message })
+      .then((signature) => siweVerifyMessage(message, signature))
+      .then(() => meQuery.refetch())
+      .then(() => toast.success('Signed in with SIWE'))
+      .catch(handleWagmiError);
   };
 
   const signOut = async () => {
-    const res = await fetch('/api/siwe/logout');
+    const res = await fetch('/api/profile/logout');
     if (!res.ok) throw new Error('Error signing out');
+
+    await meQuery.refetch();
   };
 
-  const meQuery = useQuery({
-    queryKey: ['siwe', 'me'],
-    queryFn: async () => {
-      const res = await fetch('/api/siwe/me');
-      if (!res.ok) throw new Error('Error fetching SIWE session');
-      return res.json();
-    },
-  });
-
-  return { signIn, signOut, siwe: meQuery.data };
+  return { signIn, signOut, session: meQuery.data, refetch: meQuery.refetch };
 };

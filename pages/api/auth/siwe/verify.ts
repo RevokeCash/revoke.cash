@@ -1,6 +1,10 @@
+import { RevokeDB } from 'lib';
 import { getSession } from 'lib/api/auth';
+import { getURL, isProd } from 'lib/utils/env';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { SiweMessage } from 'siwe';
+import { SiweMessage } from 'siwe-viem';
+
+const client = RevokeDB;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession(req, res);
@@ -24,14 +28,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const verifiedSiweMessage = siweResponse.data;
 
         // Verify the domain when running in production
-        if (process.env.NODE_ENV === 'production' && verifiedSiweMessage.domain !== 'revoke.cash') {
+        if (isProd() && verifiedSiweMessage.domain !== getURL().hostname) {
           throw new Error();
         }
 
-        session.siwe = verifiedSiweMessage;
+        let user = await client.user.findUnique({
+          where: {
+            siwe_address: verifiedSiweMessage.address,
+          },
+        });
+
+        if (!user) {
+          console.log(`Creating new user for ${verifiedSiweMessage.address}`);
+
+          user = await client.user.create({
+            data: {
+              siwe_address: verifiedSiweMessage.address,
+            },
+          });
+        }
+
+        // Store the session
+        session.userId = user.id;
         await session.save();
 
-        res.json({ ok: true, siwe: verifiedSiweMessage });
+        res.json({ ok: true });
       } catch (_error) {
         console.error(_error);
         res.json({ ok: false });

@@ -2,16 +2,16 @@ import { getSession } from 'lib/api/auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession(req, res);
-
   const { method } = req;
   switch (method) {
     case 'GET':
-      res.send({ session: session.siwe });
-      break;
+      const session = await getSession(req, res);
+      delete session.userId;
+      await session.save();
+      return res.json({ ok: true });
     default:
       res.setHeader('Allow', ['GET']);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      return res.status(405).end(`Method ${method} Not Allowed`);
   }
 };
 

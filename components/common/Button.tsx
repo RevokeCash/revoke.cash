@@ -1,43 +1,37 @@
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import Link from 'next/link';
-import { ForwardedRef, MouseEventHandler, forwardRef } from 'react';
+import { ButtonHTMLAttributes, MouseEventHandler } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
-// TODO: Proper extended styles for this component
-export interface Props extends Record<string, any> {
+type Props = {
   disabled?: boolean;
-  style: 'primary' | 'secondary' | 'tertiary' | 'none';
-  size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
-  onClick?: MouseEventHandler;
+  style?: 'primary' | 'secondary' | 'tertiary' | 'none';
+  size?: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   href?: string;
-  children: React.ReactNode;
   className?: string;
   external?: boolean;
   router?: boolean;
   loading?: boolean;
   asDiv?: boolean;
   align?: 'left' | 'center' | 'right';
-}
+  onClick?: MouseEventHandler;
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
 
-const Button = (
-  {
-    disabled,
-    style,
-    size,
-    onClick,
-    href,
-    external,
-    router,
-    children,
-    className,
-    loading,
-    asDiv,
-    align,
-    ...props
-  }: Props,
-  ref: ForwardedRef<any>,
-) => {
+export const Button = ({
+  disabled,
+  style = 'primary',
+  size = 'md',
+  href,
+  external,
+  router,
+  children,
+  className,
+  loading,
+  asDiv,
+  align,
+  ...props
+}: Props) => {
   const { darkMode } = useColorTheme();
 
   // In dark mode, we swap the primary and secondary styles
@@ -74,14 +68,14 @@ const Button = (
   if (href) {
     if (router) {
       return (
-        <Link {...props} className={classes} href={href} ref={ref}>
+        <Link className={classes} href={href} target={external && '_blank'}>
           {children}
         </Link>
       );
     }
 
     return (
-      <a {...props} className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
+      <a className={classes} href={href} target={external && '_blank'}>
         {children}
       </a>
     );
@@ -89,18 +83,19 @@ const Button = (
 
   if (asDiv) {
     return (
-      <div {...props} className={classes} onClick={onClick} ref={ref}>
+      <div onClick={props.onClick} className={classes}>
         {children}
+        {loading && <Spinner />}
       </div>
     );
   }
 
   return (
-    <button {...props} disabled={disabled || loading} onClick={onClick} className={classes} ref={ref}>
+    <button {...props} disabled={disabled || loading} className={classes}>
       {children}
       {loading && <Spinner />}
     </button>
   );
 };
 
-export default forwardRef(Button);
+export default Button;

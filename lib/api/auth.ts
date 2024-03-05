@@ -1,11 +1,10 @@
 import { SessionOptions, getIronSession } from 'iron-session';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
-import { SiweMessage } from 'siwe';
 
 export interface RevokeSession {
   ip?: string;
-  siwe?: {};
+  userId?: string;
 }
 
 export const IRON_OPTIONS: SessionOptions = {
@@ -52,13 +51,10 @@ declare module 'next' {
   }
 }
 
-export const storeSession = async (req: NextApiRequest, res: NextApiResponse, siwe?: SiweMessage) => {
+export const createAPISession = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
   // Store the user's IP as an identifier
   session.ip = getClientIp(req);
-
-  // Store the verified SiweMessage
-  if (siwe) session.siwe = siwe;
 
   await session.save();
 };

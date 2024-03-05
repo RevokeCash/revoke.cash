@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { generateNonce } from 'siwe';
+import { generateNonce } from 'siwe-viem';
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;

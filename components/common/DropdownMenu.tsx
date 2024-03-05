@@ -1,6 +1,7 @@
 import { Menu } from '@headlessui/react';
+import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
-import Button, { Props as ButtonProps } from './Button';
+import { Button } from './Button';
 import Chevron from './Chevron';
 
 interface Props {
@@ -51,7 +52,7 @@ const DropdownMenu = ({ menuButton, children, style, align, buttonClassName, ite
   );
 };
 
-export const DropdownMenuItem = (props: Omit<ButtonProps, 'style' | 'size'>) => {
+export const DropdownMenuItem = (props: ComponentProps<typeof Button>) => {
   return (
     <Menu.Item>
       {({ active }) => (
