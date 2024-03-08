@@ -46,9 +46,6 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.Wanchain,
   ChainId.XDCNetwork,
   ChainId.ZKFairMainnet,
-  ChainId.ZkSyncMainnet,
-  ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
-  ChainId.ZkSyncSepoliaTestnet,
 ];
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = [
@@ -130,6 +127,8 @@ export const ETHERSCAN_SUPPORTED_CHAINS = [
   ChainId.PolygonzkEVM,
   ChainId.PolygonzkEVMTestnet,
   ChainId['WEMIX3.0Mainnet'],
+  ChainId.ZkSyncMainnet,
+  ChainId.ZkSyncSepoliaTestnet,
   ...BLOCKSCOUT_SUPPORTED_CHAINS,
 ];
 
@@ -248,7 +247,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ArbitrumGoerli,
   ChainId.BaseGoerliTestnet,
   ChainId.ZkSyncSepoliaTestnet,
-  ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
   ChainId.LineaTestnet,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoJolnirL2,
@@ -412,7 +410,6 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZetaChainMainnet]: 'ZetaChain',
     [ChainId.ZKFairMainnet]: 'ZKFair',
     [ChainId.ZkSyncMainnet]: 'zkSync Era',
-    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'zkSync Goerli',
     [ChainId.ZkSyncSepoliaTestnet]: 'zkSync Sepolia',
     [12345678901]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
     [12345678902]: 'Frame', // TODO: This is a placeholder so we can add a description for Frame
@@ -528,7 +525,6 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
     [ChainId.ZetaChainMainnet]: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
-    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'https://testnet.era.zksync.dev',
     [ChainId.ZkSyncSepoliaTestnet]: 'https://sepolia.era.zksync.dev',
     ...RPC_OVERRIDES,
   };
@@ -687,7 +683,6 @@ export const getChainLogo = (chainId: number): string => {
     [ChainId.ZetaChainMainnet]: '/assets/images/vendor/chains/zetachain.svg',
     [ChainId.ZKFairMainnet]: '/assets/images/vendor/chains/zkfair.svg',
     [ChainId.ZkSyncMainnet]: '/assets/images/vendor/chains/zksync.jpeg',
-    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: '/assets/images/vendor/chains/zksync.jpeg',
     [ChainId.ZkSyncSepoliaTestnet]: '/assets/images/vendor/chains/zksync.jpeg',
     [ChainId.Zora]: '/assets/images/vendor/chains/zora.svg',
   };
@@ -883,7 +878,8 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-3.blockscout.com/api',
     [ChainId.ZetaChainMainnet]: 'https://zetachain.blockscout.com/api',
     [ChainId.ZKFairMainnet]: 'https://scan.zkfair.io/api',
-    [ChainId.ZkSyncMainnet]: 'https://zksync2-mainnet.zkscan.io/api',
+    [ChainId.ZkSyncMainnet]: 'https://api-era.zksync.network/api',
+    [ChainId.ZkSyncSepoliaTestnet]: 'https://api-sepolia-era.zksync.network/api',
     [ChainId.Zora]: 'https://explorer.zora.energy/api',
   };
 
@@ -965,7 +961,6 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.TaikoJolnirL2]: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
     [ChainId.TaikoKatlaL2]: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
     [ChainId.ZetaChainAthens3Testnet]: ChainId.ZetaChainMainnet,
-    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: ChainId.ZkSyncMainnet,
     [ChainId.ZkSyncSepoliaTestnet]: ChainId.ZkSyncMainnet,
   };
 
@@ -1085,9 +1080,6 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.ZetaChainMainnet]: { ...MULTICALL },
     [ChainId.ZKFairMainnet]: { ...MULTICALL },
     [ChainId.ZkSyncMainnet]: {
-      multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
-    },
-    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
     [ChainId.ZkSyncSepoliaTestnet]: {

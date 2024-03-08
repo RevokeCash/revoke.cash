@@ -112,10 +112,11 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const WEIRD_NETWORKS = [
     ChainId.ZkSyncMainnet,
-    ChainId['ZkSyncEraGoerliTestnet(deprecated)'],
+    ChainId.ZkSyncSepoliaTestnet,
     ChainId.ArbitrumOne,
     ChainId.ArbitrumGoerli,
     ChainId.ArbitrumNova,
+    ChainId.ArbitrumSepolia,
     ChainId.FrameTestnet,
   ];
 

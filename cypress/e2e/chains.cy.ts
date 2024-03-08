@@ -136,7 +136,6 @@ const TEST_ADDRESSES = {
   [ChainId.ZetaChainAthens3Testnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
   [ChainId.ZKFairMainnet]: '0xb0240794108Fd89C99BB828C9eBc0e7d9703C2f8',
   [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
-  [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: '0xa1c7c279c232f36a16f5FB556fDE14E6103E6E24',
 } as const;
 
 describe('Chain Support', () => {
