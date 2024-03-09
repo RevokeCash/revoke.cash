@@ -26,6 +26,7 @@ const getChainOrder = async () => {
   console.log('Total mainnet chains:', mainnetChains.length);
 
   console.log('------------------------------');
+  console.log();
 
   console.log('TESTNETS:');
   testnetChains.forEach((entry, index) => logChain(entry, index, CHAIN_SELECT_TESTNETS, multicallData));
