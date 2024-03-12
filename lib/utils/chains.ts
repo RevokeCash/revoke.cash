@@ -725,6 +725,8 @@ export const getChainInfoUrl = (chainId: number): string | undefined => {
 export const getChainNativeToken = (chainId: number): string => {
   const overrides = {
     [ChainId.BitgertMainnet]: 'BRISE',
+    [ChainId.Merlin]: 'BTC',
+    [ChainId.MerlinTestnet]: 'BTC',
     [ChainId.CoinExSmartChainMainnet]: 'CET',
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
   };
@@ -867,6 +869,7 @@ export const getChainApiUrl = (chainId: number): string | undefined => {
     [ChainId.Moonriver]: 'https://api-moonriver.moonscan.io/api',
     [ChainId.MoonbaseAlpha]: 'https://api-moonbase.moonscan.io/api',
     [ChainId.Mumbai]: 'https://api-testnet.polygonscan.com/api',
+    [ChainId.Merlin]: 'https://scan.merlinchain.io/api',
     [ChainId.NahmiiMainnet]: 'https://explorer.nahmii.io/api',
     [ChainId.OasisEmerald]: 'https://explorer.emerald.oasis.dev/api',
     [ChainId.OasisSapphire]: 'https://explorer.sapphire.oasis.io/api',
