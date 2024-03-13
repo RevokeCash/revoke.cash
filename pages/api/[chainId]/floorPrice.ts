@@ -36,16 +36,20 @@ const handler = async (req: NextRequest) => {
     return new Response(JSON.stringify({ message: `Chain with ID ${chainId} is unsupported` }), { status: 404 });
   }
 
-  const floorPrice = await backendPriceStrategy.calculateTokenPrice(contract).catch(() => null);
+  try {
+    const floorPrice = await backendPriceStrategy.calculateTokenPrice(contract).catch(() => null);
 
-  return new Response(JSON.stringify({ floorPrice }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
-      'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
-    },
-  });
+    return new Response(JSON.stringify({ floorPrice }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
+        'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
+      },
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ message: e.message }), { status: 500 });
+  }
 };
 
 export default handler;

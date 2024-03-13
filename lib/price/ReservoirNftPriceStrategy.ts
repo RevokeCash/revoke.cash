@@ -77,14 +77,16 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
 
     try {
       const result = await this.queue.add(() =>
-        ky
-          .get(url, {
-            headers,
-            searchParams,
-            retry: 0,
-            timeout: TIMEOUT,
-          })
-          .json<any>(),
+        Promise.race([
+          ky
+            .get(url, {
+              headers,
+              searchParams,
+              retry: 0,
+            })
+            .json<any>(),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Manual timeout')), TIMEOUT)),
+        ]),
       );
       return result;
     } catch (e) {
