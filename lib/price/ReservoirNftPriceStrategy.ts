@@ -1,5 +1,6 @@
-import ky, { SearchParamsOption, TimeoutError } from 'ky';
+import { SearchParamsOption, TimeoutError } from 'ky';
 import { Erc721TokenContract } from 'lib/interfaces';
+import ky from 'lib/ky';
 import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
 import { RequestQueue } from '../api/logs/RequestQueue';
@@ -15,7 +16,7 @@ interface ReservoirNftPriceStrategyOptions {
   apiKey: string;
 }
 
-const TIMEOUT = 1 * SECOND;
+const TIMEOUT = 3 * SECOND;
 
 export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   private queue: RequestQueue;
@@ -24,7 +25,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
   constructor(options: ReservoirNftPriceStrategyOptions) {
     super({ supportedAssets: ['ERC721'] });
     this.apiKey = options.apiKey;
-    this.queue = new RequestQueue(`reservoir:${options.apiKey}`, { interval: 1000, intervalCap: 80, timeout: TIMEOUT });
+    this.queue = new RequestQueue(`reservoir:${options.apiKey}`, { interval: 1000, intervalCap: 80 });
   }
 
   public async calculateTokenPriceInternal(contract: Erc721TokenContract): Promise<number> {
@@ -93,6 +94,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
 
         throw new Error(`Request timed out for ${e.request.url} with search params ${JSON.stringify(searchParams)}`);
       }
+
       if (isRateLimitError(parseErrorMessage(e))) {
         console.error('Reservoir: Rate limit reached, retrying...');
 

@@ -11,7 +11,7 @@ export const config = {
 
 // TODO: Support ERC20 token prices in this route as well
 const handler = async (req: NextRequest) => {
-  if (req.method !== 'GET') return new Response('Method not allowed', { status: 405 });
+  if (req.method !== 'GET') return new Response(JSON.stringify({ message: 'Method not allowed' }), { status: 405 });
 
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
@@ -33,24 +33,19 @@ const handler = async (req: NextRequest) => {
   const backendPriceStrategy = getChainBackendPriceStrategy(chainId);
 
   if (!backendPriceStrategy) {
-    return new Response(`Chain with ID ${chainId} is unsupported`, { status: 404 });
+    return new Response(JSON.stringify({ message: `Chain with ID ${chainId} is unsupported` }), { status: 404 });
   }
 
   const floorPrice = await backendPriceStrategy.calculateTokenPrice(contract).catch(() => null);
 
-  return new Response(
-    JSON.stringify({
-      floorPrice,
-    }),
-    {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
-        'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
-      },
+  return new Response(JSON.stringify({ floorPrice }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
+      'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
     },
-  );
+  });
 };
 
 export default handler;

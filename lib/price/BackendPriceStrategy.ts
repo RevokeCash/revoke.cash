@@ -1,5 +1,5 @@
-import ky from 'ky';
 import { TokenContract } from 'lib/interfaces';
+import ky from 'lib/ky';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 import { PriceStrategy } from './PriceStrategy';
 
