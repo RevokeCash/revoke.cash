@@ -12,6 +12,7 @@ import {
 } from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
 import ky from 'lib/ky';
+import md5 from 'md5';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 
@@ -34,29 +35,42 @@ export const getSpenderData = async (
   chainId?: number,
   openseaProxyAddress?: string,
 ): Promise<SpenderData | null> => {
+  const [labelData, riskData] = await Promise.all([
+    getLabelData(address, chainId, openseaProxyAddress),
+    getRiskData(address, chainId),
+  ]);
+
+  return { ...labelData, ...riskData };
+};
+
+export const getLabelData = async (
+  address: string,
+  chainId?: number,
+  openseaProxyAddress?: string,
+): Promise<SpenderData | null> => {
   if (!chainId) return null;
   if (!address) return null;
   if (address === openseaProxyAddress) return { name: 'OpenSea (old)' };
 
   // Check Harpie only if the whois doesn't have a name, because this is a rate-limited API
-  const data = (await getSpenderDataFromWhois(address, chainId)) ?? (await getSpenderDataFromHarpie(address, chainId));
+  const data = (await getLabelDataFromWhois(address, chainId)) ?? (await getLabelDataFromHarpie(address, chainId));
 
   return data;
 };
 
-const getSpenderDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
+const getLabelDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
   try {
-    const spenderData = await ky
+    const labelData = await ky
       .get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`)
       .json<SpenderData>();
-    if (!spenderData || Object.keys(spenderData).length === 0) return null;
-    return spenderData;
+    if (!labelData || Object.keys(labelData).length === 0) return null;
+    return labelData;
   } catch {
     return null;
   }
 };
 
-const getSpenderDataFromHarpie = async (address: string, chainId: number): Promise<SpenderData | null> => {
+const getLabelDataFromHarpie = async (address: string, chainId: number): Promise<SpenderData | null> => {
   const apiKey = HARPIE_API_KEY;
   if (!apiKey || chainId !== 1) return null;
 
@@ -70,6 +84,18 @@ const getSpenderDataFromHarpie = async (address: string, chainId: number): Promi
     if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
     return { name: data.contractOwner };
   } catch (e) {
+    return null;
+  }
+};
+
+const getRiskData = async (address: string, _chainId: number): Promise<Omit<SpenderData, 'name'> | null> => {
+  const identifier = md5(`revokecash:${address.toLowerCase()}`);
+
+  try {
+    const riskData = await ky.get(`${WHOIS_BASE_URL}/spenders/scamsniffer/${identifier}.json`).json<SpenderData>();
+
+    return riskData;
+  } catch {
     return null;
   }
 };

@@ -159,6 +159,7 @@ export interface BreadcrumbEntry {
 export interface SpenderData {
   name: string;
   exploits?: string[];
+  riskFactors?: string[];
 }
 
 export interface Contract {
