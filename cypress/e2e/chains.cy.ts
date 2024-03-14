@@ -28,6 +28,8 @@ const TEST_ADDRESSES = {
   [ChainId.AuroraMainnet]: '0x1D50A8c3295798fCebdDD0C720BeC4FBEdc3D178',
   [ChainId['AvalancheC-Chain']]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Base]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
+  [ChainId.BeamMainnet]: '0xc1447c8c647eF2f564cEAe520E1b65C758A02f9F',
+  [ChainId.BeamTestnet]: '0xaF5E71E248e223CD4c9da4bde93fdcB18D11d4e8',
   [ChainId.BitgertMainnet]: '0x6AC875A1C4E12c25265B01C9A2d1112fbb2AdfaF',
   [ChainId.BitTorrentChainMainnet]: '0x2d850d18B0617077585F1D0Cba043168dc90954D',
   [ChainId.BitrockMainnet]: '0x818416066d4a69c05046F6f2d43d50E50E46B6cE',

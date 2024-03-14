@@ -20,6 +20,8 @@ export const PROVIDER_SUPPORTED_CHAINS = [
   ChainId.ArbitrumGoerli,
   ChainId.ArbitrumOne,
   ChainId.ArbitrumSepolia,
+  ChainId.BeamMainnet,
+  ChainId.BeamTestnet,
   ChainId.CoinExSmartChainMainnet,
   ChainId.CoinExSmartChainTestnet,
   ChainId.CoreBlockchainMainnet,
@@ -191,6 +193,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['WEMIX3.0Mainnet'],
   ChainId.AuroraMainnet,
   ChainId.PegoNetwork,
+  ChainId.BeamMainnet,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.ZetaChainMainnet,
@@ -273,6 +276,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ShimmerEVMTestnet,
   ChainId.ZetaChainAthens3Testnet,
   ChainId.BerachainArtio,
+  ChainId.BeamTestnet,
 ];
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
@@ -318,6 +322,8 @@ export const getChainName = (chainId: number): string => {
     [ChainId['AvalancheC-Chain']]: 'Avalanche',
     [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
     [ChainId.BaseGoerliTestnet]: 'Base Goerli',
+    [ChainId.BeamMainnet]: 'Beam',
+    [ChainId.BeamTestnet]: 'Beam Testnet',
     [ChainId.BitgertMainnet]: 'Bitgert',
     [ChainId.BitrockMainnet]: 'Bitrock',
     [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
@@ -453,6 +459,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev',
     [ChainId['AvalancheC-Chain']]: 'https://snowscan.xyz',
     [ChainId.AvalancheFujiTestnet]: 'https://testnet.snowscan.xyz',
+    [ChainId.BeamMainnet]: 'https://4337.routescan.io/',
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
     [ChainId.BitTorrentChainTestnet]: 'https://testnet.bttcscan.com',
     [ChainId.Blast]: 'https://blastscan.io',
@@ -512,6 +519,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId['AvalancheC-Chain']]: `https://avalanche-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.AvalancheFujiTestnet]: `https://avalanche-fuji.infura.io/v3/${infuraKey}`,
     [ChainId.Base]: 'https://mainnet.base.org',
+    [ChainId.BeamMainnet]: 'https://build.onbeam.com/rpc',
     [ChainId.Blast]: 'https://blast.blockpi.network/v1/rpc/public',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
     [ChainId.CoreBlockchainMainnet]: 'https://rpc.coredao.org',
@@ -741,6 +749,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     ASTR: '300',
     AVAX: '1',
     BCH: '0.1',
+    BEAM: '250',
     BNB: '0.05',
     BONE: '20',
     BTC: '0.01',
@@ -1014,6 +1023,12 @@ export const getChainDeployedContracts = (chainId: number): any | undefined => {
     [ChainId.AvalancheFujiTestnet]: { ...MULTICALL },
     [ChainId.Base]: { ...MULTICALL },
     [ChainId.BaseGoerliTestnet]: { ...MULTICALL },
+    [ChainId.BeamMainnet]: {
+      multicall3: { address: '0x4956F15eFdc3dC16645e90Cc356eAFA65fFC65Ec' },
+    },
+    [ChainId.BeamTestnet]: {
+      multicall3: { address: '0x9BF49b704EE2A095b95c1f2D4EB9010510c41C9E' },
+    },
     [ChainId.BerachainArtio]: { ...MULTICALL },
     [ChainId.BitgertMainnet]: { ...MULTICALL },
     [ChainId.BitTorrentChainMainnet]: { ...MULTICALL },
@@ -1253,6 +1268,17 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
           toHex(500, { size: 3 }),
           '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
         ],
+        decimals: 6,
+      }),
+    ],
+  }),
+  [ChainId.BeamMainnet]: new AggregatePriceStrategy({
+    aggregationType: AggregationType.ANY,
+    strategies: [
+      // Beam Swap (Router) | BEAM -> USDC
+      new UniswapV2PriceStrategy({
+        address: '0x965B104e250648d01d4B3b72BaC751Cde809D29E',
+        path: ['0xD51BFa777609213A653a2CD067c9A0132a2D316A', '0x76BF5E7d2Bcb06b1444C0a2742780051D8D0E304'],
         decimals: 6,
       }),
     ],
