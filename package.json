@@ -1,6 +1,6 @@
 {
   "name": "revoke.cash",
-  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 70 other networks.",
+  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 80 other networks.",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",

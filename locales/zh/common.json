@@ -95,8 +95,8 @@
     "what_are_token_approvals": "什么是代币授权？"
   },
   "meta": {
-    "description": "撤销在{{chainName}}等 70+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
-    "title": "撤销 70+ 区块链上的代币授权"
+    "description": "撤销在{{chainName}}等 80+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "title": "撤销 80+ 区块链上的代币授权"
   },
   "misc": {
     "powered_by": "由<0>{{name}}</0>提供技术支持"
