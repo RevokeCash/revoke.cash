@@ -10,10 +10,12 @@ import { PriceStrategy } from './PriceStrategy';
 // Don't return a price if the collection is on the ignore list
 const IGNORE_LIST = [
   '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85', // ENS Names
+  '0xa9a6A3626993D487d2Dbda3173cf58cA1a9D9e9f', // Unstoppable Domains
 ];
 
 interface ReservoirNftPriceStrategyOptions {
   apiKey: string;
+  apiUrl: string;
 }
 
 const TIMEOUT = 3 * SECOND;
@@ -21,10 +23,12 @@ const TIMEOUT = 3 * SECOND;
 export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   private queue: RequestQueue;
   private apiKey: string;
+  private apiUrl: string;
 
   constructor(options: ReservoirNftPriceStrategyOptions) {
     super({ supportedAssets: ['ERC721'] });
     this.apiKey = options.apiKey;
+    this.apiUrl = options.apiUrl;
     this.queue = new RequestQueue(`reservoir:${options.apiKey}`, { interval: 1000, intervalCap: 80 });
   }
 
@@ -53,7 +57,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
   // TODO: For collections like Art Blocks, we should identify token ranges
   // (`{artblocksContractAddress}:{startTokenId}:{endTokenId}`) - for now we just pick the cheapest subcollection
   private async getCollection(contractAddress: string): Promise<ReservoirNFTCollection> {
-    const url = `https://api.reservoir.tools/collections/v7`;
+    const url = `${this.apiUrl}/collections/v7`;
     const searchParams = {
       contract: contractAddress,
       sortBy: 'floorAskPrice',
