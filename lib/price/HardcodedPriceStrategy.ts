@@ -1,5 +1,5 @@
 import { TokenContract, TokenStandard } from 'lib/interfaces';
-import { Address, PublicClient, parseUnits } from 'viem';
+import { Address, PublicClient } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
 
 export interface HardcodedPriceStrategyOptions {
@@ -26,10 +26,12 @@ export class HardcodedPriceStrategy implements PriceStrategy {
     throw new Error('Cannot calculate native token price for HardcodedPriceStrategy');
   }
 
-  public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
+  public async calculateTokenPrice(tokenContract: TokenContract): Promise<number> {
     const tokenPriceDetails = this.tokens.find((token) => token.address === tokenContract.address);
     if (!tokenPriceDetails) throw new Error('Not included in hardcoded token prices');
 
-    return parseUnits(String(1 / tokenPriceDetails.price), tokenPriceDetails.decimals);
+    // return parseUnits(String(1 / tokenPriceDetails.price), tokenPriceDetails.decimals);
+
+    return tokenPriceDetails.price;
   }
 }

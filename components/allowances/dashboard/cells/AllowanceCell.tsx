@@ -42,8 +42,8 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
 
   return (
     <div className={classes}>
-      <div className="flex flex-col justify-start items-start">
-        <div className="truncate">
+      <div className="flex flex-col justify-start items-start truncate">
+        <div className="w-full truncate">
           <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
         </div>
         {inTime ? (

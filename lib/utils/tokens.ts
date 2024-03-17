@@ -12,7 +12,7 @@ import type {
   TokenMetadata,
 } from 'lib/interfaces';
 import ky from 'lib/ky';
-import { calculateTokenPrice, getInverseTokenPrice } from 'lib/price/utils';
+import { getTokenPrice } from 'lib/price/utils';
 import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
 import { deduplicateArray } from '.';
 import { formatFixedPointBigInt } from './formatting';
@@ -110,28 +110,29 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
 
   if (isErc721Contract(contract)) {
-    const [symbol] = await Promise.all([
+    const [symbol, price] = await Promise.all([
       metadataFromMapping?.symbol ??
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
+      getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
       throwIfSpamNft(contract),
     ]);
 
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
-    return { ...metadataFromMapping, symbol };
+    const tokenPrice = price;
+
+    return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 0 };
   }
 
-  const [totalSupply, symbol, decimals, inversePrice] = await Promise.all([
+  const [totalSupply, symbol, decimals, price] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    getInverseTokenPrice(chainId, contract),
+    getTokenPrice(chainId, contract),
     throwIfNotErc20(contract),
   ]);
-
-  const price = calculateTokenPrice(inversePrice, decimals);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 

@@ -1,4 +1,4 @@
-import { checkActiveSession, checkRateLimitAllowed } from 'lib/api/auth';
+import { RateLimiters, checkActiveSession, checkRateLimitAllowed } from 'lib/api/auth';
 import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
 import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(403).send({ message: 'No API session is active' });
   }
 
-  if (!(await checkRateLimitAllowed(req))) {
+  if (!(await checkRateLimitAllowed(req, RateLimiters.LOGS))) {
     return res.status(429).send({ message: 'Too many requests, please try again later.' });
   }
 

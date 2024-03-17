@@ -54,7 +54,7 @@ export class EtherscanEventGetter implements EventGetter {
     if (typeof data.result === 'string') {
       // If we somehow hit the rate limit, we try again
       if (data.result.includes('Max rate limit reached')) {
-        console.error('Rate limit reached, retrying...');
+        console.error('Etherscan: Rate limit reached, retrying...');
         return this.getEvents(chainId, filter);
       }
 
@@ -127,7 +127,7 @@ const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
     return await fn();
   } catch (e) {
     if (e.message.includes('429')) {
-      console.error('Rate limit reached, retrying...');
+      console.error('Etherscan: Rate limit reached, retrying...');
       return retryOn429(fn);
     }
 
