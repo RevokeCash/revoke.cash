@@ -39,9 +39,9 @@
     "allowance": "授权金额",
     "asset": "资产",
     "asset_type": "类型",
-    "last_cancelled": "Last Cancelled",
+    "last_cancelled": "上次取消",
     "last_updated": "上次更新",
-    "marketplace": "Marketplace",
+    "marketplace": "市场",
     "spender": "被授权人（Spender）",
     "value_at_risk": "存在风险金额"
   },
@@ -65,6 +65,15 @@
   "permit2": {
     "expiration": "于 {{inTime}} 过期"
   },
+  "risk_factors": {
+    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
+    "exploit": "This address was involved in the {{exploit}}",
+    "levels": {
+      "high": "high risk",
+      "low": "low risk",
+      "medium": "medium risk"
+    }
+  },
   "search": {
     "spender": "按授权的消费者地址搜索"
   },
@@ -74,10 +83,10 @@
     },
     "marketplaces": {
       "active_approvals": {
-        "one": "1 active approval",
-        "other": "{{count}} active approvals"
+        "one": "1 个有效授权",
+        "other": "{{count}} 个有效授权"
       },
-      "none_found": "未找到该链的市场。",
+      "none_found": "未找到具备有效授权的市场。",
       "title": "潜在的市场签名"
     },
     "permit": {
@@ -119,7 +128,8 @@
     "old_approval": "该授权已有一年多了。如果不再需要，可以考虑将其撤销。",
     "permit2_expiration": "这是 Permit2 授权，将于 {{inTime}} 到期。",
     "permit_signatures": "许可签名用于在无需发送交易的情况下授权消费。如果您在钓鱼网站上签署了许可签名，请取消。",
-    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
+    "recently_cancelled": "您最近已取消了这个潜在签名。它将保留在列表中，如果后续有需要，您可以再次取消。",
+    "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
     "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
   },
   "wallet_health": {

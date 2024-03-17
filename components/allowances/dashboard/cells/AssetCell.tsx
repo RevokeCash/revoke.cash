@@ -26,7 +26,7 @@ const AssetCell = ({ allowance }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.contract.address}`;
 
   let link = (
-    <Href href={explorerUrl} underline="hover" external className="max-w-[8rem] lg:max-w-[12rem] truncate" ref={ref}>
+    <Href href={explorerUrl} underline="hover" external className="truncate" ref={ref}>
       {allowance.metadata.symbol}
     </Href>
   );
@@ -39,9 +39,9 @@ const AssetCell = ({ allowance }: Props) => {
   const fiatBalanceText = formatFiatBalance(allowance.balance, allowance.metadata.price, allowance.metadata.decimals);
 
   return (
-    <div className="flex items-center gap-1 py-1 w-40 lg:w-56">
+    <div className="flex items-center gap-1 py-1">
       <div className="flex flex-col items-start gap-0.5">
-        <div className="flex items-center gap-2 text-base">
+        <div className="flex items-center gap-2 text-base w-48 lg:w-56">
           <ChainOverlayLogo
             src={allowance.metadata.icon}
             alt={allowance.metadata.symbol}
@@ -52,8 +52,9 @@ const AssetCell = ({ allowance }: Props) => {
           {link}
         </div>
 
-        <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
-          {balanceText} {fiatBalanceText && `(${fiatBalanceText})`}
+        <div className="text-xs text-zinc-500 dark:text-zinc-400 flex gap-1 w-48 lg:w-56">
+          <div className="truncate shrink">{balanceText}</div>
+          {fiatBalanceText ? <div className="grow shrink-0">({fiatBalanceText})</div> : null}
         </div>
       </div>
     </div>

@@ -21,12 +21,12 @@ export const getNativeTokenPrice = async (chainId: number, publicClient: PublicC
   }
 };
 
-export const getInverseTokenPrice = async (chainId: number, tokenContract: TokenContract): Promise<bigint | null> => {
+export const getTokenPrice = async (chainId: number, tokenContract: TokenContract): Promise<number | null> => {
   const strategy = getChainPriceStrategy(chainId);
   if (!strategy || !strategySupportsToken(strategy, tokenContract)) return null;
 
   try {
-    return await strategy.calculateInversePrice(tokenContract);
+    return await strategy.calculateTokenPrice(tokenContract);
   } catch {
     return null;
   }

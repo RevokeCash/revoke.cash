@@ -65,6 +65,15 @@
   "permit2": {
     "expiration": "Expires {{inTime}}"
   },
+  "risk_factors": {
+    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
+    "exploit": "This address was involved in the {{exploit}}",
+    "levels": {
+      "high": "high risk",
+      "low": "low risk",
+      "medium": "medium risk"
+    }
+  },
   "search": {
     "spender": "Search by Approved Spender Address"
   },
@@ -122,15 +131,6 @@
     "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
     "switch_chain": "Please switch your connected network to <0>{{chainName}}</0> inside your wallet to continue"
-  },
-  "risk_factors": {
-    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
-    "exploit": "This address was involved in the {{exploit}}",
-    "levels": {
-      "high": "high risk",
-      "low": "low risk",
-      "medium": "medium risk"
-    }
   },
   "wallet_health": {
     "categories": {

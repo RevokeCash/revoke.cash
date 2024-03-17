@@ -1,6 +1,5 @@
 import { TokenContract, TokenStandard } from 'lib/interfaces';
 import { deduplicateArray } from 'lib/utils';
-import { bigintMax } from 'lib/utils/math';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { PublicClient } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
@@ -38,28 +37,28 @@ export class AggregatePriceStrategy implements PriceStrategy {
     return this.strategies.at(0).calculateNativeTokenPrice(publicClient);
   }
 
-  public async calculateInversePrice(tokenContract: TokenContract): Promise<bigint> {
+  public async calculateTokenPrice(tokenContract: TokenContract): Promise<number> {
     const supportedStrategies = this.getSupportedStrategies(tokenContract);
     if (supportedStrategies.length === 0) throw new Error('No supported strategies provided for this token type');
 
     if (this.aggregationType === AggregationType.ANY) {
-      return await Promise.any(supportedStrategies.map((strategy) => strategy.calculateInversePrice(tokenContract)));
+      return await Promise.any(supportedStrategies.map((strategy) => strategy.calculateTokenPrice(tokenContract)));
     }
 
     if (this.aggregationType === AggregationType.AVERAGE) {
       const results = await Promise.all(
-        supportedStrategies.map((strategy) => strategy.calculateInversePrice(tokenContract)),
+        supportedStrategies.map((strategy) => strategy.calculateTokenPrice(tokenContract)),
       );
-      const sum = results.reduce((acc, curr) => acc + curr, 0n);
-      return sum / BigInt(results.length);
+
+      const sum = results.reduce((acc, curr) => acc + curr, 0);
+      return sum / results.length;
     }
 
-    // TODO: This is probably bugged, since it's an inverse price - so we need to get the minimum inverse price
     if (this.aggregationType === AggregationType.MAX) {
       const results = await Promise.all(
-        supportedStrategies.map((strategy) => strategy.calculateInversePrice(tokenContract)),
+        supportedStrategies.map((strategy) => strategy.calculateTokenPrice(tokenContract)),
       );
-      return bigintMax(...results);
+      return Math.max(...results);
     }
   }
 

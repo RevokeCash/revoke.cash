@@ -4,12 +4,15 @@ import {
   ETHERSCAN_API_KEYS,
   ETHERSCAN_RATE_LIMITS,
   INFURA_API_KEY,
+  RESERVOIR_API_KEY,
   RPC_OVERRIDES,
 } from 'lib/constants';
 import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
+import { BackendPriceStrategy } from 'lib/price/BackendPriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
+import { ReservoirNftPriceStrategy } from 'lib/price/ReservoirNftPriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { Chain, PublicClient, createPublicClient, defineChain, http, toHex } from 'viem';
@@ -1169,6 +1172,10 @@ export const getChainPriceStrategy = (chainId: number): PriceStrategy | undefine
   return PRICE_STRATEGIES[chainId];
 };
 
+export const getChainBackendPriceStrategy = (chainId: number): PriceStrategy | undefined => {
+  return BACKEND_PRICE_STRATEGIES[chainId];
+};
+
 const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   [ChainId.ArbitrumNova]: new AggregatePriceStrategy({
     aggregationType: AggregationType.ANY,
@@ -1207,6 +1214,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         ],
         decimals: 6,
       }),
+      new BackendPriceStrategy({}),
     ],
   }),
   [ChainId.Astar]: new AggregatePriceStrategy({
@@ -1243,6 +1251,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         path: ['0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'],
         decimals: 6,
       }),
+      new BackendPriceStrategy({}),
     ],
   }),
   // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
@@ -1272,6 +1281,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         ],
         decimals: 6,
       }),
+      new BackendPriceStrategy({}),
     ],
   }),
   [ChainId.Beam]: new AggregatePriceStrategy({
@@ -1302,6 +1312,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         address: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
         path: ['0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'],
       }),
+      new BackendPriceStrategy({}),
     ],
   }),
   [ChainId.BobaNetwork]: new AggregatePriceStrategy({
@@ -1468,6 +1479,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
         decimals: 6,
       }),
+      new BackendPriceStrategy({}),
     ],
   }),
   [ChainId.Evmos]: new AggregatePriceStrategy({
@@ -1751,6 +1763,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         ],
         decimals: 6,
       }),
+      new BackendPriceStrategy({}),
     ],
   }),
   [ChainId.Palm]: undefined, // <$100k Liquidity
@@ -1782,6 +1795,7 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
         path: ['0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'],
         decimals: 6,
       }),
+      new BackendPriceStrategy({}),
     ],
   }),
   // TODO: Add Algebra strategy (probably slightly amended from Uniswap v3) to support zkEVM
@@ -1903,4 +1917,55 @@ const PRICE_STRATEGIES: Record<number, PriceStrategy> = {
   // TODO: Add SyncSwap strategy to support ZkSync
   [ChainId.ZkSyncMainnet]: undefined,
   [ChainId.Zora]: undefined, // <$100k Liquidity
+};
+
+const BACKEND_PRICE_STRATEGIES: Record<number, PriceStrategy> = {
+  [ChainId.ArbitrumOne]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-arbitrum.reservoir.tools',
+  }),
+  [ChainId['AvalancheC-Chain']]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-avalanche.reservoir.tools',
+  }),
+  [ChainId.Base]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-base.reservoir.tools',
+  }),
+  [ChainId.BNBSmartChainMainnet]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-bsc.reservoir.tools',
+  }),
+  [ChainId.EthereumMainnet]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api.reservoir.tools',
+  }),
+  [ChainId.Linea]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-linea.reservoir.tools',
+  }),
+  [ChainId.OPMainnet]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-optimism.reservoir.tools',
+  }),
+  [ChainId.PolygonMainnet]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-polygon.reservoir.tools',
+  }),
+  [ChainId.PolygonzkEVM]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-polygon-zkevm.reservoir.tools',
+  }),
+  [ChainId.Scroll]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-scroll.reservoir.tools',
+  }),
+  [ChainId.ZkSyncMainnet]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-zksync.reservoir.tools',
+  }),
+  [ChainId.Zora]: new ReservoirNftPriceStrategy({
+    apiKey: RESERVOIR_API_KEY,
+    apiUrl: 'https://api-zora.reservoir.tools',
+  }),
 };
