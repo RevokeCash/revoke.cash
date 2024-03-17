@@ -971,6 +971,7 @@ export const getCorrespondingMainnetChainId = (chainId: number): number | undefi
     [ChainId.ArbitrumSepolia]: ChainId.ArbitrumOne,
     [ChainId.AvalancheFujiTestnet]: ChainId['AvalancheC-Chain'],
     [ChainId.BaseGoerliTestnet]: ChainId.Base,
+    [ChainId.BeamTestnet]: ChainId.Beam,
     [ChainId.BerachainArtio]: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
     [ChainId.BlastSepoliaTestnet]: ChainId.Blast,
     [ChainId.BNBSmartChainTestnet]: ChainId.BNBSmartChainMainnet,
