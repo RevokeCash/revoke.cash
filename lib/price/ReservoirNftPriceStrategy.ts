@@ -77,6 +77,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
 
     try {
       const result = await this.queue.add(() =>
+        // Somehow the Ky timeout isn't working, so we have to do it manually (🤷‍♂️)
         Promise.race([
           ky
             .get(url, {
@@ -91,7 +92,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
       return result;
     } catch (e) {
       // See (https://github.com/sindresorhus/ky#readme) and search for TimoutError
-      if (e instanceof TimeoutError) {
+      if (e instanceof TimeoutError || e.message === 'Manual timeout') {
         console.error('Reservoir: Request timed out, will not retry');
 
         throw new Error(`Request timed out for ${e.request.url} with search params ${JSON.stringify(searchParams)}`);

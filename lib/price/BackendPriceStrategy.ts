@@ -12,7 +12,7 @@ export class BackendPriceStrategy extends AbstractPriceStrategy implements Price
 
   protected async calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number> {
     const result = await ky
-      .get(`/api/${1}/floorPrice?contractAddress=${tokenContract.address}`)
+      .get(`/api/${tokenContract.publicClient.chain.id}/floorPrice?contractAddress=${tokenContract.address}`)
       .json<{ floorPrice: number }>();
 
     return result.floorPrice;
