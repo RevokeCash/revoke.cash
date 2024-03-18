@@ -12,11 +12,21 @@ import type {
   TokenMetadata,
 } from 'lib/interfaces';
 import ky from 'lib/ky';
-import { calculateTokenPrice, getInverseTokenPrice } from 'lib/price/utils';
-import { Address, PublicClient, getAbiItem, getAddress, getEventSelector } from 'viem';
+import { getTokenPrice } from 'lib/price/utils';
+import {
+  Address,
+  PublicClient,
+  TypedDataDomain,
+  domainSeparator,
+  getAbiItem,
+  getAddress,
+  getEventSelector,
+  pad,
+  toHex,
+} from 'viem';
 import { deduplicateArray } from '.';
+import { track } from './analytics';
 import { formatFixedPointBigInt } from './formatting';
-import { getPermitDomain } from './permit';
 import { withFallback } from './promises';
 
 export const isSpamToken = (symbol: string) => {
@@ -110,28 +120,29 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
 
   if (isErc721Contract(contract)) {
-    const [symbol] = await Promise.all([
+    const [symbol, price] = await Promise.all([
       metadataFromMapping?.symbol ??
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
+      getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
       throwIfSpamNft(contract),
     ]);
 
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
-    return { ...metadataFromMapping, symbol };
+    const tokenPrice = price;
+
+    return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 0 };
   }
 
-  const [totalSupply, symbol, decimals, inversePrice] = await Promise.all([
+  const [totalSupply, symbol, decimals, price] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    getInverseTokenPrice(chainId, contract),
+    getTokenPrice(chainId, contract),
     throwIfNotErc20(contract),
   ]);
-
-  const price = calculateTokenPrice(inversePrice, decimals);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
@@ -236,5 +247,73 @@ export const hasSupportForPermit = async (contract: TokenContract) => {
     return true;
   } catch (e) {
     return false;
+  }
+};
+
+export const getPermitDomain = async (contract: Erc20TokenContract): Promise<TypedDataDomain> => {
+  const verifyingContract = contract.address;
+  const chainId = contract.publicClient.chain.id;
+
+  const [version, name, symbol, contractDomainSeparator] = await Promise.all([
+    getPermitDomainVersion(contract),
+    contract.publicClient.readContract({ ...contract, functionName: 'name' }),
+    contract.publicClient.readContract({ ...contract, functionName: 'symbol' }),
+    contract.publicClient.readContract({ ...contract, functionName: 'DOMAIN_SEPARATOR' }),
+  ]);
+
+  const salt = pad(toHex(chainId), { size: 32 });
+
+  // Given the potential fields of a domain, we try to find the one that matches the domain separator
+  const potentialDomains: TypedDataDomain[] = [
+    // Expected domain separators
+    { name, version, chainId, verifyingContract },
+    { name, version, verifyingContract, salt },
+    { name: symbol, version, chainId, verifyingContract },
+    { name: symbol, version, verifyingContract, salt },
+
+    // Without version
+    { name, chainId, verifyingContract },
+    { name, verifyingContract, salt },
+    { name: symbol, chainId, verifyingContract },
+    { name: symbol, verifyingContract, salt },
+
+    // Without name
+    { version, chainId, verifyingContract },
+    { version, verifyingContract, salt },
+
+    // Without name or version
+    { chainId, verifyingContract },
+    { verifyingContract, salt },
+
+    // With both chainId and salt
+    { name, version, chainId, verifyingContract, salt },
+    { name: symbol, version, chainId, verifyingContract, salt },
+  ];
+
+  const domain = potentialDomains.find((domain) => domainSeparator({ domain }) === contractDomainSeparator);
+
+  if (!domain) {
+    // If the domain separator is something else, we cannot generate a valid signature
+    track('Permit Domain Separator Mismatch', { name, verifyingContract, chainId });
+    throw new Error('Could not determine Permit Signature data');
+  }
+
+  return domain;
+};
+
+const getPermitDomainVersion = async (contract: Erc20TokenContract) => {
+  const knownDomainVersions: Record<string, string> = {
+    '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': '2', // USDC on Ethereum
+    '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1': '2', // DAI on Arbitrum and Optimism (perhaps other chains too)
+  };
+
+  if (contract.address in knownDomainVersions) {
+    return knownDomainVersions[contract.address];
+  }
+
+  try {
+    return await contract.publicClient.readContract({ ...contract, functionName: 'version' });
+  } catch {
+    return '1';
   }
 };

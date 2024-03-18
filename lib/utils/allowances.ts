@@ -1,4 +1,5 @@
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
+import blocksDB from 'lib/databases/blocks';
 import type {
   AddressEvents,
   AllowanceData,
@@ -17,7 +18,6 @@ import {
   delay,
   filterLogsByAddress,
   filterLogsByTopics,
-  getLogTimestamp,
   sortLogsChronologically,
   topicToAddress,
 } from '.';
@@ -147,7 +147,7 @@ const getErc20AllowanceFromApproval = async (
       functionName: 'allowance',
       args: [owner, spender],
     }),
-    getLogTimestamp(contract.publicClient, approval),
+    blocksDB.getLogTimestamp(contract.publicClient, approval),
     approval.transactionHash,
   ]);
 
@@ -190,7 +190,7 @@ const getLimitedErc721AllowanceFromApproval = async (contract: Erc721TokenContra
         functionName: 'getApproved',
         args: [tokenId],
       }),
-      getLogTimestamp(contract.publicClient, approval),
+      blocksDB.getLogTimestamp(contract.publicClient, approval),
       approval.transactionHash,
     ]);
 
@@ -233,7 +233,7 @@ const getUnlimitedErc721AllowanceFromApproval = async (
   if (!isApprovedForAll) return undefined;
 
   const [lastUpdated, transactionHash] = await Promise.all([
-    getLogTimestamp(contract.publicClient, approval),
+    blocksDB.getLogTimestamp(contract.publicClient, approval),
     approval.transactionHash,
   ]);
 

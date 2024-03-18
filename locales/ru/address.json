@@ -39,7 +39,7 @@
     "allowance": "Утв. сумма",
     "asset": "Aктив",
     "asset_type": "Тип",
-    "last_cancelled": "Last Cancelled",
+    "last_cancelled": "Последнее отменено",
     "last_updated": "Посл. обнов.",
     "marketplace": "Marketplace",
     "spender": "Авториз. дост.",
@@ -64,6 +64,15 @@
   },
   "permit2": {
     "expiration": "Срок действия истекает {{inTime}}"
+  },
+  "risk_factors": {
+    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
+    "exploit": "This address was involved in the {{exploit}}",
+    "levels": {
+      "high": "high risk",
+      "low": "low risk",
+      "medium": "medium risk"
+    }
   },
   "search": {
     "spender": "Поиск по адресу авторизованных"
@@ -119,7 +128,8 @@
     "old_approval": "Этому разрешению уже больше года. Отзовите его, если оно вам больше не нужно.",
     "permit2_expiration": "Это разрешение Permit2, срок действия которого истекает {{inTime}}",
     "permit_signatures": "Разрешающие подписи используются для утверждения доступов без отправки транзакции. Отмените их, если вы подписали Разрешительную подпись на фишинговом веб-сайте.",
-    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
+    "recently_cancelled": "Вы уже недавно отменили эту потенциальную подпись. Она останется в списке, при необходимости вы сможете отменить ее позже.",
+    "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
     "switch_chain": "Пожалуйста, переключите сеть на <0>{{chainName}}</0> в вашем кошельке, чтобы продолжить"
   },
   "wallet_health": {

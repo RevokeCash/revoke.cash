@@ -18,10 +18,7 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
 
   if (error) return null;
 
-  const totalValueAtRisk = deduplicateArray(
-    (allowances ?? []).sort((a, b) => (a.amount > b.amount ? -1 : 1)),
-    (a, b) => a.contract.address === b.contract.address,
-  ).reduce((acc, allowance) => acc + calculateValueAtRisk(allowance) || 0, 0);
+  const totalValueAtRisk = calculateTotalValueAtRisk(allowances ?? []);
 
   const hasNftsAtRisk = allowances?.some(
     (allowance) =>
@@ -30,7 +27,9 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
       (allowance.balance === 'ERC1155' || allowance.balance > 0n),
   );
 
-  const chainHasPricingInformation = !!getChainPriceStrategy(chainId);
+  const priceStrategy = getChainPriceStrategy(chainId);
+  const chainHasFungiblePriceStrategy = priceStrategy?.supportedAssets?.includes('ERC20');
+  const chainHasNftPriceStrategy = priceStrategy?.supportedAssets?.includes('ERC721');
 
   return (
     <Loader isLoading={isLoading}>
@@ -41,9 +40,9 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
         <div className="font-bold">
           {isLoading ? (
             '$0,000'
-          ) : chainHasPricingInformation ? (
+          ) : chainHasFungiblePriceStrategy ? (
             <>
-              {formatFiatAmount(totalValueAtRisk, 0)} {hasNftsAtRisk ? '+ NFTs' : null}
+              {formatFiatAmount(totalValueAtRisk, 0)} {hasNftsAtRisk && !chainHasNftPriceStrategy ? '+ NFTs' : null}
             </>
           ) : (
             t('address:allowances.unknown')
@@ -55,3 +54,18 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
 };
 
 export default TotalValueAtRisk;
+
+const calculateTotalValueAtRisk = (allowances: AllowanceData[]): number => {
+  const annotatedAllowances = allowances.map((allowance) => ({
+    ...allowance,
+    valueAtRisk: calculateValueAtRisk(allowance),
+  }));
+
+  const sortedAllowances = annotatedAllowances.sort((a, b) => (a.valueAtRisk > b.valueAtRisk ? -1 : 1));
+  const deduplicatedAllowances = deduplicateArray(
+    sortedAllowances,
+    (a, b) => a.contract.address === b.contract.address,
+  );
+
+  return deduplicatedAllowances.reduce((acc, allowance) => acc + allowance.valueAtRisk || 0, 0);
+};

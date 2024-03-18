@@ -95,8 +95,8 @@
     "what_are_token_approvals": "¿Qué son las Autorizaciones de Tokens?"
   },
   "meta": {
-    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {{chainName}} y en 70 redes más.",
-    "title": "Revoca las Aprobaciones de Tus Tokens en Más de 70 Redes"
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {{chainName}} y en 80 redes más.",
+    "title": "Revoca las Aprobaciones de Tus Tokens en Más de 80 Redes"
   },
   "misc": {
     "powered_by": "Desarrollado por <0>{{name}}</0>"

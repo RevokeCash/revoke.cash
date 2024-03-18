@@ -1,5 +1,4 @@
 import { ChainId } from '@revoke.cash/chains';
-import blocksDB from 'lib/databases/blocks';
 import type { AllowanceData, Log } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
@@ -27,6 +26,17 @@ export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
 };
 
+const calculateMaxAllowanceAmount = (allowance: AllowanceData) => {
+  if (allowance.balance === 'ERC1155') {
+    throw new Error('ERC1155 tokens are not supported');
+  }
+
+  if (allowance.amount) return allowance.amount;
+  if (allowance.tokenId) return 1n;
+
+  return allowance.balance;
+};
+
 export const calculateValueAtRisk = (allowance: AllowanceData): number => {
   if (!allowance.spender) return null;
   if (allowance.balance === 'ERC1155') return null;
@@ -34,7 +44,9 @@ export const calculateValueAtRisk = (allowance: AllowanceData): number => {
   if (allowance.balance === 0n) return 0;
   if (isNullish(allowance.metadata.price)) return null;
 
-  const amount = bigintMin(allowance.balance, allowance.amount);
+  const allowanceAmount = calculateMaxAllowanceAmount(allowance);
+
+  const amount = bigintMin(allowance.balance, allowanceAmount);
   const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
   const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
 
@@ -114,7 +126,6 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
     ChainId.ZkSyncMainnet,
     ChainId.ZkSyncSepoliaTestnet,
     ChainId.ArbitrumOne,
-    ChainId.ArbitrumGoerli,
     ChainId.ArbitrumNova,
     ChainId.ArbitrumSepolia,
     ChainId.FrameTestnet,
@@ -176,7 +187,3 @@ export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: n
           chunkSize,
         ),
   );
-
-export const getLogTimestamp = async (publicClient: PublicClient, log: Pick<Log, 'timestamp' | 'blockNumber'>) => {
-  return log.timestamp ?? blocksDB.getBlockTimestamp(publicClient, log.blockNumber);
-};

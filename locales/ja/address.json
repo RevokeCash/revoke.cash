@@ -39,9 +39,9 @@
     "allowance": "許可したもの",
     "asset": "資産",
     "asset_type": "種類",
-    "last_cancelled": "Last Cancelled",
+    "last_cancelled": "最終キャンセル",
     "last_updated": "最終更新日",
-    "marketplace": "Marketplace",
+    "marketplace": "マーケットプレイス",
     "spender": "認定支出者",
     "value_at_risk": "リスクがある価値"
   },
@@ -65,6 +65,15 @@
   "permit2": {
     "expiration": "{{inTime}}で期限が切れます"
   },
+  "risk_factors": {
+    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
+    "exploit": "This address was involved in the {{exploit}}",
+    "levels": {
+      "high": "high risk",
+      "low": "low risk",
+      "medium": "medium risk"
+    }
+  },
   "search": {
     "spender": "公認支出者アドレスによる検索"
   },
@@ -74,10 +83,10 @@
     },
     "marketplaces": {
       "active_approvals": {
-        "one": "1 active approval",
-        "other": "{{count}} active approvals"
+        "one": "1件の有効な承認",
+        "other": "{{count}}件の有効な承認"
       },
-      "none_found": "このネットワークにマーケットプレイスが見つかりません。",
+      "none_found": "承認が有効なマーケットプレイスは見つかりませんでした。",
       "title": "可能なマーケットプレイスの署名"
     },
     "permit": {
@@ -119,7 +128,8 @@
     "old_approval": "この承認は1年以上前のものです。不要になった場合は、取り消すことを検討してください。",
     "permit2_expiration": "これは{{inTime}}で期限が切れる許可2の承認です。",
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
-    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
+    "recently_cancelled": "あなたは最近、この署名候補をすでにキャンセルしました。この署名はリストに残るので、必要であれば後でまたキャンセルすることができます。",
+    "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
     "switch_chain": "続行するには、ウォレット内の接続ネットワークを <0>{{chainName}}</0>に切り替えてください"
   },
   "wallet_health": {

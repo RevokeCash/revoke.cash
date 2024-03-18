@@ -1,6 +1,6 @@
 {
   "name": "revoke.cash",
-  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 70 other networks.",
+  "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 80 other networks.",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@cypress/grep": "^4.0.1",
+    "@lavamoat/allow-scripts": "^3.0.3",
     "@localazy/cli": "^1.7.5",
     "@tailwindcss/typography": "^0.5.10",
     "@types/md5": "^2.3.5",
@@ -94,5 +95,19 @@
   "packageManager": "yarn@3.6.2",
   "lint-staged": {
     "*": "yarn prettier -u --write"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "$root$": true,
+      "@vercel/speed-insights": false,
+      "cypress": true,
+      "next-translate-plugin": false,
+      "sharp": true,
+      "tsx>esbuild": true,
+      "viem>ws>bufferutil": true,
+      "viem>ws>utf-8-validate": true,
+      "wagmi>@wagmi/core>@wagmi/connectors>@coinbase/wallet-sdk>@solana/web3.js>bigint-buffer": false,
+      "wagmi>@wagmi/core>@wagmi/connectors>@coinbase/wallet-sdk>keccak": false
+    }
   }
 }
