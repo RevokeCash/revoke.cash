@@ -1,8 +1,9 @@
 import { DUMMY_ADDRESS } from 'lib/constants';
+import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { OnCancel, PermitTokenData, TransactionType } from 'lib/interfaces';
-import { getLogTimestamp, waitForTransactionConfirmation } from 'lib/utils';
+import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -35,7 +36,7 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
     const lastCancelled = {
       transactionHash: hash,
       blockNumber: Number(transactionReceipt.blockNumber),
-      timestamp: await getLogTimestamp(publicClient, { blockNumber: Number(transactionReceipt.blockNumber) }),
+      timestamp: await blocksDB.getLogTimestamp(publicClient, { blockNumber: Number(transactionReceipt.blockNumber) }),
     };
 
     await onCancel(token, lastCancelled);

@@ -1,6 +1,7 @@
+import blocksDB from 'lib/databases/blocks';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { Marketplace, OnCancel } from 'lib/interfaces';
-import { getLogTimestamp, waitForTransactionConfirmation } from 'lib/utils';
+import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import CancelCell from './CancelCell';
@@ -29,7 +30,7 @@ const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
     const lastCancelled = {
       transactionHash: hash,
       blockNumber: Number(transactionReceipt.blockNumber),
-      timestamp: await getLogTimestamp(publicClient, { blockNumber: Number(transactionReceipt.blockNumber) }),
+      timestamp: await blocksDB.getLogTimestamp(publicClient, { blockNumber: Number(transactionReceipt.blockNumber) }),
     };
 
     await onCancel(marketplace, lastCancelled);

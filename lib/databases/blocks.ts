@@ -1,4 +1,5 @@
 import Dexie, { Table } from 'dexie';
+import { Log } from 'lib/interfaces';
 import { PublicClient } from 'viem';
 
 interface Block {
@@ -36,6 +37,10 @@ class BlocksDB extends Dexie {
 
       throw e;
     }
+  }
+
+  async getLogTimestamp(publicClient: PublicClient, log: Pick<Log, 'timestamp' | 'blockNumber'>) {
+    return log.timestamp ?? this.getBlockTimestamp(publicClient, log.blockNumber);
   }
 }
 

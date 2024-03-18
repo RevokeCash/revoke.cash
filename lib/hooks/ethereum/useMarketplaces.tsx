@@ -1,11 +1,12 @@
 import { ChainId } from '@revoke.cash/chains';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
+import blocksDB from 'lib/databases/blocks';
 import eventsDB from 'lib/databases/events';
 import { Marketplace, MarketplaceConfig, OnCancel, TimeLog, TransactionType } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
-import { addressToTopic, getLogTimestamp, getWalletAddress, logSorterChronological } from 'lib/utils';
+import { addressToTopic, getWalletAddress, logSorterChronological } from 'lib/utils';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
@@ -135,7 +136,7 @@ export const useMarketplaces = () => {
         });
 
         const lastCancelled = logs?.sort(logSorterChronological)?.at(-1);
-        const timestamp = lastCancelled ? await getLogTimestamp(publicClient, lastCancelled) : undefined;
+        const timestamp = lastCancelled ? await blocksDB.getLogTimestamp(publicClient, lastCancelled) : undefined;
 
         return {
           ...marketplace,

@@ -1,5 +1,4 @@
 import { ChainId } from '@revoke.cash/chains';
-import blocksDB from 'lib/databases/blocks';
 import type { AllowanceData, Log } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
@@ -189,7 +188,3 @@ export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: n
           chunkSize,
         ),
   );
-
-export const getLogTimestamp = async (publicClient: PublicClient, log: Pick<Log, 'timestamp' | 'blockNumber'>) => {
-  return log.timestamp ?? blocksDB.getBlockTimestamp(publicClient, log.blockNumber);
-};
