@@ -4,12 +4,15 @@
 
 import { ChainId } from '@revoke.cash/chains';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
+import { SupportType } from 'lib/chains/Chain';
 import {
-  ETHERSCAN_SUPPORTED_CHAINS,
   ORDERED_CHAINS,
   SUPPORTED_CHAINS,
   getChainApiUrl,
+  getChainConfig,
   getChainExplorerUrl,
+  getChainIdFromSlug,
+  getChainInfoUrl,
   getChainLogo,
   getChainLogsRpcUrl,
   getChainName,
@@ -78,7 +81,7 @@ const TEST_ADDRESSES = {
   [ChainId.Moonriver]: '0x8107b00171a02f83D7a17f62941841C29c3ae60F',
   [ChainId.NahmiiMainnet]: '0xd342d75FE943AD8b92594BAeC3A7f86E5dF0BEb6',
   [ChainId.OasisEmerald]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
-  [ChainId.OasisSapphire]: '0x2433e002Ed10B5D6a3d8d1e0C5D2083BE9E37f1D',
+  [ChainId.OasisSapphire]: '0x25D436EB03b79c818ddb94dB3f0e170706Ff638b',
   [ChainId.OasysMainnet]: '0xf04820Bbc0D6B7F7B1f2fE888E5fc60DF6B61262',
   [ChainId.OctaSpace]: '0x8a6681fb319d009d775FdD7b1b15ad4f2Aad003c',
   [ChainId.OpBNBMainnet]: '0x9bE0B370ECf45528F435c023c92a608b3EbB4A9b',
@@ -107,10 +110,9 @@ const TEST_ADDRESSES = {
   [ChainId.ZkSyncMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
   [ChainId.Zora]: '0x061EFb2DF7767D6e63529BA99394037d4dCa39D6',
   // Testnets
-  [ChainId.ArbitrumGoerli]: '0x3383A622FA7a30fC83527d6ce1820af928455EA8',
   [ChainId.ArbitrumSepolia]: '0xDd3287043493E0a08d2B348397554096728B459c',
   [ChainId.AvalancheFujiTestnet]: '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6',
-  [ChainId.BaseGoerliTestnet]: '0xDEA7DBE814dc0B13C57ed78ff2b3B3cc8Efab4be',
+  [ChainId.BaseSepoliaTestnet]: '0xF85A57d965aEcD289c625Cae6161d0Ab5141bC66',
   [ChainId.BerachainArtio]: '0x1F8C24902fbe49c235aD89F93d0C06CD699B0dfE',
   [ChainId.BlastSepoliaTestnet]: '0x01208040F4DB383c9f73C023d3c00a5F15bE5bCa',
   [ChainId.BNBSmartChainTestnet]: '0x40FE4911704f14f409ebEE40475377720C732803',
@@ -131,12 +133,10 @@ const TEST_ADDRESSES = {
   [ChainId.Mumbai]: '0x61bEE7b65F860Fe5a22958421b0a344a0F146983',
   [ChainId.OPSepoliaTestnet]: '0xDd3287043493E0a08d2B348397554096728B459c',
   [ChainId.PolygonzkEVMTestnet]: '0xe9Cc1396bcbB6e1168d731347F376A2d5709B42a',
-  [ChainId.PulseChainTestnetv4]: '0xc068aEAdc48427fde985866DAa3e52D4d63935C3',
   [ChainId.ScrollSepoliaTestnet]: '0xBF1E9dc0f7c2186346544BF985321e179c3d186c',
   [ChainId.Sepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
   [ChainId.ShimmerEVMTestnet]: '0xecaF55B79fdCf39EF23715cD8dE539C8E58e9119',
   [ChainId.SyscoinTanenbaumTestnet]: '0x2FB7aB1E0357D595877209e74a715D0F5816cC29',
-  [ChainId.TaikoJolnirL2]: '0xe5fC964C4b03BC7B84adc3A18Fc93bfe54c6EabB',
   [ChainId.TaikoKatlaL2]: '0x3E866039DD8EdACDF24165Ce022Ace2A6eb3c400',
   [ChainId.ZetaChainAthens3Testnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
   [ChainId.ZKFairMainnet]: '0xb0240794108Fd89C99BB828C9eBc0e7d9703C2f8',
@@ -168,15 +168,17 @@ describe('Chain Support', () => {
       describe('Chain Data', () => {
         it('should have base chain data', () => {
           cy.wrap(getChainName(chainId)).should('not.be.empty');
+          cy.wrap(getChainLogo(chainId)).should('not.be.empty');
+          cy.wrap(getChainInfoUrl(chainId)).should('not.be.empty');
           cy.wrap(getChainExplorerUrl(chainId)).should('not.be.empty');
           cy.wrap(getChainRpcUrl(chainId)).should('not.be.empty');
           cy.wrap(getChainLogsRpcUrl(chainId)).should('not.be.empty');
-          cy.wrap(getChainLogo(chainId)).should('not.be.empty');
           cy.wrap(getChainNativeToken(chainId)).should('not.be.empty');
           cy.wrap(getChainSlug(chainId)).should('not.be.empty');
+          cy.wrap(getChainIdFromSlug(getChainSlug(chainId))).should('eq', chainId);
         });
 
-        if (ETHERSCAN_SUPPORTED_CHAINS.includes(chainId)) {
+        if (getChainConfig(chainId)?.type === SupportType.ETHERSCAN_COMPATIBLE) {
           it('should have an Etherscan API URL', () => {
             cy.wrap(getChainApiUrl(chainId)).should('not.be.empty');
           });

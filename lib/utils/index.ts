@@ -126,7 +126,6 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
     ChainId.ZkSyncMainnet,
     ChainId.ZkSyncSepoliaTestnet,
     ChainId.ArbitrumOne,
-    ChainId.ArbitrumGoerli,
     ChainId.ArbitrumNova,
     ChainId.ArbitrumSepolia,
     ChainId.FrameTestnet,

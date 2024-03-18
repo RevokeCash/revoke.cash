@@ -63,13 +63,25 @@ Also make sure that your network is listed in [ethereum-lists/chains](https://gi
 
 In `lib/utils/chains.ts`:
 
-- Add the network to `PROVIDER_SUPPORTED_CHAINS`, `BLOCKSCOUT_SUPPORTED_CHAINS`, `ETHERSCAN_SUPPORTED_CHAINS` or `COVALENT_SUPPORTED_CHAINS`.
-- Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS`. You can subsequently run `yarn tsx scripts/get-chain-order.ts` to determine its position in the network selection dropdown.
-- Find a logo (preferably svg) for the network, add it to `public/assets/images/vendor/chains` and add the path to `getChainLogo()`.
-- If `multicall3` is deployed on the network, add it to `getChainDeployedContracts()`.
-- If a price source (Uniswap v2 or Uniswap v3 fork) is available for the network, add it to `getChainPriceStrategies()`.
-- If it uses a block explorer API such as Etherscan's or Blockscout's, add the network to `getChainApiUrl()` and if it requires an API key, this should be added to the environment variable `ETHERSCAN_API_KEYS` in `.env`.
-- If the data in `ethereum-lists/chains` is different than what should be used by Revoke.cash, add the network to `getChainName()`, `getChainExplorerUrl()`, `getChainRpcUrl()`, `getChainFreeRpcUrl()`, `getChainLogsRpcUrl()`, `getChainNativeToken()`
+- Add a network configuration for the network to the `CHAINS` mapping. A network configuration can include the following properties, and need to be filled out accordingly. `name`, `infoUrl`, `nativeToken`, `explorerUrl` and `rpc` only need to be added if the data in `ethereum-lists/chains` is different than what should be used by Revoke.cash
+  - `type`: The type of support, can be `SupportType.PROVIDER` for networks with a public RPC endpoint, `SupportType.COVALENT` for networks supported by CovalentHQ, or `SupportType.ETHERSCAN_COMPATIBLE` for networks with a block explorer API.
+  - `chainId`: The chain ID of the network.
+  - `name`: The name of the network.
+  - `logoUrl`: The URL of the network's logo. Add a logo file (preferably svg) to `public/assets/images/vendor/chains` and add the path here.
+  - `infoUrl` (Optional): The URL of the network's website.
+  - `nativeToken` (Optional): The symbol of the network's native token.
+  - `explorerUrl` (Optional): The URL of the network's block explorer.
+  - `etherscanCompatibleApiUrl` (Only for `SupportType.ETHERSCAN_COMPATIBLE`): The URL of the network's block explorer API.
+  - `rpc.main` (Optional): The URL of the network's RPC endpoint.
+  - `rpc.logs` (Optional): The URL of the network's RPC endpoint for fetching logs (if different from `main`).
+  - `rpc.free` (Optional): The URL of the network's free RPC endpoint (will be used when adding the network to a wallet).
+  - `deployedContracts` (Optional): If multicall3 is deployed to the network, set this to `{ ...MULTICALL }` (check on https://www.multicall3.com/).
+  - `priceStrategy` (Optional): If a price source (Uniswap v2 or Uniswap v3 fork), add a corresponding `PriceStrategy` to enable token pricing.
+  - `backendPriceStrategy` (Optional): If Reservoir has an API endpoint for the network, add a corresponding `ReservoirPriceStrategy` to enable NFT pricing.
+  - `isTestnet` (Optional): Whether the network is a testnet.
+  - `isCanary` (Optional): Whether the network is a canary network.
+  - `correspondingMainnetChainId` (Optional): The chain ID of the corresponding mainnet network (only for testnets or canary networks).
+- Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS` depending on whether it is a mainnet or testnet. You can subsequently run `yarn tsx scripts/get-chain-order.ts` to determine its rough position in the network selection dropdown.
 - Add an amount to `getDefaultDonationAmount()` that corresponds to around $10-20 in the native token of the network.
 
 In `cypress/e2e/chains.cy.ts`:

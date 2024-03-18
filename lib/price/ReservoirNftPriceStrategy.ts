@@ -11,6 +11,7 @@ import { PriceStrategy } from './PriceStrategy';
 const IGNORE_LIST = [
   '0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85', // ENS Names
   '0xa9a6A3626993D487d2Dbda3173cf58cA1a9D9e9f', // Unstoppable Domains
+  '0x22C1f6050E56d2876009903609a2cC3fEf83B415', // POAP
 ];
 
 interface ReservoirNftPriceStrategyOptions {
