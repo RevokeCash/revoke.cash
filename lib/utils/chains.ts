@@ -1603,7 +1603,7 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Scroll',
     logoUrl: '/assets/images/vendor/chains/scroll.svg',
     explorerUrl: 'https://scrollscan.com',
-    etherscanCompatibleApiUrl: 'https://blockscout.scroll.io/api', // TODO
+    etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api', // TODO
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
     backendPriceStrategy: new ReservoirNftPriceStrategy({
@@ -1616,7 +1616,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.ScrollSepoliaTestnet,
     name: 'Scroll Sepolia',
     logoUrl: '/assets/images/vendor/chains/scroll.svg',
-    etherscanCompatibleApiUrl: 'https://sepolia-blockscout.scroll.io/api',
+    etherscanCompatibleApiUrl: 'https://api-sepolia.scrollscan.com/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Scroll,
