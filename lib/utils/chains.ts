@@ -2,7 +2,6 @@ import { ChainId } from '@revoke.cash/chains';
 import { ALCHEMY_API_KEY, INFURA_API_KEY, RESERVOIR_API_KEY } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
-import { BackendPriceStrategy } from 'lib/price/BackendPriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { ReservoirNftPriceStrategy } from 'lib/price/ReservoirNftPriceStrategy';
@@ -76,13 +75,13 @@ export const CHAINS: Record<number, Chain> = {
           ],
           decimals: 6,
         }),
-        new BackendPriceStrategy({}),
+        // new BackendPriceStrategy({}),
       ],
     }),
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-arbitrum.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-arbitrum.reservoir.tools',
+    // }),
   }),
   [ChainId.ArbitrumSepolia]: new Chain({
     type: SupportType.PROVIDER,
@@ -164,13 +163,13 @@ export const CHAINS: Record<number, Chain> = {
           path: ['0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E'],
           decimals: 6,
         }),
-        new BackendPriceStrategy({}),
+        // new BackendPriceStrategy({}),
       ],
     }),
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-avalanche.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-avalanche.reservoir.tools',
+    // }),
   }),
   [ChainId.AvalancheFujiTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -223,13 +222,13 @@ export const CHAINS: Record<number, Chain> = {
           ],
           decimals: 6,
         }),
-        new BackendPriceStrategy({}),
+        // new BackendPriceStrategy({}),
       ],
     }),
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-base.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-base.reservoir.tools',
+    // }),
   }),
   [ChainId.BaseSepoliaTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -362,13 +361,13 @@ export const CHAINS: Record<number, Chain> = {
           address: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
           path: ['0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'],
         }),
-        new BackendPriceStrategy({}),
+        // new BackendPriceStrategy({}),
       ],
     }),
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-bsc.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-bsc.reservoir.tools',
+    // }),
   }),
   [ChainId.BNBSmartChainTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -710,13 +709,13 @@ export const CHAINS: Record<number, Chain> = {
           path: ['0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
           decimals: 6,
         }),
-        new BackendPriceStrategy({}),
+        // new BackendPriceStrategy({}),
       ],
     }),
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api.reservoir.tools',
+    // }),
   }),
   [ChainId.Evmos]: new Chain({
     type: SupportType.COVALENT,
@@ -1052,10 +1051,10 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: { ...MULTICALL },
     // TODO: Add SyncSwap strategy to support Linea
     priceStrategy: undefined,
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-linea.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-linea.reservoir.tools',
+    // }),
   }),
   [ChainId.LineaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1396,13 +1395,13 @@ export const CHAINS: Record<number, Chain> = {
           ],
           decimals: 6,
         }),
-        new BackendPriceStrategy({}),
+        // new BackendPriceStrategy({}),
       ],
     }),
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-optimism.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-optimism.reservoir.tools',
+    // }),
   }),
   [ChainId.OPSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1482,13 +1481,13 @@ export const CHAINS: Record<number, Chain> = {
           path: ['0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'],
           decimals: 6,
         }),
-        new BackendPriceStrategy({}),
+        // new BackendPriceStrategy({}),
       ],
     }),
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-polygon.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-polygon.reservoir.tools',
+    // }),
   }),
   [ChainId.PolygonzkEVM]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1606,10 +1605,10 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api', // TODO
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-scroll.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-scroll.reservoir.tools',
+    // }),
   }),
   [ChainId.ScrollSepoliaTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1871,10 +1870,10 @@ export const CHAINS: Record<number, Chain> = {
     },
     // TODO: Add SyncSwap strategy to support ZkSync
     priceStrategy: undefined,
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-zksync.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-zksync.reservoir.tools',
+    // }),
   }),
   [ChainId.ZkSyncSepoliaTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1900,10 +1899,10 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://explorer.zora.energy/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-zora.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-zora.reservoir.tools',
+    // }),
   }),
   // TODO: This is a placeholder so we can add a description for Taiko
   [12345678901]: new Chain({
