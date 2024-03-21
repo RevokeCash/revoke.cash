@@ -97,19 +97,18 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ArbitrumOne,
   }),
-    [ChainId.AreonNetwork]: new Chain({
+  [ChainId.AreonNetwork]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.AreonNetwork,
     name: 'Areon Network',
     logoUrl: '/assets/images/vendor/chains/areon.svg',
     explorerUrl: 'https://areonscan.com',
+    infoUrl: 'https://areon.network',
     nativeToken: 'AREA',
     rpc: {
       main: 'https://mainnet-rpc.areon.network',
     },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: false,
-    priceStrategy: undefined,      
+    isTestnet: false,    
   }),
   [ChainId.Astar]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
