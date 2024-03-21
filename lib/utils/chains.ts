@@ -2024,6 +2024,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
+  ChainId.AreonNetwork,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -2188,6 +2189,7 @@ export const getChainBackendPriceStrategy = (chainId: number): PriceStrategy | u
 // Target a default of a round-ish number of tokens, worth around $10-20
 export const getDefaultDonationAmount = (nativeToken: string): string => {
   const mapping = {
+    AREA: '125',
     ASTR: '300',
     AVAX: '1',
     BCH: '0.1',
