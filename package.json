@@ -102,6 +102,7 @@
     "allowScripts": {
       "$root$": true,
       "@sentry/nextjs>@sentry/webpack-plugin>@sentry/cli": true,
+      "@sentry/profiling-node": true,
       "@vercel/speed-insights": false,
       "cypress": true,
       "next-translate-plugin": false,
