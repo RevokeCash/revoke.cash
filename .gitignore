@@ -64,3 +64,5 @@ scripts/chainid-lookup.csv
 .vscode/launch.json
 
 certificates
+# Sentry Config File
+.sentryclirc

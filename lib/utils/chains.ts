@@ -1,10 +1,9 @@
 import { ChainId } from '@revoke.cash/chains';
-import { ALCHEMY_API_KEY, INFURA_API_KEY, RESERVOIR_API_KEY } from 'lib/constants';
+import { ALCHEMY_API_KEY, INFURA_API_KEY } from 'lib/constants';
 import { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
-import { ReservoirNftPriceStrategy } from 'lib/price/ReservoirNftPriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { PublicClient, Chain as ViemChain, toHex } from 'viem';
@@ -1502,10 +1501,10 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: { ...MULTICALL },
     // TODO: Add Algebra strategy (probably slightly amended from Uniswap v3) to support zkEVM
     priceStrategy: undefined,
-    backendPriceStrategy: new ReservoirNftPriceStrategy({
-      apiKey: RESERVOIR_API_KEY,
-      apiUrl: 'https://api-polygon-zkevm.reservoir.tools',
-    }),
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-polygon-zkevm.reservoir.tools',
+    // }),
   }),
   [ChainId.PolygonzkEVMTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,

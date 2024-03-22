@@ -21,6 +21,8 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@revoke.cash/chains": "^33.0.0",
+    "@sentry/nextjs": "^7.107.0",
+    "@sentry/profiling-node": "^7.107.0",
     "@tanstack/query-sync-storage-persister": "^5.13.4",
     "@tanstack/react-query": "^5.13.4",
     "@tanstack/react-query-persist-client": "^5.13.4",
@@ -99,6 +101,7 @@
   "lavamoat": {
     "allowScripts": {
       "$root$": true,
+      "@sentry/nextjs>@sentry/webpack-plugin>@sentry/cli": true,
       "@vercel/speed-insights": false,
       "cypress": true,
       "next-translate-plugin": false,
