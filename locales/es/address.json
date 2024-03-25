@@ -66,12 +66,12 @@
     "expiration": "Caduca {{inTime}}"
   },
   "risk_factors": {
-    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
-    "exploit": "This address was involved in the {{exploit}}",
+    "blocklist": "Esta dirección está en la lista de bloqueo de <0>{{platform}}</0>",
+    "exploit": "Esta dirección estuvo implicada en el {{exploit}}",
     "levels": {
-      "high": "high risk",
-      "low": "low risk",
-      "medium": "medium risk"
+      "high": "alto riesgo",
+      "low": "bajo riesgo",
+      "medium": "riesgo medio"
     }
   },
   "search": {
@@ -129,7 +129,7 @@
     "permit2_expiration": "Esta es una autorización de Permit2 que caducará en {{inTime}}",
     "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
     "recently_cancelled": "Ya has cancelado esta posible firma recientemente. Permanecerá en la lista para que puedas volver a cancelarla más adelante si lo necesitas.",
-    "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
+    "risk_factors": "La aprobación de este token es de {{riskLevel}} por estas razones:",
     "switch_chain": "Por favor cambia tu red conectada a <0>{{chainName}}</0> dentro de tu cartera para continuar"
   },
   "wallet_health": {

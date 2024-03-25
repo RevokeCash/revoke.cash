@@ -66,12 +66,12 @@
     "expiration": "{{inTime}}で期限が切れます"
   },
   "risk_factors": {
-    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
-    "exploit": "This address was involved in the {{exploit}}",
+    "blocklist": "このアドレスは<0>{{platform}}</0>ブロックリストにあります",
+    "exploit": "このアドレスは、{{exploit}}に関与していました",
     "levels": {
-      "high": "high risk",
-      "low": "low risk",
-      "medium": "medium risk"
+      "high": "高リスク",
+      "low": "低リスク",
+      "medium": "中リスク"
     }
   },
   "search": {
@@ -129,7 +129,7 @@
     "permit2_expiration": "これは{{inTime}}で期限が切れる許可2の承認です。",
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
     "recently_cancelled": "あなたは最近、この署名候補をすでにキャンセルしました。この署名はリストに残るので、必要であれば後でまたキャンセルすることができます。",
-    "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
+    "risk_factors": "このトークン承認は下記の理由で{{riskLevel}}です：",
     "switch_chain": "続行するには、ウォレット内の接続ネットワークを <0>{{chainName}}</0>に切り替えてください"
   },
   "wallet_health": {
