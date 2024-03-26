@@ -66,16 +66,16 @@
     "expiration": "于 {{inTime}} 过期"
   },
   "risk_factors": {
-    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
-    "exploit": "This address was involved in the {{exploit}}",
+    "blocklist": "此地址在<0>{{platform}}</0>黑名单上",
+    "exploit": "此地址涉及{{exploit}}",
     "levels": {
-      "high": "high risk",
-      "low": "low risk",
-      "medium": "medium risk"
+      "high": "高风险",
+      "low": "低风险",
+      "medium": "中风险"
     }
   },
   "search": {
-    "spender": "按授权的消费者地址搜索"
+    "spender": "按被授权人（Spender）地址搜索"
   },
   "signatures": {
     "info": {
@@ -129,7 +129,7 @@
     "permit2_expiration": "这是 Permit2 授权，将于 {{inTime}} 到期。",
     "permit_signatures": "许可签名用于在无需发送交易的情况下授权消费。如果您在钓鱼网站上签署了许可签名，请取消。",
     "recently_cancelled": "您最近已取消了这个潜在签名。它将保留在列表中，如果后续有需要，您可以再次取消。",
-    "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
+    "risk_factors": "此代币授权为{{riskLevel}}，原因如下：",
     "switch_chain": "请在钱包内将区块链切换为 <0>{{chainName}}</0> 以继续操作"
   },
   "wallet_health": {

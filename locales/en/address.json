@@ -66,7 +66,7 @@
     "expiration": "Expires {{inTime}}"
   },
   "risk_factors": {
-    "blocklist": "This address is on the <0>{{platform}}</0> blocklist",
+    "blocklist": "This address is blocklisted by <0>{{platform}}</0>",
     "exploit": "This address was involved in the {{exploit}}",
     "levels": {
       "high": "high risk",
