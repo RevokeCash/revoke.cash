@@ -96,6 +96,19 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ArbitrumOne,
   }),
+  [ChainId.AreonNetwork]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.AreonNetwork,
+    name: 'Areon Network',
+    logoUrl: '/assets/images/vendor/chains/areon.svg',
+    explorerUrl: 'https://areonscan.com',
+    infoUrl: 'https://areon.network',
+    nativeToken: 'AREA',
+    rpc: {
+      main: 'https://mainnet-rpc.areon.network',
+    },
+    isTestnet: false,    
+  }),
   [ChainId.Astar]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Astar,
@@ -2065,6 +2078,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
+  ChainId.AreonNetwork,
 ];
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -2231,6 +2245,7 @@ export const getChainBackendPriceStrategy = (chainId: number): PriceStrategy | u
 // Target a default of a round-ish number of tokens, worth around $10-20
 export const getDefaultDonationAmount = (nativeToken: string): string => {
   const mapping = {
+    AREA: '125',
     ASTR: '300',
     AVAX: '1',
     BCH: '0.1',

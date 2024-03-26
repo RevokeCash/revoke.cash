@@ -27,6 +27,7 @@ const TEST_ADDRESSES = {
   // Mainnets
   [ChainId.ArbitrumNova]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.ArbitrumOne]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
+  [ChainId.AreonNetwork ]: '0x5f2A3096093B0554B41c3ed503BF3997d4bDD402',
   [ChainId.Astar]: '0xAE545C0d8d4b4645fBA8c895e370529D22F8a71c',
   [ChainId.AuroraMainnet]: '0x1D50A8c3295798fCebdDD0C720BeC4FBEdc3D178',
   [ChainId['AvalancheC-Chain']]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
