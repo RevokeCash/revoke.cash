@@ -52,7 +52,6 @@ export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements Pri
 
   protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number> {
     if (tokenContract.address === this.path.at(-1)) {
-      // return parseUnits(String(1), this.decimals);
       return 1;
     }
 

@@ -1124,6 +1124,13 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
       strategies: [
+        // Merchant Moe (Router) | WMNT -> USDT
+        new UniswapV2PriceStrategy({
+          address: '0xeaEE7EE68874218c3558b40063c42B82D3E7232a',
+          path: ['0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8', '0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE'],
+          decimals: 6,
+          liquidityParameters: { baseAmount: 10n },
+        }),
         // Note: Agni Finance has a separate "Pool Deployer" contract, which is why using the "Factory" address does
         // not work for generating pool addresses. Most likely the Quoter also doesn't work for the same reason.
         // Agni Finance (Pool Deployer) | (0.25%) WMNT -> (0.05%) USDC
