@@ -618,7 +618,7 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.ENULSMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.ENULSMainnet,
     name: 'ENULS',
     logoUrl: '/assets/images/vendor/chains/enuls.svg',
@@ -1175,25 +1175,22 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.MerlinMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.MerlinMainnet,
     name: 'Merlin',
     logoUrl: '/assets/images/vendor/chains/merlin.svg',
-    nativeToken: 'BTC',
     explorerUrl: 'https://scan.merlinchain.io',
-    etherscanCompatibleApiUrl: 'https://scan.merlinchain.io/api',
     rpc: {
       main: 'https://rpc.merlinchain.io',
     },
   }),
   [686868]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: 686868,
     name: 'Merlin Testnet',
     logoUrl: '/assets/images/vendor/chains/merlin.svg',
     nativeToken: 'BTC',
     explorerUrl: 'https://testnet-scan.merlinchain.io',
-    etherscanCompatibleApiUrl: 'https://testnet-scan.merlinchain.io/api',
     rpc: {
       main: 'https://testnet-rpc.merlinchain.io',
     },
@@ -1329,7 +1326,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.OasisEmerald,
     name: 'Oasis Emerald',
     logoUrl: '/assets/images/vendor/chains/oasis.png',
-    etherscanCompatibleApiUrl: 'https://explorer.emerald.oasis.dev/api',
+    etherscanCompatibleApiUrl: 'https://explorer.oasis.updev.si/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1345,11 +1342,10 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.OasisSapphire]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.COVALENT,
     chainId: ChainId.OasisSapphire,
     name: 'Oasis Sapphire',
     logoUrl: '/assets/images/vendor/chains/oasis.png',
-    etherscanCompatibleApiUrl: 'https://explorer.sapphire.oasis.io/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
   }),
@@ -1749,18 +1745,23 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.SyscoinMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SyscoinMainnet,
     name: 'Syscoin',
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.syscoin.org/api',
+    rpc: {
+      main: 'https://syscoin.public-rpc.com',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.SyscoinTanenbaumTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SyscoinTanenbaumTestnet,
     name: 'Syscoin Tanenbaum',
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
+    etherscanCompatibleApiUrl: 'https://tanenbaum.io/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.SyscoinMainnet,
