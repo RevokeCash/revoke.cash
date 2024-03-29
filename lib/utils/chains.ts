@@ -582,6 +582,18 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
+  [ChainId.DegenChain]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.DegenChain,
+    name: 'Degen Chain',
+    logoUrl: '/assets/images/vendor/chains/degen.png',
+    explorerUrl: 'https://explorer.degen.tips',
+    etherscanCompatibleApiUrl: 'https://explorer.degen.tips/api',
+    rpc: {
+      main: 'https://rpc.degen.tips',
+    },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.DogechainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.DogechainMainnet,
@@ -2065,6 +2077,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Shiden,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.Palm,
+  ChainId.DegenChain,
   1380012617, // RARI Chain
   ChainId.Zora,
   // ChainId.LUKSOMainnet,

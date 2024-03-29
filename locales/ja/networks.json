@@ -26,6 +26,7 @@
     "core": "COREは、ビットコインのハッシュレートを活用し、プルーフ・オブ・ワークと委任型プルーフ・オブ・ステークの機能を組み合わせたSatoshi Plusと呼ばれる新しいコンセンサスメカニズムを使用するレイヤー1のブロックチェーンです。CORE DAOは独自のブロックチェーンネットワークを提供する一方で、Satoshi Plusテクノロジーの使用を他のブロックチェーンにも広めることに重点を置いています。",
     "cronos": "CronosはCrypto.orgブロックチェーンのEVM互換サイドチェーンです。Cronosは、プルーフ・オブ・オーソリティのコンセンサスメカニズムを採用しています。これにより、チェーンは高速で安価に使用できますが、分散化には妥協があります。また、インター・ブロックチェーン・コミュニケーション（IBC）プロトコルを使用して、Cronosと他のブロックチェーン間の相互運用性を実現しています。",
     "darwinia": "Darwiniaは、Polkadot上で動作するEthereum互換のパラチェーンです。PolkadotパラチェーンとしてPolkadot上に構築された他のネットワークとうまく統合できるため、Darwinia MsgPortテクノロジーを使用して異なるブロックチェーン間のクロスチェーン相互運用性を提供することを目的としています。",
+    "degen-chain": "Degen Chain is a Layer 3 blockchain that was built around the DEGEN community token for the Farcaster social network. It is built using Arbitrum's Orbit framework with settlement on Base, a Layer 2 scaling solution for Ethereum.",
     "dogechain": "Dogechainは、スマートコントラクトをDogecoinエコシステムに導入することに焦点を当てたプロジェクトです。公式には承認されていませんが、DogechainはDogecoinのサイドチェーンで、Dogecoinのメインネットとの間でDOGEを転送するためのブリッジを備えています。これにより、Dogecoinエコシステムの人々は、EVMをベースにしたスマート・コントラクトをDOGEと橋渡しして使用することができます。",
     "elastos": "Elastosは、ブロックチェーンのスマートコントラクトを現代のウェブの他の部分と統合することを目的としたレイヤー1のブロックチェーンです。そのために、Elastosはブロックチェーンとサイドチェーンネットワークのほか、ピアツーピアネットワークや分散型アイデンティティーなどの他の関連コンポーネントも開発しました。Elastosのビジョンは、これらのソリューションを統合して、Elastos SmartWebと呼ばれるものに統合することです。",
     "enuls": "ENULSは、NULSブロックチェーンインフラストラクチャー上に構築されたレイヤー1のEVM互換チェーンです。NULSエコシステムの一部でもある兄弟ネットワークのNerve Networkを通じたクロスチェーン相互運用性に重点を置いています。",

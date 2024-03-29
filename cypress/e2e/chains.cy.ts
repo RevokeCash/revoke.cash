@@ -47,6 +47,7 @@ const TEST_ADDRESSES = {
   [ChainId.CrabNetwork]: '0x492Fa13a258d3b3Daf82272be6C7D7db50Be655a',
   [ChainId.CronosMainnet]: '0xB8cAD90CBCb2157d68FD72c43766756cB9bA9B52',
   [ChainId.DarwiniaNetwork]: '0x492Fa13a258d3b3Daf82272be6C7D7db50Be655a',
+  [ChainId.DegenChain]: '0x825853aeD453e8C4201adcbaA9384d62ABbD7dEe',
   [ChainId.DogechainMainnet]: '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc',
   [ChainId.ElastosSmartChain]: '0xA52B02C68cB65083788c46F2c08c6935f0aB19C1',
   [ChainId.ENULSMainnet]: '0x71396287EeDa50fdE667E8c53771682fd74De1Ac',
