@@ -3,7 +3,7 @@ import { getChainName } from 'lib/utils/chains';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import { ReactElement } from 'react';
-import { useAccount, useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
 import SwitchChainButton from './SwitchChainButton';
 
 interface Props {
@@ -17,8 +17,7 @@ interface Props {
 
 const ControlsWrapper = ({ chainId, address, switchChainSize, children, overrideDisabled, disabledReason }: Props) => {
   const { t } = useTranslation();
-  const { address: account, connector } = useAccount();
-  const { chain } = useNetwork();
+  const { address: account, connector, chain } = useAccount();
 
   const chainName = getChainName(chainId);
 

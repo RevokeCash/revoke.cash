@@ -2,11 +2,10 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
-import { deduplicateArray } from 'lib/utils';
-import { getConnectorName, getWalletIcon } from 'lib/utils/wallet';
+import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Connector, useAccount, useConnect } from 'wagmi';
 
 interface Props {
@@ -39,7 +38,9 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
   const connectAndRedirect = async (connector: Connector) => {
     handleClose();
     try {
-      const { account } = await connectAsync({ connector });
+      const {
+        accounts: [account],
+      } = await connectAsync({ connector });
       if (account && redirect) {
         router.push(`/address/${account}`);
       }
@@ -47,6 +48,8 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
       // ignored
     }
   };
+
+  const sortedConnectors = useMemo(() => filterAndSortConnectors(connectors), [connectors]);
 
   return (
     <>
@@ -62,27 +65,25 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
             </Dialog.Title>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">
-              {deduplicateArray(connectors, (a, b) => getConnectorName(a) === getConnectorName(b))
-                .filter((connector) => connector.ready)
-                .map((connector) => (
-                  <Button
-                    style="secondary"
-                    size="none"
-                    className="flex justify-start items-center gap-2 p-2 border border-black rounded-lg w-full text-lg"
-                    key={`${connector.id} / ${connector.name}`}
-                    onClick={() => connectAndRedirect(connector)}
-                  >
-                    <Logo
-                      src={getWalletIcon(getConnectorName(connector))}
-                      alt={getConnectorName(connector)}
-                      size={48}
-                      square
-                      border
-                      className="rounded-md"
-                    />
-                    {getConnectorName(connector)}
-                  </Button>
-                ))}
+              {sortedConnectors.map((connector) => (
+                <Button
+                  style="secondary"
+                  size="none"
+                  className="flex justify-start items-center gap-2 p-2 border border-black rounded-lg w-full text-lg"
+                  key={`${connector.id} / ${connector.name}`}
+                  onClick={() => connectAndRedirect(connector)}
+                >
+                  <Logo
+                    src={getWalletIcon(getConnectorName(connector))}
+                    alt={getConnectorName(connector)}
+                    size={48}
+                    square
+                    border
+                    className="rounded-md"
+                  />
+                  {getConnectorName(connector)}
+                </Button>
+              ))}
             </div>
           </div>
         </div>

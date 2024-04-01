@@ -2,7 +2,7 @@ import { ERC721_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import { useMemo } from 'react';
-import { Address, getAbiItem, getEventSelector } from 'viem';
+import { Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';
@@ -11,7 +11,7 @@ export const useEvents = (address: Address, chainId: number) => {
   const { openSeaProxyAddress, isLoading: isOpenSeaProxyAddressLoading } = useOpenSeaProxyAddress(address);
 
   const getErc721EventSelector = (eventName: 'Transfer' | 'Approval' | 'ApprovalForAll') => {
-    return getEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
+    return toEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
   };
 
   const addressTopic = address ? addressToTopic(address) : undefined;

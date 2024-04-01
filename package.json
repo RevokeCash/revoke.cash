@@ -61,8 +61,8 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^1.21.4",
-    "wagmi": "^1.4.13"
+    "viem": "^2.9.5",
+    "wagmi": "^2.5.13"
   },
   "devDependencies": {
     "@cypress/grep": "^4.0.1",
@@ -110,8 +110,8 @@
       "tsx>esbuild": true,
       "viem>ws>bufferutil": true,
       "viem>ws>utf-8-validate": true,
-      "wagmi>@wagmi/core>@wagmi/connectors>@coinbase/wallet-sdk>@solana/web3.js>bigint-buffer": false,
-      "wagmi>@wagmi/core>@wagmi/connectors>@coinbase/wallet-sdk>keccak": false
+      "wagmi>@wagmi/connectors>@coinbase/wallet-sdk>keccak": false,
+      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false
     }
   }
 }

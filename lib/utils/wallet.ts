@@ -1,4 +1,5 @@
 import { Connector } from 'wagmi';
+import { deduplicateArray } from '.';
 
 export const getWalletIcon = (walletName: string): string | undefined => {
   // Take logos from rainbowkit
@@ -59,7 +60,7 @@ export const getWalletIcon = (walletName: string): string | undefined => {
 export const getConnectorName = (connector: Connector): string => {
   // It's confusing if there are multiple 'Coinbase Wallet' connectors. You can always connect to the Coinbase Wallet
   // extension using the dedicated connector
-  if (connector.name === 'Coinbase Wallet' && connector.id === 'injected') {
+  if (connector.name === 'Coinbase Wallet' && connector.type === 'injected') {
     return 'Browser Wallet';
   }
 
@@ -73,4 +74,26 @@ export const getConnectorName = (connector: Connector): string => {
   }
 
   return connector.name;
+};
+
+export const filterAndSortConnectors = (connectors: readonly Connector[]) => {
+  const comparator = (a: Connector, b: Connector) => {
+    // Sort MetaMask at the top
+    if (a.id === 'io.metamask') return -1;
+    if (b.id === 'io.metamask') return 1;
+
+    // Sort other multi-provider discovered connectors next
+    if (a.id.includes('.')) return -1;
+    if (b.id.includes('.')) return -1;
+
+    // Sort other injected connectors next
+    if (a.type === 'injected') return -1;
+    if (b.type === 'injected') return 1;
+
+    return 0;
+  };
+
+  return deduplicateArray(connectors, (a, b) => getConnectorName(a) === getConnectorName(b))
+    .filter((c) => c.id !== 'safe')
+    .toSorted(comparator);
 };

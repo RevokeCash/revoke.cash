@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
 import { Address } from 'viem';
-import { useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useEvents } from '../ethereum/events/useEvents';
 import { useAllowances } from '../ethereum/useAllowances';
 
@@ -27,7 +27,7 @@ const AddressPageContext = React.createContext<AddressContext>({});
 
 export const AddressPageContextProvider = ({ children, address, initialChainId }: Props) => {
   const router = useRouter();
-  const { chain } = useNetwork();
+  const { chain } = useAccount();
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
   const queryChainId = parseInt(router.query.chainId as string);

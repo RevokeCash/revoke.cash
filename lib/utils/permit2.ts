@@ -30,7 +30,13 @@ const getPermit2AllowanceFromApproval = async (
   owner: Address,
   approval: Log,
 ): Promise<BaseAllowanceData> => {
-  const parsedEvent = decodeEventLog({ abi: PERMIT2_ABI, ...approval });
+  // Note: decodeEventLog return type is messed up since Viem v2
+  const parsedEvent = decodeEventLog({
+    abi: PERMIT2_ABI,
+    data: approval.data,
+    topics: approval.topics,
+    strict: false,
+  }) as any;
   const { spender, amount: lastApprovedAmount, expiration } = parsedEvent.args;
 
   // If the most recent approval event was for 0, or it was a lockdown, or its expiration is in the past, then we know

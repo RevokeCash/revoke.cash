@@ -1,72 +1,50 @@
-import { getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
+import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { SECOND } from 'lib/utils/time';
 import { ReactNode, useEffect } from 'react';
-import { configureChains, createConfig, useAccount, useConnect, WagmiConfig } from 'wagmi';
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-// import { LedgerConnector } from 'wagmi/connectors/ledger';
-import { SafeConnector } from 'wagmi/connectors/safe';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { publicProvider } from 'wagmi/providers/public';
+import { Chain } from 'viem';
+import { createConfig, useAccount, useConnect, WagmiProvider } from 'wagmi';
+import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
 
 interface Props {
   children: ReactNode;
 }
 
-const { chains: wagmiChains, publicClient } = configureChains(
-  ORDERED_CHAINS.map(getViemChainConfig),
-  [publicProvider()],
-  // TODO: Fix cacheTime independent of pollingInterval
-  { batch: { multicall: true }, pollingInterval: 4 * SECOND },
-);
-
-// We don't want to auto-disconnect the user when they switch to certain networks
-// https://github.com/MetaMask/metamask-extension/issues/13375#issuecomment-1027663334
-class InjectedConnectorNoDisconnectListener extends InjectedConnector {
-  protected onDisconnect = async () => {};
-}
-
 export const connectors = [
-  new SafeConnector({
-    chains: wagmiChains,
-    options: { debug: false },
-  }),
-  new InjectedConnectorNoDisconnectListener({ chains: wagmiChains }),
-  new InjectedConnectorNoDisconnectListener({ chains: wagmiChains, options: { name: 'Browser Wallet' } }),
-  new WalletConnectConnector({
-    chains: wagmiChains,
-    options: {
-      projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-      metadata: {
-        name: 'Revoke.cash',
-        description:
-          'Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 80 other networks.',
-        url: 'https://revoke.cash',
-        icons: [
-          'https://revoke.cash/assets/images/revoke-icon.svg',
-          'https://revoke.cash/assets/images/apple-touch-icon.png',
-        ],
-      },
+  safe({ debug: false }),
+  injected(),
+  walletConnect({
+    projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+    metadata: {
+      name: 'Revoke.cash',
+      description:
+        'Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 80 other networks.',
+      url: 'https://revoke.cash',
+      icons: [
+        'https://revoke.cash/assets/images/revoke-icon.svg',
+        'https://revoke.cash/assets/images/apple-touch-icon.png',
+      ],
     },
   }),
-  new CoinbaseWalletConnector({ chains: wagmiChains, options: { appName: 'Revoke.cash' } }),
-  // new LedgerConnector({
-  //   chains: wagmiChains,
-  //   options: { walletConnectVersion: 2, projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID },
-  // }),
+  coinbaseWallet({ appName: 'Revoke.cash' }),
 ];
 
 export const wagmiConfig = createConfig({
-  autoConnect: true,
+  chains: ORDERED_CHAINS.map(getViemChainConfig) as [Chain, ...Chain[]],
   connectors,
-  publicClient,
+  // @ts-ignore TODO: This gives a TypeScript error since Wagmi v2
+  client: ({ chain }) => {
+    return createViemPublicClientForChain(chain.id) as any;
+  },
+  ssr: true,
+  batch: { multicall: true },
+  cacheTime: 4 * SECOND,
 });
 
 export const EthereumProvider = ({ children }: Props) => {
   return (
-    <WagmiConfig config={wagmiConfig}>
+    <WagmiProvider config={wagmiConfig} reconnectOnMount>
       <EthereumProviderChild>{children}</EthereumProviderChild>
-    </WagmiConfig>
+    </WagmiProvider>
   );
 };
 
@@ -77,8 +55,12 @@ const EthereumProviderChild = ({ children }: Props) => {
   // If the Safe connector is available, connect to it even if other connectors are available
   // (if another connector auto-connects (or user disconnects), we still override it with the Safe connector)
   useEffect(() => {
-    const safeConnector = connectors?.find((connector) => connector.id === 'safe' && connector.ready);
+    const safeConnector = connectors?.find((connector) => connector.id === 'safe');
     if (!safeConnector || connector === safeConnector) return;
+
+    // Only supported in an iFrame context
+    if (typeof window === 'undefined' || window?.parent === window) return;
+
     connect({ connector: safeConnector });
   }, [connectors, connector]);
 
