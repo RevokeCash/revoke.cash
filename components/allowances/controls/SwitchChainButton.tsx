@@ -1,7 +1,7 @@
 import Button from 'components/common/Button';
 import useTranslation from 'next-translate/useTranslation';
 import { useAsyncCallback } from 'react-async-hook';
-import { useAccount, useSwitchNetwork } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 
 interface Props {
   chainId: number;
@@ -11,10 +11,10 @@ interface Props {
 const SwitchChainButton = ({ chainId, size }: Props) => {
   const { t } = useTranslation();
   const { connector } = useAccount();
-  const { switchNetwork } = useSwitchNetwork();
+  const { switchChainAsync } = useSwitchChain();
   const canSwitchChain = connector?.id === 'injected';
 
-  const { execute, loading } = useAsyncCallback(() => switchNetwork(chainId));
+  const { execute, loading } = useAsyncCallback(() => switchChainAsync({ chainId }));
 
   const button = (
     <Button style="secondary" size={size} disabled={!canSwitchChain} loading={loading} onClick={execute}>

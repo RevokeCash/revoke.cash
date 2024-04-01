@@ -942,6 +942,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Ethereum Holesky',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     etherscanCompatibleApiUrl: 'https://api-holesky.etherscan.io/api',
+    rpc: {
+      main: 'https://holesky.drpc.org',
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.EthereumMainnet,
@@ -1196,19 +1199,6 @@ export const CHAINS: Record<number, Chain> = {
       main: 'https://rpc.merlinchain.io',
     },
   }),
-  [686868]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: 686868,
-    name: 'Merlin Testnet',
-    logoUrl: '/assets/images/vendor/chains/merlin.svg',
-    nativeToken: 'BTC',
-    explorerUrl: 'https://testnet-scan.merlinchain.io',
-    rpc: {
-      main: 'https://testnet-rpc.merlinchain.io',
-    },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.MerlinMainnet,
-  }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.MetisAndromedaMainnet,
@@ -1334,11 +1324,10 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.OasisEmerald]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.COVALENT,
     chainId: ChainId.OasisEmerald,
     name: 'Oasis Emerald',
     logoUrl: '/assets/images/vendor/chains/oasis.png',
-    etherscanCompatibleApiUrl: 'https://explorer.oasis.updev.si/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -2086,7 +2075,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
-];
+] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
   ChainId.Sepolia,
@@ -2110,7 +2099,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.FantomTestnet,
   ChainId.MoonbaseAlpha,
   ChainId.MantleTestnet,
-  686868, // Merlin Testnet
   ChainId.KromaSepolia,
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
@@ -2122,7 +2110,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BeamTestnet,
   ChainId.RedstoneHoleskyTestnet,
   // ChainId.LUKSOTestnet,
-];
+] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
 

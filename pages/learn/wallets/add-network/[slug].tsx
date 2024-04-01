@@ -23,7 +23,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
-import { useAccount, useSwitchNetwork } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 
 interface Props {
   sidebar: ISidebarEntry[];
@@ -32,7 +32,7 @@ interface Props {
 
 const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
   const { t, lang } = useTranslation();
-  const { switchNetwork } = useSwitchNetwork({ chainId });
+  const { switchChain } = useSwitchChain();
   const { isConnected } = useAccount();
   const isMounted = useMounted();
 
@@ -118,7 +118,7 @@ const AddNewChainPage: NextPage<Props> = ({ sidebar, chainId }) => {
               </div>
               <p>{t('learn:add_network.step_2.paragraph_2')}</p>
               {isConnected && isMounted ? (
-                <Button style="primary" size="md" onClick={() => switchNetwork()}>
+                <Button style="primary" size="md" onClick={() => switchChain({ chainId })}>
                   {meta.title}
                 </Button>
               ) : (

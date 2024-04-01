@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 import { parseEther } from 'viem';
-import { useNetwork, useWalletClient } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 import Input from './Input';
 
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
 
 const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   const { t } = useTranslation();
-  const { chain } = useNetwork();
+  const { chain } = useAccount();
   const { data: walletClient } = useWalletClient();
 
   const nativeToken = getChainNativeToken(chain?.id);
@@ -49,7 +49,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
 
   const sendDonation = async () => {
     if (!walletClient || !chain?.id) {
-      alert('Please connect your web3 wallet to donate');
+      alert('Please connect your web3 wallet to a supported network');
     }
 
     try {
@@ -58,6 +58,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
         to: DONATION_ADDRESS,
         value: parseEther(amount),
         chain: chain,
+        kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅
       });
 
       toast.info(t('common:toasts.donation_sent'));
@@ -99,15 +100,17 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
                 className="z-10 rounded-r-none text-zinc-600 dark:text-zinc-400 w-full"
                 aria-label="Input Donation Amount"
               />
-              <div className="px-3 py-1.5 border-y border-black dark:border-white bg-zinc-300 dark:bg-zinc-700 flex justify-center items-center">
-                {nativeToken}
-              </div>
+              {nativeToken ? (
+                <div className="px-3 py-1.5 border-y border-black dark:border-white bg-zinc-300 dark:bg-zinc-700 flex justify-center items-center">
+                  {nativeToken}
+                </div>
+              ) : null}
               <Button
                 loading={loading}
                 style="primary"
                 size="md"
                 onClick={execute}
-                className="rounded-l-none max-w-16 flex justify-center items-center"
+                className="rounded-l-none max-w-24 flex justify-center items-center"
               >
                 {loading ? t('common:buttons.sending') : t('common:buttons.send')}
               </Button>

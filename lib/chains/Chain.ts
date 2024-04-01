@@ -184,6 +184,7 @@ export class Chain {
   }
 
   createViemPublicClient(overrideUrl?: string): PublicClient {
+    // @ts-ignore TODO: This gives a TypeScript error since Viem v2
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),

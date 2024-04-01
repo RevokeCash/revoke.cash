@@ -3,7 +3,6 @@ import type { AllowanceData, Log } from 'lib/interfaces';
 import type { Translate } from 'next-translate';
 import { toast } from 'react-toastify';
 import {
-  Abi,
   Address,
   Hash,
   Hex,
@@ -71,7 +70,7 @@ export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChron
 // This is O(n*m) complexity, but it's unlikely to be a problem in practice in most cases m (unique contracts) is way
 // smaller than n (total logs). The previous version of this function was O(n^2), which was a problem for accounts with
 // many transfers.
-export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
+export const deduplicateArray = <T>(array: readonly T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
   const result: T[] = [];
 
   for (const item of array) {
@@ -149,27 +148,19 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
   }
 };
 
-export const writeContractUnlessExcessiveGas = async <
-  TAbi extends Abi | readonly unknown[] = Abi,
-  TFunctionName extends string = string,
->(
+export const writeContractUnlessExcessiveGas = async (
   publicCLient: PublicClient,
   walletClient: WalletClient,
-  transactionRequest: WriteContractParameters<TAbi, TFunctionName>,
+  transactionRequest: WriteContractParameters,
 ) => {
   const estimatedGas = await publicCLient.estimateContractGas(transactionRequest);
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
-  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas } as any);
+  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
 
-// TODO: Remove type assertion after migrating to viem v2 (waitForTransactionHash will be properly typed)
-export const waitForTransactionConfirmation = async (
-  hash: Hash,
-  publicClient: PublicClient,
-): Promise<{ blockNumber: bigint }> => {
+export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient) => {
   try {
-    const transactionReceipt = (await publicClient.waitForTransactionReceipt({ hash })) as { blockNumber: bigint };
-    return transactionReceipt;
+    return await publicClient.waitForTransactionReceipt({ hash });
   } catch (e) {
     // Workaround for Safe Apps, somehow they don't return the transaction receipt -- TODO: remove when fixed
     if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;
