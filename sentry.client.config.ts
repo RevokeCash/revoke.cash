@@ -20,6 +20,9 @@ Sentry.init({
   // in development and sample at a lower rate in production
   replaysSessionSampleRate: 0.1,
 
+  // Ignore errors from files that have "inject" in the URL (these are generally injected by 3rd party extensions)
+  denyUrls: ['inject'],
+
   // You can remove this option if you're not planning to use the Sentry Session Replay feature:
   integrations: [
     Sentry.replayIntegration({
