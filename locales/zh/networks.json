@@ -83,6 +83,7 @@
     "shibarium": "Shibarium 是一个以太坊侧链，旨在为 Shiba Inu 社区引入原生智能合约生态系统。作为侧链，它在去中心化方面做出了妥协，以保证交易速度更快、成本更低。Shibarium 可桥接至以太坊，用户可以将 SHIB 代币和其他流行的以太坊代币转入或转出 Shibarium。",
     "shimmer": "Shimmer EVM 是一个兼容 EVM 的第 2 层（Layer 2）区块链，建立在可互操作的 Shimmer 网络之上。由于是 Shimmer 的第 2 层链，Shimmer EVM 可以轻松地与 Shimmer/IOTA 生态系统中的其他链进行互操作。Shimmer EVM 带来了一些有趣的创新，例如交易的并行处理和协议中的原生随机性。",
     "syscoin": "Syscoin 创建于 2014 年，是作为比特币的一个分支而创建的第 1 层（Layer 1）区块链。多年来，它演变为双链系统，一部分是比特币分支，另一部分则是兼容 EVM 的区块链。两条链都采用合并挖矿技术保证安全，该技术过程允许比特币矿工同时使用哈希率进行比特币和 Syscoin 交易。",
+    "tabi": "Tabi is a Layer 1 blockchain that uses a consensus mechanism based on Proof of Stake. It is built using the Cosmos SDK and aims to offer interoperability between EVM chains and the Cosmos ecosystem.",
     "taiko": "Taiko 是以太坊的第 2 层（Layer 2）扩展解决方案，正在使用创新的 zkEVM 技术进行构建。与许多其他 L2 解决方案（如 Optimitic Rollups）相比，zkEVM 技术以更低的成本提供更高的吞吐量，同时保证了强大的安全性。",
     "velas": "Velas 是第 1 层（Layer 1）区块链，旨在以低廉的费用提供极高的吞吐量。为了实现这一目标，开发人员从 Solana 的架构中汲取了灵感，并对其进行了修改，以支持基于 EVM 的智能合约。Velas 使用基于委托权益证明（DPoS）共识机制。",
     "wanchain": "WanChain 是第 1 层（Layer 1）区块链，其共识机制为星系共识，该机制基于卡尔达诺的 Ouroboros 算法。Wanchain 主要关注提升跨链互操作性，为 EVM 和非 EVM 网络之间提供原生桥梁。Wanchain 使用诸如安全多方计算之类的技术来保护这些桥梁。",
@@ -90,6 +91,7 @@
     "xdc": "XDC 是第 1 层（Layer 1）区块链，其共识机制基于委托权益证明（DPoS）。XDC 致力于提供快速和低成本的交易，促进现实资产和企业用例的代币化。",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
     "zkfair": "ZKFair 是以太坊的Layer 2扩展方案，使用 Polygon链的开发工具包（CDK）和 Celestia 的数据可用性层构建。顾名思义，ZKFair 强调 \"公平\"，旨在创建一个生态系统，让网络用户共享回报，而这些回报通常归网络运营者所有。",
+    "zklink-nova": "zkLink Nova is a Layer 3 blockchain built on top of Ethereum and several Ethereum Layer 2 blockchains. It aims to tackle the problem of fragmented liquidity across different Layer 2 chains by providing bridges from these other blockchains onto zkLink Nova.",
     "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术可在保证非常低成本的同时，利用零知识证明来进行强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。",
     "zora": "Zora 网络是以太坊的第 2 层（Layer 2）扩展解决方案，采用 Optimism 的开源 OP Stack，与 Optimism 一样，使用了 Optimism Rollup 技术。由于 Zora 网络是由 Zora NFT 交易所开发的，因此主要用于铸造和交易 NFT。"
   },

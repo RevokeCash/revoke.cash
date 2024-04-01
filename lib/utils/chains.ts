@@ -1767,6 +1767,20 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.SyscoinMainnet,
   }),
+  [9789]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: 9789,
+    name: 'Tabi Testnet',
+    logoUrl: '/assets/images/vendor/chains/tabi.svg',
+    infoUrl: 'https://www.tabichain.com',
+    explorerUrl: 'https://testnet.tabiscan.com',
+    rpc: {
+      main: 'https://rpc.testnet.tabichain.com',
+    },
+    nativeToken: 'TABI',
+    isTestnet: true,
+    correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
+  }),
   [ChainId.TaikoKatlaL2]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.TaikoKatlaL2,
@@ -1913,6 +1927,13 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
+  [ChainId.ZkLinkNovaMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.ZkLinkNovaMainnet,
+    name: 'zkLink Nova',
+    logoUrl: '/assets/images/vendor/chains/zklink.png',
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.ZkSyncMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ZkSyncMainnet,
@@ -1982,6 +2003,12 @@ export const CHAINS: Record<number, Chain> = {
     type: SupportType.UNSUPPORTED,
     chainId: 12345678904,
     name: 'Redstone',
+  }),
+  // TODO: This is a placeholder so we can add a description for Tabi
+  [12345678905]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: 12345678905,
+    name: 'Tabi',
   }),
 };
 
@@ -2054,6 +2081,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CoinExSmartChainMainnet,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
+  ChainId.ZkLinkNovaMainnet,
   ChainId.EthereumClassic,
   ChainId.BitrockMainnet,
   ChainId.NahmiiMainnet,
@@ -2109,6 +2137,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BerachainArtio,
   ChainId.BeamTestnet,
   ChainId.RedstoneHoleskyTestnet,
+  9789, // Tabi Testnet
   // ChainId.LUKSOTestnet,
 ] as const;
 
