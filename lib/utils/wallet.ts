@@ -1,7 +1,9 @@
 import { Connector } from 'wagmi';
 import { deduplicateArray } from '.';
 
-export const getWalletIcon = (walletName: string): string | undefined => {
+export const getWalletIcon = (connector: Connector): string | undefined => {
+  const walletName = getConnectorName(connector);
+
   // Take logos from rainbowkit
   const BASE_URL =
     'https://raw.githubusercontent.com/rainbow-me/rainbowkit/47e578f82efafda1e7127755105141c4a6b61c66/packages/rainbowkit/src/wallets/walletConnectors';
@@ -54,7 +56,7 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     ledger: `${BASE_URL}/ledgerWallet/ledgerWallet.svg`,
   };
 
-  return mapping[walletNameLowerCase] ?? `/assets/images/vendor/wallets/injected.svg`;
+  return mapping[walletNameLowerCase] ?? connector?.icon ?? `/assets/images/vendor/wallets/injected.svg`;
 };
 
 export const getConnectorName = (connector: Connector): string => {
