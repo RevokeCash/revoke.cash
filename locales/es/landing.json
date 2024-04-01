@@ -22,15 +22,6 @@
     },
     "title": "¿Cómo Revocar Tus Autorizaciones?"
   },
-  "sponsors": {
-    "description": "El desarrollo continuado de Revoke.cash es posible gracias a donaciones y patrocinios. Estas son las personas y organizaciones que nos han apoyado con patrocinios mensuales hasta ahora.",
-    "tiers": {
-      "bronze": "Patrocinador de Bronce",
-      "gold": "Patrocinador de Oro",
-      "silver": "Patrocinador de Plata"
-    },
-    "title": "Patrocinadores"
-  },
   "why_revoke": {
     "paragraph_1": {
       "description": "Siempre es bueno limitar tus autorizaciones cuando no utilices activamente una dapp, especialmente en los mercados de NFTs. Esto reduce el riesgo de perder tus fondos a causa de hackeos y también puede ayudar a mitigar el daño de las estafas de phishing.",

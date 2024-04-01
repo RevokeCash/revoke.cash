@@ -66,7 +66,7 @@
     "expiration": "{{inTime}}で期限が切れます"
   },
   "risk_factors": {
-    "blocklist": "このアドレスは<0>{{platform}}</0>ブロックリストにあります",
+    "blocklist": "このアドレスは<0>{{platform}}</0>によってブロックリストに登録されています",
     "exploit": "このアドレスは、{{exploit}}に関与していました",
     "levels": {
       "high": "高リスク",

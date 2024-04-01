@@ -1,7 +1,6 @@
 import HeroSection from 'components/landing/HeroSection';
 import HowTo from 'components/landing/HowTo';
 import LandingPageFaq from 'components/landing/LandingPageFaq';
-import Sponsors from 'components/landing/Sponsors';
 import WhyRevokeCash from 'components/landing/WhyRevokeCash';
 import LandingLayout from 'layouts/LandingLayout';
 import { defaultSEO } from 'lib/next-seo.config';
@@ -26,7 +25,6 @@ const LandingPage: NextPage = () => {
           <HowTo />
           <WhyRevokeCash />
           <LandingPageFaq />
-          <Sponsors />
         </div>
       </LandingLayout>
     </>
