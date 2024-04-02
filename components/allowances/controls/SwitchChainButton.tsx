@@ -12,7 +12,7 @@ const SwitchChainButton = ({ chainId, size }: Props) => {
   const { t } = useTranslation();
   const { connector } = useAccount();
   const { switchChainAsync } = useSwitchChain();
-  const canSwitchChain = connector?.id === 'injected';
+  const canSwitchChain = connector?.type === 'injected';
 
   const { execute, loading } = useAsyncCallback(() => switchChainAsync({ chainId }));
 

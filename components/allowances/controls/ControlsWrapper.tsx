@@ -24,7 +24,7 @@ const ControlsWrapper = ({ chainId, address, switchChainSize, children, override
   const isConnected = !!account;
   const isConnectedAddress = isConnected && address === account;
   const needsToSwitchChain = isConnected && chainId !== chain?.id;
-  const canSwitchChain = connector?.id === 'injected';
+  const canSwitchChain = connector?.type === 'injected';
   const isChainSwitchEnabled = switchChainSize !== undefined;
   const shouldRenderSwitchChainButton = needsToSwitchChain && canSwitchChain && isChainSwitchEnabled;
   const disabled = !isConnectedAddress || (needsToSwitchChain && !shouldRenderSwitchChainButton) || overrideDisabled;
