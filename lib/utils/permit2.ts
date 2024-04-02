@@ -43,23 +43,22 @@ const getPermit2AllowanceFromApproval = async (
   // for sure that the allowance is 0. If not, we need to check the current allowance because we cannot determine the
   // allowance from the event since it may have been partially used (through transferFrom)
   if (parsedEvent.eventName === 'Lockdown' || lastApprovedAmount === 0n || expiration * SECOND <= Date.now()) {
-    return { spender, amount: 0n, lastUpdated: 0, transactionHash: approval.transactionHash };
+    return undefined;
   }
 
-  const [permit2Allowance, lastUpdated, transactionHash] = await Promise.all([
+  const [permit2Allowance, lastUpdated] = await Promise.all([
     tokenContract.publicClient.readContract({
       address: PERMIT2_ADDRESS,
       abi: PERMIT2_ABI,
       functionName: 'allowance',
       args: [owner, tokenContract.address, spender],
     }),
-    blocksDB.getLogTimestamp(tokenContract.publicClient, approval),
-    approval.transactionHash,
+    blocksDB.getTimeLog(tokenContract.publicClient, approval),
   ]);
 
   const [amount] = permit2Allowance;
 
-  return { spender, amount, lastUpdated, transactionHash, expiration };
+  return { spender, amount, lastUpdated, expiration };
 };
 
 // We don't need to do an excessive gas check for permit2 approvals since function is called on Permit2, not the token

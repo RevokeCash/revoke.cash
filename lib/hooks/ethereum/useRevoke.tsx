@@ -113,9 +113,9 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate) => {
       const transactionPromise = expiration === undefined ? executeUpdate() : executePermit2Update();
 
       const transactionType = newAmount === '0' ? TransactionType.REVOKE : TransactionType.UPDATE;
-      const hash = await handleTransaction(transactionPromise, transactionType);
+      const transactionHash = await handleTransaction(transactionPromise, transactionType);
 
-      if (hash) {
+      if (transactionHash) {
         track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
           chainId: allowance.chainId,
           account,
@@ -125,14 +125,15 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate) => {
           permit2: expiration !== undefined,
         });
 
-        const transactionReceipt = await waitForTransactionConfirmation(hash, contract.publicClient);
-        const blockTimestamp = await blocksDB.getBlockTimestamp(
-          contract.publicClient,
-          Number(transactionReceipt.blockNumber),
-        );
+        const transactionReceipt = await waitForTransactionConfirmation(transactionHash, contract.publicClient);
+        const lastUpdated = await blocksDB.getTimeLog(contract.publicClient, {
+          ...transactionReceipt,
+          blockNumber: Number(transactionReceipt.blockNumber),
+        });
+
         console.debug('Reloading data');
 
-        onUpdate(allowance, { amount: newAmountParsed, transactionHash: hash, lastUpdated: blockTimestamp });
+        onUpdate(allowance, { amount: newAmountParsed, lastUpdated });
       }
     };
 

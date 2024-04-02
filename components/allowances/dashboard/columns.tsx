@@ -117,7 +117,7 @@ export const columns = [
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address:headers.asset" />,
-    cell: (info) => <AssetCell allowance={info.row.original} />,
+    cell: (info) => <AssetCell asset={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,
   }),
@@ -162,10 +162,10 @@ export const columns = [
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,
   }),
-  columnHelper.accessor('lastUpdated', {
+  columnHelper.accessor('lastUpdated.timestamp', {
     id: ColumnId.LAST_UPDATED,
     header: () => <HeaderCell i18nKey="address:headers.last_updated" />,
-    cell: (info) => <LastUpdatedCell allowance={info.row.original} />,
+    cell: (info) => <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.lastUpdated} />,
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,
     sortUndefined: 1,

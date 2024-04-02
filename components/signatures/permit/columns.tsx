@@ -32,7 +32,7 @@ export const columns = [
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address:headers.asset" />,
-    cell: (info) => <AssetCell allowance={info.row.original} />,
+    cell: (info) => <AssetCell asset={info.row.original} />,
   }),
   columnHelper.accessor(accessors.balance, {
     id: ColumnId.BALANCE,
