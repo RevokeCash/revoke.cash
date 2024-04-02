@@ -2065,19 +2065,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/profiling-node@npm:^7.109.0":
-  version: 7.109.0
-  resolution: "@sentry/profiling-node@npm:7.109.0"
-  dependencies:
-    detect-libc: ^2.0.2
-    node-abi: ^3.52.0
-    node-gyp: latest
-  bin:
-    sentry-prune-profiler-binaries: scripts/prune-profiler-binaries.js
-  checksum: 6740477cb1cf446b2ccf8e252a342ae67a486bf33fead51a7c3b153011ad4b6c30bf1d8ada4893654e266efb6162c6eb932c087ee12cfe045d1b630a4c8e2d0b
-  languageName: node
-  linkType: hard
-
 "@sentry/react@npm:7.109.0":
   version: 7.109.0
   resolution: "@sentry/react@npm:7.109.0"
@@ -4692,13 +4679,6 @@ __metadata:
   bin:
     detect-libc: ./bin/detect-libc.js
   checksum: daaaed925ffa7889bd91d56e9624e6c8033911bb60f3a50a74a87500680652969dbaab9526d1e200a4c94acf80fc862a22131841145a0a8482d60a99c24f4a3e
-  languageName: node
-  linkType: hard
-
-"detect-libc@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "detect-libc@npm:2.0.2"
-  checksum: 2b2cd3649b83d576f4be7cc37eb3b1815c79969c8b1a03a40a4d55d83bc74d010753485753448eacb98784abf22f7dbd3911fd3b60e29fda28fed2d1a997944d
   languageName: node
   linkType: hard
 
@@ -8428,15 +8408,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-abi@npm:^3.52.0":
-  version: 3.56.0
-  resolution: "node-abi@npm:3.56.0"
-  dependencies:
-    semver: ^7.3.5
-  checksum: 76a9f705f88b217fe8b23c0003333256d695c0417bee745392524b9444df6e843a3c5cfad90e06a1e00f26cdf91db8d6efa11b1468929ffb6d2e8ac2aa364008
-  languageName: node
-  linkType: hard
-
 "node-addon-api@npm:^2.0.0":
   version: 2.0.2
   resolution: "node-addon-api@npm:2.0.2"
@@ -10061,7 +10032,6 @@ __metadata:
     "@localazy/cli": ^1.7.7
     "@revoke.cash/chains": ^36.0.0
     "@sentry/nextjs": ^7.109.0
-    "@sentry/profiling-node": ^7.109.0
     "@tailwindcss/typography": ^0.5.12
     "@tanstack/query-sync-storage-persister": ^5.28.9
     "@tanstack/react-query": ^5.28.9
