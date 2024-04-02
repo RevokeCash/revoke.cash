@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { Hash, stringify } from 'viem';
 
-export const useHandleTransaction = () => {
+export const useHandleTransaction = (chainId: number) => {
   const toastRef = useRef();
   const { t } = useTranslation();
 
@@ -43,7 +43,7 @@ export const useHandleTransaction = () => {
       const transactionHash = await transactionPromise;
 
       if (transactionHash) {
-        displayTransactionSubmittedToast(toastRef, t);
+        displayTransactionSubmittedToast(chainId, transactionHash, toastRef, t);
       }
 
       return transactionHash;

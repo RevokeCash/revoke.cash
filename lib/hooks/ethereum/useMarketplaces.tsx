@@ -20,11 +20,11 @@ import { useHandleTransaction } from './useHandleTransaction';
 export const useMarketplaces = () => {
   const [marketplaces, setMarketplaces] = useState<Marketplace[]>();
 
-  const handleTransaction = useHandleTransaction();
-  const queryClient = useQueryClient();
-
   const { selectedChainId, address } = useAddressPageContext();
   const { allowances, isLoading: isAllowancesLoading, error: allowancesError } = useAddressAllowances();
+
+  const handleTransaction = useHandleTransaction(selectedChainId);
+  const queryClient = useQueryClient();
 
   const publicClient = createViemPublicClientForChain(selectedChainId);
 

@@ -26,12 +26,10 @@ const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
 
     // TODO: Deduplicate this with the CancelPermitCell
     const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
-
-    const lastCancelled = {
-      transactionHash: hash,
+    const lastCancelled = await blocksDB.getTimeLog(publicClient, {
+      ...transactionReceipt,
       blockNumber: Number(transactionReceipt.blockNumber),
-      timestamp: await blocksDB.getLogTimestamp(publicClient, { blockNumber: Number(transactionReceipt.blockNumber) }),
-    };
+    });
 
     await onCancel(marketplace, lastCancelled);
   };
