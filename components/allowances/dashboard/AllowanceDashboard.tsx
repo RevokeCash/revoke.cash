@@ -1,14 +1,12 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import Table from 'components/common/table/Table';
-import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import NoAllowancesFound from './NoAllowancesFound';
 import AllowanceTableControls from './controls/AllowanceTableControls';
-import WalletHealthSection from './wallet-health/WalletHealthSection';
 
 const AllowanceDashboard = () => {
-  const { address, selectedChainId } = useAddressPageContext();
   const { allowances, isLoading, error, onUpdate } = useAddressAllowances();
 
   const table = useReactTable({
@@ -33,7 +31,6 @@ const AllowanceDashboard = () => {
 
   return (
     <div className="flex flex-col justify-start mx-auto gap-2">
-      <WalletHealthSection address={address} chainId={selectedChainId} />
       <AllowanceTableControls table={table} />
       <Table
         table={table}
