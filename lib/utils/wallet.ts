@@ -97,5 +97,5 @@ export const filterAndSortConnectors = (connectors: readonly Connector[]) => {
 
   return deduplicateArray(connectors, (a, b) => getConnectorName(a) === getConnectorName(b))
     .filter((c) => c.id !== 'safe')
-    .toSorted(comparator);
+    .sort(comparator);
 };
