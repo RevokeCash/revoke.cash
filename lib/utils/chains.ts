@@ -495,7 +495,7 @@ export const CHAINS: Record<number, Chain> = {
     name: 'CORE',
     logoUrl: '/assets/images/vendor/chains/core.png',
     rpc: {
-      main: 'https://rpc.coredao.org',
+      main: 'https://core.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     // Note: CORE apparently has like 5 competing "USDT" coins trading on different DEXes, so for now we added 3
