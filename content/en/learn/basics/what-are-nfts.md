@@ -14,11 +14,8 @@ Non-Fungible Tokens (NFTs) are unique digital assets that can be bought and sold
 There are many different use cases for NFTs, and they can be categorized into different types. The most common types of NFTs are:
 
 - **Art NFTs**: Art NFTs are NFTs that are used to represent digital art. For example, [Art Blocks](https://artblocks.io/) is a platform that allows artists to create generative art NFTs.
-
 - **Collectible NFTs**: Collectible NFTs are NFTs that are used to represent collectible items. The line between art and collectible NFTs can be blurry, so it's not uncommon to see collectible NFTs that are also art NFTs. For example, [CryptoPunks](https://www.larvalabs.com/cryptopunks) are a collection of 10,000 NFTs representing unique digital avatars.
-
 - **Gaming NFTs**: Gaming NFTs are NFTs that are used to represent in-game items. For example, [Axie Infinity](https://axieinfinity.com/) is a game where players can collect, breed, and battle digital creatures called Axies. Each Axie is an NFT.
-
 - **Utility NFTs**: Utility NFTs are NFTs that are used to represent utility items. For example, [ENS](https://ens.domains/) uses NFTs to represent domain names. And [Uniswap](https://uniswap.org/) uses NFTs to represent liquidity positions.
 
 ## NFT Standards
