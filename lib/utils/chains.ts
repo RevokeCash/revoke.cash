@@ -1646,6 +1646,25 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
   }),
+  [ChainId.RSS3VSLMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.RSS3VSLMainnet,
+    name: 'RSS3 VSL',
+    logoUrl: '/assets/images/vendor/chains/rss3.svg',
+    etherscanCompatibleApiUrl: 'https://scan.rss3.io/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // <$100k Liquidity
+  }),
+  [ChainId.RSS3VSLSepoliaTestnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.RSS3VSLSepoliaTestnet,
+    name: 'RSS3 VSL Sepolia',
+    logoUrl: '/assets/images/vendor/chains/rss3.svg',
+    etherscanCompatibleApiUrl: 'https://scan.testnet.rss3.io/api',
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.RSS3VSLMainnet,
+  }),
   [ChainId.Scroll]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Scroll,
@@ -2095,6 +2114,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.LightlinkPhoenixMainnet,
   ChainId.Palm,
   ChainId.DegenChain,
+  ChainId.RSS3VSLMainnet,
   1380012617, // RARI Chain
   ChainId.Zora,
   // ChainId.LUKSOMainnet,
@@ -2138,6 +2158,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BeamTestnet,
   ChainId.RedstoneHoleskyTestnet,
   9789, // Tabi Testnet
+  ChainId.RSS3VSLSepoliaTestnet,
   // ChainId.LUKSOTestnet,
 ] as const;
 
@@ -2319,6 +2340,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     REDLC: '100',
     RING: '2500',
     ROSE: '100',
+    RSS3: '25',
     SAMA: '500',
     SDN: '50',
     SGB: '1000',
