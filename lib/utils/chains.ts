@@ -1190,7 +1190,7 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.MerlinMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.COVALENT,
     chainId: ChainId.MerlinMainnet,
     name: 'Merlin',
     logoUrl: '/assets/images/vendor/chains/merlin.svg',
