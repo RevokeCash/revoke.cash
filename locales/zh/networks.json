@@ -79,7 +79,7 @@
     "redstone": "Redstone 是即将推出的第 2 层（Layer 2）区块链，旨在为游戏应用提供高吞吐量和低费用。Redstone 基于 Optimism 的 OP Stack 打造，因此与 Optimism 一样，采用了 Optimistic Rollup 技术。为了降低费用，Redstone 不使用以太坊作为数据可用层（DA），而是使用了自定义的数据可用层。",
     "rollux": "Rollux 是 Syscoin 的第 2 层（Layer 2）扩展解决方案，采用了 Optimistic Rollup 技术，通过在 Rollux 上执行交易，将交易数据批量发布到 Syscoin，以实现对 Syscoin 的扩展。作为 Syscoin 的第 2 层解决方案，Rollux 继承了 Syscoin 的某些安全属性，例如与比特币的合并挖矿。",
     "rootstock": "Rootstock 是比特币的侧链，旨在为比特币生态系统引入 EVM 功能。Rootstock 网络通过一种名为合并挖矿的技术过程保证安全，该过程允许比特币矿工同时使用哈希率进行比特币和 Rootstock 交易。比特币和 Rootstock 之间的桥梁由 9 个知名组织通过 Powpeg 流程进行保护。",
-    "rss3vsl": "RSS3 价值层（VSL）是 RSS3 网络的一部分，是使用 OP 栈构建的以太坊第二层，用于处理 AI 和开放信息的价值和所有权。RSS3 网络是一个去中心化的网络，对开放信息进行索引和结构化处理，使其成为下一个 Twitter、Google 和 OpenAI 可以访问的、有价值的信息。",
+    "rss3-vsl": "The RSS3 Value Sublayer (VSL) is a Layer 2 scaling solution for Ethereum. As part of the RSS3 Network, RSS3 VSL is built on Optimism's Open Source OP Stack, so just like Optimism it uses optimistic rollup technology. RSS3 is a decentralized network indexing and structuring Open Information, making it accessible to applications.",
     "scroll": "Scroll 是以太坊的第 2 层（Layer 2）扩展解决方案，目前正在使用创新的 zkEVM 技术构建。与许多其他 L2 解决方案相比，例如 Optimistic Rollup，zkEVM 技术以更低的成本提供更高的吞吐量，同时保证了强大的安全性。",
     "shibarium": "Shibarium 是一个以太坊侧链，旨在为 Shiba Inu 社区引入原生智能合约生态系统。作为侧链，它在去中心化方面做出了妥协，以保证交易速度更快、成本更低。Shibarium 可桥接至以太坊，用户可以将 SHIB 代币和其他流行的以太坊代币转入或转出 Shibarium。",
     "shimmer": "Shimmer EVM 是一个兼容 EVM 的第 2 层（Layer 2）区块链，建立在可互操作的 Shimmer 网络之上。由于是 Shimmer 的第 2 层链，Shimmer EVM 可以轻松地与 Shimmer/IOTA 生态系统中的其他链进行互操作。Shimmer EVM 带来了一些有趣的创新，例如交易的并行处理和协议中的原生随机性。",
