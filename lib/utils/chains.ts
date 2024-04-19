@@ -2054,7 +2054,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.CronosMainnet,
   ChainId.PulseChain,
-  ChainId.MerlinMainnet,
+  // ChainId.MerlinMainnet,
   ChainId.FantomOpera,
   ChainId.Gnosis,
   ChainId.Kava,
