@@ -1197,7 +1197,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://scan.merlinchain.io',
     etherscanCompatibleApiUrl: 'https://scan-v1.merlinchain.io/api',
     rpc: {
-      main: 'https://4200.rpc.thirdweb.com',
+      main: 'https://rpc.merlinchain.io',
     },
   }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
