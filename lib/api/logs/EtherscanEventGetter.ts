@@ -8,7 +8,6 @@ import {
   getChainApiRateLimit,
   getChainApiUrl,
 } from 'lib/utils/chains';
-import { isLogResponseSizeError, parseErrorMessage } from 'lib/utils/errors';
 import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
@@ -38,7 +37,6 @@ export class EtherscanEventGetter implements EventGetter {
       );
     } catch (e) {
       console.log(e);
-      if (isLogResponseSizeError(parseErrorMessage(e))) throw e;
       throw new Error('Could not retrieve event logs from the blockchain');
     }
 
