@@ -1189,16 +1189,17 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://explorer.maxxchain.org/api',
     priceStrategy: undefined, // <$100k Liquidity
   }),
-  // [ChainId.MerlinMainnet]: new Chain({
-  //   type: SupportType.PROVIDER,
-  //   chainId: ChainId.MerlinMainnet,
-  //   name: 'Merlin',
-  //   logoUrl: '/assets/images/vendor/chains/merlin.svg',
-  //   explorerUrl: 'https://scan.merlinchain.io',
-  //   rpc: {
-  //     main: 'https://rpc.merlinchain.io',
-  //   },
-  // }),
+  [ChainId.MerlinMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.MerlinMainnet,
+    name: 'Merlin',
+    logoUrl: '/assets/images/vendor/chains/merlin.svg',
+    explorerUrl: 'https://scan.merlinchain.io',
+    etherscanCompatibleApiUrl: 'https://scan-v1.merlinchain.io/api',
+    rpc: {
+      main: 'https://rpc.merlinchain.io',
+    },
+  }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.MetisAndromedaMainnet,
@@ -2054,7 +2055,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.CronosMainnet,
   ChainId.PulseChain,
-  // ChainId.MerlinMainnet,
+  ChainId.MerlinMainnet,
   ChainId.FantomOpera,
   ChainId.Gnosis,
   ChainId.Kava,
