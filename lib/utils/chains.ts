@@ -1189,16 +1189,16 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://explorer.maxxchain.org/api',
     priceStrategy: undefined, // <$100k Liquidity
   }),
-  [ChainId.MerlinMainnet]: new Chain({
-    type: SupportType.COVALENT,
-    chainId: ChainId.MerlinMainnet,
-    name: 'Merlin',
-    logoUrl: '/assets/images/vendor/chains/merlin.svg',
-    explorerUrl: 'https://scan.merlinchain.io',
-    rpc: {
-      main: 'https://rpc.merlinchain.io',
-    },
-  }),
+  // [ChainId.MerlinMainnet]: new Chain({
+  //   type: SupportType.PROVIDER,
+  //   chainId: ChainId.MerlinMainnet,
+  //   name: 'Merlin',
+  //   logoUrl: '/assets/images/vendor/chains/merlin.svg',
+  //   explorerUrl: 'https://scan.merlinchain.io',
+  //   rpc: {
+  //     main: 'https://rpc.merlinchain.io',
+  //   },
+  // }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.MetisAndromedaMainnet,
