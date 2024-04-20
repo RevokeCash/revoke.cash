@@ -3,7 +3,7 @@ import Button from 'components/common/Button';
 import { useMounted } from 'lib/hooks/useMounted';
 import { TimeLog } from 'lib/interfaces';
 import { HOUR, SECOND } from 'lib/utils/time';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 
 const CancelCell = ({ chainId, address, lastCancelled, cancel }: Props) => {
   const isMounted = useMounted();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { execute, loading } = useAsyncCallback(cancel);
 
   const recentlyCancelled = lastCancelled?.timestamp * SECOND > Date.now() - 24 * HOUR;
@@ -27,12 +27,12 @@ const CancelCell = ({ chainId, address, lastCancelled, cancel }: Props) => {
         address={address}
         switchChainSize="sm"
         overrideDisabled={recentlyCancelled}
-        disabledReason={t('address:tooltips.recently_cancelled')}
+        disabledReason={t('address.tooltips.recently_cancelled')}
       >
         {(disabled) => (
           <div>
             <Button loading={loading} disabled={isMounted && disabled} size="sm" style="secondary" onClick={execute}>
-              {loading ? t('common:buttons.cancelling') : t('common:buttons.cancel_signatures')}
+              {loading ? t('common.buttons.cancelling') : t('common.buttons.cancel_signatures')}
             </Button>
           </div>
         )}

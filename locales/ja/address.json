@@ -1,10 +1,10 @@
 {
   "allowances": {
-    "amount": "{{amount}} {{symbol}}",
+    "amount": "{amount} {symbol}",
     "none": "許可がありません",
     "none_found": "許可がされていません",
     "none_found_filtered": "選択したフィルタに対しての許可がありません",
-    "token_id": "トークン #{{tokenId}}",
+    "token_id": "トークン #{tokenId}",
     "unknown": "不明",
     "unlimited": "無制限"
   },
@@ -52,8 +52,8 @@
     "token": "トークン"
   },
   "meta": {
-    "title": "アドレス {{addressDisplay}}の承認",
-    "title_chain": "{{chainName}}におけるアドレス {{addressDisplay}} の承認"
+    "title": "アドレス {addressDisplay}の承認",
+    "title_chain": "{chainName}におけるアドレス {addressDisplay} の承認"
   },
   "navigation": {
     "allowances": "許可",
@@ -63,11 +63,11 @@
     "signatures": "署名"
   },
   "permit2": {
-    "expiration": "{{inTime}}で期限が切れます"
+    "expiration": "{inTime}で期限が切れます"
   },
   "risk_factors": {
-    "blocklist": "このアドレスは<0>{{platform}}</0>によってブロックリストに登録されています",
-    "exploit": "このアドレスは、{{exploit}}に関与していました",
+    "blocklist": "このアドレスは<blocklist-link>{platform}</blocklist-link>によってブロックリストに登録されています",
+    "exploit": "このアドレスは、{exploit}に関与していました",
     "levels": {
       "high": "高リスク",
       "low": "低リスク",
@@ -79,13 +79,10 @@
   },
   "signatures": {
     "info": {
-      "description": "サインはブロックチェーン上に保存されないため、Revoke.cashは、あなたが実際に署名をしたかどうかをチェックする方法がありません。そのため、このページには<0>可能性のある</0>署名リストが掲載されています。<1>フィッシングサイト上で署名したことが確実な場合のみ、これらの署名を取り消する必要があります</1>。署名をリボークした後も、その項目は次回のリストに残ります。"
+      "description": "サインはブロックチェーン上に保存されないため、Revoke.cashは、あなたが実際に署名をしたかどうかをチェックする方法がありません。そのため、このページには<i>可能性のある</i>署名リストが掲載されています。<b>フィッシングサイト上で署名したことが確実な場合のみ、これらの署名を取り消する必要があります</b>。署名をリボークした後も、その項目は次回のリストに残ります。"
     },
     "marketplaces": {
-      "active_approvals": {
-        "one": "1件の有効な承認",
-        "other": "{{count}}件の有効な承認"
-      },
+      "active_approvals": "{count, plural, =1 {1件の有効な承認} other {#件の有効な承認}}",
       "none_found": "承認が有効なマーケットプレイスは見つかりませんでした。",
       "title": "可能なマーケットプレイスの署名"
     },
@@ -123,14 +120,14 @@
     "connect_wallet": "続けるにはウォレットを接続してください",
     "connected_account": "接続されているアカウントに対してのみアクションを実行できます",
     "involved_in_exploits": "このアドレスは、以下のエクスプロイトに関与しています：",
-    "marketplace_listings": "これにより、{{marketplace}}上の全てのリスティングとオファーがキャンセルされます。",
+    "marketplace_listings": "これにより、{marketplace}上の全てのリスティングとオファーがキャンセルされます。",
     "marketplace_signatures": "承認されると、マーケットプレイスはユーザーに代わってアセットを移動できるようになります。悪意のある攻撃者は、これらの承認を悪用し、サードパーティーのWeb サイト上に、無償のリスティングを作成します。フィッシングサイト上でマーケットプレイスの署名をした場合、承認をキャンセルしてください。",
     "old_approval": "この承認は1年以上前のものです。不要になった場合は、取り消すことを検討してください。",
-    "permit2_expiration": "これは{{inTime}}で期限が切れる許可2の承認です。",
+    "permit2_expiration": "これは{inTime}で期限が切れる許可2の承認です。",
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
     "recently_cancelled": "あなたは最近、この署名候補をすでにキャンセルしました。この署名はリストに残るので、必要であれば後でまたキャンセルすることができます。",
-    "risk_factors": "このトークン承認は下記の理由で{{riskLevel}}です：",
-    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <0>{{chainName}}</0>に切り替えてください"
+    "risk_factors": "このトークン承認は下記の理由で{riskLevel}です：",
+    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください"
   },
   "wallet_health": {
     "categories": {

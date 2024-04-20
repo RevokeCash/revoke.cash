@@ -1,9 +1,9 @@
 {
-  "canary_network": "{{chainName}} es la red canaria de {{mainnetChainName}}. Las nuevas actualizaciones se despliegan primero en {{chainName}}, y sólo se activan en {{mainnetChainName}} tras un periodo de prueba satisfactorio en {{chainName}}. Utilizando esta red canaria, los desarrolladores pueden probar sus aplicaciones en un entorno incentivado, similar al de producción, en lugar de tener que depender de las redes de prueba.",
-  "is_testnet": "{{chainName}} es una red de pruebas para {{mainnetChainName}}.",
-  "learn_how_to_add_to_wallet": "Aprende a añadir {{chainName}} a tu cartera en nuestra página <0>Aprender</0>.",
-  "learn_more": "Obtén más información {{chainName}} en <0>su sitio web</0>.",
-  "native_token": "El token nativo de {{chainName}} es {{nativeToken}}.",
+  "canary_network": "{chainName} es la red canaria de {mainnetChainName}. Las nuevas actualizaciones se despliegan primero en {chainName}, y sólo se activan en {mainnetChainName} tras un periodo de prueba satisfactorio en {chainName}. Utilizando esta red canaria, los desarrolladores pueden probar sus aplicaciones en un entorno incentivado, similar al de producción, en lugar de tener que depender de las redes de prueba.",
+  "is_testnet": "{chainName} es una red de pruebas para {mainnetChainName}.",
+  "learn_how_to_add_to_wallet": "Aprende a añadir {chainName} a tu cartera en nuestra página <add-network-link>Aprender</add-network-link>.",
+  "learn_more": "Obtén más información {chainName} en <info-link>su sitio web</info-link>.",
+  "native_token": "El token nativo de {chainName} es {nativeToken}.",
   "networks": {
     "arbitrum": "Arbitrum es una solución de escalado de Capa 2 para Ethereum. Arbitrum es un paquete acumulativo optimista, lo que significa que envía periódicamente lotes de datos de transacciones a la red principal de Ethereum. Esto se traduce en transacciones más baratas y rápidas que si las transacciones se ejecutaran directamente en Ethereum. Es una de las soluciones de Capa 2 más populares para Ethereum, y su adopción se disparó en 2023.",
     "arbitrum-nova": "Arbitrum Nova es el hermano más centralizado de Arbitrum. Si bien Arbitrum envía lotes de datos de transacciones a la cadena principal de Ethereum, Arbitrum Nova solo envía certificados de estos datos. Estos certificados son creados por un conjunto de validadores, conocido como Comité de Disponibilidad de Datos (DAC). Debido a esto, la red es mucho más barata de usar, pero también mucho más centralizada.",
@@ -96,5 +96,5 @@
     "zksync-era": "zkSync Era es una solución de escalado de Capa 2 y uno de los primeros proyectos en utilizar la novedosa tecnología zkEVM. Esta tecnología ofrece tarifas muy bajas al tiempo que mantiene fuertes garantías de seguridad mediante el uso de pruebas de conocimiento cero. zkSync creó anteriormente zkSync Lite, que era una versión temprana de la tecnología zkRollup que aún no era compatible con EVM. zkSync Era es la siguiente iteración, que añade compatibilidad total con EVM.",
     "zora": "Zora Network es una solución de escalado de Capa 2 para Ethereum. Está construida sobre la pila OP de código abierto de Optimism, por lo que, al igual que Optimism, utiliza la tecnología optimistic rollup. Dado que Zora Network ha sido desarrollada por la bolsa de NFT Zora, su principal caso de uso es la acuñación y el comercio de NFT."
   },
-  "title": "¿Qué es {{chainName}}?"
+  "title": "¿Qué es {chainName}?"
 }

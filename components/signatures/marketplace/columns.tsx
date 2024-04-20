@@ -21,19 +21,19 @@ const columnHelper = createColumnHelper<Marketplace>();
 export const columns = [
   columnHelper.accessor('name', {
     id: ColumnId.MARKETPLACE,
-    header: () => <HeaderCell i18nKey="address:headers.marketplace" />,
+    header: () => <HeaderCell i18nKey="address.headers.marketplace" />,
     cell: (info) => <MarketplaceCell marketplace={info.row.original} />,
   }),
   columnHelper.accessor('lastCancelled', {
     id: ColumnId.LAST_CANCELLED,
-    header: () => <HeaderCell i18nKey="address:headers.last_cancelled" />,
+    header: () => <HeaderCell i18nKey="address.headers.last_cancelled" />,
     cell: (info) => (
       <LastCancelledCell chainId={info.row.original.chainId} lastCancelled={info.row.original.lastCancelled} />
     ),
   }),
   columnHelper.display({
     id: ColumnId.ACTIONS,
-    header: () => <HeaderCell i18nKey="address:headers.actions" align="right" />,
+    header: () => <HeaderCell i18nKey="address.headers.actions" align="right" />,
     cell: (info) => (
       <CancelMarketplaceCell marketplace={info.row.original} onCancel={info.table.options.meta.onCancel} />
     ),

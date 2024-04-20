@@ -1,14 +1,16 @@
+'use client';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import WalletIndicator from 'components/header/WalletIndicator';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { Fragment, useRef, useState } from 'react';
 import DonateButton from '../common/DonateButton';
 import NavLink from './NavLink';
 
 const MobileMenu = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const focusRef = useRef(null);
 
   const [open, setOpen] = useState(false);
@@ -40,11 +42,12 @@ const MobileMenu = () => {
                 <button ref={focusRef} /> {/* Focus trap */}
                 <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
                 <DonateButton size="none" style="tertiary" className="text-lg" />
-                <NavLink to="/extension" text={t('common:nav.extension')} />
-                <NavLink to="/exploits" text={t('common:nav.exploits')} />
-                <NavLink to="/learn" text={t('common:nav.learn')} />
-                <NavLink to="/learn/faq" text={t('common:nav.faq')} />
-                <NavLink to="/about" text={t('common:nav.about')} />
+                <NavLink to="/extension" text={t('common.nav.extension')} />
+                <NavLink to="/exploits" text={t('common.nav.exploits')} />
+                <NavLink to="/learn" text={t('common.nav.learn')} />
+                <NavLink to="/learn/faq" text={t('common.nav.faq')} />
+                <NavLink to="/blog" text={t('common.nav.blog')} />
+                <NavLink to="/about" text={t('common.nav.about')} />
               </div>
             </Dialog.Panel>
           </Transition.Child>

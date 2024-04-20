@@ -5,11 +5,11 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import Table from 'components/common/table/Table';
 import { usePermitTokens } from 'lib/hooks/ethereum/usePermitTokens';
 import { PermitTokenData } from 'lib/interfaces';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { ColumnId, columns } from './columns';
 
 const PermitsTable = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { permitTokens, isLoading, error, onCancel } = usePermitTokens();
 
   const table = useReactTable({
@@ -33,9 +33,9 @@ const PermitsTable = () => {
 
   const title = (
     <div className="flex items-center gap-2">
-      <div>{t('address:signatures.permit.title')}</div>
+      <div>{t('address.signatures.permit.title')}</div>
       <div className="font-normal">
-        <WithHoverTooltip tooltip={t('address:tooltips.permit_signatures')}>
+        <WithHoverTooltip tooltip={t('address.tooltips.permit_signatures')}>
           <div>
             <InformationCircleIcon className="w-4 h-4" />
           </div>
@@ -50,7 +50,7 @@ const PermitsTable = () => {
         table={table}
         loading={isLoading}
         error={error}
-        emptyChildren={t('address:signatures.permit.none_found')}
+        emptyChildren={t('address.signatures.permit.none_found')}
         loaderRows={6}
         className="border-none"
       />

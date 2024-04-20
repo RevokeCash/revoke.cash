@@ -1,7 +1,7 @@
 import type { AllowanceData } from 'lib/interfaces';
 import { calculateValueAtRisk } from 'lib/utils';
 import { formatFiatAmount } from 'lib/utils/formatting';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ValueAtRiskCell = ({ allowance }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   if (!allowance.spender) return null;
 
@@ -21,7 +21,7 @@ const ValueAtRiskCell = ({ allowance }: Props) => {
     !fiatBalanceText && 'text-zinc-500 dark:text-zinc-400',
   );
 
-  return <div className={classes}>{fiatBalanceText ?? t('address:allowances.unknown')}</div>;
+  return <div className={classes}>{fiatBalanceText ?? t('address.allowances.unknown')}</div>;
 };
 
 export default ValueAtRiskCell;

@@ -1,10 +1,12 @@
+'use client';
+
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Connector, useAccount, useConnect } from 'wagmi';
 
@@ -18,7 +20,7 @@ interface Props {
 
 const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const router = useRouter();
 
   const { address } = useAccount();
@@ -54,14 +56,14 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
   return (
     <>
       <Button style={style ?? 'primary'} size={size ?? 'md'} className={className} onClick={handleClick}>
-        {text ?? t('common:buttons.connect')}
+        {text ?? t('common.buttons.connect')}
       </Button>
 
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
           <div className="text-center sm:text-left w-full flex flex-col gap-2">
             <Dialog.Title as="h2" className="text-2xl text-center">
-              {t('common:connect_wallet.title')}
+              {t('common.connect_wallet.title')}
             </Dialog.Title>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">

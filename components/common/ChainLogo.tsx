@@ -1,3 +1,5 @@
+'use client';
+
 import { useMounted } from 'lib/hooks/useMounted';
 import { getChainLogo, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { twMerge } from 'tailwind-merge';

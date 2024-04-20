@@ -1,19 +1,19 @@
 {
   "add_network": {
-    "description": "Learn how you can easily add {{chainName}} and other networks to cryptocurrency wallets like MetaMask.",
-    "intro_paragraph": "The process of adding {{chainName}} to your wallet may be slightly different depending on the wallet you are using. The steps below are for MetaMask. If you are using a different wallet, there is most likely a similar process that you can follow.",
+    "description": "Learn how you can easily add {chainName} and other networks to cryptocurrency wallets like MetaMask.",
+    "intro_paragraph": "The process of adding {chainName} to your wallet may be slightly different depending on the wallet you are using. The steps below are for MetaMask. If you are using a different wallet, there is most likely a similar process that you can follow.",
     "select_network": "Select the network that you want to add:",
     "sidebar_title": "Add a Network to Your Wallet",
     "step_1": {
       "title": "1. Open your wallet and go to the \"Add network\" page."
     },
     "step_2": {
-      "paragraph_1": "After entering all the required details, you can click \"Save\" to add {{chainName}} to MetaMask.",
+      "paragraph_1": "After entering all the required details, you can click \"Save\" to add {chainName} to MetaMask.",
       "paragraph_2": "Alternatively, you can use our one-click button so you don't need to enter the required details manually.",
       "title": "2. Enter the required details and click \"Save\"."
     },
-    "steps_heading": "Steps To Add {{chainName}} to MetaMask",
-    "title": "Add {{chainName}} to MetaMask"
+    "steps_heading": "Steps To Add {chainName} to MetaMask",
+    "title": "Add {chainName} to MetaMask"
   },
   "meta": {
     "description": "The world of web3 can be confusing, but it doesn't have to be. We put together a collection of resources to help you learn about web3, security and more.",

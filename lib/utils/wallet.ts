@@ -12,7 +12,6 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
   const mapping = {
     // Injected wallets
     '1inchwallet': '/assets/images/vendor/wallets/1inch.svg',
-    // 'apex wallet': 'TODO: Can't find good logo ',
     backpack: '/assets/images/vendor/wallets/backpack.svg',
     'bifrost wallet': `/assets/images/vendor/wallets/bifrost.svg`,
     bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
@@ -37,14 +36,12 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
     'okx wallet': `${BASE_URL}/okxWallet/okxWallet.svg`,
     opera: '/assets/images/vendor/wallets/opera.svg',
     phantom: `${BASE_URL}/phantomWallet/phantomWallet.svg`,
-    // 'ripio portal': 'TODO: Can't find good logo',
     rabby: `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
     'rabby wallet': `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
     rainbow: `${BASE_URL}/rainbowWallet/rainbowWallet.svg`,
     status: '/assets/images/vendor/wallets/status.svg',
     taho: `${BASE_URL}/tahoWallet/tahoWallet.svg`,
     talisman: '/assets/images/vendor/wallets/talisman.svg',
-    // tokenary: 'TODO: Can't find good logo',
     tokenpocket: '/assets/images/vendor/wallets/tokenpocket.svg',
     'trust wallet': `${BASE_URL}/trustWallet/trustWallet.svg`,
     ttwallet: '/assets/images/vendor/wallets/ttwallet.webp',

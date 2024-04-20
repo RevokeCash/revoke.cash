@@ -1,7 +1,7 @@
 import ChainLogo from 'components/common/ChainLogo';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import PlaceholderIcon from '../PlaceholderIcon';
 import SearchableSelect from './SearchableSelect';
 
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, showNames }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { darkMode } = useColorTheme();
 
   const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
@@ -35,11 +35,11 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
 
   const groups = [
     {
-      label: t('common:chain_select.mainnets'),
+      label: t('common.chain_select.mainnets'),
       options: mainnetOptions,
     },
     {
-      label: t('common:chain_select.testnets'),
+      label: t('common.chain_select.testnets'),
       options: testnetOptions,
     },
   ];

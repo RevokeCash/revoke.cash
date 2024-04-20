@@ -1,8 +1,8 @@
 {
   "article_meta": {
-    "author": "著者 <0>{{author}}</0>",
-    "reading_time": "読み取る時間：{{readingTime}}分",
-    "translator": "翻訳者：<0>{{translator}}</0>"
+    "author": "著者 <person-link>{author}</person-link>",
+    "reading_time": "読み取る時間：{readingTime}分",
+    "translator": "翻訳者：<person-link>{translator}</person-link>"
   },
   "buttons": {
     "back_to_exploits": "エクスプロイトの項目に戻る",
@@ -48,7 +48,6 @@
     "title": "ウォレットを接続する"
   },
   "donate": {
-    "gitcoin_grants": "または、<0>Gitcoin Grant</0> に寄付をお願いします。",
     "title": "Revoke.cashに寄付をする"
   },
   "errors": {
@@ -73,7 +72,7 @@
       "title": "このページは存在しません。"
     },
     "messages": {
-      "chain_could_not_connect": "{{chainName}}に接続できませんでした"
+      "chain_could_not_connect": "{chainName}に接続できませんでした"
     }
   },
   "footer": {
@@ -94,11 +93,11 @@
     "what_are_token_approvals": "トークン承認とは？"
   },
   "meta": {
-    "description": "{{chainName}}とその他80以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
+    "description": "{chainName}とその他80以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
     "title": "80以上のネットワークでトークンの承認を取り消す"
   },
   "misc": {
-    "powered_by": "<0>{{name}}</0>によって提供されます"
+    "powered_by": "<powered-by-link>{name}</powered-by-link>によって提供されます"
   },
   "nav": {
     "about": "私たちについて",
@@ -114,9 +113,9 @@
     "clipboard_failed": "❌ クリップボードにコピーできませんでした。",
     "clipboard_success": "✅ クリップボードにコピーされました",
     "donation_sent": "💪 寄付いただき、ありがとうございます！",
-    "revoke_failed": "❌ 許可のリボークに失敗しました: {{message}}",
-    "revoke_failed_revert": "❌ 許可のリボークに失敗しました: {{message}}。この問題を解決するには、トークンチームに問い合わせください。",
-    "transaction_failed": "❌ トランザクションが失敗しました:{{message}}",
+    "revoke_failed": "❌ 許可のリボークに失敗しました: {message}",
+    "revoke_failed_revert": "❌ 許可のリボークに失敗しました: {message}。この問題を解決するには、トークンチームに問い合わせください。",
+    "transaction_failed": "❌ トランザクションが失敗しました:{message}",
     "transaction_submitted": "✅ トランザクションを送信しました！",
     "update_failed": "❌ このトークンは許可の更新についてサポートしていません、リボークしてください。"
   }

@@ -243,20 +243,20 @@ export const formatErc20Allowance = (allowance: bigint, decimals: number, totalS
 
 export const getAllowanceI18nValues = (allowance: AllowanceData) => {
   if (!allowance.spender) {
-    const i18nKey = 'address:allowances.none';
+    const i18nKey = 'address.allowances.none';
     return { i18nKey };
   }
 
   if (allowance.amount) {
     const amount = formatErc20Allowance(allowance.amount, allowance.metadata.decimals, allowance.metadata.totalSupply);
-    const i18nKey = amount === 'Unlimited' ? 'address:allowances.unlimited' : 'address:allowances.amount';
+    const i18nKey = amount === 'Unlimited' ? 'address.allowances.unlimited' : 'address.allowances.amount';
     const { symbol } = allowance.metadata;
     return { amount, i18nKey, symbol };
   }
 
-  const i18nKey = allowance.tokenId === undefined ? 'address:allowances.unlimited' : 'address:allowances.token_id';
+  const i18nKey = allowance.tokenId === undefined ? 'address.allowances.unlimited' : 'address.allowances.token_id';
   const { tokenId } = allowance;
-  return { tokenId, i18nKey };
+  return { tokenId: tokenId?.toString(), i18nKey };
 };
 
 // This function is a hardcoded patch to show Moonbirds' OpenSea allowances,

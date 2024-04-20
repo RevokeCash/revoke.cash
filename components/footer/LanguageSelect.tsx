@@ -1,9 +1,10 @@
+'use client';
+
 import Logo from 'components/common/Logo';
 import Select from 'components/common/select/Select';
-import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { usePathname, useRouter } from 'lib/i18n/navigation';
 import { track } from 'lib/utils/analytics';
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
+import { useLocale } from 'next-intl';
 import { FormatOptionLabelMeta } from 'react-select';
 
 interface Option {
@@ -12,9 +13,9 @@ interface Option {
 }
 
 const LanguageSelect = () => {
-  const { asPath, replace } = useRouter();
-  const { lang } = useTranslation();
-  const { darkMode } = useColorTheme();
+  const router = useRouter();
+  const path = usePathname();
+  const locale = useLocale();
 
   const options: Option[] = [
     { value: 'en', name: 'English' },
@@ -32,10 +33,10 @@ const LanguageSelect = () => {
   };
 
   const selectLanguage = (option: Option) => {
-    const locale = option.value;
-    track('Changed language', { from: lang, to: locale });
-    replace(asPath, undefined, { locale, scroll: false });
-    persistLocaleCookie(locale);
+    const newLocale = option.value;
+    track('Changed language', { from: locale, to: newLocale });
+    router.replace(path, { locale: newLocale, scroll: false });
+    persistLocaleCookie(newLocale);
   };
 
   const displayOption = (option: Option, { context }: FormatOptionLabelMeta<Option>) => {
@@ -56,7 +57,7 @@ const LanguageSelect = () => {
       className="w-32"
       controlTheme="dark"
       menuTheme="dark"
-      value={options.find((option) => option.value === lang)}
+      value={options.find((option) => option.value === locale)}
       options={options}
       onChange={selectLanguage}
       formatOptionLabel={displayOption}

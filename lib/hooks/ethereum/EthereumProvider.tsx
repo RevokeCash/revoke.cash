@@ -1,3 +1,5 @@
+'use client';
+
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { SECOND } from 'lib/utils/time';
 import { ReactNode, useEffect } from 'react';

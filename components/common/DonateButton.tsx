@@ -1,3 +1,5 @@
+'use client';
+
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
@@ -5,7 +7,7 @@ import { DONATION_ADDRESS } from 'lib/constants';
 import { getWalletAddress } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import type { MutableRefObject, ReactText } from 'react';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -22,7 +24,7 @@ interface Props {
 }
 
 const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { chain } = useAccount();
   const { data: walletClient } = useWalletClient();
 
@@ -61,7 +63,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
         kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅
       });
 
-      toast.info(t('common:toasts.donation_sent'));
+      toast.info(t('common.toasts.donation_sent'));
 
       track('Donated', { chainId: chain?.id, amount: Number(amount) });
 
@@ -80,14 +82,14 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   return (
     <>
       <Button style={style ?? 'primary'} size={size} className={className} onClick={handleOpen}>
-        {t('common:buttons.donate')}
+        {t('common.buttons.donate')}
       </Button>
 
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
           <div className="w-full flex flex-col gap-2 pb-2">
             <Dialog.Title as="h2" className="text-center text-2xl">
-              {t('common:donate.title')}
+              {t('common.donate.title')}
             </Dialog.Title>
 
             <div className="h-9 flex">
@@ -112,7 +114,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
                 onClick={execute}
                 className="rounded-l-none max-w-24 flex justify-center items-center"
               >
-                {loading ? t('common:buttons.sending') : t('common:buttons.send')}
+                {loading ? t('common.buttons.sending') : t('common.buttons.send')}
               </Button>
             </div>
           </div>

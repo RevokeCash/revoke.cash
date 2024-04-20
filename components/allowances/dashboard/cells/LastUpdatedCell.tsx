@@ -4,7 +4,7 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { TimeLog } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { MONTH, SECOND, formatDateNormalised } from 'lib/utils/time';
-import useTranslation from 'next-translate/useTranslation';
+import { useLocale, useTranslations } from 'next-intl';
 import TimeAgo from 'timeago-react';
 
 interface Props {
@@ -13,7 +13,8 @@ interface Props {
 }
 
 const LastUpdatedCell = ({ chainId, lastUpdated }: Props) => {
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const locale = useLocale();
 
   if (!lastUpdated) return null;
 
@@ -24,13 +25,13 @@ const LastUpdatedCell = ({ chainId, lastUpdated }: Props) => {
 
   return (
     <div className="flex justify-start items-center font-monosans gap-2 w-41">
-      <WithHoverTooltip tooltip={<TimeAgo datetime={lastUpdatedDate} locale={lang} />}>
+      <WithHoverTooltip tooltip={<TimeAgo datetime={lastUpdatedDate} locale={locale} />}>
         <Href underline="hover" href={`${explorerUrl}/tx/${lastUpdated.transactionHash}`} external className="tx-link">
           {formatDateNormalised(lastUpdatedDate)}
         </Href>
       </WithHoverTooltip>
       {oldApproval && (
-        <WithHoverTooltip tooltip={t('address:tooltips.old_approval')}>
+        <WithHoverTooltip tooltip={t('address.tooltips.old_approval')}>
           <ExclamationTriangleIcon className="w-6 h-6 text-yellow-500 focus:outline-black" />
         </WithHoverTooltip>
       )}

@@ -1,9 +1,9 @@
 {
-  "canary_network": "{{chainName}}は{{mainnetChainName}}のカナリネットワークです。新しいアップデートは最初に{{chainName}}に公開され、{{chainName}}でのテスト期間が終了してからのみ、初めて{{mainnetChainName}}に有効になります。このカナリアネットワークを利用すれば、開発者はテストネットワークに頼る必要がなく、インセンティブが与えられた本番環境のような環境でアプリケーションをテストできます。",
-  "is_testnet": "{{chainName}}は{{mainnetChainName}}のテストネットです。",
-  "learn_how_to_add_to_wallet": "{{chainName}}ウォレットに追加する方法については、<0>学習ページ</0>をご覧ください。",
-  "learn_more": "{{chainName}}の詳細については、<0>そのウェブサイト</0>をご覧ください。",
-  "native_token": "{{chainName}}のネイティブトークンは{{nativeToken}}です。",
+  "canary_network": "{chainName}は{mainnetChainName}のカナリネットワークです。新しいアップデートは最初に{chainName}に公開され、{chainName}でのテスト期間が終了してからのみ、初めて{mainnetChainName}に有効になります。このカナリアネットワークを利用すれば、開発者はテストネットワークに頼る必要がなく、インセンティブが与えられた本番環境のような環境でアプリケーションをテストできます。",
+  "is_testnet": "{chainName}は{mainnetChainName}のテストネットです。",
+  "learn_how_to_add_to_wallet": "{chainName}ウォレットに追加する方法については、<add-network-link>学習ページ</add-network-link>をご覧ください。",
+  "learn_more": "{chainName}の詳細については、<info-link>そのウェブサイト</info-link>をご覧ください。",
+  "native_token": "{chainName}のネイティブトークンは{nativeToken}です。",
   "networks": {
     "arbitrum": "ArbitrumはEthereumのレイヤー2のスケーリングソリューションです。Arbitrumは楽観的なロールアップです。つまり、トランザクションデータのバッチを定期的にEthereumのメインネットに送信します。その結果、トランザクションをEthereumで直接実行する場合よりも安価で高速な取引が可能になります。Ethereumのレイヤー2のソリューションとしては最も普及しているものの1つで、2023 年に採用が急増しました。",
     "arbitrum-nova": "Arbitrum Novaは、Arbitrumのより中央集権的な兄弟です。ArbitrumはトランザクションデータをバッチでEthereumのメインチェーンに送信しますが、Arbitrum Novaはこのデータの証明書のみを送信します。これらの証明書は、データ可用性委員会（DAC）と呼ばれる一連の検証者によって作成されます。このため、ネットワークの使用コストははるかに低く抑えられますが、一元化もはるかに進んでいます。",
@@ -96,5 +96,5 @@
     "zksync-era": "zkSync Eraはレイヤー2のスケーリングソリューションであり、新しいzkEVMテクノロジーを使用した最初のプロジェクトの1つです。このテクノロジーは、ゼロ知識証明の使用による強力なセキュリティー保証を維持しながら、非常に低い料金で提供されます。zkSyncは以前、まだEVMとの互換性がないzkRollupテクノロジーの初期バージョンであるzkSync Liteを開発しました。zkSync Eraは次のイテレーションであり、EVMを完全にサポートしています。",
     "zora": "Zora NetworkはEthereumのレイヤー2のスケーリングソリューションです。OptimismのオープンソースのOPスタック上に構築されているため、Optimismと同様にオプティミスティック・ロールアップ・テクノロジーを使用しています。Zora NetworkはZora NFT取引所によって開発されているため、その主な用途はNFTの作成と取引にあります。"
   },
-  "title": "{{chainName}}は何ですか。"
+  "title": "{chainName}は何ですか。"
 }

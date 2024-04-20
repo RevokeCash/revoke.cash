@@ -1,7 +1,7 @@
 import Href from 'components/common/Href';
 import { ContentMeta } from 'lib/interfaces';
 import { formatArticleDate } from 'lib/utils/time';
-import Trans from 'next-translate/Trans';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   meta: ContentMeta;
@@ -45,6 +45,8 @@ const MetaProperty = ({ property, meta, separator }: MetaPropertyProps) => {
 };
 
 const MetaPropertyChild = ({ property, meta }: MetaPropertyProps) => {
+  const t = useTranslations();
+
   if (!property) return null;
 
   if (property === 'date') {
@@ -52,28 +54,26 @@ const MetaPropertyChild = ({ property, meta }: MetaPropertyProps) => {
   }
 
   if (property === 'author' || property === 'translator') {
-    const component = meta[property].url ? (
-      <Href href={meta[property].url} className="font-bold" underline="hover" external />
-    ) : (
-      <span className="font-bold" />
-    );
+    const personLink = (children) =>
+      meta[property].url ? (
+        <Href href={meta[property].url} className="font-bold" underline="hover" external>
+          {children}
+        </Href>
+      ) : (
+        <span className="font-bold">{children}</span>
+      );
 
     return (
       <div>
-        <Trans
-          i18nKey={`common:article_meta.${property}`}
-          values={{ ...meta, [property]: meta[property].name }}
-          components={[component]}
-        />
+        {t.rich(`common.article_meta.${property}`, {
+          [property]: meta[property].name,
+          'person-link': personLink,
+        })}
       </div>
     );
   }
 
-  return (
-    <div>
-      <Trans i18nKey={`common:article_meta.${property}`} values={meta} components={[<span className="font-bold" />]} />
-    </div>
-  );
+  return <div>{t.rich(`common.article_meta.${property}`, { ...(meta as any) })}</div>;
 };
 
 export default ArticleMeta;

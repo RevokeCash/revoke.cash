@@ -6,8 +6,7 @@ import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
 import type { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import { SECOND } from 'lib/utils/time';
-import Trans from 'next-translate/Trans';
-import useTranslation from 'next-translate/useTranslation';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import * as timeago from 'timeago.js';
@@ -19,7 +18,8 @@ interface Props {
 }
 
 const AllowanceCell = ({ allowance, onUpdate }: Props) => {
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const locale = useLocale();
   const [editing, setEditing] = useState<boolean>();
   const { update } = useRevoke(allowance, onUpdate);
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
@@ -27,7 +27,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const classes = twMerge(
     !allowance.spender && 'text-zinc-500 dark:text-zinc-400',
     'flex items-center gap-2',
-    ['ru', 'es'].includes(lang) ? 'w-48' : 'w-40',
+    ['ru', 'es'].includes(locale) ? 'w-48' : 'w-40',
   );
 
   if (editing) {
@@ -38,18 +38,16 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
     );
   }
 
-  const inTime = allowance.expiration > 0 ? timeago.format(allowance.expiration * SECOND, lang) : null;
+  const inTime = allowance.expiration > 0 ? timeago.format(allowance.expiration * SECOND, locale) : null;
 
   return (
     <div className={classes}>
       <div className="flex flex-col justify-start items-start truncate">
-        <div className="w-full truncate">
-          <Trans i18nKey={i18nKey} values={{ amount, tokenId, symbol }} />
-        </div>
+        <div className="w-full truncate">{t(i18nKey, { amount, tokenId, symbol })}</div>
         {inTime ? (
-          <WithHoverTooltip tooltip={t('address:tooltips.permit2_expiration', { inTime })}>
+          <WithHoverTooltip tooltip={t('address.tooltips.permit2_expiration', { inTime })}>
             <div className="flex items-center gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-              {t('address:permit2.expiration', { inTime })}
+              {t('address.permit2.expiration', { inTime })}
             </div>
           </WithHoverTooltip>
         ) : null}

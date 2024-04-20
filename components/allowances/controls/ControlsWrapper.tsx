@@ -1,7 +1,6 @@
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { getChainName } from 'lib/utils/chains';
-import Trans from 'next-translate/Trans';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import { useAccount } from 'wagmi';
 import SwitchChainButton from './SwitchChainButton';
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const ControlsWrapper = ({ chainId, address, switchChainSize, children, overrideDisabled, disabledReason }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { address: account, connector, chain } = useAccount();
 
   const chainName = getChainName(chainId);
@@ -34,17 +33,15 @@ const ControlsWrapper = ({ chainId, address, switchChainSize, children, override
   }
 
   if (!isConnected) {
-    return <WithHoverTooltip tooltip={t('address:tooltips.connect_wallet')}>{children(disabled)}</WithHoverTooltip>;
+    return <WithHoverTooltip tooltip={t('address.tooltips.connect_wallet')}>{children(disabled)}</WithHoverTooltip>;
   }
 
   if (!isConnectedAddress) {
-    return <WithHoverTooltip tooltip={t('address:tooltips.connected_account')}>{children(disabled)}</WithHoverTooltip>;
+    return <WithHoverTooltip tooltip={t('address.tooltips.connected_account')}>{children(disabled)}</WithHoverTooltip>;
   }
 
   if (needsToSwitchChain) {
-    const tooltip = (
-      <Trans i18nKey={`address:tooltips.switch_chain`} values={{ chainName }} components={[<strong />]} />
-    );
+    const tooltip = t.rich('address.tooltips.switch_chain', { chainName });
 
     return <WithHoverTooltip tooltip={tooltip}>{children(disabled)}</WithHoverTooltip>;
   }
