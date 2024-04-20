@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash se proporciona como un servicio gratuito, pero cada transacción de revocación conlleva pagar un \"gas fee\" como cualquier transacción en blockchain. Usualmente esto es muy barato, pero cuando los gas fees aumentan, podría ser más caro. Si tus transacciones no son urgentes, es buena idea usar servicios como <0>GasHawk</0> para reducir los gas fees.",
+      "answer": "Revoke.cash se proporciona como un servicio gratuito, pero cada transacción de revocación conlleva pagar un \"gas fee\" como cualquier transacción en blockchain. Usualmente esto es muy barato, pero cuando los gas fees aumentan, podría ser más caro. Si tus transacciones no son urgentes, es buena idea usar servicios como <gashawk-link>GasHawk</gashawk-link> para reducir los gas fees.",
       "question": "¿Cuánto cuesta usar Revoke.cash?"
     },
     "deposited_tokens": {
@@ -13,23 +13,23 @@
       "question": "¿Qué pasa con mis tokens depositadas o en staking cuando revoco las autorizaciones?"
     },
     "enough_to_disconnect": {
-      "answer": "No. Desconectar tu cartera (como MetaMask) no hace <0>nada</0> para protegerte de vulnerabilidades de autorización - o casi cualquier otra vulnerabilidad. La única cosa que pasa cuándo desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas.",
+      "answer": "No. Desconectar tu cartera (como MetaMask) no hace <i>nada</i> para protegerte de vulnerabilidades de autorización - o casi cualquier otra vulnerabilidad. La única cosa que pasa cuándo desconectas tu cartera de un sitio web es que ese sitio web ya no puede ver tu dirección. Pero tus autorizaciones se mantienen activas.",
       "question": "¿Es suficiente solo \"desconectar\" mi cartera en lugar de revocar las autorizaciones?"
     },
     "hardware_wallets": {
-      "answer": "No. En general, las carteras de hardware son mucho más seguras que carteras de celular o carteras basadas en navegador porque las llaves de la cartera son guardadas de manera segura en el dispositivo, haciendo que sea imposible robar las llaves sin tener acceso adecuado al dispositivo. Pero con las autorizaciones nadie <0>tiene</0> que robar tus llaves para tomar tus tokens. Debido a eso, las carteras de hardware no ofrecen protección adicional contra vulnerabilidades de autorización.",
+      "answer": "No. En general, las carteras de hardware son mucho más seguras que carteras de celular o carteras basadas en navegador porque las llaves de la cartera son guardadas de manera segura en el dispositivo, haciendo que sea imposible robar las llaves sin tener acceso adecuado al dispositivo. Pero con las autorizaciones nadie <i>tiene</i> que robar tus llaves para tomar tus tokens. Debido a eso, las carteras de hardware no ofrecen protección adicional contra vulnerabilidades de autorización.",
       "question": "¿Pueden los carteras de hardware salvarme de las vulnerabilidades de autorización?"
     },
     "multiple_allowances": {
-      "answer": "No. Debido a la forma en la que realmente funcionan las autorizaciones, se <0>requiere</0> de 1 transacción por autorización. Así que es técnicamente imposible revocar múltiples autorizaciones en una sola transacción.",
+      "answer": "No. Debido a la forma en la que realmente funcionan las autorizaciones, se <i>requiere</i> de 1 transacción por autorización. Así que es técnicamente imposible revocar múltiples autorizaciones en una sola transacción.",
       "question": "¿Puedo revocar múltiples autorizaciones al mismo tiempo?"
     },
     "other_question": {
-      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, por favor ponte en contacto con nosotros en <0>Twitter</0> o <1>Discord</1>. También puedes leer más información sobre las autorizaciones en la entrada del blog de Rosco Kalis. <2>Las autorizaciones de ERC20 ilimitadas se consideran dañinas</2>.",
+      "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, por favor ponte en contacto con nosotros en <twitter-link>Twitter</twitter-link> o <discord-link>Discord</discord-link>.",
       "question": "Mi pregunta no está aquí."
     },
     "recover_assets": {
-      "answer": "No. Revoke.cash es una herramienta <0>preventiva</0> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuye las posibilidades de convertirte en una víctima de hacks de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro.",
+      "answer": "No. Revoke.cash es una herramienta <i>preventiva</i> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuye las posibilidades de convertirte en una víctima de hacks de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro.",
       "question": "Me acaban de robar mis fondos, ¿puedo usar Revoke.cash para recuperarlos?"
     },
     "stolen_through_allowances": {
@@ -49,15 +49,15 @@
       "question": "¿Cuáles autorizaciones tengo que revocar?"
     },
     "which_chains": {
-      "answer": "<0>La extensión de navegador</0> Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM, la lista completa se incluye a continuación. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <1>Twitter</1> o <2>Discord</2>.",
+      "answer": "<extension-link>La extensión de navegador</extension-link> Revoke.cash funciona con cualquier red EVM. El sitio web de Revoke.cash funciona con un gran número de redes EVM, la lista completa se incluye a continuación. Si hay cualquier otra red que te gustaría tener compatible, por favor escríbenos en <twitter-link>Twitter</twitter-link> o <discord-link>Discord</discord-link>.",
       "question": "¿Con qué redes funciona Revoke.cash?"
     },
     "which_domains": {
-      "answer": "Al buscar cuentas en la barra de búsqueda, puedes usar varios servicios de dominios diferentes. Actualmente puedes usar <0>ENS</0>, <1>Unstoppable Domains</1> y <2>Avvy Domains</2>. Es posible que agreguemos otros servicios de dominios en el futuro.",
+      "answer": "Al buscar cuentas en la barra de búsqueda, puedes usar varios servicios de dominios diferentes. Actualmente puedes usar <ens-link>ENS</ens-link>, <uns-link>Unstoppable Domains</uns-link> y <avvy-link>Avvy Domains</avvy-link>. Es posible que agreguemos otros servicios de dominios en el futuro.",
       "question": "¿Qué tipos de dominios admite Revoke.cash?"
     },
     "whole_wallet_at_risk": {
-      "answer": "No. Una autorización \"ilimitada\" solo se aplica al token o colección de NFTs a la que le diste autorización. Así que si diste una autorización ilimitada de tu DAI, entonces <0>todo tu DAI</0> podría estar en riesgo, pero nada de tu USDC. De igual forma, una autorización \"ilimitada\" de tus Bored Apes no afecta a tus Cool Cats.",
+      "answer": "No. Una autorización \"ilimitada\" solo se aplica al token o colección de NFTs a la que le diste autorización. Así que si diste una autorización ilimitada de tu DAI, entonces <i>todo tu DAI</i> podría estar en riesgo, pero nada de tu USDC. De igual forma, una autorización \"ilimitada\" de tus Bored Apes no afecta a tus Cool Cats.",
       "question": "Si tengo una autorización \"ilimitada\", ¿eso quiere decir que toda mi cartera está en riesgo?"
     }
   },

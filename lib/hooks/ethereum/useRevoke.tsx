@@ -1,3 +1,5 @@
+'use client';
+
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';

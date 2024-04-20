@@ -1,4 +1,3 @@
-import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import ReactMarkdown, { Components } from 'react-markdown';
 import remarkDirective from 'remark-directive';
 import remarkDirectiveRehype from 'remark-directive-rehype';
@@ -6,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import Divider from './Divider';
 import Href from './Href';
 import Prose from './Prose';
+import YouTubeEmbed from './YouTubeEmbed';
 
 interface Props {
   content: string;
@@ -34,11 +34,7 @@ const MarkdownProse = ({ content, className }: Props) => {
     },
     // We create a custom component for YouTube videos because we want to use the lite-youtube-embed package
     'youtube-video': (props: any) => {
-      return (
-        <div className="my-5 border border-black dark:border-white rounded-lg overflow-hidden">
-          <LiteYouTubeEmbed poster="maxresdefault" noCookie={true} {...props} />
-        </div>
-      );
+      return <YouTubeEmbed {...props} />;
     },
   };
 

@@ -1,6 +1,6 @@
 {
   "faq": {
-    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra página de <0>Preguntas Frecuentes</0>.",
+    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra página de <faq-link>Preguntas Frecuentes</faq-link>.",
     "title": "Preguntas Frecuentes"
   },
   "hero_section": {
@@ -9,7 +9,7 @@
   },
   "how_to": {
     "paragraph_1": {
-      "description": "Haz clic en <0>Conectar Cartera</0> en la parte superior derecha o introduce una dirección en la barra de búsqueda.",
+      "description": "Haz clic en <b>Conectar Cartera</b> en la parte superior derecha o introduce una dirección en la barra de búsqueda.",
       "title": "1. Conectar"
     },
     "paragraph_2": {
@@ -28,7 +28,7 @@
       "title": "1. Utiliza Revoke.cash periódicamente."
     },
     "paragraph_2": {
-      "description": "Muy seguido, los estafadores intentan engañarte para que que les des una autorización para usar tus fondos. Ordena tus autorizaciones por las más recientes para averiguar cuáles son las culpables y revocarlas para evitar mayores daños. Desafortunadamente, no es posible <0>recuperar</0> los fondos que ya han sido robados.",
+      "description": "Muy seguido, los estafadores intentan engañarte para que que les des una autorización para usar tus fondos. Ordena tus autorizaciones por las más recientes para averiguar cuáles son las culpables y revocarlas para evitar mayores daños. Desafortunadamente, no es posible <i>recuperar</i> los fondos que ya han sido robados.",
       "title": "2. Usa Revoke.cash después de ser estafado."
     },
     "paragraph_3": {

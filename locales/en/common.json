@@ -1,8 +1,8 @@
 {
   "article_meta": {
-    "author": "Written by <0>{{author}}</0>",
-    "reading_time": "{{readingTime}} min read",
-    "translator": "Translated by <0>{{translator}}</0>"
+    "author": "Written by <person-link>{author}</person-link>",
+    "reading_time": "{readingTime} min read",
+    "translator": "Translated by <person-link>{translator}</person-link>"
   },
   "buttons": {
     "back_to_exploits": "Back to Exploits",
@@ -48,7 +48,6 @@
     "title": "Connect Your Wallet"
   },
   "donate": {
-    "gitcoin_grants": "Or contribute to our <0>Gitcoin Grant</0>",
     "title": "Donate to Revoke.cash"
   },
   "errors": {
@@ -73,7 +72,7 @@
       "title": "This page does not exist."
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to {{chainName}}"
+      "chain_could_not_connect": "Could not connect to {chainName}"
     }
   },
   "footer": {
@@ -94,11 +93,11 @@
     "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
-    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {{chainName}} and over 80 other networks.",
+    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 80 other networks.",
     "title": "Revoke Your Token Approvals on Over 80 Networks"
   },
   "misc": {
-    "powered_by": "Powered by <0>{{name}}</0>"
+    "powered_by": "Powered by <powered-by-link>{name}</powered-by-link>"
   },
   "nav": {
     "about": "About Us",
@@ -114,9 +113,9 @@
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",
     "donation_sent": "💪 Thanks for the donation!",
-    "revoke_failed": "❌ Revoking failed: {{message}}",
-    "revoke_failed_revert": "❌ Revoking failed: {{message}}. Please reach out to this token's team to resolve this issue.",
-    "transaction_failed": "❌ Transaction failed: {{message}}",
+    "revoke_failed": "❌ Revoking failed: {message}",
+    "revoke_failed_revert": "❌ Revoking failed: {message}. Please reach out to this token's team to resolve this issue.",
+    "transaction_failed": "❌ Transaction failed: {message}",
     "transaction_submitted": "✅ Transaction submitted!",
     "update_failed": "❌ This token does not support updating approvals, please revoke instead."
   }

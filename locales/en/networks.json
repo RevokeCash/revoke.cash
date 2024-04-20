@@ -1,9 +1,9 @@
 {
-  "canary_network": "{{chainName}} is the canary network for {{mainnetChainName}}. New updates get rolled out on {{chainName}} first, and only get activated on {{mainnetChainName}} after a successful testing period on {{chainName}}. Using this canary network, developers can test their applications in an incentivized, production-like environment instead of having to rely on test networks.",
-  "is_testnet": "{{chainName}} is a testnet for {{mainnetChainName}}.",
-  "learn_how_to_add_to_wallet": "Learn how to add {{chainName}} to your wallet on our <0>Learn page</0>.",
-  "learn_more": "Learn more about {{chainName}} on <0>its website</0>.",
-  "native_token": "The native token of {{chainName}} is {{nativeToken}}.",
+  "canary_network": "{chainName} is the canary network for {mainnetChainName}. New updates get rolled out on {chainName} first, and only get activated on {mainnetChainName} after a successful testing period on {chainName}. Using this canary network, developers can test their applications in an incentivized, production-like environment instead of having to rely on test networks.",
+  "is_testnet": "{chainName} is a testnet for {mainnetChainName}.",
+  "learn_how_to_add_to_wallet": "Learn how to add {chainName} to your wallet on our <add-network-link>Learn page</add-network-link>.",
+  "learn_more": "Learn more about {chainName} on <info-link>its website</info-link>.",
+  "native_token": "The native token of {chainName} is {nativeToken}.",
   "networks": {
     "arbitrum": "Arbitrum is a Layer 2 scaling solution for Ethereum. Arbitrum is an optimistic rollup, which means that it periodically submits batches of transaction data to the Ethereum mainnet. This results in cheaper and faster transactions than if the transactions would be executed on Ethereum directly. It one of the most popular Layer 2 solutions for Ethereum, and its adoption has skyrocketed in 2023.",
     "arbitrum-nova": "Arbitrum Nova is the more centralized sibling of Arbitrum. While Arbitrum submits batches of transaction data to the Ethereum main chain, Arbitrum Nova only submits certificates of this data. These certificates are created by a set of validators, known as the Data Availability Committee (DAC). Because of this, the network is much cheaper to use, but also much more centralized.",
@@ -96,5 +96,5 @@
     "zksync-era": "zkSync Era is a Layer 2 scaling solution and one of the first projects to use the novel zkEVM technology. This technology offers very low fees while maintaining strong security guarantees through the use of zero-knowledge proofs. zkSync previously created zkSync Lite, which was an early version of zkRollup technology that was not yet EVM compatible. zkSync Era is the next iteration, adding full EVM support.",
     "zora": "Zora Network is a Layer 2 scaling solution for Ethereum. It is built on Optimism's Open Source OP Stack, so just like Optimism it uses optimistic rollup technology. Since Zora Network is developed by the Zora NFT exchange its main use case lies in minting and trading NFTs."
   },
-  "title": "What Is {{chainName}}?"
+  "title": "What Is {chainName}?"
 }

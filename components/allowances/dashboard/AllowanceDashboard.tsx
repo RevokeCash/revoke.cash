@@ -1,3 +1,5 @@
+'use client';
+
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import Table from 'components/common/table/Table';

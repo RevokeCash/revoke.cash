@@ -1,6 +1,8 @@
+'use client';
+
 import Label from 'components/common/Label';
 import { useMounted } from 'lib/hooks/useMounted';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import { useAccount } from 'wagmi';
 
@@ -10,7 +12,7 @@ interface Props {
 
 const ConnectedLabel = ({ address }: Props) => {
   const isMounted = useMounted();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { address: account } = useAccount();
 
   const classes = twMerge(
@@ -24,7 +26,7 @@ const ConnectedLabel = ({ address }: Props) => {
 
   return (
     <Label className={classes}>
-      {address === account ? t('address:labels.connected') : t('address:labels.not_connected')}
+      {address === account ? t('address.labels.connected') : t('address.labels.not_connected')}
     </Label>
   );
 };

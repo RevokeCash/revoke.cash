@@ -1,3 +1,5 @@
+'use client';
+
 import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';

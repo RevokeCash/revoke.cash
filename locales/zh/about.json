@@ -1,8 +1,8 @@
 {
   "body": {
-    "growth": "多年来，Rosco在为web3领域的不同公司工作时，将Revoke.cash作为副业来维护。但在过去几年中，web3的发展和对适当的安全工具的需求变得更加强烈。这就是为什么Rosco决定在2022年全职专注于Revoke.cash。从那时起，他用<0>Revoke.cash浏览器扩展</0>扩展了Revoke.cash工具集，并推出了完全大修版的审批仪表板。",
-    "intro": "Revoke.cash是2019年由<0>Rosco Kalis</0>创建。那时，DeFi和智能合约仍处于发展初期，但有很多活跃的项目。这些项目的一个共同点是都要求用户授权花费他们的代币——而且往往是无限制的金额。当时没有既定的工具来撤销这些授权，这就是Revoke.cash的诞生背景。",
-    "learn_more": "如果你想了解更多关于Revoke.cash和钱包安全的信息，请查看我们的<0>学习资源</0>。",
+    "growth": "多年来，Rosco在为web3领域的不同公司工作时，将Revoke.cash作为副业来维护。但在过去几年中，web3的发展和对适当的安全工具的需求变得更加强烈。这就是为什么Rosco决定在2022年全职专注于Revoke.cash。从那时起，他用<extension-link>Revoke.cash浏览器扩展</extension-link>扩展了Revoke.cash工具集，并推出了完全大修版的审批仪表板。",
+    "intro": "Revoke.cash是2019年由<rosco-twitter-link>Rosco Kalis</rosco-twitter-link>创建。那时，DeFi和智能合约仍处于发展初期，但有很多活跃的项目。这些项目的一个共同点是都要求用户授权花费他们的代币——而且往往是无限制的金额。当时没有既定的工具来撤销这些授权，这就是Revoke.cash的诞生背景。",
+    "learn_more": "如果你想了解更多关于Revoke.cash和钱包安全的信息，请查看我们的<learn-link>学习资源</learn-link>。",
     "team": "Revoke.cash 由 Rosco 和一个独立小团队进行维护和开发，运营资金来自捐款、赠款和赞助。我们认为，Revoke.cash 是非常重要的 web3 基础设施，因此工具可以免费使用，代码也是开源的。另外，我们也非常重视可持续性和独立性，希望在不筹集风投或发行代币的情况下，也能产生可持续收入。"
   },
   "captions": {

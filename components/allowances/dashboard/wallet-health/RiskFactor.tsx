@@ -1,6 +1,5 @@
 import Href from 'components/common/Href';
-import Trans from 'next-translate/Trans';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   name: string;
@@ -13,7 +12,7 @@ interface BlockListPlatform {
 }
 
 const RiskFactor = ({ name, type }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const blocklistPlatforms: Record<string, BlockListPlatform> = {
     scamsniffer_blocklist: {
@@ -25,17 +24,18 @@ const RiskFactor = ({ name, type }: Props) => {
   const platform = blocklistPlatforms[name];
 
   if (name.includes('blocklist') && !!platform) {
-    return (
-      <Trans
-        i18nKey="address:risk_factors.blocklist"
-        values={{ platform: platform.name }}
-        components={[<Href href={platform.url} external />]}
-      />
-    );
+    return t.rich('address.risk_factors.blocklist', {
+      platform: platform.name,
+      'blocklist-link': (children) => (
+        <Href href={platform.url} external>
+          {children}
+        </Href>
+      ),
+    });
   }
 
   if (type === 'exploit') {
-    return t('address:risk_factors.exploit', { exploit: name });
+    return t('address.risk_factors.exploit', { exploit: name });
   }
 
   return name;

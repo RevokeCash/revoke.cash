@@ -1,3 +1,5 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import type { AddressEvents, AllowanceData } from 'lib/interfaces';
 import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowances';

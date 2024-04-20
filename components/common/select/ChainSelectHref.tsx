@@ -1,8 +1,9 @@
+'use client';
+
 import ChainLogo from 'components/common/ChainLogo';
-import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { useRouter } from 'lib/i18n/navigation';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
 import Button from '../Button';
 import PlaceholderIcon from '../PlaceholderIcon';
 import SearchableSelect from './SearchableSelect';
@@ -23,8 +24,7 @@ interface Props {
 
 // This component is designed to match the styling of the ChainSelect component, but with links instead
 const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, showNames }: Props) => {
-  const { t } = useTranslation();
-  const { darkMode } = useColorTheme();
+  const t = useTranslations();
   const router = useRouter();
 
   const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
@@ -39,11 +39,11 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
 
   const groups = [
     {
-      label: t('common:chain_select.mainnets'),
+      label: t('common.chain_select.mainnets'),
       options: mainnetOptions,
     },
     {
-      label: t('common:chain_select.testnets'),
+      label: t('common.chain_select.testnets'),
       options: testnetOptions,
     },
   ];
@@ -74,8 +74,6 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
       aria-label="Select Network"
       size="md"
       className="shrink-0"
-      controlTheme={darkMode ? 'dark' : 'light'}
-      menuTheme={darkMode ? 'dark' : 'light'}
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={chainIds ? mainnetOptions : groups}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}

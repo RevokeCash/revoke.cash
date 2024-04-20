@@ -5,18 +5,18 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import Table from 'components/common/table/Table';
 import { useMarketplaces } from 'lib/hooks/ethereum/useMarketplaces';
 import { Marketplace } from 'lib/interfaces';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { columns } from './columns';
 
 const MarketplaceTable = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { marketplaces, isLoading, error, onCancel } = useMarketplaces();
 
   const title = (
     <div className="flex items-center gap-2">
-      <div>{t('address:signatures.marketplaces.title')}</div>
+      <div>{t('address.signatures.marketplaces.title')}</div>
       <div className="font-normal">
-        <WithHoverTooltip tooltip={t('address:tooltips.marketplace_signatures')}>
+        <WithHoverTooltip tooltip={t('address.tooltips.marketplace_signatures')}>
           <div>
             <InformationCircleIcon className="w-4 h-4" />
           </div>
@@ -45,7 +45,7 @@ const MarketplaceTable = () => {
         table={table}
         loading={isLoading}
         error={error}
-        emptyChildren={t('address:signatures.marketplaces.none_found')}
+        emptyChildren={t('address.signatures.marketplaces.none_found')}
         loaderRows={2}
         className="border-none"
       />

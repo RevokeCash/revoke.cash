@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash是一项免费服务，但每笔撤销交易都会产生gas费，这同其他区块链交易一样。通常手续费很便宜，但是当gas费上涨时，手续费可能会很贵。如果不是紧急交易，你可以使用<0>GasHawk</0>之类的服务来减少gas费。",
+      "answer": "Revoke.cash是一项免费服务，但每笔撤销交易都会产生gas费，这同其他区块链交易一样。通常手续费很便宜，但是当gas费上涨时，手续费可能会很贵。如果不是紧急交易，你可以使用<gashawk-link>GasHawk</gashawk-link>之类的服务来减少gas费。",
       "question": "使用 Revoke.cash 需要多少钱？"
     },
     "deposited_tokens": {
@@ -13,19 +13,19 @@
       "question": "撤销授权后，我存入或质押的代币会怎样？"
     },
     "enough_to_disconnect": {
-      "answer": "不可以。断开你的钱包（如MetaMask）并<0>不能</0>保护你免受授权漏洞的影响--或大多数其他漏洞。当从一个网站断开你的钱包时，只是该网站不能再看到你的地址。但你的授权仍然有效。",
+      "answer": "不可以。断开你的钱包（如MetaMask）并<i>不能</i>保护你免受授权漏洞的影响--或大多数其他漏洞。当从一个网站断开你的钱包时，只是该网站不能再看到你的地址。但你的授权仍然有效。",
       "question": "只 \"断开 \"我的钱包，而不是撤销授权呢？"
     },
     "hardware_wallets": {
-      "answer": "不会。一般而言，硬件钱包比移动钱包或基于浏览器的钱包更安全，因为钱包的密钥安全地存储在设备上。只要无法接触到设备，就不可能窃取密钥。但是有了授权，没有人<0>需要</0>偷你的钥匙来拿走你的代币。并且正因为如此，硬件钱包没有提供额外的保护来防止授权漏洞。",
+      "answer": "不会。一般而言，硬件钱包比移动钱包或基于浏览器的钱包更安全，因为钱包的密钥安全地存储在设备上。只要无法接触到设备，就不可能窃取密钥。但是有了授权，没有人<i>需要</i>偷你的钥匙来拿走你的代币。并且正因为如此，硬件钱包没有提供额外的保护来防止授权漏洞。",
       "question": "硬件钱包能让我免于遭受授权漏洞吗？"
     },
     "multiple_allowances": {
-      "answer": "不能。授权的工作方式<0>要求</0>每笔授权都有一笔交易。因此，从技术上讲，在一次交易中撤销多笔授权是不可能的。",
+      "answer": "不能。授权的工作方式<i>要求</i>每笔授权都有一笔交易。因此，从技术上讲，在一次交易中撤销多笔授权是不可能的。",
       "question": "我可以同时撤销多项授权吗？"
     },
     "other_question": {
-      "answer": "如果你有任何未在本常见问题解答中提及的问题，请通过 <0>Twitter</0> 或 <1>Discord 联系我们</1>。你也可以在 Rosco Kalis 的博客文章中更详细地了解授权，<2>无限的 ERC20 津贴是有害</2>的。",
+      "answer": "如果你有任何未在本常见问题解答中提及的问题，请通过 <twitter-link>Twitter</twitter-link> 或 <discord-link>Discord 联系我们</discord-link>。",
       "question": "这里找不到我的问题。"
     },
     "recover_assets": {
@@ -49,15 +49,15 @@
       "question": "我需要撤销哪些授权？"
     },
     "which_chains": {
-      "answer": "Revoke.cash<0>浏览器扩展</0>支持所有 EVM 链。Revoke.cash 网站支持大量 EVM 链，包括 Ethereum、BSC、Polygon 和 Avalanche。完整名单请见下方。如果有任何其他想添加的链，请通过<1>Twitter</1>或<2>Discord</2>联系我们。",
+      "answer": "Revoke.cash<extension-link>浏览器扩展</extension-link>支持所有 EVM 链。Revoke.cash 网站支持大量 EVM 链，包括 Ethereum、BSC、Polygon 和 Avalanche。完整名单请见下方。如果有任何其他想添加的链，请通过<twitter-link>Twitter</twitter-link>或<discord-link>Discord</discord-link>联系我们。",
       "question": "Revoke.cash 支持哪些区块链？"
     },
     "which_domains": {
-      "answer": "在搜索栏中搜索帐户时，您可以使用多种不同的域名服务。目前，我们支持 <0>ENS</0>、<1>Unstoppable Domains</1>和 <2>Avvy</2>。将来我们可能会添加其他域名服务。",
+      "answer": "在搜索栏中搜索帐户时，您可以使用多种不同的域名服务。目前，我们支持 <ens-link>ENS</ens-link>、<uns-link>Unstoppable Domains</uns-link>和 <avvy-link>Avvy</avvy-link>。将来我们可能会添加其他域名服务。",
       "question": "Revoke.cash支持哪些类型的域名？"
     },
     "whole_wallet_at_risk": {
-      "answer": "“无限”授权只局限于你给予授权的代币或NFT。比如你为你的DAI提供了一个无限授权，那么<0>你所有的DAI</0>都可能会有风险，但你的USDC没有。同样，你对无聊猿提供的 \"无限 \"授权并不影响你的酷猫。",
+      "answer": "“无限”授权只局限于你给予授权的代币或NFT。比如你为你的DAI提供了一个无限授权，那么<i>你所有的DAI</i>都可能会有风险，但你的USDC没有。同样，你对无聊猿提供的 \"无限 \"授权并不影响你的酷猫。",
       "question": "如果我有一个 \"无限 \"授权，这是否意味着我的整个钱包都有风险？"
     }
   },

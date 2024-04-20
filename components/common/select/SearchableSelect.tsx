@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode, Ref, forwardRef, useEffect, useRef, useState } from 'react';
 import { ActionMeta, FormatOptionLabelMeta, GroupBase, OnChangeValue, SelectInstance } from 'react-select';
 

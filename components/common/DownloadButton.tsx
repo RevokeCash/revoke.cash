@@ -1,4 +1,4 @@
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import Button from './Button';
 
@@ -8,11 +8,11 @@ interface Props {
 }
 
 const DownloadButton = ({ href, children }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Button href={href} style="secondary" size="md" className="flex justify-center items-center gap-2" external>
-      <div>{t('common:buttons.download')}</div>
+      <div>{t('common.buttons.download')}</div>
       <div className="flex gap-1">{children}</div>
     </Button>
   );

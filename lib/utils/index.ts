@@ -1,6 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { AllowanceData, Log } from 'lib/interfaces';
-import type { Translate } from 'next-translate';
+import { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
   Address,
@@ -98,15 +98,19 @@ export const filterLogsByTopics = (logs: Log[], topics: string[]) => {
   });
 };
 
-export const writeToClipBoard = (text: string, t: Translate, displayToast: boolean = true) => {
+export const writeToClipBoard = (
+  text: string,
+  t: Awaited<ReturnType<typeof getTranslations<string>>>,
+  displayToast: boolean = true,
+) => {
   if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
-    toast.info(t('common:toasts.clipboard_failed'), { autoClose: 1000 });
+    toast.info(t('common.toasts.clipboard_failed'), { autoClose: 1000 });
   }
 
   navigator.clipboard.writeText(text);
 
   if (displayToast) {
-    toast.info(t('common:toasts.clipboard_success'), { autoClose: 1000 });
+    toast.info(t('common.toasts.clipboard_success'), { autoClose: 1000 });
   }
 };
 

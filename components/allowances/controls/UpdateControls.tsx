@@ -1,6 +1,6 @@
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [value, setValue] = useState<string>(defaultValue ?? '0');
   const { execute, loading } = useAsyncCallback(() => update(value));
 
@@ -32,11 +32,11 @@ const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
         value={value}
       />
       <Button disabled={disabled} loading={loading} style="tertiary" size="sm" onClick={callUpdate} className="px-0">
-        {loading ? t('common:buttons.updating') : t('common:buttons.update')}
+        {loading ? t('common.buttons.updating') : t('common.buttons.update')}
       </Button>
       {!loading && (
         <Button style="tertiary" size="sm" onClick={reset} className="px-0">
-          {t('common:buttons.cancel')}
+          {t('common.buttons.cancel')}
         </Button>
       )}
     </div>

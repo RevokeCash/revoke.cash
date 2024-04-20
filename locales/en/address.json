@@ -1,10 +1,10 @@
 {
   "allowances": {
-    "amount": "{{amount}} {{symbol}}",
+    "amount": "{amount} {symbol}",
     "none": "No approvals",
     "none_found": "No approvals found",
     "none_found_filtered": "No approvals found for the selected filters",
-    "token_id": "Token #{{tokenId}}",
+    "token_id": "Token #{tokenId}",
     "unknown": "Unknown",
     "unlimited": "Unlimited"
   },
@@ -52,8 +52,8 @@
     "token": "Token"
   },
   "meta": {
-    "title": "Address {{addressDisplay}}'s Approvals",
-    "title_chain": "Address {{addressDisplay}}'s Approvals on {{chainName}}"
+    "title": "Address {addressDisplay}'s Approvals",
+    "title_chain": "Address {addressDisplay}'s Approvals on {chainName}"
   },
   "navigation": {
     "allowances": "Approvals",
@@ -63,11 +63,11 @@
     "signatures": "Signatures"
   },
   "permit2": {
-    "expiration": "Expires {{inTime}}"
+    "expiration": "Expires {inTime}"
   },
   "risk_factors": {
-    "blocklist": "This address is blocklisted by <0>{{platform}}</0>",
-    "exploit": "This address was involved in the {{exploit}}",
+    "blocklist": "This address is blocklisted by <blocklist-link>{platform}</blocklist-link>",
+    "exploit": "This address was involved in the {exploit}",
     "levels": {
       "high": "high risk",
       "low": "low risk",
@@ -79,13 +79,10 @@
   },
   "signatures": {
     "info": {
-      "description": "Because signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you actually signed any signatures. So this page contains a list of <0>potential</0> signatures. <1>You only need to cancel these signatures if you are sure that you signed one on a phishing website</1>. Because of this, the potential signature will remain in the list, even after cancelling it."
+      "description": "Because signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you actually signed any signatures. So this page contains a list of <i>potential</i> signatures. <b>You only need to cancel these signatures if you are sure that you signed one on a phishing website</b>. Because of this, the potential signature will remain in the list, even after cancelling it."
     },
     "marketplaces": {
-      "active_approvals": {
-        "one": "1 active approval",
-        "other": "{{count}} active approvals"
-      },
+      "active_approvals": "{count, plural, =1 {1 active approval} other {# active approvals}}",
       "none_found": "No marketplaces with active approvals found.",
       "title": "Potential Marketplace Signatures"
     },
@@ -123,14 +120,14 @@
     "connect_wallet": "Please connect your wallet to continue",
     "connected_account": "You can only perform actions for the connected account",
     "involved_in_exploits": "This address is involved in the following exploits:",
-    "marketplace_listings": "This will cancel all current listings and offers on {{marketplace}}.",
+    "marketplace_listings": "This will cancel all current listings and offers on {marketplace}.",
     "marketplace_signatures": "Once approved, marketplaces are able to move assets on your behalf. Bad actors exploit these approvals to create zero-priced listings on third party websites. Cancel these if you signed a marketplace signature on a phishing website.",
     "old_approval": "This approval is over a year old. Consider revoking it if you no longer need it.",
-    "permit2_expiration": "This is a Permit2 approval that will expire {{inTime}}",
+    "permit2_expiration": "This is a Permit2 approval that will expire {inTime}",
     "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
     "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
-    "risk_factors": "This token approval is {{riskLevel}} for these reasons:",
-    "switch_chain": "Please switch your connected network to <0>{{chainName}}</0> inside your wallet to continue"
+    "risk_factors": "This token approval is {riskLevel} for these reasons:",
+    "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue"
   },
   "wallet_health": {
     "categories": {

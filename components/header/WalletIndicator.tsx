@@ -1,3 +1,5 @@
+'use client';
+
 import { useMounted } from 'lib/hooks/useMounted';
 import { useAccount, useSwitchChain } from 'wagmi';
 import ChainSelect from '../common/select/ChainSelect';

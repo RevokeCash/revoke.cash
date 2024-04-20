@@ -1,7 +1,9 @@
+'use client';
+
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { getChainName } from 'lib/utils/chains';
 import { isNetworkError, parseErrorMessage } from 'lib/utils/errors';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 interface Props {
@@ -9,7 +11,7 @@ interface Props {
 }
 
 const Error = ({ error }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { selectedChainId } = useAddressPageContext();
 
   useEffect(() => {
@@ -17,7 +19,7 @@ const Error = ({ error }: Props) => {
   }, []);
 
   const chainName = getChainName(selectedChainId);
-  const chainConnectionMessage = t('common:errors.messages.chain_could_not_connect', { chainName });
+  const chainConnectionMessage = t('common.errors.messages.chain_could_not_connect', { chainName });
   const errorMessage = parseErrorMessage(error);
   const message = isNetworkError(errorMessage) ? chainConnectionMessage : errorMessage;
   return <div>Error: {message}</div>;

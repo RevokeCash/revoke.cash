@@ -1,9 +1,9 @@
 {
-  "canary_network": "{{chainName}}是{{mainnetChainName}}的金丝雀网络。如有更新，将首先在{{chainName}}上发布，只有在{{chainName}}上通过测试期后，才能在{{mainnetChainName}}上激活。通过金丝雀网络，开发人员可以在带有激励机制的类似生产环境中测试应用，而不必依赖测试网络。",
-  "is_testnet": "{{chainName}}是{{mainnetChainName}}的测试网（testnet）。",
-  "learn_how_to_add_to_wallet": "在<0>学习页面</0>了解如何将{{chainName}}添加到您的钱包中。",
-  "learn_more": "要了解更多{{chainName}}相关信息，请前往<0>官网</0>。",
-  "native_token": "{{chainName}}的原生代币是{{nativeToken}}。",
+  "canary_network": "{chainName}是{mainnetChainName}的金丝雀网络。如有更新，将首先在{chainName}上发布，只有在{chainName}上通过测试期后，才能在{mainnetChainName}上激活。通过金丝雀网络，开发人员可以在带有激励机制的类似生产环境中测试应用，而不必依赖测试网络。",
+  "is_testnet": "{chainName}是{mainnetChainName}的测试网（testnet）。",
+  "learn_how_to_add_to_wallet": "在<add-network-link>学习页面</add-network-link>了解如何将{chainName}添加到您的钱包中。",
+  "learn_more": "要了解更多{chainName}相关信息，请前往<info-link>官网</info-link>。",
+  "native_token": "{chainName}的原生代币是{nativeToken}。",
   "networks": {
     "arbitrum": "Arbitrum 是以太坊的第 2 层扩展（Layer 2）解决方案。Arbitrum 采用 Optimistic Rollup 技术，定期向以太坊主网批量提交交易数据。相比直接在以太坊上执行交易，这样交易更为便宜、更快捷。这是以太坊最受欢迎的二层扩展解决方案之一，采用率在 2023 年激增。",
     "arbitrum-nova": "Arbitrum Nova 是 Arbitrum 的姊妹链，中心化程度更高。Arbitrum 会定期向以太坊主网批量提交交易数据，而 Arbitrum Nova 仅提交这些数据的证书。这些证书由一组验证者创建，即数据可用性委员会（DAC）。因此，该网络的使用成本要低得多，但中心化程度也要高得多。",
@@ -96,5 +96,5 @@
     "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术可在保证非常低成本的同时，利用零知识证明来进行强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。",
     "zora": "Zora 网络是以太坊的第 2 层（Layer 2）扩展解决方案，采用 Optimism 的开源 OP Stack，与 Optimism 一样，使用了 Optimism Rollup 技术。由于 Zora 网络是由 Zora NFT 交易所开发的，因此主要用于铸造和交易 NFT。"
   },
-  "title": "什么是{{chainName}}？"
+  "title": "什么是{chainName}？"
 }

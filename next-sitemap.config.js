@@ -33,6 +33,10 @@ module.exports = {
   exclude: [
     // 404 pages should not be in the sitemap
     '/**404',
+    // Images and static files should not be in the sitemap
+    '**.jpg',
+    '**.png',
+    '**.json',
   ],
   // Custom transform function to de-duplicate path locale strings in alternateRefs
   // Without this we get things like https://<domain>/es/es/about rather than https://<domain>/es/about
