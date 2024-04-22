@@ -32,7 +32,7 @@ export const generateMetadata = async ({ params: { locale, slug } }): Promise<Me
     title: t('token_approval_checker.meta.title', { chainName }),
     description: t('common.meta.description', { chainName }),
     openGraph: {
-      images: `/${locale}/token-approval-checker/${slug}/og.jpg`,
+      images: `/assets/images/generated/${locale}/token-approval-checker/${slug}/og.jpg`,
     },
   };
 };
