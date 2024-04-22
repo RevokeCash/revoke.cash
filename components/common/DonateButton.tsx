@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 import { parseEther } from 'viem';
-import { useAccount, useWalletClient } from 'wagmi';
+import { useAccount, useChainId, useWalletClient } from 'wagmi';
 import Input from './Input';
 
 interface Props {
@@ -26,9 +26,10 @@ interface Props {
 const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   const t = useTranslations();
   const { chain } = useAccount();
+  const chainId = useChainId();
   const { data: walletClient } = useWalletClient();
 
-  const nativeToken = getChainNativeToken(chain?.id);
+  const nativeToken = getChainNativeToken(chainId);
   const [amount, setAmount] = useState<string>(getDefaultDonationAmount(nativeToken));
 
   const [open, setOpen] = useState(false);
@@ -50,7 +51,7 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
   }, [nativeToken]);
 
   const sendDonation = async () => {
-    if (!walletClient || !chain?.id) {
+    if (!walletClient) {
       alert('Please connect your web3 wallet to a supported network');
     }
 
@@ -59,13 +60,13 @@ const DonateButton = ({ size, style, className, parentToastRef }: Props) => {
         account: await getWalletAddress(walletClient),
         to: DONATION_ADDRESS,
         value: parseEther(amount),
-        chain: chain,
+        chain,
         kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅
       });
 
       toast.info(t('common.toasts.donation_sent'));
 
-      track('Donated', { chainId: chain?.id, amount: Number(amount) });
+      track('Donated', { chainId, amount: Number(amount) });
 
       handleClose();
     } catch (err) {
