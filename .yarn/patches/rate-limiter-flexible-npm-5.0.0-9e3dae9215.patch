@@ -1,5 +1,5 @@
 diff --git a/index.js b/index.js
-index 2064766527b5b8d9b5cb732af50f1edfd1fd34ea..d3a5e71bed387a35f9928efd36a4e20df2d07806 100644
+index 2064766527b5b8d9b5cb732af50f1edfd1fd34ea..014bef99abd624defb6e0d3a0445ece0ef73839e 100644
 --- a/index.js
 +++ b/index.js
 @@ -2,7 +2,6 @@ const RateLimiterRedis = require('./lib/RateLimiterRedis');
@@ -10,6 +10,16 @@ index 2064766527b5b8d9b5cb732af50f1edfd1fd34ea..d3a5e71bed387a35f9928efd36a4e20d
  const RateLimiterMemory = require('./lib/RateLimiterMemory');
  const RateLimiterMemcache = require('./lib/RateLimiterMemcache');
  const RLWrapperBlackAndWhite = require('./lib/RLWrapperBlackAndWhite');
+@@ -20,9 +19,6 @@ module.exports = {
+   RateLimiterPostgres,
+   RateLimiterMemory,
+   RateLimiterMemcache,
+-  RateLimiterClusterMaster,
+-  RateLimiterClusterMasterPM2,
+-  RateLimiterCluster,
+   RLWrapperBlackAndWhite,
+   RateLimiterUnion,
+   RateLimiterQueue,
 diff --git a/lib/RateLimiterCluster.js b/lib/RateLimiterCluster.js
 deleted file mode 100644
 index c1e46f787b2605b5c0ef735acbd0ff689e246ca0..0000000000000000000000000000000000000000
