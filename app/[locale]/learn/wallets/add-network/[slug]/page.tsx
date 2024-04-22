@@ -30,7 +30,7 @@ export const generateMetadata = async ({ params: { locale, slug } }): Promise<Me
     title: t('learn.add_network.title', { chainName }),
     description: t('learn.add_network.description', { chainName }),
     openGraph: {
-      images: `/${locale}/learn/wallets/add-network/${slug}/og.jpg`,
+      images: `/assets/images/generated/${locale}/learn/wallets/add-network/${slug}/og.jpg`,
     },
   };
 };
@@ -51,7 +51,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
     sidebarTitle: t('learn.add_network.title', { chainName }),
     description: t('learn.add_network.description', { chainName }),
     language: params.locale,
-    coverImage: `/${params.locale}/learn/wallets/add-network/${params.slug}/og.jpg`,
+    coverImage: `/assets/images/generated/${params.locale}/learn/wallets/add-network/${params.slug}/og.jpg`,
   };
 
   return (
