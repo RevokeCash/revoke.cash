@@ -5,7 +5,6 @@ import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
-import { track } from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import useLocalStorage from 'use-local-storage';
@@ -34,7 +33,6 @@ const SortSelect = ({ table }: Props) => {
   useEffect(() => {
     if (!selectedSort) return;
     table.setSorting(() => [selectedSort]);
-    track('Updated Sorting', { column: selectedSort.id, desc: selectedSort.desc });
   }, [selectedSort]);
 
   const options = useMemo(() => {
