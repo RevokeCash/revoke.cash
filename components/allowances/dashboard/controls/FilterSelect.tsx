@@ -6,7 +6,6 @@ import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
-import { track } from 'lib/utils/analytics';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
@@ -71,7 +70,6 @@ const FilterSelect = ({ table }: Props) => {
     const tableFilters = generateTableFilters(options, selectedFilters);
     const ignoreIds = [ColumnId.SPENDER];
     updateTableFilters(table, tableFilters, ignoreIds);
-    track('Updated Filters', { filters: tableFilters });
   }, [selectedFilters]);
 
   const displayOption = (option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {

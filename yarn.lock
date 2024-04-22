@@ -2636,13 +2636,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mixpanel-browser@npm:^2.47.5":
-  version: 2.47.5
-  resolution: "@types/mixpanel-browser@npm:2.47.5"
-  checksum: 98fda58f1ac80e8a0e7422af8ea0fa71ec330186c5d12468d9b2ab56e257cb928f19f6eddfdf2717d48810dfa8777590f66d0e05f041766e3434e54507787647
-  languageName: node
-  linkType: hard
-
 "@types/ms@npm:*":
   version: 0.7.31
   resolution: "@types/ms@npm:0.7.31"
@@ -8264,13 +8257,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mixpanel-browser@npm:^2.49.0":
-  version: 2.49.0
-  resolution: "mixpanel-browser@npm:2.49.0"
-  checksum: 24da033aa2a07d49518a4f3646fdf41f6408cb2944aa0001e234d92bdf42b23d28c0e3f277c7196a564f47318d48545811a90eab87c2d215200ec82f369ab46b
-  languageName: node
-  linkType: hard
-
 "mkdirp@npm:^0.5.5":
   version: 0.5.6
   resolution: "mkdirp@npm:0.5.6"
@@ -9567,8 +9553,8 @@ __metadata:
 
 "rate-limiter-flexible@patch:rate-limiter-flexible@npm%3A5.0.0#./.yarn/patches/rate-limiter-flexible-npm-5.0.0-9e3dae9215.patch::locator=revoke.cash%40workspace%3A.":
   version: 5.0.0
-  resolution: "rate-limiter-flexible@patch:rate-limiter-flexible@npm%3A5.0.0#./.yarn/patches/rate-limiter-flexible-npm-5.0.0-9e3dae9215.patch::version=5.0.0&hash=79466e&locator=revoke.cash%40workspace%3A."
-  checksum: 08bf38f812e9e8e0bf7820770fb85c349558fdbffa443b7d6068dc3e85d3a6d6e97cee87a68c6040a638126b55ec88d62445dd20a855cb7c1042914dcfdb2091
+  resolution: "rate-limiter-flexible@patch:rate-limiter-flexible@npm%3A5.0.0#./.yarn/patches/rate-limiter-flexible-npm-5.0.0-9e3dae9215.patch::version=5.0.0&hash=d068a1&locator=revoke.cash%40workspace%3A."
+  checksum: cff0fe7c5826f3222dbec7afe1b709225bb87d9594827050c5102f340dcf809d20c572da2f02bf2b37bee745ef371a9e7fc22f6e4603382aec5eee001bf4e89e
   languageName: node
   linkType: hard
 
@@ -10153,7 +10139,6 @@ __metadata:
     "@tanstack/react-table": 8.8.5
     "@tippyjs/react": ^4.2.6
     "@types/md5": ^2.3.5
-    "@types/mixpanel-browser": ^2.47.5
     "@types/node": ^18.19.26
     "@types/nprogress": ^0.2.3
     "@types/react": 18.2.42
@@ -10174,7 +10159,6 @@ __metadata:
     ky: ^1.2.3
     lint-staged: ^15.2.2
     md5: ^2.3.0
-    mixpanel-browser: ^2.49.0
     next: ^14.2.1
     next-bundle-analyzer: ^0.6.8
     next-circular-dependency: ^1.0.1

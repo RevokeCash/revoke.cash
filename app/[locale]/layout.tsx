@@ -1,4 +1,5 @@
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import Analytics from 'app/Analytics';
 import ToastifyConfig from 'components/common/ToastifyConfig';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
@@ -7,10 +8,8 @@ import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import { locales } from 'lib/i18n/config';
-import { init } from 'lib/utils/analytics';
 import { Metadata } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import Script from 'next/script';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import 'react-toastify/dist/ReactToastify.css';
 import * as timeago from 'timeago.js';
@@ -24,8 +23,6 @@ timeago.register('es', timeagoEs);
 timeago.register('ja', timeagoJa);
 timeago.register('ru', timeagoRu);
 timeago.register('zh', timeagoZh);
-
-init();
 
 interface Props {
   children: React.ReactNode;
@@ -58,6 +55,9 @@ const MainLayout = ({ children, params }: Props) => {
 
   return (
     <html lang={params.locale}>
+      <head>
+        <Analytics />
+      </head>
       <body>
         <QueryProvider>
           <EthereumProvider>
@@ -76,7 +76,6 @@ const MainLayout = ({ children, params }: Props) => {
         </QueryProvider>
         <SpeedInsights sampleRate={0.1} />
       </body>
-      <Script async defer src="/assets/js/sa-v11.js" />
     </html>
   );
 };
