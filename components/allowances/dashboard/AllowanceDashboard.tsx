@@ -24,7 +24,7 @@ const AllowanceDashboard = () => {
     // See https://github.com/TanStack/table/discussions/4220
     meta: { onUpdate } as any,
     initialState: {
-      sorting: [{ id: ColumnId.SYMBOL, desc: false }],
+      sorting: [{ id: ColumnId.LAST_UPDATED, desc: true }],
       columnVisibility: {
         [ColumnId.BALANCE]: false,
       },

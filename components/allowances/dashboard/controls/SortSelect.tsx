@@ -26,8 +26,8 @@ const SortSelect = ({ table }: Props) => {
   const isMounted = useMounted();
   const { darkMode } = useColorTheme();
   const [selectedSort, setSelectedSort] = useLocalStorage<ColumnSort>('allowances-table.sorting', {
-    id: ColumnId.SYMBOL,
-    desc: false,
+    id: ColumnId.LAST_UPDATED,
+    desc: true,
   });
 
   useEffect(() => {
