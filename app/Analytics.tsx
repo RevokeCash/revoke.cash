@@ -1,19 +1,6 @@
-'use client';
-
-import { usePathname } from 'lib/i18n/navigation';
-import { init } from 'lib/utils/analytics';
 import Script from 'next/script';
-import { useEffect } from 'react';
 
 const Analytics = () => {
-  const path = usePathname();
-
-  // Mixpanel
-  useEffect(() => {
-    init();
-    // track('Viewed Page', { path });
-  }, []);
-
   // SimpleAnalytics
   return (
     <>
