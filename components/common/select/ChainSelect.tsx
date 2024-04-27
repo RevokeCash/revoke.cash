@@ -1,9 +1,9 @@
 import ChainLogo from 'components/common/ChainLogo';
-import SearchableSelect from 'components/common/select/SearchableSelect';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import useTranslation from 'next-translate/useTranslation';
 import PlaceholderIcon from '../PlaceholderIcon';
+import SearchableSelect from './SearchableSelect';
 
 interface ChainOption {
   value: string;
