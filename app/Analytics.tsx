@@ -1,6 +1,14 @@
+'use client';
+
+import { init } from 'lib/utils/analytics';
 import Script from 'next/script';
+import { useEffect } from 'react';
 
 const Analytics = () => {
+  useEffect(() => {
+    init();
+  }, []);
+
   // SimpleAnalytics
   return (
     <>
