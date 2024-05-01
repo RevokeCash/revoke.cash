@@ -1,20 +1,23 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import DonateButton from 'components/common/DonateButton';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 import type { MutableRefObject, ReactText } from 'react';
 import { toast } from 'react-toastify';
 import Href from './Href';
 
-export const displayTransactionSubmittedToast = (
-  chainId: number,
-  transactionHash: string,
-  ref: MutableRefObject<ReactText>,
-  t: Awaited<ReturnType<typeof getTranslations<string>>>,
-) => {
+interface Props {
+  chainId: number;
+  transactionHash: string;
+  ref: MutableRefObject<ReactText>;
+}
+
+const TransactionSubmittedToast = ({ chainId, transactionHash, ref }: Props) => {
+  const t = useTranslations();
+
   const explorerUrl = getChainExplorerUrl(chainId);
 
-  const toastContent = (
+  return (
     <div className="flex flex-col justify-center items-center gap-2">
       <div className="flex gap-1">
         <div>{t('common.toasts.transaction_submitted')}</div>
@@ -27,8 +30,19 @@ export const displayTransactionSubmittedToast = (
       </div>
     </div>
   );
+};
 
-  ref.current = toast.info(toastContent, {
-    closeOnClick: false,
-  });
+export default TransactionSubmittedToast;
+
+export const displayTransactionSubmittedToast = (
+  chainId: number,
+  transactionHash: string,
+  ref: MutableRefObject<ReactText>,
+) => {
+  ref.current = toast.info(
+    <TransactionSubmittedToast chainId={chainId} transactionHash={transactionHash} ref={ref} />,
+    {
+      closeOnClick: false,
+    },
+  );
 };

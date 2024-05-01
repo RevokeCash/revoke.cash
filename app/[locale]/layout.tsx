@@ -7,8 +7,10 @@ import HolyLoader from 'holy-loader';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
+import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/config';
 import { Metadata } from 'next';
+import { useMessages } from 'next-intl';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -53,27 +55,31 @@ export const generateMetadata = async ({ params: { locale } }): Promise<Metadata
 const MainLayout = ({ children, params }: Props) => {
   unstable_setRequestLocale(params.locale);
 
+  const messages = useMessages();
+
   return (
     <html lang={params.locale}>
       <head>
         <Analytics />
       </head>
       <body>
-        <QueryProvider>
-          <EthereumProvider>
-            <ColorThemeProvider>
-              <div className="flex flex-col mx-auto min-h-screen">
-                <Header />
-                <main className="w-full grow">{children}</main>
-                <div className="flex flex-col justify-end">
-                  <Footer />
+        <NextIntlClientProvider messages={{ common: messages.common }}>
+          <QueryProvider>
+            <EthereumProvider>
+              <ColorThemeProvider>
+                <div className="flex flex-col mx-auto min-h-screen">
+                  <Header />
+                  <main className="w-full grow">{children}</main>
+                  <div className="flex flex-col justify-end">
+                    <Footer />
+                  </div>
                 </div>
-              </div>
-              <HolyLoader color="#000" height={2} />
-              <ToastifyConfig />
-            </ColorThemeProvider>
-          </EthereumProvider>
-        </QueryProvider>
+                <HolyLoader color="#000" height={2} />
+                <ToastifyConfig />
+              </ColorThemeProvider>
+            </EthereumProvider>
+          </QueryProvider>
+        </NextIntlClientProvider>
         <SpeedInsights sampleRate={0.1} />
       </body>
     </html>

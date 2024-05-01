@@ -63,9 +63,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
         <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
           <p className="m-0">{t('learn.add_network.select_network')}</p>
           <div className="not-prose shrink-0">
-            <NextIntlClientProvider messages={{ common: messages.common }}>
-              <AddNetworkChainSelect chainId={chainId} />
-            </NextIntlClientProvider>
+            <AddNetworkChainSelect chainId={chainId} />
           </div>
         </div>
         <ChainDescription chainId={chainId} headingElement="h2" />

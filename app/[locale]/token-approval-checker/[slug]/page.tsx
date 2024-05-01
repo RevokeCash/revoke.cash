@@ -2,7 +2,6 @@ import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
-import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
 import { Metadata, NextPage } from 'next';
@@ -58,9 +57,7 @@ const TokenApprovalCheckerPage: NextPage<Props> = ({ params }) => {
         <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
           <p className="m-0">{t('token_approval_checker.different_chain')}:</p>
           <div className="not-prose shrink-0">
-            <NextIntlClientProvider messages={{ common: messages.common }}>
-              <TokenApprovalCheckerChainSelect chainId={chainId} />
-            </NextIntlClientProvider>
+            <TokenApprovalCheckerChainSelect chainId={chainId} />
           </div>
         </div>
       </div>

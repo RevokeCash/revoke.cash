@@ -1,4 +1,4 @@
-import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
+import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { TransactionType } from 'lib/interfaces';
 import { isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
@@ -43,7 +43,7 @@ export const useHandleTransaction = (chainId: number) => {
       const transactionHash = await transactionPromise;
 
       if (transactionHash) {
-        displayTransactionSubmittedToast(chainId, transactionHash, toastRef, t);
+        displayTransactionSubmittedToast(chainId, transactionHash, toastRef);
       }
 
       return transactionHash;

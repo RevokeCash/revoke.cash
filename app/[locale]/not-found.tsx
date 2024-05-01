@@ -2,9 +2,8 @@ import { GlobeEuropeAfricaIcon, QuestionMarkCircleIcon } from '@heroicons/react/
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import Href from 'components/common/Href';
 import NotFoundLink from 'components/common/NotFoundLink';
-import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { NextPage } from 'next';
-import { useMessages, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import NotFoundLinkMyApprovals from './NotFoundLinkMyApprovals';
 
 interface Props {
@@ -18,7 +17,6 @@ const NotFoundPage: NextPage<Props> = ({ params }) => {
   // unstable_setRequestLocale(params.locale);
 
   const t = useTranslations();
-  const messages = useMessages();
 
   return (
     <ContentPageLayout>
@@ -45,9 +43,7 @@ const NotFoundPage: NextPage<Props> = ({ params }) => {
               description={t('common.errors.404.suggested_pages.extension.description')}
               icon={<GlobeEuropeAfricaIcon className="h-6 w-6" />}
             />
-            <NextIntlClientProvider messages={{ common: messages.common }}>
-              <NotFoundLinkMyApprovals />
-            </NextIntlClientProvider>
+            <NotFoundLinkMyApprovals />
           </div>
           <p>
             <Href href="/" className="font-medium" underline="none">
