@@ -1924,7 +1924,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://zetachain.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain.blockscout.com/api',
     rpc: {
-      main: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
+      main: 'https://zetachain-mainnet-archive.allthatnode.com:8545',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
