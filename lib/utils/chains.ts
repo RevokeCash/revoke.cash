@@ -2232,6 +2232,10 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   return getChainConfig(chainId)?.getRpcUrl();
 };
 
+export const getChainRpcUrls = (chainId: number): string[] | undefined => {
+  return getChainConfig(chainId)?.getRpcUrls();
+};
+
 export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
   return getChainConfig(chainId)?.getLogsRpcUrl();
 };

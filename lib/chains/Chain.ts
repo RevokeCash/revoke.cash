@@ -16,7 +16,7 @@ export interface ChainOptions {
   explorerUrl?: string;
   etherscanCompatibleApiUrl?: string;
   rpc?: {
-    main?: string;
+    main?: string | string[];
     logs?: string;
     free?: string;
   };
@@ -88,9 +88,16 @@ export class Chain {
     return this.options.rpc?.free ?? rpcUrl ?? this.getRpcUrl();
   }
 
+  getRpcUrls(): string[] {
+    const baseRpcUrls =
+      getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', INFURA_API_KEY)) ?? [];
+    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter(Boolean);
+    const rpcOverrides = RPC_OVERRIDES[this.chainId] ? [RPC_OVERRIDES[this.chainId]] : [];
+    return [...rpcOverrides, ...specifiedRpcUrls, ...baseRpcUrls];
+  }
+
   getRpcUrl(): string {
-    const defaultRpcUrl = getChain(this.chainId)?.rpc?.at(0)?.replace('${INFURA_API_KEY}', INFURA_API_KEY);
-    return RPC_OVERRIDES[this.chainId] ?? this.options.rpc?.main ?? defaultRpcUrl;
+    return this.getRpcUrls()[0];
   }
 
   getLogsRpcUrl(): string {
