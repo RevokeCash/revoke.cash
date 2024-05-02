@@ -39,8 +39,10 @@ const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
   return (
     <>
       <div vocab="https://schema.org/" typeof="Article">
-        <meta property="headline" content={meta.title} />
-        {meta.coverImage && <meta property="image" content={`https://revoke.cash${meta.coverImage}`} />}
+        <div hidden className="hidden" property="headline" content={meta.title} />
+        {meta.coverImage && (
+          <div hidden className="hidden" property="image" content={`https://revoke.cash${meta.coverImage}`} />
+        )}
       </div>
       <LearnLayout sidebarEntries={sidebar} slug={params.slug} meta={meta} translationUrl={translationUrl}>
         <MarkdownProse content={content} />

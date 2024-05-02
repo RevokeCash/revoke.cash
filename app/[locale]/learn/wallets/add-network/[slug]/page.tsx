@@ -59,7 +59,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
       <Prose vocab="https://schema.org/" typeof="HowTo">
         <h1 property="name">{meta.title}</h1>
         <Divider className="my-4" />
-        <meta property="description" content={meta.description} />
+        <div hidden className="hidden" property="description" content={meta.description} />
         <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
           <p className="m-0">{t('learn.add_network.select_network')}</p>
           <div className="not-prose shrink-0">
@@ -71,7 +71,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
         <p>{t('learn.add_network.intro_paragraph', { chainName })}</p>
         <div property="step" typeof="HowToStep">
           <h3 property="name">{t('learn.add_network.step_1.title')}</h3>
-          <meta property="text" content={t('learn.add_network.step_1.title')} />
+          <div hidden className="hidden" property="text" content={t('learn.add_network.step_1.title')} />
           <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
             <p>
               <Image

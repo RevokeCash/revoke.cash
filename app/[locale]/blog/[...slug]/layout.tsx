@@ -32,14 +32,16 @@ const BlogLayout = async ({ params, children }: Props) => {
   return (
     <>
       <div vocab="https://schema.org/" typeof="Article">
-        <meta property="headline" content={meta.title} />
+        <div hidden className="hidden" property="headline" content={meta.title} />
         {meta.author && (
           <div property="author" typeof="Person">
-            <meta property="name" content={meta.author.name} />
+            <div hidden className="hidden" property="name" content={meta.author.name} />
           </div>
         )}
-        <meta property="datePublished" content={meta.date} />
-        {meta.coverImage && <meta property="image" content={`https://revoke.cash${meta.coverImage}`} />}
+        <div hidden className="hidden" property="datePublished" content={meta.date} />
+        {meta.coverImage && (
+          <div hidden className="hidden" property="image" content={`https://revoke.cash${meta.coverImage}`} />
+        )}
       </div>
       <div className="max-w-3xl mx-auto">
         <div className="pl-2 pt-2">
