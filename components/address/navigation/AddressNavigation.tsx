@@ -1,12 +1,14 @@
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import AddressNavigationTab from './AddressNavigationTab';
 
 const AddressNavigation = () => {
-  const { address } = useAddressPageContext();
+  const { addressOrName } = useParams();
   const t = useTranslations();
 
-  const basePath = `/address/${address}`;
+  const basePath = `/address/${addressOrName}`;
   const signaturesPath = `${basePath}/signatures`;
 
   return (
