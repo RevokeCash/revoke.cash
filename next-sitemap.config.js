@@ -37,12 +37,16 @@ module.exports = {
     '**.jpg',
     '**.png',
     '**.json',
+    '**.txt',
   ],
   // Custom transform function to de-duplicate path locale strings in alternateRefs
   // Without this we get things like https://<domain>/es/es/about rather than https://<domain>/es/about
   // NOTE: This is made to work for path-based localisation scheme (https://<domain>/<locale>/<path>). It may not
   // work if you're using subdomains or separate domains for localisation.
-  transform: async (config, path) => {
+  transform: async (config, originalPath) => {
+    // Remove the leading /en/ from the default path (added for i18n in App Router + next-intl)
+    const path = `${originalPath}/`.replace(/^\/en\//, '/').replace(/\/+$/, '');
+
     // Remove the locale part of the path (e.g. /es/about -> /about)
     const extractLocaleIndependentPath = (path) => {
       const matches = config.alternateRefs.map((alt) =>
