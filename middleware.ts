@@ -4,6 +4,11 @@ import createMiddleware from 'next-intl/middleware';
 export default createMiddleware({ locales, localePrefix, defaultLocale });
 
 export const config = {
-  // Do not match non-page URLs (/_next, /_vercel, /monitoring, /api + URLs with a . in them)
-  matcher: ['/((?!api|_next|_vercel|monitoring|.*\\..*).*)'],
+  // Allow all paths starting with /address and apply exclusions to other paths
+  matcher: [
+    // Match any path starting with /address
+    '/address/(.*)',
+    // Do not match non-page URLs (/_next, /_vercel, /monitoring, /api + URLs with a . in them)
+    '/((?!_next|_vercel|monitoring|api|.*\\..*$).*)',
+  ],
 };
