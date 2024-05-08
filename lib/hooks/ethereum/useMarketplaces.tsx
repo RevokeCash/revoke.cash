@@ -37,7 +37,7 @@ export const useMarketplaces = () => {
         ChainId.EthereumMainnet,
         ChainId.Sepolia,
         ChainId.PolygonMainnet,
-        ChainId.Mumbai,
+        ChainId.Amoy,
         ChainId.OPMainnet,
         ChainId.OPSepoliaTestnet,
         ChainId.ArbitrumOne,

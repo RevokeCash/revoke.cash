@@ -16,6 +16,19 @@ const MULTICALL = {
 };
 
 export const CHAINS: Record<number, Chain> = {
+  [ChainId.Amoy]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.Amoy,
+    name: 'Polygon Amoy',
+    logoUrl: '/assets/images/vendor/chains/polygon.svg',
+    rpc: {
+      main: `https://polygon-amoy.infura.io/v3/${INFURA_API_KEY}`,
+      logs: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.PolygonMainnet,
+  }),
   [ChainId.ArbitrumNova]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ArbitrumNova,
@@ -1292,19 +1305,6 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [ChainId.Mumbai]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.Mumbai,
-    name: 'Polygon Mumbai',
-    logoUrl: '/assets/images/vendor/chains/polygon.svg',
-    rpc: {
-      main: `https://polygon-mumbai.infura.io/v3/${INFURA_API_KEY}`,
-      logs: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.PolygonMainnet,
-  }),
   [ChainId.NahmiiMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.NahmiiMainnet,
@@ -2131,7 +2131,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.Goerli,
   ChainId.Holesky,
   ChainId.BNBSmartChainTestnet,
-  ChainId.Mumbai,
+  ChainId.Amoy,
   ChainId.PolygonzkEVMTestnet,
   ChainId.OPSepoliaTestnet,
   ChainId.ArbitrumSepolia,
