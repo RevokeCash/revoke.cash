@@ -28,6 +28,7 @@ const TEST_ADDRESSES = {
   [ChainId.ArbitrumNova]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.ArbitrumOne]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Astar]: '0xAE545C0d8d4b4645fBA8c895e370529D22F8a71c',
+  [ChainId.AstarzkEVM]: '0x1bb33A99dA07048d3CbCEe3098Cb8356209dd1F6',
   [ChainId.AuroraMainnet]: '0x1D50A8c3295798fCebdDD0C720BeC4FBEdc3D178',
   [ChainId['AvalancheC-Chain']]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Base]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
@@ -95,8 +96,9 @@ const TEST_ADDRESSES = {
   [ChainId.PolygonMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.PolygonzkEVM]: '0x16959Ac6E43f509F9d16De76B3B6f60D908BF816',
   [ChainId.PulseChain]: '0x9c128fFa923B251Fa40F58906034b2DeaE6C3146',
-  [1380012617]: '0xE247B36665d3E1a5B17f0E5F795096ca0015e9d9',
+  [ChainId.RARIChainMainnet]: '0xE247B36665d3E1a5B17f0E5F795096ca0015e9d9',
   [ChainId.RedlightChainMainnet]: '0xfE294d4CfA1F3b57b902d60c17B583DED8C519bb',
+  [ChainId.Redstone]: '0x37c2DD981aC291015DAD1Cf2d4E1eB524Fc64E08',
   [ChainId.RolluxMainnet]: '0x75CCD3a10D9325aE2BF7f59d23A892061952fAF3',
   [ChainId.RootstockMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.RSS3VSLMainnet]: '0xC7C2f5a9fe35999AA1009139261eB1E563315715',
@@ -112,6 +114,7 @@ const TEST_ADDRESSES = {
   [ChainId['WEMIX3.0Mainnet']]: '0x77B7bAC5413F52fbc6db2E8C0a177F8b69Dcbf02',
   [ChainId.XDCNetwork]: '0x87dB6eA45E2F960A4DDFCfcef86264CdA78fF5E5',
   [ChainId.ZetaChainMainnet]: '0xc9636B935FB6b3Ce48654a0009755D58F473c064',
+  [ChainId.ZKFairMainnet]: '0xb0240794108Fd89C99BB828C9eBc0e7d9703C2f8',
   [ChainId.ZkLinkNovaMainnet]: '0x303733613868BF605C6fd343a757829EaA0598f0',
   [ChainId.ZkSyncMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
   [ChainId.Zora]: '0x061EFb2DF7767D6e63529BA99394037d4dCa39D6',
@@ -130,17 +133,15 @@ const TEST_ADDRESSES = {
   [ChainId.FrameTestnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.FraxtalTestnet]: '0x3289CAbF6FB3435dc645e1e204Ec663456d14ADD',
   [ChainId.FantomTestnet]: '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF',
-  [ChainId.Goerli]: '0xFCBD25BB345765192fFC2f2E35F1F5348badC3F6',
   [ChainId.Holesky]: '0x5A8ec40549AebF0E3Fb9d59bCE57b2AfE4d5eDda',
   [ChainId.HorizenGobiTestnet]: '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32',
   [ChainId.KromaSepolia]: '0x9c9eCFf9f7a4A15BA3554e1c10E576441267063b',
-  [ChainId.LineaTestnet]: '0x444111CD376893AFCd7405239CE72b64d5A22958',
+  [ChainId.LineaGoerli]: '0x444111CD376893AFCd7405239CE72b64d5A22958',
   // [ChainId.LUKSOTestnet]: '0xBdDDd277583DCaE0B501046ba86714FEea71B03F',
-  [ChainId.MantleTestnet]: '0x868A8Da54f817A1FDf4cE2ba8dBa3ef61e9DE610',
+  [ChainId.MantleSepoliaTestnet]: '0x519a89Daa5d3291730a037B94025ab46425c4003',
   [ChainId.MoonbaseAlpha]: '0xeE146d0808D6a874237701E06A118f444dB13D73',
   [ChainId.OPSepoliaTestnet]: '0xDd3287043493E0a08d2B348397554096728B459c',
-  [ChainId.PolygonzkEVMTestnet]: '0xe9Cc1396bcbB6e1168d731347F376A2d5709B42a',
-  [ChainId.RedstoneHoleskyTestnet]: '0x88a32aA2df1Bfc0736471CfEFD2Bd2094581e686',
+  [ChainId.PolygonzkEVMCardonaTestnet]: '0x2a8ecB983ab270cB31077C9ff6b5eC9739b4845f',
   [ChainId.ScrollSepoliaTestnet]: '0xBF1E9dc0f7c2186346544BF985321e179c3d186c',
   [ChainId.Sepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
   [ChainId.ShimmerEVMTestnet]: '0xecaF55B79fdCf39EF23715cD8dE539C8E58e9119',
@@ -148,13 +149,13 @@ const TEST_ADDRESSES = {
   [9789]: '0x149444932e5b33c64a8081E99851b13FbA6B2DDb', // Tabi Testnet
   [ChainId.TaikoKatlaL2]: '0x3E866039DD8EdACDF24165Ce022Ace2A6eb3c400',
   [ChainId.ZetaChainAthens3Testnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
-  [ChainId.ZKFairMainnet]: '0xb0240794108Fd89C99BB828C9eBc0e7d9703C2f8',
   [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
 } as const;
 
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
     cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
+    cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
 
     const fixtureChainNames = ORDERED_CHAINS.map((chainId) => getChainName(chainId));
@@ -202,6 +203,7 @@ describe('Chain Support', () => {
       describe('Chain Approval Checking', () => {
         it('should be able to check approvals', () => {
           cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
+          cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
 
           cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
           cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();

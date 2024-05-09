@@ -8,6 +8,7 @@
     "arbitrum": "Arbitrum 是以太坊的第 2 层扩展（Layer 2）解决方案。Arbitrum 采用 Optimistic Rollup 技术，定期向以太坊主网批量提交交易数据。相比直接在以太坊上执行交易，这样交易更为便宜、更快捷。这是以太坊最受欢迎的二层扩展解决方案之一，采用率在 2023 年激增。",
     "arbitrum-nova": "Arbitrum Nova 是 Arbitrum 的姊妹链，中心化程度更高。Arbitrum 会定期向以太坊主网批量提交交易数据，而 Arbitrum Nova 仅提交这些数据的证书。这些证书由一组验证者创建，即数据可用性委员会（DAC）。因此，该网络的使用成本要低得多，但中心化程度也要高得多。",
     "astar": "Astar 是 Polkadot 的平行链，集成了以太坊、Polkadot 和 Cosmos 的功能。Astar 可以通过跨虚拟机（XVM）支持以太坊虚拟机（EVM）并与其他区块链进行交互。Astar 通过“dApp 质押”项目为应用程序开发者提供原生经济激励措施。Astar 主要专注于日本市场，在该地区拥有庞大的用户群。",
+    "astar-zkevm": "Astar zkEVM is a Layer 2 scaling solution for Ethereum. It is built using the Polygon Chain Development Kit (CDK) to enable off-chain transaction execution. It has native account abstraction functionality built in and is designed to offer interoperability between Ethereum, Polkadot and Polygon ecosystems.",
     "aurora": "Aurora 是与以太坊虚拟机（EVM）兼容的区块链，由 NEAR 区块链团队创建。Aurora 采用了基于委托权益证明（DPoS）的共识机制。Aurora 是 NEAR 生态系统的 EVM 侧链，具备无需信任的桥接机制，可以在 NEAR、以太坊和 Aurora 之间转移资产。",
     "avalanche": "Avalanche 是一个使用 Avalanche 共识机制的区块链，结合了经典和中本聪共识机制的特点，可以实现快速交易终结和高吞吐量。Avalanche 网络的核心包括三条不同的链：交易链（X 链）、合约链（C 链）和平台链（P 链）。这些链在系统中扮演不同的角色，其中合约链支持与 EVM 兼容的智能合约。",
     "base": "Base 是 Coinbase 为以太坊开发的第 2 层扩展（Layer 2）解决方案。Base 基于 Optimism 的 OP Stack，因此与 Optimism 一样，采用了 Optimistic Rollup 技术。Base 于 2023 年的“链上夏季”期间推出，目前已经得到广泛使用。由于得到了头部加密货币公司的支持，很可能还会继续增长。",
