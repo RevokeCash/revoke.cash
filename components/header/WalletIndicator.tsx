@@ -1,6 +1,7 @@
 'use client';
 
 import { useMounted } from 'lib/hooks/useMounted';
+import { Suspense } from 'react';
 import { useAccount, useSwitchChain } from 'wagmi';
 import ChainSelect from '../common/select/ChainSelect';
 import WalletIndicatorDropdown from './WalletIndicatorDropdown';
@@ -21,17 +22,19 @@ const WalletIndicator = ({ menuAlign, size, style, className }: Props) => {
   if (!isMounted) return null;
 
   return (
-    <div className="flex gap-2">
-      {account && (
-        <ChainSelect
-          instanceId="global-chain-select"
-          onSelect={(chainId) => switchChain({ chainId })}
-          selected={chain?.id}
-          menuAlign={menuAlign}
-        />
-      )}
-      <WalletIndicatorDropdown size={size} style={style} className={className} />
-    </div>
+    <Suspense>
+      <div className="flex gap-2">
+        {account && (
+          <ChainSelect
+            instanceId="global-chain-select"
+            onSelect={(chainId) => switchChain({ chainId })}
+            selected={chain?.id}
+            menuAlign={menuAlign}
+          />
+        )}
+        <WalletIndicatorDropdown size={size} style={style} className={className} />
+      </div>
+    </Suspense>
   );
 };
 

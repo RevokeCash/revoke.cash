@@ -1,4 +1,4 @@
-import { useMessages } from 'next-intl';
+import { Suspense } from 'react';
 import SearchBar from './SearchBar';
 
 interface Props {
@@ -6,15 +6,15 @@ interface Props {
 }
 
 const HeaderAttachedSearchBar = ({ render = true }: Props) => {
-  const messages = useMessages();
-
   if (!render) return null;
 
   // We add a negative margin so the SearchBar is grouped with the header
   return (
-    <div className="flex justify-center -mt-4 mb-8 px-4 lg:px-8">
-      <SearchBar />
-    </div>
+    <Suspense>
+      <div className="flex justify-center -mt-4 mb-8 px-4 lg:px-8">
+        <SearchBar />
+      </div>
+    </Suspense>
   );
 };
 

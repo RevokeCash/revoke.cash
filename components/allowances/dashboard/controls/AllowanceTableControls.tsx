@@ -1,6 +1,7 @@
 import { Table } from '@tanstack/react-table';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
+import { Suspense } from 'react';
 import WalletHealthSection from '../wallet-health/WalletHealthSection';
 import AllowanceSearchBox from './AllowanceSearchBox';
 import FilterSelect from './FilterSelect';
@@ -22,7 +23,9 @@ const AllowanceTableControls = ({ table }: Props) => {
         </div>
         <WalletHealthSection address={address} chainId={selectedChainId} />
       </div>
-      <AllowanceSearchBox table={table} />
+      <Suspense>
+        <AllowanceSearchBox table={table} />
+      </Suspense>
     </div>
   );
 };
