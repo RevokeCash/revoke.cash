@@ -109,7 +109,11 @@ export const useMarketplaces = () => {
   // TODO: This is pretty ugly with all the queryClient.ensureQueryData calls, so we should try to improve this down
   // the line. The issue is that we want to ensure that an error in one of the marketplaces also stops the others from
   // loading, so that it displays a "global" table error, rather than a per-marketplace error.
-  const { data, isLoading, error } = useQuery<Marketplace[]>({
+  const {
+    data,
+    isLoading: isMarketplacesLoading,
+    error: marketplacesError,
+  } = useQuery<Marketplace[]>({
     queryKey: ['marketplaces', selectedChainId, address],
     queryFn: async () => {
       const filtered = ALL_MARKETPLACES.filter((marketplace) => marketplace.chains.includes(selectedChainId));
@@ -185,5 +189,8 @@ export const useMarketplaces = () => {
     });
   };
 
-  return { marketplaces, isLoading: isLoading || !marketplaces, error: error || allowancesError, onCancel };
+  const error = allowancesError || marketplacesError;
+  const isLoading = (isAllowancesLoading || isMarketplacesLoading || !marketplaces) && !error;
+
+  return { marketplaces, isLoading, error, onCancel };
 };

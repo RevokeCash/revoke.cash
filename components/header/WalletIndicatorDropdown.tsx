@@ -2,6 +2,7 @@ import DropdownMenu, { DropdownMenuItem } from 'components/common/DropdownMenu';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useAccount, useDisconnect } from 'wagmi';
 import ConnectButton from './ConnectButton';
 
@@ -13,16 +14,17 @@ interface Props {
 
 const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
   const t = useTranslations();
+  const searchParams = useSearchParams();
+
   const { address: account } = useAccount();
-  const { ensName, unsName, avvyName } = useNameLookup(account);
+  const { domainName } = useNameLookup(account);
   const { disconnect } = useDisconnect();
-  const domainName = ensName ?? unsName ?? avvyName;
 
   return (
     <div className="flex whitespace-nowrap">
       {account ? (
         <DropdownMenu menuButton={domainName ?? shortenAddress(account, 4)}>
-          <DropdownMenuItem href={`/address/${account}`} router>
+          <DropdownMenuItem href={`/address/${account}?${searchParams.toString()}`} router>
             {t('common.buttons.my_allowances')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => disconnect()}>{t('common.buttons.disconnect')}</DropdownMenuItem>

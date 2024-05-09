@@ -33,7 +33,7 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, .
 
     // If the validation is still loading, then we await it so that the submit happens immediately after validation
     // Note: since the validation is cached, this does not cause an extra network request
-    const isValid = await refetch();
+    const { data: isValid } = await refetch();
 
     if (!isValid || !value) return;
     onSubmit(event);
