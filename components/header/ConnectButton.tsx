@@ -28,7 +28,7 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
 
   const handleClick = () => {
     if (address) {
-      router.push(`/address/${address}`);
+      router.push(`/address/${address}${location.search}`);
     } else {
       setOpen(true);
     }
@@ -44,7 +44,7 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
         accounts: [account],
       } = await connectAsync({ connector });
       if (account && redirect) {
-        router.push(`/address/${account}`);
+        router.push(`/address/${account}${location.search}`);
       }
     } catch {
       // ignored

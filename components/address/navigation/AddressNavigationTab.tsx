@@ -1,6 +1,5 @@
 import Button from 'components/common/Button';
 import { usePathname, useRouter } from 'lib/i18n/navigation';
-import { useSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -11,7 +10,6 @@ interface Props {
 const AddressNavigationTab = ({ name, href }: Props) => {
   const router = useRouter();
   const path = usePathname();
-  const searchParams = useSearchParams();
 
   const selected = path?.endsWith(href);
 
@@ -23,7 +21,7 @@ const AddressNavigationTab = ({ name, href }: Props) => {
   );
 
   const onClick = () => {
-    router.replace(`${href}?${searchParams.toString()}`);
+    router.replace(`${href}${location.search}`);
   };
 
   return (
