@@ -3,6 +3,7 @@
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
+import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
 import { AllowanceData } from 'lib/interfaces';
 import { updateTableFilters } from 'lib/utils/table';
@@ -61,6 +62,7 @@ const AllowanceSearchBox = ({ table }: Props) => {
       placeholder={t('address.search.spender')}
       className="w-full"
     >
+      <FocusTrap />
       {searchValues.filter(Boolean).length > 0 && resetButton}
     </SearchBox>
   );
