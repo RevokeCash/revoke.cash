@@ -60,7 +60,7 @@ const FaqPage: NextPage = async ({ params }: Props) => {
         <FaqItem question={t('faq.questions.stolen_through_allowances.question')} slug="stolen_through_allowances">
           {t.rich('faq.questions.stolen_through_allowances.answer')}
           <Image
-            src="/assets/images/how-did-i-get-scammed-light.png"
+            src="/assets/images/learn/how-did-i-get-scammed-light.png"
             alt="How Did I Get Scammed?"
             width="1024"
             height="977"

@@ -16,7 +16,7 @@ interface Props {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  logo: 'https://revoke.cash/assets/images/revoke-icon.svg',
+  logo: 'https://revoke.cash/assets/images/revoke-icon-orange-black.svg',
   url: 'https://revoke.cash',
 };
 

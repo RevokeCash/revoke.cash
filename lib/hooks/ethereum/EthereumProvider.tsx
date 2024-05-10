@@ -21,10 +21,7 @@ export const connectors = [
       description:
         'Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 100 other networks.',
       url: 'https://revoke.cash',
-      icons: [
-        'https://revoke.cash/assets/images/revoke-icon.svg',
-        'https://revoke.cash/assets/images/apple-touch-icon.png',
-      ],
+      icons: ['https://revoke.cash/assets/images/revoke-icon-orange-black.svg', 'https://revoke.cash/icon.png'],
     },
   }),
   coinbaseWallet({ appName: 'Revoke.cash' }),
