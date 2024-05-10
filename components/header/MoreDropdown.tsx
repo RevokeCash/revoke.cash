@@ -10,7 +10,7 @@ const MoreDropdown = () => {
   const t = useTranslations();
 
   const path = usePathname();
-  const isCurrent = path.startsWith('/learn') || path.startsWith('/about') || path.startsWith('/blog');
+  const isCurrent = path.startsWith('/about') || path.startsWith('/blog');
 
   const menuButton = (
     <div className={twMerge(isCurrent && 'underline underline-offset-8 decoration-2')}>{t('common.nav.more')}</div>
@@ -20,12 +20,6 @@ const MoreDropdown = () => {
     <DropdownMenu menuButton={menuButton} style="nav" align="left">
       <DropdownMenuItem href="/blog" router className="text-lg">
         {t('common.nav.blog')}
-      </DropdownMenuItem>
-      <DropdownMenuItem href="/learn" router className="text-lg">
-        {t('common.nav.learn')}
-      </DropdownMenuItem>
-      <DropdownMenuItem href="/learn/faq" router className="text-lg">
-        {t('common.nav.faq')}
       </DropdownMenuItem>
       <DropdownMenuItem href="/about" router className="text-lg">
         {t('common.nav.about')}

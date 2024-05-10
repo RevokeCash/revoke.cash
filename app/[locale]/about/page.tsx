@@ -32,7 +32,7 @@ const AboutPage: NextPage<Props> = ({ params }) => {
 
       <p>{t.rich('about.body.intro')}</p>
 
-      <div className="mx-auto max-w-2xl my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
+      <div className="mx-auto my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
         <Href href="https://twitter.com/RoscoKalis/status/1183412994375503872" underline="none" external>
           <Image
             src="/assets/images/about/revoke-tweet.png"
@@ -51,12 +51,12 @@ const AboutPage: NextPage<Props> = ({ params }) => {
 
       <p>{t.rich('about.body.growth')}</p>
 
-      <div className="mx-auto max-w-2xl my-4 md:my-8 flex flex-col items-center gap-2 not-prose">
+      <div className="mx-auto my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
         <Image
           src="/assets/images/about/revoke-team.png"
           alt="Revoke.cash Team"
-          height="900"
-          width="1400"
+          height="720"
+          width="1280"
           className="rounded-2xl border border-black dark:border-white"
         />
         <figcaption className="text-base leading-none text-zinc-600 dark:text-zinc-400">

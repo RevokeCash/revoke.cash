@@ -40,10 +40,11 @@ const ExtensionPage: NextPage<Props> = ({ params }) => {
         <Image
           src="/assets/images/extension/screenshot-1.png"
           alt="Extension: Unexpected Allowance"
-          height="500"
-          width="800"
+          height="800"
+          width="1280"
           priority
           fetchPriority="high"
+          className="w-full"
         />
       </p>
 
@@ -55,8 +56,9 @@ const ExtensionPage: NextPage<Props> = ({ params }) => {
         <Image
           src="/assets/images/extension/screenshot-3.png"
           alt="Extension: Unexpected Listing"
-          height="500"
-          width="800"
+          height="800"
+          width="1280"
+          className="w-full"
         />
       </p>
 

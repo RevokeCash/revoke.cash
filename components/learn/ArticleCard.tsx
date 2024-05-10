@@ -19,7 +19,7 @@ const ArticleCard = ({ title, description, path, date, readingTime }: ISidebarEn
             width={1600}
             height={900}
             className="rounded-t-[calc(theme(borderRadius.lg)-1px)]"
-            fallbackSrc="/assets/images/revoke-og-image.jpg"
+            fallbackSrc="/opengraph-image.jpg"
           />
         }
       >
