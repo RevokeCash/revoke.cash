@@ -4,16 +4,22 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import WalletIndicator from 'components/header/WalletIndicator';
+import { usePathname } from 'lib/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import DonateButton from '../common/DonateButton';
 import NavLink from './NavLink';
 
 const MobileMenu = () => {
   const t = useTranslations();
   const focusRef = useRef(null);
+  const path = usePathname();
 
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [path]);
 
   return (
     <div className="flex flex-col">

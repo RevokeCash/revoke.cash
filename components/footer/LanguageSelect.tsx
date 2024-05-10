@@ -35,7 +35,7 @@ const LanguageSelect = () => {
   const selectLanguage = (option: Option) => {
     const newLocale = option.value;
     track('Changed language', { from: locale, to: newLocale });
-    router.replace(path, { locale: newLocale, scroll: false });
+    router.replace(path, { locale: newLocale, scroll: false, showProgress: false });
     persistLocaleCookie(newLocale);
   };
 

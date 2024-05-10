@@ -4,9 +4,9 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
+import { useRouter } from 'lib/i18n/navigation';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Connector, useAccount, useConnect } from 'wagmi';
 

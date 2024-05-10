@@ -48,7 +48,7 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
     if (selectedChainId && searchParams.get('chainId') !== selectedChainId.toString()) {
       const newSearchParams = new URLSearchParams(Array.from(searchParams.entries()));
       newSearchParams.set('chainId', selectedChainId.toString());
-      router.replace(`${path}?${newSearchParams.toString()}`);
+      router.replace(`${path}?${newSearchParams.toString()}`, { showProgress: false });
     }
   }, [selectedChainId, searchParams, router]);
 

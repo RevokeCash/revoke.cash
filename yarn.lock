@@ -6120,15 +6120,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"holy-loader@npm:^2.2.10":
-  version: 2.2.10
-  resolution: "holy-loader@npm:2.2.10"
-  peerDependencies:
-    react: ">= 16.0.0"
-  checksum: 409392e6a3798a7456ba67ca046b54e1e0e8abb4c449cad2d45068d2fb4ccca3e8815b05fd59178883e71d95f9d902f1a3ff61a264d0efb5be5f142fd7affe35
-  languageName: node
-  linkType: hard
-
 "hosted-git-info@npm:^7.0.0":
   version: 7.0.1
   resolution: "hosted-git-info@npm:7.0.1"
@@ -8551,6 +8542,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nextjs-toploader@npm:^1.6.12":
+  version: 1.6.12
+  resolution: "nextjs-toploader@npm:1.6.12"
+  dependencies:
+    nprogress: ^0.2.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    next: ">= 6.0.0"
+    react: ">= 16.0.0"
+    react-dom: ">= 16.0.0"
+  checksum: 728448df1d2115878ae41a82581eae1d4f38144e4206604f03e92097d110f9d18bcf8d31732d5999e06c1e9d2443ed460686cbff581b61c1a16858f31d0790eb
+  languageName: node
+  linkType: hard
+
 "node-addon-api@npm:^2.0.0":
   version: 2.0.2
   resolution: "node-addon-api@npm:2.0.2"
@@ -8814,6 +8819,13 @@ __metadata:
     gauge: ^4.0.3
     set-blocking: ^2.0.0
   checksum: ae238cd264a1c3f22091cdd9e2b106f684297d3c184f1146984ecbe18aaa86343953f26b9520dedd1b1372bc0316905b736c1932d778dbeb1fcf5a1001390e2a
+  languageName: node
+  linkType: hard
+
+"nprogress@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "nprogress@npm:0.2.0"
+  checksum: 66b7bec5d563ecf2d1c3d2815e6d5eb74ed815eee8563e0afa63d3f185ab1b9cf2ddd97e1ded263b9995c5019d26d600320e849e50f3747984daa033744619dc
   languageName: node
   linkType: hard
 
@@ -9444,7 +9456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2":
+"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -10214,7 +10226,6 @@ __metadata:
     dotenv: ^16.4.5
     glob: ^10.3.12
     gray-matter: ^4.0.3
-    holy-loader: ^2.2.10
     husky: ^9.0.11
     iron-session: ^8.0.1
     ky: ^1.2.3
@@ -10226,6 +10237,7 @@ __metadata:
     next-circular-dependency: ^1.0.1
     next-intl: ^3.11.1
     next-sitemap: ^4.2.3
+    nextjs-toploader: ^1.6.12
     p-queue: ^8.0.1
     postcss: ^8.4.38
     prettier: ^3.2.5

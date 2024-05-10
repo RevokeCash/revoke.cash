@@ -1,9 +1,9 @@
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Analytics from 'app/Analytics';
 import ToastifyConfig from 'components/common/ToastifyConfig';
+import TopLoader from 'components/common/TopLoader';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
-import HolyLoader from 'holy-loader';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
@@ -74,12 +74,12 @@ const MainLayout = ({ children, params }: Props) => {
                     <Footer />
                   </div>
                 </div>
-                <HolyLoader color="#000" height={2} />
                 <ToastifyConfig />
               </ColorThemeProvider>
             </EthereumProvider>
           </QueryProvider>
         </NextIntlClientProvider>
+        <TopLoader />
         <SpeedInsights sampleRate={0.1} />
       </body>
     </html>
