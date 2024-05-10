@@ -20,7 +20,7 @@ const SearchBox = ({ onSubmit, onChange, value, placeholder, children, className
 
   return (
     <form onSubmit={onSubmit} className={classes}>
-      <MagnifyingGlassIcon className="w-6 h-6" />
+      <MagnifyingGlassIcon className="w-6 h-6 text-zinc-500 dark:text-zinc-300" />
       <input
         className="grow focus-visible:outline-none bg-transparent"
         placeholder={placeholder}

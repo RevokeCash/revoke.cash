@@ -5,7 +5,7 @@ import Prose from 'components/common/Prose';
 import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
 import { Metadata, NextPage } from 'next';
-import { useMessages, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import TokenApprovalCheckerChainSelect from './TokenApprovalCheckerChainSelect';
 import TokenApprovalCheckerSearchBox from './TokenApprovalCheckerSearchBox';
@@ -40,7 +40,6 @@ const TokenApprovalCheckerPage: NextPage<Props> = ({ params }) => {
   unstable_setRequestLocale(params.locale);
 
   const t = useTranslations();
-  const messages = useMessages();
 
   const chainId = getChainIdFromSlug(params.slug);
 

@@ -2,13 +2,12 @@ import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import ColorThemeSelect from 'components/footer/ColorThemeSelect';
 import { DISCORD_URL, GITHUB_URL, TWITTER_URL } from 'lib/constants';
-import { useMessages, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 import LanguageSelect from './LanguageSelect';
 
 const Footer = () => {
   const t = useTranslations();
-  const messages = useMessages();
 
   return (
     <footer className="bg-black dark:bg-zinc-900 mt-24" aria-labelledby="footer-heading">

@@ -17,7 +17,7 @@ const SearchBar = () => {
       onChange={(ev) => setValue(ev.target.value.trim())}
       value={value}
       placeholder={t('common.nav.search')}
-      className="w-full max-w-3xl text-base sm:text-lg"
+      className="w-full text-base sm:text-lg border-x-0 rounded-none border-zinc-400 dark:border-zinc-600 py-6 focus-within:ring-0 focus-within:border-black dark:focus-within:border-white"
     />
   );
 };

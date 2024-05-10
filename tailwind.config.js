@@ -40,6 +40,9 @@ module.exports = {
         code: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
         monospace: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
       },
+      colors: {
+        brand: '#fdb952',
+      },
       typography: (theme) => ({
         zinc: {
           css: {
