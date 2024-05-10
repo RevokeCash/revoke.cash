@@ -1,6 +1,9 @@
-import { copyFileSync, mkdirSync } from 'fs';
+import { copyFileSync, mkdirSync, rmSync } from 'fs';
 import { globSync } from 'glob';
 import path from 'path';
+
+// Clear all generated images
+rmSync(path.join(__dirname, '..', 'public', 'assets', 'images', 'generated'), { recursive: true });
 
 const imageFiles = globSync(path.join(__dirname, '..', '.next', 'server', 'app', '*', '**', '*.body'));
 

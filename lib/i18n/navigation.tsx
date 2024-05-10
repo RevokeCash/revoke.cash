@@ -17,7 +17,7 @@ export function useRouter() {
 
   const push = (
     href: string,
-    options: Parameters<typeof router.push>[1] & { showProgress?: boolean },
+    options?: Parameters<typeof router.push>[1] & { showProgress?: boolean },
   ): ReturnType<typeof push> => {
     if (options.showProgress !== false) nProgress.start();
     return router.push(href, options);
@@ -25,7 +25,7 @@ export function useRouter() {
 
   const replace = (
     href: string,
-    options: Parameters<typeof router.replace>[1] & { showProgress?: boolean },
+    options?: Parameters<typeof router.replace>[1] & { showProgress?: boolean },
   ): ReturnType<typeof router.replace> => {
     if (options.showProgress !== false) nProgress.start();
     return router.replace(href, options);
