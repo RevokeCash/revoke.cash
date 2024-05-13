@@ -342,7 +342,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://blastscan.io',
     etherscanCompatibleApiUrl: 'https://api.blastscan.io/api',
     rpc: {
-      main: 'https://blast.blockpi.network/v1/rpc/public',
+      main: 'https://rpc.ankr.com/blast',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
