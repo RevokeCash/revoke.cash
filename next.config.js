@@ -11,8 +11,18 @@ const nextConfig = {
   redirects: async () => {
     return [
       {
+        source: '/:locale(en|es|ja|ru|zh)/faq',
+        destination: '/:locale/learn/faq',
+        permanent: true,
+      },
+      {
         source: '/faq',
         destination: '/learn/faq',
+        permanent: true,
+      },
+      {
+        source: '/:locale(en|es|ja|ru|zh)/learn/wallets/add-network',
+        destination: '/:locale/learn/wallets/add-network/ethereum',
         permanent: true,
       },
       {
