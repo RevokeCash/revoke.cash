@@ -16,6 +16,19 @@ const MULTICALL = {
 };
 
 export const CHAINS: Record<number, Chain> = {
+  [ChainId.Amoy]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.Amoy,
+    name: 'Polygon Amoy',
+    logoUrl: '/assets/images/vendor/chains/polygon.svg',
+    rpc: {
+      main: `https://polygon-amoy.infura.io/v3/${INFURA_API_KEY}`,
+      logs: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.PolygonMainnet,
+  }),
   [ChainId.ArbitrumNova]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ArbitrumNova,
@@ -133,13 +146,22 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
+  [ChainId.AstarzkEVM]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.AstarzkEVM,
+    name: 'Astar zkEVM',
+    logoUrl: '/assets/images/vendor/chains/astar.svg',
+    etherscanCompatibleApiUrl: 'https://astar-zkevm.explorer.startale.com/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.AuroraMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.AuroraMainnet,
     name: 'Aurora',
     logoUrl: '/assets/images/vendor/chains/aurora.svg',
     explorerUrl: 'https://explorer.aurora.dev',
-    etherscanCompatibleApiUrl: 'https://explorer.aurora.dev/api',
+    etherscanCompatibleApiUrl: 'https://old.explorer.aurora.dev/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -333,7 +355,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://blastscan.io',
     etherscanCompatibleApiUrl: 'https://api.blastscan.io/api',
     rpc: {
-      main: 'https://rpc.blast.io',
+      main: 'https://rpc.ankr.com/blast',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -595,6 +617,18 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
+  [ChainId.DegenChain]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.DegenChain,
+    name: 'Degen Chain',
+    logoUrl: '/assets/images/vendor/chains/degen.png',
+    explorerUrl: 'https://explorer.degen.tips',
+    etherscanCompatibleApiUrl: 'https://explorer.degen.tips/api',
+    rpc: {
+      main: 'https://rpc.degen.tips',
+    },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.DogechainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.DogechainMainnet,
@@ -631,7 +665,7 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.ENULSMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.ENULSMainnet,
     name: 'ENULS',
     logoUrl: '/assets/images/vendor/chains/enuls.svg',
@@ -896,19 +930,6 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [ChainId.Goerli]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.Goerli,
-    name: 'Ethereum Goerli',
-    logoUrl: '/assets/images/vendor/chains/ethereum.svg',
-    rpc: {
-      main: `https://goerli.infura.io/v3/${INFURA_API_KEY}`,
-      free: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.EthereumMainnet,
-  }),
   [ChainId.GoldXChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.GoldXChainMainnet,
@@ -943,6 +964,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Ethereum Holesky',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     etherscanCompatibleApiUrl: 'https://api-holesky.etherscan.io/api',
+    rpc: {
+      main: 'https://holesky.drpc.org',
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.EthereumMainnet,
@@ -1005,7 +1029,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.Kava,
     name: 'Kava',
     logoUrl: '/assets/images/vendor/chains/kava.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.kava.io/api',
+    etherscanCompatibleApiUrl: 'https://explorer.kavalabs.io/api',
     deployedContracts: { ...MULTICALL },
     // TODO: Potentially add Curve.fi strategy to support KAVA
     priceStrategy: undefined, // No liquid stablecoins
@@ -1086,9 +1110,9 @@ export const CHAINS: Record<number, Chain> = {
     //   apiUrl: 'https://api-linea.reservoir.tools',
     // }),
   }),
-  [ChainId.LineaTestnet]: new Chain({
+  [ChainId.LineaGoerli]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: ChainId.LineaTestnet,
+    chainId: ChainId.LineaGoerli,
     name: 'Linea Goerli',
     logoUrl: '/assets/images/vendor/chains/linea.png',
     explorerUrl: 'https://goerli.lineascan.build',
@@ -1137,6 +1161,13 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
       strategies: [
+        // Merchant Moe (Router) | WMNT -> USDT
+        new UniswapV2PriceStrategy({
+          address: '0xeaEE7EE68874218c3558b40063c42B82D3E7232a',
+          path: ['0x78c1b0C915c4FAA5FffA6CAbf0219DA63d7f4cb8', '0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE'],
+          decimals: 6,
+          liquidityParameters: { baseAmount: 10n },
+        }),
         // Note: Agni Finance has a separate "Pool Deployer" contract, which is why using the "Factory" address does
         // not work for generating pool addresses. Most likely the Quoter also doesn't work for the same reason.
         // Agni Finance (Pool Deployer) | (0.25%) WMNT -> (0.05%) USDC
@@ -1162,12 +1193,12 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [ChainId.MantleTestnet]: new Chain({
+  [ChainId.MantleSepoliaTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.MantleTestnet,
-    name: 'Mantle Testnet',
+    chainId: ChainId.MantleSepoliaTestnet,
+    name: 'Mantle Sepolia',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.testnet.mantle.xyz/api',
+    etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz//api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Mantle,
@@ -1185,26 +1216,11 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.MerlinMainnet,
     name: 'Merlin',
     logoUrl: '/assets/images/vendor/chains/merlin.svg',
-    nativeToken: 'BTC',
     explorerUrl: 'https://scan.merlinchain.io',
-    etherscanCompatibleApiUrl: 'https://scan.merlinchain.io/api',
+    etherscanCompatibleApiUrl: 'https://scan-v1.merlinchain.io/api',
     rpc: {
       main: 'https://rpc.merlinchain.io',
     },
-  }),
-  [686868]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: 686868,
-    name: 'Merlin Testnet',
-    logoUrl: '/assets/images/vendor/chains/merlin.svg',
-    nativeToken: 'BTC',
-    explorerUrl: 'https://testnet-scan.merlinchain.io',
-    etherscanCompatibleApiUrl: 'https://testnet-scan.merlinchain.io/api',
-    rpc: {
-      main: 'https://testnet-rpc.merlinchain.io',
-    },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.MerlinMainnet,
   }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1298,19 +1314,6 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [ChainId.Mumbai]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.Mumbai,
-    name: 'Polygon Mumbai',
-    logoUrl: '/assets/images/vendor/chains/polygon.svg',
-    rpc: {
-      main: `https://polygon-mumbai.infura.io/v3/${INFURA_API_KEY}`,
-      logs: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.PolygonMainnet,
-  }),
   [ChainId.NahmiiMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.NahmiiMainnet,
@@ -1331,11 +1334,10 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.OasisEmerald]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.COVALENT,
     chainId: ChainId.OasisEmerald,
     name: 'Oasis Emerald',
     logoUrl: '/assets/images/vendor/chains/oasis.png',
-    etherscanCompatibleApiUrl: 'https://explorer.emerald.oasis.dev/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1351,11 +1353,10 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.OasisSapphire]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.COVALENT,
     chainId: ChainId.OasisSapphire,
     name: 'Oasis Sapphire',
     logoUrl: '/assets/images/vendor/chains/oasis.png',
-    etherscanCompatibleApiUrl: 'https://explorer.sapphire.oasis.io/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
   }),
@@ -1556,15 +1557,15 @@ export const CHAINS: Record<number, Chain> = {
     //   apiUrl: 'https://api-polygon-zkevm.reservoir.tools',
     // }),
   }),
-  [ChainId.PolygonzkEVMTestnet]: new Chain({
+  [ChainId.PolygonzkEVMCardonaTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.PolygonzkEVMTestnet,
-    name: 'Polygon zkEVM Testnet',
+    chainId: ChainId.PolygonzkEVMCardonaTestnet,
+    name: 'Polygon zkEVM Cardona',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
-    explorerUrl: 'https://testnet-zkevm.polygonscan.com',
-    etherscanCompatibleApiUrl: 'https://api-testnet-zkevm.polygonscan.com/api',
+    explorerUrl: 'https://cardona-zkevm.polygonscan.com/',
+    etherscanCompatibleApiUrl: 'https://api-cardona-zkevm.polygonscan.com/api',
     rpc: {
-      main: `https://polygonzkevm-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://polygonzkevm-cardona.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1590,9 +1591,9 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [1380012617]: new Chain({
+  [ChainId.RARIChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: 1380012617,
+    chainId: ChainId.RARIChainMainnet,
     name: 'RARI Chain',
     logoUrl: '/assets/images/vendor/chains/rari.svg',
     infoUrl: 'https://rarichain.org/',
@@ -1610,15 +1611,14 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://redlightscan.finance/api',
     priceStrategy: undefined, // <$100k Liquidity
   }),
-  [ChainId.RedstoneHoleskyTestnet]: new Chain({
+  [ChainId.Redstone]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.RedstoneHoleskyTestnet,
-    name: 'Redstone Holesky',
+    chainId: ChainId.Redstone,
+    name: 'Redstone',
     logoUrl: '/assets/images/vendor/chains/redstone.svg',
-    etherscanCompatibleApiUrl: 'https://17001-explorer-api.quarry.linfra.xyz/api',
+    etherscanCompatibleApiUrl: 'https://explorer.redstone.xyz/api',
     // deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: 12345678904, // TODO: This is a placeholder so we can add a description for Redstone
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.RolluxMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1654,6 +1654,25 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://blockscout.com/rsk/mainnet/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
+  }),
+  [ChainId.RSS3VSLMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.RSS3VSLMainnet,
+    name: 'RSS3 VSL',
+    logoUrl: '/assets/images/vendor/chains/rss3.svg',
+    etherscanCompatibleApiUrl: 'https://scan.rss3.io/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // <$100k Liquidity
+  }),
+  [ChainId.RSS3VSLSepoliaTestnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.RSS3VSLSepoliaTestnet,
+    name: 'RSS3 VSL Sepolia',
+    logoUrl: '/assets/images/vendor/chains/rss3.svg',
+    etherscanCompatibleApiUrl: 'https://scan.testnet.rss3.io/api',
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.RSS3VSLMainnet,
   }),
   [ChainId.Scroll]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1755,21 +1774,40 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.SyscoinMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SyscoinMainnet,
     name: 'Syscoin',
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.syscoin.org/api',
+    rpc: {
+      main: 'https://syscoin.public-rpc.com',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.SyscoinTanenbaumTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SyscoinTanenbaumTestnet,
     name: 'Syscoin Tanenbaum',
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
+    etherscanCompatibleApiUrl: 'https://tanenbaum.io/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.SyscoinMainnet,
+  }),
+  [9789]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: 9789,
+    name: 'Tabi Testnet',
+    logoUrl: '/assets/images/vendor/chains/tabi.svg',
+    infoUrl: 'https://www.tabichain.com',
+    explorerUrl: 'https://testnet.tabiscan.com',
+    rpc: {
+      main: 'https://rpc.testnet.tabichain.com',
+    },
+    nativeToken: 'TABI',
+    isTestnet: true,
+    correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
   }),
   [ChainId.TaikoKatlaL2]: new Chain({
     type: SupportType.PROVIDER,
@@ -1894,16 +1932,17 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://zetachain.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain.blockscout.com/api',
     rpc: {
-      main: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
+      main: 'https://zetachain-mainnet-archive.allthatnode.com:8545',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZKFairMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ZKFairMainnet,
     name: 'ZKFair',
     logoUrl: '/assets/images/vendor/chains/zkfair.svg',
+    etherscanCompatibleApiUrl: 'https://scan.zkfair.io/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1916,6 +1955,13 @@ export const CHAINS: Record<number, Chain> = {
         }),
       ],
     }),
+  }),
+  [ChainId.ZkLinkNovaMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.ZkLinkNovaMainnet,
+    name: 'zkLink Nova',
+    logoUrl: '/assets/images/vendor/chains/zklink.png',
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.ZkSyncMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1981,11 +2027,11 @@ export const CHAINS: Record<number, Chain> = {
     chainId: 12345678903,
     name: 'Berachain',
   }),
-  // TODO: This is a placeholder so we can add a description for Redstone
-  [12345678904]: new Chain({
+  // TODO: This is a placeholder so we can add a description for Tabi
+  [12345678905]: new Chain({
     type: SupportType.UNSUPPORTED,
-    chainId: 12345678904,
-    name: 'Redstone',
+    chainId: 12345678905,
+    name: 'Tabi',
   }),
 };
 
@@ -2002,76 +2048,81 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OPMainnet,
   ChainId.Blast,
   ChainId['AvalancheC-Chain'],
-  ChainId.MantaPacificMainnet,
+  ChainId.Mantle,
   ChainId.Base,
   ChainId.ZkSyncMainnet,
   ChainId.Linea,
+  ChainId.MantaPacificMainnet,
   ChainId.Scroll,
   ChainId.Mode,
   ChainId['PGN(PublicGoodsNetwork)'],
-  ChainId.PulseChain,
+  ChainId.MerlinMainnet,
   ChainId.CronosMainnet,
-  ChainId.FantomOpera,
+  ChainId.PulseChain,
   ChainId.Gnosis,
   ChainId.Kava,
-  ChainId.Mantle,
-  ChainId.CeloMainnet,
+  ChainId.FantomOpera,
   ChainId.RootstockMainnet,
+  ChainId.CeloMainnet,
+  ChainId.ZkLinkNovaMainnet,
+  ChainId.MetisAndromedaMainnet,
   ChainId.Astar,
+  ChainId.AstarzkEVM,
   ChainId.Moonbeam,
   ChainId.Moonriver,
-  ChainId.MetisAndromedaMainnet,
+  ChainId.Canto,
+  ChainId.AuroraMainnet,
+  ChainId.Fraxtal,
+  ChainId['WEMIX3.0Mainnet'],
   ChainId.ZKFairMainnet,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
-  ChainId.Canto,
-  ChainId.MerlinMainnet,
-  ChainId.Kroma,
-  ChainId['WEMIX3.0Mainnet'],
-  ChainId.AuroraMainnet,
+  ChainId.CoreBlockchainMainnet,
   ChainId.PegoNetwork,
-  ChainId.Fraxtal,
-  ChainId.Beam,
+  ChainId.XDCNetwork,
   ChainId.KardiaChainMainnet,
-  ChainId.HorizenEONMainnet,
+  ChainId.Kroma,
   ChainId.ZetaChainMainnet,
+  ChainId.HorizenEONMainnet,
+  ChainId.Beam,
+  ChainId.BobaNetwork,
+  ChainId.Wanchain,
+  ChainId.DogechainMainnet,
+  ChainId.ShimmerEVM,
+  ChainId.ImmutablezkEVM,
+  ChainId.Evmos,
+  ChainId.ElastosSmartChain,
   ChainId.OasysMainnet,
   ChainId.Shibarium,
-  ChainId.ShimmerEVM,
   ChainId.HarmonyMainnetShard0,
-  ChainId.Evmos,
-  ChainId.Wanchain,
-  ChainId.BobaNetwork,
-  ChainId.CoreBlockchainMainnet,
-  ChainId.VelasEVMMainnet,
-  ChainId.DogechainMainnet,
-  ChainId.XDCNetwork,
-  ChainId.KCCMainnet,
-  ChainId.ImmutablezkEVM,
-  ChainId.MilkomedaC1Mainnet,
-  ChainId.ElastosSmartChain,
   ChainId.FuseMainnet,
+  ChainId.DegenChain,
   ChainId.EOSEVMNetwork,
+  ChainId.KCCMainnet,
+  ChainId.Zora,
+  ChainId.VelasEVMMainnet,
+  ChainId.MilkomedaC1Mainnet,
+  ChainId.RolluxMainnet,
+  ChainId.SyscoinMainnet,
+  ChainId.EthereumClassic,
+  ChainId.ENULSMainnet,
+  ChainId.BitrockMainnet,
   ChainId.OasisEmerald,
   ChainId.OasisSapphire,
   ChainId.BitTorrentChainMainnet,
   ChainId.CoinExSmartChainMainnet,
-  ChainId.RolluxMainnet,
-  ChainId.SyscoinMainnet,
-  ChainId.EthereumClassic,
-  ChainId.BitrockMainnet,
-  ChainId.NahmiiMainnet,
   ChainId.CrabNetwork,
   ChainId.DarwiniaNetwork,
-  ChainId.InEVMMainnet,
-  ChainId.BitgertMainnet,
-  ChainId.ENULSMainnet,
-  ChainId.CallistoMainnet,
-  ChainId.Shiden,
   ChainId.LightlinkPhoenixMainnet,
+  ChainId.InEVMMainnet,
+  ChainId.NahmiiMainnet,
+  ChainId.Shiden,
+  ChainId.CallistoMainnet,
+  ChainId.BitgertMainnet,
   ChainId.Palm,
-  1380012617, // RARI Chain
-  ChainId.Zora,
+  ChainId.Redstone,
+  ChainId.RARIChainMainnet,
+  ChainId.RSS3VSLMainnet,
   // ChainId.LUKSOMainnet,
   ChainId.ExosamaNetwork,
   ChainId.RedlightChainMainnet,
@@ -2079,20 +2130,20 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
   ChainId.AreonNetwork,
-];
+] as const;
+
 
 export const CHAIN_SELECT_TESTNETS = [
   ChainId.Sepolia,
-  ChainId.Goerli,
   ChainId.Holesky,
   ChainId.BNBSmartChainTestnet,
-  ChainId.Mumbai,
-  ChainId.PolygonzkEVMTestnet,
+  ChainId.Amoy,
+  ChainId.PolygonzkEVMCardonaTestnet,
   ChainId.OPSepoliaTestnet,
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
   ChainId.ZkSyncSepoliaTestnet,
-  ChainId.LineaTestnet,
+  ChainId.LineaGoerli,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoKatlaL2,
   ChainId.FrameTestnet,
@@ -2102,8 +2153,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.CeloAlfajoresTestnet,
   ChainId.FantomTestnet,
   ChainId.MoonbaseAlpha,
-  ChainId.MantleTestnet,
-  686868, // Merlin Testnet
+  ChainId.MantleSepoliaTestnet,
   ChainId.KromaSepolia,
   ChainId.CoinExSmartChainTestnet,
   ChainId.SyscoinTanenbaumTestnet,
@@ -2113,9 +2163,10 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ZetaChainAthens3Testnet,
   ChainId.BerachainArtio,
   ChainId.BeamTestnet,
-  ChainId.RedstoneHoleskyTestnet,
+  9789, // Tabi Testnet
+  ChainId.RSS3VSLSepoliaTestnet,
   // ChainId.LUKSOTestnet,
-];
+] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
 
@@ -2184,6 +2235,10 @@ export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
 
 export const getChainRpcUrl = (chainId: number): string | undefined => {
   return getChainConfig(chainId)?.getRpcUrl();
+};
+
+export const getChainRpcUrls = (chainId: number): string[] | undefined => {
+  return getChainConfig(chainId)?.getRpcUrls();
 };
 
 export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
@@ -2296,6 +2351,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     REDLC: '100',
     RING: '2500',
     ROSE: '100',
+    RSS3: '25',
     SAMA: '500',
     SDN: '50',
     SGB: '1000',

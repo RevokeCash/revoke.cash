@@ -19,7 +19,7 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
   const { address, selectedChainId } = useAddressPageContext();
-  const handleTransaction = useHandleTransaction();
+  const handleTransaction = useHandleTransaction(selectedChainId);
 
   const cancel = async () => {
     if (isErc721Contract(token.contract)) return;
@@ -32,12 +32,10 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
 
     // TODO: Deduplicate this with the CancelMarketplaceCell
     const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
-
-    const lastCancelled = {
-      transactionHash: hash,
+    const lastCancelled = await blocksDB.getTimeLog(publicClient, {
+      ...transactionReceipt,
       blockNumber: Number(transactionReceipt.blockNumber),
-      timestamp: await blocksDB.getLogTimestamp(publicClient, { blockNumber: Number(transactionReceipt.blockNumber) }),
-    };
+    });
 
     await onCancel(token, lastCancelled);
   };

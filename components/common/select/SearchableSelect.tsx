@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode, Ref, forwardRef, useEffect, useRef, useState } from 'react';
 import { ActionMeta, FormatOptionLabelMeta, GroupBase, OnChangeValue, SelectInstance } from 'react-select';
 
@@ -104,13 +106,17 @@ const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: Sele
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSelectOpen]);
 
+  const className = twMerge(
+    'absolute z-20 mt-2',
+    selectProps.menuAlign === 'right' ? undefined : 'right-0',
+    !isSelectOpen && 'hidden',
+  );
+
   return (
     <div className={twMerge('relative shrink-0', selectProps.className)}>
       {target}
       {isSelectOpen && <div className="fixed z-10 inset-0" onClick={handleSelectClose} />}
-      {isSelectOpen || selectProps.keepMounted ? (
-        <div className={twMerge('absolute z-20 mt-2 right-0', !isSelectOpen && 'hidden')}>{children}</div>
-      ) : null}
+      {isSelectOpen || selectProps.keepMounted ? <div className={className}>{children}</div> : null}
     </div>
   );
 };

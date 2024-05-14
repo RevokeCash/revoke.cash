@@ -1,6 +1,6 @@
 {
   "faq": {
-    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra página de <0>Preguntas Frecuentes</0>.",
+    "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra página de <faq-link>Preguntas Frecuentes</faq-link>.",
     "title": "Preguntas Frecuentes"
   },
   "hero_section": {
@@ -9,7 +9,7 @@
   },
   "how_to": {
     "paragraph_1": {
-      "description": "Haz clic en <0>Conectar Cartera</0> en la parte superior derecha o introduce una dirección en la barra de búsqueda.",
+      "description": "Haz clic en <b>Conectar Cartera</b> en la parte superior derecha o introduce una dirección en la barra de búsqueda.",
       "title": "1. Conectar"
     },
     "paragraph_2": {
@@ -22,22 +22,13 @@
     },
     "title": "¿Cómo Revocar Tus Autorizaciones?"
   },
-  "sponsors": {
-    "description": "El desarrollo continuado de Revoke.cash es posible gracias a donaciones y patrocinios. Estas son las personas y organizaciones que nos han apoyado con patrocinios mensuales hasta ahora.",
-    "tiers": {
-      "bronze": "Patrocinador de Bronce",
-      "gold": "Patrocinador de Oro",
-      "silver": "Patrocinador de Plata"
-    },
-    "title": "Patrocinadores"
-  },
   "why_revoke": {
     "paragraph_1": {
       "description": "Siempre es bueno limitar tus autorizaciones cuando no utilices activamente una dapp, especialmente en los mercados de NFTs. Esto reduce el riesgo de perder tus fondos a causa de hackeos y también puede ayudar a mitigar el daño de las estafas de phishing.",
       "title": "1. Utiliza Revoke.cash periódicamente."
     },
     "paragraph_2": {
-      "description": "Muy seguido, los estafadores intentan engañarte para que que les des una autorización para usar tus fondos. Ordena tus autorizaciones por las más recientes para averiguar cuáles son las culpables y revocarlas para evitar mayores daños. Desafortunadamente, no es posible <0>recuperar</0> los fondos que ya han sido robados.",
+      "description": "Muy seguido, los estafadores intentan engañarte para que que les des una autorización para usar tus fondos. Ordena tus autorizaciones por las más recientes para averiguar cuáles son las culpables y revocarlas para evitar mayores daños. Desafortunadamente, no es posible <i>recuperar</i> los fondos que ya han sido robados.",
       "title": "2. Usa Revoke.cash después de ser estafado."
     },
     "paragraph_3": {

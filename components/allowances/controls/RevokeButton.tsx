@@ -1,4 +1,4 @@
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
 import Button from '../../common/Button';
 
@@ -8,12 +8,12 @@ interface Props {
 }
 
 const RevokeButton = ({ disabled, revoke }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { execute, loading } = useAsyncCallback(revoke);
 
   return (
     <Button disabled={disabled} loading={loading} style="secondary" size="sm" onClick={execute}>
-      {loading ? t('common:buttons.revoking') : t('common:buttons.revoke')}
+      {loading ? t('common.buttons.revoking') : t('common.buttons.revoke')}
     </Button>
   );
 };

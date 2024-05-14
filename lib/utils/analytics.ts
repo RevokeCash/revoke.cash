@@ -7,6 +7,8 @@ export const init = () => {
 };
 
 export const track = (eventName: string, eventProperties: any) => {
+  if (typeof window === 'undefined') return;
+
   if (process.env.NEXT_PUBLIC_MIXPANEL_API_KEY) {
     mixpanel.track(eventName, eventProperties);
   }

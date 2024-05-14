@@ -1,6 +1,9 @@
 import { Connector } from 'wagmi';
+import { deduplicateArray } from '.';
 
-export const getWalletIcon = (walletName: string): string | undefined => {
+export const getWalletIcon = (connector: Connector): string | undefined => {
+  const walletName = getConnectorName(connector);
+
   // Take logos from rainbowkit
   const BASE_URL =
     'https://raw.githubusercontent.com/rainbow-me/rainbowkit/47e578f82efafda1e7127755105141c4a6b61c66/packages/rainbowkit/src/wallets/walletConnectors';
@@ -9,7 +12,6 @@ export const getWalletIcon = (walletName: string): string | undefined => {
   const mapping = {
     // Injected wallets
     '1inchwallet': '/assets/images/vendor/wallets/1inch.svg',
-    // 'apex wallet': 'TODO: Can't find good logo ',
     backpack: '/assets/images/vendor/wallets/backpack.svg',
     'bifrost wallet': `/assets/images/vendor/wallets/bifrost.svg`,
     bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
@@ -34,14 +36,12 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     'okx wallet': `${BASE_URL}/okxWallet/okxWallet.svg`,
     opera: '/assets/images/vendor/wallets/opera.svg',
     phantom: `${BASE_URL}/phantomWallet/phantomWallet.svg`,
-    // 'ripio portal': 'TODO: Can't find good logo',
     rabby: `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
     'rabby wallet': `${BASE_URL}/rabbyWallet/rabbyWallet.svg`,
     rainbow: `${BASE_URL}/rainbowWallet/rainbowWallet.svg`,
     status: '/assets/images/vendor/wallets/status.svg',
     taho: `${BASE_URL}/tahoWallet/tahoWallet.svg`,
     talisman: '/assets/images/vendor/wallets/talisman.svg',
-    // tokenary: 'TODO: Can't find good logo',
     tokenpocket: '/assets/images/vendor/wallets/tokenpocket.svg',
     'trust wallet': `${BASE_URL}/trustWallet/trustWallet.svg`,
     ttwallet: '/assets/images/vendor/wallets/ttwallet.webp',
@@ -53,13 +53,13 @@ export const getWalletIcon = (walletName: string): string | undefined => {
     ledger: `${BASE_URL}/ledgerWallet/ledgerWallet.svg`,
   };
 
-  return mapping[walletNameLowerCase] ?? `/assets/images/vendor/wallets/injected.svg`;
+  return mapping[walletNameLowerCase] ?? connector?.icon ?? `/assets/images/vendor/wallets/injected.svg`;
 };
 
 export const getConnectorName = (connector: Connector): string => {
   // It's confusing if there are multiple 'Coinbase Wallet' connectors. You can always connect to the Coinbase Wallet
   // extension using the dedicated connector
-  if (connector.name === 'Coinbase Wallet' && connector.id === 'injected') {
+  if (connector.name === 'Coinbase Wallet' && connector.type === 'injected') {
     return 'Browser Wallet';
   }
 
@@ -73,4 +73,26 @@ export const getConnectorName = (connector: Connector): string => {
   }
 
   return connector.name;
+};
+
+export const filterAndSortConnectors = (connectors: readonly Connector[]) => {
+  const comparator = (a: Connector, b: Connector) => {
+    // Sort MetaMask at the top
+    if (a.id === 'io.metamask') return -1;
+    if (b.id === 'io.metamask') return 1;
+
+    // Sort other multi-provider discovered connectors next
+    if (a.id.includes('.')) return -1;
+    if (b.id.includes('.')) return -1;
+
+    // Sort other injected connectors next
+    if (a.type === 'injected') return -1;
+    if (b.type === 'injected') return 1;
+
+    return 0;
+  };
+
+  return deduplicateArray(connectors, (a, b) => getConnectorName(a) === getConnectorName(b))
+    .filter((c) => c.id !== 'safe')
+    .sort(comparator);
 };

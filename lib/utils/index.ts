@@ -1,9 +1,8 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { AllowanceData, Log } from 'lib/interfaces';
-import type { Translate } from 'next-translate';
+import { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
-  Abi,
   Address,
   Hash,
   Hex,
@@ -71,7 +70,7 @@ export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChron
 // This is O(n*m) complexity, but it's unlikely to be a problem in practice in most cases m (unique contracts) is way
 // smaller than n (total logs). The previous version of this function was O(n^2), which was a problem for accounts with
 // many transfers.
-export const deduplicateArray = <T>(array: T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
+export const deduplicateArray = <T>(array: readonly T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
   const result: T[] = [];
 
   for (const item of array) {
@@ -99,15 +98,19 @@ export const filterLogsByTopics = (logs: Log[], topics: string[]) => {
   });
 };
 
-export const writeToClipBoard = (text: string, t: Translate, displayToast: boolean = true) => {
+export const writeToClipBoard = (
+  text: string,
+  t: Awaited<ReturnType<typeof getTranslations<string>>>,
+  displayToast: boolean = true,
+) => {
   if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
-    toast.info(t('common:toasts.clipboard_failed'), { autoClose: 1000 });
+    toast.info(t('common.toasts.clipboard_failed'), { autoClose: 1000 });
   }
 
   navigator.clipboard.writeText(text);
 
   if (displayToast) {
-    toast.info(t('common:toasts.clipboard_success'), { autoClose: 1000 });
+    toast.info(t('common.toasts.clipboard_success'), { autoClose: 1000 });
   }
 };
 
@@ -122,16 +125,18 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
 
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
-  const WEIRD_NETWORKS = [
-    ChainId.ZkSyncMainnet,
-    ChainId.ZkSyncSepoliaTestnet,
-    ChainId.ArbitrumOne,
-    ChainId.ArbitrumNova,
-    ChainId.ArbitrumSepolia,
-    ChainId.FrameTestnet,
-  ];
+  const gasFactors = {
+    [ChainId.ZkSyncMainnet]: 20n,
+    [ChainId.ZkSyncSepoliaTestnet]: 20n,
+    [ChainId.ArbitrumOne]: 20n,
+    [ChainId.ArbitrumNova]: 20n,
+    [ChainId.ArbitrumSepolia]: 20n,
+    [ChainId.FrameTestnet]: 20n,
+    [ChainId.Mantle]: 2_000n,
+    [ChainId.MantleTestnet]: 2_000n,
+  };
 
-  const EXCESSIVE_GAS = WEIRD_NETWORKS.includes(chainId) ? 10_000_000n : 500_000n;
+  const EXCESSIVE_GAS = 500_000n * (gasFactors[chainId] ?? 1n);
 
   // TODO: Translate this error message
   if (estimatedGas > EXCESSIVE_GAS) {
@@ -147,27 +152,19 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
   }
 };
 
-export const writeContractUnlessExcessiveGas = async <
-  TAbi extends Abi | readonly unknown[] = Abi,
-  TFunctionName extends string = string,
->(
+export const writeContractUnlessExcessiveGas = async (
   publicCLient: PublicClient,
   walletClient: WalletClient,
-  transactionRequest: WriteContractParameters<TAbi, TFunctionName>,
+  transactionRequest: WriteContractParameters,
 ) => {
   const estimatedGas = await publicCLient.estimateContractGas(transactionRequest);
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
-  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas } as any);
+  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
 
-// TODO: Remove type assertion after migrating to viem v2 (waitForTransactionHash will be properly typed)
-export const waitForTransactionConfirmation = async (
-  hash: Hash,
-  publicClient: PublicClient,
-): Promise<{ blockNumber: bigint }> => {
+export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient) => {
   try {
-    const transactionReceipt = (await publicClient.waitForTransactionReceipt({ hash })) as { blockNumber: bigint };
-    return transactionReceipt;
+    return await publicClient.waitForTransactionReceipt({ hash });
   } catch (e) {
     // Workaround for Safe Apps, somehow they don't return the transaction receipt -- TODO: remove when fixed
     if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;

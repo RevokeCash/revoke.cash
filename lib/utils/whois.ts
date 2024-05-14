@@ -237,3 +237,11 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<Add
 
   return undefined;
 };
+
+export const getAddressAndDomainName = async (addressOrName: string) => {
+  const address = await parseInputAddress(addressOrName.toLowerCase());
+  const isName = addressOrName.toLowerCase() !== address?.toLowerCase();
+  const domainName = isName ? addressOrName : await lookupDomainName(address);
+
+  return { address, domainName };
+};

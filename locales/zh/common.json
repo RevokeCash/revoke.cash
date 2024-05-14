@@ -1,8 +1,8 @@
 {
   "article_meta": {
-    "author": "作者：<0>{{author}}</0>",
-    "reading_time": "{{readingTime}} 分钟阅读时间",
-    "translator": "翻译：<0>{{translator}}</0>"
+    "author": "作者：<person-link>{author}</person-link>",
+    "reading_time": "{readingTime} 分钟阅读时间",
+    "translator": "翻译：<person-link>{translator}</person-link>"
   },
   "buttons": {
     "back_to_exploits": "返回漏洞",
@@ -48,7 +48,6 @@
     "title": "连接钱包"
   },
   "donate": {
-    "gitcoin_grants": "或者为我们的<0>Gitcoin Grant</0>捐款",
     "title": "为Revoke.cash捐款"
   },
   "errors": {
@@ -73,7 +72,7 @@
       "title": "此页面不存在。"
     },
     "messages": {
-      "chain_could_not_connect": "无法链接到{{chainName}}"
+      "chain_could_not_connect": "无法链接到{chainName}"
     }
   },
   "footer": {
@@ -89,17 +88,16 @@
     "learn": "学习资源",
     "privacy": "隐私政策",
     "product": "产品",
-    "sponsors": "赞助商",
     "terms": "条款",
     "token_approval_checker": "代币授权检查器",
     "what_are_token_approvals": "什么是代币授权？"
   },
   "meta": {
-    "description": "撤销在 {{chainName}} 等 80+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
+    "description": "撤销在 {chainName} 等 80+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
     "title": "撤销 80+ 区块链网络上的代币授权"
   },
   "misc": {
-    "powered_by": "由<0>{{name}}</0>提供技术支持"
+    "powered_by": "由<powered-by-link>{name}</powered-by-link>提供技术支持"
   },
   "nav": {
     "about": "关于我们",
@@ -115,9 +113,9 @@
     "clipboard_failed": "❌ 无法复制到剪贴板",
     "clipboard_success": "✅ 已复制到剪贴板",
     "donation_sent": "💪 感谢捐赠！",
-    "revoke_failed": "❌ 撤销授权许可失败：{{message}}",
-    "revoke_failed_revert": "❌ 撤销授权失败：{{message}}。请联系该代币团队来解决这个问题。",
-    "transaction_failed": "交易失败{{message}}",
+    "revoke_failed": "❌ 撤销授权许可失败：{message}",
+    "revoke_failed_revert": "❌ 撤销授权失败：{message}。请联系该代币团队来解决这个问题。",
+    "transaction_failed": "交易失败：{message}",
     "transaction_submitted": "✅ 交易已提交！",
     "update_failed": "❌ 此代币不支持更新授权，请改为撤销。"
   }

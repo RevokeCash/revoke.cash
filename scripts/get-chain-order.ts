@@ -37,8 +37,8 @@ const getChainOrder = async () => {
 const logChain = async (
   [chainName, chainId, tvl]: readonly [string, number, number],
   index: number,
-  reference: number[],
-  multicallData: any[],
+  reference: readonly number[],
+  multicallData: readonly any[],
 ) => {
   const hasPriceStrategyIcon = getChainPriceStrategy(chainId) ? '✅' : '❌';
   const indexDiff = String(index - reference.indexOf(chainId))

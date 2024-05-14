@@ -9,7 +9,7 @@ import type { AllowanceData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
 import { getSpenderData } from 'lib/utils/whois';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import RiskFactor from '../wallet-health/RiskFactor';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { openSeaProxyAddress } = useOpenSeaProxyAddress(allowance.owner);
 
   // TODO: Expose this data to react-table
@@ -40,7 +40,7 @@ const SpenderCell = ({ allowance }: Props) => {
 
   const riskTooltip = (
     <div>
-      {t('address:tooltips.risk_factors', { riskLevel: t('address:risk_factors.levels.high') })}
+      {t('address.tooltips.risk_factors', { riskLevel: t('address.risk_factors.levels.high') })}
       <ul className="list-disc list-inside">
         {fullRiskFactors?.map((riskFactor) => <li key={riskFactor.key}>{riskFactor}</li>)}
       </ul>

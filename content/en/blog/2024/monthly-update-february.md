@@ -43,13 +43,16 @@ This is the full list of pull requests that created by outside contributors in J
 
 ## New Exploits
 
-In January we saw one big exploit, the Seneca Hack - where over $6m in user funds were stolen. This exploit affected any users that had active token approvals to DeFi protocol [Seneca](https://senecaprotocol.com/). We created an exploit checker for this exploit so you can see if you're affected below.
+In February we saw two big exploits. In the Seneca Hack, over $6M in user funds were stolen. This exploit affected any users that had active token approvals to DeFi protocol [Seneca](https://senecaprotocol.com/). In the Concentric Hack, close to $2M was stolen from users of DeFi protocol Concentric.
 
+We created an exploit checker for this exploit so you can see if you're affected below.
+
+- [Concentric Hack](/exploits/concentric)
 - [Seneca Hack](/exploits/seneca)
 
 ## New Supported Networks
 
-While we support 70+ different blockchain networks already, we're always looking to add more. And in January we added support for 6 new networks, bringing the total to over 80 supported networks.
+While we support 70+ different blockchain networks already, we're always looking to add more. And in February we added support for 6 new networks, bringing the total to over 80 supported networks.
 
 New Mainnets:
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import type { AddressEvents, AllowanceData } from 'lib/interfaces';
 import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowances';
@@ -57,7 +59,7 @@ export const useAllowances = (address: Address, events: AddressEvents, chainId: 
 
   const onUpdate = async (
     allowance: AllowanceData,
-    updatedProperties: Pick<AllowanceData, 'amount' | 'transactionHash' | 'lastUpdated'> = {},
+    updatedProperties: Pick<AllowanceData, 'amount' | 'lastUpdated'> = {},
   ) => {
     // Invalidate blockNumber query, which triggers a refetch of the events, which in turn triggers a refetch of the allowances
     // We do not immediately refetch the allowances here, but we want to make sure that allowances will be refetched when

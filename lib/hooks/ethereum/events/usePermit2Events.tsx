@@ -2,12 +2,12 @@ import { PERMIT2_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { PERMIT2_ADDRESS } from 'lib/utils/permit2';
 import { useMemo } from 'react';
-import { Address, getAbiItem, getEventSelector } from 'viem';
+import { Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 
 export const usePermit2Events = (address: Address, chainId: number) => {
   const getPermit2EventSelector = (eventName: 'Permit' | 'Approval' | 'Lockdown') => {
-    return getEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: eventName }));
+    return toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: eventName }));
   };
 
   const addressTopic = address ? addressToTopic(address) : undefined;

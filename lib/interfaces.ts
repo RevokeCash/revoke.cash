@@ -14,8 +14,7 @@ export interface BaseTokenData {
 
 export interface BaseAllowanceData {
   spender: Address;
-  lastUpdated: number;
-  transactionHash: Hash;
+  lastUpdated: TimeLog;
   amount?: bigint; // Only for ERC20 tokens
   tokenId?: bigint; // Only for ERC721 tokens (single token)
   expiration?: number; // Only for Permit2 allowances
@@ -23,8 +22,7 @@ export interface BaseAllowanceData {
 
 export interface AllowanceData extends BaseTokenData {
   spender?: Address;
-  lastUpdated?: number;
-  transactionHash?: Hash;
+  lastUpdated?: TimeLog;
   amount?: bigint; // Only for ERC20 tokens
   tokenId?: bigint; // Only for ERC721 tokens (single token)
   expiration?: number; // Only for Permit2 allowances

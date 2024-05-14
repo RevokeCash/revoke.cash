@@ -1,6 +1,6 @@
 {
   "faq": {
-    "subtitle": "These are some of the most common questions we get asked. For a full list of FAQs please visit our <0>FAQ page</0>.",
+    "subtitle": "These are some of the most common questions we get asked. For a full list of FAQs please visit our <faq-link>FAQ page</faq-link>.",
     "title": "Frequently Asked Questions"
   },
   "hero_section": {
@@ -9,7 +9,7 @@
   },
   "how_to": {
     "paragraph_1": {
-      "description": "Click <0>Connect Wallet</0> on the top right or enter an address in the search bar.",
+      "description": "Click <b>Connect Wallet</b> on the top right or enter an address in the search bar.",
       "title": "1. Connect"
     },
     "paragraph_2": {
@@ -22,22 +22,13 @@
     },
     "title": "How To Revoke Your Approvals."
   },
-  "sponsors": {
-    "description": "The continued development of Revoke.cash is made possible by donations and sponsorships. These are the people and organizations that have supported us with monthly sponsorships so far.",
-    "tiers": {
-      "bronze": "Bronze Sponsor",
-      "gold": "Gold Sponsor",
-      "silver": "Silver Sponsor"
-    },
-    "title": "Sponsors"
-  },
   "why_revoke": {
     "paragraph_1": {
       "description": "It is always good to limit your approvals whenever you are not actively using a dapp, especially for NFT marketplaces. This reduces the risk of losing your funds to hacks or exploits and can also help mitigate the damage of phishing scams.",
       "title": "1. Use Revoke.cash periodically."
     },
     "paragraph_2": {
-      "description": "Very often, scammers try to trick you into granting them an approval to your funds. Sort your approvals by most recent to find out which approvals are to blame and revoke them to prevent further damage. Unfortunately it is not possible to <0>recover</0> funds that have already been stolen.",
+      "description": "Very often, scammers try to trick you into granting them an approval to your funds. Sort your approvals by most recent to find out which approvals are to blame and revoke them to prevent further damage. Unfortunately it is not possible to <i>recover</i> funds that have already been stolen.",
       "title": "2. Use Revoke.cash after getting scammed."
     },
     "paragraph_3": {

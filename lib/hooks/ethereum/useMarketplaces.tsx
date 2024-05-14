@@ -11,19 +11,20 @@ import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
-import { Address, WalletClient, getAbiItem, getEventSelector } from 'viem';
-import { fetchBlockNumber } from 'wagmi/actions';
+import { Address, WalletClient, getAbiItem, toEventSelector } from 'viem';
+import { getBlockNumber } from 'wagmi/actions';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
+import { wagmiConfig } from './EthereumProvider';
 import { useHandleTransaction } from './useHandleTransaction';
 
 export const useMarketplaces = () => {
   const [marketplaces, setMarketplaces] = useState<Marketplace[]>();
 
-  const handleTransaction = useHandleTransaction();
-  const queryClient = useQueryClient();
-
   const { selectedChainId, address } = useAddressPageContext();
   const { allowances, isLoading: isAllowancesLoading, error: allowancesError } = useAddressAllowances();
+
+  const handleTransaction = useHandleTransaction(selectedChainId);
+  const queryClient = useQueryClient();
 
   const publicClient = createViemPublicClientForChain(selectedChainId);
 
@@ -36,7 +37,7 @@ export const useMarketplaces = () => {
         ChainId.EthereumMainnet,
         ChainId.Sepolia,
         ChainId.PolygonMainnet,
-        ChainId.Mumbai,
+        ChainId.Amoy,
         ChainId.OPMainnet,
         ChainId.OPSepoliaTestnet,
         ChainId.ArbitrumOne,
@@ -76,7 +77,7 @@ export const useMarketplaces = () => {
       getFilter: (address: Address) => ({
         address: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
         topics: [
-          getEventSelector(getAbiItem({ abi: OPENSEA_SEAPORT_ABI, name: 'CounterIncremented' })),
+          toEventSelector(getAbiItem({ abi: OPENSEA_SEAPORT_ABI, name: 'CounterIncremented' })),
           addressToTopic(address),
         ],
       }),
@@ -100,7 +101,7 @@ export const useMarketplaces = () => {
       },
       getFilter: (address: Address) => ({
         address: '0xb2ecfE4E4D61f8790bbb9DE2D1259B9e2410CEA5',
-        topics: [getEventSelector(getAbiItem({ abi: BLUR_ABI, name: 'NonceIncremented' })), addressToTopic(address)],
+        topics: [toEventSelector(getAbiItem({ abi: BLUR_ABI, name: 'NonceIncremented' })), addressToTopic(address)],
       }),
     },
   ];
@@ -108,14 +109,18 @@ export const useMarketplaces = () => {
   // TODO: This is pretty ugly with all the queryClient.ensureQueryData calls, so we should try to improve this down
   // the line. The issue is that we want to ensure that an error in one of the marketplaces also stops the others from
   // loading, so that it displays a "global" table error, rather than a per-marketplace error.
-  const { data, isLoading, error } = useQuery<Marketplace[]>({
+  const {
+    data,
+    isLoading: isMarketplacesLoading,
+    error: marketplacesError,
+  } = useQuery<Marketplace[]>({
     queryKey: ['marketplaces', selectedChainId, address],
     queryFn: async () => {
       const filtered = ALL_MARKETPLACES.filter((marketplace) => marketplace.chains.includes(selectedChainId));
 
       const blockNumber = await queryClient.ensureQueryData({
         queryKey: ['blockNumber', selectedChainId],
-        queryFn: async () => fetchBlockNumber({ chainId: selectedChainId }).then(Number),
+        queryFn: async () => getBlockNumber(wagmiConfig, { chainId: selectedChainId }).then(Number),
         // Don't refresh the block number too often to avoid refreshing events too often, to avoid backend API rate limiting
         gcTime: 1 * MINUTE,
         staleTime: 1 * MINUTE,
@@ -184,5 +189,8 @@ export const useMarketplaces = () => {
     });
   };
 
-  return { marketplaces, isLoading: isLoading || !marketplaces, error: error || allowancesError, onCancel };
+  const error = allowancesError || marketplacesError;
+  const isLoading = (isAllowancesLoading || isMarketplacesLoading || !marketplaces) && !error;
+
+  return { marketplaces, isLoading, error, onCancel };
 };

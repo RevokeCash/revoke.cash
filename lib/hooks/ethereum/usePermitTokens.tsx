@@ -44,8 +44,8 @@ export const usePermitTokens = () => {
     }
   }, [data]);
 
-  const isLoading = isAllowancesLoading || isPermitsLoading || !permitTokens;
   const error = allowancesError || permitsError;
+  const isLoading = (isAllowancesLoading || isPermitsLoading || !permitTokens) && !error;
 
   const onCancel: OnCancel<PermitTokenData> = async (token: PermitTokenData, lastCancelled: TimeLog) => {
     await queryClient.invalidateQueries({

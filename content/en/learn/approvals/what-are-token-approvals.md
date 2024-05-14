@@ -63,7 +63,6 @@ To help combat this, we created our [exploit checker](/exploits), which contains
 Besides legitimate projects getting hacked, there are also a lot of scams and phishing attacks in the crypto space. These scams often use approvals to steal your money. Some common phishing scams that use approvals are:
 
 1. **Direct Approval to a Scammer**: A scammer trick you into approving a smart contract that they control, allowing them to take the money directly from your wallet.
-
 2. **NFT Marketplace Listings**: A scammer will trick you into signing a signature that lists your assets for sale on an NFT marketplace for 0 ETH, allowing them to "buy" your NFTs for 0 ETH.
 
 Extensions such as the [Revoke Extension](/extension) or [Pocket Universe](https://www.pocketuniverse.app/) can help protect you from these types of scams as they provide warnings when you are about to approve a smart contract. Keeping your approvals to a minimum and regularly [revoking approvals](/learn/approvals/how-to-revoke-token-approvals) can also help protect you from these types of scams, since it limits the amount of damage a scammer can do – especially for marketplace listings.

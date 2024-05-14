@@ -116,14 +116,14 @@ const columnHelper = createColumnHelper<AllowanceData>();
 export const columns = [
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
-    header: () => <HeaderCell i18nKey="address:headers.asset" />,
-    cell: (info) => <AssetCell allowance={info.row.original} />,
+    header: () => <HeaderCell i18nKey="address.headers.asset" />,
+    cell: (info) => <AssetCell asset={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,
   }),
   columnHelper.accessor(accessors.assetType, {
     id: ColumnId.ASSET_TYPE,
-    header: () => <HeaderCell i18nKey="address:headers.asset_type" />,
+    header: () => <HeaderCell i18nKey="address.headers.asset_type" />,
     cell: (info) => <AssetTypeCell assetType={info.getValue()} />,
     enableSorting: false,
     enableColumnFilter: true,
@@ -138,7 +138,7 @@ export const columns = [
   }),
   columnHelper.accessor(accessors.allowance, {
     id: ColumnId.ALLOWANCE,
-    header: () => <HeaderCell i18nKey="address:headers.allowance" />,
+    header: () => <HeaderCell i18nKey="address.headers.allowance" />,
     cell: (info) => <AllowanceCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
     enableSorting: true,
     sortingFn: customSortingFns.allowance,
@@ -148,7 +148,7 @@ export const columns = [
   }),
   columnHelper.accessor(accessors.valueAtRisk, {
     id: ColumnId.VALUE_AT_RISK,
-    header: () => <HeaderCell i18nKey="address:headers.value_at_risk" align="left" />,
+    header: () => <HeaderCell i18nKey="address.headers.value_at_risk" align="left" />,
     cell: (info) => <ValueAtRiskCell allowance={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.basic,
@@ -156,23 +156,23 @@ export const columns = [
   }),
   columnHelper.accessor('spender', {
     id: ColumnId.SPENDER,
-    header: () => <HeaderCell i18nKey="address:headers.spender" />,
+    header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
     enableSorting: false,
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,
   }),
-  columnHelper.accessor('lastUpdated', {
+  columnHelper.accessor('lastUpdated.timestamp', {
     id: ColumnId.LAST_UPDATED,
-    header: () => <HeaderCell i18nKey="address:headers.last_updated" />,
-    cell: (info) => <LastUpdatedCell allowance={info.row.original} />,
+    header: () => <HeaderCell i18nKey="address.headers.last_updated" />,
+    cell: (info) => <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.lastUpdated} />,
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,
     sortUndefined: 1,
   }),
   columnHelper.display({
     id: ColumnId.ACTIONS,
-    header: () => <HeaderCell i18nKey="address:headers.actions" align="right" />,
+    header: () => <HeaderCell i18nKey="address.headers.actions" align="right" />,
     cell: (info) => <ControlsCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
   }),
 ];

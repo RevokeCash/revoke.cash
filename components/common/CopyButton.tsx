@@ -1,6 +1,6 @@
 import { DocumentDuplicateIcon } from '@heroicons/react/24/outline';
 import { writeToClipBoard } from 'lib/utils';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import Button from './Button';
 import WithHoverTooltip from './WithHoverTooltip';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const CopyButton = ({ content, tooltip, className }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const button = (
     <Button style="none" size="none" onClick={() => writeToClipBoard(content, t)} aria-label="Copy To Clipboard">

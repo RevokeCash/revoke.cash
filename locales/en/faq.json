@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. This is usually quite cheap, but when gas fees rise it can get more expensive. If your transactions are not time sensitive, it may be wise to use services like <0>GasHawk</0> to reduce gas fees.",
+      "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. This is usually quite cheap, but when gas fees rise it can get more expensive. If your transactions are not time sensitive, it may be wise to use services like <gashawk-link>GasHawk</gashawk-link> to reduce gas fees.",
       "question": "How much does it cost to use Revoke.cash?"
     },
     "deposited_tokens": {
@@ -13,23 +13,23 @@
       "question": "What happens to my deposited or staked tokens when I revoke approvals?"
     },
     "enough_to_disconnect": {
-      "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <0>anything</0> to protect you from approval exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address anymore. But your approvals stay active.",
+      "answer": "No. Disconnecting your wallet (e.g. MetaMask) does not do <i>anything</i> to protect you from approval exploits - or most other exploits. The only thing that happens when disconnecting your wallet from a website is that that website cannot see your address anymore. But your approvals stay active.",
       "question": "Is it enough to \"disconnect\" my wallet instead of revoking approvals?"
     },
     "hardware_wallets": {
-      "answer": "No. In general, hardware wallets are much safer than mobile or browser-based wallets because the wallet's keys are securely stored on the device, making it impossible to steal the keys without proper access to the device. But with approvals no one <0>needs</0> to steal your keys to take your tokens. And because of that hardware wallets offer no extra protection against approval exploits.",
+      "answer": "No. In general, hardware wallets are much safer than mobile or browser-based wallets because the wallet's keys are securely stored on the device, making it impossible to steal the keys without proper access to the device. But with approvals no one <i>needs</i> to steal your keys to take your tokens. And because of that hardware wallets offer no extra protection against approval exploits.",
       "question": "Can hardware wallets save me from approval exploits?"
     },
     "multiple_allowances": {
-      "answer": "No. The way approvals work under the hood <0>requires</0> 1 transaction per approval. So it is technically impossible to revoke multiple approvals in a single transaction.",
+      "answer": "No. The way approvals work under the hood <i>requires</i> 1 transaction per approval. So it is technically impossible to revoke multiple approvals in a single transaction.",
       "question": "Can I revoke multiple approvals at the same time?"
     },
     "other_question": {
-      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <0>Twitter</0> or <1>Discord</1>. You can also read about approvals in more detail in Rosco Kalis' blog post <2>Unlimited ERC20 allowances considered harmful</2>.",
+      "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <twitter-link>Twitter</twitter-link> or <discord-link>Discord</discord-link>.",
       "question": "My question is not listed here."
     },
     "recover_assets": {
-      "answer": "No. Revoke.cash is a <0>preventative</0> tool that helps you practice proper wallet hygiene. By regularly revoking active approvals you reduce the chances of becoming the victim of approval exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make sure to revoke the approvals that were used to take your funds so that they cannot steal more in the future.",
+      "answer": "No. Revoke.cash is a <i>preventative</i> tool that helps you practice proper wallet hygiene. By regularly revoking active approvals you reduce the chances of becoming the victim of approval exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make sure to revoke the approvals that were used to take your funds so that they cannot steal more in the future.",
       "question": "My funds were just stolen, can I use Revoke.cash to get them back?"
     },
     "stolen_through_allowances": {
@@ -49,15 +49,15 @@
       "question": "Which approvals do I need to revoke?"
     },
     "which_chains": {
-      "answer": "The Revoke.cash <0>browser extension</0> supports every EVM network. The Revoke.cash website supports a large number of EVM networks, the full list is included below. If there are any other networks that you'd like to see supported, please reach out on <1>Twitter</1> or <2>Discord</2>.",
+      "answer": "The Revoke.cash <extension-link>browser extension</extension-link> supports every EVM network. The Revoke.cash website supports a large number of EVM networks, the full list is included below. If there are any other networks that you'd like to see supported, please reach out on <twitter-link>Twitter</twitter-link> or <discord-link>Discord</discord-link>.",
       "question": "Which networks does Revoke.cash support?"
     },
     "which_domains": {
-      "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <0>ENS</0>, <1>Unstoppable Domains</1> and <2>Avvy Domains</2>. We may add other domain name services in the future.",
+      "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <ens-link>ENS</ens-link>, <uns-link>Unstoppable Domains</uns-link> and <avvy-link>Avvy Domains</avvy-link>. We may add other domain name services in the future.",
       "question": "Which kinds of domains does Revoke.cash support?"
     },
     "whole_wallet_at_risk": {
-      "answer": "No. An \"unlimited\" approval only applies to the token or NFT collection that you gave an approval for. So if you gave an unlimited approval for your DAI, then <0>all your DAI</0> may be at risk, but none of your USDC. Similarly an \"unlimited\" approval for your Bored Apes does not impact your Cool Cats.",
+      "answer": "No. An \"unlimited\" approval only applies to the token or NFT collection that you gave an approval for. So if you gave an unlimited approval for your DAI, then <i>all your DAI</i> may be at risk, but none of your USDC. Similarly an \"unlimited\" approval for your Bored Apes does not impact your Cool Cats.",
       "question": "If I have an \"Unlimited\" approval, does that mean my whole wallet is at risk?"
     }
   },

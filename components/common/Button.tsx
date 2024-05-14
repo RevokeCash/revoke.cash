@@ -1,5 +1,7 @@
+'use client';
+
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import Link from 'next/link';
+import { Link } from 'lib/i18n/navigation';
 import { ForwardedRef, MouseEventHandler, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';

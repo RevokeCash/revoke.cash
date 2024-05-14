@@ -1,3 +1,5 @@
+'use client';
+
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';
@@ -13,7 +15,7 @@ import { useHandleTransaction } from './useHandleTransaction';
 export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate) => {
   const { data: walletClient } = useWalletClient();
   const { address: account } = useAccount();
-  const handleTransaction = useHandleTransaction();
+  const handleTransaction = useHandleTransaction(allowance.chainId);
 
   const { contract, metadata, spender, tokenId, expiration } = allowance;
 
@@ -126,13 +128,14 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate) => {
         });
 
         const transactionReceipt = await waitForTransactionConfirmation(hash, contract.publicClient);
-        const blockTimestamp = await blocksDB.getBlockTimestamp(
-          contract.publicClient,
-          Number(transactionReceipt.blockNumber),
-        );
+        const lastUpdated = await blocksDB.getTimeLog(contract.publicClient, {
+          ...transactionReceipt,
+          blockNumber: Number(transactionReceipt.blockNumber),
+        });
+
         console.debug('Reloading data');
 
-        onUpdate(allowance, { amount: newAmountParsed, transactionHash: hash, lastUpdated: blockTimestamp });
+        onUpdate(allowance, { amount: newAmountParsed, lastUpdated });
       }
     };
 

@@ -139,21 +139,18 @@ const getErc20AllowanceFromApproval = async (
   // If the most recent approval event was for 0, then we know for sure that the allowance is 0
   // If not, we need to check the current allowance because we cannot determine the allowance from the event
   // since it may have been partially used (through transferFrom)
-  if (lastApprovedAmount === 0n) {
-    return { spender, amount: 0n, lastUpdated: 0, transactionHash: approval.transactionHash };
-  }
+  if (lastApprovedAmount === 0n) return undefined;
 
-  const [amount, lastUpdated, transactionHash] = await Promise.all([
+  const [amount, lastUpdated] = await Promise.all([
     contract.publicClient.readContract({
       ...contract,
       functionName: 'allowance',
       args: [owner, spender],
     }),
-    blocksDB.getLogTimestamp(contract.publicClient, approval),
-    approval.transactionHash,
+    blocksDB.getTimeLog(contract.publicClient, approval),
   ]);
 
-  return { spender, amount, lastUpdated, transactionHash };
+  return { spender, amount, lastUpdated };
 };
 
 export const getLimitedErc721AllowancesFromApprovals = async (contract: Erc721TokenContract, approvals: Log[]) => {
@@ -181,25 +178,22 @@ const getLimitedErc721AllowanceFromApproval = async (contract: Erc721TokenContra
     // If not, we need to check the current allowance because we cannot determine the allowance from the event
     // since it may have been "revoked" by transferring the NFT to another address
     // TODO: We can probably join Approve and Transfer events to get the actual approved status from just events
-    if (lastApproved === ADDRESS_ZERO) {
-      return undefined;
-    }
+    if (lastApproved === ADDRESS_ZERO) return undefined;
 
-    const [owner, spender, lastUpdated, transactionHash] = await Promise.all([
+    const [owner, spender, lastUpdated] = await Promise.all([
       contract.publicClient.readContract({ ...contract, functionName: 'ownerOf', args: [tokenId] }),
       contract.publicClient.readContract({
         ...contract,
         functionName: 'getApproved',
         args: [tokenId],
       }),
-      blocksDB.getLogTimestamp(contract.publicClient, approval),
-      approval.transactionHash,
+      blocksDB.getTimeLog(contract.publicClient, approval),
     ]);
 
     const expectedOwner = topicToAddress(approval.topics[1]);
     if (spender === ADDRESS_ZERO || owner !== expectedOwner) return undefined;
 
-    return { spender, tokenId, lastUpdated, transactionHash };
+    return { spender, tokenId, lastUpdated };
   } catch {
     return undefined;
   }
@@ -234,12 +228,9 @@ const getUnlimitedErc721AllowanceFromApproval = async (
   // If the allwoance if already revoked, we dont need to make any more requests
   if (!isApprovedForAll) return undefined;
 
-  const [lastUpdated, transactionHash] = await Promise.all([
-    blocksDB.getLogTimestamp(contract.publicClient, approval),
-    approval.transactionHash,
-  ]);
+  const [lastUpdated] = await Promise.all([blocksDB.getTimeLog(contract.publicClient, approval)]);
 
-  return { spender, lastUpdated, transactionHash };
+  return { spender, lastUpdated };
 };
 
 export const formatErc20Allowance = (allowance: bigint, decimals: number, totalSupply: bigint): string => {
@@ -252,20 +243,20 @@ export const formatErc20Allowance = (allowance: bigint, decimals: number, totalS
 
 export const getAllowanceI18nValues = (allowance: AllowanceData) => {
   if (!allowance.spender) {
-    const i18nKey = 'address:allowances.none';
+    const i18nKey = 'address.allowances.none';
     return { i18nKey };
   }
 
   if (allowance.amount) {
     const amount = formatErc20Allowance(allowance.amount, allowance.metadata.decimals, allowance.metadata.totalSupply);
-    const i18nKey = amount === 'Unlimited' ? 'address:allowances.unlimited' : 'address:allowances.amount';
+    const i18nKey = amount === 'Unlimited' ? 'address.allowances.unlimited' : 'address.allowances.amount';
     const { symbol } = allowance.metadata;
     return { amount, i18nKey, symbol };
   }
 
-  const i18nKey = allowance.tokenId === undefined ? 'address:allowances.unlimited' : 'address:allowances.token_id';
+  const i18nKey = allowance.tokenId === undefined ? 'address.allowances.unlimited' : 'address.allowances.token_id';
   const { tokenId } = allowance;
-  return { tokenId, i18nKey };
+  return { tokenId: tokenId?.toString(), i18nKey };
 };
 
 // This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
@@ -309,6 +300,8 @@ export const getAllowanceKey = (allowance: AllowanceData) => {
 };
 
 export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTokenData) => {
+  if (!allowance) return true;
+
   return (
     formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
   );

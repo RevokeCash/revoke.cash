@@ -30,30 +30,35 @@ const getPermit2AllowanceFromApproval = async (
   owner: Address,
   approval: Log,
 ): Promise<BaseAllowanceData> => {
-  const parsedEvent = decodeEventLog({ abi: PERMIT2_ABI, ...approval });
+  // Note: decodeEventLog return type is messed up since Viem v2
+  const parsedEvent = decodeEventLog({
+    abi: PERMIT2_ABI,
+    data: approval.data,
+    topics: approval.topics,
+    strict: false,
+  }) as any;
   const { spender, amount: lastApprovedAmount, expiration } = parsedEvent.args;
 
   // If the most recent approval event was for 0, or it was a lockdown, or its expiration is in the past, then we know
   // for sure that the allowance is 0. If not, we need to check the current allowance because we cannot determine the
   // allowance from the event since it may have been partially used (through transferFrom)
   if (parsedEvent.eventName === 'Lockdown' || lastApprovedAmount === 0n || expiration * SECOND <= Date.now()) {
-    return { spender, amount: 0n, lastUpdated: 0, transactionHash: approval.transactionHash };
+    return undefined;
   }
 
-  const [permit2Allowance, lastUpdated, transactionHash] = await Promise.all([
+  const [permit2Allowance, lastUpdated] = await Promise.all([
     tokenContract.publicClient.readContract({
       address: PERMIT2_ADDRESS,
       abi: PERMIT2_ABI,
       functionName: 'allowance',
       args: [owner, tokenContract.address, spender],
     }),
-    blocksDB.getLogTimestamp(tokenContract.publicClient, approval),
-    approval.transactionHash,
+    blocksDB.getTimeLog(tokenContract.publicClient, approval),
   ]);
 
   const [amount] = permit2Allowance;
 
-  return { spender, amount, lastUpdated, transactionHash, expiration };
+  return { spender, amount, lastUpdated, expiration };
 };
 
 // We don't need to do an excessive gas check for permit2 approvals since function is called on Permit2, not the token

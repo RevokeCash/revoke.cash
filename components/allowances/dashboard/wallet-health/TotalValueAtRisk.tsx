@@ -4,7 +4,7 @@ import { calculateValueAtRisk, deduplicateArray } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   chainId: number;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   if (error) return null;
 
@@ -35,7 +35,7 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
     <Loader isLoading={isLoading}>
       <div className="flex flex-col items-center gap-0.5">
         <div className="text-zinc-600 dark:text-zinc-400 text-center">
-          {t('address:wallet_health.total_value_at_risk')}
+          {t('address.wallet_health.total_value_at_risk')}
         </div>
         <div className="font-bold">
           {isLoading ? (
@@ -45,7 +45,7 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
               {formatFiatAmount(totalValueAtRisk, 0)} {hasNftsAtRisk && !chainHasNftPriceStrategy ? '+ NFTs' : null}
             </>
           ) : (
-            t('address:allowances.unknown')
+            t('address.allowances.unknown')
           )}
         </div>
       </div>

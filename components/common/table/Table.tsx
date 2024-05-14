@@ -1,4 +1,4 @@
-import { Table } from '@tanstack/react-table';
+import { Table as ReactTable } from '@tanstack/react-table';
 import Error from 'components/common/Error';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
@@ -6,7 +6,7 @@ import TableHeader from './TableHeader';
 
 interface Props<T> {
   loading: boolean;
-  table: Table<T>;
+  table: ReactTable<T>;
   error?: Error;
   emptyChildren?: React.ReactNode;
   loaderRows?: number;

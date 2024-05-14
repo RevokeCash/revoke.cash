@@ -1,5 +1,5 @@
 const withBundleAnalyzer = require('next-bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
-const nextTranslate = require('next-translate-plugin');
+const withNextIntl = require('next-intl/plugin')();
 const withNextCircularDeps = require('next-circular-dependency');
 const { withSentryConfig } = require('@sentry/nextjs');
 
@@ -34,13 +34,14 @@ const nextConfig = {
     ];
   },
   webpack: (config) => {
-    config.resolve.fallback = { fs: false };
+    config.resolve.fallback = { fs: false, path: false };
+    config.externals.push('pino-pretty');
     return config;
   },
 };
 
 module.exports = nextConfig;
-module.exports = nextTranslate(module.exports);
+module.exports = withNextIntl(module.exports);
 module.exports = withBundleAnalyzer(module.exports);
 
 if (process.env.CHECK_CIRCULAR_DEPS) {

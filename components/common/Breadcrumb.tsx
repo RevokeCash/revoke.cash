@@ -35,7 +35,7 @@ const Breadcrumb = ({ pages }: Props) => {
                 <span property="name">{page.name}</span>
               </span>
             )}
-            <meta property="position" content={String(i + 1)} />
+            <div hidden className="hidden" property="position" content={String(i + 1)} />
           </li>
         ))}
       </ol>

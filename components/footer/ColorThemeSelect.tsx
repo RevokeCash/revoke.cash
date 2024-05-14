@@ -1,14 +1,16 @@
+'use client';
+
 import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { track } from 'lib/utils/analytics';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 
 const ColorThemeSelect = () => {
   const isMounted = useMounted();
-  const { darkMode, theme, setTheme } = useColorTheme();
-  const { t } = useTranslation();
+  const { theme, setTheme } = useColorTheme();
+  const t = useTranslations();
 
   const options = [
     { value: 'system', icon: ComputerDesktopIcon },
@@ -24,7 +26,7 @@ const ColorThemeSelect = () => {
   const displayOption = (option: (typeof options)[number]) =>
     isMounted && (
       <div className="flex gap-1 items-center" suppressHydrationWarning>
-        <option.icon className="w-4 h-4 shrink-0" /> {t(`common:color_themes.${option.value}`)}
+        <option.icon className="w-4 h-4 shrink-0" /> {t(`common.color_themes.${option.value}`)}
       </div>
     );
 

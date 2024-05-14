@@ -2,13 +2,13 @@ import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import ColorThemeSelect from 'components/footer/ColorThemeSelect';
 import { DISCORD_URL, GITHUB_URL, TWITTER_URL } from 'lib/constants';
-import useTranslation from 'next-translate/useTranslation';
+import { useMessages, useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 import LanguageSelect from './LanguageSelect';
-import NotCommonBadge from './NotCommonBadge';
 
 const Footer = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
+  const messages = useMessages();
 
   return (
     <footer className="bg-black dark:bg-zinc-900 mt-24" aria-labelledby="footer-heading">
@@ -19,42 +19,42 @@ const Footer = () => {
       <div className="mx-auto max-w-7xl px-8">
         <div className="my-16 grid grid-cols-2 gap-8 xl:col-span-2">
           <div className="md:grid md:grid-cols-2 md:gap-8">
-            <FooterSection heading={t('common:footer.product')}>
+            <FooterSection heading={t('common.footer.product')}>
               <FooterLink href="/token-approval-checker/ethereum" router>
-                {t('common:footer.token_approval_checker')}
+                {t('common.footer.token_approval_checker')}
               </FooterLink>
               <FooterLink href="/extension" router>
-                {t('common:footer.extension')}
+                {t('common.footer.extension')}
               </FooterLink>
               <FooterLink href="/exploits" router>
-                {t('common:footer.exploit_checker')}
+                {t('common.footer.exploit_checker')}
               </FooterLink>
             </FooterSection>
-            <FooterSection heading={t('common:footer.learn')}>
+            <FooterSection heading={t('common.footer.learn')}>
               <FooterLink href="/learn" router>
-                {t('common:footer.knowledgebase')}
+                {t('common.footer.knowledgebase')}
               </FooterLink>
               <FooterLink href="/learn/approvals/what-are-token-approvals" router>
-                {t('common:footer.what_are_token_approvals')}
+                {t('common.footer.what_are_token_approvals')}
               </FooterLink>
               <FooterLink href="/learn/faq" router>
-                {t('common:footer.faq')}
+                {t('common.footer.faq')}
               </FooterLink>
             </FooterSection>
           </div>
           <div className="md:grid md:grid-cols-2 md:gap-8">
-            <FooterSection heading={t('common:footer.company')}>
+            <FooterSection heading={t('common.footer.company')}>
               <FooterLink href="/blog" router>
-                {t('common:footer.blog')}
+                {t('common.footer.blog')}
               </FooterLink>
               <FooterLink href="/about" router>
-                {t('common:footer.about')}
+                {t('common.footer.about')}
               </FooterLink>
               <FooterLink href="https://github.com/RevokeCash/brand-assets" external>
-                {t('common:footer.brand_assets')}
+                {t('common.footer.brand_assets')}
               </FooterLink>
             </FooterSection>
-            <FooterSection heading={t('common:footer.community')}>
+            <FooterSection heading={t('common.footer.community')}>
               <FooterLink href={TWITTER_URL} external>
                 Twitter
               </FooterLink>
@@ -72,13 +72,12 @@ const Footer = () => {
           <div className="flex flex-col gap-px text-center md:text-left">
             <p className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2023 Revoke.cash</p>
             <ul className="flex justify-center md:justify-start items-center gap-1">
-              <FooterLink href="/privacy-policy">{t('common:footer.privacy')}</FooterLink>
+              <FooterLink href="/privacy-policy">{t('common.footer.privacy')}</FooterLink>
               <span className="text-zinc-400 dark:text-zinc-400 visited:text-zinc-400">•</span>
-              <FooterLink href="/terms">{t('common:footer.terms')}</FooterLink>
+              <FooterLink href="/terms">{t('common.footer.terms')}</FooterLink>
             </ul>
           </div>
           <div className="flex gap-2 shrink-0">
-            <NotCommonBadge />
             <LanguageSelect />
             <ColorThemeSelect />
           </div>
