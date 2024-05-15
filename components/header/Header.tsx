@@ -1,28 +1,24 @@
 import Button from 'components/common/Button';
 import Href from 'components/common/Href';
 import WalletIndicator from 'components/header/WalletIndicator';
-import useTranslation from 'next-translate/useTranslation';
+import { useMessages, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import DonateButton from '../common/DonateButton';
 import MobileMenu from './MobileMenu';
 import MoreDropdown from './MoreDropdown';
 import NavLink from './NavLink';
-import SearchBar from './SearchBar';
 
-interface Props {
-  searchBar?: boolean;
-}
-
-const Header = ({ searchBar = true }: Props) => {
-  const { t } = useTranslation();
+const Header = () => {
+  const t = useTranslations();
+  const messages = useMessages();
 
   return (
-    <header className="flex flex-col relative p-4 lg:px-8 gap-4 mb-4">
+    <header className="flex flex-col relative p-4 lg:px-8 pb-8 gap-4">
       <div className="flex justify-between items-center gap-8">
         <div className="hidden lg:flex justify-start items-center gap-4 w-2/5 flex-wrap">
           <DonateButton size="md" />
-          <NavLink to="/extension" text={t('common:nav.extension')} />
-          <NavLink to="/exploits" text={t('common:nav.exploits')} />
+          <NavLink to="/extension" text={t('common.nav.extension')} />
+          <NavLink to="/exploits" text={t('common.nav.exploits')} />
           <MoreDropdown />
         </div>
         <div className="flex lg:justify-center grow shrink-0 h-12">
@@ -50,11 +46,6 @@ const Header = ({ searchBar = true }: Props) => {
           <MobileMenu />
         </div>
       </div>
-      {searchBar && (
-        <div className="flex justify-center">
-          <SearchBar />
-        </div>
-      )}
     </header>
   );
 };

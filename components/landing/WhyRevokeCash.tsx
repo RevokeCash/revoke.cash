@@ -1,21 +1,20 @@
-import Trans from 'next-translate/Trans';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import LandingParagraph from './LandingParagraph';
 import LandingSection from './LandingSection';
 
 const WhyRevokeCash = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
-    <LandingSection title={t('landing:why_revoke.title')} size="h2">
-      <LandingParagraph title={t('landing:why_revoke.paragraph_1.title')}>
-        <Trans i18nKey="landing:why_revoke.paragraph_1.description" />
+    <LandingSection title={t('landing.why_revoke.title')} size="h2">
+      <LandingParagraph title={t('landing.why_revoke.paragraph_1.title')}>
+        {t('landing.why_revoke.paragraph_1.description')}
       </LandingParagraph>
-      <LandingParagraph title={t('landing:why_revoke.paragraph_2.title')}>
-        <Trans i18nKey="landing:why_revoke.paragraph_2.description" components={[<span className="italic" />]} />
+      <LandingParagraph title={t('landing.why_revoke.paragraph_2.title')}>
+        {t.rich('landing.why_revoke.paragraph_2.description')}
       </LandingParagraph>
-      <LandingParagraph title={t('landing:why_revoke.paragraph_3.title')}>
-        <Trans i18nKey="landing:why_revoke.paragraph_3.description" />
+      <LandingParagraph title={t('landing.why_revoke.paragraph_3.title')}>
+        {t('landing.why_revoke.paragraph_3.description')}
       </LandingParagraph>
     </LandingSection>
   );

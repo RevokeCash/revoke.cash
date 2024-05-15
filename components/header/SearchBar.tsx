@@ -1,20 +1,22 @@
+'use client';
+
 import AddressSearchBox from 'components/common/AddressSearchBox';
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
+import { useRouter } from 'lib/i18n/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 const SearchBar = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const router = useRouter();
   const [value, setValue] = useState<string>('');
 
   return (
     <AddressSearchBox
       id="global-search"
-      onSubmit={() => router.push(`/address/${value}`)}
+      onSubmit={() => router.push(`/address/${value}${location.search}`)}
       onChange={(ev) => setValue(ev.target.value.trim())}
       value={value}
-      placeholder={t('common:nav.search')}
+      placeholder={t('common.nav.search')}
       className="w-full max-w-3xl text-base sm:text-lg"
     />
   );

@@ -1,5 +1,6 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
+import type { useAllowances } from './hooks/ethereum/useAllowances';
 
 export type Balance = bigint | 'ERC1155';
 
@@ -13,8 +14,7 @@ export interface BaseTokenData {
 
 export interface BaseAllowanceData {
   spender: Address;
-  lastUpdated: number;
-  transactionHash: Hash;
+  lastUpdated: TimeLog;
   amount?: bigint; // Only for ERC20 tokens
   tokenId?: bigint; // Only for ERC721 tokens (single token)
   expiration?: number; // Only for Permit2 allowances
@@ -22,11 +22,14 @@ export interface BaseAllowanceData {
 
 export interface AllowanceData extends BaseTokenData {
   spender?: Address;
-  lastUpdated?: number;
-  transactionHash?: Hash;
+  lastUpdated?: TimeLog;
   amount?: bigint; // Only for ERC20 tokens
   tokenId?: bigint; // Only for ERC721 tokens (single token)
   expiration?: number; // Only for Permit2 allowances
+}
+
+export interface PermitTokenData extends BaseTokenData {
+  lastCancelled?: TimeLog;
 }
 
 export interface TokenFromList {
@@ -63,6 +66,8 @@ export interface Log {
   timestamp?: number;
 }
 
+export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
+
 export interface RateLimit {
   interval: number;
   intervalCap: number;
@@ -78,6 +83,7 @@ export interface AddressEvents {
 }
 
 export interface Filter {
+  address?: Address;
   topics: string[];
   fromBlock: number;
   toBlock: number;
@@ -89,11 +95,22 @@ export enum TransactionType {
   OTHER = 'other',
 }
 
-export interface Marketplace {
+export interface MarketplaceConfig {
   name: string;
   logo: string;
   chains: number[];
   cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
+  getFilter: (address: Address) => Pick<Filter, 'address' | 'topics'>;
+  approvalFilterAddress: Address;
+}
+
+export interface Marketplace {
+  name: string;
+  logo: string;
+  chainId: number;
+  lastCancelled?: TimeLog;
+  cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
+  allowances: AllowanceData[];
 }
 
 export interface ISidebarEntry {
@@ -110,11 +127,16 @@ export interface ContentMeta {
   sidebarTitle?: string;
   description: string;
   language: string;
-  author?: string;
-  translator?: string;
+  author?: Person;
+  translator?: Person;
   coverImage?: string;
   date?: string;
   readingTime?: number;
+}
+
+export interface Person {
+  name: string;
+  url?: string;
 }
 
 export interface RawContentFile {
@@ -135,6 +157,7 @@ export interface BreadcrumbEntry {
 export interface SpenderData {
   name: string;
   exploits?: string[];
+  riskFactors?: string[];
 }
 
 export interface Contract {
@@ -162,7 +185,8 @@ export interface TokenMetadata {
   price?: number;
 }
 
-export type OnUpdate = (allowance: AllowanceData, newAmount?: bigint) => void;
+export type OnUpdate = ReturnType<typeof useAllowances>['onUpdate'];
+export type OnCancel<T> = (data: T, lastCancelled: TimeLog) => Promise<void>;
 
 export interface EtherscanPlatform {
   domain: string;

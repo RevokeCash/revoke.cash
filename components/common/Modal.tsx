@@ -1,8 +1,11 @@
+'use client';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { Fragment, ReactNode, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
+import FocusTrap from './FocusTrap';
 
 interface Props {
   open: boolean;
@@ -47,7 +50,7 @@ const Modal = ({ open, setOpen, children, className }: Props) => {
             >
               <Dialog.Panel className={panelClasses}>
                 <div className="absolute top-0 right-0 pt-4 pr-4 hidden sm:block">
-                  <button ref={focusRef} aria-label="Focus Trap" />
+                  <FocusTrap ref={focusRef} />
                   <Button
                     style="none"
                     size="none"

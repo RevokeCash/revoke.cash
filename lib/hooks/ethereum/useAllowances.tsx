@@ -1,3 +1,5 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import type { AddressEvents, AllowanceData } from 'lib/interfaces';
 import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowances';
@@ -55,8 +57,10 @@ export const useAllowances = (address: Address, events: AddressEvents, chainId: 
     });
   };
 
-  // TODO: Update last updated time
-  const onUpdate = async (allowance: AllowanceData, newAmount?: bigint) => {
+  const onUpdate = async (
+    allowance: AllowanceData,
+    updatedProperties: Pick<AllowanceData, 'amount' | 'lastUpdated'> = {},
+  ) => {
     // Invalidate blockNumber query, which triggers a refetch of the events, which in turn triggers a refetch of the allowances
     // We do not immediately refetch the allowances here, but we want to make sure that allowances will be refetched when
     // users navigate to the allowances page again
@@ -70,7 +74,7 @@ export const useAllowances = (address: Address, events: AddressEvents, chainId: 
       refetchType: 'none',
     });
 
-    if (!newAmount || newAmount === 0n) {
+    if (!updatedProperties.amount || updatedProperties.amount === 0n) {
       return onRevoke(allowance);
     }
 
@@ -78,7 +82,7 @@ export const useAllowances = (address: Address, events: AddressEvents, chainId: 
       return previousAllowances.map((other) => {
         if (!allowanceEquals(other, allowance)) return other;
 
-        const newAllowance = { ...other, amount: newAmount };
+        const newAllowance = { ...other, ...updatedProperties };
         return newAllowance;
       });
     });

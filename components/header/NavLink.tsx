@@ -1,5 +1,7 @@
+'use client';
+
 import Button from 'components/common/Button';
-import { useRouter } from 'next/router';
+import { usePathname } from 'lib/i18n/navigation';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -10,9 +12,8 @@ interface Props {
 }
 
 const NavLink = ({ to, text, className }: Props) => {
-  const router = useRouter();
-
-  const isCurrent = router.asPath.startsWith(to) && !(to === '/learn' && router.asPath === '/learn/faq');
+  const path = usePathname();
+  const isCurrent = path.startsWith(to) && !(to === '/learn' && path === '/learn/faq');
 
   return (
     <Button

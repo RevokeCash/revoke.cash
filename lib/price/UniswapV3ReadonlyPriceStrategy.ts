@@ -1,16 +1,8 @@
 import { UNISWAP_V3_POOL_ABI } from 'lib/abis';
-import { TokenContract } from 'lib/interfaces';
-import {
-  Address,
-  Hex,
-  encodeAbiParameters,
-  getCreate2Address,
-  hexToNumber,
-  keccak256,
-  parseAbiParameters,
-  parseUnits,
-} from 'viem';
+import { Erc20TokenContract } from 'lib/interfaces';
+import { Address, Hex, encodeAbiParameters, getCreate2Address, hexToNumber, keccak256, parseAbiParameters } from 'viem';
 import { UniswapV3PriceStrategy, UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
+import { calculateTokenPrice } from './utils';
 
 export interface UniswapV3ReadonlyPriceStrategyOptions extends UniswapV3PriceStrategyOptions {
   poolBytecodeHash?: Hex;
@@ -43,9 +35,9 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     this.minLiquidity = options.liquidityParameters?.minLiquidity ?? 10n ** 17n;
   }
 
-  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number> {
     if (tokenContract.address === this.path.at(-1)) {
-      return parseUnits(String(1), this.decimals);
+      return 1;
     }
 
     const { publicClient } = tokenContract;
@@ -61,26 +53,32 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
       pairs.push(pair);
     }
 
-    const pairResults = await Promise.all(
-      pairs.map(async (pair) => {
-        const pairAddress = this.calculatePairAddress(pair.token0, pair.token1, pair.fee);
+    const tokenDecimalPromise = publicClient.readContract({
+      address: tokenContract.address,
+      abi: tokenContract.abi,
+      functionName: 'decimals',
+    });
 
-        const [liquidity, slot0] = await Promise.all([
-          publicClient.readContract({
-            address: pairAddress,
-            abi: UNISWAP_V3_POOL_ABI,
-            functionName: 'liquidity',
-          }),
-          publicClient.readContract({
-            address: pairAddress,
-            abi: UNISWAP_V3_POOL_ABI,
-            functionName: 'slot0',
-          }),
-        ]);
+    const pairPromises = pairs.map(async (pair) => {
+      const pairAddress = this.calculatePairAddress(pair.token0, pair.token1, pair.fee);
 
-        return { pair, liquidity, slot0 };
-      }),
-    );
+      const [liquidity, slot0] = await Promise.all([
+        publicClient.readContract({
+          address: pairAddress,
+          abi: UNISWAP_V3_POOL_ABI,
+          functionName: 'liquidity',
+        }),
+        publicClient.readContract({
+          address: pairAddress,
+          abi: UNISWAP_V3_POOL_ABI,
+          functionName: 'slot0',
+        }),
+      ]);
+
+      return { pair, liquidity, slot0 };
+    });
+
+    const [tokenDecimals, ...pairResults] = await Promise.all([tokenDecimalPromise, ...pairPromises]);
 
     const result = pairResults.reduce((acc, { pair, liquidity, slot0 }) => {
       if (!this.hasEnoughLiquidity(liquidity)) throw new Error('Not enough liquidity');
@@ -93,7 +91,9 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
       return acc * ratio;
     }, 1);
 
-    return BigInt(Math.round(result * 10 ** this.decimals));
+    const inverseTokenPrice = BigInt(Math.round(result * 10 ** this.decimals));
+
+    return calculateTokenPrice(inverseTokenPrice, tokenDecimals);
   }
 
   private calculatePairAddress(token0: Address, token1: Address, fee: number): Address {

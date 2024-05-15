@@ -1,5 +1,5 @@
 import Button from 'components/common/Button';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'lib/i18n/navigation';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -7,12 +7,11 @@ interface Props {
   href: string;
 }
 
-// TODO: This will be improved when we switch to Next.js App Directory (nested layouts)
 const AddressNavigationTab = ({ name, href }: Props) => {
   const router = useRouter();
+  const path = usePathname();
 
-  const [currentPath] = router.asPath.split('?');
-  const selected = currentPath?.endsWith(href);
+  const selected = path?.endsWith(href);
 
   const classes = twMerge(
     'whitespace-nowrap border-b-2 pb-1 text-sm font-medium border-transparent',
@@ -22,10 +21,7 @@ const AddressNavigationTab = ({ name, href }: Props) => {
   );
 
   const onClick = () => {
-    // The address part of the query is not needed in the URL
-    const query = { ...router.query };
-    delete query.address;
-    router.replace({ pathname: href, query }, undefined, { shallow: true });
+    router.replace(`${href}${location.search}`);
   };
 
   return (

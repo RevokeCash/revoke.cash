@@ -1,16 +1,18 @@
+'use client';
+
 import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { AllowanceData } from 'lib/interfaces';
+import type { BaseTokenData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatBalance, formatFiatBalance } from 'lib/utils/formatting';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {
-  allowance: AllowanceData;
+  asset: BaseTokenData;
 }
 
-const AssetCell = ({ allowance }: Props) => {
+const AssetCell = ({ asset }: Props) => {
   const ref = useRef(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -23,37 +25,38 @@ const AssetCell = ({ allowance }: Props) => {
     }
   }, [ref]);
 
-  const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(asset.chainId)}/address/${asset.contract.address}`;
 
   let link = (
-    <Href href={explorerUrl} underline="hover" external className="max-w-[8rem] lg:max-w-[12rem] truncate" ref={ref}>
-      {allowance.metadata.symbol}
+    <Href href={explorerUrl} underline="hover" external className="truncate" ref={ref}>
+      {asset.metadata.symbol}
     </Href>
   );
 
   if (showTooltip) {
-    link = <WithHoverTooltip tooltip={allowance.metadata.symbol}>{link}</WithHoverTooltip>;
+    link = <WithHoverTooltip tooltip={asset.metadata.symbol}>{link}</WithHoverTooltip>;
   }
 
-  const balanceText = formatBalance(allowance.metadata.symbol, allowance.balance, allowance.metadata.decimals);
-  const fiatBalanceText = formatFiatBalance(allowance.balance, allowance.metadata.price, allowance.metadata.decimals);
+  const balanceText = formatBalance(asset.metadata.symbol, asset.balance, asset.metadata.decimals);
+  const fiatBalanceText = formatFiatBalance(asset.balance, asset.metadata.price, asset.metadata.decimals);
 
   return (
-    <div className="flex items-center gap-1 py-1 w-40 lg:w-56">
+    <div className="flex items-center gap-1 py-1">
       <div className="flex flex-col items-start gap-0.5">
-        <div className="flex items-center gap-2 text-base">
+        <div className="flex items-center gap-2 text-base w-48 lg:w-56">
           <ChainOverlayLogo
-            src={allowance.metadata.icon}
-            alt={allowance.metadata.symbol}
-            chainId={isOnAddressPage ? undefined : allowance.chainId}
+            src={asset.metadata.icon}
+            alt={asset.metadata.symbol}
+            chainId={isOnAddressPage ? undefined : asset.chainId}
             size={24}
             overlaySize={16}
           />
           {link}
         </div>
 
-        <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
-          {balanceText} {fiatBalanceText && `(${fiatBalanceText})`}
+        <div className="text-xs text-zinc-500 dark:text-zinc-400 flex gap-1 w-48 lg:w-56">
+          <div className="truncate shrink">{balanceText}</div>
+          {fiatBalanceText ? <div className="grow shrink-0">({fiatBalanceText})</div> : null}
         </div>
       </div>
     </div>

@@ -1,9 +1,10 @@
 import { UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
-import { TokenContract } from 'lib/interfaces';
+import { Erc20TokenContract } from 'lib/interfaces';
 import { fixedPointMultiply } from 'lib/utils/math';
 import { Address, parseUnits } from 'viem';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 import { PriceStrategy } from './PriceStrategy';
+import { calculateTokenPrice } from './utils';
 
 export interface UniswapV2PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
   address: Address;
@@ -49,15 +50,15 @@ export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements Pri
     this.fee = options.feeParameters?.fee ?? [];
   }
 
-  protected async calculateInversePriceInternal(tokenContract: TokenContract): Promise<bigint> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number> {
     if (tokenContract.address === this.path.at(-1)) {
-      return parseUnits(String(1), this.decimals);
+      return 1;
     }
 
     const { publicClient } = tokenContract;
     const path = tokenContract.address === this.path.at(0) ? this.path : [tokenContract.address, ...this.path];
 
-    const [results, liquidityCheckResults] = await Promise.all([
+    const [tokenAmounts, liquidityCheckResults, tokenDecimals] = await Promise.all([
       publicClient.readContract({
         address: this.address,
         abi: this.abi,
@@ -70,11 +71,19 @@ export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements Pri
         functionName: 'getAmountsIn',
         args: [parseUnits(String(this.checkRatio * this.baseAmount), this.decimals), path].concat(this.fee) as any,
       }),
+      // get decimals
+      publicClient.readContract({
+        address: tokenContract.address,
+        abi: tokenContract.abi,
+        functionName: 'decimals',
+      }),
     ]);
 
-    if (!this.hasEnoughLiquidity(results[0], liquidityCheckResults[0])) throw new Error('Not enough liquidity');
+    if (!this.hasEnoughLiquidity(tokenAmounts[0], liquidityCheckResults[0])) throw new Error('Not enough liquidity');
 
-    return results[0] / this.baseAmount;
+    const inversePrice = tokenAmounts[0] / this.baseAmount;
+
+    return calculateTokenPrice(inversePrice, tokenDecimals);
   }
 
   // The liquidity check is to prevent the price from being too volatile. If there is more than X% slippage,

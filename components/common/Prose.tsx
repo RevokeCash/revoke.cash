@@ -18,7 +18,7 @@ const Prose = ({ children, className, ...props }: Props) => {
     'prose-p:text-zinc-700 dark:prose-p:text-zinc-300',
     'prose-p:min-w-0 min-w-0 last:prose-p:mb-0',
     'prose-li:text-zinc-700 dark:prose-li:text-zinc-300',
-    'prose-li:leading-normal',
+    'prose-li:leading-normal prose-li:my-1',
     'marker:prose-li:text-zinc-600 dark:marker:prose-li:text-zinc-400',
     'prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:bg-zinc-200 dark:prose-code:bg-zinc-800 prose-code:font-normal',
     'prose-code:before:content-none prose-code:after:content-none',

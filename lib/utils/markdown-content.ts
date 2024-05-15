@@ -1,10 +1,11 @@
 import { existsSync, readFileSync } from 'fs';
 import matter from 'gray-matter';
-import { ContentFile, ISidebarEntry, RawContentFile } from 'lib/interfaces';
+import { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
-import getT from 'next-translate/getT';
+import { getTranslations } from 'next-intl/server';
 import { join } from 'path';
 import { readingTime } from 'reading-time-estimator';
+import { deduplicateArray } from '.';
 
 const walk = require('walkdir');
 
@@ -44,27 +45,43 @@ export const readAndParseContentFile = (
     sidebarTitle: data.sidebarTitle ?? data.title,
     description: data.description,
     language,
-    author: data.author ?? null,
-    translator: data.translator ?? null,
+    author: parsePerson(data.author),
+    translator: parsePerson(data.translator),
     coverImage: getCoverImage(slug, directory),
     date: data.date?.toISOString() ?? null,
-    readingTime: Math.round(Math.max(readingTime(content, 200).minutes, 1)),
+    readingTime: calculateReadingTime(content),
   };
 
   return { content, meta };
 };
+
+const parsePerson = (person?: string): Person | null => {
+  // Placeholders are denoted with < ... >
+  if (person?.match(/^<.*>$/)) return null;
+
+  const split = person?.split('|');
+
+  if (!split) return null;
+
+  return {
+    name: split?.at(0)?.trim() ?? null,
+    url: split?.at(1)?.trim() ?? null,
+  };
+};
+
+const calculateReadingTime = (content: string): number => Math.round(Math.max(readingTime(content, 200).minutes, 1));
 
 export const getSidebar = async (
   locale: string,
   directory: string = 'learn',
   extended: boolean = false,
 ): Promise<ISidebarEntry[] | null> => {
-  const t = await getT(locale, directory);
+  const t = await getTranslations({ locale });
 
   if (directory === 'learn') {
     const sidebar: ISidebarEntry[] = [
       {
-        title: t('learn:sidebar.basics'),
+        title: t('learn.sidebar.basics'),
         path: '/learn/basics',
         children: [
           getSidebarEntry('basics/what-is-a-crypto-wallet', locale, directory, extended),
@@ -73,7 +90,7 @@ export const getSidebar = async (
         ],
       },
       {
-        title: t('learn:sidebar.approvals'),
+        title: t('learn.sidebar.approvals'),
         path: '/learn/approvals',
         children: [
           getSidebarEntry('approvals/what-are-token-approvals', locale, directory, extended),
@@ -83,18 +100,18 @@ export const getSidebar = async (
         ],
       },
       {
-        title: t('learn:sidebar.wallets'),
+        title: t('learn.sidebar.wallets'),
         path: '/learn/wallets',
         children: [
           {
-            title: t('learn:add_network.sidebar_title'),
-            description: extended ? t('learn:add_network.description', { chainName: 'Ethereum' }) : null,
+            title: t('learn.add_network.sidebar_title'),
+            description: extended ? t('learn.add_network.description', { chainName: 'Ethereum' }) : null,
             path: '/learn/wallets/add-network',
           },
         ],
       },
       {
-        title: t('learn:sidebar.faq'),
+        title: t('learn.sidebar.faq'),
         path: '/learn/faq',
         children: [],
       },
@@ -144,6 +161,11 @@ export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {
     .map((path: string) => path.split('/'));
 
   return slugs;
+};
+
+export const getAllLearnCategories = (): string[] => {
+  const slugs = getAllContentSlugs('learn');
+  return deduplicateArray([...slugs.map((slug) => slug[0]), 'wallets']);
 };
 
 export const getTranslationUrl = async (

@@ -1,4 +1,7 @@
+'use client';
+
 import { ADDRESS_ZERO } from 'lib/constants';
+import blocksDB from 'lib/databases/blocks';
 import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
@@ -9,10 +12,10 @@ import { isErc721Contract } from 'lib/utils/tokens';
 import { useAccount, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
 
-export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {}) => {
+export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate) => {
   const { data: walletClient } = useWalletClient();
   const { address: account } = useAccount();
-  const handleTransaction = useHandleTransaction();
+  const handleTransaction = useHandleTransaction(allowance.chainId);
 
   const { contract, metadata, spender, tokenId, expiration } = allowance;
 
@@ -124,10 +127,15 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate = () => {
           permit2: expiration !== undefined,
         });
 
-        await waitForTransactionConfirmation(hash, contract.publicClient);
+        const transactionReceipt = await waitForTransactionConfirmation(hash, contract.publicClient);
+        const lastUpdated = await blocksDB.getTimeLog(contract.publicClient, {
+          ...transactionReceipt,
+          blockNumber: Number(transactionReceipt.blockNumber),
+        });
+
         console.debug('Reloading data');
 
-        onUpdate(allowance, newAmountParsed);
+        onUpdate(allowance, { amount: newAmountParsed, lastUpdated });
       }
     };
 

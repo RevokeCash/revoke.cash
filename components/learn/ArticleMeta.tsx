@@ -1,6 +1,7 @@
+import Href from 'components/common/Href';
 import { ContentMeta } from 'lib/interfaces';
 import { formatArticleDate } from 'lib/utils/time';
-import Trans from 'next-translate/Trans';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   meta: ContentMeta;
@@ -11,10 +12,11 @@ const ArticleMeta = ({ meta }: Props) => {
     !!meta.author ? 'author' : undefined,
     !!meta.translator && meta.language !== 'en' ? 'translator' : undefined,
     !!meta.date ? 'date' : undefined,
-    !!meta.readingTime ? 'reading_time' : undefined,
+    !!meta.readingTime && !!meta.author ? 'reading_time' : undefined, // reading_time only if author is present (blog posts only)
   ].filter((property) => !!property);
 
-  if (properties.length === 0 || !properties.includes('author')) return null;
+  if (properties.length === 0) return null;
+  if (!properties.includes('translator') && !properties.includes('author')) return null;
 
   return (
     <div className="flex justify-center gap-2 flex-wrap max-sm:text-sm text-center my-4 text-zinc-500 dark:text-zinc-400">
@@ -36,20 +38,42 @@ const MetaProperty = ({ property, meta, separator }: MetaPropertyProps) => {
 
   return (
     <div key={property} className="flex gap-2">
-      {property === 'date' ? (
-        <div>{formatArticleDate(meta.date)}</div>
-      ) : (
-        <div>
-          <Trans
-            i18nKey={`common:article_meta.${property}`}
-            values={meta}
-            components={[<span className="font-bold" />]}
-          />
-        </div>
-      )}
+      <MetaPropertyChild property={property} meta={meta} />
       {separator && <div>•</div>}
     </div>
   );
+};
+
+const MetaPropertyChild = ({ property, meta }: MetaPropertyProps) => {
+  const t = useTranslations();
+
+  if (!property) return null;
+
+  if (property === 'date') {
+    return <div>{formatArticleDate(meta.date)}</div>;
+  }
+
+  if (property === 'author' || property === 'translator') {
+    const personLink = (children) =>
+      meta[property].url ? (
+        <Href href={meta[property].url} className="font-bold" underline="hover" external>
+          {children}
+        </Href>
+      ) : (
+        <span className="font-bold">{children}</span>
+      );
+
+    return (
+      <div>
+        {t.rich(`common.article_meta.${property}`, {
+          [property]: meta[property].name,
+          'person-link': personLink,
+        })}
+      </div>
+    );
+  }
+
+  return <div>{t.rich(`common.article_meta.${property}`, { ...(meta as any) })}</div>;
 };
 
 export default ArticleMeta;

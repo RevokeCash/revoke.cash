@@ -26,7 +26,6 @@ Then this data and the corresponding signature can be passed into the token's `p
 As mentioned above, the main problem that Permit signatures solve is that you can grant approvals without needing to send a separate approval transaction. This offers two important benefits:
 
 - Reduced friction for users, since they don't need to pay a gas fee or wait for a transaction to be mined.
-
 - Reduced security risk, since it is viable to grant limited approvals that only cover the necessary amount of tokens for specific transactions.
 
 ## Drawbacks of Permit Signatures

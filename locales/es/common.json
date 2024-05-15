@@ -1,8 +1,8 @@
 {
   "article_meta": {
-    "author": "Escrito por <0>{{author}}</0>",
-    "reading_time": "{{readingTime}} min de lectura",
-    "translator": "Traducido por <0>{{translator}}</0>"
+    "author": "Escrito por <person-link>{author}</person-link>",
+    "reading_time": "{readingTime} min de lectura",
+    "translator": "Traducido por <person-link>{translator}</person-link>"
   },
   "buttons": {
     "back_to_exploits": "Volver a Hacks",
@@ -48,7 +48,6 @@
     "title": "Conecta Tu Cartera"
   },
   "donate": {
-    "gitcoin_grants": "O contribuye a nuestro<0>Grant de Gitcoin</0>",
     "title": "Donar a Revoke.cash"
   },
   "errors": {
@@ -73,7 +72,7 @@
       "title": "Esta página no existe."
     },
     "messages": {
-      "chain_could_not_connect": "No se ha podido conectar a {{chainName}}"
+      "chain_could_not_connect": "No se ha podido conectar a {chainName}"
     }
   },
   "footer": {
@@ -89,17 +88,16 @@
     "learn": "Aprender",
     "privacy": "Política de privacidad",
     "product": "Producto",
-    "sponsors": "Patrocinadores",
     "terms": "Términos",
     "token_approval_checker": "Comprobador de Autorización de Tokens",
     "what_are_token_approvals": "¿Qué son las Autorizaciones de Tokens?"
   },
   "meta": {
-    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {{chainName}} y 70 redes más.",
-    "title": "Revoca las autorizaciones de tus tokens en más de 70 redes"
+    "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {chainName} y en 80 redes más.",
+    "title": "Revoca las Aprobaciones de Tus Tokens en Más de 80 Redes"
   },
   "misc": {
-    "powered_by": "Desarrollado por <0>{{name}}</0>"
+    "powered_by": "Desarrollado por <powered-by-link>{name}</powered-by-link>"
   },
   "nav": {
     "about": "Sobre nosotros",
@@ -115,9 +113,9 @@
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
-    "revoke_failed": "❌ No se pudo revocar la autorización: {{message}}",
-    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {{message}}. Por favor ponte en contacto con el equipo de este token para resolver este problema.",
-    "transaction_failed": "❌ Transacción fallida: {{message}}",
+    "revoke_failed": "❌ No se pudo revocar la autorización: {message}",
+    "revoke_failed_revert": "❌ No se pudo revocar la autorización: {message}. Por favor ponte en contacto con el equipo de este token para resolver este problema.",
+    "transaction_failed": "❌ Transacción fallida: {message}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
     "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."
   }

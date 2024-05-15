@@ -1,4 +1,4 @@
-export const WHOIS_BASE_URL = 'https://raw.githubusercontent.com/RevokeCash/whois/master/data/generated';
+export const WHOIS_BASE_URL = 'https://whois.revoke.cash/generated';
 
 export const CHROME_EXTENSION_URL =
   'https://chrome.google.com/webstore/detail/revokecash/nmniboccheadcclilkfkonokbcoceced';
@@ -9,6 +9,7 @@ export const TWITTER_URL = 'https://twitter.com/RevokeCash';
 
 export const ADDRESS_ZERO_PADDED = '0x0000000000000000000000000000000000000000000000000000000000000000';
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000';
+export const DUMMY_ADDRESS_PADDED = '0x0000000000000000000000000000000000000000000000000000000000000001';
 export const DUMMY_ADDRESS = '0x0000000000000000000000000000000000000001';
 export const DUMMY_ADDRESS_2 = '0x0000000000000000000000000000000000000002';
 export const OPENSEA_REGISTRY_ADDRESS = '0xa5409ec958C83C3f309868babACA7c86DCB077c1';
@@ -27,3 +28,4 @@ export const RPC_OVERRIDES = JSON.parse(process.env.NEXT_PUBLIC_NODE_URLS ?? '{}
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 export const INFURA_API_KEY = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
 export const HARPIE_API_KEY = process.env.HARPIE_API_KEY ?? process.env.NEXT_PUBLIC_HARPIE_API_KEY;
+export const RESERVOIR_API_KEY = process.env.RESERVOIR_API_KEY ?? process.env.NEXT_PUBLIC_RESERVOIR_API_KEY;

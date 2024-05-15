@@ -1,5 +1,7 @@
+'use client';
+
 import { useMounted } from 'lib/hooks/useMounted';
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import ChainSelect from '../common/select/ChainSelect';
 import WalletIndicatorDropdown from './WalletIndicatorDropdown';
 
@@ -10,21 +12,21 @@ interface Props {
   className?: string;
 }
 
+// TODO: Looks like sometimes the connected chain doesn't sync up with the actual wallet chain
 const WalletIndicator = ({ menuAlign, size, style, className }: Props) => {
   const isMounted = useMounted();
-  const { address: account } = useAccount();
-  const { switchNetwork } = useSwitchNetwork();
-  const { chain } = useNetwork();
+  const { address: account, chain } = useAccount();
+  const { switchChain } = useSwitchChain();
 
   if (!isMounted) return null;
 
   return (
     <div className="flex gap-2">
-      {account && chain && (
+      {account && (
         <ChainSelect
           instanceId="global-chain-select"
-          onSelect={switchNetwork}
-          selected={chain.id}
+          onSelect={(chainId) => switchChain({ chainId })}
+          selected={chain?.id}
           menuAlign={menuAlign}
         />
       )}

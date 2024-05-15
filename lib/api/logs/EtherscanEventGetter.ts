@@ -54,7 +54,7 @@ export class EtherscanEventGetter implements EventGetter {
     if (typeof data.result === 'string') {
       // If we somehow hit the rate limit, we try again
       if (data.result.includes('Max rate limit reached')) {
-        console.error('Rate limit reached, retrying...');
+        console.error('Etherscan: Rate limit reached, retrying...');
         return this.getEvents(chainId, filter);
       }
 
@@ -66,9 +66,11 @@ export class EtherscanEventGetter implements EventGetter {
       throw new Error(data.result);
     }
 
-    // Routescan / Snowtrace will report a timeout if the range is too large
-    if (isNullish(data?.result) && typeof data.message === 'string' && data.message.includes('Timeout reached')) {
-      throw new Error('Log response size exceeded');
+    if (typeof data.message === 'string') {
+      // Routescan / Snowtrace will report a timeout if the range is too large
+      if (isNullish(data?.result) && data.message.includes('Timeout reached')) {
+        throw new Error('Log response size exceeded');
+      }
     }
 
     if (!Array.isArray(data.result)) {
@@ -127,7 +129,7 @@ const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
     return await fn();
   } catch (e) {
     if (e.message.includes('429')) {
-      console.error('Rate limit reached, retrying...');
+      console.error('Etherscan: Rate limit reached, retrying...');
       return retryOn429(fn);
     }
 

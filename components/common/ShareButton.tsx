@@ -1,10 +1,10 @@
 import { ShareIcon } from '@heroicons/react/24/solid';
 import { writeToClipBoard } from 'lib/utils';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import Button from './Button';
 
 const ShareButton = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   return (
     <Button
       style="tertiary"

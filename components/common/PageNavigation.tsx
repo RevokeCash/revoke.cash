@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { ISidebarEntry } from 'lib/interfaces';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 
@@ -29,7 +29,7 @@ interface PageButtonProps {
 }
 
 const PageButton = ({ page, direction }: PageButtonProps) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   if (!page) return <div />;
 
   const buttonClasses = twMerge(
@@ -47,7 +47,7 @@ const PageButton = ({ page, direction }: PageButtonProps) => {
   return (
     <Button size="none" style="secondary" className={buttonClasses} href={page.path} router>
       <div className={contentClasses}>
-        <div className="text-xs md:text-sm">{t(`common:buttons.${direction}`)}</div>
+        <div className="text-xs md:text-sm">{t(`common.buttons.${direction}`)}</div>
         <div className="text-sm md:text-base flex items-center">
           {direction === 'previous' && <ChevronLeftIcon className="w-5 h-5 mr-1 md:mr-2 shrink-0" />}
           <div className={titleClasses}>{page.title}</div>

@@ -1,14 +1,14 @@
-import { displayTransactionSubmittedToast } from 'components/common/transaction-submitted-toast';
+import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { TransactionType } from 'lib/interfaces';
 import { isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
-import useTranslation from 'next-translate/useTranslation';
+import { useTranslations } from 'next-intl';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { Hash, stringify } from 'viem';
 
-export const useHandleTransaction = () => {
+export const useHandleTransaction = (chainId: number) => {
   const toastRef = useRef();
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const checkError = (e: any, type: TransactionType): void => {
     const message = parseErrorMessage(e);
@@ -24,18 +24,18 @@ export const useHandleTransaction = () => {
     // so we tell the user to revoke instead if the contract doesn't allow the simple use
     // of contract.approve(0)
     if (type === TransactionType.UPDATE) {
-      return void toast.info(t('common:toasts.update_failed'));
+      return void toast.info(t('common.toasts.update_failed'));
     }
 
     if (type === TransactionType.REVOKE) {
       if (isRevertedError(message)) {
-        return void toast.info(t('common:toasts.revoke_failed_revert', { message }));
+        return void toast.info(t('common.toasts.revoke_failed_revert', { message }));
       }
 
-      return void toast.info(t('common:toasts.revoke_failed', { message }));
+      return void toast.info(t('common.toasts.revoke_failed', { message }));
     }
 
-    return void toast.info(t('common:toasts.transaction_failed', { message }));
+    return void toast.info(t('common.toasts.transaction_failed', { message }));
   };
 
   const handleTransaction = async (transactionPromise: Promise<Hash>, type: TransactionType) => {
@@ -43,7 +43,7 @@ export const useHandleTransaction = () => {
       const transactionHash = await transactionPromise;
 
       if (transactionHash) {
-        displayTransactionSubmittedToast(toastRef, t);
+        displayTransactionSubmittedToast(chainId, transactionHash, toastRef);
       }
 
       return transactionHash;

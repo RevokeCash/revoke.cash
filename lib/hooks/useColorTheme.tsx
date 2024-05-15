@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
 

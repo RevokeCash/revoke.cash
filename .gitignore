@@ -62,3 +62,9 @@ scripts/chainid-lookup.csv
 
 # Docker
 /volumes
+.vscode/settings.json
+.vscode/launch.json
+
+certificates
+# Sentry Config File
+.sentryclirc

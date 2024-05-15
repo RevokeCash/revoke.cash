@@ -2,18 +2,16 @@ import { ERC721_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import { useMemo } from 'react';
-import { Address, getAbiItem, getEventSelector } from 'viem';
-import { useBlockNumber } from '../useBlockNumber';
-import { useLogs } from '../useLogs';
+import { Address, getAbiItem, toEventSelector } from 'viem';
+import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';
 
 export const useEvents = (address: Address, chainId: number) => {
   const { openSeaProxyAddress, isLoading: isOpenSeaProxyAddressLoading } = useOpenSeaProxyAddress(address);
-  const { data: blockNumber, isLoading: isBlockNumberLoading, error: blockNumberError } = useBlockNumber(chainId);
 
   const getErc721EventSelector = (eventName: 'Transfer' | 'Approval' | 'ApprovalForAll') => {
-    return getEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
+    return toEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
   };
 
   const addressTopic = address ? addressToTopic(address) : undefined;
@@ -22,31 +20,29 @@ export const useEvents = (address: Address, chainId: number) => {
   const approvalTopics = addressTopic && [getErc721EventSelector('Approval'), addressTopic];
   const approvalForAllTopics = addressTopic && [getErc721EventSelector('ApprovalForAll'), addressTopic];
 
-  const baseFilter = { fromBlock: 0, toBlock: blockNumber };
-
   const {
     data: transferTo,
     isLoading: isTransferToLoading,
     error: transferToError,
-  } = useLogs('Transfer (to)', chainId, { ...baseFilter, topics: transferToTopics });
+  } = useLogsFullBlockRange('Transfer (to)', chainId, { topics: transferToTopics });
 
   const {
     data: transferFrom,
     isLoading: isTransferFromLoading,
     error: transferFromError,
-  } = useLogs('Transfer (from)', chainId, { ...baseFilter, topics: transferFromTopics });
+  } = useLogsFullBlockRange('Transfer (from)', chainId, { topics: transferFromTopics });
 
   const {
     data: approval,
     isLoading: isApprovalLoading,
     error: approvalError,
-  } = useLogs('Approval', chainId, { ...baseFilter, topics: approvalTopics });
+  } = useLogsFullBlockRange('Approval', chainId, { topics: approvalTopics });
 
   const {
     data: approvalForAllUnpatched,
     isLoading: isApprovalForAllLoading,
     error: approvalForAllError,
-  } = useLogs('ApprovalForAll', chainId, { ...baseFilter, topics: approvalForAllTopics });
+  } = useLogsFullBlockRange('ApprovalForAll', chainId, { topics: approvalForAllTopics });
 
   const {
     events: permit2Approval,
@@ -69,9 +65,9 @@ export const useEvents = (address: Address, chainId: number) => {
   }, [transferFrom, transferTo, approval, approvalForAllUnpatched, openSeaProxyAddress]);
 
   const isEventsLoading = isTransferFromLoading || isTransferToLoading || isApprovalLoading || isApprovalForAllLoading;
-  const isLoading = isOpenSeaProxyAddressLoading || isBlockNumberLoading || isEventsLoading || isPermit2ApprovalLoading;
+  const isLoading = isOpenSeaProxyAddressLoading || isEventsLoading || isPermit2ApprovalLoading;
   const eventsError = transferFromError || transferToError || approvalError || approvalForAllError;
-  const error = blockNumberError || eventsError || permit2ApprovalError;
+  const error = eventsError || permit2ApprovalError;
 
   const events = useMemo(() => {
     if (!transferFrom || !transferTo || !approval || !approvalForAll || !permit2Approval) return undefined;
