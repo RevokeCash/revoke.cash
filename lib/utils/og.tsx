@@ -21,14 +21,16 @@ interface OgImageProps {
 }
 
 export const generateOgImage = ({ title, background }: OgImageProps) => {
-  // TODO: Fix size (should be 1200x630)
-  const width = 1600;
-  const height = 900;
+  const width = 1200;
+  const height = 630;
+
+  const icon = loadDataUrl(`public/assets/images/revoke-icon-orange-black.svg`, 'image/svg+xml');
 
   const response = (
     <div tw="relative bg-white w-full h-full flex flex-col text-4xl leading-none items-center justify-center">
       <img tw="absolute" height={height} width={width} src={background} />
-      <div style={{ display: 'flex', top: 290 }}>
+      <img tw="absolute top-10 left-10" height="96" width="96" src={icon} />
+      <div style={{ display: 'flex', top: 192 }}>
         <OgHeaderText>{title}</OgHeaderText>
       </div>
     </div>
@@ -39,9 +41,13 @@ export const generateOgImage = ({ title, background }: OgImageProps) => {
     height,
     fonts: [
       {
-        name: 'Futura Condensed Bold',
-        data: loadFile('public/assets/fonts/FuturaCondensedBold.otf'),
+        name: 'Inter Bold',
+        data: loadFile('public/assets/fonts/Inter-Bold.ttf'),
       },
     ],
   });
+};
+
+export const getOpenGraphImageUrl = (url: string, locale: string) => {
+  return `${locale === 'en' ? '' : `/${locale}`}${url}/opengraph-image`;
 };

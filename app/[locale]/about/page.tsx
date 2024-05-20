@@ -12,6 +12,8 @@ interface Props {
   };
 }
 
+export const dynamic = 'error';
+
 export const generateMetadata = async ({ params: { locale } }): Promise<Metadata> => {
   const t = await getTranslations({ locale });
 

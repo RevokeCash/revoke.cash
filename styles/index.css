@@ -65,11 +65,7 @@ a:visited {
 }
 
 #nprogress .bar {
-  @apply bg-black dark:bg-white;
-}
-
-#nprogress .peg {
-  @apply shadow-black dark:shadow-white shadow-lg;
+  @apply bg-brand dark:bg-brand;
 }
 
 .animate-spin-fast {

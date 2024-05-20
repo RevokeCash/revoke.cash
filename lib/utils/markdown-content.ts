@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import matter from 'gray-matter';
 import { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
@@ -6,6 +6,7 @@ import { getTranslations } from 'next-intl/server';
 import { join } from 'path';
 import { readingTime } from 'reading-time-estimator';
 import { deduplicateArray } from '.';
+import { getOpenGraphImageUrl } from './og';
 
 const walk = require('walkdir');
 
@@ -107,6 +108,7 @@ export const getSidebar = async (
             title: t('learn.add_network.sidebar_title'),
             description: extended ? t('learn.add_network.description', { chainName: 'Ethereum' }) : null,
             path: '/learn/wallets/add-network',
+            coverImage: getOpenGraphImageUrl('/learn/wallets/add-network', locale),
           },
         ],
       },
@@ -143,7 +145,10 @@ const getSidebarEntry = (
   const path = ['', directory, normalisedSlug].join('/');
 
   const entry: ISidebarEntry = { title: meta.sidebarTitle, path, date: meta.date };
-  if (extended) entry.description = meta.description;
+  if (extended) {
+    entry.description = meta.description;
+    entry.coverImage = meta.coverImage;
+  }
   if (directory === 'blog') entry.readingTime = meta.readingTime;
 
   return entry;
@@ -207,8 +212,11 @@ export const getTranslationUrl = async (
   return `https://localazy.com/p/revoke-cash-markdown-content/phrases/${languageCodes[locale]}/edit/${key.id}`;
 };
 
-export const getCoverImage = (slug: string | string[], directory: string = 'learn'): string | null => {
-  const coverImage = join('/', 'assets', 'images', directory, [slug].flat().join('/'), 'cover.jpg');
-  if (existsSync(join(process.cwd(), 'public', coverImage))) return coverImage;
-  return null;
+// TODO: Use og.tsx getOpenGraphImageUrl instead, once Next gets its shit together and supports [...slug]/opengraph-image.tsx
+export const getCoverImage = (
+  slug: string | string[],
+  directory: string = 'learn',
+  locale: string = 'en',
+): string | null => {
+  return join('/', locale === 'en' ? '' : locale, directory, 'og', [slug].flat().join('/'));
 };

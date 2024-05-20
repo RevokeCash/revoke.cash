@@ -10,6 +10,8 @@ interface Props {
   };
 }
 
+export const dynamic = 'error';
+
 export const metadata = {
   title: 'Terms and Conditions',
   description: 'Privacy Policy for Revoke.cash',

@@ -4,7 +4,7 @@ import ImageWithFallback from 'components/common/ImageWithFallback';
 import { ISidebarEntry } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 
-const ArticleCard = ({ title, description, path, date, readingTime }: ISidebarEntry) => {
+const ArticleCard = ({ title, description, path, date, readingTime, coverImage }: ISidebarEntry) => {
   const t = useTranslations();
 
   return (
@@ -14,10 +14,10 @@ const ArticleCard = ({ title, description, path, date, readingTime }: ISidebarEn
         className="flex flex-col justify-between gap-4"
         image={
           <ImageWithFallback
-            src={`/assets/images${path}/cover.jpg`}
+            src={coverImage}
             alt={`${title} Cover Image`}
-            width={1600}
-            height={900}
+            width={1200}
+            height={630}
             className="rounded-t-[calc(theme(borderRadius.lg)-1px)]"
             fallbackSrc="/opengraph-image.jpg"
           />

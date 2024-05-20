@@ -4,6 +4,7 @@ import Prose from 'components/common/Prose';
 import ArticleCardSection from 'components/learn/ArticleCardSection';
 import { locales } from 'lib/i18n/config';
 import { getAllLearnCategories, getSidebar } from 'lib/utils/markdown-content';
+import { getOpenGraphImageUrl } from 'lib/utils/og';
 import { Metadata, NextPage } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
@@ -13,6 +14,9 @@ interface Props {
     category: string;
   };
 }
+
+export const dynamic = 'error';
+export const dynamicParams = false;
 
 export const generateStaticParams = () => {
   const categorySlugs = getAllLearnCategories();
@@ -25,9 +29,6 @@ export const generateMetadata = async ({ params: { locale, category } }): Promis
   return {
     title: t(`learn.sections.${category}.title`),
     description: t('learn.meta.description'),
-    openGraph: {
-      images: `/assets/images/learn/${category}/cover.jpg`,
-    },
   };
 };
 
@@ -42,7 +43,7 @@ const LearnSectionPage: NextPage<Props> = async ({ params }: Props) => {
     description: t('learn.meta.description'),
     language: params.locale,
     sidebarTitle: t(`learn.sidebar.${params.category}`),
-    coverImage: `/assets/images/learn/${params.category}/cover.jpg`,
+    coverImage: getOpenGraphImageUrl(`/learn/${params.category}`, params.locale),
   };
 
   return (

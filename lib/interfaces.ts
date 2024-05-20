@@ -115,9 +115,10 @@ export interface Marketplace {
 }
 
 export interface ISidebarEntry {
+  path: string;
   title: string;
   description?: string;
-  path: string;
+  coverImage?: string;
   children?: ISidebarEntry[];
   date?: string;
   readingTime?: number;

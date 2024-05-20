@@ -6,6 +6,7 @@ import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getSidebar } from 'lib/utils/markdown-content';
+import { getOpenGraphImageUrl } from 'lib/utils/og';
 import { Metadata, NextPage } from 'next';
 import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
@@ -15,6 +16,9 @@ import AddNetworkForm from './AddNetworkForm';
 interface Props {
   params: { locale: string; slug: string };
 }
+
+export const dynamic = 'error';
+export const dynamicParams = false;
 
 export const generateStaticParams = () => {
   const slugs = SUPPORTED_CHAINS.map(getChainSlug);
@@ -29,9 +33,6 @@ export const generateMetadata = async ({ params: { locale, slug } }): Promise<Me
   return {
     title: t('learn.add_network.title', { chainName }),
     description: t('learn.add_network.description', { chainName }),
-    openGraph: {
-      images: `/assets/images/generated/${locale}/learn/wallets/add-network/${slug}/og.jpg`,
-    },
   };
 };
 
@@ -51,7 +52,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
     sidebarTitle: t('learn.add_network.title', { chainName }),
     description: t('learn.add_network.description', { chainName }),
     language: params.locale,
-    coverImage: `/assets/images/generated/${params.locale}/learn/wallets/add-network/${params.slug}/og.jpg`,
+    coverImage: getOpenGraphImageUrl(`/learn/wallets/add-network/${params.slug}`, params.locale),
   };
 
   return (

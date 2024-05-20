@@ -47,7 +47,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
             </div>
             <Prose className="mb-4">
               {meta.coverImage ? (
-                <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} priority fetchPriority="high" />
+                <Image src={meta.coverImage} alt={meta.title} width={1200} height={630} priority fetchPriority="high" />
               ) : null}
             </Prose>
             {children}

@@ -17,6 +17,9 @@ interface Props {
   };
 }
 
+export const dynamic = 'error';
+export const dynamicParams = false;
+
 export const generateStaticParams = () => {
   const slugs = SUPPORTED_CHAINS.map(getChainSlug);
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));

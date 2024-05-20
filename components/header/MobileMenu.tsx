@@ -3,6 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
+import FocusTrap from 'components/common/FocusTrap';
 import WalletIndicator from 'components/header/WalletIndicator';
 import { usePathname } from 'lib/i18n/navigation';
 import { useTranslations } from 'next-intl';
@@ -45,7 +46,7 @@ const MobileMenu = () => {
           >
             <Dialog.Panel className="absolute inset-0 top-[4.5rem] z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
               <div className="flex flex-col items-center gap-6 p-12">
-                <button ref={focusRef} /> {/* Focus trap */}
+                <FocusTrap ref={focusRef} />
                 <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
                 <DonateButton size="none" style="tertiary" className="text-lg" />
                 <NavLink to="/extension" text={t('common.nav.extension')} />

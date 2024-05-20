@@ -38,7 +38,7 @@
     "ky": "^1.2.3",
     "md5": "^2.3.0",
     "mixpanel-browser": "^2.50.0",
-    "next": "^14.2.1",
+    "next": "^14.2.3",
     "next-intl": "^3.11.1",
     "nextjs-toploader": "^1.6.12",
     "p-queue": "^8.0.1",

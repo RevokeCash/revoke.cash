@@ -148,7 +148,7 @@ export const columns = [
   }),
   columnHelper.accessor(accessors.valueAtRisk, {
     id: ColumnId.VALUE_AT_RISK,
-    header: () => <HeaderCell i18nKey="address.headers.value_at_risk" align="left" />,
+    header: () => <HeaderCell i18nKey="address.headers.value_at_risk" align="right" />,
     cell: (info) => <ValueAtRiskCell allowance={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.basic,

@@ -3,6 +3,7 @@ import Divider from 'components/common/Divider';
 import Prose from 'components/common/Prose';
 import ArticleCardSection from 'components/learn/ArticleCardSection';
 import { getSidebar } from 'lib/utils/markdown-content';
+import { getOpenGraphImageUrl } from 'lib/utils/og';
 import { Metadata, NextPage } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
@@ -12,15 +13,14 @@ interface Props {
   };
 }
 
+export const dynamic = 'error';
+
 export const generateMetadata = async ({ params: { locale } }): Promise<Metadata> => {
   const t = await getTranslations({ locale });
 
   return {
     title: t('learn.meta.title'),
     description: t('learn.meta.description'),
-    openGraph: {
-      images: '/assets/images/learn/cover.jpg',
-    },
   };
 };
 
@@ -34,7 +34,7 @@ const LearnPage: NextPage<Props> = async ({ params }: Props) => {
     title: t('learn.meta.title'),
     description: t('learn.meta.description'),
     language: params.locale,
-    coverImage: '/assets/images/learn/cover.jpg',
+    coverImage: getOpenGraphImageUrl('/learn', params.locale),
   };
 
   return (

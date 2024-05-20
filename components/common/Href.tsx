@@ -22,8 +22,8 @@ const Href = (
   };
 
   const underlineMapping = {
-    always: 'underline hover:underline',
-    hover: 'no-underline hover:underline',
+    always: 'underline hover:underline decoration-brand',
+    hover: 'no-underline hover:underline decoration-brand',
     none: 'no-underline hover:no-underline',
   };
 

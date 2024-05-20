@@ -11,6 +11,9 @@ interface Props {
   };
 }
 
+export const dynamic = 'error';
+export const dynamicParams = false;
+
 export const generateStaticParams = () => {
   const slugs = getAllContentSlugs('blog');
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));

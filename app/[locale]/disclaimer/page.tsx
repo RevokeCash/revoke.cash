@@ -10,6 +10,8 @@ interface Props {
   };
 }
 
+export const dynamic = 'error';
+
 export const metadata = {
   title: 'Disclaimer',
   description: 'Disclaimer for Revoke.cash',

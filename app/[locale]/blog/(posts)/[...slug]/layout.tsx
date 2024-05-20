@@ -49,7 +49,7 @@ const BlogLayout = async ({ params, children }: Props) => {
           <TranslateButton language={meta.language} translationUrl={translationUrl} />
         </div>
         <Prose className="mb-4">
-          {meta.coverImage ? <Image src={meta.coverImage} alt={meta.title} width={1600} height={900} /> : null}
+          {meta.coverImage ? <Image src={meta.coverImage} alt={meta.title} width={1200} height={630} /> : null}
         </Prose>
         <ArticleMeta meta={meta} />
         {children}

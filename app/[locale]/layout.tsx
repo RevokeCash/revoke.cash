@@ -33,6 +33,8 @@ interface Props {
   };
 }
 
+export const dynamicParams = false;
+
 export const generateStaticParams = () => {
   return locales.map((locale) => ({ locale }));
 };

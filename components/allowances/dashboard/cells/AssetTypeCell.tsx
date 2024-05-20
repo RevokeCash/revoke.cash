@@ -12,7 +12,7 @@ const AssetTypeCell = ({ assetType }: Props) => {
 
   const classes = twMerge(
     locale === 'ja' ? 'w-16' : 'w-12',
-    assetType === 'NFT' ? 'bg-blue-400 text-zinc-900' : 'bg-yellow-400 text-zinc-900',
+    assetType === 'NFT' ? 'bg-zinc-200 dark:bg-zinc-800' : 'bg-zinc-300 dark:bg-zinc-700',
   );
 
   return (

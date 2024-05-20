@@ -22,7 +22,7 @@ const NavLink = ({ to, text, className }: Props) => {
       style="tertiary"
       className={twMerge(
         'text-lg shrink-0',
-        isCurrent && 'underline underline-offset-8 decoration-2  decoration-brand',
+        isCurrent && 'underline underline-offset-8 decoration-2 decoration-brand',
         className,
       )}
       router
