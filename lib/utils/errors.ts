@@ -46,7 +46,6 @@ export const parseErrorMessage = (error: any): string => {
     error?.error?.message ||
     error?.data?.message ||
     error?.response?.data?.message ||
-    error?.details ||
     error?.shortMessage ||
     error?.message ||
     error;

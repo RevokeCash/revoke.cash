@@ -400,6 +400,14 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.BNBSmartChainMainnet,
   }),
+  [ChainId.BOB]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.BOB,
+    name: 'BOB',
+    logoUrl: '/assets/images/vendor/chains/bob.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.gobob.xyz/api',
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.BobaNetwork]: new Chain({
     type: SupportType.COVALENT,
     chainId: ChainId.BobaNetwork,
@@ -1320,6 +1328,15 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
+  [ChainId.NeonEVMMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.NeonEVMMainnet,
+    name: 'Neon',
+    logoUrl: '/assets/images/vendor/chains/neon.svg',
+    etherscanCompatibleApiUrl: 'https://neon.blockscout.com/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.OasisEmerald]: new Chain({
     type: SupportType.COVALENT,
     chainId: ChainId.OasisEmerald,
@@ -1825,6 +1842,14 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
+  [ChainId.Viction]: new Chain({
+    type: SupportType.COVALENT,
+    chainId: ChainId.Viction,
+    name: 'Viction',
+    logoUrl: '/assets/images/vendor/chains/viction.svg',
+    explorerUrl: 'https://www.vicscan.xyz',
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.Wanchain]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Wanchain,
@@ -2057,6 +2082,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.AstarzkEVM,
   ChainId.Moonbeam,
   ChainId.Moonriver,
+  ChainId.BOB,
   ChainId.Canto,
   ChainId.AuroraMainnet,
   ChainId.Fraxtal,
@@ -2089,6 +2115,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Zora,
   ChainId.VelasEVMMainnet,
   ChainId.MilkomedaC1Mainnet,
+  ChainId.NeonEVMMainnet,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
   ChainId.EthereumClassic,
@@ -2102,6 +2129,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.DarwiniaNetwork,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.InEVMMainnet,
+  ChainId.Viction,
   ChainId.NahmiiMainnet,
   ChainId.Shiden,
   ChainId.CallistoMainnet,
