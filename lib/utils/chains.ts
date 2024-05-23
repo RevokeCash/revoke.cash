@@ -1010,6 +1010,12 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://explorer.inevm.com/api',
     priceStrategy: undefined, // TODO
   }),
+  [ChainId.IoTeXNetworkMainnet]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.IoTeXNetworkMainnet,
+    name: 'IoTeX',
+    logoUrl: '/assets/images/vendor/chains/iotex.png',
+  }),
   [ChainId.KardiaChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.KardiaChainMainnet,
@@ -1800,12 +1806,13 @@ export const CHAINS: Record<number, Chain> = {
     correspondingMainnetChainId: ChainId.SyscoinMainnet,
   }),
   [9789]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: 9789,
     name: 'Tabi Testnet',
     logoUrl: '/assets/images/vendor/chains/tabi.svg',
     infoUrl: 'https://www.tabichain.com',
     explorerUrl: 'https://testnet.tabiscan.com',
+    etherscanCompatibleApiUrl: 'https://testnet-api2.tabiscan.com/api',
     rpc: {
       main: 'https://rpc.testnet.tabichain.com',
     },
@@ -1821,6 +1828,12 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
+  }),
+  [ChainId.TelosEVMMainnet]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.TelosEVMMainnet,
+    name: 'Telos',
+    logoUrl: '/assets/images/vendor/chains/telos.png',
   }),
   [ChainId.VelasEVMMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
