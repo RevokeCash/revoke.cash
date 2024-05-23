@@ -14,7 +14,7 @@ const HeaderLogo = () => {
         fetchPriority="high"
       />
       <Image
-        src="/assets/images/revoke-wordmark-orange.svg"
+        src="/assets/images/revoke-wordmark-white.svg"
         alt="Revoke.cash logo"
         height="30"
         width="130"
