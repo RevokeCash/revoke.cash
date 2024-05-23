@@ -36,7 +36,6 @@ module.exports = {
           'sans-serif',
         ],
         monosans: ['Helvetica Neue', 'sans-serif'],
-        futura: ['Futura Condensed'],
         code: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
         monospace: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
       },

@@ -33,6 +33,9 @@ export const generateMetadata = async ({ params: { locale, slug } }): Promise<Me
   return {
     title: t('learn.add_network.title', { chainName }),
     description: t('learn.add_network.description', { chainName }),
+    openGraph: {
+      images: getOpenGraphImageUrl(`/learn/wallets/add-network/${slug}`, locale),
+    },
   };
 };
 

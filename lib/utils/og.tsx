@@ -49,5 +49,5 @@ export const generateOgImage = ({ title, background }: OgImageProps) => {
 };
 
 export const getOpenGraphImageUrl = (url: string, locale: string) => {
-  return `${locale === 'en' ? '' : `/${locale}`}${url}/opengraph-image`;
+  return `/${locale}/og.jpg${url}`;
 };

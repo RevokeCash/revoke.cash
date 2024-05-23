@@ -4,6 +4,7 @@ import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
 import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
+import { getOpenGraphImageUrl } from 'lib/utils/og';
 import { Metadata, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
@@ -34,7 +35,7 @@ export const generateMetadata = async ({ params: { locale, slug } }): Promise<Me
     title: t('token_approval_checker.meta.title', { chainName }),
     description: t('common.meta.description', { chainName }),
     openGraph: {
-      images: `/assets/images/generated/${locale}/token-approval-checker/${slug}/og.jpg`,
+      images: getOpenGraphImageUrl(`/token-approval-checker/${slug}`, locale),
     },
   };
 };
@@ -45,7 +46,6 @@ const TokenApprovalCheckerPage: NextPage<Props> = ({ params }) => {
   const t = useTranslations();
 
   const chainId = getChainIdFromSlug(params.slug);
-
   const chainName = getChainName(chainId);
 
   return (

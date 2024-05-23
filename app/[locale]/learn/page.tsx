@@ -21,6 +21,9 @@ export const generateMetadata = async ({ params: { locale } }): Promise<Metadata
   return {
     title: t('learn.meta.title'),
     description: t('learn.meta.description'),
+    openGraph: {
+      images: getOpenGraphImageUrl('/learn', locale),
+    },
   };
 };
 

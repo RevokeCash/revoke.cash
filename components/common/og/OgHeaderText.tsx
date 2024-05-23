@@ -17,6 +17,7 @@ const OgHeaderText = ({ children, tw }: Props) => {
         backgroundColor: 'rgba(0, 0, 0, 1)',
         padding: '0.75rem 1.5rem',
         letterSpacing: '-2px',
+        maxWidth: '1120px',
       }}
     >
       {children}

@@ -4,6 +4,7 @@ import Href from 'components/common/Href';
 import FaqItem from 'components/faq/FaqItem';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getSidebar } from 'lib/utils/markdown-content';
+import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
@@ -22,6 +23,9 @@ export const generateMetadata = async ({ params: { locale } }): Promise<Metadata
   return {
     title: t('faq.meta.title'),
     description: t('faq.meta.description'),
+    openGraph: {
+      images: getOpenGraphImageUrl('/learn/faq', locale),
+    },
   };
 };
 

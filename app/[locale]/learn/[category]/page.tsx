@@ -29,6 +29,9 @@ export const generateMetadata = async ({ params: { locale, category } }): Promis
   return {
     title: t(`learn.sections.${category}.title`),
     description: t('learn.meta.description'),
+    openGraph: {
+      images: getOpenGraphImageUrl(`/learn/${category}`, locale),
+    },
   };
 };
 

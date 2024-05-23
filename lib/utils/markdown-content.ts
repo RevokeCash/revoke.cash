@@ -48,7 +48,7 @@ export const readAndParseContentFile = (
     language,
     author: parsePerson(data.author),
     translator: parsePerson(data.translator),
-    coverImage: getCoverImage(slug, directory),
+    coverImage: getCoverImage(slug, directory, locale),
     date: data.date?.toISOString() ?? null,
     readingTime: calculateReadingTime(content),
   };
@@ -212,11 +212,10 @@ export const getTranslationUrl = async (
   return `https://localazy.com/p/revoke-cash-markdown-content/phrases/${languageCodes[locale]}/edit/${key.id}`;
 };
 
-// TODO: Use og.tsx getOpenGraphImageUrl instead, once Next gets its shit together and supports [...slug]/opengraph-image.tsx
 export const getCoverImage = (
   slug: string | string[],
   directory: string = 'learn',
   locale: string = 'en',
 ): string | null => {
-  return join('/', locale === 'en' ? '' : locale, directory, 'og', [slug].flat().join('/'));
+  return getOpenGraphImageUrl(`/${directory}/${[slug].flat().join('/')}`, locale);
 };

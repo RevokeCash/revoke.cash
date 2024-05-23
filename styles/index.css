@@ -2,22 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Futura Condensed';
-  src: url('/assets/fonts/FuturaCondensedBold.otf');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Futura Condensed';
-  src: url('/assets/fonts/FuturaCondensedBoldOblique.otf');
-  font-weight: bold;
-  font-style: oblique;
-  font-display: swap;
-}
-
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

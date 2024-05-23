@@ -1,5 +1,6 @@
 import ArticleCard from 'components/learn/ArticleCard';
 import { getSidebar } from 'lib/utils/markdown-content';
+import { getOpenGraphImageUrl } from 'lib/utils/og';
 import { Metadata, NextPage } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
@@ -18,7 +19,7 @@ export const generateMetadata = async ({ params: { locale } }): Promise<Metadata
     title: t('blog.meta.title'),
     description: t('blog.meta.description'),
     openGraph: {
-      images: '/assets/images/blog/cover.jpg',
+      images: getOpenGraphImageUrl('/blog', locale),
     },
   };
 };
