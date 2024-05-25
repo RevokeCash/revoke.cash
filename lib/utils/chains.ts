@@ -2058,6 +2058,24 @@ export const CHAINS: Record<number, Chain> = {
     chainId: 12345678905,
     name: 'Tabi',
   }),
+  [ChainId.IotaEVM]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.IotaEVM,
+    name: 'IOTA EVM',
+    logoUrl: '/assets/images/vendor/chains/iota.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.evm.iota.org/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
+  [ChainId.IotaEVMTestnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.IotaEVMTestnet,
+    name: 'IOTA EVM Testnet',
+    logoUrl: '/assets/images/vendor/chains/iota.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.evm.testnet.iotaledger.net/api',
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.IotaEVM,
+  }),
 };
 
 // Make sure to update these lists when updating the above lists
@@ -2115,6 +2133,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Wanchain,
   ChainId.DogechainMainnet,
   ChainId.ShimmerEVM,
+  ChainId.IotaEVM,
   ChainId.ImmutablezkEVM,
   ChainId.Evmos,
   ChainId.ElastosSmartChain,
@@ -2186,6 +2205,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.FraxtalTestnet,
   ChainId.HorizenGobiTestnet,
   ChainId.ShimmerEVMTestnet,
+  ChainId.IotaEVMTestnet,
   ChainId.ZetaChainAthens3Testnet,
   ChainId.BerachainArtio,
   ChainId.BeamTestnet,
