@@ -14,7 +14,9 @@
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
-    "test": "cypress run",
+    "test": "yarn test:mocha && yarn test:cypress",
+    "test:cypress": "cypress run",
+    "test:mocha": "mocha test/**/*.test.ts",
     "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois"
   },
   "private": true,
@@ -76,12 +78,14 @@
     "@types/react-dom": "^18.2.23",
     "@types/request-ip": "^0.0.41",
     "autoprefixer": "^10.4.19",
+    "chai": "^5.1.1",
     "cypress": "^13.7.1",
     "dotenv": "^16.4.5",
     "glob": "^10.3.12",
     "gray-matter": "^4.0.3",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "mocha": "^10.4.0",
     "next-bundle-analyzer": "^0.6.8",
     "next-circular-dependency": "^1.0.1",
     "next-sitemap": "^4.2.3",
@@ -110,6 +114,15 @@
       "wagmi>@wagmi/connectors>@coinbase/wallet-sdk>keccak": false,
       "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false
     }
+  },
+  "mocha": {
+    "node-option": [
+      "import=tsx"
+    ],
+    "require": [
+      "dotenv/config"
+    ],
+    "timeout": 10000
   },
   "resolutions": {
     "rate-limiter-flexible@^5.0.0": "patch:rate-limiter-flexible@npm%3A5.0.0#./.yarn/patches/rate-limiter-flexible-npm-5.0.0-9e3dae9215.patch"

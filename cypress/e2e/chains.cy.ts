@@ -4,24 +4,7 @@
 
 import { ChainId } from '@revoke.cash/chains';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
-import { SupportType } from 'lib/chains/Chain';
-import {
-  ORDERED_CHAINS,
-  SUPPORTED_CHAINS,
-  getChainApiUrl,
-  getChainConfig,
-  getChainExplorerUrl,
-  getChainIdFromSlug,
-  getChainInfoUrl,
-  getChainLogo,
-  getChainLogsRpcUrl,
-  getChainName,
-  getChainNativeToken,
-  getChainRpcUrl,
-  getChainSlug,
-  getCorrespondingMainnetChainId,
-} from 'lib/utils/chains';
-import networkDescriptions from 'locales/en/networks.json';
+import { ORDERED_CHAINS, SUPPORTED_CHAINS, getChainName } from 'lib/utils/chains';
 
 const TEST_ADDRESSES = {
   // Mainnets
@@ -139,7 +122,7 @@ const TEST_ADDRESSES = {
   [ChainId.Holesky]: '0x5A8ec40549AebF0E3Fb9d59bCE57b2AfE4d5eDda',
   [ChainId.HorizenGobiTestnet]: '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32',
   [ChainId.KromaSepolia]: '0x9c9eCFf9f7a4A15BA3554e1c10E576441267063b',
-  [ChainId.LineaGoerli]: '0x444111CD376893AFCd7405239CE72b64d5A22958',
+  [ChainId.LineaSepolia]: '0x7061146B49427143FfF175e9C1bF7461630302fF',
   // [ChainId.LUKSOTestnet]: '0xBdDDd277583DCaE0B501046ba86714FEea71B03F',
   [ChainId.MantleSepoliaTestnet]: '0x519a89Daa5d3291730a037B94025ab46425c4003',
   [ChainId.MoonbaseAlpha]: '0xeE146d0808D6a874237701E06A118f444dB13D73',
@@ -149,8 +132,8 @@ const TEST_ADDRESSES = {
   [ChainId.Sepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
   [ChainId.ShimmerEVMTestnet]: '0xecaF55B79fdCf39EF23715cD8dE539C8E58e9119',
   [ChainId.SyscoinTanenbaumTestnet]: '0x2FB7aB1E0357D595877209e74a715D0F5816cC29',
-  [9789]: '0x149444932e5b33c64a8081E99851b13FbA6B2DDb', // Tabi Testnet
-  [ChainId.TaikoKatlaL2]: '0x3E866039DD8EdACDF24165Ce022Ace2A6eb3c400',
+  [ChainId.TabiTestnet]: '0x149444932e5b33c64a8081E99851b13FbA6B2DDb',
+  [ChainId.TaikoHeklaL2]: '0x5B9a8ADcd12568D0C17A89f8bb2306B1765B5cBc',
   [ChainId.ZetaChainAthens3Testnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
   [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
 } as const;
@@ -178,59 +161,32 @@ describe('Chain Support', () => {
     const fixtureAddress = TEST_ADDRESSES[chainId];
 
     describe(chainName, () => {
-      describe('Chain Data', () => {
-        it('should have base chain data', () => {
-          cy.wrap(getChainName(chainId)).should('not.be.empty');
-          cy.wrap(getChainLogo(chainId)).should('not.be.empty');
-          cy.wrap(getChainInfoUrl(chainId)).should('not.be.empty');
-          cy.wrap(getChainExplorerUrl(chainId)).should('not.be.empty');
-          cy.wrap(getChainRpcUrl(chainId)).should('not.be.empty');
-          cy.wrap(getChainLogsRpcUrl(chainId)).should('not.be.empty');
-          cy.wrap(getChainNativeToken(chainId)).should('not.be.empty');
-          cy.wrap(getChainSlug(chainId)).should('not.be.empty');
-          cy.wrap(getChainIdFromSlug(getChainSlug(chainId))).should('eq', chainId);
-        });
+      it('should be able to check approvals', () => {
+        cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
+        cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
 
-        if (getChainConfig(chainId)?.type === SupportType.ETHERSCAN_COMPATIBLE) {
-          it('should have an Etherscan API URL', () => {
-            cy.wrap(getChainApiUrl(chainId)).should('not.be.empty');
+        cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
+        cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
+
+        cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4_000 }).should('exist');
+        cy.wait(100); // Wait for the loading spinner to appear
+        cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
+        cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
+
+        const shouldCheckExplorer = Boolean(Cypress.env('checkExplorer'));
+        if (shouldCheckExplorer) {
+          // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
+          const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
+          linkElement.invoke('attr', 'href').then((href) => {
+            cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
+              // Suppress errors on the explorer page
+              cy.on('uncaught:exception', () => false);
+
+              cy.visit(href);
+              cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
+            });
           });
         }
-
-        const mainnetChainId = getCorrespondingMainnetChainId(chainId) ?? chainId;
-        it('should have a description', () => {
-          cy.wrap(networkDescriptions.networks[getChainSlug(mainnetChainId)]).should('not.be.empty');
-        });
-      });
-
-      describe('Chain Approval Checking', () => {
-        it('should be able to check approvals', () => {
-          cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
-          cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
-
-          cy.get(Selectors.CHAIN_SELECT_BUTTON).click();
-          cy.get(Selectors.CHAIN_SELECT_OPTION).contains(chainName).click();
-
-          cy.get(Selectors.ALLOWANCES_TABLE, { timeout: 4_000 }).should('exist');
-          cy.wait(100); // Wait for the loading spinner to appear
-          cy.get(Selectors.ALLOWANCES_LOADER, { timeout: 60_000 }).should('not.exist'); // Check that the loading spinner is gone
-          cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
-
-          const shouldCheckExplorer = Boolean(Cypress.env('checkExplorer'));
-          if (shouldCheckExplorer) {
-            // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
-            const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
-            linkElement.invoke('attr', 'href').then((href) => {
-              cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
-                // Suppress errors on the explorer page
-                cy.on('uncaught:exception', () => false);
-
-                cy.visit(href);
-                cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
-              });
-            });
-          }
-        });
       });
     });
   });
