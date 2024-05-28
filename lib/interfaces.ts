@@ -50,6 +50,7 @@ export interface ChainTokenMapping {
 export type TokenStandard = 'ERC20' | 'ERC721';
 
 export interface LogsProvider {
+  chainId: number;
   getLogs(filter: Filter): Promise<Array<Log>>;
 }
 

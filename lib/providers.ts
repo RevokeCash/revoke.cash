@@ -2,13 +2,28 @@ import ky from 'lib/ky';
 import { PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import type { Filter, Log, LogsProvider } from './interfaces';
-import { createViemPublicClientForChain, getChainLogsRpcUrl, isBackendSupportedChain } from './utils/chains';
+import {
+  createViemPublicClientForChain,
+  getChainLogsRpcUrl,
+  isBackendSupportedChain,
+  isCovalentSupportedChain,
+} from './utils/chains';
 import { isLogResponseSizeError, parseErrorMessage } from './utils/errors';
 
 export class DivideAndConquerLogsProvider implements LogsProvider {
   constructor(private underlyingProvider: LogsProvider) {}
 
+  get chainId(): number {
+    return this.underlyingProvider.chainId;
+  }
+
   async getLogs(filter: Filter): Promise<Log[]> {
+    // We pre-emptively split the requests for Covalent-supported chains, to limit potential downsides when
+    // we potentially need to divide-and-conquer the requests down the line
+    if (isCovalentSupportedChain(this.chainId) && filter.fromBlock - filter.toBlock > 2_000_000) {
+      return this.divideAndConquer(filter);
+    }
+
     try {
       const result = await this.underlyingProvider.getLogs(filter);
       return result;
@@ -18,12 +33,16 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
       // If the block range is already a single block, we re-throw the error since we can't split it further
       if (filter.fromBlock === filter.toBlock) throw error;
 
-      const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-      const leftPromise = this.getLogs({ ...filter, toBlock: middle });
-      const rightPromise = this.getLogs({ ...filter, fromBlock: middle + 1 });
-      const [left, right] = await Promise.all([leftPromise, rightPromise]);
-      return [...left, ...right];
+      return this.divideAndConquer(filter);
     }
+  }
+
+  async divideAndConquer(filter: Filter): Promise<Log[]> {
+    const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
+    const leftPromise = this.getLogs({ ...filter, toBlock: middle });
+    const rightPromise = this.getLogs({ ...filter, fromBlock: middle + 1 });
+    const [left, right] = await Promise.all([leftPromise, rightPromise]);
+    return [...left, ...right];
   }
 }
 

@@ -22,8 +22,7 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Polygon Amoy',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
-      main: `https://polygon-amoy.infura.io/v3/${INFURA_API_KEY}`,
-      logs: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -58,7 +57,6 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://arbiscan.io',
     rpc: {
       main: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      logs: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://arb1.arbitrum.io/rpc',
     },
     deployedContracts: { ...MULTICALL },
@@ -103,7 +101,6 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://sepolia.arbiscan.io',
     rpc: {
       main: `https://arbitrum-sepolia.infura.io/v3/${INFURA_API_KEY}`,
-      logs: `https://arb-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -118,6 +115,7 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://blockscout.com/astar/api',
     rpc: {
       main: 'https://evm.astar.network',
+      free: 'https://evm.astar.network',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -165,7 +163,7 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId['AvalancheC-Chain']]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId['AvalancheC-Chain'],
     name: 'Avalanche',
     logoUrl: '/assets/images/vendor/chains/avalanche.svg',
@@ -193,7 +191,7 @@ export const CHAINS: Record<number, Chain> = {
     // }),
   }),
   [ChainId.AvalancheFujiTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.AvalancheFujiTestnet,
     name: 'Avalanche Fuji',
     logoUrl: '/assets/images/vendor/chains/avalanche.svg',
@@ -207,13 +205,13 @@ export const CHAINS: Record<number, Chain> = {
     correspondingMainnetChainId: ChainId['AvalancheC-Chain'],
   }),
   [ChainId.Base]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Base,
     name: 'Base',
     logoUrl: '/assets/images/vendor/chains/base.svg',
     etherscanCompatibleApiUrl: 'https://api.basescan.org/api',
     rpc: {
-      main: 'https://mainnet.base.org',
+      main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
@@ -252,11 +250,14 @@ export const CHAINS: Record<number, Chain> = {
     // }),
   }),
   [ChainId.BaseSepoliaTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.BaseSepoliaTestnet,
     name: 'Base Sepolia',
     logoUrl: '/assets/images/vendor/chains/base.svg',
     etherscanCompatibleApiUrl: 'https://api-sepolia.basescan.org/api',
+    rpc: {
+      main: `https://base-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Base,
@@ -463,22 +464,26 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: undefined,
   }),
   [ChainId.CeloAlfajoresTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.CeloAlfajoresTestnet,
     name: 'Celo Alfajores',
     logoUrl: '/assets/images/vendor/chains/celo.svg',
     explorerUrl: 'https://alfajores.celoscan.io',
-    etherscanCompatibleApiUrl: 'https://api-alfajores.celoscan.io/api',
+    rpc: {
+      main: `https://celo-alfajores.infura.io/v3/${INFURA_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.CeloMainnet,
   }),
   [ChainId.CeloMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.CeloMainnet,
     name: 'Celo',
     logoUrl: '/assets/images/vendor/chains/celo.svg',
-    etherscanCompatibleApiUrl: 'https://api.celoscan.io/api',
+    rpc: {
+      main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     // TODO: Could benefit from a Curve.fi strategy
     priceStrategy: new AggregatePriceStrategy({
@@ -639,6 +644,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Elastos',
     logoUrl: '/assets/images/vendor/chains/elastos.jpg',
     etherscanCompatibleApiUrl: 'https://esc.elastos.io/api',
+    rpc: {
+      main: 'https://rpc.glidefinance.io',
+    },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
       strategies: [
@@ -764,6 +772,10 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.Evmos,
     name: 'Evmos',
     logoUrl: '/assets/images/vendor/chains/evmos.svg',
+    rpc: {
+      main: 'https://evmos-mainnet.public.blastapi.io',
+      free: 'https://evmos-mainnet.public.blastapi.io',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1111,14 +1123,13 @@ export const CHAINS: Record<number, Chain> = {
     //   apiUrl: 'https://api-linea.reservoir.tools',
     // }),
   }),
-  [ChainId.LineaGoerli]: new Chain({
+  [ChainId.LineaSepolia]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: ChainId.LineaGoerli,
-    name: 'Linea Goerli',
+    chainId: ChainId.LineaSepolia,
+    name: 'Linea Sepolia',
     logoUrl: '/assets/images/vendor/chains/linea.png',
-    explorerUrl: 'https://goerli.lineascan.build',
     rpc: {
-      main: `https://linea-goerli.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://linea-sepolia.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1426,7 +1437,6 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
       main: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      logs: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Velodrome for OP
@@ -1470,7 +1480,6 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
       main: `https://optimism-sepolia.infura.io/v3/${INFURA_API_KEY}`,
-      logs: `https://opt-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1483,7 +1492,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/palm.png',
     explorerUrl: 'https://www.ondora.xyz/network/palm',
     rpc: {
-      free: 'https://palm-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+      free: 'https://palm-mainnet.public.blastapi.io',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
@@ -1582,11 +1591,12 @@ export const CHAINS: Record<number, Chain> = {
     correspondingMainnetChainId: ChainId.PolygonzkEVM,
   }),
   [ChainId.PulseChain]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.PulseChain,
     name: 'PulseChain',
     logoUrl: '/assets/images/vendor/chains/pulsechain.png',
-    explorerUrl: 'https://scan.mypinata.cloud/ipfs/bafybeidn64pd2u525lmoipjl4nh3ooa2imd7huionjsdepdsphl5slfowy/#',
+    explorerUrl: 'https://scan.pulsechainfoundation.org',
+    etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
     // Although multicall is deployed on Pulsechain, it is causing issues
     // deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -1805,9 +1815,9 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.SyscoinMainnet,
   }),
-  [9789]: new Chain({
+  [ChainId.TabiTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: 9789,
+    chainId: ChainId.TabiTestnet,
     name: 'Tabi Testnet',
     logoUrl: '/assets/images/vendor/chains/tabi.svg',
     infoUrl: 'https://www.tabichain.com',
@@ -1820,10 +1830,10 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
   }),
-  [ChainId.TaikoKatlaL2]: new Chain({
+  [ChainId.TaikoHeklaL2]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: ChainId.TaikoKatlaL2,
-    name: 'Taiko Katla',
+    chainId: ChainId.TaikoHeklaL2,
+    name: 'Taiko Hekla',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1957,7 +1967,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://zetachain.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain.blockscout.com/api',
     rpc: {
-      main: 'https://zetachain-mainnet-archive.allthatnode.com:8545',
+      main: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -1989,12 +1999,15 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZkSyncMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.ZkSyncMainnet,
     name: 'zkSync Era',
     logoUrl: '/assets/images/vendor/chains/zksync.jpeg',
     explorerUrl: 'https://era.zksync.network',
     etherscanCompatibleApiUrl: 'https://api-era.zksync.network/api',
+    rpc: {
+      main: `https://zksync-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
@@ -2006,14 +2019,14 @@ export const CHAINS: Record<number, Chain> = {
     // }),
   }),
   [ChainId.ZkSyncSepoliaTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.ZkSyncSepoliaTestnet,
     name: 'zkSync Sepolia',
     logoUrl: '/assets/images/vendor/chains/zksync.jpeg',
     explorerUrl: 'https://sepolia-era.zksync.network',
     etherscanCompatibleApiUrl: 'https://api-sepolia-era.zksync.network/api',
     rpc: {
-      main: 'https://sepolia.era.zksync.dev',
+      main: `https://zksync-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
@@ -2169,9 +2182,9 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
   ChainId.ZkSyncSepoliaTestnet,
-  ChainId.LineaGoerli,
+  ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
-  ChainId.TaikoKatlaL2,
+  ChainId.TaikoHeklaL2,
   ChainId.FrameTestnet,
   ChainId.BlastSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
@@ -2189,7 +2202,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ZetaChainAthens3Testnet,
   ChainId.BerachainArtio,
   ChainId.BeamTestnet,
-  9789, // Tabi Testnet
+  ChainId.TabiTestnet,
   ChainId.RSS3VSLSepoliaTestnet,
   // ChainId.LUKSOTestnet,
 ] as const;
