@@ -24,7 +24,7 @@ export const generateStaticParams = () => {
 export async function GET(req: Request, { params }: Props) {
   const { meta } = readAndParseContentFile(params.slug, params.locale, 'blog');
 
-  const title = meta.sidebarTitle;
+  const title = meta.overlay ? meta.sidebarTitle : undefined;
   const background = loadDataUrl(`public/assets/images/blog/${params.slug.join('/')}/cover.jpg`, 'image/jpeg');
 
   return generateOgImage({ title, background });

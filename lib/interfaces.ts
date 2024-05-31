@@ -134,6 +134,7 @@ export interface ContentMeta {
   coverImage?: string;
   date?: string;
   readingTime?: number;
+  overlay?: boolean;
 }
 
 export interface Person {
