@@ -2133,6 +2133,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Wanchain,
   ChainId.DogechainMainnet,
   ChainId.ShimmerEVM,
+  ChainId.IOTAEVM,
   ChainId.ImmutablezkEVM,
   ChainId.Evmos,
   ChainId.ElastosSmartChain,
