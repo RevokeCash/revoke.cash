@@ -54,7 +54,7 @@ const BlogLayout = async ({ params, children }: Props) => {
         <ArticleMeta meta={meta} />
         {children}
         <Divider className="my-6" />
-        <PageNavigation currentPath={`/blog/${params.slug.join('/')}`} pages={posts} />
+        <PageNavigation currentPath={`/blog/${params.slug.join('/')}`} pages={[...posts].reverse()} />
       </div>
     </>
   );

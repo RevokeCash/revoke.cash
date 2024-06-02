@@ -32,7 +32,7 @@ In March we saw two big black hat exploits and one significant white hat rescue 
 
 ## New Supported Networks
 
-While we support 80+ different blockchain networks already, we're always looking to add more. And in January we added support for 7 new networks and 2 new testnets.
+While we support 80+ different blockchain networks already, we're always looking to add more. And in March we added support for 7 new networks and 2 new testnets, bringing the total over 90 supported networks.
 
 New Mainnets:
 
