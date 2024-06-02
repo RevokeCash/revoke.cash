@@ -48,6 +48,7 @@
     "horizen-eon": "Horizen 是主要关注隐私的区块链网络，特色在于工作量证明（PoW）链和 Zendoo 框架，该框架可创建能连接到 Horizen 主链的权益证明（PoS）侧链。Horizen EON 是 Horizen 生态系统中与 EVM 兼容的侧链。",
     "immutable-zkevm": "Immutable zkEVM 是第 2 层（Layer 2）区块链，由 Web3 游戏开发商和发行商 Immutable 专为游戏行业而开发的。Immutable zkEVM 采用了 Polygon 的链开发工具包（CDK），借此为游戏应用提供低成本和高规模。",
     "inevm": "inEVM 是与以太坊虚拟机（EVM）兼容的区块链，与基于 Cosmos 的 Injective 区块链同属一个开发团队。inEVM 旨在提高以太坊、Cosmos 和 Solana 之间的兼容性和互操作性。",
+    "iota-evm": "Integrating IOTA's network with an EVM-compatible smart contract chain, IOTA EVM provides horizontal scalability and advanced MEV protection for efficient tokenization of real-world assets. It supports scalable, secure smart contracts within a flexible multi-VM architecture. The platform enables asset transfers and trading and is geared towards DeFi, gaming, NFTs, and DAOs with strong cross-chain interaction capabilities.",
     "kardiachain": "KardiaChain 是第 1 层（Layer 1）区块链，基于委托权益证明共识机制（DPoS），致力于为物理数字（物理+数字）应用提供解决方案，并提升不同区块链之间的互操作性。KardiaChain 主要关注越南和东南亚市场。",
     "kava": "Kava 是首个结合了 Cosmos SDK、开发者支持与 EVM 兼容性的区块链，该链通过“共链”（Co-Chain），让开发者可以同时使用 Cosmos 和以太坊兼容技术，并将这些技术通过总体治理和安全层结合到了一起。",
     "kcc": "KuCoin 社区链（KuCoin Community Chain，简称 KCC）是由 KuCoin 交易所创建的第 1 层（Layer 1）区块链，采用权益权威证明（PoSA）共识机制，融合了权威证明（PoA）和权益证明（PoS）的特色。这一共识机制模型也从 HECO 和其他 PoA 网络中汲取了灵感。KCC 旨在打造低成本和快速交易的网络。",
