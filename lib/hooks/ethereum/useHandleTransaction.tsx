@@ -29,7 +29,7 @@ export const useHandleTransaction = (chainId: number) => {
 
     if (type === TransactionType.REVOKE) {
       if (isRevertedError(message)) {
-        return void toast.info(t('common.toasts.revoke_failed_revert', { message }));
+        return void toast.info(t('common.toasts.revoke_failed_revert'));
       }
 
       return void toast.info(t('common.toasts.revoke_failed', { message }));

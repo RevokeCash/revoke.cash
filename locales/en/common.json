@@ -114,7 +114,7 @@
     "clipboard_success": "✅ Copied to clipboard",
     "donation_sent": "💪 Thanks for the donation!",
     "revoke_failed": "❌ Revoking failed: {message}",
-    "revoke_failed_revert": "❌ Revoking failed: {message}. Please reach out to this token's team to resolve this issue.",
+    "revoke_failed_revert": "❌ This token has disabled revoking approvals. We recommend reaching out to the creators of this token to resolve the issue.",
     "transaction_failed": "❌ Transaction failed: {message}",
     "transaction_submitted": "✅ Transaction submitted!",
     "update_failed": "❌ This token does not support updating approvals, please revoke instead."
