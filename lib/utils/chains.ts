@@ -29,6 +29,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MantaPacificMainnet,
   ChainId.Scroll,
   ChainId.Mode,
+  ChainId.TaikoMainnet,
   ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.MerlinMainnet,
   ChainId.CronosMainnet,
@@ -1996,13 +1997,25 @@ export const CHAINS: Record<number, Chain> = {
     correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
   }),
   [ChainId.TaikoHeklaL2]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.TaikoHeklaL2,
     name: 'Taiko Hekla',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
+    explorerUrl: 'https://hekla.taikoscan.io',
+    etherscanCompatibleApiUrl: 'https://api-hekla.taikoscan.io/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
-    correspondingMainnetChainId: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
+    correspondingMainnetChainId: ChainId.TaikoMainnet,
+  }),
+  [ChainId.TaikoMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.TaikoMainnet,
+    name: 'Taiko',
+    logoUrl: '/assets/images/vendor/chains/taiko.svg',
+    explorerUrl: 'https://taikoscan.io',
+    etherscanCompatibleApiUrl: 'https://api.taikoscan.io/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.TelosEVMMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -2218,12 +2231,6 @@ export const CHAINS: Record<number, Chain> = {
     //   apiKey: RESERVOIR_API_KEY,
     //   apiUrl: 'https://api-zora.reservoir.tools',
     // }),
-  }),
-  // TODO: This is a placeholder so we can add a description for Taiko
-  [12345678901]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678901,
-    name: 'Taiko',
   }),
   // TODO: This is a placeholder so we can add a description for Frame
   [12345678902]: new Chain({
