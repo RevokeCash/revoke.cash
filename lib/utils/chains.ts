@@ -2290,11 +2290,11 @@ export const isNodeSupportedChain = (chainId: number): boolean => {
 export const isMainnetChain = (chainId: number): boolean => CHAIN_SELECT_MAINNETS.includes(chainId);
 export const isTestnetChain = (chainId: number): boolean => CHAIN_SELECT_TESTNETS.includes(chainId);
 
-export const getChainName = (chainId: number): string => {
+export const getChainName = (chainId: number): string | undefined => {
   return getChainConfig(chainId)?.getName();
 };
 
-export const getChainSlug = (chainId: number): string => {
+export const getChainSlug = (chainId: number): string | undefined => {
   return getChainConfig(chainId)?.getSlug();
 };
 
@@ -2327,7 +2327,7 @@ export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
   return getChainConfig(chainId)?.getLogsRpcUrl();
 };
 
-export const getChainLogo = (chainId: number): string => {
+export const getChainLogo = (chainId: number): string | undefined => {
   return getChainConfig(chainId)?.getLogoUrl();
 };
 

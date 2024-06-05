@@ -41,7 +41,7 @@ const AboutPage: NextPage<Props> = ({ params }) => {
             alt="Initial Revoke.cash Tweet"
             height="1000"
             width="1500"
-            className="rounded-2xl border border-black dark:border-white"
+            className="rounded-lg border border-black dark:border-white"
             priority
             fetchPriority="high"
           />
@@ -59,7 +59,7 @@ const AboutPage: NextPage<Props> = ({ params }) => {
           alt="Revoke.cash Team"
           height="720"
           width="1280"
-          className="rounded-2xl border border-black dark:border-white"
+          className="rounded-lg border border-black dark:border-white"
         />
         <figcaption className="text-base leading-none text-zinc-600 dark:text-zinc-400">
           {t('about.captions.team')}

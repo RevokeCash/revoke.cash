@@ -38,31 +38,25 @@ const ExtensionPage: NextPage<Props> = ({ params }) => {
 
       <p>{t('extension.paragraph_2')}</p>
 
-      <p className="mx-auto not-prose">
-        <Image
-          src="/assets/images/extension/screenshot-1.png"
-          alt="Extension: Unexpected Allowance"
-          height="800"
-          width="1280"
-          priority
-          fetchPriority="high"
-          className="w-full"
-        />
-      </p>
+      <Image
+        src="/assets/images/extension/screenshot-1.png"
+        alt="Extension: Token Approval"
+        height="1000"
+        width="1600"
+        priority
+        fetchPriority="high"
+      />
 
       <p>{t('extension.paragraph_3')}</p>
 
       <p>{t('extension.paragraph_4')}</p>
 
-      <p className="mx-auto not-prose">
-        <Image
-          src="/assets/images/extension/screenshot-3.png"
-          alt="Extension: Unexpected Listing"
-          height="800"
-          width="1280"
-          className="w-full"
-        />
-      </p>
+      <Image
+        src="/assets/images/extension/screenshot-2.png"
+        alt="Extension: Marketplace Listing"
+        height="1000"
+        width="1600"
+      />
 
       <p>{t('extension.paragraph_5')}</p>
 
