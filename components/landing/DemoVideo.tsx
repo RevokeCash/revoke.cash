@@ -1,10 +1,15 @@
 const DemoVideo = () => {
   return (
-    <div className="border border-black w-full max-w-5xl">
-      <video className="aspect-[16/9] w-full" controls muted loop preload="none" poster="/assets/images/demo-thumb.jpg">
-        <source src="/assets/videos/demo.mp4" type="video/mp4" />
-      </video>
-    </div>
+    // TODO: Make the video proper 16:9 - Screen Studio is botched so it's 4 pixels off 😅
+    <video
+      className="aspect-[1280/716] rounded-lg border border-black box-content"
+      controls
+      muted
+      loop
+      preload="metadata"
+    >
+      <source src="/assets/videos/demo.mp4" type="video/mp4" />
+    </video>
   );
 };
 
