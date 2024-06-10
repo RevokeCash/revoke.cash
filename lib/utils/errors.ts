@@ -14,8 +14,12 @@ export const isRevertedError = (message?: string): boolean => {
   return false;
 };
 
-export const isLogResponseSizeError = (message?: string) => {
-  const lowercaseMessage = message?.toLowerCase();
+export const isLogResponseSizeError = (error?: string | any) => {
+  if (typeof error !== 'string') {
+    return isLogResponseSizeError(parseErrorMessage(error)) || isLogResponseSizeError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('query returned more than 10000 results')) return true;
   if (lowercaseMessage?.includes('log response size exceeded')) return true;
   if (lowercaseMessage?.includes('query timeout exceeded')) return true;
@@ -24,16 +28,24 @@ export const isLogResponseSizeError = (message?: string) => {
   return false;
 };
 
-export const isRateLimitError = (message?: string) => {
-  const lowercaseMessage = message?.toLowerCase();
+export const isRateLimitError = (error?: string | any) => {
+  if (typeof error !== 'string') {
+    return isRateLimitError(parseErrorMessage(error)) || isRateLimitError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('max rate limit reached')) return true;
   if (lowercaseMessage?.includes('request failed with status code 429')) return true;
   if (lowercaseMessage?.includes('429 too many requests')) return true;
   return false;
 };
 
-export const isNetworkError = (message?: string) => {
-  const lowercaseMessage = message?.toLowerCase();
+export const isNetworkError = (error?: string | any) => {
+  if (typeof error !== 'string') {
+    return isNetworkError(parseErrorMessage(error)) || isNetworkError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('request failed')) return true;
   if (lowercaseMessage?.includes('request timed out')) return true;
   if (lowercaseMessage?.includes('request took too long to respond')) return true;

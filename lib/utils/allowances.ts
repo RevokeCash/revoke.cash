@@ -64,7 +64,7 @@ export const getAllowancesFromEvents = async (
         const fullAllowances = allowances.map((allowance) => ({ ...tokenData, ...allowance }));
         return fullAllowances;
       } catch (e) {
-        if (isNetworkError(stringifyError(e))) throw e;
+        if (isNetworkError(e)) throw e;
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
 
         // If the call to getTokenData() fails, the token is not a standard-adhering token so

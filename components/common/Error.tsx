@@ -20,8 +20,7 @@ const Error = ({ error }: Props) => {
 
   const chainName = getChainName(selectedChainId);
   const chainConnectionMessage = t('common.errors.messages.chain_could_not_connect', { chainName });
-  const errorMessage = parseErrorMessage(error);
-  const message = isNetworkError(errorMessage) ? chainConnectionMessage : errorMessage;
+  const message = isNetworkError(error) ? chainConnectionMessage : parseErrorMessage(error);
   return <div>Error: {message}</div>;
 };
 

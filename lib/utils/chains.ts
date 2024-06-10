@@ -708,7 +708,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/crab.svg',
     etherscanCompatibleApiUrl: 'https://crab.subview.xyz/api',
     rpc: {
-      main: 'https://crab-rpc.darwiniacommunitydao.xyz',
+      main: 'https://crab-rpc.darwinia.network',
     },
     deployedContracts: { ...MULTICALL },
     isCanary: true,
