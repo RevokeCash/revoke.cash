@@ -1,7 +1,7 @@
 import { SearchParamsOption, TimeoutError } from 'ky';
 import { Erc721TokenContract } from 'lib/interfaces';
 import ky from 'lib/ky';
-import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
+import { isRateLimitError, stringifyError } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
 import { RequestQueue } from '../api/logs/RequestQueue';
 import { AbstractPriceStrategy } from './AbstractPriceStrategy';
@@ -103,7 +103,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
         throw new Error(`Request timed out for ${e.request.url} with search params ${JSON.stringify(searchParams)}`);
       }
 
-      if (isRateLimitError(parseErrorMessage(e))) {
+      if (isRateLimitError(stringifyError(e))) {
         console.error('Reservoir: Rate limit reached, retrying...');
 
         return this.makeGetRequest<T>(url, searchParams);

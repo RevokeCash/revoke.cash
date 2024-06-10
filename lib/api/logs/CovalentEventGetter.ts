@@ -1,7 +1,7 @@
 import type { Filter, Log } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { splitBlockRangeInChunks } from 'lib/utils';
-import { isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
+import { isRateLimitError, stringifyError } from 'lib/utils/errors';
 import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
@@ -49,7 +49,7 @@ export class CovalentEventGetter implements EventGetter {
       );
       return result?.data?.items?.map(formatCovalentEvent) ?? [];
     } catch (e) {
-      if (isRateLimitError(parseErrorMessage(e))) {
+      if (isRateLimitError(stringifyError(e))) {
         console.error('Covalent: Rate limit reached, retrying...');
         return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
       }

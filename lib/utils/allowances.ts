@@ -21,7 +21,7 @@ import {
   sortLogsChronologically,
   topicToAddress,
 } from '.';
-import { isNetworkError, parseErrorMessage } from './errors';
+import { isNetworkError, stringifyError } from './errors';
 import { formatFixedPointBigInt } from './formatting';
 import { getPermit2AllowancesFromApprovals } from './permit2';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
@@ -64,8 +64,8 @@ export const getAllowancesFromEvents = async (
         const fullAllowances = allowances.map((allowance) => ({ ...tokenData, ...allowance }));
         return fullAllowances;
       } catch (e) {
-        if (isNetworkError(parseErrorMessage(e))) throw e;
-        if (parseErrorMessage(e)?.includes('Cannot decode zero data')) throw e;
+        if (isNetworkError(stringifyError(e))) throw e;
+        if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
 
         // If the call to getTokenData() fails, the token is not a standard-adhering token so
         // we do not include it in the token list.
@@ -155,7 +155,9 @@ const getErc20AllowanceFromApproval = async (
 
 export const getLimitedErc721AllowancesFromApprovals = async (contract: Erc721TokenContract, approvals: Log[]) => {
   const sortedApprovals = sortLogsChronologically(approvals).reverse();
-  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
+
+  // We only look at the topic0 (event signature) and topic3 (token ID), since a token ID can only have one *limited* approval at a time
+  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals, [0, 3]);
 
   const allowances = await Promise.all(
     deduplicatedApprovals.map((approval) => getLimitedErc721AllowanceFromApproval(contract, approval)),

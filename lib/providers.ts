@@ -8,7 +8,7 @@ import {
   isBackendSupportedChain,
   isCovalentSupportedChain,
 } from './utils/chains';
-import { isLogResponseSizeError, parseErrorMessage } from './utils/errors';
+import { isLogResponseSizeError, stringifyError } from './utils/errors';
 
 export class DivideAndConquerLogsProvider implements LogsProvider {
   constructor(private underlyingProvider: LogsProvider) {}
@@ -28,7 +28,7 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
       const result = await this.underlyingProvider.getLogs(filter);
       return result;
     } catch (error) {
-      if (!isLogResponseSizeError(parseErrorMessage(error))) throw error;
+      if (!isLogResponseSizeError(stringifyError(error))) throw error;
 
       // If the block range is already a single block, we re-throw the error since we can't split it further
       if (filter.fromBlock === filter.toBlock) throw error;

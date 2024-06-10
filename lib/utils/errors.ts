@@ -51,12 +51,16 @@ export const parseErrorMessage = (error: any): string => {
     error;
 
   if (typeof errorMessage === 'object') {
-    try {
-      return stringify(errorMessage);
-    } catch {
-      return String(errorMessage);
-    }
+    return stringifyError(errorMessage);
   }
 
   return String(errorMessage);
+};
+
+export const stringifyError = (error: any): string => {
+  try {
+    return stringify(error);
+  } catch {
+    return String(error);
+  }
 };
