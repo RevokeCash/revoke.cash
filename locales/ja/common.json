@@ -93,8 +93,8 @@
     "what_are_token_approvals": "トークン承認とは？"
   },
   "meta": {
-    "description": "{chainName}とその他80以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
-    "title": "80以上のネットワークでトークンの承認を取り消す"
+    "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
+    "title": "100以上のネットワークでトークンの承認を取り消す"
   },
   "misc": {
     "powered_by": "<powered-by-link>{name}</powered-by-link>によって提供されます"
@@ -114,7 +114,7 @@
     "clipboard_success": "✅ クリップボードにコピーされました",
     "donation_sent": "💪 寄付いただき、ありがとうございます！",
     "revoke_failed": "❌ 許可のリボークに失敗しました: {message}",
-    "revoke_failed_revert": "❌ 許可のリボークに失敗しました: {message}。この問題を解決するには、トークンチームに問い合わせください。",
+    "revoke_failed_revert": "❌ このトークンは承認の取り消しを無効にしました。このトークンの作成者に連絡して問題を解決することをおすすめします。",
     "transaction_failed": "❌ トランザクションが失敗しました:{message}",
     "transaction_submitted": "✅ トランザクションを送信しました！",
     "update_failed": "❌ このトークンは許可の更新についてサポートしていません、リボークしてください。"

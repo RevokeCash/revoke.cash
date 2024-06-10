@@ -19,7 +19,7 @@ export const connectors = [
     metadata: {
       name: 'Revoke.cash',
       description:
-        'Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 80 other networks.',
+        'Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on Ethereum and over 100 other networks.',
       url: 'https://revoke.cash',
       icons: [
         'https://revoke.cash/assets/images/revoke-icon.svg',

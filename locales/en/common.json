@@ -93,8 +93,8 @@
     "what_are_token_approvals": "What Are Token Approvals?"
   },
   "meta": {
-    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 80 other networks.",
-    "title": "Revoke Your Token Approvals on Over 80 Networks"
+    "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 100 other networks.",
+    "title": "Revoke Your Token Approvals on Over 100 Networks"
   },
   "misc": {
     "powered_by": "Powered by <powered-by-link>{name}</powered-by-link>"
