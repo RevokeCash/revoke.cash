@@ -8,8 +8,12 @@ export const isUserRejectionError = (message?: string): boolean => {
   return false;
 };
 
-export const isRevertedError = (message?: string): boolean => {
-  const lowercaseMessage = message?.toLowerCase();
+export const isRevertedError = (error?: string | any): boolean => {
+  if (typeof error !== 'string') {
+    return isRevertedError(parseErrorMessage(error)) || isRevertedError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('revert')) return true;
   return false;
 };
@@ -41,6 +45,11 @@ export const isRateLimitError = (error?: string | any) => {
 };
 
 export const isNetworkError = (error?: string | any) => {
+  // These error types might sometimes also meet the criteria for a network error, but they are handled separately
+  if (isRateLimitError(error)) return false;
+  if (isLogResponseSizeError(error)) return false;
+  if (isRevertedError(error)) return false;
+
   if (typeof error !== 'string') {
     return isNetworkError(parseErrorMessage(error)) || isNetworkError(stringifyError(error));
   }
