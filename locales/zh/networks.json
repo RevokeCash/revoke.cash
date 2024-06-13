@@ -85,6 +85,7 @@
     "rootstock": "Rootstock 是比特币的侧链，旨在为比特币生态系统引入 EVM 功能。Rootstock 网络通过一种名为合并挖矿的技术过程保证安全，该过程允许比特币矿工同时使用哈希率进行比特币和 Rootstock 交易。比特币和 Rootstock 之间的桥梁由 9 个知名组织通过 Powpeg 流程进行保护。",
     "rss3-vsl": "RSS3 Value Sublayer（VSL）是以太坊的第 2 层（Layer 2）扩展解决方案。作为 RSS3 网络的一部分，RSS3 VSL 建立在 Optimism 的 OP Stack 之上，与 Optimism 一样，采用了 Optimistic Rollup 技术。RSS3 是去中心化的网络，提供可索引和结构化的开放信息，各类应用程序均可访问。",
     "scroll": "Scroll 是以太坊的第 2 层（Layer 2）扩展解决方案，目前正在使用创新的 zkEVM 技术构建。与许多其他 L2 解决方案相比，例如 Optimistic Rollup，zkEVM 技术以更低的成本提供更高的吞吐量，同时保证了强大的安全性。",
+    "sei": "Sei is a Layer 1 blockchain that uses a consensus mechanism based on Delegated Proof of Stake. The network aims to provide a high throughput and low fees by focusing its efforts on parallelization of the EVM execution layer.",
     "shibarium": "Shibarium 是一个以太坊侧链，旨在为 Shiba Inu 社区引入原生智能合约生态系统。作为侧链，它在去中心化方面做出了妥协，以保证交易速度更快、成本更低。Shibarium 可桥接至以太坊，用户可以将 SHIB 代币和其他流行的以太坊代币转入或转出 Shibarium。",
     "shimmer": "Shimmer EVM 是一个兼容 EVM 的第 2 层（Layer 2）区块链，建立在可互操作的 Shimmer 网络之上。由于是 Shimmer 的第 2 层链，Shimmer EVM 可以轻松地与 Shimmer/IOTA 生态系统中的其他链进行互操作。Shimmer EVM 带来了一些有趣的创新，例如交易的并行处理和协议中的原生随机性。",
     "syscoin": "Syscoin 创建于 2014 年，是作为比特币的一个分支而创建的第 1 层（Layer 1）区块链。多年来，它演变为双链系统，一部分是比特币分支，另一部分则是兼容 EVM 的区块链。两条链都采用合并挖矿技术保证安全，该技术过程允许比特币矿工同时使用哈希率进行比特币和 Syscoin 交易。",

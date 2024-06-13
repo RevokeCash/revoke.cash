@@ -75,6 +75,10 @@ export class Chain {
   }
 
   getLogoUrl(): string {
+    if (!this.options.logoUrl) {
+      return getChain(this.chainId)?.iconURL;
+    }
+
     return this.options.logoUrl ?? '/assets/images/vendor/chains/ethereum.svg';
   }
 
