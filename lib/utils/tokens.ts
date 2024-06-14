@@ -232,8 +232,12 @@ export const isErc721Contract = (contract: TokenContract): contract is Erc721Tok
   return getAbiItem<any, string>({ ...contract, name: 'ApprovalForAll' }) !== undefined;
 };
 
-// MEME does not *actually* support permit. TODO: Somehow fix this in the RevokeCash/whois repo instead
-const IGNORE_LIST = ['0xb131f4A55907B10d1F0A50d8ab8FA09EC342cd74'];
+// Some tokens appear to support Permit, but don't actually support it.
+// TODO: Somehow fix this in the RevokeCash/whois repo instead
+const IGNORE_LIST = [
+  '0xb131f4A55907B10d1F0A50d8ab8FA09EC342cd74', // MEME (Ethereum)
+  '0xB4FFEf15daf4C02787bC5332580b838cE39805f5', // z0ETH (Linea)
+];
 
 export const hasSupportForPermit = async (contract: TokenContract) => {
   if (isErc721Contract(contract)) return false;

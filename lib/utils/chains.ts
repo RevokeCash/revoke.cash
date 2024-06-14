@@ -1762,7 +1762,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.PulseChain,
     name: 'PulseChain',
     logoUrl: '/assets/images/vendor/chains/pulsechain.png',
-    explorerUrl: 'https://scan.pulsechainfoundation.org',
+    explorerUrl: 'https://scan.pulsechainfoundation.org/#',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
     // Although multicall is deployed on Pulsechain, it is causing issues
     // deployedContracts: { ...MULTICALL },

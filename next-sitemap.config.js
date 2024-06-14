@@ -34,6 +34,7 @@ module.exports = {
     // 404 pages should not be in the sitemap
     '/**404',
     // Images and static files should not be in the sitemap
+    '**/og.jpg/**',
     '**.jpg',
     '**.png',
     '**.json',
