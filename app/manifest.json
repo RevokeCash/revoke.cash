@@ -23,8 +23,8 @@
     }
   ],
   "start_url": ".",
-  "theme_color": "#fdb952",
-  "background_color": "#fdb952",
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "standalone",
   "iconPath": "assets/images/android-chrome-512x512.png"
 }
