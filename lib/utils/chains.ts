@@ -22,8 +22,8 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OPMainnet,
   ChainId.Blast,
   ChainId.Base,
-  ChainId['AvalancheC-Chain'],
   ChainId.MerlinMainnet,
+  ChainId['AvalancheC-Chain'],
   ChainId.Linea,
   ChainId.Mode,
   ChainId.Mantle,
@@ -52,14 +52,15 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Fraxtal,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
+  ChainId.ZKFairMainnet,
   ChainId.AuroraMainnet,
   ChainId['WEMIX3.0Mainnet'],
-  ChainId.ZKFairMainnet,
   ChainId.XLayerMainnet,
   ChainId.XDCNetwork,
   ChainId.PegoNetwork,
   ChainId.Kroma,
   ChainId.BobaNetwork,
+  ChainId.ImmutablezkEVM,
   ChainId.ZetaChainMainnet,
   ChainId.HorizenEONMainnet,
   ChainId.Beam,
@@ -68,7 +69,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CoinExSmartChainMainnet,
   ChainId.ShimmerEVM,
   ChainId.IOTAEVM,
-  ChainId.ImmutablezkEVM,
   ChainId.Evmos,
   ChainId.ElastosSmartChain,
   ChainId.OasysMainnet,
@@ -87,16 +87,16 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
   ChainId.EthereumClassic,
+  ChainId.CrabNetwork,
+  ChainId.DarwiniaNetwork,
+  ChainId.InEVMMainnet,
   ChainId.KardiaChainMainnet,
   ChainId.ENULSMainnet,
   ChainId.BitrockMainnet,
   ChainId.OasisEmerald,
   ChainId.OasisSapphire,
   ChainId.BitTorrentChainMainnet,
-  ChainId.CrabNetwork,
-  ChainId.DarwiniaNetwork,
-  ChainId.InEVMMainnet,
-  ChainId.Nahmii2Mainnet,
+  ChainId.Nahmii3Mainnet,
   ChainId.Shiden,
   ChainId.CallistoMainnet,
   ChainId.BitgertMainnet,
@@ -484,7 +484,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://blastscan.io',
     etherscanCompatibleApiUrl: 'https://api.blastscan.io/api',
     rpc: {
-      main: 'https://rpc.ankr.com/blast',
+      main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -504,11 +504,13 @@ export const CHAINS: Record<number, Chain> = {
     correspondingMainnetChainId: ChainId.Blast,
   }),
   [ChainId.BNBSmartChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.BNBSmartChainMainnet,
     name: 'BNB Chain',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
-    etherscanCompatibleApiUrl: 'https://api.bscscan.com/api',
+    rpc: {
+      main: `https://bnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -533,11 +535,13 @@ export const CHAINS: Record<number, Chain> = {
     // }),
   }),
   [ChainId.BNBSmartChainTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.BNBSmartChainTestnet,
     name: 'BNB Chain Testnet',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
-    etherscanCompatibleApiUrl: 'https://api-testnet.bscscan.com/api',
+    rpc: {
+      main: `https://bnb-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.BNBSmartChainMainnet,
@@ -1328,6 +1332,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Mantle',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
     etherscanCompatibleApiUrl: 'https://explorer.mantle.xyz/api',
+    rpc: {
+      main: `https://mantle-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1370,6 +1377,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Mantle Sepolia',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
     etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz//api',
+    rpc: {
+      main: `https://mantle-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Mantle,
@@ -1398,6 +1408,9 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.MetisAndromedaMainnet,
     name: 'Metis',
     logoUrl: '/assets/images/vendor/chains/metis.svg',
+    rpc: {
+      main: `https://metis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1485,24 +1498,13 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [ChainId.Nahmii2Mainnet]: new Chain({
+  [ChainId.Nahmii3Mainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.Nahmii2Mainnet,
+    chainId: ChainId.Nahmii3Mainnet,
     name: 'Nahmii',
     logoUrl: '/assets/images/vendor/chains/nahmii.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.nahmii.io/api',
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // NiiFi (Router) | WETH -> USDC
-        new UniswapV2PriceStrategy({
-          address: '0x01dF38E20738c58aF8141504aa6C88013d3D6C5A',
-          path: ['0x4200000000000000000000000000000000000006', '0xBe5c622cBbF7F9c326D70f795890661FeB5BF2e6'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
+    etherscanCompatibleApiUrl: 'https://backend.explorer.n3.nahmii.io/api',
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.NeonEVMMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1976,7 +1978,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
     etherscanCompatibleApiUrl: 'https://explorer.syscoin.org/api',
     rpc: {
-      main: 'https://syscoin.public-rpc.com',
+      main: 'https://rpc.syscoin.org',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
@@ -2236,6 +2238,9 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/zora.svg',
     etherscanCompatibleApiUrl: 'https://explorer.zora.energy/api',
     deployedContracts: { ...MULTICALL },
+    rpc: {
+      main: `https://zora-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     priceStrategy: undefined, // <$100k Liquidity
     // backendPriceStrategy: new ReservoirNftPriceStrategy({
     //   apiKey: RESERVOIR_API_KEY,
