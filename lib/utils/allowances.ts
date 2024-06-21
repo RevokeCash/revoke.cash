@@ -227,7 +227,7 @@ const getUnlimitedErc721AllowanceFromApproval = async (
   // so we do not have to check the chain for the current allowance
   const isApprovedForAll = approval.data !== '0x' && fromHex(approval.data, 'bigint') !== 0n;
 
-  // If the allwoance if already revoked, we dont need to make any more requests
+  // If the allowance already revoked, we don't need to make any more requests
   if (!isApprovedForAll) return undefined;
 
   const [lastUpdated] = await Promise.all([blocksDB.getTimeLog(contract.publicClient, approval)]);
