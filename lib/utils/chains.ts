@@ -1869,7 +1869,10 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Scroll',
     logoUrl: '/assets/images/vendor/chains/scroll.svg',
     explorerUrl: 'https://scrollscan.com',
-    etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api', // TODO
+    etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api',
+    rpc: {
+      main: 'https://scroll.blockpi.network/v1/rpc/public',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
     // backendPriceStrategy: new ReservoirNftPriceStrategy({
