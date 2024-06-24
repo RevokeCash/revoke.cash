@@ -93,14 +93,15 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.KardiaChainMainnet,
   ChainId.ENULSMainnet,
   ChainId.BitrockMainnet,
-  ChainId.OasisEmerald,
-  ChainId.OasisSapphire,
   ChainId.BitTorrentChainMainnet,
   ChainId.Nahmii3Mainnet,
   ChainId.Shiden,
   ChainId.CallistoMainnet,
   ChainId.BitgertMainnet,
   ChainId.Palm,
+  ChainId.MintMainnet,
+  ChainId.OasisEmerald,
+  ChainId.OasisSapphire,
   ChainId.Redstone,
   ChainId.RARIChainMainnet,
   ChainId.RSS3VSLMainnet,
@@ -712,7 +713,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.CrabNetwork,
     name: 'Crab',
     logoUrl: '/assets/images/vendor/chains/crab.svg',
-    etherscanCompatibleApiUrl: 'https://crab.subview.xyz/api',
+    etherscanCompatibleApiUrl: 'https://crab-scan.darwinia.network/api',
     rpc: {
       main: 'https://crab-rpc.darwinia.network',
     },
@@ -1334,7 +1335,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
     etherscanCompatibleApiUrl: 'https://explorer.mantle.xyz/api',
     rpc: {
-      main: `https://mantle-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: 'https://rpc.mantle.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -1379,7 +1380,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
     etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz//api',
     rpc: {
-      main: `https://mantle-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      main: 'https://rpc.sepolia.mantle.xyz',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1441,6 +1442,15 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://explorer-mainnet-cardano-evm.c1.milkomeda.com/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No liquid stablecoins
+  }),
+  [ChainId.MintMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.MintMainnet,
+    name: 'Mint',
+    logoUrl: '/assets/images/vendor/chains/mint.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.mintchain.io/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.Mode]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2117,6 +2127,7 @@ export const CHAINS: Record<number, Chain> = {
     infoUrl: 'https://xdc.org',
     rpc: {
       main: 'https://erpc.xdcrpc.com',
+      free: 'https://erpc.xdcrpc.com',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
