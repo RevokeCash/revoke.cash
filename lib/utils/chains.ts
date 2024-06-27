@@ -969,6 +969,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Fantom',
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
     etherscanCompatibleApiUrl: 'https://api.ftmscan.com/api',
+    rpc: {
+      main: 'https://rpcapi.fantom.network',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
