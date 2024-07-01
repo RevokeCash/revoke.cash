@@ -2,13 +2,12 @@ import LearnLayout from 'app/layouts/LearnLayout';
 import ChainDescription from 'components/common/ChainDescription';
 import Divider from 'components/common/Divider';
 import Prose from 'components/common/Prose';
-import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import { Metadata, NextPage } from 'next';
-import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import AddNetworkChainSelect from './AddNetworkChainSelect';
 import AddNetworkForm from './AddNetworkForm';
@@ -45,7 +44,6 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
   const chainId = getChainIdFromSlug(params.slug as string);
   const sidebar = await getSidebar(params.locale, 'learn');
   const t = await getTranslations({ locale: params.locale });
-  const messages = await getMessages();
 
   const chainName = getChainName(chainId);
   const slug = ['wallets', 'add-network'];
@@ -101,9 +99,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
             </p>
           </div>
         </div>
-        <NextIntlClientProvider messages={{ learn: messages.learn, common: messages.common }}>
-          <AddNetworkForm chainId={chainId} />
-        </NextIntlClientProvider>
+        <AddNetworkForm chainId={chainId} />
       </Prose>
     </LearnLayout>
   );

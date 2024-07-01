@@ -1,12 +1,7 @@
-'use client';
-
-import Button from 'components/common/Button';
 import CopyButton from 'components/common/CopyButton';
-import ConnectButton from 'components/header/ConnectButton';
-import { useMounted } from 'lib/hooks/useMounted';
 import { getChainExplorerUrl, getChainFreeRpcUrl, getChainName, getChainNativeToken } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
-import { useAccount, useSwitchChain } from 'wagmi';
+import AddNetworkButton from './AddNetworkButton';
 
 interface Props {
   chainId: number;
@@ -14,11 +9,7 @@ interface Props {
 
 const AddNetworkForm = ({ chainId }: Props) => {
   const chainName = getChainName(chainId);
-
   const t = useTranslations();
-  const { switchChain } = useSwitchChain();
-  const { isConnected } = useAccount();
-  const isMounted = useMounted();
 
   return (
     <div property="step" typeof="HowToStep">
@@ -33,13 +24,7 @@ const AddNetworkForm = ({ chainId }: Props) => {
           <FormElement label="Block explorer URL (Optional)" content={getChainExplorerUrl(chainId)} />
         </div>
         <p>{t('learn.add_network.step_2.paragraph_2')}</p>
-        {isConnected && isMounted ? (
-          <Button style="primary" size="md" onClick={() => switchChain({ chainId })}>
-            {t.rich('learn.add_network.title', { chainName })}
-          </Button>
-        ) : (
-          <ConnectButton style="primary" size="md" />
-        )}
+        <AddNetworkButton chainId={chainId} label={t.rich('learn.add_network.title', { chainName })} />
       </div>
     </div>
   );
