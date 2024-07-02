@@ -1,9 +1,11 @@
 'use client';
 
+import { ChainId } from '@revoke.cash/chains';
+import { NEFTURE_API_KEY } from 'lib/constants';
 import { usePathname, useRouter } from 'lib/i18n/navigation';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
-import React, { ReactNode, useContext, useLayoutEffect, useState } from 'react';
+import React, { ReactNode, useContext, useLayoutEffect, useMemo, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
@@ -20,6 +22,7 @@ interface AddressContext {
   allowanceContext?: ReturnType<typeof useAllowances>;
   signatureNoticeAcknowledged?: boolean;
   acknowledgeSignatureNotice?: () => void;
+  neftureData?: Promise<any>;
 }
 
 interface Props {
@@ -42,6 +45,41 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   const queryChainId = parseInt(searchParams.get('chainId') as string);
   const defaultChainId = [initialChainId, queryChainId, chain?.id, 1].find((chainId) => isSupportedChain(chainId));
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
+
+  const neftureData = useMemo(() => {
+    if (!NEFTURE_API_KEY) return;
+
+    const getNeftureApprovals = async () => {
+      const res = await fetch('https://api-scan-wallet.nefture.com/getFullApprovals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': NEFTURE_API_KEY,
+        },
+        body: JSON.stringify({
+          address: address,
+          chainId: ChainId.EthereumMainnet,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.status === 'success') {
+        console.log('NEFTURE DATA', data);
+        return data;
+      }
+
+      if (data.status === 'pending') {
+        return new Promise((resolve) => {
+          setTimeout(() => resolve(getNeftureApprovals()), 5000);
+        });
+      }
+
+      return null;
+    };
+
+    return getNeftureApprovals();
+  }, [address]);
 
   // Note: We use useLayoutEffect here, because this is the only setup that works with the "spenderSearch" query param as well
   useLayoutEffect(() => {
@@ -73,6 +111,7 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
         allowanceContext,
         signatureNoticeAcknowledged,
         acknowledgeSignatureNotice,
+        neftureData,
       }}
     >
       {children}
