@@ -26,6 +26,10 @@ export const RateLimiters = {
     points: 100,
     duration: 1,
   }),
+  SPENDER: new RateLimiterMemory({
+    points: 100,
+    duration: 1,
+  }),
 };
 
 export const checkRateLimitAllowed = async (req: NextApiRequest, rateLimiter: RateLimiterMemory) => {

@@ -157,8 +157,12 @@ export interface BreadcrumbEntry {
   href?: string;
 }
 
-export interface SpenderData {
+export interface SpenderData extends SpenderRiskData {
   name: string;
+}
+
+export interface SpenderRiskData {
+  name?: string;
   exploits?: string[];
   riskFactors?: string[];
 }
