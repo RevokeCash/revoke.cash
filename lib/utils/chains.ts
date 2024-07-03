@@ -144,6 +144,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.IOTAEVMTestnet,
   ChainId.ZetaChainAthens3Testnet,
   ChainId.BerachainArtio,
+  ChainId.BerachainbArtio,
   ChainId.BeamTestnet,
   ChainId.TabiTestnet,
   ChainId.RSS3VSLSepoliaTestnet,
@@ -446,6 +447,16 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Berachain Artio',
     logoUrl: '/assets/images/vendor/chains/berachain.jpg',
     etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/testnet/evm/80085/etherscan/api',
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
+  }),
+  [ChainId.BerachainbArtio]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.BerachainbArtio,
+    name: 'Berachain bArtio',
+    logoUrl: '/assets/images/vendor/chains/berachain.jpg',
+    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/testnet/evm/80084/etherscan/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
