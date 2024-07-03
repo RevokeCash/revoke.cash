@@ -19,6 +19,10 @@ const RiskFactor = ({ name, type }: Props) => {
       name: 'ScamSniffer',
       url: 'https://scamsniffer.io/',
     },
+    blocklist_scamsniffer: {
+      name: 'ScamSniffer',
+      url: 'https://scamsniffer.io/',
+    },
   };
 
   const platform = blocklistPlatforms[name];

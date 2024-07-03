@@ -243,7 +243,7 @@ export const hasSupportForPermit = async (contract: TokenContract) => {
   if (isErc721Contract(contract)) return false;
   if (IGNORE_LIST.includes(contract.address)) return false;
 
-  // If we can properly retrieve the EIP712 domain and nonce, it supports permit
+  // If we can properly retrieve the EIP712 domain and nonce, we assume it supports permit
   try {
     await Promise.all([
       getPermitDomain(contract),
