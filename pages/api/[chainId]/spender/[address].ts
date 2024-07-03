@@ -4,6 +4,7 @@ import { NextRequest } from 'next/server';
 
 export const config = {
   runtime: 'edge',
+  regions: ['iad1', 'cle1'],
 };
 
 const handler = async (req: NextRequest) => {
