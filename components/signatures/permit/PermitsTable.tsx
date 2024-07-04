@@ -1,7 +1,5 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import Card from 'components/common/Card';
-import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import Table from 'components/common/table/Table';
 import { usePermitTokens } from 'lib/hooks/ethereum/usePermitTokens';
 import { PermitTokenData } from 'lib/interfaces';
@@ -34,13 +32,6 @@ const PermitsTable = () => {
   const title = (
     <div className="flex items-center gap-2">
       <div>{t('address.signatures.permit.title')}</div>
-      <div className="font-normal">
-        <WithHoverTooltip tooltip={t('address.tooltips.permit_signatures')}>
-          <div>
-            <InformationCircleIcon className="w-4 h-4" />
-          </div>
-        </WithHoverTooltip>
-      </div>
     </div>
   );
 

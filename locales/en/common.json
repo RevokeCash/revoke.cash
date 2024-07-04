@@ -7,7 +7,7 @@
   "buttons": {
     "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
-    "cancel_signatures": "Cancel Signatures",
+    "cancel_signatures": "Cancel Potential Signatures",
     "cancelling": "Cancelling",
     "check": "Check",
     "check_connected_address": "Check Connected Address",

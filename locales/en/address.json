@@ -66,8 +66,8 @@
     "expiration": "Expires {inTime}"
   },
   "risk_factors": {
-    "blocklist": "This address is blocklisted by <blocklist-link>{platform}</blocklist-link>",
-    "exploit": "This address was involved in the {exploit}",
+    "blocklist": "Blocklisted by <blocklist-link>{platform}</blocklist-link>",
+    "exploit": "Involved in the {exploit}",
     "levels": {
       "high": "high risk",
       "low": "low risk",
@@ -79,16 +79,16 @@
   },
   "signatures": {
     "info": {
-      "description": "Because signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you actually signed any signatures. So this page contains a list of <i>potential</i> signatures. <b>You only need to cancel these signatures if you are sure that you signed one on a phishing website</b>. Because of this, the potential signature will remain in the list, even after cancelling it."
+      "description": "Because signatures are not stored on the blockchain, <b>there is no way for Revoke.cash to know if you signed any signatures</b>. So this page contains a list of known marketplaces and a list of your tokens that support offchain <i>Permit</i> signatures. <b>Only if <i>you</i> know that you signed an offchain signature on a scam website, you need to cancel the <i>potential</i> signatures on this page</b>, otherwise you are wasting transaction fees. When you cancel potential signatures for a token or marketplace, they will remain in the list but cannot be cancelled again for some time."
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 active approval} other {# active approvals}}",
       "none_found": "No marketplaces with active approvals found.",
-      "title": "Potential Marketplace Signatures"
+      "title": "Marketplaces"
     },
     "permit": {
       "none_found": "No tokens with Permit support found.",
-      "title": "Potential Permit Signatures"
+      "title": "Tokens with Permit support"
     }
   },
   "sorting": {

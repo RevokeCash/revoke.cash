@@ -237,6 +237,7 @@ export const isErc721Contract = (contract: TokenContract): contract is Erc721Tok
 const IGNORE_LIST = [
   '0xb131f4A55907B10d1F0A50d8ab8FA09EC342cd74', // MEME (Ethereum)
   '0xB4FFEf15daf4C02787bC5332580b838cE39805f5', // z0ETH (Linea)
+  '0x0684FC172a0B8e6A65cF4684eDb2082272fe9050', // z0ezETH (Linea)
 ];
 
 export const hasSupportForPermit = async (contract: TokenContract) => {
