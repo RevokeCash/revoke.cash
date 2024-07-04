@@ -20,6 +20,7 @@ export class RequestQueue {
       new Ratelimit({
         redis: Redis.fromEnv(),
         limiter: Ratelimit.slidingWindow(rateLimit.intervalCap, `${rateLimit.interval} ms`),
+        analytics: true,
       });
   }
 
