@@ -2871,30 +2871,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@upstash/core-analytics@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "@upstash/core-analytics@npm:0.0.7"
+"@upstash/core-analytics@npm:^0.0.9":
+  version: 0.0.9
+  resolution: "@upstash/core-analytics@npm:0.0.9"
   dependencies:
     "@upstash/redis": ^1.28.3
-  checksum: fbd2a0992e3b1f5e6f208648d19f6ce7803a23afa8e5438cd71c8f6ae9362f5e333e1c0ea289b0105141f20ac0f336672ccb15302e5951661be478ff36072724
+  checksum: cfb49ce9d7c745a98de2b4e35973855d6311502c90840683dbe4b6a58304d880c6c356c6de275f32cfe5ec5add865a3dfe860c96d989e8a06e823788e90af2b9
   languageName: node
   linkType: hard
 
-"@upstash/ratelimit@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@upstash/ratelimit@npm:1.0.1"
+"@upstash/ratelimit@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@upstash/ratelimit@npm:1.2.1"
   dependencies:
-    "@upstash/core-analytics": ^0.0.7
-  checksum: 7241e6eab21187d5b92bd7576d954d51939740db24ee0669a24e94c0ca0599fc42b46bc5312d519182136954f7841f612136dcc1bb4a275cb87b65a68ecb7ab9
+    "@upstash/core-analytics": ^0.0.9
+  checksum: c23112312c51d91916ab75610a2ad9bd7b8eea41c2f6765eb84e572334eb0a4bc59c2420c9332c22a91e42398570c47ce0231884e6362d56e50057935d5f12f8
   languageName: node
   linkType: hard
 
-"@upstash/redis@npm:^1.28.3, @upstash/redis@npm:^1.29.0":
+"@upstash/redis@npm:^1.28.3":
   version: 1.29.0
   resolution: "@upstash/redis@npm:1.29.0"
   dependencies:
     crypto-js: ^4.2.0
   checksum: 9b9b4305006fa4110cfd16d24866f9b732ba2ed3c3a60e8e9d609f9a2ef98589796a6830f6aed18408e031cbc589c45fb3507b60c80407c34063165ebe473818
+  languageName: node
+  linkType: hard
+
+"@upstash/redis@npm:^1.32.0":
+  version: 1.32.0
+  resolution: "@upstash/redis@npm:1.32.0"
+  dependencies:
+    crypto-js: ^4.2.0
+  checksum: 67520363d8c14a15b6d10093f5da406da6e1d114d80f80afddb4067c7bbd521f4d35a13e11c74144848225e82fb76d8757ea306754af9e4e0b3c13dea7fc13a9
   languageName: node
   linkType: hard
 
@@ -10638,8 +10647,8 @@ __metadata:
     "@types/react-dom": ^18.2.23
     "@types/react-syntax-highlighter": ^15.5.13
     "@types/request-ip": ^0.0.41
-    "@upstash/ratelimit": ^1.0.1
-    "@upstash/redis": ^1.29.0
+    "@upstash/ratelimit": ^1.2.1
+    "@upstash/redis": ^1.32.0
     "@vercel/speed-insights": ^1.0.10
     autoprefixer: ^10.4.19
     chai: ^5.1.1
