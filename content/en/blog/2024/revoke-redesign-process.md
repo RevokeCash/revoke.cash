@@ -8,7 +8,7 @@ translator: <Your Name Here (or remove)>
 
 # Revoke Redesign: Process & Thoughts
 
-Hi, I am Richard, a Full-Stack Designer. I take care of all design aspects in projects from start to finish. You might have heared my name dropped in various Gitcoin projects. I am a user of Revoke myself, and I felt it was time for Revoke to finally look as good as the tool is useful to everybody.
+Hi, I am Richard, a Full-Stack Designer. I take care of all design aspects in projects from start to finish. You might have heard my name dropped in various Gitcoin projects. I am a user of Revoke myself, and I felt it was time for Revoke to finally look as good as the tool is useful to everybody.
 
 ![Revoke Brand](/assets/images/blog/2024/revoke-redesign-process/brand.jpg)
 

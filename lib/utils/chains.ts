@@ -1638,27 +1638,31 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
       strategies: [
-        // Uniswap v3 (Factory) | (0.3%) WETH -> (0.05%) USDbC
+        // Uniswap v3 (Factory) | (0.3%) WETH -> (0.05%) USDC
         new UniswapV3ReadonlyPriceStrategy({
           address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
           path: [
             toHex(3000, { size: 3 }),
             '0x4200000000000000000000000000000000000006',
             toHex(500, { size: 3 }),
-            '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+            '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
           ],
           decimals: 6,
         }),
-        // Uniswap v3 (Factory) | (1%) WETH -> (0.05%) USDbC
+        // Uniswap v3 (Factory) | (1%) WETH -> (0.05%) USDC
         new UniswapV3ReadonlyPriceStrategy({
           address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
           path: [
             toHex(10000, { size: 3 }),
             '0x4200000000000000000000000000000000000006',
             toHex(500, { size: 3 }),
-            '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+            '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
           ],
           decimals: 6,
+        }),
+        new HardcodedPriceStrategy({
+          // USDC.e and USDT don't have suitable pait on Uniswap v3
+          tokens: ['0x7F5c764cBc14f9669B88837ca1490cCa17c31607', '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58'],
         }),
         // new BackendPriceStrategy({}),
       ],
