@@ -2462,6 +2462,7 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     CET: '250',
     CLO: '5000',
     CORE: '10',
+    CFX: '80',
     CRO: '100',
     DOGE: '250',
     ELA: '10',
