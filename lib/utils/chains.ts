@@ -112,6 +112,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
+  ChainId.ConfluxeSpace,
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -719,6 +720,13 @@ export const CHAINS: Record<number, Chain> = {
         }),
       ],
     }),
+  }),
+  [ChainId.ConfluxeSpace]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.ConfluxeSpace,
+    name: 'Conflux eSpace',
+    logoUrl: '/assets/images/vendor/chains/conflux.svg',
+    nativeToken: 'CFX',
   }),
   [ChainId.CrabNetwork]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
