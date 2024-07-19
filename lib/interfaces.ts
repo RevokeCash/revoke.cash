@@ -205,15 +205,15 @@ export interface ParsedEvent {
 }
 export interface DecodedEventLog {
   name: string;
-  signature?: string;
-  args?: any[];
-  topics: string[];
+  signature: string;
+  args: any[];
+  topics: Hex[];
   data: string;
-  blockHash?: string;
-  blockNumber?: number;
-  transactionHash?: string;
-  transactionIndex?: number;
-  logIndex?: number;
+  blockHash: string;
+  blockNumber: number;
+  transactionHash: string;
+  transactionIndex: number;
+  logIndex: number;
   address?: string;
   eventFragment?: {
     type: 'event';
