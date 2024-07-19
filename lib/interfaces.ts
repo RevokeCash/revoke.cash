@@ -1,7 +1,6 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
 import type { useAllowances } from './hooks/ethereum/useAllowances';
-
 export type Balance = bigint | 'ERC1155';
 
 export interface BaseTokenData {
@@ -194,4 +193,36 @@ export type OnCancel<T> = (data: T, lastCancelled: TimeLog) => Promise<void>;
 export interface EtherscanPlatform {
   domain: string;
   subdomain?: string;
+}
+
+export interface ParsedEvent {
+  type: 'Approval' | 'ApprovalForAll' | 'Permit2Approval';
+  owner: string;
+  spender?: string;
+  operator?: string;
+  value?: string;
+  approved?: boolean;
+}
+export interface DecodedEventLog {
+  name: string;
+  signature?: string;
+  args?: any[];
+  topics: string[];
+  data: string;
+  blockHash?: string;
+  blockNumber?: number;
+  transactionHash?: string;
+  transactionIndex?: number;
+  logIndex?: number;
+  address?: string;
+  eventFragment?: {
+    type: 'event';
+    name: string;
+    inputs: {
+      type: string;
+      name: string;
+      indexed: boolean;
+    }[];
+    anonymous?: boolean;
+  };
 }
