@@ -18,6 +18,16 @@ export const isRevertedError = (error?: string | any): boolean => {
   return false;
 };
 
+export const isOutOfGasError = (error?: string | any): boolean => {
+  if (typeof error !== 'string') {
+    return isOutOfGasError(parseErrorMessage(error)) || isOutOfGasError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('out of gas')) return true;
+  return false;
+};
+
 export const isLogResponseSizeError = (error?: string | any) => {
   if (typeof error !== 'string') {
     return isLogResponseSizeError(parseErrorMessage(error)) || isLogResponseSizeError(stringifyError(error));
@@ -49,6 +59,7 @@ export const isNetworkError = (error?: string | any) => {
   if (isRateLimitError(error)) return false;
   if (isLogResponseSizeError(error)) return false;
   if (isRevertedError(error)) return false;
+  if (isOutOfGasError(error)) return false;
 
   if (typeof error !== 'string') {
     return isNetworkError(parseErrorMessage(error)) || isNetworkError(stringifyError(error));
