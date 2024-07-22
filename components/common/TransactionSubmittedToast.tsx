@@ -1,15 +1,15 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
-import DonateButton from 'components/common/DonateButton';
+import DonateButton from 'components/common/donate/DonateButton';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
-import type { MutableRefObject, ReactText } from 'react';
-import { toast } from 'react-toastify';
+import type { MutableRefObject } from 'react';
+import { Id, toast } from 'react-toastify';
 import Href from './Href';
 
 interface Props {
   chainId: number;
   transactionHash: string;
-  ref: MutableRefObject<ReactText>;
+  ref: MutableRefObject<Id>;
 }
 
 const TransactionSubmittedToast = ({ chainId, transactionHash, ref }: Props) => {
@@ -37,7 +37,7 @@ export default TransactionSubmittedToast;
 export const displayTransactionSubmittedToast = (
   chainId: number,
   transactionHash: string,
-  ref: MutableRefObject<ReactText>,
+  ref: MutableRefObject<Id>,
 ) => {
   ref.current = toast.info(
     <TransactionSubmittedToast chainId={chainId} transactionHash={transactionHash} ref={ref} />,
@@ -45,4 +45,5 @@ export const displayTransactionSubmittedToast = (
       closeOnClick: false,
     },
   );
+  console.log(ref.current);
 };

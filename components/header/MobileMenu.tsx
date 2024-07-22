@@ -8,7 +8,7 @@ import WalletIndicator from 'components/header/WalletIndicator';
 import { usePathname } from 'lib/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import DonateButton from '../common/DonateButton';
+import DonateButton from '../common/donate/DonateButton';
 import NavLink from './NavLink';
 
 const MobileMenu = () => {
