@@ -80,6 +80,7 @@
     "polygon-zkevm": "Polygon zkEVM 是一种第 2 层（L2）创新解决方案，也是 zkEVM 最早的应用之一。相比其他 L2 解决方案，例如 Optimistic Rollup，zkEVM 技术可以在较低的成本下提供更高的吞吐量，同时保证强大的安全性。",
     "pulsechain": "PulseChain 是作为以太坊区块链的完整分叉而构建的第 1 层（Layer 1）区块链，也就是说在分叉网络启动之前，它与以太坊共享相同的交易历史记录。PulseChain 是由 HEX 社区创建的，旨在提供比以太坊更低的费用。",
     "rari-chain": "RARI 链是建立在 Arbitrum Nova 第 2 层（Layer 2）扩展解决方案之上的 第 3 层区块链。RARI 链交易成本低，且在协议层面嵌入节点级别版税机制，旨在为创作者赋能并帮助他们进行变现。",
+    "re-al": "Re.al is a Layer 2 scaling solution for Ethereum that is dedicated to providing the infrastructure for Real World Assets (RWA). It is built using Arbitrum's Orbit framework to provide low cost and high scale for RWA applications and provides native yield on its ETH and DAI tokens.",
     "redlight": "Redlight 是第 1 层（Layer 1）区块链，采用了中心化程度最高的权威证明（PoA）共识机制，在无需支付任何汽油费用的情况下，即可提供高吞吐量的交易。",
     "redstone": "Redstone 是第 2 层（Layer 2）区块链，旨在为游戏应用提供高吞吐量和低费用。Redstone 基于 Optimism 的 OP Stack 打造，因此与 Optimism 一样，采用了 Optimistic Rollup 技术。为了降低费用，Redstone 不使用以太坊作为数据可用层（DA），而是使用了自定义的数据可用层。",
     "rollux": "Rollux 是 Syscoin 的第 2 层（Layer 2）扩展解决方案，采用了 Optimistic Rollup 技术，通过在 Rollux 上执行交易，将交易数据批量发布到 Syscoin，以实现对 Syscoin 的扩展。作为 Syscoin 的第 2 层解决方案，Rollux 继承了 Syscoin 的某些安全属性，例如与比特币的合并挖矿。",

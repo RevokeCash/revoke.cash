@@ -67,6 +67,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Wanchain,
   ChainId.DogechainMainnet,
   ChainId.CoinExSmartChainMainnet,
+  ChainId['Re.al'],
   ChainId.ShimmerEVM,
   ChainId.IOTAEVM,
   ChainId.Evmos,
@@ -142,7 +143,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.HorizenGobiTestnet,
   ChainId.ShimmerEVMTestnet,
   ChainId.IOTAEVMTestnet,
-  ChainId.ZetaChainAthens3Testnet,
+  ChainId.ZetaChainTestnet,
   ChainId.BerachainbArtio,
   ChainId.BeamTestnet,
   ChainId.TabiTestnet,
@@ -1810,6 +1811,16 @@ export const CHAINS: Record<number, Chain> = {
     rpc: {
       main: 'https://mainnet.rpc.rarichain.org/http',
     },
+    priceStrategy: undefined, // TODO
+  }),
+  [ChainId['Re.al']]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId['Re.al'],
+    name: 'Re.al',
+    logoUrl: '/assets/images/vendor/chains/re-al.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.re.al/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.RedlightChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2171,12 +2182,13 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.XLayerMainnet,
     name: 'X Layer',
     logoUrl: '/assets/images/vendor/chains/xlayer.svg',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.ZetaChainAthens3Testnet]: new Chain({
+  [ChainId.ZetaChainTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.ZetaChainAthens3Testnet,
-    name: 'ZetaChain Athens',
+    chainId: ChainId.ZetaChainTestnet,
+    name: 'ZetaChain Testnet',
     logoUrl: '/assets/images/vendor/chains/zetachain.svg',
     explorerUrl: 'https://zetachain-athens-3.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain-athens-3.blockscout.com/api',

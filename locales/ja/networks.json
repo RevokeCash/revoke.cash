@@ -80,6 +80,7 @@
     "polygon-zkevm": "Polygon zkEVMは、新しく革新的なL2スケーリングソリューションであり、zkEVMの最初の実装の1つです。zkEVMテクノロジーは、オプティミスティック・ロールアップなどの他のL2ソリューションと比較して強力なセキュリティー保証を維持しながら、他の多くのL2ソリューションよりも低いコストで高いスループットを実現します。",
     "pulsechain": "PulseChainは、Ethereumブロックチェーンのフルフォークとして構築されたレイヤー1のブロックチェーンです。つまり、フォークされたネットワークが開始されるまで、同じ取引履歴を共有しているということです。PulseChainはHEXコミュニティーから生まれたもので、Ethereumよりも低い手数料を提供するために作られました。",
     "rari-chain": "RARIチェーンは、Arbitrum Novaレイヤー2のスケーリングソリューションの上に構築されたレイヤー3のブロックチェーンです。RARI Chainは、低コストの取引とプロトコルレベルでの組み込みロイヤルティにより、作成者が作品を構築して収益化できるようにすることを目指しています。",
+    "re-al": "Re.al is a Layer 2 scaling solution for Ethereum that is dedicated to providing the infrastructure for Real World Assets (RWA). It is built using Arbitrum's Orbit framework to provide low cost and high scale for RWA applications and provides native yield on its ETH and DAI tokens.",
     "redlight": "Redlightは、プルーフ・オブ・オーソリティーのコンセンサスメカニズムを使用するレイヤー1のブロックチェーンです。ほぼ一元化されたプルーフ・オブ・オーソリティーのコンセンサスメカニズムを使用することで、通常の運用では最低限のガス料金なしで高いスループットの取引を実現できます。",
     "redstone": "Redstoneは、ゲームアプリケーションに高スループットと低料金を提供することに重点を置いたレイヤー2のブロックチェーンです。OptimismのオープンソースOPスタック上に構築されているため、Optimismと同様にオプティミスティックロールアップ技術を使用しています。より低い手数料を実現するために、Redstoneはデータ可用性レイヤーとしてEthereumを使用せず、代わりにカスタムのデータ可用性レイヤーを使用しています。",
     "rollux": "RolluxはSyscoin向けのレイヤー2のスケーリングソリューションです。オプティミスティック・ロールアップを使用してRollux上で取引を実行し、取引データのバッチをSyscoinに送信することで、Syscoinをスケーリングします。RolluxはSyscoinのレイヤー2のソリューションであるため、ビットコインとのマージマイニングなど、Syscoinのセキュリティー特性の一部を継承することもできます。",
