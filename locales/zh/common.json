@@ -7,7 +7,7 @@
   "buttons": {
     "back_to_exploits": "返回漏洞",
     "cancel": "取消",
-    "cancel_signatures": "取消签名",
+    "cancel_signatures": "取消可能存在的签名",
     "cancelling": "正在取消",
     "check": "检查",
     "check_connected_address": "检查连接地址",

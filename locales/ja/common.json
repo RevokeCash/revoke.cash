@@ -7,7 +7,7 @@
   "buttons": {
     "back_to_exploits": "エクスプロイトの項目に戻る",
     "cancel": "キャンセル",
-    "cancel_signatures": "署名を取り消す",
+    "cancel_signatures": "潜在的な署名をキャンセルする",
     "cancelling": "キャンセル中",
     "check": "確認",
     "check_connected_address": "接続したアドレスの確認",

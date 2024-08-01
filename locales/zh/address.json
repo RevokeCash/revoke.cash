@@ -66,8 +66,8 @@
     "expiration": "于 {inTime} 过期"
   },
   "risk_factors": {
-    "blocklist": "此地址在<blocklist-link>{platform}</blocklist-link>黑名单上",
-    "exploit": "此地址涉及{exploit}",
+    "blocklist": "被 <blocklist-link>{platform}</blocklist-link> 列入屏蔽名单",
+    "exploit": "涉及 {exploit}",
     "levels": {
       "high": "高风险",
       "low": "低风险",
@@ -79,16 +79,16 @@
   },
   "signatures": {
     "info": {
-      "description": "由于区块链不存储签名，因此 Revoke.cash 无法核实您是否真的进行了签名。此页面包含了<i>可能的</i>签名列表。<b>只有当您确定自己在钓鱼网站上进行了签名时，才需要取消这些签名</b>。即使您已取消签名，该条目仍将保存在本列表中。"
+      "description": "由于区块链不存储签名，<b>因此 Revoke.cash 无法核实您是否真的进行了签名</b>。此页面列出了已知的市场和您所有的支持链下<i>许可</i>签名的代币。<b>只有当<i>您</i>确定自己在钓鱼网站上进行了链下签名时，才需要取消本页面这些<i>可能存在的</i>签名</b>，否则可能浪费交易费用。即使您已取消某个代币或市场的签名，该条目仍将保存在本列表中，不过在一段时间内将无法再次取消。"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 个有效授权} other {# 个有效授权}}",
       "none_found": "未找到具备有效授权的市场。",
-      "title": "潜在的市场签名"
+      "title": "市场"
     },
     "permit": {
       "none_found": "未找到支持许可的代币。",
-      "title": "潜在的许可签名"
+      "title": "具备许可的代币"
     }
   },
   "sorting": {

@@ -66,8 +66,8 @@
     "expiration": "Caduca {inTime}"
   },
   "risk_factors": {
-    "blocklist": "Esta dirección está en la lista de bloqueo de <blocklist-link>{platform}</blocklist-link>",
-    "exploit": "Esta dirección estuvo implicada en el {exploit}",
+    "blocklist": "Listado bloqueado por <blocklist-link>{platform}</blocklist-link>",
+    "exploit": "Involucrada en el {exploit}",
     "levels": {
       "high": "alto riesgo",
       "low": "bajo riesgo",
@@ -79,16 +79,16 @@
   },
   "signatures": {
     "info": {
-      "description": "Como las firmas no se almacenan en la blockchain, Revoke.cash no tiene forma de comprobar si realmente has firmado alguna firma. Por lo tanto, esta página contiene una lista de <i>firmas potenciales</i>. <b>Solo tienes que cancelar estas firmas si estás seguro de haber firmado una en un sitio web de phishing</b>. Por ello, la firma potencial permanecerá en la lista, incluso después de cancelarla."
+      "description": "Debido a que las firmas no se almacenan en la blockchain, <b>no hay forma de que Revoke.cash sepa si firmó alguna firma</b>. Por lo tanto, esta página contiene una lista de mercados conocidos y una lista de sus tokens que <i>Admiten</i> firmas fuera de la cadena. <b>Solo si <i>Usted</i> sabe que firmó una firma fuera de la cadena en un sitio web fraudulento, debe cancelar las <i>potenciales</i> firmas en esta página</b>, de lo contrario estará desperdiciando tarifas de transacción. Cuando cancele posibles firmas para un token o mercado, permanecerán en la lista, pero no se podrán volver a cancelar durante algún tiempo."
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 aprobación activa} other {# aprobaciones activas}}",
       "none_found": "No se han encontrado mercados con autorizaciones activas.",
-      "title": "Posibles Firmas del Mercado"
+      "title": "Mercados"
     },
     "permit": {
       "none_found": "No se encontró ningún token compatible con firmas de permiso.",
-      "title": "Posibles Firmas de Permisos"
+      "title": "Tokens con soporte de permisos"
     }
   },
   "sorting": {
