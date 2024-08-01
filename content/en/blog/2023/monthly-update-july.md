@@ -55,5 +55,5 @@ New Mainnets:
 
 New Testnets:
 
-- [ZetaChain Athens](/token-approval-checker/zetachain-athens)
+- [ZetaChain Testnet](/token-approval-checker/zetachain-testnet)
 - Taiko Alpha
