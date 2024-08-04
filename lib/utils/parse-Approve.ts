@@ -16,25 +16,49 @@ export const parseLog = (log: Log): ParsedEvent | null => {
       const args = decodedLog.args;
 
       if (decodedLog.name === 'Approval') {
-        return {
-          type: 'Approval',
-          owner: args[0],
-          spender: args[1],
-          value: args[2]?.toString(),
-        };
+        if (abi === ERC721_ABI) {
+          // ERC721 Approval
+          return {
+            type: 'Approval',
+            owner: args[0],
+            spender: args[2],
+            tokenId: args[3]?.toString(),
+          };
+        } else if (abi === PERMIT2_ABI) {
+          // Permit2 Approval
+          return {
+            type: 'Approval',
+            owner: args[0],
+            token: args[1],
+            spender: args[2],
+            amount: args[3]?.toString(),
+            expiration: args[4]?.toString(),
+          };
+        } else {
+          // ERC20 Approval
+          return {
+            type: 'Approval',
+            owner: args[0],
+            spender: args[1],
+            value: args[2]?.toString(),
+          };
+        }
       } else if (decodedLog.name === 'ApprovalForAll') {
         return {
           type: 'ApprovalForAll',
           owner: args[0],
-          operator: args[1],
+          spender: args[1],
           approved: args[2],
         };
-      } else if (decodedLog.name === 'Permit2Approval') {
+      } else if (decodedLog.name === 'Permit') {
         return {
-          type: 'Permit2Approval',
+          type: 'Permit',
           owner: args[0],
-          spender: args[1],
-          value: args[2]?.toString(),
+          token: args[1],
+          spender: args[2],
+          amount: args[3]?.toString(),
+          expiration: args[4]?.toString(),
+          nonce: args[5]?.toString(),
         };
       }
     } catch (e) {

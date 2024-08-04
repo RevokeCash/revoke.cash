@@ -196,12 +196,16 @@ export interface EtherscanPlatform {
 }
 
 export interface ParsedEvent {
-  type: 'Approval' | 'ApprovalForAll' | 'Permit2Approval';
+  type: 'Approval' | 'ApprovalForAll' | 'Permit';
   owner: string;
   spender?: string;
-  operator?: string;
   value?: string;
   approved?: boolean;
+  tokenId?: string;
+  token?: string;
+  expiration?: string;
+  amount?: number;
+  nonce?: number;
 }
 export interface DecodedEventLog {
   name: string;
