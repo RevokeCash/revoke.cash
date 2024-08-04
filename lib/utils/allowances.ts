@@ -10,12 +10,10 @@ import type {
   Log,
   TokenContract,
 } from 'lib/interfaces';
-import ky from 'lib/ky';
 import { Address, PublicClient, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
   deduplicateLogsByTopics,
-  delay,
   filterLogsByAddress,
   filterLogsByTopics,
   sortLogsChronologically,
@@ -307,26 +305,4 @@ export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTo
   return (
     formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
   );
-};
-export const getNeftureRiskScore = async (address: Address) => {
-  try {
-    const data = await ky.post('https://api-scan-wallet.nefture.com/getScore', { json: { address } }).json<any>();
-    if (data.status === 'pending') {
-      await delay(5_000);
-      return getNeftureRiskScore(address);
-    }
-
-    if (data.status !== 'success') {
-      throw new Error('Nefture API error');
-    }
-
-    return data.score;
-  } catch (e) {
-    if (e?.response?.status === 500) {
-      await delay(5_000);
-      return getNeftureRiskScore(address);
-    }
-
-    throw e;
-  }
 };

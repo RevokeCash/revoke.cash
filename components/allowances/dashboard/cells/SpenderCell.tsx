@@ -8,7 +8,7 @@ import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddres
 import type { AllowanceData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
-import { getSpenderDataFromBackend } from 'lib/utils/whois';
+import { getSpenderData } from 'lib/utils/whois';
 import { useTranslations } from 'next-intl';
 import RiskFactor from '../wallet-health/RiskFactor';
 
@@ -23,7 +23,7 @@ const SpenderCell = ({ allowance }: Props) => {
   // TODO: Expose this data to react-table
   const { data: spenderData, isLoading } = useQuery({
     queryKey: ['spenderData', allowance.spender, allowance.chainId, openSeaProxyAddress],
-    queryFn: () => getSpenderDataFromBackend(allowance.spender, allowance.chainId, openSeaProxyAddress),
+    queryFn: () => getSpenderData(allowance.spender, allowance.chainId, openSeaProxyAddress),
     // Chances of this data changing while the user is on the page are very slim
     staleTime: Infinity,
   });
