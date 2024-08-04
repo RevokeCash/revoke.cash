@@ -1,10 +1,29 @@
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import { getSpenderData } from 'lib/utils/whois';
+import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
+import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderDataSource';
+import { ScamSnifferRiskDataSource } from 'lib/whois/spender/risk/ScamSnifferRiskDataSource';
+import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpenderRiskDataSource';
 import { NextRequest } from 'next/server';
+import { Address } from 'viem';
 
 export const config = {
   runtime: 'edge',
 };
+
+const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
+  aggregationType: AggregationType.PARALLEL_COMBINED,
+  sources: [
+    new AggregateSpenderDataSource({
+      aggregationType: AggregationType.SEQUENTIAL_FIRST,
+      sources: [
+        new WhoisSpenderDataSource(),
+        // new HarpieSpenderDataSource(), // TODO: Re-enable if possible
+      ],
+    }),
+    new ScamSnifferRiskDataSource(),
+    new WebacySpenderRiskDataSource(),
+  ],
+});
 
 const handler = async (req: NextRequest) => {
   if (req.method !== 'GET') return new Response(JSON.stringify({ message: 'Method not allowed' }), { status: 405 });
@@ -19,10 +38,10 @@ const handler = async (req: NextRequest) => {
 
   const query = new URL(req.url).searchParams;
   const chainId = Number.parseInt(query.get('chainId') as string, 10);
-  const address = query.get('address') as string;
+  const address = query.get('address') as Address;
 
   try {
-    const spenderData = await getSpenderData(address, chainId);
+    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address, chainId);
 
     return new Response(JSON.stringify(spenderData), {
       status: 200,

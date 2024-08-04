@@ -4,18 +4,15 @@ import {
   ADDRESS_ZERO,
   ALCHEMY_API_KEY,
   AVVY_DOMAINS_ADDRESS,
-  HARPIE_API_KEY,
   OPENSEA_REGISTRY_ADDRESS,
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
-  WEBACY_API_KEY,
-  WHOIS_BASE_URL,
 } from 'lib/constants';
 import { SpenderData, SpenderRiskData } from 'lib/interfaces';
-import ky from 'lib/ky';
-import md5 from 'md5';
+import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
+import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
+import { HardcodedSpenderDataSource } from 'lib/whois/spender/label/HardcodedSpenderDataSource';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
-import { deduplicateArray } from '.';
 import { createViemPublicClientForChain } from './chains';
 
 // Note that we do not use the official UD or Avvy resolution libraries below because they are big and use Ethers.js
@@ -32,176 +29,22 @@ const GlobalClients = {
   AVALANCHE: createViemPublicClientForChain(ChainId['AvalancheC-Chain'], 'https://api.avax.network/ext/bc/C/rpc'),
 };
 
-export const getSpenderDataFromBackend = async (
+export const getSpenderData = async (
   address: Address,
   chainId: number,
   openseaProxyAddress?: string,
-): Promise<SpenderData | null> => {
-  if (address === openseaProxyAddress) return { name: 'OpenSea (old)' };
+): Promise<SpenderData | SpenderRiskData | null> => {
+  const source = new AggregateSpenderDataSource({
+    aggregationType: AggregationType.SEQUENTIAL_FIRST,
+    sources: [
+      new HardcodedSpenderDataSource({
+        [openseaProxyAddress ?? '']: { name: 'OpenSea (old)', riskFactors: ['deprecated'] },
+      }),
+      new BackendSpenderDataSource(),
+    ],
+  });
 
-  const spenderData = await ky.get(`/api/${chainId}/spender/${getAddress(address)}`).json<SpenderData>();
-  return spenderData;
-};
-
-export const getSpenderData = async (
-  address: string,
-  chainId?: number,
-  openseaProxyAddress?: string,
-): Promise<SpenderData | null> => {
-  const [labelData, riskData] = await Promise.all([
-    getLabelData(address, chainId, openseaProxyAddress),
-    getRiskData(address, chainId),
-  ]);
-
-  return { ...labelData, ...riskData };
-};
-
-export const getLabelData = async (
-  address: string,
-  chainId?: number,
-  openseaProxyAddress?: string,
-): Promise<SpenderData | null> => {
-  if (!chainId) return null;
-  if (!address) return null;
-  if (address === openseaProxyAddress) return { name: 'OpenSea (old)' };
-
-  // Check Harpie only if the whois doesn't have a name, because this is a rate-limited API
-  const data = (await getLabelDataFromWhois(address, chainId)) ?? (await getLabelDataFromHarpie(address, chainId));
-
-  return data;
-};
-
-const getLabelDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
-  try {
-    const labelData = await ky
-      .get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`)
-      .json<SpenderData>();
-    if (!labelData || Object.keys(labelData).length === 0) return null;
-    return labelData;
-  } catch {
-    return null;
-  }
-};
-
-const getLabelDataFromHarpie = async (address: string, chainId: number): Promise<SpenderData | null> => {
-  const apiKey = HARPIE_API_KEY;
-  if (!apiKey || chainId !== 1) return null;
-
-  try {
-    const data = await ky
-      .post('https://api.harpie.io/getprotocolfromcontract', {
-        json: { apiKey, address },
-      })
-      .json<any>();
-
-    if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
-    return { name: data.contractOwner };
-  } catch (e) {
-    return null;
-  }
-};
-
-const getRiskData = async (address: string, chainId: number): Promise<SpenderRiskData | null> => {
-  const results = await Promise.all([
-    getRiskDataFromScamSniffer(address, chainId),
-    getRiskDataFromWebacy(address, chainId),
-    // getRiskDataFromHarpie(address, chainId),
-  ]);
-
-  return results.reduce(
-    (acc, result) =>
-      result
-        ? { ...acc, ...(result ?? {}), riskFactors: [...(acc?.riskFactors ?? []), ...(result?.riskFactors ?? [])] }
-        : acc,
-    {},
-  );
-};
-
-const getRiskDataFromScamSniffer = async (address: string, _chainId: number): Promise<SpenderRiskData | null> => {
-  const identifier = md5(`revokecash:${address.toLowerCase()}`);
-
-  try {
-    const time = new Date().getTime();
-    const riskData = await ky.get(`${WHOIS_BASE_URL}/spenders/scamsniffer/${identifier}.json`).json<SpenderData>();
-    const elapsedTime = (new Date().getTime() - time) / 1000;
-
-    console.log(elapsedTime, 'ScamSniffer', address);
-
-    return riskData;
-    // return null;
-  } catch {
-    return null;
-  }
-};
-
-const getRiskDataFromWebacy = async (address: string, chainId: number): Promise<SpenderRiskData | null> => {
-  const chainIdentifiers = {
-    1: 'eth',
-  };
-
-  const chainIdentifier = chainIdentifiers[chainId];
-  if (!chainIdentifier || !WEBACY_API_KEY) return null;
-
-  try {
-    const time = new Date().getTime();
-    const webacyData = await ky
-      .get(`https://api.webacy.com/addresses/${address}?chain=${chainIdentifier}`, {
-        headers: { 'x-api-key': WEBACY_API_KEY },
-      })
-      .json<any>();
-
-    const elapsedTime = (new Date().getTime() - time) / 1000;
-    console.log(elapsedTime, 'Webacy', address);
-
-    const riskFactors = (webacyData?.issues ?? []).flatMap((issue) => {
-      const tags = issue?.tags?.map((tag: any) => tag.key);
-      const categories = Object.keys(issue?.categories);
-      // console.log(issue)
-      if (categories.includes('fraudulent_malicious')) return 'blocklist_webacy';
-      if (categories.includes('possible_drainer')) return 'blocklist_webacy';
-      return [...tags, ...categories];
-    });
-    if (webacyData?.isContract === false) riskFactors.push('eoa');
-    return { riskFactors: deduplicateArray(riskFactors) };
-  } catch {
-    return null;
-  }
-};
-
-const getRiskDataFromHarpie = async (address: string, chainId: number): Promise<SpenderRiskData | null> => {
-  const apiKey = HARPIE_API_KEY;
-  if (!apiKey || chainId !== 1) return null;
-
-  try {
-    const time = new Date().getTime();
-
-    const res = await fetch('https://api.harpie.io/v2/validateAddress', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ apiKey, address }),
-    });
-
-    const data = await res.json();
-    const riskFactors = data.isMaliciousAddress ? ['blocklist_harpie'] : [];
-
-    // const { name, isMaliciousAddress } = await ky
-    //   .post('https://api.harpie.io/v2/validateAddress', {
-    //     method: 'POST',
-    //     json: { apiKey, address },
-    //   })
-    //   .json<any>();
-
-    const elapsedTime = (new Date().getTime() - time) / 1000;
-    console.log(elapsedTime, 'Harpie', address);
-
-    return { riskFactors };
-  } catch (e) {
-    console.error('Err', e);
-    return null;
-  }
+  return source.getSpenderData(address, chainId);
 };
 
 export const lookupEnsName = async (address: Address): Promise<string | null> => {
