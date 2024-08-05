@@ -163,8 +163,13 @@ export interface SpenderData extends SpenderRiskData {
 
 export interface SpenderRiskData {
   name?: string;
-  exploits?: string[];
-  riskFactors?: string[];
+  riskFactors?: Array<RiskFactor>;
+}
+
+export interface RiskFactor {
+  type: string;
+  source: string;
+  data?: string;
 }
 
 export interface Contract {
