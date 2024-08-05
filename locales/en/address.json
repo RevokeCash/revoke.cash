@@ -66,8 +66,11 @@
     "expiration": "Expires {inTime}"
   },
   "risk_factors": {
-    "blocklist": "Blocklisted by <blocklist-link>{platform}</blocklist-link>",
-    "exploit": "Involved in the {exploit}",
+    "blocklist": "Blocklisted by <source-link>{source}</source-link>",
+    "exploit": "Involved in the {data}",
+    "is_eoa": "Externally Owned Account",
+    "unsafe": "Contract with unsafe code (reported by <source-link>{source}</source-link>)",
+    "deprecated": "Deprecated contract (reported by <source-link>{source}</source-link>)",
     "levels": {
       "high": "high risk",
       "low": "low risk",
