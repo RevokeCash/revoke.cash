@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import { HARPIE_API_KEY } from 'lib/constants';
 import { SpenderData } from 'lib/interfaces';
 import { Address } from 'viem';
@@ -7,7 +8,7 @@ import { SpenderDataSource } from '../SpenderDataSource';
 export class HarpieSpenderDataSource implements SpenderDataSource {
   async getSpenderData(address: Address, chainId: number): Promise<SpenderData | null> {
     const apiKey = HARPIE_API_KEY;
-    if (!apiKey || chainId !== 1) return null;
+    if (!apiKey || chainId !== ChainId.EthereumMainnet) return null;
 
     try {
       // Note: there's a bug in Vercel Edge runtime + Ky that causes Ky not to work in Edge runtime with POST requests

@@ -38,7 +38,7 @@ export const getSpenderData = async (
     aggregationType: AggregationType.SEQUENTIAL_FIRST,
     sources: [
       new HardcodedSpenderDataSource({
-        [openseaProxyAddress ?? '']: { name: 'OpenSea (old)', riskFactors: ['deprecated'] },
+        [openseaProxyAddress ?? '']: { name: 'OpenSea (old)', riskFactors: [{ type: 'deprecated', source: 'revoke' }] },
       }),
       new BackendSpenderDataSource(),
     ],

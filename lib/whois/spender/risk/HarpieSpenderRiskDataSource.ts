@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import { HARPIE_API_KEY } from 'lib/constants';
 import { SpenderRiskData } from 'lib/interfaces';
 import { Address } from 'viem';
@@ -6,7 +7,7 @@ import { SpenderDataSource } from '../SpenderDataSource';
 export class HarpieSpenderRiskDataSource implements SpenderDataSource {
   async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {
     const apiKey = HARPIE_API_KEY;
-    if (!apiKey || chainId !== 1) return null;
+    if (!apiKey || chainId !== ChainId.EthereumMainnet) return null;
 
     try {
       const time = new Date().getTime();
@@ -20,13 +21,12 @@ export class HarpieSpenderRiskDataSource implements SpenderDataSource {
         },
         body: JSON.stringify({ apiKey, address }),
       });
-
       const data = await res.json();
-      const riskFactors = data.isMaliciousAddress ? ['blocklist_harpie'] : [];
 
       const elapsedTime = (new Date().getTime() - time) / 1000;
       console.log(elapsedTime, 'Harpie', address);
 
+      const riskFactors = data.isMaliciousAddress ? [{ type: 'blocklist', source: 'harpie' }] : [];
       return { riskFactors };
     } catch (e) {
       console.error('Err', e);
