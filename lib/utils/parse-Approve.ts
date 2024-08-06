@@ -4,9 +4,12 @@ import { decodeEventLog } from 'viem';
 
 // Keccak-256 hash of event signatures Hard coded for testing
 const eventSignatureMap: { [signatureHash: string]: { name: string; abis: any[] } } = {
-  '0x8c5be1e5': { name: 'Approval', abis: [ERC20_ABI, ERC721_ABI, PERMIT2_ABI] },
-  '0x17307eab': { name: 'ApprovalForAll', abis: [ERC721_ABI] },
-  '0xd505accf': { name: 'Permit', abis: [PERMIT2_ABI] },
+  '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925': {
+    name: 'Approval',
+    abis: [ERC20_ABI, ERC721_ABI, PERMIT2_ABI],
+  },
+  '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31': { name: 'ApprovalForAll', abis: [ERC721_ABI] },
+  '0xda9fa7c1b00402c17d0161b249b1ab8bbec047c5a52207b9c112deffd817036b': { name: 'Permit', abis: [PERMIT2_ABI] },
 };
 
 export const parseLog = (log: Log): ParsedEvent | null => {
