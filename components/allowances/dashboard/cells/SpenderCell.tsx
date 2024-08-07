@@ -1,4 +1,3 @@
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import CopyButton from 'components/common/CopyButton';
 import Href from 'components/common/Href';
@@ -8,17 +7,14 @@ import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddres
 import type { AllowanceData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
-import { filterUnknownRiskFactors } from 'lib/utils/risk';
 import { getSpenderData } from 'lib/utils/whois';
-import { useTranslations } from 'next-intl';
-import RiskFactorDisplay from '../wallet-health/RiskFactorDisplay';
+import RiskTooltip from '../wallet-health/RiskTooltip';
 
 interface Props {
   allowance: AllowanceData;
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  const t = useTranslations();
   const { openSeaProxyAddress } = useOpenSeaProxyAddress(allowance.owner);
 
   // TODO: Expose this data to react-table
@@ -35,19 +31,6 @@ const SpenderCell = ({ allowance }: Props) => {
     return null;
   }
 
-  const riskFactors = filterUnknownRiskFactors(spenderData?.riskFactors ?? []).map((riskFactor) => (
-    <RiskFactorDisplay key={`${riskFactor.type}-${riskFactor.source}-${riskFactor.data}`} riskFactor={riskFactor} />
-  ));
-
-  const riskTooltip = (
-    <div>
-      {t('address.tooltips.risk_factors', { riskLevel: t('address.risk_factors.levels.high') })}
-      <ul className="list-disc list-inside">
-        {riskFactors?.map((riskFactor) => <li key={riskFactor.key}>{riskFactor}</li>)}
-      </ul>
-    </div>
-  );
-
   return (
     <Loader isLoading={isLoading}>
       <div className="flex items-center gap-2 w-52">
@@ -62,11 +45,7 @@ const SpenderCell = ({ allowance }: Props) => {
           </WithHoverTooltip>
         </div>
         <CopyButton content={allowance.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
-        {riskFactors?.length > 0 ? (
-          <WithHoverTooltip tooltip={riskTooltip}>
-            <ExclamationTriangleIcon className="w-6 h-6 text-red-500 focus:outline-black shrink-0" />
-          </WithHoverTooltip>
-        ) : null}
+        <RiskTooltip riskData={spenderData} />
       </div>
     </Loader>
   );

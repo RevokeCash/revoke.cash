@@ -42,7 +42,11 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
         {},
       );
 
-      aggregatedResults.riskFactors = deduplicateArray(aggregatedResults.riskFactors);
+      // Allow duplicate exploit risk factors
+      aggregatedResults.riskFactors = deduplicateArray(
+        aggregatedResults.riskFactors,
+        (a, b) => a.type === b.type && a.data === b.data,
+      );
 
       return aggregatedResults;
     }
