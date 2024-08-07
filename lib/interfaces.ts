@@ -172,6 +172,8 @@ export interface RiskFactor {
   data?: string;
 }
 
+export type RiskLevel = 'high' | 'medium' | 'low' | 'unknown';
+
 export interface Contract {
   address: Address;
   abi: Abi;

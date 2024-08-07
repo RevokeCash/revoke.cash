@@ -28,20 +28,23 @@ const SOURCES: Record<string, DataSourceLink> = {
     name: 'Nefture',
     url: 'https://nefture.com/',
   },
-  revoke: {
-    name: 'Revoke.cash',
-  },
 };
 
 const RiskFactorDisplay = ({ riskFactor }: Props) => {
   const t = useTranslations();
 
-  const source = SOURCES[riskFactor.source];
-
-  const richDisplay = t.rich(`address.risk_factors.${riskFactor.type}`, {
+  const riskFactorText = t(`address.risk_factors.${riskFactor.type}`, {
     type: riskFactor.type,
-    source: source?.name ?? riskFactor.source,
     data: riskFactor.data,
+  });
+
+  if (riskFactorText === `address.risk_factors.${riskFactor.type}`) return null;
+
+  const source = SOURCES[riskFactor.source];
+  if (!source) return riskFactorText;
+
+  const sourceDisplay = t.rich(`address.risk_factors.source`, {
+    source: source?.name ?? riskFactor.source,
     'source-link': (children) =>
       source?.url ? (
         <Href href={source.url} external className="font-medium">
@@ -52,9 +55,11 @@ const RiskFactorDisplay = ({ riskFactor }: Props) => {
       ),
   });
 
-  if (richDisplay !== `address.risk_factors.${riskFactor.type}`) return richDisplay;
-
-  return null;
+  return (
+    <>
+      {riskFactorText} ({sourceDisplay})
+    </>
+  );
 };
 
 export default RiskFactorDisplay;
