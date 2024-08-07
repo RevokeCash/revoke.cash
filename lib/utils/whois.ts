@@ -35,10 +35,10 @@ export const getSpenderData = async (
   openseaProxyAddress?: string,
 ): Promise<SpenderData | SpenderRiskData | null> => {
   const source = new AggregateSpenderDataSource({
-    aggregationType: AggregationType.SEQUENTIAL_FIRST,
+    aggregationType: AggregationType.PARALLEL_COMBINED,
     sources: [
       new HardcodedSpenderDataSource({
-        [openseaProxyAddress ?? '']: { name: 'OpenSea (old)', riskFactors: [{ type: 'deprecated', source: 'revoke' }] },
+        [openseaProxyAddress ?? '']: { name: 'OpenSea (old)', riskFactors: [{ type: 'deprecated', source: 'whois' }] },
       }),
       new BackendSpenderDataSource(),
     ],

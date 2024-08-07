@@ -12,7 +12,7 @@ export class WhoisSpenderDataSource implements SpenderDataSource {
 
       if (!labelData || Object.keys(labelData).length === 0) return null;
 
-      return normaliseRiskData(labelData, 'revoke');
+      return normaliseRiskData(labelData, 'whois');
     } catch {
       return null;
     }

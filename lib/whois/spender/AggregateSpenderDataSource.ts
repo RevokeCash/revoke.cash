@@ -1,5 +1,5 @@
 import { SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { deduplicateArray } from 'lib/utils';
+import { assertFulfilled, deduplicateArray } from 'lib/utils';
 import { Address } from 'viem';
 import { SpenderDataSource } from './SpenderDataSource';
 
@@ -32,7 +32,10 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
     }
 
     if (this.aggregationType === AggregationType.PARALLEL_COMBINED) {
-      const results = await Promise.all(this.sources.map((source) => source.getSpenderData(address, chainId)));
+      const settlements = await Promise.allSettled(
+        this.sources.map((source) => source.getSpenderData(address, chainId)),
+      );
+      const results = settlements.filter(assertFulfilled).map((result) => result.value);
 
       const aggregatedResults = results.reduce(
         (acc, result) =>
@@ -42,10 +45,9 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
         {},
       );
 
-      // Allow duplicate exploit risk factors
       aggregatedResults.riskFactors = deduplicateArray(
         aggregatedResults.riskFactors,
-        (a, b) => a.type === b.type && a.data === b.data,
+        (a, b) => a.type === b.type && a.data === b.data && a.source === b.source,
       );
 
       return aggregatedResults;
