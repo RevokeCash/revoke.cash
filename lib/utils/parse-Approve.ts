@@ -13,7 +13,7 @@ const ApprovalLogSelector = (log: Log, abi: typeof ERC721_ABI | typeof ERC20_ABI
     });
     return decodedLog.args;
   } catch (e) {
-    console.log('error', e);
+    console.log('error from Approval', e);
     return null;
   }
 };
@@ -29,7 +29,7 @@ const ApprovalForAllLogSelector = (log: Log, abi: typeof ERC721_ABI | typeof ERC
     });
     return decodedLog.args;
   } catch (e) {
-    console.log('error', e);
+    console.log('error from ApprovalForAll', e);
     return null;
   }
 };
@@ -45,7 +45,7 @@ const PermitApprovalLogSelector = (log: Log, abi: typeof PERMIT2_ABI | typeof ER
     });
     return decodedLog.args;
   } catch (e) {
-    console.log('error', e);
+    console.log('error from Permit', e);
     return null;
   }
 };
@@ -60,18 +60,24 @@ export const parseLog = (log: Log) => {
   const abis = [ERC20_ABI, ERC721_ABI];
 
   for (const abi of abis) {
-    const approvalForALlDecodedLogArgs = ApprovalForAllLogSelector(log, abi);
-    if (approvalForALlDecodedLogArgs) {
-      return approvalForALlDecodedLogArgs;
-    }
     const approvalDecodedLogArgs = ApprovalLogSelector(log, abi);
     if (approvalDecodedLogArgs) {
+      console.log('Approval', approvalDecodedLogArgs);
       return approvalDecodedLogArgs;
+    }
+
+    const approvalForALLDecodedLogArgs = ApprovalForAllLogSelector(log, abi);
+    if (approvalForALLDecodedLogArgs) {
+      console.log('Approval for All', approvalForALLDecodedLogArgs);
+      return approvalForALLDecodedLogArgs;
     }
 
     const PermitDecodedLogArgs = PermitApprovalLogSelector(log, abi);
     if (PermitDecodedLogArgs) {
+      console.log('Permit', PermitDecodedLogArgs);
       return PermitDecodedLogArgs;
     }
   }
+
+  return null;
 };
