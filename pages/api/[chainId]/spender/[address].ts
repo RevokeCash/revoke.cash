@@ -1,6 +1,7 @@
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderDataSource';
+import { OnchainSpenderRiskDataSource } from 'lib/whois/spender/risk/OnchainSpenderRiskDataSource';
 import { ScamSnifferRiskDataSource } from 'lib/whois/spender/risk/ScamSnifferRiskDataSource';
 import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpenderRiskDataSource';
 import { NextRequest } from 'next/server';
@@ -20,6 +21,7 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
         // new HarpieSpenderDataSource(), // TODO: Re-enable if possible
       ],
     }),
+    new OnchainSpenderRiskDataSource(),
     new ScamSnifferRiskDataSource(),
     new WebacySpenderRiskDataSource(),
   ],
