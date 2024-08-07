@@ -1,91 +1,77 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
-import { DecodedEventLog, Log, ParsedEvent } from 'lib/interfaces';
+import { Log } from 'lib/interfaces';
 import { decodeEventLog } from 'viem';
 
-// Keccak-256 hash of event signatures Hard coded for testing
-const eventSignatureMap: { [signatureHash: string]: { name: string; abis: any[] } } = {
-  '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925': {
-    name: 'Approval',
-    abis: [ERC20_ABI, ERC721_ABI, PERMIT2_ABI],
-  },
-  '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31': { name: 'ApprovalForAll', abis: [ERC721_ABI] },
-  '0xda9fa7c1b00402c17d0161b249b1ab8bbec047c5a52207b9c112deffd817036b': { name: 'Permit', abis: [PERMIT2_ABI] },
+const ApprovalLogSelector = (log: Log, abi: typeof ERC721_ABI | typeof ERC20_ABI | typeof PERMIT2_ABI) => {
+  try {
+    const decodedLog = decodeEventLog({
+      data: log.data,
+      topics: log.topics,
+      eventName: 'Approval',
+      abi,
+      strict: false,
+    });
+    return decodedLog.args;
+  } catch (e) {
+    console.log('error', e);
+    return null;
+  }
 };
 
-export const parseLog = (log: Log): ParsedEvent | null => {
+const ApprovalForAllLogSelector = (log: Log, abi: typeof ERC721_ABI | typeof ERC20_ABI | typeof PERMIT2_ABI) => {
+  try {
+    const decodedLog = decodeEventLog({
+      data: log.data,
+      topics: log.topics,
+      eventName: 'ApprovalForAll',
+      abi,
+      strict: false,
+    });
+    return decodedLog.args;
+  } catch (e) {
+    console.log('error', e);
+    return null;
+  }
+};
+
+const PermitApprovalLogSelector = (log: Log, abi: typeof PERMIT2_ABI | typeof ERC20_ABI | typeof ERC721_ABI) => {
+  try {
+    const decodedLog = decodeEventLog({
+      data: log.data,
+      topics: log.topics,
+      eventName: 'Permit',
+      abi,
+      strict: false,
+    });
+    return decodedLog.args;
+  } catch (e) {
+    console.log('error', e);
+    return null;
+  }
+};
+
+export const parseLog = (log: Log) => {
   const eventSignature = log.topics[0];
 
-  const eventInfo = eventSignatureMap[eventSignature];
-
-  if (!eventInfo) {
-    return null; // Unknown event
+  if (!eventSignature) {
+    throw new Error('no');
   }
 
-  const { name, abis } = eventInfo;
+  const abis = [ERC20_ABI, ERC721_ABI];
 
   for (const abi of abis) {
-    try {
-      const decodedLog = decodeEventLog({
-        abi: abi,
-        data: log.data,
-        topics: log.topics,
-      }) as DecodedEventLog;
+    const approvalForALlDecodedLogArgs = ApprovalForAllLogSelector(log, abi);
+    if (approvalForALlDecodedLogArgs) {
+      return approvalForALlDecodedLogArgs;
+    }
+    const approvalDecodedLogArgs = ApprovalLogSelector(log, abi);
+    if (approvalDecodedLogArgs) {
+      return approvalDecodedLogArgs;
+    }
 
-      const args = decodedLog.args;
-
-      switch (name) {
-        case 'Approval':
-          if (abi === ERC721_ABI) {
-            // ERC721 Approval
-            return {
-              type: 'Approval',
-              owner: args[0],
-              spender: args[2],
-              tokenId: args[3]?.toString(),
-            };
-          } else if (abi === PERMIT2_ABI) {
-            // Permit2 Approval
-            return {
-              type: 'Approval',
-              owner: args[0],
-              token: args[1],
-              spender: args[2],
-              amount: args[3]?.toString(),
-              expiration: args[4]?.toString(),
-            };
-          } else {
-            // ERC20 Approval
-            return {
-              type: 'Approval',
-              owner: args[0],
-              spender: args[1],
-              value: args[2]?.toString(),
-            };
-          }
-        case 'ApprovalForAll':
-          return {
-            type: 'ApprovalForAll',
-            owner: args[0],
-            spender: args[1],
-            approved: args[2],
-          };
-        case 'Permit':
-          return {
-            type: 'Permit',
-            owner: args[0],
-            token: args[1],
-            spender: args[2],
-            amount: args[3]?.toString(),
-            expiration: args[4]?.toString(),
-            nonce: args[5]?.toString(),
-          };
-        default:
-          break;
-      }
-    } catch (e) {
-      console.error('Error decoding log:', e);
+    const PermitDecodedLogArgs = PermitApprovalLogSelector(log, abi);
+    if (PermitDecodedLogArgs) {
+      return PermitDecodedLogArgs;
     }
   }
-
-  return null;
 };

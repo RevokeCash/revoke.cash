@@ -196,37 +196,13 @@ export interface EtherscanPlatform {
 }
 
 export interface ParsedEvent {
-  type: 'Approval' | 'ApprovalForAll' | 'Permit';
-  owner: string;
-  spender?: string;
+  owner?: Address;
+  spender?: Address;
   value?: string;
   approved?: boolean;
-  tokenId?: string;
+  tokenId?: BigInt;
   token?: string;
   expiration?: string;
-  amount?: number;
+  amount?: BigInt;
   nonce?: number;
-}
-export interface DecodedEventLog {
-  name: string;
-  signature: string;
-  args: any[];
-  topics: Hex[];
-  data: string;
-  blockHash: string;
-  blockNumber: number;
-  transactionHash: string;
-  transactionIndex: number;
-  logIndex: number;
-  address?: string;
-  eventFragment?: {
-    type: 'event';
-    name: string;
-    inputs: {
-      type: string;
-      name: string;
-      indexed: boolean;
-    }[];
-    anonymous?: boolean;
-  };
 }
