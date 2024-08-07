@@ -2,7 +2,6 @@ import { ChainId } from '@revoke.cash/chains';
 import ky from 'ky';
 import { WEBACY_API_KEY } from 'lib/constants';
 import { RiskFactor, SpenderRiskData } from 'lib/interfaces';
-import { deduplicateArray } from 'lib/utils';
 import { Address } from 'viem';
 import { SpenderDataSource } from '../SpenderDataSource';
 
@@ -70,9 +69,7 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
         return [...tagFactors, ...categoryFactors];
       });
 
-      if (data?.isContract === false) riskFactors.push({ type: 'eoa', source: 'webacy' });
-
-      return { riskFactors: deduplicateArray(riskFactors, (a, b) => a.type === b.type && a.data === b.data) };
+      return { riskFactors };
     } catch {
       return null;
     }

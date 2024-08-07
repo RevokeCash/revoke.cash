@@ -28,6 +28,9 @@ const SOURCES: Record<string, DataSourceLink> = {
     name: 'Nefture',
     url: 'https://nefture.com/',
   },
+  revoke: {
+    name: 'Revoke.cash',
+  },
 };
 
 const RiskFactorDisplay = ({ riskFactor }: Props) => {

@@ -19,6 +19,10 @@ import {
 import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
 
+export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
+  return item.status === 'fulfilled';
+};
+
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const isNullish = (value: unknown): value is null | undefined => {
