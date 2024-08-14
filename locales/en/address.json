@@ -71,14 +71,14 @@
     "deprecated": "Deprecated or outdated",
     "eoa": "Externally Owned Account",
     "exploit": "Involved in the {data}",
-    "phishing_risk": "Increases risk surface in case of phishing",
-    "source": "reported by <source-link>{source}</source-link>",
-    "unsafe": "Potentially unsafe contract code",
     "levels": {
       "high": "high risk",
       "low": "low risk",
       "medium": "medium risk"
-    }
+    },
+    "phishing_risk": "Increases risk surface in case of phishing",
+    "source": "reported by <source-link>{source}</source-link>",
+    "unsafe": "Potentially unsafe contract code"
   },
   "search": {
     "spender": "Search by Approved Spender Address"
