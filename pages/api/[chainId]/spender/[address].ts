@@ -1,4 +1,5 @@
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
+import { WEBACY_API_KEY } from 'lib/constants';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderDataSource';
 import { OnchainSpenderRiskDataSource } from 'lib/whois/spender/risk/OnchainSpenderRiskDataSource';
@@ -23,7 +24,7 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
     }),
     new OnchainSpenderRiskDataSource(),
     new ScamSnifferRiskDataSource(),
-    new WebacySpenderRiskDataSource(),
+    new WebacySpenderRiskDataSource(WEBACY_API_KEY),
   ],
 });
 

@@ -1,11 +1,18 @@
 import { ChainId } from '@revoke.cash/chains';
 import ky from 'ky';
-import { WEBACY_API_KEY } from 'lib/constants';
+import { RequestQueue } from 'lib/api/logs/RequestQueue';
 import { RiskFactor, SpenderRiskData } from 'lib/interfaces';
 import { Address } from 'viem';
 import { SpenderDataSource } from '../SpenderDataSource';
 
 export class WebacySpenderRiskDataSource implements SpenderDataSource {
+  private queue: RequestQueue;
+
+  constructor(private apiKey: string) {
+    // Webacy has requested that we limit the number of requests to 30 per second
+    this.queue = new RequestQueue(`webacy:${apiKey}`, { interval: 1000, intervalCap: 30 });
+  }
+
   async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {
     const chainIdentifiers = {
       [ChainId.EthereumMainnet]: 'eth',
@@ -16,15 +23,17 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
     };
 
     const chainIdentifier = chainIdentifiers[chainId];
-    if (!chainIdentifier || !WEBACY_API_KEY) return null;
+    if (!chainIdentifier || !this.apiKey) return null;
 
     try {
       const time = new Date().getTime();
-      const data = await ky
-        .get(`https://api.webacy.com/addresses/${address}?chain=${chainIdentifier}`, {
-          headers: { 'x-api-key': WEBACY_API_KEY },
-        })
-        .json<any>();
+      const data = await this.queue.add(() =>
+        ky
+          .get(`https://api.webacy.com/addresses/${address}?chain=${chainIdentifier}`, {
+            headers: { 'x-api-key': this.apiKey },
+          })
+          .json<any>(),
+      );
 
       const elapsedTime = (new Date().getTime() - time) / 1000;
       console.log(elapsedTime, 'Webacy', address);
