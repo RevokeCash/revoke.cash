@@ -156,11 +156,22 @@ export interface BreadcrumbEntry {
   href?: string;
 }
 
-export interface SpenderData {
+export interface SpenderData extends SpenderRiskData {
   name: string;
-  exploits?: string[];
-  riskFactors?: string[];
 }
+
+export interface SpenderRiskData {
+  name?: string;
+  riskFactors?: Array<RiskFactor>;
+}
+
+export interface RiskFactor {
+  type: string;
+  source: string;
+  data?: string;
+}
+
+export type RiskLevel = 'high' | 'medium' | 'low' | 'unknown';
 
 export interface Contract {
   address: Address;

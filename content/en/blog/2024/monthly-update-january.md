@@ -30,7 +30,7 @@ Programs like Optimism RetroPGF are a huge blessing to free and open source publ
 
 Besides guiding our newest contributors, we also made some improvements to our website and our backend services. One of the more important updates that we did is that we moved a big part of our spender labels and token information to a new cloud hosting that allows for better caching and performance. This should make our website faster and more reliable.
 
-## New Exploits
+## New Exploit
 
 In January we saw one big exploit, the Socket Hack. This exploit affected any users that had active token approvals to the [Socket](https://socket.tech) cross-chain bridging protocol. This protocol was used under the hood by many cross-chain bridges, including Bungee and Rainbow Wallet. We created an exploit checker for this exploit so you can see if you're affected below.
 
