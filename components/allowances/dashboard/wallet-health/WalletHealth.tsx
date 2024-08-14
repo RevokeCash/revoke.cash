@@ -1,6 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
 import { useQuery } from '@tanstack/react-query';
-import { getNeftureRiskScore } from 'lib/utils/allowances';
 import { Address } from 'viem';
 import WalletHealthDescription from './WalletHealthDescription';
 import WalletHealthScore from './WalletHealthScore';
@@ -10,6 +9,8 @@ interface Props {
   chainId: number;
 }
 
+// TODO: Implement the actual score calculation
+
 const WalletHealth = ({ address, chainId }: Props) => {
   // TODO: Make the refreshing depend on new events (same events == same score)
   const {
@@ -18,7 +19,7 @@ const WalletHealth = ({ address, chainId }: Props) => {
     error,
   } = useQuery<number, Error>({
     queryKey: ['walletHealthScore', chainId, address],
-    queryFn: () => getNeftureRiskScore(address),
+    queryFn: () => 100,
     enabled: !!address && chainId === ChainId.EthereumMainnet,
   });
 

@@ -4,15 +4,14 @@ import {
   ADDRESS_ZERO,
   ALCHEMY_API_KEY,
   AVVY_DOMAINS_ADDRESS,
-  HARPIE_API_KEY,
   OPENSEA_REGISTRY_ADDRESS,
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
-  WHOIS_BASE_URL,
 } from 'lib/constants';
-import { SpenderData } from 'lib/interfaces';
-import ky from 'lib/ky';
-import md5 from 'md5';
+import { SpenderData, SpenderRiskData } from 'lib/interfaces';
+import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
+import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
+import { HardcodedSpenderDataSource } from 'lib/whois/spender/label/HardcodedSpenderDataSource';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 
@@ -31,73 +30,21 @@ const GlobalClients = {
 };
 
 export const getSpenderData = async (
-  address: string,
-  chainId?: number,
+  address: Address,
+  chainId: number,
   openseaProxyAddress?: string,
-): Promise<SpenderData | null> => {
-  const [labelData, riskData] = await Promise.all([
-    getLabelData(address, chainId, openseaProxyAddress),
-    getRiskData(address, chainId),
-  ]);
+): Promise<SpenderData | SpenderRiskData | null> => {
+  const source = new AggregateSpenderDataSource({
+    aggregationType: AggregationType.PARALLEL_COMBINED,
+    sources: [
+      new HardcodedSpenderDataSource({
+        [openseaProxyAddress ?? '']: { name: 'OpenSea (old)', riskFactors: [{ type: 'deprecated', source: 'whois' }] },
+      }),
+      new BackendSpenderDataSource(),
+    ],
+  });
 
-  return { ...labelData, ...riskData };
-};
-
-export const getLabelData = async (
-  address: string,
-  chainId?: number,
-  openseaProxyAddress?: string,
-): Promise<SpenderData | null> => {
-  if (!chainId) return null;
-  if (!address) return null;
-  if (address === openseaProxyAddress) return { name: 'OpenSea (old)' };
-
-  // Check Harpie only if the whois doesn't have a name, because this is a rate-limited API
-  const data = (await getLabelDataFromWhois(address, chainId)) ?? (await getLabelDataFromHarpie(address, chainId));
-
-  return data;
-};
-
-const getLabelDataFromWhois = async (address: string, chainId: number): Promise<SpenderData | null> => {
-  try {
-    const labelData = await ky
-      .get(`${WHOIS_BASE_URL}/spenders/${chainId}/${getAddress(address)}.json`)
-      .json<SpenderData>();
-    if (!labelData || Object.keys(labelData).length === 0) return null;
-    return labelData;
-  } catch {
-    return null;
-  }
-};
-
-const getLabelDataFromHarpie = async (address: string, chainId: number): Promise<SpenderData | null> => {
-  const apiKey = HARPIE_API_KEY;
-  if (!apiKey || chainId !== 1) return null;
-
-  try {
-    const data = await ky
-      .post('https://api.harpie.io/getprotocolfromcontract', {
-        json: { apiKey, address },
-      })
-      .json<any>();
-
-    if (!data?.contractOwner || data?.contractOwner === 'NO_DATA') return null;
-    return { name: data.contractOwner };
-  } catch (e) {
-    return null;
-  }
-};
-
-const getRiskData = async (address: string, _chainId: number): Promise<Omit<SpenderData, 'name'> | null> => {
-  const identifier = md5(`revokecash:${address.toLowerCase()}`);
-
-  try {
-    const riskData = await ky.get(`${WHOIS_BASE_URL}/spenders/scamsniffer/${identifier}.json`).json<SpenderData>();
-
-    return riskData;
-  } catch {
-    return null;
-  }
+  return source.getSpenderData(address, chainId);
 };
 
 export const lookupEnsName = async (address: Address): Promise<string | null> => {

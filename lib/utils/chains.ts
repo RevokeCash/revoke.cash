@@ -1902,14 +1902,13 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Scroll]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Scroll,
     name: 'Scroll',
     logoUrl: '/assets/images/vendor/chains/scroll.svg',
     explorerUrl: 'https://scrollscan.com',
-    etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api',
     rpc: {
-      main: 'https://scroll.blockpi.network/v1/rpc/public',
+      main: `https://scroll-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO

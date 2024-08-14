@@ -19,6 +19,10 @@ import {
 import { track } from './analytics';
 import { bigintMin, fixedPointMultiply } from './math';
 
+export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
+  return item.status === 'fulfilled';
+};
+
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const isNullish = (value: unknown): value is null | undefined => {
@@ -184,3 +188,25 @@ export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: n
           chunkSize,
         ),
   );
+
+// Normalise risk factors to match the format of other risk data sources (TODO: Remove once this is live and whois sources are updated)
+export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
+  if (!riskData) return null;
+
+  const riskFactors = (riskData?.riskFactors ?? []).map((riskFactor: any) => {
+    if (typeof riskFactor === 'string') {
+      const [type, source] = riskFactor.includes('blocklist_') ? riskFactor.split('_') : [riskFactor, sourceOverride];
+      return { type, source };
+    }
+    return riskFactor;
+  });
+
+  const exploitRiskFactors = (riskData?.exploits ?? []).flatMap((exploit: string) => {
+    if (typeof exploit === 'string') {
+      return [{ type: 'exploit', source: sourceOverride, data: exploit }];
+    }
+    return [];
+  });
+
+  return { ...riskData, riskFactors: [...riskFactors, ...exploitRiskFactors] };
+};

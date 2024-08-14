@@ -22,6 +22,14 @@ So our brand needed to evolve to stand on its own. That is why we decided to par
 
 The main Revoke.cash website is still mostly the same, but we've updated some parts of the website to reflect our new brand. We're planning to make further improvements to the website in the coming months. If you want to read more about the rebranding process, you can read [Richard Schumann's guest post](/blog/2024/revoke-redesign-process) on our blog.
 
+## The Revoke.cash Team Grows Further
+
+Revoke.cash has had a team of one for a long time, and last december we were joined by Dries as a part-time software engineer. This month we're happy to announce that our third team member, [WiiMee](https://twitter.com/Wii_Mee), has joined us in a part-time _Community & Content_ role. WiiMee has been a long-time friend of the team and has been sharing a lot of educational security content on Twitter and other platforms.
+
+![The Revoke.cash Team](/assets/images/blog/2024/monthly-update-june/revoke-team.jpg)
+
+WiiMee will be helping us with creating educational content, writing blog posts, and engaging with the community. We're very excited to have him on board and we're looking forward to working together.
+
 ## New Supported Networks
 
 This month we added support for 6 new mainnets, which brings us to a big milestone of supporting over 100 different EVM networks. Revoke.cash started in 2019 as a tool to revoke token approvals on only Ethereum, but in 2021 we started expanding to other EVM networks and we're very excited that we now support over 100 of them.
