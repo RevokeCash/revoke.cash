@@ -67,12 +67,18 @@
   },
   "risk_factors": {
     "blocklist": "<blocklist-link>{platform}</blocklist-link>によってブロックリストに登録されています",
+    "closed_source": "Closed source",
+    "deprecated": "Deprecated or outdated",
+    "eoa": "Externally Owned Account",
     "exploit": "{exploit}に関与していました",
     "levels": {
       "high": "高リスク",
       "low": "低リスク",
       "medium": "中リスク"
-    }
+    },
+    "phishing_risk": "Increases risk surface in case of phishing",
+    "source": "reported by <source-link>{source}</source-link>",
+    "unsafe": "Potentially unsafe contract code"
   },
   "search": {
     "spender": "公認支出者アドレスによる検索"
