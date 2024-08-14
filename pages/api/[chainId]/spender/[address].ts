@@ -50,7 +50,7 @@ const handler = async (req: NextRequest) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        // 'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
+        'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
         'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
       },
     });
