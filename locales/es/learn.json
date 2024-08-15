@@ -32,6 +32,10 @@
       "intro_paragraph": "Creamos la sección Aprender de Revoke.cash para ayudarte a comprender cómo puedes mantenerte seguro en el mundo de web3. Cubre los conceptos básicos de web3 y luego pasa a temas más avanzados. Iremos agregando más artículos con el tiempo, así que asegúrate de revisarlo regularmente.",
       "title": "Aprender Sobre Web3, Seguridad y Más"
     },
+    "security": {
+      "intro_paragraph": "In the Security section, we help you understand how you can stay safe in the world of web3. This will help you understand the different types of attacks that can happen, and how you can protect yourself from them.",
+      "title": "Learn About Security"
+    },
     "wallets": {
       "intro_paragraph": "En la sección Carteras, puedes aprender todo sobre las carteras. Esto te ayudará a entender los diferentes tipos de carteras que existen y cómo puedes usarlas para interactuar con aplicaciones en diferentes redes de blockchains.",
       "title": "Más información sobre las Carteras"
