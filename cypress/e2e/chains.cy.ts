@@ -124,7 +124,6 @@ const TEST_ADDRESSES = {
   [ChainId.CeloAlfajoresTestnet]: '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618',
   [ChainId.CoinExSmartChainTestnet]: '0x5B82588003Ac9db7510702171b94f4acAF87Ca72',
   [ChainId.CronosTestnet]: '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f',
-  [ChainId.FrameTestnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.FraxtalTestnet]: '0x3289CAbF6FB3435dc645e1e204Ec663456d14ADD',
   [ChainId.FantomTestnet]: '0x9F3A5A019Bd9eE3504F6AfD5Cf96B920aA83c4AF',
   [ChainId.Holesky]: '0x5A8ec40549AebF0E3Fb9d59bCE57b2AfE4d5eDda',
