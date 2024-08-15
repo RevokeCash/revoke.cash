@@ -11,7 +11,6 @@ import {
 import { SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
-import { HardcodedSpenderDataSource } from 'lib/whois/spender/label/HardcodedSpenderDataSource';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 
@@ -32,16 +31,10 @@ const GlobalClients = {
 export const getSpenderData = async (
   address: Address,
   chainId: number,
-  openseaProxyAddress?: string,
 ): Promise<SpenderData | SpenderRiskData | null> => {
   const source = new AggregateSpenderDataSource({
     aggregationType: AggregationType.PARALLEL_COMBINED,
-    sources: [
-      new HardcodedSpenderDataSource({
-        [openseaProxyAddress ?? '']: { name: 'OpenSea (old)', riskFactors: [{ type: 'deprecated', source: 'whois' }] },
-      }),
-      new BackendSpenderDataSource(),
-    ],
+    sources: [new BackendSpenderDataSource()],
   });
 
   return source.getSpenderData(address, chainId);
