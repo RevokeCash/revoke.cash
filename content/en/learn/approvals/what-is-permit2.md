@@ -6,7 +6,7 @@ translator: <Your Name Here (or remove)>
 
 # What Is Permit2?
 
-In _[What Are EIP2612 Permit Signatures?](/learn/approvals/what-are-token-approvals)_ we discussed how Permit signatures are a way to grant approvals through gasless signatures. But we also mentioned that support for these Permit signatures has to be implemented by the token itself, which is not the case for most tokens. Permit2 is a system that was developed by the Uniswap team to solve this problem.
+In _[What Are EIP2612 Permit Signatures?](/learn/approvals/what-are-eip2612-permit-signatures)_ we discussed how Permit signatures are a way to grant approvals through gasless signatures. But we also mentioned that support for these Permit signatures has to be implemented by the token itself, which is not the case for most tokens. Permit2 is a system that was developed by the Uniswap team to solve this problem.
 
 ## How Does Permit2 Work?
 
