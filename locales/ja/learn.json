@@ -32,6 +32,10 @@
       "intro_paragraph": "web3 の世界で安全に過ごす方法をご理解いただくため、Revoke.cash Learnセクションを作成しました。 web3 の基本を説明した上で、より高度なトピックにも触れています。今後も記事を追加していきますので、定期的にチェックしてください。",
       "title": "Web3、セキュリティー等について学ぼう"
     },
+    "security": {
+      "intro_paragraph": "In the Security section, we help you understand how you can stay safe in the world of web3. This will help you understand the different types of attacks that can happen, and how you can protect yourself from them.",
+      "title": "Learn About Security"
+    },
     "wallets": {
       "intro_paragraph": "ウォレットセクションでは、ウォレットに関するすべてを学ぶことができます。これは、存在するさまざまな種類のウォレットと、それらを使用してさまざまなブロックチェーンネットワーク上のアプリケーションとやり取りする方法を理解するのに役立ちます。",
       "title": "ウォレットについて学ぶ"

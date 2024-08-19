@@ -32,6 +32,10 @@
       "intro_paragraph": "我们创建了Revoke.cash学习部分，以帮助你了解如何在web3的世界中保持安全。它涵盖了web3的基本知识和更高阶的主题。随着时间的推移，我们将增加更多的文章，所以一定要定期回来查看。",
       "title": "了解 Web3、钱包安全和更多信息"
     },
+    "security": {
+      "intro_paragraph": "In the Security section, we help you understand how you can stay safe in the world of web3. This will help you understand the different types of attacks that can happen, and how you can protect yourself from them.",
+      "title": "Learn About Security"
+    },
     "wallets": {
       "intro_paragraph": "在钱包部分，您可以了解有关钱包的所有信息，包括现有钱包的不同类型，以及如何使用钱包与不同区块链网络上的应用程序进行交互。",
       "title": "了解钱包"

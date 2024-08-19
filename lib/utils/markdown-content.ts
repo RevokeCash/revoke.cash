@@ -102,6 +102,11 @@ export const getSidebar = async (
         ],
       },
       {
+        title: t('learn.sidebar.security'),
+        path: '/learn/security',
+        children: [getSidebarEntry('security/what-to-do-when-scammed', locale, directory, extended)],
+      },
+      {
         title: t('learn.sidebar.wallets'),
         path: '/learn/wallets',
         children: [
