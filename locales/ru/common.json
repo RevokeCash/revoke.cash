@@ -7,7 +7,7 @@
   "buttons": {
     "back_to_exploits": "Назад к Эксплойтам",
     "cancel": "Отмена",
-    "cancel_signatures": "Отменить подписи",
+    "cancel_signatures": "Отменить потенциальные подписи",
     "cancelling": "Отмена…",
     "check": "Проверить",
     "check_connected_address": "Проверьте подключенный адрес",

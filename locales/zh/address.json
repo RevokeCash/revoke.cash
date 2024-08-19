@@ -66,19 +66,19 @@
     "expiration": "于 {inTime} 过期"
   },
   "risk_factors": {
-    "blocklist": "被 <blocklist-link>{platform}</blocklist-link> 列入屏蔽名单",
-    "closed_source": "Closed source",
-    "deprecated": "Deprecated or outdated",
-    "eoa": "Externally Owned Account",
-    "exploit": "涉及 {exploit}",
+    "blocklist": "危险或恶意",
+    "closed_source": "闭源",
+    "deprecated": "已弃用或已过时",
+    "eoa": "外部持有账户",
+    "exploit": "涉及 {data}",
     "levels": {
       "high": "高风险",
       "low": "低风险",
       "medium": "中风险"
     },
-    "phishing_risk": "Increases risk surface in case of phishing",
-    "source": "reported by <source-link>{source}</source-link>",
-    "unsafe": "Potentially unsafe contract code"
+    "phishing_risk": "增加钓鱼风险",
+    "source": "举报人：<source-link>{source}</source-link>",
+    "unsafe": "可能不安全的合约代码"
   },
   "search": {
     "spender": "按被授权人（Spender）地址搜索"

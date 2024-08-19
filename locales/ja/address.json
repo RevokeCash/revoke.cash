@@ -66,19 +66,19 @@
     "expiration": "{inTime}で期限が切れます"
   },
   "risk_factors": {
-    "blocklist": "<blocklist-link>{platform}</blocklist-link>によってブロックリストに登録されています",
-    "closed_source": "Closed source",
-    "deprecated": "Deprecated or outdated",
-    "eoa": "Externally Owned Account",
-    "exploit": "{exploit}に関与していました",
+    "blocklist": "危険または悪意のある",
+    "closed_source": "ソースがクローズになっている",
+    "deprecated": "非推奨または古い",
+    "eoa": "外部所有口座",
+    "exploit": "{data}に関与していました",
     "levels": {
       "high": "高リスク",
       "low": "低リスク",
       "medium": "中リスク"
     },
-    "phishing_risk": "Increases risk surface in case of phishing",
-    "source": "reported by <source-link>{source}</source-link>",
-    "unsafe": "Potentially unsafe contract code"
+    "phishing_risk": "フィッシングの場合のリスク領域が増加",
+    "source": "<source-link>{source}</source-link>に報告された",
+    "unsafe": "安全でない可能性のある契約コード"
   },
   "search": {
     "spender": "公認支出者アドレスによる検索"

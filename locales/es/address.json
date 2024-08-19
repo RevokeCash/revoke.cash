@@ -66,19 +66,19 @@
     "expiration": "Caduca {inTime}"
   },
   "risk_factors": {
-    "blocklist": "Listado bloqueado por <blocklist-link>{platform}</blocklist-link>",
-    "closed_source": "Closed source",
-    "deprecated": "Deprecated or outdated",
-    "eoa": "Externally Owned Account",
-    "exploit": "Involucrada en el {exploit}",
+    "blocklist": "Peligroso o malintencionado",
+    "closed_source": "Código cerrado",
+    "deprecated": "Obsoleto o desactualizado",
+    "eoa": "Cuenta de Propiedad Externa",
+    "exploit": "Involucrado en la {data}",
     "levels": {
       "high": "alto riesgo",
       "low": "bajo riesgo",
       "medium": "riesgo medio"
     },
-    "phishing_risk": "Increases risk surface in case of phishing",
-    "source": "reported by <source-link>{source}</source-link>",
-    "unsafe": "Potentially unsafe contract code"
+    "phishing_risk": "Aumenta la superficie de riesgo en caso de phishing",
+    "source": "reportado por <source-link>{source}</source-link>",
+    "unsafe": "Código de contrato potencialmente inseguro"
   },
   "search": {
     "spender": "Buscar por Dirección de Gastador Autorizado"
