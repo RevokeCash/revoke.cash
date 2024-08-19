@@ -128,7 +128,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoHeklaL2,
-  ChainId.FrameTestnet,
   ChainId.BlastSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
@@ -179,6 +178,9 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/arbitrum-nova.svg',
     explorerUrl: 'https://nova.arbiscan.io',
     etherscanCompatibleApiUrl: 'https://api-nova.arbiscan.io/api',
+    rpc: {
+      main: `https://arbnova-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -500,7 +502,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://sepolia.blastscan.io',
     etherscanCompatibleApiUrl: 'https://api-sepolia.blastscan.io/api',
     rpc: {
-      main: 'https://sepolia.blast.io',
+      main: `https://blast-sepolia.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -972,7 +974,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
     etherscanCompatibleApiUrl: 'https://api.ftmscan.com/api',
     rpc: {
-      main: 'https://rpcapi.fantom.network',
+      main: `https://fantom-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -995,7 +997,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
     etherscanCompatibleApiUrl: 'https://api-testnet.ftmscan.com/api',
     rpc: {
-      main: 'https://rpc.ankr.com/fantom_testnet',
+      main: `https://fantom-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1020,15 +1022,6 @@ export const CHAINS: Record<number, Chain> = {
         }),
       ],
     }),
-  }),
-  [ChainId.FrameTestnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.FrameTestnet,
-    name: 'Frame Testnet',
-    logoUrl: '/assets/images/vendor/chains/frame.jpg',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: 12345678902, // TODO: This is a placeholder so we can add a description for Frame
   }),
   [ChainId.Fraxtal]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1077,6 +1070,9 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://gnosisscan.io',
     etherscanCompatibleApiUrl: 'https://api.gnosisscan.io/api',
     deployedContracts: { ...MULTICALL },
+    rpc: {
+      main: `https://gnosis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
       strategies: [
@@ -1118,13 +1114,13 @@ export const CHAINS: Record<number, Chain> = {
     }),
   }),
   [ChainId.Holesky]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Holesky,
     name: 'Ethereum Holesky',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     etherscanCompatibleApiUrl: 'https://api-holesky.etherscan.io/api',
     rpc: {
-      main: 'https://holesky.drpc.org',
+      main: `https://holesky.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1340,7 +1336,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
     etherscanCompatibleApiUrl: 'https://explorer.mantle.xyz/api',
     rpc: {
-      main: 'https://rpc.mantle.xyz',
+      main: `https://mantle-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -1383,9 +1379,9 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.MantleSepoliaTestnet,
     name: 'Mantle Sepolia',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz//api',
+    etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz/api',
     rpc: {
-      main: 'https://rpc.sepolia.mantle.xyz',
+      main: `https://mantle-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1599,6 +1595,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'opBNB',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
     etherscanCompatibleApiUrl: 'https://api-opbnb.bscscan.com/api',
+    rpc: {
+      main: `https://opbnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -2330,6 +2329,10 @@ export const isSupportedChain = (chainId: number): boolean => {
 export const isBackendSupportedChain = (chainId: number): boolean => {
   const chain = getChainConfig(chainId);
   return Boolean(chain) && chain.isSupported() && chain.type !== SupportType.PROVIDER;
+};
+
+export const isProviderSupportedChain = (chainId: number): boolean => {
+  return getChainConfig(chainId)?.type === SupportType.PROVIDER;
 };
 
 export const isCovalentSupportedChain = (chainId: number): boolean => {

@@ -17,7 +17,7 @@ At the same time, the world of crypto is rife with scams and phishing, and it's 
 
 ## Revoke Token Approvals Using Revoke.cash
 
-Revoke.cash is the biggest and most popular tool for revoking token approvals. It works with all big wallets and supports over 60+ different networks.
+Revoke.cash is the biggest and most popular tool for revoking token approvals. It works with all big wallets and supports over 100+ different networks.
 
 To revoke token approvals, you can enter your wallet address (or ENS name / other alias) in the search bar or connect your wallet, as can be seen at (1) in the image below. From there you can select the network for which you want to revoke approvals (2).
 

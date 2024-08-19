@@ -34,11 +34,11 @@ export const isSpamToken = (symbol: string) => {
     // Includes http(s)://
     /https?:\/\//i,
     // Includes a TLD (this is not exhaustive, but we can add more TLDs to the list as needed - better than nothing)
-    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events|\.to|\.us/i,
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events|\.to|\.us|\.vip|\.ly|\.lol|\.biz|\.life|\.pm/i,
     // Includes "www."
     /www\./i,
-    // Includes "visit [something] to claim" or "free claim"
-    /visit .+ to claim|free claim/i,
+    // Includes common spam words
+    /visit .+ claim|free claim|claim on|airdrop at|airdrop voucher/i,
   ];
 
   return spamRegexes.some((regex) => regex.test(symbol));

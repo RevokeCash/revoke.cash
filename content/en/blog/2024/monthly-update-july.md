@@ -14,7 +14,7 @@ July was a month that was mostly focused on making connections in the ecosystem.
 
 July started busy with the EthCC conference in Brussels, where the Revoke.cash team was well-represented. We gave a talk about figuring out what happened after getting scammed and what you can do to make sure it doesn't happen again. We were one of the first talks of the conference and it was great to see people coming to see the talk. We also had a bunch of questions afterwards so we hope we're able to repeat the talk at future conferences as well.
 
-TODO: Photo from Kiki of the talk
+![EthCC educational talk](/assets/images/blog/2024/monthly-update-july/ethcc.jpg)
 
 Besides our talk we also met up with a lot of other builders in the Web3 space both new contacts as well as long-term friends of the team. Some of the people we met while there were mezcalpapi.eth, the Nefture team, Anjali from Collab Land, Paul Berg from Sablier (who inspired me to create Revoke.cash back in 2019), and many others. It was great to meet so many people in person and we're looking forward to the next conference.
 

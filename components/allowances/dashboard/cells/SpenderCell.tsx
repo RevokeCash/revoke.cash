@@ -3,7 +3,6 @@ import CopyButton from 'components/common/CopyButton';
 import Href from 'components/common/Href';
 import Loader from 'components/common/Loader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useOpenSeaProxyAddress } from 'lib/hooks/ethereum/useOpenSeaProxyAddress';
 import type { AllowanceData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
@@ -15,12 +14,10 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  const { openSeaProxyAddress } = useOpenSeaProxyAddress(allowance.owner);
-
   // TODO: Expose this data to react-table
   const { data: spenderData, isLoading } = useQuery({
-    queryKey: ['spenderData', allowance.spender, allowance.chainId, openSeaProxyAddress],
-    queryFn: () => getSpenderData(allowance.spender, allowance.chainId, openSeaProxyAddress),
+    queryKey: ['spenderData', allowance.spender, allowance.chainId],
+    queryFn: () => getSpenderData(allowance.spender, allowance.chainId),
     // Chances of this data changing while the user is on the page are very slim
     staleTime: Infinity,
   });

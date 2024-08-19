@@ -23,13 +23,17 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
 
       if (this.isEOA(bytecode)) riskFactors.push({ type: 'eoa', source: 'onchain' });
       // if (this.isSmallBytecode(bytecode)) riskFactors.push({ type: 'unsafe', source: 'revoke' });
-      // TODO: Add Learn article explaining Marketplace approval risks
+      if (this.isOpenSeaProxy(bytecode)) riskFactors.push({ type: 'deprecated', source: 'onchain' });
       if (this.hasPhishingRisk(address, bytecode)) riskFactors.push({ type: 'phishing_risk', source: 'onchain' });
 
       const elapsedTime = (new Date().getTime() - time) / 1000;
       console.log(elapsedTime, 'Onchain', address);
 
-      return { riskFactors };
+      if (this.isOpenSeaProxy(bytecode)) {
+        return { name: 'OpenSea (old)', riskFactors };
+      }
+
+      return riskFactors.length > 0 ? { riskFactors } : null;
     } catch {
       return null;
     }
