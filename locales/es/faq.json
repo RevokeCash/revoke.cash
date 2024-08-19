@@ -40,6 +40,10 @@
       "answer": "Si tienes un \"sweeper bot\" en tu cuenta que roba todo el ETH en cuánto ingresas, tu frase semilla fue comprometida. Esto quiere decir que revocar autorizaciones no te va a ayudar con tu seguridad de cartera. Desafortunadamente, no hay ninguna manera de que tu cartera se recupere de esto. Debes abandonar esta cartera y crear una nueva.",
       "question": "Quiero revocar las autorizaciones, pero cuando añado ETH a mi cuenta me lo roban."
     },
+    "testnet_allowances": {
+      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
+      "question": "Do I need to revoke approvals on testnets?"
+    },
     "wallet_mentions_approve": {
       "answer": "En los contratos inteligentes del token, las funciones para autorizar y revocar autorizaciones son la misma función. La diferencia es que la estableces en 0 (para tokens ERC20) o \"falso\" (para NFTs) cuando revocas la autorización. Puedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para autorizaciones ERC20), o la pestaña de \"datos\" (para NFTs) en MetaMask.",
       "question": "¿Por qué la ventana emergente de mi cartera menciona \"dar permiso\", \"autorizar\" o \"establecer autorización para todos\" al revocar?"

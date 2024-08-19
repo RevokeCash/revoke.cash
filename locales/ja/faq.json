@@ -40,6 +40,10 @@
       "answer": "もし、あなたのアカウントにETHが入ってくるとすぐに盗む、いわゆる「スイーパーボット」が存在する場合、シードフレーズが侵害されたことになります。つまり、許可をリボークしたとしても、ウォレットセキュリティには役立たないということです。残念ながら、この状態からウォレットを回復する手段はありません。このウォレットを廃棄して、新しいウォレットを作成してください。",
       "question": "許可をリボークたいのですが、アカウントに ETH を追加すると盗まれてしまいます。"
     },
+    "testnet_allowances": {
+      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
+      "question": "Do I need to revoke approvals on testnets?"
+    },
     "wallet_mentions_approve": {
       "answer": "トークンのスマートコントラクトでは、承認と許可の取り消しの機能は、同じ機能となっています。違いは、許可をリボークするときに、許可を「0」(ERC20トークンの場合)、または「false」(NFTの場合)に設定することです。Revoke.cashが実際に許可を取り消していることを確認するには、「許可の編集」(ERC20許可の場合)、またはMetaMaskの「データ」タブ(NFTの場合）をクリックします。",
       "question": "なぜ、取り消をする時に、ウォレットのポップアップに「許可する」、「承認する」、「全てに承認する」と表示されるのですか？"

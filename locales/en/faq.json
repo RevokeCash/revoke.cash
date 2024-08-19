@@ -30,7 +30,7 @@
     },
     "recover_assets": {
       "answer": "No. Revoke.cash is a <i>preventative</i> tool that helps you practice proper wallet hygiene. By regularly revoking active approvals you reduce the chances of becoming the victim of approval exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make sure to revoke the approvals that were used to take your funds so that they cannot steal more in the future.",
-      "question": "My funds were just stolen, can I use Revoke.cash to get them back?"
+      "question": "Can I use Revoke.cash to recover stolen assets?"
     },
     "stolen_through_allowances": {
       "answer": "It is always hard to determine how exactly your funds were stolen. To help you diagnose the cause and mitigations, we developed an infographic that shows the most common ways that funds are stolen, which has been included below. Note that you may need to zoom in to see the details.",
@@ -39,6 +39,10 @@
     "sweeper_bot": {
       "answer": "If you have a so-called \"sweeper bot\" on your account that steals any ETH as soon as it comes in, your seed phrase was compromised. This means that revoking approvals is not going to help with your wallet security. Unfortunately, there is no way for your wallet to recover from this. You should abandon this wallet and create a new one.",
       "question": "I want to revoke approvals, but when I add ETH to my account it gets stolen."
+    },
+    "testnet_allowances": {
+      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
+      "question": "Do I need to revoke approvals on testnets?"
     },
     "wallet_mentions_approve": {
       "answer": "In the tokens' smart contracts, the functions for approving and revoking approvals are the same function. The difference is that you set the approval to 0 (for ERC20 tokens) or \"false\" (for NFTs) when revoking the approval. You can verify that Revoke.cash is actually revoking the approval by clicking \"Edit Permission\" (for ERC20 tokens), or the \"data\" tab (for NFTs) in MetaMask.",

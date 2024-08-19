@@ -40,6 +40,10 @@
       "answer": "如果你的账户上有一个所谓的 \"扫荡机器人\"，只要有ETH进来就会被偷走，这意味着你的备份词组泄露了。也就是说撤销授权对你的钱包安全没有帮助。不幸的是，你的钱包没有办法从中恢复。你应该放弃这个钱包并创建一个新的钱包。",
       "question": "我想撤销授权，但每当我向我的账户添加ETH时，它就会被盗。"
     },
+    "testnet_allowances": {
+      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
+      "question": "Do I need to revoke approvals on testnets?"
+    },
     "wallet_mentions_approve": {
       "answer": "在代币的智能合约中，批准和撤销授权是同样的功能。不同的是，你在撤销授权时将授权转移资金设置为0（对于ERC20代币）或 \"false\"（对于NFTs）。你可以通过点击 \"编辑权限\"（对于ERC20代币），或MetaMask中的 \"数据 \"标签（对于NFT）来验证Revoke.cash是否撤销了授权。",
       "question": "为什么我的钱包在撤销授权时弹出 \"授权 \"提示？"

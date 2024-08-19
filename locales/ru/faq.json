@@ -40,6 +40,10 @@
       "answer": "Если на вашем аккаунте есть так называемый «sweeper-bot», который крадет любые ETH сразу после их поступления, значит, ваша seed-фраза была взломана. Это означает, что отмена доступов не поможет обеспечить безопасность вашего кошелька. К сожалению, ваш кошелек не вернуть. Вам следует отказаться от него и создать новый.",
       "question": "Я хочу отменить доступы, но когда я добавляю ETH на свой счет, их крадут."
     },
+    "testnet_allowances": {
+      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
+      "question": "Do I need to revoke approvals on testnets?"
+    },
     "wallet_mentions_approve": {
       "answer": "В смарт-контрактах токенов функции утверждения и отмены доступов совпадают. Разница в том, что при отмене доступа вы устанавливаете значение 0 (для токенов ERC20) или «false» (для NFT). Вы можете убедиться, что Revoke.cash действительно отменяет доступ, нажав «Разрешение на редактирование» (для доступов ERC20) или вкладку «данные» (для NFT) в MetaMask.",
       "question": "Почему во всплывающем окне моего кошелька при отзыве появляется надпись «дать разрешение», «одобрить» или «утвердить для всех»?"

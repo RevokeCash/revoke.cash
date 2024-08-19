@@ -7,7 +7,6 @@ import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import Image from 'next/image';
 
 interface Props {
   params: {
@@ -51,32 +50,20 @@ const FaqPage: NextPage = async ({ params }: Props) => {
         vocab="https://schema.org/"
         typeof="FAQPage"
       >
-        <FaqItem question={t('faq.questions.whole_wallet_at_risk.question')} slug="whole_wallet_at_risk">
-          {t.rich('faq.questions.whole_wallet_at_risk.answer')}
-        </FaqItem>
-        <FaqItem question={t('faq.questions.enough_to_disconnect.question')} slug="enough_to_disconnect">
-          {t.rich('faq.questions.enough_to_disconnect.answer')}
-        </FaqItem>
         <FaqItem question={t('faq.questions.recover_assets.question')} slug="recover_assets">
           {t.rich('faq.questions.recover_assets.answer')}
+        </FaqItem>
+        <FaqItem question={t('faq.questions.multiple_allowances.question')} slug="multiple_allowances">
+          {t.rich('faq.questions.multiple_allowances.answer')}
         </FaqItem>
         <FaqItem question={t('faq.questions.sweeper_bot.question')} slug="sweeper_bot">
           {t.rich('faq.questions.sweeper_bot.answer')}
         </FaqItem>
-        <FaqItem question={t('faq.questions.stolen_through_allowances.question')} slug="stolen_through_allowances">
-          {t.rich('faq.questions.stolen_through_allowances.answer')}
-          <Image
-            src="/assets/images/learn/how-did-i-get-scammed-light.png"
-            alt="How Did I Get Scammed?"
-            width="1024"
-            height="977"
-          />
+        <FaqItem question={t('faq.questions.enough_to_disconnect.question')} slug="enough_to_disconnect">
+          {t.rich('faq.questions.enough_to_disconnect.answer')}
         </FaqItem>
         <FaqItem question={t('faq.questions.hardware_wallets.question')} slug="hardware_wallets">
           {t.rich('faq.questions.hardware_wallets.answer')}
-        </FaqItem>
-        <FaqItem question={t('faq.questions.multiple_allowances.question')} slug="multiple_allowances">
-          {t.rich('faq.questions.multiple_allowances.answer')}
         </FaqItem>
         <FaqItem question={t('faq.questions.costs.question')} slug="costs">
           {t.rich('faq.questions.costs.answer')}
@@ -89,6 +76,9 @@ const FaqPage: NextPage = async ({ params }: Props) => {
         </FaqItem>
         <FaqItem question={t('faq.questions.which_allowances.question')} slug="which_allowances">
           {t.rich('faq.questions.which_allowances.answer')}
+        </FaqItem>
+        <FaqItem question={t('faq.questions.testnet_allowances.question')} slug="testnet_allowances">
+          {t.rich('faq.questions.testnet_allowances.answer')}
         </FaqItem>
         <FaqItem question={t('faq.questions.which_chains.question')} slug="which_chains" wrapper="div">
           <p>{t.rich('faq.questions.which_chains.answer')}</p>
