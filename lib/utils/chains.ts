@@ -1237,11 +1237,11 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [ChainId.KlaytnMainnetCypress]: new Chain({
+  [ChainId.KaiaMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
-    chainId: ChainId.KlaytnMainnetCypress,
-    name: 'Klaytn',
-    logoUrl: '/assets/images/vendor/chains/klaytn.svg',
+    chainId: ChainId.KaiaMainnet,
+    name: 'Kaia',
+    logoUrl: '/assets/images/vendor/chains/kaia.svg',
   }),
   [ChainId.Kroma]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2475,7 +2475,6 @@ export const getDefaultDonationAmount = (nativeToken: string): string => {
     KAI: '5000',
     KAVA: '20',
     KCS: '2',
-    KLAYTN: '50',
     LYX: '2',
     mADA: '50',
     MATIC: '15',

@@ -6,6 +6,8 @@ export const locales = ['en', 'es', 'ja', 'ru', 'zh'] as const;
 export const localePrefix = 'as-needed' as const; // Default
 export const defaultLocale = 'en' as const;
 
+export type Locale = (typeof locales)[number];
+
 export const defaultTranslationValues: RichTranslationValues = {
   i: (children) => <span className="italic">{children}</span>,
   b: (children) => <span className="font-bold">{children}</span>,

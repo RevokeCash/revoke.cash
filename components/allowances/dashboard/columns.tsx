@@ -142,7 +142,7 @@ export const columns = [
     cell: (info) => <AllowanceCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
     enableSorting: true,
     sortingFn: customSortingFns.allowance,
-    sortUndefined: 1,
+    sortUndefined: 'last',
     enableColumnFilter: true,
     filterFn: customFilterFns.allowance,
   }),
@@ -152,7 +152,7 @@ export const columns = [
     cell: (info) => <ValueAtRiskCell allowance={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.basic,
-    sortUndefined: 1,
+    sortUndefined: 'last',
   }),
   columnHelper.accessor('spender', {
     id: ColumnId.SPENDER,
@@ -168,7 +168,7 @@ export const columns = [
     cell: (info) => <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.lastUpdated} />,
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,
-    sortUndefined: 1,
+    sortUndefined: 'last',
   }),
   columnHelper.display({
     id: ColumnId.ACTIONS,

@@ -28,7 +28,7 @@ const ToastifyConfig = () => (
     closeOnClick
     rtl={false}
     pauseOnFocusLoss
-    draggable
+    draggable="touch"
     pauseOnHover
   />
 );
