@@ -9,4 +9,7 @@ export const Selectors = {
   LAST_UPDATED_LINK: '.tx-link',
   SEARCH_WALLET_INPUT: '[aria-label="Search Accounts by Address or Domain"]',
   SEARCH_WALLET_BUTTON: '[aria-label="Check Address"]',
+  EXPLOIT_CHECKER_INPUT: '#exploit-search',
+  EXPLOIT_CHECKER_LOADER: '.exploit-checker-loader',
+  EXPLOIT_CHECKER_STATUS: '.exploit-checker-status',
 };
