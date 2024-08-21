@@ -30,7 +30,7 @@
     },
     "recover_assets": {
       "answer": "いいえ。Revoke.cashは、適切なウォレットハイジーンを行うための<i>予防</i>ツールです。定期的にアクティブな許可を取り消することで、許可を悪用された被害者になる可能性を減らすことができます。しかし残念ながら、盗まれた資金はリカバリーすることができません。今後資金が盗まれないように、資金を受け取るために使用した許可等を必ず取り消す必要があります。",
-      "question": "資金が盗まれたのですが、Revoke.cashを利用して資金を取り戻すことができますか？"
+      "question": "Revoke.cashを使用して盗まれた資産を回復できますか。"
     },
     "stolen_through_allowances": {
       "answer": "あなたの資金が具体的にどのように盗まれたかを判断するのは常に困難です。原因と軽減策を診断いただくため、私達は、資金が盗まれる最も一般的な方法を図解し、以下に掲載しました。詳細を確認するには拡大が必要な場合があります。",
@@ -41,8 +41,8 @@
       "question": "許可をリボークたいのですが、アカウントに ETH を追加すると盗まれてしまいます。"
     },
     "testnet_allowances": {
-      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
-      "question": "Do I need to revoke approvals on testnets?"
+      "answer": "通常、テストネットのトークンには価値がないため、テストネットのトークン承認を取り消す必要はありません。個々のトークンの承認は、1つのネットワーク上の1つのトークンに<i>のみ</i>適用されます。したがって、テストネットでのトークン承認は、メインネットトークンのセキュリティーリスクにはなりません。",
+      "question": "テストネットでの承認を取り消す必要はありますか。"
     },
     "wallet_mentions_approve": {
       "answer": "トークンのスマートコントラクトでは、承認と許可の取り消しの機能は、同じ機能となっています。違いは、許可をリボークするときに、許可を「0」(ERC20トークンの場合)、または「false」(NFTの場合)に設定することです。Revoke.cashが実際に許可を取り消していることを確認するには、「許可の編集」(ERC20許可の場合)、またはMetaMaskの「データ」タブ(NFTの場合）をクリックします。",

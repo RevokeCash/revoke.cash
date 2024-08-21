@@ -66,19 +66,19 @@
     "expiration": "Срок действия истекает {inTime}"
   },
   "risk_factors": {
-    "blocklist": "Этот адрес занесен в черный список <blocklist-link>{platform}</blocklist-link>",
-    "closed_source": "Closed source",
-    "deprecated": "Deprecated or outdated",
-    "eoa": "Externally Owned Account",
+    "blocklist": "Опасный или вредоносный",
+    "closed_source": "Закрытый исходный код",
+    "deprecated": "Устаревший или неактуальный",
+    "eoa": "Внешний аккаунт",
     "exploit": "Участвует в {data}",
     "levels": {
       "high": "высокий риск",
       "low": "низкий риск",
       "medium": "средний риск"
     },
-    "phishing_risk": "Increases risk surface in case of phishing",
-    "source": "reported by <source-link>{source}</source-link>",
-    "unsafe": "Potentially unsafe contract code"
+    "phishing_risk": "Увеличивает поверхность риска в случае фишинга",
+    "source": "сообщил(а)<source-link>{source}</source-link>",
+    "unsafe": "Потенциально небезопасный код контракта"
   },
   "search": {
     "spender": "Поиск по адресу авторизованных"

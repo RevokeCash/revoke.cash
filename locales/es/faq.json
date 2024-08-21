@@ -30,7 +30,7 @@
     },
     "recover_assets": {
       "answer": "No. Revoke.cash es una herramienta <i>preventiva</i> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuye las posibilidades de convertirte en una víctima de hacks de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro.",
-      "question": "Me acaban de robar mis fondos, ¿puedo usar Revoke.cash para recuperarlos?"
+      "question": "¿Puedo usar Revoke.cash para recuperar activos robados?"
     },
     "stolen_through_allowances": {
       "answer": "Siempre es difícil determinar exactamente cómo se robaron tus fondos. Para ayudarte a diagnosticar la causa y las mitigaciones, desarrollamos una infografía que muestra las formas más comunes de robo de fondos, que se incluye a continuación. Ten en cuenta que necesitas ampliar la imagen para ver los detalles.",
@@ -41,8 +41,8 @@
       "question": "Quiero revocar las autorizaciones, pero cuando añado ETH a mi cuenta me lo roban."
     },
     "testnet_allowances": {
-      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
-      "question": "Do I need to revoke approvals on testnets?"
+      "answer": "Por lo general, no es necesario revocar las aprobaciones de tokens en las redes de prueba, ya que los tokens en las redes de prueba no tienen ningún valor. Cada aprobación de token individual <i>only</i> se aplica a un solo token en una sola red. Por lo tanto, las aprobaciones de tokens en las redes de prueba no son un riesgo de seguridad para los tokens de su red principal.",
+      "question": "¿Necesito revocar las aprobaciones en las redes de prueba?"
     },
     "wallet_mentions_approve": {
       "answer": "En los contratos inteligentes del token, las funciones para autorizar y revocar autorizaciones son la misma función. La diferencia es que la estableces en 0 (para tokens ERC20) o \"falso\" (para NFTs) cuando revocas la autorización. Puedes verificar que Revoke.cash está realmente revocando la autorización haciendo clic en \"Editar permiso\" (para autorizaciones ERC20), o la pestaña de \"datos\" (para NFTs) en MetaMask.",

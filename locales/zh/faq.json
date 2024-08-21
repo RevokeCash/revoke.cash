@@ -30,7 +30,7 @@
     },
     "recover_assets": {
       "answer": "Revoke.cash是一<i>种预防性</i>工具，用来管理你的代币授权并践行合适的钱包状态检查。通过定期撤销活跃的授权，来减少因授权漏洞遭受损失的可能性。但是无法恢复你的被盗资产。为了防止更多的资金被盗，你依然需要撤销被盗资产的授权。",
-      "question": "我的资金刚刚被盗，我可以使用Revoke.cash来找回它们吗？"
+      "question": "我可以用 Revoke.cash 来追回被盗资产吗？"
     },
     "stolen_through_allowances": {
       "answer": "资金被盗的具体细节是很难被说得清的。为了帮助你诊断原因并提供减少损失的办法，我们开发了一张信息图，显示了最常见的资金被盗方式，详情如下。请注意，你需要放大才能查看详细信息。",
@@ -41,8 +41,8 @@
       "question": "我想撤销授权，但每当我向我的账户添加ETH时，它就会被盗。"
     },
     "testnet_allowances": {
-      "answer": "Generally you don't need to revoke token approvals on testnets, because tokens on testnets do not have any value. Every individual token approval <i>only</i> applies to a single token on a single network. So token approvals on testnets are not a security risk for your mainnet tokens.",
-      "question": "Do I need to revoke approvals on testnets?"
+      "answer": "通常，您无需撤销测试网络上的代币授权，因为测试网络上的代币没有任何价值。每个代币授权<i>仅</i>适用于单个网络的单个代币。因此，测试网络上的代币授权不会对您主网代币构成安全风险。",
+      "question": "我需要撤销测试网络的代币授权吗？"
     },
     "wallet_mentions_approve": {
       "answer": "在代币的智能合约中，批准和撤销授权是同样的功能。不同的是，你在撤销授权时将授权转移资金设置为0（对于ERC20代币）或 \"false\"（对于NFTs）。你可以通过点击 \"编辑权限\"（对于ERC20代币），或MetaMask中的 \"数据 \"标签（对于NFT）来验证Revoke.cash是否撤销了授权。",

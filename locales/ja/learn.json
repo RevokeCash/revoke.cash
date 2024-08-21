@@ -33,8 +33,8 @@
       "title": "Web3、セキュリティー等について学ぼう"
     },
     "security": {
-      "intro_paragraph": "In the Security section, we help you understand how you can stay safe in the world of web3. This will help you understand the different types of attacks that can happen, and how you can protect yourself from them.",
-      "title": "Learn About Security"
+      "intro_paragraph": "セキュリティーセクションでは、web3の世界で安全を保つ方法を理解するお手伝いをします。これは、発生する可能性のあるさまざまな種類の攻撃と、それらから身を守る方法を理解するのに役立ちます。",
+      "title": "セキュリティーについて知る"
     },
     "wallets": {
       "intro_paragraph": "ウォレットセクションでは、ウォレットに関するすべてを学ぶことができます。これは、存在するさまざまな種類のウォレットと、それらを使用してさまざまなブロックチェーンネットワーク上のアプリケーションとやり取りする方法を理解するのに役立ちます。",
