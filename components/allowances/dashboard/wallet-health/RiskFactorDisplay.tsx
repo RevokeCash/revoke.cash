@@ -1,6 +1,8 @@
 import Href from 'components/common/Href';
 import { RiskFactor } from 'lib/interfaces';
+import { getRiskIcon } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   riskFactor: RiskFactor;
@@ -44,7 +46,6 @@ const RiskFactorDisplay = ({ riskFactor }: Props) => {
   if (riskFactorText === `address.risk_factors.${riskFactor.type}`) return null;
 
   const source = SOURCES[riskFactor.source];
-  if (!source) return riskFactorText;
 
   const sourceDisplay = t.rich(`address.risk_factors.source`, {
     source: source?.name ?? riskFactor.source,
@@ -59,9 +60,11 @@ const RiskFactorDisplay = ({ riskFactor }: Props) => {
   });
 
   return (
-    <>
-      {riskFactorText} ({sourceDisplay})
-    </>
+    <div className={twMerge('flex items-center justify-center gap-1')}>
+      <div>{getRiskIcon(riskFactor)}</div>
+      <div>{riskFactorText}</div>
+      {source && <div>({sourceDisplay})</div>}
+    </div>
   );
 };
 

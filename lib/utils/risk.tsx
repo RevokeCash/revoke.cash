@@ -1,3 +1,4 @@
+import { ExclamationCircleIcon, ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import { RiskFactor, RiskLevel } from 'lib/interfaces';
 import { track } from './analytics';
 
@@ -36,4 +37,18 @@ export const getRiskLevel = (riskFactors: RiskFactor[]): RiskLevel => {
   if (riskScore <= 20) return 'low';
 
   return 'medium';
+};
+
+export const getRiskIcon = (riskFactor: RiskFactor) => {
+  const score = RiskFactorScore[riskFactor.type];
+
+  if (score > 75) {
+    return <ExclamationCircleIcon className=" text-red-500 h-5" />;
+  }
+
+  if (score > 25) {
+    return <ExclamationTriangleIcon className="text-yellow-500 h-5" />;
+  }
+
+  return <InformationCircleIcon className="text-green-500 h-5" />;
 };
