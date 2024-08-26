@@ -1,4 +1,5 @@
 import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
+import IndeterminateCheckbox from 'components/common/IndeterminateCheckbox';
 import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { calculateValueAtRisk, isNullish } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
@@ -20,6 +21,7 @@ declare module '@tanstack/table-core' {
 }
 
 export enum ColumnId {
+  SELECT = 'Select',
   SYMBOL = 'Asset Name',
   ASSET_TYPE = 'Asset Type',
   BALANCE = 'Balance',
@@ -114,6 +116,20 @@ export const customFilterFns = {
 
 const columnHelper = createColumnHelper<AllowanceData>();
 export const columns = [
+  columnHelper.display({
+    id: ColumnId.SELECT,
+    header: ({ table }) => (
+      <IndeterminateCheckbox
+        checked={table.getIsAllRowsSelected()}
+        indeterminate={table.getIsSomeRowsSelected()}
+        onChange={table.getToggleAllRowsSelectedHandler()}
+      />
+    ),
+    cell: ({ row }) =>
+      row.getCanSelect() ? (
+        <IndeterminateCheckbox checked={row.getIsSelected()} onChange={row.getToggleSelectedHandler()} />
+      ) : null,
+  }),
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,

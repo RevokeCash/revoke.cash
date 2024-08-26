@@ -11,9 +11,17 @@ import AllowanceTableControls from './controls/AllowanceTableControls';
 const AllowanceDashboard = () => {
   const { allowances, isLoading, error, onUpdate } = useAddressAllowances();
 
+  // const [rowSelection, setRowSelection] = useState({});
+
   const table = useReactTable({
-    data: allowances,
+    // We fall back to an empty array because the table crashes if the data is undefined
+    data: allowances ?? [],
     columns,
+    // state: {
+    //   rowSelection,
+    // },
+    enableRowSelection: (row) => row.original.spender !== undefined,
+    // onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel<AllowanceData>(),
     getSortedRowModel: getSortedRowModel<AllowanceData>(),
     getFilteredRowModel: getFilteredRowModel<AllowanceData>(),
