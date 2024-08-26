@@ -1,4 +1,5 @@
 import { HTMLProps, useEffect, useRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props extends HTMLProps<HTMLInputElement> {
   indeterminate?: boolean;
@@ -13,7 +14,14 @@ const IndeterminateCheckbox = ({ indeterminate, className = '', ...rest }: Props
     }
   }, [ref, indeterminate]);
 
-  return <input type="checkbox" ref={ref} className={className + ' cursor-pointer'} {...rest} />;
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={twMerge(className, 'cursor-pointer accent-brand', rest.disabled && 'cursor-not-allowed')}
+      {...rest}
+    />
+  );
 };
 
 export default IndeterminateCheckbox;

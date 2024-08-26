@@ -1,4 +1,5 @@
 import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
+import Button from 'components/common/Button';
 import IndeterminateCheckbox from 'components/common/IndeterminateCheckbox';
 import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { calculateValueAtRisk, isNullish } from 'lib/utils';
@@ -118,8 +119,9 @@ const columnHelper = createColumnHelper<AllowanceData>();
 export const columns = [
   columnHelper.display({
     id: ColumnId.SELECT,
-    header: ({ table }) => (
+    footer: ({ table }) => (
       <IndeterminateCheckbox
+        disabled={table.getRowCount() === 0}
         checked={table.getIsAllRowsSelected()}
         indeterminate={table.getIsSomeRowsSelected()}
         onChange={table.getToggleAllRowsSelectedHandler()}
@@ -133,6 +135,16 @@ export const columns = [
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
+    footer: ({ table }) => (
+      <Button
+        style="primary"
+        size="sm"
+        disabled={!table.getIsSomeRowsSelected()}
+        onClick={() => console.log(table.getGroupedSelectedRowModel().flatRows.map((row) => row.original))}
+      >
+        Revoke Selected
+      </Button>
+    ),
     cell: (info) => <AssetCell asset={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,
