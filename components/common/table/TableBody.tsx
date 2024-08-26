@@ -11,8 +11,8 @@ const TableBody = <T,>({ table, isLoading, loaderRows }: Props<T>) => {
   if (isLoading) {
     return (
       <TableBodyLoader
-        columns={table.getVisibleFlatColumns().length}
-        rows={loaderRows ?? 10}
+        columns={table.getVisibleFlatColumns()}
+        rowCount={loaderRows ?? 10}
         className="allowances-loader"
       />
     );
