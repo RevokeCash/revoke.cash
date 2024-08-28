@@ -44,7 +44,7 @@ const MobileMenu = () => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <Dialog.Panel className="absolute inset-0 top-[4.5rem] z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
+            <Dialog.Panel className="absolute inset-0 top-16 z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
               <div className="flex flex-col items-center gap-6 p-12">
                 <FocusTrap ref={focusRef} />
                 <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
