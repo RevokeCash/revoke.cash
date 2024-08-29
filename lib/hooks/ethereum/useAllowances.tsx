@@ -61,6 +61,8 @@ export const useAllowances = (address: Address, events: AddressEvents, chainId: 
     allowance: AllowanceData,
     updatedProperties: Pick<AllowanceData, 'amount' | 'lastUpdated'> = {},
   ) => {
+    console.debug('Reloading data');
+
     // Invalidate blockNumber query, which triggers a refetch of the events, which in turn triggers a refetch of the allowances
     // We do not immediately refetch the allowances here, but we want to make sure that allowances will be refetched when
     // users navigate to the allowances page again
