@@ -219,3 +219,5 @@ export interface EtherscanPlatform {
   domain: string;
   subdomain?: string;
 }
+
+export type TransactionStatus = 'not_started' | 'pending' | 'confirmed' | 'reverted';
