@@ -11,7 +11,7 @@ import type {
   OnUpdate,
   TokenContract,
 } from 'lib/interfaces';
-import { Address, PublicClient, WalletClient, fromHex, getEventSelector } from 'viem';
+import { Address, PublicClient, WalletClient, WriteContractParameters, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
   deduplicateLogsByTopics,
@@ -25,7 +25,7 @@ import {
 import { track } from './analytics';
 import { isNetworkError, isRevertedError, parseErrorMessage, stringifyError } from './errors';
 import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
-import { getPermit2AllowancesFromApprovals, permit2Approve } from './permit2';
+import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
 
 export const getAllowancesFromEvents = async (
@@ -328,43 +328,12 @@ export const revokeErc721Allowance = async (
   allowance: AllowanceData,
   onUpdate: OnUpdate,
 ) => {
-  const { chainId, owner, contract, spender, tokenId } = allowance;
-
-  const executeRevokeSingle = async () => {
-    return writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
-      ...contract,
-      functionName: 'approve',
-      args: [ADDRESS_ZERO, tokenId],
-      account: allowance.owner,
-      chain: walletClient.chain,
-      value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
-    });
-  };
-
-  const executeRevokeForAll = async () => {
-    return writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
-      ...contract,
-      functionName: 'setApprovalForAll',
-      args: [spender, false],
-      account: allowance.owner,
-      chain: walletClient.chain,
-      value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
-    });
-  };
-
-  const hash = tokenId === undefined ? await executeRevokeForAll() : await executeRevokeSingle();
+  const transactionRequest = await prepareRevokeErc721Allowance(walletClient, allowance);
+  const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
+  trackTransaction(allowance, hash);
 
   if (hash) {
-    track('Revoked ERC721 allowance', {
-      chainId,
-      account: owner,
-      spender,
-      token: contract.address,
-      tokenId,
-    });
-
-    await waitForTransactionConfirmation(hash, contract.publicClient);
-
+    await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
     onUpdate(allowance, undefined);
   }
 
@@ -385,69 +354,16 @@ export const updateErc20Allowance = async (
   newAmount: string,
   onUpdate: OnUpdate,
 ) => {
-  const { chainId, owner, contract, metadata, spender, expiration } = allowance;
+  const newAmountParsed = parseFixedPointBigInt(newAmount, allowance.metadata.decimals);
+  const transactionRequest = await prepareUpdateErc20Allowance(walletClient, allowance, newAmountParsed);
+  if (!transactionRequest) return;
 
-  if (isErc721Contract(contract)) {
-    throw new Error('Cannot update ERC721 allowances');
-  }
-
-  const newAmountParsed = parseFixedPointBigInt(newAmount, metadata.decimals);
-  const differenceAmount = newAmountParsed - allowance.amount;
-  if (differenceAmount === 0n) return;
-
-  const executeUpdate = async () => {
-    const baseRequest = {
-      ...contract,
-      account: allowance.owner,
-      chain: walletClient.chain,
-      value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
-    };
-
-    try {
-      console.debug(`Calling contract.approve(${spender}, ${newAmountParsed})`);
-      return await writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
-        ...baseRequest,
-        functionName: 'approve',
-        args: [spender, newAmountParsed],
-      });
-    } catch (e) {
-      if (!isRevertedError(parseErrorMessage(e))) throw e;
-
-      // Some tokens can only change approval with {increase|decrease}Approval
-      if (differenceAmount > 0n) {
-        console.debug(`Calling contract.increaseAllowance(${spender}, ${differenceAmount})`);
-        return await writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
-          ...baseRequest,
-          functionName: 'increaseAllowance',
-          args: [spender, differenceAmount],
-        });
-      } else {
-        console.debug(`Calling contract.decreaseAllowance(${spender}, ${-differenceAmount})`);
-        return await writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
-          ...baseRequest,
-          functionName: 'decreaseAllowance',
-          args: [spender, -differenceAmount],
-        });
-      }
-    }
-  };
-
-  // If this is a permit2 approval, then we need to update it through Permit2
-  const executePermit2Update = () => permit2Approve(walletClient, contract, spender, newAmountParsed, expiration);
-  const hash = expiration === undefined ? await executeUpdate() : await executePermit2Update();
+  const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
+  trackTransaction(allowance, hash, newAmount, allowance.expiration);
 
   if (hash) {
-    track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
-      chainId,
-      account: owner,
-      spender,
-      token: contract.address,
-      amount: newAmount === '0' ? undefined : newAmount,
-      permit2: expiration !== undefined,
-    });
-
-    const transactionReceipt = await waitForTransactionConfirmation(hash, contract.publicClient);
-    const lastUpdated = await blocksDB.getTimeLog(contract.publicClient, {
+    const transactionReceipt = await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
+    const lastUpdated = await blocksDB.getTimeLog(allowance.contract.publicClient, {
       ...transactionReceipt,
       blockNumber: Number(transactionReceipt.blockNumber),
     });
@@ -456,4 +372,141 @@ export const updateErc20Allowance = async (
   }
 
   return hash;
+};
+
+export const prepareRevokeAllowance = async (walletClient: WalletClient, allowance: AllowanceData) => {
+  if (!allowance.spender) {
+    return undefined;
+  }
+
+  if (isErc721Contract(allowance.contract)) {
+    return prepareRevokeErc721Allowance(walletClient, allowance);
+  }
+
+  return prepareRevokeErc20Allowance(walletClient, allowance);
+};
+
+export const prepareRevokeErc721Allowance = async (
+  walletClient: WalletClient,
+  allowance: AllowanceData,
+): Promise<WriteContractParameters> => {
+  if (allowance.tokenId !== undefined) {
+    const transactionRequest = {
+      ...(allowance.contract as Erc721TokenContract),
+      functionName: 'approve' as const,
+      args: [ADDRESS_ZERO, allowance.tokenId] as const,
+      account: allowance.owner,
+      chain: walletClient.chain,
+      value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
+    };
+
+    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    return { ...transactionRequest, gas };
+  }
+
+  const transactionRequest = {
+    ...(allowance.contract as Erc721TokenContract),
+    functionName: 'setApprovalForAll' as const,
+    args: [allowance.spender, false] as const,
+    account: allowance.owner,
+    chain: walletClient.chain,
+    value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
+  };
+
+  const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+  return { ...transactionRequest, gas };
+};
+
+export const prepareRevokeErc20Allowance = async (
+  walletClient: WalletClient,
+  allowance: AllowanceData,
+): Promise<WriteContractParameters | undefined> => {
+  return prepareUpdateErc20Allowance(walletClient, allowance, 0n);
+};
+
+export const prepareUpdateErc20Allowance = async (
+  walletClient: WalletClient,
+  allowance: AllowanceData,
+  newAmount: bigint,
+): Promise<WriteContractParameters | undefined> => {
+  if (isErc721Contract(allowance.contract)) {
+    throw new Error('Cannot update ERC721 allowances');
+  }
+
+  const differenceAmount = newAmount - allowance.amount;
+  if (differenceAmount === 0n) return;
+
+  if (allowance.expiration !== undefined) {
+    return preparePermit2Approve(walletClient, allowance.contract, allowance.spender, newAmount, allowance.expiration);
+  }
+
+  const baseRequest = {
+    ...allowance.contract,
+    account: allowance.owner,
+    chain: walletClient.chain,
+    value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
+  };
+
+  try {
+    console.debug(`Calling contract.approve(${allowance.spender}, ${newAmount})`);
+
+    const transactionRequest = {
+      ...baseRequest,
+      functionName: 'approve' as const,
+      args: [allowance.spender, newAmount] as const,
+    };
+
+    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    return { ...transactionRequest, gas };
+  } catch (e) {
+    if (!isRevertedError(parseErrorMessage(e))) throw e;
+
+    // Some tokens can only change approval with {increase|decrease}Approval
+    if (differenceAmount > 0n) {
+      console.debug(`Calling contract.increaseAllowance(${allowance.spender}, ${differenceAmount})`);
+
+      const transactionRequest = {
+        ...baseRequest,
+        functionName: 'increaseAllowance' as const,
+        args: [allowance.spender, differenceAmount] as const,
+      };
+
+      const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+      return { ...transactionRequest, gas };
+    } else {
+      console.debug(`Calling contract.decreaseAllowance(${allowance.spender}, ${-differenceAmount})`);
+
+      const transactionRequest = {
+        ...baseRequest,
+        functionName: 'decreaseAllowance' as const,
+        args: [allowance.spender, -differenceAmount] as const,
+      };
+
+      const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+      return { ...transactionRequest, gas };
+    }
+  }
+};
+
+const trackTransaction = (allowance: AllowanceData, hash: string, newAmount?: string, expiration?: number) => {
+  if (!hash) return;
+
+  if (isErc721Contract(allowance.contract)) {
+    track('Revoked ERC721 allowance', {
+      chainId: allowance.chainId,
+      account: allowance.owner,
+      spender: allowance.spender,
+      token: allowance.contract.address,
+      tokenId: allowance.tokenId,
+    });
+  }
+
+  track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
+    chainId: allowance.chainId,
+    account: allowance.owner,
+    spender: allowance.spender,
+    token: allowance.contract.address,
+    amount: newAmount === '0' ? undefined : newAmount,
+    permit2: expiration !== undefined,
+  });
 };

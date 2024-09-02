@@ -69,13 +69,28 @@ export const permit2Approve = async (
   amount: bigint,
   expiration: number,
 ) => {
-  return walletClient.writeContract({
+  const transactionRequest = await preparePermit2Approve(walletClient, tokenContract, spender, amount, expiration);
+  return walletClient.writeContract(transactionRequest);
+};
+
+export const preparePermit2Approve = async (
+  walletClient: WalletClient,
+  tokenContract: Erc20TokenContract,
+  spender: Address,
+  amount: bigint,
+  expiration: number,
+) => {
+  const transactionRequest = {
     address: PERMIT2_ADDRESS,
     abi: PERMIT2_ABI,
-    functionName: 'approve',
-    args: [tokenContract.address, spender, amount, expiration],
+    functionName: 'approve' as const,
+    args: [tokenContract.address, spender, amount, expiration] as const,
     account: await getWalletAddress(walletClient),
     chain: walletClient.chain,
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
-  });
+  };
+
+  const gas = await tokenContract.publicClient.estimateContractGas(transactionRequest);
+
+  return { ...transactionRequest, gas };
 };
