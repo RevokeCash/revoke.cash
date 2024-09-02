@@ -157,11 +157,12 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
 };
 
 export const writeContractUnlessExcessiveGas = async (
-  publicCLient: PublicClient,
+  publicClient: PublicClient,
   walletClient: WalletClient,
   transactionRequest: WriteContractParameters,
 ) => {
-  const estimatedGas = await publicCLient.estimateContractGas(transactionRequest);
+  const estimatedGas =
+    'gas' in transactionRequest ? transactionRequest.gas : await publicClient.estimateContractGas(transactionRequest);
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
