@@ -34,7 +34,7 @@
     },
     "security": {
       "intro_paragraph": "En la sección de Seguridad, te ayudamos a entender cómo puedes mantenerte seguro en el mundo de la web3. Esto te ayudará a comprender los diferentes tipos de ataques que pueden ocurrir y cómo puedes protegerte de ellos.",
-      "title": "Más Información sobre la Seguridad"
+      "title": "Más información sobre Seguridad y Estafas"
     },
     "wallets": {
       "intro_paragraph": "En la sección Carteras, puedes aprender todo sobre las carteras. Esto te ayudará a entender los diferentes tipos de carteras que existen y cómo puedes usarlas para interactuar con aplicaciones en diferentes redes de blockchains.",
@@ -46,7 +46,7 @@
     "basics": "Conceptos Básicos",
     "faq": "FAQ",
     "mobile_header": "Explorar artículos",
-    "security": "Seguridad",
+    "security": "Seguridad y Estafas",
     "wallets": "Carteras"
   }
 }

@@ -114,7 +114,7 @@
     "clipboard_success": "✅ クリップボードにコピーされました",
     "donation_sent": "💪 寄付いただき、ありがとうございます！",
     "revoke_failed": "❌ 許可のリボークに失敗しました: {message}",
-    "revoke_failed_revert": "❌ このトークンは承認の取り消しを無効にしました。このトークンの作成者に連絡して問題を解決することをおすすめします。",
+    "revoke_failed_revert": "❌ このトークンの承認は取り消せません。このトークンの作成者に連絡して問題を解決することをおすすめします。",
     "transaction_failed": "❌ トランザクションが失敗しました:{message}",
     "transaction_submitted": "✅ トランザクションを送信しました！",
     "update_failed": "❌ このトークンは許可の更新についてサポートしていません、リボークしてください。"
