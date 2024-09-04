@@ -37,6 +37,7 @@ export class EtherscanEventGetter implements EventGetter {
       );
     } catch (e) {
       console.log(e);
+      console.log(apiUrl + '?' + new URLSearchParams(searchParams).toString());
       throw new Error('Could not retrieve event logs from the blockchain');
     }
 
@@ -53,7 +54,10 @@ export class EtherscanEventGetter implements EventGetter {
 
     if (typeof data.result === 'string') {
       // If we somehow hit the rate limit, we try again
-      if (data.result.includes('Max rate limit reached')) {
+      if (
+        data.result.includes('Max rate limit reached') ||
+        data.result.includes('Max calls per sec rate limit reached')
+      ) {
         console.error('Etherscan: Rate limit reached, retrying...');
         return this.getEvents(chainId, filter);
       }

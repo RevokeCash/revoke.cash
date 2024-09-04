@@ -23,7 +23,7 @@
   "dependencies": {
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
-    "@revoke.cash/chains": "^48.1.0",
+    "@revoke.cash/chains": "^49.0.0",
     "@tanstack/query-sync-storage-persister": "^5.52.0",
     "@tanstack/react-query": "^5.52.0",
     "@tanstack/react-query-persist-client": "^5.52.0",
