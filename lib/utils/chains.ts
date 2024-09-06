@@ -129,6 +129,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoHeklaL2,
   ChainId.BlastSepoliaTestnet,
+  ChainId.MorphHolesky,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
   ChainId.CeloAlfajoresTestnet,
@@ -1121,6 +1122,7 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://api-holesky.etherscan.io/api',
     rpc: {
       main: `https://holesky.infura.io/v3/${INFURA_API_KEY}`,
+      free: 'https://holesky.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1509,6 +1511,19 @@ export const CHAINS: Record<number, Chain> = {
         }),
       ],
     }),
+  }),
+  [ChainId.MorphHolesky]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.MorphHolesky,
+    name: 'Morph Holesky',
+    logoUrl: '/assets/images/vendor/chains/morph.svg',
+    etherscanCompatibleApiUrl: 'https://explorer-api-holesky.morphl2.io/api',
+    rpc: {
+      main: 'https://rpc-holesky.morphl2.io',
+    },
+    priceStrategy: undefined, // TODO
+    isTestnet: true,
+    correspondingMainnetChainId: 12345678901, // TODO: This is a placeholder so we can add a description for Morph
   }),
   [ChainId.Nahmii3Mainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2191,7 +2206,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://zetachain-athens-3.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain-athens-3.blockscout.com/api',
     rpc: {
-      main: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
+      main: 'https://zeta-chain-testnet.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -2288,11 +2303,11 @@ export const CHAINS: Record<number, Chain> = {
     //   apiUrl: 'https://api-zora.reservoir.tools',
     // }),
   }),
-  // TODO: This is a placeholder so we can add a description for Frame
-  [12345678902]: new Chain({
+  // TODO: This is a placeholder so we can add a description for Morph
+  [12345678901]: new Chain({
     type: SupportType.UNSUPPORTED,
-    chainId: 12345678902,
-    name: 'Frame',
+    chainId: 12345678901,
+    name: 'Morph',
   }),
   // TODO: This is a placeholder so we can add a description for Berachain
   [12345678903]: new Chain({

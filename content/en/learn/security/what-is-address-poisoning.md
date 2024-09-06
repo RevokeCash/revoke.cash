@@ -1,5 +1,6 @@
 ---
 title: What Is Address Poisoning?
+sidebarTitle: 'Common Scam: Address Poisoning'
 description: Address poisoning is a scam that tries to trick you into sending money to the wrong address. Learn how address poisoning works and how you can stay safe from it.
 translator: <Your Name Here (or remove)>
 ---
