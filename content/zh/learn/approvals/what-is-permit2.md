@@ -6,7 +6,7 @@ translator: KKontheway | https://x.com/zzzkkk12355
 
 # 什么是Permit2？
 
-在*[什么是EIP2612签名](/learn/approvals/what-are-eip2612-permit-signatures)*中，我们讨论了Permit签名是如何通过无Gas Fee签名授予批准的，但我们也提到，对这些 Permit 签名的支持必须由Token本身实现，而大多数Token并非如此。 Permit2是Uniswap团队为了解决这个问题而开发的系统。
+在 _[什么是EIP2612签名](/learn/approvals/what-are-eip2612-permit-signatures)_ 中，我们讨论了Permit签名是如何通过无Gas Fee签名授予批准的，但我们也提到，对这些 Permit 签名的支持必须由Token本身实现，而大多数Token并非如此。 Permit2是Uniswap团队为了解决这个问题而开发的系统。
 
 ## Permit2是如何工作的？
 
