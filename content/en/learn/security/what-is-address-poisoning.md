@@ -43,7 +43,7 @@ Even though you did not give any token approvals to the scammer, they can still 
 
 ## Staying Safe from Address Poisoning
 
-The main way these scams happen is when you copy and paste an address from a wallet history or a block explorer. That is why our recommendation is to never use your wallet history or block explorer as a source of truth for finding addresses to send tokens to. So if you're depositing funds into a centralised exchange, copy the deposit address from their website every time. Or if you're sending money to a friend, ask them for their address.
+The main way these scams happen is when you copy and paste an address from a wallet history or a block explorer. That is why our recommendation is to never use your wallet history or block explorer as a source of truth for finding addresses to send tokens to. So if you're depositing funds into a centralised exchange, copy the deposit address from their website every time. And if you're sending money to a friend, ask them for their address or use their ENS name.
 
 We also recommend to always double check the address that you're sending tokens to, especially if you do insist on copy-pasting from your wallet history or block explorer. It is commonly recommended to verify the first and last 4 characters of the address, but this is actually not enough. Scammers can create addresses that have the same first and last 4 characters as the address that you're trying to send tokens to. So we highly recommend to always double check more than just the first and last 4 characters.
 
