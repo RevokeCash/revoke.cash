@@ -18,9 +18,12 @@ import Input from '../Input';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
+  type: DonateButtonType;
 }
 
-const DonateModal = ({ open, setOpen }: Props) => {
+export type DonateButtonType = 'transaction-toast' | 'menu-button';
+
+const DonateModal = ({ open, setOpen, type }: Props) => {
   const t = useTranslations();
   const { chain } = useAccount();
   const chainId = useChainId();
@@ -49,7 +52,12 @@ const DonateModal = ({ open, setOpen }: Props) => {
 
       toast.info(t('common.toasts.donation_sent'));
 
-      track('Donated', { chainName: getChainName(chainId), nativeToken, amount: Number(amount) });
+      track('Donated', {
+        chainName: getChainName(chainId),
+        nativeToken,
+        amount: Number(amount),
+        type,
+      });
 
       setOpen(false);
     } catch (err) {

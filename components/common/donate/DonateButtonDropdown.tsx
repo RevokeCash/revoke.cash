@@ -19,7 +19,7 @@ const DonateButtonDropdown = ({ className }: Props) => {
         {t('common.buttons.donate')}
       </DropdownMenuItem>
 
-      <DonateModal open={open} setOpen={setOpen} />
+      <DonateModal open={open} setOpen={setOpen} type="menu-button" />
     </>
   );
 };

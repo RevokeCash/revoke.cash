@@ -48,7 +48,7 @@ const MobileMenu = () => {
               <div className="flex flex-col items-center gap-6 p-12">
                 <FocusTrap ref={focusRef} />
                 <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
-                <DonateButton size="none" style="tertiary" className="text-lg" />
+                <DonateButton size="none" style="tertiary" className="text-lg" type="menu-button" />
                 <NavLink to="/extension" text={t('common.nav.extension')} />
                 <NavLink to="/exploits" text={t('common.nav.exploits')} />
                 <NavLink to="/learn" text={t('common.nav.learn')} />
