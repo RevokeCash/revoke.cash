@@ -8,6 +8,14 @@
     "unknown": "Unknown",
     "unlimited": "Unlimited"
   },
+  "batch_revoke": {
+    "title": "Batch Revoke",
+    "revoked": "Revoked",
+    "failed": "Failed",
+    "total": "Total",
+    "add_tip": "Would you like to add a tip?",
+    "no_tip": "No tip"
+  },
   "filters": {
     "allowances": {
       "label": "Approved Amount",
@@ -43,6 +51,8 @@
     "last_updated": "Last Updated",
     "marketplace": "Marketplace",
     "spender": "Approved Spender",
+    "status": "Status",
+    "transaction": "Transaction",
     "value_at_risk": "Value at Risk"
   },
   "labels": {
@@ -133,7 +143,8 @@
     "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
     "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "risk_factors": "This token approval is {riskLevel} for these reasons:",
-    "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue"
+    "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue",
+    "select_tip": "Please select a tip amount"
   },
   "wallet_health": {
     "categories": {

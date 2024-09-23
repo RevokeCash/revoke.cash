@@ -3,16 +3,12 @@
 import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import { DONATION_ADDRESS } from 'lib/constants';
-import { getWalletAddress } from 'lib/utils';
-import { track } from 'lib/utils/analytics';
-import { getChainName, getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
+import { useDonate } from 'lib/hooks/ethereum/useDonate';
+import { getDefaultDonationAmount } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
-import { toast } from 'react-toastify';
-import { parseEther } from 'viem';
-import { useAccount, useChainId, useWalletClient } from 'wagmi';
+import { useChainId } from 'wagmi';
 import Input from '../Input';
 
 interface Props {
@@ -21,50 +17,25 @@ interface Props {
   type: DonateButtonType;
 }
 
-export type DonateButtonType = 'transaction-toast' | 'menu-button';
+export type DonateButtonType = 'transaction-toast' | 'menu-button' | 'batch-revoke-tip';
 
 const DonateModal = ({ open, setOpen, type }: Props) => {
   const t = useTranslations();
-  const { chain } = useAccount();
   const chainId = useChainId();
-  const { data: walletClient } = useWalletClient();
+  const { donate, nativeToken, defaultAmount } = useDonate(chainId, type);
 
-  const nativeToken = getChainNativeToken(chainId);
-  const [amount, setAmount] = useState<string>(getDefaultDonationAmount(nativeToken));
+  const [amount, setAmount] = useState<string>(defaultAmount);
 
   useEffect(() => {
     setAmount(getDefaultDonationAmount(nativeToken));
   }, [nativeToken]);
 
   const sendDonation = async () => {
-    if (!walletClient) {
-      alert('Please connect your web3 wallet to a supported network');
-    }
-
     try {
-      await walletClient.sendTransaction({
-        account: await getWalletAddress(walletClient),
-        to: DONATION_ADDRESS,
-        value: parseEther(amount),
-        chain,
-        kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅
-      });
-
-      toast.info(t('common.toasts.donation_sent'));
-
-      track('Donated', {
-        chainName: getChainName(chainId),
-        nativeToken,
-        amount: Number(amount),
-        type,
-      });
+      await donate(amount);
 
       setOpen(false);
     } catch (err) {
-      if (err.code && err.code === 'INVALID_ARGUMENT') {
-        alert('Input is not a valid number');
-      }
-
       console.log(err);
     }
   };
