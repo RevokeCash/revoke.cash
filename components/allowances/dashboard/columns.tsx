@@ -1,5 +1,4 @@
 import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
-import IndeterminateCheckbox from 'components/common/IndeterminateCheckbox';
 import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { calculateValueAtRisk, isNullish } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
@@ -10,8 +9,10 @@ import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
 import AssetTypeCell from './cells/AssetTypeCell';
 import ControlsCell from './cells/ControlsCell';
+import GlobalSelectCell from './cells/GlobalSelectCell';
 import HeaderCell from './cells/HeaderCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
+import SelectCell from './cells/SelectCell';
 import SpenderCell from './cells/SpenderCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
 
@@ -119,27 +120,8 @@ const columnHelper = createColumnHelper<AllowanceData>();
 export const columns = [
   columnHelper.display({
     id: ColumnId.SELECT,
-    footer: ({ table }) => {
-      const selectedCount = table.getSelectedRowModel().flatRows.length;
-      const selectableCount = table.getRowModel().flatRows.filter((row) => row.getCanSelect()).length;
-      const checked = selectedCount === selectableCount;
-
-      const disabled = table.getRowCount() === 0;
-      const indeterminate = table.getSelectedRowModel().flatRows.length > 0;
-
-      return (
-        <IndeterminateCheckbox
-          disabled={disabled}
-          checked={checked && !disabled}
-          indeterminate={indeterminate && !disabled}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
-      );
-    },
-    cell: ({ row }) =>
-      row.getCanSelect() ? (
-        <IndeterminateCheckbox checked={row.getIsSelected()} onChange={row.getToggleSelectedHandler()} />
-      ) : null,
+    footer: ({ table }) => <GlobalSelectCell table={table} />,
+    cell: ({ row }) => <SelectCell row={row} />,
   }),
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
