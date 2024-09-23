@@ -4,11 +4,13 @@ import SpenderCell from 'components/allowances/dashboard/cells/SpenderCell';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
+import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData } from 'lib/interfaces';
 import { getAllowanceKey } from 'lib/utils/allowances';
 import { useEffect, useMemo, useState } from 'react';
 import StatusCell from '../dashboard/cells/StatusCell';
 import TransactionHashCell from '../dashboard/cells/TransactionHashCell';
+import ControlsWrapper from './ControlsWrapper';
 
 interface Props {
   table: Table<AllowanceData>;
@@ -16,12 +18,13 @@ interface Props {
 
 const BatchRevokeModalWithButton = ({ table }: Props) => {
   const [open, setOpen] = useState(false);
+  const { address, selectedChainId } = useAddressPageContext();
 
-  const allowances = useMemo(() => {
+  const selectedAllowances = useMemo(() => {
     return table.getGroupedSelectedRowModel().flatRows.map((row) => row.original);
   }, [open]);
 
-  const { results, revoke, pause, isLoading } = useRevokeBatch(allowances, table.options.meta.onUpdate);
+  const { results, revoke, pause, isLoading } = useRevokeBatch(selectedAllowances, table.options.meta.onUpdate);
 
   useEffect(() => {
     if (!open) pause();
@@ -30,18 +33,24 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
   const totalRevoked = Object.values(results).filter((result) => result.status === 'confirmed').length;
   const totalReverted = Object.values(results).filter((result) => result.status === 'reverted').length;
 
-  if (!allowances || !results) return null;
+  if (!selectedAllowances || !results) return null;
 
   return (
     <>
-      <Button style="primary" size="sm" disabled={!table.getIsSomeRowsSelected()} onClick={() => setOpen(true)}>
-        Revoke Selected
-      </Button>
+      <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={!table.getIsSomeRowsSelected()}>
+        {(disabled) => (
+          <div className="w-fit">
+            <Button style="primary" size="sm" disabled={disabled} onClick={() => setOpen(true)}>
+              Revoke Selected
+            </Button>
+          </div>
+        )}
+      </ControlsWrapper>
       <Modal open={open} setOpen={setOpen} className="sm:max-w-5xl max-h-[70vh] overflow-hidden">
         <div>
           <h2 className="text-center text-2xl">Batch Revoke</h2>
           <div className="text-center mb-4 text-sm text-zinc-500">
-            Revoked: {totalRevoked} | Failed: {totalReverted} | Total: {allowances.length}
+            Revoked: {totalRevoked} | Failed: {totalReverted} | Total: {selectedAllowances.length}
           </div>
           <div className="h-[52vh] w-full overflow-scroll whitespace-nowrap scrollbar-hide">
             <table className="w-full border-collapse">
@@ -55,7 +64,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
                 </tr>
               </thead>
               <tbody>
-                {allowances.map((allowance, index) => (
+                {selectedAllowances.map((allowance, index) => (
                   <tr key={getAllowanceKey(allowance)}>
                     <td className="text-zinc-500">{index + 1}</td>
                     <td className="py-1">

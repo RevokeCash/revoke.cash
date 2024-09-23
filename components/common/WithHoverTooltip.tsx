@@ -14,7 +14,7 @@ const WithHoverTooltip = ({ tooltip, placement, children }: Props) => (
     interactive
     content={tooltip}
     placement={placement ?? 'top'}
-    className="text-center break-words"
+    className="text-center break-words font-normal"
     maxWidth={380}
   >
     {children}
