@@ -26,7 +26,7 @@ const TransactionSubmittedToast = ({ chainId, transactionHash, ref }: Props) => 
         </Href>
       </div>
       <div>
-        <DonateButton size="sm" parentToastRef={ref} />
+        <DonateButton size="sm" parentToastRef={ref} type="transaction-toast" />
       </div>
     </div>
   );
