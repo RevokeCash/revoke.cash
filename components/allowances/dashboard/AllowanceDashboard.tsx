@@ -5,23 +5,34 @@ import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import Table from 'components/common/table/Table';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
+import { useEffect, useMemo, useState } from 'react';
 import NoAllowancesFound from './NoAllowancesFound';
 import AllowanceTableControls from './controls/AllowanceTableControls';
 
 const AllowanceDashboard = () => {
   const { allowances, isLoading, error, onUpdate } = useAddressAllowances();
 
-  // const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState({});
+
+  // We fall back to an empty array because the table crashes if the data is undefined
+  // and we use useMemo to prevent the table from infinite re-rendering
+  const data = useMemo(() => {
+    return allowances ?? [];
+  }, [allowances]);
+
+  useEffect(() => {
+    setRowSelection({});
+  }, [allowances]);
 
   const table = useReactTable({
-    // We fall back to an empty array because the table crashes if the data is undefined
-    data: allowances ?? [],
+    data,
     columns,
-    // state: {
-    //   rowSelection,
-    // },
+    state: {
+      rowSelection,
+    },
+    debugTable: true,
     enableRowSelection: (row) => row.original.spender !== undefined,
-    // onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel<AllowanceData>(),
     getSortedRowModel: getSortedRowModel<AllowanceData>(),
     getFilteredRowModel: getFilteredRowModel<AllowanceData>(),

@@ -106,6 +106,7 @@ export interface Filter {
 export enum TransactionType {
   REVOKE = 'revoke',
   UPDATE = 'update',
+  DONATE = 'donate',
   OTHER = 'other',
 }
 
