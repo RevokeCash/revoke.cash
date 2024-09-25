@@ -1,10 +1,12 @@
 'use client';
 
 import { Radio, RadioGroup } from '@headlessui/react';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Select from '../select/Select';
+import WithHoverTooltip from '../WithHoverTooltip';
 
 interface Props {
   midAmount: string;
@@ -27,10 +29,22 @@ const TipSection = ({ midAmount, nativeToken, onSelect }: Props) => {
   // React Select does not support pure string values, so we need to use an object
   const options = [{ value: '0' }, { value: lowAmount }, { value: midAmount }, { value: highAmount }];
 
+  const whyTipTooltip = (
+    <div>
+      <div className="font-semibold mb-2">{t('address.tooltips.why_tip.title')}</div>
+      <div>{t('address.tooltips.why_tip.description')}</div>
+    </div>
+  );
+
   return (
     <>
       <div>
-        <div className="text-sm font-medium mb-2">{t('address.batch_revoke.add_tip')}</div>
+        <div className="inline-flex items-center gap-1 text-sm font-medium mb-2">
+          {t('address.batch_revoke.add_tip')}
+          <WithHoverTooltip tooltip={whyTipTooltip}>
+            <InformationCircleIcon className="w-4 h-4 inline-block" />
+          </WithHoverTooltip>
+        </div>
         <RadioGroup value={selectedTip} onChange={onChange} className="flex gap-3 justify-between max-sm:hidden">
           <TipOption amount={'0'} nativeToken={nativeToken}>
             {t('address.batch_revoke.no_tip')}
