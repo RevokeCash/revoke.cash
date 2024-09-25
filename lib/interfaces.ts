@@ -1,5 +1,5 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
-import { Abi, Address, Hash, Hex, PublicClient, WalletClient } from 'viem';
+import { Abi, Address, Hash, Hex, PublicClient, TransactionReceipt, WalletClient } from 'viem';
 import type { useAllowances } from './hooks/ethereum/useAllowances';
 
 export type Balance = bigint | 'ERC1155';
@@ -222,3 +222,8 @@ export interface EtherscanPlatform {
 }
 
 export type TransactionStatus = 'not_started' | 'pending' | 'confirmed' | 'reverted';
+
+export interface TransactionSubmitted {
+  hash: Hash;
+  confirmation: Promise<TransactionReceipt | undefined>;
+}

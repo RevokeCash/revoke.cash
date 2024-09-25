@@ -2,28 +2,29 @@
 
 import { DonateButtonType } from 'components/common/donate/DonateModal';
 import { DONATION_ADDRESS } from 'lib/constants';
-import { TransactionType } from 'lib/interfaces';
-import { getWalletAddress } from 'lib/utils';
+import { TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { getWalletAddress, waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { getChainName, getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import { parseEther } from 'viem';
-import { useWalletClient } from 'wagmi';
+import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
 
 export const useDonate = (chainId: number, type: DonateButtonType) => {
   const nativeToken = getChainNativeToken(chainId);
   const defaultAmount = getDefaultDonationAmount(nativeToken);
   const { data: walletClient } = useWalletClient({ chainId });
+  const publicClient = usePublicClient({ chainId });
   const handleTransaction = useHandleTransaction(chainId);
 
-  const donate = async (amount: string) => {
+  const sendDonation = async (amount: string): Promise<TransactionSubmitted | undefined> => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
 
     if (!amount || Number(amount) === 0) return;
 
-    const transactionPromise = walletClient.sendTransaction({
+    const hash = await walletClient.sendTransaction({
       account: await getWalletAddress(walletClient),
       to: DONATION_ADDRESS,
       value: parseEther(amount),
@@ -31,9 +32,13 @@ export const useDonate = (chainId: number, type: DonateButtonType) => {
       kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅
     });
 
-    const transactionHash = await handleTransaction(transactionPromise, TransactionType.DONATE);
+    return { hash, confirmation: waitForTransactionConfirmation(hash, publicClient) };
+  };
 
-    if (transactionHash) {
+  const donate = async (amount: string): Promise<TransactionSubmitted | undefined> => {
+    const transactionSubmitted = await handleTransaction(sendDonation(amount), TransactionType.DONATE);
+
+    if (transactionSubmitted) {
       track('Donated', {
         chainId,
         chainName: getChainName(chainId),
@@ -43,7 +48,7 @@ export const useDonate = (chainId: number, type: DonateButtonType) => {
       });
     }
 
-    return transactionHash;
+    return transactionSubmitted;
   };
 
   return { donate, nativeToken, defaultAmount };

@@ -1,10 +1,10 @@
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
-import { TransactionType } from 'lib/interfaces';
+import { TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
-import { Hash, stringify } from 'viem';
+import { stringify } from 'viem';
 
 export const useHandleTransaction = (chainId: number) => {
   const toastRef = useRef();
@@ -38,19 +38,22 @@ export const useHandleTransaction = (chainId: number) => {
     return void toast.info(t('common.toasts.transaction_failed', { message }));
   };
 
-  const handleTransaction = async (transactionPromise: Promise<Hash>, type: TransactionType) => {
+  const handleTransaction = async (
+    transactionPromise: Promise<TransactionSubmitted | undefined>,
+    type: TransactionType,
+  ) => {
     try {
-      const transactionHash = await transactionPromise;
+      const transaction = await transactionPromise;
 
-      if (transactionHash) {
+      if (transaction?.hash) {
         if (type === TransactionType.DONATE) {
           toast.info(t('common.toasts.donation_sent'));
         } else {
-          displayTransactionSubmittedToast(chainId, transactionHash, toastRef);
+          displayTransactionSubmittedToast(chainId, transaction.hash, toastRef);
         }
       }
 
-      return transactionHash;
+      return transaction;
     } catch (e) {
       checkError(e, type);
       return undefined;

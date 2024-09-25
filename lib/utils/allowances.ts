@@ -10,6 +10,7 @@ import type {
   Log,
   OnUpdate,
   TokenContract,
+  TransactionSubmitted,
 } from 'lib/interfaces';
 import { Address, PublicClient, WalletClient, WriteContractParameters, fromHex, getEventSelector } from 'viem';
 import {
@@ -311,7 +312,11 @@ export const hasZeroAllowance = (allowance: BaseAllowanceData, tokenData: BaseTo
   );
 };
 
-export const revokeAllowance = async (walletClient: WalletClient, allowance: AllowanceData, onUpdate: OnUpdate) => {
+export const revokeAllowance = async (
+  walletClient: WalletClient,
+  allowance: AllowanceData,
+  onUpdate: OnUpdate,
+): Promise<TransactionSubmitted | undefined> => {
   if (!allowance.spender) {
     return undefined;
   }
@@ -327,24 +332,25 @@ export const revokeErc721Allowance = async (
   walletClient: WalletClient,
   allowance: AllowanceData,
   onUpdate: OnUpdate,
-) => {
+): Promise<TransactionSubmitted> => {
   const transactionRequest = await prepareRevokeErc721Allowance(walletClient, allowance);
   const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
   trackTransaction(allowance, hash);
 
-  if (hash) {
-    await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
+  const waitForConfirmation = async () => {
+    const transactionReceipt = await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
     onUpdate(allowance, undefined);
-  }
+    return transactionReceipt;
+  };
 
-  return hash;
+  return { hash, confirmation: waitForConfirmation() };
 };
 
 export const revokeErc20Allowance = async (
   walletClient: WalletClient,
   allowance: AllowanceData,
   onUpdate: OnUpdate,
-) => {
+): Promise<TransactionSubmitted | undefined> => {
   return updateErc20Allowance(walletClient, allowance, '0', onUpdate);
 };
 
@@ -353,7 +359,7 @@ export const updateErc20Allowance = async (
   allowance: AllowanceData,
   newAmount: string,
   onUpdate: OnUpdate,
-) => {
+): Promise<TransactionSubmitted | undefined> => {
   const newAmountParsed = parseFixedPointBigInt(newAmount, allowance.metadata.decimals);
   const transactionRequest = await prepareUpdateErc20Allowance(walletClient, allowance, newAmountParsed);
   if (!transactionRequest) return;
@@ -361,7 +367,7 @@ export const updateErc20Allowance = async (
   const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
   trackTransaction(allowance, hash, newAmount, allowance.expiration);
 
-  if (hash) {
+  const waitForConfirmation = async () => {
     const transactionReceipt = await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
     const lastUpdated = await blocksDB.getTimeLog(allowance.contract.publicClient, {
       ...transactionReceipt,
@@ -369,9 +375,11 @@ export const updateErc20Allowance = async (
     });
 
     onUpdate(allowance, { amount: newAmountParsed, lastUpdated });
-  }
 
-  return hash;
+    return transactionReceipt;
+  };
+
+  return { hash, confirmation: waitForConfirmation() };
 };
 
 export const prepareRevokeAllowance = async (walletClient: WalletClient, allowance: AllowanceData) => {

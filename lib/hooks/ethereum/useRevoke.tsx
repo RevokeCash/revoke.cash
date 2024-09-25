@@ -16,12 +16,12 @@ export const useRevoke = (allowance: AllowanceData, onUpdate: OnUpdate) => {
 
   const revoke = async () => {
     const transactionPromise = revokeAllowance(walletClient, allowance, onUpdate);
-    await handleTransaction(transactionPromise, TransactionType.REVOKE);
+    return handleTransaction(transactionPromise, TransactionType.REVOKE);
   };
 
   const update = async (newAmount: string) => {
     const transactionPromise = updateErc20Allowance(walletClient, allowance, newAmount, onUpdate);
-    await handleTransaction(transactionPromise, TransactionType.UPDATE);
+    return handleTransaction(transactionPromise, TransactionType.UPDATE);
   };
 
   if (isErc721Contract(allowance.contract)) {
