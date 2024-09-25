@@ -4,6 +4,7 @@ import { Radio, RadioGroup } from '@headlessui/react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+import Select from '../select/Select';
 
 interface Props {
   midAmount: string;
@@ -23,11 +24,14 @@ const TipSection = ({ midAmount, nativeToken, onSelect }: Props) => {
   const lowAmount = String(Number(midAmount) * 0.5);
   const highAmount = String(Number(midAmount) * 2);
 
+  // React Select does not support pure string values, so we need to use an object
+  const options = [{ value: '0' }, { value: lowAmount }, { value: midAmount }, { value: highAmount }];
+
   return (
     <>
       <div>
         <div className="text-sm font-medium mb-2">{t('address.batch_revoke.add_tip')}</div>
-        <RadioGroup value={selectedTip} onChange={onChange} className="flex gap-3">
+        <RadioGroup value={selectedTip} onChange={onChange} className="flex gap-3 justify-between max-sm:hidden">
           <TipOption amount={'0'} nativeToken={nativeToken}>
             {t('address.batch_revoke.no_tip')}
           </TipOption>
@@ -35,6 +39,19 @@ const TipSection = ({ midAmount, nativeToken, onSelect }: Props) => {
           <TipOption amount={midAmount} nativeToken={nativeToken} />
           <TipOption amount={highAmount} nativeToken={nativeToken} />
         </RadioGroup>
+        <Select
+          options={options}
+          value={selectedTip ? { value: selectedTip } : null}
+          onChange={(option) => onChange(option.value)}
+          placeholder={'Select tip amount'}
+          formatOptionLabel={(option) =>
+            option.value === '0' ? t('address.batch_revoke.no_tip') : `${option.value} ${nativeToken}`
+          }
+          className="w-full sm:hidden"
+          isMulti={false}
+          isSearchable={false}
+          menuPlacement="top"
+        />
       </div>
     </>
   );
