@@ -42,11 +42,19 @@ export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) 
             try {
               setResults((prev) => ({ ...prev, [getAllowanceKey(allowance)]: { status: 'pending' } }));
 
-              const transactionHash = await revokeAllowance(walletClient, allowance, onUpdate);
+              const transactionSubmitted = await revokeAllowance(walletClient, allowance, onUpdate);
               setResults((prev) => ({
                 ...prev,
-                [getAllowanceKey(allowance)]: { status: 'confirmed', transactionHash },
+                [getAllowanceKey(allowance)]: { status: 'pending', transactionHash: transactionSubmitted?.hash },
               }));
+
+              // We don't await this, since we want to return after submitting all transactions, even if they're still pending
+              transactionSubmitted.confirmation.then(() => {
+                setResults((prev) => ({
+                  ...prev,
+                  [getAllowanceKey(allowance)]: { status: 'confirmed', transactionHash: transactionSubmitted.hash },
+                }));
+              });
             } catch (error) {
               setResults((prev) => ({
                 ...prev,

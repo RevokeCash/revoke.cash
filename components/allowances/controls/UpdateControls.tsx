@@ -1,11 +1,13 @@
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
+import { TransactionSubmitted } from 'lib/interfaces';
+import { waitForSubmittedTransactionConfirmation } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 
 interface Props {
-  update: (newAllowance: string) => Promise<void>;
+  update: (newAllowance: string) => Promise<TransactionSubmitted>;
   disabled: boolean;
   defaultValue?: string;
   reset: () => void;
@@ -14,7 +16,7 @@ interface Props {
 const UpdateControls = ({ disabled, update, defaultValue, reset }: Props) => {
   const t = useTranslations();
   const [value, setValue] = useState<string>(defaultValue ?? '0');
-  const { execute, loading } = useAsyncCallback(() => update(value));
+  const { execute, loading } = useAsyncCallback(() => waitForSubmittedTransactionConfirmation(update(value)));
 
   const callUpdate = async () => {
     await execute();

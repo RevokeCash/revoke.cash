@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { AllowanceData, Log } from 'lib/interfaces';
+import type { AllowanceData, Log, TransactionSubmitted } from 'lib/interfaces';
 import { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
@@ -175,6 +175,13 @@ export const waitForTransactionConfirmation = async (hash: Hash, publicClient: P
     if (e instanceof TransactionNotFoundError || e instanceof TransactionReceiptNotFoundError) return;
     throw e;
   }
+};
+
+export const waitForSubmittedTransactionConfirmation = async (
+  transactionSubmitted: TransactionSubmitted | Promise<TransactionSubmitted>,
+) => {
+  const transaction = await transactionSubmitted;
+  return transaction?.confirmation ?? null;
 };
 
 export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: number): [number, number][] =>

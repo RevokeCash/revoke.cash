@@ -33,7 +33,6 @@ const DonateModal = ({ open, setOpen, type }: Props) => {
   const sendDonation = async () => {
     try {
       await donate(amount);
-
       setOpen(false);
     } catch (err) {
       console.log(err);
