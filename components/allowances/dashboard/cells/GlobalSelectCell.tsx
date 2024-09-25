@@ -12,12 +12,12 @@ const GlobalSelectCell = ({ table }: Props) => {
   const { address, selectedChainId } = useAddressPageContext();
   const selectedCount = table.getSelectedRowModel().flatRows.length;
   const selectableCount = table.getRowModel().flatRows.filter((row) => row.getCanSelect()).length;
-  const checked = selectedCount === selectableCount;
+  const checked = selectedCount === selectableCount && selectableCount > 0;
 
   const indeterminate = table.getSelectedRowModel().flatRows.length > 0;
 
   return (
-    <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={table.getRowCount() === 0}>
+    <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={selectableCount === 0}>
       {(disabled) => (
         <div>
           <IndeterminateCheckbox
