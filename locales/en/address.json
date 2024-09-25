@@ -143,8 +143,12 @@
     "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
     "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "risk_factors": "This token approval is {riskLevel} for these reasons:",
+    "select_tip": "Please select a tip amount",
     "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue",
-    "select_tip": "Please select a tip amount"
+    "why_tip": {
+      "title": "Why add a tip?",
+      "description": "Revoke.cash is a 100% free and open source public good. To keep it that way, we rely on your donations. We are very grateful for your support! 🙏"
+    }
   },
   "wallet_health": {
     "categories": {
