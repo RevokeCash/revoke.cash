@@ -1,17 +1,20 @@
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import type {
-  AddressEvents,
-  AllowanceData,
-  BaseAllowanceData,
-  BaseTokenData,
-  Erc20TokenContract,
-  Erc721TokenContract,
-  Log,
-  OnUpdate,
-  TokenContract,
-  TransactionSubmitted,
+import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
+import {
+  TransactionType,
+  type AddressEvents,
+  type AllowanceData,
+  type BaseAllowanceData,
+  type BaseTokenData,
+  type Erc20TokenContract,
+  type Erc721TokenContract,
+  type Log,
+  type OnUpdate,
+  type TokenContract,
+  type TransactionSubmitted,
 } from 'lib/interfaces';
+import { TransactionStore } from 'lib/stores/transaction-store';
 import { Address, PublicClient, WalletClient, WriteContractParameters, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
@@ -24,7 +27,7 @@ import {
   writeContractUnlessExcessiveGas,
 } from '.';
 import { track } from './analytics';
-import { isNetworkError, isRevertedError, parseErrorMessage, stringifyError } from './errors';
+import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
 import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
@@ -517,4 +520,39 @@ const trackTransaction = (allowance: AllowanceData, hash: string, newAmount?: st
     amount: newAmount === '0' ? undefined : newAmount,
     permit2: expiration !== undefined,
   });
+};
+
+// Wraps the revoke function to update the transaction store and do any error handling
+// TODO: Add other kinds of transactions besides "revoke" transactions to the store
+export const wrapRevoke = (
+  allowance: AllowanceData,
+  revoke: () => Promise<TransactionSubmitted | undefined>,
+  updateTransaction: TransactionStore['updateTransaction'],
+  handleTransaction?: ReturnType<typeof useHandleTransaction>,
+) => {
+  return async () => {
+    try {
+      updateTransaction(allowance, { status: 'pending' });
+      const transactionPromise = revoke();
+
+      if (handleTransaction) await handleTransaction(transactionPromise, TransactionType.REVOKE);
+      const transactionSubmitted = await transactionPromise;
+
+      updateTransaction(allowance, { status: 'pending', transactionHash: transactionSubmitted?.hash });
+
+      // We don't await this, since we want to return after submitting all transactions, even if they're still pending
+      transactionSubmitted.confirmation.then(() => {
+        updateTransaction(allowance, { status: 'confirmed', transactionHash: transactionSubmitted.hash });
+      });
+
+      return transactionSubmitted;
+    } catch (error) {
+      const message = parseErrorMessage(error);
+      if (isUserRejectionError(message)) {
+        updateTransaction(allowance, { status: 'not_started' });
+      } else {
+        updateTransaction(allowance, { status: 'reverted', error: message });
+      }
+    }
+  };
 };
