@@ -9973,6 +9973,7 @@ __metadata:
     viem: ^2.19.9
     wagmi: ^2.12.7
     walkdir: ^0.4.1
+    zustand: ^5.0.0-rc.2
   languageName: unknown
   linkType: soft
 
@@ -12070,6 +12071,27 @@ __metadata:
     react:
       optional: true
   checksum: 80acd0fbf633782996642802c8692bbb80ae5c80a8dff4c501b88250acd5ccd468fbc6398bdce198475a25e3839c91385b81da921274f33ffb5c2d08c3eab400
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^5.0.0-rc.2":
+  version: 5.0.0-rc.2
+  resolution: "zustand@npm:5.0.0-rc.2"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    immer: ">=9.0.6"
+    react: ">=18.0.0"
+    use-sync-external-store: ">=1.2.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+    use-sync-external-store:
+      optional: true
+  checksum: 2c3129a42a044b9b7215da8af9ae22f188cbd30243685ccad8cdb872375f2211ba90c720d8ec0461eb2e0a85a9e42cfc6de008a15bef25aa116dc90ca813a65c
   languageName: node
   linkType: hard
 

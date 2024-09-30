@@ -20,7 +20,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
     <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize="sm">
       {(disabled) => (
         <div className="controls-section">
-          {revoke && <RevokeButton revoke={revoke} disabled={disabled} />}
+          {revoke && <RevokeButton allowance={allowance} revoke={revoke} disabled={disabled} />}
           {update && reset && (
             <UpdateControls
               update={update}
