@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { SupportType } from 'lib/chains/Chain';
 import { ALCHEMY_API_KEY, INFURA_API_KEY } from 'lib/constants';
 import {
+  DEFAULT_DONATION_AMOUNTS,
   ORDERED_CHAINS,
   createViemPublicClientForChain,
   getChainApiUrl,
@@ -17,14 +18,24 @@ import {
   getChainRpcUrl,
   getChainSlug,
   getCorrespondingMainnetChainId,
+  getDefaultDonationAmount,
 } from 'lib/utils/chains';
 import networkDescriptions from 'locales/en/networks.json';
 
 describe('Chain Support', () => {
+  it('should not have superfluous default donation amounts', () => {
+    const nativeTokensWithAmounts = Object.keys(DEFAULT_DONATION_AMOUNTS);
+    const supportedChainNativeTokens = ORDERED_CHAINS.map(getChainNativeToken);
+    nativeTokensWithAmounts.forEach((token) => {
+      expect(supportedChainNativeTokens).to.include(token);
+    });
+  });
+
   ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
+    const nativeToken = getChainNativeToken(chainId);
 
-    describe(chainName, () => {
+    describe(`${chainName} (${nativeToken})`, () => {
       it('should have base chain data', () => {
         expect(getChainName(chainId)).to.exist;
         expect(getChainLogo(chainId)).to.exist;
@@ -33,9 +44,10 @@ describe('Chain Support', () => {
         expect(getChainRpcUrl(chainId)).to.exist;
         expect(getChainLogsRpcUrl(chainId)).to.exist;
         expect(getChainFreeRpcUrl(chainId)).to.exist;
-        expect(getChainNativeToken(chainId)).to.exist;
         expect(getChainSlug(chainId)).to.exist;
         expect(getChainIdFromSlug(getChainSlug(chainId))).to.equal(chainId);
+        expect(nativeToken).to.exist;
+        expect(getDefaultDonationAmount(nativeToken)).to.exist;
       });
 
       if (getChainConfig(chainId)?.type === SupportType.ETHERSCAN_COMPATIBLE) {

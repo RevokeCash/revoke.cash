@@ -116,7 +116,7 @@ export class Chain {
   }
 
   getNativeToken(): string {
-    return this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol ?? 'ETH';
+    return this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol;
   }
 
   getEtherscanCompatibleApiUrl(): string | undefined {

@@ -28,7 +28,7 @@ We created this flowchart to help you better understand these possibilities and 
 
 ![Seed Phrase Compromise](/assets/images/learn/security/what-to-do-when-scammed/seed-phrase-compromise.jpg)
 
-If several tokens have been stolen out of your wallet, then it is possible that your seed phrase or private keys have been compromised. This suspicion is further confirmed if the tokens were taken across multiple blockchains and/or multiple wallet addresses. If the native token of the blockchain (e.g. ETH, MATIC or BNB) gets stolen immediately after you deposit it into the compromised wallet, then you can be certain that your seed phrase has been exposed.
+If several tokens have been stolen out of your wallet, then it is possible that your seed phrase or private keys have been compromised. This suspicion is further confirmed if the tokens were taken across multiple blockchains and/or multiple wallet addresses. If the native token of the blockchain (e.g. ETH, POL or BNB) gets stolen immediately after you deposit it into the compromised wallet, then you can be certain that your seed phrase has been exposed.
 
 ### How does this happen?
 
@@ -110,7 +110,7 @@ If only one specific asset was stolen from your wallet, then it can be either a 
 
 As with marketplace signatures and token approvals, direct transfers happen when a user visits a phishing website. The user is then tricked into signing a direct transfer of the asset in question to the attacker's wallet. Often times these transfers are disguised as named functions, such as "Security Update", "Claim" or "Claim Rewards" so that the user does not realize what they are signing.
 
-If you sign multiple consecutive transactions, the attacker can steal multiple assets from your wallet, which can make it seem like a seed phrase compromise or marketplace signature scam. One way to be sure is to send a small amount of the native token (e.g. ETH, MATIC or BNB) to the compromised wallet. If this token gets does not get stolen immediately, then it is likely that you fell victim to a direct transfer scam.
+If you sign multiple consecutive transactions, the attacker can steal multiple assets from your wallet, which can make it seem like a seed phrase compromise or marketplace signature scam. One way to be sure is to send a small amount of the native token (e.g. ETH, POL or BNB) to the compromised wallet. If this token gets does not get stolen immediately, then it is likely that you fell victim to a direct transfer scam.
 
 ### What can be done?
 
