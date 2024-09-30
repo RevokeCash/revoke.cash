@@ -9,7 +9,7 @@ import { useAsyncCallback } from 'react-async-hook';
 import { Hash } from 'viem';
 import { useWalletClient } from 'wagmi';
 
-const REVOKE_QUEUE = new PQueue({ interval: 50, intervalCap: 1 });
+const REVOKE_QUEUE = new PQueue({ interval: 75, intervalCap: 1 });
 
 interface RevokeResults {
   [key: string]: {

@@ -58,7 +58,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
           </div>
         )}
       </ControlsWrapper>
-      <Modal open={open} setOpen={setOpen} className="sm:max-w-5xl min-h-[68vh] overflow-hidden">
+      <Modal open={open} setOpen={setOpen} className="sm:max-w-5xl min-h-[68vh] overflow-hidden" onlyExplicitClose>
         <div className="flex flex-col justify-between gap-4">
           <div>
             <h2 className="text-center text-2xl">{t('address.batch_revoke.title')}</h2>
