@@ -9,6 +9,7 @@ import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData } from 'lib/interfaces';
 import { getAllowanceKey } from 'lib/utils/allowances';
+import { track } from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import StatusCell from '../dashboard/cells/StatusCell';
@@ -33,6 +34,13 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
   const { results, revoke, pause, isLoading } = useRevokeBatch(selectedAllowances, table.options.meta.onUpdate);
 
   const revokeAndTip = async () => {
+    track('Batch Revoked', {
+      chainId: selectedChainId,
+      address,
+      allowances: selectedAllowances.length,
+      amount: tipAmount,
+    });
+
     await revoke();
     await donate(tipAmount);
   };
