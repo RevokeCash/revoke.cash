@@ -8,6 +8,14 @@
     "unknown": "不明",
     "unlimited": "無制限"
   },
+  "batch_revoke": {
+    "add_tip": "Would you like to add a tip?",
+    "failed": "Failed",
+    "no_tip": "No tip",
+    "revoked": "Revoked",
+    "title": "Batch Revoke",
+    "total": "Total"
+  },
   "filters": {
     "allowances": {
       "label": "許可したもの",
@@ -43,6 +51,8 @@
     "last_updated": "最終更新日",
     "marketplace": "マーケットプレイス",
     "spender": "認定支出者",
+    "status": "Status",
+    "transaction": "Transaction",
     "value_at_risk": "リスクがある価値"
   },
   "labels": {
@@ -133,7 +143,12 @@
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
     "recently_cancelled": "あなたは最近、この署名候補をすでにキャンセルしました。この署名はリストに残るので、必要であれば後でまたキャンセルすることができます。",
     "risk_factors": "このトークン承認は下記の理由で{riskLevel}です：",
-    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください"
+    "select_tip": "Please select a tip amount",
+    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください",
+    "why_tip": {
+      "description": "Revoke.cash is a 100% free and open source public good. To keep it that way, we rely on your donations. We are very grateful for your support! 🙏",
+      "title": "Why add a tip?"
+    }
   },
   "wallet_health": {
     "categories": {

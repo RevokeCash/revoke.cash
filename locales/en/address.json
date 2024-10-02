@@ -9,12 +9,12 @@
     "unlimited": "Unlimited"
   },
   "batch_revoke": {
-    "title": "Batch Revoke",
-    "revoked": "Revoked",
-    "failed": "Failed",
-    "total": "Total",
     "add_tip": "Would you like to add a tip?",
-    "no_tip": "No tip"
+    "failed": "Failed",
+    "no_tip": "No tip",
+    "revoked": "Revoked",
+    "title": "Batch Revoke",
+    "total": "Total"
   },
   "filters": {
     "allowances": {
@@ -146,8 +146,8 @@
     "select_tip": "Please select a tip amount",
     "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue",
     "why_tip": {
-      "title": "Why add a tip?",
-      "description": "Revoke.cash is a 100% free and open source public good. To keep it that way, we rely on your donations. We are very grateful for your support! 🙏"
+      "description": "Revoke.cash is a 100% free and open source public good. To keep it that way, we rely on your donations. We are very grateful for your support! 🙏",
+      "title": "Why add a tip?"
     }
   },
   "wallet_health": {

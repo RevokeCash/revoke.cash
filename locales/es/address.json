@@ -8,6 +8,14 @@
     "unknown": "Desconocido",
     "unlimited": "Ilimitada"
   },
+  "batch_revoke": {
+    "add_tip": "¿Quieres añadir una propina?",
+    "failed": "Fallido",
+    "no_tip": "Sin propina",
+    "revoked": "Revocado",
+    "title": "Revocación por Lotes",
+    "total": "Total"
+  },
   "filters": {
     "allowances": {
       "label": "Cantidad Autorizada",
@@ -43,6 +51,8 @@
     "last_updated": "Última Actualización",
     "marketplace": "Mercado",
     "spender": "Gastador Autorizado",
+    "status": "Estatus",
+    "transaction": "Transacción",
     "value_at_risk": "Valor en Riesgo"
   },
   "labels": {
@@ -133,7 +143,12 @@
     "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
     "recently_cancelled": "Ya has cancelado esta posible firma recientemente. Permanecerá en la lista para que puedas volver a cancelarla más adelante si lo necesitas.",
     "risk_factors": "La aprobación de este token es de {riskLevel} por estas razones:",
-    "switch_chain": "Por favor cambia tu red conectada a <b>{chainName}</b> dentro de tu cartera para continuar"
+    "select_tip": "Por favor selecciona el monto de la propina",
+    "switch_chain": "Por favor cambia tu red conectada a <b>{chainName}</b> dentro de tu cartera para continuar",
+    "why_tip": {
+      "description": "Revoke.cash es un bien público 100 % gratuito y de código abierto. Para que siga siendo así, dependemos de tus donaciones. ¡Estamos muy agradecidos por tu apoyo! 🙏",
+      "title": "¿Por qué añadir una propina?"
+    }
   },
   "wallet_health": {
     "categories": {
