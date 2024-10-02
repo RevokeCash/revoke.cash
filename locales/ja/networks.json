@@ -65,7 +65,7 @@
     "mint": "MintはEthereumのレイヤー2のスケーリングソリューションです。OptimismのオープンソースOPスタックをベースにしているため、Optimismと同様にオプティミスティック・ロールアップ・テクノロジーを使用しています。MintはNFTに特に重点を置いており、クリエイターがNFTを作成するのに必要なインフラを提供することを目指しています。Mintには収益分配モデルもあり、Mint上で革新的なアプリケーションを開発する開発者がネットワークの収益の一部を得ることができます。",
     "mode": "ModeはEthereumのレイヤー2のスケーリングソリューションです。OptimismのOpen Source OP Stack上に構築されているため、Optimismと同様にオプティミスティック・ロールアップ・テクノロジーを使用しています。Modeは、シーケンサーの収益の一部を開発者に還元し、紹介されたユーザーには報酬を与えることで、ネットワーク利用の拡大を促すことを目的としています。",
     "moonbeam": "Moonbeamは、Polkadot上で動作するEthereum互換のパラチェーンです。Polkadotのパラチェーンであるため、Polkadot上に構築された他のネットワークとうまく統合できます。さらに、Ethereum、Cosmos、Polkadotの機能を組み合わせて、クロスチェーンアプリの使いやすさを向上させることも目的としています。",
-    "morph": "Morph is a Layer 2 scaling solution for Ethereum. It is built using a combination of zkEVM and optimistic rollup technology, which reduces costs and the length of the long challenge period of optimistic rollups.",
+    "morph": "MorphはEthereumのレイヤー2のスケーリングソリューションです。zkeVMとオプティミスティック・ロールアップ・テクノロジーを組み合わせて構築されているため、コストとオプティミスティック・ロールアップの長期にわたるチャレンジ期間の長さを削減できます。",
     "nahmii": "Nahmiiは、低く予測可能な料金で高い取引スループットを提供することを目的とした、Ethereumのレイヤー2のスケーリングソリューションです。現在、Nahmiiは取引を検証する中央集権型のオペレーターを使用していますが、将来的にはより分散型のモデルに移行する予定です。 ",
     "neon": "Neon EVMは、EthereumとSolanaのエコシステムを橋渡しすることを目的とした、Solanaスマートコントラクトとして構築されたブロックチェーンです。Solanaのスマートコントラクトとしては、EthereumのEVM機能をすべて維持しながら、Solanaのガス料金が低く、並行して実行できるというメリットがあります。",
     "oasis-emerald": "Oasisは、スケーラブルで汎用性の高いネットワークとして設計されたレイヤー1のブロックチェーンです。これを実現するために、Oasisはアーキテクチャーをトップレベルのコンセンサスレイヤーと下位レベルの実行レイヤーに分割しました。これにより、OasisはEVM互換の実行レイヤーであるOasis Emeraldを含め、複数の異なる実行レイヤーをサポートできるようになりました。",
