@@ -2474,7 +2474,7 @@ export const DEFAULT_DONATION_AMOUNTS = {
   ELA: '10',
   EOS: '30',
   ETC: '1',
-  ETH: '0.01',
+  ETH: '0.006',
   EVMOS: '1000',
   FLR: '1000',
   frxETH: '0.01',

@@ -34,11 +34,19 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
   const { results, revoke, pause, isLoading } = useRevokeBatch(selectedAllowances, table.options.meta.onUpdate);
 
   const revokeAndTip = async () => {
+    const getTipSelection = () => {
+      if (tipAmount === '0') return 'none';
+      if (Number(tipAmount) < Number(defaultAmount)) return 'low';
+      if (Number(tipAmount) > Number(defaultAmount)) return 'high';
+      return 'mid';
+    };
+
     track('Batch Revoked', {
       chainId: selectedChainId,
       address,
       allowances: selectedAllowances.length,
       amount: tipAmount,
+      tipSelection: getTipSelection(),
     });
 
     await revoke();

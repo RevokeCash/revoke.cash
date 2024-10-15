@@ -8,7 +8,8 @@ import { useAsyncCallback } from 'react-async-hook';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore } from '../../stores/transaction-store';
 
-const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1 });
+// Limit to 50 concurrent revokes to avoid wallets crashing
+const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
 
 export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) => {
   const { results, getTransaction, updateTransaction } = useTransactionStore();
