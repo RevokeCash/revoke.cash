@@ -203,7 +203,8 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/arbitrum.svg',
     explorerUrl: 'https://arbiscan.io',
     rpc: {
-      main: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://arb1.arbitrum.io/rpc',
     },
     deployedContracts: { ...MULTICALL },
@@ -317,7 +318,8 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://snowscan.xyz',
     etherscanCompatibleApiUrl: 'https://api.snowscan.xyz/api',
     rpc: {
-      main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://avax-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -358,7 +360,8 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/base.svg',
     etherscanCompatibleApiUrl: 'https://api.basescan.org/api',
     rpc: {
-      main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
@@ -490,7 +493,8 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://blastscan.io',
     etherscanCompatibleApiUrl: 'https://api.blastscan.io/api',
     rpc: {
-      main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -634,7 +638,8 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Celo',
     logoUrl: '/assets/images/vendor/chains/celo.svg',
     rpc: {
-      main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://celo-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY} `,
+      // main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Could benefit from a Curve.fi strategy
@@ -872,7 +877,8 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Ethereum',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
-      main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://eth.llamarpc.com',
     },
     deployedContracts: {
@@ -1281,7 +1287,8 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/linea.png',
     explorerUrl: 'https://lineascan.build',
     rpc: {
-      main: `https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://linea-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Add SyncSwap strategy to support Linea
@@ -1635,7 +1642,8 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Optimism',
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
-      main: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Velodrome for OP
@@ -1733,7 +1741,8 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Polygon',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
-      main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       logs: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
