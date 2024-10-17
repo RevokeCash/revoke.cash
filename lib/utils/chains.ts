@@ -31,12 +31,10 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZkSyncMainnet,
   ChainId.MantaPacificMainnet,
   ChainId.TaikoMainnet,
-  ChainId['PGN(PublicGoodsNetwork)'],
   ChainId.CronosMainnet,
   ChainId.PulseChain,
   ChainId.Gnosis,
   ChainId.ZkLinkNovaMainnet,
-  ChainId.Kava,
   ChainId.FantomOpera,
   ChainId.RootstockMainnet,
   ChainId.CeloMainnet,
@@ -56,7 +54,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZKFairMainnet,
   ChainId.AuroraMainnet,
   ChainId.XLayerMainnet,
-  ChainId.XDCNetwork,
   ChainId.PegoNetwork,
   ChainId.Kroma,
   ChainId.BobaNetwork,
@@ -318,8 +315,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://snowscan.xyz',
     etherscanCompatibleApiUrl: 'https://api.snowscan.xyz/api',
     rpc: {
-      main: `https://avax-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      // main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -360,8 +356,8 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/base.svg',
     etherscanCompatibleApiUrl: 'https://api.basescan.org/api',
     rpc: {
-      main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      // main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
@@ -493,8 +489,8 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://blastscan.io',
     etherscanCompatibleApiUrl: 'https://api.blastscan.io/api',
     rpc: {
-      main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      // main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -589,8 +585,11 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.CallistoMainnet,
     name: 'Callisto',
     logoUrl: '/assets/images/vendor/chains/callisto.png',
-    explorerUrl: 'https://explorer.callisto.network',
-    etherscanCompatibleApiUrl: 'https://explorer.callisto.network/api',
+    explorerUrl: 'https://explorer.callistodao.org',
+    etherscanCompatibleApiUrl: 'https://explorer.callistodao.org/api',
+    rpc: {
+      main: 'https://rpc.callistodao.org',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -638,8 +637,8 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Celo',
     logoUrl: '/assets/images/vendor/chains/celo.svg',
     rpc: {
-      main: `https://celo-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY} `,
-      // main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://celo-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY} `,
+      main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Could benefit from a Curve.fi strategy
@@ -770,7 +769,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.DarwiniaNetwork,
     name: 'Darwinia',
     logoUrl: '/assets/images/vendor/chains/darwinia.svg',
-    etherscanCompatibleApiUrl: 'https://darwinia.subview.xyz/api',
+    etherscanCompatibleApiUrl: 'https://explorer.darwinia.network/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -877,8 +876,8 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Ethereum',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
-      main: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      // main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://eth.llamarpc.com',
     },
     deployedContracts: {
@@ -1101,33 +1100,24 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: undefined, // < $100k Liquidity
   }),
   [ChainId.HarmonyMainnetShard0]: new Chain({
-    type: SupportType.COVALENT,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.HarmonyMainnetShard0,
     name: 'Harmony',
     logoUrl: '/assets/images/vendor/chains/harmony.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.harmony.one/api',
     deployedContracts: { ...MULTICALL },
-    // Note: The "regular" USDC is depegged on Harmony, so we have to be careful to use the "new" USDC
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // Tranquil Finance (Router) | WONE -> USDC (pegged)
-        new UniswapV2PriceStrategy({
-          address: '0x3C8BF7e25EbfAaFb863256A4380A8a93490d8065',
-          path: ['0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a', '0xbc594cabd205bd993e7ffa6f3e9cea75c1110da5'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
+    rpc: {
+      main: 'https://api.harmony.one',
+    },
+    priceStrategy: undefined, // RPC on Harmony is not really reliable + USDC is depegged, so not worth it
   }),
   [ChainId.Holesky]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Holesky,
     name: 'Ethereum Holesky',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
-    etherscanCompatibleApiUrl: 'https://api-holesky.etherscan.io/api',
     rpc: {
-      main: `https://holesky.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://eth-holesky.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://holesky.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
@@ -1139,7 +1129,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.HorizenEONMainnet,
     name: 'Horizen EON',
     logoUrl: '/assets/images/vendor/chains/horizen.png',
-    etherscanCompatibleApiUrl: 'https://eon-explorer.horizenlabs.io/api',
+    etherscanCompatibleApiUrl: 'https://eon-explorer-api.horizenlabs.io/api',
     rpc: {
       main: 'https://eon-rpc.horizenlabs.io/ethv1',
     },
@@ -1151,7 +1141,7 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Horizen Gobi',
     logoUrl: '/assets/images/vendor/chains/horizen.png',
     explorerUrl: 'https://gobi-explorer.horizenlabs.io',
-    etherscanCompatibleApiUrl: 'https://gobi-explorer.horizenlabs.io/api',
+    etherscanCompatibleApiUrl: 'https://gobi-explorer-api.horizenlabs.io/api',
     isTestnet: true,
     correspondingMainnetChainId: ChainId.HorizenEONMainnet,
   }),
@@ -1209,16 +1199,6 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/kardiachain.svg',
     explorerUrl: 'https://explorer.kardiachain.io',
     etherscanCompatibleApiUrl: 'https://explorer.kardiachain.io/api',
-    priceStrategy: undefined, // No liquid stablecoins
-  }),
-  [ChainId.Kava]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.Kava,
-    name: 'Kava',
-    logoUrl: '/assets/images/vendor/chains/kava.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.kavalabs.io/api',
-    deployedContracts: { ...MULTICALL },
-    // TODO: Potentially add Curve.fi strategy to support KAVA
     priceStrategy: undefined, // No liquid stablecoins
   }),
   [ChainId.KCCMainnet]: new Chain({
@@ -1287,8 +1267,8 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/linea.png',
     explorerUrl: 'https://lineascan.build',
     rpc: {
-      main: `https://linea-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      // main: `https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://linea-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Add SyncSwap strategy to support Linea
@@ -1642,8 +1622,8 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Optimism',
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
-      main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      // main: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Velodrome for OP
@@ -1726,23 +1706,14 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
-  [ChainId['PGN(PublicGoodsNetwork)']]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId['PGN(PublicGoodsNetwork)'],
-    name: 'PGN',
-    logoUrl: '/assets/images/vendor/chains/pgn.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.publicgoods.network/api',
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // <$100k Liquidity
-  }),
   [ChainId.PolygonMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.PolygonMainnet,
     name: 'Polygon',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
-      // main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      main: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       logs: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
@@ -1855,11 +1826,15 @@ export const CHAINS: Record<number, Chain> = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.RolluxMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.RolluxMainnet,
     name: 'Rollux',
     logoUrl: '/assets/images/vendor/chains/rollux.svg',
     etherscanCompatibleApiUrl: 'https://explorer.rollux.com/api',
+    rpc: {
+      main: 'https://rpc.ankr.com/rollux',
+      logs: 'https://rpc.rollux.com',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -2155,37 +2130,6 @@ export const CHAINS: Record<number, Chain> = {
         new UniswapV2PriceStrategy({
           address: '0x80a5A916FB355A8758f0a3e47891dc288DAC2665',
           path: ['0x7D72b22a74A216Af4a002a1095C8C707d6eC1C5f', '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
-  }),
-  [ChainId.XDCNetwork]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.XDCNetwork,
-    name: 'XDC',
-    logoUrl: '/assets/images/vendor/chains/xdc.svg',
-    infoUrl: 'https://xdc.org',
-    rpc: {
-      main: 'https://erpc.xdcrpc.com',
-      free: 'https://erpc.xdcrpc.com',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // XSPSwap (Router) | WXDC -> xUSDT
-        new UniswapV2PriceStrategy({
-          address: '0xf9c5E4f6E627201aB2d6FB6391239738Cf4bDcf9',
-          path: ['0x951857744785E80e2De051c32EE7b25f9c458C42', '0xD4B5f10D61916Bd6E0860144a91Ac658dE8a1437'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
-        }),
-        // Globiance (Router) | GBEX -> USDG
-        new UniswapV2PriceStrategy({
-          address: '0x90055EdC794e839567a5631d42752dB732E10C8F',
-          path: ['0x34514748F86A8dA01Ef082306b6d6e738F777f5A', '0x9C1eb1Ea34e70AC05B5EE5515212e9Ec201Cfc5d'],
           decimals: 6,
           liquidityParameters: { baseAmount: 100n },
         }),
@@ -2495,7 +2439,6 @@ export const DEFAULT_DONATION_AMOUNTS = {
   INJ: '0.6',
   IOTA: '100',
   KAI: '8000',
-  KAVA: '50',
   KCS: '2',
   mADA: '50',
   METIS: '0.5',
@@ -2534,7 +2477,6 @@ export const DEFAULT_DONATION_AMOUNTS = {
   WAN: '100',
   WEMIX: '20',
   XDAI: '10',
-  XDC: '500',
   ZEN: '2',
   ZETA: '20',
 };
