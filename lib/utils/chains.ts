@@ -460,6 +460,9 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/bitgert.svg',
     etherscanCompatibleApiUrl: 'https://brisescan.com/api',
     nativeToken: 'BRISE',
+    rpc: {
+      main: 'https://mainnet-rpc.brisescan.com',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No liquid stablecoins
   }),
@@ -589,6 +592,7 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://explorer.callistodao.org/api',
     rpc: {
       main: 'https://rpc.callistodao.org',
+      free: 'https://rpc.callistodao.org',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
