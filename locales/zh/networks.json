@@ -99,6 +99,7 @@
     "viction": "Viction 是以权益证明（PoS）作为共识机制的第 1 层（Layer 1）区块链，其设计基于各自独立的“应用链”组成的网络，这些应用链将通过 Viction 基础链上的共同结算进行锚定。",
     "wanchain": "WanChain 是第 1 层（Layer 1）区块链，其共识机制为星系共识，该机制基于卡尔达诺的 Ouroboros 算法。Wanchain 主要关注提升跨链互操作性，为 EVM 和非 EVM 网络之间提供原生桥梁。Wanchain 使用诸如安全多方计算之类的技术来保护这些桥梁。",
     "wemix": "WEMIX 是第 1 层（Layer 1）区块链，使用基于权益的权威证明共识机制，有 40 位验证者，融合了权益证明（PoS）和权威证明（PoA）的特色。WEMIX 在链上部署了许多官方应用程序，包括官方稳定币和游戏平台。",
+    "world-chain": "World Chain is an Layer 2 blockchain built around the World Coin ecosystem. It provides free gas fees for all humans verified on the World Coin platform. World Chain is built on Optimism's Open Source OP Stack, so just like Optimism it uses optimistic rollup technology.",
     "x-layer": "X Layer 是以太坊的第 2 层（Layer 2）扩展解决方案，由知名的欧易交易所（OKX）开发。X Layer 采用了 Polygon 链的开发工具包（CDK），并运用了 zkEVM 技术。此外，该网络还旨在与欧易交易所的其他产品（例如 OKB 代币）进行集成。",
     "xdc": "XDC 是第 1 层（Layer 1）区块链，其共识机制基于委托权益证明（DPoS）。XDC 致力于提供快速和低成本的交易，促进现实资产和企业用例的代币化。",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
