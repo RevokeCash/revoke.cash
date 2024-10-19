@@ -21,6 +21,7 @@
   },
   "private": true,
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.14.2",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@revoke.cash/chains": "^53.0.0",
