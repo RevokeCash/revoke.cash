@@ -1,5 +1,6 @@
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Analytics from 'app/Analytics';
+import ThemeScript from 'app/ThemeScript';
 import ToastifyConfig from 'components/common/ToastifyConfig';
 import TopLoader from 'components/common/TopLoader';
 import Footer from 'components/footer/Footer';
@@ -62,6 +63,7 @@ const MainLayout = ({ children, params }: Props) => {
   return (
     <html lang={params.locale}>
       <head>
+        <ThemeScript />
         <Analytics />
       </head>
       <body>
