@@ -1,18 +1,22 @@
+import { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
+import { useTransactionStore } from 'lib/stores/transaction-store';
+import { getAllowanceKey } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
-import { useAsyncCallback } from 'react-async-hook';
 import Button from '../../common/Button';
 
 interface Props {
-  revoke: () => Promise<void>;
+  allowance: AllowanceData;
+  revoke: () => Promise<TransactionSubmitted>;
   disabled: boolean;
 }
 
-const RevokeButton = ({ disabled, revoke }: Props) => {
+const RevokeButton = ({ allowance, disabled, revoke }: Props) => {
   const t = useTranslations();
-  const { execute, loading } = useAsyncCallback(revoke);
+  const result = useTransactionStore((state) => state.results[getAllowanceKey(allowance)]);
+  const loading = result?.status === 'pending';
 
   return (
-    <Button disabled={disabled} loading={loading} style="secondary" size="sm" onClick={execute}>
+    <Button disabled={disabled} loading={loading} style="secondary" size="sm" onClick={revoke}>
       {loading ? t('common.buttons.revoking') : t('common.buttons.revoke')}
     </Button>
   );

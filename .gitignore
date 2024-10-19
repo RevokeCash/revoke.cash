@@ -58,9 +58,10 @@ cypress/videos
 cypress/screenshots
 cypress/downloads
 
-scripts/chainid-lookup.csv
-
 .vscode/settings.json
 .vscode/launch.json
 
 certificates
+
+scripts/chainid-lookup.csv
+scripts/ledger-live-manifest.json

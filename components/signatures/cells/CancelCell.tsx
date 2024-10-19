@@ -1,7 +1,8 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import { useMounted } from 'lib/hooks/useMounted';
-import { TimeLog } from 'lib/interfaces';
+import { TimeLog, TransactionSubmitted } from 'lib/interfaces';
+import { waitForSubmittedTransactionConfirmation } from 'lib/utils';
 import { HOUR, SECOND } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
@@ -10,13 +11,13 @@ interface Props {
   chainId: number;
   address: string;
   lastCancelled?: TimeLog;
-  cancel: () => Promise<void>;
+  cancel: () => Promise<TransactionSubmitted>;
 }
 
 const CancelCell = ({ chainId, address, lastCancelled, cancel }: Props) => {
   const isMounted = useMounted();
   const t = useTranslations();
-  const { execute, loading } = useAsyncCallback(cancel);
+  const { execute, loading } = useAsyncCallback(() => waitForSubmittedTransactionConfirmation(cancel()));
 
   const recentlyCancelled = lastCancelled?.timestamp * SECOND > Date.now() - 24 * HOUR;
 

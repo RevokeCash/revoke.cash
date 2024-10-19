@@ -232,6 +232,10 @@ export const isErc721Contract = (contract: TokenContract): contract is Erc721Tok
   return getAbiItem<any, string>({ ...contract, name: 'ApprovalForAll' }) !== undefined;
 };
 
+export const isErc20Contract = (contract: TokenContract): contract is Erc20TokenContract => {
+  return !isErc721Contract(contract);
+};
+
 // Some tokens appear to support Permit, but don't actually support it.
 // TODO: Somehow fix this in the RevokeCash/whois repo instead
 const IGNORE_LIST = [

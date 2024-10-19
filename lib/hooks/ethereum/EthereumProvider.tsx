@@ -54,14 +54,24 @@ const EthereumProviderChild = ({ children }: Props) => {
   // If the Safe connector is available, connect to it even if other connectors are available
   // (if another connector auto-connects (or user disconnects), we still override it with the Safe connector)
   useEffect(() => {
-    const safeConnector = connectors?.find((connector) => connector.id === 'safe');
-    if (!safeConnector || connector === safeConnector) return;
-
     // Only supported in an iFrame context
     if (typeof window === 'undefined' || window?.parent === window) return;
+
+    const safeConnector = connectors?.find((connector) => connector.id === 'safe');
+    if (!safeConnector || connector === safeConnector) return;
 
     connect({ connector: safeConnector });
   }, [connectors, connector]);
 
+  // If the Ledger Live connector is available, connect to it even if other connectors are available
+  // (if another connector auto-connects (or user disconnects), we still override it with the Ledger Live connector)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window?.ethereum?.isLedgerLive) return;
+
+    const injectedConnector = connectors?.find((connector) => connector.id === 'injected');
+    if (!injectedConnector || connector === injectedConnector) return;
+
+    connect({ connector: injectedConnector });
+  }, [connectors, connector]);
   return <>{children}</>;
 };

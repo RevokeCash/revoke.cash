@@ -4,12 +4,15 @@ import { calculateValueAtRisk, isNullish } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
+import BatchRevokeModalWithButton from '../controls/BatchRevokeModalWithButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
 import AssetTypeCell from './cells/AssetTypeCell';
 import ControlsCell from './cells/ControlsCell';
+import GlobalSelectCell from './cells/GlobalSelectCell';
 import HeaderCell from './cells/HeaderCell';
 import LastUpdatedCell from './cells/LastUpdatedCell';
+import SelectCell from './cells/SelectCell';
 import SpenderCell from './cells/SpenderCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
 
@@ -20,6 +23,7 @@ declare module '@tanstack/table-core' {
 }
 
 export enum ColumnId {
+  SELECT = 'Select',
   SYMBOL = 'Asset Name',
   ASSET_TYPE = 'Asset Type',
   BALANCE = 'Balance',
@@ -114,9 +118,15 @@ export const customFilterFns = {
 
 const columnHelper = createColumnHelper<AllowanceData>();
 export const columns = [
+  columnHelper.display({
+    id: ColumnId.SELECT,
+    footer: ({ table }) => <GlobalSelectCell table={table} />,
+    cell: ({ row }) => <SelectCell row={row} />,
+  }),
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
+    footer: ({ table }) => <BatchRevokeModalWithButton table={table} />,
     cell: (info) => <AssetCell asset={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,

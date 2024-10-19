@@ -2,6 +2,7 @@ import { Table as ReactTable } from '@tanstack/react-table';
 import Error from 'components/common/Error';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
+import TableFooter from './TableFooter';
 import TableHeader from './TableHeader';
 
 interface Props<T> {
@@ -24,6 +25,7 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, className
     <div className={twMerge(classes.container, className)}>
       <table className={classes.table}>
         <TableHeader table={table} />
+        <TableFooter table={table} />
         {!error && <TableBody table={table} isLoading={loading} loaderRows={loaderRows} />}
       </table>
       <div className={classes.label}>

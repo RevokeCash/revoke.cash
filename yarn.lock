@@ -265,6 +265,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dotenvx/dotenvx@npm:^1.14.2":
+  version: 1.14.2
+  resolution: "@dotenvx/dotenvx@npm:1.14.2"
+  dependencies:
+    commander: ^11.1.0
+    dotenv: ^16.4.5
+    eciesjs: ^0.4.6
+    execa: ^5.1.1
+    fdir: ^6.2.0
+    ignore: ^5.3.0
+    object-treeify: 1.1.33
+    picomatch: ^4.0.2
+    which: ^4.0.0
+  bin:
+    dotenvx: src/cli/dotenvx.js
+    git-dotenvx: src/cli/dotenvx.js
+  checksum: dcd177ab9960b62f3fd29cc161993c1b7c25adfc22b0a32328ebfd0b4a190bed33c89d7fc94b555e8cfe3047c33adb96580f0fc4fa561b04b74c4f6e0cba51cb
+  languageName: node
+  linkType: hard
+
 "@emnapi/runtime@npm:^1.2.0":
   version: 1.2.0
   resolution: "@emnapi/runtime@npm:1.2.0"
@@ -1436,6 +1456,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/ciphers@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@noble/ciphers@npm:1.0.0"
+  checksum: fa34a8f794deca3c47b82002705d7d742046e772460f1b04156c8e9eb6e0c706b8cb474bb78bdc3f35fae8270b01784f0484d31b8f839b9e16319660b9f229de
+  languageName: node
+  linkType: hard
+
 "@noble/curves@npm:1.3.0, @noble/curves@npm:~1.3.0":
   version: 1.3.0
   resolution: "@noble/curves@npm:1.3.0"
@@ -1463,6 +1490,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/curves@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@noble/curves@npm:1.6.0"
+  dependencies:
+    "@noble/hashes": 1.5.0
+  checksum: 258f3feb2a6098cf35521562ecb7d452fd728e8a008ff9f1ef435184f9d0c782ceb8f7b7fa8df3317c3be7a19f53995ee124cd05c8080b130bd42e3cb072f24d
+  languageName: node
+  linkType: hard
+
 "@noble/curves@npm:~1.4.0":
   version: 1.4.2
   resolution: "@noble/curves@npm:1.4.2"
@@ -1483,6 +1519,13 @@ __metadata:
   version: 1.4.0
   resolution: "@noble/hashes@npm:1.4.0"
   checksum: 8ba816ae26c90764b8c42493eea383716396096c5f7ba6bea559993194f49d80a73c081f315f4c367e51bd2d5891700bcdfa816b421d24ab45b41cb03e4f3342
+  languageName: node
+  linkType: hard
+
+"@noble/hashes@npm:1.5.0, @noble/hashes@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@noble/hashes@npm:1.5.0"
+  checksum: 9cc031d5c888c455bfeef76af649b87f75380a4511405baea633c1e4912fd84aff7b61e99716f0231d244c9cfeda1fafd7d718963e6a0c674ed705e9b1b4f76b
   languageName: node
   linkType: hard
 
@@ -1864,10 +1907,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^49.0.0":
-  version: 49.0.0
-  resolution: "@revoke.cash/chains@npm:49.0.0"
-  checksum: 6dda32ee57a09e40a20c440dffc0c367d6fd8123d685c656cdeea56f3e01fa122fa76350877aad6ce215d72a16950896d2c7f2def2765fadff7ad1bafa803ea5
+"@revoke.cash/chains@npm:^53.0.0":
+  version: 53.0.0
+  resolution: "@revoke.cash/chains@npm:53.0.0"
+  checksum: 4415a78e914b16aba5d27d01ce5ef9f7a9149150ec61f1c649bf80a115ecdccebbe9d37caf79997d26a5dc77e5a1878970439449457a31920ac617a4caef3756
   languageName: node
   linkType: hard
 
@@ -4106,6 +4149,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "commander@npm:11.1.0"
+  checksum: fd1a8557c6b5b622c89ecdfde703242ab7db3b628ea5d1755784c79b8e7cb0d74d65b4a262289b533359cd58e1bfc0bf50245dfbcd2954682a6f367c828b79ef
+  languageName: node
+  linkType: hard
+
 "commander@npm:^4.0.0":
   version: 4.1.1
   resolution: "commander@npm:4.1.1"
@@ -4618,6 +4668,17 @@ __metadata:
     futoin-hkdf: ^1.5.3
     secp256k1: ^5.0.0
   checksum: 2d6e1624c4b2110ab4c76a684d0f458774c702f9711859404a52ede1b2dea67f61e8fc258a0867c2090e5b1110ca3201ea2876f5ac0e2dd57ef1bcfb358d3004
+  languageName: node
+  linkType: hard
+
+"eciesjs@npm:^0.4.6":
+  version: 0.4.8
+  resolution: "eciesjs@npm:0.4.8"
+  dependencies:
+    "@noble/ciphers": ^1.0.0
+    "@noble/curves": ^1.6.0
+    "@noble/hashes": ^1.5.0
+  checksum: ff9482b5ac488b63115e9b871b402670010e00ab773b17c6d94d493861dee9538765ad4187a1dc38c529f3e1810b6c408341e9463a3a7ea05039649941463c90
   languageName: node
   linkType: hard
 
@@ -5170,6 +5231,18 @@ __metadata:
   dependencies:
     pend: ~1.2.0
   checksum: c8585fd5713f4476eb8261150900d2cb7f6ff2d87f8feb306ccc8a1122efd152f1783bdb2b8dc891395744583436bfd8081d8e63ece0ec8687eeefea394d4ff2
+  languageName: node
+  linkType: hard
+
+"fdir@npm:^6.2.0":
+  version: 6.4.0
+  resolution: "fdir@npm:6.4.0"
+  peerDependencies:
+    picomatch: ^3 || ^4
+  peerDependenciesMeta:
+    picomatch:
+      optional: true
+  checksum: 63b4dc592c662d0c4703ffcae1e3ad15901c0b9f64e742dff1bbc74f58029b1a43f4d05b0ab75503a0b9fc7a616d8a755cd56ea680504b6a1e87249ec79b43f3
   languageName: node
   linkType: hard
 
@@ -6042,6 +6115,13 @@ __metadata:
   version: 5.2.4
   resolution: "ignore@npm:5.2.4"
   checksum: 3d4c309c6006e2621659311783eaea7ebcd41fe4ca1d78c91c473157ad6666a57a2df790fe0d07a12300d9aac2888204d7be8d59f9aaf665b1c7fcdb432517ef
+  languageName: node
+  linkType: hard
+
+"ignore@npm:^5.3.0":
+  version: 5.3.2
+  resolution: "ignore@npm:5.3.2"
+  checksum: 2acfd32a573260ea522ea0bfeff880af426d68f6831f973129e2ba7363f422923cf53aab62f8369cbf4667c7b25b6f8a3761b34ecdb284ea18e87a5262a865be
   languageName: node
   linkType: hard
 
@@ -8538,6 +8618,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object-treeify@npm:1.1.33":
+  version: 1.1.33
+  resolution: "object-treeify@npm:1.1.33"
+  checksum: 3af7f889349571ee73f5bdfb5ac478270c85eda8bcba950b454eb598ce41759a1ed6b0b43fbd624cb449080a4eb2df906b602e5138b6186b9563b692231f1694
+  languageName: node
+  linkType: hard
+
 "ofetch@npm:^1.3.3":
   version: 1.3.3
   resolution: "ofetch@npm:1.3.3"
@@ -8854,6 +8941,13 @@ __metadata:
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
+  languageName: node
+  linkType: hard
+
+"picomatch@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "picomatch@npm:4.0.2"
+  checksum: a7a5188c954f82c6585720e9143297ccd0e35ad8072231608086ca950bee672d51b0ef676254af0788205e59bd4e4deb4e7708769226bed725bf13370a7d1464
   languageName: node
   linkType: hard
 
@@ -9900,11 +9994,12 @@ __metadata:
   resolution: "revoke.cash@workspace:."
   dependencies:
     "@cypress/grep": ^4.1.0
+    "@dotenvx/dotenvx": ^1.14.2
     "@headlessui/react": ^2.1.2
     "@heroicons/react": ^2.1.5
     "@lavamoat/allow-scripts": ^3.2.0
     "@localazy/cli": ^1.7.14
-    "@revoke.cash/chains": ^49.0.0
+    "@revoke.cash/chains": ^53.0.0
     "@tailwindcss/typography": ^0.5.14
     "@tanstack/query-sync-storage-persister": ^5.52.0
     "@tanstack/react-query": ^5.52.0
@@ -9973,6 +10068,7 @@ __metadata:
     viem: ^2.19.9
     wagmi: ^2.12.7
     walkdir: ^0.4.1
+    zustand: ^5.0.0-rc.2
   languageName: unknown
   linkType: soft
 
@@ -12070,6 +12166,27 @@ __metadata:
     react:
       optional: true
   checksum: 80acd0fbf633782996642802c8692bbb80ae5c80a8dff4c501b88250acd5ccd468fbc6398bdce198475a25e3839c91385b81da921274f33ffb5c2d08c3eab400
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^5.0.0-rc.2":
+  version: 5.0.0-rc.2
+  resolution: "zustand@npm:5.0.0-rc.2"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    immer: ">=9.0.6"
+    react: ">=18.0.0"
+    use-sync-external-store: ">=1.2.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+    use-sync-external-store:
+      optional: true
+  checksum: 2c3129a42a044b9b7215da8af9ae22f188cbd30243685ccad8cdb872375f2211ba90c720d8ec0461eb2e0a85a9e42cfc6de008a15bef25aa116dc90ca813a65c
   languageName: node
   linkType: hard
 

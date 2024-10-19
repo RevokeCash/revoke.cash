@@ -8,6 +8,14 @@
     "unknown": "不明",
     "unlimited": "無制限"
   },
+  "batch_revoke": {
+    "add_tip": "チップを追加しますか。",
+    "failed": "失敗",
+    "no_tip": "チップなし",
+    "revoked": "取り消された",
+    "title": "一括取り消し",
+    "total": "合計"
+  },
   "filters": {
     "allowances": {
       "label": "許可したもの",
@@ -43,6 +51,8 @@
     "last_updated": "最終更新日",
     "marketplace": "マーケットプレイス",
     "spender": "認定支出者",
+    "status": "ステータス",
+    "transaction": "トランザクション",
     "value_at_risk": "リスクがある価値"
   },
   "labels": {
@@ -133,7 +143,12 @@
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
     "recently_cancelled": "あなたは最近、この署名候補をすでにキャンセルしました。この署名はリストに残るので、必要であれば後でまたキャンセルすることができます。",
     "risk_factors": "このトークン承認は下記の理由で{riskLevel}です：",
-    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください"
+    "select_tip": "チップの金額を選択してください",
+    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください",
+    "why_tip": {
+      "description": "Revoke.cashは100％無料のオープンソースの公共財です。それを維持するために、私たちは皆さんの寄付に頼っています。皆さんのご支援に大変感謝しています！🙏",
+      "title": "なぜチップを追加すればいいですか。"
+    }
   },
   "wallet_health": {
     "categories": {
