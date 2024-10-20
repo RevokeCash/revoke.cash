@@ -8,6 +8,7 @@ import { ORDERED_CHAINS, SUPPORTED_CHAINS, getChainName } from 'lib/utils/chains
 
 const TEST_ADDRESSES = {
   // Mainnets
+  [33139]: '0x722E2E4c15bE1fDDEd3C86f4100bC32b181827F5', // ApeChain
   [ChainId.ArbitrumNova]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.ArbitrumOne]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Astar]: '0xAE545C0d8d4b4645fBA8c895e370529D22F8a71c',

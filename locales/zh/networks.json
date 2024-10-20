@@ -5,6 +5,7 @@
   "learn_more": "要了解更多{chainName}相关信息，请前往<info-link>官网</info-link>。",
   "native_token": "{chainName}的原生代币是{nativeToken}。",
   "networks": {
+    "apechain": "ApeChain is a Layer 2 blockchain that is created to be the dedicated infrastructure layer for the ApeCoin ecosystem. It uses APE as its native token to enhance its utility, and it offers native yield for several important assets. It is built using Arbitrum's Orbit framework with settlement on Arbitrum One, a Layer 2 scaling solution for Ethereum.",
     "arbitrum": "Arbitrum 是以太坊的第 2 层扩展（Layer 2）解决方案。Arbitrum 采用 Optimistic Rollup 技术，定期向以太坊主网批量提交交易数据。相比直接在以太坊上执行交易，这样交易更为便宜、更快捷。这是以太坊最受欢迎的二层扩展解决方案之一，采用率在 2023 年激增。",
     "arbitrum-nova": "Arbitrum Nova 是 Arbitrum 的姊妹链，中心化程度更高。Arbitrum 会定期向以太坊主网批量提交交易数据，而 Arbitrum Nova 仅提交这些数据的证书。这些证书由一组验证者创建，即数据可用性委员会（DAC）。因此，该网络的使用成本要低得多，但中心化程度也要高得多。",
     "astar": "Astar 是 Polkadot 的平行链，集成了以太坊、Polkadot 和 Cosmos 的功能。Astar 可以通过跨虚拟机（XVM）支持以太坊虚拟机（EVM）并与其他区块链进行交互。Astar 通过“dApp 质押”项目为应用程序开发者提供原生经济激励措施。Astar 主要专注于日本市场，在该地区拥有庞大的用户群。",

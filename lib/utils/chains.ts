@@ -27,6 +27,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZkSyncMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.CronosMainnet,
+  33139, // ApeChain
   ChainId.WorldChain,
   ChainId.CoreBlockchainMainnet,
   ChainId.PulseChain,
@@ -161,14 +162,29 @@ export const CHAINS: Record<number, Chain> = {
     type: SupportType.PROVIDER,
     chainId: ChainId.Amoy,
     name: 'Polygon Amoy',
-    logoUrl: '/assets/images/vendor/chains/polygon.svg',
     nativeToken: 'POL',
+    logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
       main: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.PolygonMainnet,
+  }),
+  [33139]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: 33139,
+    name: 'ApeChain',
+    nativeToken: 'APE',
+    logoUrl: '/assets/images/vendor/chains/apechain.svg',
+    explorerUrl: 'https://apescan.io',
+    infoUrl: 'https://apechain.com',
+    rpc: {
+      main: `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://apechain.calderachain.xyz/http',
+    },
+    // deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.ArbitrumNova]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2422,6 +2438,7 @@ export const getChainBackendPriceStrategy = (chainId: number): PriceStrategy | u
 
 // Target a default of a round-ish number of tokens, worth around $10-20
 export const DEFAULT_DONATION_AMOUNTS = {
+  APE: '10',
   ASTR: '250',
   AVAX: '0.5',
   BEAM: '1000',

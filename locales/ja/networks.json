@@ -5,6 +5,7 @@
   "learn_more": "{chainName}の詳細については、<info-link>そのウェブサイト</info-link>をご覧ください。",
   "native_token": "{chainName}のネイティブトークンは{nativeToken}です。",
   "networks": {
+    "apechain": "ApeChain is a Layer 2 blockchain that is created to be the dedicated infrastructure layer for the ApeCoin ecosystem. It uses APE as its native token to enhance its utility, and it offers native yield for several important assets. It is built using Arbitrum's Orbit framework with settlement on Arbitrum One, a Layer 2 scaling solution for Ethereum.",
     "arbitrum": "ArbitrumはEthereumのレイヤー2のスケーリングソリューションです。Arbitrumは楽観的なロールアップです。つまり、トランザクションデータのバッチを定期的にEthereumのメインネットに送信します。その結果、トランザクションをEthereumで直接実行する場合よりも安価で高速な取引が可能になります。Ethereumのレイヤー2のソリューションとしては最も普及しているものの1つで、2023 年に採用が急増しました。",
     "arbitrum-nova": "Arbitrum Novaは、Arbitrumのより中央集権的な兄弟です。ArbitrumはトランザクションデータをバッチでEthereumのメインチェーンに送信しますが、Arbitrum Novaはこのデータの証明書のみを送信します。これらの証明書は、データ可用性委員会（DAC）と呼ばれる一連の検証者によって作成されます。このため、ネットワークの使用コストははるかに低く抑えられますが、一元化もはるかに進んでいます。",
     "astar": "Astarは、Ethereum、ポルカドット、コスモスの機能を組み合わせたポルカドット向けのパラチェーンです。Astarはクロスバーチャルマシン（XVM）を通じて、EVMをサポートし、他のブロックチェーンと相互作用することができます。Astarは、「分散形アプリステーキング」プログラムを通じて、アプリ開発者にネイティブの金銭的インセンティブを提供しています。Astarは主に日本市場に焦点を当てており、この地域には大きなユーザーベースがあります。",
