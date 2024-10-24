@@ -49,7 +49,7 @@ export const EthereumProvider = ({ children }: Props) => {
 };
 
 const EthereumProviderChild = ({ children }: Props) => {
-  const { connect, connectAsync, connectors } = useConnect();
+  const { connectAsync, connectors } = useConnect();
   const { connector } = useAccount();
   const router = useRouter();
   const pathName = usePathname();
