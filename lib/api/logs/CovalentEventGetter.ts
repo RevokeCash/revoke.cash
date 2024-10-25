@@ -71,12 +71,13 @@ const formatCovalentEvent = (covalentLog: any) => ({
 });
 
 const filterLogs = (logs: Log[], filter: Filter): Log[] => {
-  const { fromBlock, toBlock } = filter;
+  const { address, fromBlock, toBlock } = filter;
   const topics = filter.topics.map((topic) => topic?.toLowerCase());
 
   const filteredLogs = logs.filter((event) => {
     if (fromBlock && event.blockNumber < fromBlock) return false;
     if (toBlock && event.blockNumber > toBlock) return false;
+    if (address && event.address !== address) return false;
     if (topics) {
       if (topics[0] && event.topics[0] !== topics[0]) return false;
       if (topics[1] && event.topics[1] !== topics[1]) return false;

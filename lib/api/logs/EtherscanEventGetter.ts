@@ -94,7 +94,7 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, page: number, apiKey?: str
   const query = {
     module: 'logs',
     action: 'getLogs',
-    address: undefined,
+    address: filter.address ?? undefined,
     fromBlock: String(filter.fromBlock ?? 0),
     toBlock: String(filter.toBlock ?? 'latest'),
     topic0: topic0 ?? undefined,
