@@ -63,11 +63,13 @@ const EthereumProviderChild = ({ children }: Props) => {
     const safeConnector = connectors?.find((connector) => connector.id === 'safe');
     if (!safeConnector || connector === safeConnector) return;
 
-    connectAsync({ connector: safeConnector }).then(({ accounts: [account] }) => {
-      if (pathName === '/') {
-        router.push(`/address/${account}${location.search}`);
-      }
-    });
+    connectAsync({ connector: safeConnector })
+      .then(({ accounts: [account] }) => {
+        if (pathName === '/') {
+          router.push(`/address/${account}${location.search}`);
+        }
+      })
+      .catch(console.error);
   }, [connectors, connector]);
 
   // If the Ledger Live connector is available, connect to it even if other connectors are available
@@ -78,11 +80,13 @@ const EthereumProviderChild = ({ children }: Props) => {
     const injectedConnector = connectors?.find((connector) => connector.id === 'injected');
     if (!injectedConnector || connector === injectedConnector) return;
 
-    connectAsync({ connector: injectedConnector }).then(({ accounts: [account] }) => {
-      if (pathName === '/') {
-        router.push(`/address/${account}${location.search}`);
-      }
-    });
+    connectAsync({ connector: injectedConnector })
+      .then(({ accounts: [account] }) => {
+        if (pathName === '/') {
+          router.push(`/address/${account}${location.search}`);
+        }
+      })
+      .catch(console.error);
   }, [connectors, connector]);
   return <>{children}</>;
 };
