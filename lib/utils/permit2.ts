@@ -46,9 +46,12 @@ const getPermit2AllowanceFromApproval = async (
     return undefined;
   }
 
+  // Different chains may have different instances of Permit2, so we use the address of the instance that emitted the approval event
+  const permit2Address = approval.address;
+
   const [permit2Allowance, lastUpdated] = await Promise.all([
     tokenContract.publicClient.readContract({
-      address: PERMIT2_ADDRESS,
+      address: permit2Address,
       abi: PERMIT2_ABI,
       functionName: 'allowance',
       args: [owner, tokenContract.address, spender],
@@ -58,22 +61,31 @@ const getPermit2AllowanceFromApproval = async (
 
   const [amount] = permit2Allowance;
 
-  return { spender, amount, lastUpdated, expiration };
+  return { spender, amount, lastUpdated, expiration, permit2Address };
 };
 
 // We don't need to do an excessive gas check for permit2 approvals since function is called on Permit2, not the token
 export const permit2Approve = async (
+  permit2Address: Address,
   walletClient: WalletClient,
   tokenContract: Erc20TokenContract,
   spender: Address,
   amount: bigint,
   expiration: number,
 ) => {
-  const transactionRequest = await preparePermit2Approve(walletClient, tokenContract, spender, amount, expiration);
+  const transactionRequest = await preparePermit2Approve(
+    permit2Address,
+    walletClient,
+    tokenContract,
+    spender,
+    amount,
+    expiration,
+  );
   return walletClient.writeContract(transactionRequest);
 };
 
 export const preparePermit2Approve = async (
+  permit2Address: Address,
   walletClient: WalletClient,
   tokenContract: Erc20TokenContract,
   spender: Address,
@@ -81,7 +93,7 @@ export const preparePermit2Approve = async (
   expiration: number,
 ) => {
   const transactionRequest = {
-    address: PERMIT2_ADDRESS,
+    address: permit2Address,
     abi: PERMIT2_ABI,
     functionName: 'approve' as const,
     args: [tokenContract.address, spender, amount, expiration] as const,

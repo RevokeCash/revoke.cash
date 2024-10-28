@@ -5,6 +5,7 @@
   "learn_more": "要了解更多{chainName}相关信息，请前往<info-link>官网</info-link>。",
   "native_token": "{chainName}的原生代币是{nativeToken}。",
   "networks": {
+    "apechain": "ApeChain is a Layer 2 blockchain that is created to be the dedicated infrastructure layer for the ApeCoin ecosystem. It uses APE as its native token to enhance its utility, and it offers native yield for several important assets. It is built using Arbitrum's Orbit framework with settlement on Arbitrum One, a Layer 2 scaling solution for Ethereum.",
     "arbitrum": "Arbitrum 是以太坊的第 2 层扩展（Layer 2）解决方案。Arbitrum 采用 Optimistic Rollup 技术，定期向以太坊主网批量提交交易数据。相比直接在以太坊上执行交易，这样交易更为便宜、更快捷。这是以太坊最受欢迎的二层扩展解决方案之一，采用率在 2023 年激增。",
     "arbitrum-nova": "Arbitrum Nova 是 Arbitrum 的姊妹链，中心化程度更高。Arbitrum 会定期向以太坊主网批量提交交易数据，而 Arbitrum Nova 仅提交这些数据的证书。这些证书由一组验证者创建，即数据可用性委员会（DAC）。因此，该网络的使用成本要低得多，但中心化程度也要高得多。",
     "astar": "Astar 是 Polkadot 的平行链，集成了以太坊、Polkadot 和 Cosmos 的功能。Astar 可以通过跨虚拟机（XVM）支持以太坊虚拟机（EVM）并与其他区块链进行交互。Astar 通过“dApp 质押”项目为应用程序开发者提供原生经济激励措施。Astar 主要专注于日本市场，在该地区拥有庞大的用户群。",
@@ -24,6 +25,7 @@
     "callisto": "Callisto 是第 1 层（Layer 1）区块链，最开始是以太坊经典区块链的侧链，采用了冷权益质押（Cold Stakin）安全机制。Callisto 的开发人员是以太坊经典区块链的部分初始开发人员，他们引入了自己的安全审计团队，以确保在 Callisto 上部署的智能合约的安全性。",
     "canto": "Canto 是使用权益证明（PoS）共识机制的第 1 层（Layer 1）区块链。Canto 设立的宗旨是支持免费公共基础设施（ Free Public Infrastructure），为此，Canto 推出了合约安全收入费用分配模型（CSR），使智能合约开发人员在其开发的合约产生费用后，可获取一定比例的分成收益，以替代产品或协议费用。Canto 是基于 Cosmos SDK 构建的，但同时也保持了 EVM 兼容性。",
     "celo": "Celo 是第 1 层（Layer 1）区块链，专注于为移动应用和拉丁美洲等新兴市场开发高效数据技术。虽然 Celo 是作为兼容 EVM 的第 1 层（Layer 1）区块链而创建的，但 Celo 管理层最近投票决定将该链转移到基于 Optimism 的 OP Stack 的以太坊第 2 层（Layer 2）扩展链。",
+    "chiliz": "Chiliz is a Layer 1 blockchain that is focused on sports and entertainment. It focuses on enhancing sports fan engagement through tokenisation, allowing fans to interact and engage with their favorite sports teams and clubs.",
     "coinex-smart-chain": "CoinEX 智能链（CSC）是 CoinEx 交易所开发的第 1 层（Layer 1）区块链，旨在提供比以太坊更低廉的交易费用和更快捷的交易速度。为达成这一目标，CSC 采用了更为中心化的共识机制，整合了权益证明（PoS）和权威证明（PoA）的特点。",
     "core": "CORE 是第 1 层（Layer 1）区块链，采用了名为中本聪+（Satoshi Plus）的全新共识机制，该机制在利用比特币哈希率的同时还融合了工作量证明（PoW）和委托权益证明（DPoS）的特色。除了提供自己的区块链网络，CORE DAO 还致力于将中本聪+（Satoshi Plus）技术推广至其他区块链。",
     "cronos": "Cronos 是 Crypto.org 区块链上与 EVM 兼容的侧链。Cronos 采用权威证明（PoA）共识机制，使用便捷、成本低廉，缺点是去中心化程度方面有所妥协。该链还使用跨链通信协议（IBC）来实现与其他区块链之间的互操作性。",
@@ -103,6 +105,7 @@
     "x-layer": "X Layer 是以太坊的第 2 层（Layer 2）扩展解决方案，由知名的欧易交易所（OKX）开发。X Layer 采用了 Polygon 链的开发工具包（CDK），并运用了 zkEVM 技术。此外，该网络还旨在与欧易交易所的其他产品（例如 OKB 代币）进行集成。",
     "xdc": "XDC 是第 1 层（Layer 1）区块链，其共识机制基于委托权益证明（DPoS）。XDC 致力于提供快速和低成本的交易，促进现实资产和企业用例的代币化。",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
+    "zircuit": "Zircuit is a Layer 2 scaling solution for Ethereum that is built on zk rollup technology. To focus on security, Zircuit uses AI to monitor the network's mempool for malicious transactions and blocks them before they are included in the chain.",
     "zkfair": "ZKFair 是以太坊的Layer 2扩展方案，使用 Polygon链的开发工具包（CDK）和 Celestia 的数据可用性层构建。顾名思义，ZKFair 强调 \"公平\"，旨在创建一个生态系统，让网络用户共享回报，而这些回报通常归网络运营者所有。",
     "zklink-nova": "zkLink Nova 是第 3 层（Layer 3）区块链，建立在以太坊和多个以太坊第 2 层（Layer 2）区块链之上。zkLink Nova 旨在搭建其他区块链到本链的桥梁，进而解决不同第 2 层（Layer 2）链上的流动性分散问题。",
     "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术可在保证非常低成本的同时，利用零知识证明来进行强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。",

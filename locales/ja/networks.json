@@ -5,6 +5,7 @@
   "learn_more": "{chainName}の詳細については、<info-link>そのウェブサイト</info-link>をご覧ください。",
   "native_token": "{chainName}のネイティブトークンは{nativeToken}です。",
   "networks": {
+    "apechain": "ApeChain is a Layer 2 blockchain that is created to be the dedicated infrastructure layer for the ApeCoin ecosystem. It uses APE as its native token to enhance its utility, and it offers native yield for several important assets. It is built using Arbitrum's Orbit framework with settlement on Arbitrum One, a Layer 2 scaling solution for Ethereum.",
     "arbitrum": "ArbitrumはEthereumのレイヤー2のスケーリングソリューションです。Arbitrumは楽観的なロールアップです。つまり、トランザクションデータのバッチを定期的にEthereumのメインネットに送信します。その結果、トランザクションをEthereumで直接実行する場合よりも安価で高速な取引が可能になります。Ethereumのレイヤー2のソリューションとしては最も普及しているものの1つで、2023 年に採用が急増しました。",
     "arbitrum-nova": "Arbitrum Novaは、Arbitrumのより中央集権的な兄弟です。ArbitrumはトランザクションデータをバッチでEthereumのメインチェーンに送信しますが、Arbitrum Novaはこのデータの証明書のみを送信します。これらの証明書は、データ可用性委員会（DAC）と呼ばれる一連の検証者によって作成されます。このため、ネットワークの使用コストははるかに低く抑えられますが、一元化もはるかに進んでいます。",
     "astar": "Astarは、Ethereum、ポルカドット、コスモスの機能を組み合わせたポルカドット向けのパラチェーンです。Astarはクロスバーチャルマシン（XVM）を通じて、EVMをサポートし、他のブロックチェーンと相互作用することができます。Astarは、「分散形アプリステーキング」プログラムを通じて、アプリ開発者にネイティブの金銭的インセンティブを提供しています。Astarは主に日本市場に焦点を当てており、この地域には大きなユーザーベースがあります。",
@@ -24,6 +25,7 @@
     "callisto": "Callistoは、コールドステーキングと呼ばれるセキュリティーメカニズムを導入するためにEthereum Classicブロックチェーンのサイドチェーンとして生まれたレイヤー1のブロックチェーンです。開発者はEthereum Classicの最初の開発者であり、Callistoにデプロイされたスマートコントラクトの安全性を確保するために独自のセキュリティー監査チームを導入しました。",
     "canto": "Cantoは、プルーフ・オブ・ステークのコンセンサスメカニズムを採用したレイヤー1のブロックチェーンです。Cantoネットワークは、無料の公共インフラの開発を支援するために創設されました。そのために、契約開発者は製品料金やプロトコル料金を設定する代わりに、契約によって発生するネットワーク料金の一定割合を受け取ることができる契約担保収入（CSR）モデルを構築しました。CantoはEVMとの互換性を維持しながらCosmos SDKで構築されています。",
     "celo": "Celoは、モバイル用途やラテンアメリカなどの新興市場向けのデータ効率の高いテクノロジーの開発に焦点を当てたレイヤー1のブロックチェーンです。CeloはEVM互換のレイヤー1のブロックチェーンとして作成されましたが、Celoのガバナンスは最近、OptimismのOPスタックをベースにしたEthereumのレイヤー2のチェーンにチェーンを移行することを決議しました。",
+    "chiliz": "Chiliz is a Layer 1 blockchain that is focused on sports and entertainment. It focuses on enhancing sports fan engagement through tokenisation, allowing fans to interact and engage with their favorite sports teams and clubs.",
     "coinex-smart-chain": "CoinExスマートチェーン（CSC）は、CoinEx取引所によって作成されたレイヤー1のブロックチェーンです。Ethereumよりも低い取引手数料と速い取引時間を提供するために作成されました。プルーフ・オブ・ステークとプルーフ・オブ・オーソリティの機能を統合した、より一元化されたコンセンサスメカニズムを採用することでこれを実現しています。",
     "core": "COREは、ビットコインのハッシュレートを活用し、プルーフ・オブ・ワークと委任型プルーフ・オブ・ステークの機能を組み合わせたSatoshi Plusと呼ばれる新しいコンセンサスメカニズムを使用するレイヤー1のブロックチェーンです。CORE DAOは独自のブロックチェーンネットワークを提供する一方で、Satoshi Plusテクノロジーの使用を他のブロックチェーンにも広めることに重点を置いています。",
     "cronos": "CronosはCrypto.orgブロックチェーンのEVM互換サイドチェーンです。Cronosは、プルーフ・オブ・オーソリティのコンセンサスメカニズムを採用しています。これにより、チェーンは高速で安価に使用できますが、分散化には妥協があります。また、インター・ブロックチェーン・コミュニケーション（IBC）プロトコルを使用して、Cronosと他のブロックチェーン間の相互運用性を実現しています。",
@@ -103,6 +105,7 @@
     "x-layer": "X Layerは、人気のある取引所OKXによって開発されたEthereumのレイヤー2のスケーリングソリューションです。X LayerはPolygonのチェーン開発キット（CDK）を使用して構築され、ZkeVM技術を使用しています。OKXによって作成されたこのネットワークは、OKBトークンなどのOKXの他の製品と統合できるようにも設計されています。",
     "xdc": "XDCは、委任型プルーフ・オブ・ステークに基づくコンセンサスメカニズムを備えたレイヤー1のブロックチェーンです。現実世界の資産や企業の使用ケースをトークン化するために、高速で低コストの取引を提供することに重点を置いています。",
     "zetachain": "ZetaChainは、現在開発中のプルーフ・オブ・ステークに基づくコンセンサスメカニズムを備えたレイヤー1のブロックチェーンです。開発者が他のEVMチェーンや非EVMチェーンに接続するクロスチェーンアプリケーションを構築するためのインフラストラクチャーを提供することを目的としています。",
+    "zircuit": "Zircuit is a Layer 2 scaling solution for Ethereum that is built on zk rollup technology. To focus on security, Zircuit uses AI to monitor the network's mempool for malicious transactions and blocks them before they are included in the chain.",
     "zkfair": "ZkFairは、Polygonのチェーン開発キット（CDK）とCelestiaのデータ可用性レイヤーを使用して構築されたEthereumのレイヤー2のスケーリングソリューションです。その名の通り、ZkFairは「公平性」に重点を置き、通常は事業者に支払われるネットワークの恩恵をネットワークのユーザーが分かち合うエコシステムの構築を目指しています。",
     "zklink-nova": "zkLink Novaは、EthereumといくつかのEthereumのレイヤー2のブロックチェーンの上に構築されたレイヤー3のブロックチェーンです。他のブロックチェーンからzkLink Novaへのブリッジを提供することで、異なるレイヤー2のチェーンにまたがる流動性の断片化の問題に取り組むことを目的としています。",
     "zksync-era": "zkSync Eraはレイヤー2のスケーリングソリューションであり、新しいzkEVMテクノロジーを使用した最初のプロジェクトの1つです。このテクノロジーは、ゼロ知識証明の使用による強力なセキュリティー保証を維持しながら、非常に低い料金で提供されます。zkSyncは以前、まだEVMとの互換性がないzkRollupテクノロジーの初期バージョンであるzkSync Liteを開発しました。zkSync Eraは次のイテレーションであり、EVMを完全にサポートしています。",

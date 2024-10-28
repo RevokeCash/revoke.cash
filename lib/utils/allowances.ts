@@ -448,7 +448,14 @@ export const prepareUpdateErc20Allowance = async (
   if (differenceAmount === 0n) return;
 
   if (allowance.expiration !== undefined) {
-    return preparePermit2Approve(walletClient, allowance.contract, allowance.spender, newAmount, allowance.expiration);
+    return preparePermit2Approve(
+      allowance.permit2Address,
+      walletClient,
+      allowance.contract,
+      allowance.spender,
+      newAmount,
+      allowance.expiration,
+    );
   }
 
   const baseRequest = {

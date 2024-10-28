@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname, useRouter } from 'lib/i18n/navigation';
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { SECOND } from 'lib/utils/time';
 import { ReactNode, useEffect } from 'react';
@@ -48,8 +49,10 @@ export const EthereumProvider = ({ children }: Props) => {
 };
 
 const EthereumProviderChild = ({ children }: Props) => {
-  const { connect, connectors } = useConnect();
+  const { connectAsync, connectors } = useConnect();
   const { connector } = useAccount();
+  const router = useRouter();
+  const pathName = usePathname();
 
   // If the Safe connector is available, connect to it even if other connectors are available
   // (if another connector auto-connects (or user disconnects), we still override it with the Safe connector)
@@ -60,7 +63,13 @@ const EthereumProviderChild = ({ children }: Props) => {
     const safeConnector = connectors?.find((connector) => connector.id === 'safe');
     if (!safeConnector || connector === safeConnector) return;
 
-    connect({ connector: safeConnector });
+    connectAsync({ connector: safeConnector })
+      .then(({ accounts: [account] }) => {
+        if (pathName === '/') {
+          router.push(`/address/${account}${location.search}`);
+        }
+      })
+      .catch(console.error);
   }, [connectors, connector]);
 
   // If the Ledger Live connector is available, connect to it even if other connectors are available
@@ -71,7 +80,13 @@ const EthereumProviderChild = ({ children }: Props) => {
     const injectedConnector = connectors?.find((connector) => connector.id === 'injected');
     if (!injectedConnector || connector === injectedConnector) return;
 
-    connect({ connector: injectedConnector });
+    connectAsync({ connector: injectedConnector })
+      .then(({ accounts: [account] }) => {
+        if (pathName === '/') {
+          router.push(`/address/${account}${location.search}`);
+        }
+      })
+      .catch(console.error);
   }, [connectors, connector]);
   return <>{children}</>;
 };

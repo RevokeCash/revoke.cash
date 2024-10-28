@@ -42,6 +42,12 @@ class EventsDB extends Dexie {
           entry.toBlock -= 50;
         });
     });
+
+    // On 2024-10-25, we fixed that Permit2 events and allowances can also use alternative Permit2 contracts
+    // This requires a full re-index of all events
+    this.version(2024_10_25).upgrade((tx) => {
+      tx.table<Events>('events').clear();
+    });
   }
 
   // Note: It is always assumed that this function is called to get logs for the entire chain (i.e. from block 0 to 'latest')
