@@ -9,8 +9,8 @@ import {
 } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import PlaceholderIcon from '../PlaceholderIcon';
-import SearchableSelect from './SearchableSelect';
+import PlaceholderIcon from './PlaceholderIcon';
+import SearchableSelect from './select/SearchableSelect';
 
 interface ChainOption {
   value: string;
