@@ -93,7 +93,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
             </div>
             <div className="h-[46vh] w-full overflow-scroll whitespace-nowrap scrollbar-hide">
               <table className="w-full border-collapse">
-                <thead className="sticky top-0 bg-white z-50">
+                <thead className="sticky top-0 bg-white dark:bg-black z-50">
                   <tr>
                     <th className="py-2">#</th>
                     <th>{t('address.headers.asset')}</th>

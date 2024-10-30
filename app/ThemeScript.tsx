@@ -1,22 +1,14 @@
+// We inject the theme script to prevent flash of white when the page loads
 const ThemeScript = () => {
   const themeScript = `
-            (function() {
-              function getInitialTheme() {
-                const storedTheme = localStorage.getItem('theme')
-                if (storedTheme === 'dark' || storedTheme === 'light') {
-                  return storedTheme
-                }
-                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-              }
-              
-              const theme = getInitialTheme()
-              document.documentElement.classList.add(theme)
-              localStorage.setItem('theme', theme)
-            })()
-          `;
-
-  // not sure about this, but the idea is to inject this themescript
-  // before the page even loads, it helps with performance
+    (function() {
+      const storedTheme = localStorage.getItem('theme')
+      if (storedTheme === '"light"') return;
+      if (storedTheme === '"dark"' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark')
+      }
+    })()
+  `;
 
   return <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
 };
