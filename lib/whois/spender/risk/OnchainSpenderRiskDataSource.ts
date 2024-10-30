@@ -17,7 +17,7 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
 
     try {
       const time = new Date().getTime();
-      const bytecode = await publicClient.getBytecode({ address });
+      const bytecode = await publicClient.getCode({ address });
 
       const riskFactors = [];
 
