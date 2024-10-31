@@ -1,7 +1,14 @@
 'use client';
 
-import { ReactNode, Ref, forwardRef, useEffect, useRef, useState } from 'react';
-import { ActionMeta, FormatOptionLabelMeta, GroupBase, OnChangeValue, SelectInstance } from 'react-select';
+import { forwardRef, ReactNode, Ref, useEffect, useRef, useState } from 'react';
+import {
+  ActionMeta,
+  createFilter,
+  FormatOptionLabelMeta,
+  GroupBase,
+  OnChangeValue,
+  SelectInstance,
+} from 'react-select';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
@@ -9,7 +16,7 @@ import Select, { Props as SelectProps } from 'components/common/select/Select';
 import Button from '../Button';
 import Chevron from '../Chevron';
 
-import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
+import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 import { twMerge } from 'tailwind-merge';
 
 interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProps<O, I, G> {
@@ -42,10 +49,9 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
     handleSelectClose();
   };
 
-  const handleFiltering = (option: FilterOptionOption<O>, inputValue: string) => {
-    const lowerCaseValue = inputValue.toLowerCase();
-    return option.value.toLowerCase().includes(lowerCaseValue);
-  };
+  const filterOption = createFilter({
+    stringify: (option: FilterOptionOption<O>) => option.value,
+  });
 
   const formatOptionLabel = (option: O, formatOptionLabelMeta: FormatOptionLabelMeta<O>) => {
     // 'value' context is handled separately in TargetButton
@@ -68,7 +74,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
         onChange={onChange}
         className="shrink-0"
         menuIsOpen={props.keepMounted ? true : isSelectOpen}
-        filterOption={handleFiltering}
+        filterOption={filterOption}
         minControlWidth={props.minMenuWidth}
         formatOptionLabel={props.formatOptionLabel ? formatOptionLabel : undefined}
         components={{ DropdownIndicator: CustomDropdownIndicator, ...props.components }}

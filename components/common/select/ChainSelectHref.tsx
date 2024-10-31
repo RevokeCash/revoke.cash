@@ -4,6 +4,7 @@ import ChainLogo from 'components/common/ChainLogo';
 import { useRouter } from 'lib/i18n/navigation';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
+import { memo } from 'react';
 import Button from '../Button';
 import PlaceholderIcon from '../PlaceholderIcon';
 import SearchableSelect from './SearchableSelect';
@@ -89,4 +90,4 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
   );
 };
 
-export default ChainSelectHref;
+export default memo(ChainSelectHref);

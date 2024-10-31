@@ -51,7 +51,12 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
       {...props}
       ref={props.selectRef}
       className={twMerge(props.className)}
-      components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
+      components={{
+        IndicatorSeparator: null,
+        ClearIndicator: () => null,
+        Option,
+        ...props.components,
+      }}
       classNames={{
         control: (state) =>
           twMerge(

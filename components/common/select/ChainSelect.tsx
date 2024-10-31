@@ -2,6 +2,7 @@ import ChainLogo from 'components/common/ChainLogo';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
+import { memo } from 'react';
 import PlaceholderIcon from '../PlaceholderIcon';
 import SearchableSelect from './SearchableSelect';
 
@@ -77,8 +78,10 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       minMenuWidth="14.5rem"
       placeholder={<PlaceholderIcon size={24} border />}
       menuAlign={menuAlign}
+      // Note: when searching, option do get unmounted, so there's still some optimization to be done here
+      keepMounted
     />
   );
 };
 
-export default ChainSelect;
+export default memo(ChainSelect);

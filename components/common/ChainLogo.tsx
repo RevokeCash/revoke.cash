@@ -2,6 +2,7 @@
 
 import { useMounted } from 'lib/hooks/useMounted';
 import { getChainLogo, getChainName, isSupportedChain } from 'lib/utils/chains';
+import { memo } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Logo from './Logo';
 import PlaceholderIcon from './PlaceholderIcon';
@@ -38,4 +39,4 @@ const ChainLogo = ({ chainId, size, tooltip, className, checkMounted }: Props) =
   return <Logo src={src} alt={name} size={size} border className={classes} />;
 };
 
-export default ChainLogo;
+export default memo(ChainLogo);
