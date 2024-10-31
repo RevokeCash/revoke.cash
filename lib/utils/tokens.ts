@@ -183,13 +183,17 @@ export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
 // TODO: Improve spam checks
 // TODO: Investigate other proxy patterns to see if they result in false positives
 export const throwIfSpamNft = async (contract: Contract) => {
-  const bytecode = await contract.publicClient.getBytecode({ address: contract.address });
+  const bytecode = await contract.publicClient.getCode({ address: contract.address });
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {
     // Minimal proxies should not be marked as spam
-    if (bytecode.match(/^0x363d3d373d3d3d363d[0-9a-f]{2}[0-9a-f]{0,40}5af43d82803e903d9160[0-9a-f]{2}57fd5bf3$/i))
-      return;
+    if (bytecode.length < 100 && bytecode.endsWith('57fd5bf3')) return;
+
+    // Somehow ApeChain minimal proxies have a different bytecode (I guess because of slight EVM differences)
+    // - see https://apescan.io/address/0x90b4d884964392a6d998EcE041214F8D375bb25b
+    // TODO: Make this minimal proxy check more robust for those kinds of cases
+    // if (bytecode.match(/363d3d373d3d3d363d[0-9a-f]{2}[0-9a-f]{0,40}5af43d82803e903d9160[0-9a-f]{2}57fd5bf3$/i)) return;
 
     throw new Error('Contract bytecode indicates a "spam" token');
   }
