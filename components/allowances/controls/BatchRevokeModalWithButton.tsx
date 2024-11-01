@@ -3,15 +3,19 @@ import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import SpenderCell from 'components/allowances/dashboard/cells/SpenderCell';
 import Button from 'components/common/Button';
 import TipSection from 'components/common/donate/TipSection';
+import Href from 'components/common/Href';
 import Modal from 'components/common/Modal';
+import ky from 'ky';
+import merchCodesDB from 'lib/databases/merch-codes';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { AllowanceData } from 'lib/interfaces';
+import { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
 import { getAllowanceKey } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 import StatusCell from '../dashboard/cells/StatusCell';
 import TransactionHashCell from '../dashboard/cells/TransactionHashCell';
 import ControlsWrapper from './ControlsWrapper';
@@ -33,6 +37,47 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   const { results, revoke, pause, isLoading } = useRevokeBatch(selectedAllowances, table.options.meta.onUpdate);
 
+  const generateMerchCode = async (txSubmitted: TransactionSubmitted) => {
+    try {
+      const { code } = await ky<{ code: string }>(`/api/${selectedChainId}/merchandise/generate-code`, {
+        method: 'POST',
+        json: {
+          transactionHash: txSubmitted.hash,
+        },
+      }).json();
+
+      try {
+        await merchCodesDB.addCode(address, code);
+      } catch {}
+
+      const toastContent = (
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <div>🎉</div>
+            <div>Thank you for using and supporting Revoke.cash!</div>
+            <div>🎉</div>
+          </div>
+          <div>
+            If you're visiting Devcon and would like to receive an exclusive Revoke t-shirt, come find us at Devcon and
+            use your unique code to claim your t-shirt.
+          </div>
+          <div className="font-bold">{code}</div>
+          <div>
+            <Href href="/merchandise" external>
+              More details
+            </Href>
+          </div>
+        </div>
+      );
+
+      toast.info(toastContent, { autoClose: false, closeOnClick: false });
+
+      console.log(code);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const revokeAndTip = async () => {
     const getTipSelection = () => {
       if (tipAmount === '0') return 'none';
@@ -50,7 +95,8 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
     });
 
     await revoke();
-    await donate(tipAmount);
+    const txSubmitted = await donate(tipAmount);
+    if (txSubmitted?.hash) await generateMerchCode(txSubmitted);
   };
 
   useEffect(() => {

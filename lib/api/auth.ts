@@ -30,6 +30,10 @@ export const RateLimiters = {
     points: 100,
     duration: 1,
   }),
+  MERCH_CODES: new RateLimiterMemory({
+    points: 2,
+    duration: 1,
+  }),
 };
 
 export const checkRateLimitAllowed = async (req: NextApiRequest, rateLimiter: RateLimiterMemory) => {
