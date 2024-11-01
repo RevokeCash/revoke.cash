@@ -2,9 +2,10 @@
 
 import Button from 'components/common/Button';
 import ConnectButton from 'components/header/ConnectButton';
+import { useSwitchChain } from 'lib/hooks/ethereum/useSwitchChain';
 import { useMounted } from 'lib/hooks/useMounted';
 import { ReactNode } from 'react';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 interface Props {
   chainId: number;
@@ -17,7 +18,7 @@ const AddNetworkButton = ({ chainId, label }: Props) => {
   const isMounted = useMounted();
 
   return isConnected && isMounted ? (
-    <Button style="primary" size="md" onClick={() => switchChain({ chainId })}>
+    <Button style="primary" size="md" onClick={() => switchChain(chainId)}>
       {label}
     </Button>
   ) : (

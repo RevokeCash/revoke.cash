@@ -3,7 +3,15 @@ import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDE
 import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { SECOND } from 'lib/utils/time';
-import { Address, PublicClient, Chain as ViemChain, createPublicClient, defineChain, http } from 'viem';
+import {
+  AddEthereumChainParameter,
+  Address,
+  PublicClient,
+  Chain as ViemChain,
+  createPublicClient,
+  defineChain,
+  http,
+} from 'viem';
 
 export interface ChainOptions {
   type: SupportType;
@@ -74,12 +82,8 @@ export class Chain {
     return this.options.isCanary ?? false;
   }
 
-  getLogoUrl(): string {
-    if (!this.options.logoUrl) {
-      return getChain(this.chainId)?.iconURL;
-    }
-
-    return this.options.logoUrl ?? '/assets/images/vendor/chains/ethereum.svg';
+  getLogoUrl(): string | undefined {
+    return this.options.logoUrl ?? getChain(this.chainId)?.iconURL;
   }
 
   getExplorerUrl(): string {
@@ -95,7 +99,7 @@ export class Chain {
   getRpcUrls(): string[] {
     const baseRpcUrls =
       getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', INFURA_API_KEY)) ?? [];
-    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter(Boolean);
+    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter(Boolean) as string[];
     const rpcOverrides = RPC_OVERRIDES[this.chainId] ? [RPC_OVERRIDES[this.chainId]] : [];
     return [...rpcOverrides, ...specifiedRpcUrls, ...baseRpcUrls];
   }
@@ -108,14 +112,14 @@ export class Chain {
     return this.options.rpc?.logs ?? this.getRpcUrl();
   }
 
-  getInfoUrl(): string {
+  getInfoUrl(): string | undefined {
     // TODO: Ideally we would call getInfoUrl() for the mainnet chain here in case it has overridden infoUrl, but then
     // we run into circular dependency issues 😅
-    const mainnetChainId = this.getCorrespondingMainnetChainId();
+    const mainnetChainId = this.getCorrespondingMainnetChainId() ?? -1;
     return this.options.infoUrl ?? getChain(mainnetChainId)?.infoURL ?? getChain(this.chainId)?.infoURL;
   }
 
-  getNativeToken(): string {
+  getNativeToken(): string | undefined {
     return this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol;
   }
 
@@ -192,6 +196,20 @@ export class Chain {
       contracts: this.getDeployedContracts(),
       testnet: this.isTestnet(),
     });
+  }
+
+  getAddEthereumChainParameter(): AddEthereumChainParameter {
+    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken(), decimals: 18 };
+    const addEthereumChainParameter = {
+      chainId: String(this.chainId),
+      chainName: this.getName(),
+      nativeCurrency: getChain(this.chainId)?.nativeCurrency ?? fallbackNativeCurrency,
+      rpcUrls: [this.getFreeRpcUrl()],
+      blockExplorerUrls: [this.getExplorerUrl()],
+      iconUrls: [getChain(this.chainId)?.iconURL],
+    };
+
+    return addEthereumChainParameter;
   }
 
   createViemPublicClient(overrideUrl?: string): PublicClient {

@@ -1,7 +1,7 @@
 import Button from 'components/common/Button';
+import { useSwitchChain } from 'lib/hooks/ethereum/useSwitchChain';
 import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
-import { useAccount, useSwitchChain } from 'wagmi';
 
 interface Props {
   chainId: number;
@@ -10,11 +10,9 @@ interface Props {
 
 const SwitchChainButton = ({ chainId, size }: Props) => {
   const t = useTranslations();
-  const { connector } = useAccount();
-  const { switchChainAsync } = useSwitchChain();
-  const canSwitchChain = connector?.type === 'injected';
+  const { switchChainAsync, canSwitchChain } = useSwitchChain();
 
-  const { execute, loading } = useAsyncCallback(() => switchChainAsync({ chainId }));
+  const { execute, loading } = useAsyncCallback(() => switchChainAsync(chainId));
 
   const button = (
     <Button style="secondary" size={size} disabled={!canSwitchChain} loading={loading} onClick={execute}>

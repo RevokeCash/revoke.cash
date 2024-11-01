@@ -1,8 +1,8 @@
 'use client';
 
+import { useSwitchChain } from 'lib/hooks/ethereum/useSwitchChain';
 import { useMounted } from 'lib/hooks/useMounted';
-import { useCallback } from 'react';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount } from 'wagmi';
 import ChainSelect from '../common/select/ChainSelect';
 import WalletIndicatorDropdown from './WalletIndicatorDropdown';
 
@@ -18,14 +18,18 @@ const WalletIndicator = ({ menuAlign, size, style, className }: Props) => {
   const isMounted = useMounted();
   const { address: account, chain } = useAccount();
   const { switchChain } = useSwitchChain();
-  const onSelect = useCallback((chainId: number) => switchChain({ chainId }), [switchChain]);
 
   if (!isMounted) return null;
 
   return (
     <div className="flex gap-2">
       {account && (
-        <ChainSelect instanceId="global-chain-select" onSelect={onSelect} selected={chain?.id} menuAlign={menuAlign} />
+        <ChainSelect
+          instanceId="global-chain-select"
+          onSelect={switchChain}
+          selected={chain?.id}
+          menuAlign={menuAlign}
+        />
       )}
       <WalletIndicatorDropdown size={size} style={style} className={className} />
     </div>

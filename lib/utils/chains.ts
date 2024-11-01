@@ -6,7 +6,7 @@ import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
-import { PublicClient, Chain as ViemChain, toHex } from 'viem';
+import { AddEthereumChainParameter, PublicClient, Chain as ViemChain, toHex } from 'viem';
 import { Chain, SupportType } from '../chains/Chain';
 
 // Make sure to update these lists when updating the above lists
@@ -2454,6 +2454,10 @@ export const getViemChainConfig = (chainId: number): ViemChain | undefined => {
 
 export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient | undefined => {
   return getChainConfig(chainId)?.createViemPublicClient(url);
+};
+
+export const getChainAddEthereumChainParameter = (chainId: number): AddEthereumChainParameter | undefined => {
+  return getChainConfig(chainId)?.getAddEthereumChainParameter();
 };
 
 export const getChainPriceStrategy = (chainId: number): PriceStrategy | undefined => {
