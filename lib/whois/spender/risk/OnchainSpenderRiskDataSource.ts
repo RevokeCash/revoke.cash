@@ -6,6 +6,7 @@ import { SpenderDataSource } from '../SpenderDataSource';
 const Addresses = {
   OPENSEA_SEAPORT: '0x1E0049783F008A0085193E00003D00cd54003c71',
   BLUR_MARKETPLACE: '0x00000000000111AbE46ff893f3B2fdF1F759a8A8',
+  BLUR_MARKETPLACE_V2: '0x2f18F339620a63e43f0839Eeb18D7de1e1Be4DfB',
   X2Y2_MARKETPLACE: '0xF849de01B080aDC3A814FaBE1E2087475cF2E354',
   PERMIT2: '0x000000000022D473030F116dDEE9F6B43aC78BA3',
 };
@@ -52,6 +53,7 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
     const PHISHING_RISK_ADDRESSES = [
       Addresses.OPENSEA_SEAPORT,
       Addresses.BLUR_MARKETPLACE,
+      Addresses.BLUR_MARKETPLACE_V2,
       Addresses.X2Y2_MARKETPLACE,
       Addresses.PERMIT2,
     ];
