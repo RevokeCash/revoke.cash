@@ -57,11 +57,11 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
             <div>Thank you for using and supporting Revoke.cash!</div>
             <div>🎉</div>
           </div>
+          <div className="font-bold">Your code: {code}</div>
           <div>
-            If you're visiting Devcon and would like to receive an exclusive Revoke t-shirt, come find us at Devcon and
-            use your unique code to claim your t-shirt.
+            If you're visiting Devcon and would like to receive an exclusive Revoke t-shirt, come find us at the event
+            and use your unique code to claim your t-shirt.
           </div>
-          <div className="font-bold">{code}</div>
           <div>
             <Href href="/merchandise" external>
               More details
