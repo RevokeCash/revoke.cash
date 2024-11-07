@@ -10,7 +10,7 @@ import merchCodesDB from 'lib/databases/merch-codes';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
+import { AllowanceData } from 'lib/interfaces';
 import { getAllowanceKey } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
@@ -37,13 +37,11 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   const { results, revoke, pause, isLoading } = useRevokeBatch(selectedAllowances, table.options.meta.onUpdate);
 
-  const generateMerchCode = async (txSubmitted: TransactionSubmitted) => {
+  const generateMerchCode = async (transactionHash: string) => {
     try {
       const { code } = await ky<{ code: string }>(`/api/${selectedChainId}/merchandise/generate-code`, {
         method: 'POST',
-        json: {
-          transactionHash: txSubmitted.hash,
-        },
+        json: { transactionHash },
       }).json();
 
       try {
@@ -54,7 +52,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <div>🎉</div>
-            <div>Thank you for using and supporting Revoke.cash!</div>
+            <div>Thank you for using Revoke!</div>
             <div>🎉</div>
           </div>
           <div className="font-bold">Your code: {code}</div>
@@ -94,9 +92,14 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
       tipSelection: getTipSelection(),
     });
 
-    await revoke();
-    const txSubmitted = await donate(tipAmount);
-    if (txSubmitted?.hash) await generateMerchCode(txSubmitted);
+    const returnedResults = await revoke();
+    await donate(tipAmount);
+
+    const [transactionHash] = Object.values(returnedResults)
+      .map((result) => result.transactionHash)
+      .filter(Boolean);
+
+    if (transactionHash) await generateMerchCode(transactionHash);
   };
 
   useEffect(() => {

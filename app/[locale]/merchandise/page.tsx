@@ -62,9 +62,8 @@ const MerchandisePage: NextPage<Props> = ({ params }) => {
 
       <p>
         In the week leading up to Devcon 7 in Bangkok, we will be generating unique codes for our users. These codes
-        will be given out to users who use our new Batch Revoke functionality and add a tip while revoking. After doing
-        your batch revoke and tipping, you will receive a unique code that you can use to claim your t-shirt from the
-        Revoke team at the event.
+        will be given out to users who use our new Batch Revoke functionality. After completing your batch revoke, you
+        will receive a unique code that you can use to claim your t-shirt from the Revoke team at the event.
       </p>
 
       <div className="mx-auto my-2 md:my-4 flex flex-col items-center gap-2 not-prose">

@@ -1,14 +1,8 @@
 import { neon } from '@neondatabase/serverless';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
-import { DONATION_ADDRESS } from 'lib/constants';
-import {
-  createViemPublicClientForChain,
-  getChainName,
-  getChainNativeToken,
-  getDefaultDonationAmount,
-} from 'lib/utils/chains';
+import { createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
 import { NextRequest } from 'next/server';
-import { getAddress, parseEther } from 'viem';
+import { getAddress } from 'viem';
 
 interface Props {
   params: {
@@ -52,22 +46,22 @@ export async function POST(req: NextRequest, { params }: Props) {
     });
   }
 
-  if (getAddress(transaction.to) !== DONATION_ADDRESS) {
-    return new Response(JSON.stringify({ message: 'Invalid transaction: does not send to donation address' }), {
-      status: 400,
-    });
-  }
+  // if (getAddress(transaction.to) !== DONATION_ADDRESS) {
+  //   return new Response(JSON.stringify({ message: 'Invalid transaction: does not send to donation address' }), {
+  //     status: 400,
+  //   });
+  // }
 
-  // Calculate the lowest donation amount for this chain (default donation amount / 2 with a small buffer)
-  const defaultDonationAmount = getDefaultDonationAmount(getChainNativeToken(Number(params.chainId))) || '0';
-  const lowestDonationAmount = Number(defaultDonationAmount) / 2.2;
+  // // Calculate the lowest donation amount for this chain (default donation amount / 2 with a small buffer)
+  // const defaultDonationAmount = getDefaultDonationAmount(getChainNativeToken(Number(params.chainId))) || '0';
+  // const lowestDonationAmount = Number(defaultDonationAmount) / 2.2;
 
-  if (transaction.value < parseEther(lowestDonationAmount.toFixed(18))) {
-    return new Response(
-      JSON.stringify({ message: 'Invalid transaction: does not send at least the lowest donation amount' }),
-      { status: 400 },
-    );
-  }
+  // if (transaction.value < parseEther(lowestDonationAmount.toFixed(18))) {
+  //   return new Response(
+  //     JSON.stringify({ message: 'Invalid transaction: does not send at least the lowest donation amount' }),
+  //     { status: 400 },
+  //   );
+  // }
 
   const code = generateRandomMerchCode();
 
@@ -80,7 +74,13 @@ export async function POST(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ code }), { status: 200 });
   } catch (error) {
     const result = await sql`SELECT code FROM codes WHERE address = ${getAddress(transaction.from)}`;
-    const existingCode = result[0].code;
+    const existingCode = result[0]?.code;
+
+    if (!existingCode) {
+      console.error(error);
+      return new Response(JSON.stringify({ message: 'Failed to generate merch code' }), { status: 500 });
+    }
+
     return new Response(JSON.stringify({ code: existingCode }), { status: 200 });
   }
 }
