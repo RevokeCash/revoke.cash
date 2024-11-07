@@ -18,7 +18,7 @@ const ClaimCodesSection = () => {
       <p>
         While using Revoke.cash in the week leading up to Devcon, you may have been given a code to claim a limited
         edition Revoke.cash t-shirt. Below you can find the codes that were generated on this device that are valid for
-        the upcoming event.
+        the upcoming event. Note that these codes are valid while supplies last.
       </p>
 
       <div className="not-prose flex flex-wrap gap-4">

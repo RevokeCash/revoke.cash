@@ -73,7 +73,7 @@ export async function POST(req: NextRequest, { params }: Props) {
 
   try {
     await sql`
-      INSERT INTO codes (address, donationTransactionHash, chainName, code)
+      INSERT INTO codes (address, transactionHash, chainName, code)
       VALUES (${getAddress(transaction.from)}, ${transaction.hash}, ${chainName}, ${code})
     `;
 
