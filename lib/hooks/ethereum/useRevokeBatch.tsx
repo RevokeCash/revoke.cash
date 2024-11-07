@@ -40,6 +40,8 @@ export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) 
       ),
       REVOKE_QUEUE.onIdle(),
     ]);
+
+    return Object.fromEntries(allowances.map((allowance) => [getAllowanceKey(allowance), getTransaction(allowance)]));
   });
 
   const pause = () => {

@@ -52,9 +52,8 @@ const MobileMenu = () => {
                 <NavLink to="/extension" text={t('common.nav.extension')} />
                 <NavLink to="/exploits" text={t('common.nav.exploits')} />
                 <NavLink to="/learn" text={t('common.nav.learn')} />
-                <NavLink to="/learn/faq" text={t('common.nav.faq')} />
                 <NavLink to="/blog" text={t('common.nav.blog')} />
-                <NavLink to="/about" text={t('common.nav.about')} />
+                <NavLink to="/merchandise" text="Merchandise" />
               </div>
             </Dialog.Panel>
           </Transition.Child>

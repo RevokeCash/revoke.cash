@@ -3,7 +3,10 @@ import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import SpenderCell from 'components/allowances/dashboard/cells/SpenderCell';
 import Button from 'components/common/Button';
 import TipSection from 'components/common/donate/TipSection';
+import Href from 'components/common/Href';
 import Modal from 'components/common/Modal';
+import ky from 'ky';
+import merchCodesDB from 'lib/databases/merch-codes';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
@@ -12,6 +15,7 @@ import { getAllowanceKey } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 import StatusCell from '../dashboard/cells/StatusCell';
 import TransactionHashCell from '../dashboard/cells/TransactionHashCell';
 import ControlsWrapper from './ControlsWrapper';
@@ -33,6 +37,45 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   const { results, revoke, pause, isLoading } = useRevokeBatch(selectedAllowances, table.options.meta.onUpdate);
 
+  const generateMerchCode = async (transactionHash: string) => {
+    try {
+      const { code } = await ky<{ code: string }>(`/api/${selectedChainId}/merchandise/generate-code`, {
+        method: 'POST',
+        json: { transactionHash },
+      }).json();
+
+      try {
+        await merchCodesDB.addCode(address, code);
+      } catch {}
+
+      const toastContent = (
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <div>🎉</div>
+            <div>Thank you for using Revoke!</div>
+            <div>🎉</div>
+          </div>
+          <div className="font-bold">Your code: {code}</div>
+          <div>
+            If you're visiting Devcon and would like to receive an exclusive Revoke t-shirt, come find us at the event
+            and use your unique code to claim your t-shirt.
+          </div>
+          <div>
+            <Href href="/merchandise" external>
+              More details
+            </Href>
+          </div>
+        </div>
+      );
+
+      toast.info(toastContent, { autoClose: false, closeOnClick: false });
+
+      console.log(code);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const revokeAndTip = async () => {
     const getTipSelection = () => {
       if (tipAmount === '0') return 'none';
@@ -49,8 +92,14 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
       tipSelection: getTipSelection(),
     });
 
-    await revoke();
+    const returnedResults = await revoke();
     await donate(tipAmount);
+
+    const [transactionHash] = Object.values(returnedResults)
+      .map((result) => result.transactionHash)
+      .filter(Boolean);
+
+    if (transactionHash) await generateMerchCode(transactionHash);
   };
 
   useEffect(() => {
@@ -63,9 +112,12 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   if (!selectedAllowances || !results) return null;
 
+  // Somehow, if filters are applied, getIsSomeRowsSelected() returns false if *all* rows are selected
+  const isSomeRowsSelected = table.getIsSomeRowsSelected() || table.getIsAllRowsSelected();
+
   return (
     <>
-      <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={!table.getIsSomeRowsSelected()}>
+      <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={!isSomeRowsSelected}>
         {(disabled) => (
           <div className="w-fit">
             <Button style="primary" size="sm" disabled={disabled} onClick={() => setOpen(true)}>
