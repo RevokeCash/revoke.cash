@@ -109,9 +109,12 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   if (!selectedAllowances || !results) return null;
 
+  // Somehow, if filters are applied, getIsSomeRowsSelected() returns false if *all* rows are selected
+  const isSomeRowsSelected = table.getIsSomeRowsSelected() || table.getIsAllRowsSelected();
+
   return (
     <>
-      <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={!table.getIsSomeRowsSelected()}>
+      <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={!isSomeRowsSelected}>
         {(disabled) => (
           <div className="w-fit">
             <Button style="primary" size="sm" disabled={disabled} onClick={() => setOpen(true)}>
