@@ -63,10 +63,10 @@ const MainLayout = ({ children, params }: Props) => {
   return (
     <html lang={params.locale}>
       <head>
-        <ThemeScript />
         <Analytics />
       </head>
       <body>
+        <ThemeScript />
         <NextIntlClientProvider messages={{ common: messages.common }}>
           <QueryProvider>
             <EthereumProvider>
