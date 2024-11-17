@@ -19,6 +19,7 @@ export default getRequestConfig(async ({ locale }) => {
       learn: (await import(`./locales/${locale}/learn.json`)).default,
       networks: (await import(`./locales/${locale}/networks.json`)).default,
       token_approval_checker: (await import(`./locales/${locale}/token_approval_checker.json`)).default,
+      merchandise: (await import(`./locales/${locale}/merchandise.json`)).default,
     },
     defaultTranslationValues,
   };

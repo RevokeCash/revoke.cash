@@ -28,7 +28,7 @@ const MoreDropdown = () => {
         {t('common.nav.about')}
       </DropdownMenuItem>
       <DropdownMenuItem href="/merchandise" router className="text-lg">
-        Merchandise
+        {t('common.nav.merchandise')}
       </DropdownMenuItem>
       <DonateButtonDropdown className="text-lg" />
     </DropdownMenu>
