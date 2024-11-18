@@ -23,7 +23,11 @@ const Checkbox = ({ checked, indeterminate, disabled, onChange, className, iconC
     disabled && 'cursor-not-allowed bg-zinc-300 dark:bg-zinc-500 border-0',
   );
 
-  const icon = checked ? <Check className={iconClasses} /> : indeterminate ? <Minus className={iconClasses} /> : null;
+  const icon = disabled ? null : checked ? (
+    <Check className={iconClasses} />
+  ) : indeterminate ? (
+    <Minus className={iconClasses} />
+  ) : null;
 
   return (
     <div className={classes} onClick={(event) => !disabled && onChange?.(event)}>

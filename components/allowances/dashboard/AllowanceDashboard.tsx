@@ -3,14 +3,17 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import Table from 'components/common/table/Table';
-import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { useEffect, useMemo, useState } from 'react';
 import NoAllowancesFound from './NoAllowancesFound';
 import AllowanceTableControls from './controls/AllowanceTableControls';
 
+const getRowId = (row: AllowanceData) => {
+  return `${row.chainId}-${row.contract.address}-${row.spender}-${row.tokenId}`;
+};
+
 const AllowanceDashboard = () => {
-  const { selectedChainId } = useAddressPageContext();
   const { allowances, isLoading, error, onUpdate } = useAddressAllowances();
 
   const [rowSelection, setRowSelection] = useState({});
@@ -21,9 +24,19 @@ const AllowanceDashboard = () => {
     return allowances ?? [];
   }, [allowances]);
 
+  // When rows are deleted, the row selection state is not updated automatically (see https://github.com/TanStack/table/issues/4369)
+  // This effect manually syncs the row selection state with the new table data
   useEffect(() => {
-    setRowSelection({});
-  }, [selectedChainId]);
+    setRowSelection((currentSelection) => {
+      if (!data || data.length === 0) return {};
+      if (Object.keys(currentSelection).length === 0) return {};
+
+      return data.reduce<Record<string, boolean>>((acc, allowance) => {
+        if (currentSelection[getRowId(allowance)]) acc[getRowId(allowance)] = true;
+        return acc;
+      }, {});
+    });
+  }, [data]);
 
   const table = useReactTable({
     data,
@@ -37,9 +50,7 @@ const AllowanceDashboard = () => {
     getCoreRowModel: getCoreRowModel<AllowanceData>(),
     getSortedRowModel: getSortedRowModel<AllowanceData>(),
     getFilteredRowModel: getFilteredRowModel<AllowanceData>(),
-    getRowId(row) {
-      return `${row.contract.address}-${row.spender}-${row.tokenId}`;
-    },
+    getRowId,
     // TODO: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any
     // See https://github.com/TanStack/table/discussions/4220
     meta: { onUpdate } as any,
