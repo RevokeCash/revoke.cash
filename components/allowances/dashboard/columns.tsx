@@ -4,7 +4,7 @@ import { calculateValueAtRisk, isNullish } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
-import BatchRevokeModalWithButton from '../controls/BatchRevokeModalWithButton';
+import BatchRevokeModalWithButton from '../controls/batch-revoke/BatchRevokeModalWithButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
 import AssetTypeCell from './cells/AssetTypeCell';

@@ -12,6 +12,7 @@
     "check": "Comprobar",
     "check_connected_address": "Comprobar Dirección Conectada",
     "clear_filters": "Quitar Filtros",
+    "close": "Close",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "disconnect": "Desconectar",
@@ -107,7 +108,7 @@
     "extension": "Extensión",
     "faq": "FAQ",
     "learn": "Aprender",
-    "merchandise": "Merchandise",
+    "merchandise": "Mercancía",
     "more": "Más",
     "search": "Buscar Cuentas por Dirección o Dominio"
   },

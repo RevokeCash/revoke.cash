@@ -22,7 +22,7 @@ export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) 
     });
   }, [allowances]);
 
-  const { execute: revoke, loading: isLoading } = useAsyncCallback(async () => {
+  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async () => {
     await Promise.race([
       Promise.all(
         allowances.map(async (allowance) => {
@@ -50,5 +50,13 @@ export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) 
     return Object.fromEntries(allowances.map((allowance) => [getAllowanceKey(allowance), getTransaction(allowance)]));
   }, [allowances, results]);
 
-  return { revoke, pause, results: relevantResults, isLoading };
+  const isRevoking = useMemo(() => {
+    return allowances.some((allowance) => getTransaction(allowance).status === 'pending');
+  }, [allowances, results]);
+
+  const isAllConfirmed = useMemo(() => {
+    return allowances.every((allowance) => getTransaction(allowance).status === 'confirmed');
+  }, [allowances, results]);
+
+  return { revoke, pause, results: relevantResults, isSubmitting, isRevoking, isAllConfirmed };
 };
