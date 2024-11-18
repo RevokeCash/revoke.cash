@@ -1,6 +1,6 @@
 import { Table } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
-import IndeterminateCheckbox from 'components/common/IndeterminateCheckbox';
+import Checkbox from 'components/common/Checkbox';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData } from 'lib/interfaces';
 
@@ -19,12 +19,13 @@ const GlobalSelectCell = ({ table }: Props) => {
   return (
     <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={selectableCount === 0}>
       {(disabled) => (
-        <div>
-          <IndeterminateCheckbox
+        <div className="w-fit">
+          <Checkbox
             disabled={disabled}
             checked={checked && !disabled}
             indeterminate={indeterminate && !disabled}
             onChange={table.getToggleAllRowsSelectedHandler()}
+            iconClassName="max-sm:w-5 max-sm:h-5"
           />
         </div>
       )}

@@ -1,6 +1,6 @@
 import { Row } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
-import IndeterminateCheckbox from 'components/common/IndeterminateCheckbox';
+import Checkbox from 'components/common/Checkbox';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { AllowanceData } from 'lib/interfaces';
 
@@ -15,11 +15,12 @@ const SelectCell = ({ row }: Props) => {
   return (
     <ControlsWrapper chainId={selectedChainId} address={address}>
       {(disabled) => (
-        <div>
-          <IndeterminateCheckbox
+        <div className="w-fit">
+          <Checkbox
             disabled={disabled}
             checked={row.getIsSelected()}
             onChange={row.getToggleSelectedHandler()}
+            iconClassName="max-sm:w-5 max-sm:h-5"
           />
         </div>
       )}
