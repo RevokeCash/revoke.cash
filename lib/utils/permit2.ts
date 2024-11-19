@@ -2,7 +2,7 @@ import { PERMIT2_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
 import { BaseAllowanceData, Erc20TokenContract, Log } from 'lib/interfaces';
 import { Address, WalletClient, decodeEventLog } from 'viem';
-import { deduplicateLogsByTopics, getWalletAddress, sortLogsChronologically } from '.';
+import { deduplicateLogsByTopics, getWalletAddress, sortLogsChronologically, writeContractUnlessExcessiveGas } from '.';
 import { SECOND } from './time';
 
 export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
@@ -64,7 +64,6 @@ const getPermit2AllowanceFromApproval = async (
   return { spender, amount, lastUpdated, expiration, permit2Address };
 };
 
-// We don't need to do an excessive gas check for permit2 approvals since function is called on Permit2, not the token
 export const permit2Approve = async (
   permit2Address: Address,
   walletClient: WalletClient,
@@ -81,7 +80,8 @@ export const permit2Approve = async (
     amount,
     expiration,
   );
-  return walletClient.writeContract(transactionRequest);
+
+  return writeContractUnlessExcessiveGas(tokenContract.publicClient, walletClient, transactionRequest);
 };
 
 export const preparePermit2Approve = async (
