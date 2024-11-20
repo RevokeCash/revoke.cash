@@ -20,6 +20,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      # Option 1: Use tsc with specific paths
       - name: Run TypeScript Check
-        run: yarn tsc --noEmit "**/*.ts" "**/*.tsx"
+        run: yarn tsc project --typesctipt --noEmit
