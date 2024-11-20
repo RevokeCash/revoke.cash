@@ -69,19 +69,6 @@ export interface Log {
   timestamp?: number;
 }
 
-export interface ApprovalEvent {
-  rawLog: Log;
-  token: Address;
-  chainId: number;
-  owner: Address;
-  spender: Address;
-  time: TimeLog;
-  amount?: bigint; // Only for ERC20 tokens
-  tokenId?: bigint; // Only for ERC721 tokens (single token)
-  approved?: boolean; // Only for ERC721 tokens (approval for all)
-  expiration?: number; // Only for Permit2 allowances
-}
-
 export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
 
 export interface RateLimit {
