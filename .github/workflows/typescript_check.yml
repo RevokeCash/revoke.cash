@@ -1,4 +1,4 @@
-name: Prettier Linter check
+name: TypeScript Type Check
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     branches: [master]
 
 jobs:
-  prettier:
+  typescript:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,5 +20,6 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run Prettier
-        run: yarn prettier --check .
+      # Option 1: Use tsc with specific paths
+      - name: Run TypeScript Check
+        run: yarn tsc --noEmit "**/*.ts" "**/*.tsx"
