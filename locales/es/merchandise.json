@@ -1,21 +1,21 @@
 {
   "captions": {
-    "revoke-shirt": "First Edition Revoke T-shirt"
+    "revoke-shirt": "Camiseta Revoke de primera edición"
   },
   "meta": {
-    "description": "Claim your high quality Revoke.cash merchandise at in-person events.",
-    "title": "Revoke.cash Merchandise"
+    "description": "Reclama tu mercancía Revoke.cash de alta calidad en eventos presenciales.",
+    "title": "Mercancía Revoke.cash"
   },
   "sections": {
     "claiming": {
-      "content": "Leading up to Devcon 7 we generated unique codes for our users. These codes were given to users who used our Batch Revoke functionality. They could then be used to claim your t-shirt in person from the Revoke team at the event.",
-      "content-2": "We don't have concrete plans for future merchandise, but we will update this page and announce on our social media when we do. Similar to the first edition, we will be giving them out at events that we attend, and they will have a claim process linked to usage of our product. Let us know if you have anything on your wishlist for future merch!",
-      "title": "Claiming Merchandise & Future Plans"
+      "content": "Antes de Devcon 7, generamos códigos únicos para nuestros usuarios. Estos códigos se entregaron a los usuarios que utilizaron nuestra funcionalidad de revocación por lotes. A continuación, se pueden utilizar para reclamar tu camiseta en persona al equipo de Revoke en el evento.",
+      "content-2": "No tenemos planes concretos para futuros productos, pero actualizaremos esta página y anunciaremos en nuestras redes sociales cuando lo hagamos. Al igual que en la primera edición, los entregaremos en los eventos a los que asistamos, y tendrán un proceso de reclamación vinculado al uso de nuestro producto. ¡Haznos saber si tienes algo en tu lista de deseos para futuros productos!",
+      "title": "Reclamando de Mercancía y Planes Futuros"
     },
     "intro": {
-      "content": "We believe in sustainability, which is why we do not want to produce merchandise that will end up in landfills. Instead, we are producing limited runs of high-quality Revoke.cash merchandise. Doing so, we want to produce something that can be worn every day and is not overly recognizable as crypto merch.",
-      "content-2": "Since these are limited runs, we are only giving these out to our users at crypto events that we attend. Our inaugural collection are high-quality Revoke t-shirts that were given out at Devcon 7 in Bangkok, Thailand."
+      "content": "Creemos en la sostenibilidad, por eso no queremos producir productos que terminen en vertederos. En su lugar, estamos produciendo tiradas limitadas de productos de alta calidad de Revoke.cash. De esta manera, queremos producir algo que se pueda usar todos los días y que no sea demasiado reconocible como producto criptográfico.",
+      "content-2": "Dado que se trata de ediciones limitadas, solo las entregamos a nuestros usuarios en los eventos de criptomonedas a los que asistimos. Nuestra colección inaugural son camisetas Revoke de alta calidad que se entregaron en Devcon 7 en Bangkok, Tailandia."
     }
   },
-  "title": "Revoke.cash Merchandise"
+  "title": "Mercancía de Revoke.cash"
 }

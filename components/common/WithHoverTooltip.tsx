@@ -15,7 +15,7 @@ const WithHoverTooltip = ({ tooltip, placement, children }: Props) => (
     content={tooltip}
     placement={placement ?? 'top'}
     className="text-center break-words font-normal"
-    maxWidth={380}
+    maxWidth={400}
   >
     {children}
   </Tippy>
