@@ -21,4 +21,7 @@ jobs:
         run: yarn install
 
       - name: Run TypeScript Check
-        run: yarn tsc project --typesctipt --noEmit
+        shell: bash
+        run: |
+          shopt -s globstar
+          yarn tsc --noEmit $(find . -type f -name "*.ts" -o -name "*.tsx" ! -path "./node_modules/*")
