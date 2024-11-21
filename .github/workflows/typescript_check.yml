@@ -1,4 +1,4 @@
-name: TypeScript Type Check
+name: TypeScript Syntax Error Check
 
 on:
   push:
