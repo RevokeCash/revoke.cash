@@ -1,21 +1,22 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import type { AddressEvents, AllowanceData } from 'lib/interfaces';
+import type { AllowanceData } from 'lib/interfaces';
 import { getAllowancesFromEvents, stripAllowanceData } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
+import { getEventKey, TokenEvent } from 'lib/utils/events';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
 import { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
 
-export const useAllowances = (address: Address, events: AddressEvents, chainId: number) => {
+export const useAllowances = (address: Address, events: TokenEvent[], chainId: number) => {
   const [allowances, setAllowances] = useState<AllowanceData[]>();
   const publicClient = usePublicClient({ chainId });
 
   const { data, isLoading, error } = useQuery<AllowanceData[], Error>({
-    queryKey: ['allowances', address, chainId, events],
+    queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
     queryFn: async () => {
       const allowances = getAllowancesFromEvents(address, events, publicClient, chainId);
       track('Fetched Allowances', { account: address, chainId });

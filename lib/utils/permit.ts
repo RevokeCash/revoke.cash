@@ -1,9 +1,10 @@
 import { DAI_PERMIT_ABI } from 'lib/abis';
-import { ADDRESS_ZERO_PADDED, DUMMY_ADDRESS_PADDED } from 'lib/constants';
+import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import { BaseTokenData, Erc20TokenContract, Log } from 'lib/interfaces';
-import { Address, Hex, Signature, TypedDataDomain, WalletClient, hexToSignature } from 'viem';
-import { getWalletAddress, logSorterChronological, writeContractUnlessExcessiveGas } from '.';
+import { BaseTokenData, Erc20TokenContract, TimeLog } from 'lib/interfaces';
+import { Address, Hex, Signature, TypedDataDomain, WalletClient, parseSignature } from 'viem';
+import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
+import { TokenEvent, TokenEventType } from './events';
 import { getPermitDomain } from './tokens';
 
 export const permit = async (
@@ -81,7 +82,7 @@ export const signEIP2612Permit = async (
     message: { owner, spender, value, nonce, deadline },
   });
 
-  return hexToSignature(signatureHex);
+  return parseSignature(signatureHex);
 };
 
 export const signDaiPermit = async (
@@ -113,24 +114,26 @@ export const signDaiPermit = async (
     message: { holder, spender, nonce, expiry, allowed },
   });
 
-  return hexToSignature(signatureHex);
+  return parseSignature(signatureHex);
 };
 
-export const getLastCancelled = async (approvalEvents: Log[], token: BaseTokenData): Promise<Log> => {
-  const lastCancelledEvent = approvalEvents
-    .filter((event) => event.address === token.contract.address && isCancelPermitEvent(event))
-    .sort(logSorterChronological)
-    .at(-1);
+export const getLastCancelled = async (events: TokenEvent[], token: BaseTokenData): Promise<TimeLog> => {
+  const [lastCancelledEvent] = events.filter(
+    (event) => event.token === token.contract.address && isCancelPermitEvent(event),
+  );
 
   if (!lastCancelledEvent) return null;
 
-  const timestamp = await blocksDB.getLogTimestamp(token.contract.publicClient, lastCancelledEvent);
+  const timestamp = await blocksDB.getLogTimestamp(token.contract.publicClient, lastCancelledEvent.time);
 
-  return { ...lastCancelledEvent, timestamp };
+  return { ...lastCancelledEvent.time, timestamp };
 };
 
-const isCancelPermitEvent = (event: Log) => {
-  const hasDummySpender = event.topics[2] === DUMMY_ADDRESS_PADDED;
-  const hasZeroValue = event.data === ADDRESS_ZERO_PADDED || event.data === '0x';
+const isCancelPermitEvent = (event: TokenEvent) => {
+  if (event.type !== TokenEventType.APPROVAL_ERC20) return false;
+
+  const hasDummySpender = event.payload.spender === DUMMY_ADDRESS;
+  const hasZeroValue = event.payload.amount === 0n;
+
   return hasDummySpender && hasZeroValue;
 };

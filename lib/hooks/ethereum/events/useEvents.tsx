@@ -1,6 +1,13 @@
 import { ERC721_ABI } from 'lib/abis';
-import { addressToTopic } from 'lib/utils';
+import { addressToTopic, sortTokenEventsChronologically } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
+import {
+  parseApprovalForAllLog,
+  parseApprovalLog,
+  parsePermit2Log,
+  parseTransferLog,
+  TokenEvent,
+} from 'lib/utils/events';
 import { useMemo } from 'react';
 import { Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
@@ -72,7 +79,18 @@ export const useEvents = (address: Address, chainId: number) => {
   const events = useMemo(() => {
     if (!transferFrom || !transferTo || !approval || !approvalForAll || !permit2Approval) return undefined;
     if (error || isLoading) return undefined;
-    return { transferFrom, transferTo, approval, approvalForAll, permit2Approval };
+
+    const parsedEvents = [
+      // We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
+      ...approvalForAll.map((log) => parseApprovalForAllLog(log, chainId)),
+      ...approval.map((log) => parseApprovalLog(log, chainId)),
+      ...permit2Approval.map((log) => parsePermit2Log(log, chainId)),
+      ...transferFrom.map((log) => parseTransferLog(log, chainId, address)),
+      ...transferTo.map((log) => parseTransferLog(log, chainId, address)),
+    ];
+
+    // We sort the events in reverse chronological order to ensure that the most recent events are processed first
+    return sortTokenEventsChronologically(parsedEvents.filter(Boolean) as TokenEvent[]).reverse();
   }, [transferFrom, transferTo, approval, approvalForAll, permit2Approval]);
 
   return { events, isLoading, error };

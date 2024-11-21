@@ -6,26 +6,16 @@ import type {
   Contract,
   Erc20TokenContract,
   Erc721TokenContract,
-  Log,
   TokenContract,
   TokenFromList,
   TokenMetadata,
 } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
-import {
-  Address,
-  PublicClient,
-  TypedDataDomain,
-  domainSeparator,
-  getAbiItem,
-  getAddress,
-  getEventSelector,
-  pad,
-  toHex,
-} from 'viem';
+import { Address, domainSeparator, getAbiItem, getAddress, pad, PublicClient, toHex, TypedDataDomain } from 'viem';
 import { deduplicateArray } from '.';
 import { track } from './analytics';
+import { isTransferTokenEvent, TokenEvent, TokenEventType } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
 
@@ -46,13 +36,12 @@ export const isSpamToken = (symbol: string) => {
 
 export const getTokenData = async (
   contract: TokenContract,
+  events: TokenEvent[],
   owner: Address,
-  transfersFrom: Log[],
-  transfersTo: Log[],
   chainId: number,
 ): Promise<BaseTokenData> => {
   if (isErc721Contract(contract)) {
-    return getErc721TokenData(contract, owner, transfersFrom, transfersTo, chainId);
+    return getErc721TokenData(contract, owner, events, chainId);
   }
 
   return getErc20TokenData(contract, owner, chainId);
@@ -74,10 +63,13 @@ export const getErc20TokenData = async (
 export const getErc721TokenData = async (
   contract: Erc721TokenContract,
   owner: Address,
-  transfersFrom: Log[],
-  transfersTo: Log[],
+  events: TokenEvent[],
   chainId: number,
 ): Promise<BaseTokenData> => {
+  const transfers = events.filter((event) => event.type === TokenEventType.TRANSFER_ERC721);
+  const transfersFrom = transfers.filter((event) => event.payload.from === owner);
+  const transfersTo = transfers.filter((event) => event.payload.to === owner);
+
   const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
   const calculatedBalance = BigInt(transfersTo.length - transfersFrom.length);
 
@@ -203,33 +195,35 @@ export const hasZeroBalance = (balance: Balance, decimals?: number) => {
   return balance !== 'ERC1155' && formatFixedPointBigInt(balance, decimals) === '0';
 };
 
-export const createTokenContracts = (events: Log[], publicClient: PublicClient): TokenContract[] => {
-  return deduplicateArray(events, (a, b) => a.address === b.address)
+export const createTokenContracts = (events: TokenEvent[], publicClient: PublicClient): TokenContract[] => {
+  // Remove transfer events FROM the owner, because if that is the *only* event, it's likely a spam token
+  const filteredEvents = events.filter((event) => !(isTransferTokenEvent(event) && event.owner === event.payload.from));
+
+  return deduplicateArray(filteredEvents, (a, b) => a.token === b.token)
     .map((event) => createTokenContract(event, publicClient))
     .filter((contract) => contract !== undefined);
 };
 
-const createTokenContract = (event: Log, publicClient: PublicClient): TokenContract | undefined => {
-  const { address } = event;
+const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {
   const abi = getTokenAbi(event);
   if (!abi) return undefined;
 
-  return { address, abi, publicClient } as TokenContract;
+  return { address: event.token, abi, publicClient } as TokenContract;
 };
 
-const getTokenAbi = (event: Log): typeof ERC20_ABI | typeof ERC721_ABI | undefined => {
-  const Topics = {
-    TRANSFER: getEventSelector(getAbiItem({ abi: ERC20_ABI, name: 'Transfer' })),
-    APPROVAL: getEventSelector(getAbiItem({ abi: ERC20_ABI, name: 'Approval' })),
-    APPROVAL_FOR_ALL: getEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'ApprovalForAll' })),
-  };
-
-  if (![Topics.TRANSFER, Topics.APPROVAL, Topics.APPROVAL_FOR_ALL].includes(event.topics[0])) return undefined;
-  if (event.topics[0] === Topics.APPROVAL_FOR_ALL) return ERC721_ABI;
-  if (event.topics.length === 4) return ERC721_ABI;
-  if (event.topics.length === 3) return ERC20_ABI;
-
-  return undefined;
+const getTokenAbi = (event: TokenEvent): typeof ERC20_ABI | typeof ERC721_ABI | undefined => {
+  switch (event.type) {
+    case TokenEventType.TRANSFER_ERC20:
+    case TokenEventType.APPROVAL_ERC20:
+    case TokenEventType.PERMIT2:
+      return ERC20_ABI;
+    case TokenEventType.TRANSFER_ERC721:
+    case TokenEventType.APPROVAL_ERC721:
+    case TokenEventType.APPROVAL_FOR_ALL:
+      return ERC721_ABI;
+    default:
+      return undefined;
+  }
 };
 
 export const isErc721Contract = (contract: TokenContract): contract is Erc721TokenContract => {

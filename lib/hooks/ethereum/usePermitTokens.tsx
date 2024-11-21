@@ -29,7 +29,7 @@ export const usePermitTokens = () => {
 
       const permitTokens = await mapAsync(
         filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract)),
-        async (token) => ({ ...token, lastCancelled: await getLastCancelled(events.approval, token) }),
+        async (token) => ({ ...token, lastCancelled: await getLastCancelled(events, token) }),
       );
 
       return permitTokens;

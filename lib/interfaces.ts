@@ -77,14 +77,6 @@ export interface RateLimit {
   timeout?: number;
 }
 
-export interface AddressEvents {
-  transferFrom: Log[];
-  transferTo: Log[];
-  approval: Log[];
-  approvalForAll: Log[];
-  permit2Approval: Log[]; // Note that this combines Approval, Permit and Lockdown events
-}
-
 export interface Filter {
   address?: Address;
   topics: string[];

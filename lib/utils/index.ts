@@ -17,6 +17,7 @@ import {
   slice,
 } from 'viem';
 import { track } from './analytics';
+import { TokenEvent } from './events';
 import { bigintMin, fixedPointMultiply } from './math';
 
 export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
@@ -70,6 +71,9 @@ export const logSorterChronological = (a: Log, b: Log) => {
 };
 
 export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
+
+export const sortTokenEventsChronologically = (events: TokenEvent[]) =>
+  events.sort((a, b) => logSorterChronological(a.rawLog, b.rawLog));
 
 // This is O(n*m) complexity, but it's unlikely to be a problem in practice in most cases m (unique contracts) is way
 // smaller than n (total logs). The previous version of this function was O(n^2), which was a problem for accounts with

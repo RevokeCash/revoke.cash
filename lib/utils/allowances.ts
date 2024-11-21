@@ -3,7 +3,6 @@ import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import {
   TransactionType,
-  type AddressEvents,
   type AllowanceData,
   type BaseAllowanceData,
   type BaseTokenData,
@@ -15,53 +14,43 @@ import {
   type TransactionSubmitted,
 } from 'lib/interfaces';
 import { TransactionStore } from 'lib/stores/transaction-store';
-import { Address, PublicClient, WalletClient, WriteContractParameters, fromHex, getEventSelector } from 'viem';
-import {
-  addressToTopic,
-  deduplicateLogsByTopics,
-  filterLogsByAddress,
-  filterLogsByTopics,
-  sortLogsChronologically,
-  topicToAddress,
-  waitForTransactionConfirmation,
-  writeContractUnlessExcessiveGas,
-} from '.';
+import { Address, PublicClient, toEventSelector, WalletClient, WriteContractParameters } from 'viem';
+import { addressToTopic, deduplicateArray, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
 import { track } from './analytics';
 import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
+import {
+  Erc20ApprovalEvent,
+  Erc721ApprovalEvent,
+  Erc721ApprovalForAllEvent,
+  Erc721TransferEvent,
+  TokenEvent,
+  TokenEventType,
+} from './events';
 import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 import { createTokenContracts, getTokenData, hasZeroBalance, isErc721Contract } from './tokens';
 
 export const getAllowancesFromEvents = async (
   owner: Address,
-  events: AddressEvents,
+  events: TokenEvent[],
   publicClient: PublicClient,
   chainId: number,
 ): Promise<AllowanceData[]> => {
-  // We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
-  const allEvents = [...events.approvalForAll, ...events.approval, ...events.transferTo];
-  const contracts = createTokenContracts(allEvents, publicClient);
+  const contracts = createTokenContracts(events, publicClient);
 
   // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
     contracts.map(async (contract) => {
-      const approvalsForAll = filterLogsByAddress(events.approvalForAll, contract.address);
-      const approvals = filterLogsByAddress(events.approval, contract.address);
-      const transfersFrom = filterLogsByAddress(events.transferFrom, contract.address);
-      const transfersTo = filterLogsByAddress(events.transferTo, contract.address);
-      const permit2TopicFilter = [null, null, addressToTopic(contract.address)];
-      const permit2Approval = filterLogsByTopics(events.permit2Approval, permit2TopicFilter);
+      const contractEvents = events.filter((event) => event.token === contract.address);
 
       try {
-        const tokenData = await getTokenData(contract, owner, transfersFrom, transfersTo, chainId);
-        const allowances = await getAllowancesForToken(
-          contract,
-          approvals,
-          approvalsForAll,
-          permit2Approval,
-          owner,
-          tokenData,
-        );
+        const [tokenData, unfilteredAllowances] = await Promise.all([
+          getTokenData(contract, contractEvents, owner, chainId),
+          getAllowancesForToken(contract, contractEvents, owner),
+        ]);
+
+        // Filter out zero-value allowances
+        const allowances = unfilteredAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
 
         if (allowances.length === 0) {
           return [tokenData as AllowanceData];
@@ -90,45 +79,38 @@ export const getAllowancesFromEvents = async (
 
 export const getAllowancesForToken = async (
   contract: TokenContract,
-  approvalEvents: Log[],
-  approvalForAllEvents: Log[],
-  permit2ApprovalEvents: Log[],
+  events: TokenEvent[],
   userAddress: Address,
-  tokenData: BaseTokenData,
 ): Promise<BaseAllowanceData[]> => {
   if (isErc721Contract(contract)) {
-    const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(
-      contract,
-      userAddress,
-      approvalForAllEvents,
-    );
-    const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, approvalEvents);
+    const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(contract, userAddress, events);
+    const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, events);
 
     const allowances = [...limitedAllowances, ...unlimitedAllowances].filter((allowance) => !!allowance);
 
     return allowances;
   } else {
-    const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, approvalEvents);
-    const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, permit2ApprovalEvents);
+    const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events);
+    const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events);
     const allAllowances = [...regularAllowances, ...permit2Allowances];
 
-    // Filter out zero-value allowances
-    const filteredAllowance = allAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
-
-    return filteredAllowance;
+    return allAllowances;
   }
 };
 
 export const getErc20AllowancesFromApprovals = async (
   contract: Erc20TokenContract,
   owner: Address,
-  approvals: Log[],
+  events: TokenEvent[],
 ) => {
-  const sortedApprovals = sortLogsChronologically(approvals).reverse();
-  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
+  const approvalEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_ERC20);
+  const deduplicatedApprovalEvents = deduplicateArray(
+    approvalEvents,
+    (a, b) => a.token === b.token && a.owner === b.owner && a.payload.spender === b.payload.spender,
+  );
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval)),
+    deduplicatedApprovalEvents.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval)),
   );
 
   return allowances;
@@ -137,10 +119,9 @@ export const getErc20AllowancesFromApprovals = async (
 const getErc20AllowanceFromApproval = async (
   contract: Erc20TokenContract,
   owner: Address,
-  approval: Log,
+  approval: Erc20ApprovalEvent,
 ): Promise<BaseAllowanceData> => {
-  const spender = topicToAddress(approval.topics[2]);
-  const lastApprovedAmount = fromHex(approval.data, 'bigint');
+  const { spender, amount: lastApprovedAmount } = approval.payload;
 
   // If the most recent approval event was for 0, then we know for sure that the allowance is 0
   // If not, we need to check the current allowance because we cannot determine the allowance from the event
@@ -153,70 +134,63 @@ const getErc20AllowanceFromApproval = async (
       functionName: 'allowance',
       args: [owner, spender],
     }),
-    blocksDB.getTimeLog(contract.publicClient, approval),
+    blocksDB.getTimeLog(contract.publicClient, approval.time),
   ]);
 
   return { spender, amount, lastUpdated };
 };
 
-export const getLimitedErc721AllowancesFromApprovals = async (contract: Erc721TokenContract, approvals: Log[]) => {
-  const sortedApprovals = sortLogsChronologically(approvals).reverse();
+export const getLimitedErc721AllowancesFromApprovals = async (contract: Erc721TokenContract, events: TokenEvent[]) => {
+  const singeTokenIdEvents = events.filter(
+    (event) => event.type === TokenEventType.APPROVAL_ERC721 || event.type === TokenEventType.TRANSFER_ERC721,
+  );
 
-  // We only look at the topic0 (event signature) and topic3 (token ID), since a token ID can only have one *limited* approval at a time
-  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals, [0, 3]);
+  // We only look at the tokenId, since a tokenId can only have one *limited* approval at a time
+  const deduplicatedEvents = deduplicateArray(
+    singeTokenIdEvents,
+    (a, b) => a.token === b.token && a.payload.tokenId === b.payload.tokenId,
+  );
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getLimitedErc721AllowanceFromApproval(contract, approval)),
+    deduplicatedEvents.map((event) => getLimitedErc721AllowanceFromApproval(contract, event)),
   );
 
   return allowances;
 };
 
-const getLimitedErc721AllowanceFromApproval = async (contract: Erc721TokenContract, approval: Log) => {
-  // Wrap this in a try-catch since it's possible the NFT has been burned
-  try {
-    // Some contracts (like CryptoStrikers) may not implement ERC721 correctly
-    // by making tokenId a non-indexed parameter, in which case it needs to be
-    // taken from the event data rather than topics
-    const tokenIdEncoded = approval.topics.length === 4 ? approval.topics[3] : approval.data;
-    const tokenId = fromHex(tokenIdEncoded, 'bigint');
-    const lastApproved = topicToAddress(approval.topics[2]);
+const getLimitedErc721AllowanceFromApproval = async (
+  contract: Erc721TokenContract,
+  event: Erc721ApprovalEvent | Erc721TransferEvent,
+) => {
+  // "limited" NFT approvals are reset on transfer, so if the NFT was transferred more recently than it was approved,
+  // we know for sure that the allowance is revoked
+  if (event.type === TokenEventType.TRANSFER_ERC721) return undefined;
 
-    // If the most recent approval was a REVOKE, we know for sure that the allowance is revoked
-    // If not, we need to check the current allowance because we cannot determine the allowance from the event
-    // since it may have been "revoked" by transferring the NFT to another address
-    // TODO: We can probably join Approve and Transfer events to get the actual approved status from just events
-    if (lastApproved === ADDRESS_ZERO) return undefined;
+  const { tokenId, spender } = event.payload;
 
-    const [owner, spender, lastUpdated] = await Promise.all([
-      contract.publicClient.readContract({ ...contract, functionName: 'ownerOf', args: [tokenId] }),
-      contract.publicClient.readContract({
-        ...contract,
-        functionName: 'getApproved',
-        args: [tokenId],
-      }),
-      blocksDB.getTimeLog(contract.publicClient, approval),
-    ]);
+  // If the most recent approval was a REVOKE (aka APPROVE address(0)), we know for sure that the allowance is revoked
+  if (spender === ADDRESS_ZERO) return undefined;
 
-    const expectedOwner = topicToAddress(approval.topics[1]);
-    if (spender === ADDRESS_ZERO || owner !== expectedOwner) return undefined;
+  const [lastUpdated] = await Promise.all([blocksDB.getTimeLog(contract.publicClient, event.time)]);
 
-    return { spender, tokenId, lastUpdated };
-  } catch {
-    return undefined;
-  }
+  return { spender, tokenId, lastUpdated };
 };
 
 export const getUnlimitedErc721AllowancesFromApprovals = async (
   contract: Erc721TokenContract,
   owner: string,
-  approvals: Log[],
+  events: TokenEvent[],
 ) => {
-  const sortedApprovals = sortLogsChronologically(approvals).reverse();
-  const deduplicatedApprovals = deduplicateLogsByTopics(sortedApprovals);
+  const approvalForAllEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_FOR_ALL);
+  const deduplicatedApprovalForAllEvents = deduplicateArray(
+    approvalForAllEvents,
+    (a, b) => a.token === b.token && a.owner === b.owner && a.payload.spender === b.payload.spender,
+  );
 
   const allowances = await Promise.all(
-    deduplicatedApprovals.map((approval) => getUnlimitedErc721AllowanceFromApproval(contract, owner, approval)),
+    deduplicatedApprovalForAllEvents.map((approval) =>
+      getUnlimitedErc721AllowanceFromApproval(contract, owner, approval),
+    ),
   );
 
   return allowances;
@@ -225,18 +199,14 @@ export const getUnlimitedErc721AllowancesFromApprovals = async (
 const getUnlimitedErc721AllowanceFromApproval = async (
   contract: Erc721TokenContract,
   _owner: string,
-  approval: Log,
+  approval: Erc721ApprovalForAllEvent,
 ) => {
-  const spender = topicToAddress(approval.topics[2]);
+  const { spender, approved: isApprovedForAll } = approval.payload;
 
-  // For ApprovalForAll events, we can determine the allowance (true/false) from *only* the event
-  // so we do not have to check the chain for the current allowance
-  const isApprovedForAll = approval.data !== '0x' && fromHex(approval.data, 'bigint') !== 0n;
-
-  // If the allowance already revoked, we don't need to make any more requests
+  // If the most recent approval event was false, we know that the approval is revoked, and we don't need to check the chain
   if (!isApprovedForAll) return undefined;
 
-  const [lastUpdated] = await Promise.all([blocksDB.getTimeLog(contract.publicClient, approval)]);
+  const [lastUpdated] = await Promise.all([blocksDB.getTimeLog(contract.publicClient, approval.time)]);
 
   return { spender, lastUpdated };
 };
@@ -288,7 +258,7 @@ export const generatePatchedAllowanceEvents = (
       logIndex: 0,
       address: MOONBIRDS_ADDRESS,
       topics: [
-        getEventSelector('ApprovalForAll(address,address,bool)'),
+        toEventSelector('ApprovalForAll(address,address,bool)'),
         addressToTopic(userAddress),
         addressToTopic(openseaProxyAddress),
       ],
