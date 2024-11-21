@@ -87,7 +87,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.NeonEVMMainnet,
   ChainId.VelasEVMMainnet,
   ChainId.ElastosSmartChain,
-  ChainId.Evmos,
   ChainId.ShimmerEVM,
   ChainId.Lisk,
   ChainId.MilkomedaC1Mainnet,
@@ -110,6 +109,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RARIChainMainnet,
   ChainId.BitgertMainnet,
   ChainId.Palm,
+  ChainId.GeistMainnet,
   ChainId.PegoNetwork,
   ChainId.Redstone,
   ChainId.RSS3VSLMainnet,
@@ -153,6 +153,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BeamTestnet,
   ChainId.TabiTestnet,
   ChainId.RSS3VSLSepoliaTestnet,
+  ChainId.StoryOdysseyTestnet,
   // ChainId.LUKSOTestnet,
 ] as const;
 
@@ -973,48 +974,6 @@ export const CHAINS: Record<number, Chain> = {
     //   apiUrl: 'https://api.reservoir.tools',
     // }),
   }),
-  [ChainId.Evmos]: new Chain({
-    type: SupportType.COVALENT,
-    chainId: ChainId.Evmos,
-    name: 'Evmos',
-    logoUrl: '/assets/images/vendor/chains/evmos.svg',
-    rpc: {
-      main: 'https://evmos-mainnet.public.blastapi.io',
-      free: 'https://evmos-mainnet.public.blastapi.io',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // Forge (Factory) | (0.05%) stEVMOS -> (0.05%) axlUSDC
-        new UniswapV3ReadonlyPriceStrategy({
-          address: '0xf544365e7065966f190155F629cE0182fC68Eaa2',
-          path: [
-            toHex(500, { size: 3 }),
-            '0x2C68D1d6aB986Ff4640b51e1F14C716a076E44C4',
-            toHex(500, { size: 3 }),
-            '0x15C3Eb3B621d1Bff62CbA1c9536B7c1AE9149b57',
-          ],
-          decimals: 6,
-          nativeAsset: '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517',
-        }),
-        // Forge (Factory) | (0.05%) stATOM -> (0.05%) stEVMOS -> (0.05%) axlUSDC
-        new UniswapV3ReadonlyPriceStrategy({
-          address: '0xf544365e7065966f190155F629cE0182fC68Eaa2',
-          path: [
-            toHex(500, { size: 3 }),
-            '0xB5124FA2b2cF92B2D469b249433BA1c96BDF536D',
-            toHex(500, { size: 3 }),
-            '0x2C68D1d6aB986Ff4640b51e1F14C716a076E44C4',
-            toHex(500, { size: 3 }),
-            '0x15C3Eb3B621d1Bff62CbA1c9536B7c1AE9149b57',
-          ],
-          decimals: 6,
-          liquidityParameters: { minLiquidity: 10n ** 9n }, // TODO: This is a stopgap to make prices work, fix later
-        }),
-      ],
-    }),
-  }),
   [ChainId.ExosamaNetwork]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.ExosamaNetwork,
@@ -1116,6 +1075,19 @@ export const CHAINS: Record<number, Chain> = {
         }),
       ],
     }),
+  }),
+  [ChainId.GeistMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.GeistMainnet,
+    name: 'Geist',
+    logoUrl: '/assets/images/vendor/chains/geist.png',
+    explorerUrl: 'https://geist-mainnet.explorer.alchemy.com/',
+    rpc: {
+      main: `https://geist-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://geist-mainnet.g.alchemy.com/public',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.Gnosis]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2083,6 +2055,15 @@ export const CHAINS: Record<number, Chain> = {
       ],
     }),
   }),
+  [ChainId.StoryOdysseyTestnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.StoryOdysseyTestnet,
+    name: 'Story Odyssey',
+    logoUrl: '/assets/images/vendor/chains/story.svg',
+    etherscanCompatibleApiUrl: 'https://odyssey.storyscan.xyz/api',
+    isTestnet: true,
+    correspondingMainnetChainId: 12345678901,
+  }),
   [ChainId.SyscoinMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SyscoinMainnet,
@@ -2352,6 +2333,12 @@ export const CHAINS: Record<number, Chain> = {
     //   apiUrl: 'https://api-zora.reservoir.tools',
     // }),
   }),
+  // TODO: This is a placeholder so we can add a description for Story
+  [12345678901]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: 12345678901,
+    name: 'Story',
+  }),
   // TODO: This is a placeholder so we can add a description for Berachain
   [12345678903]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -2531,16 +2518,17 @@ export const DEFAULT_DONATION_AMOUNTS = {
   EOS: '30',
   ETC: '1',
   ETH: '0.006',
-  EVMOS: '1000',
   FLR: '1000',
   frxETH: '0.006',
   FTM: '20',
   FUSE: '500',
+  GHST: '16',
   GLMR: '100',
   GOLDX: '1', // Can't find price info
   IMX: '10',
   INJ: '0.6',
   IOTA: '100',
+  IP: '1', // Can't find price info
   KAI: '8000',
   KCS: '2',
   mADA: '50',

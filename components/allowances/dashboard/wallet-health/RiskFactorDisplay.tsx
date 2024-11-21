@@ -60,7 +60,7 @@ const RiskFactorDisplay = ({ riskFactor }: Props) => {
   });
 
   return (
-    <div className={twMerge('flex items-center justify-center gap-1')}>
+    <div className={twMerge('flex items-center justify-center gap-1 flex-wrap')}>
       <div>{getRiskIcon(riskFactor)}</div>
       <div>{riskFactorText}</div>
       {source && <div>({sourceDisplay})</div>}
