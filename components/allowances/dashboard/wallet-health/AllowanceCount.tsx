@@ -21,7 +21,7 @@ const AllowancesCount = ({ allowances, isLoading, error }: Props) => {
         <div className="text-zinc-600 dark:text-zinc-400 text-center">
           {t('address.wallet_health.total_allowances')}
         </div>
-        <div className="font-bold">{isLoading ? '000' : actualAllowances?.length}</div>
+        <div className="font-bold total-allowances">{isLoading ? '000' : actualAllowances?.length}</div>
       </div>
     </Loader>
   );

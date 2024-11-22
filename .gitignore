@@ -57,6 +57,7 @@ localazy.content.keys.json
 cypress/videos
 cypress/screenshots
 cypress/downloads
+cypress/temp
 
 .vscode/settings.json
 .vscode/launch.json

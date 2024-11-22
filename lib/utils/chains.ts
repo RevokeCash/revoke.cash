@@ -1902,7 +1902,8 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.RootstockMainnet,
     name: 'Rootstock',
     logoUrl: '/assets/images/vendor/chains/rootstock.jpg',
-    etherscanCompatibleApiUrl: 'https://blockscout.com/rsk/mainnet/api',
+    explorerUrl: 'https://rootstock.blockscout.com',
+    etherscanCompatibleApiUrl: 'https://rootstock.blockscout.com/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
   }),
