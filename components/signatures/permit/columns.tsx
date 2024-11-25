@@ -21,9 +21,7 @@ export enum ColumnId {
 
 export const accessors = {
   balance: (allowance: AllowanceData) => {
-    return allowance.balance === 'ERC1155'
-      ? 'ERC1155'
-      : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
+    return formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
 };
 

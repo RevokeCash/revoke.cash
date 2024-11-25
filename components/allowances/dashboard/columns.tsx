@@ -45,9 +45,7 @@ export const accessors = {
     return allowance.tokenId ?? 'Unlimited';
   },
   balance: (allowance: AllowanceData) => {
-    return allowance.balance === 'ERC1155'
-      ? 'ERC1155'
-      : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
+    return formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
   assetType: (allowance: AllowanceData) => {
     if (isErc721Contract(allowance.contract)) return 'NFT';
@@ -62,7 +60,6 @@ export const accessors = {
 
     // If we don't know the price, we can't calculate the value at risk, but we want to it to be sorted
     // before "no approvals" and before the < $0.01 threshold
-    if (allowance.balance === 'ERC1155') return 0.01;
     if (isNullish(allowance.metadata.price)) return 0.01;
     return calculateValueAtRisk(allowance);
   },

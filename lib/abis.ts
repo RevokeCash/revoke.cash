@@ -27,16 +27,29 @@ export const ERC721_ABI = parseAbi([
   'function symbol() public view returns (string)',
   'function balanceOf(address owner) public view returns (uint256 balance)',
   'function ownerOf(uint256 tokenId) public view returns (address owner)',
-  'function safeTransferFrom(address from, address to, uint256 tokenId, bytes data) public payable',
-  'function safeTransferFrom(address from, address to, uint256 tokenId) public payable',
-  'function transferFrom(address from, address to, uint256 tokenId) public payable',
-  'function approve(address approved, uint256 tokenId) public payable',
+  'function safeTransferFrom(address from, address to, uint256 tokenId, bytes data) public',
+  'function safeTransferFrom(address from, address to, uint256 tokenId) public',
+  'function transferFrom(address from, address to, uint256 tokenId) public',
+  'function approve(address approved, uint256 tokenId) public',
   'function setApprovalForAll(address spender, bool approved) public',
   'function getApproved(uint256 tokenId) public view returns (address)',
   'function isApprovedForAll(address owner, address spender) public view returns (bool)',
   'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
   'event Approval(address indexed owner, address indexed spender, uint256 indexed tokenId)',
   'event ApprovalForAll(address indexed owner, address indexed spender, bool approved)',
+]);
+
+export const ERC1155_ABI = parseAbi([
+  'function balanceOf(address owner, uint256 id) public view returns (uint256)',
+  'function balanceOfBatch(address[] owners, uint256[] ids) public view returns (uint256[])',
+  'function setApprovalForAll(address spender, bool approved) public',
+  'function isApprovedForAll(address owner, address spender) public view returns (bool)',
+  'function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data) public',
+  'function safeBatchTransferFrom(address from, address to, uint256[] ids, uint256[] amounts, bytes data) public',
+  'event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 amount)',
+  'event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] amounts)',
+  'event ApprovalForAll(address indexed owner, address indexed spender, bool approved)',
+  'event URI(string value, uint256 indexed id)',
 ]);
 
 export const OPENSEA_REGISTRY_ABI = parseAbi([

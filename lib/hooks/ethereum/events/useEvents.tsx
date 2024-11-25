@@ -4,6 +4,7 @@ import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import {
   parseApprovalForAllLog,
   parseApprovalLog,
+  parseErc1155TransferLog,
   parsePermit2Log,
   parseTransferLog,
   TokenEvent,
@@ -12,6 +13,7 @@ import { useMemo } from 'react';
 import { Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
+import { useErc1155TransferEvents } from './useErc1155TransferEvents';
 import { usePermit2Events } from './usePermit2Events';
 
 export const useEvents = (address: Address, chainId: number) => {
@@ -57,6 +59,12 @@ export const useEvents = (address: Address, chainId: number) => {
     error: permit2ApprovalError,
   } = usePermit2Events(address, chainId);
 
+  const {
+    events: erc1155Transfer,
+    isLoading: isErc1155TransferLoading,
+    error: erc1155TransferError,
+  } = useErc1155TransferEvents(address, chainId);
+
   // Manually patch the ApprovalForAll events
   const approvalForAll = useMemo(() => {
     if (!transferFrom || !transferTo || !approval || !approvalForAllUnpatched) return undefined;
@@ -72,12 +80,16 @@ export const useEvents = (address: Address, chainId: number) => {
   }, [transferFrom, transferTo, approval, approvalForAllUnpatched, openSeaProxyAddress]);
 
   const isEventsLoading = isTransferFromLoading || isTransferToLoading || isApprovalLoading || isApprovalForAllLoading;
-  const isLoading = isOpenSeaProxyAddressLoading || isEventsLoading || isPermit2ApprovalLoading;
+  const isLoading =
+    isOpenSeaProxyAddressLoading || isEventsLoading || isPermit2ApprovalLoading || isErc1155TransferLoading;
   const eventsError = transferFromError || transferToError || approvalError || approvalForAllError;
-  const error = eventsError || permit2ApprovalError;
+  const error = eventsError || permit2ApprovalError || erc1155TransferError;
 
   const events = useMemo(() => {
-    if (!transferFrom || !transferTo || !approval || !approvalForAll || !permit2Approval) return undefined;
+    if (!transferFrom || !transferTo || !approval || !approvalForAll || !permit2Approval || !erc1155Transfer) {
+      return undefined;
+    }
+
     if (error || isLoading) return undefined;
 
     const parsedEvents = [
@@ -85,13 +97,14 @@ export const useEvents = (address: Address, chainId: number) => {
       ...approvalForAll.map((log) => parseApprovalForAllLog(log, chainId)),
       ...approval.map((log) => parseApprovalLog(log, chainId)),
       ...permit2Approval.map((log) => parsePermit2Log(log, chainId)),
+      ...erc1155Transfer.map((log) => parseErc1155TransferLog(log, chainId, address)),
       ...transferFrom.map((log) => parseTransferLog(log, chainId, address)),
       ...transferTo.map((log) => parseTransferLog(log, chainId, address)),
     ];
 
     // We sort the events in reverse chronological order to ensure that the most recent events are processed first
     return sortTokenEventsChronologically(parsedEvents.filter(Boolean) as TokenEvent[]).reverse();
-  }, [transferFrom, transferTo, approval, approvalForAll, permit2Approval]);
+  }, [transferFrom, transferTo, approval, approvalForAll, permit2Approval, erc1155Transfer]);
 
   return { events, isLoading, error };
 };

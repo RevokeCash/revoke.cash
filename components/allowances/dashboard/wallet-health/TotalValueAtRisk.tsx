@@ -21,10 +21,7 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
   const totalValueAtRisk = calculateTotalValueAtRisk(allowances ?? []);
 
   const hasNftsAtRisk = allowances?.some(
-    (allowance) =>
-      !!allowance.spender &&
-      isErc721Contract(allowance.contract) &&
-      (allowance.balance === 'ERC1155' || allowance.balance > 0n),
+    (allowance) => !!allowance.spender && isErc721Contract(allowance.contract) && allowance.balance > 0n,
   );
 
   const priceStrategy = getChainPriceStrategy(chainId);

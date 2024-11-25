@@ -72,7 +72,6 @@ export const getAllowancesFromEvents = async (
   // Filter out any zero-balance + zero-allowance tokens
   return allowances
     .flat()
-    .filter((allowance) => allowance.spender || allowance.balance !== 'ERC1155')
     .filter((allowance) => allowance.spender || !hasZeroBalance(allowance.balance, allowance.metadata.decimals))
     .sort((a, b) => a.metadata.symbol.localeCompare(b.metadata.symbol));
 };

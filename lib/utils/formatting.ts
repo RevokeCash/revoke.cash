@@ -1,4 +1,3 @@
-import { Balance } from 'lib/interfaces';
 import { formatUnits } from 'viem';
 import { isNullish } from '.';
 import { fixedPointMultiply } from './math';
@@ -44,13 +43,11 @@ export const parseFixedPointBigInt = (floatString: string, decimals: number): bi
   return BigInt(integerPart + fractionalPart.slice(0, decimals).padEnd(decimals, '0'));
 };
 
-export const formatBalance = (symbol: string, balance: Balance, decimals?: number) => {
-  if (balance === 'ERC1155') return `(ERC1155)`;
+export const formatBalance = (symbol: string, balance: bigint, decimals?: number) => {
   return `${formatFixedPointBigInt(balance, decimals)} ${symbol}`;
 };
 
-export const formatFiatBalance = (balance: Balance, price?: number, decimals?: number, fiatSign: string = '$') => {
-  if (balance === 'ERC1155') return null;
+export const formatFiatBalance = (balance: bigint, price?: number, decimals?: number, fiatSign: string = '$') => {
   if (isNullish(price)) return null;
   return formatFiatAmount(Number(formatUnits(fixedPointMultiply(balance, price, decimals ?? 18), decimals)));
 };

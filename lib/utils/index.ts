@@ -31,10 +31,6 @@ export const isNullish = (value: unknown): value is null | undefined => {
 };
 
 const calculateMaxAllowanceAmount = (allowance: AllowanceData) => {
-  if (allowance.balance === 'ERC1155') {
-    throw new Error('ERC1155 tokens are not supported');
-  }
-
   if (allowance.amount) return allowance.amount;
   if (allowance.tokenId) return 1n;
 
@@ -43,7 +39,6 @@ const calculateMaxAllowanceAmount = (allowance: AllowanceData) => {
 
 export const calculateValueAtRisk = (allowance: AllowanceData): number => {
   if (!allowance.spender) return null;
-  if (allowance.balance === 'ERC1155') return null;
 
   if (allowance.balance === 0n) return 0;
   if (isNullish(allowance.metadata.price)) return null;

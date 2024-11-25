@@ -1,7 +1,6 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type {
-  Balance,
   BaseTokenData,
   Contract,
   Erc20TokenContract,
@@ -66,24 +65,42 @@ export const getErc721TokenData = async (
   events: TokenEvent[],
   chainId: number,
 ): Promise<BaseTokenData> => {
-  const transfers = events.filter((event) => event.type === TokenEventType.TRANSFER_ERC721);
-  const transfersFrom = transfers.filter((event) => event.payload.from === owner);
-  const transfersTo = transfers.filter((event) => event.payload.to === owner);
-
-  const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
-  const calculatedBalance = BigInt(transfersTo.length - transfersFrom.length);
+  const calculatedBalance = calculateErc721Balance(events, owner);
 
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
-    shouldFetchBalance
-      ? withFallback<Balance>(
-          contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
-          'ERC1155',
-        )
-      : calculatedBalance,
+    calculatedBalance ??
+      withFallback<bigint>(
+        contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
+        0n,
+      ),
   ]);
 
   return { contract, metadata, chainId, owner, balance };
+};
+
+const calculateErc721Balance = (events: TokenEvent[], owner: Address): bigint | null => {
+  const hasTransferEvents = events.some(
+    (event) => event.type === TokenEventType.TRANSFER_ERC721 || event.type === TokenEventType.TRANSFER_ERC1155,
+  );
+
+  if (!hasTransferEvents) return null;
+
+  const balance = events.reduce((acc, event) => {
+    if (event.type === TokenEventType.TRANSFER_ERC721) {
+      if (event.payload.from === owner) return acc - 1n;
+      return acc + 1n;
+    }
+
+    if (event.type === TokenEventType.TRANSFER_ERC1155) {
+      if (event.payload.from === owner) return acc - event.payload.amounts.reduce((a, b) => a + b, 0n);
+      return acc + event.payload.amounts.reduce((a, b) => a + b, 0n);
+    }
+
+    return acc;
+  }, 0n);
+
+  return balance;
 };
 
 const getTokenDataFromMapping = async (
@@ -191,8 +208,8 @@ export const throwIfSpamNft = async (contract: Contract) => {
   }
 };
 
-export const hasZeroBalance = (balance: Balance, decimals?: number) => {
-  return balance !== 'ERC1155' && formatFixedPointBigInt(balance, decimals) === '0';
+export const hasZeroBalance = (balance: bigint, decimals?: number) => {
+  return formatFixedPointBigInt(balance, decimals) === '0';
 };
 
 export const createTokenContracts = (events: TokenEvent[], publicClient: PublicClient): TokenContract[] => {

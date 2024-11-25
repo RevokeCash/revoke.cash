@@ -1,4 +1,4 @@
-import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
+import { ERC1155_ABI, ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import { Log, TimeLog } from 'lib/interfaces';
 import { Address, decodeEventLog } from 'viem';
 import { isNullish } from '.';
@@ -10,6 +10,7 @@ export enum TokenEventType {
   PERMIT2 = 'PERMIT2',
   TRANSFER_ERC20 = 'TRANSFER_ERC20',
   TRANSFER_ERC721 = 'TRANSFER_ERC721',
+  TRANSFER_ERC1155 = 'TRANSFER_ERC1155',
 }
 
 export interface BaseTokenEvent {
@@ -74,12 +75,27 @@ export interface Erc721TransferEvent extends BaseTokenEvent {
   };
 }
 
+export interface Erc1155TransferEvent extends BaseTokenEvent {
+  type: TokenEventType.TRANSFER_ERC1155;
+  payload: {
+    operator: Address;
+    from: Address;
+    to: Address;
+    ids: bigint[];
+    amounts: bigint[];
+  };
+}
+
 export type ApprovalTokenEvent = Erc20ApprovalEvent | Erc721ApprovalEvent | Erc721ApprovalForAllEvent | Permit2Event;
-export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent;
+export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent | Erc1155TransferEvent;
 export type TokenEvent = ApprovalTokenEvent | TransferTokenEvent;
 
 export const isTransferTokenEvent = (event: TokenEvent): event is TransferTokenEvent => {
-  return event.type === TokenEventType.TRANSFER_ERC20 || event.type === TokenEventType.TRANSFER_ERC721;
+  return (
+    event.type === TokenEventType.TRANSFER_ERC20 ||
+    event.type === TokenEventType.TRANSFER_ERC721 ||
+    event.type === TokenEventType.TRANSFER_ERC1155
+  );
 };
 
 export const isApprovalTokenEvent = (event: TokenEvent): event is ApprovalTokenEvent => {
@@ -175,6 +191,29 @@ export const parseTransferLog = (
     return { type, rawLog: log, token: log.address, chainId, owner, time, payload };
   } catch {
     console.error('Malformed transfer log:', log);
+    return undefined;
+  }
+};
+
+export const parseErc1155TransferLog = (
+  log: Log,
+  chainId: number,
+  owner: Address,
+): Erc1155TransferEvent | undefined => {
+  try {
+    const parsedEvent = decodeEventLog({ abi: ERC1155_ABI, data: log.data, topics: log.topics, strict: false }) as any;
+
+    const { operator, from, to, id, ids, amount, amounts } = parsedEvent.args;
+    const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
+
+    if ([operator, from, to].some((arg) => isNullish(arg))) return undefined;
+
+    if ([id, amount].some((arg) => isNullish(arg)) || [ids, amounts].some((arg) => isNullish(arg))) return undefined;
+
+    const payload = { operator, from, to, ids: ids ?? [id], amounts: amounts ?? [amount] };
+    return { type: TokenEventType.TRANSFER_ERC1155, rawLog: log, token: log.address, chainId, owner, time, payload };
+  } catch {
+    console.error('Malformed ERC1155 transfer log:', log);
     return undefined;
   }
 };
