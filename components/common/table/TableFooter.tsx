@@ -1,4 +1,4 @@
-import { flexRender, Table } from '@tanstack/react-table';
+import { flexRender, type Table } from '@tanstack/react-table';
 
 interface Props<T> {
   table: Table<T>;
@@ -7,8 +7,7 @@ interface Props<T> {
 const TableFooter = <T,>({ table }: Props<T>) => {
   const footers = table
     .getFooterGroups()
-    .map((group) => group.headers.map((header) => header.column.columnDef.footer))
-    .flat()
+    .flatMap((group) => group.headers.map((header) => header.column.columnDef.footer))
     .filter(Boolean);
 
   if (footers.length === 0) return null;

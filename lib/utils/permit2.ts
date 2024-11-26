@@ -1,7 +1,7 @@
 import { PERMIT2_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
-import { BaseAllowanceData, Erc20TokenContract, Log } from 'lib/interfaces';
-import { Address, WalletClient, decodeEventLog } from 'viem';
+import type { BaseAllowanceData, Erc20TokenContract, Log } from 'lib/interfaces';
+import { type Address, type WalletClient, decodeEventLog } from 'viem';
 import { deduplicateLogsByTopics, getWalletAddress, sortLogsChronologically, writeContractUnlessExcessiveGas } from '.';
 import { SECOND } from './time';
 

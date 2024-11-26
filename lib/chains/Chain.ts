@@ -1,13 +1,13 @@
 import { getChain } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
-import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
-import { PriceStrategy } from 'lib/price/PriceStrategy';
+import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
+import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { SECOND } from 'lib/utils/time';
 import {
-  AddEthereumChainParameter,
-  Address,
-  PublicClient,
-  Chain as ViemChain,
+  type AddEthereumChainParameter,
+  type Address,
+  type PublicClient,
+  type Chain as ViemChain,
   createPublicClient,
   defineChain,
   http,
@@ -176,7 +176,11 @@ export class Chain {
   getViemChainConfig(): ViemChain {
     const chainInfo = getChain(this.chainId);
     const chainName = this.getName();
-    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken(), decimals: 18 };
+    const fallbackNativeCurrency = {
+      name: chainName,
+      symbol: this.getNativeToken(),
+      decimals: 18,
+    };
 
     return defineChain({
       id: this.chainId,
@@ -199,7 +203,11 @@ export class Chain {
   }
 
   getAddEthereumChainParameter(): AddEthereumChainParameter {
-    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken(), decimals: 18 };
+    const fallbackNativeCurrency = {
+      name: this.getName(),
+      symbol: this.getNativeToken(),
+      decimals: 18,
+    };
     const addEthereumChainParameter = {
       chainId: String(this.chainId),
       chainName: this.getName(),

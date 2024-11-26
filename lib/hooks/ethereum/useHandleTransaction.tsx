@@ -1,5 +1,5 @@
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
-import { TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { useRef } from 'react';

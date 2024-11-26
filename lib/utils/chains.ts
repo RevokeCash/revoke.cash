@@ -1,12 +1,12 @@
 import { ChainId } from '@revoke.cash/chains';
 import { ALCHEMY_API_KEY, INFURA_API_KEY } from 'lib/constants';
-import { RateLimit } from 'lib/interfaces';
+import type { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
-import { PriceStrategy } from 'lib/price/PriceStrategy';
+import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
-import { AddEthereumChainParameter, PublicClient, Chain as ViemChain, toHex } from 'viem';
+import { type AddEthereumChainParameter, type PublicClient, type Chain as ViemChain, toHex } from 'viem';
 import { Chain, SupportType } from '../chains/Chain';
 
 // Make sure to update these lists when updating the above lists
@@ -933,7 +933,9 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: {
       ...MULTICALL,
       ensRegistry: { address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e' },
-      ensUniversalResolver: { address: '0xc0497E381f536Be9ce14B0dD3817cBcAe57d2F62' },
+      ensUniversalResolver: {
+        address: '0xc0497E381f536Be9ce14B0dD3817cBcAe57d2F62',
+      },
     },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,

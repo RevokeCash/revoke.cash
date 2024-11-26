@@ -1,11 +1,11 @@
-import { SearchParamsOption, TimeoutError } from 'ky';
-import { Erc721TokenContract } from 'lib/interfaces';
+import { type SearchParamsOption, TimeoutError } from 'ky';
+import type { Erc721TokenContract } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { isRateLimitError } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
 import { RequestQueue } from '../api/logs/RequestQueue';
 import { AbstractPriceStrategy } from './AbstractPriceStrategy';
-import { PriceStrategy } from './PriceStrategy';
+import type { PriceStrategy } from './PriceStrategy';
 
 // Don't return a price if the collection is on the ignore list
 const IGNORE_LIST = [
@@ -30,7 +30,10 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
     super({ supportedAssets: ['ERC721'] });
     this.apiKey = options.apiKey;
     this.apiUrl = options.apiUrl;
-    this.queue = new RequestQueue(`reservoir:${options.apiKey}`, { interval: 1000, intervalCap: 80 });
+    this.queue = new RequestQueue(`reservoir:${options.apiKey}`, {
+      interval: 1000,
+      intervalCap: 80,
+    });
   }
 
   public async calculateTokenPriceInternal(contract: Erc721TokenContract): Promise<number> {
@@ -65,7 +68,9 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
       sortDirection: 'asc',
     };
 
-    const result = await this.makeGetRequest<{ collections: ReservoirNFTCollection[] }>(url, searchParams);
+    const result = await this.makeGetRequest<{
+      collections: ReservoirNFTCollection[];
+    }>(url, searchParams);
 
     if (result.collections.length === 0) {
       throw new Error(`No collection found for contract address ${contractAddress}`);

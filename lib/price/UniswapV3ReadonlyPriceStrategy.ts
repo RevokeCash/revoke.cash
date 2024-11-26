@@ -1,7 +1,15 @@
 import { UNISWAP_V3_POOL_ABI } from 'lib/abis';
-import { Erc20TokenContract } from 'lib/interfaces';
-import { Address, Hex, encodeAbiParameters, getCreate2Address, hexToNumber, keccak256, parseAbiParameters } from 'viem';
-import { UniswapV3PriceStrategy, UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
+import type { Erc20TokenContract } from 'lib/interfaces';
+import {
+  type Address,
+  type Hex,
+  encodeAbiParameters,
+  getCreate2Address,
+  hexToNumber,
+  keccak256,
+  parseAbiParameters,
+} from 'viem';
+import { UniswapV3PriceStrategy, type UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
 import { calculateTokenPrice } from './utils';
 
 export interface UniswapV3ReadonlyPriceStrategyOptions extends UniswapV3PriceStrategyOptions {
@@ -49,7 +57,11 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
       if (path[i].length !== 42) continue;
       if (i > path.length - 3) break;
 
-      const pair = { token0: path[i], token1: path[i + 2], fee: hexToNumber(path[i + 1]) };
+      const pair = {
+        token0: path[i],
+        token1: path[i + 2],
+        fee: hexToNumber(path[i + 1]),
+      };
       pairs.push(pair);
     }
 
@@ -99,7 +111,11 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
   private calculatePairAddress(token0: Address, token1: Address, fee: number): Address {
     const [tokenA, tokenB] = tokenSortsBefore(token0, token1) ? [token0, token1] : [token1, token0];
     const salt = keccak256(encodeAbiParameters(parseAbiParameters('address, address, uint24'), [tokenA, tokenB, fee]));
-    return getCreate2Address({ from: this.address, salt, bytecodeHash: this.poolBytecodeHash });
+    return getCreate2Address({
+      from: this.address,
+      salt,
+      bytecodeHash: this.poolBytecodeHash,
+    });
   }
 
   // TODO: We may need to solve the liquidity issue better in general for this strategy

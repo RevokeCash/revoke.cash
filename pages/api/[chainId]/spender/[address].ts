@@ -5,8 +5,8 @@ import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderData
 import { OnchainSpenderRiskDataSource } from 'lib/whois/spender/risk/OnchainSpenderRiskDataSource';
 import { ScamSnifferRiskDataSource } from 'lib/whois/spender/risk/ScamSnifferRiskDataSource';
 import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpenderRiskDataSource';
-import { NextRequest } from 'next/server';
-import { Address } from 'viem';
+import type { NextRequest } from 'next/server';
+import type { Address } from 'viem';
 
 export const config = {
   runtime: 'edge',
@@ -29,14 +29,19 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
 });
 
 const handler = async (req: NextRequest) => {
-  if (req.method !== 'GET') return new Response(JSON.stringify({ message: 'Method not allowed' }), { status: 405 });
+  if (req.method !== 'GET')
+    return new Response(JSON.stringify({ message: 'Method not allowed' }), {
+      status: 405,
+    });
 
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.SPENDER))) {
-    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
+    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), {
+      status: 429,
+    });
   }
 
   const query = new URL(req.url).searchParams;
@@ -55,7 +60,9 @@ const handler = async (req: NextRequest) => {
       },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ message: e.message }), { status: 500 });
+    return new Response(JSON.stringify({ message: e.message }), {
+      status: 500,
+    });
   }
 };
 

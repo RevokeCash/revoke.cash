@@ -14,9 +14,9 @@ import type {
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
 import {
-  Address,
-  PublicClient,
-  TypedDataDomain,
+  type Address,
+  type PublicClient,
+  type TypedDataDomain,
   domainSeparator,
   getAbiItem,
   getAddress,
@@ -65,7 +65,11 @@ export const getErc20TokenData = async (
 ): Promise<BaseTokenData> => {
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
-    contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
+    contract.publicClient.readContract({
+      ...contract,
+      functionName: 'balanceOf',
+      args: [owner],
+    }),
   ]);
 
   return { contract, metadata, chainId, owner, balance };
@@ -85,7 +89,11 @@ export const getErc721TokenData = async (
     getTokenMetadata(contract, chainId),
     shouldFetchBalance
       ? withFallback<Balance>(
-          contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
+          contract.publicClient.readContract({
+            ...contract,
+            functionName: 'balanceOf',
+            args: [owner],
+          }),
           'ERC1155',
         )
       : calculatedBalance,
@@ -123,7 +131,13 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (isErc721Contract(contract)) {
     const [symbol, price] = await Promise.all([
       metadataFromMapping?.symbol ??
-        withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
+        withFallback(
+          contract.publicClient.readContract({
+            ...contract,
+            functionName: 'name',
+          }),
+          contract.address,
+        ),
       getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
       throwIfSpamNft(contract),
@@ -137,10 +151,23 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   }
 
   const [totalSupply, symbol, decimals, price] = await Promise.all([
-    contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
+    contract.publicClient.readContract({
+      ...contract,
+      functionName: 'totalSupply',
+    }),
     metadataFromMapping?.symbol ??
-      withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
-    metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
+      withFallback(
+        contract.publicClient.readContract({
+          ...contract,
+          functionName: 'symbol',
+        }),
+        contract.address,
+      ),
+    metadataFromMapping?.decimals ??
+      contract.publicClient.readContract({
+        ...contract,
+        functionName: 'decimals',
+      }),
     getTokenPrice(chainId, contract),
     throwIfNotErc20(contract),
   ]);
@@ -183,7 +210,9 @@ export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
 // TODO: Improve spam checks
 // TODO: Investigate other proxy patterns to see if they result in false positives
 export const throwIfSpamNft = async (contract: Contract) => {
-  const bytecode = await contract.publicClient.getCode({ address: contract.address });
+  const bytecode = await contract.publicClient.getCode({
+    address: contract.address,
+  });
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {
@@ -256,7 +285,11 @@ export const hasSupportForPermit = async (contract: TokenContract) => {
   try {
     await Promise.all([
       getPermitDomain(contract),
-      contract.publicClient.readContract({ ...contract, functionName: 'nonces', args: [DUMMY_ADDRESS] }),
+      contract.publicClient.readContract({
+        ...contract,
+        functionName: 'nonces',
+        args: [DUMMY_ADDRESS],
+      }),
     ]);
     return true;
   } catch (e) {
@@ -272,7 +305,10 @@ export const getPermitDomain = async (contract: Erc20TokenContract): Promise<Typ
     getPermitDomainVersion(contract),
     contract.publicClient.readContract({ ...contract, functionName: 'name' }),
     contract.publicClient.readContract({ ...contract, functionName: 'symbol' }),
-    contract.publicClient.readContract({ ...contract, functionName: 'DOMAIN_SEPARATOR' }),
+    contract.publicClient.readContract({
+      ...contract,
+      functionName: 'DOMAIN_SEPARATOR',
+    }),
   ]);
 
   const salt = pad(toHex(chainId), { size: 32 });
@@ -308,7 +344,11 @@ export const getPermitDomain = async (contract: Erc20TokenContract): Promise<Typ
 
   if (!domain) {
     // If the domain separator is something else, we cannot generate a valid signature
-    track('Permit Domain Separator Mismatch', { name, verifyingContract, chainId });
+    track('Permit Domain Separator Mismatch', {
+      name,
+      verifyingContract,
+      chainId,
+    });
     throw new Error('Could not determine Permit Signature data');
   }
 
@@ -326,7 +366,10 @@ const getPermitDomainVersion = async (contract: Erc20TokenContract) => {
   }
 
   try {
-    return await contract.publicClient.readContract({ ...contract, functionName: 'version' });
+    return await contract.publicClient.readContract({
+      ...contract,
+      functionName: 'version',
+    });
   } catch {
     return '1';
   }

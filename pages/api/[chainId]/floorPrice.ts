@@ -1,9 +1,9 @@
 import { ERC721_ABI } from 'lib/abis';
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import { Erc721TokenContract } from 'lib/interfaces';
+import type { Erc721TokenContract } from 'lib/interfaces';
 import { createViemPublicClientForChain, getChainBackendPriceStrategy } from 'lib/utils/chains';
-import { NextRequest } from 'next/server';
-import { Address } from 'viem';
+import type { NextRequest } from 'next/server';
+import type { Address } from 'viem';
 
 export const config = {
   runtime: 'edge',
@@ -11,14 +11,19 @@ export const config = {
 
 // TODO: Support ERC20 token prices in this route as well
 const handler = async (req: NextRequest) => {
-  if (req.method !== 'GET') return new Response(JSON.stringify({ message: 'Method not allowed' }), { status: 405 });
+  if (req.method !== 'GET')
+    return new Response(JSON.stringify({ message: 'Method not allowed' }), {
+      status: 405,
+    });
 
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PRICE))) {
-    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
+    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), {
+      status: 429,
+    });
   }
 
   const query = new URL(req.url).searchParams;
@@ -48,7 +53,9 @@ const handler = async (req: NextRequest) => {
       },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ message: e.message }), { status: 500 });
+    return new Response(JSON.stringify({ message: e.message }), {
+      status: 500,
+    });
   }
 };
 

@@ -26,7 +26,9 @@ export const generateMetadata = async ({ params: { locale, addressOrName }, sear
 
   return {
     title,
-    description: t('common.meta.description', { chainName: chainName ?? 'Ethereum' }),
+    description: t('common.meta.description', {
+      chainName: chainName ?? 'Ethereum',
+    }),
   };
 };
 

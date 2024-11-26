@@ -1,7 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Logo from 'components/common/Logo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { Marketplace } from 'lib/interfaces';
+import type { Marketplace } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 
 interface Props {
@@ -19,10 +19,16 @@ const MarketplaceCell = ({ marketplace }: Props) => {
           <div>{marketplace.name}</div>
         </div>
         <div className="text-xs text-zinc-500 dark:text-zinc-400 max-w-[10rem] lg:max-w-[14rem] truncate">
-          {t('address.signatures.marketplaces.active_approvals', { count: marketplace.allowances.length })}
+          {t('address.signatures.marketplaces.active_approvals', {
+            count: marketplace.allowances.length,
+          })}
         </div>
       </div>
-      <WithHoverTooltip tooltip={t('address.tooltips.marketplace_listings', { marketplace: marketplace.name })}>
+      <WithHoverTooltip
+        tooltip={t('address.tooltips.marketplace_listings', {
+          marketplace: marketplace.name,
+        })}
+      >
         <div>
           <InformationCircleIcon className="w-4 h-h-4" />
         </div>

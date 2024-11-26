@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import { ChangeEventHandler, FormEventHandler, HTMLAttributes, ReactNode } from 'react';
+import type { ChangeEventHandler, FormEventHandler, HTMLAttributes, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {

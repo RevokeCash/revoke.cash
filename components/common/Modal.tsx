@@ -2,7 +2,7 @@
 
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import { Fragment, ReactNode, useRef } from 'react';
+import { Fragment, type ReactNode, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 import FocusTrap from './FocusTrap';

@@ -87,5 +87,3 @@ describe('Chain Support', () => {
     });
   });
 });
-
-export {};

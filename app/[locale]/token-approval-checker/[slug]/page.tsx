@@ -5,7 +5,7 @@ import Prose from 'components/common/Prose';
 import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
-import { Metadata, NextPage } from 'next';
+import type { Metadata, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import TokenApprovalCheckerChainSelect from './TokenApprovalCheckerChainSelect';
@@ -75,7 +75,11 @@ const TokenApprovalCheckerPage: NextPage<Props> = ({ params }) => {
             ),
           })}
         </p>
-        <h2 className="text-left">{t('token_approval_checker.what_are_token_approvals.title', { chainName })}</h2>
+        <h2 className="text-left">
+          {t('token_approval_checker.what_are_token_approvals.title', {
+            chainName,
+          })}
+        </h2>
         <p>
           {t.rich('token_approval_checker.what_are_token_approvals.content', {
             chainName,

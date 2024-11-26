@@ -1,5 +1,5 @@
-import { TokenContract, TokenStandard } from 'lib/interfaces';
-import { PublicClient } from 'viem';
+import type { TokenContract, TokenStandard } from 'lib/interfaces';
+import type { PublicClient } from 'viem';
 
 export interface PriceStrategy {
   supportedAssets: TokenStandard[];

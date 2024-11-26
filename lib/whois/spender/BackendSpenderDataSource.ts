@@ -1,7 +1,7 @@
 import ky from 'ky';
-import { SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { Address, getAddress } from 'viem';
-import { SpenderDataSource } from './SpenderDataSource';
+import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
+import { type Address, getAddress } from 'viem';
+import type { SpenderDataSource } from './SpenderDataSource';
 
 export class BackendSpenderDataSource implements SpenderDataSource {
   async getSpenderData(address: Address, chainId: number): Promise<SpenderData | SpenderRiskData | null> {

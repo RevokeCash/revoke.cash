@@ -1,7 +1,7 @@
 import Card from 'components/common/Card';
 import Href from 'components/common/Href';
 import ImageWithFallback from 'components/common/ImageWithFallback';
-import { ISidebarEntry } from 'lib/interfaces';
+import type { ISidebarEntry } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 
 const ArticleCard = ({ title, description, path, date, readingTime, coverImage }: ISidebarEntry) => {
@@ -29,7 +29,11 @@ const ArticleCard = ({ title, description, path, date, readingTime, coverImage }
         </div>
         {date && readingTime ? (
           <p className="text-sm text-right text-zinc-500 dark:text-zinc-400 flex gap-1 justify-end">
-            {new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+            {new Date(date).toLocaleDateString(undefined, {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })}
             <span>•</span>
             {t('common.article_meta.reading_time', { readingTime })}
           </p>

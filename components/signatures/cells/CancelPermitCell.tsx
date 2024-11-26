@@ -2,7 +2,7 @@ import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { OnCancel, PermitTokenData, TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { type OnCancel, type PermitTokenData, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
@@ -25,7 +25,11 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
     if (isErc721Contract(token.contract)) return;
     const hash = await permit(walletClient, token.contract, DUMMY_ADDRESS, 0n);
 
-    track('Cancelled Permit Signatures', { chainId: selectedChainId, account: address, token: token.contract.address });
+    track('Cancelled Permit Signatures', {
+      chainId: selectedChainId,
+      account: address,
+      token: token.contract.address,
+    });
 
     const waitForConfirmation = async () => {
       // TODO: Deduplicate this with the CancelMarketplaceCell

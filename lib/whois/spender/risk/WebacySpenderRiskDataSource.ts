@@ -1,16 +1,19 @@
 import { ChainId } from '@revoke.cash/chains';
 import ky from 'ky';
 import { RequestQueue } from 'lib/api/logs/RequestQueue';
-import { RiskFactor, SpenderRiskData } from 'lib/interfaces';
-import { Address } from 'viem';
-import { SpenderDataSource } from '../SpenderDataSource';
+import type { RiskFactor, SpenderRiskData } from 'lib/interfaces';
+import type { Address } from 'viem';
+import type { SpenderDataSource } from '../SpenderDataSource';
 
 export class WebacySpenderRiskDataSource implements SpenderDataSource {
   private queue: RequestQueue;
 
   constructor(private apiKey: string) {
     // Webacy has requested that we limit the number of requests to 30 per second
-    this.queue = new RequestQueue(`webacy:${apiKey}`, { interval: 1000, intervalCap: 30 });
+    this.queue = new RequestQueue(`webacy:${apiKey}`, {
+      interval: 1000,
+      intervalCap: 30,
+    });
   }
 
   async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {

@@ -1,16 +1,16 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { AllowanceData, Log, TransactionSubmitted } from 'lib/interfaces';
-import { getTranslations } from 'next-intl/server';
+import type { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
-  Address,
-  Hash,
-  Hex,
-  PublicClient,
+  type Address,
+  type Hash,
+  type Hex,
+  type PublicClient,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
-  WalletClient,
-  WriteContractParameters,
+  type WalletClient,
+  type WriteContractParameters,
   formatUnits,
   getAddress,
   pad,
@@ -105,7 +105,7 @@ export const filterLogsByTopics = (logs: Log[], topics: string[]) => {
 export const writeToClipBoard = (
   text: string,
   t: Awaited<ReturnType<typeof getTranslations<string>>>,
-  displayToast: boolean = true,
+  displayToast = true,
 ) => {
   if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
     toast.info(t('common.toasts.clipboard_failed'), { autoClose: 1000 });
@@ -148,7 +148,11 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
 
     // Track excessive gas usage so we can blacklist tokens
     // TODO: Use a different tool than analytics for this
-    track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
+    track('Excessive gas limit', {
+      chainId,
+      address,
+      estimatedGas: estimatedGas.toString(),
+    });
 
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
@@ -164,7 +168,10 @@ export const writeContractUnlessExcessiveGas = async (
   const estimatedGas =
     'gas' in transactionRequest ? transactionRequest.gas : await publicClient.estimateContractGas(transactionRequest);
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
-  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
+  return walletClient.writeContract({
+    ...transactionRequest,
+    gas: estimatedGas,
+  });
 };
 
 export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient) => {

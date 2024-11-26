@@ -1,7 +1,7 @@
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { readAndParseContentFile } from 'lib/utils/markdown-content';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { unstable_setRequestLocale } from 'next-intl/server';
 
 interface Props {

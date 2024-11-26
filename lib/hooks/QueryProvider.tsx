@@ -4,7 +4,7 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { DAY } from 'lib/utils/time';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 // Note: the query persister stuff is based on wagmi (https://github.com/wagmi-dev/wagmi/blob/main/packages/react/src/client.ts)
 
@@ -23,7 +23,10 @@ export const queryClient = new QueryClient({
 if (typeof window !== 'undefined') {
   persistQueryClient({
     queryClient,
-    persister: createSyncStoragePersister({ key: 'cache', storage: window.localStorage }),
+    persister: createSyncStoragePersister({
+      key: 'cache',
+      storage: window.localStorage,
+    }),
     dehydrateOptions: {
       // Note: adding a `persist` flag to a query key will instruct the
       // persister whether or not to persist the response of the query.

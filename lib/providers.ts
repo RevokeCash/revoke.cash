@@ -1,5 +1,5 @@
 import ky from 'lib/ky';
-import { PublicClient, getAddress } from 'viem';
+import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import type { Filter, Log, LogsProvider } from './interfaces';
 import {
@@ -79,7 +79,11 @@ export class ViemLogsProvider implements LogsProvider {
     const logs = await this.client.request({
       method: 'eth_getLogs',
       params: [
-        { ...filter, fromBlock: `0x${filter.fromBlock.toString(16)}`, toBlock: `0x${filter.toBlock.toString(16)}` },
+        {
+          ...filter,
+          fromBlock: `0x${filter.fromBlock.toString(16)}`,
+          toBlock: `0x${filter.toBlock.toString(16)}`,
+        },
       ],
     });
 

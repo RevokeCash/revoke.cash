@@ -14,7 +14,10 @@ export class CovalentEventGetter implements EventGetter {
     isPremium: boolean,
   ) {
     // Covalent's premium API has a rate limit of 50 (normal = 5) requests per second, which we underestimate to be safe
-    this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
+    this.queue = new RequestQueue(`covalent:${apiKey}`, {
+      interval: 1000,
+      intervalCap: isPremium ? 40 : 4,
+    });
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {

@@ -156,7 +156,9 @@ const TEST_ADDRESSES = {
 
 describe('Chain Support', () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
-    cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
+    cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, {
+      timeout: 10_000,
+    });
     cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
 
@@ -199,7 +201,9 @@ describe('Chain Support', () => {
               cy.on('uncaught:exception', () => false);
 
               cy.visit(href);
-              cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
+              cy.get(`a[href*="${fixtureAddress}" i]`, {
+                timeout: 10_000,
+              }).should('exist');
             });
           });
         }
@@ -207,5 +211,3 @@ describe('Chain Support', () => {
     });
   });
 });
-
-export {};

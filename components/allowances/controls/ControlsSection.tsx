@@ -1,5 +1,5 @@
 import RevokeButton from 'components/allowances/controls/RevokeButton';
-import { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
+import type { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
 import ControlsWrapper from './ControlsWrapper';
 import UpdateControls from './UpdateControls';

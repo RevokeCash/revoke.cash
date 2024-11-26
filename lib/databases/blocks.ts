@@ -1,6 +1,6 @@
-import Dexie, { Table } from 'dexie';
-import { Log, TimeLog } from 'lib/interfaces';
-import { PublicClient } from 'viem';
+import Dexie, { type Table } from 'dexie';
+import type { Log, TimeLog } from 'lib/interfaces';
+import type { PublicClient } from 'viem';
 
 interface Block {
   chainId: number;
@@ -24,14 +24,18 @@ class BlocksDB extends Dexie {
       const storedBlock = await this.blocks.get([chainId, blockNumber]);
       if (storedBlock) return storedBlock.timestamp;
 
-      const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
+      const block = await publicClient.getBlock({
+        blockNumber: BigInt(blockNumber),
+      });
       const timestamp = Number(block?.timestamp);
       await this.blocks.put({ chainId, blockNumber, timestamp });
       return timestamp;
     } catch (e) {
       // If there is an error, we just return the block timestamp from the public client (may be the case if IndexedDB is not supported)
       if (e instanceof Dexie.DexieError) {
-        const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
+        const block = await publicClient.getBlock({
+          blockNumber: BigInt(blockNumber),
+        });
         return Number(block?.timestamp);
       }
 

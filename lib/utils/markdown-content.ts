@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
-import { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
+import type { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTranslations } from 'next-intl/server';
 import { join } from 'path';
@@ -13,7 +13,7 @@ const walk = require('walkdir');
 export const readContentFile = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
+  directory = 'learn',
 ): RawContentFile | null => {
   try {
     const contentDirectory = join(process.cwd(), 'content');
@@ -35,7 +35,7 @@ export const readContentFile = (
 export const readAndParseContentFile = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
+  directory = 'learn',
 ): ContentFile | null => {
   const { content: rawContent, language } = readContentFile(slug, locale, directory) ?? {};
   if (!rawContent) return null;
@@ -75,8 +75,8 @@ const calculateReadingTime = (content: string): number => Math.round(Math.max(re
 
 export const getSidebar = async (
   locale: string,
-  directory: string = 'learn',
-  extended: boolean = false,
+  directory = 'learn',
+  extended = false,
 ): Promise<ISidebarEntry[] | null> => {
   const t = await getTranslations({ locale });
 
@@ -144,8 +144,8 @@ export const getSidebar = async (
 const getSidebarEntry = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
-  extended: boolean = false,
+  directory = 'learn',
+  extended = false,
 ): ISidebarEntry => {
   const { meta } = readAndParseContentFile(slug, locale, directory) ?? {};
   if (!meta) return null;
@@ -153,7 +153,11 @@ const getSidebarEntry = (
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 
-  const entry: ISidebarEntry = { title: meta.sidebarTitle, path, date: meta.date };
+  const entry: ISidebarEntry = {
+    title: meta.sidebarTitle,
+    path,
+    date: meta.date,
+  };
   if (extended) {
     entry.description = meta.description;
     entry.coverImage = meta.coverImage;
@@ -163,7 +167,7 @@ const getSidebarEntry = (
   return entry;
 };
 
-export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {
+export const getAllContentSlugs = (directory = 'learn'): string[][] => {
   const contentDirectory = join(process.cwd(), 'content');
 
   const subdirectory = join(contentDirectory, 'en', directory);
@@ -185,7 +189,7 @@ export const getAllLearnCategories = (): string[] => {
 export const getTranslationUrl = async (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
+  directory = 'learn',
 ): Promise<string | null> => {
   if (!process.env.LOCALAZY_API_KEY || locale === 'en') return null;
 
@@ -221,10 +225,6 @@ export const getTranslationUrl = async (
   return `https://localazy.com/p/revoke-cash-markdown-content/phrases/${languageCodes[locale]}/edit/${key.id}`;
 };
 
-export const getCoverImage = (
-  slug: string | string[],
-  directory: string = 'learn',
-  locale: string = 'en',
-): string | null => {
+export const getCoverImage = (slug: string | string[], directory = 'learn', locale = 'en'): string | null => {
   return getOpenGraphImageUrl(`/${directory}/${[slug].flat().join('/')}`, locale);
 };
