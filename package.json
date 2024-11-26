@@ -10,7 +10,7 @@
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
     "lint:checksums": "tsx scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
-    "lint": "npx @biomejs/biome lint --write .",
+    "lint": "yarn biome lint --write .",
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
@@ -116,7 +116,8 @@
       "viem>ws>bufferutil": true,
       "viem>ws>utf-8-validate": true,
       "wagmi>@wagmi/connectors>cbw-sdk>keccak": false,
-      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false
+      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false,
+      "@biomejs/biome": true
     }
   },
   "mocha": {
