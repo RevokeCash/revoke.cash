@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
-import { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
+import type { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTranslations } from 'next-intl/server';
 import { join } from 'path';

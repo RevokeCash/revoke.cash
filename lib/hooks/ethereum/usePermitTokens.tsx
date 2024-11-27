@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { OnCancel, PermitTokenData, TimeLog } from 'lib/interfaces';
+import type { OnCancel, PermitTokenData, TimeLog } from 'lib/interfaces';
 import { deduplicateArray } from 'lib/utils';
 import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
 import { getLastCancelled } from 'lib/utils/permit';
@@ -35,7 +35,7 @@ export const usePermitTokens = () => {
       return permitTokens;
     },
     enabled: !!allowances,
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
   });
 
   useLayoutEffect(() => {

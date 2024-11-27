@@ -1,4 +1,4 @@
-import { Balance } from 'lib/interfaces';
+import type { Balance } from 'lib/interfaces';
 import { formatUnits } from 'viem';
 import { isNullish } from '.';
 import { fixedPointMultiply } from './math';

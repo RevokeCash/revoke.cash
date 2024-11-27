@@ -1,8 +1,8 @@
 import { DAI_PERMIT_ABI } from 'lib/abis';
 import { ADDRESS_ZERO_PADDED, DUMMY_ADDRESS_PADDED } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import { BaseTokenData, Erc20TokenContract, Log } from 'lib/interfaces';
-import { Address, Hex, Signature, TypedDataDomain, WalletClient, hexToSignature } from 'viem';
+import type { BaseTokenData, Erc20TokenContract, Log } from 'lib/interfaces';
+import { type Address, type Hex, type Signature, type TypedDataDomain, type WalletClient, hexToSignature } from 'viem';
 import { getWalletAddress, logSorterChronological, writeContractUnlessExcessiveGas } from '.';
 import { getPermitDomain } from './tokens';
 

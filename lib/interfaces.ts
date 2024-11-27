@@ -1,5 +1,5 @@
-import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
-import { Abi, Address, Hash, Hex, PublicClient, TransactionReceipt, WalletClient } from 'viem';
+import type { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+import type { Abi, Address, Hash, Hex, PublicClient, TransactionReceipt, WalletClient } from 'viem';
 import type { useAllowances } from './hooks/ethereum/useAllowances';
 
 export type Balance = bigint | 'ERC1155';

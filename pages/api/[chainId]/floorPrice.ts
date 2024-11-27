@@ -1,9 +1,9 @@
 import { ERC721_ABI } from 'lib/abis';
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import { Erc721TokenContract } from 'lib/interfaces';
+import type { Erc721TokenContract } from 'lib/interfaces';
 import { createViemPublicClientForChain, getChainBackendPriceStrategy } from 'lib/utils/chains';
-import { NextRequest } from 'next/server';
-import { Address } from 'viem';
+import type { NextRequest } from 'next/server';
+import type { Address } from 'viem';
 
 export const config = {
   runtime: 'edge',

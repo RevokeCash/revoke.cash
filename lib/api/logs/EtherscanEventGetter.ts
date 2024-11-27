@@ -23,7 +23,7 @@ export class EtherscanEventGetter implements EventGetter {
     this.queues = Object.fromEntries(queueEntries);
   }
 
-  async getEvents(chainId: number, filter: Filter, page: number = 1): Promise<Log[]> {
+  async getEvents(chainId: number, filter: Filter, page = 1): Promise<Log[]> {
     const apiUrl = getChainApiUrl(chainId);
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;

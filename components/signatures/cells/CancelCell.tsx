@@ -1,7 +1,7 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import { useMounted } from 'lib/hooks/useMounted';
-import { TimeLog, TransactionSubmitted } from 'lib/interfaces';
+import type { TimeLog, TransactionSubmitted } from 'lib/interfaces';
 import { waitForSubmittedTransactionConfirmation } from 'lib/utils';
 import { HOUR, SECOND } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';

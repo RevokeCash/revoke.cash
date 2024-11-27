@@ -1,11 +1,11 @@
-import { SearchParamsOption, TimeoutError } from 'ky';
-import { Erc721TokenContract } from 'lib/interfaces';
+import { type SearchParamsOption, TimeoutError } from 'ky';
+import type { Erc721TokenContract } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { isRateLimitError } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
 import { RequestQueue } from '../api/logs/RequestQueue';
 import { AbstractPriceStrategy } from './AbstractPriceStrategy';
-import { PriceStrategy } from './PriceStrategy';
+import type { PriceStrategy } from './PriceStrategy';
 
 // Don't return a price if the collection is on the ignore list
 const IGNORE_LIST = [

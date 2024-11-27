@@ -1,5 +1,5 @@
 import Loader from 'components/common/Loader';
-import { AllowanceData } from 'lib/interfaces';
+import type { AllowanceData } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 
 interface Props {

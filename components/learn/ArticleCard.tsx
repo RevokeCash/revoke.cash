@@ -1,7 +1,7 @@
 import Card from 'components/common/Card';
 import Href from 'components/common/Href';
 import ImageWithFallback from 'components/common/ImageWithFallback';
-import { ISidebarEntry } from 'lib/interfaces';
+import type { ISidebarEntry } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 
 const ArticleCard = ({ title, description, path, date, readingTime, coverImage }: ISidebarEntry) => {

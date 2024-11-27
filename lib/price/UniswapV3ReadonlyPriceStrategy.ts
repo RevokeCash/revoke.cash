@@ -1,7 +1,7 @@
 import { UNISWAP_V3_POOL_ABI } from 'lib/abis';
-import { Erc20TokenContract } from 'lib/interfaces';
-import { Address, Hex, encodeAbiParameters, getCreate2Address, hexToNumber, keccak256, parseAbiParameters } from 'viem';
-import { UniswapV3PriceStrategy, UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
+import type { Erc20TokenContract } from 'lib/interfaces';
+import { type Address, type Hex, encodeAbiParameters, getCreate2Address, hexToNumber, keccak256, parseAbiParameters } from 'viem';
+import { UniswapV3PriceStrategy, type UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
 import { calculateTokenPrice } from './utils';
 
 export interface UniswapV3ReadonlyPriceStrategyOptions extends UniswapV3PriceStrategyOptions {

@@ -1,8 +1,8 @@
 import { UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
-import { Erc20TokenContract } from 'lib/interfaces';
-import { Address, concat, parseUnits } from 'viem';
-import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
-import { PriceStrategy } from './PriceStrategy';
+import type { Erc20TokenContract } from 'lib/interfaces';
+import { type Address, concat, parseUnits } from 'viem';
+import { AbstractPriceStrategy, type AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
+import type { PriceStrategy } from './PriceStrategy';
 import { calculateTokenPrice } from './utils';
 
 export interface UniswapV3PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {

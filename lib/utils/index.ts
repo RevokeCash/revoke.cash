@@ -1,16 +1,16 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { AllowanceData, Log, TransactionSubmitted } from 'lib/interfaces';
-import { getTranslations } from 'next-intl/server';
+import type { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
-  Address,
-  Hash,
-  Hex,
-  PublicClient,
+  type Address,
+  type Hash,
+  type Hex,
+  type PublicClient,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
-  WalletClient,
-  WriteContractParameters,
+  type WalletClient,
+  type WriteContractParameters,
   formatUnits,
   getAddress,
   pad,

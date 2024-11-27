@@ -1,4 +1,4 @@
-import { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
+import type { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
 import { useTransactionStore } from 'lib/stores/transaction-store';
 import { getAllowanceKey } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';

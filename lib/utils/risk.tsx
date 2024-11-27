@@ -1,5 +1,5 @@
 import { ExclamationCircleIcon, ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
-import { RiskFactor, RiskLevel } from 'lib/interfaces';
+import type { RiskFactor, RiskLevel } from 'lib/interfaces';
 import { track } from './analytics';
 
 export const RiskFactorScore = {

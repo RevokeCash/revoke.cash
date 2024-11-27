@@ -1,15 +1,15 @@
-import { ColumnFiltersState, Table } from '@tanstack/react-table';
+import type { ColumnFiltersState, Table } from '@tanstack/react-table';
 import Checkbox from 'components/common/Checkbox';
 import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import { AllowanceData } from 'lib/interfaces';
+import type { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { FormatOptionLabelMeta } from 'react-select';
+import type { FormatOptionLabelMeta } from 'react-select';
 import useLocalStorage from 'use-local-storage';
 import { ColumnId } from '../columns';
 

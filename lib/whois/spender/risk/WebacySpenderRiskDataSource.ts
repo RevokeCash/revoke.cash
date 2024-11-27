@@ -1,9 +1,9 @@
 import { ChainId } from '@revoke.cash/chains';
 import ky from 'ky';
 import { RequestQueue } from 'lib/api/logs/RequestQueue';
-import { RiskFactor, SpenderRiskData } from 'lib/interfaces';
-import { Address } from 'viem';
-import { SpenderDataSource } from '../SpenderDataSource';
+import type { RiskFactor, SpenderRiskData } from 'lib/interfaces';
+import type { Address } from 'viem';
+import type { SpenderDataSource } from '../SpenderDataSource';
 
 export class WebacySpenderRiskDataSource implements SpenderDataSource {
   private queue: RequestQueue;

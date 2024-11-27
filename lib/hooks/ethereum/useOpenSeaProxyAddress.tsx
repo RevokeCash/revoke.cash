@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { DAY } from 'lib/utils/time';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 
 export const useOpenSeaProxyAddress = (address: Address) => {
   const { data: openSeaProxyAddress, isLoading } = useQuery({

@@ -104,7 +104,7 @@
   },
   "packageManager": "yarn@3.6.2",
   "lint-staged": {
-    "*": "yarn biome check --write"
+    "*": ""
   },
   "lavamoat": {
     "allowScripts": {

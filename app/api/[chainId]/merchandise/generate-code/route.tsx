@@ -1,7 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { getAddress } from 'viem';
 
 interface Props {

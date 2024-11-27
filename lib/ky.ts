@@ -1,4 +1,4 @@
-import kyBase, { HTTPError, NormalizedOptions } from 'ky';
+import kyBase, { HTTPError, type NormalizedOptions } from 'ky';
 import PQueue from 'p-queue';
 
 export class KyHttpError extends HTTPError {

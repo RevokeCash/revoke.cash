@@ -2,7 +2,7 @@ import { ERC721_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import { useMemo } from 'react';
-import { Address, getAbiItem, toEventSelector } from 'viem';
+import { type Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';

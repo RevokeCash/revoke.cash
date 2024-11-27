@@ -1,15 +1,15 @@
 'use client';
 
 import { XCircleIcon } from '@heroicons/react/24/outline';
-import { Table } from '@tanstack/react-table';
+import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
-import { AllowanceData } from 'lib/interfaces';
+import type { AllowanceData } from 'lib/interfaces';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { type ChangeEventHandler, useEffect, useState } from 'react';
 import { ColumnId } from '../columns';
 
 interface Props {

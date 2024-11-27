@@ -1,5 +1,5 @@
-import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
-import { AllowanceData, OnUpdate } from 'lib/interfaces';
+import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
+import type { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { calculateValueAtRisk, isNullish } from 'lib/utils';
 import { formatErc20Allowance } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';

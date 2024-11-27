@@ -1,8 +1,8 @@
-import { TokenContract, TokenStandard } from 'lib/interfaces';
+import type { TokenContract, TokenStandard } from 'lib/interfaces';
 import { deduplicateArray } from 'lib/utils';
 import { isErc721Contract } from 'lib/utils/tokens';
-import { PublicClient } from 'viem';
-import { PriceStrategy } from './PriceStrategy';
+import type { PublicClient } from 'viem';
+import type { PriceStrategy } from './PriceStrategy';
 
 export enum AggregationType {
   ANY = 'ANY',

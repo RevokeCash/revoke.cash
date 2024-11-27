@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import type { MutableRefObject, ReactText } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import DonateModal, { DonateButtonType } from './DonateModal';
+import DonateModal, { type DonateButtonType } from './DonateModal';
 
 interface Props {
   size: 'sm' | 'md' | 'lg' | 'none' | 'menu';

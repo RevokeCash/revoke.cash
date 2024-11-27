@@ -1,5 +1,5 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
-import { ApprovalEvent, Log } from 'lib/interfaces';
+import type { ApprovalEvent, Log } from 'lib/interfaces';
 import { decodeEventLog } from 'viem';
 
 export const parsePermit2Log = (log: Log, chainId: number): ApprovalEvent => {

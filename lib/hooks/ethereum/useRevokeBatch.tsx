@@ -1,6 +1,6 @@
 'use client';
 
-import { AllowanceData, OnUpdate } from 'lib/interfaces';
+import type { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { getAllowanceKey, revokeAllowance, wrapRevoke } from 'lib/utils/allowances';
 import PQueue from 'p-queue';
 import { useEffect, useMemo } from 'react';

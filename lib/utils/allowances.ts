@@ -1,6 +1,6 @@
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
+import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import {
   TransactionType,
   type AddressEvents,
@@ -14,8 +14,8 @@ import {
   type TokenContract,
   type TransactionSubmitted,
 } from 'lib/interfaces';
-import { TransactionStore } from 'lib/stores/transaction-store';
-import { Address, PublicClient, WalletClient, WriteContractParameters, fromHex, getEventSelector } from 'viem';
+import type { TransactionStore } from 'lib/stores/transaction-store';
+import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
   deduplicateLogsByTopics,

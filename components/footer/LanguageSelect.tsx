@@ -2,11 +2,11 @@
 
 import Logo from 'components/common/Logo';
 import Select from 'components/common/select/Select';
-import { Locale } from 'lib/i18n/config';
+import type { Locale } from 'lib/i18n/config';
 import { usePathname, useRouter } from 'lib/i18n/navigation';
 import { track } from 'lib/utils/analytics';
 import { useLocale } from 'next-intl';
-import { FormatOptionLabelMeta } from 'react-select';
+import type { FormatOptionLabelMeta } from 'react-select';
 
 interface Option {
   value: Locale;

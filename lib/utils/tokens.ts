@@ -14,9 +14,9 @@ import type {
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
 import {
-  Address,
-  PublicClient,
-  TypedDataDomain,
+  type Address,
+  type PublicClient,
+  type TypedDataDomain,
   domainSeparator,
   getAbiItem,
   getAddress,

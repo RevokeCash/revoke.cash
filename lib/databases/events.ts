@@ -1,8 +1,8 @@
 import { ChainId } from '@revoke.cash/chains';
-import Dexie, { Table } from 'dexie';
-import { Filter, Log, LogsProvider } from 'lib/interfaces';
+import Dexie, { type Table } from 'dexie';
+import type { Filter, Log, LogsProvider } from 'lib/interfaces';
 import { isCovalentSupportedChain } from 'lib/utils/chains';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 
 interface Events {
   chainId: number;

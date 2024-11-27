@@ -1,5 +1,5 @@
 import ky from 'lib/ky';
-import { PublicClient, getAddress } from 'viem';
+import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import type { Filter, Log, LogsProvider } from './interfaces';
 import {

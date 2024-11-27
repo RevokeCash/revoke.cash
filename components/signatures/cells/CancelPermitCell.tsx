@@ -2,7 +2,7 @@ import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { OnCancel, PermitTokenData, TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { type OnCancel, type PermitTokenData, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';

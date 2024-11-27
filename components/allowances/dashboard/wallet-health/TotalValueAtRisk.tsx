@@ -1,5 +1,5 @@
 import Loader from 'components/common/Loader';
-import { AllowanceData } from 'lib/interfaces';
+import type { AllowanceData } from 'lib/interfaces';
 import { calculateValueAtRisk, deduplicateArray } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { formatFiatAmount } from 'lib/utils/formatting';

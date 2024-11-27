@@ -3,7 +3,7 @@ import Href from 'components/common/Href';
 import ColorThemeSelect from 'components/footer/ColorThemeSelect';
 import { DISCORD_URL, GITHUB_URL, TWITTER_URL } from 'lib/constants';
 import { useTranslations } from 'next-intl';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import LanguageSelect from './LanguageSelect';
 
 const Footer = () => {
