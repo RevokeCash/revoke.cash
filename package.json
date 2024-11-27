@@ -69,6 +69,7 @@
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@cypress/grep": "^4.1.0",
     "@lavamoat/allow-scripts": "^3.2.0",
     "@localazy/cli": "^1.7.14",
@@ -103,7 +104,7 @@
   },
   "packageManager": "yarn@3.6.2",
   "lint-staged": {
-    "*": "yarn prettier -u --write"
+    "*": "yarn biome check --write"
   },
   "lavamoat": {
     "allowScripts": {
@@ -115,16 +116,13 @@
       "viem>ws>bufferutil": true,
       "viem>ws>utf-8-validate": true,
       "wagmi>@wagmi/connectors>cbw-sdk>keccak": false,
-      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false
+      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false,
+      "@biomejs/biome": true
     }
   },
   "mocha": {
-    "node-option": [
-      "import=tsx"
-    ],
-    "require": [
-      "dotenv/config"
-    ],
+    "node-option": ["import=tsx"],
+    "require": ["dotenv/config"],
     "timeout": 10000
   },
   "resolutions": {
