@@ -1,7 +1,7 @@
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { TimeLog } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
+import { TimeLog } from 'lib/utils/events';
 import { SECOND, formatDateNormalised } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
 import TimeAgo from 'timeago-react';
@@ -15,7 +15,7 @@ const LastUpdatedCell = ({ chainId, lastUpdated }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
 
-  if (!lastUpdated) return null;
+  if (!lastUpdated?.timestamp) return null;
 
   const lastUpdatedDate = new Date(lastUpdated.timestamp * SECOND);
   const explorerUrl = getChainExplorerUrl(chainId);

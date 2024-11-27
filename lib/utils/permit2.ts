@@ -1,10 +1,11 @@
 import { PERMIT2_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
-import { BaseAllowanceData, Erc20TokenContract } from 'lib/interfaces';
 import { Address, WalletClient } from 'viem';
 import { deduplicateArray, getWalletAddress, writeContractUnlessExcessiveGas } from '.';
+import { AllowanceType, Permit2Erc20Allowance } from './allowances';
 import { Permit2Event, TokenEvent, TokenEventType } from './events';
 import { SECOND } from './time';
+import { Erc20TokenContract } from './tokens';
 
 export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
 
@@ -12,7 +13,7 @@ export const getPermit2AllowancesFromApprovals = async (
   contract: Erc20TokenContract,
   owner: Address,
   events: TokenEvent[],
-): Promise<BaseAllowanceData[]> => {
+): Promise<Permit2Erc20Allowance[]> => {
   const permit2ApprovalEvents = events.filter((event) => event.type === TokenEventType.PERMIT2);
 
   const deduplicatedApprovalEvents = deduplicateArray(
@@ -28,14 +29,14 @@ export const getPermit2AllowancesFromApprovals = async (
     deduplicatedApprovalEvents.map((approval) => getPermit2AllowanceFromApproval(contract, owner, approval)),
   );
 
-  return allowances;
+  return allowances.filter((allowance) => allowance !== undefined) as Permit2Erc20Allowance[];
 };
 
 const getPermit2AllowanceFromApproval = async (
   tokenContract: Erc20TokenContract,
   owner: Address,
   approval: Permit2Event,
-): Promise<BaseAllowanceData> => {
+): Promise<Permit2Erc20Allowance | undefined> => {
   const { spender, amount: lastApprovedAmount, expiration, permit2Address } = approval.payload;
   if (lastApprovedAmount === 0n) return undefined;
   if (expiration * SECOND <= Date.now()) return undefined;
@@ -52,7 +53,14 @@ const getPermit2AllowanceFromApproval = async (
 
   const [amount] = permit2Allowance;
 
-  return { spender, amount, lastUpdated, expiration, permit2Address };
+  return {
+    type: AllowanceType.PERMIT2,
+    spender,
+    amount,
+    lastUpdated,
+    expiration,
+    permit2Address,
+  };
 };
 
 export const permit2Approve = async (

@@ -1,24 +1,22 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { AllowanceData, Log, TransactionSubmitted } from 'lib/interfaces';
+import type { TransactionSubmitted } from 'lib/interfaces';
 import { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
   Address,
+  getAddress,
   Hash,
   Hex,
+  pad,
   PublicClient,
+  slice,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
   WalletClient,
   WriteContractParameters,
-  formatUnits,
-  getAddress,
-  pad,
-  slice,
 } from 'viem';
 import { track } from './analytics';
-import { TokenEvent } from './events';
-import { bigintMin, fixedPointMultiply } from './math';
+import type { Log, TokenEvent } from './events';
 
 export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
   return item.status === 'fulfilled';
@@ -28,33 +26,6 @@ export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
-};
-
-const calculateMaxAllowanceAmount = (allowance: AllowanceData) => {
-  if (allowance.balance === 'ERC1155') {
-    throw new Error('ERC1155 tokens are not supported');
-  }
-
-  if (allowance.amount) return allowance.amount;
-  if (allowance.tokenId) return 1n;
-
-  return allowance.balance;
-};
-
-export const calculateValueAtRisk = (allowance: AllowanceData): number => {
-  if (!allowance.spender) return null;
-  if (allowance.balance === 'ERC1155') return null;
-
-  if (allowance.balance === 0n) return 0;
-  if (isNullish(allowance.metadata.price)) return null;
-
-  const allowanceAmount = calculateMaxAllowanceAmount(allowance);
-
-  const amount = bigintMin(allowance.balance, allowanceAmount);
-  const valueAtRisk = fixedPointMultiply(amount, allowance.metadata.price, allowance.metadata.decimals);
-  const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals));
-
-  return float;
 };
 
 export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));
@@ -133,7 +104,7 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
 
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
-  const gasFactors = {
+  const gasFactors: Record<number, bigint> = {
     [ChainId.ZkSyncMainnet]: 20n,
     [ChainId.ZkSyncSepoliaTestnet]: 20n,
     [ChainId.ArbitrumOne]: 20n,
@@ -165,8 +136,7 @@ export const writeContractUnlessExcessiveGas = async (
   walletClient: WalletClient,
   transactionRequest: WriteContractParameters,
 ) => {
-  const estimatedGas =
-    'gas' in transactionRequest ? transactionRequest.gas : await publicClient.estimateContractGas(transactionRequest);
+  const estimatedGas = transactionRequest.gas ?? (await publicClient.estimateContractGas(transactionRequest));
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
@@ -182,7 +152,7 @@ export const waitForTransactionConfirmation = async (hash: Hash, publicClient: P
 };
 
 export const waitForSubmittedTransactionConfirmation = async (
-  transactionSubmitted: TransactionSubmitted | Promise<TransactionSubmitted>,
+  transactionSubmitted?: TransactionSubmitted | Promise<TransactionSubmitted | undefined>,
 ) => {
   const transaction = await transactionSubmitted;
   return transaction?.confirmation ?? null;

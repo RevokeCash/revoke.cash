@@ -3,11 +3,12 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
 import eventsDB from 'lib/databases/events';
-import { Marketplace, MarketplaceConfig, OnCancel, TimeLog } from 'lib/interfaces';
+import { Marketplace, MarketplaceConfig, OnCancel } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
-import { addressToTopic, getWalletAddress, logSorterChronological } from 'lib/utils';
+import { addressToTopic, getWalletAddress, isNullish, logSorterChronological } from 'lib/utils';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
+import { TimeLog } from 'lib/utils/events';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
@@ -17,7 +18,7 @@ import { useAddressAllowances, useAddressPageContext } from '../page-context/Add
 import { wagmiConfig } from './EthereumProvider';
 
 export const useMarketplaces = () => {
-  const [marketplaces, setMarketplaces] = useState<Marketplace[]>();
+  const [marketplaces, setMarketplaces] = useState<Marketplace[]>([]);
 
   const { selectedChainId, address } = useAddressPageContext();
   const { allowances, isLoading: isAllowancesLoading, error: allowancesError } = useAddressAllowances();
@@ -141,7 +142,9 @@ export const useMarketplaces = () => {
           ...marketplace,
           chainId: selectedChainId,
           lastCancelled: lastCancelled ? { ...lastCancelled, timestamp } : undefined,
-          allowances: allowances.filter((allowance) => allowance.spender === marketplace.approvalFilterAddress),
+          allowances: allowances!.filter(
+            (allowance) => allowance.payload?.spender === marketplace.approvalFilterAddress,
+          ),
         };
       });
 
@@ -149,7 +152,7 @@ export const useMarketplaces = () => {
     },
     // TODO: This is a hack to ensure that the allowances are already loaded so we can filter on them.
     // But most of these calls could easily be done in parallel, so we should try to improve this down the line.
-    enabled: !isAllowancesLoading && !allowancesError && !!allowances,
+    enabled: !isAllowancesLoading && isNullish(allowancesError) && !isNullish(allowances),
   });
 
   useLayoutEffect(() => {

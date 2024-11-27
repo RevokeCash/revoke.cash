@@ -65,5 +65,5 @@ export async function POST(req: NextRequest, { params }: Props) {
 
 // generate a random 9 digit code xxx-xxx-xxx
 const generateRandomMerchCode = () => {
-  return Math.random().toString().replace('.', '').slice(6, 15).match(/.{3}/g).join('-');
+  return Math.random().toString().replace('.', '').slice(6, 15).match(/.{3}/g)!.join('-');
 };

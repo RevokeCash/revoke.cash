@@ -39,10 +39,11 @@ const ColorThemeSelect = () => {
       menuTheme="dark"
       value={options.find((option) => option.value === theme)}
       options={options}
-      onChange={selectTheme}
+      onChange={(option) => selectTheme(option!)}
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
+      isMulti={false}
     />
   );
 };

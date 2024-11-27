@@ -56,14 +56,14 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
   const formatOptionLabel = (option: O, formatOptionLabelMeta: FormatOptionLabelMeta<O>) => {
     // 'value' context is handled separately in TargetButton
     if (formatOptionLabelMeta.context !== 'menu') return null;
-    return props.formatOptionLabel(option, formatOptionLabelMeta);
+    return props.formatOptionLabel?.(option, formatOptionLabelMeta);
   };
 
   return (
     <SelectOverlay
       isSelectOpen={isSelectOpen}
       handleSelectClose={handleSelectClose}
-      target={<TargetButton ref={buttonRef} toggleSelectClose={toggleSelectOpen} selectProps={props} />}
+      target={<TargetButton ref={buttonRef} toggleSelectClose={toggleSelectOpen} selectProps={props as any} />}
       selectProps={props}
     >
       <Select

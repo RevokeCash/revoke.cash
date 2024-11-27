@@ -60,11 +60,11 @@ const LanguageSelect = () => {
       menuTheme="dark"
       value={options.find((option) => option.value === locale)}
       options={options}
-      onChange={selectLanguage}
+      onChange={(option) => selectLanguage(option!)}
       formatOptionLabel={displayOption}
       menuPlacement="top"
       isSearchable={false}
-      size="md"
+      isMulti={false}
     />
   );
 };

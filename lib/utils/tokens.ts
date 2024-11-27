@@ -1,23 +1,56 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
-import type {
-  Balance,
-  BaseTokenData,
-  Contract,
-  Erc20TokenContract,
-  Erc721TokenContract,
-  TokenContract,
-  TokenFromList,
-  TokenMetadata,
-} from 'lib/interfaces';
+import type { Contract } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
 import { Address, domainSeparator, getAbiItem, getAddress, pad, PublicClient, toHex, TypedDataDomain } from 'viem';
 import { deduplicateArray } from '.';
 import { track } from './analytics';
-import { isTransferTokenEvent, TokenEvent, TokenEventType } from './events';
+import { isTransferTokenEvent, type TimeLog, type TokenEvent, TokenEventType } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
+
+export interface TokenData {
+  contract: Erc20TokenContract | Erc721TokenContract;
+  metadata: TokenMetadata;
+  chainId: number;
+  owner: Address;
+  balance: TokenBalance;
+}
+
+export interface PermitTokenData extends TokenData {
+  lastCancelled?: TimeLog;
+}
+
+export type TokenContract = Erc20TokenContract | Erc721TokenContract;
+
+export interface Erc20TokenContract extends Contract {
+  abi: typeof ERC20_ABI;
+}
+
+export interface Erc721TokenContract extends Contract {
+  abi: typeof ERC721_ABI;
+}
+
+export interface TokenMetadata {
+  // name: string;
+  symbol: string;
+  icon?: string;
+  decimals?: number;
+  totalSupply?: bigint;
+  price?: number;
+}
+
+export type TokenBalance = bigint | 'ERC1155';
+
+export type TokenStandard = 'ERC20' | 'ERC721';
+
+interface TokenFromList {
+  symbol: string;
+  decimals?: number;
+  logoURI?: string;
+  isSpam?: boolean;
+}
 
 export const isSpamToken = (symbol: string) => {
   const spamRegexes = [
@@ -39,7 +72,7 @@ export const getTokenData = async (
   events: TokenEvent[],
   owner: Address,
   chainId: number,
-): Promise<BaseTokenData> => {
+): Promise<TokenData> => {
   if (isErc721Contract(contract)) {
     return getErc721TokenData(contract, owner, events, chainId);
   }
@@ -51,7 +84,7 @@ export const getErc20TokenData = async (
   contract: Erc20TokenContract,
   owner: Address,
   chainId: number,
-): Promise<BaseTokenData> => {
+): Promise<TokenData> => {
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
     contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
@@ -65,7 +98,7 @@ export const getErc721TokenData = async (
   owner: Address,
   events: TokenEvent[],
   chainId: number,
-): Promise<BaseTokenData> => {
+): Promise<TokenData> => {
   const transfers = events.filter((event) => event.type === TokenEventType.TRANSFER_ERC721);
   const transfersFrom = transfers.filter((event) => event.payload.from === owner);
   const transfersTo = transfers.filter((event) => event.payload.to === owner);
@@ -76,7 +109,7 @@ export const getErc721TokenData = async (
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
     shouldFetchBalance
-      ? withFallback<Balance>(
+      ? withFallback<TokenBalance>(
           contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
           'ERC1155',
         )
@@ -175,7 +208,7 @@ export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
 // TODO: Improve spam checks
 // TODO: Investigate other proxy patterns to see if they result in false positives
 export const throwIfSpamNft = async (contract: Contract) => {
-  const bytecode = await contract.publicClient.getCode({ address: contract.address });
+  const bytecode = (await contract.publicClient.getCode({ address: contract.address })) ?? '';
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {
@@ -191,7 +224,7 @@ export const throwIfSpamNft = async (contract: Contract) => {
   }
 };
 
-export const hasZeroBalance = (balance: Balance, decimals?: number) => {
+export const hasZeroBalance = (balance: TokenBalance, decimals?: number) => {
   return balance !== 'ERC1155' && formatFixedPointBigInt(balance, decimals) === '0';
 };
 
@@ -260,7 +293,7 @@ export const hasSupportForPermit = async (contract: TokenContract) => {
 
 export const getPermitDomain = async (contract: Erc20TokenContract): Promise<TypedDataDomain> => {
   const verifyingContract = contract.address;
-  const chainId = contract.publicClient.chain.id;
+  const chainId = contract.publicClient.chain!.id;
 
   const [version, name, symbol, contractDomainSeparator] = await Promise.all([
     getPermitDomainVersion(contract),

@@ -18,7 +18,10 @@ const SidebarSection = ({ title, href, path, children }: Props) => {
 
   const classes = twMerge(
     'text-lg font-bold',
-    isMounted && routerPath.startsWith(path) && 'text-black visited:text-black dark:text-white dark:visited:text-white',
+    isMounted &&
+      path &&
+      routerPath.startsWith(path) &&
+      'text-black visited:text-black dark:text-white dark:visited:text-white',
   );
 
   return (

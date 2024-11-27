@@ -23,7 +23,7 @@ const testCovalentRateLimits = async (chainId: number, rps: number) => {
         )
         .json<any>();
     } catch (e) {
-      console.error(e?.data);
+      console.error((e as any).data);
       return null;
     }
   };

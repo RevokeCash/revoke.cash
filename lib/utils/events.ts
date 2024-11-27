@@ -1,7 +1,27 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
-import { Log, TimeLog } from 'lib/interfaces';
-import { Address, decodeEventLog } from 'viem';
-import { isNullish } from '.';
+import { MOONBIRDS_ADDRESS } from 'lib/constants';
+import { Address, decodeEventLog, Hash, Hex, toEventSelector } from 'viem';
+import { addressToTopic, isNullish } from '.';
+
+export interface Log {
+  address: Address;
+  topics: [topic0: Hex, ...rest: Hex[]];
+  data: Hex;
+  transactionHash: Hash;
+  blockNumber: number;
+  transactionIndex: number;
+  logIndex: number;
+  timestamp?: number;
+}
+
+export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
+
+export interface Filter {
+  address?: Address;
+  topics: Array<Hex | null>;
+  fromBlock: number;
+  toBlock: number;
+}
 
 export enum TokenEventType {
   APPROVAL_ERC20 = 'APPROVAL_ERC20',
@@ -181,4 +201,35 @@ export const parseTransferLog = (
 
 export const getEventKey = (event: TokenEvent) => {
   return JSON.stringify(event.rawLog);
+};
+
+// This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
+// which do not show up normally because of a bug in their contract
+export const generatePatchedAllowanceEvents = (
+  userAddress: Address,
+  openseaProxyAddress?: Address,
+  allEvents: Log[] = [],
+): Log[] => {
+  if (!userAddress || !openseaProxyAddress) return [];
+
+  // Only add the Moonbirds approval event if the account has interacted with Moonbirds at all
+  if (!allEvents.some((ev) => ev.address === MOONBIRDS_ADDRESS)) return [];
+
+  return [
+    {
+      // We use the deployment transaction hash as a placeholder for the approval transaction hash
+      transactionHash: '0xd4547dc336dd4a0655f11267537964d7641f115ef3d5440d71514e3efba9d210',
+      blockNumber: 14591056,
+      transactionIndex: 145,
+      logIndex: 0,
+      address: MOONBIRDS_ADDRESS,
+      topics: [
+        toEventSelector('ApprovalForAll(address,address,bool)'),
+        addressToTopic(userAddress),
+        addressToTopic(openseaProxyAddress),
+      ],
+      data: '0x1',
+      timestamp: 1649997510,
+    },
+  ];
 };

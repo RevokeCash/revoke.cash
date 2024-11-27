@@ -4,12 +4,12 @@ import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { FormatOptionLabelMeta } from 'react-select';
+import { FormatOptionLabelMeta, ValueContainerProps } from 'react-select';
 import useLocalStorage from 'use-local-storage';
 import { ColumnId } from '../columns';
 
@@ -29,7 +29,7 @@ interface OptionGroupWithSelected extends OptionGroup {
 }
 
 interface Props {
-  table: Table<AllowanceData>;
+  table: Table<TokenAllowanceData>;
 }
 
 const options = [
@@ -75,7 +75,7 @@ const FilterSelect = ({ table }: Props) => {
   const displayOption = (option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {
     return (
       <div className="flex items-center gap-1">
-        <Checkbox checked={!!selectValue.find((selected) => selected.value === option.value)} />
+        <Checkbox checked={selectValue.some((selected) => selected.value === option.value)} />
         <span>{t(`address.filters.${normaliseLabel(option.group)}.options.${normaliseLabel(option.value)}`)}</span>
       </div>
     );
@@ -113,11 +113,11 @@ const FilterSelect = ({ table }: Props) => {
 export default FilterSelect;
 
 // We disable MultiValue and implement our own ValueContainer to display the selected options in a more compact way
-const ValueContainer = ({ children, getValue, options }) => {
+const ValueContainer = ({ children, getValue, options }: ValueContainerProps<Option, true, OptionGroup>) => {
   const t = useTranslations();
   const isMounted = useMounted();
 
-  const groupsWithSelected = getGroupsWithSelected(options, getValue());
+  const groupsWithSelected = getGroupsWithSelected(options as OptionGroup[], getValue() as Option[]);
 
   const labels = groupsWithSelected.map((group) => {
     const commonKey = `address.filters.${normaliseLabel(group.label)}`;

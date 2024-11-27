@@ -1,20 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
 import eventsDB from 'lib/databases/events';
-import type { Filter, Log } from 'lib/interfaces';
 import { getLogsProvider } from 'lib/providers';
+import { isNullish } from 'lib/utils';
+import type { Filter, Log } from 'lib/utils/events';
 import { useEffect } from 'react';
 import { useApiSession } from '../useApiSession';
 
-export const useLogs = (name: string, chainId: number, filter: Filter) => {
+export const useLogs = (name: string, chainId: number, filter?: Filter) => {
   const { isLoggedIn, loggingIn, error: loginError } = useApiSession();
 
   const result = useQuery<Log[], Error>({
     queryKey: ['logs', filter, chainId, isLoggedIn],
-    queryFn: async () => eventsDB.getLogs(getLogsProvider(chainId), filter, chainId),
+    queryFn: async () => eventsDB.getLogs(getLogsProvider(chainId), filter!, chainId),
     refetchOnWindowFocus: false,
     // The same filter should always return the same logs
     staleTime: Infinity,
-    enabled: !!chainId && !!isLoggedIn && ![filter?.fromBlock, filter?.toBlock, filter?.topics].includes(undefined),
+    enabled:
+      !isNullish(chainId) &&
+      !isNullish(isLoggedIn) &&
+      !isNullish(filter?.fromBlock) &&
+      !isNullish(filter?.toBlock) &&
+      !isNullish(filter?.topics),
   });
 
   useEffect(() => {

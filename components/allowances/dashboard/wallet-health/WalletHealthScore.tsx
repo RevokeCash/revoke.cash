@@ -1,11 +1,12 @@
 import Loader from 'components/common/Loader';
+import { Nullable } from 'lib/interfaces';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 interface Props {
   score: number;
   isLoading: boolean;
-  error?: Error;
+  error?: Nullable<Error>;
 }
 
 const WalletHealthScore = ({ score, error, isLoading }: Props) => {

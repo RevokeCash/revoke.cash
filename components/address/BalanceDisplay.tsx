@@ -1,5 +1,6 @@
 import Loader from 'components/common/Loader';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { Nullable } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import { getChainNativeToken } from 'lib/utils/chains';
 import { formatFiatBalance, formatFixedPointBigInt } from 'lib/utils/formatting';
@@ -7,8 +8,8 @@ import { twMerge } from 'tailwind-merge';
 
 interface Props {
   isLoading: boolean;
-  balance: bigint;
-  price?: number;
+  balance?: bigint;
+  price?: Nullable<number>;
   className?: string;
 }
 
@@ -25,7 +26,7 @@ const BalanceDisplay = ({ isLoading, balance, price, className }: Props) => {
   return (
     <Loader isLoading={isLoading || isNullish(balance)} loadingChildren={placeholder} className="rounded-md">
       <div className={classes}>
-        <span>{formatFixedPointBigInt(balance, 18)}</span>
+        <span>{balance ? formatFixedPointBigInt(balance, 18) : null}</span>
         <span className="font-bold">{nativeToken}</span>
         {fiatBalanceText ? <span>({fiatBalanceText})</span> : null}
       </div>

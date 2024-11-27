@@ -13,4 +13,5 @@ export const Selectors = {
   EXPLOIT_CHECKER_LOADER: '.exploit-checker-loader',
   EXPLOIT_CHECKER_STATUS: '.exploit-checker-status',
   TOTAL_ALLOWANCES: '.total-allowances',
+  ALLOWANCE_TABLE_ROW: '.allowances-table > tbody > tr',
 };

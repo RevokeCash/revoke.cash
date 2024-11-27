@@ -14,12 +14,12 @@ interface Props {
 
 const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
   const { data: walletClient } = useWalletClient();
-  const publicClient = usePublicClient();
+  const publicClient = usePublicClient()!;
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction(selectedChainId);
 
   const sendCancelTransaction = async (): Promise<TransactionSubmitted> => {
-    const hash = await marketplace?.cancelSignatures(walletClient);
+    const hash = await marketplace?.cancelSignatures(walletClient!);
 
     track('Cancelled Marketplace Signatures', {
       chainId: selectedChainId,
@@ -30,6 +30,7 @@ const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
     const waitForConfirmation = async () => {
       // TODO: Deduplicate this with the CancelPermitCell
       const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
+      if (!transactionReceipt) return;
       const lastCancelled = await blocksDB.getTimeLog(publicClient, {
         ...transactionReceipt,
         blockNumber: Number(transactionReceipt.blockNumber),
@@ -43,7 +44,7 @@ const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
     return { hash, confirmation: waitForConfirmation() };
   };
 
-  const cancel = async (): Promise<TransactionSubmitted> => {
+  const cancel = async (): Promise<TransactionSubmitted | undefined> => {
     return handleTransaction(sendCancelTransaction(), TransactionType.OTHER);
   };
 

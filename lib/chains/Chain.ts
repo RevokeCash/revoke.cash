@@ -98,7 +98,7 @@ export class Chain {
 
   getRpcUrls(): string[] {
     const baseRpcUrls =
-      getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', INFURA_API_KEY)) ?? [];
+      getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', `${INFURA_API_KEY}`)) ?? [];
     const specifiedRpcUrls = [this.options.rpc?.main].flat().filter(Boolean) as string[];
     const rpcOverrides = RPC_OVERRIDES[this.chainId] ? [RPC_OVERRIDES[this.chainId]] : [];
     return [...rpcOverrides, ...specifiedRpcUrls, ...baseRpcUrls];
@@ -129,13 +129,16 @@ export class Chain {
 
   getEtherscanCompatibleApiKey(): string | undefined {
     const platform = this.getEtherscanCompatiblePlatformNames();
-    return ETHERSCAN_API_KEYS[`${platform?.subdomain}.${platform?.domain}`] ?? ETHERSCAN_API_KEYS[platform?.domain];
+    const subdomainApiKey = ETHERSCAN_API_KEYS[`${platform?.subdomain}.${platform?.domain}`];
+    const domainApiKey = ETHERSCAN_API_KEYS[`${platform?.domain}`];
+    return subdomainApiKey ?? domainApiKey;
   }
 
   getEtherscanCompatibleApiRateLimit(): RateLimit {
     const platform = this.getEtherscanCompatiblePlatformNames();
-    const customRateLimit =
-      ETHERSCAN_RATE_LIMITS[`${platform?.subdomain}.${platform?.domain}`] ?? ETHERSCAN_RATE_LIMITS[platform?.domain];
+    const subdomainRateLimit = ETHERSCAN_RATE_LIMITS[`${platform?.subdomain}.${platform?.domain}`];
+    const domainRateLimit = ETHERSCAN_RATE_LIMITS[`${platform?.domain}`];
+    const customRateLimit = subdomainRateLimit ?? domainRateLimit;
 
     if (customRateLimit) {
       return { interval: 1000, intervalCap: customRateLimit };
@@ -160,7 +163,7 @@ export class Chain {
     const apiUrl = this.getEtherscanCompatibleApiUrl();
     if (!apiUrl) return undefined;
 
-    const domain = new URL(apiUrl).hostname.split('.').at(-2);
+    const domain = new URL(apiUrl).hostname.split('.').at(-2)!;
     const subdomain = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
     return { domain, subdomain };
   };
@@ -176,7 +179,7 @@ export class Chain {
   getViemChainConfig(): ViemChain {
     const chainInfo = getChain(this.chainId);
     const chainName = this.getName();
-    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken(), decimals: 18 };
+    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken()!, decimals: 18 };
 
     return defineChain({
       id: this.chainId,
@@ -199,14 +202,15 @@ export class Chain {
   }
 
   getAddEthereumChainParameter(): AddEthereumChainParameter {
-    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken(), decimals: 18 };
+    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken()!, decimals: 18 };
+    const iconUrl = getChain(this.chainId)?.iconURL;
     const addEthereumChainParameter = {
       chainId: String(this.chainId),
       chainName: this.getName(),
       nativeCurrency: getChain(this.chainId)?.nativeCurrency ?? fallbackNativeCurrency,
       rpcUrls: [this.getFreeRpcUrl()],
       blockExplorerUrls: [this.getExplorerUrl()],
-      iconUrls: [getChain(this.chainId)?.iconURL],
+      iconUrls: iconUrl ? [iconUrl] : [],
     };
 
     return addEthereumChainParameter;

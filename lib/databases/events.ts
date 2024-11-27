@@ -1,14 +1,15 @@
 import { ChainId } from '@revoke.cash/chains';
 import Dexie, { Table } from 'dexie';
-import { Filter, Log, LogsProvider } from 'lib/interfaces';
+import { LogsProvider } from 'lib/providers';
 import { isCovalentSupportedChain } from 'lib/utils/chains';
+import { Filter, Log } from 'lib/utils/events';
 import { Address } from 'viem';
 
 interface Events {
   chainId: number;
   address?: Address;
   topicsKey: string;
-  topics: string[];
+  topics: Array<string | null>;
   toBlock: number;
   logs: Log[];
 }
@@ -81,7 +82,7 @@ class EventsDB extends Dexie {
 
       // If the fromBlock is greater than the toBlock, it means that we already have all the events
       if (fromBlock > toBlock) {
-        return storedEvents.logs.filter(
+        return storedEvents!.logs.filter(
           (log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock,
         );
       }

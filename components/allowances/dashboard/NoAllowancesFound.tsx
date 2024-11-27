@@ -1,8 +1,8 @@
-import type { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  allowances: Array<AllowanceData>;
+  allowances: Array<TokenAllowanceData>;
 }
 
 const NoAllowancesFound = ({ allowances }: Props) => {

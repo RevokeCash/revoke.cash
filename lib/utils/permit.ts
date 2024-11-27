@@ -1,11 +1,10 @@
 import { DAI_PERMIT_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import { BaseTokenData, Erc20TokenContract, TimeLog } from 'lib/interfaces';
-import { Address, Hex, Signature, TypedDataDomain, WalletClient, parseSignature } from 'viem';
+import { Address, Hex, parseSignature, Signature, TypedDataDomain, WalletClient } from 'viem';
 import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
-import { TokenEvent, TokenEventType } from './events';
-import { getPermitDomain } from './tokens';
+import { TimeLog, TokenEvent, TokenEventType } from './events';
+import { Erc20TokenContract, getPermitDomain, TokenData } from './tokens';
 
 export const permit = async (
   walletClient: WalletClient,
@@ -117,12 +116,12 @@ export const signDaiPermit = async (
   return parseSignature(signatureHex);
 };
 
-export const getLastCancelled = async (events: TokenEvent[], token: BaseTokenData): Promise<TimeLog> => {
+export const getLastCancelled = async (events: TokenEvent[], token: TokenData): Promise<TimeLog | undefined> => {
   const [lastCancelledEvent] = events.filter(
     (event) => event.token === token.contract.address && isCancelPermitEvent(event),
   );
 
-  if (!lastCancelledEvent) return null;
+  if (!lastCancelledEvent) return undefined;
 
   const timestamp = await blocksDB.getLogTimestamp(token.contract.publicClient, lastCancelledEvent.time);
 

@@ -195,7 +195,13 @@ describe('Chain Support', () => {
             .should('exist')
             .invoke('text')
             .then((text) => {
-              cy.writeFile(`cypress/temp/temp_${chainId}.txt`, text);
+              cy.writeFile(`cypress/downloads/temp_${chainId}_total_allowances.txt`, text);
+            });
+
+          cy.get(Selectors.ALLOWANCE_TABLE_ROW)
+            .its('length')
+            .then((length) => {
+              cy.writeFile(`cypress/downloads/temp_${chainId}_total_rows.txt`, `${length}`);
             });
         }
 
@@ -203,11 +209,11 @@ describe('Chain Support', () => {
           // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
           const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
           linkElement.invoke('attr', 'href').then((href) => {
-            cy.origin(href, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
+            cy.origin(href!, { args: { href, fixtureAddress } }, ({ href, fixtureAddress }) => {
               // Suppress errors on the explorer page
               cy.on('uncaught:exception', () => false);
 
-              cy.visit(href);
+              cy.visit(href!);
               cy.get(`a[href*="${fixtureAddress}" i]`, { timeout: 10_000 }).should('exist');
             });
           });
@@ -225,11 +231,15 @@ describe('Chain Support', () => {
           cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
 
           // Check that the number of approvals is the same as the number of approvals on production
-          cy.readFile(`cypress/temp/temp_${chainId}.txt`).then((expectedNumberOfApprovals) => {
+          cy.readFile(`cypress/downloads/temp_${chainId}_total_allowances.txt`).then((expectedNumberOfApprovals) => {
             cy.get(Selectors.TOTAL_ALLOWANCES)
               .should('exist')
               .invoke('text')
               .should('equal', expectedNumberOfApprovals);
+          });
+
+          cy.readFile(`cypress/downloads/temp_${chainId}_total_rows.txt`).then((expectedNumberOfRows) => {
+            cy.get(Selectors.ALLOWANCE_TABLE_ROW).its('length').should('equal', Number(expectedNumberOfRows));
           });
         });
       }

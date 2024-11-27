@@ -1,7 +1,6 @@
 'use client';
 
-import { AllowanceData, OnUpdate } from 'lib/interfaces';
-import { getAllowanceKey, revokeAllowance, wrapRevoke } from 'lib/utils/allowances';
+import { getAllowanceKey, OnUpdate, revokeAllowance, TokenAllowanceData, wrapRevoke } from 'lib/utils/allowances';
 import PQueue from 'p-queue';
 import { useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -11,7 +10,7 @@ import { useTransactionStore } from '../../stores/transaction-store';
 // Limit to 50 concurrent revokes to avoid wallets crashing
 const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
 
-export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) => {
+export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { results, getTransaction, updateTransaction } = useTransactionStore();
 
   const { data: walletClient } = useWalletClient();
@@ -31,7 +30,7 @@ export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) 
 
           const revoke = wrapRevoke(
             allowance,
-            () => revokeAllowance(walletClient, allowance, onUpdate),
+            () => revokeAllowance(walletClient!, allowance, onUpdate),
             updateTransaction,
           );
 

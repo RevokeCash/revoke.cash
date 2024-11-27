@@ -1,5 +1,6 @@
 import { Table as ReactTable } from '@tanstack/react-table';
 import Error from 'components/common/Error';
+import { Nullable } from 'lib/interfaces';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
@@ -8,7 +9,7 @@ import TableHeader from './TableHeader';
 interface Props<T> {
   loading: boolean;
   table: ReactTable<T>;
-  error?: Error;
+  error?: Nullable<Error>;
   emptyChildren?: React.ReactNode;
   loaderRows?: number;
   className?: string;

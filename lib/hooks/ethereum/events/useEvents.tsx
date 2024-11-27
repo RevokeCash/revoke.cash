@@ -1,7 +1,7 @@
 import { ERC721_ABI } from 'lib/abis';
 import { addressToTopic, sortTokenEventsChronologically } from 'lib/utils';
-import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import {
+  generatePatchedAllowanceEvents,
   parseApprovalForAllLog,
   parseApprovalLog,
   parsePermit2Log,
@@ -22,34 +22,34 @@ export const useEvents = (address: Address, chainId: number) => {
   };
 
   const addressTopic = address ? addressToTopic(address) : undefined;
-  const transferToTopics = addressTopic && [getErc721EventSelector('Transfer'), null, addressTopic];
-  const transferFromTopics = addressTopic && [getErc721EventSelector('Transfer'), addressTopic];
-  const approvalTopics = addressTopic && [getErc721EventSelector('Approval'), addressTopic];
-  const approvalForAllTopics = addressTopic && [getErc721EventSelector('ApprovalForAll'), addressTopic];
+  const transferToFilter = addressTopic && { topics: [getErc721EventSelector('Transfer'), null, addressTopic] };
+  const transferFromFilter = addressTopic && { topics: [getErc721EventSelector('Transfer'), addressTopic] };
+  const approvalFilter = addressTopic && { topics: [getErc721EventSelector('Approval'), addressTopic] };
+  const approvalForAllFilter = addressTopic && { topics: [getErc721EventSelector('ApprovalForAll'), addressTopic] };
 
   const {
     data: transferTo,
     isLoading: isTransferToLoading,
     error: transferToError,
-  } = useLogsFullBlockRange('Transfer (to)', chainId, { topics: transferToTopics });
+  } = useLogsFullBlockRange('Transfer (to)', chainId, transferToFilter);
 
   const {
     data: transferFrom,
     isLoading: isTransferFromLoading,
     error: transferFromError,
-  } = useLogsFullBlockRange('Transfer (from)', chainId, { topics: transferFromTopics });
+  } = useLogsFullBlockRange('Transfer (from)', chainId, transferFromFilter);
 
   const {
     data: approval,
     isLoading: isApprovalLoading,
     error: approvalError,
-  } = useLogsFullBlockRange('Approval', chainId, { topics: approvalTopics });
+  } = useLogsFullBlockRange('Approval', chainId, approvalFilter);
 
   const {
     data: approvalForAllUnpatched,
     isLoading: isApprovalForAllLoading,
     error: approvalForAllError,
-  } = useLogsFullBlockRange('ApprovalForAll', chainId, { topics: approvalForAllTopics });
+  } = useLogsFullBlockRange('ApprovalForAll', chainId, approvalForAllFilter);
 
   const {
     events: permit2Approval,
@@ -62,7 +62,7 @@ export const useEvents = (address: Address, chainId: number) => {
     if (!transferFrom || !transferTo || !approval || !approvalForAllUnpatched) return undefined;
     return [
       ...approvalForAllUnpatched,
-      ...generatePatchedAllowanceEvents(address, openSeaProxyAddress, [
+      ...generatePatchedAllowanceEvents(address, openSeaProxyAddress ?? undefined, [
         ...approval,
         ...approvalForAllUnpatched,
         ...transferFrom,

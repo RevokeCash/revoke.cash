@@ -18,7 +18,7 @@ export function useRouter() {
   const push = (
     href: string,
     options?: Parameters<typeof router.push>[1] & { showProgress?: boolean },
-  ): ReturnType<typeof push> => {
+  ): ReturnType<typeof router.push> => {
     if (options?.showProgress !== false) nProgress.start();
     return router.push(href, options);
   };

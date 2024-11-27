@@ -1,9 +1,9 @@
 import { ColumnFiltersState, Table } from '@tanstack/react-table';
-import { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { deduplicateArray } from '.';
 
 export const updateTableFilters = (
-  table: Table<AllowanceData>,
+  table: Table<TokenAllowanceData>,
   newFilters: ColumnFiltersState,
   ignoreIds: string[] = [],
 ) => {

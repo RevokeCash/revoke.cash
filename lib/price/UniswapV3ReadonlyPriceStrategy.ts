@@ -1,5 +1,5 @@
 import { UNISWAP_V3_POOL_ABI } from 'lib/abis';
-import { Erc20TokenContract } from 'lib/interfaces';
+import { Erc20TokenContract } from 'lib/utils/tokens';
 import { Address, Hex, encodeAbiParameters, getCreate2Address, hexToNumber, keccak256, parseAbiParameters } from 'viem';
 import { UniswapV3PriceStrategy, UniswapV3PriceStrategyOptions } from './UniswapV3PriceStrategy';
 import { calculateTokenPrice } from './utils';
@@ -35,7 +35,7 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     this.minLiquidity = options.liquidityParameters?.minLiquidity ?? 10n ** 17n;
   }
 
-  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | undefined> {
     if (tokenContract.address === this.path.at(-1)) {
       return 1;
     }

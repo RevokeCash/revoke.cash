@@ -40,7 +40,7 @@ export const generateStaticParams = () => {
   return locales.map((locale) => ({ locale }));
 };
 
-export const generateMetadata = async ({ params: { locale } }): Promise<Metadata> => {
+export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
   const t = await getTranslations({ locale });
 
   return {

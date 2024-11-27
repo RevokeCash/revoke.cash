@@ -5,7 +5,7 @@ import { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
-import { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
@@ -13,11 +13,11 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import { ColumnId } from '../columns';
 
 interface Props {
-  table: Table<AllowanceData>;
+  table: Table<TokenAllowanceData>;
 }
 
 const AllowanceSearchBox = ({ table }: Props) => {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()!;
   const t = useTranslations();
   const [searchValues, setSearchValues] = useState<string[]>([]);
 

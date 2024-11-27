@@ -1,7 +1,6 @@
 import ky from 'lib/ky';
 import { PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
-import type { Filter, Log, LogsProvider } from './interfaces';
 import {
   createViemPublicClientForChain,
   getChainLogsRpcUrl,
@@ -9,6 +8,12 @@ import {
   isCovalentSupportedChain,
 } from './utils/chains';
 import { isLogResponseSizeError } from './utils/errors';
+import { Filter, Log } from './utils/events';
+
+export interface LogsProvider {
+  chainId: number;
+  getLogs(filter: Filter): Promise<Array<Log>>;
+}
 
 export class DivideAndConquerLogsProvider implements LogsProvider {
   constructor(private underlyingProvider: LogsProvider) {}
@@ -60,7 +65,7 @@ export class BackendLogsProvider implements LogsProvider {
         ky.post(`/api/${this.chainId}/logs`, { json: filter, timeout: false }).json<any>(),
       );
     } catch (error) {
-      throw new Error(error?.data?.message ?? error?.message);
+      throw new Error((error as any).data?.message ?? (error as any).message);
     }
   }
 }
