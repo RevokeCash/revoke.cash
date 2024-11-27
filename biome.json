@@ -14,7 +14,19 @@
     "bracketSpacing": true
   },
   "organizeImports": { "enabled": true },
-  "linter": { "enabled": true, "rules": { "recommended": true } },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noShadowRestrictedNames": "warn"
+      },
+      "style": {
+        "noInferrableTypes": "off"
+      }
+    }
+  },
   "javascript": {
     "formatter": {
       "jsxQuoteStyle": "double",
