@@ -1,7 +1,7 @@
-import { createColumnHelper, type RowData } from '@tanstack/react-table';
+import { createColumnHelper, RowData } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import type { AllowanceData, OnCancel, PermitTokenData } from 'lib/interfaces';
+import { AllowanceData, OnCancel, PermitTokenData } from 'lib/interfaces';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import CancelPermitCell from '../cells/CancelPermitCell';
 import LastCancelledCell from '../cells/LastCancelledCell';

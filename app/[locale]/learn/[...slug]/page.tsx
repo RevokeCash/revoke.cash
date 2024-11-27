@@ -2,7 +2,7 @@ import LearnLayout from 'app/layouts/LearnLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { locales } from 'lib/i18n/config';
 import { getAllContentSlugs, getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
-import type { Metadata, NextPage } from 'next';
+import { Metadata, NextPage } from 'next';
 import { unstable_setRequestLocale } from 'next-intl/server';
 
 interface Props {

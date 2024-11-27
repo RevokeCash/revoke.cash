@@ -1,7 +1,7 @@
 import { ERC20_ABI } from 'lib/abis';
-import type { TokenContract, TokenStandard } from 'lib/interfaces';
-import type { Address, PublicClient } from 'viem';
-import type { PriceStrategy } from './PriceStrategy';
+import { TokenContract, TokenStandard } from 'lib/interfaces';
+import { Address, PublicClient } from 'viem';
+import { PriceStrategy } from './PriceStrategy';
 import { strategySupportsToken } from './utils';
 
 export interface AbstractPriceStrategyOptions {

@@ -2,7 +2,7 @@
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { Link } from 'lib/i18n/navigation';
-import { type ForwardedRef, type MouseEventHandler, forwardRef } from 'react';
+import { ForwardedRef, MouseEventHandler, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 

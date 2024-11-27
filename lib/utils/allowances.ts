@@ -1,6 +1,6 @@
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
+import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import {
   TransactionType,
   type AddressEvents,
@@ -14,15 +14,8 @@ import {
   type TokenContract,
   type TransactionSubmitted,
 } from 'lib/interfaces';
-import type { TransactionStore } from 'lib/stores/transaction-store';
-import {
-  fromHex,
-  getEventSelector,
-  type Address,
-  type PublicClient,
-  type WalletClient,
-  type WriteContractParameters,
-} from 'viem';
+import { TransactionStore } from 'lib/stores/transaction-store';
+import { Address, PublicClient, WalletClient, WriteContractParameters, fromHex, getEventSelector } from 'viem';
 import {
   addressToTopic,
   deduplicateLogsByTopics,
@@ -74,10 +67,7 @@ export const getAllowancesFromEvents = async (
           return [tokenData as AllowanceData];
         }
 
-        const fullAllowances = allowances.map((allowance) => ({
-          ...tokenData,
-          ...allowance,
-        }));
+        const fullAllowances = allowances.map((allowance) => ({ ...tokenData, ...allowance }));
         return fullAllowances;
       } catch (e) {
         if (isNetworkError(e)) throw e;
@@ -199,11 +189,7 @@ const getLimitedErc721AllowanceFromApproval = async (contract: Erc721TokenContra
     if (lastApproved === ADDRESS_ZERO) return undefined;
 
     const [owner, spender, lastUpdated] = await Promise.all([
-      contract.publicClient.readContract({
-        ...contract,
-        functionName: 'ownerOf',
-        args: [tokenId],
-      }),
+      contract.publicClient.readContract({ ...contract, functionName: 'ownerOf', args: [tokenId] }),
       contract.publicClient.readContract({
         ...contract,
         functionName: 'getApproved',
@@ -559,17 +545,11 @@ export const wrapRevoke = (
       if (handleTransaction) await handleTransaction(transactionPromise, TransactionType.REVOKE);
       const transactionSubmitted = await transactionPromise;
 
-      updateTransaction(allowance, {
-        status: 'pending',
-        transactionHash: transactionSubmitted?.hash,
-      });
+      updateTransaction(allowance, { status: 'pending', transactionHash: transactionSubmitted?.hash });
 
       // We don't await this, since we want to return after submitting all transactions, even if they're still pending
       transactionSubmitted.confirmation.then(() => {
-        updateTransaction(allowance, {
-          status: 'confirmed',
-          transactionHash: transactionSubmitted.hash,
-        });
+        updateTransaction(allowance, { status: 'confirmed', transactionHash: transactionSubmitted.hash });
       });
 
       return transactionSubmitted;

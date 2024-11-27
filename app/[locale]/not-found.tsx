@@ -2,7 +2,7 @@ import { GlobeEuropeAfricaIcon, QuestionMarkCircleIcon } from '@heroicons/react/
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import Href from 'components/common/Href';
 import NotFoundLink from 'components/common/NotFoundLink';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import NotFoundLinkMyApprovals from './NotFoundLinkMyApprovals';
 

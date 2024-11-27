@@ -69,7 +69,6 @@
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
     "@cypress/grep": "^4.1.0",
     "@lavamoat/allow-scripts": "^3.2.0",
     "@localazy/cli": "^1.7.14",

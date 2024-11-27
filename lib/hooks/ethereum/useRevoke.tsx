@@ -1,6 +1,6 @@
 'use client';
 
-import { type AllowanceData, type OnUpdate, TransactionType } from 'lib/interfaces';
+import { AllowanceData, OnUpdate, TransactionType } from 'lib/interfaces';
 import { revokeAllowance, updateErc20Allowance, wrapRevoke } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { useWalletClient } from 'wagmi';

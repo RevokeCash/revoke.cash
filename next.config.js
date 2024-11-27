@@ -1,6 +1,4 @@
-const withBundleAnalyzer = require('next-bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
+const withBundleAnalyzer = require('next-bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
 const withNextIntl = require('next-intl/plugin')();
 const withNextCircularDeps = require('next-circular-dependency');
 

@@ -2,7 +2,7 @@
 
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import type { ISidebarEntry } from 'lib/interfaces';
+import { ISidebarEntry } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 import StickyBox from 'react-sticky-box';
 import { twMerge } from 'tailwind-merge';

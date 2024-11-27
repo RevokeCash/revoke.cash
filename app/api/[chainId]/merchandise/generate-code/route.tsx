@@ -1,7 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
-import type { NextRequest } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getAddress } from 'viem';
 
 interface Props {
@@ -18,9 +18,7 @@ export async function POST(req: NextRequest, { params }: Props) {
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.MERCH_CODES))) {
-    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), {
-      status: 429,
-    });
+    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   }
 
   if (!process.env.MERCH_CODES_DATABASE_URL) {
@@ -38,14 +36,9 @@ export async function POST(req: NextRequest, { params }: Props) {
   });
 
   if (!transaction) {
-    return new Response(
-      JSON.stringify({
-        message: 'Invalid transaction: donation transaction not found',
-      }),
-      {
-        status: 400,
-      },
-    );
+    return new Response(JSON.stringify({ message: 'Invalid transaction: donation transaction not found' }), {
+      status: 400,
+    });
   }
 
   const code = generateRandomMerchCode();
@@ -66,9 +59,7 @@ export async function POST(req: NextRequest, { params }: Props) {
       return new Response(JSON.stringify({ message: 'Failed to generate merch code' }), { status: 500 });
     }
 
-    return new Response(JSON.stringify({ code: existingCode }), {
-      status: 200,
-    });
+    return new Response(JSON.stringify({ code: existingCode }), { status: 200 });
   }
 }
 

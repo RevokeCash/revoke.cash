@@ -1,6 +1,6 @@
 'use client';
 
-import type { AllowanceData, OnUpdate } from 'lib/interfaces';
+import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import { getAllowanceKey, revokeAllowance, wrapRevoke } from 'lib/utils/allowances';
 import PQueue from 'p-queue';
 import { useEffect, useMemo } from 'react';
@@ -9,11 +9,7 @@ import { useWalletClient } from 'wagmi';
 import { useTransactionStore } from '../../stores/transaction-store';
 
 // Limit to 50 concurrent revokes to avoid wallets crashing
-const REVOKE_QUEUE = new PQueue({
-  interval: 100,
-  intervalCap: 1,
-  concurrency: 50,
-});
+const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
 
 export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) => {
   const { results, getTransaction, updateTransaction } = useTransactionStore();
@@ -62,12 +58,5 @@ export const useRevokeBatch = (allowances: AllowanceData[], onUpdate: OnUpdate) 
     return allowances.every((allowance) => getTransaction(allowance).status === 'confirmed');
   }, [allowances, results]);
 
-  return {
-    revoke,
-    pause,
-    results: relevantResults,
-    isSubmitting,
-    isRevoking,
-    isAllConfirmed,
-  };
+  return { revoke, pause, results: relevantResults, isSubmitting, isRevoking, isAllConfirmed };
 };

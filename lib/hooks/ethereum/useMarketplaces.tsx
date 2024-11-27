@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
 import eventsDB from 'lib/databases/events';
-import type { Marketplace, MarketplaceConfig, OnCancel, TimeLog } from 'lib/interfaces';
+import { Marketplace, MarketplaceConfig, OnCancel, TimeLog } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
 import { addressToTopic, getWalletAddress, logSorterChronological } from 'lib/utils';
@@ -11,7 +11,7 @@ import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
-import { type Address, type Hash, type WalletClient, getAbiItem, toEventSelector } from 'viem';
+import { Address, Hash, WalletClient, getAbiItem, toEventSelector } from 'viem';
 import { getBlockNumber } from 'wagmi/actions';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
 import { wagmiConfig } from './EthereumProvider';
@@ -73,12 +73,7 @@ export const useMarketplaces = () => {
       getFilter: (address: Address) => ({
         address: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
         topics: [
-          toEventSelector(
-            getAbiItem({
-              abi: OPENSEA_SEAPORT_ABI,
-              name: 'CounterIncremented',
-            }),
-          ),
+          toEventSelector(getAbiItem({ abi: OPENSEA_SEAPORT_ABI, name: 'CounterIncremented' })),
           addressToTopic(address),
         ],
       }),
@@ -131,16 +126,12 @@ export const useMarketplaces = () => {
         .then((res) => !!res?.ok);
 
       const marketplaces = await mapAsync(filtered, async (marketplace) => {
-        const filter = {
-          ...marketplace.getFilter(address),
-          fromBlock: 0,
-          toBlock: blockNumber,
-        };
+        const filter = { ...marketplace.getFilter(address), fromBlock: 0, toBlock: blockNumber };
         const logs = await queryClient.ensureQueryData({
           queryKey: ['logs', filter, selectedChainId, isLoggedIn],
           queryFn: async () => eventsDB.getLogs(getLogsProvider(selectedChainId), filter, selectedChainId),
           // The same filter should always return the same logs
-          staleTime: Number.POSITIVE_INFINITY,
+          staleTime: Infinity,
         });
 
         const lastCancelled = logs?.sort(logSorterChronological)?.at(-1);

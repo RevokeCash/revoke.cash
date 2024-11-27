@@ -1,9 +1,9 @@
-import { type Column, type ColumnSort, sortingFns, type Table } from '@tanstack/react-table';
+import { Column, ColumnSort, sortingFns, Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import type { AllowanceData } from 'lib/interfaces';
+import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';

@@ -1,4 +1,4 @@
-import type { Table as ReactTable } from '@tanstack/react-table';
+import { Table as ReactTable } from '@tanstack/react-table';
 import Error from 'components/common/Error';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';

@@ -4,11 +4,11 @@ import PageNavigation from 'components/common/PageNavigation';
 import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
 import ArticleMeta from 'components/learn/ArticleMeta';
-import type { BreadcrumbEntry } from 'lib/interfaces';
+import { BreadcrumbEntry } from 'lib/interfaces';
 import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface Props {
   params: {

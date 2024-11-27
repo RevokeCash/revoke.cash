@@ -1,4 +1,4 @@
-import type { Connector } from 'wagmi';
+import { Connector } from 'wagmi';
 import { deduplicateArray } from '.';
 
 export const getWalletIcon = (connector: Connector): string | undefined => {

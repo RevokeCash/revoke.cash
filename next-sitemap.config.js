@@ -60,11 +60,7 @@ module.exports = {
 
     // Map the locale independent path onto the locale paths
     const alternateRefs = config.alternateRefs.map((alt) => {
-      return {
-        ...alt,
-        href: `${alt.href}${localeIndependentPath}`,
-        hrefIsAbsolute: true,
-      };
+      return { ...alt, href: `${alt.href}${localeIndependentPath}`, hrefIsAbsolute: true };
     });
 
     return {

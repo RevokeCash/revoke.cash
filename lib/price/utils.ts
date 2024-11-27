@@ -1,9 +1,9 @@
-import type { TokenContract } from 'lib/interfaces';
+import { TokenContract } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { isErc721Contract } from 'lib/utils/tokens';
-import { type PublicClient, formatUnits } from 'viem';
-import type { PriceStrategy } from './PriceStrategy';
+import { PublicClient, formatUnits } from 'viem';
+import { PriceStrategy } from './PriceStrategy';
 
 export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: number): number => {
   return !isNullish(inversePrice) ? 1 / Number.parseFloat(formatUnits(inversePrice, tokenDecimals)) : null;

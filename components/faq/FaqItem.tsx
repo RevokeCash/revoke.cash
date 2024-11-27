@@ -5,7 +5,7 @@ import { ChevronDownIcon, HashtagIcon } from '@heroicons/react/24/outline';
 import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
 import { useMounted } from 'lib/hooks/useMounted';
-import React, { type ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {

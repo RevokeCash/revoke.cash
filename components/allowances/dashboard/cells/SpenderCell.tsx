@@ -19,7 +19,7 @@ const SpenderCell = ({ allowance }: Props) => {
     queryKey: ['spenderData', allowance.spender, allowance.chainId],
     queryFn: () => getSpenderData(allowance.spender, allowance.chainId),
     // Chances of this data changing while the user is on the page are very slim
-    staleTime: Number.POSITIVE_INFINITY,
+    staleTime: Infinity,
   });
 
   const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.spender}`;

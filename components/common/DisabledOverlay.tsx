@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {

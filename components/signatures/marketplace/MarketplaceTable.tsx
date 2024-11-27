@@ -2,7 +2,7 @@ import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable 
 import Card from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useMarketplaces } from 'lib/hooks/ethereum/useMarketplaces';
-import type { Marketplace } from 'lib/interfaces';
+import { Marketplace } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 import { columns } from './columns';
 

@@ -1,6 +1,6 @@
 import SharedLayout from 'app/layouts/SharedLayout';
 import { unstable_setRequestLocale } from 'next-intl/server';
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;

@@ -1,18 +1,18 @@
 'use client';
 
-import { forwardRef, type ReactNode, type Ref, useEffect, useRef, useState } from 'react';
+import { forwardRef, ReactNode, Ref, useEffect, useRef, useState } from 'react';
 import {
-  type ActionMeta,
+  ActionMeta,
   createFilter,
-  type FormatOptionLabelMeta,
-  type GroupBase,
-  type OnChangeValue,
-  type SelectInstance,
+  FormatOptionLabelMeta,
+  GroupBase,
+  OnChangeValue,
+  SelectInstance,
 } from 'react-select';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-import Select, { type Props as SelectProps } from 'components/common/select/Select';
+import Select, { Props as SelectProps } from 'components/common/select/Select';
 import Button from '../Button';
 import Chevron from '../Chevron';
 
@@ -77,10 +77,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
         filterOption={filterOption}
         minControlWidth={props.minMenuWidth}
         formatOptionLabel={props.formatOptionLabel ? formatOptionLabel : undefined}
-        components={{
-          DropdownIndicator: CustomDropdownIndicator,
-          ...props.components,
-        }}
+        components={{ DropdownIndicator: CustomDropdownIndicator, ...props.components }}
         placeholder={null}
         isSearchable
       />

@@ -1,7 +1,7 @@
-import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
+import { SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { assertFulfilled, deduplicateArray } from 'lib/utils';
-import type { Address } from 'viem';
-import type { SpenderDataSource } from './SpenderDataSource';
+import { Address } from 'viem';
+import { SpenderDataSource } from './SpenderDataSource';
 
 export enum AggregationType {
   SEQUENTIAL_FIRST = 'SEQUENTIAL_FIRST',
@@ -40,11 +40,7 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
       const aggregatedResults = results.reduce(
         (acc, result) =>
           result
-            ? {
-                ...acc,
-                ...(result ?? {}),
-                riskFactors: [...(acc?.riskFactors ?? []), ...(result?.riskFactors ?? [])],
-              }
+            ? { ...acc, ...(result ?? {}), riskFactors: [...(acc?.riskFactors ?? []), ...(result?.riskFactors ?? [])] }
             : acc,
         {},
       );

@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {

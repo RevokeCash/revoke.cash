@@ -1,4 +1,4 @@
-import type { Column } from '@tanstack/table-core';
+import { Column } from '@tanstack/table-core';
 import { ColumnId } from 'components/allowances/dashboard/columns';
 import { twMerge } from 'tailwind-merge';
 import Loader from './Loader';

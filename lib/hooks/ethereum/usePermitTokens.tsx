@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import type { OnCancel, PermitTokenData, TimeLog } from 'lib/interfaces';
+import { OnCancel, PermitTokenData, TimeLog } from 'lib/interfaces';
 import { deduplicateArray } from 'lib/utils';
 import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
 import { getLastCancelled } from 'lib/utils/permit';
@@ -29,16 +29,13 @@ export const usePermitTokens = () => {
 
       const permitTokens = await mapAsync(
         filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract)),
-        async (token) => ({
-          ...token,
-          lastCancelled: await getLastCancelled(events.approval, token),
-        }),
+        async (token) => ({ ...token, lastCancelled: await getLastCancelled(events.approval, token) }),
       );
 
       return permitTokens;
     },
     enabled: !!allowances,
-    staleTime: Number.POSITIVE_INFINITY,
+    staleTime: Infinity,
   });
 
   useLayoutEffect(() => {

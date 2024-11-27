@@ -1,5 +1,5 @@
 import Href from 'components/common/Href';
-import type { RiskFactor } from 'lib/interfaces';
+import { RiskFactor } from 'lib/interfaces';
 import { getRiskIcon } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';

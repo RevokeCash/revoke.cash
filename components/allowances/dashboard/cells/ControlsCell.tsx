@@ -1,5 +1,5 @@
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import type { AllowanceData, OnUpdate } from 'lib/interfaces';
+import { AllowanceData, OnUpdate } from 'lib/interfaces';
 import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {

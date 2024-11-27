@@ -1,6 +1,6 @@
-import type { AllowanceData, TransactionStatus } from 'lib/interfaces';
+import { AllowanceData, TransactionStatus } from 'lib/interfaces';
 import { getAllowanceKey } from 'lib/utils/allowances';
-import type { Hash } from 'viem';
+import { Hash } from 'viem';
 import { create } from 'zustand';
 
 // TODO: Add other kinds of transactions besides "revoke" transactions to the store
@@ -22,13 +22,9 @@ export interface TransactionStore {
 export const useTransactionStore = create<TransactionStore>((set, get) => ({
   results: {},
   getTransaction: (allowance: AllowanceData) => {
-    return (
-      get().results[getAllowanceKey(allowance)] ?? {
-        status: 'not_started' as const,
-      }
-    );
+    return get().results[getAllowanceKey(allowance)] ?? { status: 'not_started' as const };
   },
-  updateTransaction: (allowance: AllowanceData, result: TransactionResult, override = true) => {
+  updateTransaction: (allowance: AllowanceData, result: TransactionResult, override: boolean = true) => {
     const key = getAllowanceKey(allowance);
     set((state) => ({
       results: {

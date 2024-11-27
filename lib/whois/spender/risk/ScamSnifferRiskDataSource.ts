@@ -1,10 +1,10 @@
 import ky from 'ky';
 import { WHOIS_BASE_URL } from 'lib/constants';
-import type { SpenderRiskData } from 'lib/interfaces';
+import { SpenderRiskData } from 'lib/interfaces';
 import { normaliseRiskData } from 'lib/utils';
 import md5 from 'md5';
-import type { Address } from 'viem';
-import type { SpenderDataSource } from '../SpenderDataSource';
+import { Address } from 'viem';
+import { SpenderDataSource } from '../SpenderDataSource';
 
 export class ScamSnifferRiskDataSource implements SpenderDataSource {
   async getSpenderData(address: Address, _chainId: number): Promise<SpenderRiskData | null> {

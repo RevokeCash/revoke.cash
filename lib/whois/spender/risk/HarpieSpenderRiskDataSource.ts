@@ -1,8 +1,8 @@
 import { ChainId } from '@revoke.cash/chains';
 import { HARPIE_API_KEY } from 'lib/constants';
-import type { SpenderRiskData } from 'lib/interfaces';
-import type { Address } from 'viem';
-import type { SpenderDataSource } from '../SpenderDataSource';
+import { SpenderRiskData } from 'lib/interfaces';
+import { Address } from 'viem';
+import { SpenderDataSource } from '../SpenderDataSource';
 
 export class HarpieSpenderRiskDataSource implements SpenderDataSource {
   async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {

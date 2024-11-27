@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { HOUR } from 'lib/utils/time';
 import { lookupAvvyName, lookupEnsName, lookupUnsName } from 'lib/utils/whois';
-import type { Address } from 'viem';
+import { Address } from 'viem';
 
 export const useNameLookup = (address: Address) => {
   const { data: ensName } = useQuery({
@@ -25,10 +25,5 @@ export const useNameLookup = (address: Address) => {
     staleTime: 12 * HOUR,
   });
 
-  return {
-    ensName,
-    unsName,
-    avvyName,
-    domainName: ensName || unsName || avvyName,
-  };
+  return { ensName, unsName, avvyName, domainName: ensName || unsName || avvyName };
 };

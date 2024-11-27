@@ -1,8 +1,8 @@
 import { UNISWAP_V3_QUOTER_ABI } from 'lib/abis';
-import type { Erc20TokenContract } from 'lib/interfaces';
-import { type Address, concat, parseUnits } from 'viem';
-import { AbstractPriceStrategy, type AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
-import type { PriceStrategy } from './PriceStrategy';
+import { Erc20TokenContract } from 'lib/interfaces';
+import { Address, concat, parseUnits } from 'viem';
+import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
+import { PriceStrategy } from './PriceStrategy';
 import { calculateTokenPrice } from './utils';
 
 export interface UniswapV3PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
@@ -23,10 +23,7 @@ export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements Pri
 
   constructor(options: UniswapV3PriceStrategyOptions) {
     // Note: the first address (so second entry) in the path is assumed to be the wrapped native token
-    super({
-      nativeAsset: options.nativeAsset ?? options.path[1],
-      supportedAssets: ['ERC20'],
-    });
+    super({ nativeAsset: options.nativeAsset ?? options.path[1], supportedAssets: ['ERC20'] });
 
     this.address = options.address;
     this.path = options.path;

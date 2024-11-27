@@ -2,7 +2,7 @@ import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
 import { parseInputAddress } from 'lib/utils/whois';
-import type { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
+import { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
 import Button from './Button';
 import SearchBox from './SearchBox';
 import Spinner from './Spinner';
@@ -25,7 +25,7 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, .
     queryFn: async () => !!(await parseInputAddress(value)),
     enabled: !!value,
     // Chances of this data changing while the user is on the page are very slim
-    staleTime: Number.POSITIVE_INFINITY,
+    staleTime: Infinity,
   });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {

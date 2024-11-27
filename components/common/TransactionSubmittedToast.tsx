@@ -3,7 +3,7 @@ import DonateButton from 'components/common/donate/DonateButton';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import type { MutableRefObject } from 'react';
-import { type Id, toast } from 'react-toastify';
+import { Id, toast } from 'react-toastify';
 import Href from './Href';
 
 interface Props {

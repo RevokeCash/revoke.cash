@@ -1,7 +1,7 @@
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
-import type { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { useAccount } from 'wagmi';
 import SwitchChainButton from './SwitchChainButton';
 

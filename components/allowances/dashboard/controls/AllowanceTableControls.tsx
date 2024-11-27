@@ -1,4 +1,4 @@
-import type { Table } from '@tanstack/react-table';
+import { Table } from '@tanstack/react-table';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { AllowanceData } from 'lib/interfaces';
 import { Suspense } from 'react';

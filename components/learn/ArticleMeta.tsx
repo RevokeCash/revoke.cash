@@ -1,5 +1,5 @@
 import Href from 'components/common/Href';
-import type { ContentMeta } from 'lib/interfaces';
+import { ContentMeta } from 'lib/interfaces';
 import { formatArticleDate } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 

@@ -1,6 +1,6 @@
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
-import type { TransactionSubmitted } from 'lib/interfaces';
+import { TransactionSubmitted } from 'lib/interfaces';
 import { waitForSubmittedTransactionConfirmation } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

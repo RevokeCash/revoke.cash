@@ -1,7 +1,7 @@
-import type { SpenderRiskData } from 'lib/interfaces';
+import { SpenderRiskData } from 'lib/interfaces';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
-import type { Address, Hex } from 'viem';
-import type { SpenderDataSource } from '../SpenderDataSource';
+import { Address, Hex } from 'viem';
+import { SpenderDataSource } from '../SpenderDataSource';
 
 const Addresses = {
   OPENSEA_SEAPORT: '0x1E0049783F008A0085193E00003D00cd54003c71',

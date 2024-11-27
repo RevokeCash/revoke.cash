@@ -1,13 +1,13 @@
-import type { Balance } from 'lib/interfaces';
+import { Balance } from 'lib/interfaces';
 import { formatUnits } from 'viem';
 import { isNullish } from '.';
 import { fixedPointMultiply } from './math';
 
-export const shortenAddress = (address?: string, characters = 6): string => {
+export const shortenAddress = (address?: string, characters: number = 6): string => {
   return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
 };
 
-export const shortenString = (name?: string, maxLength = 16): string | undefined => {
+export const shortenString = (name?: string, maxLength: number = 16): string | undefined => {
   if (!name) return undefined;
   if (name.length <= maxLength) return name;
   return `${name.substr(0, maxLength - 3).trim()}...`;
@@ -15,9 +15,9 @@ export const shortenString = (name?: string, maxLength = 16): string | undefined
 
 export const formatFixedPointBigInt = (
   fixedPointBigInt: bigint,
-  decimals = 0,
-  minDisplayDecimals = 0,
-  maxDisplayDecimals = 3,
+  decimals: number = 0,
+  minDisplayDecimals: number = 0,
+  maxDisplayDecimals: number = 3,
 ): string | undefined => {
   if (isNullish(fixedPointBigInt)) return undefined;
 
@@ -49,13 +49,13 @@ export const formatBalance = (symbol: string, balance: Balance, decimals?: numbe
   return `${formatFixedPointBigInt(balance, decimals)} ${symbol}`;
 };
 
-export const formatFiatBalance = (balance: Balance, price?: number, decimals?: number, fiatSign = '$') => {
+export const formatFiatBalance = (balance: Balance, price?: number, decimals?: number, fiatSign: string = '$') => {
   if (balance === 'ERC1155') return null;
   if (isNullish(price)) return null;
   return formatFiatAmount(Number(formatUnits(fixedPointMultiply(balance, price, decimals ?? 18), decimals)));
 };
 
-export const formatFiatAmount = (amount?: number, decimals = 2, fiatSign = '$'): string | null => {
+export const formatFiatAmount = (amount?: number, decimals: number = 2, fiatSign: string = '$'): string | null => {
   if (isNullish(amount)) return null;
   if (amount < 0.01 && amount > 0) return `< ${fiatSign}0.01`;
   return `${fiatSign}${addThousandsSeparators(amount.toFixed(decimals))}`;

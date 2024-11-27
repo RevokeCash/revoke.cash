@@ -4,7 +4,7 @@ import Button from 'components/common/Button';
 import ConnectButton from 'components/header/ConnectButton';
 import { useSwitchChain } from 'lib/hooks/ethereum/useSwitchChain';
 import { useMounted } from 'lib/hooks/useMounted';
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { useAccount } from 'wagmi';
 
 interface Props {

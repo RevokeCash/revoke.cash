@@ -1,4 +1,4 @@
-import Dexie, { type Table } from 'dexie';
+import Dexie, { Table } from 'dexie';
 
 interface MerchCode {
   address: string;

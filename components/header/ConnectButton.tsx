@@ -8,7 +8,7 @@ import { useRouter } from 'lib/i18n/navigation';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { type Connector, useAccount, useConnect } from 'wagmi';
+import { Connector, useAccount, useConnect } from 'wagmi';
 
 interface Props {
   text?: string;

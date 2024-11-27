@@ -1,8 +1,8 @@
 import { ChainId } from '@revoke.cash/chains';
-import Dexie, { type Table } from 'dexie';
-import type { Filter, Log, LogsProvider } from 'lib/interfaces';
+import Dexie, { Table } from 'dexie';
+import { Filter, Log, LogsProvider } from 'lib/interfaces';
 import { isCovalentSupportedChain } from 'lib/utils/chains';
-import type { Address } from 'viem';
+import { Address } from 'viem';
 
 interface Events {
   chainId: number;
@@ -85,22 +85,11 @@ class EventsDB extends Dexie {
           (log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock,
         );
       }
-      const newLogs = await logsProvider.getLogs({
-        ...filter,
-        fromBlock,
-        toBlock,
-      });
+      const newLogs = await logsProvider.getLogs({ ...filter, fromBlock, toBlock });
 
       const logs = [...(storedEvents?.logs || []), ...newLogs];
 
-      await this.events.put({
-        chainId,
-        address,
-        topicsKey,
-        topics,
-        toBlock,
-        logs,
-      });
+      await this.events.put({ chainId, address, topicsKey, topics, toBlock, logs });
       return logs;
     } catch (e) {
       console.error(e);

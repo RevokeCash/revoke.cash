@@ -8,10 +8,10 @@ import {
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
 } from 'lib/constants';
-import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
+import { SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
-import { type Address, type PublicClient, getAddress, isAddress, namehash } from 'viem';
+import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 
 // Note that we do not use the official UD or Avvy resolution libraries below because they are big and use Ethers.js
@@ -51,9 +51,7 @@ export const lookupEnsName = async (address: Address): Promise<string | null> =>
 
 export const resolveEnsName = async (name: string): Promise<Address | null> => {
   try {
-    const address = await GlobalClients.ETHEREUM?.getEnsAddress({
-      name: name.toLowerCase(),
-    });
+    const address = await GlobalClients.ETHEREUM?.getEnsAddress({ name: name.toLowerCase() });
     return address ?? null;
   } catch {
     return null;

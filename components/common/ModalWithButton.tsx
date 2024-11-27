@@ -1,7 +1,7 @@
 'use client';
 
 import Modal from 'components/common/Modal';
-import { type ReactElement, type ReactNode, cloneElement, useState } from 'react';
+import { ReactElement, ReactNode, cloneElement, useState } from 'react';
 
 interface Props {
   button: ReactElement;

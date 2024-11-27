@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ReactNode, useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
 
 type Theme = 'system' | 'light' | 'dark';

@@ -2,7 +2,7 @@ import { ERC721_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { generatePatchedAllowanceEvents } from 'lib/utils/allowances';
 import { useMemo } from 'react';
-import { type Address, getAbiItem, toEventSelector } from 'viem';
+import { Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';
@@ -24,17 +24,13 @@ export const useEvents = (address: Address, chainId: number) => {
     data: transferTo,
     isLoading: isTransferToLoading,
     error: transferToError,
-  } = useLogsFullBlockRange('Transfer (to)', chainId, {
-    topics: transferToTopics,
-  });
+  } = useLogsFullBlockRange('Transfer (to)', chainId, { topics: transferToTopics });
 
   const {
     data: transferFrom,
     isLoading: isTransferFromLoading,
     error: transferFromError,
-  } = useLogsFullBlockRange('Transfer (from)', chainId, {
-    topics: transferFromTopics,
-  });
+  } = useLogsFullBlockRange('Transfer (from)', chainId, { topics: transferFromTopics });
 
   const {
     data: approval,
@@ -46,9 +42,7 @@ export const useEvents = (address: Address, chainId: number) => {
     data: approvalForAllUnpatched,
     isLoading: isApprovalForAllLoading,
     error: approvalForAllError,
-  } = useLogsFullBlockRange('ApprovalForAll', chainId, {
-    topics: approvalForAllTopics,
-  });
+  } = useLogsFullBlockRange('ApprovalForAll', chainId, { topics: approvalForAllTopics });
 
   const {
     events: permit2Approval,
@@ -78,13 +72,7 @@ export const useEvents = (address: Address, chainId: number) => {
   const events = useMemo(() => {
     if (!transferFrom || !transferTo || !approval || !approvalForAll || !permit2Approval) return undefined;
     if (error || isLoading) return undefined;
-    return {
-      transferFrom,
-      transferTo,
-      approval,
-      approvalForAll,
-      permit2Approval,
-    };
+    return { transferFrom, transferTo, approval, approvalForAll, permit2Approval };
   }, [transferFrom, transferTo, approval, approvalForAll, permit2Approval]);
 
   return { events, isLoading, error };
