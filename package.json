@@ -72,6 +72,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@cypress/grep": "^4.1.0",
     "@lavamoat/allow-scripts": "^3.2.0",
     "@localazy/cli": "^1.7.14",
@@ -123,8 +125,12 @@
     }
   },
   "mocha": {
-    "node-option": ["import=tsx"],
-    "require": ["dotenv/config"],
+    "node-option": [
+      "import=tsx"
+    ],
+    "require": [
+      "dotenv/config"
+    ],
     "timeout": 10000
   },
   "resolutions": {
