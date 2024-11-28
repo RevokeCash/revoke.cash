@@ -3,8 +3,8 @@ import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import { AllowanceData } from 'lib/interfaces';
 import { normaliseLabel } from 'lib/utils';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import useLocalStorage from 'use-local-storage';
@@ -13,12 +13,12 @@ import { ColumnId, customSortingFns } from '../columns';
 interface Option {
   id: ColumnId;
   value: string;
-  column: Column<AllowanceData>;
+  column: Column<TokenAllowanceData>;
   desc: boolean;
 }
 
 interface Props {
-  table: Table<AllowanceData>;
+  table: Table<TokenAllowanceData>;
 }
 
 const SortSelect = ({ table }: Props) => {
@@ -35,13 +35,13 @@ const SortSelect = ({ table }: Props) => {
     table.setSorting(() => [selectedSort]);
   }, [selectedSort]);
 
-  const options = useMemo(() => {
+  const options: Option[] = useMemo(() => {
     return table
       .getAllColumns()
       .filter((column) => column.getCanSort())
       .flatMap((column) => [
-        { value: `${column.id}-false`, id: column.id, column, desc: false },
-        { value: `${column.id}-true`, id: column.id, column, desc: true },
+        { value: `${column.id}-false`, id: column.id as ColumnId, column, desc: false },
+        { value: `${column.id}-true`, id: column.id as ColumnId, column, desc: true },
       ]);
   }, [table]);
 
@@ -94,7 +94,7 @@ const SortSelect = ({ table }: Props) => {
         return option.id === sorting.id && option.desc === sorting.desc;
       })}
       options={options}
-      onChange={(option) => setSelectedSort({ id: option.id, desc: option.desc })}
+      onChange={(option) => setSelectedSort({ id: option!.id, desc: option!.desc })}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       isSearchable={false}

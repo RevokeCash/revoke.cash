@@ -56,7 +56,7 @@ const TipSection = ({ midAmount, nativeToken, onSelect }: Props) => {
         <Select
           options={options}
           value={selectedTip ? { value: selectedTip } : null}
-          onChange={(option) => onChange(option.value)}
+          onChange={(option) => onChange(option!.value)}
           placeholder={'Select tip amount'}
           formatOptionLabel={(option) =>
             option.value === '0' ? t('address.batch_revoke.no_tip') : `${option.value} ${nativeToken}`

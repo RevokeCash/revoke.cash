@@ -1,10 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { OnCancel, PermitTokenData, TimeLog } from 'lib/interfaces';
-import { deduplicateArray } from 'lib/utils';
+import { OnCancel } from 'lib/interfaces';
+import { deduplicateArray, isNullish } from 'lib/utils';
 import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
+import { TimeLog } from 'lib/utils/events';
 import { getLastCancelled } from 'lib/utils/permit';
 import { filterAsync, mapAsync } from 'lib/utils/promises';
-import { hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
+import { hasSupportForPermit, hasZeroBalance, PermitTokenData } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
 import { useAddressAllowances, useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';
 
@@ -23,18 +24,18 @@ export const usePermitTokens = () => {
   } = useQuery({
     queryKey: ['permitTokens', allowances?.map(getAllowanceKey)],
     queryFn: async () => {
-      const ownedTokens = deduplicateArray(allowances, (a, b) => a.contract.address === b.contract.address)
+      const ownedTokens = deduplicateArray(allowances!, (a, b) => a.contract.address === b.contract.address)
         .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals) && token)
         .map(stripAllowanceData);
 
       const permitTokens = await mapAsync(
         filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract)),
-        async (token) => ({ ...token, lastCancelled: await getLastCancelled(events.approval, token) }),
+        async (token) => ({ ...token, lastCancelled: await getLastCancelled(events!, token) }),
       );
 
       return permitTokens;
     },
-    enabled: !!allowances,
+    enabled: !isNullish(allowances) && !isNullish(events),
     staleTime: Infinity,
   });
 
@@ -58,7 +59,7 @@ export const usePermitTokens = () => {
     };
 
     setPermitTokens((previousPermitTokens) => {
-      return previousPermitTokens.map((other) => {
+      return previousPermitTokens!.map((other) => {
         if (!permitTokenEquals(other, token)) return other;
 
         const newPermitTokenData = { ...other, lastCancelled };

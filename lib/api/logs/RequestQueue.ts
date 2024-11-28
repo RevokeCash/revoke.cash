@@ -15,13 +15,13 @@ export class RequestQueue {
     private preferredQueue?: 'upstash' | 'p-queue',
   ) {
     this.pQueue = new PQueue(rateLimit);
-    this.upstashQueue =
-      process.env.UPSTASH_REDIS_REST_URL &&
-      new Ratelimit({
-        redis: Redis.fromEnv(),
-        limiter: Ratelimit.slidingWindow(rateLimit.intervalCap, `${rateLimit.interval} ms`),
-        analytics: true,
-      });
+    this.upstashQueue = process.env.UPSTASH_REDIS_REST_URL
+      ? new Ratelimit({
+          redis: Redis.fromEnv(),
+          limiter: Ratelimit.slidingWindow(rateLimit.intervalCap, `${rateLimit.interval} ms`),
+          analytics: true,
+        })
+      : undefined;
   }
 
   async add<T>(fn: () => Promise<T>): Promise<T> {

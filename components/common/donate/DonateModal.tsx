@@ -4,7 +4,6 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
-import { getDefaultDonationAmount } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -17,7 +16,7 @@ interface Props {
   type: DonateButtonType;
 }
 
-export type DonateButtonType = 'transaction-toast' | 'menu-button' | 'batch-revoke-tip';
+export type DonateButtonType = 'menu-button' | 'batch-revoke-tip';
 
 const DonateModal = ({ open, setOpen, type }: Props) => {
   const t = useTranslations();
@@ -27,8 +26,8 @@ const DonateModal = ({ open, setOpen, type }: Props) => {
   const [amount, setAmount] = useState<string>(defaultAmount);
 
   useEffect(() => {
-    setAmount(getDefaultDonationAmount(nativeToken));
-  }, [nativeToken]);
+    setAmount(defaultAmount);
+  }, [defaultAmount]);
 
   const sendDonation = async () => {
     try {

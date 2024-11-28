@@ -1,3 +1,4 @@
+import { isNullish } from 'lib/utils';
 import {
   CHAIN_SELECT_TESTNETS,
   getChainInfoUrl,
@@ -33,7 +34,7 @@ const ChainDescription = ({ chainId, headingElement }: Props) => {
 
   return (
     <>
-      {!!headingElement && createElement(headingElement, {}, t('networks.title', { chainName }))}
+      {!isNullish(headingElement) && createElement(headingElement, {}, t('networks.title', { chainName }))}
       <p>
         {isTestnet && <span>{t(`networks.is_testnet`, { chainName, mainnetChainName })} </span>}
         <span>

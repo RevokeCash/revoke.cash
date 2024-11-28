@@ -1,17 +1,16 @@
-import type { AllowanceData } from 'lib/interfaces';
-import { calculateValueAtRisk } from 'lib/utils';
+import { TokenAllowanceData, calculateValueAtRisk } from 'lib/utils/allowances';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  allowance: AllowanceData;
+  allowance: TokenAllowanceData;
 }
 
 const ValueAtRiskCell = ({ allowance }: Props) => {
   const t = useTranslations();
 
-  if (!allowance.spender) return null;
+  if (!allowance.payload) return null;
 
   const valueAtRisk = calculateValueAtRisk(allowance);
   const fiatBalanceText = formatFiatAmount(valueAtRisk);

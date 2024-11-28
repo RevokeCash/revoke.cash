@@ -7,7 +7,7 @@ import { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
 import { AddEthereumChainParameter, PublicClient, Chain as ViemChain, toHex } from 'viem';
-import { Chain, SupportType } from '../chains/Chain';
+import { Chain, DeployedContracts, SupportType } from '../chains/Chain';
 
 // Make sure to update these lists when updating the above lists
 // Order is loosely based on TVL (as per DeFiLlama)
@@ -165,7 +165,7 @@ const MULTICALL = {
   },
 };
 
-export const CHAINS: Record<number, Chain> = {
+export const CHAINS = {
   [ChainId.Amoy]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Amoy,
@@ -1902,7 +1902,8 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.RootstockMainnet,
     name: 'Rootstock',
     logoUrl: '/assets/images/vendor/chains/rootstock.jpg',
-    etherscanCompatibleApiUrl: 'https://blockscout.com/rsk/mainnet/api',
+    explorerUrl: 'https://rootstock.blockscout.com',
+    etherscanCompatibleApiUrl: 'https://rootstock.blockscout.com/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
   }),
@@ -2351,7 +2352,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: 12345678905,
     name: 'Tabi',
   }),
-};
+} as const;
 
 export const SUPPORTED_CHAINS = Object.values(CHAINS)
   .filter((chain) => chain.isSupported())
@@ -2361,135 +2362,144 @@ export const ETHERSCAN_SUPPORTED_CHAINS = Object.values(CHAINS)
   .filter((chain) => chain.type === SupportType.ETHERSCAN_COMPATIBLE)
   .map((chain) => chain.chainId);
 
-export const getChainConfig = (chainId: number): Chain | undefined => {
+export type DocumentedChainId = keyof typeof CHAINS;
+
+export const getChainConfig = (chainId: DocumentedChainId): Chain => {
   return CHAINS[chainId];
 };
 
 // TODO: All these functions below are kept for backwards compatibility and should be removed in the future in favor of getChainConfig
 
-export const isSupportedChain = (chainId: number): boolean => {
+export const isSupportedChain = (chainId: DocumentedChainId): boolean => {
   return Boolean(getChainConfig(chainId)?.isSupported());
 };
 
-export const isBackendSupportedChain = (chainId: number): boolean => {
+export const isBackendSupportedChain = (chainId: DocumentedChainId): boolean => {
   const chain = getChainConfig(chainId);
-  return Boolean(chain) && chain.isSupported() && chain.type !== SupportType.PROVIDER;
+  return chain.isSupported() && chain.type !== SupportType.PROVIDER;
 };
 
-export const isProviderSupportedChain = (chainId: number): boolean => {
-  return getChainConfig(chainId)?.type === SupportType.PROVIDER;
+export const isProviderSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.PROVIDER;
 };
 
-export const isCovalentSupportedChain = (chainId: number): boolean => {
-  return getChainConfig(chainId)?.type === SupportType.COVALENT;
+export const isCovalentSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.COVALENT;
 };
 
-export const isEtherscanSupportedChain = (chainId: number): boolean => {
-  return getChainConfig(chainId)?.type === SupportType.ETHERSCAN_COMPATIBLE;
+export const isEtherscanSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.ETHERSCAN_COMPATIBLE;
 };
 
-export const isNodeSupportedChain = (chainId: number): boolean => {
-  return getChainConfig(chainId)?.type === SupportType.BACKEND_NODE;
+export const isNodeSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.BACKEND_NODE;
 };
 
-export const isMainnetChain = (chainId: number): boolean => CHAIN_SELECT_MAINNETS.includes(chainId);
-export const isTestnetChain = (chainId: number): boolean => CHAIN_SELECT_TESTNETS.includes(chainId);
-
-export const getChainName = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getName();
+export const isMainnetChain = (chainId: DocumentedChainId): boolean => {
+  return !isTestnetChain(chainId);
 };
 
-export const getChainSlug = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getSlug();
+export const isTestnetChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).isTestnet();
+};
+
+export const getChainName = (chainId: DocumentedChainId): string => {
+  return getChainConfig(chainId).getName();
+};
+
+export const getChainSlug = (chainId: DocumentedChainId): string => {
+  return getChainConfig(chainId).getSlug();
 };
 
 const REVERSE_CHAIN_SLUGS: Record<string, number> = Object.fromEntries(
   SUPPORTED_CHAINS.map((chainId) => [getChainSlug(chainId), chainId]),
 );
 
-export const getChainIdFromSlug = (slug: string): number | undefined => {
+export type ChainSlug = keyof typeof REVERSE_CHAIN_SLUGS;
+
+export const getChainIdFromSlug = (slug: ChainSlug): DocumentedChainId => {
   return REVERSE_CHAIN_SLUGS[slug];
 };
 
-export const getChainExplorerUrl = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getExplorerUrl();
+export const getChainExplorerUrl = (chainId: DocumentedChainId): string => {
+  return getChainConfig(chainId).getExplorerUrl();
 };
 
 // This is used on the "Add a network" page
-export const getChainFreeRpcUrl = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getFreeRpcUrl();
+export const getChainFreeRpcUrl = (chainId: DocumentedChainId): string => {
+  return getChainConfig(chainId).getFreeRpcUrl();
 };
 
-export const getChainRpcUrl = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getRpcUrl();
+export const getChainRpcUrl = (chainId: DocumentedChainId): string => {
+  return getChainConfig(chainId).getRpcUrl();
 };
 
-export const getChainRpcUrls = (chainId: number): string[] | undefined => {
-  return getChainConfig(chainId)?.getRpcUrls();
+export const getChainRpcUrls = (chainId: DocumentedChainId): string[] => {
+  return getChainConfig(chainId).getRpcUrls();
 };
 
-export const getChainLogsRpcUrl = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getLogsRpcUrl();
+export const getChainLogsRpcUrl = (chainId: DocumentedChainId): string => {
+  return getChainConfig(chainId).getLogsRpcUrl();
 };
 
-export const getChainLogo = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getLogoUrl();
+export const getChainLogo = (chainId: DocumentedChainId): string | undefined => {
+  return getChainConfig(chainId).getLogoUrl();
 };
 
-export const getChainInfoUrl = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getInfoUrl();
+export const getChainInfoUrl = (chainId: DocumentedChainId): string | undefined => {
+  return getChainConfig(chainId).getInfoUrl();
 };
 
-export const getChainNativeToken = (chainId: number): string => {
-  return getChainConfig(chainId)?.getNativeToken();
+export const getChainNativeToken = (chainId: DocumentedChainId): string | undefined => {
+  return getChainConfig(chainId).getNativeToken();
 };
 
-export const getChainApiUrl = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getEtherscanCompatibleApiUrl();
+export const getChainApiUrl = (chainId: DocumentedChainId): string | undefined => {
+  return getChainConfig(chainId).getEtherscanCompatibleApiUrl();
 };
 
-export const getChainApiKey = (chainId: number): string | undefined => {
-  return getChainConfig(chainId)?.getEtherscanCompatibleApiKey();
+export const getChainApiKey = (chainId: DocumentedChainId): string | undefined => {
+  return getChainConfig(chainId).getEtherscanCompatibleApiKey();
 };
 
-export const getChainApiRateLimit = (chainId: number): RateLimit => {
-  return getChainConfig(chainId)?.getEtherscanCompatibleApiRateLimit();
+export const getChainApiRateLimit = (chainId: DocumentedChainId): RateLimit => {
+  return getChainConfig(chainId).getEtherscanCompatibleApiRateLimit();
 };
 
-export const getChainApiIdentifer = (chainId: number): string => {
-  return getChainConfig(chainId)?.getEtherscanCompatibleApiIdentifier();
+export const getChainApiIdentifer = (chainId: DocumentedChainId): string => {
+  return getChainConfig(chainId).getEtherscanCompatibleApiIdentifier();
 };
 
-export const getCorrespondingMainnetChainId = (chainId: number): number | undefined => {
-  return getChainConfig(chainId)?.getCorrespondingMainnetChainId();
+export const getCorrespondingMainnetChainId = (chainId: DocumentedChainId): number | undefined => {
+  return getChainConfig(chainId).getCorrespondingMainnetChainId();
 };
 
-export const getChainDeployedContracts = (chainId: number): any | undefined => {
-  return getChainConfig(chainId)?.getDeployedContracts();
+export const getChainDeployedContracts = (chainId: DocumentedChainId): DeployedContracts | undefined => {
+  return getChainConfig(chainId).getDeployedContracts();
 };
 
-export const getViemChainConfig = (chainId: number): ViemChain | undefined => {
-  return getChainConfig(chainId)?.getViemChainConfig();
+export const getViemChainConfig = (chainId: DocumentedChainId): ViemChain => {
+  return getChainConfig(chainId).getViemChainConfig();
 };
 
-export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient | undefined => {
-  return getChainConfig(chainId)?.createViemPublicClient(url);
+export const createViemPublicClientForChain = (chainId: DocumentedChainId, url?: string): PublicClient => {
+  return getChainConfig(chainId).createViemPublicClient(url);
 };
 
-export const getChainAddEthereumChainParameter = (chainId: number): AddEthereumChainParameter | undefined => {
-  return getChainConfig(chainId)?.getAddEthereumChainParameter();
+export const getChainAddEthereumChainParameter = (chainId: DocumentedChainId): AddEthereumChainParameter => {
+  return getChainConfig(chainId).getAddEthereumChainParameter();
 };
 
-export const getChainPriceStrategy = (chainId: number): PriceStrategy | undefined => {
-  return getChainConfig(chainId)?.getPriceStrategy();
+export const getChainPriceStrategy = (chainId: DocumentedChainId): PriceStrategy | undefined => {
+  return getChainConfig(chainId).getPriceStrategy();
 };
 
-export const getChainBackendPriceStrategy = (chainId: number): PriceStrategy | undefined => {
-  return getChainConfig(chainId)?.getBackendPriceStrategy();
+export const getChainBackendPriceStrategy = (chainId: DocumentedChainId): PriceStrategy | undefined => {
+  return getChainConfig(chainId).getBackendPriceStrategy();
 };
 
 // Target a default of a round-ish number of tokens, worth around $10-20
-export const DEFAULT_DONATION_AMOUNTS = {
+export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   APE: '10',
   ASTR: '250',
   AVAX: '0.5',

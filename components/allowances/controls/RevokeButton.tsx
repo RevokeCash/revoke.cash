@@ -1,12 +1,12 @@
-import { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
+import { TransactionSubmitted } from 'lib/interfaces';
 import { useTransactionStore } from 'lib/stores/transaction-store';
-import { getAllowanceKey } from 'lib/utils/allowances';
+import { getAllowanceKey, TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import Button from '../../common/Button';
 
 interface Props {
-  allowance: AllowanceData;
-  revoke: () => Promise<TransactionSubmitted>;
+  allowance: TokenAllowanceData;
+  revoke: () => Promise<TransactionSubmitted | undefined>;
   disabled: boolean;
 }
 

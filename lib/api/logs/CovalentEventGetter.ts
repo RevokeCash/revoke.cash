@@ -1,7 +1,7 @@
-import type { Filter, Log } from 'lib/interfaces';
 import ky from 'lib/ky';
-import { splitBlockRangeInChunks } from 'lib/utils';
+import { isNullish, splitBlockRangeInChunks } from 'lib/utils';
 import { isRateLimitError } from 'lib/utils/errors';
+import type { Filter, Log } from 'lib/utils/events';
 import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
@@ -10,14 +10,16 @@ export class CovalentEventGetter implements EventGetter {
   private queue: RequestQueue;
 
   constructor(
-    private apiKey: string,
-    isPremium: boolean,
+    private apiKey?: string,
+    isPremium: boolean = false,
   ) {
     // Covalent's premium API has a rate limit of 50 (normal = 5) requests per second, which we underestimate to be safe
     this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
+    if (!this.apiKey) throw new Error('Covalent API key is not set');
+
     const { topics, fromBlock, toBlock } = filter;
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
@@ -28,8 +30,13 @@ export class CovalentEventGetter implements EventGetter {
     return filterLogs(results.flat(), filter);
   }
 
-  private async getEventsInChunk(chainId: number, fromBlock: number, toBlock: number, topics: string[]) {
-    const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !!topic);
+  private async getEventsInChunk(
+    chainId: number,
+    fromBlock: number,
+    toBlock: number,
+    topics: Array<string | null>,
+  ): Promise<Log[]> {
+    const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !isNullish(topic));
     const apiUrl = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
 
     const searchParams = {
@@ -54,7 +61,7 @@ export class CovalentEventGetter implements EventGetter {
         return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
       }
 
-      throw new Error(e.data?.error_message ?? e.message);
+      throw new Error((e as any).data?.error_message ?? (e as any).message);
     }
   }
 }

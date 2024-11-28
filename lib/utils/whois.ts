@@ -8,7 +8,7 @@ import {
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
 } from 'lib/constants';
-import { SpenderData, SpenderRiskData } from 'lib/interfaces';
+import { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
 import { Address, PublicClient, getAddress, isAddress, namehash } from 'viem';
@@ -20,18 +20,18 @@ const GlobalClients = {
   ETHEREUM: createViemPublicClientForChain(
     ChainId.EthereumMainnet,
     `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-  ),
+  )!,
   POLYGON: createViemPublicClientForChain(
     ChainId.PolygonMainnet,
     `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-  ),
-  AVALANCHE: createViemPublicClientForChain(ChainId['AvalancheC-Chain'], 'https://api.avax.network/ext/bc/C/rpc'),
-};
+  )!,
+  AVALANCHE: createViemPublicClientForChain(ChainId['AvalancheC-Chain'], 'https://api.avax.network/ext/bc/C/rpc')!,
+} as const;
 
 export const getSpenderData = async (
   address: Address,
   chainId: number,
-): Promise<SpenderData | SpenderRiskData | null> => {
+): Promise<Nullable<SpenderData | SpenderRiskData>> => {
   const source = new AggregateSpenderDataSource({
     aggregationType: AggregationType.PARALLEL_COMBINED,
     sources: [new BackendSpenderDataSource()],
@@ -40,7 +40,9 @@ export const getSpenderData = async (
   return source.getSpenderData(address, chainId);
 };
 
-export const lookupEnsName = async (address: Address): Promise<string | null> => {
+export const lookupEnsName = async (address?: Address): Promise<string | null> => {
+  if (!address) return null;
+
   try {
     const name = await GlobalClients.ETHEREUM?.getEnsName({ address });
     return name ?? null;
@@ -49,7 +51,9 @@ export const lookupEnsName = async (address: Address): Promise<string | null> =>
   }
 };
 
-export const resolveEnsName = async (name: string): Promise<Address | null> => {
+export const resolveEnsName = async (name?: string): Promise<Address | null> => {
+  if (!name) return null;
+
   try {
     const address = await GlobalClients.ETHEREUM?.getEnsAddress({ name: name.toLowerCase() });
     return address ?? null;
@@ -58,7 +62,9 @@ export const resolveEnsName = async (name: string): Promise<Address | null> => {
   }
 };
 
-export const lookupUnsName = async (address: Address) => {
+export const lookupUnsName = async (address?: Address): Promise<string | null> => {
+  if (!address) return null;
+
   const lookupUnsNameOnClient = (client: PublicClient, contractAddress: Address) =>
     client.readContract({
       abi: UNSTOPPABLE_DOMAINS_ABI,
@@ -83,7 +89,9 @@ export const lookupUnsName = async (address: Address) => {
   }
 };
 
-export const resolveUnsName = async (unsName: string): Promise<Address | null> => {
+export const resolveUnsName = async (unsName?: string): Promise<Address | null> => {
+  if (!unsName) return null;
+
   const resolveUnsNameOnClient = (client: PublicClient, contractAddress: Address) =>
     client.readContract({
       abi: UNSTOPPABLE_DOMAINS_ABI,
@@ -108,7 +116,9 @@ export const resolveUnsName = async (unsName: string): Promise<Address | null> =
   }
 };
 
-export const lookupAvvyName = async (address: Address) => {
+export const lookupAvvyName = async (address?: Address): Promise<Nullable<string>> => {
+  if (!address) return null;
+
   try {
     const name = await GlobalClients.AVALANCHE.readContract({
       abi: AVVY_DOMAINS_ABI,
@@ -123,7 +133,9 @@ export const lookupAvvyName = async (address: Address) => {
   }
 };
 
-export const resolveAvvyName = async (avvyName: string): Promise<Address | null> => {
+export const resolveAvvyName = async (avvyName?: string): Promise<Address | null> => {
+  if (!avvyName) return null;
+
   try {
     const address = await GlobalClients.AVALANCHE.readContract({
       abi: AVVY_DOMAINS_ABI,
@@ -166,7 +178,7 @@ export const getOpenSeaProxyAddress = async (userAddress: Address): Promise<Addr
   }
 };
 
-export const parseInputAddress = async (inputAddressOrName: string): Promise<Address | undefined> => {
+export const parseInputAddress = async (inputAddressOrName: string): Promise<Address | null> => {
   const sanitisedInput = inputAddressOrName.trim().toLowerCase();
 
   // We support ENS .eth and Avvy .avax domains, other domain-like inputs are interpreted as Unstoppable Domains
@@ -175,7 +187,7 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<Add
   if (sanitisedInput.includes('.')) return resolveUnsName(sanitisedInput);
   if (isAddress(sanitisedInput)) return getAddress(sanitisedInput);
 
-  return undefined;
+  return null;
 };
 
 export const getAddressAndDomainName = async (addressOrName: string) => {

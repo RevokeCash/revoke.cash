@@ -14,7 +14,7 @@ const ArticleCard = ({ title, description, path, date, readingTime, coverImage }
         className="flex flex-col justify-between gap-4"
         image={
           <ImageWithFallback
-            src={coverImage}
+            src={coverImage ?? '/opengraph-image.jpg'}
             alt={`${title} Cover Image`}
             width={1200}
             height={630}

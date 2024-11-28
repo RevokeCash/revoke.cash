@@ -53,7 +53,7 @@ const logChain = async (
 };
 
 const mapChain = (chainId: number, llamaData: any[], isTestnet?: boolean) => {
-  const mainnetChainId = isTestnet ? getCorrespondingMainnetChainId(chainId) : chainId;
+  const mainnetChainId = isTestnet ? getCorrespondingMainnetChainId(chainId)! : chainId;
 
   const llamaChainData = llamaData.find(
     (chain) =>

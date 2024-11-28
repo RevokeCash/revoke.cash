@@ -1,4 +1,3 @@
-import type { Filter, Log } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { isNullish } from 'lib/utils';
 import {
@@ -8,6 +7,7 @@ import {
   getChainApiRateLimit,
   getChainApiUrl,
 } from 'lib/utils/chains';
+import type { Filter, Log } from 'lib/utils/events';
 import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
@@ -24,7 +24,7 @@ export class EtherscanEventGetter implements EventGetter {
   }
 
   async getEvents(chainId: number, filter: Filter, page: number = 1): Promise<Log[]> {
-    const apiUrl = getChainApiUrl(chainId);
+    const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
@@ -118,7 +118,7 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, page: number, apiKey?: str
 
 const formatEtherscanEvent = (etherscanLog: any) => ({
   address: getAddress(etherscanLog.address),
-  topics: etherscanLog.topics.filter((topic: string) => !!topic),
+  topics: etherscanLog.topics.filter((topic: string) => !isNullish(topic)),
   data: etherscanLog.data,
   transactionHash: etherscanLog.transactionHash,
   blockNumber: Number.parseInt(etherscanLog.blockNumber, 16),
@@ -132,7 +132,7 @@ const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
   try {
     return await fn();
   } catch (e) {
-    if (e.message.includes('429')) {
+    if ((e as any).message.includes('429')) {
       console.error('Etherscan: Rate limit reached, retrying...');
       return retryOn429(fn);
     }

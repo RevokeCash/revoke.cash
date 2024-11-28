@@ -16,7 +16,7 @@ interface Props {
 
 export const dynamic = 'error';
 
-export const generateMetadata = async ({ params: { locale } }): Promise<Metadata> => {
+export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
   const t = await getTranslations({ locale });
 
   return {
@@ -28,7 +28,7 @@ export const generateMetadata = async ({ params: { locale } }): Promise<Metadata
   };
 };
 
-const FaqPage: NextPage = async ({ params }: Props) => {
+const FaqPage: NextPage<Props> = async ({ params }: Props) => {
   unstable_setRequestLocale(params.locale);
 
   const sidebar = await getSidebar(params.locale, 'learn');

@@ -1,13 +1,13 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { SpenderRiskData } from 'lib/interfaces';
+import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { filterUnknownRiskFactors, getRiskLevel } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import RiskFactorDisplay from './RiskFactorDisplay';
 
 interface Props {
-  riskData?: SpenderRiskData;
+  riskData?: Nullable<SpenderRiskData>;
 }
 
 const RiskTooltip = ({ riskData }: Props) => {

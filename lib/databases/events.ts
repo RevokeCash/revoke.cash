@@ -1,14 +1,15 @@
 import { ChainId } from '@revoke.cash/chains';
 import Dexie, { Table } from 'dexie';
-import { Filter, Log, LogsProvider } from 'lib/interfaces';
+import { LogsProvider } from 'lib/providers';
 import { isCovalentSupportedChain } from 'lib/utils/chains';
+import { Filter, Log } from 'lib/utils/events';
 import { Address } from 'viem';
 
 interface Events {
   chainId: number;
   address?: Address;
   topicsKey: string;
-  topics: string[];
+  topics: Array<string | null>;
   toBlock: number;
   logs: Log[];
 }
@@ -22,32 +23,16 @@ class EventsDB extends Dexie {
 
   constructor() {
     super('Events');
-    this.version(2023_03_14).stores({
-      events: '[chainId+topicsKey], topics, toBlock',
-    });
 
-    // Add key for chainId
-    this.version(2023_04_10.1).stores({
-      events: '[chainId+topicsKey], chainId, topics, toBlock',
-    });
-
-    // On 2023-04-10, We moved the "-50" calculation from the backend to the frontend (for flexibility)
-    // We need to subtract 50 blocks from the fromBlock and toBlock for Covalent supported chains to make up for this
-    this.version(2023_04_10.2).upgrade((tx) => {
-      const affectedChains = [1666600000, 4689, 9001, 71402, 288, 592, 336]; // Covalent supported chains (2023-04-10)
-      tx.table<Events>('events')
-        .where('chainId')
-        .anyOf(affectedChains)
-        .modify((entry) => {
-          entry.toBlock -= 50;
-        });
-    });
-
-    // On 2024-10-25, we fixed that Permit2 events and allowances can also use alternative Permit2 contracts
-    // This requires a full re-index of all events
-    this.version(2024_10_25).upgrade((tx) => {
-      tx.table<Events>('events').clear();
-    });
+    // On 2024-11-28, we found a bug with the formatting of specific events, which requires a full re-index of all events.
+    // Because this is a full re-index, we removed previous database migrations since those are no longer relevant.
+    this.version(2024_11_28)
+      .stores({
+        events: '[chainId+topicsKey], chainId, topics, toBlock',
+      })
+      .upgrade((tx) => {
+        tx.table<Events>('events').clear();
+      });
   }
 
   // Note: It is always assumed that this function is called to get logs for the entire chain (i.e. from block 0 to 'latest')
@@ -81,7 +66,7 @@ class EventsDB extends Dexie {
 
       // If the fromBlock is greater than the toBlock, it means that we already have all the events
       if (fromBlock > toBlock) {
-        return storedEvents.logs.filter(
+        return storedEvents!.logs.filter(
           (log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock,
         );
       }
