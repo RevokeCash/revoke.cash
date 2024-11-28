@@ -11,6 +11,8 @@
     "analyze": "ANALYZE=true yarn build",
     "lint:checksums": "tsx scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
     "lint": "npx @biomejs/biome lint --write .",
+    "lint:staged": "yarn lint --error-on-warnings --no-errors-on-unmatched --staged .",
+    "lint:fix": "biome check --write .",
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
