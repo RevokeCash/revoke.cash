@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'lib/i18n/navigation';
+import { isNullish } from 'lib/utils';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
 import React, { type ReactNode, useContext, useLayoutEffect, useState } from 'react';
@@ -12,35 +13,38 @@ import { useAllowances } from '../ethereum/useAllowances';
 import { useNameLookup } from '../ethereum/useNameLookup';
 
 interface AddressContext {
-  address?: Address;
+  address: Address;
   domainName?: string;
-  selectedChainId?: number;
-  selectChain?: (chainId: number) => void;
-  eventContext?: ReturnType<typeof useEvents>;
-  allowanceContext?: ReturnType<typeof useAllowances>;
-  signatureNoticeAcknowledged?: boolean;
-  acknowledgeSignatureNotice?: () => void;
+  selectedChainId: number;
+  selectChain: (chainId: number) => void;
+  eventContext: ReturnType<typeof useEvents>;
+  allowanceContext: ReturnType<typeof useAllowances>;
+  signatureNoticeAcknowledged: boolean;
+  acknowledgeSignatureNotice: () => void;
 }
 
 interface Props {
   children: ReactNode;
   address: Address;
-  domainName?: string;
+  domainName?: string | null;
   initialChainId?: number;
 }
 
-const AddressPageContext = React.createContext<AddressContext>({});
+// We pass in undefined as the default value, since there should always be a provider for this context
+const AddressPageContext = React.createContext<AddressContext>(undefined as any);
 
 export const AddressPageContextProvider = ({ children, address, domainName, initialChainId }: Props) => {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()!;
   const path = usePathname();
   const router = useRouter();
   const { chain } = useAccount();
   const { domainName: resolvedDomainName } = useNameLookup(domainName ? undefined : address);
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
-  const queryChainId = Number.parseInt(searchParams.get('chainId') as string);
-  const defaultChainId = [initialChainId, queryChainId, chain?.id, 1].find((chainId) => isSupportedChain(chainId));
+  const queryChainId = parseInt(searchParams.get('chainId') as string);
+  const defaultChainId = [initialChainId, queryChainId, chain?.id, 1]
+    .filter((chainId) => !isNullish(chainId))
+    .find((chainId) => isSupportedChain(chainId!)) as number;
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 
   // Note: We use useLayoutEffect here, because this is the only setup that works with the "spenderSearch" query param as well
@@ -66,7 +70,7 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
     <AddressPageContext.Provider
       value={{
         address,
-        domainName: domainName ?? resolvedDomainName,
+        domainName: domainName ?? resolvedDomainName ?? undefined,
         selectedChainId,
         selectChain,
         eventContext,

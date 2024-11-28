@@ -1,9 +1,9 @@
 import { UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
-import type { Erc20TokenContract } from 'lib/interfaces';
 import { fixedPointMultiply } from 'lib/utils/math';
-import { type Address, parseUnits } from 'viem';
-import { AbstractPriceStrategy, type AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
-import type { PriceStrategy } from './PriceStrategy';
+import { Erc20TokenContract } from 'lib/utils/tokens';
+import { Address, parseUnits } from 'viem';
+import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
+import { PriceStrategy } from './PriceStrategy';
 import { calculateTokenPrice } from './utils';
 
 export interface UniswapV2PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {
@@ -50,7 +50,7 @@ export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements Pri
     this.fee = options.feeParameters?.fee ?? [];
   }
 
-  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | undefined> {
     if (tokenContract.address === this.path.at(-1)) {
       return 1;
     }

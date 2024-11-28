@@ -1,18 +1,18 @@
 import RevokeButton from 'components/allowances/controls/RevokeButton';
-import type { AllowanceData, TransactionSubmitted } from 'lib/interfaces';
-import { getAllowanceI18nValues } from 'lib/utils/allowances';
+import { TransactionSubmitted } from 'lib/interfaces';
+import { getAllowanceI18nValues, TokenAllowanceData } from 'lib/utils/allowances';
 import ControlsWrapper from './ControlsWrapper';
 import UpdateControls from './UpdateControls';
 
 interface Props {
-  allowance: AllowanceData;
-  update?: (newAmount?: string) => Promise<TransactionSubmitted>;
+  allowance: TokenAllowanceData;
+  update?: (newAmount: string) => Promise<TransactionSubmitted | undefined>;
   reset?: () => void;
-  revoke?: () => Promise<TransactionSubmitted>;
+  revoke?: () => Promise<TransactionSubmitted | undefined>;
 }
 
 const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
-  if (!allowance.spender) return null;
+  if (!allowance.payload) return null;
 
   const { amount } = getAllowanceI18nValues(allowance);
 

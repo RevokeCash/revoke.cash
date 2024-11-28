@@ -3,17 +3,17 @@
 import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { BaseTokenData } from 'lib/interfaces';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatBalance, formatFiatBalance } from 'lib/utils/formatting';
+import { TokenData } from 'lib/utils/tokens';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {
-  asset: BaseTokenData;
+  asset: TokenData;
 }
 
 const AssetCell = ({ asset }: Props) => {
-  const ref = useRef(null);
+  const ref = useRef<any>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
   // This is pretty hacky, but it works to detect that we're on the address page, so single chain usage

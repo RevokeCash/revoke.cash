@@ -19,7 +19,7 @@ export const metadata = {
 
 const PrivacyPolicyPage: NextPage<Props> = ({ params }) => {
   unstable_setRequestLocale(params.locale);
-  const { content } = readAndParseContentFile('privacy-policy', params.locale, 'docs');
+  const { content } = readAndParseContentFile('privacy-policy', params.locale, 'docs')!;
 
   return (
     <ContentPageLayout>

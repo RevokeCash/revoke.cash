@@ -1,6 +1,6 @@
-import Dexie, { type Table } from 'dexie';
-import type { Log, TimeLog } from 'lib/interfaces';
-import type { PublicClient } from 'viem';
+import Dexie, { Table } from 'dexie';
+import { Log, TimeLog } from 'lib/utils/events';
+import { PublicClient } from 'viem';
 
 interface Block {
   chainId: number;
@@ -20,7 +20,7 @@ class BlocksDB extends Dexie {
 
   async getBlockTimestamp(publicClient: PublicClient, blockNumber: number): Promise<number> {
     try {
-      const chainId = publicClient.chain.id;
+      const chainId = publicClient.chain!.id;
       const storedBlock = await this.blocks.get([chainId, blockNumber]);
       if (storedBlock) return storedBlock.timestamp;
 

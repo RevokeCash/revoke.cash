@@ -55,7 +55,7 @@ const handler = async (req: NextRequest) => {
       },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ message: e.message }), { status: 500 });
+    return new Response(JSON.stringify({ message: (e as any).message }), { status: 500 });
   }
 };
 

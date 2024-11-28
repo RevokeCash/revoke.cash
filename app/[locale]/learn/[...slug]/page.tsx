@@ -20,8 +20,8 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export const generateMetadata = async ({ params: { locale, slug } }): Promise<Metadata> => {
-  const { meta } = readAndParseContentFile(slug, locale, 'learn');
+export const generateMetadata = async ({ params: { locale, slug } }: Props): Promise<Metadata> => {
+  const { meta } = readAndParseContentFile(slug, locale, 'learn')!;
 
   return {
     title: meta.title,
@@ -35,7 +35,7 @@ export const generateMetadata = async ({ params: { locale, slug } }): Promise<Me
 const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
   unstable_setRequestLocale(params.locale);
 
-  const { content, meta } = readAndParseContentFile(params.slug, params.locale, 'learn');
+  const { content, meta } = readAndParseContentFile(params.slug, params.locale, 'learn')!;
   const sidebar = await getSidebar(params.locale, 'learn');
   const translationUrl = await getTranslationUrl(params.slug, params.locale, 'learn');
 

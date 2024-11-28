@@ -65,7 +65,7 @@ const Button = (
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
     (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded',
     style !== 'none' && classMapping.common,
-    classMapping[variant],
+    variant !== 'none' && classMapping[variant],
     classMapping[align ?? 'center'],
     size !== 'none' && classMapping[size],
     loading && 'flex gap-1',

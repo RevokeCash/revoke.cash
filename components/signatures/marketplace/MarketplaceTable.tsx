@@ -4,11 +4,14 @@ import Table from 'components/common/table/Table';
 import { useMarketplaces } from 'lib/hooks/ethereum/useMarketplaces';
 import type { Marketplace } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 import { columns } from './columns';
 
 const MarketplaceTable = () => {
   const t = useTranslations();
   const { marketplaces, isLoading, error, onCancel } = useMarketplaces();
+
+  const data = useMemo(() => marketplaces ?? [], [marketplaces]);
 
   const title = (
     <div className="flex items-center gap-2">
@@ -17,7 +20,7 @@ const MarketplaceTable = () => {
   );
 
   const table = useReactTable({
-    data: marketplaces,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel<Marketplace>(),
     getSortedRowModel: getSortedRowModel<Marketplace>(),

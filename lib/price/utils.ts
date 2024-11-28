@@ -1,34 +1,33 @@
-import type { TokenContract } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
-import { isErc721Contract } from 'lib/utils/tokens';
-import { type PublicClient, formatUnits } from 'viem';
+import { isErc721Contract, type TokenContract } from 'lib/utils/tokens';
+import { formatUnits, type PublicClient } from 'viem';
 import type { PriceStrategy } from './PriceStrategy';
 
-export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: number): number => {
-  return !isNullish(inversePrice) ? 1 / Number.parseFloat(formatUnits(inversePrice, tokenDecimals)) : null;
+export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: number): number | undefined => {
+  return isNullish(inversePrice) ? undefined : 1 / Number.parseFloat(formatUnits(inversePrice, tokenDecimals));
 };
 
-export const getNativeTokenPrice = async (chainId: number, publicClient: PublicClient): Promise<number | null> => {
+export const getNativeTokenPrice = async (chainId: number, publicClient: PublicClient): Promise<number | undefined> => {
   const strategy = getChainPriceStrategy(chainId);
 
-  if (!strategy) return null;
+  if (!strategy) return undefined;
 
   try {
     return await strategy.calculateNativeTokenPrice(publicClient);
   } catch {
-    return null;
+    return undefined;
   }
 };
 
-export const getTokenPrice = async (chainId: number, tokenContract: TokenContract): Promise<number | null> => {
+export const getTokenPrice = async (chainId: number, tokenContract: TokenContract): Promise<number | undefined> => {
   const strategy = getChainPriceStrategy(chainId);
-  if (!strategy || !strategySupportsToken(strategy, tokenContract)) return null;
+  if (!strategy || !strategySupportsToken(strategy, tokenContract)) return undefined;
 
   try {
     return await strategy.calculateTokenPrice(tokenContract);
   } catch {
-    return null;
+    return undefined;
   }
 };
 

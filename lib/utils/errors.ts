@@ -28,7 +28,7 @@ export const isOutOfGasError = (error?: string | any): boolean => {
   return false;
 };
 
-export const isLogResponseSizeError = (error?: string | any) => {
+export const isLogResponseSizeError = (error?: string | any): boolean => {
   if (typeof error !== 'string') {
     return isLogResponseSizeError(parseErrorMessage(error)) || isLogResponseSizeError(stringifyError(error));
   }
@@ -42,7 +42,7 @@ export const isLogResponseSizeError = (error?: string | any) => {
   return false;
 };
 
-export const isRateLimitError = (error?: string | any) => {
+export const isRateLimitError = (error?: string | any): boolean => {
   if (typeof error !== 'string') {
     return isRateLimitError(parseErrorMessage(error)) || isRateLimitError(stringifyError(error));
   }
@@ -54,7 +54,7 @@ export const isRateLimitError = (error?: string | any) => {
   return false;
 };
 
-export const isNetworkError = (error?: string | any) => {
+export const isNetworkError = (error?: string | any): boolean => {
   // These error types might sometimes also meet the criteria for a network error, but they are handled separately
   if (isRateLimitError(error)) return false;
   if (isLogResponseSizeError(error)) return false;

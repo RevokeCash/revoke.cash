@@ -1,6 +1,8 @@
-import { type SessionOptions, getIronSession, unsealData } from 'iron-session';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import type { NextRequest } from 'next/server';
+import { SessionOptions, getIronSession, unsealData } from 'iron-session';
+import { Nullable } from 'lib/interfaces';
+import { isNullish } from 'lib/utils';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 
 export interface RevokeSession {
@@ -9,7 +11,7 @@ export interface RevokeSession {
 
 export const IRON_OPTIONS: SessionOptions = {
   cookieName: 'revoke_session',
-  password: process.env.IRON_SESSION_PASSWORD,
+  password: process.env.IRON_SESSION_PASSWORD!,
   ttl: 60 * 60 * 24,
   cookieOptions: {
     secure: true, // Change this to false when locally testing on Safari
@@ -80,7 +82,7 @@ export const checkActiveSessionEdge = async (req: NextRequest) => {
 };
 
 // Note: if ever moving to a different hosting / reverse proxy, then we need to update this
-const getClientIp = (req: NextApiRequest) => {
+const getClientIp = (req: NextApiRequest): string => {
   // Cloudflare
   if (isIp(req.headers['cf-connecting-ip'] as string)) return req.headers['cf-connecting-ip'] as string;
 
@@ -94,12 +96,12 @@ const getClientIp = (req: NextApiRequest) => {
   throw new Error('Request headers malformed');
 };
 
-const getClientIpEdge = (req: NextRequest) => {
+const getClientIpEdge = (req: NextRequest): string => {
   // Cloudflare
-  if (isIp(req.headers.get('cf-connecting-ip'))) return req.headers.get('cf-connecting-ip');
+  if (isIp(req.headers.get('cf-connecting-ip'))) return req.headers.get('cf-connecting-ip')!;
 
   // Vercel
-  if (isIp(req.headers.get('x-real-ip'))) return req.headers.get('x-real-ip');
+  if (isIp(req.headers.get('x-real-ip'))) return req.headers.get('x-real-ip')!;
 
   // Other
   const xForwardedFor = req.headers.get('x-forwarded-for')?.split(',')?.at(0);
@@ -114,6 +116,6 @@ const regexes = {
   ipv6: /^((?=.*::)(?!.*::.+::)(::)?([\dA-F]{1,4}:(:|\b)|){5}|([\dA-F]{1,4}:){6})((([\dA-F]{1,4}((?!\3)::|:\b|$))|(?!\2\3)){2}|(((2[0-4]|1\d|[1-9])?\d|25[0-5])\.?\b){4})$/i,
 };
 
-const isIp = (ip?: string) => {
-  return !!ip && (regexes.ipv4.test(ip) || regexes.ipv6.test(ip));
+const isIp = (ip?: Nullable<string>): ip is string => {
+  return !isNullish(ip) && (regexes.ipv4.test(ip) || regexes.ipv6.test(ip));
 };

@@ -2,7 +2,7 @@ import ChainLogo from './ChainLogo';
 import Logo from './Logo';
 
 interface Props {
-  src: string;
+  src?: string;
   alt: string;
   chainId?: number;
   size?: number;

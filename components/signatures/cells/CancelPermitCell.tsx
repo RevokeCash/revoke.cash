@@ -2,11 +2,11 @@ import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { type OnCancel, type PermitTokenData, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { OnCancel, TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
-import { isErc721Contract } from 'lib/utils/tokens';
+import { isErc721Contract, PermitTokenData } from 'lib/utils/tokens';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import CancelCell from './CancelCell';
 
@@ -17,19 +17,21 @@ interface Props {
 
 const CancelPermitCell = ({ token, onCancel }: Props) => {
   const { data: walletClient } = useWalletClient();
-  const publicClient = usePublicClient();
+  const publicClient = usePublicClient()!;
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction(selectedChainId);
 
-  const sendCancelTransaction = async (): Promise<TransactionSubmitted> => {
+  const sendCancelTransaction = async (): Promise<TransactionSubmitted | undefined> => {
     if (isErc721Contract(token.contract)) return;
-    const hash = await permit(walletClient, token.contract, DUMMY_ADDRESS, 0n);
+    const hash = await permit(walletClient!, token.contract, DUMMY_ADDRESS, 0n);
 
     track('Cancelled Permit Signatures', { chainId: selectedChainId, account: address, token: token.contract.address });
 
     const waitForConfirmation = async () => {
       // TODO: Deduplicate this with the CancelMarketplaceCell
       const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
+      if (!transactionReceipt) return;
+
       const lastCancelled = await blocksDB.getTimeLog(publicClient, {
         ...transactionReceipt,
         blockNumber: Number(transactionReceipt.blockNumber),
@@ -42,7 +44,7 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
     return { hash, confirmation: waitForConfirmation() };
   };
 
-  const cancel = async (): Promise<TransactionSubmitted> => {
+  const cancel = async (): Promise<TransactionSubmitted | undefined> => {
     return handleTransaction(sendCancelTransaction(), TransactionType.OTHER);
   };
 

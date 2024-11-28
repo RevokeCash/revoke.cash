@@ -1,8 +1,9 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import { useMounted } from 'lib/hooks/useMounted';
-import type { TimeLog, TransactionSubmitted } from 'lib/interfaces';
-import { waitForSubmittedTransactionConfirmation } from 'lib/utils';
+import { TransactionSubmitted } from 'lib/interfaces';
+import { isNullish, waitForSubmittedTransactionConfirmation } from 'lib/utils';
+import { TimeLog } from 'lib/utils/events';
 import { HOUR, SECOND } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
@@ -11,7 +12,7 @@ interface Props {
   chainId: number;
   address: string;
   lastCancelled?: TimeLog;
-  cancel: () => Promise<TransactionSubmitted>;
+  cancel: () => Promise<TransactionSubmitted | undefined>;
 }
 
 const CancelCell = ({ chainId, address, lastCancelled, cancel }: Props) => {
@@ -19,7 +20,8 @@ const CancelCell = ({ chainId, address, lastCancelled, cancel }: Props) => {
   const t = useTranslations();
   const { execute, loading } = useAsyncCallback(() => waitForSubmittedTransactionConfirmation(cancel()));
 
-  const recentlyCancelled = lastCancelled?.timestamp * SECOND > Date.now() - 24 * HOUR;
+  const recentlyCancelled =
+    !isNullish(lastCancelled?.timestamp) && lastCancelled.timestamp * SECOND > Date.now() - 24 * HOUR;
 
   return (
     <div className="flex justify-end w-28 mr-0 mx-auto">

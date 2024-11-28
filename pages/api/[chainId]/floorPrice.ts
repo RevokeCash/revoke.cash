@@ -1,9 +1,9 @@
 import { ERC721_ABI } from 'lib/abis';
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import type { Erc721TokenContract } from 'lib/interfaces';
 import { createViemPublicClientForChain, getChainBackendPriceStrategy } from 'lib/utils/chains';
-import type { NextRequest } from 'next/server';
-import type { Address } from 'viem';
+import type { Erc721TokenContract } from 'lib/utils/tokens';
+import { NextRequest } from 'next/server';
+import { Address } from 'viem';
 
 export const config = {
   runtime: 'edge',
@@ -48,7 +48,7 @@ const handler = async (req: NextRequest) => {
       },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ message: e.message }), { status: 500 });
+    return new Response(JSON.stringify({ message: (e as any).message }), { status: 500 });
   }
 };
 

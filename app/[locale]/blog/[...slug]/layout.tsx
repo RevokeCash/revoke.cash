@@ -22,7 +22,7 @@ const BlogLayout = async ({ params, children }: Props) => {
   unstable_setRequestLocale(params.locale);
 
   const t = await getTranslations({ locale: params.locale });
-  const { meta } = readAndParseContentFile(params.slug, params.locale, 'blog');
+  const { meta } = readAndParseContentFile(params.slug, params.locale, 'blog')!;
   const posts = await getSidebar(params.locale, 'blog');
   const translationUrl = await getTranslationUrl(params.slug, params.locale, 'blog');
 

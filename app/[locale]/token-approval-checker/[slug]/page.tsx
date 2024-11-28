@@ -26,7 +26,7 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export const generateMetadata = async ({ params: { locale, slug } }): Promise<Metadata> => {
+export const generateMetadata = async ({ params: { locale, slug } }: Props): Promise<Metadata> => {
   const t = await getTranslations({ locale });
   const chainId = getChainIdFromSlug(slug);
   const chainName = getChainName(chainId);

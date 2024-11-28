@@ -1,13 +1,13 @@
-import type { Filter, Log, LogsProvider } from 'lib/interfaces';
-import { DivideAndConquerLogsProvider, ViemLogsProvider } from 'lib/providers';
+import { DivideAndConquerLogsProvider, type LogsProvider, ViemLogsProvider } from 'lib/providers';
+import type { Filter, Log } from 'lib/utils/events';
 import type { EventGetter } from './EventGetter';
 
 export class NodeEventGetter implements EventGetter {
   private logsProviders: { [chainId: number]: LogsProvider };
 
-  constructor(urls: { [chainId: number]: string }) {
+  constructor(urls?: Record<number, string>) {
     this.logsProviders = Object.fromEntries(
-      Object.entries(urls).map(([chainId, url]) => [
+      Object.entries(urls ?? {}).map(([chainId, url]) => [
         Number(chainId),
         new DivideAndConquerLogsProvider(new ViemLogsProvider(Number(chainId), url)),
       ]),

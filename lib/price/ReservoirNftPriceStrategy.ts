@@ -1,8 +1,8 @@
-import { type SearchParamsOption, TimeoutError } from 'ky';
-import type { Erc721TokenContract } from 'lib/interfaces';
+import { SearchParamsOption, TimeoutError } from 'ky';
 import ky from 'lib/ky';
 import { isRateLimitError } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
+import type { Erc721TokenContract } from 'lib/utils/tokens';
 import { RequestQueue } from '../api/logs/RequestQueue';
 import { AbstractPriceStrategy } from './AbstractPriceStrategy';
 import type { PriceStrategy } from './PriceStrategy';
@@ -97,10 +97,12 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
       return result;
     } catch (e) {
       // See (https://github.com/sindresorhus/ky#readme) and search for TimoutError
-      if (e instanceof TimeoutError || e.message === 'Manual timeout') {
+      if (e instanceof TimeoutError || (e as any).message === 'Manual timeout') {
         console.error('Reservoir: Request timed out, will not retry');
 
-        throw new Error(`Request timed out for ${e.request.url} with search params ${JSON.stringify(searchParams)}`);
+        throw new Error(
+          `Request timed out for ${(e as any).request.url} with search params ${JSON.stringify(searchParams)}`,
+        );
       }
 
       if (isRateLimitError(e)) {
@@ -109,7 +111,7 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
         return this.makeGetRequest<T>(url, searchParams);
       }
 
-      throw new Error(e.data?.error_message ?? e.message);
+      throw new Error((e as any).data?.error_message ?? (e as any).message);
     }
   }
 }
@@ -117,9 +119,9 @@ export class ReservoirNftPriceStrategy extends AbstractPriceStrategy implements 
 // TODO: Should we perform this volume check here? Or take the volume across subcollections?
 const pickCheapestSubcollectionWithVolume = (collections: ReservoirNFTCollection[]): ReservoirNFTCollection => {
   const viableCollections = collections
-    .filter((collection) => !!collection.volume['7day'])
+    .filter((collection) => !!collection.volume?.['7day'])
     .filter((collection) => !!collection.floorAsk?.price?.amount?.usd)
-    .sort((a, b) => a.floorAsk?.price?.amount?.usd - b.floorAsk?.price?.amount?.usd);
+    .sort((a, b) => (a.floorAsk?.price?.amount?.usd ?? 0) - (b.floorAsk?.price?.amount?.usd ?? 0));
 
   return viableCollections[0];
 };

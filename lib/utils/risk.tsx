@@ -2,7 +2,7 @@ import { ExclamationCircleIcon, ExclamationTriangleIcon, InformationCircleIcon }
 import type { RiskFactor, RiskLevel } from 'lib/interfaces';
 import { track } from './analytics';
 
-export const RiskFactorScore = {
+export const RiskFactorScore: Record<string, number> = {
   blocklist: 100,
   closed_source: 50,
   deprecated: 100,

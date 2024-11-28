@@ -10,4 +10,4 @@ export const covalentEventGetter = new CovalentEventGetter(
   process.env.COVALENT_IS_PREMIUM === 'true',
 );
 export const etherscanEventGetter = new EtherscanEventGetter();
-export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS));
+export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS ?? '{}'));

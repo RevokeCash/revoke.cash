@@ -2,10 +2,10 @@ import type { Table } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Checkbox from 'components/common/Checkbox';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import type { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 
 interface Props {
-  table: Table<AllowanceData>;
+  table: Table<TokenAllowanceData>;
 }
 
 const GlobalSelectCell = ({ table }: Props) => {

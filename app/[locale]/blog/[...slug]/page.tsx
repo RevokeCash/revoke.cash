@@ -20,7 +20,7 @@ export const generateStaticParams = () => {
 };
 
 export const generateMetadata = async ({ params: { locale, slug } }: Props): Promise<Metadata> => {
-  const { meta } = readAndParseContentFile(slug, locale, 'blog');
+  const { meta } = readAndParseContentFile(slug, locale, 'blog')!;
 
   return {
     title: meta.title,
@@ -34,7 +34,7 @@ export const generateMetadata = async ({ params: { locale, slug } }: Props): Pro
 const BlogPostPage: NextPage<Props> = ({ params }) => {
   unstable_setRequestLocale(params.locale);
 
-  const { content } = readAndParseContentFile(params.slug, params.locale, 'blog');
+  const { content } = readAndParseContentFile(params.slug, params.locale, 'blog')!;
 
   return <MarkdownProse content={content} />;
 };

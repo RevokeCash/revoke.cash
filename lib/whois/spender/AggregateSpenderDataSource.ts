@@ -1,4 +1,4 @@
-import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
+import { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { assertFulfilled, deduplicateArray } from 'lib/utils';
 import type { Address } from 'viem';
 import type { SpenderDataSource } from './SpenderDataSource';
@@ -22,7 +22,7 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
     this.sources = options.sources;
   }
 
-  async getSpenderData(address: Address, chainId: number): Promise<SpenderData | SpenderRiskData | null> {
+  async getSpenderData(address: Address, chainId: number): Promise<Nullable<SpenderData | SpenderRiskData>> {
     if (this.aggregationType === AggregationType.SEQUENTIAL_FIRST) {
       for (const source of this.sources) {
         const result = await source.getSpenderData(address, chainId);
@@ -37,7 +37,7 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
       );
       const results = settlements.filter(assertFulfilled).map((result) => result.value);
 
-      const aggregatedResults = results.reduce(
+      const aggregatedResults = results.reduce<SpenderData | SpenderRiskData>(
         (acc, result) =>
           result
             ? { ...acc, ...(result ?? {}), riskFactors: [...(acc?.riskFactors ?? []), ...(result?.riskFactors ?? [])] }
@@ -46,11 +46,13 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
       );
 
       aggregatedResults.riskFactors = deduplicateArray(
-        aggregatedResults.riskFactors,
+        aggregatedResults.riskFactors ?? [],
         (a, b) => a.type === b.type && a.data === b.data && a.source === b.source,
       );
 
       return aggregatedResults;
     }
+
+    throw new Error('Invalid aggregation type');
   }
 }

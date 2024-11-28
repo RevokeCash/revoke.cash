@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 
 interface Props {
-  update: (newAllowance: string) => Promise<TransactionSubmitted>;
+  update: (newAllowance: string) => Promise<TransactionSubmitted | undefined>;
   disabled: boolean;
   defaultValue?: string;
   reset: () => void;

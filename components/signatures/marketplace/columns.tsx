@@ -35,7 +35,7 @@ export const columns = [
     id: ColumnId.ACTIONS,
     header: () => <HeaderCell i18nKey="address.headers.actions" align="right" />,
     cell: (info) => (
-      <CancelMarketplaceCell marketplace={info.row.original} onCancel={info.table.options.meta.onCancel} />
+      <CancelMarketplaceCell marketplace={info.row.original} onCancel={info.table.options.meta!.onCancel} />
     ),
   }),
 ];

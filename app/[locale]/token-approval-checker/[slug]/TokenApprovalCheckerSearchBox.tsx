@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 interface Props {
   chainId: number;
-  placeholder?: string;
+  placeholder: string;
 }
 
 const TokenApprovalCheckerSearchBox: NextPage<Props> = ({ chainId, placeholder }) => {

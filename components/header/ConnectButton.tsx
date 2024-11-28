@@ -12,7 +12,7 @@ import { type Connector, useAccount, useConnect } from 'wagmi';
 
 interface Props {
   text?: string;
-  size: 'sm' | 'md' | 'lg' | 'none';
+  size?: 'sm' | 'md' | 'lg' | 'none';
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
   redirect?: boolean;

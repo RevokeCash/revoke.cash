@@ -3,8 +3,13 @@ import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import type { AllowanceData, OnUpdate } from 'lib/interfaces';
-import { getAllowanceI18nValues } from 'lib/utils/allowances';
+import {
+  AllowanceType,
+  getAllowanceI18nValues,
+  isErc20Allowance,
+  OnUpdate,
+  TokenAllowanceData,
+} from 'lib/utils/allowances';
 import { SECOND } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -13,7 +18,7 @@ import * as timeago from 'timeago.js';
 import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
-  allowance: AllowanceData;
+  allowance: TokenAllowanceData;
   onUpdate: OnUpdate;
 }
 
@@ -25,7 +30,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
 
   const classes = twMerge(
-    !allowance.spender && 'text-zinc-500 dark:text-zinc-400',
+    !allowance.payload && 'text-zinc-500 dark:text-zinc-400',
     'flex items-center gap-2',
     ['ru', 'es'].includes(locale) ? 'w-48' : 'w-40',
   );
@@ -38,7 +43,10 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
     );
   }
 
-  const inTime = allowance.expiration > 0 ? timeago.format(allowance.expiration * SECOND, locale) : null;
+  const inTime =
+    allowance.payload?.type === AllowanceType.PERMIT2
+      ? timeago.format(allowance.payload.expiration * SECOND, locale)
+      : null;
 
   return (
     <div className={classes}>
@@ -52,7 +60,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
           </WithHoverTooltip>
         ) : null}
       </div>
-      {allowance.amount && (
+      {isErc20Allowance(allowance.payload) && (
         <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize={undefined}>
           {(disabled) => (
             <div>

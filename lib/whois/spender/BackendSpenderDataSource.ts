@@ -1,10 +1,10 @@
 import ky from 'ky';
-import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { type Address, getAddress } from 'viem';
-import type { SpenderDataSource } from './SpenderDataSource';
+import { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
+import { Address, getAddress } from 'viem';
+import { SpenderDataSource } from './SpenderDataSource';
 
 export class BackendSpenderDataSource implements SpenderDataSource {
-  async getSpenderData(address: Address, chainId: number): Promise<SpenderData | SpenderRiskData | null> {
-    return ky.get(`/api/${chainId}/spender/${getAddress(address)}`).json<SpenderData | SpenderRiskData | null>();
+  async getSpenderData(address: Address, chainId: number): Promise<Nullable<SpenderData | SpenderRiskData>> {
+    return ky.get(`/api/${chainId}/spender/${getAddress(address)}`).json<Nullable<SpenderData | SpenderRiskData>>();
   }
 }

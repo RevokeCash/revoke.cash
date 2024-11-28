@@ -3,7 +3,7 @@ import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import type { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import ControlsWrapper from '../ControlsWrapper';
@@ -12,7 +12,7 @@ import BatchRevokeHeader from './BatchRevokeHeader';
 import BatchRevokeTable from './BatchRevokeTable';
 
 interface Props {
-  table: Table<AllowanceData>;
+  table: Table<TokenAllowanceData>;
 }
 
 const BatchRevokeModalWithButton = ({ table }: Props) => {
@@ -26,7 +26,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   const { results, revoke, pause, isRevoking, isAllConfirmed } = useRevokeBatch(
     selectedAllowances,
-    table.options.meta.onUpdate,
+    table.options.meta!.onUpdate,
   );
 
   useEffect(() => {

@@ -14,7 +14,7 @@ const Input = ({ size, className, ...props }: Props) => {
     lg: 'h-12 px-6 text-lg rounded-xl',
   };
 
-  const classes = twMerge(classMapping.common, size !== 'none' && classMapping[size], className);
+  const classes = twMerge(classMapping.common, size && size !== 'none' && classMapping[size], className);
 
   return <input className={classes} {...props} />;
 };

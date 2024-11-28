@@ -1,6 +1,6 @@
 import type { Table } from '@tanstack/react-table';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import type { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { Suspense } from 'react';
 import WalletHealthSection from '../wallet-health/WalletHealthSection';
 import AllowanceSearchBox from './AllowanceSearchBox';
@@ -8,7 +8,7 @@ import FilterSelect from './FilterSelect';
 import SortSelect from './SortSelect';
 
 interface Props {
-  table: Table<AllowanceData>;
+  table: Table<TokenAllowanceData>;
 }
 
 const AllowanceTableControls = ({ table }: Props) => {

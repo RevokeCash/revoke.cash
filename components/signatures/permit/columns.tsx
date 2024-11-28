@@ -1,8 +1,10 @@
 import { createColumnHelper, type RowData } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import type { AllowanceData, OnCancel, PermitTokenData } from 'lib/interfaces';
+import { OnCancel } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
+import { PermitTokenData } from 'lib/utils/tokens';
 import CancelPermitCell from '../cells/CancelPermitCell';
 import LastCancelledCell from '../cells/LastCancelledCell';
 
@@ -20,7 +22,7 @@ export enum ColumnId {
 }
 
 export const accessors = {
-  balance: (allowance: AllowanceData) => {
+  balance: (allowance: TokenAllowanceData) => {
     return allowance.balance === 'ERC1155'
       ? 'ERC1155'
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
@@ -48,6 +50,6 @@ export const columns = [
   columnHelper.display({
     id: ColumnId.ACTIONS,
     header: () => <HeaderCell i18nKey="address.headers.actions" align="right" />,
-    cell: (info) => <CancelPermitCell token={info.row.original} onCancel={info.table.options.meta.onCancel} />,
+    cell: (info) => <CancelPermitCell token={info.row.original} onCancel={info.table.options.meta!.onCancel} />,
   }),
 ];

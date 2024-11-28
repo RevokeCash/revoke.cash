@@ -8,13 +8,15 @@ import type { SpenderDataSource } from '../SpenderDataSource';
 export class WebacySpenderRiskDataSource implements SpenderDataSource {
   private queue: RequestQueue;
 
-  constructor(private apiKey: string) {
+  constructor(private apiKey?: string) {
     // Webacy has requested that we limit the number of requests to 30 per second
     this.queue = new RequestQueue(`webacy:${apiKey}`, { interval: 1000, intervalCap: 30 });
   }
 
   async getSpenderData(address: Address, chainId: number): Promise<SpenderRiskData | null> {
-    const chainIdentifiers = {
+    if (!this.apiKey) throw new Error('Webacy API key is not set');
+
+    const chainIdentifiers: Record<number, string> = {
       [ChainId.EthereumMainnet]: 'eth',
       [ChainId.Base]: 'base',
       [ChainId.BNBSmartChainMainnet]: 'bsc',
@@ -58,10 +60,10 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
         'fraudulent_malicious',
       ];
 
-      const riskFactors: RiskFactor[] = (data?.issues ?? []).flatMap((issue) => {
+      const riskFactors: RiskFactor[] = (data?.issues ?? []).flatMap((issue: any) => {
         const tags = issue?.tags?.map((tag: any) => tag.key) as string[];
 
-        const tagFactors = tags.flatMap((tag) => {
+        const tagFactors = tags.flatMap((tag: string) => {
           if (tag === 'is_closed_source') return [{ type: 'closed_source', source: 'webacy' }];
           if (UNSAFE_TAGS.includes(tag)) return [{ type: 'unsafe', source: 'webacy' }];
           if (BLOCKLIST_TAGS.includes(tag)) return [{ type: 'blocklist', source: 'webacy' }];

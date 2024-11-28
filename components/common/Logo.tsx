@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import PlaceholderIcon from './PlaceholderIcon';
 
 interface Props {
-  src: string;
+  src?: string;
   alt: string;
   size?: number;
   square?: boolean;

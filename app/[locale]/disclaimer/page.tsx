@@ -19,7 +19,7 @@ export const metadata = {
 
 const DisclaimerPage: NextPage<Props> = ({ params }) => {
   unstable_setRequestLocale(params.locale);
-  const { content } = readAndParseContentFile('disclaimer', params.locale, 'docs');
+  const { content } = readAndParseContentFile('disclaimer', params.locale, 'docs')!;
 
   return (
     <ContentPageLayout>

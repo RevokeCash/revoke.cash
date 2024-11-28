@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import ChainSelect from 'components/common/select/ChainSelect';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { getNativeTokenPrice } from 'lib/price/utils';
+import { isNullish } from 'lib/utils';
 import { usePublicClient } from 'wagmi';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
@@ -13,18 +14,18 @@ import AddressNavigation from './navigation/AddressNavigation';
 
 const AddressHeader = () => {
   const { address, domainName, selectedChainId, selectChain } = useAddressPageContext();
-  const publicClient = usePublicClient({ chainId: selectedChainId });
+  const publicClient = usePublicClient({ chainId: selectedChainId })!;
 
   const { data: balance, isLoading: balanceIsLoading } = useQuery({
     queryKey: ['balance', address, publicClient.chain?.id],
-    queryFn: () => publicClient.getBalance({ address }),
-    enabled: !!address && !!publicClient.chain,
+    queryFn: () => publicClient.getBalance({ address: address! }),
+    enabled: !isNullish(address) && !isNullish(publicClient.chain),
   });
 
   const { data: nativeAssetPrice, isLoading: nativeAssetPriceIsLoading } = useQuery({
     queryKey: ['nativeAssetPrice', publicClient.chain.id],
     queryFn: () => getNativeTokenPrice(publicClient.chain.id, publicClient),
-    enabled: !!publicClient,
+    enabled: !isNullish(publicClient),
   });
 
   return (

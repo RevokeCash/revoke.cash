@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
-import type { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/interfaces';
+import { ContentFile, ISidebarEntry, Nullable, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTranslations } from 'next-intl/server';
 import { join } from 'path';
@@ -10,10 +10,12 @@ import { getOpenGraphImageUrl } from './og';
 
 const walk = require('walkdir');
 
+export type ContentDirectory = 'blog' | 'docs' | 'learn' | 'exploits';
+
 export const readContentFile = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
+  directory: ContentDirectory = 'learn',
 ): RawContentFile | null => {
   try {
     const contentDirectory = join(process.cwd(), 'content');
@@ -35,10 +37,10 @@ export const readContentFile = (
 export const readAndParseContentFile = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
-): ContentFile | null => {
+  directory: ContentDirectory = 'learn',
+): ContentFile | undefined => {
   const { content: rawContent, language } = readContentFile(slug, locale, directory) ?? {};
-  if (!rawContent) return null;
+  if (!rawContent || !language) return undefined;
 
   const { content, data } = matter(rawContent);
   const meta = {
@@ -57,17 +59,17 @@ export const readAndParseContentFile = (
   return { content, meta };
 };
 
-const parsePerson = (person?: string): Person | null => {
+const parsePerson = (person: Nullable<string>): Person | undefined => {
   // Placeholders are denoted with < ... >
-  if (person?.match(/^<.*>$/)) return null;
+  if (person?.match(/^<.*>$/)) return undefined;
 
-  const split = person?.split('|');
+  const [left, right] = person?.split('|') ?? [];
 
-  if (!split) return null;
+  if (!left) return undefined;
 
   return {
-    name: split?.at(0)?.trim() ?? null,
-    url: split?.at(1)?.trim() ?? null,
+    name: left.trim(),
+    url: right?.trim(),
   };
 };
 
@@ -75,9 +77,9 @@ const calculateReadingTime = (content: string): number => Math.round(Math.max(re
 
 export const getSidebar = async (
   locale: string,
-  directory: string = 'learn',
+  directory: ContentDirectory = 'learn',
   extended: boolean = false,
-): Promise<ISidebarEntry[] | null> => {
+): Promise<ISidebarEntry[]> => {
   const t = await getTranslations({ locale });
 
   if (directory === 'learn') {
@@ -115,7 +117,7 @@ export const getSidebar = async (
         children: [
           {
             title: t('learn.add_network.sidebar_title'),
-            description: extended ? t('learn.add_network.description', { chainName: 'Ethereum' }) : null,
+            description: extended ? t('learn.add_network.description', { chainName: 'Ethereum' }) : undefined,
             path: '/learn/wallets/add-network',
             coverImage: getOpenGraphImageUrl('/learn/wallets/add-network', locale),
           },
@@ -134,26 +136,26 @@ export const getSidebar = async (
   if (directory === 'blog') {
     const allSlugs = getAllContentSlugs(directory);
     const sidebar: ISidebarEntry[] = allSlugs.map((slug) => getSidebarEntry(slug, locale, directory, extended));
-    sidebar.sort((a, b) => (a.date > b.date ? -1 : 1));
+    sidebar.sort((a, b) => (a.date && b.date ? (a.date > b.date ? -1 : 1) : 0));
     return sidebar;
   }
 
-  return null;
+  throw new Error(`Unknown directory: ${directory}`);
 };
 
 const getSidebarEntry = (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
+  directory: ContentDirectory = 'learn',
   extended: boolean = false,
 ): ISidebarEntry => {
   const { meta } = readAndParseContentFile(slug, locale, directory) ?? {};
-  if (!meta) return null;
+  if (!meta) throw new Error(`Could not find meta for /${locale}/${directory}/${slug}`);
 
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 
-  const entry: ISidebarEntry = { title: meta.sidebarTitle, path, date: meta.date };
+  const entry: ISidebarEntry = { title: meta.sidebarTitle ?? meta.title, path, date: meta.date };
   if (extended) {
     entry.description = meta.description;
     entry.coverImage = meta.coverImage;
@@ -163,7 +165,7 @@ const getSidebarEntry = (
   return entry;
 };
 
-export const getAllContentSlugs = (directory: string = 'learn'): string[][] => {
+export const getAllContentSlugs = (directory: ContentDirectory = 'learn'): string[][] => {
   const contentDirectory = join(process.cwd(), 'content');
 
   const subdirectory = join(contentDirectory, 'en', directory);
@@ -185,9 +187,9 @@ export const getAllLearnCategories = (): string[] => {
 export const getTranslationUrl = async (
   slug: string | string[],
   locale: string,
-  directory: string = 'learn',
-): Promise<string | null> => {
-  if (!process.env.LOCALAZY_API_KEY || locale === 'en') return null;
+  directory: ContentDirectory = 'learn',
+): Promise<string | undefined> => {
+  if (!process.env.LOCALAZY_API_KEY || locale === 'en') return undefined;
 
   const normalisedSlug = Array.isArray(slug) ? slug : [slug];
 
@@ -211,7 +213,7 @@ export const getTranslationUrl = async (
     keys: [key],
   } = await ky.get(`${baseUrl}/files/${file.id}/keys/en`, { headers }).json<any>();
 
-  const languageCodes = {
+  const languageCodes: Record<string, number> = {
     zh: 1,
     ru: 1105,
     ja: 717,
@@ -223,8 +225,8 @@ export const getTranslationUrl = async (
 
 export const getCoverImage = (
   slug: string | string[],
-  directory: string = 'learn',
+  directory: ContentDirectory = 'learn',
   locale: string = 'en',
-): string | null => {
+): string => {
   return getOpenGraphImageUrl(`/${directory}/${[slug].flat().join('/')}`, locale);
 };

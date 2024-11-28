@@ -2,14 +2,14 @@ import Button from 'components/common/Button';
 import TipSection from 'components/common/donate/TipSection';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import type { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import ControlsWrapper from '../ControlsWrapper';
 
 interface Props {
-  selectedAllowances: AllowanceData[];
+  selectedAllowances: TokenAllowanceData[];
   isRevoking: boolean;
   isAllConfirmed: boolean;
   setOpen: (open: boolean) => void;
@@ -24,6 +24,8 @@ const BatchRevokeControls = ({ selectedAllowances, isRevoking, isAllConfirmed, s
   const [tipAmount, setTipAmount] = useState<string | null>(null);
 
   const revokeAndTip = async (tipAmount: string | null) => {
+    if (!tipAmount) throw new Error('Tip amount is required');
+
     const getTipSelection = () => {
       if (tipAmount === '0') return 'none';
       if (Number(tipAmount) < Number(defaultAmount)) return 'low';

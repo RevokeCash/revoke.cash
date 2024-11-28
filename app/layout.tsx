@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
+interface Props {
+  children: React.ReactNode;
+}
+
 export const generateMetadata = async (): Promise<Metadata> => {
   const t = await getTranslations({ locale: 'en' });
 
@@ -16,7 +20,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   };
 };
 
-const RootLayout = ({ children }) => {
+const RootLayout = ({ children }: Props) => {
   return <>{children}</>;
 };
 

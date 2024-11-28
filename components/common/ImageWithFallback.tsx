@@ -8,7 +8,7 @@ interface Props extends ImageProps {
 }
 
 const ImageWithFallback = ({ fallbackSrc, ...props }: Props) => {
-  const [src, setSrc] = useState(props.src);
+  const [src, setSrc] = useState(props.src ?? fallbackSrc);
 
   return (
     <Image

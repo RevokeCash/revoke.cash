@@ -20,7 +20,7 @@ const AddNetworkForm = ({ chainId }: Props) => {
           <FormElement label="Network name" content={chainName} />
           <FormElement label="New RPC URL" content={getChainFreeRpcUrl(chainId)} />
           <FormElement label="Chain ID" content={String(chainId)} />
-          <FormElement label="Currency symbol" content={getChainNativeToken(chainId)} />
+          <FormElement label="Currency symbol" content={getChainNativeToken(chainId)!} />
           <FormElement label="Block explorer URL (Optional)" content={getChainExplorerUrl(chainId)} />
         </div>
         <p>{t('learn.add_network.step_2.paragraph_2')}</p>

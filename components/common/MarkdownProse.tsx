@@ -30,11 +30,11 @@ const MarkdownProse = ({ content, className }: Props) => {
     a: ({ href, children, rel }) => {
       return (
         <Href
-          href={href}
+          href={href!}
           rel={rel}
           underline="hover"
-          external={!href.startsWith('/')}
-          router={href.startsWith('/')}
+          external={!href!.startsWith('/')}
+          router={href!.startsWith('/')}
           html
         >
           {children}

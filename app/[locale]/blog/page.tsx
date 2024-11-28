@@ -12,7 +12,7 @@ interface Props {
 
 export const dynamic = 'error';
 
-export const generateMetadata = async ({ params: { locale } }): Promise<Metadata> => {
+export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
   const t = await getTranslations({ locale });
 
   return {

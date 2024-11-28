@@ -1,6 +1,7 @@
 import Loader from 'components/common/Loader';
-import type { AllowanceData } from 'lib/interfaces';
-import { calculateValueAtRisk, deduplicateArray } from 'lib/utils';
+import { Nullable } from 'lib/interfaces';
+import { deduplicateArray, isNullish } from 'lib/utils';
+import { calculateValueAtRisk, TokenAllowanceData } from 'lib/utils/allowances';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -8,9 +9,9 @@ import { useTranslations } from 'next-intl';
 
 interface Props {
   chainId: number;
-  allowances: AllowanceData[];
+  allowances?: TokenAllowanceData[];
   isLoading: boolean;
-  error?: Error;
+  error?: Nullable<Error>;
 }
 
 const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
@@ -22,7 +23,7 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
 
   const hasNftsAtRisk = allowances?.some(
     (allowance) =>
-      !!allowance.spender &&
+      !isNullish(allowance.payload) &&
       isErc721Contract(allowance.contract) &&
       (allowance.balance === 'ERC1155' || allowance.balance > 0n),
   );
@@ -55,17 +56,17 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
 
 export default TotalValueAtRisk;
 
-const calculateTotalValueAtRisk = (allowances: AllowanceData[]): number => {
+const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number => {
   const annotatedAllowances = allowances.map((allowance) => ({
     ...allowance,
     valueAtRisk: calculateValueAtRisk(allowance),
   }));
 
-  const sortedAllowances = annotatedAllowances.sort((a, b) => (a.valueAtRisk > b.valueAtRisk ? -1 : 1));
+  const sortedAllowances = annotatedAllowances.sort((a, b) => ((a.valueAtRisk ?? 0n) > (b.valueAtRisk ?? 0n) ? -1 : 1));
   const deduplicatedAllowances = deduplicateArray(
     sortedAllowances,
     (a, b) => a.contract.address === b.contract.address,
   );
 
-  return deduplicatedAllowances.reduce((acc, allowance) => acc + allowance.valueAtRisk || 0, 0);
+  return deduplicatedAllowances.reduce((acc, allowance) => acc + (allowance.valueAtRisk ?? 0), 0);
 };

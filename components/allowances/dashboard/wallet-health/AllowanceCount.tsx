@@ -1,11 +1,13 @@
 import Loader from 'components/common/Loader';
-import type { AllowanceData } from 'lib/interfaces';
+import { Nullable } from 'lib/interfaces';
+import { isNullish } from 'lib/utils';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  allowances: AllowanceData[];
+  allowances?: TokenAllowanceData[];
   isLoading: boolean;
-  error?: Error;
+  error?: Nullable<Error>;
 }
 
 const AllowancesCount = ({ allowances, isLoading, error }: Props) => {
@@ -13,7 +15,7 @@ const AllowancesCount = ({ allowances, isLoading, error }: Props) => {
 
   if (error) return null;
 
-  const actualAllowances = allowances?.filter((allowance) => !!allowance.spender);
+  const actualAllowances = allowances?.filter((allowance) => !isNullish(allowance.payload));
 
   return (
     <Loader isLoading={isLoading}>
@@ -21,7 +23,7 @@ const AllowancesCount = ({ allowances, isLoading, error }: Props) => {
         <div className="text-zinc-600 dark:text-zinc-400 text-center">
           {t('address.wallet_health.total_allowances')}
         </div>
-        <div className="font-bold">{isLoading ? '000' : actualAllowances?.length}</div>
+        <div className="font-bold total-allowances">{isLoading ? '000' : actualAllowances?.length}</div>
       </div>
     </Loader>
   );
