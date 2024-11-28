@@ -10,7 +10,7 @@ interface Props {
 
 // This is a wrapper around ChainSelectHref because we cannot pass the getUrl function as a prop from a server component
 const TokenApprovalCheckerChainSelect = ({ chainId }: Props) => {
-  const getUrl = useCallback((chainId) => `/token-approval-checker/${getChainSlug(chainId)}`, []);
+  const getUrl = useCallback((chainId: number) => `/token-approval-checker/${getChainSlug(chainId)}`, []);
   return <ChainSelectHref instanceId="tac-chain-select" selected={chainId} getUrl={getUrl} showNames />;
 };
 

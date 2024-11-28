@@ -11,10 +11,10 @@ import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
 
 export const useDonate = (chainId: number, type: DonateButtonType) => {
-  const nativeToken = getChainNativeToken(chainId);
-  const defaultAmount = getDefaultDonationAmount(nativeToken);
+  const nativeToken = getChainNativeToken(chainId)!;
+  const defaultAmount = getDefaultDonationAmount(nativeToken)!;
   const { data: walletClient } = useWalletClient({ chainId });
-  const publicClient = usePublicClient({ chainId });
+  const publicClient = usePublicClient({ chainId })!;
   const handleTransaction = useHandleTransaction(chainId);
 
   const sendDonation = async (amount: string): Promise<TransactionSubmitted | undefined> => {

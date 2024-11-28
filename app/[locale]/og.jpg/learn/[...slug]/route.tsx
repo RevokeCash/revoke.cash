@@ -22,7 +22,7 @@ export const generateStaticParams = () => {
 };
 
 export async function GET(req: Request, { params }: Props) {
-  const { meta } = readAndParseContentFile(params.slug, params.locale, 'learn');
+  const { meta } = readAndParseContentFile(params.slug, params.locale, 'learn')!;
 
   const title = meta.overlay ? meta.sidebarTitle : undefined;
   const background = loadDataUrl(`public/assets/images/learn/${params.slug.join('/')}/cover.jpg`, 'image/jpeg');

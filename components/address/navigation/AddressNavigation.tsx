@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import AddressNavigationTab from './AddressNavigationTab';
 
 const AddressNavigation = () => {
-  const { addressOrName } = useParams();
+  const { addressOrName } = useParams() as { addressOrName: string };
   const t = useTranslations();
 
   const basePath = `/address/${addressOrName}`;

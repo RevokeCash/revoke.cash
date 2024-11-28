@@ -4,19 +4,20 @@ import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable 
 import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import Table from 'components/common/table/Table';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
-import type { AllowanceData } from 'lib/interfaces';
+import { isNullish } from 'lib/utils';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 import { useEffect, useMemo, useState } from 'react';
 import NoAllowancesFound from './NoAllowancesFound';
 import AllowanceTableControls from './controls/AllowanceTableControls';
 
-const getRowId = (row: AllowanceData) => {
-  return `${row.chainId}-${row.contract.address}-${row.spender}-${row.tokenId}`;
+const getRowId = (row: TokenAllowanceData) => {
+  return `${row.chainId}-${row.contract.address}-${row.payload?.spender}-${(row.payload as any)?.tokenId}`;
 };
 
 const AllowanceDashboard = () => {
   const { allowances, isLoading, error, onUpdate } = useAddressAllowances();
 
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
 
   // We fall back to an empty array because the table crashes if the data is undefined
   // and we use useMemo to prevent the table from infinite re-rendering
@@ -27,7 +28,7 @@ const AllowanceDashboard = () => {
   // When rows are deleted, the row selection state is not updated automatically (see https://github.com/TanStack/table/issues/4369)
   // This effect manually syncs the row selection state with the new table data
   useEffect(() => {
-    setRowSelection((currentSelection) => {
+    setRowSelection((currentSelection: Record<string, boolean>) => {
       if (!data || data.length === 0) return {};
       if (Object.keys(currentSelection).length === 0) return {};
 
@@ -45,11 +46,11 @@ const AllowanceDashboard = () => {
       rowSelection,
     },
     debugTable: true,
-    enableRowSelection: (row) => row.original.spender !== undefined,
+    enableRowSelection: (row) => !isNullish(row.original.payload),
     onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel<AllowanceData>(),
-    getSortedRowModel: getSortedRowModel<AllowanceData>(),
-    getFilteredRowModel: getFilteredRowModel<AllowanceData>(),
+    getCoreRowModel: getCoreRowModel<TokenAllowanceData>(),
+    getSortedRowModel: getSortedRowModel<TokenAllowanceData>(),
+    getFilteredRowModel: getFilteredRowModel<TokenAllowanceData>(),
     getRowId,
     // TODO: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any
     // See https://github.com/TanStack/table/discussions/4220
@@ -69,7 +70,7 @@ const AllowanceDashboard = () => {
         table={table}
         loading={isLoading}
         error={error}
-        emptyChildren={<NoAllowancesFound allowances={allowances} />}
+        emptyChildren={<NoAllowancesFound allowances={allowances!} />}
       />
     </div>
   );

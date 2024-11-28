@@ -1,4 +1,5 @@
 import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
+import { isNullish } from 'lib/utils';
 import { getChainName } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
 import { getAddressAndDomainName } from 'lib/utils/whois';
@@ -10,9 +11,15 @@ interface Props {
     locale: string;
     addressOrName: string;
   };
+  searchParams: {
+    chainId?: string;
+  };
 }
 
-export const generateMetadata = async ({ params: { locale, addressOrName }, searchParams }): Promise<Metadata> => {
+export const generateMetadata = async ({
+  params: { locale, addressOrName },
+  searchParams,
+}: Props): Promise<Metadata> => {
   const t = await getTranslations({ locale });
 
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
@@ -20,9 +27,9 @@ export const generateMetadata = async ({ params: { locale, addressOrName }, sear
 
   const chainName = getChainName(Number(searchParams.chainId || 1));
 
-  const title = !!searchParams.chainId
-    ? t('address.meta.title_chain', { addressDisplay, chainName })
-    : t('address.meta.title', { addressDisplay });
+  const title = isNullish(searchParams.chainId)
+    ? t('address.meta.title', { addressDisplay })
+    : t('address.meta.title_chain', { addressDisplay, chainName });
 
   return {
     title,

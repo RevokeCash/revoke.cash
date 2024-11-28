@@ -20,7 +20,7 @@ import {
   getCorrespondingMainnetChainId,
   getDefaultDonationAmount,
 } from 'lib/utils/chains';
-import networkDescriptions from 'locales/en/networks.json';
+import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
 
 describe('Chain Support', () => {
   it('should not have superfluous default donation amounts', () => {
@@ -33,7 +33,7 @@ describe('Chain Support', () => {
 
   ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
-    const nativeToken = getChainNativeToken(chainId);
+    const nativeToken = getChainNativeToken(chainId)!;
 
     describe(`${chainName} (${nativeToken})`, () => {
       it('should have base chain data', () => {
@@ -58,24 +58,24 @@ describe('Chain Support', () => {
 
       it('should have a description', () => {
         const mainnetChainId = getCorrespondingMainnetChainId(chainId) ?? chainId;
-        expect(networkDescriptions.networks[getChainSlug(mainnetChainId)]).to.exist;
+        expect((networkDescriptions.networks as Record<string, string>)[getChainSlug(mainnetChainId)]).to.exist;
       });
 
       it('should have the correct chain ID for the main RPC', async () => {
-        const client = createViemPublicClientForChain(chainId, getChainRpcUrl(chainId));
+        const client = createViemPublicClientForChain(chainId, getChainRpcUrl(chainId))!;
         expect(await client.getChainId()).to.equal(chainId);
       });
 
       if (getChainRpcUrl(chainId) !== getChainLogsRpcUrl(chainId)) {
         it('should have the correct chain ID for the logs RPC', async () => {
-          const client = createViemPublicClientForChain(chainId, getChainLogsRpcUrl(chainId));
+          const client = createViemPublicClientForChain(chainId, getChainLogsRpcUrl(chainId))!;
           expect(await client.getChainId()).to.equal(chainId);
         });
       }
 
       if (getChainRpcUrl(chainId) !== getChainFreeRpcUrl(chainId)) {
         it('should have the correct chain ID for the free RPC', async () => {
-          const client = createViemPublicClientForChain(chainId, getChainFreeRpcUrl(chainId));
+          const client = createViemPublicClientForChain(chainId, getChainFreeRpcUrl(chainId))!;
           expect(await client.getChainId()).to.equal(chainId);
         });
       }

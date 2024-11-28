@@ -12,7 +12,7 @@ interface ChainOption {
 }
 
 interface Props {
-  selected: number;
+  selected?: number;
   chainIds?: number[];
   onSelect?: (chainId: number) => void;
   menuAlign?: 'left' | 'right';
@@ -72,7 +72,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={chainIds ? mainnetOptions : groups}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
-      onChange={onChange}
+      onChange={(option) => onChange(option!)}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       minMenuWidth="14.5rem"
@@ -80,6 +80,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       menuAlign={menuAlign}
       // Note: when searching, option do get unmounted, so there's still some optimization to be done here
       keepMounted
+      isMulti={false}
     />
   );
 };

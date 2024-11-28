@@ -1,5 +1,5 @@
-import { AllowanceData, TransactionStatus } from 'lib/interfaces';
-import { getAllowanceKey } from 'lib/utils/allowances';
+import { TransactionStatus } from 'lib/interfaces';
+import { getAllowanceKey, TokenAllowanceData } from 'lib/utils/allowances';
 import { Hash } from 'viem';
 import { create } from 'zustand';
 
@@ -15,16 +15,16 @@ export interface TransactionResult {
 
 export interface TransactionStore {
   results: TransactionResults;
-  getTransaction: (allowance: AllowanceData) => TransactionResult;
-  updateTransaction: (allowance: AllowanceData, result: TransactionResult, override?: boolean) => void;
+  getTransaction: (allowance: TokenAllowanceData) => TransactionResult;
+  updateTransaction: (allowance: TokenAllowanceData, result: TransactionResult, override?: boolean) => void;
 }
 
 export const useTransactionStore = create<TransactionStore>((set, get) => ({
   results: {},
-  getTransaction: (allowance: AllowanceData) => {
+  getTransaction: (allowance: TokenAllowanceData) => {
     return get().results[getAllowanceKey(allowance)] ?? { status: 'not_started' as const };
   },
-  updateTransaction: (allowance: AllowanceData, result: TransactionResult, override: boolean = true) => {
+  updateTransaction: (allowance: TokenAllowanceData, result: TransactionResult, override: boolean = true) => {
     const key = getAllowanceKey(allowance);
     set((state) => ({
       results: {

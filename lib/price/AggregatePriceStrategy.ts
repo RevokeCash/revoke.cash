@@ -1,6 +1,5 @@
-import { TokenContract, TokenStandard } from 'lib/interfaces';
-import { deduplicateArray } from 'lib/utils';
-import { isErc721Contract } from 'lib/utils/tokens';
+import { deduplicateArray, isNullish } from 'lib/utils';
+import { isErc721Contract, TokenContract, TokenStandard } from 'lib/utils/tokens';
 import { PublicClient } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
 
@@ -32,12 +31,12 @@ export class AggregatePriceStrategy implements PriceStrategy {
 
   // Note: we only use the first strategy to calculate the native token price, so we only need to make sure that
   // the first strategy is able to calculate the native token price
-  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
+  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number | undefined> {
     if (this.strategies.length === 0) throw new Error('No strategies provided');
-    return this.strategies.at(0).calculateNativeTokenPrice(publicClient);
+    return this.strategies[0].calculateNativeTokenPrice(publicClient);
   }
 
-  public async calculateTokenPrice(tokenContract: TokenContract): Promise<number> {
+  public async calculateTokenPrice(tokenContract: TokenContract): Promise<number | undefined> {
     const supportedStrategies = this.getSupportedStrategies(tokenContract);
     if (supportedStrategies.length === 0) throw new Error('No supported strategies provided for this token type');
 
@@ -50,16 +49,21 @@ export class AggregatePriceStrategy implements PriceStrategy {
         supportedStrategies.map((strategy) => strategy.calculateTokenPrice(tokenContract)),
       );
 
-      const sum = results.reduce((acc, curr) => acc + curr, 0);
-      return sum / results.length;
+      const validResults = results.filter((result) => !isNullish(result));
+
+      const sum = validResults.reduce((acc, curr) => acc + curr, 0);
+      return sum / validResults.length;
     }
 
     if (this.aggregationType === AggregationType.MAX) {
       const results = await Promise.all(
         supportedStrategies.map((strategy) => strategy.calculateTokenPrice(tokenContract)),
       );
-      return Math.max(...results);
+      const validResults = results.filter((result) => !isNullish(result));
+      return Math.max(...validResults);
     }
+
+    throw new Error('Invalid aggregation type');
   }
 
   public getSupportedStrategies(tokenContract: TokenContract): PriceStrategy[] {

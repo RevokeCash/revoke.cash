@@ -2,10 +2,10 @@ import { Row } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Checkbox from 'components/common/Checkbox';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { AllowanceData } from 'lib/interfaces';
+import { TokenAllowanceData } from 'lib/utils/allowances';
 
 interface Props {
-  row: Row<AllowanceData>;
+  row: Row<TokenAllowanceData>;
 }
 
 const SelectCell = ({ row }: Props) => {

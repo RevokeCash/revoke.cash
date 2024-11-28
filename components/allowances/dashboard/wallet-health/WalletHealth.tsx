@@ -1,5 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import { useQuery } from '@tanstack/react-query';
+import { isNullish } from 'lib/utils';
 import { Address } from 'viem';
 import WalletHealthDescription from './WalletHealthDescription';
 import WalletHealthScore from './WalletHealthScore';
@@ -20,7 +21,7 @@ const WalletHealth = ({ address, chainId }: Props) => {
   } = useQuery<number, Error>({
     queryKey: ['walletHealthScore', chainId, address],
     queryFn: () => 100,
-    enabled: !!address && chainId === ChainId.EthereumMainnet,
+    enabled: !isNullish(address) && chainId === ChainId.EthereumMainnet,
   });
 
   if (chainId !== ChainId.EthereumMainnet) return null;

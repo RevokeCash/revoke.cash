@@ -1,7 +1,13 @@
 import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
-import { AllowanceData, OnUpdate } from 'lib/interfaces';
-import { calculateValueAtRisk, isNullish } from 'lib/utils';
-import { formatErc20Allowance } from 'lib/utils/allowances';
+import { isNullish } from 'lib/utils';
+import {
+  AllowanceType,
+  calculateValueAtRisk,
+  formatErc20Allowance,
+  isErc20Allowance,
+  OnUpdate,
+  TokenAllowanceData,
+} from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
 import BatchRevokeModalWithButton from '../controls/batch-revoke/BatchRevokeModalWithButton';
@@ -35,27 +41,35 @@ export enum ColumnId {
 }
 
 export const accessors = {
-  allowance: (allowance: AllowanceData) => {
-    if (!allowance.spender) return undefined;
+  allowance: (allowance: TokenAllowanceData) => {
+    if (!allowance.payload) return undefined;
 
-    if (allowance.amount) {
-      return formatErc20Allowance(allowance.amount, allowance.metadata.decimals, allowance.metadata.totalSupply);
+    if (isErc20Allowance(allowance.payload)) {
+      return formatErc20Allowance(
+        allowance.payload.amount,
+        allowance.metadata.decimals,
+        allowance.metadata.totalSupply,
+      );
     }
 
-    return allowance.tokenId ?? 'Unlimited';
+    if (allowance.payload.type === AllowanceType.ERC721_SINGLE) {
+      return allowance.payload.tokenId;
+    }
+
+    return 'Unlimited';
   },
-  balance: (allowance: AllowanceData) => {
+  balance: (allowance: TokenAllowanceData) => {
     return allowance.balance === 'ERC1155'
       ? 'ERC1155'
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
-  assetType: (allowance: AllowanceData) => {
+  assetType: (allowance: TokenAllowanceData) => {
     if (isErc721Contract(allowance.contract)) return 'NFT';
     return 'Token';
   },
-  valueAtRisk: (allowance: AllowanceData) => {
+  valueAtRisk: (allowance: TokenAllowanceData) => {
     // No approvals should be sorted separately through `sortUndefined`
-    if (!allowance.spender) return undefined;
+    if (!allowance.payload) return undefined;
 
     // No balance means no risk (even if we don't know the price)
     if (allowance.balance === 0n) return 0;
@@ -69,10 +83,10 @@ export const accessors = {
 };
 
 export const customSortingFns = {
-  timestamp: (rowA: Row<AllowanceData>, rowB: Row<AllowanceData>, columnId: string) => {
+  timestamp: (rowA: Row<TokenAllowanceData>, rowB: Row<TokenAllowanceData>, columnId: string) => {
     return sortingFns.basic(rowA, rowB, columnId);
   },
-  allowance: (rowA: Row<AllowanceData>, rowB: Row<AllowanceData>, columnId: string) => {
+  allowance: (rowA: Row<TokenAllowanceData>, rowB: Row<TokenAllowanceData>, columnId: string) => {
     if (rowA.getValue(columnId) === rowB.getValue(columnId)) return 0;
     if (rowA.getValue(columnId) === 'Unlimited') return 1;
     if (rowB.getValue(columnId) === 'Unlimited') return -1;
@@ -81,14 +95,14 @@ export const customSortingFns = {
 };
 
 export const customFilterFns = {
-  assetType: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
+  assetType: (row: Row<TokenAllowanceData>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       return row.getValue(columnId) === filterValue;
     });
 
     return results.some((result) => result);
   },
-  balance: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
+  balance: (row: Row<TokenAllowanceData>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       if (filterValue === 'Zero') return row.getValue(columnId) === '0';
       if (filterValue === 'Non-Zero') return row.getValue(columnId) !== '0';
@@ -96,7 +110,7 @@ export const customFilterFns = {
 
     return results.some((result) => result);
   },
-  allowance: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
+  allowance: (row: Row<TokenAllowanceData>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       if (filterValue === 'Unlimited') return row.getValue(columnId) === 'Unlimited';
       if (filterValue === 'None') return row.getValue(columnId) === undefined;
@@ -107,7 +121,7 @@ export const customFilterFns = {
 
     return results.some((result) => result);
   },
-  spender: (row: Row<AllowanceData>, columnId: string, filterValues: string[]) => {
+  spender: (row: Row<TokenAllowanceData>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       return filterFns.includesString(row, columnId, filterValue, () => {});
     });
@@ -116,7 +130,7 @@ export const customFilterFns = {
   },
 };
 
-const columnHelper = createColumnHelper<AllowanceData>();
+const columnHelper = createColumnHelper<TokenAllowanceData>();
 export const columns = [
   columnHelper.display({
     id: ColumnId.SELECT,
@@ -149,7 +163,7 @@ export const columns = [
   columnHelper.accessor(accessors.allowance, {
     id: ColumnId.ALLOWANCE,
     header: () => <HeaderCell i18nKey="address.headers.allowance" />,
-    cell: (info) => <AllowanceCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
+    cell: (info) => <AllowanceCell allowance={info.row.original} onUpdate={info.table.options.meta!.onUpdate} />,
     enableSorting: true,
     sortingFn: customSortingFns.allowance,
     sortUndefined: 'last',
@@ -164,7 +178,7 @@ export const columns = [
     sortingFn: sortingFns.basic,
     sortUndefined: 'last',
   }),
-  columnHelper.accessor('spender', {
+  columnHelper.accessor('payload.spender', {
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
@@ -172,10 +186,12 @@ export const columns = [
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,
   }),
-  columnHelper.accessor('lastUpdated.timestamp', {
+  columnHelper.accessor('payload.lastUpdated.timestamp', {
     id: ColumnId.LAST_UPDATED,
     header: () => <HeaderCell i18nKey="address.headers.last_updated" />,
-    cell: (info) => <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.lastUpdated} />,
+    cell: (info) => (
+      <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.payload?.lastUpdated} />
+    ),
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,
     sortUndefined: 'last',
@@ -183,6 +199,6 @@ export const columns = [
   columnHelper.display({
     id: ColumnId.ACTIONS,
     header: () => <HeaderCell i18nKey="address.headers.actions" align="right" />,
-    cell: (info) => <ControlsCell allowance={info.row.original} onUpdate={info.table.options.meta.onUpdate} />,
+    cell: (info) => <ControlsCell allowance={info.row.original} onUpdate={info.table.options.meta!.onUpdate} />,
   }),
 ];

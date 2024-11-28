@@ -11,27 +11,27 @@ export const usePermit2Events = (address: Address, chainId: number) => {
 
   const addressTopic = address ? addressToTopic(address) : undefined;
 
-  const approvalTopics = addressTopic && [getPermit2EventSelector('Approval'), addressTopic];
-  const permitTopics = addressTopic && [getPermit2EventSelector('Permit'), addressTopic];
-  const lockdownTopics = addressTopic && [getPermit2EventSelector('Lockdown'), addressTopic];
+  const approvalFilter = addressTopic && { topics: [getPermit2EventSelector('Approval'), addressTopic] };
+  const permitFilter = addressTopic && { topics: [getPermit2EventSelector('Permit'), addressTopic] };
+  const lockdownFilter = addressTopic && { topics: [getPermit2EventSelector('Lockdown'), addressTopic] };
 
   const {
     data: approval,
     isLoading: isApprovalLoading,
     error: approvalError,
-  } = useLogsFullBlockRange('Permit2 Approval', chainId, { topics: approvalTopics });
+  } = useLogsFullBlockRange('Permit2 Approval', chainId, approvalFilter);
 
   const {
     data: permit,
     isLoading: isPermitLoading,
     error: permitError,
-  } = useLogsFullBlockRange('Permit2 Permit', chainId, { topics: permitTopics });
+  } = useLogsFullBlockRange('Permit2 Permit', chainId, permitFilter);
 
   const {
     data: lockdown,
     isLoading: isLockdownLoading,
     error: lockdownError,
-  } = useLogsFullBlockRange('Permit2 Lockdown', chainId, { topics: lockdownTopics });
+  } = useLogsFullBlockRange('Permit2 Lockdown', chainId, lockdownFilter);
 
   const isLoading = isPermitLoading || isApprovalLoading || isLockdownLoading;
   const error = permitError || approvalError || lockdownError;

@@ -1,5 +1,5 @@
-import { TokenContract } from 'lib/interfaces';
 import ky from 'lib/ky';
+import { TokenContract } from 'lib/utils/tokens';
 import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
 import { PriceStrategy } from './PriceStrategy';
 
@@ -12,7 +12,7 @@ export class BackendPriceStrategy extends AbstractPriceStrategy implements Price
 
   protected async calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number> {
     const result = await ky
-      .get(`/api/${tokenContract.publicClient.chain.id}/floorPrice?contractAddress=${tokenContract.address}`)
+      .get(`/api/${tokenContract.publicClient.chain!.id}/floorPrice?contractAddress=${tokenContract.address}`)
       .json<{ floorPrice: number }>();
 
     return result.floorPrice;

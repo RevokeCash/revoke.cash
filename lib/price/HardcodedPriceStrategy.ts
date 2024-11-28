@@ -1,4 +1,4 @@
-import { TokenContract, TokenStandard } from 'lib/interfaces';
+import { TokenContract, TokenStandard } from 'lib/utils/tokens';
 import { Address, PublicClient } from 'viem';
 import { PriceStrategy } from './PriceStrategy';
 

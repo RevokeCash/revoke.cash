@@ -19,7 +19,7 @@ export const metadata = {
 
 const TermsAndConditionsPage: NextPage<Props> = ({ params }) => {
   unstable_setRequestLocale(params.locale);
-  const { content } = readAndParseContentFile('terms', params.locale, 'docs');
+  const { content } = readAndParseContentFile('terms', params.locale, 'docs')!;
 
   return (
     <ContentPageLayout>

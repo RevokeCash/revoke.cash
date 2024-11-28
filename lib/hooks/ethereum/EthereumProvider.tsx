@@ -2,7 +2,6 @@
 
 import { usePathname, useRouter } from 'lib/i18n/navigation';
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
-import { SECOND } from 'lib/utils/time';
 import { memo, ReactNode, useEffect } from 'react';
 import { Chain } from 'viem';
 import { createConfig, useAccount, useConnect, WagmiProvider } from 'wagmi';
@@ -16,7 +15,7 @@ export const connectors = [
   safe({ debug: false }),
   injected(),
   walletConnect({
-    projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+    projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
     metadata: {
       name: 'Revoke.cash',
       description:
@@ -36,8 +35,7 @@ export const wagmiConfig = createConfig({
     return createViemPublicClientForChain(chain.id) as any;
   },
   ssr: true,
-  batch: { multicall: true },
-  cacheTime: 4 * SECOND,
+  batch: { multicall: true } as any, // For some reason, this is not typed correctly
 });
 
 export const EthereumProvider = ({ children }: Props) => {
