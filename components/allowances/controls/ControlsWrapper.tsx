@@ -28,7 +28,7 @@ const ControlsWrapper = ({ chainId, address, switchChainSize, children, override
   const isChainSwitchEnabled = !isNullish(switchChainSize);
   const shouldRenderSwitchChainButton = needsToSwitchChain && canSwitchChain && isChainSwitchEnabled;
   const disabled =
-    !isConnectedAddress || (needsToSwitchChain && !shouldRenderSwitchChainButton) || !isNullish(overrideDisabled);
+    !isConnectedAddress || (needsToSwitchChain && !shouldRenderSwitchChainButton) || Boolean(overrideDisabled);
 
   if (shouldRenderSwitchChainButton) {
     return <SwitchChainButton chainId={chainId} size={switchChainSize} />;

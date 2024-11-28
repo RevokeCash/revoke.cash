@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'lib/i18n/navigation';
+import { isNullish } from 'lib/utils';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
 import React, { ReactNode, useContext, useLayoutEffect, useState } from 'react';
@@ -42,7 +43,7 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
   const queryChainId = parseInt(searchParams.get('chainId') as string);
   const defaultChainId = [initialChainId, queryChainId, chain?.id, 1]
-    .filter(Boolean)
+    .filter((chainId) => !isNullish(chainId))
     .find((chainId) => isSupportedChain(chainId!)) as number;
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 

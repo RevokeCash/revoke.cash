@@ -2,6 +2,7 @@ import { getChain } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
 import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import { PriceStrategy } from 'lib/price/PriceStrategy';
+import { isNullish } from 'lib/utils';
 import { SECOND } from 'lib/utils/time';
 import {
   AddEthereumChainParameter,
@@ -99,7 +100,7 @@ export class Chain {
   getRpcUrls(): string[] {
     const baseRpcUrls =
       getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', `${INFURA_API_KEY}`)) ?? [];
-    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter(Boolean) as string[];
+    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter((url) => !isNullish(url));
     const rpcOverrides = RPC_OVERRIDES[this.chainId] ? [RPC_OVERRIDES[this.chainId]] : [];
     return [...rpcOverrides, ...specifiedRpcUrls, ...baseRpcUrls];
   }

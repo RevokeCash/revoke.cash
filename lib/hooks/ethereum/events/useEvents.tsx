@@ -1,12 +1,11 @@
 import { ERC721_ABI } from 'lib/abis';
-import { addressToTopic, sortTokenEventsChronologically } from 'lib/utils';
+import { addressToTopic, isNullish, sortTokenEventsChronologically } from 'lib/utils';
 import {
   generatePatchedAllowanceEvents,
   parseApprovalForAllLog,
   parseApprovalLog,
   parsePermit2Log,
   parseTransferLog,
-  TokenEvent,
 } from 'lib/utils/events';
 import { useMemo } from 'react';
 import { Address, getAbiItem, toEventSelector } from 'viem';
@@ -90,7 +89,7 @@ export const useEvents = (address: Address, chainId: number) => {
     ];
 
     // We sort the events in reverse chronological order to ensure that the most recent events are processed first
-    return sortTokenEventsChronologically(parsedEvents.filter(Boolean) as TokenEvent[]).reverse();
+    return sortTokenEventsChronologically(parsedEvents.filter((event) => !isNullish(event))).reverse();
   }, [transferFrom, transferTo, approval, approvalForAll, permit2Approval]);
 
   return { events, isLoading, error };
