@@ -1,7 +1,7 @@
 import Loader from 'components/common/Loader';
-import { Nullable } from 'lib/interfaces';
+import type { Nullable } from 'lib/interfaces';
 import { deduplicateArray, isNullish } from 'lib/utils';
-import { calculateValueAtRisk, TokenAllowanceData } from 'lib/utils/allowances';
+import { type TokenAllowanceData, calculateValueAtRisk } from 'lib/utils/allowances';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';

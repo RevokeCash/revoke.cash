@@ -1,5 +1,5 @@
-import { Nullable } from 'lib/interfaces';
-import { TokenBalance } from 'lib/utils/tokens';
+import type { Nullable } from 'lib/interfaces';
+import type { TokenBalance } from 'lib/utils/tokens';
 import { formatUnits } from 'viem';
 import { isNullish } from '.';
 import { fixedPointMultiply } from './math';

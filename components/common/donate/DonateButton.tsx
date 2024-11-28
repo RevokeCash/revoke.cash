@@ -3,7 +3,7 @@
 import Button from 'components/common/Button';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import DonateModal, { DonateButtonType } from './DonateModal';
+import DonateModal, { type DonateButtonType } from './DonateModal';
 
 interface Props {
   size: 'sm' | 'md' | 'lg' | 'none' | 'menu';

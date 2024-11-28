@@ -1,6 +1,6 @@
-import { TransactionSubmitted } from 'lib/interfaces';
+import type { TransactionSubmitted } from 'lib/interfaces';
 import { useTransactionStore } from 'lib/stores/transaction-store';
-import { getAllowanceKey, TokenAllowanceData } from 'lib/utils/allowances';
+import { type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import Button from '../../common/Button';
 

@@ -1,17 +1,17 @@
 import { getChain } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
-import { EtherscanPlatform, RateLimit } from 'lib/interfaces';
-import { PriceStrategy } from 'lib/price/PriceStrategy';
+import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
+import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { isNullish } from 'lib/utils';
 import { SECOND } from 'lib/utils/time';
 import {
+  http,
   type AddEthereumChainParameter,
   type Address,
   type PublicClient,
   type Chain as ViemChain,
   createPublicClient,
   defineChain,
-  http,
 } from 'viem';
 
 export interface ChainOptions {

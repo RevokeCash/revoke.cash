@@ -1,19 +1,19 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { TransactionSubmitted } from 'lib/interfaces';
-import { getTranslations } from 'next-intl/server';
+import type { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
-  Address,
-  getAddress,
-  Hash,
-  Hex,
-  pad,
-  PublicClient,
-  slice,
+  type Address,
+  type Hash,
+  type Hex,
+  type PublicClient,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
-  WalletClient,
-  WriteContractParameters,
+  type WalletClient,
+  type WriteContractParameters,
+  getAddress,
+  pad,
+  slice,
 } from 'viem';
 import { track } from './analytics';
 import type { Log, TokenEvent } from './events';
@@ -163,12 +163,12 @@ export const splitBlockRangeInChunks = (chunks: [number, number][], chunkSize: n
     to - from < chunkSize
       ? [[from, to]]
       : splitBlockRangeInChunks(
-        [
-          [from, from + chunkSize - 1],
-          [from + chunkSize, to],
-        ],
-        chunkSize,
-      ),
+          [
+            [from, from + chunkSize - 1],
+            [from + chunkSize, to],
+          ],
+          chunkSize,
+        ),
   );
 
 // Normalise risk factors to match the format of other risk data sources (TODO: Remove once this is live and whois sources are updated)

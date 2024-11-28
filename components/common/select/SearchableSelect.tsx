@@ -1,13 +1,13 @@
 'use client';
 
-import { forwardRef, type ReactNode, type Ref, useEffect, useRef, useState } from 'react';
+import { type ReactNode, type Ref, forwardRef, useEffect, useRef, useState } from 'react';
 import {
   type ActionMeta,
-  createFilter,
   type FormatOptionLabelMeta,
   type GroupBase,
   type OnChangeValue,
   type SelectInstance,
+  createFilter,
 } from 'react-select';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';

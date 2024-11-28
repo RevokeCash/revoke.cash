@@ -1,4 +1,4 @@
-import { SpenderRiskData } from 'lib/interfaces';
+import type { SpenderRiskData } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import type { Address, Hex } from 'viem';

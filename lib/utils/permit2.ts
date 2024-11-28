@@ -1,11 +1,11 @@
 import { PERMIT2_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
-import { Address, WalletClient } from 'viem';
+import type { Address, WalletClient } from 'viem';
 import { deduplicateArray, getWalletAddress, writeContractUnlessExcessiveGas } from '.';
-import { AllowanceType, Permit2Erc20Allowance } from './allowances';
-import { Permit2Event, TokenEvent, TokenEventType } from './events';
+import { AllowanceType, type Permit2Erc20Allowance } from './allowances';
+import { type Permit2Event, type TokenEvent, TokenEventType } from './events';
 import { SECOND } from './time';
-import { Erc20TokenContract } from './tokens';
+import type { Erc20TokenContract } from './tokens';
 
 export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
 

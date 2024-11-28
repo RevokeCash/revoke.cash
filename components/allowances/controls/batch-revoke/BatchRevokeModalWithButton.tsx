@@ -3,7 +3,7 @@ import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import ControlsWrapper from '../ControlsWrapper';

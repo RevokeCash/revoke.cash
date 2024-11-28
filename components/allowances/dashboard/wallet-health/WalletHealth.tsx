@@ -1,7 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
 import { useQuery } from '@tanstack/react-query';
 import { isNullish } from 'lib/utils';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 import WalletHealthDescription from './WalletHealthDescription';
 import WalletHealthScore from './WalletHealthScore';
 

@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
 import { createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
 import type { NextRequest } from 'next/server';
 import { getAddress } from 'viem';

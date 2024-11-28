@@ -1,6 +1,6 @@
-import Dexie, { Table } from 'dexie';
-import { Log, TimeLog } from 'lib/utils/events';
-import { PublicClient } from 'viem';
+import Dexie, { type Table } from 'dexie';
+import type { Log, TimeLog } from 'lib/utils/events';
+import type { PublicClient } from 'viem';
 
 interface Block {
   chainId: number;

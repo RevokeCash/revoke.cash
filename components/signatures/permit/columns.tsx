@@ -1,10 +1,10 @@
-import { createColumnHelper, type RowData } from '@tanstack/react-table';
+import { type RowData, createColumnHelper } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import { OnCancel } from 'lib/interfaces';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { OnCancel } from 'lib/interfaces';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
-import { PermitTokenData } from 'lib/utils/tokens';
+import type { PermitTokenData } from 'lib/utils/tokens';
 import CancelPermitCell from '../cells/CancelPermitCell';
 import LastCancelledCell from '../cells/LastCancelledCell';
 

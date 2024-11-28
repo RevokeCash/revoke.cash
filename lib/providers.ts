@@ -8,7 +8,7 @@ import {
   isCovalentSupportedChain,
 } from './utils/chains';
 import { isLogResponseSizeError } from './utils/errors';
-import { Filter, Log } from './utils/events';
+import type { Filter, Log } from './utils/events';
 
 export interface LogsProvider {
   chainId: number;

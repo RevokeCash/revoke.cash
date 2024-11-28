@@ -1,5 +1,5 @@
 import Loader from 'components/common/Loader';
-import { Nullable } from 'lib/interfaces';
+import type { Nullable } from 'lib/interfaces';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 

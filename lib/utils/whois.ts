@@ -8,7 +8,7 @@ import {
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
 } from 'lib/constants';
-import { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
+import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
 import { type Address, type PublicClient, getAddress, isAddress, namehash } from 'viem';

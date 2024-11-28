@@ -5,7 +5,7 @@ import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatBalance, formatFiatBalance } from 'lib/utils/formatting';
-import { TokenData } from 'lib/utils/tokens';
+import type { TokenData } from 'lib/utils/tokens';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {

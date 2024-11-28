@@ -1,4 +1,4 @@
-import { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
+import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { assertFulfilled, deduplicateArray } from 'lib/utils';
 import type { Address } from 'viem';
 import type { SpenderDataSource } from './SpenderDataSource';

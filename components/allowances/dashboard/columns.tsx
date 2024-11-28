@@ -1,12 +1,12 @@
-import { createColumnHelper, filterFns, Row, RowData, sortingFns } from '@tanstack/react-table';
+import { type Row, type RowData, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
 import { isNullish } from 'lib/utils';
 import {
   AllowanceType,
+  type OnUpdate,
+  type TokenAllowanceData,
   calculateValueAtRisk,
   formatErc20Allowance,
   isErc20Allowance,
-  OnUpdate,
-  TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -123,7 +123,7 @@ export const customFilterFns = {
   },
   spender: (row: Row<TokenAllowanceData>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
-      return filterFns.includesString(row, columnId, filterValue, () => { });
+      return filterFns.includesString(row, columnId, filterValue, () => {});
     });
 
     return results.some((result) => result);

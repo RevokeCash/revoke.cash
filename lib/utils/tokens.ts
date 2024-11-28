@@ -3,10 +3,19 @@ import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
-import { Address, domainSeparator, getAbiItem, getAddress, pad, PublicClient, toHex, TypedDataDomain } from 'viem';
+import {
+  type Address,
+  type PublicClient,
+  type TypedDataDomain,
+  domainSeparator,
+  getAbiItem,
+  getAddress,
+  pad,
+  toHex,
+} from 'viem';
 import { deduplicateArray } from '.';
 import { track } from './analytics';
-import { isTransferTokenEvent, type TimeLog, type TokenEvent, TokenEventType } from './events';
+import { type TimeLog, type TokenEvent, TokenEventType, isTransferTokenEvent } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
 
@@ -110,9 +119,9 @@ export const getErc721TokenData = async (
     getTokenMetadata(contract, chainId),
     shouldFetchBalance
       ? withFallback<TokenBalance>(
-        contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
-        'ERC1155',
-      )
+          contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
+          'ERC1155',
+        )
       : calculatedBalance,
   ]);
 
@@ -148,7 +157,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (isErc721Contract(contract)) {
     const [symbol, price] = await Promise.all([
       metadataFromMapping?.symbol ??
-      withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
+        withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
       getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
       throwIfSpamNft(contract),
@@ -164,7 +173,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   const [totalSupply, symbol, decimals, price] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
-    withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
+      withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
     getTokenPrice(chainId, contract),
     throwIfNotErc20(contract),

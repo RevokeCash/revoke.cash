@@ -1,8 +1,8 @@
-import { SessionOptions, getIronSession, unsealData } from 'iron-session';
-import { Nullable } from 'lib/interfaces';
+import { type SessionOptions, getIronSession, unsealData } from 'iron-session';
+import type { Nullable } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { NextRequest } from 'next/server';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextRequest } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 
 export interface RevokeSession {

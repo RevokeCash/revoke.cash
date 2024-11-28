@@ -6,8 +6,8 @@ import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
-import { AddEthereumChainParameter, PublicClient, Chain as ViemChain, toHex } from 'viem';
-import { Chain, DeployedContracts, SupportType } from '../chains/Chain';
+import { type AddEthereumChainParameter, type PublicClient, type Chain as ViemChain, toHex } from 'viem';
+import { Chain, type DeployedContracts, SupportType } from '../chains/Chain';
 
 // Make sure to update these lists when updating the above lists
 // Order is loosely based on TVL (as per DeFiLlama)

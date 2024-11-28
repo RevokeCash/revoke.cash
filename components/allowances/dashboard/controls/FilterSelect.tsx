@@ -5,11 +5,11 @@ import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { normaliseLabel } from 'lib/utils';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { FormatOptionLabelMeta, ValueContainerProps } from 'react-select';
+import type { FormatOptionLabelMeta, ValueContainerProps } from 'react-select';
 import useLocalStorage from 'use-local-storage';
 import { ColumnId } from '../columns';
 
