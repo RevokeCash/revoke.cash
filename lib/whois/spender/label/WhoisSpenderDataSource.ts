@@ -1,9 +1,9 @@
 import { WHOIS_BASE_URL } from 'lib/constants';
-import { SpenderData } from 'lib/interfaces';
+import type { SpenderData } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { normaliseRiskData } from 'lib/utils';
-import { Address, getAddress } from 'viem';
-import { SpenderDataSource } from '../SpenderDataSource';
+import { type Address, getAddress } from 'viem';
+import type { SpenderDataSource } from '../SpenderDataSource';
 
 export class WhoisSpenderDataSource implements SpenderDataSource {
   async getSpenderData(address: Address, chainId: number): Promise<SpenderData | null> {

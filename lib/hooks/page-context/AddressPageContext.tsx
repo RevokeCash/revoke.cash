@@ -4,9 +4,9 @@ import { usePathname, useRouter } from 'lib/i18n/navigation';
 import { isNullish } from 'lib/utils';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
-import React, { ReactNode, useContext, useLayoutEffect, useState } from 'react';
+import React, { type ReactNode, useContext, useLayoutEffect, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
 import { useEvents } from '../ethereum/events/useEvents';
 import { useAllowances } from '../ethereum/useAllowances';
@@ -41,7 +41,7 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   const { domainName: resolvedDomainName } = useNameLookup(domainName ? undefined : address);
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
-  const queryChainId = parseInt(searchParams.get('chainId') as string);
+  const queryChainId = Number.parseInt(searchParams.get('chainId') as string);
   const defaultChainId = [initialChainId, queryChainId, chain?.id, 1]
     .filter((chainId) => !isNullish(chainId))
     .find((chainId) => isSupportedChain(chainId!)) as number;

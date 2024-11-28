@@ -3,17 +3,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { isNullish } from 'lib/utils';
 import {
-  AllowancePayload,
+  type AllowancePayload,
   AllowanceType,
+  type TokenAllowanceData,
   getAllowancesFromEvents,
   stripAllowanceData,
-  type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
-import { getEventKey, TimeLog, TokenEvent } from 'lib/utils/events';
+import { type TimeLog, type TokenEvent, getEventKey } from 'lib/utils/events';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
 
@@ -35,7 +35,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     },
     // If events (transfers + approvals) don't change, derived allowances also shouldn't change, even if allowances
     // are used on-chain. The only exception would be incorrectly implemented tokens that don't emit correct events
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     enabled: !isNullish(address) && !isNullish(chainId) && !isNullish(events),
   });
 

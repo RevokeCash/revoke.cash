@@ -2,7 +2,7 @@
 
 import AddressSearchBox from 'components/common/AddressSearchBox';
 import { useRouter } from 'lib/i18n/navigation';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { useState } from 'react';
 
 interface Props {

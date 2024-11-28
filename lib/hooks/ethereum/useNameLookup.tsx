@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { isNullish } from 'lib/utils';
 import { HOUR } from 'lib/utils/time';
 import { lookupAvvyName, lookupEnsName, lookupUnsName } from 'lib/utils/whois';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 
 export const useNameLookup = (address?: Address) => {
   const { data: ensName } = useQuery({

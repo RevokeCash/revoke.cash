@@ -2,8 +2,8 @@ import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import SpenderCell from 'components/allowances/dashboard/cells/SpenderCell';
 import StatusCell from 'components/allowances/dashboard/cells/StatusCell';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
-import { TransactionResults } from 'lib/stores/transaction-store';
-import { getAllowanceKey, TokenAllowanceData } from 'lib/utils/allowances';
+import type { TransactionResults } from 'lib/stores/transaction-store';
+import { type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 
 interface Props {

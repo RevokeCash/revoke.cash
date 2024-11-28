@@ -247,4 +247,5 @@ describe('Chain Support', () => {
   });
 });
 
+// biome-ignore lint/complexity/noUselessEmptyExport lint/suspicious/noExportsInTest: Cypress somehow wants this
 export {};

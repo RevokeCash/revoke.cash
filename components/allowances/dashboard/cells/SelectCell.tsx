@@ -1,8 +1,8 @@
-import { Row } from '@tanstack/react-table';
+import type { Row } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Checkbox from 'components/common/Checkbox';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 
 interface Props {
   row: Row<TokenAllowanceData>;

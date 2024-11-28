@@ -8,7 +8,7 @@ import {
   parseTransferLog,
 } from 'lib/utils/events';
 import { useMemo } from 'react';
-import { Address, getAbiItem, toEventSelector } from 'viem';
+import { type Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';

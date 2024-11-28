@@ -1,7 +1,7 @@
 import { PERMIT2_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { useMemo } from 'react';
-import { Address, getAbiItem, toEventSelector } from 'viem';
+import { type Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 
 export const usePermit2Events = (address: Address, chainId: number) => {

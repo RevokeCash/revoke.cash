@@ -1,7 +1,7 @@
-import OgHeaderText from 'components/common/og/OgHeaderText';
 import { readFileSync } from 'fs';
-import { ImageResponse } from 'next/og';
 import { join } from 'path';
+import OgHeaderText from 'components/common/og/OgHeaderText';
+import { ImageResponse } from 'next/og';
 
 // Note: this does not work in Edge runtime
 

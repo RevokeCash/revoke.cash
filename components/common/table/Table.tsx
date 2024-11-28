@@ -1,6 +1,6 @@
-import { Table as ReactTable } from '@tanstack/react-table';
+import type { Table as ReactTable } from '@tanstack/react-table';
 import Error from 'components/common/Error';
-import { Nullable } from 'lib/interfaces';
+import type { Nullable } from 'lib/interfaces';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';

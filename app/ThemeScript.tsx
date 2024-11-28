@@ -10,6 +10,7 @@ const ThemeScript = () => {
     })()
   `;
 
+  // biome-ignore lint/security/noDangerouslySetInnerHtml: the theme script only works with dangerouslySetInnerHTML
   return <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
 };
 

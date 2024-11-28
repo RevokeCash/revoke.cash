@@ -1,9 +1,9 @@
 import { UNISWAP_V2_ROUTER_ABI } from 'lib/abis';
 import { fixedPointMultiply } from 'lib/utils/math';
-import { Erc20TokenContract } from 'lib/utils/tokens';
-import { Address, parseUnits } from 'viem';
-import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
-import { PriceStrategy } from './PriceStrategy';
+import type { Erc20TokenContract } from 'lib/utils/tokens';
+import { type Address, parseUnits } from 'viem';
+import { AbstractPriceStrategy, type AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
+import type { PriceStrategy } from './PriceStrategy';
 import { calculateTokenPrice } from './utils';
 
 export interface UniswapV2PriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {

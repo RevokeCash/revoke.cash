@@ -14,7 +14,7 @@ export const useLogs = (name: string, chainId: number, filter?: Filter) => {
     queryFn: async () => eventsDB.getLogs(getLogsProvider(chainId), filter!, chainId),
     refetchOnWindowFocus: false,
     // The same filter should always return the same logs
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     enabled:
       !isNullish(chainId) &&
       !isNullish(isLoggedIn) &&

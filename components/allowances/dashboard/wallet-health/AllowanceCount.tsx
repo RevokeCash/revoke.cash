@@ -1,7 +1,7 @@
 import Loader from 'components/common/Loader';
-import { Nullable } from 'lib/interfaces';
+import type { Nullable } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 
 interface Props {

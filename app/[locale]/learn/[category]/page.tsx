@@ -5,7 +5,7 @@ import ArticleCardSection from 'components/learn/ArticleCardSection';
 import { locales } from 'lib/i18n/config';
 import { getAllLearnCategories, getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
-import { Metadata, NextPage } from 'next';
+import type { Metadata, NextPage } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 interface Props {

@@ -2,7 +2,7 @@ import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable 
 import Card from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { usePermitTokens } from 'lib/hooks/ethereum/usePermitTokens';
-import { PermitTokenData } from 'lib/utils/tokens';
+import type { PermitTokenData } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { ColumnId, columns } from './columns';

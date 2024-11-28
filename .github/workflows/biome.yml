@@ -1,5 +1,4 @@
-name: Prettier Linter check
-
+name: Biome Format and linter check
 on:
   push:
   pull_request:
@@ -20,5 +19,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run Prettier
-        run: yarn prettier --check .
+      - name: Run Biome
+        run: yarn biome check .

@@ -1,6 +1,6 @@
 import Href from 'components/common/Href';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
-import { RichTranslationValues } from 'next-intl';
+import type { RichTranslationValues } from 'next-intl';
 
 export const locales = ['en', 'es', 'ja', 'ru', 'zh'] as const;
 export const localePrefix = 'as-needed' as const; // Default

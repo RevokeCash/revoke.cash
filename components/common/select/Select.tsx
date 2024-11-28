@@ -1,12 +1,12 @@
 'use client';
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { Ref } from 'react';
+import type { Ref } from 'react';
 import ReactSelect, {
-  GroupBase,
-  OptionProps,
-  Props as ReactSelectProps,
-  SelectInstance,
+  type GroupBase,
+  type OptionProps,
+  type Props as ReactSelectProps,
+  type SelectInstance,
   components,
 } from 'react-select';
 import { twMerge } from 'tailwind-merge';

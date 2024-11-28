@@ -1,4 +1,4 @@
-import { flexRender, Table } from '@tanstack/react-table';
+import { type Table, flexRender } from '@tanstack/react-table';
 import { isNullish } from 'lib/utils';
 
 interface Props<T> {

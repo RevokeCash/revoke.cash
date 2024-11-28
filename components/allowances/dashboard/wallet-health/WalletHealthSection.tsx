@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 import AllowancesSummary from './AllowancesSummary';
 
 interface Props {

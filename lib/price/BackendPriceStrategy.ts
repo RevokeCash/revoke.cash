@@ -1,7 +1,7 @@
 import ky from 'lib/ky';
-import { TokenContract } from 'lib/utils/tokens';
-import { AbstractPriceStrategy, AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
-import { PriceStrategy } from './PriceStrategy';
+import type { TokenContract } from 'lib/utils/tokens';
+import { AbstractPriceStrategy, type AbstractPriceStrategyOptions } from './AbstractPriceStrategy';
+import type { PriceStrategy } from './PriceStrategy';
 
 interface BackendPriceStrategyOptions extends Partial<AbstractPriceStrategyOptions> {}
 

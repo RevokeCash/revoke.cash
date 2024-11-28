@@ -1,6 +1,6 @@
 import Href from 'components/common/Href';
 import Loader from 'components/common/Loader';
-import { Nullable } from 'lib/interfaces';
+import type { Nullable } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

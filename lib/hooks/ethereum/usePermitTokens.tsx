@@ -1,11 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { OnCancel } from 'lib/interfaces';
+import type { OnCancel } from 'lib/interfaces';
 import { deduplicateArray, isNullish } from 'lib/utils';
 import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
-import { TimeLog } from 'lib/utils/events';
+import type { TimeLog } from 'lib/utils/events';
 import { getLastCancelled } from 'lib/utils/permit';
 import { filterAsync, mapAsync } from 'lib/utils/promises';
-import { hasSupportForPermit, hasZeroBalance, PermitTokenData } from 'lib/utils/tokens';
+import { type PermitTokenData, hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
 import { useAddressAllowances, useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';
 
@@ -36,7 +36,7 @@ export const usePermitTokens = () => {
       return permitTokens;
     },
     enabled: !isNullish(allowances) && !isNullish(events),
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
   });
 
   useLayoutEffect(() => {

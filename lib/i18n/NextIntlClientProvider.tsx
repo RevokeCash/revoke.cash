@@ -1,5 +1,5 @@
-import { NextIntlClientProvider as InternalProvider, useLocale, useNow, useTimeZone } from 'next-intl';
-import { ComponentProps } from 'react';
+import { type NextIntlClientProvider as InternalProvider, useLocale, useNow, useTimeZone } from 'next-intl';
+import type { ComponentProps } from 'react';
 import NextIntlClientProviderChild from './NextIntlClientProviderChild';
 
 const NextIntlClientProvider = ({ children, ...props }: ComponentProps<typeof InternalProvider>) => {

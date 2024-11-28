@@ -1,6 +1,6 @@
-import { TokenContract, TokenStandard } from 'lib/utils/tokens';
-import { Address, PublicClient } from 'viem';
-import { PriceStrategy } from './PriceStrategy';
+import type { TokenContract, TokenStandard } from 'lib/utils/tokens';
+import type { Address, PublicClient } from 'viem';
+import type { PriceStrategy } from './PriceStrategy';
 
 export interface HardcodedPriceStrategyOptions {
   tokens: Array<Address | TokenPriceDetails>;

@@ -1,6 +1,6 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import { MOONBIRDS_ADDRESS } from 'lib/constants';
-import { Address, decodeEventLog, Hash, Hex, toEventSelector } from 'viem';
+import { type Address, type Hash, type Hex, decodeEventLog, toEventSelector } from 'viem';
 import { addressToTopic, isNullish } from '.';
 
 export interface Log {

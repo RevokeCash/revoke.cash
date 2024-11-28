@@ -1,7 +1,7 @@
-import { allChains } from '@revoke.cash/chains';
 import { writeFileSync } from 'fs';
-import { getChainName } from 'lib/utils/chains';
 import { join } from 'path';
+import { allChains } from '@revoke.cash/chains';
+import { getChainName } from 'lib/utils/chains';
 
 const path = join(__dirname, 'chainid-lookup.csv');
 const lookupCsvValues = Object.keys(allChains())

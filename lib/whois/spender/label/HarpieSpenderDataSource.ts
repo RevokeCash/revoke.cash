@@ -1,8 +1,8 @@
 import { ChainId } from '@revoke.cash/chains';
 import { HARPIE_API_KEY } from 'lib/constants';
-import { SpenderData } from 'lib/interfaces';
-import { Address } from 'viem';
-import { SpenderDataSource } from '../SpenderDataSource';
+import type { SpenderData } from 'lib/interfaces';
+import type { Address } from 'viem';
+import type { SpenderDataSource } from '../SpenderDataSource';
 
 // TODO: Does this work from server environment?
 export class HarpieSpenderDataSource implements SpenderDataSource {
