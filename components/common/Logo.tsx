@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import PlaceholderIcon from './PlaceholderIcon';
 
@@ -14,7 +14,7 @@ interface Props {
   className?: string;
 }
 
-const Logo = ({ src, alt, size, square, border, className }: Props) => {
+const Logo = memo(({ src, alt, size, square, border, className }: Props) => {
   const [error, setError] = useState(false);
 
   if (error || !src) {
@@ -52,6 +52,6 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
       onError={() => setError(true)}
     />
   );
-};
+});
 
 export default Logo;

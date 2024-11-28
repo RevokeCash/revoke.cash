@@ -2,16 +2,16 @@
 
 import Button from 'components/common/Button';
 import { useTranslations } from 'next-intl';
-import type { MutableRefObject, ReactText } from 'react';
+import type { MutableRefObject } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import DonateModal, { DonateButtonType } from './DonateModal';
 
 interface Props {
-  size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
+  size?: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
-  parentToastRef?: MutableRefObject<ReactText>;
+  parentToastRef?: MutableRefObject<string | number>;
   type: DonateButtonType;
 }
 
@@ -37,7 +37,7 @@ const DonateButton = ({ size, style, className, parentToastRef, type }: Props) =
         {t('common.buttons.donate')}
       </Button>
 
-      <DonateModal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())} type={type} />
+      {open && <DonateModal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())} type={type} />}
     </>
   );
 };
