@@ -19,5 +19,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run Prettier
+      - name: Run Biome
         run: yarn biome check .
