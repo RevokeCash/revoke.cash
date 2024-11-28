@@ -20,12 +20,12 @@ interface OgImageProps {
   background: string;
 }
 
-const SKIP_OG_IMAGES = process.env.SKIP_OG_IMAGES === 'true';
-const base64Image = loadFile('public/assets/images/opengraph-image.jpg');
-
 export const generateOgImage = ({ title, background }: OgImageProps) => {
   const width = 1200;
   const height = 630;
+
+  const SKIP_OG_IMAGES = process.env.SKIP_OG_IMAGES === 'true';
+  const base64Image = loadFile('public/assets/images/opengraph-image.jpg');
 
   // If SKIP_OG_IMAGES is true, return a placeholder image instead of generating one dynamically.
   // This significantly speeds up builds during emergency patches by skipping resource-intensive OG image generation.
