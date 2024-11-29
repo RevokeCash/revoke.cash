@@ -109,6 +109,7 @@
     "world-chain": "World Chain 是围绕 World Coin 生态系统构建的第 2 层（Layer 2）区块链，对所有经 World Coin 平台验证的真人用户免除汽油费。World Chain 基于 Optimism 的 OP Stack 构建，因此与 Optimism 一样，也使用了 Optimistic Rollup 技术。",
     "x-layer": "X Layer 是以太坊的第 2 层（Layer 2）扩展解决方案，由知名的欧易交易所（OKX）开发。X Layer 采用了 Polygon 链的开发工具包（CDK），并运用了 zkEVM 技术。此外，该网络还旨在与欧易交易所的其他产品（例如 OKB 代币）进行集成。",
     "xdc": "XDC 是第 1 层（Layer 1）区块链，其共识机制基于委托权益证明（DPoS）。XDC 致力于提供快速和低成本的交易，促进现实资产和企业用例的代币化。",
+    "zero": "ZERϴ is a Layer 2 scaling solution for Ethereum that aims to completely eliminate gas costs for users. It is built using zkSync's ZK Stack and features native account abstraction. Using this native account abstraction, ZERϴ is able to offer a \"zero\" gas fee for all transactions.",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
     "zircuit": "Zircuit 是以太坊的第 2 层（Layer 2）扩展解决方案，基于 zk rollup 技术搭建。为了提高安全性，Zircuit 利用 AI 监控网络内存池中的恶意交易，并在上链之前将其阻止。",
     "zkfair": "ZKFair 是以太坊的Layer 2扩展方案，使用 Polygon链的开发工具包（CDK）和 Celestia 的数据可用性层构建。顾名思义，ZKFair 强调 \"公平\"，旨在创建一个生态系统，让网络用户共享回报，而这些回报通常归网络运营者所有。",

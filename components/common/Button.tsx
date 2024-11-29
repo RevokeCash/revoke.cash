@@ -20,6 +20,7 @@ export interface Props extends Record<string, any> {
   loading?: boolean;
   asDiv?: boolean;
   align?: 'left' | 'center' | 'right';
+  retainSearchParams?: boolean | string[];
 }
 
 const Button = (
@@ -36,6 +37,7 @@ const Button = (
     loading,
     asDiv,
     align,
+    retainSearchParams,
     ...props
   }: Props,
   ref: ForwardedRef<any>,
@@ -76,7 +78,7 @@ const Button = (
   if (href) {
     if (router) {
       return (
-        <Link {...props} className={classes} href={href} ref={ref}>
+        <Link {...props} className={classes} href={href} ref={ref} retainSearchParams={retainSearchParams}>
           {children}
         </Link>
       );
