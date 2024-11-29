@@ -1,5 +1,6 @@
 import Button from 'components/common/Button';
-import { usePathname, useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
+import { usePathname } from 'lib/i18n/navigation';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const AddressNavigationTab = ({ name, href }: Props) => {
-  const router = useRouter();
+  const router = useCsrRouter();
   const path = usePathname();
 
   const selected = path?.endsWith(href);

@@ -1,6 +1,7 @@
 'use client';
 
-import { usePathname, useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
+import { usePathname } from 'lib/i18n/navigation';
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { ReactNode, useEffect } from 'react';
 import { Chain } from 'viem';
@@ -49,7 +50,7 @@ export const EthereumProvider = ({ children }: Props) => {
 const EthereumProviderChild = ({ children }: Props) => {
   const { connectAsync, connectors } = useConnect();
   const { connector } = useAccount();
-  const router = useRouter();
+  const router = useCsrRouter();
   const pathName = usePathname();
 
   // If the Safe connector is available, connect to it even if other connectors are available

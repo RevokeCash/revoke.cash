@@ -1,6 +1,7 @@
 'use client';
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
+import { CsrLink } from 'lib/i18n/csr-navigation';
 import { Link } from 'lib/i18n/navigation';
 import { ForwardedRef, MouseEventHandler, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -77,8 +78,16 @@ const Button = (
   // Note: This code is repeated in Href.tsx for styling reasons
   if (href) {
     if (router) {
+      if (retainSearchParams) {
+        return (
+          <CsrLink {...props} className={classes} href={href} ref={ref} retainSearchParams={retainSearchParams}>
+            {children}
+          </CsrLink>
+        );
+      }
+
       return (
-        <Link {...props} className={classes} href={href} ref={ref} retainSearchParams={retainSearchParams}>
+        <Link {...props} className={classes} href={href} ref={ref}>
           {children}
         </Link>
       );

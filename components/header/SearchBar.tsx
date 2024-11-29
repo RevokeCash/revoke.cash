@@ -1,13 +1,13 @@
 'use client';
 
 import AddressSearchBox from 'components/common/AddressSearchBox';
-import { useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 const SearchBar = () => {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useCsrRouter();
   const [value, setValue] = useState<string>('');
 
   return (

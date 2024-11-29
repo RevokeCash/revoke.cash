@@ -1,7 +1,7 @@
 'use client';
 
 import AddressSearchBox from 'components/common/AddressSearchBox';
-import { useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { NextPage } from 'next';
 import { useState } from 'react';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const TokenApprovalCheckerSearchBox: NextPage<Props> = ({ chainId, placeholder }) => {
-  const router = useRouter();
+  const router = useCsrRouter();
   const [value, setValue] = useState<string>('');
 
   return (
