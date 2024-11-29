@@ -64,7 +64,7 @@ const EthereumProviderChild = ({ children }: Props) => {
     connectAsync({ connector: safeConnector })
       .then(({ accounts: [account] }) => {
         if (pathName === '/') {
-          router.push(`/address/${account}${location.search}`);
+          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);
@@ -81,7 +81,7 @@ const EthereumProviderChild = ({ children }: Props) => {
     connectAsync({ connector: injectedConnector })
       .then(({ accounts: [account] }) => {
         if (pathName === '/') {
-          router.push(`/address/${account}${location.search}`);
+          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);

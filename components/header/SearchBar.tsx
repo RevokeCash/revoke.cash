@@ -13,7 +13,7 @@ const SearchBar = () => {
   return (
     <AddressSearchBox
       id="global-search"
-      onSubmit={() => router.push(`/address/${value}${location.search}`)}
+      onSubmit={() => router.push(`/address/${value}`, { retainSearchParams: ['chainId'] })}
       onChange={(ev) => setValue(ev.target.value.trim())}
       value={value}
       placeholder={t('common.nav.search')}

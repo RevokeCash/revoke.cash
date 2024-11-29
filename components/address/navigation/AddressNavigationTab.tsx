@@ -21,7 +21,7 @@ const AddressNavigationTab = ({ name, href }: Props) => {
   );
 
   const onClick = () => {
-    router.replace(`${href}${location.search}`);
+    router.replace(`${href}`, { retainSearchParams: ['chainId'] });
   };
 
   return (

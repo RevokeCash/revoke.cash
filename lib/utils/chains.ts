@@ -109,6 +109,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RARIChainMainnet,
   ChainId.BitgertMainnet,
   ChainId.Palm,
+  ChainId.ZERONetwork,
   ChainId.GeistMainnet,
   ChainId.PegoNetwork,
   ChainId.Redstone,
@@ -1932,6 +1933,7 @@ export const CHAINS = {
     name: 'Sanko',
     logoUrl: '/assets/images/vendor/chains/sanko.webp',
     etherscanCompatibleApiUrl: 'https://explorer.sanko.xyz/api',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Scroll]: new Chain({
@@ -2155,6 +2157,7 @@ export const CHAINS = {
     name: 'Viction',
     logoUrl: '/assets/images/vendor/chains/viction.svg',
     explorerUrl: 'https://www.vicscan.xyz',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Wanchain]: new Chain({
@@ -2186,6 +2189,7 @@ export const CHAINS = {
     name: 'WEMIX',
     logoUrl: '/assets/images/vendor/chains/wemix.svg',
     etherscanCompatibleApiUrl: 'https://api.wemixscan.com/api',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
       strategies: [
@@ -2217,6 +2221,13 @@ export const CHAINS = {
     name: 'X Layer',
     logoUrl: '/assets/images/vendor/chains/xlayer.svg',
     deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
+  [ChainId.ZERONetwork]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.ZERONetwork,
+    name: 'ZERϴ',
+    logoUrl: '/assets/images/vendor/chains/zero.svg',
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZetaChainTestnet]: new Chain({

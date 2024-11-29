@@ -2,13 +2,7 @@
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { Ref } from 'react';
-import ReactSelect, {
-  GroupBase,
-  OptionProps,
-  Props as ReactSelectProps,
-  SelectInstance,
-  components,
-} from 'react-select';
+import ReactSelect, { GroupBase, Props as ReactSelectProps, SelectInstance } from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
 export interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
@@ -44,6 +38,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
     light: '#d4d4d8', // zinc-300
     dark: '#71717a', // zinc-500
     darkest: '#27272a', // zinc-800
+    brand: '#fdb952',
   };
 
   return (
@@ -54,7 +49,6 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
       components={{
         IndicatorSeparator: null,
         ClearIndicator: () => null,
-        Option,
         ...props.components,
       }}
       classNames={{
@@ -112,11 +106,19 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
           ...styles,
           cursor: optionProps.isDisabled ? 'not-allowed' : 'pointer',
           padding: '0.5rem', // p-2
-          backgroundColor: optionProps.isDisabled
-            ? menuTheme === 'light'
-              ? colors.light
-              : colors.dark
-            : styles.backgroundColor,
+          backgroundColor: (() => {
+            if (optionProps.isDisabled) {
+              return menuTheme === 'light' ? colors.light : colors.dark;
+            }
+            if (optionProps.isSelected) {
+              return menuTheme === 'light' ? colors.light : colors.dark;
+            }
+            if (optionProps.isFocused) {
+              return menuTheme === 'light' ? colors.lightest : colors.darkest;
+            }
+            return styles.backgroundColor;
+          })(),
+          borderLeft: optionProps.isSelected ? `4px solid ${colors.brand}` : undefined,
         }),
       }}
       theme={(theme) => ({
@@ -152,8 +154,3 @@ const removeSpacing = (styles: any) => ({
   padding: 0,
   margin: 0,
 });
-
-// Make sure that the selected option is not highlighted
-const Option = <O, I extends boolean, G extends GroupBase<O>>(props: OptionProps<O, I, G>) => {
-  return components.Option({ ...props, isSelected: false });
-};

@@ -26,7 +26,7 @@ const BalanceDisplay = ({ isLoading, balance, price, className }: Props) => {
   return (
     <Loader isLoading={isLoading || isNullish(balance)} loadingChildren={placeholder} className="rounded-md">
       <div className={classes}>
-        <span>{balance ? formatFixedPointBigInt(balance, 18) : null}</span>
+        <span>{isNullish(balance) ? null : formatFixedPointBigInt(balance, 18)}</span>
         <span className="font-bold">{nativeToken}</span>
         {fiatBalanceText ? <span>({fiatBalanceText})</span> : null}
       </div>
