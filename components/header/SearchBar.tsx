@@ -33,7 +33,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="relative w-full">
       <AddressSearchBox
         id="global-search"
         onSubmit={() => router.push(`/address/${value}`, { retainSearchParams: ['chainId'] })}
@@ -44,7 +44,7 @@ const SearchBar = () => {
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      <div className={twMerge('relative mt-2', (!isFocused || !address) && 'hidden')}>
+      <div className={twMerge('absolute mt-2', (!isFocused || !address) && 'hidden')}>
         <Button style="secondary" size="md" onClick={onClick}>
           {t('common.buttons.check_connected_address')}
         </Button>
