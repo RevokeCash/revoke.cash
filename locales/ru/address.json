@@ -56,7 +56,7 @@
     "value_at_risk": "Значение риска"
   },
   "labels": {
-    "connected": "Поключено",
+    "connected": "Подключено",
     "nft": "NFT",
     "not_connected": "Не подключено",
     "token": "Токен"
