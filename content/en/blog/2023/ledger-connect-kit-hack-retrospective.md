@@ -30,7 +30,7 @@ Generally speaking, developers protect against supply chain attacks by "pinning"
 
 However, Ledger's `ledger-connect-kit` library uses a different distribution mechanism than most libraries. Instead of accessing the library from NPM (Node Package Manager), they distribute the library through a CDN (Content Delivery Network). This means that developers cannot pin the version of `ledger-connect-kit` that they use. Instead, they always get the latest version, even if they don't opt in.
 
-![Ledger Connect Kit Loader](/assets/images/blog/2023/ledger-connect-kit-hack-retrospective/connect-kit-loader.png)
+::img{src="/assets/images/blog/2023/ledger-connect-kit-hack-retrospective/connect-kit-loader.jpg" alt="Ledger Connect Kit Loader" width="1200" height="240"}
 
 This is precisely what made this exploit so dangerous. Because application developers could not pin the version of `ledger-connect-kit` that they use, they were always using the latest version. And when the malicious version was published, they were immediately impacted - with the only way to fix it being to completely rip out the dependency and redeploy their website.
 
@@ -52,7 +52,7 @@ The Ledger Connect Kit Hack was a big wake up call for the entire crypto industr
 
 As soon as we were alerted to the hack, we took immediate action to prevent any new users from being impacted. We locked the website behind an authentication screen, preventing any new users from accessing the website. We also notified our users of the hack through announcements on Twitter and Discord. We then started investigating the hack to figure out what happened and how to fix it.
 
-![Revoke.cash Tweet](/assets/images/blog/2023/ledger-connect-kit-hack-retrospective/revokecash-tweet.png)
+::img{src="/assets/images/blog/2023/ledger-connect-kit-hack-retrospective/revokecash-tweet.png" alt="Revoke.cash Tweet" width="1334" height="593"}
 
 While we were working on removing the affected dependency, we also made sure to engage with our community on Twitter Spaces to give our account of what happened. We believe our swift action and transparency helped prevent much bigger losses. And we will continue to be transparent about what happened and what we are doing to fix it.
 
@@ -78,7 +78,7 @@ While we were able to prevent much bigger losses by locking the website behind a
 
 Even within that time window, only certain users were impacted. From our investigation, users who already had their wallet connected from previous visits to Revoke.cash were not impacted. And the hacker's script malfunctioned for many users as well, meaning that they were also not impacted.
 
-![Exploit Checker](/assets/images/blog/2023/ledger-connect-kit-hack-retrospective/exploit-checker.png)
+::img{src="/assets/images/blog/2023/ledger-connect-kit-hack-retrospective/exploit-checker.png" alt="Exploit Checker" width="2600" height="1463"}
 
 If you want to check if the scammers _still_ have access to your funds, you can use the [Exploit Checker](/exploits/ledger-connect-kit) on Revoke.cash. If you are impacted, you will see a warning message and you will be directed to revoke the affected approvals. If you are not impacted, you will see a success message and you can rest assured that your funds are safe from here on out.
 

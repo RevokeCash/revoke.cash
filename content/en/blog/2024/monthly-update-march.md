@@ -14,7 +14,7 @@ In March we made a first step towards better insights into the risk of individua
 
 With our security tools we are always trying to help our users stay safe. And to that end we have partnered with ScamSniffer to provide alerts in the Revoke.cash Dashboard using their blocklist. When one of your token approvals is on the ScamSniffer blocklist, you will see a warning in the Revoke.cash Dashboard. This will help identify potential scams and keep your funds safe.
 
-![Revoke x ScamSniffer](/assets/images/blog/2024/monthly-update-march/scamsniffer.jpg)
+::img{src="/assets/images/blog/2024/monthly-update-march/scamsniffer.jpg" alt="Revoke x ScamSniffer" width="2000" height="1000"}
 
 This is a first step to providing better insights into the risk of individual token approvals. We are looking to expand this feature in the future to provide more information about the risks associated with each of your token approvals, so that you can make informed decisions about which approvals to revoke.
 

@@ -14,7 +14,7 @@ In September we released some pretty big features. The most important is the add
 
 The biggest new release this month is the addition of pricing and wallet health information. This information is available on the approvals dashboard and gives users insight into the actual value at risk of their approvals. This is an important step in helping users understand the risks of their approvals and make better decisions.
 
-![Pricing Information](/assets/images/blog/2023/monthly-update-september/wallet-health.jpg)
+::img{src="/assets/images/blog/2023/monthly-update-september/wallet-health.jpg" alt="Pricing Information & Wallet Health" width="2450" height="1200"}
 
 If you're an active crypto user it is not unusual to have a dozen or more token approvals, and it can be hard to understand which ones need revoking. In the coming months we want to focus on providing more insight into the risks of your approvals and help you make better decisions. The pricing information and wallet health is the first step in this direction.
 
@@ -28,11 +28,11 @@ Migrating our entire codebase to Viem and the latest version of Wagmi was a big 
 
 This month we found out about a new scam that tries to steal user funds by "masking" the selected network in a wallet. Scammers would send an "add network" request for existing networks, but with a different name.
 
-![Add a Scam Network](/assets/images/blog/2023/monthly-update-september/add-scam-network.jpg)
+::img{src="/assets/images/blog/2023/monthly-update-september/add-scam-network.jpg" alt="Add a Scam Network" width="2744" height="1544"}
 
 Then they would send a transaction request to the wallet for this new network, essentially making it seem like the user was sending an inconsequential transaction, while in reality they may be sending their entire ETH or BNB balance to the scammer.
 
-![Scam Transaction](/assets/images/blog/2023/monthly-update-september/scam-transaction.jpg)
+::img{src="/assets/images/blog/2023/monthly-update-september/scam-transaction.jpg" alt="Scam Transaction" width="2744" height="1544"}
 
 This scam is something to be aware of, but it can be avoided by always checking the network name in your wallet before sending a transaction. And wallets can also help prevent this scam by showing proper warnings when a network is added for an existing network with a different name.
 

@@ -8,7 +8,7 @@ translator: <Your Name Here (or remove)>
 
 Scams are unfortunately still a common occurrence in the crypto space. They can take many forms, from phishing websites to rug pulls, and cause hundreds of millions of dollars in losses every year, as reported by [ScamSniffer](https://scamsniffer.io/) in their [2023 report](https://drops.scamsniffer.io/post/scam-sniffer-2023-crypto-phishing-scams-drain-300-million-from-320000-users/).
 
-![ScamSniffer Report 2023](/assets/images/learn/security/what-to-do-when-scammed/scamsniffer-report.jpg)
+::img{src="/assets/images/learn/security/what-to-do-when-scammed/scamsniffer-report.jpg" alt="ScamSniffer Report 2023" width="2168" height="1260"}
 
 One of the most common questions we see asked on our Discord and Twitter is:
 
@@ -20,13 +20,13 @@ To best answer this question, we need to understand the nature of the scam and h
 
 To understand what happened, it is important to _fully_ answer the question of _"what was stolen?"_. Did many different assets get stolen across multiple networks or wallets, then it is very likely that your seed phrase or private keys were compromised. If multiple assets weres stolen that had been approved for a specific smart contract, then it might be a _marketplace signature_ scam. If only one specific asset was stolen, then it might be a direct transfer or approval to a malicious smart contract.
 
-![Flowchart](/assets/images/learn/how-did-i-get-scammed-light.png)
+::img{src="/assets/images/learn/how-did-i-get-scammed-light.png" alt="Flowchart" width="4138" height="3949"}
 
 We created this flowchart to help you better understand these possibilities and pathways. It's important to understand that these are general guidelines and that each case is unique. But this flowchart and the information in this article can help you understand what happened and what you can do about it. If you are still unsure about what happened, please reach out on [Discord](https://discord.gg/revoke-cash).
 
 ## Seed Phrase Compromise
 
-![Seed Phrase Compromise](/assets/images/learn/security/what-to-do-when-scammed/seed-phrase-compromise.jpg)
+::img{src="/assets/images/learn/security/what-to-do-when-scammed/seed-phrase-compromise.jpg" alt="Seed Phrase Compromise" width="1200" height="675"}
 
 If several tokens have been stolen out of your wallet, then it is possible that your seed phrase or private keys have been compromised. This suspicion is further confirmed if the tokens were taken across multiple blockchains and/or multiple wallet addresses. If the native token of the blockchain (e.g. ETH, POL or BNB) gets stolen immediately after you deposit it into the compromised wallet, then you can be certain that your seed phrase has been exposed.
 
@@ -50,7 +50,7 @@ The best way to prevent seed phrase compromise is to use a hardware wallet, such
 
 ## Marketplace Signatures
 
-![Marketplace Signatures](/assets/images/learn/security/what-to-do-when-scammed/marketplace-signature-scams.jpg)
+::img{src="/assets/images/learn/security/what-to-do-when-scammed/marketplace-signature-scams.jpg" alt="Marketplace Signatures" width="1200" height="675"}
 
 If multiple tokens and NFTs were stolen from your wallet that were all approved for a specific smart contract, such as OpenSea, Blur or Permit2, then it is likely that you fell victim to a _marketplace signature_ scam. These scams are usually a "one and done" event, meaning that the attacker can only steal your assets once - unless you signed multiple requests.
 
@@ -72,7 +72,7 @@ Because this is a "one and done" event, you can continue to use your wallet with
 
 The best way to limit the impact of marketplace signature scams is to revoke approvals on a regular basis, especially to marketplace contracts like OpenSea, Blur or Permit2. Any approvals to these kinds of contracts are marked as potentially risky on Revoke.cash, so it is important to check these regularly and revoke any that you are not actively using.
 
-![Phishing Risk Warning](/assets/images/learn/security/what-to-do-when-scammed/phishing-risk-warning.jpg)
+::img{src="/assets/images/learn/security/what-to-do-when-scammed/phishing-risk-warning.jpg" alt="Phishing Risk Warning" width="1600" height="900"}
 
 Besides keeping an eye on your approvals, it is also important to double check URLs of any website you visit, especially when signing transactions or gasless signatures. If there are any crypto websites that you visit regularly, such as OpenSea or Revoke.cash, then it is a good idea to bookmark these websites to ensure that you are always visiting the correct URL.
 
@@ -80,7 +80,7 @@ Finally, using security browser extensions, such as the [Revoke extension](/exte
 
 ## Token Approvals
 
-![Token Approvals](/assets/images/learn/security/what-to-do-when-scammed/token-approvals.jpg)
+::img{src="/assets/images/learn/security/what-to-do-when-scammed/token-approvals.jpg" alt="Token Approvals" width="1200" height="675"}
 
 If only one specific asset was stolen from your wallet, then it is likely that you signed a direct transfer or approval to a malicious smart contract. This can be verified by checking Revoke.cash for any recent approvals to unknown smart contracts. While this is usually only for a single asset, it is also possible that you lose multiple assets if you sign multiple consecutive transactions.
 
@@ -102,7 +102,7 @@ Similar to marketplace signatures, the best way to prevent token approval scams 
 
 ## Direct Transfers
 
-![Direct Transfers](/assets/images/learn/security/what-to-do-when-scammed/direct-transfers.jpg)
+::img{src="/assets/images/learn/security/what-to-do-when-scammed/direct-transfers.jpg" alt="Direct Transfers" width="1200" height="675"}
 
 If only one specific asset was stolen from your wallet, then it can be either a direct transfer or token approval. If there are no unexpected approvals on Revoke.cash, then it is most likely a direct transfer of the asset in question. These transfers often come disguised as named functions, such as "Security Update", "Claim" or "Claim Rewards".
 
@@ -122,7 +122,7 @@ Similar to marketplace signatures and token approvals, the best way to prevent t
 
 ## Combinations of Scams
 
-![Combinations of Scams](/assets/images/learn/security/what-to-do-when-scammed/combinations-of-scams.jpg)
+::img{src="/assets/images/learn/security/what-to-do-when-scammed/combinations-of-scams.jpg" alt="Combinations of Scams" width="1200" height="675"}
 
 In this article we discussed the most common forms of scams individually, but it is also possible that scammers use a combination of these methods to steal your assets. For example, a scammer might trick you into signing a marketplace signature and then also trick you into signing a direct transfer. This can make it difficult to understand what happened and what you can do about it.
 

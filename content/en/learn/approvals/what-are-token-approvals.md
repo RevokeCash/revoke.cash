@@ -22,7 +22,7 @@ For fungible tokens, smart contracts contain an `approve()` function to grant ap
 
 For example, if you want to grant approval to a decentralized exchange to spend 1000 USDC on your behalf, you would call `approve()` like this:
 
-![Approve USDC](/assets/images/learn/approvals/what-are-token-approvals/erc20-approve.png)
+::img{src="/assets/images/learn/approvals/what-are-token-approvals/erc20-approve.png" alt="Approve USDC" width="1152" height="714"}
 
 ### NFT Approvals
 
@@ -34,7 +34,7 @@ For limited approvals, NFT contracts contain an `approve()` function to grant ap
 
 For example, if you want to grant approval to OpenSea to transfer your Pudgy Penguin with ID 4420 on your behalf, you would call `approve()` like this:
 
-![Approve Pudgy Penguins 4420](/assets/images/learn/approvals/what-are-token-approvals/erc721-approve.png)
+::img{src="/assets/images/learn/approvals/what-are-token-approvals/erc721-approve.png" alt="Approve Pudgy Penguins 4420" width="1146" height="508"}
 
 #### Unlimited NFT Approvals
 
@@ -42,7 +42,7 @@ For unlimited approvals, NFT contracts contain an `setApprovalForAll()` function
 
 For example, if you want to grant approval to OpenSea to transfer any NFT within your collection on your behalf, you would call `setApprovalForAll()` like this:
 
-![Approve All Pudgy Penguins](/assets/images/learn/approvals/what-are-token-approvals/erc721-setApprovalForAll.png)
+::img{src="/assets/images/learn/approvals/what-are-token-approvals/erc721-setApprovalForAll.png" alt="Approve All Pudgy Penguins" width="1150" height="498"}
 
 ### Semi-Fungible Token Approvals
 

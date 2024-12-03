@@ -14,11 +14,11 @@ In June we launched a new logo and brand identity for Revoke.cash as well as a f
 
 Revoke.cash was created in 2019, with its first logo only slightly changing once since then. The old logo was a simple black and white clipart of a shield, with the Ethereum icon layered on top. And while we love Ethereum, the reality is that we support over 100 different EVM blockchains today, both within the Ethereum ecosystem and outside of it.
 
-![New Branding](/assets/images/blog/2024/revoke-redesign-process/brand.jpg)
+::img{src="/assets/images/blog/2024/revoke-redesign-process/brand.jpg" alt="New Branding" width="2000" height="1200"}
 
 So our brand needed to evolve to stand on its own. That is why we decided to partner up with full-stack designer [Richard Schumann](https://schumanncombo.com) to launch a new logo and brand identity for Revoke.cash. As part of the rebrand we also overhauled the look and feel of our browser extension, which hadn't received any significant design updates since its launch in 2022.
 
-![New Extension](/assets/images/blog/2024/revoke-redesign-process/extension.jpg)
+::img{src="/assets/images/blog/2024/revoke-redesign-process/extension.jpg" alt="New Extension" width="2000" height="1200"}
 
 The main Revoke.cash website is still mostly the same, but we've updated some parts of the website to reflect our new brand. We're planning to make further improvements to the website in the coming months. If you want to read more about the rebranding process, you can read [Richard Schumann's guest post](/blog/2024/revoke-redesign-process) on our blog.
 
@@ -26,7 +26,7 @@ The main Revoke.cash website is still mostly the same, but we've updated some pa
 
 Revoke.cash has had a team of one for a long time, and last december we were joined by Dries as a part-time software engineer. This month we're happy to announce that our third team member, [WiiMee](https://twitter.com/Wii_Mee), has joined us in a part-time _Community & Content_ role. WiiMee has been a long-time friend of the team and has been sharing a lot of educational security content on Twitter and other platforms.
 
-![The Revoke.cash Team](/assets/images/blog/2024/monthly-update-june/revoke-team.jpg)
+::img{src="/assets/images/blog/2024/monthly-update-june/revoke-team.jpg" alt="The Revoke.cash Team" width="1200" height="600"}
 
 WiiMee will be helping us with creating educational content, writing blog posts, and engaging with the community. We're very excited to have him on board and we're looking forward to working together.
 

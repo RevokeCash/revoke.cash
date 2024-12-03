@@ -12,9 +12,9 @@ In May we've been working some exciting things. Most of the new features and upd
 
 ## Pentesting Guide
 
-In May we collaborated with Jason Doyle, a security researcher in the web3 space, who has hlped us and a bunch of other security tools improve our products. In May he wrote a guide on how to pentest web3 applications, which we published on our blog. We hope that this guide will help more people become security researchers in web3 to make the space more secure for everyone.
+In May we collaborated with Jason Doyle, a security researcher in the web3 space, who has hlped us and a bunch of other security tools improve our products. In May he wrote [a guide on how to pentest web3 applications](/blog/2024/pentesters-guide-exploiting-browser-extensions), which we published on our blog. We hope that this guide will help more people become security researchers in web3 to make the space more secure for everyone.
 
-![Pentesting Guide](/assets/images/blog/2024/pentesters-guide-exploiting-browser-extensions/cover.jpg)
+::img{src="/assets/images/blog/2024/pentesters-guide-exploiting-browser-extensions/cover.jpg" alt="Pentesting Guide" width="1200" height="630"}
 
 ## Fixes, Improvements & Refactoring
 
