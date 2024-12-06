@@ -5,13 +5,12 @@ import { Ref } from 'react';
 import ReactSelect, { GroupBase, Props as ReactSelectProps, SelectInstance } from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
-export interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
+export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Omit<ReactSelectProps<O, I, G>, 'theme'> {
   minMenuWidth?: number | string;
   minControlWidth?: number | string;
   menuAlign?: 'left' | 'right';
   size?: 'sm' | 'md' | 'full';
-  controlTheme?: 'light' | 'dark';
-  menuTheme?: 'light' | 'dark';
+  theme?: 'light' | 'dark';
   keepMounted?: boolean;
   selectRef?: Ref<SelectInstance<O, I, G>>;
 }
@@ -20,9 +19,6 @@ export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Rea
 // the className prop can still be used to customise some of the styles per component
 const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
   const { darkMode } = useColorTheme();
-
-  const controlTheme = props.controlTheme ?? (darkMode ? 'dark' : 'light');
-  const menuTheme = props.menuTheme ?? (darkMode ? 'dark' : 'light');
 
   const controlClassMapping = {
     sm: 'h-6 px-1',
@@ -36,9 +32,30 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
     secondary: 'white', // white
     lightest: '#e4e4e7', // zinc-200
     light: '#d4d4d8', // zinc-300
-    dark: '#71717a', // zinc-500
+    dark: '#52525b', // zinc-600
     darkest: '#27272a', // zinc-800
     brand: '#fdb952',
+  };
+
+  const theme = props.theme ?? (darkMode ? 'dark' : 'light');
+
+  const resolvedColors = {
+    primary: theme === 'dark' ? colors.secondary : colors.primary, // focus color
+    secondary: theme === 'dark' ? colors.primary : colors.secondary,
+    primary25: theme === 'dark' ? colors.darkest : colors.lightest, // option hover color
+    primary50: theme === 'dark' ? colors.dark : colors.light, // option click color
+    // primary75: 'red', // ??
+    // neutral0: 'red', // control + menu background color (handled separately above)
+    // neutral5: 'red', // ??
+    // neutral10: 'red', // ??
+    neutral20: theme === 'dark' ? colors.secondary : colors.primary, // control border + indicator color
+    // neutral30: 'red', // ??
+    neutral40: theme === 'dark' ? colors.secondary : colors.primary, // indicator hover color
+    // neutral50: 'red', // ??
+    neutral60: theme === 'dark' ? colors.secondary : colors.primary, // indicator focus color
+    // neutral70: 'red', // ??
+    neutral80: theme === 'dark' ? colors.secondary : colors.primary, // control text color
+    // neutral90: 'red', // ??
   };
 
   return (
@@ -65,10 +82,10 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
       styles={{
         control: (styles) => ({
           ...styles,
-          color: controlTheme === 'dark' ? colors.secondary : colors.primary,
-          backgroundColor: controlTheme === 'dark' ? colors.primary : colors.secondary,
+          color: resolvedColors.primary,
+          backgroundColor: resolvedColors.secondary,
           '&:hover': {
-            backgroundColor: controlTheme === 'dark' ? colors.darkest : colors.lightest,
+            backgroundColor: resolvedColors.primary25,
           },
           minHeight: 0,
           minWidth: props.minControlWidth,
@@ -78,9 +95,9 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
           ...styles,
           textAlign: 'left', // text-left
           border: '1px solid', // border
-          color: menuTheme === 'dark' ? colors.secondary : colors.primary,
-          backgroundColor: menuTheme === 'dark' ? colors.primary : colors.secondary,
-          borderColor: menuTheme === 'dark' ? colors.secondary : colors.primary,
+          color: resolvedColors.primary,
+          backgroundColor: resolvedColors.secondary,
+          borderColor: resolvedColors.primary,
           overflow: 'hidden', // overflow-hidden
           minWidth: props.minMenuWidth,
           position: 'absolute',
@@ -106,42 +123,27 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
           ...styles,
           cursor: optionProps.isDisabled ? 'not-allowed' : 'pointer',
           padding: '0.5rem', // p-2
+          color: resolvedColors.primary,
           backgroundColor: (() => {
-            if (optionProps.isDisabled) {
-              return menuTheme === 'light' ? colors.light : colors.dark;
-            }
-            if (optionProps.isSelected) {
-              return menuTheme === 'light' ? colors.light : colors.dark;
-            }
-            if (optionProps.isFocused) {
-              return menuTheme === 'light' ? colors.lightest : colors.darkest;
-            }
+            if (optionProps.isDisabled) return resolvedColors.primary50;
+            if (optionProps.isSelected && !props.isMulti) return resolvedColors.primary50;
+            if (optionProps.isFocused) return resolvedColors.primary25;
+            if (props.isMulti) return 'transparent';
             return styles.backgroundColor;
           })(),
-          borderLeft: optionProps.isSelected ? `4px solid ${colors.brand}` : undefined,
+          ':active': {
+            backgroundColor: (() => {
+              if (optionProps.isSelected && !props.isMulti) return resolvedColors.primary25;
+              return resolvedColors.primary50;
+            })(),
+          },
+          borderLeft: optionProps.isSelected && !props.isMulti ? `4px solid ${colors.brand}` : undefined,
         }),
       }}
       theme={(theme) => ({
         ...theme,
         borderRadius: 8, // rounded-lg
-        colors: {
-          ...theme.colors,
-          primary: controlTheme === 'dark' ? colors.secondary : colors.primary, // focus color
-          primary25: menuTheme === 'dark' ? colors.darkest : colors.lightest, // option hover color
-          primary50: menuTheme === 'dark' ? colors.dark : colors.light, // option click color
-          // primary75: 'red', // ??
-          // neutral0: 'red', // control + menu background color (handled separately above)
-          // neutral5: 'red', // ??
-          // neutral10: 'red', // ??
-          neutral20: controlTheme === 'dark' ? colors.secondary : colors.primary, // control border + indicator color
-          // neutral30: 'red', // ??
-          neutral40: controlTheme === 'dark' ? colors.secondary : colors.primary, // indicator hover color
-          // neutral50: 'red', // ??
-          neutral60: controlTheme === 'dark' ? colors.secondary : colors.primary, // indicator focus color
-          // neutral70: 'red', // ??
-          neutral80: controlTheme === 'dark' ? colors.secondary : colors.primary, // control text color
-          // neutral90: 'red', // ??
-        },
+        colors: { ...theme.colors, ...resolvedColors },
       })}
     />
   );

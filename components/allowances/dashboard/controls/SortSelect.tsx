@@ -87,8 +87,7 @@ const SortSelect = ({ table }: Props) => {
       aria-label="Sort By"
       className="w-full shrink-0"
       classNamePrefix="sort-select"
-      controlTheme={darkMode ? 'dark' : 'light'}
-      menuTheme={darkMode ? 'dark' : 'light'}
+      theme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => {
         const [sorting] = table.getState().sorting;
         return option.id === sorting.id && option.desc === sorting.desc;

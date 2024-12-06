@@ -57,8 +57,7 @@ const LanguageSelect = () => {
       instanceId="language-select"
       aria-label="Select Language"
       className="w-32"
-      controlTheme="dark"
-      menuTheme="dark"
+      theme="dark"
       value={options.find((option) => option.value === locale)}
       options={options}
       onChange={(option) => selectLanguage(option!)}
