@@ -5,7 +5,7 @@ import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
 import { Address, domainSeparator, getAbiItem, getAddress, pad, PublicClient, toHex, TypedDataDomain } from 'viem';
 import { deduplicateArray } from '.';
-import { track } from './analytics';
+import { analytics } from './analytics';
 import { isTransferTokenEvent, type TimeLog, type TokenEvent, TokenEventType } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
@@ -335,7 +335,7 @@ export const getPermitDomain = async (contract: Erc20TokenContract): Promise<Typ
 
   if (!domain) {
     // If the domain separator is something else, we cannot generate a valid signature
-    track('Permit Domain Separator Mismatch', { name, verifyingContract, chainId });
+    analytics.track('Permit Domain Separator Mismatch', { name, verifyingContract, chainId });
     throw new Error('Could not determine Permit Signature data');
   }
 

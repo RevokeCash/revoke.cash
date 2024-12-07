@@ -9,7 +9,7 @@ import {
   stripAllowanceData,
   type TokenAllowanceData,
 } from 'lib/utils/allowances';
-import { track } from 'lib/utils/analytics';
+import { analytics } from 'lib/utils/analytics';
 import { getEventKey, TimeLog, TokenEvent } from 'lib/utils/events';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
@@ -30,7 +30,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
     queryFn: async () => {
       const allowances = getAllowancesFromEvents(address, events!, publicClient, chainId);
-      track('Fetched Allowances', { account: address, chainId });
+      analytics.track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
     // If events (transfers + approvals) don't change, derived allowances also shouldn't change, even if allowances

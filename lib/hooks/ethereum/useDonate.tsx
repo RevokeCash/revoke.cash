@@ -4,7 +4,7 @@ import { DonateButtonType } from 'components/common/donate/DonateModal';
 import { DONATION_ADDRESS } from 'lib/constants';
 import { TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { getWalletAddress, waitForTransactionConfirmation } from 'lib/utils';
-import { track } from 'lib/utils/analytics';
+import { analytics } from 'lib/utils/analytics';
 import { getChainName, getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import { parseEther } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
@@ -39,7 +39,7 @@ export const useDonate = (chainId: number, type: DonateButtonType) => {
     const transactionSubmitted = await handleTransaction(sendDonation(amount), TransactionType.DONATE);
 
     if (transactionSubmitted) {
-      track('Donated', {
+      analytics.track('Donated', {
         chainId,
         chainName: getChainName(chainId),
         nativeToken,
