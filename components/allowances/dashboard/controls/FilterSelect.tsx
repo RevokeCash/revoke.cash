@@ -91,8 +91,7 @@ const FilterSelect = ({ table }: Props) => {
       aria-label="Select Filters"
       className="w-full"
       classNamePrefix="filters-select"
-      controlTheme={darkMode ? 'dark' : 'light'}
-      menuTheme={darkMode ? 'dark' : 'light'}
+      theme={darkMode ? 'dark' : 'light'}
       options={options}
       value={selectedFilters}
       onChange={(options) => setSelectedFilters(options as Option[])}

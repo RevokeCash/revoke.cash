@@ -26,7 +26,7 @@ Permit2 的另一项好处是它还增加了批准的过期时间。这减少了
 
 虽然 Permit2 确实有重要的好处，但值得注意的是，与常规批准或 EIP2612 许可证签名相比，它还引入了一些新的安全风险。
 
-![Permit2 Batch MetaMask Popup](/assets/images/learn/approvals/what-is-permit2/permit-batch.png)
+::img{src="/assets/images/learn/approvals/what-is-permit2/permit-batch.png" alt="Permit2 Batch MetaMask Popup" width="1024" height="598"}
 
 Permit2 系统非常灵活，允许同时批准多个代币。由于这种灵活性，用户很难理解他们正在批准什么。钓鱼网站可能会滥用这一点来诱骗用户授予他们不理解的批准。
 
@@ -38,4 +38,4 @@ Permit2 系统非常灵活，允许同时批准多个代币。由于这种灵活
 
 第二件事要考虑的是 Permit2 合同代表您授予的实际 Permit2 批准。通常，这些批准的过期时间应该不会太远，因此您可以考虑让它们自动过期。如果过期时间太长，您仍然可以使用 Revoke.cash 手动撤销或更新批准。
 
-![Permit2 Approvals on Revoke.cash](/assets/images/learn/approvals/what-is-permit2/permit2-approvals.png)
+::img{src="/assets/images/learn/approvals/what-is-permit2/permit2-approvals.png" alt="Permit2 Approvals on Revoke.cash" width="1751" height="986"}

@@ -1,6 +1,7 @@
 'use client';
 
-import { usePathname, useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
+import { usePathname } from 'lib/i18n/navigation';
 import { isNullish } from 'lib/utils';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
@@ -36,7 +37,7 @@ const AddressPageContext = React.createContext<AddressContext>(undefined as any)
 export const AddressPageContextProvider = ({ children, address, domainName, initialChainId }: Props) => {
   const searchParams = useSearchParams()!;
   const path = usePathname();
-  const router = useRouter();
+  const router = useCsrRouter();
   const { chain } = useAccount();
   const { domainName: resolvedDomainName } = useNameLookup(domainName ? undefined : address);
 

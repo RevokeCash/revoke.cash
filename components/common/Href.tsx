@@ -1,3 +1,5 @@
+'use client';
+
 import { Link } from 'lib/i18n/navigation';
 import { AnchorHTMLAttributes, ForwardedRef, forwardRef, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';

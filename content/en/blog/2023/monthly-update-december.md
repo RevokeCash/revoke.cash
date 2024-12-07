@@ -14,7 +14,7 @@ In December, Dries joined our team as a part time software engineer and he will 
 
 We created our Learn section earlier this year in June. We created this section to help people understand more about the crypto space, wallet security and the role of Revoke.cash. This Learn section has been read by many users since we initially published it, but we were missing a place to share news and updates.
 
-![The Revoke.cash Blog](/assets/images/blog/2023/monthly-update-december/blog.jpg)
+::img{src="/assets/images/blog/2023/monthly-update-december/blog.jpg" alt="The Revoke.cash Blog" width="1600" height="720"}
 
 That's why we created this blog. We will use this blog to share updates about Revoke.cash, but also to share our thoughts on the crypto space and wallet security. We've retro-actively published monthly updates for the past year, and we will continue to do so going forward. We hope this helps interested users to stay up to date with what we're doing.
 
@@ -22,7 +22,7 @@ That's why we created this blog. We will use this blog to share updates about Re
 
 Those who have been following Revoke.cash' journey know that it started as my (Rosco) personal side project back in 2019, which turned into my full-time job in 2022. And while the project has grown a lot, most of the work in the company is still done by me alone. This includes development, marketing, support, and everything else that comes with running a company.
 
-![The Revoke.cash Team](/assets/images/about/revoke-team.png)
+::img{src="/assets/images/about/revoke-team.png" alt="The Revoke.cash Team" width="1280" height="720"}
 
 But starting this month, we will have more help on the development side of things. [Dries](https://twitter.com/Steen3S), a long-time friend of the team, has joined us as a part-time software engineer. Dries will be helping us with the development of Revoke.cash, and we're very happy to have him on board.
 

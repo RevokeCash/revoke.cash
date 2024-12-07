@@ -12,7 +12,7 @@
     "check": "检查",
     "check_connected_address": "检查连接地址",
     "clear_filters": "清除筛选条件",
-    "close": "Close",
+    "close": "关闭",
     "connect": "连接钱包",
     "connecting": "正在连接",
     "disconnect": "断开连接",
@@ -108,7 +108,7 @@
     "extension": "扩展",
     "faq": "常见问题",
     "learn": "学习资源",
-    "merchandise": "Merchandise",
+    "merchandise": "商品",
     "more": "更多",
     "search": "通过输入地址或域名来搜索账户"
   },

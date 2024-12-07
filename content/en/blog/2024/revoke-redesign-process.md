@@ -10,11 +10,11 @@ translator: <Your Name Here (or remove)>
 
 Hi, I am Richard, a Full-Stack Designer. I take care of all design aspects in projects from start to finish. You might have heard my name dropped in various Gitcoin projects. I am a user of Revoke myself, and I felt it was time for Revoke to finally look as good as the tool is useful to everybody.
 
-![Revoke Brand](/assets/images/blog/2024/revoke-redesign-process/brand.jpg)
+::img{src="/assets/images/blog/2024/revoke-redesign-process/brand.jpg" alt="Revoke Brand" width="2000" height="1200"}
 
 I chose the color yellow in reference to traffic light colors. Yellow is the neutral signal color between green and red. The yellow symbolizes revoke's function as a guardian between contract and wallet.
 
-![Revoke Icon](/assets/images/blog/2024/revoke-redesign-process/icon.jpg)
+::img{src="/assets/images/blog/2024/revoke-redesign-process/icon.jpg" alt="Revoke Icon" width="4000" height="2400"}
 
 The old logo, combining a shield and the Ethereum symbol, effectively represented Revoke's initial role within the Ethereum ecosystem. However, as Revoke has blossomed to support over 100 EVM chains, it was time for a logo that could encompass the new era of multi-chain compatibility.
 
@@ -24,7 +24,7 @@ Some may find the logo too simple or boring. Others may miss the familiarity of 
 
 The new logo will allow Revoke to more easily expand its product suite and stands for pragmatism, clarity, and minimalism. It is a sign of maturity, humility, and a forward-thinking approach.
 
-![Revoke Extension](/assets/images/blog/2024/revoke-redesign-process/extension.jpg)
+::img{src="/assets/images/blog/2024/revoke-redesign-process/extension.jpg" alt="Revoke Extension" width="4000" height="2400"}
 
 ## The new browser extension - now in sexy.
 
@@ -37,7 +37,7 @@ Working closely with Revoke to not only give the interface a face lift, but also
 Using this extension should be a joy. I haven't just redesigned a tool, we've crafted an experience. Every detail has been infused with a little extra love for detail.
 
 :::div{.w-40 .mb-5}
-![Richard Schumann](/assets/images/blog/2024/revoke-redesign-process/richard.jpg)
+::img{src="/assets/images/blog/2024/revoke-redesign-process/richard.jpg" alt="Richard Schumann" width="493" height="493"}
 :::
 
 ## Seeking a design partner who shares your vision?

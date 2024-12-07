@@ -1,6 +1,7 @@
 'use client';
 
-import { usePathname, useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
+import { usePathname } from 'lib/i18n/navigation';
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { memo, ReactNode, useEffect } from 'react';
 import { Chain } from 'viem';
@@ -49,7 +50,7 @@ export const EthereumProvider = ({ children }: Props) => {
 const EthereumProviderChild = memo(({ children }: Props) => {
   const { connectAsync, connectors } = useConnect();
   const { connector } = useAccount();
-  const router = useRouter();
+  const router = useCsrRouter();
   const pathName = usePathname();
 
   // If the Safe connector is available, connect to it even if other connectors are available
@@ -64,7 +65,7 @@ const EthereumProviderChild = memo(({ children }: Props) => {
     connectAsync({ connector: safeConnector })
       .then(({ accounts: [account] }) => {
         if (pathName === '/') {
-          router.push(`/address/${account}${location.search}`);
+          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);
@@ -81,7 +82,7 @@ const EthereumProviderChild = memo(({ children }: Props) => {
     connectAsync({ connector: injectedConnector })
       .then(({ accounts: [account] }) => {
         if (pathName === '/') {
-          router.push(`/address/${account}${location.search}`);
+          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);

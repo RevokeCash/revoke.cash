@@ -1,9 +1,13 @@
 'use client';
 
 import AddressSearchBox from 'components/common/AddressSearchBox';
-import { useRouter } from 'lib/i18n/navigation';
+import Button from 'components/common/Button';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useRef, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
+import { useAccount } from 'wagmi';
 
 interface Props {
   chainId: number;
@@ -11,18 +15,48 @@ interface Props {
 }
 
 const TokenApprovalCheckerSearchBox: NextPage<Props> = ({ chainId, placeholder }) => {
-  const router = useRouter();
+  const t = useTranslations();
+  const router = useCsrRouter();
   const [value, setValue] = useState<string>('');
 
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const { address } = useAccount();
+  const timerRef = useRef<NodeJS.Timeout>();
+
+  const onFocus = () => {
+    clearTimeout(timerRef.current);
+    setIsFocused(true);
+  };
+
+  const onBlur = () => {
+    timerRef.current = setTimeout(() => setIsFocused(false), 200);
+  };
+
+  const onClick = () => {
+    if (address) {
+      setValue(address);
+      router.push(`/address/${address}`, { retainSearchParams: ['chainId'] });
+    }
+  };
+
   return (
-    <AddressSearchBox
-      id="tac-search"
-      onSubmit={() => router.push(`/address/${value}?chainId=${chainId}`)}
-      onChange={(ev) => setValue(ev.target.value.trim())}
-      value={value}
-      placeholder={placeholder}
-      className="w-full max-w-3xl text-base sm:text-lg"
-    />
+    <div className="relative w-full max-w-3xl">
+      <AddressSearchBox
+        id="tac-search"
+        onSubmit={() => router.push(`/address/${value}?chainId=${chainId}`)}
+        onChange={(ev) => setValue(ev.target.value.trim())}
+        value={value}
+        placeholder={placeholder}
+        className="w-full text-base sm:text-lg"
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
+      <div className={twMerge('absolute mt-2', (!isFocused || !address) && 'hidden')}>
+        <Button style="secondary" size="md" onClick={onClick}>
+          {t('common.buttons.check_connected_address')}
+        </Button>
+      </div>
+    </div>
   );
 };
 

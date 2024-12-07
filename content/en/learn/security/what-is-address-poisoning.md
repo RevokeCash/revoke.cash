@@ -13,7 +13,7 @@ Address poisoning is a type of scam that involves token transfers to addresses t
 
 There are two main types of address poisoning attacks: **fake tokens** and **zero value transfers**. In both cases the goal is the same: to make it seem like you sent tokens to a certain address when you actually didn't.
 
-![Address Poisoning Transaction History](/assets/images/learn/security/what-is-address-poisoning/transaction-history.jpg)
+::img{src="/assets/images/learn/security/what-is-address-poisoning/transaction-history.jpg" alt="Address Poisoning Transaction History" width="1600" height="900"}
 
 Many wallets and block explorers will show you the token transfers that you've sent and received in the past. This is a useful feature, and many users use this feature to copy and paste addresses when they want to send tokens to someone. But if you're not careful, you might accidentally copy and paste the wrong address due to address poisoning.
 
@@ -31,11 +31,11 @@ While the _fake tokens_ method can be very dangerous, you can usually spot it si
 
 Similar to the _fake tokens_ method, the scammer monitors the transfers of certain tokens, such as USDT or USDC. But instead of creating a fake token contract, they use the `transferFrom` functionality of the _real_ token contract to send a zero value from _your_ wallet address to a different address that looks similar to the original address, but actually belongs to the scammer.
 
-![Zero Value Transfer Address Poisoning](/assets/images/learn/security/what-is-address-poisoning/zero-transfer.jpg)
+::img{src="/assets/images/learn/security/what-is-address-poisoning/zero-transfer.jpg" alt="Zero Value Transfer Address Poisoning" width="2336" height="1314"}
 
 This variant is dangerous because it uses the _real_ token contract and it appears to send those tokens from _your_ address. The only difference is that the recipient address is different and that the value of the transfer is zero. Now you might rightfully be asking yourself: _How is it even possible that the scammer can make these zero value transfers on my behalf?_
 
-![Zero Value Allowances](/assets/images/learn/security/what-is-address-poisoning/zero-transfer-allowances.jpg)
+::img{src="/assets/images/learn/security/what-is-address-poisoning/zero-transfer-allowances.jpg" alt="Zero Value Transfer Allowances" width="2080" height="1170"}
 
 The answer here is that they are using the token's `transferFrom` functionality. Generally, this function is used to allow smart contracts to transfer tokens on behalf of the user with token approvals. This is a common pattern in DeFi and you can read more about it in _[What Are Token Approvals?](/learn/approvals/what-are-token-approvals)_.
 

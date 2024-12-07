@@ -14,7 +14,7 @@ The focus in June was mostly on building out our new knowledgebase platform so w
 
 Early in June the Revoke.cash team visited Prague for the Prague DeFi Summit and ETHPrague hackathon. It was great to meet some of the other folks in the crypto space working on open source public goods, like the teams behind Rotki and Sourcify.
 
-![Revoke.cash Team in Prague](/assets/images/blog/2023/monthly-update-june/ethprague.jpg)
+::img{src="/assets/images/blog/2023/monthly-update-june/ethprague.jpg" alt="Revoke.cash Team in Prague" width="1600" height="900"}
 
 We had a great time and are looking forward to the next crypto event to spend some more time with these awesome people.
 
@@ -22,7 +22,7 @@ We had a great time and are looking forward to the next crypto event to spend so
 
 Token Approvals are a big part of the DeFi ecosystem, but they are also still often misunderstood. And more generally it can be difficult for new crypto users to understand the risks that exist when using crypto applications and how they can stay safe. That is why this month we've introduced our new Learn section. This section contains a bunch of articles that explain things ranging from the basics of crypto to more advanced security topics.
 
-![Learn Section](/assets/images/blog/2023/monthly-update-june/learn-section.png)
+::img{src="/assets/images/blog/2023/monthly-update-june/learn-section.png" alt="Learn Section" width="2327" height="1309"}
 
 While we added the Learn page, we also decided to brush up on some more content on the website. So we also added a new About page and made updates to our FAQ. We've also updated som eof our terminology to be more consistent with other crypto projects. The new Learn section already includes a bunch of articles, but we'll be adding more in the coming months. If there is anything you'd like to see added, please let us know.
 

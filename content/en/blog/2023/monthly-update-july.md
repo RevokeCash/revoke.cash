@@ -16,7 +16,7 @@ Scammers are always looking to find ways to trick you into giving them your mone
 
 These fake tokens are programmed to come with some risky looking approval, but when you try to revoke the approval, the transaction would have a very high gas cost because it is programmed to mint a lot of so-called "gas tokens". These gas tokens essentially convert transaction fees into a token format, which can then be sold on the market for a profit.
 
-![Gas Fee Check](/assets/images/blog/2023/monthly-update-july/gas-fee-check.png)
+::img{src="/assets/images/blog/2023/monthly-update-july/gas-fee-check.png" alt="Gas Fee Check" width="793" height="446"}
 
 This kind of scam is especially worrisome, because victims could be using the official websites of approval management tools and still get scammed. Luckily our existing spam filters were able to detect 99% of these fake tokens, but we still wanted to make sure that our users were 100% safe. That's why we've added checks to the website to make sure that you can't revoke approvals when the transaction fees are unreasonably high.
 
@@ -26,13 +26,13 @@ As far as we know, no users of Revoke.cash have been affected by this scam. And 
 
 After making sure everyone was safe from the fake approvals scam, we went on a very welcome holiday to Italy. We spent two weeks in Sardinia, where together with some of our friends from the crypto space we rented an airbnb and enjoyed the beautiful beaches and delicious food.
 
-![Italy](/assets/images/blog/2023/monthly-update-july/italy.jpg)
+::img{src="/assets/images/blog/2023/monthly-update-july/italy.jpg" alt="Italy" width="1600" height="900"}
 
 ## Fixes and Improvements
 
 Besides these larger changes we're also always making smaller updates that improve the overall experience of using Revoke.cash and keep the website running. This month we've expanded our address labels, improved the FAQ page and made some updates to our signature management page.
 
-![Exploit Indicators](/assets/images/blog/2023/monthly-update-july/exploit-indicators.jpg)
+::img{src="/assets/images/blog/2023/monthly-update-july/exploit-indicators.jpg" alt="Exploit Indicators" width="1283" height="721"}
 
 To make it easier to see if you're affected by exploits, we also added warning indicators to the main approvals dashboard, warning you of any exploited contracts that you may have approved. And we've also added dynamic social preview images for exploits, so that you can easily share exploit information on social media.
 

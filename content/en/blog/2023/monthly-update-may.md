@@ -14,7 +14,7 @@ In May we launched a lot of new features, such as our new Exploit Checker that c
 
 In April we saw SushiSwap get exploited for over three million dollars, with approved funds at risk. This exploit shook the crypto community and saw thousands of users flock to Revoke.cash to check if they were at risk. During this ordeal we realised that we needed to make it easier for users to check if they were at risk. So in May we released our Exploit Checker.
 
-![SushiSwap Exploit Checker](/assets/images/blog/2023/monthly-update-may/sushiswap-exploit-checker.png)
+::img{src="/assets/images/blog/2023/monthly-update-may/sushiswap-exploit-checker.png" alt="SushiSwap Exploit Checker" width="2519" height="1417"}
 
 The inspiration for this exploit checker came from our friends at [ScamSniffer](https://www.scamsniffer.io/), who had been requesting a way to add custom filters to Revoke.cash that they could share with their users. This was a great idea, but there can be some security issues with allowing that level of flexibility. So we decided to build on top of this idea and create a way for users to check if they were at risk from a specific exploit.
 
@@ -24,7 +24,7 @@ For this we enlisted the help of our friend [Dries](https://twitter.com/Steen3S)
 
 A popular question we get is whether it's possible to cancel offchain signatures. And the answer is not that clear. It depends on the type of signature, and every different type of signature has its own rules. Additionally, because these signatures are offchain, there's no way to know whether you signed any of them. These issues make it pretty hard to cancel offchain signatures.
 
-![Cancel Signatures](/assets/images/blog/2023/monthly-update-may/cancel-signatures.png)
+::img{src="/assets/images/blog/2023/monthly-update-may/cancel-signatures.png" alt="Cancel Signatures" width="1620" height="1172"}
 
 Our new signatures tab on the Approvals Dashboard allows you to cancel two kinds of signatures that are often-used by phishing websites. The first is the _Permit_ signature, which can be used to grant token approvals with a gasless signature. The second are marketplace signatures, which authorise asset transfers for tokens and NFTs with active approvals on marketplaces like OpenSea and Blur.
 

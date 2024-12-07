@@ -22,7 +22,7 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
     <div className="flex whitespace-nowrap">
       {account ? (
         <DropdownMenu menuButton={domainName ?? shortenAddress(account, 4)}>
-          <DropdownMenuItem href={`/address/${account}${location.search}`} router>
+          <DropdownMenuItem href={`/address/${account}`} router retainSearchParams={['chainId']}>
             {t('common.buttons.my_allowances')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => disconnect()}>{t('common.buttons.disconnect')}</DropdownMenuItem>

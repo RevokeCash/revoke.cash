@@ -4,7 +4,7 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
-import { useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
@@ -21,14 +21,14 @@ interface Props {
 const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
-  const router = useRouter();
+  const router = useCsrRouter();
 
   const { address } = useAccount();
   const { connectAsync, connectors } = useConnect();
 
   const handleClick = () => {
     if (address) {
-      router.push(`/address/${address}${location.search}`);
+      router.push(`/address/${address}`, { retainSearchParams: ['chainId'] });
     } else {
       setOpen(true);
     }
@@ -44,7 +44,7 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
         accounts: [account],
       } = await connectAsync({ connector });
       if (account && redirect) {
-        router.push(`/address/${account}${location.search}`);
+        router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
       }
     } catch {
       // ignored
