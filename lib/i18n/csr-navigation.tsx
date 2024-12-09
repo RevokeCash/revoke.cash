@@ -3,7 +3,7 @@
 import { Nullable } from 'lib/interfaces';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import nProgress from 'nprogress';
-import { ComponentProps } from 'react';
+import { ComponentProps, ForwardedRef, forwardRef } from 'react';
 import { UrlObject } from 'url';
 import { Link, useRouter } from './navigation';
 
@@ -27,11 +27,15 @@ const getHrefRetainingCurrentSearchParams = (
   return `${path}?${mergedSearchParams.toString()}`;
 };
 
-export function CsrLink(props: ComponentProps<typeof Link> & { retainSearchParams?: boolean | string[] }) {
-  const searchParams = useSearchParams();
-  const resolvedHref = getHrefRetainingCurrentSearchParams(props.href, searchParams, props.retainSearchParams);
-  return <Link {...props} href={resolvedHref} />;
-}
+type CsrLinkProps = ComponentProps<typeof Link> & { retainSearchParams?: boolean | string[] };
+
+export const CsrLink = forwardRef(
+  ({ retainSearchParams, ...props }: CsrLinkProps, ref: ForwardedRef<HTMLAnchorElement>) => {
+    const searchParams = useSearchParams();
+    const resolvedHref = getHrefRetainingCurrentSearchParams(props.href, searchParams, retainSearchParams);
+    return <Link {...props} href={resolvedHref} ref={ref} />;
+  },
+);
 
 export function useCsrRouter() {
   const router = useRouter();
