@@ -1,15 +1,15 @@
 'use client';
 
 import { XCircleIcon } from '@heroicons/react/24/outline';
-import { Table } from '@tanstack/react-table';
+import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { type ChangeEventHandler, useEffect, useState } from 'react';
 import { ColumnId } from '../columns';
 
 interface Props {
@@ -40,7 +40,7 @@ const AllowanceSearchBox = ({ table }: Props) => {
     const tableFilters = tableFilter.value.length > 0 ? [tableFilter] : [];
     const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
     updateTableFilters(table, tableFilters, ignoreIds);
-  }, [searchValues]);
+  }, [table, searchValues]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const values = event.target.value.trim().split(',');

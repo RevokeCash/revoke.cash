@@ -3,7 +3,7 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
 import { isNullish } from 'lib/utils';
 import { parseInputAddress } from 'lib/utils/whois';
-import { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
+import type { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
 import Button from './Button';
 import SearchBox from './SearchBox';
 import Spinner from './Spinner';
@@ -26,7 +26,7 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, .
     queryFn: async () => !isNullish(await parseInputAddress(value)),
     enabled: !isNullish(value),
     // Chances of this data changing while the user is on the page are very slim
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
   });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {

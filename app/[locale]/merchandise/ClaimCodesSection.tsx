@@ -23,7 +23,10 @@ const ClaimCodesSection = () => {
 
       <div className="not-prose flex flex-wrap gap-4">
         {codes.map((code) => (
-          <div className="border border-black dark:border-white rounded-lg p-4 flex flex-col items-center">
+          <div
+            key={code.code}
+            className="border border-black dark:border-white rounded-lg p-4 flex flex-col items-center"
+          >
             <div className="font-bold">{code.code}</div>
             <div className="text-sm text-zinc-500 dark:text-zinc-400">({shortenAddress(code.address, 4)})</div>
           </div>

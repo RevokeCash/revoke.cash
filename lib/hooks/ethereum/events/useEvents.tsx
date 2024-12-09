@@ -8,7 +8,7 @@ import {
   parseTransferLog,
 } from 'lib/utils/events';
 import { useMemo } from 'react';
-import { Address, getAbiItem, toEventSelector } from 'viem';
+import { type Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 import { useOpenSeaProxyAddress } from '../useOpenSeaProxyAddress';
 import { usePermit2Events } from './usePermit2Events';
@@ -68,7 +68,7 @@ export const useEvents = (address: Address, chainId: number) => {
         ...transferTo,
       ]),
     ];
-  }, [transferFrom, transferTo, approval, approvalForAllUnpatched, openSeaProxyAddress]);
+  }, [transferFrom, transferTo, approval, approvalForAllUnpatched, openSeaProxyAddress, address]);
 
   const isEventsLoading = isTransferFromLoading || isTransferToLoading || isApprovalLoading || isApprovalForAllLoading;
   const isLoading = isOpenSeaProxyAddressLoading || isEventsLoading || isPermit2ApprovalLoading;
@@ -90,7 +90,7 @@ export const useEvents = (address: Address, chainId: number) => {
 
     // We sort the events in reverse chronological order to ensure that the most recent events are processed first
     return sortTokenEventsChronologically(parsedEvents.filter((event) => !isNullish(event))).reverse();
-  }, [transferFrom, transferTo, approval, approvalForAll, permit2Approval]);
+  }, [transferFrom, transferTo, approval, approvalForAll, permit2Approval, error, isLoading, address, chainId]);
 
   return { events, isLoading, error };
 };

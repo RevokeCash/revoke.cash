@@ -1,6 +1,6 @@
 import Loader from 'components/common/Loader';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { Nullable } from 'lib/interfaces';
+import type { Nullable } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import { getChainNativeToken } from 'lib/utils/chains';
 import { formatFiatBalance, formatFixedPointBigInt } from 'lib/utils/formatting';

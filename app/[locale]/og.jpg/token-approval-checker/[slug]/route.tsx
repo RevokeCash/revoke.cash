@@ -25,8 +25,8 @@ export async function GET(req: Request, { params }: Props) {
   const t = await getTranslations({ locale: params.locale });
 
   const chainName = getChainName(getChainIdFromSlug(params.slug));
-  const title = t(`token_approval_checker.meta.title`, { chainName });
-  const background = loadDataUrl(`public/assets/images/token-approval-checker/cover.jpg`, 'image/jpeg');
+  const title = t('token_approval_checker.meta.title', { chainName });
+  const background = loadDataUrl('public/assets/images/token-approval-checker/cover.jpg', 'image/jpeg');
 
   return generateOgImage({ title, background });
 }

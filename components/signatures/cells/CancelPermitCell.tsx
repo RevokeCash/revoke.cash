@@ -2,11 +2,11 @@ import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { OnCancel, TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
-import { isErc721Contract, PermitTokenData } from 'lib/utils/tokens';
+import { type PermitTokenData, isErc721Contract } from 'lib/utils/tokens';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import CancelCell from './CancelCell';
 

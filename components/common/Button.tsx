@@ -3,7 +3,7 @@
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { CsrLink } from 'lib/i18n/csr-navigation';
 import { Link } from 'lib/i18n/navigation';
-import { ForwardedRef, MouseEventHandler, forwardRef } from 'react';
+import { type ForwardedRef, type MouseEventHandler, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
@@ -116,4 +116,5 @@ const Button = (
   );
 };
 
-export default forwardRef(Button);
+// biome-ignore lint/suspicious/noExplicitAny: For some reason, forwardRef typing is not working here
+export default forwardRef<HTMLElement, Props>(Button as any);

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": [".next", ".yarn", "public/assets", ".vercel", "package.json"]
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120,
+    "attributePosition": "auto",
+    "bracketSpacing": true
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noForEach": "off" // I prefer to use array methods
+      },
+      "correctness": {
+        "useExhaustiveDependencies": {
+          "level": "error",
+          "options": {
+            "hooks": [{ "name": "useTransactionStore", "stableResult": true }]
+          }
+        }
+      },
+      "performance": {
+        "noAccumulatingSpread": "warn" // I think this only warrants a warning, as it's not a super big deal in most cases
+      },
+      "suspicious": {
+        "noExplicitAny": "warn", // TODO: something to improve later
+        "noShadowRestrictedNames": "warn" // TODO: something to improve later
+      },
+      "style": {
+        "noInferrableTypes": "off", // I prefer to be explicit about types
+        "noNonNullAssertion": "off", // TODO: something to improve later
+        "useNodejsImportProtocol": "off" // Node.js imports seem not te be supported by Next.js
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true
+    }
+  }
+}

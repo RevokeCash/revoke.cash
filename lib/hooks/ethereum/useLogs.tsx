@@ -14,7 +14,7 @@ export const useLogs = (name: string, chainId: number, filter?: Filter) => {
     queryFn: async () => eventsDB.getLogs(getLogsProvider(chainId), filter!, chainId),
     refetchOnWindowFocus: false,
     // The same filter should always return the same logs
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     enabled:
       !isNullish(chainId) &&
       !isNullish(isLoggedIn) &&
@@ -25,7 +25,7 @@ export const useLogs = (name: string, chainId: number, filter?: Filter) => {
 
   useEffect(() => {
     if (result.data) console.log(`${name} events`, result.data);
-  }, [result.data]);
+  }, [result.data, name]);
 
   const error = loginError ? new Error('Failed to create API session') : result.error;
 

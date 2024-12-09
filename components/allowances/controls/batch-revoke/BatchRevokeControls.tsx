@@ -2,7 +2,7 @@ import Button from 'components/common/Button';
 import TipSection from 'components/common/donate/TipSection';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

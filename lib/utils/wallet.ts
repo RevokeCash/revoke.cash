@@ -1,4 +1,4 @@
-import { Connector } from 'wagmi';
+import type { Connector } from 'wagmi';
 import { deduplicateArray } from '.';
 
 export const getWalletIcon = (connector: Connector): string | undefined => {
@@ -13,7 +13,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
     // Injected wallets
     '1inchwallet': '/assets/images/vendor/wallets/1inch.svg',
     backpack: '/assets/images/vendor/wallets/backpack.svg',
-    'bifrost wallet': `/assets/images/vendor/wallets/bifrost.svg`,
+    'bifrost wallet': '/assets/images/vendor/wallets/bifrost.svg',
     bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
     bitski: `${BASE_URL}/bitskiWallet/bitskiWallet.svg`,
     blockwallet: '/assets/images/vendor/wallets/block-wallet.jpg',
@@ -53,7 +53,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
     ledger: `${BASE_URL}/ledgerWallet/ledgerWallet.svg`,
   };
 
-  return mapping[walletNameLowerCase] ?? connector?.icon ?? `/assets/images/vendor/wallets/injected.svg`;
+  return mapping[walletNameLowerCase] ?? connector?.icon ?? '/assets/images/vendor/wallets/injected.svg';
 };
 
 export const getConnectorName = (connector: Connector): string => {

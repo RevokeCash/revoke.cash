@@ -6,7 +6,7 @@ import TranslateButton from 'components/common/TranslateButton';
 import ArticleMeta from 'components/learn/ArticleMeta';
 import Sidebar from 'components/learn/Sidebar';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
-import { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
+import type { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import { useMessages, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import SharedLayout from './SharedLayout';

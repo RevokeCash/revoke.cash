@@ -1,5 +1,5 @@
-import { Nullable } from 'lib/interfaces';
-import { TokenBalance } from 'lib/utils/tokens';
+import type { Nullable } from 'lib/interfaces';
+import type { TokenBalance } from 'lib/utils/tokens';
 import { formatUnits } from 'viem';
 import { isNullish } from '.';
 import { fixedPointMultiply } from './math';
@@ -44,7 +44,7 @@ export const parseFixedPointBigInt = (floatString: string, decimals: number = 0)
 };
 
 export const formatBalance = (symbol: string, balance: TokenBalance, decimals?: number) => {
-  if (balance === 'ERC1155') return `(ERC1155)`;
+  if (balance === 'ERC1155') return '(ERC1155)';
   return `${formatFixedPointBigInt(balance, decimals)} ${symbol}`;
 };
 

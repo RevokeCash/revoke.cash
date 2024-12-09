@@ -3,16 +3,16 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
 import eventsDB from 'lib/databases/events';
-import { Marketplace, MarketplaceConfig, OnCancel } from 'lib/interfaces';
+import type { Marketplace, MarketplaceConfig, OnCancel } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
 import { addressToTopic, getWalletAddress, isNullish, logSorterChronological } from 'lib/utils';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
-import { TimeLog } from 'lib/utils/events';
+import type { TimeLog } from 'lib/utils/events';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
-import { Address, Hash, WalletClient, getAbiItem, toEventSelector } from 'viem';
+import { type Address, type Hash, type WalletClient, getAbiItem, toEventSelector } from 'viem';
 import { getBlockNumber } from 'wagmi/actions';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
 import { wagmiConfig } from './EthereumProvider';
@@ -132,7 +132,7 @@ export const useMarketplaces = () => {
           queryKey: ['logs', filter, selectedChainId, isLoggedIn],
           queryFn: async () => eventsDB.getLogs(getLogsProvider(selectedChainId), filter, selectedChainId),
           // The same filter should always return the same logs
-          staleTime: Infinity,
+          staleTime: Number.POSITIVE_INFINITY,
         });
 
         const lastCancelled = logs?.sort(logSorterChronological)?.at(-1);

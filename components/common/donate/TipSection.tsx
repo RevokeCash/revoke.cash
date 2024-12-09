@@ -5,8 +5,8 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import Select from '../select/Select';
 import WithHoverTooltip from '../WithHoverTooltip';
+import Select from '../select/Select';
 
 interface Props {
   midAmount: string;

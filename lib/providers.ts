@@ -1,5 +1,5 @@
 import ky from 'lib/ky';
-import { PublicClient, getAddress } from 'viem';
+import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import {
   createViemPublicClientForChain,
@@ -8,7 +8,7 @@ import {
   isCovalentSupportedChain,
 } from './utils/chains';
 import { isLogResponseSizeError } from './utils/errors';
-import { Filter, Log } from './utils/events';
+import type { Filter, Log } from './utils/events';
 
 export interface LogsProvider {
   chainId: number;

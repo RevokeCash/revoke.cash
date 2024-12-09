@@ -1,7 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Logo from 'components/common/Logo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { Marketplace } from 'lib/interfaces';
+import type { Marketplace } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 
 interface Props {

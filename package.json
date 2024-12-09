@@ -10,7 +10,9 @@
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
     "lint:checksums": "tsx scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
-    "lint": "prettier --write .",
+    "lint": "biome check .",
+    "lint:staged": "yarn lint --error-on-warnings --no-errors-on-unmatched --staged .",
+    "lint:fix": "yarn lint --write",
     "postinstall": "husky install",
     "translations:update": "localazy upload && localazy download && yarn lint",
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
@@ -69,6 +71,9 @@
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@cypress/grep": "^4.1.0",
     "@lavamoat/allow-scripts": "^3.2.0",
     "@localazy/cli": "^1.7.14",
@@ -94,8 +99,6 @@
     "next-circular-dependency": "^1.0.1",
     "next-sitemap": "^4.2.3",
     "postcss": "^8.4.41",
-    "prettier": "^3.3.3",
-    "prettier-plugin-organize-imports": "^4.0.0",
     "tailwindcss": "^3.4.10",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4",
@@ -103,7 +106,7 @@
   },
   "packageManager": "yarn@3.6.2",
   "lint-staged": {
-    "*": "yarn prettier -u --write"
+    "*": "biome check --write"
   },
   "lavamoat": {
     "allowScripts": {
@@ -115,7 +118,8 @@
       "viem>ws>bufferutil": true,
       "viem>ws>utf-8-validate": true,
       "wagmi>@wagmi/connectors>cbw-sdk>keccak": false,
-      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false
+      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false,
+      "@biomejs/biome": true
     }
   },
   "mocha": {

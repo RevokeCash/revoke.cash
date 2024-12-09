@@ -2,7 +2,7 @@ import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable 
 import Card from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useMarketplaces } from 'lib/hooks/ethereum/useMarketplaces';
-import { Marketplace } from 'lib/interfaces';
+import type { Marketplace } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { columns } from './columns';
@@ -28,8 +28,8 @@ const MarketplaceTable = () => {
     getRowId(row) {
       return `${row.name}`;
     },
-    // TODO: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any
-    // See https://github.com/TanStack/table/discussions/4220
+
+    // biome-ignore lint/suspicious/noExplicitAny: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
     meta: { onCancel } as any,
   });
 

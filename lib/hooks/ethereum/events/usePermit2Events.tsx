@@ -1,7 +1,7 @@
 import { PERMIT2_ABI } from 'lib/abis';
 import { addressToTopic } from 'lib/utils';
 import { useMemo } from 'react';
-import { Address, getAbiItem, toEventSelector } from 'viem';
+import { type Address, getAbiItem, toEventSelector } from 'viem';
 import { useLogsFullBlockRange } from '../useLogsFullBlockRange';
 
 export const usePermit2Events = (address: Address, chainId: number) => {
@@ -40,7 +40,7 @@ export const usePermit2Events = (address: Address, chainId: number) => {
     if (!permit || !approval || !lockdown) return undefined;
     if (error || isLoading) return undefined;
     return [...approval, ...permit, ...lockdown];
-  }, [permit, approval, lockdown]);
+  }, [permit, approval, lockdown, error, isLoading]);
 
   return { events, isLoading, error };
 };

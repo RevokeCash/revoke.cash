@@ -5,10 +5,10 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
 import {
   AllowanceType,
+  type OnUpdate,
+  type TokenAllowanceData,
   getAllowanceI18nValues,
   isErc20Allowance,
-  OnUpdate,
-  TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { SECOND } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';

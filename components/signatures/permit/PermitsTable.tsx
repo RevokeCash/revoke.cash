@@ -2,7 +2,7 @@ import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable 
 import Card from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { usePermitTokens } from 'lib/hooks/ethereum/usePermitTokens';
-import { PermitTokenData } from 'lib/utils/tokens';
+import type { PermitTokenData } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { ColumnId, columns } from './columns';
@@ -22,8 +22,8 @@ const PermitsTable = () => {
     getRowId(row) {
       return `${row.contract.address}`;
     },
-    // TODO: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any
-    // See https://github.com/TanStack/table/discussions/4220
+
+    // biome-ignore lint/suspicious/noExplicitAny: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
     meta: { onCancel } as any,
     initialState: {
       columnVisibility: {

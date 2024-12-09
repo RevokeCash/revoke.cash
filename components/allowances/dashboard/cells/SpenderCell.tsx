@@ -4,7 +4,7 @@ import Href from 'components/common/Href';
 import Loader from 'components/common/Loader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { isNullish } from 'lib/utils';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
 import { getSpenderData } from 'lib/utils/whois';
@@ -20,7 +20,7 @@ const SpenderCell = ({ allowance }: Props) => {
     queryKey: ['spenderData', allowance.payload?.spender, allowance.chainId],
     queryFn: () => getSpenderData(allowance.payload!.spender, allowance.chainId),
     // Chances of this data changing while the user is on the page are very slim
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     enabled: !isNullish(allowance.payload?.spender),
   });
 

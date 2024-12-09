@@ -1,7 +1,7 @@
 import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { Marketplace, OnCancel, TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { type Marketplace, type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { usePublicClient, useWalletClient } from 'wagmi';

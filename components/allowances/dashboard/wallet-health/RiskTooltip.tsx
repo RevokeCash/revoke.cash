@@ -25,7 +25,11 @@ const RiskTooltip = ({ riskData }: Props) => {
   const riskTooltip = (
     <div className="flex flex-col">
       {t('address.tooltips.risk_factors', { riskLevel: t(`address.risk_factors.levels.${riskLevel}`) })}
-      <ul className="my-2">{riskFactors?.map((riskFactor) => <li key={riskFactor.key}>{riskFactor}</li>)}</ul>
+      <ul className="my-2">
+        {riskFactors?.map((riskFactor) => (
+          <li key={riskFactor.key}>{riskFactor}</li>
+        ))}
+      </ul>
     </div>
   );
 

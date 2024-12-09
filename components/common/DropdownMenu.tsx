@@ -1,6 +1,6 @@
 import { Menu } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
-import Button, { Props as ButtonProps } from './Button';
+import Button, { type Props as ButtonProps } from './Button';
 import Chevron from './Chevron';
 
 interface Props {

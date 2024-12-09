@@ -1,9 +1,9 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import { useMounted } from 'lib/hooks/useMounted';
-import { TransactionSubmitted } from 'lib/interfaces';
+import type { TransactionSubmitted } from 'lib/interfaces';
 import { isNullish, waitForSubmittedTransactionConfirmation } from 'lib/utils';
-import { TimeLog } from 'lib/utils/events';
+import type { TimeLog } from 'lib/utils/events';
 import { HOUR, SECOND } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';

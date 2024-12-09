@@ -1,7 +1,7 @@
-import { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
+import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { assertFulfilled, deduplicateArray } from 'lib/utils';
-import { Address } from 'viem';
-import { SpenderDataSource } from './SpenderDataSource';
+import type { Address } from 'viem';
+import type { SpenderDataSource } from './SpenderDataSource';
 
 export enum AggregationType {
   SEQUENTIAL_FIRST = 'SEQUENTIAL_FIRST',

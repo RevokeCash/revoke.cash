@@ -6,7 +6,7 @@ interface Props {
   checked: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
-  onChange?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onChange?: (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
   className?: string;
   iconClassName?: string;
 }
@@ -16,7 +16,7 @@ const Checkbox = ({ checked, indeterminate, disabled, onChange, className, iconC
   const iconClasses = twMerge('w-4 h-4', iconClassName);
 
   const classes = twMerge(
-    'border border-black dark:border-white flex justify-center rounded items-center cursor-pointer',
+    'border border-black dark:border-white flex justify-center rounded items-center cursor-pointer focus:outline-black dark:focus:outline-white',
     iconClasses,
     className,
     (checked || indeterminate) && 'bg-brand text-black border-0',
@@ -30,7 +30,15 @@ const Checkbox = ({ checked, indeterminate, disabled, onChange, className, iconC
   ) : null;
 
   return (
-    <div className={classes} onClick={(event) => !disabled && onChange?.(event)}>
+    <div
+      // biome-ignore lint/a11y/useSemanticElements: we want to use a div instead of a native checkbox for styling reasons
+      role="checkbox"
+      aria-checked={checked}
+      className={classes}
+      onClick={(event) => !disabled && onChange?.(event)}
+      onKeyDown={(event) => !disabled && event.key === 'Enter' && onChange?.(event)}
+      tabIndex={0}
+    >
       {icon}
     </div>
   );

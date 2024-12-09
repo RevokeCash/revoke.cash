@@ -5,8 +5,8 @@ import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderData
 import { OnchainSpenderRiskDataSource } from 'lib/whois/spender/risk/OnchainSpenderRiskDataSource';
 import { ScamSnifferRiskDataSource } from 'lib/whois/spender/risk/ScamSnifferRiskDataSource';
 import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpenderRiskDataSource';
-import { NextRequest } from 'next/server';
-import { Address } from 'viem';
+import type { NextRequest } from 'next/server';
+import type { Address } from 'viem';
 
 export const config = {
   runtime: 'edge',

@@ -1,18 +1,18 @@
 'use client';
 
-import { forwardRef, ReactNode, Ref, useEffect, useRef, useState } from 'react';
+import { type ReactNode, type Ref, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActionMeta,
+  type ActionMeta,
+  type FormatOptionLabelMeta,
+  type GroupBase,
+  type OnChangeValue,
+  type SelectInstance,
   createFilter,
-  FormatOptionLabelMeta,
-  GroupBase,
-  OnChangeValue,
-  SelectInstance,
 } from 'react-select';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-import Select, { Props as SelectProps } from 'components/common/select/Select';
+import Select, { type Props as SelectProps } from 'components/common/select/Select';
 import Button from '../Button';
 import Chevron from '../Chevron';
 
@@ -30,10 +30,11 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
 
   // Track whether the React Select is open or not
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
-  const handleSelectClose = () => {
+  const handleSelectClose = useCallback(() => {
     buttonRef.current?.focus();
     setSelectOpen(false);
-  };
+  }, []);
+
   const toggleSelectOpen = () => setSelectOpen((prev) => !prev);
 
   useEffect(() => {
@@ -110,7 +111,7 @@ const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: Sele
 
     if (isSelectOpen) window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSelectOpen]);
+  }, [isSelectOpen, handleSelectClose]);
 
   const className = twMerge(
     'absolute z-20 mt-2',
@@ -121,7 +122,13 @@ const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: Sele
   return (
     <div className={twMerge('relative shrink-0', selectProps.className)}>
       {target}
-      {isSelectOpen && <div className="fixed z-10 inset-0" onClick={handleSelectClose} />}
+      {isSelectOpen && (
+        <div
+          className="fixed z-10 inset-0"
+          onClick={handleSelectClose}
+          onKeyDown={(ev) => ev.key === 'Enter' && handleSelectClose()}
+        />
+      )}
       {isSelectOpen || selectProps.keepMounted ? <div className={className}>{children}</div> : null}
     </div>
   );

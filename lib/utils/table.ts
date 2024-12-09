@@ -1,5 +1,5 @@
-import { ColumnFiltersState, Table } from '@tanstack/react-table';
-import { TokenAllowanceData } from 'lib/utils/allowances';
+import type { ColumnFiltersState, Table } from '@tanstack/react-table';
+import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { deduplicateArray } from '.';
 
 export const updateTableFilters = (

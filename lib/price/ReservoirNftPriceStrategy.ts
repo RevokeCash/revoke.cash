@@ -1,4 +1,4 @@
-import { SearchParamsOption, TimeoutError } from 'ky';
+import { type SearchParamsOption, TimeoutError } from 'ky';
 import ky from 'lib/ky';
 import { isRateLimitError } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';

@@ -1,6 +1,6 @@
-import { Abi, Address, Hash, PublicClient, TransactionReceipt, WalletClient } from 'viem';
-import { TokenAllowanceData } from './utils/allowances';
-import { Filter, TimeLog } from './utils/events';
+import type { Abi, Address, Hash, PublicClient, TransactionReceipt, WalletClient } from 'viem';
+import type { TokenAllowanceData } from './utils/allowances';
+import type { Filter, TimeLog } from './utils/events';
 
 export interface RateLimit {
   interval: number;

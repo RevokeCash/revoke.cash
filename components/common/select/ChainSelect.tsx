@@ -46,7 +46,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
   ];
 
   const onChange = ({ chainId }: ChainOption) => {
-    onSelect && onSelect(chainId);
+    onSelect?.(chainId);
   };
 
   const displayOption = ({ chainId }: ChainOption, { context }: any) => {

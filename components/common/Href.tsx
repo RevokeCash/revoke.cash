@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from 'lib/i18n/navigation';
-import { AnchorHTMLAttributes, ForwardedRef, forwardRef, ReactNode } from 'react';
+import { type AnchorHTMLAttributes, type ForwardedRef, type ReactNode, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {

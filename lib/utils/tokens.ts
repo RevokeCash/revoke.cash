@@ -3,10 +3,19 @@ import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
-import { Address, domainSeparator, getAbiItem, getAddress, pad, PublicClient, toHex, TypedDataDomain } from 'viem';
+import {
+  type Address,
+  type PublicClient,
+  type TypedDataDomain,
+  domainSeparator,
+  getAbiItem,
+  getAddress,
+  pad,
+  toHex,
+} from 'viem';
 import { deduplicateArray } from '.';
 import { track } from './analytics';
-import { isTransferTokenEvent, type TimeLog, type TokenEvent, TokenEventType } from './events';
+import { type TimeLog, type TokenEvent, TokenEventType, isTransferTokenEvent } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
 
