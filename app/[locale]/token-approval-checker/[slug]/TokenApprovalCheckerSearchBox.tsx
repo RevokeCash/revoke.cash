@@ -3,7 +3,7 @@
 import AddressSearchBox from 'components/common/AddressSearchBox';
 import Button from 'components/common/Button';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';

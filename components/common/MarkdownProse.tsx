@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import ReactMarkdown, { Components } from 'react-markdown';
+import ReactMarkdown, { type Components } from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';

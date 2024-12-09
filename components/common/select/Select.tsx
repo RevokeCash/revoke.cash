@@ -1,8 +1,8 @@
 'use client';
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { Ref } from 'react';
-import ReactSelect, { GroupBase, Props as ReactSelectProps, SelectInstance } from 'react-select';
+import type { Ref } from 'react';
+import ReactSelect, { type GroupBase, type Props as ReactSelectProps, type SelectInstance } from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
 export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Omit<ReactSelectProps<O, I, G>, 'theme'> {

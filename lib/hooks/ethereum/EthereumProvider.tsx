@@ -3,8 +3,8 @@
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
-import { ReactNode, useEffect } from 'react';
-import { Chain } from 'viem';
+import { type ReactNode, useEffect } from 'react';
+import type { Chain } from 'viem';
 import { createConfig, useAccount, useConnect, WagmiProvider } from 'wagmi';
 import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
 
