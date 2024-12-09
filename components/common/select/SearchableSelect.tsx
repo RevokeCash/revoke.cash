@@ -50,7 +50,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
   };
 
   const filterOption = createFilter({
-    stringify: (option: FilterOptionOption<O>) => option.value,
+    stringify: (option: FilterOptionOption<O>) => option.value.replace('ZERϴ', 'ZERO | ZERϴ'),
   });
 
   const formatOptionLabel = (option: O, formatOptionLabelMeta: FormatOptionLabelMeta<O>) => {

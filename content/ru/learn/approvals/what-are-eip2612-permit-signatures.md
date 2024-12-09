@@ -17,7 +17,7 @@ translator: Andrei Kalpovski | https://github.com/kalpovskii
 
 EIP2612 является дополнением стандарта ERC20, что означает, что токены ERC20 могут реализовать эту дополнительную функциональность, но большинство токенов ее не поддерживают. Permit Signatures основаны на стандарте [EIP712](https://eips.ethereum.org/EIPS/eip-712), который определяет стандартизированный способ подписи структурированных данных. Данные, которые необходимо подписать для Permit signatures, содержат ту же информацию, что и при выдаче апрувов onchain: authorised spender address (ASA) и количество токенов.
 
-![Permit Approve USDC on Etherscan](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit.png)
+::img{src="/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit.png" alt="Permit Approve USDC on Etherscan" width="1560" height="1449"}
 
 Затем эти данные и соответствующую подпись можно передать в функцию токена `permit()`, которая проверяет подпись и "активирует" апрув onchain, после чего он становится таким же, как и обычный onchain апрув. Хотя этот вид подписи необходимо "активировать" onchain, onchain активация может быть совмещена с транзакцией, для которой вам нужен апрув, так что вам не нужно отправлять отдельную транзакцию.
 
@@ -32,7 +32,7 @@ EIP2612 является дополнением стандарта ERC20, что
 
 Хотя Permit Signatures обладают рядом важных преимуществ, у них есть и недостатки. Один из них заключается в том, что они не поддерживаются большинством токенов, поэтому вы не можете рассчитывать на их доступность. Из-за ограниченной поддержки в токенах ERC20 они также не поддерживаются многими приложениями. Для того чтобы смарт-контракты поддерживали Permit Signatures, им необходимо специально реализовать эту поддержку, что создает дополнительные трудности для разработчиков.
 
-![Permit Approve USDC MetaMask Popup](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-request.png)
+::img{src="/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-request.png" alt="Permit Approve USDC MetaMask Popup" width="1110" height="580"}
 
 Поскольку Permit Signatures - это offchain подписи, они также часто используются скамерами, чтобы обмануть пользователей и заставить их дать апрув. Многие кошельки, такие как MetaMask, теперь отображают предупреждение, когда вы подписываете onchain апрув, но для Permit Signatures такие предупреждения отсутствуют. Таким образом, может показаться, что вы просто подлючаете кошелёк на сайте, но на самом деле вы даете апрув.
 
@@ -42,6 +42,6 @@ EIP2612 является дополнением стандарта ERC20, что
 
 Если вы хотите попробовать отменить потенциально мошенническую подпись, вы можете сделать это во вкладке _Подписи_ на странице вашей учетной записи.
 
-![Permit Signatures on Revoke.cash](/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-signatures.png)
+::img{src="/assets/images/learn/approvals/what-are-eip2612-permit-signatures/permit-signatures.png" alt="Permit Signatures on Revoke.cash" width="2424" height="720"}
 
 Важно еще раз отметить, что Permit Signatures находятся offchain, а это значит, что платформа вроде Revoke.cash никогда не сможет определить, что вы подписали. Поэтому все, что вы видите на вкладке _Подписи_ на Revoke.cash, - это только _потенциальные_ подписи, и вы должны пытаться отменить их, только если вы очень уверены, что подписали мошенническую Permit signature. Отменять подписи без необходимости не опасно, но это пустая трата газа.

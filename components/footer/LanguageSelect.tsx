@@ -2,8 +2,9 @@
 
 import Logo from 'components/common/Logo';
 import Select from 'components/common/select/Select';
-import type { Locale } from 'lib/i18n/config';
-import { usePathname, useRouter } from 'lib/i18n/navigation';
+import { Locale } from 'lib/i18n/config';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
+import { usePathname } from 'lib/i18n/navigation';
 import { track } from 'lib/utils/analytics';
 import { useLocale } from 'next-intl';
 import type { FormatOptionLabelMeta } from 'react-select';
@@ -14,7 +15,7 @@ interface Option {
 }
 
 const LanguageSelect = () => {
-  const router = useRouter();
+  const router = useCsrRouter();
   const path = usePathname();
   const locale = useLocale();
 
@@ -36,7 +37,7 @@ const LanguageSelect = () => {
   const selectLanguage = (option: Option) => {
     const newLocale = option.value;
     track('Changed language', { from: locale, to: newLocale });
-    router.replace(path, { locale: newLocale, scroll: false, showProgress: false });
+    router.replace(path, { locale: newLocale, scroll: false, showProgress: false, retainSearchParams: ['chainId'] });
     persistLocaleCookie(newLocale);
   };
 
@@ -56,8 +57,7 @@ const LanguageSelect = () => {
       instanceId="language-select"
       aria-label="Select Language"
       className="w-32"
-      controlTheme="dark"
-      menuTheme="dark"
+      theme="dark"
       value={options.find((option) => option.value === locale)}
       options={options}
       onChange={(option) => selectLanguage(option!)}

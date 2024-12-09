@@ -1,21 +1,21 @@
 {
   "captions": {
-    "revoke-shirt": "First Edition Revoke T-shirt"
+    "revoke-shirt": "第一版 Revoke T 恤"
   },
   "meta": {
-    "description": "Claim your high quality Revoke.cash merchandise at in-person events.",
-    "title": "Revoke.cash Merchandise"
+    "description": "在现场活动中领取优质 Revoke.cash 商品。",
+    "title": "Revoke.cash 商品"
   },
   "sections": {
     "claiming": {
-      "content": "Leading up to Devcon 7 we generated unique codes for our users. These codes were given to users who used our Batch Revoke functionality. They could then be used to claim your t-shirt in person from the Revoke team at the event.",
-      "content-2": "We don't have concrete plans for future merchandise, but we will update this page and announce on our social media when we do. Similar to the first edition, we will be giving them out at events that we attend, and they will have a claim process linked to usage of our product. Let us know if you have anything on your wishlist for future merch!",
-      "title": "Claiming Merchandise & Future Plans"
+      "content": "在以太坊开发者大会（Devcon 7）举办之际，我们为使用 Batch Revoke 功能的用户准生成了唯一代码，可在现场活动中凭借代码向 Revoke 团队领取 T 恤。",
+      "content-2": "我们没有关于未来商品的具体计划，不过会持续更新此页面。如有更新，也会在社交媒体上同步。与之前类似，我们将在参加的活动中现场分发商品，根据用户对 Revoke 产品的使用情况，将有相应的领取流程。如果您有任何关于未来商品的期望或建议，请与我们联系！",
+      "title": "领取商品 & 未来计划"
     },
     "intro": {
-      "content": "We believe in sustainability, which is why we do not want to produce merchandise that will end up in landfills. Instead, we are producing limited runs of high-quality Revoke.cash merchandise. Doing so, we want to produce something that can be worn every day and is not overly recognizable as crypto merch.",
-      "content-2": "Since these are limited runs, we are only giving these out to our users at crypto events that we attend. Our inaugural collection are high-quality Revoke t-shirts that were given out at Devcon 7 in Bangkok, Thailand."
+      "content": "我们坚持可持续性发展，不想生产最终会被填埋的商品，因此我们正在限量生产高质量的 Revoke.cash 商品。我们希望通过这么做，生产出可以每天穿着并且不那么容易被识别为加密商品相关的东西。",
+      "content-2": "这些都是限量发行，我们只会在我们参加的加密代币活动中向用户发放。我们的首批商品是高品质的 Revoke T 恤，将在泰国曼谷的 Devcon 7 上发放。"
     }
   },
-  "title": "Revoke.cash Merchandise"
+  "title": "Revoke.cash 商品"
 }

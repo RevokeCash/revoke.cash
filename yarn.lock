@@ -2123,10 +2123,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^54.0.0":
-  version: 54.0.0
-  resolution: "@revoke.cash/chains@npm:54.0.0"
-  checksum: 6e0dcb73a4e84a01c98a8863b5b20e89a225fde39310efe5848d1e53bb5c5c9bf8ba2050d5ec3e78611532a5bc5eb49d052d707c46d923b3f139d8abad866fb0
+"@revoke.cash/chains@npm:^56.0.0":
+  version: 56.0.0
+  resolution: "@revoke.cash/chains@npm:56.0.0"
+  checksum: 0aa5a203cc97cc0c67bf80dad0357e1c1d38c63ab4ade638a2c0494f61cdfc9193dc54d2e1fe883a9204847c0fc965cb3e588b6e6476222ab624e09adb91bacd
   languageName: node
   linkType: hard
 
@@ -9935,7 +9935,7 @@ __metadata:
     "@lavamoat/allow-scripts": ^3.2.0
     "@localazy/cli": ^1.7.14
     "@neondatabase/serverless": ^0.10.1
-    "@revoke.cash/chains": ^54.0.0
+    "@revoke.cash/chains": ^56.0.0
     "@tailwindcss/typography": ^0.5.14
     "@tanstack/query-sync-storage-persister": ^5.52.0
     "@tanstack/react-query": ^5.52.0

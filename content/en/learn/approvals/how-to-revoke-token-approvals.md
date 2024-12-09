@@ -25,7 +25,7 @@ After the loading is finished, you will see a list of all the token approvals yo
 
 After applying these options, you can find the approval you want to revoke and click the _Revoke_ button (7). Alternatively, it's also possible to update the approval to a different amount by clicking the pencil icon next to the approved amount (6). This can be useful if you want to reduce your risk, but still need the approval in the future.
 
-![Revoke.cash](/assets/images/learn/approvals/how-to-revoke-token-approvals/revoke-cash.png)
+::img{src="/assets/images/learn/approvals/how-to-revoke-token-approvals/revoke-cash.png" alt="Revoke.cash" width="2560" height="1414"}
 
 If you prefer learning through video content, our friend [WiiMee](https://twitter.com/Wii_Mee) has created an excellent video tutorial on how to use Revoke.cash. If you want to read more from other sources, [Bankless Academy](https://app.banklessacademy.com/lessons/managing-token-allowances) has also written a great article on the topic.
 
@@ -41,7 +41,7 @@ After loading you will see a list of all token approvals for your selected token
 
 If you want to revoke token approvals on other chains like BNB Chain or Polygon, you can use the same process, but you have to navigate to the respective block explorer for that chain, like BscScan or Polygonscan.
 
-![Etherscan](/assets/images/learn/approvals/how-to-revoke-token-approvals/etherscan.png)
+::img{src="/assets/images/learn/approvals/how-to-revoke-token-approvals/etherscan.png" alt="Etherscan" width="2560" height="1414"}
 
 Again our friend [WiiMee](https://twitter.com/Wii_Mee) has created a video tutorial on how to use Etherscan to revoke token approvals if you prefer learning by video.
 

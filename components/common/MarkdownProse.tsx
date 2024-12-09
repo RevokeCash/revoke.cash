@@ -1,4 +1,5 @@
-import ReactMarkdown, { type Components } from 'react-markdown';
+import Image from 'next/image';
+import ReactMarkdown, { Components } from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -51,6 +52,21 @@ const MarkdownProse = ({ content, className }: Props) => {
     // We create a custom component for YouTube videos because we want to use the lite-youtube-embed package
     'youtube-video': (props: any) => {
       return <YouTubeEmbed {...props} />;
+    },
+    img: ({ src, alt, width, height }) => {
+      if (!width || !height) {
+        return (
+          <p>
+            <img src={src!} alt={alt ?? src!} />
+          </p>
+        );
+      }
+
+      return (
+        <p>
+          <Image src={src!} alt={alt ?? src!} width={width as any} height={height as any} />
+        </p>
+      );
     },
     // <pre> is handled by the code component (SyntaxHighlighter)
     pre: ({ children }) => <>{children}</>,

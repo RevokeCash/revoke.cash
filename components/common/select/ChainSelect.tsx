@@ -67,8 +67,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       aria-label="Select Network"
       size="md"
       className="shrink-0"
-      controlTheme={darkMode ? 'dark' : 'light'}
-      menuTheme={darkMode ? 'dark' : 'light'}
+      theme={darkMode ? 'dark' : 'light'}
       value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={chainIds ? mainnetOptions : groups}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}

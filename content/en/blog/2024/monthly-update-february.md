@@ -16,7 +16,7 @@ It's been close to a year since we launched the Signatures Dashboard, and over t
 
 The difficulty with the Signatures Dashboard is that it's a complex topic and it's hard to explain in a way that's easy to understand. With the biggest issue being that signatures are offchain, which means that we can never show a completely accurate picture of which signatures need to be cancelled.
 
-![Signatures Dashboard Improvements](/assets/images/blog/2024/monthly-update-february/signatures-dashboard.png)
+::img{src="/assets/images/blog/2024/monthly-update-february/signatures-dashboard.png" alt="Signatures Dashboard Improvements" width="2552" height="1530"}
 
 Unfortunately we cannot solve the issue of communicating which signatures need to be cancelled, but we can hopefully show more insight in which don't need to be cancelled (again). Due to the offchain nature of signatures, we can never be 100% sure whether someone has signed a signature since their last cancellation, but we can show the last time a signature was cancelled. This is what we've added to the Signatures Dashboard in February.
 
@@ -47,8 +47,8 @@ In February we saw two big exploits. In the Seneca Hack, over $6M in user funds 
 
 We created an exploit checker for this exploit so you can see if you're affected below.
 
-- [Concentric Hack](/exploits/concentric)
 - [Seneca Hack](/exploits/seneca)
+- [Concentric Hack](/exploits/concentric)
 
 ## New Supported Networks
 

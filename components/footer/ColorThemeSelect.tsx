@@ -35,8 +35,7 @@ const ColorThemeSelect = () => {
       instanceId="color-theme-select"
       aria-label="Select Color Theme"
       className="w-32"
-      controlTheme="dark"
-      menuTheme="dark"
+      theme="dark"
       value={options.find((option) => option.value === theme)}
       options={options}
       onChange={(option) => selectTheme(option!)}

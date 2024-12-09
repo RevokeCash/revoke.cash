@@ -72,7 +72,12 @@ export class Chain {
 
   getSlug(): string {
     const chainName = this.getName();
-    return chainName.toLowerCase().replace(' (unsupported)', '').replace(/\s/g, '-').replace(/\./g, '-');
+    return chainName
+      .toLowerCase()
+      .replace(' (unsupported)', '')
+      .replace(/\s/g, '-')
+      .replace(/\./g, '-')
+      .replace(/zerθ/g, 'zero');
   }
 
   isTestnet(): boolean {

@@ -23,7 +23,7 @@ translator: Andrei Kalpovski | https://github.com/kalpovskii
 
 Например, если вы хотите дать разрешение децентрализованной бирже (DEX) потратить 1000 USDC от вашего имени, вы должны вызвать `approve()` следующим образом:
 
-![Approve USDC](/assets/images/learn/approvals/what-are-token-approvals/erc20-approve.png)
+::img{src="/assets/images/learn/approvals/what-are-token-approvals/erc20-approve.png" alt="Approve USDC" width="1152" height="714"}
 
 ### NFT Апрувы (Approvals)
 
@@ -35,7 +35,7 @@ translator: Andrei Kalpovski | https://github.com/kalpovskii
 
 Например, если вы хотите дать разрешение OpenSea на передачу вашего Pudgy Penguin с ID 4420 от вашего имени, вы должны вызвать `approve()` следующим образом:
 
-![Approve Pudgy Penguins 4420](/assets/images/learn/approvals/what-are-token-approvals/erc721-approve.png)
+::img{src="/assets/images/learn/approvals/what-are-token-approvals/erc721-approve.png" alt="Approve Pudgy Penguins 4420" width="1146" height="508"}
 
 #### Неограниченные апрувы NFT (Unlimited Approvals)
 
@@ -43,7 +43,7 @@ translator: Andrei Kalpovski | https://github.com/kalpovskii
 
 Например, если вы хотите дать апрув OpenSea на передачу любого вашего NFT от вашего имени, вы должны вызвать `setApprovalForAll()` следующим образом:
 
-![Approve All Pudgy Penguins](/assets/images/learn/approvals/what-are-token-approvals/erc721-setApprovalForAll.png)
+::img{src="/assets/images/learn/approvals/what-are-token-approvals/erc721-setApprovalForAll.png" alt="Approve All Pudgy Penguins" width="1150" height="498"}
 
 ### Апрувы полувзаимозаменяемых токенов (Semi-Fungible)
 

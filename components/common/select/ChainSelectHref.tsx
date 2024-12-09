@@ -1,7 +1,7 @@
 'use client';
 
 import ChainLogo from 'components/common/ChainLogo';
-import { useRouter } from 'lib/i18n/navigation';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { memo } from 'react';
@@ -26,7 +26,7 @@ interface Props {
 // This component is designed to match the styling of the ChainSelect component, but with links instead
 const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, showNames }: Props) => {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useCsrRouter();
 
   const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
     value: getChainName(chainId),

@@ -1,10 +1,11 @@
 'use client';
 
-import { usePathname, useRouter } from 'lib/i18n/navigation';
-import { ORDERED_CHAINS, createViemPublicClientForChain, getViemChainConfig } from 'lib/utils/chains';
-import { type ReactNode, useEffect } from 'react';
-import type { Chain } from 'viem';
-import { WagmiProvider, createConfig, useAccount, useConnect } from 'wagmi';
+import { useCsrRouter } from 'lib/i18n/csr-navigation';
+import { usePathname } from 'lib/i18n/navigation';
+import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
+import { ReactNode, useEffect } from 'react';
+import { Chain } from 'viem';
+import { createConfig, useAccount, useConnect, WagmiProvider } from 'wagmi';
 import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
 
 interface Props {
@@ -49,7 +50,7 @@ export const EthereumProvider = ({ children }: Props) => {
 const EthereumProviderChild = ({ children }: Props) => {
   const { connectAsync, connectors } = useConnect();
   const { connector } = useAccount();
-  const router = useRouter();
+  const router = useCsrRouter();
   const pathName = usePathname();
 
   // If the Safe connector is available, connect to it even if other connectors are available
@@ -64,7 +65,7 @@ const EthereumProviderChild = ({ children }: Props) => {
     connectAsync({ connector: safeConnector })
       .then(({ accounts: [account] }) => {
         if (pathName === '/') {
-          router.push(`/address/${account}${location.search}`);
+          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);
@@ -81,7 +82,7 @@ const EthereumProviderChild = ({ children }: Props) => {
     connectAsync({ connector: injectedConnector })
       .then(({ accounts: [account] }) => {
         if (pathName === '/') {
-          router.push(`/address/${account}${location.search}`);
+          router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
         }
       })
       .catch(console.error);

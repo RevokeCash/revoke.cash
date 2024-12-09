@@ -22,7 +22,7 @@ The 30 Days of Web3 challenge extends into February so we hope to merge a few mo
 
 In November we participated in the Optimism RetroPGF grants program. Hundreds of projects applied and over 100 separate judges (or badgeholders) reviewed the applications to allocate the grants. We ended up in the top 50 of all projects and we received a grant of close to 150k OP tokens.
 
-![Optimism RetroPGF Grant](/assets/images/blog/2024/monthly-update-january/optimism-retropgf.jpg)
+::img{src="/assets/images/blog/2024/monthly-update-january/optimism-retropgf.jpg" alt="Optimism RetroPGF Grant" width="1600" height="900"}
 
 Programs like Optimism RetroPGF are a huge blessing to free and open source public goods projects like ours. We're very grateful for the support and this grant will help us to continue building Revoke.cash while keeping it free for everyone to use.
 

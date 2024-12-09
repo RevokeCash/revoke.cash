@@ -26,7 +26,7 @@ One additional benefit of Permit2 is that it also adds an expiration time to app
 
 While Permit2 does have important benefits it is also important to note that it also introduces some new security risks compared to regular approvals or EIP2612 Permit signatures.
 
-![Permit2 Batch MetaMask Popup](/assets/images/learn/approvals/what-is-permit2/permit-batch.png)
+::img{src="/assets/images/learn/approvals/what-is-permit2/permit-batch.png" alt="Permit2 Batch MetaMask Popup" width="1024" height="598"}
 
 The Permit2 system is very flexible and allows for granting approvals for multiple tokens at once. Because of this flexibility, it is harder for users to understand what they are approving. This can be abused by phishing websites to trick users into granting approvals that they don't understand.
 
@@ -38,4 +38,4 @@ When talking about Permit2 Approvals, there are two things to consider. First is
 
 The second thing to consider is the actual _Permit2 approvals_ that the Permit2 contract grants on your behalf. Oftentimes these approvals will have an expiration time that should not be too far in the future, so you can consider letting them expire automatically. If the expiration is too far in the future, you can still revoke or update the approval manually using Revoke.cash.
 
-![Permit2 Approvals on Revoke.cash](/assets/images/learn/approvals/what-is-permit2/permit2-approvals.png)
+::img{src="/assets/images/learn/approvals/what-is-permit2/permit2-approvals.png" alt="Permit2 Approvals on Revoke.cash" width="1751" height="986"}

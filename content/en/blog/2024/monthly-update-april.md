@@ -12,9 +12,9 @@ April was a month of cleaning up and refactoring. While we already did significa
 
 ## Removed Wallet Health Score
 
-We added the Wallet Health Score in collaboration with Nefture last September, but this month we made the decision to remove it. The main reason for this decision is that we believe that in its current iteration, the Wallet Health score raises more questions than it answers with our user.
+We added the Wallet Health Score in collaboration with Nefture last September, but this month we made the decision to remove it. The main reason for this decision is that we believe that in its current iteration, the Wallet Health score raises more questions than it answers.
 
-We do believe that providing these kinds of insights is very important, however. That is why we're working on a replacement that will provide more actionable insights for individual token approvals. We believe that iterating and experimenting with these kinds of features is important to find the right solution, so we do not regret trying out the Wallet Health Score, and we hope we can offer something new soon.
+We do believe that providing these kinds of insights is very important. That is why we're working on a replacement that will provide more actionable insights for individual token approvals. We believe that iterating and experimenting with these kinds of features is important to find the right solution, so we do not regret trying out the Wallet Health Score, and we hope we can offer something new soon.
 
 ## Removed Sponsors Section
 
