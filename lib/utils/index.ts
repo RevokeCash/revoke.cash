@@ -15,7 +15,7 @@ import {
   WalletClient,
   WriteContractParameters,
 } from 'viem';
-import { track } from './analytics';
+import { analytics } from './analytics';
 import type { Log, TokenEvent } from './events';
 
 export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
@@ -123,7 +123,7 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
 
     // Track excessive gas usage so we can blacklist tokens
     // TODO: Use a different tool than analytics for this
-    track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
+    analytics.track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
 
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',

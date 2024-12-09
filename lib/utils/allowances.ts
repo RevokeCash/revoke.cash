@@ -6,7 +6,7 @@ import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { TransactionStore } from 'lib/stores/transaction-store';
 import { type Address, formatUnits, type PublicClient, type WalletClient, type WriteContractParameters } from 'viem';
 import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
-import { track } from './analytics';
+import { analytics } from './analytics';
 import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
 import {
   Erc20ApprovalEvent,
@@ -510,7 +510,7 @@ const trackTransaction = (allowance: TokenAllowanceData, hash: string, newAmount
   if (!hash) return;
 
   if (isErc721Contract(allowance.contract)) {
-    track('Revoked ERC721 allowance', {
+    analytics.track('Revoked ERC721 allowance', {
       chainId: allowance.chainId,
       account: allowance.owner,
       spender: allowance.payload?.spender,
@@ -519,7 +519,7 @@ const trackTransaction = (allowance: TokenAllowanceData, hash: string, newAmount
     });
   }
 
-  track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
+  analytics.track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
     chainId: allowance.chainId,
     account: allowance.owner,
     spender: allowance.payload?.spender,

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import DonateModal, { DonateButtonType } from './DonateModal';
 
 interface Props {
-  size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
+  size?: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
   type: DonateButtonType;
@@ -30,7 +30,7 @@ const DonateButton = ({ size, style, className, type }: Props) => {
         {t('common.buttons.donate')}
       </Button>
 
-      <DonateModal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())} type={type} />
+      {open && <DonateModal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())} type={type} />}
     </>
   );
 };
