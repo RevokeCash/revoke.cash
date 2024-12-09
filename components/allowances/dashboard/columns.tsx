@@ -80,6 +80,12 @@ export const accessors = {
     if (isNullish(allowance.metadata.price)) return 0.01;
     return calculateValueAtRisk(allowance);
   },
+  spender: (allowance: TokenAllowanceData) => {
+    return allowance.payload?.spender;
+  },
+  timestamp: (allowance: TokenAllowanceData) => {
+    return allowance.payload?.lastUpdated?.timestamp;
+  },
 };
 
 export const customSortingFns = {
@@ -178,7 +184,7 @@ export const columns = [
     sortingFn: sortingFns.basic,
     sortUndefined: 'last',
   }),
-  columnHelper.accessor('payload.spender', {
+  columnHelper.accessor(accessors.spender, {
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
@@ -186,7 +192,7 @@ export const columns = [
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,
   }),
-  columnHelper.accessor('payload.lastUpdated.timestamp', {
+  columnHelper.accessor(accessors.timestamp, {
     id: ColumnId.LAST_UPDATED,
     header: () => <HeaderCell i18nKey="address.headers.last_updated" />,
     cell: (info) => (

@@ -40,7 +40,7 @@ export const usePermit2Events = (address: Address, chainId: number) => {
     if (!permit || !approval || !lockdown) return undefined;
     if (error || isLoading) return undefined;
     return [...approval, ...permit, ...lockdown];
-  }, [permit, approval, lockdown]);
+  }, [permit, approval, lockdown, error, isLoading]);
 
   return { events, isLoading, error };
 };

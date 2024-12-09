@@ -36,12 +36,12 @@ export const generateOgImage = ({ title, background }: OgImageProps) => {
     });
   }
 
-  const icon = loadDataUrl(`public/assets/images/revoke-icon-orange-black.svg`, 'image/svg+xml');
+  const icon = loadDataUrl('public/assets/images/revoke-icon-orange-black.svg', 'image/svg+xml');
 
   const response = (
     <div tw="relative bg-white w-full h-full flex flex-col text-4xl leading-none items-center justify-center">
-      <img tw="absolute" height={height} width={width} src={background} />
-      <img tw="absolute top-10 left-10" height="96" width="96" src={icon} />
+      <img tw="absolute" height={height} width={width} src={background} alt="Background" />
+      <img tw="absolute top-10 left-10" height="96" width="96" src={icon} alt="Revoke icon" />
       {title ? (
         <div style={{ display: 'flex', top: 192 }}>
           <OgHeaderText>{title}</OgHeaderText>

@@ -198,7 +198,7 @@ export class Chain {
       },
       blockExplorers: {
         default: {
-          name: chainName + ' Explorer',
+          name: `${chainName} Explorer`,
           url: this.getExplorerUrl(),
         },
       },

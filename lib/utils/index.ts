@@ -192,3 +192,5 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 
   return { ...riskData, riskFactors: [...riskFactors, ...exploitRiskFactors] };
 };
+
+export const range = (length: number) => Array.from({ length }, (_, i) => i);

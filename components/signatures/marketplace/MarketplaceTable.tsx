@@ -28,8 +28,8 @@ const MarketplaceTable = () => {
     getRowId(row) {
       return `${row.name}`;
     },
-    // TODO: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any
-    // See https://github.com/TanStack/table/discussions/4220
+
+    // biome-ignore lint/suspicious/noExplicitAny: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
     meta: { onCancel } as any,
   });
 

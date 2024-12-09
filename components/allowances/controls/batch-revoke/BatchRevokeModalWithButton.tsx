@@ -20,6 +20,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
   const [open, setOpen] = useState(false);
   const { address, selectedChainId } = useAddressPageContext();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we only want to run this when the modal is opened
   const selectedAllowances = useMemo(() => {
     return table.getGroupedSelectedRowModel().flatRows.map((row) => row.original);
   }, [open]);
@@ -31,7 +32,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   useEffect(() => {
     if (!open) pause();
-  }, [open]);
+  }, [open, pause]);
 
   const totalRevoked = Object.values(results).filter((result) => result.status === 'confirmed').length;
   const totalReverted = Object.values(results).filter((result) => result.status === 'reverted').length;

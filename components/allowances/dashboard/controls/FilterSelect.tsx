@@ -70,7 +70,7 @@ const FilterSelect = ({ table }: Props) => {
     const tableFilters = generateTableFilters(options, selectedFilters);
     const ignoreIds = [ColumnId.SPENDER];
     updateTableFilters(table, tableFilters, ignoreIds);
-  }, [selectedFilters]);
+  }, [table, selectedFilters]);
 
   const displayOption = (option: Option, { selectValue }: FormatOptionLabelMeta<Option>) => {
     return (

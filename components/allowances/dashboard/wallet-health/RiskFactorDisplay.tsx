@@ -47,7 +47,7 @@ const RiskFactorDisplay = ({ riskFactor }: Props) => {
 
   const source = SOURCES[riskFactor.source];
 
-  const sourceDisplay = t.rich(`address.risk_factors.source`, {
+  const sourceDisplay = t.rich('address.risk_factors.source', {
     source: source?.name ?? riskFactor.source,
     'source-link': (children) =>
       source?.url ? (

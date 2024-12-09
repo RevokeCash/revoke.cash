@@ -83,9 +83,10 @@ const MarkdownProse = ({ content, className }: Props) => {
           customStyle={{ marginTop: '1.25em', marginBottom: '1.25em' }}
           style={dracula}
           language={language}
-          children={String(children).replace(/\n$/, '')}
           {...props}
-        />
+        >
+          {String(children).replace(/\n$/, '')}
+        </SyntaxHighlighter>
       );
     },
   };
@@ -93,11 +94,12 @@ const MarkdownProse = ({ content, className }: Props) => {
   return (
     <Prose className={className}>
       <ReactMarkdown
-        children={content}
         components={components}
         remarkPlugins={[remarkGfm, remarkDirective, remarkDirectiveRehype]}
         skipHtml
-      />
+      >
+        {content}
+      </ReactMarkdown>
     </Prose>
   );
 };

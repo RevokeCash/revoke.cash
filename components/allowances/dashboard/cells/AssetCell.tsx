@@ -13,17 +13,18 @@ interface Props {
 }
 
 const AssetCell = ({ asset }: Props) => {
-  const ref = useRef<any>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
   // This is pretty hacky, but it works to detect that we're on the address page, so single chain usage
   const isOnAddressPage = typeof window !== 'undefined' && window.location.pathname.includes('/address/');
 
   useLayoutEffect(() => {
+    if (!ref.current) return;
     if (ref.current.clientWidth < ref.current.scrollWidth) {
       setShowTooltip(true);
     }
-  }, [ref]);
+  }, []);
 
   const explorerUrl = `${getChainExplorerUrl(asset.chainId)}/address/${asset.contract.address}`;
 

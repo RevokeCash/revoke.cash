@@ -8,7 +8,7 @@ import {
   wrapRevoke,
 } from 'lib/utils/allowances';
 import PQueue from 'p-queue';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore } from '../../stores/transaction-store';
@@ -47,18 +47,21 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     ]);
   });
 
-  const pause = () => {
+  const pause = useCallback(() => {
     REVOKE_QUEUE.clear();
-  };
+  }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const relevantResults = useMemo(() => {
     return Object.fromEntries(allowances.map((allowance) => [getAllowanceKey(allowance), getTransaction(allowance)]));
   }, [allowances, results]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const isRevoking = useMemo(() => {
     return allowances.some((allowance) => getTransaction(allowance).status === 'pending');
   }, [allowances, results]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const isAllConfirmed = useMemo(() => {
     return allowances.every((allowance) => getTransaction(allowance).status === 'confirmed');
   }, [allowances, results]);

@@ -33,7 +33,7 @@ const SortSelect = ({ table }: Props) => {
   useEffect(() => {
     if (!selectedSort) return;
     table.setSorting(() => [selectedSort]);
-  }, [selectedSort]);
+  }, [table, selectedSort]);
 
   const options: Option[] = useMemo(() => {
     return table
@@ -45,7 +45,7 @@ const SortSelect = ({ table }: Props) => {
       ]);
   }, [table]);
 
-  const displayOption = ({ column, desc }: Option, { context }: any) => {
+  const displayOption = ({ column, desc }: Option, { context }: { context: 'menu' | 'value' }) => {
     const sortingFnDisplays = {
       [sortingFns.basic.name]: {
         asc: t('address.sorting.fns.number.asc'),
@@ -75,7 +75,7 @@ const SortSelect = ({ table }: Props) => {
 
     return (
       <div className="flex items-center gap-2">
-        {context !== 'menu' && <div>{t('address.sorting.label')}</div>}
+        <div>{t('address.sorting.label')}</div>
         {isMounted && <Label className="flex items-center gap-1 bg-zinc-300 dark:bg-zinc-600">{sortDisplay}</Label>}
       </div>
     );

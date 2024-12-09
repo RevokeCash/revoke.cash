@@ -137,11 +137,11 @@ export const getAllowancesForToken = async (
     const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(contract, userAddress, events);
     const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, events);
     return [...limitedAllowances, ...unlimitedAllowances];
-  } else {
-    const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events);
-    const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events);
-    return [...regularAllowances, ...permit2Allowances];
   }
+
+  const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events);
+  const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events);
+  return [...regularAllowances, ...permit2Allowances];
 };
 
 export const getErc20AllowancesFromApprovals = async (
@@ -491,18 +491,18 @@ export const prepareUpdateErc20Allowance = async (
 
       const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
       return { ...transactionRequest, gas };
-    } else {
-      console.debug(`Calling contract.decreaseAllowance(${allowance.payload.spender}, ${-differenceAmount})`);
-
-      const transactionRequest = {
-        ...baseRequest,
-        functionName: 'decreaseAllowance' as const,
-        args: [allowance.payload.spender, -differenceAmount] as const,
-      };
-
-      const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
-      return { ...transactionRequest, gas };
     }
+
+    console.debug(`Calling contract.decreaseAllowance(${allowance.payload.spender}, ${-differenceAmount})`);
+
+    const transactionRequest = {
+      ...baseRequest,
+      functionName: 'decreaseAllowance' as const,
+      args: [allowance.payload.spender, -differenceAmount] as const,
+    };
+
+    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    return { ...transactionRequest, gas };
   }
 };
 

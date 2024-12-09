@@ -116,4 +116,5 @@ const Button = (
   );
 };
 
-export default forwardRef(Button);
+// biome-ignore lint/suspicious/noExplicitAny: For some reason, forwardRef typing is not working here
+export default forwardRef<HTMLElement, Props>(Button as any);

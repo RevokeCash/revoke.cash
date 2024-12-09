@@ -1,0 +1,10 @@
+{
+  "i18n-ally.localesPaths": ["locales", "lib/i18n"],
+  "i18n-ally.namespace": true,
+  "i18n-ally.keystyle": "nested",
+  "biome.enabled": true,
+  "[typescript][javascript][typescriptreact][javascriptreact][html][css][json][jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "editor.formatOnSave": true
+}

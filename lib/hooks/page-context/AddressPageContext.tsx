@@ -49,6 +49,7 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 
   // Note: We use useLayoutEffect here, because this is the only setup that works with the "spenderSearch" query param as well
+  // biome-ignore lint/correctness/useExhaustiveDependencies(path): We don't want this to re-run when path changes
   useLayoutEffect(() => {
     if (selectedChainId && searchParams.get('chainId') !== selectedChainId.toString()) {
       const newSearchParams = new URLSearchParams(Array.from(searchParams.entries()));

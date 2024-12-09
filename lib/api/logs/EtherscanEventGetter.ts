@@ -37,7 +37,7 @@ export class EtherscanEventGetter implements EventGetter {
       );
     } catch (e) {
       console.log(e);
-      console.log(apiUrl + '?' + new URLSearchParams(searchParams).toString());
+      console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
       throw new Error('Could not retrieve event logs from the blockchain');
     }
 

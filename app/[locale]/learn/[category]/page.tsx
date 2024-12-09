@@ -59,7 +59,7 @@ const LearnSectionPage: NextPage<Props> = async ({ params }: Props) => {
         </p>
         {sidebar.map((entry) =>
           entry.path === `/learn/${params.category}` ? (
-            <ArticleCardSection key={entry.title} children={entry.children} />
+            <ArticleCardSection key={entry.title}>{entry.children}</ArticleCardSection>
           ) : null,
         )}
       </Prose>

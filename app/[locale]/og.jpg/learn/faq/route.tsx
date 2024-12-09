@@ -21,8 +21,8 @@ export const generateStaticParams = () => {
 export async function GET(req: Request, { params }: Props) {
   const t = await getTranslations({ locale: params.locale });
 
-  const title = t(`faq.meta.title`);
-  const background = loadDataUrl(`public/assets/images/learn/faq/cover.jpg`, 'image/jpeg');
+  const title = t('faq.meta.title');
+  const background = loadDataUrl('public/assets/images/learn/faq/cover.jpg', 'image/jpeg');
 
   return generateOgImage({ title, background });
 }

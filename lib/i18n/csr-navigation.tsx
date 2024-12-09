@@ -1,10 +1,10 @@
 'use client';
 
+import type { UrlObject } from 'url';
 import type { Nullable } from 'lib/interfaces';
 import { type ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import nProgress from 'nprogress';
 import { type ComponentProps, type ForwardedRef, forwardRef } from 'react';
-import type { UrlObject } from 'url';
 import { Link, useRouter } from './navigation';
 
 const getHrefRetainingCurrentSearchParams = (

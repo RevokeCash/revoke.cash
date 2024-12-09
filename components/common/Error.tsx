@@ -16,7 +16,7 @@ const Error = ({ error }: Props) => {
 
   useEffect(() => {
     console.log(error);
-  }, []);
+  }, [error]);
 
   const chainName = getChainName(selectedChainId);
   const chainConnectionMessage = t('common.errors.messages.chain_could_not_connect', { chainName });

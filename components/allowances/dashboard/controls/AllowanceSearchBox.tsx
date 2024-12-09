@@ -40,7 +40,7 @@ const AllowanceSearchBox = ({ table }: Props) => {
     const tableFilters = tableFilter.value.length > 0 ? [tableFilter] : [];
     const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
     updateTableFilters(table, tableFilters, ignoreIds);
-  }, [searchValues]);
+  }, [table, searchValues]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const values = event.target.value.trim().split(',');

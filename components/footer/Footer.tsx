@@ -95,9 +95,7 @@ const FooterSection = ({ heading, children }: FooterSectionProps) => {
   return (
     <div className="mt-8 flex flex-col gap-4">
       <h3 className="text-sm font-semibold leading-6 text-zinc-100">{heading}</h3>
-      <ul role="list" className="space-y-2">
-        {children}
-      </ul>
+      <ul className="space-y-2">{children}</ul>
     </div>
   );
 };

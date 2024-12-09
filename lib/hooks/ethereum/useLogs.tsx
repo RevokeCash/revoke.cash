@@ -25,7 +25,7 @@ export const useLogs = (name: string, chainId: number, filter?: Filter) => {
 
   useEffect(() => {
     if (result.data) console.log(`${name} events`, result.data);
-  }, [result.data]);
+  }, [result.data, name]);
 
   const error = loginError ? new Error('Failed to create API session') : result.error;
 
