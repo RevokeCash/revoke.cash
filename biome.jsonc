@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": [".next", ".yarn", "public/assets", ".vercel"]
+    "ignore": [".next", ".yarn", "public/assets", ".vercel", "package.json"]
   },
   "formatter": {
     "enabled": true,

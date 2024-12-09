@@ -123,8 +123,12 @@
     }
   },
   "mocha": {
-    "node-option": ["import=tsx"],
-    "require": ["dotenv/config"],
+    "node-option": [
+      "import=tsx"
+    ],
+    "require": [
+      "dotenv/config"
+    ],
     "timeout": 10000
   },
   "resolutions": {
