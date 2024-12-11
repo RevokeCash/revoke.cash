@@ -1,5 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { TransactionSubmitted } from 'lib/interfaces';
+import ky from 'lib/ky';
 import type { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
@@ -194,3 +195,10 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 };
 
 export const range = (length: number) => Array.from({ length }, (_, i) => i);
+
+export const apiLogin = async () => {
+  return ky
+    .post('/api/login')
+    .json<any>()
+    .then((res) => !!res?.ok);
+};

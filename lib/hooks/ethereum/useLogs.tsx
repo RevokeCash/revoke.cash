@@ -3,7 +3,6 @@ import eventsDB from 'lib/databases/events';
 import { getLogsProvider } from 'lib/providers';
 import { isNullish } from 'lib/utils';
 import type { Filter, Log } from 'lib/utils/events';
-import { useEffect } from 'react';
 import { useApiSession } from '../useApiSession';
 
 export const useLogs = (name: string, chainId: number, filter?: Filter) => {
@@ -11,7 +10,7 @@ export const useLogs = (name: string, chainId: number, filter?: Filter) => {
 
   const result = useQuery<Log[], Error>({
     queryKey: ['logs', filter, chainId, isLoggedIn],
-    queryFn: async () => eventsDB.getLogs(getLogsProvider(chainId), filter!, chainId),
+    queryFn: async () => eventsDB.getLogs(getLogsProvider(chainId), filter!, chainId, name),
     refetchOnWindowFocus: false,
     // The same filter should always return the same logs
     staleTime: Number.POSITIVE_INFINITY,
@@ -22,10 +21,6 @@ export const useLogs = (name: string, chainId: number, filter?: Filter) => {
       !isNullish(filter?.toBlock) &&
       !isNullish(filter?.topics),
   });
-
-  useEffect(() => {
-    if (result.data) console.log(`${name} events`, result.data);
-  }, [result.data, name]);
 
   const error = loginError ? new Error('Failed to create API session') : result.error;
 

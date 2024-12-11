@@ -123,9 +123,9 @@ export const getLastCancelled = async (events: TokenEvent[], token: TokenData): 
 
   if (!lastCancelledEvent) return undefined;
 
-  const timestamp = await blocksDB.getLogTimestamp(token.contract.publicClient, lastCancelledEvent.time);
+  const lastCancelled = await blocksDB.getTimeLog(token.contract.publicClient, lastCancelledEvent.time);
 
-  return { ...lastCancelledEvent.time, timestamp };
+  return lastCancelled;
 };
 
 const isCancelPermitEvent = (event: TokenEvent) => {

@@ -13,9 +13,7 @@ import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
 import { type Address, type Hash, type WalletClient, getAbiItem, toEventSelector } from 'viem';
-import { getBlockNumber } from 'wagmi/actions';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
-import { wagmiConfig } from './EthereumProvider';
 
 export const useMarketplaces = () => {
   const [marketplaces, setMarketplaces] = useState<Marketplace[]>([]);
@@ -115,7 +113,7 @@ export const useMarketplaces = () => {
 
       const blockNumber = await queryClient.ensureQueryData({
         queryKey: ['blockNumber', selectedChainId],
-        queryFn: async () => getBlockNumber(wagmiConfig, { chainId: selectedChainId }).then(Number),
+        queryFn: async () => createViemPublicClientForChain(selectedChainId).getBlockNumber().then(Number),
         // Don't refresh the block number too often to avoid refreshing events too often, to avoid backend API rate limiting
         gcTime: 1 * MINUTE,
         staleTime: 1 * MINUTE,
@@ -135,13 +133,13 @@ export const useMarketplaces = () => {
           staleTime: Number.POSITIVE_INFINITY,
         });
 
-        const lastCancelled = logs?.sort(logSorterChronological)?.at(-1);
-        const timestamp = lastCancelled ? await blocksDB.getLogTimestamp(publicClient, lastCancelled) : undefined;
+        const lastCancelledLog = logs?.sort(logSorterChronological)?.at(-1);
+        const lastCancelled = lastCancelledLog ? await blocksDB.getTimeLog(publicClient, lastCancelledLog) : undefined;
 
         return {
           ...marketplace,
           chainId: selectedChainId,
-          lastCancelled: lastCancelled ? { ...lastCancelled, timestamp } : undefined,
+          lastCancelled,
           allowances: allowances!.filter(
             (allowance) => allowance.payload?.spender === marketplace.approvalFilterAddress,
           ),

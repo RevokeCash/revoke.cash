@@ -36,7 +36,8 @@
           "options": {
             "hooks": [{ "name": "useTransactionStore", "stableResult": true }]
           }
-        }
+        },
+        "noUnusedImports": "warn" // We don't need red squiggly lines for unused imports, but we do want to remove them
       },
       "performance": {
         "noAccumulatingSpread": "warn" // I think this only warrants a warning, as it's not a super big deal in most cases
@@ -48,7 +49,8 @@
       "style": {
         "noInferrableTypes": "off", // I prefer to be explicit about types
         "noNonNullAssertion": "off", // TODO: something to improve later
-        "useNodejsImportProtocol": "off" // Node.js imports seem not te be supported by Next.js
+        "useNodejsImportProtocol": "off", // Node.js imports seem not te be supported by Next.js
+        "useImportType": "warn" // We don't need red squiggly lines for unused imports, but we do want to remove them
       }
     }
   },
