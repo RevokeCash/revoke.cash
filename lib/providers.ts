@@ -3,8 +3,8 @@ import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import {
   createViemPublicClientForChain,
-  getChainConfig,
   getChainLogsRpcUrl,
+  isBackendSupportedChain,
   isCovalentSupportedChain,
 } from './utils/chains';
 import { isLogResponseSizeError } from './utils/errors';
@@ -102,6 +102,11 @@ export class ViemLogsProvider implements LogsProvider {
   }
 }
 
-export const getLogsProvider = (chainId: number): LogsProvider => {
-  return getChainConfig(chainId).getLogsProvider();
+const getUnderlyingLogsProvider = (chainId: number): BackendLogsProvider | ViemLogsProvider => {
+  if (isBackendSupportedChain(chainId)) return new BackendLogsProvider(chainId);
+  return new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId));
+};
+
+export const getLogsProvider = (chainId: number): DivideAndConquerLogsProvider => {
+  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId));
 };

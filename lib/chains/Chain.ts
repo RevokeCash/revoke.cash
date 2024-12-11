@@ -2,7 +2,6 @@ import { getChain } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
 import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import type { PriceStrategy } from 'lib/price/PriceStrategy';
-import { BackendLogsProvider, DivideAndConquerLogsProvider, type LogsProvider, ViemLogsProvider } from 'lib/providers';
 import { isNullish } from 'lib/utils';
 import { SECOND } from 'lib/utils/time';
 import {
@@ -239,14 +238,5 @@ export class Chain {
 
   getBackendPriceStrategy(): PriceStrategy | undefined {
     return this.options.backendPriceStrategy;
-  }
-
-  private getUnderlyingLogsProvider(): BackendLogsProvider | ViemLogsProvider {
-    if (this.type !== SupportType.PROVIDER) return new BackendLogsProvider(this.chainId);
-    return new ViemLogsProvider(this.chainId, this.getLogsRpcUrl());
-  }
-
-  getLogsProvider(): LogsProvider {
-    return new DivideAndConquerLogsProvider(this.getUnderlyingLogsProvider());
   }
 }

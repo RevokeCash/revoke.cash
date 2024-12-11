@@ -1,9 +1,10 @@
 import { ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import eventsDB from 'lib/databases/events';
+import { getLogsProvider } from 'lib/providers';
 import { sortTokenEventsChronologically } from 'lib/utils';
 import { isNullish } from 'lib/utils';
 import { addressToTopic, apiLogin } from 'lib/utils';
-import { type DocumentedChainId, getChainConfig } from 'lib/utils/chains';
+import { type DocumentedChainId, createViemPublicClientForChain } from 'lib/utils/chains';
 import { parseApprovalForAllLog, parseApprovalLog, parsePermit2Log, parseTransferLog } from 'lib/utils/events';
 import { type TokenEvent, generatePatchedAllowanceEvents } from 'lib/utils/events';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
@@ -25,9 +26,8 @@ const ChainOverrides: Record<number, TokenEventsGetter> = {};
 const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
   // Assemble prerequisites
 
-  const chain = getChainConfig(chainId);
-  const publicClient = chain.createViemPublicClient();
-  const logsProvider = chain.getLogsProvider();
+  const publicClient = createViemPublicClientForChain(chainId);
+  const logsProvider = getLogsProvider(chainId);
 
   const [openSeaProxyAddress, fromBlock, toBlock, isLoggedIn] = await Promise.all([
     getOpenSeaProxyAddress(address),
