@@ -6,7 +6,13 @@ import eventsDB from 'lib/databases/events';
 import type { Marketplace, MarketplaceConfig, OnCancel } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
-import { addressToTopic, getWalletAddress, isNullish, logSorterChronological } from 'lib/utils';
+import {
+  addressToTopic,
+  getWalletAddress,
+  isNullish,
+  logSorterChronological,
+  writeContractUnlessExcessiveGas,
+} from 'lib/utils';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import type { TimeLog } from 'lib/utils/events';
 import { mapAsync } from 'lib/utils/promises';
@@ -60,7 +66,7 @@ export const useMarketplaces = () => {
       ],
       approvalFilterAddress: '0x1E0049783F008A0085193E00003D00cd54003c71',
       cancelSignatures: async (walletClient: WalletClient): Promise<Hash> => {
-        return walletClient.writeContract({
+        return writeContractUnlessExcessiveGas(publicClient, walletClient, {
           address: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
           abi: OPENSEA_SEAPORT_ABI,
           account: await getWalletAddress(walletClient),
@@ -83,7 +89,7 @@ export const useMarketplaces = () => {
       chains: [ChainId.EthereumMainnet],
       approvalFilterAddress: '0x2f18F339620a63e43f0839Eeb18D7de1e1Be4DfB',
       cancelSignatures: async (walletClient: WalletClient): Promise<Hash> => {
-        return walletClient.writeContract({
+        return writeContractUnlessExcessiveGas(publicClient, walletClient, {
           address: '0xb2ecfE4E4D61f8790bbb9DE2D1259B9e2410CEA5',
           abi: BLUR_ABI,
           account: await getWalletAddress(walletClient),

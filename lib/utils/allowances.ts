@@ -5,7 +5,13 @@ import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransacti
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import type { TransactionStore } from 'lib/stores/transaction-store';
 import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
-import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
+import {
+  deduplicateArray,
+  estimateContractGas,
+  isNullish,
+  waitForTransactionConfirmation,
+  writeContractUnlessExcessiveGas,
+} from '.';
 import { track } from './analytics';
 import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
 import {
@@ -409,7 +415,7 @@ export const prepareRevokeErc721Allowance = async (
       value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
     };
 
-    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    const gas = await estimateContractGas(allowance.contract.publicClient, transactionRequest);
     return { ...transactionRequest, gas };
   }
 
@@ -422,7 +428,7 @@ export const prepareRevokeErc721Allowance = async (
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   };
 
-  const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+  const gas = await estimateContractGas(allowance.contract.publicClient, transactionRequest);
   return { ...transactionRequest, gas };
 };
 
@@ -474,7 +480,7 @@ export const prepareUpdateErc20Allowance = async (
       args: [allowance.payload.spender, newAmount] as const,
     };
 
-    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    const gas = await estimateContractGas(allowance.contract.publicClient, transactionRequest);
     return { ...transactionRequest, gas };
   } catch (e) {
     if (!isRevertedError(parseErrorMessage(e))) throw e;
@@ -489,7 +495,7 @@ export const prepareUpdateErc20Allowance = async (
         args: [allowance.payload.spender, differenceAmount] as const,
       };
 
-      const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+      const gas = await estimateContractGas(allowance.contract.publicClient, transactionRequest);
       return { ...transactionRequest, gas };
     }
 
@@ -501,7 +507,7 @@ export const prepareUpdateErc20Allowance = async (
       args: [allowance.payload.spender, -differenceAmount] as const,
     };
 
-    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    const gas = await estimateContractGas(allowance.contract.publicClient, transactionRequest);
     return { ...transactionRequest, gas };
   }
 };

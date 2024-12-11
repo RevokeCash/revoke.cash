@@ -1,4 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
+import { DOMAIN_SUFFIX } from 'lib/constants';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import ky from 'lib/ky';
 import type { getTranslations } from 'next-intl/server';
@@ -137,9 +138,16 @@ export const writeContractUnlessExcessiveGas = async (
   walletClient: WalletClient,
   transactionRequest: WriteContractParameters,
 ) => {
-  const estimatedGas = transactionRequest.gas ?? (await publicClient.estimateContractGas(transactionRequest));
+  const transactionRequestWithDataSuffix = { ...transactionRequest, dataSuffix: DOMAIN_SUFFIX };
+  const estimatedGas =
+    transactionRequest.gas ?? (await publicClient.estimateContractGas(transactionRequestWithDataSuffix));
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
-  return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
+  return walletClient.writeContract({ ...transactionRequestWithDataSuffix, gas: estimatedGas });
+};
+
+export const estimateContractGas = async (publicClient: PublicClient, transactionRequest: WriteContractParameters) => {
+  const transactionRequestWithDataSuffix = { ...transactionRequest, dataSuffix: DOMAIN_SUFFIX };
+  return publicClient.estimateContractGas(transactionRequestWithDataSuffix);
 };
 
 export const waitForTransactionConfirmation = async (hash: Hash, publicClient: PublicClient) => {

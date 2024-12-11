@@ -30,7 +30,7 @@ export const permit = async (
   // DAI uses a different form of permit
   if (DAI_ADDRESSES.includes(verifyingContract)) {
     const { v, r, s } = await signDaiPermit(walletClient, domain, address, spender, nonce, deadline, false);
-    return walletClient.writeContract({
+    return writeContractUnlessExcessiveGas(contract.publicClient, walletClient, {
       ...contract,
       account: address,
       abi: DAI_PERMIT_ABI,

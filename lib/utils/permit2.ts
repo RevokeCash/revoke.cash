@@ -1,7 +1,7 @@
 import { PERMIT2_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
 import type { Address, WalletClient } from 'viem';
-import { deduplicateArray, getWalletAddress, writeContractUnlessExcessiveGas } from '.';
+import { deduplicateArray, estimateContractGas, getWalletAddress, writeContractUnlessExcessiveGas } from '.';
 import { AllowanceType, type Permit2Erc20Allowance } from './allowances';
 import { type Permit2Event, type TokenEvent, TokenEventType } from './events';
 import { SECOND } from './time';
@@ -101,7 +101,7 @@ export const preparePermit2Approve = async (
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   };
 
-  const gas = await tokenContract.publicClient.estimateContractGas(transactionRequest);
+  const gas = await estimateContractGas(tokenContract.publicClient, transactionRequest);
 
   return { ...transactionRequest, gas };
 };
