@@ -155,7 +155,7 @@ const TEST_ADDRESSES = {
   [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
 } as const;
 
-describe('Chain Support', () => {
+describe(`Chain Support (${TEST_URL})`, () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
     cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
     cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-

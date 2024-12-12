@@ -10,9 +10,6 @@ interface Props {
   };
 }
 
-export const runtime = 'edge';
-export const preferredRegion = ['iad1'];
-
 export async function POST(req: NextRequest, { params }: Props) {
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
