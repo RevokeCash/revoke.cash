@@ -10,6 +10,7 @@ export const RiskFactorScore: Record<string, number> = {
   exploit: 100,
   phishing_risk: 50,
   unsafe: 50,
+  uninitialized: 50,
 };
 
 export const filterUnknownRiskFactors = (riskFactors: RiskFactor[]): RiskFactor[] => {

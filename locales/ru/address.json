@@ -88,6 +88,7 @@
     },
     "phishing_risk": "Увеличивает поверхность риска в случае фишинга",
     "source": "сообщил(а)<source-link>{source}</source-link>",
+    "uninitialized": "No contract deployed to this address",
     "unsafe": "Потенциально небезопасный код контракта"
   },
   "search": {

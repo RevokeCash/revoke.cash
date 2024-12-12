@@ -19,11 +19,15 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
 
     try {
       const time = new Date().getTime();
-      const bytecode = await publicClient.getCode({ address });
+      const [bytecode, nonce] = await Promise.all([
+        publicClient.getCode({ address }),
+        publicClient.getTransactionCount({ address }),
+      ]);
 
       const riskFactors = [];
 
-      if (this.isEOA(bytecode)) riskFactors.push({ type: 'eoa', source: 'onchain' });
+      if (this.isEOA(bytecode, nonce)) riskFactors.push({ type: 'eoa', source: 'onchain' });
+      if (this.isUninitialized(bytecode, nonce)) riskFactors.push({ type: 'uninitialized', source: 'onchain' });
       // if (this.isSmallBytecode(bytecode)) riskFactors.push({ type: 'unsafe', source: 'revoke' });
       if (this.isOpenSeaProxy(bytecode)) riskFactors.push({ type: 'deprecated', source: 'onchain' });
       if (this.hasPhishingRisk(address, bytecode)) riskFactors.push({ type: 'phishing_risk', source: 'onchain' });
@@ -41,11 +45,15 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
     }
   }
 
-  isEOA(bytecode?: Hex): boolean {
-    return isNullish(bytecode) || bytecode === '0x';
+  isEOA(bytecode: Hex | undefined, nonce: number): boolean {
+    return isNullish(bytecode) && nonce > 0;
   }
 
-  isSmallBytecode(bytecode: Hex): boolean {
+  isUninitialized(bytecode: Hex | undefined, nonce: number): boolean {
+    return isNullish(bytecode) && nonce === 0;
+  }
+
+  isSmallBytecode(bytecode?: Hex): boolean {
     return !isNullish(bytecode) && bytecode.length > 0 && bytecode.length < 1000;
   }
 

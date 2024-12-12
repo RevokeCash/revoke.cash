@@ -29,15 +29,23 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
   const publicClient = createViemPublicClientForChain(chainId);
   const logsProvider = getLogsProvider(chainId);
 
-  const [openSeaProxyAddress, fromBlock, toBlock, isLoggedIn] = await Promise.all([
+  const [openSeaProxyAddress, fromBlock, toBlock, nonce, isLoggedIn] = await Promise.all([
     getOpenSeaProxyAddress(address),
     0,
     publicClient.getBlockNumber().then((blockNumber) => Number(blockNumber)),
+    publicClient.getTransactionCount({ address }),
     apiLogin(),
   ]);
 
   if (!isLoggedIn) {
     throw new Error('Failed to create an API session');
+  }
+
+  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
+  // See https://eips.ethereum.org/EIPS/eip-161
+  if (nonce === 0) {
+    console.log('Skipping event fetching for EOA with no transactions', address);
+    return [];
   }
 
   // Create required event filters
