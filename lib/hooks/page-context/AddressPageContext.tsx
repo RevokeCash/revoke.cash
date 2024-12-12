@@ -45,7 +45,7 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   const queryChainId = Number.parseInt(searchParams.get('chainId') as string);
   const defaultChainId = [initialChainId, queryChainId, chain?.id, 1]
     .filter((chainId) => !isNullish(chainId))
-    .find((chainId) => isSupportedChain(chainId!)) as number;
+    .find((chainId) => isSupportedChain(chainId)) as number;
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
 
   // Note: We use useLayoutEffect here, because this is the only setup that works with the "spenderSearch" query param as well

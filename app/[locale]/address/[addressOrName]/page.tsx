@@ -1,6 +1,6 @@
 import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
 import { isNullish } from 'lib/utils';
-import { getChainName } from 'lib/utils/chains';
+import { getChainName, isSupportedChain } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
 import { getAddressAndDomainName } from 'lib/utils/whois';
 import type { Metadata, NextPage } from 'next';
@@ -25,7 +25,9 @@ export const generateMetadata = async ({
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
   const addressDisplay = domainName ?? shortenAddress(address);
 
-  const chainName = getChainName(Number(searchParams.chainId || 1));
+  const chainIdFromSearchParams = Number(searchParams.chainId || 1);
+  const chainId = isSupportedChain(chainIdFromSearchParams) ? chainIdFromSearchParams : 1;
+  const chainName = getChainName(chainId);
 
   const title = isNullish(searchParams.chainId)
     ? t('address.meta.title', { addressDisplay })
