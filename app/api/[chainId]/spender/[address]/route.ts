@@ -8,9 +8,15 @@ import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpende
 import type { NextRequest } from 'next/server';
 import type { Address } from 'viem';
 
-export const config = {
-  runtime: 'edge',
-};
+interface Props {
+  params: {
+    chainId: string;
+    address: string;
+  };
+}
+
+export const runtime = 'edge';
+export const preferredRegion = ['iad1'];
 
 const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
   aggregationType: AggregationType.PARALLEL_COMBINED,
@@ -28,9 +34,7 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
   ],
 });
 
-const handler = async (req: NextRequest) => {
-  if (req.method !== 'GET') return new Response(JSON.stringify({ message: 'Method not allowed' }), { status: 405 });
-
+export async function GET(req: NextRequest, { params }: Props) {
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
@@ -39,9 +43,8 @@ const handler = async (req: NextRequest) => {
     return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   }
 
-  const query = new URL(req.url).searchParams;
-  const chainId = Number.parseInt(query.get('chainId') as string, 10);
-  const address = query.get('address') as Address;
+  const chainId = Number.parseInt(params.chainId, 10);
+  const address = params.address as Address;
 
   try {
     const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address, chainId);
@@ -57,6 +60,4 @@ const handler = async (req: NextRequest) => {
   } catch (e) {
     return new Response(JSON.stringify({ message: (e as any).message }), { status: 500 });
   }
-};
-
-export default handler;
+}

@@ -1,7 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
 import Dexie, { type Table } from 'dexie';
 import type { LogsProvider } from 'lib/providers';
-import { isCovalentSupportedChain } from 'lib/utils/chains';
+import { getChainName, isCovalentSupportedChain } from 'lib/utils/chains';
 import type { Filter, Log } from 'lib/utils/events';
 import type { Address } from 'viem';
 
@@ -41,7 +41,7 @@ class EventsDB extends Dexie {
   async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number, nameTag?: string) {
     const logs = await this.getLogsInternal(logsProvider, filter, chainId);
 
-    if (nameTag) console.log(`${nameTag} logs`, logs);
+    if (nameTag) console.log(`${getChainName(chainId)}: ${nameTag} logs`, logs);
     // We can uncomment this to filter the logs once more by block number after retrieving them from IndexedDB
     // This is useful when we want to test the state of approvals at a different block by using a Tenderly fork
     // return logs.filter((log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock);
