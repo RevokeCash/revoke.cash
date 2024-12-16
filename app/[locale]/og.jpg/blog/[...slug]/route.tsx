@@ -1,3 +1,4 @@
+import { SKIP_OG_IMAGES } from 'lib/constants';
 import { locales } from 'lib/i18n/config';
 import { getAllContentSlugs, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { generateOgImage, loadDataUrl } from 'lib/utils/og';
@@ -13,13 +14,15 @@ interface Props {
   };
 }
 
-export const dynamic = 'error';
-export const dynamicParams = false;
+export const dynamic = SKIP_OG_IMAGES ? 'error' : 'force-dynamic';
+export const dynamicParams = SKIP_OG_IMAGES;
 
-export const generateStaticParams = () => {
-  const slugs = getAllContentSlugs('blog');
-  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
-};
+export const generateStaticParams = SKIP_OG_IMAGES
+  ? undefined
+  : () => {
+      const slugs = getAllContentSlugs('blog');
+      return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+    };
 
 export async function GET(req: Request, { params }: Props) {
   const { meta } = readAndParseContentFile(params.slug, params.locale, 'blog')!;
