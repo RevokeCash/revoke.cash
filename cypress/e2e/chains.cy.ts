@@ -120,6 +120,7 @@ const TEST_ADDRESSES = {
   [ChainId.ZkSyncMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
   [ChainId.Zora]: '0x061EFb2DF7767D6e63529BA99394037d4dCa39D6',
   // Testnets
+  [ChainId.AbstractTestnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Amoy]: '0x57BD9b2E821d2bF1f8136026ba3A29848eff9e47',
   [ChainId.ArbitrumSepolia]: '0xDd3287043493E0a08d2B348397554096728B459c',
   [ChainId.AvalancheFujiTestnet]: '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6',

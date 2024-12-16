@@ -5,6 +5,7 @@
   "learn_more": "{chainName}の詳細については、<info-link>そのウェブサイト</info-link>をご覧ください。",
   "native_token": "{chainName}のネイティブトークンは{nativeToken}です。",
   "networks": {
+    "abstract": "Abstract is a Layer 2 scaling solution for Ethereum. It is built using zkSync's ZK Stack, which means that it uses zkEVM technology. Abstract is focused on building a network that can attract consumers from outside of the crypto space and comes with several key features, such as its native account abstraction and Abstract Global Wallet.",
     "apechain": "ApeChainは、ApeCoinエコシステムの専用インフラストラクチャレイヤーとして作成されたレイヤー2のブロックチェーンです。APEをネイティブトークンとして使用してユーティリティーを強化し、いくつかの重要な資産に対してネイティブ利回りを提供します。ArbitrumのOrbitフレームワークを使用して構築されており、Ethereumのレイヤー2のスケーリング・ソリューションであるArbitrum Oneで決済を行っています。",
     "arbitrum": "ArbitrumはEthereumのレイヤー2のスケーリングソリューションです。Arbitrumは楽観的なロールアップです。つまり、トランザクションデータのバッチを定期的にEthereumのメインネットに送信します。その結果、トランザクションをEthereumで直接実行する場合よりも安価で高速な取引が可能になります。Ethereumのレイヤー2のソリューションとしては最も普及しているものの1つで、2023 年に採用が急増しました。",
     "arbitrum-nova": "Arbitrum Novaは、Arbitrumのより中央集権的な兄弟です。ArbitrumはトランザクションデータをバッチでEthereumのメインチェーンに送信しますが、Arbitrum Novaはこのデータの証明書のみを送信します。これらの証明書は、データ可用性委員会（DAC）と呼ばれる一連の検証者によって作成されます。このため、ネットワークの使用コストははるかに低く抑えられますが、一元化もはるかに進んでいます。",

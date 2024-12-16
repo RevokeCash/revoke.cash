@@ -131,6 +131,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
   ChainId.ZkSyncSepoliaTestnet,
+  ChainId.AbstractTestnet,
   ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoHeklaL2,
@@ -167,6 +168,26 @@ const MULTICALL = {
 };
 
 export const CHAINS = {
+  [ChainId.Abstract]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.Abstract,
+    name: 'Abstract',
+    nativeToken: 'ETH',
+    logoUrl: '/assets/images/vendor/chains/abstract.jpg',
+  }),
+  [ChainId.AbstractTestnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.AbstractTestnet,
+    name: 'Abstract Testnet',
+    nativeToken: 'ETH',
+    logoUrl: '/assets/images/vendor/chains/abstract.jpg',
+    rpc: {
+      main: `https://abstract-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' } },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.Abstract,
+  }),
   [ChainId.Amoy]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Amoy,
