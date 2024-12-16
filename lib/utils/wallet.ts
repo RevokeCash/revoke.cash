@@ -6,7 +6,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
 
   // Take logos from rainbowkit
   const BASE_URL =
-    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/47e578f82efafda1e7127755105141c4a6b61c66/packages/rainbowkit/src/wallets/walletConnectors';
+    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/9dd23d9e350c430622e15a629bab78d7cc89c566/packages/rainbowkit/src/wallets/walletConnectors';
   const walletNameLowerCase = walletName.toLowerCase();
 
   const mapping: Record<string, string> = {
@@ -30,6 +30,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
     'halo wallet': '/assets/images/vendor/wallets/halo.jpg', // Note: this used to be KuCoin Wallet
     'hyperpay wallet': '/assets/images/vendor/wallets/hyperpay.svg',
     imtoken: `${BASE_URL}/imTokenWallet/imTokenWallet.svg`,
+    keplr: '/assets/images/vendor/wallets/keplr.png',
     mathwallet: '/assets/images/vendor/wallets/mathwallet.svg',
     metamask: `${BASE_URL}/metaMaskWallet/metaMaskWallet.svg`,
     'nova wallet': '/assets/images/vendor/wallets/nova.webp',
@@ -57,6 +58,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
 };
 
 export const getConnectorName = (connector: Connector): string => {
+  console.log(connector.name);
   // It's confusing if there are multiple 'Coinbase Wallet' connectors. You can always connect to the Coinbase Wallet
   // extension using the dedicated connector
   if (connector.name === 'Coinbase Wallet' && connector.type === 'injected') {
