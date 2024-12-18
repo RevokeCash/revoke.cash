@@ -58,7 +58,6 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
 };
 
 export const getConnectorName = (connector: Connector): string => {
-  console.log(connector.name);
   // It's confusing if there are multiple 'Coinbase Wallet' connectors. You can always connect to the Coinbase Wallet
   // extension using the dedicated connector
   if (connector.name === 'Coinbase Wallet' && connector.type === 'injected') {
