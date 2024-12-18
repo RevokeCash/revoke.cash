@@ -50,7 +50,7 @@ export const EthereumProvider = ({ children }: Props) => {
 
 const EthereumProviderChild = ({ children }: Props) => {
   const { connectAsync, connectors } = useConnect();
-  const { connector } = useAccount();
+  const { connector, address } = useAccount();
   const router = useCsrRouter();
   const pathName = usePathname();
 
@@ -59,7 +59,7 @@ const EthereumProviderChild = ({ children }: Props) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: this hook was checked manually to ensure relevant dependencies are included
   useEffect(() => {
     // Only supported in an iFrame context
-    if (typeof window === 'undefined' || window?.parent === window) return;
+    if (!isIframe()) return;
 
     const safeConnector = connectors?.find((connector) => connector.id === 'safe');
     if (!safeConnector || connector === safeConnector) return;
@@ -77,7 +77,7 @@ const EthereumProviderChild = ({ children }: Props) => {
   // (if another connector auto-connects (or user disconnects), we still override it with the Ledger Live connector)
   // biome-ignore lint/correctness/useExhaustiveDependencies: this hook was checked manually to ensure relevant dependencies are included
   useEffect(() => {
-    if (typeof window === 'undefined' || !window?.ethereum?.isLedgerLive) return;
+    if (!isLedgerLive()) return;
 
     const injectedConnector = connectors?.find((connector) => connector.id === 'injected');
     if (!injectedConnector || connector === injectedConnector) return;
@@ -91,5 +91,24 @@ const EthereumProviderChild = ({ children }: Props) => {
       .catch(console.error);
   }, [connectors, connector]);
 
+  // If connected through Ledger or iFrame, then we automatically redirect to the right address page when address changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: this hook was checked manually to ensure relevant dependencies are included
+  useEffect(() => {
+    if (!isIframe() && !isLedgerLive()) return;
+    if (!address) return;
+
+    if (pathName.startsWith('/address/') && !pathName.includes(address)) {
+      router.push(`/address/${address}`, { retainSearchParams: ['chainId'] });
+    }
+  }, [address]);
+
   return <>{children}</>;
+};
+
+const isIframe = () => {
+  return typeof window !== 'undefined' && window?.parent !== window;
+};
+
+const isLedgerLive = () => {
+  return typeof window !== 'undefined' && window?.ethereum?.isLedgerLive;
 };
