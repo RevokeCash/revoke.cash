@@ -49,7 +49,7 @@ export const useMarketplaces = () => {
         ChainId.BNBSmartChainMainnet,
         ChainId.BNBSmartChainTestnet,
         ChainId.KaiaMainnet,
-        ChainId.KaiaTestnetKairos,
+        ChainId.KaiaKairosTestnet,
         ChainId.Moonbeam,
         ChainId.Moonriver,
         ChainId.Canto,
