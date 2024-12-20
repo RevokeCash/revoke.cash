@@ -13,7 +13,7 @@
     "failed": "Не удалось",
     "no_tip": "Без чаевых",
     "revoked": "Отозвано",
-    "title": "Batch Revoke",
+    "title": "Пакетный отзыв разрешений",
     "total": "Всего"
   },
   "filters": {
@@ -88,7 +88,7 @@
     },
     "phishing_risk": "Увеличивает поверхность риска в случае фишинга",
     "source": "сообщил(а)<source-link>{source}</source-link>",
-    "uninitialized": "No contract deployed to this address",
+    "uninitialized": "Контракт по этому адресу не отправлен",
     "unsafe": "Потенциально небезопасный код контракта"
   },
   "search": {

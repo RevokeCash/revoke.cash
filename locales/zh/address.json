@@ -88,7 +88,7 @@
     },
     "phishing_risk": "增加钓鱼风险",
     "source": "举报人：<source-link>{source}</source-link>",
-    "uninitialized": "No contract deployed to this address",
+    "uninitialized": "没有部署到此地址的合约",
     "unsafe": "可能不安全的合约代码"
   },
   "search": {

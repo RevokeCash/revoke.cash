@@ -81,6 +81,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZKFairMainnet,
   ChainId.OasysMainnet,
   ChainId.Viction,
+  ChainId.Vana,
   ChainId.KCCMainnet,
   ChainId.FuseMainnet,
   ChainId.CoinExSmartChainMainnet,
@@ -2153,6 +2154,14 @@ export const CHAINS = {
     name: 'Telos',
     logoUrl: '/assets/images/vendor/chains/telos.png',
   }),
+  [ChainId.Vana]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Vana,
+    name: 'Vana',
+    logoUrl: '/assets/images/vendor/chains/vana.png',
+    etherscanCompatibleApiUrl: 'https://api.vanascan.io/api',
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.VelasEVMMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.VelasEVMMainnet,
@@ -2607,6 +2616,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   tSYS: '1', // Testnet coin
   tZEN: '1', // Testnet coin
   USDC: '10',
+  VANA: '0.5', // Can't find price info
   VIC: '15',
   VLX: '600',
   WAN: '30',

@@ -88,7 +88,7 @@
     },
     "phishing_risk": "Aumenta la superficie de riesgo en caso de phishing",
     "source": "reportado por <source-link>{source}</source-link>",
-    "uninitialized": "No contract deployed to this address",
+    "uninitialized": "No se ha implementado ningún contrato en esta dirección",
     "unsafe": "Código de contrato potencialmente inseguro"
   },
   "search": {
