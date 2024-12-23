@@ -127,7 +127,6 @@ const TEST_ADDRESSES = {
   [ChainId.AvalancheFujiTestnet]: '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6',
   [ChainId.BaseSepoliaTestnet]: '0xF85A57d965aEcD289c625Cae6161d0Ab5141bC66',
   [ChainId.BeamTestnet]: '0xc1447c8c647eF2f564cEAe520E1b65C758A02f9F',
-  [ChainId.BerachainArtio]: '0x1F8C24902fbe49c235aD89F93d0C06CD699B0dfE',
   [ChainId.BerachainbArtio]: '0xF81b9D1d7e50De9c9D0948815d87519BEb087A94',
   [ChainId.BlastSepoliaTestnet]: '0x01208040F4DB383c9f73C023d3c00a5F15bE5bCa',
   [ChainId.BNBSmartChainTestnet]: '0x40FE4911704f14f409ebEE40475377720C732803',
