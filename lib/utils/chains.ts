@@ -1,13 +1,13 @@
 import { ChainId } from '@revoke.cash/chains';
 import { ALCHEMY_API_KEY, INFURA_API_KEY } from 'lib/constants';
-import { RateLimit } from 'lib/interfaces';
+import type { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
-import { PriceStrategy } from 'lib/price/PriceStrategy';
+import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
-import { AddEthereumChainParameter, PublicClient, Chain as ViemChain, toHex } from 'viem';
-import { Chain, DeployedContracts, SupportType } from '../chains/Chain';
+import { type AddEthereumChainParameter, type PublicClient, type Chain as ViemChain, toHex } from 'viem';
+import { Chain, type DeployedContracts, SupportType } from '../chains/Chain';
 
 // Make sure to update these lists when updating the above lists
 // Order is loosely based on TVL (as per DeFiLlama)
@@ -81,6 +81,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZKFairMainnet,
   ChainId.OasysMainnet,
   ChainId.Viction,
+  ChainId.Vana,
   ChainId.KCCMainnet,
   ChainId.FuseMainnet,
   ChainId.CoinExSmartChainMainnet,
@@ -131,6 +132,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
   ChainId.ZkSyncSepoliaTestnet,
+  ChainId.AbstractTestnet,
   ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoHeklaL2,
@@ -167,6 +169,26 @@ const MULTICALL = {
 };
 
 export const CHAINS = {
+  [ChainId.Abstract]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.Abstract,
+    name: 'Abstract',
+    nativeToken: 'ETH',
+    logoUrl: '/assets/images/vendor/chains/abstract.jpg',
+  }),
+  [ChainId.AbstractTestnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.AbstractTestnet,
+    name: 'Abstract Testnet',
+    nativeToken: 'ETH',
+    logoUrl: '/assets/images/vendor/chains/abstract.jpg',
+    rpc: {
+      main: `https://abstract-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' } },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.Abstract,
+  }),
   [ChainId.Amoy]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Amoy,
@@ -181,13 +203,14 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.PolygonMainnet,
   }),
   [ChainId.ApeChain]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ApeChain,
     name: 'ApeChain',
     nativeToken: 'APE',
     logoUrl: '/assets/images/vendor/chains/apechain.svg',
     explorerUrl: 'https://apescan.io',
     infoUrl: 'https://apechain.com',
+    etherscanCompatibleApiUrl: 'https://api.apescan.io/api',
     rpc: {
       main: `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://apechain.calderachain.xyz/http',
@@ -1258,8 +1281,8 @@ export const CHAINS = {
     chainId: ChainId.Kroma,
     name: 'Kroma',
     logoUrl: '/assets/images/vendor/chains/kroma.svg',
-    explorerUrl: 'https://kromascan.com',
-    etherscanCompatibleApiUrl: 'https://api.kromascan.com/api',
+    explorerUrl: 'https://blockscout.kroma.network',
+    etherscanCompatibleApiUrl: 'https://blockscout.kroma.network/api',
     deployedContracts: { ...MULTICALL },
     // TODO: Add iZiSwap strategy to support Kroma
     priceStrategy: undefined,
@@ -1269,8 +1292,8 @@ export const CHAINS = {
     chainId: ChainId.KromaSepolia,
     name: 'Kroma Sepolia',
     logoUrl: '/assets/images/vendor/chains/kroma.svg',
-    explorerUrl: 'https://sepolia.kromascan.com',
-    etherscanCompatibleApiUrl: 'https://api-sepolia.kromascan.com/api',
+    explorerUrl: 'https://blockscout.sepolia.kroma.network/',
+    etherscanCompatibleApiUrl: 'https://blockscout.sepolia.kroma.network/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Kroma,
@@ -2131,6 +2154,14 @@ export const CHAINS = {
     name: 'Telos',
     logoUrl: '/assets/images/vendor/chains/telos.png',
   }),
+  [ChainId.Vana]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Vana,
+    name: 'Vana',
+    logoUrl: '/assets/images/vendor/chains/vana.png',
+    etherscanCompatibleApiUrl: 'https://api.vanascan.io/api',
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.VelasEVMMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.VelasEVMMainnet,
@@ -2509,88 +2540,90 @@ export const getChainBackendPriceStrategy = (chainId: DocumentedChainId): PriceS
   return getChainConfig(chainId).getBackendPriceStrategy();
 };
 
-// Target a default of a round-ish number of tokens, worth around $10-20
+// Target a default of a round-ish number of tokens, worth $7-$10
+// This results in tip options of $3.5-$5, $7-$10, $14-$20
 export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
-  APE: '10',
-  ASTR: '250',
-  AVAX: '0.5',
-  BEAM: '1000',
+  APE: '6',
+  ASTR: '100',
+  AVAX: '0.2',
+  BEAM: '200',
   BERA: '1', // Can't find price info
-  BNB: '0.02',
-  BONE: '30',
-  BTC: '0.0002',
-  BRISE: '200000000',
-  BROCK: '200',
-  BTT: '10000000',
-  CANTO: '1000',
-  CELO: '20',
-  CET: '200',
+  BNB: '0.01',
+  BONE: '10',
+  BTC: '0.0001',
+  BRISE: '80000000',
+  BROCK: '120',
+  BTT: '6000000',
+  CANTO: '300',
+  CELO: '10',
+  CET: '80',
   CETT: '1', // Testnet coin
-  CHZ: '250',
-  CLO: '100000',
-  CORE: '10',
+  CHZ: '80',
+  CLO: '30000',
+  CORE: '6',
   CRAB: '1', // Can't find price info
-  CRO: '200',
-  DEGEN: '2500',
+  CRO: '50',
+  DEGEN: '500',
   DEV: '1', // Testnet coin
-  DMT: '0.3',
-  DOGE: '100',
-  ELA: '10',
-  EOS: '30',
-  ETC: '1',
-  ETH: '0.006',
-  FLR: '1000',
-  frxETH: '0.006',
-  FTM: '20',
-  FUSE: '500',
-  GHST: '16',
-  GLMR: '100',
+  DMT: '0.1',
+  DOGE: '20',
+  ELA: '3',
+  EOS: '8',
+  ETC: '0.3',
+  ETH: '0.002',
+  FLR: '300',
+  frxETH: '0.002',
+  FTM: '6',
+  FUSE: '200',
+  GHST: '8',
+  GLMR: '30',
   GOLDX: '1', // Can't find price info
-  IMX: '10',
-  INJ: '0.6',
-  IOTA: '100',
+  IMX: '4',
+  INJ: '0.3',
+  IOTA: '20',
   IP: '1', // Can't find price info
-  KAI: '8000',
-  KCS: '2',
-  mADA: '50',
-  METIS: '0.5',
-  MNT: '25',
-  MOVR: '1',
-  NEON: '50',
-  NULS: '40',
+  KAI: '2000',
+  KCS: '0.6',
+  mADA: '8',
+  METIS: '0.14',
+  MNT: '6',
+  MOVR: '0.5',
+  NEON: '15',
+  NULS: '15',
   OAS: '200',
-  OCTA: '10',
-  OKB: '0.5',
-  ONE: '1000',
+  OCTA: '6',
+  OKB: '0.16',
+  ONE: '200',
   PALM: '1', // Can't find price info
   PG: '1', // Can't find price info
-  PLS: '300000',
-  POL: '40',
+  PLS: '100000',
+  POL: '10',
   PWR: '8000',
-  RBTC: '0.0002',
-  reETH: '0.006',
-  RING: '8000',
-  ROSE: '200',
-  RSS3: '100',
-  SAMA: '3000',
-  SDN: '100',
-  SEI: '30',
-  SGB: '2000',
-  SMR: '5000',
-  SYS: '100',
+  RBTC: '0.0001',
+  reETH: '0.002',
+  RING: '3000',
+  ROSE: '80',
+  RSS3: '50',
+  SAMA: '600',
+  SDN: '50',
+  SEI: '15',
+  SGB: '600',
+  SMR: '3000',
+  SYS: '50',
   TABI: '1', // Can't find price info
   tBNB: '1', // Testnet coin
   TCRO: '1', // Testnet coin
   tSYS: '1', // Testnet coin
   tZEN: '1', // Testnet coin
   USDC: '10',
-  VIC: '30',
-  VLX: '1000',
-  WAN: '100',
-  WEMIX: '20',
+  VANA: '0.5', // Can't find price info
+  VIC: '15',
+  VLX: '600',
+  WAN: '30',
+  WEMIX: '8',
   XDAI: '10',
-  ZEN: '2',
-  ZETA: '20',
+  ZEN: '0.6',
+  ZETA: '10',
 };
 
 export const getDefaultDonationAmount = (nativeToken: string): string | undefined => {

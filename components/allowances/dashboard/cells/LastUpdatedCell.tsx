@@ -1,7 +1,7 @@
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { getChainExplorerUrl } from 'lib/utils/chains';
-import { TimeLog } from 'lib/utils/events';
+import type { TimeLog } from 'lib/utils/events';
 import { SECOND, formatDateNormalised } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
 import TimeAgo from 'timeago-react';

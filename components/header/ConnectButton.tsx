@@ -8,7 +8,7 @@ import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { Connector, useAccount, useConnect } from 'wagmi';
+import { type Connector, useAccount, useConnect } from 'wagmi';
 
 interface Props {
   text?: string;

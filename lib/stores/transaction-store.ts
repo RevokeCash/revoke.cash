@@ -1,6 +1,6 @@
-import { TransactionStatus } from 'lib/interfaces';
-import { getAllowanceKey, TokenAllowanceData } from 'lib/utils/allowances';
-import { Hash } from 'viem';
+import type { TransactionStatus } from 'lib/interfaces';
+import { type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
+import type { Hash } from 'viem';
 import { create } from 'zustand';
 
 // TODO: Add other kinds of transactions besides "revoke" transactions to the store

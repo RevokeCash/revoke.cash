@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import ky from 'lib/ky';
+import { apiLogin } from 'lib/utils';
 import { HOUR } from 'lib/utils/time';
 
 export const useApiSession = () => {
@@ -9,11 +9,7 @@ export const useApiSession = () => {
     error,
   } = useQuery({
     queryKey: ['login'],
-    queryFn: () =>
-      ky
-        .post('/api/login')
-        .json<any>()
-        .then((res) => !!res?.ok),
+    queryFn: apiLogin,
     staleTime: 12 * HOUR,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,

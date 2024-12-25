@@ -1,12 +1,11 @@
-name: Prettier Linter check
-
+name: Biome Format and linter check
 on:
   push:
   pull_request:
     branches: [master]
 
 jobs:
-  prettier:
+  biome:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,5 +19,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run Prettier
-        run: yarn prettier --check .
+      - name: Run Biome
+        run: yarn lint

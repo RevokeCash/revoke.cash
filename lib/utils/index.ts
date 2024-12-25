@@ -1,19 +1,20 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { TransactionSubmitted } from 'lib/interfaces';
-import { getTranslations } from 'next-intl/server';
+import ky from 'lib/ky';
+import type { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
-  Address,
-  getAddress,
-  Hash,
-  Hex,
-  pad,
-  PublicClient,
-  slice,
+  type Address,
+  type Hash,
+  type Hex,
+  type PublicClient,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
-  WalletClient,
-  WriteContractParameters,
+  type WalletClient,
+  type WriteContractParameters,
+  getAddress,
+  pad,
+  slice,
 } from 'viem';
 import { analytics } from './analytics';
 import type { Log, TokenEvent } from './events';
@@ -191,4 +192,13 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
   });
 
   return { ...riskData, riskFactors: [...riskFactors, ...exploitRiskFactors] };
+};
+
+export const range = (length: number) => Array.from({ length }, (_, i) => i);
+
+export const apiLogin = async () => {
+  return ky
+    .post('/api/login')
+    .json<any>()
+    .then((res) => !!res?.ok);
 };

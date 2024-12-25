@@ -1,4 +1,4 @@
-import { Connector } from 'wagmi';
+import type { Connector } from 'wagmi';
 import { deduplicateArray } from '.';
 
 export const getWalletIcon = (connector: Connector): string | undefined => {
@@ -6,14 +6,14 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
 
   // Take logos from rainbowkit
   const BASE_URL =
-    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/47e578f82efafda1e7127755105141c4a6b61c66/packages/rainbowkit/src/wallets/walletConnectors';
+    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/9dd23d9e350c430622e15a629bab78d7cc89c566/packages/rainbowkit/src/wallets/walletConnectors';
   const walletNameLowerCase = walletName.toLowerCase();
 
   const mapping: Record<string, string> = {
     // Injected wallets
     '1inchwallet': '/assets/images/vendor/wallets/1inch.svg',
     backpack: '/assets/images/vendor/wallets/backpack.svg',
-    'bifrost wallet': `/assets/images/vendor/wallets/bifrost.svg`,
+    'bifrost wallet': '/assets/images/vendor/wallets/bifrost.svg',
     bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
     bitski: `${BASE_URL}/bitskiWallet/bitskiWallet.svg`,
     blockwallet: '/assets/images/vendor/wallets/block-wallet.jpg',
@@ -30,6 +30,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
     'halo wallet': '/assets/images/vendor/wallets/halo.jpg', // Note: this used to be KuCoin Wallet
     'hyperpay wallet': '/assets/images/vendor/wallets/hyperpay.svg',
     imtoken: `${BASE_URL}/imTokenWallet/imTokenWallet.svg`,
+    keplr: '/assets/images/vendor/wallets/keplr.png',
     mathwallet: '/assets/images/vendor/wallets/mathwallet.svg',
     metamask: `${BASE_URL}/metaMaskWallet/metaMaskWallet.svg`,
     'nova wallet': '/assets/images/vendor/wallets/nova.webp',
@@ -53,7 +54,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
     ledger: `${BASE_URL}/ledgerWallet/ledgerWallet.svg`,
   };
 
-  return mapping[walletNameLowerCase] ?? connector?.icon ?? `/assets/images/vendor/wallets/injected.svg`;
+  return mapping[walletNameLowerCase] ?? connector?.icon ?? '/assets/images/vendor/wallets/injected.svg';
 };
 
 export const getConnectorName = (connector: Connector): string => {

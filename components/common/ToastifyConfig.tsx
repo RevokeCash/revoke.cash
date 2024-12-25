@@ -10,6 +10,7 @@ const ToastifyConfig = () => (
     progressClassName="!bg-black dark:!bg-white"
     closeButton={({ closeToast, ariaLabel }) => (
       <button
+        type="button"
         onClick={(e) => {
           e.stopPropagation();
           closeToast(e);

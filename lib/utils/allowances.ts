@@ -1,34 +1,34 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import { useAllowances } from 'lib/hooks/ethereum/useAllowances';
-import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
+import type { useAllowances } from 'lib/hooks/ethereum/useAllowances';
+import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { TransactionStore } from 'lib/stores/transaction-store';
-import { type Address, formatUnits, type PublicClient, type WalletClient, type WriteContractParameters } from 'viem';
+import type { TransactionStore } from 'lib/stores/transaction-store';
+import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
 import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
 import { analytics } from './analytics';
 import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
 import {
-  Erc20ApprovalEvent,
-  Erc721ApprovalEvent,
-  Erc721ApprovalForAllEvent,
-  Erc721TransferEvent,
-  TimeLog,
-  TokenEvent,
+  type Erc20ApprovalEvent,
+  type Erc721ApprovalEvent,
+  type Erc721ApprovalForAllEvent,
+  type Erc721TransferEvent,
+  type TimeLog,
+  type TokenEvent,
   TokenEventType,
 } from './events';
 import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
 import { bigintMin, fixedPointMultiply } from './math';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 import {
-  createTokenContracts,
   type Erc20TokenContract,
   type Erc721TokenContract,
+  type TokenContract,
+  type TokenData,
+  createTokenContracts,
   getTokenData,
   hasZeroBalance,
   isErc721Contract,
-  type TokenContract,
-  type TokenData,
 } from './tokens';
 
 export interface TokenAllowanceData extends TokenData {
@@ -137,11 +137,11 @@ export const getAllowancesForToken = async (
     const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(contract, userAddress, events);
     const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, events);
     return [...limitedAllowances, ...unlimitedAllowances];
-  } else {
-    const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events);
-    const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events);
-    return [...regularAllowances, ...permit2Allowances];
   }
+
+  const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events);
+  const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events);
+  return [...regularAllowances, ...permit2Allowances];
 };
 
 export const getErc20AllowancesFromApprovals = async (
@@ -491,18 +491,18 @@ export const prepareUpdateErc20Allowance = async (
 
       const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
       return { ...transactionRequest, gas };
-    } else {
-      console.debug(`Calling contract.decreaseAllowance(${allowance.payload.spender}, ${-differenceAmount})`);
-
-      const transactionRequest = {
-        ...baseRequest,
-        functionName: 'decreaseAllowance' as const,
-        args: [allowance.payload.spender, -differenceAmount] as const,
-      };
-
-      const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
-      return { ...transactionRequest, gas };
     }
+
+    console.debug(`Calling contract.decreaseAllowance(${allowance.payload.spender}, ${-differenceAmount})`);
+
+    const transactionRequest = {
+      ...baseRequest,
+      functionName: 'decreaseAllowance' as const,
+      args: [allowance.payload.spender, -differenceAmount] as const,
+    };
+
+    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    return { ...transactionRequest, gas };
   }
 };
 

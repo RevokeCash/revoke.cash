@@ -1,5 +1,5 @@
 import { ExclamationCircleIcon, ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
-import { RiskFactor, RiskLevel } from 'lib/interfaces';
+import type { RiskFactor, RiskLevel } from 'lib/interfaces';
 import { analytics } from './analytics';
 
 export const RiskFactorScore: Record<string, number> = {
@@ -10,6 +10,7 @@ export const RiskFactorScore: Record<string, number> = {
   exploit: 100,
   phishing_risk: 50,
   unsafe: 50,
+  uninitialized: 50,
 };
 
 export const filterUnknownRiskFactors = (riskFactors: RiskFactor[]): RiskFactor[] => {

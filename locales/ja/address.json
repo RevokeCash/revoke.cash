@@ -88,6 +88,7 @@
     },
     "phishing_risk": "フィッシングの場合のリスク領域が増加",
     "source": "<source-link>{source}</source-link>に報告された",
+    "uninitialized": "この住所にはコントラクトがデプロイされていません",
     "unsafe": "安全でない可能性のある契約コード"
   },
   "search": {

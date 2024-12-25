@@ -1,8 +1,8 @@
 'use client';
 
-import { DonateButtonType } from 'components/common/donate/DonateModal';
+import type { DonateButtonType } from 'components/common/donate/DonateModal';
 import { DONATION_ADDRESS } from 'lib/constants';
-import { TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { getWalletAddress, waitForTransactionConfirmation } from 'lib/utils';
 import { analytics } from 'lib/utils/analytics';
 import { getChainName, getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';

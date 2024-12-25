@@ -1,7 +1,7 @@
 import ArticleCard from 'components/learn/ArticleCard';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
-import { Metadata, NextPage } from 'next';
+import type { Metadata, NextPage } from 'next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 interface Props {

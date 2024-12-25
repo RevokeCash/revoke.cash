@@ -1,7 +1,7 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { TransactionStatus } from 'lib/interfaces';
+import type { TransactionStatus } from 'lib/interfaces';
 import { useMemo } from 'react';
 
 interface Props {

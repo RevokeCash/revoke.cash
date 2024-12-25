@@ -36,12 +36,12 @@ const ChainDescription = ({ chainId, headingElement }: Props) => {
     <>
       {!isNullish(headingElement) && createElement(headingElement, {}, t('networks.title', { chainName }))}
       <p>
-        {isTestnet && <span>{t(`networks.is_testnet`, { chainName, mainnetChainName })} </span>}
+        {isTestnet && <span>{t('networks.is_testnet', { chainName, mainnetChainName })} </span>}
         <span>
           {isCanary
             ? t('networks.canary_network', { chainName, mainnetChainName })
             : t(`networks.networks.${mainnetChainSlug}`)}{' '}
-          {t(`networks.native_token`, { chainName, nativeToken })}
+          {t('networks.native_token', { chainName, nativeToken })}
           {infoUrl && (
             <>
               {' '}

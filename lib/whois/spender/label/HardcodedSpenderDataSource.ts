@@ -1,6 +1,6 @@
-import { SpenderData } from 'lib/interfaces';
-import { Address } from 'viem';
-import { SpenderDataSource } from '../SpenderDataSource';
+import type { SpenderData } from 'lib/interfaces';
+import type { Address } from 'viem';
+import type { SpenderDataSource } from '../SpenderDataSource';
 
 export class HardcodedSpenderDataSource implements SpenderDataSource {
   constructor(private data: Record<Address, SpenderData>) {}

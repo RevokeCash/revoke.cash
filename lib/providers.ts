@@ -1,5 +1,5 @@
 import ky from 'lib/ky';
-import { PublicClient, getAddress } from 'viem';
+import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import {
   createViemPublicClientForChain,
@@ -8,7 +8,7 @@ import {
   isCovalentSupportedChain,
 } from './utils/chains';
 import { isLogResponseSizeError } from './utils/errors';
-import { Filter, Log } from './utils/events';
+import type { Filter, Log } from './utils/events';
 
 export interface LogsProvider {
   chainId: number;
@@ -102,11 +102,11 @@ export class ViemLogsProvider implements LogsProvider {
   }
 }
 
-const getUnderlyingLogsProvider = (chainId: number, url?: string): BackendLogsProvider | ViemLogsProvider => {
+const getUnderlyingLogsProvider = (chainId: number): BackendLogsProvider | ViemLogsProvider => {
   if (isBackendSupportedChain(chainId)) return new BackendLogsProvider(chainId);
-  return new ViemLogsProvider(chainId, url);
+  return new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId));
 };
 
-export const getLogsProvider = (chainId: number, url?: string): DivideAndConquerLogsProvider => {
-  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId, url));
+export const getLogsProvider = (chainId: number): DivideAndConquerLogsProvider => {
+  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId));
 };

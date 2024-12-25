@@ -5,7 +5,7 @@ import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatBalance, formatFiatBalance } from 'lib/utils/formatting';
-import { TokenData } from 'lib/utils/tokens';
+import type { TokenData } from 'lib/utils/tokens';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {
@@ -13,17 +13,18 @@ interface Props {
 }
 
 const AssetCell = ({ asset }: Props) => {
-  const ref = useRef<any>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
   // This is pretty hacky, but it works to detect that we're on the address page, so single chain usage
   const isOnAddressPage = typeof window !== 'undefined' && window.location.pathname.includes('/address/');
 
   useLayoutEffect(() => {
+    if (!ref.current) return;
     if (ref.current.clientWidth < ref.current.scrollWidth) {
       setShowTooltip(true);
     }
-  }, [ref]);
+  }, []);
 
   const explorerUrl = `${getChainExplorerUrl(asset.chainId)}/address/${asset.contract.address}`;
 

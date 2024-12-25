@@ -1,4 +1,4 @@
-import { TokenAllowanceData, calculateValueAtRisk } from 'lib/utils/allowances';
+import { type TokenAllowanceData, calculateValueAtRisk } from 'lib/utils/allowances';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';

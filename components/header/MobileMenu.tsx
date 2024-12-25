@@ -18,6 +18,7 @@ const MobileMenu = () => {
 
   const [open, setOpen] = useState(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We want to close the menu when the path changes
   useEffect(() => {
     setOpen(false);
   }, [path]);
