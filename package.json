@@ -41,7 +41,7 @@
     "ky": "^1.7.0",
     "md5": "^2.3.0",
     "mixpanel-browser": "^2.55.0",
-    "next": "^14.2.5",
+    "next": "^14.2.21",
     "next-intl": "^3.17.4",
     "nextjs-toploader": "^1.6.12",
     "p-queue": "^8.0.1",
@@ -106,7 +106,7 @@
   },
   "packageManager": "yarn@3.6.2",
   "lint-staged": {
-    "*": "biome check --write"
+    "*": "biome check --write --no-errors-on-unmatched"
   },
   "lavamoat": {
     "allowScripts": {

@@ -36,7 +36,7 @@ export const generateOgImage = ({ title, background }: OgImageProps) => {
     });
   }
 
-  const icon = loadDataUrl('public/assets/images/revoke-icon-orange-black.svg', 'image/svg+xml');
+  const icon = loadDataUrl('public/assets/images/revoke-icon-orange-black.png', 'image/png');
 
   const response = (
     <div tw="relative bg-white w-full h-full flex flex-col text-4xl leading-none items-center justify-center">

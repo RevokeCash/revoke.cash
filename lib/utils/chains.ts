@@ -2019,10 +2019,11 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Shibarium]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Shibarium,
     name: 'Shibarium',
     logoUrl: '/assets/images/vendor/chains/shibarium.svg',
+    etherscanCompatibleApiUrl: 'https://www.shibariumscan.io/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
