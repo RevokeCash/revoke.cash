@@ -16,7 +16,7 @@ interface Props {
   checkMounted?: boolean;
 }
 
-const ChainLogo = ({ chainId, size, tooltip, className, checkMounted }: Props) => {
+const ChainLogo = memo(({ chainId, size, tooltip, className, checkMounted }: Props) => {
   const isMounted = useMounted();
   const name = getChainName(chainId);
   const src = getChainLogo(chainId);
@@ -37,6 +37,6 @@ const ChainLogo = ({ chainId, size, tooltip, className, checkMounted }: Props) =
   }
 
   return <Logo src={src} alt={name} size={size} border className={classes} />;
-};
+});
 
 export default memo(ChainLogo);

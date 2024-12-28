@@ -5,7 +5,7 @@ import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useChainId } from 'wagmi';
 import Input from '../Input';
@@ -18,7 +18,7 @@ interface Props {
 
 export type DonateButtonType = 'menu-button' | 'batch-revoke-tip';
 
-const DonateModal = ({ open, setOpen, type }: Props) => {
+const DonateModal = memo(({ open, setOpen, type }: Props) => {
   const t = useTranslations();
   const chainId = useChainId();
   const { donate, nativeToken, defaultAmount } = useDonate(chainId, type);
@@ -77,6 +77,6 @@ const DonateModal = ({ open, setOpen, type }: Props) => {
       </div>
     </Modal>
   );
-};
+});
 
 export default DonateModal;
