@@ -77,7 +77,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
           <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">
             <p>
               <Image
-                src="/assets/images/learn/wallets/add-network/metamask-add-network-1.png"
+                src="/assets/images/learn/wallets/add-network/metamask-add-network-1.webp"
                 alt="MetaMask Add Network 1"
                 width={712}
                 height={784}
@@ -88,7 +88,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
             </p>
             <p>
               <Image
-                src="/assets/images/learn/wallets/add-network/metamask-add-network-2.png"
+                src="/assets/images/learn/wallets/add-network/metamask-add-network-2.webp"
                 alt="MetaMask Add Network 2"
                 width={712}
                 height={784}

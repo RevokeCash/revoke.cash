@@ -25,7 +25,7 @@ export async function GET(req: Request, { params }: Props) {
   const t = await getTranslations({ locale: params.locale });
 
   const title = t(`learn.sections.${params.category}.title`);
-  const background = loadDataUrl(`public/assets/images/learn/${params.category}/cover.jpg`, 'image/jpeg');
+  const background = loadDataUrl(`public/assets/images/learn/${params.category}/cover.webp`, 'image/webp');
 
   return generateOgImage({ title, background });
 }
