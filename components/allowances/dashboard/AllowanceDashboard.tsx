@@ -64,7 +64,12 @@ const AllowanceDashboard = () => {
 
   return (
     <div className="flex flex-col justify-start mx-auto gap-2">
-      <AllowanceTableControls table={table} />
+      {useMemo(
+        () => (
+          <AllowanceTableControls table={table} />
+        ),
+        [table],
+      )}
       <Table
         table={table}
         loading={isLoading}

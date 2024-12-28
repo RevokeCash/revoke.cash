@@ -3,7 +3,7 @@
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { CsrLink } from 'lib/i18n/csr-navigation';
 import { Link } from 'lib/i18n/navigation';
-import { type ForwardedRef, type MouseEventHandler, forwardRef } from 'react';
+import { type ForwardedRef, type MouseEventHandler, forwardRef, memo } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
@@ -24,7 +24,7 @@ export interface Props extends Record<string, any> {
   retainSearchParams?: boolean | string[];
 }
 
-const Button = (
+const ButtonComponent = (
   {
     disabled,
     style,
@@ -115,6 +115,7 @@ const Button = (
     </button>
   );
 };
-
 // biome-ignore lint/suspicious/noExplicitAny: For some reason, forwardRef typing is not working here
-export default forwardRef<HTMLElement, Props>(Button as any);
+const Button = memo(forwardRef<HTMLElement, Props>(ButtonComponent as any));
+
+export default Button;
