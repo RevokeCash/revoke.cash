@@ -37,6 +37,7 @@ export interface ISidebarEntry {
   path: string;
   title: string;
   description?: string;
+  author?: Person;
   coverImage?: string;
   children?: ISidebarEntry[];
   date?: string;
