@@ -1,5 +1,6 @@
 'use client';
 
+import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import { ORDERED_CHAINS, createViemPublicClientForChain, getViemChainConfig } from 'lib/utils/chains';
@@ -26,6 +27,7 @@ export const connectors = [
     },
   }),
   coinbaseWallet({ appName: 'Revoke.cash' }),
+  abstractWalletConnector(),
 ];
 
 export const wagmiConfig = createConfig({

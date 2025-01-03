@@ -12,6 +12,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
   const mapping: Record<string, string> = {
     // Injected wallets
     '1inchwallet': '/assets/images/vendor/wallets/1inch.svg',
+    abstract: '/assets/images/vendor/wallets/abstract.jpg',
     backpack: '/assets/images/vendor/wallets/backpack.svg',
     'bifrost wallet': '/assets/images/vendor/wallets/bifrost.svg',
     bitkeep: '/assets/images/vendor/wallets/bitkeep.svg',
