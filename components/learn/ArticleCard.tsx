@@ -4,7 +4,7 @@ import ImageWithFallback from 'components/common/ImageWithFallback';
 import type { ISidebarEntry } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 
-const ArticleCard = ({ title, description, path, date, readingTime, coverImage }: ISidebarEntry) => {
+const ArticleCard = ({ title, description, path, date, readingTime, coverImage, author }: ISidebarEntry) => {
   const t = useTranslations();
 
   return (
@@ -28,9 +28,10 @@ const ArticleCard = ({ title, description, path, date, readingTime, coverImage }
           <p>{description}</p>
         </div>
         {date && readingTime ? (
-          <p className="text-sm text-right text-zinc-500 dark:text-zinc-400 flex gap-1 justify-end">
+          <p className="text-sm text-right text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+            {author ? `${author.name?.split(' ')?.[0]} • ` : ''}
             {new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-            <span>•</span>
+            {' • '}
             {t('common.article_meta.reading_time', { readingTime })}
           </p>
         ) : null}

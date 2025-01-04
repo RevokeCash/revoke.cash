@@ -15,7 +15,7 @@ import {
 } from 'viem';
 import { deduplicateArray } from '.';
 import { analytics } from './analytics';
-import { type TimeLog, type TokenEvent, TokenEventType, isTransferTokenEvent } from './events';
+import { type TimeLog, type TokenEvent, TokenEventType, isApprovalTokenEvent, isTransferTokenEvent } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
 
@@ -86,17 +86,19 @@ export const getTokenData = async (
     return getErc721TokenData(contract, owner, events, chainId);
   }
 
-  return getErc20TokenData(contract, owner, chainId);
+  return getErc20TokenData(contract, owner, events, chainId);
 };
 
 export const getErc20TokenData = async (
   contract: Erc20TokenContract,
   owner: Address,
+  events: TokenEvent[],
   chainId: number,
 ): Promise<TokenData> => {
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
     contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
+    throwIfSpam(contract, events),
   ]);
 
   return { contract, metadata, chainId, owner, balance };
@@ -123,6 +125,7 @@ export const getErc721TokenData = async (
           'ERC1155',
         )
       : calculatedBalance,
+    throwIfSpam(contract, events),
   ]);
 
   return { contract, metadata, chainId, owner, balance };
@@ -160,7 +163,6 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
       getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
-      throwIfSpamNft(contract),
     ]);
 
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
@@ -215,8 +217,12 @@ export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
 };
 
 // TODO: Improve spam checks
+export const throwIfSpam = async (contract: TokenContract, events: TokenEvent[]) => {
+  await Promise.all([throwIfSpamAirdrop(contract, events), throwIfSpamBytecode(contract)]);
+};
+
 // TODO: Investigate other proxy patterns to see if they result in false positives
-export const throwIfSpamNft = async (contract: Contract) => {
+export const throwIfSpamBytecode = async (contract: TokenContract) => {
   const bytecode = (await contract.publicClient.getCode({ address: contract.address })) ?? '';
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
@@ -230,6 +236,20 @@ export const throwIfSpamNft = async (contract: Contract) => {
     // if (bytecode.match(/363d3d373d3d3d363d[0-9a-f]{2}[0-9a-f]{0,40}5af43d82803e903d9160[0-9a-f]{2}57fd5bf3$/i)) return;
 
     throw new Error('Contract bytecode indicates a "spam" token');
+  }
+};
+
+export const throwIfSpamAirdrop = async (contract: Contract, events: TokenEvent[]) => {
+  const transferTransactions = events.filter(isTransferTokenEvent).map((event) => event.time.transactionHash);
+  const approvalTransactions = events.filter(isApprovalTokenEvent).map((event) => event.time.transactionHash);
+
+  // If the transfers and approvals occur in the same transaction, it's a spam transaction
+  // Note that we only check if that is the case fo *all* events to prevent false positives at the cost of false negatives
+  if (
+    transferTransactions.length > 0 &&
+    transferTransactions.every((transaction) => approvalTransactions.includes(transaction))
+  ) {
+    throw new Error('Contract is a spam airdrop');
   }
 };
 

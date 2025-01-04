@@ -155,7 +155,7 @@ const getSidebarEntry = (
   const normalisedSlug = Array.isArray(slug) ? slug.join('/') : slug;
   const path = ['', directory, normalisedSlug].join('/');
 
-  const entry: ISidebarEntry = { title: meta.sidebarTitle ?? meta.title, path, date: meta.date };
+  const entry: ISidebarEntry = { title: meta.sidebarTitle ?? meta.title, path, date: meta.date, author: meta.author };
   if (extended) {
     entry.description = meta.description;
     entry.coverImage = meta.coverImage;
