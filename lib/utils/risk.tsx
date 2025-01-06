@@ -3,6 +3,7 @@ import type { RiskFactor, RiskLevel } from 'lib/interfaces';
 import { track } from './analytics';
 
 export const RiskFactorScore: Record<string, number> = {
+  allowlist: -100,
   blocklist: 100,
   closed_source: 50,
   deprecated: 100,

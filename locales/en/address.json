@@ -76,6 +76,7 @@
     "expiration": "Expires {inTime}"
   },
   "risk_factors": {
+    "allowlist": "Well-known spender address",
     "blocklist": "Dangerous or malicious",
     "closed_source": "Closed source",
     "deprecated": "Deprecated or outdated",

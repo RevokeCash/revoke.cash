@@ -76,6 +76,7 @@
     "expiration": "{inTime}で期限が切れます"
   },
   "risk_factors": {
+    "allowlist": "Well-known spender address",
     "blocklist": "危険または悪意のある",
     "closed_source": "ソースがクローズになっている",
     "deprecated": "非推奨または古い",

@@ -76,6 +76,7 @@
     "expiration": "于 {inTime} 过期"
   },
   "risk_factors": {
+    "allowlist": "Well-known spender address",
     "blocklist": "危险或恶意",
     "closed_source": "闭源",
     "deprecated": "已弃用或已过时",

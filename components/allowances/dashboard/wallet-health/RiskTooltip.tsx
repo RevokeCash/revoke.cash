@@ -16,7 +16,8 @@ const RiskTooltip = ({ riskData }: Props) => {
   const filteredRiskFactors = filterUnknownRiskFactors(riskData?.riskFactors ?? []);
   const riskLevel = getRiskLevel(filteredRiskFactors);
 
-  if (riskLevel === 'unknown') return null;
+  // TODO: Properly handle low risk
+  if (riskLevel === 'unknown' || riskLevel === 'low') return null;
 
   const riskFactors = filteredRiskFactors.map((riskFactor) => (
     <RiskFactorDisplay key={`${riskFactor.type}-${riskFactor.source}-${riskFactor.data}`} riskFactor={riskFactor} />
@@ -37,7 +38,7 @@ const RiskTooltip = ({ riskData }: Props) => {
     'w-6 h-6 focus:outline-black shrink-0',
     riskLevel === 'high' && 'text-red-500',
     riskLevel === 'medium' && 'text-yellow-500',
-    riskLevel === 'low' && 'text-green-500',
+    // riskLevel === 'low' && 'text-green-500',
   );
 
   return (
