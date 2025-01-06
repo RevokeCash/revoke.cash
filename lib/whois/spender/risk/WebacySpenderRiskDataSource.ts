@@ -22,6 +22,7 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
       [ChainId.BNBSmartChainMainnet]: 'bsc',
       [ChainId.PolygonMainnet]: 'pol',
       [ChainId.OPMainnet]: 'opt',
+      [ChainId.ArbitrumOne]: 'arb',
     };
 
     const chainIdentifier = chainIdentifiers[chainId];
@@ -40,20 +41,22 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
       const elapsedTime = (new Date().getTime() - time) / 1000;
       console.log(elapsedTime, 'Webacy', address);
 
-      // if (address === '0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8') {
-      //   console.log(data);
-      // }
-
       const ALLOWLIST_TAGS = ['trust_list'];
       const BLOCKLIST_TAGS = ['blacklist_doubt', 'stealing_attack', 'phishing_activities', 'is_blacklisted'];
-      const UNSAFE_TAGS = ['can_take_back_ownership', 'transfer_without_approval', 'restricted_approval'];
+      const UNSAFE_TAGS = [
+        'can_take_back_ownership',
+        'transfer_without_approval',
+        'restricted_approval',
+        'centralized_risk_high',
+        'centralized_risk_medium',
+        'centralized_risk_low',
+      ];
 
       const BLOCKLIST_CATEGORIES = ['contract_reported', 'possible_drainer'];
       const UNSAFE_CATEGORIES = [
         'poor_developer_practices',
         'contract_brickable',
         'contract_issues',
-        'financially_lopsided',
         'improper_signature_validation',
       ];
 
@@ -69,13 +72,9 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
         const tags = issue?.tags?.map((tag: any) => tag.key) as string[];
         const categories = Object.keys(issue?.categories ?? {});
 
-        if (address === '0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8') {
-          console.log(tags);
-          console.log(categories);
-        }
-
         const tagFactors = tags.flatMap((tag: string) => {
           if (tag === 'is_closed_source') return [{ type: 'closed_source', source: 'webacy' }];
+          if (tag === 'is_proxy') return [{ type: 'proxy', source: 'webacy' }];
           if (UNSAFE_TAGS.includes(tag)) return [{ type: 'unsafe', source: 'webacy' }];
           if (BLOCKLIST_TAGS.includes(tag)) return [{ type: 'blocklist', source: 'webacy' }];
           if (ALLOWLIST_TAGS.includes(tag)) return [{ type: 'allowlist', source: 'webacy' }];
@@ -83,6 +82,13 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
         });
 
         const categoryFactors = categories.flatMap((category: string) => {
+          // Proxies are included in the contract_issues category, but we want to treat them as a separate risk factor,
+          // so we ignore them here and add them in the tagFactors section
+          if (category === 'contract_issues') {
+            const categoryTags = Object.keys(issue.categories.contract_issues.tags);
+            if (categoryTags.length === 1 && categoryTags[0] === 'is_proxy') return [];
+          }
+
           if (IGNORE_CATEGORIES.includes(category)) return [];
           if (UNSAFE_CATEGORIES.includes(category)) return [{ type: 'unsafe', source: 'webacy' }];
           if (BLOCKLIST_CATEGORIES.includes(category)) return [{ type: 'blocklist', source: 'webacy' }];

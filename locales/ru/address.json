@@ -88,6 +88,7 @@
       "medium": "средний риск"
     },
     "phishing_risk": "Увеличивает поверхность риска в случае фишинга",
+    "proxy": "Upgradeable proxy contract",
     "source": "сообщил(а)<source-link>{source}</source-link>",
     "uninitialized": "Контракт по этому адресу не отправлен",
     "unsafe": "Потенциально небезопасный код контракта"
