@@ -1,7 +1,7 @@
 import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
+import { useRevokeBatch2 } from 'lib/hooks/ethereum/useRevokeBatch2';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
@@ -25,7 +25,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
     return table.getGroupedSelectedRowModel().flatRows.map((row) => row.original);
   }, [open]);
 
-  const { results, revoke, pause, isRevoking, isAllConfirmed } = useRevokeBatch(
+  const { results, revoke, pause, isRevoking, isAllConfirmed } = useRevokeBatch2(
     selectedAllowances,
     table.options.meta!.onUpdate,
   );

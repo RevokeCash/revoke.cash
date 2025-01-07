@@ -23,8 +23,8 @@
   },
   "private": true,
   "dependencies": {
-    "@abstract-foundation/agw-client": "^0.1.5",
-    "@abstract-foundation/agw-react": "^0.1.7",
+    "@abstract-foundation/agw-client": "^0.1.6",
+    "@abstract-foundation/agw-react": "^0.1.8",
     "@dotenvx/dotenvx": "^1.14.2",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
@@ -69,8 +69,8 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^2.19.9",
-    "wagmi": "^2.12.7",
+    "viem": "^2.22.2",
+    "wagmi": "^2.14.6",
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {

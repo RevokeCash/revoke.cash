@@ -5,6 +5,7 @@ import type { getTranslations } from 'next-intl/server';
 import { toast } from 'react-toastify';
 import {
   type Address,
+  type EstimateContractGasParameters,
   type Hash,
   type Hex,
   type PublicClient,
@@ -138,7 +139,9 @@ export const writeContractUnlessExcessiveGas = async (
   walletClient: WalletClient,
   transactionRequest: WriteContractParameters,
 ) => {
-  const estimatedGas = transactionRequest.gas ?? (await publicClient.estimateContractGas(transactionRequest));
+  const estimatedGas =
+    transactionRequest.gas ??
+    (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
   throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };

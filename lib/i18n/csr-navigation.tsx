@@ -21,8 +21,8 @@ const getHrefRetainingCurrentSearchParams = (
 
   const [path, search] = hrefString.split('?');
   const mergedSearchParams = new URLSearchParams({
-    ...Object.fromEntries(searchParamsToRetain),
     ...Object.fromEntries(new URLSearchParams(search)),
+    ...Object.fromEntries(searchParamsToRetain),
   });
   return `${path}?${mergedSearchParams.toString()}`;
 };
