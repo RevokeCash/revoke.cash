@@ -1,7 +1,7 @@
 import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import { useRevokeBatch2 } from 'lib/hooks/ethereum/useRevokeBatch2';
+import { useRevokeBatch2 } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
