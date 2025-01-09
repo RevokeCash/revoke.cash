@@ -13,37 +13,15 @@ interface Props {
   isRevoking: boolean;
   isAllConfirmed: boolean;
   setOpen: (open: boolean) => void;
-  revoke: () => Promise<void>;
+  revoke: (tipAmount: string) => Promise<void>;
 }
 
 const BatchRevokeControls = ({ selectedAllowances, isRevoking, isAllConfirmed, setOpen, revoke }: Props) => {
   const t = useTranslations();
   const { address, selectedChainId } = useAddressPageContext();
+  const { defaultAmount, nativeToken } = useDonate(selectedChainId, 'batch-revoke-tip');
 
-  const { donate, nativeToken, defaultAmount } = useDonate(selectedChainId, 'batch-revoke-tip');
   const [tipAmount, setTipAmount] = useState<string | null>(null);
-
-  const revokeAndTip = async (tipAmount: string | null) => {
-    if (!tipAmount) throw new Error('Tip amount is required');
-
-    const getTipSelection = () => {
-      if (tipAmount === '0') return 'none';
-      if (Number(tipAmount) < Number(defaultAmount)) return 'low';
-      if (Number(tipAmount) > Number(defaultAmount)) return 'high';
-      return 'mid';
-    };
-
-    track('Batch Revoked', {
-      chainId: selectedChainId,
-      address,
-      allowances: selectedAllowances.length,
-      amount: tipAmount,
-      tipSelection: getTipSelection(),
-    });
-
-    await revoke();
-    await donate(tipAmount);
-  };
 
   const getButtonText = () => {
     if (isRevoking) return t('common.buttons.revoking');
@@ -53,7 +31,26 @@ const BatchRevokeControls = ({ selectedAllowances, isRevoking, isAllConfirmed, s
 
   const getButtonAction = () => {
     if (isAllConfirmed) return () => setOpen(false);
-    return () => revokeAndTip(tipAmount);
+    return async () => {
+      if (!tipAmount) throw new Error('Tip amount is required');
+
+      const getTipSelection = () => {
+        if (tipAmount === '0') return 'none';
+        if (Number(tipAmount) < Number(defaultAmount)) return 'low';
+        if (Number(tipAmount) > Number(defaultAmount)) return 'high';
+        return 'mid';
+      };
+
+      track('Batch Revoked', {
+        chainId: selectedChainId,
+        address,
+        allowances: selectedAllowances.length,
+        amount: tipAmount,
+        tipSelection: getTipSelection(),
+      });
+
+      await revoke(tipAmount);
+    };
   };
 
   return (
