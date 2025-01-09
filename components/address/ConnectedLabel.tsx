@@ -22,7 +22,7 @@ const ConnectedLabel = ({ address }: Props) => {
   );
 
   // Add placeholder label to prevent layout shift
-  if (!isMounted) return <Label className="bg-transparent">&nbsp;</Label>;
+  if (!isMounted) return <Label className="bg-transparent min-h-[2rem] inline-block">&nbsp;</Label>;
 
   return (
     <Label className={classes}>

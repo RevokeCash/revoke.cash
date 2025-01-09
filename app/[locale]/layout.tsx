@@ -74,7 +74,7 @@ const MainLayout = ({ children, params }: Props) => {
                 <div className="flex flex-col mx-auto min-h-screen">
                   <Header />
                   <main className="w-full grow">{children}</main>
-                  <div className="flex flex-col justify-end">
+                  <div className="flex flex-col justify-end flex-shrink-0 min-h-[100px]">
                     <Footer />
                   </div>
                 </div>
