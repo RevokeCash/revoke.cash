@@ -3,14 +3,16 @@ import type { RiskFactor, RiskLevel } from 'lib/interfaces';
 import { analytics } from './analytics';
 
 export const RiskFactorScore: Record<string, number> = {
+  allowlist: -100,
   blocklist: 100,
-  closed_source: 50,
+  closed_source: 40,
   deprecated: 100,
   eoa: 100,
   exploit: 100,
-  phishing_risk: 50,
-  unsafe: 50,
-  uninitialized: 50,
+  phishing_risk: 40,
+  proxy: 20,
+  unsafe: 40,
+  uninitialized: 40,
 };
 
 export const filterUnknownRiskFactors = (riskFactors: RiskFactor[]): RiskFactor[] => {
@@ -34,8 +36,8 @@ export const getRiskLevel = (riskFactors: RiskFactor[]): RiskLevel => {
 
   const riskScore = calculateRiskScore(riskFactors);
 
-  if (riskScore >= 80) return 'high';
-  if (riskScore <= 20) return 'low';
+  if (riskScore >= 75) return 'high';
+  if (riskScore <= 25) return 'low';
 
   return 'medium';
 };
@@ -47,9 +49,10 @@ export const getRiskIcon = (riskFactor: RiskFactor) => {
     return <ExclamationCircleIcon className=" text-red-500 h-5" />;
   }
 
-  if (score > 25) {
+  if (score > 0) {
     return <ExclamationTriangleIcon className="text-yellow-500 h-5" />;
   }
 
+  // Green is only used for negative risk factors (e.g. allowlist)
   return <InformationCircleIcon className="text-green-500 h-5" />;
 };

@@ -76,6 +76,7 @@
     "expiration": "Expires {inTime}"
   },
   "risk_factors": {
+    "allowlist": "Well-known spender address",
     "blocklist": "Dangerous or malicious",
     "closed_source": "Closed source",
     "deprecated": "Deprecated or outdated",
@@ -87,6 +88,7 @@
       "medium": "medium risk"
     },
     "phishing_risk": "Increases risk surface in case of phishing",
+    "proxy": "Upgradeable proxy contract",
     "source": "reported by <source-link>{source}</source-link>",
     "uninitialized": "No contract deployed to this address",
     "unsafe": "Potentially unsafe contract code"

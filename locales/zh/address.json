@@ -76,6 +76,7 @@
     "expiration": "于 {inTime} 过期"
   },
   "risk_factors": {
+    "allowlist": "Well-known spender address",
     "blocklist": "危险或恶意",
     "closed_source": "闭源",
     "deprecated": "已弃用或已过时",
@@ -87,6 +88,7 @@
       "medium": "中风险"
     },
     "phishing_risk": "增加钓鱼风险",
+    "proxy": "Upgradeable proxy contract",
     "source": "举报人：<source-link>{source}</source-link>",
     "uninitialized": "没有部署到此地址的合约",
     "unsafe": "可能不安全的合约代码"
