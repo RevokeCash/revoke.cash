@@ -11,7 +11,7 @@ If you want to learn more about (unlimited) token approvals, I wrote an article 
 ## Running locally
 
 ```
-git clone git@github.com:rkalis/revoke.cash.git
+git clone git@github.com:RevokeCash/revoke.cash.git
 cd revoke.cash
 yarn
 yarn dev
