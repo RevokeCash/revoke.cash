@@ -3,10 +3,10 @@
 import type { DonateButtonType } from 'components/common/donate/DonateModal';
 import { DONATION_ADDRESS } from 'lib/constants';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { getWalletAddress, waitForTransactionConfirmation } from 'lib/utils';
+import { waitForTransactionConfirmation } from 'lib/utils';
 import { track } from 'lib/utils/analytics';
 import { getChainName, getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
-import { parseEther } from 'viem';
+import { type SendTransactionParameters, parseEther } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
 
@@ -17,22 +17,32 @@ export const useDonate = (chainId: number, type: DonateButtonType) => {
   const publicClient = usePublicClient({ chainId })!;
   const handleTransaction = useHandleTransaction(chainId);
 
-  const sendDonation = async (amount: string): Promise<TransactionSubmitted | undefined> => {
+  const sendDonation = async (amount: string): Promise<TransactionSubmitted> => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
 
-    if (!amount || Number(amount) === 0) return;
+    if (!amount || Number(amount) === 0) {
+      throw new Error('User rejected donation');
+    }
 
-    const hash = await walletClient.sendTransaction({
-      account: await getWalletAddress(walletClient),
+    const hash = await walletClient.sendTransaction(await prepareDonate(amount));
+
+    return { hash, confirmation: waitForTransactionConfirmation(hash, publicClient) };
+  };
+
+  const prepareDonate = async (amount: string): Promise<SendTransactionParameters> => {
+    if (!walletClient) {
+      throw new Error('Please connect your web3 wallet to a supported network');
+    }
+
+    return {
+      account: walletClient.account!,
       to: DONATION_ADDRESS,
       value: parseEther(amount),
       chain: walletClient.chain,
       kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅
-    });
-
-    return { hash, confirmation: waitForTransactionConfirmation(hash, publicClient) };
+    };
   };
 
   const donate = async (amount: string): Promise<TransactionSubmitted | undefined> => {
@@ -51,5 +61,5 @@ export const useDonate = (chainId: number, type: DonateButtonType) => {
     return transactionSubmitted;
   };
 
-  return { donate, nativeToken, defaultAmount };
+  return { prepareDonate, donate, nativeToken, defaultAmount };
 };

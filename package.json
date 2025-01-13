@@ -23,10 +23,13 @@
   },
   "private": true,
   "dependencies": {
+    "@abstract-foundation/agw-client": "^0.1.6",
+    "@abstract-foundation/agw-react": "^0.1.8",
     "@dotenvx/dotenvx": "^1.14.2",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@neondatabase/serverless": "^0.10.1",
+    "@privy-io/cross-app-connect": "^0.1.2",
     "@revoke.cash/chains": "^59.0.0",
     "@tanstack/query-sync-storage-persister": "^5.52.0",
     "@tanstack/react-query": "^5.52.0",
@@ -66,8 +69,8 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^2.19.9",
-    "wagmi": "^2.12.7",
+    "viem": "^2.22.2",
+    "wagmi": "^2.14.6",
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
@@ -77,6 +80,7 @@
     "@cypress/grep": "^4.1.0",
     "@lavamoat/allow-scripts": "^3.2.0",
     "@localazy/cli": "^1.7.14",
+    "@rainbow-me/rainbowkit": "^2.2.1",
     "@tailwindcss/typography": "^0.5.14",
     "@types/md5": "^2.3.5",
     "@types/mixpanel-browser": "^2.49.1",
@@ -111,6 +115,8 @@
   "lavamoat": {
     "allowScripts": {
       "$root$": true,
+      "@abstract-foundation/agw-react>secp256k1": false,
+      "@biomejs/biome": true,
       "@vercel/speed-insights": false,
       "cypress": true,
       "sharp": true,
@@ -118,8 +124,7 @@
       "viem>ws>bufferutil": true,
       "viem>ws>utf-8-validate": true,
       "wagmi>@wagmi/connectors>cbw-sdk>keccak": false,
-      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false,
-      "@biomejs/biome": true
+      "wagmi>@wagmi/connectors>@metamask/sdk>eciesjs>secp256k1": false
     }
   },
   "mocha": {

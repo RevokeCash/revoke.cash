@@ -76,6 +76,7 @@ export const isNetworkError = (error?: string | any): boolean => {
 
 export const parseErrorMessage = (error: any): string => {
   const errorMessage =
+    error?.cause?.details || // Abstract Global Wallet
     error?.error?.message ||
     error?.data?.message ||
     error?.response?.data?.message ||

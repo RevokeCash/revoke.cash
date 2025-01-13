@@ -14,7 +14,7 @@ interface Props {
 const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
   const t = useTranslations();
 
-  const { address: account } = useAccount();
+  const { address: account, chainId } = useAccount();
   const { domainName } = useNameLookup(account);
   const { disconnect } = useDisconnect();
 
@@ -22,7 +22,7 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
     <div className="flex whitespace-nowrap">
       {account ? (
         <DropdownMenu menuButton={domainName ?? shortenAddress(account, 4)}>
-          <DropdownMenuItem href={`/address/${account}`} router retainSearchParams={['chainId']}>
+          <DropdownMenuItem href={`/address/${account}?chainId=${chainId}`} router retainSearchParams={['chainId']}>
             {t('common.buttons.my_allowances')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => disconnect()}>{t('common.buttons.disconnect')}</DropdownMenuItem>

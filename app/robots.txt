@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /private/
 
 Sitemap: https://revoke.cash/sitemap.xml
