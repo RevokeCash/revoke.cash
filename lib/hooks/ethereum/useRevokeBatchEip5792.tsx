@@ -48,7 +48,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     const calls = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
 
-    if (tipAmount && Number(tipAmount) > 0) {
+    if (tipAmount && Number(tipAmount) > 0 && calls.length > 0) {
       const donateTransaction = await prepareDonate(tipAmount);
       calls.push(mapTransactionRequestToEip5792Call(donateTransaction));
     }
