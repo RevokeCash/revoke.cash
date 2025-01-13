@@ -102,6 +102,7 @@ const TEST_ADDRESSES = {
   [ChainId.Shibarium]: '0x8fA1F2969082a8d141DA3f0DD06D308C783fe7bB',
   [ChainId.Shiden]: '0xD377cFFCc52C16bF6e9840E77F78F42Ddb946568',
   [ChainId.ShimmerEVM]: '0xAc4682eF9fE8c62980cd8bd8d8a3Bb100FD652e7',
+  [ChainId.SonicMainnet]: '0xA93093fc1D0343298966E1F971fAE10a7a629296',
   [ChainId['SongbirdCanary-Network']]: '0x4E8De52271D3bE18cC972af892198103C1e6AfE8',
   [ChainId.StoryOdysseyTestnet]: '0x2343bcb7f864D6e2880b3510492dc3da33E75f14',
   [ChainId.SyscoinMainnet]: '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044',
@@ -122,7 +123,7 @@ const TEST_ADDRESSES = {
   [ChainId.ZkSyncMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
   [ChainId.Zora]: '0x061EFb2DF7767D6e63529BA99394037d4dCa39D6',
   // Testnets
-  [ChainId.AbstractTestnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
+  [ChainId.AbstractSepoliaTestnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Amoy]: '0x57BD9b2E821d2bF1f8136026ba3A29848eff9e47',
   [ChainId.ArbitrumSepolia]: '0xDd3287043493E0a08d2B348397554096728B459c',
   [ChainId.AvalancheFujiTestnet]: '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6',

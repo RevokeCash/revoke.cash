@@ -42,6 +42,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.SeiNetwork,
   ChainId.BOB,
   ChainId.RootstockMainnet,
+  ChainId.SonicMainnet,
   ChainId.FantomOpera,
   ChainId.MerlinMainnet,
   ChainId.CeloMainnet,
@@ -133,7 +134,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
   ChainId.ZkSyncSepoliaTestnet,
-  ChainId.AbstractTestnet,
+  ChainId.AbstractSepoliaTestnet,
   ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoHeklaL2,
@@ -178,9 +179,9 @@ export const CHAINS = {
     nativeToken: 'ETH',
     logoUrl: '/assets/images/vendor/chains/abstract.jpg',
   }),
-  [ChainId.AbstractTestnet]: new Chain({
+  [ChainId.AbstractSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: ChainId.AbstractTestnet,
+    chainId: ChainId.AbstractSepoliaTestnet,
     name: 'Abstract Testnet',
     nativeToken: 'ETH',
     logoUrl: '/assets/images/vendor/chains/abstract.jpg',
@@ -2025,6 +2026,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
       main: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      free: 'https://sepolia.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -2081,6 +2083,18 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://explorer.evm.testnet.shimmer.network/api',
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ShimmerEVM,
+  }),
+  [ChainId.SonicMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.SonicMainnet,
+    name: 'Sonic',
+    explorerUrl: 'https://sonicscan.org',
+    logoUrl: '/assets/images/vendor/chains/sonic.svg',
+    rpc: {
+      main: `https://sonic-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId['SongbirdCanary-Network']]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2636,6 +2650,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   ROSE: '80',
   RSS3: '50',
   SAMA: '600',
+  S: '5',
   SDN: '50',
   SEI: '15',
   SGB: '600',
