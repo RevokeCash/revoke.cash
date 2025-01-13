@@ -100,7 +100,7 @@ export const normaliseLabel = (label: string) => {
 };
 
 export const getWalletAddress = async (walletClient: WalletClient) => {
-  const [address] = await walletClient.requestAddresses();
+  const [address] = await walletClient.getAddresses();
   return address;
 };
 
