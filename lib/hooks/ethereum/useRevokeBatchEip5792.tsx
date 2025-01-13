@@ -75,6 +75,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
               const id = await batchPromise;
               const { receipts } = await pollForCallsReceipts(id, extendedWalletClient);
 
+              console.log('receipts', receipts);
+
               if (receipts?.length === 1) {
                 return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[0], onUpdate);
               }
