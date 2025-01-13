@@ -82,6 +82,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
               const callIndex = getCallIndex(index, callsSettled);
 
               if (!receipts?.[callIndex]) {
+                console.log('receipts', receipts);
                 throw new Error('An error occurred related to EIP5792 batch calls');
               }
 
