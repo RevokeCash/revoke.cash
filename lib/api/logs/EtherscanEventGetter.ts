@@ -121,9 +121,9 @@ const formatEtherscanEvent = (etherscanLog: any) => ({
   topics: etherscanLog.topics.filter((topic: string) => !isNullish(topic)),
   data: etherscanLog.data,
   transactionHash: etherscanLog.transactionHash,
-  blockNumber: Number.parseInt(etherscanLog.blockNumber, 16),
-  transactionIndex: Number.parseInt(etherscanLog.transactionIndex, 16),
-  logIndex: Number.parseInt(etherscanLog.logIndex, 16),
+  blockNumber: Number.parseInt(etherscanLog.blockNumber, 16) || 0,
+  transactionIndex: Number.parseInt(etherscanLog.transactionIndex, 16) || 0,
+  logIndex: Number.parseInt(etherscanLog.logIndex, 16) || 0,
   timestamp: Number.parseInt(etherscanLog.timeStamp, 16),
 });
 

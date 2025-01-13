@@ -1,15 +1,11 @@
 import type { TransactionSubmitted } from 'lib/interfaces';
 import type { SendTransactionParameters, WalletCallReceipt, WalletClient, WriteContractParameters } from 'viem';
-import {
-  type Eip5792Actions,
-  type GetCallsStatusReturnType,
-  type SendCallsParameters,
-  eip5792Actions,
-} from 'viem/experimental';
+import type { Call } from 'viem/_types/types/calls';
+import { type Eip5792Actions, type GetCallsStatusReturnType, eip5792Actions } from 'viem/experimental';
 import type { OnUpdate } from './allowances';
 import type { TokenAllowanceData } from './allowances';
 
-export type Eip5792Call = SendCallsParameters['calls'][number];
+export type Eip5792Call = Call;
 
 export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
   try {
@@ -37,7 +33,9 @@ export const pollForCallsReceipts = async (id: string, walletClient: WalletClien
   });
 };
 
-export const mapContractTransactionRequestToEip5792Call = (transactionRequest: WriteContractParameters) => {
+export const mapContractTransactionRequestToEip5792Call = (
+  transactionRequest: WriteContractParameters,
+): Eip5792Call => {
   return {
     to: transactionRequest.address,
     abi: transactionRequest.abi,
@@ -49,7 +47,7 @@ export const mapContractTransactionRequestToEip5792Call = (transactionRequest: W
 
 export const mapTransactionRequestToEip5792Call = (transactionRequest: SendTransactionParameters): Eip5792Call => {
   return {
-    to: transactionRequest.to,
+    to: transactionRequest.to!,
     data: transactionRequest.data,
     value: transactionRequest.value,
   };

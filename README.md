@@ -51,11 +51,11 @@ Adding a new network is relatively straightforward as you only need to change th
 
 #### Prerequisites
 
-To add a new network, one of the following needs to be available:
+To add a new network, **one** of the following needs to be available:
 
 - A (public or private) RPC endpoint that supports `eth_getLogs` requests for the entire history of the network.
-- Support in [CovalentHQ](https://www.covalenthq.com/) for the network.
-- A block explorer with an exposed API that is compatible with Etherscan's API (such as Blockscout).
+- Or: Support in [CovalentHQ](https://www.covalenthq.com/) for the network.
+- Or: A block explorer with an exposed API that is compatible with Etherscan's API (such as Blockscout).
 
 Also make sure that your network is listed in [ethereum-lists/chains](https://github.com/ethereum-lists/chains) (and that it has subsequently been included in [@revoke.cash/chains](https://github.com/RevokeCash/chains)). Besides the earlier requirements, we also require a publicly available RPC endpoint with rate limits that are not too restrictive. It is also helpful if your network is listed (with TVL and volume stats) on DeFiLlama, but this is not required.
 

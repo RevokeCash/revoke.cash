@@ -1,5 +1,6 @@
 'use client';
 
+import { throwIfExcessiveGas } from 'lib/utils';
 import { type OnUpdate, type TokenAllowanceData, prepareRevokeAllowance, wrapRevoke } from 'lib/utils/allowances';
 import {
   type Eip5792Call,
@@ -9,6 +10,7 @@ import {
   pollForCallsReceipts,
 } from 'lib/utils/eip5792';
 import type PQueue from 'p-queue';
+import type { EstimateContractGasParameters } from 'viem';
 import { eip5792Actions } from 'viem/experimental';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore } from '../../stores/transaction-store';
@@ -29,14 +31,22 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     const extendedWalletClient = walletClient.extend(eip5792Actions());
 
-    // TODO: What if estimategas fails (should skip 1 and revoke others)
-    const calls: Eip5792Call[] = await Promise.all(
-      allowances.map(async (allowance) => {
+    const callsSettled = await Promise.allSettled(
+      allowances.map(async (allowance): Promise<Eip5792Call> => {
         const transactionRequest = await prepareRevokeAllowance(walletClient, allowance);
-        if (!transactionRequest) return;
+
+        const publicClient = allowance.contract.publicClient;
+        const estimatedGas =
+          transactionRequest.gas ??
+          (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
+
+        throwIfExcessiveGas(selectedChainId, allowance.owner, estimatedGas);
+
         return mapContractTransactionRequestToEip5792Call(transactionRequest);
       }),
     );
+
+    const calls = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
 
     if (tipAmount && Number(tipAmount) > 0) {
       const donateTransaction = await prepareDonate(tipAmount);
@@ -58,6 +68,10 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
           const revoke = wrapRevoke(
             allowance,
             async () => {
+              // Check whether the revoke failed *before* even making it into wallet_sendCalls
+              const settlement = callsSettled[index];
+              if (settlement.status === 'rejected') throw settlement.reason;
+
               const id = await batchPromise;
               const { receipts } = await pollForCallsReceipts(id, extendedWalletClient);
 
@@ -65,11 +79,13 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[0], onUpdate);
               }
 
-              if (!receipts?.[index]) {
+              const callIndex = getCallIndex(index, callsSettled);
+
+              if (!receipts?.[callIndex]) {
                 throw new Error('An error occurred related to EIP5792 batch calls');
               }
 
-              return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[index], onUpdate);
+              return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[callIndex], onUpdate);
             },
             updateTransaction,
           );
@@ -82,4 +98,13 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
   };
 
   return revoke;
+};
+
+const getCallIndex = (index: number, callsSettled: PromiseSettledResult<Eip5792Call>[]): number => {
+  const numberOfFailedCallsBeforeIndex = callsSettled
+    .slice(0, index)
+    .filter((call) => call.status === 'rejected').length;
+
+  const adjustedIndex = index - numberOfFailedCallsBeforeIndex;
+  return adjustedIndex;
 };
