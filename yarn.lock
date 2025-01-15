@@ -5,9 +5,9 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@abstract-foundation/agw-client@npm:^0.1.6":
-  version: 0.1.6
-  resolution: "@abstract-foundation/agw-client@npm:0.1.6"
+"@abstract-foundation/agw-client@npm:1.0.0, @abstract-foundation/agw-client@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@abstract-foundation/agw-client@npm:1.0.0"
   peerDependencies:
     abitype: ^1.0.0
     typescript: ">=5.0.4"
@@ -15,15 +15,16 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 46e808f26a70689cb21eb5988962bfc12bca7fbc0662a8969dd7977a38054a97a981ea353216cda2a57e3dfd50c84df9f30dff921ac63c9bcc64906f9faf6b90
+  checksum: 4e68a931cfde14aabb6c4b3c4b5fa4ba949262c0a91d1bb729ff52a3779169642f65bcb171c34f6bc88638dcd11625c6f025dffb57be8765b784727855bad07e
   languageName: node
   linkType: hard
 
-"@abstract-foundation/agw-react@npm:^0.1.8":
-  version: 0.1.8
-  resolution: "@abstract-foundation/agw-react@npm:0.1.8"
+"@abstract-foundation/agw-react@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@abstract-foundation/agw-react@npm:1.0.0"
+  dependencies:
+    "@abstract-foundation/agw-client": 1.0.0
   peerDependencies:
-    "@abstract-foundation/agw-client": ^0.1.6
     "@privy-io/cross-app-connect": ^0.1.2
     "@privy-io/react-auth": ^1.97.0
     "@tanstack/react-query": ^5
@@ -40,7 +41,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 48645d43b0476630271dee711342def0d3dd0e31059cd8efa0e6cadda66ff08235866c8df23c1eb30892008886ebc87d1f20e4ddda6857bf15e625ceae29620c
+  checksum: c531d9158c5bbbff2ced23514f93e5200409d296f924fdef2f9c3f86f0d64aa2d8ea2db37aff93a89d21602bf61aba326ee1506ddc326f5414044d44c2faf02b
   languageName: node
   linkType: hard
 
@@ -10205,8 +10206,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "revoke.cash@workspace:."
   dependencies:
-    "@abstract-foundation/agw-client": ^0.1.6
-    "@abstract-foundation/agw-react": ^0.1.8
+    "@abstract-foundation/agw-client": ^1.0.0
+    "@abstract-foundation/agw-react": ^1.0.0
     "@biomejs/biome": ^1.9.4
     "@commitlint/cli": ^19.6.0
     "@commitlint/config-conventional": ^19.6.0
