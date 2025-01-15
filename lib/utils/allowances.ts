@@ -366,7 +366,7 @@ export const updateErc20Allowance = async (
   // Note that tracking happens in the wrapRevoke function already so we only need to track if the allowance is not being revoked
   // TODO: Merge tracking with wrapRevoke
   if (newAmount !== '0') {
-    trackRevokeTransaction(allowance, hash, newAmount);
+    trackRevokeTransaction(allowance, newAmount);
   }
 
   const waitForConfirmation = async () => {
@@ -512,25 +512,25 @@ export const prepareUpdateErc20Allowance = async (
   }
 };
 
-export const trackRevokeTransaction = (allowance: TokenAllowanceData, hash: string, newAmount?: string) => {
-  if (!hash) return;
-
+export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?: string) => {
   if (isErc721Contract(allowance.contract)) {
     track('Revoked ERC721 allowance', {
       chainId: allowance.chainId,
       account: allowance.owner,
       spender: allowance.payload?.spender,
       token: allowance.contract.address,
-      tokenId: (allowance.payload as any).tokenId,
+      tokenId: allowance.payload?.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
     });
   }
 
-  track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
+  const isRevoke = !newAmount || newAmount === '0';
+
+  track(isRevoke ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
     chainId: allowance.chainId,
     account: allowance.owner,
     spender: allowance.payload?.spender,
     token: allowance.contract.address,
-    amount: newAmount === '0' ? undefined : newAmount,
+    amount: isRevoke ? undefined : newAmount,
     permit2: allowance.payload?.type === AllowanceType.PERMIT2,
   });
 };
@@ -553,7 +553,7 @@ export const wrapRevoke = (
 
       updateTransaction(allowance, { status: 'pending', transactionHash: transactionSubmitted.hash });
 
-      trackRevokeTransaction(allowance, transactionSubmitted.hash);
+      trackRevokeTransaction(allowance);
 
       // We don't await this, since we want to return after submitting all transactions, even if they're still pending
       transactionSubmitted.confirmation.then(() => {
