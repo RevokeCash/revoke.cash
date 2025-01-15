@@ -185,6 +185,7 @@ export const CHAINS = {
     name: 'Abstract Testnet',
     nativeToken: 'ETH',
     logoUrl: '/assets/images/vendor/chains/abstract.jpg',
+    explorerUrl: 'https://sepolia.abscan.org',
     rpc: {
       main: `https://abstract-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },

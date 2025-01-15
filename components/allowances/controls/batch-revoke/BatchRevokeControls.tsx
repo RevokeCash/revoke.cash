@@ -4,6 +4,7 @@ import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { track } from 'lib/utils/analytics';
+import type { BatchType } from 'lib/utils/eip5792';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import ControlsWrapper from '../ControlsWrapper';
@@ -13,7 +14,7 @@ interface Props {
   isRevoking: boolean;
   isAllConfirmed: boolean;
   setOpen: (open: boolean) => void;
-  revoke: (tipAmount: string) => Promise<void>;
+  revoke: (tipAmount: string) => Promise<BatchType>;
 }
 
 const BatchRevokeControls = ({ selectedAllowances, isRevoking, isAllConfirmed, setOpen, revoke }: Props) => {
@@ -41,15 +42,16 @@ const BatchRevokeControls = ({ selectedAllowances, isRevoking, isAllConfirmed, s
         return 'mid';
       };
 
+      const batchType = await revoke(tipAmount);
+
       track('Batch Revoked', {
         chainId: selectedChainId,
         address,
         allowances: selectedAllowances.length,
         amount: tipAmount,
         tipSelection: getTipSelection(),
+        batchType,
       });
-
-      await revoke(tipAmount);
     };
   };
 

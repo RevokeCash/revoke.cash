@@ -7,6 +7,8 @@ import type { TokenAllowanceData } from './allowances';
 
 export type Eip5792Call = Call;
 
+export type BatchType = 'eip5792' | 'queued';
+
 export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
   try {
     const extendedWalletClient = walletClient.extend(eip5792Actions());
