@@ -317,8 +317,8 @@ export const revokeAllowance = async (
   walletClient: WalletClient,
   allowance: TokenAllowanceData,
   onUpdate: OnUpdate,
-): Promise<TransactionSubmitted | undefined> => {
-  if (!allowance.payload) return undefined;
+): Promise<TransactionSubmitted> => {
+  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
 
   if (isErc721Contract(allowance.contract)) {
     return revokeErc721Allowance(walletClient, allowance, onUpdate);
@@ -334,7 +334,6 @@ export const revokeErc721Allowance = async (
 ): Promise<TransactionSubmitted> => {
   const transactionRequest = await prepareRevokeErc721Allowance(walletClient, allowance);
   const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
-  trackTransaction(allowance, hash);
 
   const waitForConfirmation = async () => {
     const transactionReceipt = await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
@@ -349,7 +348,7 @@ export const revokeErc20Allowance = async (
   walletClient: WalletClient,
   allowance: TokenAllowanceData,
   onUpdate: OnUpdate,
-): Promise<TransactionSubmitted | undefined> => {
+): Promise<TransactionSubmitted> => {
   return updateErc20Allowance(walletClient, allowance, '0', onUpdate);
 };
 
@@ -358,13 +357,17 @@ export const updateErc20Allowance = async (
   allowance: TokenAllowanceData,
   newAmount: string,
   onUpdate: OnUpdate,
-): Promise<TransactionSubmitted | undefined> => {
+): Promise<TransactionSubmitted> => {
   const newAmountParsed = parseFixedPointBigInt(newAmount, allowance.metadata.decimals);
   const transactionRequest = await prepareUpdateErc20Allowance(walletClient, allowance, newAmountParsed);
-  if (!transactionRequest) return;
 
   const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
-  trackTransaction(allowance, hash, newAmount);
+
+  // Note that tracking happens in the wrapRevoke function already so we only need to track if the allowance is not being revoked
+  // TODO: Merge tracking with wrapRevoke
+  if (newAmount !== '0') {
+    trackRevokeTransaction(allowance, newAmount);
+  }
 
   const waitForConfirmation = async () => {
     const transactionReceipt = await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
@@ -383,8 +386,11 @@ export const updateErc20Allowance = async (
   return { hash, confirmation: waitForConfirmation() };
 };
 
-export const prepareRevokeAllowance = async (walletClient: WalletClient, allowance: TokenAllowanceData) => {
-  if (!allowance.payload) return undefined;
+export const prepareRevokeAllowance = async (
+  walletClient: WalletClient,
+  allowance: TokenAllowanceData,
+): Promise<WriteContractParameters> => {
+  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
 
   if (isErc721Contract(allowance.contract)) {
     return prepareRevokeErc721Allowance(walletClient, allowance);
@@ -429,7 +435,7 @@ export const prepareRevokeErc721Allowance = async (
 export const prepareRevokeErc20Allowance = async (
   walletClient: WalletClient,
   allowance: TokenAllowanceData,
-): Promise<WriteContractParameters | undefined> => {
+): Promise<WriteContractParameters> => {
   return prepareUpdateErc20Allowance(walletClient, allowance, 0n);
 };
 
@@ -437,7 +443,7 @@ export const prepareUpdateErc20Allowance = async (
   walletClient: WalletClient,
   allowance: TokenAllowanceData,
   newAmount: bigint,
-): Promise<WriteContractParameters | undefined> => {
+): Promise<WriteContractParameters> => {
   if (!allowance.payload) throw new Error('Cannot update undefined allowance');
 
   if (isErc721Contract(allowance.contract) || isErc721Allowance(allowance.payload)) {
@@ -445,7 +451,7 @@ export const prepareUpdateErc20Allowance = async (
   }
 
   const differenceAmount = newAmount - allowance.payload.amount;
-  if (differenceAmount === 0n) return;
+  if (differenceAmount === 0n) throw new Error('User rejected update transaction');
 
   if (allowance.payload.type === AllowanceType.PERMIT2) {
     return preparePermit2Approve(
@@ -506,25 +512,25 @@ export const prepareUpdateErc20Allowance = async (
   }
 };
 
-const trackTransaction = (allowance: TokenAllowanceData, hash: string, newAmount?: string) => {
-  if (!hash) return;
-
+export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?: string) => {
   if (isErc721Contract(allowance.contract)) {
     analytics.track('Revoked ERC721 allowance', {
       chainId: allowance.chainId,
       account: allowance.owner,
       spender: allowance.payload?.spender,
       token: allowance.contract.address,
-      tokenId: (allowance.payload as any).tokenId,
+      tokenId: allowance.payload?.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
     });
   }
 
-  analytics.track(newAmount === '0' ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
+  const isRevoke = !newAmount || newAmount === '0';
+
+  analytics.track(isRevoke ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
     chainId: allowance.chainId,
     account: allowance.owner,
     spender: allowance.payload?.spender,
     token: allowance.contract.address,
-    amount: newAmount === '0' ? undefined : newAmount,
+    amount: isRevoke ? undefined : newAmount,
     permit2: allowance.payload?.type === AllowanceType.PERMIT2,
   });
 };
@@ -533,7 +539,7 @@ const trackTransaction = (allowance: TokenAllowanceData, hash: string, newAmount
 // TODO: Add other kinds of transactions besides "revoke" transactions to the store
 export const wrapRevoke = (
   allowance: TokenAllowanceData,
-  revoke: () => Promise<TransactionSubmitted | undefined>,
+  revoke: () => Promise<TransactionSubmitted>,
   updateTransaction: TransactionStore['updateTransaction'],
   handleTransaction?: ReturnType<typeof useHandleTransaction>,
 ) => {
@@ -545,10 +551,12 @@ export const wrapRevoke = (
       if (handleTransaction) await handleTransaction(transactionPromise, TransactionType.REVOKE);
       const transactionSubmitted = await transactionPromise;
 
-      updateTransaction(allowance, { status: 'pending', transactionHash: transactionSubmitted?.hash });
+      updateTransaction(allowance, { status: 'pending', transactionHash: transactionSubmitted.hash });
+
+      trackRevokeTransaction(allowance);
 
       // We don't await this, since we want to return after submitting all transactions, even if they're still pending
-      transactionSubmitted?.confirmation.then(() => {
+      transactionSubmitted.confirmation.then(() => {
         updateTransaction(allowance, { status: 'confirmed', transactionHash: transactionSubmitted.hash });
       });
 

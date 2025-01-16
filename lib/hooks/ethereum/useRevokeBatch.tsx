@@ -1,23 +1,22 @@
 'use client';
 
-import {
-  type OnUpdate,
-  type TokenAllowanceData,
-  getAllowanceKey,
-  revokeAllowance,
-  wrapRevoke,
-} from 'lib/utils/allowances';
+import { type OnUpdate, type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
+import { walletSupportsEip5792 } from 'lib/utils/eip5792';
 import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore } from '../../stores/transaction-store';
+import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
+import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
 
 // Limit to 50 concurrent revokes to avoid wallets crashing
 const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
 
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { results, getTransaction, updateTransaction } = useTransactionStore();
+  const revokeEip5792 = useRevokeBatchEip5792(allowances, onUpdate);
+  const revokeQueuedTransactions = useRevokeBatchQueuedTransactions(allowances, onUpdate);
 
   const { data: walletClient } = useWalletClient();
 
@@ -27,24 +26,12 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     });
   }, [allowances]);
 
-  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async () => {
-    await Promise.race([
-      Promise.all(
-        allowances.map(async (allowance) => {
-          // Skip if already confirmed or pending
-          if (['confirmed', 'pending'].includes(getTransaction(allowance).status)) return;
-
-          const revoke = wrapRevoke(
-            allowance,
-            () => revokeAllowance(walletClient!, allowance, onUpdate),
-            updateTransaction,
-          );
-
-          await REVOKE_QUEUE.add(revoke);
-        }),
-      ),
-      REVOKE_QUEUE.onIdle(),
-    ]);
+  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (tipAmount: string): Promise<void> => {
+    if (await walletSupportsEip5792(walletClient!)) {
+      await revokeEip5792(REVOKE_QUEUE, tipAmount);
+    } else {
+      await revokeQueuedTransactions(REVOKE_QUEUE, tipAmount);
+    }
   });
 
   const pause = useCallback(() => {

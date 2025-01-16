@@ -21,8 +21,8 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction(selectedChainId);
 
-  const sendCancelTransaction = async (): Promise<TransactionSubmitted | undefined> => {
-    if (isErc721Contract(token.contract)) return;
+  const sendCancelTransaction = async (): Promise<TransactionSubmitted> => {
+    if (isErc721Contract(token.contract)) throw new Error('Cannot cancel ERC721 tokens');
     const hash = await permit(walletClient!, token.contract, DUMMY_ADDRESS, 0n);
 
     analytics.track('Cancelled Permit Signatures', {

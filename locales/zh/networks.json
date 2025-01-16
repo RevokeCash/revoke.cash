@@ -101,6 +101,8 @@
     "shape": "Shape 是以太坊的第 2 层（Layer 2）扩展解决方案，为创作者量身打造而成。创作者可以通过 Shape 独特的汽油费返还激励系统回收通过其智能合约产生的大部分汽油费。Shape 基于 Optimism 的 OP Stack 构建，因此与 Optimism 一样，它也使用 Optimistic Rollup 技术。",
     "shibarium": "Shibarium 是一个以太坊侧链，旨在为 Shiba Inu 社区引入原生智能合约生态系统。作为侧链，它在去中心化方面做出了妥协，以保证交易速度更快、成本更低。Shibarium 可桥接至以太坊，用户可以将 SHIB 代币和其他流行的以太坊代币转入或转出 Shibarium。",
     "shimmer": "Shimmer EVM 是一个兼容 EVM 的第 2 层（Layer 2）区块链，建立在可互操作的 Shimmer 网络之上。由于是 Shimmer 的第 2 层链，Shimmer EVM 可以轻松地与 Shimmer/IOTA 生态系统中的其他链进行互操作。Shimmer EVM 带来了一些有趣的创新，例如交易的并行处理和协议中的原生随机性。",
+    "soneium": "Soneium is a Layer 2 blockchain built on top of Ethereum and Optimism's Superchain. It is built using Optimism's Open Source OP Stack, so just like Optimism it uses optimistic rollup technology. It was founded by Sony with the vision of creating a network with mass mainstream adoption.",
+    "sonic": "Sonic is a Layer 1 blockchain that is created by the team behind Fantom as its spiritual successor. It offers a high throughput and low fees and offers incentives for developers to build on the network.",
     "story": "Story 是第 1 层（Layer 1）区块链，专为链上知识产权提供框架。其目的是让创作者能够更轻松地对作品进行保护、授权和货币化。Story 使用 Cosmos SDK 构建，并完全支持与 EVM 兼容的智能合约。",
     "syscoin": "Syscoin 创建于 2014 年，是作为比特币的一个分支而创建的第 1 层（Layer 1）区块链。多年来，它演变为双链系统，一部分是比特币分支，另一部分则是兼容 EVM 的区块链。两条链都采用合并挖矿技术保证安全，该技术过程允许比特币矿工同时使用哈希率进行比特币和 Syscoin 交易。",
     "tabi": "Tabi 是第 1 层（Layer 1）区块链，采用了权益证明（PoS）共识机制。Tabi 使用 Cosmos SDK 构建，旨在提高EVM 链与 Cosmos 生态之间的互操作性。",

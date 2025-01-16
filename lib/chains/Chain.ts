@@ -125,8 +125,9 @@ export class Chain {
     return this.options.infoUrl ?? getChain(mainnetChainId)?.infoURL ?? getChain(this.chainId)?.infoURL;
   }
 
-  getNativeToken(): string | undefined {
-    return this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol;
+  // Note: we run tests to make sure that this is configured correctly for all chains (which is why we override the type)
+  getNativeToken(): string {
+    return (this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol) as string;
   }
 
   getEtherscanCompatibleApiUrl(): string | undefined {

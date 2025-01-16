@@ -42,6 +42,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.SeiNetwork,
   ChainId.BOB,
   ChainId.RootstockMainnet,
+  ChainId.SonicMainnet,
   ChainId.FantomOpera,
   ChainId.MerlinMainnet,
   ChainId.CeloMainnet,
@@ -58,6 +59,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['SongbirdCanary-Network'],
   ChainId['WEMIX3.0Mainnet'],
   ChainId.AuroraMainnet,
+  ChainId.Soneium,
   ChainId.ImmutablezkEVM,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
@@ -133,7 +135,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
   ChainId.ZkSyncSepoliaTestnet,
-  ChainId.AbstractTestnet,
+  ChainId.AbstractSepoliaTestnet,
   ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
   ChainId.TaikoHeklaL2,
@@ -178,12 +180,13 @@ export const CHAINS = {
     nativeToken: 'ETH',
     logoUrl: '/assets/images/vendor/chains/abstract.jpg',
   }),
-  [ChainId.AbstractTestnet]: new Chain({
+  [ChainId.AbstractSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: ChainId.AbstractTestnet,
+    chainId: ChainId.AbstractSepoliaTestnet,
     name: 'Abstract Testnet',
     nativeToken: 'ETH',
     logoUrl: '/assets/images/vendor/chains/abstract.jpg',
+    explorerUrl: 'https://sepolia.abscan.org',
     rpc: {
       main: `https://abstract-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -2025,6 +2028,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
       main: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      free: 'https://sepolia.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -2081,6 +2085,30 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://explorer.evm.testnet.shimmer.network/api',
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ShimmerEVM,
+  }),
+  [ChainId.Soneium]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.Soneium,
+    name: 'Soneium',
+    explorerUrl: 'https://soneium.blockscout.com',
+    rpc: {
+      main: `https://soneium-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://rpc.soneium.org',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
+  [ChainId.SonicMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.SonicMainnet,
+    name: 'Sonic',
+    explorerUrl: 'https://sonicscan.org',
+    logoUrl: '/assets/images/vendor/chains/sonic.svg',
+    rpc: {
+      main: `https://sonic-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId['SongbirdCanary-Network']]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2522,7 +2550,7 @@ export const getChainInfoUrl = (chainId: DocumentedChainId): string | undefined 
   return getChainConfig(chainId).getInfoUrl();
 };
 
-export const getChainNativeToken = (chainId: DocumentedChainId): string | undefined => {
+export const getChainNativeToken = (chainId: DocumentedChainId): string => {
   return getChainConfig(chainId).getNativeToken();
 };
 
@@ -2636,6 +2664,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   ROSE: '80',
   RSS3: '50',
   SAMA: '600',
+  S: '5',
   SDN: '50',
   SEI: '15',
   SGB: '600',
@@ -2657,6 +2686,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   ZETA: '10',
 };
 
-export const getDefaultDonationAmount = (nativeToken: string): string | undefined => {
+// Note: we run tests to make sure that this is configured correctly for all chains
+export const getDefaultDonationAmount = (nativeToken: string): string => {
   return DEFAULT_DONATION_AMOUNTS[nativeToken];
 };
