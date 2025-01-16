@@ -26,7 +26,7 @@ export async function GET(req: Request, { params }: Props) {
 
   const chainName = getChainName(getChainIdFromSlug(params.slug));
   const title = t('learn.add_network.title', { chainName });
-  const background = loadDataUrl('public/assets/images/learn/wallets/add-network/cover.webp', 'image/webp');
+  const background = loadDataUrl('public/assets/images/learn/wallets/add-network/cover.jpg', 'image/jpeg');
 
   return generateOgImage({ title, background });
 }
