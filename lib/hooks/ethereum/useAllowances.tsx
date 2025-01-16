@@ -9,7 +9,7 @@ import {
   getAllowancesFromEvents,
   stripAllowanceData,
 } from 'lib/utils/allowances';
-import { analytics } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import { type TimeLog, type TokenEvent, getEventKey } from 'lib/utils/events';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';

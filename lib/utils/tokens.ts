@@ -14,7 +14,7 @@ import {
   toHex,
 } from 'viem';
 import { deduplicateArray } from '.';
-import { analytics } from './analytics';
+import analytics from './analytics';
 import { type TimeLog, type TokenEvent, TokenEventType, isApprovalTokenEvent, isTransferTokenEvent } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';

@@ -1,6 +1,6 @@
 import { getTipSelection } from 'lib/hooks/ethereum/useDonate';
 import type { TokenAllowanceData } from './allowances';
-import { analytics } from './analytics';
+import analytics from './analytics';
 
 export type BatchType = 'eip5792' | 'queued';
 

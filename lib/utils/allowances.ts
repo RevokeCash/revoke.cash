@@ -6,7 +6,7 @@ import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import type { TransactionStore } from 'lib/stores/transaction-store';
 import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
 import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
-import { analytics } from './analytics';
+import analytics from './analytics';
 import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
 import {
   type Erc20ApprovalEvent,

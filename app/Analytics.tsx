@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'lib/i18n/navigation';
-import { analytics } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import Script from 'next/script';
 import { useEffect } from 'react';
 

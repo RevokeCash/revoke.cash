@@ -3,7 +3,7 @@ import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { type Marketplace, type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
-import { analytics } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import CancelCell from './CancelCell';
 

@@ -1,6 +1,6 @@
 import { ExclamationCircleIcon, ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import type { RiskFactor, RiskLevel } from 'lib/interfaces';
-import { analytics } from './analytics';
+import analytics from './analytics';
 
 export const RiskFactorScore: Record<string, number> = {
   allowlist: -100,

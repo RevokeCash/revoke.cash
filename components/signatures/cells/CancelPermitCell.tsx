@@ -4,7 +4,7 @@ import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
-import { analytics } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
 import { type PermitTokenData, isErc721Contract } from 'lib/utils/tokens';
 import { usePublicClient, useWalletClient } from 'wagmi';

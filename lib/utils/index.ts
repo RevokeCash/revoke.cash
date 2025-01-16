@@ -17,7 +17,7 @@ import {
   pad,
   slice,
 } from 'viem';
-import { analytics } from './analytics';
+import analytics from './analytics';
 import type { Log, TokenEvent } from './events';
 
 export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {

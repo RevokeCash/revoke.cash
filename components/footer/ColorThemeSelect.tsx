@@ -4,7 +4,7 @@ import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outl
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import { analytics } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 
 const ColorThemeSelect = () => {

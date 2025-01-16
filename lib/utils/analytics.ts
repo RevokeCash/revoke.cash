@@ -1,6 +1,6 @@
 import mixpanel from 'mixpanel-browser';
 
-export const analytics = {
+const analytics = {
   isInitialized: false,
   // init only when first used
   init() {
@@ -22,3 +22,5 @@ export const analytics = {
     mixpanel.track(eventName, eventProperties);
   },
 };
+
+export default analytics;
