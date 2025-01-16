@@ -37,17 +37,17 @@ describe('Chain Support', () => {
 
     describe(`${chainName} (${nativeToken})`, () => {
       it('should have base chain data', () => {
-        expect(getChainName(chainId)).to.exist;
-        expect(getChainLogo(chainId)).to.exist;
-        expect(getChainInfoUrl(chainId)).to.exist;
-        expect(getChainExplorerUrl(chainId)).to.exist;
-        expect(getChainRpcUrl(chainId)).to.exist;
-        expect(getChainLogsRpcUrl(chainId)).to.exist;
-        expect(getChainFreeRpcUrl(chainId)).to.exist;
-        expect(getChainSlug(chainId)).to.exist;
-        expect(getChainIdFromSlug(getChainSlug(chainId))).to.equal(chainId);
-        expect(nativeToken).to.exist;
-        expect(getDefaultDonationAmount(nativeToken)).to.exist;
+        expect(getChainName(chainId), `${chainName} name`).to.exist;
+        expect(getChainLogo(chainId), `${chainName} logo`).to.exist;
+        expect(getChainInfoUrl(chainId), `${chainName} info url`).to.exist;
+        expect(getChainExplorerUrl(chainId), `${chainName} explorer url`).to.exist;
+        expect(getChainRpcUrl(chainId), `${chainName} rpc url`).to.exist;
+        expect(getChainLogsRpcUrl(chainId), `${chainName} logs rpc url`).to.exist;
+        expect(getChainFreeRpcUrl(chainId), `${chainName} free rpc url`).to.exist;
+        expect(getChainSlug(chainId), `${chainName} slug`).to.exist;
+        expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
+        expect(nativeToken, `${chainName} native token`).to.exist;
+        expect(getDefaultDonationAmount(nativeToken), `${chainName} default donation amount`).to.exist;
       });
 
       if (getChainConfig(chainId)?.type === SupportType.ETHERSCAN_COMPATIBLE) {

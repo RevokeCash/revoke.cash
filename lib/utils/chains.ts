@@ -59,6 +59,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['SongbirdCanary-Network'],
   ChainId['WEMIX3.0Mainnet'],
   ChainId.AuroraMainnet,
+  ChainId.Soneium,
   ChainId.ImmutablezkEVM,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
@@ -2084,6 +2085,18 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://explorer.evm.testnet.shimmer.network/api',
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ShimmerEVM,
+  }),
+  [ChainId.Soneium]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.Soneium,
+    name: 'Soneium',
+    explorerUrl: 'https://soneium.blockscout.com',
+    rpc: {
+      main: `https://soneium-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://rpc.soneium.org',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.SonicMainnet]: new Chain({
     type: SupportType.PROVIDER,
