@@ -2,6 +2,7 @@
 
 import { throwIfExcessiveGas } from 'lib/utils';
 import { type OnUpdate, type TokenAllowanceData, prepareRevokeAllowance, wrapRevoke } from 'lib/utils/allowances';
+import { trackBatchRevoke } from 'lib/utils/batch-revoke';
 import {
   type Eip5792Call,
   mapContractTransactionRequestToEip5792Call,
@@ -15,11 +16,11 @@ import { eip5792Actions } from 'viem/experimental';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
-import { useDonate } from './useDonate';
+import { trackDonate, useDonate } from './useDonate';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
-  const { selectedChainId } = useAddressPageContext();
+  const { address, selectedChainId } = useAddressPageContext();
   const { prepareDonate } = useDonate(selectedChainId, 'batch-revoke-tip');
 
   const { data: walletClient } = useWalletClient();
@@ -96,6 +97,9 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       ),
       REVOKE_QUEUE.onIdle(),
     ]);
+
+    trackBatchRevoke(selectedChainId, address, allowances, tipAmount, 'eip5792');
+    trackDonate(selectedChainId, tipAmount, 'batch-revoke-tip');
   };
 
   return revoke;

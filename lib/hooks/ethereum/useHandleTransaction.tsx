@@ -36,14 +36,11 @@ export const useHandleTransaction = (chainId: number) => {
     return void toast.info(t('common.toasts.transaction_failed', { message }));
   };
 
-  const handleTransaction = async (
-    transactionPromise: Promise<TransactionSubmitted | undefined>,
-    type: TransactionType,
-  ) => {
+  const handleTransaction = async (transactionPromise: Promise<TransactionSubmitted>, type: TransactionType) => {
     try {
       const transaction = await transactionPromise;
 
-      if (transaction?.hash) {
+      if (transaction.hash) {
         if (type === TransactionType.DONATE) {
           toast.info(t('common.toasts.donation_sent'));
         } else {

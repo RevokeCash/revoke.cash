@@ -1,6 +1,7 @@
 'use client';
 
 import { type OnUpdate, type TokenAllowanceData, revokeAllowance, wrapRevoke } from 'lib/utils/allowances';
+import { trackBatchRevoke } from 'lib/utils/batch-revoke';
 import type PQueue from 'p-queue';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore } from '../../stores/transaction-store';
@@ -9,9 +10,8 @@ import { useDonate } from './useDonate';
 
 export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
-  const { selectedChainId } = useAddressPageContext();
+  const { address, selectedChainId } = useAddressPageContext();
   const { donate } = useDonate(selectedChainId, 'batch-revoke-tip');
-
   const { data: walletClient } = useWalletClient();
 
   const revoke = async (REVOKE_QUEUE: PQueue, tipAmount: string) => {
@@ -33,6 +33,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
       REVOKE_QUEUE.onIdle(),
     ]);
 
+    trackBatchRevoke(selectedChainId, address, allowances, tipAmount, 'queued');
     await donate(tipAmount);
   };
 

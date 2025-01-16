@@ -1,7 +1,7 @@
 'use client';
 
 import { type OnUpdate, type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
-import { type BatchType, walletSupportsEip5792 } from 'lib/utils/eip5792';
+import { walletSupportsEip5792 } from 'lib/utils/eip5792';
 import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -26,14 +26,12 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     });
   }, [allowances]);
 
-  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (tipAmount: string): Promise<BatchType> => {
+  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (tipAmount: string): Promise<void> => {
     if (await walletSupportsEip5792(walletClient!)) {
       await revokeEip5792(REVOKE_QUEUE, tipAmount);
-      return 'eip5792';
+    } else {
+      await revokeQueuedTransactions(REVOKE_QUEUE, tipAmount);
     }
-
-    await revokeQueuedTransactions(REVOKE_QUEUE, tipAmount);
-    return 'queued';
   });
 
   const pause = useCallback(() => {

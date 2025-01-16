@@ -2537,7 +2537,7 @@ export const getChainInfoUrl = (chainId: DocumentedChainId): string | undefined 
   return getChainConfig(chainId).getInfoUrl();
 };
 
-export const getChainNativeToken = (chainId: DocumentedChainId): string | undefined => {
+export const getChainNativeToken = (chainId: DocumentedChainId): string => {
   return getChainConfig(chainId).getNativeToken();
 };
 
@@ -2673,6 +2673,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   ZETA: '10',
 };
 
-export const getDefaultDonationAmount = (nativeToken: string): string | undefined => {
+// Note: we run tests to make sure that this is configured correctly for all chains
+export const getDefaultDonationAmount = (nativeToken: string): string => {
   return DEFAULT_DONATION_AMOUNTS[nativeToken];
 };
