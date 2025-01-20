@@ -18,7 +18,7 @@ interface Props {
 
 export type DonateButtonType = 'menu-button' | 'batch-revoke-tip';
 
-const DonateModal = memo(({ open, setOpen, type }: Props) => {
+const DonateModal = ({ open, setOpen, type }: Props) => {
   const t = useTranslations();
   const chainId = useChainId();
   const { donate, nativeToken, defaultAmount } = useDonate(chainId, type);
@@ -77,6 +77,6 @@ const DonateModal = memo(({ open, setOpen, type }: Props) => {
       </div>
     </Modal>
   );
-});
+};
 
-export default DonateModal;
+export default memo(DonateModal);

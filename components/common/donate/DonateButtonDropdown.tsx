@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { DropdownMenuItem } from '../DropdownMenu';
 import DonateModal from './DonateModal';
 
@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-const DonateButtonDropdown = memo(({ className }: Props) => {
+const DonateButtonDropdown = ({ className }: Props) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
 
@@ -22,6 +22,6 @@ const DonateButtonDropdown = memo(({ className }: Props) => {
       <DonateModal open={open} setOpen={setOpen} type="menu-button" />
     </>
   );
-});
+};
 
 export default DonateButtonDropdown;
