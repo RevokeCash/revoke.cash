@@ -6,7 +6,7 @@ import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import type { TransactionStore } from 'lib/stores/transaction-store';
 import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
 import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
-import { track } from './analytics';
+import analytics from './analytics';
 import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
 import {
   type Erc20ApprovalEvent,
@@ -514,7 +514,7 @@ export const prepareUpdateErc20Allowance = async (
 
 export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?: string) => {
   if (isErc721Contract(allowance.contract)) {
-    track('Revoked ERC721 allowance', {
+    analytics.track('Revoked ERC721 allowance', {
       chainId: allowance.chainId,
       account: allowance.owner,
       spender: allowance.payload?.spender,
@@ -525,7 +525,7 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?
 
   const isRevoke = !newAmount || newAmount === '0';
 
-  track(isRevoke ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
+  analytics.track(isRevoke ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
     chainId: allowance.chainId,
     account: allowance.owner,
     spender: allowance.payload?.spender,

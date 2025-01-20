@@ -4,7 +4,7 @@ import AddressSearchBox from 'components/common/AddressSearchBox';
 import Button from 'components/common/Button';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { useTranslations } from 'next-intl';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useAccount } from 'wagmi';
 
@@ -16,21 +16,21 @@ const SearchBar = () => {
   const { address } = useAccount();
   const timerRef = useRef<NodeJS.Timeout>();
 
-  const onFocus = () => {
+  const onFocus = useCallback(() => {
     clearTimeout(timerRef.current);
     setIsFocused(true);
-  };
+  }, []);
 
-  const onBlur = () => {
+  const onBlur = useCallback(() => {
     timerRef.current = setTimeout(() => setIsFocused(false), 200);
-  };
+  }, []);
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     if (address) {
       setValue(address);
       router.push(`/address/${address}`, { retainSearchParams: ['chainId'] });
     }
-  };
+  }, [address, router]);
 
   return (
     <div className="relative w-full">

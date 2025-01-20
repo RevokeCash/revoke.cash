@@ -6,10 +6,11 @@ const DemoVideo = () => {
       controls
       muted
       loop
-      preload="metadata"
+      preload="metadata" // Preload the video fully for faster LCP
       playsInline
+      poster="/assets/images/thumbnail/demo-thumbnail.webp"
     >
-      <source src="/assets/videos/demo.mp4#t=0.001" type="video/mp4" />
+      <source src="/assets/videos/demo.mp4" type="video/mp4" />
     </video>
   );
 };

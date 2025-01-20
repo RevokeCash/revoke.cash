@@ -4,7 +4,7 @@ import { abstractWalletConnector } from '@abstract-foundation/agw-react/connecto
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import { ORDERED_CHAINS, createViemPublicClientForChain, getViemChainConfig } from 'lib/utils/chains';
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode, memo, useEffect } from 'react';
 import type { Chain } from 'viem';
 import { WagmiProvider, createConfig, useAccount, useConnect } from 'wagmi';
 import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
@@ -50,7 +50,7 @@ export const EthereumProvider = ({ children }: Props) => {
   );
 };
 
-const EthereumProviderChild = ({ children }: Props) => {
+const EthereumProviderChild = memo(({ children }: Props) => {
   const { connectAsync, connectors } = useConnect();
   const { connector, address } = useAccount();
   const router = useCsrRouter();
@@ -105,7 +105,7 @@ const EthereumProviderChild = ({ children }: Props) => {
   }, [address]);
 
   return <>{children}</>;
-};
+});
 
 const isIframe = () => {
   return typeof window !== 'undefined' && window?.parent !== window;

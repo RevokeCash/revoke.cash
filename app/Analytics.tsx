@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'lib/i18n/navigation';
-import { init, track } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import Script from 'next/script';
 import { useEffect } from 'react';
 
@@ -9,12 +9,12 @@ const Analytics = () => {
   const path = usePathname();
 
   useEffect(() => {
-    init();
+    analytics.init();
   }, []);
 
   useEffect(() => {
     if (!path) return;
-    track('Viewed Page', { path });
+    analytics.track('Viewed Page', { path });
   }, [path]);
 
   // SimpleAnalytics

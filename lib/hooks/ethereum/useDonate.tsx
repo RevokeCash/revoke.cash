@@ -4,7 +4,7 @@ import type { DonateButtonType } from 'components/common/donate/DonateModal';
 import { DONATION_ADDRESS } from 'lib/constants';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
-import { track } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import { type DocumentedChainId, getChainName, getChainNativeToken, getDefaultDonationAmount } from 'lib/utils/chains';
 import { type SendTransactionParameters, parseEther } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
@@ -65,7 +65,7 @@ export const getTipSelection = (chainId: DocumentedChainId, amount: string) => {
 export const trackDonate = (chainId: DocumentedChainId, amount: string, type: DonateButtonType) => {
   if (!Number(amount)) return;
 
-  track('Donated', {
+  analytics.track('Donated', {
     chainId,
     chainName: getChainName(chainId),
     nativeToken: getChainNativeToken(chainId),
