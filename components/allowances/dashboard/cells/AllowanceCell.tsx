@@ -10,7 +10,7 @@ import {
   getAllowanceI18nValues,
   isErc20Allowance,
 } from 'lib/utils/allowances';
-import { SECOND } from 'lib/utils/time';
+import { DAY, SECOND, YEAR } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -45,7 +45,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
 
   const inTime =
     allowance.payload?.type === AllowanceType.PERMIT2
-      ? timeago.format(allowance.payload.expiration * SECOND, locale)
+      ? timeago.format(Math.min(allowance.payload.expiration * SECOND, Date.now() + 1000 * YEAR + 1 * DAY), locale)
       : null;
 
   return (
