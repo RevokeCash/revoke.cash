@@ -76,11 +76,12 @@
     "expiration": "{inTime}で期限が切れます"
   },
   "risk_factors": {
-    "allowlist": "Well-known spender address",
+    "allowlist": "よく知られている支出者のアドレス",
     "blocklist": "危険または悪意のある",
     "closed_source": "ソースがクローズになっている",
     "deprecated": "非推奨または古い",
     "eoa": "外部所有口座",
+    "excessive_expiration": "Excessive expiration",
     "exploit": "{data}に関与していました",
     "levels": {
       "high": "高リスク",
@@ -88,8 +89,9 @@
       "medium": "中リスク"
     },
     "phishing_risk": "フィッシングの場合のリスク領域が増加",
-    "proxy": "Upgradeable proxy contract",
+    "proxy": "アップグレード可能なプロキシ契約",
     "source": "<source-link>{source}</source-link>に報告された",
+    "suspicious_address": "Suspicious-looking address",
     "uninitialized": "この住所にはコントラクトがデプロイされていません",
     "unsafe": "安全でない可能性のある契約コード"
   },

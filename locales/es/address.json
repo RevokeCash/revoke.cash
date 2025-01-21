@@ -76,11 +76,12 @@
     "expiration": "Caduca {inTime}"
   },
   "risk_factors": {
-    "allowlist": "Well-known spender address",
+    "allowlist": "Dirección conocida del comprador",
     "blocklist": "Peligroso o malintencionado",
     "closed_source": "Código cerrado",
     "deprecated": "Obsoleto o desactualizado",
     "eoa": "Cuenta de Propiedad Externa",
+    "excessive_expiration": "Excessive expiration",
     "exploit": "Involucrado en la {data}",
     "levels": {
       "high": "alto riesgo",
@@ -88,8 +89,9 @@
       "medium": "riesgo medio"
     },
     "phishing_risk": "Aumenta la superficie de riesgo en caso de phishing",
-    "proxy": "Upgradeable proxy contract",
+    "proxy": "Contrato de proxy actualizable",
     "source": "reportado por <source-link>{source}</source-link>",
+    "suspicious_address": "Suspicious-looking address",
     "uninitialized": "No se ha implementado ningún contrato en esta dirección",
     "unsafe": "Código de contrato potencialmente inseguro"
   },

@@ -1,25 +1,25 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { Nullable, SpenderRiskData } from 'lib/interfaces';
+import type { RiskFactor } from 'lib/interfaces';
 import { filterUnknownRiskFactors, getRiskLevel } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import RiskFactorDisplay from './RiskFactorDisplay';
 
 interface Props {
-  riskData?: Nullable<SpenderRiskData>;
+  riskFactors?: RiskFactor[];
 }
 
-const RiskTooltip = ({ riskData }: Props) => {
+const RiskTooltip = ({ riskFactors }: Props) => {
   const t = useTranslations();
 
-  const filteredRiskFactors = filterUnknownRiskFactors(riskData?.riskFactors ?? []);
+  const filteredRiskFactors = filterUnknownRiskFactors(riskFactors ?? []);
   const riskLevel = getRiskLevel(filteredRiskFactors);
 
   // TODO: Properly handle low risk
   if (riskLevel === 'unknown' || riskLevel === 'low') return null;
 
-  const riskFactors = filteredRiskFactors.map((riskFactor) => (
+  const riskFactorDisplays = filteredRiskFactors.map((riskFactor) => (
     <RiskFactorDisplay key={`${riskFactor.type}-${riskFactor.source}-${riskFactor.data}`} riskFactor={riskFactor} />
   ));
 
@@ -27,8 +27,8 @@ const RiskTooltip = ({ riskData }: Props) => {
     <div className="flex flex-col">
       {t('address.tooltips.risk_factors', { riskLevel: t(`address.risk_factors.levels.${riskLevel}`) })}
       <ul className="my-2">
-        {riskFactors?.map((riskFactor) => (
-          <li key={riskFactor.key}>{riskFactor}</li>
+        {riskFactorDisplays?.map((riskFactorDisplay) => (
+          <li key={riskFactorDisplay.key}>{riskFactorDisplay}</li>
         ))}
       </ul>
     </div>

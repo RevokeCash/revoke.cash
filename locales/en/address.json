@@ -81,6 +81,7 @@
     "closed_source": "Closed source",
     "deprecated": "Deprecated or outdated",
     "eoa": "Externally Owned Account",
+    "excessive_expiration": "Excessive expiration",
     "exploit": "Involved in the {data}",
     "levels": {
       "high": "high risk",
@@ -90,6 +91,7 @@
     "phishing_risk": "Increases risk surface in case of phishing",
     "proxy": "Upgradeable proxy contract",
     "source": "reported by <source-link>{source}</source-link>",
+    "suspicious_address": "Suspicious-looking address",
     "uninitialized": "No contract deployed to this address",
     "unsafe": "Potentially unsafe contract code"
   },

@@ -4,10 +4,12 @@ import Href from 'components/common/Href';
 import Loader from 'components/common/Loader';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { isNullish } from 'lib/utils';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
+import { AllowanceType, type TokenAllowanceData } from 'lib/utils/allowances';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
+import { YEAR } from 'lib/utils/time';
 import { getSpenderData } from 'lib/utils/whois';
+import { useMemo } from 'react';
 import RiskTooltip from '../wallet-health/RiskTooltip';
 
 interface Props {
@@ -23,6 +25,17 @@ const SpenderCell = ({ allowance }: Props) => {
     staleTime: Number.POSITIVE_INFINITY,
     enabled: !isNullish(allowance.payload?.spender),
   });
+
+  // Add non-spender-specific risk factors (TODO: set up a proper system for this)
+  const riskFactors = useMemo(() => {
+    const factors = spenderData?.riskFactors ?? [];
+
+    if (allowance.payload?.type === AllowanceType.PERMIT2 && allowance.payload.expiration > Date.now() + 1 * YEAR) {
+      return [...factors, { type: 'excessive_expiration', source: 'onchain' }];
+    }
+
+    return factors;
+  }, [allowance.payload, spenderData?.riskFactors]);
 
   const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.payload?.spender}`;
 
@@ -44,7 +57,7 @@ const SpenderCell = ({ allowance }: Props) => {
           </WithHoverTooltip>
         </div>
         <CopyButton content={allowance.payload.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
-        <RiskTooltip riskData={spenderData} />
+        <RiskTooltip riskFactors={riskFactors} />
       </div>
     </Loader>
   );

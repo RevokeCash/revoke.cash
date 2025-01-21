@@ -81,6 +81,7 @@
     "closed_source": "Закрытый исходный код",
     "deprecated": "Устаревший или неактуальный",
     "eoa": "Внешний аккаунт",
+    "excessive_expiration": "Excessive expiration",
     "exploit": "Участвует в {data}",
     "levels": {
       "high": "высокий риск",
@@ -90,6 +91,7 @@
     "phishing_risk": "Увеличивает поверхность риска в случае фишинга",
     "proxy": "Upgradeable proxy contract",
     "source": "сообщил(а)<source-link>{source}</source-link>",
+    "suspicious_address": "Suspicious-looking address",
     "uninitialized": "Контракт по этому адресу не отправлен",
     "unsafe": "Потенциально небезопасный код контракта"
   },
