@@ -1396,6 +1396,9 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/manta-pacific.svg',
     infoUrl: 'https://pacific.manta.network/',
     etherscanCompatibleApiUrl: 'https://manta-pacific.calderaexplorer.xyz/api',
+    rpc: {
+      main: 'https://manta-pacific.drpc.org',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
