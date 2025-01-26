@@ -2099,11 +2099,12 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.SonicMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SonicMainnet,
     name: 'Sonic',
     explorerUrl: 'https://sonicscan.org',
     logoUrl: '/assets/images/vendor/chains/sonic.svg',
+    etherscanCompatibleApiUrl: 'https://api.sonicscan.org/api',
     rpc: {
       main: `https://sonic-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
