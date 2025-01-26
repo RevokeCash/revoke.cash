@@ -57,7 +57,7 @@ export const formatFiatBalance = (
   if (balance === 'ERC1155') return null;
   if (isNullish(price)) return null;
   const amount = Number(formatUnits(fixedPointMultiply(balance, price, decimals ?? 18), decimals ?? 18));
-  return formatFiatAmount(amount, decimals, fiatSign);
+  return formatFiatAmount(amount, 2, fiatSign);
 };
 
 export const formatFiatAmount = (
