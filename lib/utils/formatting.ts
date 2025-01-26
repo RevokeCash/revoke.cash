@@ -48,10 +48,16 @@ export const formatBalance = (symbol: string, balance: TokenBalance, decimals?: 
   return `${formatFixedPointBigInt(balance, decimals)} ${symbol}`;
 };
 
-export const formatFiatBalance = (balance: TokenBalance, price?: number, decimals?: number, fiatSign: string = '$') => {
+export const formatFiatBalance = (
+  balance: TokenBalance,
+  price?: Nullable<number>,
+  decimals?: number,
+  fiatSign: string = '$',
+) => {
   if (balance === 'ERC1155') return null;
   if (isNullish(price)) return null;
-  return formatFiatAmount(Number(formatUnits(fixedPointMultiply(balance, price, decimals ?? 18), decimals ?? 18)));
+  const amount = Number(formatUnits(fixedPointMultiply(balance, price, decimals ?? 18), decimals ?? 18));
+  return formatFiatAmount(amount, decimals, fiatSign);
 };
 
 export const formatFiatAmount = (

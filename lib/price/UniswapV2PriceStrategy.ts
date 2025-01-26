@@ -50,7 +50,7 @@ export class UniswapV2PriceStrategy extends AbstractPriceStrategy implements Pri
     this.fee = options.feeParameters?.fee ?? [];
   }
 
-  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | undefined> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | null> {
     if (tokenContract.address === this.path.at(-1)) {
       return 1;
     }

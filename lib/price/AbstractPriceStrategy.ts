@@ -18,7 +18,7 @@ export abstract class AbstractPriceStrategy implements PriceStrategy {
     this.supportedAssets = options.supportedAssets;
   }
 
-  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number | undefined> {
+  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number | null> {
     if (!this.nativeAsset) {
       throw new Error('Native token type is not supported by this price strategy');
     }
@@ -32,7 +32,7 @@ export abstract class AbstractPriceStrategy implements PriceStrategy {
     return tokenPrice;
   }
 
-  public calculateTokenPrice(tokenContract: TokenContract): Promise<number | undefined> {
+  public calculateTokenPrice(tokenContract: TokenContract): Promise<number | null> {
     if (!strategySupportsToken(this, tokenContract)) {
       throw new Error('Token type is not supported by this price strategy');
     }
@@ -40,5 +40,5 @@ export abstract class AbstractPriceStrategy implements PriceStrategy {
     return this.calculateTokenPriceInternal(tokenContract);
   }
 
-  protected abstract calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number | undefined>;
+  protected abstract calculateTokenPriceInternal(tokenContract: TokenContract): Promise<number | null>;
 }

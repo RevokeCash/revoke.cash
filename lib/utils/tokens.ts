@@ -1,6 +1,6 @@
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
-import type { Contract } from 'lib/interfaces';
+import type { Contract, Nullable } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
 import {
@@ -47,7 +47,7 @@ export interface TokenMetadata {
   icon?: string;
   decimals?: number;
   totalSupply?: bigint;
-  price?: number;
+  price?: Nullable<number>;
 }
 
 export type TokenBalance = bigint | 'ERC1155';

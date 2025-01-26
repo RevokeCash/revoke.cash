@@ -30,7 +30,7 @@ export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements Pri
     this.decimals = options.decimals ?? 18;
   }
 
-  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | undefined> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | null> {
     if (tokenContract.address === this.path.at(-1)) {
       // return parseUnits(String(1), this.decimals);
 

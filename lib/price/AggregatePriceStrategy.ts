@@ -31,12 +31,12 @@ export class AggregatePriceStrategy implements PriceStrategy {
 
   // Note: we only use the first strategy to calculate the native token price, so we only need to make sure that
   // the first strategy is able to calculate the native token price
-  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number | undefined> {
+  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number | null> {
     if (this.strategies.length === 0) throw new Error('No strategies provided');
     return this.strategies[0].calculateNativeTokenPrice(publicClient);
   }
 
-  public async calculateTokenPrice(tokenContract: TokenContract): Promise<number | undefined> {
+  public async calculateTokenPrice(tokenContract: TokenContract): Promise<number | null> {
     const supportedStrategies = this.getSupportedStrategies(tokenContract);
     if (supportedStrategies.length === 0) throw new Error('No supported strategies provided for this token type');
 

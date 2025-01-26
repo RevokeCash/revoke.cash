@@ -43,7 +43,7 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
     this.minLiquidity = options.liquidityParameters?.minLiquidity ?? 10n ** 17n;
   }
 
-  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | undefined> {
+  protected async calculateTokenPriceInternal(tokenContract: Erc20TokenContract): Promise<number | null> {
     if (tokenContract.address === this.path.at(-1)) {
       return 1;
     }
