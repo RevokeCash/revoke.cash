@@ -5,7 +5,7 @@ import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useChainId } from 'wagmi';
 import Input from '../Input';
@@ -79,4 +79,4 @@ const DonateModal = ({ open, setOpen, type }: Props) => {
   );
 };
 
-export default DonateModal;
+export default memo(DonateModal);

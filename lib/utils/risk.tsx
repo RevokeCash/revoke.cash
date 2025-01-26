@@ -1,6 +1,6 @@
 import { ExclamationCircleIcon, ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import type { RiskFactor, RiskLevel } from 'lib/interfaces';
-import { track } from './analytics';
+import analytics from './analytics';
 
 export const RiskFactorScore: Record<string, number> = {
   allowlist: -100,
@@ -20,7 +20,7 @@ export const RiskFactorScore: Record<string, number> = {
 export const filterUnknownRiskFactors = (riskFactors: RiskFactor[]): RiskFactor[] => {
   return riskFactors.filter((riskFactor) => {
     if (RiskFactorScore[riskFactor.type] === undefined) {
-      track('Unknown Risk Factor', riskFactor);
+      analytics.track('Unknown Risk Factor', riskFactor);
       return false;
     }
 

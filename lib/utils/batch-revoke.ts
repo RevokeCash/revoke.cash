@@ -1,6 +1,6 @@
 import { getTipSelection } from 'lib/hooks/ethereum/useDonate';
 import type { TokenAllowanceData } from './allowances';
-import { track } from './analytics';
+import analytics from './analytics';
 
 export type BatchType = 'eip5792' | 'queued';
 
@@ -11,7 +11,7 @@ export const trackBatchRevoke = (
   tipAmount: string,
   batchType: BatchType,
 ) => {
-  track('Batch Revoked', {
+  analytics.track('Batch Revoked', {
     chainId,
     address,
     allowances: allowances.length,

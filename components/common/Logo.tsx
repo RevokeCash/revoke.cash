@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import PlaceholderIcon from './PlaceholderIcon';
 
@@ -54,4 +54,4 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
   );
 };
 
-export default Logo;
+export default memo(Logo);

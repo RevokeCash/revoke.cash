@@ -4,7 +4,7 @@ import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
-import { track } from 'lib/utils/analytics';
+import analytics from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
 import { type PermitTokenData, isErc721Contract } from 'lib/utils/tokens';
 import { usePublicClient, useWalletClient } from 'wagmi';
@@ -25,7 +25,11 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
     if (isErc721Contract(token.contract)) throw new Error('Cannot cancel ERC721 tokens');
     const hash = await permit(walletClient!, token.contract, DUMMY_ADDRESS, 0n);
 
-    track('Cancelled Permit Signatures', { chainId: selectedChainId, account: address, token: token.contract.address });
+    analytics.track('Cancelled Permit Signatures', {
+      chainId: selectedChainId,
+      account: address,
+      token: token.contract.address,
+    });
 
     const waitForConfirmation = async () => {
       // TODO: Deduplicate this with the CancelMarketplaceCell
