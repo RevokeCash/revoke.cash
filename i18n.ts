@@ -20,6 +20,8 @@ export default getRequestConfig(async ({ locale }) => {
       networks: (await import(`./locales/${locale}/networks.json`)).default,
       token_approval_checker: (await import(`./locales/${locale}/token_approval_checker.json`)).default,
       merchandise: (await import(`./locales/${locale}/merchandise.json`)).default,
+      // Rename to scam_tracker when ready
+      // scam_tracker: (await import(`./locales/${locale}/scam_tracker.json`)).default,
     },
     defaultTranslationValues,
   };
