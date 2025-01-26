@@ -31,3 +31,4 @@ export const HARPIE_API_KEY = process.env.HARPIE_API_KEY ?? process.env.NEXT_PUB
 export const WEBACY_API_KEY = process.env.WEBACY_API_KEY ?? process.env.NEXT_PUBLIC_WEBACY_API_KEY;
 export const NEFTURE_API_KEY = process.env.NEFTURE_API_KEY ?? process.env.NEXT_PUBLIC_NEFTURE_API_KEY;
 export const RESERVOIR_API_KEY = process.env.RESERVOIR_API_KEY ?? process.env.NEXT_PUBLIC_RESERVOIR_API_KEY;
+export const GOLD_RUSH_API_KEY = process.env.GOLD_RUSH_API_KEY;
