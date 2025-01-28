@@ -1,0 +1,16 @@
+{
+  "different_chain": "Or check fund flows on a different chain",
+  "meta": {
+    "title": "{chainName} Fund Flow Visualizer"
+  },
+  "title": "{chainName} Fund Flow Visualizer",
+  "placeholder": "Enter transaction hash",
+  "what_is_fund_flow": {
+    "title": "What is {chainName} Fund Flow Visualizer?",
+    "content": "The Fund Flow Visualizer helps you track the movement of ERC20 tokens across {chainName}. Starting from a single transaction, it traces how tokens move between different wallets, helping you understand the flow of funds and identify potential patterns."
+  },
+  "how_to_track": {
+    "title": "How to Track Fund Flows on {chainName}",
+    "content": "Enter a transaction hash above to see how tokens move across {chainName}. The visualizer will show you the initial transfer and subsequent movements of those tokens. You can expand the visualization to see more transactions and get a better understanding of where the funds eventually end up."
+  }
+}
