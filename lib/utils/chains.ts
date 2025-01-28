@@ -25,6 +25,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['AvalancheC-Chain'],
   ChainId.ZircuitMainnet,
   ChainId.CoreBlockchainMainnet,
+  ChainId.Abstract,
   ChainId.Mantle,
   ChainId.Blast,
   ChainId.Linea,
@@ -174,11 +175,18 @@ const MULTICALL = {
 
 export const CHAINS = {
   [ChainId.Abstract]: new Chain({
-    type: SupportType.UNSUPPORTED,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Abstract,
     name: 'Abstract',
     nativeToken: 'ETH',
     logoUrl: '/assets/images/vendor/chains/abstract.jpg',
+    explorerUrl: 'https://abscan.org',
+    rpc: {
+      main: `https://abstract-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://api.mainnet.abs.xyz',
+    },
+    deployedContracts: { multicall3: { address: '0xAa4De41dba0Ca5dCBb288b7cC6b708F3aaC759E7' } },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.AbstractSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1591,6 +1599,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.morphl2.io',
     },
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.MorphHolesky]: new Chain({
