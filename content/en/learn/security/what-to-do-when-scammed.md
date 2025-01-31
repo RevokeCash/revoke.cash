@@ -40,7 +40,7 @@ Other common ways in which your seed phrase can be compromised include getting t
 
 The seed phrase compromise is the **most destructive** form of scam, as it gives the attacker full control over your wallet. If your seed phrase has been compromised, there is _nothing_ you can do to "re-secure" your wallet or regain control over it. The affected wallet addresses need to be abandoned.
 
-Nevertheless there are important steps to take when this happens. The first step is to run a malware check on your computer to ensure that the attacker does not have access to any other sensitive information. If needed, it may even be wise to do a complete reset of your computer (after backing up any important data). It is also adviced to change important passwords if you're unsure how your seed phrase was compromised exactly.
+Nevertheless there are important steps to take when this happens. The first step is to run a malware check on your computer to ensure that the attacker does not have access to any other sensitive information. If needed, it may even be wise to do a complete reset of your computer (after backing up any important data). It is also advised to change important passwords if you're unsure how your seed phrase was compromised exactly.
 
 When you're confident that your computer is clean, you can create a new wallet (preferably a hardware wallet) and transfer any remaining assets to it. Often times transferring assets to a new wallet can be hard due to the attacker using a sweeper bot to steal any assets that end up in your wallet. So if you have more than $1000 worth of assets left in the compromised wallet, it is recommended to reach out to the [Flashbots Whitehat Hotline](https://docs.flashbots.net/whitehat) for help.
 
