@@ -12,7 +12,7 @@ const Footer = () => {
   return (
     <footer className="bg-black dark:bg-zinc-900 mt-24" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
-        Footer
+        Footer alfbafsnfksbksahkkb
       </h2>
 
       <div className="mx-auto max-w-7xl px-8">
