@@ -1640,7 +1640,7 @@ export const CHAINS = {
     chainId: ChainId.NeoXMainnet,
     name: 'Neo X',
     infoUrl: 'https://x.neo.org',
-    logoUrl: '/assets/images/vendor/chains/neoX.png',
+    logoUrl: '/assets/images/vendor/chains/neo-x.svg',
     etherscanCompatibleApiUrl: 'https://xexplorer.neo.org/api',
     rpc: {
       main: 'https://mainnet-1.rpc.banelabs.org',
@@ -1652,7 +1652,7 @@ export const CHAINS = {
     chainId: ChainId.NeoXTestnetT4,
     name: 'Neo X Testnet T4',
     infoUrl: 'https://x.neo.org',
-    logoUrl: '/assets/images/vendor/chains/neoX.png',
+    logoUrl: '/assets/images/vendor/chains/neo-x.svg',
     etherscanCompatibleApiUrl: 'https://xt4scan.ngd.network/api',
     rpc: {
       main: 'https://testnet.rpc.banelabs.org',
