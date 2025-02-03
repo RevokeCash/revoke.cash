@@ -24,7 +24,7 @@ Token Approvals are a big part of the DeFi ecosystem, but they are also still of
 
 ::img{src="/assets/images/blog/2023/monthly-update-june/learn-section.png" alt="Learn Section" width="2327" height="1309"}
 
-While we added the Learn page, we also decided to brush up on some more content on the website. So we also added a new About page and made updates to our FAQ. We've also updated some eof our terminology to be more consistent with other crypto projects. The new Learn section already includes a bunch of articles, but we'll be adding more in the coming months. If there is anything you'd like to see added, please let us know.
+While we added the Learn page, we also decided to brush up on some more content on the website. So we also added a new About page and made updates to our FAQ. We've also updated some of our terminology to be more consistent with other crypto projects. The new Learn section already includes a bunch of articles, but we'll be adding more in the coming months. If there is anything you'd like to see added, please let us know.
 
 ## Fixes and Improvements
 
