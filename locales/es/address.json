@@ -81,7 +81,7 @@
     "closed_source": "Código cerrado",
     "deprecated": "Obsoleto o desactualizado",
     "eoa": "Cuenta de Propiedad Externa",
-    "excessive_expiration": "Excessive expiration",
+    "excessive_expiration": "Caducidad excesiva",
     "exploit": "Involucrado en la {data}",
     "levels": {
       "high": "alto riesgo",
@@ -91,7 +91,7 @@
     "phishing_risk": "Aumenta la superficie de riesgo en caso de phishing",
     "proxy": "Contrato de proxy actualizable",
     "source": "reportado por <source-link>{source}</source-link>",
-    "suspicious_address": "Suspicious-looking address",
+    "suspicious_address": "Dirección de aspecto sospechoso",
     "uninitialized": "No se ha implementado ningún contrato en esta dirección",
     "unsafe": "Código de contrato potencialmente inseguro"
   },
