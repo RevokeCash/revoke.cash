@@ -124,6 +124,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
+  ChainId.NeoXMainnet,
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -162,6 +163,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.RSS3VSLSepoliaTestnet,
   ChainId.StoryOdysseyTestnet,
   ChainId.CreatorChainTestnet,
+  ChainId.NeoXTestnetT4,
   // ChainId.LUKSOTestnet,
 ] as const;
 
@@ -1632,6 +1634,31 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://neon.blockscout.com/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
+  }),
+  [ChainId.NeoXMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.NeoXMainnet,
+    name: 'Neo X',
+    infoUrl: 'https://x.neo.org',
+    logoUrl: '/assets/images/vendor/chains/neoX.png',
+    etherscanCompatibleApiUrl: 'https://xexplorer.neo.org/api',
+    rpc: {
+      main: 'https://mainnet-1.rpc.banelabs.org',
+      free: 'https://mainnet-2.rpc.banelabs.org',
+    },
+  }),
+  [ChainId.NeoXTestnetT4]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.NeoXTestnetT4,
+    name: 'Neo X Testnet T4',
+    infoUrl: 'https://x.neo.org',
+    logoUrl: '/assets/images/vendor/chains/neoX.png',
+    etherscanCompatibleApiUrl: 'https://xt4scan.ngd.network/api',
+    rpc: {
+      main: 'https://testnet.rpc.banelabs.org',
+      free: 'https://testnet.rpc.banelabs.org',
+    },
+    isTestnet: true,
   }),
   // [ChainId.NumbersMainnet]: new Chain({
   //   type: SupportType.ETHERSCAN_COMPATIBLE,
