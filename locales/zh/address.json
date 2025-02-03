@@ -76,12 +76,12 @@
     "expiration": "于 {inTime} 过期"
   },
   "risk_factors": {
-    "allowlist": "Well-known spender address",
+    "allowlist": "知名被授权人（Spender）地址",
     "blocklist": "危险或恶意",
     "closed_source": "闭源",
     "deprecated": "已弃用或已过时",
     "eoa": "外部持有账户",
-    "excessive_expiration": "Excessive expiration",
+    "excessive_expiration": "大量到期",
     "exploit": "涉及 {data}",
     "levels": {
       "high": "高风险",
@@ -89,9 +89,9 @@
       "medium": "中风险"
     },
     "phishing_risk": "增加钓鱼风险",
-    "proxy": "Upgradeable proxy contract",
+    "proxy": "可升级的代理合同",
     "source": "举报人：<source-link>{source}</source-link>",
-    "suspicious_address": "Suspicious-looking address",
+    "suspicious_address": "可疑地址",
     "uninitialized": "没有部署到此地址的合约",
     "unsafe": "可能不安全的合约代码"
   },

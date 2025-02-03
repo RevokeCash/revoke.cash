@@ -112,6 +112,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Shiden,
   ChainId.CallistoMainnet,
   ChainId.RARIChainMainnet,
+  ChainId.NeoXMainnet,
   ChainId.BitgertMainnet,
   ChainId.Palm,
   ChainId.ZERONetwork,
@@ -124,7 +125,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
-  ChainId.NeoXMainnet,
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -1659,6 +1659,7 @@ export const CHAINS = {
       free: 'https://testnet.rpc.banelabs.org',
     },
     isTestnet: true,
+    correspondingMainnetChainId: ChainId.NeoXMainnet,
   }),
   // [ChainId.NumbersMainnet]: new Chain({
   //   type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2674,6 +2675,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   frxETH: '0.002',
   FTM: '6',
   FUSE: '200',
+  GAS: '2',
   GHST: '8',
   GLMR: '30',
   GOLDX: '1', // Can't find price info

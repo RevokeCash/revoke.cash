@@ -81,7 +81,7 @@
     "closed_source": "ソースがクローズになっている",
     "deprecated": "非推奨または古い",
     "eoa": "外部所有口座",
-    "excessive_expiration": "Excessive expiration",
+    "excessive_expiration": "期限切れが多すぎる",
     "exploit": "{data}に関与していました",
     "levels": {
       "high": "高リスク",
@@ -91,7 +91,7 @@
     "phishing_risk": "フィッシングの場合のリスク領域が増加",
     "proxy": "アップグレード可能なプロキシ契約",
     "source": "<source-link>{source}</source-link>に報告された",
-    "suspicious_address": "Suspicious-looking address",
+    "suspicious_address": "不審な住所",
     "uninitialized": "この住所にはコントラクトがデプロイされていません",
     "unsafe": "安全でない可能性のある契約コード"
   },
