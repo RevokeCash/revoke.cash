@@ -70,7 +70,8 @@
     "history": "History",
     "more": "More",
     "settings": "Settings",
-    "signatures": "Signatures"
+    "signatures": "Signatures",
+    "coverage": "Coverage"
   },
   "permit2": {
     "expiration": "Expires {inTime}"
@@ -97,6 +98,24 @@
   },
   "search": {
     "spender": "Search by Approved Spender Address"
+  },
+  "coverage": {
+    "membership_card_title": "Fairside Membership",
+    "status": "Status",
+    "claims": "Claims",
+    "amount": "Amount",
+    "covered": "Covered",
+    "not_covered": "Not Covered",
+    "info": {
+      "what": {
+        "title": "What is Coverage?",
+        "description": "Get paid when you get drained. Fairside is the first Crypto native coverage platform that allows you to purchase coverag for your wallet in the event of 30+ attacks via phishing, malware, and poison addressing."
+      },
+      "how": {
+        "title": "How to get Covered",
+        "description": "1. Input the amount you want to be covered (in ETH), and pay 1.95% of that amount. 2. Add all the wallets that are covered across the 11+ chains."
+      }
+    }
   },
   "signatures": {
     "info": {
