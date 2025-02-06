@@ -1,5 +1,4 @@
 import CopyButton from 'components/common/CopyButton';
-import { FAIRSIDE_API_KEY } from 'lib/constants';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -33,6 +32,9 @@ const WalletDetails = ({ isAuthenticated, className, fsdAPI, walletAddress, toke
 
   const handleAuthentication = async () => {
     if (!fsdAPI || !walletAddress || !walletClient) {
+      console.log('fsdAPI', fsdAPI);
+      console.log('walletAddress', walletAddress);
+      console.log('walletClient', walletClient);
       toast.error('Missing required data for authentication');
       return;
     }
@@ -67,16 +69,8 @@ const WalletDetails = ({ isAuthenticated, className, fsdAPI, walletAddress, toke
       setToken(response.token);
 
       // Step 4: Fetch wallets after successful authentication
-      const walletDataResponse = await fetch('https://api.test.fairside.dev/v1/membership/wallets', {
-        headers: {
-          'api-key': FAIRSIDE_API_KEY ?? '',
-          Authorization: `Bearer ${response.token}`,
-        },
-        method: 'GET',
-      });
-      const walletData = await walletDataResponse.json();
-      console.log('Wallet data:', walletData);
-      setWallets([{ walletAddress: walletAddress ?? '' }, ...walletData.data]);
+      const walletDataResponse = await fsdAPI.getCoveredWallets({ accessToken: response.token });
+      setWallets([{ walletAddress: walletAddress ?? '' }, ...walletDataResponse.wallets]);
     } catch (error) {
       console.error('Authentication error:', error);
       toast.error('Failed to authenticate with Fairside');

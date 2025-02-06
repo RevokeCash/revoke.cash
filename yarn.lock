@@ -969,9 +969,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fairside-foundation/sdk@npm:^1.0.27":
-  version: 1.0.27
-  resolution: "@fairside-foundation/sdk@npm:1.0.27"
+"@fairside-foundation/sdk@npm:^1.0.29":
+  version: 1.0.29
+  resolution: "@fairside-foundation/sdk@npm:1.0.29"
   dependencies:
     axios: "npm:^1.6.0"
     ethers: "npm:6.11.1"
@@ -980,7 +980,7 @@ __metadata:
     react: ^18.0.0
     react-dom: ^18.0.0
     styled-components: ^6.1.8
-  checksum: 10/9545c9fe19d108a90c5d8c6a2e7da7887487bf33f0146384271082853f0b0a41fd1f1a9987f37cba9b7a0c97febc4bc69a9a1126241a9fc5692adb672baf6f0d
+  checksum: 10/300291bb47d6976417a92d383330f6bf0aae36884eb5b649cd1fc905972b068a799c931678847378b71a3181756960e9d1395910b63c0868f2fc823ca5db6109
   languageName: node
   linkType: hard
 
@@ -10364,7 +10364,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.6.0"
     "@cypress/grep": "npm:^4.1.0"
     "@dotenvx/dotenvx": "npm:^1.14.2"
-    "@fairside-foundation/sdk": "npm:^1.0.27"
+    "@fairside-foundation/sdk": "npm:^1.0.29"
     "@headlessui/react": "npm:^2.1.2"
     "@heroicons/react": "npm:^2.1.5"
     "@lavamoat/allow-scripts": "npm:^3.2.0"

@@ -26,7 +26,7 @@
     "@abstract-foundation/agw-client": "^1.0.0",
     "@abstract-foundation/agw-react": "^1.0.0",
     "@dotenvx/dotenvx": "^1.14.2",
-    "@fairside-foundation/sdk": "^1.0.27",
+    "@fairside-foundation/sdk": "^1.0.29",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@neondatabase/serverless": "^0.10.1",
