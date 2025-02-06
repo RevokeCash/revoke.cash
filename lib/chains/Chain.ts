@@ -186,7 +186,7 @@ export class Chain {
   getViemChainConfig(): ViemChain {
     const chainInfo = getChain(this.chainId);
     const chainName = this.getName();
-    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken()!, decimals: 18 };
+    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken(), decimals: 18 };
 
     return defineChain({
       id: this.chainId,
@@ -209,7 +209,7 @@ export class Chain {
   }
 
   getAddEthereumChainParameter(): AddEthereumChainParameter {
-    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken()!, decimals: 18 };
+    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken(), decimals: 18 };
     const iconUrl = getChain(this.chainId)?.iconURL;
     const addEthereumChainParameter = {
       chainId: String(this.chainId),
