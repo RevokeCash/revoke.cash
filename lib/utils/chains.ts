@@ -42,6 +42,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RootstockMainnet,
   ChainId.ApeChain,
   ChainId.WorldChain,
+  ChainId.Berachain,
   ChainId.SeiNetwork,
   ChainId.BOB,
   ChainId.FantomOpera,
@@ -509,15 +510,28 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Beam,
   }),
+  [ChainId.Berachain]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Berachain,
+    name: 'Berachain',
+    logoUrl: '/assets/images/vendor/chains/berachain.svg',
+    explorerUrl: 'https://berascan.com',
+    etherscanCompatibleApiUrl: 'https://api.berascan.com/api',
+    rpc: {
+      main: `https://berachain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.BerachainbArtio]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.BerachainbArtio,
     name: 'Berachain bArtio',
-    logoUrl: '/assets/images/vendor/chains/berachain.jpg',
+    logoUrl: '/assets/images/vendor/chains/berachain.svg',
     etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/testnet/evm/80084/etherscan/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
-    correspondingMainnetChainId: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
+    correspondingMainnetChainId: ChainId.Berachain,
   }),
   [ChainId.BitgertMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2499,12 +2513,6 @@ export const CHAINS = {
     chainId: 12345678902,
     name: 'Creator Chain',
   }),
-  // TODO: This is a placeholder so we can add a description for Berachain
-  [12345678903]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678903,
-    name: 'Berachain',
-  }),
   // TODO: This is a placeholder so we can add a description for Tabi
   [12345678905]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -2664,7 +2672,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   ASTR: '100',
   AVAX: '0.2',
   BEAM: '200',
-  BERA: '1', // Can't find price info
+  BERA: '0.6',
   BNB: '0.01',
   BONE: '10',
   BTC: '0.0001',
@@ -2693,6 +2701,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   frxETH: '0.002',
   FTM: '6',
   FUSE: '200',
+  G: '400',
   GAS: '2',
   GHST: '8',
   GLMR: '30',
