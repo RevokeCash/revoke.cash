@@ -18,6 +18,7 @@ const TEST_ADDRESSES = {
   [ChainId['AvalancheC-Chain']]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Base]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Beam]: '0xc1447c8c647eF2f564cEAe520E1b65C758A02f9F',
+  [ChainId.Berachain]: '0xED361b6dCce5498EEF362126BFdA548bAf78833C',
   [ChainId.BitgertMainnet]: '0x6AC875A1C4E12c25265B01C9A2d1112fbb2AdfaF',
   [ChainId.BitlayerMainnet]: '0x862E82662c7Ef7961bD1D8e2D35Ca70cc0B4DFD6',
   [ChainId.BitTorrentChainMainnet]: '0x2d850d18B0617077585F1D0Cba043168dc90954D',
@@ -43,6 +44,7 @@ const TEST_ADDRESSES = {
   [ChainId.EthereumClassic]: '0x8163dB62D6294bA66261644EcCD5FD5269451495',
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
   [ChainId.EthereumMainnet]: '0xA9a3D92C3aA8CfDA6C5139eCE02401432b91cbB2',
+  [ChainId.Ethernity]: '0xa63cce06Adc521ef91a2DB2153dD75d336Cd0004',
   [ChainId.ExosamaNetwork]: '0xf0dB619363881ceb6bA06b9AE3dd4886652Aa896',
   [ChainId.FantomOpera]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.FlareMainnet]: '0xDDB43EEeA9B5BAe08F4CaB101CB9BEe56D763738',
@@ -51,6 +53,7 @@ const TEST_ADDRESSES = {
   [ChainId.GeistMainnet]: '0x01Bb7B44cc398AaA2b76Ac6253F0F5634279Db9D',
   [ChainId.Gnosis]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.GoldXChainMainnet]: '0xE62864BC4e3075E9E3784CD0586EBA02CEE785d0',
+  [ChainId.GravityAlphaMainnet]: '0x7b8af2b20763E971Aa09549DF2d3D73E8C1dF74B',
   [ChainId.HarmonyMainnetShard0]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.HorizenEONMainnet]: '0x8b157B3fFEAD48C8a4CDC6bddBE1C1D170049Da4',
   [ChainId.ImmutablezkEVM]: '0xEAf9eaE01b153FAec95A666427391BCcBdAACC18',

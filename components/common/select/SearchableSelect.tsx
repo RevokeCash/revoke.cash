@@ -6,7 +6,9 @@ import {
   type FormatOptionLabelMeta,
   type GroupBase,
   type OnChangeValue,
+  type OptionProps,
   type SelectInstance,
+  components,
   createFilter,
 } from 'react-select';
 
@@ -78,9 +80,11 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
         filterOption={filterOption}
         minControlWidth={props.minMenuWidth}
         formatOptionLabel={props.formatOptionLabel ? formatOptionLabel : undefined}
-        components={{ DropdownIndicator: CustomDropdownIndicator, ...props.components }}
+        components={{ DropdownIndicator: CustomDropdownIndicator, Option: CustomOption, ...props.components }}
         placeholder={null}
         isSearchable
+        // We're passing custom props so that the CustomOption can scroll to the selected option
+        custom={{ isSelectOpen }}
       />
     </SelectOverlay>
   );
@@ -171,3 +175,27 @@ const TargetButton = forwardRef(
     );
   },
 );
+
+const CustomOption = <O, I extends boolean, G extends GroupBase<O>>(props: OptionProps<O, I, G>) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const customProps = (props.selectProps as any).custom;
+
+  // Scroll to the selected option when the select is opened
+  // TODO: There is still an edge case, where the selected option is not *focused* when the select is opened a second time
+  useEffect(() => {
+    if (customProps.isSelectOpen && props.isSelected) {
+      ref.current?.scrollIntoView({ behavior: 'instant', block: 'center' });
+    }
+  }, [props.isSelected, customProps.isSelectOpen]);
+
+  return (
+    <components.Option
+      {...props}
+      // This keeps existing innerRef functionality, but also allows us to scroll to the selected option
+      innerRef={(el) => {
+        props.innerRef?.(el);
+        ref.current = el;
+      }}
+    />
+  );
+};

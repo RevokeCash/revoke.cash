@@ -13,6 +13,7 @@ export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Omi
   theme?: 'light' | 'dark';
   keepMounted?: boolean;
   selectRef?: Ref<SelectInstance<O, I, G>>;
+  custom?: Record<string, any>;
 }
 
 // This component is created to allow us to customise the styles of the react-select component
