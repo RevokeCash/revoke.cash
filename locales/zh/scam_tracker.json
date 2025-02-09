@@ -4,13 +4,5 @@
     "title": "{chainName}资金流向可视化工具"
   },
   "title": "{chainName}资金流向可视化工具",
-  "placeholder": "输入{chainName}交易哈希",
-  "what_is_fund_flow": {
-    "title": "什么是{chainName}资金流向可视化工具？",
-    "content": "资金流向可视化工具帮助您追踪{chainName}上ERC20代币的转移。从单个交易开始，它会追踪代币在不同钱包之间的转移，帮助您理解资金流向并识别潜在模式。"
-  },
-  "how_to_track": {
-    "title": "如何在{chainName}上追踪资金流向",
-    "content": "在上方输入交易哈希以查看代币在{chainName}上的转移情况。可视化工具将显示初始转账和这些代币后续的转移。您可以展开可视化视图以查看更多交易，更好地了解资金最终流向何处。"
-  }
+  "placeholder": "输入{chainName}交易哈希"
 }

@@ -4,13 +4,5 @@
     "title": "Visualizador de Flujo de Fondos de {chainName}"
   },
   "title": "Visualizador de Flujo de Fondos de {chainName}",
-  "placeholder": "Ingrese el hash de la transacción de {chainName}",
-  "what_is_fund_flow": {
-    "title": "¿Qué es el Visualizador de Flujo de Fondos de {chainName}?",
-    "content": "El Visualizador de Flujo de Fondos te ayuda a rastrear el movimiento de tokens ERC20 a través de {chainName}. Comenzando desde una única transacción, rastrea cómo los tokens se mueven entre diferentes billeteras, ayudándote a entender el flujo de fondos e identificar patrones potenciales."
-  },
-  "how_to_track": {
-    "title": "Cómo Rastrear Flujos de Fondos en {chainName}",
-    "content": "Ingresa un hash de transacción arriba para ver cómo se mueven los tokens a través de {chainName}. El visualizador te mostrará la transferencia inicial y los movimientos subsiguientes de esos tokens. Puedes expandir la visualización para ver más transacciones y obtener una mejor comprensión de dónde terminan los fondos finalmente."
-  }
+  "placeholder": "Ingrese el hash de la transacción de {chainName}"
 }
