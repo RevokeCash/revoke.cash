@@ -32,6 +32,7 @@
     "sending": "Sending",
     "switch_chain": "Switch Network",
     "switching": "Switching",
+    "track_funds": "Track Funds",
     "translate": "Help Us Translate This Page",
     "understand": "I Understand",
     "update": "Update",
@@ -121,5 +122,6 @@
     "transaction_failed": "❌ Transaction failed: {message}",
     "transaction_submitted": "✅ Transaction submitted!",
     "update_failed": "❌ This token does not support updating approvals, please revoke instead."
-  }
+  },
+  "transaction_visualizer": "Transaction Visualizer"
 }
