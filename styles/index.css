@@ -75,3 +75,38 @@ a:visited {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* For some reason, I was not able to use the data-[state=xxx] tailwind syntax in className */
+.tooltip-content[data-state="delayed-open"] {
+  @apply animate-fade-in;
+}
+
+.tooltip-content[data-state="closed"] {
+  @apply animate-fade-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+.animate-fade-out {
+  animation: fade-out 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
