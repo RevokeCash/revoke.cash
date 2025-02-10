@@ -7,10 +7,12 @@ import { getTranslations } from 'next-intl/server';
 // https://github.com/vercel/next.js/issues/51147#issuecomment-1842197049
 
 interface Props {
-  params: {
-    locale: string;
-    slug: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
+  slug: string;
 }
 
 export const dynamic = 'error';
@@ -22,9 +24,10 @@ export const generateStaticParams = () => {
 };
 
 export async function GET(req: Request, { params }: Props) {
-  const t = await getTranslations({ locale: params.locale });
+  const { locale, slug } = await params;
+  const t = await getTranslations({ locale });
 
-  const chainName = getChainName(getChainIdFromSlug(params.slug));
+  const chainName = getChainName(getChainIdFromSlug(slug));
   const title = t('token_approval_checker.meta.title', { chainName });
   const background = loadDataUrl('public/assets/images/token-approval-checker/cover.jpg', 'image/jpeg');
 

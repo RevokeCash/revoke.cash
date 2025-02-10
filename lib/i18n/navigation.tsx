@@ -1,16 +1,8 @@
-import { createSharedPathnamesNavigation } from 'next-intl/navigation';
+import { createNavigation } from 'next-intl/navigation';
 import nProgress from 'nprogress';
+import { routing } from './config';
 
-// For *some reason*, Next.js won't compile if we import thesse values from './config', so they're repeated here
-const locales = ['en', 'es', 'ja', 'ru', 'zh'] as const;
-const localePrefix = 'as-needed' as const; // Default
-
-export const {
-  Link,
-  redirect,
-  usePathname,
-  useRouter: useNextRouter,
-} = createSharedPathnamesNavigation({ locales, localePrefix });
+export const { Link, redirect, usePathname, useRouter: useNextRouter } = createNavigation(routing);
 
 export function useRouter() {
   const router = useNextRouter();

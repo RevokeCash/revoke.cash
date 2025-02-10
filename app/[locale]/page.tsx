@@ -4,13 +4,15 @@ import HowTo from 'components/landing/HowTo';
 import LandingPageFaq from 'components/landing/LandingPageFaq';
 import WhyRevokeCash from 'components/landing/WhyRevokeCash';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Script from 'next/script';
 
 interface Props {
-  params: {
-    locale: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 const jsonLd = {
@@ -20,7 +22,9 @@ const jsonLd = {
   url: 'https://revoke.cash',
 };
 
-export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+
   const t = await getTranslations({ locale });
 
   return {
@@ -29,8 +33,9 @@ export const generateMetadata = async ({ params: { locale } }: Props): Promise<M
   };
 };
 
-const LandingPage: NextPage<Props> = ({ params }) => {
-  unstable_setRequestLocale(params.locale);
+const LandingPage: NextPage<Props> = async ({ params }) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   return (
     <>

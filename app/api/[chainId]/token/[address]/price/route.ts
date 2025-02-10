@@ -6,10 +6,12 @@ import type { NextRequest } from 'next/server';
 import type { Address } from 'viem';
 
 interface Props {
-  params: {
-    chainId: string;
-    address: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  chainId: string;
+  address: Address;
 }
 
 export const runtime = 'edge';
@@ -18,6 +20,8 @@ export const preferredRegion = ['iad1'];
 // TODO: Support ERC20 token prices in this route as well
 
 export async function GET(req: NextRequest, { params }: Props) {
+  const { chainId: chainIdString, address } = await params;
+
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
@@ -26,11 +30,11 @@ export async function GET(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   }
 
-  const chainId = Number.parseInt(params.chainId, 10);
+  const chainId = Number.parseInt(chainIdString, 10);
 
   const contract: Erc721TokenContract = {
     abi: ERC721_ABI,
-    address: params.address as Address,
+    address,
     publicClient: createViemPublicClientForChain(chainId),
   };
 

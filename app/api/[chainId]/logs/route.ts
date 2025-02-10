@@ -5,12 +5,16 @@ import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextRequest } from 'next/server';
 
 interface Props {
-  params: {
-    chainId: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  chainId: string;
 }
 
 export async function POST(req: NextRequest, { params }: Props) {
+  const { chainId: chainIdString } = await params;
+
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
@@ -19,7 +23,7 @@ export async function POST(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Too many requests, please try again later.' }), { status: 429 });
   }
 
-  const chainId = Number.parseInt(params.chainId, 10);
+  const chainId = Number.parseInt(chainIdString, 10);
   const body = await req.json();
 
   try {

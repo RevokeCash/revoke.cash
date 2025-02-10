@@ -2,17 +2,19 @@ import ArticleCard from 'components/learn/ArticleCard';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export const dynamic = 'error';
 
-export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+
   const t = await getTranslations({ locale });
 
   return {
@@ -24,11 +26,12 @@ export const generateMetadata = async ({ params: { locale } }: Props): Promise<M
   };
 };
 
-const BlogPage: NextPage<Props> = async ({ params }: Props) => {
-  unstable_setRequestLocale(params.locale);
+const BlogPage: NextPage<Props> = async ({ params }) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-  const t = await getTranslations({ locale: params.locale });
-  const posts = await getSidebar(params.locale, 'blog', true);
+  const t = await getTranslations({ locale });
+  const posts = await getSidebar(locale, 'blog', true);
 
   return (
     <>
