@@ -3,6 +3,7 @@ import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
+import { timeago } from 'lib/i18n/timeago';
 import {
   AllowanceType,
   type OnUpdate,
@@ -14,7 +15,6 @@ import { DAY, SECOND, YEAR } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import * as timeago from 'timeago.js';
 import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
