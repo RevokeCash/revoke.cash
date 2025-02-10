@@ -31,6 +31,7 @@
     "@neondatabase/serverless": "^0.10.1",
     "@privy-io/cross-app-connect": "^0.1.2",
     "@revoke.cash/chains": "^63.0.0",
+    "@simpleanalytics/next": "https://pkg.pr.new/JeanMeijer/simpleanalytics-next/@simpleanalytics/next@9f661fc",
     "@tanstack/query-sync-storage-persister": "^5.52.0",
     "@tanstack/react-query": "^5.52.0",
     "@tanstack/react-query-persist-client": "^5.52.0",

@@ -18,7 +18,7 @@ import Select, { type Props as SelectProps } from 'components/common/select/Sele
 import Button from '../Button';
 import Chevron from '../Chevron';
 
-import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
+import type { FilterOptionOption } from 'node_modules/react-select/dist/declarations/src/filters';
 import { twMerge } from 'tailwind-merge';
 
 interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProps<O, I, G> {

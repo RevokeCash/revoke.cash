@@ -1,6 +1,6 @@
 import type { TransactionSubmitted } from 'lib/interfaces';
+import type { Call } from 'node_modules/viem/_types/types/calls';
 import type { SendTransactionParameters, WalletCallReceipt, WalletClient, WriteContractParameters } from 'viem';
-import type { Call } from 'viem/_types/types/calls';
 import { type Eip5792Actions, type GetCallsStatusReturnType, eip5792Actions } from 'viem/experimental';
 import type { OnUpdate } from './allowances';
 import type { TokenAllowanceData } from './allowances';

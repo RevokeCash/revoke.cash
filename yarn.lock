@@ -2377,6 +2377,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@simpleanalytics/next@https://pkg.pr.new/JeanMeijer/simpleanalytics-next/@simpleanalytics/next@9f661fc":
+  version: 0.0.1
+  resolution: "@simpleanalytics/next@https://pkg.pr.new/JeanMeijer/simpleanalytics-next/@simpleanalytics/next@9f661fc"
+  dependencies:
+    server-only: "npm:^0.0.1"
+  peerDependencies:
+    next: ">= 13"
+    react: ^18 || ^19
+  peerDependenciesMeta:
+    next:
+      optional: true
+    react:
+      optional: true
+  checksum: 10/cd03046a27b31e28ad33df58017289e24415d494f627193dfab997368bcbf323166cf429ff10a9e0f1fa81b240cecff499d8684ef392f0208e3f509895ebe0e3
+  languageName: node
+  linkType: hard
+
 "@sinonjs/text-encoding@npm:0.7.2":
   version: 0.7.2
   resolution: "@sinonjs/text-encoding@npm:0.7.2"
@@ -10221,6 +10238,7 @@ __metadata:
     "@privy-io/cross-app-connect": "npm:^0.1.2"
     "@rainbow-me/rainbowkit": "npm:^2.2.1"
     "@revoke.cash/chains": "npm:^63.0.0"
+    "@simpleanalytics/next": "https://pkg.pr.new/JeanMeijer/simpleanalytics-next/@simpleanalytics/next@9f661fc"
     "@tailwindcss/typography": "npm:^0.5.14"
     "@tanstack/query-sync-storage-persister": "npm:^5.52.0"
     "@tanstack/react-query": "npm:^5.52.0"
@@ -10410,6 +10428,13 @@ __metadata:
   dependencies:
     randombytes: "npm:^2.1.0"
   checksum: 10/445a420a6fa2eaee4b70cbd884d538e259ab278200a2ededd73253ada17d5d48e91fb1f4cd224a236ab62ea7ba0a70c6af29fc93b4f3d3078bf7da1c031fde58
+  languageName: node
+  linkType: hard
+
+"server-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "server-only@npm:0.0.1"
+  checksum: 10/c432348956641ea3f460af8dc3765f3a1bdbcf7a1e0205b0756d868e6e6fe8934cdee6bff68401a1dd49ba4a831c75916517a877446d54b334f7de36fa273e53
   languageName: node
   linkType: hard
 

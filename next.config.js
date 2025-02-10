@@ -1,6 +1,7 @@
 const withBundleAnalyzer = require('next-bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
 const withNextIntl = require('next-intl/plugin')();
 const withNextCircularDeps = require('next-circular-dependency');
+const withSimpleAnalytics = require('@simpleanalytics/next/plugin');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -52,6 +53,7 @@ const nextConfig = {
 module.exports = nextConfig;
 module.exports = withNextIntl(module.exports);
 module.exports = withBundleAnalyzer(module.exports);
+module.exports = withSimpleAnalytics(module.exports);
 
 if (process.env.CHECK_CIRCULAR_DEPS) {
   module.exports = withNextCircularDeps(module.exports);
