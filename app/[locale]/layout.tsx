@@ -13,7 +13,6 @@ import { locales } from 'lib/i18n/config';
 import type { Metadata } from 'next';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
-import 'react-toastify/dist/ReactToastify.css';
 import '../../styles/index.css';
 
 interface Props {
