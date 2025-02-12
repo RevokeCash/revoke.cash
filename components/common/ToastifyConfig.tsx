@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 const ToastifyConfig = () => (
   <ToastContainer
     toastClassName="flex items-center justify-center text-center border border-black bg-white text-zinc-900 dark:bg-black dark:border-white dark:text-zinc-100"
-    progressClassName="!bg-black dark:!bg-white"
+    progressClassName="bg-black! dark:bg-white!"
     closeButton={({ closeToast, ariaLabel }) => (
       <button
         type="button"

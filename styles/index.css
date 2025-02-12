@@ -1,47 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config '../tailwind.config.js';
 
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  @apply leading-tight;
-  @apply bg-white dark:bg-black;
-  @apply text-zinc-900 dark:text-zinc-100;
-}
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 
-h1 {
-  @apply text-4xl md:text-5xl font-bold tracking-tight m-0;
-}
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply leading-tight;
+    @apply bg-white dark:bg-black;
+    @apply text-zinc-900 dark:text-zinc-100;
+  }
 
-h2 {
-  @apply text-3xl md:text-4xl font-bold m-0;
-}
+  h1 {
+    @apply text-4xl md:text-5xl font-bold tracking-tight m-0;
+  }
 
-h3 {
-  @apply text-2xl font-bold m-0;
-}
+  h2 {
+    @apply text-3xl md:text-4xl font-bold m-0;
+  }
 
-h4 {
-  @apply text-xl font-bold m-0;
-}
+  h3 {
+    @apply text-2xl font-bold m-0;
+  }
 
-h5,
-h6 {
-  @apply text-lg font-bold m-0;
-}
+  h4 {
+    @apply text-xl font-bold m-0;
+  }
 
-p {
-  @apply text-base leading-normal text-zinc-700 dark:text-zinc-300;
-}
+  h5,
+  h6 {
+    @apply text-lg font-bold m-0;
+  }
 
-a {
-  color: blue;
-  text-decoration: none;
-}
+  p {
+    @apply text-base leading-normal text-zinc-700 dark:text-zinc-300;
+  }
 
-a:visited {
-  color: purple;
+  a {
+    color: blue;
+    text-decoration: none;
+  }
+
+  a:visited {
+    color: purple;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  div:focus {
+    @apply outline-black;
+  }
 }
 
 .dev {
@@ -85,12 +103,12 @@ a:visited {
   @apply animate-fade-out;
 }
 
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
+@utility animate-fade-in {
+  animation: fade-in 0.5s ease-out;
 }
 
-.animate-fade-out {
-  animation: fade-out 0.2s ease-out;
+@utility animate-fade-out {
+  animation: fade-out 0.5s ease-out;
 }
 
 @keyframes fade-in {

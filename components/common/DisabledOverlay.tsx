@@ -8,9 +8,9 @@ interface Props {
 
 const DisabledOverlay = ({ children, tooltip }: Props) => {
   const overlay = (
-    <div className="relative blur-sm">
+    <div className="relative blur-xs">
       <div>{children}</div>
-      <div className="inset-0 absolute bg-zinc-400 dark:bg-zinc-700 bg-opacity-50 dark:bg-opacity-50 z-10 rounded-lg cursor-not-allowed" />
+      <div className="inset-0 absolute bg-zinc-400/50 dark:bg-zinc-700/50 z-10 rounded-lg cursor-not-allowed" />
     </div>
   );
 
