@@ -529,7 +529,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cypress/request@npm:^3.0.6":
+"@cypress/request@npm:^3.0.7":
   version: 3.0.7
   resolution: "@cypress/request@npm:3.0.7"
   dependencies:
@@ -2630,7 +2630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/node@npm:^4.0.0":
+"@tailwindcss/node@npm:^4.0.6":
   version: 4.0.6
   resolution: "@tailwindcss/node@npm:4.0.6"
   dependencies:
@@ -2718,7 +2718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/oxide@npm:^4.0.0":
+"@tailwindcss/oxide@npm:^4.0.6":
   version: 4.0.6
   resolution: "@tailwindcss/oxide@npm:4.0.6"
   dependencies:
@@ -2760,17 +2760,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/postcss@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@tailwindcss/postcss@npm:4.0.0"
+"@tailwindcss/postcss@npm:4.0.6":
+  version: 4.0.6
+  resolution: "@tailwindcss/postcss@npm:4.0.6"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
-    "@tailwindcss/node": "npm:^4.0.0"
-    "@tailwindcss/oxide": "npm:^4.0.0"
+    "@tailwindcss/node": "npm:^4.0.6"
+    "@tailwindcss/oxide": "npm:^4.0.6"
     lightningcss: "npm:^1.29.1"
     postcss: "npm:^8.4.41"
-    tailwindcss: "npm:4.0.0"
-  checksum: 10/76a232425ae75053ab501b404d3689e14f8d3ca15168fb3d0f88b3709b3b59e8c2d5a6ad5eeb88cc5f239376ba904b9fcf6424735807766f9c0e9c3a6ddeb67e
+    tailwindcss: "npm:4.0.6"
+  checksum: 10/699dfc80447d7a1ecaabf70fa15ddb358f6d63e32fb47cae32b922b7e54c3894dab990692a8f8cd5bacfaddde8a5add096dee7f3930b9d4ea94def1e28b9f6dd
   languageName: node
   linkType: hard
 
@@ -2837,15 +2837,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-table@npm:^8.20.6":
-  version: 8.20.6
-  resolution: "@tanstack/react-table@npm:8.20.6"
+"@tanstack/react-table@npm:^8.21.2":
+  version: 8.21.2
+  resolution: "@tanstack/react-table@npm:8.21.2"
   dependencies:
-    "@tanstack/table-core": "npm:8.20.5"
+    "@tanstack/table-core": "npm:8.21.2"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10/7ff2daf480bf2135ed072152cd8bc3f8ac342ca333831fd1b28603a8a8da0a858609d2fca18804f83ab62bbcf28041d5b98a0f2b7b283ec7229f99a57047a49f
+  checksum: 10/62b944b79f0ac06b74921c1da4821a4f122f7b30e2bd3391b5eac2d15a8050f3ac7752282354520ec42a3fa382580ac88e28731121ad445bb65218614ab21fd1
   languageName: node
   linkType: hard
 
@@ -2861,10 +2861,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/table-core@npm:8.20.5":
-  version: 8.20.5
-  resolution: "@tanstack/table-core@npm:8.20.5"
-  checksum: 10/5408237920d5796951e925278edbbe76f71006627a4e3da248a810970256f75d973538fe7ae75a32155d4a25a95abc4fffaea337b5120f7940d7e664dc9da87f
+"@tanstack/table-core@npm:8.21.2":
+  version: 8.21.2
+  resolution: "@tanstack/table-core@npm:8.21.2"
+  checksum: 10/6a435905fcfa2ac0d06963f14125f313a08086cb0c71949d60fbd04c3a5e229779f94ff6783e35cf09f77fddfbe987cfdd74b18577ac7476b5a43729f3e4b9d5
   languageName: node
   linkType: hard
 
@@ -4828,11 +4828,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^14.0.2":
-  version: 14.0.2
-  resolution: "cypress@npm:14.0.2"
+"cypress@npm:^14.0.3":
+  version: 14.0.3
+  resolution: "cypress@npm:14.0.3"
   dependencies:
-    "@cypress/request": "npm:^3.0.6"
+    "@cypress/request": "npm:^3.0.7"
     "@cypress/xvfb": "npm:^1.2.4"
     "@types/sinonjs__fake-timers": "npm:8.1.1"
     "@types/sizzle": "npm:^2.3.2"
@@ -4877,7 +4877,7 @@ __metadata:
     yauzl: "npm:^2.10.0"
   bin:
     cypress: bin/cypress
-  checksum: 10/1adb4dd7559c8e483815fa682a8e02115e654e3dd6cd006cd0c7ea97c88acb4dcbe5feaa8a5d8b67e034883c208cd3d5c18f6e8df50a38e1d8dd1449ce7fd889
+  checksum: 10/a3ce943f21dd3e3a0a138dbb6789ed1228c8fe81ad8c98d37c362414c37b64d2ab3de23cc31e1c4cc52fbfd1f941a481ece6d157c2736798a428a309778aeded
   languageName: node
   linkType: hard
 
@@ -7303,10 +7303,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ky@npm:^1.7.4":
-  version: 1.7.4
-  resolution: "ky@npm:1.7.4"
-  checksum: 10/a5e98434866e4e8e691f76aaa4b4d5bd3abe6527dbb0e853ee37c4475852af6e0cbeef442be31b6824ca7fd3998740492419a45be60352836b9a21a54458f56c
+"ky@npm:^1.7.5":
+  version: 1.7.5
+  resolution: "ky@npm:1.7.5"
+  checksum: 10/aabb9688ca9a1839c8c0a9e7ff12a5d12f6905fb6a9892ac3ff9be6a9f16c5890ec02f00aec1a64cf548f795a5eaa7154f3e3e44ffa81f1cf5d9a90be8b6a9b3
   languageName: node
   linkType: hard
 
@@ -10401,12 +10401,12 @@ __metadata:
     "@privy-io/cross-app-connect": "npm:^0.1.7"
     "@rainbow-me/rainbowkit": "npm:^2.2.3"
     "@revoke.cash/chains": "npm:^63.0.0"
-    "@tailwindcss/postcss": "npm:4.0.0"
+    "@tailwindcss/postcss": "npm:4.0.6"
     "@tailwindcss/typography": "npm:^0.5.16"
     "@tanstack/query-sync-storage-persister": "npm:^5.66.0"
     "@tanstack/react-query": "npm:^5.66.0"
     "@tanstack/react-query-persist-client": "npm:^5.66.0"
-    "@tanstack/react-table": "npm:^8.20.6"
+    "@tanstack/react-table": "npm:^8.21.2"
     "@types/md5": "npm:^2.3.5"
     "@types/mixpanel-browser": "npm:^2.49.1"
     "@types/node": "npm:^22.13.1"
@@ -10419,14 +10419,14 @@ __metadata:
     "@upstash/redis": "npm:^1.34.4"
     "@vercel/speed-insights": "npm:^1.2.0"
     chai: "npm:^5.1.2"
-    cypress: "npm:^14.0.2"
+    cypress: "npm:^14.0.3"
     dexie: "npm:^4.0.11"
     dotenv: "npm:^16.4.7"
     glob: "npm:^11.0.1"
     gray-matter: "npm:^4.0.3"
     husky: "npm:^9.1.7"
     iron-session: "npm:^8.0.4"
-    ky: "npm:^1.7.4"
+    ky: "npm:^1.7.5"
     lint-staged: "npm:^15.4.3"
     md5: "npm:^2.3.0"
     mixpanel-browser: "npm:^2.55.0"
@@ -10456,14 +10456,14 @@ __metadata:
     remark-directive-rehype: "npm:^0.4.2"
     remark-gfm: "npm:^4.0.1"
     sharp: "npm:^0.33.5"
-    tailwind-merge: "npm:^2.6.0"
-    tailwindcss: "npm:4.0.0"
+    tailwind-merge: "npm:^3.0.1"
+    tailwindcss: "npm:4.0.6"
     timeago-react: "npm:^3.0.6"
     timeago.js: "npm:^4.0.2"
     tsx: "npm:^4.19.2"
     typescript: "npm:^5.7.3"
     use-local-storage: "npm:^3.0.0"
-    viem: "npm:^2.23.1"
+    viem: "npm:^2.23.2"
     wagmi: "npm:^2.14.11"
     walkdir: "npm:^0.4.1"
     zustand: "npm:^5.0.3"
@@ -11261,17 +11261,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^2.6.0":
-  version: 2.6.0
-  resolution: "tailwind-merge@npm:2.6.0"
-  checksum: 10/a84f49d6f2cfb18ba06dc51b446b69f6b42cedcb9c9fa4e7c5f931b56e739870e513339e02b348b43f44011fa4852f02f72658a3f3e066e5101b09fc28644210
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:4.0.0":
-  version: 4.0.0
-  resolution: "tailwindcss@npm:4.0.0"
-  checksum: 10/3491d86a7c3ad08209eb988fcf36d893e5f5a4c48c63da706a8788f6111e141386e1b5c8fa46f2650b08200c1b8011251d97b6d65514bdc14aa06597871d1f7d
+"tailwind-merge@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "tailwind-merge@npm:3.0.1"
+  checksum: 10/bad61589b78530ce1d49a369b089ff606ed56d7d5aa67f57c04144751abbee3d844652a22595bfa21a4509d0d06946a9bc8c7e9ef74cd5fcf10c51925a2f14af
   languageName: node
   linkType: hard
 
@@ -12010,9 +12003,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.23.1":
-  version: 2.23.1
-  resolution: "viem@npm:2.23.1"
+"viem@npm:^2.23.2":
+  version: 2.23.2
+  resolution: "viem@npm:2.23.2"
   dependencies:
     "@noble/curves": "npm:1.8.1"
     "@noble/hashes": "npm:1.7.1"
@@ -12027,7 +12020,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/c8209e35b0df5dd6ebb07d024ace8b3db938d62ae5dd59c338664f2d5b5e0a03f434e451a53e8c3815783f0c1d4a18bfb93bf8d710b6dbfb3f5ad7dfad44ef7c
+  checksum: 10/847fdb57a6941f67c4ff97c79d99368c48e78b9c070df8fb3f3310d58bbd075fd78e9a506abccb82fcdbcf0c6c13aba7cfb021e37fda0777ea1eb0ccecf25fe1
   languageName: node
   linkType: hard
 
