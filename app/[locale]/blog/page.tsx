@@ -5,9 +5,11 @@ import type { Metadata, NextPage } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
-  params: Promise<{
-    locale: string;
-  }>;
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 export const dynamic = 'error';
