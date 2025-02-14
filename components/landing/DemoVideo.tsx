@@ -2,7 +2,7 @@ const DemoVideo = () => {
   return (
     // TODO: Make the video proper 16:9 - Screen Studio is botched so it's 4 pixels off 😅
     <video
-      className="aspect-[1280/716] rounded-lg border border-black box-content"
+      className="aspect-1280/716 rounded-lg border border-black box-content"
       controls
       muted
       loop

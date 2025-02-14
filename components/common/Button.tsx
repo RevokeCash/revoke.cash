@@ -65,8 +65,8 @@ const Button = (
   };
 
   const classes = twMerge(
-    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
-    (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded',
+    'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
+    (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded-sm',
     style !== 'none' && classMapping.common,
     variant !== 'none' && classMapping[variant],
     classMapping[align ?? 'center'],

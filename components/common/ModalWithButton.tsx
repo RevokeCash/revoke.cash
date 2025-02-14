@@ -1,10 +1,11 @@
 'use client';
 
+import type Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import { type ReactElement, type ReactNode, cloneElement, useState } from 'react';
+import { type ComponentProps, type ReactElement, type ReactNode, cloneElement, useState } from 'react';
 
 interface Props {
-  button: ReactElement;
+  button: ReactElement<ComponentProps<typeof Button>>;
   children: ReactNode;
   className?: string;
 }

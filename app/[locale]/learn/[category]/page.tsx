@@ -6,13 +6,15 @@ import { locales } from 'lib/i18n/config';
 import { getAllLearnCategories, getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
-  params: {
-    locale: string;
-    category: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
+  category: string;
 }
 
 export const dynamic = 'error';
@@ -23,7 +25,9 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => categorySlugs.map((category) => ({ locale, category })));
 };
 
-export const generateMetadata = async ({ params: { locale, category } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale, category } = await params;
+
   const t = await getTranslations({ locale });
 
   return {
@@ -35,30 +39,31 @@ export const generateMetadata = async ({ params: { locale, category } }: Props):
   };
 };
 
-const LearnSectionPage: NextPage<Props> = async ({ params }: Props) => {
-  unstable_setRequestLocale(params.locale);
+const LearnSectionPage: NextPage<Props> = async ({ params }) => {
+  const { locale, category } = await params;
+  setRequestLocale(locale);
 
-  const sidebar = await getSidebar(params.locale, 'learn', true);
-  const t = await getTranslations({ locale: params.locale });
+  const sidebar = await getSidebar(locale, 'learn', true);
+  const t = await getTranslations({ locale });
 
   const meta = {
-    title: t(`learn.sections.${params.category}.title`),
+    title: t(`learn.sections.${category}.title`),
     description: t('learn.meta.description'),
-    language: params.locale,
-    sidebarTitle: t(`learn.sidebar.${params.category}`),
-    coverImage: getOpenGraphImageUrl(`/learn/${params.category}`, params.locale),
+    language: locale,
+    sidebarTitle: t(`learn.sidebar.${category}`),
+    coverImage: getOpenGraphImageUrl(`/learn/${category}`, locale),
   };
 
   return (
-    <LearnLayout sidebarEntries={sidebar} slug={[params.category]} meta={meta}>
+    <LearnLayout sidebarEntries={sidebar} slug={[category]} meta={meta}>
       <Prose>
-        <h1>{t(`learn.sections.${params.category}.title`)}</h1>
+        <h1>{t(`learn.sections.${category}.title`)}</h1>
         <Divider className="my-4" />
         <p>
-          {t('learn.meta.description')} {t(`learn.sections.${params.category}.intro_paragraph`)}
+          {t('learn.meta.description')} {t(`learn.sections.${category}.intro_paragraph`)}
         </p>
         {sidebar.map((entry) =>
-          entry.path === `/learn/${params.category}` ? (
+          entry.path === `/learn/${category}` ? (
             <ArticleCardSection key={entry.title}>{entry.children}</ArticleCardSection>
           ) : null,
         )}

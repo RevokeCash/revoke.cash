@@ -144,7 +144,7 @@
     "marketplace_listings": "Esto cancelará todos los listados y ofertas actuales en {marketplace}.",
     "marketplace_signatures": "Una vez autorizados, los mercados pueden mover activos en tu nombre. Los malos actores se aprovechan de estas autorizaciones para crear listados a precio cero en sitios web de terceros. Cancela estas autorizaciones si firmaste una firma de mercado en un sitio web de phishing.",
     "old_approval": "Esta aprobación tiene más de un año. Considera revocarla si ya no la necesitas.",
-    "permit2_expiration": "Esta es una autorización de Permit2 que caducará en {inTime}",
+    "permit2_expiration": "Esta es una autorización de Permit2 que caducará {inTime}",
     "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
     "recently_cancelled": "Ya has cancelado esta posible firma recientemente. Permanecerá en la lista para que puedas volver a cancelarla más adelante si lo necesitas.",
     "risk_factors": "La aprobación de este token es de {riskLevel} por estas razones:",

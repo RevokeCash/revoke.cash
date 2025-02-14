@@ -20,7 +20,7 @@ const Breadcrumb = ({ pages }: Props) => {
             router
             aria-label="Home Page"
           >
-            <HomeIcon className="h-5 w-5 flex-shrink-0" />
+            <HomeIcon className="h-5 w-5 shrink-0" />
           </Href>
         </li>
         {pages.map((page, i) => (
