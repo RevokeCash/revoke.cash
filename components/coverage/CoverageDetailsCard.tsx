@@ -90,7 +90,7 @@ const CoverageDetailsCard = ({
         <span className="text-gray-600 dark:text-gray-400">{t('claims')}:</span>
         <div className="text-black dark:text-white font-medium flex items-center gap-2">
           <span className="text-amber-600 dark:text-amber-500">
-            {claimsCount === 0 ? t('not_covered') : `${claimsCount} claims`}
+            {claimsCount === 0 ? t('no_claims') : `${claimsCount} claims`}
           </span>
         </div>
       </div>
