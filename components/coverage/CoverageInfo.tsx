@@ -45,7 +45,8 @@ const quizQuestions: QuizQuestion[] = [
     question: 'How much of my coverage amount do I receive in a payout?',
     options: ['100% of coverage amount', '90% of coverage amount', '80% of coverage amount', '75% of coverage amount'],
     correctAnswers: ['90% of coverage amount'],
-    explanation: 'There is a 10% Personal Responsibility Fee, so you receive 90% of your coverage amount.',
+    explanation:
+      'Fairside covers 90% of your loss, with a 10% Personal Responsibility Amount deducted from your payout—not your coverage. This approach encourages accountability, helps maintain a robust community fund, and ensures long-term affordability for all members.',
   },
 ];
 
