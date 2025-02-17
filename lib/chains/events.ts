@@ -4,7 +4,7 @@ import { getLogsProvider } from 'lib/providers';
 import { sortTokenEventsChronologically } from 'lib/utils';
 import { isNullish } from 'lib/utils';
 import { addressToTopic, apiLogin } from 'lib/utils';
-import { type DocumentedChainId, createViemPublicClientForChain } from 'lib/utils/chains';
+import { type DocumentedChainId, createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
 import { parseApprovalForAllLog, parseApprovalLog, parsePermit2Log, parseTransferLog } from 'lib/utils/events';
 import { type TokenEvent, generatePatchedAllowanceEvents } from 'lib/utils/events';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
@@ -26,6 +26,7 @@ const ChainOverrides: Record<number, TokenEventsGetter> = {};
 const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
   // Assemble prerequisites
 
+  const chainName = getChainName(chainId);
   const publicClient = createViemPublicClientForChain(chainId);
   const logsProvider = getLogsProvider(chainId);
 
@@ -44,7 +45,7 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
   // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
   // See https://eips.ethereum.org/EIPS/eip-161
   if (nonce === 0) {
-    console.log('Skipping event fetching for EOA with no transactions', address);
+    console.log(`${chainName}: Skipping event fetching for EOA with no transactions`, address);
     return [];
   }
 

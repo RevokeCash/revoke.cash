@@ -44,6 +44,7 @@ export enum SupportType {
   ETHERSCAN_COMPATIBLE = 'etherscan_compatible',
   COVALENT = 'covalent',
   BACKEND_NODE = 'backend_node',
+  BACKEND_CUSTOM = 'backend_custom',
   UNSUPPORTED = 'unsupported',
 }
 

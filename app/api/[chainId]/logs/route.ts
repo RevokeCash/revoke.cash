@@ -1,6 +1,11 @@
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
-import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
+import { covalentEventGetter, customEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
+import {
+  isCovalentSupportedChain,
+  isCustomSupportedChain,
+  isEtherscanSupportedChain,
+  isNodeSupportedChain,
+} from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextRequest } from 'next/server';
 
@@ -39,6 +44,11 @@ export async function POST(req: NextRequest, { params }: Props) {
 
     if (isNodeSupportedChain(chainId)) {
       const events = await nodeEventGetter.getEvents(chainId, body);
+      return new Response(JSON.stringify(events), { status: 200 });
+    }
+
+    if (isCustomSupportedChain(chainId)) {
+      const events = await customEventGetter.getEvents(chainId, body);
       return new Response(JSON.stringify(events), { status: 200 });
     }
   } catch (e) {

@@ -23,7 +23,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OPMainnet,
   ChainId.Base,
   ChainId['AvalancheC-Chain'],
-  ChainId.ZircuitMainnet,
   ChainId.CoreBlockchainMainnet,
   ChainId.Abstract,
   ChainId.Mantle,
@@ -32,23 +31,25 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Scroll,
   ChainId.ZkSyncMainnet,
   ChainId.Ink,
+  ChainId.Unichain,
+  ChainId.Berachain,
   ChainId.BitlayerMainnet,
+  ChainId.SonicMainnet,
   ChainId.CronosMainnet,
   ChainId.PulseChain,
   ChainId.Mode,
-  ChainId.SonicMainnet,
   ChainId.Gnosis,
   ChainId.TaikoMainnet,
   ChainId.RootstockMainnet,
   ChainId.ApeChain,
   ChainId.WorldChain,
-  ChainId.Berachain,
   ChainId.SeiNetwork,
   ChainId.BOB,
   ChainId.FantomOpera,
   ChainId.MetisAndromedaMainnet,
   ChainId.MerlinMainnet,
   ChainId.CeloMainnet,
+  ChainId.EVMonFlow,
   ChainId.Fraxtal,
   ChainId.MantaPacificMainnet,
   ChainId.FlareMainnet,
@@ -57,6 +58,8 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Astar,
   ChainId.AstarzkEVM,
   ChainId.Soneium,
+  ChainId.TelosEVMMainnet,
+  ChainId.Story,
   ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
   ChainId.ZetaChainMainnet,
@@ -110,6 +113,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.DarwiniaNetwork,
   ChainId.Zora,
   ChainId.KardiaChainMainnet,
+  ChainId.Superposition,
   ChainId.BitrockMainnet,
   ChainId.Nahmii3Mainnet,
   ChainId.Shiden,
@@ -124,7 +128,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RSS3VSLMainnet,
   // ChainId.LUKSOMainnet,
   ChainId.ExosamaNetwork,
-  ChainId.MaxxChainMainnet,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
   ChainId.Ethernity,
@@ -164,7 +167,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BeamTestnet,
   ChainId.TabiTestnet,
   ChainId.RSS3VSLSepoliaTestnet,
-  ChainId.StoryOdysseyTestnet,
   ChainId.CreatorChainTestnet,
   ChainId.NeoXTestnetT4,
   // ChainId.LUKSOTestnet,
@@ -636,10 +638,11 @@ export const CHAINS = {
     // }),
   }),
   [ChainId.BNBSmartChainTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.BNBSmartChainTestnet,
     name: 'BNB Chain Testnet',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
+    etherscanCompatibleApiUrl: 'https://api-testnet.bscscan.com/api',
     rpc: {
       main: `https://bnb-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -1047,6 +1050,17 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/183/etherscan/api',
     priceStrategy: undefined, // TODO
   }),
+  [ChainId.EVMonFlow]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.EVMonFlow,
+    name: 'Flow EVM',
+    logoUrl: '/assets/images/vendor/chains/flow.png',
+    rpc: {
+      main: `https://flow-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.ExosamaNetwork]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.ExosamaNetwork,
@@ -1199,6 +1213,7 @@ export const CHAINS = {
     name: 'Gravity Alpha',
     logoUrl: '/assets/images/vendor/chains/gravity.svg',
     etherscanCompatibleApiUrl: 'https://explorer-gravity-mainnet-0.t.conduit.xyz/api',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.HarmonyMainnetShard0]: new Chain({
@@ -1502,14 +1517,6 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Mantle,
   }),
-  [ChainId.MaxxChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.MaxxChainMainnet,
-    name: 'MaxxChain',
-    logoUrl: '/assets/images/vendor/chains/maxxchain.png',
-    etherscanCompatibleApiUrl: 'https://explorer.maxxchain.org/api',
-    priceStrategy: undefined, // <$100k Liquidity
-  }),
   [ChainId.MerlinMainnet]: new Chain({
     type: SupportType.COVALENT,
     chainId: ChainId.MerlinMainnet,
@@ -1521,10 +1528,11 @@ export const CHAINS = {
     },
   }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.MetisAndromedaMainnet,
     name: 'Metis',
     logoUrl: '/assets/images/vendor/chains/metis.svg',
+    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api',
     rpc: {
       main: `https://metis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -2206,14 +2214,26 @@ export const CHAINS = {
       ],
     }),
   }),
-  [ChainId.StoryOdysseyTestnet]: new Chain({
+  [ChainId.Story]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.StoryOdysseyTestnet,
-    name: 'Story Odyssey',
+    chainId: ChainId.Story,
+    name: 'Story',
     logoUrl: '/assets/images/vendor/chains/story.svg',
-    etherscanCompatibleApiUrl: 'https://odyssey.storyscan.xyz/api',
-    isTestnet: true,
-    correspondingMainnetChainId: 12345678901,
+    etherscanCompatibleApiUrl: 'https://storyscan.xyz/api',
+    rpc: {
+      main: 'https://mainnet.storyrpc.io',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
+  [ChainId.Superposition]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Superposition,
+    name: 'Superposition',
+    logoUrl: '/assets/images/vendor/chains/superposition.svg',
+    etherscanCompatibleApiUrl: 'https://explorer-superposition-1v9rjalnat.t.conduit.xyz/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.SyscoinMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2274,10 +2294,28 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.TelosEVMMainnet]: new Chain({
-    type: SupportType.UNSUPPORTED,
+    type: SupportType.BACKEND_CUSTOM, // TeloscanEventGetter
     chainId: ChainId.TelosEVMMainnet,
-    name: 'Telos',
-    logoUrl: '/assets/images/vendor/chains/telos.png',
+    name: 'Telos EVM',
+    logoUrl: '/assets/images/vendor/chains/telos.svg',
+    rpc: {
+      main: 'https://rpc.telos.net',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
+  [ChainId.Unichain]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.Unichain,
+    name: 'Unichain',
+    logoUrl: '/assets/images/vendor/chains/unichain.svg',
+    explorerUrl: 'https://uniscan.xyz',
+    rpc: {
+      main: `https://unichain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://mainnet.unichain.org',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.Vana]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2413,16 +2451,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.ZircuitMainnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.ZircuitMainnet,
-    name: 'Zircuit',
-    logoUrl: '/assets/images/vendor/chains/zircuit.svg',
-    rpc: {
-      main: 'https://zircuit-mainnet.drpc.org',
-    },
-    priceStrategy: undefined, // TODO
-  }),
   [ChainId.ZKFairMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ZKFairMainnet,
@@ -2502,12 +2530,6 @@ export const CHAINS = {
     // }),
   }),
   // TODO: This is a placeholder so we can add a description for Story
-  [12345678901]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678901,
-    name: 'Story',
-  }),
-  // TODO: This is a placeholder so we can add a description for Story
   [12345678902]: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678902,
@@ -2560,6 +2582,10 @@ export const isEtherscanSupportedChain = (chainId: DocumentedChainId): boolean =
 
 export const isNodeSupportedChain = (chainId: DocumentedChainId): boolean => {
   return getChainConfig(chainId).type === SupportType.BACKEND_NODE;
+};
+
+export const isCustomSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.BACKEND_CUSTOM;
 };
 
 export const isMainnetChain = (chainId: DocumentedChainId): boolean => {
@@ -2697,6 +2723,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   EOS: '8',
   ETC: '0.3',
   ETH: '0.002',
+  FLOW: '15',
   FLR: '300',
   frxETH: '0.002',
   FTM: '6',
@@ -2709,7 +2736,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   IMX: '4',
   INJ: '0.3',
   IOTA: '20',
-  IP: '1', // Can't find price info
+  IP: '4',
   KAI: '2000',
   KCS: '0.6',
   mADA: '8',
@@ -2726,7 +2753,6 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   PG: '1', // Can't find price info
   PLS: '100000',
   POL: '10',
-  PWR: '8000',
   RBTC: '0.0001',
   reETH: '0.002',
   RING: '3000',
@@ -2742,6 +2768,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   TABI: '1', // Can't find price info
   tBNB: '1', // Testnet coin
   TCRO: '1', // Testnet coin
+  TLOS: '80',
   tSYS: '1', // Testnet coin
   tZEN: '1', // Testnet coin
   USDC: '10',
