@@ -1,13 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import ScamTrackerChainSelect from './ScamTrackerChainSelect';
-import TransactionGraph from './TransactionGraph';
-import ScamTrackerSearchBox from './ScamTrackerSearchBox';
-import { buildGraphData, getTokenTransfers } from 'lib/utils/token-tracking';
-import { useState, useMemo } from 'react';
-import type { PublicClient } from 'viem';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
+import { buildGraphData, getTokenTransfers } from 'lib/utils/token-tracking';
+import { useTranslations } from 'next-intl';
+import { useMemo, useState } from 'react';
+import type { PublicClient } from 'viem';
+import ScamTrackerChainSelect from './ScamTrackerChainSelect';
+import ScamTrackerSearchBox from './ScamTrackerSearchBox';
+import TransactionGraph from './TransactionGraph';
 
 interface Props {
   chainId: number;
@@ -44,7 +44,7 @@ const ScamTrackerContent = ({ chainId, chainName }: Props) => {
   return (
     <div className="flex flex-col items-center m-auto gap-4 px-4">
       <ScamTrackerSearchBox
-        chainId={chainId}
+        chainName={chainName}
         onSubmit={handleTransactionSubmit}
         placeholder={t('scam_tracker.placeholder', { chainName })}
       />

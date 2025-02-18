@@ -9,7 +9,8 @@ import { useState } from 'react';
 import type { FormEventHandler, HTMLAttributes } from 'react';
 
 interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
-  onSubmit: (hash: string) => void;
+  placeholder: string;
+  onSubmit: (hash: string) => void | Promise<void>;
   chainName: string;
 }
 
@@ -34,17 +35,12 @@ const ScamTrackerSearchBox = ({ onSubmit, chainName, ...props }: Props) => {
   const isValid = isValidHash(value);
 
   return (
-    <SearchBox
-      onSubmit={handleSubmit}
-      onChange={(e) => setValue(e.target.value)}
-      value={value}
-      {...props}
-    >
+    <SearchBox onSubmit={handleSubmit} onChange={(e) => setValue(e.target.value)} value={value} {...props}>
       {value && isValidating && <Loader isLoading={true} loadingMessage="Validating..." />}{' '}
       {value && !isValidating && !isValid && <XMarkIcon className="w-6 h-6 text-red-500" />}
       {value && !isValidating && isValid && (
         <Button type="submit" variant="ghost" size="sm" aria-label="Track Funds">
-          {t('buttons.track_funds')}
+          {t('common.buttons.track_funds')}
         </Button>
       )}
     </SearchBox>
