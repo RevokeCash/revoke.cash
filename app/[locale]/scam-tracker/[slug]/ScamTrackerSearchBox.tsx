@@ -38,7 +38,6 @@ const ScamTrackerSearchBox = ({ onSubmit, chainName, ...props }: Props) => {
       onSubmit={handleSubmit}
       onChange={(e) => setValue(e.target.value)}
       value={value}
-      placeholder={t('scam_tracker.placeholder', { chainName })}
       {...props}
     >
       {value && isValidating && <Loader isLoading={true} loadingMessage="Validating..." />}{' '}

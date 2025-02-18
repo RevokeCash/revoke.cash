@@ -1,3 +1,4 @@
+// page.tsx (Server Component)
 import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
 import Prose from 'components/common/Prose';
@@ -7,9 +8,7 @@ import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
 import { useTranslations } from 'next-intl';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import ScamTrackerChainSelect from './ScamTrackerChainSelect';
 import ScamTrackerContent from './ScamTrackerContent';
-import ScamTrackerSearchBox from './ScamTrackerSearchBox';
 
 interface Props {
   params: {
@@ -17,9 +16,6 @@ interface Props {
     slug: string;
   };
 }
-
-export const dynamic = 'error';
-export const dynamicParams = false;
 
 export const generateStaticParams = () => {
   const slugs = SUPPORTED_CHAINS.map(getChainSlug);
@@ -47,6 +43,7 @@ const ScamTrackerPage: NextPage<Props> = ({ params }) => {
   const chainId = getChainIdFromSlug(params.slug);
   const chainName = getChainName(chainId);
 
+  // Pass only serializable props (chainId and chainName) to the client component.
   return (
     <div className="flex flex-col items-center m-auto gap-4 px-4">
       <div className="flex flex-col items-center w-full">
@@ -55,20 +52,9 @@ const ScamTrackerPage: NextPage<Props> = ({ params }) => {
           <div className="inline align-middle">{t('scam_tracker.title', { chainName })}</div>
         </h1>
       </div>
-      <ScamTrackerSearchBox chainId={chainId} placeholder={t('scam_tracker.placeholder')} />
-      <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
-        <p className="m-0">{t('scam_tracker.different_chain')}:</p>
-        <div className="not-prose shrink-0">
-          <ScamTrackerChainSelect chainId={chainId} />
-        </div>
-      </div>
-      <ScamTrackerContent chainId={chainId} />
+      <ScamTrackerContent chainId={chainId} chainName={chainName} />
       <Prose className="max-w-3xl">
         <ChainDescription chainId={chainId} headingElement="h2" />
-        <h2>{t('scam_tracker.what_is_fund_flow.title', { chainName })}</h2>
-        <p>{t('scam_tracker.what_is_fund_flow.content', { chainName })}</p>
-        <h2>{t('scam_tracker.how_to_track.title', { chainName })}</h2>
-        <p>{t('scam_tracker.how_to_track.content', { chainName })}</p>
       </Prose>
     </div>
   );
