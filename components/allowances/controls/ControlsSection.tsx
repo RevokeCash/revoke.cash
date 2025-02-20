@@ -1,6 +1,6 @@
 import RevokeButton from 'components/allowances/controls/RevokeButton';
 import type { TransactionSubmitted } from 'lib/interfaces';
-import { type TokenAllowanceData, getAllowanceI18nValues } from 'lib/utils/allowances';
+import { type TokenAllowanceData, getAllowanceI18nValues, getAllowanceKey } from 'lib/utils/allowances';
 import ControlsWrapper from './ControlsWrapper';
 import UpdateControls from './UpdateControls';
 
@@ -20,7 +20,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
     <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize="sm">
       {(disabled) => (
         <div className="controls-section">
-          {revoke && <RevokeButton allowance={allowance} revoke={revoke} disabled={disabled} />}
+          {revoke && <RevokeButton transactionKey={getAllowanceKey(allowance)} revoke={revoke} disabled={disabled} />}
           {update && reset && (
             <UpdateControls
               update={update}
