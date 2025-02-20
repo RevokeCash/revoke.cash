@@ -10,7 +10,7 @@ const InfoPanel = () => {
   const { signatureNoticeAcknowledged, acknowledgeSignatureNotice } = useAddressPageContext();
 
   return (
-    <Card>
+    <Card title={t('address.signatures.info.title')}>
       <div className="flex flex-col sm:flex-row sm:items-center gap-2">
         <p>{t.rich('address.signatures.info.description')}</p>
         {isMounted && !signatureNoticeAcknowledged && (
