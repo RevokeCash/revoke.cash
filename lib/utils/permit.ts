@@ -4,7 +4,7 @@ import blocksDB from 'lib/databases/blocks';
 import { type Address, type Hex, type Signature, type TypedDataDomain, type WalletClient, parseSignature } from 'viem';
 import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
 import { type TimeLog, type TokenEvent, TokenEventType } from './events';
-import { type Erc20TokenContract, type TokenData, getPermitDomain } from './tokens';
+import { type Erc20TokenContract, type PermitTokenData, type TokenData, getPermitDomain } from './tokens';
 
 export const permit = async (
   walletClient: WalletClient,
@@ -135,4 +135,8 @@ const isCancelPermitEvent = (event: TokenEvent) => {
   const hasZeroValue = event.payload.amount === 0n;
 
   return hasDummySpender && hasZeroValue;
+};
+
+export const getPermitKey = (allowance: PermitTokenData) => {
+  return `permit-${allowance.chainId}-${allowance.contract.address}`;
 };

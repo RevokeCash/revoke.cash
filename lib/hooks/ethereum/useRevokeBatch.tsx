@@ -22,7 +22,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   useEffect(() => {
     allowances.forEach((allowance) => {
-      updateTransaction(allowance, { status: 'not_started' }, false);
+      updateTransaction(getAllowanceKey(allowance), { status: 'not_started' }, false);
     });
   }, [allowances]);
 
@@ -40,17 +40,19 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const relevantResults = useMemo(() => {
-    return Object.fromEntries(allowances.map((allowance) => [getAllowanceKey(allowance), getTransaction(allowance)]));
+    return Object.fromEntries(
+      allowances.map((allowance) => [getAllowanceKey(allowance), getTransaction(getAllowanceKey(allowance))]),
+    );
   }, [allowances, results]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const isRevoking = useMemo(() => {
-    return allowances.some((allowance) => getTransaction(allowance).status === 'pending');
+    return allowances.some((allowance) => getTransaction(getAllowanceKey(allowance)).status === 'pending');
   }, [allowances, results]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const isAllConfirmed = useMemo(() => {
-    return allowances.every((allowance) => getTransaction(allowance).status === 'confirmed');
+    return allowances.every((allowance) => getTransaction(getAllowanceKey(allowance)).status === 'confirmed');
   }, [allowances, results]);
 
   return { revoke, pause, results: relevantResults, isSubmitting, isRevoking, isAllConfirmed };
