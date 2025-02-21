@@ -47,9 +47,13 @@
     "allowance": "許可したもの",
     "asset": "資産",
     "asset_type": "種類",
+    "expiration": "Expiration",
     "last_cancelled": "最終キャンセル",
     "last_updated": "最終更新日",
     "marketplace": "マーケットプレイス",
+    "policy_type": "Permission Type",
+    "session_hash": "Session Identifier",
+    "signer": "Authorized Signer",
     "spender": "認定支出者",
     "status": "ステータス",
     "transaction": "トランザクション",
@@ -59,6 +63,12 @@
     "connected": "接続中",
     "nft": "NFT",
     "not_connected": "未接続",
+    "policy_type": {
+      "all": "Transfers & Calls",
+      "calls": "Contract Calls",
+      "none": "None",
+      "transfers": "Transfers"
+    },
     "token": "トークン"
   },
   "meta": {
@@ -69,6 +79,7 @@
     "allowances": "許可",
     "history": "履歴",
     "more": "その他",
+    "sessions": "Sessions",
     "settings": "設定",
     "signatures": "署名"
   },
@@ -98,9 +109,28 @@
   "search": {
     "spender": "公認支出者アドレスによる検索"
   },
+  "sessions": {
+    "info": {
+      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
+      "title": "What Are Sessions?"
+    },
+    "table": {
+      "none_found": "No sessions found",
+      "title": "Active Sessions"
+    },
+    "tooltips": {
+      "policy_type": {
+        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
+        "calls": "This session is authorized to call {callPoliciesCount} different functions",
+        "none": "This session has no permissions",
+        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+      }
+    }
+  },
   "signatures": {
     "info": {
-      "description": "署名はブロックチェーンに保存されないため、<b>署名したかどうかをRevoke.cashが知る方法はありません。</b>そのため、このページには、既知のマーケットプレイスのリストと、オフチェーンの<i>許可</i>署名に対応しているトークンのリストが含まれています。<b>詐欺サイトでオフチェーン署名をしたことがわかっている場合にのみ<i></i>、このページで<i>署名候補</i>をキャンセルする必要があります。</b>そうしないと、取引手数料が無駄になります。トークンやマーケットプレイスへの署名候補をキャンセルしても、リストには残りますが、しばらくの間は再び取り消すことはできません。"
+      "description": "署名はブロックチェーンに保存されないため、<b>署名したかどうかをRevoke.cashが知る方法はありません。</b>そのため、このページには、既知のマーケットプレイスのリストと、オフチェーンの<i>許可</i>署名に対応しているトークンのリストが含まれています。<b>詐欺サイトでオフチェーン署名をしたことがわかっている場合にのみ<i></i>、このページで<i>署名候補</i>をキャンセルする必要があります。</b>そうしないと、取引手数料が無駄になります。トークンやマーケットプレイスへの署名候補をキャンセルしても、リストには残りますが、しばらくの間は再び取り消すことはできません。",
+      "title": "What Are Signatures?"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1件の有効な承認} other {#件の有効な承認}}",
