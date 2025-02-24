@@ -31,7 +31,7 @@
     "@heroicons/react": "^2.2.0",
     "@neondatabase/serverless": "^0.10.4",
     "@privy-io/cross-app-connect": "^0.1.7",
-    "@revoke.cash/chains": "^63.0.0",
+    "@revoke.cash/chains": "^65.0.0",
     "@tanstack/query-sync-storage-persister": "^5.66.0",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-query-persist-client": "^5.66.0",

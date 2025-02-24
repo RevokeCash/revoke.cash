@@ -39,7 +39,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PulseChain,
   ChainId.Mode,
   ChainId.Gnosis,
-  ChainId.TaikoMainnet,
+  ChainId.TaikoAlethia,
   ChainId.RootstockMainnet,
   ChainId.ApeChain,
   ChainId.WorldChain,
@@ -48,15 +48,17 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FantomOpera,
   ChainId.MetisAndromedaMainnet,
   ChainId.MerlinMainnet,
-  ChainId.CeloMainnet,
-  ChainId.EVMonFlow,
   ChainId.Fraxtal,
+  ChainId.RoninMainnet,
+  ChainId.CeloMainnet,
+  ChainId.FlowEVMMainnet,
   ChainId.MantaPacificMainnet,
   ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.IOTAEVM,
   ChainId.Astar,
   ChainId.AstarzkEVM,
+  999, // Hyperliquid EVM
   ChainId.Soneium,
   ChainId.TelosEVMMainnet,
   ChainId.Story,
@@ -116,6 +118,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Superposition,
   ChainId.BitrockMainnet,
   ChainId.Nahmii3Mainnet,
+  ChainId.ShidoNetwork,
   ChainId.Shiden,
   ChainId.CallistoMainnet,
   ChainId.RARIChainMainnet,
@@ -146,7 +149,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AbstractSepoliaTestnet,
   ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
-  ChainId.TaikoHeklaL2,
+  ChainId.TaikoHekla,
   ChainId.BlastSepoliaTestnet,
   ChainId.MorphHolesky,
   ChainId.AvalancheFujiTestnet,
@@ -160,10 +163,10 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.SyscoinTanenbaumTestnet,
   ChainId.FraxtalTestnet,
   ChainId.HorizenGobiTestnet,
-  ChainId.ShimmerEVMTestnet,
   ChainId.IOTAEVMTestnet,
   ChainId.ZetaChainTestnet,
   ChainId.BerachainbArtio,
+  ChainId.MonadTestnet,
   ChainId.BeamTestnet,
   ChainId.TabiTestnet,
   ChainId.RSS3VSLSepoliaTestnet,
@@ -1050,17 +1053,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/183/etherscan/api',
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.EVMonFlow]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.EVMonFlow,
-    name: 'Flow EVM',
-    logoUrl: '/assets/images/vendor/chains/flow.png',
-    rpc: {
-      main: `https://flow-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // TODO
-  }),
   [ChainId.ExosamaNetwork]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.ExosamaNetwork,
@@ -1123,6 +1115,18 @@ export const CHAINS = {
         }),
       ],
     }),
+  }),
+  [ChainId.FlowEVMMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.FlowEVMMainnet,
+    name: 'Flow EVM',
+    logoUrl: '/assets/images/vendor/chains/flow.png',
+    etherscanCompatibleApiUrl: 'https://evm.flowscan.io/api',
+    rpc: {
+      main: `https://flow-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.Fraxtal]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1229,10 +1233,11 @@ export const CHAINS = {
     priceStrategy: undefined, // RPC on Harmony is not really reliable + USDC is depegged, so not worth it
   }),
   [ChainId.Holesky]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Holesky,
     name: 'Ethereum Holesky',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
+    etherscanCompatibleApiUrl: 'https://api-holesky.etherscan.io/api',
     rpc: {
       main: `https://eth-holesky.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://holesky.drpc.org',
@@ -1267,6 +1272,21 @@ export const CHAINS = {
     chainId: ChainId.HuobiECOChainMainnet,
     name: 'HECO',
     logoUrl: '/assets/images/vendor/chains/heco.svg',
+  }),
+  [999]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: 999,
+    name: 'Hyperliquid EVM',
+    nativeToken: 'HYPE',
+    explorerUrl: 'https://hyperliquid.cloud.blockscout.com',
+    infoUrl: 'https://hyperfoundation.org/',
+    logoUrl: '/assets/images/vendor/chains/hyperliquid.svg',
+    etherscanCompatibleApiUrl: 'https://hyperliquid.cloud.blockscout.com/api',
+    rpc: {
+      main: 'https://rpc.hyperliquid.xyz/evm',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.ImmutablezkEVM]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1511,7 +1531,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
     etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz/api',
     rpc: {
-      main: `https://mantle-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: 'https://rpc.sepolia.mantle.xyz',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1583,6 +1603,24 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://explorer.mode.network/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
+  }),
+  [ChainId.MonadMainnet]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.MonadMainnet,
+    name: 'Monad',
+    logoUrl: '/assets/images/vendor/chains/monad.svg',
+  }),
+  [ChainId.MonadTestnet]: new Chain({
+    type: SupportType.COVALENT,
+    chainId: ChainId.MonadTestnet,
+    name: 'Monad Testnet',
+    logoUrl: '/assets/images/vendor/chains/monad.svg',
+    rpc: {
+      main: `https://monad-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.MonadMainnet,
   }),
   [ChainId.MoonbaseAlpha]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2027,6 +2065,28 @@ export const CHAINS = {
       ],
     }),
   }),
+  [ChainId.RoninMainnet]: new Chain({
+    type: SupportType.COVALENT,
+    chainId: ChainId.RoninMainnet,
+    name: 'Ronin',
+    logoUrl: '/assets/images/vendor/chains/ronin.svg',
+    rpc: {
+      main: `https://ronin-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: new AggregatePriceStrategy({
+      aggregationType: AggregationType.ANY,
+      strategies: [
+        // Katana v2 (Router) | WRON -> USDC
+        new UniswapV2PriceStrategy({
+          address: '0x7d0556d55ca1a92708681e2e231733ebd922597d',
+          path: ['0xe514d9deb7966c8be0ca922de8a064264ea6bcd4', '0x0b7007c13325c48911f73a2dad5fa5dcbf808adc'],
+          decimals: 6,
+          liquidityParameters: { baseAmount: 100n },
+        }),
+      ],
+    }),
+  }),
   [ChainId.RootstockMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.RootstockMainnet,
@@ -2148,6 +2208,18 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Astar,
     priceStrategy: undefined, // <$100k Liquidity
   }),
+  [ChainId.ShidoNetwork]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.ShidoNetwork,
+    name: 'Shido',
+    logoUrl: '/assets/images/vendor/chains/shido.png',
+    explorerUrl: 'https://shidoscan.net',
+    etherscanCompatibleApiUrl: 'https://shidoscan.net/api',
+    rpc: {
+      main: 'https://evm.shidoscan.net',
+    },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.ShimmerEVM]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ShimmerEVM,
@@ -2156,15 +2228,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://explorer.evm.shimmer.network/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
-  }),
-  [ChainId.ShimmerEVMTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.ShimmerEVMTestnet,
-    name: 'Shimmer Testnet',
-    logoUrl: '/assets/images/vendor/chains/shimmer.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.evm.testnet.shimmer.network/api',
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.ShimmerEVM,
   }),
   [ChainId.Soneium]: new Chain({
     type: SupportType.PROVIDER,
@@ -2272,26 +2335,26 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
   }),
-  [ChainId.TaikoHeklaL2]: new Chain({
+  [ChainId.TaikoAlethia]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.TaikoHeklaL2,
+    chainId: ChainId.TaikoAlethia,
+    name: 'Taiko Alethia',
+    logoUrl: '/assets/images/vendor/chains/taiko.svg',
+    explorerUrl: 'https://taikoscan.io',
+    etherscanCompatibleApiUrl: 'https://api.taikoscan.io/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
+  }),
+  [ChainId.TaikoHekla]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.TaikoHekla,
     name: 'Taiko Hekla',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
     explorerUrl: 'https://hekla.taikoscan.io',
     etherscanCompatibleApiUrl: 'https://api-hekla.taikoscan.io/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
-    correspondingMainnetChainId: ChainId.TaikoMainnet,
-  }),
-  [ChainId.TaikoMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.TaikoMainnet,
-    name: 'Taiko',
-    logoUrl: '/assets/images/vendor/chains/taiko.svg',
-    explorerUrl: 'https://taikoscan.io',
-    etherscanCompatibleApiUrl: 'https://api.taikoscan.io/api',
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // TODO
+    correspondingMainnetChainId: ChainId.TaikoAlethia,
   }),
   [ChainId.TelosEVMMainnet]: new Chain({
     type: SupportType.BACKEND_CUSTOM, // TeloscanEventGetter
@@ -2733,6 +2796,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   GHST: '8',
   GLMR: '30',
   GOLDX: '1', // Can't find price info
+  HYPE: '0.4',
   IMX: '4',
   INJ: '0.3',
   IOTA: '20',
@@ -2743,6 +2807,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   METIS: '0.14',
   MNT: '6',
   MOVR: '0.5',
+  MON: '1', // Can't find price info
   NEON: '15',
   NULS: '15',
   OAS: '200',
@@ -2756,6 +2821,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   RBTC: '0.0001',
   reETH: '0.002',
   RING: '3000',
+  RON: '6',
   ROSE: '80',
   RSS3: '50',
   SAMA: '600',
@@ -2763,6 +2829,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   SDN: '50',
   SEI: '15',
   SGB: '600',
+  SHIDO: '20000',
   SMR: '3000',
   SYS: '50',
   TABI: '1', // Can't find price info
