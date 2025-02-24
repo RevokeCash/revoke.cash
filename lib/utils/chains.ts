@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import { ALCHEMY_API_KEY, INFURA_API_KEY } from 'lib/constants';
+import { ALCHEMY_API_KEY, INFURA_API_KEY, MULTICALL_ADDRESS } from 'lib/constants';
 import type { RateLimit } from 'lib/interfaces';
 import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
 import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
@@ -179,7 +179,7 @@ export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNET
 
 const MULTICALL = {
   multicall3: {
-    address: '0xcA11bde05977b3631167028862bE2a173976CA11' as const,
+    address: MULTICALL_ADDRESS,
   },
 };
 
@@ -848,7 +848,7 @@ export const CHAINS = {
     name: 'Creator Chain Testnet',
     logoUrl: '/assets/images/vendor/chains/creator-chain.png',
     etherscanCompatibleApiUrl: 'https://explorer.creatorchain.io/api',
-    // deployedContracts: { ...MULTICALL },
+    deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: 12345678902,
   }),
@@ -1051,6 +1051,7 @@ export const CHAINS = {
     name: 'Ethernity',
     logoUrl: '/assets/images/vendor/chains/ethernity.png',
     etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/183/etherscan/api',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ExosamaNetwork]: new Chain({
@@ -1303,6 +1304,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/injective.svg',
     explorerUrl: 'https://explorer.inevm.com',
     etherscanCompatibleApiUrl: 'https://explorer.inevm.com/api',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Ink]: new Chain({
@@ -1313,7 +1315,7 @@ export const CHAINS = {
     rpc: {
       main: `https://ink-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    // deployedContracts: { ...MULTICALL },
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.IOTAEVM]: new Chain({
@@ -1407,6 +1409,7 @@ export const CHAINS = {
     name: 'Lightlink',
     logoUrl: '/assets/images/vendor/chains/lightlink.jpg',
     etherscanCompatibleApiUrl: 'https://phoenix.lightlink.io/api',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.Linea]: new Chain({
@@ -1691,6 +1694,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc-holesky.morphl2.io',
     },
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Morph,
@@ -2032,7 +2036,7 @@ export const CHAINS = {
     name: 'Redstone',
     logoUrl: '/assets/images/vendor/chains/redstone.svg',
     etherscanCompatibleApiUrl: 'https://explorer.redstone.xyz/api',
-    // deployedContracts: { ...MULTICALL },
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.RolluxMainnet]: new Chain({

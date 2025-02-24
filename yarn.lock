@@ -5157,13 +5157,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.4.7":
-  version: 16.4.7
-  resolution: "dotenv@npm:16.4.7"
-  checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
-  languageName: node
-  linkType: hard
-
 "dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -10421,7 +10414,6 @@ __metadata:
     chai: "npm:^5.1.2"
     cypress: "npm:^14.0.3"
     dexie: "npm:^4.0.11"
-    dotenv: "npm:^16.4.7"
     glob: "npm:^11.0.1"
     gray-matter: "npm:^4.0.3"
     husky: "npm:^9.1.7"

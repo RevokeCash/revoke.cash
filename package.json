@@ -18,8 +18,9 @@
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
     "test": "yarn test:mocha && yarn test:cypress",
     "test:cypress": "cypress run",
-    "test:mocha": "mocha test/**/*.test.ts",
-    "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois"
+    "test:mocha": "dotenvx run mocha test/**/*.test.ts",
+    "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois",
+    "tsx": "dotenvx run tsx"
   },
   "private": true,
   "dependencies": {
@@ -93,7 +94,6 @@
     "@types/request-ip": "^0.0.41",
     "chai": "^5.1.2",
     "cypress": "^14.0.3",
-    "dotenv": "^16.4.7",
     "glob": "^11.0.1",
     "gray-matter": "^4.0.3",
     "husky": "^9.1.7",
@@ -130,9 +130,6 @@
   "mocha": {
     "node-option": [
       "import=tsx"
-    ],
-    "require": [
-      "dotenv/config"
     ],
     "timeout": 10000
   },
