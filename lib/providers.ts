@@ -1,12 +1,7 @@
 import ky from 'lib/ky';
 import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
-import {
-  createViemPublicClientForChain,
-  getChainLogsRpcUrl,
-  isBackendSupportedChain,
-  isCovalentSupportedChain,
-} from './utils/chains';
+import { createViemPublicClientForChain, getChainLogsRpcUrl, isBackendSupportedChain } from './utils/chains';
 import { isLogResponseSizeError } from './utils/errors';
 import type { Filter, Log } from './utils/events';
 
@@ -23,12 +18,6 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
-    // We pre-emptively split the requests for Covalent-supported chains, to limit potential downsides when
-    // we potentially need to divide-and-conquer the requests down the line
-    if (isCovalentSupportedChain(this.chainId) && filter.toBlock - filter.fromBlock > 5_000_000) {
-      return this.divideAndConquer(filter);
-    }
-
     try {
       const result = await this.underlyingProvider.getLogs(filter);
       return result;

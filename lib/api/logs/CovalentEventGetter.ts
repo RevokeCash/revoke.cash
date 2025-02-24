@@ -20,6 +20,12 @@ export class CovalentEventGetter implements EventGetter {
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
     if (!this.apiKey) throw new Error('Covalent API key is not set');
 
+    const latestBlock = await this.queue.add(() => this.getLatestBlock(chainId));
+
+    if (filter.toBlock > latestBlock) {
+      throw new Error(`Requested block range is out of bounds (${filter.toBlock} > ${latestBlock})`);
+    }
+
     const { topics, fromBlock, toBlock } = filter;
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
 
@@ -28,6 +34,13 @@ export class CovalentEventGetter implements EventGetter {
     );
 
     return filterLogs(results.flat(), filter);
+  }
+
+  private async getLatestBlock(chainId: number): Promise<number> {
+    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/block_v2/latest/`;
+    const headers = this.getHeaders();
+    const result = await ky.get(apiUrl, { headers, retry: 3, timeout: false }).json<any>();
+    return result?.data?.items[0]?.height ?? 0;
   }
 
   private async getEventsInChunk(
@@ -46,9 +59,7 @@ export class CovalentEventGetter implements EventGetter {
       'page-size': 9999999,
     };
 
-    const headers = {
-      Authorization: `Basic ${Buffer.from(`${this.apiKey}:`).toString('base64')}`,
-    };
+    const headers = this.getHeaders();
 
     try {
       const result = await this.queue.add(() =>
@@ -63,6 +74,12 @@ export class CovalentEventGetter implements EventGetter {
 
       throw new Error((e as any).data?.error_message ?? (e as any).message);
     }
+  }
+
+  private getHeaders(): Record<string, string> {
+    return {
+      Authorization: `Basic ${Buffer.from(`${this.apiKey}:`).toString('base64')}`,
+    };
   }
 }
 
