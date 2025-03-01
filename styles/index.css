@@ -8,6 +8,8 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
+    /* Somehow we need to specify this, or borders don't work on Firefox*/
+    --tw-border-style: solid;
   }
 
   body {
