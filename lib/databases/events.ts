@@ -16,7 +16,7 @@ interface Events {
 
 // Certain chains lack proper infrastructure, so we don't index events for them
 // Note: these are prime candidates for delisting from the app if no long term solutions are found
-const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet];
+const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet, 999];
 
 class EventsDB extends Dexie {
   private events!: Table<Events>;
