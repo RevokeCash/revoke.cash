@@ -1,7 +1,7 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { RiskFactor } from 'lib/interfaces';
-import { filterUnknownRiskFactors, getRiskLevel } from 'lib/utils/risk';
+import { filterUnknownRiskFactors, getRiskFactorScore, getRiskLevel } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import RiskFactorDisplay from './RiskFactorDisplay';
@@ -19,9 +19,11 @@ const RiskTooltip = ({ riskFactors }: Props) => {
   // TODO: Properly handle low risk
   if (riskLevel === 'unknown' || riskLevel === 'low') return null;
 
-  const riskFactorDisplays = filteredRiskFactors.map((riskFactor) => (
-    <RiskFactorDisplay key={`${riskFactor.type}-${riskFactor.source}-${riskFactor.data}`} riskFactor={riskFactor} />
-  ));
+  const riskFactorDisplays = filteredRiskFactors
+    .sort((a, b) => getRiskFactorScore(b) - getRiskFactorScore(a))
+    .map((riskFactor) => (
+      <RiskFactorDisplay key={`${riskFactor.type}-${riskFactor.source}-${riskFactor.data}`} riskFactor={riskFactor} />
+    ));
 
   const riskTooltip = (
     <div className="flex flex-col">
