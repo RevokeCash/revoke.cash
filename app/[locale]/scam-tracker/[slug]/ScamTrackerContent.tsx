@@ -1,12 +1,12 @@
 'use client';
 
+import ValidatedSearchBox from 'components/common/ValidatedSearchBox';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { buildGraphData, getTokenTransfers } from 'lib/utils/token-tracking';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import type { PublicClient } from 'viem';
 import ScamTrackerChainSelect from './ScamTrackerChainSelect';
-import ScamTrackerSearchBox from './ScamTrackerSearchBox';
 import TransactionGraph from './TransactionGraph';
 
 interface Props {
@@ -31,6 +31,7 @@ const ScamTrackerContent = ({ chainId, chainName }: Props) => {
 
       const transfers = await getTokenTransfers(publicClient, hash as `0x${string}`);
       const data = await buildGraphData(transfers);
+      console.log('The output of buildGraphData is: ', data);
 
       setGraphData(data);
     } catch (err) {
@@ -41,12 +42,17 @@ const ScamTrackerContent = ({ chainId, chainName }: Props) => {
     }
   };
 
+  const isValidHash = (hash: string) => /^0x([A-Fa-f0-9]{64})$/.test(hash);
+
   return (
     <div className="flex flex-col items-center m-auto gap-4 px-4">
-      <ScamTrackerSearchBox
-        chainName={chainName}
+      <ValidatedSearchBox
         onSubmit={handleTransactionSubmit}
-        placeholder={t('scam_tracker.placeholder', { chainName })}
+        validate={async (value) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          return isValidHash(value.trim());
+        }}
+        placeholder={t('scam_tracker.placeholder')}
       />
       {error && <div className="text-red-500 mt-2">{error}</div>}
       {isLoading && (
@@ -61,6 +67,7 @@ const ScamTrackerContent = ({ chainId, chainName }: Props) => {
         </div>
       </div>
 
+      {/* {!graphData && !isLoading && <ChainDescription chainId={chainId} />} */}
       {graphData && <TransactionGraph data={graphData} />}
     </div>
   );
