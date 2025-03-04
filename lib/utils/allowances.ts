@@ -5,7 +5,7 @@ import type { TransactionSubmitted } from 'lib/interfaces';
 import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
 import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
 import analytics from './analytics';
-import { isNetworkError, isRevertedError, parseErrorMessage, stringifyError } from './errors';
+import { isNetworkError, isRateLimitError, isRevertedError, parseErrorMessage, stringifyError } from './errors';
 import {
   type Erc20ApprovalEvent,
   type Erc721ApprovalEvent,
@@ -109,6 +109,7 @@ export const getAllowancesFromEvents = async (
         return fullAllowances;
       } catch (e) {
         if (isNetworkError(e)) throw e;
+        if (isRateLimitError(e)) throw e;
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
 
         // If the call to getTokenData() fails, the token is not a standard-adhering token so

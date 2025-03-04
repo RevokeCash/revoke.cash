@@ -2046,8 +2046,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/rollux.svg',
     etherscanCompatibleApiUrl: 'https://explorer.rollux.com/api',
     rpc: {
-      main: 'https://rpc.ankr.com/rollux',
-      logs: 'https://rpc.rollux.com',
+      main: 'https://rpc.rollux.com',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -2389,7 +2388,7 @@ export const CHAINS = {
     chainId: ChainId.Vana,
     name: 'Vana',
     logoUrl: '/assets/images/vendor/chains/vana.png',
-    etherscanCompatibleApiUrl: 'https://api.vanascan.io/api',
+    etherscanCompatibleApiUrl: 'https://vanascan.io/api',
     priceStrategy: undefined, // TODO
   }),
   [ChainId.VelasEVMMainnet]: new Chain({
@@ -2545,7 +2544,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZkSyncMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ZkSyncMainnet,
     name: 'zkSync Era',
     logoUrl: '/assets/images/vendor/chains/zksync.jpeg',
@@ -2565,7 +2564,7 @@ export const CHAINS = {
     // }),
   }),
   [ChainId.ZkSyncSepoliaTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ZkSyncSepoliaTestnet,
     name: 'zkSync Sepolia',
     logoUrl: '/assets/images/vendor/chains/zksync.jpeg',

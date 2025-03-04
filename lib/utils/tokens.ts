@@ -111,11 +111,12 @@ export const getErc721TokenData = async (
   chainId: number,
 ): Promise<TokenData> => {
   const transfers = events.filter((event) => event.type === TokenEventType.TRANSFER_ERC721);
-  const transfersFrom = transfers.filter((event) => event.payload.from === owner);
-  const transfersTo = transfers.filter((event) => event.payload.to === owner);
 
-  const shouldFetchBalance = transfersFrom.length === 0 && transfersTo.length === 0;
-  const calculatedBalance = BigInt(transfersTo.length - transfersFrom.length);
+  // Since the events are sorted by reverse chronological order, we know that the first event is the latest,
+  // if the latest event for a tokenId is a transfer to the owner, then the owner still holds the token
+  const uniqueTokenIdTransfers = deduplicateArray(transfers, (a, b) => a.payload.tokenId === b.payload.tokenId);
+  const calculatedBalance = BigInt(uniqueTokenIdTransfers.filter((event) => event.payload.to === owner).length);
+  const shouldFetchBalance = transfers.length === 0;
 
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
