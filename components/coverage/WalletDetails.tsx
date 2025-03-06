@@ -84,7 +84,7 @@ const WalletDetails = ({ isAuthenticated, className, fsdAPI, walletAddress, toke
     try {
       // This would need to be implemented based on Fairside's SDK
       // Typically would open a modal or redirect to add wallet flow
-      window.open('https://test.fairside.dev/add-wallet', '_blank');
+      window.open('https://app.fairside.io/', '_blank');
     } catch (error) {
       console.error('Error adding wallet:', error);
       toast.error('Failed to add wallet');

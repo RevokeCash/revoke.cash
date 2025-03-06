@@ -4,7 +4,6 @@ import { Env, FsdSDK } from '@fairside-foundation/sdk';
 import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
 import { FAIRSIDE_API_KEY } from 'lib/constants';
-import { getMembershipInfo } from 'lib/coverage/fairside';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
@@ -31,12 +30,12 @@ const CoverageDashboard = () => {
 
   const { fsdAPI, fsdContract, fsdConfig } = FsdSDK({
     apiKey: FAIRSIDE_API_KEY ?? '',
-    env: Env.TestNet,
+    env: Env.MainNet,
   });
 
   const { data: membershipInfo, isLoading } = useQuery({
     queryKey: ['fairsideMembershipInfo', address],
-    queryFn: () => getMembershipInfo(address),
+    queryFn: () => fsdAPI.getPublicMembershipInfo({ walletAddress: address }),
   });
 
   if (!isMounted || isLoading) {
@@ -64,7 +63,7 @@ const CoverageDashboard = () => {
           validFrom={membershipInfo.validFrom}
           validUntil={membershipInfo.validUntil}
           claimsCount={membershipInfo.activeClaims.length}
-          onIncrease={() => window.open('https://test.fairside.dev/', '_blank')}
+          onIncrease={() => window.open('https://app.fairside.io/', '_blank')}
         />
       </div>
       <div className="w-full lg:w-1/3">
