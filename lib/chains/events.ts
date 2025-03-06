@@ -1,12 +1,14 @@
-import { ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
+import { ChainId } from '@revoke.cash/chains';
+import { AGW_SESSIONS_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import eventsDB from 'lib/databases/events';
 import { getLogsProvider } from 'lib/providers';
 import { sortTokenEventsChronologically } from 'lib/utils';
 import { isNullish } from 'lib/utils';
 import { addressToTopic, apiLogin } from 'lib/utils';
-import { type DocumentedChainId, createViemPublicClientForChain } from 'lib/utils/chains';
+import { type DocumentedChainId, createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
 import { parseApprovalForAllLog, parseApprovalLog, parsePermit2Log, parseTransferLog } from 'lib/utils/events';
 import { type TokenEvent, generatePatchedAllowanceEvents } from 'lib/utils/events';
+import { type SessionCreatedEvent, parseSessionCreatedLog } from 'lib/utils/sessions';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { type Address, getAbiItem, toEventSelector } from 'viem';
 
@@ -23,13 +25,11 @@ type TokenEventsGetter = (chainId: DocumentedChainId, address: Address) => Promi
 
 const ChainOverrides: Record<number, TokenEventsGetter> = {};
 
-const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
-  // Assemble prerequisites
-
+const getEventPrerequisites = async (chainId: DocumentedChainId, address: Address) => {
+  const chainName = getChainName(chainId);
   const publicClient = createViemPublicClientForChain(chainId);
   const logsProvider = getLogsProvider(chainId);
-
-  const [openSeaProxyAddress, fromBlock, toBlock, nonce, isLoggedIn] = await Promise.all([
+  const [openSeaProxy, fromBlock, toBlock, nonce, isLoggedIn] = await Promise.all([
     getOpenSeaProxyAddress(address),
     0,
     publicClient.getBlockNumber().then((blockNumber) => Number(blockNumber)),
@@ -44,11 +44,15 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
   // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
   // See https://eips.ethereum.org/EIPS/eip-161
   if (nonce === 0) {
-    console.log('Skipping event fetching for EOA with no transactions', address);
-    return [];
+    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
   }
 
-  // Create required event filters
+  return { logsProvider, openSeaProxy, fromBlock, toBlock, nonce };
+};
+
+const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
+  const { openSeaProxy, logsProvider, fromBlock, toBlock, nonce } = await getEventPrerequisites(chainId, address);
+  if (nonce === 0) return [];
 
   const getErc721EventSelector = (eventName: 'Transfer' | 'Approval' | 'ApprovalForAll') => {
     return toEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
@@ -73,7 +77,6 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
   const permit2PermitFilter = { topics: [getPermit2EventSelector('Permit'), addressTopic], fromBlock, toBlock };
   const permit2LockdownFilter = { topics: [getPermit2EventSelector('Lockdown'), addressTopic], fromBlock, toBlock };
 
-  // Fetch events
   const [transferTo, transferFrom, approval, approvalForAllUnpatched, permit2Approval, permit2Permit, permit2Lockdown] =
     await Promise.all([
       eventsDB.getLogs(logsProvider, transferToFilter, chainId, 'Transfer (to)'),
@@ -88,7 +91,7 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
   // Manually patch the ApprovalForAll events
   const approvalForAll = [
     ...approvalForAllUnpatched,
-    ...generatePatchedAllowanceEvents(address, openSeaProxyAddress ?? undefined, [
+    ...generatePatchedAllowanceEvents(address, openSeaProxy ?? undefined, [
       ...approval,
       ...approvalForAllUnpatched,
       ...transferFrom,
@@ -109,4 +112,30 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
 
   // We sort the events in reverse chronological order to ensure that the most recent events are processed first
   return sortTokenEventsChronologically(parsedEvents.filter((event) => !isNullish(event))).reverse();
+};
+
+export const getSessionEvents = async (
+  chainId: DocumentedChainId,
+  address: Address,
+): Promise<SessionCreatedEvent[]> => {
+  if (chainId !== ChainId.Abstract) {
+    throw new Error('Sessions are only supported on Abstract');
+  }
+
+  const { logsProvider, fromBlock, toBlock, nonce } = await getEventPrerequisites(chainId, address);
+  if (nonce === 0) return [];
+
+  const eventSelector = toEventSelector(getAbiItem({ abi: AGW_SESSIONS_ABI, name: 'SessionCreated' }));
+  const addressTopic = addressToTopic(address);
+
+  const sessionEvents = await eventsDB.getLogs(
+    logsProvider,
+    { topics: [eventSelector, addressTopic], fromBlock, toBlock },
+    chainId,
+    'SessionCreated',
+  );
+
+  const parsedEvents = sessionEvents.map((log) => parseSessionCreatedLog(log, chainId));
+
+  return parsedEvents;
 };

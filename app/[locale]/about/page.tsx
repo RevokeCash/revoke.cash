@@ -2,19 +2,22 @@ import ProseLayout from 'app/layouts/ProseLayout';
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import type { Metadata, NextPage } from 'next';
-import { useTranslations } from 'next-intl';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 
 interface Props {
-  params: {
-    locale: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 export const dynamic = 'error';
 
-export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+
   const t = await getTranslations({ locale });
 
   return {
@@ -23,9 +26,11 @@ export const generateMetadata = async ({ params: { locale } }: Props): Promise<M
   };
 };
 
-const AboutPage: NextPage<Props> = ({ params }) => {
-  unstable_setRequestLocale(params.locale);
-  const t = useTranslations();
+const AboutPage: NextPage<Props> = async ({ params }) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations({ locale });
 
   return (
     <ProseLayout>

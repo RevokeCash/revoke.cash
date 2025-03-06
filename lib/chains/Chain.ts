@@ -1,4 +1,4 @@
-import { getChain } from '@revoke.cash/chains';
+import { ChainId, getChain } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
 import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import type { PriceStrategy } from 'lib/price/PriceStrategy';
@@ -44,6 +44,7 @@ export enum SupportType {
   ETHERSCAN_COMPATIBLE = 'etherscan_compatible',
   COVALENT = 'covalent',
   BACKEND_NODE = 'backend_node',
+  BACKEND_CUSTOM = 'backend_custom',
   UNSUPPORTED = 'unsupported',
 }
 
@@ -186,7 +187,7 @@ export class Chain {
   getViemChainConfig(): ViemChain {
     const chainInfo = getChain(this.chainId);
     const chainName = this.getName();
-    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken()!, decimals: 18 };
+    const fallbackNativeCurrency = { name: chainName, symbol: this.getNativeToken(), decimals: 18 };
 
     return defineChain({
       id: this.chainId,
@@ -209,7 +210,7 @@ export class Chain {
   }
 
   getAddEthereumChainParameter(): AddEthereumChainParameter {
-    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken()!, decimals: 18 };
+    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken(), decimals: 18 };
     const iconUrl = getChain(this.chainId)?.iconURL;
     const addEthereumChainParameter = {
       chainId: String(this.chainId),
@@ -224,12 +225,17 @@ export class Chain {
   }
 
   createViemPublicClient(overrideUrl?: string): PublicClient {
+    // We noticed that certain chains run out of gas when using the default multicall settings
+    const multicallOverrides: Record<number, { batchSize: number }> = {
+      [ChainId.Mantle]: { batchSize: 256 },
+    };
+
     // @ts-ignore TODO: This gives a TypeScript error since Viem v2
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),
       transport: http(overrideUrl ?? this.getRpcUrl()),
-      batch: { multicall: true },
+      batch: { multicall: multicallOverrides[this.chainId] ?? true },
     });
   }
 

@@ -6,16 +6,17 @@ import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
-import { useTranslations } from 'next-intl';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import TokenApprovalCheckerChainSelect from './TokenApprovalCheckerChainSelect';
 import TokenApprovalCheckerSearchBox from './TokenApprovalCheckerSearchBox';
 
 interface Props {
-  params: {
-    locale: string;
-    slug: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
+  slug: string;
 }
 
 export const dynamic = 'error';
@@ -26,7 +27,9 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export const generateMetadata = async ({ params: { locale, slug } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale, slug } = await params;
+
   const t = await getTranslations({ locale });
   const chainId = getChainIdFromSlug(slug);
   const chainName = getChainName(chainId);
@@ -40,12 +43,13 @@ export const generateMetadata = async ({ params: { locale, slug } }: Props): Pro
   };
 };
 
-const TokenApprovalCheckerPage: NextPage<Props> = ({ params }) => {
-  unstable_setRequestLocale(params.locale);
+const TokenApprovalCheckerPage: NextPage<Props> = async ({ params }) => {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
 
-  const t = useTranslations();
+  const t = await getTranslations({ locale });
 
-  const chainId = getChainIdFromSlug(params.slug);
+  const chainId = getChainIdFromSlug(slug);
   const chainName = getChainName(chainId);
 
   return (

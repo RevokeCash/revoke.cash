@@ -1,7 +1,7 @@
 ---
 title: 'Year in Review: 2024'
 description: 2024 was a big year for us. This year marked Revoke's fifth anniversary while it was also the first year that we were able to grow the team past just myself. Read on to find out what we've been up to in 2024 and what we're planning for 2025.
-date: 2024-12-31
+date: 2024-12-31T13:00:00Z
 author: Rosco Kalis
 ---
 

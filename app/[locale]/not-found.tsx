@@ -14,7 +14,7 @@ interface Props {
 
 const NotFoundPage: NextPage<Props> = ({ params }) => {
   // Somehow this does not work for the not-found page. This is alright though.
-  // unstable_setRequestLocale(params.locale);
+  // setRequestLocale(params.locale);
 
   const t = useTranslations();
 

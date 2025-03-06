@@ -1,7 +1,7 @@
-import { defaultLocale, localePrefix, locales } from 'lib/i18n/config';
+import { routing } from 'lib/i18n/config';
 import createMiddleware from 'next-intl/middleware';
 
-export default createMiddleware({ locales, localePrefix, defaultLocale });
+export default createMiddleware(routing);
 
 export const config = {
   // Allow all paths starting with /address and apply exclusions to other paths

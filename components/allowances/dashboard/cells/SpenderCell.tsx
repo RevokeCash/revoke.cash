@@ -1,16 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import CopyButton from 'components/common/CopyButton';
-import Href from 'components/common/Href';
 import Loader from 'components/common/Loader';
-import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { isNullish } from 'lib/utils';
 import { AllowanceType, type TokenAllowanceData } from 'lib/utils/allowances';
-import { getChainExplorerUrl } from 'lib/utils/chains';
-import { shortenAddress } from 'lib/utils/formatting';
 import { YEAR } from 'lib/utils/time';
 import { getSpenderData } from 'lib/utils/whois';
 import { useMemo } from 'react';
-import RiskTooltip from '../wallet-health/RiskTooltip';
+import AddressCell from './AddressCell';
 
 interface Props {
   allowance: TokenAllowanceData;
@@ -30,35 +25,22 @@ const SpenderCell = ({ allowance }: Props) => {
   const riskFactors = useMemo(() => {
     const factors = spenderData?.riskFactors ?? [];
 
-    if (allowance.payload?.type === AllowanceType.PERMIT2 && allowance.payload.expiration > Date.now() + 1 * YEAR) {
+    if (allowance?.payload?.type === AllowanceType.PERMIT2 && allowance?.payload?.expiration > Date.now() + 1 * YEAR) {
       return [...factors, { type: 'excessive_expiration', source: 'onchain' }];
     }
 
     return factors;
-  }, [allowance.payload, spenderData?.riskFactors]);
+  }, [allowance?.payload, spenderData?.riskFactors]);
 
-  const explorerUrl = `${getChainExplorerUrl(allowance.chainId)}/address/${allowance.payload?.spender}`;
-
-  if (!allowance.payload) return null;
+  if (!allowance.payload?.spender) return null;
 
   return (
     <Loader isLoading={isLoading}>
-      <div className="flex items-center gap-2 w-52">
-        <div className="flex flex-col justify-start items-start">
-          <WithHoverTooltip tooltip={allowance.payload.spender}>
-            <Href href={explorerUrl} underline="hover" external>
-              <div className="max-w-[10rem] truncate">
-                {spenderData?.name ?? shortenAddress(allowance.payload.spender, 6)}
-              </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                {spenderData?.name ? shortenAddress(allowance.payload.spender, 6) : null}
-              </div>
-            </Href>
-          </WithHoverTooltip>
-        </div>
-        <CopyButton content={allowance.payload.spender} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
-        <RiskTooltip riskFactors={riskFactors} />
-      </div>
+      <AddressCell
+        address={allowance.payload.spender}
+        spenderData={spenderData ? { name: spenderData.name, riskFactors } : undefined}
+        chainId={allowance.chainId}
+      />
     </Loader>
   );
 };

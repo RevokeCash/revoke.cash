@@ -6,25 +6,28 @@ import TranslateButton from 'components/common/TranslateButton';
 import ArticleMeta from 'components/learn/ArticleMeta';
 import type { BreadcrumbEntry } from 'lib/interfaces';
 import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
 
 interface Props {
-  params: {
-    locale: string;
-    slug: string[];
-  };
+  params: Promise<Params>;
   children: ReactNode;
 }
 
-const BlogLayout = async ({ params, children }: Props) => {
-  unstable_setRequestLocale(params.locale);
+interface Params {
+  locale: string;
+  slug: string[];
+}
 
-  const t = await getTranslations({ locale: params.locale });
-  const { meta } = readAndParseContentFile(params.slug, params.locale, 'blog')!;
-  const posts = await getSidebar(params.locale, 'blog');
-  const translationUrl = await getTranslationUrl(params.slug, params.locale, 'blog');
+const BlogLayout = async ({ params, children }: Props) => {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations({ locale });
+  const { meta } = readAndParseContentFile(slug, locale, 'blog')!;
+  const posts = await getSidebar(locale, 'blog');
+  const translationUrl = await getTranslationUrl(slug, locale, 'blog');
 
   const breadcrumbs: BreadcrumbEntry[] = [{ name: t('common.nav.blog'), href: '/blog' }];
   if (meta.sidebarTitle) breadcrumbs.push({ name: meta.sidebarTitle });
@@ -54,7 +57,7 @@ const BlogLayout = async ({ params, children }: Props) => {
         <ArticleMeta meta={meta} />
         {children}
         <Divider className="my-6" />
-        <PageNavigation currentPath={`/blog/${params.slug.join('/')}`} pages={[...posts].reverse()} />
+        <PageNavigation currentPath={`/blog/${slug.join('/')}`} pages={[...posts].reverse()} />
       </div>
     </>
   );

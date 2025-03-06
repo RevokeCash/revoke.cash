@@ -7,13 +7,18 @@ import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import AddNetworkChainSelect from './AddNetworkChainSelect';
 import AddNetworkForm from './AddNetworkForm';
 
 interface Props {
-  params: { locale: string; slug: string };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
+  slug: string;
 }
 
 export const dynamic = 'error';
@@ -24,7 +29,9 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export const generateMetadata = async ({ params: { locale, slug } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale, slug } = await params;
+
   const t = await getTranslations({ locale });
   const chainId = getChainIdFromSlug(slug);
   const chainName = getChainName(chainId);
@@ -39,25 +46,26 @@ export const generateMetadata = async ({ params: { locale, slug } }: Props): Pro
 };
 
 const AddNewChainPage: NextPage<Props> = async ({ params }) => {
-  unstable_setRequestLocale(params.locale);
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
 
-  const chainId = getChainIdFromSlug(params.slug as string);
-  const sidebar = await getSidebar(params.locale, 'learn');
-  const t = await getTranslations({ locale: params.locale });
+  const chainId = getChainIdFromSlug(slug);
+  const sidebar = await getSidebar(locale, 'learn');
+  const t = await getTranslations({ locale });
 
   const chainName = getChainName(chainId);
-  const slug = ['wallets', 'add-network'];
+  const breadcrumbs = ['wallets', 'add-network'];
 
   const meta = {
     title: t('learn.add_network.title', { chainName }),
     sidebarTitle: t('learn.add_network.title', { chainName }),
     description: t('learn.add_network.description', { chainName }),
-    language: params.locale,
-    coverImage: getOpenGraphImageUrl(`/learn/wallets/add-network/${params.slug}`, params.locale),
+    language: locale,
+    coverImage: getOpenGraphImageUrl(`/learn/wallets/add-network/${slug}`, locale),
   };
 
   return (
-    <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta}>
+    <LearnLayout sidebarEntries={sidebar} slug={breadcrumbs} meta={meta}>
       <Prose vocab="https://schema.org/" typeof="HowTo">
         <h1 property="name">{meta.title}</h1>
         <Divider className="my-4" />

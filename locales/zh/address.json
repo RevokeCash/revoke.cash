@@ -47,9 +47,13 @@
     "allowance": "授权金额",
     "asset": "资产",
     "asset_type": "类型",
+    "expiration": "Expiration",
     "last_cancelled": "上次取消",
     "last_updated": "上次更新",
     "marketplace": "市场",
+    "policy_type": "Permission Type",
+    "session_hash": "Session Identifier",
+    "signer": "Authorized Signer",
     "spender": "被授权人（Spender）",
     "status": "状态",
     "transaction": "交易",
@@ -59,6 +63,12 @@
     "connected": "已连接",
     "nft": "NFT",
     "not_connected": "未连接",
+    "policy_type": {
+      "all": "Transfers & Calls",
+      "calls": "Contract Calls",
+      "none": "None",
+      "transfers": "Transfers"
+    },
     "token": "代币"
   },
   "meta": {
@@ -69,6 +79,7 @@
     "allowances": "授权",
     "history": "历史",
     "more": "更多",
+    "sessions": "Sessions",
     "settings": "设置",
     "signatures": "签名"
   },
@@ -98,9 +109,28 @@
   "search": {
     "spender": "按被授权人（Spender）地址搜索"
   },
+  "sessions": {
+    "info": {
+      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
+      "title": "What Are Sessions?"
+    },
+    "table": {
+      "none_found": "No sessions found",
+      "title": "Active Sessions"
+    },
+    "tooltips": {
+      "policy_type": {
+        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
+        "calls": "This session is authorized to call {callPoliciesCount} different functions",
+        "none": "This session has no permissions",
+        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+      }
+    }
+  },
   "signatures": {
     "info": {
-      "description": "由于区块链不存储签名，<b>因此 Revoke.cash 无法核实您是否真的进行了签名</b>。此页面列出了已知的市场和您所有的支持链下<i>许可</i>签名的代币。<b>只有当<i>您</i>确定自己在钓鱼网站上进行了链下签名时，才需要取消本页面这些<i>可能存在的</i>签名</b>，否则可能浪费交易费用。即使您已取消某个代币或市场的签名，该条目仍将保存在本列表中，不过在一段时间内将无法再次取消。"
+      "description": "由于区块链不存储签名，<b>因此 Revoke.cash 无法核实您是否真的进行了签名</b>。此页面列出了已知的市场和您所有的支持链下<i>许可</i>签名的代币。<b>只有当<i>您</i>确定自己在钓鱼网站上进行了链下签名时，才需要取消本页面这些<i>可能存在的</i>签名</b>，否则可能浪费交易费用。即使您已取消某个代币或市场的签名，该条目仍将保存在本列表中，不过在一段时间内将无法再次取消。",
+      "title": "What Are Signatures?"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 个有效授权} other {# 个有效授权}}",

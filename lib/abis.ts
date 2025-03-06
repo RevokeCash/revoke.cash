@@ -118,3 +118,15 @@ export const AVVY_DOMAINS_ABI = parseAbi([
   'function resolveStandard(string calldata name, uint256 key) external view returns (string memory)',
   'function reverseResolveEVMToName(address addy) external view returns (string memory preimage)',
 ]);
+
+export const AGW_SESSIONS_ABI = parseAbi([
+  'function sessionStatus(address account, bytes32 sessionHash) external view returns (uint8)',
+  'function revokeKey(bytes32 sessionHash) external',
+  'event SessionCreated(address indexed account, bytes32 indexed sessionHash, SessionSpec sessionSpec)',
+  'event SessionRevoked(address indexed account, bytes32 indexed sessionHash)',
+  'struct SessionSpec { address signer; uint256 expiresAt; UsageLimit feeLimit; CallSpec[] callPolicies; TransferSpec[] transferPolicies; }',
+  'struct CallSpec { address target; bytes4 selector; uint256 maxValuePerUse; UsageLimit valueLimit; Constraint[] constraints; }',
+  'struct UsageLimit { uint8 limitType; uint256 limit; uint256 period; }',
+  'struct Constraint { uint8 condition; uint64 index; bytes32 refValue; UsageLimit limit; }',
+  'struct TransferSpec { address target; uint256 maxValuePerUse; UsageLimit valueLimit; }',
+]);

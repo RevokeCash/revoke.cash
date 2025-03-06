@@ -3,24 +3,27 @@ import AddressHeader from 'components/address/AddressHeader';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { getAddressAndDomainName } from 'lib/utils/whois';
-import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
-  params: {
-    locale: string;
-    addressOrName: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
+  addressOrName: string;
 }
 
 const AddressPageLayout = async ({ params, children }: Props) => {
-  unstable_setRequestLocale(params.locale);
+  const { locale, addressOrName } = await params;
+  setRequestLocale(locale);
 
-  const messages = await getMessages({ locale: params.locale });
+  const messages = await getMessages({ locale });
 
-  const { address, domainName } = await getAddressAndDomainName(params.addressOrName);
+  const { address, domainName } = await getAddressAndDomainName(addressOrName);
   if (!address) notFound();
 
   return (

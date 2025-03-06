@@ -2,12 +2,14 @@ import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { readAndParseContentFile } from 'lib/utils/markdown-content';
 import type { NextPage } from 'next';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 
 interface Props {
-  params: {
-    locale: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 export const dynamic = 'error';
@@ -17,9 +19,11 @@ export const metadata = {
   description: 'Privacy Policy for Revoke.cash',
 };
 
-const TermsAndConditionsPage: NextPage<Props> = ({ params }) => {
-  unstable_setRequestLocale(params.locale);
-  const { content } = readAndParseContentFile('terms', params.locale, 'docs')!;
+const TermsAndConditionsPage: NextPage<Props> = async ({ params }) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const { content } = readAndParseContentFile('terms', locale, 'docs')!;
 
   return (
     <ContentPageLayout>

@@ -1,16 +1,25 @@
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
-import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
+import { covalentEventGetter, customEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
+import {
+  isCovalentSupportedChain,
+  isCustomSupportedChain,
+  isEtherscanSupportedChain,
+  isNodeSupportedChain,
+} from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextRequest } from 'next/server';
 
 interface Props {
-  params: {
-    chainId: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  chainId: string;
 }
 
 export async function POST(req: NextRequest, { params }: Props) {
+  const { chainId: chainIdString } = await params;
+
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
@@ -19,7 +28,7 @@ export async function POST(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Too many requests, please try again later.' }), { status: 429 });
   }
 
-  const chainId = Number.parseInt(params.chainId, 10);
+  const chainId = Number.parseInt(chainIdString, 10);
   const body = await req.json();
 
   try {
@@ -35,6 +44,11 @@ export async function POST(req: NextRequest, { params }: Props) {
 
     if (isNodeSupportedChain(chainId)) {
       const events = await nodeEventGetter.getEvents(chainId, body);
+      return new Response(JSON.stringify(events), { status: 200 });
+    }
+
+    if (isCustomSupportedChain(chainId)) {
+      const events = await customEventGetter.getEvents(chainId, body);
       return new Response(JSON.stringify(events), { status: 200 });
     }
   } catch (e) {

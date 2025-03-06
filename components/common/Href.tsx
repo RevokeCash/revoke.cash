@@ -30,7 +30,7 @@ const Href = (
   };
 
   const classes = twMerge(
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
+    'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded-sm',
     styleMapping[html ? 'html' : 'inherit'],
     underlineMapping[underline ?? 'always'],
     className,

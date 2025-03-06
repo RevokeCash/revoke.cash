@@ -8,9 +8,26 @@ import {
   getChainApiUrl,
 } from 'lib/utils/chains';
 import type { Filter, Log } from 'lib/utils/events';
-import { getAddress } from 'viem';
+import { type Address, type Hash, type Hex, getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
+
+interface Response {
+  status: string;
+  message: string;
+  result: string | Array<EtherscanLog>;
+}
+
+interface EtherscanLog {
+  address: Address;
+  blockNumber: Hex;
+  timeStamp: Hex;
+  topics: [topic0: Hex, ...rest: Hex[]];
+  data: Hex;
+  transactionHash: Hash;
+  transactionIndex: Hex;
+  logIndex: Hex;
+}
 
 export class EtherscanEventGetter implements EventGetter {
   private queues: { [chainId: number]: RequestQueue };
@@ -30,26 +47,15 @@ export class EtherscanEventGetter implements EventGetter {
 
     const searchParams = prepareEtherscanGetLogsQuery(filter, page, apiKey);
 
-    let data: any;
+    let data: Response;
     try {
       data = await retryOn429(() =>
-        queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<any>()),
+        queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<Response>()),
       );
     } catch (e) {
       console.log(e);
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
       throw new Error('Could not retrieve event logs from the blockchain');
-    }
-
-    // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
-    if (data.result?.length === 1000) {
-      // If we cannot split this block range further, we use Etherscan's pagination in the hope that it does not exceed
-      // 10 pages of results
-      if (filter.fromBlock === filter.toBlock) {
-        return [...data.result.map(formatEtherscanEvent), ...(await this.getEvents(chainId, filter, page + 1))];
-      }
-
-      throw new Error('Log response size exceeded');
     }
 
     if (typeof data.result === 'string') {
@@ -80,6 +86,17 @@ export class EtherscanEventGetter implements EventGetter {
     if (!Array.isArray(data.result)) {
       console.log(data);
       throw new Error('Could not retrieve event logs from the blockchain');
+    }
+
+    // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
+    if (data.result?.length === 1000) {
+      // If we cannot split this block range further, we use Etherscan's pagination in the hope that it does not exceed
+      // 10 pages of results
+      if (filter.fromBlock === filter.toBlock) {
+        return [...data.result.map(formatEtherscanEvent), ...(await this.getEvents(chainId, filter, page + 1))];
+      }
+
+      throw new Error('Log response size exceeded');
     }
 
     return data.result.map(formatEtherscanEvent);
@@ -116,15 +133,15 @@ const prepareEtherscanGetLogsQuery = (filter: Filter, page: number, apiKey?: str
   return JSON.parse(JSON.stringify(query));
 };
 
-const formatEtherscanEvent = (etherscanLog: any) => ({
+const formatEtherscanEvent = (etherscanLog: EtherscanLog): Log => ({
   address: getAddress(etherscanLog.address),
-  topics: etherscanLog.topics.filter((topic: string) => !isNullish(topic)),
+  topics: etherscanLog.topics.filter((topic: string) => !isNullish(topic)) as [topic0: Hex, ...rest: Hex[]],
   data: etherscanLog.data,
   transactionHash: etherscanLog.transactionHash,
   blockNumber: Number.parseInt(etherscanLog.blockNumber, 16) || 0,
   transactionIndex: Number.parseInt(etherscanLog.transactionIndex, 16) || 0,
   logIndex: Number.parseInt(etherscanLog.logIndex, 16) || 0,
-  timestamp: Number.parseInt(etherscanLog.timeStamp, 16),
+  timestamp: Number.parseInt(etherscanLog.timeStamp, 16) || undefined,
 });
 
 // Certain Blockscout instances will return a 429 error if we hit the rate limit instead of a 200 response with the error message

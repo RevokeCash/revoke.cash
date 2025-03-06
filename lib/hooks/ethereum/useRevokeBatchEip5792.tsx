@@ -1,7 +1,14 @@
 'use client';
 
+import { TransactionType } from 'lib/interfaces';
 import { throwIfExcessiveGas } from 'lib/utils';
-import { type OnUpdate, type TokenAllowanceData, prepareRevokeAllowance, wrapRevoke } from 'lib/utils/allowances';
+import {
+  type OnUpdate,
+  type TokenAllowanceData,
+  getAllowanceKey,
+  prepareRevokeAllowance,
+  trackRevokeTransaction,
+} from 'lib/utils/allowances';
 import { trackBatchRevoke } from 'lib/utils/batch-revoke';
 import {
   type Eip5792Call,
@@ -14,7 +21,7 @@ import type PQueue from 'p-queue';
 import type { EstimateContractGasParameters } from 'viem';
 import { eip5792Actions } from 'viem/experimental';
 import { useWalletClient } from 'wagmi';
-import { useTransactionStore } from '../../stores/transaction-store';
+import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
 import { trackDonate, useDonate } from './useDonate';
 
@@ -64,11 +71,12 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       Promise.all(
         allowances.map(async (allowance, index) => {
           // Skip if already confirmed or pending
-          if (['confirmed', 'pending'].includes(getTransaction(allowance).status)) return;
+          if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;
 
-          const revoke = wrapRevoke(
-            allowance,
-            async () => {
+          const revoke = wrapTransaction({
+            transactionKey: getAllowanceKey(allowance),
+            transactionType: TransactionType.REVOKE,
+            executeTransaction: async () => {
               // Check whether the revoke failed *before* even making it into wallet_sendCalls
               const settlement = callsSettled[index];
               if (settlement.status === 'rejected') throw settlement.reason;
@@ -90,7 +98,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
               return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[callIndex], onUpdate);
             },
             updateTransaction,
-          );
+            trackTransaction: () => trackRevokeTransaction(allowance),
+          });
 
           await REVOKE_QUEUE.add(revoke);
         }),

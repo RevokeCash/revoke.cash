@@ -1,7 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
 import Dexie, { type Table } from 'dexie';
 import type { LogsProvider } from 'lib/providers';
-import { getChainName, isCovalentSupportedChain } from 'lib/utils/chains';
+import { getChainName } from 'lib/utils/chains';
 import type { Filter, Log } from 'lib/utils/events';
 import type { Address } from 'viem';
 
@@ -16,7 +16,7 @@ interface Events {
 
 // Certain chains lack proper infrastructure, so we don't index events for them
 // Note: these are prime candidates for delisting from the app if no long term solutions are found
-const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet];
+const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet, 999];
 
 class EventsDB extends Dexie {
   private events!: Table<Events>;
@@ -38,7 +38,7 @@ class EventsDB extends Dexie {
   // Note: It is always assumed that this function is called to get logs for the entire chain (i.e. from block 0 to 'latest')
   // So we assume that the filter.fromBlock is always 0, and we only need to retrieve events between the last stored event and 'latest'
   // This means that we can't use this function to get logs for a specific block range
-  async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number, nameTag?: string) {
+  async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number, nameTag?: string): Promise<Log[]> {
     const logs = await this.getLogsInternal(logsProvider, filter, chainId);
 
     if (nameTag) console.log(`${getChainName(chainId)}: ${nameTag} logs`, logs);
@@ -48,9 +48,8 @@ class EventsDB extends Dexie {
     return logs;
   }
 
-  private async getLogsInternal(logsProvider: LogsProvider, filter: Filter, chainId: number) {
-    // For Covalent supported chains, we need to subtract 50 blocks from the toBlock (due to issues with Covalent)
-    const toBlock = isCovalentSupportedChain(chainId) ? Math.max(filter.toBlock - 50, 0) : filter.toBlock;
+  private async getLogsInternal(logsProvider: LogsProvider, filter: Filter, chainId: number): Promise<Log[]> {
+    const toBlock = filter.toBlock;
 
     if (DO_NOT_INDEX.includes(chainId)) return logsProvider.getLogs({ ...filter, toBlock });
 
@@ -83,6 +82,14 @@ class EventsDB extends Dexie {
       // If there is an error, we just return the logs from the provider (may be the case if IndexedDB is not supported)
       if (e instanceof Dexie.DexieError) {
         return logsProvider.getLogs(filter);
+      }
+
+      // Covalent can have issues with keeping up with the chain, so if we cannot find the block, we try again with a smaller toBlock
+      if (e instanceof Error && e.message.includes('Requested block range is out of bounds')) {
+        const latestKnownBlock = Number(e.message.match(/\d+ > (\d+)/)?.[1]);
+        if (latestKnownBlock) {
+          return this.getLogsInternal(logsProvider, { ...filter, toBlock: latestKnownBlock }, chainId);
+        }
       }
 
       throw e;

@@ -2,7 +2,7 @@
 
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { getChainName } from 'lib/utils/chains';
-import { isNetworkError, parseErrorMessage } from 'lib/utils/errors';
+import { isNetworkError, isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
@@ -20,7 +20,7 @@ const Error = ({ error }: Props) => {
 
   const chainName = getChainName(selectedChainId);
   const chainConnectionMessage = t('common.errors.messages.chain_could_not_connect', { chainName });
-  const message = isNetworkError(error) ? chainConnectionMessage : parseErrorMessage(error);
+  const message = isNetworkError(error) || isRateLimitError(error) ? chainConnectionMessage : parseErrorMessage(error);
   return <div>Error: {message}</div>;
 };
 

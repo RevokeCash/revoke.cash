@@ -11,6 +11,7 @@ export interface RateLimit {
 export enum TransactionType {
   REVOKE = 'revoke',
   UPDATE = 'update',
+  SESSION_REVOKE = 'session_revoke',
   DONATE = 'donate',
   OTHER = 'other',
 }
