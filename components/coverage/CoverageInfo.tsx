@@ -41,6 +41,7 @@ const CoverageInfo = () => {
     { id: 'rug_pulls', text: t('info.main.not_covered_items.rug_pulls') },
     { id: 'seed_phrase', text: t('info.main.not_covered_items.seed_phrase') },
     { id: 'smart_contracts', text: t('info.main.not_covered_items.smart_contracts') },
+    { id: 'custodial-accounts', text: t('info.main.not_covered_items.custodial-accounts') },
   ];
 
   const supportedChains = {
@@ -91,6 +92,7 @@ const CoverageInfo = () => {
                   <li>{t('info.important.kyc')}</li>
                   <li>{t('info.important.coverage_amount')}</li>
                   <li>{t('info.important.fee')}</li>
+                  <li>{t('info.important.wallets')}</li>
                 </ul>
               </div>
 

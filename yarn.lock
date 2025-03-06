@@ -2677,7 +2677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/node@npm:^4.0.6":
+"@tailwindcss/node@npm:4.0.11":
   version: 4.0.11
   resolution: "@tailwindcss/node@npm:4.0.11"
   dependencies:
@@ -2765,7 +2765,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/oxide@npm:^4.0.6":
+"@tailwindcss/oxide@npm:4.0.11":
   version: 4.0.11
   resolution: "@tailwindcss/oxide@npm:4.0.11"
   dependencies:
@@ -2807,17 +2807,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/postcss@npm:4.0.6":
-  version: 4.0.6
-  resolution: "@tailwindcss/postcss@npm:4.0.6"
+"@tailwindcss/postcss@npm:^4.0.11":
+  version: 4.0.11
+  resolution: "@tailwindcss/postcss@npm:4.0.11"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
-    "@tailwindcss/node": "npm:^4.0.6"
-    "@tailwindcss/oxide": "npm:^4.0.6"
+    "@tailwindcss/node": "npm:4.0.11"
+    "@tailwindcss/oxide": "npm:4.0.11"
     lightningcss: "npm:^1.29.1"
     postcss: "npm:^8.4.41"
-    tailwindcss: "npm:4.0.6"
-  checksum: 10/699dfc80447d7a1ecaabf70fa15ddb358f6d63e32fb47cae32b922b7e54c3894dab990692a8f8cd5bacfaddde8a5add096dee7f3930b9d4ea94def1e28b9f6dd
+    tailwindcss: "npm:4.0.11"
+  checksum: 10/633bce95af40e6cb04fc20aecba1a96198d681aba81e9be3cf7df979c4eea4aa3f2e05cc840edbaa587fd2c3ac847c92337cf4b6b9b26a1db4051728a824cd7f
   languageName: node
   linkType: hard
 
@@ -10588,7 +10588,7 @@ __metadata:
     "@privy-io/cross-app-connect": "npm:^0.1.7"
     "@rainbow-me/rainbowkit": "npm:^2.2.3"
     "@revoke.cash/chains": "npm:^65.0.0"
-    "@tailwindcss/postcss": "npm:4.0.6"
+    "@tailwindcss/postcss": "npm:^4.0.11"
     "@tailwindcss/typography": "npm:^0.5.16"
     "@tanstack/query-sync-storage-persister": "npm:^5.66.0"
     "@tanstack/react-query": "npm:^5.66.0"

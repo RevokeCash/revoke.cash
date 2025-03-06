@@ -7,14 +7,15 @@ import { unstable_setRequestLocale } from 'next-intl/server';
 export { generateMetadata } from '../page';
 
 interface Props {
-  params: {
+  params: Promise<{
     locale: string;
     addressOrName: string;
-  };
+  }>;
 }
 
-const AddressCoveragePage: NextPage<Props> = ({ params }) => {
-  unstable_setRequestLocale(params.locale);
+const AddressCoveragePage: NextPage<Props> = async ({ params }) => {
+  const resolvedParams = await params;
+  unstable_setRequestLocale(resolvedParams.locale);
 
   return (
     <div className="flex flex-col gap-2">

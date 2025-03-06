@@ -22,6 +22,7 @@ const quizQuestions: QuizQuestion[] = [
       'Rugs',
       'Smart contract failures',
       'Malicious transaction signatures',
+      'Custodial Account Drains',
       'Malware',
       'Address Poisoning',
       'Accidentally revealing my seed phrase',
@@ -44,6 +45,18 @@ const quizQuestions: QuizQuestion[] = [
     correctAnswers: ['90% of coverage amount'],
     explanation:
       'Fairside covers 90% of your loss, with a 10% Personal Responsibility Amount deducted from your payout—not your coverage. This approach encourages accountability, helps maintain a robust community fund, and ensures long-term affordability for all members.',
+  },
+  {
+    id: 'wallets',
+    question: 'Can I claim any wallet at the time of submitting a claim, or did they already have to be added',
+    options: [
+      'You can cover up to 10 wallets, but they have to be added to your membership before a claim was submitted!',
+      'I can submit any wallet',
+    ],
+    correctAnswers: [
+      'You can cover up to 10 wallets, but they have to be added to your membership before a claim was submitted!',
+    ],
+    explanation: `Without adding wallets beforehand, you can defraud us by submitting a wallet that is not yours, or for someone who hasn't purchased coveraged`,
   },
 ];
 
