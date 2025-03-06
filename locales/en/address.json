@@ -108,14 +108,8 @@
     "not_covered": "Not Covered",
     "no_claims": "No claims",
     "info": {
-      "what": {
-        "title": "What is Coverage?",
-        "description": "Get paid if you get drained. Fairside is the first crypto native coverage platform that allows you to purchase coverage for your wallet in the case of drains. We cover various loss events under phishing and social engineering delivery methods."
-      },
-      "how": {
-        "title": "How to get Covered",
-        "description": "1. Input the amount you want to be covered (in ETH), and pay 1.95% of that amount. 2. Add all the wallets that are covered across the 11+ chains."
-      },
+      "title": "What is Coverage?",
+      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools to help you prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of phishing drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
       "quiz": {
         "title": "Quick Coverage Quiz",
         "start": "Take Quick Quiz to Get Started",

@@ -71,4 +71,19 @@ export const defaultTranslationValues: RichTranslationValues = {
       {children}
     </Href>
   ),
+  'fairside-link': (children) => (
+    <Href href="https://fairside.io" className="font-medium" underline="hover" html external>
+      {children}
+    </Href>
+  ),
+  'nexus-link': (children) => (
+    <Href href="https://nexusmutual.io" className="font-medium" underline="hover" html external>
+      {children}
+    </Href>
+  ),
+  'bright-union-link': (children) => (
+    <Href href="https://brightunion.io" className="font-medium" underline="hover" html external>
+      {children}
+    </Href>
+  ),
 };

@@ -1,19 +1,17 @@
 'use client';
 
 import { Env, FsdSDK } from '@fairside-foundation/sdk';
+import { useQuery } from '@tanstack/react-query';
+import Loader from 'components/common/Loader';
 import { FAIRSIDE_API_KEY } from 'lib/constants';
+import { getMembershipInfo } from 'lib/coverage/fairside';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CoverageDetailsCard from './CoverageDetailsCard';
 import CoverageInfo from './CoverageInfo';
 import WalletDetails from './WalletDetails';
-
-interface Props {
-  isActive: boolean;
-  coverageAmount?: number | null;
-}
 
 interface MembershipInfo {
   statusCode: number;
@@ -25,7 +23,7 @@ interface MembershipInfo {
   activeClaims: string[];
 }
 
-const CoverageDashboard = ({ isActive = false, coverageAmount = null }: Props) => {
+const CoverageDashboard = () => {
   const isMounted = useMounted();
   const { address } = useAddressPageContext();
   const [token, setToken] = useState<string | null>(null);
@@ -35,27 +33,21 @@ const CoverageDashboard = ({ isActive = false, coverageAmount = null }: Props) =
     apiKey: FAIRSIDE_API_KEY ?? '',
     env: Env.TestNet,
   });
-  const [membershipInfo, setMembershipInfo] = useState<MembershipInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchMembershipInfo() {
-      try {
-        const results = await fsdAPI.getPublicMembershipInfo({ walletAddress: address });
-        setMembershipInfo(results);
-      } catch (error) {
-        console.error('Error fetching membership info:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchMembershipInfo();
-  }, [address, fsdAPI]);
+  const { data: membershipInfo, isLoading } = useQuery({
+    queryKey: ['fairsideMembershipInfo', address],
+    queryFn: () => getMembershipInfo(address),
+  });
 
   if (!isMounted || isLoading) {
     return (
-      <div className="flex justify-center items-center h-[500px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black dark:border-white" />
+      <div className="flex flex-col lg:flex-row gap-2">
+        <div className="h-[500px] w-full lg:w-2/3">
+          <Loader isLoading={true} className="h-[500px]" />
+        </div>
+        <div className="h-[500px] w-full lg:w-1/3">
+          <Loader isLoading={true} className="h-[500px]" />
+        </div>
       </div>
     );
   }
@@ -65,8 +57,8 @@ const CoverageDashboard = ({ isActive = false, coverageAmount = null }: Props) =
   }
 
   return (
-    <div className="flex flex-col md:flex-row justify-center gap-4">
-      <div className="flex flex-col h-[500px] w-[75%]">
+    <div className="flex flex-col lg:flex-row gap-2">
+      <div className="flex flex-col w-full lg:w-2/3">
         <CoverageDetailsCard
           coverageAmount={membershipInfo.coverAmount}
           validFrom={membershipInfo.validFrom}
@@ -75,7 +67,7 @@ const CoverageDashboard = ({ isActive = false, coverageAmount = null }: Props) =
           onIncrease={() => window.open('https://test.fairside.dev/', '_blank')}
         />
       </div>
-      <div className="flex flex-col gap-y-4 max-w-[400px] md:w-[400px] h-[500px]">
+      <div className="w-full lg:w-1/3">
         <WalletDetails
           isAuthenticated={token != null}
           fsdAPI={fsdAPI}

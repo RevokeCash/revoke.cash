@@ -1,18 +1,6 @@
+import { formatArticleDate } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
-
-const formatDate = (dateString: string | null): string => {
-  if (!dateString) return '';
-
-  const date = new Date(dateString);
-  const month = date.toLocaleString('en-US', { month: 'short' });
-  const day = date.getDate();
-  const year = date.getFullYear();
-
-  // Add appropriate suffix to day
-  const suffix = ['th', 'st', 'nd', 'rd'][day % 10 > 3 ? 0 : day % 10] || 'th';
-  return `${month} ${day}${suffix}, ${year}`;
-};
 
 const getExpiryInfo = (validUntil: string | null): { text: string; isWarning: boolean; isDanger: boolean } => {
   if (!validUntil) return { text: '', isWarning: false, isDanger: false };
@@ -22,7 +10,7 @@ const getExpiryInfo = (validUntil: string | null): { text: string; isWarning: bo
   const daysUntilExpiry = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
   return {
-    text: `Expires in ${daysUntilExpiry} days!`,
+    text: `Expires in ${daysUntilExpiry} days`,
     isWarning: daysUntilExpiry <= 60,
     isDanger: daysUntilExpiry <= 30,
   };
@@ -70,7 +58,7 @@ const CoverageDetailsCard = ({
               onClick={onIncrease}
               className="px-3 py-1 text-sm bg-white hover:bg-white/80 text-black rounded-full transition-colors border border-gray-800 hover:shadow-[0_8px_8px_rgba(0,0,0,0.25)] duration-300 ease-in-out"
             >
-              Increase!
+              Increase
             </button>
           )}
         </div>
@@ -80,7 +68,7 @@ const CoverageDetailsCard = ({
         <span className="text-gray-600 dark:text-gray-400">Timeframe:</span>
         <div className="text-right">
           <div className="text-black dark:text-white font-medium flex items-center gap-2">
-            {`${formatDate(validFrom)} - ${formatDate(validUntil)}`}
+            {`${formatArticleDate(validFrom!)} - ${formatArticleDate(validUntil!)}`}
           </div>
           <div className={expiryClass}>{expiryInfo.text}</div>
         </div>

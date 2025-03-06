@@ -1,4 +1,5 @@
 import CoverageDashboard from 'components/coverage/CoverageDashboard';
+import InfoPanel from 'components/coverage/InfoPanel';
 import type { NextPage } from 'next';
 import { unstable_setRequestLocale } from 'next-intl/server';
 
@@ -12,10 +13,15 @@ interface Props {
   };
 }
 
-const AddressSignaturesPage: NextPage<Props> = ({ params }) => {
+const AddressCoveragePage: NextPage<Props> = ({ params }) => {
   unstable_setRequestLocale(params.locale);
 
-  return <CoverageDashboard isActive={true} coverageAmount={100} />;
+  return (
+    <div className="flex flex-col gap-2">
+      <InfoPanel />
+      <CoverageDashboard />
+    </div>
+  );
 };
 
-export default AddressSignaturesPage;
+export default AddressCoveragePage;
