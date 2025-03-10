@@ -1285,6 +1285,7 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://hyperliquid.cloud.blockscout.com/api',
     rpc: {
       main: 'https://rpc.hyperliquid.xyz/evm',
+      free: 'https://rpc.hyperliquid.xyz/evm',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
