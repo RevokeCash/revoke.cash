@@ -32,6 +32,14 @@ const quizQuestions: QuizQuestion[] = [
       'You are covered for certain loss events under phishing and malware - malicious transaction signatures, address poisoning, and malware, but not all events under phishing and social engineering. You are NOT covered for rugs or if you reveal your seed phrase.',
   },
   {
+    id: 'malware-coverage',
+    question: 'What is the minimum coverage amount to be covered for malware?',
+    options: ['0.25 ETH', '1 ETH', '5 ETH', '10 ETH'],
+    correctAnswers: ['10 ETH'],
+    explanation:
+      'When you submit a claim for malware, you have to send in your device to a third party to check that you actually were drained due to malware. This is an expensive process and would drastically hurt the pool for smaller amounts of coverage.',
+  },
+  {
     id: 'kyc',
     question: 'When do I need to KYC?',
     options: ['When purchasing coverage', 'When creating a claim', 'When connecting my wallet', 'Never'],
@@ -48,7 +56,7 @@ const quizQuestions: QuizQuestion[] = [
   },
   {
     id: 'wallets',
-    question: 'Can I claim any wallet at the time of submitting a claim, or did they already have to be added',
+    question: 'Can I claim any wallet at the time of submitting a claim, or did they already have to be added?',
     options: [
       'You can cover up to 10 wallets, but they have to be added to your membership before a claim was submitted!',
       'I can submit any wallet',
@@ -105,7 +113,7 @@ const CoverageQuiz = ({ open, onClose }: Props) => {
       setSelectedAnswers([]);
       setShowExplanation(false);
     } else if (quizCompleted) {
-      window.open('https://test.fairside.dev/', '_blank');
+      window.open('https://app.fairside.io/', '_blank');
     }
   };
 

@@ -132,12 +132,12 @@
       "main": {
         "title": "Wallet Drain Coverage",
         "description": "Get paid if you get drained. Fairside is the first crypto native coverage platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
-        "covered_title": "When You're Covered",
-        "not_covered_title": "When You're NOT Covered",
+        "covered_title": "What we cover",
+        "not_covered_title": "What we don't cover",
         "covered_items": {
           "signatures": "Malicious transaction signatures",
           "poisoning": "Address poisoning attacks",
-          "malware": "Malware-based attacks"
+          "malware": "Malware-based attacks (min. 10 ETH coverage)"
         },
         "not_covered_items": {
           "rug_pulls": "Rug pulls",

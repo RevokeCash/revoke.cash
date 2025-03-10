@@ -41,7 +41,6 @@ const WalletDetails = ({ isAuthenticated, className, fsdAPI, walletAddress, toke
 
     try {
       setIsLoading(true);
-
       // Step 1: Generate message to sign
       const messageData = await fsdAPI.generateMessageToSign(walletAddress);
       if (!messageData) {

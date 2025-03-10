@@ -28,6 +28,8 @@ const CoverageDashboard = () => {
   const [token, setToken] = useState<string | null>(null);
   const t = useTranslations();
 
+  console.log('address', address);
+
   const { fsdAPI, fsdContract, fsdConfig } = FsdSDK({
     apiKey: FAIRSIDE_API_KEY ?? '',
     env: Env.MainNet,
