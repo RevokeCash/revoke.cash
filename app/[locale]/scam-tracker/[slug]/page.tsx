@@ -1,7 +1,4 @@
-// page.tsx (Server Component)
-import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
-import Prose from 'components/common/Prose';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
@@ -56,9 +53,6 @@ const ScamTrackerPage: NextPage<Props> = ({ params }) => {
           </h1>
         </div>
         <ScamTrackerContent chainId={chainId} chainName={chainName} />
-        <Prose className="max-w-3xl">
-          <ChainDescription chainId={chainId} headingElement="h2" />
-        </Prose>
       </div>
     </NextIntlClientProvider>
   );

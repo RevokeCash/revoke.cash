@@ -5,7 +5,7 @@ import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { buildGraphData, getTokenTransfers } from 'lib/utils/token-tracking';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import type { PublicClient } from 'viem';
+import type { Hex, PublicClient } from 'viem';
 import ScamTrackerChainSelect from './ScamTrackerChainSelect';
 import TransactionGraph from './TransactionGraph';
 
@@ -29,7 +29,7 @@ const ScamTrackerContent = ({ chainId, chainName }: Props) => {
       setIsLoading(true);
       setError(null);
 
-      const transfers = await getTokenTransfers(publicClient, hash as `0x${string}`);
+      const transfers = await getTokenTransfers(publicClient, hash as Hex);
       const data = await buildGraphData(transfers);
       console.log('The output of buildGraphData is: ', data);
 
@@ -67,7 +67,6 @@ const ScamTrackerContent = ({ chainId, chainName }: Props) => {
         </div>
       </div>
 
-      {/* {!graphData && !isLoading && <ChainDescription chainId={chainId} />} */}
       {graphData && <TransactionGraph data={graphData} />}
     </div>
   );
