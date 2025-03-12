@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -79,8 +79,10 @@ const CoverageQuiz = ({ open, onClose }: Props) => {
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const [showExplanation, setShowExplanation] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [canProceed, setCanProceed] = useState(false);
 
   const handleAnswerSelect = (answer: string) => {
+    if (showExplanation) return;
     const newAnswers = selectedAnswers.includes(answer)
       ? selectedAnswers.filter((a) => a !== answer)
       : [...selectedAnswers, answer];
@@ -91,27 +93,31 @@ const CoverageQuiz = ({ open, onClose }: Props) => {
     const isCorrect =
       quizQuestions[currentQuestion].correctAnswers.every((answer) => selectedAnswers.includes(answer)) &&
       selectedAnswers.length === quizQuestions[currentQuestion].correctAnswers.length;
-    console.log(quizQuestions[currentQuestion].correctAnswers, selectedAnswers);
+
     setShowExplanation(true);
 
-    if (isCorrect && currentQuestion === quizQuestions.length - 1) {
+    // Only add delay if answer is incorrect
+    if (isCorrect) {
+      setCanProceed(true);
+    } else {
+      setCanProceed(false);
+      // Enable proceeding after 2 seconds only for incorrect answers
+      setTimeout(() => {
+        setCanProceed(true);
+      }, 3000);
+    }
+
+    if (currentQuestion === quizQuestions.length - 1) {
       setQuizCompleted(true);
     }
   };
 
   const handleNextStep = () => {
-    const isCorrect =
-      quizQuestions[currentQuestion].correctAnswers.every((answer) => selectedAnswers.includes(answer)) &&
-      selectedAnswers.length === quizQuestions[currentQuestion].correctAnswers.length;
-
-    if (!isCorrect) {
-      return; // Don't proceed if answers are incorrect
-    }
-
     if (currentQuestion < quizQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswers([]);
       setShowExplanation(false);
+      setCanProceed(false);
     } else if (quizCompleted) {
       window.open('https://app.fairside.io/', '_blank');
     }
@@ -140,54 +146,78 @@ const CoverageQuiz = ({ open, onClose }: Props) => {
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          {quizQuestions[currentQuestion].options.map((option) => (
-            <button
-              type="button"
-              key={option}
-              onClick={() => handleAnswerSelect(option)}
-              className={twMerge(
-                'p-3 border rounded-lg text-left transition-colors flex items-center gap-3',
-                selectedAnswers.includes(option)
-                  ? 'border-brand bg-brand/10'
-                  : 'border-gray-300 dark:border-gray-700 hover:border-brand',
-              )}
-              disabled={showExplanation}
-            >
-              <div
+          {quizQuestions[currentQuestion].options.map((option) => {
+            const isSelected = selectedAnswers.includes(option);
+            const isCorrect = quizQuestions[currentQuestion].correctAnswers.includes(option);
+            const showCorrectness = showExplanation;
+
+            return (
+              <button
+                type="button"
+                key={option}
+                onClick={() => handleAnswerSelect(option)}
                 className={twMerge(
-                  'w-5 h-5 border rounded flex items-center justify-center transition-colors',
-                  selectedAnswers.includes(option) ? 'border-brand bg-brand' : 'border-gray-300 dark:border-gray-700',
+                  'p-3 border rounded-lg text-left transition-colors flex items-center gap-3',
+                  showCorrectness
+                    ? isCorrect
+                      ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                      : isSelected
+                        ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                        : 'border-gray-300 dark:border-gray-700'
+                    : isSelected
+                      ? 'border-brand bg-brand/10'
+                      : 'border-gray-300 dark:border-gray-700 hover:border-brand',
                 )}
+                disabled={showExplanation}
               >
-                {selectedAnswers.includes(option) && <CheckCircleIcon className="w-4 h-4 text-white" />}
-              </div>
-              <span>{option}</span>
-            </button>
-          ))}
+                <div
+                  className={twMerge(
+                    'w-5 h-5 border rounded flex items-center justify-center transition-colors',
+                    showCorrectness
+                      ? isCorrect
+                        ? 'border-green-500 bg-green-500'
+                        : isSelected
+                          ? 'border-red-500 bg-red-500'
+                          : 'border-gray-300 dark:border-gray-700'
+                      : isSelected
+                        ? 'border-brand bg-brand'
+                        : 'border-gray-300 dark:border-gray-700',
+                  )}
+                >
+                  {(isSelected || (showCorrectness && isCorrect)) && (
+                    <CheckCircleIcon
+                      className={twMerge(
+                        'w-4 h-4',
+                        showCorrectness
+                          ? isCorrect
+                            ? 'text-white'
+                            : isSelected
+                              ? 'text-white'
+                              : 'text-gray-400'
+                          : 'text-white',
+                      )}
+                    />
+                  )}
+                </div>
+                <span
+                  className={twMerge(
+                    showCorrectness && isCorrect && !isSelected && 'text-green-600 dark:text-green-400 font-medium',
+                  )}
+                >
+                  {option}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {showExplanation && (
-        <div
-          className={twMerge(
-            'p-4 rounded-lg',
-            isAnswerCorrect ? 'bg-green-100 dark:bg-green-900' : 'bg-red-100 dark:bg-red-900',
-          )}
-        >
+        <div className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
           <div className="flex items-start gap-2 mb-2">
-            {isAnswerCorrect ? (
-              <>
-                <CheckCircleIcon className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
-                <p className="text-sm font-medium text-green-600 dark:text-green-400">Correct! Well done.</p>
-              </>
-            ) : (
-              <>
-                <XCircleIcon className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
-                <p className="text-sm font-medium text-red-600 dark:text-red-400">
-                  Incorrect. Please try again with the correct answers.
-                </p>
-              </>
-            )}
+            <p className="text-sm font-medium">
+              {isAnswerCorrect ? 'Correct! Well done.' : 'Here are the correct answers:'}
+            </p>
           </div>
           <p className="text-sm text-gray-800 dark:text-gray-200">{quizQuestions[currentQuestion].explanation}</p>
         </div>
@@ -202,16 +232,28 @@ const CoverageQuiz = ({ open, onClose }: Props) => {
           </Button>
         ) : (
           <>
-            {!isAnswerCorrect && (
-              <Button style="secondary" size="md" onClick={() => setShowExplanation(false)}>
-                Try Again
+            {currentQuestion === quizQuestions.length - 1 && (
+              <Button
+                style="purple"
+                size="md"
+                onClick={() => window.open('https://app.fairside.io/retroactive', '_blank')}
+              >
+                {t('info.quiz.retroactive_campaign')}
               </Button>
             )}
-            {isAnswerCorrect && (
-              <Button style="primary" size="md" onClick={handleNextStep}>
-                {quizCompleted ? t('info.quiz.get_coverage') : t('info.quiz.next_question')}
-              </Button>
-            )}
+            <Button
+              style="primary"
+              size="md"
+              onClick={handleNextStep}
+              disabled={!canProceed}
+              className={!canProceed ? 'opacity-50 cursor-not-allowed' : ''}
+            >
+              {!canProceed
+                ? 'Please wait and read!'
+                : quizCompleted
+                  ? t('info.quiz.get_coverage')
+                  : t('info.quiz.next_question')}
+            </Button>
           </>
         )}
       </div>

@@ -126,6 +126,7 @@
         "start": "Take Quick Quiz to Get Started",
         "check_answer": "Check Answer",
         "next_question": "Next Question",
+        "retroactive_campaign": "Here for the campaign?",
         "get_coverage": "Get Coverage Now!",
         "question_progress": "Question {current} of {total}"
       },
