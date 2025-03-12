@@ -2234,10 +2234,11 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Soneium]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Soneium,
     name: 'Soneium',
     explorerUrl: 'https://soneium.blockscout.com',
+    etherscanCompatibleApiUrl: 'https://soneium.blockscout.com/api',
     rpc: {
       main: `https://soneium-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.soneium.org',
