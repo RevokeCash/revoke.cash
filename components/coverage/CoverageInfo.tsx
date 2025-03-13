@@ -54,6 +54,7 @@ const CoverageInfo = () => {
       getChainName(ChainId.BNBSmartChainMainnet),
       getChainName(ChainId.PolygonMainnet),
       getChainName(ChainId.SonicMainnet),
+      getChainName(ChainId.Abstract),
     ],
     nonEvm: ['Bitcoin', 'Solana', 'TON'],
   };

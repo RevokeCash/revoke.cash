@@ -132,19 +132,19 @@
       },
       "main": {
         "title": "Wallet Drain Coverage",
-        "description": "Get paid if you get drained. Fairside is the first crypto native coverage platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
-        "covered_title": "What we cover",
-        "not_covered_title": "What we don't cover",
+        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "covered_title": "What Fairside covers",
+        "not_covered_title": "What Fairside doesn't cover",
         "covered_items": {
-          "signatures": "Malicious transaction signatures",
-          "poisoning": "Address poisoning attacks",
-          "malware": "Malware-based attacks (min. 10 ETH coverage)"
+          "signatures": "Malicious transactions and signatures",
+          "poisoning": "Address poisoning",
+          "malware": "Malware (min. 10 ETH coverage)"
         },
         "not_covered_items": {
           "rug_pulls": "Rug pulls",
           "seed_phrase": "Revealing your seed phrase",
-          "smart_contracts": "Smart contracts hacks",
-          "custodial-accounts": "Custodial Account Drains"
+          "smart_contracts": "Smart contract hacks",
+          "custodial-accounts": "Custodial account drains"
         }
       },
       "important": {
