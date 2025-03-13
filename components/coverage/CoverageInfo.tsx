@@ -51,12 +51,12 @@ const CoverageInfo = () => {
             <ModalWithButton
               className="w-full sm:max-w-2xl"
               button={
-                <Button style="primary" size="lg" className="self-center mt-4">
+                <Button style="primary" size="lg" className="self-center my-2">
                   {t('info.quiz.start')}
                 </Button>
               }
             >
-              <CoverageQuiz open={true} onClose={() => {}} />
+              <CoverageQuiz />
             </ModalWithButton>
           </Card>
         </div>
@@ -69,6 +69,7 @@ const CoverageInfo = () => {
                 <ListItem>{getChainName(ChainId.Base)}</ListItem>
                 <ListItem>{getChainName(ChainId.OPMainnet)}</ListItem>
                 <ListItem>{getChainName(ChainId.ArbitrumOne)}</ListItem>
+                <ListItem>{getChainName(ChainId.Abstract)}</ListItem>
                 <ListItem>{getChainName(ChainId['AvalancheC-Chain'])}</ListItem>
                 <ListItem>{getChainName(ChainId.BNBSmartChainMainnet)}</ListItem>
                 <ListItem>{getChainName(ChainId.PolygonMainnet)}</ListItem>

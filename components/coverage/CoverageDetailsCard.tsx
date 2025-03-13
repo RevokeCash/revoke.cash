@@ -1,87 +1,74 @@
-import { formatArticleDate } from 'lib/utils/time';
-import { useTranslations } from 'next-intl';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import Button from 'components/common/Button';
+import Card from 'components/common/Card';
+import { type ActiveMembershipInfo, FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
+import { timeago } from 'lib/i18n/timeago';
+import { DAY, formatArticleDate } from 'lib/utils/time';
+import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-const getExpiryInfo = (validUntil: string | null): { text: string; isWarning: boolean; isDanger: boolean } => {
-  if (!validUntil) return { text: '', isWarning: false, isDanger: false };
-
-  const now = new Date();
-  const expiryDate = new Date(validUntil);
-  const daysUntilExpiry = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-
-  return {
-    text: `Expires in ${daysUntilExpiry} days`,
-    isWarning: daysUntilExpiry <= 60,
-    isDanger: daysUntilExpiry <= 30,
-  };
-};
-
 interface CoverageDetailsProps {
-  coverageAmount: number | null;
-  validFrom: string | null;
-  validUntil: string | null;
-  claimsCount: number | null;
-  onIncrease?: () => void;
-  className?: string;
+  membershipInfo: ActiveMembershipInfo;
 }
 
-const CoverageDetailsCard = ({
-  coverageAmount,
-  validFrom,
-  validUntil,
-  claimsCount,
-  onIncrease,
-  className,
-}: CoverageDetailsProps) => {
-  const t = useTranslations('address.coverage');
+const CoverageDetailsCard = ({ membershipInfo }: CoverageDetailsProps) => {
+  const t = useTranslations();
+  const locale = useLocale();
 
-  const expiryInfo = getExpiryInfo(validUntil);
+  const daysUntilExpiry = Math.ceil((new Date(membershipInfo.validUntil).getTime() - new Date().getTime()) / DAY);
+  const inTime = timeago.format(new Date(membershipInfo.validUntil), locale);
+
   const expiryClass = twMerge(
-    'text-sm text-gray-500 dark:text-gray-400 italic',
-    expiryInfo.isWarning && 'text-yellow-500 dark:text-yellow-400',
-    expiryInfo.isDanger && 'text-red-500 dark:text-red-400',
+    'text-sm text-zinc-500 dark:text-zinc-400 italic',
+    daysUntilExpiry <= 60 && 'text-yellow-500 dark:text-yellow-400',
+    daysUntilExpiry <= 30 && 'text-red-500 dark:text-red-400',
   );
 
   return (
-    <div className={twMerge('border border-gray-400 dark:border-gray-700 rounded-lg overflow-hidden', className)}>
-      <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 font-medium">
-        {t('membership_card_title')}
-      </div>
+    <Card
+      title={t('address.coverage.membership.title')}
+      className="py-0 justify-center flex flex-col divide-y divide-zinc-200 dark:divide-zinc-700"
+    >
+      <CoverageDetailsItem label={t('address.coverage.membership.labels.amount')}>
+        {`${membershipInfo.coverAmount} ETH`}
+        <Button style="secondary" size="sm" href={FAIRSIDE_APP_URL} external className="flex items-center gap-1.5">
+          {t('common.buttons.increase')}
+          <ArrowTopRightOnSquareIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
+        </Button>
+      </CoverageDetailsItem>
 
-      <div className="px-4 py-3 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
-        <span className="text-gray-600 dark:text-gray-400">{t('amount')}:</span>
-        <div className="text-black dark:text-white font-medium flex items-center gap-2">
-          {coverageAmount} ETH
-          {onIncrease && (
-            <button
-              type="button"
-              onClick={onIncrease}
-              className="px-3 py-1 text-sm bg-white hover:bg-white/80 text-black rounded-full transition-colors border border-gray-800 hover:shadow-[0_8px_8px_rgba(0,0,0,0.25)] duration-300 ease-in-out"
-            >
-              Increase
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="px-4 py-3 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
-        <span className="text-gray-600 dark:text-gray-400">Timeframe:</span>
+      <CoverageDetailsItem label={t('address.coverage.membership.labels.timeframe')}>
         <div className="text-right">
           <div className="text-black dark:text-white font-medium flex items-center gap-2">
-            {`${formatArticleDate(validFrom!)} - ${formatArticleDate(validUntil!)}`}
+            {`${formatArticleDate(membershipInfo.validFrom!)} - ${formatArticleDate(membershipInfo.validUntil!)}`}
           </div>
-          <div className={expiryClass}>{expiryInfo.text}</div>
+          <div className={expiryClass}>{t('address.permit2.expiration', { inTime })}</div>
         </div>
-      </div>
+      </CoverageDetailsItem>
 
-      <div className="px-4 py-3 flex justify-between items-center border-b-0 border-gray-200 dark:border-gray-700">
-        <span className="text-gray-600 dark:text-gray-400">{t('claims')}:</span>
-        <div className="text-black dark:text-white font-medium flex items-center gap-2">
-          <span className="text-amber-600 dark:text-amber-500">
-            {claimsCount === 0 ? t('no_claims') : `${claimsCount} claims`}
-          </span>
-        </div>
-      </div>
+      <CoverageDetailsItem label={t('address.coverage.membership.labels.claims')}>
+        <span className="text-amber-600 dark:text-amber-500">
+          {t('address.coverage.membership.claims', { count: membershipInfo.activeClaims.length })}
+        </span>
+      </CoverageDetailsItem>
+    </Card>
+  );
+};
+
+interface CoverageDetailsItemProps {
+  label: string;
+  children: ReactNode;
+  className?: string;
+}
+
+const CoverageDetailsItem = ({ label, children, className }: CoverageDetailsItemProps) => {
+  const classes = twMerge('py-3 flex justify-between items-center', className);
+
+  return (
+    <div className={classes}>
+      <span className="text-zinc-600 dark:text-zinc-400">{label}</span>
+      <div className="font-medium flex items-center gap-2">{children}</div>
     </div>
   );
 };

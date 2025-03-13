@@ -1,161 +1,141 @@
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import Button from 'components/common/Button';
+import Card from 'components/common/Card';
 import CopyButton from 'components/common/CopyButton';
+import ConnectButton from 'components/header/ConnectButton';
+import {
+  FAIRSIDE_APP_URL,
+  FAIRSIDE_REFERRAL_CODE,
+  getAuthenticationMessage,
+  getCoveredWallets,
+  loginUser,
+} from 'lib/coverage/fairside';
+import { isNullish } from 'lib/utils';
+import { isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
-import { twMerge } from 'tailwind-merge';
+import type { Address } from 'viem';
 import { useWalletClient } from 'wagmi';
 
 interface WalletDetailsProps {
-  isAuthenticated: boolean;
-  className?: string;
-  fsdAPI?: any;
-  walletAddress?: string;
-  token?: string | null;
-  setToken: (token: string) => void;
+  walletAddress: Address;
 }
 
 interface WalletEntry {
   walletAddress: string;
 }
 
-interface SignatureResponse {
-  message: string;
-  walletAddress: string;
-  nonce: string;
-}
-
-const WalletDetails = ({ isAuthenticated, className, fsdAPI, walletAddress, token, setToken }: WalletDetailsProps) => {
-  const t = useTranslations('address.coverage');
+const WalletDetailsCard = ({ walletAddress }: WalletDetailsProps) => {
+  const t = useTranslations();
+  const [token, setToken] = useState<string | null>(null);
   const [wallets, setWallets] = useState<WalletEntry[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { data: walletClient } = useWalletClient();
 
-  const handleAuthentication = async () => {
-    if (!fsdAPI || !walletAddress || !walletClient) {
-      console.log('fsdAPI', fsdAPI);
-      console.log('walletAddress', walletAddress);
-      console.log('walletClient', walletClient);
-      toast.error('Missing required data for authentication');
+  const isAuthenticated = !isNullish(token);
+
+  const { execute: handleAuthentication, loading: isAuthenticating } = useAsyncCallback(async () => {
+    if (!walletClient) {
+      toast.error('Please connect your wallet to authenticate');
       return;
     }
 
     try {
-      setIsLoading(true);
       // Step 1: Generate message to sign
-      const messageData = await fsdAPI.generateMessageToSign(walletAddress);
+      const messageData = await getAuthenticationMessage({ walletAddress });
       if (!messageData) {
-        toast.error('Failed to generate message to sign');
+        toast.error('Could not generate authentication message');
         return;
       }
 
       // Step 2: Request signature from user
       const signature = await walletClient.signMessage({
-        message: messageData.message as `0x${string}`,
+        message: messageData.message,
       });
 
       // Step 3: Verify signature with Fairside
-      const response = await fsdAPI.createOrLoginUser({
+      const accessToken = await loginUser({
         walletAddress,
         signature,
         nonce: messageData.nonce,
-        referralCode: 'revoke.cash',
+        referralCode: FAIRSIDE_REFERRAL_CODE,
       });
-      if (!response?.token) {
+
+      if (!accessToken) {
         toast.error('Failed to authenticate');
         return;
       }
 
-      setToken(response.token);
+      setToken(accessToken);
 
       // Step 4: Fetch wallets after successful authentication
-      const walletDataResponse = await fsdAPI.getCoveredWallets({ accessToken: response.token });
-      setWallets([{ walletAddress: walletAddress ?? '' }, ...walletDataResponse.wallets]);
+      const coveredWallets = await getCoveredWallets({ accessToken });
+      setWallets([{ walletAddress }, ...(coveredWallets ?? [])]);
     } catch (error) {
       console.error('Authentication error:', error);
-      toast.error('Failed to authenticate with Fairside');
-      setWallets([{ walletAddress: walletAddress ?? '' }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      if (isUserRejectionError(parseErrorMessage(error))) return;
 
-  const handleAddWallet = async () => {
-    try {
-      // This would need to be implemented based on Fairside's SDK
-      // Typically would open a modal or redirect to add wallet flow
-      window.open('https://app.fairside.io/', '_blank');
-    } catch (error) {
-      console.error('Error adding wallet:', error);
-      toast.error('Failed to add wallet');
+      toast.error('Failed to authenticate with Fairside');
+      setWallets([{ walletAddress }]);
     }
-  };
+  });
+
   if (!isAuthenticated) {
     return (
-      <div
-        className={twMerge('border border-gray-400 dark:border-gray-700 rounded-lg overflow-hidden h-full', className)}
-      >
-        <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 font-medium">
-          Covered Wallets
+      <Card title={t('address.coverage.wallets.title')} className="py-0">
+        <div className="p-7.25 flex flex-col gap-4 items-center justify-center text-center">
+          <p className="text-zinc-600 dark:text-zinc-400">{t('address.coverage.wallets.description')}</p>
+          {walletClient ? (
+            <Button style="secondary" size="md" onClick={handleAuthentication} loading={isAuthenticating}>
+              {isAuthenticating ? t('common.buttons.authenticating') : t('common.buttons.authenticate')}
+            </Button>
+          ) : (
+            <ConnectButton style="secondary" size="md" />
+          )}
         </div>
-        <div className="p-6 flex flex-col items-center justify-center text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Connect your wallet to view and manage your covered wallets
-          </p>
-          <button
-            type="button"
-            onClick={handleAuthentication}
-            className="px-4 py-2 bg-white hover:bg-white/80 text-black rounded-full transition-colors border border-gray-800 hover:shadow-[0_8px_8px_rgba(0,0,0,0.25)] duration-300ms ease-in-out"
-          >
-            Connect Wallet
-          </button>
-        </div>
-      </div>
+      </Card>
     );
   }
 
+  const title = (
+    <span className="flex items-center w-full justify-between">
+      <span>{t('address.coverage.wallets.title')}</span>
+      <span className="text-xs italic font-normal">
+        {wallets && wallets.length > 0 ? wallets.length : 0} / 10 {t('address.coverage.wallets.wallets')}
+      </span>
+    </span>
+  );
+
   return (
-    <div className={twMerge('border border-gray-400 dark:border-gray-700 rounded-lg overflow-hidden', className)}>
-      <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 font-medium">
-        <div>Covered Wallets{isAuthenticated && ` - ${wallets && wallets.length > 0 ? wallets.length : ''}`}</div>
-        <div className="text-xs italic">Max 10 wallets</div>
-      </div>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700 max-h-[180px] overflow-y-auto">
-        {isLoading ? (
-          <div className="p-4 text-center">Loading wallets...</div>
-        ) : (
-          wallets &&
-          Array.isArray(wallets) &&
-          wallets.map((wallet) => (
-            <div key={wallet.walletAddress} className="px-4 py-3 flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="rounded-full flex items-center justify-center text-sm font-medium">
-                  {wallets.indexOf(wallet) + 1}.
+    <Card title={title} className="py-0">
+      <div className="divide-y divide-zinc-200 dark:divide-zinc-700 min-h-[90px] max-h-[180px] overflow-y-auto">
+        {wallets && Array.isArray(wallets)
+          ? wallets.map((wallet, index) => (
+              <div key={wallet.walletAddress} className="py-3 flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-full flex items-center justify-center text-sm font-medium">{index + 1}.</div>
+                  <span className="flex items-center gap-1 font-mono text-sm text-zinc-600 dark:text-zinc-300">
+                    {shortenAddress(wallet.walletAddress, 8)}
+                    <CopyButton content={wallet.walletAddress} />
+                  </span>
                 </div>
-                <span className="font-mono text-sm text-gray-600 dark:text-gray-400">
-                  {wallet.walletAddress.slice(0, 6)}...{wallet.walletAddress.slice(-4)}
-                </span>
-                <CopyButton content={wallet.walletAddress} />
               </div>
-              {/* <span className="text-sm font-medium">
-                {wallet.chain}
-              </span> */}
-            </div>
-          ))
-        )}
+            ))
+          : null}
+        <div />
       </div>
       {wallets && wallets.length < 10 && (
-        <div className="p-4 flex justify-center border-t border-gray-200 dark:border-gray-700">
-          <button
-            type="button"
-            onClick={handleAddWallet}
-            className="px-4 py-2 bg-white hover:bg-white/80 text-black rounded-full transition-colors border border-gray-800 hover:shadow-[0_8px_8px_rgba(0,0,0,0.25)] duration-300ms ease-in-out"
-          >
-            Add Wallet
-          </button>
+        <div className="p-4 flex justify-center">
+          <Button style="secondary" size="md" href={FAIRSIDE_APP_URL} external className="flex items-center gap-2">
+            {t('address.coverage.wallets.add')}
+            <ArrowTopRightOnSquareIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
+          </Button>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 
-export default WalletDetails;
+export default WalletDetailsCard;

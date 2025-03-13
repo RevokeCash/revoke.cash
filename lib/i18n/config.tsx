@@ -1,5 +1,6 @@
 import Href from 'components/common/Href';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
+import { FAIRSIDE_LANDING_URL } from 'lib/coverage/fairside';
 import type { RichTranslationValues } from 'next-intl';
 import { defineRouting } from 'next-intl/routing';
 import { getRequestConfig } from 'next-intl/server';
@@ -81,7 +82,7 @@ export const defaultTranslationValues: RichTranslationValues = {
     </Href>
   ),
   'fairside-link': (children) => (
-    <Href href="https://fairside.io" className="font-medium" underline="hover" html external>
+    <Href href={FAIRSIDE_LANDING_URL} className="font-medium" underline="hover" html external>
       {children}
     </Href>
   ),
