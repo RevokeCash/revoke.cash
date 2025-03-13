@@ -165,7 +165,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.HorizenGobiTestnet,
   ChainId.IOTAEVMTestnet,
   ChainId.ZetaChainTestnet,
-  ChainId.BerachainbArtio,
   ChainId.MonadTestnet,
   ChainId.BeamTestnet,
   ChainId.TabiTestnet,
@@ -324,7 +323,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.ArbitrumOne,
   }),
   [ChainId.Astar]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Astar,
     name: 'Astar',
     logoUrl: '/assets/images/vendor/chains/astar.svg',
@@ -349,7 +348,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.AstarzkEVM]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.AstarzkEVM,
     name: 'Astar zkEVM',
     logoUrl: '/assets/images/vendor/chains/astar.svg',
@@ -358,7 +357,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.AuroraMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.AuroraMainnet,
     name: 'Aurora',
     logoUrl: '/assets/images/vendor/chains/aurora.svg',
@@ -528,18 +527,8 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.BerachainbArtio]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.BerachainbArtio,
-    name: 'Berachain bArtio',
-    logoUrl: '/assets/images/vendor/chains/berachain.svg',
-    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/testnet/evm/80084/etherscan/api',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Berachain,
-  }),
   [ChainId.BitgertMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.BitgertMainnet,
     name: 'Bitgert',
     logoUrl: '/assets/images/vendor/chains/bitgert.svg',
@@ -563,7 +552,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.BitrockMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.BitrockMainnet,
     name: 'Bitrock',
     logoUrl: '/assets/images/vendor/chains/bitrock.svg',
@@ -654,7 +643,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.BNBSmartChainMainnet,
   }),
   [ChainId.BOB]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.BOB,
     name: 'BOB',
     logoUrl: '/assets/images/vendor/chains/bob.svg',
@@ -682,7 +671,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.CallistoMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.CallistoMainnet,
     name: 'Callisto',
     logoUrl: '/assets/images/vendor/chains/callisto.png',
@@ -706,7 +695,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Canto]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Canto,
     name: 'Canto',
     logoUrl: '/assets/images/vendor/chains/canto.svg',
@@ -766,7 +755,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.ChilizChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ChilizChainMainnet,
     name: 'Chiliz',
     logoUrl: '/assets/images/vendor/chains/chiliz.png',
@@ -829,7 +818,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.CrabNetwork]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.CrabNetwork,
     name: 'Crab',
     logoUrl: '/assets/images/vendor/chains/crab.svg',
@@ -843,7 +832,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.CreatorChainTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.CreatorChainTestnet,
     name: 'Creator Chain Testnet',
     logoUrl: '/assets/images/vendor/chains/creator-chain.png',
@@ -853,7 +842,7 @@ export const CHAINS = {
     correspondingMainnetChainId: 12345678902,
   }),
   [ChainId.CronosMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.CronosMainnet,
     name: 'Cronos',
     logoUrl: '/assets/images/vendor/chains/cronos.svg',
@@ -876,7 +865,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.CronosTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.CronosTestnet,
     name: 'Cronos Testnet',
     logoUrl: '/assets/images/vendor/chains/cronos.svg',
@@ -886,7 +875,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.CronosMainnet,
   }),
   [ChainId.DarwiniaNetwork]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.DarwiniaNetwork,
     name: 'Darwinia',
     logoUrl: '/assets/images/vendor/chains/darwinia.svg',
@@ -895,7 +884,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.DegenChain]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.DegenChain,
     name: 'Degen Chain',
     logoUrl: '/assets/images/vendor/chains/degen.png',
@@ -907,7 +896,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.DogechainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.DogechainMainnet,
     name: 'Dogechain',
     logoUrl: '/assets/images/vendor/chains/dogechain.jpg',
@@ -916,7 +905,7 @@ export const CHAINS = {
     priceStrategy: undefined, // All stablecoins on Dogechain are depegged
   }),
   [ChainId.ElastosSmartChain]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ElastosSmartChain,
     name: 'Elastos',
     logoUrl: '/assets/images/vendor/chains/elastos.jpg',
@@ -963,7 +952,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.EOSEVMNetwork]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.EOSEVMNetwork,
     name: 'EOS EVM',
     logoUrl: '/assets/images/vendor/chains/eos.svg',
@@ -983,7 +972,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.EthereumClassic]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.EthereumClassic,
     name: 'Ethereum Classic',
     logoUrl: '/assets/images/vendor/chains/etc.png',
@@ -1098,7 +1087,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.FantomOpera,
   }),
   [ChainId.FlareMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.FlareMainnet,
     name: 'Flare',
     logoUrl: '/assets/images/vendor/chains/flare.svg',
@@ -1118,7 +1107,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.FlowEVMMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.FlowEVMMainnet,
     name: 'Flow EVM',
     logoUrl: '/assets/images/vendor/chains/flow.png',
@@ -1148,7 +1137,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Fraxtal,
   }),
   [ChainId.FuseMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.FuseMainnet,
     name: 'Fuse',
     logoUrl: '/assets/images/vendor/chains/fuse.png',
@@ -1205,7 +1194,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.GoldXChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.GoldXChainMainnet,
     name: 'GoldX',
     logoUrl: '/assets/images/vendor/chains/goldx.jpg',
@@ -1213,7 +1202,7 @@ export const CHAINS = {
     priceStrategy: undefined, // < $100k Liquidity
   }),
   [ChainId.GravityAlphaMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.GravityAlphaMainnet,
     name: 'Gravity Alpha',
     logoUrl: '/assets/images/vendor/chains/gravity.svg',
@@ -1222,7 +1211,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.HarmonyMainnetShard0]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.HarmonyMainnetShard0,
     name: 'Harmony',
     logoUrl: '/assets/images/vendor/chains/harmony.svg',
@@ -1248,7 +1237,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.EthereumMainnet,
   }),
   [ChainId.HorizenEONMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.HorizenEONMainnet,
     name: 'Horizen EON',
     logoUrl: '/assets/images/vendor/chains/horizen.png',
@@ -1259,7 +1248,7 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.HorizenGobiTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.HorizenGobiTestnet,
     name: 'Horizen Gobi',
     logoUrl: '/assets/images/vendor/chains/horizen.png',
@@ -1275,7 +1264,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/heco.svg',
   }),
   [999]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: 999,
     name: 'Hyperliquid EVM',
     nativeToken: 'HYPE',
@@ -1291,7 +1280,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ImmutablezkEVM]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ImmutablezkEVM,
     name: 'Immutable zkEVM',
     logoUrl: '/assets/images/vendor/chains/immutable.svg',
@@ -1299,7 +1288,7 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.InEVMMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.InEVMMainnet,
     name: 'inEVM',
     logoUrl: '/assets/images/vendor/chains/injective.svg',
@@ -1320,7 +1309,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.IOTAEVM]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.IOTAEVM,
     name: 'IOTA EVM',
     logoUrl: '/assets/images/vendor/chains/iota.svg',
@@ -1329,7 +1318,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.IOTAEVMTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.IOTAEVMTestnet,
     name: 'IOTA EVM Testnet',
     logoUrl: '/assets/images/vendor/chains/iota.svg',
@@ -1350,7 +1339,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/kaia.svg',
   }),
   [ChainId.KardiaChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.KardiaChainMainnet,
     name: 'KardiaChain',
     logoUrl: '/assets/images/vendor/chains/kardiachain.svg',
@@ -1383,7 +1372,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Kroma]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Kroma,
     name: 'Kroma',
     logoUrl: '/assets/images/vendor/chains/kroma.svg',
@@ -1394,7 +1383,7 @@ export const CHAINS = {
     priceStrategy: undefined,
   }),
   [ChainId.KromaSepolia]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.KromaSepolia,
     name: 'Kroma Sepolia',
     logoUrl: '/assets/images/vendor/chains/kroma.svg',
@@ -1405,7 +1394,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Kroma,
   }),
   [ChainId.LightlinkPhoenixMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.LightlinkPhoenixMainnet,
     name: 'Lightlink',
     logoUrl: '/assets/images/vendor/chains/lightlink.jpg',
@@ -1444,7 +1433,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Linea,
   }),
   // [ChainId.LUKSOMainnet]: new Chain({
-  //   type: SupportType.ETHERSCAN_COMPATIBLE,
+  //   type: SupportType.BLOCKSCOUT,
   //   chainId: ChainId.LUKSOMainnet,
   //   name: 'LUKSO',
   //   logoUrl: '/assets/images/vendor/chains/lukso.svg',
@@ -1452,7 +1441,7 @@ export const CHAINS = {
   //   deployedContracts: { ...MULTICALL },
   // }),
   // [ChainId.LUKSOTestnet]: new Chain({
-  //   type: SupportType.ETHERSCAN_COMPATIBLE,
+  //   type: SupportType.BLOCKSCOUT,
   //   chainId: ChainId.LUKSOTestnet,
   //   name: 'LUKSO Testnet',
   //   logoUrl: '/assets/images/vendor/chains/lukso.svg',
@@ -1462,7 +1451,7 @@ export const CHAINS = {
   //   correspondingMainnetChainId: ChainId.LUKSOMainnet,
   // }),
   [ChainId.Lisk]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Lisk,
     name: 'Lisk',
     etherscanCompatibleApiUrl: 'https://blockscout.lisk.com/api',
@@ -1471,7 +1460,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.MantaPacificMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.MantaPacificMainnet,
     name: 'Manta Pacific',
     logoUrl: '/assets/images/vendor/chains/manta-pacific.svg',
@@ -1484,7 +1473,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Mantle]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Mantle,
     name: 'Mantle',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
@@ -1529,7 +1518,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.MantleSepoliaTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.MantleSepoliaTestnet,
     name: 'Mantle Sepolia',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
@@ -1582,7 +1571,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.MilkomedaC1Mainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.MilkomedaC1Mainnet,
     name: 'Milkomeda C1',
     logoUrl: '/assets/images/vendor/chains/milkomeda.svg',
@@ -1591,7 +1580,7 @@ export const CHAINS = {
     priceStrategy: undefined, // No liquid stablecoins
   }),
   [ChainId.MintMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.MintMainnet,
     name: 'Mint',
     logoUrl: '/assets/images/vendor/chains/mint.svg',
@@ -1600,7 +1589,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Mode]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Mode,
     name: 'Mode',
     logoUrl: '/assets/images/vendor/chains/mode.jpg',
@@ -1675,7 +1664,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Morph]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Morph,
     name: 'Morph',
     logoUrl: '/assets/images/vendor/chains/morph.svg',
@@ -1687,7 +1676,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.MorphHolesky]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.MorphHolesky,
     name: 'Morph Holesky',
     logoUrl: '/assets/images/vendor/chains/morph.svg',
@@ -1701,7 +1690,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Morph,
   }),
   [ChainId.Nahmii3Mainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Nahmii3Mainnet,
     name: 'Nahmii',
     logoUrl: '/assets/images/vendor/chains/nahmii.svg',
@@ -1710,7 +1699,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.NeonEVMMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.NeonEVMMainnet,
     name: 'Neon',
     logoUrl: '/assets/images/vendor/chains/neon.svg',
@@ -1745,7 +1734,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.NeoXMainnet,
   }),
   // [ChainId.NumbersMainnet]: new Chain({
-  //   type: SupportType.ETHERSCAN_COMPATIBLE,
+  //   type: SupportType.BLOCKSCOUT,
   //   chainId: ChainId.NumbersMainnet,
   //   name: 'Numbers',
   //   // logoUrl: '/assets/images/vendor/chains/numbers.png',
@@ -1780,7 +1769,7 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.OasysMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.OasysMainnet,
     name: 'Oasys',
     logoUrl: '/assets/images/vendor/chains/oasys.svg',
@@ -1799,7 +1788,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.OctaSpace]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.OctaSpace,
     name: 'OctaSpace',
     logoUrl: '/assets/images/vendor/chains/octaspace.png',
@@ -1904,7 +1893,7 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.PegoNetwork]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.PegoNetwork,
     name: 'Pego',
     logoUrl: '/assets/images/vendor/chains/pego.jpg',
@@ -1989,7 +1978,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.PolygonzkEVM,
   }),
   [ChainId.PulseChain]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.PulseChain,
     name: 'PulseChain',
     logoUrl: '/assets/images/vendor/chains/pulsechain.png',
@@ -2010,7 +1999,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.RARIChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.RARIChainMainnet,
     name: 'RARI Chain',
     logoUrl: '/assets/images/vendor/chains/rari.svg',
@@ -2023,7 +2012,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId['Re.al']]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId['Re.al'],
     name: 'Re.al',
     logoUrl: '/assets/images/vendor/chains/re-al.svg',
@@ -2032,7 +2021,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Redstone]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Redstone,
     name: 'Redstone',
     logoUrl: '/assets/images/vendor/chains/redstone.svg',
@@ -2092,7 +2081,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.RootstockMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.RootstockMainnet,
     name: 'Rootstock',
     logoUrl: '/assets/images/vendor/chains/rootstock.jpg',
@@ -2102,7 +2091,7 @@ export const CHAINS = {
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
   }),
   [ChainId.RSS3VSLMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.RSS3VSLMainnet,
     name: 'RSS3 VSL',
     logoUrl: '/assets/images/vendor/chains/rss3.svg',
@@ -2111,7 +2100,7 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.RSS3VSLSepoliaTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.RSS3VSLSepoliaTestnet,
     name: 'RSS3 VSL Sepolia',
     logoUrl: '/assets/images/vendor/chains/rss3.svg',
@@ -2121,7 +2110,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.RSS3VSLMainnet,
   }),
   [ChainId.Sanko]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Sanko,
     name: 'Sanko',
     logoUrl: '/assets/images/vendor/chains/sanko.webp',
@@ -2157,7 +2146,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Scroll,
   }),
   [ChainId.SeiNetwork]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.SeiNetwork,
     name: 'Sei',
     logoUrl: '/assets/images/vendor/chains/sei.svg',
@@ -2190,7 +2179,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Shibarium]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Shibarium,
     name: 'Shibarium',
     logoUrl: '/assets/images/vendor/chains/shibarium.svg',
@@ -2199,7 +2188,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Shiden]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Shiden,
     name: 'Shiden',
     logoUrl: '/assets/images/vendor/chains/shiden.svg',
@@ -2213,7 +2202,7 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.ShidoNetwork]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ShidoNetwork,
     name: 'Shido',
     logoUrl: '/assets/images/vendor/chains/shido.png',
@@ -2225,7 +2214,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ShimmerEVM]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ShimmerEVM,
     name: 'Shimmer',
     logoUrl: '/assets/images/vendor/chains/shimmer.svg',
@@ -2234,9 +2223,10 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Soneium]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Soneium,
     name: 'Soneium',
+    logoUrl: '/assets/images/vendor/chains/soneium.png',
     explorerUrl: 'https://soneium.blockscout.com',
     etherscanCompatibleApiUrl: 'https://soneium.blockscout.com/api',
     rpc: {
@@ -2250,8 +2240,8 @@ export const CHAINS = {
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SonicMainnet,
     name: 'Sonic',
-    explorerUrl: 'https://sonicscan.org',
     logoUrl: '/assets/images/vendor/chains/sonic.svg',
+    explorerUrl: 'https://sonicscan.org',
     etherscanCompatibleApiUrl: 'https://api.sonicscan.org/api',
     rpc: {
       main: `https://sonic-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -2260,7 +2250,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId['SongbirdCanary-Network']]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId['SongbirdCanary-Network'],
     name: 'Songbird',
     logoUrl: '/assets/images/vendor/chains/songbird.svg',
@@ -2283,7 +2273,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Story]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Story,
     name: 'Story',
     logoUrl: '/assets/images/vendor/chains/story.svg',
@@ -2295,7 +2285,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Superposition]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Superposition,
     name: 'Superposition',
     logoUrl: '/assets/images/vendor/chains/superposition.svg',
@@ -2304,7 +2294,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.SyscoinMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.SyscoinMainnet,
     name: 'Syscoin',
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
@@ -2316,7 +2306,7 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.SyscoinTanenbaumTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.SyscoinTanenbaumTestnet,
     name: 'Syscoin Tanenbaum',
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
@@ -2326,7 +2316,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.SyscoinMainnet,
   }),
   [ChainId.TabiTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.TabiTestnet,
     name: 'Tabi Testnet',
     logoUrl: '/assets/images/vendor/chains/tabi.svg',
@@ -2386,7 +2376,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Vana]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Vana,
     name: 'Vana',
     logoUrl: '/assets/images/vendor/chains/vana.png',
@@ -2394,7 +2384,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.VelasEVMMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.VelasEVMMainnet,
     name: 'Velas',
     logoUrl: '/assets/images/vendor/chains/velas.svg',
@@ -2493,7 +2483,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZetaChainTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ZetaChainTestnet,
     name: 'ZetaChain Testnet',
     logoUrl: '/assets/images/vendor/chains/zetachain.svg',
@@ -2507,7 +2497,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.ZetaChainMainnet,
   }),
   [ChainId.ZetaChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ZetaChainMainnet,
     name: 'ZetaChain',
     logoUrl: '/assets/images/vendor/chains/zetachain.svg',
@@ -2520,7 +2510,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZKFairMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ZKFairMainnet,
     name: 'ZKFair',
     logoUrl: '/assets/images/vendor/chains/zkfair.svg',
@@ -2582,7 +2572,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.ZkSyncMainnet,
   }),
   [ChainId.Zora]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Zora,
     name: 'Zora',
     logoUrl: '/assets/images/vendor/chains/zora.svg',
@@ -2619,6 +2609,10 @@ export const ETHERSCAN_SUPPORTED_CHAINS = Object.values(CHAINS)
   .filter((chain) => chain.type === SupportType.ETHERSCAN_COMPATIBLE)
   .map((chain) => chain.chainId);
 
+export const BLOCKSCOUT_SUPPORTED_CHAINS = Object.values(CHAINS)
+  .filter((chain) => chain.type === SupportType.BLOCKSCOUT)
+  .map((chain) => chain.chainId);
+
 export type DocumentedChainId = keyof typeof CHAINS;
 
 export const getChainConfig = (chainId: DocumentedChainId): Chain => {
@@ -2646,6 +2640,10 @@ export const isCovalentSupportedChain = (chainId: DocumentedChainId): boolean =>
 
 export const isEtherscanSupportedChain = (chainId: DocumentedChainId): boolean => {
   return getChainConfig(chainId).type === SupportType.ETHERSCAN_COMPATIBLE;
+};
+
+export const isBlockScoutSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.BLOCKSCOUT;
 };
 
 export const isNodeSupportedChain = (chainId: DocumentedChainId): boolean => {

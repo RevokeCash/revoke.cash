@@ -32,7 +32,7 @@ const getEventPrerequisites = async (chainId: DocumentedChainId, address: Addres
   const [openSeaProxy, fromBlock, toBlock, nonce, isLoggedIn] = await Promise.all([
     getOpenSeaProxyAddress(address),
     0,
-    publicClient.getBlockNumber().then((blockNumber) => Number(blockNumber)),
+    logsProvider.getLatestBlock(),
     publicClient.getTransactionCount({ address }),
     apiLogin(),
   ]);

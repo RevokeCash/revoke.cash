@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   }
 
-  const chainId = Number.parseInt(chainIdString, 10);
+  const chainId = Number(chainIdString);
 
   const contract: Erc721TokenContract = {
     abi: ERC721_ABI,

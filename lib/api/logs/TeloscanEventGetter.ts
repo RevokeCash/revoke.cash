@@ -1,4 +1,4 @@
-import ky from 'lib/ky';
+import ky, { retryOn429 } from 'lib/ky';
 import { isNullish } from 'lib/utils';
 import type { Filter, Log } from 'lib/utils/events';
 import { getAddress } from 'viem';
@@ -7,13 +7,22 @@ import { RequestQueue } from './RequestQueue';
 
 // This file is modified from the EtherscanEventGetter file
 
-interface Response {
+interface LogsResponse {
   code: number;
   success: boolean;
   total_count: number;
   more: boolean;
   message: string;
   results: Log[];
+}
+
+interface LatestBlockResponse {
+  code: number;
+  success: boolean;
+  message: string;
+  results: Array<{
+    blockNumber: number;
+  }>;
 }
 
 export class TeloscanEventGetter implements EventGetter {
@@ -24,13 +33,25 @@ export class TeloscanEventGetter implements EventGetter {
     this.queue = new RequestQueue('teloscan', { interval: 1000, intervalCap: 5 });
   }
 
-  async getEvents(chainId: number, filter: Filter, page: number = 0): Promise<Log[]> {
+  async getLatestBlock(_chainId: number): Promise<number> {
+    const { apiUrl, searchParams } = prepareTeloscanGetLatestBlockQuery(this.apiUrl);
+    const result = await this.queue.add(() =>
+      ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>(),
+    );
+
+    const blockNumber = result?.results[0]?.blockNumber;
+    if (!blockNumber) throw new Error('Failed to get latest block number');
+
+    return blockNumber;
+  }
+
+  async getEvents(_chainId: number, filter: Filter, page: number = 0): Promise<Log[]> {
     const { apiUrl, searchParams } = prepareTeloscanGetLogsQuery(filter, page, this.apiUrl);
 
-    let data: Response;
+    let data: LogsResponse;
     try {
       data = await retryOn429(() =>
-        this.queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<Response>()),
+        this.queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LogsResponse>()),
       );
     } catch (e) {
       console.log(e);
@@ -44,7 +65,7 @@ export class TeloscanEventGetter implements EventGetter {
 
     if (data.more) {
       if (page === 25) throw new Error('Could not retrieve event logs from the blockchain');
-      return [...data.results.map(formatTeloscanEvent), ...(await this.getEvents(chainId, filter, page + 1))];
+      return [...data.results.map(formatTeloscanEvent), ...(await this.getEvents(_chainId, filter, page + 1))];
     }
 
     return (
@@ -55,6 +76,10 @@ export class TeloscanEventGetter implements EventGetter {
     );
   }
 }
+
+const prepareTeloscanGetLatestBlockQuery = (baseUrl: string) => {
+  return { apiUrl: `${baseUrl}/blocks`, searchParams: { limit: 1 } };
+};
 
 const prepareTeloscanGetLogsQuery = (filter: Filter, page: number, baseUrl: string) => {
   const [topic0, ...topics] = (filter.topics ?? []).map((topic) =>
@@ -90,16 +115,3 @@ const formatTeloscanEvent = (teloscanLog: Log) => ({
   logIndex: teloscanLog.logIndex,
   timestamp: teloscanLog.timestamp ? Math.floor(teloscanLog.timestamp / 1000) : undefined,
 });
-
-const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
-  try {
-    return await fn();
-  } catch (e) {
-    if ((e as any).message.includes('429')) {
-      console.error('Teloscan: Rate limit reached, retrying...');
-      return retryOn429(fn);
-    }
-
-    throw e;
-  }
-};

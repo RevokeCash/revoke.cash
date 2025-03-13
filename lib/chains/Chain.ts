@@ -40,12 +40,13 @@ export interface ChainOptions {
 export type DeployedContracts = Record<string, { address: Address }>;
 
 export enum SupportType {
-  PROVIDER = 'provider',
-  ETHERSCAN_COMPATIBLE = 'etherscan_compatible',
-  COVALENT = 'covalent',
-  BACKEND_NODE = 'backend_node',
-  BACKEND_CUSTOM = 'backend_custom',
-  UNSUPPORTED = 'unsupported',
+  PROVIDER = 'PROVIDER',
+  ETHERSCAN_COMPATIBLE = 'ETHERSCAN_COMPATIBLE',
+  BLOCKSCOUT = 'BLOCKSCOUT', // Note that this is mostly Etherscan Compatible, with slight differences in the API
+  COVALENT = 'COVALENT',
+  BACKEND_NODE = 'BACKEND_NODE',
+  BACKEND_CUSTOM = 'BACKEND_CUSTOM',
+  UNSUPPORTED = 'UNSUPPORTED',
 }
 
 export class Chain {
