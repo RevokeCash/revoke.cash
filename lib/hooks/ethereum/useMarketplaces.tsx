@@ -61,7 +61,7 @@ export const useMarketplaces = () => {
       approvalFilterAddress: '0x1E0049783F008A0085193E00003D00cd54003c71',
       cancelSignatures: async (walletClient: WalletClient): Promise<Hash> => {
         return walletClient.writeContract({
-          address: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
+          address: '0x0000000000000068F116a894984e2DB1123eB395',
           abi: OPENSEA_SEAPORT_ABI,
           account: await getWalletAddress(walletClient),
           functionName: 'incrementCounter',
@@ -70,7 +70,7 @@ export const useMarketplaces = () => {
         });
       },
       getFilter: (address: Address) => ({
-        address: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
+        address: '0x0000000000000068F116a894984e2DB1123eB395',
         topics: [
           toEventSelector(getAbiItem({ abi: OPENSEA_SEAPORT_ABI, name: 'CounterIncremented' })),
           addressToTopic(address),
