@@ -32,7 +32,7 @@ export async function POST(req: NextRequest, { params }: Props) {
   const sql = neon(process.env.MERCH_CODES_DATABASE_URL);
 
   const body = await req.json();
-  const chainId = Number.parseInt(chainIdString, 10);
+  const chainId = Number(chainIdString);
   const publicClient = createViemPublicClientForChain(chainId);
   const chainName = getChainName(chainId);
 

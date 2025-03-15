@@ -1,12 +1,21 @@
 import ky from 'lib/ky';
 import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
-import { createViemPublicClientForChain, getChainLogsRpcUrl, isBackendSupportedChain } from './utils/chains';
+import {
+  createViemPublicClientForChain,
+  getChainLogsRpcUrl,
+  isBackendSupportedChain,
+  isCovalentSupportedChain,
+} from './utils/chains';
 import { isLogResponseSizeError } from './utils/errors';
 import type { Filter, Log } from './utils/events';
 
+// It is important that we get the latest block number from the same source as the logs, otherwise we may get
+// inconsistent results (e.g. if we get the latest block number from node and then request logs from Etherscan,
+// the logs may be from a different blocks)
 export interface LogsProvider {
   chainId: number;
+  getLatestBlock(): Promise<number>;
   getLogs(filter: Filter): Promise<Array<Log>>;
 }
 
@@ -17,7 +26,17 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
     return this.underlyingProvider.chainId;
   }
 
+  async getLatestBlock(): Promise<number> {
+    return this.underlyingProvider.getLatestBlock();
+  }
+
   async getLogs(filter: Filter): Promise<Log[]> {
+    // We pre-emptively split the requests for Covalent-supported chains, to limit potential downsides when
+    // we potentially need to divide-and-conquer the requests down the line
+    if (isCovalentSupportedChain(this.chainId) && filter.toBlock - filter.fromBlock > 5_000_000) {
+      return this.divideAndConquer(filter);
+    }
+
     try {
       const result = await this.underlyingProvider.getLogs(filter);
       return result;
@@ -48,6 +67,14 @@ export class BackendLogsProvider implements LogsProvider {
     this.queue = new RequestQueue(String(chainId), { interval: 200, intervalCap: 1 }, 'p-queue');
   }
 
+  async getLatestBlock(): Promise<number> {
+    const result = await this.queue.add(() =>
+      ky.get(`/api/${this.chainId}/block`, { timeout: false }).json<{ blockNumber: number }>(),
+    );
+
+    return result.blockNumber;
+  }
+
   async getLogs(filter: Filter): Promise<Log[]> {
     try {
       return await this.queue.add(() =>
@@ -67,6 +94,10 @@ export class ViemLogsProvider implements LogsProvider {
     url?: string,
   ) {
     this.client = createViemPublicClientForChain(chainId, url ?? getChainLogsRpcUrl(chainId));
+  }
+
+  async getLatestBlock(): Promise<number> {
+    return Number(await this.client.getBlockNumber());
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {

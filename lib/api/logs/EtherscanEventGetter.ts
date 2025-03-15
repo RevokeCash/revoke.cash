@@ -1,4 +1,4 @@
-import ky from 'lib/ky';
+import ky, { retryOn429 } from 'lib/ky';
 import { isNullish } from 'lib/utils';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
@@ -12,7 +12,7 @@ import { type Address, type Hash, type Hex, getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
 
-interface Response {
+interface LogsResponse {
   status: string;
   message: string;
   result: string | Array<EtherscanLog>;
@@ -29,8 +29,14 @@ interface EtherscanLog {
   logIndex: Hex;
 }
 
+interface LatestBlockResponse {
+  status: string;
+  message: string;
+  result: string;
+}
+
 export class EtherscanEventGetter implements EventGetter {
-  private queues: { [chainId: number]: RequestQueue };
+  protected queues: { [chainId: number]: RequestQueue };
 
   constructor() {
     const queueEntries = ETHERSCAN_SUPPORTED_CHAINS.map((chainId) => [
@@ -40,17 +46,33 @@ export class EtherscanEventGetter implements EventGetter {
     this.queues = Object.fromEntries(queueEntries);
   }
 
+  async getLatestBlock(chainId: number): Promise<number> {
+    const apiUrl = getChainApiUrl(chainId)!;
+    const apiKey = getChainApiKey(chainId);
+    const queue = this.queues[chainId]!;
+
+    const searchParams = prepareGetLatestBlockQuery(apiKey);
+
+    const result = await retryOn429(() =>
+      queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>()),
+    );
+
+    const blockNumber = Number(result.result);
+    if (!blockNumber) throw new Error('Failed to get latest block number');
+    return blockNumber;
+  }
+
   async getEvents(chainId: number, filter: Filter, page: number = 1): Promise<Log[]> {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const searchParams = prepareEtherscanGetLogsQuery(filter, page, apiKey);
+    const searchParams = prepareGetLogsQuery(filter, page, apiKey);
 
-    let data: Response;
+    let data: LogsResponse;
     try {
       data = await retryOn429(() =>
-        queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<Response>()),
+        queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LogsResponse>()),
       );
     } catch (e) {
       console.log(e);
@@ -103,7 +125,22 @@ export class EtherscanEventGetter implements EventGetter {
   }
 }
 
-const prepareEtherscanGetLogsQuery = (filter: Filter, page: number, apiKey?: string) => {
+const prepareGetLatestBlockQuery = (apiKey?: string) => {
+  const timestamp = Math.floor(Date.now() / 1000);
+
+  const query = {
+    module: 'block',
+    action: 'getblocknobytime',
+    timestamp: String(timestamp),
+    closest: 'before',
+    apiKey,
+  };
+
+  // Remove 'undefined' values from the query
+  return JSON.parse(JSON.stringify(query));
+};
+
+const prepareGetLogsQuery = (filter: Filter, page: number, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
     typeof topic === 'string' ? topic.toLowerCase() : topic,
   );
@@ -138,22 +175,8 @@ const formatEtherscanEvent = (etherscanLog: EtherscanLog): Log => ({
   topics: etherscanLog.topics.filter((topic: string) => !isNullish(topic)) as [topic0: Hex, ...rest: Hex[]],
   data: etherscanLog.data,
   transactionHash: etherscanLog.transactionHash,
-  blockNumber: Number.parseInt(etherscanLog.blockNumber, 16) || 0,
-  transactionIndex: Number.parseInt(etherscanLog.transactionIndex, 16) || 0,
-  logIndex: Number.parseInt(etherscanLog.logIndex, 16) || 0,
-  timestamp: Number.parseInt(etherscanLog.timeStamp, 16) || undefined,
+  blockNumber: Number(etherscanLog.blockNumber) || 0,
+  transactionIndex: Number(etherscanLog.transactionIndex) || 0,
+  logIndex: Number(etherscanLog.logIndex) || 0,
+  timestamp: Number(etherscanLog.timeStamp) || undefined,
 });
-
-// Certain Blockscout instances will return a 429 error if we hit the rate limit instead of a 200 response with the error message
-const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
-  try {
-    return await fn();
-  } catch (e) {
-    if ((e as any).message.includes('429')) {
-      console.error('Etherscan: Rate limit reached, retrying...');
-      return retryOn429(fn);
-    }
-
-    throw e;
-  }
-};

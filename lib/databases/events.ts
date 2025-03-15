@@ -24,9 +24,10 @@ class EventsDB extends Dexie {
   constructor() {
     super('Events');
 
-    // On 2024-11-28, we found a bug with the formatting of specific events, which requires a full re-index of all events.
-    // Because this is a full re-index, we removed previous database migrations since those are no longer relevant.
-    this.version(2024_11_28)
+    // On 2025-03-13, we moved to using the logs provider's getLatestBlock method to get the latest block number to
+    // prevent any discrepancies between the public client's block number and the logs provider's block number
+    // We do a full re-index to ensure that we're not missing any events due to this change
+    this.version(2025_03_13)
       .stores({
         events: '[chainId+topicsKey], chainId, topics, toBlock',
       })
@@ -71,8 +72,8 @@ class EventsDB extends Dexie {
           (log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock,
         );
       }
-      const newLogs = await logsProvider.getLogs({ ...filter, fromBlock, toBlock });
 
+      const newLogs = await logsProvider.getLogs({ ...filter, fromBlock, toBlock });
       const logs = [...(storedEvents?.logs || []), ...newLogs];
 
       await this.events.put({ chainId, address, topicsKey, topics, toBlock, logs });
@@ -82,14 +83,6 @@ class EventsDB extends Dexie {
       // If there is an error, we just return the logs from the provider (may be the case if IndexedDB is not supported)
       if (e instanceof Dexie.DexieError) {
         return logsProvider.getLogs(filter);
-      }
-
-      // Covalent can have issues with keeping up with the chain, so if we cannot find the block, we try again with a smaller toBlock
-      if (e instanceof Error && e.message.includes('Requested block range is out of bounds')) {
-        const latestKnownBlock = Number(e.message.match(/\d+ > (\d+)/)?.[1]);
-        if (latestKnownBlock) {
-          return this.getLogsInternal(logsProvider, { ...filter, toBlock: latestKnownBlock }, chainId);
-        }
       }
 
       throw e;

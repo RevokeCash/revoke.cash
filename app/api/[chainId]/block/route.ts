@@ -11,7 +11,7 @@ interface Params {
   chainId: string;
 }
 
-export async function POST(req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, { params }: Props) {
   const { chainId: chainIdString } = await params;
 
   if (!(await checkActiveSessionEdge(req))) {
@@ -23,12 +23,11 @@ export async function POST(req: NextRequest, { params }: Props) {
   }
 
   const chainId = Number(chainIdString);
-  const body = await req.json();
 
   try {
     const eventGetter = getEventGetter(chainId);
-    const events = await eventGetter.getEvents(chainId, body);
-    return new Response(JSON.stringify(events), { status: 200 });
+    const blockNumber = await eventGetter.getLatestBlock(chainId);
+    return new Response(JSON.stringify({ blockNumber }), { status: 200 });
   } catch (e) {
     console.error('Error occurred', parseErrorMessage(e));
 

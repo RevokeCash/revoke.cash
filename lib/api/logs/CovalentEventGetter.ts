@@ -17,14 +17,21 @@ export class CovalentEventGetter implements EventGetter {
     this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
   }
 
-  async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
+  async getLatestBlock(chainId: number): Promise<number> {
     if (!this.apiKey) throw new Error('Covalent API key is not set');
 
-    const latestBlock = await this.queue.add(() => this.getLatestBlock(chainId));
+    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/block_v2/latest/`;
+    const headers = this.getHeaders();
+    const result = await this.queue.add(() => ky.get(apiUrl, { headers, retry: 3, timeout: false }).json<any>());
 
-    if (filter.toBlock > latestBlock) {
-      throw new Error(`Requested block range is out of bounds (${filter.toBlock} > ${latestBlock})`);
-    }
+    const blockNumber = result?.data?.items[0]?.height;
+    if (!blockNumber) throw new Error('Failed to get latest block number');
+
+    return blockNumber;
+  }
+
+  async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
+    if (!this.apiKey) throw new Error('Covalent API key is not set');
 
     const { topics, fromBlock, toBlock } = filter;
     const blockRangeChunks = splitBlockRangeInChunks([[fromBlock, toBlock]], 1e6);
@@ -34,13 +41,6 @@ export class CovalentEventGetter implements EventGetter {
     );
 
     return filterLogs(results.flat(), filter);
-  }
-
-  private async getLatestBlock(chainId: number): Promise<number> {
-    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/block_v2/latest/`;
-    const headers = this.getHeaders();
-    const result = await ky.get(apiUrl, { headers, retry: 3, timeout: false }).json<any>();
-    return result?.data?.items[0]?.height ?? 0;
   }
 
   private async getEventsInChunk(

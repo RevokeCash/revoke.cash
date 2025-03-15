@@ -14,6 +14,12 @@ export class NodeEventGetter implements EventGetter {
     );
   }
 
+  async getLatestBlock(chainId: number): Promise<number> {
+    const logsProvider = this.logsProviders[chainId];
+    if (!logsProvider) return 0;
+    return logsProvider.getLatestBlock();
+  }
+
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
     const logsProvider = this.logsProviders[chainId];
     if (!logsProvider) return [];

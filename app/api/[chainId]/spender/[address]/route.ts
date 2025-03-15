@@ -47,7 +47,7 @@ export async function GET(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   }
 
-  const chainId = Number.parseInt(chainIdString, 10);
+  const chainId = Number(chainIdString);
 
   try {
     const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address, chainId);

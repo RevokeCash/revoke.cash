@@ -4,7 +4,7 @@
 
 import { ChainId } from '@revoke.cash/chains';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
-import { ORDERED_CHAINS, SUPPORTED_CHAINS, getChainName } from 'lib/utils/chains';
+import { ORDERED_CHAINS, SUPPORTED_CHAINS, getChainConfig, getChainName } from 'lib/utils/chains';
 
 const TEST_ADDRESSES = {
   // Mainnets
@@ -111,10 +111,10 @@ const TEST_ADDRESSES = {
   [ChainId.ShidoNetwork]: '0x612d5C920AAb4d75349a0F299883be71b1bC060D',
   [ChainId.ShimmerEVM]: '0xAc4682eF9fE8c62980cd8bd8d8a3Bb100FD652e7',
   [ChainId.Soneium]: '0x351F34efCE7BBF960da2ca61130a89bF41471047',
-  [ChainId.SonicMainnet]: '0xA93093fc1D0343298966E1F971fAE10a7a629296',
+  [ChainId.SonicMainnet]: '0x793625d47087D55f1F1F29eb94d589C199A1D128',
   [ChainId['SongbirdCanary-Network']]: '0x4E8De52271D3bE18cC972af892198103C1e6AfE8',
   [ChainId.Story]: '0x4545dFE080ADf461756710e5204ab6d7d4924B8E',
-  [ChainId.Superposition]: '0x4eD1cc7466a79f599a1De5b00195850E4a151151',
+  [ChainId.Superposition]: '0x7A414969b98399f7A1C44E18A0c434dD36d3C137',
   [ChainId.SyscoinMainnet]: '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044',
   [ChainId.TaikoAlethia]: '0xCC16b73b315d511Dd3D8E4DF2e02aE97bB6b3647',
   [ChainId.TelosEVMMainnet]: '0x3E6C7B5F878e80148e6B6b7f89b8c884aD133186',
@@ -192,12 +192,13 @@ describe(`Chain Support (${TEST_URL})`, () => {
 
   ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
+    const supportType = getChainConfig(chainId).type;
     const fixtureAddress = TEST_ADDRESSES[chainId];
 
     // Skip PulseChain because it is too slow, causing failures
     const describeFunction = chainId === ChainId.PulseChain ? describe.skip : describe;
 
-    describeFunction(chainName, () => {
+    describeFunction(`${chainName} --- ${supportType}`, () => {
       it('should be able to check approvals', () => {
         cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
         cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
