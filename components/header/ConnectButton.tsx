@@ -27,7 +27,7 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
   const { connectAsync, connectors } = useConnect();
 
   const handleClick = () => {
-    if (address) {
+    if (address && redirect) {
       router.push(`/address/${address}`, { retainSearchParams: ['chainId'] });
     } else {
       setOpen(true);

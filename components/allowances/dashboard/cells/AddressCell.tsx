@@ -28,7 +28,7 @@ const AddressCell = ({ address, spenderData, chainId }: Props) => {
           </Href>
         </WithHoverTooltip>
       </div>
-      <CopyButton content={address} className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+      <CopyButton content={address} className="text-zinc-500 dark:text-zinc-400" />
       <RiskTooltip riskFactors={spenderData?.riskFactors ?? undefined} />
     </div>
   );

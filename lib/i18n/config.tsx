@@ -1,5 +1,6 @@
 import Href from 'components/common/Href';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
+import { FAIRSIDE_LANDING_URL } from 'lib/coverage/fairside';
 import type { RichTranslationValues } from 'next-intl';
 import { defineRouting } from 'next-intl/routing';
 import { getRequestConfig } from 'next-intl/server';
@@ -77,6 +78,21 @@ export const defaultTranslationValues: RichTranslationValues = {
   ),
   'what-are-token-approvals': (children) => (
     <Href href="/learn/approvals/what-are-token-approvals" className="font-medium" html underline="hover" router>
+      {children}
+    </Href>
+  ),
+  'fairside-link': (children) => (
+    <Href href={FAIRSIDE_LANDING_URL} className="font-medium" underline="hover" html external>
+      {children}
+    </Href>
+  ),
+  'nexus-link': (children) => (
+    <Href href="https://nexusmutual.io" className="font-medium" underline="hover" html external>
+      {children}
+    </Href>
+  ),
+  'bright-union-link': (children) => (
+    <Href href="https://brightunion.io" className="font-medium" underline="hover" html external>
       {children}
     </Href>
   ),
