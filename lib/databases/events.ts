@@ -24,10 +24,10 @@ class EventsDB extends Dexie {
   constructor() {
     super('Events');
 
-    // On 2025-03-13, we moved to using the logs provider's getLatestBlock method to get the latest block number to
+    // On 2025-03-15, we moved to using the logs provider's getLatestBlock method to get the latest block number to
     // prevent any discrepancies between the public client's block number and the logs provider's block number
     // We do a full re-index to ensure that we're not missing any events due to this change
-    this.version(2025_03_13)
+    this.version(2025_03_15)
       .stores({
         events: '[chainId+topicsKey], chainId, topics, toBlock',
       })

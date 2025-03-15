@@ -27,7 +27,8 @@ export class CovalentEventGetter implements EventGetter {
     const blockNumber = result?.data?.items[0]?.height;
     if (!blockNumber) throw new Error('Failed to get latest block number');
 
-    return blockNumber;
+    // Covalent might still have slight delay so we subtract 10 to be safe
+    return blockNumber - 10;
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
