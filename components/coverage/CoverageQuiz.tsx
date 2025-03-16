@@ -2,7 +2,7 @@
 
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
-import { FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
+import { FAIRSIDE_APP_URL, FAIRSIDE_CAMPAIGN_URL } from 'lib/coverage/fairside';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -290,7 +290,7 @@ const QuizFooter = ({
       ) : (
         <>
           {currentQuestion === quizQuestions.length - 1 && (
-            <Button style="purple" size="md" href="https://app.fairside.io/retroactive" external>
+            <Button style="purple" size="md" href={FAIRSIDE_CAMPAIGN_URL} external>
               {t('address.coverage.info.quiz.retroactive_campaign')}
             </Button>
           )}

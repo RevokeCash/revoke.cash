@@ -7,6 +7,7 @@ export const FAIRSIDE_REFERRAL_CODE = 'rHJeTS8YIYdOLq75LpCJ5F863';
 export const FAIRSIDE_API_URL = 'https://api.fairside.io/v1';
 export const FAIRSIDE_APP_URL = `https://app.fairside.io?referralCode=${FAIRSIDE_REFERRAL_CODE}`;
 export const FAIRSIDE_LANDING_URL = `https://fairside.io?referralCode=${FAIRSIDE_REFERRAL_CODE}`;
+export const FAIRSIDE_CAMPAIGN_URL = 'https://forms.gle/VTYtEaHHbvTHAC8NA';
 
 const headers = {
   'api-key': FAIRSIDE_API_KEY,
