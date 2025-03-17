@@ -129,7 +129,7 @@ const ApprovePage = () => {
       <div className="flex flex-col gap-4 max-w-3xl mx-auto">
         <h1>Approve Arbitrary Contracts</h1>
         <p>For testing purposes only.</p>
-        <div className="flex flex-col gap-4 border border-gray-200 rounded-md p-4">
+        <div className="flex flex-col gap-4 border border-zinc-200 rounded-md p-4">
           <div className="flex flex-col gap-1">
             <span>Approval Type</span>
             <Select

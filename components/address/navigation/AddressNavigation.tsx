@@ -14,6 +14,7 @@ const AddressNavigation = () => {
 
   const basePath = `/address/${addressOrName}`;
   const signaturesPath = `${basePath}/signatures`;
+  const coveragePath = `${basePath}/coverage`;
   const sessionsPath = `${basePath}/sessions`;
 
   return (
@@ -24,6 +25,7 @@ const AddressNavigation = () => {
         {(selectedChainId === ChainId.Abstract || path.endsWith(sessionsPath)) && (
           <AddressNavigationTab name={t('address.navigation.sessions')} href={sessionsPath} />
         )}
+        <AddressNavigationTab name={t('address.navigation.coverage')} href={coveragePath} />
       </nav>
     </div>
   );

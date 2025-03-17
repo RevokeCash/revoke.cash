@@ -5,6 +5,8 @@
     "translator": "翻译：<person-link>{translator}</person-link>"
   },
   "buttons": {
+    "authenticate": "Authenticate",
+    "authenticating": "Authenticating",
     "back_to_exploits": "返回漏洞",
     "cancel": "取消",
     "cancel_signatures": "取消可能存在的签名",
@@ -21,6 +23,7 @@
     "donating": "正在捐赠",
     "download": "下载",
     "get_started": "开始使用",
+    "increase": "Increase",
     "my_allowances": "我的授权",
     "next": "下一个",
     "previous": "上一个",

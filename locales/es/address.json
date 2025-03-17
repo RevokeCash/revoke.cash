@@ -16,6 +16,69 @@
     "title": "Revocación por Lotes",
     "total": "Total"
   },
+  "coverage": {
+    "info": {
+      "chains": {
+        "evm": "EVM Compatible",
+        "non_evm": "Non-EVM",
+        "title": "Supported Blockchains"
+      },
+      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "important": {
+        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
+        "fee": "There is a 10% personal responsibility fee on payouts.",
+        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
+        "title": "Important Information",
+        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
+      },
+      "main": {
+        "covered_items": {
+          "malware": "Malware (min. 10 ETH coverage)",
+          "poisoning": "Address poisoning",
+          "signatures": "Malicious transactions and signatures"
+        },
+        "covered_title": "What Fairside covers",
+        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "not_covered_items": {
+          "custodial-accounts": "Custodial account drains",
+          "rug_pulls": "Rug pulls",
+          "seed_phrase": "Revealing your seed phrase",
+          "smart_contracts": "Smart contract hacks"
+        },
+        "not_covered_title": "What Fairside doesn't cover",
+        "title": "Fairside Wallet Drain Coverage"
+      },
+      "quiz": {
+        "check_answer": "Check Answer",
+        "get_coverage": "Get Coverage Now",
+        "next_question": "Next Question",
+        "question_progress": "Question {current} of {total}",
+        "retroactive_campaign": "Here for the campaign?",
+        "start": "Take Quiz to Get Started",
+        "title": "Quick Coverage Quiz",
+        "wait_and_read": "Read before proceeding"
+      },
+      "title": "What is Coverage?"
+    },
+    "membership": {
+      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
+      "covered": "Covered",
+      "labels": {
+        "amount": "Amount",
+        "claims": "Claims",
+        "status": "Status",
+        "timeframe": "Timeframe"
+      },
+      "not_covered": "Not Covered",
+      "title": "Fairside Membership"
+    },
+    "wallets": {
+      "add": "Add Wallet",
+      "description": "Sign an authentication message to view and manage your covered wallets.",
+      "title": "Covered Wallets",
+      "wallets": "wallets"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "Cantidad Autorizada",
@@ -47,13 +110,13 @@
     "allowance": "Cantidad Autorizada",
     "asset": "Activo",
     "asset_type": "Tipo",
-    "expiration": "Expiration",
+    "expiration": "Vencimiento",
     "last_cancelled": "Última cancelación",
     "last_updated": "Última Actualización",
     "marketplace": "Mercado",
-    "policy_type": "Permission Type",
-    "session_hash": "Session Identifier",
-    "signer": "Authorized Signer",
+    "policy_type": "Tipo de Permiso",
+    "session_hash": "Identificador de sesión",
+    "signer": "Firmante autorizado",
     "spender": "Gastador Autorizado",
     "status": "Estatus",
     "transaction": "Transacción",
@@ -64,10 +127,10 @@
     "nft": "NFT",
     "not_connected": "No Conectado",
     "policy_type": {
-      "all": "Transfers & Calls",
-      "calls": "Contract Calls",
-      "none": "None",
-      "transfers": "Transfers"
+      "all": "Transferencias y llamadas",
+      "calls": "Convocatorias de contratos",
+      "none": "Ninguno",
+      "transfers": "Transferencias"
     },
     "token": "Token"
   },
@@ -77,9 +140,10 @@
   },
   "navigation": {
     "allowances": "Autorizaciones",
+    "coverage": "Coverage",
     "history": "Historial",
     "more": "Más",
-    "sessions": "Sessions",
+    "sessions": "Sesiones",
     "settings": "Configuración",
     "signatures": "Firmas"
   },
@@ -111,26 +175,26 @@
   },
   "sessions": {
     "info": {
-      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
-      "title": "What Are Sessions?"
+      "description": "Las sesiones son un sistema de permisos similar a las aprobaciones de tokens, pero con algunas diferencias clave. Mientras que las aprobaciones de tokens especifican un permiso para que una dirección tome tokens de tu monedero, las sesiones pueden utilizarse para especificar un permiso para que otra dirección firme transacciones específicas en tu nombre al interactuar con contratos inteligentes. Actualmente, estas sesiones sólo están disponibles en Abstracto cuando se utiliza la Cartera Global Abstracto <i></i> , pero podrían estar disponibles en otras cadenas en el futuro.",
+      "title": "¿Qué Son las Sesiones?"
     },
     "table": {
-      "none_found": "No sessions found",
-      "title": "Active Sessions"
+      "none_found": "No se han encontrado sesiones",
+      "title": "Sesiones Activas"
     },
     "tooltips": {
       "policy_type": {
-        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
-        "calls": "This session is authorized to call {callPoliciesCount} different functions",
-        "none": "This session has no permissions",
-        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+        "all": "Esta sesión está autorizada a llamar a {callPoliciesCount} funciones diferentes y a transferir tokens a {transferPoliciesCount} direcciones diferentes",
+        "calls": "Esta sesión está autorizada a llamar a {callPoliciesCount} diferentes funciones",
+        "none": "Esta sesión no tiene permisos",
+        "transfers": "Esta sesión está autorizada a transferir tokens a {transferPoliciesCount} direcciones diferentes"
       }
     }
   },
   "signatures": {
     "info": {
-      "description": "Debido a que las firmas no se almacenan en la blockchain, <b>no hay forma de que Revoke.cash sepa si firmó alguna firma</b>. Por lo tanto, esta página contiene una lista de mercados conocidos y una lista de sus tokens que <i>Admiten</i> firmas fuera de la cadena. <b>Solo si <i>Usted</i> sabe que firmó una firma fuera de la cadena en un sitio web fraudulento, debe cancelar las <i>potenciales</i> firmas en esta página</b>, de lo contrario estará desperdiciando tarifas de transacción. Cuando cancele posibles firmas para un token o mercado, permanecerán en la lista, pero no se podrán volver a cancelar durante algún tiempo.",
-      "title": "What Are Signatures?"
+      "description": "Las firmas son una forma de autorizar acciones sin enviar una transacción. <i>Las firmas de mercado</i> se utilizan para poner en venta activos en mercados como OpenSea. <i>Las firmas de permiso</i> se utilizan para conceder aprobaciones de tokens. Como estas firmas no se almacenan en la cadena de bloques, Revoke.cash no tiene forma de saber si las has firmado. Esta página contiene una lista de mercados y una lista de tus tokens que admiten firmas offchain <i>Permiso</i>. <b>Sólo si <i></i> sabes que firmaste una firma offchain en un sitio web fraudulento, debes cancelar las <i>firmas</i> potenciales en esta página</b>, de lo contrario estarás desperdiciando comisiones por transacción. Cuando canceles firmas potenciales para un token o mercado, permanecerán en la lista pero no se podrán volver a cancelar durante algún tiempo.",
+      "title": "¿Qué Son las Firmas?"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 aprobación activa} other {# aprobaciones activas}}",
@@ -177,7 +241,7 @@
     "permit2_expiration": "Esta es una autorización de Permit2 que caducará {inTime}",
     "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
     "recently_cancelled": "Ya has cancelado esta posible firma recientemente. Permanecerá en la lista para que puedas volver a cancelarla más adelante si lo necesitas.",
-    "risk_factors": "La aprobación de este token es de {riskLevel} por estas razones:",
+    "risk_factors": "Esto es {riskLevel} por estas razones:",
     "select_tip": "Por favor selecciona el monto de la propina",
     "switch_chain": "Por favor cambia tu red conectada a <b>{chainName}</b> dentro de tu cartera para continuar",
     "why_tip": {
