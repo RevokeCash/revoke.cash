@@ -848,7 +848,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/cronos.svg',
     etherscanCompatibleApiUrl: 'https://cronos.org/explorer/api',
     rpc: {
-      main: 'https://evm.cronos.org',
+      main: 'https://cronos.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
