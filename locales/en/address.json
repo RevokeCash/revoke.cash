@@ -16,6 +16,69 @@
     "title": "Batch Revoke",
     "total": "Total"
   },
+  "coverage": {
+    "info": {
+      "chains": {
+        "evm": "EVM Compatible",
+        "non_evm": "Non-EVM",
+        "title": "Supported Blockchains"
+      },
+      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "important": {
+        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
+        "fee": "There is a 10% personal responsibility fee on payouts.",
+        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
+        "title": "Important Information",
+        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
+      },
+      "main": {
+        "covered_items": {
+          "malware": "Malware (min. 10 ETH coverage)",
+          "poisoning": "Address poisoning",
+          "signatures": "Malicious transactions and signatures"
+        },
+        "covered_title": "What Fairside covers",
+        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "not_covered_items": {
+          "custodial-accounts": "Custodial account drains",
+          "rug_pulls": "Rug pulls",
+          "seed_phrase": "Revealing your seed phrase",
+          "smart_contracts": "Smart contract hacks"
+        },
+        "not_covered_title": "What Fairside doesn't cover",
+        "title": "Fairside Wallet Drain Coverage"
+      },
+      "quiz": {
+        "check_answer": "Check Answer",
+        "get_coverage": "Get Coverage Now",
+        "next_question": "Next Question",
+        "question_progress": "Question {current} of {total}",
+        "retroactive_campaign": "Here for the campaign?",
+        "start": "Take Quiz to Get Started",
+        "title": "Quick Coverage Quiz",
+        "wait_and_read": "Read before proceeding"
+      },
+      "title": "What is Coverage?"
+    },
+    "membership": {
+      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
+      "covered": "Covered",
+      "labels": {
+        "amount": "Amount",
+        "claims": "Claims",
+        "status": "Status",
+        "timeframe": "Timeframe"
+      },
+      "not_covered": "Not Covered",
+      "title": "Fairside Membership"
+    },
+    "wallets": {
+      "add": "Add Wallet",
+      "description": "Sign an authentication message to view and manage your covered wallets.",
+      "title": "Covered Wallets",
+      "wallets": "wallets"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "Approved Amount",
@@ -77,12 +140,12 @@
   },
   "navigation": {
     "allowances": "Approvals",
+    "coverage": "Coverage",
     "history": "History",
     "more": "More",
     "sessions": "Sessions",
     "settings": "Settings",
-    "signatures": "Signatures",
-    "coverage": "Coverage"
+    "signatures": "Signatures"
   },
   "permit2": {
     "expiration": "Expires {inTime}"
@@ -109,69 +172,6 @@
   },
   "search": {
     "spender": "Search by Approved Spender Address"
-  },
-  "coverage": {
-    "membership": {
-      "title": "Fairside Membership",
-      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
-      "covered": "Covered",
-      "not_covered": "Not Covered",
-      "labels": {
-        "status": "Status",
-        "amount": "Amount",
-        "claims": "Claims",
-        "timeframe": "Timeframe"
-      }
-    },
-    "info": {
-      "title": "What is Coverage?",
-      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
-      "quiz": {
-        "title": "Quick Coverage Quiz",
-        "start": "Take Quiz to Get Started",
-        "check_answer": "Check Answer",
-        "next_question": "Next Question",
-        "retroactive_campaign": "Here for the campaign?",
-        "get_coverage": "Get Coverage Now",
-        "question_progress": "Question {current} of {total}",
-        "wait_and_read": "Read before proceeding"
-      },
-      "main": {
-        "title": "Fairside Wallet Drain Coverage",
-        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
-        "covered_title": "What Fairside covers",
-        "not_covered_title": "What Fairside doesn't cover",
-        "covered_items": {
-          "signatures": "Malicious transactions and signatures",
-          "poisoning": "Address poisoning",
-          "malware": "Malware (min. 10 ETH coverage)"
-        },
-        "not_covered_items": {
-          "rug_pulls": "Rug pulls",
-          "seed_phrase": "Revealing your seed phrase",
-          "smart_contracts": "Smart contract hacks",
-          "custodial-accounts": "Custodial account drains"
-        }
-      },
-      "important": {
-        "title": "Important Information",
-        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
-        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
-        "fee": "There is a 10% personal responsibility fee on payouts.",
-        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
-      },
-      "chains": {
-        "title": "Supported Blockchains",
-        "evm": "EVM Compatible",
-        "non_evm": "Non-EVM"
-      }
-    },
-    "wallets": {
-      "title": "Covered Wallets",
-      "description": "Sign an authentication message to view and manage your covered wallets.",
-      "add": "Add Wallet",
-      "wallets": "wallets"
-    }
   },
   "sessions": {
     "info": {

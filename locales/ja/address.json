@@ -16,6 +16,69 @@
     "title": "一括取り消し",
     "total": "合計"
   },
+  "coverage": {
+    "info": {
+      "chains": {
+        "evm": "EVM Compatible",
+        "non_evm": "Non-EVM",
+        "title": "Supported Blockchains"
+      },
+      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "important": {
+        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
+        "fee": "There is a 10% personal responsibility fee on payouts.",
+        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
+        "title": "Important Information",
+        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
+      },
+      "main": {
+        "covered_items": {
+          "malware": "Malware (min. 10 ETH coverage)",
+          "poisoning": "Address poisoning",
+          "signatures": "Malicious transactions and signatures"
+        },
+        "covered_title": "What Fairside covers",
+        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "not_covered_items": {
+          "custodial-accounts": "Custodial account drains",
+          "rug_pulls": "Rug pulls",
+          "seed_phrase": "Revealing your seed phrase",
+          "smart_contracts": "Smart contract hacks"
+        },
+        "not_covered_title": "What Fairside doesn't cover",
+        "title": "Fairside Wallet Drain Coverage"
+      },
+      "quiz": {
+        "check_answer": "Check Answer",
+        "get_coverage": "Get Coverage Now",
+        "next_question": "Next Question",
+        "question_progress": "Question {current} of {total}",
+        "retroactive_campaign": "Here for the campaign?",
+        "start": "Take Quiz to Get Started",
+        "title": "Quick Coverage Quiz",
+        "wait_and_read": "Read before proceeding"
+      },
+      "title": "What is Coverage?"
+    },
+    "membership": {
+      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
+      "covered": "Covered",
+      "labels": {
+        "amount": "Amount",
+        "claims": "Claims",
+        "status": "Status",
+        "timeframe": "Timeframe"
+      },
+      "not_covered": "Not Covered",
+      "title": "Fairside Membership"
+    },
+    "wallets": {
+      "add": "Add Wallet",
+      "description": "Sign an authentication message to view and manage your covered wallets.",
+      "title": "Covered Wallets",
+      "wallets": "wallets"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "許可したもの",
@@ -47,13 +110,13 @@
     "allowance": "許可したもの",
     "asset": "資産",
     "asset_type": "種類",
-    "expiration": "Expiration",
+    "expiration": "有効期限",
     "last_cancelled": "最終キャンセル",
     "last_updated": "最終更新日",
     "marketplace": "マーケットプレイス",
-    "policy_type": "Permission Type",
-    "session_hash": "Session Identifier",
-    "signer": "Authorized Signer",
+    "policy_type": "許可タイプ",
+    "session_hash": "セッション識別子",
+    "signer": "承認済み署名者",
     "spender": "認定支出者",
     "status": "ステータス",
     "transaction": "トランザクション",
@@ -64,10 +127,10 @@
     "nft": "NFT",
     "not_connected": "未接続",
     "policy_type": {
-      "all": "Transfers & Calls",
-      "calls": "Contract Calls",
-      "none": "None",
-      "transfers": "Transfers"
+      "all": "トランスファー&コール",
+      "calls": "コントラクトコール",
+      "none": "なし",
+      "transfers": "トランスファー"
     },
     "token": "トークン"
   },
@@ -77,9 +140,10 @@
   },
   "navigation": {
     "allowances": "許可",
+    "coverage": "Coverage",
     "history": "履歴",
     "more": "その他",
-    "sessions": "Sessions",
+    "sessions": "セッション",
     "settings": "設定",
     "signatures": "署名"
   },
@@ -111,26 +175,26 @@
   },
   "sessions": {
     "info": {
-      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
-      "title": "What Are Sessions?"
+      "description": "セッションはトークン承認に似た権限システムですが、いくつかの重要な違いがあります。トークン承認では、あるアドレスがウォレットからトークンを取得する権限を指定しますが、セッションでは、スマートコントラクトとやり取りする際に、別のアドレスがユーザーに代わって特定のトランザクションに署名する権限を指定できます。これらのセッションは現在、<i>Abstract Global Wallet</i>を使用する場合はAbstractでのみ利用可能ですが、将来的には他のチェーンでも利用できるようになるかもしれません。",
+      "title": "セッションとは何ですか。"
     },
     "table": {
-      "none_found": "No sessions found",
-      "title": "Active Sessions"
+      "none_found": "セッションが見つかりません",
+      "title": "アクティブセッション"
     },
     "tooltips": {
       "policy_type": {
-        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
-        "calls": "This session is authorized to call {callPoliciesCount} different functions",
-        "none": "This session has no permissions",
-        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+        "all": "このセッションには、{callPoliciesCount}つのさまざまな関数を呼び出し、{transferPoliciesCount}つのさまざまなアドレスにトークンを転送する権限があります。",
+        "calls": "このセッションには、{callPoliciesCount}つのさまざまな関数を呼び出す権限があります",
+        "none": "このセッションには権限がありません",
+        "transfers": "このセッションには、{transferPoliciesCount}つのさまざまなアドレスにトークンを転送する権限があります"
       }
     }
   },
   "signatures": {
     "info": {
-      "description": "署名はブロックチェーンに保存されないため、<b>署名したかどうかをRevoke.cashが知る方法はありません。</b>そのため、このページには、既知のマーケットプレイスのリストと、オフチェーンの<i>許可</i>署名に対応しているトークンのリストが含まれています。<b>詐欺サイトでオフチェーン署名をしたことがわかっている場合にのみ<i></i>、このページで<i>署名候補</i>をキャンセルする必要があります。</b>そうしないと、取引手数料が無駄になります。トークンやマーケットプレイスへの署名候補をキャンセルしても、リストには残りますが、しばらくの間は再び取り消すことはできません。",
-      "title": "What Are Signatures?"
+      "description": "署名は、トランザクションを送信せずにアクションを承認する方法です。<i>マーケットプレイス署名</i>は、OpenSeaなどのマーケットプレイスで販売するアセットを一覧表示するために使用されます。<i>パーミット署名</i>はトークンの承認に使用されます。これらの署名はブロックチェーンに保存されないため、署名したかどうかをRevoke.cashが知る方法はありません。このページには、マーケットプレイスのリストと、オフチェーン<i>Permit</i>署名に対応しているトークンのリストが含まれています。<b>詐欺サイトでオフチェーン署名をしたことがわかっている<i>場合にのみ</i>、このページで署名<i>候補</i>をキャンセルする必要があります。</b>そうしないと、取引手数料が無駄になります。トークンやマーケットプレイスへの署名候補をキャンセルしても、リストには残りますが、しばらくの間は再びキャンセルすることはできません。",
+      "title": "署名とは何ですか。"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1件の有効な承認} other {#件の有効な承認}}",
@@ -177,7 +241,7 @@
     "permit2_expiration": "これは{inTime}で期限が切れる許可2の承認です。",
     "permit_signatures": "許可の署名は、トランザクションを送信せずに許可を承認する場合に使用されます。フィッシングサイト上で許可の署名をした場合は、キャンセルしてください。",
     "recently_cancelled": "あなたは最近、この署名候補をすでにキャンセルしました。この署名はリストに残るので、必要であれば後でまたキャンセルすることができます。",
-    "risk_factors": "このトークン承認は下記の理由で{riskLevel}です：",
+    "risk_factors": "これは下記の理由により{riskLevel}です：",
     "select_tip": "チップの金額を選択してください",
     "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください",
     "why_tip": {
