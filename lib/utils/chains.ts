@@ -58,7 +58,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.IOTAEVM,
   ChainId.Astar,
   ChainId.AstarzkEVM,
-  999, // Hyperliquid EVM
+  // 999, // Hyperliquid EVM
   ChainId.Soneium,
   ChainId.TelosEVMMainnet,
   ChainId.Story,
@@ -1264,7 +1264,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/heco.svg',
   }),
   [999]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.UNSUPPORTED,
     chainId: 999,
     name: 'Hyperliquid EVM',
     nativeToken: 'HYPE',
