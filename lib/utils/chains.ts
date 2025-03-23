@@ -58,7 +58,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.IOTAEVM,
   ChainId.Astar,
   ChainId.AstarzkEVM,
-  // 999, // Hyperliquid EVM
+  999, // Hyperliquid EVM
   ChainId.Soneium,
   ChainId.TelosEVMMainnet,
   ChainId.Story,
@@ -1264,16 +1264,17 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/heco.svg',
   }),
   [999]: new Chain({
-    type: SupportType.UNSUPPORTED,
+    type: SupportType.PROVIDER,
     chainId: 999,
     name: 'Hyperliquid EVM',
     nativeToken: 'HYPE',
-    explorerUrl: 'https://purrsec.com',
+    explorerUrl: 'https://hyperliquid.cloud.blockscout.com',
     infoUrl: 'https://hyperfoundation.org/',
     logoUrl: '/assets/images/vendor/chains/hyperliquid.svg',
     etherscanCompatibleApiUrl: 'https://hyperliquid.cloud.blockscout.com/api',
     rpc: {
       main: 'https://rpc.hyperliquid.xyz/evm',
+      logs: 'https://hl-archive-node.xyz',
       free: 'https://rpc.hyperliquid.xyz/evm',
     },
     deployedContracts: { ...MULTICALL },
