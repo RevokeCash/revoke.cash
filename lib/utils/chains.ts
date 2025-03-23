@@ -1268,10 +1268,9 @@ export const CHAINS = {
     chainId: 999,
     name: 'Hyperliquid EVM',
     nativeToken: 'HYPE',
-    explorerUrl: 'https://hyperliquid.cloud.blockscout.com',
+    explorerUrl: 'https://purrsec.com',
     infoUrl: 'https://hyperfoundation.org/',
     logoUrl: '/assets/images/vendor/chains/hyperliquid.svg',
-    etherscanCompatibleApiUrl: 'https://hyperliquid.cloud.blockscout.com/api',
     rpc: {
       main: 'https://rpc.hyperliquid.xyz/evm',
       logs: 'https://hl-archive-node.xyz',
