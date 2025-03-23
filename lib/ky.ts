@@ -33,9 +33,14 @@ export const retryOn429 = async <T>(fn: () => Promise<T>): Promise<T> => {
   try {
     return await fn();
   } catch (e) {
-    if ((e as any).message.includes('429')) {
+    if ((e as any).message.includes('429') || (e as any).message.includes('rate limited')) {
       console.error('Rate limit reached, retrying...');
       return retryOn429(fn);
+    }
+
+    if ((e as any).message.includes('https://rpc.hypurrscan.io') && (e as any).message.includes('fetch failed')) {
+      console.error('Hypurrscan fetch failed, retrying once...');
+      return fn();
     }
 
     throw e;

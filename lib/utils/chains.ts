@@ -1264,7 +1264,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/heco.svg',
   }),
   [999]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.BACKEND_CUSTOM,
     chainId: 999,
     name: 'Hyperliquid EVM',
     nativeToken: 'HYPE',
