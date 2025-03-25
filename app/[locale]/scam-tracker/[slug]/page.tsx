@@ -45,13 +45,14 @@ const ScamTrackerPage: NextPage<Props> = ({ params }) => {
   // Pass only serializable props (chainId and chainName) to the client component.
   return (
     <NextIntlClientProvider messages={{ common: messages.common, scam_tracker: messages.scam_tracker }}>
-      <div className="flex flex-col items-center m-auto gap-4 px-4">
+      <div className="flex flex-col items-center m-auto gap-4 px-4 w-full">
         <div className="flex flex-col items-center w-full">
-          <h1 className="text-4xl md:text-5xl not-prose items-center gap-2 mb-12 text-center">
-            <ChainLogo chainId={chainId} size={56} className="inline align-middle" />{' '}
+          <h1 className="text-3xl md:text-4xl not-prose items-center gap-2 mb-8 mt-8 text-center">
+            <ChainLogo chainId={chainId} size={42} className="inline align-middle mr-4" />{' '}
             <div className="inline align-middle">{t('scam_tracker.title', { chainName })}</div>
           </h1>
         </div>
+
         <ScamTrackerContent chainId={chainId} chainName={chainName} />
       </div>
     </NextIntlClientProvider>
