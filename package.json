@@ -25,7 +25,6 @@
   "dependencies": {
     "@abstract-foundation/agw-client": "^1.0.0",
     "@abstract-foundation/agw-react": "^1.0.0",
-
     "@dotenvx/dotenvx": "^1.14.2",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",

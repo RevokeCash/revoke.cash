@@ -516,15 +516,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@covalenthq/client-sdk@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "@covalenthq/client-sdk@npm:2.2.2"
-  dependencies:
-    big.js: "npm:^6.2.1"
-  checksum: 10/aca40f1bb6dad537af0ef22d783d563638b2a2027c3d19df4f8252f9c70afcccb6611d09a02cabd32a59183204eb5ce519a0118d8a92cda7ae25dce24032440e
-  languageName: node
-  linkType: hard
-
 "@cypress/grep@npm:^4.1.0":
   version: 4.1.0
   resolution: "@cypress/grep@npm:4.1.0"
@@ -3878,13 +3869,6 @@ __metadata:
   dependencies:
     tweetnacl: "npm:^0.14.3"
   checksum: 10/13a4cde058250dbf1fa77a4f1b9a07d32ae2e3b9e28e88a0c7a1827835bc3482f3e478c4a0cfd4da6ff0c46dae07da1061123a995372b32cc563d9975f975404
-  languageName: node
-  linkType: hard
-
-"big.js@npm:^6.2.1":
-  version: 6.2.2
-  resolution: "big.js@npm:6.2.2"
-  checksum: 10/018af3e572780b41536a987c3fc3636efe7d05671e8bf4a6bd22b62316e32f57abfc0fc849732adfd81b00b249f873a5a107e01ab5aa4fc3d42c181cc821bf47
   languageName: node
   linkType: hard
 
@@ -10396,7 +10380,6 @@ __metadata:
     "@biomejs/biome": "npm:^1.9.4"
     "@commitlint/cli": "npm:^19.6.0"
     "@commitlint/config-conventional": "npm:^19.6.0"
-    "@covalenthq/client-sdk": "npm:^2.2.2"
     "@cypress/grep": "npm:^4.1.0"
     "@dotenvx/dotenvx": "npm:^1.14.2"
     "@headlessui/react": "npm:^2.1.2"
