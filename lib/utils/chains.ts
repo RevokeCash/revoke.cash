@@ -990,6 +990,7 @@ export const CHAINS = {
     chainId: ChainId.EthereumMainnet,
     name: 'Ethereum',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
+    etherscanCompatibleApiUrl: 'https://api.etherscan.io/v2/api',
     rpc: {
       // main: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,

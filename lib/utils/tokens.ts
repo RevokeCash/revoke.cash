@@ -266,7 +266,7 @@ export const createTokenContracts = (events: TokenEvent[], publicClient: PublicC
     .filter((contract) => contract !== undefined);
 };
 
-const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {
+export const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {
   const abi = getTokenAbi(event);
   if (!abi) return undefined;
 
