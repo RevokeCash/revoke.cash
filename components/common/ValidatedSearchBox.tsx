@@ -43,7 +43,7 @@ const ValidatedSearchBox = ({ onSubmit, placeholder, validate, ...props }: Valid
 
   return (
     <SearchBox onSubmit={handleSubmit} onChange={handleChange} value={value} placeholder={placeholder} {...props}>
-      {value && isValidating && <Spinner className="w-4 h-4" />}
+      {value && isValidating && <Spinner className="flex w-4 h-4" />}
       {value && !isValidating && isValid === false && <XMarkIcon className="w-6 h-6 text-red-500" />}
       {value && !isValidating && isValid && (
         <Button type="submit" variant="ghost" size="sm" aria-label="Submit">
