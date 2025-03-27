@@ -1,16 +1,19 @@
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
-import { covalentEventGetter, etherscanEventGetter, nodeEventGetter } from 'lib/api/globals';
-import { isCovalentSupportedChain, isEtherscanSupportedChain, isNodeSupportedChain } from 'lib/utils/chains';
+import { getEventGetter } from 'lib/api/globals';
 import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextRequest } from 'next/server';
 
 interface Props {
-  params: {
-    chainId: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  chainId: string;
 }
 
 export async function POST(req: NextRequest, { params }: Props) {
+  const { chainId: chainIdString } = await params;
+
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
@@ -19,28 +22,20 @@ export async function POST(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Too many requests, please try again later.' }), { status: 429 });
   }
 
-  const chainId = Number.parseInt(params.chainId, 10);
+  const chainId = Number(chainIdString);
   const body = await req.json();
 
   try {
-    if (isCovalentSupportedChain(chainId)) {
-      const events = await covalentEventGetter.getEvents(chainId, body);
-      return new Response(JSON.stringify(events), { status: 200 });
-    }
-
-    if (isEtherscanSupportedChain(chainId)) {
-      const events = await etherscanEventGetter.getEvents(chainId, body);
-      return new Response(JSON.stringify(events), { status: 200 });
-    }
-
-    if (isNodeSupportedChain(chainId)) {
-      const events = await nodeEventGetter.getEvents(chainId, body);
-      return new Response(JSON.stringify(events), { status: 200 });
-    }
+    const eventGetter = getEventGetter(chainId);
+    const events = await eventGetter.getEvents(chainId, body);
+    return new Response(JSON.stringify(events), { status: 200 });
   } catch (e) {
     console.error('Error occurred', parseErrorMessage(e));
+
+    if (e instanceof Error && e.message.includes('Unsupported chain ID')) {
+      return new Response(JSON.stringify({ message: e.message }), { status: 404 });
+    }
+
     return new Response(JSON.stringify({ message: parseErrorMessage(e) }), { status: 500 });
   }
-
-  return new Response(JSON.stringify({ message: `Chain with ID ${chainId} is unsupported` }), { status: 404 });
 }

@@ -1,4 +1,4 @@
-import { getChain } from '@revoke.cash/chains';
+import { ChainId, getChain } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
 import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import type { PriceStrategy } from 'lib/price/PriceStrategy';
@@ -40,11 +40,13 @@ export interface ChainOptions {
 export type DeployedContracts = Record<string, { address: Address }>;
 
 export enum SupportType {
-  PROVIDER = 'provider',
-  ETHERSCAN_COMPATIBLE = 'etherscan_compatible',
-  COVALENT = 'covalent',
-  BACKEND_NODE = 'backend_node',
-  UNSUPPORTED = 'unsupported',
+  PROVIDER = 'PROVIDER',
+  ETHERSCAN_COMPATIBLE = 'ETHERSCAN_COMPATIBLE',
+  BLOCKSCOUT = 'BLOCKSCOUT', // Note that this is mostly Etherscan Compatible, with slight differences in the API
+  COVALENT = 'COVALENT',
+  BACKEND_NODE = 'BACKEND_NODE',
+  BACKEND_CUSTOM = 'BACKEND_CUSTOM',
+  UNSUPPORTED = 'UNSUPPORTED',
 }
 
 export class Chain {
@@ -227,12 +229,17 @@ export class Chain {
   }
 
   createViemPublicClient(overrideUrl?: string): PublicClient {
+    // We noticed that certain chains run out of gas when using the default multicall settings
+    const multicallOverrides: Record<number, { batchSize: number }> = {
+      [ChainId.Mantle]: { batchSize: 256 },
+    };
+
     // @ts-ignore TODO: This gives a TypeScript error since Viem v2
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),
       transport: http(overrideUrl ?? this.getRpcUrl()),
-      batch: { multicall: true },
+      batch: { multicall: multicallOverrides[this.chainId] ?? true },
     });
   }
 

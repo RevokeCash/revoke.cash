@@ -11,27 +11,17 @@ import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/config';
 import type { Metadata } from 'next';
-import { useMessages } from 'next-intl';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
-import 'react-toastify/dist/ReactToastify.css';
-import * as timeago from 'timeago.js';
-import timeagoEs from 'timeago.js/lib/lang/es';
-import timeagoJa from 'timeago.js/lib/lang/ja';
-import timeagoRu from 'timeago.js/lib/lang/ru';
-import timeagoZh from 'timeago.js/lib/lang/zh_CN';
 import '../../styles/index.css';
-
-timeago.register('es', timeagoEs);
-timeago.register('ja', timeagoJa);
-timeago.register('ru', timeagoRu);
-timeago.register('zh', timeagoZh);
 
 interface Props {
   children: React.ReactNode;
-  params: {
-    locale: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 export const dynamicParams = false;
@@ -40,7 +30,9 @@ export const generateStaticParams = () => {
   return locales.map((locale) => ({ locale }));
 };
 
-export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+
   const t = await getTranslations({ locale });
 
   return {
@@ -55,13 +47,14 @@ export const generateMetadata = async ({ params: { locale } }: Props): Promise<M
   };
 };
 
-const MainLayout = ({ children, params }: Props) => {
-  unstable_setRequestLocale(params.locale);
+const MainLayout = async ({ children, params }: Props) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-  const messages = useMessages();
+  const messages = await getMessages({ locale });
 
   return (
-    <html lang={params.locale}>
+    <html lang={locale}>
       <head>
         <Analytics />
       </head>

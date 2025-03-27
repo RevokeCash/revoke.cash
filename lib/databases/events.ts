@@ -1,7 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
 import Dexie, { type Table } from 'dexie';
 import type { LogsProvider } from 'lib/providers';
-import { getChainName, isCovalentSupportedChain } from 'lib/utils/chains';
+import { getChainName } from 'lib/utils/chains';
 import type { Filter, Log } from 'lib/utils/events';
 import type { Address } from 'viem';
 
@@ -24,9 +24,8 @@ class EventsDB extends Dexie {
   constructor() {
     super('Events');
 
-    // On 2024-11-28, we found a bug with the formatting of specific events, which requires a full re-index of all events.
-    // Because this is a full re-index, we removed previous database migrations since those are no longer relevant.
-    this.version(2024_11_28)
+    // On 2025-03-23, we perform a full re-index of the events table
+    this.version(2025_03_23)
       .stores({
         events: '[chainId+topicsKey], chainId, topics, toBlock',
       })
@@ -38,7 +37,7 @@ class EventsDB extends Dexie {
   // Note: It is always assumed that this function is called to get logs for the entire chain (i.e. from block 0 to 'latest')
   // So we assume that the filter.fromBlock is always 0, and we only need to retrieve events between the last stored event and 'latest'
   // This means that we can't use this function to get logs for a specific block range
-  async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number, nameTag?: string) {
+  async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number, nameTag?: string): Promise<Log[]> {
     const logs = await this.getLogsInternal(logsProvider, filter, chainId);
 
     if (nameTag) console.log(`${getChainName(chainId)}: ${nameTag} logs`, logs);
@@ -48,9 +47,8 @@ class EventsDB extends Dexie {
     return logs;
   }
 
-  private async getLogsInternal(logsProvider: LogsProvider, filter: Filter, chainId: number) {
-    // For Covalent supported chains, we need to subtract 50 blocks from the toBlock (due to issues with Covalent)
-    const toBlock = isCovalentSupportedChain(chainId) ? Math.max(filter.toBlock - 50, 0) : filter.toBlock;
+  private async getLogsInternal(logsProvider: LogsProvider, filter: Filter, chainId: number): Promise<Log[]> {
+    const toBlock = filter.toBlock;
 
     if (DO_NOT_INDEX.includes(chainId)) return logsProvider.getLogs({ ...filter, toBlock });
 
@@ -72,8 +70,8 @@ class EventsDB extends Dexie {
           (log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock,
         );
       }
-      const newLogs = await logsProvider.getLogs({ ...filter, fromBlock, toBlock });
 
+      const newLogs = await logsProvider.getLogs({ ...filter, fromBlock, toBlock });
       const logs = [...(storedEvents?.logs || []), ...newLogs];
 
       await this.events.put({ chainId, address, topicsKey, topics, toBlock, logs });

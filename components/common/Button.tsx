@@ -10,7 +10,7 @@ import Spinner from './Spinner';
 // TODO: Proper extended styles for this component
 export interface Props extends Record<string, any> {
   disabled?: boolean;
-  style: 'primary' | 'secondary' | 'tertiary' | 'none';
+  style: 'primary' | 'secondary' | 'tertiary' | 'none' | 'purple';
   size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   onClick?: MouseEventHandler;
   href?: string;
@@ -55,6 +55,8 @@ const Button = (
     secondary: 'bg-white text-black visited:text-black hover:bg-zinc-200 disabled:bg-zinc-300',
     tertiary:
       'text-black visited:text-black dark:text-white dark:visited:text-white disabled:text-zinc-600 dark:disabled:text-zinc-400 border-none',
+    purple:
+      'bg-purple-600 text-white visited:text-white hover:bg-purple-700 disabled:bg-purple-400 border-purple-600 hover:border-purple-700',
     menu: 'h-9 px-4 rounded-none border-none font-normal text-base justify-start',
     sm: 'h-6 px-2 text-xs rounded-md',
     md: 'h-9 px-4 text-base rounded-lg',
@@ -65,8 +67,8 @@ const Button = (
   };
 
   const classes = twMerge(
-    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
-    (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded',
+    'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
+    (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded-sm',
     style !== 'none' && classMapping.common,
     variant !== 'none' && classMapping[variant],
     classMapping[align ?? 'center'],

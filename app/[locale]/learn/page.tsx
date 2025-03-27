@@ -5,17 +5,21 @@ import ArticleCardSection from 'components/learn/ArticleCardSection';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
-  params: {
-    locale: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 export const dynamic = 'error';
 
-export const generateMetadata = async ({ params: { locale } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+
   const t = await getTranslations({ locale });
 
   return {
@@ -27,17 +31,18 @@ export const generateMetadata = async ({ params: { locale } }: Props): Promise<M
   };
 };
 
-const LearnPage: NextPage<Props> = async ({ params }: Props) => {
-  unstable_setRequestLocale(params.locale);
+const LearnPage: NextPage<Props> = async ({ params }) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-  const sidebar = await getSidebar(params.locale, 'learn', true);
-  const t = await getTranslations({ locale: params.locale });
+  const sidebar = await getSidebar(locale, 'learn', true);
+  const t = await getTranslations({ locale });
 
   const meta = {
     title: t('learn.meta.title'),
     description: t('learn.meta.description'),
-    language: params.locale,
-    coverImage: getOpenGraphImageUrl('/learn', params.locale),
+    language: locale,
+    coverImage: getOpenGraphImageUrl('/learn', locale),
   };
 
   return (

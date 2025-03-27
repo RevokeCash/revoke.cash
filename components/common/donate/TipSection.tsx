@@ -84,7 +84,7 @@ const TipOption = ({ amount, children, nativeToken }: TipOptionProps) => {
     <Radio
       value={amount}
       className={twMerge(
-        'flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold uppercase cursor-pointer focus:outline-none data-[focus]:ring-2 data-[focus]:ring-black ring-1 ring-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 data-[checked]:bg-brand dark:data-[checked]:bg-brand data-[checked]:ring-0 whitespace-nowrap',
+        'flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold uppercase cursor-pointer focus:outline-hidden data-focus:ring-2 data-focus:ring-black ring-1 ring-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 data-checked:bg-brand dark:data-checked:bg-brand data-checked:ring-0 whitespace-nowrap',
       )}
     >
       {children ?? `${amount} ${nativeToken}`}

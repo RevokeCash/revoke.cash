@@ -5,6 +5,8 @@
     "translator": "Translated by <person-link>{translator}</person-link>"
   },
   "buttons": {
+    "authenticate": "Authenticate",
+    "authenticating": "Authenticating",
     "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
     "cancel_signatures": "Cancel Potential Signatures",
@@ -21,6 +23,7 @@
     "donating": "Donating",
     "download": "Download",
     "get_started": "Get Started",
+    "increase": "Increase",
     "my_allowances": "My Approvals",
     "next": "Next",
     "previous": "Previous",
@@ -74,7 +77,7 @@
       "title": "This page does not exist."
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to {chainName}"
+      "chain_could_not_connect": "Could not connect to {chainName}, please try again later."
     }
   },
   "footer": {

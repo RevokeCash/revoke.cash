@@ -1,6 +1,7 @@
 import ky from 'lib/ky';
 import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
+import { isNullish } from './utils';
 import {
   createViemPublicClientForChain,
   getChainLogsRpcUrl,
@@ -10,8 +11,12 @@ import {
 import { isLogResponseSizeError } from './utils/errors';
 import type { Filter, Log } from './utils/events';
 
+// It is important that we get the latest block number from the same source as the logs, otherwise we may get
+// inconsistent results (e.g. if we get the latest block number from node and then request logs from Etherscan,
+// the logs may be from a different blocks)
 export interface LogsProvider {
   chainId: number;
+  getLatestBlock(): Promise<number>;
   getLogs(filter: Filter): Promise<Array<Log>>;
 }
 
@@ -20,6 +25,10 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
 
   get chainId(): number {
     return this.underlyingProvider.chainId;
+  }
+
+  async getLatestBlock(): Promise<number> {
+    return this.underlyingProvider.getLatestBlock();
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
@@ -59,6 +68,14 @@ export class BackendLogsProvider implements LogsProvider {
     this.queue = new RequestQueue(String(chainId), { interval: 200, intervalCap: 1 }, 'p-queue');
   }
 
+  async getLatestBlock(): Promise<number> {
+    const result = await this.queue.add(() =>
+      ky.get(`/api/${this.chainId}/block`, { timeout: false }).json<{ blockNumber: number }>(),
+    );
+
+    return result.blockNumber;
+  }
+
   async getLogs(filter: Filter): Promise<Log[]> {
     try {
       return await this.queue.add(() =>
@@ -72,15 +89,26 @@ export class BackendLogsProvider implements LogsProvider {
 
 export class ViemLogsProvider implements LogsProvider {
   private client: PublicClient;
+  private url: string;
 
   constructor(
     public chainId: number,
     url?: string,
   ) {
-    this.client = createViemPublicClientForChain(chainId, url ?? getChainLogsRpcUrl(chainId));
+    this.url = url ?? getChainLogsRpcUrl(chainId);
+    this.client = createViemPublicClientForChain(chainId, this.url);
+  }
+
+  async getLatestBlock(): Promise<number> {
+    return Number(await this.client.getBlockNumber());
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
+    // Hypersync does not allow using `null` as a topic, so we replace it with an empty array
+    if (this.url.includes('hypersync')) {
+      filter.topics = filter.topics?.map((topic) => (isNullish(topic) ? [] : topic)) as Log['topics'];
+    }
+
     const logs = await this.client.request({
       method: 'eth_getLogs',
       params: [

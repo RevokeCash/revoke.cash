@@ -1,13 +1,11 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type { useAllowances } from 'lib/hooks/ethereum/useAllowances';
-import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
-import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import type { TransactionStore } from 'lib/stores/transaction-store';
+import type { TransactionSubmitted } from 'lib/interfaces';
 import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
 import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
 import analytics from './analytics';
-import { isNetworkError, isRevertedError, isUserRejectionError, parseErrorMessage, stringifyError } from './errors';
+import { isNetworkError, isRateLimitError, isRevertedError, parseErrorMessage, stringifyError } from './errors';
 import {
   type Erc20ApprovalEvent,
   type Erc721ApprovalEvent,
@@ -111,6 +109,7 @@ export const getAllowancesFromEvents = async (
         return fullAllowances;
       } catch (e) {
         if (isNetworkError(e)) throw e;
+        if (isRateLimitError(e)) throw e;
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
 
         // If the call to getTokenData() fails, the token is not a standard-adhering token so
@@ -301,7 +300,7 @@ export const stripAllowanceData = (allowance: TokenAllowanceData): TokenAllowanc
 };
 
 export const getAllowanceKey = (allowance: TokenAllowanceData) => {
-  return `${allowance.contract.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}-${allowance.chainId}-${allowance.owner}`;
+  return `allowance-${allowance.contract.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}-${allowance.chainId}-${allowance.owner}`;
 };
 
 export const hasZeroAllowance = (allowance: AllowancePayload, tokenData: TokenAllowanceData) => {
@@ -362,12 +361,6 @@ export const updateErc20Allowance = async (
   const transactionRequest = await prepareUpdateErc20Allowance(walletClient, allowance, newAmountParsed);
 
   const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
-
-  // Note that tracking happens in the wrapRevoke function already so we only need to track if the allowance is not being revoked
-  // TODO: Merge tracking with wrapRevoke
-  if (newAmount !== '0') {
-    trackRevokeTransaction(allowance, newAmount);
-  }
 
   const waitForConfirmation = async () => {
     const transactionReceipt = await waitForTransactionConfirmation(hash, allowance.contract.publicClient);
@@ -533,43 +526,6 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?
     amount: isRevoke ? undefined : newAmount,
     permit2: allowance.payload?.type === AllowanceType.PERMIT2,
   });
-};
-
-// Wraps the revoke function to update the transaction store and do any error handling
-// TODO: Add other kinds of transactions besides "revoke" transactions to the store
-export const wrapRevoke = (
-  allowance: TokenAllowanceData,
-  revoke: () => Promise<TransactionSubmitted>,
-  updateTransaction: TransactionStore['updateTransaction'],
-  handleTransaction?: ReturnType<typeof useHandleTransaction>,
-) => {
-  return async () => {
-    try {
-      updateTransaction(allowance, { status: 'pending' });
-      const transactionPromise = revoke();
-
-      if (handleTransaction) await handleTransaction(transactionPromise, TransactionType.REVOKE);
-      const transactionSubmitted = await transactionPromise;
-
-      updateTransaction(allowance, { status: 'pending', transactionHash: transactionSubmitted.hash });
-
-      trackRevokeTransaction(allowance);
-
-      // We don't await this, since we want to return after submitting all transactions, even if they're still pending
-      transactionSubmitted.confirmation.then(() => {
-        updateTransaction(allowance, { status: 'confirmed', transactionHash: transactionSubmitted.hash });
-      });
-
-      return transactionSubmitted;
-    } catch (error) {
-      const message = parseErrorMessage(error);
-      if (isUserRejectionError(message)) {
-        updateTransaction(allowance, { status: 'not_started' });
-      } else {
-        updateTransaction(allowance, { status: 'reverted', error: message });
-      }
-    }
-  };
 };
 
 const calculateMaxAllowanceAmount = (allowance: TokenAllowanceData) => {

@@ -5,14 +5,18 @@ import type { NextRequest } from 'next/server';
 import { getAddress } from 'viem';
 
 interface Props {
-  params: {
-    chainId: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  chainId: string;
 }
 
 export const runtime = 'edge';
 
 export async function POST(req: NextRequest, { params }: Props) {
+  const { chainId: chainIdString } = await params;
+
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
@@ -28,8 +32,9 @@ export async function POST(req: NextRequest, { params }: Props) {
   const sql = neon(process.env.MERCH_CODES_DATABASE_URL);
 
   const body = await req.json();
-  const publicClient = createViemPublicClientForChain(Number(params.chainId));
-  const chainName = getChainName(Number(params.chainId));
+  const chainId = Number(chainIdString);
+  const publicClient = createViemPublicClientForChain(chainId);
+  const chainName = getChainName(chainId);
 
   const transaction = await publicClient.getTransaction({
     hash: body.transactionHash,

@@ -9,10 +9,12 @@ import type { NextRequest } from 'next/server';
 import type { Address } from 'viem';
 
 interface Props {
-  params: {
-    chainId: string;
-    address: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  chainId: string;
+  address: Address;
 }
 
 export const runtime = 'edge';
@@ -35,6 +37,8 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
 });
 
 export async function GET(req: NextRequest, { params }: Props) {
+  const { chainId: chainIdString, address } = await params;
+
   if (!(await checkActiveSessionEdge(req))) {
     return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
   }
@@ -43,8 +47,7 @@ export async function GET(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   }
 
-  const chainId = Number.parseInt(params.chainId, 10);
-  const address = params.address as Address;
+  const chainId = Number(chainIdString);
 
   try {
     const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address, chainId);

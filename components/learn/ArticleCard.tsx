@@ -18,7 +18,7 @@ const ArticleCard = ({ title, description, path, date, readingTime, coverImage, 
             alt={`${title} Cover Image`}
             width={1200}
             height={630}
-            className="rounded-t-[calc(theme(borderRadius.lg)-1px)]"
+            className="rounded-t-[calc(var(--radius-lg)-1px)]"
             fallbackSrc="/opengraph-image.jpg"
           />
         }

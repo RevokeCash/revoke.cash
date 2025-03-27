@@ -6,9 +6,11 @@ import { getTranslations } from 'next-intl/server';
 // https://github.com/vercel/next.js/issues/51147#issuecomment-1842197049
 
 interface Props {
-  params: {
-    locale: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 export const dynamic = 'error';
@@ -19,7 +21,8 @@ export const generateStaticParams = () => {
 };
 
 export async function GET(req: Request, { params }: Props) {
-  const t = await getTranslations({ locale: params.locale });
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
 
   const title = t('blog.meta.title');
   const background = loadDataUrl('public/assets/images/blog/cover.jpg', 'image/jpeg');

@@ -4,13 +4,14 @@ import { TransactionType } from 'lib/interfaces';
 import {
   type OnUpdate,
   type TokenAllowanceData,
+  getAllowanceKey,
   revokeAllowance,
+  trackRevokeTransaction,
   updateErc20Allowance,
-  wrapRevoke,
 } from 'lib/utils/allowances';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { useWalletClient } from 'wagmi';
-import { useTransactionStore } from '../../stores/transaction-store';
+import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useHandleTransaction } from './useHandleTransaction';
 
 // TODO: Add other kinds of transactions besides "revoke" transactions to the store
@@ -25,16 +26,26 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
     return { revoke: undefined };
   }
 
-  const revoke = wrapRevoke(
-    allowance,
-    () => revokeAllowance(walletClient!, allowance, onUpdate),
+  const revoke = wrapTransaction({
+    transactionKey: getAllowanceKey(allowance),
+    transactionType: TransactionType.REVOKE,
+    executeTransaction: () => revokeAllowance(walletClient!, allowance, onUpdate),
+    trackTransaction: () => trackRevokeTransaction(allowance),
     updateTransaction,
     handleTransaction,
-  );
+  });
 
-  const update = async (newAmount: string) => {
-    const transactionPromise = updateErc20Allowance(walletClient!, allowance, newAmount, onUpdate);
-    return handleTransaction(transactionPromise, TransactionType.UPDATE);
+  const update = (newAmount: string) => {
+    const wrappedUpdate = wrapTransaction({
+      transactionKey: `update-${getAllowanceKey(allowance)}`,
+      transactionType: TransactionType.UPDATE,
+      executeTransaction: () => updateErc20Allowance(walletClient!, allowance, newAmount, onUpdate),
+      trackTransaction: () => trackRevokeTransaction(allowance, newAmount),
+      updateTransaction,
+      handleTransaction,
+    });
+
+    return wrappedUpdate();
   };
 
   if (isErc721Contract(allowance.contract)) {

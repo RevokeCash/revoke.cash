@@ -16,6 +16,69 @@
     "title": "Batch Revoke",
     "total": "Total"
   },
+  "coverage": {
+    "info": {
+      "chains": {
+        "evm": "EVM Compatible",
+        "non_evm": "Non-EVM",
+        "title": "Supported Blockchains"
+      },
+      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "important": {
+        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
+        "fee": "There is a 10% personal responsibility fee on payouts.",
+        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
+        "title": "Important Information",
+        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
+      },
+      "main": {
+        "covered_items": {
+          "malware": "Malware (min. 10 ETH coverage)",
+          "poisoning": "Address poisoning",
+          "signatures": "Malicious transactions and signatures"
+        },
+        "covered_title": "What Fairside covers",
+        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "not_covered_items": {
+          "custodial-accounts": "Custodial account drains",
+          "rug_pulls": "Rug pulls",
+          "seed_phrase": "Revealing your seed phrase",
+          "smart_contracts": "Smart contract hacks"
+        },
+        "not_covered_title": "What Fairside doesn't cover",
+        "title": "Fairside Wallet Drain Coverage"
+      },
+      "quiz": {
+        "check_answer": "Check Answer",
+        "get_coverage": "Get Coverage Now",
+        "next_question": "Next Question",
+        "question_progress": "Question {current} of {total}",
+        "retroactive_campaign": "Here for the campaign?",
+        "start": "Take Quiz to Get Started",
+        "title": "Quick Coverage Quiz",
+        "wait_and_read": "Read before proceeding"
+      },
+      "title": "What is Coverage?"
+    },
+    "membership": {
+      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
+      "covered": "Covered",
+      "labels": {
+        "amount": "Amount",
+        "claims": "Claims",
+        "status": "Status",
+        "timeframe": "Timeframe"
+      },
+      "not_covered": "Not Covered",
+      "title": "Fairside Membership"
+    },
+    "wallets": {
+      "add": "Add Wallet",
+      "description": "Sign an authentication message to view and manage your covered wallets.",
+      "title": "Covered Wallets",
+      "wallets": "wallets"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "Approved Amount",
@@ -47,9 +110,13 @@
     "allowance": "Approved Amount",
     "asset": "Asset",
     "asset_type": "Type",
+    "expiration": "Expiration",
     "last_cancelled": "Last Cancelled",
     "last_updated": "Last Updated",
     "marketplace": "Marketplace",
+    "policy_type": "Permission Type",
+    "session_hash": "Session Identifier",
+    "signer": "Authorized Signer",
     "spender": "Approved Spender",
     "status": "Status",
     "transaction": "Transaction",
@@ -59,6 +126,12 @@
     "connected": "Connected",
     "nft": "NFT",
     "not_connected": "Not Connected",
+    "policy_type": {
+      "all": "Transfers & Calls",
+      "calls": "Contract Calls",
+      "none": "None",
+      "transfers": "Transfers"
+    },
     "token": "Token"
   },
   "meta": {
@@ -67,8 +140,10 @@
   },
   "navigation": {
     "allowances": "Approvals",
+    "coverage": "Coverage",
     "history": "History",
     "more": "More",
+    "sessions": "Sessions",
     "settings": "Settings",
     "signatures": "Signatures"
   },
@@ -98,9 +173,28 @@
   "search": {
     "spender": "Search by Approved Spender Address"
   },
+  "sessions": {
+    "info": {
+      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
+      "title": "What Are Sessions?"
+    },
+    "table": {
+      "none_found": "No sessions found",
+      "title": "Active Sessions"
+    },
+    "tooltips": {
+      "policy_type": {
+        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
+        "calls": "This session is authorized to call {callPoliciesCount} different functions",
+        "none": "This session has no permissions",
+        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+      }
+    }
+  },
   "signatures": {
     "info": {
-      "description": "Because signatures are not stored on the blockchain, <b>there is no way for Revoke.cash to know if you signed any signatures</b>. So this page contains a list of known marketplaces and a list of your tokens that support offchain <i>Permit</i> signatures. <b>Only if <i>you</i> know that you signed an offchain signature on a scam website, you need to cancel the <i>potential</i> signatures on this page</b>, otherwise you are wasting transaction fees. When you cancel potential signatures for a token or marketplace, they will remain in the list but cannot be cancelled again for some time."
+      "description": "Signatures are a way to authorize actions without sending a transaction. <i>Marketplace signatures</i> are used to list assets for sale on marketplaces like OpenSea. <i>Permit signatures</i> are used to grant token approvals. Because these signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you signed them. This page contains a list of marketplaces and a list of your tokens that support offchain <i>Permit</i> signatures. <b>Only if <i>you</i> know that you signed an offchain signature on a scam website, you need to cancel the <i>potential</i> signatures on this page</b>, otherwise you are wasting transaction fees. When you cancel potential signatures for a token or marketplace, they will remain in the list but cannot be cancelled again for some time.",
+      "title": "What Are Signatures?"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 active approval} other {# active approvals}}",
@@ -147,7 +241,7 @@
     "permit2_expiration": "This is a Permit2 approval that will expire {inTime}",
     "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
     "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
-    "risk_factors": "This token approval is {riskLevel} for these reasons:",
+    "risk_factors": "This is {riskLevel} for these reasons:",
     "select_tip": "Please select a tip amount",
     "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue",
     "why_tip": {

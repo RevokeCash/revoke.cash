@@ -3,13 +3,15 @@ import MarkdownProse from 'components/common/MarkdownProse';
 import { locales } from 'lib/i18n/config';
 import { getAllContentSlugs, getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
 import type { Metadata, NextPage } from 'next';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 
 interface Props {
-  params: {
-    locale: string;
-    slug: string[];
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
+  slug: string[];
 }
 
 export const dynamic = 'error';
@@ -20,7 +22,9 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export const generateMetadata = async ({ params: { locale, slug } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale, slug } = await params;
+
   const { meta } = readAndParseContentFile(slug, locale, 'learn')!;
 
   return {
@@ -33,11 +37,12 @@ export const generateMetadata = async ({ params: { locale, slug } }: Props): Pro
 };
 
 const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
-  unstable_setRequestLocale(params.locale);
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
 
-  const { content, meta } = readAndParseContentFile(params.slug, params.locale, 'learn')!;
-  const sidebar = await getSidebar(params.locale, 'learn');
-  const translationUrl = await getTranslationUrl(params.slug, params.locale, 'learn');
+  const { content, meta } = readAndParseContentFile(slug, locale, 'learn')!;
+  const sidebar = await getSidebar(locale, 'learn');
+  const translationUrl = await getTranslationUrl(slug, locale, 'learn');
 
   return (
     <>
@@ -47,7 +52,7 @@ const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
           <div hidden className="hidden" property="image" content={`https://revoke.cash${meta.coverImage}`} />
         )}
       </div>
-      <LearnLayout sidebarEntries={sidebar} slug={params.slug} meta={meta} translationUrl={translationUrl}>
+      <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta} translationUrl={translationUrl}>
         <MarkdownProse content={content} />
       </LearnLayout>
     </>

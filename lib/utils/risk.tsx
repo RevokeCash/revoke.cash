@@ -28,8 +28,12 @@ export const filterUnknownRiskFactors = (riskFactors: RiskFactor[]): RiskFactor[
   });
 };
 
+export const getRiskFactorScore = (riskFactor: RiskFactor): number => {
+  return RiskFactorScore[riskFactor.type] ?? 0;
+};
+
 export const calculateRiskScore = (riskFactors: RiskFactor[]): number => {
-  const riskScore = riskFactors.reduce((acc, riskFactor) => acc + (RiskFactorScore[riskFactor.type] ?? 0), 0);
+  const riskScore = riskFactors.reduce((acc, riskFactor) => acc + getRiskFactorScore(riskFactor), 0);
   return Math.max(Math.min(riskScore, 100), 0);
 };
 
@@ -45,7 +49,7 @@ export const getRiskLevel = (riskFactors: RiskFactor[]): RiskLevel => {
 };
 
 export const getRiskIcon = (riskFactor: RiskFactor) => {
-  const score = RiskFactorScore[riskFactor.type];
+  const score = getRiskFactorScore(riskFactor);
 
   if (score > 75) {
     return <ExclamationCircleIcon className=" text-red-500 h-5" />;

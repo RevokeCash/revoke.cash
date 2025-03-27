@@ -18,7 +18,7 @@ const BatchRevokeTable = ({ selectedAllowances, results }: Props) => {
     <table className="w-full border-collapse">
       <thead className="sticky top-0 bg-white dark:bg-black z-50">
         <tr>
-          <th className="py-2">#</th>
+          <th className="py-2 pr-0.5">#</th>
           <th>{t('address.headers.asset')}</th>
           <th>{t('address.headers.spender')}</th>
           <th className="pr-2">{t('address.headers.status')}</th>

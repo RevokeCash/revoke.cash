@@ -1,18 +1,17 @@
 import type { TransactionSubmitted } from 'lib/interfaces';
 import { useTransactionStore } from 'lib/stores/transaction-store';
-import { type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import Button from '../../common/Button';
 
 interface Props {
-  allowance: TokenAllowanceData;
+  transactionKey: string;
   revoke: () => Promise<TransactionSubmitted | undefined>;
   disabled: boolean;
 }
 
-const RevokeButton = ({ allowance, disabled, revoke }: Props) => {
+const RevokeButton = ({ transactionKey, disabled, revoke }: Props) => {
   const t = useTranslations();
-  const result = useTransactionStore((state) => state.results[getAllowanceKey(allowance)]);
+  const result = useTransactionStore((state) => state.results[transactionKey]);
   const loading = result?.status === 'pending';
 
   return (

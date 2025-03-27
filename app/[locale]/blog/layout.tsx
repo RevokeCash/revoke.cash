@@ -1,17 +1,19 @@
 import SharedLayout from 'app/layouts/SharedLayout';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
-  params: {
-    locale: string;
-    addressOrName: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
 }
 
 const BlogPageLayout = async ({ params, children }: Props) => {
-  unstable_setRequestLocale(params.locale);
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   return (
     <SharedLayout searchBar={true} padding>

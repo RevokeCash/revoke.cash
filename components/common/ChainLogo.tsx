@@ -28,7 +28,7 @@ const ChainLogo = ({ chainId, size, tooltip, className, checkMounted }: Props) =
 
   if (tooltip) {
     return (
-      <WithHoverTooltip tooltip={name} placement="top">
+      <WithHoverTooltip tooltip={name}>
         <div>
           <Logo src={src} alt={`${name} Logo`} size={size} border className={classes} />
         </div>

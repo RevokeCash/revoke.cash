@@ -7,10 +7,12 @@ import { getTranslations } from 'next-intl/server';
 // https://github.com/vercel/next.js/issues/51147#issuecomment-1842197049
 
 interface Props {
-  params: {
-    locale: string;
-    category: string;
-  };
+  params: Promise<Params>;
+}
+
+interface Params {
+  locale: string;
+  category: string;
 }
 
 export const dynamic = 'error';
@@ -22,10 +24,11 @@ export const generateStaticParams = () => {
 };
 
 export async function GET(req: Request, { params }: Props) {
-  const t = await getTranslations({ locale: params.locale });
+  const { locale, category } = await params;
+  const t = await getTranslations({ locale });
 
-  const title = t(`learn.sections.${params.category}.title`);
-  const background = loadDataUrl(`public/assets/images/learn/${params.category}/cover.jpg`, 'image/jpeg');
+  const title = t(`learn.sections.${category}.title`);
+  const background = loadDataUrl(`public/assets/images/learn/${category}/cover.jpg`, 'image/jpeg');
 
   return generateOgImage({ title, background });
 }

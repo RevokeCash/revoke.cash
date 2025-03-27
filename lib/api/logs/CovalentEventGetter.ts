@@ -17,6 +17,20 @@ export class CovalentEventGetter implements EventGetter {
     this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
   }
 
+  async getLatestBlock(chainId: number): Promise<number> {
+    if (!this.apiKey) throw new Error('Covalent API key is not set');
+
+    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/block_v2/latest/`;
+    const headers = this.getHeaders();
+    const result = await this.queue.add(() => ky.get(apiUrl, { headers, retry: 3, timeout: false }).json<any>());
+
+    const blockNumber = result?.data?.items[0]?.height;
+    if (!blockNumber) throw new Error('Failed to get latest block number');
+
+    // Covalent might still have slight delay so we subtract 10 to be safe
+    return blockNumber - 10;
+  }
+
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
     if (!this.apiKey) throw new Error('Covalent API key is not set');
 
@@ -46,9 +60,7 @@ export class CovalentEventGetter implements EventGetter {
       'page-size': 9999999,
     };
 
-    const headers = {
-      Authorization: `Basic ${Buffer.from(`${this.apiKey}:`).toString('base64')}`,
-    };
+    const headers = this.getHeaders();
 
     try {
       const result = await this.queue.add(() =>
@@ -63,6 +75,12 @@ export class CovalentEventGetter implements EventGetter {
 
       throw new Error((e as any).data?.error_message ?? (e as any).message);
     }
+  }
+
+  private getHeaders(): Record<string, string> {
+    return {
+      Authorization: `Basic ${Buffer.from(`${this.apiKey}:`).toString('base64')}`,
+    };
   }
 }
 

@@ -31,7 +31,7 @@ const Card = ({ title, subtitle, children, className, image, hover, ...props }: 
       )}
       {image ? <div className="border-b border-black dark:border-white">{image}</div> : null}
       <Loader isLoading={!!props.isLoading} className="rounded-t-none border-none">
-        <div className={twMerge('h-full w-full py-2 px-4 flex-grow', className)}>{children}</div>
+        <div className={twMerge('h-full w-full py-2 px-4 grow', className)}>{children}</div>
       </Loader>
     </div>
   );

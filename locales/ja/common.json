@@ -5,6 +5,8 @@
     "translator": "翻訳者：<person-link>{translator}</person-link>"
   },
   "buttons": {
+    "authenticate": "Authenticate",
+    "authenticating": "Authenticating",
     "back_to_exploits": "エクスプロイトの項目に戻る",
     "cancel": "キャンセル",
     "cancel_signatures": "潜在的な署名をキャンセルする",
@@ -21,6 +23,7 @@
     "donating": "寄付をしています",
     "download": "ダウンロードする",
     "get_started": "開始する",
+    "increase": "Increase",
     "my_allowances": "私の許可一覧",
     "next": "次へ",
     "previous": "前へ",

@@ -5,6 +5,8 @@
     "translator": "Переводчик <person-link>{translator}</person-link>"
   },
   "buttons": {
+    "authenticate": "Authenticate",
+    "authenticating": "Authenticating",
     "back_to_exploits": "Назад к Эксплойтам",
     "cancel": "Отмена",
     "cancel_signatures": "Отменить потенциальные подписи",
@@ -21,6 +23,7 @@
     "donating": "Пожертвование",
     "download": "Скачать",
     "get_started": "Начать",
+    "increase": "Increase",
     "my_allowances": "Мои доступы",
     "next": "Следующее",
     "previous": "Предыдущее",

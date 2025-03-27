@@ -1,10 +1,17 @@
 'use client';
 
-import { type OnUpdate, type TokenAllowanceData, revokeAllowance, wrapRevoke } from 'lib/utils/allowances';
+import { TransactionType } from 'lib/interfaces';
+import {
+  type OnUpdate,
+  type TokenAllowanceData,
+  getAllowanceKey,
+  revokeAllowance,
+  trackRevokeTransaction,
+} from 'lib/utils/allowances';
 import { trackBatchRevoke } from 'lib/utils/batch-revoke';
 import type PQueue from 'p-queue';
 import { useWalletClient } from 'wagmi';
-import { useTransactionStore } from '../../stores/transaction-store';
+import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
 import { useDonate } from './useDonate';
 
@@ -19,13 +26,15 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
       Promise.all(
         allowances.map(async (allowance) => {
           // Skip if already confirmed or pending
-          if (['confirmed', 'pending'].includes(getTransaction(allowance).status)) return;
+          if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;
 
-          const revoke = wrapRevoke(
-            allowance,
-            () => revokeAllowance(walletClient!, allowance, onUpdate),
+          const revoke = wrapTransaction({
+            transactionKey: getAllowanceKey(allowance),
+            transactionType: TransactionType.REVOKE,
+            executeTransaction: () => revokeAllowance(walletClient!, allowance, onUpdate),
             updateTransaction,
-          );
+            trackTransaction: () => trackRevokeTransaction(allowance),
+          });
 
           await REVOKE_QUEUE.add(revoke);
         }),
