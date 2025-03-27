@@ -5,7 +5,7 @@ import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
 import { useMessages, useTranslations } from 'next-intl';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import ScamTrackerContent from './ScamTrackerContent';
 
 interface Props {
@@ -35,7 +35,7 @@ export const generateMetadata = async ({ params: { locale, slug } }: Props): Pro
 };
 
 const ScamTrackerPage: NextPage<Props> = ({ params }) => {
-  unstable_setRequestLocale(params.locale);
+  setRequestLocale(params.locale);
   const t = useTranslations();
   const messages = useMessages();
 
