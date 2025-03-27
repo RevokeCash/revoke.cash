@@ -1,6 +1,7 @@
 import ky from 'lib/ky';
 import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
+import { isNullish } from './utils';
 import {
   createViemPublicClientForChain,
   getChainLogsRpcUrl,
@@ -88,12 +89,14 @@ export class BackendLogsProvider implements LogsProvider {
 
 export class ViemLogsProvider implements LogsProvider {
   private client: PublicClient;
+  private url: string;
 
   constructor(
     public chainId: number,
     url?: string,
   ) {
-    this.client = createViemPublicClientForChain(chainId, url ?? getChainLogsRpcUrl(chainId));
+    this.url = url ?? getChainLogsRpcUrl(chainId);
+    this.client = createViemPublicClientForChain(chainId, this.url);
   }
 
   async getLatestBlock(): Promise<number> {
@@ -101,6 +104,11 @@ export class ViemLogsProvider implements LogsProvider {
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
+    // Hypersync does not allow using `null` as a topic, so we replace it with an empty array
+    if (this.url.includes('hypersync')) {
+      filter.topics = filter.topics?.map((topic) => (isNullish(topic) ? [] : topic)) as Log['topics'];
+    }
+
     const logs = await this.client.request({
       method: 'eth_getLogs',
       params: [
