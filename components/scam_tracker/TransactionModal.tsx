@@ -8,7 +8,11 @@ import { getChainExplorerUrl } from 'lib/utils/chains';
 import { formatBalance, shortenAddress } from 'lib/utils/formatting';
 import type { TransactionInfo } from 'lib/utils/token-tracking';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { formatEther } from 'viem';
+import { type Log, formatEther } from 'viem';
+
+interface ExtendedLog extends Log<bigint, number, false> {
+  blockTimestamp: number;
+}
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -79,7 +83,7 @@ const TransactionModal = ({ isOpen, onClose, transaction }: TransactionModalProp
               <div>
                 <div className="text-sm md:text-base text-gray-600 dark:text-gray-300">Timestamp</div>
                 <div className="mt-1 text-sm md:text-base text-gray-900 dark:text-white">
-                  {new Date(11234564 * 1000).toLocaleString()}
+                  {new Date((transaction.receipt.logs[0] as ExtendedLog).blockTimestamp * 1000).toLocaleString()}
                 </div>
               </div>
             </div>
@@ -128,7 +132,7 @@ const TransactionModal = ({ isOpen, onClose, transaction }: TransactionModalProp
             <div>
               <div className="text-sm md:text-base text-gray-600 dark:text-gray-300">Value</div>
               <div className="mt-1 text-sm md:text-base text-gray-900 dark:text-white">
-                {formatEther(BigInt(transaction.receipt.cumulativeGasUsed ?? '0'))} ETH
+                {formatEther(BigInt(transaction.receipt.cumulativeGasUsed), 'gwei')} ETH
               </div>
             </div>
             <div>
