@@ -19,7 +19,8 @@ export async function GET(req: NextRequest, { params }: Props) {
   //     return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
   //   }
 
-  const chainId = Number.parseInt(params.chainId, 10);
+  const { chainId } = await params;
+  // const chainId = Number.parseInt(params, 10);
 
   const searchParams = req.nextUrl.searchParams;
   const address = searchParams.get('address') as Hex;
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest, { params }: Props) {
 
   try {
     const transactions = await getTransactions(
-      chainId,
+      Number.parseInt(chainId, 10),
       address,
       startBlock ? Number.parseInt(startBlock, 10) : 0,
       endBlock ? Number.parseInt(endBlock, 10) : 999999999,

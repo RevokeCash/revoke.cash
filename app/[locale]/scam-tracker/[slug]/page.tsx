@@ -4,8 +4,7 @@ import { locales } from 'lib/i18n/config';
 import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
-import { useMessages, useTranslations } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import ScamTrackerContent from './ScamTrackerContent';
 
 interface Props {
@@ -20,7 +19,8 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export const generateMetadata = async ({ params: { locale, slug } }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale, slug } = await params;
   const t = await getTranslations({ locale });
   const chainId = getChainIdFromSlug(slug);
   const chainName = getChainName(chainId);
@@ -34,12 +34,13 @@ export const generateMetadata = async ({ params: { locale, slug } }: Props): Pro
   };
 };
 
-const ScamTrackerPage: NextPage<Props> = ({ params }) => {
-  setRequestLocale(params.locale);
-  const t = useTranslations();
-  const messages = useMessages();
+const ScamTrackerPage: NextPage<Props> = async ({ params }) => {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale });
+  const messages = await getMessages({ locale });
 
-  const chainId = getChainIdFromSlug(params.slug);
+  const chainId = getChainIdFromSlug(slug);
   const chainName = getChainName(chainId);
 
   // Pass only serializable props (chainId and chainName) to the client component.
