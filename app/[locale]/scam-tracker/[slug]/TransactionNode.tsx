@@ -25,7 +25,18 @@ const TransactionNode = ({ data }: NodeProps<TransactionNodeType>) => {
 
   // Maximum number of token logos to display
   const MAX_LOGOS = 5;
-  const hasMoreTokens = data.transfers.length > MAX_LOGOS;
+
+  const uniqueTokens = new Set();
+  const uniqueTransfers = data.transfers.filter((transfer) => {
+    const key = `${transfer.metadata.symbol}-${transfer.event.chainId}`;
+    if (!uniqueTokens.has(key)) {
+      uniqueTokens.add(key);
+      return true;
+    }
+    return false;
+  });
+
+  const hasMoreTokens = uniqueTransfers.length > MAX_LOGOS;
 
   return (
     <Card className="p-2 min-w-[300px] min-h-[200px] cursor-pointer relative">
@@ -43,9 +54,9 @@ const TransactionNode = ({ data }: NodeProps<TransactionNodeType>) => {
         <div className="flex items-center gap-1 text-xs mt-1">
           Token Type:
           <div className="flex items-center gap-1 flex-wrap">
-            {data.transfers.slice(0, MAX_LOGOS).map((transfer) => (
+            {uniqueTransfers.slice(0, MAX_LOGOS).map((transfer) => (
               <ChainOverlayLogo
-                key={`${transfer.metadata.symbol}-${transfer.event.chainId}-${transfer.event.payload.amount}`}
+                key={`${transfer.metadata.symbol}-${transfer.event.chainId}`}
                 src={transfer.metadata.icon}
                 alt={transfer.metadata.symbol}
                 chainId={transfer.event.chainId}
