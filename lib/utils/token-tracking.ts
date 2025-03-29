@@ -29,33 +29,31 @@ export interface TransactionInfo {
   predecessorHash?: Hex | null;
   transactionType?: TransactionType;
   swapDetails?: {
-    tokenIn?: TokenTransfer;
-    tokenOut?: TokenTransfer;
+    tokenIn?: TokenTransfer; // Token received
+    tokenOut?: TokenTransfer; // Token sent out
   };
+  activeToken?: TokenTransfer; // Holds the token received (active token)
   [key: string]: any;
 }
 
-export async function buildGraph(publicClient: PublicClient, hash: Hex, maxDepth: number = 1) {
+/**
+ * Builds a graph by starting the recursive tracking at the given transaction hash.
+ */
+export async function buildGraph(publicClient: PublicClient, hash: Hex, maxDepth: number = 2) {
   const nodes: GraphNode[] = [];
   const edges: GraphEdge[] = [];
   const processedTxs = new Set<string>();
   const depthXPositions: Record<number, { left: number; right: number }> = {};
 
-  await trackTransactionsRecursively(
-    publicClient,
-    hash,
-    nodes,
-    edges,
-    processedTxs,
-    0,
-    maxDepth,
-    depthXPositions,
-    0, // Root starts at x = 0 (center)
-  );
+  // Start recursive tracking without an active token.
+  await trackTransactionsRecursively(publicClient, hash, nodes, edges, processedTxs, 0, maxDepth, depthXPositions, 0);
 
   return { nodes, edges };
 }
 
+/**
+ * Recursively tracks transactions, adds nodes/edges to the graph, and propagates the active token if set.
+ */
 async function trackTransactionsRecursively(
   publicClient: PublicClient,
   hash: Hex,
@@ -67,34 +65,36 @@ async function trackTransactionsRecursively(
   depthXPositions: Record<number, { left: number; right: number }>,
   parentX: number,
   isLeft: boolean = false,
+  activeToken?: TokenTransfer, // Propagate active token from a previous swap
 ) {
   if (processedTxs.has(hash) || currentDepth > maxDepth) return;
-
   processedTxs.add(hash);
 
   const txinfo = await getTransactionInfo(publicClient, hash);
-
   if (txinfo.transfers.length === 0) {
     console.log(`Skipping node with hash ${hash} because it has no transfers`);
     return;
   }
 
-  // Layout constants
+  const currentActiveToken =
+    txinfo.transactionType === TransactionType.SWAP && txinfo.activeToken ? txinfo.activeToken : activeToken;
+  if (txinfo.transactionType === TransactionType.SWAP && txinfo.activeToken) {
+    console.log('New active token set:', JSON.stringify(activeToken, null, 2));
+  }
+
   const nodeSpacing = 400;
   const levelSpacing = 300;
   const nodeWidth = 300;
   const nodeHeight = 200;
-  // Initialize x-positions for this depth if not set
   if (!depthXPositions[currentDepth]) {
     depthXPositions[currentDepth] = { left: 0, right: 0 };
   }
 
-  // Calculate x-position
+  // Calculate x-position for the current node.
   let xPos: number;
   if (currentDepth === 0) {
-    xPos = 0; // Root node is centered
+    xPos = 0;
   } else {
-    // Position children symmetrically
     xPos = isLeft ? parentX - nodeSpacing : parentX + nodeSpacing;
     if (isLeft) {
       depthXPositions[currentDepth].left = Math.min(depthXPositions[currentDepth].left, xPos);
@@ -102,10 +102,9 @@ async function trackTransactionsRecursively(
       depthXPositions[currentDepth].right = Math.max(depthXPositions[currentDepth].right, xPos);
     }
   }
-
   const yPos = currentDepth * levelSpacing;
 
-  // Add the transaction node
+  // Add the current transaction as a node.
   nodes.push({
     id: hash,
     data: txinfo,
@@ -114,8 +113,8 @@ async function trackTransactionsRecursively(
     style: { width: nodeWidth, height: nodeHeight },
   });
 
-  // Add edge from parent if not the root
-  if (currentDepth > 0 && parentX !== undefined) {
+  // Add an edge from the parent if not the root.
+  if (currentDepth > 0) {
     edges.push({
       id: `${parentX}-${hash}`,
       source: nodes.find((n) => n.position.x === parentX && n.position.y === yPos - levelSpacing)?.id || '',
@@ -125,13 +124,28 @@ async function trackTransactionsRecursively(
     });
   }
 
-  // Recurse to child transactions
+  let nextRecipients: Set<Hex>;
+  if (currentActiveToken) {
+    nextRecipients = new Set(
+      txinfo.transfers
+        .filter(
+          (transfer) =>
+            transfer.metadata.symbol === currentActiveToken.metadata.symbol &&
+            transfer.event.payload.from.toLowerCase() === txinfo.receipt.from.toLowerCase(),
+        )
+        .map((transfer) => transfer.event.payload.to),
+    );
+  } else {
+    nextRecipients = txinfo.recipients;
+  }
+  console.log('the currrent Active token: ', currentActiveToken);
+
   if (currentDepth < maxDepth) {
     let childIndex = 0;
-    for (const addr of txinfo.recipients) {
+    for (const addr of nextRecipients) {
       const transactions = await getTransactions(publicClient, addr, txinfo.block, txinfo.block + 300000);
       for (const tx of transactions) {
-        const isLeftChild = childIndex % 2 === 0; // Alternate left and right
+        const isLeftChild = childIndex % 2 === 0;
         await trackTransactionsRecursively(
           publicClient,
           tx.hash,
@@ -143,6 +157,7 @@ async function trackTransactionsRecursively(
           depthXPositions,
           xPos,
           isLeftChild,
+          currentActiveToken, // Propagate the active token down the recursion
         );
         childIndex++;
       }
@@ -150,9 +165,9 @@ async function trackTransactionsRecursively(
   }
 }
 
-// The rest of the code (getTransactionInfo and getTransactions) remains unchanged
-// as the issue was primarily in the layout logic of trackTransactionsRecursively.
-
+/**
+ * Retrieves and parses transaction details including token transfer events.
+ */
 async function getTransactionInfo(publicClient: PublicClient, hash: Hex): Promise<TransactionInfo> {
   const transaction = await publicClient.getTransactionReceipt({ hash });
   const tokens: Set<string> = new Set();
@@ -169,22 +184,18 @@ async function getTransactionInfo(publicClient: PublicClient, hash: Hex): Promis
   const transfers: TokenTransfer[] = [];
   for (const log of logs) {
     try {
-      console.log(`The Logs that are being parsed are ${JSON.stringify(log, null, 2)}`);
-      console.log(`The client Id is ${publicClient.chain?.id}`);
+      console.log(`Parsing log: ${JSON.stringify(log, null, 2)}`);
       if (!publicClient.chain?.id) {
         throw new Error('Chain ID is not available. Please ensure you are connected to the correct network.');
       }
-
       const parsedEvent = parseTransferLog(log, publicClient.chain.id, log.address);
       if (parsedEvent?.type === TokenEventType.TRANSFER_ERC20) {
         tokens.add(parsedEvent.token);
         recipients.add(parsedEvent.payload.to);
-
         const contract = createTokenContract(parsedEvent, publicClient);
         if (!contract) {
           throw new Error(`Failed to create contract for token: ${parsedEvent.token}`);
         }
-
         const metadata = await getTokenMetadata(contract, publicClient.chain.id);
         transfers.push({
           metadata,
@@ -207,9 +218,7 @@ async function getTransactionInfo(publicClient: PublicClient, hash: Hex): Promis
   };
 
   detectSwap(txInfo);
-
-  console.log(`Transaction Info: ${JSON.stringify(txInfo.transactionType, null, 2)}`);
-  // console.log(`Transaction Info: ${JSON.stringify(txInfo, null, 2)}`);
+  console.log(`Transaction type: ${JSON.stringify(txInfo.transactionType, null, 2)}`);
   return txInfo;
 }
 
@@ -233,6 +242,7 @@ const getTransactions = async (
 
   const response = await fetch(`/api/${chainId}/transactions?${new URLSearchParams(params)}`);
   const data = await response.json();
+  console.log('Data type: ', typeof data);
 
   return Promise.all(
     data.transactions.map(async (tx: any) => {
@@ -256,12 +266,10 @@ const getTransactions = async (
           if (parsedEvent?.type === TokenEventType.TRANSFER_ERC20) {
             tokens.add(parsedEvent.token);
             recipients.add(parsedEvent.payload.to);
-
             const contract = createTokenContract(parsedEvent, publicClient);
             if (!contract) {
               throw new Error(`Failed to create contract for token: ${parsedEvent.token}`);
             }
-
             const metadata = await getTokenMetadata(contract, chainId);
             transfers.push({
               metadata,
@@ -286,6 +294,11 @@ const getTransactions = async (
   );
 };
 
+/**
+ * Detects if the transaction is a swap by examining its transfers.
+ * If a swap is detected, assigns tokenIn as the token received and tokenOut as the token sent,
+ * and sets the activeToken to the token received.
+ */
 function detectSwap(txInfo: TransactionInfo): void {
   if (txInfo.transfers.length < 2) {
     txInfo.transactionType = txInfo.transfers.length === 1 ? TransactionType.TRANSFER : TransactionType.UNKNOWN;
@@ -294,24 +307,20 @@ function detectSwap(txInfo: TransactionInfo): void {
 
   const userAddress = txInfo.receipt.from.toLowerCase();
 
-  // Find transfers where user is sending tokens out (from)
+  // Find transfers where the user sent tokens (tokenOut).
   const tokensOut = txInfo.transfers.filter((transfer) => transfer.event.payload.from.toLowerCase() === userAddress);
-
-  // Find transfers where user is receiving tokens (to)
+  // Find transfers where the user received tokens (tokenIn).
   const tokensIn = txInfo.transfers.filter((transfer) => transfer.event.payload.to.toLowerCase() === userAddress);
 
-  // If user both sent and received tokens, it's likely a swap
   if (tokensOut.length > 0 && tokensIn.length > 0) {
     txInfo.transactionType = TransactionType.SWAP;
-
-    // Store details about the swap
+    // Note: Adjust the order if needed. Here we assume the user receives (tokensIn) and sends (tokensOut)
     txInfo.swapDetails = {
-      tokenIn: tokensOut[0],
-      tokenOut: tokensIn[0],
+      tokenIn: tokensIn[0],
+      tokenOut: tokensOut[0],
     };
-
-    console.log('the to address', txInfo.transfers[0].event.payload.to);
-    console.log('the from address', txInfo.transfers[0].event.payload.to);
+    // Use the received token as the active token.
+    txInfo.activeToken = tokensIn[0];
     console.log(`Detected swap: ${tokensOut[0].metadata.symbol} → ${tokensIn[0].metadata.symbol}`);
   } else if (tokensOut.length > 0) {
     txInfo.transactionType = TransactionType.TRANSFER;
