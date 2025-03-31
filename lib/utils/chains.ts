@@ -225,7 +225,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.PolygonMainnet,
   }),
   [ChainId.ApeChain]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.ApeChain,
     name: 'ApeChain',
     nativeToken: 'APE',
