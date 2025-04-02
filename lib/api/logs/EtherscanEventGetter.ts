@@ -7,6 +7,7 @@ import {
   getChainApiRateLimit,
   getChainApiUrl,
 } from 'lib/utils/chains';
+import { isLogResponseSizeError } from 'lib/utils/errors';
 import type { Filter, Log } from 'lib/utils/events';
 import { type Address, type Hash, type Hex, getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
@@ -77,6 +78,9 @@ export class EtherscanEventGetter implements EventGetter {
     } catch (e) {
       console.log(e);
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
+
+      if (isLogResponseSizeError(e)) throw new Error('Log response size exceeded');
+
       throw new Error('Could not retrieve event logs from the blockchain');
     }
 
