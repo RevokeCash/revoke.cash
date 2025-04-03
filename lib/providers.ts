@@ -35,7 +35,7 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
     // We pre-emptively split the requests for Covalent-supported chains, to limit potential downsides when
     // we potentially need to divide-and-conquer the requests down the line
     if (isCovalentSupportedChain(this.chainId) && filter.toBlock - filter.fromBlock > 5_000_000) {
-      return this.divideAndConquer(filter);
+      return this.divideAndConquer(filter, 2);
     }
 
     try {
@@ -47,14 +47,16 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
       // If the block range is already a single block, we re-throw the error since we can't split it further
       if (filter.fromBlock === filter.toBlock) throw error;
 
-      return this.divideAndConquer(filter);
+      return this.divideAndConquer(filter, 2);
     }
   }
 
-  async divideAndConquer(filter: Filter): Promise<Log[]> {
+  async divideAndConquer(filter: Filter, iterations: number): Promise<Log[]> {
+    if (iterations === 1) return this.getLogs(filter);
+
     const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-    const leftPromise = this.getLogs({ ...filter, toBlock: middle });
-    const rightPromise = this.getLogs({ ...filter, fromBlock: middle + 1 });
+    const leftPromise = this.divideAndConquer({ ...filter, toBlock: middle }, iterations - 1);
+    const rightPromise = this.divideAndConquer({ ...filter, fromBlock: middle + 1 }, iterations - 1);
     const [left, right] = await Promise.all([leftPromise, rightPromise]);
     return [...left, ...right];
   }
