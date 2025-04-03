@@ -15,54 +15,57 @@ import { Chain, type DeployedContracts, SupportType } from '../chains/Chain';
 export const CHAIN_SELECT_MAINNETS = [
   ChainId.EthereumMainnet,
   ChainId.BNBSmartChainMainnet,
-  ChainId.OpBNBMainnet,
   ChainId.PolygonMainnet,
-  ChainId.PolygonzkEVM,
-  ChainId.ArbitrumOne,
-  ChainId.ArbitrumNova,
-  ChainId.OPMainnet,
   ChainId.Base,
+  ChainId.ArbitrumOne,
+  ChainId.OPMainnet,
+  ChainId.SonicMainnet,
   ChainId['AvalancheC-Chain'],
+  ChainId.Berachain,
   ChainId.CoreBlockchainMainnet,
+  ChainId.CronosMainnet,
+  ChainId.SeiNetwork,
+  ChainId.BitlayerMainnet,
   ChainId.Abstract,
   ChainId.Mantle,
+  ChainId.Mode,
+  ChainId.Gnosis,
   ChainId.Blast,
   ChainId.Linea,
   ChainId.Scroll,
   ChainId.ZkSyncMainnet,
   ChainId.Ink,
   ChainId.Unichain,
-  ChainId.Berachain,
-  ChainId.BitlayerMainnet,
-  ChainId.SonicMainnet,
-  ChainId.CronosMainnet,
-  ChainId.PulseChain,
-  ChainId.Mode,
-  ChainId.Gnosis,
   ChainId.TaikoAlethia,
+  ChainId.BOB,
   ChainId.RootstockMainnet,
+  ChainId.MerlinMainnet,
+  ChainId.PulseChain,
+  ChainId.Fraxtal,
+  ChainId.Morph,
+  ChainId.Soneium,
+  ChainId.CeloMainnet,
+  ChainId.Story,
+  ChainId.FlowEVMMainnet,
+  ChainId.FlareMainnet,
   ChainId.ApeChain,
   ChainId.WorldChain,
-  ChainId.SeiNetwork,
-  ChainId.BOB,
   ChainId.FantomOpera,
+  ChainId.OpBNBMainnet,
+  ChainId.PolygonzkEVM,
+  ChainId.ArbitrumNova,
   ChainId.MetisAndromedaMainnet,
-  ChainId.MerlinMainnet,
-  ChainId.Fraxtal,
   ChainId.RoninMainnet,
-  ChainId.CeloMainnet,
-  ChainId.FlowEVMMainnet,
   ChainId.MantaPacificMainnet,
-  ChainId.FlareMainnet,
   ChainId['SongbirdCanary-Network'],
   ChainId.IOTAEVM,
   ChainId.Astar,
   ChainId.AstarzkEVM,
   999, // Hyperliquid EVM
-  ChainId.Soneium,
   ChainId.TelosEVMMainnet,
-  ChainId.Story,
+  ChainId.Sophon,
   ChainId.RolluxMainnet,
+  ChainId.ImmutablezkEVM,
   ChainId.SyscoinMainnet,
   ChainId.ZetaChainMainnet,
   ChainId.AuroraMainnet,
@@ -71,12 +74,13 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZkLinkNovaMainnet,
   ChainId['WEMIX3.0Mainnet'],
   ChainId.EOSEVMNetwork,
-  ChainId.ImmutablezkEVM,
+  ChainId.OasisEmerald,
+  ChainId.OasisSapphire,
+  ChainId.MintMainnet,
   ChainId.ChilizChainMainnet,
   ChainId.Canto,
   ChainId.XLayerMainnet,
   ChainId.Kroma,
-  ChainId.Morph,
   ChainId.DogechainMainnet,
   ChainId['Re.al'],
   ChainId.Wanchain,
@@ -86,8 +90,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Viction,
   ChainId.HorizenEONMainnet,
   ChainId.GravityAlphaMainnet,
-  ChainId.OasisEmerald,
-  ChainId.OasisSapphire,
   ChainId.HarmonyMainnetShard0,
   ChainId.BobaNetwork,
   ChainId.DegenChain,
@@ -108,7 +110,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.LightlinkPhoenixMainnet,
   ChainId.ENULSMainnet,
   ChainId.Shape,
-  ChainId.MintMainnet,
   ChainId.ZKFairMainnet,
   ChainId.InEVMMainnet,
   ChainId.CrabNetwork,
@@ -134,6 +135,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
   ChainId.Ethernity,
+  ChainId.XDCNetwork,
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -241,14 +243,14 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ArbitrumNova]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.ArbitrumNova,
     name: 'Arbitrum Nova',
     logoUrl: '/assets/images/vendor/chains/arbitrum-nova.svg',
     explorerUrl: 'https://nova.arbiscan.io',
-    etherscanCompatibleApiUrl: 'https://api-nova.arbiscan.io/api',
     rpc: {
       main: `https://arbnova-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: 'https://42170.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -272,6 +274,7 @@ export const CHAINS = {
     explorerUrl: 'https://arbiscan.io',
     rpc: {
       main: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: 'https://42161.rpc.hypersync.xyz',
       // main: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://arb1.arbitrum.io/rpc',
     },
@@ -387,6 +390,7 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://api.snowscan.xyz/api',
     rpc: {
       main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      logs: 'https://43114.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -429,6 +433,7 @@ export const CHAINS = {
     rpc: {
       // main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      logs: 'https://8453.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
@@ -570,7 +575,7 @@ export const CHAINS = {
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
   }),
   [ChainId.Blast]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Blast,
     name: 'Blast',
     logoUrl: '/assets/images/vendor/chains/blast.jpg',
@@ -579,6 +584,7 @@ export const CHAINS = {
     rpc: {
       // main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      logs: 'https://81457.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -1052,13 +1058,14 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.FantomOpera]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.FantomOpera,
     name: 'Fantom',
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
     etherscanCompatibleApiUrl: 'https://api.ftmscan.com/api',
     rpc: {
       main: `https://fantom-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: 'https://250.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -1172,7 +1179,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Gnosis]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Gnosis,
     name: 'Gnosis Chain',
     logoUrl: '/assets/images/vendor/chains/gnosis.svg',
@@ -1181,6 +1188,7 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     rpc: {
       main: `https://gnosis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: 'https://100.rpc.hypersync.xyz',
     },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1452,10 +1460,12 @@ export const CHAINS = {
   //   correspondingMainnetChainId: ChainId.LUKSOMainnet,
   // }),
   [ChainId.Lisk]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Lisk,
     name: 'Lisk',
-    etherscanCompatibleApiUrl: 'https://blockscout.lisk.com/api',
+    rpc: {
+      logs: 'https://1135.rpc.hypersync.xyz',
+    },
     logoUrl: '/assets/images/vendor/chains/lisk.svg',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -1605,12 +1615,13 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/monad.svg',
   }),
   [ChainId.MonadTestnet]: new Chain({
-    type: SupportType.COVALENT,
+    type: SupportType.PROVIDER,
     chainId: ChainId.MonadTestnet,
     name: 'Monad Testnet',
     logoUrl: '/assets/images/vendor/chains/monad.svg',
     rpc: {
       main: `https://monad-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: 'https://10143.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -2082,12 +2093,15 @@ export const CHAINS = {
     }),
   }),
   [ChainId.RootstockMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.PROVIDER,
     chainId: ChainId.RootstockMainnet,
     name: 'Rootstock',
     logoUrl: '/assets/images/vendor/chains/rootstock.jpg',
     explorerUrl: 'https://rootstock.blockscout.com',
     etherscanCompatibleApiUrl: 'https://rootstock.blockscout.com/api',
+    rpc: {
+      logs: 'https://30.rpc.hypersync.xyz',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
   }),
@@ -2120,7 +2134,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Scroll]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Scroll,
     name: 'Scroll',
     logoUrl: '/assets/images/vendor/chains/scroll.svg',
@@ -2128,6 +2142,7 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api',
     rpc: {
       main: `https://scroll-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: 'https://534352.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -2272,6 +2287,16 @@ export const CHAINS = {
         }),
       ],
     }),
+  }),
+  [ChainId.Sophon]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.Sophon,
+    name: 'Sophon',
+    logoUrl: '/assets/images/vendor/chains/sophon.jpg',
+    rpc: {
+      logs: 'https://50104.rpc.hypersync.xyz',
+    },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.Story]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -2467,6 +2492,15 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
+  }),
+  [ChainId.XDCNetwork]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.XDCNetwork,
+    name: 'XDC Network',
+    logoUrl: '/assets/images/vendor/chains/xdc.svg',
+    rpc: {
+      logs: 'https://50.rpc.hypersync.xyz',
+    },
   }),
   [ChainId.XLayerMainnet]: new Chain({
     type: SupportType.COVALENT,
