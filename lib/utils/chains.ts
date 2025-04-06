@@ -1478,7 +1478,7 @@ export const CHAINS = {
     infoUrl: 'https://pacific.manta.network/',
     etherscanCompatibleApiUrl: 'https://manta-pacific.calderaexplorer.xyz/api',
     rpc: {
-      main: 'https://manta-pacific.drpc.org',
+      main: `https://lb.drpc.org/ogrpc?network=manta-pacific&dkey=${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO

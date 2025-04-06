@@ -27,8 +27,8 @@ export class CovalentEventGetter implements EventGetter {
     const blockNumber = result?.data?.items[0]?.height;
     if (!blockNumber) throw new Error('Failed to get latest block number');
 
-    // Covalent might still have slight delay so we subtract 10 to be safe
-    return blockNumber - 10;
+    // Covalent might still have slight delay so we subtract 20 to be safe
+    return blockNumber - 20;
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
@@ -56,8 +56,8 @@ export class CovalentEventGetter implements EventGetter {
     const searchParams = {
       'starting-block': fromBlock === 0 ? 'earliest' : fromBlock,
       'ending-block': toBlock,
-      'secondary-topics': secondaryTopics.join(','),
       'page-size': 9999999,
+      ...(secondaryTopics.length > 0 ? { 'secondary-topics': secondaryTopics.join(',') } : {}),
     };
 
     const headers = this.getHeaders();
