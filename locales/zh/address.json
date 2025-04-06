@@ -19,64 +19,64 @@
   "coverage": {
     "info": {
       "chains": {
-        "evm": "EVM Compatible",
-        "non_evm": "Non-EVM",
-        "title": "Supported Blockchains"
+        "evm": "兼容 EVM",
+        "non_evm": "非 EVM",
+        "title": "支持的区块链"
       },
-      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "Revoke.cash 可以帮助您管理加密货币领域的风险。我们提供的各种工具可以帮助您防止资金被盗或损失。但即便如此，依然可能遭受诈骗和黑客攻击。这就是保险的价值所在。保险可以在钱包被盗时依然保障钱包价值。保险类型有很多，从智能合约黑客攻击到网络钓鱼攻击都有覆盖。我们与<fairside-link>Fairside</fairside-link>合作，为您提供一些网络钓鱼和社交工程泄密的保险，也有其他针对智能合约黑客攻击的保险产品，如<nexus-link>Nexus Mutual</nexus-link>或<bright-union-link>Bright Union</bright-union-link>。",
       "important": {
-        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
-        "fee": "There is a 10% personal responsibility fee on payouts.",
-        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
-        "title": "Important Information",
-        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
+        "coverage_amount": "为特定 ETH 金额购买保险——如果您的投资组合价值升值（折算成 ETH），您也只能获得之前配置的 ETH 金额的保障。",
+        "fee": "付款需支付 10% 的个人责任费。",
+        "kyc": "KYC 仅在申请索赔时需要，在购买保险时不需要。",
+        "title": "重要信息",
+        "wallets": "一个会员最多可覆盖 10 个钱包，只需将钱包绑定到相关会员账户即可。"
       },
       "main": {
         "covered_items": {
-          "malware": "Malware (min. 10 ETH coverage)",
-          "poisoning": "Address poisoning",
-          "signatures": "Malicious transactions and signatures"
+          "malware": "恶意软件（至少10个ETH）",
+          "poisoning": "地址中毒",
+          "signatures": "恶意交易和签名"
         },
-        "covered_title": "What Fairside covers",
-        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "covered_title": "Fairside 覆盖范围",
+        "description": "如果钱包被盗，您就可以获得赔偿。Fairside 是第一个允许购买钱包被盗保险的加密货币原生平台。他们承保范围覆盖网络钓鱼和社交工程交付方式下的各种损失。",
         "not_covered_items": {
-          "custodial-accounts": "Custodial account drains",
-          "rug_pulls": "Rug pulls",
-          "seed_phrase": "Revealing your seed phrase",
-          "smart_contracts": "Smart contract hacks"
+          "custodial-accounts": "托管账户被盗",
+          "rug_pulls": "地毯式拉盘",
+          "seed_phrase": "泄露助记词",
+          "smart_contracts": "智能合约黑客"
         },
-        "not_covered_title": "What Fairside doesn't cover",
-        "title": "Fairside Wallet Drain Coverage"
+        "not_covered_title": "Fairside 不覆盖的范围",
+        "title": "Fairside 钱包被盗覆盖范围"
       },
       "quiz": {
-        "check_answer": "Check Answer",
-        "get_coverage": "Get Coverage Now",
-        "next_question": "Next Question",
-        "question_progress": "Question {current} of {total}",
-        "retroactive_campaign": "Here for the campaign?",
-        "start": "Take Quiz to Get Started",
-        "title": "Quick Coverage Quiz",
-        "wait_and_read": "Read before proceeding"
+        "check_answer": "查看答案",
+        "get_coverage": "立即获得保障",
+        "next_question": "下一个问题",
+        "question_progress": "问题{current}，共{total}",
+        "retroactive_campaign": "来参加活动？",
+        "start": "参加测验以开始",
+        "title": "快速覆盖测验",
+        "wait_and_read": "开始前请阅读"
       },
-      "title": "What is Coverage?"
+      "title": "什么是覆盖范围？"
     },
     "membership": {
-      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
-      "covered": "Covered",
+      "claims": "{count, plural, =0 {无领取} =1 {# 领取} other {# 领取}}",
+      "covered": "覆盖",
       "labels": {
-        "amount": "Amount",
-        "claims": "Claims",
-        "status": "Status",
-        "timeframe": "Timeframe"
+        "amount": "金额",
+        "claims": "领取",
+        "status": "状态",
+        "timeframe": "时间范围"
       },
-      "not_covered": "Not Covered",
-      "title": "Fairside Membership"
+      "not_covered": "未覆盖",
+      "title": "Fairside 会员"
     },
     "wallets": {
-      "add": "Add Wallet",
-      "description": "Sign an authentication message to view and manage your covered wallets.",
-      "title": "Covered Wallets",
-      "wallets": "wallets"
+      "add": "添加钱包",
+      "description": "签署身份验证信息，查看和管理覆盖的钱包。",
+      "title": "覆盖钱包",
+      "wallets": "钱包"
     }
   },
   "filters": {
@@ -110,13 +110,13 @@
     "allowance": "授权金额",
     "asset": "资产",
     "asset_type": "类型",
-    "expiration": "Expiration",
+    "expiration": "到期",
     "last_cancelled": "上次取消",
     "last_updated": "上次更新",
     "marketplace": "市场",
-    "policy_type": "Permission Type",
-    "session_hash": "Session Identifier",
-    "signer": "Authorized Signer",
+    "policy_type": "权限类型",
+    "session_hash": "会话标识符",
+    "signer": "授权签署人",
     "spender": "被授权人（Spender）",
     "status": "状态",
     "transaction": "交易",
@@ -127,10 +127,10 @@
     "nft": "NFT",
     "not_connected": "未连接",
     "policy_type": {
-      "all": "Transfers & Calls",
-      "calls": "Contract Calls",
-      "none": "None",
-      "transfers": "Transfers"
+      "all": "转账和通话",
+      "calls": "合同条款要求",
+      "none": "没有",
+      "transfers": "转账"
     },
     "token": "代币"
   },
@@ -140,10 +140,10 @@
   },
   "navigation": {
     "allowances": "授权",
-    "coverage": "Coverage",
+    "coverage": "覆盖范围",
     "history": "历史",
     "more": "更多",
-    "sessions": "Sessions",
+    "sessions": "会话",
     "settings": "设置",
     "signatures": "签名"
   },
@@ -175,26 +175,26 @@
   },
   "sessions": {
     "info": {
-      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
-      "title": "What Are Sessions?"
+      "description": "会话是一种权限系统，类似代币授权，但有一些关键区别。代币授予特定地址从钱包中提取令牌的权限，而会话可以授予特定地址在与智能合约交互时代表你签署特定交易的权限。这些会话目前只有在使用<i>Abstract Global Wallet</i> 时才能在 Abstract 上使用，但将来可能会应用到其他链上。",
+      "title": "什么是会话？"
     },
     "table": {
-      "none_found": "No sessions found",
-      "title": "Active Sessions"
+      "none_found": "未找到会话",
+      "title": "活跃会话"
     },
     "tooltips": {
       "policy_type": {
-        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
-        "calls": "This session is authorized to call {callPoliciesCount} different functions",
-        "none": "This session has no permissions",
-        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+        "all": "此会话有权限调用{callPoliciesCount}个不同的函数，并将代币传输到{transferPoliciesCount}个不同的地址",
+        "calls": "此会话有权调用{callPoliciesCount}个不同的函数",
+        "none": "此会话没有权限",
+        "transfers": "该会话有权将代币转移到{transferPoliciesCount}个不同的地址"
       }
     }
   },
   "signatures": {
     "info": {
-      "description": "由于区块链不存储签名，<b>因此 Revoke.cash 无法核实您是否真的进行了签名</b>。此页面列出了已知的市场和您所有的支持链下<i>许可</i>签名的代币。<b>只有当<i>您</i>确定自己在钓鱼网站上进行了链下签名时，才需要取消本页面这些<i>可能存在的</i>签名</b>，否则可能浪费交易费用。即使您已取消某个代币或市场的签名，该条目仍将保存在本列表中，不过在一段时间内将无法再次取消。",
-      "title": "What Are Signatures?"
+      "description": "签名是一种无需发送交易即可授权操作的方式。<i>市场签名</i>用于列出在 OpenSea 等市场上出售的资产。<i>许可证签名</i>用于进行代币授权。由于区块链不存储签名，<b>因此 Revoke.cash 无法核实您是否真的进行了签名</b>。此页面列出了已知的市场和您所有的支持链下<i>许可</i>签名的代币。<b>只有当<i>您</i>确定自己在钓鱼网站上进行了链下签名时，才需要取消本页面这些<i>可能存在的</i>签名</b>，否则可能浪费交易费用。即使您已取消某个代币或市场的签名，该条目仍将保存在本列表中，不过在一段时间内将无法再次取消。",
+      "title": "什么是签名？"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 个有效授权} other {# 个有效授权}}",

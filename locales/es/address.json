@@ -20,63 +20,63 @@
     "info": {
       "chains": {
         "evm": "EVM Compatible",
-        "non_evm": "Non-EVM",
-        "title": "Supported Blockchains"
+        "non_evm": "No EVM",
+        "title": "Blockchains compatibles"
       },
-      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La cobertura es una forma de asegurarte de que el valor de tu monedero está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
       "important": {
-        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
-        "fee": "There is a 10% personal responsibility fee on payouts.",
-        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
-        "title": "Important Information",
-        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
+        "coverage_amount": "La cobertura se compra por una cierta cantidad de ETH - si el valor de su cartera aumenta en ETH, solo estará cubierto por la cantidad de ETH configurada.",
+        "fee": "Hay una comisión de responsabilidad personal del 10% sobre los pagos.",
+        "kyc": "KYC solo es necesario al crear un reclamo, no al comprar cobertura.",
+        "title": "Información importante",
+        "wallets": "Puedes cubrir hasta 10 carteras con una afiliación, siempre que las añadas a tu membresía."
       },
       "main": {
         "covered_items": {
-          "malware": "Malware (min. 10 ETH coverage)",
-          "poisoning": "Address poisoning",
-          "signatures": "Malicious transactions and signatures"
+          "malware": "Malware (cobertura mínima de 10 ETH)",
+          "poisoning": "Falsificación de direcciones",
+          "signatures": "Transacciones y firmas maliciosas"
         },
-        "covered_title": "What Fairside covers",
-        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "covered_title": "Qué cubre Fairside",
+        "description": "Recibe una compensación si te sustrajeron fondos de la cartera. Fairside es la primera plataforma nativa de criptomonedas que te permite contratar cobertura para tu cartera en caso de sustracción de fondos. Ellos cubren diversas pérdidas causadas por métodos de phishing e ingeniería social.",
         "not_covered_items": {
-          "custodial-accounts": "Custodial account drains",
+          "custodial-accounts": "Sustracción de fondos en cuenta custodia",
           "rug_pulls": "Rug pulls",
-          "seed_phrase": "Revealing your seed phrase",
-          "smart_contracts": "Smart contract hacks"
+          "seed_phrase": "Revelando tu frase semilla",
+          "smart_contracts": "Hacks de contratos inteligentes"
         },
-        "not_covered_title": "What Fairside doesn't cover",
-        "title": "Fairside Wallet Drain Coverage"
+        "not_covered_title": "Lo que Fairside no cubre",
+        "title": "Cobertura de Sustracción de Fondos de Cartera Fairside"
       },
       "quiz": {
-        "check_answer": "Check Answer",
-        "get_coverage": "Get Coverage Now",
-        "next_question": "Next Question",
-        "question_progress": "Question {current} of {total}",
-        "retroactive_campaign": "Here for the campaign?",
-        "start": "Take Quiz to Get Started",
-        "title": "Quick Coverage Quiz",
-        "wait_and_read": "Read before proceeding"
+        "check_answer": "Comprobar Respuesta",
+        "get_coverage": "Obtén Cobertura Ahora",
+        "next_question": "Siguiente Pregunta",
+        "question_progress": "Pregunta {current} de {total}",
+        "retroactive_campaign": "¿Estás aquí para la campaña?",
+        "start": "Responde el Cuestionario para Comenzar",
+        "title": "Cuestionario de Cobertura Rápida",
+        "wait_and_read": "Leer antes de continuar"
       },
-      "title": "What is Coverage?"
+      "title": "¿Qué es la Cobertura?"
     },
     "membership": {
-      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
-      "covered": "Covered",
+      "claims": "{count, plural, =0 {Sin reclamos} =1 {# reclamo} other {# reclamos}}",
+      "covered": "Cubierto",
       "labels": {
-        "amount": "Amount",
-        "claims": "Claims",
-        "status": "Status",
-        "timeframe": "Timeframe"
+        "amount": "Monto",
+        "claims": "Reclamos",
+        "status": "Estatus",
+        "timeframe": "Periodo de tiempo"
       },
-      "not_covered": "Not Covered",
-      "title": "Fairside Membership"
+      "not_covered": "No cubierto",
+      "title": "Membresía Fairside"
     },
     "wallets": {
-      "add": "Add Wallet",
-      "description": "Sign an authentication message to view and manage your covered wallets.",
-      "title": "Covered Wallets",
-      "wallets": "wallets"
+      "add": "Añadir Cartera",
+      "description": "Firma un mensaje de autenticación para ver y administrar tus carteras cubiertas.",
+      "title": "Carteras Cubiertas",
+      "wallets": "carteras"
     }
   },
   "filters": {
@@ -140,7 +140,7 @@
   },
   "navigation": {
     "allowances": "Autorizaciones",
-    "coverage": "Coverage",
+    "coverage": "Cobertura",
     "history": "Historial",
     "more": "Más",
     "sessions": "Sesiones",

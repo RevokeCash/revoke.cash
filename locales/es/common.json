@@ -5,8 +5,8 @@
     "translator": "Traducido por <person-link>{translator}</person-link>"
   },
   "buttons": {
-    "authenticate": "Authenticate",
-    "authenticating": "Authenticating",
+    "authenticate": "Autenticar",
+    "authenticating": "Autenticando",
     "back_to_exploits": "Volver a Hacks",
     "cancel": "Cancelar",
     "cancel_signatures": "Cancelar Firmas Potenciales",
@@ -23,7 +23,7 @@
     "donating": "Donando",
     "download": "Descargar",
     "get_started": "Empezar",
-    "increase": "Increase",
+    "increase": "Aumentar",
     "my_allowances": "Mis Autorizaciones",
     "next": "Siguiente",
     "previous": "Anterior",
@@ -77,7 +77,7 @@
       "title": "Esta página no existe."
     },
     "messages": {
-      "chain_could_not_connect": "No se ha podido conectar a {chainName}"
+      "chain_could_not_connect": "No se ha podido conectar a {chainName}, por favor inténtalo de nuevo más tarde."
     }
   },
   "footer": {
