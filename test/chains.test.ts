@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SupportType } from 'lib/chains/Chain';
-import { ALCHEMY_API_KEY, INFURA_API_KEY } from 'lib/constants';
+import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
 import {
   DEFAULT_DONATION_AMOUNTS,
   ORDERED_CHAINS,
@@ -83,6 +83,7 @@ describe('Chain Support', () => {
       it('should not expose API keys in the free RPC URL', () => {
         INFURA_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(INFURA_API_KEY);
         ALCHEMY_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(ALCHEMY_API_KEY);
+        DRPC_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(DRPC_API_KEY);
       });
     });
   });
