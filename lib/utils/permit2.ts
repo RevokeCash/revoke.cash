@@ -11,8 +11,8 @@ export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78
 
 export const getPermit2AllowancesFromApprovals = async (
   contract: Erc20TokenContract,
-  owner: Address,
   events: TokenEvent[],
+  owner: Address,
 ): Promise<Permit2Erc20Allowance[]> => {
   const permit2ApprovalEvents = events.filter((event) => event.type === TokenEventType.PERMIT2);
 
@@ -26,7 +26,7 @@ export const getPermit2AllowancesFromApprovals = async (
   );
 
   const allowances = await Promise.all(
-    deduplicatedApprovalEvents.map((approval) => getPermit2AllowanceFromApproval(contract, owner, approval)),
+    deduplicatedApprovalEvents.map((approval) => getPermit2AllowanceFromApproval(contract, approval, owner)),
   );
 
   return allowances.filter((allowance) => allowance !== undefined) as Permit2Erc20Allowance[];
@@ -34,8 +34,8 @@ export const getPermit2AllowancesFromApprovals = async (
 
 const getPermit2AllowanceFromApproval = async (
   tokenContract: Erc20TokenContract,
-  owner: Address,
   approval: Permit2Event,
+  owner: Address,
 ): Promise<Permit2Erc20Allowance | undefined> => {
   const { spender, amount: lastApprovedAmount, expiration, permit2Address } = approval.payload;
   if (lastApprovedAmount === 0n) return undefined;

@@ -7,9 +7,8 @@ import {
   getAllowanceKey,
   revokeAllowance,
   trackRevokeTransaction,
-  updateErc20Allowance,
+  updateAllowance,
 } from 'lib/utils/allowances';
-import { isErc721Contract } from 'lib/utils/tokens';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useHandleTransaction } from './useHandleTransaction';
@@ -39,7 +38,7 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
     const wrappedUpdate = wrapTransaction({
       transactionKey: `update-${getAllowanceKey(allowance)}`,
       transactionType: TransactionType.UPDATE,
-      executeTransaction: () => updateErc20Allowance(walletClient!, allowance, newAmount, onUpdate),
+      executeTransaction: () => updateAllowance(walletClient!, allowance, newAmount, onUpdate),
       trackTransaction: () => trackRevokeTransaction(allowance, newAmount),
       updateTransaction,
       handleTransaction,
@@ -48,7 +47,7 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
     return wrappedUpdate();
   };
 
-  if (isErc721Contract(allowance.contract)) {
+  if (allowance.contract.tokenStandard === 'ERC721') {
     return { revoke };
   }
 

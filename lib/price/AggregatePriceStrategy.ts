@@ -1,5 +1,5 @@
 import { deduplicateArray, isNullish } from 'lib/utils';
-import { type TokenContract, type TokenStandard, isErc721Contract } from 'lib/utils/tokens';
+import type { TokenContract, TokenStandard } from 'lib/utils/tokens';
 import type { PublicClient } from 'viem';
 import type { PriceStrategy } from './PriceStrategy';
 
@@ -22,11 +22,7 @@ export class AggregatePriceStrategy implements PriceStrategy {
   constructor(options: AggregatePriceStrategyOptions) {
     this.aggregationType = options.aggregationType;
     this.strategies = options.strategies;
-    this.supportedAssets = deduplicateArray(
-      this.strategies.reduce<TokenStandard[]>((acc, curr) => {
-        return [...acc, ...curr.supportedAssets];
-      }, []),
-    );
+    this.supportedAssets = deduplicateArray(this.strategies.flatMap((strategy) => strategy.supportedAssets));
   }
 
   // Note: we only use the first strategy to calculate the native token price, so we only need to make sure that
@@ -67,10 +63,6 @@ export class AggregatePriceStrategy implements PriceStrategy {
   }
 
   public getSupportedStrategies(tokenContract: TokenContract): PriceStrategy[] {
-    if (isErc721Contract(tokenContract)) {
-      return this.strategies.filter((strategy) => strategy.supportedAssets.includes('ERC721'));
-    }
-
-    return this.strategies.filter((strategy) => strategy.supportedAssets.includes('ERC20'));
+    return this.strategies.filter((strategy) => strategy.supportedAssets.includes(tokenContract.tokenStandard));
   }
 }

@@ -130,3 +130,24 @@ export const AGW_SESSIONS_ABI = parseAbi([
   'struct Constraint { uint8 condition; uint64 index; bytes32 refValue; UsageLimit limit; }',
   'struct TransferSpec { address target; uint256 maxValuePerUse; UsageLimit valueLimit; }',
 ]);
+
+export const LSP7_ABI = parseAbi([
+  'event Transfer(address indexed operator, address indexed from, address indexed to, uint256 amount, bool force, bytes data)',
+  'event OperatorAuthorizationChanged(address indexed operator, address indexed tokenOwner, uint256 indexed amount, bytes operatorNotificationData)',
+  'event OperatorRevoked(address indexed operator, address indexed tokenOwner, bool indexed notified, bytes operatorNotificationData)',
+  'function decimals() external view returns (uint8)',
+  'function totalSupply() external view returns (uint256)',
+  'function balanceOf(address tokenOwner) external view returns (uint256)',
+  'function getData(bytes32 dataKey) external view returns (bytes memory value)',
+  'function authorizeOperator(address operator, uint256 amount, bytes memory operatorNotificationData) external',
+  'function revokeOperator(address operator, bool notify, bytes memory operatorNotificationData) external',
+  'function revokeOperator(address operator, address tokenOwner, bool notify, bytes memory operatorNotificationData) external',
+  'function increaseAllowance(address operator, uint256 addedAmount, bytes memory operatorNotificationData) external',
+  'function decreaseAllowance(address operator, uint256 subtractedAmount, bytes memory operatorNotificationData) external',
+  'function decreaseAllowance(address operator, address tokenOwner, uint256 subtractedAmount, bytes memory operatorNotificationData) external',
+  'function authorizedAmountFor(address operator, address tokenOwner) external view returns (uint256)',
+  'function getOperatorsOf(address tokenOwner) external view returns (address[] memory)',
+  'function transfer(address from, address to, uint256 amount, bool force, bytes memory data) external',
+  'function transferBatch(address[] memory from, address[] memory to, uint256[] memory amount, bool[] memory force, bytes[] memory data) external',
+  'function batchCalls(bytes[] memory data) external returns (bytes[] memory results)',
+]);

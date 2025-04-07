@@ -9,7 +9,7 @@ import {
   type OnUpdate,
   type TokenAllowanceData,
   getAllowanceI18nValues,
-  isErc20Allowance,
+  isFungibleAllowance,
 } from 'lib/utils/allowances';
 import { DAY, SECOND, YEAR } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
@@ -60,7 +60,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
           </WithHoverTooltip>
         ) : null}
       </div>
-      {isErc20Allowance(allowance.payload) && (
+      {isFungibleAllowance(allowance) && (
         <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize={undefined}>
           {(disabled) => (
             <div>

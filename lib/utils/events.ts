@@ -30,6 +30,8 @@ export enum TokenEventType {
   PERMIT2 = 'PERMIT2',
   TRANSFER_ERC20 = 'TRANSFER_ERC20',
   TRANSFER_ERC721 = 'TRANSFER_ERC721',
+  TRANSFER_LSP7 = 'TRANSFER_LSP7',
+  APPROVAL_LSP7 = 'APPROVAL_LSP7',
 }
 
 export interface BaseTokenEvent {
@@ -94,12 +96,41 @@ export interface Erc721TransferEvent extends BaseTokenEvent {
   };
 }
 
-export type ApprovalTokenEvent = Erc20ApprovalEvent | Erc721ApprovalEvent | Erc721ApprovalForAllEvent | Permit2Event;
-export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent;
+export interface Lsp7TransferEvent extends BaseTokenEvent {
+  type: TokenEventType.TRANSFER_LSP7;
+  payload: {
+    spender: Address;
+    from: Address;
+    to: Address;
+    amount: bigint;
+  };
+}
+
+export interface Lsp7ApprovalEvent extends BaseTokenEvent {
+  type: TokenEventType.APPROVAL_LSP7;
+  payload: {
+    spender: Address;
+    amount: bigint;
+  };
+}
+
+export type ApprovalTokenEvent =
+  | Erc20ApprovalEvent
+  | Erc721ApprovalEvent
+  | Erc721ApprovalForAllEvent
+  | Permit2Event
+  | Lsp7ApprovalEvent;
+
+export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent | Lsp7TransferEvent;
+
 export type TokenEvent = ApprovalTokenEvent | TransferTokenEvent;
 
 export const isTransferTokenEvent = (event: TokenEvent): event is TransferTokenEvent => {
-  return event.type === TokenEventType.TRANSFER_ERC20 || event.type === TokenEventType.TRANSFER_ERC721;
+  return (
+    event.type === TokenEventType.TRANSFER_ERC20 ||
+    event.type === TokenEventType.TRANSFER_ERC721 ||
+    event.type === TokenEventType.TRANSFER_LSP7
+  );
 };
 
 export const isApprovalTokenEvent = (event: TokenEvent): event is ApprovalTokenEvent => {
@@ -107,7 +138,8 @@ export const isApprovalTokenEvent = (event: TokenEvent): event is ApprovalTokenE
     event.type === TokenEventType.APPROVAL_ERC20 ||
     event.type === TokenEventType.APPROVAL_ERC721 ||
     event.type === TokenEventType.APPROVAL_FOR_ALL ||
-    event.type === TokenEventType.PERMIT2
+    event.type === TokenEventType.PERMIT2 ||
+    event.type === TokenEventType.APPROVAL_LSP7
   );
 };
 

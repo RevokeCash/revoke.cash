@@ -1,6 +1,6 @@
 import { isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
-import { type TokenContract, isErc721Contract } from 'lib/utils/tokens';
+import type { TokenContract } from 'lib/utils/tokens';
 import { type PublicClient, formatUnits } from 'viem';
 import type { PriceStrategy } from './PriceStrategy';
 
@@ -32,7 +32,5 @@ export const getTokenPrice = async (chainId: number, tokenContract: TokenContrac
 };
 
 export const strategySupportsToken = (strategy: PriceStrategy, tokenContract: TokenContract): boolean => {
-  if (isErc721Contract(tokenContract) && !strategy.supportedAssets.includes('ERC721')) return false;
-  if (!isErc721Contract(tokenContract) && !strategy.supportedAssets.includes('ERC20')) return false;
-  return true;
+  return strategy.supportedAssets.includes(tokenContract.tokenStandard);
 };

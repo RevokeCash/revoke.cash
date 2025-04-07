@@ -5,11 +5,10 @@ import {
   type OnUpdate,
   type TokenAllowanceData,
   calculateValueAtRisk,
-  formatErc20Allowance,
-  isErc20Allowance,
+  formatFungibleAllowance,
+  isFungibleAllowance,
 } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
-import { isErc721Contract } from 'lib/utils/tokens';
 import BatchRevokeModalWithButton from '../controls/batch-revoke/BatchRevokeModalWithButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
@@ -44,8 +43,8 @@ export const accessors = {
   allowance: (allowance: TokenAllowanceData) => {
     if (!allowance.payload) return undefined;
 
-    if (isErc20Allowance(allowance.payload)) {
-      return formatErc20Allowance(
+    if (isFungibleAllowance(allowance)) {
+      return formatFungibleAllowance(
         allowance.payload.amount,
         allowance.metadata.decimals,
         allowance.metadata.totalSupply,
@@ -64,7 +63,7 @@ export const accessors = {
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
   assetType: (allowance: TokenAllowanceData) => {
-    if (isErc721Contract(allowance.contract)) return 'NFT';
+    if (allowance.contract.tokenStandard === 'ERC721') return 'NFT';
     return 'Token';
   },
   valueAtRisk: (allowance: TokenAllowanceData) => {

@@ -8,6 +8,7 @@ import { addressToTopic, apiLogin } from 'lib/utils';
 import { type DocumentedChainId, createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
 import { parseApprovalForAllLog, parseApprovalLog, parsePermit2Log, parseTransferLog } from 'lib/utils/events';
 import { type TokenEvent, generatePatchedAllowanceEvents } from 'lib/utils/events';
+import { getLuksoEvents } from 'lib/utils/lukso';
 import { type SessionCreatedEvent, parseSessionCreatedLog } from 'lib/utils/sessions';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { type Address, getAbiItem, toEventSelector } from 'viem';
@@ -23,7 +24,21 @@ export const getTokenEvents = async (chainId: DocumentedChainId, address: Addres
 
 type TokenEventsGetter = (chainId: DocumentedChainId, address: Address) => Promise<TokenEvent[]>;
 
-const ChainOverrides: Record<number, TokenEventsGetter> = {};
+const ChainOverrides: Record<number, TokenEventsGetter> = {
+  [ChainId.LUKSOMainnet]: async (chainId: DocumentedChainId, address: Address) => {
+    // TODO: This is executed twice, once in getTokenEventsDefault and once here.
+    const { logsProvider, fromBlock, toBlock, nonce } = await getEventPrerequisites(chainId, address);
+    if (nonce === 0) return [];
+
+    const [luksoEvents, defaultEvents] = await Promise.all([
+      getLuksoEvents(chainId, address, fromBlock, toBlock, logsProvider),
+      getTokenEventsDefault(chainId, address),
+    ]);
+
+    const allEvents = [...luksoEvents, ...defaultEvents];
+    return sortTokenEventsChronologically(allEvents.filter((event) => !isNullish(event))).reverse();
+  },
+};
 
 const getEventPrerequisites = async (chainId: DocumentedChainId, address: Address) => {
   const chainName = getChainName(chainId);

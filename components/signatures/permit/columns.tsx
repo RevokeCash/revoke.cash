@@ -2,7 +2,6 @@ import { type RowData, createColumnHelper } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import type { OnCancel } from 'lib/interfaces';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import type { PermitTokenData } from 'lib/utils/tokens';
 import CancelPermitCell from '../cells/CancelPermitCell';
@@ -22,7 +21,7 @@ export enum ColumnId {
 }
 
 export const accessors = {
-  balance: (allowance: TokenAllowanceData) => {
+  balance: (allowance: PermitTokenData) => {
     return allowance.balance === 'ERC1155'
       ? 'ERC1155'
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);

@@ -131,7 +131,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PegoNetwork,
   ChainId.Redstone,
   ChainId.RSS3VSLMainnet,
-  // ChainId.LUKSOMainnet,
+  ChainId.LUKSOMainnet,
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
   ChainId.GoldXChainMainnet,
@@ -174,7 +174,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.RSS3VSLSepoliaTestnet,
   ChainId.CreatorChainTestnet,
   ChainId.NeoXTestnetT4,
-  // ChainId.LUKSOTestnet,
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
@@ -1456,24 +1455,14 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Linea,
   }),
-  // [ChainId.LUKSOMainnet]: new Chain({
-  //   type: SupportType.BLOCKSCOUT,
-  //   chainId: ChainId.LUKSOMainnet,
-  //   name: 'LUKSO',
-  //   logoUrl: '/assets/images/vendor/chains/lukso.svg',
-  //   etherscanCompatibleApiUrl: 'https://api.explorer.execution.mainnet.lukso.network/api',
-  //   deployedContracts: { ...MULTICALL },
-  // }),
-  // [ChainId.LUKSOTestnet]: new Chain({
-  //   type: SupportType.BLOCKSCOUT,
-  //   chainId: ChainId.LUKSOTestnet,
-  //   name: 'LUKSO Testnet',
-  //   logoUrl: '/assets/images/vendor/chains/lukso.svg',
-  //   etherscanCompatibleApiUrl: 'https://api.explorer.execution.testnet.lukso.network/api',
-  //   deployedContracts: { ...MULTICALL },
-  //   isTestnet: true,
-  //   correspondingMainnetChainId: ChainId.LUKSOMainnet,
-  // }),
+  [ChainId.LUKSOMainnet]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.LUKSOMainnet,
+    name: 'LUKSO',
+    logoUrl: '/assets/images/vendor/chains/lukso.svg',
+    etherscanCompatibleApiUrl: 'https://api.explorer.execution.mainnet.lukso.network/api',
+    deployedContracts: { ...MULTICALL },
+  }),
   [ChainId.Lisk]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.Lisk,
@@ -2858,6 +2847,7 @@ export const DEFAULT_DONATION_AMOUNTS: Record<string, string> = {
   IP: '2',
   KAI: '10000',
   KCS: '1',
+  LYX: '10',
   mADA: '10',
   METIS: '0.5',
   MNT: '10',

@@ -16,30 +16,54 @@ import {
   TokenEventType,
 } from './events';
 import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
+import {
+  getLsp7AllowancesFromApprovals,
+  prepareRevokeLsp7Allowance,
+  revokeLsp7Allowance,
+  updateLsp7Allowance,
+} from './lukso';
 import { bigintMin, fixedPointMultiply } from './math';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 import {
   type Erc20TokenContract,
   type Erc721TokenContract,
+  type Lsp7TokenContract,
   type TokenContract,
   type TokenData,
   createTokenContracts,
   getTokenData,
   hasZeroBalance,
-  isErc721Contract,
 } from './tokens';
 
-export interface TokenAllowanceData extends TokenData {
-  payload?: AllowancePayload;
+export interface TokenAllowanceData<Payload extends AllowancePayload | undefined = AllowancePayload | undefined>
+  extends TokenData {
+  contract: Payload extends Erc721SingleAllowance
+    ? Erc721TokenContract
+    : Payload extends Erc721AllAllowance
+      ? Erc721TokenContract
+      : Payload extends Erc20Allowance
+        ? Erc20TokenContract
+        : Payload extends Permit2Erc20Allowance
+          ? Erc20TokenContract
+          : Payload extends Lsp7Allowance
+            ? Lsp7TokenContract
+            : TokenContract;
+  payload: Payload;
 }
 
-export type AllowancePayload = Erc721SingleAllowance | Erc721AllAllowance | Erc20Allowance | Permit2Erc20Allowance;
+export type AllowancePayload =
+  | Erc721SingleAllowance
+  | Erc721AllAllowance
+  | Erc20Allowance
+  | Permit2Erc20Allowance
+  | Lsp7Allowance;
 
 export enum AllowanceType {
   ERC721_SINGLE = 'ERC721_SINGLE',
   ERC721_ALL = 'ERC721_ALL',
   ERC20 = 'ERC20',
   PERMIT2 = 'PERMIT2',
+  LSP7 = 'LSP7',
 }
 
 export interface BaseAllowance {
@@ -69,13 +93,28 @@ export interface Permit2Erc20Allowance extends BaseAllowance {
   expiration: number;
 }
 
-export const isErc20Allowance = (allowance?: AllowancePayload): allowance is Erc20Allowance | Permit2Erc20Allowance =>
-  allowance?.type === AllowanceType.ERC20 || allowance?.type === AllowanceType.PERMIT2;
+export interface Lsp7Allowance extends BaseAllowance {
+  type: AllowanceType.LSP7;
+  amount: bigint;
+}
+
+export const isErc20Allowance = (
+  allowance?: TokenAllowanceData,
+): allowance is TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance> =>
+  allowance?.payload?.type === AllowanceType.ERC20 || allowance?.payload?.type === AllowanceType.PERMIT2;
 
 export const isErc721Allowance = (
-  allowance?: AllowancePayload,
-): allowance is Erc721SingleAllowance | Erc721AllAllowance =>
-  allowance?.type === AllowanceType.ERC721_SINGLE || allowance?.type === AllowanceType.ERC721_ALL;
+  allowance?: TokenAllowanceData,
+): allowance is TokenAllowanceData<Erc721SingleAllowance | Erc721AllAllowance> =>
+  allowance?.payload?.type === AllowanceType.ERC721_SINGLE || allowance?.payload?.type === AllowanceType.ERC721_ALL;
+
+export const isLsp7Allowance = (allowance?: TokenAllowanceData): allowance is TokenAllowanceData<Lsp7Allowance> =>
+  allowance?.payload?.type === AllowanceType.LSP7;
+
+export const isFungibleAllowance = (
+  allowance?: TokenAllowanceData,
+): allowance is TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance | Lsp7Allowance> =>
+  isErc20Allowance(allowance) || isLsp7Allowance(allowance);
 
 export type OnUpdate = ReturnType<typeof useAllowances>['onUpdate'];
 
@@ -99,14 +138,14 @@ export const getAllowancesFromEvents = async (
         ]);
 
         // Filter out zero-value allowances
-        const allowances = unfilteredAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
+        const fullAllowances = unfilteredAllowances.map((allowance) => ({ ...tokenData, payload: allowance }));
+        const filteredAllowances = fullAllowances.filter((allowance) => !hasZeroAllowance(allowance));
 
-        if (allowances.length === 0) {
+        if (filteredAllowances.length === 0) {
           return [tokenData as TokenAllowanceData];
         }
 
-        const fullAllowances = allowances.map((allowance) => ({ ...tokenData, payload: allowance }));
-        return fullAllowances;
+        return filteredAllowances;
       } catch (e) {
         if (isNetworkError(e)) throw e;
         if (isRateLimitError(e)) throw e;
@@ -130,23 +169,27 @@ export const getAllowancesFromEvents = async (
 export const getAllowancesForToken = async (
   contract: TokenContract,
   events: TokenEvent[],
-  userAddress: Address,
+  owner: Address,
 ): Promise<AllowancePayload[]> => {
-  if (isErc721Contract(contract)) {
-    const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(contract, userAddress, events);
+  if (contract.tokenStandard === 'LSP7') {
+    return getLsp7AllowancesFromApprovals(contract, events, owner);
+  }
+
+  if (contract.tokenStandard === 'ERC721') {
+    const unlimitedAllowances = await getUnlimitedErc721AllowancesFromApprovals(contract, events, owner);
     const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, events);
     return [...limitedAllowances, ...unlimitedAllowances];
   }
 
-  const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events);
-  const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events);
+  const regularAllowances = await getErc20AllowancesFromApprovals(contract, events, owner);
+  const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, events, owner);
   return [...regularAllowances, ...permit2Allowances];
 };
 
 export const getErc20AllowancesFromApprovals = async (
   contract: Erc20TokenContract,
-  owner: Address,
   events: TokenEvent[],
+  owner: Address,
 ): Promise<Erc20Allowance[]> => {
   const approvalEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_ERC20);
   const deduplicatedApprovalEvents = deduplicateArray(
@@ -155,7 +198,7 @@ export const getErc20AllowancesFromApprovals = async (
   );
 
   const allowances = await Promise.all(
-    deduplicatedApprovalEvents.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval)),
+    deduplicatedApprovalEvents.map((approval) => getErc20AllowanceFromApproval(contract, approval, owner)),
   );
 
   return allowances.filter((allowance) => !isNullish(allowance));
@@ -163,8 +206,8 @@ export const getErc20AllowancesFromApprovals = async (
 
 const getErc20AllowanceFromApproval = async (
   contract: Erc20TokenContract,
-  owner: Address,
   approval: Erc20ApprovalEvent,
+  owner: Address,
 ): Promise<Erc20Allowance | undefined> => {
   const { spender, amount: lastApprovedAmount } = approval.payload;
 
@@ -226,8 +269,8 @@ const getLimitedErc721AllowanceFromApproval = async (
 
 export const getUnlimitedErc721AllowancesFromApprovals = async (
   contract: Erc721TokenContract,
-  owner: string,
   events: TokenEvent[],
+  owner: Address,
 ): Promise<Erc721AllAllowance[]> => {
   const approvalForAllEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_FOR_ALL);
   const deduplicatedApprovalForAllEvents = deduplicateArray(
@@ -237,7 +280,7 @@ export const getUnlimitedErc721AllowancesFromApprovals = async (
 
   const allowances = await Promise.all(
     deduplicatedApprovalForAllEvents.map((approval) =>
-      getUnlimitedErc721AllowanceFromApproval(contract, owner, approval),
+      getUnlimitedErc721AllowanceFromApproval(contract, approval, owner),
     ),
   );
 
@@ -246,8 +289,8 @@ export const getUnlimitedErc721AllowancesFromApprovals = async (
 
 const getUnlimitedErc721AllowanceFromApproval = async (
   contract: Erc721TokenContract,
-  _owner: string,
   approval: Erc721ApprovalForAllEvent,
+  _owner: Address,
 ): Promise<Erc721AllAllowance | undefined> => {
   const { spender, approved: isApprovedForAll } = approval.payload;
 
@@ -259,7 +302,7 @@ const getUnlimitedErc721AllowanceFromApproval = async (
   return { type: AllowanceType.ERC721_ALL, spender, lastUpdated };
 };
 
-export const formatErc20Allowance = (allowance: bigint, decimals?: number, totalSupply?: bigint): string => {
+export const formatFungibleAllowance = (allowance: bigint, decimals?: number, totalSupply?: bigint): string => {
   if (totalSupply && allowance > totalSupply) {
     return 'Unlimited';
   }
@@ -273,8 +316,8 @@ export const getAllowanceI18nValues = (allowance: TokenAllowanceData) => {
     return { i18nKey };
   }
 
-  if (isErc20Allowance(allowance.payload)) {
-    const amount = formatErc20Allowance(
+  if (isFungibleAllowance(allowance)) {
+    const amount = formatFungibleAllowance(
       allowance.payload.amount,
       allowance.metadata.decimals,
       allowance.metadata.totalSupply,
@@ -295,21 +338,24 @@ export const getAllowanceI18nValues = (allowance: TokenAllowanceData) => {
 };
 
 export const stripAllowanceData = (allowance: TokenAllowanceData): TokenAllowanceData => {
-  const { contract, metadata, chainId, owner, balance, payload: _payload } = allowance;
-  return { contract, metadata, chainId, owner, balance };
+  return { ...allowance, payload: undefined };
 };
 
 export const getAllowanceKey = (allowance: TokenAllowanceData) => {
   return `allowance-${allowance.contract.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}-${allowance.chainId}-${allowance.owner}`;
 };
 
-export const hasZeroAllowance = (allowance: AllowancePayload, tokenData: TokenAllowanceData) => {
-  if (!allowance) return true;
-  if (!isErc20Allowance(allowance)) return false;
+export const hasZeroAllowance = (allowance: TokenAllowanceData) => {
+  if (!allowance.payload) return true;
+  if (!isFungibleAllowance(allowance)) return false;
 
-  return (
-    formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
+  const formattedAllowance = formatFungibleAllowance(
+    allowance.payload.amount,
+    allowance.metadata.decimals,
+    allowance.metadata.totalSupply,
   );
+
+  return formattedAllowance === '0';
 };
 
 export const revokeAllowance = async (
@@ -317,18 +363,24 @@ export const revokeAllowance = async (
   allowance: TokenAllowanceData,
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
-  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
-
-  if (isErc721Contract(allowance.contract)) {
+  if (isErc721Allowance(allowance)) {
     return revokeErc721Allowance(walletClient, allowance, onUpdate);
   }
 
-  return revokeErc20Allowance(walletClient, allowance, onUpdate);
+  if (isLsp7Allowance(allowance)) {
+    return revokeLsp7Allowance(walletClient, allowance, onUpdate);
+  }
+
+  if (isErc20Allowance(allowance)) {
+    return revokeErc20Allowance(walletClient, allowance, onUpdate);
+  }
+
+  throw new Error('Cannot revoke undefined allowance');
 };
 
 export const revokeErc721Allowance = async (
   walletClient: WalletClient,
-  allowance: TokenAllowanceData,
+  allowance: TokenAllowanceData<Erc721SingleAllowance | Erc721AllAllowance>,
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
   const transactionRequest = await prepareRevokeErc721Allowance(walletClient, allowance);
@@ -343,9 +395,30 @@ export const revokeErc721Allowance = async (
   return { hash, confirmation: waitForConfirmation() };
 };
 
-export const revokeErc20Allowance = async (
+export const updateAllowance = async (
   walletClient: WalletClient,
   allowance: TokenAllowanceData,
+  newAmount: string,
+  onUpdate: OnUpdate,
+) => {
+  if (isErc721Allowance(allowance)) {
+    throw new Error('Cannot update ERC721 allowances');
+  }
+
+  if (isErc20Allowance(allowance)) {
+    return updateErc20Allowance(walletClient, allowance, newAmount, onUpdate);
+  }
+
+  if (isLsp7Allowance(allowance)) {
+    return updateLsp7Allowance(walletClient, allowance, newAmount, onUpdate);
+  }
+
+  throw new Error('Cannot update undefined allowance');
+};
+
+export const revokeErc20Allowance = async (
+  walletClient: WalletClient,
+  allowance: TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance>,
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
   return updateErc20Allowance(walletClient, allowance, '0', onUpdate);
@@ -353,7 +426,7 @@ export const revokeErc20Allowance = async (
 
 export const updateErc20Allowance = async (
   walletClient: WalletClient,
-  allowance: TokenAllowanceData,
+  allowance: TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance>,
   newAmount: string,
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
@@ -385,16 +458,24 @@ export const prepareRevokeAllowance = async (
 ): Promise<WriteContractParameters> => {
   if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
 
-  if (isErc721Contract(allowance.contract)) {
+  if (isErc721Allowance(allowance)) {
     return prepareRevokeErc721Allowance(walletClient, allowance);
   }
 
-  return prepareRevokeErc20Allowance(walletClient, allowance);
+  if (isErc20Allowance(allowance)) {
+    return prepareRevokeErc20Allowance(walletClient, allowance);
+  }
+
+  if (isLsp7Allowance(allowance)) {
+    return prepareRevokeLsp7Allowance(walletClient, allowance);
+  }
+
+  throw new Error('Cannot revoke undefined allowance');
 };
 
 export const prepareRevokeErc721Allowance = async (
   walletClient: WalletClient,
-  allowance: TokenAllowanceData,
+  allowance: TokenAllowanceData<Erc721SingleAllowance | Erc721AllAllowance>,
 ): Promise<WriteContractParameters> => {
   if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
 
@@ -427,22 +508,16 @@ export const prepareRevokeErc721Allowance = async (
 
 export const prepareRevokeErc20Allowance = async (
   walletClient: WalletClient,
-  allowance: TokenAllowanceData,
+  allowance: TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance>,
 ): Promise<WriteContractParameters> => {
   return prepareUpdateErc20Allowance(walletClient, allowance, 0n);
 };
 
 export const prepareUpdateErc20Allowance = async (
   walletClient: WalletClient,
-  allowance: TokenAllowanceData,
+  allowance: TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance>,
   newAmount: bigint,
 ): Promise<WriteContractParameters> => {
-  if (!allowance.payload) throw new Error('Cannot update undefined allowance');
-
-  if (isErc721Contract(allowance.contract) || isErc721Allowance(allowance.payload)) {
-    throw new Error('Cannot update ERC721 allowances');
-  }
-
   const differenceAmount = newAmount - allowance.payload.amount;
   if (differenceAmount === 0n) throw new Error('User rejected update transaction');
 
@@ -506,25 +581,17 @@ export const prepareUpdateErc20Allowance = async (
 };
 
 export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?: string) => {
-  if (isErc721Contract(allowance.contract)) {
-    analytics.track('Revoked ERC721 allowance', {
-      chainId: allowance.chainId,
-      account: allowance.owner,
-      spender: allowance.payload?.spender,
-      token: allowance.contract.address,
-      tokenId: allowance.payload?.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
-    });
-  }
-
   const isRevoke = !newAmount || newAmount === '0';
+  const title = `${isRevoke ? 'Revoked' : 'Updated'} ${allowance.contract.tokenStandard} allowance`;
 
-  analytics.track(isRevoke ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
+  analytics.track(title, {
     chainId: allowance.chainId,
     account: allowance.owner,
     spender: allowance.payload?.spender,
     token: allowance.contract.address,
+    tokenId: allowance.payload?.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
     amount: isRevoke ? undefined : newAmount,
-    permit2: allowance.payload?.type === AllowanceType.PERMIT2,
+    permit2: allowance.payload?.type === AllowanceType.PERMIT2 ? true : undefined,
   });
 };
 
@@ -533,7 +600,7 @@ const calculateMaxAllowanceAmount = (allowance: TokenAllowanceData) => {
     throw new Error('ERC1155 tokens are not supported');
   }
 
-  if (isErc20Allowance(allowance.payload)) return allowance.payload.amount;
+  if (isFungibleAllowance(allowance)) return allowance.payload.amount;
   if (allowance.payload?.type === AllowanceType.ERC721_SINGLE) return 1n;
 
   return allowance.balance;

@@ -33,6 +33,7 @@ export async function GET(req: NextRequest, { params }: Props) {
   const chainId = Number(chainIdString);
 
   const contract: Erc721TokenContract = {
+    tokenStandard: 'ERC721',
     abi: ERC721_ABI,
     address,
     publicClient: createViemPublicClientForChain(chainId),

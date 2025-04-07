@@ -6,7 +6,7 @@ import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/i
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
-import { type PermitTokenData, isErc721Contract } from 'lib/utils/tokens';
+import type { PermitTokenData } from 'lib/utils/tokens';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import CancelCell from './CancelCell';
 
@@ -22,7 +22,10 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
   const handleTransaction = useHandleTransaction(selectedChainId);
 
   const sendCancelTransaction = async (): Promise<TransactionSubmitted> => {
-    if (isErc721Contract(token.contract)) throw new Error('Cannot cancel ERC721 tokens');
+    if (token.contract.tokenStandard !== 'ERC20') {
+      throw new Error('Can only cancel permits for ERC20 tokens');
+    }
+
     const hash = await permit(walletClient!, token.contract, DUMMY_ADDRESS, 0n);
 
     analytics.track('Cancelled Permit Signatures', {

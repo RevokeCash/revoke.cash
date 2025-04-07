@@ -1,44 +1,43 @@
-import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+import { ERC20_ABI, ERC721_ABI, LSP7_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract, Nullable } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTokenPrice } from 'lib/price/utils';
-import {
-  type Address,
-  type PublicClient,
-  type TypedDataDomain,
-  domainSeparator,
-  getAbiItem,
-  getAddress,
-  pad,
-  toHex,
-} from 'viem';
-import { deduplicateArray } from '.';
+import { type Address, type PublicClient, type TypedDataDomain, domainSeparator, getAddress, pad, toHex } from 'viem';
+import { deduplicateArray, isNullish } from '.';
 import analytics from './analytics';
 import { type TimeLog, type TokenEvent, TokenEventType, isApprovalTokenEvent, isTransferTokenEvent } from './events';
 import { formatFixedPointBigInt } from './formatting';
+import { getLsp7TokenData } from './lukso';
 import { withFallback } from './promises';
 
-export interface TokenData {
-  contract: Erc20TokenContract | Erc721TokenContract;
+export interface TokenData<Contract extends TokenContract = TokenContract> {
+  contract: Contract;
   metadata: TokenMetadata;
   chainId: number;
   owner: Address;
   balance: TokenBalance;
 }
 
-export interface PermitTokenData extends TokenData {
+export interface PermitTokenData<Contract extends TokenContract = TokenContract> extends TokenData<Contract> {
   lastCancelled?: TimeLog;
 }
 
-export type TokenContract = Erc20TokenContract | Erc721TokenContract;
+export type TokenContract = Erc20TokenContract | Erc721TokenContract | Lsp7TokenContract;
 
 export interface Erc20TokenContract extends Contract {
+  tokenStandard: 'ERC20';
   abi: typeof ERC20_ABI;
 }
 
 export interface Erc721TokenContract extends Contract {
+  tokenStandard: 'ERC721';
   abi: typeof ERC721_ABI;
+}
+
+export interface Lsp7TokenContract extends Contract {
+  tokenStandard: 'LSP7';
+  abi: typeof LSP7_ABI;
 }
 
 export interface TokenMetadata {
@@ -52,7 +51,7 @@ export interface TokenMetadata {
 
 export type TokenBalance = bigint | 'ERC1155';
 
-export type TokenStandard = 'ERC20' | 'ERC721';
+export type TokenStandard = 'ERC20' | 'ERC721' | 'LSP7';
 
 interface TokenFromList {
   symbol: string;
@@ -82,8 +81,12 @@ export const getTokenData = async (
   owner: Address,
   chainId: number,
 ): Promise<TokenData> => {
-  if (isErc721Contract(contract)) {
+  if (contract.tokenStandard === 'ERC721') {
     return getErc721TokenData(contract, owner, events, chainId);
+  }
+
+  if (contract.tokenStandard === 'LSP7') {
+    return getLsp7TokenData(contract, owner, events, chainId);
   }
 
   return getErc20TokenData(contract, owner, events, chainId);
@@ -132,7 +135,7 @@ export const getErc721TokenData = async (
   return { contract, metadata, chainId, owner, balance };
 };
 
-const getTokenDataFromMapping = async (
+export const getTokenDataFromMapping = async (
   contract: TokenContract,
   chainId: number,
 ): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
@@ -154,11 +157,14 @@ const getTokenDataFromMapping = async (
   }
 };
 
-export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
+export const getTokenMetadata = async (
+  contract: Erc20TokenContract | Erc721TokenContract,
+  chainId: number,
+): Promise<TokenMetadata> => {
   const metadataFromMapping = await getTokenDataFromMapping(contract, chainId);
   if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
 
-  if (isErc721Contract(contract)) {
+  if (contract.tokenStandard === 'ERC721') {
     const [symbol, price] = await Promise.all([
       metadataFromMapping?.symbol ??
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
@@ -264,37 +270,38 @@ export const createTokenContracts = (events: TokenEvent[], publicClient: PublicC
 
   return deduplicateArray(filteredEvents, (a, b) => a.token === b.token)
     .map((event) => createTokenContract(event, publicClient))
-    .filter((contract) => contract !== undefined);
+    .filter((contract) => !isNullish(contract));
 };
 
 const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {
-  const abi = getTokenAbi(event);
-  if (!abi) return undefined;
+  const type = getTokenContractType(event);
+  if (!type) return undefined;
 
-  return { address: event.token, abi, publicClient } as TokenContract;
+  const abis = {
+    ERC20: ERC20_ABI,
+    ERC721: ERC721_ABI,
+    LSP7: LSP7_ABI,
+  } as const;
+
+  const abi = abis[type];
+
+  return { tokenStandard: type, address: event.token, abi, publicClient } as TokenContract;
 };
 
-const getTokenAbi = (event: TokenEvent): typeof ERC20_ABI | typeof ERC721_ABI | undefined => {
+const getTokenContractType = (event: TokenEvent): TokenStandard => {
   switch (event.type) {
     case TokenEventType.TRANSFER_ERC20:
     case TokenEventType.APPROVAL_ERC20:
     case TokenEventType.PERMIT2:
-      return ERC20_ABI;
+      return 'ERC20';
     case TokenEventType.TRANSFER_ERC721:
     case TokenEventType.APPROVAL_ERC721:
     case TokenEventType.APPROVAL_FOR_ALL:
-      return ERC721_ABI;
-    default:
-      return undefined;
+      return 'ERC721';
+    case TokenEventType.TRANSFER_LSP7:
+    case TokenEventType.APPROVAL_LSP7:
+      return 'LSP7';
   }
-};
-
-export const isErc721Contract = (contract: TokenContract): contract is Erc721TokenContract => {
-  return getAbiItem<any, string>({ ...contract, name: 'ApprovalForAll' }) !== undefined;
-};
-
-export const isErc20Contract = (contract: TokenContract): contract is Erc20TokenContract => {
-  return !isErc721Contract(contract);
 };
 
 // Some tokens appear to support Permit, but don't actually support it.
@@ -306,7 +313,7 @@ const IGNORE_LIST = [
 ];
 
 export const hasSupportForPermit = async (contract: TokenContract) => {
-  if (isErc721Contract(contract)) return false;
+  if (contract.tokenStandard !== 'ERC20') return false;
   if (IGNORE_LIST.includes(contract.address)) return false;
 
   // If we can properly retrieve the EIP712 domain and nonce, we assume it supports permit

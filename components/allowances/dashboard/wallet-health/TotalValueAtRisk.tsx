@@ -4,7 +4,6 @@ import { deduplicateArray, isNullish } from 'lib/utils';
 import { type TokenAllowanceData, calculateValueAtRisk } from 'lib/utils/allowances';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { formatFiatAmount } from 'lib/utils/formatting';
-import { isErc721Contract } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';
 
 interface Props {
@@ -24,7 +23,7 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
   const hasNftsAtRisk = allowances?.some(
     (allowance) =>
       !isNullish(allowance.payload) &&
-      isErc721Contract(allowance.contract) &&
+      allowance.contract.tokenStandard === 'ERC721' &&
       (allowance.balance === 'ERC1155' || allowance.balance > 0n),
   );
 

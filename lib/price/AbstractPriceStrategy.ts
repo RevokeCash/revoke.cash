@@ -24,6 +24,7 @@ export abstract class AbstractPriceStrategy implements PriceStrategy {
     }
 
     const tokenPrice = await this.calculateTokenPrice({
+      tokenStandard: 'ERC20',
       address: this.nativeAsset,
       abi: ERC20_ABI,
       publicClient,

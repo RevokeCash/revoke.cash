@@ -10,6 +10,7 @@ import { writeContractUnlessExcessiveGas } from 'lib/utils';
 import { AllowanceType } from 'lib/utils/allowances';
 import { parseErrorMessage } from 'lib/utils/errors';
 import { permit2Approve } from 'lib/utils/permit2';
+import type { Erc20TokenContract } from 'lib/utils/tokens';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isAddress } from 'viem';
@@ -70,7 +71,8 @@ const ApprovePage = () => {
             throw new Error('Amount, expiration, and permit2 address are required');
           }
 
-          const tokenContract = {
+          const tokenContract: Erc20TokenContract = {
+            tokenStandard: 'ERC20',
             address: tokenAddress,
             publicClient,
             abi: ERC20_ABI,
