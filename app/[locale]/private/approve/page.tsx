@@ -5,7 +5,7 @@ import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import Select from 'components/common/select/Select';
-import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+import { ERC20_ABI, ERC721_ABI, LSP7_ABI, LSP8_ABI } from 'lib/abis';
 import { writeContractUnlessExcessiveGas } from 'lib/utils';
 import { AllowanceType } from 'lib/utils/allowances';
 import { parseErrorMessage } from 'lib/utils/errors';
@@ -13,7 +13,7 @@ import { permit2Approve } from 'lib/utils/permit2';
 import type { Erc20TokenContract } from 'lib/utils/tokens';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { isAddress } from 'viem';
+import { isAddress, toHex } from 'viem';
 import { useAccount, usePublicClient } from 'wagmi';
 import { useWalletClient } from 'wagmi';
 
@@ -36,7 +36,7 @@ const ApprovePage = () => {
         throw new Error('Token address and spender address are required');
       }
 
-      if (allowanceType === AllowanceType.ERC721_SINGLE && !tokenId) {
+      if ((allowanceType === AllowanceType.ERC721_SINGLE || allowanceType === AllowanceType.LSP8) && !tokenId) {
         throw new Error('Token ID is required');
       }
 
@@ -120,6 +120,40 @@ const ApprovePage = () => {
           displayTransactionSubmittedToast(walletClient!.chain!.id, tx);
           break;
         }
+        case AllowanceType.LSP7: {
+          if (!amount) {
+            throw new Error('Amount is required');
+          }
+
+          const tx = await writeContractUnlessExcessiveGas(publicClient, walletClient!, {
+            address: tokenAddress,
+            account: account!,
+            chain: walletClient!.chain!,
+            abi: LSP7_ABI,
+            functionName: 'authorizeOperator',
+            args: [spenderAddress, BigInt(amount), '0x'],
+          });
+
+          displayTransactionSubmittedToast(walletClient!.chain!.id, tx);
+          break;
+        }
+        case AllowanceType.LSP8: {
+          if (!tokenId) {
+            throw new Error('Token ID is required');
+          }
+
+          const tx = await writeContractUnlessExcessiveGas(publicClient, walletClient!, {
+            address: tokenAddress,
+            account: account!,
+            chain: walletClient!.chain!,
+            abi: LSP8_ABI,
+            functionName: 'authorizeOperator',
+            args: [spenderAddress, toHex(BigInt(tokenId), { size: 32 }), '0x'],
+          });
+
+          displayTransactionSubmittedToast(walletClient!.chain!.id, tx);
+          break;
+        }
       }
     } catch (e) {
       toast.error(e instanceof Error ? parseErrorMessage(e) : 'An error occurred');
@@ -173,13 +207,15 @@ const ApprovePage = () => {
               />
             </div>
           )}
-          {(allowanceType === AllowanceType.ERC20 || allowanceType === AllowanceType.PERMIT2) && (
+          {(allowanceType === AllowanceType.ERC20 ||
+            allowanceType === AllowanceType.PERMIT2 ||
+            allowanceType === AllowanceType.LSP7) && (
             <div className="flex flex-col gap-1">
               <span>Amount</span>
               <Input size="md" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
           )}
-          {allowanceType === AllowanceType.ERC721_SINGLE && (
+          {(allowanceType === AllowanceType.ERC721_SINGLE || allowanceType === AllowanceType.LSP8) && (
             <div className="flex flex-col gap-1">
               <span>Token ID</span>
               <Input size="md" placeholder="Token ID" value={tokenId} onChange={(e) => setTokenId(e.target.value)} />
