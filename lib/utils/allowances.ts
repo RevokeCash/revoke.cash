@@ -15,11 +15,13 @@ import {
   type TokenEvent,
   TokenEventType,
 } from './events';
-import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
+import { formatFixedPointBigInt, parseFixedPointBigInt, shortenString } from './formatting';
 import {
   getLsp7AllowancesFromApprovals,
+  getLsp8AllowancesFromApprovals,
   prepareRevokeLsp7Allowance,
   revokeLsp7Allowance,
+  revokeLsp8Allowance,
   updateLsp7Allowance,
 } from './lukso';
 import { bigintMin, fixedPointMultiply } from './math';
@@ -56,7 +58,8 @@ export type AllowancePayload =
   | Erc721AllAllowance
   | Erc20Allowance
   | Permit2Erc20Allowance
-  | Lsp7Allowance;
+  | Lsp7Allowance
+  | Lsp8Allowance;
 
 export enum AllowanceType {
   ERC721_SINGLE = 'ERC721_SINGLE',
@@ -64,6 +67,7 @@ export enum AllowanceType {
   ERC20 = 'ERC20',
   PERMIT2 = 'PERMIT2',
   LSP7 = 'LSP7',
+  LSP8 = 'LSP8',
 }
 
 export interface BaseAllowance {
@@ -98,6 +102,11 @@ export interface Lsp7Allowance extends BaseAllowance {
   amount: bigint;
 }
 
+export interface Lsp8Allowance extends BaseAllowance {
+  type: AllowanceType.LSP8;
+  tokenId: bigint;
+}
+
 export const isErc20Allowance = (
   allowance?: TokenAllowanceData,
 ): allowance is TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance> =>
@@ -111,10 +120,18 @@ export const isErc721Allowance = (
 export const isLsp7Allowance = (allowance?: TokenAllowanceData): allowance is TokenAllowanceData<Lsp7Allowance> =>
   allowance?.payload?.type === AllowanceType.LSP7;
 
+export const isLsp8Allowance = (allowance?: TokenAllowanceData): allowance is TokenAllowanceData<Lsp8Allowance> =>
+  allowance?.payload?.type === AllowanceType.LSP8;
+
 export const isFungibleAllowance = (
   allowance?: TokenAllowanceData,
 ): allowance is TokenAllowanceData<Erc20Allowance | Permit2Erc20Allowance | Lsp7Allowance> =>
   isErc20Allowance(allowance) || isLsp7Allowance(allowance);
+
+export const isNftAllowance = (
+  allowance?: TokenAllowanceData,
+): allowance is TokenAllowanceData<Erc721SingleAllowance | Lsp8Allowance> =>
+  isErc721Allowance(allowance) || isLsp8Allowance(allowance);
 
 export type OnUpdate = ReturnType<typeof useAllowances>['onUpdate'];
 
@@ -171,8 +188,10 @@ export const getAllowancesForToken = async (
   events: TokenEvent[],
   owner: Address,
 ): Promise<AllowancePayload[]> => {
-  if (contract.tokenStandard === 'LSP7') {
-    return getLsp7AllowancesFromApprovals(contract, events, owner);
+  if (contract.tokenStandard === 'ERC20') {
+    const regularAllowances = await getErc20AllowancesFromApprovals(contract, events, owner);
+    const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, events, owner);
+    return [...regularAllowances, ...permit2Allowances];
   }
 
   if (contract.tokenStandard === 'ERC721') {
@@ -181,9 +200,15 @@ export const getAllowancesForToken = async (
     return [...limitedAllowances, ...unlimitedAllowances];
   }
 
-  const regularAllowances = await getErc20AllowancesFromApprovals(contract, events, owner);
-  const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, events, owner);
-  return [...regularAllowances, ...permit2Allowances];
+  if (contract.tokenStandard === 'LSP7') {
+    return getLsp7AllowancesFromApprovals(contract, events, owner);
+  }
+
+  if (contract.tokenStandard === 'LSP8') {
+    return getLsp8AllowancesFromApprovals(contract, events, owner);
+  }
+
+  throw new Error('Unsupported token standard');
 };
 
 export const getErc20AllowancesFromApprovals = async (
@@ -327,9 +352,9 @@ export const getAllowanceI18nValues = (allowance: TokenAllowanceData) => {
     return { amount, i18nKey, symbol };
   }
 
-  if (allowance.payload.type === AllowanceType.ERC721_SINGLE) {
+  if (allowance.payload.type === AllowanceType.ERC721_SINGLE || allowance.payload.type === AllowanceType.LSP8) {
     const i18nKey = 'address.allowances.token_id';
-    const tokenId = allowance.payload.tokenId?.toString();
+    const tokenId = shortenString(allowance.payload.tokenId?.toString(), 10);
     return { tokenId, i18nKey };
   }
 
@@ -363,6 +388,10 @@ export const revokeAllowance = async (
   allowance: TokenAllowanceData,
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
+  if (isErc20Allowance(allowance)) {
+    return revokeErc20Allowance(walletClient, allowance, onUpdate);
+  }
+
   if (isErc721Allowance(allowance)) {
     return revokeErc721Allowance(walletClient, allowance, onUpdate);
   }
@@ -371,8 +400,8 @@ export const revokeAllowance = async (
     return revokeLsp7Allowance(walletClient, allowance, onUpdate);
   }
 
-  if (isErc20Allowance(allowance)) {
-    return revokeErc20Allowance(walletClient, allowance, onUpdate);
+  if (isLsp8Allowance(allowance)) {
+    return revokeLsp8Allowance(walletClient, allowance, onUpdate);
   }
 
   throw new Error('Cannot revoke undefined allowance');
@@ -401,8 +430,8 @@ export const updateAllowance = async (
   newAmount: string,
   onUpdate: OnUpdate,
 ) => {
-  if (isErc721Allowance(allowance)) {
-    throw new Error('Cannot update ERC721 allowances');
+  if (isNftAllowance(allowance)) {
+    throw new Error('Cannot update NFT allowances');
   }
 
   if (isErc20Allowance(allowance)) {
@@ -456,8 +485,6 @@ export const prepareRevokeAllowance = async (
   walletClient: WalletClient,
   allowance: TokenAllowanceData,
 ): Promise<WriteContractParameters> => {
-  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
-
   if (isErc721Allowance(allowance)) {
     return prepareRevokeErc721Allowance(walletClient, allowance);
   }
@@ -477,8 +504,6 @@ export const prepareRevokeErc721Allowance = async (
   walletClient: WalletClient,
   allowance: TokenAllowanceData<Erc721SingleAllowance | Erc721AllAllowance>,
 ): Promise<WriteContractParameters> => {
-  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
-
   if (allowance.payload.type === AllowanceType.ERC721_SINGLE) {
     const transactionRequest = {
       ...(allowance.contract as Erc721TokenContract),

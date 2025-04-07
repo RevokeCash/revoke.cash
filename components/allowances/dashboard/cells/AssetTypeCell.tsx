@@ -3,7 +3,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  assetType: 'NFT' | 'Token';
+  assetType: 'NFT' | 'Token' | 'Unknown';
 }
 
 const AssetTypeCell = ({ assetType }: Props) => {

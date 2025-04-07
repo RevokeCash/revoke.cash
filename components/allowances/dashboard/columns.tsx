@@ -9,6 +9,8 @@ import {
   isFungibleAllowance,
 } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
+import { isFungibleToken } from 'lib/utils/tokens';
+import { isNftToken } from 'lib/utils/tokens';
 import BatchRevokeModalWithButton from '../controls/batch-revoke/BatchRevokeModalWithButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
@@ -63,8 +65,9 @@ export const accessors = {
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
   assetType: (allowance: TokenAllowanceData) => {
-    if (allowance.contract.tokenStandard === 'ERC721') return 'NFT';
-    return 'Token';
+    if (isFungibleToken(allowance.contract)) return 'Token';
+    if (isNftToken(allowance.contract)) return 'NFT';
+    return 'Unknown';
   },
   valueAtRisk: (allowance: TokenAllowanceData) => {
     // No approvals should be sorted separately through `sortUndefined`

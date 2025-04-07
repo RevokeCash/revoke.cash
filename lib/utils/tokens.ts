@@ -1,4 +1,4 @@
-import { ERC20_ABI, ERC721_ABI, LSP7_ABI } from 'lib/abis';
+import { ERC20_ABI, ERC721_ABI, LSP7_ABI, LSP8_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract, Nullable } from 'lib/interfaces';
 import ky from 'lib/ky';
@@ -8,7 +8,7 @@ import { deduplicateArray, isNullish } from '.';
 import analytics from './analytics';
 import { type TimeLog, type TokenEvent, TokenEventType, isApprovalTokenEvent, isTransferTokenEvent } from './events';
 import { formatFixedPointBigInt } from './formatting';
-import { getLsp7TokenData } from './lukso';
+import { getLsp7TokenData, getLsp8TokenData } from './lukso';
 import { withFallback } from './promises';
 
 export interface TokenData<Contract extends TokenContract = TokenContract> {
@@ -23,7 +23,7 @@ export interface PermitTokenData<Contract extends TokenContract = TokenContract>
   lastCancelled?: TimeLog;
 }
 
-export type TokenContract = Erc20TokenContract | Erc721TokenContract | Lsp7TokenContract;
+export type TokenContract = Erc20TokenContract | Erc721TokenContract | Lsp7TokenContract | Lsp8TokenContract;
 
 export interface Erc20TokenContract extends Contract {
   tokenStandard: 'ERC20';
@@ -40,6 +40,11 @@ export interface Lsp7TokenContract extends Contract {
   abi: typeof LSP7_ABI;
 }
 
+export interface Lsp8TokenContract extends Contract {
+  tokenStandard: 'LSP8';
+  abi: typeof LSP8_ABI;
+}
+
 export interface TokenMetadata {
   // name: string;
   symbol: string;
@@ -51,7 +56,7 @@ export interface TokenMetadata {
 
 export type TokenBalance = bigint | 'ERC1155';
 
-export type TokenStandard = 'ERC20' | 'ERC721' | 'LSP7';
+export type TokenStandard = 'ERC20' | 'ERC721' | 'LSP7' | 'LSP8';
 
 interface TokenFromList {
   symbol: string;
@@ -59,6 +64,14 @@ interface TokenFromList {
   logoURI?: string;
   isSpam?: boolean;
 }
+
+export const isFungibleToken = (contract: TokenContract): contract is Erc20TokenContract | Lsp7TokenContract => {
+  return contract.tokenStandard === 'ERC20' || contract.tokenStandard === 'LSP7';
+};
+
+export const isNftToken = (contract: TokenContract): contract is Erc721TokenContract | Lsp8TokenContract => {
+  return contract.tokenStandard === 'ERC721' || contract.tokenStandard === 'LSP8';
+};
 
 export const isSpamToken = (symbol: string) => {
   const spamRegexes = [
@@ -81,6 +94,10 @@ export const getTokenData = async (
   owner: Address,
   chainId: number,
 ): Promise<TokenData> => {
+  if (contract.tokenStandard === 'ERC20') {
+    return getErc20TokenData(contract, owner, events, chainId);
+  }
+
   if (contract.tokenStandard === 'ERC721') {
     return getErc721TokenData(contract, owner, events, chainId);
   }
@@ -89,7 +106,11 @@ export const getTokenData = async (
     return getLsp7TokenData(contract, owner, events, chainId);
   }
 
-  return getErc20TokenData(contract, owner, events, chainId);
+  if (contract.tokenStandard === 'LSP8') {
+    return getLsp8TokenData(contract, owner, events, chainId);
+  }
+
+  throw new Error('Unsupported token standard');
 };
 
 export const getErc20TokenData = async (
@@ -281,6 +302,7 @@ const createTokenContract = (event: TokenEvent, publicClient: PublicClient): Tok
     ERC20: ERC20_ABI,
     ERC721: ERC721_ABI,
     LSP7: LSP7_ABI,
+    LSP8: LSP8_ABI,
   } as const;
 
   const abi = abis[type];
@@ -301,6 +323,9 @@ const getTokenContractType = (event: TokenEvent): TokenStandard => {
     case TokenEventType.TRANSFER_LSP7:
     case TokenEventType.APPROVAL_LSP7:
       return 'LSP7';
+    case TokenEventType.TRANSFER_LSP8:
+    case TokenEventType.APPROVAL_LSP8:
+      return 'LSP8';
   }
 };
 

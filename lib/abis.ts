@@ -151,3 +151,22 @@ export const LSP7_ABI = parseAbi([
   'function transferBatch(address[] memory from, address[] memory to, uint256[] memory amount, bool[] memory force, bytes[] memory data) external',
   'function batchCalls(bytes[] memory data) external returns (bytes[] memory results)',
 ]);
+
+export const LSP8_ABI = parseAbi([
+  'function getData(bytes32 dataKey) external view returns (bytes memory value)',
+  'event Transfer(address operator, address indexed from, address indexed to, bytes32 indexed tokenId, bool force, bytes data)',
+  'event OperatorAuthorizationChanged(address indexed operator, address indexed tokenOwner, bytes32 indexed tokenId, bytes operatorNotificationData)',
+  'event OperatorRevoked(address indexed operator, address indexed tokenOwner, bytes32 indexed tokenId, bool notified, bytes operatorNotificationData)',
+  'function getDataForTokenId(bytes32 tokenId, bytes32 dataKey) external view returns (bytes memory dataValue)',
+  'function totalSupply() external view returns (uint256)',
+  'function balanceOf(address tokenOwner) external view returns (uint256)',
+  'function tokenOwnerOf(bytes32 tokenId) external view returns (address)',
+  'function tokenIdsOf(address tokenOwner) external view returns (bytes32[] memory)',
+  'function authorizeOperator(address operator, bytes32 tokenId, bytes memory operatorNotificationData) external',
+  'function revokeOperator(address operator, bytes32 tokenId, bool notify, bytes memory operatorNotificationData) external',
+  'function isOperatorFor(address operator, bytes32 tokenId) external view returns (bool)',
+  'function getOperatorsOf(bytes32 tokenId) external view returns (address[] memory)',
+  'function transfer(address from, address to, bytes32 tokenId, bool force, bytes memory data) external',
+  'function transferBatch(address[] memory from, address[] memory to, bytes32[] memory tokenId, bool[] memory force, bytes[] memory data) external',
+  'function batchCalls(bytes[] memory data) external returns (bytes[] memory results)',
+]);

@@ -62,14 +62,12 @@
     },
     "membership": {
       "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
-      "covered": "Covered",
       "labels": {
         "amount": "Amount",
         "claims": "Claims",
         "status": "Status",
         "timeframe": "Timeframe"
       },
-      "not_covered": "Not Covered",
       "title": "Fairside Membership"
     },
     "wallets": {
@@ -132,7 +130,8 @@
       "none": "None",
       "transfers": "Transfers"
     },
-    "token": "Token"
+    "token": "Token",
+    "unknown": "Unknown"
   },
   "meta": {
     "title": "Address {addressDisplay}'s Approvals",

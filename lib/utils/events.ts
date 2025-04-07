@@ -32,6 +32,8 @@ export enum TokenEventType {
   TRANSFER_ERC721 = 'TRANSFER_ERC721',
   TRANSFER_LSP7 = 'TRANSFER_LSP7',
   APPROVAL_LSP7 = 'APPROVAL_LSP7',
+  TRANSFER_LSP8 = 'TRANSFER_LSP8',
+  APPROVAL_LSP8 = 'APPROVAL_LSP8',
 }
 
 export interface BaseTokenEvent {
@@ -114,14 +116,34 @@ export interface Lsp7ApprovalEvent extends BaseTokenEvent {
   };
 }
 
+export interface Lsp8TransferEvent extends BaseTokenEvent {
+  type: TokenEventType.TRANSFER_LSP8;
+  payload: {
+    spender: Address;
+    from: Address;
+    to: Address;
+    tokenId: bigint; // TODO: Technically tokenId is a bytes32, but we can ignore that for now
+  };
+}
+
+export interface Lsp8ApprovalEvent extends BaseTokenEvent {
+  type: TokenEventType.APPROVAL_LSP8;
+  payload: {
+    spender: Address;
+    tokenId: bigint; // TODO: Technically tokenId is a bytes32, but we can ignore that for now
+    approved: boolean;
+  };
+}
+
 export type ApprovalTokenEvent =
   | Erc20ApprovalEvent
   | Erc721ApprovalEvent
   | Erc721ApprovalForAllEvent
   | Permit2Event
-  | Lsp7ApprovalEvent;
+  | Lsp7ApprovalEvent
+  | Lsp8ApprovalEvent;
 
-export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent | Lsp7TransferEvent;
+export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent | Lsp7TransferEvent | Lsp8TransferEvent;
 
 export type TokenEvent = ApprovalTokenEvent | TransferTokenEvent;
 
@@ -129,7 +151,8 @@ export const isTransferTokenEvent = (event: TokenEvent): event is TransferTokenE
   return (
     event.type === TokenEventType.TRANSFER_ERC20 ||
     event.type === TokenEventType.TRANSFER_ERC721 ||
-    event.type === TokenEventType.TRANSFER_LSP7
+    event.type === TokenEventType.TRANSFER_LSP7 ||
+    event.type === TokenEventType.TRANSFER_LSP8
   );
 };
 
@@ -139,7 +162,8 @@ export const isApprovalTokenEvent = (event: TokenEvent): event is ApprovalTokenE
     event.type === TokenEventType.APPROVAL_ERC721 ||
     event.type === TokenEventType.APPROVAL_FOR_ALL ||
     event.type === TokenEventType.PERMIT2 ||
-    event.type === TokenEventType.APPROVAL_LSP7
+    event.type === TokenEventType.APPROVAL_LSP7 ||
+    event.type === TokenEventType.APPROVAL_LSP8
   );
 };
 
