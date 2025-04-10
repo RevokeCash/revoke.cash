@@ -12,7 +12,12 @@ export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
     const extendedWalletClient = walletClient.extend(eip5792Actions());
     const capabilities = await extendedWalletClient.getCapabilities();
     console.log('Wallet supports EIP5792:', capabilities);
-    return true;
+
+    // We might even need to check the exact capabilities, but we'll deal with that if we need to
+    if (capabilities[walletClient.chain!.id]) return true;
+
+    console.log(`Wallet does not support EIP5792 on chain ${walletClient.chain!.id}`);
+    return false;
   } catch (e) {
     console.log('Wallet does not support EIP5792');
     return false;
