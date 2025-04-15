@@ -26,7 +26,7 @@
       "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
       "important": {
         "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
-        "fee": "There is a 10% personal responsibility fee on payouts.",
+        "fee": "There is a 10% personal responsibility amount on payouts.",
         "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
         "title": "Important Information",
         "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."

@@ -101,3 +101,68 @@ export const getCoveredWallets = async ({ accessToken }: GetCoveredWalletsParams
     .json<{ data: CoveredWallet[] }>();
   return result.data;
 };
+
+// Constants for coverage session
+const COVERAGE_SESSION_ID_KEY = 'coverage_session_id';
+const COVERAGE_SESSION_START_KEY = 'coverage_session_start';
+const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+// Generate a random string for session ID
+const generateSessionId = (): string => {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const id = Array.from({ length: 20 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  const isLocalhost =
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  return isLocalhost ? `${id}-test` : id;
+};
+
+// Get or create a session ID with 30-minute expiration
+const getSessionId = (): string => {
+  if (typeof window === 'undefined') return generateSessionId();
+
+  const storedId = localStorage.getItem(COVERAGE_SESSION_ID_KEY);
+  const storedTimestamp = localStorage.getItem(COVERAGE_SESSION_START_KEY);
+  const now = Date.now();
+
+  // Check if we have a valid, non-expired ID
+  if (storedId && storedTimestamp) {
+    const timestamp = Number.parseInt(storedTimestamp, 10);
+    if (now - timestamp < SESSION_DURATION) {
+      return storedId;
+    }
+  }
+
+  // Generate new ID if expired or doesn't exist
+  const newId = generateSessionId();
+  localStorage.setItem(COVERAGE_SESSION_ID_KEY, newId);
+  localStorage.setItem(COVERAGE_SESSION_START_KEY, now.toString());
+  return newId;
+};
+
+// Track quiz actions
+export const trackQuizAction = async (action: string): Promise<void> => {
+  const userId = getSessionId();
+
+  try {
+    await ky.post(`${FAIRSIDE_API_URL}/revoke-stats`, {
+      headers,
+      json: {
+        userId,
+        action,
+      },
+    });
+  } catch (error) {
+    console.error('Failed to track Fairside quiz action:', error);
+  }
+};
+
+// Helper functions for specific quiz actions
+export const trackQuizStart = () => trackQuizAction('quiz_start');
+export const trackQuizQuestion1 = () => trackQuizAction('quiz_1_question');
+export const trackQuizQuestion2 = () => trackQuizAction('quiz_2_question');
+export const trackQuizQuestion3 = () => trackQuizAction('quiz_3_question');
+export const trackQuizQuestion4 = () => trackQuizAction('quiz_4_question');
+export const trackQuizQuestion5 = () => trackQuizAction('quiz_5_question');
+export const trackQuizComplete = () => trackQuizAction('quiz_complete');
+export const trackGetCoverageClick = () => trackQuizAction('get_coverage_click');

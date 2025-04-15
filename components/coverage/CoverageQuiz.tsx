@@ -2,9 +2,19 @@
 
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
-import { FAIRSIDE_APP_URL, FAIRSIDE_CAMPAIGN_URL } from 'lib/coverage/fairside';
+import {
+  FAIRSIDE_APP_URL,
+  trackGetCoverageClick,
+  trackQuizComplete,
+  trackQuizQuestion1,
+  trackQuizQuestion2,
+  trackQuizQuestion3,
+  trackQuizQuestion4,
+  trackQuizQuestion5,
+  trackQuizStart,
+} from 'lib/coverage/fairside';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface QuizQuestion {
@@ -53,7 +63,7 @@ const quizQuestions: QuizQuestion[] = [
     options: ['100% of coverage amount', '90% of coverage amount', '80% of coverage amount', '75% of coverage amount'],
     correctAnswers: ['90% of coverage amount'],
     explanation:
-      'Fairside covers 90% of your loss, with a 10% personal responsibility fee deducted from your payout. This approach encourages accountability, helps maintain a robust community fund, and ensures long-term affordability for all members.',
+      'Fairside covers 90% of your loss, with a 10% personal responsibility amount deducted from your payout. This approach encourages accountability, helps maintain a robust community fund, and ensures long-term affordability for all members.',
   },
   {
     id: 'wallets',
@@ -77,6 +87,23 @@ const CoverageQuiz = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
 
+  // Track quiz start when component mounts
+  useEffect(() => {
+    let isSubscribed = true;
+
+    // Only send if component is still mounted
+    if (isSubscribed) {
+      const timeoutId = setTimeout(() => {
+        trackQuizStart();
+      }, 0);
+
+      return () => {
+        isSubscribed = false;
+        clearTimeout(timeoutId);
+      };
+    }
+  }, []);
+
   const isAnswerCorrect =
     quizQuestions[currentQuestion].correctAnswers.every((answer) => selectedAnswers.includes(answer)) &&
     selectedAnswers.length === quizQuestions[currentQuestion].correctAnswers.length;
@@ -91,6 +118,29 @@ const CoverageQuiz = () => {
   const handleCheckAnswers = () => {
     setShowExplanation(true);
 
+    // Track the current question completion
+    // Use setTimeout to ensure we don't get duplicate calls
+    const action = (() => {
+      switch (currentQuestion) {
+        case 0:
+          return () => trackQuizQuestion1();
+        case 1:
+          return () => trackQuizQuestion2();
+        case 2:
+          return () => trackQuizQuestion3();
+        case 3:
+          return () => trackQuizQuestion4();
+        case 4:
+          return () => trackQuizQuestion5();
+        default:
+          return null;
+      }
+    })();
+
+    if (action) {
+      setTimeout(action, 0);
+    }
+
     // If the answer is correct, we can proceed immediately, if not we wait 3 seconds before enabling proceeding
     if (isAnswerCorrect) {
       setCanProceed(true);
@@ -103,6 +153,7 @@ const CoverageQuiz = () => {
 
     if (currentQuestion === quizQuestions.length - 1) {
       setQuizCompleted(true);
+      setTimeout(() => trackQuizComplete(), 0);
     }
   };
 
@@ -113,6 +164,7 @@ const CoverageQuiz = () => {
       setShowExplanation(false);
       setCanProceed(false);
     } else if (quizCompleted) {
+      setTimeout(() => trackGetCoverageClick(), 0);
       window.open(FAIRSIDE_APP_URL, '_blank');
     }
   };
@@ -289,16 +341,11 @@ const QuizFooter = ({
         </Button>
       ) : (
         <>
-          {currentQuestion === quizQuestions.length - 1 && (
-            <Button style="purple" size="md" href={FAIRSIDE_CAMPAIGN_URL} external>
-              {t('address.coverage.info.quiz.retroactive_campaign')}
-            </Button>
-          )}
           <Button
             style="primary"
             size="md"
-            onClick={quizCompleted && canProceed ? undefined : handleNextQuestion}
-            href={quizCompleted && canProceed ? FAIRSIDE_APP_URL : undefined}
+            onClick={handleNextQuestion}
+            // href={quizCompleted && canProceed ? FAIRSIDE_APP_URL : undefined}
             external={quizCompleted && canProceed}
             disabled={!canProceed}
           >
