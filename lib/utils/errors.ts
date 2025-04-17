@@ -74,6 +74,15 @@ export const isNetworkError = (error?: string | any): boolean => {
   return false;
 };
 
+export const isCovalentError = (error?: string | any): boolean => {
+  if (typeof error !== 'string') {
+    return isCovalentError(parseErrorMessage(error)) || isCovalentError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  return lowercaseMessage?.includes('block not found: chain-height');
+};
+
 export const parseErrorMessage = (error: any): string => {
   const errorMessage =
     error?.cause?.details || // Abstract Global Wallet

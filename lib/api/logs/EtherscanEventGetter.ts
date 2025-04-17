@@ -1,4 +1,5 @@
 import ky, { retryOn429 } from 'lib/ky';
+import { ViemLogsProvider } from 'lib/providers';
 import { isNullish } from 'lib/utils';
 import {
   ETHERSCAN_SUPPORTED_CHAINS,
@@ -6,6 +7,7 @@ import {
   getChainApiKey,
   getChainApiRateLimit,
   getChainApiUrl,
+  getChainLogsRpcUrl,
 } from 'lib/utils/chains';
 import { isLogResponseSizeError } from 'lib/utils/errors';
 import type { Filter, Log } from 'lib/utils/events';
@@ -59,16 +61,19 @@ export class EtherscanEventGetter implements EventGetter {
     );
 
     const blockNumber = Number(result.result);
-    if (!blockNumber) throw new Error('Failed to get latest block number');
+    if (!blockNumber) {
+      console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
+      throw new Error('Failed to get latest block number');
+    }
     return blockNumber;
   }
 
-  async getEvents(chainId: number, filter: Filter, page: number = 1): Promise<Log[]> {
+  async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const searchParams = prepareGetLogsQuery(filter, page, apiKey);
+    const searchParams = prepareGetLogsQuery(filter, apiKey);
 
     let data: LogsResponse;
     try {
@@ -116,10 +121,11 @@ export class EtherscanEventGetter implements EventGetter {
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit
     if (data.result?.length === 1000) {
-      // If we cannot split this block range further, we use Etherscan's pagination in the hope that it does not exceed
-      // 10 pages of results
+      // If the result size is still too large when looking at events for a single block, we use the "regular"
+      // RPC call to get the logs, since these generally have no problem when only looking at a single block
       if (filter.fromBlock === filter.toBlock) {
-        return [...data.result.map(formatEtherscanEvent), ...(await this.getEvents(chainId, filter, page + 1))];
+        const backupLogsProvider = new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId));
+        return await backupLogsProvider.getLogs(filter);
       }
 
       throw new Error('Log response size exceeded');
@@ -144,7 +150,7 @@ const prepareGetLatestBlockQuery = (apiKey?: string) => {
   return JSON.parse(JSON.stringify(query));
 };
 
-const prepareGetLogsQuery = (filter: Filter, page: number, apiKey?: string) => {
+const prepareGetLogsQuery = (filter: Filter, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
     typeof topic === 'string' ? topic.toLowerCase() : topic,
   );
@@ -166,8 +172,8 @@ const prepareGetLogsQuery = (filter: Filter, page: number, apiKey?: string) => {
     topic1_3_opr: topic1 && topic3 ? 'and' : undefined,
     topic2_3_opr: topic2 && topic3 ? 'and' : undefined,
     offset: String(1000),
+    page: String(1),
     apiKey,
-    page: String(page),
   };
 
   // Remove 'undefined' values from the query

@@ -5,8 +5,8 @@
     "translator": "翻译：<person-link>{translator}</person-link>"
   },
   "buttons": {
-    "authenticate": "Authenticate",
-    "authenticating": "Authenticating",
+    "authenticate": "身份验证",
+    "authenticating": "认证中",
     "back_to_exploits": "返回漏洞",
     "cancel": "取消",
     "cancel_signatures": "取消可能存在的签名",
@@ -23,7 +23,7 @@
     "donating": "正在捐赠",
     "download": "下载",
     "get_started": "开始使用",
-    "increase": "Increase",
+    "increase": "增加",
     "my_allowances": "我的授权",
     "next": "下一个",
     "previous": "上一个",
@@ -77,7 +77,7 @@
       "title": "此页面不存在。"
     },
     "messages": {
-      "chain_could_not_connect": "无法链接到{chainName}"
+      "chain_could_not_connect": "无法连接到{chainName}，请稍后重试。"
     }
   },
   "footer": {
