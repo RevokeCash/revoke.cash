@@ -76,7 +76,7 @@ const ScamTrackerContent = ({ chainId }: Props) => {
         )}
       </div>
 
-      {graphData && <TransactionGraph data={graphData} />}
+      {graphData && !isLoading && <TransactionGraph data={graphData} />}
     </div>
   );
 };
