@@ -130,3 +130,57 @@ export const AGW_SESSIONS_ABI = parseAbi([
   'struct Constraint { uint8 condition; uint64 index; bytes32 refValue; UsageLimit limit; }',
   'struct TransferSpec { address target; uint256 maxValuePerUse; UsageLimit valueLimit; }',
 ]);
+
+export const DELEGATE_V1_ABI = parseAbi([
+  'function checkDelegateForAll(address delegate, address vault) external view returns (bool)',
+  'function checkDelegateForContract(address delegate, address vault, address contract_) external view returns (bool)',
+  'function checkDelegateForToken(address delegate, address vault, address contract_, uint256 tokenId) external view returns (bool)',
+  'function getDelegatesForAll(address vault) external view returns (address[])',
+  'function getDelegatesForContract(address vault, address contract_) external view returns (address[])',
+  'function getDelegatesForToken(address vault, address contract_, uint256 tokenId) external view returns (address[])',
+  'function getContractLevelDelegations(address vault) external view returns ((address,address)[])',
+  'function getTokenLevelDelegations(address vault) external view returns ((address,uint256,address)[])',
+  'function getDelegationsByDelegate(address delegate) external view returns ((uint8,address,address,address,uint256)[])',
+  'function revokeAllDelegates() external',
+  'function revokeDelegate(address delegate) external',
+  'function revokeSelf(address vault) external',
+  'function supportsInterface(bytes4 interfaceId) external view returns (bool)',
+  'event DelegateForAll(address vault, address delegate, bool value)',
+  'event DelegateForContract(address vault, address delegate, address contract_, bool value)',
+  'event DelegateForToken(address vault, address delegate, address contract_, uint256 tokenId, bool value)',
+  'event RevokeAllDelegates(address vault)',
+  'event RevokeDelegate(address vault, address delegate)',
+]);
+
+export const DELEGATE_V2_ABI = parseAbi([
+  'function getOutgoingDelegations(address from) external view returns ((uint8,address,address,bytes32,address,uint256,uint256)[])',
+  'function getIncomingDelegations(address to) external view returns ((uint8,address,address,bytes32,address,uint256,uint256)[])',
+  'function getOutgoingDelegationHashes(address from) external view returns (bytes32[])',
+  'function getIncomingDelegationHashes(address to) external view returns (bytes32[])',
+  'function checkDelegateForAll(address to, address from, bytes32 rights) external view returns (bool)',
+  'function checkDelegateForContract(address to, address from, address contract_, bytes32 rights) external view returns (bool)',
+  'function checkDelegateForERC1155(address to, address from, address contract_, uint256 tokenId, bytes32 rights) external view returns (uint256)',
+  'function checkDelegateForERC20(address to, address from, address contract_, bytes32 rights) external view returns (uint256)',
+  'function checkDelegateForERC721(address to, address from, address contract_, uint256 tokenId, bytes32 rights) external view returns (bool)',
+  'function delegateAll(address to, bytes32 rights, bool enable) external payable returns (bytes32)',
+  'function delegateContract(address to, address contract_, bytes32 rights, bool enable) external payable returns (bytes32)',
+  'function delegateERC1155(address to, address contract_, uint256 tokenId, bytes32 rights, uint256 amount) external payable returns (bytes32)',
+  'function delegateERC20(address to, address contract_, bytes32 rights, uint256 amount) external payable returns (bytes32)',
+  'function delegateERC721(address to, address contract_, uint256 tokenId, bytes32 rights, bool enable) external payable returns (bytes32)',
+  'event DelegateAll(address indexed from, address indexed to, bytes32 rights, bool enable)',
+  'event DelegateContract(address indexed from, address indexed to, address indexed contract_, bytes32 rights, bool enable)',
+  'event DelegateERC1155(address indexed from, address indexed to, address indexed contract_, uint256 tokenId, bytes32 rights, uint256 amount)',
+  'event DelegateERC20(address indexed from, address indexed to, address indexed contract_, bytes32 rights, uint256 amount)',
+  'event DelegateERC721(address indexed from, address indexed to, address indexed contract_, uint256 tokenId, bytes32 rights, bool enable)',
+]);
+
+export const WARM_XYZ_ABI = parseAbi([
+  'function getColdWalletLinks(address hotWallet) external view returns ((address,uint256)[])',
+  'function getColdWallets(address hotWallet) external view returns (address[])',
+  'function getHotWallet(address coldWallet) external view returns (address)',
+  'function getHotWalletLink(address coldWallet) external view returns ((address,uint256))',
+  'function removeColdWallet(address coldWallet) external',
+  'function removeExpiredWalletLinks(address hotWallet) external',
+  'function supportsInterface(bytes4 interfaceId) external view returns (bool)',
+  'event HotWalletChanged(address coldWallet, address from, address to, uint256 expirationTimestamp)',
+]);
