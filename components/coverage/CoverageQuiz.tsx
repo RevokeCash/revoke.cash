@@ -2,17 +2,7 @@
 
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
-import {
-  FAIRSIDE_APP_URL,
-  trackGetCoverageClick,
-  trackQuizComplete,
-  trackQuizQuestion1,
-  trackQuizQuestion2,
-  trackQuizQuestion3,
-  trackQuizQuestion4,
-  trackQuizQuestion5,
-  trackQuizStart,
-} from 'lib/coverage/fairside';
+import { FAIRSIDE_APP_URL, trackQuizAction } from 'lib/coverage/fairside';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -94,7 +84,7 @@ const CoverageQuiz = () => {
     // Only send if component is still mounted
     if (isSubscribed) {
       const timeoutId = setTimeout(() => {
-        trackQuizStart();
+        trackQuizAction('quiz_start');
       }, 0);
 
       return () => {
@@ -123,15 +113,15 @@ const CoverageQuiz = () => {
     const action = (() => {
       switch (currentQuestion) {
         case 0:
-          return () => trackQuizQuestion1();
+          return () => trackQuizAction('quiz_1_question');
         case 1:
-          return () => trackQuizQuestion2();
+          return () => trackQuizAction('quiz_2_question');
         case 2:
-          return () => trackQuizQuestion3();
+          return () => trackQuizAction('quiz_3_question');
         case 3:
-          return () => trackQuizQuestion4();
+          return () => trackQuizAction('quiz_4_question');
         case 4:
-          return () => trackQuizQuestion5();
+          return () => trackQuizAction('quiz_5_question');
         default:
           return null;
       }
@@ -153,7 +143,7 @@ const CoverageQuiz = () => {
 
     if (currentQuestion === quizQuestions.length - 1) {
       setQuizCompleted(true);
-      setTimeout(() => trackQuizComplete(), 0);
+      setTimeout(() => trackQuizAction('quiz_complete'), 0);
     }
   };
 
@@ -164,7 +154,7 @@ const CoverageQuiz = () => {
       setShowExplanation(false);
       setCanProceed(false);
     } else if (quizCompleted) {
-      setTimeout(() => trackGetCoverageClick(), 0);
+      setTimeout(() => trackQuizAction('get_coverage_click'), 0);
       window.open(FAIRSIDE_APP_URL, '_blank');
     }
   };

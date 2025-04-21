@@ -140,8 +140,19 @@ const getSessionId = (): string => {
   return newId;
 };
 
+type QuizAction =
+  | 'coverage_tab_view'
+  | 'quiz_start'
+  | 'quiz_1_question'
+  | 'quiz_2_question'
+  | 'quiz_3_question'
+  | 'quiz_4_question'
+  | 'quiz_5_question'
+  | 'quiz_complete'
+  | 'get_coverage_click';
+
 // Track quiz actions
-export const trackQuizAction = async (action: string): Promise<void> => {
+export const trackQuizAction = async (action: QuizAction): Promise<void> => {
   const userId = getSessionId();
 
   try {
@@ -156,13 +167,3 @@ export const trackQuizAction = async (action: string): Promise<void> => {
     console.error('Failed to track Fairside quiz action:', error);
   }
 };
-
-// Helper functions for specific quiz actions
-export const trackQuizStart = () => trackQuizAction('quiz_start');
-export const trackQuizQuestion1 = () => trackQuizAction('quiz_1_question');
-export const trackQuizQuestion2 = () => trackQuizAction('quiz_2_question');
-export const trackQuizQuestion3 = () => trackQuizAction('quiz_3_question');
-export const trackQuizQuestion4 = () => trackQuizAction('quiz_4_question');
-export const trackQuizQuestion5 = () => trackQuizAction('quiz_5_question');
-export const trackQuizComplete = () => trackQuizAction('quiz_complete');
-export const trackGetCoverageClick = () => trackQuizAction('get_coverage_click');
