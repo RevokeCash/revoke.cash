@@ -12,6 +12,7 @@ import { CovalentEventGetter } from './logs/CovalentEventGetter';
 import { CustomEventGetter } from './logs/CustomEventGetter';
 import { EtherscanEventGetter } from './logs/EtherscanEventGetter';
 import type { EventGetter } from './logs/EventGetter';
+import { HyperLiquidEventGetter } from './logs/HyperLiquidEventGetter';
 import { NodeEventGetter } from './logs/NodeEventGetter';
 import { TeloscanEventGetter } from './logs/TeloscanEventGetter';
 
@@ -28,6 +29,8 @@ export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_U
 
 export const customEventGetter = new CustomEventGetter({
   [ChainId.TelosEVMMainnet]: new TeloscanEventGetter(),
+  // [999]: new ParsecEventGetter(),
+  [999]: new HyperLiquidEventGetter(),
 });
 
 export const getEventGetter = (chainId: DocumentedChainId): EventGetter => {

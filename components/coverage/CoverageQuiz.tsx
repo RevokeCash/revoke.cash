@@ -344,8 +344,8 @@ const QuizFooter = ({
           <Button
             style="primary"
             size="md"
-            onClick={handleNextQuestion}
-            // href={quizCompleted && canProceed ? FAIRSIDE_APP_URL : undefined}
+            onClick={quizCompleted && canProceed ? undefined : handleNextQuestion}
+            href={quizCompleted && canProceed ? FAIRSIDE_APP_URL : undefined}
             external={quizCompleted && canProceed}
             disabled={!canProceed}
           >

@@ -66,5 +66,6 @@ certificates
 
 scripts/chainid-lookup.csv
 scripts/ledger-live-manifest.json
+scripts/exploits/data
 
 !.vscode/settings.json

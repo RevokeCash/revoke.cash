@@ -19,64 +19,64 @@
   "coverage": {
     "info": {
       "chains": {
-        "evm": "EVM Compatible",
-        "non_evm": "Non-EVM",
-        "title": "Supported Blockchains"
+        "evm": "Совместимые с EVM",
+        "non_evm": "Не-EVM",
+        "title": "Поддерживаемые блокчейны"
       },
-      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "С Revoke.cash, мы помогаем вам управлять рисками в криптопространстве. Мы предлагаем инструменты, которые помогут вам предотвратить утечку или потерю средств. Но даже в этом случае мошенничество и взломы случаются. Вот тут-то и появляется страховое покрытие. Страховое покрытие — это способ гарантировать, что стоимость вашего кошелька будет покрыта в случае утечки средств из кошелька. Существует несколько типов страхового покрытия: от взлома смарт-контрактов до фишинговых атак. В партнерстве с компанией <fairside-link> Fairside мы предлагаем </fairside-link> вам страховое покрытие на случай утечки фишинга и социальных технологий, но существуют и другие страховые продукты для смарт-контрактов, такие как Nexus Mutual или Bright Union. <nexus-link> </nexus-link> <bright-union-link> </bright-union-link>",
       "important": {
-        "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
-        "fee": "There is a 10% personal responsibility amount on payouts.",
-        "kyc": "KYC is only required when creating a claim, not when purchasing coverage.",
-        "title": "Important Information",
-        "wallets": "You can cover up to 10 wallets with one membership as long as you add them to your membership."
+        "coverage_amount": "Страховое покрытие приобретается на определенную сумму ETH. Если стоимость вашего портфеля растет в ETH, вы получаете страховое покрытие только на указанную сумму ETH.",
+        "fee": "При выплатах взимается 10% комиссии за личную ответственность.",
+        "kyc": "KYC требуется только при подаче заявки, а не при покупке страхового покрытия.",
+        "title": "Важная информация",
+        "wallets": "Вы можете покрыть до 10 кошельков одной подпиской, если добавите их все в свою подписку."
       },
       "main": {
         "covered_items": {
-          "malware": "Malware (min. 10 ETH coverage)",
-          "poisoning": "Address poisoning",
-          "signatures": "Malicious transactions and signatures"
+          "malware": "Вредоносное ПО (покрытие не менее 10 ETH)",
+          "poisoning": "Мошенничество с подменой адреса",
+          "signatures": "Вредоносные транзакции и подписи"
         },
-        "covered_title": "What Fairside covers",
-        "description": "Get paid if you get drained. Fairside is the first crypto native platform that allows you to purchase coverage for your wallet in the case of drains. They cover various loss events under phishing and social engineering delivery methods.",
+        "covered_title": "Что покрывает Fairside",
+        "description": "Получайте деньги, если вы были обмануты. Fairside — первая криптовалютная платформа, позволяющая приобретать страховое покрытие для кошелька в случае утечки средств. Они покрывают различные убытки, связанные с фишингом и методами социальной инженерии.",
         "not_covered_items": {
-          "custodial-accounts": "Custodial account drains",
-          "rug_pulls": "Rug pulls",
-          "seed_phrase": "Revealing your seed phrase",
-          "smart_contracts": "Smart contract hacks"
+          "custodial-accounts": "Кража средств с кастодиального счета",
+          "rug_pulls": "Мошенничество с ликвидностью",
+          "seed_phrase": "Раскрытие вашей seed-фразы",
+          "smart_contracts": "Взлом смарт-контрактов"
         },
-        "not_covered_title": "What Fairside doesn't cover",
-        "title": "Fairside Wallet Drain Coverage"
+        "not_covered_title": "Что не покрывает Fairside",
+        "title": "Покрытие утечки Fairside Wallet"
       },
       "quiz": {
-        "check_answer": "Check Answer",
-        "get_coverage": "Get Coverage Now",
-        "next_question": "Next Question",
-        "question_progress": "Question {current} of {total}",
-        "retroactive_campaign": "Here for the campaign?",
-        "start": "Take Quiz to Get Started",
-        "title": "Quick Coverage Quiz",
-        "wait_and_read": "Read before proceeding"
+        "check_answer": "Проверьте ответ",
+        "get_coverage": "Получить покрытие сейчас",
+        "next_question": "Следующий вопрос",
+        "question_progress": "Вопрос {current} из {total}",
+        "retroactive_campaign": "Вы здесь для участия в кампании?",
+        "start": "Пройдите викторину, чтобы начать",
+        "title": "Быстрая викторина по теме покрытия",
+        "wait_and_read": "Прочтите, прежде чем продолжить"
       },
-      "title": "What is Coverage?"
+      "title": "Что такое покрытие?"
     },
     "membership": {
-      "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
-      "covered": "Covered",
+      "claims": "{count, plural, =0 {Нет запросов} =1 {# запрос} other {# запросы}}",
+      "covered": "Покрывается",
       "labels": {
-        "amount": "Amount",
-        "claims": "Claims",
-        "status": "Status",
-        "timeframe": "Timeframe"
+        "amount": "Сумма",
+        "claims": "Запросы",
+        "status": "Статус",
+        "timeframe": "Таймфрейм"
       },
-      "not_covered": "Not Covered",
-      "title": "Fairside Membership"
+      "not_covered": "Не покрывается",
+      "title": "Членство в Fairside"
     },
     "wallets": {
-      "add": "Add Wallet",
-      "description": "Sign an authentication message to view and manage your covered wallets.",
-      "title": "Covered Wallets",
-      "wallets": "wallets"
+      "add": "Добавить кошелек",
+      "description": "Подпишите сообщение об аутентификации, чтобы просматривать защищенные кошельки и управлять ими.",
+      "title": "Покрытые кошельки",
+      "wallets": "кошельки"
     }
   },
   "filters": {
@@ -110,13 +110,13 @@
     "allowance": "Утв. сумма",
     "asset": "Aктив",
     "asset_type": "Тип",
-    "expiration": "Expiration",
+    "expiration": "Срок действия",
     "last_cancelled": "Последнее отменено",
     "last_updated": "Посл. обнов.",
     "marketplace": "Маркетплейс",
-    "policy_type": "Permission Type",
-    "session_hash": "Session Identifier",
-    "signer": "Authorized Signer",
+    "policy_type": "Тип разрешения",
+    "session_hash": "Идентификатор сессии",
+    "signer": "Уполномоченное лицо с правом подписи",
     "spender": "Авториз. дост.",
     "status": "Статус",
     "transaction": "Транзакция",
@@ -127,10 +127,10 @@
     "nft": "NFT",
     "not_connected": "Не подключено",
     "policy_type": {
-      "all": "Transfers & Calls",
-      "calls": "Contract Calls",
-      "none": "None",
-      "transfers": "Transfers"
+      "all": "Переводы и звонки",
+      "calls": "Контрактные звонки",
+      "none": "Нет разрешений",
+      "transfers": "Трансферы"
     },
     "token": "Токен"
   },
@@ -140,10 +140,10 @@
   },
   "navigation": {
     "allowances": "Доступы",
-    "coverage": "Coverage",
+    "coverage": "Покрытие",
     "history": "История",
     "more": "Больше",
-    "sessions": "Sessions",
+    "sessions": "Сессии",
     "settings": "Настройки",
     "signatures": "Подписи"
   },
@@ -175,26 +175,26 @@
   },
   "sessions": {
     "info": {
-      "description": "Sessions are a permissions system similar to token approvals, but with a few key differences. While token approvals specify a permission for an address to take tokens from your wallet, sessions can be used to specify a permission for another address to sign specific transactions on your behalf when interacting with smart contracts. These sessions are currently only available on Abstract when using the <i>Abstract Global Wallet</i>, but might be available on other chains in the future.",
-      "title": "What Are Sessions?"
+      "description": "Сессии - это система разрешений, похожая на одобрение токенов, но с несколькими ключевыми отличиями. В то время как одобрение токенов определяет разрешение для адреса брать токены из твоего кошелька, сессии можно использовать для определения разрешения для другого адреса подписывать определенные транзакции от твоего имени при взаимодействии со смарт-контрактами. В настоящее время такие сессии доступны только на Abstract при использовании <i>Abstract Global Wallet</i>, но в будущем они могут появиться и на других цепочках.",
+      "title": "Что такое сессии?"
     },
     "table": {
-      "none_found": "No sessions found",
-      "title": "Active Sessions"
+      "none_found": "Не найдено ни одной сессии",
+      "title": "Активные сессии"
     },
     "tooltips": {
       "policy_type": {
-        "all": "This session is authorized to call {callPoliciesCount} different functions and transfer tokens to {transferPoliciesCount} different addresses",
-        "calls": "This session is authorized to call {callPoliciesCount} different functions",
-        "none": "This session has no permissions",
-        "transfers": "This session is authorized to transfer tokens to {transferPoliciesCount} different addresses"
+        "all": "Эта сессия уполномочена вызывать {callPoliciesCount} различные функции и переводить токены на {transferPoliciesCount} разные адреса",
+        "calls": "Эта сессия уполномочена вызывать {callPoliciesCount} разные функции",
+        "none": "У этой сессии нет разрешений",
+        "transfers": "Эта сессия авторизована для передачи токенов на {transferPoliciesCount} разные адреса"
       }
     }
   },
   "signatures": {
     "info": {
-      "description": "Поскольку подписи не хранятся в блокчейне, <b>Revoke.cash не может проверить, действительно ли вы подписали что-либо</b>. Поэтому эта страница содержит список известных маркетплейсов и список ваших токенов, которые поддерживают подписи <i>разрешений</i> за пределами блокчейна. <b>Только если <i>вы</i> знаете, что подписали офчейн-подпись на мошенническом веб-сайте, вам необходимо аннулировать <i>потенциальные</i>подписи на этой странице</b>, иначе вы потратите комиссию за транзакции впустую. Если вы отмените потенциальные подписи на токен или маркетплейс, они останутся в списке, но их нельзя будет снова отменить в течение некоторого времени.",
-      "title": "What Are Signatures?"
+      "description": "Подписи — это способ авторизации действий без отправки транзакции. <i>Подписи торговых площадок</i> используются для размещения объявлений о продаже активов на таких торговых площадках, как OpenSea. <i>Подписи разрешений</i> используются для одобрения токенов. Поскольку эти подписи не хранятся в блокчейне, Revoke.cash не может узнать, подписали ли вы что-либо. На этой странице представлен список торговых площадок и список ваших токенов, поддерживающих подписи разрешений за пределами блокчейна. <i>Подписи</i>разрешений. <b>Только если <i>вы</i> знаете, что оставили офчейн-подпись на мошенническом веб-сайте, вам необходимо аннулировать <i> потенциальные </i> подписи на этой странице</b>, иначе вы потратите комиссию за транзакции впустую. Если вы отмените потенциальные подписи для токена или торговой площадки, они останутся в списке, но их нельзя будет снова отменить в течение некоторого времени.",
+      "title": "Что такое подписи?"
     },
     "marketplaces": {
       "active_approvals": "{count, plural, =1 {1 активное одобрение} other {# активных одобрений}}",
@@ -241,7 +241,7 @@
     "permit2_expiration": "Это разрешение Permit2, срок действия которого истекает {inTime}",
     "permit_signatures": "Разрешающие подписи используются для утверждения доступов без отправки транзакции. Отмените их, если вы подписали Разрешительную подпись на фишинговом веб-сайте.",
     "recently_cancelled": "Вы уже недавно отменили эту потенциальную подпись. Она останется в списке, при необходимости вы сможете отменить ее позже.",
-    "risk_factors": "Это одобрение токена - {riskLevel} по этим причинам:",
+    "risk_factors": "Это {riskLevel} по следующим причинам:",
     "select_tip": "Пожалуйста, выберите сумму чаевых",
     "switch_chain": "Пожалуйста, переключите сеть на <b>{chainName}</b> в вашем кошельке, чтобы продолжить",
     "why_tip": {

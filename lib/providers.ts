@@ -1,6 +1,7 @@
 import ky from 'lib/ky';
 import { type PublicClient, getAddress } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
+import { isNullish } from './utils';
 import {
   createViemPublicClientForChain,
   getChainLogsRpcUrl,
@@ -34,7 +35,7 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
     // We pre-emptively split the requests for Covalent-supported chains, to limit potential downsides when
     // we potentially need to divide-and-conquer the requests down the line
     if (isCovalentSupportedChain(this.chainId) && filter.toBlock - filter.fromBlock > 5_000_000) {
-      return this.divideAndConquer(filter);
+      return this.divideAndConquer(filter, 2);
     }
 
     try {
@@ -46,14 +47,16 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
       // If the block range is already a single block, we re-throw the error since we can't split it further
       if (filter.fromBlock === filter.toBlock) throw error;
 
-      return this.divideAndConquer(filter);
+      return this.divideAndConquer(filter, 2);
     }
   }
 
-  async divideAndConquer(filter: Filter): Promise<Log[]> {
+  async divideAndConquer(filter: Filter, iterations: number): Promise<Log[]> {
+    if (iterations === 1) return this.getLogs(filter);
+
     const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-    const leftPromise = this.getLogs({ ...filter, toBlock: middle });
-    const rightPromise = this.getLogs({ ...filter, fromBlock: middle + 1 });
+    const leftPromise = this.divideAndConquer({ ...filter, toBlock: middle }, iterations - 1);
+    const rightPromise = this.divideAndConquer({ ...filter, fromBlock: middle + 1 }, iterations - 1);
     const [left, right] = await Promise.all([leftPromise, rightPromise]);
     return [...left, ...right];
   }
@@ -88,12 +91,14 @@ export class BackendLogsProvider implements LogsProvider {
 
 export class ViemLogsProvider implements LogsProvider {
   private client: PublicClient;
+  private url: string;
 
   constructor(
     public chainId: number,
     url?: string,
   ) {
-    this.client = createViemPublicClientForChain(chainId, url ?? getChainLogsRpcUrl(chainId));
+    this.url = url ?? getChainLogsRpcUrl(chainId);
+    this.client = createViemPublicClientForChain(chainId, this.url);
   }
 
   async getLatestBlock(): Promise<number> {
@@ -101,6 +106,11 @@ export class ViemLogsProvider implements LogsProvider {
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
+    // Hypersync does not allow using `null` as a topic, so we replace it with an empty array
+    if (this.url.includes('hypersync')) {
+      filter.topics = filter.topics?.map((topic) => (isNullish(topic) ? [] : topic)) as Log['topics'];
+    }
+
     const logs = await this.client.request({
       method: 'eth_getLogs',
       params: [

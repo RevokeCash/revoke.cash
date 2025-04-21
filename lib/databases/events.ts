@@ -16,7 +16,7 @@ interface Events {
 
 // Certain chains lack proper infrastructure, so we don't index events for them
 // Note: these are prime candidates for delisting from the app if no long term solutions are found
-const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet, 999];
+const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet];
 
 class EventsDB extends Dexie {
   private events!: Table<Events>;
@@ -24,10 +24,8 @@ class EventsDB extends Dexie {
   constructor() {
     super('Events');
 
-    // On 2025-03-13, we moved to using the logs provider's getLatestBlock method to get the latest block number to
-    // prevent any discrepancies between the public client's block number and the logs provider's block number
-    // We do a full re-index to ensure that we're not missing any events due to this change
-    this.version(2025_03_13)
+    // On 2025-03-23, we perform a full re-index of the events table
+    this.version(2025_03_23)
       .stores({
         events: '[chainId+topicsKey], chainId, topics, toBlock',
       })

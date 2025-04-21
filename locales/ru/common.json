@@ -5,8 +5,8 @@
     "translator": "Переводчик <person-link>{translator}</person-link>"
   },
   "buttons": {
-    "authenticate": "Authenticate",
-    "authenticating": "Authenticating",
+    "authenticate": "Аутентифицировать",
+    "authenticating": "Аутентификация",
     "back_to_exploits": "Назад к Эксплойтам",
     "cancel": "Отмена",
     "cancel_signatures": "Отменить потенциальные подписи",
@@ -23,7 +23,7 @@
     "donating": "Пожертвование",
     "download": "Скачать",
     "get_started": "Начать",
-    "increase": "Increase",
+    "increase": "Увеличить",
     "my_allowances": "Мои доступы",
     "next": "Следующее",
     "previous": "Предыдущее",
@@ -77,7 +77,7 @@
       "title": "Такой страницы не существует."
     },
     "messages": {
-      "chain_could_not_connect": "Не удалось подключиться к {chainName}"
+      "chain_could_not_connect": "Не удалось подключиться к {chainName}, пожалуйста, повторите попытку позже."
     }
   },
   "footer": {
