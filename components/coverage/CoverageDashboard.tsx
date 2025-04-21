@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
-import { getMembershipInfo, trackQuizAction } from 'lib/coverage/fairside';
+import { getMembershipInfo, useFairsideStore } from 'lib/coverage/fairside';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useEffect } from 'react';
@@ -13,22 +13,20 @@ import WalletDetailsCard from './WalletDetails';
 const CoverageDashboard = () => {
   const isMounted = useMounted();
   const { address } = useAddressPageContext();
+  const { trackQuizAction } = useFairsideStore();
 
   // Track when user lands on coverage tab
   useEffect(() => {
-    let isSubscribed = true;
-
-    if (isSubscribed && isMounted) {
+    if (isMounted) {
       const timeoutId = setTimeout(() => {
         trackQuizAction('coverage_tab_view');
       }, 0);
 
       return () => {
-        isSubscribed = false;
         clearTimeout(timeoutId);
       };
     }
-  }, [isMounted]);
+  }, [isMounted, trackQuizAction]);
 
   const { data: membershipInfo, isLoading } = useQuery({
     queryKey: ['fairsideMembershipInfo', address],

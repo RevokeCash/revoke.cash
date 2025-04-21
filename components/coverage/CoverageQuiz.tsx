@@ -2,7 +2,8 @@
 
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
-import { FAIRSIDE_APP_URL, trackQuizAction } from 'lib/coverage/fairside';
+import { FAIRSIDE_APP_URL, useFairsideStore } from 'lib/coverage/fairside';
+import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -76,23 +77,22 @@ const CoverageQuiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
+  const { trackQuizAction } = useFairsideStore();
+  const isMounted = useMounted();
 
   // Track quiz start when component mounts
   useEffect(() => {
-    let isSubscribed = true;
-
     // Only send if component is still mounted
-    if (isSubscribed) {
+    if (isMounted) {
       const timeoutId = setTimeout(() => {
         trackQuizAction('quiz_start');
       }, 0);
 
       return () => {
-        isSubscribed = false;
         clearTimeout(timeoutId);
       };
     }
-  }, []);
+  }, [isMounted, trackQuizAction]);
 
   const isAnswerCorrect =
     quizQuestions[currentQuestion].correctAnswers.every((answer) => selectedAnswers.includes(answer)) &&
@@ -331,14 +331,7 @@ const QuizFooter = ({
         </Button>
       ) : (
         <>
-          <Button
-            style="primary"
-            size="md"
-            onClick={quizCompleted && canProceed ? undefined : handleNextQuestion}
-            href={quizCompleted && canProceed ? FAIRSIDE_APP_URL : undefined}
-            external={quizCompleted && canProceed}
-            disabled={!canProceed}
-          >
+          <Button style="primary" size="md" onClick={handleNextQuestion} disabled={!canProceed}>
             {!canProceed
               ? t('address.coverage.info.quiz.wait_and_read')
               : quizCompleted

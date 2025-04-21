@@ -2,6 +2,7 @@ import { FAIRSIDE_API_KEY } from 'lib/constants';
 import ky from 'lib/ky';
 import type { Hex } from 'viem';
 import type { Address } from 'viem';
+import { create } from 'zustand';
 
 export const FAIRSIDE_REFERRAL_CODE = 'rHJeTS8YIYdOLq75LpCJ5F863';
 export const FAIRSIDE_API_URL = 'https://api.fairside.io/v1';
@@ -102,11 +103,6 @@ export const getCoveredWallets = async ({ accessToken }: GetCoveredWalletsParams
   return result.data;
 };
 
-// Constants for coverage session
-const COVERAGE_SESSION_ID_KEY = 'coverage_session_id';
-const COVERAGE_SESSION_START_KEY = 'coverage_session_start';
-const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
-
 // Generate a random string for session ID
 const generateSessionId = (): string => {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -115,29 +111,6 @@ const generateSessionId = (): string => {
     typeof window !== 'undefined' &&
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
   return isLocalhost ? `${id}-test` : id;
-};
-
-// Get or create a session ID with 30-minute expiration
-const getSessionId = (): string => {
-  if (typeof window === 'undefined') return generateSessionId();
-
-  const storedId = localStorage.getItem(COVERAGE_SESSION_ID_KEY);
-  const storedTimestamp = localStorage.getItem(COVERAGE_SESSION_START_KEY);
-  const now = Date.now();
-
-  // Check if we have a valid, non-expired ID
-  if (storedId && storedTimestamp) {
-    const timestamp = Number.parseInt(storedTimestamp, 10);
-    if (now - timestamp < SESSION_DURATION) {
-      return storedId;
-    }
-  }
-
-  // Generate new ID if expired or doesn't exist
-  const newId = generateSessionId();
-  localStorage.setItem(COVERAGE_SESSION_ID_KEY, newId);
-  localStorage.setItem(COVERAGE_SESSION_START_KEY, now.toString());
-  return newId;
 };
 
 type QuizAction =
@@ -152,9 +125,8 @@ type QuizAction =
   | 'get_coverage_click';
 
 // Track quiz actions
-export const trackQuizAction = async (action: QuizAction): Promise<void> => {
-  const userId = getSessionId();
-
+const trackQuizAction = async (userId: string, action: QuizAction): Promise<void> => {
+  console.log('Tracking quiz action:', userId, action);
   try {
     await ky.post(`${FAIRSIDE_API_URL}/revoke-stats`, {
       headers,
@@ -167,3 +139,25 @@ export const trackQuizAction = async (action: QuizAction): Promise<void> => {
     console.error('Failed to track Fairside quiz action:', error);
   }
 };
+
+export interface FairsideStore {
+  userId?: string;
+  getUserId: () => string;
+  trackQuizAction: (action: QuizAction) => void;
+}
+
+export const useFairsideStore = create<FairsideStore>((set, get) => ({
+  getUserId: () => {
+    const userId = get().userId;
+    if (userId) return userId;
+
+    const newUserId = generateSessionId();
+    set({ userId: newUserId });
+
+    return newUserId;
+  },
+  trackQuizAction: (action: QuizAction) => {
+    const userId = get().getUserId();
+    trackQuizAction(userId, action);
+  },
+}));
