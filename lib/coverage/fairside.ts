@@ -126,7 +126,6 @@ type QuizAction =
 
 // Track quiz actions
 const trackQuizAction = async (userId: string, action: QuizAction): Promise<void> => {
-  console.log('Tracking quiz action:', userId, action);
   try {
     await ky.post(`${FAIRSIDE_API_URL}/revoke-stats`, {
       headers,
