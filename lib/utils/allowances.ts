@@ -151,7 +151,7 @@ export const getErc20AllowancesFromApprovals = async (
   const approvalEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_ERC20);
   const deduplicatedApprovalEvents = deduplicateArray(
     approvalEvents,
-    (a, b) => a.token === b.token && a.owner === b.owner && a.payload.spender === b.payload.spender,
+    (event) => `${event.token}-${event.owner}-${event.payload.spender}`,
   );
 
   const allowances = await Promise.all(
@@ -194,10 +194,7 @@ export const getLimitedErc721AllowancesFromApprovals = async (
   );
 
   // We only look at the tokenId, since a tokenId can only have one *limited* approval at a time
-  const deduplicatedEvents = deduplicateArray(
-    singeTokenIdEvents,
-    (a, b) => a.token === b.token && a.payload.tokenId === b.payload.tokenId,
-  );
+  const deduplicatedEvents = deduplicateArray(singeTokenIdEvents, (event) => `${event.token}-${event.payload.tokenId}`);
 
   const allowances = await Promise.all(
     deduplicatedEvents.map((event) => getLimitedErc721AllowanceFromApproval(contract, event)),
@@ -232,7 +229,7 @@ export const getUnlimitedErc721AllowancesFromApprovals = async (
   const approvalForAllEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_FOR_ALL);
   const deduplicatedApprovalForAllEvents = deduplicateArray(
     approvalForAllEvents,
-    (a, b) => a.token === b.token && a.owner === b.owner && a.payload.spender === b.payload.spender,
+    (event) => `${event.token}-${event.owner}-${event.payload.spender}`,
   );
 
   const allowances = await Promise.all(

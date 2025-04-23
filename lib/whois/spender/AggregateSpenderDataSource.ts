@@ -47,7 +47,7 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
 
       aggregatedResults.riskFactors = deduplicateArray(
         aggregatedResults.riskFactors ?? [],
-        (a, b) => a.type === b.type && a.data === b.data && a.source === b.source,
+        (riskFactor) => `${riskFactor.type}-${riskFactor.data}-${riskFactor.source}`,
       );
 
       return aggregatedResults;

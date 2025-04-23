@@ -24,7 +24,7 @@ export const usePermitTokens = () => {
   } = useQuery({
     queryKey: ['permitTokens', allowances?.map(getAllowanceKey)],
     queryFn: async () => {
-      const ownedTokens = deduplicateArray(allowances!, (a, b) => a.contract.address === b.contract.address)
+      const ownedTokens = deduplicateArray(allowances!, (allowance) => allowance.contract.address)
         .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals) && token)
         .map(stripAllowanceData);
 

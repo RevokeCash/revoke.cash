@@ -18,7 +18,7 @@ import {
   slice,
 } from 'viem';
 import analytics from './analytics';
-import type { Log, TokenEvent } from './events';
+import type { Log } from './events';
 
 export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
   return item.status === 'fulfilled';
@@ -45,28 +45,41 @@ export const logSorterChronological = (a: Log, b: Log) => {
 
 export const sortLogsChronologically = (logs: Log[]) => logs.sort(logSorterChronological);
 
-export const sortTokenEventsChronologically = (events: TokenEvent[]) =>
+export const sortTokenEventsChronologically = <T extends { rawLog: Log }>(events: T[]): T[] =>
   events.sort((a, b) => logSorterChronological(a.rawLog, b.rawLog));
 
-// This is O(n*m) complexity, but it's unlikely to be a problem in practice in most cases m (unique contracts) is way
-// smaller than n (total logs). The previous version of this function was O(n^2), which was a problem for accounts with
-// many transfers.
-export const deduplicateArray = <T>(array: readonly T[], matcher: (a: T, b: T) => boolean = (a, b) => a === b): T[] => {
+// This is O(n) complexity because Set.has() and Set.add() are O(1), which is much faster than the previous
+// iterations of this function, which were O(n^2) and later O(n*m). This doesn't matter for most cases, but for
+// our calculate-potential-losses script, it makes a huge difference because we might be dealing with deduplicating
+// 1m+ logs.
+export const deduplicateArray = <T>(
+  array: readonly T[],
+  keyGenerator: (item: T) => string = (item) => `${item}`,
+): T[] => {
+  const seen = new Set<string>();
   const result: T[] = [];
 
   for (const item of array) {
-    if (!result.some((existingItem) => matcher(existingItem, item))) result.push(item);
+    const key = keyGenerator(item);
+    if (!seen.has(key)) {
+      seen.add(key);
+      result.push(item);
+    }
   }
 
   return result;
 };
 
 export const deduplicateLogsByTopics = (logs: Log[], consideredIndexes: Array<0 | 1 | 2 | 3> = [0, 1, 2, 3]) => {
-  const matcher = (a: Log, b: Log) => {
-    return a.address === b.address && consideredIndexes.every((index) => a.topics[index] === b.topics[index]);
+  const keyGenerator = (log: Log) => {
+    const topicsKey = log.topics
+      .map((topic, index) => (consideredIndexes.includes(index as 0 | 1 | 2 | 3) ? topic : 'ignored'))
+      .join('-');
+
+    return `${log.address}-${topicsKey}`;
   };
 
-  return deduplicateArray(logs, matcher);
+  return deduplicateArray(logs, keyGenerator);
 };
 
 export const filterLogsByAddress = (logs: Log[], address: string) => {

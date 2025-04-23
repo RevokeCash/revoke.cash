@@ -114,7 +114,7 @@ export const getErc721TokenData = async (
 
   // Since the events are sorted by reverse chronological order, we know that the first event is the latest,
   // if the latest event for a tokenId is a transfer to the owner, then the owner still holds the token
-  const uniqueTokenIdTransfers = deduplicateArray(transfers, (a, b) => a.payload.tokenId === b.payload.tokenId);
+  const uniqueTokenIdTransfers = deduplicateArray(transfers, (event) => `${event.payload.tokenId}`);
   const calculatedBalance = BigInt(uniqueTokenIdTransfers.filter((event) => event.payload.to === owner).length);
   const shouldFetchBalance = transfers.length === 0;
 
@@ -262,12 +262,12 @@ export const createTokenContracts = (events: TokenEvent[], publicClient: PublicC
   // Remove transfer events FROM the owner, because if that is the *only* event, it's likely a spam token
   const filteredEvents = events.filter((event) => !(isTransferTokenEvent(event) && event.owner === event.payload.from));
 
-  return deduplicateArray(filteredEvents, (a, b) => a.token === b.token)
+  return deduplicateArray(filteredEvents, (event) => event.token)
     .map((event) => createTokenContract(event, publicClient))
     .filter((contract) => contract !== undefined);
 };
 
-const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {
+export const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {
   const abi = getTokenAbi(event);
   if (!abi) return undefined;
 

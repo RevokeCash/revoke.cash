@@ -10,7 +10,7 @@ export const updateTableFilters = (
   table.setColumnFilters((oldFilters) => {
     const keepOldFilters = oldFilters.filter((filter) => ignoreIds.includes(filter.id));
     const allFilters = [...keepOldFilters, ...newFilters];
-    const uniqueFilters = deduplicateArray(allFilters, (a, b) => a.id === b.id);
+    const uniqueFilters = deduplicateArray(allFilters, (filter) => filter.id);
     return uniqueFilters;
   });
 };

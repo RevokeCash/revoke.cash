@@ -8,6 +8,11 @@ export interface RateLimit {
   timeout?: number;
 }
 
+export interface ConcurrencyLimit {
+  concurrency: number;
+  timeout?: number;
+}
+
 export enum TransactionType {
   REVOKE = 'revoke',
   UPDATE = 'update',
