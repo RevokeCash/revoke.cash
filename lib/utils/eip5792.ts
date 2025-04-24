@@ -1,7 +1,6 @@
 import type { TransactionSubmitted } from 'lib/interfaces';
 import type { SendTransactionParameters, WalletCallReceipt, WalletClient, WriteContractParameters } from 'viem';
 import type { Call } from 'viem/_types/types/calls';
-import { type Eip5792Actions, type GetCallsStatusReturnType, eip5792Actions } from 'viem/experimental';
 import type { OnUpdate } from './allowances';
 import type { TokenAllowanceData } from './allowances';
 
@@ -9,8 +8,7 @@ export type Eip5792Call = Call;
 
 export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
   try {
-    const extendedWalletClient = walletClient.extend(eip5792Actions());
-    const capabilities = await extendedWalletClient.getCapabilities();
+    const capabilities = await walletClient.getCapabilities();
     console.log('Wallet supports EIP5792:', capabilities);
 
     // We might even need to check the exact capabilities, but we'll deal with that if we need to
@@ -22,20 +20,6 @@ export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
     console.log('Wallet does not support EIP5792');
     return false;
   }
-};
-
-export const pollForCallsReceipts = async (id: string, walletClient: WalletClient & Eip5792Actions) => {
-  return new Promise<GetCallsStatusReturnType>((resolve) => {
-    const interval = setInterval(async () => {
-      const res = await walletClient.getCallsStatus({ id });
-      if (res.status === 'CONFIRMED') {
-        clearInterval(interval);
-        resolve(res);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  });
 };
 
 export const mapContractTransactionRequestToEip5792Call = (

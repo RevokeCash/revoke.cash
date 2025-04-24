@@ -10790,8 +10790,8 @@ __metadata:
     tsx: "npm:^4.19.2"
     typescript: "npm:^5.7.3"
     use-local-storage: "npm:^3.0.0"
-    viem: "npm:^2.23.2"
-    wagmi: "npm:^2.14.11"
+    viem: "npm:^2.28.0"
+    wagmi: "npm:^2.15.0"
     walkdir: "npm:^0.4.1"
     zustand: "npm:^5.0.3"
   languageName: unknown
@@ -12428,7 +12428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.23.2":
+"viem@npm:^2.28.0":
   version: 2.28.0
   resolution: "viem@npm:2.28.0"
   dependencies:
@@ -12449,7 +12449,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wagmi@npm:^2.14.11":
+"wagmi@npm:^2.15.0":
   version: 2.15.0
   resolution: "wagmi@npm:2.15.0"
   dependencies:

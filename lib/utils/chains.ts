@@ -388,7 +388,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://api.snowscan.xyz/api',
     rpc: {
       main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      logs: 'https://43114.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -431,7 +430,6 @@ export const CHAINS = {
     rpc: {
       main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       logs: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      // logs: 'https://8453.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base

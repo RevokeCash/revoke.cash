@@ -1,6 +1,6 @@
 import { createNavigation } from 'next-intl/navigation';
 import nProgress from 'nprogress';
-import { routing } from './config';
+import { routing } from './routing';
 
 export const { Link, redirect, usePathname, useRouter: useNextRouter } = createNavigation(routing);
 

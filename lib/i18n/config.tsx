@@ -2,14 +2,10 @@ import Href from 'components/common/Href';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
 import { FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
 import type { RichTranslationValues } from 'next-intl';
-import { defineRouting } from 'next-intl/routing';
 import { getRequestConfig } from 'next-intl/server';
+import { routing } from './routing';
 
-export const routing = defineRouting({
-  locales: ['en', 'es', 'ja', 'ru', 'zh'],
-  defaultLocale: 'en',
-  localePrefix: 'as-needed',
-});
+export { routing } from './routing';
 
 // TODO: Replace this with the new routing config
 export const locales = routing.locales;
