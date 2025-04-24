@@ -109,9 +109,10 @@ export class EtherscanEventGetter implements EventGetter {
 
     if (typeof data.message === 'string') {
       // Routescan / Snowtrace will report a timeout if the range is too large
-      if (isNullish(data?.result) && data.message.includes('Timeout reached')) {
-        throw new Error('Log response size exceeded');
-      }
+      const isTimeoutError =
+        isNullish(data?.result) &&
+        (data.message.includes('Timeout reached') || data.message.includes('Query Timeout occured'));
+      if (isTimeoutError) throw new Error('Log response size exceeded');
     }
 
     if (!Array.isArray(data.result)) {

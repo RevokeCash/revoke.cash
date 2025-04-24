@@ -7,7 +7,7 @@ import { SECOND } from 'lib/utils/time';
 import {
   http,
   type AddEthereumChainParameter,
-  type Address,
+  type ChainContract,
   type PublicClient,
   type Chain as ViemChain,
   createPublicClient,
@@ -37,10 +37,11 @@ export interface ChainOptions {
   correspondingMainnetChainId?: number;
 }
 
-export type DeployedContracts = Record<string, { address: Address }>;
+export type DeployedContracts = Record<string, ChainContract>;
 
 export enum SupportType {
   PROVIDER = 'PROVIDER',
+  HYPERSYNC = 'HYPERSYNC',
   ETHERSCAN_COMPATIBLE = 'ETHERSCAN_COMPATIBLE',
   BLOCKSCOUT = 'BLOCKSCOUT', // Note that this is mostly Etherscan Compatible, with slight differences in the API
   COVALENT = 'COVALENT',

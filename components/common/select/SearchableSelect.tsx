@@ -18,6 +18,7 @@ import Select, { type Props as SelectProps } from 'components/common/select/Sele
 import Button from '../Button';
 import Chevron from '../Chevron';
 
+import { useMounted } from 'lib/hooks/useMounted';
 import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 import { twMerge } from 'tailwind-merge';
 
@@ -29,6 +30,7 @@ interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProp
 const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
   const selectRef = useRef<SelectInstance<O, I, G> | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const isMounted = useMounted();
 
   // Track whether the React Select is open or not
   const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
@@ -76,7 +78,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
         autoFocus
         onChange={onChange}
         className="shrink-0"
-        menuIsOpen={props.keepMounted ? true : isSelectOpen}
+        menuIsOpen={isMounted ? (props.keepMounted ? true : isSelectOpen) : undefined}
         filterOption={filterOption}
         minControlWidth={props.minMenuWidth}
         formatOptionLabel={props.formatOptionLabel ? formatOptionLabel : undefined}

@@ -5,6 +5,7 @@ import {
   isCovalentSupportedChain,
   isCustomSupportedChain,
   isEtherscanSupportedChain,
+  isHyperSyncSupportedChain,
   isNodeSupportedChain,
 } from 'lib/utils/chains';
 import { BlockScoutEventGetter } from './logs/BlockScoutEventGetter';
@@ -13,6 +14,7 @@ import { CustomEventGetter } from './logs/CustomEventGetter';
 import { EtherscanEventGetter } from './logs/EtherscanEventGetter';
 import type { EventGetter } from './logs/EventGetter';
 import { HyperLiquidEventGetter } from './logs/HyperLiquidEventGetter';
+import { HyperSyncEventGetter } from './logs/HyperSyncEventGetter';
 import { NodeEventGetter } from './logs/NodeEventGetter';
 import { TeloscanEventGetter } from './logs/TeloscanEventGetter';
 
@@ -27,6 +29,8 @@ export const etherscanEventGetter = new EtherscanEventGetter();
 export const blockScoutEventGetter = new BlockScoutEventGetter();
 export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS ?? '{}'));
 
+export const hyperSyncEventGetter = new HyperSyncEventGetter();
+
 export const customEventGetter = new CustomEventGetter({
   [ChainId.TelosEVMMainnet]: new TeloscanEventGetter(),
   // [999]: new ParsecEventGetter(),
@@ -34,6 +38,10 @@ export const customEventGetter = new CustomEventGetter({
 });
 
 export const getEventGetter = (chainId: DocumentedChainId): EventGetter => {
+  if (isHyperSyncSupportedChain(chainId)) {
+    return hyperSyncEventGetter;
+  }
+
   if (isCovalentSupportedChain(chainId)) {
     return covalentEventGetter;
   }
