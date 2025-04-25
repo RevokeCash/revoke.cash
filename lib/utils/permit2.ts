@@ -18,11 +18,7 @@ export const getPermit2AllowancesFromApprovals = async (
 
   const deduplicatedApprovalEvents = deduplicateArray(
     permit2ApprovalEvents,
-    (a, b) =>
-      a.token === b.token &&
-      a.owner === b.owner &&
-      a.payload.spender === b.payload.spender &&
-      a.payload.permit2Address === b.payload.permit2Address,
+    (event) => `${event.token}-${event.owner}-${event.payload.spender}-${event.payload.permit2Address}`,
   );
 
   const allowances = await Promise.all(

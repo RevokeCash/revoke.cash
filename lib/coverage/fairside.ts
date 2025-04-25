@@ -2,6 +2,7 @@ import { FAIRSIDE_API_KEY } from 'lib/constants';
 import ky from 'lib/ky';
 import type { Hex } from 'viem';
 import type { Address } from 'viem';
+import { create } from 'zustand';
 
 export const FAIRSIDE_REFERRAL_CODE = 'rHJeTS8YIYdOLq75LpCJ5F863';
 export const FAIRSIDE_API_URL = 'https://api.fairside.io/v1';
@@ -101,3 +102,61 @@ export const getCoveredWallets = async ({ accessToken }: GetCoveredWalletsParams
     .json<{ data: CoveredWallet[] }>();
   return result.data;
 };
+
+// Generate a random string for session ID
+const generateSessionId = (): string => {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const id = Array.from({ length: 20 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  const isLocalhost =
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  return isLocalhost ? `${id}-test` : id;
+};
+
+type QuizAction =
+  | 'coverage_tab_view'
+  | 'quiz_start'
+  | 'quiz_1_question'
+  | 'quiz_2_question'
+  | 'quiz_3_question'
+  | 'quiz_4_question'
+  | 'quiz_5_question'
+  | 'quiz_complete'
+  | 'get_coverage_click';
+
+// Track quiz actions
+const trackQuizAction = async (userId: string, action: QuizAction): Promise<void> => {
+  try {
+    await ky.post(`${FAIRSIDE_API_URL}/revoke-stats`, {
+      headers,
+      json: {
+        userId,
+        action,
+      },
+    });
+  } catch (error) {
+    console.error('Failed to track Fairside quiz action:', error);
+  }
+};
+
+export interface FairsideStore {
+  userId?: string;
+  getUserId: () => string;
+  trackQuizAction: (action: QuizAction) => void;
+}
+
+export const useFairsideStore = create<FairsideStore>((set, get) => ({
+  getUserId: () => {
+    const userId = get().userId;
+    if (userId) return userId;
+
+    const newUserId = generateSessionId();
+    set({ userId: newUserId });
+
+    return newUserId;
+  },
+  trackQuizAction: (action: QuizAction) => {
+    const userId = get().getUserId();
+    trackQuizAction(userId, action);
+  },
+}));

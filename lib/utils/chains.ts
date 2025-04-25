@@ -84,7 +84,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Kroma,
   ChainId.DogechainMainnet,
   ChainId['Re.al'],
-  ChainId.Wanchain,
   ChainId.Beam,
   ChainId.Lisk,
   ChainId.Shibarium,
@@ -158,7 +157,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
   ChainId.CeloAlfajoresTestnet,
-  ChainId.FantomTestnet,
   ChainId.MoonbaseAlpha,
   ChainId.MantleSepoliaTestnet,
   ChainId.KromaSepolia,
@@ -244,7 +242,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ArbitrumNova]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.ArbitrumNova,
     name: 'Arbitrum Nova',
     logoUrl: '/assets/images/vendor/chains/arbitrum-nova.svg',
@@ -275,8 +273,7 @@ export const CHAINS = {
     explorerUrl: 'https://arbiscan.io',
     rpc: {
       main: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://42161.rpc.hypersync.xyz',
-      // main: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      logs: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://arb1.arbitrum.io/rpc',
     },
     deployedContracts: { ...MULTICALL },
@@ -383,7 +380,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId['AvalancheC-Chain']]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId['AvalancheC-Chain'],
     name: 'Avalanche',
     logoUrl: '/assets/images/vendor/chains/avalanche.svg',
@@ -391,7 +388,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://api.snowscan.xyz/api',
     rpc: {
       main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      logs: 'https://43114.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -432,9 +428,8 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/base.svg',
     etherscanCompatibleApiUrl: 'https://api.basescan.org/api',
     rpc: {
-      // main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      logs: 'https://8453.rpc.hypersync.xyz',
+      main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Aerodrome (forked from Velodrome) for Base
@@ -576,7 +571,7 @@ export const CHAINS = {
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
   }),
   [ChainId.Blast]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.Blast,
     name: 'Blast',
     logoUrl: '/assets/images/vendor/chains/blast.jpg',
@@ -605,16 +600,18 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Blast,
   }),
   [ChainId.BNBSmartChainMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.BNBSmartChainMainnet,
     name: 'BNB Chain',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
     etherscanCompatibleApiUrl: 'https://api.bscscan.com/api',
     rpc: {
       main: `https://bnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://56.rpc.hypersync.xyz',
+      // logs: 'https://56.rpc.hypersync.xyz',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: {
+      multicall3: { address: '0xcA11bde05977b3631167028862bE2a173976CA11', blockCreated: 15921452 },
+    },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
       // TODO: Maybe add Pancakeswap v3 (Uniswap v3)
@@ -1059,14 +1056,13 @@ export const CHAINS = {
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.FantomOpera]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.FantomOpera,
     name: 'Fantom',
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
-    etherscanCompatibleApiUrl: 'https://api.ftmscan.com/api',
     rpc: {
-      main: `https://fantom-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://250.rpc.hypersync.xyz',
+      main: `https://lb.drpc.org/ogrpc?network=fantom&dkey=${DRPC_API_KEY}`,
+      // logs: 'https://250.rpc.hypersync.xyz',
       free: 'https://rpc.fantom.network',
     },
     deployedContracts: { ...MULTICALL },
@@ -1082,19 +1078,6 @@ export const CHAINS = {
         }),
       ],
     }),
-  }),
-  [ChainId.FantomTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.FantomTestnet,
-    name: 'Fantom Testnet',
-    logoUrl: '/assets/images/vendor/chains/fantom.svg',
-    etherscanCompatibleApiUrl: 'https://api-testnet.ftmscan.com/api',
-    rpc: {
-      main: `https://fantom-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.FantomOpera,
   }),
   [ChainId.FlareMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1153,6 +1136,9 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/fuse.png',
     explorerUrl: 'https://explorer.fuse.io',
     etherscanCompatibleApiUrl: 'https://explorer.fuse.io/api',
+    rpc: {
+      main: 'https://fuse-pokt.nodies.app',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1181,7 +1167,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Gnosis]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.Gnosis,
     name: 'Gnosis Chain',
     logoUrl: '/assets/images/vendor/chains/gnosis.svg',
@@ -1190,7 +1176,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     rpc: {
       main: `https://gnosis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://100.rpc.hypersync.xyz',
     },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1275,7 +1260,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/heco.svg',
   }),
   [999]: new Chain({
-    type: SupportType.BACKEND_CUSTOM,
+    type: SupportType.PROVIDER,
     chainId: 999,
     name: 'Hyperliquid EVM',
     nativeToken: 'HYPE',
@@ -1284,7 +1269,8 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/hyperliquid.svg',
     rpc: {
       main: 'https://rpc.hyperliquid.xyz/evm',
-      logs: 'https://hl-archive-node.xyz',
+      // logs: 'https://hl-archive-node.xyz',
+      logs: 'https://hyperliquid.valtitude.xyz?apiKey=a3dee98b-d4d4-4b71-b652-fd03d54783c8',
       free: 'https://rpc.hyperliquid.xyz/evm',
     },
     deployedContracts: { ...MULTICALL },
@@ -1475,7 +1461,7 @@ export const CHAINS = {
   //   correspondingMainnetChainId: ChainId.LUKSOMainnet,
   // }),
   [ChainId.Lisk]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.Lisk,
     name: 'Lisk',
     rpc: {
@@ -1499,7 +1485,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Mantle]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Mantle,
     name: 'Mantle',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
@@ -1630,7 +1616,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/monad.svg',
   }),
   [ChainId.MonadTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.MonadTestnet,
     name: 'Monad Testnet',
     logoUrl: '/assets/images/vendor/chains/monad.svg',
@@ -1658,6 +1644,9 @@ export const CHAINS = {
     name: 'Moonbeam',
     logoUrl: '/assets/images/vendor/chains/moonbeam.svg',
     etherscanCompatibleApiUrl: 'https://api-moonbeam.moonscan.io/api',
+    rpc: {
+      main: `https://lb.drpc.org/ogrpc?network=moonbeam&dkey=${DRPC_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     // TODO: Add Algebra (StellaSwap) strategy to support Moonbeam
     priceStrategy: undefined,
@@ -1669,6 +1658,9 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/moonriver.svg',
     infoUrl: 'https://moonbeam.network/networks/moonriver/',
     etherscanCompatibleApiUrl: 'https://api-moonriver.moonscan.io/api',
+    rpc: {
+      main: `https://lb.drpc.org/ogrpc?network=moonriver&dkey=${DRPC_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isCanary: true,
     correspondingMainnetChainId: ChainId.Moonbeam,
@@ -1853,8 +1845,8 @@ export const CHAINS = {
     name: 'Optimism',
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
-      // main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      main: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      logs: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Look at integrating Velodrome for OP
@@ -2108,13 +2100,14 @@ export const CHAINS = {
     }),
   }),
   [ChainId.RootstockMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.RootstockMainnet,
     name: 'Rootstock',
     logoUrl: '/assets/images/vendor/chains/rootstock.jpg',
     explorerUrl: 'https://rootstock.blockscout.com',
     etherscanCompatibleApiUrl: 'https://rootstock.blockscout.com/api',
     rpc: {
+      main: `https://rootstock-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       logs: 'https://30.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
@@ -2149,7 +2142,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Scroll]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.Scroll,
     name: 'Scroll',
     logoUrl: '/assets/images/vendor/chains/scroll.svg',
@@ -2304,7 +2297,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Sophon]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.Sophon,
     name: 'Sophon',
     logoUrl: '/assets/images/vendor/chains/sophon.jpg',
@@ -2454,29 +2447,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.Wanchain]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.Wanchain,
-    name: 'Wanchain',
-    logoUrl: '/assets/images/vendor/chains/wanchain.svg',
-    infoUrl: 'https://www.wanchain.org',
-    explorerUrl: 'https://www.wanscan.org',
-    deployedContracts: {
-      multicall3: { address: '0xcDF6A1566e78EB4594c86Fe73Fcdc82429e97fbB' },
-    },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // WanSwap (Router) | WWAN -> wanUSDT
-        new UniswapV2PriceStrategy({
-          address: '0xeA300406FE2eED9CD2bF5c47D01BECa8Ad294Ec1',
-          path: ['0xdabD997aE5E4799BE47d6E69D9431615CBa28f48', '0x11e77E27Af5539872efEd10abaA0b408cfd9fBBD'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
-  }),
   [ChainId['WEMIX3.0Mainnet']]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId['WEMIX3.0Mainnet'],
@@ -2510,7 +2480,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.XDCNetwork]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.XDCNetwork,
     name: 'XDC',
     logoUrl: '/assets/images/vendor/chains/xdc.svg',
@@ -2587,7 +2557,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZkSyncMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.HYPERSYNC,
     chainId: ChainId.ZkSyncMainnet,
     name: 'zkSync Era',
     logoUrl: '/assets/images/vendor/chains/zksync.jpeg',
@@ -2683,6 +2653,10 @@ export const isBackendSupportedChain = (chainId: DocumentedChainId): boolean => 
 
 export const isProviderSupportedChain = (chainId: DocumentedChainId): boolean => {
   return getChainConfig(chainId).type === SupportType.PROVIDER;
+};
+
+export const isHyperSyncSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.HYPERSYNC;
 };
 
 export const isCovalentSupportedChain = (chainId: DocumentedChainId): boolean => {

@@ -15,11 +15,9 @@ import {
   mapContractTransactionRequestToEip5792Call,
   mapTransactionRequestToEip5792Call,
   mapWalletCallReceiptToTransactionSubmitted,
-  pollForCallsReceipts,
 } from 'lib/utils/eip5792';
 import type PQueue from 'p-queue';
 import type { EstimateContractGasParameters } from 'viem';
-import { eip5792Actions } from 'viem/experimental';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
@@ -36,8 +34,6 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
-
-    const extendedWalletClient = walletClient.extend(eip5792Actions());
 
     const callsSettled = await Promise.allSettled(
       allowances.map(async (allowance): Promise<Eip5792Call> => {
@@ -61,7 +57,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       calls.push(mapTransactionRequestToEip5792Call(donateTransaction));
     }
 
-    const batchPromise = extendedWalletClient.sendCalls({
+    const batchPromise = walletClient.sendCalls({
+      version: '2.0.0',
       account: walletClient.account!,
       chain: walletClient.chain!,
       calls,
@@ -82,7 +79,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
               if (settlement.status === 'rejected') throw settlement.reason;
 
               const id = await batchPromise;
-              const { receipts } = await pollForCallsReceipts(id, extendedWalletClient);
+              const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
 
               if (receipts?.length === 1) {
                 return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[0], onUpdate);

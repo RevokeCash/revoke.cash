@@ -42,9 +42,20 @@ const nextConfig = {
       },
     ];
   },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false, path: false };
     config.externals.push('pino-pretty');
+
+    // We're running into issues with webpack when importing the hypersync client directly
+    if (isServer) {
+      config.externals.push(({ request }, callback) => {
+        if (request?.startsWith('@envio-dev/hypersync-client-') || request?.endsWith('.node')) {
+          return callback(null, `commonjs ${request}`);
+        }
+        callback();
+      });
+    }
+
     return config;
   },
 };

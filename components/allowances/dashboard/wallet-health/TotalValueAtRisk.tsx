@@ -63,10 +63,7 @@ const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number => 
   }));
 
   const sortedAllowances = annotatedAllowances.sort((a, b) => ((a.valueAtRisk ?? 0n) > (b.valueAtRisk ?? 0n) ? -1 : 1));
-  const deduplicatedAllowances = deduplicateArray(
-    sortedAllowances,
-    (a, b) => a.contract.address === b.contract.address,
-  );
+  const deduplicatedAllowances = deduplicateArray(sortedAllowances, (allowance) => allowance.contract.address);
 
   return deduplicatedAllowances.reduce((acc, allowance) => acc + (allowance.valueAtRisk ?? 0), 0);
 };

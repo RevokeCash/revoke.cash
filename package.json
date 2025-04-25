@@ -27,6 +27,7 @@
     "@abstract-foundation/agw-client": "^1.4.2",
     "@abstract-foundation/agw-react": "^1.5.4",
     "@dotenvx/dotenvx": "^1.35.0",
+    "@envio-dev/hypersync-client": "^0.6.3",
     "@floating-ui/react": "^0.27.4",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
@@ -72,8 +73,8 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^2.23.2",
-    "wagmi": "^2.14.11",
+    "viem": "^2.28.0",
+    "wagmi": "^2.15.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
@@ -96,6 +97,7 @@
     "@types/request-ip": "^0.0.41",
     "chai": "^5.1.2",
     "cypress": "^14.0.3",
+    "fast-csv": "^5.0.2",
     "glob": "^11.0.1",
     "gray-matter": "^4.0.3",
     "husky": "^9.1.7",

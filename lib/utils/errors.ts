@@ -36,7 +36,8 @@ export const isLogResponseSizeError = (error?: string | any): boolean => {
   const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('query returned more than 10000 results')) return true; // Infura
   if (lowercaseMessage?.includes('log response size exceeded')) return true; // Alchemy
-  if (lowercaseMessage?.includes('query timeout exceeded')) return true;
+  if (lowercaseMessage?.includes('request timed out')) return true; // Also Alchemy (and p-timeout)
+  if (lowercaseMessage?.includes('query timeout exceeded')) return true; // Also Alchemy
   // This is also a partial match for a network error, but the checks for these two error categories are mutually exclusive
   if (lowercaseMessage?.includes('queued request timed out')) return true;
   if (lowercaseMessage?.includes('query returned more than 1024 results')) return true; // ZERO network

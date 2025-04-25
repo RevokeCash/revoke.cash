@@ -1,15 +1,11 @@
 import Href from 'components/common/Href';
 import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
-import { FAIRSIDE_LANDING_URL } from 'lib/coverage/fairside';
+import { FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
 import type { RichTranslationValues } from 'next-intl';
-import { defineRouting } from 'next-intl/routing';
 import { getRequestConfig } from 'next-intl/server';
+import { routing } from './routing';
 
-export const routing = defineRouting({
-  locales: ['en', 'es', 'ja', 'ru', 'zh'],
-  defaultLocale: 'en',
-  localePrefix: 'as-needed',
-});
+export { routing } from './routing';
 
 // TODO: Replace this with the new routing config
 export const locales = routing.locales;
@@ -82,7 +78,7 @@ export const defaultTranslationValues: RichTranslationValues = {
     </Href>
   ),
   'fairside-link': (children) => (
-    <Href href={FAIRSIDE_LANDING_URL} className="font-medium" underline="hover" html external>
+    <Href href={FAIRSIDE_APP_URL} className="font-medium" underline="hover" html external>
       {children}
     </Href>
   ),
