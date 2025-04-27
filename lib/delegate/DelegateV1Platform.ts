@@ -2,7 +2,7 @@ import { DELEGATE_V1_ABI } from 'lib/abis';
 import { DELEGATE_V1_REGISTRY_ADDRESS } from 'lib/constants';
 import type { Abi, Address } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
-import type { Delegation } from './DelegatePlatform';
+import type { Delegation, TransactionData } from './DelegatePlatform';
 
 export class DelegateV1Platform extends AbstractDelegatePlatform {
   getAddress(): Address {
@@ -93,23 +93,94 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
     }
   }
 
-  async getIncomingDelegations(_wallet: Address): Promise<Delegation[]> {
-    // Implementation will involve reading the Delegate V1 registry
-    return [];
+  async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
+    try {
+      const delegationsRaw = (await this.publicClient.readContract({
+        address: this.address,
+        abi: this.abi,
+        functionName: 'getDelegationsByDelegate',
+        args: [wallet],
+      })) as [number, Address, Address, Address, bigint][];
+
+      const chainId = await this.publicClient.getChainId();
+      const delegations: Delegation[] = [];
+
+      delegationsRaw.forEach(([delegationType, delegator, delegate, contract, tokenId]) => {
+        let type: Delegation['type'];
+        switch (delegationType) {
+          case 1:
+            type = 'ALL';
+            break;
+          case 2:
+            type = 'CONTRACT';
+            break;
+          case 3:
+            type = 'TOKEN';
+            break;
+          default:
+            type = 'NONE';
+        }
+        delegations.push({
+          type,
+          delegator,
+          delegate,
+          contract: type === 'ALL' ? null : contract,
+          tokenId: type === 'TOKEN' ? tokenId : null,
+          direction: 'INCOMING',
+          platform: this.platformName,
+          chainId,
+        });
+      });
+      return delegations;
+    } catch (error) {
+      console.error('Error getting incoming delegations from Delegate V1:', error);
+      return [];
+    }
   }
 
-  async revokeDelagationInternal(delegation: Delegation): Promise<void> {
+  async revokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }
 
-    // Implementation will involve creating and sending a transaction
-    // This will be implemented with the wallet connection pattern used elsewhere in the app
+    let functionName: string;
+    let args: any[];
+
+    switch (delegation.type) {
+      case 'ALL':
+        functionName = 'revokeDelegateForAll';
+        args = [delegation.delegate];
+        break;
+      case 'CONTRACT':
+        if (!delegation.contract) throw new Error('Missing contract address for CONTRACT delegation');
+        functionName = 'revokeDelegateForContract';
+        args = [delegation.delegate, delegation.contract];
+        break;
+      case 'TOKEN':
+        if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
+          throw new Error('Missing contract address or tokenId for TOKEN delegation');
+        }
+        functionName = 'revokeDelegateForToken';
+        args = [delegation.delegate, delegation.contract, delegation.tokenId];
+        break;
+      default:
+        throw new Error('Unsupported delegation type for revocation');
+    }
+
+    return {
+      address: this.address,
+      abi: this.abi,
+      functionName,
+      args,
+    };
   }
 
-  async revokeAllDelegationsInternal(delegations: Delegation[]): Promise<void> {
-    // We would call revokeAllDelegates() here
-    // Implementation will involve creating and sending a transaction
-    // This will be implemented with the wallet connection pattern used elsewhere in the app
+  async revokeAllDelegationsInternal(): Promise<TransactionData> {
+    return {
+      address: this.address,
+      abi: this.abi,
+      functionName: 'revokeAllDelegates',
+      args: [],
+    };
   }
 }

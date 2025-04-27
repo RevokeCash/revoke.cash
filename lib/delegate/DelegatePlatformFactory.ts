@@ -5,9 +5,6 @@ import { DelegateV1Platform } from './DelegateV1Platform';
 import { DelegateV2Platform } from './DelegateV2Platform';
 import { WarmPlatform } from './WarmPlatform';
 
-/**
- * Chains where Delegate v1 and v2 are deployed
- */
 export const DELEGATE_SUPPORTED_CHAINS: ChainId[] = [
   ChainId.EthereumMainnet,
   ChainId.ArbitrumOne,
@@ -44,21 +41,8 @@ export const DELEGATE_SUPPORTED_CHAINS: ChainId[] = [
   ChainId.BaseSepoliaTestnet,
   ChainId.BerachainbArtio,
 ];
+export const WARM_SUPPORTED_CHAINS: ChainId[] = [ChainId.EthereumMainnet, ChainId.Sepolia];
 
-/**
- * Chains where Warm.xyz is deployed
- */
-export const WARM_SUPPORTED_CHAINS: ChainId[] = [
-  ChainId.EthereumMainnet, // Ethereum Mainnet
-  ChainId.Sepolia, // Ethereum Sepolia
-];
-
-/**
- * Creates delegation platform instances for a given chain
- * @param publicClient The Viem public client to use for blockchain interactions
- * @param chainId The chain ID to create platforms for
- * @returns An array of delegate platform instances for the specified chain
- */
 export function createDelegatePlatforms(publicClient: PublicClient, chainId: ChainId): DelegatePlatform[] {
   const platforms: DelegatePlatform[] = [];
 
@@ -67,8 +51,6 @@ export function createDelegatePlatforms(publicClient: PublicClient, chainId: Cha
     platforms.push(new DelegateV1Platform(publicClient));
     platforms.push(new DelegateV2Platform(publicClient));
   }
-
-  // Add Warm.xyz if supported on this chain
   if (WARM_SUPPORTED_CHAINS.includes(chainId)) {
     platforms.push(new WarmPlatform(publicClient));
   }

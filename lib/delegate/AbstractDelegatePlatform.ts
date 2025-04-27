@@ -1,5 +1,5 @@
 import type { Abi, Address, PublicClient } from 'viem';
-import type { DelegatePlatform, Delegation } from './DelegatePlatform';
+import type { DelegatePlatform, Delegation, TransactionData } from './DelegatePlatform';
 
 export abstract class AbstractDelegatePlatform implements DelegatePlatform {
   publicClient: PublicClient;
@@ -25,16 +25,16 @@ export abstract class AbstractDelegatePlatform implements DelegatePlatform {
     return [...outgoingDelegations, ...incomingDelegations];
   }
 
-  public async revokeDelagation(delegation: Delegation): Promise<void> {
-    return this.revokeDelagationInternal(delegation);
+  public async revokeDelegation(delegation: Delegation): Promise<TransactionData> {
+    return this.revokeDelegationInternal(delegation);
   }
 
-  public async revokeAllDelegations(delegations: Delegation[]): Promise<void> {
-    return this.revokeAllDelegationsInternal(delegations);
+  public async revokeAllDelegations(): Promise<TransactionData> {
+    return this.revokeAllDelegationsInternal();
   }
 
   protected abstract getOutgoingDelegations(wallet: Address): Promise<Delegation[]>;
   protected abstract getIncomingDelegations(wallet: Address): Promise<Delegation[]>;
-  protected abstract revokeDelagationInternal(delegation: Delegation): Promise<void>;
-  protected abstract revokeAllDelegationsInternal(delegations: Delegation[]): Promise<void>;
+  protected abstract revokeDelegationInternal(delegation: Delegation): Promise<TransactionData>;
+  protected abstract revokeAllDelegationsInternal(): Promise<TransactionData>;
 }

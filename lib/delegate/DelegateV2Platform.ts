@@ -2,7 +2,7 @@ import { DELEGATE_V2_ABI } from 'lib/abis';
 import { DELEGATE_V2_REGISTRY_ADDRESS } from 'lib/constants';
 import type { Abi, Address } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
-import type { Delegation } from './DelegatePlatform';
+import type { Delegation, TransactionData } from './DelegatePlatform';
 
 type DelegateV2Result = [number, Address, Address, string, Address, bigint, bigint];
 
@@ -54,9 +54,6 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
     }
   }
 
-  /**
-   * Get incoming delegations for a wallet from Delegate V2
-   */
   async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
       const delegations = (await this.publicClient.readContract({
@@ -95,42 +92,75 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
   /**
    * Implementation for revoking a specific delegation in Delegate V2
    */
-  async revokeDelagationInternal(delegation: Delegation): Promise<void> {
+  async revokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }
 
-    // Implementation will involve creating and sending a transaction based on the delegation type
-    // This would be implemented with the wallet connection pattern used elsewhere in the app
+    // For DelegateV2, we need to specify different function calls based on delegation type
+    let functionName: string;
+    let args: any[];
 
-    // For example:
-    // if (delegation.type === 'ALL') {
-    //   // Revoke an all-level delegation
-    //   await this.sendTransaction({
-    //     address: this.address,
-    //     abi: this.abi,
-    //     functionName: 'delegateAll',
-    //     args: [delegation.delegate, delegation.rights, false]
-    //   });
-    // } else if (delegation.type === 'CONTRACT') {
-    //   // Revoke contract-level delegation
-    // } else if (delegation.type === 'ERC721') {
-    //   // Revoke ERC721 token-level delegation
-    // }
+    switch (delegation.type) {
+      case 'ALL':
+        functionName = 'delegateAll';
+        args = [delegation.delegate, '', false]; // false to revoke
+        break;
+      case 'CONTRACT':
+        if (!delegation.contract) throw new Error('Missing contract address for CONTRACT delegation');
+        functionName = 'delegateContract';
+        args = [delegation.contract, delegation.delegate, '', false]; // false to revoke
+        break;
+      case 'ERC721':
+        if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
+          throw new Error('Missing contract address or tokenId for TOKEN delegation');
+        }
+        functionName = 'delegateERC721';
+        args = [delegation.contract, delegation.tokenId, delegation.delegate, '', false]; // false to revoke
+        break;
+      case 'ERC20':
+        if (!delegation.contract) {
+          throw new Error('Missing contract address for ERC20 delegation');
+        }
+        functionName = 'delegateERC20';
+        args = [delegation.contract, delegation.delegate, '', false]; // false to revoke
+        break;
+      case 'ERC1155':
+        if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
+          throw new Error('Missing contract address or tokenId for ERC1155 delegation');
+        }
+        functionName = 'delegateERC1155';
+        args = [delegation.contract, delegation.tokenId, delegation.delegate, '', false]; // false to revoke
+        break;
+      default:
+        throw new Error('Unsupported delegation type for revocation');
+    }
+
+    // Return the transaction data for the UI to execute
+    return {
+      address: this.address,
+      abi: this.abi,
+      functionName,
+      args,
+    };
   }
 
   /**
    * Implementation for revoking all delegations in Delegate V2
    * Note: Delegate V2 doesn't have a single "revoke all" function,
-   * so this would need to be implemented by revoking each delegation individually
+   * so we use a general approach to revoke the highest level delegation
    */
-  async revokeAllDelegationsInternal(delegations: Delegation[]): Promise<void> {
-    // Implementation will involve creating and sending multiple transactions
-    // This will be implemented with the wallet connection pattern used elsewhere in the app
-    // For example:
-    // for (const delegation of delegations) {
-    //   await this.revokeDelagation(delegation);
-    // }
+  async revokeAllDelegationsInternal(): Promise<TransactionData> {
+    // In DelegateV2, we can't revoke everything with one call
+    // We'll use the delegateAll method with revoke parameter (false) for a blanket revocation
+    // This is the closest to a "revoke all" we can get in one transaction
+
+    return {
+      address: this.address,
+      abi: this.abi,
+      functionName: 'delegateAll',
+      args: ['0x0000000000000000000000000000000000000000', '', false], // Using zero address as a blanket revocation
+    };
   }
 
   /**
@@ -146,11 +176,11 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
       case 2:
         return 'CONTRACT';
       case 3:
-        return 'TOKEN'; // In our model we map ERC721 to TOKEN
+        return 'ERC721';
       case 4:
-        return 'TOKEN'; // In our model we map ERC20 to TOKEN
+        return 'ERC20'; // In our model we map ERC20 to TOKEN
       case 5:
-        return 'TOKEN'; // In our model we map ERC1155 to TOKEN
+        return 'ERC1155'; // In our model we map ERC1155 to TOKEN
       default:
         return 'NONE';
     }

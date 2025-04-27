@@ -1,4 +1,4 @@
-import type { Address, PublicClient } from 'viem';
+import type { Abi, Address, PublicClient } from 'viem';
 
 export type DelegationDirection = 'OUTGOING' | 'INCOMING';
 export type DelegationType = 'ALL' | 'CONTRACT' | 'TOKEN' | 'ERC721' | 'ERC1155' | 'ERC20';
@@ -14,9 +14,16 @@ export interface Delegation {
   expirationTimestamp?: bigint;
 }
 
+export interface TransactionData {
+  address: Address;
+  abi: Abi;
+  functionName: string;
+  args: any[];
+}
+
 export interface DelegatePlatform {
   publicClient: PublicClient;
   getDelegations: (wallet: Address) => Promise<Delegation[]>;
-  revokeDelagation: (delegation: Delegation) => Promise<void>;
-  revokeAllDelegations: (delegations: Delegation[]) => Promise<void>;
+  revokeDelegation: (delegation: Delegation) => Promise<TransactionData>;
+  revokeAllDelegations: () => Promise<TransactionData>;
 }
