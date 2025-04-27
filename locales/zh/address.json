@@ -79,6 +79,46 @@
       "wallets": "钱包"
     }
   },
+  "delegations": {
+    "loading": "正在加载委托...",
+    "error": "加载委托时出错",
+    "no_outgoing_delegations": "未找到外发委托",
+    "no_incoming_delegations": "未找到接收委托",
+    "outgoing_explanation": "外发委托是你授予其他地址代表你操作的权限。",
+    "incoming_explanation": "接收委托是其他地址授予你代表其操作的权限。",
+    "outgoing_delegations": "外发委托",
+    "incoming_delegations": "接收委托",
+    "info_panel": {
+      "title": "什么是委托？",
+      "description": "委托是一种授权其他地址代表你操作的方式。它可以让其他钱包或合约在无需每次都进行代币授权的情况下管理你的资产。",
+      "what_are_delegations": "委托类型",
+      "delegations_explanation_1": "全局级别委托允许受托人代表你操作所有资产",
+      "delegations_explanation_2": "合约级别委托允许受托人代表你操作特定合约",
+      "delegations_explanation_3": "代币级别委托允许受托人代表你操作特定代币",
+      "why_revoke": "为什么要撤销委托？",
+      "revoke_reason_1": "如果你不再希望某个受托人代表你操作",
+      "revoke_reason_2": "如果你怀疑受托人存在恶意或已被攻破",
+      "revoke_reason_3": "减少钱包被攻击的风险面"
+    },
+    "types": {
+      "all": "全部",
+      "contract": "合约",
+      "token": "代币"
+    },
+    "columns": {
+      "type": "类型",
+      "delegate": "受托人",
+      "delegator": "委托人",
+      "contract": "合约",
+      "platform": "平台"
+    },
+    "contract": {
+      "not_applicable": "不适用"
+    },
+    "actions": {
+      "revoke": "撤销"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "授权金额",

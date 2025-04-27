@@ -79,6 +79,46 @@
       "wallets": "carteras"
     }
   },
+  "delegations": {
+    "loading": "Cargando delegaciones...",
+    "error": "Error al cargar las delegaciones",
+    "no_outgoing_delegations": "No se encontraron delegaciones salientes",
+    "no_incoming_delegations": "No se encontraron delegaciones entrantes",
+    "outgoing_explanation": "Las delegaciones salientes son permisos que has otorgado a otras direcciones para actuar en tu nombre.",
+    "incoming_explanation": "Las delegaciones entrantes son permisos que otras direcciones te han otorgado a ti.",
+    "outgoing_delegations": "Delegaciones Salientes",
+    "incoming_delegations": "Delegaciones Entrantes",
+    "info_panel": {
+      "title": "¿Qué son las delegaciones?",
+      "description": "Las delegaciones son una forma de autorizar a otras direcciones para actuar en tu nombre. Se pueden usar para permitir que otras carteras o contratos gestionen tus activos sin requerir aprobaciones de tokens para cada interacción.",
+      "what_are_delegations": "Tipos de delegaciones",
+      "delegations_explanation_1": "Las delegaciones a nivel general permiten al delegado actuar en nombre de todos tus activos",
+      "delegations_explanation_2": "Las delegaciones a nivel de contrato permiten al delegado actuar en nombre de un contrato específico",
+      "delegations_explanation_3": "Las delegaciones a nivel de token permiten al delegado actuar en nombre de un token específico",
+      "why_revoke": "¿Por qué revocar delegaciones?",
+      "revoke_reason_1": "Si ya no quieres que un delegado actúe en tu nombre",
+      "revoke_reason_2": "Si sospechas que un delegado es malicioso o ha sido comprometido",
+      "revoke_reason_3": "Para reducir la superficie de ataque de tu cartera"
+    },
+    "types": {
+      "all": "Todas",
+      "contract": "Contrato",
+      "token": "Token"
+    },
+    "columns": {
+      "type": "Tipo",
+      "delegate": "Delegado",
+      "delegator": "Delegante",
+      "contract": "Contrato",
+      "platform": "Plataforma"
+    },
+    "contract": {
+      "not_applicable": "N/A"
+    },
+    "actions": {
+      "revoke": "Revocar"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "Cantidad Autorizada",
