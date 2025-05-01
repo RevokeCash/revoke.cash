@@ -22,6 +22,7 @@ export interface ChainOptions {
   logoUrl?: string;
   infoUrl?: string;
   nativeToken?: string;
+  nativeTokenCoingeckoId?: string;
   explorerUrl?: string;
   etherscanCompatibleApiUrl?: string;
   rpc?: {
@@ -131,6 +132,10 @@ export class Chain {
   // Note: we run tests to make sure that this is configured correctly for all chains (which is why we override the type)
   getNativeToken(): string {
     return (this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol) as string;
+  }
+
+  getNativeTokenCoingeckoId(): string | undefined {
+    return this.options.nativeTokenCoingeckoId ?? (this.getNativeToken() === 'ETH' ? 'ethereum' : undefined);
   }
 
   getEtherscanCompatibleApiUrl(): string | undefined {
