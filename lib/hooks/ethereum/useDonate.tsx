@@ -5,7 +5,7 @@ import { DONATION_ADDRESS } from 'lib/constants';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
-import { type DocumentedChainId, getChainNativeToken } from 'lib/utils/chains';
+import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
 import { type SendTransactionParameters, parseEther } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
@@ -63,6 +63,7 @@ export const useDonate = (chainId: number, type: DonateButtonType) => {
 
 export const trackDonate = (chainId: DocumentedChainId, dollarAmount: string, type: DonateButtonType) => {
   if (!Number(dollarAmount)) return;
+  if (isTestnetChain(chainId)) return;
 
   analytics.track('Donated', {
     chainId,
