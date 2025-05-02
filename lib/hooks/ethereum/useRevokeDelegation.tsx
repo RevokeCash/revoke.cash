@@ -34,7 +34,7 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
 
       // Get the appropriate delegate platform
       const platforms = createDelegatePlatforms(publicClient, delegation.chainId);
-      const platform = platforms.find((p) => p.constructor.name === delegation.platform.replace('.', ''));
+      const platform = platforms.find((p) => p.name === delegation.platform);
 
       if (!platform) {
         throw new Error(`Platform ${delegation.platform} not found for chain ${delegation.chainId}`);

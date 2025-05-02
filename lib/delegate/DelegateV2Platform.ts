@@ -43,13 +43,13 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           contract: type === 'ALL' ? null : contract,
           tokenId: ['TOKEN', 'ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
           direction: 'OUTGOING',
-          platform: this.platformName,
+          platform: this.name,
           chainId,
           rights,
         } as Delegation;
       });
     } catch (error) {
-      console.error(`Error getting outgoing delegations from ${this.platformName}:`, error);
+      console.error(`Error getting outgoing delegations from ${this.name}:`, error);
       return [];
     }
   }
@@ -78,13 +78,13 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           contract: type === 'ALL' ? null : contract,
           tokenId: ['TOKEN', 'ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
           direction: 'INCOMING',
-          platform: this.platformName,
+          platform: this.name,
           chainId,
           rights,
         } as Delegation;
       });
     } catch (error) {
-      console.error(`Error getting incoming delegations from ${this.platformName}:`, error);
+      console.error(`Error getting incoming delegations from ${this.name}:`, error);
       return [];
     }
   }

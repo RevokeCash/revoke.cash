@@ -81,7 +81,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           contract,
           tokenId,
           direction: 'OUTGOING',
-          platform: this.platformName,
+          platform: this.name,
           chainId,
         });
       });
@@ -127,7 +127,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           contract: type === 'ALL' ? null : contract,
           tokenId: type === 'TOKEN' ? tokenId : null,
           direction: 'INCOMING',
-          platform: this.platformName,
+          platform: this.name,
           chainId,
         });
       });

@@ -45,13 +45,13 @@ export class WarmPlatform extends AbstractDelegatePlatform {
           contract: null,
           tokenId: null,
           direction: 'INCOMING',
-          platform: this.platformName,
+          platform: this.name,
           chainId,
           expirationTimestamp,
         };
       });
     } catch (error) {
-      console.error(`Error getting outgoing delegations from ${this.platformName}:`, error);
+      console.error(`Error getting outgoing delegations from ${this.name}:`, error);
       return [];
     }
   }
@@ -86,13 +86,13 @@ export class WarmPlatform extends AbstractDelegatePlatform {
           contract: null,
           tokenId: null,
           direction: 'OUTGOING',
-          platform: this.platformName,
+          platform: this.name,
           chainId,
           expirationTimestamp: hotWalletLink[1],
         },
       ];
     } catch (error) {
-      console.error(`Error getting incoming delegations from ${this.platformName}:`, error);
+      console.error(`Error getting incoming delegations from ${this.name}:`, error);
       return [];
     }
   }

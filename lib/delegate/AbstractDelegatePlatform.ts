@@ -16,9 +16,10 @@ export abstract class AbstractDelegatePlatform implements DelegatePlatform {
   protected abstract getAbi(): Abi;
   protected abstract getPlatformName(): string;
 
-  protected get platformName(): string {
+  get name(): string {
     return this.getPlatformName();
   }
+
   public async getDelegations(wallet: Address): Promise<Delegation[]> {
     const outgoingDelegations = await this.getOutgoingDelegations(wallet);
     const incomingDelegations = await this.getIncomingDelegations(wallet);
