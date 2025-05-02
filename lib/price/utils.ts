@@ -1,23 +1,17 @@
+import ky from 'ky';
 import { isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { type TokenContract, isErc721Contract } from 'lib/utils/tokens';
-import { type PublicClient, formatUnits } from 'viem';
+import { formatUnits } from 'viem';
 import type { PriceStrategy } from './PriceStrategy';
 
 export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: number): number | null => {
   return isNullish(inversePrice) ? null : 1 / Number.parseFloat(formatUnits(inversePrice, tokenDecimals));
 };
 
-export const getNativeTokenPrice = async (chainId: number, publicClient: PublicClient): Promise<number | null> => {
-  const strategy = getChainPriceStrategy(chainId);
-
-  if (!strategy) return null;
-
-  try {
-    return await strategy.calculateNativeTokenPrice(publicClient);
-  } catch {
-    return null;
-  }
+export const getNativeTokenPrice = async (chainId: number): Promise<number | null> => {
+  const response = await ky.get(`/api/${chainId}/native-price`).json<{ price: number | null }>();
+  return response.price;
 };
 
 export const getTokenPrice = async (chainId: number, tokenContract: TokenContract): Promise<number | null> => {

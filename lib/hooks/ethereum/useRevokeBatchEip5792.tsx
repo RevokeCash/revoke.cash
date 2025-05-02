@@ -30,7 +30,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
   const { data: walletClient } = useWalletClient();
 
-  const revoke = async (REVOKE_QUEUE: PQueue, tipAmount: string) => {
+  const revoke = async (REVOKE_QUEUE: PQueue, tipDollarAmount: string) => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
@@ -52,8 +52,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     const calls = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
 
-    if (tipAmount && Number(tipAmount) > 0 && calls.length > 0) {
-      const donateTransaction = await prepareDonate(tipAmount);
+    if (tipDollarAmount && Number(tipDollarAmount) > 0 && calls.length > 0) {
+      const donateTransaction = await prepareDonate(tipDollarAmount);
       calls.push(mapTransactionRequestToEip5792Call(donateTransaction));
     }
 
@@ -104,8 +104,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       REVOKE_QUEUE.onIdle(),
     ]);
 
-    trackBatchRevoke(selectedChainId, address, allowances, tipAmount, 'eip5792');
-    trackDonate(selectedChainId, tipAmount, 'batch-revoke-tip');
+    trackBatchRevoke(selectedChainId, address, allowances, tipDollarAmount, 'eip5792');
+    trackDonate(selectedChainId, tipDollarAmount, 'batch-revoke-tip');
   };
 
   return revoke;

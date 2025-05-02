@@ -1,4 +1,3 @@
-import { getTipSelection } from 'lib/hooks/ethereum/useDonate';
 import type { TokenAllowanceData } from './allowances';
 import analytics from './analytics';
 
@@ -8,15 +7,14 @@ export const trackBatchRevoke = (
   chainId: number,
   address: string,
   allowances: TokenAllowanceData[],
-  tipAmount: string,
+  tipDollarAmount: string,
   batchType: BatchType,
 ) => {
   analytics.track('Batch Revoked', {
     chainId,
     address,
     allowances: allowances.length,
-    tipSelection: getTipSelection(chainId, tipAmount),
-    amount: tipAmount,
+    tipDollarAmount: Number(tipDollarAmount),
     batchType,
   });
 };

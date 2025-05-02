@@ -19,7 +19,6 @@ import {
   getChainRpcUrl,
   getChainSlug,
   getCorrespondingMainnetChainId,
-  getDefaultDonationAmount,
   isTestnetChain,
 } from 'lib/utils/chains';
 import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
@@ -41,7 +40,6 @@ describe('Chain Support', () => {
         expect(getChainSlug(chainId), `${chainName} slug`).to.exist;
         expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
         expect(nativeToken, `${chainName} native token`).to.exist;
-        expect(getDefaultDonationAmount(nativeToken), `${chainName} default donation amount`).to.exist;
 
         const NO_PRICING: number[] = [
           ChainId.CrabNetwork,

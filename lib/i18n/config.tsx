@@ -1,5 +1,5 @@
 import Href from 'components/common/Href';
-import { DISCORD_URL, TWITTER_URL } from 'lib/constants';
+import { DISCORD_URL, DONATION_ADDRESS, TWITTER_URL } from 'lib/constants';
 import { FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
 import type { RichTranslationValues } from 'next-intl';
 import { getRequestConfig } from 'next-intl/server';
@@ -89,6 +89,17 @@ export const defaultTranslationValues: RichTranslationValues = {
   ),
   'bright-union-link': (children) => (
     <Href href="https://brightunion.io" className="font-medium" underline="hover" html external>
+      {children}
+    </Href>
+  ),
+  'donations-link': (children) => (
+    <Href
+      href={`https://etherscan.io/address/${DONATION_ADDRESS}`}
+      className="font-medium"
+      underline="hover"
+      html
+      external
+    >
       {children}
     </Href>
   ),
