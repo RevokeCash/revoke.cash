@@ -4,8 +4,10 @@ import { Dialog } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
+import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
+import { formatDonationTokenAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
-import { memo, useEffect, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useChainId } from 'wagmi';
 import Input from '../Input';
@@ -21,17 +23,17 @@ export type DonateButtonType = 'menu-button' | 'batch-revoke-tip';
 const DonateModal = ({ open, setOpen, type }: Props) => {
   const t = useTranslations();
   const chainId = useChainId();
-  const { donate, nativeToken, defaultAmount } = useDonate(chainId, type);
+  const { donate, nativeToken } = useDonate(chainId, type);
+  const { nativeTokenPrice } = useNativeTokenPrice(chainId);
+  const [dollarAmount, setDollarAmount] = useState<string>('5');
 
-  const [amount, setAmount] = useState<string>(defaultAmount);
-
-  useEffect(() => {
-    setAmount(defaultAmount);
-  }, [defaultAmount]);
+  const tokenAmount = useMemo(() => {
+    return nativeTokenPrice ? Number(dollarAmount) / nativeTokenPrice : null;
+  }, [dollarAmount, nativeTokenPrice]);
 
   const sendDonation = async () => {
     try {
-      await donate(amount);
+      await donate(dollarAmount);
       setOpen(false);
     } catch (err) {
       console.log(err);
@@ -43,36 +45,38 @@ const DonateModal = ({ open, setOpen, type }: Props) => {
   return (
     <Modal open={open} setOpen={setOpen}>
       <div className="sm:flex sm:items-start">
-        <div className="w-full flex flex-col gap-2 pb-2">
+        <div className="w-full flex flex-col gap-4">
           <Dialog.Title as="h2" className="text-center text-2xl">
             {t('common.donate.title')}
           </Dialog.Title>
-
-          <div className="h-9 flex">
+          <div className="h-9 flex border border-black dark:border-white rounded-lg overflow-hidden">
+            <div className="flex justify-center items-center pl-3 text-zinc-600 dark:text-zinc-400">$</div>
             <Input
-              size="md"
+              size="none"
               type="number"
-              step={0.01}
-              value={amount}
-              onChange={(event) => setAmount(event.target.value)}
-              className="z-10 rounded-r-none text-zinc-600 dark:text-zinc-400 w-full"
+              step={1}
+              min={1}
+              value={dollarAmount}
+              onChange={(event) => setDollarAmount(event.target.value)}
+              className="z-10 px-1.5 text-zinc-900 dark:text-zinc-100 w-full border-0 focus-visible:ring-0"
               aria-label="Input Donation Amount"
             />
-            {nativeToken ? (
-              <div className="px-3 py-1.5 border-y border-black dark:border-white bg-zinc-300 dark:bg-zinc-700 flex justify-center items-center">
-                {nativeToken}
+            {tokenAmount ? (
+              <div className="flex justify-center items-center shrink-0 whitespace-nowrap pr-3 text-zinc-600 dark:text-zinc-400 text-sm">
+                {`(${formatDonationTokenAmount(tokenAmount, nativeToken)})`}
               </div>
             ) : null}
             <Button
               loading={loading}
               style="primary"
-              size="md"
+              size="none"
               onClick={execute}
-              className="rounded-l-none max-w-24 flex justify-center items-center"
+              className="px-4 border-0 overflow-hidden max-w-24 flex justify-center items-center"
             >
               {loading ? t('common.buttons.sending') : t('common.buttons.send')}
             </Button>
           </div>
+          <div>{t.rich('common.donate.donate_any_token')}</div>
         </div>
       </div>
     </Modal>

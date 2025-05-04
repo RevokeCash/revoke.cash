@@ -53,7 +53,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
           </div>
         )}
       </ControlsWrapper>
-      <Modal open={open} setOpen={setOpen} className="sm:max-w-5xl min-h-[68vh] overflow-hidden" onlyExplicitClose>
+      <Modal open={open} setOpen={setOpen} className="sm:max-w-5xl min-h-[60vh] overflow-hidden" onlyExplicitClose>
         <div className="flex flex-col justify-between gap-4">
           <div>
             <BatchRevokeHeader
@@ -66,7 +66,6 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
             </div>
           </div>
           <BatchRevokeControls
-            selectedAllowances={selectedAllowances}
             isRevoking={isRevoking}
             isAllConfirmed={isAllConfirmed}
             setOpen={setOpen}

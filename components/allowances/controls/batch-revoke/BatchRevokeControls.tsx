@@ -1,24 +1,25 @@
 import Button from 'components/common/Button';
 import TipSection from 'components/common/donate/TipSection';
 import { useDonate } from 'lib/hooks/ethereum/useDonate';
+import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
+import { isNullish } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import ControlsWrapper from '../ControlsWrapper';
 
 interface Props {
-  selectedAllowances: TokenAllowanceData[];
   isRevoking: boolean;
   isAllConfirmed: boolean;
   setOpen: (open: boolean) => void;
-  revoke: (tipAmount: string) => Promise<void>;
+  revoke: (tipDollarAmount: string) => Promise<void>;
 }
 
-const BatchRevokeControls = ({ selectedAllowances, isRevoking, isAllConfirmed, setOpen, revoke }: Props) => {
+const BatchRevokeControls = ({ isRevoking, isAllConfirmed, setOpen, revoke }: Props) => {
   const t = useTranslations();
   const { address, selectedChainId } = useAddressPageContext();
-  const { defaultAmount, nativeToken } = useDonate(selectedChainId, 'batch-revoke-tip');
+  const { nativeToken } = useDonate(selectedChainId, 'batch-revoke-tip');
+  const { nativeTokenPrice } = useNativeTokenPrice(selectedChainId);
 
   const [tipAmount, setTipAmount] = useState<string | null>(null);
 
@@ -31,18 +32,18 @@ const BatchRevokeControls = ({ selectedAllowances, isRevoking, isAllConfirmed, s
   const getButtonAction = () => {
     if (isAllConfirmed) return () => setOpen(false);
     return async () => {
-      if (!tipAmount) throw new Error('Tip amount is required');
-      await revoke(tipAmount);
+      if (!tipAmount && !isNullish(nativeTokenPrice)) throw new Error('Tip amount is required');
+      await revoke(tipAmount ?? '0');
     };
   };
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      <TipSection midAmount={defaultAmount} nativeToken={nativeToken} onSelect={setTipAmount} />
+      <TipSection chainId={selectedChainId} nativeToken={nativeToken} onSelect={setTipAmount} />
       <ControlsWrapper
         chainId={selectedChainId}
         address={address}
-        overrideDisabled={!tipAmount}
+        overrideDisabled={!tipAmount && !isNullish(nativeTokenPrice)}
         disabledReason={t('address.tooltips.select_tip')}
       >
         {(disabled) => (

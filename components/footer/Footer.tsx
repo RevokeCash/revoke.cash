@@ -1,7 +1,8 @@
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import ColorThemeSelect from 'components/footer/ColorThemeSelect';
-import { DISCORD_URL, GITHUB_URL, TWITTER_URL } from 'lib/constants';
+import { DISCORD_URL, DONATION_ADDRESS, GITHUB_URL, TWITTER_URL } from 'lib/constants';
+import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import LanguageSelect from './LanguageSelect';
@@ -69,12 +70,18 @@ const Footer = () => {
         <Divider className="my-16 border-zinc-900 dark:border-zinc-800" />
         <div className="my-16 flex flex-col md:flex-row items-center gap-4 justify-between">
           <div className="flex flex-col gap-px text-center md:text-left">
-            <p className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2024 Revoke.cash</p>
+            <p className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2025 Revoke.cash</p>
             <ul className="flex justify-center md:justify-start items-center gap-1">
               <FooterLink href="/privacy-policy">{t('common.footer.privacy')}</FooterLink>
               <span className="text-zinc-400 dark:text-zinc-400 visited:text-zinc-400">•</span>
               <FooterLink href="/terms">{t('common.footer.terms')}</FooterLink>
             </ul>
+            <p className="flex items-center gap-1 text-zinc-400 dark:text-zinc-400 visited:text-zinc-400 text-sm">
+              {t('common.footer.donations')}:
+              <FooterLink href={`https://etherscan.io/address/${DONATION_ADDRESS}`} external>
+                {shortenAddress(DONATION_ADDRESS)}
+              </FooterLink>
+            </p>
           </div>
           <div className="flex gap-2 shrink-0">
             <LanguageSelect />

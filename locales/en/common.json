@@ -53,7 +53,8 @@
     "title": "Connect Your Wallet"
   },
   "donate": {
-    "title": "Donate to Revoke.cash"
+    "title": "Donate to Revoke.cash",
+    "donate_any_token": "Or send any token to our <donations-link>donations address</donations-link>"
   },
   "errors": {
     "404": {
@@ -86,6 +87,7 @@
     "brand_assets": "Brand Assets",
     "community": "Community",
     "company": "Company",
+    "donations": "Donations",
     "exploit_checker": "Exploit Checker",
     "extension": "Browser Extension",
     "faq": "FAQ",

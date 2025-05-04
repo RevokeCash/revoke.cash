@@ -70,6 +70,7 @@ In `lib/utils/chains.ts`:
   - `logoUrl`: The URL of the network's logo. Add a logo file (preferably svg) to `public/assets/images/vendor/chains` and add the path here.
   - `infoUrl` (Optional): The URL of the network's website.
   - `nativeToken` (Optional): The symbol of the network's native token.
+  - `nativeTokenCoingeckoId` (Optional): The Coingecko ID of the network's native token.
   - `explorerUrl` (Optional): The URL of the network's block explorer.
   - `etherscanCompatibleApiUrl` (Only for `SupportType.ETHERSCAN_COMPATIBLE`): The URL of the network's block explorer API.
   - `rpc.main` (Optional): The URL of the network's RPC endpoint.
@@ -82,7 +83,6 @@ In `lib/utils/chains.ts`:
   - `isCanary` (Optional): Whether the network is a canary network.
   - `correspondingMainnetChainId` (Optional): The chain ID of the corresponding mainnet network (only for testnets or canary networks).
 - Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS` depending on whether it is a mainnet or testnet. You can subsequently run `yarn tsx scripts/get-chain-order.ts` to determine its rough position in the network selection dropdown.
-- Add an amount to `getDefaultDonationAmount()` that corresponds to around $10-20 in the native token of the network.
 
 In `cypress/e2e/chains.cy.ts`:
 

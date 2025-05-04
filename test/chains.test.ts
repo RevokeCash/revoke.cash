@@ -1,8 +1,8 @@
+import { ChainId } from '@revoke.cash/chains';
 import { expect } from 'chai';
 import { SupportType } from 'lib/chains/Chain';
 import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
 import {
-  DEFAULT_DONATION_AMOUNTS,
   ORDERED_CHAINS,
   createViemPublicClientForChain,
   getChainApiUrl,
@@ -15,22 +15,15 @@ import {
   getChainLogsRpcUrl,
   getChainName,
   getChainNativeToken,
+  getChainNativeTokenCoingeckoId,
   getChainRpcUrl,
   getChainSlug,
   getCorrespondingMainnetChainId,
-  getDefaultDonationAmount,
+  isTestnetChain,
 } from 'lib/utils/chains';
 import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
 
 describe('Chain Support', () => {
-  it('should not have superfluous default donation amounts', () => {
-    const nativeTokensWithAmounts = Object.keys(DEFAULT_DONATION_AMOUNTS);
-    const supportedChainNativeTokens = ORDERED_CHAINS.map(getChainNativeToken);
-    nativeTokensWithAmounts.forEach((token) => {
-      expect(supportedChainNativeTokens).to.include(token);
-    });
-  });
-
   ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
     const nativeToken = getChainNativeToken(chainId)!;
@@ -47,7 +40,17 @@ describe('Chain Support', () => {
         expect(getChainSlug(chainId), `${chainName} slug`).to.exist;
         expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
         expect(nativeToken, `${chainName} native token`).to.exist;
-        expect(getDefaultDonationAmount(nativeToken), `${chainName} default donation amount`).to.exist;
+
+        const NO_PRICING: number[] = [
+          ChainId.CrabNetwork,
+          ChainId.Palm,
+          ChainId.PegoNetwork,
+          ChainId.GoldXChainMainnet,
+        ];
+
+        if (!isTestnetChain(chainId) && !NO_PRICING.includes(chainId)) {
+          expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;
+        }
       });
 
       if (getChainConfig(chainId)?.type === SupportType.ETHERSCAN_COMPATIBLE) {
