@@ -1,6 +1,6 @@
 import type { Nullable } from 'lib/interfaces';
 import type { TokenBalance } from 'lib/utils/tokens';
-import { formatUnits } from 'viem';
+import { formatUnits, parseEther } from 'viem';
 import { isNullish } from '.';
 import { fixedPointMultiply } from './math';
 
@@ -68,6 +68,22 @@ export const formatFiatAmount = (
   if (isNullish(amount)) return null;
   if (amount < 0.01 && amount > 0) return `< ${fiatSign}0.01`;
   return `${fiatSign}${addThousandsSeparators(amount.toFixed(decimals))}`;
+};
+
+export const formatDonationTokenAmount = (tokenAmount: number | null, nativeToken: string) => {
+  if (tokenAmount === null) return '???';
+
+  const exponent = Math.floor(Math.log10(tokenAmount));
+  if (exponent >= 9) return `${(tokenAmount / 10 ** exponent).toFixed(2)}e${exponent} ${nativeToken}`;
+  if (exponent >= 6) return `${(tokenAmount / 1e6).toFixed(2)}M ${nativeToken}`;
+  if (exponent >= 3) return `${(tokenAmount / 1e3).toFixed(2)}k ${nativeToken}`;
+
+  const formatted = formatBalance(nativeToken, parseEther(tokenAmount.toString()), 18);
+
+  if (formatted.startsWith('<') || exponent > 0) return formatted;
+
+  // Indicate that the amount is an estimate when the amount is small enough that the rounding error matters
+  return `~${formatted}`;
 };
 
 const addThousandsSeparators = (number: string) => {

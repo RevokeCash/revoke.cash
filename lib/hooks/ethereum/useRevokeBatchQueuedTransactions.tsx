@@ -21,7 +21,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
   const { donate } = useDonate(selectedChainId, 'batch-revoke-tip');
   const { data: walletClient } = useWalletClient();
 
-  const revoke = async (REVOKE_QUEUE: PQueue, tipAmount: string) => {
+  const revoke = async (REVOKE_QUEUE: PQueue, tipDollarAmount: string) => {
     await Promise.race([
       Promise.all(
         allowances.map(async (allowance) => {
@@ -42,8 +42,8 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
       REVOKE_QUEUE.onIdle(),
     ]);
 
-    trackBatchRevoke(selectedChainId, address, allowances, tipAmount, 'queued');
-    await donate(tipAmount);
+    trackBatchRevoke(selectedChainId, address, allowances, tipDollarAmount, 'queued');
+    await donate(tipDollarAmount);
   };
 
   return revoke;

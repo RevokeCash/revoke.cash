@@ -2,9 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query';
 import ChainSelect from 'components/common/select/ChainSelect';
+import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { getNativeTokenPrice } from 'lib/price/utils';
 import { isNullish } from 'lib/utils';
+import { isTestnetChain } from 'lib/utils/chains';
 import { usePublicClient } from 'wagmi';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
@@ -15,6 +16,7 @@ import AddressNavigation from './navigation/AddressNavigation';
 const AddressHeader = () => {
   const { address, domainName, selectedChainId, selectChain } = useAddressPageContext();
   const publicClient = usePublicClient({ chainId: selectedChainId })!;
+  const isTestnet = isTestnetChain(selectedChainId);
 
   const { data: balance, isLoading: balanceIsLoading } = useQuery({
     queryKey: ['balance', address, publicClient.chain?.id],
@@ -22,11 +24,7 @@ const AddressHeader = () => {
     enabled: !isNullish(address) && !isNullish(publicClient.chain),
   });
 
-  const { data: nativeAssetPrice, isLoading: nativeAssetPriceIsLoading } = useQuery({
-    queryKey: ['nativeAssetPrice', publicClient.chain.id],
-    queryFn: () => getNativeTokenPrice(publicClient.chain.id, publicClient),
-    enabled: !isNullish(publicClient),
-  });
+  const { nativeTokenPrice, isLoading: nativeTokenPriceIsLoading } = useNativeTokenPrice(selectedChainId);
 
   return (
     <div className="flex flex-col gap-2 mb-2 border border-black dark:border-white rounded-lg px-4 pt-3">
@@ -37,8 +35,8 @@ const AddressHeader = () => {
             <div className="flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
               <BalanceDisplay
                 balance={balance}
-                price={nativeAssetPrice}
-                isLoading={balanceIsLoading || nativeAssetPriceIsLoading}
+                price={isTestnet ? null : nativeTokenPrice}
+                isLoading={balanceIsLoading || nativeTokenPriceIsLoading}
               />
               <div className="leading-none">&bull;</div>
               <AddressDisplay address={address} withCopyButton withTooltip />

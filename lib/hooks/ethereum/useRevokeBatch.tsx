@@ -26,13 +26,15 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     });
   }, [allowances]);
 
-  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (tipAmount: string): Promise<void> => {
-    if (await walletSupportsEip5792(walletClient!)) {
-      await revokeEip5792(REVOKE_QUEUE, tipAmount);
-    } else {
-      await revokeQueuedTransactions(REVOKE_QUEUE, tipAmount);
-    }
-  });
+  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(
+    async (tipDollarAmount: string): Promise<void> => {
+      if (await walletSupportsEip5792(walletClient!)) {
+        await revokeEip5792(REVOKE_QUEUE, tipDollarAmount);
+      } else {
+        await revokeQueuedTransactions(REVOKE_QUEUE, tipDollarAmount);
+      }
+    },
+  );
 
   const pause = useCallback(() => {
     REVOKE_QUEUE.clear();
