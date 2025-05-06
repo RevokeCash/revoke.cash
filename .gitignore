@@ -64,8 +64,7 @@ cypress/temp
 
 certificates
 
-scripts/chainid-lookup.csv
-scripts/ledger-live-manifest.json
+scripts/data
 scripts/exploits/data
 
 !.vscode/settings.json
