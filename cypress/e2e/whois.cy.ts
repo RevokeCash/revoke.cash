@@ -1,7 +1,7 @@
 import { Selectors, TEST_URL } from 'cypress/support/utils';
 
 // This depends on me keeping these domains registered
-const RESULTION_FIXTURES = [
+const RESOLUTION_FIXTURES = [
   'kalis.eth',
   'kalis.crypto',
   'kalis.avax',
@@ -23,7 +23,7 @@ const LABEL_FIXTURES = ['OpenSea', 'OpenSea (old)', 'Permit2', 'Uniswap', 'Sushi
 
 describe('whois', () => {
   describe('Name resolution', () => {
-    RESULTION_FIXTURES.forEach((name) => {
+    RESOLUTION_FIXTURES.forEach((name) => {
       it(`should resolve ${name} in the search bar`, () => {
         cy.visit(TEST_URL, { timeout: 10_000 });
         cy.get(Selectors.SEARCH_WALLET_INPUT).click().type(name);
