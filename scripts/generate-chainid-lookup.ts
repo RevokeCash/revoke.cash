@@ -11,7 +11,7 @@ const lookupName = (chainId: number) => {
   }
 };
 
-const path = join(__dirname, 'chainid-lookup.csv');
+const path = join(__dirname, 'data', `chainid-lookup-${new Date().toISOString().split('T')[0]}.csv`);
 const lookupCsvValues = Object.keys(allChains())
   .map((chainId) => `${chainId},${lookupName(Number(chainId))}`)
   .join('\n');
