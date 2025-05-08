@@ -58,9 +58,6 @@ const FaqPage: NextPage<Props> = async ({ params }) => {
         <FaqItem question={t('faq.questions.recover_assets.question')} slug="recover_assets">
           {t.rich('faq.questions.recover_assets.answer')}
         </FaqItem>
-        <FaqItem question={t('faq.questions.multiple_allowances.question')} slug="multiple_allowances">
-          {t.rich('faq.questions.multiple_allowances.answer')}
-        </FaqItem>
         <FaqItem question={t('faq.questions.sweeper_bot.question')} slug="sweeper_bot">
           {t.rich('faq.questions.sweeper_bot.answer')}
         </FaqItem>
