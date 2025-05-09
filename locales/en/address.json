@@ -79,6 +79,46 @@
       "wallets": "wallets"
     }
   },
+  "delegations": {
+    "loading": "Loading delegations...",
+    "error": "Error loading delegations",
+    "no_outgoing_delegations": "No outgoing delegations found",
+    "no_incoming_delegations": "No incoming delegations found",
+    "outgoing_explanation": "Outgoing delegations are permissions you have granted to other addresses to act on your behalf.",
+    "incoming_explanation": "Incoming delegations are permissions granted to you by other addresses.",
+    "outgoing_delegations": "Outgoing Delegations",
+    "incoming_delegations": "Incoming Delegations",
+    "info_panel": {
+      "title": "What Are Delegations?",
+      "description": "Delegations are a way to authorize other addresses to act on your behalf. They can be used to allow other wallets or contracts to manage your assets without requiring token approvals for each interaction.",
+      "what_are_delegations": "Types of Delegations",
+      "delegations_explanation_1": "All-level delegations allow the delegate to act on behalf of all your assets",
+      "delegations_explanation_2": "Contract-level delegations allow the delegate to act on behalf of a specific contract",
+      "delegations_explanation_3": "Token-level delegations allow the delegate to act on behalf of a specific token",
+      "why_revoke": "Why Revoke Delegations?",
+      "revoke_reason_1": "If you no longer want a delegate to act on your behalf",
+      "revoke_reason_2": "If you suspect a delegate is malicious or compromised",
+      "revoke_reason_3": "To reduce the attack surface of your wallet"
+    },
+    "types": {
+      "all": "All",
+      "contract": "Contract",
+      "token": "Token"
+    },
+    "columns": {
+      "type": "Type",
+      "delegate": "Delegate",
+      "delegator": "Delegator",
+      "contract": "Contract",
+      "platform": "Platform"
+    },
+    "contract": {
+      "not_applicable": "N/A"
+    },
+    "actions": {
+      "revoke": "Revoke"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "Approved Amount",
@@ -141,6 +181,7 @@
   "navigation": {
     "allowances": "Approvals",
     "coverage": "Coverage",
+    "delegations": "Delegations",
     "history": "History",
     "more": "More",
     "sessions": "Sessions",
