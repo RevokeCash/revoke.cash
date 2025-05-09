@@ -1,16 +1,12 @@
 'use client';
 
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { createColumnHelper } from '@tanstack/react-table';
 import Error from 'components/common/Error';
 import Loader from 'components/common/Loader';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import ContractCell from './cells/ContractCell';
-import DelegationTypeCell from './cells/DelegationTypeCell';
-import DelegatorCell from './cells/DelegatorCell';
-import PlatformCell from './cells/PlatformCell';
+import NoDelegationsFound from './NoDelegationsFound';
+import { useColumns } from './columns';
 
 interface Props {
   delegations: Delegation[];
@@ -20,35 +16,11 @@ interface Props {
 
 const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
   const t = useTranslations();
-  const columnHelper = createColumnHelper<Delegation>();
-
-  // Create TanStack table columns
-  const tableColumns = useMemo(
-    () => [
-      columnHelper.accessor('type', {
-        header: () => t('address.delegations.columns.type'),
-        cell: (info) => <DelegationTypeCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('delegator', {
-        header: () => t('address.delegations.columns.delegator'),
-        cell: (info) => <DelegatorCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('contract', {
-        header: () => t('address.delegations.columns.contract'),
-        cell: (info) => <ContractCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('platform', {
-        header: () => t('address.delegations.columns.platform'),
-        cell: (info) => <PlatformCell delegation={info.row.original} />,
-      }),
-    ],
-    [t, columnHelper],
-  );
-
+  const columns = useColumns({ incoming: true });
   // Create TanStack table instance
   const table = useReactTable({
     data: delegations,
-    columns: tableColumns,
+    columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -61,12 +33,7 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
   }
 
   if (delegations.length === 0) {
-    return (
-      <div className="rounded-md border p-6 text-center">
-        <h2 className="text-lg font-semibold">{t('address.delegations.no_incoming_delegations')}</h2>
-        <p>{t('address.delegations.incoming_explanation')}</p>
-      </div>
-    );
+    return <NoDelegationsFound incoming={true} />;
   }
 
   return (

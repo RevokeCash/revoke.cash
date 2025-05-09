@@ -1,18 +1,13 @@
 'use client';
 
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { createColumnHelper } from '@tanstack/react-table';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import Error from 'components/common/Error';
 import Loader from 'components/common/Loader';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import ContractCell from './cells/ContractCell';
-import ControlsCell from './cells/ControlsCell';
-import DelegateCell from './cells/DelegateCell';
-import DelegationTypeCell from './cells/DelegationTypeCell';
-import PlatformCell from './cells/PlatformCell';
+import NoDelegationsFound from './NoDelegationsFound';
+import { useColumns } from './columns';
 
 interface Props {
   delegations: Delegation[];
@@ -23,40 +18,12 @@ interface Props {
 
 const OutgoingDelegationsTable = ({ delegations, isLoading, error, onRevoke }: Props) => {
   const t = useTranslations();
-  const columnHelper = createColumnHelper<Delegation>();
-
-  // Create TanStack table columns
-  const tableColumns = useMemo(
-    () => [
-      columnHelper.accessor('type', {
-        header: () => t('address.delegations.columns.type'),
-        cell: (info) => <DelegationTypeCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('delegate', {
-        header: () => t('address.delegations.columns.delegate'),
-        cell: (info) => <DelegateCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('contract', {
-        header: () => t('address.delegations.columns.contract'),
-        cell: (info) => <ContractCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('platform', {
-        header: () => t('address.delegations.columns.platform'),
-        cell: (info) => <PlatformCell delegation={info.row.original} />,
-      }),
-      columnHelper.display({
-        id: 'controls',
-        header: () => '',
-        cell: (info) => <ControlsCell delegation={info.row.original} onRevoke={onRevoke} />,
-      }),
-    ],
-    [t, columnHelper, onRevoke],
-  );
+  const columns = useColumns({ onRevoke });
 
   // Create TanStack table instance
   const table = useReactTable({
     data: delegations,
-    columns: tableColumns,
+    columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -69,12 +36,7 @@ const OutgoingDelegationsTable = ({ delegations, isLoading, error, onRevoke }: P
   }
 
   if (delegations.length === 0) {
-    return (
-      <div className="rounded-md border p-6 text-center">
-        <h2 className="text-lg font-semibold">{t('address.delegations.no_outgoing_delegations')}</h2>
-        <p>{t('address.delegations.outgoing_explanation')}</p>
-      </div>
-    );
+    return <NoDelegationsFound incoming={false} />;
   }
 
   return (
