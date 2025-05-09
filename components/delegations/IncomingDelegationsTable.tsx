@@ -19,22 +19,13 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
   const columns = useColumns({ incoming: true });
   // Create TanStack table instance
   const table = useReactTable({
-    data: delegations,
+    data: delegations || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (isLoading) {
-    return <Loader isLoading={true} loadingMessage={t('address.delegations.loading')} />;
-  }
-
-  if (error) {
-    return <Error error={error} />;
-  }
-
-  if (delegations.length === 0) {
-    return <NoDelegationsFound incoming={true} />;
-  }
+  // Get column count for spanning loading/error/empty states
+  const columnCount = table.getAllLeafColumns().length;
 
   return (
     <div>
@@ -53,15 +44,38 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-2 py-2">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+            {isLoading && (
+              <tr>
+                <td colSpan={columnCount} className="py-4 text-center">
+                  <Loader isLoading={true} loadingMessage={t('address.delegations.loading')} />
+                </td>
               </tr>
-            ))}
+            )}
+
+            {error && (
+              <tr>
+                <td colSpan={columnCount} className="py-4">
+                  <Error error={error} />
+                </td>
+              </tr>
+            )}
+
+            {!isLoading && !error && delegations.length === 0 && (
+              <NoDelegationsFound incoming={true} colSpan={columnCount} />
+            )}
+
+            {!isLoading &&
+              !error &&
+              delegations.length > 0 &&
+              table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-2 py-2">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
