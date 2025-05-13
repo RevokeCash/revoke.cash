@@ -47,6 +47,9 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
   }
 
   isEOA(bytecode: Hex | undefined, nonce: number): boolean {
+    // EIP7702 accounts are also EOA's but their bytecode is set to 0xef0100..., so we need to check for that first
+    if (this.isEip7702Account(bytecode)) return true;
+
     return isNullish(bytecode) && nonce > 0;
   }
 
@@ -56,6 +59,10 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
 
   isSmallBytecode(bytecode?: Hex): boolean {
     return !isNullish(bytecode) && bytecode.length > 0 && bytecode.length < 1000;
+  }
+
+  isEip7702Account(bytecode?: Hex): boolean {
+    return !isNullish(bytecode) && bytecode.startsWith('0xef0100') && bytecode.length === 48;
   }
 
   hasPhishingRisk(address: Address, bytecode?: Hex): boolean {

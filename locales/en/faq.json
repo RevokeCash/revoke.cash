@@ -20,10 +20,6 @@
       "answer": "No. In general, hardware wallets are much safer than mobile or browser-based wallets because the wallet's keys are securely stored on the device, making it impossible to steal the keys without proper access to the device. But with approvals no one <i>needs</i> to steal your keys to take your tokens. And because of that hardware wallets offer no extra protection against approval exploits.",
       "question": "Can hardware wallets save me from approval exploits?"
     },
-    "multiple_allowances": {
-      "answer": "No. The way approvals work under the hood <i>requires</i> 1 transaction per approval. So it is technically impossible to revoke multiple approvals in a single transaction.",
-      "question": "Can I revoke multiple approvals at the same time?"
-    },
     "other_question": {
       "answer": "If you have any questions that aren't mentioned in this FAQ, please reach out on <twitter-link>Twitter</twitter-link> or <discord-link>Discord</discord-link>.",
       "question": "My question is not listed here."

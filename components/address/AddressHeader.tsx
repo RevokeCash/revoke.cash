@@ -7,6 +7,7 @@ import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext
 import { isNullish } from 'lib/utils';
 import { isTestnetChain } from 'lib/utils/chains';
 import { usePublicClient } from 'wagmi';
+import AccountTypeLabel from './AccountTypeLabel';
 import AddressDisplay from './AddressDisplay';
 import AddressSocialShareButtons from './AddressSocialShareButtons';
 import BalanceDisplay from './BalanceDisplay';
@@ -41,6 +42,9 @@ const AddressHeader = () => {
               <div className="leading-none">&bull;</div>
               <AddressDisplay address={address} withCopyButton withTooltip />
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <AccountTypeLabel address={address} />
             <ConnectedLabel address={address} />
           </div>
         </div>

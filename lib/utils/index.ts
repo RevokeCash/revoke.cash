@@ -219,3 +219,11 @@ export const apiLogin = async () => {
     .json<any>()
     .then((res) => !!res?.ok);
 };
+
+export type AccountType = 'EOA' | 'EIP7702 Account' | 'Smart Contract';
+export const getAccountType = async (address: Address, publicClient: PublicClient): Promise<AccountType> => {
+  const code = await publicClient.getCode({ address });
+  if (isNullish(code) || code === '0x') return 'EOA';
+  if (code.startsWith('0xef0100')) return 'EIP7702 Account';
+  return 'Smart Contract';
+};
