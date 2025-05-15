@@ -7,7 +7,7 @@ import Loader from 'components/common/Loader';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { useTranslations } from 'next-intl';
 import NoDelegationsFound from './NoDelegationsFound';
-import { useColumns } from './columns';
+import { outgoingColumns } from './columns';
 
 interface Props {
   delegations: Delegation[];
@@ -18,13 +18,16 @@ interface Props {
 
 const OutgoingDelegationsTable = ({ delegations, isLoading, error, onRevoke }: Props) => {
   const t = useTranslations();
-  const columns = useColumns({ onRevoke });
+  // Use the hook to get translated columns
+  const columns = outgoingColumns;
 
   // Create TanStack table instance
-  const table = useReactTable({
+  const table = useReactTable<Delegation>({
     data: delegations || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
+    // Make sure we typecast the meta to fix type issues
+    meta: { onRevoke } as any,
   });
 
   // Get column count for spanning loading/error/empty states
