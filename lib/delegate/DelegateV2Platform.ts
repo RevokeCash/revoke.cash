@@ -98,51 +98,55 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
     }
 
     // For DelegateV2, we need to specify different function calls based on delegation type
-    let functionName: string;
-    let args: any[];
-
     switch (delegation.type) {
       case 'ALL':
-        functionName = 'delegateAll';
-        args = [delegation.delegate, '', false]; // false to revoke
-        break;
+        return {
+          address: this.address,
+          abi: this.abi,
+          functionName: 'delegateAll',
+          args: [delegation.delegate, '', false], // false to revoke
+        };
       case 'CONTRACT':
         if (!delegation.contract) throw new Error('Missing contract address for CONTRACT delegation');
-        functionName = 'delegateContract';
-        args = [delegation.contract, delegation.delegate, '', false]; // false to revoke
-        break;
+        return {
+          address: this.address,
+          abi: this.abi,
+          functionName: 'delegateContract',
+          args: [delegation.contract, delegation.delegate, '', false], // false to revoke
+        };
       case 'ERC721':
         if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
           throw new Error('Missing contract address or tokenId for TOKEN delegation');
         }
-        functionName = 'delegateERC721';
-        args = [delegation.contract, delegation.tokenId, delegation.delegate, '', false]; // false to revoke
-        break;
+        return {
+          address: this.address,
+          abi: this.abi,
+          functionName: 'delegateERC721',
+          args: [delegation.contract, delegation.tokenId, delegation.delegate, '', false], // false to revoke
+        };
       case 'ERC20':
         if (!delegation.contract) {
           throw new Error('Missing contract address for ERC20 delegation');
         }
-        functionName = 'delegateERC20';
-        args = [delegation.contract, delegation.delegate, '', false]; // false to revoke
-        break;
+        return {
+          address: this.address,
+          abi: this.abi,
+          functionName: 'delegateERC20',
+          args: [delegation.contract, delegation.delegate, '', false], // false to revoke
+        };
       case 'ERC1155':
         if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
           throw new Error('Missing contract address or tokenId for ERC1155 delegation');
         }
-        functionName = 'delegateERC1155';
-        args = [delegation.contract, delegation.tokenId, delegation.delegate, '', false]; // false to revoke
-        break;
+        return {
+          address: this.address,
+          abi: this.abi,
+          functionName: 'delegateERC1155',
+          args: [delegation.contract, delegation.tokenId, delegation.delegate, '', false], // false to revoke
+        };
       default:
         throw new Error('Unsupported delegation type for revocation');
     }
-
-    // Return the transaction data for the UI to execute
-    return {
-      address: this.address,
-      abi: this.abi,
-      functionName,
-      args,
-    };
   }
 
   /**
