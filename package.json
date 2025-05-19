@@ -73,7 +73,7 @@
     "timeago-react": "^3.0.6",
     "timeago.js": "^4.0.2",
     "use-local-storage": "^3.0.0",
-    "viem": "^2.28.0",
+    "viem": "^2.29.0",
     "wagmi": "^2.15.0",
     "zustand": "^5.0.3"
   },
