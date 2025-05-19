@@ -17,11 +17,26 @@ import {
   mapWalletCallReceiptToTransactionSubmitted,
 } from 'lib/utils/eip5792';
 import type PQueue from 'p-queue';
-import type { EstimateContractGasParameters } from 'viem';
+import type { EstimateContractGasParameters, WalletCapabilities } from 'viem';
+import { toHex } from 'viem';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
 import { trackDonate, useDonate } from './useDonate';
+
+const chainIdToNetwork: Record<number, string> = {
+  1: 'ethereum',
+  84532: 'base-sepolia',
+  11155111: 'sepolia',
+  10: 'optimism',
+};
+const chainIdToSponsorshipPolicyId: Record<number, string|undefined> = {
+  1: process.env.NEXT_PUBLIC_ETHEREUM_SPONSORSHIP_POLICY_ID,
+  84532: process.env.NEXT_PUBLIC_BASE_SEPOLIA_SPONSORSHIP_POLICY_ID,
+  11155111: process.env.NEXT_PUBLIC_SEPOLIA_SPONSORSHIP_POLICY_ID,
+  10: process.env.NEXT_PUBLIC_OPTIMISM_SPONSORSHIP_POLICY_ID,
+};
+const candidePaymasterVersion = "v3";
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
@@ -57,11 +72,44 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       calls.push(mapTransactionRequestToEip5792Call(donateTransaction));
     }
 
+    const capabilities = await walletClient.getCapabilities();
+    const atomicStatus = capabilities[selectedChainId]!.atomic?.status;
+    const hasAtomic = atomicStatus === 'supported' || atomicStatus === 'ready';
+    const hasPaymaster = capabilities[selectedChainId]!.paymasterService?.supported === true;
+
+    // Build paymaster URL & policyId from env + maps
+    const network = chainIdToNetwork[selectedChainId];
+    const candideApiKey = process.env.NEXT_PUBLIC_CANDIDE_APY_KEY;
+    const sponsorshipPolicyId = chainIdToSponsorshipPolicyId[selectedChainId];
+    
+    const includePaymaster = hasAtomic && hasPaymaster && network;
+
+    const paymasterUrl = includePaymaster
+      ? `https://api.candide.dev/paymaster/${candidePaymasterVersion}/${network}/${candideApiKey}`
+      : undefined;    
+
+    // **2. Conditionally include paymaster capabilities**
     const batchPromise = walletClient.sendCalls({
       version: '2.0.0',
       account: walletClient.account!,
       chain: walletClient.chain!,
       calls,
+      // Only spread in the paymaster bits when supported
+      ...(includePaymaster
+        ? {
+          capabilities: {
+            paymasterService: {
+              [toHex(selectedChainId)]: {
+                url:      paymasterUrl,
+                optional: true,
+                context: {
+                  sponsorshipPolicyId,
+                },
+              },
+            },
+          },
+        }
+        : {}),
     });
 
     await Promise.race([
