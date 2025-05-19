@@ -53,6 +53,7 @@
     "title": "连接钱包"
   },
   "donate": {
+    "donate_any_token": "Or send any token to our <donations-link>donations address</donations-link>",
     "title": "为Revoke.cash捐款"
   },
   "errors": {
@@ -86,6 +87,8 @@
     "brand_assets": "品牌资产",
     "community": "社区",
     "company": "公司",
+    "domain_scanner": "Domain Scanner",
+    "donations": "Donations",
     "exploit_checker": "漏洞检查器",
     "extension": "浏览器扩展",
     "faq": "常见问题",
@@ -95,7 +98,8 @@
     "product": "产品",
     "terms": "条款",
     "token_approval_checker": "代币授权检查器",
-    "what_are_token_approvals": "什么是代币授权？"
+    "what_are_token_approvals": "什么是代币授权？",
+    "what_to_do_when_scammed": "What to Do When Scammed?"
   },
   "meta": {
     "description": "撤销在 {chainName} 等 100+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",

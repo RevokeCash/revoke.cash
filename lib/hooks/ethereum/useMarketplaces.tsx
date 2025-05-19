@@ -4,9 +4,8 @@ import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
 import eventsDB from 'lib/databases/events';
 import type { Marketplace, MarketplaceConfig, OnCancel } from 'lib/interfaces';
-import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
-import { addressToTopic, getWalletAddress, isNullish, logSorterChronological } from 'lib/utils';
+import { addressToTopic, apiLogin, getWalletAddress, isNullish, logSorterChronological } from 'lib/utils';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import type { TimeLog } from 'lib/utils/events';
 import { mapAsync } from 'lib/utils/promises';
@@ -119,10 +118,7 @@ export const useMarketplaces = () => {
         staleTime: 1 * MINUTE,
       });
 
-      const isLoggedIn = await ky
-        .post('/api/login')
-        .json<any>()
-        .then((res) => !!res?.ok);
+      const isLoggedIn = await apiLogin();
 
       const marketplaces = await mapAsync(filtered, async (marketplace) => {
         const filter = { ...marketplace.getFilter(address), fromBlock: 0, toBlock: blockNumber };

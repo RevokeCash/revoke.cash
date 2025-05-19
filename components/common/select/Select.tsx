@@ -2,7 +2,12 @@
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import type { Ref } from 'react';
-import ReactSelect, { type GroupBase, type Props as ReactSelectProps, type SelectInstance } from 'react-select';
+import ReactSelect, {
+  type GroupBase,
+  type Props as ReactSelectProps,
+  type SelectInstance,
+  components,
+} from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
 export interface Props<O, I extends boolean, G extends GroupBase<O>> extends Omit<ReactSelectProps<O, I, G>, 'theme'> {
@@ -67,6 +72,9 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
       components={{
         IndicatorSeparator: null,
         ClearIndicator: () => null,
+        Input: (props) => {
+          return <components.Input {...props} suppressHydrationWarning />;
+        },
         ...props.components,
       }}
       classNames={{
