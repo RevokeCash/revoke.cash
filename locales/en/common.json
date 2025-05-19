@@ -53,8 +53,8 @@
     "title": "Connect Your Wallet"
   },
   "donate": {
-    "title": "Donate to Revoke.cash",
-    "donate_any_token": "Or send any token to our <donations-link>donations address</donations-link>"
+    "donate_any_token": "Or send any token to our <donations-link>donations address</donations-link>",
+    "title": "Donate to Revoke.cash"
   },
   "errors": {
     "404": {
@@ -87,6 +87,7 @@
     "brand_assets": "Brand Assets",
     "community": "Community",
     "company": "Company",
+    "domain_scanner": "Domain Scanner",
     "donations": "Donations",
     "exploit_checker": "Exploit Checker",
     "extension": "Browser Extension",
@@ -97,7 +98,8 @@
     "product": "Product",
     "terms": "Terms",
     "token_approval_checker": "Token Approval Checker",
-    "what_are_token_approvals": "What Are Token Approvals?"
+    "what_are_token_approvals": "What Are Token Approvals?",
+    "what_to_do_when_scammed": "What to Do When Scammed?"
   },
   "meta": {
     "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 100 other networks.",

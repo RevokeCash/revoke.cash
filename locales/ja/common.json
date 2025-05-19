@@ -53,6 +53,7 @@
     "title": "ウォレットを接続する"
   },
   "donate": {
+    "donate_any_token": "または、<donations-link>寄付先のアドレスに</donations-link>トークンを送ってください",
     "title": "Revoke.cashに寄付をする"
   },
   "errors": {
@@ -86,6 +87,8 @@
     "brand_assets": "ブランド資産",
     "community": "コミュニティー",
     "company": "会社",
+    "domain_scanner": "Domain Scanner",
+    "donations": "寄付",
     "exploit_checker": "エクスプロイトチェッカー",
     "extension": "ブラウザ拡張機能",
     "faq": "よくある質問",
@@ -95,7 +98,8 @@
     "product": "製品",
     "terms": "利用規約",
     "token_approval_checker": "トークン承認チェッカー",
-    "what_are_token_approvals": "トークン承認とは？"
+    "what_are_token_approvals": "トークン承認とは？",
+    "what_to_do_when_scammed": "What to Do When Scammed?"
   },
   "meta": {
     "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
