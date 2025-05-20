@@ -19,14 +19,41 @@ export class WarmPlatform extends AbstractDelegatePlatform {
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      // Get cold wallets linked to this hot wallet
-      const coldWallets = (await this.publicClient.readContract({
+      const [hotWallet, expirationTimestamp] = (await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
-        functionName: 'getColdWallets',
+        functionName: 'getHotWalletLink',
         args: [wallet],
-      })) as Address[];
+      })) as [Address, bigint];
 
+      if (!hotWallet || hotWallet === '0x0000000000000000000000000000000000000000') {
+        return [];
+      }
+
+      const chainId = await this.publicClient.getChainId();
+
+      // Return delegations where cold wallets have delegated to this wallet
+      return [
+        {
+          type: 'ALL',
+          delegator: wallet, // The cold wallet (who delegated permission)
+          delegate: hotWallet, // The current wallet (hot wallet who received permission)
+          contract: null,
+          tokenId: null,
+          direction: 'OUTGOING', // From the current wallet's perspective, these are incoming
+          platform: this.name,
+          chainId,
+          expirationTimestamp: expirationTimestamp,
+        },
+      ];
+    } catch (error) {
+      console.error(`Error getting incoming delegations from ${this.name}:`, error);
+      return [];
+    }
+  }
+
+  async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
+    try {
       const coldWalletLinks = (await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
@@ -36,63 +63,21 @@ export class WarmPlatform extends AbstractDelegatePlatform {
 
       const chainId = await this.publicClient.getChainId();
 
-      // Map cold wallets to delegations
-      return coldWalletLinks.map(([coldWallet, expirationTimestamp]) => {
-        return {
-          type: 'ALL',
-          delegator: coldWallet,
-          delegate: wallet,
-          contract: null,
-          tokenId: null,
-          direction: 'INCOMING',
-          platform: this.name,
-          chainId,
-          expirationTimestamp,
-        };
-      });
+      // Return the delegation from this cold wallet to its hot wallet
+
+      return coldWalletLinks.map(([coldWallet, expirationTimestamp]) => ({
+        type: 'ALL',
+        delegator: coldWallet,
+        delegate: wallet, // hot wallet (current wallet)
+        contract: null,
+        tokenId: null,
+        direction: 'INCOMING', // from hot wallet's perspective
+        platform: this.name,
+        chainId,
+        expirationTimestamp, // convert bigint → number if needed
+      }));
     } catch (error) {
       console.error(`Error getting outgoing delegations from ${this.name}:`, error);
-      return [];
-    }
-  }
-
-  async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
-    try {
-      const hotWallet = (await this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getHotWallet',
-        args: [wallet],
-      })) as Address;
-
-      if (!hotWallet || hotWallet === '0x0000000000000000000000000000000000000000') {
-        return [];
-      }
-
-      const hotWalletLink = (await this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getHotWalletLink',
-        args: [wallet],
-      })) as [Address, bigint];
-
-      const chainId = await this.publicClient.getChainId();
-
-      return [
-        {
-          type: 'ALL',
-          delegator: wallet,
-          delegate: hotWalletLink[0],
-          contract: null,
-          tokenId: null,
-          direction: 'OUTGOING',
-          platform: this.name,
-          chainId,
-          expirationTimestamp: hotWalletLink[1],
-        },
-      ];
-    } catch (error) {
-      console.error(`Error getting incoming delegations from ${this.name}:`, error);
       return [];
     }
   }
@@ -101,20 +86,15 @@ export class WarmPlatform extends AbstractDelegatePlatform {
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }
-    return {
-      address: this.address,
-      abi: this.abi,
-      functionName: 'removeColdWallet',
-      args: [delegation.delegator],
-    };
-  }
 
-  async revokeAllDelegationsInternal(): Promise<TransactionData> {
+    console.log('Revoking Warm.xyz delegation:', delegation.delegator);
+
+    // Based on the ABI: 'function removeColdWallet(address coldWallet) external'
     return {
       address: this.address,
       abi: this.abi,
-      functionName: 'removeHotWallet',
-      args: [],
+      functionName: 'removeExpiredWalletLinks',
+      args: [delegation.delegate],
     };
   }
 }

@@ -2,7 +2,7 @@ import { DELEGATE_V2_ABI } from 'lib/abis';
 import { DELEGATE_V2_REGISTRY_ADDRESS } from 'lib/constants';
 import type { Abi, Address } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
-import type { Delegation, TransactionData } from './DelegatePlatform';
+import type { Delegation, DelegationV2, TransactionData } from './DelegatePlatform';
 
 type DelegateV2Result = [number, Address, Address, string, Address, bigint, bigint];
 
@@ -31,11 +31,11 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
       const chainId = await this.publicClient.getChainId();
 
       return delegations.map((delegation) => {
-        const [delegationType, delegator, delegate, rights, contract, tokenId, _amount] = delegation;
+        const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
 
         // Convert type number to string type
         const type = this.convertDelegationType(delegationType);
-
+        console.log('The rights', rights);
         return {
           type,
           delegator,
@@ -46,7 +46,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           platform: this.name,
           chainId,
           rights,
-        } as Delegation;
+        } as DelegationV2;
       });
     } catch (error) {
       console.error(`Error getting outgoing delegations from ${this.name}:`, error);
@@ -66,7 +66,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
       const chainId = await this.publicClient.getChainId();
 
       return delegations.map((delegation) => {
-        const [delegationType, delegator, delegate, rights, contract, tokenId, _amount] = delegation;
+        const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
 
         // Convert type number to string type
         const type = this.convertDelegationType(delegationType);
@@ -81,7 +81,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           platform: this.name,
           chainId,
           rights,
-        } as Delegation;
+        } as DelegationV2;
       });
     } catch (error) {
       console.error(`Error getting incoming delegations from ${this.name}:`, error);
@@ -92,11 +92,12 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
   /**
    * Implementation for revoking a specific delegation in Delegate V2
    */
-  async revokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
+  async revokeDelegationInternal(delegation: DelegationV2): Promise<TransactionData> {
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }
 
+    console.log('The rights', delegation);
     // For DelegateV2, we need to specify different function calls based on delegation type
     switch (delegation.type) {
       case 'ALL':
@@ -104,7 +105,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           address: this.address,
           abi: this.abi,
           functionName: 'delegateAll',
-          args: [delegation.delegate, '', false], // false to revoke
+          args: [delegation.delegate, delegation.rights, false],
         };
       case 'CONTRACT':
         if (!delegation.contract) throw new Error('Missing contract address for CONTRACT delegation');
@@ -112,7 +113,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           address: this.address,
           abi: this.abi,
           functionName: 'delegateContract',
-          args: [delegation.contract, delegation.delegate, '', false], // false to revoke
+          args: [delegation.delegate, delegation.contract, delegation.rights, false], // false to revoke
         };
       case 'ERC721':
         if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
@@ -122,17 +123,19 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           address: this.address,
           abi: this.abi,
           functionName: 'delegateERC721',
-          args: [delegation.contract, delegation.tokenId, delegation.delegate, '', false], // false to revoke
+          args: [delegation.delegate, delegation.contract, delegation.tokenId, delegation.rights, false], // false to revoke
         };
       case 'ERC20':
         if (!delegation.contract) {
           throw new Error('Missing contract address for ERC20 delegation');
         }
+        console.log('The delegate', delegation.delegate);
+        console.log('The delegator', delegation.delegator);
         return {
           address: this.address,
           abi: this.abi,
           functionName: 'delegateERC20',
-          args: [delegation.contract, delegation.delegate, '', false], // false to revoke
+          args: [delegation.delegate, delegation.contract, delegation.rights, false],
         };
       case 'ERC1155':
         if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
@@ -142,7 +145,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           address: this.address,
           abi: this.abi,
           functionName: 'delegateERC1155',
-          args: [delegation.contract, delegation.tokenId, delegation.delegate, '', false], // false to revoke
+          args: [delegation.delegate, delegation.contract, delegation.tokenId, delegation.rights, false], // false to revoke
         };
       default:
         throw new Error('Unsupported delegation type for revocation');
@@ -150,28 +153,9 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
   }
 
   /**
-   * Implementation for revoking all delegations in Delegate V2
-   * Note: Delegate V2 doesn't have a single "revoke all" function,
-   * so we use a general approach to revoke the highest level delegation
-   */
-  async revokeAllDelegationsInternal(): Promise<TransactionData> {
-    // In DelegateV2, we can't revoke everything with one call
-    // We'll use the delegateAll method with revoke parameter (false) for a blanket revocation
-    // This is the closest to a "revoke all" we can get in one transaction
-
-    return {
-      address: this.address,
-      abi: this.abi,
-      functionName: 'delegateAll',
-      args: ['0x0000000000000000000000000000000000000000', '', false], // Using zero address as a blanket revocation
-    };
-  }
-
-  /**
    * Convert the numeric delegation type from the contract to our string type
    */
   private convertDelegationType(typeNumber: number): Delegation['type'] {
-    // Based on the contract's enum values
     switch (typeNumber) {
       case 0:
         return 'NONE';
@@ -182,9 +166,9 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
       case 3:
         return 'ERC721';
       case 4:
-        return 'ERC20'; // In our model we map ERC20 to TOKEN
+        return 'ERC20';
       case 5:
-        return 'ERC1155'; // In our model we map ERC1155 to TOKEN
+        return 'ERC1155';
       default:
         return 'NONE';
     }

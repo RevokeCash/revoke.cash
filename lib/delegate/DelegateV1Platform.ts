@@ -139,48 +139,25 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
   }
 
   async revokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
+    console.log('delegate for V1', delegation.delegate);
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }
 
-    let functionName: string;
-    let args: any[];
-
-    switch (delegation.type) {
-      case 'ALL':
-        functionName = 'revokeDelegateForAll';
-        args = [delegation.delegate];
-        break;
-      case 'CONTRACT':
-        if (!delegation.contract) throw new Error('Missing contract address for CONTRACT delegation');
-        functionName = 'revokeDelegateForContract';
-        args = [delegation.delegate, delegation.contract];
-        break;
-      case 'TOKEN':
-        if (!delegation.contract || delegation.tokenId === null || delegation.tokenId === undefined) {
-          throw new Error('Missing contract address or tokenId for TOKEN delegation');
-        }
-        functionName = 'revokeDelegateForToken';
-        args = [delegation.delegate, delegation.contract, delegation.tokenId];
-        break;
-      default:
-        throw new Error('Unsupported delegation type for revocation');
+    if (delegation.type === 'ALL') {
+      return {
+        address: this.address,
+        abi: this.abi,
+        functionName: 'revokeAllDelegates',
+        args: [],
+      };
     }
 
     return {
       address: this.address,
       abi: this.abi,
-      functionName,
-      args,
-    };
-  }
-
-  async revokeAllDelegationsInternal(): Promise<TransactionData> {
-    return {
-      address: this.address,
-      abi: this.abi,
-      functionName: 'revokeAllDelegates',
-      args: [],
+      functionName: 'revokeDelegate',
+      args: [delegation.delegate],
     };
   }
 }
