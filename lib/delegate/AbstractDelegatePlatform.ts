@@ -30,12 +30,7 @@ export abstract class AbstractDelegatePlatform implements DelegatePlatform {
     return this.revokeDelegationInternal(delegation);
   }
 
-  public async revokeAllDelegations(): Promise<TransactionData> {
-    return this.revokeAllDelegationsInternal();
-  }
-
   protected abstract getOutgoingDelegations(wallet: Address): Promise<Delegation[]>;
   protected abstract getIncomingDelegations(wallet: Address): Promise<Delegation[]>;
   protected abstract revokeDelegationInternal(delegation: Delegation): Promise<TransactionData>;
-  protected abstract revokeAllDelegationsInternal(): Promise<TransactionData>;
 }

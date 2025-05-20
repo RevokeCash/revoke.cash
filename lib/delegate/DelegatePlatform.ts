@@ -14,11 +14,15 @@ export interface Delegation {
   expirationTimestamp?: bigint;
 }
 
+export interface DelegationV2 extends Delegation {
+  rights: string;
+}
 export interface TransactionData {
   address: Address;
   abi: Abi;
   functionName: string;
   args: any[];
+  account?: Address;
 }
 
 export interface DelegatePlatform {
@@ -26,5 +30,4 @@ export interface DelegatePlatform {
   publicClient: PublicClient;
   getDelegations: (wallet: Address) => Promise<Delegation[]>;
   revokeDelegation: (delegation: Delegation) => Promise<TransactionData>;
-  revokeAllDelegations: () => Promise<TransactionData>;
 }
