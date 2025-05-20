@@ -29,6 +29,9 @@ const Footer = () => {
               <FooterLink href="/exploits" router>
                 {t('common.footer.exploit_checker')}
               </FooterLink>
+              <FooterLink href="/scanner/domain" router>
+                {t('common.footer.domain_scanner')}
+              </FooterLink>
             </FooterSection>
             <FooterSection heading={t('common.footer.learn')}>
               <FooterLink href="/learn" router>
@@ -36,6 +39,9 @@ const Footer = () => {
               </FooterLink>
               <FooterLink href="/learn/approvals/what-are-token-approvals" router>
                 {t('common.footer.what_are_token_approvals')}
+              </FooterLink>
+              <FooterLink href="/learn/security/what-to-do-when-scammed" router>
+                {t('common.footer.what_to_do_when_scammed')}
               </FooterLink>
               <FooterLink href="/learn/faq" router>
                 {t('common.footer.faq')}
@@ -53,6 +59,9 @@ const Footer = () => {
               <FooterLink href="https://github.com/RevokeCash/brand-assets" external>
                 {t('common.footer.brand_assets')}
               </FooterLink>
+              <FooterLink href="/merchandise" router>
+                {t('common.nav.merchandise')}
+              </FooterLink>
             </FooterSection>
             <FooterSection heading={t('common.footer.community')}>
               <FooterLink href={TWITTER_URL} external>
@@ -64,24 +73,27 @@ const Footer = () => {
               <FooterLink href={GITHUB_URL} external>
                 GitHub
               </FooterLink>
+              <FooterLink href={`https://etherscan.io/address/${DONATION_ADDRESS}`} external>
+                {t('common.buttons.donate')}
+              </FooterLink>
             </FooterSection>
           </div>
         </div>
         <Divider className="my-16 border-zinc-900 dark:border-zinc-800" />
         <div className="my-16 flex flex-col md:flex-row items-center gap-4 justify-between">
           <div className="flex flex-col gap-px text-center md:text-left">
-            <p className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2025 Revoke.cash</p>
+            <div className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2025 Revoke.cash</div>
             <ul className="flex justify-center md:justify-start items-center gap-1">
               <FooterLink href="/privacy-policy">{t('common.footer.privacy')}</FooterLink>
               <span className="text-zinc-400 dark:text-zinc-400 visited:text-zinc-400">•</span>
               <FooterLink href="/terms">{t('common.footer.terms')}</FooterLink>
             </ul>
-            <p className="flex items-center gap-1 text-zinc-400 dark:text-zinc-400 visited:text-zinc-400 text-sm">
+            <div className="flex items-center gap-1 text-zinc-400 dark:text-zinc-400 visited:text-zinc-400 text-sm">
               {t('common.footer.donations')}:
               <FooterLink href={`https://etherscan.io/address/${DONATION_ADDRESS}`} external>
                 {shortenAddress(DONATION_ADDRESS)}
               </FooterLink>
-            </p>
+            </div>
           </div>
           <div className="flex gap-2 shrink-0">
             <LanguageSelect />
