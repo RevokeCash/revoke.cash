@@ -1,5 +1,5 @@
 import type { TransactionSubmitted } from 'lib/interfaces';
-import { useTransactionStore } from 'lib/stores/transaction-store';
+import { isTransactionStatusLoadingState, useTransactionStore } from 'lib/stores/transaction-store';
 import { useTranslations } from 'next-intl';
 import Button from '../../common/Button';
 
@@ -12,7 +12,7 @@ interface Props {
 const RevokeButton = ({ transactionKey, disabled, revoke }: Props) => {
   const t = useTranslations();
   const result = useTransactionStore((state) => state.results[transactionKey]);
-  const loading = result?.status === 'pending';
+  const loading = isTransactionStatusLoadingState(result?.status);
 
   return (
     <Button disabled={disabled} loading={loading} style="secondary" size="sm" onClick={revoke}>

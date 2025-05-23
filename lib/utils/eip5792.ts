@@ -1,6 +1,11 @@
 import type { TransactionSubmitted } from 'lib/interfaces';
-import type { SendTransactionParameters, WalletCallReceipt, WalletClient, WriteContractParameters } from 'viem';
-import type { Capabilities } from 'viem'; // viem has a issue with typing the capability. Until they fix it, we manually importing it.
+import type {
+  Capabilities,
+  SendTransactionParameters,
+  WalletCallReceipt,
+  WalletClient,
+  WriteContractParameters,
+} from 'viem';
 import type { Call } from 'viem/_types/types/calls';
 import type { OnUpdate } from './allowances';
 import type { TokenAllowanceData } from './allowances';
@@ -11,8 +16,6 @@ export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
   try {
     const capabilities = (await walletClient.getCapabilities()) as Capabilities;
     console.log('Wallet supports EIP5792:', capabilities);
-
-    // We might even need to check the exact capabilities, but we'll deal with that if we need to
 
     if (capabilities[walletClient.chain!.id]) return true;
 

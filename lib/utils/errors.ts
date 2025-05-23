@@ -8,6 +8,14 @@ export const isUserRejectionError = (message?: string): boolean => {
   return false;
 };
 
+export const isBatchSizeError = (error?: string | any): boolean => {
+  if (typeof error !== 'string') {
+    return isBatchSizeError(parseErrorMessage(error)) || isBatchSizeError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('batch size cannot exceed');
+};
+
 export const isRevertedError = (error?: string | any): boolean => {
   if (typeof error !== 'string') {
     return isRevertedError(parseErrorMessage(error)) || isRevertedError(stringifyError(error));

@@ -2,6 +2,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { TransactionStatus } from 'lib/interfaces';
+import { isTransactionStatusLoadingState } from 'lib/stores/transaction-store';
 import { useMemo } from 'react';
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
 
 const StatusCell = ({ status, reason }: Props) => {
   const content = useMemo(() => {
-    if (status === 'pending') {
+    if (isTransactionStatusLoadingState(status)) {
       return <Spinner className="w-4 h-4" />;
     }
 
