@@ -17,7 +17,7 @@ const AddressCell = ({ address, spenderData, chainId }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(chainId)}/address/${address}`;
 
   return (
-    <div className="flex items-center gap-2 w-52">
+    <div className="flex items-center gap-2 max-w-52">
       <div className="flex flex-col justify-start items-start">
         <WithHoverTooltip tooltip={address}>
           <Href href={explorerUrl} underline="hover" external>
