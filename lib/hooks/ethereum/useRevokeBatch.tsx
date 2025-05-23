@@ -6,15 +6,17 @@ import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useWalletClient } from 'wagmi';
-import { useTransactionStore } from '../../stores/transaction-store';
+import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
 import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
+import { useWalletCapabilities } from './useWalletCapabilities';
 
 // Limit to 50 concurrent revokes to avoid wallets crashing
 const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
 
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { results, getTransaction, updateTransaction } = useTransactionStore();
+  const walletCapabilities = useWalletCapabilities();
   const revokeEip5792 = useRevokeBatchEip5792(allowances, onUpdate);
   const revokeQueuedTransactions = useRevokeBatchQueuedTransactions(allowances, onUpdate);
 
@@ -28,7 +30,11 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(
     async (tipDollarAmount: string): Promise<void> => {
-      if (await walletSupportsEip5792(walletClient!)) {
+      const supportsEip5792 = walletCapabilities.isLoading
+        ? await walletSupportsEip5792(walletClient!)
+        : walletCapabilities.supportsEip5792;
+
+      if (supportsEip5792) {
         await revokeEip5792(REVOKE_QUEUE, tipDollarAmount);
       } else {
         await revokeQueuedTransactions(REVOKE_QUEUE, tipDollarAmount);
@@ -49,7 +55,9 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const isRevoking = useMemo(() => {
-    return allowances.some((allowance) => getTransaction(getAllowanceKey(allowance)).status === 'pending');
+    return allowances.some((allowance) =>
+      isTransactionStatusLoadingState(getTransaction(getAllowanceKey(allowance)).status),
+    );
   }, [allowances, results]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale

@@ -111,7 +111,7 @@ export interface EtherscanPlatform {
   subdomain?: string;
 }
 
-export type TransactionStatus = 'not_started' | 'pending' | 'confirmed' | 'reverted';
+export type TransactionStatus = 'not_started' | 'preparing' | 'pending' | 'confirmed' | 'reverted' | 'retrying';
 
 export interface TransactionSubmitted {
   hash: Hash;
