@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { isAddress } from 'viem';
 import { useAccount, usePublicClient } from 'wagmi';
 import { useWalletClient } from 'wagmi';
-import { prepareApprove } from '../approve/page';
+import { prepareApprove } from '../approve/lib';
 
 const ApprovePage = () => {
   const { data: walletClient } = useWalletClient();
