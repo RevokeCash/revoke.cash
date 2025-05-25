@@ -8,11 +8,7 @@ interface Props {
 }
 
 const DelegatorCell = ({ delegation }: Props) => {
-  return (
-    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-      <AddressDisplay address={delegation.delegator} />
-    </td>
-  );
+  return <AddressDisplay address={delegation.delegator} />;
 };
 
 export default DelegatorCell;
