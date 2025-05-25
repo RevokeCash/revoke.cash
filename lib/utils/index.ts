@@ -227,3 +227,13 @@ export const getAccountType = async (address: Address, publicClient: PublicClien
   if (code.startsWith('0xef0100')) return 'EIP7702 Account';
   return 'Smart Contract';
 };
+
+export const splitArray = <T>(array: T[], chunkSize: number): T[][] => {
+  const result: T[][] = [];
+
+  for (let i = 0; i < array.length; i += chunkSize) {
+    result.push(array.slice(i, i + chunkSize));
+  }
+
+  return result;
+};

@@ -1,6 +1,6 @@
 import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import type { TransactionStatus, TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+import { isBatchSizeError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import type { Hash } from 'viem';
 import { create } from 'zustand';
 
@@ -85,9 +85,16 @@ export const wrapTransaction = ({
       const message = parseErrorMessage(error);
       if (isUserRejectionError(message)) {
         updateTransaction(transactionKey, { status: 'not_started' });
+      } else if (isBatchSizeError(message)) {
+        updateTransaction(transactionKey, { status: 'retrying' });
+        throw error;
       } else {
         updateTransaction(transactionKey, { status: 'reverted', error: message });
       }
     }
   };
+};
+
+export const isTransactionStatusLoadingState = (status: TransactionStatus) => {
+  return status === 'pending' || status === 'retrying' || status === 'preparing';
 };
