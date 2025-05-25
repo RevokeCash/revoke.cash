@@ -1,7 +1,7 @@
 'use client';
 
 import { TransactionType } from 'lib/interfaces';
-import { throwIfExcessiveGas } from 'lib/utils';
+import { splitArray, throwIfExcessiveGas } from 'lib/utils';
 import {
   type OnUpdate,
   type TokenAllowanceData,
@@ -30,13 +30,30 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
   const { data: walletClient } = useWalletClient();
 
-  const revoke = async (REVOKE_QUEUE: PQueue, tipDollarAmount: string) => {
+  const revoke = async (
+    REVOKE_QUEUE: PQueue,
+    tipDollarAmount: string,
+    maxBatchSize: number = Number.POSITIVE_INFINITY,
+  ) => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
 
+    // Do not revoke allowances that are already confirmed, or that are already pending
+    // We do retry revoking the allowances that are reverted, preparing or retrying
+    const allowancesToRevoke = allowances.filter((allowance) => {
+      const status = getTransaction(getAllowanceKey(allowance)).status;
+      if (status === 'confirmed') return false;
+      if (status === 'pending') return false;
+      return true;
+    });
+
+    if (allowancesToRevoke.length === 0) {
+      return;
+    }
+
     const callsSettled = await Promise.allSettled(
-      allowances.map(async (allowance): Promise<Eip5792Call> => {
+      allowancesToRevoke.map(async (allowance): Promise<Eip5792Call> => {
         const transactionRequest = await prepareRevokeAllowance(walletClient, allowance);
 
         const publicClient = allowance.contract.publicClient;
@@ -50,72 +67,92 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       }),
     );
 
-    const calls = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
-
-    if (tipDollarAmount && Number(tipDollarAmount) > 0 && calls.length > 0) {
-      const donateTransaction = await prepareDonate(tipDollarAmount);
-      calls.push(mapTransactionRequestToEip5792Call(donateTransaction));
-    }
-
-    const batchPromise = walletClient.sendCalls({
-      version: '2.0.0',
-      account: walletClient.account!,
-      chain: walletClient.chain!,
-      calls,
+    // Update the transaction status for calls that failed before they were submitted
+    callsSettled.forEach((result, index) => {
+      if (result.status !== 'rejected') return;
+      const transactionKey = getAllowanceKey(allowancesToRevoke[index]);
+      updateTransaction(transactionKey, { status: 'reverted', error: result.reason });
     });
 
-    await Promise.race([
-      Promise.all(
-        allowances.map(async (allowance, index) => {
-          // Skip if already confirmed or pending
-          if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;
+    // We filter failed calls pre-emptively so that these calls are not included in the batch
+    const callsToSubmit = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
+    const allowancesToSubmit = allowancesToRevoke.filter((_, index) => callsSettled[index].status === 'fulfilled');
 
-          const revoke = wrapTransaction({
-            transactionKey: getAllowanceKey(allowance),
-            transactionType: TransactionType.REVOKE,
-            executeTransaction: async () => {
-              // Check whether the revoke failed *before* even making it into wallet_sendCalls
-              const settlement = callsSettled[index];
-              if (settlement.status === 'rejected') throw settlement.reason;
+    if (tipDollarAmount && Number(tipDollarAmount) > 0 && callsToSubmit.length > 0) {
+      const donateTransaction = await prepareDonate(tipDollarAmount);
+      callsToSubmit.push(mapTransactionRequestToEip5792Call(donateTransaction));
+    }
 
-              const id = await batchPromise;
-              const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
+    const callChunks = splitArray(callsToSubmit, maxBatchSize);
+    const allowanceChunks = splitArray(allowancesToSubmit, maxBatchSize);
 
-              if (receipts?.length === 1) {
-                return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[0], onUpdate);
-              }
-
-              const callIndex = getCallIndex(index, callsSettled);
-
-              if (!receipts?.[callIndex]) {
-                console.log('receipts', receipts);
-                throw new Error('An error occurred related to EIP5792 batch calls');
-              }
-
-              return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[callIndex], onUpdate);
-            },
-            updateTransaction,
-            trackTransaction: () => trackRevokeTransaction(allowance),
+    try {
+      await Promise.all(
+        callChunks.map(async (callsChunk, chunkIndex) => {
+          const chunkPromise = walletClient.sendCalls({
+            version: '2.0.0',
+            account: walletClient.account!,
+            chain: walletClient.chain!,
+            calls: callsChunk,
           });
 
-          await REVOKE_QUEUE.add(revoke);
-        }),
-      ),
-      REVOKE_QUEUE.onIdle(),
-    ]);
+          const allowancesChunk = allowanceChunks[chunkIndex];
 
-    trackBatchRevoke(selectedChainId, address, allowances, tipDollarAmount, 'eip5792');
+          await Promise.all(
+            allowancesChunk.map(async (allowance, index) => {
+              // Skip if already confirmed or pending
+              if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;
+
+              const revokeSingleAllowance = wrapTransaction({
+                transactionKey: getAllowanceKey(allowance),
+                transactionType: TransactionType.REVOKE,
+                executeTransaction: async () => {
+                  const id = await chunkPromise;
+                  const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
+
+                  if (receipts?.length === 1) {
+                    return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[0], onUpdate);
+                  }
+
+                  if (!receipts?.[index]) {
+                    console.log('receipts', receipts);
+                    throw new Error('An error occurred related to EIP5792 batch calls');
+                  }
+
+                  return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[index], onUpdate);
+                },
+                updateTransaction,
+                trackTransaction: () => trackRevokeTransaction(allowance),
+              });
+
+              await REVOKE_QUEUE.add(revokeSingleAllowance);
+            }),
+          );
+        }),
+      );
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('Batch size cannot exceed')) {
+        const newMaxBatchSize = getNewMaxBatchSize(maxBatchSize, callsToSubmit.length);
+        console.log(error.message, 'reducing batch size to', newMaxBatchSize);
+        return revoke(REVOKE_QUEUE, tipDollarAmount, newMaxBatchSize);
+      }
+    }
+
+    trackBatchRevoke(selectedChainId, address, allowancesToSubmit, tipDollarAmount, 'eip5792');
     trackDonate(selectedChainId, tipDollarAmount, 'batch-revoke-tip');
   };
 
   return revoke;
 };
 
-const getCallIndex = (index: number, callsSettled: PromiseSettledResult<Eip5792Call>[]): number => {
-  const numberOfFailedCallsBeforeIndex = callsSettled
-    .slice(0, index)
-    .filter((call) => call.status === 'rejected').length;
+const getNewMaxBatchSize = (maxBatchSize: number, totalCalls: number) => {
+  // If the current max batch size is larger than 10, we set it to 10
+  // Otherwise, we divide the current max batch size by 2, with a minimum of 1
+  const newBatchSizeBase = Math.min(Math.max(Math.floor(maxBatchSize / 2), 1), 10);
 
-  const adjustedIndex = index - numberOfFailedCallsBeforeIndex;
-  return adjustedIndex;
+  // We try to find a more "equal" batch size so that e.g. 45 calls are split into 5 batches of 9 instead of 4 batches of 10 and 1 batch of 5
+  const numberOfBatches = Math.ceil(totalCalls / newBatchSizeBase);
+  const newBatchSize = Math.ceil(totalCalls / numberOfBatches);
+
+  return newBatchSize;
 };

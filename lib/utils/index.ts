@@ -219,3 +219,21 @@ export const apiLogin = async () => {
     .json<any>()
     .then((res) => !!res?.ok);
 };
+
+export type AccountType = 'EOA' | 'EIP7702 Account' | 'Smart Contract';
+export const getAccountType = async (address: Address, publicClient: PublicClient): Promise<AccountType> => {
+  const code = await publicClient.getCode({ address });
+  if (isNullish(code) || code === '0x') return 'EOA';
+  if (code.startsWith('0xef0100')) return 'EIP7702 Account';
+  return 'Smart Contract';
+};
+
+export const splitArray = <T>(array: T[], chunkSize: number): T[][] => {
+  const result: T[][] = [];
+
+  for (let i = 0; i < array.length; i += chunkSize) {
+    result.push(array.slice(i, i + chunkSize));
+  }
+
+  return result;
+};

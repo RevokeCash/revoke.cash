@@ -12,14 +12,17 @@ interface Props {
 
 const ControlsCell = ({ delegation, onRevoke }: Props) => {
   const t = useTranslations();
+
   const { revoke } = useRevokeDelegation(delegation, onRevoke);
 
+  const handleRevoke = revoke;
+
   return (
-    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-      <Button size="xs" onClick={revoke} disabled={!revoke}>
-        {t('address.delegations.actions.revoke')}
+    <div className="text-right">
+      <Button style="secondary" size="sm" onClick={handleRevoke} disabled={!handleRevoke}>
+        {t('common.buttons.revoke')}
       </Button>
-    </td>
+    </div>
   );
 };
 

@@ -14,11 +14,6 @@ const getDelegationKey = (delegation: Delegation) => {
   return `${delegation.platform}-${delegation.type}-${delegation.delegator}-${delegation.delegate}-${delegation.contract || 'null'}-${delegation.tokenId || 'null'}`;
 };
 
-// Function to generate a key for revoking all delegations
-const getRevokeAllKey = (platform: string, chainId: number) => {
-  return `revoke-all-${platform}-${chainId}`;
-};
-
 export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegation: Delegation) => void) => {
   const { updateTransaction } = useTransactionStore();
   const publicClient = usePublicClient({ chainId: delegation.chainId })!;
@@ -41,16 +36,21 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
       }
 
       // Get transaction parameters from the platform
+      console.log(`Revoking delegation of type ${delegation.type} on platform ${delegation.platform}`);
+      console.log('Delegation data:', delegation);
+
       const txData = await platform.revokeDelegation(delegation);
+      console.log('Transaction data:', txData);
 
       // Get the connected wallet address
       const [account] = await walletClient.getAddresses();
+      console.log('Connected account:', account);
 
       // Execute the transaction using the existing utility
       const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, {
         ...txData,
         chain: publicClient.chain,
-        account,
+        account: txData.account ?? account,
       });
 
       const waitForConfirmation = async () => {
@@ -74,63 +74,65 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
     updateTransaction,
     handleTransaction,
   });
+  console.log('This is the revoke: ', revoke);
 
   return { revoke };
 };
 
-// Hook for revoking all delegations from a specific platform
-export const useRevokeAllDelegations = (platformName: string, chainId: number, onRevoke: () => void) => {
-  const { updateTransaction } = useTransactionStore();
-  const publicClient = usePublicClient({ chainId })!;
-  const { data: walletClient } = useWalletClient();
-  const handleTransaction = useHandleTransaction(chainId);
+// // Hook for revoking all delegations from a specific platform
+// export const useRevokeAllDelegations = (platformName: string, chainId: number, onRevoke: () => void) => {
+//   const { updateTransaction } = useTransactionStore();
+//   const publicClient = usePublicClient({ chainId })!;
+//   const { data: walletClient } = useWalletClient();
+//   const handleTransaction = useHandleTransaction(chainId);
 
-  // Create revoking function for all delegations
-  const revokeAll = wrapTransaction({
-    transactionKey: getRevokeAllKey(platformName, chainId),
-    transactionType: TransactionType.REVOKE,
-    executeTransaction: async () => {
-      if (!walletClient) throw new Error('No wallet client available');
+//   // Create revoking function for all delegations
+//   const revokeAll = wrapTransaction({
+//     transactionKey: getRevokeAllKey(platformName, chainId),
+//     transactionType: TransactionType.REVOKE,
+//     executeTransaction: async () => {
+//       if (!walletClient) throw new Error('No wallet client available');
 
-      // Get the appropriate delegate platform
-      const platforms = createDelegatePlatforms(publicClient, chainId);
-      const platform = platforms.find((p) => p.constructor.name === platformName.replace('.', ''));
+//       // Get the appropriate delegate platform
+//       const platforms = createDelegatePlatforms(publicClient, chainId);
+//       const platform = platforms.find((p) => p.name === platformName);
 
-      if (!platform) {
-        throw new Error(`Platform ${platformName} not found for chain ${chainId}`);
-      }
+//       if (!platform) {
+//         throw new Error(`Platform ${platformName} not found for chain ${chainId}`);
+//       }
 
-      // Get transaction parameters for revoking all delegations
-      const txData = await platform.revokeAllDelegations();
+//       // Get transaction parameters for revoking all delegations
+//       const txData = await platform.revokeAllDelegations();
 
-      // Get the connected wallet address
-      const [account] = await walletClient.getAddresses();
+//       // Get the connected wallet address
+//       const [account] = await walletClient.getAddresses();
 
-      // Execute the transaction using the existing utility
-      const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, {
-        ...txData,
-        chain: publicClient.chain,
-        account,
-      });
+//       // Execute the transaction using the existing utility
+//       const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, {
+//         ...txData,
+//         chain: publicClient.chain,
+//         account,
+//       });
 
-      const waitForConfirmation = async () => {
-        const receipt = await waitForTransactionConfirmation(hash, publicClient);
-        onRevoke(); // Callback after successful revocation
-        return receipt;
-      };
+//       const waitForConfirmation = async () => {
+//         const receipt = await waitForTransactionConfirmation(hash, publicClient);
+//         onRevoke(); // Callback after successful revocation
+//         return receipt;
+//       };
 
-      return { hash, confirmation: waitForConfirmation() };
-    },
-    trackTransaction: () => {
-      // Track analytics for revoking all delegations
-      analytics.track('All Delegations Revoked', {
-        chainId,
-        platform: platformName,
-      });
-    },
-    updateTransaction,
-    handleTransaction,
-  });
+//       return { hash, confirmation: waitForConfirmation() };
+//     },
+//     trackTransaction: () => {
+//       // Track analytics for revoking all delegations
+//       analytics.track('All Delegations Revoked', {
+//         chainId,
+//         platform: platformName,
+//       });
+//     },
+//     updateTransaction,
+//     handleTransaction,
+//   });
 
-  return { revokeAll };
-};
+//   console.log('This is the revoke: ', revokeAll);
+//   return { revokeAll };
+// };

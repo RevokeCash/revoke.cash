@@ -53,6 +53,7 @@
     "title": "Подключите кошелек"
   },
   "donate": {
+    "donate_any_token": "Or send any token to our <donations-link>donations address</donations-link>",
     "title": "Сделайте пожертвование для Revoke.cash"
   },
   "errors": {
@@ -86,6 +87,8 @@
     "brand_assets": "Активы бренда",
     "community": "Сообщество",
     "company": "Компания",
+    "domain_scanner": "Domain Scanner",
+    "donations": "Donations",
     "exploit_checker": "Проверка эксплойтов",
     "extension": "Расширение для браузера",
     "faq": "ЧаВо",
@@ -95,7 +98,8 @@
     "product": "Продукт",
     "terms": "Условия",
     "token_approval_checker": "Проверка одобрения токенов",
-    "what_are_token_approvals": "Что такое одобрение токенов?"
+    "what_are_token_approvals": "Что такое одобрение токенов?",
+    "what_to_do_when_scammed": "What to Do When Scammed?"
   },
   "meta": {
     "description": "Верните себе контроль над своим кошельком и оставайтесь в безопасности, отменив одобренные токены и разрешения, предоставленные вами в {chainName} и более чем в 100 других сетях.",

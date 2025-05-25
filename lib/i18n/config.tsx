@@ -103,6 +103,17 @@ export const defaultTranslationValues: RichTranslationValues = {
       {children}
     </Href>
   ),
+  'kerberus-link': (children) => (
+    <Href
+      href="https://www.kerberus.com/extension/?ref=REVOKECASH"
+      className="font-medium"
+      underline="hover"
+      html
+      external
+    >
+      {children}
+    </Href>
+  ),
 };
 
 export default getRequestConfig(async ({ requestLocale }) => {
@@ -119,6 +130,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       address: (await import(`../../locales/${locale}/address.json`)).default,
       blog: (await import(`../../locales/${locale}/blog.json`)).default,
       common: (await import(`../../locales/${locale}/common.json`)).default,
+      domain_checker: (await import(`../../locales/${locale}/domain_checker.json`)).default,
       exploits: (await import(`../../locales/${locale}/exploits.json`)).default,
       extension: (await import(`../../locales/${locale}/extension.json`)).default,
       faq: (await import(`../../locales/${locale}/faq.json`)).default,

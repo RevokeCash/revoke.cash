@@ -1,5 +1,5 @@
 import ky from 'ky';
-import { isNullish } from 'lib/utils';
+import { apiLogin, isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
 import { type TokenContract, isErc721Contract } from 'lib/utils/tokens';
 import { formatUnits } from 'viem';
@@ -10,6 +10,7 @@ export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: 
 };
 
 export const getNativeTokenPrice = async (chainId: number): Promise<number | null> => {
+  await apiLogin();
   const response = await ky.get(`/api/${chainId}/native-price`).json<{ price: number | null }>();
   return response.price;
 };

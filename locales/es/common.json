@@ -53,6 +53,7 @@
     "title": "Conecta Tu Cartera"
   },
   "donate": {
+    "donate_any_token": "O envíe cualquier token a nuestra dirección de donaciones en <donations-link>donations address</donations-link>",
     "title": "Donar a Revoke.cash"
   },
   "errors": {
@@ -86,6 +87,8 @@
     "brand_assets": "Activos de Marca",
     "community": "Comunidad",
     "company": "Empresa",
+    "domain_scanner": "Domain Scanner",
+    "donations": "Donaciones",
     "exploit_checker": "Comprobador de Exploits",
     "extension": "Extensión del Navegador",
     "faq": "FAQ",
@@ -95,7 +98,8 @@
     "product": "Producto",
     "terms": "Términos",
     "token_approval_checker": "Comprobador de Autorización de Tokens",
-    "what_are_token_approvals": "¿Qué son las Autorizaciones de Tokens?"
+    "what_are_token_approvals": "¿Qué son las Autorizaciones de Tokens?",
+    "what_to_do_when_scammed": "What to Do When Scammed?"
   },
   "meta": {
     "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {chainName} y en 100 redes más.",

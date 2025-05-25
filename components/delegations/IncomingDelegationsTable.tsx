@@ -1,16 +1,12 @@
 'use client';
 
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { createColumnHelper } from '@tanstack/react-table';
 import Error from 'components/common/Error';
 import Loader from 'components/common/Loader';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import ContractCell from './cells/ContractCell';
-import DelegationTypeCell from './cells/DelegationTypeCell';
-import DelegatorCell from './cells/DelegatorCell';
-import PlatformCell from './cells/PlatformCell';
+import NoDelegationsFound from './NoDelegationsFound';
+import { incomingColumns } from './columns';
 
 interface Props {
   delegations: Delegation[];
@@ -20,54 +16,20 @@ interface Props {
 
 const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
   const t = useTranslations();
-  const columnHelper = createColumnHelper<Delegation>();
+  // Use the hook to get translated columns
+  const columns = incomingColumns;
 
-  // Create TanStack table columns
-  const tableColumns = useMemo(
-    () => [
-      columnHelper.accessor('type', {
-        header: () => t('address.delegations.columns.type'),
-        cell: (info) => <DelegationTypeCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('delegator', {
-        header: () => t('address.delegations.columns.delegator'),
-        cell: (info) => <DelegatorCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('contract', {
-        header: () => t('address.delegations.columns.contract'),
-        cell: (info) => <ContractCell delegation={info.row.original} />,
-      }),
-      columnHelper.accessor('platform', {
-        header: () => t('address.delegations.columns.platform'),
-        cell: (info) => <PlatformCell delegation={info.row.original} />,
-      }),
-    ],
-    [t, columnHelper],
-  );
-
-  // Create TanStack table instance
-  const table = useReactTable({
-    data: delegations,
-    columns: tableColumns,
+  // Create TanStack table instance with empty meta
+  const table = useReactTable<Delegation>({
+    data: delegations || [],
+    columns,
     getCoreRowModel: getCoreRowModel(),
+    // @ts-ignore - meta may have other properties from elsewhere in the code
+    meta: {},
   });
 
-  if (isLoading) {
-    return <Loader isLoading={true} loadingMessage={t('address.delegations.loading')} />;
-  }
-
-  if (error) {
-    return <Error error={error} />;
-  }
-
-  if (delegations.length === 0) {
-    return (
-      <div className="rounded-md border p-6 text-center">
-        <h2 className="text-lg font-semibold">{t('address.delegations.no_incoming_delegations')}</h2>
-        <p>{t('address.delegations.incoming_explanation')}</p>
-      </div>
-    );
-  }
+  // Get column count for spanning loading/error/empty states
+  const columnCount = table.getAllLeafColumns().length;
 
   return (
     <div>
@@ -86,15 +48,38 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-2 py-2">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+            {isLoading && (
+              <tr>
+                <td colSpan={columnCount} className="py-4 text-center">
+                  <Loader isLoading={true} loadingMessage={t('address.delegations.loading')} />
+                </td>
               </tr>
-            ))}
+            )}
+
+            {error && (
+              <tr>
+                <td colSpan={columnCount} className="py-4">
+                  <Error error={error} />
+                </td>
+              </tr>
+            )}
+
+            {!isLoading && !error && delegations.length === 0 && (
+              <NoDelegationsFound incoming={true} colSpan={columnCount} />
+            )}
+
+            {!isLoading &&
+              !error &&
+              delegations.length > 0 &&
+              table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-2 py-2">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

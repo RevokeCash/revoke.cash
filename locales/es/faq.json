@@ -20,10 +20,6 @@
       "answer": "No. En general, las carteras de hardware son mucho más seguras que carteras de celular o carteras basadas en navegador porque las llaves de la cartera son guardadas de manera segura en el dispositivo, haciendo que sea imposible robar las llaves sin tener acceso adecuado al dispositivo. Pero con las autorizaciones nadie <i>tiene</i> que robar tus llaves para tomar tus tokens. Debido a eso, las carteras de hardware no ofrecen protección adicional contra vulnerabilidades de autorización.",
       "question": "¿Pueden los carteras de hardware salvarme de las vulnerabilidades de autorización?"
     },
-    "multiple_allowances": {
-      "answer": "No. Debido a la forma en la que realmente funcionan las autorizaciones, se <i>requiere</i> de 1 transacción por autorización. Así que es técnicamente imposible revocar múltiples autorizaciones en una sola transacción.",
-      "question": "¿Puedo revocar múltiples autorizaciones al mismo tiempo?"
-    },
     "other_question": {
       "answer": "Si tienes alguna pregunta que no aparezca en estas preguntas frecuentes, por favor ponte en contacto con nosotros en <twitter-link>Twitter</twitter-link> o <discord-link>Discord</discord-link>.",
       "question": "Mi pregunta no está aquí."
