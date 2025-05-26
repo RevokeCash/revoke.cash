@@ -1,6 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import { getTokenPrice } from 'lib/price/utils';
 import { isNullish } from 'lib/utils';
 import {
   type AllowancePayload,
@@ -12,7 +13,8 @@ import {
 import analytics from 'lib/utils/analytics';
 import { type TimeLog, type TokenEvent, getEventKey } from 'lib/utils/events';
 import { hasZeroBalance } from 'lib/utils/tokens';
-import { useLayoutEffect, useState } from 'react';
+import { getSpenderData } from 'lib/utils/whois';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
@@ -22,10 +24,13 @@ interface AllowanceUpdateProperties {
   lastUpdated?: TimeLog;
 }
 
+const PRICE_STALE_TIME = 5 * 60 * 1000; // 5 minutes
+
 export const useAllowances = (address: Address, events: TokenEvent[] | undefined, chainId: number) => {
   const [allowances, setAllowances] = useState<TokenAllowanceData[]>();
   const publicClient = usePublicClient({ chainId })!;
 
+  // Core allowances query(non-blocking set to null)
   const { data, isLoading, error } = useQuery<TokenAllowanceData[], Error>({
     queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
     queryFn: async () => {
@@ -39,11 +44,97 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     enabled: !isNullish(address) && !isNullish(chainId) && !isNullish(events),
   });
 
-  useLayoutEffect(() => {
-    if (data) {
-      setAllowances(data);
-    }
+  const uniqueContracts = useMemo(() => {
+    if (!data) return [];
+    const seen = new Set<string>();
+    return data.filter((allowance) => {
+      const key = `${allowance.chainId}-${allowance.contract.address}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }, [data]);
+
+  const uniqueSpenders = useMemo(() => {
+    if (!data) return [];
+    const seen = new Set<string>();
+    return data
+      .filter((allowance) => allowance.payload?.spender)
+      .filter((allowance) => {
+        const key = `${allowance.chainId}-${allowance.payload!.spender}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+  }, [data]);
+
+  const priceQueries = useQueries({
+    queries: uniqueContracts.map((allowance) => ({
+      queryKey: ['tokenPrice', allowance.chainId, allowance.contract.address],
+      queryFn: () => getTokenPrice(allowance.chainId, allowance.contract),
+      staleTime: PRICE_STALE_TIME,
+      refetchOnWindowFocus: false,
+      placeholderData: null,
+    })),
+  });
+
+  // Batch spender queries for all unique spenders
+  const spenderQueries = useQueries({
+    queries: uniqueSpenders.map((allowance) => ({
+      queryKey: ['spenderData', allowance.payload!.spender, allowance.chainId],
+      queryFn: () => getSpenderData(allowance.payload!.spender, allowance.chainId),
+      staleTime: Number.POSITIVE_INFINITY,
+      refetchOnWindowFocus: false,
+      placeholderData: undefined,
+    })),
+  });
+
+  // Create lookup maps for efficient data merging
+  const priceMap = useMemo(() => {
+    const map = new Map<string, number | null>();
+    uniqueContracts.forEach((allowance, index) => {
+      const key = `${allowance.chainId}-${allowance.contract.address}`;
+      map.set(key, priceQueries[index]?.data ?? null);
+    });
+    return map;
+  }, [uniqueContracts, priceQueries]);
+
+  const spenderMap = useMemo(() => {
+    const map = new Map<string, any>();
+    uniqueSpenders.forEach((allowance, index) => {
+      const key = `${allowance.chainId}-${allowance.payload!.spender}`;
+      map.set(key, spenderQueries[index]?.data);
+    });
+    return map;
+  }, [uniqueSpenders, spenderQueries]);
+
+  // Merge async data with allowances reactively
+  const enhancedAllowances = useMemo(() => {
+    if (!data) return undefined;
+
+    return data.map((allowance) => {
+      const priceKey = `${allowance.chainId}-${allowance.contract.address}`;
+      const spenderKey = allowance.payload?.spender ? `${allowance.chainId}-${allowance.payload.spender}` : null;
+
+      const price = priceMap.get(priceKey) ?? null;
+      const spenderData = spenderKey ? spenderMap.get(spenderKey) : undefined;
+
+      return {
+        ...allowance,
+        metadata: {
+          ...allowance.metadata,
+          price,
+        },
+        spenderData, // Add spender data for sorting/filtering
+      };
+    });
+  }, [data, priceMap, spenderMap]);
+
+  useLayoutEffect(() => {
+    if (enhancedAllowances) {
+      setAllowances(enhancedAllowances);
+    }
+  }, [enhancedAllowances]);
 
   const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
     return a.contract.address === b.contract.address && a.chainId === b.chainId;
