@@ -17,15 +17,17 @@ import {
   mapWalletCallReceiptToTransactionSubmitted,
 } from 'lib/utils/eip5792';
 import type PQueue from 'p-queue';
-import type { EstimateContractGasParameters } from 'viem';
+import type { Capabilities, EstimateContractGasParameters } from 'viem'; // viem has a issue with typing the capability. Until they fix it, we manually importing it.
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
 import { trackDonate, useDonate } from './useDonate';
+import { useWalletCapabilities } from './useWalletCapabilities';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, selectedChainId } = useAddressPageContext();
+  const { capabilities } = useWalletCapabilities();
   const { prepareDonate } = useDonate(selectedChainId, 'batch-revoke-tip');
 
   const { data: walletClient } = useWalletClient();
@@ -87,6 +89,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     const allowanceChunks = splitArray(allowancesToSubmit, maxBatchSize);
 
     try {
+      const walletCapabilities = capabilities ?? ((await walletClient.getCapabilities()) as Capabilities);
+
       await Promise.all(
         callChunks.map(async (callsChunk, chunkIndex) => {
           const chunkPromise = walletClient.sendCalls({
@@ -94,6 +98,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
             account: walletClient.account!,
             chain: walletClient.chain!,
             calls: callsChunk,
+            ...getPaymasterDetails(walletCapabilities, selectedChainId),
           });
 
           const allowancesChunk = allowanceChunks[chunkIndex];
@@ -155,4 +160,53 @@ const getNewMaxBatchSize = (maxBatchSize: number, totalCalls: number) => {
   const newBatchSize = Math.ceil(totalCalls / numberOfBatches);
 
   return newBatchSize;
+};
+
+const CANDIDE_NETWORK_NAMES: Record<number, string> = {
+  // Mainnet
+  1: 'ethereum',
+  10: 'optimism',
+  56: 'bsc',
+  100: 'gnosis',
+  137: 'polygon',
+  8453: 'base',
+  42161: 'arbitrum',
+  42220: 'celo',
+
+  // Testnet
+  11155111: 'sepolia',
+  11155420: 'optimism-sepolia',
+  80002: 'amoy',
+  84532: 'base-sepolia',
+  421614: 'arbitrum-sepolia',
+};
+
+const SPONSORSHIP_POLICIES = JSON.parse(process.env.NEXT_PUBLIC_CANDIDE_SPONSORSHIP_POLICIES ?? '{}');
+const CANDIDE_PAYMASTER_VERSION = 'v3';
+
+const getPaymasterDetails = (capabilities: Capabilities, chainId: number) => {
+  const atomicStatus = capabilities[chainId]?.atomic?.status;
+  const supportsAtomic = atomicStatus === 'supported' || atomicStatus === 'ready';
+  const supportsPaymaster = capabilities[chainId]?.paymasterService?.supported === true;
+
+  const networkName = CANDIDE_NETWORK_NAMES[chainId];
+  const candideApiKey = process.env.NEXT_PUBLIC_CANDIDE_API_KEY;
+
+  const includePaymaster = supportsAtomic && supportsPaymaster && Boolean(networkName) && Boolean(candideApiKey);
+  if (!includePaymaster) return null;
+
+  const sponsorshipPolicyId = SPONSORSHIP_POLICIES[chainId];
+  const paymasterUrl = `https://api.candide.dev/paymaster/${CANDIDE_PAYMASTER_VERSION}/${networkName}/${candideApiKey}`;
+
+  return {
+    capabilities: {
+      paymasterService: {
+        url: paymasterUrl,
+        optional: true,
+        context: {
+          sponsorshipPolicyId,
+        },
+      },
+    },
+  };
 };

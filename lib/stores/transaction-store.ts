@@ -73,12 +73,16 @@ export const wrapTransaction = ({
       trackTransaction();
 
       // We don't await this, since we want to return after submitting all transactions, even if they're still pending
-      transactionSubmitted.confirmation.then(() => {
-        updateTransaction(transactionKey, {
-          status: 'confirmed',
-          transactionHash: transactionSubmitted.hash,
+      transactionSubmitted.confirmation
+        .then(() => {
+          updateTransaction(transactionKey, {
+            status: 'confirmed',
+            transactionHash: transactionSubmitted.hash,
+          });
+        })
+        .catch((reason) => {
+          updateTransaction(transactionKey, { status: 'reverted', error: reason?.message });
         });
-      });
 
       return transactionSubmitted;
     } catch (error) {
