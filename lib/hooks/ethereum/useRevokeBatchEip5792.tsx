@@ -24,44 +24,6 @@ import { useAddressPageContext } from '../page-context/AddressPageContext';
 import { trackDonate, useDonate } from './useDonate';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
-const chainIdToNetwork: Record<number, string> = {
-  // Mainnet
-  1: 'ethereum',
-  10: 'optimism',
-  56: 'bsc',
-  100: 'gnosis',
-  137: 'polygon',
-  8453: 'base',
-  42161: 'arbitrum',
-  42220: 'celo',
-  // Testnet
-  11155111: 'sepolia',
-  11155420: 'optimism-sepolia',
-  80002: 'amoy',
-  84532: 'base-sepolia',
-  421614: 'arbitrum-sepolia',
-};
-
-const chainIdToSponsorshipPolicyId: Record<number, string | undefined> = {
-  // Mainnets
-  1: process.env.NEXT_PUBLIC_ETHEREUM_SPONSORSHIP_POLICY_ID,
-  10: process.env.NEXT_PUBLIC_OPTIMISM_SPONSORSHIP_POLICY_ID,
-  56: process.env.NEXT_PUBLIC_BSC_SPONSORSHIP_POLICY_ID,
-  100: process.env.NEXT_PUBLIC_GNOSIS_SPONSORSHIP_POLICY_ID,
-  137: process.env.NEXT_PUBLIC_POLYGON_SPONSORSHIP_POLICY_ID,
-  8453: process.env.NEXT_PUBLIC_BASE_SPONSORSHIP_POLICY_ID,
-  42161: process.env.NEXT_PUBLIC_ARBITRUM_SPONSORSHIP_POLICY_ID,
-  42220: process.env.NEXT_PUBLIC_CELO_SPONSORSHIP_POLICY_ID,
-  // Testnets
-  11155111: process.env.NEXT_PUBLIC_SEPOLIA_SPONSORSHIP_POLICY_ID,
-  11155420: process.env.NEXT_PUBLIC_OPTIMISM_SEPOLIA_SPONSORSHIP_POLICY_ID,
-  80002: process.env.NEXT_PUBLIC_AMOY_SPONSORSHIP_POLICY_ID,
-  84532: process.env.NEXT_PUBLIC_BASE_SEPOLIA_SPONSORSHIP_POLICY_ID,
-  421614: process.env.NEXT_PUBLIC_ARBITRUM_SEPOLIA_SPONSORSHIP_POLICY_ID,
-};
-
-const candidePaymasterVersion = 'v3';
-
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, selectedChainId } = useAddressPageContext();
@@ -126,22 +88,9 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     const callChunks = splitArray(callsToSubmit, maxBatchSize);
     const allowanceChunks = splitArray(allowancesToSubmit, maxBatchSize);
 
-    const walletCapabilities = capabilities ?? ((await walletClient.getCapabilities()) as Capabilities);
-
-    const atomicStatus = walletCapabilities[selectedChainId]!.atomic?.status;
-    const hasAtomic = atomicStatus === 'supported' || atomicStatus === 'ready';
-    const hasPaymaster = walletCapabilities[selectedChainId]!.paymasterService?.supported === true;
-
-    // Build paymaster URL & policyId from env + maps
-    const network = chainIdToNetwork[selectedChainId];
-    const candideApiKey = process.env.NEXT_PUBLIC_CANDIDE_API_KEY;
-    const sponsorshipPolicyId = chainIdToSponsorshipPolicyId[selectedChainId];
-    const includePaymaster = hasAtomic && hasPaymaster && network;
-
-    const paymasterUrl = `https://api.candide.dev/paymaster/${candidePaymasterVersion}/${network}/${candideApiKey}`;
-    console.log('paymasterUrl', paymasterUrl, sponsorshipPolicyId);
-
     try {
+      const walletCapabilities = capabilities ?? ((await walletClient.getCapabilities()) as Capabilities);
+
       await Promise.all(
         callChunks.map(async (callsChunk, chunkIndex) => {
           const chunkPromise = walletClient.sendCalls({
@@ -149,20 +98,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
             account: walletClient.account!,
             chain: walletClient.chain!,
             calls: callsChunk,
-            // Only spread in the paymaster bits when supported
-            ...(includePaymaster
-              ? {
-                  capabilities: {
-                    paymasterService: {
-                      url: paymasterUrl,
-                      optional: true,
-                      context: {
-                        sponsorshipPolicyId,
-                      },
-                    },
-                  },
-                }
-              : {}),
+            ...getPaymasterDetails(walletCapabilities, selectedChainId),
           });
 
           const allowancesChunk = allowanceChunks[chunkIndex];
@@ -224,4 +160,53 @@ const getNewMaxBatchSize = (maxBatchSize: number, totalCalls: number) => {
   const newBatchSize = Math.ceil(totalCalls / numberOfBatches);
 
   return newBatchSize;
+};
+
+const CANDIDE_NETWORK_NAMES: Record<number, string> = {
+  // Mainnet
+  1: 'ethereum',
+  10: 'optimism',
+  56: 'bsc',
+  100: 'gnosis',
+  137: 'polygon',
+  8453: 'base',
+  42161: 'arbitrum',
+  42220: 'celo',
+
+  // Testnet
+  11155111: 'sepolia',
+  11155420: 'optimism-sepolia',
+  80002: 'amoy',
+  84532: 'base-sepolia',
+  421614: 'arbitrum-sepolia',
+};
+
+const SPONSORSHIP_POLICIES = JSON.parse(process.env.NEXT_PUBLIC_CANDIDE_SPONSORSHIP_POLICIES ?? '{}');
+const CANDIDE_PAYMASTER_VERSION = 'v3';
+
+const getPaymasterDetails = (capabilities: Capabilities, chainId: number) => {
+  const atomicStatus = capabilities[chainId]?.atomic?.status;
+  const supportsAtomic = atomicStatus === 'supported' || atomicStatus === 'ready';
+  const supportsPaymaster = capabilities[chainId]?.paymasterService?.supported === true;
+
+  const networkName = CANDIDE_NETWORK_NAMES[chainId];
+  const candideApiKey = process.env.NEXT_PUBLIC_CANDIDE_API_KEY;
+
+  const includePaymaster = supportsAtomic && supportsPaymaster && Boolean(networkName) && Boolean(candideApiKey);
+  if (!includePaymaster) return null;
+
+  const sponsorshipPolicyId = SPONSORSHIP_POLICIES[chainId];
+  const paymasterUrl = `https://api.candide.dev/paymaster/${CANDIDE_PAYMASTER_VERSION}/${networkName}/${candideApiKey}`;
+
+  return {
+    capabilities: {
+      paymasterService: {
+        url: paymasterUrl,
+        optional: true,
+        context: {
+          sponsorshipPolicyId,
+        },
+      },
+    },
+  };
 };
