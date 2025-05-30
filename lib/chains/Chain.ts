@@ -139,7 +139,7 @@ export class Chain {
   }
 
   getEtherscanCompatibleApiUrl(): string | undefined {
-    return this.options.etherscanCompatibleApiUrl;
+    return this.options.etherscanCompatibleApiUrl ?? 'https://api.etherscan.io/v2/api';
   }
 
   getEtherscanCompatibleApiKey(): string | undefined {

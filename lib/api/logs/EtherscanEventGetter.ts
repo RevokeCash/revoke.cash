@@ -54,7 +54,7 @@ export class EtherscanEventGetter implements EventGetter {
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const searchParams = prepareGetLatestBlockQuery(apiKey);
+    const searchParams = prepareGetLatestBlockQuery(chainId, apiKey);
 
     const result = await retryOn429(() =>
       queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>()),
@@ -73,7 +73,7 @@ export class EtherscanEventGetter implements EventGetter {
     const apiKey = getChainApiKey(chainId);
     const queue = this.queues[chainId]!;
 
-    const searchParams = prepareGetLogsQuery(filter, apiKey);
+    const searchParams = prepareGetLogsQuery(chainId, filter, apiKey);
 
     let data: LogsResponse;
     try {
@@ -136,10 +136,11 @@ export class EtherscanEventGetter implements EventGetter {
   }
 }
 
-const prepareGetLatestBlockQuery = (apiKey?: string) => {
+const prepareGetLatestBlockQuery = (chainId: number, apiKey?: string) => {
   const timestamp = Math.floor(Date.now() / 1000);
 
   const query = {
+    chainId: String(chainId),
     module: 'block',
     action: 'getblocknobytime',
     timestamp: String(timestamp),
@@ -151,12 +152,13 @@ const prepareGetLatestBlockQuery = (apiKey?: string) => {
   return JSON.parse(JSON.stringify(query));
 };
 
-const prepareGetLogsQuery = (filter: Filter, apiKey?: string) => {
+const prepareGetLogsQuery = (chainId: number, filter: Filter, apiKey?: string) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
     typeof topic === 'string' ? topic.toLowerCase() : topic,
   );
 
   const query = {
+    chainId: String(chainId),
     module: 'logs',
     action: 'getLogs',
     address: filter.address ?? undefined,
