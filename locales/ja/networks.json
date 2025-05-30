@@ -89,6 +89,7 @@
     "palm": "Palmは、プルーフ・オブ・オーソリティーのコンセンサスメカニズムを使用するEthereumのサイドチェーンです。現実世界とデジタル資産に関連するNFTの作成と取引に特化しており、ユーザーがEthereumとPalmの間でトークンを転送できる資産ブリッジを備えています。このチェーンでは、ダミアン・ハーストの「The Currency」など、数多くの大規模なNFTプロジェクトが立ち上げられています。",
     "pego": "Pegoは、Parliaと呼ばれるプルーフ・オブ・ステークド・オーソリティーのコンセンサスメカニズムを使用するレイヤー1のブロックチェーンです。このコンセンサスメカニズムは、プルーフ・オブ・ステークとプルーフ・オブ・オーソリティーの機能を組み合わせたものです。Pegoには、コミュニティーのメンバーがネットワークパラメータの調整やその他のプロトコルのアップグレードについて投票できるシステムがあります。",
     "pgn": "PGNはEthereumのレイヤー2のスケーリングソリューションです。OptimismのオープンソースOPスタック上に構築されているため、Optimismと同様にオプティミスティック・ロールアップ・テクノロジーを使用しています。PGNは、公共財への資金提供を支援するためのネットワークとして、Gitcoinチームによって作成されました。そのために、PGNは、Gitcoin Grantsプラットフォームが使用している主なネットワークです。",
+    "plume": "Plume is a Layer 1 blockchain that is focused on the Real World Assets (RWA) space. It does not just aim to tokenise RWA, but rather to create a network that enables using RWA just like crypto, such as trading, lending, borrowing, and more.",
     "polygon": "Polygon PoSは、Polygonコミュニティーによって選出された一連のバリデーターによって保護されているEthereumのサイドチェーンです。特にNFT分野では、最も人気のあるスマートコントラクトブロックチェーンの1つです。Polygon PoSネットワーク以外にも、PolygonはPolygon zkEVMのような他のL2ソリューションの開発にも取り組んでいます。",
     "polygon-zkevm": "Polygon zkEVMは、新しく革新的なL2スケーリングソリューションであり、zkEVMの最初の実装の1つです。zkEVMテクノロジーは、オプティミスティック・ロールアップなどの他のL2ソリューションと比較して強力なセキュリティー保証を維持しながら、他の多くのL2ソリューションよりも低いコストで高いスループットを実現します。",
     "pulsechain": "PulseChainは、Ethereumブロックチェーンのフルフォークとして構築されたレイヤー1のブロックチェーンです。つまり、フォークされたネットワークが開始されるまで、同じ取引履歴を共有しているということです。PulseChainはHEXコミュニティーから生まれたもので、Ethereumよりも低い手数料を提供するために作られました。",

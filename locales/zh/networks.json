@@ -89,6 +89,7 @@
     "palm": "Palm 是以太坊侧链，采用了权威证明（PoA）共识机制，致力于使用相关现实和数字资产创建、交易 NFT，具备资产桥接功能，用户可在以太坊和 Palm 之间转移代币。Palm 上已经发布了系列大型 NFT 项目，例如当代艺术家达米恩·赫斯特（Damien Hirst）的《The Currency（货币）》。",
     "pego": "Pego 是第 1 层（Layer 1）区块链，采用了名为 Parlia 的权益权威证明（PoSA）共识机制，融合了权威证明（PoA）和权益证明（PoS）的特色。Pego 系统允许社区成员就调整网络参数和升级其他协议的事项进行投票表决。",
     "pgn": "PGN 是以太坊的第 2 层（Layer 2）扩展解决方案，采用 Optimism 的开源 OP Stack，与 Optimism 一样，使用了 Optimistic Rollup 技术。PGN 网络由 Gitcoin 团队开发，旨在支持资助公共产品。PGN 是 Gitcoin Grants 平台的主网。",
+    "plume": "Plume is a Layer 1 blockchain that is focused on the Real World Assets (RWA) space. It does not just aim to tokenise RWA, but rather to create a network that enables using RWA just like crypto, such as trading, lending, borrowing, and more.",
     "polygon": "Polygon PoS 是以太坊的侧链，由 Polygon 社区选组产生的一组验证者来维护安全。这是最受欢迎的智能合约区块链之一，尤其是在 NFT 领域。除了 Polygon PoS 网络，Polygon 也在开发一组其他第 2 层（L2）解决方案，例如 Polygon zkEVM。",
     "polygon-zkevm": "Polygon zkEVM 是一种第 2 层（L2）创新解决方案，也是 zkEVM 最早的应用之一。相比其他 L2 解决方案，例如 Optimistic Rollup，zkEVM 技术可以在较低的成本下提供更高的吞吐量，同时保证强大的安全性。",
     "pulsechain": "PulseChain 是作为以太坊区块链的完整分叉而构建的第 1 层（Layer 1）区块链，也就是说在分叉网络启动之前，它与以太坊共享相同的交易历史记录。PulseChain 是由 HEX 社区创建的，旨在提供比以太坊更低的费用。",

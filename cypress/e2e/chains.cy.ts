@@ -158,6 +158,7 @@ const TEST_ADDRESSES = {
   [ChainId.MorphHolesky]: '0xA134B3B2F11B861953FF569Be3D0111d997cD537',
   [ChainId.NeoXTestnetT4]: '0x214806ed35613afbe0064b65a9f814dee40aed5d',
   [ChainId.OPSepoliaTestnet]: '0xDd3287043493E0a08d2B348397554096728B459c',
+  [ChainId.PlumeTestnet]: '0x7561dAB2b8c9709A5D550FAe8F617aF7b11547D1',
   [ChainId.PolygonzkEVMCardonaTestnet]: '0x2a8ecB983ab270cB31077C9ff6b5eC9739b4845f',
   [ChainId.ScrollSepoliaTestnet]: '0xBF1E9dc0f7c2186346544BF985321e179c3d186c',
   [ChainId.Sepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
