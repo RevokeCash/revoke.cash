@@ -27,38 +27,47 @@ interface AllowanceUpdateProperties {
 const PRICE_STALE_TIME = 5 * 60 * 1000; // 5 minutes
 
 export const useAllowances = (address: Address, events: TokenEvent[] | undefined, chainId: number) => {
-  const [allowances, setAllowances] = useState<TokenAllowanceData[]>();
   const publicClient = usePublicClient({ chainId })!;
 
-  // Core allowances query(non-blocking set to null)
-  const { data, isLoading, error } = useQuery<TokenAllowanceData[], Error>({
+  // Core allowances query (non-blocking, pricing set to null)
+  const {
+    data: baseAllowances,
+    isLoading,
+    error,
+  } = useQuery<TokenAllowanceData[], Error>({
     queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
     queryFn: async () => {
       const allowances = getAllowancesFromEvents(address, events!, publicClient, chainId);
       analytics.track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
-    // If events (transfers + approvals) don't change, derived allowances also shouldn't change, even if allowances
-    // are used on-chain. The only exception would be incorrectly implemented tokens that don't emit correct events
     staleTime: Number.POSITIVE_INFINITY,
     enabled: !isNullish(address) && !isNullish(chainId) && !isNullish(events),
   });
 
+  const [localAllowances, setLocalAllowances] = useState<TokenAllowanceData[] | undefined>(undefined);
+
+  useLayoutEffect(() => {
+    if (baseAllowances) {
+      setLocalAllowances(baseAllowances);
+    }
+  }, [baseAllowances]);
+
   const uniqueContracts = useMemo(() => {
-    if (!data) return [];
+    if (!localAllowances) return [];
     const seen = new Set<string>();
-    return data.filter((allowance) => {
+    return localAllowances.filter((allowance) => {
       const key = `${allowance.chainId}-${allowance.contract.address}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
-  }, [data]);
+  }, [localAllowances]);
 
   const uniqueSpenders = useMemo(() => {
-    if (!data) return [];
+    if (!localAllowances) return [];
     const seen = new Set<string>();
-    return data
+    return localAllowances
       .filter((allowance) => allowance.payload?.spender)
       .filter((allowance) => {
         const key = `${allowance.chainId}-${allowance.payload!.spender}`;
@@ -66,7 +75,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
         seen.add(key);
         return true;
       });
-  }, [data]);
+  }, [localAllowances]);
 
   const priceQueries = useQueries({
     queries: uniqueContracts.map((allowance) => ({
@@ -109,10 +118,10 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
   }, [uniqueSpenders, spenderQueries]);
 
   // Merge async data with allowances reactively
-  const enhancedAllowances = useMemo(() => {
-    if (!data) return undefined;
+  const allowances = useMemo(() => {
+    if (!localAllowances) return undefined;
 
-    return data.map((allowance) => {
+    return localAllowances.map((allowance) => {
       const priceKey = `${allowance.chainId}-${allowance.contract.address}`;
       const spenderKey = allowance.payload?.spender ? `${allowance.chainId}-${allowance.payload.spender}` : null;
 
@@ -125,16 +134,10 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
           ...allowance.metadata,
           price,
         },
-        spenderData, // Add spender data for sorting/filtering
+        spenderData,
       };
     });
-  }, [data, priceMap, spenderMap]);
-
-  useLayoutEffect(() => {
-    if (enhancedAllowances) {
-      setAllowances(enhancedAllowances);
-    }
-  }, [enhancedAllowances]);
+  }, [localAllowances, priceMap, spenderMap]);
 
   const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
     return a.contract.address === b.contract.address && a.chainId === b.chainId;
@@ -152,7 +155,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
   };
 
   const onRevoke = (allowance: TokenAllowanceData) => {
-    setAllowances((previousAllowances) => {
+    setLocalAllowances((previousAllowances) => {
       const newAllowances = previousAllowances!.filter((other) => !allowanceEquals(other, allowance));
 
       // If the token has a balance and we just revoked the last allowance, we need to add the token back to the list
@@ -170,9 +173,6 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
     console.debug('Reloading data');
 
-    // Invalidate blockNumber query, which triggers a refetch of the events, which in turn triggers a refetch of the allowances
-    // We do not immediately refetch the allowances here, but we want to make sure that allowances will be refetched when
-    // users navigate to the allowances page again
     await queryClient.invalidateQueries({
       queryKey: ['blockNumber', chainId],
       refetchType: 'none',
@@ -187,7 +187,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
       return onRevoke(allowance);
     }
 
-    setAllowances((previousAllowances) => {
+    setLocalAllowances((previousAllowances) => {
       return previousAllowances!.map((other) => {
         if (!allowanceEquals(other, allowance)) return other;
 
