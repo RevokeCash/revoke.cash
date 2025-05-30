@@ -133,10 +133,11 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OctaSpace,
   ChainId.Ethernity,
   ChainId.XDCNetwork,
+  ChainId.BasedAI,
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
-  ChainId.Sepolia,
+  ChainId.EthereumSepolia,
   ChainId.Holesky,
   ChainId.BNBSmartChainTestnet,
   ChainId.Amoy,
@@ -421,6 +422,18 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId['AvalancheC-Chain'],
+  }),
+  [ChainId.BasedAI]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.BasedAI,
+    name: 'BasedAI',
+    nativeTokenCoingeckoId: 'basedai',
+    logoUrl: '/assets/images/vendor/chains/basedai.jpg',
+    explorerUrl: 'https://explorer.bf1337.org',
+    etherscanCompatibleApiUrl: 'https://explorer.bf1337.org/api',
+    rpc: {
+      main: 'https://mainnet.basedaibridge.com/rpc',
+    },
   }),
   [ChainId.Base]: new Chain({
     type: SupportType.PROVIDER,
@@ -1042,6 +1055,19 @@ export const CHAINS = {
     //   apiKey: RESERVOIR_API_KEY,
     //   apiUrl: 'https://api.reservoir.tools',
     // }),
+  }),
+  [ChainId.EthereumSepolia]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.EthereumSepolia,
+    name: 'Ethereum Sepolia',
+    logoUrl: '/assets/images/vendor/chains/ethereum.svg',
+    rpc: {
+      main: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      free: 'https://ethereum-sepolia-rpc.publicnode.com',
+    },
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.EthereumMainnet,
   }),
   [ChainId.Ethernity]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2193,19 +2219,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://seitrace.com/pacific-1/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
-  }),
-  [ChainId.Sepolia]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.Sepolia,
-    name: 'Ethereum Sepolia',
-    logoUrl: '/assets/images/vendor/chains/ethereum.svg',
-    rpc: {
-      main: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
-      free: 'https://ethereum-sepolia-rpc.publicnode.com',
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.EthereumMainnet,
   }),
   [ChainId.Shape]: new Chain({
     type: SupportType.PROVIDER,

@@ -31,7 +31,7 @@ export const useMarketplaces = () => {
       chains: [
         // See https://github.com/ProjectOpenSea/seaport
         ChainId.EthereumMainnet,
-        ChainId.Sepolia,
+        ChainId.EthereumSepolia,
         ChainId.PolygonMainnet,
         ChainId.Amoy,
         ChainId.OPMainnet,
