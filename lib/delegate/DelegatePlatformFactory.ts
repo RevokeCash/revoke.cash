@@ -35,13 +35,13 @@ export const DELEGATE_SUPPORTED_CHAINS: ChainId[] = [
   ChainId.Zora,
 
   // Testnets
-  ChainId.Sepolia, // Ethereum (Sepolia)
+  ChainId.EthereumSepolia, // Ethereum (Sepolia)
   ChainId.AbstractSepoliaTestnet,
   ChainId.Holesky,
   ChainId.BaseSepoliaTestnet,
   ChainId.BerachainbArtio,
 ];
-export const WARM_SUPPORTED_CHAINS: ChainId[] = [ChainId.EthereumMainnet, ChainId.Sepolia];
+export const WARM_SUPPORTED_CHAINS: ChainId[] = [ChainId.EthereumMainnet, ChainId.EthereumSepolia];
 
 export function createDelegatePlatforms(publicClient: PublicClient, chainId: ChainId): DelegatePlatform[] {
   const platforms: DelegatePlatform[] = [];
