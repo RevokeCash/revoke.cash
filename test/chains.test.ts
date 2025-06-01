@@ -41,12 +41,7 @@ describe('Chain Support', () => {
         expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
         expect(nativeToken, `${chainName} native token`).to.exist;
 
-        const NO_PRICING: number[] = [
-          ChainId.CrabNetwork,
-          ChainId.Palm,
-          ChainId.PegoNetwork,
-          ChainId.GoldXChainMainnet,
-        ];
+        const NO_PRICING: number[] = [ChainId.CrabNetwork, ChainId.Palm, ChainId.PegoNetwork];
 
         if (!isTestnetChain(chainId) && !NO_PRICING.includes(chainId)) {
           expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;

@@ -26,7 +26,7 @@ const AccountTypeLabel = ({ address }: Props) => {
     enabled: !isNullish(address) && !isNullish(publicClient?.chain),
   });
 
-  if (!isMounted || isLoading) return <Label className="bg-transparent">&nbsp;</Label>;
+  if (!isMounted || isLoading || !accountType) return null;
 
   const classes = twMerge('bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100');
 
