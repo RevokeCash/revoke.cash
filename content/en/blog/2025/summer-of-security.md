@@ -1,6 +1,6 @@
 ---
 title: 'Summer of Security: Revoke for Free, Every Week'
-description:
+description: At Revoke.cash, we’ve always encouraged users to make revoking token approvals a regular habit. That is why we've partnered with Candide to sponsor gas fees for one batch revoke per week per user.
 date: 2025-06-03
 author: Rosco Kalis
 translator: <Your Name Here (or remove)>
@@ -13,7 +13,7 @@ At Revoke.cash, we’ve always encouraged users to make revoking token approvals
 
 But let’s be honest: no one loves paying gas fees. Even a small fee can feel like a hurdle when you’re just trying to stay safe. So this summer, we’re making it easier than ever to clean up your wallet.
 
-We’ve integrated [Candide](https://candide.dev/) to sponsor your gas fees for **one free batch revoke per week**. That means every week, you can revoke some token approvals without spending a single cent on gas.
+We’ve integrated with [Candide](https://candide.dev/) to sponsor your gas fees for **one free batch revoke per week**. That means every week, you can revoke some token approvals without spending a single cent on gas.
 
 ## Why Revoking Matters
 
