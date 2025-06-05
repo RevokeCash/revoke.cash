@@ -30,7 +30,7 @@ export class WarmPlatform extends AbstractDelegatePlatform {
         return [];
       }
 
-      const chainId = await this.publicClient.getChainId();
+      const chainId = await this.chainId;
 
       // Return delegations where cold wallets have delegated to this wallet
       return [
@@ -61,7 +61,7 @@ export class WarmPlatform extends AbstractDelegatePlatform {
         args: [wallet],
       })) as [Address, bigint][];
 
-      const chainId = await this.publicClient.getChainId();
+      const chainId = await this.chainId;
 
       // Return the delegation from this cold wallet to its hot wallet
 

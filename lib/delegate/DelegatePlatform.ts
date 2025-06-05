@@ -27,6 +27,7 @@ export interface TransactionData {
 
 export interface DelegatePlatform {
   name: string;
+  chainId: Promise<number>;
   publicClient: PublicClient;
   getDelegations: (wallet: Address) => Promise<Delegation[]>;
   revokeDelegation: (delegation: Delegation) => Promise<TransactionData>;

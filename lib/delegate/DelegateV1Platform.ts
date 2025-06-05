@@ -40,7 +40,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
         args: [wallet],
       })) as Address[];
 
-      const chainId = await this.publicClient.getChainId();
+      const chainId = await this.chainId;
 
       const delegations: Delegation[] = [];
 
@@ -102,7 +102,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
         args: [wallet],
       })) as [number, Address, Address, Address, bigint][];
 
-      const chainId = await this.publicClient.getChainId();
+      const chainId = await this.chainId;
       const delegations: Delegation[] = [];
 
       delegationsRaw.forEach(([delegationType, delegator, delegate, contract, tokenId]) => {

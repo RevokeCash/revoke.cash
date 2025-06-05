@@ -28,7 +28,8 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
         args: [wallet],
       })) as DelegateV2Result[];
 
-      const chainId = await this.publicClient.getChainId();
+      const chainId = await this.chainId;
+      console.log('The chainId', chainId);
 
       return delegations.map((delegation) => {
         const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
@@ -63,7 +64,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
         args: [wallet],
       })) as DelegateV2Result[];
 
-      const chainId = await this.publicClient.getChainId();
+      const chainId = await this.chainId;
 
       return delegations.map((delegation) => {
         const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;

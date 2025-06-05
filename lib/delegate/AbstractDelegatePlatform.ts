@@ -20,6 +20,10 @@ export abstract class AbstractDelegatePlatform implements DelegatePlatform {
     return this.getPlatformName();
   }
 
+  get chainId(): Promise<number> {
+    return this.publicClient.getChainId();
+  }
+
   public async getDelegations(wallet: Address): Promise<Delegation[]> {
     const outgoingDelegations = await this.getOutgoingDelegations(wallet);
     const incomingDelegations = await this.getIncomingDelegations(wallet);
