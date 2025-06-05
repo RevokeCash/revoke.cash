@@ -104,10 +104,12 @@
       "token": "Token"
     },
     "tooltips": {
-      "all": "Una delegación de nivel total permite al delegado gestionar todos tus activos, en todos los contratos, en tu nombre.",
-      "erc20": "Una delegación de nivel de token ERC20 permite al delegado gestionar un token ERC20 específico en tu nombre.",
-      "erc721": "Una delegación de nivel de token ERC721 permite al delegado gestionar un token ERC721 (NFT) específico en tu nombre.",
-      "token": "Una delegación de nivel de token le da al delegado permiso para gestionar un token específico (como un NFT o token ERC20) en tu nombre."
+      "all": "Una delegación a nivel general permite al delegado gestionar todos tus activos en todos los contratos en tu nombre.",
+      "erc20": "Una delegación a nivel de token ERC20 permite al delegado gestionar un token ERC20 específico en tu nombre.",
+      "erc721": "Una delegación a nivel de token ERC721 permite al delegado gestionar un token ERC721 (NFT) específico en tu nombre.",
+      "token": "Una delegación a nivel de token otorga al delegado el permiso para gestionar un token específico (como un NFT particular o un token ERC20) en tu nombre.",
+      "erc1155": "Una delegación a nivel de token ERC1155 permite al delegado gestionar un token ERC1155 específico en tu nombre.",
+      "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para gestionar todos los activos de un contrato específico en tu nombre."
     },
     "columns": {
       "type": "Tipo",

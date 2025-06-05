@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { createDelegatePlatforms } from 'lib/delegate/DelegatePlatformFactory';
-import { isNullish } from 'lib/utils';
+import { delegationEquals } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { useLayoutEffect, useState } from 'react';
 import type { Address, PublicClient } from 'viem';
@@ -60,15 +60,7 @@ export const useDelegations = () => {
 
   const onRevoke = (delegation: Delegation) => {
     setDelegations((previousDelegations) => {
-      return previousDelegations.filter((other) => {
-        if (isNullish(other.delegator) || isNullish(other.delegate)) return true;
-        if (other.delegator !== delegation.delegator) return true;
-        if (other.delegate !== delegation.delegate) return true;
-        if (other.type !== delegation.type) return true;
-        if (other.contract !== delegation.contract) return true;
-        if (other.tokenId !== delegation.tokenId) return true;
-        return false;
-      });
+      return previousDelegations.filter((other) => !delegationEquals(other, delegation));
     });
   };
 

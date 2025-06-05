@@ -107,7 +107,9 @@
       "all": "An all level delegation allows the delegate to manage all of your assets, across all contracts, on your behalf.",
       "erc20": "An ERC20 token level delegation allows the delegate to manage a specific ERC20 token on your behalf.",
       "erc721": "An ERC721 token level delegation allows the delegate to manage a specific ERC721(NFT) token on your behalf.",
-      "token": "A token-level delegation gives the  delegate the permission to manage a specific token (like a particular NFT or ERC20 token) on your behalf."
+      "token": "A token-level delegation gives the  delegate the permission to manage a specific token (like a particular NFT or ERC20 token) on your behalf.",
+      "erc1155": "An ERC1155 token level delegation allows the delegate to manage a specific ERC1155 token on your behalf.",
+      "contract": "A contract-level delegation gives the delegate the permission to manage all of the assets on a specific contract on your behalf."
     },
     "columns": {
       "type": "Type",

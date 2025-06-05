@@ -1,6 +1,7 @@
 'use client';
 
 import { type Row, type RowData, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
+import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -20,13 +21,13 @@ export enum ColumnId {
   CONTROLS = 'Controls',
 }
 
-// Accessors for delegation data - these can be used for sorting and filtering
+// Simple property accessors - can use strings directly since these are basic property lookups
 export const accessors = {
-  type: (delegation: Delegation) => delegation.type,
-  delegator: (delegation: Delegation) => delegation.delegator,
-  delegate: (delegation: Delegation) => delegation.delegate,
-  contract: (delegation: Delegation) => delegation.contract,
-  platform: (delegation: Delegation) => delegation.platform,
+  type: 'type' as const,
+  delegator: 'delegator' as const,
+  delegate: 'delegate' as const,
+  contract: 'contract' as const,
+  platform: 'platform' as const,
 };
 
 // sorting functions
@@ -82,7 +83,7 @@ const createColumns = (t: any, incoming: boolean) => {
   const commonColumns = [
     columnHelper.accessor(accessors.type, {
       id: ColumnId.TYPE,
-      header: () => t('address.delegations.columns.type'),
+      header: () => <HeaderCell i18nKey="address.delegations.columns.type" />,
       cell: (info) => <DelegationTypeCell delegation={info.row.original} />,
       enableSorting: true,
       sortingFn: customSortingFns.type,
@@ -93,7 +94,7 @@ const createColumns = (t: any, incoming: boolean) => {
     // Contract column
     columnHelper.accessor(accessors.contract, {
       id: ColumnId.CONTRACT,
-      header: () => t('address.delegations.columns.contract'),
+      header: () => <HeaderCell i18nKey="address.delegations.columns.contract" />,
       cell: (info) => <ContractCell delegation={info.row.original} />,
       enableSorting: true,
       sortingFn: sortingFns.alphanumeric,
@@ -102,7 +103,7 @@ const createColumns = (t: any, incoming: boolean) => {
     // Platform column
     columnHelper.accessor(accessors.platform, {
       id: ColumnId.PLATFORM,
-      header: () => t('address.delegations.columns.platform'),
+      header: () => <HeaderCell i18nKey="address.delegations.columns.platform" />,
       cell: (info) => <PlatformCell delegation={info.row.original} />,
       enableSorting: true,
       sortingFn: sortingFns.alphanumeric,
@@ -119,7 +120,7 @@ const createColumns = (t: any, incoming: boolean) => {
       // Delegator column (specific to incoming)
       columnHelper.accessor(accessors.delegator, {
         id: ColumnId.DELEGATOR,
-        header: () => t('address.delegations.columns.delegator'),
+        header: () => <HeaderCell i18nKey="address.delegations.columns.delegator" />,
         cell: (info) => <DelegatorCell delegation={info.row.original} />,
         enableSorting: true,
         sortingFn: sortingFns.alphanumeric,
@@ -136,7 +137,7 @@ const createColumns = (t: any, incoming: boolean) => {
     // Delegate column (specific to outgoing)
     columnHelper.accessor(accessors.delegate, {
       id: ColumnId.DELEGATE,
-      header: () => t('address.delegations.columns.delegate'),
+      header: () => <HeaderCell i18nKey="address.delegations.columns.delegate" />,
       cell: (info) => <DelegateCell delegation={info.row.original} />,
       enableSorting: true,
       sortingFn: sortingFns.alphanumeric,

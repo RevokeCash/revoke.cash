@@ -15,6 +15,7 @@ export interface ConcurrencyLimit {
 
 export enum TransactionType {
   REVOKE = 'revoke',
+  DELEGATION_REVOKE = 'delegation_revoke',
   UPDATE = 'update',
   SESSION_REVOKE = 'session_revoke',
   DONATE = 'donate',

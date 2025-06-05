@@ -10,7 +10,7 @@ import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
 
 // Function to generate a unique key for a delegation
-const getDelegationKey = (delegation: Delegation) => {
+export const getDelegationKey = (delegation: Delegation) => {
   return `${delegation.platform}-${delegation.type}-${delegation.delegator}-${delegation.delegate}-${delegation.contract || 'null'}-${delegation.tokenId || 'null'}`;
 };
 
@@ -23,7 +23,7 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
   // Create revoking function for a single delegation
   const revoke = wrapTransaction({
     transactionKey: getDelegationKey(delegation),
-    transactionType: TransactionType.REVOKE,
+    transactionType: TransactionType.DELEGATION_REVOKE,
     executeTransaction: async () => {
       if (!walletClient) throw new Error('No wallet client available');
 
@@ -52,6 +52,8 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
         chain: publicClient.chain,
         account: txData.account ?? account,
       });
+
+      console.log('Transaction hash:', hash);
 
       const waitForConfirmation = async () => {
         const receipt = await waitForTransactionConfirmation(hash, publicClient);

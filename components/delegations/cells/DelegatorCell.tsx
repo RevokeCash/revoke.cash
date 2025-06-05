@@ -1,6 +1,5 @@
 'use client';
-
-import AddressDisplay from 'components/address/AddressDisplay';
+import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
 }
 
 const DelegatorCell = ({ delegation }: Props) => {
-  return <AddressDisplay address={delegation.delegator} />;
+  return <AddressCell address={delegation.delegator} chainId={delegation.chainId} />;
 };
 
 export default DelegatorCell;
