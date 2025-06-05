@@ -79,6 +79,26 @@
       "wallets": "ウォレット"
     }
   },
+  "delegations": {
+    "loading": "委任情報を読み込み中...",
+    "error": "委任情報の読み込み中にエラーが発生しました",
+    "no_outgoing_delegations": "送信された委任は見つかりませんでした",
+    "no_incoming_delegations": "受信された委任は見つかりませんでした",
+    "outgoing_delegations": "送信された委任",
+    "incoming_delegations": "受信された委任",
+    "info_panel": {
+      "title": "委任とは？",
+      "description": "委任とは、他のアドレスに自分の代わりに行動する権限を与える仕組みです。これにより、各操作ごとにトークンの承認を行わなくても、他のウォレットやコントラクトに資産を管理させることができます。",
+      "what_are_delegations": "委任の種類",
+      "delegations_explanation_1": "全体レベルの委任では、すべての資産に対して代理行動が可能になります",
+      "delegations_explanation_2": "コントラクトレベルの委任では、特定のコントラクトに対して代理行動が可能になります",
+      "delegations_explanation_3": "トークンレベルの委任では、特定のトークンに対して代理行動が可能になります",
+      "why_revoke": "なぜ委任を取り消すのか？",
+      "revoke_reason_1": "もうその代理人に自分の代理を任せたくない場合",
+      "revoke_reason_2": "代理人が悪意を持っていたり、侵害されたと疑われる場合",
+      "revoke_reason_3": "ウォレットの攻撃対象範囲を減らすため"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "許可したもの",

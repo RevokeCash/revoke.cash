@@ -84,8 +84,6 @@
     "error": "Error loading delegations",
     "no_outgoing_delegations": "No outgoing delegations found",
     "no_incoming_delegations": "No incoming delegations found",
-    "outgoing_explanation": "Outgoing delegations are permissions you have granted to other addresses to act on your behalf.",
-    "incoming_explanation": "Incoming delegations are permissions granted to you by other addresses.",
     "outgoing_delegations": "Outgoing Delegations",
     "incoming_delegations": "Incoming Delegations",
     "info_panel": {

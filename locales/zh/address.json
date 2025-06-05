@@ -84,8 +84,6 @@
     "error": "加载委托时出错",
     "no_outgoing_delegations": "未找到外发委托",
     "no_incoming_delegations": "未找到接收委托",
-    "outgoing_explanation": "外发委托是你授予其他地址代表你操作的权限。",
-    "incoming_explanation": "接收委托是其他地址授予你代表其操作的权限。",
     "outgoing_delegations": "外发委托",
     "incoming_delegations": "接收委托",
     "info_panel": {

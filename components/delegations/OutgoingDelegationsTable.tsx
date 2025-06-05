@@ -1,9 +1,10 @@
 'use client';
 
-import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import Card from 'components/common/Card';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import Error from 'components/common/Error';
-import Loader from 'components/common/Loader';
+import type Error from 'components/common/Error';
+import Table from 'components/common/table/Table';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { useTranslations } from 'next-intl';
 import NoDelegationsFound from './NoDelegationsFound';
@@ -18,7 +19,6 @@ interface Props {
 
 const OutgoingDelegationsTable = ({ delegations, isLoading, error, onRevoke }: Props) => {
   const t = useTranslations();
-  // Use the hook to get translated columns
   const columns = outgoingColumns;
 
   // Create TanStack table instance
@@ -26,66 +26,27 @@ const OutgoingDelegationsTable = ({ delegations, isLoading, error, onRevoke }: P
     data: delegations || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // Make sure we typecast the meta to fix type issues
     meta: { onRevoke } as any,
   });
 
   // Get column count for spanning loading/error/empty states
   const columnCount = table.getAllLeafColumns().length;
 
-  return (
-    <div>
-      <h2 className="mb-2 font-semibold text-lg">{t('address.delegations.outgoing_delegations')}</h2>
-      <div className="border border-black dark:border-white rounded-lg overflow-x-scroll whitespace-nowrap scrollbar-hide">
-        <table className="w-full border-collapse">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="border-b border-black dark:border-white h-10">
-                {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="text-left px-2 whitespace-nowrap">
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {isLoading && (
-              <tr>
-                <td colSpan={columnCount} className="py-4 text-center">
-                  <Loader isLoading={true} loadingMessage={t('address.delegations.loading')} />
-                </td>
-              </tr>
-            )}
-
-            {error && (
-              <tr>
-                <td colSpan={columnCount} className="py-4">
-                  <Error error={error} />
-                </td>
-              </tr>
-            )}
-
-            {!isLoading && !error && delegations.length === 0 && (
-              <NoDelegationsFound incoming={false} colSpan={columnCount} />
-            )}
-
-            {!isLoading &&
-              !error &&
-              delegations.length > 0 &&
-              table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-2 py-2">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+  const title = (
+    <div className="flex items-center gap-2">
+      <div>{t('address.delegations.outgoing_delegations')}</div>
     </div>
+  );
+  return (
+    <Card title={title} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+      <Table
+        table={table}
+        loading={isLoading}
+        emptyChildren={<NoDelegationsFound incoming={false} colSpan={columnCount} />}
+        loaderRows={2}
+        error={error}
+      />
+    </Card>
   );
 };
 

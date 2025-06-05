@@ -16,10 +16,9 @@ const NoDelegationsFound = ({ incoming = false, colSpan }: Props) => {
 
   const content = (
     <>
-      <h2 className="text-lg font-semibold">
+      <p>
         {incoming ? t('address.delegations.no_incoming_delegations') : t('address.delegations.no_outgoing_delegations')}
-      </h2>
-      <p>{incoming ? t('address.delegations.incoming_explanation') : t('address.delegations.outgoing_explanation')}</p>
+      </p>
     </>
   );
 

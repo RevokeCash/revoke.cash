@@ -84,8 +84,6 @@
     "error": "Error al cargar las delegaciones",
     "no_outgoing_delegations": "No se encontraron delegaciones salientes",
     "no_incoming_delegations": "No se encontraron delegaciones entrantes",
-    "outgoing_explanation": "Las delegaciones salientes son permisos que has otorgado a otras direcciones para actuar en tu nombre.",
-    "incoming_explanation": "Las delegaciones entrantes son permisos que otras direcciones te han otorgado a ti.",
     "outgoing_delegations": "Delegaciones Salientes",
     "incoming_delegations": "Delegaciones Entrantes",
     "info_panel": {
