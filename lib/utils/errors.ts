@@ -1,10 +1,31 @@
 import { stringify } from 'viem';
 
-export const isUserRejectionError = (message?: string): boolean => {
-  const lowercaseMessage = message?.toLowerCase();
+export const isUserRejectionError = (error?: string | any): boolean => {
+  if (typeof error !== 'string') {
+    return isUserRejectionError(parseErrorMessage(error)) || isUserRejectionError(stringifyError(error));
+  }
+
+  // This is a user rejection error, but we want to handle it separately to fall back to "queued" batching
+  if (isAccountUpgradeRejectionError(error)) return false;
+
+  const lowercaseMessage = error?.toLowerCase();
+
   if (lowercaseMessage?.includes('user denied')) return true;
   if (lowercaseMessage?.includes('user rejected')) return true;
   if (lowercaseMessage?.includes('transaction was rejected')) return true;
+
+  return false;
+};
+
+export const isAccountUpgradeRejectionError = (error?: string | any): boolean => {
+  if (typeof error !== 'string') {
+    return (
+      isAccountUpgradeRejectionError(parseErrorMessage(error)) || isAccountUpgradeRejectionError(stringifyError(error))
+    );
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('user rejected account upgrade')) return true;
   return false;
 };
 

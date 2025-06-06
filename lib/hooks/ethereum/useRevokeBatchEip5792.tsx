@@ -16,6 +16,7 @@ import {
   mapTransactionRequestToEip5792Call,
   mapWalletCallReceiptToTransactionSubmitted,
 } from 'lib/utils/eip5792';
+import { isBatchSizeError } from 'lib/utils/errors';
 import type PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters } from 'viem'; // viem has a issue with typing the capability. Until they fix it, we manually importing it.
 import { useWalletClient } from 'wagmi';
@@ -136,11 +137,13 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
         }),
       );
     } catch (error) {
-      if (error instanceof Error && error.message.includes('Batch size cannot exceed')) {
+      if (isBatchSizeError(error)) {
         const newMaxBatchSize = getNewMaxBatchSize(maxBatchSize, callsToSubmit.length);
-        console.log(error.message, 'reducing batch size to', newMaxBatchSize);
+        console.log((error as Error).message, 'reducing batch size to', newMaxBatchSize);
         return revoke(REVOKE_QUEUE, tipDollarAmount, newMaxBatchSize);
       }
+
+      throw error;
     }
 
     trackBatchRevoke(selectedChainId, address, allowancesToSubmit, tipDollarAmount, 'eip5792');

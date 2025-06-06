@@ -2,6 +2,7 @@
 
 import { type OnUpdate, type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
 import { walletSupportsEip5792 } from 'lib/utils/eip5792';
+import { isAccountUpgradeRejectionError } from 'lib/utils/errors';
 import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
@@ -35,7 +36,16 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
         : walletCapabilities.supportsEip5792;
 
       if (supportsEip5792) {
-        await revokeEip5792(REVOKE_QUEUE, tipDollarAmount);
+        try {
+          await revokeEip5792(REVOKE_QUEUE, tipDollarAmount);
+        } catch (error) {
+          // Fall back to queued transactions if the user rejected the account upgrade
+          if (isAccountUpgradeRejectionError(error)) {
+            await revokeQueuedTransactions(REVOKE_QUEUE, tipDollarAmount);
+          }
+
+          throw error;
+        }
       } else {
         await revokeQueuedTransactions(REVOKE_QUEUE, tipDollarAmount);
       }
