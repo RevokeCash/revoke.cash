@@ -23,7 +23,7 @@ Regularly revoking approvals is the crypto equivalent of locking your doors. And
 
 ## Who Can Use It?
 
-To take advantage of the free revoke sponsorship, you’ll need a wallet that supports EIP-4337 Paymasters, such as [Ambire](https://ambire.com/) or [Coinbase Wallet](https://www.coinbase.com/wallet). You also need to use one of the following networks:
+To take advantage of the free revoke sponsorship, you’ll need a wallet that supports EIP-4337 Paymasters, such as [Ambire](https://ambire.com/) or [Coinbase Smart Wallet](https://www.coinbase.com/wallet/smart-wallet) (not the "regular" Coinbase Wallet). You also need to use one of the following networks:
 
 - Optimism
 - Base
