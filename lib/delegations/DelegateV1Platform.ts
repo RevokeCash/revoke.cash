@@ -10,26 +10,32 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      const contractDelegations = await this.publicClient.readContract({
+      const contractDelegationsPromise = this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getContractLevelDelegations',
         args: [wallet],
       });
 
-      const tokenDelegations = await this.publicClient.readContract({
+      const tokenDelegationsPromise = this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getTokenLevelDelegations',
         args: [wallet],
       });
 
-      const allDelegates = await this.publicClient.readContract({
+      const allDelegatesPromise = this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getDelegatesForAll',
         args: [wallet],
       });
+
+      const [contractDelegations, tokenDelegations, allDelegates] = await Promise.all([
+        contractDelegationsPromise,
+        tokenDelegationsPromise,
+        allDelegatesPromise,
+      ]);
 
       const delegations: Delegation[] = [];
 
