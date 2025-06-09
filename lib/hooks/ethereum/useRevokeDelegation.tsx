@@ -1,10 +1,10 @@
 'use client';
 
+import { AggregateDelegatePlatform } from 'lib/delegate/AggregateDelegatePlatform';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
-import { createDelegatePlatforms } from 'lib/delegate/DelegatePlatformFactory';
 import { TransactionType } from 'lib/interfaces';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
-import { waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from 'lib/utils';
+import { getWalletAddress, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
@@ -28,32 +28,19 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
       if (!walletClient) throw new Error('No wallet client available');
 
       // Get the appropriate delegate platform
-      const platforms = createDelegatePlatforms(publicClient, delegation.chainId);
-      const platform = platforms.find((p) => p.name === delegation.platform);
-
-      if (!platform) {
-        throw new Error(`Platform ${delegation.platform} not found for chain ${delegation.chainId}`);
-      }
+      const delegationPlatform = new AggregateDelegatePlatform(publicClient, delegation.chainId);
 
       // Get transaction parameters from the platform
       console.log(`Revoking delegation of type ${delegation.type} on platform ${delegation.platform}`);
       console.log('Delegation data:', delegation);
 
-      const txData = await platform.revokeDelegation(delegation);
-      console.log('Transaction data:', txData);
+      const transactionData = await delegationPlatform.prepareRevokeDelegation(delegation);
 
-      // Get the connected wallet address
-      const [account] = await walletClient.getAddresses();
-      console.log('Connected account:', account);
-
-      // Execute the transaction using the existing utility
       const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, {
-        ...txData,
-        chain: publicClient.chain,
-        account: txData.account ?? account,
+        ...transactionData,
+        chain: walletClient.chain,
+        account: await getWalletAddress(walletClient),
       });
-
-      console.log('Transaction hash:', hash);
 
       const waitForConfirmation = async () => {
         const receipt = await waitForTransactionConfirmation(hash, publicClient);
@@ -76,65 +63,6 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
     updateTransaction,
     handleTransaction,
   });
-  console.log('This is the revoke: ', revoke);
 
   return { revoke };
 };
-
-// // Hook for revoking all delegations from a specific platform
-// export const useRevokeAllDelegations = (platformName: string, chainId: number, onRevoke: () => void) => {
-//   const { updateTransaction } = useTransactionStore();
-//   const publicClient = usePublicClient({ chainId })!;
-//   const { data: walletClient } = useWalletClient();
-//   const handleTransaction = useHandleTransaction(chainId);
-
-//   // Create revoking function for all delegations
-//   const revokeAll = wrapTransaction({
-//     transactionKey: getRevokeAllKey(platformName, chainId),
-//     transactionType: TransactionType.REVOKE,
-//     executeTransaction: async () => {
-//       if (!walletClient) throw new Error('No wallet client available');
-
-//       // Get the appropriate delegate platform
-//       const platforms = createDelegatePlatforms(publicClient, chainId);
-//       const platform = platforms.find((p) => p.name === platformName);
-
-//       if (!platform) {
-//         throw new Error(`Platform ${platformName} not found for chain ${chainId}`);
-//       }
-
-//       // Get transaction parameters for revoking all delegations
-//       const txData = await platform.revokeAllDelegations();
-
-//       // Get the connected wallet address
-//       const [account] = await walletClient.getAddresses();
-
-//       // Execute the transaction using the existing utility
-//       const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, {
-//         ...txData,
-//         chain: publicClient.chain,
-//         account,
-//       });
-
-//       const waitForConfirmation = async () => {
-//         const receipt = await waitForTransactionConfirmation(hash, publicClient);
-//         onRevoke(); // Callback after successful revocation
-//         return receipt;
-//       };
-
-//       return { hash, confirmation: waitForConfirmation() };
-//     },
-//     trackTransaction: () => {
-//       // Track analytics for revoking all delegations
-//       analytics.track('All Delegations Revoked', {
-//         chainId,
-//         platform: platformName,
-//       });
-//     },
-//     updateTransaction,
-//     handleTransaction,
-//   });
-
-//   console.log('This is the revoke: ', revokeAll);
-//   return { revokeAll };
-// };

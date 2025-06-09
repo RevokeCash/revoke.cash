@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { AggregateDelegatePlatform } from 'lib/delegate/AggregateDelegatePlatform';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
-import { createDelegatePlatforms } from 'lib/delegate/DelegatePlatformFactory';
 import { delegationEquals } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { useLayoutEffect, useState } from 'react';
@@ -17,14 +17,10 @@ const fetchDelegations = async (
 ): Promise<Delegation[]> => {
   if (!publicClient || !address) return [];
 
-  const platforms = createDelegatePlatforms(publicClient, chainId);
-
-  if (!platforms.length) return [];
+  const delegationPlatform = new AggregateDelegatePlatform(publicClient, chainId);
 
   try {
-    const allDelegationsArrays = await Promise.all(platforms.map((platform) => platform.getDelegations(address)));
-
-    return allDelegationsArrays.flat();
+    return delegationPlatform.getDelegations(address);
   } catch (error) {
     console.error('Error fetching delegations:', error);
     return [];
