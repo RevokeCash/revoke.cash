@@ -180,7 +180,7 @@ export const WARM_XYZ_ABI = parseAbi([
   'function getHotWallet(address coldWallet) external view returns (address)',
   'function getHotWalletLink(address coldWallet) external view returns ((address,uint256))',
   'function removeColdWallet(address coldWallet) external',
-  'function removeExpiredWalletLinks(address hotWallet) external',
-  'function supportsInterface(bytes4 interfaceId) external view returns (bool)',
+  'function renounceHotWallet() external',
+  'function setHotWallet(address hotWalletAddress, uint256 expirationTimestamp, bool lockHotWalletAddress) external',
   'event HotWalletChanged(address coldWallet, address from, address to, uint256 expirationTimestamp)',
 ]);

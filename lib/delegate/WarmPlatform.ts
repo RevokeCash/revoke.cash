@@ -1,5 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import { WARM_XYZ_ABI } from 'lib/abis';
+import { ADDRESS_ZERO } from 'lib/constants';
 import type { Address, PublicClient } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
 import type { Delegation, TransactionData } from './DelegatePlatform';
@@ -91,8 +92,8 @@ export class WarmPlatform extends AbstractDelegatePlatform {
     return {
       address: this.address,
       abi: this.abi,
-      functionName: 'removeExpiredWalletLinks',
-      args: [delegation.delegate],
+      functionName: 'setHotWallet',
+      args: [ADDRESS_ZERO, 0n, false],
     };
   }
 }
