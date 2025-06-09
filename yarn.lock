@@ -2441,10 +2441,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^67.0.0":
-  version: 67.0.0
-  resolution: "@revoke.cash/chains@npm:67.0.0"
-  checksum: 10/26d7a30365cc2306291c8514a10d8f46964c7136de3a1a284f3a8e05911276f27b4e0a04fe7913848f906082c0cf29a538e5ce911b30d6d190a5ab767f68d4f1
+"@revoke.cash/chains@npm:^68.0.0":
+  version: 68.0.0
+  resolution: "@revoke.cash/chains@npm:68.0.0"
+  checksum: 10/4295ab9c6f595dc698dd67cf28172bbf3fe9ef2ff375a149b43437b47ef9d2fa098aa0db3768731203e0982300593552e541d26a9286ce80ed6db7c0ac410bc3
   languageName: node
   linkType: hard
 
@@ -10983,7 +10983,7 @@ __metadata:
     "@neondatabase/serverless": "npm:^0.10.4"
     "@privy-io/cross-app-connect": "npm:^0.1.7"
     "@rainbow-me/rainbowkit": "npm:^2.2.3"
-    "@revoke.cash/chains": "npm:^67.0.0"
+    "@revoke.cash/chains": "npm:^68.0.0"
     "@tailwindcss/postcss": "npm:^4.0.11"
     "@tailwindcss/typography": "npm:^0.5.16"
     "@tanstack/query-sync-storage-persister": "npm:^5.66.0"

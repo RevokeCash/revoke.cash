@@ -22,6 +22,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.SonicMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.Berachain,
+  ChainId.Unichain,
   ChainId.CoreBlockchainMainnet,
   ChainId.CronosMainnet,
   ChainId.SeiNetwork,
@@ -35,11 +36,10 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Scroll,
   ChainId.ZkSyncMainnet,
   ChainId.Ink,
-  ChainId.Unichain,
+  ChainId.MerlinMainnet,
   ChainId.TaikoAlethia,
   ChainId.BOB,
   ChainId.RootstockMainnet,
-  ChainId.MerlinMainnet,
   ChainId.PulseChain,
   ChainId.Fraxtal,
   ChainId.Morph,
@@ -50,20 +50,23 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.FlareMainnet,
   ChainId.ApeChain,
   ChainId.WorldChain,
+  ChainId.RoninMainnet,
+  ChainId.PlumeMainnet,
   ChainId.Lens,
   ChainId.FantomOpera,
   ChainId.OpBNBMainnet,
   ChainId.PolygonzkEVM,
   ChainId.ArbitrumNova,
   ChainId.MetisAndromedaMainnet,
-  ChainId.RoninMainnet,
   ChainId.MantaPacificMainnet,
+  ChainId.Lisk,
   ChainId['SongbirdCanary-Network'],
   ChainId.IOTAEVM,
   ChainId.Astar,
   ChainId.AstarzkEVM,
   999, // Hyperliquid EVM
   ChainId.TelosEVMMainnet,
+  ChainId.XDCNetwork,
   ChainId.Sophon,
   ChainId.RolluxMainnet,
   ChainId.ImmutablezkEVM,
@@ -74,6 +77,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Moonriver,
   ChainId.ZkLinkNovaMainnet,
   ChainId['WEMIX3.0Mainnet'],
+  ChainId.GravityAlphaMainnet,
   ChainId.EOSEVMNetwork,
   ChainId.OasisEmerald,
   ChainId.OasisSapphire,
@@ -85,11 +89,9 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.DogechainMainnet,
   ChainId['Re.al'],
   ChainId.Beam,
-  ChainId.Lisk,
   ChainId.Shibarium,
   ChainId.Viction,
   ChainId.HorizenEONMainnet,
-  ChainId.GravityAlphaMainnet,
   ChainId.HarmonyMainnetShard0,
   ChainId.BobaNetwork,
   ChainId.DegenChain,
@@ -132,7 +134,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
   ChainId.Ethernity,
-  ChainId.XDCNetwork,
   ChainId.BasedAI,
 ] as const;
 
@@ -1430,7 +1431,7 @@ export const CHAINS = {
       main: `https://lens-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.lens.xyz',
     },
-    // deployedContracts: { ...MULTICALL },
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.LightlinkPhoenixMainnet]: new Chain({
@@ -1956,22 +1957,27 @@ export const CHAINS = {
     }),
   }),
   [ChainId.PlumeMainnet]: new Chain({
-    type: SupportType.UNSUPPORTED,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.PlumeMainnet,
     name: 'Plume',
+    nativeTokenCoingeckoId: 'plume',
     logoUrl: '/assets/images/vendor/chains/plume.svg',
-    nativeToken: 'P',
+    etherscanCompatibleApiUrl: 'https://explorer-plume-mainnet-1.t.conduit.xyz/api',
+    rpc: {
+      main: 'https://rpc.plume.org',
+    },
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.PlumeTestnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.PlumeTestnet,
     name: 'Plume Testnet',
     logoUrl: '/assets/images/vendor/chains/plume.svg',
-    nativeToken: 'P',
     etherscanCompatibleApiUrl: 'https://explorer-plume-testnet-1.t.conduit.xyz/api',
     rpc: {
       main: 'https://testnet-rpc.plumenetwork.xyz',
     },
+    deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.PlumeMainnet,
   }),
@@ -2074,6 +2080,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://mainnet.rpc.rarichain.org/http',
     },
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId['Re.al']]: new Chain({
@@ -2250,7 +2257,7 @@ export const CHAINS = {
     infoUrl: 'https://shiden.astar.network',
     etherscanCompatibleApiUrl: 'https://blockscout.com/shiden/api',
     rpc: {
-      main: 'https://shiden.public.blastapi.io',
+      main: 'https://shiden-rpc.dwellir.com',
     },
     isCanary: true,
     correspondingMainnetChainId: ChainId.Astar,
@@ -2337,9 +2344,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'sophon',
     logoUrl: '/assets/images/vendor/chains/sophon.jpg',
     explorerUrl: 'https://sophscan.xyz',
-    rpc: {
-      logs: 'https://50104.rpc.hypersync.xyz',
-    },
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Story]: new Chain({
@@ -2532,6 +2537,7 @@ export const CHAINS = {
     chainId: ChainId.ZERONetwork,
     name: 'ZERϴ',
     logoUrl: '/assets/images/vendor/chains/zero.svg',
+    deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
   [ChainId.ZetaChainTestnet]: new Chain({
