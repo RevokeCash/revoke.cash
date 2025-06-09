@@ -80,46 +80,37 @@
     }
   },
   "delegations": {
-    "loading": "Cargando delegaciones...",
-    "error": "Error al cargar las delegaciones",
-    "no_outgoing_delegations": "No se encontraron delegaciones salientes",
-    "no_incoming_delegations": "No se encontraron delegaciones entrantes",
-    "outgoing_delegations": "Delegaciones Salientes",
-    "incoming_delegations": "Delegaciones Entrantes",
-    "info_panel": {
-      "title": "¿Qué son las delegaciones?",
-      "description": "Las delegaciones son una forma de autorizar a otras direcciones para actuar en tu nombre. Se pueden usar para permitir que otras carteras o contratos gestionen tus activos sin requerir aprobaciones de tokens para cada interacción.",
-      "what_are_delegations": "Tipos de delegaciones",
-      "delegations_explanation_1": "Las delegaciones a nivel general permiten al delegado actuar en nombre de todos tus activos",
-      "delegations_explanation_2": "Las delegaciones a nivel de contrato permiten al delegado actuar en nombre de un contrato específico",
-      "delegations_explanation_3": "Las delegaciones a nivel de token permiten al delegado actuar en nombre de un token específico",
-      "why_revoke": "¿Por qué revocar delegaciones?",
-      "revoke_reason_1": "Si ya no quieres que un delegado actúe en tu nombre",
-      "revoke_reason_2": "Si sospechas que un delegado es malicioso o ha sido comprometido",
-      "revoke_reason_3": "Para reducir la superficie de ataque de tu cartera"
-    },
-    "types": {
-      "all": "Todas",
-      "contract": "Contrato",
-      "token": "Token"
-    },
-    "tooltips": {
-      "all": "Una delegación a nivel general permite al delegado gestionar todos tus activos en todos los contratos en tu nombre.",
-      "erc20": "Una delegación a nivel de token ERC20 permite al delegado gestionar un token ERC20 específico en tu nombre.",
-      "erc721": "Una delegación a nivel de token ERC721 permite al delegado gestionar un token ERC721 (NFT) específico en tu nombre.",
-      "token": "Una delegación a nivel de token otorga al delegado el permiso para gestionar un token específico (como un NFT particular o un token ERC20) en tu nombre.",
-      "erc1155": "Una delegación a nivel de token ERC1155 permite al delegado gestionar un token ERC1155 específico en tu nombre.",
-      "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para gestionar todos los activos de un contrato específico en tu nombre."
-    },
     "columns": {
-      "type": "Tipo",
-      "delegate": "Delegado",
-      "delegator": "Delegante",
-      "contract": "Contrato",
-      "platform": "Plataforma"
+      "contract": "Asset / Contract",
+      "delegate": "Delegate",
+      "delegator": "Delegator",
+      "platform": "Platform",
+      "type": "Type"
     },
     "contract": {
       "not_applicable": "N/A"
+    },
+    "incoming_delegations": "Incoming Delegations",
+    "info_panel": {
+      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
+      "title": "What Are Delegations?"
+    },
+    "no_incoming_delegations": "No incoming delegations found",
+    "no_outgoing_delegations": "No outgoing delegations found",
+    "outgoing_delegations": "Outgoing Delegations",
+    "tooltips": {
+      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
+      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
+      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
+      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
+      "wallet": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms."
+    },
+    "types": {
+      "contract": "Contract",
+      "erc1155": "ERC1155",
+      "erc20": "ERC20",
+      "erc721": "ERC721",
+      "wallet": "Wallet"
     }
   },
   "filters": {
@@ -184,6 +175,7 @@
   "navigation": {
     "allowances": "Autorizaciones",
     "coverage": "Cobertura",
+    "delegations": "Delegations",
     "history": "Historial",
     "more": "Más",
     "sessions": "Sesiones",

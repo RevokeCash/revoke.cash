@@ -80,46 +80,37 @@
     }
   },
   "delegations": {
-    "loading": "正在加载委托...",
-    "error": "加载委托时出错",
-    "no_outgoing_delegations": "未找到外发委托",
-    "no_incoming_delegations": "未找到接收委托",
-    "outgoing_delegations": "外发委托",
-    "incoming_delegations": "接收委托",
-    "info_panel": {
-      "title": "什么是委托？",
-      "description": "委托是一种授权其他地址代表你操作的方式。它可以让其他钱包或合约在无需每次都进行代币授权的情况下管理你的资产。",
-      "what_are_delegations": "委托类型",
-      "delegations_explanation_1": "全局级别委托允许受托人代表你操作所有资产",
-      "delegations_explanation_2": "合约级别委托允许受托人代表你操作特定合约",
-      "delegations_explanation_3": "代币级别委托允许受托人代表你操作特定代币",
-      "why_revoke": "为什么要撤销委托？",
-      "revoke_reason_1": "如果你不再希望某个受托人代表你操作",
-      "revoke_reason_2": "如果你怀疑受托人存在恶意或已被攻破",
-      "revoke_reason_3": "减少钱包被攻击的风险面"
-    },
-    "types": {
-      "all": "全部",
-      "contract": "合约",
-      "token": "代币"
-    },
-    "tooltips": {
-      "all": "全级别委托允许受托人代表您管理所有合约中的所有资产。",
-      "erc20": "ERC20 令牌级别委托允许受托人代表您管理特定的 ERC20 令牌。",
-      "erc721": "ERC721 令牌级别委托允许受托人代表您管理特定的 ERC721（NFT）令牌。",
-      "token": "令牌级别委托授予受托人代表您管理特定令牌（例如特定 NFT 或 ERC20 令牌）的权限。",
-      "erc1155": "ERC1155 令牌级别委托允许受托人代表您管理特定的 ERC1155 令牌。",
-      "contract": "合约级别委托授予受托人代表您管理特定合约上所有资产的权限。"
-    },
     "columns": {
-      "type": "类型",
-      "delegate": "受托人",
-      "delegator": "委托人",
-      "contract": "合约",
-      "platform": "平台"
+      "contract": "Asset / Contract",
+      "delegate": "Delegate",
+      "delegator": "Delegator",
+      "platform": "Platform",
+      "type": "Type"
     },
     "contract": {
-      "not_applicable": "不适用"
+      "not_applicable": "N/A"
+    },
+    "incoming_delegations": "Incoming Delegations",
+    "info_panel": {
+      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
+      "title": "What Are Delegations?"
+    },
+    "no_incoming_delegations": "No incoming delegations found",
+    "no_outgoing_delegations": "No outgoing delegations found",
+    "outgoing_delegations": "Outgoing Delegations",
+    "tooltips": {
+      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
+      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
+      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
+      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
+      "wallet": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms."
+    },
+    "types": {
+      "contract": "Contract",
+      "erc1155": "ERC1155",
+      "erc20": "ERC20",
+      "erc721": "ERC721",
+      "wallet": "Wallet"
     }
   },
   "filters": {
@@ -184,6 +175,7 @@
   "navigation": {
     "allowances": "授权",
     "coverage": "覆盖范围",
+    "delegations": "Delegations",
     "history": "历史",
     "more": "更多",
     "sessions": "会话",
