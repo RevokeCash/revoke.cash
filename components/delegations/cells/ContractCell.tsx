@@ -5,7 +5,7 @@ import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
 import Loader from 'components/common/Loader';
 import { ERC20_ABI } from 'lib/abis';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { isNullish } from 'lib/utils';
 import { getTokenMetadataUnknown } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';

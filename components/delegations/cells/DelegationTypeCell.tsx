@@ -1,7 +1,7 @@
 'use client';
 import Label from 'components/common/Label';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

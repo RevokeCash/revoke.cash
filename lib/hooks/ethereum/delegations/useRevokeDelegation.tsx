@@ -1,13 +1,13 @@
 'use client';
 
-import { AggregateDelegatePlatform } from 'lib/delegate/AggregateDelegatePlatform';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { TransactionType } from 'lib/interfaces';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
 import { getWalletAddress, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { usePublicClient, useWalletClient } from 'wagmi';
-import { useHandleTransaction } from './useHandleTransaction';
+import { useHandleTransaction } from '../useHandleTransaction';
 
 // Function to generate a unique key for a delegation
 export const getDelegationKey = (delegation: Delegation) => {

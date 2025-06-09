@@ -1,5 +1,5 @@
 'use client';
-import { useDelegations } from 'lib/hooks/ethereum/useDelegations';
+import { useDelegations } from 'lib/hooks/ethereum/delegations/useDelegations';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
 import IncomingDelegationsTable from './IncomingDelegationsTable';

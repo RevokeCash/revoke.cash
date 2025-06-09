@@ -1,14 +1,14 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { AggregateDelegatePlatform } from 'lib/delegate/AggregateDelegatePlatform';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { delegationEquals } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { useLayoutEffect, useState } from 'react';
 import type { Address, PublicClient } from 'viem';
 import { usePublicClient } from 'wagmi';
-import { useAddressPageContext } from '../page-context/AddressPageContext';
+import { useAddressPageContext } from '../../page-context/AddressPageContext';
 
 const fetchDelegations = async (
   publicClient: PublicClient,

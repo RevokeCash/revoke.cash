@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import ky from 'lib/ky';
 import type { getTranslations } from 'next-intl/server';

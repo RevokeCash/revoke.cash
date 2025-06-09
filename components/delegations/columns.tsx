@@ -2,7 +2,7 @@
 
 import { type Row, type RowData, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import ContractCell from './cells/ContractCell';
 import ControlsCell from './cells/ControlsCell';
 import DelegateCell from './cells/DelegateCell';

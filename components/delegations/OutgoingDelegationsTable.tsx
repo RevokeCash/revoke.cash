@@ -5,7 +5,7 @@ import Card from 'components/common/Card';
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import type Error from 'components/common/Error';
 import Table from 'components/common/table/Table';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { useTranslations } from 'next-intl';
 import { outgoingColumns } from './columns';
 

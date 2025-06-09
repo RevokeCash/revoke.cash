@@ -1,7 +1,7 @@
 'use client';
 
 import AddressCellWithRiskData from 'components/allowances/dashboard/cells/AddressCellWithRiskData';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 
 interface Props {
   delegation: Delegation;

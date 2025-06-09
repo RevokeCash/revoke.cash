@@ -1,7 +1,7 @@
 'use client';
 
 import Label from 'components/common/Label';
-import type { Delegation } from 'lib/delegate/DelegatePlatform';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
