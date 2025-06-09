@@ -14,7 +14,7 @@ interface Props {
 
 const AddressNavigationTab = ({ name, href }: Props) => {
   const isMounted = useMounted();
-  const [newTabs, setNewTabs] = useLocalStorage<string[]>('new-tabs', ['/sessions', '/coverage']);
+  const [visitedTabs, setVisitedTabs] = useLocalStorage<string[]>('visited-tabs', ['', '/signatures']);
 
   const router = useCsrRouter();
   const path = usePathname();
@@ -23,7 +23,7 @@ const AddressNavigationTab = ({ name, href }: Props) => {
   const BASE_PATH_LENGTH = 51;
   const tabId = href.slice(BASE_PATH_LENGTH);
 
-  const isNew = isMounted && newTabs?.includes(tabId);
+  const isNew = isMounted && !visitedTabs?.includes(tabId);
 
   const classes = twMerge(
     'whitespace-nowrap border-b-2 pb-1 text-sm font-medium border-transparent',
@@ -40,8 +40,8 @@ const AddressNavigationTab = ({ name, href }: Props) => {
   useEffect(() => {
     if (!isNew) return;
     if (!isSelected) return;
-    setNewTabs((prev) => (prev ?? []).filter((tab) => tab !== tabId));
-  }, [isSelected, isNew, tabId, setNewTabs]);
+    setVisitedTabs((prev) => [...(prev ?? []), tabId]);
+  }, [isSelected, isNew, tabId, setVisitedTabs]);
 
   return (
     <div className={twMerge('relative', isNew && 'mr-2')}>
