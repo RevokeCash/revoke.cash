@@ -36,7 +36,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
       // Process all-level delegations
       allDelegates.forEach((delegate) => {
         delegations.push({
-          type: 'ALL',
+          type: 'WALLET',
           delegator: wallet,
           delegate,
           contract: null,
@@ -97,7 +97,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
         let type: Delegation['type'];
         switch (delegationType) {
           case 1:
-            type = 'ALL';
+            type = 'WALLET';
             break;
           case 2:
             type = 'CONTRACT';
@@ -112,7 +112,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           type,
           delegator,
           delegate,
-          contract: type === 'ALL' ? null : contract,
+          contract: type === 'WALLET' ? null : contract,
           tokenId: type === 'ERC721' ? tokenId : null,
           direction: 'INCOMING',
           platform: this.name,
@@ -132,7 +132,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
       throw new Error('Cannot revoke incoming delegations');
     }
 
-    if (delegation.type === 'ALL') {
+    if (delegation.type === 'WALLET') {
       return {
         address: this.address,
         abi: this.abi,

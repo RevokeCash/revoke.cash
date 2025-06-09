@@ -32,7 +32,7 @@ export const accessors = {
 export const customSortingFns = {
   type: (rowA: Row<Delegation>, rowB: Row<Delegation>, columnId: string) => {
     const typeOrder = {
-      ALL: 1,
+      WALLET: 1,
       CONTRACT: 2,
       TOKEN: 3,
       ERC721: 4,

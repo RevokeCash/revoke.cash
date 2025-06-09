@@ -14,7 +14,7 @@ const DelegationTypeCell = ({ delegation }: Props) => {
 
   const classes = twMerge(
     'w-16',
-    delegation.type === 'ALL' && 'bg-zinc-100 dark:bg-zinc-800',
+    delegation.type === 'WALLET' && 'bg-zinc-100 dark:bg-zinc-800',
     delegation.type === 'CONTRACT' && 'bg-zinc-200 dark:bg-zinc-700',
     delegation.type === 'ERC721' && 'bg-zinc-300 dark:bg-zinc-600',
     delegation.type === 'ERC1155' && 'bg-zinc-400 dark:bg-zinc-500',

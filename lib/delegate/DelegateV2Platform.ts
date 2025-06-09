@@ -46,8 +46,8 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           type,
           delegator,
           delegate,
-          contract: type === 'ALL' ? null : contract,
-          tokenId: ['TOKEN', 'ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
+          contract: type === 'WALLET' ? null : contract,
+          tokenId: ['ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
           direction: 'OUTGOING',
           platform: this.name,
           chainId: this.chainId,
@@ -79,8 +79,8 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           type,
           delegator,
           delegate,
-          contract: type === 'ALL' ? null : contract,
-          tokenId: ['TOKEN', 'ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
+          contract: type === 'WALLET' ? null : contract,
+          tokenId: ['ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
           direction: 'INCOMING',
           platform: this.name,
           chainId: this.chainId,
@@ -104,7 +104,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
     console.log('The rights', delegation);
     // For DelegateV2, we need to specify different function calls based on delegation type
     switch (delegation.type) {
-      case 'ALL':
+      case 'WALLET':
         return {
           address: this.address,
           abi: this.abi,
@@ -162,7 +162,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
   private convertDelegationType(typeNumber: number): Delegation['type'] {
     const mapping: Record<number, Delegation['type']> = {
       0: 'NONE',
-      1: 'ALL',
+      1: 'WALLET',
       2: 'CONTRACT',
       3: 'ERC721',
       4: 'ERC20',

@@ -36,7 +36,7 @@ export class WarmPlatform extends AbstractDelegatePlatform {
       // Return delegations where cold wallets have delegated to this wallet
       return [
         {
-          type: 'ALL',
+          type: 'WALLET',
           delegator: wallet, // The cold wallet (who delegated permission)
           delegate: hotWallet, // The current wallet (hot wallet who received permission)
           contract: null,
@@ -65,7 +65,7 @@ export class WarmPlatform extends AbstractDelegatePlatform {
       // Return the delegation from this cold wallet to its hot wallet
 
       return coldWalletLinks.map(([coldWallet, expirationTimestamp]) => ({
-        type: 'ALL',
+        type: 'WALLET',
         delegator: coldWallet,
         delegate: wallet, // hot wallet (current wallet)
         contract: null,
