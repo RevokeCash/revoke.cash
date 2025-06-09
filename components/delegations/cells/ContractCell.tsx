@@ -33,8 +33,6 @@ const ContractCell = ({ delegation }: Props) => {
     return <Loader isLoading={true} loadingChildren={<div className="w-full h-6" />} />;
   }
 
-  console.log('tokenMetadata', delegation.contract, tokenMetadata);
-
   if (!tokenMetadata) {
     return <AddressCell address={delegation.contract} chainId={delegation.chainId} />;
   }

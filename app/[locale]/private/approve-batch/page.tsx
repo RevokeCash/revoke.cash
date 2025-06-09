@@ -18,15 +18,11 @@ const ApprovePage = () => {
   const handleApprove = async () => {
     const allowances = parseAllowancesCsv(allowancesCsv);
 
-    console.log(allowances);
-
     const transactionRequests = await Promise.all(
       allowances.map(async (allowance) =>
         prepareApprove(allowance as unknown as any, publicClient, walletClient!, account!),
       ),
     );
-
-    console.log(transactionRequests);
 
     const calls = transactionRequests.map((request) => mapContractTransactionRequestToEip5792Call(request));
 
@@ -37,8 +33,6 @@ const ApprovePage = () => {
     const txs = await walletClient!.waitForCallsStatus({
       id,
     });
-
-    console.log(txs);
   };
 
   return (

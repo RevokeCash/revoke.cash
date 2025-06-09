@@ -127,7 +127,6 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
   }
 
   async prepareRevokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
-    console.log('delegate for V1', delegation.delegate);
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }

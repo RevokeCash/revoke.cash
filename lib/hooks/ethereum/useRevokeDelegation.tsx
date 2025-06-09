@@ -27,13 +27,7 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
     executeTransaction: async () => {
       if (!walletClient) throw new Error('No wallet client available');
 
-      // Get the appropriate delegate platform
       const delegationPlatform = new AggregateDelegatePlatform(publicClient, delegation.chainId);
-
-      // Get transaction parameters from the platform
-      console.log(`Revoking delegation of type ${delegation.type} on platform ${delegation.platform}`);
-      console.log('Delegation data:', delegation);
-
       const transactionData = await delegationPlatform.prepareRevokeDelegation(delegation);
 
       const hash = await writeContractUnlessExcessiveGas(publicClient, walletClient, {
@@ -51,7 +45,6 @@ export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegatio
       return { hash, confirmation: waitForConfirmation() };
     },
     trackTransaction: () => {
-      // Track analytics for the delegation revocation
       analytics.track('Delegation Revoked', {
         chainId: delegation.chainId,
         delegator: delegation.delegator,

@@ -196,8 +196,6 @@ export const getTokenMetadataUnknown = async (
     getTokenMetadata({ address, abi: ERC721_ABI, publicClient }, publicClient.chain!.id),
   ]);
 
-  console.log('results', results);
-
   return results.reduce(
     (acc, result) => (result.status === 'fulfilled' ? { ...acc, ...result.value } : acc),
     undefined as TokenMetadata | undefined,

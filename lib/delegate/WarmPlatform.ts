@@ -33,15 +33,14 @@ export class WarmPlatform extends AbstractDelegatePlatform {
         return [];
       }
 
-      // Return delegations where cold wallets have delegated to this wallet
       return [
         {
           type: 'WALLET',
-          delegator: wallet, // The cold wallet (who delegated permission)
-          delegate: hotWallet, // The current wallet (hot wallet who received permission)
+          delegator: wallet,
+          delegate: hotWallet,
           contract: null,
           tokenId: null,
-          direction: 'OUTGOING', // From the current wallet's perspective, these are incoming
+          direction: 'OUTGOING',
           platform: this.name,
           chainId: this.chainId,
           expirationTimestamp: expirationTimestamp,
@@ -62,18 +61,16 @@ export class WarmPlatform extends AbstractDelegatePlatform {
         args: [wallet],
       });
 
-      // Return the delegation from this cold wallet to its hot wallet
-
       return coldWalletLinks.map(([coldWallet, expirationTimestamp]) => ({
         type: 'WALLET',
         delegator: coldWallet,
-        delegate: wallet, // hot wallet (current wallet)
+        delegate: wallet,
         contract: null,
         tokenId: null,
-        direction: 'INCOMING', // from hot wallet's perspective
+        direction: 'INCOMING',
         platform: this.name,
         chainId: this.chainId,
-        expirationTimestamp, // convert bigint → number if needed
+        expirationTimestamp,
       }));
     } catch (error) {
       console.error(`Error getting outgoing delegations from ${this.name}:`, error);
@@ -86,9 +83,6 @@ export class WarmPlatform extends AbstractDelegatePlatform {
       throw new Error('Cannot revoke incoming delegations');
     }
 
-    console.log('Revoking Warm.xyz delegation:', delegation.delegator);
-
-    // Based on the ABI: 'function removeColdWallet(address coldWallet) external'
     return {
       address: this.address,
       abi: this.abi,

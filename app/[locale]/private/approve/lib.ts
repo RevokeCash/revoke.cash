@@ -19,8 +19,6 @@ export const prepareApprove = async (
   walletClient: WalletClient,
   account: Address,
 ) => {
-  console.log(allowanceType, tokenAddress, spenderAddress, amount, tokenId, expiration, permit2Address);
-
   if (!tokenAddress || !spenderAddress) {
     throw new Error('Token address and spender address are required');
   }
