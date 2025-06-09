@@ -53,15 +53,15 @@ const DelegationTypeCell = ({ delegation }: Props) => {
   const bgClasses = (() => {
     switch (delegation.type) {
       case 'ALL':
-        return 'bg-zinc-100 dark:bg-zinc-700';
+        return 'bg-zinc-100 dark:bg-zinc-800';
       case 'CONTRACT':
-        return 'bg-zinc-200 dark:bg-zinc-600';
+        return 'bg-zinc-200 dark:bg-zinc-700';
       case 'TOKEN':
         return 'bg-zinc-300 dark:bg-zinc-600';
       case 'ERC721':
-        return 'bg-zinc-200 dark:bg-zinc-500';
+        return 'bg-zinc-200 dark:bg-zinc-600';
       case 'ERC1155':
-        return 'bg-zinc-200 dark:bg-zinc-500';
+        return 'bg-zinc-200 dark:bg-zinc-600';
       default:
         return 'bg-zinc-100 dark:bg-zinc-500';
     }

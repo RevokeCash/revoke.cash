@@ -46,6 +46,7 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
         emptyChildren={<NoDelegationsFound incoming={true} colSpan={columnCount} />}
         loaderRows={2}
         error={error}
+        className="border-none"
       />
     </Card>
   );

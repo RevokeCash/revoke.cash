@@ -1,20 +1,22 @@
+import { ChainId } from '@revoke.cash/chains';
 import { WARM_XYZ_ABI } from 'lib/abis';
-import { WARM_ETH_ADDRESS } from 'lib/constants';
-import type { Abi, Address } from 'viem';
+import type { Address, PublicClient } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
 import type { Delegation, TransactionData } from './DelegatePlatform';
 
 export class WarmPlatform extends AbstractDelegatePlatform {
-  protected getAddress(): Address {
-    return WARM_ETH_ADDRESS;
-  }
+  address: Address;
+  abi = WARM_XYZ_ABI;
+  name = 'Warm.xyz';
 
-  protected getAbi(): Abi {
-    return WARM_XYZ_ABI;
-  }
+  constructor(publicClient: PublicClient, chainId: number) {
+    super(publicClient, chainId);
 
-  protected getPlatformName(): string {
-    return 'Warm.xyz';
+    this.address = '0xC3AA9bc72Bd623168860a1e5c6a4530d3D80456c';
+
+    if (chainId === ChainId.EthereumSepolia) {
+      this.address = '0x050e78c41339DDCa7e5a25c554c6f2C3dbB95dC4';
+    }
   }
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
@@ -30,8 +32,6 @@ export class WarmPlatform extends AbstractDelegatePlatform {
         return [];
       }
 
-      const chainId = await this.chainId;
-
       // Return delegations where cold wallets have delegated to this wallet
       return [
         {
@@ -42,7 +42,7 @@ export class WarmPlatform extends AbstractDelegatePlatform {
           tokenId: null,
           direction: 'OUTGOING', // From the current wallet's perspective, these are incoming
           platform: this.name,
-          chainId,
+          chainId: this.chainId,
           expirationTimestamp: expirationTimestamp,
         },
       ];
@@ -61,8 +61,6 @@ export class WarmPlatform extends AbstractDelegatePlatform {
         args: [wallet],
       })) as [Address, bigint][];
 
-      const chainId = await this.chainId;
-
       // Return the delegation from this cold wallet to its hot wallet
 
       return coldWalletLinks.map(([coldWallet, expirationTimestamp]) => ({
@@ -73,7 +71,7 @@ export class WarmPlatform extends AbstractDelegatePlatform {
         tokenId: null,
         direction: 'INCOMING', // from hot wallet's perspective
         platform: this.name,
-        chainId,
+        chainId: this.chainId,
         expirationTimestamp, // convert bigint → number if needed
       }));
     } catch (error) {
@@ -82,7 +80,7 @@ export class WarmPlatform extends AbstractDelegatePlatform {
     }
   }
 
-  async revokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
+  async prepareRevokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }

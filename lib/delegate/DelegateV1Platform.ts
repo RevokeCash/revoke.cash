@@ -1,46 +1,35 @@
 import { DELEGATE_V1_ABI } from 'lib/abis';
-import { DELEGATE_V1_REGISTRY_ADDRESS } from 'lib/constants';
-import type { Abi, Address } from 'viem';
+import type { Address } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
 import type { Delegation, TransactionData } from './DelegatePlatform';
 
 export class DelegateV1Platform extends AbstractDelegatePlatform {
-  getAddress(): Address {
-    return DELEGATE_V1_REGISTRY_ADDRESS;
-  }
-
-  getAbi(): Abi {
-    return DELEGATE_V1_ABI;
-  }
-
-  protected getPlatformName(): string {
-    return 'Delegate V1';
-  }
+  address = '0x00000000000076A84feF008CDAbe6409d2FE638B' as const;
+  abi = DELEGATE_V1_ABI;
+  name = 'Delegate.xyz V1';
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      const contractDelegations = (await this.publicClient.readContract({
+      const contractDelegations = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getContractLevelDelegations',
         args: [wallet],
-      })) as [Address, Address][];
+      });
 
-      const tokenDelegations = (await this.publicClient.readContract({
+      const tokenDelegations = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getTokenLevelDelegations',
         args: [wallet],
-      })) as [Address, bigint, Address][];
+      });
 
-      const allDelegates = (await this.publicClient.readContract({
+      const allDelegates = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getDelegatesForAll',
         args: [wallet],
-      })) as Address[];
-
-      const chainId = await this.chainId;
+      });
 
       const delegations: Delegation[] = [];
 
@@ -53,8 +42,8 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           contract: null,
           tokenId: null,
           direction: 'OUTGOING',
-          platform: 'Delegate V1',
-          chainId,
+          platform: this.name,
+          chainId: this.chainId,
         });
       });
 
@@ -67,8 +56,8 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           contract,
           tokenId: null,
           direction: 'OUTGOING',
-          platform: 'Delegate V1',
-          chainId,
+          platform: this.name,
+          chainId: this.chainId,
         });
       });
 
@@ -82,7 +71,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           tokenId,
           direction: 'OUTGOING',
           platform: this.name,
-          chainId,
+          chainId: this.chainId,
         });
       });
 
@@ -95,14 +84,13 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
 
   async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      const delegationsRaw = (await this.publicClient.readContract({
+      const delegationsRaw = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getDelegationsByDelegate',
         args: [wallet],
-      })) as [number, Address, Address, Address, bigint][];
+      });
 
-      const chainId = await this.chainId;
       const delegations: Delegation[] = [];
 
       delegationsRaw.forEach(([delegationType, delegator, delegate, contract, tokenId]) => {
@@ -128,7 +116,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           tokenId: type === 'TOKEN' ? tokenId : null,
           direction: 'INCOMING',
           platform: this.name,
-          chainId,
+          chainId: this.chainId,
         });
       });
       return delegations;
@@ -138,7 +126,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
     }
   }
 
-  async revokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
+  async prepareRevokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {
     console.log('delegate for V1', delegation.delegate);
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');

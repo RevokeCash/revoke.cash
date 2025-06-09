@@ -1,42 +1,47 @@
+import { ChainId } from '@revoke.cash/chains';
 import { DELEGATE_V2_ABI } from 'lib/abis';
-import { DELEGATE_V2_REGISTRY_ADDRESS } from 'lib/constants';
-import type { Abi, Address } from 'viem';
+import type { Address, PublicClient } from 'viem';
 import { AbstractDelegatePlatform } from './AbstractDelegatePlatform';
 import type { Delegation, DelegationV2, TransactionData } from './DelegatePlatform';
 
-type DelegateV2Result = [number, Address, Address, string, Address, bigint, bigint];
-
 export class DelegateV2Platform extends AbstractDelegatePlatform {
-  protected getAddress(): Address {
-    return DELEGATE_V2_REGISTRY_ADDRESS;
-  }
+  address: Address;
+  abi = DELEGATE_V2_ABI;
+  name = 'Delegate.xyz V2';
 
-  protected getAbi(): Abi {
-    return DELEGATE_V2_ABI;
-  }
+  constructor(publicClient: PublicClient, chainId: number) {
+    super(publicClient, chainId);
+    this.address = '0x00000000000000447e69651d841bD8D104Bed493';
 
-  protected getPlatformName(): string {
-    return 'Delegate V2';
+    const ZKSYNC_CHAINS = [
+      ChainId.Abstract,
+      ChainId.AbstractSepoliaTestnet,
+      ChainId.ZkSyncMainnet,
+      ChainId.ZkSyncSepoliaTestnet,
+      ChainId.Treasure,
+    ];
+
+    // Chains based on zkSync have a different address (see https://github.com/delegatexyz/delegate-registry)
+    if (ZKSYNC_CHAINS.includes(chainId)) {
+      this.address = '0x0000000059A24EB229eED07Ac44229DB56C5d797';
+    }
   }
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      const delegations = (await this.publicClient.readContract({
+      const delegations = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getOutgoingDelegations',
         args: [wallet],
-      })) as DelegateV2Result[];
-
-      const chainId = await this.chainId;
-      console.log('The chainId', chainId);
+      });
 
       return delegations.map((delegation) => {
         const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
 
         // Convert type number to string type
         const type = this.convertDelegationType(delegationType);
-        console.log('The rights', rights);
+
         return {
           type,
           delegator,
@@ -45,9 +50,9 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           tokenId: ['TOKEN', 'ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
           direction: 'OUTGOING',
           platform: this.name,
-          chainId,
+          chainId: this.chainId,
           rights,
-        } as DelegationV2;
+        };
       });
     } catch (error) {
       console.error(`Error getting outgoing delegations from ${this.name}:`, error);
@@ -57,14 +62,12 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
 
   async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      const delegations = (await this.publicClient.readContract({
+      const delegations = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getIncomingDelegations',
         args: [wallet],
-      })) as DelegateV2Result[];
-
-      const chainId = await this.chainId;
+      });
 
       return delegations.map((delegation) => {
         const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
@@ -80,9 +83,9 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
           tokenId: ['TOKEN', 'ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
           direction: 'INCOMING',
           platform: this.name,
-          chainId,
+          chainId: this.chainId,
           rights,
-        } as DelegationV2;
+        };
       });
     } catch (error) {
       console.error(`Error getting incoming delegations from ${this.name}:`, error);
@@ -93,7 +96,7 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
   /**
    * Implementation for revoking a specific delegation in Delegate V2
    */
-  async revokeDelegationInternal(delegation: DelegationV2): Promise<TransactionData> {
+  async prepareRevokeDelegationInternal(delegation: DelegationV2): Promise<TransactionData> {
     if (delegation.direction !== 'OUTGOING') {
       throw new Error('Cannot revoke incoming delegations');
     }
@@ -157,21 +160,15 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
    * Convert the numeric delegation type from the contract to our string type
    */
   private convertDelegationType(typeNumber: number): Delegation['type'] {
-    switch (typeNumber) {
-      case 0:
-        return 'NONE';
-      case 1:
-        return 'ALL';
-      case 2:
-        return 'CONTRACT';
-      case 3:
-        return 'ERC721';
-      case 4:
-        return 'ERC20';
-      case 5:
-        return 'ERC1155';
-      default:
-        return 'NONE';
-    }
+    const mapping: Record<number, Delegation['type']> = {
+      0: 'NONE',
+      1: 'ALL',
+      2: 'CONTRACT',
+      3: 'ERC721',
+      4: 'ERC20',
+      5: 'ERC1155',
+    };
+
+    return mapping[typeNumber] ?? 'NONE';
   }
 }

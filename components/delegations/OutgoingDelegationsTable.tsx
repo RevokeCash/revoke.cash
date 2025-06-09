@@ -45,6 +45,7 @@ const OutgoingDelegationsTable = ({ delegations, isLoading, error, onRevoke }: P
         emptyChildren={<NoDelegationsFound incoming={false} colSpan={columnCount} />}
         loaderRows={2}
         error={error}
+        className="border-none"
       />
     </Card>
   );

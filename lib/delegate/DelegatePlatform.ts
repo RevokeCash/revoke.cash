@@ -1,7 +1,8 @@
-import type { Abi, Address, PublicClient } from 'viem';
+import type { Address, WriteContractParameters } from 'viem';
 
 export type DelegationDirection = 'OUTGOING' | 'INCOMING';
 export type DelegationType = 'ALL' | 'CONTRACT' | 'TOKEN' | 'ERC721' | 'ERC1155' | 'ERC20';
+
 export interface Delegation {
   type: 'NONE' | DelegationType;
   delegator: Address;
@@ -17,18 +18,12 @@ export interface Delegation {
 export interface DelegationV2 extends Delegation {
   rights: string;
 }
-export interface TransactionData {
-  address: Address;
-  abi: Abi;
-  functionName: string;
-  args: any[];
-  account?: Address;
-}
+
+export type TransactionData = Pick<WriteContractParameters, 'address' | 'abi' | 'functionName' | 'args'>;
 
 export interface DelegatePlatform {
   name: string;
-  chainId: Promise<number>;
-  publicClient: PublicClient;
+  chainId: number;
   getDelegations: (wallet: Address) => Promise<Delegation[]>;
-  revokeDelegation: (delegation: Delegation) => Promise<TransactionData>;
+  prepareRevokeDelegation: (delegation: Delegation) => Promise<TransactionData>;
 }
