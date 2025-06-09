@@ -187,6 +187,23 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   return { ...metadataFromMapping, totalSupply, symbol, decimals, price };
 };
 
+export const getTokenMetadataUnknown = async (
+  address: Address,
+  publicClient: PublicClient,
+): Promise<TokenMetadata | undefined> => {
+  const results = await Promise.allSettled([
+    getTokenMetadata({ address, abi: ERC20_ABI, publicClient }, publicClient.chain!.id),
+    getTokenMetadata({ address, abi: ERC721_ABI, publicClient }, publicClient.chain!.id),
+  ]);
+
+  console.log('results', results);
+
+  return results.reduce(
+    (acc, result) => (result.status === 'fulfilled' ? { ...acc, ...result.value } : acc),
+    undefined as TokenMetadata | undefined,
+  );
+};
+
 export const throwIfNotErc20 = async (contract: Erc20TokenContract) => {
   // If the function allowance does not exist it will throw (and is not ERC20)
   const allowance = await contract.publicClient.readContract({

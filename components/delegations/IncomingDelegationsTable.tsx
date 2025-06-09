@@ -2,11 +2,9 @@
 
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import Card from 'components/common/Card';
-import type Error from 'components/common/Error';
 import Table from 'components/common/table/Table';
 import type { Delegation } from 'lib/delegate/DelegatePlatform';
 import { useTranslations } from 'next-intl';
-import NoDelegationsFound from './NoDelegationsFound';
 import { incomingColumns } from './columns';
 
 interface Props {
@@ -17,20 +15,15 @@ interface Props {
 
 const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
   const t = useTranslations();
-  // Use the hook to get translated columns
-  const columns = incomingColumns;
 
   // Create TanStack table instance with empty meta
   const table = useReactTable<Delegation>({
     data: delegations || [],
-    columns,
+    columns: incomingColumns,
     getCoreRowModel: getCoreRowModel(),
     // @ts-ignore - meta may have other properties from elsewhere in the code
     meta: {},
   });
-
-  // Get column count for spanning loading/error/empty states
-  const columnCount = table.getAllLeafColumns().length;
 
   const title = (
     <div className="flex items-center gap-2">
@@ -43,7 +36,7 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
       <Table
         table={table}
         loading={isLoading}
-        emptyChildren={<NoDelegationsFound incoming={true} colSpan={columnCount} />}
+        emptyChildren={t('address.delegations.no_incoming_delegations')}
         loaderRows={2}
         error={error}
         className="border-none"

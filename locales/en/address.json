@@ -101,21 +101,22 @@
     "types": {
       "all": "All",
       "contract": "Contract",
-      "token": "Token"
+      "erc1155": "ERC1155",
+      "erc20": "ERC20",
+      "erc721": "ERC721"
     },
     "tooltips": {
-      "all": "An all level delegation allows the delegate to manage all of your assets, across all contracts, on your behalf.",
-      "erc20": "An ERC20 token level delegation allows the delegate to manage a specific ERC20 token on your behalf.",
-      "erc721": "An ERC721 token level delegation allows the delegate to manage a specific ERC721(NFT) token on your behalf.",
-      "token": "A token-level delegation gives the  delegate the permission to manage a specific token (like a particular NFT or ERC20 token) on your behalf.",
-      "erc1155": "An ERC1155 token level delegation allows the delegate to manage a specific ERC1155 token on your behalf.",
-      "contract": "A contract-level delegation gives the delegate the permission to manage all of the assets on a specific contract on your behalf."
+      "all": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms.",
+      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
+      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
+      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
+      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract."
     },
     "columns": {
       "type": "Type",
       "delegate": "Delegate",
       "delegator": "Delegator",
-      "contract": "Contract",
+      "contract": "Asset / Contract",
       "platform": "Platform"
     },
     "contract": {

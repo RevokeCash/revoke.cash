@@ -1,7 +1,7 @@
 import type { Address, WriteContractParameters } from 'viem';
 
 export type DelegationDirection = 'OUTGOING' | 'INCOMING';
-export type DelegationType = 'ALL' | 'CONTRACT' | 'TOKEN' | 'ERC721' | 'ERC1155' | 'ERC20';
+export type DelegationType = 'ALL' | 'CONTRACT' | 'ERC721' | 'ERC1155' | 'ERC20';
 
 export interface Delegation {
   type: 'NONE' | DelegationType;

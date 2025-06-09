@@ -21,12 +21,12 @@ export class WarmPlatform extends AbstractDelegatePlatform {
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      const [hotWallet, expirationTimestamp] = (await this.publicClient.readContract({
+      const [hotWallet, expirationTimestamp] = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getHotWalletLink',
         args: [wallet],
-      })) as [Address, bigint];
+      });
 
       if (!hotWallet || hotWallet === '0x0000000000000000000000000000000000000000') {
         return [];
@@ -54,12 +54,12 @@ export class WarmPlatform extends AbstractDelegatePlatform {
 
   async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
     try {
-      const coldWalletLinks = (await this.publicClient.readContract({
+      const coldWalletLinks = await this.publicClient.readContract({
         address: this.address,
         abi: this.abi,
         functionName: 'getColdWalletLinks',
         args: [wallet],
-      })) as [Address, bigint][];
+      });
 
       // Return the delegation from this cold wallet to its hot wallet
 

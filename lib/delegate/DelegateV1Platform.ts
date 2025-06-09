@@ -64,7 +64,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
       // Process token-level delegations
       tokenDelegations.forEach(([contract, tokenId, delegate]) => {
         delegations.push({
-          type: 'TOKEN',
+          type: 'ERC721',
           delegator: wallet,
           delegate,
           contract,
@@ -103,7 +103,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
             type = 'CONTRACT';
             break;
           case 3:
-            type = 'TOKEN';
+            type = 'ERC721';
             break;
           default:
             type = 'NONE';
@@ -113,7 +113,7 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
           delegator,
           delegate,
           contract: type === 'ALL' ? null : contract,
-          tokenId: type === 'TOKEN' ? tokenId : null,
+          tokenId: type === 'ERC721' ? tokenId : null,
           direction: 'INCOMING',
           platform: this.name,
           chainId: this.chainId,
