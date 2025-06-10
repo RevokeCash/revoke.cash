@@ -5,15 +5,17 @@ import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import Loader from 'components/common/Loader';
 import { isNullish } from 'lib/utils';
 import { getSpenderData } from 'lib/utils/whois';
+import { useMemo } from 'react';
 import type { Address } from 'viem';
 
 interface Props {
   address: Address;
   chainId: number;
   isLoading?: boolean;
+  ignoredRiskFactors?: string[];
 }
 
-const Eip7702DelegatedAddressCell = ({ address, chainId, isLoading: isLoadingOverride }: Props) => {
+const AddressCellWithRiskData = ({ address, chainId, isLoading: isLoadingOverride, ignoredRiskFactors }: Props) => {
   const { data: spenderData, isLoading } = useQuery({
     queryKey: ['spenderData', address, chainId],
     queryFn: () => getSpenderData(address, chainId),
@@ -22,11 +24,19 @@ const Eip7702DelegatedAddressCell = ({ address, chainId, isLoading: isLoadingOve
     enabled: !isNullish(address),
   });
 
+  const riskFactors = useMemo(() => {
+    return spenderData?.riskFactors?.filter((factor) => !ignoredRiskFactors?.includes(factor.type)) ?? [];
+  }, [spenderData?.riskFactors, ignoredRiskFactors]);
+
   return (
     <Loader isLoading={isLoading || Boolean(isLoadingOverride)}>
-      <AddressCell address={address} spenderData={spenderData ?? undefined} chainId={chainId} />
+      <AddressCell
+        address={address}
+        spenderData={spenderData ? { ...spenderData, riskFactors } : undefined}
+        chainId={chainId}
+      />
     </Loader>
   );
 };
 
-export default Eip7702DelegatedAddressCell;
+export default AddressCellWithRiskData;

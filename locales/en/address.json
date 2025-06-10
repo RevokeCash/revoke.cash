@@ -79,6 +79,40 @@
       "wallets": "wallets"
     }
   },
+  "delegations": {
+    "columns": {
+      "contract": "Asset / Contract",
+      "delegate": "Delegate",
+      "delegator": "Delegator",
+      "platform": "Platform",
+      "type": "Type"
+    },
+    "contract": {
+      "not_applicable": "N/A"
+    },
+    "incoming_delegations": "Incoming Delegations",
+    "info_panel": {
+      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
+      "title": "What Are Delegations?"
+    },
+    "no_incoming_delegations": "No incoming delegations found",
+    "no_outgoing_delegations": "No outgoing delegations found",
+    "outgoing_delegations": "Outgoing Delegations",
+    "tooltips": {
+      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
+      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
+      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
+      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
+      "wallet": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms."
+    },
+    "types": {
+      "contract": "Contract",
+      "erc1155": "ERC1155",
+      "erc20": "ERC20",
+      "erc721": "ERC721",
+      "wallet": "Wallet"
+    }
+  },
   "filters": {
     "allowances": {
       "label": "Approved Amount",
@@ -141,6 +175,7 @@
   "navigation": {
     "allowances": "Approvals",
     "coverage": "Coverage",
+    "delegations": "Delegations",
     "history": "History",
     "more": "More",
     "sessions": "Sessions",

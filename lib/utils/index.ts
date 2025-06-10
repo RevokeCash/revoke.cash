@@ -1,4 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
+import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import ky from 'lib/ky';
 import type { getTranslations } from 'next-intl/server';
@@ -28,6 +29,23 @@ export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
+};
+
+export const delegationEquals = (a: Delegation, b: Delegation): boolean => {
+  // Handle null/undefined cases
+  if (isNullish(a) || isNullish(b)) return false;
+  if (isNullish(a.delegator) || isNullish(a.delegate)) return false;
+  if (isNullish(b.delegator) || isNullish(b.delegate)) return false;
+
+  return (
+    a.delegator === b.delegator &&
+    a.delegate === b.delegate &&
+    a.type === b.type &&
+    a.contract === b.contract &&
+    a.tokenId === b.tokenId &&
+    a.platform === b.platform &&
+    a.direction === b.direction
+  );
 };
 
 export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));
