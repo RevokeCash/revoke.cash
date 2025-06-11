@@ -22,7 +22,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.SonicMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.Berachain,
-  ChainId.ZircuitMainnet,
   ChainId.Unichain,
   ChainId.CoreBlockchainMainnet,
   ChainId.CronosMainnet,
@@ -68,6 +67,7 @@ export const CHAIN_SELECT_MAINNETS = [
   999, // Hyperliquid EVM
   ChainId.TelosEVMMainnet,
   ChainId.XDCNetwork,
+  ChainId.ZircuitMainnet,
   ChainId.Sophon,
   ChainId.RolluxMainnet,
   ChainId.ImmutablezkEVM,
