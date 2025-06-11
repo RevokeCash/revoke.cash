@@ -22,6 +22,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.SonicMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.Berachain,
+  ChainId.ZircuitMainnet,
   ChainId.Unichain,
   ChainId.CoreBlockchainMainnet,
   ChainId.CronosMainnet,
@@ -2520,7 +2521,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'xdce-crowd-sale',
     logoUrl: '/assets/images/vendor/chains/xdc.svg',
     rpc: {
-      logs: 'https://50.rpc.hypersync.xyz',
+      main: 'https://rpc.ankr.com/xdc',
     },
   }),
   [ChainId.XLayerMainnet]: new Chain({
@@ -2631,6 +2632,17 @@ export const CHAINS = {
     },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ZkSyncMainnet,
+  }),
+  [ChainId.ZircuitMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.ZircuitMainnet,
+    name: 'Zircuit',
+    logoUrl: '/assets/images/vendor/chains/zircuit.svg',
+    rpc: {
+      main: `https://lb.drpc.org/ogrpc?network=zircuit-mainnet&dkey=${DRPC_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.Zora]: new Chain({
     type: SupportType.BLOCKSCOUT,

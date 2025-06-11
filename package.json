@@ -18,7 +18,7 @@
     "translations:update:md": "localazy upload -k localazy.content.keys.json -c localazy.content.json && localazy download -k localazy.content.keys.json -c localazy.content.json && tsx scripts/remove-untranslated-markdown-files.ts",
     "test": "yarn test:mocha && yarn test:cypress",
     "test:cypress": "cypress run",
-    "test:mocha": "dotenvx run mocha test/**/*.test.ts",
+    "test:mocha": "dotenvx run mocha test/**/*.test.ts --",
     "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois",
     "tsx": "dotenvx run tsx"
   },
