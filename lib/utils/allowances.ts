@@ -31,6 +31,10 @@ import {
 
 export interface TokenAllowanceData extends TokenData {
   payload?: AllowancePayload;
+  spenderData?: {
+    name?: string;
+    riskFactors?: Array<{ type: string; source: string }>;
+  };
 }
 
 export type AllowancePayload = Erc721SingleAllowance | Erc721AllAllowance | Erc20Allowance | Permit2Erc20Allowance;
