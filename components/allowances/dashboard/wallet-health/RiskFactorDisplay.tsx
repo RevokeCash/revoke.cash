@@ -22,10 +22,6 @@ const SOURCES: Record<string, DataSourceLink> = {
     name: 'Webacy',
     url: 'https://webacy.com/',
   },
-  harpie: {
-    name: 'Harpie',
-    url: 'https://harpie.io/',
-  },
   nefture: {
     name: 'Nefture',
     url: 'https://nefture.com/',

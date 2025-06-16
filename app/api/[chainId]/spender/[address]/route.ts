@@ -23,13 +23,7 @@ export const preferredRegion = ['iad1'];
 const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
   aggregationType: AggregationType.PARALLEL_COMBINED,
   sources: [
-    new AggregateSpenderDataSource({
-      aggregationType: AggregationType.SEQUENTIAL_FIRST,
-      sources: [
-        new WhoisSpenderDataSource(),
-        // new HarpieSpenderDataSource(), // TODO: Re-enable if possible
-      ],
-    }),
+    new WhoisSpenderDataSource(),
     new OnchainSpenderRiskDataSource(),
     new ScamSnifferRiskDataSource(),
     new WebacySpenderRiskDataSource(WEBACY_API_KEY),

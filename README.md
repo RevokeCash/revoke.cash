@@ -38,7 +38,6 @@ Then there are a few less essential variables:
 - `IRON_SESSION_PASSWORD` is used for encrypting session cookies and can be filled with any random 32-character string - if omitted many chains will not work.
 - `NEXT_PUBLIC_MIXPANEL_API_KEY` is used for Analytics - if omitted, no Analytics are collected.
 - `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are used for queueing third-party API calls - these are only necessary when hosting in a serverless environment such as Vercel.
-- `NEXT_PUBLIC_HARPIE_API_KEY` is used to call Harpie's API for getting contract address labels - if omitted it only uses public label data sources.
 - `RESERVOIR_API_KEY` is used for fetching NFT prices - if omitted, NFT prices will not be shown.
 - `NODE_URLS` is currently unused, but can be used for certain networks in the future.
 - `LOCALAZY_API_KEY` is used for generating "Help Us Translate This Page" links - if omitted, those links will not work.
