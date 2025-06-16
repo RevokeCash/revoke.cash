@@ -11,10 +11,10 @@ export class CovalentEventGetter implements EventGetter {
 
   constructor(
     private apiKey?: string,
-    isPremium: boolean = false,
+    // Covalent's free tier API has a rate limit of 5 requests per second, which we underestimate to be safe
+    intervalCap: number = 4,
   ) {
-    // Covalent's premium API has a rate limit of 50 (normal = 5) requests per second, which we underestimate to be safe
-    this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap: isPremium ? 40 : 4 });
+    this.queue = new RequestQueue(`covalent:${apiKey}`, { interval: 1000, intervalCap });
   }
 
   async getLatestBlock(chainId: number): Promise<number> {

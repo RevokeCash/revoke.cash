@@ -23,7 +23,7 @@ import { TeloscanEventGetter } from './logs/TeloscanEventGetter';
 
 export const covalentEventGetter = new CovalentEventGetter(
   process.env.COVALENT_API_KEY,
-  process.env.COVALENT_IS_PREMIUM === 'true',
+  Number(process.env.COVALENT_RATE_LIMIT) || 4,
 );
 export const etherscanEventGetter = new EtherscanEventGetter();
 export const blockScoutEventGetter = new BlockScoutEventGetter();

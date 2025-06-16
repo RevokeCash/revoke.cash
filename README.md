@@ -26,7 +26,7 @@ Some of these variables are integral to the functioning of Revoke.cash:
 - `NEXT_PUBLIC_INFURA_API_KEY` is used for reading data from Ethereum + Testnets.
 - `NEXT_PUBLIC_ALCHEMY_API_KEY` is used for reading data from Polygon, Optimism and Arbitrum + Testnets
   - Alchemy is also used for ENS and UNS name resolutions - if omitted those resolutions will not work.
-- `COVALENT_API_KEY` and `COVALENT_IS_PREMIUM` is used for certain chains such as Harmony.
+- `COVALENT_API_KEY` and `COVALENT_RATE_LIMIT` is used for certain chains such as Harmony.
 - `ETHERSCAN_API_KEYS` and `ETHERSCAN_RATE_LIMITS` are used for many of the other chains such as BNB Chain or Avalanche.
 - `NEXT_PUBLIC_NODE_URLS` is used to override any RPC URLs on the frontend - e.g. if you want to use Alchemy instead of Infura.
 - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` is used for WalletConnect - if omitted, WalletConnect will not work.
