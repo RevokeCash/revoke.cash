@@ -81,36 +81,36 @@
   },
   "delegations": {
     "columns": {
-      "contract": "Asset / Contract",
-      "delegate": "Delegate",
-      "delegator": "Delegator",
-      "platform": "Platform",
-      "type": "Type"
+      "contract": "資産/契約",
+      "delegate": "委任者",
+      "delegator": "委任させる者",
+      "platform": "プラットフォーム",
+      "type": "タイプ"
     },
     "contract": {
-      "not_applicable": "N/A"
+      "not_applicable": "該当なし"
     },
-    "incoming_delegations": "Incoming Delegations",
+    "incoming_delegations": "受信委任",
     "info_panel": {
-      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
-      "title": "What Are Delegations?"
+      "description": "委任とは、アセットの所有権を確認しようとしたり、エアドロップを申請したりする場合など、他のアドレスがあなたに代わって行動することを許可する方法です。これは、やりとりのたびに<b>コールドウォレット</b>を使わなくても<b>ホットウォレット</b>を使ってアセットを管理できるため、セキュリティー面でのメリットがあります。ただし、ホットウォレットが侵害された場合に備えて、攻撃者があなたになりすまして利用することがないように、必ず委任を取り消しておく必要があります。",
+      "title": "委任とは何ですか。"
     },
-    "no_incoming_delegations": "No incoming delegations found",
-    "no_outgoing_delegations": "No outgoing delegations found",
-    "outgoing_delegations": "Outgoing Delegations",
+    "no_incoming_delegations": "受信委任は見つかりません",
+    "no_outgoing_delegations": "送信委任が見つかりません",
+    "outgoing_delegations": "送信委任",
     "tooltips": {
-      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
-      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
-      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
-      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
-      "wallet": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms."
+      "contract": "契約レベルの委任は、特定の契約でサポートされているプラットフォーム上でユーザーに代わって行動する許可を委任者に与えます。",
+      "erc1155": "ERC1155トークンの委任により、委任者は特定のERC1155トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
+      "erc20": "ERC20トークンの委任により、委任者は特定のERC20トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
+      "erc721": "ERC721トークンの委任により、委任者は特定のERC721トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
+      "wallet": "ウォレットレベルの委任により、委任者はサポートされているプラットフォーム上でユーザーに代わって行動することができます。"
     },
     "types": {
-      "contract": "Contract",
+      "contract": "契約",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
       "erc721": "ERC721",
-      "wallet": "Wallet"
+      "wallet": "ウォレット"
     }
   },
   "filters": {
@@ -175,7 +175,7 @@
   "navigation": {
     "allowances": "許可",
     "coverage": "カバレッジ",
-    "delegations": "Delegations",
+    "delegations": "委任の対象",
     "history": "履歴",
     "more": "その他",
     "sessions": "セッション",

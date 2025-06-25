@@ -1,8 +1,8 @@
 {
-  "description": "When interacting with web3 websites, you may come across a domain that you don't recognize. To make sure that the domain is safe to interact with, you can use the domain scanner to check if the domain has any security issues. To bring you the domain scanner, we've partnered with <kerberus-link>Kerberus</kerberus-link>. You can also use the <extension-link>Revoke extension</extension-link> to have the domain scanner integrated, or the <kerberus-link>Kerberus Sentinel3 extension</kerberus-link> for even more security checks on all SOL/EVM chains and up to $30k scam coverage.",
+  "description": "web3ウェブサイトを操作しているときに、見覚えのないドメインに出くわすことがあります。ドメインが安全に操作できることを確認するには、ドメインスキャナーを使用してドメインにセキュリティー上の問題がないかどうかを確認できます。ドメインスキャナーをお届けするために、弊社は<kerberus-link>Kerberus</kerberus-link>と提携しました。また、<extension-link>Revoke拡張機能</extension-link>を使用してドメインスキャナーを統合したり、<kerberus-link>Kerberus Sentinel3拡張機能</kerberus-link>を使用してすべてのSOL/EVMチェーンでさらにセキュリティーチェックを強化したり、最大3万ドルの詐欺対策を行ったりすることもできます。",
   "meta": {
-    "description": "Use the Domain Scanner to check if a web3 domain is safe to interact with. We've partnered with Kerberus to bring you the domain scanner.",
-    "title": "Domain Scanner: Check if a domain is safe to interact with"
+    "description": "ドメインスキャナーを使用して、web3ドメインが安全にやり取りできるかどうかを確認できます。Kerberusと提携して、ドメインスキャナーを提供しています。",
+    "title": "ドメインスキャナー：ドメインが安全にやり取りできるかどうかを確認する"
   },
-  "title": "Domain Scanner"
+  "title": "ドメインスキャナー"
 }

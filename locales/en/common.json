@@ -82,8 +82,8 @@
     }
   },
   "footer": {
-    "acknowledgements": "Acknowledgements",
     "about": "About Us",
+    "acknowledgements": "Acknowledgements",
     "blog": "Blog",
     "brand_assets": "Brand Assets",
     "community": "Community",

@@ -81,36 +81,36 @@
   },
   "delegations": {
     "columns": {
-      "contract": "Asset / Contract",
-      "delegate": "Delegate",
-      "delegator": "Delegator",
-      "platform": "Platform",
-      "type": "Type"
+      "contract": "Activo / Contrato",
+      "delegate": "Delegar",
+      "delegator": "Delegador",
+      "platform": "Plataforma",
+      "type": "Tipo"
     },
     "contract": {
       "not_applicable": "N/A"
     },
-    "incoming_delegations": "Incoming Delegations",
+    "incoming_delegations": "Delegaciones entrantes",
     "info_panel": {
-      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
-      "title": "What Are Delegations?"
+      "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo al intentar verificar la propiedad de activos o al reclamar airdrops. Esto puede ser beneficioso para la seguridad, ya que le permite utilizar una <b>cartera caliente</b> para gestionar sus activos sin tener que utilizar su <b>cartera fría</b> para cada interacción. Sin embargo, en caso de que su cartera caliente se vea comprometida, debe asegurarse de revocar la delegación para que el atacante no pueda utilizarla para hacerse pasar por usted.",
+      "title": "¿Qué son las Delegaciones?"
     },
-    "no_incoming_delegations": "No incoming delegations found",
-    "no_outgoing_delegations": "No outgoing delegations found",
-    "outgoing_delegations": "Outgoing Delegations",
+    "no_incoming_delegations": "No se han encontrado delegaciones entrantes",
+    "no_outgoing_delegations": "No se ha encontrado ninguna delegación saliente",
+    "outgoing_delegations": "Delegaciones salientes",
     "tooltips": {
-      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
-      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
-      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
-      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
-      "wallet": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms."
+      "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para actuar en su nombre en las plataformas compatibles para un contrato específico.",
+      "erc1155": "Una delegación de tokens ERC1155 permite al delegado actuar en su nombre en plataformas compatibles para un token de ERC1155 específico.",
+      "erc20": "Una delegación de tokens ERC20 permite al delegado actuar en su nombre en plataformas compatibles para un token ERC20 específico.",
+      "erc721": "Una delegación de token ERC721 permite al delegado actuar en su nombre en plataformas compatibles con un token ERC721 específico.",
+      "wallet": "Una delegación a nivel de cartera permite que el delegado actúe en su nombre en las plataformas compatibles."
     },
     "types": {
-      "contract": "Contract",
+      "contract": "Contrato",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
       "erc721": "ERC721",
-      "wallet": "Wallet"
+      "wallet": "Cartera"
     }
   },
   "filters": {
@@ -175,7 +175,7 @@
   "navigation": {
     "allowances": "Autorizaciones",
     "coverage": "Cobertura",
-    "delegations": "Delegations",
+    "delegations": "Delegaciones",
     "history": "Historial",
     "more": "Más",
     "sessions": "Sesiones",

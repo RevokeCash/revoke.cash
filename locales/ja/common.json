@@ -83,11 +83,12 @@
   },
   "footer": {
     "about": "私たちについて",
+    "acknowledgements": "Acknowledgements",
     "blog": "ブログ",
     "brand_assets": "ブランド資産",
     "community": "コミュニティー",
     "company": "会社",
-    "domain_scanner": "Domain Scanner",
+    "domain_scanner": "ドメインスキャナー",
     "donations": "寄付",
     "exploit_checker": "エクスプロイトチェッカー",
     "extension": "ブラウザ拡張機能",
@@ -99,7 +100,7 @@
     "terms": "利用規約",
     "token_approval_checker": "トークン承認チェッカー",
     "what_are_token_approvals": "トークン承認とは？",
-    "what_to_do_when_scammed": "What to Do When Scammed?"
+    "what_to_do_when_scammed": "詐欺に遭った場合の対処方法"
   },
   "meta": {
     "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
