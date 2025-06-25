@@ -82,6 +82,7 @@
     }
   },
   "footer": {
+    "acknowledgements": "Acknowledgements",
     "about": "About Us",
     "blog": "Blog",
     "brand_assets": "Brand Assets",

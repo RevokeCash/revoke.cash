@@ -84,11 +84,13 @@ const Footer = () => {
           <div className="flex flex-col gap-px text-center md:text-left">
             <div className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2025 Revoke.cash</div>
             <ul className="flex justify-center md:justify-start items-center gap-1">
+              <FooterLink href="/acknowledgements">{t('common.footer.acknowledgements')}</FooterLink>
+              <span className="text-zinc-400 dark:text-zinc-400 visited:text-zinc-400">•</span>
               <FooterLink href="/privacy-policy">{t('common.footer.privacy')}</FooterLink>
               <span className="text-zinc-400 dark:text-zinc-400 visited:text-zinc-400">•</span>
               <FooterLink href="/terms">{t('common.footer.terms')}</FooterLink>
             </ul>
-            <div className="flex items-center gap-1 text-zinc-400 dark:text-zinc-400 visited:text-zinc-400 text-sm">
+            <div className="flex justify-center md:justify-start items-center gap-1 text-zinc-400 dark:text-zinc-400 visited:text-zinc-400 text-sm">
               {t('common.footer.donations')}:
               <FooterLink href={`https://etherscan.io/address/${DONATION_ADDRESS}`} external>
                 {shortenAddress(DONATION_ADDRESS)}

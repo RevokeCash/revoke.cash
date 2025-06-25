@@ -10,7 +10,7 @@ import { getOpenGraphImageUrl } from './og';
 
 const walk = require('walkdir');
 
-export type ContentDirectory = 'blog' | 'docs' | 'learn' | 'exploits';
+export type ContentDirectory = 'blog' | 'docs' | 'learn' | 'exploits' | 'pages';
 
 export const readContentFile = (
   slug: string | string[],
