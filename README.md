@@ -31,7 +31,7 @@ Some of these variables are integral to the functioning of Revoke.cash:
 - `NEXT_PUBLIC_NODE_URLS` is used to override any RPC URLs on the frontend - e.g. if you want to use Alchemy instead of Infura.
 - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` is used for WalletConnect - if omitted, WalletConnect will not work.
 
-If you omit any of these variables, Revoke.cash will not work for the chains you omitted.
+If you omit any of these variables, Revoke.cash will not work for the affected chains.
 
 Then there are a few less essential variables:
 
