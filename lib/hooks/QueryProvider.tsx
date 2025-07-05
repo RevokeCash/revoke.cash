@@ -6,7 +6,7 @@ import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { DAY } from 'lib/utils/time';
 import type { ReactNode } from 'react';
 
-// Note: the query persister stuff is based on wagmi (https://github.com/wagmi-dev/wagmi/blob/main/packages/react/src/client.ts)
+// Note: the query persister stuff is based on wagmi (https://github.com/wevm/wagmi/blob/2748416561a2724b7ade6255f5b06a60fe537001/packages/react/src/client.ts)
 
 export const queryClient = new QueryClient({
   defaultOptions: {
