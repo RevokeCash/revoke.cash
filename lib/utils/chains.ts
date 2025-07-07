@@ -1281,7 +1281,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/heco.svg',
   }),
   [999]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: 999,
     name: 'Hyperliquid EVM',
     nativeToken: 'HYPE',
@@ -1291,8 +1291,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/hyperliquid.svg',
     rpc: {
       main: 'https://rpc.hyperliquid.xyz/evm',
-      // logs: 'https://hl-archive-node.xyz',
-      logs: 'https://hyperliquid.valtitude.xyz?apiKey=a3dee98b-d4d4-4b71-b652-fd03d54783c8',
       free: 'https://rpc.hyperliquid.xyz/evm',
     },
     deployedContracts: { ...MULTICALL },
@@ -1653,13 +1651,12 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/monad.svg',
   }),
   [ChainId.MonadTestnet]: new Chain({
-    type: SupportType.HYPERSYNC,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.MonadTestnet,
     name: 'Monad Testnet',
     logoUrl: '/assets/images/vendor/chains/monad.svg',
     rpc: {
       main: `https://monad-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://10143.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
