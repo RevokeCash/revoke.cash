@@ -82,7 +82,7 @@ export const accessors = {
   },
   spender: (allowance: TokenAllowanceData) => {
     // Use spender name if available
-    return allowance.spenderData?.name ?? allowance.payload?.spender;
+    return allowance.payload?.spenderData?.name ?? allowance.payload?.spender;
   },
   timestamp: (allowance: TokenAllowanceData) => {
     return allowance.payload?.lastUpdated?.timestamp;

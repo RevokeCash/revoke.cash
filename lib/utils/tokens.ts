@@ -46,7 +46,7 @@ export interface TokenMetadata {
   icon?: string;
   decimals?: number;
   totalSupply?: bigint;
-  price?: Nullable<number>;
+  price?: Nullable<number | undefined>;
 }
 
 export type TokenBalance = bigint | 'ERC1155';

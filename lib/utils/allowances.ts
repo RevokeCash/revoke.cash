@@ -1,7 +1,7 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type { useAllowances } from 'lib/hooks/ethereum/useAllowances';
-import type { TransactionSubmitted } from 'lib/interfaces';
+import type { Nullable, SpenderRiskData, TransactionSubmitted } from 'lib/interfaces';
 import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
 import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
 import analytics from './analytics';
@@ -31,10 +31,6 @@ import {
 
 export interface TokenAllowanceData extends TokenData {
   payload?: AllowancePayload;
-  spenderData?: {
-    name?: string;
-    riskFactors?: Array<{ type: string; source: string }>;
-  };
 }
 
 export type AllowancePayload = Erc721SingleAllowance | Erc721AllAllowance | Erc20Allowance | Permit2Erc20Allowance;
@@ -49,6 +45,7 @@ export enum AllowanceType {
 export interface BaseAllowance {
   type: AllowanceType;
   spender: Address;
+  spenderData?: Nullable<SpenderRiskData>;
   lastUpdated: TimeLog;
 }
 
