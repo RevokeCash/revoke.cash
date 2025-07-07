@@ -24,6 +24,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Berachain,
   ChainId.Unichain,
   ChainId.CoreBlockchainMainnet,
+  ChainId.Katana,
   ChainId.CronosMainnet,
   ChainId.SeiNetwork,
   ChainId.BitlayerMainnet,
@@ -1371,6 +1372,15 @@ export const CHAINS = {
     explorerUrl: 'https://explorer.kardiachain.io',
     etherscanCompatibleApiUrl: 'https://explorer.kardiachain.io/api',
     priceStrategy: undefined, // No liquid stablecoins
+  }),
+  [ChainId.Katana]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.Katana,
+    name: 'Katana',
+    logoUrl: '/assets/images/vendor/chains/katana.svg',
+    etherscanCompatibleApiUrl: 'https://explorer-katana.t.conduit.xyz/api',
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.KCCMainnet]: new Chain({
     type: SupportType.PROVIDER,
