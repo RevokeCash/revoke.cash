@@ -83,6 +83,7 @@ export interface Erc20TransferEvent extends BaseTokenEvent {
     to: Address;
     amount: bigint;
   };
+  [key: string]: any;
 }
 
 export interface Erc721TransferEvent extends BaseTokenEvent {
@@ -92,6 +93,7 @@ export interface Erc721TransferEvent extends BaseTokenEvent {
     to: Address;
     tokenId: bigint;
   };
+  [key: string]: any;
 }
 
 export type ApprovalTokenEvent = Erc20ApprovalEvent | Erc721ApprovalEvent | Erc721ApprovalForAllEvent | Permit2Event;

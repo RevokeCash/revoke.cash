@@ -146,6 +146,9 @@ export class Chain {
     const platform = this.getEtherscanCompatiblePlatformNames();
     const subdomainApiKey = ETHERSCAN_API_KEYS[`${platform?.subdomain}.${platform?.domain}`];
     const domainApiKey = ETHERSCAN_API_KEYS[`${platform?.domain}`];
+
+    console.log(domainApiKey, subdomainApiKey, platform);
+
     return subdomainApiKey ?? domainApiKey;
   }
 
