@@ -142,8 +142,11 @@
   "headers": {
     "actions": "Actions",
     "allowance": "Approved Amount",
+    "amount": "Amount",
     "asset": "Asset",
     "asset_type": "Type",
+    "date": "Date",
+    "event_type": "Event Type",
     "expiration": "Expiration",
     "last_cancelled": "Last Cancelled",
     "last_updated": "Last Updated",
@@ -155,6 +158,12 @@
     "status": "Status",
     "transaction": "Transaction",
     "value_at_risk": "Value at Risk"
+  },
+  "history": {
+    "approved": "Approved",
+    "none_found": "No approval history found",
+    "revoked": "Revoked",
+    "title": "Approval History"
   },
   "labels": {
     "connected": "Connected",
