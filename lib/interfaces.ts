@@ -90,7 +90,7 @@ export interface SpenderData extends SpenderRiskData {
 
 export interface SpenderRiskData {
   name?: string;
-  riskFactors?: Nullable<Array<RiskFactor>>;
+  riskFactors?: Array<RiskFactor>;
 }
 
 export interface RiskFactor {
