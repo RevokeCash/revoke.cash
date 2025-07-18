@@ -35,7 +35,7 @@ export enum ColumnId {
   BALANCE = 'Balance',
   ALLOWANCE = 'Allowance',
   VALUE_AT_RISK = 'Value at Risk',
-  SPENDER = 'Approved Spender',
+  SPENDER = 'Authorized Spender',
   LAST_UPDATED = 'Last Updated',
   ACTIONS = 'Actions',
 }
@@ -81,7 +81,8 @@ export const accessors = {
     return calculateValueAtRisk(allowance);
   },
   spender: (allowance: TokenAllowanceData) => {
-    return allowance.payload?.spender;
+    // Use spender name if available
+    return allowance.payload?.spenderData?.name ?? allowance.payload?.spender;
   },
   timestamp: (allowance: TokenAllowanceData) => {
     return allowance.payload?.lastUpdated?.timestamp;
@@ -188,7 +189,9 @@ export const columns = [
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
-    enableSorting: false,
+    enableSorting: true,
+    sortingFn: sortingFns.text,
+    sortUndefined: 'last',
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,
   }),
