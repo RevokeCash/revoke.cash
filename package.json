@@ -24,8 +24,8 @@
   },
   "private": true,
   "dependencies": {
-    "@abstract-foundation/agw-client": "^1.4.2",
-    "@abstract-foundation/agw-react": "^1.5.4",
+    "@abstract-foundation/agw-client": "^1.8.6",
+    "@abstract-foundation/agw-react": "^1.8.7",
     "@dotenvx/dotenvx": "^1.35.0",
     "@envio-dev/hypersync-client": "^0.6.3",
     "@floating-ui/react": "^0.27.4",
