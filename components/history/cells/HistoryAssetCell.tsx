@@ -1,3 +1,5 @@
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import Button from 'components/common/Button';
 import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
@@ -8,9 +10,10 @@ import { useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {
   event: ApprovalTokenEvent & { metadata?: TokenMetadata | null };
+  onFilter?: (filterValue: string) => void;
 }
 
-const HistoryAssetCell = ({ event }: Props) => {
+const HistoryAssetCell = ({ event, onFilter }: Props) => {
   const ref = useRef<HTMLAnchorElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -28,6 +31,13 @@ const HistoryAssetCell = ({ event }: Props) => {
   const explorerUrl = `${getChainExplorerUrl(event.chainId)}/address/${event.token}`;
   const displayText = metadata?.symbol || `${event.token.slice(0, 8)}...`;
 
+  const handleFilterClick = () => {
+    if (onFilter) {
+      const filterValue = metadata?.symbol || event.token;
+      onFilter(`token:${filterValue}`);
+    }
+  };
+
   let link = (
     <Href href={explorerUrl} underline="hover" external className="truncate" ref={ref}>
       {displayText}
@@ -38,8 +48,16 @@ const HistoryAssetCell = ({ event }: Props) => {
     link = <WithHoverTooltip tooltip={metadata?.symbol || event.token}>{link}</WithHoverTooltip>;
   }
 
+  const filterButton = onFilter && (
+    <WithHoverTooltip tooltip="Filter by this token">
+      <Button style="none" size="none" onClick={handleFilterClick} aria-label={`Filter by token ${displayText}`}>
+        <MagnifyingGlassIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200" />
+      </Button>
+    </WithHoverTooltip>
+  );
+
   return (
-    <div className="flex items-center gap-1 py-1 w-48 lg:w-56">
+    <div className="flex items-center gap-2 py-1 w-48 lg:w-56">
       <div className="flex flex-col items-start gap-0.5">
         <div className="flex items-center gap-2 text-base">
           <ChainOverlayLogo
@@ -54,6 +72,7 @@ const HistoryAssetCell = ({ event }: Props) => {
 
         <div className="text-xs text-zinc-500 dark:text-zinc-400 h-4" />
       </div>
+      {filterButton}
     </div>
   );
 };

@@ -1,5 +1,4 @@
-import { createColumnHelper } from '@tanstack/react-table';
-import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
+import { type Row, createColumnHelper } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
@@ -8,6 +7,7 @@ import { TokenEventType } from 'lib/utils/events';
 import { formatUnits } from 'viem';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAssetCell from './cells/HistoryAssetCell';
+import HistorySpenderCell from './cells/HistorySpenderCell';
 
 const columnHelper = createColumnHelper<ApprovalTokenEvent>();
 
@@ -23,15 +23,15 @@ export enum ColumnId {
 
 // Custom filter functions for history table
 export const customFilterFns = {
-  spender: (row: any, columnId: string, filterValues: string[]) => {
+  spender: (row: Row<ApprovalTokenEvent>, columnId: string, filterValues: string[]) => {
     const spenderAddress = row.original.payload.spender;
     return filterValues.some((value) => spenderAddress.toLowerCase().includes(value.toLowerCase()));
   },
-  token: (row: any, columnId: string, filterValues: string[]) => {
+  token: (row: Row<ApprovalTokenEvent>, columnId: string, filterValues: string[]) => {
     const tokenAddress = row.original.token;
     const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
-    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? metadata.symbol : '';
-    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? metadata.name : '';
+    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? String(metadata.symbol) : '';
+    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? String(metadata.name) : '';
 
     return filterValues.some((value) => {
       const searchTerm = value.toLowerCase();
@@ -43,12 +43,16 @@ export const customFilterFns = {
     });
   },
   // Combined filter for searching both spenders and tokens with OR logic
-  combined: (row: any, columnId: string, filterData: { spenderTerms: string[]; tokenTerms: string[] }) => {
+  combined: (
+    row: Row<ApprovalTokenEvent>,
+    columnId: string,
+    filterData: { spenderTerms: string[]; tokenTerms: string[] },
+  ) => {
     const spenderAddress = row.original.payload.spender;
     const tokenAddress = row.original.token;
     const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
-    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? metadata.symbol : '';
-    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? metadata.name : '';
+    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? String(metadata.symbol) : '';
+    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? String(metadata.name) : '';
 
     // Check spender matches
     const spenderMatches = filterData.spenderTerms.some((value) =>
@@ -69,7 +73,7 @@ export const customFilterFns = {
   },
 };
 
-export const columns = [
+export const createColumns = (onFilter?: (filterValue: string) => void) => [
   // Virtual column for combined search (not displayed)
   columnHelper.display({
     id: ColumnId.COMBINED_SEARCH,
@@ -80,7 +84,7 @@ export const columns = [
   columnHelper.accessor('token', {
     id: ColumnId.ASSET,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
-    cell: ({ row }) => <HistoryAssetCell event={row.original} />,
+    cell: ({ row }) => <HistoryAssetCell event={row.original} onFilter={onFilter} />,
     size: 160,
     enableSorting: false,
     enableColumnFilter: true,
@@ -98,7 +102,9 @@ export const columns = [
   columnHelper.accessor('payload.spender', {
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
-    cell: ({ row }) => <AddressCell address={row.original.payload.spender} chainId={row.original.chainId} />,
+    cell: ({ row }) => (
+      <HistorySpenderCell address={row.original.payload.spender} chainId={row.original.chainId} onFilter={onFilter} />
+    ),
     size: 160,
     enableSorting: false,
     enableColumnFilter: true,
@@ -154,3 +160,6 @@ export const columns = [
     enableSorting: false,
   }),
 ];
+
+// Backward compatibility - default columns without filter callback
+export const columns = createColumns();

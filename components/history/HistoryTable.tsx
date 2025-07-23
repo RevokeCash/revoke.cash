@@ -4,21 +4,31 @@ import Table from 'components/common/table/Table';
 import { useApprovalHistory } from 'lib/hooks/ethereum/useApprovalHistory';
 import type { ApprovalTokenEvent } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import HistorySearchBox from './HistorySearchBox';
-import { columns, customFilterFns } from './columns';
+import { useCallback, useMemo, useRef } from 'react';
+import HistorySearchBox, { type HistorySearchBoxRef } from './HistorySearchBox';
+import { createColumns, customFilterFns } from './columns';
 
 const HistoryTable = () => {
   const t = useTranslations();
   const { approvalHistory, isLoading, error } = useApprovalHistory();
+  const searchBoxRef = useRef<HistorySearchBoxRef>(null);
 
   const data = useMemo(() => approvalHistory ?? [], [approvalHistory]);
+
+  const handleFilter = useCallback((filterValue: string) => {
+    // Set the filter value in the search box
+    if (searchBoxRef.current) {
+      searchBoxRef.current.setSearchValue(filterValue);
+    }
+  }, []);
 
   const title = (
     <div className="flex items-center gap-2">
       <div>{t('address.history.title')}</div>
     </div>
   );
+
+  const columns = useMemo(() => createColumns(handleFilter), [handleFilter]);
 
   const table = useReactTable({
     data,
@@ -34,7 +44,7 @@ const HistoryTable = () => {
 
   const controls = (
     <div className="flex flex-col gap-2 p-4">
-      <HistorySearchBox table={table} />
+      <HistorySearchBox ref={searchBoxRef} table={table} />
     </div>
   );
 

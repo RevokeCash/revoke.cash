@@ -8,16 +8,24 @@ import SearchBox from 'components/common/SearchBox';
 import type { ApprovalTokenEvent } from 'lib/utils/events';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
-import { type ChangeEventHandler, useEffect, useState } from 'react';
+import { type ChangeEventHandler, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { ColumnId } from './columns';
 
 interface Props {
   table: Table<ApprovalTokenEvent>;
 }
 
-const HistorySearchBox = ({ table }: Props) => {
+export interface HistorySearchBoxRef {
+  setSearchValue: (value: string) => void;
+}
+
+const HistorySearchBox = forwardRef<HistorySearchBoxRef, Props>(({ table }, ref) => {
   const t = useTranslations();
   const [searchValue, setSearchValue] = useState<string>('');
+
+  useImperativeHandle(ref, () => ({
+    setSearchValue,
+  }));
 
   useEffect(() => {
     const terms = searchValue.trim().split(',').filter(Boolean);
@@ -92,6 +100,8 @@ const HistorySearchBox = ({ table }: Props) => {
       {searchValue.trim().length > 0 && resetButton}
     </SearchBox>
   );
-};
+});
+
+HistorySearchBox.displayName = 'HistorySearchBox';
 
 export default HistorySearchBox;
