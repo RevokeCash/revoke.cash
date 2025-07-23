@@ -1,10 +1,10 @@
 import { type Row, createColumnHelper } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
-import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
 import type { ApprovalTokenEvent } from 'lib/utils/events';
 import { TokenEventType } from 'lib/utils/events';
-import { formatUnits } from 'viem';
+import { formatFixedPointBigInt } from 'lib/utils/formatting';
+import { zeroAddress } from 'viem';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAssetCell from './cells/HistoryAssetCell';
 import HistorySpenderCell from './cells/HistorySpenderCell';
@@ -17,7 +17,6 @@ export enum ColumnId {
   SPENDER = 'Approved Spender',
   AMOUNT = 'Amount',
   DATE = 'Date',
-  TRANSACTION = 'Transaction',
   COMBINED_SEARCH = 'Combined Search',
 }
 
@@ -123,19 +122,32 @@ export const createColumns = (onFilter?: (filterValue: string) => void) => [
       }
 
       if (type === TokenEventType.APPROVAL_ERC721) {
-        return `Token #${payload.tokenId}`;
+        // ERC721 approval to zero address is a revoke
+        return payload.spender === zeroAddress ? 'None' : `Token #${payload.tokenId}`;
       }
 
       if ('amount' in payload && payload.amount === 0n) {
         return '0';
       }
 
-      if ('amount' in payload && payload.amount > 10n ** 50n) {
-        return 'Unlimited';
+      if ('amount' in payload) {
+        const decimals =
+          metadata && typeof metadata === 'object' && 'decimals' in metadata ? Number(metadata.decimals) : 18;
+        const totalSupply =
+          metadata && typeof metadata === 'object' && 'totalSupply' in metadata
+            ? BigInt(String(metadata.totalSupply))
+            : undefined;
+
+        // Check if amount exceeds total supply (unlimited)
+        if (totalSupply && payload.amount > totalSupply) {
+          return 'Unlimited';
+        }
+
+        // Use proper formatting with decimal precision
+        return formatFixedPointBigInt(payload.amount, decimals);
       }
 
-      const decimals = metadata && typeof metadata === 'object' && 'decimals' in metadata ? metadata.decimals : 18;
-      return 'amount' in payload ? formatUnits(payload.amount, decimals as number) : '';
+      return '';
     },
     size: 128,
     enableSorting: false,
@@ -148,16 +160,6 @@ export const createColumns = (onFilter?: (filterValue: string) => void) => [
     size: 128,
     enableSorting: true,
     sortingFn: 'basic',
-  }),
-
-  columnHelper.accessor('time.transactionHash', {
-    id: ColumnId.TRANSACTION,
-    header: () => <HeaderCell i18nKey="address.headers.transaction" />,
-    cell: ({ row }) => (
-      <TransactionHashCell transactionHash={row.original.time.transactionHash} chainId={row.original.chainId} />
-    ),
-    size: 128,
-    enableSorting: false,
   }),
 ];
 

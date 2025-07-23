@@ -1,4 +1,10 @@
-import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import Card from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useApprovalHistory } from 'lib/hooks/ethereum/useApprovalHistory';
@@ -6,6 +12,7 @@ import type { ApprovalTokenEvent } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef } from 'react';
 import HistorySearchBox, { type HistorySearchBoxRef } from './HistorySearchBox';
+import TablePagination from './TablePagination';
 import { createColumns, customFilterFns } from './columns';
 
 const HistoryTable = () => {
@@ -36,7 +43,13 @@ const HistoryTable = () => {
     getCoreRowModel: getCoreRowModel<ApprovalTokenEvent>(),
     getSortedRowModel: getSortedRowModel<ApprovalTokenEvent>(),
     getFilteredRowModel: getFilteredRowModel<ApprovalTokenEvent>(),
+    getPaginationRowModel: getPaginationRowModel<ApprovalTokenEvent>(),
     filterFns: customFilterFns,
+    initialState: {
+      pagination: {
+        pageSize: 25, // Default page size
+      },
+    },
     getRowId(row, index) {
       return `${row.time.transactionHash}-${index}`;
     },
@@ -59,6 +72,7 @@ const HistoryTable = () => {
         loaderRows={2}
         className="border-none"
       />
+      <TablePagination table={table} />
     </Card>
   );
 };
