@@ -215,7 +215,8 @@
     "unsafe": "Potentially unsafe contract code"
   },
   "search": {
-    "spender": "Search by Approved Spender Address"
+    "spender": "Search by Approved Spender Address",
+    "history": "Search by Spender or Token"
   },
   "sessions": {
     "info": {

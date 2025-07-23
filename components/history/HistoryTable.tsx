@@ -5,7 +5,8 @@ import { useApprovalHistory } from 'lib/hooks/ethereum/useApprovalHistory';
 import type { ApprovalTokenEvent } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import { columns } from './columns';
+import HistorySearchBox from './HistorySearchBox';
+import { columns, customFilterFns } from './columns';
 
 const HistoryTable = () => {
   const t = useTranslations();
@@ -25,13 +26,21 @@ const HistoryTable = () => {
     getCoreRowModel: getCoreRowModel<ApprovalTokenEvent>(),
     getSortedRowModel: getSortedRowModel<ApprovalTokenEvent>(),
     getFilteredRowModel: getFilteredRowModel<ApprovalTokenEvent>(),
+    filterFns: customFilterFns,
     getRowId(row, index) {
       return `${row.time.transactionHash}-${index}`;
     },
   });
 
+  const controls = (
+    <div className="flex flex-col gap-2 p-4">
+      <HistorySearchBox table={table} />
+    </div>
+  );
+
   return (
     <Card title={title} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+      {controls}
       <Table
         table={table}
         loading={isLoading}

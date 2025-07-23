@@ -18,15 +18,73 @@ export enum ColumnId {
   AMOUNT = 'Amount',
   DATE = 'Date',
   TRANSACTION = 'Transaction',
+  COMBINED_SEARCH = 'Combined Search',
 }
 
+// Custom filter functions for history table
+export const customFilterFns = {
+  spender: (row: any, columnId: string, filterValues: string[]) => {
+    const spenderAddress = row.original.payload.spender;
+    return filterValues.some((value) => spenderAddress.toLowerCase().includes(value.toLowerCase()));
+  },
+  token: (row: any, columnId: string, filterValues: string[]) => {
+    const tokenAddress = row.original.token;
+    const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
+    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? metadata.symbol : '';
+    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? metadata.name : '';
+
+    return filterValues.some((value) => {
+      const searchTerm = value.toLowerCase();
+      return (
+        tokenAddress?.toLowerCase().includes(searchTerm) ||
+        tokenSymbol.toLowerCase().includes(searchTerm) ||
+        tokenName.toLowerCase().includes(searchTerm)
+      );
+    });
+  },
+  // Combined filter for searching both spenders and tokens with OR logic
+  combined: (row: any, columnId: string, filterData: { spenderTerms: string[]; tokenTerms: string[] }) => {
+    const spenderAddress = row.original.payload.spender;
+    const tokenAddress = row.original.token;
+    const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
+    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? metadata.symbol : '';
+    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? metadata.name : '';
+
+    // Check spender matches
+    const spenderMatches = filterData.spenderTerms.some((value) =>
+      spenderAddress.toLowerCase().includes(value.toLowerCase()),
+    );
+
+    // Check token matches
+    const tokenMatches = filterData.tokenTerms.some((value) => {
+      const searchTerm = value.toLowerCase();
+      return (
+        tokenAddress?.toLowerCase().includes(searchTerm) ||
+        tokenSymbol.toLowerCase().includes(searchTerm) ||
+        tokenName.toLowerCase().includes(searchTerm)
+      );
+    });
+
+    return spenderMatches || tokenMatches;
+  },
+};
+
 export const columns = [
+  // Virtual column for combined search (not displayed)
+  columnHelper.display({
+    id: ColumnId.COMBINED_SEARCH,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.combined,
+  }),
+
   columnHelper.accessor('token', {
     id: ColumnId.ASSET,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
     cell: ({ row }) => <HistoryAssetCell event={row.original} />,
     size: 160,
     enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.token,
   }),
 
   columnHelper.accessor('type', {
@@ -43,6 +101,8 @@ export const columns = [
     cell: ({ row }) => <AddressCell address={row.original.payload.spender} chainId={row.original.chainId} />,
     size: 160,
     enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.spender,
   }),
 
   columnHelper.accessor('payload.amount', {
