@@ -64,7 +64,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId['SongbirdCanary-Network'],
   ChainId.IOTAEVM,
   ChainId.Astar,
-  ChainId.AstarzkEVM,
   999, // Hyperliquid EVM
   ChainId.TelosEVMMainnet,
   ChainId.XDCNetwork,
@@ -132,7 +131,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PegoNetwork,
   ChainId.Redstone,
   ChainId.RSS3VSLMainnet,
-  // ChainId.LUKSOMainnet,
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
   ChainId.Ethernity,
@@ -160,9 +158,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.CeloAlfajoresTestnet,
   ChainId.MoonbaseAlpha,
   ChainId.MantleSepoliaTestnet,
-  ChainId.KromaSepolia,
   ChainId.FraxtalTestnet,
-  ChainId.HorizenGobiTestnet,
   ChainId.IOTAEVMTestnet,
   ChainId.ZetaChainTestnet,
   ChainId.MonadTestnet,
@@ -170,7 +166,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BeamTestnet,
   ChainId.TabiTestnetv2,
   ChainId.CreatorChainTestnet,
-  // ChainId.LUKSOTestnet,
+  ChainId.ZenChainTestnet,
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
@@ -349,15 +345,6 @@ export const CHAINS = {
         }),
       ],
     }),
-  }),
-  [ChainId.AstarzkEVM]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.AstarzkEVM,
-    name: 'Astar zkEVM',
-    logoUrl: '/assets/images/vendor/chains/astar.svg',
-    etherscanCompatibleApiUrl: 'https://astar-zkevm.explorer.startale.com/api',
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // TODO
   }),
   [ChainId.AuroraMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -556,7 +543,8 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://brisescan.com/api',
     nativeToken: 'BRISE',
     rpc: {
-      main: 'https://mainnet-rpc.brisescan.com',
+      main: 'https://rpc-bitgert.icecreamswap.com',
+      free: 'https://rpc-bitgert.icecreamswap.com',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No liquid stablecoins
@@ -722,7 +710,8 @@ export const CHAINS = {
     explorerUrl: 'https://tuber.build',
     etherscanCompatibleApiUrl: 'https://explorer.plexnode.wtf/api',
     rpc: {
-      main: 'https://canto.slingshot.finance',
+      main: 'https://canto.gravitychain.io',
+      free: 'https://canto.gravitychain.io',
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Canto DEX is not fully compatible with Uniswap v2, but it might be partially compatible, so we can look into
@@ -1264,17 +1253,6 @@ export const CHAINS = {
     },
     priceStrategy: undefined, // <$100k Liquidity
   }),
-  [ChainId.HorizenGobiTestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.HorizenGobiTestnet,
-    name: 'Horizen Gobi',
-    nativeTokenCoingeckoId: 'zencash',
-    logoUrl: '/assets/images/vendor/chains/horizen.png',
-    explorerUrl: 'https://gobi-explorer.horizenlabs.io',
-    etherscanCompatibleApiUrl: 'https://gobi-explorer-api.horizenlabs.io/api',
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.HorizenEONMainnet,
-  }),
   [ChainId.HuobiECOChainMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: ChainId.HuobiECOChainMainnet,
@@ -1414,20 +1392,13 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/kroma.svg',
     explorerUrl: 'https://blockscout.kroma.network',
     etherscanCompatibleApiUrl: 'https://blockscout.kroma.network/api',
+    rpc: {
+      main: 'https://kroma.drpc.org',
+      free: 'https://kroma.drpc.org',
+    },
     deployedContracts: { ...MULTICALL },
     // TODO: Add iZiSwap strategy to support Kroma
     priceStrategy: undefined,
-  }),
-  [ChainId.KromaSepolia]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.KromaSepolia,
-    name: 'Kroma Sepolia',
-    logoUrl: '/assets/images/vendor/chains/kroma.svg',
-    explorerUrl: 'https://blockscout.sepolia.kroma.network/',
-    etherscanCompatibleApiUrl: 'https://blockscout.sepolia.kroma.network/api',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Kroma,
   }),
   [ChainId.Lens]: new Chain({
     type: SupportType.COVALENT,
@@ -2529,6 +2500,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/xdc.svg',
     rpc: {
       main: 'https://rpc.ankr.com/xdc',
+      free: 'https://rpc.ankr.com/xdc',
     },
   }),
   [ChainId.XLayerMainnet]: new Chain({
@@ -2539,6 +2511,21 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/xlayer.svg',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
+  }),
+  [ChainId.ZenChain]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.ZenChain,
+    name: 'ZenChain',
+    logoUrl: '/assets/images/vendor/chains/zenchain.svg',
+  }),
+  [ChainId.ZenChainTestnet]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.ZenChainTestnet,
+    name: 'ZenChain Testnet',
+    logoUrl: '/assets/images/vendor/chains/zenchain.svg',
+    etherscanCompatibleApiUrl: 'https://zentrace.io/api',
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.ZenChain,
   }),
   [ChainId.ZERONetwork]: new Chain({
     type: SupportType.PROVIDER,
