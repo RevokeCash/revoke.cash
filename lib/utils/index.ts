@@ -232,11 +232,16 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 export const range = (length: number) => Array.from({ length }, (_, i) => i);
 
 export const apiLogin = async () => {
+  // In a backend context, we do not need to login
+  if (!isBrowser()) return true;
+
   return ky
     .post('/api/login')
     .json<any>()
     .then((res) => !!res?.ok);
 };
+
+export const isBrowser = () => typeof window !== 'undefined';
 
 export type AccountType = 'EOA' | 'EIP7702 Account' | 'Smart Contract';
 export const getAccountType = async (address: Address, publicClient: PublicClient): Promise<AccountType> => {

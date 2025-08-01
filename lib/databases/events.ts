@@ -1,46 +1,33 @@
 import { ChainId } from '@revoke.cash/chains';
-import Dexie, { type Table } from 'dexie';
 import type { LogsProvider } from 'lib/providers';
+import { isBrowser } from 'lib/utils';
 import { getChainName } from 'lib/utils/chains';
 import type { Filter, Log } from 'lib/utils/events';
-import type { Address } from 'viem';
-
-interface Events {
-  chainId: number;
-  address?: Address;
-  topicsKey: string;
-  topics: Array<string | null>;
-  toBlock: number;
-  logs: Log[];
-}
+import type { Events } from './cache/EventsDexie';
+import EventsDexieCache from './cache/EventsDexieCache';
+import { CacheError, type ICache } from './cache/ICache';
+import NoCache from './cache/NoCache';
 
 // Certain chains lack proper infrastructure, so we don't index events for them
 // Note: these are prime candidates for delisting from the app if no long term solutions are found
 const DO_NOT_INDEX = [ChainId.PulseChain, ChainId.BitTorrentChainMainnet];
 
-class EventsDB extends Dexie {
-  private events!: Table<Events>;
-
-  constructor() {
-    super('Events');
-
-    // On 2025-03-23, we perform a full re-index of the events table
-    this.version(2025_03_23)
-      .stores({
-        events: '[chainId+topicsKey], chainId, topics, toBlock',
-      })
-      .upgrade((tx) => {
-        tx.table<Events>('events').clear();
-      });
-  }
+class EventsDB {
+  constructor(private cache: ICache<Events, [number, string]>) {}
 
   // Note: It is always assumed that this function is called to get logs for the entire chain (i.e. from block 0 to 'latest')
   // So we assume that the filter.fromBlock is always 0, and we only need to retrieve events between the last stored event and 'latest'
   // This means that we can't use this function to get logs for a specific block range
   async getLogs(logsProvider: LogsProvider, filter: Filter, chainId: number, nameTag?: string): Promise<Log[]> {
+    await this.cache.initialize();
+
     const logs = await this.getLogsInternal(logsProvider, filter, chainId);
 
-    if (nameTag) console.log(`${getChainName(chainId)}: ${nameTag} logs`, logs);
+    if (nameTag) {
+      const cacheType = this.cache.constructor.name;
+      console.log(`${getChainName(chainId)}: ${nameTag} logs [${cacheType}]`, logs);
+    }
+
     // We can uncomment this to filter the logs once more by block number after retrieving them from IndexedDB
     // This is useful when we want to test the state of approvals at a different block by using a Tenderly fork
     // return logs.filter((log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock);
@@ -59,35 +46,34 @@ class EventsDB extends Dexie {
       // TODO: Properly update the primary key of the table in Dexie when it is supported.
       const { address, topics } = filter;
       const topicsKey = topics.join(',') + (address ? `/${address}` : '');
-      const storedEvents = await this.events.get([chainId, topicsKey]);
+
+      const cachedEvents = await this.cache.get([chainId, topicsKey]);
 
       // If we already have events stored, we only need to get events from the last stored event to the latest block
-      const fromBlock = storedEvents?.toBlock ? storedEvents.toBlock + 1 : filter.fromBlock;
+      const fromBlock = cachedEvents?.toBlock ? cachedEvents.toBlock + 1 : filter.fromBlock;
 
       // If the fromBlock is greater than the toBlock, it means that we already have all the events
       if (fromBlock > toBlock) {
-        return storedEvents!.logs.filter(
+        return cachedEvents!.logs.filter(
           (log) => log.blockNumber >= filter.fromBlock && log.blockNumber <= filter.toBlock,
         );
       }
 
       const newLogs = await logsProvider.getLogs({ ...filter, fromBlock, toBlock });
-      const logs = [...(storedEvents?.logs || []), ...newLogs];
+      const logs = [...(cachedEvents?.logs || []), ...newLogs];
 
-      await this.events.put({ chainId, address, topicsKey, topics, toBlock, logs });
+      await this.cache.put([chainId, topicsKey], { chainId, address, topicsKey, topics, toBlock, logs });
       return logs;
     } catch (e) {
       console.error(e);
-      // If there is an error, we just return the logs from the provider (may be the case if IndexedDB is not supported)
-      if (e instanceof Dexie.DexieError) {
-        return logsProvider.getLogs(filter);
-      }
+      if (e instanceof CacheError) return logsProvider.getLogs(filter);
 
       throw e;
     }
   }
 }
 
-const eventsDB = new EventsDB();
+const cache: ICache<Events, [number, string]> = isBrowser() ? new EventsDexieCache() : new NoCache();
+const eventsDB = new EventsDB(cache);
 
 export default eventsDB;
