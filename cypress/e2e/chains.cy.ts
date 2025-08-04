@@ -13,7 +13,6 @@ const TEST_ADDRESSES = {
   [ChainId.ArbitrumNova]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.ArbitrumOne]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Astar]: '0xAE545C0d8d4b4645fBA8c895e370529D22F8a71c',
-  [ChainId.AstarzkEVM]: '0x1bb33A99dA07048d3CbCEe3098Cb8356209dd1F6',
   [ChainId.AuroraMainnet]: '0x1D50A8c3295798fCebdDD0C720BeC4FBEdc3D178',
   [ChainId['AvalancheC-Chain']]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.BasedAI]: '0x35b7d03d4ef836068008f984df89284158722d71',
@@ -151,9 +150,7 @@ const TEST_ADDRESSES = {
   [ChainId.EthereumSepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
   [ChainId.FraxtalTestnet]: '0x3289CAbF6FB3435dc645e1e204Ec663456d14ADD',
   [ChainId.Holesky]: '0x5A8ec40549AebF0E3Fb9d59bCE57b2AfE4d5eDda',
-  [ChainId.HorizenGobiTestnet]: '0xbc6b540c8F7fCEC60b89342E65c14cb38CDcAb32',
   [ChainId.IOTAEVMTestnet]: '0xdeD212B8BAb662B98f49e757CbB409BB7808dc10',
-  [ChainId.KromaSepolia]: '0x9c9eCFf9f7a4A15BA3554e1c10E576441267063b',
   [ChainId.LineaSepolia]: '0x7061146B49427143FfF175e9C1bF7461630302fF',
   // [ChainId.LUKSOTestnet]: '0xBdDDd277583DCaE0B501046ba86714FEea71B03F',
   [ChainId.MantleSepoliaTestnet]: '0x519a89Daa5d3291730a037B94025ab46425c4003',
@@ -169,6 +166,7 @@ const TEST_ADDRESSES = {
   [ChainId.TaikoHekla]: '0x5B9a8ADcd12568D0C17A89f8bb2306B1765B5cBc',
   [ChainId.ZetaChainTestnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
   [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
+  [ChainId.ZenChainTestnet]: '0xb98B6373f7f59bdc0bB2DCd11a9fC1e0a43AfBfa',
 } as const;
 
 describe(`Chain Support (${TEST_URL})`, () => {

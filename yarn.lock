@@ -5,9 +5,9 @@ __metadata:
   version: 8
   cacheKey: 10
 
-"@abstract-foundation/agw-client@npm:1.5.0, @abstract-foundation/agw-client@npm:^1.4.2":
-  version: 1.5.0
-  resolution: "@abstract-foundation/agw-client@npm:1.5.0"
+"@abstract-foundation/agw-client@npm:1.8.6, @abstract-foundation/agw-client@npm:^1.8.6":
+  version: 1.8.6
+  resolution: "@abstract-foundation/agw-client@npm:1.8.6"
   peerDependencies:
     abitype: ^1.0.0
     typescript: ">=5.0.4"
@@ -15,18 +15,18 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/1a008759967731446cb7b48e03157d637749166389407963bdfe69f415a974bf7bb878508fbe4384d6dc8395fe4d564415cb162e4d78fc1666b918a7d627e0f5
+  checksum: 10/af69d44d072c6e95afaea9d1aed629d74ef165919e511a11ab407b575050b63c16b7c96819b71391a28585e3997a47681bb3f962ffccded03ff2c8dc551c5e66
   languageName: node
   linkType: hard
 
-"@abstract-foundation/agw-react@npm:^1.5.4":
-  version: 1.5.5
-  resolution: "@abstract-foundation/agw-react@npm:1.5.5"
+"@abstract-foundation/agw-react@npm:^1.8.7":
+  version: 1.8.7
+  resolution: "@abstract-foundation/agw-react@npm:1.8.7"
   dependencies:
-    "@abstract-foundation/agw-client": "npm:1.5.0"
+    "@abstract-foundation/agw-client": "npm:1.8.6"
   peerDependencies:
-    "@privy-io/cross-app-connect": ^0.1.5
-    "@privy-io/react-auth": ^2.4.1
+    "@privy-io/cross-app-connect": ^0.2.1
+    "@privy-io/react-auth": ^2.13.8
     "@tanstack/react-query": ^5
     react: ">=18"
     secp256k1: ">=5.0.1"
@@ -35,13 +35,11 @@ __metadata:
     viem: ^2.22.23
     wagmi: ^2.14.11
   peerDependenciesMeta:
-    "@rainbow-me/rainbowkit":
-      optional: true
     thirdweb:
       optional: true
     typescript:
       optional: true
-  checksum: 10/867420c02c70900893aff3d5578ac253893a1c8980d4a02c50e0d4e199f0b378dbbcd438cd3fdfee1c2425f6696ba1653569b253077449b974b5b6e08a2ae49a
+  checksum: 10/5b3df36065d405ddce65e75a8b148f39eca612ab95e3889f043e9e340f2e216f0d14e79bac956e878ecc4327d2fc1c6b541f2971e9aa80c149229e81bd207cef
   languageName: node
   linkType: hard
 
@@ -10102,8 +10100,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "revoke.cash@workspace:."
   dependencies:
-    "@abstract-foundation/agw-client": "npm:^1.4.2"
-    "@abstract-foundation/agw-react": "npm:^1.5.4"
+    "@abstract-foundation/agw-client": "npm:^1.8.6"
+    "@abstract-foundation/agw-react": "npm:^1.8.7"
     "@biomejs/biome": "npm:^1.9.4"
     "@commitlint/cli": "npm:^19.7.1"
     "@commitlint/config-conventional": "npm:^19.7.1"
