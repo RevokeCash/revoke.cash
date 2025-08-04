@@ -37,6 +37,7 @@ const RiskTooltip = ({ riskFactors }: Props) => {
   );
 
   const className = twMerge(
+    'risk-tooltip',
     'w-6 h-6 focus:outline-black shrink-0',
     riskLevel === 'high' && 'text-red-500',
     riskLevel === 'medium' && 'text-yellow-500',
