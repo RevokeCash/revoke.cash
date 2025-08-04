@@ -81,7 +81,7 @@ export const accessors = {
     return calculateValueAtRisk(allowance);
   },
   spender: (allowance: TokenAllowanceData) => {
-    return allowance.payload?.spender;
+    return allowance.payload?.spenderData?.name ?? allowance.payload?.spender;
   },
   timestamp: (allowance: TokenAllowanceData) => {
     return allowance.payload?.lastUpdated?.timestamp;
@@ -97,6 +97,11 @@ export const customSortingFns = {
     if (rowA.getValue(columnId) === 'Unlimited') return 1;
     if (rowB.getValue(columnId) === 'Unlimited') return -1;
     return sortingFns.alphanumeric(rowA, rowB, columnId);
+  },
+  spender: (rowA: Row<TokenAllowanceData>, rowB: Row<TokenAllowanceData>, columnId: string) => {
+    if (!rowA.original.payload?.spenderData?.name) return 1;
+    if (!rowB.original.payload?.spenderData?.name) return -1;
+    return sortingFns.text(rowA, rowB, columnId);
   },
 };
 
@@ -188,7 +193,9 @@ export const columns = [
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
-    enableSorting: false,
+    enableSorting: true,
+    sortingFn: customSortingFns.spender,
+    sortUndefined: 'last',
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,
   }),

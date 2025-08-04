@@ -244,8 +244,8 @@
   "sorting": {
     "columns": {
       "allowance": "授权金额",
+      "approved_spender": "被授权人（Spender）",
       "asset_name": "资产名称",
-      "authorized_spender": "被授权人（Spender）",
       "last_updated": "上次更新",
       "value_at_risk": "存在风险金额"
     },

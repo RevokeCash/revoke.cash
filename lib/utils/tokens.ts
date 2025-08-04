@@ -2,7 +2,6 @@ import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract, Nullable } from 'lib/interfaces';
 import ky from 'lib/ky';
-import { getTokenPrice } from 'lib/price/utils';
 import {
   type Address,
   type PublicClient,
@@ -47,6 +46,7 @@ export interface TokenMetadata {
   icon?: string;
   decimals?: number;
   totalSupply?: bigint;
+  // Price will be loaded separately (undefined until loaded, null if no price available)
   price?: Nullable<number>;
 }
 
@@ -159,32 +159,28 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
 
   if (isErc721Contract(contract)) {
-    const [symbol, price] = await Promise.all([
+    const [symbol] = await Promise.all([
       metadataFromMapping?.symbol ??
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
-      getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
     ]);
 
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
-
-    const tokenPrice = price;
-
-    return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 0 };
+    return { ...metadataFromMapping, symbol, price: null, decimals: 0 };
   }
 
-  const [totalSupply, symbol, decimals, price] = await Promise.all([
+  const [totalSupply, symbol, decimals] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    getTokenPrice(chainId, contract),
     throwIfNotErc20(contract),
   ]);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
-  return { ...metadataFromMapping, totalSupply, symbol, decimals, price };
+  // Price will be loaded separately via useTokenPrice hook
+  return { ...metadataFromMapping, totalSupply, symbol, decimals, price: null };
 };
 
 export const getTokenMetadataUnknown = async (

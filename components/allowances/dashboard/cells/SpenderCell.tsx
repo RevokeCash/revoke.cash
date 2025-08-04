@@ -1,9 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
 import { isNullish } from 'lib/utils';
 import { AllowanceType, type TokenAllowanceData } from 'lib/utils/allowances';
 import { YEAR } from 'lib/utils/time';
-import { getSpenderData } from 'lib/utils/whois';
 import { useMemo } from 'react';
 import AddressCell from './AddressCell';
 
@@ -12,14 +10,8 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  // TODO: Expose this data to react-table
-  const { data: spenderData, isLoading } = useQuery({
-    queryKey: ['spenderData', allowance.payload?.spender, allowance.chainId],
-    queryFn: () => getSpenderData(allowance.payload!.spender, allowance.chainId),
-    // Chances of this data changing while the user is on the page are very slim
-    staleTime: Number.POSITIVE_INFINITY,
-    enabled: !isNullish(allowance.payload?.spender),
-  });
+  const spenderData = allowance.payload?.spenderData;
+  const isLoading = spenderData === undefined && !isNullish(allowance.payload?.spender);
 
   // Add non-spender-specific risk factors (TODO: set up a proper system for this)
   const riskFactors = useMemo(() => {
@@ -35,7 +27,7 @@ const SpenderCell = ({ allowance }: Props) => {
   if (!allowance.payload?.spender) return null;
 
   return (
-    <Loader isLoading={isLoading}>
+    <Loader isLoading={isLoading} className="h-6">
       <AddressCell
         address={allowance.payload.spender}
         spenderData={spenderData ? { name: spenderData.name, riskFactors } : undefined}
