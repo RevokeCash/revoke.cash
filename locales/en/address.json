@@ -244,8 +244,8 @@
   "sorting": {
     "columns": {
       "allowance": "Approved Amount",
+      "approved_spender": "Approved Spender",
       "asset_name": "Asset Name",
-      "authorized_spender": "Approved Spender",
       "last_updated": "Last Updated",
       "value_at_risk": "Value at Risk"
     },

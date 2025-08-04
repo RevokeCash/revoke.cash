@@ -244,8 +244,8 @@
   "sorting": {
     "columns": {
       "allowance": "Утв. сумма",
+      "approved_spender": "Авториз. дост.",
       "asset_name": "Название актива",
-      "authorized_spender": "Авториз. дост.",
       "last_updated": "Посл. обнов.",
       "value_at_risk": "Значение риска"
     },

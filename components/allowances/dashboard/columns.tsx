@@ -35,7 +35,7 @@ export enum ColumnId {
   BALANCE = 'Balance',
   ALLOWANCE = 'Allowance',
   VALUE_AT_RISK = 'Value at Risk',
-  SPENDER = 'Authorized Spender',
+  SPENDER = 'Approved Spender',
   LAST_UPDATED = 'Last Updated',
   ACTIONS = 'Actions',
 }
@@ -81,7 +81,6 @@ export const accessors = {
     return calculateValueAtRisk(allowance);
   },
   spender: (allowance: TokenAllowanceData) => {
-    // Use spender name if available
     return allowance.payload?.spenderData?.name ?? allowance.payload?.spender;
   },
   timestamp: (allowance: TokenAllowanceData) => {
@@ -98,6 +97,11 @@ export const customSortingFns = {
     if (rowA.getValue(columnId) === 'Unlimited') return 1;
     if (rowB.getValue(columnId) === 'Unlimited') return -1;
     return sortingFns.alphanumeric(rowA, rowB, columnId);
+  },
+  spender: (rowA: Row<TokenAllowanceData>, rowB: Row<TokenAllowanceData>, columnId: string) => {
+    if (!rowA.original.payload?.spenderData?.name) return 1;
+    if (!rowB.original.payload?.spenderData?.name) return -1;
+    return sortingFns.text(rowA, rowB, columnId);
   },
 };
 
@@ -190,7 +194,7 @@ export const columns = [
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
     enableSorting: true,
-    sortingFn: sortingFns.text,
+    sortingFn: customSortingFns.spender,
     sortUndefined: 'last',
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,

@@ -1,4 +1,5 @@
 import Loader from 'components/common/Loader';
+import { isNullish } from 'lib/utils';
 import { AllowanceType, type TokenAllowanceData } from 'lib/utils/allowances';
 import { YEAR } from 'lib/utils/time';
 import { useMemo } from 'react';
@@ -9,9 +10,8 @@ interface Props {
 }
 
 const SpenderCell = ({ allowance }: Props) => {
-  // Spender data is now provided via the enhanced allowances hook
   const spenderData = allowance.payload?.spenderData;
-  const isLoading = spenderData === undefined && !!allowance.payload?.spender;
+  const isLoading = spenderData === undefined && !isNullish(allowance.payload?.spender);
 
   // Add non-spender-specific risk factors (TODO: set up a proper system for this)
   const riskFactors = useMemo(() => {

@@ -244,8 +244,8 @@
   "sorting": {
     "columns": {
       "allowance": "許可したもの",
+      "approved_spender": "認定支出者",
       "asset_name": "資産名",
-      "authorized_spender": "認定支出者",
       "last_updated": "最終更新日",
       "value_at_risk": "リスクがある価値"
     },

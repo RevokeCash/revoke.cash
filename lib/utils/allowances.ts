@@ -45,6 +45,7 @@ export enum AllowanceType {
 export interface BaseAllowance {
   type: AllowanceType;
   spender: Address;
+  // Spender data will be loaded separately (undefined until loaded, null if no data available)
   spenderData?: Nullable<SpenderRiskData>;
   lastUpdated: TimeLog;
 }

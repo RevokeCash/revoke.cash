@@ -50,7 +50,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     }
   }, [data]);
 
-  // No need to deduplicate duplicate unique tokens, since TanStack Query will deduplicate the queries for us
+  // No need to deduplicate duplicate unique tokens/spenders, since TanStack Query will deduplicate the queries for us
   const priceQueries = useQueries({
     queries: (baseAllowances ?? []).map((allowance) => ({
       queryKey: ['tokenPrice', allowance.chainId, allowance.contract.address],
@@ -61,7 +61,6 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     })),
   });
 
-  // Batch spender queries with 1:1 mapping to baseAllowances (disabled queries for non-spender allowances)
   const spenderQueries = useQueries({
     queries: (baseAllowances ?? []).map((allowance) => ({
       queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender ?? 'null'],
@@ -122,6 +121,9 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
     console.debug('Reloading data');
 
+    // Invalidate blockNumber query, which triggers a refetch of the events, which in turn triggers a refetch of the allowances
+    // We do not immediately refetch the allowances here, but we want to make sure that allowances will be refetched when
+    // users navigate to the allowances page again
     await queryClient.invalidateQueries({
       queryKey: ['blockNumber', chainId],
       refetchType: 'none',

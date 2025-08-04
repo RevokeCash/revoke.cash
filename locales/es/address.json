@@ -244,8 +244,8 @@
   "sorting": {
     "columns": {
       "allowance": "Cantidad Autorizada",
+      "approved_spender": "Gastador Autorizado",
       "asset_name": "Nombre del Activo",
-      "authorized_spender": "Gastador Autorizado",
       "last_updated": "Última Actualización",
       "value_at_risk": "Valor en Riesgo"
     },
