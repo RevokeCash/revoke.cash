@@ -1,9 +1,8 @@
 'use client';
 
 import { useQueries, useQuery } from '@tanstack/react-query';
-import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { getTokenPrice } from 'lib/price/utils';
-import { deduplicateArray, isNullish } from 'lib/utils';
+import { isNullish } from 'lib/utils';
 import {
   type AllowancePayload,
   AllowanceType,
@@ -13,6 +12,7 @@ import {
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import { type TimeLog, type TokenEvent, getEventKey } from 'lib/utils/events';
+import { MINUTE } from 'lib/utils/time';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
 import { useLayoutEffect, useMemo, useState } from 'react';
@@ -25,8 +25,6 @@ interface AllowanceUpdateProperties {
   lastUpdated?: TimeLog;
 }
 
-const PRICE_STALE_TIME = 5 * 60 * 1000; // 5 minutes
-
 export const useAllowances = (address: Address, events: TokenEvent[] | undefined, chainId: number) => {
   const publicClient = usePublicClient({ chainId })!;
 
@@ -38,6 +36,8 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
       analytics.track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
+    // If events (transfers + approvals) don't change, derived allowances also shouldn't change, even if allowances
+    // are used on-chain. The only exception would be incorrectly implemented tokens that don't emit correct events
     staleTime: Number.POSITIVE_INFINITY,
     enabled: !isNullish(address) && !isNullish(chainId) && !isNullish(events),
   });
@@ -50,73 +50,43 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     }
   }, [data]);
 
-  const uniqueContracts = useMemo(() => {
-    if (!baseAllowances) return [];
-    return deduplicateArray(baseAllowances, (allowance) => `${allowance.chainId}-${allowance.contract.address}`);
-  }, [baseAllowances]);
-
-  const uniqueSpenders = useMemo(() => {
-    if (!baseAllowances) return [];
-    return deduplicateArray(
-      baseAllowances.filter((allowance) => allowance.payload?.spender),
-      (allowance) => `${allowance.chainId}-${allowance.payload!.spender}`,
-    );
-  }, [baseAllowances]);
-
+  // No need to deduplicate duplicate unique tokens, since TanStack Query will deduplicate the queries for us
   const priceQueries = useQueries({
-    queries: uniqueContracts.map((allowance) => ({
+    queries: (baseAllowances ?? []).map((allowance) => ({
       queryKey: ['tokenPrice', allowance.chainId, allowance.contract.address],
       queryFn: () => getTokenPrice(allowance.chainId, allowance.contract),
-      staleTime: PRICE_STALE_TIME,
+      staleTime: 5 * MINUTE,
       refetchOnWindowFocus: false,
       placeholderData: undefined,
     })),
   });
 
-  // Batch spender queries for all unique spenders
+  // Batch spender queries with 1:1 mapping to baseAllowances (disabled queries for non-spender allowances)
   const spenderQueries = useQueries({
-    queries: uniqueSpenders.map((allowance) => ({
-      queryKey: ['spenderData', allowance.payload!.spender, allowance.chainId],
-      queryFn: () => getSpenderData(allowance.payload!.spender, allowance.chainId),
+    queries: (baseAllowances ?? []).map((allowance) => ({
+      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender ?? 'null'],
+      queryFn: allowance.payload?.spender
+        ? () => getSpenderData(allowance.payload!.spender, allowance.chainId)
+        : () => null,
       staleTime: Number.POSITIVE_INFINITY,
       refetchOnWindowFocus: false,
       placeholderData: undefined,
     })),
   });
 
-  // Create lookup maps for efficient data merging
-  const priceMap = useMemo(() => {
-    const map = new Map<string, Nullable<number | undefined>>();
-    uniqueContracts.forEach((allowance, index) => {
-      const key = `${allowance.chainId}-${allowance.contract.address}`;
-      map.set(key, priceQueries[index]?.data);
-    });
-    return map;
-  }, [uniqueContracts, priceQueries]);
-
-  const spenderMap = useMemo(() => {
-    const map = new Map<string, Nullable<SpenderData | SpenderRiskData | undefined>>();
-    uniqueSpenders.forEach((allowance, index) => {
-      const key = `${allowance.chainId}-${allowance.payload!.spender}`;
-      map.set(key, spenderQueries[index]?.data);
-    });
-    return map;
-  }, [uniqueSpenders, spenderQueries]);
-
   const allowances = useMemo(() => {
     if (!baseAllowances) return undefined;
 
-    return baseAllowances.map((allowance) => {
-      const priceKey = `${allowance.chainId}-${allowance.contract.address}`;
-      const spenderKey = allowance.payload?.spender ? `${allowance.chainId}-${allowance.payload.spender}` : null;
-
-      const metadata = { ...allowance.metadata, price: priceMap.get(priceKey) };
-      const payload =
-        spenderKey && allowance.payload ? { ...allowance.payload, spenderData: spenderMap.get(spenderKey) } : undefined;
+    return baseAllowances.map((allowance, index) => {
+      // Direct indexing for both prices and spenders since the arrays have 1:1 mapping
+      const metadata = { ...allowance.metadata, price: priceQueries[index]?.data };
+      const payload = allowance.payload
+        ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
+        : undefined;
 
       return { ...allowance, metadata, payload };
     });
-  }, [baseAllowances, priceMap, spenderMap]);
+  }, [baseAllowances, priceQueries, spenderQueries]);
 
   const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
     return a.contract.address === b.contract.address && a.chainId === b.chainId;
