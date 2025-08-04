@@ -81,7 +81,8 @@ export const accessors = {
     return calculateValueAtRisk(allowance);
   },
   spender: (allowance: TokenAllowanceData) => {
-    return allowance.payload?.spenderData?.name ?? allowance.payload?.spender;
+    if (isNullish(allowance.payload?.spenderData?.name)) return allowance.payload?.spender;
+    return `${allowance.payload?.spenderData?.name} (${allowance.payload?.spender})`;
   },
   timestamp: (allowance: TokenAllowanceData) => {
     return allowance.payload?.lastUpdated?.timestamp;
