@@ -1,0 +1,35 @@
+{
+  "buttons": {
+    "already_claimed": "Already Claimed",
+    "check_eligibility": "Check Eligibility",
+    "claim": "Claim Soulbound Token",
+    "claiming": "Claiming"
+  },
+  "errors": {
+    "claim_failed": "Failed to claim SBT"
+  },
+  "result": {
+    "eligible": {
+      "title": "🎉 You can mint a Pudgy Penguins x Revoke.cash Soulbound Token",
+      "description": "Congratulations! You don't have any active token approvals and are eligible to mint a Pudgy Penguins x Revoke.cash Soulbound Token. Finish this short security quiz to get your Soulbound Token."
+    },
+    "has_allowances": {
+      "title": "❌ You have active token approvals",
+      "description": "You have active allowances on Ethereum. The Pudgy Penguins x Revoke.cash collaboration promotes cold wallet usage and limiting token approvals. The SBT is only available to wallets without <i>any</i> token approvals. Revoke your approvals and try again.",
+      "button": "Revoke Approvals"
+    },
+    "no_tokens": {
+      "title": "❌ You don't own any Pudgy Penguins",
+      "description": "You don't own any Pudgy Penguins, Lil Pudgys or Pudgy Rods. The SBT is only available to the Pudgy Penguins community at this time. Check back later when the mint opens up to the rest of the crypto community."
+    },
+    "already_claimed": {
+      "title": "🎉 You have already claimed your Soulbound Token",
+      "description": "You have already claimed your Soulbound Token. You can view it in your wallet."
+    }
+  },
+  "quiz": {
+    "title": "Security Quiz",
+    "start_quiz": "Start Quiz",
+    "finish_quiz": "Finish Quiz"
+  }
+}

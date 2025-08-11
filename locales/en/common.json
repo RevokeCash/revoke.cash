@@ -120,6 +120,17 @@
     "more": "More",
     "search": "Search Accounts by Address or Domain"
   },
+  "quiz": {
+    "check_selected_answers": "Check Selected Answers",
+    "check_answer": "Check Answer",
+    "wait_and_read": "Wait and Read",
+    "next_question": "Next Question",
+    "correct_answer": "Correct! Well done.",
+    "incorrect_answer": "Incorrect. Here is the correct answer:",
+    "question_progress": "Question {current} of {total}",
+    "select_all_that_apply": "Select all that apply",
+    "select_correct_answer": "Select the correct answer"
+  },
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",

@@ -139,6 +139,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       networks: (await import(`../../locales/${locale}/networks.json`)).default,
       token_approval_checker: (await import(`../../locales/${locale}/token_approval_checker.json`)).default,
       merchandise: (await import(`../../locales/${locale}/merchandise.json`)).default,
+      pudgy: (await import(`../../locales/${locale}/pudgy.json`)).default,
     },
     defaultTranslationValues,
   };

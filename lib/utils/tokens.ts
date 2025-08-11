@@ -399,3 +399,12 @@ const getPermitDomainVersion = async (contract: Erc20TokenContract) => {
     return '1';
   }
 };
+
+export const ownsAnyOf = (ownedOrAllowedTokens: TokenData[], tokens: Address[]) => {
+  const tokenIsOwned = (expectedAddress: Address) =>
+    ownedOrAllowedTokens.some(
+      (token) => token.contract.address === expectedAddress && typeof token.balance === 'bigint' && token.balance > 0n,
+    );
+
+  return tokens.some(tokenIsOwned);
+};
