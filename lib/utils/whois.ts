@@ -11,8 +11,10 @@ import {
 import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
-import { type Address, type PublicClient, getAddress, isAddress, namehash } from 'viem';
+import { type Address, type PublicClient, getAddress, isAddress } from 'viem';
+import { namehash, normalize } from 'viem/ens';
 import { createViemPublicClientForChain } from './chains';
+import { unstoppableTlds } from './unstoppableTlds';
 
 // Note that we do not use the official UD or Avvy resolution libraries below because they are big and use Ethers.js
 
@@ -55,7 +57,7 @@ export const resolveEnsName = async (name?: string): Promise<Address | null> => 
   if (!name) return null;
 
   try {
-    const address = await GlobalClients.ETHEREUM?.getEnsAddress({ name: name.toLowerCase() });
+    const address = await GlobalClients.ETHEREUM?.getEnsAddress({ name: normalize(name) });
     return address ?? null;
   } catch {
     return null;
@@ -180,13 +182,22 @@ export const getOpenSeaProxyAddress = async (userAddress: Address): Promise<Addr
 
 export const parseInputAddress = async (inputAddressOrName: string): Promise<Address | null> => {
   const sanitisedInput = inputAddressOrName.trim().toLowerCase();
+  const parts = sanitisedInput.split('.');
+  const tld = parts.length > 1 ? parts.pop() : null;
 
-  // We support ENS .eth and Avvy .avax domains, other domain-like inputs are interpreted as Unstoppable Domains
-  if (sanitisedInput.endsWith('.eth')) return resolveEnsName(sanitisedInput);
-  if (sanitisedInput.endsWith('.avax')) return resolveAvvyName(sanitisedInput);
-  if (sanitisedInput.includes('.')) return resolveUnsName(sanitisedInput);
+  if (tld) {
+    // Avvy Domains
+    if (tld === 'avax') return resolveAvvyName(sanitisedInput);
+    // Unstoppable Domains
+    if (unstoppableTlds.includes(tld)) return resolveUnsName(sanitisedInput);
+    // Treat anything else as a potential ENS name, which include .eth and all DNS domains
+    return resolveEnsName(sanitisedInput);
+  }
+
+  // If the input is a valid address, return it
   if (isAddress(sanitisedInput)) return getAddress(sanitisedInput);
 
+  // If the input is not a valid address, return null
   return null;
 };
 
