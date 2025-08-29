@@ -1,0 +1,49 @@
+{
+  "name": "revoke-mini-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "biome check src",
+    "preview": "vite preview",
+    "allow-scripts": "allow-scripts"
+  },
+  "dependencies": {
+    "@farcaster/frame-sdk": "latest",
+    "@farcaster/miniapp-sdk": "latest",
+    "@farcaster/miniapp-wagmi-connector": "^1.0.0",
+    "@heroicons/react": "^2.2.0",
+    "@tanstack/react-query": "5.45.1",
+    "@wagmi/core": "^2.16.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "viem": "^2.34.0",
+    "wagmi": "^2.16.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.0",
+    "@lavamoat/allow-scripts": "^3.3.1",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@wagmi/cli": "latest",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.8.3",
+    "vite": "^5.2.11"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "$root$": true,
+      "@biomejs/biome": false,
+      "@wagmi/cli>esbuild": false,
+      "viem>ws>bufferutil": false,
+      "viem>ws>utf-8-validate": false,
+      "vite>esbuild": false,
+      "wagmi>@wagmi/connectors>cbw-sdk>keccak": false
+    }
+  }
+}

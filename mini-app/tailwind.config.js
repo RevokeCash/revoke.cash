@@ -1,0 +1,47 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: 'class',
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      spacing: {
+        2.75: '0.6875rem',
+        12: '3rem',
+        20: '5rem',
+        30: '7.5rem',
+        38: '9.5rem',
+        46: '11.5rem',
+        58: '14.5rem',
+        88: '22rem',
+      },
+      fontFamily: {
+        sans: [
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Oxygen',
+          'Ubuntu',
+          'Cantarell',
+          'Fira Sans',
+          'Droid Sans',
+          'Helvetica Neue',
+          'sans-serif',
+        ],
+        monosans: ['Helvetica Neue', 'sans-serif'],
+        code: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
+        monospace: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
+      },
+      colors: {
+        brand: '#fdb952',
+        'revoke-orange': '#FDB952',
+        'revoke-black': '#000000',
+      },
+    },
+  },
+  plugins: [],
+}

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Revoke.cash - Token Approval Manager</title>
+    <meta name="description" content="Take control of your token approvals directly in Farcaster. View and revoke risky allowances to protect your wallet." />
+    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://revoke.cash/assets/images/opengraph-image.jpg","button":{"title":"Open Revoke.cash","action":{"type":"launch_frame","name":"Revoke.cash","url":"https://revoke.cash/mini-app","splashBackgroundColor":"#000000","splashIconUrl":"https://revoke.cash/assets/images/revoke-icon-orange-black.png"}}}' />
+    <script>
+      (function() {
+        const storedTheme = localStorage.getItem('mini-app-theme');
+        if (storedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+        // Default to light mode - no need to check system preference
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

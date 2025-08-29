@@ -21,13 +21,25 @@ export const UNSTOPPABLE_DOMAINS_ETH_ADDRESS = '0x578853aa776Eef10CeE6c4dd2B5862
 export const UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS = '0x91EDd8708062bd4233f4Dd0FCE15A7cb4d500091' as const;
 export const AVVY_DOMAINS_ADDRESS = '0x1ea4e7A798557001b99D88D6b4ba7F7fc79406A9' as const;
 
-export const ETHERSCAN_API_KEYS = JSON.parse(process.env.ETHERSCAN_API_KEYS ?? '{}');
-export const ETHERSCAN_RATE_LIMITS = JSON.parse(process.env.ETHERSCAN_RATE_LIMITS ?? '{}');
+export const ETHERSCAN_API_KEYS = JSON.parse(
+  process.env.VITE_ETHERSCAN_API_KEYS ?? process.env.ETHERSCAN_API_KEYS ?? '{}'
+);
+export const ETHERSCAN_RATE_LIMITS = JSON.parse(
+  process.env.VITE_ETHERSCAN_RATE_LIMITS ?? process.env.ETHERSCAN_RATE_LIMITS ?? '{}'
+);
 
-export const RPC_OVERRIDES = JSON.parse(process.env.NEXT_PUBLIC_NODE_URLS ?? '{}');
+export const RPC_OVERRIDES = JSON.parse(
+  process.env.VITE_NODE_URLS ?? process.env.NEXT_PUBLIC_NODE_URLS ?? '{}'
+);
 
-export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY ?? process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
-export const INFURA_API_KEY = process.env.INFURA_API_KEY ?? process.env.NEXT_PUBLIC_INFURA_API_KEY;
+export const ALCHEMY_API_KEY = 
+  process.env.VITE_ALCHEMY_API_KEY ?? 
+  process.env.ALCHEMY_API_KEY ?? 
+  process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+export const INFURA_API_KEY = 
+  process.env.VITE_INFURA_API_KEY ?? 
+  process.env.INFURA_API_KEY ?? 
+  process.env.NEXT_PUBLIC_INFURA_API_KEY;
 export const DRPC_API_KEY = process.env.DRPC_API_KEY ?? process.env.NEXT_PUBLIC_DRPC_API_KEY;
 export const WEBACY_API_KEY = process.env.WEBACY_API_KEY ?? process.env.NEXT_PUBLIC_WEBACY_API_KEY;
 export const NEFTURE_API_KEY = process.env.NEFTURE_API_KEY ?? process.env.NEXT_PUBLIC_NEFTURE_API_KEY;
