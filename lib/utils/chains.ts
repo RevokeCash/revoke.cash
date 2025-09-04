@@ -164,6 +164,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.CreatorChainTestnet,
   ChainId.ZenChainTestnet,
   ChainId.SomniaTestnet,
+  ChainId.MegaETHTestnet,
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
@@ -1522,6 +1523,16 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Mantle,
   }),
+  [ChainId.MegaETHTestnet]: new Chain({
+    type: SupportType.HYPERSYNC,
+    chainId: ChainId.MegaETHTestnet,
+    name: 'MegaETH Testnet',
+    logoUrl: '/assets/images/vendor/chains/megaeth.svg',
+    explorerUrl: 'https://web3.okx.com/explorer/megaeth-testnet',
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: 12345678903,
+  }),
   [ChainId.MerlinMainnet]: new Chain({
     type: SupportType.COVALENT,
     chainId: ChainId.MerlinMainnet,
@@ -2606,19 +2617,22 @@ export const CHAINS = {
     //   apiUrl: 'https://api-zora.reservoir.tools',
     // }),
   }),
-  // TODO: This is a placeholder so we can add a description
+  // TODO: These are placeholders so we can add descriptions
   [12345678901]: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678901,
     name: 'Somnia',
   }),
-  // TODO: This is a placeholder so we can add a description
   [12345678902]: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678902,
     name: 'Creator Chain',
   }),
-  // TODO: This is a placeholder so we can add a description
+  [12345678903]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: 12345678903,
+    name: 'MegaETH',
+  }),
   [12345678905]: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678905,
