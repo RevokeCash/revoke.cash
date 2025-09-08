@@ -1,18 +1,8 @@
-import { Redis } from '@upstash/redis';
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
 import type { NextRequest } from 'next/server';
+import { CACHE_KEY_PREFIX, PUDDY_CACHE } from '../constants';
 
 export const runtime = 'edge';
-
-export const PUDDY_CACHE = process.env.UPSTASH_REDIS_REST_URL
-  ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    })
-  : undefined;
-
-export const CACHE_TTL = 30 * 24 * 60 * 60; // 30 days
-export const CACHE_KEY_PREFIX = 'pudgy-checker-staging';
 
 export async function POST(req: NextRequest) {
   if (!(await checkActiveSessionEdge(req))) {

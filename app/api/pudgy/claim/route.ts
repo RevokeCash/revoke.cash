@@ -6,13 +6,9 @@ import { getAllowancesFromEvents } from 'lib/utils/allowances';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import type { NextRequest } from 'next/server';
 import type { Hash } from 'viem';
-import { CACHE_KEY_PREFIX, CACHE_TTL, PUDDY_CACHE } from '../check-cache/route';
+import { CACHE_KEY_PREFIX, CACHE_TTL, PUDDY_CACHE, PUDGY_API_KEY, PUDGY_API_URL } from '../constants';
 
 export const runtime = 'edge';
-
-const PUDGY_API_KEY = process.env.PUDGY_API_KEY;
-const PUDGY_API_URL = process.env.PUDGY_API_URL;
-
 interface PudgyApiResponse {
   success: boolean;
   taskId: Hash;
