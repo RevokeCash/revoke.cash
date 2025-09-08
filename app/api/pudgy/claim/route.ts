@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
   const events = await getTokenEvents(chainId, address);
   const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
 
-  if (alreadyOwnsSoulboundToken(allowances)) {
+  if (await alreadyOwnsSoulboundToken(address)) {
     return new Response(JSON.stringify({ status: 'already_claimed', message: 'User already owns the SBT' }), {
       status: 400,
     });

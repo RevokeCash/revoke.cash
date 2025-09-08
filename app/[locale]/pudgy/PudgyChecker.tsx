@@ -6,12 +6,11 @@ import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-cont
 import { isNullish } from 'lib/utils';
 import { type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
-import { useTranslations } from 'next-intl';
+import type { Address } from 'viem';
 import PudgyCheckerStatus, { type PudgyCheckerStatusString } from './PudgyCheckerStatus';
 import { alreadyOwnsSoulboundToken, canMint, checkIfAlreadyClaimedInCache } from './utils';
 
 const PudgyChecker = () => {
-  const t = useTranslations();
   const { address } = useAddressPageContext();
   const { allowances, isLoading } = useAddressAllowances();
 
@@ -35,10 +34,10 @@ const PudgyChecker = () => {
 export default PudgyChecker;
 
 const getPudgyCheckerStatus = async (
-  address: string,
+  address: Address,
   allowances: TokenAllowanceData[],
 ): Promise<PudgyCheckerStatusString> => {
-  if (await checkAlreadyClaimed(address, allowances)) {
+  if (await checkAlreadyClaimed(address)) {
     return 'already_claimed';
   }
 
@@ -53,6 +52,6 @@ const getPudgyCheckerStatus = async (
   return 'eligible';
 };
 
-const checkAlreadyClaimed = async (address: string, allowances: TokenAllowanceData[]): Promise<boolean> => {
-  return alreadyOwnsSoulboundToken(allowances) || (await checkIfAlreadyClaimedInCache(address));
+const checkAlreadyClaimed = async (address: Address): Promise<boolean> => {
+  return (await alreadyOwnsSoulboundToken(address)) || (await checkIfAlreadyClaimedInCache(address));
 };

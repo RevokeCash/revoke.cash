@@ -1,5 +1,9 @@
+import { ChainId } from '@revoke.cash/chains';
+import { ERC1155_ABI } from 'lib/abis';
 import ky from 'lib/ky';
+import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { type TokenData, ownsAnyOf } from 'lib/utils/tokens';
+import type { Address } from 'viem';
 
 export const canMint = (ownedOrAllowedTokens: TokenData[]) => {
   const PUDGY_PENGUINS_ADDRESS = '0xBd3531dA5CF5857e7CfAA92426877b022e612cf8';
@@ -8,11 +12,19 @@ export const canMint = (ownedOrAllowedTokens: TokenData[]) => {
   return ownsAnyOf(ownedOrAllowedTokens, [PUDGY_PENGUINS_ADDRESS, LIL_PUDGYS_ADDRESS, PUDGY_ROGS_ADDRESS]);
 };
 
-// TODO: Check if we already own the SBT
-export const alreadyOwnsSoulboundToken = (ownedOrAllowedTokens: TokenData[]) => {
-  return false;
-  // const SBT_ADDRESS = '0x0000000000000000000000000000000000000000'; // TODO
-  // return ownsAnyOf(ownedOrAllowedTokens, [SBT_ADDRESS]);
+export const alreadyOwnsSoulboundToken = async (address: Address) => {
+  const SBT_ADDRESS = '0xD0EB70639146909A5eE1439dA1124Cb80aF2d0b9';
+  const SBT_TOKEN_ID = 11n;
+  const client = createViemPublicClientForChain(ChainId.PolygonMainnet);
+
+  const balance = await client.readContract({
+    abi: ERC1155_ABI,
+    address: SBT_ADDRESS,
+    functionName: 'balanceOf',
+    args: [address, SBT_TOKEN_ID],
+  });
+
+  return balance > 0n;
 };
 
 export const checkIfAlreadyClaimedInCache = async (address: string) => {
