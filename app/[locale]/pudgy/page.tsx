@@ -46,7 +46,7 @@ const PudgyPage: NextPage<Props> = async ({ params }) => {
       />
       <p>{t.rich('pudgy.landing.paragraph_2')}</p>
 
-      <div className="not-prose">
+      <div className="flex flex-col gap-4 not-prose">
         <NextIntlClientProvider messages={{ common: messages.common, pudgy: messages.pudgy }}>
           <PudgyCheckerWrapper />
         </NextIntlClientProvider>

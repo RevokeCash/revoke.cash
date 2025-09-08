@@ -24,6 +24,8 @@ const PudgyChecker = () => {
     enabled: !isNullish(allowances),
   });
 
+  if (!address) return null;
+
   return (
     <Loader isLoading={isLoading || isLoadingStatus}>
       <PudgyCheckerStatus address={address} status={status ?? 'has_allowances'} />
