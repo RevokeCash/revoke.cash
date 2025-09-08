@@ -8,7 +8,7 @@ import { type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
 import PudgyCheckerStatus, { type PudgyCheckerStatusString } from './PudgyCheckerStatus';
-import { canMint } from './utils';
+import { alreadyOwnsSoulboundToken, canMint, checkIfAlreadyClaimedInCache } from './utils';
 
 const PudgyChecker = () => {
   const t = useTranslations();
@@ -17,8 +17,8 @@ const PudgyChecker = () => {
 
   const { data: status, isLoading: isLoadingStatus } = useQuery({
     queryKey: ['pudgy-checker', allowances?.map(getAllowanceKey)],
-    queryFn: () => {
-      const status = getPudgyCheckerStatus(allowances!);
+    queryFn: async () => {
+      const status = await getPudgyCheckerStatus(address, allowances!);
       analytics.track('Pudgy Checked', { account: address, status });
       return status;
     },
@@ -34,9 +34,13 @@ const PudgyChecker = () => {
 
 export default PudgyChecker;
 
-const getPudgyCheckerStatus = (allowances: TokenAllowanceData[]): PudgyCheckerStatusString => {
-  // TODO: Check if user has already claimed
-  // Check balance of SBT to see if they have it
+const getPudgyCheckerStatus = async (
+  address: string,
+  allowances: TokenAllowanceData[],
+): Promise<PudgyCheckerStatusString> => {
+  if (await checkAlreadyClaimed(address, allowances)) {
+    return 'already_claimed';
+  }
 
   if (!canMint(allowances)) {
     return 'no_tokens';
@@ -47,4 +51,8 @@ const getPudgyCheckerStatus = (allowances: TokenAllowanceData[]): PudgyCheckerSt
   }
 
   return 'eligible';
+};
+
+const checkAlreadyClaimed = async (address: string, allowances: TokenAllowanceData[]): Promise<boolean> => {
+  return alreadyOwnsSoulboundToken(allowances) || (await checkIfAlreadyClaimedInCache(address));
 };

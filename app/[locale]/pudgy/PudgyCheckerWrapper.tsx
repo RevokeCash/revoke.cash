@@ -14,7 +14,11 @@ const PudgyCheckerWrapper = () => {
   const t = useTranslations();
 
   if (!clickedCheck || !address) {
-    return <ConnectButton text={t('pudgy.buttons.check_eligibility')} onClick={() => setClickedCheck(true)} />;
+    return (
+      <div className="flex flex-col gap-2 items-center">
+        <ConnectButton text={t('pudgy.buttons.check_eligibility')} onClick={() => setClickedCheck(true)} />
+      </div>
+    );
   }
 
   return (

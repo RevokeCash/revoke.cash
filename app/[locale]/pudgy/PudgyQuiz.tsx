@@ -7,11 +7,10 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface Props {
-  completedQuiz: boolean;
   setCompletedQuiz: (completed: boolean) => void;
 }
 
-const PudgyQuiz = ({ completedQuiz, setCompletedQuiz }: Props) => {
+const PudgyQuiz = ({ setCompletedQuiz }: Props) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
 

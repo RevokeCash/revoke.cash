@@ -95,3 +95,16 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.fade-video {
+  width: 600px;
+  height: auto;
+
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent),
+    linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-composite: destination-in; /* Safari/Chrome */
+  mask-composite: intersect; /* Firefox */
+
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent),
+    linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+}

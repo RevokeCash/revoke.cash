@@ -31,14 +31,20 @@ const PudgyPage: NextPage<Props> = async ({ params }) => {
 
   return (
     <ProseLayout>
-      <h1>Revoke.cash x Pudgy Penguins</h1>
+      <h1>
+        Revoke.cash x Pudgy Penguins <br /> Cold Storage SBT
+      </h1>
       <Divider className="my-4" />
 
-      <p>We've teamed up with Pudgy Penguins to educate users about the benefits of hardware wallets.</p>
-
-      <p>Yada yada yada</p>
-
-      <p>Check eligibility here:</p>
+      <p>{t.rich('pudgy.landing.paragraph_1')}</p>
+      <video
+        src="assets/videos/pudgy-sbt.mp4"
+        className="aspect-square w-full max-w-100 my-0 mx-auto fade-video"
+        autoPlay
+        muted
+        loop
+      />
+      <p>{t.rich('pudgy.landing.paragraph_2')}</p>
 
       <div className="not-prose">
         <NextIntlClientProvider messages={{ common: messages.common, pudgy: messages.pudgy }}>
