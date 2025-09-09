@@ -1,0 +1,10 @@
+{
+  "name": "Revoke.cash",
+  "description": "Take control of your token approvals. View and revoke risky allowances to protect your wallet.",
+  "version": "1.0.0",
+  "homeUrl": "https://revoke.cash",
+  "appUrl": "https://revoke.cash/farcaster",
+  "splashBackgroundColor": "#000000",
+  "splashIconUrl": "https://revoke.cash/assets/images/revoke-icon-orange-black.png",
+  "imageUrl": "https://revoke.cash/assets/images/revoke-wordmark-black.svg"
+}

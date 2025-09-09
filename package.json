@@ -2,9 +2,6 @@
   "name": "revoke.cash",
   "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on Ethereum and over 100 other networks.",
   "version": "0.1.0",
-  "workspaces": [
-    "mini-app"
-  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build && next-sitemap",
@@ -33,6 +30,8 @@
     "@abstract-foundation/agw-react": "^1.8.7",
     "@dotenvx/dotenvx": "^1.35.0",
     "@envio-dev/hypersync-client": "^0.6.3",
+    "@farcaster/miniapp-sdk": "latest",
+    "@farcaster/miniapp-wagmi-connector": "^1.0.0",
     "@floating-ui/react": "^0.27.4",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
