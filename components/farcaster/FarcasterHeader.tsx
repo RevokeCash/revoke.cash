@@ -14,18 +14,18 @@ const FarcasterHeader = () => {
         {/* Logo */}
         <Link href="/farcaster" className="flex items-center">
           <Image
-            src="/assets/images/revoke-wordmark-orange-black.svg"
+            src="/assets/images/revoke-wordmark-black.svg"
             alt="Revoke.cash"
-            width={120}
-            height={32}
-            className="dark:hidden"
+            width={130}
+            height={30}
+            className="block dark:hidden shrink-0"
           />
           <Image
-            src="/assets/images/revoke-wordmark-orange-white.svg"
+            src="/assets/images/revoke-wordmark-white.svg"
             alt="Revoke.cash"
-            width={120}
-            height={32}
-            className="hidden dark:block"
+            width={130}
+            height={30}
+            className="hidden dark:block shrink-0"
           />
         </Link>
 

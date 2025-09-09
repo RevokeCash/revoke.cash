@@ -1,6 +1,7 @@
 'use client';
 
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import FarcasterLoadingScreen from './FarcasterLoadingScreen';
 
 interface FarcasterSDK {
   actions: {
@@ -80,5 +81,9 @@ export const FarcasterProvider = ({ children }: FarcasterProviderProps) => {
     initializeSDK();
   }, []);
 
-  return <FarcasterContext.Provider value={{ sdk, isReady }}>{children}</FarcasterContext.Provider>;
+  return (
+    <FarcasterContext.Provider value={{ sdk, isReady }}>
+      {!isReady ? <FarcasterLoadingScreen /> : children}
+    </FarcasterContext.Provider>
+  );
 };

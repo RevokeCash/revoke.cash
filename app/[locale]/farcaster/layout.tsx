@@ -41,9 +41,9 @@ const FarcasterLayout = async ({ children, params }: Props) => {
             <FarcasterEthereumProvider>
               <ColorThemeProvider>
                 <FarcasterProvider>
-                  <div className="flex flex-col min-h-screen">
+                  <div className="min-h-screen">
                     <FarcasterHeader />
-                    <main className="w-full grow bg-zinc-50 dark:bg-zinc-900">{children}</main>
+                    <main className="w-full">{children}</main>
                   </div>
                 </FarcasterProvider>
                 <ToastifyConfig />

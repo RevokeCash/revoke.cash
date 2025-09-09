@@ -1,7 +1,6 @@
 'use client';
 
 import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
-import WalletHealthSection from 'components/allowances/dashboard/wallet-health/WalletHealthSection';
 import ConnectButton from 'components/header/ConnectButton';
 import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useAccount } from 'wagmi';
@@ -46,13 +45,6 @@ const ConnectedDashboard = () => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-8">
-      {/* Wallet Health Summary */}
-      {address && (
-        <div className="mb-8">
-          <WalletHealthSection address={address} chainId={selectedChainId} />
-        </div>
-      )}
-
       {/* Share Button */}
       {!isLoading && allowances && allowances.length > 0 && (
         <div className="mb-6 flex justify-end">
@@ -82,13 +74,15 @@ const FarcasterDashboard = ({ hasContext = false }: { hasContext?: boolean }) =>
 
   if (!isConnected) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
-        <div className="text-center max-w-md">
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-8">
+        <div className="text-center max-w-sm">
           <h2 className="text-2xl font-bold mb-4 text-zinc-900 dark:text-zinc-100">Connect Your Wallet</h2>
-          <p className="text-zinc-600 dark:text-zinc-400 mb-8">
-            Connect your wallet to view and manage token approvals
+          <p className="text-zinc-600 dark:text-zinc-400 mb-8 text-sm leading-relaxed">
+            Connect your wallet to view and manage your token approvals
           </p>
-          <ConnectButton size="lg" />
+          <div className="flex justify-center">
+            <ConnectButton size="lg" />
+          </div>
         </div>
       </div>
     );
