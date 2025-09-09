@@ -23,7 +23,7 @@
         "non_evm": "No EVM",
         "title": "Blockchains compatibles"
       },
-      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La cobertura es una forma de asegurarte de que el valor de tu monedero está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La cobertura es una forma de asegurarte de que el valor de tu cartera está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
       "important": {
         "coverage_amount": "La cobertura se compra por una cierta cantidad de ETH - si el valor de su cartera aumenta en ETH, solo estará cubierto por la cantidad de ETH configurada.",
         "fee": "Hay un monto de responsabilidad personal del 10% sobre los pagos.",
@@ -210,7 +210,7 @@
   },
   "sessions": {
     "info": {
-      "description": "Las sesiones son un sistema de permisos similar a las aprobaciones de tokens, pero con algunas diferencias clave. Mientras que las aprobaciones de tokens especifican un permiso para que una dirección tome tokens de tu monedero, las sesiones pueden utilizarse para especificar un permiso para que otra dirección firme transacciones específicas en tu nombre al interactuar con contratos inteligentes. Actualmente, estas sesiones sólo están disponibles en Abstracto cuando se utiliza la Cartera Global Abstracto <i></i> , pero podrían estar disponibles en otras cadenas en el futuro.",
+      "description": "Las sesiones son un sistema de permisos similar a las aprobaciones de tokens, pero con algunas diferencias clave. Mientras que las aprobaciones de tokens especifican un permiso para que una dirección tome tokens de tu cartera, las sesiones pueden utilizarse para especificar un permiso para que otra dirección firme transacciones específicas en tu nombre al interactuar con contratos inteligentes. Actualmente, estas sesiones sólo están disponibles en Abstracto cuando se utiliza la Cartera Global Abstracto <i></i> , pero podrían estar disponibles en otras cadenas en el futuro.",
       "title": "¿Qué Son las Sesiones?"
     },
     "table": {

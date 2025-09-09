@@ -92,7 +92,7 @@
     },
     "incoming_delegations": "Incoming Delegations",
     "info_panel": {
-      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
+      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you. Note that these delegations are <b>different</b> from EIP7702 delegations, which can <i>only</i> be revoked inside your wallet application.",
       "title": "What Are Delegations?"
     },
     "no_incoming_delegations": "No incoming delegations found",
