@@ -81,6 +81,7 @@
   },
   "delegations": {
     "columns": {
+      "chain_id": "Network",
       "contract": "Activo / Contrato",
       "delegate": "Delegar",
       "delegator": "Delegador",
@@ -90,16 +91,20 @@
     "contract": {
       "not_applicable": "N/A"
     },
+    "eip7702_delegations": "EIP7702 Delegations",
     "incoming_delegations": "Delegaciones entrantes",
     "info_panel": {
-      "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo al intentar verificar la propiedad de activos o al reclamar airdrops. Esto puede ser beneficioso para la seguridad, ya que le permite utilizar una <b>cartera caliente</b> para gestionar sus activos sin tener que utilizar su <b>cartera fría</b> para cada interacción. Sin embargo, en caso de que su cartera caliente se vea comprometida, debe asegurarse de revocar la delegación para que el atacante no pueda utilizarla para hacerse pasar por usted.",
+      "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo, al intentar verificar la propiedad de los activos o al reclamar lanzamientos aéreos. Esto puede ser beneficioso para la seguridad, ya que le permite usar un <b>hot wallet</b> para administrar sus activos sin tener que usar su <b>cold wallet</b> para cada interacción. Sin embargo, en caso de que su billetera caliente se vea comprometida, debe asegurarse de revocar la delegación para que el atacante no pueda usarla para hacerse pasar por usted. Tenga en cuenta que estas delegaciones son <b>different</b> de EIP7702 delegaciones, que pueden <i>only</i> ser revocadas dentro de su aplicación de billetera.",
       "title": "¿Qué son las Delegaciones?"
     },
+    "no_eip7702_delegations": "No EIP7702 delegations found",
     "no_incoming_delegations": "No se han encontrado delegaciones entrantes",
     "no_outgoing_delegations": "No se ha encontrado ninguna delegación saliente",
     "outgoing_delegations": "Delegaciones salientes",
     "tooltips": {
       "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para actuar en su nombre en las plataformas compatibles para un contrato específico.",
+      "eip7702": "An EIP7702 delegation adds smart contract functionality to your wallet.",
+      "eip7702_revoke": "EIP7702 delegations have to be revoked inside your wallet application",
       "erc1155": "Una delegación de tokens ERC1155 permite al delegado actuar en su nombre en plataformas compatibles para un token de ERC1155 específico.",
       "erc20": "Una delegación de tokens ERC20 permite al delegado actuar en su nombre en plataformas compatibles para un token ERC20 específico.",
       "erc721": "Una delegación de token ERC721 permite al delegado actuar en su nombre en plataformas compatibles con un token ERC721 específico.",
@@ -107,6 +112,7 @@
     },
     "types": {
       "contract": "Contrato",
+      "eip7702": "EIP7702",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
       "erc721": "ERC721",
