@@ -92,6 +92,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.DogechainMainnet,
   ChainId.Beam,
   ChainId.Shibarium,
+  5031, // Somnia
   ChainId.Viction,
   ChainId.HarmonyMainnetShard0,
   ChainId.DegenChain,
@@ -163,7 +164,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.TabiTestnetv2,
   ChainId.CreatorChainTestnet,
   ChainId.ZenChainTestnet,
-  ChainId.SomniaTestnet,
   ChainId.MegaETHTestnet,
 ] as const;
 
@@ -2165,12 +2165,15 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Scroll,
   }),
   [ChainId.SeiNetwork]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.SeiNetwork,
     name: 'Sei',
     nativeTokenCoingeckoId: 'sei-network',
     logoUrl: '/assets/images/vendor/chains/sei.svg',
-    etherscanCompatibleApiUrl: 'https://seitrace.com/pacific-1/api',
+    explorerUrl: 'https://seiscan.io',
+    rpc: {
+      main: `https://sei-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -2218,6 +2221,21 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
+  [5031]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: 5031,
+    name: 'Somnia',
+    nativeToken: 'SOMI',
+    nativeTokenCoingeckoId: 'somnia',
+    logoUrl: '/assets/images/vendor/chains/somnia.png',
+    infoUrl: 'https://somnia.network',
+    explorerUrl: 'https://mainnet.somnia.w3us.site',
+    etherscanCompatibleApiUrl: 'https://mainnet.somnia.w3us.site/api',
+    rpc: {
+      main: 'https://somnia-json-rpc.stakely.io',
+    },
+    priceStrategy: undefined, // TODO
+  }),
   [ChainId.SomniaTestnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.SomniaTestnet,
@@ -2225,7 +2243,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/somnia.png',
     etherscanCompatibleApiUrl: 'https://somnia.w3us.site/api',
     isTestnet: true,
-    correspondingMainnetChainId: 12345678901,
+    correspondingMainnetChainId: 5031,
   }),
   [ChainId.Soneium]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -2618,11 +2636,6 @@ export const CHAINS = {
     // }),
   }),
   // TODO: These are placeholders so we can add descriptions
-  [12345678901]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678901,
-    name: 'Somnia',
-  }),
   [12345678902]: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678902,
