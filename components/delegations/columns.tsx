@@ -3,11 +3,14 @@
 import { type Row, type RowData, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
+import { ORDERED_CHAINS } from 'lib/utils/chains';
+import ChainCell from './cells/ChainCell';
 import ContractCell from './cells/ContractCell';
 import ControlsCell from './cells/ControlsCell';
 import DelegateCell from './cells/DelegateCell';
 import DelegationTypeCell from './cells/DelegationTypeCell';
 import DelegatorCell from './cells/DelegatorCell';
+import Eip7702RevokeCell from './cells/Eip7702RevokeCell';
 import PlatformCell from './cells/PlatformCell';
 
 export enum ColumnId {
@@ -17,6 +20,7 @@ export enum ColumnId {
   CONTRACT = 'Contract',
   PLATFORM = 'Platform',
   CONTROLS = 'Controls',
+  CHAIN_ID = 'Network',
 }
 
 // Simple property accessors - can use strings directly since these are basic property lookups
@@ -47,6 +51,11 @@ export const customSortingFns = {
     const orderB = typeOrder[typeB as keyof typeof typeOrder] || 10;
 
     return orderA - orderB;
+  },
+  chainId: (rowA: Row<Delegation>, rowB: Row<Delegation>, columnId: string) => {
+    const indexOfA = ORDERED_CHAINS.indexOf(rowA.getValue(columnId) as number);
+    const indexOfB = ORDERED_CHAINS.indexOf(rowB.getValue(columnId) as number);
+    return indexOfA - indexOfB;
   },
 };
 
@@ -141,3 +150,34 @@ const createColumns = (incoming: boolean) => {
 
 export const outgoingColumns = createColumns(false);
 export const incomingColumns = createColumns(true);
+
+export const eip7702Columns = [
+  columnHelper.accessor('chainId', {
+    id: ColumnId.CHAIN_ID,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.chain_id" />,
+    cell: (info) => <ChainCell chainId={info.row.original.chainId} />,
+    enableSorting: true,
+    sortingFn: customSortingFns.chainId,
+  }),
+  columnHelper.accessor(accessors.delegate, {
+    id: ColumnId.DELEGATE,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.delegate" />,
+    cell: (info) => <DelegateCell delegation={info.row.original} />,
+    enableSorting: true,
+    sortingFn: sortingFns.alphanumeric,
+  }),
+  columnHelper.accessor(accessors.type, {
+    id: ColumnId.TYPE,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.type" />,
+    cell: (info) => <DelegationTypeCell delegation={info.row.original} />,
+    enableSorting: true,
+    sortingFn: customSortingFns.type,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.type,
+  }),
+  columnHelper.display({
+    id: ColumnId.CONTROLS,
+    header: () => '',
+    cell: () => <Eip7702RevokeCell />,
+  }),
+];

@@ -19,6 +19,7 @@ const DelegationTypeCell = ({ delegation }: Props) => {
     delegation.type === 'ERC721' && 'bg-zinc-300 dark:bg-zinc-600',
     delegation.type === 'ERC1155' && 'bg-zinc-400 dark:bg-zinc-500',
     delegation.type === 'ERC20' && 'bg-zinc-500 dark:bg-zinc-400 text-white',
+    delegation.type === 'EIP7702' && 'bg-zinc-600 dark:bg-zinc-300 text-white',
   );
 
   return (
