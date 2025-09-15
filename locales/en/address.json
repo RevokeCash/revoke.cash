@@ -99,6 +99,7 @@
     },
     "no_incoming_delegations": "No incoming delegations found",
     "no_outgoing_delegations": "No outgoing delegations found",
+    "no_eip7702_delegations": "No EIP7702 delegations found",
     "outgoing_delegations": "Outgoing Delegations",
     "tooltips": {
       "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",

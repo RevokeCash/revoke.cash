@@ -36,7 +36,7 @@ const Eip7702DelegationsTable = ({ delegations, isLoading, error }: Props) => {
       <Table
         table={table}
         loading={isLoading}
-        emptyChildren={t('address.delegations.no_incoming_delegations')}
+        emptyChildren={t('address.delegations.no_eip7702_delegations')}
         loaderRows={2}
         error={error}
         className="border-none"
