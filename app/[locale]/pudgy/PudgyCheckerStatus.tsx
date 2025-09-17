@@ -3,6 +3,7 @@ import Checkbox from 'components/common/Checkbox';
 import ky from 'lib/ky';
 import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
@@ -30,23 +31,41 @@ const PudgyCheckerStatus = ({ address, status }: Props) => {
 
   const adjustedStatus = claimed ? 'confirmed' : status === 'eligible' && completedQuiz ? 'quiz_success' : status;
 
-  // TODO: Add some fun images from Pudgy?
+  const images = {
+    eligible: '/assets/images/pudgy/chest-bump-pudgy.gif',
+    has_allowances: '/assets/images/pudgy/study-pudgy.gif',
+    no_tokens: '/assets/images/pudgy/study-pudgy.gif',
+    already_claimed: '/assets/images/pudgy/chest-bump-pudgy.gif',
+    quiz_success: '/assets/images/pudgy/accomplished-pudgy.png',
+    confirmed: '/assets/images/pudgy/happy-pudgy.gif',
+  } as const;
 
   return (
     <div className={'rounded-lg border border-black dark:border-white p-4'}>
       <div className="flex flex-col items-center gap-4">
         <div className="w-full flex items-center gap-4">
-          <div className="flex flex-col gap-2 ml-2">
-            <h3>{t(`pudgy.result.${adjustedStatus}.title`)}</h3>
-            <p className="text-sm">{t.rich(`pudgy.result.${adjustedStatus}.description`)}</p>
+          <div className="flex flex-col sm:flex-row gap-2 items-center justify-center w-full">
+            <Image
+              src={images[adjustedStatus]}
+              alt="Pudgy Penguins x Revoke.cash"
+              className="w-80 h-80"
+              width={1000}
+              height={1000}
+            />
+            <div className="flex flex-col gap-2 ml-2 w-full items-start">
+              <h3>{t(`pudgy.result.${adjustedStatus}.title`)}</h3>
+              <div className="text-sm mb-4 leading-normal text-zinc-700 dark:text-zinc-300">
+                {t.rich(`pudgy.result.${adjustedStatus}.description`)}
+              </div>
+              <PudgyStatusButton
+                status={adjustedStatus}
+                address={address}
+                setCompletedQuiz={setCompletedQuiz}
+                setClaimed={setClaimed}
+              />
+            </div>
           </div>
         </div>
-        <PudgyStatusButton
-          status={adjustedStatus}
-          address={address}
-          setCompletedQuiz={setCompletedQuiz}
-          setClaimed={setClaimed}
-        />
       </div>
     </div>
   );
@@ -83,7 +102,7 @@ const PudgyStatusButton = ({ status, address, setCompletedQuiz, setClaimed }: Pu
         href={`/address/${address}?chainId=1`}
         className="shrink-0 w-full sm:w-fit"
         size="md"
-        style="secondary"
+        style="primary"
         router
       >
         {t('pudgy.result.has_allowances.button')}
@@ -117,7 +136,7 @@ const ClaimButton = ({ address, setClaimed }: { address: string; setClaimed: (cl
   }, [t, error]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex items-start flex-col gap-2">
       <div className="flex items-center gap-2">
         <Checkbox checked={hasChecked1} onChange={() => setHasChecked1(!hasChecked1)} className="shrink-0" />
         <span className="text-sm">{t('pudgy.buttons.checkbox_1')}</span>
@@ -131,7 +150,7 @@ const ClaimButton = ({ address, setClaimed }: { address: string; setClaimed: (cl
         loading={loading}
         style="primary"
         size="md"
-        className="self-center my-2"
+        className="my-2"
         onClick={() => execute()}
       >
         {result ? t('pudgy.buttons.already_claimed') : loading ? t('pudgy.buttons.claiming') : t('pudgy.buttons.claim')}

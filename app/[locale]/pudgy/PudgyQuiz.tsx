@@ -88,7 +88,7 @@ const PudgyQuiz = ({ setCompletedQuiz }: Props) => {
 
   return (
     <>
-      <Button style="primary" size="md" className="self-center my-2" onClick={() => setOpen(true)}>
+      <Button style="primary" size="md" onClick={() => setOpen(true)}>
         {t('pudgy.quiz.start_quiz')}
       </Button>
       <Modal open={open} setOpen={setOpen} className="w-full sm:max-w-2xl">
