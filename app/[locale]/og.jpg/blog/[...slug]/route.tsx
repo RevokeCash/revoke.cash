@@ -28,7 +28,12 @@ export async function GET(req: Request, { params }: Props) {
   const { meta } = readAndParseContentFile(slug, locale, 'blog')!;
 
   const title = meta.overlay ? meta.sidebarTitle : undefined;
-  const background = loadDataUrl(`public/assets/images/blog/${slug.join('/')}/cover.jpg`, 'image/jpeg');
 
-  return generateOgImage({ title, background });
+  try {
+    const background = loadDataUrl(`public/assets/images/blog/${slug.join('/')}/cover.jpg`, 'image/jpeg');
+    return generateOgImage({ title, background });
+  } catch (error) {
+    const background = loadDataUrl('public/assets/images/opengraph-image.jpg', 'image/jpeg');
+    return generateOgImage({ title, background });
+  }
 }

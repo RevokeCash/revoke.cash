@@ -1,5 +1,6 @@
 ---
 title: 'Revoke.cash x Pudgy Penguins: Cold Storage SBT'
+sidebarTitle: 'Pudgy Penguins x Revoke.cash'
 description: It is important to use a cold wallet to store your crypto assets. To help users understand the importance of cold storage, we've partnered with Pudgy Penguins to create a Cold Storage SBT.
 date: 2025-09-22
 author: Rosco Kalis
