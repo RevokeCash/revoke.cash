@@ -81,6 +81,7 @@
   },
   "delegations": {
     "columns": {
+      "chain_id": "Network",
       "contract": "資産/契約",
       "delegate": "委任者",
       "delegator": "委任させる者",
@@ -90,16 +91,20 @@
     "contract": {
       "not_applicable": "該当なし"
     },
+    "eip7702_delegations": "EIP7702 Delegations",
     "incoming_delegations": "受信委任",
     "info_panel": {
       "description": "委任とは、アセットの所有権を確認しようとしたり、エアドロップを申請したりする場合など、他のアドレスがあなたに代わって行動することを許可する方法です。これは、やりとりのたびに<b>コールドウォレット</b>を使わなくても<b>ホットウォレット</b>を使ってアセットを管理できるため、セキュリティー面でのメリットがあります。ただし、ホットウォレットが侵害された場合に備えて、攻撃者があなたになりすまして利用することがないように、必ず委任を取り消しておく必要があります。",
       "title": "委任とは何ですか。"
     },
+    "no_eip7702_delegations": "No EIP7702 delegations found",
     "no_incoming_delegations": "受信委任は見つかりません",
     "no_outgoing_delegations": "送信委任が見つかりません",
     "outgoing_delegations": "送信委任",
     "tooltips": {
       "contract": "契約レベルの委任は、特定の契約でサポートされているプラットフォーム上でユーザーに代わって行動する許可を委任者に与えます。",
+      "eip7702": "An EIP7702 delegation adds smart contract functionality to your wallet.",
+      "eip7702_revoke": "EIP7702 delegations have to be revoked inside your wallet application",
       "erc1155": "ERC1155トークンの委任により、委任者は特定のERC1155トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
       "erc20": "ERC20トークンの委任により、委任者は特定のERC20トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
       "erc721": "ERC721トークンの委任により、委任者は特定のERC721トークンについて、サポートされているプラットフォーム上でユーザーに代わって行動することができます。",
@@ -107,6 +112,7 @@
     },
     "types": {
       "contract": "契約",
+      "eip7702": "EIP7702",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
       "erc721": "ERC721",

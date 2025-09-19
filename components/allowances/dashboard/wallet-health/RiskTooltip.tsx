@@ -1,6 +1,7 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { RiskFactor } from 'lib/interfaces';
+import { deduplicateArray } from 'lib/utils';
 import { filterUnknownRiskFactors, getRiskFactorScore, getRiskLevel } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
@@ -13,13 +14,18 @@ interface Props {
 const RiskTooltip = ({ riskFactors }: Props) => {
   const t = useTranslations();
 
-  const filteredRiskFactors = filterUnknownRiskFactors(riskFactors ?? []);
-  const riskLevel = getRiskLevel(filteredRiskFactors);
+  const deduplicatedRiskFactors = deduplicateArray(
+    filterUnknownRiskFactors(riskFactors ?? []),
+    (riskFactor) =>
+      // Onchain risk factors are deduplicated by the whois source, so we need to add a unique identifier for them
+      `${riskFactor.type}-${riskFactor.source === 'onchain' ? 'whois' : riskFactor.source}-${riskFactor.data}`,
+  );
+  const riskLevel = getRiskLevel(deduplicatedRiskFactors);
 
   // TODO: Properly handle low risk
   if (riskLevel === 'unknown' || riskLevel === 'low') return null;
 
-  const riskFactorDisplays = filteredRiskFactors
+  const riskFactorDisplays = deduplicatedRiskFactors
     .sort((a, b) => getRiskFactorScore(b) - getRiskFactorScore(a))
     .map((riskFactor) => (
       <RiskFactorDisplay key={`${riskFactor.type}-${riskFactor.source}-${riskFactor.data}`} riskFactor={riskFactor} />
