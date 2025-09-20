@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract, Nullable } from 'lib/interfaces';
@@ -176,7 +177,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
     // TODO: I'm temporarily disabling this check because of false positives on Sei network
     // Make sure to add this back when we have a solution for Sei
-    // metadataFromMapping ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
+    metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
   ]);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
