@@ -1,0 +1,8 @@
+{
+  "different_chain": "或在其他链上查看资金流向",
+  "meta": {
+    "title": "{chainName}资金流向可视化工具"
+  },
+  "title": "{chainName}资金流向可视化工具",
+  "placeholder": "输入{chainName}交易哈希"
+}
