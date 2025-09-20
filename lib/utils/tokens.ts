@@ -174,7 +174,9 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    throwIfNotErc20(contract),
+    // TODO: I'm temporarily disabling this check because of false positives on Sei network
+    // Make sure to add this back when we have a solution for Sei
+    // metadataFromMapping ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
   ]);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
