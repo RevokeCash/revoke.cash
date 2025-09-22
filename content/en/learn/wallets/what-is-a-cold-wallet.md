@@ -14,6 +14,8 @@ The most basic type of cold wallet is a **paper wallet**, which is a piece of pa
 
 That is why **hardware wallets** were developed. These are secure physical devices that store your private keys offline, but allow a connection with your computer to send and receive funds. Your keys are secured in such a way that even if your connected computer is compromised, your private keys are still safe on the hardware device. Because of this, hardware wallets are the preferred type of cold wallet for most users.
 
+::img{src="/assets/images/learn/wallets/what-is-a-cold-wallet/hardware-wallets.jpg" alt="Hardware Wallets" width="1200" height="630"}
+
 The most popular hardware wallets are made by [Ledger](https://ledger.com), but other options such as [Trezor](https://trezor.io/) or [Keystone](https://keyst.one/) are also available. More recent versions of hardware wallets like the [Ledger Stax](https://www.ledger.com/products/ledger-stax) have a proper screen to inspect transactions, but earlier versions like the [Ledger Nano S](https://www.ledger.com/products/ledger-nano-s) or [Ledger Nano X](https://www.ledger.com/products/ledger-nano-x) only have a tiny display.
 
 ## Hot vs Cold Wallets
@@ -35,5 +37,7 @@ With a warm wallet, you still use a hardware device to store your private keys, 
 ## Three Address Protocol (TAP)
 
 To get the best of both worlds, we recommend using the three address protocol (TAP). With TAP, you split up your assets into three wallets: you use a hot wallet for everyday minting and active trading on DEXes, a warm wallet for interacting with DeFi and buying/selling NFTs in the medium term, and a proper cold wallet for long-term storage.
+
+::img{src="/assets/images/learn/wallets/what-is-a-cold-wallet/three-address-protocol.jpg" alt="Three Address Protocol" width="1560" height="860"}
 
 The hot wallet should never contain more than a small amount of funds but can have token approvals and smart contract interactions. The cold wallet should contain your most valuable assets and should have no token approvals and smart contract interactions. And the warm wallet sits right in the middle, containing your medium-term assets and allowing you to interact with some smart contracts and DeFi.

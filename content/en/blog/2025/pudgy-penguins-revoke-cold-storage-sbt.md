@@ -1,5 +1,5 @@
 ---
-title: 'Revoke.cash x Pudgy Penguins: Cold Storage SBT'
+title: 'Pudgy Penguins x Revoke.cash: Cold Storage SBT'
 sidebarTitle: 'Pudgy Penguins x Revoke.cash'
 description: It is important to use a cold wallet to store your crypto assets. To help users understand the importance of cold storage, we've partnered with Pudgy Penguins to create a Cold Storage SBT.
 date: 2025-09-22
@@ -31,7 +31,7 @@ Here’s how to claim it:
    This should be a hardware wallet or another wallet that you don’t use for approvals or day-to-day transactions.
 
 2. **Verify through Revoke.cash.**
-   Enter your cold wallet address, and Revoke.cash will check that you don't have any active token approvals.
+   Visit the [Claim Page](/cold-storage-sbt) and enter your cold wallet address. Revoke.cash will check that you don't have any active token approvals.
 
 3. **Pass the quiz.**
    Once you've verified your wallet, you'll be able to pass the quiz. The quiz is a simple security quiz that will help you understand the importance of cold storage.
@@ -44,7 +44,5 @@ Here’s how to claim it:
 The Cold Storage SBT is more than a collectible. It’s a signal that you care about the long-term safety of your assets and that you’re part of a security-first movement in web3.
 
 We believe that security education should be fun and rewarding, and by working with Pudgy Penguins we’re making cold storage not just best practice but also part of your identity as a responsible community member.
-
----
 
 Stay safe, stay secure, and keep your penguins cold. 🐧❄️

@@ -80,6 +80,11 @@ export const defaultTranslationValues: RichTranslationValues = {
       {children}
     </Href>
   ),
+  'what-is-a-cold-wallet': (children) => (
+    <Href href="/learn/wallets/what-is-a-cold-wallet" className="font-medium" html underline="hover" router>
+      {children}
+    </Href>
+  ),
   'fairside-link': (children) => (
     <Href href={FAIRSIDE_APP_URL} className="font-medium" underline="hover" html external>
       {children}
