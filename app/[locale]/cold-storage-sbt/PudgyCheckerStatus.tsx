@@ -32,12 +32,12 @@ const PudgyCheckerStatus = ({ address, status }: Props) => {
   const adjustedStatus = claimed ? 'confirmed' : status === 'eligible' && completedQuiz ? 'quiz_success' : status;
 
   const images = {
-    eligible: '/assets/images/pudgy/chest-bump-pudgy.gif',
-    has_allowances: '/assets/images/pudgy/study-pudgy.gif',
-    no_tokens: '/assets/images/pudgy/study-pudgy.gif',
-    already_claimed: '/assets/images/pudgy/chest-bump-pudgy.gif',
-    quiz_success: '/assets/images/pudgy/accomplished-pudgy.png',
-    confirmed: '/assets/images/pudgy/happy-pudgy.gif',
+    eligible: '/assets/images/cold-storage-sbt/chest-bump-pudgy.gif',
+    has_allowances: '/assets/images/cold-storage-sbt/study-pudgy.gif',
+    no_tokens: '/assets/images/cold-storage-sbt/study-pudgy.gif',
+    already_claimed: '/assets/images/cold-storage-sbt/chest-bump-pudgy.gif',
+    quiz_success: '/assets/images/cold-storage-sbt/accomplished-pudgy.png',
+    confirmed: '/assets/images/cold-storage-sbt/happy-pudgy.gif',
   } as const;
 
   return (

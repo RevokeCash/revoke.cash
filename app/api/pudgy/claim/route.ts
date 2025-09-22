@@ -1,4 +1,4 @@
-import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/pudgy/utils';
+import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/cold-storage-sbt/utils';
 import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
 import { getTokenEvents } from 'lib/chains/events';
 import ky from 'lib/ky';
