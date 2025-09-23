@@ -8,7 +8,7 @@ export const PUDDY_CACHE = process.env.UPSTASH_REDIS_REST_URL
   : undefined;
 
 export const CACHE_TTL = 30 * 24 * 60 * 60; // 30 days
-export const CACHE_KEY_PREFIX = 'pudgy-checker-staging';
+export const CACHE_KEY_PREFIX = 'pudgy-checker';
 
 export const PUDGY_API_KEY = process.env.PUDGY_API_KEY;
 export const PUDGY_API_URL = process.env.PUDGY_API_URL;
