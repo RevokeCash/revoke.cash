@@ -138,14 +138,12 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const gasFactors: Record<number, bigint> = {
-    [ChainId.ArbitrumOne]: 20n,
     [ChainId.ArbitrumNova]: 20n,
     [ChainId.ArbitrumSepolia]: 20n,
     [ChainId.FrameTestnet]: 20n,
     [ChainId.Mantle]: 2_000n,
     [ChainId.MantleTestnet]: 2_000n,
     [5031]: 10n, // Somnia
-    [ChainId.ZkSyncMainnet]: 20n,
     [ChainId.ZkSyncSepoliaTestnet]: 20n,
     [ChainId.ZERONetwork]: 20n,
   };

@@ -4,9 +4,15 @@
 
 import { ChainId } from '@revoke.cash/chains';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
-import { ORDERED_CHAINS, SUPPORTED_CHAINS, getChainConfig, getChainName } from 'lib/utils/chains';
+import {
+  ORDERED_CHAINS,
+  SUPPORTED_CHAINS,
+  type SupportedChainId,
+  getChainConfig,
+  getChainName,
+} from 'lib/utils/chains';
 
-const TEST_ADDRESSES = {
+const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   // Mainnets
   [ChainId.Abstract]: '0x08A8494EcA0AaA732B6292c23b8904ea627F156b',
   [ChainId.ApeChain]: '0x722E2E4c15bE1fDDEd3C86f4100bC32b181827F5',
@@ -61,7 +67,6 @@ const TEST_ADDRESSES = {
   [ChainId.IOTAEVM]: '0xdeD212B8BAb662B98f49e757CbB409BB7808dc10',
   [ChainId.KardiaChainMainnet]: '0xc770C26a40F16010a76A5313ffF138B35C69586C',
   [ChainId.Katana]: '0x041d7710eb5B759cA179FcbF8A5F9b534E6a4C21',
-  [ChainId.Kava]: '0xC7a0407186E949222B4D214C89431a33745e8b8C',
   [ChainId.KCCMainnet]: '0x14A3a2F8894e769A82Fd49df39209e5a82DcAc7C',
   [ChainId.Lens]: '0x27Af72b4E0Ec65687a00E26e309571B5439e349f',
   [ChainId.LightlinkPhoenixMainnet]: '0x64F0CFb19aD0c6E170F0E29c7584F5f22b0C6ec3',
@@ -138,17 +143,14 @@ const TEST_ADDRESSES = {
   [ChainId.AvalancheFujiTestnet]: '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6',
   [ChainId.BaseSepoliaTestnet]: '0xF85A57d965aEcD289c625Cae6161d0Ab5141bC66',
   [ChainId.BeamTestnet]: '0xc1447c8c647eF2f564cEAe520E1b65C758A02f9F',
-  [ChainId.BerachainbArtio]: '0xF81b9D1d7e50De9c9D0948815d87519BEb087A94',
   [ChainId.BlastSepoliaTestnet]: '0x01208040F4DB383c9f73C023d3c00a5F15bE5bCa',
   [ChainId.BNBSmartChainTestnet]: '0x40FE4911704f14f409ebEE40475377720C732803',
   [ChainId.CeloAlfajoresTestnet]: '0x486FCa950d82e45e8e6863Fac4d22e0Db1359618',
-  [ChainId.CoinExSmartChainTestnet]: '0x5B82588003Ac9db7510702171b94f4acAF87Ca72',
   [ChainId.CreatorChainTestnet]: '0xF5c6d262ec83658D2Aa1ceCC5092ad9F0d981eE2',
   [ChainId.CronosTestnet]: '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f',
   [ChainId.EthereumSepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
   [ChainId.FraxtalTestnet]: '0x3289CAbF6FB3435dc645e1e204Ec663456d14ADD',
   [ChainId.Holesky]: '0x5A8ec40549AebF0E3Fb9d59bCE57b2AfE4d5eDda',
-  [ChainId.IOTAEVMTestnet]: '0xdeD212B8BAb662B98f49e757CbB409BB7808dc10',
   [ChainId.LineaSepolia]: '0x7061146B49427143FfF175e9C1bF7461630302fF',
   // [ChainId.LUKSOTestnet]: '0xBdDDd277583DCaE0B501046ba86714FEea71B03F',
   [ChainId.MantleSepoliaTestnet]: '0x519a89Daa5d3291730a037B94025ab46425c4003',
@@ -156,7 +158,6 @@ const TEST_ADDRESSES = {
   [ChainId.MonadTestnet]: '0xB62a9716B08C8a1844B90B59D0CEf3637d42715e',
   [ChainId.MoonbaseAlpha]: '0xeE146d0808D6a874237701E06A118f444dB13D73',
   [ChainId.MorphHolesky]: '0xA134B3B2F11B861953FF569Be3D0111d997cD537',
-  [ChainId.NeoXTestnetT4]: '0x214806ed35613afbe0064b65a9f814dee40aed5d',
   [ChainId.OPSepoliaTestnet]: '0xDd3287043493E0a08d2B348397554096728B459c',
   [ChainId.PlumeTestnet]: '0x7561dAB2b8c9709A5D550FAe8F617aF7b11547D1',
   [ChainId.PolygonzkEVMCardonaTestnet]: '0x2a8ecB983ab270cB31077C9ff6b5eC9739b4845f',
@@ -170,6 +171,9 @@ const TEST_ADDRESSES = {
 
 describe(`Chain Support (${TEST_URL})`, () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
+    cy.wrap(SUPPORTED_CHAINS.sort()).should('deep.equal', [...ORDERED_CHAINS].sort());
+    cy.wrap(Object.keys(TEST_ADDRESSES).sort()).should('deep.equal', [...ORDERED_CHAINS].sort());
+
     cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
     cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();
@@ -182,8 +186,6 @@ describe(`Chain Support (${TEST_URL})`, () => {
       cy.wrap(getChainName(chainId)).should('not.be.empty');
       cy.wrap(TEST_ADDRESSES[chainId]).should('not.be.empty');
     });
-
-    cy.wrap(SUPPORTED_CHAINS.sort()).should('deep.equal', ORDERED_CHAINS.sort());
   });
 
   ORDERED_CHAINS.forEach((chainId) => {

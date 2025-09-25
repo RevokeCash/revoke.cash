@@ -1,6 +1,6 @@
 import { PERMIT2_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
-import type { Address, WalletClient } from 'viem';
+import type { Address, Chain, WalletClient } from 'viem';
 import { deduplicateArray, getWalletAddress, writeContractUnlessExcessiveGas } from '.';
 import { AllowanceType, type Permit2Erc20Allowance } from './allowances';
 import { type Permit2Event, type TokenEvent, TokenEventType } from './events';
@@ -69,7 +69,8 @@ export const permit2Approve = async (
 ) => {
   const transactionRequest = await preparePermit2Approve(
     permit2Address,
-    walletClient,
+    await getWalletAddress(walletClient),
+    walletClient.chain,
     tokenContract,
     spender,
     amount,
@@ -81,7 +82,8 @@ export const permit2Approve = async (
 
 export const preparePermit2Approve = async (
   permit2Address: Address,
-  walletClient: WalletClient,
+  account: Address,
+  chain: Chain | undefined,
   tokenContract: Erc20TokenContract,
   spender: Address,
   amount: bigint,
@@ -92,8 +94,8 @@ export const preparePermit2Approve = async (
     abi: PERMIT2_ABI,
     functionName: 'approve' as const,
     args: [tokenContract.address, spender, amount, expiration] as const,
-    account: await getWalletAddress(walletClient),
-    chain: walletClient.chain,
+    account,
+    chain,
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   };
 

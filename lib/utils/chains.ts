@@ -167,7 +167,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.MegaETHTestnet,
 ] as const;
 
-export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS];
+export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
 
 const MULTICALL = {
   multicall3: {
@@ -2236,15 +2236,6 @@ export const CHAINS = {
     },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.SomniaTestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.SomniaTestnet,
-    name: 'Somnia Testnet',
-    logoUrl: '/assets/images/vendor/chains/somnia.png',
-    etherscanCompatibleApiUrl: 'https://somnia.w3us.site/api',
-    isTestnet: true,
-    correspondingMainnetChainId: 5031,
-  }),
   [ChainId.Soneium]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Soneium,
@@ -2666,6 +2657,7 @@ export const BLOCKSCOUT_SUPPORTED_CHAINS = Object.values(CHAINS)
   .map((chain) => chain.chainId);
 
 export type DocumentedChainId = keyof typeof CHAINS;
+export type SupportedChainId = (typeof ORDERED_CHAINS)[number];
 
 export const getChainConfig = (chainId: DocumentedChainId): Chain => {
   return CHAINS[chainId];
