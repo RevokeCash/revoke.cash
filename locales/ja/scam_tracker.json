@@ -1,0 +1,8 @@
+{
+  "different_chain": "または別のチェーンで資金の流れを確認する",
+  "meta": {
+    "title": "{chainName}資金フロー可視化ツール"
+  },
+  "title": "{chainName}資金フロー可視化ツール",
+  "placeholder": "{chainName}のトランザクションハッシュを入力"
+}

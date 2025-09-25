@@ -129,5 +129,6 @@
     "transaction_failed": "❌ Transaction failed: {message}",
     "transaction_submitted": "✅ Transaction submitted!",
     "update_failed": "❌ This token does not support updating approvals, please revoke instead."
-  }
+  },
+  "transaction_visualizer": "Transaction Visualizer"
 }

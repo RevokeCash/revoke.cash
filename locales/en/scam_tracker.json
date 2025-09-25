@@ -1,0 +1,8 @@
+{
+  "different_chain": "Or check fund flows on a different chain",
+  "meta": {
+    "title": "{chainName} Fund Flow Visualizer"
+  },
+  "title": "{chainName} Fund Flow Visualizer",
+  "placeholder": "Enter transaction hash"
+}

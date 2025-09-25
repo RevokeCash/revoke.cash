@@ -1,0 +1,8 @@
+{
+  "different_chain": "O verificar los flujos de fondos en una cadena diferente",
+  "meta": {
+    "title": "Visualizador de Flujo de Fondos de {chainName}"
+  },
+  "title": "Visualizador de Flujo de Fondos de {chainName}",
+  "placeholder": "Ingrese el hash de la transacción de {chainName}"
+}
