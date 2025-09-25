@@ -125,7 +125,7 @@ type QuizAction =
   | 'get_coverage_click';
 
 // Track quiz actions
-const trackQuizAction = async (userId: string, action: QuizAction): Promise<void> => {
+const trackQuizAction = async (userId: string, action: string): Promise<void> => {
   try {
     await ky.post(`${FAIRSIDE_API_URL}/revoke-stats`, {
       headers,
@@ -142,7 +142,7 @@ const trackQuizAction = async (userId: string, action: QuizAction): Promise<void
 export interface FairsideStore {
   userId?: string;
   getUserId: () => string;
-  trackQuizAction: (action: QuizAction) => void;
+  trackQuizAction: (action: string) => void;
 }
 
 export const useFairsideStore = create<FairsideStore>((set, get) => ({
@@ -155,7 +155,7 @@ export const useFairsideStore = create<FairsideStore>((set, get) => ({
 
     return newUserId;
   },
-  trackQuizAction: (action: QuizAction) => {
+  trackQuizAction: (action: string) => {
     const userId = get().getUserId();
     trackQuizAction(userId, action);
   },

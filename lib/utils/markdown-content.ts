@@ -116,6 +116,7 @@ export const getSidebar = async (
         path: '/learn/wallets',
         children: [
           getSidebarEntry('wallets/what-is-eip7702', locale, directory, extended),
+          getSidebarEntry('wallets/what-is-a-cold-wallet', locale, directory, extended),
           {
             title: t('learn.add_network.sidebar_title'),
             description: extended ? t('learn.add_network.description', { chainName: 'Ethereum' }) : undefined,
