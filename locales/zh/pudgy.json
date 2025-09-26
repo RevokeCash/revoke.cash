@@ -1,45 +1,45 @@
 {
   "buttons": {
-    "already_claimed": "Already Claimed",
-    "check_eligibility": "Check Eligibility",
+    "already_claimed": "已领取",
+    "check_eligibility": "检查资格",
     "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
     "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
-    "claim": "Claim Soulbound Token",
-    "claiming": "Claiming"
+    "claim": "领取灵魂绑定代币",
+    "claiming": "领取"
   },
   "errors": {
-    "claim_failed": "Failed to claim SBT"
+    "claim_failed": "未能申领灵魂绑定代币"
   },
   "landing": {
     "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
     "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
   },
   "quiz": {
-    "finish_quiz": "Finish Quiz",
-    "start_quiz": "Start Quiz",
-    "title": "Security Quiz"
+    "finish_quiz": "完成测验",
+    "start_quiz": "开始测验",
+    "title": "安全测验"
   },
   "result": {
     "already_claimed": {
-      "description": "You've already earned your Cold Storage SBT. 🧊🐧 Thanks for taking steps to protect your assets - your badge is safely bound to your wallet for good.<br></br><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
-      "title": "🎉 Already claimed"
+      "description": "你已领取灵魂绑定代币，可以在钱包中查看。",
+      "title": "🎉 你已领取灵魂绑定代币"
     },
     "confirmed": {
       "description": "Thanks for practicing safe wallet habits and helping set the standard for The Huddle! The SBT will be sent to your wallet shortly. Use the share button below to spread the word!<br></br><br></br>A Cold Wallet gives peace of mind.<br></br><ul><li>Malware risks are contained to your separate device.</li><li>No token approvals = no smart contract risks.</li></ul><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
       "title": "🎉 Congrats, you're eligible!"
     },
     "eligible": {
-      "description": "Nice work - your wallet is clean and ready! To finish earning your Cold Storage SBT, complete the short quiz below and show you understand the power of cold storage.",
-      "title": "🎉 You're eligible - Complete the quiz"
+      "description": "恭喜！你当前没有任何代币授权，可铸造一枚 Pudgy Penguins x Revoke.cash 灵魂绑定代币。完成这个简短的安全测试，即可获取你的灵魂绑定代币。",
+      "title": "🎉你可以铸造一枚 Pudgy Penguins x Revoke.cash 灵魂绑定代币"
     },
     "has_allowances": {
-      "button": "Revoke Approvals",
-      "description": "Your wallet has existing token approvals, which suggests it is not a Cold Wallet. A Cold Wallet is treated like a vault and should only be used to send or receive tokens, or to log into apps when necessary.<br></br><br></br>To qualify for this Soulbound Token, revoke your token approvals or move your valuables to a fresh Cold Wallet.",
-      "title": "❌ Active approvals detected"
+      "button": "撤销授权",
+      "description": "你在以太坊网络上存在活跃的代币授权。Pudgy Penguins 与 Revoke.cash 的合作项目旨在推广冷钱包使用并限制代币授权。灵魂绑定代币仅向<i>未具备任何</i>代币授权的钱包开放。请撤销现有授权并重新尝试。",
+      "title": "❌你当前存在有效的代币授权"
     },
     "no_tokens": {
-      "description": "To be eligible for the Cold Storage SBT, you need to hold a Pudgy Penguin or a Lil Pudgy. Enter a different wallet, or keep an eye out as we plan to open this initiative to more NFT communities.",
-      "title": "❌ No Pudgy Penguins NFTs owned"
+      "description": "你没有任何 Pudgy Penguins、Lil Pudgys 或 Pudgy Rods。灵魂绑定代币目前仅对 Pudgy Penguins 社区开放。请在铸币功能向其他加密货币社区开放时再回来查看。",
+      "title": "❌你当前没有 Pudgy Penguins"
     },
     "quiz_success": {
       "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",

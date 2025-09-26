@@ -49,7 +49,7 @@
         "title": "Fairside 钱包被盗覆盖范围"
       },
       "quiz": {
-        "check_answer": "查看答案",
+        "check_answer": "查看回答",
         "get_coverage": "立即获得保障",
         "next_question": "下一个问题",
         "question_progress": "问题{current}，共{total}",
@@ -81,7 +81,7 @@
   },
   "delegations": {
     "columns": {
-      "chain_id": "Network",
+      "chain_id": "网络",
       "contract": "资产/合约",
       "delegate": "授权",
       "delegator": "授权人",
@@ -91,20 +91,20 @@
     "contract": {
       "not_applicable": "不适用"
     },
-    "eip7702_delegations": "EIP7702 Delegations",
+    "eip7702_delegations": "EIP7702 授权",
     "incoming_delegations": "接收他人授权",
     "info_panel": {
-      "description": "授权可允许其他地址代表你进行操作，例如验证资产所有权或申请空投。授权可以提高安全性，因为可以使用<b>热钱包</b>来管理资产，而不必在每次互动中都使用<b>冷钱包</b>。但是，如果热钱包遭到入侵，请务必确保撤销授权，避免攻击者冒充。",
+      "description": "授权可允许其他地址代表你进行操作，例如验证资产所有权或申请空投。授权可以提高安全性，因为可以使用<b>热钱包</b>来管理资产，而不必在每次互动中都使用<b>冷钱包</b>。但是，如果热钱包遭到入侵，请务必确保撤销授权，避免攻击者冒充。请注意，这些授权和 EIP7702 授权<b>不同</b>，EIP7702 授权<i>只</i>能在您的钱包应用内撤销。",
       "title": "什么是委托？"
     },
-    "no_eip7702_delegations": "No EIP7702 delegations found",
+    "no_eip7702_delegations": "未找到 EIP7702 授权",
     "no_incoming_delegations": "未接收他人授权",
     "no_outgoing_delegations": "未向他人授权",
     "outgoing_delegations": "向他人授权",
     "tooltips": {
       "contract": "合约级别的授权允许被授权人代表您在特定支持的合约平台上代表您行事。",
-      "eip7702": "An EIP7702 delegation adds smart contract functionality to your wallet.",
-      "eip7702_revoke": "EIP7702 delegations have to be revoked inside your wallet application",
+      "eip7702": "EIP7702 授权为您的钱包添加了智能合约功能。",
+      "eip7702_revoke": "EIP7702 授权必须在您的钱包应用程序内撤销",
       "erc1155": "ERC1155 代币授权允许被授权人在支持的特定 ERC1155 代币的平台上代表您进行操作。",
       "erc20": "ERC20 代币授权允许被授权人在支持的特定 ERC20 代币的平台上代表您进行操作。",
       "erc721": "ERC721 代币授权允许被授权人在支持的特定 ERC721 代币的平台上代表您进行操作。",
