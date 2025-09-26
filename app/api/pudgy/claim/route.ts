@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
       });
     }
   } catch (error) {
+    console.error('Pudgy Penguins API error:', error);
     return new Response(
       JSON.stringify({ status: 'failed', message: `Pudgy Penguins API error: ${parseErrorMessage(error)}` }),
       {
