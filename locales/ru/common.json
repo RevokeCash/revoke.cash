@@ -33,6 +33,7 @@
     "revoking": "Отмена",
     "send": "Отправить",
     "sending": "Отправка…",
+    "share_on_x": "Share on X",
     "switch_chain": "Сменить сеть",
     "switching": "Переключение...",
     "translate": "Помогите перевести эту страницу",
@@ -119,6 +120,17 @@
     "merchandise": "Мерч",
     "more": "Больше",
     "search": "Поиск учетных записей по адресу или домену"
+  },
+  "quiz": {
+    "check_answer": "Check Answer",
+    "check_selected_answers": "Check Selected Answers",
+    "correct_answer": "Correct! Well done.",
+    "incorrect_answer": "Incorrect. Here is the correct answer:",
+    "next_question": "Next Question",
+    "question_progress": "Question {current} of {total}",
+    "select_all_that_apply": "Select all that apply",
+    "select_correct_answer": "Select the correct answer",
+    "wait_and_read": "Wait and Read"
   },
   "toasts": {
     "clipboard_failed": "❌ Не удалось скопировать в буфер",

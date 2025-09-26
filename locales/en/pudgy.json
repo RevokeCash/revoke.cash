@@ -2,22 +2,22 @@
   "buttons": {
     "already_claimed": "Already Claimed",
     "check_eligibility": "Check Eligibility",
-    "claim": "Claim Soulbound Token",
-    "claiming": "Claiming",
     "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
-    "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware."
+    "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
+    "claim": "Claim Soulbound Token",
+    "claiming": "Claiming"
   },
   "errors": {
     "claim_failed": "Failed to claim SBT"
+  },
+  "landing": {
+    "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
+    "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
   },
   "quiz": {
     "finish_quiz": "Finish Quiz",
     "start_quiz": "Start Quiz",
     "title": "Security Quiz"
-  },
-  "landing": {
-    "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
-    "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
   },
   "result": {
     "already_claimed": {
@@ -32,10 +32,6 @@
       "description": "Nice work - your wallet is clean and ready! To finish earning your Cold Storage SBT, complete the short quiz below and show you understand the power of cold storage.",
       "title": "🎉 You're eligible - Complete the quiz"
     },
-    "quiz_success": {
-      "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",
-      "title": "🎉 Ready to Claim!"
-    },
     "has_allowances": {
       "button": "Revoke Approvals",
       "description": "Your wallet has existing token approvals, which suggests it is not a Cold Wallet. A Cold Wallet is treated like a vault and should only be used to send or receive tokens, or to log into apps when necessary.<br></br><br></br>To qualify for this Soulbound Token, revoke your token approvals or move your valuables to a fresh Cold Wallet.",
@@ -44,6 +40,10 @@
     "no_tokens": {
       "description": "To be eligible for the Cold Storage SBT, you need to hold a Pudgy Penguin or a Lil Pudgy. Enter a different wallet, or keep an eye out as we plan to open this initiative to more NFT communities.",
       "title": "❌ No Pudgy Penguins NFTs owned"
+    },
+    "quiz_success": {
+      "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",
+      "title": "🎉 Ready to Claim!"
     }
   },
   "search": {

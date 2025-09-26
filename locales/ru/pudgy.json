@@ -2,11 +2,17 @@
   "buttons": {
     "already_claimed": "Already Claimed",
     "check_eligibility": "Check Eligibility",
+    "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
+    "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
     "claim": "Claim Soulbound Token",
     "claiming": "Claiming"
   },
   "errors": {
     "claim_failed": "Failed to claim SBT"
+  },
+  "landing": {
+    "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
+    "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
   },
   "quiz": {
     "finish_quiz": "Finish Quiz",
@@ -15,21 +21,32 @@
   },
   "result": {
     "already_claimed": {
-      "description": "You have already claimed your Soulbound Token. You can view it in your wallet.",
-      "title": "🎉 You have already claimed your Soulbound Token"
+      "description": "You've already earned your Cold Storage SBT. 🧊🐧 Thanks for taking steps to protect your assets - your badge is safely bound to your wallet for good.<br></br><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
+      "title": "🎉 Already claimed"
+    },
+    "confirmed": {
+      "description": "Thanks for practicing safe wallet habits and helping set the standard for The Huddle! The SBT will be sent to your wallet shortly. Use the share button below to spread the word!<br></br><br></br>A Cold Wallet gives peace of mind.<br></br><ul><li>Malware risks are contained to your separate device.</li><li>No token approvals = no smart contract risks.</li></ul><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
+      "title": "🎉 Congrats, you're eligible!"
     },
     "eligible": {
-      "description": "Congratulations! You don't have any active token approvals and are eligible to mint a Pudgy Penguins x Revoke.cash Soulbound Token. Finish this short security quiz to get your Soulbound Token.",
-      "title": "🎉 You can mint a Pudgy Penguins x Revoke.cash Soulbound Token"
+      "description": "Nice work - your wallet is clean and ready! To finish earning your Cold Storage SBT, complete the short quiz below and show you understand the power of cold storage.",
+      "title": "🎉 You're eligible - Complete the quiz"
     },
     "has_allowances": {
       "button": "Revoke Approvals",
-      "description": "You have active allowances on Ethereum. The Pudgy Penguins x Revoke.cash collaboration promotes cold wallet usage and limiting token approvals. The SBT is only available to wallets without <i>any</i> token approvals. Revoke your approvals and try again.",
-      "title": "❌ You have active token approvals"
+      "description": "Your wallet has existing token approvals, which suggests it is not a Cold Wallet. A Cold Wallet is treated like a vault and should only be used to send or receive tokens, or to log into apps when necessary.<br></br><br></br>To qualify for this Soulbound Token, revoke your token approvals or move your valuables to a fresh Cold Wallet.",
+      "title": "❌ Active approvals detected"
     },
     "no_tokens": {
-      "description": "You don't own any Pudgy Penguins, Lil Pudgys or Pudgy Rods. The SBT is only available to the Pudgy Penguins community at this time. Check back later when the mint opens up to the rest of the crypto community.",
-      "title": "❌ You don't own any Pudgy Penguins"
+      "description": "To be eligible for the Cold Storage SBT, you need to hold a Pudgy Penguin or a Lil Pudgy. Enter a different wallet, or keep an eye out as we plan to open this initiative to more NFT communities.",
+      "title": "❌ No Pudgy Penguins NFTs owned"
+    },
+    "quiz_success": {
+      "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",
+      "title": "🎉 Ready to Claim!"
     }
+  },
+  "search": {
+    "placeholder": "Enter your wallet address to check eligibility"
   }
 }
