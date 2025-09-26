@@ -4,6 +4,7 @@ import { getTokenEvents } from 'lib/chains/events';
 import ky from 'lib/ky';
 import { getAllowancesFromEvents } from 'lib/utils/allowances';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
+import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextRequest } from 'next/server';
 import type { Hash } from 'viem';
 import { CACHE_KEY_PREFIX, CACHE_TTL, PUDDY_CACHE, PUDGY_API_KEY, PUDGY_API_URL } from '../constants';
@@ -63,14 +64,25 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const response = await ky
-    .post(PUDGY_API_URL, { json: { receiver: address }, headers: { 'x-api-key': PUDGY_API_KEY } })
-    .json<PudgyApiResponse>();
+  let response: PudgyApiResponse;
 
-  if (!response.success) {
-    return new Response(JSON.stringify({ status: 'failed', message: 'Pudgy Penguins API error', ...response }), {
-      status: 500,
-    });
+  try {
+    response = await ky
+      .post(PUDGY_API_URL, { json: { receiver: address }, headers: { 'x-api-key': PUDGY_API_KEY } })
+      .json<PudgyApiResponse>();
+
+    if (!response.success) {
+      return new Response(JSON.stringify({ status: 'failed', message: 'Pudgy Penguins API error', ...response }), {
+        status: 500,
+      });
+    }
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ status: 'failed', message: `Pudgy Penguins API error: ${parseErrorMessage(error)}` }),
+      {
+        status: 500,
+      },
+    );
   }
 
   // We set the user status to already_claimed so that they can't claim again

@@ -2,6 +2,7 @@ import Button from 'components/common/Button';
 import Checkbox from 'components/common/Checkbox';
 import ky from 'lib/ky';
 import analytics from 'lib/utils/analytics';
+import { parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -130,7 +131,7 @@ const ClaimButton = ({ address, setClaimed }: { address: string; setClaimed: (cl
 
   useEffect(() => {
     if (error) {
-      const errorMessage = (error as any)?.data?.message;
+      const errorMessage = parseErrorMessage(error);
       toast.error(`${t('pudgy.errors.claim_failed')}: ${errorMessage}`);
     }
   }, [t, error]);
