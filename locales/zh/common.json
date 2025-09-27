@@ -137,6 +137,7 @@
     "clipboard_success": "✅ 已复制到剪贴板",
     "donation_sent": "💪 感谢捐赠！",
     "revoke_failed": "❌ 撤销授权许可失败：{message}",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S was deprecated by Ledger and does not support revoking NFT approvals any more. It is recommended to upgrade to a newer Ledger device.",
     "revoke_failed_revert": "❌ 此代币授权无法撤销。请联系该代币团队来解决这个问题。",
     "transaction_failed": "交易失败：{message}",
     "transaction_submitted": "✅ 交易已提交！",

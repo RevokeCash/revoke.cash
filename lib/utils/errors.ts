@@ -37,12 +37,21 @@ export const isBatchSizeError = (error?: string | any): boolean => {
   return error?.toLowerCase()?.includes('batch size cannot exceed');
 };
 
+export const isLedgerNanoSError = (error?: string | any): boolean => {
+  if (typeof error !== 'string') {
+    return isLedgerNanoSError(parseErrorMessage(error)) || isLedgerNanoSError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('ethappnftnotsupported');
+};
+
 export const isRevertedError = (error?: string | any): boolean => {
   if (typeof error !== 'string') {
     return isRevertedError(parseErrorMessage(error)) || isRevertedError(stringifyError(error));
   }
 
   const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('ethappnftnotsupported')) return false;
   if (lowercaseMessage?.includes('revert')) return true;
   return false;
 };
