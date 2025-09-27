@@ -63,7 +63,8 @@ export const prepareApprove = async (
 
       return preparePermit2Approve(
         permit2Address,
-        walletClient!,
+        account,
+        walletClient.chain,
         tokenContract,
         spenderAddress,
         BigInt(amount),

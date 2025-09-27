@@ -138,13 +138,12 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
 export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const gasFactors: Record<number, bigint> = {
-    [ChainId.ArbitrumOne]: 20n,
     [ChainId.ArbitrumNova]: 20n,
     [ChainId.ArbitrumSepolia]: 20n,
     [ChainId.FrameTestnet]: 20n,
     [ChainId.Mantle]: 2_000n,
     [ChainId.MantleTestnet]: 2_000n,
-    [ChainId.ZkSyncMainnet]: 20n,
+    [5031]: 10n, // Somnia
     [ChainId.ZkSyncSepoliaTestnet]: 20n,
     [ChainId.ZERONetwork]: 20n,
   };
@@ -232,11 +231,16 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 export const range = (length: number) => Array.from({ length }, (_, i) => i);
 
 export const apiLogin = async () => {
+  // In a backend context, we do not need to login
+  if (!isBrowser()) return true;
+
   return ky
     .post('/api/login')
     .json<any>()
     .then((res) => !!res?.ok);
 };
+
+export const isBrowser = () => typeof window !== 'undefined';
 
 export type AccountType = 'EOA' | 'EIP7702 Account' | 'Smart Contract';
 export const getAccountType = async (address: Address, publicClient: PublicClient): Promise<AccountType> => {

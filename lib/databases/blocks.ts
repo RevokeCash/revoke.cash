@@ -1,36 +1,30 @@
-import Dexie, { type Table } from 'dexie';
+import { isBrowser } from 'lib/utils';
 import type { Log, TimeLog } from 'lib/utils/events';
 import type { PublicClient } from 'viem';
+import type { Block } from './cache/BlocksDexie';
+import BlocksDexieCache from './cache/BlocksDexieCache';
+import { CacheError, type ICache } from './cache/ICache';
+import NoCache from './cache/NoCache';
 
-interface Block {
-  chainId: number;
-  blockNumber: number;
-  timestamp: number;
-}
-
-class BlocksDB extends Dexie {
-  private blocks!: Table<Block>;
-
-  constructor() {
-    super('Blocks');
-    this.version(2023_03_14).stores({
-      blocks: '[chainId+blockNumber], timestamp',
-    });
-  }
+class BlocksDB {
+  constructor(private cache: ICache<Block, [number, number]>) {}
 
   async getBlockTimestamp(publicClient: PublicClient, blockNumber: number): Promise<number> {
+    await this.cache.initialize();
+
     try {
       const chainId = publicClient.chain!.id;
-      const storedBlock = await this.blocks.get([chainId, blockNumber]);
+      const storedBlock = await this.cache.get([chainId, blockNumber]);
       if (storedBlock) return storedBlock.timestamp;
 
       const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
       const timestamp = Number(block?.timestamp);
-      await this.blocks.put({ chainId, blockNumber, timestamp });
+
+      await this.cache.put([chainId, blockNumber], { chainId, blockNumber, timestamp });
       return timestamp;
     } catch (e) {
-      // If there is an error, we just return the block timestamp from the public client (may be the case if IndexedDB is not supported)
-      if (e instanceof Dexie.DexieError) {
+      console.error(e);
+      if (e instanceof CacheError) {
         const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
         return Number(block?.timestamp);
       }
@@ -39,16 +33,17 @@ class BlocksDB extends Dexie {
     }
   }
 
-  async getLogTimestamp(publicClient: PublicClient, log: Pick<Log, 'timestamp' | 'blockNumber'>) {
+  async getLogTimestamp(publicClient: PublicClient, log: Pick<Log, 'timestamp' | 'blockNumber'>): Promise<number> {
     return log.timestamp ?? this.getBlockTimestamp(publicClient, log.blockNumber);
   }
 
-  async getTimeLog(publicClient: PublicClient, log: TimeLog) {
+  async getTimeLog(publicClient: PublicClient, log: TimeLog): Promise<TimeLog & { timestamp: number }> {
     const timestamp = await this.getLogTimestamp(publicClient, log);
     return { ...log, timestamp };
   }
 }
 
-const blocksDB = new BlocksDB();
+const cache: ICache<Block, [number, number]> = isBrowser() ? new BlocksDexieCache() : new NoCache();
+const blocksDB = new BlocksDB(cache);
 
 export default blocksDB;

@@ -57,7 +57,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     const callsSettled = await Promise.allSettled(
       allowancesToRevoke.map(async (allowance): Promise<Eip5792Call> => {
-        const transactionRequest = await prepareRevokeAllowance(walletClient, allowance);
+        const transactionRequest = await prepareRevokeAllowance(allowance);
 
         const publicClient = allowance.contract.publicClient;
         const estimatedGas =

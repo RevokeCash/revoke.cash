@@ -1,6 +1,6 @@
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+import { isLedgerNanoSError, isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { stringify } from 'viem';
@@ -26,8 +26,12 @@ export const useHandleTransaction = (chainId: number) => {
     }
 
     if (type === TransactionType.REVOKE) {
+      if (isLedgerNanoSError(message)) {
+        return void toast.info(t('common.toasts.revoke_failed_ledger_nano_s'));
+      }
+
       if (isRevertedError(message)) {
-        return void toast.info(t('common.toasts.revoke_failed_revert'));
+        return void toast.info(t('common.toasts.revoke_failed_revert', { message }));
       }
 
       return void toast.info(t('common.toasts.revoke_failed', { message }));

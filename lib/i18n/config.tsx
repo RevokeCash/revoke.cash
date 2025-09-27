@@ -17,6 +17,9 @@ export type Locale = (typeof routing.locales)[number];
 export const defaultTranslationValues: RichTranslationValues = {
   i: (children) => <span className="italic">{children}</span>,
   b: (children) => <span className="font-bold">{children}</span>,
+  br: () => <br />,
+  ul: (children) => <ul className="list-disc list-inside">{children}</ul>,
+  li: (children) => <li className="list-item">{children}</li>,
   'rosco-twitter-link': (children) => (
     <Href href="https://twitter.com/RoscoKalis" className="font-medium" underline="hover" html external>
       {children}
@@ -77,6 +80,11 @@ export const defaultTranslationValues: RichTranslationValues = {
       {children}
     </Href>
   ),
+  'what-is-a-cold-wallet': (children) => (
+    <Href href="/learn/wallets/what-is-a-cold-wallet" className="font-medium" html underline="hover" router>
+      {children}
+    </Href>
+  ),
   'fairside-link': (children) => (
     <Href href={FAIRSIDE_APP_URL} className="font-medium" underline="hover" html external>
       {children}
@@ -114,6 +122,17 @@ export const defaultTranslationValues: RichTranslationValues = {
       {children}
     </Href>
   ),
+  'pudgy-sbt-link': (children) => (
+    <Href
+      href="https://opensea.io/item/matic/0xd0eb70639146909a5ee1439da1124cb80af2d0b9/11"
+      className="font-medium"
+      underline="hover"
+      html
+      external
+    >
+      {children}
+    </Href>
+  ),
 };
 
 export default getRequestConfig(async ({ requestLocale }) => {
@@ -139,6 +158,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       networks: (await import(`../../locales/${locale}/networks.json`)).default,
       token_approval_checker: (await import(`../../locales/${locale}/token_approval_checker.json`)).default,
       merchandise: (await import(`../../locales/${locale}/merchandise.json`)).default,
+      pudgy: (await import(`../../locales/${locale}/pudgy.json`)).default,
     },
     defaultTranslationValues,
   };

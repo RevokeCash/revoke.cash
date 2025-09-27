@@ -55,6 +55,10 @@ const SortSelect = ({ table }: Props) => {
         asc: t('address.sorting.fns.text.asc'),
         desc: t('address.sorting.fns.text.desc'),
       },
+      [customSortingFns.spender.name]: {
+        asc: t('address.sorting.fns.text.asc'),
+        desc: t('address.sorting.fns.text.desc'),
+      },
       [customSortingFns.timestamp.name]: {
         asc: t('address.sorting.fns.date.asc'),
         desc: t('address.sorting.fns.date.desc'),

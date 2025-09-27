@@ -33,6 +33,7 @@
     "revoking": "Revoking",
     "send": "Send",
     "sending": "Sending",
+    "share_on_x": "Share on X",
     "switch_chain": "Switch Network",
     "switching": "Switching",
     "translate": "Help Us Translate This Page",
@@ -120,12 +121,24 @@
     "more": "More",
     "search": "Search Accounts by Address or Domain"
   },
+  "quiz": {
+    "check_answer": "Check Answer",
+    "check_selected_answers": "Check Selected Answers",
+    "correct_answer": "Correct! Well done.",
+    "incorrect_answer": "Incorrect. Here is the correct answer:",
+    "next_question": "Next Question",
+    "question_progress": "Question {current} of {total}",
+    "select_all_that_apply": "Select all that apply",
+    "select_correct_answer": "Select the correct answer",
+    "wait_and_read": "Wait and Read"
+  },
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",
     "donation_sent": "💪 Thanks for the donation!",
     "revoke_failed": "❌ Revoking failed: {message}",
-    "revoke_failed_revert": "❌ This token approval cannot be revoked. We recommend reaching out to the creators of this token to resolve the issue.",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S was deprecated by Ledger and does not support revoking NFT approvals any more. It is recommended to upgrade to a newer Ledger device.",
+    "revoke_failed_revert": "❌ The creator of this token has disabled or paused approving and revoking approvals ({message})",
     "transaction_failed": "❌ Transaction failed: {message}",
     "transaction_submitted": "✅ Transaction submitted!",
     "update_failed": "❌ This token does not support updating approvals, please revoke instead."

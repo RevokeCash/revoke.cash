@@ -1,0 +1,52 @@
+{
+  "buttons": {
+    "already_claimed": "Already Claimed",
+    "check_eligibility": "Проверьте соответствие критериям",
+    "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
+    "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
+    "claim": "Получить токен Soulbound",
+    "claiming": "Claiming"
+  },
+  "errors": {
+    "claim_failed": "Не удалось получить SBT"
+  },
+  "landing": {
+    "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
+    "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
+  },
+  "quiz": {
+    "finish_quiz": "Завершить тест",
+    "start_quiz": "Начать тест",
+    "title": "Тест по безопасности"
+  },
+  "result": {
+    "already_claimed": {
+      "description": "Вы уже получили свой токен Soulbound. Вы можете увидеть его в своем кошельке.",
+      "title": "🎉 Вы уже получили свой токен Soulbound"
+    },
+    "confirmed": {
+      "description": "Thanks for practicing safe wallet habits and helping set the standard for The Huddle! The SBT will be sent to your wallet shortly. Use the share button below to spread the word!<br></br><br></br>A Cold Wallet gives peace of mind.<br></br><ul><li>Malware risks are contained to your separate device.</li><li>No token approvals = no smart contract risks.</li></ul><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
+      "title": "🎉 Congrats, you're eligible!"
+    },
+    "eligible": {
+      "description": "Поздравляю! У вас нет активных одобренных токенов, и вы имеете право выпустить токен Pudgy Penguins x Revoke.Cash Soulbound. Пройдите этот короткий тест по безопасности, чтобы получить свой токен Soulbound.",
+      "title": "🎉 Вы можете выпустить токен Pudgy Penguins x Revoke.cash Soulbound"
+    },
+    "has_allowances": {
+      "button": "Отменить разрешения",
+      "description": "У вас есть активные разрешения на Ethereum. Сотрудничество Pudgy Penguins и Revoke.cash поощряет использование холодных кошельков и ограничение разрешений на токены. SBT доступен только для кошельков без <i> </i> разрешений на токены. Отмените свои разрешения и попробуйте снова.",
+      "title": "❌ У вас есть активные разрешения на токены"
+    },
+    "no_tokens": {
+      "description": "У вас нет Pudgy Penguins, Lil Pudgys или Pudgy Rods. SBT пока доступен только сообществу Pudgy Penguins. Следите за обновлениями позже, когда монетный двор откроется для остального криптосообщества.",
+      "title": "❌ У вас нет Pudgy Penguins"
+    },
+    "quiz_success": {
+      "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",
+      "title": "🎉 Ready to Claim!"
+    }
+  },
+  "search": {
+    "placeholder": "Enter your wallet address to check eligibility"
+  }
+}

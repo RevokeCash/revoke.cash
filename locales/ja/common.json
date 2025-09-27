@@ -33,6 +33,7 @@
     "revoking": "取り消中",
     "send": "送信する",
     "sending": "送信中",
+    "share_on_x": "Share on X",
     "switch_chain": "ネットワークを切り替える",
     "switching": "切り替え中",
     "translate": "このページの翻訳にご協力ください",
@@ -83,7 +84,7 @@
   },
   "footer": {
     "about": "私たちについて",
-    "acknowledgements": "Acknowledgements",
+    "acknowledgements": "謝辞",
     "blog": "ブログ",
     "brand_assets": "ブランド資産",
     "community": "コミュニティー",
@@ -120,11 +121,23 @@
     "more": "その他",
     "search": "アドレスまたはドメインでアカウントを検索する"
   },
+  "quiz": {
+    "check_answer": "回答を確認する",
+    "check_selected_answers": "選択した回答を確認する",
+    "correct_answer": "正解です！よくできました。",
+    "incorrect_answer": "不正解です。正解は次のとおりです。",
+    "next_question": "次の質問",
+    "question_progress": "{total}中{current}つ目の質問",
+    "select_all_that_apply": "該当するものをすべて選択してください",
+    "select_correct_answer": "正しい答えを選択してください",
+    "wait_and_read": "待って読む"
+  },
   "toasts": {
     "clipboard_failed": "❌ クリップボードにコピーできませんでした。",
     "clipboard_success": "✅ クリップボードにコピーされました",
     "donation_sent": "💪 寄付いただき、ありがとうございます！",
     "revoke_failed": "❌ 許可のリボークに失敗しました: {message}",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S was deprecated by Ledger and does not support revoking NFT approvals any more. It is recommended to upgrade to a newer Ledger device.",
     "revoke_failed_revert": "❌ このトークンの承認は取り消せません。このトークンの作成者に連絡して問題を解決することをおすすめします。",
     "transaction_failed": "❌ トランザクションが失敗しました:{message}",
     "transaction_submitted": "✅ トランザクションを送信しました！",

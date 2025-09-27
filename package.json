@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && next-sitemap",
+    "build:preview": "next build --profile && next-sitemap",
     "build:images": "GENERATE_OG_IMAGES=true next build && tsx scripts/move-cover-images.ts",
     "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml",
     "start": "next start",
@@ -24,8 +25,8 @@
   },
   "private": true,
   "dependencies": {
-    "@abstract-foundation/agw-client": "^1.4.2",
-    "@abstract-foundation/agw-react": "^1.5.4",
+    "@abstract-foundation/agw-client": "^1.8.6",
+    "@abstract-foundation/agw-react": "^1.8.7",
     "@dotenvx/dotenvx": "^1.35.0",
     "@envio-dev/hypersync-client": "^0.6.3",
     "@floating-ui/react": "^0.27.4",

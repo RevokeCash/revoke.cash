@@ -33,6 +33,7 @@
     "revoking": "Revocando",
     "send": "Enviar",
     "sending": "Enviando",
+    "share_on_x": "Compartir en X",
     "switch_chain": "Cambiar de Red",
     "switching": "Cambiando",
     "translate": "Ayúdanos a traducir esta página",
@@ -83,7 +84,7 @@
   },
   "footer": {
     "about": "Sobre nosotros",
-    "acknowledgements": "Acknowledgements",
+    "acknowledgements": "Agradecimientos",
     "blog": "Blog",
     "brand_assets": "Activos de Marca",
     "community": "Comunidad",
@@ -120,12 +121,24 @@
     "more": "Más",
     "search": "Buscar Cuentas por Dirección o Dominio"
   },
+  "quiz": {
+    "check_answer": "Comprobar respuesta",
+    "check_selected_answers": "Verifica las respuestas seleccionadas",
+    "correct_answer": "¡Correcto! Bien hecho.",
+    "incorrect_answer": "Incorrecto. Aquí está la respuesta correcta:",
+    "next_question": "Siguiente pregunta",
+    "question_progress": "Pregunta {current} de {total}",
+    "select_all_that_apply": "Selecciona todas las opciones que correspondan.",
+    "select_correct_answer": "Selecciona la respuesta correcta",
+    "wait_and_read": "Espera y lee"
+  },
   "toasts": {
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",
-    "revoke_failed_revert": "❌ Este token ha desactivado la revocación de aprobaciones. Recomendamos comunicarse con los creadores de este token para resolver el problema.",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S was deprecated by Ledger and does not support revoking NFT approvals any more. It is recommended to upgrade to a newer Ledger device.",
+    "revoke_failed_revert": "❌ El creador de este token ha deshabilitado o pausado la aprobación y revocación de aprobaciones.",
     "transaction_failed": "❌ Transacción fallida: {message}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
     "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."

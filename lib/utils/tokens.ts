@@ -1,8 +1,8 @@
+import { ChainId } from '@revoke.cash/chains';
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract, Nullable } from 'lib/interfaces';
 import ky from 'lib/ky';
-import { getTokenPrice } from 'lib/price/utils';
 import {
   type Address,
   type PublicClient,
@@ -47,6 +47,7 @@ export interface TokenMetadata {
   icon?: string;
   decimals?: number;
   totalSupply?: bigint;
+  // Price will be loaded separately (undefined until loaded, null if no price available)
   price?: Nullable<number>;
 }
 
@@ -159,32 +160,30 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
 
   if (isErc721Contract(contract)) {
-    const [symbol, price] = await Promise.all([
+    const [symbol] = await Promise.all([
       metadataFromMapping?.symbol ??
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
-      getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
     ]);
 
     if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
-
-    const tokenPrice = price;
-
-    return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 0 };
+    return { ...metadataFromMapping, symbol, price: null, decimals: 0 };
   }
 
-  const [totalSupply, symbol, decimals, price] = await Promise.all([
+  const [totalSupply, symbol, decimals] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    getTokenPrice(chainId, contract),
-    throwIfNotErc20(contract),
+    // TODO: I'm temporarily disabling this check because of false positives on Sei network
+    // Make sure to add this back when we have a solution for Sei
+    metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
   ]);
 
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
-  return { ...metadataFromMapping, totalSupply, symbol, decimals, price };
+  // Price will be loaded separately via useTokenPrice hook
+  return { ...metadataFromMapping, totalSupply, symbol, decimals, price: null };
 };
 
 export const getTokenMetadataUnknown = async (
@@ -402,4 +401,13 @@ const getPermitDomainVersion = async (contract: Erc20TokenContract) => {
   } catch {
     return '1';
   }
+};
+
+export const ownsAnyOf = (ownedOrAllowedTokens: TokenData[], tokens: Address[]) => {
+  const tokenIsOwned = (expectedAddress: Address) =>
+    ownedOrAllowedTokens.some(
+      (token) => token.contract.address === expectedAddress && typeof token.balance === 'bigint' && token.balance > 0n,
+    );
+
+  return tokens.some(tokenIsOwned);
 };

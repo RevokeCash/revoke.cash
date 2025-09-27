@@ -1,3 +1,4 @@
+import Loader from 'components/common/Loader';
 import { type TokenAllowanceData, calculateValueAtRisk } from 'lib/utils/allowances';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
@@ -9,6 +10,8 @@ interface Props {
 
 const ValueAtRiskCell = ({ allowance }: Props) => {
   const t = useTranslations();
+
+  if (allowance.metadata.price === undefined) return <Loader isLoading className="h-6" />;
 
   if (!allowance.payload) return null;
 

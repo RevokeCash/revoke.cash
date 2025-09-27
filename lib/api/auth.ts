@@ -36,6 +36,10 @@ export const RateLimiters = {
     points: 2,
     duration: 1,
   }),
+  PUDGY: new RateLimiterMemory({
+    points: 5,
+    duration: 1,
+  }),
 };
 
 export const checkRateLimitAllowed = async (req: NextApiRequest, rateLimiter: RateLimiterMemory) => {

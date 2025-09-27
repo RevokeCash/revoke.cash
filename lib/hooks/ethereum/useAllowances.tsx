@@ -1,6 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import { getTokenPrice } from 'lib/price/utils';
 import { isNullish } from 'lib/utils';
 import {
   type AllowancePayload,
@@ -11,8 +12,10 @@ import {
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import { type TimeLog, type TokenEvent, getEventKey } from 'lib/utils/events';
+import { MINUTE } from 'lib/utils/time';
 import { hasZeroBalance } from 'lib/utils/tokens';
-import { useLayoutEffect, useState } from 'react';
+import { getSpenderData } from 'lib/utils/whois';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
@@ -23,9 +26,9 @@ interface AllowanceUpdateProperties {
 }
 
 export const useAllowances = (address: Address, events: TokenEvent[] | undefined, chainId: number) => {
-  const [allowances, setAllowances] = useState<TokenAllowanceData[]>();
   const publicClient = usePublicClient({ chainId })!;
 
+  // Core allowances query (non-blocking, pricing set to null)
   const { data, isLoading, error } = useQuery<TokenAllowanceData[], Error>({
     queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
     queryFn: async () => {
@@ -39,11 +42,50 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     enabled: !isNullish(address) && !isNullish(chainId) && !isNullish(events),
   });
 
+  const [baseAllowances, setBaseAllowances] = useState<TokenAllowanceData[] | undefined>(undefined);
+
   useLayoutEffect(() => {
     if (data) {
-      setAllowances(data);
+      setBaseAllowances(data);
     }
   }, [data]);
+
+  // No need to deduplicate duplicate unique tokens/spenders, since TanStack Query will deduplicate the queries for us
+  const priceQueries = useQueries({
+    queries: (baseAllowances ?? []).map((allowance) => ({
+      queryKey: ['tokenPrice', allowance.chainId, allowance.contract.address],
+      queryFn: () => getTokenPrice(allowance.chainId, allowance.contract),
+      staleTime: 5 * MINUTE,
+      refetchOnWindowFocus: false,
+      placeholderData: undefined,
+    })),
+  });
+
+  const spenderQueries = useQueries({
+    queries: (baseAllowances ?? []).map((allowance) => ({
+      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender ?? 'null'],
+      queryFn: allowance.payload?.spender
+        ? () => getSpenderData(allowance.payload!.spender, allowance.chainId)
+        : () => null,
+      staleTime: Number.POSITIVE_INFINITY,
+      refetchOnWindowFocus: false,
+      placeholderData: undefined,
+    })),
+  });
+
+  const allowances = useMemo(() => {
+    if (!baseAllowances) return undefined;
+
+    return baseAllowances.map((allowance, index) => {
+      // Direct indexing for both prices and spenders since the arrays have 1:1 mapping
+      const metadata = { ...allowance.metadata, price: priceQueries[index]?.data };
+      const payload = allowance.payload
+        ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
+        : undefined;
+
+      return { ...allowance, metadata, payload };
+    });
+  }, [baseAllowances, priceQueries, spenderQueries]);
 
   const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
     return a.contract.address === b.contract.address && a.chainId === b.chainId;
@@ -61,7 +103,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
   };
 
   const onRevoke = (allowance: TokenAllowanceData) => {
-    setAllowances((previousAllowances) => {
+    setBaseAllowances((previousAllowances) => {
       const newAllowances = previousAllowances!.filter((other) => !allowanceEquals(other, allowance));
 
       // If the token has a balance and we just revoked the last allowance, we need to add the token back to the list
@@ -96,7 +138,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
       return onRevoke(allowance);
     }
 
-    setAllowances((previousAllowances) => {
+    setBaseAllowances((previousAllowances) => {
       return previousAllowances!.map((other) => {
         if (!allowanceEquals(other, allowance)) return other;
 

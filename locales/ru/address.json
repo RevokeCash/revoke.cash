@@ -81,36 +81,42 @@
   },
   "delegations": {
     "columns": {
-      "contract": "Asset / Contract",
+      "chain_id": "Network",
+      "contract": "Актив / контракт",
       "delegate": "Delegate",
-      "delegator": "Delegator",
-      "platform": "Platform",
+      "delegator": "Делегат",
+      "platform": "Платформа",
       "type": "Type"
     },
     "contract": {
-      "not_applicable": "N/A"
+      "not_applicable": "Не применимо"
     },
-    "incoming_delegations": "Incoming Delegations",
+    "eip7702_delegations": "EIP7702 Delegations",
+    "incoming_delegations": "Входящие делегации",
     "info_panel": {
-      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
-      "title": "What Are Delegations?"
+      "description": "Делегации — это способ разрешить другим адресам действовать от вашего имени, например, при попытке подтвердить право собственности на активы или при подаче заявки на доставку имущества. Это может быть выгодно с точки зрения безопасности, поскольку позволяет использовать <b> «горячий» кошелек </b> для управления активами без необходимости использовать <b> «холодный» кошелек </b> для каждого взаимодействия. Однако если ваш «горячий» кошелек будет взломан, обязательно отмените делегирование, чтобы злоумышленник не мог выдать себя за вас.",
+      "title": "Что такое делегации?"
     },
-    "no_incoming_delegations": "No incoming delegations found",
-    "no_outgoing_delegations": "No outgoing delegations found",
-    "outgoing_delegations": "Outgoing Delegations",
+    "no_eip7702_delegations": "No EIP7702 delegations found",
+    "no_incoming_delegations": "Не найдено ни одной входящей делегации",
+    "no_outgoing_delegations": "Не найдено ни одной исходящей делегации",
+    "outgoing_delegations": "Исходящие делегации",
     "tooltips": {
-      "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
-      "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
-      "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
-      "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
-      "wallet": "A wallet-level delegation allows the delegate to act on your behalf on supported platforms."
+      "contract": "Делегирование на уровне контракта дает делегату разрешение действовать от вашего имени на поддерживаемых платформах по конкретному контракту.",
+      "eip7702": "An EIP7702 delegation adds smart contract functionality to your wallet.",
+      "eip7702_revoke": "EIP7702 delegations have to be revoked inside your wallet application",
+      "erc1155": "Делегация токена ERC1155 позволяет делегату действовать от твоего имени на поддерживаемых платформах для конкретного токена ERC1155.",
+      "erc20": "Делегация ERC20-токена позволяет делегату действовать от твоего имени на поддерживаемых платформах для конкретного ERC20-токена.",
+      "erc721": "Делегация токена ERC721 позволяет делегату действовать от твоего имени на поддерживаемых платформах для конкретного токена ERC721.",
+      "wallet": "Делегирование на уровне кошелька позволяет делегату действовать от вашего имени на поддерживаемых платформах."
     },
     "types": {
-      "contract": "Contract",
+      "contract": "Контракт",
+      "eip7702": "EIP7702",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
       "erc721": "ERC721",
-      "wallet": "Wallet"
+      "wallet": "Кошелек"
     }
   },
   "filters": {
@@ -175,7 +181,7 @@
   "navigation": {
     "allowances": "Доступы",
     "coverage": "Покрытие",
-    "delegations": "Delegations",
+    "delegations": "Делегации",
     "history": "История",
     "more": "Больше",
     "sessions": "Сессии",
@@ -244,8 +250,8 @@
   "sorting": {
     "columns": {
       "allowance": "Утв. сумма",
+      "approved_spender": "Авториз. дост.",
       "asset_name": "Название актива",
-      "authorized_spender": "Авториз. дост.",
       "last_updated": "Посл. обнов.",
       "value_at_risk": "Значение риска"
     },
