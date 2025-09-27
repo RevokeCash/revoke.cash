@@ -21,7 +21,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   const { amount } = getAllowanceI18nValues(allowance);
 
   const tooltip = isRevertedError(allowance.payload?.revokeError)
-    ? t('common.toasts.revoke_failed_revert')
+    ? t('common.toasts.revoke_failed_revert', { message: allowance.payload?.revokeError })
     : allowance.payload?.revokeError;
 
   return (

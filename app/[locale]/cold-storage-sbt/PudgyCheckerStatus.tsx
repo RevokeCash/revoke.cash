@@ -1,6 +1,7 @@
 import Button from 'components/common/Button';
 import Checkbox from 'components/common/Checkbox';
 import ky from 'lib/ky';
+import { apiLogin } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
@@ -123,6 +124,7 @@ const ClaimButton = ({ address, setClaimed }: { address: string; setClaimed: (cl
   const hasChecked = hasChecked1 && hasChecked2;
 
   const { result, execute, loading, error } = useAsyncCallback(async () => {
+    await apiLogin();
     const response = await ky.post('/api/pudgy/claim', { json: { address } }).json<{ status: string }>();
     analytics.track('Pudgy Claimed', { account: address, status: response.status });
     setClaimed(true);
