@@ -599,12 +599,11 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Blast,
   }),
   [ChainId.BNBSmartChainMainnet]: new Chain({
-    type: SupportType.HYPERSYNC,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.BNBSmartChainMainnet,
     name: 'BNB Chain',
     nativeTokenCoingeckoId: 'binancecoin',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
-    etherscanCompatibleApiUrl: 'https://api.bscscan.com/api',
     rpc: {
       main: `https://bnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       // logs: 'https://56.rpc.hypersync.xyz',
