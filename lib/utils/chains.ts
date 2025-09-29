@@ -19,6 +19,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Base,
   ChainId.ArbitrumOne,
   ChainId.OPMainnet,
+  ChainId.PlasmaMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.SonicMainnet,
   ChainId.Linea,
@@ -106,7 +107,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.VelasEVMMainnet,
   ChainId.ElastosSmartChain,
   ChainId.ShimmerEVM,
-  ChainId.MilkomedaC1Mainnet,
   ChainId.BitTorrentChainMainnet,
   ChainId.Sanko,
   ChainId.EthereumClassic,
@@ -127,7 +127,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.NeoXMainnet,
   ChainId.BitgertMainnet,
   ChainId.Palm,
-  ChainId.PegoNetwork,
   ChainId.Redstone,
   ChainId.RSS3VSLMainnet,
   ChainId.ExosamaNetwork,
@@ -652,6 +651,9 @@ export const CHAINS = {
     name: 'BOB',
     logoUrl: '/assets/images/vendor/chains/bob.svg',
     etherscanCompatibleApiUrl: 'https://explorer.gobob.xyz/api',
+    rpc: {
+      main: `https://bob-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -1574,16 +1576,6 @@ export const CHAINS = {
       ],
     }),
   }),
-  [ChainId.MilkomedaC1Mainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.MilkomedaC1Mainnet,
-    name: 'Milkomeda C1',
-    nativeTokenCoingeckoId: 'cardano',
-    logoUrl: '/assets/images/vendor/chains/milkomeda.svg',
-    etherscanCompatibleApiUrl: 'https://explorer-mainnet-cardano-evm.c1.milkomeda.com/api',
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // No liquid stablecoins
-  }),
   [ChainId.MintMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.MintMainnet,
@@ -1599,6 +1591,9 @@ export const CHAINS = {
     name: 'Mode',
     logoUrl: '/assets/images/vendor/chains/mode.jpg',
     etherscanCompatibleApiUrl: 'https://explorer.mode.network/api',
+    rpc: {
+      main: `https://mode-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -1894,23 +1889,16 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
   }),
-  [ChainId.PegoNetwork]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.PegoNetwork,
-    name: 'Pego',
-    logoUrl: '/assets/images/vendor/chains/pego.jpg',
-    etherscanCompatibleApiUrl: 'https://scan.pego.network/api',
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // W3swap (Router) | WPG -> USDT
-        new UniswapV2PriceStrategy({
-          address: '0xE9d6f80028671279a28790bb4007B10B0595Def1',
-          path: ['0x0cF4071940782b640d0b595Cb17bDf3E90869d70', '0x02F9Bebf5E54968D8Cc2562356C91ECDE135801B'],
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
+  [ChainId.PlasmaMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.PlasmaMainnet,
+    name: 'Plasma',
+    logoUrl: '/assets/images/vendor/chains/plasma.svg',
+    nativeTokenCoingeckoId: 'plasma',
+    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/9745/etherscan/api',
+    rpc: {
+      main: `https://plasma-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
   }),
   [ChainId.PlumeMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,

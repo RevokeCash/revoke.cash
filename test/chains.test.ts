@@ -1,9 +1,11 @@
 import { ChainId } from '@revoke.cash/chains';
 import { expect } from 'chai';
+import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import { SupportType } from 'lib/chains/Chain';
 import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
 import {
   ORDERED_CHAINS,
+  SUPPORTED_CHAINS,
   createViemPublicClientForChain,
   getChainApiUrl,
   getChainConfig,
@@ -24,6 +26,15 @@ import {
 import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
 
 describe('Chain Support', () => {
+  it('should have a Mocha and Cypress test for every supported chain', () => {
+    const SORTED_SUPPORTED_CHAINS = [...SUPPORTED_CHAINS].sort();
+    const SORTED_DROPDOWN_CHAINS = [...ORDERED_CHAINS].sort();
+    const SORTED_TEST_CHAINS = Object.keys(TEST_ADDRESSES).map(Number).sort();
+
+    expect(SORTED_SUPPORTED_CHAINS).to.deep.equal(SORTED_DROPDOWN_CHAINS);
+    expect(SORTED_TEST_CHAINS).to.deep.equal(SORTED_DROPDOWN_CHAINS);
+  });
+
   ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
     const nativeToken = getChainNativeToken(chainId)!;
@@ -41,7 +52,7 @@ describe('Chain Support', () => {
         expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
         expect(nativeToken, `${chainName} native token`).to.exist;
 
-        const NO_PRICING: number[] = [ChainId.CrabNetwork, ChainId.Palm, ChainId.PegoNetwork];
+        const NO_PRICING: number[] = [ChainId.CrabNetwork, ChainId.Palm];
 
         if (!isTestnetChain(chainId) && !NO_PRICING.includes(chainId)) {
           expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;
