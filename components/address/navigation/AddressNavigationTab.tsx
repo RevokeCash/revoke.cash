@@ -14,7 +14,7 @@ interface Props {
 
 const AddressNavigationTab = ({ name, href }: Props) => {
   const isMounted = useMounted();
-  const [visitedTabs, setVisitedTabs] = useLocalStorage<string[]>('visited-tabs', ['', '/signatures']);
+  const [visitedTabs, setVisitedTabs] = useLocalStorage<string[]>('visited-tabs', ['', '/signatures', '/coverage']);
 
   const router = useCsrRouter();
   const path = usePathname();

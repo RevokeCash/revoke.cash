@@ -43,7 +43,7 @@ const getPudgyCheckerStatus = async (
     return 'already_claimed';
   }
 
-  if (!canMint(allowances)) {
+  if (!(await canMint(address))) {
     return 'no_tokens';
   }
 

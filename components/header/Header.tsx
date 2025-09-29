@@ -21,7 +21,7 @@ const Header = () => {
           <NavLink to="/learn/faq" text={t('common.nav.faq')} />
           <MoreDropdown />
         </div>
-        <div className="hidden lg:flex justify-end gap-2 min-w-[15rem]">
+        <div className="hidden lg:flex justify-end gap-2 min-w-48">
           <WalletIndicator />
         </div>
         <div className="flex lg:hidden justify-end">

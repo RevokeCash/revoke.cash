@@ -22,6 +22,7 @@
     "donate": "Donar",
     "donating": "Donando",
     "download": "Descargar",
+    "explorer_links": "Explorer Links",
     "get_started": "Empezar",
     "increase": "Aumentar",
     "my_allowances": "Mis Autorizaciones",
@@ -137,8 +138,8 @@
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",
-    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S was deprecated by Ledger and does not support revoking NFT approvals any more. It is recommended to upgrade to a newer Ledger device.",
-    "revoke_failed_revert": "❌ El creador de este token ha deshabilitado o pausado la aprobación y revocación de aprobaciones.",
+    "revoke_failed_ledger_nano_s": "❌ Ledger Nano S fue obsoleto por Ledger y ya no admite la revocación de las aprobaciones de NFT. Se recomienda actualizar a un dispositivo Ledger más nuevo.",
+    "revoke_failed_revert": "❌ El creador de este token ha deshabilitado o pausado la aprobación y revocación de aprobaciones ({message})",
     "transaction_failed": "❌ Transacción fallida: {message}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
     "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."

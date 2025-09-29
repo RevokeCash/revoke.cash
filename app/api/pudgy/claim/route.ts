@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Check if the user owns any of the tokens that enable them to mint
-  if (!canMint(allowances)) {
+  if (!(await canMint(address))) {
     return new Response(
       JSON.stringify({ status: 'no_tokens', message: 'User does not own any Pudgy-related tokens' }),
       { status: 400 },

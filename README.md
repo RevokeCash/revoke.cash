@@ -84,9 +84,9 @@ In `lib/utils/chains.ts`:
   - `correspondingMainnetChainId` (Optional): The chain ID of the corresponding mainnet network (only for testnets or canary networks).
 - Add the network to `CHAIN_SELECT_MAINNETS` or `CHAIN_SELECT_TESTNETS` depending on whether it is a mainnet or testnet. You can subsequently run `yarn tsx scripts/get-chain-order.ts` to determine its rough position in the network selection dropdown.
 
-In `cypress/e2e/chains.cy.ts`:
+In `cypress/support/chain-fixtures.ts`:
 
-- Find a wallet that has active approvals and add it to `fixtures`.
+- Find a wallet that has active approvals and add it to `TEST_ADDRESSES`.
 
 In `locales/en/networks.json`:
 

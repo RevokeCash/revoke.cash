@@ -1,14 +1,31 @@
 import { ChainId } from '@revoke.cash/chains';
-import { ERC1155_ABI } from 'lib/abis';
+import { ERC721_ABI, ERC1155_ABI } from 'lib/abis';
 import ky from 'lib/ky';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
-import { type TokenData, ownsAnyOf } from 'lib/utils/tokens';
 import type { Address } from 'viem';
 
-export const canMint = (ownedOrAllowedTokens: TokenData[]) => {
+export const canMint = async (address: Address) => {
+  const client = createViemPublicClientForChain(ChainId.EthereumMainnet);
   const PUDGY_PENGUINS_ADDRESS = '0xBd3531dA5CF5857e7CfAA92426877b022e612cf8';
   const LIL_PUDGYS_ADDRESS = '0x524cAB2ec69124574082676e6F654a18df49A048';
-  return ownsAnyOf(ownedOrAllowedTokens, [PUDGY_PENGUINS_ADDRESS, LIL_PUDGYS_ADDRESS]);
+
+  const pudgyBalancePromise = client.readContract({
+    abi: ERC721_ABI,
+    address: PUDGY_PENGUINS_ADDRESS,
+    functionName: 'balanceOf',
+    args: [address],
+  });
+
+  const lilPudgyBalancePromise = client.readContract({
+    abi: ERC721_ABI,
+    address: LIL_PUDGYS_ADDRESS,
+    functionName: 'balanceOf',
+    args: [address],
+  });
+
+  const [pudgyBalance, lilPudgyBalance] = await Promise.all([pudgyBalancePromise, lilPudgyBalancePromise]);
+
+  return pudgyBalance > 0n || lilPudgyBalance > 0n;
 };
 
 export const alreadyOwnsSoulboundToken = async (address: Address) => {
