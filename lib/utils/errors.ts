@@ -139,9 +139,9 @@ export const parseErrorMessage = (error: any): string => {
   return String(errorMessage);
 };
 
-export const stringifyError = (error: any): string => {
+export const stringifyError = (error: any, indent?: number): string => {
   try {
-    return stringify(error);
+    return stringify(error, undefined, indent);
   } catch {
     return String(error);
   }

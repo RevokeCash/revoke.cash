@@ -9,7 +9,7 @@ export default function GlobalError({ error, reset }: { error: Error; reset: () 
         <div style={{ padding: 24 }}>
           <h1>Unexpected application error</h1>
           <p>{parseErrorMessage(error)}</p>
-          <p>{stringifyError(error)}</p>
+          <p>{stringifyError(error, 2)}</p>
           <button type="button" onClick={() => reset()}>
             Reload section
           </button>
