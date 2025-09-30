@@ -1,115 +1,119 @@
 import { useQuery } from '@tanstack/react-query';
-import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
+import type { ApprovalHistoryEvent } from 'components/history/utils';
+import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { deduplicateArray } from 'lib/utils';
-import { createViemPublicClientForChain } from 'lib/utils/chains';
-import type { ApprovalTokenEvent } from 'lib/utils/events';
-import { TokenEventType } from 'lib/utils/events';
-import { getTokenMetadata } from 'lib/utils/tokens';
-import { useMemo } from 'react';
+import { deduplicateArray, isNullish, logSorterChronological } from 'lib/utils';
+import { isNetworkError, isRateLimitError, stringifyError } from 'lib/utils/errors';
+import { TokenEventType, getEventKey, isApprovalTokenEvent } from 'lib/utils/events';
+import { HOUR } from 'lib/utils/time';
+import { createTokenContract, getTokenMetadata, throwIfSpam } from 'lib/utils/tokens';
+import { usePublicClient } from 'wagmi';
 import { useEvents } from './events/useEvents';
-
-const getAbiFromEventType = (eventType: TokenEventType) => {
-  switch (eventType) {
-    case TokenEventType.APPROVAL_ERC20:
-    case TokenEventType.PERMIT2:
-      return ERC20_ABI;
-    case TokenEventType.APPROVAL_ERC721:
-    case TokenEventType.APPROVAL_FOR_ALL:
-      return ERC721_ABI;
-    default:
-      return ERC20_ABI;
-  }
-};
 
 export const useApprovalHistory = () => {
   const { address, selectedChainId } = useAddressPageContext();
   const { events, isLoading: eventsLoading, error: eventsError } = useEvents(address, selectedChainId);
+  const publicClient = usePublicClient({ chainId: selectedChainId })!;
 
-  const approvalEvents = useMemo(() => {
-    if (!events) return [];
-
-    return events.filter((event): event is ApprovalTokenEvent => {
-      return [
-        TokenEventType.APPROVAL_ERC20,
-        TokenEventType.APPROVAL_ERC721,
-        TokenEventType.APPROVAL_FOR_ALL,
-        TokenEventType.PERMIT2,
-      ].includes(event.type);
-    });
-  }, [events]);
-
-  const queryKey = useMemo(() => {
-    const serializable = approvalEvents.map((event) => ({
-      type: event.type,
-      token: event.token,
-      blockNumber: event.time.blockNumber,
-      transactionHash: event.time.transactionHash,
-      spender: event.payload.spender,
-    }));
-    return ['approvalHistoryWithTimestamps', address, selectedChainId, serializable];
-  }, [approvalEvents, address, selectedChainId]);
   const {
     data: approvalHistory,
-    isLoading: timestampsLoading,
-    error: timestampsError,
+    isLoading: historyLoading,
+    error: historyError,
   } = useQuery({
-    queryKey,
+    queryKey: ['approvalHistory', address, selectedChainId, events?.map(getEventKey)],
     queryFn: async () => {
-      if (!approvalEvents.length) return [];
+      const approvalEvents = events!.filter(isApprovalTokenEvent);
+      if (approvalEvents.length === 0) return [];
 
-      const publicClient = createViemPublicClientForChain(selectedChainId);
+      const uniqueTokenEvents = deduplicateArray(approvalEvents, (event) => event.token);
 
-      const eventsWithTimestamps = await Promise.all(
-        approvalEvents.map(async (event) => {
-          if (event.time.timestamp) {
-            return event;
-          }
-
-          const completeTimeLog = await blocksDB.getTimeLog(publicClient, event.time);
-          return { ...event, time: completeTimeLog };
-        }),
-      );
-
-      const uniqueTokens = deduplicateArray(eventsWithTimestamps, (event) => event.token).map((event) => ({
-        address: event.token,
-        eventType: event.type,
-      }));
-
+      // Get metadata for all unique tokens and filter out tokens that are marked as spam
       const metadataMap = new Map();
       await Promise.all(
-        uniqueTokens.map(async ({ address, eventType }) => {
+        uniqueTokenEvents.map(async (event) => {
+          const fullTokenEvents = (events ?? []).filter((other) => other.token === event.token);
+
           try {
-            const abi = getAbiFromEventType(eventType);
-            const contract = { address, abi, publicClient } as const;
-            const metadata = await getTokenMetadata(contract as any, selectedChainId);
-            metadataMap.set(address, metadata);
-          } catch (error) {
-            console.warn(`Failed to fetch metadata for token ${address}:`, error);
-            metadataMap.set(address, null);
+            const contract = createTokenContract(event, publicClient)!;
+            const [metadata] = await Promise.all([
+              getTokenMetadata(contract, selectedChainId),
+              throwIfSpam(contract, fullTokenEvents),
+            ]);
+            metadataMap.set(event.token, metadata);
+          } catch (e) {
+            console.warn(`Failed to fetch metadata for token ${event.token}:`, e);
+            // If we run into any network-related errors we re-throw the error, if not, we skip the token since it is
+            // likely spam or not a standard-adhering token
+            if (isNetworkError(e)) throw e;
+            if (isRateLimitError(e)) throw e;
+            if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
           }
         }),
       );
 
-      const eventsWithMetadata = eventsWithTimestamps.map((event) => ({
-        ...event,
-        metadata: metadataMap.get(event.token),
-      }));
+      // Add metadata to the events and filter out any events that failed metadata lookup (and therefore are spam)
+      const historyEventsWithMetadata = approvalEvents
+        .map((event) => ({ ...event, metadata: metadataMap.get(event.token) }))
+        .filter((event) => !isNullish(event.metadata));
 
-      return eventsWithMetadata.sort((a, b) => {
-        const timestampA = a.time.timestamp ?? 0;
-        const timestampB = b.time.timestamp ?? 0;
-        return timestampB - timestampA;
+      const historyEventsWithOldSpender = processErc721ApprovalEvents(historyEventsWithMetadata);
+
+      // Only fetch timestamps for the events that will actually be displayed in the history table
+      const historyEventsWithTimestamps = await Promise.all(
+        historyEventsWithOldSpender.map(async (event) => {
+          const time = await blocksDB.getTimeLog(publicClient, event.time);
+          return { ...event, time };
+        }),
+      );
+
+      return historyEventsWithTimestamps.sort((a, b) => {
+        return b.time.timestamp - a.time.timestamp;
       });
     },
-    enabled: !!approvalEvents.length && !eventsLoading,
-    staleTime: 1000 * 60 * 60,
+    enabled: !isNullish(events) && !eventsLoading,
+    staleTime: 1 * HOUR,
   });
 
   return {
-    approvalHistory: approvalHistory ?? [],
-    isLoading: eventsLoading || timestampsLoading,
-    error: eventsError || timestampsError,
+    approvalHistory,
+    isLoading: eventsLoading || historyLoading,
+    error: eventsError || historyError,
   };
+};
+
+// ERC721_APPROVAL events are always emitted on token transfers with an ADDRESS_ZERO spender, so we need to look at
+// the spender *before* that event to determine whether an existing approval was revoked in that event.
+// If so, we need to add the old spender to the event so it can be displayed in the history table instead of the
+// "new" spender (which is the zero address).
+// If not, we remove the event, since it is superfluous.
+const processErc721ApprovalEvents = (events: ApprovalHistoryEvent[]): ApprovalHistoryEvent[] => {
+  const singleNftApprovalLastSpenderMap = new Map();
+
+  return events
+    .sort((a, b) => logSorterChronological(a.rawLog, b.rawLog))
+    .map((event) => {
+      // We only need to handle ERC721 approvals, since these have a special case where the old spender is needed
+      if (event.type !== TokenEventType.APPROVAL_ERC721) return event;
+
+      // Get the previously recorded spender and update the map
+      const oldSpender = singleNftApprovalLastSpenderMap.get(`${event.token}-${event.payload.tokenId}`);
+      singleNftApprovalLastSpenderMap.set(`${event.token}-${event.payload.tokenId}`, event.payload.spender);
+
+      // If there was no old spender and there is no new spender, we remove the event
+      if (isNullish(oldSpender) || oldSpender === ADDRESS_ZERO) {
+        if (event.payload.spender === ADDRESS_ZERO) return undefined;
+      } else {
+        // If there is an old spender, but the current spender is the zero address, that means that an approval
+        // existed and was revoked in this event, which means that we need to add the old spender to the event so
+        // it can be displayed in the history table instead of the "new" spender (which is the zero address)
+        if (event.payload.spender === ADDRESS_ZERO) {
+          return { ...event, payload: { ...event.payload, oldSpender } };
+        }
+      }
+
+      // In any other case, we don't need to update the event
+      return event;
+    })
+    .filter((event) => !isNullish(event));
 };

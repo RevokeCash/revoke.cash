@@ -287,7 +287,7 @@ export const formatErc20Allowance = (allowance: bigint, decimals?: number, total
   return formatFixedPointBigInt(allowance, decimals);
 };
 
-export const getAllowanceI18nValues = (allowance: TokenAllowanceData) => {
+export const getAllowanceI18nValues = (allowance: Pick<TokenAllowanceData, 'payload' | 'metadata'>) => {
   if (!allowance.payload) {
     const i18nKey = 'address.allowances.none';
     return { i18nKey };

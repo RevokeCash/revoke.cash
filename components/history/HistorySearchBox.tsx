@@ -5,14 +5,14 @@ import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
-import type { ApprovalTokenEvent } from 'lib/utils/events';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import { type ChangeEventHandler, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { ColumnId } from './columns';
+import type { ApprovalHistoryEvent } from './utils';
 
 interface Props {
-  table: Table<ApprovalTokenEvent>;
+  table: Table<ApprovalHistoryEvent>;
 }
 
 export interface HistorySearchBoxRef {

@@ -1,15 +1,18 @@
-import { type Row, createColumnHelper } from '@tanstack/react-table';
+import { type Row, type RowData, createColumnHelper } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
-import type { ApprovalTokenEvent } from 'lib/utils/events';
-import { TokenEventType } from 'lib/utils/events';
-import { formatFixedPointBigInt } from 'lib/utils/formatting';
-import { zeroAddress } from 'viem';
+import type { Address } from 'viem';
 import EventTypeCell from './cells/EventTypeCell';
+import HistoryAmountCell from './cells/HistoryAmountCell';
 import HistoryAssetCell from './cells/HistoryAssetCell';
 import HistorySpenderCell from './cells/HistorySpenderCell';
+import type { ApprovalHistoryEvent } from './utils';
 
-const columnHelper = createColumnHelper<ApprovalTokenEvent>();
+declare module '@tanstack/table-core' {
+  interface TableMeta<TData extends RowData> {
+    onFilter: (filterValue: string) => void;
+  }
+}
 
 export enum ColumnId {
   ASSET = 'Asset',
@@ -22,11 +25,11 @@ export enum ColumnId {
 
 // Custom filter functions for history table
 export const customFilterFns = {
-  spender: (row: Row<ApprovalTokenEvent>, columnId: string, filterValues: string[]) => {
+  spender: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
     const spenderAddress = row.original.payload.spender;
     return filterValues.some((value) => spenderAddress.toLowerCase().includes(value.toLowerCase()));
   },
-  token: (row: Row<ApprovalTokenEvent>, columnId: string, filterValues: string[]) => {
+  token: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
     const tokenAddress = row.original.token;
     const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
     const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? String(metadata.symbol) : '';
@@ -43,7 +46,7 @@ export const customFilterFns = {
   },
   // Combined filter for searching both spenders and tokens with OR logic
   combined: (
-    row: Row<ApprovalTokenEvent>,
+    row: Row<ApprovalHistoryEvent>,
     columnId: string,
     filterData: { spenderTerms: string[]; tokenTerms: string[] },
   ) => {
@@ -72,7 +75,8 @@ export const customFilterFns = {
   },
 };
 
-export const createColumns = (onFilter?: (filterValue: string) => void) => [
+const columnHelper = createColumnHelper<ApprovalHistoryEvent>();
+export const columns = [
   // Virtual column for combined search (not displayed)
   columnHelper.display({
     id: ColumnId.COMBINED_SEARCH,
@@ -83,11 +87,31 @@ export const createColumns = (onFilter?: (filterValue: string) => void) => [
   columnHelper.accessor('token', {
     id: ColumnId.ASSET,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
-    cell: ({ row }) => <HistoryAssetCell event={row.original} onFilter={onFilter} />,
+    cell: (info) => <HistoryAssetCell event={info.row.original} onFilter={info.table.options.meta!.onFilter} />,
     size: 160,
     enableSorting: false,
     enableColumnFilter: true,
     filterFn: customFilterFns.token,
+  }),
+
+  columnHelper.accessor('payload.spender', {
+    id: ColumnId.SPENDER,
+    header: () => <HeaderCell i18nKey="address.headers.spender" />,
+    cell: (info) => (
+      <HistorySpenderCell
+        address={
+          'oldSpender' in info.row.original.payload
+            ? (info.row.original.payload.oldSpender as Address)
+            : info.row.original.payload.spender
+        }
+        chainId={info.row.original.chainId}
+        onFilter={info.table.options.meta!.onFilter}
+      />
+    ),
+    size: 160,
+    enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.spender,
   }),
 
   columnHelper.accessor('type', {
@@ -98,57 +122,10 @@ export const createColumns = (onFilter?: (filterValue: string) => void) => [
     enableSorting: false,
   }),
 
-  columnHelper.accessor('payload.spender', {
-    id: ColumnId.SPENDER,
-    header: () => <HeaderCell i18nKey="address.headers.spender" />,
-    cell: ({ row }) => (
-      <HistorySpenderCell address={row.original.payload.spender} chainId={row.original.chainId} onFilter={onFilter} />
-    ),
-    size: 160,
-    enableSorting: false,
-    enableColumnFilter: true,
-    filterFn: customFilterFns.spender,
-  }),
-
   columnHelper.accessor('payload.amount', {
     id: ColumnId.AMOUNT,
     header: () => <HeaderCell i18nKey="address.headers.amount" />,
-    cell: ({ row }) => {
-      const { type, payload } = row.original;
-      const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
-
-      if (type === TokenEventType.APPROVAL_FOR_ALL) {
-        return payload.approved ? 'All NFTs' : 'None';
-      }
-
-      if (type === TokenEventType.APPROVAL_ERC721) {
-        // ERC721 approval to zero address is a revoke
-        return payload.spender === zeroAddress ? 'None' : `Token #${payload.tokenId}`;
-      }
-
-      if ('amount' in payload && payload.amount === 0n) {
-        return '0';
-      }
-
-      if ('amount' in payload) {
-        const decimals =
-          metadata && typeof metadata === 'object' && 'decimals' in metadata ? Number(metadata.decimals) : 18;
-        const totalSupply =
-          metadata && typeof metadata === 'object' && 'totalSupply' in metadata
-            ? BigInt(String(metadata.totalSupply))
-            : undefined;
-
-        // Check if amount exceeds total supply (unlimited)
-        if (totalSupply && payload.amount > totalSupply) {
-          return 'Unlimited';
-        }
-
-        // Use proper formatting with decimal precision
-        return formatFixedPointBigInt(payload.amount, decimals);
-      }
-
-      return '';
-    },
+    cell: ({ row }) => <HistoryAmountCell event={row.original} />,
     size: 128,
     enableSorting: false,
   }),
@@ -162,6 +139,3 @@ export const createColumns = (onFilter?: (filterValue: string) => void) => [
     sortingFn: 'basic',
   }),
 ];
-
-// Backward compatibility - default columns without filter callback
-export const columns = createColumns();

@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
+import AddressCellWithRiskData from 'components/allowances/dashboard/cells/AddressCellWithRiskData';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { Address } from 'viem';
@@ -17,7 +17,7 @@ const HistorySpenderCell = ({ address, chainId, onFilter }: Props) => {
     }
   };
 
-  const filterButton = onFilter && (
+  const filterButton = (
     <WithHoverTooltip tooltip="Filter by this spender">
       <Button style="none" size="none" onClick={handleFilterClick} aria-label={`Filter by spender ${address}`}>
         <MagnifyingGlassIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200" />
@@ -27,8 +27,8 @@ const HistorySpenderCell = ({ address, chainId, onFilter }: Props) => {
 
   return (
     <div className="flex items-center gap-2">
-      <AddressCell address={address} chainId={chainId} />
-      {filterButton}
+      <AddressCellWithRiskData address={address} chainId={chainId} />
+      {onFilter ? filterButton : null}
     </div>
   );
 };

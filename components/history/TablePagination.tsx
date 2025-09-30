@@ -2,12 +2,14 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import { useTranslations } from 'next-intl';
+import { twMerge } from 'tailwind-merge';
 
 interface Props<T> {
   table: Table<T>;
+  className?: string;
 }
 
-const TablePagination = <T,>({ table }: Props<T>) => {
+const TablePagination = <T,>({ table, className }: Props<T>) => {
   const t = useTranslations();
 
   const canPreviousPage = table.getCanPreviousPage();
@@ -19,12 +21,8 @@ const TablePagination = <T,>({ table }: Props<T>) => {
 
   const pageSizeOptions = [10, 25, 50, 100];
 
-  if (totalRows <= Math.min(...pageSizeOptions)) {
-    return null; // Don't show pagination if there are fewer items than the smallest page size
-  }
-
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-zinc-200 dark:border-zinc-700">
+    <div className={twMerge('flex items-center justify-between px-4 py-3', className)}>
       <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
         <span>
           Showing {pageIndex * pageSize + 1} to {Math.min((pageIndex + 1) * pageSize, totalRows)} of {totalRows} results
@@ -38,7 +36,7 @@ const TablePagination = <T,>({ table }: Props<T>) => {
           <select
             value={pageSize}
             onChange={(e) => table.setPageSize(Number(e.target.value))}
-            className="px-2 py-1 text-sm border border-zinc-300 dark:border-zinc-600 rounded bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+            className="px-2 py-1 text-sm border border-zinc-300 dark:border-zinc-600 rounded bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-black dark:focus:outline-white"
           >
             {pageSizeOptions.map((size) => (
               <option key={size} value={size}>
@@ -70,7 +68,7 @@ const TablePagination = <T,>({ table }: Props<T>) => {
             <ChevronLeftIcon className="w-4 h-4" />
           </Button>
 
-          <span className="flex items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400">
+          <span className="flex items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400 font-monosans">
             Page {pageIndex + 1} of {pageCount}
           </span>
 

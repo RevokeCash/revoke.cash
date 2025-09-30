@@ -6,9 +6,10 @@ import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { getChainExplorerUrl } from 'lib/utils/chains';
 import type { TokenData } from 'lib/utils/tokens';
 import { useLayoutEffect, useRef, useState } from 'react';
+import type { Address } from 'viem';
 
 interface Props {
-  asset: TokenData;
+  asset: Pick<TokenData, 'metadata' | 'chainId'> & { contract: { address: Address } };
 }
 
 const AssetDisplay = ({ asset }: Props) => {
