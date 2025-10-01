@@ -5,9 +5,10 @@ import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
+import useDebouncedValue from 'lib/hooks/useDebouncedValue';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
-import { type ChangeEventHandler, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { type ChangeEventHandler, forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { ColumnId } from './columns';
 import type { ApprovalHistoryEvent } from './utils';
 
@@ -16,58 +17,47 @@ interface Props {
 }
 
 export interface HistorySearchBoxRef {
-  setSearchValue: (value: string) => void;
+  setInputValue: (value: string) => void;
 }
 
 const HistorySearchBox = forwardRef<HistorySearchBoxRef, Props>(({ table }, ref) => {
   const t = useTranslations();
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
+  const [searchValue, { flushWith }] = useDebouncedValue(inputValue, 200);
 
   useImperativeHandle(ref, () => ({
-    setSearchValue,
+    setInputValue,
   }));
 
   useEffect(() => {
     const terms = searchValue.trim().split(',').filter(Boolean);
 
-    const spenderTerms: string[] = [];
-    const tokenTerms: string[] = [];
-    const hasOnlyPrefixedTerms = terms.every(
-      (term) => term.trim().startsWith('spender:') || term.trim().startsWith('token:'),
-    );
-
-    terms.forEach((term) => {
-      const trimmedTerm = term.trim();
-
-      if (trimmedTerm.startsWith('spender:')) {
-        spenderTerms.push(trimmedTerm.substring(8).trim());
-      } else if (trimmedTerm.startsWith('token:')) {
-        tokenTerms.push(trimmedTerm.substring(6).trim());
-      } else {
-        // No prefix: search BOTH spenders and tokens
-        spenderTerms.push(trimmedTerm);
-        tokenTerms.push(trimmedTerm);
-      }
-    });
-
     const tableFilters = [];
 
-    if (spenderTerms.length > 0 || tokenTerms.length > 0) {
-      if (hasOnlyPrefixedTerms) {
-        // Use separate filters for prefixed searches
-        if (spenderTerms.length > 0) {
-          tableFilters.push({ id: ColumnId.SPENDER, value: spenderTerms });
+    const categorisedTerms = terms.reduce<Record<string, string[]>>(
+      (acc, term) => {
+        if (term.trim().startsWith('spender:')) {
+          acc.spenderTerms.push(term.substring(8).trim());
+        } else if (term.trim().startsWith('token:')) {
+          acc.tokenTerms.push(term.substring(6).trim());
+        } else {
+          acc.combinedTerms.push(term);
         }
-        if (tokenTerms.length > 0) {
-          tableFilters.push({ id: ColumnId.ASSET, value: tokenTerms });
-        }
-      } else {
-        // Use combined filter for unprefixed searches
-        tableFilters.push({
-          id: ColumnId.COMBINED_SEARCH,
-          value: { spenderTerms, tokenTerms },
-        });
-      }
+        return acc;
+      },
+      { spenderTerms: [], tokenTerms: [], combinedTerms: [] },
+    );
+
+    if (categorisedTerms.spenderTerms.length > 0) {
+      tableFilters.push({ id: ColumnId.SPENDER, value: categorisedTerms.spenderTerms });
+    }
+
+    if (categorisedTerms.tokenTerms.length > 0) {
+      tableFilters.push({ id: ColumnId.ASSET, value: categorisedTerms.tokenTerms });
+    }
+
+    if (categorisedTerms.combinedTerms.length > 0) {
+      tableFilters.push({ id: ColumnId.COMBINED_SEARCH, value: categorisedTerms.combinedTerms });
     }
 
     const ignoreIds = Object.values(ColumnId).filter(
@@ -77,12 +67,19 @@ const HistorySearchBox = forwardRef<HistorySearchBoxRef, Props>(({ table }, ref)
     updateTableFilters(table, tableFilters, ignoreIds);
   }, [table, searchValue]);
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setSearchValue(event.target.value);
-  };
+  const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+    setInputValue(event.target.value);
+  }, []);
 
   const resetButton = (
-    <Button style="tertiary" onClick={() => setSearchValue('')} size="none">
+    <Button
+      style="tertiary"
+      onClick={() => {
+        setInputValue('');
+        flushWith('');
+      }}
+      size="none"
+    >
       <XCircleIcon className="w-6 h-6" />
     </Button>
   );
@@ -92,12 +89,12 @@ const HistorySearchBox = forwardRef<HistorySearchBoxRef, Props>(({ table }, ref)
       id="history-search"
       onSubmit={(event) => event.preventDefault()}
       onChange={handleChange}
-      value={searchValue}
+      value={inputValue}
       placeholder={t('address.search.history')}
       className="w-full"
     >
       <FocusTrap />
-      {searchValue.trim().length > 0 && resetButton}
+      {inputValue.trim().length > 0 && resetButton}
     </SearchBox>
   );
 });

@@ -8,6 +8,8 @@ import { isNetworkError, isRateLimitError, stringifyError } from 'lib/utils/erro
 import { TokenEventType, getEventKey, isApprovalTokenEvent } from 'lib/utils/events';
 import { HOUR } from 'lib/utils/time';
 import { createTokenContract, getTokenMetadata, throwIfSpam } from 'lib/utils/tokens';
+import { getSpenderData } from 'lib/utils/whois';
+import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { useEvents } from './events/useEvents';
 
@@ -60,16 +62,22 @@ export const useApprovalHistory = () => {
       const historyEventsWithOldSpender = processErc721ApprovalEvents(historyEventsWithMetadata);
 
       // Only fetch timestamps for the events that will actually be displayed in the history table
-      const historyEventsWithTimestamps = await Promise.all(
+      const historyEventsWithTimestampsAndSpenderData = await Promise.all(
         historyEventsWithOldSpender.map(async (event) => {
-          const time = await blocksDB.getTimeLog(publicClient, event.time);
-          return { ...event, time };
+          const [time, spenderData] = await Promise.all([
+            blocksDB.getTimeLog(publicClient, event.time),
+            getSpenderData(
+              'oldSpender' in event.payload ? (event.payload.oldSpender as Address) : event.payload.spender,
+              selectedChainId,
+            ),
+          ]);
+          return { ...event, time, payload: { ...event.payload, spenderData } };
         }),
       );
 
-      return historyEventsWithTimestamps.sort((a, b) => {
+      return historyEventsWithTimestampsAndSpenderData.sort((a, b) => {
         return b.time.timestamp - a.time.timestamp;
-      });
+      }) as ApprovalHistoryEvent[];
     },
     enabled: !isNullish(events) && !eventsLoading,
     staleTime: 1 * HOUR,

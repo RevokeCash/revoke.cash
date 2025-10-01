@@ -1,16 +1,18 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import AddressCellWithRiskData from 'components/allowances/dashboard/cells/AddressCellWithRiskData';
+import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
+import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import type { Address } from 'viem';
 
 interface Props {
   address: Address;
   chainId: number;
+  spenderData?: Nullable<SpenderRiskData>;
   onFilter?: (filterValue: string) => void;
 }
 
-const HistorySpenderCell = ({ address, chainId, onFilter }: Props) => {
+const HistorySpenderCell = ({ address, spenderData, chainId, onFilter }: Props) => {
   const handleFilterClick = () => {
     if (onFilter) {
       onFilter(`spender:${address}`);
@@ -27,7 +29,7 @@ const HistorySpenderCell = ({ address, chainId, onFilter }: Props) => {
 
   return (
     <div className="flex items-center gap-2">
-      <AddressCellWithRiskData address={address} chainId={chainId} />
+      <AddressCell address={address} chainId={chainId} spenderData={spenderData ?? undefined} />
       {onFilter ? filterButton : null}
     </div>
   );

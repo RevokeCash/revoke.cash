@@ -29,7 +29,7 @@ const HistoryTable = () => {
   const onFilter = useCallback((filterValue: string) => {
     // Set the filter value in the search box
     if (searchBoxRef.current) {
-      searchBoxRef.current.setSearchValue(filterValue);
+      searchBoxRef.current.setInputValue(filterValue);
     }
   }, []);
 

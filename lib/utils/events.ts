@@ -1,5 +1,6 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
+import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { type Address, type Hash, type Hex, decodeEventLog, toEventSelector } from 'viem';
 import { addressToTopic, isNullish } from '.';
 import { type AllowancePayload, AllowanceType } from './allowances';
@@ -47,6 +48,7 @@ export interface Erc20ApprovalEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_ERC20;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     amount: bigint;
   };
 }
@@ -55,6 +57,7 @@ export interface Erc721ApprovalEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_ERC721;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     tokenId: bigint;
   };
 }
@@ -63,6 +66,7 @@ export interface Erc721ApprovalForAllEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_FOR_ALL;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     approved: boolean;
   };
 }
@@ -71,6 +75,7 @@ export interface Permit2Event extends BaseTokenEvent {
   type: TokenEventType.PERMIT2;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     permit2Address: Address;
     amount: bigint;
     expiration: number;

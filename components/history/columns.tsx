@@ -1,6 +1,7 @@
-import { type Row, type RowData, createColumnHelper } from '@tanstack/react-table';
+import { type Row, type RowData, createColumnHelper, filterFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
+import { isNullish } from 'lib/utils';
 import type { Address } from 'viem';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAmountCell from './cells/HistoryAmountCell';
@@ -23,54 +24,37 @@ export enum ColumnId {
   COMBINED_SEARCH = 'Combined Search',
 }
 
+const accessors = {
+  spender: (event: ApprovalHistoryEvent) => {
+    if (isNullish(event.payload.spenderData?.name)) return event.payload.spender;
+    return `${event.payload.spenderData?.name} (${event.payload.spender})`;
+  },
+  timestamp: (event: ApprovalHistoryEvent) => {
+    return event.time.timestamp;
+  },
+};
+
 // Custom filter functions for history table
 export const customFilterFns = {
   spender: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
-    const spenderAddress = row.original.payload.spender;
-    return filterValues.some((value) => spenderAddress.toLowerCase().includes(value.toLowerCase()));
+    const results = filterValues.map((filterValue) => {
+      return filterFns.includesString(row, columnId, filterValue, () => {});
+    });
+
+    return results.some((result) => result);
   },
   token: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
     const tokenAddress = row.original.token;
-    const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
-    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? String(metadata.symbol) : '';
-    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? String(metadata.name) : '';
+    const tokenSymbol = row.original.metadata?.symbol;
 
     return filterValues.some((value) => {
       const searchTerm = value.toLowerCase();
-      return (
-        tokenAddress?.toLowerCase().includes(searchTerm) ||
-        tokenSymbol.toLowerCase().includes(searchTerm) ||
-        tokenName.toLowerCase().includes(searchTerm)
-      );
+      return tokenAddress?.toLowerCase().includes(searchTerm) || tokenSymbol?.toLowerCase().includes(searchTerm);
     });
   },
-  // Combined filter for searching both spenders and tokens with OR logic
-  combined: (
-    row: Row<ApprovalHistoryEvent>,
-    columnId: string,
-    filterData: { spenderTerms: string[]; tokenTerms: string[] },
-  ) => {
-    const spenderAddress = row.original.payload.spender;
-    const tokenAddress = row.original.token;
-    const metadata = 'metadata' in row.original ? row.original.metadata : undefined;
-    const tokenSymbol = metadata && typeof metadata === 'object' && 'symbol' in metadata ? String(metadata.symbol) : '';
-    const tokenName = metadata && typeof metadata === 'object' && 'name' in metadata ? String(metadata.name) : '';
-
-    // Check spender matches
-    const spenderMatches = filterData.spenderTerms.some((value) =>
-      spenderAddress.toLowerCase().includes(value.toLowerCase()),
-    );
-
-    // Check token matches
-    const tokenMatches = filterData.tokenTerms.some((value) => {
-      const searchTerm = value.toLowerCase();
-      return (
-        tokenAddress?.toLowerCase().includes(searchTerm) ||
-        tokenSymbol.toLowerCase().includes(searchTerm) ||
-        tokenName.toLowerCase().includes(searchTerm)
-      );
-    });
-
+  combined: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
+    const spenderMatches = customFilterFns.spender(row, ColumnId.SPENDER, filterValues);
+    const tokenMatches = customFilterFns.token(row, ColumnId.ASSET, filterValues);
     return spenderMatches || tokenMatches;
   },
 };
@@ -94,7 +78,7 @@ export const columns = [
     filterFn: customFilterFns.token,
   }),
 
-  columnHelper.accessor('payload.spender', {
+  columnHelper.accessor(accessors.spender, {
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => (
@@ -104,6 +88,7 @@ export const columns = [
             ? (info.row.original.payload.oldSpender as Address)
             : info.row.original.payload.spender
         }
+        spenderData={info.row.original.payload.spenderData}
         chainId={info.row.original.chainId}
         onFilter={info.table.options.meta!.onFilter}
       />
@@ -130,7 +115,7 @@ export const columns = [
     enableSorting: false,
   }),
 
-  columnHelper.accessor('time.timestamp', {
+  columnHelper.accessor(accessors.timestamp, {
     id: ColumnId.DATE,
     header: () => <HeaderCell i18nKey="address.headers.date" />,
     cell: ({ row }) => <LastUpdatedCell lastUpdated={row.original.time} chainId={row.original.chainId} />,
