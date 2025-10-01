@@ -37,13 +37,15 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
     <SharedLayout searchBar={searchBar} padding>
       <div className="max-w-6xl w-full mx-auto grow">
         <div className="flex flex-col min-w-0 lg:flex-row gap-4">
-          <NextIntlClientProvider messages={{ learn: messages.learn }}>
+          <NextIntlClientProvider messages={{ common: messages.common, learn: messages.learn }}>
             <Sidebar entries={sidebarEntries} />
           </NextIntlClientProvider>
           <div className="min-w-0 w-full">
             <div className="pl-2 pt-2">
               <Breadcrumb pages={breadcrumbs} />
-              <TranslateButton language={meta.language} translationUrl={translationUrl} />
+              <NextIntlClientProvider messages={{ common: messages.common, learn: messages.learn }}>
+                <TranslateButton language={meta.language} translationUrl={translationUrl} />
+              </NextIntlClientProvider>
             </div>
             <Prose className="mb-4">
               {meta.coverImage ? (
