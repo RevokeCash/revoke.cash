@@ -7,7 +7,6 @@ import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import analytics from 'lib/utils/analytics';
 import { useLocale } from 'next-intl';
-import type { FormatOptionLabelMeta } from 'react-select';
 
 interface Option {
   value: Locale;
@@ -28,10 +27,8 @@ const LanguageSelect = () => {
   ];
 
   const persistLocaleCookie = (locale: string) => {
-    const date = new Date();
     const expireMs = 10 * 365 * 24 * 60 * 60 * 1000; // 10 years - i.e. effective no expiration
-    date.setTime(date.getTime() + expireMs);
-    document.cookie = `NEXT_LOCALE=${locale};expires=${date.toUTCString()};path=/`;
+    cookieStore.set({ name: 'NEXT_LOCALE', value: locale, expires: Date.now() + expireMs, path: '/' });
   };
 
   const selectLanguage = (option: Option) => {
@@ -41,7 +38,7 @@ const LanguageSelect = () => {
     persistLocaleCookie(newLocale);
   };
 
-  const displayOption = (option: Option, { context }: FormatOptionLabelMeta<Option>) => {
+  const displayOption = (option: Option) => {
     // Flag images are from https://github.com/lipis/flag-icons/tree/main/flags/1x1
     const src = `/assets/images/flags/${option.value}.svg`;
     return (

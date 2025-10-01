@@ -6,10 +6,10 @@ import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
 import { timeago } from 'lib/i18n/timeago';
 import {
   AllowanceType,
-  type OnUpdate,
-  type TokenAllowanceData,
   getAllowanceI18nValues,
   isErc20Allowance,
+  type OnUpdate,
+  type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { DAY, SECOND, YEAR } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';

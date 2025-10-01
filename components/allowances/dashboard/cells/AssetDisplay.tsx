@@ -17,7 +17,7 @@ const AssetDisplay = ({ asset }: Props) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   // This is pretty hacky, but it works to detect that we're on the address page, so single chain usage
-  const isOnAddressPage = typeof window !== 'undefined' && window.location.pathname.includes('/address/');
+  const isOnAddressPage = window?.location?.pathname?.includes('/address/');
 
   useLayoutEffect(() => {
     if (!ref.current) return;

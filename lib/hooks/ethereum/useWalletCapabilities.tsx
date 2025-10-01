@@ -16,7 +16,7 @@ export const useWalletCapabilities = () => {
         const capabilities = (await walletClient.getCapabilities()) as Capabilities;
         console.log('Wallet supports EIP5792:', capabilities);
         return capabilities;
-      } catch (e) {
+      } catch {
         console.log('Wallet does not support EIP5792');
         return null;
       }

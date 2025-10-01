@@ -5,17 +5,17 @@ import type { Contract, Nullable } from 'lib/interfaces';
 import ky from 'lib/ky';
 import {
   type Address,
-  type PublicClient,
-  type TypedDataDomain,
   domainSeparator,
   getAbiItem,
   getAddress,
+  type PublicClient,
   pad,
+  type TypedDataDomain,
   toHex,
 } from 'viem';
 import { deduplicateArray } from '.';
 import analytics from './analytics';
-import { type TimeLog, type TokenEvent, TokenEventType, isApprovalTokenEvent, isTransferTokenEvent } from './events';
+import { isApprovalTokenEvent, isTransferTokenEvent, type TimeLog, type TokenEvent, TokenEventType } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
 
@@ -152,7 +152,7 @@ const getTokenDataFromMapping = async (
       icon: metadata.logoURI,
       isSpam: metadata.isSpam,
     };
-  } catch (e) {
+  } catch {
     return undefined;
   }
 };
@@ -256,7 +256,7 @@ export const throwIfSpamBytecode = async (contract: TokenContract) => {
   }
 };
 
-export const throwIfSpamAirdrop = async (contract: Contract, events: TokenEvent[]) => {
+export const throwIfSpamAirdrop = async (_contract: Contract, events: TokenEvent[]) => {
   const transferTransactions = events.filter(isTransferTokenEvent).map((event) => event.time.transactionHash);
   const approvalTransactions = events.filter(isApprovalTokenEvent).map((event) => event.time.transactionHash);
 
@@ -332,7 +332,7 @@ export const hasSupportForPermit = async (contract: TokenContract) => {
       contract.publicClient.readContract({ ...contract, functionName: 'nonces', args: [DUMMY_ADDRESS] }),
     ]);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };

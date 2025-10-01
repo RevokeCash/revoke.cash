@@ -29,7 +29,7 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
     if (!chainIdentifier || !this.apiKey) return null;
 
     try {
-      const time = new Date().getTime();
+      const time = Date.now();
       const data = await this.queue.add(() =>
         ky
           .get(`https://api.webacy.com/addresses/${address}?chain=${chainIdentifier}`, {
@@ -38,7 +38,7 @@ export class WebacySpenderRiskDataSource implements SpenderDataSource {
           .json<any>(),
       );
 
-      const elapsedTime = (new Date().getTime() - time) / 1000;
+      const elapsedTime = (Date.now() - time) / 1000;
       console.log(elapsedTime, 'Webacy', address);
 
       const ALLOWLIST_TAGS = ['trust_list'];

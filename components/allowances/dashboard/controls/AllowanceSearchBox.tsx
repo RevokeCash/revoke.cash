@@ -8,8 +8,8 @@ import SearchBox from 'components/common/SearchBox';
 import useDebouncedValue from 'lib/hooks/useDebouncedValue';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
-import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { type ChangeEventHandler, useEffect, useState } from 'react';
 import { ColumnId } from '../columns';
 

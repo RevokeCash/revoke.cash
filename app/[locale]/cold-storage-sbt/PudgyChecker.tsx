@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
 import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { isNullish } from 'lib/utils';
-import { type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
+import { getAllowanceKey, type TokenAllowanceData } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import type { Address } from 'viem';
 import PudgyCheckerStatus, { type PudgyCheckerStatusString } from './PudgyCheckerStatus';

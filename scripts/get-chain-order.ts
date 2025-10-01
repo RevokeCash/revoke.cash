@@ -29,7 +29,9 @@ const getChainOrder = async () => {
   testnetChains.sort(([, , a], [, , b]) => b - a);
 
   console.log('MAINNETS:');
-  mainnetChains.forEach((entry, index) => logChain(entry, index, CHAIN_SELECT_MAINNETS));
+  mainnetChains.forEach((entry, index) => {
+    logChain(entry, index, CHAIN_SELECT_MAINNETS);
+  });
   console.log();
   console.log('Total mainnet chains:', mainnetChains.length);
 
@@ -37,12 +39,14 @@ const getChainOrder = async () => {
   console.log();
 
   console.log('TESTNETS:');
-  testnetChains.forEach((entry, index) => logChain(entry, index, CHAIN_SELECT_TESTNETS));
+  testnetChains.forEach((entry, index) => {
+    logChain(entry, index, CHAIN_SELECT_TESTNETS);
+  });
   console.log();
   console.log('Total testnet chains:', testnetChains.length);
 };
 
-const logChain = async (
+const logChain = (
   [chainName, chainId, tvl, hasMulticall]: readonly [string, number, number, boolean],
   index: number,
   reference: readonly number[],

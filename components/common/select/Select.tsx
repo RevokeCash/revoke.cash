@@ -1,12 +1,12 @@
 'use client';
 
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import type { Ref } from 'react';
+import type { ComponentProps, Ref } from 'react';
 import ReactSelect, {
+  components,
   type GroupBase,
   type Props as ReactSelectProps,
   type SelectInstance,
-  components,
 } from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
@@ -71,10 +71,8 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
       className={twMerge(props.className)}
       components={{
         IndicatorSeparator: null,
-        ClearIndicator: () => null,
-        Input: (props) => {
-          return <components.Input {...props} suppressHydrationWarning />;
-        },
+        ClearIndicator: CustomClearIndicator,
+        Input: CustomInput,
         ...props.components,
       }}
       classNames={{
@@ -165,3 +163,11 @@ const removeSpacing = (styles: any) => ({
   padding: 0,
   margin: 0,
 });
+
+const CustomInput = <O, I extends boolean, G extends GroupBase<O>>(
+  props: ComponentProps<typeof components.Input<O, I, G>>,
+) => {
+  return <components.Input {...props} suppressHydrationWarning />;
+};
+
+const CustomClearIndicator = () => null;

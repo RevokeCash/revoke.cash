@@ -5,8 +5,7 @@ import Button from 'components/common/Button';
 import { mapContractTransactionRequestToEip5792Call } from 'lib/utils/eip5792';
 import { useState } from 'react';
 import { isAddress } from 'viem';
-import { useAccount, usePublicClient } from 'wagmi';
-import { useWalletClient } from 'wagmi';
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
 import { prepareApprove } from '../approve/lib';
 
 const ApprovePage = () => {
@@ -19,9 +18,7 @@ const ApprovePage = () => {
     const allowances = parseAllowancesCsv(allowancesCsv);
 
     const transactionRequests = await Promise.all(
-      allowances.map(async (allowance) =>
-        prepareApprove(allowance as unknown as any, publicClient, walletClient!, account!),
-      ),
+      allowances.map(async (allowance) => prepareApprove(allowance as any, publicClient, walletClient!, account!)),
     );
 
     const calls = transactionRequests.map((request) => mapContractTransactionRequestToEip5792Call(request));
@@ -30,7 +27,7 @@ const ApprovePage = () => {
       calls,
     });
 
-    const txs = await walletClient!.waitForCallsStatus({
+    await walletClient!.waitForCallsStatus({
       id,
     });
   };
@@ -121,6 +118,8 @@ const parseAllowancesCsv = (csv: string) => {
         permit2Address,
       };
     }
+
+    throw new Error(`Invalid allowance type on line ${index + 1}`);
   });
 
   return allowances;

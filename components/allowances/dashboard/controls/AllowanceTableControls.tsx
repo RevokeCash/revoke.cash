@@ -12,7 +12,7 @@ interface Props {
 }
 
 const AllowanceTableControls = ({ table }: Props) => {
-  const { address, selectedChainId } = useAddressPageContext();
+  const { selectedChainId } = useAddressPageContext();
 
   return (
     <div className="flex flex-col gap-2">
@@ -21,7 +21,7 @@ const AllowanceTableControls = ({ table }: Props) => {
           <SortSelect table={table} />
           <FilterSelect table={table} />
         </div>
-        <WalletHealthSection address={address} chainId={selectedChainId} />
+        <WalletHealthSection chainId={selectedChainId} />
       </div>
       <Suspense>
         <AllowanceSearchBox table={table} />

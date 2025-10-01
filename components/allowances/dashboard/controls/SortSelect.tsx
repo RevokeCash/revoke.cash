@@ -1,4 +1,4 @@
-import { type Column, type ColumnSort, type Table, sortingFns } from '@tanstack/react-table';
+import { type Column, type ColumnSort, sortingFns, type Table } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';

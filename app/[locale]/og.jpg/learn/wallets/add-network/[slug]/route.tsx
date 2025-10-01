@@ -1,5 +1,5 @@
 import { locales } from 'lib/i18n/config';
-import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
+import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from 'lib/utils/chains';
 import { generateOgImage, loadDataUrl } from 'lib/utils/og';
 import { getTranslations } from 'next-intl/server';
 
@@ -23,7 +23,7 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export async function GET(req: Request, { params }: Props) {
+export async function GET(_req: Request, { params }: Props) {
   const { locale, slug } = await params;
   const t = await getTranslations({ locale });
 

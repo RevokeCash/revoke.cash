@@ -2,10 +2,10 @@
 
 import { TransactionType } from 'lib/interfaces';
 import {
-  type OnUpdate,
-  type TokenAllowanceData,
   getAllowanceKey,
+  type OnUpdate,
   revokeAllowance,
+  type TokenAllowanceData,
   trackRevokeTransaction,
   updateErc20Allowance,
 } from 'lib/utils/allowances';

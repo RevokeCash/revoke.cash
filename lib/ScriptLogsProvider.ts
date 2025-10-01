@@ -1,6 +1,6 @@
 import { getEventGetter } from './api/globals';
 import type { EventGetter } from './api/logs/EventGetter';
-import { DivideAndConquerLogsProvider, type LogsProvider, getLogsProvider } from './providers';
+import { DivideAndConquerLogsProvider, getLogsProvider, type LogsProvider } from './providers';
 import { isBackendSupportedChain } from './utils/chains';
 import type { Filter, Log } from './utils/events';
 

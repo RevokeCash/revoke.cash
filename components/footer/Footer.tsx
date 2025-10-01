@@ -11,10 +11,8 @@ const Footer = () => {
   const t = useTranslations();
 
   return (
-    <footer className="bg-black dark:bg-zinc-900 mt-24" aria-labelledby="footer-heading">
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
+    <footer className="bg-black dark:bg-zinc-900 mt-24">
+      <h2 className="sr-only">Footer</h2>
 
       <div className="mx-auto max-w-7xl px-8">
         <div className="my-16 grid grid-cols-2 gap-8 xl:col-span-2">

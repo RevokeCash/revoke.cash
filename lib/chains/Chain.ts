@@ -1,17 +1,17 @@
 import { ChainId, getChain } from '@revoke.cash/chains';
-import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
+import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { isNullish } from 'lib/utils';
 import { SECOND } from 'lib/utils/time';
 import {
-  http,
   type AddEthereumChainParameter,
   type ChainContract,
-  type PublicClient,
-  type Chain as ViemChain,
   createPublicClient,
   defineChain,
+  http,
+  type PublicClient,
+  type Chain as ViemChain,
 } from 'viem';
 
 export interface ChainOptions {
@@ -107,8 +107,7 @@ export class Chain {
   }
 
   getRpcUrls(): string[] {
-    const baseRpcUrls =
-      getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', `${INFURA_API_KEY}`)) ?? [];
+    const baseRpcUrls = getChain(this.chainId)?.rpc ?? [];
     const specifiedRpcUrls = [this.options.rpc?.main].flat().filter((url) => !isNullish(url));
     const rpcOverrides = RPC_OVERRIDES[this.chainId] ? [RPC_OVERRIDES[this.chainId]] : [];
     return [...rpcOverrides, ...specifiedRpcUrls, ...baseRpcUrls];
@@ -237,7 +236,6 @@ export class Chain {
       [ChainId.Mantle]: { batchSize: 256 },
     };
 
-    // @ts-ignore TODO: This gives a TypeScript error since Viem v2
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),

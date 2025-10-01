@@ -1,4 +1,4 @@
-import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
+import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { WEBACY_API_KEY } from 'lib/constants';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderDataSource';

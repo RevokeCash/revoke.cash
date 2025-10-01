@@ -3,7 +3,7 @@ import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
 import { locales } from 'lib/i18n/config';
-import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
+import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from 'lib/utils/chains';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';

@@ -11,7 +11,7 @@ import {
 import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
-import { type Address, type PublicClient, getAddress, isAddress } from 'viem';
+import { type Address, getAddress, isAddress, type PublicClient } from 'viem';
 import { namehash, normalize } from 'viem/ens';
 import { createViemPublicClientForChain } from './chains';
 import { unstoppableTlds } from './unstoppableTlds';
@@ -130,7 +130,7 @@ export const lookupAvvyName = async (address?: Address): Promise<Nullable<string
     });
 
     return name || null;
-  } catch (err) {
+  } catch {
     return null;
   }
 };
@@ -147,7 +147,7 @@ export const resolveAvvyName = async (avvyName?: string): Promise<Address | null
     });
 
     return getAddress(address?.toLowerCase()) || null;
-  } catch (err) {
+  } catch {
     return null;
   }
 };

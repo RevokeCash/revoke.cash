@@ -1,8 +1,8 @@
 import ProseLayout from 'app/layouts/ProseLayout';
 import { KERBERUS_API_KEY } from 'lib/constants';
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import KerberusWidget from './KerberusWidget';
 
 interface Props {

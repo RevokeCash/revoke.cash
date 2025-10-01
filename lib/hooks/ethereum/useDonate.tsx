@@ -6,7 +6,7 @@ import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
-import { type SendTransactionParameters, parseEther } from 'viem';
+import { parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
 import { useNativeTokenPrice } from './useNativeTokenPrice';

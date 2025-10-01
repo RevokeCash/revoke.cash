@@ -1,5 +1,5 @@
 import ky from 'lib/ky';
-import { type PublicClient, getAddress } from 'viem';
+import { getAddress, type PublicClient } from 'viem';
 import { RequestQueue } from './api/logs/RequestQueue';
 import { isNullish } from './utils';
 import {

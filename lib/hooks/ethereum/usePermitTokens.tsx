@@ -5,7 +5,7 @@ import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
 import type { TimeLog } from 'lib/utils/events';
 import { getLastCancelled } from 'lib/utils/permit';
 import { filterAsync, mapAsync } from 'lib/utils/promises';
-import { type PermitTokenData, hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
+import { hasSupportForPermit, hasZeroBalance, type PermitTokenData } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
 import { useAddressAllowances, useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';
 

@@ -1,4 +1,4 @@
-import { type ForwardedRef, type HTMLAttributes, forwardRef } from 'react';
+import { type ForwardedRef, forwardRef, type HTMLAttributes } from 'react';
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {}
 

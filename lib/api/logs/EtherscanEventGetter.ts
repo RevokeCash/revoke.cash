@@ -11,7 +11,7 @@ import {
 } from 'lib/utils/chains';
 import { isLogResponseSizeError } from 'lib/utils/errors';
 import type { Filter, Log } from 'lib/utils/events';
-import { type Address, type Hash, type Hex, getAddress } from 'viem';
+import { type Address, getAddress, type Hash, type Hex } from 'viem';
 import type { EventGetter } from './EventGetter';
 import { RequestQueue } from './RequestQueue';
 

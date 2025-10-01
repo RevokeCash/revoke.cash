@@ -1,4 +1,4 @@
-import { type RowData, createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper, type RowData } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import type { OnCancel } from 'lib/interfaces';

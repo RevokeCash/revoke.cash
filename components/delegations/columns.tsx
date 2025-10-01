@@ -1,6 +1,6 @@
 'use client';
 
-import { type Row, type RowData, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
+import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { ORDERED_CHAINS } from 'lib/utils/chains';
@@ -77,6 +77,7 @@ export const customFilterFns = {
 
 // This will extend the original TableMeta interface, not replace it
 declare module '@tanstack/table-core' {
+  // biome-ignore lint/correctness/noUnusedVariables: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
   interface TableMeta<TData extends RowData> {
     onRevoke?: (delegation: Delegation) => void;
   }

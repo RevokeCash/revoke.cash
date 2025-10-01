@@ -16,9 +16,12 @@ interface Params {
 export const dynamic = 'error';
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+
   return {
-    title: 'Revoke.cash x Pudgy Penguins',
-    description: 'Revoke.cash x Pudgy Penguins',
+    title: 'Revoke.cash x Pudgy Penguins SBT',
+    description: t('pudgy.landing.paragraph_1'),
   };
 };
 

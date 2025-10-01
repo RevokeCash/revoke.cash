@@ -5,7 +5,7 @@ import blocksDB from 'lib/databases/blocks';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { deduplicateArray, isNullish, logSorterChronological } from 'lib/utils';
 import { isNetworkError, isRateLimitError, stringifyError } from 'lib/utils/errors';
-import { TokenEventType, getEventKey, isApprovalTokenEvent } from 'lib/utils/events';
+import { getEventKey, isApprovalTokenEvent, TokenEventType } from 'lib/utils/events';
 import { HOUR } from 'lib/utils/time';
 import { createTokenContract, getTokenMetadata, throwIfSpam } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';

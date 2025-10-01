@@ -2,13 +2,17 @@ import { ChainId } from '@revoke.cash/chains';
 import { AGW_SESSIONS_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import eventsDB from 'lib/databases/events';
 import { getLogsProvider } from 'lib/providers';
-import { sortTokenEventsChronologically } from 'lib/utils';
-import { isNullish } from 'lib/utils';
-import { addressToTopic, apiLogin } from 'lib/utils';
-import { type DocumentedChainId, createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
-import { parseApprovalForAllLog, parseApprovalLog, parsePermit2Log, parseTransferLog } from 'lib/utils/events';
-import { type TokenEvent, generatePatchedAllowanceEvents } from 'lib/utils/events';
-import { type SessionCreatedEvent, parseSessionCreatedLog } from 'lib/utils/sessions';
+import { addressToTopic, apiLogin, isNullish, sortTokenEventsChronologically } from 'lib/utils';
+import { createViemPublicClientForChain, type DocumentedChainId, getChainName } from 'lib/utils/chains';
+import {
+  generatePatchedAllowanceEvents,
+  parseApprovalForAllLog,
+  parseApprovalLog,
+  parsePermit2Log,
+  parseTransferLog,
+  type TokenEvent,
+} from 'lib/utils/events';
+import { parseSessionCreatedLog, type SessionCreatedEvent } from 'lib/utils/sessions';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { type Address, getAbiItem, toEventSelector } from 'viem';
 

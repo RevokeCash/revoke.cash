@@ -1,7 +1,7 @@
 import ky from 'ky';
 import { apiLogin, isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
-import { type TokenContract, isErc721Contract } from 'lib/utils/tokens';
+import { isErc721Contract, type TokenContract } from 'lib/utils/tokens';
 import { formatUnits } from 'viem';
 import type { PriceStrategy } from './PriceStrategy';
 

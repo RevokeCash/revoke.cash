@@ -2,8 +2,8 @@ import ProseLayout from 'app/layouts/ProseLayout';
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;

@@ -6,8 +6,8 @@ import TranslateButton from 'components/common/TranslateButton';
 import ArticleMeta from 'components/learn/ArticleMeta';
 import type { BreadcrumbEntry } from 'lib/interfaces';
 import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 
 interface Props {

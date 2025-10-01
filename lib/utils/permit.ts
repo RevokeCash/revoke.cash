@@ -1,10 +1,10 @@
 import { DAI_PERMIT_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import { type Address, type Hex, type Signature, type TypedDataDomain, type WalletClient, parseSignature } from 'viem';
+import { type Address, type Hex, parseSignature, type Signature, type TypedDataDomain, type WalletClient } from 'viem';
 import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
 import { type TimeLog, type TokenEvent, TokenEventType } from './events';
-import { type Erc20TokenContract, type PermitTokenData, type TokenData, getPermitDomain } from './tokens';
+import { type Erc20TokenContract, getPermitDomain, type PermitTokenData, type TokenData } from './tokens';
 
 export const permit = async (
   walletClient: WalletClient,

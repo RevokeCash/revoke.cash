@@ -21,7 +21,7 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
     data: delegations || [],
     columns: incomingColumns,
     getCoreRowModel: getCoreRowModel(),
-    // @ts-ignore - meta may have other properties from elsewhere in the code
+    // @ts-expect-error - meta may have other properties from elsewhere in the code
     meta: {},
   });
 

@@ -49,7 +49,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.GravityAlphaMainnet]: '0x7b8af2b20763E971Aa09549DF2d3D73E8C1dF74B',
   [ChainId.HarmonyMainnetShard0]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Hemi]: '0x473eD6129788A9e6cF2da3D326869E277404fBdd',
-  [999]: '0xdbfc2F881d0A2864b3d247e08C5d93BaF564050e', // Hyperliquid EVM
+  999: '0xdbfc2F881d0A2864b3d247e08C5d93BaF564050e', // Hyperliquid EVM
   [ChainId.ImmutablezkEVM]: '0xEAf9eaE01b153FAec95A666427391BCcBdAACC18',
   [ChainId.InEVMMainnet]: '0x83c64A707850cE810A5F001dD51142aFf1fC53b9',
   [ChainId.Ink]: '0xB48586959C7A5e5ef1D36A3d3027C11690E0818c',
@@ -99,7 +99,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.Shibarium]: '0x8fA1F2969082a8d141DA3f0DD06D308C783fe7bB',
   [ChainId.ShidoNetwork]: '0x612d5C920AAb4d75349a0F299883be71b1bC060D',
   [ChainId.ShimmerEVM]: '0xAc4682eF9fE8c62980cd8bd8d8a3Bb100FD652e7',
-  [5031]: '0x8a21a31BEE51A1d0fE075DF7aF6F3Fa549CCB3f0',
+  5031: '0x8a21a31BEE51A1d0fE075DF7aF6F3Fa549CCB3f0',
   [ChainId.Soneium]: '0x351F34efCE7BBF960da2ca61130a89bF41471047',
   [ChainId.SonicMainnet]: '0x793625d47087D55f1F1F29eb94d589C199A1D128',
   [ChainId['SongbirdCanary-Network']]: '0x4E8De52271D3bE18cC972af892198103C1e6AfE8',

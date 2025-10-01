@@ -11,7 +11,7 @@ import type { TimeLog } from 'lib/utils/events';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
-import { type Address, type Hash, type WalletClient, getAbiItem, toEventSelector } from 'viem';
+import { type Address, getAbiItem, type Hash, toEventSelector, type WalletClient } from 'viem';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
 
 export const useMarketplaces = () => {

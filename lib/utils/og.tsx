@@ -1,7 +1,7 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import OgHeaderText from 'components/common/og/OgHeaderText';
+import { readFileSync } from 'fs';
 import { ImageResponse } from 'next/og';
+import { join } from 'path';
 
 // Note: this does not work in Edge runtime
 
@@ -40,7 +40,9 @@ export const generateOgImage = ({ title, background }: OgImageProps) => {
 
   const response = (
     <div tw="relative bg-white w-full h-full flex flex-col text-4xl leading-none items-center justify-center">
+      {/* biome-ignore lint/performance/noImgElement: this rule does not apply in OG image generation */}
       <img tw="absolute" height={height} width={width} src={background} alt="Background" />
+      {/* biome-ignore lint/performance/noImgElement: this rule does not apply in OG image generation */}
       <img tw="absolute top-10 left-10" height="96" width="96" src={icon} alt="Revoke icon" />
       {title ? (
         <div style={{ display: 'flex', top: 192 }}>
