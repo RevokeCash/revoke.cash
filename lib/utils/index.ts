@@ -234,6 +234,14 @@ export const apiLogin = async () => {
   // In a backend context, we do not need to login
   if (!isBrowser()) return true;
 
+  // Skip login for mini-app context (Vite dev server or specific env var)
+  if (
+    typeof window !== 'undefined' &&
+    (window.location.port === '5173' || process.env.VITE_SKIP_API_LOGIN === 'true')
+  ) {
+    return true;
+  }
+
   return ky
     .post('/api/login')
     .json<any>()
