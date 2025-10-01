@@ -1,7 +1,9 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
-import { MOONBIRDS_ADDRESS } from 'lib/constants';
+import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
+import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { type Address, type Hash, type Hex, decodeEventLog, toEventSelector } from 'viem';
 import { addressToTopic, isNullish } from '.';
+import { type AllowancePayload, AllowanceType } from './allowances';
 
 export interface Log {
   address: Address;
@@ -46,6 +48,7 @@ export interface Erc20ApprovalEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_ERC20;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     amount: bigint;
   };
 }
@@ -54,6 +57,7 @@ export interface Erc721ApprovalEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_ERC721;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     tokenId: bigint;
   };
 }
@@ -62,6 +66,7 @@ export interface Erc721ApprovalForAllEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_FOR_ALL;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     approved: boolean;
   };
 }
@@ -70,6 +75,7 @@ export interface Permit2Event extends BaseTokenEvent {
   type: TokenEventType.PERMIT2;
   payload: {
     spender: Address;
+    spenderData?: Nullable<SpenderRiskData>;
     permit2Address: Address;
     amount: bigint;
     expiration: number;
@@ -232,4 +238,33 @@ export const generatePatchedAllowanceEvents = (
       timestamp: 1649997510,
     },
   ];
+};
+
+// This is a utility function to convert an approval event to an allowance payload uysed to display the allowance amount in the history table
+// We can safely cast the result to AllowancePayload because the type is known to be valid
+export const eventToAllowance = (event: ApprovalTokenEvent): AllowancePayload => {
+  return {
+    type:
+      event.type === TokenEventType.APPROVAL_ERC20
+        ? AllowanceType.ERC20
+        : event.type === TokenEventType.APPROVAL_ERC721
+          ? AllowanceType.ERC721_SINGLE
+          : event.type === TokenEventType.APPROVAL_FOR_ALL
+            ? AllowanceType.ERC721_ALL
+            : AllowanceType.PERMIT2,
+    ...event.payload,
+    lastUpdated: event.time,
+  } as unknown as AllowancePayload;
+};
+
+export const isRevokeEvent = (event: ApprovalTokenEvent): boolean => {
+  if (event.type === TokenEventType.APPROVAL_ERC721) {
+    return event.payload.spender === ADDRESS_ZERO;
+  }
+
+  if (event.type === TokenEventType.APPROVAL_FOR_ALL) {
+    return !event.payload.approved;
+  }
+
+  return event.payload.amount === 0n;
 };

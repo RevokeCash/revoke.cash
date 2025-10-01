@@ -122,6 +122,12 @@
     "more": "Больше",
     "search": "Поиск учетных записей по адресу или домену"
   },
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "page": "Page {page} of {total}",
+    "showing": "Showing {start} to {end} of {total} results"
+  },
   "quiz": {
     "check_answer": "Проверьте ответ",
     "check_selected_answers": "Проверьте выбранные ответы",

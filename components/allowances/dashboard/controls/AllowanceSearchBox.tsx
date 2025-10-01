@@ -5,6 +5,7 @@ import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
+import useDebouncedValue from 'lib/hooks/useDebouncedValue';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
@@ -19,7 +20,8 @@ interface Props {
 const AllowanceSearchBox = ({ table }: Props) => {
   const searchParams = useSearchParams()!;
   const t = useTranslations();
-  const [searchValues, setSearchValues] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [searchValue, { flushWith }] = useDebouncedValue(inputValue, 200);
 
   // Allow passing in a spenderSearch query param to pre-populate the search box (cleared on mount)
   // Note that this should be carefully tested with the query param handling in AddressPageContext.tsx when updated
@@ -27,7 +29,7 @@ const AllowanceSearchBox = ({ table }: Props) => {
     const spenderSearch = searchParams.get('spenderSearch');
     if (!spenderSearch) return;
 
-    setSearchValues(spenderSearch.split(','));
+    setInputValue(spenderSearch);
 
     // Clear the query param
     const newSearchParams = new URLSearchParams(Array.from(searchParams.entries()));
@@ -36,19 +38,30 @@ const AllowanceSearchBox = ({ table }: Props) => {
   }, [searchParams]);
 
   useEffect(() => {
-    const tableFilter = { id: ColumnId.SPENDER, value: searchValues.filter(Boolean).map((value) => value.trim()) };
-    const tableFilters = tableFilter.value.length > 0 ? [tableFilter] : [];
+    const values = searchValue
+      .split(',')
+      .map((v) => v.trim())
+      .filter(Boolean);
+
+    const tableFilters = values.length > 0 ? [{ id: ColumnId.SPENDER, value: values }] : [];
     const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
+
     updateTableFilters(table, tableFilters, ignoreIds);
-  }, [table, searchValues]);
+  }, [table, searchValue]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    const values = event.target.value.trim().split(',');
-    setSearchValues(values);
+    setInputValue(event.target.value);
   };
 
   const resetButton = (
-    <Button style="tertiary" onClick={() => setSearchValues([])} size="none">
+    <Button
+      style="tertiary"
+      onClick={() => {
+        setInputValue('');
+        flushWith('');
+      }}
+      size="none"
+    >
       <XCircleIcon className="w-6 h-6" />
     </Button>
   );
@@ -58,12 +71,12 @@ const AllowanceSearchBox = ({ table }: Props) => {
       id="spender-search"
       onSubmit={(event) => event.preventDefault()}
       onChange={handleChange}
-      value={searchValues.join(',')}
+      value={inputValue}
       placeholder={t('address.search.spender')}
       className="w-full"
     >
       <FocusTrap />
-      {searchValues.filter(Boolean).length > 0 && resetButton}
+      {inputValue.trim().length > 0 && resetButton}
     </SearchBox>
   );
 };

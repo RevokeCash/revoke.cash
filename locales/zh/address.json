@@ -148,8 +148,11 @@
   "headers": {
     "actions": "操作",
     "allowance": "授权金额",
+    "amount": "Amount",
     "asset": "资产",
     "asset_type": "类型",
+    "date": "Date",
+    "event_type": "Event Type",
     "expiration": "到期",
     "last_cancelled": "上次取消",
     "last_updated": "上次更新",
@@ -161,6 +164,12 @@
     "status": "状态",
     "transaction": "交易",
     "value_at_risk": "存在风险金额"
+  },
+  "history": {
+    "approved": "Approved",
+    "none_found": "No approval history found",
+    "revoked": "Revoked",
+    "title": "Approval History"
   },
   "labels": {
     "connected": "已连接",
@@ -212,6 +221,7 @@
     "unsafe": "可能不安全的合约代码"
   },
   "search": {
+    "history": "Search by Spender or Token",
     "spender": "按被授权人（Spender）地址搜索"
   },
   "sessions": {
@@ -275,6 +285,8 @@
     "acknowledge_signature_notice": "检查签名前，请确认该通知。",
     "connect_wallet": "请连接钱包继续下一步",
     "connected_account": "您只能操作已连接的账户",
+    "filter_by_spender": "Filter by this spender",
+    "filter_by_token": "Filter by this token",
     "involved_in_exploits": "此地址涉及以下漏洞：",
     "marketplace_listings": "这将取消 {marketplace} 上的所有当前列出的产品和报价。",
     "marketplace_signatures": "一旦获得授权，市场可以代表您转移资产。骗子可利用这些授权在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",
