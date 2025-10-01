@@ -63,7 +63,7 @@ const TipSection = ({ chainId, nativeToken, onSelect }: Props) => {
             <InformationCircleIcon className="w-4 h-4 inline-block" />
           </WithHoverTooltip>
         </div>
-        <RadioGroup value={selectedTip} onChange={onChange} className="flex gap-3 justify-between max-sm:hidden">
+        <RadioGroup value={selectedTip ?? ''} onChange={onChange} className="flex gap-3 justify-between max-sm:hidden">
           <TipOption dollarAmount="0" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice}>
             {t('address.batch_revoke.no_tip')}
           </TipOption>

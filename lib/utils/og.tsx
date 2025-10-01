@@ -28,7 +28,7 @@ export const generateOgImage = ({ title, background }: OgImageProps) => {
   // This significantly speeds up builds during emergency patches by skipping resource-intensive OG image generation.
   const SKIP_OG_IMAGES = process.env.SKIP_OG_IMAGES === 'true';
   if (SKIP_OG_IMAGES) {
-    return new Response(loadFile('public/assets/images/opengraph-image.jpg'), {
+    return new Response(Uint8Array.from(loadFile('public/assets/images/opengraph-image.jpg')), {
       headers: {
         'Content-Type': 'image/jpeg',
         'Cache-Control': 'public, max-age=31536000, immutable',
