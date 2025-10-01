@@ -122,6 +122,12 @@
     "more": "その他",
     "search": "アドレスまたはドメインでアカウントを検索する"
   },
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "page": "Page {page} of {total}",
+    "showing": "Showing {start} to {end} of {total} results"
+  },
   "quiz": {
     "check_answer": "回答を確認する",
     "check_selected_answers": "選択した回答を確認する",

@@ -122,6 +122,12 @@
     "more": "More",
     "search": "Search Accounts by Address or Domain"
   },
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "page": "Page {page} of {total}",
+    "showing": "Showing {start} to {end} of {total} results"
+  },
   "quiz": {
     "check_answer": "Check Answer",
     "check_selected_answers": "Check Selected Answers",

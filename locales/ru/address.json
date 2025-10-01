@@ -148,8 +148,11 @@
   "headers": {
     "actions": "Действия",
     "allowance": "Утв. сумма",
+    "amount": "Amount",
     "asset": "Aктив",
     "asset_type": "Тип",
+    "date": "Date",
+    "event_type": "Event Type",
     "expiration": "Срок действия",
     "last_cancelled": "Последнее отменено",
     "last_updated": "Посл. обнов.",
@@ -161,6 +164,12 @@
     "status": "Статус",
     "transaction": "Транзакция",
     "value_at_risk": "Значение риска"
+  },
+  "history": {
+    "approved": "Approved",
+    "none_found": "No approval history found",
+    "revoked": "Revoked",
+    "title": "Approval History"
   },
   "labels": {
     "connected": "Подключено",
@@ -212,6 +221,7 @@
     "unsafe": "Потенциально небезопасный код контракта"
   },
   "search": {
+    "history": "Search by Spender or Token",
     "spender": "Поиск по адресу авторизованных"
   },
   "sessions": {
@@ -275,6 +285,8 @@
     "acknowledge_signature_notice": "Пожалуйста, ознакомьтесь с уведомлением, прежде чем проверять свои подписи.",
     "connect_wallet": "Пожалуйста, подключите свой кошелек, чтобы продолжить",
     "connected_account": "Вы можете выполнять действия только для подключенного аккаунта",
+    "filter_by_spender": "Filter by this spender",
+    "filter_by_token": "Filter by this token",
     "involved_in_exploits": "Этот адрес используется в следующих эксплойтах:",
     "marketplace_listings": "Это аннулирует все текущие объявления и предложения на {marketplace}.",
     "marketplace_signatures": "После одобрения торговые площадки смогут перемещать активы от вашего имени. Злоумышленники используют эти доступы для создания объявлений по нулевой цене на сторонних веб-сайтах. Отмените их, если вы дали доступ к торговой площадке на фишинговом сайте.",

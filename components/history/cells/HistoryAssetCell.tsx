@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
+import { useTranslations } from 'next-intl';
 import type { ApprovalHistoryEvent } from '../utils';
 
 interface Props {
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const HistoryAssetCell = ({ event, onFilter }: Props) => {
+  const t = useTranslations();
+
   const asset = {
     metadata: event.metadata,
     chainId: event.chainId,
@@ -26,7 +29,7 @@ const HistoryAssetCell = ({ event, onFilter }: Props) => {
   };
 
   const filterButton = (
-    <WithHoverTooltip tooltip="Filter by this token">
+    <WithHoverTooltip tooltip={t('address.tooltips.filter_by_token')}>
       <Button
         style="none"
         size="none"

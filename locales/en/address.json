@@ -221,8 +221,8 @@
     "unsafe": "Potentially unsafe contract code"
   },
   "search": {
-    "spender": "Search by Approved Spender Address",
-    "history": "Search by Spender or Token"
+    "history": "Search by Spender or Token",
+    "spender": "Search by Approved Spender Address"
   },
   "sessions": {
     "info": {
@@ -285,6 +285,8 @@
     "acknowledge_signature_notice": "Please acknowledge the notice before checking your signatures.",
     "connect_wallet": "Please connect your wallet to continue",
     "connected_account": "You can only perform actions for the connected account",
+    "filter_by_spender": "Filter by this spender",
+    "filter_by_token": "Filter by this token",
     "involved_in_exploits": "This address is involved in the following exploits:",
     "marketplace_listings": "This will cancel all current listings and offers on {marketplace}.",
     "marketplace_signatures": "Once approved, marketplaces are able to move assets on your behalf. Bad actors exploit these approvals to create zero-priced listings on third party websites. Cancel these if you signed a marketplace signature on a phishing website.",

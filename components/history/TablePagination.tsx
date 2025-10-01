@@ -25,7 +25,11 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
     <div className={twMerge('flex items-center justify-between px-4 py-3', className)}>
       <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
         <span>
-          Showing {pageIndex * pageSize + 1} to {Math.min((pageIndex + 1) * pageSize, totalRows)} of {totalRows} results
+          {t.rich('common.pagination.showing', {
+            start: pageIndex * pageSize + 1,
+            end: Math.min((pageIndex + 1) * pageSize, totalRows),
+            total: totalRows,
+          })}
         </span>
       </div>
 
@@ -55,7 +59,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
             disabled={!canPreviousPage}
             aria-label="First page"
           >
-            First
+            {t('common.pagination.first')}
           </Button>
 
           <Button
@@ -69,7 +73,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
           </Button>
 
           <span className="flex items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400 font-monosans">
-            Page {pageIndex + 1} of {pageCount}
+            {t.rich('common.pagination.page', { page: pageIndex + 1, total: pageCount })}
           </span>
 
           <Button
@@ -89,7 +93,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
             disabled={!canNextPage}
             aria-label="Last page"
           >
-            Last
+            {t('common.pagination.last')}
           </Button>
         </div>
       </div>

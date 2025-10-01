@@ -122,6 +122,12 @@
     "more": "更多",
     "search": "通过输入地址或域名来搜索账户"
   },
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "page": "Page {page} of {total}",
+    "showing": "Showing {start} to {end} of {total} results"
+  },
   "quiz": {
     "check_answer": "查看回答",
     "check_selected_answers": "查看已选回答",

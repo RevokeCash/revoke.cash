@@ -22,7 +22,7 @@
     "donate": "Donar",
     "donating": "Donando",
     "download": "Descargar",
-    "explorer_links": "Explorer Links",
+    "explorer_links": "Enlaces del explorador",
     "get_started": "Empezar",
     "increase": "Aumentar",
     "my_allowances": "Mis Autorizaciones",
@@ -121,6 +121,12 @@
     "merchandise": "Mercancía",
     "more": "Más",
     "search": "Buscar Cuentas por Dirección o Dominio"
+  },
+  "pagination": {
+    "first": "First",
+    "last": "Last",
+    "page": "Page {page} of {total}",
+    "showing": "Showing {start} to {end} of {total} results"
   },
   "quiz": {
     "check_answer": "Comprobar respuesta",
