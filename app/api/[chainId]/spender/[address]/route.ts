@@ -14,7 +14,7 @@ interface Props {
 
 interface Params {
   chainId: string;
-  address: Address;
+  address: string;
 }
 
 export const runtime = 'edge';
@@ -44,7 +44,7 @@ export async function GET(req: NextRequest, { params }: Props) {
   const chainId = Number(chainIdString);
 
   try {
-    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address, chainId);
+    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address as Address, chainId);
 
     return new Response(JSON.stringify(spenderData), {
       status: 200,

@@ -57,14 +57,14 @@ const MarkdownProse = ({ content, className }: Props) => {
       if (!width || !height) {
         return (
           <p>
-            <img src={src!} alt={alt ?? src!} />
+            <img src={src as string} alt={alt ?? (src as string)} />
           </p>
         );
       }
 
       return (
         <p>
-          <Image src={src!} alt={alt ?? src!} width={width as any} height={height as any} />
+          <Image src={src as string} alt={alt ?? (src as string)} width={width as any} height={height as any} />
         </p>
       );
     },

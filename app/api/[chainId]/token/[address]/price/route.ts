@@ -11,7 +11,7 @@ interface Props {
 
 interface Params {
   chainId: string;
-  address: Address;
+  address: string;
 }
 
 export const runtime = 'edge';
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest, { params }: Props) {
 
   const contract: Erc721TokenContract = {
     abi: ERC721_ABI,
-    address,
+    address: address as Address,
     publicClient: createViemPublicClientForChain(chainId),
   };
 

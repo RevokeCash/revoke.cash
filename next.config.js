@@ -7,6 +7,9 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   exclude: /a\.js|node_modules/, // exclude node_modules for checking circular dependencies
+  images: {
+    qualities: [25, 50, 75, 100],
+  },
   redirects: async () => {
     return [
       {

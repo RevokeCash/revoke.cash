@@ -38,7 +38,7 @@ const Href = (
 
   if (router) {
     return (
-      <Link {...props} className={classes} href={href} ref={ref}>
+      <Link {...props} className={classes} href={href} ref={ref} popover={undefined}>
         {children}
       </Link>
     );
