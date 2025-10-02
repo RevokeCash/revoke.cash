@@ -2,6 +2,7 @@ import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
+import RichText from 'components/common/RichText';
 import { locales } from 'lib/i18n/config';
 import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from 'lib/utils/chains';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
@@ -70,36 +71,31 @@ const TokenApprovalCheckerPage: NextPage<Props> = async ({ params }) => {
       <Prose className="max-w-3xl">
         <ChainDescription chainId={chainId} headingElement="h2" />
         <p>
-          {t.rich('networks.learn_how_to_add_to_wallet', {
-            chainName,
-            'add-network-link': (children) => (
-              <Href href={`/learn/wallets/add-network/${getChainSlug(chainId)}`} underline="hover" html router>
-                {children}
-              </Href>
-            ),
-          })}
+          <RichText>
+            {(tags) =>
+              t.rich('networks.learn_how_to_add_to_wallet', {
+                ...tags,
+                chainName,
+                'add-network-link': (children) => (
+                  <Href href={`/learn/wallets/add-network/${getChainSlug(chainId)}`} underline="hover" html router>
+                    {children}
+                  </Href>
+                ),
+              })
+            }
+          </RichText>
         </p>
         <h2 className="text-left">{t('token_approval_checker.what_are_token_approvals.title', { chainName })}</h2>
         <p>
-          {t.rich('token_approval_checker.what_are_token_approvals.content', {
-            chainName,
-            whatAreTokenApprovals: (children) => (
-              <Href href="/learn/approvals/what-are-token-approvals" html underline="hover" router>
-                {children}
-              </Href>
-            ),
-          })}
+          <RichText>
+            {(tags) => t.rich('token_approval_checker.what_are_token_approvals.content', { ...tags, chainName })}
+          </RichText>
         </p>
         <h2>{t('token_approval_checker.how_to_revoke.title', { chainName })}</h2>
         <p>
-          {t.rich('token_approval_checker.how_to_revoke.content', {
-            chainName,
-            howToRevoke: (children) => (
-              <Href href="/learn/approvals/how-to-revoke-token-approvals" html underline="hover" router>
-                {children}
-              </Href>
-            ),
-          })}
+          <RichText>
+            {(tags) => t.rich('token_approval_checker.how_to_revoke.content', { ...tags, chainName })}
+          </RichText>
         </p>
       </Prose>
     </div>

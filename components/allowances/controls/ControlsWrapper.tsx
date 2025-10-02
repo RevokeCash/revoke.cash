@@ -1,3 +1,4 @@
+import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { isNullish } from 'lib/utils';
 import { getChainName } from 'lib/utils/chains';
@@ -43,8 +44,7 @@ const ControlsWrapper = ({ chainId, address, switchChainSize, children, override
   }
 
   if (needsToSwitchChain) {
-    const tooltip = t.rich('address.tooltips.switch_chain', { chainName });
-
+    const tooltip = <RichText>{(tags) => t.rich('address.tooltips.switch_chain', { ...tags, chainName })}</RichText>;
     return <WithHoverTooltip tooltip={tooltip}>{children(disabled)}</WithHoverTooltip>;
   }
 

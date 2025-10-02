@@ -56,7 +56,9 @@ const MainLayout = async ({ children, params }: Props) => {
   return (
     <html lang={locale}>
       <head>
-        <Analytics />
+        <NextIntlClientProvider>
+          <Analytics />
+        </NextIntlClientProvider>
       </head>
       <body>
         <ThemeScript />

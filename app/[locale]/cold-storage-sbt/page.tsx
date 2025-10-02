@@ -1,5 +1,6 @@
 import ProseLayout from 'app/layouts/ProseLayout';
 import Divider from 'components/common/Divider';
+import RichText from 'components/common/RichText';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import type { Metadata, NextPage } from 'next';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
@@ -39,7 +40,9 @@ const PudgyPage: NextPage<Props> = async ({ params }) => {
       </h1>
       <Divider className="my-4" />
 
-      <p>{t.rich('pudgy.landing.paragraph_1')}</p>
+      <p>
+        <RichText>{(tags) => t.rich('pudgy.landing.paragraph_1', tags)}</RichText>
+      </p>
       <video
         src="assets/videos/pudgy-sbt.mp4"
         className="aspect-square w-full max-w-100 my-0 mx-auto fade-video"
@@ -47,7 +50,9 @@ const PudgyPage: NextPage<Props> = async ({ params }) => {
         muted
         loop
       />
-      <p>{t.rich('pudgy.landing.paragraph_2')}</p>
+      <p>
+        <RichText>{(tags) => t.rich('pudgy.landing.paragraph_2', tags)}</RichText>
+      </p>
 
       <div className="flex flex-col gap-4 not-prose">
         <NextIntlClientProvider messages={{ common: messages.common, pudgy: messages.pudgy }}>

@@ -236,11 +236,13 @@ export class Chain {
       [ChainId.Mantle]: { batchSize: 256 },
     };
 
+    const multicallConfig = this.getDeployedContracts()?.multicall3 ? true : { deployless: true };
+
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),
       transport: http(overrideUrl ?? this.getRpcUrl()),
-      batch: { multicall: multicallOverrides[this.chainId] ?? true },
+      batch: { multicall: multicallOverrides[this.chainId] ?? multicallConfig },
     });
   }
 

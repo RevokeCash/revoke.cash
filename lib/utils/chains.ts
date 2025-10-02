@@ -1006,8 +1006,7 @@ export const CHAINS = {
     },
     deployedContracts: {
       ...MULTICALL,
-      ensRegistry: { address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e' },
-      ensUniversalResolver: { address: '0xc0497E381f536Be9ce14B0dD3817cBcAe57d2F62' },
+      ensUniversalResolver: { address: '0xeeeeeeee14d718c2b47d9923deab1335e144eeee' },
     },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,

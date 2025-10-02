@@ -1,5 +1,6 @@
 import Button from 'components/common/Button';
 import Checkbox from 'components/common/Checkbox';
+import RichText from 'components/common/RichText';
 import ky from 'lib/ky';
 import { apiLogin } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
@@ -57,7 +58,7 @@ const PudgyCheckerStatus = ({ address, status }: Props) => {
             <div className="flex flex-col gap-2 ml-2 w-full items-start">
               <h3>{t(`pudgy.result.${adjustedStatus}.title`)}</h3>
               <div className="text-sm mb-4 leading-normal text-zinc-700 dark:text-zinc-300">
-                {t.rich(`pudgy.result.${adjustedStatus}.description`)}
+                <RichText>{(tags) => t.rich(`pudgy.result.${adjustedStatus}.description`, tags)}</RichText>
               </div>
               <PudgyStatusButton
                 status={adjustedStatus}

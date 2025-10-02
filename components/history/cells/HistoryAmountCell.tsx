@@ -17,7 +17,7 @@ const HistoryAmountCell = ({ event }: Props) => {
 
   return (
     <div className="flex flex-col justify-start items-start truncate">
-      <div className="w-full truncate">{t(i18nKey, { amount, tokenId, symbol })}</div>
+      <div className="w-full truncate">{t(i18nKey, { amount, tokenId, symbol } as any)}</div>
     </div>
   );
 };

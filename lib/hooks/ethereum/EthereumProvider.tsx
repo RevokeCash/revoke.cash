@@ -37,7 +37,6 @@ export const wagmiConfig = createConfig({
     return createViemPublicClientForChain(chain.id) as any;
   },
   ssr: true,
-  batch: { multicall: true } as any,
 });
 
 export const EthereumProvider = ({ children }: Props) => {

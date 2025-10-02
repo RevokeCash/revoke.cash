@@ -1,4 +1,5 @@
 import Href from 'components/common/Href';
+import RichText from 'components/common/RichText';
 import type { ContentMeta } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import { formatArticleDate } from 'lib/utils/time';
@@ -66,15 +67,24 @@ const MetaPropertyChild = ({ property, meta }: MetaPropertyProps) => {
 
     return (
       <div>
-        {t.rich(`common.article_meta.${property}`, {
-          [property]: meta[property]?.name,
-          'person-link': personLink,
-        })}
+        <RichText>
+          {(tags) =>
+            t.rich(`common.article_meta.${property}`, {
+              ...tags,
+              [property]: meta[property]?.name,
+              'person-link': personLink,
+            })
+          }
+        </RichText>
       </div>
     );
   }
 
-  return <div>{t.rich(`common.article_meta.${property}`, { ...(meta as any) })}</div>;
+  return (
+    <div>
+      <RichText>{(tags) => t.rich(`common.article_meta.${property}`, { ...tags, ...(meta as any) })}</RichText>
+    </div>
+  );
 };
 
 export default ArticleMeta;

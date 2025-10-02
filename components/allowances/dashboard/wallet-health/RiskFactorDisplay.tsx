@@ -1,4 +1,5 @@
 import Href from 'components/common/Href';
+import RichText from 'components/common/RichText';
 import type { RiskFactor } from 'lib/interfaces';
 import { getRiskIcon } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
@@ -36,24 +37,31 @@ const RiskFactorDisplay = ({ riskFactor }: Props) => {
 
   const riskFactorText = t(`address.risk_factors.${riskFactor.type}`, {
     type: riskFactor.type,
-    data: riskFactor.data,
+    data: riskFactor.data!,
   });
 
   if (riskFactorText === `address.risk_factors.${riskFactor.type}`) return null;
 
   const source = SOURCES[riskFactor.source];
 
-  const sourceDisplay = t.rich('address.risk_factors.source', {
-    source: source?.name ?? riskFactor.source,
-    'source-link': (children) =>
-      source?.url ? (
-        <Href href={source.url} external className="font-medium">
-          {children}
-        </Href>
-      ) : (
-        <span className="font-medium">{children}</span>
-      ),
-  });
+  const sourceDisplay = (
+    <RichText>
+      {(tags) =>
+        t.rich('address.risk_factors.source', {
+          ...tags,
+          source: source?.name ?? riskFactor.source,
+          'source-link': (children) =>
+            source?.url ? (
+              <Href href={source.url} external className="font-medium">
+                {children}
+              </Href>
+            ) : (
+              <span className="font-medium">{children}</span>
+            ),
+        })
+      }
+    </RichText>
+  );
 
   return (
     <div className={twMerge('flex items-center justify-center gap-1 flex-wrap')}>
