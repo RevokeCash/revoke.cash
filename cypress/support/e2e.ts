@@ -1,4 +1,4 @@
 // @ts-expect-error
-import registerCypressGrep from '@cypress/grep/src/support';
+import { register as registerCypressGrep } from '@cypress/grep';
 
 registerCypressGrep();
