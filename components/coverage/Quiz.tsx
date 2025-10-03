@@ -273,15 +273,9 @@ const QuizFooter = ({
             : t('common.quiz.check_answer')}
         </Button>
       ) : (
-        <>
-          <Button style="primary" size="md" onClick={handleNextQuestion} disabled={!canProceed}>
-            {!canProceed
-              ? t('common.quiz.wait_and_read')
-              : quizCompleted
-                ? callToAction
-                : t('common.quiz.next_question')}
-          </Button>
-        </>
+        <Button style="primary" size="md" onClick={handleNextQuestion} disabled={!canProceed}>
+          {!canProceed ? t('common.quiz.wait_and_read') : quizCompleted ? callToAction : t('common.quiz.next_question')}
+        </Button>
       )}
     </div>
   );

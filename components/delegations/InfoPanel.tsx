@@ -1,6 +1,7 @@
 'use client';
 
 import Card from 'components/common/Card';
+import RichText from 'components/common/RichText';
 import { useTranslations } from 'next-intl';
 
 const InfoPanel = () => {
@@ -8,7 +9,9 @@ const InfoPanel = () => {
 
   return (
     <Card title={t('address.delegations.info_panel.title')}>
-      <p>{t.rich('address.delegations.info_panel.description')}</p>
+      <p>
+        <RichText>{(tags) => t.rich('address.delegations.info_panel.description', tags)}</RichText>
+      </p>
     </Card>
   );
 };

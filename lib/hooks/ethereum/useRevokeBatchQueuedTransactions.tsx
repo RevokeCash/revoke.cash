@@ -2,10 +2,10 @@
 
 import { TransactionType } from 'lib/interfaces';
 import {
-  type OnUpdate,
-  type TokenAllowanceData,
   getAllowanceKey,
+  type OnUpdate,
   revokeAllowance,
+  type TokenAllowanceData,
   trackRevokeTransaction,
 } from 'lib/utils/allowances';
 import { trackBatchRevoke } from 'lib/utils/batch-revoke';

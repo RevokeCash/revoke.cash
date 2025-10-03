@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
 import matter from 'gray-matter';
 import type { ContentFile, ISidebarEntry, Nullable, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTranslations } from 'next-intl/server';
+import { join } from 'path';
 import { readingTime } from 'reading-time-estimator';
 import { deduplicateArray } from '.';
 import { getOpenGraphImageUrl } from './og';

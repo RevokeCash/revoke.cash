@@ -4,8 +4,6 @@ import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import { SupportType } from 'lib/chains/Chain';
 import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
 import {
-  ORDERED_CHAINS,
-  SUPPORTED_CHAINS,
   createViemPublicClientForChain,
   getChainApiUrl,
   getChainConfig,
@@ -22,6 +20,8 @@ import {
   getChainSlug,
   getCorrespondingMainnetChainId,
   isTestnetChain,
+  ORDERED_CHAINS,
+  SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
 import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
 

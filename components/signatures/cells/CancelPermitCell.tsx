@@ -6,7 +6,7 @@ import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/i
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
-import { type PermitTokenData, isErc721Contract } from 'lib/utils/tokens';
+import { isErc721Contract, type PermitTokenData } from 'lib/utils/tokens';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import CancelCell from './CancelCell';
 

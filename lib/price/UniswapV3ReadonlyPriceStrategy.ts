@@ -2,9 +2,9 @@ import { UNISWAP_V3_POOL_ABI } from 'lib/abis';
 import type { Erc20TokenContract } from 'lib/utils/tokens';
 import {
   type Address,
-  type Hex,
   encodeAbiParameters,
   getCreate2Address,
+  type Hex,
   hexToNumber,
   keccak256,
   parseAbiParameters,
@@ -112,7 +112,7 @@ export class UniswapV3ReadonlyPriceStrategy extends UniswapV3PriceStrategy {
 
   // TODO: We may need to solve the liquidity issue better in general for this strategy
   // TODO: I think we should be able to do something like dividing by the price
-  // @ts-ignore I just want to be able to override this function with the same name (should be fine)
+  // @ts-expect-error I just want to be able to override this function with the same name (should be fine)
   private hasEnoughLiquidity = (liquidity: bigint): boolean => {
     return liquidity > this.minLiquidity;
   };

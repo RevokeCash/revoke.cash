@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": [".next", ".yarn", "public/assets", ".vercel", "package.json"]
+    "includes": ["**", "!**/.next", "!**/.yarn", "!**/public/assets", "!**/.vercel", "!**/package.json"]
   },
   "formatter": {
     "enabled": true,
@@ -20,9 +20,7 @@
     "attributePosition": "auto",
     "bracketSpacing": true
   },
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -37,14 +35,16 @@
             "hooks": [{ "name": "useTransactionStore", "stableResult": true }]
           }
         },
-        "noUnusedImports": "warn" // We don't need red squiggly lines for unused imports, but we do want to remove them
+        "noUnusedImports": "warn", // We don't need red squiggly lines for unused imports, but we do want to remove them
+        "useUniqueElementIds": "off" // TODO: something to improve later
       },
       "performance": {
         "noAccumulatingSpread": "warn" // I think this only warrants a warning, as it's not a super big deal in most cases
       },
       "suspicious": {
-        "noExplicitAny": "warn", // TODO: something to improve later
-        "noShadowRestrictedNames": "warn" // TODO: something to improve later
+        "noExplicitAny": "off", // TODO: something to improve later
+        "noShadowRestrictedNames": "warn", // TODO: something to improve later
+        "noUnknownAtRules": "off" // We want to use @apply in Tailwind
       },
       "style": {
         "noInferrableTypes": "off", // I prefer to be explicit about types

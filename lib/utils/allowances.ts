@@ -2,7 +2,7 @@ import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type { useAllowances } from 'lib/hooks/ethereum/useAllowances';
 import type { Nullable, SpenderRiskData, TransactionSubmitted } from 'lib/interfaces';
-import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
+import { type Address, formatUnits, type PublicClient, type WalletClient, type WriteContractParameters } from 'viem';
 import {
   deduplicateArray,
   isNullish,
@@ -26,14 +26,14 @@ import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
 import { bigintMin, fixedPointMultiply } from './math';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 import {
+  createTokenContracts,
   type Erc20TokenContract,
   type Erc721TokenContract,
-  type TokenContract,
-  type TokenData,
-  createTokenContracts,
   getTokenData,
   hasZeroBalance,
   isErc721Contract,
+  type TokenContract,
+  type TokenData,
 } from './tokens';
 
 export interface TokenAllowanceData extends TokenData {

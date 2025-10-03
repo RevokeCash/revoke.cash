@@ -74,7 +74,7 @@ We are currently working to thoroughly audit the rest of our dependencies so we 
 
 ## Impacted Users
 
-While we were able to prevent much bigger losses by locking the website behind an authentication screen, some users were still impacted. We know that the only time window in which users could have been impacted was **between 11:00 and 13:00 UTC on the 14th of December**.
+While we were able to prevent much bigger losses by locking the website behind an authentication screen, some users were still impacted. We know that the only time window in which users could have been impacted was **between 11\:00 and 13\:00 UTC on the 14th of December**.
 
 Even within that time window, only certain users were impacted. From our investigation, users who already had their wallet connected from previous visits to Revoke.cash were not impacted. And the hacker's script malfunctioned for many users as well, meaning that they were also not impacted.
 

@@ -6,12 +6,12 @@ import { isNullish } from 'lib/utils';
 import {
   type AllowancePayload,
   AllowanceType,
-  type TokenAllowanceData,
   getAllowancesFromEvents,
   stripAllowanceData,
+  type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
-import { type TimeLog, type TokenEvent, getEventKey } from 'lib/utils/events';
+import { getEventKey, type TimeLog, type TokenEvent } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';

@@ -1,6 +1,6 @@
 'use client';
 
-import { type OnUpdate, type TokenAllowanceData, getAllowanceKey } from 'lib/utils/allowances';
+import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from 'lib/utils/allowances';
 import { walletSupportsEip5792 } from 'lib/utils/eip5792';
 import { isAccountUpgradeRejectionError } from 'lib/utils/errors';
 import PQueue from 'p-queue';

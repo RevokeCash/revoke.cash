@@ -1,9 +1,8 @@
 import { Redis } from '@upstash/redis';
 import ky from 'ky';
-import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
+import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { RequestQueue } from 'lib/api/logs/RequestQueue';
-import { COINGECKO_API_KEY } from 'lib/constants';
-import { COINGECKO_API_BASE_URL } from 'lib/constants';
+import { COINGECKO_API_BASE_URL, COINGECKO_API_KEY } from 'lib/constants';
 import { isNullish } from 'lib/utils';
 import { getChainNativeTokenCoingeckoId } from 'lib/utils/chains';
 import { MINUTE } from 'lib/utils/time';

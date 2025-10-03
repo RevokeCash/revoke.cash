@@ -18,7 +18,7 @@ const SelectCell = ({ row }: Props) => {
   if (!row.getCanSelect() && !row.original.payload?.revokeError) return null;
 
   const tooltip = isRevertedError(row.original.payload?.revokeError)
-    ? t('common.toasts.revoke_failed_revert', { message: row.original.payload?.revokeError })
+    ? t('common.toasts.revoke_failed_revert', { message: row.original.payload!.revokeError! })
     : row.original.payload?.revokeError;
 
   return (

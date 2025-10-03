@@ -2,8 +2,8 @@
 
 import { ChainId } from '@revoke.cash/chains';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { useTranslations } from 'next-intl';
 import { useParams, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import AddressNavigationTab from './AddressNavigationTab';
 
 const AddressNavigation = () => {

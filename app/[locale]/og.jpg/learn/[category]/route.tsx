@@ -23,7 +23,7 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => categorySlugs.map((category) => ({ locale, category })));
 };
 
-export async function GET(req: Request, { params }: Props) {
+export async function GET(_req: Request, { params }: Props) {
   const { locale, category } = await params;
   const t = await getTranslations({ locale });
 

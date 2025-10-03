@@ -1,6 +1,6 @@
 import RevokeButton from 'components/allowances/controls/RevokeButton';
 import type { TransactionSubmitted } from 'lib/interfaces';
-import { type TokenAllowanceData, getAllowanceI18nValues, getAllowanceKey } from 'lib/utils/allowances';
+import { getAllowanceI18nValues, getAllowanceKey, type TokenAllowanceData } from 'lib/utils/allowances';
 import { isRevertedError } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import ControlsWrapper from './ControlsWrapper';
@@ -21,7 +21,7 @@ const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   const { amount } = getAllowanceI18nValues(allowance);
 
   const tooltip = isRevertedError(allowance.payload?.revokeError)
-    ? t('common.toasts.revoke_failed_revert', { message: allowance.payload?.revokeError })
+    ? t('common.toasts.revoke_failed_revert', { message: allowance.payload!.revokeError! })
     : allowance.payload?.revokeError;
 
   return (

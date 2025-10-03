@@ -1,4 +1,4 @@
-import { type SessionOptions, getIronSession, unsealData } from 'iron-session';
+import { getIronSession, type SessionOptions, unsealData } from 'iron-session';
 import type { Nullable } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -54,7 +54,7 @@ export const checkRateLimitAllowedByIp = async (ip: string, rateLimiter: RateLim
   try {
     await rateLimiter.consume(ip);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };

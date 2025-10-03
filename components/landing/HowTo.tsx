@@ -1,4 +1,5 @@
 import { LinkIcon, MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import RichText from 'components/common/RichText';
 import { useTranslations } from 'next-intl';
 import ExplanationBubble from './ExplanationBubble';
 import FullWidthLandingSection from './FullWidthLandingSection';
@@ -10,7 +11,7 @@ const HowTo = () => {
     <FullWidthLandingSection title={t('landing.how_to.title')} inverted>
       <div className="flex flex-col md:flex-row gap-4 pt-8">
         <ExplanationBubble title={t('landing.how_to.paragraph_1.title')} icon={<LinkIcon className="w-12 h-12" />}>
-          {t.rich('landing.how_to.paragraph_1.description')}
+          <RichText>{(tags) => t.rich('landing.how_to.paragraph_1.description', tags)}</RichText>
         </ExplanationBubble>
         <ExplanationBubble
           title={t('landing.how_to.paragraph_2.title')}

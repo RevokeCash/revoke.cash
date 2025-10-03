@@ -23,7 +23,7 @@ export const generateStaticParams = () => {
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 };
 
-export async function GET(req: Request, { params }: Props) {
+export async function GET(_req: Request, { params }: Props) {
   const { locale, slug } = await params;
   const { meta } = readAndParseContentFile(slug, locale, 'blog')!;
 
@@ -32,7 +32,7 @@ export async function GET(req: Request, { params }: Props) {
   try {
     const background = loadDataUrl(`public/assets/images/blog/${slug.join('/')}/cover.jpg`, 'image/jpeg');
     return generateOgImage({ title, background });
-  } catch (error) {
+  } catch {
     const background = loadDataUrl('public/assets/images/opengraph-image.jpg', 'image/jpeg');
     return generateOgImage({ title, background });
   }

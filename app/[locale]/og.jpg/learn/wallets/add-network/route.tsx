@@ -20,7 +20,7 @@ export const generateStaticParams = () => {
   return locales.map((locale) => ({ locale }));
 };
 
-export async function GET(req: Request, { params }: Props) {
+export async function GET(_req: Request, { params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale });
 

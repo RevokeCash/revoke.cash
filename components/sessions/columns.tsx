@@ -1,4 +1,4 @@
-import { type Row, type RowData, createColumnHelper, sortingFns } from '@tanstack/react-table';
+import { createColumnHelper, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
 import type { Session } from 'lib/utils/sessions';
@@ -9,6 +9,7 @@ import PolicyTypeCell from './cells/PolicyTypeCell';
 import SignerCell from './cells/SignerCell';
 
 declare module '@tanstack/table-core' {
+  // biome-ignore lint/correctness/noUnusedVariables: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
   interface TableMeta<TData extends RowData> {
     onSessionRevoke: (session: Session) => void;
   }

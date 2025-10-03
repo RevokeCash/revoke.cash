@@ -6,10 +6,10 @@ import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
 import { timeago } from 'lib/i18n/timeago';
 import {
   AllowanceType,
-  type OnUpdate,
-  type TokenAllowanceData,
   getAllowanceI18nValues,
   isErc20Allowance,
+  type OnUpdate,
+  type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { DAY, SECOND, YEAR } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
@@ -51,7 +51,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
   return (
     <div className={classes}>
       <div className="flex flex-col justify-start items-start truncate">
-        <div className="w-full truncate">{t(i18nKey, { amount, tokenId, symbol })}</div>
+        <div className="w-full truncate">{t(i18nKey, { amount, tokenId, symbol } as any)}</div>
         {inTime ? (
           <WithHoverTooltip tooltip={t('address.tooltips.permit2_expiration', { inTime })}>
             <div className="flex items-center gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">

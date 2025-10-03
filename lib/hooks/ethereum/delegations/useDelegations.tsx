@@ -5,7 +5,7 @@ import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlat
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { delegationEquals } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
-import { ORDERED_CHAINS, createViemPublicClientForChain } from 'lib/utils/chains';
+import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
 import { getEip7702DelegatedAddress } from 'lib/utils/eip7702';
 import { useLayoutEffect, useState } from 'react';
 import type { Address, PublicClient } from 'viem';

@@ -1,4 +1,4 @@
-import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
+import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import type { NextRequest } from 'next/server';
 import { CACHE_KEY_PREFIX, PUDDY_CACHE } from '../constants';
 

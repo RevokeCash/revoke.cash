@@ -6,7 +6,7 @@ import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
 import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
 import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
-import { type AddEthereumChainParameter, type PublicClient, type Chain as ViemChain, toHex } from 'viem';
+import { type AddEthereumChainParameter, type PublicClient, toHex, type Chain as ViemChain } from 'viem';
 import { Chain, type DeployedContracts, SupportType } from '../chains/Chain';
 
 // Make sure to update these lists when updating the above lists
@@ -1006,8 +1006,7 @@ export const CHAINS = {
     },
     deployedContracts: {
       ...MULTICALL,
-      ensRegistry: { address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e' },
-      ensUniversalResolver: { address: '0xc0497E381f536Be9ce14B0dD3817cBcAe57d2F62' },
+      ensUniversalResolver: { address: '0xeeeeeeee14d718c2b47d9923deab1335e144eeee' },
     },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1242,7 +1241,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
       main: `https://eth-holesky.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      free: 'https://ethereum-holesky-rpc.publicnode.com',
+      free: 'https://holesky.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1254,7 +1253,7 @@ export const CHAINS = {
     name: 'HECO',
     logoUrl: '/assets/images/vendor/chains/heco.svg',
   }),
-  [999]: new Chain({
+  999: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: 999,
     name: 'Hyperliquid EVM',
@@ -1884,6 +1883,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/palm.png',
     explorerUrl: 'https://www.ondora.xyz/network/palm',
     rpc: {
+      main: `https://palm-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://palm-mainnet.public.blastapi.io',
     },
     deployedContracts: { ...MULTICALL },
@@ -2208,7 +2208,7 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [5031]: new Chain({
+  5031: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: 5031,
     name: 'Somnia',
@@ -2349,6 +2349,10 @@ export const CHAINS = {
     name: 'Taiko Hekla',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
     explorerUrl: 'https://hekla.taikoscan.io',
+    rpc: {
+      main: `https://lb.drpc.org/ogrpc?network=taiko-hekla&dkey=${DRPC_API_KEY}`,
+      free: 'https://taiko-hekla.drpc.org',
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.TaikoAlethia,
@@ -2614,17 +2618,17 @@ export const CHAINS = {
     // }),
   }),
   // TODO: These are placeholders so we can add descriptions
-  [12345678902]: new Chain({
+  12345678902: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678902,
     name: 'Creator Chain',
   }),
-  [12345678903]: new Chain({
+  12345678903: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678903,
     name: 'MegaETH',
   }),
-  [12345678905]: new Chain({
+  12345678905: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: 12345678905,
     name: 'Tabi',

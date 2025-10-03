@@ -4,8 +4,8 @@ import HowTo from 'components/landing/HowTo';
 import LandingPageFaq from 'components/landing/LandingPageFaq';
 import WhyRevokeCash from 'components/landing/WhyRevokeCash';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Script from 'next/script';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;

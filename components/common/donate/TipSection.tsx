@@ -7,8 +7,8 @@ import { formatDonationTokenAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import WithHoverTooltip from '../WithHoverTooltip';
 import Select from '../select/Select';
+import WithHoverTooltip from '../WithHoverTooltip';
 
 interface Props {
   chainId: number;
@@ -55,35 +55,33 @@ const TipSection = ({ chainId, nativeToken, onSelect }: Props) => {
   };
 
   return (
-    <>
-      <div>
-        <div className="inline-flex items-center gap-1 text-sm font-medium mb-2">
-          {t('address.batch_revoke.add_tip')}
-          <WithHoverTooltip tooltip={whyTipTooltip}>
-            <InformationCircleIcon className="w-4 h-4 inline-block" />
-          </WithHoverTooltip>
-        </div>
-        <RadioGroup value={selectedTip} onChange={onChange} className="flex gap-3 justify-between max-sm:hidden">
-          <TipOption dollarAmount="0" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice}>
-            {t('address.batch_revoke.no_tip')}
-          </TipOption>
-          <TipOption dollarAmount="3" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice} />
-          <TipOption dollarAmount="5" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice} />
-          <TipOption dollarAmount="10" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice} />
-        </RadioGroup>
-        <Select
-          options={options}
-          value={selectedTip ? { value: selectedTip } : null}
-          onChange={(option) => onChange(option!.value)}
-          placeholder={'Select tip amount'}
-          formatOptionLabel={formatOptionLabel}
-          className="w-full sm:hidden"
-          isMulti={false}
-          isSearchable={false}
-          menuPlacement="top"
-        />
+    <div>
+      <div className="inline-flex items-center gap-1 text-sm font-medium mb-2">
+        {t('address.batch_revoke.add_tip')}
+        <WithHoverTooltip tooltip={whyTipTooltip}>
+          <InformationCircleIcon className="w-4 h-4 inline-block" />
+        </WithHoverTooltip>
       </div>
-    </>
+      <RadioGroup value={selectedTip ?? ''} onChange={onChange} className="flex gap-3 justify-between max-sm:hidden">
+        <TipOption dollarAmount="0" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice}>
+          {t('address.batch_revoke.no_tip')}
+        </TipOption>
+        <TipOption dollarAmount="3" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice} />
+        <TipOption dollarAmount="5" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice} />
+        <TipOption dollarAmount="10" nativeToken={nativeToken} nativeTokenPrice={nativeTokenPrice} />
+      </RadioGroup>
+      <Select
+        options={options}
+        value={selectedTip ? { value: selectedTip } : null}
+        onChange={(option) => onChange(option!.value)}
+        placeholder={'Select tip amount'}
+        formatOptionLabel={formatOptionLabel}
+        className="w-full sm:hidden"
+        isMulti={false}
+        isSearchable={false}
+        menuPlacement="top"
+      />
+    </div>
   );
 };
 

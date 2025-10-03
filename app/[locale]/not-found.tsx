@@ -12,7 +12,7 @@ interface Props {
   };
 }
 
-const NotFoundPage: NextPage<Props> = ({ params }) => {
+const NotFoundPage: NextPage<Props> = () => {
   // Somehow this does not work for the not-found page. This is alright though.
   // setRequestLocale(params.locale);
 

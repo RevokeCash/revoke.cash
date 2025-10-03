@@ -1,5 +1,5 @@
 import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/cold-storage-sbt/utils';
-import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
+import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { getTokenEvents } from 'lib/chains/events';
 import ky from 'lib/ky';
 import { getAllowancesFromEvents } from 'lib/utils/allowances';

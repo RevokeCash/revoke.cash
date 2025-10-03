@@ -5,7 +5,7 @@
 import { ChainId } from '@revoke.cash/chains';
 import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
-import { ORDERED_CHAINS, getChainConfig, getChainName } from 'lib/utils/chains';
+import { getChainConfig, getChainName, ORDERED_CHAINS } from 'lib/utils/chains';
 
 describe(`Chain Support (${TEST_URL})`, () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {

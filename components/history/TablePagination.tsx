@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
+import RichText from 'components/common/RichText';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -25,11 +26,16 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
     <div className={twMerge('flex items-center justify-between px-4 py-3', className)}>
       <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
         <span>
-          {t.rich('common.pagination.showing', {
-            start: pageIndex * pageSize + 1,
-            end: Math.min((pageIndex + 1) * pageSize, totalRows),
-            total: totalRows,
-          })}
+          <RichText>
+            {(tags) =>
+              t.rich('common.pagination.showing', {
+                ...tags,
+                start: pageIndex * pageSize + 1,
+                end: Math.min((pageIndex + 1) * pageSize, totalRows),
+                total: totalRows,
+              })
+            }
+          </RichText>
         </span>
       </div>
 
@@ -73,7 +79,9 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
           </Button>
 
           <span className="flex items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400 font-monosans">
-            {t.rich('common.pagination.page', { page: pageIndex + 1, total: pageCount })}
+            <RichText>
+              {(tags) => t.rich('common.pagination.page', { ...tags, page: pageIndex + 1, total: pageCount })}
+            </RichText>
           </span>
 
           <Button

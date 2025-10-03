@@ -10,6 +10,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { createElement } from 'react';
 import Href from './Href';
+import RichText from './RichText';
 
 interface Props {
   chainId: number;
@@ -45,14 +46,19 @@ const ChainDescription = ({ chainId, headingElement }: Props) => {
           {infoUrl && (
             <>
               {' '}
-              {t.rich('networks.learn_more', {
-                chainName,
-                'info-link': (children) => (
-                  <Href href={infoUrl} underline="hover" html external>
-                    {children}
-                  </Href>
-                ),
-              })}
+              <RichText>
+                {(tags) =>
+                  t.rich('networks.learn_more', {
+                    ...tags,
+                    chainName,
+                    'info-link': (children) => (
+                      <Href href={infoUrl} underline="hover" html external>
+                        {children}
+                      </Href>
+                    ),
+                  })
+                }
+              </RichText>
             </>
           )}
         </span>

@@ -57,14 +57,15 @@ const MarkdownProse = ({ content, className }: Props) => {
       if (!width || !height) {
         return (
           <p>
-            <img src={src!} alt={alt ?? src!} />
+            {/* biome-ignore lint/performance/noImgElement: we only use this img element when we specifically cannot use the Image component */}
+            <img src={src as string} alt={alt ?? (src as string)} />
           </p>
         );
       }
 
       return (
         <p>
-          <Image src={src!} alt={alt ?? src!} width={width as any} height={height as any} />
+          <Image src={src as string} alt={alt ?? (src as string)} width={width as any} height={height as any} />
         </p>
       );
     },
@@ -78,7 +79,6 @@ const MarkdownProse = ({ content, className }: Props) => {
       }
 
       return (
-        // @ts-ignore (Not sure why this is throwing an error)
         <SyntaxHighlighter
           customStyle={{ marginTop: '1.25em', marginBottom: '1.25em' }}
           style={dracula}

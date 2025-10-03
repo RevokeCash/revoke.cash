@@ -16,7 +16,7 @@ const CoverageDetailsCard = ({ membershipInfo }: CoverageDetailsProps) => {
   const t = useTranslations();
   const locale = useLocale();
 
-  const daysUntilExpiry = Math.ceil((new Date(membershipInfo.validUntil).getTime() - new Date().getTime()) / DAY);
+  const daysUntilExpiry = Math.ceil((new Date(membershipInfo.validUntil).getTime() - Date.now()) / DAY);
   const inTime = timeago.format(new Date(membershipInfo.validUntil), locale);
 
   const expiryClass = twMerge(

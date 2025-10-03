@@ -1,12 +1,12 @@
-import { type Row, type RowData, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
+import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import { isNullish } from 'lib/utils';
 import {
   AllowanceType,
-  type OnUpdate,
-  type TokenAllowanceData,
   calculateValueAtRisk,
   formatErc20Allowance,
   isErc20Allowance,
+  type OnUpdate,
+  type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
@@ -23,6 +23,7 @@ import SpenderCell from './cells/SpenderCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
 
 declare module '@tanstack/table-core' {
+  // biome-ignore lint/correctness/noUnusedVariables: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
   interface TableMeta<TData extends RowData> {
     onUpdate: OnUpdate;
   }
@@ -118,6 +119,7 @@ export const customFilterFns = {
     const results = filterValues.map((filterValue) => {
       if (filterValue === 'Zero') return row.getValue(columnId) === '0';
       if (filterValue === 'Non-Zero') return row.getValue(columnId) !== '0';
+      return true;
     });
 
     return results.some((result) => result);

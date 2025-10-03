@@ -11,6 +11,7 @@ import { memo, useMemo, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useChainId } from 'wagmi';
 import Input from '../Input';
+import RichText from '../RichText';
 
 interface Props {
   open: boolean;
@@ -76,7 +77,9 @@ const DonateModal = ({ open, setOpen, type }: Props) => {
               {loading ? t('common.buttons.sending') : t('common.buttons.send')}
             </Button>
           </div>
-          <div>{t.rich('common.donate.donate_any_token')}</div>
+          <div>
+            <RichText>{(tags) => t.rich('common.donate.donate_any_token', tags)}</RichText>
+          </div>
         </div>
       </div>
     </Modal>

@@ -7,8 +7,7 @@ import type {
   WriteContractParameters,
 } from 'viem';
 import type { Call } from 'viem/_types/types/calls';
-import type { OnUpdate } from './allowances';
-import type { TokenAllowanceData } from './allowances';
+import type { OnUpdate, TokenAllowanceData } from './allowances';
 
 export type Eip5792Call = Call;
 
@@ -21,7 +20,7 @@ export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
 
     console.log(`Wallet does not support EIP5792 on chain ${walletClient.chain!.id}`);
     return false;
-  } catch (e) {
+  } catch {
     console.log('Wallet does not support EIP5792');
     return false;
   }

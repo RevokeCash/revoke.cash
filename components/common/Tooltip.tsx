@@ -1,10 +1,11 @@
 import {
-  FloatingArrow,
-  FloatingPortal,
   arrow,
   autoUpdate,
+  FloatingArrow,
+  FloatingPortal,
   flip,
   offset,
+  type Placement,
   safePolygon,
   shift,
   useDismiss,
@@ -16,7 +17,6 @@ import {
   useRole,
   useTransitionStyles,
 } from '@floating-ui/react';
-import type { Placement } from '@floating-ui/react';
 import React, {
   type ComponentProps,
   type ForwardedRef,

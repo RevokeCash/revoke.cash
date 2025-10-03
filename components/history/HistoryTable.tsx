@@ -10,9 +10,9 @@ import Table from 'components/common/table/Table';
 import { useApprovalHistory } from 'lib/hooks/ethereum/useApprovalHistory';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef } from 'react';
+import { ColumnId, columns, customFilterFns } from './columns';
 import HistorySearchBox, { type HistorySearchBoxRef } from './HistorySearchBox';
 import TablePagination from './TablePagination';
-import { ColumnId, columns, customFilterFns } from './columns';
 import type { ApprovalHistoryEvent } from './utils';
 
 const HistoryTable = () => {

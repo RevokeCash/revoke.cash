@@ -1,4 +1,4 @@
-import { type Row, type RowData, createColumnHelper, filterFns } from '@tanstack/react-table';
+import { createColumnHelper, filterFns, type Row, type RowData } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
 import { isNullish } from 'lib/utils';
@@ -10,6 +10,7 @@ import HistorySpenderCell from './cells/HistorySpenderCell';
 import type { ApprovalHistoryEvent } from './utils';
 
 declare module '@tanstack/table-core' {
+  // biome-ignore lint/correctness/noUnusedVariables: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
   interface TableMeta<TData extends RowData> {
     onFilter: (filterValue: string) => void;
   }
@@ -25,9 +26,13 @@ export enum ColumnId {
 }
 
 const accessors = {
+  token: (event: ApprovalHistoryEvent) => {
+    if (isNullish(event.metadata?.symbol)) return event.token;
+    return `${event.metadata?.symbol} ${event.token}`;
+  },
   spender: (event: ApprovalHistoryEvent) => {
     if (isNullish(event.payload.spenderData?.name)) return event.payload.spender;
-    return `${event.payload.spenderData?.name} (${event.payload.spender})`;
+    return `${event.payload.spenderData?.name} ${event.payload.spender}`;
   },
   timestamp: (event: ApprovalHistoryEvent) => {
     return event.time.timestamp;
@@ -36,25 +41,16 @@ const accessors = {
 
 // Custom filter functions for history table
 export const customFilterFns = {
-  spender: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
+  includesOneOfStrings: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       return filterFns.includesString(row, columnId, filterValue, () => {});
     });
 
     return results.some((result) => result);
   },
-  token: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
-    const tokenAddress = row.original.token;
-    const tokenSymbol = row.original.metadata?.symbol;
-
-    return filterValues.some((value) => {
-      const searchTerm = value.toLowerCase();
-      return tokenAddress?.toLowerCase().includes(searchTerm) || tokenSymbol?.toLowerCase().includes(searchTerm);
-    });
-  },
-  combined: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
-    const spenderMatches = customFilterFns.spender(row, ColumnId.SPENDER, filterValues);
-    const tokenMatches = customFilterFns.token(row, ColumnId.ASSET, filterValues);
+  tokenOrSpender: (row: Row<ApprovalHistoryEvent>, _columnId: string, filterValues: string[]) => {
+    const spenderMatches = customFilterFns.includesOneOfStrings(row, ColumnId.SPENDER, filterValues);
+    const tokenMatches = customFilterFns.includesOneOfStrings(row, ColumnId.ASSET, filterValues);
     return spenderMatches || tokenMatches;
   },
 };
@@ -65,17 +61,17 @@ export const columns = [
   columnHelper.display({
     id: ColumnId.COMBINED_SEARCH,
     enableColumnFilter: true,
-    filterFn: customFilterFns.combined,
+    filterFn: customFilterFns.tokenOrSpender,
   }),
 
-  columnHelper.accessor('token', {
+  columnHelper.accessor(accessors.token, {
     id: ColumnId.ASSET,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
     cell: (info) => <HistoryAssetCell event={info.row.original} onFilter={info.table.options.meta!.onFilter} />,
     size: 160,
     enableSorting: false,
     enableColumnFilter: true,
-    filterFn: customFilterFns.token,
+    filterFn: customFilterFns.includesOneOfStrings,
   }),
 
   columnHelper.accessor(accessors.spender, {
@@ -96,7 +92,7 @@ export const columns = [
     size: 160,
     enableSorting: false,
     enableColumnFilter: true,
-    filterFn: customFilterFns.spender,
+    filterFn: customFilterFns.includesOneOfStrings,
   }),
 
   columnHelper.accessor('type', {

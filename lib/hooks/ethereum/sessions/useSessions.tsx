@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSessionEvents } from 'lib/chains/events';
 import { isNullish } from 'lib/utils';
-import { type Session, getSessionsFromEvents } from 'lib/utils/sessions';
+import { getSessionsFromEvents, type Session } from 'lib/utils/sessions';
 import { useLayoutEffect, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';

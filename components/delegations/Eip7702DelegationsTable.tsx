@@ -21,7 +21,7 @@ const Eip7702DelegationsTable = ({ delegations, isLoading, error }: Props) => {
     data: delegations || [],
     columns: eip7702Columns,
     getCoreRowModel: getCoreRowModel(),
-    // @ts-ignore - meta may have other properties from elsewhere in the code
+    // @ts-expect-error - meta may have other properties from elsewhere in the code
     meta: {},
   });
 

@@ -7,8 +7,8 @@ import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext'
 import { isNullish } from 'lib/utils';
 import type { Erc721SingleAllowance, TokenAllowanceData } from 'lib/utils/allowances';
 import { useEffect, useMemo, useState } from 'react';
-import NoAllowancesFound from './NoAllowancesFound';
 import AllowanceTableControls from './controls/AllowanceTableControls';
+import NoAllowancesFound from './NoAllowancesFound';
 
 const getRowId = (row: TokenAllowanceData) => {
   return `${row.chainId}-${row.contract.address}-${row.payload?.spender}-${(row.payload as Erc721SingleAllowance)?.tokenId}`;
@@ -52,7 +52,6 @@ const AllowanceDashboard = () => {
     getSortedRowModel: getSortedRowModel<TokenAllowanceData>(),
     getFilteredRowModel: getFilteredRowModel<TokenAllowanceData>(),
     getRowId,
-    // biome-ignore lint/suspicious/noExplicitAny: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
     meta: { onUpdate } as any,
     initialState: {
       sorting: [{ id: ColumnId.LAST_UPDATED, desc: true }],

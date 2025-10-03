@@ -104,7 +104,7 @@ const FilterSelect = ({ table }: Props) => {
       placeholder=""
       menuPlacement="bottom"
       isSearchable={false}
-      components={{ ValueContainer, MultiValue: () => null }}
+      components={{ ValueContainer, MultiValue }}
     />
   );
 };
@@ -145,6 +145,8 @@ const ValueContainer = ({ children, getValue, options }: ValueContainerProps<Opt
     </>
   );
 };
+
+const MultiValue = () => null;
 
 const getGroupsWithSelected = (groups: OptionGroup[], selected: Option[]): OptionGroupWithSelected[] => {
   const groupsWithSelected = groups.map((group) => {
