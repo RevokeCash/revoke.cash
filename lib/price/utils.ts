@@ -20,7 +20,9 @@ export const getTokenPrice = async (chainId: number, tokenContract: TokenContrac
   if (!strategy || !strategySupportsToken(strategy, tokenContract)) return null;
 
   try {
-    return await strategy.calculateTokenPrice(tokenContract);
+    const price = await strategy.calculateTokenPrice(tokenContract);
+    if (isNullish(price) || Number.isNaN(price) || price === Infinity || price === -Infinity) return null;
+    return price;
   } catch {
     return null;
   }
