@@ -14,7 +14,7 @@ const kyQueue = new PQueue({ concurrency: 100 });
 
 const ky = kyBase.extend({
   timeout: false,
-  fetch: (input, options) => kyQueue.add(() => fetch(input, options), { throwOnTimeout: true }),
+  fetch: (input, options) => kyQueue.add(() => fetch(input, options)),
   hooks: {
     beforeError: [
       async (error) => {
