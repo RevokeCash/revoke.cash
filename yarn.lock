@@ -9832,7 +9832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.2.0":
+"react-dom@npm:^19.1.0":
   version: 19.2.0
   resolution: "react-dom@npm:19.2.0"
   dependencies:
@@ -10005,7 +10005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.0":
+"react@npm:^19.1.0":
   version: 19.2.0
   resolution: "react@npm:19.2.0"
   checksum: 10/e13bcdb8e994c3cfa922743cb75ca8deb60531bf02f584d2d8dab940a8132ce8a2e6ef16f8ed7f372b4072e7a7eeff589b2812dabbedfa73e6e46201dac8a9d0
@@ -10341,9 +10341,9 @@ __metadata:
     p-queue: "npm:^9.0.0"
     postcss: "npm:^8.5.6"
     rate-limiter-flexible: "npm:^8.0.1"
-    react: "npm:^19.2.0"
+    react: "npm:^19.1.0"
     react-async-hook: "npm:^4.0.0"
-    react-dom: "npm:^19.2.0"
+    react-dom: "npm:^19.1.0"
     react-lite-youtube-embed: "npm:^2.5.6"
     react-markdown: "npm:^10.1.0"
     react-select: "npm:^5.10.2"

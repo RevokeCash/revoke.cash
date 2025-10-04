@@ -1,6 +1,8 @@
 import { stringify } from 'viem';
 
 export const isUserRejectionError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isUserRejectionError(parseErrorMessage(error)) || isUserRejectionError(stringifyError(error));
   }
@@ -18,6 +20,8 @@ export const isUserRejectionError = (error?: string | any): boolean => {
 };
 
 export const isAccountUpgradeRejectionError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return (
       isAccountUpgradeRejectionError(parseErrorMessage(error)) || isAccountUpgradeRejectionError(stringifyError(error))
@@ -30,6 +34,8 @@ export const isAccountUpgradeRejectionError = (error?: string | any): boolean =>
 };
 
 export const isBatchSizeError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isBatchSizeError(parseErrorMessage(error)) || isBatchSizeError(stringifyError(error));
   }
@@ -38,6 +44,8 @@ export const isBatchSizeError = (error?: string | any): boolean => {
 };
 
 export const isLedgerNanoSError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isLedgerNanoSError(parseErrorMessage(error)) || isLedgerNanoSError(stringifyError(error));
   }
@@ -46,6 +54,8 @@ export const isLedgerNanoSError = (error?: string | any): boolean => {
 };
 
 export const isRevertedError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isRevertedError(parseErrorMessage(error)) || isRevertedError(stringifyError(error));
   }
@@ -57,6 +67,8 @@ export const isRevertedError = (error?: string | any): boolean => {
 };
 
 export const isOutOfGasError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isOutOfGasError(parseErrorMessage(error)) || isOutOfGasError(stringifyError(error));
   }
@@ -67,6 +79,8 @@ export const isOutOfGasError = (error?: string | any): boolean => {
 };
 
 export const isLogResponseSizeError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isLogResponseSizeError(parseErrorMessage(error)) || isLogResponseSizeError(stringifyError(error));
   }
@@ -83,6 +97,8 @@ export const isLogResponseSizeError = (error?: string | any): boolean => {
 };
 
 export const isRateLimitError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isRateLimitError(parseErrorMessage(error)) || isRateLimitError(stringifyError(error));
   }
@@ -95,6 +111,8 @@ export const isRateLimitError = (error?: string | any): boolean => {
 };
 
 export const isNetworkError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   // These error types might sometimes also meet the criteria for a network error, but they are handled separately
   if (isRateLimitError(error)) return false;
   if (isLogResponseSizeError(error)) return false;
@@ -114,6 +132,8 @@ export const isNetworkError = (error?: string | any): boolean => {
 };
 
 export const isCovalentError = (error?: string | any): boolean => {
+  if (!error) return false;
+
   if (typeof error !== 'string') {
     return isCovalentError(parseErrorMessage(error)) || isCovalentError(stringifyError(error));
   }
