@@ -185,7 +185,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
 
   // Price will be loaded separately via useTokenPrice hook
-  return { ...metadataFromMapping, totalSupply, symbol, decimals, price: null };
+  return { ...metadataFromMapping, totalSupply, symbol: String(symbol), decimals, price: null };
 };
 
 export const getTokenMetadataUnknown = async (
