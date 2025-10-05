@@ -1,6 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
 import { ERC721_ABI, ERC1155_ABI } from 'lib/abis';
-import ky from 'lib/ky';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import type { Address } from 'viem';
 
@@ -41,9 +40,4 @@ export const alreadyOwnsSoulboundToken = async (address: Address) => {
   });
 
   return balance > 0n;
-};
-
-export const checkIfAlreadyClaimedInCache = async (address: string) => {
-  const response = await ky.post('/api/pudgy/check-cache', { json: { address } }).json<{ claimed: boolean }>();
-  return response.claimed;
 };

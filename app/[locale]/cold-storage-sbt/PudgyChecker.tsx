@@ -8,7 +8,7 @@ import { getAllowanceKey, type TokenAllowanceData } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import type { Address } from 'viem';
 import PudgyCheckerStatus, { type PudgyCheckerStatusString } from './PudgyCheckerStatus';
-import { alreadyOwnsSoulboundToken, canMint, checkIfAlreadyClaimedInCache } from './utils';
+import { alreadyOwnsSoulboundToken, canMint } from './utils';
 
 const PudgyChecker = () => {
   const { address } = useAddressPageContext();
@@ -54,6 +54,4 @@ const getPudgyCheckerStatus = async (
   return 'eligible';
 };
 
-const checkAlreadyClaimed = async (address: Address): Promise<boolean> => {
-  return (await alreadyOwnsSoulboundToken(address)) || (await checkIfAlreadyClaimedInCache(address));
-};
+const checkAlreadyClaimed = async (address: Address): Promise<boolean> => alreadyOwnsSoulboundToken(address);

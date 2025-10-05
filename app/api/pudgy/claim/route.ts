@@ -7,7 +7,7 @@ import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
 import type { NextRequest } from 'next/server';
 import type { Hash } from 'viem';
-import { CACHE_KEY_PREFIX, CACHE_TTL, PUDDY_CACHE, PUDGY_API_KEY, PUDGY_API_URL } from '../constants';
+import { PUDGY_API_KEY, PUDGY_API_URL } from '../constants';
 
 export const runtime = 'edge';
 interface PudgyApiResponse {
@@ -31,11 +31,6 @@ export async function POST(req: NextRequest) {
   // We only check Ethereum for now
   const chainId = 1;
   const { address } = await req.json();
-
-  const cachedStatus = await PUDDY_CACHE?.get(`${CACHE_KEY_PREFIX}:${address}`);
-  if (cachedStatus) {
-    return new Response(JSON.stringify(cachedStatus), { status: 200 });
-  }
 
   // Get the events and allowances for the user
   const publicClient = createViemPublicClientForChain(chainId);
@@ -85,13 +80,6 @@ export async function POST(req: NextRequest) {
       },
     );
   }
-
-  // We set the user status to already_claimed so that they can't claim again
-  await PUDDY_CACHE?.set(
-    `${CACHE_KEY_PREFIX}:${address}`,
-    { status: 'already_claimed', taskId: response.taskId },
-    { ex: CACHE_TTL },
-  );
 
   return new Response(JSON.stringify({ status: 'confirmed', taskId: response.taskId }), { status: 200 });
 }
