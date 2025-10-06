@@ -13,18 +13,19 @@ import type PQueue from 'p-queue';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
-import { useDonate } from './useDonate';
+import { useFeePayment } from './useFeePayment';
 
 export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, selectedChainId } = useAddressPageContext();
-  const { donate } = useDonate(selectedChainId, 'batch-revoke-tip');
+  const { sendFeePayment } = useFeePayment(selectedChainId);
   const { data: walletClient } = useWalletClient();
 
-  const revoke = async (REVOKE_QUEUE: PQueue, tipDollarAmount: string) => {
+  const revoke = async (REVOKE_QUEUE: PQueue, feeDollarAmount: string) => {
     await Promise.race([
-      Promise.all(
-        allowances.map(async (allowance) => {
+      Promise.all([
+        sendFeePayment(feeDollarAmount),
+        ...allowances.map(async (allowance) => {
           // Skip if already confirmed or pending
           if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;
 
@@ -38,12 +39,11 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
 
           await REVOKE_QUEUE.add(revoke);
         }),
-      ),
+      ]),
       REVOKE_QUEUE.onIdle(),
     ]);
 
-    trackBatchRevoke(selectedChainId, address, allowances, tipDollarAmount, 'queued');
-    await donate(tipDollarAmount);
+    trackBatchRevoke(selectedChainId, address, allowances, feeDollarAmount, 'queued');
   };
 
   return revoke;

@@ -7,8 +7,8 @@ import { formatDonationTokenAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import Select from '../select/Select';
-import WithHoverTooltip from '../WithHoverTooltip';
+import Select from '../../../common/select/Select';
+import WithHoverTooltip from '../../../common/WithHoverTooltip';
 
 interface Props {
   chainId: number;

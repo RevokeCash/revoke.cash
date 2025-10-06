@@ -18,7 +18,7 @@ export enum TransactionType {
   DELEGATION_REVOKE = 'delegation_revoke',
   UPDATE = 'update',
   SESSION_REVOKE = 'session_revoke',
-  DONATE = 'donate',
+  FEE = 'fee',
   OTHER = 'other',
 }
 

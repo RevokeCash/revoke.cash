@@ -32,7 +32,7 @@ const PRICE_QUEUE = new RequestQueue('token-price-native', {
   interval: 1 * MINUTE,
 });
 
-const CACHE_TTL = 1 * 60 * 60; // 1 hour
+const CACHE_TTL = 1 * 60 * 20; // 20 minutes
 
 export async function GET(req: NextRequest, { params }: Props) {
   const { chainId: chainIdString } = await params;

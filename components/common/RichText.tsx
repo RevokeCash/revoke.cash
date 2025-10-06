@@ -12,6 +12,7 @@ type Tag = keyof typeof tags;
 const tags = {
   i: (children: ReactNode) => <span className="italic">{children}</span>,
   b: (children: ReactNode) => <span className="font-bold">{children}</span>,
+  m: (children: ReactNode) => <span className="font-medium">{children}</span>,
   br: () => <br />,
   ul: (children: ReactNode) => <ul className="list-disc list-inside">{children}</ul>,
   li: (children: ReactNode) => <li className="list-item">{children}</li>,

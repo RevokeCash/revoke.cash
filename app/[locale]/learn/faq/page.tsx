@@ -1,4 +1,5 @@
 import LearnLayout from 'app/layouts/LearnLayout';
+import { BASE_FEE, PER_ALLOWANCE_FEE } from 'components/allowances/controls/batch-revoke/fee';
 import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
@@ -65,11 +66,19 @@ const FaqPage: NextPage<Props> = async ({ params }) => {
         <FaqItem question={t('faq.questions.enough_to_disconnect.question')} slug="enough_to_disconnect">
           <RichText>{(tags) => t.rich('faq.questions.enough_to_disconnect.answer', tags)}</RichText>
         </FaqItem>
+        <FaqItem question={t('faq.questions.costs.question')} slug="costs">
+          <RichText>
+            {(tags) =>
+              t.rich('faq.questions.costs.answer', {
+                ...tags,
+                BASE_FEE: BASE_FEE.toFixed(2),
+                PER_ALLOWANCE_FEE: PER_ALLOWANCE_FEE.toFixed(2),
+              })
+            }
+          </RichText>
+        </FaqItem>
         <FaqItem question={t('faq.questions.hardware_wallets.question')} slug="hardware_wallets">
           <RichText>{(tags) => t.rich('faq.questions.hardware_wallets.answer', tags)}</RichText>
-        </FaqItem>
-        <FaqItem question={t('faq.questions.costs.question')} slug="costs">
-          <RichText>{(tags) => t.rich('faq.questions.costs.answer', tags)}</RichText>
         </FaqItem>
         <FaqItem question={t('faq.questions.wallet_mentions_approve.question')} slug="wallet_mentions_approve">
           <RichText>{(tags) => t.rich('faq.questions.wallet_mentions_approve.answer', tags)}</RichText>

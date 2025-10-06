@@ -1,6 +1,5 @@
 'use client';
 
-import type { DonateButtonType } from 'components/common/donate/DonateModal';
 import { DONATION_ADDRESS } from 'lib/constants';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
@@ -11,24 +10,24 @@ import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 
-export const useDonate = (chainId: number, type: DonateButtonType) => {
+export const useFeePayment = (chainId: number) => {
   const nativeToken = getChainNativeToken(chainId)!;
   const { data: walletClient } = useWalletClient({ chainId });
   const publicClient = usePublicClient({ chainId })!;
   const handleTransaction = useHandleTransaction(chainId);
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
-  const sendDonation = async (dollarAmount: string): Promise<TransactionSubmitted> => {
+  const sendFeePaymentInternal = async (dollarAmount: string): Promise<TransactionSubmitted> => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
 
-    const hash = await walletClient.sendTransaction(await prepareDonate(dollarAmount));
+    const hash = await walletClient.sendTransaction(await prepareFeePayment(dollarAmount));
 
     return { hash, confirmation: waitForTransactionConfirmation(hash, publicClient) };
   };
 
-  const prepareDonate = async (dollarAmount: string): Promise<SendTransactionParameters> => {
+  const prepareFeePayment = async (dollarAmount: string): Promise<SendTransactionParameters> => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
@@ -52,22 +51,22 @@ export const useDonate = (chainId: number, type: DonateButtonType) => {
     };
   };
 
-  const donate = async (dollarAmount: string): Promise<TransactionSubmitted | undefined> => {
-    const transactionSubmitted = await handleTransaction(sendDonation(dollarAmount), TransactionType.DONATE);
-    if (transactionSubmitted) trackDonate(chainId, dollarAmount, type);
+  const sendFeePayment = async (dollarAmount: string): Promise<TransactionSubmitted | undefined> => {
+    if (!dollarAmount || Number(dollarAmount) === 0) return;
+
+    const transactionSubmitted = await handleTransaction(sendFeePaymentInternal(dollarAmount), TransactionType.FEE);
+    if (transactionSubmitted) trackFeePaid(chainId, dollarAmount);
     return transactionSubmitted;
   };
 
-  return { prepareDonate, donate, nativeToken };
+  return { prepareFeePayment, sendFeePayment, nativeToken };
 };
 
-export const trackDonate = (chainId: DocumentedChainId, dollarAmount: string, type: DonateButtonType) => {
-  if (!Number(dollarAmount)) return;
+export const trackFeePaid = (chainId: DocumentedChainId, dollarAmountStr: string) => {
+  const dollarAmount = Number(dollarAmountStr);
+
+  if (!dollarAmount) return;
   if (isTestnetChain(chainId)) return;
 
-  analytics.track('Donated', {
-    chainId,
-    dollarAmount: Number(dollarAmount),
-    type,
-  });
+  analytics.track('Fee Paid', { chainId, dollarAmount });
 };
