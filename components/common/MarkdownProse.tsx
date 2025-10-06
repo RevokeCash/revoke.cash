@@ -1,3 +1,5 @@
+import ArticleMeta from 'components/learn/ArticleMeta';
+import type { ContentMeta } from 'lib/interfaces';
 import Image from 'next/image';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -15,15 +17,17 @@ SyntaxHighlighter.registerLanguage('javascript', javascript);
 
 interface Props {
   content: string;
+  meta?: ContentMeta;
   className?: string;
 }
 
-const MarkdownProse = ({ content, className }: Props) => {
+const MarkdownProse = ({ content, meta, className }: Props) => {
   const components: Components & Record<string, any> = {
     h1: ({ children }) => {
       return (
         <>
           <h1>{children}</h1>
+          {meta ? <ArticleMeta meta={meta} /> : null}
           <Divider className="my-4" />
         </>
       );

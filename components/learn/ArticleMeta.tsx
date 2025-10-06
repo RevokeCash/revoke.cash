@@ -21,7 +21,7 @@ const ArticleMeta = ({ meta }: Props) => {
   if (!properties.includes('translator') && !properties.includes('author')) return null;
 
   return (
-    <div className="flex justify-center gap-2 flex-wrap max-sm:text-sm text-center my-4 text-zinc-500 dark:text-zinc-400">
+    <div className="flex justify-start gap-2 flex-wrap max-sm:text-sm text-center my-4 text-zinc-500 dark:text-zinc-400">
       {properties.map((property, i) => (
         <MetaProperty key={property} property={property} meta={meta} separator={i < properties.length - 1} />
       ))}

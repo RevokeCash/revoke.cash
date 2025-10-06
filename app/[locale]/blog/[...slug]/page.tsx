@@ -39,9 +39,9 @@ const BlogPostPage: NextPage<Props> = async ({ params }) => {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const { content } = readAndParseContentFile(slug, locale, 'blog')!;
+  const { content, meta } = readAndParseContentFile(slug, locale, 'blog')!;
 
-  return <MarkdownProse content={content} />;
+  return <MarkdownProse content={content} meta={meta} />;
 };
 
 export default BlogPostPage;

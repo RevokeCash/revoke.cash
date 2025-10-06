@@ -10,6 +10,8 @@ translator: <Your Name Here (or remove)>
 
 We are building Revoke.cash on the shoulders of giants. Without the services and tools that we depend on, we would not be able to build the service that we have today. In this series of blog posts, we will be highlighting some of the services and tools that we depend on, and how they help us build Revoke.cash.
 
+::img{src="/assets/images/blog/2025/dependency-spotlight-envio/cover.jpg" alt="Envio" width="1200" height="630"}
+
 To build a service like Revoke.cash, we need to process a lot of data because we look at users' entire transaction histories to determine the current state of their token approvals. This is a lot of data to process, and it's a lot of data to store. We use several services to help us with this, and Envio is one of the most important ones.
 
 ## What is Envio?

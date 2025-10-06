@@ -13,7 +13,7 @@ interface Params {
   locale: string;
 }
 
-export const dynamic = 'error';
+export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export const generateStaticParams = () => {
