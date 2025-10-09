@@ -47,11 +47,6 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
                 <TranslateButton language={meta.language} translationUrl={translationUrl} />
               </NextIntlClientProvider>
             </div>
-            <Prose className="mb-4">
-              {meta.coverImage ? (
-                <Image src={meta.coverImage} alt={meta.title} width={1200} height={630} priority fetchPriority="high" />
-              ) : null}
-            </Prose>
             {children}
             <Divider className="my-6" />
             <PageNavigation currentPath={`/learn/${slug.join('/')}`} pages={sidebarEntries} />

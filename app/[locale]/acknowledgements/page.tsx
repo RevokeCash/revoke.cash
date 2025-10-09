@@ -1,7 +1,7 @@
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { readAndParseContentFile } from 'lib/utils/markdown-content';
-import type { NextPage } from 'next';
+import type { Metadata, NextPage } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Params {
 
 export const dynamic = 'error';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Acknowledgements',
   description: 'Revoke.cash depends on several third-party tools and services. This page lists them.',
 };
