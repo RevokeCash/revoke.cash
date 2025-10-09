@@ -10,6 +10,7 @@ import { useAsyncCallback } from 'react-async-hook';
 import { useWalletClient } from 'wagmi';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
+import { useNativeTokenPrice } from './useNativeTokenPrice';
 import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
 import { useWalletCapabilities } from './useWalletCapabilities';
@@ -23,8 +24,10 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   const walletCapabilities = useWalletCapabilities();
   const revokeEip5792 = useRevokeBatchEip5792(allowances, onUpdate);
   const revokeQueuedTransactions = useRevokeBatchQueuedTransactions(allowances, onUpdate);
+  const { nativeTokenPrice } = useNativeTokenPrice(selectedChainId);
 
-  const feeDollarAmount = getFeeDollarAmount(selectedChainId, allowances.length).toFixed(2);
+  // If we cannot get the native token price, we set the fee to $0 (this will result in no fee payment downstream)
+  const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(selectedChainId, allowances.length).toFixed(2) : '0';
 
   const { data: walletClient } = useWalletClient();
 
@@ -90,5 +93,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
 };
 
 const hasMoreThanOneTransaction = (allowances: TokenAllowanceData[], feeDollarAmount: string) => {
-  return Number(feeDollarAmount) > 0 && allowances.length > 1;
+  if (allowances.length === 0) return false;
+  if (allowances.length === 1 && Number(feeDollarAmount) === 0) return false;
+  return true;
 };

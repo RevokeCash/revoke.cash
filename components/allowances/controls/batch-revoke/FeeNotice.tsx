@@ -1,6 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
+import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { BASE_FEE, FEE_SPONSORS, PER_ALLOWANCE_FEE } from './fee';
@@ -12,6 +13,9 @@ interface Props {
 
 const FeeNotice = ({ chainId, feeDollarAmount }: Props) => {
   const t = useTranslations();
+  const { nativeTokenPrice } = useNativeTokenPrice(chainId);
+
+  if (!nativeTokenPrice) return null;
 
   const sponsor = FEE_SPONSORS[chainId];
 

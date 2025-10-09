@@ -1,5 +1,6 @@
 'use client';
 
+import { isNonZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
 import {
   getAllowanceKey,
@@ -24,7 +25,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
   const revoke = async (REVOKE_QUEUE: PQueue, feeDollarAmount: string) => {
     await Promise.race([
       Promise.all([
-        sendFeePayment(feeDollarAmount),
+        isNonZeroFeeDollarAmount(feeDollarAmount) ? sendFeePayment(feeDollarAmount) : Promise.resolve(),
         ...allowances.map(async (allowance) => {
           // Skip if already confirmed or pending
           if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;

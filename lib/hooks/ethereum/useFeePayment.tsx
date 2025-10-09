@@ -1,5 +1,6 @@
 'use client';
 
+import { isNonZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { DONATION_ADDRESS } from 'lib/constants';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
@@ -33,11 +34,11 @@ export const useFeePayment = (chainId: number) => {
     }
 
     if (!nativeTokenPrice) {
-      throw new Error('Could not get native token price for donation');
+      throw new Error('Could not get native token price for fee payment');
     }
 
-    if (!dollarAmount || Number(dollarAmount) === 0) {
-      throw new Error('User rejected donation');
+    if (!isNonZeroFeeDollarAmount(dollarAmount)) {
+      throw new Error('User rejected fee payment');
     }
 
     const tokenAmount = Number(dollarAmount) / nativeTokenPrice;

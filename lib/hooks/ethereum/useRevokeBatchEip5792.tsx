@@ -1,5 +1,6 @@
 'use client';
 
+import { isNonZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
 import { splitArray, throwIfExcessiveGas } from 'lib/utils';
 import {
@@ -81,7 +82,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     const callsToSubmit = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
     const allowancesToSubmit = allowancesToRevoke.filter((_, index) => callsSettled[index].status === 'fulfilled');
 
-    if (feeDollarAmount && Number(feeDollarAmount) > 0 && callsToSubmit.length > 0) {
+    if (isNonZeroFeeDollarAmount(feeDollarAmount) && callsToSubmit.length > 0) {
       const feeTransaction = await prepareFeePayment(feeDollarAmount);
       callsToSubmit.unshift(mapTransactionRequestToEip5792Call(feeTransaction));
     }
