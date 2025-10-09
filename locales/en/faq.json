@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. When using the <i>batch revoke</i> feature, a small fee of <b>${BASE_FEE} + ${PER_ALLOWANCE_FEE} per approval</b> is charged to support the continued development of Revoke.cash. On certain networks, the fee is covered by a sponsor.",
+      "answer": "Revoke.cash is provided as a free service, but every revoke transaction incurs a gas fee just like other blockchain transactions. When using the <i>batch revoke</i> feature, a small fee of <b>${BASE_FEE}</b> is charged to support the continued development of Revoke.cash. On certain networks, the fee is covered by a sponsor.",
       "question": "How much does it cost to use Revoke.cash?"
     },
     "deposited_tokens": {

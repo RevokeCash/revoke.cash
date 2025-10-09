@@ -17,7 +17,7 @@
     "total": "Total",
     "fee": {
       "notice": "By batch revoking, you pay a small fee of <m>${feeDollarAmount}</m> that supports the continued development of Revoke.cash.",
-      "tooltip": "This fee consists of a <m>${BASE_FEE} + ${PER_ALLOWANCE_FEE} per approval</m>. It supports infrastructure costs and ongoing development. You can also revoke approvals individually for free.",
+      "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals individually for free.",
       "sponsored_notice": "{sponsor} is sponsoring the batch revoke fee on the {chainName} network! 🥳"
     }
   },

@@ -1,7 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
 
-export const BASE_FEE = 0.75;
-export const PER_ALLOWANCE_FEE = 0.05;
+export const BASE_FEE = 1.5;
+export const PER_ALLOWANCE_FEE = 0.0;
 
 export const FEE_SPONSORS: Record<number, string> = {
   [ChainId.OPMainnet]: 'Optimism Foundation',
