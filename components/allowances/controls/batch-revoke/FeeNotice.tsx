@@ -1,9 +1,11 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 import { BASE_FEE, FEE_SPONSORS, PER_ALLOWANCE_FEE } from './fee';
 
 interface Props {
@@ -68,11 +70,24 @@ const SponsoredFeeNotice = ({ chainId }: SponsoredFeeNoticeProps) => {
 
   if (!sponsor) return null;
 
+  const sponsorTags = {
+    sponsor: sponsor.name,
+    chainName,
+    'sponsor-link': (children: ReactNode) =>
+      sponsor.url ? (
+        <Href href={sponsor.url} external className="font-medium">
+          {children}
+        </Href>
+      ) : (
+        <span className="font-medium">{children}</span>
+      ),
+  };
+
   return (
     <div className="flex items-center justify-center gap-2 text-center text-sm text-zinc-600 dark:text-zinc-300 bg-brand/30 dark:bg-brand/20 py-4 px-6">
       <span>
         <RichText>
-          {(tags) => t.rich('address.batch_revoke.fee.sponsored_notice', { ...tags, sponsor, chainName })}
+          {(tags) => t.rich('address.batch_revoke.fee.sponsored_notice', { ...tags, ...sponsorTags })}
         </RichText>
       </span>
     </div>
