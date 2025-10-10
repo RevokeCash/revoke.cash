@@ -123,10 +123,10 @@
     "search": "Buscar Cuentas por Dirección o Dominio"
   },
   "pagination": {
-    "first": "First",
-    "last": "Last",
-    "page": "Page {page} of {total}",
-    "showing": "Showing {start} to {end} of {total} results"
+    "first": "Primero",
+    "last": "Último",
+    "page": "Página {page} de {total}",
+    "showing": "Mostrando {start} a {end} de {total} resultados"
   },
   "quiz": {
     "check_answer": "Comprobar respuesta",

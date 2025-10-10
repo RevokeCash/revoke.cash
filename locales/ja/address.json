@@ -153,11 +153,11 @@
   "headers": {
     "actions": "アクション",
     "allowance": "許可したもの",
-    "amount": "Amount",
+    "amount": "金額",
     "asset": "資産",
     "asset_type": "種類",
-    "date": "Date",
-    "event_type": "Event Type",
+    "date": "日付",
+    "event_type": "イベントの種類",
     "expiration": "有効期限",
     "last_cancelled": "最終キャンセル",
     "last_updated": "最終更新日",
@@ -171,10 +171,10 @@
     "value_at_risk": "リスクがある価値"
   },
   "history": {
-    "approved": "Approved",
-    "none_found": "No approval history found",
-    "revoked": "Revoked",
-    "title": "Approval History"
+    "approved": "承認済み",
+    "none_found": "承認履歴が見つかりません",
+    "revoked": "取り消されました",
+    "title": "承認履歴"
   },
   "labels": {
     "connected": "接続中",
@@ -226,7 +226,7 @@
     "unsafe": "安全でない可能性のある契約コード"
   },
   "search": {
-    "history": "Search by Spender or Token",
+    "history": "支出者またはトークンで検索する",
     "spender": "公認支出者アドレスによる検索"
   },
   "sessions": {
@@ -290,8 +290,8 @@
     "acknowledge_signature_notice": "通知をご確認の上、署名をご確認ください。",
     "connect_wallet": "続けるにはウォレットを接続してください",
     "connected_account": "接続されているアカウントに対してのみアクションを実行できます",
-    "filter_by_spender": "Filter by this spender",
-    "filter_by_token": "Filter by this token",
+    "filter_by_spender": "この支出者でフィルタリングする",
+    "filter_by_token": "このトークンでフィルタリングする",
     "involved_in_exploits": "このアドレスは、以下のエクスプロイトに関与しています：",
     "marketplace_listings": "これにより、{marketplace}上の全てのリスティングとオファーがキャンセルされます。",
     "marketplace_signatures": "承認されると、マーケットプレイスはユーザーに代わってアセットを移動できるようになります。悪意のある攻撃者は、これらの承認を悪用し、サードパーティーのWeb サイト上に、無償のリスティングを作成します。フィッシングサイト上でマーケットプレイスの署名をした場合、承認をキャンセルしてください。",

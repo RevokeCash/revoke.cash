@@ -2,8 +2,8 @@
   "buttons": {
     "already_claimed": "Ya reclamado",
     "check_eligibility": "Verifica la elegibilidad",
-    "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
-    "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
+    "checkbox_1": "Entiendo la importancia de proteger las criptomonedas con un dispositivo de hardware.",
+    "checkbox_2": "Entiendo que el uso de hot wallets en un ordenador portátil o un teléfono te hace vulnerable al malware.",
     "claim": "Reclama el token de Soulbound",
     "claiming": "Reclamando"
   },
@@ -11,8 +11,8 @@
     "claim_failed": "No se ha podido reclamar el SBT."
   },
   "landing": {
-    "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
-    "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
+    "paragraph_1": "Las hot wallets son ideales para operar, pero te exponen a malware, phishing y scams. Una verdadera cartera fría, protegida con un dispositivo de hardware y sin aprobaciones de tokens, es la forma más segura de proteger tus NFT y tokens a largo plazo.",
+    "paragraph_2": "Por eso, <b>Revoke.cash y Pudgy Penguins</b> lanzan el Cold Storage SBT. Al revocar las aprobaciones y demostrar que comprendes la importancia del cold storage, puedes ganar una insignia que demuestre tu compromiso con la salud de tu cartera y las prácticas de seguridad. Y no olvides leer nuestra guía <what-is-a-cold-wallet></what-is-a-cold-wallet> para obtener más información sobre el cold storage."
   },
   "quiz": {
     "finish_quiz": "Finalizar el cuestionario",
@@ -21,32 +21,32 @@
   },
   "result": {
     "already_claimed": {
-      "description": "Ya has reclamado tu Token Soulbound. Puedes verlo en tu cartera.",
-      "title": "🎉 Ya has reclamado tu token de Soulbound"
+      "description": "Ya te has ganado tu Cold Storage SBT. 🧊🐧 Gracias por tomar medidas para proteger tus activos: tu insignia está vinculada de forma segura a tu cartera para siempre.<br></br><br></br>Puedes ver tu SBT en <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
+      "title": "🎉 Ya reclamado"
     },
     "confirmed": {
-      "description": "Thanks for practicing safe wallet habits and helping set the standard for The Huddle! The SBT will be sent to your wallet shortly. Use the share button below to spread the word!<br></br><br></br>A Cold Wallet gives peace of mind.<br></br><ul><li>Malware risks are contained to your separate device.</li><li>No token approvals = no smart contract risks.</li></ul><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
-      "title": "🎉 Congrats, you're eligible!"
+      "description": "¡Gracias por practicar hábitos seguros con tu cartera y ayudar a establecer el estándar para The Huddle! El SBT se enviará a tu cartera en breve. ¡Utiliza el botón de compartir que aparece a continuación para correr la voz!<br></br><br></br>Un Cold Wallet te da tranquilidad.<br></br><ul><li>Los riesgos de Malware se limitan a tu dispositivo independiente.</li><li>Sin aprobaciones de tokens = sin riesgos de contratos inteligentes.</li></ul><br></br>Puedes ver tu SBT en <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
+      "title": "🎉 ¡Enhorabuena, cumples los requisitos!"
     },
     "eligible": {
-      "description": "¡Felicidades! No tienes ninguna aprobación de fichas activa y puedes acuñar una ficha de Soulbound de Pudgy Penguins x Revoke.cash. Completa este breve cuestionario de seguridad para obtener tu token de Soulbound.",
-      "title": "🎉 Puedes acuñar un token de Pudgy Penguins x Revoke.cash Soulbound"
+      "description": "¡Buen trabajo! Tu cartera está limpia y lista. Para terminar de ganar tu Cold Storage SBT, completa el breve cuestionario que aparece a continuación y demuestra que comprendes el poder del cold storage.",
+      "title": "🎉 Eres elegible: completa el cuestionario."
     },
     "has_allowances": {
       "button": "Revocar aprobaciones",
-      "description": "Tienes asignaciones activas en Ethereum. La colaboración entre Pudgy Penguins y Revoke.cash promueve el uso de carteras sin uso y limita la aprobación de tokens. El SBT solo está disponible para carteras que no hayan aprobado ningún token. <i> </i> Revoca tus aprobaciones e inténtalo de nuevo.",
-      "title": "❌ Tienes aprobaciones de tokens activas"
+      "description": "Tu cartera tiene autorizaciones de tokens existentes, lo que sugiere que no es un Cold Wallet. Un Cold Wallet se trata como una caja fuerte y solo debe utilizarse para enviar o recibir tokens, o para iniciar sesión en aplicaciones cuando sea necesario.<br></br><br></br>Para poder optar a este token Soulbound, revoca tus autorizaciones de tokens o traslada tus objetos de valor a un Cold Wallet.",
+      "title": "❌ Aprobaciones activas detectadas"
     },
     "no_tokens": {
-      "description": "No tienes ningún Pudgy Penguins, Lil Pudgys o Pudgy Rods. Por el momento, el SBT solo está disponible para la comunidad de Pudgy Penguins. Vuelve más tarde, cuando la casa de la moneda esté abierta al resto de la comunidad criptográfica.",
-      "title": "❌ No eres propietario de ningún Pudgy Penguins."
+      "description": "Para poder optar al SBT de almacenamiento en frío, debes tener un Pudgy Penguin o un Lil Pudgy. Introduce una cartera diferente o mantente atento, ya que tenemos previsto abrir esta iniciativa a más comunidades NFT.",
+      "title": "❌ No posees ningún NFT de Pudgy Penguins"
     },
     "quiz_success": {
-      "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",
-      "title": "🎉 Ready to Claim!"
+      "description": "¡Puntuación perfecta! 🧊 Para reclamar tu Cold Storage SBT, confirma que comprendes la importancia de utilizar una cartera de hardware y los riesgos de utilizar una hot wallet.",
+      "title": "🎉 ¡Listo para Reclamar!"
     }
   },
   "search": {
-    "placeholder": "Enter your wallet address to check eligibility"
+    "placeholder": "Introduce la dirección de tu cartera para comprobar si cumples los requisitos."
   }
 }

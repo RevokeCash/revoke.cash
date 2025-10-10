@@ -34,6 +34,17 @@ describe('Chain Support', () => {
     expect(SORTED_TEST_CHAINS).to.deep.equal(SORTED_DROPDOWN_CHAINS);
   });
 
+  it('should not have superfluous network descriptions', () => {
+    const descriptionSlugs = Object.keys(networkDescriptions.networks).toSorted();
+
+    const expectedSlugs = ORDERED_CHAINS.map((chainId) => {
+      const correspondingMainnetChainId = getCorrespondingMainnetChainId(chainId);
+      return correspondingMainnetChainId ? getChainSlug(correspondingMainnetChainId) : getChainSlug(chainId);
+    });
+
+    expect(descriptionSlugs).to.deep.equal([...new Set(expectedSlugs)].toSorted());
+  });
+
   ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
     const nativeToken = getChainNativeToken(chainId)!;

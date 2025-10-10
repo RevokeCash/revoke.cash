@@ -2,8 +2,8 @@
   "buttons": {
     "already_claimed": "已领取",
     "check_eligibility": "检查资格",
-    "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
-    "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
+    "checkbox_1": "我了解使用硬件设备保护加密货币的重要性。",
+    "checkbox_2": "我了解在笔记本电脑或手机上使用热钱包将容易面临恶意软件的威胁。",
     "claim": "领取灵魂绑定代币",
     "claiming": "领取"
   },
@@ -11,8 +11,8 @@
     "claim_failed": "未能申领灵魂绑定代币"
   },
   "landing": {
-    "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
-    "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
+    "paragraph_1": "热钱包非常适合交易，但它会让您面临恶意软件、网络钓鱼和诈骗的风险。真正的冷钱包，由硬件设备保护，且无需代币授权，是长期保护您的 NFT 和代币最安全的方式。",
+    "paragraph_2": "因此，<b>Revoke.cash 和 Pudgy Penguins</b>即将发布冷存储 SBT。通过撤销授权证明您了解冷存储的重要性，即可获得一枚徽章，以证明您对钱包卫生和安全实践的承诺。请务必阅读我们的<what-is-a-cold-wallet>指导</what-is-a-cold-wallet>了解有关冷存储的更多信息。"
   },
   "quiz": {
     "finish_quiz": "完成测验",
@@ -25,8 +25,8 @@
       "title": "🎉 你已领取灵魂绑定代币"
     },
     "confirmed": {
-      "description": "Thanks for practicing safe wallet habits and helping set the standard for The Huddle! The SBT will be sent to your wallet shortly. Use the share button below to spread the word!<br></br><br></br>A Cold Wallet gives peace of mind.<br></br><ul><li>Malware risks are contained to your separate device.</li><li>No token approvals = no smart contract risks.</li></ul><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
-      "title": "🎉 Congrats, you're eligible!"
+      "description": "感谢您践行安全钱包习惯，帮助 The Huddle 树立安全标准！SBT 即将发送到您的钱包。请使用下方的分享按钮分享！<br></br><br></br>冷钱包让人安心。<br></br><ul><li>独立设备包含恶意软件风险。</li><li>无需代币授权=无智能合约风险。</li></ul><br></br>您可以在<pudgy-sbt-link>OpenSea</pudgy-sbt-link>上查看 SBT。",
+      "title": "🎉恭喜，您符合资格！"
     },
     "eligible": {
       "description": "恭喜！你当前没有任何代币授权，可铸造一枚 Pudgy Penguins x Revoke.cash 灵魂绑定代币。完成这个简短的安全测试，即可获取你的灵魂绑定代币。",
@@ -42,11 +42,11 @@
       "title": "❌你当前没有 Pudgy Penguins"
     },
     "quiz_success": {
-      "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",
-      "title": "🎉 Ready to Claim!"
+      "description": "满分！🧊要领取您的冷存储 SBT，请确认您了解使用硬件钱包的重要性以及使用热钱包的风险。",
+      "title": "🎉准备领取！"
     }
   },
   "search": {
-    "placeholder": "Enter your wallet address to check eligibility"
+    "placeholder": "输入您的钱包地址以查看资格"
   }
 }

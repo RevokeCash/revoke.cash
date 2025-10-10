@@ -2,8 +2,8 @@
   "buttons": {
     "already_claimed": "すでに申請済み",
     "check_eligibility": "適格性を確認する",
-    "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
-    "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
+    "checkbox_1": "暗号資産をハードウェアデバイスで保護することの重要性は理解しています。",
+    "checkbox_2": "ノートパソコンやスマートフォンでホットウォレットを使うと、マルウェアの被害に遭うリスクがあることは理解しています。",
     "claim": "ソウルバウンドトークンを獲得する",
     "claiming": "獲得中"
   },
@@ -11,8 +11,8 @@
     "claim_failed": "SBTの獲得に失敗しました"
   },
   "landing": {
-    "paragraph_1": "Hot wallets are great for trading, but they leave you exposed to malware, phishing, and scams. A true cold wallet, secured with a hardware device and kept free of token approvals, is the safest way to protect your NFTs and tokens long-term.",
-    "paragraph_2": "That's why <b>Revoke.cash and Pudgy Penguins</b> are releasing the Cold Storage SBT. By revoking approvals and showing that you understand the importance of cold storage, you can earn a badge that proves your commitment to wallet hygiene and security practices. And make sure to read our <what-is-a-cold-wallet>guide</what-is-a-cold-wallet> to learn more about cold storage."
+    "paragraph_1": "ホットウォレットは取引には便利ですが、マルウェアやフィッシング、詐欺の危険に晒されます。ハードウェアデバイスで保護され、トークンの承認を一切行わない真のコールドウォレットこそが、NFTやトークンを長期的に守る最も安全な方法です。",
+    "paragraph_2": "そのため<b>Revoke.cashとPudgy Penguins</b>は、コールドストレージSBTをリリースします。承認を取り消し、コールドストレージの重要性を理解していることを示すことで、ウォレットの衛生管理とセキュリティー対策への取り組みを証明するバッジを獲得できます。コールドストレージの詳細については、<what-is-a-cold-wallet>ガイド</what-is-a-cold-wallet>を必ず読んでください。"
   },
   "quiz": {
     "finish_quiz": "クイズを終了する",
@@ -21,32 +21,32 @@
   },
   "result": {
     "already_claimed": {
-      "description": "すでにソウルバウンドトークンを取得済みです。ウォレットでご確認いただけます。",
-      "title": "🎉 すでにソウルバウンドトークンを受け取っています"
+      "description": "既にコールドストレージSBTを獲得しました。🧊🐧 資産保護の措置を講じていただきありがとうございます。バッジは永久にウォレットに安全に紐付けられています。<br></br><br></br>SBTは以下で確認できます：<pudgy-sbt-link>OpenSea</pudgy-sbt-link>",
+      "title": "🎉 すでに受け取っています"
     },
     "confirmed": {
-      "description": "Thanks for practicing safe wallet habits and helping set the standard for The Huddle! The SBT will be sent to your wallet shortly. Use the share button below to spread the word!<br></br><br></br>A Cold Wallet gives peace of mind.<br></br><ul><li>Malware risks are contained to your separate device.</li><li>No token approvals = no smart contract risks.</li></ul><br></br>You can view your SBT on <pudgy-sbt-link>OpenSea</pudgy-sbt-link>.",
-      "title": "🎉 Congrats, you're eligible!"
+      "description": "安全なウォレット習慣を実践し、The Huddleの基準設定にご協力いただきありがとうございます。SBTはまもなくウォレットに送付されます。下のシェアボタンで情報を広めてください！<br></br><br></br>コールドウォレットは安心感をもたらします。<br></br><ul><li>マルウェアリスクは専用デバイス内に封じ込められます。</li><li>トークン承認なし＝スマートコントラクトリスクなし。</li></ul><br></br>SBTは下記のリンクで確認できます：<pudgy-sbt-link>OpenSea</pudgy-sbt-link>。",
+      "title": "🎉 おめでとうございます。ご利用可能です！"
     },
     "eligible": {
-      "description": "おめでとうございます！有効なトークン承認がないため、Pudgy Penguins x Revoke.cash Soulboundトークンを発行する資格があります。Soulboundトークンを取得するには、この簡単なセキュリティークイズに答えてください。",
-      "title": "🎉 Pudgy Penguins x Revoke.cash Soulboundトークンを発行できます"
+      "description": "お疲れ様でした。ウォレットはクリーンで準備完了です！コールドストレージSBTを獲得するには、以下の簡単なクイズを完了し、コールドストレージのパワーを理解していることを示しましょう。",
+      "title": "🎉 ご利用可能です：クイズを完了してください"
     },
     "has_allowances": {
       "button": "承認を取り消す",
-      "description": "Ethereumの有効なアローワンスがあります。Pudgy PenguinsとRevoke.cashのコラボレーションは、コールドウォレットの利用を促進し、トークンの承認を制限します。SBTは、SBTはトークン承認の<i>ない</i>ウォレットのみに利用可能です。承認を取り消してもう一度試してください。",
-      "title": "❌ 有効なトークン承認があります"
+      "description": "お使いのウォレットには既存のトークン承認が残っています。これはコールドウォレットではないことを示しています。コールドウォレットは金庫のように扱われ、トークンの送受信や必要なアプリへのログイン時のみ使用すべきです。<br></br><br></br>このソウルバウンドトークンを取得するには、トークン承認を解除するか、貴重品を新しいコールドウォレットに移す必要があります。",
+      "title": "❌ 有効な承認が検出されました"
     },
     "no_tokens": {
-      "description": "Pudgy Penguins、Lil Pudgys、Pudgy Rodsをお持ちではありません。SBTは現在Pudgy Penguinsコミュニティーでのみご利用いただけます。後日、ミントが他の暗号通貨コミュニティーにも公開されたら、再度ご確認ください。",
-      "title": "❌ Pudgy Penguinsを所有していません"
+      "description": "コールドストレージSBTの対象となるには、Pudgy PenguinまたはLil Pudgyを保有している必要があります。別のウォレットを入力するか、この取り組みを他のNFTコミュニティーにも拡大する予定なので、今後の情報に注意を払ってください。",
+      "title": "❌ Pudgy Penguins NFTsを所有していません"
     },
     "quiz_success": {
-      "description": "Perfect score! 🧊 To claim your Cold Storage SBT, please confirm you understand the importance of using a hardware wallet and the risks of using a hot wallet.",
-      "title": "🎉 Ready to Claim!"
+      "description": "満点です！🧊 コールドストレージSBTを受け取るには、ハードウェアウォレット使用の重要性とホットウォレット使用のリスクを理解していることを確認してください。",
+      "title": "🎉 受け取る準備ができました。"
     }
   },
   "search": {
-    "placeholder": "Enter your wallet address to check eligibility"
+    "placeholder": "利用可能性を確認するには、ウォレットアドレスを入力してください"
   }
 }

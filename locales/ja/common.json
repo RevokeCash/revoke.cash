@@ -22,7 +22,7 @@
     "donate": "寄付する",
     "donating": "寄付をしています",
     "download": "ダウンロードする",
-    "explorer_links": "Explorer Links",
+    "explorer_links": "エクスプローラーリンク",
     "get_started": "開始する",
     "increase": "増加",
     "my_allowances": "私の許可一覧",
@@ -123,10 +123,10 @@
     "search": "アドレスまたはドメインでアカウントを検索する"
   },
   "pagination": {
-    "first": "First",
-    "last": "Last",
-    "page": "Page {page} of {total}",
-    "showing": "Showing {start} to {end} of {total} results"
+    "first": "最初",
+    "last": "最後",
+    "page": "{total}ページ中{page}ページ目",
+    "showing": "{total}件中{start}件目から{end}件目までを表示中"
   },
   "quiz": {
     "check_answer": "回答を確認する",
