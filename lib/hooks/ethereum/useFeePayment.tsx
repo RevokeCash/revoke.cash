@@ -6,6 +6,8 @@ import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
+import { HOUR } from 'lib/utils/time';
+import useLocalStorage from 'use-local-storage';
 import { parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from './useHandleTransaction';
@@ -18,12 +20,23 @@ export const useFeePayment = (chainId: number) => {
   const handleTransaction = useHandleTransaction(chainId);
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
+  const [lastFeePayments, setLastFeePayments] = useLocalStorage<Record<string, number>>('last-fee-payments', {});
+
   const sendFeePaymentInternal = async (dollarAmount: string): Promise<TransactionSubmitted> => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
 
+    const feePaymentKey = `${chainId}-${walletClient.account.address}`;
+    const lastFeePayment = lastFeePayments[feePaymentKey];
+
+    if (lastFeePayment && Date.now() - lastFeePayment < 1 * HOUR) {
+      throw new Error('User rejected fee payment: Fee payment already registered in the last hour');
+    }
+
     const hash = await walletClient.sendTransaction(await prepareFeePayment(dollarAmount));
+
+    setLastFeePayments((prev) => ({ ...prev, [feePaymentKey]: Date.now() }));
 
     return { hash, confirmation: waitForTransactionConfirmation(hash, publicClient) };
   };
@@ -34,7 +47,7 @@ export const useFeePayment = (chainId: number) => {
     }
 
     if (!nativeTokenPrice) {
-      throw new Error('Could not get native token price for fee payment');
+      throw new Error('User rejected fee payment: Could not get native token price for fee payment');
     }
 
     if (!isNonZeroFeeDollarAmount(dollarAmount)) {
