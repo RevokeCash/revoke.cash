@@ -1,6 +1,6 @@
 import { locales } from 'lib/i18n/config';
 import { getAllLearnCategories } from 'lib/utils/markdown-content';
-import { generateOgImage, loadDataUrl } from 'lib/utils/og';
+import { generateOgImage } from 'lib/utils/og';
 import { getTranslations } from 'next-intl/server';
 
 // This is a workaround to enable static OG image generation, see
@@ -28,7 +28,7 @@ export async function GET(_req: Request, { params }: Props) {
   const t = await getTranslations({ locale });
 
   const title = t(`learn.sections.${category}.title`);
-  const background = loadDataUrl(`public/assets/images/learn/${category}/cover.jpg`, 'image/jpeg');
+  const background = `https://revoke.cash/assets/images/learn/${category}/cover.jpg`;
 
-  return generateOgImage({ title, background });
+  return await generateOgImage({ title, background });
 }

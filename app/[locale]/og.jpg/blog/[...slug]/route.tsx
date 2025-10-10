@@ -1,6 +1,6 @@
 import { locales } from 'lib/i18n/config';
 import { getAllContentSlugs, readAndParseContentFile } from 'lib/utils/markdown-content';
-import { generateOgImage, loadDataUrl } from 'lib/utils/og';
+import { generateOgImage } from 'lib/utils/og';
 
 // We cannot use [...slug]/open-graph-image.tsx because ridiculously Next App Router doesn't support this,
 // even though it is listed as a supported feature in the documentation. 🤬
@@ -30,10 +30,10 @@ export async function GET(_req: Request, { params }: Props) {
   const title = meta.overlay ? meta.sidebarTitle : undefined;
 
   try {
-    const background = loadDataUrl(`public/assets/images/blog/${slug.join('/')}/cover.jpg`, 'image/jpeg');
-    return generateOgImage({ title, background });
+    const background = `https://revoke.cash/assets/images/blog/${slug.join('/')}/cover.jpg`;
+    return await generateOgImage({ title, background });
   } catch {
-    const background = loadDataUrl('public/assets/images/opengraph-image.jpg', 'image/jpeg');
-    return generateOgImage({ title, background });
+    const background = 'https://revoke.cash/assets/images/opengraph-image.jpg';
+    return await generateOgImage({ title, background });
   }
 }
