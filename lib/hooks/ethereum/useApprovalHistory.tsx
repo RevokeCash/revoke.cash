@@ -1,11 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ApprovalHistoryEvent } from 'components/history/utils';
-import { ADDRESS_ZERO } from 'lib/constants';
+import { ADDRESS_ZERO, DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { deduplicateArray, isNullish, logSorterChronological } from 'lib/utils';
+import { deduplicateArray, isNullish, logSorterChronological, sortTokenEventsChronologically } from 'lib/utils';
 import { isNetworkError, isRateLimitError, stringifyError } from 'lib/utils/errors';
-import { getEventKey, isApprovalTokenEvent, TokenEventType } from 'lib/utils/events';
+import {
+  type ApprovalTokenEvent,
+  getEventKey,
+  isApprovalTokenEvent,
+  isRevokeEvent,
+  TokenEventType,
+} from 'lib/utils/events';
 import { HOUR } from 'lib/utils/time';
 import { createTokenContract, getTokenMetadata, throwIfSpam } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
@@ -25,7 +31,7 @@ export const useApprovalHistory = () => {
   } = useQuery({
     queryKey: ['approvalHistory', address, selectedChainId, events?.map(getEventKey)],
     queryFn: async () => {
-      const approvalEvents = events!.filter(isApprovalTokenEvent);
+      const approvalEvents = removeLoneRevokeEvents(events!.filter(isApprovalTokenEvent));
       if (approvalEvents.length === 0) return [];
 
       const uniqueTokenEvents = deduplicateArray(approvalEvents, (event) => event.token);
@@ -75,9 +81,9 @@ export const useApprovalHistory = () => {
         }),
       );
 
-      return historyEventsWithTimestampsAndSpenderData.sort((a, b) => {
-        return b.time.timestamp - a.time.timestamp;
-      }) as ApprovalHistoryEvent[];
+      return sortTokenEventsChronologically(
+        historyEventsWithTimestampsAndSpenderData,
+      ).reverse() as ApprovalHistoryEvent[];
     },
     enabled: !isNullish(events) && !eventsLoading,
     staleTime: 1 * HOUR,
@@ -124,4 +130,34 @@ const processErc721ApprovalEvents = (events: ApprovalHistoryEvent[]): ApprovalHi
       return event;
     })
     .filter((event) => !isNullish(event));
+};
+
+// If a token/spender pair has only revoke events, this is likely spam and should not be displayed
+const removeLoneRevokeEvents = (events: ApprovalTokenEvent[]): ApprovalTokenEvent[] => {
+  const groupedEvents = groupEventsByTokenAndSpender(events);
+
+  const filterLoneRevokeEvents = (key: string, events: ApprovalTokenEvent[]) => {
+    // We don't count DUMMY_ADDRESS (cancel signatures) and ADDRESS_ZERO (revoke ERC721 approvals) as spenders
+    if (key.includes(DUMMY_ADDRESS) || key.includes(ADDRESS_ZERO)) return true;
+
+    // If only revokes exist for this token/spender pair, we don't need to display it, since this islikely a spam revoke
+    if (events.every((event) => isRevokeEvent(event))) return false;
+
+    return true;
+  };
+
+  return Object.entries(groupedEvents)
+    .filter(([key, events]) => filterLoneRevokeEvents(key, events))
+    .flatMap(([_, events]) => events);
+};
+
+const groupEventsByTokenAndSpender = (events: ApprovalTokenEvent[]): Record<string, ApprovalTokenEvent[]> => {
+  return events.reduce<Record<string, ApprovalTokenEvent[]>>((acc, event) => {
+    const key =
+      'oldSpender' in event.payload
+        ? `${event.token}-${event.payload.oldSpender}`
+        : `${event.token}-${event.payload.spender}`;
+    acc[key] = [...(acc[key] || []), event];
+    return acc;
+  }, {});
 };

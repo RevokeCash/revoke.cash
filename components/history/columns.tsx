@@ -63,7 +63,6 @@ export const columns = [
     enableColumnFilter: true,
     filterFn: customFilterFns.tokenOrSpender,
   }),
-
   columnHelper.accessor(accessors.token, {
     id: ColumnId.ASSET,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
@@ -73,7 +72,13 @@ export const columns = [
     enableColumnFilter: true,
     filterFn: customFilterFns.includesOneOfStrings,
   }),
-
+  columnHelper.accessor('type', {
+    id: ColumnId.EVENT_TYPE,
+    header: () => <HeaderCell i18nKey="address.headers.event_type" />,
+    cell: ({ row }) => <EventTypeCell approvalEvent={row.original} />,
+    size: 96,
+    enableSorting: false,
+  }),
   columnHelper.accessor(accessors.spender, {
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
@@ -94,15 +99,6 @@ export const columns = [
     enableColumnFilter: true,
     filterFn: customFilterFns.includesOneOfStrings,
   }),
-
-  columnHelper.accessor('type', {
-    id: ColumnId.EVENT_TYPE,
-    header: () => <HeaderCell i18nKey="address.headers.event_type" />,
-    cell: ({ row }) => <EventTypeCell approvalEvent={row.original} />,
-    size: 96,
-    enableSorting: false,
-  }),
-
   columnHelper.accessor('payload.amount', {
     id: ColumnId.AMOUNT,
     header: () => <HeaderCell i18nKey="address.headers.amount" />,
@@ -110,7 +106,6 @@ export const columns = [
     size: 128,
     enableSorting: false,
   }),
-
   columnHelper.accessor(accessors.timestamp, {
     id: ColumnId.DATE,
     header: () => <HeaderCell i18nKey="address.headers.date" />,

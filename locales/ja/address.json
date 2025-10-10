@@ -172,6 +172,7 @@
   },
   "history": {
     "approved": "承認済み",
+    "cancelled_signatures": "Cancelled Signatures",
     "none_found": "承認履歴が見つかりません",
     "revoked": "取り消されました",
     "title": "承認履歴"

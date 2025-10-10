@@ -1,5 +1,5 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
-import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from 'lib/constants';
+import { ADDRESS_ZERO, DUMMY_ADDRESS, MOONBIRDS_ADDRESS } from 'lib/constants';
 import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { type Address, decodeEventLog, type Hash, type Hex, toEventSelector } from 'viem';
 import { addressToTopic, isNullish } from '.';
@@ -234,7 +234,7 @@ export const generatePatchedAllowanceEvents = (
         addressToTopic(userAddress),
         addressToTopic(openseaProxyAddress),
       ],
-      data: '0x1',
+      data: '0x0000000000000000000000000000000000000000000000000000000000000001',
       timestamp: 1649997510,
     },
   ];
@@ -267,4 +267,13 @@ export const isRevokeEvent = (event: ApprovalTokenEvent): boolean => {
   }
 
   return event.payload.amount === 0n;
+};
+
+export const isCancelPermitEvent = (event: ApprovalTokenEvent): boolean => {
+  if (event.type !== TokenEventType.APPROVAL_ERC20) return false;
+
+  const hasDummySpender = event.payload.spender === DUMMY_ADDRESS;
+  const hasZeroValue = event.payload.amount === 0n;
+
+  return hasDummySpender && hasZeroValue;
 };

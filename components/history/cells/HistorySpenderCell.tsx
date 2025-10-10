@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
+import { DUMMY_ADDRESS } from 'lib/constants';
 import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
@@ -29,6 +30,9 @@ const HistorySpenderCell = ({ address, spenderData, chainId, onFilter }: Props) 
       </Button>
     </WithHoverTooltip>
   );
+
+  // "Cancel Permit signatures" are handles separately in the table
+  if (address === DUMMY_ADDRESS) return null;
 
   return (
     <div className="flex items-center gap-2">

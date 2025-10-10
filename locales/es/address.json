@@ -172,6 +172,7 @@
   },
   "history": {
     "approved": "Aprobado",
+    "cancelled_signatures": "Cancelled Signatures",
     "none_found": "No se encontró ningún historial de aprobaciones",
     "revoked": "Revocado",
     "title": "Historial de aprobaciones"
