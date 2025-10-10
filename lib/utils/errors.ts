@@ -19,6 +19,16 @@ export const isUserRejectionError = (error?: string | any): boolean => {
   return false;
 };
 
+export const isNoFeeRequiredError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isNoFeeRequiredError(parseErrorMessage(error)) || isNoFeeRequiredError(stringifyError(error));
+  }
+
+  return error?.toLowerCase()?.includes('no fee required');
+};
+
 export const isAccountUpgradeRejectionError = (error?: string | any): boolean => {
   if (!error) return false;
 

@@ -143,6 +143,8 @@
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
     "donation_sent": "💪 ¡Gracias por la donación!",
+    "fee_payment_failed": "❌ Fee payment failed: {message}",
+    "fee_payment_rejected": "❌ Please pay the batch revoke fee to continue",
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano S fue obsoleto por Ledger y ya no admite la revocación de las aprobaciones de NFT. Se recomienda actualizar a un dispositivo Ledger más nuevo.",
     "revoke_failed_revert": "❌ El creador de este token ha deshabilitado o pausado la aprobación y revocación de aprobaciones ({message})",

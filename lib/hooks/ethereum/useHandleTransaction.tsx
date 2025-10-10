@@ -1,6 +1,12 @@
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { isLedgerNanoSError, isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+import {
+  isLedgerNanoSError,
+  isNoFeeRequiredError,
+  isRevertedError,
+  isUserRejectionError,
+  parseErrorMessage,
+} from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { stringify } from 'viem';
@@ -14,6 +20,7 @@ export const useHandleTransaction = (chainId: number) => {
 
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(message)) return;
+    if (isNoFeeRequiredError(message)) return;
 
     console.debug(stringify(e, null, 2));
 
@@ -44,7 +51,7 @@ export const useHandleTransaction = (chainId: number) => {
     try {
       const transaction = await transactionPromise;
 
-      if (transaction.hash && type !== TransactionType.FEE) {
+      if (transaction.hash) {
         displayTransactionSubmittedToast(chainId, transaction.hash);
       }
 

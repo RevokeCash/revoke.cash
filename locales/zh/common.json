@@ -143,6 +143,8 @@
     "clipboard_failed": "❌ 无法复制到剪贴板",
     "clipboard_success": "✅ 已复制到剪贴板",
     "donation_sent": "💪 感谢捐赠！",
+    "fee_payment_failed": "❌ Fee payment failed: {message}",
+    "fee_payment_rejected": "❌ Please pay the batch revoke fee to continue",
     "revoke_failed": "❌ 撤销授权许可失败：{message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano S 已被 Ledger 弃用，不再支持撤销 NFT 授权。建议升级到较新的 Ledger 设备。",
     "revoke_failed_revert": "❌该代币创建者已禁用或暂停批准及撤销批准功能（{message}）",

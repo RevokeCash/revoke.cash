@@ -143,6 +143,8 @@
     "clipboard_failed": "❌ クリップボードにコピーできませんでした。",
     "clipboard_success": "✅ クリップボードにコピーされました",
     "donation_sent": "💪 寄付いただき、ありがとうございます！",
+    "fee_payment_failed": "❌ Fee payment failed: {message}",
+    "fee_payment_rejected": "❌ Please pay the batch revoke fee to continue",
     "revoke_failed": "❌ 許可のリボークに失敗しました: {message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano SはLedgerによって非推奨となり、NFT承認の取り消し機能をサポートしなくなりました。新しいLedgerデバイスへのアップグレードが推奨されます。",
     "revoke_failed_revert": "❌ このトークンの作成者は、承認と承認取り消しの機能を無効化または一時停止しました（{message}）",

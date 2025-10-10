@@ -2,22 +2,21 @@
 
 import { isNonZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { DONATION_ADDRESS } from 'lib/constants';
-import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import type { TransactionSubmitted } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
+import { isNoFeeRequiredError } from 'lib/utils/errors';
 import { HOUR } from 'lib/utils/time';
 import useLocalStorage from 'use-local-storage';
 import { parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
-import { useHandleTransaction } from './useHandleTransaction';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 
 export const useFeePayment = (chainId: number) => {
   const nativeToken = getChainNativeToken(chainId)!;
   const { data: walletClient } = useWalletClient({ chainId });
   const publicClient = usePublicClient({ chainId })!;
-  const handleTransaction = useHandleTransaction(chainId);
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
   const [lastFeePayments, setLastFeePayments] = useLocalStorage<Record<string, number>>('last-fee-payments', {});
@@ -31,7 +30,7 @@ export const useFeePayment = (chainId: number) => {
     const lastFeePayment = lastFeePayments[feePaymentKey];
 
     if (lastFeePayment && Date.now() - lastFeePayment < 1 * HOUR) {
-      throw new Error('User rejected fee payment: Fee payment already registered in the last hour');
+      throw new Error('No fee required: Fee payment already registered in the last hour');
     }
 
     const hash = await walletClient.sendTransaction(await prepareFeePayment(dollarAmount));
@@ -47,11 +46,11 @@ export const useFeePayment = (chainId: number) => {
     }
 
     if (!nativeTokenPrice) {
-      throw new Error('User rejected fee payment: Could not get native token price for fee payment');
+      throw new Error('No fee required: Could not get native token price for fee payment');
     }
 
     if (!isNonZeroFeeDollarAmount(dollarAmount)) {
-      throw new Error('User rejected fee payment');
+      throw new Error('No fee required: Fee amount is zero');
     }
 
     const tokenAmount = Number(dollarAmount) / nativeTokenPrice;
@@ -68,9 +67,14 @@ export const useFeePayment = (chainId: number) => {
   const sendFeePayment = async (dollarAmount: string): Promise<TransactionSubmitted | undefined> => {
     if (!dollarAmount || Number(dollarAmount) === 0) return;
 
-    const transactionSubmitted = await handleTransaction(sendFeePaymentInternal(dollarAmount), TransactionType.FEE);
-    if (transactionSubmitted) trackFeePaid(chainId, dollarAmount);
-    return transactionSubmitted;
+    try {
+      const transactionSubmitted = await sendFeePaymentInternal(dollarAmount);
+      trackFeePaid(chainId, dollarAmount);
+      return transactionSubmitted;
+    } catch (error) {
+      if (isNoFeeRequiredError(error)) return;
+      throw error;
+    }
   };
 
   return { prepareFeePayment, sendFeePayment, nativeToken };
