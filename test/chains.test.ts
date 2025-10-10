@@ -19,7 +19,6 @@ import {
   getChainRpcUrl,
   getChainSlug,
   getCorrespondingMainnetChainId,
-  isTestnetChain,
   ORDERED_CHAINS,
   SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
