@@ -146,6 +146,7 @@
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano S fue obsoleto por Ledger y ya no admite la revocación de las aprobaciones de NFT. Se recomienda actualizar a un dispositivo Ledger más nuevo.",
     "revoke_failed_revert": "❌ El creador de este token ha deshabilitado o pausado la aprobación y revocación de aprobaciones ({message})",
+    "switch_chain_failed": "❌ Switching chain failed, please switch to {chainName} manually in your wallet.",
     "transaction_failed": "❌ Transacción fallida: {message}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
     "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."

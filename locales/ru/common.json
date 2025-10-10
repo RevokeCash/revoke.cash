@@ -146,6 +146,7 @@
     "revoke_failed": "❌ Отменить доступ не удалось: {message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano S was deprecated by Ledger and does not support revoking NFT approvals any more. It is recommended to upgrade to a newer Ledger device.",
     "revoke_failed_revert": "❌ Это одобрение токена не может быть отозвано. Мы рекомендуем обратиться к создателям этого токена для решения проблемы.",
+    "switch_chain_failed": "❌ Switching chain failed, please switch to {chainName} manually in your wallet.",
     "transaction_failed": "❌ Сбой транзакции: {message}",
     "transaction_submitted": "✅ Транзакция отправлена!",
     "update_failed": "❌ Этот токен не поддерживает обновление доступов, вместо этого отмените их."

@@ -14,20 +14,28 @@ interface Props {
   children: (disabled: boolean) => ReactElement;
   overrideDisabled?: boolean;
   disabledReason?: string;
+  skipSwitchChain?: boolean;
 }
 
-const ControlsWrapper = ({ chainId, address, switchChainSize, children, overrideDisabled, disabledReason }: Props) => {
+const ControlsWrapper = ({
+  chainId,
+  address,
+  switchChainSize,
+  children,
+  overrideDisabled,
+  disabledReason,
+  skipSwitchChain,
+}: Props) => {
   const t = useTranslations();
-  const { address: account, connector, chain } = useAccount();
+  const { address: account, chain } = useAccount();
 
   const chainName = getChainName(chainId);
 
   const isConnected = !isNullish(account);
   const isConnectedAddress = isConnected && address === account;
-  const needsToSwitchChain = isConnected && chainId !== chain?.id;
-  const canSwitchChain = connector?.type === 'injected';
+  const needsToSwitchChain = isConnected && chainId !== chain?.id && !skipSwitchChain;
   const isChainSwitchEnabled = !isNullish(switchChainSize);
-  const shouldRenderSwitchChainButton = needsToSwitchChain && canSwitchChain && isChainSwitchEnabled;
+  const shouldRenderSwitchChainButton = needsToSwitchChain && isChainSwitchEnabled;
   const disabled =
     !isConnectedAddress || (needsToSwitchChain && !shouldRenderSwitchChainButton) || Boolean(overrideDisabled);
 

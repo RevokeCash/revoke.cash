@@ -127,6 +127,7 @@ export const isNetworkError = (error?: string | any): boolean => {
   if (lowercaseMessage?.includes('request timed out')) return true;
   if (lowercaseMessage?.includes('request took too long to respond')) return true;
   if (lowercaseMessage?.includes('failed to fetch')) return true;
+  if (lowercaseMessage?.includes('service temporarily unavailable')) return true;
   return false;
 };
 

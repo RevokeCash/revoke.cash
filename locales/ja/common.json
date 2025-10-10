@@ -146,6 +146,7 @@
     "revoke_failed": "❌ 許可のリボークに失敗しました: {message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano SはLedgerによって非推奨となり、NFT承認の取り消し機能をサポートしなくなりました。新しいLedgerデバイスへのアップグレードが推奨されます。",
     "revoke_failed_revert": "❌ このトークンの作成者は、承認と承認取り消しの機能を無効化または一時停止しました（{message}）",
+    "switch_chain_failed": "❌ Switching chain failed, please switch to {chainName} manually in your wallet.",
     "transaction_failed": "❌ トランザクションが失敗しました:{message}",
     "transaction_submitted": "✅ トランザクションを送信しました！",
     "update_failed": "❌ このトークンは許可の更新についてサポートしていません、リボークしてください。"

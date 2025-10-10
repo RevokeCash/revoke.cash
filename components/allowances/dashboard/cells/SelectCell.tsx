@@ -27,6 +27,7 @@ const SelectCell = ({ row }: Props) => {
       address={address}
       overrideDisabled={Boolean(tooltip)}
       disabledReason={tooltip}
+      skipSwitchChain
     >
       {(disabled) => (
         <div className="w-fit">

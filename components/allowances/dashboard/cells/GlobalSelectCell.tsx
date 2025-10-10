@@ -17,7 +17,12 @@ const GlobalSelectCell = ({ table }: Props) => {
   const indeterminate = table.getSelectedRowModel().flatRows.length > 0;
 
   return (
-    <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={selectableCount === 0}>
+    <ControlsWrapper
+      chainId={selectedChainId}
+      address={address}
+      overrideDisabled={selectableCount === 0}
+      skipSwitchChain
+    >
       {(disabled) => (
         <div className="w-fit">
           <Checkbox

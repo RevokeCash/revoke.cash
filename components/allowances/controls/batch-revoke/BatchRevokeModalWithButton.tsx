@@ -44,7 +44,12 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   return (
     <>
-      <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={!isSomeRowsSelected}>
+      <ControlsWrapper
+        chainId={selectedChainId}
+        address={address}
+        overrideDisabled={!isSomeRowsSelected}
+        skipSwitchChain
+      >
         {(disabled) => (
           <div className="w-fit">
             <Button style="primary" size="sm" disabled={disabled} onClick={() => setOpen(true)}>

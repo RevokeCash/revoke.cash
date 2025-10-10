@@ -61,7 +61,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
         ) : null}
       </div>
       {isErc20Allowance(allowance.payload) && (
-        <ControlsWrapper chainId={allowance.chainId} address={allowance.owner} switchChainSize={undefined}>
+        <ControlsWrapper chainId={allowance.chainId} address={allowance.owner}>
           {(disabled) => (
             <div>
               <Button
