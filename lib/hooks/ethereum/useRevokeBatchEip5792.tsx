@@ -1,5 +1,6 @@
 'use client';
 
+import { isNonZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
 import { splitArray, throwIfExcessiveGas } from 'lib/utils';
 import {
@@ -22,20 +23,20 @@ import type { Capabilities, EstimateContractGasParameters } from 'viem'; // viem
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
-import { trackDonate, useDonate } from './useDonate';
+import { trackFeePaid, useFeePayment } from './useFeePayment';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, selectedChainId } = useAddressPageContext();
   const { capabilities } = useWalletCapabilities();
-  const { prepareDonate } = useDonate(selectedChainId, 'batch-revoke-tip');
+  const { prepareFeePayment } = useFeePayment(selectedChainId);
 
   const { data: walletClient } = useWalletClient();
 
   const revoke = async (
     REVOKE_QUEUE: PQueue,
-    tipDollarAmount: string,
+    feeDollarAmount: string,
     maxBatchSize: number = Number.POSITIVE_INFINITY,
   ) => {
     if (!walletClient) {
@@ -81,9 +82,9 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     const callsToSubmit = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
     const allowancesToSubmit = allowancesToRevoke.filter((_, index) => callsSettled[index].status === 'fulfilled');
 
-    if (tipDollarAmount && Number(tipDollarAmount) > 0 && callsToSubmit.length > 0) {
-      const donateTransaction = await prepareDonate(tipDollarAmount);
-      callsToSubmit.push(mapTransactionRequestToEip5792Call(donateTransaction));
+    if (isNonZeroFeeDollarAmount(feeDollarAmount) && callsToSubmit.length > 0) {
+      const feeTransaction = await prepareFeePayment(feeDollarAmount);
+      callsToSubmit.unshift(mapTransactionRequestToEip5792Call(feeTransaction));
     }
 
     const callChunks = splitArray(callsToSubmit, maxBatchSize);
@@ -140,14 +141,14 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       if (isBatchSizeError(error)) {
         const newMaxBatchSize = getNewMaxBatchSize(maxBatchSize, callsToSubmit.length);
         console.log((error as Error).message, 'reducing batch size to', newMaxBatchSize);
-        return revoke(REVOKE_QUEUE, tipDollarAmount, newMaxBatchSize);
+        return revoke(REVOKE_QUEUE, feeDollarAmount, newMaxBatchSize);
       }
 
       throw error;
     }
 
-    trackBatchRevoke(selectedChainId, address, allowancesToSubmit, tipDollarAmount, 'eip5792');
-    trackDonate(selectedChainId, tipDollarAmount, 'batch-revoke-tip');
+    trackBatchRevoke(selectedChainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792');
+    trackFeePaid(selectedChainId, feeDollarAmount);
   };
 
   return revoke;

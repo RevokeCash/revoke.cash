@@ -23,6 +23,7 @@ const Prose = ({ children, className, ...props }: Props) => {
     'prose-code:rounded-sm prose-code:px-1 prose-code:py-0.5 prose-code:bg-zinc-200 dark:prose-code:bg-zinc-800 prose-code:font-normal',
     'prose-code:before:content-none prose-code:after:content-none',
     'prose-img:rounded-lg prose-img:border prose-img:border-black dark:prose-img:border-white prose-img:mx-auto prose-img:my-0',
+    'prose-video:rounded-lg prose-video:border prose-video:border-black dark:prose-video:border-white prose-video:mx-auto prose-video:my-0',
     className,
   );
 

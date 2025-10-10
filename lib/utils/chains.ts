@@ -115,7 +115,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Shape,
   ChainId.ZKFairMainnet,
   ChainId.InEVMMainnet,
-  ChainId.CrabNetwork,
   ChainId.DarwiniaNetwork,
   ChainId.Zora,
   ChainId.KardiaChainMainnet,
@@ -153,7 +152,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
   ChainId.CeloAlfajoresTestnet,
-  ChainId.MoonbaseAlpha,
   ChainId.MantleSepoliaTestnet,
   ChainId.FraxtalTestnet,
   ChainId.ZetaChainTestnet,
@@ -821,20 +819,6 @@ export const CHAINS = {
         }),
       ],
     }),
-  }),
-  [ChainId.CrabNetwork]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.CrabNetwork,
-    name: 'Crab',
-    logoUrl: '/assets/images/vendor/chains/crab.svg',
-    etherscanCompatibleApiUrl: 'https://crab-scan.darwinia.network/api',
-    rpc: {
-      main: 'https://crab-rpc.darwinia.network',
-    },
-    deployedContracts: { ...MULTICALL },
-    isCanary: true,
-    correspondingMainnetChainId: ChainId.DarwiniaNetwork,
-    priceStrategy: undefined, // TODO
   }),
   [ChainId.CreatorChainTestnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1614,15 +1598,6 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.MonadMainnet,
   }),
-  [ChainId.MoonbaseAlpha]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.MoonbaseAlpha,
-    name: 'Moonbase Alpha',
-    logoUrl: '/assets/images/vendor/chains/moonbeam.svg',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Moonbeam,
-  }),
   [ChainId.Moonbeam]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Moonbeam,
@@ -1916,6 +1891,7 @@ export const CHAINS = {
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.PlumeTestnet,
     name: 'Plume Testnet',
+    nativeTokenCoingeckoId: 'plume',
     logoUrl: '/assets/images/vendor/chains/plume.svg',
     etherscanCompatibleApiUrl: 'https://explorer-plume-testnet-1.t.conduit.xyz/api',
     rpc: {

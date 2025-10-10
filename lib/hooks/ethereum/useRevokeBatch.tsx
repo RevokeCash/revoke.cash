@@ -1,5 +1,6 @@
 'use client';
 
+import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from 'lib/utils/allowances';
 import { walletSupportsEip5792 } from 'lib/utils/eip5792';
 import { isAccountUpgradeRejectionError } from 'lib/utils/errors';
@@ -8,6 +9,8 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { useWalletClient } from 'wagmi';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
+import { useAddressPageContext } from '../page-context/AddressPageContext';
+import { useNativeTokenPrice } from './useNativeTokenPrice';
 import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
 import { useWalletCapabilities } from './useWalletCapabilities';
@@ -16,10 +19,15 @@ import { useWalletCapabilities } from './useWalletCapabilities';
 const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
 
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
+  const { selectedChainId } = useAddressPageContext();
   const { results, getTransaction, updateTransaction } = useTransactionStore();
   const walletCapabilities = useWalletCapabilities();
   const revokeEip5792 = useRevokeBatchEip5792(allowances, onUpdate);
   const revokeQueuedTransactions = useRevokeBatchQueuedTransactions(allowances, onUpdate);
+  const { nativeTokenPrice } = useNativeTokenPrice(selectedChainId);
+
+  // If we cannot get the native token price, we set the fee to $0 (this will result in no fee payment downstream)
+  const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(selectedChainId, allowances.length).toFixed(2) : '0';
 
   const { data: walletClient } = useWalletClient();
 
@@ -29,28 +37,26 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     });
   }, [allowances]);
 
-  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(
-    async (tipDollarAmount: string): Promise<void> => {
-      const supportsEip5792 = walletCapabilities.isLoading
-        ? await walletSupportsEip5792(walletClient!)
-        : walletCapabilities.supportsEip5792;
+  const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
+    const supportsEip5792 = walletCapabilities.isLoading
+      ? await walletSupportsEip5792(walletClient!)
+      : walletCapabilities.supportsEip5792;
 
-      if (supportsEip5792) {
-        try {
-          await revokeEip5792(REVOKE_QUEUE, tipDollarAmount);
-        } catch (error) {
-          // Fall back to queued transactions if the user rejected the account upgrade
-          if (isAccountUpgradeRejectionError(error)) {
-            await revokeQueuedTransactions(REVOKE_QUEUE, tipDollarAmount);
-          }
-
-          throw error;
+    if (supportsEip5792 && hasMoreThanOneTransaction(allowances, feeDollarAmount)) {
+      try {
+        await revokeEip5792(REVOKE_QUEUE, feeDollarAmount);
+      } catch (error) {
+        // Fall back to queued transactions if the user rejected the account upgrade
+        if (isAccountUpgradeRejectionError(error)) {
+          await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
         }
-      } else {
-        await revokeQueuedTransactions(REVOKE_QUEUE, tipDollarAmount);
+
+        throw error;
       }
-    },
-  );
+    } else {
+      await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
+    }
+  });
 
   const pause = useCallback(() => {
     REVOKE_QUEUE.clear();
@@ -75,5 +81,19 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     return allowances.every((allowance) => getTransaction(getAllowanceKey(allowance)).status === 'confirmed');
   }, [allowances, results]);
 
-  return { revoke, pause, results: relevantResults, isSubmitting, isRevoking, isAllConfirmed };
+  return {
+    revoke,
+    pause,
+    results: relevantResults,
+    isSubmitting,
+    isRevoking,
+    isAllConfirmed,
+    feeDollarAmount,
+  };
+};
+
+const hasMoreThanOneTransaction = (allowances: TokenAllowanceData[], feeDollarAmount: string) => {
+  if (allowances.length === 0) return false;
+  if (allowances.length === 1 && Number(feeDollarAmount) === 0) return false;
+  return true;
 };

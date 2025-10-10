@@ -8,14 +8,14 @@ export const trackBatchRevoke = (
   chainId: number,
   address: string,
   allowances: TokenAllowanceData[],
-  tipDollarAmount: string,
+  feeDollarAmount: string,
   batchType: BatchType,
 ) => {
   analytics.track('Batch Revoked', {
     chainId,
     address,
     allowances: allowances.length,
-    tipDollarAmount: Number(tipDollarAmount),
+    feeDollarAmount: Number(feeDollarAmount),
     batchType,
     isTestnet: isTestnetChain(chainId),
   });

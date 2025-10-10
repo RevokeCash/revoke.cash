@@ -25,7 +25,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
     return table.getGroupedSelectedRowModel().flatRows.map((row) => row.original);
   }, [open]);
 
-  const { results, revoke, pause, isRevoking, isAllConfirmed } = useRevokeBatch(
+  const { results, revoke, pause, isRevoking, isAllConfirmed, feeDollarAmount } = useRevokeBatch(
     selectedAllowances,
     table.options.meta!.onUpdate,
   );
@@ -66,6 +66,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
             </div>
           </div>
           <BatchRevokeControls
+            feeDollarAmount={feeDollarAmount}
             isRevoking={isRevoking}
             isAllConfirmed={isAllConfirmed}
             setOpen={setOpen}

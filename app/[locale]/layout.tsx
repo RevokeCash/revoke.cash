@@ -14,6 +14,7 @@ import type { Metadata } from 'next';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import '../../styles/index.css';
+import AnnouncementsContainer from 'components/common/AnnouncementsContainer';
 
 interface Props {
   children: React.ReactNode;
@@ -67,6 +68,7 @@ const MainLayout = async ({ children, params }: Props) => {
             <EthereumProvider>
               <ColorThemeProvider>
                 <div className="flex flex-col mx-auto min-h-screen">
+                  <AnnouncementsContainer />
                   <Header />
                   <main className="w-full grow">{children}</main>
                   <div className="flex flex-col justify-end">
