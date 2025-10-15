@@ -26,13 +26,17 @@ We have also received funding from [ENS](https://ens.domains/) and sponsors such
 
 Reliable blockchain data powers every feature of Revoke.cash, from understanding approvals to flagging risks. We need real-time transaction data, smart contract information and security intelligence to help users understand their token approvals and identify potential risks. This critical data comes from a combination of generous free partnerships and paid services.
 
-::img{src="/assets/images/acknowledgements/envio.jpg" alt="Envio Banner" width="1200" height="675"}
+::img{src="/assets/images/acknowledgements/envio.jpg" alt="Envio Banner" width="1200" height="600"}
 
 [Envio](https://envio.dev/) is a modern blockchain indexing platform that specializes in providing developers with fast, reliable access to on-chain data through their custom indexing infrastructure. Envio provides us with extensive historic data for many of the networks we support.
 
 ::img{src="/assets/images/acknowledgements/blockscout.jpg" alt="Blockscout Banner" width="1200" height="600"}
 
 [Blockscout](https://blockscout.com/) is an open-source blockchain explorer that supports multiple EVM-compatible networks, offering transparent blockchain data access with a focus on decentralization and openness. Blockscout provides us with historic data for many of the networks we support.
+
+::img{src="/assets/images/acknowledgements/goldrush.jpg" alt="Goldrush Banner" width="1200" height="600"}
+
+[Goldrush](https://goldrush.dev/) is a modern blockchain indexing platform that specializes in providing developers with fast, reliable access to on-chain data through their custom indexing infrastructure. Goldrush provides us with historic data for some of the networks we support.
 
 ::img{src="/assets/images/blog/2024/monthly-update-march/scamsniffer.jpg" alt="ScamSniffer Banner" width="1200" height="600"}
 
@@ -42,7 +46,7 @@ Reliable blockchain data powers every feature of Revoke.cash, from understanding
 
 [Webacy](https://webacy.com/) is a comprehensive web3 security platform that provides risk assessment tools and threat intelligence for smart contracts and DeFi protocols. Webacy provides us with real-time scam detection for spender addresses.
 
-We also use several paid data providers including [Alchemy](https://www.alchemy.com/), [Infura](https://infura.io/), [Etherscan](https://etherscan.io/), and [Covalent](https://www.covalenthq.com/). These commercial services complement our free data sources and provide additional coverage across different blockchain networks.
+We also use several paid data providers including [Alchemy](https://www.alchemy.com/), [Infura](https://infura.io/), and [Etherscan](https://etherscan.io/). These commercial services complement our free data sources and provide additional coverage across different blockchain networks.
 
 ## Technology Stack
 
