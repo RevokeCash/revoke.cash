@@ -5,7 +5,7 @@ import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ControlsWrapper from '../ControlsWrapper';
 import BatchRevokeControls from './BatchRevokeControls';
 import BatchRevokeHeader from './BatchRevokeHeader';
@@ -13,17 +13,13 @@ import BatchRevokeTable from './BatchRevokeTable';
 
 interface Props {
   table: Table<TokenAllowanceData>;
+  selectedAllowances: TokenAllowanceData[];
 }
 
-const BatchRevokeModalWithButton = ({ table }: Props) => {
+const BatchRevokeModalWithButton = ({ table, selectedAllowances }: Props) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const { address, selectedChainId } = useAddressPageContext();
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: we only want to run this when the modal is opened
-  const selectedAllowances = useMemo(() => {
-    return table.getGroupedSelectedRowModel().flatRows.map((row) => row.original);
-  }, [open]);
 
   const { results, revoke, pause, isRevoking, isAllConfirmed, feeDollarAmount } = useRevokeBatch(
     selectedAllowances,

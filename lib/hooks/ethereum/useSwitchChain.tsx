@@ -1,4 +1,4 @@
-import { getChainAddEthereumChainParameter } from 'lib/utils/chains';
+import { getChainAddEthereumChainParameter, getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
@@ -18,7 +18,7 @@ export const useSwitchChain = () => {
         return switchChainInternal({ chainId, addEthereumChainParameter });
       } catch (error) {
         console.error(error);
-        toast.error(t('common.toasts.switch_chain_failed'));
+        toast.error(t('common.toasts.switch_chain_failed', { chainName: getChainName(chainId) }));
         throw error;
       }
     },
@@ -32,7 +32,7 @@ export const useSwitchChain = () => {
         return await switchChainAsyncInternal({ chainId, addEthereumChainParameter });
       } catch (error) {
         console.error(error);
-        toast.error(t('common.toasts.switch_chain_failed'));
+        toast.error(t('common.toasts.switch_chain_failed', { chainName: getChainName(chainId) }));
         throw error;
       }
     },

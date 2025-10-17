@@ -11,6 +11,7 @@ import {
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
 import BatchRevokeModalWithButton from '../controls/batch-revoke/BatchRevokeModalWithButton';
+import RevokeSelectedButton from '../controls/batch-revoke/RevokeSelectedButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
 import AssetTypeCell from './cells/AssetTypeCell';
@@ -154,7 +155,7 @@ export const columns = [
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
-    footer: ({ table }) => <BatchRevokeModalWithButton table={table} />,
+    footer: ({ table }) => <RevokeSelectedButton table={table} />,
     cell: (info) => <AssetCell asset={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,
