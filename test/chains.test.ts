@@ -66,7 +66,6 @@ describe('Chain Support', () => {
           ChainId.Palm,
           ChainId.MonadTestnet,
           ChainId.TabiTestnetv2,
-          ChainId.CreatorChainTestnet,
           ChainId.ZenChainTestnet,
         ];
 

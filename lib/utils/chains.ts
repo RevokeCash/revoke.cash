@@ -39,6 +39,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Gnosis,
   ChainId.Blast,
   ChainId.ZkSyncMainnet,
+  ChainId.Swellchain,
   ChainId.Ink,
   ChainId.MerlinMainnet,
   ChainId.TaikoAlethia,
@@ -60,7 +61,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Lens,
   ChainId.FantomOpera,
   ChainId.OpBNBMainnet,
-  ChainId.PolygonzkEVM,
   ChainId.ArbitrumNova,
   ChainId.MetisAndromedaMainnet,
   ChainId.MantaPacificMainnet,
@@ -138,7 +138,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.Holesky,
   ChainId.BNBSmartChainTestnet,
   ChainId.Amoy,
-  ChainId.PolygonzkEVMCardonaTestnet,
   ChainId.OPSepoliaTestnet,
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
@@ -159,7 +158,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.PlumeTestnet,
   ChainId.BeamTestnet,
   ChainId.TabiTestnetv2,
-  ChainId.CreatorChainTestnet,
   ChainId.ZenChainTestnet,
   ChainId.MegaETHTestnet,
 ] as const;
@@ -819,16 +817,6 @@ export const CHAINS = {
         }),
       ],
     }),
-  }),
-  [ChainId.CreatorChainTestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.CreatorChainTestnet,
-    name: 'Creator Chain Testnet',
-    logoUrl: '/assets/images/vendor/chains/creator-chain.png',
-    etherscanCompatibleApiUrl: 'https://explorer.creatorchain.io/api',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: 12345678902,
   }),
   [ChainId.CronosMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1874,6 +1862,7 @@ export const CHAINS = {
     rpc: {
       main: `https://plasma-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.PlumeMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1938,34 +1927,10 @@ export const CHAINS = {
     // }),
   }),
   [ChainId.PolygonzkEVM]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.UNSUPPORTED,
     chainId: ChainId.PolygonzkEVM,
     name: 'Polygon zkEVM',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
-    explorerUrl: 'https://zkevm.polygonscan.com',
-    rpc: {
-      main: `https://polygonzkevm-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    // TODO: Add Algebra strategy (probably slightly amended from Uniswap v3) to support zkEVM
-    priceStrategy: undefined,
-    // backendPriceStrategy: new ReservoirNftPriceStrategy({
-    //   apiKey: RESERVOIR_API_KEY,
-    //   apiUrl: 'https://api-polygon-zkevm.reservoir.tools',
-    // }),
-  }),
-  [ChainId.PolygonzkEVMCardonaTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.PolygonzkEVMCardonaTestnet,
-    name: 'Polygon zkEVM Cardona',
-    logoUrl: '/assets/images/vendor/chains/polygon.svg',
-    explorerUrl: 'https://cardona-zkevm.polygonscan.com/',
-    rpc: {
-      main: `https://polygonzkevm-cardona.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.PolygonzkEVM,
   }),
   [ChainId.PulseChain]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -2282,6 +2247,17 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
+  [ChainId.Swellchain]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.Swellchain,
+    name: 'Swellchain',
+    logoUrl: '/assets/images/vendor/chains/swellchain.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.swellnetwork.io/api',
+    rpc: {
+      main: 'https://rpc.ankr.com/swell',
+    },
+    deployedContracts: { ...MULTICALL },
+  }),
   [ChainId.SyscoinMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.SyscoinMainnet,
@@ -2592,12 +2568,6 @@ export const CHAINS = {
     //   apiKey: RESERVOIR_API_KEY,
     //   apiUrl: 'https://api-zora.reservoir.tools',
     // }),
-  }),
-  // TODO: These are placeholders so we can add descriptions
-  12345678902: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678902,
-    name: 'Creator Chain',
   }),
   12345678903: new Chain({
     type: SupportType.UNSUPPORTED,

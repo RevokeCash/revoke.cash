@@ -10,7 +10,6 @@ import {
 } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
-import BatchRevokeModalWithButton from '../controls/batch-revoke/BatchRevokeModalWithButton';
 import RevokeSelectedButton from '../controls/batch-revoke/RevokeSelectedButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
