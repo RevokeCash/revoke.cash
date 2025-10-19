@@ -72,6 +72,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
       REVOKE_QUEUE.onIdle(),
     ]);
 
+    // TODO: This still tracks if all revokes/the full batch gets rejected
     trackBatchRevoke(selectedChainId, address, allowances, feeDollarAmount, 'queued');
   };
 

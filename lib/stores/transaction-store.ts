@@ -12,7 +12,7 @@ import { create } from 'zustand';
 // TODO: Add other kinds of transactions besides "revoke" transactions to the store
 // - Cancel permit
 // - Cancel marketplace
-// - Fee Payment
+// - ✅ Fee Payment
 // - Update allowance vs revoke
 // - Revoke session
 

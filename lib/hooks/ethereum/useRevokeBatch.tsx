@@ -3,10 +3,11 @@
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from 'lib/utils/allowances';
 import { walletSupportsEip5792 } from 'lib/utils/eip5792';
-import { isAccountUpgradeRejectionError } from 'lib/utils/errors';
+import { isAccountUpgradeRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
+import { toast } from 'react-toastify';
 import { useWalletClient } from 'wagmi';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
@@ -38,23 +39,28 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   }, [allowances]);
 
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
-    const supportsEip5792 = walletCapabilities.isLoading
-      ? await walletSupportsEip5792(walletClient!)
-      : walletCapabilities.supportsEip5792;
+    try {
+      const supportsEip5792 = walletCapabilities.isLoading
+        ? await walletSupportsEip5792(walletClient!)
+        : walletCapabilities.supportsEip5792;
 
-    if (supportsEip5792 && hasMoreThanOneTransaction(allowances, feeDollarAmount)) {
-      try {
-        await revokeEip5792(REVOKE_QUEUE, feeDollarAmount);
-      } catch (error) {
-        // Fall back to queued transactions if the user rejected the account upgrade
-        if (isAccountUpgradeRejectionError(error)) {
-          await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
+      if (supportsEip5792 && hasMoreThanOneTransaction(allowances, feeDollarAmount)) {
+        try {
+          await revokeEip5792(REVOKE_QUEUE, feeDollarAmount);
+        } catch (error) {
+          // Fall back to queued transactions if the user rejected the account upgrade
+          if (isAccountUpgradeRejectionError(error)) {
+            await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
+          }
+
+          throw error;
         }
-
-        throw error;
+      } else {
+        await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
       }
-    } else {
-      await revokeQueuedTransactions(REVOKE_QUEUE, feeDollarAmount);
+    } catch (error) {
+      toast.error(parseErrorMessage(error));
+      throw error;
     }
   });
 
