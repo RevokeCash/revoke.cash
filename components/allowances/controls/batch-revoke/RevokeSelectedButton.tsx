@@ -14,7 +14,7 @@ const RevokeSelectedButton = ({ table }: Props) => {
     return <RevokeSingleSelectedButton table={table} allowance={selectedAllowances[0]} />;
   }
 
-  return <BatchRevokeModalWithButton table={table} selectedAllowances={selectedAllowances} />;
+  return <BatchRevokeModalWithButton table={table} />;
 };
 
 export default RevokeSelectedButton;
