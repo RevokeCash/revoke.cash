@@ -7,7 +7,7 @@ import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
 import { isNoFeeRequiredError } from 'lib/utils/errors';
-import { MINUTE } from 'lib/utils/time';
+import { HOUR } from 'lib/utils/time';
 import useLocalStorage from 'use-local-storage';
 import { parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
@@ -29,8 +29,8 @@ export const useFeePayment = (chainId: number) => {
 
     const feePaymentKey = `${chainId}-${walletClient.account.address}`;
     const lastFeePayment = lastFeePayments[feePaymentKey];
-    if (lastFeePayment && Date.now() - lastFeePayment < 10 * MINUTE) {
-      throw new Error('No fee required: Fee payment already registered in the last 10 minutes');
+    if (lastFeePayment && Date.now() - lastFeePayment < 1 * HOUR) {
+      throw new Error('No fee required: Fee payment already registered in the last hour');
     }
 
     if (!nativeTokenPrice) {
