@@ -1,6 +1,7 @@
 'use client';
 
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
+import { toPrivyWalletConnector } from '@privy-io/cross-app-connect/rainbow-kit';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
@@ -12,6 +13,12 @@ import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors'
 interface Props {
   children: ReactNode;
 }
+
+const veeFriendsConnector = toPrivyWalletConnector({
+  id: 'cm5158iom02kdwmj4wj527lc4',
+  name: 'VeeFriends Wallet',
+  iconUrl: '/assets/images/vendor/wallets/veefriends.svg',
+});
 
 export const connectors = [
   safe({ debug: false }),
@@ -28,6 +35,7 @@ export const connectors = [
   }),
   coinbaseWallet({ appName: 'Revoke.cash' }),
   abstractWalletConnector(),
+  veeFriendsConnector,
 ];
 
 export const wagmiConfig = createConfig({
