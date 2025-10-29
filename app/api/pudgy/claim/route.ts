@@ -2,6 +2,7 @@ import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/cold-storage-sb
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { getTokenEvents } from 'lib/chains/events';
 import ky from 'lib/ky';
+import { isNullish } from 'lib/utils';
 import { getAllowancesFromEvents } from 'lib/utils/allowances';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
@@ -51,8 +52,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Check if the user has active allowances
-  const activeAllowances = allowances.filter((allowance) => Boolean(allowance.payload));
+  // Check if the user has active allowances that can be revoked
+  const activeAllowances = allowances
+    .filter((allowance) => Boolean(allowance.payload))
+    .filter((allowance) => isNullish(allowance.payload?.revokeError));
   if (activeAllowances.length > 0) {
     return new Response(JSON.stringify({ status: 'has_allowances', message: 'User has active allowances' }), {
       status: 400,
