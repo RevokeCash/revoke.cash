@@ -9,7 +9,7 @@ import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib
 import { isNoFeeRequiredError } from 'lib/utils/errors';
 import { HOUR } from 'lib/utils/time';
 import useLocalStorage from 'use-local-storage';
-import { parseEther, type SendTransactionParameters } from 'viem';
+import { type Hash, parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 
@@ -62,7 +62,7 @@ export const useFeePayment = (chainId: number) => {
 
       const hash = await walletClient.sendTransaction(await prepareFeePayment(dollarAmount));
 
-      trackFeePaid(chainId, walletClient.account.address, dollarAmount);
+      trackFeePaid(chainId, walletClient.account.address, dollarAmount, hash);
 
       return { hash, confirmation: waitForTransactionConfirmation(hash, publicClient) };
     } catch (error) {
@@ -71,7 +71,12 @@ export const useFeePayment = (chainId: number) => {
     }
   };
 
-  const trackFeePaid = (chainId: DocumentedChainId, address: string, dollarAmountStr: string) => {
+  const trackFeePaid = (
+    chainId: DocumentedChainId,
+    address: string,
+    dollarAmountStr: string,
+    transactionHash: Hash,
+  ) => {
     const dollarAmount = Number(dollarAmountStr);
     if (!dollarAmount) return;
 
@@ -80,7 +85,7 @@ export const useFeePayment = (chainId: number) => {
 
     if (isTestnetChain(chainId)) return;
 
-    analytics.track('Fee Paid', { address, chainId, dollarAmount });
+    analytics.track('Fee Paid', { address, chainId, dollarAmount, transactionHash });
   };
 
   return { prepareFeePayment, sendFeePayment, nativeToken, trackFeePaid };

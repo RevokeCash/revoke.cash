@@ -19,7 +19,7 @@ import {
 } from 'lib/utils/eip5792';
 import { isBatchSizeError, isNoFeeRequiredError } from 'lib/utils/errors';
 import type PQueue from 'p-queue';
-import type { Capabilities, EstimateContractGasParameters } from 'viem'; // viem has a issue with typing the capability. Until they fix it, we manually importing it.
+import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has a issue with typing the capability. Until they fix it, we manually importing it.
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
@@ -129,7 +129,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
               const trackTransaction = allowance
                 ? () => trackRevokeTransaction(allowance)
-                : () => trackFeePaid(selectedChainId, address, feeDollarAmount);
+                : (transactionHash: Hash) => trackFeePaid(selectedChainId, address, feeDollarAmount, transactionHash);
 
               const executeTransaction = async () => {
                 const id = await chunkPromise;
@@ -157,7 +157,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 );
               };
 
-              const revokeSingleAllowance = wrapTransaction({
+              const revokeSingleAllowanceOrFeePayment = wrapTransaction({
                 transactionKey,
                 transactionType,
                 executeTransaction,
@@ -165,7 +165,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 trackTransaction,
               });
 
-              await REVOKE_QUEUE.add(revokeSingleAllowance);
+              await REVOKE_QUEUE.add(revokeSingleAllowanceOrFeePayment);
             }),
           );
         }),

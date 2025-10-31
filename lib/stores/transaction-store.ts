@@ -52,7 +52,7 @@ interface WrapTransactionProps {
   transactionKey: string;
   transactionType: TransactionType;
   executeTransaction: () => Promise<TransactionSubmitted>;
-  trackTransaction: () => void;
+  trackTransaction: (transactionHash: Hash) => void;
   updateTransaction: TransactionStore['updateTransaction'];
   handleTransaction?: ReturnType<typeof useHandleTransaction>;
 }
@@ -75,7 +75,7 @@ export const wrapTransaction = ({
 
       updateTransaction(transactionKey, { status: 'pending', transactionHash: transactionSubmitted.hash });
 
-      trackTransaction();
+      trackTransaction(transactionSubmitted.hash);
 
       // We don't await this, since we want to return after submitting all transactions, even if they're still pending
       transactionSubmitted.confirmation
