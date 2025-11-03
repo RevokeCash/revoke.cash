@@ -12,9 +12,11 @@
     "add_tip": "¿Quieres añadir una propina?",
     "failed": "Fallido",
     "fee": {
-      "notice": "By batch revoking, you pay a small fee of <m>${feeDollarAmount}</m> that supports the continued development of Revoke.cash.",
-      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> is sponsoring the batch revoke fee on the <m>{chainName}</m> network! 🥳",
-      "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals one by one for free."
+      "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "notice": "Al revocar por lotes, pagas una pequeña tarifa de <m>${feeDollarAmount}</m> que contribuye al desarrollo continuo de Revoke.cash.",
+      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> ¡Patrocina la tarifa de revocación por lotes en la red <m>{chainName}</m>! 🥳",
+      "tooltip": "La tarifa fija de <m>${BASE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita."
     },
     "no_tip": "Sin propina",
     "revoked": "Revocado",
@@ -28,7 +30,7 @@
         "non_evm": "No EVM",
         "title": "Blockchains compatibles"
       },
-      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La cobertura es una forma de asegurarte de que el valor de tu cartera está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La Cobertura es una forma de asegurarte de que el valor de tu cartera está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
       "important": {
         "coverage_amount": "La cobertura se compra por una cierta cantidad de ETH - si el valor de su cartera aumenta en ETH, solo estará cubierto por la cantidad de ETH configurada.",
         "fee": "Hay un monto de responsabilidad personal del 10% sobre los pagos.",
@@ -172,7 +174,7 @@
   },
   "history": {
     "approved": "Aprobado",
-    "cancelled_signatures": "Cancelled Signatures",
+    "cancelled_signatures": "Firmas canceladas",
     "none_found": "No se encontró ningún historial de aprobaciones",
     "revoked": "Revocado",
     "title": "Historial de aprobaciones"

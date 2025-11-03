@@ -20,7 +20,7 @@ To support the continued development of Revoke.cash, as well as rising infrastru
 
 ## Introducing Batch Revoke Fees
 
-As a small business, we need a sustainable model to keep offering our services to users. That’s why we’re introducing a small batch revoke fee. Revoking approvals one by one will remain free, but if you want to save time and gas by batching, you’ll now pay a fee of $1.50 per batch.
+As a small business, we need a sustainable model to keep offering our services to users. That’s why we’re introducing a small batch revoke fee. Revoking approvals one by one will remain free, but if you want to save time by batching, you’ll now pay a fee of $1.50 per batch.
 
 This fee will help us be sustainable as a company and continue to offer you the best security services. This will allow us to keep our services running, develop important new features, like the new History tab and Delegations tab, and continue producing quality educational content.
 

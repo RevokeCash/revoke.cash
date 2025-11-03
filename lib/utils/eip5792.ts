@@ -12,14 +12,14 @@ import type { OnUpdate, TokenAllowanceData } from './allowances';
 
 export type Eip5792Call = Call;
 
-export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
+export const walletSupportsEip5792 = async (walletClient: WalletClient, chainId: number) => {
   try {
     const capabilities = (await walletClient.getCapabilities()) as Capabilities;
     console.log('Wallet supports EIP5792:', capabilities);
 
-    if (capabilities[walletClient.chain!.id]) return true;
+    if (capabilities[chainId]) return true;
 
-    console.log(`Wallet does not support EIP5792 on chain ${walletClient.chain!.id}`);
+    console.log(`Wallet does not support EIP5792 on chain ${chainId}`);
     return false;
   } catch {
     console.log('Wallet does not support EIP5792');

@@ -15,7 +15,7 @@ import { getEventKey, type TimeLog, type TokenEvent } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
 import { hasZeroBalance } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
@@ -43,6 +43,12 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
   });
 
   const [baseAllowances, setBaseAllowances] = useState<TokenAllowanceData[] | undefined>(undefined);
+
+  // When the chainId changes, we reset the allowances, so it doesn't keep old allowances for the previous chain while loading
+  // biome-ignore lint/correctness/useExhaustiveDependencies(chainId): We want this to re-run when chainId changes
+  useEffect(() => {
+    setBaseAllowances(undefined);
+  }, [chainId]);
 
   useLayoutEffect(() => {
     if (data) {

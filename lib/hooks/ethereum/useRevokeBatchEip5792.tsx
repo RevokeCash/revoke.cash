@@ -29,7 +29,7 @@ import { useWalletCapabilities } from './useWalletCapabilities';
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, selectedChainId } = useAddressPageContext();
-  const { capabilities } = useWalletCapabilities();
+  const { capabilities } = useWalletCapabilities(selectedChainId);
   const { prepareFeePayment, trackFeePaid } = useFeePayment(selectedChainId);
 
   const { data: walletClient } = useWalletClient();

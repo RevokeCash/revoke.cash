@@ -22,7 +22,7 @@ const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { selectedChainId } = useAddressPageContext();
   const { results, getTransaction, updateTransaction } = useTransactionStore();
-  const walletCapabilities = useWalletCapabilities();
+  const walletCapabilities = useWalletCapabilities(selectedChainId);
   const revokeEip5792 = useRevokeBatchEip5792(allowances, onUpdate);
   const revokeQueuedTransactions = useRevokeBatchQueuedTransactions(allowances, onUpdate);
   const { nativeTokenPrice } = useNativeTokenPrice(selectedChainId);
@@ -41,7 +41,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
     try {
       const supportsEip5792 = walletCapabilities.isLoading
-        ? await walletSupportsEip5792(walletClient!)
+        ? await walletSupportsEip5792(walletClient!, selectedChainId)
         : walletCapabilities.supportsEip5792;
 
       if (supportsEip5792 && hasMoreThanOneTransaction(allowances, feeDollarAmount)) {
