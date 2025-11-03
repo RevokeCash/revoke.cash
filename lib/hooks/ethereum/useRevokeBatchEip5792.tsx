@@ -157,7 +157,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 );
               };
 
-              const revokeSingleAllowanceOrFeePayment = wrapTransaction({
+              const executeSingleTransaction = wrapTransaction({
                 transactionKey,
                 transactionType,
                 executeTransaction,
@@ -165,7 +165,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 trackTransaction,
               });
 
-              await REVOKE_QUEUE.add(revokeSingleAllowanceOrFeePayment);
+              await REVOKE_QUEUE.add(executeSingleTransaction);
             }),
           );
         }),

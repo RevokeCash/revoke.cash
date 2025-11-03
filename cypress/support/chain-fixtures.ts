@@ -136,7 +136,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.CronosTestnet]: '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f',
   [ChainId.EthereumSepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
   [ChainId.FraxtalTestnet]: '0x3289CAbF6FB3435dc645e1e204Ec663456d14ADD',
-  [ChainId.Holesky]: '0x5A8ec40549AebF0E3Fb9d59bCE57b2AfE4d5eDda',
   [ChainId.LineaSepolia]: '0x7061146B49427143FfF175e9C1bF7461630302fF',
   // [ChainId.LUKSOTestnet]: '0xBdDDd277583DCaE0B501046ba86714FEea71B03F',
   [ChainId.MantleSepoliaTestnet]: '0x519a89Daa5d3291730a037B94025ab46425c4003',

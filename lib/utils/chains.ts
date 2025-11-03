@@ -135,7 +135,6 @@ export const CHAIN_SELECT_MAINNETS = [
 
 export const CHAIN_SELECT_TESTNETS = [
   ChainId.EthereumSepolia,
-  ChainId.Holesky,
   ChainId.BNBSmartChainTestnet,
   ChainId.Amoy,
   ChainId.OPSepoliaTestnet,
@@ -1205,19 +1204,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/hemi.svg',
     etherscanCompatibleApiUrl: 'https://explorer.hemi.xyz/api',
     deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.Holesky]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.Holesky,
-    name: 'Ethereum Holesky',
-    logoUrl: '/assets/images/vendor/chains/ethereum.svg',
-    rpc: {
-      main: `https://eth-holesky.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      free: 'https://holesky.drpc.org',
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.EthereumMainnet,
   }),
   [ChainId.HuobiECOChainMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
