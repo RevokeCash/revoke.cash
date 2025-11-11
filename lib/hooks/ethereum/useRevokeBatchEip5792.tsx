@@ -86,7 +86,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     if (isNonZeroFeeDollarAmount(feeDollarAmount) && callsToSubmit.length > 0) {
       try {
-        const feeTransaction = await prepareFeePayment(feeDollarAmount);
+        const feeTransaction = prepareFeePayment(feeDollarAmount);
         // Fee payment is always the first transaction in the batch so it cannot be "skipped"
         // To fix the indexes and to handle fee payment tracking, we also add an undefined allowance to the allowancesToSubmit array
         callsToSubmit.unshift(mapTransactionRequestToEip5792Call(feeTransaction));

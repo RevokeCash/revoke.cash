@@ -22,7 +22,7 @@ export const useFeePayment = (chainId: number) => {
   // We keep track of the most recent fee payments per chain/address combination, to prevent potential duplicate fee payments
   const [lastFeePayments, setLastFeePayments] = useLocalStorage<Record<string, number>>('last-fee-payments', {});
 
-  const prepareFeePayment = async (dollarAmount: string): Promise<SendTransactionParameters> => {
+  const prepareFeePayment = (dollarAmount: string): SendTransactionParameters => {
     if (!walletClient) {
       throw new Error('Please connect your web3 wallet to a supported network');
     }
@@ -60,7 +60,7 @@ export const useFeePayment = (chainId: number) => {
         throw new Error('Please connect your web3 wallet to a supported network');
       }
 
-      const hash = await walletClient.sendTransaction(await prepareFeePayment(dollarAmount));
+      const hash = await walletClient.sendTransaction(prepareFeePayment(dollarAmount));
 
       trackFeePaid(chainId, walletClient.account.address, dollarAmount, hash);
 

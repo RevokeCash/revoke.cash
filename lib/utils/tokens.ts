@@ -62,7 +62,7 @@ interface TokenFromList {
   isSpam?: boolean;
 }
 
-export const isSpamToken = (symbol: string) => {
+export const isSpamTokenSymbol = (symbol: string) => {
   const spamRegexes = [
     // Includes http(s)://
     /https?:\/\//i,
@@ -72,8 +72,8 @@ export const isSpamToken = (symbol: string) => {
     /www\./i,
     // Includes common spam words
     /visit .+ claim|free claim|claim on|airdrop at|airdrop voucher|✅.+ airdrop|✅.+ reward|✅.+ voucher|USDТ airdrop/i,
-    // Includes symbols
-    /\[|\]|\(|\)|＄|\$ /i,
+    // Includes $ or ＄ symbols
+    /＄|\$ /i,
   ];
 
   return spamRegexes.some((regex) => regex.test(symbol));
@@ -159,7 +159,7 @@ const getTokenDataFromMapping = async (
 
 export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
   const metadataFromMapping = await getTokenDataFromMapping(contract, chainId);
-  if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
+  if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam in metadata');
 
   if (isErc721Contract(contract)) {
     const [symbol] = await Promise.all([
@@ -168,7 +168,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
       throwIfNotErc721(contract),
     ]);
 
-    if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
+    if (isSpamTokenSymbol(symbol)) throw new Error('Token symbol looks like spam');
     return { ...metadataFromMapping, symbol, price: null, decimals: 0 };
   }
 
@@ -182,7 +182,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
   ]);
 
-  if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
+  if (isSpamTokenSymbol(symbol)) throw new Error('Token symbol looks like spam');
 
   // Price will be loaded separately via useTokenPrice hook
   return { ...metadataFromMapping, totalSupply, symbol: String(symbol), decimals, price: null };
