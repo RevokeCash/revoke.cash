@@ -21,7 +21,7 @@ Together with the new brand we also completely overhauled our browser extension 
 
 ## Batch Revoke Functionality
 
-Batch revoking is something that users have been asking for for a long time. Usually our response to this request has been that it's not possible to batch multiple revocations into a single transaction. And this remains to be the case. However, we have finally added a batch revoke transaction flow that allows users to queue up multiple revocation transactions one after the other.
+Batch revoking is something that users have been asking for a long time. Usually our response to this request has been that it's not possible to batch multiple revocations into a single transaction. And this remains to be the case. However, we have finally added a batch revoke transaction flow that allows users to queue up multiple revocation transactions one after the other.
 
 ::img{src="/assets/images/blog/2024/monthly-update-october/batch-revoke.png" alt="Batch Revoke" width="2000" height="1000"}
 
