@@ -40,8 +40,9 @@ const AddressNavigationTab = ({ name, href }: Props) => {
   useEffect(() => {
     if (!isNew) return;
     if (!isSelected) return;
-    setVisitedTabs((prev) => [...(prev ?? []), tabId]);
-  }, [isSelected, isNew, tabId, setVisitedTabs]);
+    if (!visitedTabs) return;
+    setVisitedTabs((prev) => [...prev!, tabId]);
+  }, [isSelected, isNew, tabId, visitedTabs, setVisitedTabs]);
 
   return (
     <div className={twMerge('relative', isNew && 'mr-2')}>

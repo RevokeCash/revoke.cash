@@ -62,12 +62,7 @@ describe('Chain Support', () => {
         expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
         expect(nativeToken, `${chainName} native token`).to.exist;
 
-        const NO_PRICING: number[] = [
-          ChainId.Palm,
-          ChainId.MonadTestnet,
-          ChainId.TabiTestnetv2,
-          ChainId.ZenChainTestnet,
-        ];
+        const NO_PRICING: number[] = [ChainId.MonadTestnet, ChainId.TabiTestnetv2, ChainId.ZenChainTestnet];
 
         if (!NO_PRICING.includes(chainId)) {
           expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;

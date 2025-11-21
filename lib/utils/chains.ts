@@ -32,7 +32,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CoreBlockchainMainnet,
   ChainId.SeiNetwork,
   ChainId.PlumeMainnet,
-  ChainId.BitlayerMainnet,
+  // ChainId.BitlayerMainnet,
   ChainId.Abstract,
   ChainId.Mantle,
   ChainId.Mode,
@@ -41,7 +41,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZkSyncMainnet,
   ChainId.Swellchain,
   ChainId.Ink,
-  ChainId.MerlinMainnet,
   ChainId.TaikoAlethia,
   ChainId.BOB,
   ChainId.RootstockMainnet,
@@ -72,7 +71,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.TelosEVMMainnet,
   ChainId.XDCNetwork,
   ChainId.Sophon,
-  ChainId['WEMIX3.0Mainnet'],
   ChainId.RolluxMainnet,
   ChainId.ImmutablezkEVM,
   ChainId.SyscoinMainnet,
@@ -82,7 +80,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.BobaNetwork,
-  ChainId.ZkLinkNovaMainnet,
   ChainId.GravityAlphaMainnet,
   ChainId.EOSEVMNetwork,
   ChainId.OasisEmerald,
@@ -125,7 +122,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RARIChainMainnet,
   ChainId.NeoXMainnet,
   ChainId.BitgertMainnet,
-  ChainId.Palm,
   ChainId.Redstone,
   ChainId.RSS3VSLMainnet,
   ChainId.ExosamaNetwork,
@@ -144,14 +140,9 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AbstractSepoliaTestnet,
   ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
-  ChainId.TaikoHekla,
   ChainId.BlastSepoliaTestnet,
-  ChainId.MorphHolesky,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
-  ChainId.CeloAlfajoresTestnet,
-  ChainId.MantleSepoliaTestnet,
-  ChainId.FraxtalTestnet,
   ChainId.ZetaChainTestnet,
   ChainId.MonadTestnet,
   ChainId.PlumeTestnet,
@@ -237,7 +228,6 @@ export const CHAINS = {
     explorerUrl: 'https://nova.arbiscan.io',
     rpc: {
       main: `https://arbnova-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://42170.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -542,18 +532,18 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No liquid stablecoins
   }),
-  [ChainId.BitlayerMainnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.BitlayerMainnet,
-    name: 'Bitlayer',
-    nativeTokenCoingeckoId: 'bitcoin',
-    logoUrl: '/assets/images/vendor/chains/bitlayer.png',
-    rpc: {
-      main: 'https://rpc.bitlayer.org',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // TODO
-  }),
+  // [ChainId.BitlayerMainnet]: new Chain({
+  //   type: SupportType.PROVIDER,
+  //   chainId: ChainId.BitlayerMainnet,
+  //   name: 'Bitlayer',
+  //   nativeTokenCoingeckoId: 'bitcoin',
+  //   logoUrl: '/assets/images/vendor/chains/bitlayer.png',
+  //   rpc: {
+  //     main: 'https://rpc.bitlayer.org',
+  //   },
+  //   deployedContracts: { ...MULTICALL },
+  //   priceStrategy: undefined, // TODO
+  // }),
   [ChainId.BitTorrentChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.BitTorrentChainMainnet,
@@ -574,7 +564,6 @@ export const CHAINS = {
     rpc: {
       // main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      logs: 'https://81457.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -600,7 +589,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
     rpc: {
       main: `https://bnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      // logs: 'https://56.rpc.hypersync.xyz',
     },
     deployedContracts: {
       multicall3: { address: '0xcA11bde05977b3631167028862bE2a173976CA11', blockCreated: 15921452 },
@@ -712,20 +700,6 @@ export const CHAINS = {
     // TODO: Canto DEX is not fully compatible with Uniswap v2, but it might be partially compatible, so we can look into
     // amending the Uniswap v2 strategy to work with it (https://tuber.build/address/0xa252eEE9BDe830Ca4793F054B506587027825a8e)
     priceStrategy: undefined,
-  }),
-  [ChainId.CeloAlfajoresTestnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.CeloAlfajoresTestnet,
-    name: 'Celo Alfajores',
-    nativeTokenCoingeckoId: 'celo',
-    logoUrl: '/assets/images/vendor/chains/celo.svg',
-    explorerUrl: 'https://alfajores.celoscan.io',
-    rpc: {
-      main: `https://celo-alfajores.infura.io/v3/${INFURA_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.CeloMainnet,
   }),
   [ChainId.CeloMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -941,6 +915,9 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'eos',
     logoUrl: '/assets/images/vendor/chains/eos.svg',
     etherscanCompatibleApiUrl: 'https://explorer.evm.eosnetwork.com/api',
+    rpc: {
+      main: 'https://api.evm.eosnetwork.com/',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
       aggregationType: AggregationType.ANY,
@@ -1047,7 +1024,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
     rpc: {
       main: `https://lb.drpc.org/ogrpc?network=fantom&dkey=${DRPC_API_KEY}`,
-      // logs: 'https://250.rpc.hypersync.xyz',
       free: 'https://rpc.fantom.network',
     },
     deployedContracts: { ...MULTICALL },
@@ -1114,16 +1090,6 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'frax-ether',
     logoUrl: '/assets/images/vendor/chains/fraxtal.svg',
     deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.FraxtalTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.FraxtalTestnet,
-    name: 'Fraxtal Holesky',
-    nativeTokenCoingeckoId: 'frax-ether',
-    logoUrl: '/assets/images/vendor/chains/fraxtal.svg',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Fraxtal,
   }),
   [ChainId.FuseMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1197,6 +1163,14 @@ export const CHAINS = {
     },
     priceStrategy: undefined, // RPC on Harmony is not really reliable + USDC is depegged, so not worth it
   }),
+  // [ChainId.HeliosChainTestnet]: new Chain({
+  //   type: SupportType.BLOCKSCOUT,
+  //   chainId: ChainId.HeliosChainTestnet,
+  //   name: 'Helios',
+  //   logoUrl: '/assets/images/vendor/chains/helios.svg',
+  //   etherscanCompatibleApiUrl: 'https://explorer.helios.xyz/api',
+  //   deployedContracts: { ...MULTICALL },
+  // }),
   [ChainId.Hemi]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Hemi,
@@ -1251,10 +1225,11 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Ink]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Ink,
     name: 'Ink',
     logoUrl: '/assets/images/vendor/chains/ink.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.inkonchain.com/api',
     rpc: {
       main: `https://ink-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -1402,9 +1377,6 @@ export const CHAINS = {
     type: SupportType.HYPERSYNC,
     chainId: ChainId.Lisk,
     name: 'Lisk',
-    rpc: {
-      logs: 'https://1135.rpc.hypersync.xyz',
-    },
     logoUrl: '/assets/images/vendor/chains/lisk.svg',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -1467,20 +1439,6 @@ export const CHAINS = {
       ],
     }),
   }),
-  [ChainId.MantleSepoliaTestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.MantleSepoliaTestnet,
-    name: 'Mantle Sepolia',
-    nativeTokenCoingeckoId: 'mantle',
-    logoUrl: '/assets/images/vendor/chains/mantle.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz/api',
-    rpc: {
-      main: `https://mantle-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Mantle,
-  }),
   [ChainId.MegaETHTestnet]: new Chain({
     type: SupportType.HYPERSYNC,
     chainId: ChainId.MegaETHTestnet,
@@ -1490,17 +1448,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: 12345678903,
-  }),
-  [ChainId.MerlinMainnet]: new Chain({
-    type: SupportType.COVALENT,
-    chainId: ChainId.MerlinMainnet,
-    name: 'Merlin',
-    nativeTokenCoingeckoId: 'bitcoin',
-    logoUrl: '/assets/images/vendor/chains/merlin.svg',
-    explorerUrl: 'https://scan.merlinchain.io',
-    rpc: {
-      main: 'https://rpc.merlinchain.io',
-    },
   }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1627,20 +1574,6 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
-  }),
-  [ChainId.MorphHolesky]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.MorphHolesky,
-    name: 'Morph Holesky',
-    logoUrl: '/assets/images/vendor/chains/morph.svg',
-    etherscanCompatibleApiUrl: 'https://explorer-api-holesky.morphl2.io/api',
-    rpc: {
-      main: 'https://rpc-holesky.morphl2.io',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // TODO
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Morph,
   }),
   [ChainId.Nahmii3Mainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1824,19 +1757,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.OPMainnet,
-  }),
-  [ChainId.Palm]: new Chain({
-    type: SupportType.COVALENT,
-    chainId: ChainId.Palm,
-    name: 'Palm',
-    logoUrl: '/assets/images/vendor/chains/palm.png',
-    explorerUrl: 'https://www.ondora.xyz/network/palm',
-    rpc: {
-      main: `https://palm-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      free: 'https://palm-mainnet.public.blastapi.io',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.PlasmaMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2026,7 +1946,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://rootstock.blockscout.com/api',
     rpc: {
       main: `https://rootstock-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://30.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // No DEXes that are compatible with other popular DEXes
@@ -2060,7 +1979,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api',
     rpc: {
       main: `https://scroll-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: 'https://534352.rpc.hypersync.xyz',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -2281,20 +2199,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.TaikoHekla]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.TaikoHekla,
-    name: 'Taiko Hekla',
-    logoUrl: '/assets/images/vendor/chains/taiko.svg',
-    explorerUrl: 'https://hekla.taikoscan.io',
-    rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=taiko-hekla&dkey=${DRPC_API_KEY}`,
-      free: 'https://taiko-hekla.drpc.org',
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.TaikoAlethia,
-  }),
   [ChainId.TelosEVMMainnet]: new Chain({
     type: SupportType.BACKEND_CUSTOM, // TeloscanEventGetter
     chainId: ChainId.TelosEVMMainnet,
@@ -2308,7 +2212,7 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Unichain]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Unichain,
     name: 'Unichain',
     logoUrl: '/assets/images/vendor/chains/unichain.svg',
@@ -2359,26 +2263,6 @@ export const CHAINS = {
     explorerUrl: 'https://www.vicscan.xyz',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
-  }),
-  [ChainId['WEMIX3.0Mainnet']]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId['WEMIX3.0Mainnet'],
-    name: 'WEMIX',
-    nativeTokenCoingeckoId: 'wemix-token',
-    logoUrl: '/assets/images/vendor/chains/wemix.svg',
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // WEMIX.FI (Router) | WEMIX -> mUSDC
-        new UniswapV2PriceStrategy({
-          address: '0x80a5A916FB355A8758f0a3e47891dc288DAC2665',
-          path: ['0x7D72b22a74A216Af4a002a1095C8C707d6eC1C5f', '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
   }),
   [ChainId.WorldChain]: new Chain({
     type: SupportType.PROVIDER,
@@ -2485,21 +2369,12 @@ export const CHAINS = {
       ],
     }),
   }),
-  [ChainId.ZkLinkNovaMainnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.ZkLinkNovaMainnet,
-    name: 'zkLink Nova',
-    nativeTokenCoingeckoId: 'zklink',
-    logoUrl: '/assets/images/vendor/chains/zklink.png',
-    priceStrategy: undefined, // TODO
-  }),
   [ChainId.ZkSyncMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.ZkSyncMainnet,
     name: 'zkSync Era',
     logoUrl: '/assets/images/vendor/chains/zksync.jpeg',
     explorerUrl: 'https://era.zksync.network',
-    etherscanCompatibleApiUrl: 'https://api-era.zksync.network/api',
     rpc: {
       main: `https://zksync-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },

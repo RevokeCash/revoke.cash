@@ -21,7 +21,7 @@ const BalanceDisplay = ({ isLoading, balance, price, className }: Props) => {
   const fiatBalanceText =
     !isLoading && !isNullish(balance) && !isNullish(price) && formatFiatBalance(balance, price, 18);
 
-  const placeholder = <div className={classes}>X.XXX {nativeToken} ($X,XXX.XX)</div>;
+  const placeholder = <div className={classes}>X.XXX {nativeToken} ($XXX.XX)</div>;
 
   return (
     <Loader isLoading={isLoading || isNullish(balance)} loadingChildren={placeholder} className="rounded-md">

@@ -13,9 +13,6 @@ export const FEE_SPONSORS: Record<number, FeeSponsor> = {
     name: 'Optimism Foundation',
     url: 'https://www.optimism.io/',
   },
-  [ChainId.Palm]: {
-    name: 'Revoke.cash',
-  },
 };
 
 export const getFeeDollarAmount = (chainId: number, allowancesCount: number) => {

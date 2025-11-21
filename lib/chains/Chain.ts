@@ -232,8 +232,9 @@ export class Chain {
 
   createViemPublicClient(overrideUrl?: string): PublicClient {
     // We noticed that certain chains run out of gas when using the default multicall settings
-    const multicallOverrides: Record<number, { batchSize: number }> = {
+    const multicallOverrides: Record<number, boolean | { batchSize: number }> = {
       [ChainId.Mantle]: { batchSize: 256 },
+      [ChainId.OasysMainnet]: false,
     };
 
     const multicallConfig = this.getDeployedContracts()?.multicall3 ? true : { deployless: true };
