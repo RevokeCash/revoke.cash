@@ -1,5 +1,4 @@
 import type { Event, HypersyncClient } from '@envio-dev/hypersync-client';
-import { ViemLogsProvider } from 'lib/providers';
 import { isNullish } from 'lib/utils';
 import type { Filter, Log } from 'lib/utils/events';
 import { getAddress, type Hash, type Hex } from 'viem';
