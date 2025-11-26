@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import { SupportType } from 'lib/chains/Chain';
 import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
+import { getScriptLogsProvider } from 'lib/ScriptLogsProvider';
 import {
   createViemPublicClientForChain,
   getChainApiUrl,
@@ -103,6 +104,12 @@ describe('Chain Support', () => {
         INFURA_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(INFURA_API_KEY);
         ALCHEMY_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(ALCHEMY_API_KEY);
         DRPC_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(DRPC_API_KEY);
+      });
+
+      it('can retrieve latest block number', async () => {
+        const logsProvider = getScriptLogsProvider(chainId);
+        const blockHeight = await logsProvider.getLatestBlock();
+        expect(blockHeight).to.exist;
       });
     });
   });

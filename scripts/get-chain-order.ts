@@ -82,10 +82,12 @@ const hasDeployedMulticall = async (chainId: number, multicallData: readonly any
   const registeredMulticall = multicallData.find((data) => data.chainId === chainId);
   if (registeredMulticall) return true;
 
-  const publicClient = createViemPublicClientForChain(chainId);
-  const unregisteredMulticall = await publicClient.getCode({ address: MULTICALL_ADDRESS });
+  try {
+    const publicClient = createViemPublicClientForChain(chainId);
+    const unregisteredMulticall = await publicClient.getCode({ address: MULTICALL_ADDRESS });
 
-  if (unregisteredMulticall && unregisteredMulticall !== '0x') return true;
+    if (unregisteredMulticall && unregisteredMulticall !== '0x') return true;
+  } catch {}
 
   return false;
 };

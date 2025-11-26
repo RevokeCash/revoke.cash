@@ -37,6 +37,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Mantle,
   ChainId.Mode,
   ChainId.Gnosis,
+  ChainId.MonadMainnet,
   ChainId.Blast,
   ChainId.ZkSyncMainnet,
   ChainId.Swellchain,
@@ -1445,6 +1446,9 @@ export const CHAINS = {
     name: 'MegaETH Testnet',
     logoUrl: '/assets/images/vendor/chains/megaeth.svg',
     explorerUrl: 'https://web3.okx.com/explorer/megaeth-testnet',
+    rpc: {
+      main: `https://megaeth-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: 12345678903,
@@ -1502,10 +1506,17 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.MonadMainnet]: new Chain({
-    type: SupportType.UNSUPPORTED,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.MonadMainnet,
     name: 'Monad',
+    nativeTokenCoingeckoId: 'monad',
     logoUrl: '/assets/images/vendor/chains/monad.svg',
+    explorerUrl: 'https://monadscan.com',
+    rpc: {
+      main: `https://monad-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://rpc.monad.xyz',
+    },
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.MonadTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,

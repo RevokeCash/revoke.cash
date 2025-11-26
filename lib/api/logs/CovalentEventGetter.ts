@@ -22,7 +22,7 @@ export class CovalentEventGetter implements EventGetter {
 
     // Covalent removed their "latest block" API, so now we have to get status for *ALL* chains instead
 
-    const apiUrl = `https://api.covalenthq.com/v1/chains/status`;
+    const apiUrl = `https://api.covalenthq.com/v1/chains/status/`;
     const headers = this.getHeaders();
     const result = await this.queue.add(() => ky.get(apiUrl, { headers, retry: 3, timeout: false }).json<any>());
 
@@ -55,7 +55,7 @@ export class CovalentEventGetter implements EventGetter {
     topics: Array<string | null>,
   ): Promise<Log[]> {
     const [mainTopic, ...secondaryTopics] = topics.filter((topic) => !isNullish(topic));
-    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}`;
+    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/events/topics/${mainTopic}/`;
 
     const searchParams = {
       'starting-block': fromBlock === 0 ? 'earliest' : fromBlock,
@@ -83,7 +83,7 @@ export class CovalentEventGetter implements EventGetter {
 
   private getHeaders(): Record<string, string> {
     return {
-      Authorization: `Basic ${Buffer.from(`${this.apiKey}:`).toString('base64')}`,
+      Authorization: `Bearer ${this.apiKey}`,
     };
   }
 }
