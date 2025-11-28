@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash se proporciona como un servicio gratuito, pero cada transacción de revocación conlleva pagar un \"gas fee\" como cualquier transacción en blockchain. Usualmente esto es muy barato, pero cuando los gas fees aumentan, podría ser más caro. Si tus transacciones no son urgentes, es buena idea usar servicios como <gashawk-link>GasHawk</gashawk-link> para reducir los gas fees.",
+      "answer": "Revoke se ofrece como un servicio gratuito, pero cada transacción de revoke genera una tarifa de gas, al igual que otras transacciones de blockchain . Al usar<i> revoke por lotes</i> característica, una pequeña tarifa de<b>${BASE_FEE}</b> Se cobra para apoyar el desarrollo continuo de Revoke. En determinadas redes, la tarifa corre a cargo de un patrocinador.",
       "question": "¿Cuánto cuesta usar Revoke.cash?"
     },
     "deposited_tokens": {

@@ -12,8 +12,8 @@
     "add_tip": "チップを追加しますか。",
     "failed": "失敗",
     "fee": {
-      "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
-      "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "eip5792_notice": "注意：ウォレットはアトミックバッチ取り消しをサポートしていないため、有料のバッチ取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
+      "eip5792_notice_chain": "注意：ウォレットは{chainName}のアトミックバッチ取り消しをサポートしていないため、有料のバッチ取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
       "notice": "一括取り消しには、Revoke.cashの継続的な開発のサポートとなる<m>${feeDollarAmount}</m>の少額の手数料がかかります。",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>は<m>{chainName}</m>ネットワークで一括取り消し手数料を負担しています！🥳",
       "tooltip": "バッチごとの<m>${BASE_FEE}</m>の定額料金は、インフラコストと継続的な開発をサポートします。また、承認を1つずつ無料で取り消すこともできます。"

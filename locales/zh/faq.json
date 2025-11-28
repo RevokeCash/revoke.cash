@@ -5,7 +5,7 @@
   },
   "questions": {
     "costs": {
-      "answer": "Revoke.cash是一项免费服务，但每笔撤销交易都会产生gas费，这同其他区块链交易一样。通常手续费很便宜，但是当gas费上涨时，手续费可能会很贵。如果不是紧急交易，你可以使用<gashawk-link>GasHawk</gashawk-link>之类的服务来减少gas费。",
+      "answer": "Revoke.cash 提供免费服务，但每笔撤销交易都会像其他区块链交易一样产生汽油费。使用<i>批量撤销</i>功能时，只需支付少量<b>${BASE_FEE}</b>用于支持 Revoke.cash 的持续开发。在某些网络上，这笔费用由赞助商承担。",
       "question": "使用 Revoke.cash 需要多少钱？"
     },
     "deposited_tokens": {

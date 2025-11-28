@@ -12,11 +12,11 @@
     "add_tip": "您想要添加小费吗？",
     "failed": "失败",
     "fee": {
-      "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
-      "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
-      "notice": "By batch revoking, you pay a small fee of <m>${feeDollarAmount}</m> that supports the continued development of Revoke.cash.",
-      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> is sponsoring the batch revoke fee on the <m>{chainName}</m> network! 🥳",
-      "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals one by one for free."
+      "eip5792_notice": "注意：您的钱包不支持原子批量撤销，即便使用付费批量撤销服务，也需要发送多笔交易。",
+      "eip5792_notice_chain": "注意：您的钱包不支持{chainName}上的原子批量撤销。因此，即便使用付费批量撤销功能，也需要发送多笔交易。",
+      "notice": "进行批量撤销，您需要支付<m>${feeDollarAmount}</m>的少量费用来支持 Revoke.cash 的持续发展。",
+      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>将赞助<m>{chainName}</m>的批量撤销费用。🥳",
+      "tooltip": "每次批量操作收取<m>${BASE_FEE}</m>的固定费用用于支持基础设施成本及持续开发。您也可免费逐笔撤销授权。"
     },
     "no_tip": "没有小费",
     "revoked": "撤销",
@@ -155,11 +155,11 @@
   "headers": {
     "actions": "操作",
     "allowance": "授权金额",
-    "amount": "Amount",
+    "amount": "金额",
     "asset": "资产",
     "asset_type": "类型",
-    "date": "Date",
-    "event_type": "Event Type",
+    "date": "日期",
+    "event_type": "事件类型",
     "expiration": "到期",
     "last_cancelled": "上次取消",
     "last_updated": "上次更新",
@@ -173,11 +173,11 @@
     "value_at_risk": "存在风险金额"
   },
   "history": {
-    "approved": "Approved",
-    "cancelled_signatures": "Cancelled Signatures",
-    "none_found": "No approval history found",
-    "revoked": "Revoked",
-    "title": "Approval History"
+    "approved": "已授权",
+    "cancelled_signatures": "已取消的签名",
+    "none_found": "未找到授权历史记录",
+    "revoked": "已撤销",
+    "title": "授权历史"
   },
   "labels": {
     "connected": "已连接",
@@ -229,7 +229,7 @@
     "unsafe": "可能不安全的合约代码"
   },
   "search": {
-    "history": "Search by Spender or Token",
+    "history": "按被授权人或代币搜索",
     "spender": "按被授权人（Spender）地址搜索"
   },
   "sessions": {
@@ -293,8 +293,8 @@
     "acknowledge_signature_notice": "检查签名前，请确认该通知。",
     "connect_wallet": "请连接钱包继续下一步",
     "connected_account": "您只能操作已连接的账户",
-    "filter_by_spender": "Filter by this spender",
-    "filter_by_token": "Filter by this token",
+    "filter_by_spender": "按该被授权人筛选",
+    "filter_by_token": "按此代币筛选",
     "involved_in_exploits": "此地址涉及以下漏洞：",
     "marketplace_listings": "这将取消 {marketplace} 上的所有当前列出的产品和报价。",
     "marketplace_signatures": "一旦获得授权，市场可以代表您转移资产。骗子可利用这些授权在第三方网站上创建零价格列表。如果您在钓鱼网站上签署了签名，请尽快取消。",

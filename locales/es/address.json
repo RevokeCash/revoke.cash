@@ -12,8 +12,8 @@
     "add_tip": "¿Quieres añadir una propina?",
     "failed": "Fallido",
     "fee": {
-      "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
-      "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "eip5792_notice": "Nota: tu cartera no admite revocaciones atómicas por lotes, por lo que, incluso cuando utilices nuestra revocación por lotes de pago, tendrás que enviar varias transacciones.",
+      "eip5792_notice_chain": "Nota: tu cartera no admite revocaciones atómicas por lotes para {chainName}, por lo que, incluso cuando utilices nuestra revocación por lotes de pago, tendrás que enviar varias transacciones.",
       "notice": "Al revocar por lotes, pagas una pequeña tarifa de <m>${feeDollarAmount}</m> que contribuye al desarrollo continuo de Revoke.cash.",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> ¡Patrocina la tarifa de revocación por lotes en la red <m>{chainName}</m>! 🥳",
       "tooltip": "La tarifa fija de <m>${BASE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita."
