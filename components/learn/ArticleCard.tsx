@@ -1,6 +1,7 @@
 import Card from 'components/common/Card';
 import Href from 'components/common/Href';
 import type { ISidebarEntry } from 'lib/interfaces';
+import { formatArticleDate } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 
 const ArticleCard = ({ title, description, path, date, readingTime, author }: ISidebarEntry) => {
@@ -15,7 +16,7 @@ const ArticleCard = ({ title, description, path, date, readingTime, author }: IS
         {date && readingTime ? (
           <p className="text-sm text-right text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
             {author ? `${author.name?.split(' ')?.[0]} • ` : ''}
-            {new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+            {formatArticleDate(date)}
             {' • '}
             {t('common.article_meta.reading_time', { readingTime })}
           </p>
