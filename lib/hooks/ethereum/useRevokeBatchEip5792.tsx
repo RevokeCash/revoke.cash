@@ -128,7 +128,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
               const transactionType = allowance ? TransactionType.REVOKE : TransactionType.FEE;
 
               const trackTransaction = allowance
-                ? () => trackRevokeTransaction(allowance)
+                ? () => trackRevokeTransaction(allowance, 'eip5792')
                 : (transactionHash: Hash) => trackFeePaid(selectedChainId, address, feeDollarAmount, transactionHash);
 
               const executeTransaction = async () => {

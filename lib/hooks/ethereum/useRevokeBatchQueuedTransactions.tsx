@@ -63,7 +63,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
             transactionType: TransactionType.REVOKE,
             executeTransaction: () => revokeAllowance(walletClient!, allowance, onUpdate),
             updateTransaction,
-            trackTransaction: () => trackRevokeTransaction(allowance),
+            trackTransaction: () => trackRevokeTransaction(allowance, 'queued'),
           });
 
           await REVOKE_QUEUE.add(revoke);

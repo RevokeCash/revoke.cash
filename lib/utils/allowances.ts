@@ -11,7 +11,8 @@ import {
   writeContractUnlessExcessiveGas,
 } from '.';
 import analytics from './analytics';
-import { getViemChainConfig } from './chains';
+import type { BatchType } from './batch-revoke';
+import { getViemChainConfig, isTestnetChain } from './chains';
 import { isNetworkError, isRateLimitError, isRevertedError, parseErrorMessage, stringifyError } from './errors';
 import {
   type Erc20ApprovalEvent,
@@ -534,7 +535,7 @@ export const prepareUpdateErc20Allowance = async (
   }
 };
 
-export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?: string) => {
+export const trackRevokeTransaction = (allowance: TokenAllowanceData, batchType?: BatchType, newAmount?: string) => {
   if (isErc721Contract(allowance.contract)) {
     analytics.track('Revoked ERC721 allowance', {
       chainId: allowance.chainId,
@@ -542,6 +543,8 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?
       spender: allowance.payload?.spender,
       token: allowance.contract.address,
       tokenId: allowance.payload?.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
+      isTestnet: isTestnetChain(allowance.chainId),
+      batchType,
     });
   }
 
@@ -554,6 +557,8 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?
     token: allowance.contract.address,
     amount: isRevoke ? undefined : newAmount,
     permit2: allowance.payload?.type === AllowanceType.PERMIT2,
+    isTestnet: isTestnetChain(allowance.chainId),
+    batchType,
   });
 };
 

@@ -55,7 +55,7 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
         const walletClient = await ensureWalletClient(allowance.chainId);
         return updateErc20Allowance(walletClient, allowance, newAmount, onUpdate);
       },
-      trackTransaction: () => trackRevokeTransaction(allowance, newAmount),
+      trackTransaction: () => trackRevokeTransaction(allowance, undefined, newAmount),
       updateTransaction,
       handleTransaction,
     });
