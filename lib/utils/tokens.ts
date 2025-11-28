@@ -261,7 +261,7 @@ export const throwIfSpamAirdrop = async (_contract: Contract, events: TokenEvent
   const approvalTransactions = events.filter(isApprovalTokenEvent).map((event) => event.time.transactionHash);
 
   // If the transfers and approvals occur in the same transaction, it's a spam transaction
-  // Note that we only check if that is the case fo *all* events to prevent false positives at the cost of false negatives
+  // Note that we only check if that is the case for *all* events to prevent false positives at the cost of false negatives
   if (
     transferTransactions.length > 0 &&
     transferTransactions.every((transaction) => approvalTransactions.includes(transaction))
