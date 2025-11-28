@@ -41,7 +41,11 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
     );
 
     const blockNumber = Number(result.result);
-    if (!blockNumber) throw new Error('Failed to get latest block number');
+    if (!blockNumber) {
+      console.log(result);
+      console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
+      throw new Error('Failed to get latest block number');
+    }
 
     return blockNumber;
   }

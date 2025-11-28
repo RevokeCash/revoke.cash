@@ -75,14 +75,12 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RolluxMainnet,
   ChainId.ImmutablezkEVM,
   ChainId.SyscoinMainnet,
-  ChainId.XLayerMainnet,
   ChainId.ZetaChainMainnet,
   ChainId.AuroraMainnet,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.BobaNetwork,
   ChainId.GravityAlphaMainnet,
-  ChainId.EOSEVMNetwork,
   ChainId.OasisEmerald,
   ChainId.OasisSapphire,
   ChainId.MintMainnet,
@@ -108,14 +106,13 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.BitTorrentChainMainnet,
   ChainId.Sanko,
   ChainId.EthereumClassic,
+  ChainId.SubtensorEVM,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.ENULSMainnet,
   ChainId.Shape,
-  ChainId.ZKFairMainnet,
-  ChainId.InEVMMainnet,
+  ChainId.Injective,
   ChainId.DarwiniaNetwork,
   ChainId.Zora,
-  ChainId.KardiaChainMainnet,
   ChainId.Superposition,
   ChainId.Nahmii3Mainnet,
   ChainId.ShidoNetwork,
@@ -139,7 +136,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BaseSepoliaTestnet,
   ChainId.ZkSyncSepoliaTestnet,
   ChainId.AbstractSepoliaTestnet,
-  ChainId.LineaSepolia,
   ChainId.ScrollSepoliaTestnet,
   ChainId.BlastSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
@@ -148,9 +144,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.MonadTestnet,
   ChainId.PlumeTestnet,
   ChainId.BeamTestnet,
-  ChainId.TabiTestnetv2,
   ChainId.ZenChainTestnet,
-  ChainId.MegaETHTestnet,
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
@@ -469,7 +463,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.Base,
   }),
   [ChainId.Beam]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ROUTESCAN,
     chainId: ChainId.Beam,
     name: 'Beam',
     nativeTokenCoingeckoId: 'beam',
@@ -642,23 +636,12 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.BobaNetwork]: new Chain({
-    type: SupportType.COVALENT,
+    type: SupportType.ROUTESCAN,
     chainId: ChainId.BobaNetwork,
     name: 'Boba',
     logoUrl: '/assets/images/vendor/chains/boba.jpg',
     deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // OolongSwap (Router) | WETH -> USDC
-        new UniswapV2PriceStrategy({
-          address: '0x17C83E2B96ACfb5190d63F5E46d93c107eC0b514',
-          path: ['0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000', '0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 10n },
-        }),
-      ],
-    }),
+    priceStrategy: undefined, // TODO
   }),
   [ChainId.CallistoMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -905,30 +888,6 @@ export const CHAINS = {
           address: '0x3653d15A4Ed7E9acAA9AC7C5DB812e8A7a90DF9e',
           path: ['0x217dffF57E3b855803CE88a1374C90759Ea071bD', '0x9e5d124Cd49671f3f7B54d4aef43b3930BcF6dE7'],
           liquidityParameters: { baseAmount: 1n }, // Super low liquidity DEX
-        }),
-      ],
-    }),
-  }),
-  [ChainId.EOSEVMNetwork]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.EOSEVMNetwork,
-    name: 'EOS EVM',
-    nativeTokenCoingeckoId: 'eos',
-    logoUrl: '/assets/images/vendor/chains/eos.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.evm.eosnetwork.com/api',
-    rpc: {
-      main: 'https://api.evm.eosnetwork.com/',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // Noah Swap (Router) | WEOS -> USDT
-        new UniswapV2PriceStrategy({
-          address: '0x1c8f68e8AdBD75c23281e5c88E44D0b7023a4238',
-          path: ['0xc00592aA41D32D137dC480d9f6d0Df19b860104F', '0x33B57dC70014FD7AA6e1ed3080eeD2B619632B8e'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
         }),
       ],
     }),
@@ -1214,14 +1173,14 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
   }),
-  [ChainId.InEVMMainnet]: new Chain({
+  [ChainId.Injective]: new Chain({
     type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.InEVMMainnet,
-    name: 'inEVM',
+    chainId: ChainId.Injective,
+    name: 'Injective',
     nativeTokenCoingeckoId: 'injective-protocol',
     logoUrl: '/assets/images/vendor/chains/injective.svg',
-    explorerUrl: 'https://explorer.inevm.com',
-    etherscanCompatibleApiUrl: 'https://explorer.inevm.com/api',
+    explorerUrl: 'https://blockscout.injective.network',
+    etherscanCompatibleApiUrl: 'https://blockscout-api.injective.network/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -1258,16 +1217,6 @@ export const CHAINS = {
     chainId: ChainId.KaiaMainnet,
     name: 'Kaia',
     logoUrl: '/assets/images/vendor/chains/kaia.svg',
-  }),
-  [ChainId.KardiaChainMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.KardiaChainMainnet,
-    name: 'KardiaChain',
-    nativeTokenCoingeckoId: 'kardiachain',
-    logoUrl: '/assets/images/vendor/chains/kardiachain.svg',
-    explorerUrl: 'https://explorer.kardiachain.io',
-    etherscanCompatibleApiUrl: 'https://explorer.kardiachain.io/api',
-    priceStrategy: undefined, // No liquid stablecoins
   }),
   [ChainId.Katana]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1344,36 +1293,6 @@ export const CHAINS = {
     //   apiUrl: 'https://api-linea.reservoir.tools',
     // }),
   }),
-  [ChainId.LineaSepolia]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.LineaSepolia,
-    name: 'Linea Sepolia',
-    logoUrl: '/assets/images/vendor/chains/linea.png',
-    rpc: {
-      main: `https://linea-sepolia.infura.io/v3/${INFURA_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.Linea,
-  }),
-  // [ChainId.LUKSOMainnet]: new Chain({
-  //   type: SupportType.BLOCKSCOUT,
-  //   chainId: ChainId.LUKSOMainnet,
-  //   name: 'LUKSO',
-  //   logoUrl: '/assets/images/vendor/chains/lukso.svg',
-  //   etherscanCompatibleApiUrl: 'https://api.explorer.execution.mainnet.lukso.network/api',
-  //   deployedContracts: { ...MULTICALL },
-  // }),
-  // [ChainId.LUKSOTestnet]: new Chain({
-  //   type: SupportType.BLOCKSCOUT,
-  //   chainId: ChainId.LUKSOTestnet,
-  //   name: 'LUKSO Testnet',
-  //   logoUrl: '/assets/images/vendor/chains/lukso.svg',
-  //   etherscanCompatibleApiUrl: 'https://api.explorer.execution.testnet.lukso.network/api',
-  //   deployedContracts: { ...MULTICALL },
-  //   isTestnet: true,
-  //   correspondingMainnetChainId: ChainId.LUKSOMainnet,
-  // }),
   [ChainId.Lisk]: new Chain({
     type: SupportType.HYPERSYNC,
     chainId: ChainId.Lisk,
@@ -1439,19 +1358,6 @@ export const CHAINS = {
         }),
       ],
     }),
-  }),
-  [ChainId.MegaETHTestnet]: new Chain({
-    type: SupportType.HYPERSYNC,
-    chainId: ChainId.MegaETHTestnet,
-    name: 'MegaETH Testnet',
-    logoUrl: '/assets/images/vendor/chains/megaeth.svg',
-    explorerUrl: 'https://web3.okx.com/explorer/megaeth-testnet',
-    rpc: {
-      main: `https://megaeth-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: 12345678903,
   }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1522,6 +1428,7 @@ export const CHAINS = {
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.MonadTestnet,
     name: 'Monad Testnet',
+    nativeTokenCoingeckoId: 'monad',
     logoUrl: '/assets/images/vendor/chains/monad.svg',
     rpc: {
       main: `https://monad-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -1575,7 +1482,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Morph]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.ROUTESCAN,
     chainId: ChainId.Morph,
     name: 'Morph',
     logoUrl: '/assets/images/vendor/chains/morph.svg',
@@ -1770,12 +1677,11 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.OPMainnet,
   }),
   [ChainId.PlasmaMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.ROUTESCAN,
     chainId: ChainId.PlasmaMainnet,
     name: 'Plasma',
     logoUrl: '/assets/images/vendor/chains/plasma.svg',
     nativeTokenCoingeckoId: 'plasma',
-    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/9745/etherscan/api',
     rpc: {
       main: `https://plasma-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -2153,6 +2059,16 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
+  [ChainId.SubtensorEVM]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.SubtensorEVM,
+    name: 'Bittensor EVM',
+    nativeTokenCoingeckoId: 'bittensor',
+    logoUrl: '/assets/images/vendor/chains/bittensor.svg',
+    explorerUrl: 'https://evm.taostats.io/',
+    etherscanCompatibleApiUrl: 'https://evm.taostats.io/api',
+    deployedContracts: { ...MULTICALL },
+  }),
   [ChainId.Superposition]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Superposition,
@@ -2185,21 +2101,6 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
-  }),
-  [ChainId.TabiTestnetv2]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.TabiTestnetv2,
-    name: 'Tabi Testnet',
-    logoUrl: '/assets/images/vendor/chains/tabi.svg',
-    infoUrl: 'https://www.tabichain.com',
-    explorerUrl: 'https://testnetv2.tabiscan.com',
-    etherscanCompatibleApiUrl: 'https://tabiv2-test.tabiscan.com/api',
-    rpc: {
-      main: 'https://rpc.testnetv2.tabichain.com',
-    },
-    nativeToken: 'TABI',
-    isTestnet: true,
-    correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
   }),
   [ChainId.TaikoAlethia]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2298,15 +2199,6 @@ export const CHAINS = {
       free: 'https://rpc.ankr.com/xdc',
     },
   }),
-  [ChainId.XLayerMainnet]: new Chain({
-    type: SupportType.COVALENT,
-    chainId: ChainId.XLayerMainnet,
-    name: 'X Layer',
-    nativeTokenCoingeckoId: 'okb',
-    logoUrl: '/assets/images/vendor/chains/xlayer.svg',
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: undefined, // TODO
-  }),
   [ChainId.ZenChain]: new Chain({
     type: SupportType.UNSUPPORTED,
     chainId: ChainId.ZenChain,
@@ -2359,26 +2251,6 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
-  }),
-  [ChainId.ZKFairMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.ZKFairMainnet,
-    name: 'ZKFair',
-    nativeTokenCoingeckoId: 'zkfair',
-    logoUrl: '/assets/images/vendor/chains/zkfair.svg',
-    etherscanCompatibleApiUrl: 'https://scan.zkfair.io/api',
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // Sideswap (Router) | WUSDC
-        new UniswapV2PriceStrategy({
-          address: '0x72E25Dd6a6E75fC8f7820bA2eDEc3F89bB61f7A4',
-          path: ['0xD33Db7EC50A98164cC865dfaa64666906d79319C'],
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
   }),
   [ChainId.ZkSyncMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -2441,16 +2313,6 @@ export const CHAINS = {
     //   apiUrl: 'https://api-zora.reservoir.tools',
     // }),
   }),
-  12345678903: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678903,
-    name: 'MegaETH',
-  }),
-  12345678905: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678905,
-    name: 'Tabi',
-  }),
 } as const;
 
 export const SUPPORTED_CHAINS = Object.values(CHAINS)
@@ -2463,6 +2325,10 @@ export const ETHERSCAN_SUPPORTED_CHAINS = Object.values(CHAINS)
 
 export const BLOCKSCOUT_SUPPORTED_CHAINS = Object.values(CHAINS)
   .filter((chain) => chain.type === SupportType.BLOCKSCOUT)
+  .map((chain) => chain.chainId);
+
+export const ROUTESCAN_SUPPORTED_CHAINS = Object.values(CHAINS)
+  .filter((chain) => chain.type === SupportType.ROUTESCAN)
   .map((chain) => chain.chainId);
 
 export type DocumentedChainId = keyof typeof CHAINS;
@@ -2501,6 +2367,10 @@ export const isEtherscanSupportedChain = (chainId: DocumentedChainId): boolean =
 
 export const isBlockScoutSupportedChain = (chainId: DocumentedChainId): boolean => {
   return getChainConfig(chainId).type === SupportType.BLOCKSCOUT;
+};
+
+export const isRoutescanSupportedChain = (chainId: DocumentedChainId): boolean => {
+  return getChainConfig(chainId).type === SupportType.ROUTESCAN;
 };
 
 export const isNodeSupportedChain = (chainId: DocumentedChainId): boolean => {

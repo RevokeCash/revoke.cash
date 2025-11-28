@@ -29,7 +29,10 @@ export class CovalentEventGetter implements EventGetter {
     const chainStatus = result?.data?.items?.find((chain: any) => Number(chain.chain_id) === chainId);
     const blockNumber = chainStatus?.synced_block_height;
 
-    if (!blockNumber) throw new Error('Failed to get latest block number');
+    if (!blockNumber) {
+      console.log('chainStatus:', chainStatus);
+      throw new Error('Failed to get latest block number');
+    }
 
     // Covalent might still have slight delay so we subtract 20 to be safe
     return blockNumber - 20;

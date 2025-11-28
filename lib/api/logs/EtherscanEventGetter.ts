@@ -46,6 +46,7 @@ export class EtherscanEventGetter implements EventGetter {
       chainId,
       new RequestQueue(getChainApiIdentifer(chainId), getChainApiRateLimit(chainId)),
     ]);
+
     this.queues = Object.fromEntries(queueEntries);
   }
 

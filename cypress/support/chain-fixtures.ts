@@ -1,7 +1,8 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { SupportedChainId } from 'lib/utils/chains';
+import type { Address } from 'viem';
 
-export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
+export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   // Mainnets
   [ChainId.Abstract]: '0x08A8494EcA0AaA732B6292c23b8904ea627F156b',
   [ChainId.ApeChain]: '0x722E2E4c15bE1fDDEd3C86f4100bC32b181827F5',
@@ -33,7 +34,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.DogechainMainnet]: '0x544b7Bfd815905fF87a0d25b1Fb109931851fdCc',
   [ChainId.ElastosSmartChain]: '0xA52B02C68cB65083788c46F2c08c6935f0aB19C1',
   [ChainId.ENULSMainnet]: '0x71396287EeDa50fdE667E8c53771682fd74De1Ac',
-  [ChainId.EOSEVMNetwork]: '0x74Ab5D0CcDB5A8b8BE357bF395F121E5BcAeB86f',
   [ChainId.EthereumClassic]: '0x8163dB62D6294bA66261644EcCD5FD5269451495',
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
   [ChainId.EthereumMainnet]: '0xA9a3D92C3aA8CfDA6C5139eCE02401432b91cbB2',
@@ -50,17 +50,15 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.Hemi]: '0x473eD6129788A9e6cF2da3D326869E277404fBdd',
   999: '0xdbfc2F881d0A2864b3d247e08C5d93BaF564050e', // Hyperliquid EVM
   [ChainId.ImmutablezkEVM]: '0xEAf9eaE01b153FAec95A666427391BCcBdAACC18',
-  [ChainId.InEVMMainnet]: '0x83c64A707850cE810A5F001dD51142aFf1fC53b9',
+  [ChainId.Injective]: '0x96FF0691b18254C97Db23da2044e521297716BAD',
   [ChainId.Ink]: '0xB48586959C7A5e5ef1D36A3d3027C11690E0818c',
   [ChainId.IOTAEVM]: '0xdeD212B8BAb662B98f49e757CbB409BB7808dc10',
-  [ChainId.KardiaChainMainnet]: '0xc770C26a40F16010a76A5313ffF138B35C69586C',
   [ChainId.Katana]: '0x041d7710eb5B759cA179FcbF8A5F9b534E6a4C21',
   [ChainId.KCCMainnet]: '0x14A3a2F8894e769A82Fd49df39209e5a82DcAc7C',
   [ChainId.Lens]: '0x27Af72b4E0Ec65687a00E26e309571B5439e349f',
-  [ChainId.LightlinkPhoenixMainnet]: '0x64F0CFb19aD0c6E170F0E29c7584F5f22b0C6ec3',
+  [ChainId.LightlinkPhoenixMainnet]: '0xcF1eD7Cb5023347Ac517BBBBCCfa253408946606',
   [ChainId.Linea]: '0xe8Df96a342628B40a0036DB0F182b917403A6D1B',
-  [ChainId.Lisk]: '0x893623d575fd7314dfF31Ec28688E6bCf0c7Dc00',
-  // [ChainId.LUKSOMainnet]: '0xF001197e5c9a528f0bCC1bE65727De28AB2bB774',
+  [ChainId.Lisk]: '0x6905E142375cb39587127c3f55E78E26390108b7',
   [ChainId.MantaPacificMainnet]: '0xCd733fEA07B1b68a63B6FFa84ce0d12a94f0Bc22',
   [ChainId.Mantle]: '0xEF12EAA20882A33487Ab069C2E27855aF49D9B16',
   [ChainId.MetisAndromedaMainnet]: '0x50E92fd1f4A456b6669637635333C6275ada797d',
@@ -83,7 +81,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.PlumeMainnet]: '0x5D2Fec7e07afbb002210760fc8Da9c3335e90826',
   [ChainId.PolygonMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.PulseChain]: '0x9c128fFa923B251Fa40F58906034b2DeaE6C3146',
-  [ChainId.RARIChainMainnet]: '0xE247B36665d3E1a5B17f0E5F795096ca0015e9d9',
+  [ChainId.RARIChainMainnet]: '0x3633c7dE0aE55F6387E55824B006b51b7dbd8Dc1',
   [ChainId.Redstone]: '0x37c2DD981aC291015DAD1Cf2d4E1eB524Fc64E08',
   [ChainId.RolluxMainnet]: '0x75CCD3a10D9325aE2BF7f59d23A892061952fAF3',
   [ChainId.RoninMainnet]: '0x85abC7587044c5b587e6550FC5b048A8DaBb328b',
@@ -102,6 +100,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId['SongbirdCanary-Network']]: '0x4E8De52271D3bE18cC972af892198103C1e6AfE8',
   [ChainId.Sophon]: '0x713AA0891b17DCB54208502518e4665A4affC40b',
   [ChainId.Story]: '0x4545dFE080ADf461756710e5204ab6d7d4924B8E',
+  [ChainId.SubtensorEVM]: '0x6497Af269cdDd099C82F09208b89C62fAeEf0545',
   [ChainId.Superposition]: '0x7A414969b98399f7A1C44E18A0c434dD36d3C137',
   [ChainId.Swellchain]: '0xdCCac741a7Cd7d317f05b953D879e4D5262e0d91',
   [ChainId.SyscoinMainnet]: '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044',
@@ -113,11 +112,9 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.Viction]: '0x2CB38284290009Bb9557821300CA1eA5E32c01ad',
   [ChainId.WorldChain]: '0x6A9Cf2489cA50c5dAe3b31cddace1D8c9096630b',
   [ChainId.XDCNetwork]: '0x87dB6eA45E2F960A4DDFCfcef86264CdA78fF5E5',
-  [ChainId.XLayerMainnet]: '0x22dF8f85AD9850151582F89E37237Bf0517f87DD',
   [ChainId.ZetaChainMainnet]: '0xc9636B935FB6b3Ce48654a0009755D58F473c064',
   [ChainId.ZERONetwork]: '0x37D2098459efC343e157cb43a79f8AEDfa6B1a3c',
   [ChainId.ZircuitMainnet]: '0x0E276aB356FC73093Ba530dFFa3445786cD859f8',
-  [ChainId.ZKFairMainnet]: '0xb0240794108Fd89C99BB828C9eBc0e7d9703C2f8',
   [ChainId.ZkSyncMainnet]: '0x82FdF36736f3f8eE6f04Ab96eA32213c8d826FaA',
   [ChainId.Zora]: '0x061EFb2DF7767D6e63529BA99394037d4dCa39D6',
   // Testnets
@@ -131,14 +128,10 @@ export const TEST_ADDRESSES: Record<SupportedChainId, string> = {
   [ChainId.BNBSmartChainTestnet]: '0x40FE4911704f14f409ebEE40475377720C732803',
   [ChainId.CronosTestnet]: '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f',
   [ChainId.EthereumSepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
-  [ChainId.LineaSepolia]: '0x7061146B49427143FfF175e9C1bF7461630302fF',
-  // [ChainId.LUKSOTestnet]: '0xBdDDd277583DCaE0B501046ba86714FEea71B03F',
-  [ChainId.MegaETHTestnet]: '0x4D915A2f0a2c94b159b69D36bc26338E0ef8E3F6',
   [ChainId.MonadTestnet]: '0xB62a9716B08C8a1844B90B59D0CEf3637d42715e',
   [ChainId.OPSepoliaTestnet]: '0xDd3287043493E0a08d2B348397554096728B459c',
   [ChainId.PlumeTestnet]: '0x7561dAB2b8c9709A5D550FAe8F617aF7b11547D1',
   [ChainId.ScrollSepoliaTestnet]: '0xBF1E9dc0f7c2186346544BF985321e179c3d186c',
-  [ChainId.TabiTestnetv2]: '0xc9b213DAb2157aFC31999A3ADCc45a24B7fA7fFf',
   [ChainId.ZetaChainTestnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
   [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
   [ChainId.ZenChainTestnet]: '0xb98B6373f7f59bdc0bB2DCd11a9fC1e0a43AfBfa',

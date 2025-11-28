@@ -45,6 +45,7 @@ export enum SupportType {
   HYPERSYNC = 'HYPERSYNC',
   ETHERSCAN_COMPATIBLE = 'ETHERSCAN_COMPATIBLE',
   BLOCKSCOUT = 'BLOCKSCOUT', // Note that this is mostly Etherscan Compatible, with slight differences in the API
+  ROUTESCAN = 'ROUTESCAN', // Note that this is fully Etherscan Compatible, just for identification
   COVALENT = 'COVALENT',
   BACKEND_NODE = 'BACKEND_NODE',
   BACKEND_CUSTOM = 'BACKEND_CUSTOM',
@@ -138,6 +139,9 @@ export class Chain {
   }
 
   getEtherscanCompatibleApiUrl(): string | undefined {
+    if (this.type === SupportType.ROUTESCAN) {
+      return `https://api.routescan.io/v2/network/${this.isTestnet() ? 'testnet' : 'mainnet'}/evm/${this.chainId}/etherscan/api`;
+    }
     return this.options.etherscanCompatibleApiUrl ?? 'https://api.etherscan.io/v2/api';
   }
 
