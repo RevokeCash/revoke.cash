@@ -73,7 +73,8 @@ const parsePerson = (person: Nullable<string>): Person | undefined => {
   };
 };
 
-const calculateReadingTime = (content: string): number => Math.round(Math.max(readingTime(content, 200).minutes, 1));
+const calculateReadingTime = (content: string): number =>
+  Math.round(Math.max(readingTime(content, { wordsPerMinute: 200 }).minutes, 1));
 
 export const getSidebar = async (
   locale: string,

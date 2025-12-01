@@ -10,7 +10,7 @@ interface Props {
   error: any;
 }
 
-const Error = ({ error }: Props) => {
+const ErrorDisplay = ({ error }: Props) => {
   const t = useTranslations();
   const { selectedChainId } = useAddressPageContext();
 
@@ -26,4 +26,4 @@ const Error = ({ error }: Props) => {
   return <div>Error: {parseErrorMessage(error)}</div>;
 };
 
-export default Error;
+export default ErrorDisplay;

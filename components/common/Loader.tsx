@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
-import Error from './Error';
+import ErrorDisplay from './ErrorDisplay';
 
 interface Props {
   isLoading: boolean;
@@ -19,7 +19,7 @@ const Loader = ({ isLoading, error, children, loadingChildren, className, loadin
   };
 
   if (error) {
-    return <Error error={error} />;
+    return <ErrorDisplay error={error} />;
   }
 
   if (isLoading) {

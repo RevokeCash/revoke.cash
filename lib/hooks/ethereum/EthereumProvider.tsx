@@ -117,5 +117,5 @@ const isIframe = () => {
 };
 
 const isLedgerLive = () => {
-  return window?.ethereum?.isLedgerLive;
+  return (window as any)?.ethereum?.isLedgerLive;
 };

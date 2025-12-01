@@ -1,13 +1,11 @@
 import Breadcrumb from 'components/common/Breadcrumb';
 import Divider from 'components/common/Divider';
 import PageNavigation from 'components/common/PageNavigation';
-import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
 import ArticleMeta from 'components/learn/ArticleMeta';
 import Sidebar from 'components/learn/Sidebar';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import type { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
-import Image from 'next/image';
 import { useMessages, useTranslations } from 'next-intl';
 import SharedLayout from './SharedLayout';
 

@@ -198,6 +198,7 @@ export const getTokenMetadataUnknown = async (
   ]);
 
   return results.reduce(
+    // biome-ignore lint/performance/noAccumulatingSpread: list is so small that it doesn't matter
     (acc, result) => (result.status === 'fulfilled' ? { ...acc, ...result.value } : acc),
     undefined as TokenMetadata | undefined,
   );

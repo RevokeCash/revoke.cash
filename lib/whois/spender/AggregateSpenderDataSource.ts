@@ -40,7 +40,8 @@ export class AggregateSpenderDataSource implements SpenderDataSource {
       const aggregatedResults = results.reduce<SpenderData | SpenderRiskData>(
         (acc, result) =>
           result
-            ? { ...acc, ...(result ?? {}), riskFactors: [...(acc?.riskFactors ?? []), ...(result?.riskFactors ?? [])] }
+            ? // biome-ignore lint/performance/noAccumulatingSpread: list is so small that it doesn't matter
+              { ...acc, ...(result ?? {}), riskFactors: [...(acc?.riskFactors ?? []), ...(result?.riskFactors ?? [])] }
             : acc,
         {},
       );

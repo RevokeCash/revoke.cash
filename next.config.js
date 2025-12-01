@@ -46,8 +46,15 @@ const nextConfig = {
     ];
   },
   webpack: (config, { isServer }) => {
-    config.resolve.fallback = { fs: false, path: false, '@react-native-async-storage/async-storage': false };
-    config.externals.push('pino-pretty');
+    config.resolve.fallback = {
+      fs: false,
+      path: false,
+      // Unused wallet connectors (still get processed even though they're not used)
+      '@base-org/account': false,
+      '@gemini-wallet/core': false,
+      '@metamask/sdk': false,
+      porto: false,
+    };
 
     // We're running into issues with webpack when importing the hypersync client directly
     if (isServer) {

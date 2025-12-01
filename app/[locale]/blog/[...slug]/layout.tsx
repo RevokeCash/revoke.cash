@@ -1,12 +1,9 @@
 import Breadcrumb from 'components/common/Breadcrumb';
 import Divider from 'components/common/Divider';
 import PageNavigation from 'components/common/PageNavigation';
-import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
-import ArticleMeta from 'components/learn/ArticleMeta';
 import type { BreadcrumbEntry } from 'lib/interfaces';
 import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
-import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 
