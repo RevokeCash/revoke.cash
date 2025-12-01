@@ -46,7 +46,7 @@ const nextConfig = {
     ];
   },
   webpack: (config, { isServer }) => {
-    config.resolve.fallback = { fs: false, path: false };
+    config.resolve.fallback = { fs: false, path: false, '@react-native-async-storage/async-storage': false };
     config.externals.push('pino-pretty');
 
     // We're running into issues with webpack when importing the hypersync client directly
