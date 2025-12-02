@@ -1650,19 +1650,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:^16.0.6":
-  version: 16.0.6
-  resolution: "@next/bundle-analyzer@npm:16.0.6"
+"@next/bundle-analyzer@npm:^16.0.7":
+  version: 16.0.7
+  resolution: "@next/bundle-analyzer@npm:16.0.7"
   dependencies:
     webpack-bundle-analyzer: "npm:4.10.1"
-  checksum: 10/4ca9d5e6d68878df0742726b1e293c87f32364d806da1fbcc9bf29d4c32a193a7939c062ca25698caf3478320352b3b88210f033f66f012128d0c8ddfe60fc4e
+  checksum: 10/a8dc33c806da4f8cdafd478b8bcf00f345de2e3b8f822dee9e8312319a97f392a3244e710fbc43c52af535261859c105a55c0bb83f34d21cdd5d703d6b90090a
   languageName: node
   linkType: hard
 
-"@next/env@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/env@npm:16.0.6"
-  checksum: 10/a3cf3db4e84dddeb77de9b923edef7b9a8d85f15b6957c096024020f92fbb21c41119f7ff2c4aca60eb4f4c86e7609923a8b1cbc4cab3f216ae0349ba6ce25e8
+"@next/env@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/env@npm:16.0.7"
+  checksum: 10/dc81ffaa22749e4a60233928bca2a89e91a5b2eedf0ec5e5ae43c19c432cbc4881a22205aafbb31e2e8e62ed54d7d97565691d0d2939f120bc1dea955ef2aa94
   languageName: node
   linkType: hard
 
@@ -1673,58 +1673,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-darwin-arm64@npm:16.0.6"
+"@next/swc-darwin-arm64@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-darwin-arm64@npm:16.0.7"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-darwin-x64@npm:16.0.6"
+"@next/swc-darwin-x64@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-darwin-x64@npm:16.0.7"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-linux-arm64-gnu@npm:16.0.6"
+"@next/swc-linux-arm64-gnu@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-linux-arm64-gnu@npm:16.0.7"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-linux-arm64-musl@npm:16.0.6"
+"@next/swc-linux-arm64-musl@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-linux-arm64-musl@npm:16.0.7"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-linux-x64-gnu@npm:16.0.6"
+"@next/swc-linux-x64-gnu@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-linux-x64-gnu@npm:16.0.7"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-linux-x64-musl@npm:16.0.6"
+"@next/swc-linux-x64-musl@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-linux-x64-musl@npm:16.0.7"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-win32-arm64-msvc@npm:16.0.6"
+"@next/swc-win32-arm64-msvc@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-win32-arm64-msvc@npm:16.0.7"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:16.0.6":
-  version: 16.0.6
-  resolution: "@next/swc-win32-x64-msvc@npm:16.0.6"
+"@next/swc-win32-x64-msvc@npm:16.0.7":
+  version: 16.0.7
+  resolution: "@next/swc-win32-x64-msvc@npm:16.0.7"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3042,13 +3042,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/speed-insights@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@vercel/speed-insights@npm:1.3.0"
+"@vercel/speed-insights@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@vercel/speed-insights@npm:1.3.1"
   peerDependencies:
     "@sveltejs/kit": ^1 || ^2
     next: ">= 13"
-    nuxt: ">= 3"
     react: ^18 || ^19 || ^19.0.0-rc
     svelte: ">= 4"
     vue: ^3
@@ -3066,7 +3065,7 @@ __metadata:
       optional: true
     vue-router:
       optional: true
-  checksum: 10/92f38db335b0805e40796e8a1e92fcb8aebba298002210b01c5c8f424ffee3bc95cea93f03eedcc8be28b5fb184bc9231c3c42cb6ae5ff8365c3cd7415c84028
+  checksum: 10/64d82e980900961c144bdf0054a4a261c99bcb1150f2cc37614b0cf879143885f56077360325c4805c4491eba027bca908ebd8c7c200eb068b581b13533b2de1
   languageName: node
   linkType: hard
 
@@ -8062,23 +8061,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-intl-swc-plugin-extractor@npm:^4.5.6":
-  version: 4.5.6
-  resolution: "next-intl-swc-plugin-extractor@npm:4.5.6"
-  checksum: 10/0456c91b897438bc770279933c7a4a53f54e2bbb2032941fa1292b8ee61ff01563e96868cbc698c0b493a30551518ab0ef9508eef42c0f11d9b9de769afc90c4
+"next-intl-swc-plugin-extractor@npm:^4.5.8":
+  version: 4.5.8
+  resolution: "next-intl-swc-plugin-extractor@npm:4.5.8"
+  checksum: 10/86792b33240c67577dd6983c881d0c8ae122b1919ad83dc870addd81c0dd2ddab412beb7e48513bebab664af8860827d1e4a009461890019b539767df7caf36a
   languageName: node
   linkType: hard
 
-"next-intl@npm:^4.5.6":
-  version: 4.5.6
-  resolution: "next-intl@npm:4.5.6"
+"next-intl@npm:^4.5.8":
+  version: 4.5.8
+  resolution: "next-intl@npm:4.5.8"
   dependencies:
     "@formatjs/intl-localematcher": "npm:^0.5.4"
     "@swc/core": "npm:^1.15.2"
     negotiator: "npm:^1.0.0"
-    next-intl-swc-plugin-extractor: "npm:^4.5.6"
+    next-intl-swc-plugin-extractor: "npm:^4.5.8"
     po-parser: "npm:^1.0.2"
-    use-intl: "npm:^4.5.6"
+    use-intl: "npm:^4.5.8"
   peerDependencies:
     next: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
@@ -8086,7 +8085,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/b6d682e5096bd235acb788c36d537e7f815930118a4ad0ff98b880623d2c8a5a14586afa3d40699bb4b8e6182372b4ebe1961fa653a6e8837179d0ce9a5d0d5c
+  checksum: 10/ad5dbc3a6d72a1b40a2132e2aad2b673872857b89884d8647561f539a5fcf05d91da2372076753f40083d3a76fab62789532d2ecd8369fee7b4d28e4ca6c9129
   languageName: node
   linkType: hard
 
@@ -8107,19 +8106,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^16.0.6":
-  version: 16.0.6
-  resolution: "next@npm:16.0.6"
+"next@npm:^16.0.7":
+  version: 16.0.7
+  resolution: "next@npm:16.0.7"
   dependencies:
-    "@next/env": "npm:16.0.6"
-    "@next/swc-darwin-arm64": "npm:16.0.6"
-    "@next/swc-darwin-x64": "npm:16.0.6"
-    "@next/swc-linux-arm64-gnu": "npm:16.0.6"
-    "@next/swc-linux-arm64-musl": "npm:16.0.6"
-    "@next/swc-linux-x64-gnu": "npm:16.0.6"
-    "@next/swc-linux-x64-musl": "npm:16.0.6"
-    "@next/swc-win32-arm64-msvc": "npm:16.0.6"
-    "@next/swc-win32-x64-msvc": "npm:16.0.6"
+    "@next/env": "npm:16.0.7"
+    "@next/swc-darwin-arm64": "npm:16.0.7"
+    "@next/swc-darwin-x64": "npm:16.0.7"
+    "@next/swc-linux-arm64-gnu": "npm:16.0.7"
+    "@next/swc-linux-arm64-musl": "npm:16.0.7"
+    "@next/swc-linux-x64-gnu": "npm:16.0.7"
+    "@next/swc-linux-x64-musl": "npm:16.0.7"
+    "@next/swc-win32-arm64-msvc": "npm:16.0.7"
+    "@next/swc-win32-x64-msvc": "npm:16.0.7"
     "@swc/helpers": "npm:0.5.15"
     caniuse-lite: "npm:^1.0.30001579"
     postcss: "npm:8.4.31"
@@ -8162,7 +8161,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 10/be4f41278a3833c934e31563047f4a496f0f5a45a37aadc78d303d894afedfb167d2796d2c5bc525a9f9cc40488e15c9e3488afb5b478f8eda0a4356a7fcca3b
+  checksum: 10/1c8e174534279bb68447c8aabc1c68eb28eef33eaea32bfe76613d7727c114542c787e4b5cfb76fcedb88e0861c5171a0ae85f3e61bdf6d50ac7749b7bf5f09d
   languageName: node
   linkType: hard
 
@@ -9029,14 +9028,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.2.0":
-  version: 19.2.0
-  resolution: "react-dom@npm:19.2.0"
+"react-dom@npm:^19.2.1":
+  version: 19.2.1
+  resolution: "react-dom@npm:19.2.1"
   dependencies:
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.0
-  checksum: 10/3dbba071b9b1e7a19eae55f05c100f6b44f88c0aee72397d719ae338248ca66ed5028e6964c1c14870cc3e1abcecc91b22baba6dc2072f819dea81a9fd72f2fd
+    react: ^19.2.1
+  checksum: 10/cceea7104bd3ad52e2f6377f47c4b346244c1263917fd95745e31647ff8ab23b16f719c2bfc8bcf2a6c802ecb9c9e81f08b09e3447e1f49bc27368283ed299ba
   languageName: node
   linkType: hard
 
@@ -9202,10 +9201,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.0":
-  version: 19.2.0
-  resolution: "react@npm:19.2.0"
-  checksum: 10/e13bcdb8e994c3cfa922743cb75ca8deb60531bf02f584d2d8dab940a8132ce8a2e6ef16f8ed7f372b4072e7a7eeff589b2812dabbedfa73e6e46201dac8a9d0
+"react@npm:^19.2.1":
+  version: 19.2.1
+  resolution: "react@npm:19.2.1"
+  checksum: 10/7c7ab0f40b98e87e1466bea8c28564c5f3c384506cbda93d24788d32b40bf6059c991687c7e90a396b11f09223a779a81b1188af9acd839aaa0a672987c13107
   languageName: node
   linkType: hard
 
@@ -9458,7 +9457,7 @@ __metadata:
     "@heroicons/react": "npm:^2.2.0"
     "@lavamoat/allow-scripts": "npm:^3.4.1"
     "@localazy/cli": "npm:^2.0.8"
-    "@next/bundle-analyzer": "npm:^16.0.6"
+    "@next/bundle-analyzer": "npm:^16.0.7"
     "@privy-io/cross-app-connect": "npm:^0.2.3"
     "@rainbow-me/rainbowkit": "npm:^2.2.9"
     "@revoke.cash/chains": "npm:^73.0.0"
@@ -9480,7 +9479,7 @@ __metadata:
     "@types/request-ip": "npm:^0.0.41"
     "@upstash/ratelimit": "npm:^2.0.7"
     "@upstash/redis": "npm:^1.35.7"
-    "@vercel/speed-insights": "npm:^1.3.0"
+    "@vercel/speed-insights": "npm:^1.3.1"
     "@walletconnect/ethereum-provider": "npm:^2.23.0"
     chai: "npm:^6.2.1"
     cypress: "npm:^15.7.0"
@@ -9495,17 +9494,17 @@ __metadata:
     md5: "npm:^2.3.0"
     mixpanel-browser: "npm:^2.70.0"
     mocha: "npm:^11.7.5"
-    next: "npm:^16.0.6"
+    next: "npm:^16.0.7"
     next-circular-dependency: "npm:^1.0.1"
-    next-intl: "npm:^4.5.6"
+    next-intl: "npm:^4.5.8"
     next-sitemap: "npm:^4.2.3"
     nextjs-toploader: "npm:^3.9.17"
     p-queue: "npm:^9.0.1"
     postcss: "npm:^8.5.6"
     rate-limiter-flexible: "npm:^9.0.0"
-    react: "npm:^19.2.0"
+    react: "npm:^19.2.1"
     react-async-hook: "npm:^4.0.0"
-    react-dom: "npm:^19.2.0"
+    react-dom: "npm:^19.2.1"
     react-lite-youtube-embed: "npm:^2.6.0"
     react-markdown: "npm:^10.1.0"
     react-select: "npm:^5.10.2"
@@ -9523,8 +9522,8 @@ __metadata:
     tsx: "npm:^4.21.0"
     typescript: "npm:^5.9.3"
     use-local-storage: "npm:^3.0.0"
-    viem: "npm:^2.40.3"
-    wagmi: "npm:^3.0.2"
+    viem: "npm:^2.41.2"
+    wagmi: "npm:^3.1.0"
     walkdir: "npm:^0.4.1"
     zustand: "npm:^5.0.9"
   languageName: unknown
@@ -10773,16 +10772,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-intl@npm:^4.5.6":
-  version: 4.5.6
-  resolution: "use-intl@npm:4.5.6"
+"use-intl@npm:^4.5.8":
+  version: 4.5.8
+  resolution: "use-intl@npm:4.5.8"
   dependencies:
     "@formatjs/fast-memoize": "npm:^2.2.0"
     "@schummar/icu-type-parser": "npm:1.21.5"
     intl-messageformat: "npm:^10.5.14"
   peerDependencies:
     react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0 || ^19.0.0
-  checksum: 10/3d775370a116a5a8aaeaacd5c8170c7ddbc687fb4cefe2252674e1992c4bb89336d055c07c1d92573bab21e38cfa478671ce9c01f98d9bd77864d6f5c2a32ffb
+  checksum: 10/c2bdcdd8e511b8c54dc085838fcd8f92cac5aeb82e20f76e5f8ba1f3a01d8ceb506fa2cdfdc9d9f6afa184f460d3633de2280136193543f36bc9a6d218cb4374
   languageName: node
   linkType: hard
 
@@ -10922,7 +10921,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:>=2.37.9, viem@npm:^2.1.1, viem@npm:^2.27.2, viem@npm:^2.40.3":
+"viem@npm:>=2.37.9, viem@npm:^2.1.1, viem@npm:^2.27.2":
   version: 2.40.3
   resolution: "viem@npm:2.40.3"
   dependencies:
@@ -10943,9 +10942,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wagmi@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "wagmi@npm:3.0.2"
+"viem@npm:^2.41.2":
+  version: 2.41.2
+  resolution: "viem@npm:2.41.2"
+  dependencies:
+    "@noble/curves": "npm:1.9.1"
+    "@noble/hashes": "npm:1.8.0"
+    "@scure/bip32": "npm:1.7.0"
+    "@scure/bip39": "npm:1.6.0"
+    abitype: "npm:1.1.0"
+    isows: "npm:1.0.7"
+    ox: "npm:0.9.6"
+    ws: "npm:8.18.3"
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/235d0a4c4f9ba27747388fdb45d7c54cd096f3b9d172179d90f6971ecbed710a0232385c37019a72812bba5e4db4be8c1a4d8381e8cb6e9210b900369f801e77
+  languageName: node
+  linkType: hard
+
+"wagmi@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "wagmi@npm:3.1.0"
   dependencies:
     "@wagmi/connectors": "npm:7.0.2"
     "@wagmi/core": "npm:3.0.0"
@@ -10958,7 +10978,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/3ff3dc778c9a7832cdcbb6da744fb7297ad8b368cc18cc648a13dffe620866b0bfc3e23775fcedbfc8c75367c3733f4503faf76d5a8a7932b5a24729b4198468
+  checksum: 10/6bbd5f2b261b5d6b81cd13d5788346316d7ed0d4e8ebb6c47f40b8cfd1b129ee30d8547020e643ffe8a618c4186c02b1393cf0ed0545e21ee392f5f226b1318b
   languageName: node
   linkType: hard
 

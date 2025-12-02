@@ -7,7 +7,15 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!**/.next", "!**/.yarn", "!**/public/assets", "!**/.vercel", "!**/package.json"]
+    "includes": [
+      "**",
+      "!**/.next",
+      "!**/.yarn",
+      "!**/public/assets",
+      "!**/.vercel",
+      "!**/package.json",
+      "!**/next-env.d.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
