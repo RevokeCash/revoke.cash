@@ -1,6 +1,6 @@
 'use client';
 
-import { isNonZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
+import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
 import { splitArray, throwIfExcessiveGas } from 'lib/utils';
 import {
@@ -10,7 +10,7 @@ import {
   type TokenAllowanceData,
   trackRevokeTransaction,
 } from 'lib/utils/allowances';
-import { trackBatchRevoke } from 'lib/utils/batch-revoke';
+import { recordBatchRevoke, trackBatchRevoke } from 'lib/utils/batch-revoke';
 import {
   type Eip5792Call,
   mapContractTransactionRequestToEip5792Call,
@@ -84,7 +84,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       (_, index) => callsSettled[index].status === 'fulfilled',
     );
 
-    if (isNonZeroFeeDollarAmount(feeDollarAmount) && callsToSubmit.length > 0) {
+    if (!isZeroFeeDollarAmount(feeDollarAmount) && callsToSubmit.length > 0) {
       try {
         const feeTransaction = prepareFeePayment(feeDollarAmount);
         // Fee payment is always the first transaction in the batch so it cannot be "skipped"
@@ -181,6 +181,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     }
 
     // TODO: This still tracks if all revokes/the full batch gets rejected
+    // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
+    if (isZeroFeeDollarAmount(feeDollarAmount)) recordBatchRevoke(selectedChainId, null, feeDollarAmount);
     trackBatchRevoke(selectedChainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792');
   };
 

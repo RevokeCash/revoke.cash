@@ -25,6 +25,6 @@ export const getFeeDollarAmount = (chainId: number, allowancesCount: number) => 
   return BASE_FEE + allowancesCount * PER_ALLOWANCE_FEE;
 };
 
-export const isNonZeroFeeDollarAmount = (feeDollarAmount: string) => {
-  return Number(feeDollarAmount) > 0;
+export const isZeroFeeDollarAmount = (feeDollarAmount: string) => {
+  return Number(feeDollarAmount) === 0;
 };

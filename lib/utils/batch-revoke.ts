@@ -23,7 +23,7 @@ export const trackBatchRevoke = (
   });
 };
 
-export const recordBatchRevoke = async (chainId: number, transactionHash: string, feePaid: string) => {
+export const recordBatchRevoke = async (chainId: number, transactionHash: string | null, feePaid: string) => {
   await ky.post(`/api/${chainId}/batch-revoke`, {
     json: {
       chainId,
