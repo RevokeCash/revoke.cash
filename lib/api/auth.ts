@@ -40,6 +40,10 @@ export const RateLimiters = {
     points: 5,
     duration: 1,
   }),
+  BATCH_REVOKE: new RateLimiterMemory({
+    points: 10,
+    duration: 1,
+  }),
 };
 
 export const checkRateLimitAllowed = async (req: NextApiRequest, rateLimiter: RateLimiterMemory) => {
@@ -119,6 +123,18 @@ const getClientIpEdge = (req: NextRequest): string => {
   if (isIp(xForwardedFor)) return xForwardedFor;
 
   throw new Error('Request headers malformed');
+};
+
+export const getClientCountryEdge = (req: NextRequest): string | null => {
+  // Cloudflare
+  const cfCountry = req.headers.get('cf-ipcountry');
+  if (cfCountry) return cfCountry;
+
+  // Vercel
+  const vercelCountry = req.headers.get('x-vercel-ip-country');
+  if (vercelCountry) return vercelCountry;
+
+  return null;
 };
 
 // From request-ip

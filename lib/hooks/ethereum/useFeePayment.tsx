@@ -5,6 +5,7 @@ import { DONATION_ADDRESS } from 'lib/constants';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
+import { recordBatchRevoke } from 'lib/utils/batch-revoke';
 import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
 import { isNoFeeRequiredError } from 'lib/utils/errors';
 import { HOUR } from 'lib/utils/time';
@@ -77,6 +78,8 @@ export const useFeePayment = (chainId: number) => {
     dollarAmountStr: string,
     transactionHash: Hash,
   ) => {
+    recordBatchRevoke(chainId, transactionHash, dollarAmountStr); // Don't await
+
     const dollarAmount = Number(dollarAmountStr);
     if (!dollarAmount) return;
 

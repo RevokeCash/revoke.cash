@@ -1,3 +1,4 @@
+import ky from 'lib/ky';
 import { isNullish } from '.';
 import type { TokenAllowanceData } from './allowances';
 import analytics from './analytics';
@@ -19,5 +20,15 @@ export const trackBatchRevoke = (
     feeDollarAmount: Number(feeDollarAmount),
     batchType,
     isTestnet: isTestnetChain(chainId),
+  });
+};
+
+export const recordBatchRevoke = async (chainId: number, transactionHash: string, feePaid: string) => {
+  await ky.post(`/api/${chainId}/batch-revoke`, {
+    json: {
+      chainId,
+      transactionHash,
+      feePaid,
+    },
   });
 };
