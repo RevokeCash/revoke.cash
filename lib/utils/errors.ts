@@ -73,6 +73,7 @@ export const isRevertedError = (error?: string | any): boolean => {
 
   const lowercaseMessage = error?.toLowerCase();
   if (lowercaseMessage?.includes('ethappnftnotsupported')) return false;
+  if (lowercaseMessage?.includes('blind signing')) return false;
   if (lowercaseMessage?.includes('revert')) return true;
   return false;
 };
