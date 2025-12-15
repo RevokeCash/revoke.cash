@@ -27,9 +27,6 @@ const Footer = () => {
               <FooterLink href="/exploits" router>
                 {t('common.footer.exploit_checker')}
               </FooterLink>
-              <FooterLink href="/scanner/domain" router>
-                {t('common.footer.domain_scanner')}
-              </FooterLink>
             </FooterSection>
             <FooterSection heading={t('common.footer.learn')}>
               <FooterLink href="/learn" router>

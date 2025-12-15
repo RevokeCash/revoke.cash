@@ -1,8 +1,0 @@
-{
-  "description": "与 web3 网站交互时，您可能会遇到无法识别的域名。您可以通过域名扫描，检查该域名是否存在安全问题，确保可以安全地与该域名进行交互。我们已经与 <kerberus-link> Kerberus </kerberus-link> 合作，可为您提供域名扫描服务。您也可以使用<extension-link> Revoke 扩展程序</extension-link>来集成域名扫描器，或者使用 <kerberus-link> Kerberus Sentinel3 扩展程序</kerberus-link>对所有 SOL/EVM 链进行更多的安全检查，并获取高达 3 万美元的诈骗保险。",
-  "meta": {
-    "description": "使用域名扫描检查 web3 域名是否可以安全地与之交互。我们已经与 Kerberus 合作，可为您进行域名扫描。",
-    "title": "域名扫描：检查域名是否可以安全交互"
-  },
-  "title": "域名扫描"
-}

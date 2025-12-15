@@ -33,7 +33,6 @@ export const WEBACY_API_KEY = process.env.WEBACY_API_KEY ?? process.env.NEXT_PUB
 export const NEFTURE_API_KEY = process.env.NEFTURE_API_KEY ?? process.env.NEXT_PUBLIC_NEFTURE_API_KEY;
 export const RESERVOIR_API_KEY = process.env.RESERVOIR_API_KEY ?? process.env.NEXT_PUBLIC_RESERVOIR_API_KEY;
 export const FAIRSIDE_API_KEY = process.env.FAIRSIDE_API_KEY ?? process.env.NEXT_PUBLIC_FAIRSIDE_API_KEY;
-export const KERBERUS_API_KEY = process.env.KERBERUS_API_KEY ?? process.env.NEXT_PUBLIC_KERBERUS_API_KEY;
 
 export const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY ?? process.env.NEXT_PUBLIC_COINGECKO_API_KEY;
 export const COINGECKO_API_BASE_URL = 'https://pro-api.coingecko.com/api/v3';

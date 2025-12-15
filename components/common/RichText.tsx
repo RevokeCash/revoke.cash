@@ -107,17 +107,6 @@ const tags = {
       {children}
     </Href>
   ),
-  'kerberus-link': (children: ReactNode) => (
-    <Href
-      href="https://www.kerberus.com/extension/?ref=REVOKECASH"
-      className="font-medium"
-      underline="hover"
-      html
-      external
-    >
-      {children}
-    </Href>
-  ),
   'pudgy-sbt-link': (children: ReactNode) => (
     <Href
       href="https://opensea.io/item/matic/0xd0eb70639146909a5ee1439da1124cb80af2d0b9/11"
