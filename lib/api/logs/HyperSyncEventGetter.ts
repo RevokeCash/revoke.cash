@@ -8,10 +8,14 @@ export class HyperSyncEventGetter implements EventGetter {
   async getClient(chainId: number): Promise<HypersyncClient> {
     const { HypersyncClient } = await import('@envio-dev/hypersync-client');
 
+    if (!process.env.HYPERSYNC_API_KEY) {
+      throw new Error('HYPERSYNC_API_KEY is not set');
+    }
+
     const url = `https://${chainId}.hypersync.xyz`;
-    const client = HypersyncClient.new({
+    const client = new HypersyncClient({
       url,
-      bearerToken: process.env.HYPERSYNC_API_KEY,
+      apiToken: process.env.HYPERSYNC_API_KEY,
     });
 
     return client;
@@ -23,7 +27,6 @@ export class HyperSyncEventGetter implements EventGetter {
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
-    const { BlockField, LogField } = await import('@envio-dev/hypersync-client');
     const client = await this.getClient(chainId);
 
     const eventResponse = await client.collectEvents(
@@ -38,18 +41,18 @@ export class HyperSyncEventGetter implements EventGetter {
         ],
         fieldSelection: {
           log: [
-            LogField.Address,
-            LogField.Data,
-            LogField.Topic0,
-            LogField.Topic1,
-            LogField.Topic2,
-            LogField.Topic3,
-            LogField.BlockNumber,
-            LogField.TransactionHash,
-            LogField.LogIndex,
-            LogField.TransactionIndex,
+            'Address',
+            'Data',
+            'Topic0',
+            'Topic1',
+            'Topic2',
+            'Topic3',
+            'BlockNumber',
+            'TransactionHash',
+            'LogIndex',
+            'TransactionIndex',
           ],
-          block: [BlockField.Timestamp],
+          block: ['Timestamp'],
         },
       },
       {},
