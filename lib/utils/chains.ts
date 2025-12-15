@@ -677,8 +677,8 @@ export const CHAINS = {
     explorerUrl: 'https://tuber.build',
     etherscanCompatibleApiUrl: 'https://explorer.plexnode.wtf/api',
     rpc: {
-      main: 'https://canto.gravitychain.io',
-      free: 'https://canto.gravitychain.io',
+      main: 'https://canto-rpc.ansybl.io',
+      free: 'https://canto-rpc.ansybl.io',
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Canto DEX is not fully compatible with Uniswap v2, but it might be partially compatible, so we can look into
@@ -686,13 +686,12 @@ export const CHAINS = {
     priceStrategy: undefined,
   }),
   [ChainId.CeloMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.CeloMainnet,
     name: 'Celo',
     nativeTokenCoingeckoId: 'celo',
     logoUrl: '/assets/images/vendor/chains/celo.svg',
     rpc: {
-      // main: `https://celo-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY} `,
       main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
@@ -1181,6 +1180,9 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/injective.svg',
     explorerUrl: 'https://blockscout.injective.network',
     etherscanCompatibleApiUrl: 'https://blockscout-api.injective.network/api',
+    rpc: {
+      main: 'https://injective-evm-rpc.scvsecurity.io',
+    },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -1253,7 +1255,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Lens]: new Chain({
-    type: SupportType.COVALENT,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Lens,
     name: 'Lens',
     nativeTokenCoingeckoId: 'gho',
@@ -1482,7 +1484,7 @@ export const CHAINS = {
     }),
   }),
   [ChainId.Morph]: new Chain({
-    type: SupportType.ROUTESCAN,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Morph,
     name: 'Morph',
     logoUrl: '/assets/images/vendor/chains/morph.svg',
@@ -1927,10 +1929,11 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.Shape]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Shape,
     name: 'Shape',
     logoUrl: '/assets/images/vendor/chains/shape.svg',
+    etherscanCompatibleApiUrl: 'https://shapescan.xyz/api',
     rpc: {
       main: `https://shape-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -2065,7 +2068,7 @@ export const CHAINS = {
     name: 'Bittensor EVM',
     nativeTokenCoingeckoId: 'bittensor',
     logoUrl: '/assets/images/vendor/chains/bittensor.svg',
-    explorerUrl: 'https://evm.taostats.io/',
+    explorerUrl: 'https://evm.taostats.io',
     etherscanCompatibleApiUrl: 'https://evm.taostats.io/api',
     deployedContracts: { ...MULTICALL },
   }),

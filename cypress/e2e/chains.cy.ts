@@ -27,7 +27,8 @@ describe(`Chain Support (${TEST_URL})`, () => {
     // Skip PulseChain because it is too slow, causing failures
     const describeFunction = chainId === ChainId.PulseChain ? describe.skip : describe;
 
-    describeFunction(`${chainName} --- ${supportType}`, () => {
+    const testName = `${chainName} --- ${supportType} (${TEST_URL}/address/${fixtureAddress}?chainId=${chainId})`;
+    describeFunction(testName, () => {
       it('should be able to check approvals', () => {
         cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
         cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-

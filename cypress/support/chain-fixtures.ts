@@ -100,7 +100,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId['SongbirdCanary-Network']]: '0x4E8De52271D3bE18cC972af892198103C1e6AfE8',
   [ChainId.Sophon]: '0x713AA0891b17DCB54208502518e4665A4affC40b',
   [ChainId.Story]: '0x4545dFE080ADf461756710e5204ab6d7d4924B8E',
-  [ChainId.SubtensorEVM]: '0x6497Af269cdDd099C82F09208b89C62fAeEf0545',
+  [ChainId.SubtensorEVM]: '0xBc46dfF8B58Cb86Cb9FfC022d3f60af9a44c78c2',
   [ChainId.Superposition]: '0x7A414969b98399f7A1C44E18A0c434dD36d3C137',
   [ChainId.Swellchain]: '0xdCCac741a7Cd7d317f05b953D879e4D5262e0d91',
   [ChainId.SyscoinMainnet]: '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044',
