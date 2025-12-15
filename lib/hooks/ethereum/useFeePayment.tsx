@@ -1,10 +1,11 @@
 'use client';
 
-import { isNonZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
+import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { DONATION_ADDRESS } from 'lib/constants';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
+import { recordBatchRevoke } from 'lib/utils/batch-revoke';
 import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
 import { isNoFeeRequiredError } from 'lib/utils/errors';
 import { HOUR } from 'lib/utils/time';
@@ -37,7 +38,7 @@ export const useFeePayment = (chainId: number) => {
       throw new Error('No fee required: Could not get native token price for fee payment');
     }
 
-    if (!isNonZeroFeeDollarAmount(dollarAmount)) {
+    if (isZeroFeeDollarAmount(dollarAmount)) {
       throw new Error('No fee required: Fee amount is zero');
     }
 
@@ -77,6 +78,8 @@ export const useFeePayment = (chainId: number) => {
     dollarAmountStr: string,
     transactionHash: Hash,
   ) => {
+    recordBatchRevoke(chainId, transactionHash, dollarAmountStr); // Don't await
+
     const dollarAmount = Number(dollarAmountStr);
     if (!dollarAmount) return;
 
