@@ -28,7 +28,7 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
     analytics.track('Cancelled Permit Signatures', {
       chainId: selectedChainId,
       account: address,
-      token: token.contract.address,
+      tokenAddress: token.contract.address,
     });
 
     const waitForConfirmation = async () => {

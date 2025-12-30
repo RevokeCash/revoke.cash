@@ -27,7 +27,7 @@ describe(`Chain Support (${TEST_URL})`, () => {
     // Skip PulseChain because it is too slow, causing failures
     const describeFunction = chainId === ChainId.PulseChain ? describe.skip : describe;
 
-    const testName = `${chainName} --- ${supportType} (${TEST_URL}/address/${fixtureAddress}?chainId=${chainId})`;
+    const testName = `${chainName} (chainId: ${chainId}) --- ${supportType} (${TEST_URL}/address/${fixtureAddress}?chainId=${chainId})`;
     describeFunction(testName, () => {
       it('should be able to check approvals', () => {
         cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
