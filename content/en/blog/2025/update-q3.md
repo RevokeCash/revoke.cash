@@ -24,7 +24,6 @@ This quarter we shipped a range of smaller updates and improvements across the s
 - Added EIP7702 delegations to the Delegations tab
 - Published an article about EIP7702 to address some common misconceptions
 - Added more sorting and filtering options to the approvals dashboard
-- Added EIP7702 delegations to the Delegations tab
 - Improved ENS resolution to resolve DNS-based names
 
 These upgrades make it easier to inspect permissions, understand delegations and navigate the interface.
