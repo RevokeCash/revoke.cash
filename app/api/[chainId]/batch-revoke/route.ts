@@ -35,14 +35,15 @@ export async function POST(req: NextRequest, { params }: Props) {
   const body = await req.json();
 
   const transactionHash = body.transactionHash;
+  const userAddress = body.userAddress;
   const feePaid = BigInt(((Number(body.feePaid) ?? 0) * 100).toFixed(0));
   const sponsor = FEE_SPONSORS[chainId] ?? null;
   const country = getClientCountryEdge(req);
 
   try {
     await sql`
-      INSERT INTO batch_revokes (chain_id, fee_transaction_hash, fee_paid, is_testnet, vat_region, sponsor, timestamp)
-      VALUES (${chainId}, ${transactionHash}, ${feePaid}, ${isTestnetChain(chainId)}, ${country}, ${sponsor}, ${new Date().toISOString()})
+      INSERT INTO batch_revokes (chain_id, fee_transaction_hash, user_address, fee_paid, is_testnet, vat_region, sponsor, timestamp)
+      VALUES (${chainId}, ${transactionHash}, ${userAddress}, ${feePaid}, ${isTestnetChain(chainId)}, ${country}, ${sponsor}, ${new Date().toISOString()})
     `;
 
     return new Response(JSON.stringify({}), { status: 200 });

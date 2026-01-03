@@ -10,7 +10,7 @@ import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib
 import { isNoFeeRequiredError } from 'lib/utils/errors';
 import { HOUR } from 'lib/utils/time';
 import useLocalStorage from 'use-local-storage';
-import { type Hash, parseEther, type SendTransactionParameters } from 'viem';
+import { type Address, type Hash, parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 
@@ -74,11 +74,11 @@ export const useFeePayment = (chainId: number) => {
 
   const trackFeePaid = (
     chainId: DocumentedChainId,
-    address: string,
+    address: Address,
     dollarAmountStr: string,
     transactionHash: Hash,
   ) => {
-    recordBatchRevoke(chainId, transactionHash, dollarAmountStr); // Don't await
+    recordBatchRevoke(chainId, transactionHash, address, dollarAmountStr); // Don't await
 
     const dollarAmount = Number(dollarAmountStr);
     if (!dollarAmount) return;

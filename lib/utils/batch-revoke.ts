@@ -1,4 +1,5 @@
 import ky from 'lib/ky';
+import type { Address } from 'viem';
 import { isNullish } from '.';
 import type { TokenAllowanceData } from './allowances';
 import analytics from './analytics';
@@ -23,11 +24,17 @@ export const trackBatchRevoke = (
   });
 };
 
-export const recordBatchRevoke = async (chainId: number, transactionHash: string | null, feePaid: string) => {
+export const recordBatchRevoke = async (
+  chainId: number,
+  transactionHash: string | null,
+  userAddress: Address,
+  feePaid: string,
+) => {
   await ky.post(`/api/${chainId}/batch-revoke`, {
     json: {
       chainId,
       transactionHash,
+      userAddress,
       feePaid,
     },
   });

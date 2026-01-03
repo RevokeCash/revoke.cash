@@ -76,7 +76,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
     trackBatchRevoke(selectedChainId, address, allowances, feeDollarAmount, 'queued');
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowances.length > 1) {
-      recordBatchRevoke(selectedChainId, null, feeDollarAmount);
+      recordBatchRevoke(selectedChainId, null, address, feeDollarAmount);
     }
   };
 

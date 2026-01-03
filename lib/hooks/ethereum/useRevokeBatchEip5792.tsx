@@ -184,7 +184,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     trackBatchRevoke(selectedChainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792');
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowancesToSubmit.length > 1) {
-      recordBatchRevoke(selectedChainId, null, feeDollarAmount);
+      recordBatchRevoke(selectedChainId, null, address, feeDollarAmount);
     }
   };
 
