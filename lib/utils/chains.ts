@@ -125,6 +125,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
   ChainId.BasedAI,
+  42793, // Etherlink
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -890,6 +891,23 @@ export const CHAINS = {
         }),
       ],
     }),
+  }),
+  42793: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: 42793,
+    name: 'Etherlink',
+    nativeToken: 'XTZ',
+    nativeTokenCoingeckoId: 'tezos',
+    logoUrl: '/assets/images/vendor/chains/etherlink.svg',
+    infoUrl: 'https://etherlink.com',
+    explorerUrl: 'https://explorer.etherlink.com',
+    etherscanCompatibleApiUrl: 'https://explorer.etherlink.com/api',
+    rpc: {
+      main: 'https://node.mainnet.etherlink.com',
+      free: 'https://node.mainnet.etherlink.com',
+    },
+    deployedContracts: { ...MULTICALL },
+    priceStrategy: undefined,
   }),
   [ChainId.EthereumClassic]: new Chain({
     type: SupportType.BLOCKSCOUT,
