@@ -6,6 +6,7 @@
   },
   "buttons": {
     "authenticate": "認証する",
+    "authenticated": "Authenticated",
     "authenticating": "認証中",
     "back_to_exploits": "エクスプロイトの項目に戻る",
     "cancel": "キャンセル",

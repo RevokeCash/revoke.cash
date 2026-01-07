@@ -13,7 +13,7 @@ const Header = () => {
       <div className="flex shrink-0 h-9">
         <HeaderLogo />
       </div>
-      <div className="flex grow justify-end items-center gap-2 shrink-0">
+      <div className="flex grow justify-end items-center gap-8 shrink-0">
         <div className="hidden lg:flex justify-end items-center gap-4 flex-wrap">
           <NavLink to="/extension" text={t('common.nav.extension')} />
           <NavLink to="/exploits" text={t('common.nav.exploits')} />

@@ -2775,10 +2775,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-async-storage-persister@npm:^5.90.18":
+  version: 5.90.18
+  resolution: "@tanstack/query-async-storage-persister@npm:5.90.18"
+  dependencies:
+    "@tanstack/query-core": "npm:5.90.16"
+    "@tanstack/query-persist-client-core": "npm:5.91.15"
+  checksum: 10/90fc86a0cc583a7dc258fe365de0bef52a555b8c9ba4b972bd59bf94cb8c9957119324f57d8b8c8a4d6df9510427ccd3e9af9e88ce8e6d5be7884d27a00d80de
+  languageName: node
+  linkType: hard
+
 "@tanstack/query-core@npm:5.90.12":
   version: 5.90.12
   resolution: "@tanstack/query-core@npm:5.90.12"
   checksum: 10/e7a23a83152c40c5eced669a0d0965b19467c03009b383b6bc18b5ee86db7a7357984a2c851ba60859cbeb6966bb9756314c153c14532c75fd24d0159cbe7e56
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:5.90.16":
+  version: 5.90.16
+  resolution: "@tanstack/query-core@npm:5.90.16"
+  checksum: 10/25720ff6aa5888550351d92620ca62b6882e80da0fd0428be01c2c6cf4772e6678d7850b88f81916b3ab3fb49dad3b697a3ac84e9e6a90da482ef980c30b7566
   languageName: node
   linkType: hard
 
@@ -2791,13 +2808,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-sync-storage-persister@npm:^5.90.14":
-  version: 5.90.14
-  resolution: "@tanstack/query-sync-storage-persister@npm:5.90.14"
+"@tanstack/query-persist-client-core@npm:5.91.15":
+  version: 5.91.15
+  resolution: "@tanstack/query-persist-client-core@npm:5.91.15"
   dependencies:
-    "@tanstack/query-core": "npm:5.90.12"
-    "@tanstack/query-persist-client-core": "npm:5.91.11"
-  checksum: 10/3697f989d9d779be646d294d6a6f10fb5e72101f02d2cf659d17420d5aaf889ec27fe1b5d03b2c281c3a2148f58943e835d620ff6498d3c3a2ac371c6302e03c
+    "@tanstack/query-core": "npm:5.90.16"
+  checksum: 10/db552b3bc5199246297780ac215e8994cb58fd42255d8632d30b4f132677581fc1f6836ed75a4b84a6d838b6037c3188bc4ba7c4d23b31cf7200b5e60d200ce1
   languageName: node
   linkType: hard
 
@@ -9708,7 +9724,7 @@ __metadata:
     "@safe-global/safe-apps-sdk": "npm:^9.1.0"
     "@tailwindcss/postcss": "npm:^4.1.18"
     "@tailwindcss/typography": "npm:^0.5.19"
-    "@tanstack/query-sync-storage-persister": "npm:^5.90.14"
+    "@tanstack/query-async-storage-persister": "npm:^5.90.18"
     "@tanstack/react-query": "npm:^5.90.12"
     "@tanstack/react-query-persist-client": "npm:^5.90.14"
     "@tanstack/react-table": "npm:^8.21.3"

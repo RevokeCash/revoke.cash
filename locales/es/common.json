@@ -6,6 +6,7 @@
   },
   "buttons": {
     "authenticate": "Autenticar",
+    "authenticated": "Authenticated",
     "authenticating": "Autenticando",
     "back_to_exploits": "Volver a Hacks",
     "cancel": "Cancelar",

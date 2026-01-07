@@ -4,9 +4,17 @@ import { isNullish } from 'lib/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { NextRequest, NextResponse } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
+import type { Address, Hex } from 'viem';
+
+export interface SiweFields {
+  address: Address;
+  message: string;
+  signature: Hex;
+}
 
 export interface RevokeSession {
   ip?: string;
+  siwe?: SiweFields;
 }
 
 export const IRON_OPTIONS: SessionOptions = {
@@ -63,17 +71,31 @@ export const checkRateLimitAllowedByIp = async (ip: string, rateLimiter: RateLim
   }
 };
 
-export const storeSession = async (req: NextApiRequest, res: NextApiResponse) => {
+export const storeSession = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  sessionUpdate?: Partial<RevokeSession>,
+) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+
   // Store the user's IP as an identifier
   session.ip = getClientIp(req);
+
+  // Update the session with the provided sessionUpdate if provided
+  session.siwe = sessionUpdate?.siwe;
+
   await session.save();
 };
 
-export const storeSessionEdge = async (req: NextRequest, res: NextResponse) => {
+export const storeSessionEdge = async (req: NextRequest, res: NextResponse, sessionUpdate?: Partial<RevokeSession>) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+
   // Store the user's IP as an identifier
   session.ip = getClientIpEdge(req);
+
+  // Update the session with the provided sessionUpdate if provided
+  session.siwe = sessionUpdate?.siwe;
+
   await session.save();
 };
 

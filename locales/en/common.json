@@ -6,6 +6,7 @@
   },
   "buttons": {
     "authenticate": "Authenticate",
+    "authenticated": "Authenticated",
     "authenticating": "Authenticating",
     "back_to_exploits": "Back to Exploits",
     "cancel": "Cancel",
