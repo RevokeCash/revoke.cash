@@ -25,7 +25,7 @@ export async function GET(_req: Request, { params }: Props) {
   const t = await getTranslations({ locale });
 
   const title = t('blog.meta.title');
-  const background = 'https://revoke.cash/assets/images/blog/cover.jpg';
+  const background = 'https://revoke.cash/assets/images/cover-template.jpg';
 
   return await generateOgImage({ title, background });
 }

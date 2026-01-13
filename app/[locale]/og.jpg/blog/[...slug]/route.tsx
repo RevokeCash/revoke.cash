@@ -29,11 +29,6 @@ export async function GET(_req: Request, { params }: Props) {
 
   const title = meta.overlay ? meta.sidebarTitle : undefined;
 
-  try {
-    const background = `https://revoke.cash/assets/images/blog/${slug.join('/')}/cover.jpg`;
-    return await generateOgImage({ title, background });
-  } catch {
-    const background = 'https://revoke.cash/assets/images/opengraph-image.jpg';
-    return await generateOgImage({ title, background });
-  }
+  const background = 'https://revoke.cash/assets/images/cover-template.jpg';
+  return await generateOgImage({ title, background });
 }

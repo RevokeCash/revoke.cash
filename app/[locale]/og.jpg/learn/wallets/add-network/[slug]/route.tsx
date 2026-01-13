@@ -29,7 +29,7 @@ export async function GET(_req: Request, { params }: Props) {
 
   const chainName = getChainName(getChainIdFromSlug(slug));
   const title = t('learn.add_network.title', { chainName });
-  const background = 'https://revoke.cash/assets/images/learn/wallets/add-network/cover.jpg';
+  const background = 'https://revoke.cash/assets/images/cover-template.jpg';
 
   return await generateOgImage({ title, background });
 }

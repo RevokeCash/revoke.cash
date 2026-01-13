@@ -25,7 +25,7 @@ export async function GET(_req: Request, { params }: Props) {
   const t = await getTranslations({ locale });
 
   const title = t('learn.add_network.sidebar_title');
-  const background = 'https://revoke.cash/assets/images/learn/wallets/add-network/cover.jpg';
+  const background = 'https://revoke.cash/assets/images/cover-template.jpg';
 
   return await generateOgImage({ title, background });
 }

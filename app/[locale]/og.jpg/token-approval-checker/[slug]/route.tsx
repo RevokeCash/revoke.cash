@@ -29,7 +29,7 @@ export async function GET(_req: Request, { params }: Props) {
 
   const chainName = getChainName(getChainIdFromSlug(slug));
   const title = t('token_approval_checker.meta.title', { chainName });
-  const background = 'https://revoke.cash/assets/images/token-approval-checker/cover.jpg';
+  const background = 'https://revoke.cash/assets/images/cover-template.jpg';
 
   return await generateOgImage({ title, background });
 }
