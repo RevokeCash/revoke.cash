@@ -59,7 +59,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ZircuitMainnet,
   ChainId.RoninMainnet,
   ChainId.Lens,
-  ChainId.FantomOpera,
   ChainId.OpBNBMainnet,
   ChainId.ArbitrumNova,
   ChainId.MetisAndromedaMainnet,
@@ -124,7 +123,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RSS3VSLMainnet,
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
-  ChainId.BasedAI,
 ] as const;
 
 export const CHAIN_SELECT_TESTNETS = [
@@ -389,19 +387,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId['AvalancheC-Chain'],
-  }),
-  [ChainId.BasedAI]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.BasedAI,
-    name: 'BasedAI',
-    nativeTokenCoingeckoId: 'basedai',
-    logoUrl: '/assets/images/vendor/chains/basedai.jpg',
-    explorerUrl: 'https://explorer.bf1337.org',
-    etherscanCompatibleApiUrl: 'https://explorer.bf1337.org/api',
-    rpc: {
-      main: 'https://mainnet.basedaibridge.com/rpc',
-    },
-    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Base]: new Chain({
     type: SupportType.PROVIDER,
@@ -718,12 +703,11 @@ export const CHAINS = {
     }),
   }),
   [ChainId.ChilizChainMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.ROUTESCAN,
     chainId: ChainId.ChilizChainMainnet,
     name: 'Chiliz',
     nativeTokenCoingeckoId: 'chiliz',
     logoUrl: '/assets/images/vendor/chains/chiliz.png',
-    etherscanCompatibleApiUrl: 'https://scan.chiliz.com/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -975,30 +959,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/exosama.png',
     priceStrategy: undefined, // <$100k Liquidity
   }),
-  [ChainId.FantomOpera]: new Chain({
-    type: SupportType.HYPERSYNC,
-    chainId: ChainId.FantomOpera,
-    name: 'Fantom',
-    nativeTokenCoingeckoId: 'fantom',
-    logoUrl: '/assets/images/vendor/chains/fantom.svg',
-    rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=fantom&dkey=${DRPC_API_KEY}`,
-      free: 'https://rpc.fantom.network',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // SpookySwap (Router) | WFTM -> lzUSDC
-        new UniswapV2PriceStrategy({
-          address: '0x31F63A33141fFee63D4B26755430a390ACdD8a4d',
-          path: ['0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', '0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf'],
-          decimals: 6,
-          liquidityParameters: { baseAmount: 100n },
-        }),
-      ],
-    }),
-  }),
   [ChainId['Filecoin-Mainnet']]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId['Filecoin-Mainnet'],
@@ -1181,7 +1141,7 @@ export const CHAINS = {
     explorerUrl: 'https://blockscout.injective.network',
     etherscanCompatibleApiUrl: 'https://blockscout-api.injective.network/api',
     rpc: {
-      main: 'https://injective-evm-rpc.scvsecurity.io',
+      main: 'https://sentry.evm-rpc.injective.network',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
@@ -1393,11 +1353,10 @@ export const CHAINS = {
     }),
   }),
   [ChainId.MintMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.ROUTESCAN,
     chainId: ChainId.MintMainnet,
     name: 'Mint',
     logoUrl: '/assets/images/vendor/chains/mint.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.mintchain.io/api',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
@@ -1591,6 +1550,9 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'octaspace',
     logoUrl: '/assets/images/vendor/chains/octaspace.png',
     etherscanCompatibleApiUrl: 'https://explorer.octa.space/api',
+    rpc: {
+      main: 'https://rpc.octa.space',
+    },
     priceStrategy: undefined, // <$100k Liquidity
   }),
   [ChainId.OpBNBMainnet]: new Chain({
@@ -1984,7 +1946,7 @@ export const CHAINS = {
     explorerUrl: 'https://mainnet.somnia.w3us.site',
     etherscanCompatibleApiUrl: 'https://mainnet.somnia.w3us.site/api',
     rpc: {
-      main: 'https://somnia-json-rpc.stakely.io',
+      main: 'https://api.infra.mainnet.somnia.network',
     },
     priceStrategy: undefined, // TODO
   }),

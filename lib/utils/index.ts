@@ -1,5 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
+import { queryClient } from 'lib/hooks/QueryProvider';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import ky from 'lib/ky';
 import type { getTranslations } from 'next-intl/server';
@@ -234,7 +235,18 @@ export const apiLogin = async () => {
   // In a backend context, we do not need to login
   if (!isBrowser()) return true;
 
-  return ky
+  if (queryClient) {
+    return await queryClient.ensureQueryData({
+      queryKey: ['login'],
+      queryFn: () =>
+        ky
+          .post('/api/login')
+          .json<any>()
+          .then((res) => !!res?.ok),
+    });
+  }
+
+  return await ky
     .post('/api/login')
     .json<any>()
     .then((res) => !!res?.ok);

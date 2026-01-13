@@ -11,7 +11,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Astar]: '0xAE545C0d8d4b4645fBA8c895e370529D22F8a71c',
   [ChainId.AuroraMainnet]: '0x1D50A8c3295798fCebdDD0C720BeC4FBEdc3D178',
   [ChainId['AvalancheC-Chain']]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
-  [ChainId.BasedAI]: '0x35b7d03d4ef836068008f984df89284158722d71',
   [ChainId.Base]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Beam]: '0xc1447c8c647eF2f564cEAe520E1b65C758A02f9F',
   [ChainId.Berachain]: '0xED361b6dCce5498EEF362126BFdA548bAf78833C',
@@ -38,7 +37,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   // For some reason Cypress doesn't handle kalis.eth on mainnet, works in regular browser though
   [ChainId.EthereumMainnet]: '0xA9a3D92C3aA8CfDA6C5139eCE02401432b91cbB2',
   [ChainId.ExosamaNetwork]: '0xf0dB619363881ceb6bA06b9AE3dd4886652Aa896',
-  [ChainId.FantomOpera]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId['Filecoin-Mainnet']]: '0xbE2009437463895DF25Ab9895634B347672503cF',
   [ChainId.FlareMainnet]: '0xDDB43EEeA9B5BAe08F4CaB101CB9BEe56D763738',
   [ChainId.FlowEVMMainnet]: '0x000000000000000000000002F4F3404bF58d55d0',
