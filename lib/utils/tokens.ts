@@ -101,6 +101,7 @@ export const getErc20TokenData = async (
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
     contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
+    // TODO: if getTokenMetadata has a tokenlist entry, then we don't want to throw if spam, since it's likely false positive
     throwIfSpam(contract, events),
   ]);
 
@@ -245,8 +246,9 @@ export const throwIfSpamBytecode = async (contract: TokenContract) => {
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {
-    // Minimal proxies should not be marked as spam
-    if (bytecode.length < 100 && bytecode.endsWith('57fd5bf3')) return;
+    // (Minimal) proxies should not be marked as spam
+    if (bytecode.endsWith('57fd5bf3')) return; // EIP1167 minimal proxy
+    if (bytecode.includes('360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc')) return; // EIP1967 proxy
 
     // Somehow ApeChain minimal proxies have a different bytecode (I guess because of slight EVM differences)
     // - see https://apescan.io/address/0x90b4d884964392a6d998EcE041214F8D375bb25b
