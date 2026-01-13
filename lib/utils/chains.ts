@@ -959,6 +959,13 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/exosama.png',
     priceStrategy: undefined, // <$100k Liquidity
   }),
+  [ChainId.FantomOpera]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.FantomOpera,
+    name: 'Fantom',
+    nativeTokenCoingeckoId: 'fantom',
+    logoUrl: '/assets/images/vendor/chains/fantom.svg',
+  }),
   [ChainId['Filecoin-Mainnet']]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId['Filecoin-Mainnet'],
