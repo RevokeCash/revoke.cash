@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 
+/**
+ * Konami Code sequence: ↑↑↓↓←→←→BA
+ * The famous cheat code from Konami games
+ */
 const KONAMI_CODE = [
   'ArrowUp',
   'ArrowUp',
@@ -13,6 +17,10 @@ const KONAMI_CODE = [
   'a',
 ];
 
+/**
+ * Custom React hook that detects when the user enters the Konami code
+ * @param callback - Function to call when the Konami code is successfully entered
+ */
 export const useKonamiCode = (callback: () => void) => {
   const [keys, setKeys] = useState<string[]>([]);
 

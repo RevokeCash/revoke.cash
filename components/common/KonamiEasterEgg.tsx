@@ -7,6 +7,14 @@ interface Props {
   onClose: () => void;
 }
 
+/**
+ * Easter egg component that displays a celebration animation when the Konami code is entered
+ * Features:
+ * - Animated checkmark with bounce and pulse effects
+ * - Floating emoji particles
+ * - Auto-closes after 8 seconds
+ * - Can be manually closed by clicking anywhere or pressing Escape
+ */
 const KonamiEasterEgg = ({ onClose }: Props) => {
   const t = useTranslations();
   const [isVisible, setIsVisible] = useState(false);
