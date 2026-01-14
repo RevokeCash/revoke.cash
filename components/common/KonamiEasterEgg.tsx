@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   onClose: () => void;
@@ -18,10 +18,14 @@ interface Props {
 const KonamiEasterEgg = ({ onClose }: Props) => {
   const t = useTranslations();
   const [isVisible, setIsVisible] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Trigger animation after component mounts
     setIsVisible(true);
+
+    // Focus the dialog for accessibility
+    dialogRef.current?.focus();
 
     // Auto-close after 8 seconds
     const timer = setTimeout(() => {
@@ -32,19 +36,26 @@ const KonamiEasterEgg = ({ onClose }: Props) => {
     return () => clearTimeout(timer);
   }, [onClose]);
 
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(onClose, 500);
+  };
+
   return (
     <div
+      ref={dialogRef}
+      // biome-ignore lint/a11y/useSemanticElements: Using div with ARIA roles is appropriate here as we need custom animations and don't use dialog.show/showModal APIs
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="easter-egg-title"
+      tabIndex={-1}
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-500 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
-      onClick={() => {
-        setIsVisible(false);
-        setTimeout(onClose, 500);
-      }}
+      onClick={handleClose}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
-          setIsVisible(false);
-          setTimeout(onClose, 500);
+          handleClose();
         }
       }}
     >
@@ -147,7 +158,7 @@ const KonamiEasterEgg = ({ onClose }: Props) => {
         }
 
         .animate-draw {
-          animation: draw 1s ease-in-out infinite;
+          animation: draw 1s ease-in-out forwards;
         }
       `}</style>
     </div>
