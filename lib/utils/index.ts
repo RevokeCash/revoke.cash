@@ -271,3 +271,7 @@ export const splitArray = <T>(array: T[], chunkSize: number): T[][] => {
 
   return result;
 };
+
+export const slugify = (text: string) => {
+  return text.toLowerCase().replace(/ /g, '_');
+};

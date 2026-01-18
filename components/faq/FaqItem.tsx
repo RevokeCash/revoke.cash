@@ -13,9 +13,10 @@ interface Props {
   slug: string;
   children: ReactNode;
   wrapper?: 'p' | 'div';
+  heading?: 'h2' | 'h3';
 }
 
-const FaqItem = ({ question, slug, children, wrapper }: Props) => {
+const FaqItem = ({ question, slug, children, wrapper, heading = 'h2' }: Props) => {
   const isMounted = useMounted();
 
   return (
@@ -34,9 +35,7 @@ const FaqItem = ({ question, slug, children, wrapper }: Props) => {
         <>
           <dt className="relative">
             <Disclosure.Button className="flex gap-2 w-full items-center justify-between text-left">
-              <h2 className="text-lg" property="name">
-                {question}
-              </h2>
+              {React.createElement(heading, { className: 'text-lg not-prose', property: 'name' }, question)}
               <ChevronDownIcon className={twMerge(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform shrink-0')} />
             </Disclosure.Button>
             <div className="absolute top-0 -right-8 h-full w-8 z-10">

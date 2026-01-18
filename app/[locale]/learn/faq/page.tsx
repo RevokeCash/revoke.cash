@@ -3,6 +3,7 @@ import { BASE_FEE, PER_ALLOWANCE_FEE } from 'components/allowances/controls/batc
 import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
+import Faq from 'components/faq/Faq';
 import FaqItem from 'components/faq/FaqItem';
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getSidebar } from 'lib/utils/markdown-content';
@@ -52,11 +53,7 @@ const FaqPage: NextPage<Props> = async ({ params }) => {
     <LearnLayout sidebarEntries={sidebar} slug={['faq']} meta={meta}>
       <h1>{t('faq.title')}</h1>
 
-      <dl
-        className="w-full divide-y divide-zinc-200 dark:divide-zinc-800 pr-6 lg:pr-4"
-        vocab="https://schema.org/"
-        typeof="FAQPage"
-      >
+      <Faq>
         <FaqItem question={t('faq.questions.recover_assets.question')} slug="recover_assets">
           <RichText>{(tags) => t.rich('faq.questions.recover_assets.answer', tags)}</RichText>
         </FaqItem>
@@ -135,7 +132,7 @@ const FaqPage: NextPage<Props> = async ({ params }) => {
         <FaqItem question={t('faq.questions.other_question.question')} slug="other_question">
           <RichText>{(tags) => t.rich('faq.questions.other_question.answer', tags)}</RichText>
         </FaqItem>
-      </dl>
+      </Faq>
     </LearnLayout>
   );
 };
