@@ -160,9 +160,7 @@ const getTokenDataFromMapping = async (
 
 export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
   const metadataFromMapping = await getTokenDataFromMapping(contract, chainId);
-
-  // TODO: re-enable this once Alchemy fixes their spam list
-  // if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam in metadata');
+  if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam in metadata');
 
   if (isErc721Contract(contract)) {
     const [symbol] = await Promise.all([
