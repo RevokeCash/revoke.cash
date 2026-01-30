@@ -75,7 +75,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.OasisSapphire]: '0x25D436EB03b79c818ddb94dB3f0e170706Ff638b',
   [ChainId.OasysMainnet]: '0xf04820Bbc0D6B7F7B1f2fE888E5fc60DF6B61262',
   [ChainId.OctaSpace]: '0x8a6681fb319d009d775FdD7b1b15ad4f2Aad003c',
-  42793: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a', // Etherlink
+  [ChainId.EtherlinkMainnet]: '0x993894799d8Ae6ED114766a603dD9f0deE1B67A4',
   [ChainId.OpBNBMainnet]: '0x9bE0B370ECf45528F435c023c92a608b3EbB4A9b',
   [ChainId.OPMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.PlasmaMainnet]: '0x28bc371c773FDAEA0cCbf9742205f8711d880525',

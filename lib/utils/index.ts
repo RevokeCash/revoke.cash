@@ -135,7 +135,7 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
   return address;
 };
 
-export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
+export const throwIfExcessiveGas = (chainId: number, estimatedGas: bigint, tokenAddress: Address) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const gasFactors: Record<number, bigint> = {
     [ChainId.ArbitrumNova]: 20n,
@@ -146,17 +146,22 @@ export const throwIfExcessiveGas = (chainId: number, address: Address, estimated
     5031: 10n, // Somnia
     [ChainId.ZkSyncSepoliaTestnet]: 20n,
     [ChainId.ZERONetwork]: 20n,
+    [ChainId.EtherlinkMainnet]: 10n,
   };
 
   const EXCESSIVE_GAS = 500_000n * (gasFactors[chainId] ?? 1n);
 
   // TODO: Translate this error message
   if (estimatedGas > EXCESSIVE_GAS) {
-    console.error(`Gas limit of ${estimatedGas} is excessive`);
+    console.error(`Gas limit of ${estimatedGas} is excessive (token: ${tokenAddress})`);
 
     // Track excessive gas usage so we can blacklist tokens
     // TODO: Use a different tool than analytics for this
-    analytics.track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
+    analytics.track('Excessive gas limit', {
+      chainId,
+      estimatedGas: estimatedGas.toString(),
+      tokenAddress,
+    });
 
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
@@ -172,7 +177,7 @@ export const writeContractUnlessExcessiveGas = async (
   const estimatedGas =
     transactionRequest.gas ??
     (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
-  throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
+  throwIfExcessiveGas(transactionRequest.chain!.id, estimatedGas, transactionRequest.address);
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
 

@@ -406,7 +406,7 @@ export const simulateRevokeAllowance = async (allowance: TokenAllowanceData): Pr
 
   try {
     const preparedRevoke = await prepareRevokeAllowance(allowance);
-    throwIfExcessiveGas(allowance.chainId, allowance.owner, preparedRevoke.gas ?? 0n);
+    throwIfExcessiveGas(allowance.chainId, preparedRevoke.gas ?? 0n, allowance.contract.address);
     return { ...allowance, payload: { ...allowance.payload, preparedRevoke } };
   } catch (e) {
     return { ...allowance, payload: { ...allowance.payload, revokeError: parseErrorMessage(e) } };
