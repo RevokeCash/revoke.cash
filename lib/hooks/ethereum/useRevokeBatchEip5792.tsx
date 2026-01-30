@@ -65,7 +65,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
           transactionRequest.gas ??
           (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
 
-        throwIfExcessiveGas(selectedChainId, allowance.owner, estimatedGas);
+        throwIfExcessiveGas(selectedChainId, estimatedGas, allowance.contract.address);
 
         return mapContractTransactionRequestToEip5792Call(transactionRequest);
       }),

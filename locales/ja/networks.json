@@ -36,6 +36,7 @@
     "enuls": "ENULSは、NULSブロックチェーンインフラストラクチャー上に構築されたレイヤー1のEVM互換チェーンです。NULSエコシステムの一部でもある兄弟ネットワークのNerve Networkを通じたクロスチェーン相互運用性に重点を置いています。",
     "ethereum": "Ethereumはオリジナルのスマートコントラクトブロックチェーンで、2015年に作成されました。DeFiやNFTで最も人気のあるブロックチェーンであり、ユーザーと開発者が最も多いです。新しいブロックチェーンの多くはEthereumバーチャルマシン（EVM）上に構築されており、Ethereumのウォレットやツールと互換性があります。",
     "ethereum-classic": "Ethereum Classicは、2016年のDAOハッキングから生まれたEthereumのフォークです。Ethereum Classicは、ハッキングで盗まれた資金を回収する措置を拒否し、「元の」チェーンを継続しました。Ethereum Classicには、Ethashに基づくプルーフ・オブ・ワークのコンセンサスメカニズムなど、Ethereumが過去に持っていた多くの特性があります。",
+    "etherlink": "Etherlink is an EVM-compatible Layer 2 rollup built on the Tezos blockchain. It combines the security of Tezos with full Ethereum compatibility, featuring low fees, fast finality, and uses XTZ as its native token.",
     "exosama": "Exosamaは、主にNFTとゲーム使用のケースに焦点を当てたレイヤー1のブロックチェーンであり、ブロックチェーンにはいくつかのNFTゲームがあります。Exosamaは、Polkadotのパラチェーン技術を基盤として構築される新しいMoonsamaチェーンへの移行を計画しています。これにより、ExosamaはPolkadotエコシステム内の他のブロックチェーンと相互運用できるようになります。",
     "filecoin-evm": "Filecoinは分散型ファイルストレージのインセンティブ化に焦点を当てたブロックチェーンネットワークです。Filecoin Virtual Machine（FVM）と呼ばれる実行環境を持ち、Filecoin EVMまたはFEVMと呼ばれるEVM互換レイヤーを備えています。これにより、Filecoin上でEVM互換のスマートコントラクトが使用可能となります。",
     "flare": "Flareは、オフチェーンソースからの高信頼性データを提供することに重点を置いたレイヤー1のブロックチェーンです。これには2つのネイティブデータ収集プロトコルがあり、契約開発者に他のブロックチェーンやインターネットからのデータを提供してスマートコントラクトアプリケーションで使用できるようにしています。これらのデータ収集プロトコルのコンセンサスは、Flareのコンセンサスを確保しているのと同じ検証者によって決定されます。",

@@ -36,6 +36,7 @@
     "enuls": "ENULS 是建立在 NULS 区块链基础设施之上的第 1 层（Layer 1）EVM 兼容链。ENULS 致力于通过其兄弟网络——Nerve 网络，实现跨链互操作性。Nerve 网络同样属于 NULS 生态系统。",
     "ethereum": "以太坊创建于 2015 年，是最早的智能合约区块链，也是最受欢迎的去中心化金融（DeFi）和非同质化代币（NFT）区块链平台，拥有最多的用户和开发人员。许多较新的区块链是建立在以太坊虚拟机（EVM）之上的，与以太坊钱包和工具兼容。",
     "ethereum-classic": "以太坊经典（Ethereum Classic ）是以太坊的分支，是在 2016 年 The DAO 黑客事件之后诞生。以太坊经典拒绝了追回黑客事件中被盗资金的措施，继续在“原始”链上运行。以太坊经典仍然具备以太坊过去拥有的许多属性，例如基于 Ethash 的工作量证明（PoW）共识机制。",
+    "etherlink": "Etherlink is an EVM-compatible Layer 2 rollup built on the Tezos blockchain. It combines the security of Tezos with full Ethereum compatibility, featuring low fees, fast finality, and uses XTZ as its native token.",
     "exosama": "Exosama 是第 1 层（Layer 1）区块链，专注于 NFT 和游戏用例，链上有几款 NFT 游戏。Exosama 计划转向新的 Moonsama 链，新链将在波卡（Polkadot）的平行链技术上进行搭建，可以实现与波卡生态系统中的其他区块链的互操作。",
     "filecoin-evm": "Filecoin 是专注于去中心化文件存储创新的区块链网络，运行时环境名为 Filecoin 虚拟机（FVM），搭载名为 Filecoin EVM 或 FEVM 的 EVM 兼容层，允许兼容 EVM 的智能合约在 Filecoin 上使用。",
     "flare": "Flare 是第 1 层（Layer 1）区块链，旨在提供源自链下的高完整性数据。Flare 有两个原生数据采集协议，可为合约开发者提供其他数据链和互联网上的数据以便在智能合约中使用。维护 Flare 共识的验证者也将决定这些数据采集协议的共识。",
