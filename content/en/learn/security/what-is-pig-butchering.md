@@ -21,9 +21,13 @@ Unlike a typical hack, this isn't a technical exploit. It is social engineering 
 
 ## How The Scam Plays Out: The Five Stages
 
+::img{src="/assets/images/learn/security/what-is-pig-butchering/pig-butchering-stages.jpg" alt="Pig Butchering Stages" width="1080" height="720"}
+
 Pig butchering scams follow a structured, long-term pattern. Details may vary, but these scammers patiently follow a specific five-stage playbook:
 
 ### 1. Initial Contact
+
+::img{src="/assets/images/learn/security/what-is-pig-butchering/pig-butchering-intro-message.jpg" alt="Pig Butchering Intro Message" width="1600" height="900"}
 
 It usually starts with an innocent-looking message on WhatsApp, Telegram, a dating app or any social media network.
 At this stage, nothing feels suspicious. The conversation often appears accidental or friendly.
@@ -37,6 +41,8 @@ During this phase, money is intentionally not discussed. The primary goal is to 
 ### 3. Introduction of an Investment Opportunity
 
 Once trust is established, the scammer introduces risk-free investing. The attacker will create the illusion of their own financial success and offer to help the victim get started. Sometimes by referring to a mentor, a wealthy relative or an insider with guaranteed tips. To prove their success, they might show you fake trading dashboards or edited screenshots of massive profits.
+
+::img{src="/assets/images/learn/security/what-is-pig-butchering/pig-butchering-investment.jpg" alt="Pig Butchering Investment Opportunity" width="1200" height="1050"}
 
 In this phase, their primary goal is to make you believe that there is absolutely no risk involved and that you are missing out on easy money.
 
