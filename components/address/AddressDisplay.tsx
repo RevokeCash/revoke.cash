@@ -7,11 +7,19 @@ interface Props {
   address: string;
   domainName?: string;
   className?: string;
+  copyButtonClassName?: string;
   withCopyButton?: boolean;
   withTooltip?: boolean;
 }
 
-const AddressDisplay = ({ address, domainName, className, withCopyButton, withTooltip }: Props) => {
+const AddressDisplay = ({
+  address,
+  domainName,
+  className,
+  copyButtonClassName,
+  withCopyButton,
+  withTooltip,
+}: Props) => {
   const classes = twMerge('flex gap-1 items-center', className, 'leading-none');
 
   return (
@@ -23,7 +31,7 @@ const AddressDisplay = ({ address, domainName, className, withCopyButton, withTo
       ) : (
         (domainName ?? shortenAddress(address, 6))
       )}
-      {withCopyButton && <CopyButton content={address} />}
+      {withCopyButton && <CopyButton content={address} className={copyButtonClassName} />}
     </div>
   );
 };

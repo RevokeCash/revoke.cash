@@ -167,7 +167,7 @@ const TargetButton = forwardRef(
         size="none"
         style="secondary"
         onClick={toggleSelectClose}
-        className="flex items-center px-2 h-9 font-normal rounded-lg control-button-wrapper"
+        className="flex items-center gap-2 px-2 h-9 font-normal rounded-lg control-button-wrapper"
       >
         {formatControlOptionLabel(selectProps.value as O)}
         <Chevron className="w-5 h-5 fill-black dark:fill-white" />

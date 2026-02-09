@@ -241,13 +241,18 @@ export class Chain {
       [ChainId.OasysMainnet]: false,
     };
 
+    const transportOverrides: Record<number, any> = {
+      // OctaSpace's RPC does not handle batch requests properly
+      [ChainId.OctaSpace]: { batch: false },
+    };
+
     const multicallConfig = this.getDeployedContracts()?.multicall3 ? true : { deployless: true };
     const transportConfig = { batch: { wait: 10, batchSize: 10 } };
 
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),
-      transport: http(overrideUrl ?? this.getRpcUrl(), transportConfig),
+      transport: http(overrideUrl ?? this.getRpcUrl(), transportOverrides[this.chainId] ?? transportConfig),
       batch: { multicall: multicallOverrides[this.chainId] ?? multicallConfig },
     });
   }

@@ -53,7 +53,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
     const chainName = getChainName(chainId);
 
     return (
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {<ChainLogo chainId={chainId} checkMounted />}
         {(context === 'menu' || showNames) && <div>{chainName}</div>}
       </div>

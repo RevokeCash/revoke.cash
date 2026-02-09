@@ -52,7 +52,6 @@ export const useMarketplaces = () => {
         ChainId.Moonbeam,
         ChainId.Moonriver,
         ChainId.Canto,
-        ChainId.FantomOpera,
         ChainId.CeloMainnet,
         ChainId.Zora,
         ChainId.ZoraSepoliaTestnet,

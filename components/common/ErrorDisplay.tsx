@@ -1,29 +1,48 @@
 'use client';
 
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { getChainName } from 'lib/utils/chains';
 import { isCovalentError, isNetworkError, isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {
   error: any;
+  chainId?: number;
 }
 
-const ErrorDisplay = ({ error }: Props) => {
+const ErrorDisplay = ({ error, chainId }: Props) => {
   const t = useTranslations();
-  const { selectedChainId } = useAddressPageContext();
+  // Try to get the context, but don't fail if it's not available (e.g., in premium context)
+  const context = useContext(AddressPageContext);
+  const selectedChainId = chainId || context?.selectedChainId;
 
   useEffect(() => {
     console.log(error);
   }, [error]);
 
+  const fullMessage = String(error);
+  const shortMessage = getErrorMessage(error, selectedChainId, t);
+
+  const tooltip = <div className="whitespace-pre-wrap">{fullMessage}</div>;
+
+  return (
+    <WithHoverTooltip tooltip={tooltip}>
+      <div className="truncate">⚠ {shortMessage}</div>
+    </WithHoverTooltip>
+  );
+};
+
+const getErrorMessage = (error: any, selectedChainId: number | undefined, t: ReturnType<typeof useTranslations>) => {
   if (isNetworkError(error) || isRateLimitError(error) || isCovalentError(error)) {
-    const chainName = getChainName(selectedChainId);
-    return <div>Error: {t('common.errors.messages.chain_could_not_connect', { chainName })}</div>;
+    if (selectedChainId) {
+      const chainName = getChainName(selectedChainId);
+      return t('common.errors.messages.chain_could_not_connect', { chainName });
+    }
   }
 
-  return <div>Error: {parseErrorMessage(error)}</div>;
+  return parseErrorMessage(error);
 };
 
 export default ErrorDisplay;

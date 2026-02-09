@@ -56,7 +56,7 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
       <Button
         style="none"
         size="none"
-        className="flex items-center gap-1 text-black visited:text-black dark:text-white dark:visited:text-white"
+        className="flex items-center gap-2 text-black visited:text-black dark:text-white dark:visited:text-white"
         href={context === 'menu' ? getUrl(chainId) : undefined}
         router
         align="left"

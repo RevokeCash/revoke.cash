@@ -20,7 +20,7 @@ const AddressNavigation = () => {
   const delegationsPath = `${basePath}/delegations`;
 
   return (
-    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full justify-center sm:justify-start">
+    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full">
       <nav className="flex gap-4">
         <AddressNavigationTab name={t('address.navigation.allowances')} href={basePath} />
         <AddressNavigationTab name={t('address.navigation.history')} href={historyPath} />

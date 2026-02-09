@@ -41,4 +41,10 @@ export const ColorThemeProvider = ({ children }: Props) => {
   return <ColorThemeContext.Provider value={{ darkMode, theme, setTheme }}>{children}</ColorThemeContext.Provider>;
 };
 
-export const useColorTheme = () => useContext(ColorThemeContext);
+export const useColorTheme = () => {
+  const context = useContext(ColorThemeContext);
+  if (!context) {
+    throw new Error('useColorTheme must be used within a ColorThemeProvider');
+  }
+  return context;
+};

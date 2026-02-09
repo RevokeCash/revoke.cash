@@ -32,7 +32,7 @@ interface Props {
 }
 
 // We pass in undefined as the default value, since there should always be a provider for this context
-const AddressPageContext = React.createContext<AddressContext>(undefined as any);
+export const AddressPageContext = React.createContext<AddressContext>(undefined as any);
 
 export const AddressPageContextProvider = ({ children, address, domainName, initialChainId }: Props) => {
   const searchParams = useSearchParams()!;
@@ -86,7 +86,20 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   );
 };
 
-export const useAddressPageContext = () => useContext(AddressPageContext);
+export const useAddressPageContext = () => {
+  const context = useContext(AddressPageContext);
+  if (!context) {
+    throw new Error('useAddressPageContext must be used within an AddressPageContextProvider');
+  }
+  return context;
+};
 
-export const useAddressEvents = () => useContext(AddressPageContext).eventContext;
-export const useAddressAllowances = () => useContext(AddressPageContext).allowanceContext;
+export const useAddressEvents = () => {
+  const context = useAddressPageContext();
+  return context.eventContext;
+};
+
+export const useAddressAllowances = () => {
+  const context = useAddressPageContext();
+  return context.allowanceContext;
+};
