@@ -36,7 +36,9 @@ const FaqItem = ({ question, slug, children, wrapper, heading = 'h2' }: Props) =
           <dt className="relative">
             <Disclosure.Button className="flex gap-2 w-full items-center justify-between text-left">
               {React.createElement(heading, { className: 'text-lg not-prose', property: 'name' }, question)}
-              <ChevronDownIcon className={twMerge(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform shrink-0')} />
+              <ChevronDownIcon
+                className={twMerge(open ? 'rotate-180' : 'rotate-0', 'h-6 w-6 transition-transform shrink-0')}
+              />
             </Disclosure.Button>
             <div className="absolute top-0 -right-8 h-full w-8 z-10">
               <Href href={`#${slug}`} underline="none" router className="flex h-full items-center">

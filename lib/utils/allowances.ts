@@ -1,6 +1,5 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import type { useAllowances } from 'lib/hooks/ethereum/useAllowances';
 import type { Nullable, SpenderRiskData, TransactionSubmitted } from 'lib/interfaces';
 import { type Address, formatUnits, type PublicClient, type WalletClient, type WriteContractParameters } from 'viem';
 import {
@@ -88,8 +87,6 @@ export const isErc721Allowance = (
   allowance?: AllowancePayload,
 ): allowance is Erc721SingleAllowance | Erc721AllAllowance =>
   allowance?.type === AllowanceType.ERC721_SINGLE || allowance?.type === AllowanceType.ERC721_ALL;
-
-export type OnUpdate = ReturnType<typeof useAllowances>['onUpdate'];
 
 export const getAllowancesFromEvents = async (
   owner: Address,
@@ -587,4 +584,53 @@ export const calculateValueAtRisk = (allowance: TokenAllowanceData): number | nu
   const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals ?? 0));
 
   return float;
+};
+
+export interface AllowanceUpdateProperties {
+  amount?: bigint;
+  lastUpdated?: TimeLog;
+}
+
+export type OnUpdate = (allowance: TokenAllowanceData, updatedProperties?: AllowanceUpdateProperties) => Promise<void>;
+
+export const applyRevokeToAllowances = (
+  allowances: TokenAllowanceData[],
+  allowance: TokenAllowanceData,
+): TokenAllowanceData[] => {
+  const newAllowances = allowances.filter((other) => !allowanceEquals(other, allowance));
+
+  // If the token has a balance and we just revoked the last allowance, add the token back (stripped)
+  const hasBalance = !hasZeroBalance(allowance.balance, allowance.metadata.decimals);
+  const wasLastAllowanceForToken = !newAllowances.find((other) => contractEquals(other, allowance));
+  if (hasBalance && wasLastAllowanceForToken) {
+    newAllowances.push(stripAllowanceData(allowance));
+  }
+
+  return newAllowances;
+};
+
+export const applyUpdateToAllowances = (
+  allowances: TokenAllowanceData[],
+  allowance: TokenAllowanceData,
+  updatedProperties: AllowanceUpdateProperties,
+): TokenAllowanceData[] => {
+  return allowances.map((other) => {
+    if (!allowanceEquals(other, allowance)) return other;
+    return { ...other, payload: { ...other.payload, ...updatedProperties } as AllowancePayload };
+  });
+};
+
+export const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
+  return a.contract.address === b.contract.address && a.chainId === b.chainId;
+};
+
+export const allowanceEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
+  if (!contractEquals(a, b)) return false;
+  if (a.payload?.spender !== b.payload?.spender) return false;
+  if (a.payload?.type !== b.payload?.type) return false;
+  if (a.payload?.type === AllowanceType.ERC721_SINGLE && b.payload?.type === AllowanceType.ERC721_SINGLE) {
+    return a.payload.tokenId === b.payload.tokenId;
+  }
+
+  return true;
 };

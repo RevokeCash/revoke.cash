@@ -1,9 +1,10 @@
 import { ChainId } from '@revoke.cash/chains';
 import { AGW_SESSIONS_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import eventsDB from 'lib/databases/events';
+import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
 import { addressToTopic, apiLogin, isNullish, sortTokenEventsChronologically } from 'lib/utils';
-import { createViemPublicClientForChain, type DocumentedChainId, getChainName } from 'lib/utils/chains';
+import { createViemPublicClientForChain, type DocumentedChainId, getChainApiUrl, getChainName } from 'lib/utils/chains';
 import {
   generatePatchedAllowanceEvents,
   parseApprovalForAllLog,
@@ -21,41 +22,56 @@ import { type Address, getAbiItem, toEventSelector } from 'viem';
 
 export const getTokenEvents = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
   const override = ChainOverrides[chainId];
+
+  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
+  // See https://eips.ethereum.org/EIPS/eip-161
+  const chainName = getChainName(chainId);
+  const publicClient = createViemPublicClientForChain(chainId);
+  const nonce = await publicClient.getTransactionCount({ address });
+  if (nonce === 0) {
+    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
+    return [];
+  }
+
   if (override) return override(chainId, address);
   return getTokenEventsDefault(chainId, address);
 };
 
 type TokenEventsGetter = (chainId: DocumentedChainId, address: Address) => Promise<TokenEvent[]>;
 
-const ChainOverrides: Record<number, TokenEventsGetter> = {};
+const ChainOverrides: Record<number, TokenEventsGetter> = {
+  // For pulsechain we want to check whether an account has transacted after the fork timestamp,
+  // since otherwise everyone that used Ethereum before the fork would have to wait to get their events.
+  // Note: this doesn't work 100% for smart contract addresses, but the trade-off is worth it.
+  [ChainId.PulseChain]: async (chainId, address) => {
+    const apiUrl = getChainApiUrl(chainId);
+    const pulsechainForkBlock = 17233000;
+    const url = `${apiUrl}?module=account&action=txlist&address=${address}&start_block=${pulsechainForkBlock}`;
+
+    const { result } = await ky.get(url).json<{ result: any[] | string }>();
+    if (!Array.isArray(result) || result.length === 0) return [];
+
+    return getTokenEventsDefault(chainId, address);
+  },
+};
 
 const getEventPrerequisites = async (chainId: DocumentedChainId, address: Address) => {
-  const chainName = getChainName(chainId);
-  const publicClient = createViemPublicClientForChain(chainId);
   const logsProvider = getLogsProvider(chainId);
 
   const isLoggedIn = await apiLogin();
   if (!isLoggedIn) throw new Error('Failed to create an API session');
 
-  const [openSeaProxy, fromBlock, toBlock, nonce] = await Promise.all([
+  const [openSeaProxy, fromBlock, toBlock] = await Promise.all([
     getOpenSeaProxyAddress(address),
     0,
     logsProvider.getLatestBlock(),
-    publicClient.getTransactionCount({ address }),
   ]);
 
-  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
-  // See https://eips.ethereum.org/EIPS/eip-161
-  if (nonce === 0) {
-    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
-  }
-
-  return { logsProvider, openSeaProxy, fromBlock, toBlock, nonce };
+  return { logsProvider, openSeaProxy, fromBlock, toBlock };
 };
 
 const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
-  const { openSeaProxy, logsProvider, fromBlock, toBlock, nonce } = await getEventPrerequisites(chainId, address);
-  if (nonce === 0) return [];
+  const { openSeaProxy, logsProvider, fromBlock, toBlock } = await getEventPrerequisites(chainId, address);
 
   const getErc721EventSelector = (eventName: 'Transfer' | 'Approval' | 'ApprovalForAll') => {
     return toEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
@@ -125,8 +141,17 @@ export const getSessionEvents = async (
     throw new Error('Sessions are only supported on Abstract');
   }
 
-  const { logsProvider, fromBlock, toBlock, nonce } = await getEventPrerequisites(chainId, address);
-  if (nonce === 0) return [];
+  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
+  // See https://eips.ethereum.org/EIPS/eip-161
+  const chainName = getChainName(chainId);
+  const publicClient = createViemPublicClientForChain(chainId);
+  const nonce = await publicClient.getTransactionCount({ address });
+  if (nonce === 0) {
+    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
+    return [];
+  }
+
+  const { logsProvider, fromBlock, toBlock } = await getEventPrerequisites(chainId, address);
 
   const eventSelector = toEventSelector(getAbiItem({ abi: AGW_SESSIONS_ABI, name: 'SessionCreated' }));
   const addressTopic = addressToTopic(address);

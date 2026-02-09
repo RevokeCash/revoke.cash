@@ -1,11 +1,7 @@
-import { SparklesIcon } from '@heroicons/react/24/solid';
 import Button from 'components/common/Button';
-import { useMounted } from 'lib/hooks/useMounted';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
-import { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
-import useLocalStorage from 'use-local-storage';
 
 interface Props {
   name: string;
@@ -13,17 +9,9 @@ interface Props {
 }
 
 const AddressNavigationTab = ({ name, href }: Props) => {
-  const isMounted = useMounted();
-  const [visitedTabs, setVisitedTabs] = useLocalStorage<string[]>('visited-tabs', ['', '/signatures', '/coverage']);
-
   const router = useCsrRouter();
   const path = usePathname();
   const isSelected = path?.endsWith(href);
-
-  const BASE_PATH_LENGTH = 51;
-  const tabId = href.slice(BASE_PATH_LENGTH);
-
-  const isNew = isMounted && !visitedTabs?.includes(tabId);
 
   const classes = twMerge(
     'whitespace-nowrap border-b-2 pb-1 text-sm font-medium border-transparent',
@@ -37,19 +25,11 @@ const AddressNavigationTab = ({ name, href }: Props) => {
     router.replace(`${href}`, { retainSearchParams: ['chainId'] });
   };
 
-  useEffect(() => {
-    if (!isNew) return;
-    if (!isSelected) return;
-    if (!visitedTabs) return;
-    setVisitedTabs((prev) => [...prev!, tabId]);
-  }, [isSelected, isNew, tabId, visitedTabs, setVisitedTabs]);
-
   return (
-    <div className={twMerge('relative', isNew && 'mr-2')}>
+    <div className="relative">
       <Button id={name} style="none" size="none" onClick={onClick} className={classes}>
         {name}
       </Button>
-      {isNew && <SparklesIcon className="absolute -top-0.25 -right-4 w-4 h-4 text-brand animate-pulse" />}
     </div>
   );
 };
