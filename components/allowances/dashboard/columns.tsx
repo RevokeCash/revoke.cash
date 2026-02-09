@@ -23,7 +23,6 @@ import SpenderCell from './cells/SpenderCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
 
 declare module '@tanstack/table-core' {
-  // biome-ignore lint/correctness/noUnusedVariables: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
   interface TableMeta<TData extends RowData> {
     onUpdate: OnUpdate;
   }

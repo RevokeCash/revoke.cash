@@ -36,7 +36,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     allowances.forEach((allowance) => {
       updateTransaction(getAllowanceKey(allowance), { status: 'not_started' }, false);
     });
-  }, [allowances]);
+  }, [allowances, updateTransaction]);
 
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
     try {
@@ -73,19 +73,19 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
     return Object.fromEntries(
       allowances.map((allowance) => [getAllowanceKey(allowance), getTransaction(getAllowanceKey(allowance))]),
     );
-  }, [allowances, results]);
+  }, [allowances, getTransaction, results]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const isRevoking = useMemo(() => {
     return allowances.some((allowance) =>
       isTransactionStatusLoadingState(getTransaction(getAllowanceKey(allowance)).status),
     );
-  }, [allowances, results]);
+  }, [allowances, getTransaction, results]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(results): updated results mean the memo is stale
   const isAllConfirmed = useMemo(() => {
     return allowances.every((allowance) => getTransaction(getAllowanceKey(allowance)).status === 'confirmed');
-  }, [allowances, results]);
+  }, [allowances, getTransaction, results]);
 
   return {
     revoke,

@@ -77,7 +77,6 @@ export const customFilterFns = {
 
 // This will extend the original TableMeta interface, not replace it
 declare module '@tanstack/table-core' {
-  // biome-ignore lint/correctness/noUnusedVariables: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
   interface TableMeta<TData extends RowData> {
     onRevoke?: (delegation: Delegation) => void;
   }
