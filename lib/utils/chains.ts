@@ -39,7 +39,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Abstract,
   ChainId.Mode,
   ChainId.Gnosis,
-  ChainId.MonadMainnet,
+  ChainId.Monad,
   ChainId.Blast,
   ChainId.ZkSyncMainnet,
   ChainId.Swellchain,
@@ -1390,9 +1390,9 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.MonadMainnet]: new Chain({
+  [ChainId.Monad]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.MonadMainnet,
+    chainId: ChainId.Monad,
     name: 'Monad',
     nativeTokenCoingeckoId: 'monad',
     logoUrl: '/assets/images/vendor/chains/monad.svg',
@@ -1414,7 +1414,7 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
-    correspondingMainnetChainId: ChainId.MonadMainnet,
+    correspondingMainnetChainId: ChainId.Monad,
   }),
   [ChainId.Moonbeam]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,

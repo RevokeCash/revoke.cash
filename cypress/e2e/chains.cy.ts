@@ -42,7 +42,7 @@ describe(`Chain Support (${TEST_URL})`, () => {
         cy.get(Selectors.CONTROLS_SECTION, { timeout: 4_000 }).should('exist');
 
         // Get the number of approvals from the UI and store it in a file to compare with production
-        if (Cypress.env('CHECK_REGRESSIONS')) {
+        if (Cypress.expose('CHECK_REGRESSIONS')) {
           cy.get(Selectors.TOTAL_ALLOWANCES)
             .should('exist')
             .invoke('text')
@@ -57,7 +57,7 @@ describe(`Chain Support (${TEST_URL})`, () => {
             });
         }
 
-        if (Cypress.env('CHECK_EXPLORER')) {
+        if (Cypress.expose('CHECK_EXPLORER')) {
           // To test that the explorer link works, we navigate to the "Last Updated" URL and check that the address is present
           const linkElement = cy.get(Selectors.LAST_UPDATED_LINK).first();
           linkElement.invoke('attr', 'href').then((href) => {
@@ -72,7 +72,7 @@ describe(`Chain Support (${TEST_URL})`, () => {
         }
       });
 
-      if (Cypress.env('CHECK_REGRESSIONS')) {
+      if (Cypress.expose('CHECK_REGRESSIONS')) {
         it('should return the same results as production', () => {
           cy.visit(`https://revoke.cash/address/${fixtureAddress}?chainId=${chainId}`, { timeout: 10_000 });
           cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-

@@ -1,4 +1,4 @@
-export const TEST_URL = Cypress.env('TEST_URL') ?? 'http://localhost:3000';
+export const TEST_URL = Cypress.expose('TEST_URL') ?? 'http://localhost:3000';
 
 export const Selectors = {
   CHAIN_SELECT_BUTTON: '.control-button-wrapper',

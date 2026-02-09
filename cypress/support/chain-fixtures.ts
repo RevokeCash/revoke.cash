@@ -61,7 +61,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Mantle]: '0xEF12EAA20882A33487Ab069C2E27855aF49D9B16',
   [ChainId.MetisAndromedaMainnet]: '0x50E92fd1f4A456b6669637635333C6275ada797d',
   [ChainId.MintMainnet]: '0x0cf19FEAB99a1cdA5e101c1a6689490496aD630A',
-  [ChainId.MonadMainnet]: '0x6cCEF041d4Be3Db50Cc093cff835D8E793FcbfAF',
+  [ChainId.Monad]: '0x6cCEF041d4Be3Db50Cc093cff835D8E793FcbfAF',
   [ChainId.Mode]: '0x0A30C1F21E0268A58327665aA5106a8444c5C21c',
   [ChainId.Moonbeam]: '0x8107b00171a02f83D7a17f62941841C29c3ae60F',
   [ChainId.Moonriver]: '0x8107b00171a02f83D7a17f62941841C29c3ae60F',
