@@ -1,18 +1,24 @@
 'use client';
 
 import { ChainId } from '@revoke.cash/chains';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useParams, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useContext } from 'react';
 import AddressNavigationTab from './AddressNavigationTab';
 
-const AddressNavigation = () => {
+interface Props {
+  isPremium?: boolean;
+}
+
+const AddressNavigation = ({ isPremium }: Props) => {
   const { addressOrName } = useParams() as { addressOrName: string };
-  const { selectedChainId } = useAddressPageContext();
+  const context = useContext(AddressPageContext);
+  const selectedChainId = context?.selectedChainId;
   const path = usePathname();
   const t = useTranslations();
 
-  const basePath = `/address/${addressOrName}`;
+  const basePath = isPremium ? `/premium/address/${addressOrName}` : `/address/${addressOrName}`;
   const historyPath = `${basePath}/history`;
   const coveragePath = `${basePath}/coverage`;
   const sessionsPath = `${basePath}/sessions`;

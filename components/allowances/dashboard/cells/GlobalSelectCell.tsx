@@ -1,7 +1,7 @@
 import type { Table } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Checkbox from 'components/common/Checkbox';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddress } from 'lib/hooks/page-context/useAddress';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 
 interface Props {
@@ -9,12 +9,16 @@ interface Props {
 }
 
 const GlobalSelectCell = ({ table }: Props) => {
-  const { address, selectedChainId } = useAddressPageContext();
-  const selectedCount = table.getSelectedRowModel().flatRows.length;
+  const { address } = useAddress();
+
+  const selectedRows = table.getSelectedRowModel().flatRows;
+  const selectedCount = selectedRows.length;
   const selectableCount = table.getRowModel().flatRows.filter((row) => row.getCanSelect()).length;
   const checked = selectedCount === selectableCount && selectableCount > 0;
+  const indeterminate = selectedCount > 0;
 
-  const indeterminate = table.getSelectedRowModel().flatRows.length > 0;
+  // Use the first selected row's chainId, or default to 1 if none selected
+  const selectedChainId = selectedRows[0]?.original.chainId ?? 1;
 
   return (
     <ControlsWrapper

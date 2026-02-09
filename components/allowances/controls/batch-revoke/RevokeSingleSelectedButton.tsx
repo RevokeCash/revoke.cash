@@ -1,7 +1,7 @@
 import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddress } from 'lib/hooks/page-context/useAddress';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import ControlsWrapper from '../ControlsWrapper';
@@ -13,12 +13,15 @@ interface Props {
 
 const RevokeSingleSelectedButton = ({ table, allowance }: Props) => {
   const t = useTranslations();
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddress();
+
+  // Get chainId from the allowance itself
+  const chainId = allowance.chainId;
 
   const { revoke, isRevoking } = useRevoke(allowance, table.options.meta!.onUpdate);
 
   return (
-    <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={false} skipSwitchChain>
+    <ControlsWrapper chainId={chainId} address={address} overrideDisabled={false} skipSwitchChain>
       {(disabled) => (
         <div className="w-fit">
           <Button style="primary" size="sm" disabled={disabled} onClick={revoke} loading={isRevoking}>

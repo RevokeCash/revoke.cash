@@ -1,8 +1,6 @@
 import type { Table } from '@tanstack/react-table';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { Suspense } from 'react';
-import WalletHealthSection from '../wallet-health/WalletHealthSection';
 import AllowanceSearchBox from './AllowanceSearchBox';
 import SortSelect from './SortSelect';
 
@@ -11,7 +9,8 @@ interface Props {
 }
 
 const AllowanceTableControls = ({ table }: Props) => {
-  const { selectedChainId } = useAddressPageContext();
+  // TODO: Re-enable wallet health section when it's ready for both contexts
+  // const { selectedChainId } = useAddressPageContext();
 
   return (
     <div className="flex flex-col gap-2">
@@ -22,7 +21,7 @@ const AllowanceTableControls = ({ table }: Props) => {
             <AllowanceSearchBox table={table} />
           </Suspense>
         </div>
-        <WalletHealthSection chainId={selectedChainId} />
+        {/* <WalletHealthSection chainId={selectedChainId} /> */}
       </div>
     </div>
   );

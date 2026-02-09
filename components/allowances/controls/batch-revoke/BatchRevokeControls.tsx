@@ -1,12 +1,13 @@
 import Button from 'components/common/Button';
 import Loader from 'components/common/Loader';
 import { useWalletCapabilities } from 'lib/hooks/ethereum/useWalletCapabilities';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddress } from 'lib/hooks/page-context/useAddress';
 import { useTranslations } from 'next-intl';
 import ControlsWrapper from '../ControlsWrapper';
 import FeeNotice from './FeeNotice';
 
 interface Props {
+  chainId: number;
   feeDollarAmount: string;
   isRevoking: boolean;
   isAllConfirmed: boolean;
@@ -14,10 +15,10 @@ interface Props {
   revoke: () => Promise<void>;
 }
 
-const BatchRevokeControls = ({ feeDollarAmount, isRevoking, isAllConfirmed, setOpen, revoke }: Props) => {
+const BatchRevokeControls = ({ chainId, feeDollarAmount, isRevoking, isAllConfirmed, setOpen, revoke }: Props) => {
   const t = useTranslations();
-  const { address, selectedChainId } = useAddressPageContext();
-  const walletCapabilities = useWalletCapabilities(selectedChainId);
+  const { address } = useAddress();
+  const walletCapabilities = useWalletCapabilities(chainId);
 
   const getButtonText = () => {
     if (isRevoking) return t('common.buttons.revoking');
@@ -33,8 +34,8 @@ const BatchRevokeControls = ({ feeDollarAmount, isRevoking, isAllConfirmed, setO
   return (
     <Loader isLoading={walletCapabilities.isLoading}>
       <div className="flex flex-col items-center justify-center gap-8">
-        <FeeNotice chainId={selectedChainId} feeDollarAmount={feeDollarAmount} />
-        <ControlsWrapper chainId={selectedChainId} address={address} switchChainSize="md">
+        <FeeNotice chainId={chainId} feeDollarAmount={feeDollarAmount} />
+        <ControlsWrapper chainId={chainId} address={address} switchChainSize="md">
           {(disabled) => (
             <div>
               <Button

@@ -16,14 +16,16 @@ import type PQueue from 'p-queue';
 import { toast } from 'react-toastify';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
-import { useAddressPageContext } from '../page-context/AddressPageContext';
+import { useAddress } from '../page-context/useAddress';
 import { useFeePayment } from './useFeePayment';
 
 export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const t = useTranslations();
   const { getTransaction, updateTransaction } = useTransactionStore();
-  const { address, selectedChainId } = useAddressPageContext();
-  const { sendFeePayment } = useFeePayment(selectedChainId);
+  const { address } = useAddress();
+  // Get chainId from the first allowance (all selected allowances should be from the same chain)
+  const chainId = allowances[0]?.chainId ?? 1;
+  const { sendFeePayment } = useFeePayment(chainId);
   const { data: walletClient } = useWalletClient();
 
   const revoke = async (REVOKE_QUEUE: PQueue, feeDollarAmount: string) => {
@@ -73,10 +75,10 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
     ]);
 
     // TODO: This still tracks if all revokes/the full batch gets rejected
-    trackBatchRevoke(selectedChainId, address, allowances, feeDollarAmount, 'queued');
+    trackBatchRevoke(chainId, address, allowances, feeDollarAmount, 'queued');
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowances.length > 1) {
-      recordBatchRevoke(selectedChainId, null, address, feeDollarAmount);
+      recordBatchRevoke(chainId, null, address, feeDollarAmount);
     }
   };
 

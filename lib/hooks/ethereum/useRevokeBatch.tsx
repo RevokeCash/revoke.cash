@@ -10,7 +10,6 @@ import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 import { useWalletClient } from 'wagmi';
 import { isTransactionStatusLoadingState, useTransactionStore } from '../../stores/transaction-store';
-import { useAddressPageContext } from '../page-context/AddressPageContext';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 import { useRevokeBatchEip5792 } from './useRevokeBatchEip5792';
 import { useRevokeBatchQueuedTransactions } from './useRevokeBatchQueuedTransactions';
@@ -20,15 +19,17 @@ import { useWalletCapabilities } from './useWalletCapabilities';
 const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50 });
 
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
-  const { selectedChainId } = useAddressPageContext();
+  // Get chainId from the first allowance (all selected allowances should be from the same chain)
+  const chainId = allowances[0]?.chainId ?? 1;
+
   const { results, getTransaction, updateTransaction } = useTransactionStore();
-  const walletCapabilities = useWalletCapabilities(selectedChainId);
+  const walletCapabilities = useWalletCapabilities(chainId);
   const revokeEip5792 = useRevokeBatchEip5792(allowances, onUpdate);
   const revokeQueuedTransactions = useRevokeBatchQueuedTransactions(allowances, onUpdate);
-  const { nativeTokenPrice } = useNativeTokenPrice(selectedChainId);
+  const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
   // If we cannot get the native token price, we set the fee to $0 (this will result in no fee payment downstream)
-  const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(selectedChainId, allowances.length).toFixed(2) : '0';
+  const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(chainId, allowances.length).toFixed(2) : '0';
 
   const { data: walletClient } = useWalletClient();
 
@@ -41,7 +42,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   const { execute: revoke, loading: isSubmitting } = useAsyncCallback(async (): Promise<void> => {
     try {
       const supportsEip5792 = walletCapabilities.isLoading
-        ? await walletSupportsEip5792(walletClient!, selectedChainId)
+        ? await walletSupportsEip5792(walletClient!, chainId)
         : walletCapabilities.supportsEip5792;
 
       if (supportsEip5792 && hasMoreThanOneTransaction(allowances, feeDollarAmount)) {

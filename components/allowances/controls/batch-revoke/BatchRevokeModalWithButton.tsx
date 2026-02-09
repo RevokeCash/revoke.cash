@@ -2,7 +2,7 @@ import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useRevokeBatch } from 'lib/hooks/ethereum/useRevokeBatch';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddress } from 'lib/hooks/page-context/useAddress';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -18,12 +18,14 @@ interface Props {
 const BatchRevokeModalWithButton = ({ table }: Props) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddress();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: we only want to refresh the selected allowances when the modal is opened/closed
   const selectedAllowances = useMemo(() => {
     return table.getGroupedSelectedRowModel().flatRows.map((row) => row.original);
   }, [open]);
+
+  const selectedChainId = selectedAllowances[0]?.chainId ?? 1;
 
   const { results, revoke, pause, isRevoking, isAllConfirmed, feeDollarAmount } = useRevokeBatch(
     selectedAllowances,
@@ -71,6 +73,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
             </div>
           </div>
           <BatchRevokeControls
+            chainId={selectedChainId}
             feeDollarAmount={feeDollarAmount}
             isRevoking={isRevoking}
             isAllConfirmed={isAllConfirmed}

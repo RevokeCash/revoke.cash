@@ -22,15 +22,17 @@ import type PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
-import { useAddressPageContext } from '../page-context/AddressPageContext';
+import { useAddress } from '../page-context/useAddress';
 import { useFeePayment } from './useFeePayment';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
-  const { address, selectedChainId } = useAddressPageContext();
-  const { capabilities } = useWalletCapabilities(selectedChainId);
-  const { prepareFeePayment, trackFeePaid } = useFeePayment(selectedChainId);
+  const { address } = useAddress();
+  // Get chainId from the first allowance (all selected allowances should be from the same chain)
+  const chainId = allowances[0]?.chainId ?? 1;
+  const { capabilities } = useWalletCapabilities(chainId);
+  const { prepareFeePayment, trackFeePaid } = useFeePayment(chainId);
 
   const { data: walletClient } = useWalletClient();
 
@@ -65,7 +67,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
           transactionRequest.gas ??
           (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
 
-        throwIfExcessiveGas(selectedChainId, estimatedGas, allowance.contract.address);
+        throwIfExcessiveGas(chainId, estimatedGas, allowance.contract.address);
 
         return mapContractTransactionRequestToEip5792Call(transactionRequest);
       }),
@@ -111,16 +113,14 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
             account: walletClient.account!,
             chain: walletClient.chain!,
             calls: callsChunk,
-            ...getPaymasterDetails(walletCapabilities, selectedChainId),
+            ...getPaymasterDetails(walletCapabilities, chainId),
           });
 
           const allowancesChunk = allowanceChunks[chunkIndex];
 
           await Promise.all(
             allowancesChunk.map(async (allowance, index) => {
-              const transactionKey = allowance
-                ? getAllowanceKey(allowance)
-                : `fee-payment-${selectedChainId}-${address}`;
+              const transactionKey = allowance ? getAllowanceKey(allowance) : `fee-payment-${chainId}-${address}`;
 
               // Skip if already confirmed or pending
               if (['confirmed', 'pending'].includes(getTransaction(transactionKey).status)) return;
@@ -129,7 +129,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
               const trackTransaction = allowance
                 ? () => trackRevokeTransaction(allowance, 'eip5792')
-                : (transactionHash: Hash) => trackFeePaid(selectedChainId, address, feeDollarAmount, transactionHash);
+                : (transactionHash: Hash) => trackFeePaid(chainId, address, feeDollarAmount, transactionHash);
 
               const executeTransaction = async () => {
                 const id = await chunkPromise;
@@ -181,10 +181,10 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     }
 
     // TODO: This still tracks if all revokes/the full batch gets rejected
-    trackBatchRevoke(selectedChainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792');
+    trackBatchRevoke(chainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792');
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowancesToSubmit.length > 1) {
-      recordBatchRevoke(selectedChainId, null, address, feeDollarAmount);
+      recordBatchRevoke(chainId, null, address, feeDollarAmount);
     }
   };
 

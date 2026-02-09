@@ -1,7 +1,7 @@
 import type { Row } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Checkbox from 'components/common/Checkbox';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddress } from 'lib/hooks/page-context/useAddress';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { isRevertedError } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
@@ -12,7 +12,10 @@ interface Props {
 
 const SelectCell = ({ row }: Props) => {
   const t = useTranslations();
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddress();
+
+  // Get chainId from the row data itself - works for both single-chain and multi-chain scenarios
+  const chainId = row.original.chainId;
 
   // If the row is not selectable because of a revoke error, we still want to show the (disabled) checkbox
   if (!row.getCanSelect() && !row.original.payload?.revokeError) return null;
@@ -23,7 +26,7 @@ const SelectCell = ({ row }: Props) => {
 
   return (
     <ControlsWrapper
-      chainId={selectedChainId}
+      chainId={chainId}
       address={address}
       overrideDisabled={Boolean(tooltip)}
       disabledReason={tooltip}
