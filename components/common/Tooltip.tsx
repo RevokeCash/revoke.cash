@@ -8,6 +8,7 @@ import {
   type Placement,
   safePolygon,
   shift,
+  size,
   useDismiss,
   useFloating,
   useFocus,
@@ -58,6 +59,14 @@ const useTooltip = ({
         padding: 8,
       }),
       shift({ padding: 8 }),
+      size({
+        padding: 8,
+        apply({ availableHeight, elements }) {
+          Object.assign(elements.floating.style, {
+            maxHeight: `${availableHeight}px`,
+          });
+        },
+      }),
       arrow({
         element: arrowRef,
         padding: 8,

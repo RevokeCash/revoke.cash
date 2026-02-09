@@ -20,7 +20,7 @@ const WithHoverTooltip = ({ tooltip, children }: Props) => {
       <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
       <Tooltip.Content className={contentClasses}>
         {tooltip}
-        <Tooltip.Arrow className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-800 dark:stroke-zinc-100 w-8 h-4" />
+        <Tooltip.Arrow className="fill-zinc-100 dark:fill-zinc-800 stroke-zinc-800 dark:stroke-zinc-100" />
       </Tooltip.Content>
     </Tooltip.Root>
   );
