@@ -240,7 +240,7 @@ export const generatePatchedAllowanceEvents = (
   ];
 };
 
-// This is a utility function to convert an approval event to an allowance payload uysed to display the allowance amount in the history table
+// This is a utility function to convert an approval event to an allowance payload used to display the allowance amount in the history table
 // We can safely cast the result to AllowancePayload because the type is known to be valid
 export const eventToAllowance = (event: ApprovalTokenEvent): AllowancePayload => {
   return {

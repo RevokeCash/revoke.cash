@@ -17,7 +17,7 @@ import { parseSessionCreatedLog, type SessionCreatedEvent } from 'lib/utils/sess
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { type Address, getAbiItem, toEventSelector } from 'viem';
 
-// Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues nd issues with Edge runtime
+// Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues and issues with Edge runtime
 // So we use this separate file instead to configure token event getting per chain.
 
 export const getTokenEvents = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
