@@ -101,7 +101,7 @@ export class EtherscanEventGetter implements EventGetter {
       }
 
       // If the query times out, this indicates that we should try again with a smaller block range
-      if (data.result.includes('Query Timeout occured')) {
+      if (data.result.includes('Query Timeout occurred')) {
         throw new Error('Log response size exceeded');
       }
 
@@ -112,7 +112,7 @@ export class EtherscanEventGetter implements EventGetter {
       // Routescan / Snowtrace will report a timeout if the range is too large
       const isTimeoutError =
         isNullish(data?.result) &&
-        (data.message.includes('Timeout reached') || data.message.includes('Query Timeout occured'));
+        (data.message.includes('Timeout reached') || data.message.includes('Query Timeout occurred'));
       if (isTimeoutError) throw new Error('Log response size exceeded');
     }
 

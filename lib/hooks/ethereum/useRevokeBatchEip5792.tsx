@@ -19,7 +19,7 @@ import {
 } from 'lib/utils/eip5792';
 import { isBatchSizeError, isNoFeeRequiredError } from 'lib/utils/errors';
 import type PQueue from 'p-queue';
-import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has a issue with typing the capability. Until they fix it, we manually importing it.
+import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
