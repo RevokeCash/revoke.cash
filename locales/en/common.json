@@ -56,6 +56,11 @@
     "donate_any_token": "Or send any token to our <donations-link>donations address</donations-link>",
     "title": "Donate to Revoke.cash"
   },
+  "easter_egg": {
+    "hint": "Click anywhere to close",
+    "message": "You found the secret! Stay safe and keep revoking! 🛡️",
+    "title": "Konami Code Activated"
+  },
   "errors": {
     "404": {
       "go_home": "Or go back home",

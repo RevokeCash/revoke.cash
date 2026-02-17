@@ -1,6 +1,7 @@
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Analytics from 'app/Analytics';
 import ThemeScript from 'app/ThemeScript';
+import KonamiCodeListener from 'components/common/KonamiCodeListener';
 import ToastifyConfig from 'components/common/ToastifyConfig';
 import TopLoader from 'components/common/TopLoader';
 import Footer from 'components/footer/Footer';
@@ -72,6 +73,7 @@ const MainLayout = async ({ children, params }: Props) => {
                   </div>
                 </div>
                 <ToastifyConfig />
+                <KonamiCodeListener />
               </ColorThemeProvider>
             </EthereumProvider>
           </QueryProvider>
