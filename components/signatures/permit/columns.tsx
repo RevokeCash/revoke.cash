@@ -1,4 +1,4 @@
-import { type RowData, createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper, type RowData } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import type { OnCancel } from 'lib/interfaces';
@@ -33,7 +33,7 @@ const columnHelper = createColumnHelper<PermitTokenData>();
 export const columns = [
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
-    header: () => <HeaderCell i18nKey="address.headers.asset" />,
+    header: () => <HeaderCell i18nKey="signatures.permit.table.headers.asset" />,
     cell: (info) => <AssetCell asset={info.row.original} />,
   }),
   columnHelper.accessor(accessors.balance, {
@@ -42,14 +42,14 @@ export const columns = [
   }),
   columnHelper.accessor('lastCancelled', {
     id: ColumnId.LAST_CANCELLED,
-    header: () => <HeaderCell i18nKey="address.headers.last_cancelled" />,
+    header: () => <HeaderCell i18nKey="signatures.permit.table.headers.last_cancelled" />,
     cell: (info) => (
       <LastCancelledCell chainId={info.row.original.chainId} lastCancelled={info.row.original.lastCancelled} />
     ),
   }),
   columnHelper.display({
     id: ColumnId.ACTIONS,
-    header: () => <HeaderCell i18nKey="address.headers.actions" align="right" />,
+    header: () => <HeaderCell i18nKey="signatures.permit.table.headers.actions" align="right" />,
     cell: (info) => <CancelPermitCell token={info.row.original} onCancel={info.table.options.meta!.onCancel} />,
   }),
 ];

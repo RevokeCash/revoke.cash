@@ -1,5 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
+import { queryClient } from 'lib/hooks/QueryProvider';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import ky from 'lib/ky';
 import type { getTranslations } from 'next-intl/server';
@@ -7,16 +8,16 @@ import { toast } from 'react-toastify';
 import {
   type Address,
   type EstimateContractGasParameters,
+  getAddress,
   type Hash,
   type Hex,
   type PublicClient,
+  pad,
+  slice,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
   type WalletClient,
   type WriteContractParameters,
-  getAddress,
-  pad,
-  slice,
 } from 'viem';
 import analytics from './analytics';
 import type { Log } from './events';
@@ -135,29 +136,33 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
   return address;
 };
 
-export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
+export const throwIfExcessiveGas = (chainId: number, estimatedGas: bigint, tokenAddress: Address) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const gasFactors: Record<number, bigint> = {
-    [ChainId.ArbitrumOne]: 20n,
     [ChainId.ArbitrumNova]: 20n,
     [ChainId.ArbitrumSepolia]: 20n,
     [ChainId.FrameTestnet]: 20n,
     [ChainId.Mantle]: 2_000n,
     [ChainId.MantleTestnet]: 2_000n,
-    [ChainId.ZkSyncMainnet]: 20n,
+    5031: 10n, // Somnia
     [ChainId.ZkSyncSepoliaTestnet]: 20n,
     [ChainId.ZERONetwork]: 20n,
+    [ChainId.EtherlinkMainnet]: 10n,
   };
 
   const EXCESSIVE_GAS = 500_000n * (gasFactors[chainId] ?? 1n);
 
   // TODO: Translate this error message
   if (estimatedGas > EXCESSIVE_GAS) {
-    console.error(`Gas limit of ${estimatedGas} is excessive`);
+    console.error(`Gas limit of ${estimatedGas} is excessive (token: ${tokenAddress})`);
 
     // Track excessive gas usage so we can blacklist tokens
     // TODO: Use a different tool than analytics for this
-    analytics.track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
+    analytics.track('Excessive gas limit', {
+      chainId,
+      estimatedGas: estimatedGas.toString(),
+      tokenAddress,
+    });
 
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
@@ -173,7 +178,7 @@ export const writeContractUnlessExcessiveGas = async (
   const estimatedGas =
     transactionRequest.gas ??
     (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
-  throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
+  throwIfExcessiveGas(transactionRequest.chain!.id, estimatedGas, transactionRequest.address);
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
 
@@ -232,11 +237,27 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 export const range = (length: number) => Array.from({ length }, (_, i) => i);
 
 export const apiLogin = async () => {
-  return ky
+  // In a backend context, we do not need to login
+  if (!isBrowser()) return true;
+
+  if (queryClient) {
+    return await queryClient.ensureQueryData({
+      queryKey: ['login'],
+      queryFn: () =>
+        ky
+          .post('/api/login')
+          .json<any>()
+          .then((res) => !!res?.ok),
+    });
+  }
+
+  return await ky
     .post('/api/login')
     .json<any>()
     .then((res) => !!res?.ok);
 };
+
+export const isBrowser = () => typeof window !== 'undefined';
 
 export type AccountType = 'EOA' | 'EIP7702 Account' | 'Smart Contract';
 export const getAccountType = async (address: Address, publicClient: PublicClient): Promise<AccountType> => {
@@ -254,4 +275,8 @@ export const splitArray = <T>(array: T[], chunkSize: number): T[][] => {
   }
 
   return result;
+};
+
+export const slugify = (text: string) => {
+  return text.toLowerCase().replace(/ /g, '_');
 };

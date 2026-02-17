@@ -1,6 +1,12 @@
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { isRevertedError, isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+import {
+  isLedgerNanoSError,
+  isNoFeeRequiredError,
+  isRevertedError,
+  isUserRejectionError,
+  parseErrorMessage,
+} from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { stringify } from 'viem';
@@ -14,6 +20,7 @@ export const useHandleTransaction = (chainId: number) => {
 
     // Don't show error toasts for user denied transactions
     if (isUserRejectionError(message)) return;
+    if (isNoFeeRequiredError(message)) return;
 
     console.debug(stringify(e, null, 2));
 
@@ -26,8 +33,12 @@ export const useHandleTransaction = (chainId: number) => {
     }
 
     if (type === TransactionType.REVOKE) {
+      if (isLedgerNanoSError(message)) {
+        return void toast.info(t('common.toasts.revoke_failed_ledger_nano_s'));
+      }
+
       if (isRevertedError(message)) {
-        return void toast.info(t('common.toasts.revoke_failed_revert'));
+        return void toast.info(t('common.toasts.revoke_failed_revert', { message }));
       }
 
       return void toast.info(t('common.toasts.revoke_failed', { message }));
@@ -41,11 +52,7 @@ export const useHandleTransaction = (chainId: number) => {
       const transaction = await transactionPromise;
 
       if (transaction.hash) {
-        if (type === TransactionType.DONATE) {
-          toast.info(t('common.toasts.donation_sent'));
-        } else {
-          displayTransactionSubmittedToast(chainId, transaction.hash);
-        }
+        displayTransactionSubmittedToast(chainId, transaction.hash);
       }
 
       return transaction;

@@ -1,27 +1,27 @@
 import type { TransactionSubmitted } from 'lib/interfaces';
 import type {
   Capabilities,
+  PublicClient,
   SendTransactionParameters,
   WalletCallReceipt,
   WalletClient,
   WriteContractParameters,
 } from 'viem';
 import type { Call } from 'viem/_types/types/calls';
-import type { OnUpdate } from './allowances';
-import type { TokenAllowanceData } from './allowances';
+import type { OnUpdate, TokenAllowanceData } from './allowances';
 
 export type Eip5792Call = Call;
 
-export const walletSupportsEip5792 = async (walletClient: WalletClient) => {
+export const walletSupportsEip5792 = async (walletClient: WalletClient, chainId: number) => {
   try {
     const capabilities = (await walletClient.getCapabilities()) as Capabilities;
     console.log('Wallet supports EIP5792:', capabilities);
 
-    if (capabilities[walletClient.chain!.id]) return true;
+    if (capabilities[chainId]) return true;
 
-    console.log(`Wallet does not support EIP5792 on chain ${walletClient.chain!.id}`);
+    console.log(`Wallet does not support EIP5792 on chain ${chainId}`);
     return false;
-  } catch (e) {
+  } catch {
     console.log('Wallet does not support EIP5792');
     return false;
   }
@@ -48,15 +48,14 @@ export const mapTransactionRequestToEip5792Call = (transactionRequest: SendTrans
 };
 
 export const mapWalletCallReceiptToTransactionSubmitted = (
-  allowance: TokenAllowanceData,
   walletCallReceipt: WalletCallReceipt<bigint, 'success' | 'reverted'>,
-  onUpdate: OnUpdate,
+  publicClient: PublicClient,
+  allowance?: TokenAllowanceData,
+  onUpdate?: OnUpdate,
 ): TransactionSubmitted => {
   const awaitConfirmationAndUpdate = async () => {
-    const receipt = await allowance.contract.publicClient.getTransactionReceipt({
-      hash: walletCallReceipt.transactionHash,
-    });
-    onUpdate(allowance, undefined);
+    const receipt = await publicClient.getTransactionReceipt({ hash: walletCallReceipt.transactionHash });
+    if (allowance && onUpdate) onUpdate(allowance, undefined);
     return receipt;
   };
 

@@ -1,17 +1,24 @@
 'use client';
 
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
+import { toPrivyWalletConnector } from '@privy-io/cross-app-connect/rainbow-kit';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
-import { ORDERED_CHAINS, createViemPublicClientForChain, getViemChainConfig } from 'lib/utils/chains';
-import { type ReactNode, memo, useEffect } from 'react';
+import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
+import { memo, type ReactNode, useEffect } from 'react';
 import type { Chain } from 'viem';
-import { WagmiProvider, createConfig, useAccount, useConnect } from 'wagmi';
+import { createConfig, useAccount, useConnect, WagmiProvider } from 'wagmi';
 import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
 
 interface Props {
   children: ReactNode;
 }
+
+const veeFriendsConnector = toPrivyWalletConnector({
+  id: 'cm5158iom02kdwmj4wj527lc4',
+  name: 'VeeFriends Wallet',
+  iconUrl: '/assets/images/vendor/wallets/veefriends.svg',
+});
 
 export const connectors = [
   safe({ debug: false }),
@@ -28,18 +35,16 @@ export const connectors = [
   }),
   coinbaseWallet({ appName: 'Revoke.cash' }),
   abstractWalletConnector(),
+  veeFriendsConnector,
 ];
 
 export const wagmiConfig = createConfig({
   chains: ORDERED_CHAINS.map(getViemChainConfig) as [Chain, ...Chain[]],
   connectors,
   client: ({ chain }) => {
-    // biome-ignore lint/suspicious/noExplicitAny: For some reason, this is not typed correctly
     return createViemPublicClientForChain(chain.id) as any;
   },
   ssr: true,
-  // biome-ignore lint/suspicious/noExplicitAny: For some reason, this is not typed correctly
-  batch: { multicall: true } as any,
 });
 
 export const EthereumProvider = ({ children }: Props) => {
@@ -108,9 +113,9 @@ const EthereumProviderChild = memo(({ children }: Props) => {
 });
 
 const isIframe = () => {
-  return typeof window !== 'undefined' && window?.parent !== window;
+  return window?.parent !== window;
 };
 
 const isLedgerLive = () => {
-  return typeof window !== 'undefined' && window?.ethereum?.isLedgerLive;
+  return (window as any)?.ethereum?.isLedgerLive;
 };

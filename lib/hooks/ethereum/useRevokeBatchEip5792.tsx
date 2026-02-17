@@ -1,41 +1,42 @@
 'use client';
 
+import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
 import { splitArray, throwIfExcessiveGas } from 'lib/utils';
 import {
-  type OnUpdate,
-  type TokenAllowanceData,
   getAllowanceKey,
+  type OnUpdate,
   prepareRevokeAllowance,
+  type TokenAllowanceData,
   trackRevokeTransaction,
 } from 'lib/utils/allowances';
-import { trackBatchRevoke } from 'lib/utils/batch-revoke';
+import { recordBatchRevoke, trackBatchRevoke } from 'lib/utils/batch-revoke';
 import {
   type Eip5792Call,
   mapContractTransactionRequestToEip5792Call,
   mapTransactionRequestToEip5792Call,
   mapWalletCallReceiptToTransactionSubmitted,
 } from 'lib/utils/eip5792';
-import { isBatchSizeError } from 'lib/utils/errors';
+import { isBatchSizeError, isNoFeeRequiredError } from 'lib/utils/errors';
 import type PQueue from 'p-queue';
-import type { Capabilities, EstimateContractGasParameters } from 'viem'; // viem has a issue with typing the capability. Until they fix it, we manually importing it.
+import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
-import { trackDonate, useDonate } from './useDonate';
+import { useFeePayment } from './useFeePayment';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, selectedChainId } = useAddressPageContext();
-  const { capabilities } = useWalletCapabilities();
-  const { prepareDonate } = useDonate(selectedChainId, 'batch-revoke-tip');
+  const { capabilities } = useWalletCapabilities(selectedChainId);
+  const { prepareFeePayment, trackFeePaid } = useFeePayment(selectedChainId);
 
   const { data: walletClient } = useWalletClient();
 
   const revoke = async (
     REVOKE_QUEUE: PQueue,
-    tipDollarAmount: string,
+    feeDollarAmount: string,
     maxBatchSize: number = Number.POSITIVE_INFINITY,
   ) => {
     if (!walletClient) {
@@ -57,14 +58,14 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     const callsSettled = await Promise.allSettled(
       allowancesToRevoke.map(async (allowance): Promise<Eip5792Call> => {
-        const transactionRequest = await prepareRevokeAllowance(walletClient, allowance);
+        const transactionRequest = await prepareRevokeAllowance(allowance);
 
         const publicClient = allowance.contract.publicClient;
         const estimatedGas =
           transactionRequest.gas ??
           (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
 
-        throwIfExcessiveGas(selectedChainId, allowance.owner, estimatedGas);
+        throwIfExcessiveGas(selectedChainId, estimatedGas, allowance.contract.address);
 
         return mapContractTransactionRequestToEip5792Call(transactionRequest);
       }),
@@ -79,15 +80,26 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     // We filter failed calls pre-emptively so that these calls are not included in the batch
     const callsToSubmit = callsSettled.filter((call) => call.status === 'fulfilled').map((call) => call.value);
-    const allowancesToSubmit = allowancesToRevoke.filter((_, index) => callsSettled[index].status === 'fulfilled');
+    const allowancesToSubmit: Array<TokenAllowanceData | undefined> = allowancesToRevoke.filter(
+      (_, index) => callsSettled[index].status === 'fulfilled',
+    );
 
-    if (tipDollarAmount && Number(tipDollarAmount) > 0 && callsToSubmit.length > 0) {
-      const donateTransaction = await prepareDonate(tipDollarAmount);
-      callsToSubmit.push(mapTransactionRequestToEip5792Call(donateTransaction));
+    if (!isZeroFeeDollarAmount(feeDollarAmount) && callsToSubmit.length > 0) {
+      try {
+        const feeTransaction = prepareFeePayment(feeDollarAmount);
+        // Fee payment is always the first transaction in the batch so it cannot be "skipped"
+        // To fix the indexes and to handle fee payment tracking, we also add an undefined allowance to the allowancesToSubmit array
+        callsToSubmit.unshift(mapTransactionRequestToEip5792Call(feeTransaction));
+        allowancesToSubmit.unshift(undefined);
+      } catch (error) {
+        if (!isNoFeeRequiredError(error)) throw error;
+        console.log('No fee required, skipping fee payment');
+      }
     }
 
     const callChunks = splitArray(callsToSubmit, maxBatchSize);
     const allowanceChunks = splitArray(allowancesToSubmit, maxBatchSize);
+    const globalPublicClient = allowancesToRevoke[0].contract.publicClient;
 
     try {
       const walletCapabilities = capabilities ?? ((await walletClient.getCapabilities()) as Capabilities);
@@ -106,32 +118,54 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
           await Promise.all(
             allowancesChunk.map(async (allowance, index) => {
+              const transactionKey = allowance
+                ? getAllowanceKey(allowance)
+                : `fee-payment-${selectedChainId}-${address}`;
+
               // Skip if already confirmed or pending
-              if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;
+              if (['confirmed', 'pending'].includes(getTransaction(transactionKey).status)) return;
 
-              const revokeSingleAllowance = wrapTransaction({
-                transactionKey: getAllowanceKey(allowance),
-                transactionType: TransactionType.REVOKE,
-                executeTransaction: async () => {
-                  const id = await chunkPromise;
-                  const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
+              const transactionType = allowance ? TransactionType.REVOKE : TransactionType.FEE;
 
-                  if (receipts?.length === 1) {
-                    return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[0], onUpdate);
-                  }
+              const trackTransaction = allowance
+                ? () => trackRevokeTransaction(allowance, 'eip5792')
+                : (transactionHash: Hash) => trackFeePaid(selectedChainId, address, feeDollarAmount, transactionHash);
 
-                  if (!receipts?.[index]) {
-                    console.log('receipts', receipts);
-                    throw new Error('An error occurred related to EIP5792 batch calls');
-                  }
+              const executeTransaction = async () => {
+                const id = await chunkPromise;
+                const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
 
-                  return mapWalletCallReceiptToTransactionSubmitted(allowance, receipts[index], onUpdate);
-                },
+                if (receipts?.length === 1) {
+                  return mapWalletCallReceiptToTransactionSubmitted(
+                    receipts[0],
+                    globalPublicClient,
+                    allowance,
+                    onUpdate,
+                  );
+                }
+
+                if (!receipts?.[index]) {
+                  console.log('receipts', receipts);
+                  throw new Error('An error occurred related to EIP5792 batch calls');
+                }
+
+                return mapWalletCallReceiptToTransactionSubmitted(
+                  receipts[index],
+                  globalPublicClient,
+                  allowance,
+                  onUpdate,
+                );
+              };
+
+              const executeSingleTransaction = wrapTransaction({
+                transactionKey,
+                transactionType,
+                executeTransaction,
                 updateTransaction,
-                trackTransaction: () => trackRevokeTransaction(allowance),
+                trackTransaction,
               });
 
-              await REVOKE_QUEUE.add(revokeSingleAllowance);
+              await REVOKE_QUEUE.add(executeSingleTransaction);
             }),
           );
         }),
@@ -140,14 +174,18 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       if (isBatchSizeError(error)) {
         const newMaxBatchSize = getNewMaxBatchSize(maxBatchSize, callsToSubmit.length);
         console.log((error as Error).message, 'reducing batch size to', newMaxBatchSize);
-        return revoke(REVOKE_QUEUE, tipDollarAmount, newMaxBatchSize);
+        return revoke(REVOKE_QUEUE, feeDollarAmount, newMaxBatchSize);
       }
 
       throw error;
     }
 
-    trackBatchRevoke(selectedChainId, address, allowancesToSubmit, tipDollarAmount, 'eip5792');
-    trackDonate(selectedChainId, tipDollarAmount, 'batch-revoke-tip');
+    // TODO: This still tracks if all revokes/the full batch gets rejected
+    trackBatchRevoke(selectedChainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792');
+    // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
+    if (isZeroFeeDollarAmount(feeDollarAmount) && allowancesToSubmit.length > 1) {
+      recordBatchRevoke(selectedChainId, null, address, feeDollarAmount);
+    }
   };
 
   return revoke;

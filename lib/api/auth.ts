@@ -1,12 +1,20 @@
-import { type SessionOptions, getIronSession, unsealData } from 'iron-session';
+import { getIronSession, type SessionOptions, unsealData } from 'iron-session';
 import type { Nullable } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { NextRequest, NextResponse } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
+import type { Address, Hex } from 'viem';
+
+export interface SiweFields {
+  address: Address;
+  message: string;
+  signature: Hex;
+}
 
 export interface RevokeSession {
   ip?: string;
+  siwe?: SiweFields;
 }
 
 export const IRON_OPTIONS: SessionOptions = {
@@ -36,6 +44,14 @@ export const RateLimiters = {
     points: 2,
     duration: 1,
   }),
+  PUDGY: new RateLimiterMemory({
+    points: 5,
+    duration: 1,
+  }),
+  BATCH_REVOKE: new RateLimiterMemory({
+    points: 10,
+    duration: 1,
+  }),
 };
 
 export const checkRateLimitAllowed = async (req: NextApiRequest, rateLimiter: RateLimiterMemory) => {
@@ -50,22 +66,36 @@ export const checkRateLimitAllowedByIp = async (ip: string, rateLimiter: RateLim
   try {
     await rateLimiter.consume(ip);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };
 
-export const storeSession = async (req: NextApiRequest, res: NextApiResponse) => {
+export const storeSession = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  sessionUpdate?: Partial<RevokeSession>,
+) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+
   // Store the user's IP as an identifier
   session.ip = getClientIp(req);
+
+  // Update the session with the provided sessionUpdate if provided
+  session.siwe = sessionUpdate?.siwe;
+
   await session.save();
 };
 
-export const storeSessionEdge = async (req: NextRequest, res: NextResponse) => {
+export const storeSessionEdge = async (req: NextRequest, res: NextResponse, sessionUpdate?: Partial<RevokeSession>) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+
   // Store the user's IP as an identifier
   session.ip = getClientIpEdge(req);
+
+  // Update the session with the provided sessionUpdate if provided
+  session.siwe = sessionUpdate?.siwe;
+
   await session.save();
 };
 
@@ -115,6 +145,18 @@ const getClientIpEdge = (req: NextRequest): string => {
   if (isIp(xForwardedFor)) return xForwardedFor;
 
   throw new Error('Request headers malformed');
+};
+
+export const getClientCountryEdge = (req: NextRequest): string | null => {
+  // Cloudflare
+  const cfCountry = req.headers.get('cf-ipcountry');
+  if (cfCountry) return cfCountry;
+
+  // Vercel
+  const vercelCountry = req.headers.get('x-vercel-ip-country');
+  if (vercelCountry) return vercelCountry;
+
+  return null;
 };
 
 // From request-ip

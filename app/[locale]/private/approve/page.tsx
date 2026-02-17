@@ -3,15 +3,14 @@
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
-import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import Select from 'components/common/select/Select';
+import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { writeContractUnlessExcessiveGas } from 'lib/utils';
 import { AllowanceType } from 'lib/utils/allowances';
 import { parseErrorMessage } from 'lib/utils/errors';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAccount, usePublicClient } from 'wagmi';
-import { useWalletClient } from 'wagmi';
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
 import { prepareApprove } from './lib';
 
 const ApprovePage = () => {

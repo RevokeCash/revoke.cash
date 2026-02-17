@@ -1,10 +1,17 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import type { useAllowances } from 'lib/hooks/ethereum/useAllowances';
-import type { TransactionSubmitted } from 'lib/interfaces';
-import { type Address, type PublicClient, type WalletClient, type WriteContractParameters, formatUnits } from 'viem';
-import { deduplicateArray, isNullish, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from '.';
+import type { Nullable, SpenderRiskData, TransactionSubmitted } from 'lib/interfaces';
+import { type Address, formatUnits, type PublicClient, type WalletClient, type WriteContractParameters } from 'viem';
+import {
+  deduplicateArray,
+  isNullish,
+  throwIfExcessiveGas,
+  waitForTransactionConfirmation,
+  writeContractUnlessExcessiveGas,
+} from '.';
 import analytics from './analytics';
+import type { BatchType } from './batch-revoke';
+import { getViemChainConfig, isTestnetChain } from './chains';
 import { isNetworkError, isRateLimitError, isRevertedError, parseErrorMessage, stringifyError } from './errors';
 import {
   type Erc20ApprovalEvent,
@@ -19,14 +26,14 @@ import { formatFixedPointBigInt, parseFixedPointBigInt } from './formatting';
 import { bigintMin, fixedPointMultiply } from './math';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
 import {
+  createTokenContracts,
   type Erc20TokenContract,
   type Erc721TokenContract,
-  type TokenContract,
-  type TokenData,
-  createTokenContracts,
   getTokenData,
   hasZeroBalance,
   isErc721Contract,
+  type TokenContract,
+  type TokenData,
 } from './tokens';
 
 export interface TokenAllowanceData extends TokenData {
@@ -45,7 +52,11 @@ export enum AllowanceType {
 export interface BaseAllowance {
   type: AllowanceType;
   spender: Address;
+  // Spender data will be loaded separately (undefined until loaded, null if no data available)
+  spenderData?: Nullable<SpenderRiskData>;
   lastUpdated: TimeLog;
+  revokeError?: string;
+  preparedRevoke?: WriteContractParameters;
 }
 
 export interface Erc721SingleAllowance extends BaseAllowance {
@@ -77,8 +88,6 @@ export const isErc721Allowance = (
 ): allowance is Erc721SingleAllowance | Erc721AllAllowance =>
   allowance?.type === AllowanceType.ERC721_SINGLE || allowance?.type === AllowanceType.ERC721_ALL;
 
-export type OnUpdate = ReturnType<typeof useAllowances>['onUpdate'];
-
 export const getAllowancesFromEvents = async (
   owner: Address,
   events: TokenEvent[],
@@ -106,7 +115,19 @@ export const getAllowancesFromEvents = async (
         }
 
         const fullAllowances = allowances.map((allowance) => ({ ...tokenData, payload: allowance }));
-        return fullAllowances;
+
+        // Simulate the revoke to see if it will revert
+        const simulatedAllowances = await Promise.all(
+          fullAllowances.map((allowance) => simulateRevokeAllowance(allowance)),
+        );
+
+        // Filter out allowances that run into an excessive gas limit error (since these are almost certainly spam tokens)
+        // Note that other simulation revert errors are just passed on in the payload.revokeError
+        const filteredAllowances = simulatedAllowances.filter(
+          (allowance) => !allowance.payload?.revokeError?.includes('Excessive gas limit'),
+        );
+
+        return filteredAllowances;
       } catch (e) {
         if (isNetworkError(e)) throw e;
         if (isRateLimitError(e)) throw e;
@@ -264,7 +285,7 @@ export const formatErc20Allowance = (allowance: bigint, decimals?: number, total
   return formatFixedPointBigInt(allowance, decimals);
 };
 
-export const getAllowanceI18nValues = (allowance: TokenAllowanceData) => {
+export const getAllowanceI18nValues = (allowance: Pick<TokenAllowanceData, 'payload' | 'metadata'>) => {
   if (!allowance.payload) {
     const i18nKey = 'address.allowances.none';
     return { i18nKey };
@@ -328,7 +349,7 @@ export const revokeErc721Allowance = async (
   allowance: TokenAllowanceData,
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
-  const transactionRequest = await prepareRevokeErc721Allowance(walletClient, allowance);
+  const transactionRequest = await prepareRevokeErc721Allowance(allowance);
   const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
 
   const waitForConfirmation = async () => {
@@ -355,7 +376,7 @@ export const updateErc20Allowance = async (
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
   const newAmountParsed = parseFixedPointBigInt(newAmount, allowance.metadata.decimals);
-  const transactionRequest = await prepareUpdateErc20Allowance(walletClient, allowance, newAmountParsed);
+  const transactionRequest = await prepareUpdateErc20Allowance(allowance, newAmountParsed);
 
   const hash = await writeContractUnlessExcessiveGas(allowance.contract.publicClient, walletClient, transactionRequest);
 
@@ -376,24 +397,34 @@ export const updateErc20Allowance = async (
   return { hash, confirmation: waitForConfirmation() };
 };
 
-export const prepareRevokeAllowance = async (
-  walletClient: WalletClient,
-  allowance: TokenAllowanceData,
-): Promise<WriteContractParameters> => {
-  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
+export const simulateRevokeAllowance = async (allowance: TokenAllowanceData): Promise<TokenAllowanceData> => {
+  // If there is no allowance, we return the token data as-is
+  if (!allowance.payload) return allowance;
 
-  if (isErc721Contract(allowance.contract)) {
-    return prepareRevokeErc721Allowance(walletClient, allowance);
+  try {
+    const preparedRevoke = await prepareRevokeAllowance(allowance);
+    throwIfExcessiveGas(allowance.chainId, preparedRevoke.gas ?? 0n, allowance.contract.address);
+    return { ...allowance, payload: { ...allowance.payload, preparedRevoke } };
+  } catch (e) {
+    return { ...allowance, payload: { ...allowance.payload, revokeError: parseErrorMessage(e) } };
   }
-
-  return prepareRevokeErc20Allowance(walletClient, allowance);
 };
 
-export const prepareRevokeErc721Allowance = async (
-  walletClient: WalletClient,
-  allowance: TokenAllowanceData,
-): Promise<WriteContractParameters> => {
+export const prepareRevokeAllowance = async (allowance: TokenAllowanceData): Promise<WriteContractParameters> => {
   if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
+  if (allowance.payload.preparedRevoke) return allowance.payload.preparedRevoke;
+
+  if (isErc721Contract(allowance.contract)) {
+    return prepareRevokeErc721Allowance(allowance);
+  }
+
+  return prepareRevokeErc20Allowance(allowance);
+};
+
+export const prepareRevokeErc721Allowance = async (allowance: TokenAllowanceData): Promise<WriteContractParameters> => {
+  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
+
+  const chain = getViemChainConfig(allowance.chainId);
 
   if (allowance.payload.type === AllowanceType.ERC721_SINGLE) {
     const transactionRequest = {
@@ -401,7 +432,7 @@ export const prepareRevokeErc721Allowance = async (
       functionName: 'approve' as const,
       args: [ADDRESS_ZERO, allowance.payload.tokenId] as const,
       account: allowance.owner,
-      chain: walletClient.chain,
+      chain,
       value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
     };
 
@@ -414,7 +445,7 @@ export const prepareRevokeErc721Allowance = async (
     functionName: 'setApprovalForAll' as const,
     args: [allowance.payload.spender, false] as const,
     account: allowance.owner,
-    chain: walletClient.chain,
+    chain,
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   };
 
@@ -422,15 +453,11 @@ export const prepareRevokeErc721Allowance = async (
   return { ...transactionRequest, gas };
 };
 
-export const prepareRevokeErc20Allowance = async (
-  walletClient: WalletClient,
-  allowance: TokenAllowanceData,
-): Promise<WriteContractParameters> => {
-  return prepareUpdateErc20Allowance(walletClient, allowance, 0n);
+export const prepareRevokeErc20Allowance = async (allowance: TokenAllowanceData): Promise<WriteContractParameters> => {
+  return prepareUpdateErc20Allowance(allowance, 0n);
 };
 
 export const prepareUpdateErc20Allowance = async (
-  walletClient: WalletClient,
   allowance: TokenAllowanceData,
   newAmount: bigint,
 ): Promise<WriteContractParameters> => {
@@ -443,10 +470,13 @@ export const prepareUpdateErc20Allowance = async (
   const differenceAmount = newAmount - allowance.payload.amount;
   if (differenceAmount === 0n) throw new Error('User rejected update transaction');
 
+  const chain = getViemChainConfig(allowance.chainId);
+
   if (allowance.payload.type === AllowanceType.PERMIT2) {
     return preparePermit2Approve(
       allowance.payload.permit2Address,
-      walletClient,
+      allowance.owner,
+      chain,
       allowance.contract,
       allowance.payload.spender,
       newAmount,
@@ -457,7 +487,7 @@ export const prepareUpdateErc20Allowance = async (
   const baseRequest = {
     ...allowance.contract,
     account: allowance.owner,
-    chain: walletClient.chain,
+    chain,
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   };
 
@@ -502,14 +532,16 @@ export const prepareUpdateErc20Allowance = async (
   }
 };
 
-export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?: string) => {
+export const trackRevokeTransaction = (allowance: TokenAllowanceData, batchType?: BatchType, newAmount?: string) => {
   if (isErc721Contract(allowance.contract)) {
     analytics.track('Revoked ERC721 allowance', {
       chainId: allowance.chainId,
       account: allowance.owner,
       spender: allowance.payload?.spender,
-      token: allowance.contract.address,
+      tokenAddress: allowance.contract.address,
       tokenId: allowance.payload?.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
+      isTestnet: isTestnetChain(allowance.chainId),
+      batchType,
     });
   }
 
@@ -519,9 +551,11 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, newAmount?
     chainId: allowance.chainId,
     account: allowance.owner,
     spender: allowance.payload?.spender,
-    token: allowance.contract.address,
+    tokenAddress: allowance.contract.address,
     amount: isRevoke ? undefined : newAmount,
     permit2: allowance.payload?.type === AllowanceType.PERMIT2,
+    isTestnet: isTestnetChain(allowance.chainId),
+    batchType,
   });
 };
 
@@ -550,4 +584,53 @@ export const calculateValueAtRisk = (allowance: TokenAllowanceData): number | nu
   const float = Number(formatUnits(valueAtRisk, allowance.metadata.decimals ?? 0));
 
   return float;
+};
+
+export interface AllowanceUpdateProperties {
+  amount?: bigint;
+  lastUpdated?: TimeLog;
+}
+
+export type OnUpdate = (allowance: TokenAllowanceData, updatedProperties?: AllowanceUpdateProperties) => Promise<void>;
+
+export const applyRevokeToAllowances = (
+  allowances: TokenAllowanceData[],
+  allowance: TokenAllowanceData,
+): TokenAllowanceData[] => {
+  const newAllowances = allowances.filter((other) => !allowanceEquals(other, allowance));
+
+  // If the token has a balance and we just revoked the last allowance, add the token back (stripped)
+  const hasBalance = !hasZeroBalance(allowance.balance, allowance.metadata.decimals);
+  const wasLastAllowanceForToken = !newAllowances.find((other) => contractEquals(other, allowance));
+  if (hasBalance && wasLastAllowanceForToken) {
+    newAllowances.push(stripAllowanceData(allowance));
+  }
+
+  return newAllowances;
+};
+
+export const applyUpdateToAllowances = (
+  allowances: TokenAllowanceData[],
+  allowance: TokenAllowanceData,
+  updatedProperties: AllowanceUpdateProperties,
+): TokenAllowanceData[] => {
+  return allowances.map((other) => {
+    if (!allowanceEquals(other, allowance)) return other;
+    return { ...other, payload: { ...other.payload, ...updatedProperties } as AllowancePayload };
+  });
+};
+
+export const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
+  return a.contract.address === b.contract.address && a.chainId === b.chainId;
+};
+
+export const allowanceEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
+  if (!contractEquals(a, b)) return false;
+  if (a.payload?.spender !== b.payload?.spender) return false;
+  if (a.payload?.type !== b.payload?.type) return false;
+  if (a.payload?.type === AllowanceType.ERC721_SINGLE && b.payload?.type === AllowanceType.ERC721_SINGLE) {
+    return a.payload.tokenId === b.payload.tokenId;
+  }
+
+  return true;
 };

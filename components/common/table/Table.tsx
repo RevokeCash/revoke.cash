@@ -1,5 +1,5 @@
 import type { Table as ReactTable } from '@tanstack/react-table';
-import Error from 'components/common/Error';
+import ErrorDisplay from 'components/common/ErrorDisplay';
 import type { Nullable } from 'lib/interfaces';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
@@ -19,7 +19,7 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, className
   const classes = {
     container: 'border border-black dark:border-white rounded-lg overflow-x-scroll whitespace-nowrap scrollbar-hide',
     table: 'w-full border-collapse allowances-table',
-    label: 'flex flex-col justify-center items-center p-3 gap-2 w-full h-10 empty:hidden',
+    label: 'flex flex-col justify-center items-center p-3 gap-2 w-full h-12 empty:hidden',
   };
 
   return (
@@ -31,7 +31,7 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, className
       </table>
       <div className={classes.label}>
         {!loading && !error && table?.getRowModel()?.rows?.length === 0 && emptyChildren}
-        {!loading && error && <Error error={error} />}
+        {!loading && error && <ErrorDisplay error={error} />}
       </div>
     </div>
   );

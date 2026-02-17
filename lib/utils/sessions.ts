@@ -1,7 +1,7 @@
 import { AGW_SESSIONS_ABI } from 'lib/abis';
 import blocksDB from 'lib/databases/blocks';
 import type { useSessions } from 'lib/hooks/ethereum/sessions/useSessions';
-import { type Address, type Hash, type Hex, type PublicClient, type WalletClient, decodeEventLog } from 'viem';
+import { type Address, decodeEventLog, type Hash, type Hex, type PublicClient, type WalletClient } from 'viem';
 import { getWalletAddress, isNullish, writeContractUnlessExcessiveGas } from '.';
 import type { Log, TimeLog } from './events';
 

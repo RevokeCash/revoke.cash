@@ -1,16 +1,16 @@
-import { type Row, type RowData, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
+import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import { isNullish } from 'lib/utils';
 import {
   AllowanceType,
-  type OnUpdate,
-  type TokenAllowanceData,
   calculateValueAtRisk,
   formatErc20Allowance,
   isErc20Allowance,
+  type OnUpdate,
+  type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { formatFixedPointBigInt } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
-import BatchRevokeModalWithButton from '../controls/batch-revoke/BatchRevokeModalWithButton';
+import RevokeSelectedButton from '../controls/batch-revoke/RevokeSelectedButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';
 import AssetTypeCell from './cells/AssetTypeCell';
@@ -81,7 +81,8 @@ export const accessors = {
     return calculateValueAtRisk(allowance);
   },
   spender: (allowance: TokenAllowanceData) => {
-    return allowance.payload?.spender;
+    if (isNullish(allowance.payload?.spenderData?.name)) return allowance.payload?.spender;
+    return `${allowance.payload?.spenderData?.name} (${allowance.payload?.spender})`;
   },
   timestamp: (allowance: TokenAllowanceData) => {
     return allowance.payload?.lastUpdated?.timestamp;
@@ -98,6 +99,11 @@ export const customSortingFns = {
     if (rowB.getValue(columnId) === 'Unlimited') return -1;
     return sortingFns.alphanumeric(rowA, rowB, columnId);
   },
+  spender: (rowA: Row<TokenAllowanceData>, rowB: Row<TokenAllowanceData>, columnId: string) => {
+    if (!rowA.original.payload?.spenderData?.name) return 1;
+    if (!rowB.original.payload?.spenderData?.name) return -1;
+    return sortingFns.text(rowA, rowB, columnId);
+  },
 };
 
 export const customFilterFns = {
@@ -112,6 +118,7 @@ export const customFilterFns = {
     const results = filterValues.map((filterValue) => {
       if (filterValue === 'Zero') return row.getValue(columnId) === '0';
       if (filterValue === 'Non-Zero') return row.getValue(columnId) !== '0';
+      return true;
     });
 
     return results.some((result) => result);
@@ -146,7 +153,7 @@ export const columns = [
   columnHelper.accessor('metadata.symbol', {
     id: ColumnId.SYMBOL,
     header: () => <HeaderCell i18nKey="address.headers.asset" />,
-    footer: ({ table }) => <BatchRevokeModalWithButton table={table} />,
+    footer: ({ table }) => <RevokeSelectedButton table={table} />,
     cell: (info) => <AssetCell asset={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.text,
@@ -188,7 +195,9 @@ export const columns = [
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
     cell: (info) => <SpenderCell allowance={info.row.original} />,
-    enableSorting: false,
+    enableSorting: true,
+    sortingFn: customSortingFns.spender,
+    sortUndefined: 'last',
     enableColumnFilter: true,
     filterFn: customFilterFns.spender,
   }),

@@ -1,3 +1,8 @@
+import Faq from 'components/faq/Faq';
+import FaqItem from 'components/faq/FaqItem';
+import ArticleMeta from 'components/learn/ArticleMeta';
+import type { ContentMeta } from 'lib/interfaces';
+import { slugify } from 'lib/utils';
 import Image from 'next/image';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -15,15 +20,17 @@ SyntaxHighlighter.registerLanguage('javascript', javascript);
 
 interface Props {
   content: string;
+  meta?: ContentMeta;
   className?: string;
 }
 
-const MarkdownProse = ({ content, className }: Props) => {
+const MarkdownProse = ({ content, meta, className }: Props) => {
   const components: Components & Record<string, any> = {
     h1: ({ children }) => {
       return (
         <>
           <h1>{children}</h1>
+          {meta ? <ArticleMeta meta={meta} /> : null}
           <Divider className="my-4" />
         </>
       );
@@ -57,14 +64,15 @@ const MarkdownProse = ({ content, className }: Props) => {
       if (!width || !height) {
         return (
           <p>
-            <img src={src!} alt={alt ?? src!} />
+            {/* biome-ignore lint/performance/noImgElement: we only use this img element when we specifically cannot use the Image component */}
+            <img src={src as string} alt={alt ?? (src as string)} />
           </p>
         );
       }
 
       return (
         <p>
-          <Image src={src!} alt={alt ?? src!} width={width as any} height={height as any} />
+          <Image src={src as string} alt={alt ?? (src as string)} width={width as any} height={height as any} />
         </p>
       );
     },
@@ -78,7 +86,6 @@ const MarkdownProse = ({ content, className }: Props) => {
       }
 
       return (
-        // @ts-ignore (Not sure why this is throwing an error)
         <SyntaxHighlighter
           customStyle={{ marginTop: '1.25em', marginBottom: '1.25em' }}
           style={dracula}
@@ -87,6 +94,16 @@ const MarkdownProse = ({ content, className }: Props) => {
         >
           {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
+      );
+    },
+    faq: ({ children }: any) => {
+      return <Faq>{children}</Faq>;
+    },
+    'faq-item': ({ children, question }: any) => {
+      return (
+        <FaqItem question={question} slug={slugify(question)} heading="h3" wrapper="div">
+          {children}
+        </FaqItem>
       );
     },
   };

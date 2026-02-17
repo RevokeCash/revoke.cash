@@ -1,4 +1,4 @@
-import { type ReactNode, createElement } from 'react';
+import { createElement, type ReactNode } from 'react';
 
 interface Props {
   title?: string;

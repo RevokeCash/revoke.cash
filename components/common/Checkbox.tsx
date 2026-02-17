@@ -30,8 +30,8 @@ const Checkbox = ({ checked, indeterminate, disabled, onChange, className, iconC
   ) : null;
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: we want to use a div instead of a native checkbox for styling reasons
     <div
-      // biome-ignore lint/a11y/useSemanticElements: we want to use a div instead of a native checkbox for styling reasons
       role="checkbox"
       aria-checked={checked}
       className={classes}

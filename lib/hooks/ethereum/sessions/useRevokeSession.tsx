@@ -2,7 +2,7 @@ import { TransactionType } from 'lib/interfaces';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
-import { type OnSessionRevoke, type Session, getSessionKey, revokeSession } from 'lib/utils/sessions';
+import { getSessionKey, type OnSessionRevoke, revokeSession, type Session } from 'lib/utils/sessions';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from '../useHandleTransaction';
 

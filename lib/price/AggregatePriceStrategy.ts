@@ -1,5 +1,5 @@
 import { deduplicateArray, isNullish } from 'lib/utils';
-import { type TokenContract, type TokenStandard, isErc721Contract } from 'lib/utils/tokens';
+import { isErc721Contract, type TokenContract, type TokenStandard } from 'lib/utils/tokens';
 import type { PublicClient } from 'viem';
 import type { PriceStrategy } from './PriceStrategy';
 
@@ -24,7 +24,8 @@ export class AggregatePriceStrategy implements PriceStrategy {
     this.strategies = options.strategies;
     this.supportedAssets = deduplicateArray(
       this.strategies.reduce<TokenStandard[]>((acc, curr) => {
-        return [...acc, ...curr.supportedAssets];
+        acc.push(...curr.supportedAssets);
+        return acc;
       }, []),
     );
   }

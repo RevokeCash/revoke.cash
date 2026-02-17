@@ -1,21 +1,21 @@
+import { ChainId } from '@revoke.cash/chains';
 import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from 'lib/constants';
 import type { Contract, Nullable } from 'lib/interfaces';
 import ky from 'lib/ky';
-import { getTokenPrice } from 'lib/price/utils';
 import {
   type Address,
-  type PublicClient,
-  type TypedDataDomain,
   domainSeparator,
   getAbiItem,
   getAddress,
+  type PublicClient,
   pad,
+  type TypedDataDomain,
   toHex,
 } from 'viem';
 import { deduplicateArray } from '.';
 import analytics from './analytics';
-import { type TimeLog, type TokenEvent, TokenEventType, isApprovalTokenEvent, isTransferTokenEvent } from './events';
+import { isApprovalTokenEvent, isTransferTokenEvent, type TimeLog, type TokenEvent, TokenEventType } from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
 
@@ -47,6 +47,7 @@ export interface TokenMetadata {
   icon?: string;
   decimals?: number;
   totalSupply?: bigint;
+  // Price will be loaded separately (undefined until loaded, null if no price available)
   price?: Nullable<number>;
 }
 
@@ -61,16 +62,18 @@ interface TokenFromList {
   isSpam?: boolean;
 }
 
-export const isSpamToken = (symbol: string) => {
+export const isSpamTokenSymbol = (symbol: string) => {
   const spamRegexes = [
     // Includes http(s)://
     /https?:\/\//i,
     // Includes a TLD (this is not exhaustive, but we can add more TLDs to the list as needed - better than nothing)
-    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events|\.to|\.us|\.vip|\.ly|\.lol|\.biz|\.life|\.pm/i,
+    /\.com|\.io|\.xyz|\.org|\.me|\.site|\.net|\.fi|\.vision|\.team|\.app|\.exchange|\.cash|\.finance|\.cc|\.cloud|\.fun|\.wtf|\.game|\.games|\.city|\.claims|\.family|\.events|\.to|\.us|\.vip|\.ly|\.lol|\.biz|\.life|\.pm|\.lat|.bar/i,
     // Includes "www."
     /www\./i,
     // Includes common spam words
-    /visit .+ claim|free claim|claim on|airdrop at|airdrop voucher/i,
+    /visit .+ claim|free claim|claim on|airdrop at|airdrop voucher|✅.+ airdrop|✅.+ reward|✅.+ voucher|USDТ airdrop/i,
+    // Includes $ or ＄ symbols
+    /＄|\$ /i,
   ];
 
   return spamRegexes.some((regex) => regex.test(symbol));
@@ -98,6 +101,7 @@ export const getErc20TokenData = async (
   const [metadata, balance] = await Promise.all([
     getTokenMetadata(contract, chainId),
     contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
+    // TODO: if getTokenMetadata has a tokenlist entry, then we don't want to throw if spam, since it's likely false positive
     throwIfSpam(contract, events),
   ]);
 
@@ -149,42 +153,40 @@ const getTokenDataFromMapping = async (
       icon: metadata.logoURI,
       isSpam: metadata.isSpam,
     };
-  } catch (e) {
+  } catch {
     return undefined;
   }
 };
 
 export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
   const metadataFromMapping = await getTokenDataFromMapping(contract, chainId);
-  if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam');
+  if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam in metadata');
 
   if (isErc721Contract(contract)) {
-    const [symbol, price] = await Promise.all([
+    const [symbol] = await Promise.all([
       metadataFromMapping?.symbol ??
         withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
-      getTokenPrice(chainId, contract),
       throwIfNotErc721(contract),
     ]);
 
-    if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
-
-    const tokenPrice = price;
-
-    return { ...metadataFromMapping, symbol, price: tokenPrice, decimals: 0 };
+    if (isSpamTokenSymbol(symbol)) throw new Error('Token symbol looks like spam');
+    return { ...metadataFromMapping, symbol, price: null, decimals: 0 };
   }
 
-  const [totalSupply, symbol, decimals, price] = await Promise.all([
+  const [totalSupply, symbol, decimals] = await Promise.all([
     contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
       withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
     metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
-    getTokenPrice(chainId, contract),
-    throwIfNotErc20(contract),
+    // TODO: I'm temporarily disabling this check because of false positives on Sei network
+    // Make sure to add this back when we have a solution for Sei
+    metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
   ]);
 
-  if (isSpamToken(symbol)) throw new Error('Token is marked as spam');
+  if (isSpamTokenSymbol(symbol)) throw new Error('Token symbol looks like spam');
 
-  return { ...metadataFromMapping, totalSupply, symbol, decimals, price };
+  // Price will be loaded separately via useTokenPrice hook
+  return { ...metadataFromMapping, totalSupply, symbol: String(symbol), decimals, price: null };
 };
 
 export const getTokenMetadataUnknown = async (
@@ -197,6 +199,7 @@ export const getTokenMetadataUnknown = async (
   ]);
 
   return results.reduce(
+    // biome-ignore lint/performance/noAccumulatingSpread: list is so small that it doesn't matter
     (acc, result) => (result.status === 'fulfilled' ? { ...acc, ...result.value } : acc),
     undefined as TokenMetadata | undefined,
   );
@@ -243,8 +246,9 @@ export const throwIfSpamBytecode = async (contract: TokenContract) => {
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {
-    // Minimal proxies should not be marked as spam
-    if (bytecode.length < 100 && bytecode.endsWith('57fd5bf3')) return;
+    // (Minimal) proxies should not be marked as spam
+    if (bytecode.endsWith('57fd5bf3')) return; // EIP1167 minimal proxy
+    if (bytecode.includes('360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc')) return; // EIP1967 proxy
 
     // Somehow ApeChain minimal proxies have a different bytecode (I guess because of slight EVM differences)
     // - see https://apescan.io/address/0x90b4d884964392a6d998EcE041214F8D375bb25b
@@ -255,12 +259,12 @@ export const throwIfSpamBytecode = async (contract: TokenContract) => {
   }
 };
 
-export const throwIfSpamAirdrop = async (contract: Contract, events: TokenEvent[]) => {
+export const throwIfSpamAirdrop = async (_contract: Contract, events: TokenEvent[]) => {
   const transferTransactions = events.filter(isTransferTokenEvent).map((event) => event.time.transactionHash);
   const approvalTransactions = events.filter(isApprovalTokenEvent).map((event) => event.time.transactionHash);
 
   // If the transfers and approvals occur in the same transaction, it's a spam transaction
-  // Note that we only check if that is the case fo *all* events to prevent false positives at the cost of false negatives
+  // Note that we only check if that is the case for *all* events to prevent false positives at the cost of false negatives
   if (
     transferTransactions.length > 0 &&
     transferTransactions.every((transaction) => approvalTransactions.includes(transaction))
@@ -331,7 +335,7 @@ export const hasSupportForPermit = async (contract: TokenContract) => {
       contract.publicClient.readContract({ ...contract, functionName: 'nonces', args: [DUMMY_ADDRESS] }),
     ]);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };
@@ -402,4 +406,13 @@ const getPermitDomainVersion = async (contract: Erc20TokenContract) => {
   } catch {
     return '1';
   }
+};
+
+export const ownsAnyOf = (ownedOrAllowedTokens: TokenData[], tokens: Address[]) => {
+  const tokenIsOwned = (expectedAddress: Address) =>
+    ownedOrAllowedTokens.some(
+      (token) => token.contract.address === expectedAddress && typeof token.balance === 'bigint' && token.balance > 0n,
+    );
+
+  return tokens.some(tokenIsOwned);
 };

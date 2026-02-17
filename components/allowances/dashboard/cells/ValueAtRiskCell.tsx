@@ -1,4 +1,5 @@
-import { type TokenAllowanceData, calculateValueAtRisk } from 'lib/utils/allowances';
+import Loader from 'components/common/Loader';
+import { calculateValueAtRisk, type TokenAllowanceData } from 'lib/utils/allowances';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
@@ -9,6 +10,8 @@ interface Props {
 
 const ValueAtRiskCell = ({ allowance }: Props) => {
   const t = useTranslations();
+
+  if (allowance.metadata.price === undefined) return <Loader isLoading className="h-6" />;
 
   if (!allowance.payload) return null;
 

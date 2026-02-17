@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import type { Capabilities } from 'viem';
 import { useWalletClient } from 'wagmi';
 
-export const useWalletCapabilities = () => {
+export const useWalletCapabilities = (chainId: number) => {
   const { data: walletClient } = useWalletClient();
 
   const { data: capabilities, isLoading } = useQuery({
@@ -16,7 +16,7 @@ export const useWalletCapabilities = () => {
         const capabilities = (await walletClient.getCapabilities()) as Capabilities;
         console.log('Wallet supports EIP5792:', capabilities);
         return capabilities;
-      } catch (e) {
+      } catch {
         console.log('Wallet does not support EIP5792');
         return null;
       }
@@ -26,12 +26,8 @@ export const useWalletCapabilities = () => {
 
   const supportsEip5792 = useMemo(() => {
     if (isLoading) return null;
-
-    const chainId = walletClient?.chain?.id;
-    if (isNullish(chainId)) return null;
-
     return !isNullish(capabilities?.[chainId]);
-  }, [isLoading, capabilities, walletClient?.chain?.id]);
+  }, [isLoading, capabilities, chainId]);
 
   return { isLoading, capabilities, supportsEip5792 };
 };

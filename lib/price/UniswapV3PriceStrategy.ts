@@ -12,8 +12,6 @@ export interface UniswapV3PriceStrategyOptions extends Partial<AbstractPriceStra
 }
 
 const PRICE_BASE_AMOUNT = 1000n;
-const LIQUIDITY_CHECK_RATIO = 10n;
-const ACCEPTABLE_SLIPPAGE = 0.4;
 
 export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements PriceStrategy {
   abi = UNISWAP_V3_QUOTER_ABI;
@@ -51,13 +49,11 @@ export class UniswapV3PriceStrategy extends AbstractPriceStrategy implements Pri
 
     if (!this.hasEnoughLiquidity(sqrtPriceX96AfterList)) throw new Error('Not enough liquidity');
 
-    // return amountIn / 1000n;
-
     return calculateTokenPrice(amountIn, this.decimals);
   }
 
   // TODO: Figure out how to interpret the sqrtPriceX96AfterList
-  private hasEnoughLiquidity(sqrtPriceX96AfterList: readonly bigint[]): boolean {
+  private hasEnoughLiquidity(_sqrtPriceX96AfterList: readonly bigint[]): boolean {
     return true;
   }
 }

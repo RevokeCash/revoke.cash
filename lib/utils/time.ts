@@ -13,5 +13,8 @@ export const formatDateNormalised = (date: Date) => {
 };
 
 export const formatArticleDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  const day = new Date(dateString).toLocaleDateString('en-US', { day: 'numeric', timeZone: 'UTC' });
+  const month = new Date(dateString).toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' });
+  const year = new Date(dateString).toLocaleDateString('en-US', { year: 'numeric', timeZone: 'UTC' });
+  return `${day} ${month} ${year}`;
 };

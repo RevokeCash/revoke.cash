@@ -1,8 +1,8 @@
-export const TEST_URL = Cypress.env('TEST_URL') ?? 'http://localhost:3000';
+export const TEST_URL = Cypress.expose('TEST_URL') ?? 'http://localhost:3000';
 
 export const Selectors = {
-  CHAIN_SELECT_BUTTON: '.control-button-wrapper',
-  CHAIN_SELECT_OPTION: '.chain-select__option',
+  CHAIN_SELECT_BUTTON: '#react-select-address-chain-select-desktop-target-button',
+  CHAIN_SELECT_OPTION: '*[id^="react-select-address-chain-select-desktop-option"]',
   ALLOWANCES_TABLE: '.allowances-table',
   ALLOWANCES_LOADER: '.allowances-loader',
   CONTROLS_SECTION: '.controls-section',

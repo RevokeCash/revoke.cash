@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
 import Loader from 'components/common/Loader';
-import { ERC20_ABI } from 'lib/abis';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { isNullish } from 'lib/utils';
 import { getTokenMetadataUnknown } from 'lib/utils/tokens';
@@ -42,10 +41,8 @@ const ContractCell = ({ delegation }: Props) => {
       <AssetDisplay
         asset={{
           metadata: tokenMetadata ?? undefined,
-          contract: { address: delegation.contract, abi: ERC20_ABI, publicClient: publicClient! },
+          contract: { address: delegation.contract },
           chainId: delegation.chainId,
-          owner: delegation.delegator,
-          balance: 0n,
         }}
       />
       {delegation.tokenId ? (

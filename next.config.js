@@ -1,4 +1,4 @@
-const withBundleAnalyzer = require('next-bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
+const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
 const withNextIntl = require('next-intl/plugin')('./lib/i18n/config.tsx');
 const withNextCircularDeps = require('next-circular-dependency');
 
@@ -7,6 +7,9 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   exclude: /a\.js|node_modules/, // exclude node_modules for checking circular dependencies
+  images: {
+    qualities: [25, 50, 75, 100],
+  },
   redirects: async () => {
     return [
       {
@@ -43,8 +46,15 @@ const nextConfig = {
     ];
   },
   webpack: (config, { isServer }) => {
-    config.resolve.fallback = { fs: false, path: false };
-    config.externals.push('pino-pretty');
+    config.resolve.fallback = {
+      fs: false,
+      path: false,
+      // Unused wallet connectors (still get processed even though they're not used)
+      '@base-org/account': false,
+      '@gemini-wallet/core': false,
+      '@metamask/sdk': false,
+      porto: false,
+    };
 
     // We're running into issues with webpack when importing the hypersync client directly
     if (isServer) {

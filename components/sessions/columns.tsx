@@ -1,4 +1,4 @@
-import { type Row, type RowData, createColumnHelper, sortingFns } from '@tanstack/react-table';
+import { createColumnHelper, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
 import type { Session } from 'lib/utils/sessions';

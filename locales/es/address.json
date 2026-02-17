@@ -11,6 +11,13 @@
   "batch_revoke": {
     "add_tip": "¿Quieres añadir una propina?",
     "failed": "Fallido",
+    "fee": {
+      "eip5792_notice": "Nota: tu cartera no admite revocaciones atómicas por lotes, por lo que, incluso cuando utilices nuestra revocación por lotes de pago, tendrás que enviar varias transacciones.",
+      "eip5792_notice_chain": "Nota: tu cartera no admite revocaciones atómicas por lotes para {chainName}, por lo que, incluso cuando utilices nuestra revocación por lotes de pago, tendrás que enviar varias transacciones.",
+      "notice": "Al revocar por lotes, pagas una pequeña tarifa de <m>${feeDollarAmount}</m> que contribuye al desarrollo continuo de Revoke.cash.",
+      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> ¡Patrocina la tarifa de revocación por lotes en la red <m>{chainName}</m>! 🥳",
+      "tooltip": "La tarifa fija de <m>${BASE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita."
+    },
     "no_tip": "Sin propina",
     "revoked": "Revocado",
     "title": "Revocación por Lotes",
@@ -23,7 +30,7 @@
         "non_evm": "No EVM",
         "title": "Blockchains compatibles"
       },
-      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La cobertura es una forma de asegurarte de que el valor de tu monedero está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La Cobertura es una forma de asegurarte de que el valor de tu cartera está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link>.",
       "important": {
         "coverage_amount": "La cobertura se compra por una cierta cantidad de ETH - si el valor de su cartera aumenta en ETH, solo estará cubierto por la cantidad de ETH configurada.",
         "fee": "Hay un monto de responsabilidad personal del 10% sobre los pagos.",
@@ -81,6 +88,7 @@
   },
   "delegations": {
     "columns": {
+      "chain_id": "Red",
       "contract": "Activo / Contrato",
       "delegate": "Delegar",
       "delegator": "Delegador",
@@ -90,16 +98,20 @@
     "contract": {
       "not_applicable": "N/A"
     },
+    "eip7702_delegations": "Delegaciones EIP7702",
     "incoming_delegations": "Delegaciones entrantes",
     "info_panel": {
-      "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo al intentar verificar la propiedad de activos o al reclamar airdrops. Esto puede ser beneficioso para la seguridad, ya que le permite utilizar una <b>cartera caliente</b> para gestionar sus activos sin tener que utilizar su <b>cartera fría</b> para cada interacción. Sin embargo, en caso de que su cartera caliente se vea comprometida, debe asegurarse de revocar la delegación para que el atacante no pueda utilizarla para hacerse pasar por usted.",
+      "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo, al intentar verificar la propiedad de los activos o al reclamar lanzamientos aéreos. Esto puede ser beneficioso para la seguridad, ya que te permite usar un <b>hot wallet</b> para administrar tus activos sin tener que usar tu <b>cold wallet</b> para cada interacción. Sin embargo, en caso de que tu hot wallet se vea comprometida, debes asegurarte de revocar la delegación para que el atacante no pueda usarla para hacerse pasar por ti. Ten en cuenta que estas delegaciones son <b>different</b> de EIP7702 delegaciones, que pueden <i>only</i> ser revocadas dentro de tu aplicación de cartera.",
       "title": "¿Qué son las Delegaciones?"
     },
+    "no_eip7702_delegations": "No se encontraron delegaciones EIP7702",
     "no_incoming_delegations": "No se han encontrado delegaciones entrantes",
     "no_outgoing_delegations": "No se ha encontrado ninguna delegación saliente",
     "outgoing_delegations": "Delegaciones salientes",
     "tooltips": {
       "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para actuar en su nombre en las plataformas compatibles para un contrato específico.",
+      "eip7702": "Una delegación EIP7702 añade la funcionalidad de contrato inteligente a tu cartera.",
+      "eip7702_revoke": "EIP7702 delegaciones deben ser revocadas dentro de tu aplicación de cartera",
       "erc1155": "Una delegación de tokens ERC1155 permite al delegado actuar en su nombre en plataformas compatibles para un token de ERC1155 específico.",
       "erc20": "Una delegación de tokens ERC20 permite al delegado actuar en su nombre en plataformas compatibles para un token ERC20 específico.",
       "erc721": "Una delegación de token ERC721 permite al delegado actuar en su nombre en plataformas compatibles con un token ERC721 específico.",
@@ -107,6 +119,7 @@
     },
     "types": {
       "contract": "Contrato",
+      "eip7702": "EIP7702",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
       "erc721": "ERC721",
@@ -142,12 +155,13 @@
   "headers": {
     "actions": "Acciones",
     "allowance": "Cantidad Autorizada",
+    "amount": "Monto",
     "asset": "Activo",
     "asset_type": "Tipo",
+    "date": "Fecha",
+    "event_type": "Tipo de evento",
     "expiration": "Vencimiento",
-    "last_cancelled": "Última cancelación",
     "last_updated": "Última Actualización",
-    "marketplace": "Mercado",
     "policy_type": "Tipo de Permiso",
     "session_hash": "Identificador de sesión",
     "signer": "Firmante autorizado",
@@ -155,6 +169,13 @@
     "status": "Estatus",
     "transaction": "Transacción",
     "value_at_risk": "Valor en Riesgo"
+  },
+  "history": {
+    "approved": "Aprobado",
+    "cancelled_signatures": "Firmas canceladas",
+    "none_found": "No se encontró ningún historial de aprobaciones",
+    "revoked": "Revocado",
+    "title": "Historial de aprobaciones"
   },
   "labels": {
     "connected": "Conectado",
@@ -206,11 +227,12 @@
     "unsafe": "Código de contrato potencialmente inseguro"
   },
   "search": {
+    "history": "Buscar por Spender o Token",
     "spender": "Buscar por Dirección de Gastador Autorizado"
   },
   "sessions": {
     "info": {
-      "description": "Las sesiones son un sistema de permisos similar a las aprobaciones de tokens, pero con algunas diferencias clave. Mientras que las aprobaciones de tokens especifican un permiso para que una dirección tome tokens de tu monedero, las sesiones pueden utilizarse para especificar un permiso para que otra dirección firme transacciones específicas en tu nombre al interactuar con contratos inteligentes. Actualmente, estas sesiones sólo están disponibles en Abstracto cuando se utiliza la Cartera Global Abstracto <i></i> , pero podrían estar disponibles en otras cadenas en el futuro.",
+      "description": "Las sesiones son un sistema de permisos similar a las aprobaciones de tokens, pero con algunas diferencias clave. Mientras que las aprobaciones de tokens especifican un permiso para que una dirección tome tokens de tu cartera, las sesiones pueden utilizarse para especificar un permiso para que otra dirección firme transacciones específicas en tu nombre al interactuar con contratos inteligentes. Actualmente, estas sesiones sólo están disponibles en Abstracto cuando se utiliza la Cartera Global Abstracto <i></i> , pero podrían estar disponibles en otras cadenas en el futuro.",
       "title": "¿Qué Son las Sesiones?"
     },
     "table": {
@@ -226,26 +248,11 @@
       }
     }
   },
-  "signatures": {
-    "info": {
-      "description": "Las firmas son una forma de autorizar acciones sin enviar una transacción. <i>Las firmas de mercado</i> se utilizan para poner en venta activos en mercados como OpenSea. <i>Las firmas de permiso</i> se utilizan para conceder aprobaciones de tokens. Como estas firmas no se almacenan en la cadena de bloques, Revoke.cash no tiene forma de saber si las has firmado. Esta página contiene una lista de mercados y una lista de tus tokens que admiten firmas offchain <i>Permiso</i>. <b>Sólo si <i></i> sabes que firmaste una firma offchain en un sitio web fraudulento, debes cancelar las <i>firmas</i> potenciales en esta página</b>, de lo contrario estarás desperdiciando comisiones por transacción. Cuando canceles firmas potenciales para un token o mercado, permanecerán en la lista pero no se podrán volver a cancelar durante algún tiempo.",
-      "title": "¿Qué Son las Firmas?"
-    },
-    "marketplaces": {
-      "active_approvals": "{count, plural, =1 {1 aprobación activa} other {# aprobaciones activas}}",
-      "none_found": "No se han encontrado mercados con autorizaciones activas.",
-      "title": "Mercados"
-    },
-    "permit": {
-      "none_found": "No se encontró ningún token compatible con firmas de permiso.",
-      "title": "Tokens con soporte de permisos"
-    }
-  },
   "sorting": {
     "columns": {
       "allowance": "Cantidad Autorizada",
+      "approved_spender": "Gastador Autorizado",
       "asset_name": "Nombre del Activo",
-      "authorized_spender": "Gastador Autorizado",
       "last_updated": "Última Actualización",
       "value_at_risk": "Valor en Riesgo"
     },
@@ -269,13 +276,11 @@
     "acknowledge_signature_notice": "Por favor da acuse de recibo del aviso antes de comprobar tus firmas.",
     "connect_wallet": "Por favor conecta tu cartera para continuar",
     "connected_account": "Solo puedes revocar las autorizaciones de la cuenta conectada",
+    "filter_by_spender": "Filtrar por este spender",
+    "filter_by_token": "Filtrar por este token",
     "involved_in_exploits": "Esta dirección está involucrada en los siguientes hacks:",
-    "marketplace_listings": "Esto cancelará todos los listados y ofertas actuales en {marketplace}.",
-    "marketplace_signatures": "Una vez autorizados, los mercados pueden mover activos en tu nombre. Los malos actores se aprovechan de estas autorizaciones para crear listados a precio cero en sitios web de terceros. Cancela estas autorizaciones si firmaste una firma de mercado en un sitio web de phishing.",
     "old_approval": "Esta aprobación tiene más de un año. Considera revocarla si ya no la necesitas.",
     "permit2_expiration": "Esta es una autorización de Permit2 que caducará {inTime}",
-    "permit_signatures": "Las firmas de permiso se utilizan para aprobar autorizaciones sin enviar una transacción. Cancélelos si firmó una firma de permiso en un sitio web de phishing.",
-    "recently_cancelled": "Ya has cancelado esta posible firma recientemente. Permanecerá en la lista para que puedas volver a cancelarla más adelante si lo necesitas.",
     "risk_factors": "Esto es {riskLevel} por estas razones:",
     "select_tip": "Por favor selecciona el monto de la propina",
     "switch_chain": "Por favor cambia tu red conectada a <b>{chainName}</b> dentro de tu cartera para continuar",

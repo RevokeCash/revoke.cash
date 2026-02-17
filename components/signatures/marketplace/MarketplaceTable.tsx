@@ -15,7 +15,7 @@ const MarketplaceTable = () => {
 
   const title = (
     <div className="flex items-center gap-2">
-      <div>{t('address.signatures.marketplaces.title')}</div>
+      <div>{t('signatures.marketplace.table.title')}</div>
     </div>
   );
 
@@ -28,8 +28,6 @@ const MarketplaceTable = () => {
     getRowId(row) {
       return `${row.name}`;
     },
-
-    // biome-ignore lint/suspicious/noExplicitAny: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
     meta: { onCancel } as any,
   });
 
@@ -39,7 +37,7 @@ const MarketplaceTable = () => {
         table={table}
         loading={isLoading}
         error={error}
-        emptyChildren={t('address.signatures.marketplaces.none_found')}
+        emptyChildren={t('signatures.marketplace.table.none_found')}
         loaderRows={2}
         className="border-none"
       />

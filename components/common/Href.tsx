@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from 'lib/i18n/navigation';
-import { type AnchorHTMLAttributes, type ForwardedRef, type ReactNode, forwardRef } from 'react';
+import { type AnchorHTMLAttributes, type ForwardedRef, forwardRef, type ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -38,7 +38,7 @@ const Href = (
 
   if (router) {
     return (
-      <Link {...props} className={classes} href={href} ref={ref}>
+      <Link {...props} className={classes} href={href} ref={ref} popover={undefined}>
         {children}
       </Link>
     );

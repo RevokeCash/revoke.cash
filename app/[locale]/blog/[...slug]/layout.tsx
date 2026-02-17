@@ -1,13 +1,10 @@
 import Breadcrumb from 'components/common/Breadcrumb';
 import Divider from 'components/common/Divider';
 import PageNavigation from 'components/common/PageNavigation';
-import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
-import ArticleMeta from 'components/learn/ArticleMeta';
 import type { BreadcrumbEntry } from 'lib/interfaces';
 import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import Image from 'next/image';
 import type { ReactNode } from 'react';
 
 interface Props {
@@ -51,10 +48,6 @@ const BlogLayout = async ({ params, children }: Props) => {
           <Breadcrumb pages={breadcrumbs} />
           <TranslateButton language={meta.language} translationUrl={translationUrl} />
         </div>
-        <Prose className="mb-4">
-          {meta.coverImage ? <Image src={meta.coverImage} alt={meta.title} width={1200} height={630} /> : null}
-        </Prose>
-        <ArticleMeta meta={meta} />
         {children}
         <Divider className="my-6" />
         <PageNavigation currentPath={`/blog/${slug.join('/')}`} pages={[...posts].reverse()} />

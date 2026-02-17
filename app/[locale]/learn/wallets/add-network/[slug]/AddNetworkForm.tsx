@@ -1,4 +1,5 @@
 import CopyButton from 'components/common/CopyButton';
+import RichText from 'components/common/RichText';
 import { getChainExplorerUrl, getChainFreeRpcUrl, getChainName, getChainNativeToken } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import AddNetworkButton from './AddNetworkButton';
@@ -24,7 +25,10 @@ const AddNetworkForm = ({ chainId }: Props) => {
           <FormElement label="Block explorer URL (Optional)" content={getChainExplorerUrl(chainId)} />
         </div>
         <p>{t('learn.add_network.step_2.paragraph_2')}</p>
-        <AddNetworkButton chainId={chainId} label={t.rich('learn.add_network.title', { chainName })} />
+        <AddNetworkButton
+          chainId={chainId}
+          label={<RichText>{(tags) => t.rich('learn.add_network.title', { ...tags, chainName })}</RichText>}
+        />
       </div>
     </div>
   );

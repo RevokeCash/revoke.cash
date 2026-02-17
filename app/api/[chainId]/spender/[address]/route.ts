@@ -1,4 +1,4 @@
-import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
+import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { WEBACY_API_KEY } from 'lib/constants';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderDataSource';
@@ -14,7 +14,7 @@ interface Props {
 
 interface Params {
   chainId: string;
-  address: Address;
+  address: string;
 }
 
 export const runtime = 'edge';
@@ -44,7 +44,7 @@ export async function GET(req: NextRequest, { params }: Props) {
   const chainId = Number(chainIdString);
 
   try {
-    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address, chainId);
+    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address as Address, chainId);
 
     return new Response(JSON.stringify(spenderData), {
       status: 200,

@@ -11,8 +11,39 @@ import type { TimeLog } from 'lib/utils/events';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
-import { type Address, type Hash, type WalletClient, getAbiItem, toEventSelector } from 'viem';
+import { type Address, getAbiItem, type Hash, toEventSelector, type WalletClient } from 'viem';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
+
+export const OPENSEA_CHAINS = [
+  // See https://github.com/ProjectOpenSea/seaport
+  ChainId.EthereumMainnet,
+  ChainId.EthereumSepolia,
+  ChainId.PolygonMainnet,
+  ChainId.Amoy,
+  ChainId.OPMainnet,
+  ChainId.OPSepoliaTestnet,
+  ChainId.ArbitrumOne,
+  ChainId.ArbitrumSepolia,
+  ChainId.ArbitrumNova,
+  ChainId.Base,
+  ChainId.BaseSepoliaTestnet,
+  ChainId['AvalancheC-Chain'],
+  ChainId.AvalancheFujiTestnet,
+  ChainId.Gnosis,
+  ChainId.GnosisChiadoTestnet,
+  ChainId.BNBSmartChainMainnet,
+  ChainId.BNBSmartChainTestnet,
+  ChainId.KaiaMainnet,
+  ChainId.KaiaKairosTestnet,
+  ChainId.Moonbeam,
+  ChainId.Moonriver,
+  ChainId.Canto,
+  ChainId.CeloMainnet,
+  ChainId.Zora,
+  ChainId.ZoraSepoliaTestnet,
+];
+
+export const BLUR_CHAINS = [ChainId.EthereumMainnet];
 
 export const useMarketplaces = () => {
   const [marketplaces, setMarketplaces] = useState<Marketplace[]>([]);
@@ -28,35 +59,7 @@ export const useMarketplaces = () => {
     {
       name: 'OpenSea',
       logo: '/assets/images/vendor/opensea.svg',
-      chains: [
-        // See https://github.com/ProjectOpenSea/seaport
-        ChainId.EthereumMainnet,
-        ChainId.EthereumSepolia,
-        ChainId.PolygonMainnet,
-        ChainId.Amoy,
-        ChainId.OPMainnet,
-        ChainId.OPSepoliaTestnet,
-        ChainId.ArbitrumOne,
-        ChainId.ArbitrumSepolia,
-        ChainId.ArbitrumNova,
-        ChainId.Base,
-        ChainId.BaseSepoliaTestnet,
-        ChainId['AvalancheC-Chain'],
-        ChainId.AvalancheFujiTestnet,
-        ChainId.Gnosis,
-        ChainId.GnosisChiadoTestnet,
-        ChainId.BNBSmartChainMainnet,
-        ChainId.BNBSmartChainTestnet,
-        ChainId.KaiaMainnet,
-        ChainId.KaiaKairosTestnet,
-        ChainId.Moonbeam,
-        ChainId.Moonriver,
-        ChainId.Canto,
-        ChainId.FantomOpera,
-        ChainId.CeloMainnet,
-        ChainId.Zora,
-        ChainId.ZoraSepoliaTestnet,
-      ],
+      chains: OPENSEA_CHAINS,
       approvalFilterAddress: '0x1E0049783F008A0085193E00003D00cd54003c71',
       cancelSignatures: async (walletClient: WalletClient): Promise<Hash> => {
         return walletClient.writeContract({
@@ -79,7 +82,7 @@ export const useMarketplaces = () => {
     {
       name: 'Blur',
       logo: '/assets/images/vendor/blur.png',
-      chains: [ChainId.EthereumMainnet],
+      chains: BLUR_CHAINS,
       approvalFilterAddress: '0x2f18F339620a63e43f0839Eeb18D7de1e1Be4DfB',
       cancelSignatures: async (walletClient: WalletClient): Promise<Hash> => {
         return walletClient.writeContract({

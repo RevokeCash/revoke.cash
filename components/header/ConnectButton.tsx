@@ -16,9 +16,10 @@ interface Props {
   style?: 'primary' | 'secondary' | 'tertiary' | 'none';
   className?: string;
   redirect?: boolean;
+  onClick?: () => void;
 }
 
-const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
+const ConnectButton = ({ size, style, className, text, redirect, onClick }: Props) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
   const router = useCsrRouter();
@@ -27,6 +28,8 @@ const ConnectButton = ({ size, style, className, text, redirect }: Props) => {
   const { connectAsync, connectors } = useConnect();
 
   const handleClick = () => {
+    onClick?.();
+
     if (address && redirect) {
       router.push(`/address/${address}`, { retainSearchParams: ['chainId'] });
     } else {

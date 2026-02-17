@@ -1,9 +1,8 @@
 import { Redis } from '@upstash/redis';
 import ky from 'ky';
-import { RateLimiters, checkActiveSessionEdge, checkRateLimitAllowedEdge } from 'lib/api/auth';
+import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { RequestQueue } from 'lib/api/logs/RequestQueue';
-import { COINGECKO_API_KEY } from 'lib/constants';
-import { COINGECKO_API_BASE_URL } from 'lib/constants';
+import { COINGECKO_API_BASE_URL, COINGECKO_API_KEY } from 'lib/constants';
 import { isNullish } from 'lib/utils';
 import { getChainNativeTokenCoingeckoId } from 'lib/utils/chains';
 import { MINUTE } from 'lib/utils/time';
@@ -33,7 +32,7 @@ const PRICE_QUEUE = new RequestQueue('token-price-native', {
   interval: 1 * MINUTE,
 });
 
-const CACHE_TTL = 1 * 60 * 60; // 1 hour
+const CACHE_TTL = 1 * 60 * 20; // 20 minutes
 
 export async function GET(req: NextRequest, { params }: Props) {
   const { chainId: chainIdString } = await params;

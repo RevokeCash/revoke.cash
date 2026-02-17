@@ -1,7 +1,6 @@
 import { FAIRSIDE_API_KEY } from 'lib/constants';
 import ky from 'lib/ky';
-import type { Hex } from 'viem';
-import type { Address } from 'viem';
+import type { Address, Hex } from 'viem';
 import { create } from 'zustand';
 
 export const FAIRSIDE_REFERRAL_CODE = 'rHJeTS8YIYdOLq75LpCJ5F863';
@@ -113,19 +112,7 @@ const generateSessionId = (): string => {
   return isLocalhost ? `${id}-test` : id;
 };
 
-type QuizAction =
-  | 'coverage_tab_view'
-  | 'quiz_start'
-  | 'quiz_1_question'
-  | 'quiz_2_question'
-  | 'quiz_3_question'
-  | 'quiz_4_question'
-  | 'quiz_5_question'
-  | 'quiz_complete'
-  | 'get_coverage_click';
-
-// Track quiz actions
-const trackQuizAction = async (userId: string, action: QuizAction): Promise<void> => {
+const trackQuizAction = async (userId: string, action: string): Promise<void> => {
   try {
     await ky.post(`${FAIRSIDE_API_URL}/revoke-stats`, {
       headers,
@@ -142,7 +129,7 @@ const trackQuizAction = async (userId: string, action: QuizAction): Promise<void
 export interface FairsideStore {
   userId?: string;
   getUserId: () => string;
-  trackQuizAction: (action: QuizAction) => void;
+  trackQuizAction: (action: string) => void;
 }
 
 export const useFairsideStore = create<FairsideStore>((set, get) => ({
@@ -155,7 +142,7 @@ export const useFairsideStore = create<FairsideStore>((set, get) => ({
 
     return newUserId;
   },
-  trackQuizAction: (action: QuizAction) => {
+  trackQuizAction: (action: string) => {
     const userId = get().getUserId();
     trackQuizAction(userId, action);
   },

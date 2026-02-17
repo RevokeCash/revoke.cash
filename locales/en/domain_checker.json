@@ -1,8 +1,0 @@
-{
-  "description": "When interacting with web3 websites, you may come across a domain that you don't recognize. To make sure that the domain is safe to interact with, you can use the domain scanner to check if the domain has any security issues. To bring you the domain scanner, we've partnered with <kerberus-link>Kerberus</kerberus-link>. You can also use the <extension-link>Revoke extension</extension-link> to have the domain scanner integrated, or the <kerberus-link>Kerberus Sentinel3 extension</kerberus-link> for even more security checks on all SOL/EVM chains and up to $30k scam coverage.",
-  "meta": {
-    "description": "Use the Domain Scanner to check if a web3 domain is safe to interact with. We've partnered with Kerberus to bring you the domain scanner.",
-    "title": "Domain Scanner: Check if a domain is safe to interact with"
-  },
-  "title": "Domain Scanner"
-}

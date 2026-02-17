@@ -22,7 +22,7 @@ export class HardcodedPriceStrategy implements PriceStrategy {
     );
   }
 
-  public async calculateNativeTokenPrice(publicClient: PublicClient): Promise<number> {
+  public async calculateNativeTokenPrice(_publicClient: PublicClient): Promise<number> {
     throw new Error('Cannot calculate native token price for HardcodedPriceStrategy');
   }
 

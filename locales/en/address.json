@@ -11,6 +11,13 @@
   "batch_revoke": {
     "add_tip": "Would you like to add a tip?",
     "failed": "Failed",
+    "fee": {
+      "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
+      "notice": "By batch revoking, you pay a small fee of <m>${feeDollarAmount}</m> that supports the continued development of Revoke.cash.",
+      "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> is sponsoring the batch revoke fee on the <m>{chainName}</m> network! 🥳",
+      "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals one by one for free."
+    },
     "no_tip": "No tip",
     "revoked": "Revoked",
     "title": "Batch Revoke",
@@ -23,7 +30,7 @@
         "non_evm": "Non-EVM",
         "title": "Supported Blockchains"
       },
-      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link> or <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "With Revoke.cash, we help you manage your risk in the crypto space. We offer tools that help you to prevent getting drained or losing funds. But even then, scams and hacks do occur. That is where coverage comes in. Coverage is a way to make sure that the value of your wallet is covered in case of a wallet drain. Several types of coverage exist, from smart contract hacks to phishing attacks. We've partnered with <fairside-link>Fairside</fairside-link> to offer you coverage in case of some phishing and social engineering drains, but other coverage products exist for smart contract hacks, such as <nexus-link>Nexus Mutual</nexus-link>.",
       "important": {
         "coverage_amount": "Coverage is purchased for a certain ETH amount - if your portfolio value rises in ETH, you're only covered for the configured ETH amount.",
         "fee": "There is a 10% personal responsibility amount on payouts.",
@@ -81,6 +88,7 @@
   },
   "delegations": {
     "columns": {
+      "chain_id": "Network",
       "contract": "Asset / Contract",
       "delegate": "Delegate",
       "delegator": "Delegator",
@@ -90,16 +98,20 @@
     "contract": {
       "not_applicable": "N/A"
     },
+    "eip7702_delegations": "EIP7702 Delegations",
     "incoming_delegations": "Incoming Delegations",
     "info_panel": {
-      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you.",
+      "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you. Note that these delegations are <b>different</b> from EIP7702 delegations, which can <i>only</i> be revoked inside your wallet application.",
       "title": "What Are Delegations?"
     },
+    "no_eip7702_delegations": "No EIP7702 delegations found",
     "no_incoming_delegations": "No incoming delegations found",
     "no_outgoing_delegations": "No outgoing delegations found",
     "outgoing_delegations": "Outgoing Delegations",
     "tooltips": {
       "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
+      "eip7702": "An EIP7702 delegation adds smart contract functionality to your wallet.",
+      "eip7702_revoke": "EIP7702 delegations have to be revoked inside your wallet application",
       "erc1155": "An ERC1155 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC1155 token.",
       "erc20": "An ERC20 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC20 token.",
       "erc721": "An ERC721 token delegation allows the delegate to act on your behalf on supported platforms for a specific ERC721 token.",
@@ -107,6 +119,7 @@
     },
     "types": {
       "contract": "Contract",
+      "eip7702": "EIP7702",
       "erc1155": "ERC1155",
       "erc20": "ERC20",
       "erc721": "ERC721",
@@ -142,12 +155,13 @@
   "headers": {
     "actions": "Actions",
     "allowance": "Approved Amount",
+    "amount": "Amount",
     "asset": "Asset",
     "asset_type": "Type",
+    "date": "Date",
+    "event_type": "Event Type",
     "expiration": "Expiration",
-    "last_cancelled": "Last Cancelled",
     "last_updated": "Last Updated",
-    "marketplace": "Marketplace",
     "policy_type": "Permission Type",
     "session_hash": "Session Identifier",
     "signer": "Authorized Signer",
@@ -155,6 +169,13 @@
     "status": "Status",
     "transaction": "Transaction",
     "value_at_risk": "Value at Risk"
+  },
+  "history": {
+    "approved": "Approved",
+    "cancelled_signatures": "Cancelled Signatures",
+    "none_found": "No approval history found",
+    "revoked": "Revoked",
+    "title": "Approval History"
   },
   "labels": {
     "connected": "Connected",
@@ -206,7 +227,8 @@
     "unsafe": "Potentially unsafe contract code"
   },
   "search": {
-    "spender": "Search by Approved Spender Address"
+    "history": "Search by Spender or Token",
+    "spender": "Search by Spender"
   },
   "sessions": {
     "info": {
@@ -226,26 +248,11 @@
       }
     }
   },
-  "signatures": {
-    "info": {
-      "description": "Signatures are a way to authorize actions without sending a transaction. <i>Marketplace signatures</i> are used to list assets for sale on marketplaces like OpenSea. <i>Permit signatures</i> are used to grant token approvals. Because these signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you signed them. This page contains a list of marketplaces and a list of your tokens that support offchain <i>Permit</i> signatures. <b>Only if <i>you</i> know that you signed an offchain signature on a scam website, you need to cancel the <i>potential</i> signatures on this page</b>, otherwise you are wasting transaction fees. When you cancel potential signatures for a token or marketplace, they will remain in the list but cannot be cancelled again for some time.",
-      "title": "What Are Signatures?"
-    },
-    "marketplaces": {
-      "active_approvals": "{count, plural, =1 {1 active approval} other {# active approvals}}",
-      "none_found": "No marketplaces with active approvals found.",
-      "title": "Marketplaces"
-    },
-    "permit": {
-      "none_found": "No tokens with Permit support found.",
-      "title": "Tokens with Permit support"
-    }
-  },
   "sorting": {
     "columns": {
       "allowance": "Approved Amount",
+      "approved_spender": "Approved Spender",
       "asset_name": "Asset Name",
-      "authorized_spender": "Approved Spender",
       "last_updated": "Last Updated",
       "value_at_risk": "Value at Risk"
     },
@@ -269,13 +276,11 @@
     "acknowledge_signature_notice": "Please acknowledge the notice before checking your signatures.",
     "connect_wallet": "Please connect your wallet to continue",
     "connected_account": "You can only perform actions for the connected account",
+    "filter_by_spender": "Filter by this spender",
+    "filter_by_token": "Filter by this token",
     "involved_in_exploits": "This address is involved in the following exploits:",
-    "marketplace_listings": "This will cancel all current listings and offers on {marketplace}.",
-    "marketplace_signatures": "Once approved, marketplaces are able to move assets on your behalf. Bad actors exploit these approvals to create zero-priced listings on third party websites. Cancel these if you signed a marketplace signature on a phishing website.",
     "old_approval": "This approval is over a year old. Consider revoking it if you no longer need it.",
     "permit2_expiration": "This is a Permit2 approval that will expire {inTime}",
-    "permit_signatures": "Permit Signatures are used to grant approvals without sending a transaction. Cancel these if you signed a Permit signature on a phishing website.",
-    "recently_cancelled": "You already cancelled this potential signature recently. It will remain in the list so you can cancel it again later if you need to.",
     "risk_factors": "This is {riskLevel} for these reasons:",
     "select_tip": "Please select a tip amount",
     "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue",

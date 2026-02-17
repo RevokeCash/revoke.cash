@@ -18,7 +18,7 @@ export enum TransactionType {
   DELEGATION_REVOKE = 'delegation_revoke',
   UPDATE = 'update',
   SESSION_REVOKE = 'session_revoke',
-  DONATE = 'donate',
+  FEE = 'fee',
   OTHER = 'other',
 }
 
@@ -90,7 +90,7 @@ export interface SpenderData extends SpenderRiskData {
 
 export interface SpenderRiskData {
   name?: string;
-  riskFactors?: Nullable<Array<RiskFactor>>;
+  riskFactors?: Array<RiskFactor>;
 }
 
 export interface RiskFactor {

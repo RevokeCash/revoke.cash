@@ -3,9 +3,9 @@
 import { ChainId } from '@revoke.cash/chains';
 import Button from 'components/common/Button';
 import Card from 'components/common/Card';
-import ModalWithButton from 'components/common/ModalWithButton';
 import GridList from 'components/common/list/GridList';
 import ListItem from 'components/common/list/ListItem';
+import ModalWithButton from 'components/common/ModalWithButton';
 import { getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import CoverageQuiz from './CoverageQuiz';

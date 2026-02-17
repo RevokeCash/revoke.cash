@@ -3,12 +3,12 @@ import ChainDescription from 'components/common/ChainDescription';
 import Divider from 'components/common/Divider';
 import Prose from 'components/common/Prose';
 import { locales } from 'lib/i18n/config';
-import { SUPPORTED_CHAINS, getChainIdFromSlug, getChainName, getChainSlug } from 'lib/utils/chains';
+import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from 'lib/utils/chains';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import AddNetworkChainSelect from './AddNetworkChainSelect';
 import AddNetworkForm from './AddNetworkForm';
 

@@ -1,4 +1,4 @@
-import { type Table, flexRender } from '@tanstack/react-table';
+import { flexRender, type Table } from '@tanstack/react-table';
 import { ColumnId } from 'components/allowances/dashboard/columns';
 import TableBodyLoader from 'components/common/TableBodyLoader';
 import { twMerge } from 'tailwind-merge';

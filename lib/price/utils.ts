@@ -1,7 +1,7 @@
 import ky from 'ky';
 import { apiLogin, isNullish } from 'lib/utils';
 import { getChainPriceStrategy } from 'lib/utils/chains';
-import { type TokenContract, isErc721Contract } from 'lib/utils/tokens';
+import { isErc721Contract, type TokenContract } from 'lib/utils/tokens';
 import { formatUnits } from 'viem';
 import type { PriceStrategy } from './PriceStrategy';
 
@@ -20,7 +20,9 @@ export const getTokenPrice = async (chainId: number, tokenContract: TokenContrac
   if (!strategy || !strategySupportsToken(strategy, tokenContract)) return null;
 
   try {
-    return await strategy.calculateTokenPrice(tokenContract);
+    const price = await strategy.calculateTokenPrice(tokenContract);
+    if (isNullish(price) || Number.isNaN(price) || price === Infinity || price === -Infinity) return null;
+    return price;
   } catch {
     return null;
   }

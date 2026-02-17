@@ -53,7 +53,7 @@ const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
         )}
       </div>
       <LearnLayout sidebarEntries={sidebar} slug={slug} meta={meta} translationUrl={translationUrl}>
-        <MarkdownProse content={content} />
+        <MarkdownProse meta={meta} content={content} />
       </LearnLayout>
     </>
   );
