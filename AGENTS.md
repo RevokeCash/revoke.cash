@@ -105,6 +105,7 @@ Notes:
 ### Additional Feature Modules
 
 - Approval history: `lib/hooks/ethereum/useApprovalHistory.tsx`, `lib/utils/approval-history.ts`.
+- Premium multi-chain history/allowances: `lib/hooks/page-context/PremiumAddressPageContext.tsx`, `lib/hooks/ethereum/usePremiumApprovalHistory.tsx`.
 - Permit signatures and marketplace bulk delisting: `lib/hooks/ethereum/usePermitTokens.tsx`, `lib/hooks/ethereum/useMarketplaces.tsx`.
 - Delegations and EIP-7702: `lib/hooks/ethereum/delegations/*`, `lib/utils/eip7702.ts`, `lib/delegations/*`.
 - Sessions (Abstract): `lib/hooks/ethereum/sessions/*`, `lib/utils/sessions.ts`.
@@ -191,3 +192,4 @@ Notes:
 - Do not remove existing comments unless they are clearly outdated.
 - Prefer one component per file unless multiple components are strongly justified.
 - Many App Router pages are static (`dynamic='error'`, `dynamicParams=false`); update static params when adding new dynamic content paths.
+- Premium routes currently have no enforced premium access gate (see TODO in `app/[locale]/premium/address/[addressOrName]/layout.tsx`).

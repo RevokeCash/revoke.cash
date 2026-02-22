@@ -10,7 +10,6 @@
     "trim-sitemap": "sed 's,<urlset.*,<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">,g' public/sitemap.xml",
     "start": "next start",
     "analyze": "ANALYZE=true yarn build",
-    "lint:checksums": "tsx scripts/lint-checksums.ts && git rm -r --cached -q data && git add --all data",
     "lint": "biome check .",
     "lint:staged": "yarn lint --error-on-warnings --no-errors-on-unmatched --staged .",
     "lint:fix": "yarn lint --write",
