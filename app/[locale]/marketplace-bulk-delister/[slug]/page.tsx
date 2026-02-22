@@ -72,7 +72,9 @@ const MarketplaceBulkDelisterPage: NextPage<Props> = async ({ params }) => {
       </Prose>
       <div className="flex flex-col items-center w-full">
         <Suspense>
-          <NextIntlClientProvider messages={{ common: messages.common, signatures: messages.signatures }}>
+          <NextIntlClientProvider
+            messages={{ common: messages.common, signatures: messages.signatures, address: messages.address }}
+          >
             <MarketplaceBulkDelisterChecker chainId={chainId} />
           </NextIntlClientProvider>
           <div className="flex flex-col sm:flex-row items-center gap-2 my-4">

@@ -22,7 +22,7 @@ import type PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
-import { useAddress } from '../page-context/useAddress';
+import { useAddress } from '../page-context/AddressIdentityContext';
 import { useFeePayment } from './useFeePayment';
 import { useWalletCapabilities } from './useWalletCapabilities';
 

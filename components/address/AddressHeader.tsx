@@ -1,6 +1,7 @@
 'use client';
 
 import ChainSelect from 'components/common/select/ChainSelect';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import AccountTypeLabel from './AccountTypeLabel';
 import AddressDisplay from './AddressDisplay';
@@ -9,7 +10,8 @@ import ConnectedLabel from './ConnectedLabel';
 import AddressNavigation from './navigation/AddressNavigation';
 
 const AddressHeader = () => {
-  const { address, domainName, selectedChainId, selectChain } = useAddressPageContext();
+  const { address, domainName } = useAddress();
+  const { selectedChainId, selectChain } = useAddressPageContext();
 
   return (
     <div className="flex flex-col gap-2 mb-2 border border-black dark:border-white rounded-lg px-4 pt-3">

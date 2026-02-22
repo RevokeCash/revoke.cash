@@ -158,6 +158,7 @@
     "amount": "Сумма",
     "asset": "Aктив",
     "asset_type": "Тип",
+    "chain": "Сеть",
     "date": "Дата",
     "event_type": "Тип события",
     "expiration": "Срок действия",
@@ -173,8 +174,18 @@
   "history": {
     "approved": "Одобрено",
     "cancelled_signatures": "Отмененные подписи",
+    "hide_details": "Скрыть детали",
+    "incomplete_summary": "История может быть неполной. Не удалось загрузить данные для {failed} из {total} сетей.",
+    "loading_summary": "Загрузка истории для {loading} из {total} сетей.",
     "none_found": "История одобрений не найдена",
+    "partial_and_loading_summary": "История может быть неполной. {failed} сетей не загрузились, еще {loading} загружаются.",
+    "status_failed": "с ошибкой",
+    "status_loaded": "загружено",
+    "status_loading": "загружается",
+    "retry_chain": "Повторить для сети",
+    "retry_failed": "Повторить сети с ошибкой",
     "revoked": "Отозвано",
+    "show_details": "Показать детали",
     "title": "История одобрений"
   },
   "labels": {

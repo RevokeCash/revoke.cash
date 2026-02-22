@@ -10,6 +10,7 @@ import { getEip7702DelegatedAddress } from 'lib/utils/eip7702';
 import { useLayoutEffect, useState } from 'react';
 import type { Address, PublicClient } from 'viem';
 import { usePublicClient } from 'wagmi';
+import { useAddress } from '../../page-context/AddressIdentityContext';
 import { useAddressPageContext } from '../../page-context/AddressPageContext';
 
 const fetchDelegations = async (
@@ -55,7 +56,8 @@ const fetchEip7702Delegations = async (address: Address): Promise<Delegation[]> 
 };
 
 export const useDelegations = () => {
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddress();
+  const { selectedChainId } = useAddressPageContext();
   const [delegations, setDelegations] = useState<Delegation[]>([]);
   const publicClient = usePublicClient({ chainId: selectedChainId })!;
 
@@ -95,7 +97,7 @@ export const useDelegations = () => {
 };
 
 export const useEip7702Delegations = () => {
-  const { address } = useAddressPageContext();
+  const { address } = useAddress();
 
   const {
     data: delegations = [],

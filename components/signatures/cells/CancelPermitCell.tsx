@@ -3,6 +3,7 @@ import Button from 'components/common/Button';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
 import { isNullish, waitForSubmittedTransactionConfirmation, waitForTransactionConfirmation } from 'lib/utils';
@@ -23,7 +24,8 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
   const t = useTranslations();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient()!;
-  const { address, selectedChainId } = useAddressPageContext();
+  const { address } = useAddress();
+  const { selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction(selectedChainId);
 
   const { execute, loading } = useAsyncCallback(() => waitForSubmittedTransactionConfirmation(cancel()));

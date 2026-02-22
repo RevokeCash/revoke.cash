@@ -1,14 +1,14 @@
 'use client';
 
 import { ChainId } from '@revoke.cash/chains';
-import { usePremiumAddressPageContext } from 'lib/hooks/page-context/PremiumAddressPageContext';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import AddressDisplay from './AddressDisplay';
 import AddressExternalLinks from './AddressExternalLinks';
 import ConnectedLabel from './ConnectedLabel';
 import AddressNavigation from './navigation/AddressNavigation';
 
 const PremiumAddressHeader = () => {
-  const { address, domainName } = usePremiumAddressPageContext();
+  const { address, domainName } = useAddress();
 
   return (
     <div className="w-full flex flex-col items-center sm:items-start gap-2 mb-2 border border-black dark:border-white rounded-lg px-4 pt-3">

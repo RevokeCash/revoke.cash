@@ -3,6 +3,7 @@ import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable 
 import Card from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useSessions } from 'lib/hooks/ethereum/sessions/useSessions';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import type { Session } from 'lib/utils/sessions';
 import { useTranslations } from 'next-intl';
@@ -11,7 +12,8 @@ import { columns } from './columns';
 
 const SessionsTable = () => {
   const t = useTranslations();
-  const { selectedChainId, address } = useAddressPageContext();
+  const { address } = useAddress();
+  const { selectedChainId } = useAddressPageContext();
   const { sessions, isLoading, error, onSessionRevoke } = useSessions(address, selectedChainId);
 
   const data = useMemo(() => sessions ?? [], [sessions]);

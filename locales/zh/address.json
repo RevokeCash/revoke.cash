@@ -158,6 +158,7 @@
     "amount": "金额",
     "asset": "资产",
     "asset_type": "类型",
+    "chain": "链",
     "date": "日期",
     "event_type": "事件类型",
     "expiration": "到期",
@@ -173,8 +174,18 @@
   "history": {
     "approved": "已授权",
     "cancelled_signatures": "已取消的签名",
+    "hide_details": "隐藏详情",
+    "incomplete_summary": "历史记录可能不完整。{total} 条链中有 {failed} 条链的数据无法加载。",
+    "loading_summary": "正在从 {total} 条链中的 {loading} 条加载历史记录。",
     "none_found": "未找到授权历史记录",
+    "partial_and_loading_summary": "历史记录可能不完整。{failed} 条链加载失败，另有 {loading} 条链仍在加载。",
+    "status_failed": "失败",
+    "status_loaded": "已加载",
+    "status_loading": "加载中",
+    "retry_chain": "重试该链",
+    "retry_failed": "重试失败的链",
     "revoked": "已撤销",
+    "show_details": "显示详情",
     "title": "授权历史"
   },
   "labels": {

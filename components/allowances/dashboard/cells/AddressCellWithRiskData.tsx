@@ -17,7 +17,7 @@ interface Props {
 
 const AddressCellWithRiskData = ({ address, chainId, isLoading: isLoadingOverride, ignoredRiskFactors }: Props) => {
   const { data: spenderData, isLoading } = useQuery({
-    queryKey: ['spenderData', address, chainId],
+    queryKey: ['spenderData', chainId, address],
     queryFn: () => getSpenderData(address, chainId),
     // Chances of this data changing while the user is on the page are very slim
     staleTime: Number.POSITIVE_INFINITY,

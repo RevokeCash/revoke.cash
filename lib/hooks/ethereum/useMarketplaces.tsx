@@ -12,6 +12,7 @@ import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
 import { type Address, getAbiItem, type Hash, toEventSelector, type WalletClient } from 'viem';
+import { useAddress } from '../page-context/AddressIdentityContext';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
 
 export const OPENSEA_CHAINS = [
@@ -48,7 +49,8 @@ export const BLUR_CHAINS = [ChainId.EthereumMainnet];
 export const useMarketplaces = () => {
   const [marketplaces, setMarketplaces] = useState<Marketplace[]>([]);
 
-  const { selectedChainId, address } = useAddressPageContext();
+  const { address } = useAddress();
+  const { selectedChainId } = useAddressPageContext();
   const { allowances, isLoading: isAllowancesLoading, error: allowancesError } = useAddressAllowances();
 
   const queryClient = useQueryClient();

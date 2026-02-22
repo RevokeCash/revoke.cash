@@ -6,22 +6,17 @@ import { isNullish } from 'lib/utils';
 import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
 import React, { type ReactNode, useContext, useLayoutEffect, useState } from 'react';
-import useLocalStorage from 'use-local-storage';
 import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
 import { useEvents } from '../ethereum/events/useEvents';
 import { useAllowances } from '../ethereum/useAllowances';
-import { useNameLookup } from '../ethereum/useNameLookup';
+import { AddressIdentityContextProvider } from './AddressIdentityContext';
 
 interface AddressContext {
-  address: Address;
-  domainName?: string;
   selectedChainId: number;
   selectChain: (chainId: number) => void;
   eventContext: ReturnType<typeof useEvents>;
   allowanceContext: ReturnType<typeof useAllowances>;
-  signatureNoticeAcknowledged: boolean;
-  acknowledgeSignatureNotice: () => void;
 }
 
 interface Props {
@@ -46,7 +41,6 @@ export const AddressPageContextProvider = ({
   const path = usePathname();
   const router = useCsrRouter();
   const { chain } = useAccount();
-  const { domainName: resolvedDomainName } = useNameLookup(domainName ? undefined : address);
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
   const queryChainId = Number(searchParams.get('chainId')) || undefined;
@@ -90,24 +84,19 @@ export const AddressPageContextProvider = ({
     (allowanceContext?.isLoading || eventContext?.isLoading || !allowanceContext?.allowances) &&
     !allowanceContext?.error;
 
-  const [signatureNoticeAcknowledged, setAcknowledged] = useLocalStorage('signature-notice-acknowledged', false);
-  const acknowledgeSignatureNotice = () => setAcknowledged(true);
-
   return (
-    <AddressPageContext.Provider
-      value={{
-        address,
-        domainName: domainName ?? resolvedDomainName ?? undefined,
-        selectedChainId,
-        selectChain,
-        eventContext,
-        allowanceContext,
-        signatureNoticeAcknowledged,
-        acknowledgeSignatureNotice,
-      }}
-    >
-      {children}
-    </AddressPageContext.Provider>
+    <AddressIdentityContextProvider address={address} domainName={domainName}>
+      <AddressPageContext.Provider
+        value={{
+          selectedChainId,
+          selectChain,
+          eventContext,
+          allowanceContext,
+        }}
+      >
+        {children}
+      </AddressPageContext.Provider>
+    </AddressIdentityContextProvider>
   );
 };
 

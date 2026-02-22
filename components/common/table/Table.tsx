@@ -12,10 +12,11 @@ interface Props<T> {
   error?: Nullable<Error>;
   emptyChildren?: React.ReactNode;
   loaderRows?: number;
+  partialLoadingRows?: number;
   className?: string;
 }
 
-const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, className }: Props<T>) => {
+const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, partialLoadingRows, className }: Props<T>) => {
   const classes = {
     container: 'border border-black dark:border-white rounded-lg overflow-x-scroll whitespace-nowrap scrollbar-hide',
     table: 'w-full border-collapse allowances-table',
@@ -27,7 +28,14 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, className
       <table className={classes.table}>
         <TableHeader table={table} />
         <TableFooter table={table} />
-        {!error && <TableBody table={table} isLoading={loading} loaderRows={loaderRows} />}
+        {!error && (
+          <TableBody
+            table={table}
+            isLoading={loading}
+            loaderRows={loaderRows}
+            partialLoadingRows={partialLoadingRows}
+          />
+        )}
       </table>
       <div className={classes.label}>
         {!loading && !error && table?.getRowModel()?.rows?.length === 0 && emptyChildren}

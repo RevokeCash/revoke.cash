@@ -71,7 +71,7 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
 
   const spenderQueries = useQueries({
     queries: (baseAllowances ?? []).map((allowance) => ({
-      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender ?? 'null'],
+      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender],
       queryFn: allowance.payload?.spender
         ? () => getSpenderData(allowance.payload!.spender, allowance.chainId)
         : () => null,

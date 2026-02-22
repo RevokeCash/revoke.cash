@@ -5,14 +5,16 @@ import { getChainName } from 'lib/utils/chains';
 import { isCovalentError, isNetworkError, isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { useContext, useEffect } from 'react';
+import { twMerge } from 'tailwind-merge';
 import WithHoverTooltip from './WithHoverTooltip';
 
 interface Props {
   error: any;
   chainId?: number;
+  className?: string;
 }
 
-const ErrorDisplay = ({ error, chainId }: Props) => {
+const ErrorDisplay = ({ error, chainId, className }: Props) => {
   const t = useTranslations();
   // Try to get the context, but don't fail if it's not available (e.g., in premium context)
   const context = useContext(AddressPageContext);
@@ -29,7 +31,7 @@ const ErrorDisplay = ({ error, chainId }: Props) => {
 
   return (
     <WithHoverTooltip tooltip={tooltip}>
-      <div className="truncate">⚠ {shortMessage}</div>
+      <div className={twMerge('min-w-0 truncate', className)}>⚠ {shortMessage}</div>
     </WithHoverTooltip>
   );
 };

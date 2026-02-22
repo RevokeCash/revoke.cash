@@ -12,7 +12,7 @@ const PudgyCheckerWrapper = () => {
   const t = useTranslations();
   const [address, setAddress] = useState<Address | undefined>();
 
-  // TODO: Move AddressForm out of epxloits into some more generic component
+  // TODO: Move AddressForm out of exploits into some more generic component
   return (
     <Suspense>
       <AddressPageContextProvider address={address!} initialChainId={ChainId.EthereumMainnet}>

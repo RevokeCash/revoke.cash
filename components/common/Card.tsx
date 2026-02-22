@@ -15,7 +15,7 @@ interface Props {
 
 const Card = ({ title, subtitle, children, className, image, hover, ...props }: Props) => {
   const outerClass = twMerge(
-    'h-full w-full border border-black dark:border-white rounded-lg flex flex-col',
+    'h-full w-full border border-black dark:border-white rounded-lg flex flex-col overflow-hidden',
     hover === 'scale' ? 'hover:scale-105 transition' : null,
   );
 
@@ -31,7 +31,7 @@ const Card = ({ title, subtitle, children, className, image, hover, ...props }: 
       )}
       {image ? <div className="border-b border-black dark:border-white">{image}</div> : null}
       <Loader isLoading={!!props.isLoading} className="rounded-t-none border-none">
-        <div className={twMerge('h-full w-full py-2 px-4 grow', className)}>{children}</div>
+        <div className={twMerge('h-full w-full py-2 px-4 grow bg-zinc-50 dark:bg-zinc-900', className)}>{children}</div>
       </Loader>
     </div>
   );

@@ -29,9 +29,10 @@ export const IRON_OPTIONS: SessionOptions = {
   },
 };
 
+// TODO: Fix rate limiter values when premium is fully implemented
 export const RateLimiters = {
   LOGS: new RateLimiterMemory({
-    points: 20,
+    points: 200,
     duration: 1,
   }),
   PRICE: new RateLimiterMemory({
@@ -39,7 +40,7 @@ export const RateLimiters = {
     duration: 1,
   }),
   SPENDER: new RateLimiterMemory({
-    points: 100,
+    points: 1000,
     duration: 1,
   }),
   MERCH_CODES: new RateLimiterMemory({

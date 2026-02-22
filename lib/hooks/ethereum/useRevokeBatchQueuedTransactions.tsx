@@ -16,7 +16,7 @@ import type PQueue from 'p-queue';
 import { toast } from 'react-toastify';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
-import { useAddress } from '../page-context/useAddress';
+import { useAddress } from '../page-context/AddressIdentityContext';
 import { useFeePayment } from './useFeePayment';
 
 export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {

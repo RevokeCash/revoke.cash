@@ -6,6 +6,7 @@ import type { Address } from 'viem';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAmountCell from './cells/HistoryAmountCell';
 import HistoryAssetCell from './cells/HistoryAssetCell';
+import HistoryChainCell from './cells/HistoryChainCell';
 import HistorySpenderCell from './cells/HistorySpenderCell';
 import type { ApprovalHistoryEvent } from './utils';
 
@@ -16,6 +17,7 @@ declare module '@tanstack/table-core' {
 }
 
 export enum ColumnId {
+  CHAIN = 'Chain',
   ASSET = 'Asset',
   EVENT_TYPE = 'Event Type',
   SPENDER = 'Approved Spender',
@@ -61,6 +63,13 @@ export const columns = [
     id: ColumnId.COMBINED_SEARCH,
     enableColumnFilter: true,
     filterFn: customFilterFns.tokenOrSpender,
+  }),
+  columnHelper.accessor('chainId', {
+    id: ColumnId.CHAIN,
+    header: () => <HeaderCell i18nKey="address.headers.chain" />,
+    cell: ({ row }) => <HistoryChainCell chainId={row.original.chainId} />,
+    size: 132,
+    enableSorting: false,
   }),
   columnHelper.accessor(accessors.token, {
     id: ColumnId.ASSET,

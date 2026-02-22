@@ -1,7 +1,7 @@
 import type { Table } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Checkbox from 'components/common/Checkbox';
-import { useAddress } from 'lib/hooks/page-context/useAddress';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
 
 interface Props {

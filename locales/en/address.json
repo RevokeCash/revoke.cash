@@ -158,6 +158,7 @@
     "amount": "Amount",
     "asset": "Asset",
     "asset_type": "Type",
+    "chain": "Chain",
     "date": "Date",
     "event_type": "Event Type",
     "expiration": "Expiration",
@@ -173,8 +174,18 @@
   "history": {
     "approved": "Approved",
     "cancelled_signatures": "Cancelled Signatures",
+    "hide_details": "Hide details",
+    "incomplete_summary": "History may be incomplete. Data from {failed} of {total} chains could not be loaded.",
+    "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "No approval history found",
+    "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
+    "status_failed": "failed",
+    "status_loaded": "loaded",
+    "status_loading": "loading",
+    "retry_chain": "Retry chain",
+    "retry_failed": "Retry failed chains",
     "revoked": "Revoked",
+    "show_details": "Show details",
     "title": "Approval History"
   },
   "labels": {

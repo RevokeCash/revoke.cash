@@ -1,22 +1,17 @@
+import PremiumAllowancePageProvider from 'components/address/PremiumAllowancePageProvider';
 import PremiumAllowanceDashboard from 'components/allowances/dashboard/PremiumAllowanceDashboard';
-import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { shortenAddress } from 'lib/utils/formatting';
 import { getAddressAndDomainName } from 'lib/utils/whois';
 import type { Metadata, NextPage } from 'next';
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
-  searchParams: Promise<SearchParams>;
 }
 
 interface Params {
   locale: string;
   addressOrName: string;
-}
-
-interface SearchParams {
-  chainId?: string;
 }
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
@@ -27,11 +22,11 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
   const addressDisplay = domainName ?? shortenAddress(address)!;
 
-  const title = `${t('address.meta.title', { addressDisplay })} (Premium)`;
+  const title = t('address.meta.title', { addressDisplay });
 
   return {
     title,
-    description: t('common.meta.description', { chainName: 'All Chains' }),
+    description: t('common.meta.description', { chainName: 'Ethereum' }),
   };
 };
 
@@ -39,12 +34,10 @@ const PremiumAddressPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const messages = await getMessages({ locale });
-
   return (
-    <NextIntlClientProvider messages={{ common: messages.common, address: messages.address }}>
+    <PremiumAllowancePageProvider>
       <PremiumAllowanceDashboard />
-    </NextIntlClientProvider>
+    </PremiumAllowancePageProvider>
   );
 };
 

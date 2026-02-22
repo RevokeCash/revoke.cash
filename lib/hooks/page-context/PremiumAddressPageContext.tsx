@@ -146,7 +146,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
   // Fetch spender data for all allowances (TanStack Query deduplicates by queryKey)
   const spenderQueries = useQueries({
     queries: allBaseAllowances.map((allowance) => ({
-      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender ?? 'null'],
+      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender],
       queryFn: allowance.payload?.spender
         ? () => getSpenderData(allowance.payload!.spender, allowance.chainId)
         : () => null,

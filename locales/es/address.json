@@ -158,6 +158,7 @@
     "amount": "Monto",
     "asset": "Activo",
     "asset_type": "Tipo",
+    "chain": "Red",
     "date": "Fecha",
     "event_type": "Tipo de evento",
     "expiration": "Vencimiento",
@@ -173,8 +174,18 @@
   "history": {
     "approved": "Aprobado",
     "cancelled_signatures": "Firmas canceladas",
+    "hide_details": "Ocultar detalles",
+    "incomplete_summary": "El historial puede estar incompleto. No se pudieron cargar datos de {failed} de {total} cadenas.",
+    "loading_summary": "Cargando historial de {loading} de {total} cadenas.",
     "none_found": "No se encontró ningún historial de aprobaciones",
+    "partial_and_loading_summary": "El historial puede estar incompleto. {failed} cadenas fallaron y {loading} siguen cargando.",
+    "status_failed": "con error",
+    "status_loaded": "cargadas",
+    "status_loading": "cargando",
+    "retry_chain": "Reintentar cadena",
+    "retry_failed": "Reintentar cadenas con error",
     "revoked": "Revocado",
+    "show_details": "Mostrar detalles",
     "title": "Historial de aprobaciones"
   },
   "labels": {

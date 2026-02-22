@@ -1,7 +1,7 @@
 import Button from 'components/common/Button';
 import Loader from 'components/common/Loader';
 import { useWalletCapabilities } from 'lib/hooks/ethereum/useWalletCapabilities';
-import { useAddress } from 'lib/hooks/page-context/useAddress';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useTranslations } from 'next-intl';
 import ControlsWrapper from '../ControlsWrapper';
 import FeeNotice from './FeeNotice';
