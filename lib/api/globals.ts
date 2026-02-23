@@ -1,4 +1,3 @@
-import { ChainId } from '@revoke.cash/chains';
 import {
   type DocumentedChainId,
   isBlockScoutSupportedChain,
@@ -17,7 +16,6 @@ import type { EventGetter } from './logs/EventGetter';
 import { HyperSyncEventGetter } from './logs/HyperSyncEventGetter';
 import { NodeEventGetter } from './logs/NodeEventGetter';
 import { RoutescanEventGetter } from './logs/RoutescanEventGetter';
-import { TeloscanEventGetter } from './logs/TeloscanEventGetter';
 
 // These variables should only get initiated once, which is why they live in their own file
 // (would get initiated once per chain ID if in the /logs route file)
@@ -33,9 +31,7 @@ export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_U
 
 export const hyperSyncEventGetter = new HyperSyncEventGetter();
 
-export const customEventGetter = new CustomEventGetter({
-  [ChainId.TelosEVMMainnet]: new TeloscanEventGetter(),
-});
+export const customEventGetter = new CustomEventGetter({});
 
 export const getEventGetter = (chainId: DocumentedChainId): EventGetter => {
   if (isHyperSyncSupportedChain(chainId)) {

@@ -87,7 +87,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OasisSapphire,
   ChainId.MintMainnet,
   ChainId.ChilizChainMainnet,
-  ChainId.Canto,
   ChainId.DogechainMainnet,
   ChainId.Beam,
   ChainId.Shibarium,
@@ -613,23 +612,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/boba.jpg',
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
-  }),
-  [ChainId.Canto]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Canto,
-    name: 'Canto',
-    nativeTokenCoingeckoId: 'canto',
-    logoUrl: '/assets/images/vendor/chains/canto.svg',
-    explorerUrl: 'https://tuber.build',
-    etherscanCompatibleApiUrl: 'https://explorer.plexnode.wtf/api',
-    rpc: {
-      main: 'https://canto-rpc.ansybl.io',
-      free: 'https://canto-rpc.ansybl.io',
-    },
-    deployedContracts: { ...MULTICALL },
-    // TODO: Canto DEX is not fully compatible with Uniswap v2, but it might be partially compatible, so we can look into
-    // amending the Uniswap v2 strategy to work with it (https://tuber.build/address/0xa252eEE9BDe830Ca4793F054B506587027825a8e)
-    priceStrategy: undefined,
   }),
   [ChainId.CeloMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -2073,11 +2055,12 @@ export const CHAINS = {
     priceStrategy: undefined, // TODO
   }),
   [ChainId.TelosEVMMainnet]: new Chain({
-    type: SupportType.BACKEND_CUSTOM, // TeloscanEventGetter
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.TelosEVMMainnet,
     name: 'Telos EVM',
     nativeTokenCoingeckoId: 'telos',
     logoUrl: '/assets/images/vendor/chains/telos.svg',
+    etherscanCompatibleApiUrl: 'https://teloscan.io/api',
     rpc: {
       main: 'https://rpc.telos.net',
     },

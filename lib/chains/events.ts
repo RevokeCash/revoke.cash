@@ -70,6 +70,9 @@ const getEventPrerequisites = async (chainId: DocumentedChainId, address: Addres
   ]);
 
   if (rpcBlock > toBlock + 1000) {
+    console.log(
+      `${getChainName(chainId)}: Events data source is out of sync with the blockchain, please try again later.`,
+    );
     throw new Error(`Events data source is out of sync with the blockchain, please try again later.`);
   }
 

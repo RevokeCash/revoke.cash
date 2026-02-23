@@ -21,7 +21,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.BNBSmartChainMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.BOB]: '0x873D133876cbB180A333393e333DEaA3D373cDd4',
   [ChainId.BobaNetwork]: '0x164EA2CDE6f59F5Fcb76E78d292679B2521C54C2',
-  [ChainId.Canto]: '0xc2Dd41A21BC1fE912cc9a6EECd5f62d1c75fdc9F',
   [ChainId.CeloMainnet]: '0xDa9760828175a7684371321b17e11e823Aa5F4C0',
   [ChainId.ChilizChainMainnet]: '0x466111CB22867851fA667deaeeBe772cE435148b',
   [ChainId.CoinExSmartChainMainnet]: '0x3eC67Dd5060F8657720915B890A36E66B48D36d1',
