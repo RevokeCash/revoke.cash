@@ -15,7 +15,7 @@ import {
   type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
-import { CHAIN_SELECT_MAINNETS, createViemPublicClientForChain } from 'lib/utils/chains';
+import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
 import { getEventKey } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
 import { getSpenderData } from 'lib/utils/whois';
@@ -63,7 +63,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
 
   // Fetch events for all chains in parallel using useQueries
   const eventQueries = useQueries({
-    queries: CHAIN_SELECT_MAINNETS.map((chainId) => ({
+    queries: ORDERED_CHAINS.map((chainId) => ({
       queryKey: ['events', address, chainId],
       queryFn: () => getTokenEvents(chainId, address),
       enabled: !isNullish(address) && !isNullish(chainId),
@@ -73,7 +73,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
 
   // Fetch allowances for all chains in parallel
   const allowanceQueries = useQueries({
-    queries: CHAIN_SELECT_MAINNETS.map((chainId, index) => {
+    queries: ORDERED_CHAINS.map((chainId, index) => {
       const events = eventQueries[index]?.data;
       return {
         queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
@@ -93,7 +93,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
   useLayoutEffect(() => {
     let hasChanges = false;
 
-    CHAIN_SELECT_MAINNETS.forEach((chainId, index) => {
+    ORDERED_CHAINS.forEach((chainId, index) => {
       const queryData = allowanceQueries[index]?.data;
       const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
@@ -108,7 +108,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
       setBaseAllowancesMap((prevMap) => {
         const newMap = new Map(prevMap);
 
-        CHAIN_SELECT_MAINNETS.forEach((chainId, index) => {
+        ORDERED_CHAINS.forEach((chainId, index) => {
           const queryData = allowanceQueries[index]?.data;
           const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
@@ -190,7 +190,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
 
   // Build chainData array with status, allowances (enriched with price/spender), and computed values
   const chainData = useMemo<ChainAllowanceData[]>(() => {
-    return CHAIN_SELECT_MAINNETS.map((chainId, index) => {
+    return ORDERED_CHAINS.map((chainId, index) => {
       const eventQuery = eventQueries[index];
       const allowanceQuery = allowanceQueries[index];
 

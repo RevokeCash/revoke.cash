@@ -5,7 +5,7 @@ import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlat
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { delegationEquals, isNullish } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
-import { CHAIN_SELECT_MAINNETS, createViemPublicClientForChain } from 'lib/utils/chains';
+import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { Address, PublicClient } from 'viem';
 import { useAddress } from '../../page-context/AddressIdentityContext';
@@ -49,7 +49,7 @@ export const usePremiumDelegations = () => {
   }, [address]);
 
   const delegationQueries = useQueries({
-    queries: CHAIN_SELECT_MAINNETS.map((chainId) => ({
+    queries: ORDERED_CHAINS.map((chainId) => ({
       queryKey: ['delegations', address, chainId],
       queryFn: async () => {
         const publicClient = createViemPublicClientForChain(chainId);
@@ -66,7 +66,7 @@ export const usePremiumDelegations = () => {
   useLayoutEffect(() => {
     let hasChanges = false;
 
-    CHAIN_SELECT_MAINNETS.forEach((chainId, index) => {
+    ORDERED_CHAINS.forEach((chainId, index) => {
       const queryData = delegationQueries[index]?.data;
       const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
@@ -81,7 +81,7 @@ export const usePremiumDelegations = () => {
     setBaseDelegationsMap((prevMap) => {
       const newMap = new Map(prevMap);
 
-      CHAIN_SELECT_MAINNETS.forEach((chainId, index) => {
+      ORDERED_CHAINS.forEach((chainId, index) => {
         const queryData = delegationQueries[index]?.data;
         const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
@@ -95,7 +95,7 @@ export const usePremiumDelegations = () => {
   }, [delegationQueries]);
 
   const chainData = useMemo<ChainDelegationsData[]>(() => {
-    return CHAIN_SELECT_MAINNETS.map((chainId, index) => {
+    return ORDERED_CHAINS.map((chainId, index) => {
       const delegationQuery = delegationQueries[index];
       const delegationsForChain = baseDelegationsMap.get(chainId) ?? [];
       const hasLoadedData = !isNullish(delegationQuery?.data);

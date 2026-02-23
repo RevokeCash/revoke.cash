@@ -2,7 +2,7 @@ import { useQueries } from '@tanstack/react-query';
 import { getTokenEvents } from 'lib/chains/events';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { isNullish } from 'lib/utils';
-import { CHAIN_SELECT_MAINNETS } from 'lib/utils/chains';
+import { ORDERED_CHAINS } from 'lib/utils/chains';
 import { getEventKey } from 'lib/utils/events';
 import { HOUR } from 'lib/utils/time';
 import { useMemo } from 'react';
@@ -22,7 +22,7 @@ export const usePremiumApprovalHistory = () => {
   const { address } = useAddress();
 
   const eventQueries = useQueries({
-    queries: CHAIN_SELECT_MAINNETS.map((chainId) => ({
+    queries: ORDERED_CHAINS.map((chainId) => ({
       queryKey: ['events', address, chainId],
       queryFn: () => getTokenEvents(chainId, address),
       enabled: !isNullish(address),
@@ -31,7 +31,7 @@ export const usePremiumApprovalHistory = () => {
   });
 
   const historyQueries = useQueries({
-    queries: CHAIN_SELECT_MAINNETS.map((chainId, index) => {
+    queries: ORDERED_CHAINS.map((chainId, index) => {
       const events = eventQueries[index]?.data;
 
       return {
@@ -44,7 +44,7 @@ export const usePremiumApprovalHistory = () => {
   });
 
   const chainStatuses = useMemo<ChainHistoryStatus[]>(() => {
-    return CHAIN_SELECT_MAINNETS.map((chainId, index) => {
+    return ORDERED_CHAINS.map((chainId, index) => {
       const eventQuery = eventQueries[index];
       const historyQuery = historyQueries[index];
       const isFetching = Boolean(eventQuery?.isFetching || historyQuery?.isFetching);
