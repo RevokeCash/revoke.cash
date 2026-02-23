@@ -1,6 +1,8 @@
 {
   "allowances": {
     "amount": "{amount} {symbol}",
+    "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
+    "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
     "none": "Sin autorizaciones",
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
@@ -30,7 +32,7 @@
         "non_evm": "No EVM",
         "title": "Blockchains compatibles"
       },
-      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La Cobertura es una forma de asegurarte de que el valor de tu cartera está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link>.",
+      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La Cobertura es una forma de asegurarte de que el valor de tu cartera está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
       "important": {
         "coverage_amount": "La cobertura se compra por una cierta cantidad de ETH - si el valor de su cartera aumenta en ETH, solo estará cubierto por la cantidad de ETH configurada.",
         "fee": "Hay un monto de responsabilidad personal del 10% sobre los pagos.",
@@ -88,7 +90,7 @@
   },
   "delegations": {
     "columns": {
-      "chain_id": "Red",
+      "chain": "Network",
       "contract": "Activo / Contrato",
       "delegate": "Delegar",
       "delegator": "Delegador",
@@ -98,16 +100,16 @@
     "contract": {
       "not_applicable": "N/A"
     },
+    "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
     "eip7702_delegations": "Delegaciones EIP7702",
-    "incoming_delegations": "Delegaciones entrantes",
+    "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
     "info_panel": {
       "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo, al intentar verificar la propiedad de los activos o al reclamar lanzamientos aéreos. Esto puede ser beneficioso para la seguridad, ya que te permite usar un <b>hot wallet</b> para administrar tus activos sin tener que usar tu <b>cold wallet</b> para cada interacción. Sin embargo, en caso de que tu hot wallet se vea comprometida, debes asegurarte de revocar la delegación para que el atacante no pueda usarla para hacerse pasar por ti. Ten en cuenta que estas delegaciones son <b>different</b> de EIP7702 delegaciones, que pueden <i>only</i> ser revocadas dentro de tu aplicación de cartera.",
       "title": "¿Qué son las Delegaciones?"
     },
+    "no_delegations": "No delegations found",
     "no_eip7702_delegations": "No se encontraron delegaciones EIP7702",
-    "no_incoming_delegations": "No se han encontrado delegaciones entrantes",
-    "no_outgoing_delegations": "No se ha encontrado ninguna delegación saliente",
-    "outgoing_delegations": "Delegaciones salientes",
+    "this_wallet": "This wallet",
     "tooltips": {
       "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para actuar en su nombre en las plataformas compatibles para un contrato específico.",
       "eip7702": "Una delegación EIP7702 añade la funcionalidad de contrato inteligente a tu cartera.",
@@ -158,7 +160,7 @@
     "amount": "Monto",
     "asset": "Activo",
     "asset_type": "Tipo",
-    "chain": "Red",
+    "chain": "Cadena",
     "date": "Fecha",
     "event_type": "Tipo de evento",
     "expiration": "Vencimiento",
@@ -174,18 +176,16 @@
   "history": {
     "approved": "Aprobado",
     "cancelled_signatures": "Firmas canceladas",
-    "hide_details": "Ocultar detalles",
-    "incomplete_summary": "El historial puede estar incompleto. No se pudieron cargar datos de {failed} de {total} cadenas.",
-    "loading_summary": "Cargando historial de {loading} de {total} cadenas.",
+    "hide_details": "Hide details",
+    "incomplete_summary": "History may be incomplete. Data from {failed} of {total} chains could not be loaded.",
+    "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "No se encontró ningún historial de aprobaciones",
-    "partial_and_loading_summary": "El historial puede estar incompleto. {failed} cadenas fallaron y {loading} siguen cargando.",
-    "status_failed": "con error",
-    "status_loaded": "cargadas",
-    "status_loading": "cargando",
-    "retry_chain": "Reintentar cadena",
-    "retry_failed": "Reintentar cadenas con error",
+    "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
     "revoked": "Revocado",
-    "show_details": "Mostrar detalles",
+    "show_details": "Show details",
+    "status_failed": "failed",
+    "status_loaded": "loaded",
+    "status_loading": "loading",
     "title": "Historial de aprobaciones"
   },
   "labels": {

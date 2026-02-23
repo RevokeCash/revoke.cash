@@ -28,67 +28,57 @@ export class DelegateV2Platform extends AbstractDelegatePlatform {
   }
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
-    try {
-      const delegations = await this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getOutgoingDelegations',
-        args: [wallet],
-      });
+    const delegations = await this.publicClient.readContract({
+      address: this.address,
+      abi: this.abi,
+      functionName: 'getOutgoingDelegations',
+      args: [wallet],
+    });
 
-      return delegations.map((delegation) => {
-        const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
+    return delegations.map((delegation) => {
+      const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
 
-        const type = this.convertDelegationType(delegationType);
+      const type = this.convertDelegationType(delegationType);
 
-        return {
-          type,
-          delegator,
-          delegate,
-          contract: type === 'WALLET' ? null : contract,
-          tokenId: ['ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
-          direction: 'OUTGOING',
-          platform: this.name,
-          chainId: this.chainId,
-          rights,
-        };
-      });
-    } catch (error) {
-      console.error(`Error getting outgoing delegations from ${this.name}:`, error);
-      return [];
-    }
+      return {
+        type,
+        delegator,
+        delegate,
+        contract: type === 'WALLET' ? null : contract,
+        tokenId: ['ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
+        direction: 'OUTGOING',
+        platform: this.name,
+        chainId: this.chainId,
+        rights,
+      };
+    });
   }
 
   async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
-    try {
-      const delegations = await this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getIncomingDelegations',
-        args: [wallet],
-      });
+    const delegations = await this.publicClient.readContract({
+      address: this.address,
+      abi: this.abi,
+      functionName: 'getIncomingDelegations',
+      args: [wallet],
+    });
 
-      return delegations.map((delegation) => {
-        const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
+    return delegations.map((delegation) => {
+      const [delegationType, delegate, delegator, rights, contract, tokenId, _amount] = delegation;
 
-        const type = this.convertDelegationType(delegationType);
+      const type = this.convertDelegationType(delegationType);
 
-        return {
-          type,
-          delegator,
-          delegate,
-          contract: type === 'WALLET' ? null : contract,
-          tokenId: ['ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
-          direction: 'INCOMING',
-          platform: this.name,
-          chainId: this.chainId,
-          rights,
-        };
-      });
-    } catch (error) {
-      console.error(`Error getting incoming delegations from ${this.name}:`, error);
-      return [];
-    }
+      return {
+        type,
+        delegator,
+        delegate,
+        contract: type === 'WALLET' ? null : contract,
+        tokenId: ['ERC721', 'ERC20', 'ERC1155'].includes(type) ? tokenId : null,
+        direction: 'INCOMING',
+        platform: this.name,
+        chainId: this.chainId,
+        rights,
+      };
+    });
   }
 
   async prepareRevokeDelegationInternal(delegation: DelegationV2): Promise<TransactionData> {

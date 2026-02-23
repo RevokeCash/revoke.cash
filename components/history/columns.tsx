@@ -17,7 +17,7 @@ declare module '@tanstack/table-core' {
 }
 
 export enum ColumnId {
-  CHAIN = 'Chain',
+  CHAIN = 'Network',
   ASSET = 'Asset',
   EVENT_TYPE = 'Event Type',
   SPENDER = 'Approved Spender',

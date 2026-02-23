@@ -1,6 +1,8 @@
 {
   "allowances": {
     "amount": "{amount} {symbol}",
+    "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
+    "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
     "none": "No approvals",
     "none_found": "No approvals found",
     "none_found_filtered": "No approvals found for the selected filters",
@@ -88,7 +90,7 @@
   },
   "delegations": {
     "columns": {
-      "chain_id": "Network",
+      "chain": "Network",
       "contract": "Asset / Contract",
       "delegate": "Delegate",
       "delegator": "Delegator",
@@ -98,16 +100,16 @@
     "contract": {
       "not_applicable": "N/A"
     },
+    "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
     "eip7702_delegations": "EIP7702 Delegations",
-    "incoming_delegations": "Incoming Delegations",
+    "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
     "info_panel": {
       "description": "Delegations are a way to authorize other addresses to act on your behalf, for example when trying to verify asset ownership or when claiming airdrops. This can be beneficial to security, as it allows you to use a <b>hot wallet</b> to manage your assets without having to use your <b>cold wallet</b> for every interaction. However, in case your hot wallet gets compromised, you do want to make sure that you revoke the delegation so that the attacker cannot use it to impersonate you. Note that these delegations are <b>different</b> from EIP7702 delegations, which can <i>only</i> be revoked inside your wallet application.",
       "title": "What Are Delegations?"
     },
+    "no_delegations": "No delegations found",
     "no_eip7702_delegations": "No EIP7702 delegations found",
-    "no_incoming_delegations": "No incoming delegations found",
-    "no_outgoing_delegations": "No outgoing delegations found",
-    "outgoing_delegations": "Outgoing Delegations",
+    "this_wallet": "This wallet",
     "tooltips": {
       "contract": "A contract-level delegation gives the delegate the permission to act on your behalf on supported platforms for a specific contract.",
       "eip7702": "An EIP7702 delegation adds smart contract functionality to your wallet.",
@@ -158,7 +160,7 @@
     "amount": "Amount",
     "asset": "Asset",
     "asset_type": "Type",
-    "chain": "Chain",
+    "chain": "Network",
     "date": "Date",
     "event_type": "Event Type",
     "expiration": "Expiration",
@@ -179,13 +181,11 @@
     "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "No approval history found",
     "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
+    "revoked": "Revoked",
+    "show_details": "Show details",
     "status_failed": "failed",
     "status_loaded": "loaded",
     "status_loading": "loading",
-    "retry_chain": "Retry chain",
-    "retry_failed": "Retry failed chains",
-    "revoked": "Revoked",
-    "show_details": "Show details",
     "title": "Approval History"
   },
   "labels": {

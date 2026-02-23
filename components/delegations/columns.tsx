@@ -20,19 +20,9 @@ export enum ColumnId {
   CONTRACT = 'Contract',
   PLATFORM = 'Platform',
   CONTROLS = 'Controls',
-  CHAIN_ID = 'Network',
+  CHAIN = 'Network',
 }
 
-// Simple property accessors - can use strings directly since these are basic property lookups
-export const accessors = {
-  type: 'type' as const,
-  delegator: 'delegator' as const,
-  delegate: 'delegate' as const,
-  contract: 'contract' as const,
-  platform: 'platform' as const,
-};
-
-// sorting functions
 export const customSortingFns = {
   type: (rowA: Row<Delegation>, rowB: Row<Delegation>, columnId: string) => {
     const typeOrder = {
@@ -59,7 +49,6 @@ export const customSortingFns = {
   },
 };
 
-// Custom filter functions
 export const customFilterFns = {
   type: (row: Row<Delegation>, columnId: string, filterValues: string[]) => {
     if (!filterValues.length) return true;
@@ -75,7 +64,6 @@ export const customFilterFns = {
   },
 };
 
-// This will extend the original TableMeta interface, not replace it
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
     onRevoke?: (delegation: Delegation) => void;
@@ -84,89 +72,72 @@ declare module '@tanstack/table-core' {
 
 const columnHelper = createColumnHelper<Delegation>();
 
-// Function to create columns with translations
-const createColumns = (incoming: boolean) => {
-  return [
-    // Delegator column (specific to incoming)
-    ...(incoming
-      ? [
-          columnHelper.accessor(accessors.delegator, {
-            id: ColumnId.DELEGATOR,
-            header: () => <HeaderCell i18nKey="address.delegations.columns.delegator" />,
-            cell: (info) => <DelegatorCell delegation={info.row.original} />,
-            enableSorting: true,
-            sortingFn: sortingFns.alphanumeric,
-          }),
-        ]
-      : []),
-    // Delegate column (specific to outgoing)
-    ...(!incoming
-      ? [
-          columnHelper.accessor(accessors.delegate, {
-            id: ColumnId.DELEGATE,
-            header: () => <HeaderCell i18nKey="address.delegations.columns.delegate" />,
-            cell: (info) => <DelegateCell delegation={info.row.original} />,
-            enableSorting: true,
-            sortingFn: sortingFns.alphanumeric,
-          }),
-        ]
-      : []),
-    columnHelper.accessor(accessors.contract, {
-      id: ColumnId.CONTRACT,
-      header: () => <HeaderCell i18nKey="address.delegations.columns.contract" />,
-      cell: (info) => <ContractCell delegation={info.row.original} />,
-      enableSorting: true,
-      sortingFn: sortingFns.alphanumeric,
-    }),
-    columnHelper.accessor(accessors.platform, {
-      id: ColumnId.PLATFORM,
-      header: () => <HeaderCell i18nKey="address.delegations.columns.platform" />,
-      cell: (info) => <PlatformCell delegation={info.row.original} />,
-      enableSorting: true,
-      sortingFn: sortingFns.alphanumeric,
-      enableColumnFilter: true,
-      filterFn: customFilterFns.platform,
-    }),
-    columnHelper.accessor(accessors.type, {
-      id: ColumnId.TYPE,
-      header: () => <HeaderCell i18nKey="address.delegations.columns.type" />,
-      cell: (info) => <DelegationTypeCell delegation={info.row.original} />,
-      enableSorting: true,
-      sortingFn: customSortingFns.type,
-      enableColumnFilter: true,
-      filterFn: customFilterFns.type,
-    }),
-    columnHelper.display({
-      id: ColumnId.CONTROLS,
-      header: () => '',
-      cell: (info) => {
-        // Make sure onRevoke exists before accessing it
-        if (!info.table.options.meta?.onRevoke) return <div className="w-28" />;
-        return <ControlsCell delegation={info.row.original} onRevoke={info.table.options.meta.onRevoke} />;
-      },
-    }),
-  ];
-};
-
-export const outgoingColumns = createColumns(false);
-export const incomingColumns = createColumns(true);
-
-export const eip7702Columns = [
-  columnHelper.accessor('chainId', {
-    id: ColumnId.CHAIN_ID,
-    header: () => <HeaderCell i18nKey="address.delegations.columns.chain_id" />,
-    cell: (info) => <ChainCell chainId={info.row.original.chainId} />,
+export const columns = [
+  columnHelper.accessor('delegator', {
+    id: ColumnId.DELEGATOR,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.delegator" />,
+    cell: (info) => <DelegatorCell delegation={info.row.original} />,
     enableSorting: true,
-    sortingFn: customSortingFns.chainId,
+    sortingFn: sortingFns.alphanumeric,
   }),
-  columnHelper.accessor(accessors.delegate, {
+  columnHelper.accessor('delegate', {
     id: ColumnId.DELEGATE,
     header: () => <HeaderCell i18nKey="address.delegations.columns.delegate" />,
     cell: (info) => <DelegateCell delegation={info.row.original} />,
     enableSorting: true,
     sortingFn: sortingFns.alphanumeric,
   }),
-  columnHelper.accessor(accessors.type, {
+  columnHelper.accessor('contract', {
+    id: ColumnId.CONTRACT,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.contract" />,
+    cell: (info) => <ContractCell delegation={info.row.original} />,
+    enableSorting: true,
+    sortingFn: sortingFns.alphanumeric,
+  }),
+  columnHelper.accessor('platform', {
+    id: ColumnId.PLATFORM,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.platform" />,
+    cell: (info) => <PlatformCell delegation={info.row.original} />,
+    enableSorting: true,
+    sortingFn: sortingFns.alphanumeric,
+  }),
+  columnHelper.accessor('type', {
+    id: ColumnId.TYPE,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.type" />,
+    cell: (info) => <DelegationTypeCell delegation={info.row.original} />,
+    enableSorting: true,
+    sortingFn: customSortingFns.type,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.type,
+  }),
+  columnHelper.display({
+    id: ColumnId.CONTROLS,
+    header: () => '',
+    cell: (info) => {
+      const onRevoke = info.table.options.meta?.onRevoke;
+      const isIncoming = info.row.original.direction === 'INCOMING';
+      if (!onRevoke || isIncoming) return <div className="w-28" />;
+      return <ControlsCell delegation={info.row.original} onRevoke={onRevoke} />;
+    },
+  }),
+];
+
+export const eip7702Columns = [
+  columnHelper.accessor('chainId', {
+    id: ColumnId.CHAIN,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.chain" />,
+    cell: (info) => <ChainCell chainId={info.row.original.chainId} />,
+    enableSorting: true,
+    sortingFn: customSortingFns.chainId,
+  }),
+  columnHelper.accessor('delegate', {
+    id: ColumnId.DELEGATE,
+    header: () => <HeaderCell i18nKey="address.delegations.columns.delegate" />,
+    cell: (info) => <DelegateCell delegation={info.row.original} />,
+    enableSorting: true,
+    sortingFn: sortingFns.alphanumeric,
+  }),
+  columnHelper.accessor('type', {
     id: ColumnId.TYPE,
     header: () => <HeaderCell i18nKey="address.delegations.columns.type" />,
     cell: (info) => <DelegationTypeCell delegation={info.row.original} />,

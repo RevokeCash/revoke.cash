@@ -16,7 +16,6 @@ const PremiumHistoryTable = () => {
         approvalHistory={approvalHistory}
         isLoading={tableLoading}
         error={error}
-        includeChainColumn
         autoResetPageIndex={false}
         partialLoadingRows={3}
       />

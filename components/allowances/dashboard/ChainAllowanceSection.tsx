@@ -1,14 +1,16 @@
 'use client';
 
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
 import type { ChainAllowanceData } from 'lib/hooks/page-context/PremiumAddressPageContext';
 import { isNullish } from 'lib/utils';
 import type { Erc721SingleAllowance, OnUpdate, TokenAllowanceData } from 'lib/utils/allowances';
+import { formatFiatAmount } from 'lib/utils/formatting';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Table from '../../common/table/Table';
-import ChainSectionHeader from './ChainSectionHeader';
 import { ColumnId, columns } from './columns';
 
 interface Props {
@@ -87,10 +89,38 @@ const ChainAllowanceSection = ({ chainData, onUpdate, defaultExpanded }: Props) 
       )}
       headerClassName={twMerge(canExpand && 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50')}
       contentClassName="border-black dark:border-white bg-zinc-50 dark:bg-zinc-900"
-      header={<ChainSectionHeader chainData={chainData} />}
+      header={<Header chainData={chainData} />}
     >
       <Table table={table} loading={false} error={null} emptyChildren={null} className="border-none" />
     </CollapsibleCard>
+  );
+};
+
+interface HeaderProps {
+  chainData: ChainAllowanceData;
+}
+
+const Header = ({ chainData }: HeaderProps) => {
+  const t = useTranslations();
+  const { chainId, status, error, allowances, totalValueAtRisk, refetch } = chainData;
+  const formattedValue = formatFiatAmount(totalValueAtRisk);
+
+  const totalValueAtRiskIsSignificant = (formattedValue: string | null): boolean => {
+    if (!formattedValue) return false;
+    return formattedValue !== '$0.00' && !formattedValue.startsWith('<');
+  };
+
+  return (
+    <ChainSectionHeader chainId={chainId} status={status} error={error} refetch={refetch}>
+      <div className="flex items-center gap-4 text-sm">
+        <span className="text-zinc-700 dark:text-zinc-300">
+          {t('address.allowances.count', { count: allowances.length })}
+        </span>
+        {totalValueAtRiskIsSignificant(formattedValue) && (
+          <span className="text-amber-600 dark:text-amber-400 font-medium">{formattedValue}</span>
+        )}
+      </div>
+    </ChainSectionHeader>
   );
 };
 

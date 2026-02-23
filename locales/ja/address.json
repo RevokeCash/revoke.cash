@@ -1,6 +1,8 @@
 {
   "allowances": {
     "amount": "{amount} {symbol}",
+    "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
+    "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
     "none": "許可がありません",
     "none_found": "許可がされていません",
     "none_found_filtered": "選択したフィルタに対しての許可がありません",
@@ -30,7 +32,7 @@
         "non_evm": "非EVM",
         "title": "対応ブロックチェーン"
       },
-      "description": "Revoke.cashでは、暗号通貨業界でのリスク管理を支援します。弊社では、資金の流出や損失を防ぐのに役立つツールを提供しています。しかし、それでも詐欺やハッキングは起こります。そこで役立つのがカバレッジです。カバレッジとは、ウォレットが枯渇した場合にウォレットの価値が確実にカバーされるようにする方法です。スマートコントラクトのハッキングからフィッシング攻撃まで、いくつかの種類のカバレッジがあります。<fairside-link>Fairside</fairside-link>と提携して、フィッシングやソーシャルエンジニアリングの流出に備えてカバレッジを提供していますが、<nexus-link>Nexus Mutual</nexus-link>など、スマートコントラクトハッキング向けのカバレッジ商品は他にもあります。",
+      "description": "Revoke.cashでは、暗号通貨業界でのリスク管理を支援します。弊社では、資金の流出や損失を防ぐのに役立つツールを提供しています。しかし、それでも詐欺やハッキングは起こります。そこで役立つのがカバレッジです。カバレッジとは、ウォレットが枯渇した場合にウォレットの価値が確実にカバーされるようにする方法です。スマートコントラクトのハッキングからフィッシング攻撃まで、いくつかの種類のカバレッジがあります。<fairside-link>Fairside</fairside-link>と提携して、フィッシングやソーシャルエンジニアリングの流出に備えてカバレッジを提供していますが、<nexus-link>Nexus Mutual</nexus-link>や<bright-union-link>Bright Union</bright-union-link>など、スマートコントラクトハッキング向けのカバレッジ商品は他にもあります。",
       "important": {
         "coverage_amount": "カバレッジは特定のETH金額で購入されます。ポートフォリオの価値がETHで上昇した場合、設定されたETH金額のみがカバーされます。",
         "fee": "支払いには10％の個人責任額があります。",
@@ -88,7 +90,7 @@
   },
   "delegations": {
     "columns": {
-      "chain_id": "ネットワーク",
+      "chain": "Network",
       "contract": "資産/契約",
       "delegate": "委任者",
       "delegator": "委任させる者",
@@ -98,16 +100,16 @@
     "contract": {
       "not_applicable": "該当なし"
     },
+    "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
     "eip7702_delegations": "EIP7702委任",
-    "incoming_delegations": "受信委任",
+    "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
     "info_panel": {
       "description": "委任とは、他のアドレスにあなたの代わりに行動することを承認する方法です。例えば、資産の所有権を確認したり、エアドロップを請求したりする場合などです。これは、セキュリティー上有益であり、<b>ホットウォレット</b>を使って資産を管理できるため、<b>コールドウォレット</b>を毎回のやり取りに対して使用する必要がなくなります。ただし、ホットウォレットが侵害された場合、攻撃者がそれを悪用してなりすまさないよう、委任を必ず取り消す必要があります。これらの委任は<b>異なる</b>ものであり、EIP7702委任とは異なり、ウォレットアプリケーション内で<i>のみ</i>取り消すことができます。",
       "title": "委任とは何ですか。"
     },
+    "no_delegations": "No delegations found",
     "no_eip7702_delegations": "EIP7702委任は見つかりませんでした",
-    "no_incoming_delegations": "受信委任は見つかりません",
-    "no_outgoing_delegations": "送信委任が見つかりません",
-    "outgoing_delegations": "送信委任",
+    "this_wallet": "This wallet",
     "tooltips": {
       "contract": "契約レベルの委任は、特定の契約でサポートされているプラットフォーム上でユーザーに代わって行動する許可を委任者に与えます。",
       "eip7702": "EIP7702委任は、ウォレットにスマートコントラクト機能を追加します。",
@@ -158,7 +160,7 @@
     "amount": "金額",
     "asset": "資産",
     "asset_type": "種類",
-    "chain": "チェーン",
+    "chain": "Network",
     "date": "日付",
     "event_type": "イベントの種類",
     "expiration": "有効期限",
@@ -174,18 +176,16 @@
   "history": {
     "approved": "承認済み",
     "cancelled_signatures": "取り消された署名",
-    "hide_details": "詳細を隠す",
-    "incomplete_summary": "履歴が不完全な可能性があります。{total} チェーン中 {failed} チェーンのデータを読み込めませんでした。",
-    "loading_summary": "{total} チェーン中 {loading} チェーンの履歴を読み込み中です。",
+    "hide_details": "Hide details",
+    "incomplete_summary": "History may be incomplete. Data from {failed} of {total} chains could not be loaded.",
+    "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "承認履歴が見つかりません",
-    "partial_and_loading_summary": "履歴が不完全な可能性があります。{failed} チェーンで失敗し、{loading} チェーンは読み込み中です。",
-    "status_failed": "失敗",
-    "status_loaded": "読み込み済み",
-    "status_loading": "読み込み中",
-    "retry_chain": "チェーンを再試行",
-    "retry_failed": "失敗したチェーンを再試行",
+    "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
     "revoked": "取り消されました",
-    "show_details": "詳細を表示",
+    "show_details": "Show details",
+    "status_failed": "failed",
+    "status_loaded": "loaded",
+    "status_loading": "loading",
     "title": "承認履歴"
   },
   "labels": {

@@ -5,29 +5,31 @@ import Card from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { useTranslations } from 'next-intl';
-import { incomingColumns } from './columns';
+import { useMemo } from 'react';
+import { columns } from './columns';
 
 interface Props {
   delegations: Delegation[];
   isLoading: boolean;
   error: Error | null;
+  onRevoke: (delegation: Delegation) => void;
 }
 
-const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
+const DelegationsTable = ({ delegations, isLoading, error, onRevoke }: Props) => {
   const t = useTranslations();
 
-  // Create TanStack table instance with empty meta
+  const data = useMemo(() => delegations ?? [], [delegations]);
+
   const table = useReactTable<Delegation>({
-    data: delegations || [],
-    columns: incomingColumns,
+    data,
+    columns,
     getCoreRowModel: getCoreRowModel(),
-    // @ts-expect-error - meta may have other properties from elsewhere in the code
-    meta: {},
+    meta: { onRevoke } as any,
   });
 
   const title = (
     <div className="flex items-center gap-2">
-      <div>{t('address.delegations.incoming_delegations')}</div>
+      <div>{t('address.navigation.delegations')}</div>
     </div>
   );
 
@@ -36,7 +38,7 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
       <Table
         table={table}
         loading={isLoading}
-        emptyChildren={t('address.delegations.no_incoming_delegations')}
+        emptyChildren={t('address.delegations.no_delegations')}
         loaderRows={2}
         error={error}
         className="border-none"
@@ -45,4 +47,4 @@ const IncomingDelegationsTable = ({ delegations, isLoading, error }: Props) => {
   );
 };
 
-export default IncomingDelegationsTable;
+export default DelegationsTable;

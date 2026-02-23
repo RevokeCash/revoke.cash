@@ -9,127 +9,117 @@ export class DelegateV1Platform extends AbstractDelegatePlatform {
   name = 'Delegate.xyz V1';
 
   async getOutgoingDelegations(wallet: Address): Promise<Delegation[]> {
-    try {
-      const contractDelegationsPromise = this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getContractLevelDelegations',
-        args: [wallet],
+    const contractDelegationsPromise = this.publicClient.readContract({
+      address: this.address,
+      abi: this.abi,
+      functionName: 'getContractLevelDelegations',
+      args: [wallet],
+    });
+
+    const tokenDelegationsPromise = this.publicClient.readContract({
+      address: this.address,
+      abi: this.abi,
+      functionName: 'getTokenLevelDelegations',
+      args: [wallet],
+    });
+
+    const allDelegatesPromise = this.publicClient.readContract({
+      address: this.address,
+      abi: this.abi,
+      functionName: 'getDelegatesForAll',
+      args: [wallet],
+    });
+
+    const [contractDelegations, tokenDelegations, allDelegates] = await Promise.all([
+      contractDelegationsPromise,
+      tokenDelegationsPromise,
+      allDelegatesPromise,
+    ]);
+
+    const delegations: Delegation[] = [];
+
+    // Process all-level delegations
+    allDelegates.forEach((delegate) => {
+      delegations.push({
+        type: 'WALLET',
+        delegator: wallet,
+        delegate,
+        contract: null,
+        tokenId: null,
+        direction: 'OUTGOING',
+        platform: this.name,
+        chainId: this.chainId,
       });
+    });
 
-      const tokenDelegationsPromise = this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getTokenLevelDelegations',
-        args: [wallet],
+    // Process contract-level delegations
+    contractDelegations.forEach(([contract, delegate]) => {
+      delegations.push({
+        type: 'CONTRACT',
+        delegator: wallet,
+        delegate,
+        contract,
+        tokenId: null,
+        direction: 'OUTGOING',
+        platform: this.name,
+        chainId: this.chainId,
       });
+    });
 
-      const allDelegatesPromise = this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getDelegatesForAll',
-        args: [wallet],
+    // Process token-level delegations
+    tokenDelegations.forEach(([contract, tokenId, delegate]) => {
+      delegations.push({
+        type: 'ERC721',
+        delegator: wallet,
+        delegate,
+        contract,
+        tokenId,
+        direction: 'OUTGOING',
+        platform: this.name,
+        chainId: this.chainId,
       });
+    });
 
-      const [contractDelegations, tokenDelegations, allDelegates] = await Promise.all([
-        contractDelegationsPromise,
-        tokenDelegationsPromise,
-        allDelegatesPromise,
-      ]);
-
-      const delegations: Delegation[] = [];
-
-      // Process all-level delegations
-      allDelegates.forEach((delegate) => {
-        delegations.push({
-          type: 'WALLET',
-          delegator: wallet,
-          delegate,
-          contract: null,
-          tokenId: null,
-          direction: 'OUTGOING',
-          platform: this.name,
-          chainId: this.chainId,
-        });
-      });
-
-      // Process contract-level delegations
-      contractDelegations.forEach(([contract, delegate]) => {
-        delegations.push({
-          type: 'CONTRACT',
-          delegator: wallet,
-          delegate,
-          contract,
-          tokenId: null,
-          direction: 'OUTGOING',
-          platform: this.name,
-          chainId: this.chainId,
-        });
-      });
-
-      // Process token-level delegations
-      tokenDelegations.forEach(([contract, tokenId, delegate]) => {
-        delegations.push({
-          type: 'ERC721',
-          delegator: wallet,
-          delegate,
-          contract,
-          tokenId,
-          direction: 'OUTGOING',
-          platform: this.name,
-          chainId: this.chainId,
-        });
-      });
-
-      return delegations;
-    } catch (error) {
-      console.error('Error getting delegations from Delegate V1:', error);
-      return [];
-    }
+    return delegations;
   }
 
   async getIncomingDelegations(wallet: Address): Promise<Delegation[]> {
-    try {
-      const delegationsRaw = await this.publicClient.readContract({
-        address: this.address,
-        abi: this.abi,
-        functionName: 'getDelegationsByDelegate',
-        args: [wallet],
-      });
+    const delegationsRaw = await this.publicClient.readContract({
+      address: this.address,
+      abi: this.abi,
+      functionName: 'getDelegationsByDelegate',
+      args: [wallet],
+    });
 
-      const delegations: Delegation[] = [];
+    const delegations: Delegation[] = [];
 
-      delegationsRaw.forEach(([delegationType, delegator, delegate, contract, tokenId]) => {
-        let type: Delegation['type'];
-        switch (delegationType) {
-          case 1:
-            type = 'WALLET';
-            break;
-          case 2:
-            type = 'CONTRACT';
-            break;
-          case 3:
-            type = 'ERC721';
-            break;
-          default:
-            type = 'NONE';
-        }
-        delegations.push({
-          type,
-          delegator,
-          delegate,
-          contract: type === 'WALLET' ? null : contract,
-          tokenId: type === 'ERC721' ? tokenId : null,
-          direction: 'INCOMING',
-          platform: this.name,
-          chainId: this.chainId,
-        });
+    delegationsRaw.forEach(([delegationType, delegator, delegate, contract, tokenId]) => {
+      let type: Delegation['type'];
+      switch (delegationType) {
+        case 1:
+          type = 'WALLET';
+          break;
+        case 2:
+          type = 'CONTRACT';
+          break;
+        case 3:
+          type = 'ERC721';
+          break;
+        default:
+          type = 'NONE';
+      }
+      delegations.push({
+        type,
+        delegator,
+        delegate,
+        contract: type === 'WALLET' ? null : contract,
+        tokenId: type === 'ERC721' ? tokenId : null,
+        direction: 'INCOMING',
+        platform: this.name,
+        chainId: this.chainId,
       });
-      return delegations;
-    } catch (error) {
-      console.error('Error getting incoming delegations from Delegate V1:', error);
-      return [];
-    }
+    });
+    return delegations;
   }
 
   async prepareRevokeDelegationInternal(delegation: Delegation): Promise<TransactionData> {

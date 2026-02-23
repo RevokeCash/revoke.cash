@@ -3,15 +3,15 @@
 import ChainLogo from 'components/common/ChainLogo';
 import ChainLogoStack from 'components/common/ChainLogoStack';
 import CollapsibleCard from 'components/common/CollapsibleCard';
-import type { ChainAllowanceData } from 'lib/hooks/page-context/PremiumAddressPageContext';
 import { getChainName } from 'lib/utils/chains';
 import { useState } from 'react';
 
 interface Props {
-  emptyChains: ChainAllowanceData[];
+  emptyChains: Array<{ chainId: number }>;
+  description: string;
 }
 
-const EmptyChainsSection = ({ emptyChains }: Props) => {
+const EmptyChainsSection = ({ emptyChains, description }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (emptyChains.length === 0) return null;
@@ -33,9 +33,7 @@ const EmptyChainsSection = ({ emptyChains }: Props) => {
             itemClassName="ring-2"
             overflowClassName="h-6 min-w-6 text-xs bg-zinc-200 dark:bg-zinc-700 ring-2"
           />
-          <span className="text-sm text-zinc-600 dark:text-zinc-400">
-            {emptyChains.length} {emptyChains.length === 1 ? 'network' : 'networks'} with no approvals
-          </span>
+          <span className="text-sm text-zinc-600 dark:text-zinc-400">{description}</span>
         </div>
       }
     >
