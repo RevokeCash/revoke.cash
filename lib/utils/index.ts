@@ -145,7 +145,6 @@ export const throwIfExcessiveGas = (chainId: number, estimatedGas: bigint, token
     [ChainId.Mantle]: 2_000n,
     [ChainId.MantleTestnet]: 2_000n,
     5031: 10n, // Somnia
-    [ChainId.ZkSyncSepoliaTestnet]: 20n,
     [ChainId.ZERONetwork]: 20n,
     [ChainId.EtherlinkMainnet]: 10n,
   };

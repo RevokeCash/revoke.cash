@@ -17,8 +17,8 @@ export default class EventsDexie extends Dexie {
   constructor() {
     super('Events');
 
-    // On 2025-03-23, we perform a full re-index of the events table
-    this.version(2025_03_23)
+    // On 2026-02-23, we perform a full re-index of the events table
+    this.version(2026_02_23)
       .stores({
         events: '[chainId+topicsKey], chainId, topics, toBlock',
       })

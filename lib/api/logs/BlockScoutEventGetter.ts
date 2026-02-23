@@ -17,6 +17,13 @@ interface LatestBlockResponse {
   result: Hex;
 }
 
+interface IndexingStatusResponse {
+  finished_indexing: boolean;
+  finished_indexing_blocks: boolean;
+  indexed_blocks_ratio: number;
+  indexed_internal_transactions_ratio: number;
+}
+
 export class BlockScoutEventGetter extends EtherscanEventGetter implements EventGetter {
   constructor() {
     super();
@@ -36,13 +43,32 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
 
     const searchParams = prepareGetLatestBlockQuery(apiKey);
 
-    const result = await retryOn429(() =>
+    const latestBlockPromise = retryOn429(() =>
       queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>()),
     );
 
-    const blockNumber = Number(result.result);
+    const indexingStatusPromise = retryOn429(() =>
+      queue.add(() => ky.get(`${apiUrl}/v2/main-page/indexing-status`).json<IndexingStatusResponse>()),
+    );
+
+    const [latestBlock, indexingStatus] = await Promise.allSettled([latestBlockPromise, indexingStatusPromise]);
+
+    if (latestBlock.status !== 'fulfilled') {
+      throw new Error('Failed to get latest block number');
+    }
+
+    // Note: if the API does not support indexing status, we simply do not apply the check and assume the data is synced
+    if (indexingStatus.status === 'fulfilled') {
+      if (indexingStatus.value.indexed_blocks_ratio < 0.95) {
+        console.log(indexingStatus.value);
+        console.log(`${apiUrl}/v2/main-page/indexing-status`);
+        throw new Error('Events data source is out of sync with the blockchain, please try again later.');
+      }
+    }
+
+    const blockNumber = Number(latestBlock.value.result);
     if (!blockNumber) {
-      console.log(result);
+      console.log(latestBlock.value);
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
       throw new Error('Failed to get latest block number');
     }

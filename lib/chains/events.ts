@@ -57,15 +57,21 @@ const ChainOverrides: Record<number, TokenEventsGetter> = {
 
 const getEventPrerequisites = async (chainId: DocumentedChainId, address: Address) => {
   const logsProvider = getLogsProvider(chainId);
+  const publicClient = createViemPublicClientForChain(chainId);
 
   const isLoggedIn = await apiLogin();
   if (!isLoggedIn) throw new Error('Failed to create an API session');
 
-  const [openSeaProxy, fromBlock, toBlock] = await Promise.all([
+  const [openSeaProxy, fromBlock, toBlock, rpcBlock] = await Promise.all([
     getOpenSeaProxyAddress(address),
     0,
     logsProvider.getLatestBlock(),
+    publicClient.getBlockNumber(),
   ]);
+
+  if (rpcBlock > toBlock + 1000) {
+    throw new Error(`Events data source is out of sync with the blockchain, please try again later.`);
+  }
 
   return { logsProvider, openSeaProxy, fromBlock, toBlock };
 };

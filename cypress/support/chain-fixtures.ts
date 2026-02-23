@@ -21,7 +21,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.BNBSmartChainMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.BOB]: '0x873D133876cbB180A333393e333DEaA3D373cDd4',
   [ChainId.BobaNetwork]: '0x164EA2CDE6f59F5Fcb76E78d292679B2521C54C2',
-  [ChainId.CallistoMainnet]: '0x3Ce5AE5E6762D568fcddB5Beef8B9B666CBa29Bb',
   [ChainId.Canto]: '0xc2Dd41A21BC1fE912cc9a6EECd5f62d1c75fdc9F',
   [ChainId.CeloMainnet]: '0xDa9760828175a7684371321b17e11e823Aa5F4C0',
   [ChainId.ChilizChainMainnet]: '0x466111CB22867851fA667deaeeBe772cE435148b',
@@ -132,6 +131,5 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.PlumeTestnet]: '0x7561dAB2b8c9709A5D550FAe8F617aF7b11547D1',
   [ChainId.ScrollSepoliaTestnet]: '0xBF1E9dc0f7c2186346544BF985321e179c3d186c',
   [ChainId.ZetaChainTestnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
-  [ChainId.ZkSyncSepoliaTestnet]: '0x46D8e47b9A6487FDAB0a700b269A452cFeED49Aa',
   [ChainId.ZenChainTestnet]: '0xb98B6373f7f59bdc0bB2DCd11a9fC1e0a43AfBfa',
 } as const;

@@ -117,7 +117,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Superposition,
   ChainId.Nahmii3Mainnet,
   ChainId.ShidoNetwork,
-  ChainId.CallistoMainnet,
   ChainId.RARIChainMainnet,
   ChainId.NeoXMainnet,
   ChainId.BitgertMainnet,
@@ -135,7 +134,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.OPSepoliaTestnet,
   ChainId.ArbitrumSepolia,
   ChainId.BaseSepoliaTestnet,
-  ChainId.ZkSyncSepoliaTestnet,
   ChainId.AbstractSepoliaTestnet,
   ChainId.ScrollSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
@@ -616,31 +614,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // TODO
   }),
-  [ChainId.CallistoMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.CallistoMainnet,
-    name: 'Callisto',
-    nativeTokenCoingeckoId: 'callisto',
-    logoUrl: '/assets/images/vendor/chains/callisto.png',
-    explorerUrl: 'https://explorer.callistodao.org',
-    etherscanCompatibleApiUrl: 'https://explorer.callistodao.org/api',
-    rpc: {
-      main: 'https://rpc.callistodao.org',
-      free: 'https://rpc.callistodao.org',
-    },
-    deployedContracts: { ...MULTICALL },
-    priceStrategy: new AggregatePriceStrategy({
-      aggregationType: AggregationType.ANY,
-      strategies: [
-        // Soy Finance (Router) | WCLO -> BUSDT
-        new UniswapV2PriceStrategy({
-          address: '0xeB5B468fAacC6bBdc14c4aacF0eec38ABCCC13e7',
-          path: ['0xF5AD6F6EDeC824C7fD54A66d241a227F6503aD3a', '0xbf6c50889d3a620eb42C0F188b65aDe90De958c4'],
-          liquidityParameters: { baseAmount: 10n }, // Super low liquidity DEX
-        }),
-      ],
-    }),
-  }),
   [ChainId.Canto]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Canto,
@@ -1024,7 +997,8 @@ export const CHAINS = {
     explorerUrl: 'https://explorer.fuse.io',
     etherscanCompatibleApiUrl: 'https://explorer.fuse.io/api',
     rpc: {
-      main: 'https://fuse-pokt.nodies.app',
+      main: `https://lb.drpc.org/ogrpc?network=fuse-mainnet&dkey=${DRPC_API_KEY}`,
+      free: 'https://fuse.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -1708,6 +1682,7 @@ export const CHAINS = {
       main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       // main: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       // logs: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://polygon.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     priceStrategy: new AggregatePriceStrategy({
@@ -2256,21 +2231,6 @@ export const CHAINS = {
     //   apiKey: RESERVOIR_API_KEY,
     //   apiUrl: 'https://api-zksync.reservoir.tools',
     // }),
-  }),
-  [ChainId.ZkSyncSepoliaTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.ZkSyncSepoliaTestnet,
-    name: 'zkSync Sepolia',
-    logoUrl: '/assets/images/vendor/chains/zksync.jpeg',
-    explorerUrl: 'https://sepolia-era.zksync.network',
-    rpc: {
-      main: `https://zksync-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-    deployedContracts: {
-      multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
-    },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.ZkSyncMainnet,
   }),
   [ChainId.ZircuitMainnet]: new Chain({
     type: SupportType.PROVIDER,
