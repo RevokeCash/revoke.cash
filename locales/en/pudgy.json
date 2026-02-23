@@ -1,7 +1,6 @@
 {
   "buttons": {
     "already_claimed": "Already Claimed",
-    "check_eligibility": "Check Eligibility",
     "checkbox_1": "I understand the importance of securing crypto with a hardware device.",
     "checkbox_2": "I understand that using hot wallets on a laptop or phone leaves you vulnerable to malware.",
     "claim": "Claim Soulbound Token",

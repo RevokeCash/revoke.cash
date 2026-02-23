@@ -59,10 +59,6 @@
   "connect_wallet": {
     "title": "连接钱包"
   },
-  "donate": {
-    "donate_any_token": "或者将任何代币发送到我们的<donations-link>捐赠地址</donations-link>",
-    "title": "为 Revoke.cash 捐款"
-  },
   "errors": {
     "404": {
       "go_home": "返回主页",
@@ -110,9 +106,6 @@
     "description": "撤销在 {chainName} 等 100+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
     "title": "撤销 100+ 区块链网络上的代币授权"
   },
-  "misc": {
-    "powered_by": "由<powered-by-link>{name}</powered-by-link>提供技术支持"
-  },
   "nav": {
     "about": "关于我们",
     "blog": "博客",
@@ -144,7 +137,6 @@
   "toasts": {
     "clipboard_failed": "❌ 无法复制到剪贴板",
     "clipboard_success": "✅ 已复制到剪贴板",
-    "donation_sent": "💪 感谢捐赠！",
     "fee_payment_failed": "❌费用支付失败：{message}",
     "fee_payment_rejected": "❌请支付批量撤销费用才能继续",
     "revoke_failed": "❌ 撤销授权许可失败：{message}",

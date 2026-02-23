@@ -1,7 +1,6 @@
 {
   "buttons": {
     "already_claimed": "Ya reclamado",
-    "check_eligibility": "Verifica la elegibilidad",
     "checkbox_1": "Entiendo la importancia de proteger las criptomonedas con un dispositivo de hardware.",
     "checkbox_2": "Entiendo que el uso de hot wallets en un ordenador portátil o un teléfono te hace vulnerable al malware.",
     "claim": "Reclama el token de Soulbound",

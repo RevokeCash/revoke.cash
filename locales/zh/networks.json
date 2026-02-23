@@ -60,7 +60,7 @@
     "lisk": "Lisk 是以太坊的第 2 层（Layer 2）扩展解决方案，基于 Optimism 的开源 OP Stack 构建，因此与 Optimism 一样，也使用 Optimistic Rollup 技术。Lisk 最初是作为独立的第 1 层（Layer 1）区块链创建的，但后来转移到 OP Stack，成为以太坊的第 2 层解决方案。",
     "manta-pacific": "Manta Pacific 是以太坊的第 2 层（Layer 2）扩展解决方案。采用 Optimism 的开源 OP Stack 构建，与 Optimism 一样，使用了 Optimistic Rollup 技术。Manta Pacific 通过 Celestia 的数据可用性解决方案扩展了该技术，可提供比基础的 Optimistic Rollup 解决方案更低的汽油费。",
     "mantle": "Mantle 是以太坊的第 2 层（Layer 2）扩展解决方案，提供比第 1 层（L1）更便宜、更快捷的交易。Mantle 使用模块化架构，采用了 Optimistic Rollup 技术，并结合了改进后的数据可用性解决方案。虽然 Mantle 是兼容 EVM 的第 2 层（Layer 2）链，但可以使用自己的原生代币来支付第 2 层的汽油费。",
-    "megaeth": "MegaETH is a Layer 2 scaling solution for Ethereum that is built using a combination of zkEVM and optimistic rollup technology, which reduces costs and the length of the long challenge period of optimistic rollups. It is focused on providing high throughput with sub-10ms block times.",
+    "megaeth": "MegaETH 是一款专注于海量交易吞吐量的第 2 层（Layer 2）区块链，旨在通过高效存储方案、EVM 字节码编译、并行执行及 1 毫秒区块生成时间，实现 100,000+ TPS 的处理能力。",
     "metis": "Metis 是以太坊的第 2 层（Layer 2）扩展解决方案，最初是 Optimism 的分支，但自 2021 年成立以来一直朝着自己的方向发展。Metis 通过为创建多个互联链提供支持，以支持创建去中心化自治公司（DAC）。虽然Metis 是兼容 EVM 的第 2 层链，但可以使用自己的原生代币来支付第 2 层的汽油费。",
     "mint": "Mint 是以太坊的扩展解决方案，基于 Optimism 的 OP Stack 构建，因此与 Optimism 一样，采用了 Optimistic Rollup 技术。Mint 重点关注 NFT 领域，旨在为创作者建设 NFT 创作所需的基础设施。Mint 还有收益分享模式，使得在 Mint 上开发创新应用的创作者可以获取部分区块链网络的收益。",
     "mode": "Mode 是以太坊的第 2 层扩展（Layer 2）解决方案。Mode 基于 Optimism 的 OP Stack，因此与 Optimism 一样，采用了 Optimistic Rollup 技术。Mode 向开发者奖励部分排序器（Sequencer）利润，并奖励用户推荐行为，希望借此促进网络使用量增长。",

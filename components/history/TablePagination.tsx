@@ -42,7 +42,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
       <div className="flex items-center gap-4">
         {/* Page Size Selector */}
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-zinc-600 dark:text-zinc-400">Show:</span>
+          <span className="text-zinc-600 dark:text-zinc-400">{t('common.pagination.show')}</span>
           <select
             value={pageSize}
             onChange={(e) => table.setPageSize(Number(e.target.value))}

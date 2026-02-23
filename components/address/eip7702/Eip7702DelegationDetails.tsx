@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import AddressCellWithRiskData from 'components/allowances/dashboard/cells/AddressCellWithRiskData';
 import { isNullish } from 'lib/utils';
 import { getEip7702DelegatedAddress } from 'lib/utils/eip7702';
+import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export const Eip7702DelegationDetails = ({ address, chainId }: Props) => {
+  const t = useTranslations();
   const publicClient = usePublicClient({ chainId });
 
   const { data: delegatedAddress, isLoading } = useQuery({
@@ -23,7 +25,7 @@ export const Eip7702DelegationDetails = ({ address, chainId }: Props) => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-1">
-      <div className="text-sm font-medium">Delegated To</div>
+      <div className="text-sm font-medium">{t('address.delegations.delegated_to')}</div>
       <div className="w-full flex flex-row justify-between gap-2">
         <AddressCellWithRiskData address={delegatedAddress!} chainId={chainId} isLoading={isLoading} />
       </div>

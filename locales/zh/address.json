@@ -22,6 +22,7 @@
     },
     "no_tip": "没有小费",
     "revoked": "撤销",
+    "select_tip_amount": "Select tip amount",
     "title": "批量撤销",
     "total": "总计"
   },
@@ -58,27 +59,19 @@
         "title": "Fairside 钱包被盗覆盖范围"
       },
       "quiz": {
-        "check_answer": "查看回答",
         "get_coverage": "立即获得保障",
-        "next_question": "下一个问题",
-        "question_progress": "问题{current}，共{total}",
-        "retroactive_campaign": "来参加活动？",
         "start": "参加测验以开始",
-        "title": "快速覆盖测验",
-        "wait_and_read": "开始前请阅读"
+        "title": "快速覆盖测验"
       },
       "title": "什么是覆盖范围？"
     },
     "membership": {
       "claims": "{count, plural, =0 {无领取} =1 {# 领取} other {# 领取}}",
-      "covered": "覆盖",
       "labels": {
         "amount": "金额",
         "claims": "领取",
-        "status": "状态",
         "timeframe": "时间范围"
       },
-      "not_covered": "未覆盖",
       "title": "Fairside 会员"
     },
     "wallets": {
@@ -101,6 +94,7 @@
       "not_applicable": "不适用"
     },
     "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
+    "delegated_to": "Delegated To",
     "eip7702_delegations": "EIP7702 授权",
     "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
     "info_panel": {
@@ -176,13 +170,8 @@
   "history": {
     "approved": "已授权",
     "cancelled_signatures": "已取消的签名",
-    "hide_details": "Hide details",
-    "incomplete_summary": "History may be incomplete. Data from {failed} of {total} chains could not be loaded.",
-    "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "未找到授权历史记录",
-    "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
     "revoked": "已撤销",
-    "show_details": "Show details",
     "status_failed": "failed",
     "status_loaded": "loaded",
     "status_loading": "loading",
@@ -211,8 +200,7 @@
     "history": "历史",
     "more": "更多",
     "sessions": "会话",
-    "settings": "设置",
-    "signatures": "签名"
+    "settings": "设置"
   },
   "permit2": {
     "expiration": "于 {inTime} 过期"
@@ -284,13 +272,10 @@
     "label": "排序"
   },
   "tooltips": {
-    "acknowledge_signature_notice": "检查签名前，请确认该通知。",
     "connect_wallet": "请连接钱包继续下一步",
     "connected_account": "您只能操作已连接的账户",
     "filter_by_spender": "按该被授权人筛选",
     "filter_by_token": "按此代币筛选",
-    "involved_in_exploits": "此地址涉及以下漏洞：",
-    "old_approval": "该授权已有一年多了。如果不再需要，可以考虑将其撤销。",
     "permit2_expiration": "这是 Permit2 授权，将于 {inTime} 到期。",
     "risk_factors": "此代币授权为{riskLevel}，原因如下：",
     "select_tip": "请选择小费金额",
@@ -301,12 +286,6 @@
     }
   },
   "wallet_health": {
-    "categories": {
-      "high": "良好",
-      "low": "较差",
-      "medium": "一般"
-    },
-    "description": "钱包健康",
     "total_allowances": "全部授权",
     "total_value_at_risk": "全部存在风险金额"
   }

@@ -59,10 +59,6 @@
   "connect_wallet": {
     "title": "Connect Your Wallet"
   },
-  "donate": {
-    "donate_any_token": "Or send any token to our <donations-link>donations address</donations-link>",
-    "title": "Donate to Revoke.cash"
-  },
   "errors": {
     "404": {
       "go_home": "Or go back home",
@@ -110,9 +106,6 @@
     "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 100 other networks.",
     "title": "Revoke Your Token Approvals on Over 100 Networks"
   },
-  "misc": {
-    "powered_by": "Powered by <powered-by-link>{name}</powered-by-link>"
-  },
   "nav": {
     "about": "About Us",
     "blog": "Blog",
@@ -144,7 +137,6 @@
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",
     "clipboard_success": "✅ Copied to clipboard",
-    "donation_sent": "💪 Thanks for the donation!",
     "fee_payment_failed": "❌ Fee payment failed: {message}",
     "fee_payment_rejected": "❌ Please pay the batch revoke fee to continue",
     "revoke_failed": "❌ Revoking failed: {message}",

@@ -59,10 +59,6 @@
   "connect_wallet": {
     "title": "Conecta Tu Cartera"
   },
-  "donate": {
-    "donate_any_token": "O envíe cualquier token a nuestra dirección de donaciones en <donations-link>donations address</donations-link>",
-    "title": "Donar a Revoke.cash"
-  },
   "errors": {
     "404": {
       "go_home": "Volver a la página principal",
@@ -110,9 +106,6 @@
     "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {chainName} y en 100 redes más.",
     "title": "Revoca las Aprobaciones de Tus Tokens en Más de 100 Redes"
   },
-  "misc": {
-    "powered_by": "Desarrollado por <powered-by-link>{name}</powered-by-link>"
-  },
   "nav": {
     "about": "Sobre nosotros",
     "blog": "Blog",
@@ -144,7 +137,6 @@
   "toasts": {
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
-    "donation_sent": "💪 ¡Gracias por la donación!",
     "fee_payment_failed": "❌ Fallo en el pago de la tarifa: {message}",
     "fee_payment_rejected": "❌ Por favor, paga la tarifa de revocación por lotes para continuar.",
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",

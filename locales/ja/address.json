@@ -22,6 +22,7 @@
     },
     "no_tip": "チップなし",
     "revoked": "取り消された",
+    "select_tip_amount": "Select tip amount",
     "title": "一括取り消し",
     "total": "合計"
   },
@@ -58,27 +59,19 @@
         "title": "Fairsideウォレットドレインカバレッジ"
       },
       "quiz": {
-        "check_answer": "回答をチェックする",
         "get_coverage": "今すぐカバレッジを受ける",
-        "next_question": "次の質問",
-        "question_progress": "{total}中{current}目の質問",
-        "retroactive_campaign": "キャンペーンのために来ましたか。",
         "start": "クイズに答えて始めましょう",
-        "title": "クイックカバレッジクイズ",
-        "wait_and_read": "先に進む前にお読みください"
+        "title": "クイックカバレッジクイズ"
       },
       "title": "カバレッジとは何ですか。"
     },
     "membership": {
       "claims": "{count, plural, =0 {クレーム無し} =1 {#件のクレーム} other {#件のクレーム}}",
-      "covered": "カバーされている",
       "labels": {
         "amount": "金額",
         "claims": "クレーム",
-        "status": "ステータス",
         "timeframe": "タイムフレーム"
       },
-      "not_covered": "カバーされていない",
       "title": "Fairsideメンバーシップ"
     },
     "wallets": {
@@ -101,6 +94,7 @@
       "not_applicable": "該当なし"
     },
     "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
+    "delegated_to": "Delegated To",
     "eip7702_delegations": "EIP7702委任",
     "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
     "info_panel": {
@@ -176,13 +170,8 @@
   "history": {
     "approved": "承認済み",
     "cancelled_signatures": "取り消された署名",
-    "hide_details": "Hide details",
-    "incomplete_summary": "History may be incomplete. Data from {failed} of {total} chains could not be loaded.",
-    "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "承認履歴が見つかりません",
-    "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
     "revoked": "取り消されました",
-    "show_details": "Show details",
     "status_failed": "failed",
     "status_loaded": "loaded",
     "status_loading": "loading",
@@ -211,8 +200,7 @@
     "history": "履歴",
     "more": "その他",
     "sessions": "セッション",
-    "settings": "設定",
-    "signatures": "署名"
+    "settings": "設定"
   },
   "permit2": {
     "expiration": "{inTime}で期限が切れます"
@@ -284,13 +272,10 @@
     "label": "並べ替え"
   },
   "tooltips": {
-    "acknowledge_signature_notice": "通知をご確認の上、署名をご確認ください。",
     "connect_wallet": "続けるにはウォレットを接続してください",
     "connected_account": "接続されているアカウントに対してのみアクションを実行できます",
     "filter_by_spender": "この支出者でフィルタリングする",
     "filter_by_token": "このトークンでフィルタリングする",
-    "involved_in_exploits": "このアドレスは、以下のエクスプロイトに関与しています：",
-    "old_approval": "この承認は1年以上前のものです。不要になった場合は、取り消すことを検討してください。",
     "permit2_expiration": "これは{inTime}で期限が切れる許可2の承認です。",
     "risk_factors": "これは下記の理由により{riskLevel}です：",
     "select_tip": "チップの金額を選択してください",
@@ -301,12 +286,6 @@
     }
   },
   "wallet_health": {
-    "categories": {
-      "high": "良い",
-      "low": "悪い",
-      "medium": "中程度"
-    },
-    "description": "ウォレットヘルス",
     "total_allowances": "承認総数",
     "total_value_at_risk": "リスクがある総価値"
   }

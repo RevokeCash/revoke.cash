@@ -74,7 +74,7 @@ const TipSection = ({ chainId, nativeToken, onSelect }: Props) => {
         options={options}
         value={selectedTip ? { value: selectedTip } : null}
         onChange={(option) => onChange(option!.value)}
-        placeholder={'Select tip amount'}
+        placeholder={t('address.batch_revoke.select_tip_amount')}
         formatOptionLabel={formatOptionLabel}
         className="w-full sm:hidden"
         isMulti={false}

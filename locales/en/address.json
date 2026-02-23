@@ -22,6 +22,7 @@
     },
     "no_tip": "No tip",
     "revoked": "Revoked",
+    "select_tip_amount": "Select tip amount",
     "title": "Batch Revoke",
     "total": "Total"
   },
@@ -58,27 +59,19 @@
         "title": "Fairside Wallet Drain Coverage"
       },
       "quiz": {
-        "check_answer": "Check Answer",
         "get_coverage": "Get Coverage Now",
-        "next_question": "Next Question",
-        "question_progress": "Question {current} of {total}",
-        "retroactive_campaign": "Here for the campaign?",
         "start": "Take Quiz to Get Started",
-        "title": "Quick Coverage Quiz",
-        "wait_and_read": "Read before proceeding"
+        "title": "Quick Coverage Quiz"
       },
       "title": "What is Coverage?"
     },
     "membership": {
       "claims": "{count, plural, =0 {No claims} =1 {# claim} other {# claims}}",
-      "covered": "Covered",
       "labels": {
         "amount": "Amount",
         "claims": "Claims",
-        "status": "Status",
         "timeframe": "Timeframe"
       },
-      "not_covered": "Not Covered",
       "title": "Fairside Membership"
     },
     "wallets": {
@@ -101,6 +94,7 @@
       "not_applicable": "N/A"
     },
     "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
+    "delegated_to": "Delegated To",
     "eip7702_delegations": "EIP7702 Delegations",
     "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
     "info_panel": {
@@ -176,13 +170,8 @@
   "history": {
     "approved": "Approved",
     "cancelled_signatures": "Cancelled Signatures",
-    "hide_details": "Hide details",
-    "incomplete_summary": "History may be incomplete. Data from {failed} of {total} chains could not be loaded.",
-    "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "No approval history found",
-    "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
     "revoked": "Revoked",
-    "show_details": "Show details",
     "status_failed": "failed",
     "status_loaded": "loaded",
     "status_loading": "loading",
@@ -211,8 +200,7 @@
     "history": "History",
     "more": "More",
     "sessions": "Sessions",
-    "settings": "Settings",
-    "signatures": "Signatures"
+    "settings": "Settings"
   },
   "permit2": {
     "expiration": "Expires {inTime}"
@@ -284,13 +272,10 @@
     "label": "Sort"
   },
   "tooltips": {
-    "acknowledge_signature_notice": "Please acknowledge the notice before checking your signatures.",
     "connect_wallet": "Please connect your wallet to continue",
     "connected_account": "You can only perform actions for the connected account",
     "filter_by_spender": "Filter by this spender",
     "filter_by_token": "Filter by this token",
-    "involved_in_exploits": "This address is involved in the following exploits:",
-    "old_approval": "This approval is over a year old. Consider revoking it if you no longer need it.",
     "permit2_expiration": "This is a Permit2 approval that will expire {inTime}",
     "risk_factors": "This is {riskLevel} for these reasons:",
     "select_tip": "Please select a tip amount",
@@ -301,12 +286,6 @@
     }
   },
   "wallet_health": {
-    "categories": {
-      "high": "Good",
-      "low": "Bad",
-      "medium": "Moderate"
-    },
-    "description": "Wallet Health",
     "total_allowances": "Total Approvals",
     "total_value_at_risk": "Total Value at Risk"
   }

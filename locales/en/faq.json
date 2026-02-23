@@ -28,10 +28,6 @@
       "answer": "No. Revoke.cash is a <i>preventative</i> tool that helps you practice proper wallet hygiene. By regularly revoking active approvals you reduce the chances of becoming the victim of approval exploits. But unfortunately it cannot be used to recover any stolen funds. You should still make sure to revoke the approvals that were used to take your funds so that they cannot steal more in the future.",
       "question": "Can I use Revoke.cash to recover stolen assets?"
     },
-    "stolen_through_allowances": {
-      "answer": "It is always hard to determine how exactly your funds were stolen. To help you diagnose the cause and mitigations, we developed an infographic that shows the most common ways that funds are stolen, which has been included below. Note that you may need to zoom in to see the details.",
-      "question": "How do I know if my funds were stolen through an approval exploit?"
-    },
     "sweeper_bot": {
       "answer": "If you have a so-called \"sweeper bot\" on your account that steals any ETH as soon as it comes in, your seed phrase was compromised. This means that revoking approvals is not going to help with your wallet security. Unfortunately, there is no way for your wallet to recover from this. You should abandon this wallet and create a new one.",
       "question": "I want to revoke approvals, but when I add ETH to my account it gets stolen."
@@ -55,10 +51,6 @@
     "which_domains": {
       "answer": "When searching for accounts in the search bar, you can use several different domain name services. Currently we support <ens-link>ENS</ens-link>, <uns-link>Unstoppable Domains</uns-link> and <avvy-link>Avvy Domains</avvy-link>. We may add other domain name services in the future.",
       "question": "Which kinds of domains does Revoke.cash support?"
-    },
-    "whole_wallet_at_risk": {
-      "answer": "No. An \"unlimited\" approval only applies to the token or NFT collection that you gave an approval for. So if you gave an unlimited approval for your DAI, then <i>all your DAI</i> may be at risk, but none of your USDC. Similarly an \"unlimited\" approval for your Bored Apes does not impact your Cool Cats.",
-      "question": "If I have an \"Unlimited\" approval, does that mean my whole wallet is at risk?"
     }
   },
   "title": "Frequently Asked Questions"

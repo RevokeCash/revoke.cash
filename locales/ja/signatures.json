@@ -8,7 +8,6 @@
       "active_approvals": "{count, plural, =1 {1 active approval} other {# active approvals}}",
       "headers": {
         "actions": "Actions",
-        "asset": "Asset Name",
         "last_delisted": "Last Delisted",
         "marketplace": "Marketplace"
       },
@@ -33,7 +32,6 @@
       "headers": {
         "actions": "Actions",
         "asset": "Asset Name",
-        "balance": "Balance",
         "last_cancelled": "Last Cancelled"
       },
       "none_found": "No tokens with Permit support found.",

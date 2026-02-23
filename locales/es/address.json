@@ -1,8 +1,8 @@
 {
   "allowances": {
     "amount": "{amount} {symbol}",
-    "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
-    "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
+    "count": "{count, plural, =0 {Sin aprobaciones} =1 {# aprobación} other {# aprobaciones}}",
+    "empty_chains_count": "{count, plural, =0 {No hay redes sin aprobaciones} =1 {# red sin aprobaciones} other {# redes sin aprobaciones}}",
     "none": "Sin autorizaciones",
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
@@ -22,6 +22,7 @@
     },
     "no_tip": "Sin propina",
     "revoked": "Revocado",
+    "select_tip_amount": "Select tip amount",
     "title": "Revocación por Lotes",
     "total": "Total"
   },
@@ -32,7 +33,7 @@
         "non_evm": "No EVM",
         "title": "Blockchains compatibles"
       },
-      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el espacio criptográfico. Ofrecemos herramientas que te ayudan a evitar que te estafen o pierdas fondos. Pero incluso así, se producen estafas y hackeos. Ahí es donde entra en juego la cobertura. La Cobertura es una forma de asegurarte de que el valor de tu cartera está cubierto en caso de drenaje del mismo. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes a ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos drenajes por phishing e ingeniería social, pero existen otros productos de cobertura para los hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link> o <bright-union-link>Bright Union</bright-union-link>.",
+      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el mundo de las criptomonedas. Ofrecemos herramientas que te ayudan a evitar el vaciado o la pérdida de fondos. Pero aun así, las estafas y los hackeos ocurren. Ahí es donde entra en juego la cobertura. La cobertura es una forma de asegurar que el valor de tu cartera esté cubierto en caso de vaciado. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes hasta ataques de phishing. Nos hemos asociado con<fairside-link> Fairside</fairside-link> para ofrecerle cobertura en caso de algunos ataques de phishing e ingeniería social, pero existen otros productos de cobertura para hackeos de contratos inteligentes, como<nexus-link> Nexus Mutual</nexus-link> .",
       "important": {
         "coverage_amount": "La cobertura se compra por una cierta cantidad de ETH - si el valor de su cartera aumenta en ETH, solo estará cubierto por la cantidad de ETH configurada.",
         "fee": "Hay un monto de responsabilidad personal del 10% sobre los pagos.",
@@ -58,27 +59,19 @@
         "title": "Cobertura de Sustracción de Fondos de Cartera Fairside"
       },
       "quiz": {
-        "check_answer": "Comprobar Respuesta",
         "get_coverage": "Obtén Cobertura Ahora",
-        "next_question": "Siguiente Pregunta",
-        "question_progress": "Pregunta {current} de {total}",
-        "retroactive_campaign": "¿Estás aquí para la campaña?",
         "start": "Responde el Cuestionario para Comenzar",
-        "title": "Cuestionario de Cobertura Rápida",
-        "wait_and_read": "Leer antes de continuar"
+        "title": "Cuestionario de Cobertura Rápida"
       },
       "title": "¿Qué es la Cobertura?"
     },
     "membership": {
       "claims": "{count, plural, =0 {Sin reclamos} =1 {# reclamo} other {# reclamos}}",
-      "covered": "Cubierto",
       "labels": {
         "amount": "Monto",
         "claims": "Reclamos",
-        "status": "Estatus",
         "timeframe": "Periodo de tiempo"
       },
-      "not_covered": "No cubierto",
       "title": "Membresía Fairside"
     },
     "wallets": {
@@ -90,7 +83,7 @@
   },
   "delegations": {
     "columns": {
-      "chain": "Network",
+      "chain": "Red",
       "contract": "Activo / Contrato",
       "delegate": "Delegar",
       "delegator": "Delegador",
@@ -100,16 +93,17 @@
     "contract": {
       "not_applicable": "N/A"
     },
-    "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
+    "count": "{count, plural, =0 {Sin delegaciones} =1 {# delegación} other {# delegaciones}}",
+    "delegated_to": "Delegated To",
     "eip7702_delegations": "Delegaciones EIP7702",
-    "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
+    "empty_chains_count": "{contador, plural, =0 {No hay redes sin delegaciones} =1 {# red sin delegaciones} other {# redes sin delegaciones}}",
     "info_panel": {
       "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo, al intentar verificar la propiedad de los activos o al reclamar lanzamientos aéreos. Esto puede ser beneficioso para la seguridad, ya que te permite usar un <b>hot wallet</b> para administrar tus activos sin tener que usar tu <b>cold wallet</b> para cada interacción. Sin embargo, en caso de que tu hot wallet se vea comprometida, debes asegurarte de revocar la delegación para que el atacante no pueda usarla para hacerse pasar por ti. Ten en cuenta que estas delegaciones son <b>different</b> de EIP7702 delegaciones, que pueden <i>only</i> ser revocadas dentro de tu aplicación de cartera.",
       "title": "¿Qué son las Delegaciones?"
     },
-    "no_delegations": "No delegations found",
+    "no_delegations": "No se encontraron delegaciones",
     "no_eip7702_delegations": "No se encontraron delegaciones EIP7702",
-    "this_wallet": "This wallet",
+    "this_wallet": "Esta cartera",
     "tooltips": {
       "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para actuar en su nombre en las plataformas compatibles para un contrato específico.",
       "eip7702": "Una delegación EIP7702 añade la funcionalidad de contrato inteligente a tu cartera.",
@@ -160,7 +154,7 @@
     "amount": "Monto",
     "asset": "Activo",
     "asset_type": "Tipo",
-    "chain": "Cadena",
+    "chain": "Red",
     "date": "Fecha",
     "event_type": "Tipo de evento",
     "expiration": "Vencimiento",
@@ -176,16 +170,11 @@
   "history": {
     "approved": "Aprobado",
     "cancelled_signatures": "Firmas canceladas",
-    "hide_details": "Hide details",
-    "incomplete_summary": "History may be incomplete. Data from {failed} of {total} chains could not be loaded.",
-    "loading_summary": "Loading history from {loading} of {total} chains.",
     "none_found": "No se encontró ningún historial de aprobaciones",
-    "partial_and_loading_summary": "History may be incomplete. {failed} chains failed and {loading} chains are still loading.",
     "revoked": "Revocado",
-    "show_details": "Show details",
-    "status_failed": "failed",
-    "status_loaded": "loaded",
-    "status_loading": "loading",
+    "status_failed": "fallido",
+    "status_loaded": "cargado",
+    "status_loading": "cargando",
     "title": "Historial de aprobaciones"
   },
   "labels": {
@@ -211,8 +200,7 @@
     "history": "Historial",
     "more": "Más",
     "sessions": "Sesiones",
-    "settings": "Configuración",
-    "signatures": "Firmas"
+    "settings": "Configuración"
   },
   "permit2": {
     "expiration": "Caduca {inTime}"
@@ -239,7 +227,7 @@
   },
   "search": {
     "history": "Buscar por Spender o Token",
-    "spender": "Buscar por Dirección de Gastador Autorizado"
+    "spender": "Búsqueda por Gastador"
   },
   "sessions": {
     "info": {
@@ -284,13 +272,10 @@
     "label": "Ordenar"
   },
   "tooltips": {
-    "acknowledge_signature_notice": "Por favor da acuse de recibo del aviso antes de comprobar tus firmas.",
     "connect_wallet": "Por favor conecta tu cartera para continuar",
     "connected_account": "Solo puedes revocar las autorizaciones de la cuenta conectada",
     "filter_by_spender": "Filtrar por este spender",
     "filter_by_token": "Filtrar por este token",
-    "involved_in_exploits": "Esta dirección está involucrada en los siguientes hacks:",
-    "old_approval": "Esta aprobación tiene más de un año. Considera revocarla si ya no la necesitas.",
     "permit2_expiration": "Esta es una autorización de Permit2 que caducará {inTime}",
     "risk_factors": "Esto es {riskLevel} por estas razones:",
     "select_tip": "Por favor selecciona el monto de la propina",
@@ -301,12 +286,6 @@
     }
   },
   "wallet_health": {
-    "categories": {
-      "high": "Buena",
-      "low": "Mala",
-      "medium": "Moderado"
-    },
-    "description": "Salud de la Cartera",
     "total_allowances": "Total de Autorizaciones",
     "total_value_at_risk": "Valor Total en Riesgo"
   }

@@ -59,10 +59,6 @@
   "connect_wallet": {
     "title": "ウォレットを接続する"
   },
-  "donate": {
-    "donate_any_token": "または、<donations-link>寄付先のアドレスに</donations-link>トークンを送ってください",
-    "title": "Revoke.cashに寄付をする"
-  },
   "errors": {
     "404": {
       "go_home": "もしくは、ホーム画面に戻る",
@@ -110,9 +106,6 @@
     "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
     "title": "100以上のネットワークでトークンの承認を取り消す"
   },
-  "misc": {
-    "powered_by": "<powered-by-link>{name}</powered-by-link>によって提供されます"
-  },
   "nav": {
     "about": "私たちについて",
     "blog": "ブログ",
@@ -144,7 +137,6 @@
   "toasts": {
     "clipboard_failed": "❌ クリップボードにコピーできませんでした。",
     "clipboard_success": "✅ クリップボードにコピーされました",
-    "donation_sent": "💪 寄付いただき、ありがとうございます！",
     "fee_payment_failed": "❌料金の支払いに失敗しました：{message}",
     "fee_payment_rejected": "❌続行するには一括取り消し手数料をお支払いください",
     "revoke_failed": "❌ 許可のリボークに失敗しました: {message}",
