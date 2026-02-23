@@ -1,19 +1,26 @@
 import { ChainId } from '@revoke.cash/chains';
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import Card from 'components/common/Card';
+import ChainDisplay from 'components/common/ChainDisplay';
 import Table from 'components/common/table/Table';
 import { useSessions } from 'lib/hooks/ethereum/sessions/useSessions';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { isNullish } from 'lib/utils';
 import type { Session } from 'lib/utils/sessions';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { columns } from './columns';
 
-const SessionsTable = () => {
+interface Props {
+  chainId?: number;
+}
+
+const SessionsTable = ({ chainId }: Props) => {
   const t = useTranslations();
   const { address } = useAddress();
-  const { selectedChainId } = useAddressPageContext();
+  const context = useContext(AddressPageContext);
+  const selectedChainId = chainId ?? context?.selectedChainId;
   const { sessions, isLoading, error, onSessionRevoke } = useSessions(address, selectedChainId);
 
   const data = useMemo(() => sessions ?? [], [sessions]);
@@ -36,7 +43,7 @@ const SessionsTable = () => {
 
   const title = (
     <div className="flex items-center gap-2">
-      <div>{t('address.sessions.table.title')}</div>
+      {isNullish(chainId) ? t('address.sessions.table.title') : <ChainDisplay chainId={chainId} logoSize={28} />}
     </div>
   );
 

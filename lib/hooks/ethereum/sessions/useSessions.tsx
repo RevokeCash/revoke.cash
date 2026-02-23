@@ -17,7 +17,7 @@ export const useSessions = (address: Address, chainId: number) => {
       const sessions = await getSessionsFromEvents(events, publicClient);
       return sessions;
     },
-    enabled: !isNullish(chainId) && !isNullish(address),
+    enabled: !isNullish(chainId) && !isNullish(address) && !isNullish(publicClient),
   });
 
   useLayoutEffect(() => {
