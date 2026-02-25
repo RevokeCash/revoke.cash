@@ -1,5 +1,5 @@
 import MarkdownProse from 'components/common/MarkdownProse';
-import { locales } from 'lib/i18n/config';
+import { locales } from 'lib/i18n/routing';
 import { getAllContentSlugs, readAndParseContentFile } from 'lib/utils/markdown-content';
 import type { Metadata, NextPage } from 'next';
 import { setRequestLocale } from 'next-intl/server';

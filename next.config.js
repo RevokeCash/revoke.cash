@@ -1,5 +1,5 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
-const withNextIntl = require('next-intl/plugin')('./lib/i18n/config.tsx');
+const withNextIntl = require('next-intl/plugin')('./lib/i18n/request.tsx');
 const withNextCircularDeps = require('next-circular-dependency');
 
 /** @type {import('next').NextConfig} */

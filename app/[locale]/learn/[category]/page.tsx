@@ -2,7 +2,7 @@ import LearnLayout from 'app/layouts/LearnLayout';
 import Divider from 'components/common/Divider';
 import Prose from 'components/common/Prose';
 import ArticleCardSection from 'components/learn/ArticleCardSection';
-import { locales } from 'lib/i18n/config';
+import { locales } from 'lib/i18n/routing';
 import { getAllLearnCategories, getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';

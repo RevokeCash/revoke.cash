@@ -1,4 +1,4 @@
-import { locales } from 'lib/i18n/config';
+import { locales } from 'lib/i18n/routing';
 import { getAllContentSlugs, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { generateOgImage } from 'lib/utils/og';
 

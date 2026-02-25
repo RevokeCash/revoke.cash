@@ -1,4 +1,4 @@
-import { locales } from 'lib/i18n/config';
+import { locales } from 'lib/i18n/routing';
 import { getAllLearnCategories } from 'lib/utils/markdown-content';
 import { generateOgImage } from 'lib/utils/og';
 import { getTranslations } from 'next-intl/server';
