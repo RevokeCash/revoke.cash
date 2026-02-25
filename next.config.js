@@ -1,12 +1,12 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
 const withNextIntl = require('next-intl/plugin')('./lib/i18n/request.tsx');
-const withNextCircularDeps = require('next-circular-dependency');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-  exclude: /a\.js|node_modules/, // exclude node_modules for checking circular dependencies
+  // Turbopack-compatible way to keep native HyperSync bindings external.
+  serverExternalPackages: ['@envio-dev/hypersync-client'],
   images: {
     qualities: [25, 50, 75, 100],
   },
@@ -45,35 +45,8 @@ const nextConfig = {
       },
     ];
   },
-  webpack: (config, { isServer }) => {
-    config.resolve.fallback = {
-      fs: false,
-      path: false,
-      // Unused wallet connectors (still get processed even though they're not used)
-      '@base-org/account': false,
-      '@gemini-wallet/core': false,
-      '@metamask/sdk': false,
-      porto: false,
-    };
-
-    // We're running into issues with webpack when importing the hypersync client directly
-    if (isServer) {
-      config.externals.push(({ request }, callback) => {
-        if (request?.startsWith('@envio-dev/hypersync-client-') || request?.endsWith('.node')) {
-          return callback(null, `commonjs ${request}`);
-        }
-        callback();
-      });
-    }
-
-    return config;
-  },
 };
 
 module.exports = nextConfig;
 module.exports = withNextIntl(module.exports);
 module.exports = withBundleAnalyzer(module.exports);
-
-if (process.env.CHECK_CIRCULAR_DEPS) {
-  module.exports = withNextCircularDeps(module.exports);
-}
