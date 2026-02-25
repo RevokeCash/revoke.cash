@@ -1,13 +1,5 @@
-import {
-  type DocumentedChainId,
-  isBlockScoutSupportedChain,
-  isCovalentSupportedChain,
-  isCustomSupportedChain,
-  isEtherscanSupportedChain,
-  isHyperSyncSupportedChain,
-  isNodeSupportedChain,
-  isRoutescanSupportedChain,
-} from 'lib/utils/chains';
+import { SupportType } from 'lib/chains/Chain';
+import { type DocumentedChainId, getChainConfig } from 'lib/utils/chains';
 import { BlockScoutEventGetter } from './logs/BlockScoutEventGetter';
 import { CovalentEventGetter } from './logs/CovalentEventGetter';
 import { CustomEventGetter } from './logs/CustomEventGetter';
@@ -17,50 +9,39 @@ import { HyperSyncEventGetter } from './logs/HyperSyncEventGetter';
 import { NodeEventGetter } from './logs/NodeEventGetter';
 import { RoutescanEventGetter } from './logs/RoutescanEventGetter';
 
-// These variables should only get initiated once, which is why they live in their own file
-// (would get initiated once per chain ID if in the /logs route file)
+// Event getters should only be instantiated once. These singleton accessors keep
+// initialization lazy so we don't pay startup cost (or import side effects) until needed.
+const singleton = <T>(factory: () => T): (() => T) => {
+  let instance: T | undefined;
 
-export const covalentEventGetter = new CovalentEventGetter(
-  process.env.COVALENT_API_KEY,
-  Number(process.env.COVALENT_RATE_LIMIT) || 4,
-);
-export const routescanEventGetter = new RoutescanEventGetter();
-export const etherscanEventGetter = new EtherscanEventGetter();
-export const blockScoutEventGetter = new BlockScoutEventGetter();
-export const nodeEventGetter = new NodeEventGetter(JSON.parse(process.env.NODE_URLS ?? '{}'));
+  return () => {
+    if (!instance) instance = factory();
+    return instance;
+  };
+};
 
-export const hyperSyncEventGetter = new HyperSyncEventGetter();
-
-export const customEventGetter = new CustomEventGetter({});
+const EVENT_GETTERS: Record<SupportType, () => EventGetter | undefined> = {
+  [SupportType.COVALENT]: singleton(
+    () => new CovalentEventGetter(process.env.COVALENT_API_KEY, Number(process.env.COVALENT_RATE_LIMIT) || 4),
+  ),
+  [SupportType.ROUTESCAN]: singleton(() => new RoutescanEventGetter()),
+  [SupportType.ETHERSCAN_COMPATIBLE]: singleton(() => new EtherscanEventGetter()),
+  [SupportType.BLOCKSCOUT]: singleton(() => new BlockScoutEventGetter()),
+  [SupportType.HYPERSYNC]: singleton(() => new HyperSyncEventGetter()),
+  [SupportType.BACKEND_NODE]: singleton(() => new NodeEventGetter(JSON.parse(process.env.NODE_URLS ?? '{}'))),
+  [SupportType.BACKEND_CUSTOM]: singleton(() => new CustomEventGetter({})),
+  [SupportType.UNSUPPORTED]: () => undefined,
+  [SupportType.PROVIDER]: () => undefined,
+};
 
 export const getEventGetter = (chainId: DocumentedChainId): EventGetter => {
-  if (isHyperSyncSupportedChain(chainId)) {
-    return hyperSyncEventGetter;
+  const chainConfig = getChainConfig(chainId);
+  const supportType = chainConfig.type;
+  const eventGetter = EVENT_GETTERS[supportType]();
+
+  if (!eventGetter) {
+    throw new Error(`Unsupported chain ID: ${chainId}`);
   }
 
-  if (isCovalentSupportedChain(chainId)) {
-    return covalentEventGetter;
-  }
-
-  if (isBlockScoutSupportedChain(chainId)) {
-    return blockScoutEventGetter;
-  }
-
-  if (isRoutescanSupportedChain(chainId)) {
-    return routescanEventGetter;
-  }
-
-  if (isEtherscanSupportedChain(chainId)) {
-    return etherscanEventGetter;
-  }
-
-  if (isNodeSupportedChain(chainId)) {
-    return nodeEventGetter;
-  }
-
-  if (isCustomSupportedChain(chainId)) {
-    return customEventGetter;
-  }
-
-  throw new Error(`Unsupported chain ID: ${chainId}`);
+  return eventGetter;
 };
