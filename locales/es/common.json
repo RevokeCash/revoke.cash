@@ -17,6 +17,7 @@
     "check_connected_address": "Comprobar Dirección Conectada",
     "clear_filters": "Quitar Filtros",
     "close": "Cerrar",
+    "collapse_all": "Collapse All",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "delisting": "Exclusión de la lista",
@@ -25,6 +26,7 @@
     "donate": "Donar",
     "donating": "Donando",
     "download": "Descargar",
+    "expand_all": "Expand All",
     "explorer_links": "Enlaces del explorador",
     "get_started": "Empezar",
     "increase": "Aumentar",
@@ -121,6 +123,7 @@
     "first": "Primero",
     "last": "Último",
     "page": "Página {page} de {total}",
+    "show": "Show",
     "showing": "Mostrando {start} a {end} de {total} resultados"
   },
   "quiz": {

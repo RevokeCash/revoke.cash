@@ -1,6 +1,9 @@
 import type { Table } from '@tanstack/react-table';
 import type { TokenAllowanceData } from 'lib/utils/allowances';
-import { Suspense } from 'react';
+import { updateTableFilters } from 'lib/utils/table';
+import { Suspense, useCallback } from 'react';
+import { ColumnId } from '../columns';
+import WalletHealthSection from '../wallet-health/WalletHealthSection';
 import AllowanceSearchBox from './AllowanceSearchBox';
 import SortSelect from './SortSelect';
 
@@ -9,19 +12,25 @@ interface Props {
 }
 
 const AllowanceTableControls = ({ table }: Props) => {
-  // TODO: Re-enable wallet health section when it's ready for both contexts
-  // const { selectedChainId } = useAddressPageContext();
+  const onSearchValuesChange = useCallback(
+    (values: string[]) => {
+      const tableFilters = values.length > 0 ? [{ id: ColumnId.SPENDER, value: values }] : [];
+      const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
+      updateTableFilters(table, tableFilters, ignoreIds);
+    },
+    [table],
+  );
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col-reverse md:flex-row justify-start gap-2">
+      <div className="flex flex-col-reverse sm:flex-row justify-start gap-2">
         <div className="flex flex-col justify-start gap-2 grow">
-          <SortSelect table={table} />
+          <SortSelect onSortChange={table.setSorting} />
           <Suspense>
-            <AllowanceSearchBox table={table} />
+            <AllowanceSearchBox onSearchValuesChange={onSearchValuesChange} />
           </Suspense>
         </div>
-        {/* <WalletHealthSection chainId={selectedChainId} /> */}
+        <WalletHealthSection />
       </div>
     </div>
   );

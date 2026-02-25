@@ -1,23 +1,20 @@
 'use client';
 
 import { XCircleIcon } from '@heroicons/react/24/outline';
-import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
 import useDebouncedValue from 'lib/hooks/useDebouncedValue';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
-import { updateTableFilters } from 'lib/utils/table';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { type ChangeEventHandler, useEffect, useState } from 'react';
-import { ColumnId } from '../columns';
 
 interface Props {
-  table: Table<TokenAllowanceData>;
+  onSearchValuesChange: (values: string[]) => void;
+  id?: string;
 }
 
-const AllowanceSearchBox = ({ table }: Props) => {
+const AllowanceSearchBox = ({ onSearchValuesChange, id = 'spender-search' }: Props) => {
   const searchParams = useSearchParams()!;
   const t = useTranslations();
   const [inputValue, setInputValue] = useState<string>('');
@@ -43,11 +40,8 @@ const AllowanceSearchBox = ({ table }: Props) => {
       .map((v) => v.trim())
       .filter(Boolean);
 
-    const tableFilters = values.length > 0 ? [{ id: ColumnId.SPENDER, value: values }] : [];
-    const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
-
-    updateTableFilters(table, tableFilters, ignoreIds);
-  }, [table, searchValue]);
+    onSearchValuesChange(values);
+  }, [searchValue, onSearchValuesChange]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setInputValue(event.target.value);
@@ -68,7 +62,7 @@ const AllowanceSearchBox = ({ table }: Props) => {
 
   return (
     <SearchBox
-      id="spender-search"
+      id={id}
       onSubmit={(event) => event.preventDefault()}
       onChange={handleChange}
       value={inputValue}

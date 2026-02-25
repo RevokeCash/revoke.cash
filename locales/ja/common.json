@@ -17,6 +17,7 @@
     "check_connected_address": "接続したアドレスの確認",
     "clear_filters": "フィルターをクリア",
     "close": "閉じる",
+    "collapse_all": "Collapse All",
     "connect": "ウォレットを接続する",
     "connecting": "接続中",
     "delisting": "Delisting",
@@ -25,6 +26,7 @@
     "donate": "寄付する",
     "donating": "寄付をしています",
     "download": "ダウンロードする",
+    "expand_all": "Expand All",
     "explorer_links": "エクスプローラーリンク",
     "get_started": "開始する",
     "increase": "増加",
@@ -121,6 +123,7 @@
     "first": "最初",
     "last": "最後",
     "page": "{total}ページ中{page}ページ目",
+    "show": "Show",
     "showing": "{total}件中{start}件目から{end}件目までを表示中"
   },
   "quiz": {

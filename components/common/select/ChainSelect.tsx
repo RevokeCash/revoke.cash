@@ -34,7 +34,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
     chainId,
   }));
 
-  const groups = [
+  const groupedOptions = [
     {
       label: t('common.chain_select.mainnets'),
       options: mainnetOptions,
@@ -68,8 +68,8 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       size="md"
       className="shrink-0"
       theme={darkMode ? 'dark' : 'light'}
-      value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
-      options={chainIds ? mainnetOptions : groups}
+      value={groupedOptions.flatMap((group) => group.options).find((option) => option.chainId === selected)}
+      options={chainIds ? mainnetOptions : groupedOptions}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
       onChange={(option) => onChange(option!)}
       formatOptionLabel={displayOption}

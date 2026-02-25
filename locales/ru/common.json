@@ -17,6 +17,7 @@
     "check_connected_address": "Проверьте подключенный адрес",
     "clear_filters": "Очистить фильтры",
     "close": "Закрыть",
+    "collapse_all": "Collapse All",
     "connect": "Подключить кошелек",
     "connecting": "Подключение…",
     "delisting": "Delisting",
@@ -25,6 +26,7 @@
     "donate": "Пожертвовать",
     "donating": "Пожертвование",
     "download": "Скачать",
+    "expand_all": "Expand All",
     "explorer_links": "Ссылки на блокчейн-обозреватели",
     "get_started": "Начать",
     "increase": "Увеличить",
@@ -121,6 +123,7 @@
     "first": "Первая",
     "last": "Последняя",
     "page": "Страница {page} из {total}",
+    "show": "Show",
     "showing": "Показано с {start} до {end} из {total} результатов"
   },
   "quiz": {

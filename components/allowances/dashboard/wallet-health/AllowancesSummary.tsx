@@ -2,11 +2,7 @@ import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext'
 import AllowancesCount from './AllowanceCount';
 import TotalValueAtRisk from './TotalValueAtRisk';
 
-interface Props {
-  chainId: number;
-}
-
-const AllowancesSummary = ({ chainId }: Props) => {
+const AllowancesSummary = () => {
   const { allowances, isLoading, error } = useAddressAllowances();
 
   if (error) return null;

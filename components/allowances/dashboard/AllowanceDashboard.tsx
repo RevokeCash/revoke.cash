@@ -45,7 +45,6 @@ const AllowanceDashboard = () => {
     state: {
       rowSelection,
     },
-    debugTable: true,
     enableRowSelection: (row) => !isNullish(row.original.payload) && isNullish(row.original.payload?.revokeError),
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel<TokenAllowanceData>(),

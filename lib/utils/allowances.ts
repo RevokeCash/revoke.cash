@@ -180,7 +180,7 @@ export const getErc20AllowancesFromApprovals = async (
   const approvalEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_ERC20);
   const deduplicatedApprovalEvents = deduplicateArray(
     approvalEvents,
-    (event) => `${event.token}-${event.owner}-${event.payload.spender}`,
+    (event) => `${event.chainId}-${event.token}-${event.owner}-${event.payload.spender}`,
   );
 
   const allowances = await Promise.all(
@@ -237,7 +237,10 @@ export const getLimitedErc721AllowancesFromApprovals = async (
   );
 
   // We only look at the tokenId, since a tokenId can only have one *limited* approval at a time
-  const deduplicatedEvents = deduplicateArray(singeTokenIdEvents, (event) => `${event.token}-${event.payload.tokenId}`);
+  const deduplicatedEvents = deduplicateArray(
+    singeTokenIdEvents,
+    (event) => `${event.chainId}-${event.token}-${event.payload.tokenId}`,
+  );
 
   const allowances = await Promise.all(
     deduplicatedEvents.map((event) => getLimitedErc721AllowanceFromApproval(contract, event)),
@@ -272,7 +275,7 @@ export const getUnlimitedErc721AllowancesFromApprovals = async (
   const approvalForAllEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_FOR_ALL);
   const deduplicatedApprovalForAllEvents = deduplicateArray(
     approvalForAllEvents,
-    (event) => `${event.token}-${event.owner}-${event.payload.spender}`,
+    (event) => `${event.chainId}-${event.token}-${event.owner}-${event.payload.spender}`,
   );
 
   const allowances = await Promise.all(
@@ -340,7 +343,7 @@ export const stripAllowanceData = (allowance: TokenAllowanceData): TokenAllowanc
 };
 
 export const getAllowanceKey = (allowance: TokenAllowanceData) => {
-  return `allowance-${allowance.contract.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}-${allowance.chainId}-${allowance.owner}`;
+  return `allowance-${allowance.chainId}-${allowance.owner}-${allowance.contract.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}`;
 };
 
 export const hasZeroAllowance = (allowance: AllowancePayload, tokenData: TokenAllowanceData) => {

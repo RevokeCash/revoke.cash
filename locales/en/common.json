@@ -17,6 +17,7 @@
     "check_connected_address": "Check Connected Address",
     "clear_filters": "Clear Filters",
     "close": "Close",
+    "collapse_all": "Collapse All",
     "connect": "Connect Wallet",
     "connecting": "Connecting",
     "delisting": "Delisting",
@@ -25,6 +26,7 @@
     "donate": "Donate",
     "donating": "Donating",
     "download": "Download",
+    "expand_all": "Expand All",
     "explorer_links": "Explorer Links",
     "get_started": "Get Started",
     "increase": "Increase",
@@ -121,6 +123,7 @@
     "first": "First",
     "last": "Last",
     "page": "Page {page} of {total}",
+    "show": "Show",
     "showing": "Showing {start} to {end} of {total} results"
   },
   "quiz": {

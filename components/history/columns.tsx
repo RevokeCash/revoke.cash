@@ -2,6 +2,7 @@ import { createColumnHelper, filterFns, type Row, type RowData } from '@tanstack
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
 import { isNullish } from 'lib/utils';
+import { getChainName } from 'lib/utils/chains';
 import type { Address } from 'viem';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAmountCell from './cells/HistoryAmountCell';
@@ -38,6 +39,10 @@ const accessors = {
   timestamp: (event: ApprovalHistoryEvent) => {
     return event.time.timestamp;
   },
+  chain: (event: ApprovalHistoryEvent) => {
+    const chainName = getChainName(event.chainId);
+    return `${chainName} ${event.chainId}`;
+  },
 };
 
 // Custom filter functions for history table
@@ -64,12 +69,14 @@ export const columns = [
     enableColumnFilter: true,
     filterFn: customFilterFns.tokenOrSpender,
   }),
-  columnHelper.accessor('chainId', {
+  columnHelper.accessor(accessors.chain, {
     id: ColumnId.CHAIN,
     header: () => <HeaderCell i18nKey="address.headers.chain" />,
     cell: ({ row }) => <HistoryChainCell chainId={row.original.chainId} />,
     size: 132,
     enableSorting: false,
+    enableColumnFilter: true,
+    filterFn: customFilterFns.includesOneOfStrings,
   }),
   columnHelper.accessor(accessors.token, {
     id: ColumnId.ASSET,

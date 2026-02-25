@@ -38,7 +38,7 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
     chainId,
   }));
 
-  const groups = [
+  const groupedOptions = [
     {
       label: t('common.chain_select.mainnets'),
       options: mainnetOptions,
@@ -75,8 +75,8 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
       aria-label="Select Network"
       size="md"
       className="shrink-0"
-      value={groups.flatMap((group) => group.options).find((option) => option.chainId === selected)}
-      options={chainIds ? mainnetOptions : groups}
+      value={groupedOptions.flatMap((group) => group.options).find((option) => option.chainId === selected)}
+      options={chainIds ? mainnetOptions : groupedOptions}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
       onChange={(option) => router.push(getUrl((option as any).chainId))}
       formatOptionLabel={displayOption}

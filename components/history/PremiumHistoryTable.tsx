@@ -12,14 +12,7 @@ const PremiumHistoryTable = () => {
   return (
     <div className="flex flex-col gap-2">
       <PremiumHistoryStatusSection chainStatuses={chainStatuses} />
-      <SharedHistoryTable
-        approvalHistory={approvalHistory}
-        isLoading={tableLoading}
-        error={error}
-        partialLoadingRows={3}
-        autoResetPageIndex={false}
-        includeChainColumn
-      />
+      <SharedHistoryTable approvalHistory={approvalHistory} isLoading={tableLoading} error={error} isPremium />
     </div>
   );
 };

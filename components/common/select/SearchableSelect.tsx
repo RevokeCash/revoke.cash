@@ -22,6 +22,7 @@ import Chevron from '../Chevron';
 interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProps<O, I, G> {
   // TODO: Support 'keepMounted' for regular Select component (currently impossible without a wrapper + controlled state)
   keepMounted?: boolean;
+  targetClassName?: string;
 }
 
 const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
@@ -48,7 +49,7 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
 
   const onChange = (option: OnChangeValue<O, I>, actionMeta: ActionMeta<O>) => {
     props?.onChange?.(option, actionMeta);
-    handleSelectClose();
+    if (props.closeMenuOnSelect ?? !props.isMulti) handleSelectClose();
   };
 
   const filterOption = createFilter({
@@ -156,7 +157,9 @@ const TargetButton = forwardRef(
     const { toggleSelectClose, selectProps } = props;
 
     const formatControlOptionLabel = (option: O) => {
-      if (!option) return selectProps.placeholder ?? null;
+      if (!option || selectProps.controlShouldRenderValue === false) {
+        return selectProps.placeholder ?? null;
+      }
 
       if (typeof selectProps.formatOptionLabel === 'undefined') {
         return ((option as any).label as string) ?? ((option as any).value as string);
@@ -175,7 +178,10 @@ const TargetButton = forwardRef(
         size="none"
         style="secondary"
         onClick={toggleSelectClose}
-        className="flex items-center gap-2 px-2 h-9 font-normal rounded-lg control-button-wrapper"
+        className={twMerge(
+          'flex items-center justify-between gap-2 px-2 h-9 font-normal rounded-lg control-button-wrapper',
+          selectProps.targetClassName,
+        )}
         id={`react-select-${props.instanceId}-target-button`}
       >
         {formatControlOptionLabel(selectProps.value as O)}

@@ -47,7 +47,8 @@ export const delegationEquals = (a: Delegation, b: Delegation): boolean => {
     a.contract === b.contract &&
     a.tokenId === b.tokenId &&
     a.platform === b.platform &&
-    a.direction === b.direction
+    a.direction === b.direction &&
+    (a as any).rights === (b as any).rights
   );
 };
 

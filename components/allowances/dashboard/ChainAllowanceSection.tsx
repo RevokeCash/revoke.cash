@@ -1,6 +1,12 @@
 'use client';
 
-import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  type ColumnSort,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
 import type { ChainAllowanceData } from 'lib/hooks/page-context/PremiumAddressPageContext';
@@ -12,10 +18,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Table from '../../common/table/Table';
 import { ColumnId, columns } from './columns';
+import NoAllowancesFound from './NoAllowancesFound';
 
 interface Props {
   chainData: ChainAllowanceData;
   onUpdate: OnUpdate;
+  sorting: ColumnSort[];
+  spenderFilters: string[];
+  allExpanded: boolean;
   defaultExpanded?: boolean;
 }
 
@@ -23,7 +33,14 @@ const getRowId = (row: TokenAllowanceData) => {
   return `${row.chainId}-${row.contract.address}-${row.payload?.spender}-${(row.payload as Erc721SingleAllowance)?.tokenId}`;
 };
 
-const ChainAllowanceSection = ({ chainData, onUpdate, defaultExpanded }: Props) => {
+const ChainAllowanceSection = ({
+  chainData,
+  onUpdate,
+  sorting,
+  spenderFilters,
+  allExpanded,
+  defaultExpanded,
+}: Props) => {
   const { status, allowances } = chainData;
 
   const [isExpanded, setIsExpanded] = useState(() => {
@@ -33,13 +50,18 @@ const ChainAllowanceSection = ({ chainData, onUpdate, defaultExpanded }: Props) 
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: intentional - only auto-expand on status change
   useEffect(() => {
+    if (!allExpanded) return;
     if (status === 'success' && allowances.length > 0 && !isExpanded) {
       setIsExpanded(true);
     }
-  }, [status, allowances.length]);
+  }, [status, allowances.length, allExpanded]);
 
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const data = useMemo(() => allowances, [allowances]);
+  const columnFilters = useMemo(
+    () => (spenderFilters.length > 0 ? [{ id: ColumnId.SPENDER, value: spenderFilters }] : []),
+    [spenderFilters],
+  );
 
   useEffect(() => {
     setRowSelection((currentSelection) => {
@@ -58,6 +80,8 @@ const ChainAllowanceSection = ({ chainData, onUpdate, defaultExpanded }: Props) 
     columns,
     state: {
       rowSelection,
+      sorting,
+      columnFilters,
     },
     enableRowSelection: (row) => !isNullish(row.original.payload) && isNullish(row.original.payload?.revokeError),
     onRowSelectionChange: setRowSelection,
@@ -67,7 +91,6 @@ const ChainAllowanceSection = ({ chainData, onUpdate, defaultExpanded }: Props) 
     getRowId,
     meta: { onUpdate } as any,
     initialState: {
-      sorting: [{ id: ColumnId.LAST_UPDATED, desc: true }],
       columnVisibility: {
         [ColumnId.BALANCE]: false,
       },
@@ -75,6 +98,12 @@ const ChainAllowanceSection = ({ chainData, onUpdate, defaultExpanded }: Props) 
   });
 
   const canExpand = status === 'success' && allowances.length > 0;
+
+  useEffect(() => {
+    if (!canExpand) return;
+    setIsExpanded(allExpanded);
+  }, [canExpand, allExpanded]);
+
   const toggleExpanded = () => canExpand && setIsExpanded(!isExpanded);
 
   return (
@@ -91,7 +120,13 @@ const ChainAllowanceSection = ({ chainData, onUpdate, defaultExpanded }: Props) 
       contentClassName="border-black dark:border-white bg-zinc-50 dark:bg-zinc-900"
       header={<Header chainData={chainData} />}
     >
-      <Table table={table} loading={false} error={null} emptyChildren={null} className="border-none" />
+      <Table
+        table={table}
+        loading={false}
+        error={null}
+        emptyChildren={<NoAllowancesFound allowances={allowances} />}
+        className="border-none"
+      />
     </CollapsibleCard>
   );
 };

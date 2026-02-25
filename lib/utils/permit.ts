@@ -138,5 +138,5 @@ const isCancelPermitEvent = (event: TokenEvent) => {
 };
 
 export const getPermitKey = (allowance: PermitTokenData) => {
-  return `permit-${allowance.chainId}-${allowance.contract.address}`;
+  return `permit-${allowance.chainId}-${allowance.owner}-${allowance.contract.address}`;
 };

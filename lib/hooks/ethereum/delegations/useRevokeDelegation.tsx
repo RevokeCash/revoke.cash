@@ -11,7 +11,7 @@ import { useHandleTransaction } from '../useHandleTransaction';
 
 // Function to generate a unique key for a delegation
 export const getDelegationKey = (delegation: Delegation) => {
-  return `${delegation.platform}-${delegation.type}-${delegation.delegator}-${delegation.delegate}-${delegation.contract || 'null'}-${delegation.tokenId || 'null'}`;
+  return `${delegation.chainId}-${delegation.platform}-${delegation.type}-${delegation.delegator}-${delegation.delegate}-${delegation.contract || 'null'}-${delegation.tokenId || 'null'}-${'rights' in delegation ? delegation.rights : 'null'}`;
 };
 
 export const useRevokeDelegation = (delegation: Delegation, onRevoke: (delegation: Delegation) => void) => {

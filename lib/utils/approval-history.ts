@@ -85,8 +85,9 @@ const processErc721ApprovalEvents = (events: ApprovalHistoryEvent[]): ApprovalHi
     .map((event) => {
       if (event.type !== TokenEventType.APPROVAL_ERC721) return event;
 
-      const oldSpender = singleNftApprovalLastSpenderMap.get(`${event.token}-${event.payload.tokenId}`);
-      singleNftApprovalLastSpenderMap.set(`${event.token}-${event.payload.tokenId}`, event.payload.spender);
+      const spenderKey = `${event.chainId}-${event.token}-${event.payload.tokenId}`;
+      const oldSpender = singleNftApprovalLastSpenderMap.get(spenderKey);
+      singleNftApprovalLastSpenderMap.set(spenderKey, event.payload.spender);
 
       if (isNullish(oldSpender) || oldSpender === ADDRESS_ZERO) {
         if (event.payload.spender === ADDRESS_ZERO) return undefined;
@@ -118,8 +119,8 @@ const groupEventsByTokenAndSpender = (events: ApprovalTokenEvent[]): Record<stri
   return events.reduce<Record<string, ApprovalTokenEvent[]>>((acc, event) => {
     const key =
       'oldSpender' in event.payload
-        ? `${event.token}-${event.payload.oldSpender}`
-        : `${event.token}-${event.payload.spender}`;
+        ? `${event.chainId}-${event.token}-${event.payload.oldSpender}`
+        : `${event.chainId}-${event.token}-${event.payload.spender}`;
     acc[key] = [...(acc[key] || []), event];
     return acc;
   }, {});

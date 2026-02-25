@@ -1,27 +1,43 @@
-import { type Column, type ColumnSort, sortingFns, type Table } from '@tanstack/react-table';
+import type { ColumnSort } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { normaliseLabel } from 'lib/utils';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import useLocalStorage from 'use-local-storage';
-import { ColumnId, customSortingFns } from '../columns';
+import { ColumnId } from '../columns';
+
+type SortType = 'number' | 'text' | 'date';
 
 interface Option {
   id: ColumnId;
   value: string;
-  column: Column<TokenAllowanceData>;
+  sortType: SortType;
   desc: boolean;
 }
 
+type SortableColumn = Pick<Option, 'id' | 'sortType'>;
+
 interface Props {
-  table: Table<TokenAllowanceData>;
+  onSortChange: (sort: ColumnSort[]) => void;
+  sortableColumns?: SortableColumn[];
+  instanceId?: string;
 }
 
-const SortSelect = ({ table }: Props) => {
+const DEFAULT_SORTABLE_COLUMNS: SortableColumn[] = [
+  { id: ColumnId.LAST_UPDATED, sortType: 'date' },
+  { id: ColumnId.VALUE_AT_RISK, sortType: 'number' },
+  { id: ColumnId.SYMBOL, sortType: 'text' },
+  { id: ColumnId.SPENDER, sortType: 'text' },
+];
+
+const SortSelect = ({
+  onSortChange,
+  sortableColumns = DEFAULT_SORTABLE_COLUMNS,
+  instanceId = 'sort-select',
+}: Props) => {
   const t = useTranslations();
   const isMounted = useMounted();
   const { darkMode } = useColorTheme();
@@ -32,46 +48,35 @@ const SortSelect = ({ table }: Props) => {
 
   useEffect(() => {
     if (!selectedSort) return;
-    table.setSorting(() => [selectedSort]);
-  }, [table, selectedSort]);
+    onSortChange([selectedSort]);
+  }, [selectedSort, onSortChange]);
 
   const options: Option[] = useMemo(() => {
-    return table
-      .getAllColumns()
-      .filter((column) => column.getCanSort())
-      .flatMap((column) => [
-        { value: `${column.id}-false`, id: column.id as ColumnId, column, desc: false },
-        { value: `${column.id}-true`, id: column.id as ColumnId, column, desc: true },
-      ]);
-  }, [table]);
+    return sortableColumns.flatMap((column) => [
+      { value: `${column.id}-false`, id: column.id, sortType: column.sortType, desc: false },
+      { value: `${column.id}-true`, id: column.id, sortType: column.sortType, desc: true },
+    ]);
+  }, [sortableColumns]);
 
-  const displayOption = ({ column, desc }: Option, { context }: { context: 'menu' | 'value' }) => {
+  const displayOption = ({ id, sortType, desc }: Option, { context }: { context: 'menu' | 'value' }) => {
     const sortingFnDisplays = {
-      [sortingFns.basic.name]: {
+      number: {
         asc: t('address.sorting.fns.number.asc'),
         desc: t('address.sorting.fns.number.desc'),
       },
-      [sortingFns.text.name]: {
+      text: {
         asc: t('address.sorting.fns.text.asc'),
         desc: t('address.sorting.fns.text.desc'),
       },
-      [customSortingFns.spender.name]: {
-        asc: t('address.sorting.fns.text.asc'),
-        desc: t('address.sorting.fns.text.desc'),
-      },
-      [customSortingFns.timestamp.name]: {
+      date: {
         asc: t('address.sorting.fns.date.asc'),
         desc: t('address.sorting.fns.date.desc'),
       },
-      [customSortingFns.allowance.name]: {
-        asc: t('address.sorting.fns.number.asc'),
-        desc: t('address.sorting.fns.number.desc'),
-      },
     };
 
-    const sortingFnDisplay = sortingFnDisplays[column.getSortingFn().name]?.[desc ? 'desc' : 'asc'];
+    const sortingFnDisplay = sortingFnDisplays[sortType]?.[desc ? 'desc' : 'asc'];
 
-    const sortDisplay = `${t(`address.sorting.columns.${normaliseLabel(column.id)}`)}: ${sortingFnDisplay}`;
+    const sortDisplay = `${t(`address.sorting.columns.${normaliseLabel(id)}`)}: ${sortingFnDisplay}`;
 
     if (context === 'menu') {
       return <div className="flex items-center gap-1">{sortDisplay}</div>;
@@ -87,14 +92,13 @@ const SortSelect = ({ table }: Props) => {
 
   return (
     <Select
-      instanceId="sort-select"
+      instanceId={instanceId}
       aria-label="Sort By"
       className="w-full shrink-0"
       classNamePrefix="sort-select"
       theme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => {
-        const [sorting] = table.getState().sorting;
-        return option.id === sorting.id && option.desc === sorting.desc;
+        return option.id === selectedSort.id && option.desc === selectedSort.desc;
       })}
       options={options}
       onChange={(option) => setSelectedSort({ id: option!.id, desc: option!.desc })}

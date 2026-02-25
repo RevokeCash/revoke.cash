@@ -20,19 +20,10 @@ interface Props {
   approvalHistory?: ApprovalHistoryEvent[];
   isLoading: boolean;
   error?: Error;
-  includeChainColumn?: boolean;
-  autoResetPageIndex?: boolean;
-  partialLoadingRows?: number;
+  isPremium?: boolean;
 }
 
-const SharedHistoryTable = ({
-  approvalHistory,
-  isLoading,
-  error,
-  includeChainColumn = false,
-  autoResetPageIndex = true,
-  partialLoadingRows = 0,
-}: Props) => {
+const SharedHistoryTable = ({ approvalHistory, isLoading, error, isPremium = false }: Props) => {
   const t = useTranslations();
   const searchBoxRef = useRef<HistorySearchBoxRef>(null);
 
@@ -55,8 +46,7 @@ const SharedHistoryTable = ({
   const table = useReactTable({
     data,
     columns,
-    debugTable: true,
-    autoResetPageIndex,
+    autoResetPageIndex: !isPremium,
     getCoreRowModel: getCoreRowModel<ApprovalHistoryEvent>(),
     getSortedRowModel: getSortedRowModel<ApprovalHistoryEvent>(),
     getFilteredRowModel: getFilteredRowModel<ApprovalHistoryEvent>(),
@@ -67,21 +57,19 @@ const SharedHistoryTable = ({
         pageSize: 25,
       },
       columnVisibility: {
-        [ColumnId.CHAIN]: includeChainColumn,
+        [ColumnId.CHAIN]: isPremium,
         [ColumnId.COMBINED_SEARCH]: false,
       },
     },
-    getRowId(row, index) {
-      return `${row.chainId}-${row.time.transactionHash}-${index}`;
+    getRowId(row) {
+      return `${row.chainId}-${row.rawLog.transactionHash}-${row.rawLog.logIndex}`;
     },
     meta: { onFilter } as any,
   });
 
   return (
     <Card title={title} className="p-0">
-      <div className="flex flex-col gap-2 p-4">
-        <HistorySearchBox ref={searchBoxRef} table={table} />
-      </div>
+      <HistorySearchBox ref={searchBoxRef} table={table} isPremium={isPremium} />
       <TablePagination table={table} className="border-y border-zinc-200 dark:border-zinc-700" />
       <Table
         table={table}
@@ -89,7 +77,7 @@ const SharedHistoryTable = ({
         error={error}
         emptyChildren={t('address.history.none_found')}
         loaderRows={table.getState().pagination.pageSize}
-        partialLoadingRows={partialLoadingRows}
+        partialLoadingRows={isPremium ? 3 : 0}
         className="border-none rounded-none"
       />
       <TablePagination table={table} className="border-t border-zinc-200 dark:border-zinc-700" />
