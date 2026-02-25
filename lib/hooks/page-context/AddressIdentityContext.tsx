@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { createContext, type ReactNode, useContext } from 'react';
 import type { Address } from 'viem';
 import { useNameLookup } from '../ethereum/useNameLookup';
@@ -7,6 +8,7 @@ import { useNameLookup } from '../ethereum/useNameLookup';
 interface AddressIdentityContextValue {
   address: Address;
   domainName?: string;
+  isPremium: boolean;
 }
 
 interface Props {
@@ -17,11 +19,15 @@ interface Props {
 
 export const AddressIdentityContext = createContext<AddressIdentityContextValue>(undefined as any);
 
-export const AddressIdentityContextProvider = ({ children, address, domainName }: Props) => {
-  const { domainName: resolvedDomainName } = useNameLookup(domainName ? undefined : address);
+export const AddressIdentityContextProvider = ({ children, address, domainName: initialDomainName }: Props) => {
+  const { domainName: resolvedDomainName } = useNameLookup(initialDomainName ? undefined : address);
+  const pathname = usePathname();
+
+  const domainName = initialDomainName ?? resolvedDomainName ?? undefined;
+  const isPremium = pathname.includes('/premium');
 
   return (
-    <AddressIdentityContext.Provider value={{ address, domainName: domainName ?? resolvedDomainName ?? undefined }}>
+    <AddressIdentityContext.Provider value={{ address, domainName, isPremium }}>
       {children}
     </AddressIdentityContext.Provider>
   );
