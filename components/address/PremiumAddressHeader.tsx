@@ -6,6 +6,7 @@ import AddressDisplay from './AddressDisplay';
 import AddressExternalLinks from './AddressExternalLinks';
 import ConnectedLabel from './ConnectedLabel';
 import AddressNavigation from './navigation/AddressNavigation';
+import PremiumBadge from './PremiumBadge';
 
 const PremiumAddressHeader = () => {
   const { address, domainName } = useAddress();
@@ -22,6 +23,7 @@ const PremiumAddressHeader = () => {
           withTooltip
         />
         <ConnectedLabel address={address} />
+        <PremiumBadge />
       </div>
       <AddressExternalLinks address={address} chainId={ChainId.EthereumMainnet} />
       <AddressNavigation isPremium />
