@@ -3,7 +3,7 @@
 import { useQueries } from '@tanstack/react-query';
 import { getTokenEvents } from 'lib/chains/events';
 import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { getTokenPrice } from 'lib/price/utils';
+import { getTokenPrices } from 'lib/price/utils';
 import { deduplicateArray, isNullish } from 'lib/utils';
 import {
   type AllowanceUpdateProperties,
@@ -18,6 +18,7 @@ import analytics from 'lib/utils/analytics';
 import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
 import { getEventKey } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
+import { isErc721Contract } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
 import React, { type ReactNode, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { Address } from 'viem';
@@ -132,14 +133,26 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
     return allowances;
   }, [baseAllowancesMap]);
 
-  // Fetch token prices for all allowances (TanStack Query deduplicates by queryKey)
+  const uniqueErc20TokenAddressesByChain = useMemo(() => {
+    return ORDERED_CHAINS.map((chainId) => {
+      const chainAllowances = baseAllowancesMap.get(chainId) ?? [];
+      const erc20Addresses = chainAllowances
+        .filter((allowance) => !isErc721Contract(allowance.contract))
+        .map((allowance) => allowance.contract.address);
+
+      return { chainId, addresses: deduplicateArray(erc20Addresses).sort() };
+    });
+  }, [baseAllowancesMap]);
+
+  // Fetch token prices in batches per chain
   const priceQueries = useQueries({
-    queries: allBaseAllowances.map((allowance) => ({
-      queryKey: ['tokenPrice', allowance.chainId, allowance.contract.address],
-      queryFn: () => getTokenPrice(allowance.chainId, allowance.contract),
+    queries: uniqueErc20TokenAddressesByChain.map(({ chainId, addresses }) => ({
+      queryKey: ['tokenPrices', chainId, addresses],
+      queryFn: () => getTokenPrices(chainId, addresses),
       staleTime: 5 * MINUTE,
       refetchOnWindowFocus: false,
       placeholderData: undefined,
+      enabled: addresses.length > 0,
     })),
   });
 
@@ -158,18 +171,19 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
 
   // Create separate maps for prices (per token) and spender data (per spender)
   const priceMap = useMemo(() => {
-    const map = new Map<string, number | null | undefined>();
+    const map = new Map<string, number | null>();
 
-    allBaseAllowances.forEach((allowance, index) => {
-      const key = `${allowance.chainId}-${allowance.contract.address}`;
-      // Only set if not already present (all queries for same token return same price)
-      if (!map.has(key)) {
-        map.set(key, priceQueries[index]?.data);
+    uniqueErc20TokenAddressesByChain.forEach(({ chainId, addresses }, index) => {
+      const queryData = priceQueries[index]?.data;
+      if (!queryData) return;
+
+      for (const tokenAddress of addresses) {
+        map.set(`${chainId}-${tokenAddress}`, queryData[tokenAddress] ?? null);
       }
     });
 
     return map;
-  }, [allBaseAllowances, priceQueries]);
+  }, [uniqueErc20TokenAddressesByChain, priceQueries]);
 
   const spenderDataMap = useMemo(() => {
     const map = new Map<string, SpenderData | SpenderRiskData | null | undefined>();
@@ -212,7 +226,8 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
           const priceKey = `${allowance.chainId}-${allowance.contract.address}`;
           const spenderKey = `${allowance.chainId}-${allowance.payload?.spender}`;
 
-          const metadata = { ...allowance.metadata, price: priceMap.get(priceKey) };
+          const price = isErc721Contract(allowance.contract) ? null : (priceMap.get(priceKey) ?? null);
+          const metadata = { ...allowance.metadata, price };
           const payload = allowance.payload
             ? { ...allowance.payload, spenderData: spenderDataMap.get(spenderKey) }
             : undefined;
