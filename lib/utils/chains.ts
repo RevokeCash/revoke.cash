@@ -494,7 +494,6 @@ export const CHAINS = {
     name: 'CoinEx Smart Chain',
     nativeToken: 'CET',
     nativeTokenCoingeckoId: 'coinex-token',
-    coingeckoNetworkId: 'coinex-smart-chain',
     logoUrl: '/assets/images/vendor/chains/coinex.svg',
   }),
   [ChainId.CoreBlockchainMainnet]: new Chain({
@@ -628,7 +627,6 @@ export const CHAINS = {
     type: SupportType.PROVIDER,
     chainId: ChainId.EthereumSepolia,
     name: 'Ethereum Sepolia',
-    coingeckoNetworkId: 'sepolia-testnet',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
       main: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
@@ -740,7 +738,6 @@ export const CHAINS = {
     chainId: ChainId.HarmonyMainnetShard0,
     name: 'Harmony',
     nativeTokenCoingeckoId: 'harmony',
-    coingeckoNetworkId: 'one',
     logoUrl: '/assets/images/vendor/chains/harmony.svg',
     etherscanCompatibleApiUrl: 'https://explorer.harmony.one/api',
     deployedContracts: { ...MULTICALL },

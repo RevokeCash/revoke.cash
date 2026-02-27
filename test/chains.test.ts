@@ -83,14 +83,20 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         const NO_TOKEN_PRICING: number[] = [
           ChainId.CoinExSmartChainMainnet,
           ChainId.DarwiniaNetwork,
+          ChainId.HarmonyMainnetShard0,
           ChainId.NeoXMainnet,
           ChainId.OasisEmerald,
           ChainId.SyscoinMainnet,
         ];
-        if (!isTestnetChain(chainId) && !NO_TOKEN_PRICING.includes(chainId)) {
-          const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);
+
+        const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);
+        const coingeckoNetwork = coingeckoNetworks.data.find((network) => network.id === coingeckoNetworkId);
+
+        if (isTestnetChain(chainId) || NO_TOKEN_PRICING.includes(chainId)) {
+          expect(coingeckoNetworkId, `${chainName} coingecko network id`).not.to.exist;
+          expect(coingeckoNetwork, `${chainName} coingecko network`).not.to.exist;
+        } else {
           expect(coingeckoNetworkId, `${chainName} coingecko network id`).to.exist;
-          const coingeckoNetwork = coingeckoNetworks.data.find((network) => network.id === coingeckoNetworkId);
           expect(coingeckoNetwork, `${chainName} coingecko network`).to.exist;
         }
       });
