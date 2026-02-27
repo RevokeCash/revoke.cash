@@ -4,10 +4,10 @@ import {
   CHAIN_SELECT_MAINNETS,
   CHAIN_SELECT_TESTNETS,
   createViemPublicClientForChain,
+  getChainCoingeckoNetworkId,
   getChainDeployedContracts,
   getChainExplorerUrl,
   getChainName,
-  getChainPriceStrategy,
   getCorrespondingMainnetChainId,
 } from 'lib/utils/chains';
 
@@ -51,12 +51,12 @@ const logChain = (
   index: number,
   reference: readonly number[],
 ) => {
-  const hasPriceStrategyIcon = getChainPriceStrategy(chainId) ? '✅' : '❌';
+  const hasTokenPricingIcon = getChainCoingeckoNetworkId(chainId) ? '✅' : '❌';
   const indexDiff = String(index - reference.indexOf(chainId))
     .padStart(3, ' ')
     .padEnd(4, ' ');
 
-  console.log(hasPriceStrategyIcon, indexDiff, chainName.padEnd(22), tvl);
+  console.log(hasTokenPricingIcon, indexDiff, chainName.padEnd(22), tvl);
 
   if (hasMulticall && !getChainDeployedContracts(chainId)) {
     const explorerUrl = getChainExplorerUrl(chainId);

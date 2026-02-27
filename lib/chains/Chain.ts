@@ -1,7 +1,6 @@
 import { ChainId, getChain } from '@revoke.cash/chains';
 import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
-import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { isNullish } from 'lib/utils';
 import { SECOND } from 'lib/utils/time';
 import {
@@ -23,6 +22,7 @@ export interface ChainOptions {
   infoUrl?: string;
   nativeToken?: string;
   nativeTokenCoingeckoId?: string;
+  coingeckoNetworkId?: string;
   explorerUrl?: string;
   etherscanCompatibleApiUrl?: string;
   rpc?: {
@@ -31,8 +31,6 @@ export interface ChainOptions {
     free?: string;
   };
   deployedContracts?: DeployedContracts;
-  priceStrategy?: PriceStrategy;
-  backendPriceStrategy?: PriceStrategy;
   isTestnet?: boolean;
   isCanary?: boolean;
   correspondingMainnetChainId?: number;
@@ -136,6 +134,10 @@ export class Chain {
 
   getNativeTokenCoingeckoId(): string | undefined {
     return this.options.nativeTokenCoingeckoId ?? (this.getNativeToken() === 'ETH' ? 'ethereum' : undefined);
+  }
+
+  getCoingeckoNetworkId(): string | undefined {
+    return this.options.coingeckoNetworkId;
   }
 
   getEtherscanCompatibleApiUrl(): string | undefined {
@@ -257,13 +259,5 @@ export class Chain {
       transport: http(overrideUrl ?? this.getRpcUrl(), transportOverrides[this.chainId] ?? transportConfig),
       batch: { multicall: multicallOverrides[this.chainId] ?? multicallConfig },
     });
-  }
-
-  getPriceStrategy(): PriceStrategy | undefined {
-    return this.options.priceStrategy;
-  }
-
-  getBackendPriceStrategy(): PriceStrategy | undefined {
-    return this.options.backendPriceStrategy;
   }
 }

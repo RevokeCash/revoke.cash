@@ -266,7 +266,7 @@ export const getAccountType = async (address: Address, publicClient: PublicClien
   return 'Smart Contract';
 };
 
-export const splitArray = <T>(array: T[], chunkSize: number): T[][] => {
+export const chunkArray = <T>(array: T[], chunkSize: number): T[][] => {
   const result: T[][] = [];
 
   for (let i = 0; i < array.length; i += chunkSize) {

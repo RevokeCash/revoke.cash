@@ -1,13 +1,6 @@
 import ky from 'ky';
-import { apiLogin, isNullish } from 'lib/utils';
-import { getChainPriceStrategy } from 'lib/utils/chains';
-import { isErc721Contract, type TokenContract } from 'lib/utils/tokens';
-import { formatUnits } from 'viem';
-import type { PriceStrategy } from './PriceStrategy';
-
-export const calculateTokenPrice = (inversePrice: bigint | null, tokenDecimals: number): number | null => {
-  return isNullish(inversePrice) ? null : 1 / Number.parseFloat(formatUnits(inversePrice, tokenDecimals));
-};
+import { apiLogin } from 'lib/utils';
+import { type Address, getAddress } from 'viem';
 
 export const getNativeTokenPrice = async (chainId: number): Promise<number | null> => {
   await apiLogin();
@@ -15,21 +8,18 @@ export const getNativeTokenPrice = async (chainId: number): Promise<number | nul
   return response.price;
 };
 
-export const getTokenPrice = async (chainId: number, tokenContract: TokenContract): Promise<number | null> => {
-  const strategy = getChainPriceStrategy(chainId);
-  if (!strategy || !strategySupportsToken(strategy, tokenContract)) return null;
+export const getTokenPrices = async (
+  chainId: number,
+  addresses: Address[],
+): Promise<Record<Address, number | null>> => {
+  if (addresses.length === 0) return {} as Record<Address, number | null>;
 
-  try {
-    const price = await strategy.calculateTokenPrice(tokenContract);
-    if (isNullish(price) || Number.isNaN(price) || price === Infinity || price === -Infinity) return null;
-    return price;
-  } catch {
-    return null;
-  }
-};
+  const normalizedAddresses = addresses.map((address) => getAddress(address));
+  await apiLogin();
 
-export const strategySupportsToken = (strategy: PriceStrategy, tokenContract: TokenContract): boolean => {
-  if (isErc721Contract(tokenContract) && !strategy.supportedAssets.includes('ERC721')) return false;
-  if (!isErc721Contract(tokenContract) && !strategy.supportedAssets.includes('ERC20')) return false;
-  return true;
+  const response = await ky
+    .post(`/api/${chainId}/token-prices`, { json: { addresses: normalizedAddresses } })
+    .json<{ prices: Record<string, number | null> }>();
+
+  return response.prices as Record<Address, number | null>;
 };

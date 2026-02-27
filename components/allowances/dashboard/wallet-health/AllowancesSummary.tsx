@@ -14,7 +14,7 @@ const AllowancesSummary = ({ chainId }: Props) => {
   return (
     <div className="flex items-center justify-around gap-4 h-16 only:w-full only:justify-center">
       <AllowancesCount allowances={allowances} isLoading={isLoading} error={error} />
-      <TotalValueAtRisk chainId={chainId} allowances={allowances} isLoading={isLoading} error={error} />
+      <TotalValueAtRisk allowances={allowances} isLoading={isLoading} error={error} />
     </div>
   );
 };

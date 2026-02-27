@@ -2,7 +2,7 @@
 
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
-import { splitArray, throwIfExcessiveGas } from 'lib/utils';
+import { chunkArray, throwIfExcessiveGas } from 'lib/utils';
 import {
   getAllowanceKey,
   type OnUpdate,
@@ -97,8 +97,8 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
       }
     }
 
-    const callChunks = splitArray(callsToSubmit, maxBatchSize);
-    const allowanceChunks = splitArray(allowancesToSubmit, maxBatchSize);
+    const callChunks = chunkArray(callsToSubmit, maxBatchSize);
+    const allowanceChunks = chunkArray(allowancesToSubmit, maxBatchSize);
     const globalPublicClient = allowancesToRevoke[0].contract.publicClient;
 
     try {

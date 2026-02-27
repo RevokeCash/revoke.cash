@@ -1,8 +1,8 @@
 'use client';
 
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { getTokenPrice } from 'lib/price/utils';
-import { isNullish } from 'lib/utils';
+import { getTokenPrices } from 'lib/price/utils';
+import { deduplicateArray, isNullish } from 'lib/utils';
 import {
   type AllowanceUpdateProperties,
   applyRevokeToAllowances,
@@ -13,6 +13,7 @@ import {
 import analytics from 'lib/utils/analytics';
 import { getEventKey, type TokenEvent } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
+import { isErc721Contract } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
@@ -50,15 +51,21 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     }
   }, [data]);
 
-  // No need to deduplicate duplicate unique tokens/spenders, since TanStack Query will deduplicate the queries for us
-  const priceQueries = useQueries({
-    queries: (baseAllowances ?? []).map((allowance) => ({
-      queryKey: ['tokenPrice', allowance.chainId, allowance.contract.address],
-      queryFn: () => getTokenPrice(allowance.chainId, allowance.contract),
-      staleTime: 5 * MINUTE,
-      refetchOnWindowFocus: false,
-      placeholderData: undefined,
-    })),
+  const uniqueErc20TokenAddresses = useMemo(() => {
+    const erc20Addresses = (baseAllowances ?? [])
+      .filter((allowance) => !isErc721Contract(allowance.contract))
+      .map((allowance) => allowance.contract.address);
+
+    return deduplicateArray(erc20Addresses).sort();
+  }, [baseAllowances]);
+
+  const priceQuery = useQuery<Record<Address, number | null>, Error>({
+    queryKey: ['tokenPrices', chainId, uniqueErc20TokenAddresses],
+    queryFn: () => getTokenPrices(chainId, uniqueErc20TokenAddresses),
+    staleTime: 5 * MINUTE,
+    refetchOnWindowFocus: false,
+    placeholderData: undefined,
+    enabled: uniqueErc20TokenAddresses.length > 0,
   });
 
   const spenderQueries = useQueries({
@@ -77,15 +84,18 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     if (!baseAllowances) return undefined;
 
     return baseAllowances.map((allowance, index) => {
-      // Direct indexing for both prices and spenders since the arrays have 1:1 mapping
-      const metadata = { ...allowance.metadata, price: priceQueries[index]?.data };
+      const tokenPrice = isErc721Contract(allowance.contract)
+        ? null
+        : (priceQuery.data?.[allowance.contract.address as Address] ?? null);
+
+      const metadata = { ...allowance.metadata, price: tokenPrice };
       const payload = allowance.payload
         ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
         : undefined;
 
       return { ...allowance, metadata, payload };
     });
-  }, [baseAllowances, priceQueries, spenderQueries]);
+  }, [baseAllowances, priceQuery.data, spenderQueries]);
 
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
     console.debug('Reloading data');

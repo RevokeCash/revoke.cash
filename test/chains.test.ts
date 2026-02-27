@@ -9,6 +9,7 @@ import { addressToTopic } from 'lib/utils';
 import {
   createViemPublicClientForChain,
   getChainApiUrl,
+  getChainCoingeckoNetworkId,
   getChainConfig,
   getChainExplorerUrl,
   getChainFreeRpcUrl,
@@ -22,11 +23,13 @@ import {
   getChainRpcUrl,
   getChainSlug,
   getCorrespondingMainnetChainId,
+  isTestnetChain,
   ORDERED_CHAINS,
   SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
 import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
 import { getAbiItem, toEventSelector } from 'viem';
+import coingeckoNetworks from './coingecko-networks.json' with { type: 'json' };
 
 const extended = process.env.EXTENDED !== 'false';
 
@@ -72,10 +75,23 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
         expect(nativeToken, `${chainName} native token`).to.exist;
 
-        const NO_PRICING: number[] = [ChainId.ZenChainTestnet];
-
-        if (!NO_PRICING.includes(chainId)) {
+        const NO_NATIVE_PRICING: number[] = [ChainId.ZenChainTestnet];
+        if (!NO_NATIVE_PRICING.includes(chainId)) {
           expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;
+        }
+
+        const NO_TOKEN_PRICING: number[] = [
+          ChainId.CoinExSmartChainMainnet,
+          ChainId.DarwiniaNetwork,
+          ChainId.NeoXMainnet,
+          ChainId.OasisEmerald,
+          ChainId.SyscoinMainnet,
+        ];
+        if (!isTestnetChain(chainId) && !NO_TOKEN_PRICING.includes(chainId)) {
+          const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);
+          expect(coingeckoNetworkId, `${chainName} coingecko network id`).to.exist;
+          const coingeckoNetwork = coingeckoNetworks.data.find((network) => network.id === coingeckoNetworkId);
+          expect(coingeckoNetwork, `${chainName} coingecko network`).to.exist;
         }
       });
 

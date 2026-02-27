@@ -2,19 +2,17 @@ import Loader from 'components/common/Loader';
 import type { Nullable } from 'lib/interfaces';
 import { deduplicateArray, isNullish } from 'lib/utils';
 import { calculateValueAtRisk, type TokenAllowanceData } from 'lib/utils/allowances';
-import { getChainPriceStrategy } from 'lib/utils/chains';
 import { formatFiatAmount } from 'lib/utils/formatting';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  chainId: number;
   allowances?: TokenAllowanceData[];
   isLoading: boolean;
   error?: Nullable<Error>;
 }
 
-const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
+const TotalValueAtRisk = ({ allowances, isLoading, error }: Props) => {
   const t = useTranslations();
 
   if (error) return null;
@@ -28,10 +26,6 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
       (allowance.balance === 'ERC1155' || allowance.balance > 0n),
   );
 
-  const priceStrategy = getChainPriceStrategy(chainId);
-  const chainHasFungiblePriceStrategy = priceStrategy?.supportedAssets?.includes('ERC20');
-  const chainHasNftPriceStrategy = priceStrategy?.supportedAssets?.includes('ERC721');
-
   return (
     <Loader isLoading={isLoading}>
       <div className="flex flex-col items-center gap-0.5">
@@ -41,12 +35,12 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
         <div className="font-bold">
           {isLoading ? (
             '$0,000'
-          ) : chainHasFungiblePriceStrategy ? (
-            <>
-              {formatFiatAmount(totalValueAtRisk, 0)} {hasNftsAtRisk && !chainHasNftPriceStrategy ? '+ NFTs' : null}
-            </>
-          ) : (
+          ) : isNullish(totalValueAtRisk) ? (
             t('address.allowances.unknown')
+          ) : (
+            <>
+              {formatFiatAmount(totalValueAtRisk, 0)} {hasNftsAtRisk ? '+ NFTs' : null}
+            </>
           )}
         </div>
       </div>
@@ -56,14 +50,20 @@ const TotalValueAtRisk = ({ chainId, allowances, isLoading, error }: Props) => {
 
 export default TotalValueAtRisk;
 
-const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number => {
+const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number | null => {
   const annotatedAllowances = allowances.map((allowance) => ({
     ...allowance,
     valueAtRisk: calculateValueAtRisk(allowance),
   }));
 
   const sortedAllowances = annotatedAllowances.sort((a, b) => ((a.valueAtRisk ?? 0n) > (b.valueAtRisk ?? 0n) ? -1 : 1));
-  const deduplicatedAllowances = deduplicateArray(sortedAllowances, (allowance) => allowance.contract.address);
+  const deduplicatedAllowances = deduplicateArray(
+    sortedAllowances,
+    (allowance) => `${allowance.chainId}-${allowance.contract.address}`,
+  );
 
-  return deduplicatedAllowances.reduce((acc, allowance) => acc + (allowance.valueAtRisk ?? 0), 0);
+  return deduplicatedAllowances.reduce<number | null>(
+    (acc, allowance) => (isNullish(acc) ? allowance.valueAtRisk : acc + (allowance.valueAtRisk ?? 0)),
+    null,
+  );
 };
