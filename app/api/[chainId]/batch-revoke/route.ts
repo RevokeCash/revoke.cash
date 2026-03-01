@@ -25,11 +25,11 @@ export async function POST(req: NextRequest, { params }: Props) {
     return new Response(JSON.stringify({ message: 'Too many requests, please try again later.' }), { status: 429 });
   }
 
-  if (!process.env.ANALYTICS_DATABASE_URL) {
+  if (!process.env.DATABASE_URL) {
     return new Response(JSON.stringify({ message: 'Cannot record batch revoke' }), { status: 500 });
   }
 
-  const sql = neon(process.env.ANALYTICS_DATABASE_URL);
+  const sql = neon(process.env.DATABASE_URL);
 
   const chainId = Number(chainIdString);
   const body = await req.json();

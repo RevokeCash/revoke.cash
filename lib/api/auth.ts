@@ -1,7 +1,9 @@
 import { getIronSession, type SessionOptions, unsealData } from 'iron-session';
+import { type AuthSession, UNAUTHENTICATED_AUTH_SESSION } from 'lib/auth/session';
 import type { Nullable } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { cookies, headers } from 'next/headers';
 import type { NextRequest, NextResponse } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { Address, Hex } from 'viem';
@@ -110,12 +112,36 @@ export const checkActiveSession = async (req: NextApiRequest, res: NextApiRespon
 };
 
 export const checkActiveSessionEdge = async (req: NextRequest) => {
-  const cookie = req.cookies.get(IRON_OPTIONS.cookieName);
-  if (!cookie) return false;
+  const sealedSession = req.cookies.get(IRON_OPTIONS.cookieName)?.value;
+  const authSession = await getAuthSessionByHeaders(req.headers, sealedSession);
+  return authSession.hasApiSession;
+};
 
-  const session = await unsealSession(cookie.value);
+export const getAuthSessionByHeaders = async (headers: Headers, sealedSession?: string): Promise<AuthSession> => {
+  if (!sealedSession) return UNAUTHENTICATED_AUTH_SESSION;
 
-  return session.ip && getClientIpEdge(req) === session.ip;
+  try {
+    const session = await unsealSession(sealedSession);
+    if (!session.ip) return UNAUTHENTICATED_AUTH_SESSION;
+
+    const requestIp = getClientIpFromHeaders(headers);
+    if (!requestIp || requestIp !== session.ip) return UNAUTHENTICATED_AUTH_SESSION;
+
+    return {
+      hasApiSession: true,
+      siweAddress: session.siwe?.address ?? null,
+    };
+  } catch {
+    return UNAUTHENTICATED_AUTH_SESSION;
+  }
+};
+
+export const getServerAuthSession = async () => {
+  const cookieStore = await cookies();
+  const requestHeaders = await headers();
+  const sessionCookie = cookieStore.get(IRON_OPTIONS.cookieName)?.value;
+
+  return getAuthSessionByHeaders(requestHeaders, sessionCookie);
 };
 
 // Note: if ever moving to a different hosting / reverse proxy, then we need to update this
@@ -134,14 +160,20 @@ const getClientIp = (req: NextApiRequest): string => {
 };
 
 const getClientIpEdge = (req: NextRequest): string => {
+  return getClientIpFromHeaders(req.headers);
+};
+
+const getClientIpFromHeaders = (headers: Headers): string => {
   // Cloudflare
-  if (isIp(req.headers.get('cf-connecting-ip'))) return req.headers.get('cf-connecting-ip')!;
+  const cfConnectingIp = headers.get('cf-connecting-ip');
+  if (isIp(cfConnectingIp)) return cfConnectingIp;
 
   // Vercel
-  if (isIp(req.headers.get('x-real-ip'))) return req.headers.get('x-real-ip')!;
+  const realIp = headers.get('x-real-ip');
+  if (isIp(realIp)) return realIp;
 
   // Other
-  const xForwardedFor = req.headers.get('x-forwarded-for')?.split(',')?.at(0);
+  const xForwardedFor = headers.get('x-forwarded-for')?.split(',')?.at(0);
   if (isIp(xForwardedFor)) return xForwardedFor;
 
   throw new Error('Request headers malformed');

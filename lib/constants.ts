@@ -36,3 +36,6 @@ export const FAIRSIDE_API_KEY = process.env.FAIRSIDE_API_KEY ?? process.env.NEXT
 
 export const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY ?? process.env.NEXT_PUBLIC_COINGECKO_API_KEY;
 export const COINGECKO_API_BASE_URL = 'https://pro-api.coingecko.com/api/v3';
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.NODE_ENV === 'production' ? 'https://revoke.cash' : 'http://localhost:3000');

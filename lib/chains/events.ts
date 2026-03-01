@@ -3,7 +3,7 @@ import { AGW_SESSIONS_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import eventsDB from 'lib/databases/events';
 import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
-import { addressToTopic, apiLogin, isNullish, sortTokenEventsChronologically } from 'lib/utils';
+import { addressToTopic, isNullish, sortTokenEventsChronologically } from 'lib/utils';
 import { createViemPublicClientForChain, type DocumentedChainId, getChainApiUrl, getChainName } from 'lib/utils/chains';
 import {
   generatePatchedAllowanceEvents,
@@ -58,9 +58,6 @@ const ChainOverrides: Record<number, TokenEventsGetter> = {
 const getEventPrerequisites = async (chainId: DocumentedChainId, address: Address) => {
   const logsProvider = getLogsProvider(chainId);
   const publicClient = createViemPublicClientForChain(chainId);
-
-  const isLoggedIn = await apiLogin();
-  if (!isLoggedIn) throw new Error('Failed to create an API session');
 
   const [openSeaProxy, fromBlock, toBlock, rpcBlock] = await Promise.all([
     getOpenSeaProxyAddress(address),

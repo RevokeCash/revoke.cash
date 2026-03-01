@@ -1,4 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
+import { AUTH_SESSION_QUERY_KEY, type AuthSession } from 'lib/auth/session';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { queryClient } from 'lib/hooks/QueryProvider';
 import type { TransactionSubmitted } from 'lib/interfaces';
@@ -21,6 +22,7 @@ import {
 } from 'viem';
 import analytics from './analytics';
 import type { Log } from './events';
+import { MINUTE } from './time';
 
 export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
   return item.status === 'fulfilled';
@@ -235,25 +237,50 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 
 export const range = (length: number) => Array.from({ length }, (_, i) => i);
 
-export const apiLogin = async () => {
+export const ensureAuthSession = async () => {
   // In a backend context, we do not need to login
   if (!isBrowser()) return true;
 
-  if (queryClient) {
-    return await queryClient.ensureQueryData({
-      queryKey: ['login'],
-      queryFn: () =>
-        ky
-          .post('/api/login')
-          .json<any>()
-          .then((res) => !!res?.ok),
-    });
-  }
+  return queryClient.ensureQueryData({
+    queryKey: ['auth', 'ensure-session'],
+    staleTime: 5 * MINUTE,
+    gcTime: 10 * MINUTE,
+    queryFn: async () => {
+      const authSession = await getAuthSession();
 
-  return await ky
-    .post('/api/login')
-    .json<any>()
-    .then((res) => !!res?.ok);
+      if (authSession?.hasApiSession) {
+        queryClient.setQueryData(AUTH_SESSION_QUERY_KEY, authSession);
+        return true;
+      }
+
+      const isLoggedIn = await ky
+        .post('/api/auth/login')
+        .json<{ ok?: boolean }>()
+        .then((res) => !!res?.ok)
+        .catch(() => false);
+
+      if (!isLoggedIn) {
+        queryClient.invalidateQueries({ queryKey: AUTH_SESSION_QUERY_KEY, refetchType: 'none' });
+        throw new Error('Failed to create API session');
+      }
+
+      const updatedAuthSession = await getAuthSession();
+      if (updatedAuthSession?.hasApiSession) {
+        queryClient.setQueryData(AUTH_SESSION_QUERY_KEY, updatedAuthSession);
+        return true;
+      }
+
+      queryClient.invalidateQueries({ queryKey: AUTH_SESSION_QUERY_KEY, refetchType: 'none' });
+      throw new Error('Failed to create API session');
+    },
+  });
+};
+
+const getAuthSession = async (): Promise<AuthSession | null> => {
+  return ky
+    .get('/api/auth/session')
+    .json<AuthSession>()
+    .catch(() => null);
 };
 
 export const isBrowser = () => typeof window !== 'undefined';

@@ -1660,7 +1660,7 @@ export const CHAINS = {
     explorerUrl: 'https://zetachain.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain.blockscout.com/api',
     rpc: {
-      main: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
+      main: `https://lb.drpc.org/ogrpc?network=zeta-chain-mainnet&dkey=${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),

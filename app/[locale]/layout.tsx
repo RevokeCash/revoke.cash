@@ -5,6 +5,7 @@ import ToastifyConfig from 'components/common/ToastifyConfig';
 import TopLoader from 'components/common/TopLoader';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
+import { AuthSessionProvider } from 'lib/hooks/auth/AuthSessionProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
@@ -65,19 +66,21 @@ const MainLayout = async ({ children, params }: Props) => {
         <ThemeScript />
         <NextIntlClientProvider messages={{ common: messages.common }}>
           <QueryProvider>
-            <EthereumProvider>
-              <ColorThemeProvider>
-                <div className="flex flex-col mx-auto min-h-screen">
-                  <AnnouncementsContainer />
-                  <Header />
-                  <main className="w-full grow">{children}</main>
-                  <div className="flex flex-col justify-end">
-                    <Footer />
+            <AuthSessionProvider>
+              <EthereumProvider>
+                <ColorThemeProvider>
+                  <div className="flex flex-col mx-auto min-h-screen">
+                    <AnnouncementsContainer />
+                    <Header />
+                    <main className="w-full grow">{children}</main>
+                    <div className="flex flex-col justify-end">
+                      <Footer />
+                    </div>
                   </div>
-                </div>
-                <ToastifyConfig />
-              </ColorThemeProvider>
-            </EthereumProvider>
+                  <ToastifyConfig />
+                </ColorThemeProvider>
+              </EthereumProvider>
+            </AuthSessionProvider>
           </QueryProvider>
         </NextIntlClientProvider>
         <TopLoader />

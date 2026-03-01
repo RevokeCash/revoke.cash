@@ -1,5 +1,7 @@
 import kyBase, { HTTPError, type NormalizedOptions } from 'ky';
 import PQueue from 'p-queue';
+import { SITE_URL } from './constants';
+import { ensureAuthSession } from './utils';
 
 export class KyHttpError extends HTTPError {
   data?: any;
@@ -16,6 +18,19 @@ const ky = kyBase.extend({
   timeout: false,
   fetch: (input, options) => kyQueue.add(() => fetch(input, options)),
   hooks: {
+    beforeRequest: [
+      async (request) => {
+        if (!isOwnSite(request.url)) return request;
+
+        const path = new URL(request.url).pathname;
+        if (!path.startsWith('/api/')) return request;
+        if (path.startsWith('/api/auth/')) return request;
+
+        await ensureAuthSession();
+
+        return request;
+      },
+    ],
     beforeError: [
       async (error) => {
         try {
@@ -52,6 +67,11 @@ export const retryOn429 = async <T>(fn: () => Promise<T>, retries = 3): Promise<
 
     throw e;
   }
+};
+
+const isOwnSite = (url: string) => {
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : SITE_URL;
+  return new URL(url, siteUrl).origin === new URL(siteUrl).origin;
 };
 
 export default ky;

@@ -3,7 +3,7 @@ import type { Address } from 'viem';
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe';
 import { useSignMessage } from 'wagmi';
 
-export const useSiweSignature = (address: Address) => {
+export const useSiweSignature = (address?: Address) => {
   const { mutateAsync: signMessageAsync } = useSignMessage();
 
   const {
