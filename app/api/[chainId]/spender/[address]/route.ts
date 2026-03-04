@@ -5,7 +5,7 @@ import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderData
 import { OnchainSpenderRiskDataSource } from 'lib/whois/spender/risk/OnchainSpenderRiskDataSource';
 import { ScamSnifferRiskDataSource } from 'lib/whois/spender/risk/ScamSnifferRiskDataSource';
 import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpenderRiskDataSource';
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import type { Address } from 'viem';
 
 interface Props {
@@ -34,11 +34,11 @@ export async function GET(req: NextRequest, { params }: Props) {
   const { chainId: chainIdString, address } = await params;
 
   if (!(await checkActiveSessionEdge(req))) {
-    return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
+    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.SPENDER))) {
-    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
+    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
   }
 
   const chainId = Number(chainIdString);
@@ -46,15 +46,13 @@ export async function GET(req: NextRequest, { params }: Props) {
   try {
     const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address as Address, chainId);
 
-    return new Response(JSON.stringify(spenderData), {
-      status: 200,
+    return NextResponse.json(spenderData, {
       headers: {
-        'Content-Type': 'application/json',
         'Cache-Control': `max-age=${60 * 60}`, // 1 hour browser cache (mostly for localhost)
         'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
       },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ message: (e as any).message }), { status: 500 });
+    return NextResponse.json({ message: (e as any).message }, { status: 500 });
   }
 }

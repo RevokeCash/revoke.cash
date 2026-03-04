@@ -1,7 +1,7 @@
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { getEventGetter } from 'lib/api/globals';
 import { parseErrorMessage } from 'lib/utils/errors';
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 interface Props {
   params: Promise<Params>;
@@ -15,11 +15,11 @@ export async function GET(req: NextRequest, { params }: Props) {
   const { chainId: chainIdString } = await params;
 
   if (!(await checkActiveSessionEdge(req))) {
-    return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
+    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.LOGS))) {
-    return new Response(JSON.stringify({ message: 'Too many requests, please try again later.' }), { status: 429 });
+    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
   const chainId = Number(chainIdString);
@@ -27,14 +27,14 @@ export async function GET(req: NextRequest, { params }: Props) {
   try {
     const eventGetter = getEventGetter(chainId);
     const blockNumber = await eventGetter.getLatestBlock(chainId);
-    return new Response(JSON.stringify({ blockNumber }), { status: 200 });
+    return NextResponse.json({ blockNumber });
   } catch (e) {
     console.error('Error occurred', parseErrorMessage(e));
 
     if (e instanceof Error && e.message.includes('Unsupported chain ID')) {
-      return new Response(JSON.stringify({ message: e.message }), { status: 404 });
+      return NextResponse.json({ message: e.message }, { status: 404 });
     }
 
-    return new Response(JSON.stringify({ message: parseErrorMessage(e) }), { status: 500 });
+    return NextResponse.json({ message: parseErrorMessage(e) }, { status: 500 });
   }
 }

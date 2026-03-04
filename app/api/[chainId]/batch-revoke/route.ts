@@ -2,7 +2,7 @@ import { neon } from '@neondatabase/serverless';
 import { FEE_SPONSORS } from 'components/allowances/controls/batch-revoke/fee';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, getClientCountryEdge, RateLimiters } from 'lib/api/auth';
 import { isTestnetChain } from 'lib/utils/chains';
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 interface Props {
   params: Promise<Params>;
@@ -18,15 +18,15 @@ export async function POST(req: NextRequest, { params }: Props) {
   const { chainId: chainIdString } = await params;
 
   if (!(await checkActiveSessionEdge(req))) {
-    return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
+    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.BATCH_REVOKE))) {
-    return new Response(JSON.stringify({ message: 'Too many requests, please try again later.' }), { status: 429 });
+    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
   if (!process.env.DATABASE_URL) {
-    return new Response(JSON.stringify({ message: 'Cannot record batch revoke' }), { status: 500 });
+    return NextResponse.json({ message: 'Cannot record batch revoke' }, { status: 500 });
   }
 
   const sql = neon(process.env.DATABASE_URL);
@@ -46,9 +46,9 @@ export async function POST(req: NextRequest, { params }: Props) {
       VALUES (${chainId}, ${transactionHash}, ${userAddress}, ${feePaid}, ${isTestnetChain(chainId)}, ${country}, ${sponsor}, ${new Date().toISOString()})
     `;
 
-    return new Response(JSON.stringify({}), { status: 200 });
+    return NextResponse.json({});
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify({ message: 'Failed to record batch revoke' }), { status: 500 });
+    return NextResponse.json({ message: 'Failed to record batch revoke' }, { status: 500 });
   }
 }

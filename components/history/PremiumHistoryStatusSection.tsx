@@ -82,7 +82,7 @@ const PremiumHistoryStatusSection = ({ chainStatuses }: Props) => {
             className="flex items-center gap-2 min-w-0 text-sm rounded px-3 py-2 bg-red-100 dark:bg-red-900/25"
           >
             <ChainDisplay chainId={chain.chainId} logoSize={18} className="w-42" />
-            <ErrorDisplay error={chain.error} />
+            <ErrorDisplay chainId={chain.chainId} error={chain.error} />
           </div>
         ))}
         {loadingChains.map((chain) => (

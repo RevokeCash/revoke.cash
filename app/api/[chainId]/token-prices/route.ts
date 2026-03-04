@@ -6,7 +6,7 @@ import { COINGECKO_API_BASE_URL, COINGECKO_API_KEY } from 'lib/constants';
 import { chunkArray, deduplicateArray } from 'lib/utils';
 import { type DocumentedChainId, getChainCoingeckoNetworkId, isSupportedChain } from 'lib/utils/chains';
 import { MINUTE } from 'lib/utils/time';
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { type Address, getAddress } from 'viem';
 
 interface Props {
@@ -60,23 +60,21 @@ export async function POST(req: NextRequest, { params }: Props) {
   const { chainId: chainIdString } = await params;
 
   if (!(await checkActiveSessionEdge(req))) {
-    return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
+    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PRICE))) {
-    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
+    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
   }
 
   const chainId = Number(chainIdString) as DocumentedChainId;
   if (!isSupportedChain(chainId)) {
-    return new Response(JSON.stringify({ message: `Chain with ID ${chainId} is unsupported` }), { status: 404 });
+    return NextResponse.json({ message: `Chain with ID ${chainId} is unsupported` }, { status: 404 });
   }
 
   const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);
   if (!coingeckoNetworkId) {
-    return new Response(JSON.stringify({ message: `Chain with ID ${chainId} has no Coingecko network mapping` }), {
-      status: 404,
-    });
+    return NextResponse.json({ message: `Chain with ID ${chainId} has no Coingecko network mapping` }, { status: 404 });
   }
 
   const body = (await req.json()) as RequestBody;
@@ -84,7 +82,7 @@ export async function POST(req: NextRequest, { params }: Props) {
   const uniqueAddresses = deduplicateArray(body.addresses.map((address) => getAddress(address)));
   const prices = await getTokenPrices(chainId, coingeckoNetworkId, uniqueAddresses);
 
-  return new Response(JSON.stringify({ prices }), { status: 200 });
+  return NextResponse.json({ prices });
 }
 
 const getTokenPrices = async (

@@ -1,4 +1,5 @@
 import { SupportType } from 'lib/chains/Chain';
+import { singleton } from 'lib/utils';
 import { type DocumentedChainId, getChainConfig } from 'lib/utils/chains';
 import { BlockScoutEventGetter } from './logs/BlockScoutEventGetter';
 import { CovalentEventGetter } from './logs/CovalentEventGetter';
@@ -11,14 +12,6 @@ import { RoutescanEventGetter } from './logs/RoutescanEventGetter';
 
 // Event getters should only be instantiated once. These singleton accessors keep
 // initialization lazy so we don't pay startup cost (or import side effects) until needed.
-const singleton = <T>(factory: () => T): (() => T) => {
-  let instance: T | undefined;
-
-  return () => {
-    if (!instance) instance = factory();
-    return instance;
-  };
-};
 
 const EVENT_GETTERS: Record<SupportType, () => EventGetter | undefined> = {
   [SupportType.COVALENT]: singleton(

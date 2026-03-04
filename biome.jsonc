@@ -14,7 +14,8 @@
       "!**/public/assets",
       "!**/.vercel",
       "!**/package.json",
-      "!**/next-env.d.ts"
+      "!**/next-env.d.ts",
+      "!**/drizzle"
     ]
   },
   "formatter": {

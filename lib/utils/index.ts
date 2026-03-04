@@ -307,3 +307,12 @@ export const chunkArray = <T>(array: T[], chunkSize: number): T[][] => {
 export const slugify = (text: string) => {
   return text.toLowerCase().replace(/ /g, '_');
 };
+
+export const singleton = <T>(factory: () => T): (() => T) => {
+  let instance: T | undefined;
+
+  return () => {
+    if (!instance) instance = factory();
+    return instance;
+  };
+};

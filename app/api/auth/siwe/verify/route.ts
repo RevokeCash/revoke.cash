@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import { storeSessionEdge } from 'lib/api/auth';
+import { storeSessionEdge, storeSiweCookieEdge } from 'lib/api/auth';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -18,10 +18,12 @@ export async function POST(req: NextRequest) {
   });
 
   if (!isValid) {
-    return new Response(JSON.stringify({ ok: false }), { status: 400 });
+    return NextResponse.json({ ok: false }, { status: 400 });
   }
 
-  const res = new NextResponse(JSON.stringify({ ok: true }), { status: 200 });
-  await storeSessionEdge(req, res, { siwe: { address, message, signature } });
+  const siwe = { address, message, signature };
+  const res = NextResponse.json({ ok: true });
+  await storeSessionEdge(req, res, { siwe });
+  await storeSiweCookieEdge(req, res, siwe);
   return res;
 }

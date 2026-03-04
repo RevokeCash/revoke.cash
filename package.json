@@ -20,7 +20,12 @@
     "test:cypress": "cypress run",
     "test:mocha": "dotenvx run mocha test/**/*.test.ts --",
     "exploits:update": "tsx scripts/update-exploits.ts ../approval-exploit-list ../whois",
-    "tsx": "dotenvx run tsx"
+    "tsx": "dotenvx run tsx",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:drop": "drizzle-kit drop",
+    "premium:key:create": "yarn tsx scripts/create-premium-api-key.ts"
   },
   "private": true,
   "dependencies": {
@@ -48,6 +53,7 @@
     "@walletconnect/ethereum-provider": "^2.23.4",
     "@worldcoin/minikit-js": "2.0.0-dev.0",
     "dexie": "^4.3.0",
+    "drizzle-orm": "^0.45.1",
     "gray-matter": "^4.0.3",
     "iron-session": "^8.0.4",
     "ky": "^1.14.3",
@@ -101,6 +107,7 @@
     "@types/request-ip": "^0.0.41",
     "chai": "^6.2.2",
     "cypress": "^15.10.0",
+    "drizzle-kit": "^0.31.7",
     "fast-csv": "^5.0.5",
     "glob": "^13.0.1",
     "husky": "^9.1.7",
@@ -134,7 +141,9 @@
       "next-intl>@swc/core": true,
       "tsx>esbuild": true,
       "viem>ws>bufferutil": true,
-      "viem>ws>utf-8-validate": true
+      "viem>ws>utf-8-validate": true,
+      "drizzle-kit>@esbuild-kit/esm-loader>@esbuild-kit/core-utils>esbuild": false,
+      "drizzle-kit>esbuild": false
     }
   },
   "mocha": {

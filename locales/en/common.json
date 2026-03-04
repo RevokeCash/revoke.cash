@@ -5,6 +5,7 @@
     "translator": "Translated by <person-link>{translator}</person-link>"
   },
   "buttons": {
+    "my_account": "My Account",
     "authenticate": "Authenticate",
     "authenticated": "Authenticated",
     "authenticating": "Authenticating",

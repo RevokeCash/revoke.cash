@@ -29,6 +29,16 @@ export const IRON_OPTIONS: SessionOptions = {
   },
 };
 
+export const SIWE_IRON_OPTIONS: SessionOptions = {
+  cookieName: 'revoke_siwe',
+  password: process.env.IRON_SESSION_PASSWORD!,
+  ttl: 60 * 60 * 24 * 90, // 90 days — outlives the 24h main session so SIWE can restore it
+  cookieOptions: {
+    secure: true,
+    sameSite: 'none',
+  },
+};
+
 // TODO: Fix rate limiter values when premium is fully implemented
 export const RateLimiters = {
   LOGS: new RateLimiterMemory({
@@ -53,6 +63,14 @@ export const RateLimiters = {
   }),
   BATCH_REVOKE: new RateLimiterMemory({
     points: 10,
+    duration: 1,
+  }),
+  PREMIUM_READ: new RateLimiterMemory({
+    points: 20,
+    duration: 1,
+  }),
+  PREMIUM_WRITE: new RateLimiterMemory({
+    points: 2,
     duration: 1,
   }),
 };
@@ -107,6 +125,37 @@ export const unsealSession = async (sealedSession: string) => {
   return unsealData<RevokeSession>(sealedSession, { password, ttl });
 };
 
+export const storeSiweCookieEdge = async (req: NextRequest, res: NextResponse, siwe: SiweFields) => {
+  const session = await getIronSession<SiweFields>(req, res, SIWE_IRON_OPTIONS);
+  session.address = siwe.address;
+  session.message = siwe.message;
+  session.signature = siwe.signature;
+  await session.save();
+};
+
+const unsealSiweCookie = async (sealedCookie: string): Promise<SiweFields | null> => {
+  try {
+    const { password, ttl } = SIWE_IRON_OPTIONS;
+    return await unsealData<SiweFields>(sealedCookie, { password, ttl });
+  } catch {
+    return null;
+  }
+};
+
+export const destroySessionsEdge = async (req: NextRequest, res: NextResponse) => {
+  const mainSession = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
+  mainSession.destroy();
+
+  const siweSession = await getIronSession<SiweFields>(req, res, SIWE_IRON_OPTIONS);
+  siweSession.destroy();
+};
+
+export const getSiweCookieEdge = async (req: NextRequest): Promise<SiweFields | null> => {
+  const siweCookie = req.cookies.get(SIWE_IRON_OPTIONS.cookieName)?.value;
+  if (!siweCookie) return null;
+  return unsealSiweCookie(siweCookie);
+};
+
 export const checkActiveSession = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getIronSession<RevokeSession>(req, res, IRON_OPTIONS);
   return session.ip && session.ip === getClientIp(req);
@@ -143,6 +192,17 @@ export const getServerAuthSession = async () => {
   const sessionCookie = cookieStore.get(IRON_OPTIONS.cookieName)?.value;
 
   return getAuthSessionByHeaders(requestHeaders, sessionCookie);
+};
+
+export const getAuthenticatedSiweAddress = async (req: NextRequest): Promise<Address | null> => {
+  const sessionCookie = req.cookies.get(IRON_OPTIONS.cookieName)?.value;
+  const session = await getAuthSessionByHeaders(req.headers, sessionCookie);
+
+  if (!session.hasApiSession || !session.siweAddress) {
+    return null;
+  }
+
+  return session.siweAddress;
 };
 
 // Note: if ever moving to a different hosting / reverse proxy, then we need to update this

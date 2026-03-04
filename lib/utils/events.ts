@@ -1,7 +1,7 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import { ADDRESS_ZERO, DUMMY_ADDRESS, MOONBIRDS_ADDRESS } from 'lib/constants';
 import type { Nullable, SpenderRiskData } from 'lib/interfaces';
-import { type Address, decodeEventLog, type Hash, type Hex, toEventSelector } from 'viem';
+import { type Address, decodeEventLog, getAbiItem, type Hash, type Hex, toEventSelector } from 'viem';
 import { addressToTopic, isNullish, logSorterChronological } from '.';
 import { type AllowancePayload, AllowanceType } from './allowances';
 
@@ -230,7 +230,7 @@ export const generatePatchedAllowanceEvents = (
       logIndex: 0,
       address: MOONBIRDS_ADDRESS,
       topics: [
-        toEventSelector('ApprovalForAll(address,address,bool)'),
+        toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'ApprovalForAll' })),
         addressToTopic(userAddress),
         addressToTopic(openseaProxyAddress),
       ],

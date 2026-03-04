@@ -6,7 +6,7 @@ import { isNullish } from 'lib/utils';
 import { getAllowancesFromEvents } from 'lib/utils/allowances';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import type { Hash } from 'viem';
 import { PUDGY_API_KEY, PUDGY_API_URL } from '../constants';
 
@@ -18,15 +18,15 @@ interface PudgyApiResponse {
 
 export async function POST(req: NextRequest) {
   if (!(await checkActiveSessionEdge(req))) {
-    return new Response(JSON.stringify({ message: 'No API session is active' }), { status: 403 });
+    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
 
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PUDGY))) {
-    return new Response(JSON.stringify({ message: 'Rate limit exceeded' }), { status: 429 });
+    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
   }
 
   if (!PUDGY_API_KEY || !PUDGY_API_URL) {
-    return new Response(JSON.stringify({ message: 'PUDGY_API_KEY or PUDGY_API_URL is not set' }), { status: 500 });
+    return NextResponse.json({ message: 'PUDGY_API_KEY or PUDGY_API_URL is not set' }, { status: 500 });
   }
 
   // We only check Ethereum for now
@@ -39,15 +39,13 @@ export async function POST(req: NextRequest) {
   const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
 
   if (await alreadyOwnsSoulboundToken(address)) {
-    return new Response(JSON.stringify({ status: 'already_claimed', message: 'User already owns the SBT' }), {
-      status: 400,
-    });
+    return NextResponse.json({ status: 'already_claimed', message: 'User already owns the SBT' }, { status: 400 });
   }
 
   // Check if the user owns any of the tokens that enable them to mint
   if (!(await canMint(address))) {
-    return new Response(
-      JSON.stringify({ status: 'no_tokens', message: 'User does not own any Pudgy-related tokens' }),
+    return NextResponse.json(
+      { status: 'no_tokens', message: 'User does not own any Pudgy-related tokens' },
       { status: 400 },
     );
   }
@@ -57,9 +55,7 @@ export async function POST(req: NextRequest) {
     .filter((allowance) => Boolean(allowance.payload))
     .filter((allowance) => isNullish(allowance.payload?.revokeError));
   if (activeAllowances.length > 0) {
-    return new Response(JSON.stringify({ status: 'has_allowances', message: 'User has active allowances' }), {
-      status: 400,
-    });
+    return NextResponse.json({ status: 'has_allowances', message: 'User has active allowances' }, { status: 400 });
   }
 
   let response: PudgyApiResponse;
@@ -70,19 +66,15 @@ export async function POST(req: NextRequest) {
       .json<PudgyApiResponse>();
 
     if (!response.success) {
-      return new Response(JSON.stringify({ status: 'failed', message: 'Pudgy Penguins API error', ...response }), {
-        status: 500,
-      });
+      return NextResponse.json({ status: 'failed', message: 'Pudgy Penguins API error', ...response }, { status: 500 });
     }
   } catch (error) {
     console.error('Pudgy Penguins API error:', error);
-    return new Response(
-      JSON.stringify({ status: 'failed', message: `Pudgy Penguins API error: ${parseErrorMessage(error)}` }),
-      {
-        status: 500,
-      },
+    return NextResponse.json(
+      { status: 'failed', message: `Pudgy Penguins API error: ${parseErrorMessage(error)}` },
+      { status: 500 },
     );
   }
 
-  return new Response(JSON.stringify({ status: 'confirmed', taskId: response.taskId }), { status: 200 });
+  return NextResponse.json({ status: 'confirmed', taskId: response.taskId });
 }
