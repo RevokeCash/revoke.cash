@@ -1,5 +1,5 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import Card from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useMarketplaces } from 'lib/hooks/ethereum/useMarketplaces';
 import type { Marketplace } from 'lib/interfaces';
@@ -12,12 +12,6 @@ const MarketplaceTable = () => {
   const { marketplaces, isLoading, error, onCancel } = useMarketplaces();
 
   const data = useMemo(() => marketplaces ?? [], [marketplaces]);
-
-  const title = (
-    <div className="flex items-center gap-2">
-      <div>{t('signatures.marketplace.table.title')}</div>
-    </div>
-  );
 
   const table = useReactTable({
     data,
@@ -32,7 +26,10 @@ const MarketplaceTable = () => {
   });
 
   return (
-    <Card title={title} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+    <Card
+      header={<CardTitle title={t('signatures.marketplace.table.title')} />}
+      className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide"
+    >
       <Table
         table={table}
         loading={isLoading}

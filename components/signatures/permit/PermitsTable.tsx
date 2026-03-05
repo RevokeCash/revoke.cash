@@ -1,5 +1,5 @@
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import Card from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { usePermitTokens } from 'lib/hooks/ethereum/usePermitTokens';
 import type { PermitTokenData } from 'lib/utils/tokens';
@@ -30,14 +30,11 @@ const PermitsTable = () => {
     },
   });
 
-  const title = (
-    <div className="flex items-center gap-2">
-      <div>{t('signatures.permit.table.title')}</div>
-    </div>
-  );
-
   return (
-    <Card title={title} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+    <Card
+      header={<CardTitle title={t('signatures.permit.table.title')} />}
+      className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide"
+    >
       <Table
         table={table}
         loading={isLoading}

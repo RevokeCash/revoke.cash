@@ -7,7 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import Card from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef } from 'react';
@@ -37,12 +37,6 @@ const SharedHistoryTable = ({ approvalHistory, isLoading, error, isPremium = fal
     }
   }, []);
 
-  const title = (
-    <div className="flex items-center gap-2">
-      <div>{t('address.history.title')}</div>
-    </div>
-  );
-
   const table = useReactTable({
     data,
     columns,
@@ -68,7 +62,7 @@ const SharedHistoryTable = ({ approvalHistory, isLoading, error, isPremium = fal
   });
 
   return (
-    <Card title={title} className="p-0">
+    <Card header={<CardTitle title={t('address.history.title')} />} className="p-0">
       <HistorySearchBox ref={searchBoxRef} table={table} isPremium={isPremium} />
       <TablePagination table={table} className="border-y border-zinc-200 dark:border-zinc-700" />
       <Table

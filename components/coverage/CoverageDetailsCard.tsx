@@ -1,6 +1,6 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
-import Card from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import { type ActiveMembershipInfo, FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
 import { timeago } from 'lib/i18n/timeago';
 import { DAY, formatArticleDate } from 'lib/utils/time';
@@ -27,7 +27,7 @@ const CoverageDetailsCard = ({ membershipInfo }: CoverageDetailsProps) => {
 
   return (
     <Card
-      title={t('address.coverage.membership.title')}
+      header={<CardTitle title={t('address.coverage.membership.title')} />}
       className="py-0 justify-center flex flex-col divide-y divide-zinc-200 dark:divide-zinc-700"
     >
       <CoverageDetailsItem label={t('address.coverage.membership.labels.amount')}>

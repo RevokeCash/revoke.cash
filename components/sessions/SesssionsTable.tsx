@@ -1,6 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import Card from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import ChainDisplay from 'components/common/ChainDisplay';
 import Table from 'components/common/table/Table';
 import { useSessions } from 'lib/hooks/ethereum/sessions/useSessions';
@@ -41,14 +41,14 @@ const SessionsTable = ({ chainId }: Props) => {
     return null;
   }
 
-  const title = (
-    <div className="flex items-center gap-2">
-      {isNullish(chainId) ? t('address.sessions.table.title') : <ChainDisplay chainId={chainId} logoSize={28} />}
-    </div>
+  const header = (
+    <CardTitle
+      title={isNullish(chainId) ? t('address.sessions.table.title') : <ChainDisplay chainId={chainId} logoSize={28} />}
+    />
   );
 
   return (
-    <Card title={title} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+    <Card header={header} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
       <Table
         table={table}
         loading={isLoading}

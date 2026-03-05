@@ -1,7 +1,7 @@
 import type { Address } from 'viem';
 
 export type { PremiumPlan } from './plans';
-export type { PremiumSubscription } from './subscriptions';
+export type { PremiumSubscription, SubscriptionPayment } from './subscriptions';
 
 export interface PaymentIntent {
   intentId: string;

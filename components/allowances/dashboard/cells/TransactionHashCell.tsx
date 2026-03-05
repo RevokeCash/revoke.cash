@@ -5,7 +5,7 @@ import { shortenAddress } from 'lib/utils/formatting';
 
 interface Props {
   chainId: number;
-  transactionHash?: string;
+  transactionHash?: string | null;
 }
 
 const TransactionHashCell = ({ chainId, transactionHash }: Props) => {

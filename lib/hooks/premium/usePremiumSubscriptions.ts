@@ -18,6 +18,5 @@ export const usePremiumSubscriptions = (ownerAddress: Address, enabled: boolean)
   return {
     subscriptions: query.data ?? [],
     isLoading: query.isLoading,
-    isAnyActive: Boolean(query.data?.some((subscription) => subscription.isActive)),
   };
 };

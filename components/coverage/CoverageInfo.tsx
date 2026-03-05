@@ -2,7 +2,7 @@
 
 import { ChainId } from '@revoke.cash/chains';
 import Button from 'components/common/Button';
-import Card from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import GridList from 'components/common/list/GridList';
 import ListItem from 'components/common/list/ListItem';
 import ModalWithButton from 'components/common/ModalWithButton';
@@ -18,7 +18,7 @@ const CoverageInfo = () => {
     <div className="w-full max-w-7xl mx-auto">
       <div className="flex flex-col lg:flex-row gap-2">
         <div className="w-full lg:w-2/3">
-          <Card title={t('info.main.title')} className="flex flex-col gap-2">
+          <Card header={<CardTitle title={t('info.main.title')} />} className="flex flex-col gap-2">
             <p>{t('info.main.description')}</p>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -62,7 +62,7 @@ const CoverageInfo = () => {
         </div>
 
         <div className="w-full lg:w-1/3 h-fit">
-          <Card title={t('info.chains.title')} className="flex flex-col gap-6">
+          <Card header={<CardTitle title={t('info.chains.title')} />} className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <GridList title={t('info.chains.evm')} columns={2} className="text-sm">
                 <ListItem>{getChainName(ChainId.EthereumMainnet)}</ListItem>

@@ -1,4 +1,4 @@
-import Card from 'components/common/Card';
+import Card, { CardTitle } from 'components/common/Card';
 import Href from 'components/common/Href';
 import type { ISidebarEntry } from 'lib/interfaces';
 import { formatArticleDate } from 'lib/utils/time';
@@ -9,7 +9,7 @@ const ArticleCard = ({ title, description, path, date, readingTime, author }: IS
 
   return (
     <Href href={path} router underline="none">
-      <Card title={title} hover="scale" className="flex flex-col justify-between gap-4">
+      <Card header={<CardTitle title={title} />} hover="scale" className="flex flex-col justify-between gap-4">
         <div className="flex flex-col gap-2">
           <p>{description}</p>
         </div>

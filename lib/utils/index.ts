@@ -28,7 +28,7 @@ export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is Promi
   return item.status === 'fulfilled';
 };
 
-export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;

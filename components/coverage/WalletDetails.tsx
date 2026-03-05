@@ -1,6 +1,6 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
-import Card from 'components/common/Card';
+import Card, { CardHeader, CardTitle } from 'components/common/Card';
 import CopyButton from 'components/common/CopyButton';
 import ConnectButton from 'components/header/ConnectButton';
 import {
@@ -84,7 +84,7 @@ const WalletDetailsCard = ({ walletAddress }: WalletDetailsProps) => {
 
   if (!isAuthenticated) {
     return (
-      <Card title={t('address.coverage.wallets.title')} className="py-0">
+      <Card header={<CardTitle title={t('address.coverage.wallets.title')} />} className="py-0">
         <div className="p-7.25 flex flex-col gap-4 items-center justify-center text-center">
           <p className="text-zinc-600 dark:text-zinc-400">{t('address.coverage.wallets.description')}</p>
           {walletClient ? (
@@ -99,17 +99,19 @@ const WalletDetailsCard = ({ walletAddress }: WalletDetailsProps) => {
     );
   }
 
-  const title = (
-    <span className="flex items-center w-full justify-between">
-      <span>{t('address.coverage.wallets.title')}</span>
-      <span className="text-xs italic font-normal">
-        {wallets && wallets.length > 0 ? wallets.length : 0} / 10 {t('address.coverage.wallets.wallets')}
-      </span>
-    </span>
+  const header = (
+    <CardHeader>
+      <div className="flex items-center w-full justify-between">
+        <h2 className="text-xl flex gap-2 items-center">{t('address.coverage.wallets.title')}</h2>
+        <p className="text-xs italic font-normal">
+          {wallets && wallets.length > 0 ? wallets.length : 0} / 10 {t('address.coverage.wallets.wallets')}
+        </p>
+      </div>
+    </CardHeader>
   );
 
   return (
-    <Card title={title} className="py-0">
+    <Card header={header} className="py-0">
       <div className="divide-y divide-zinc-200 dark:divide-zinc-700 min-h-[90px] max-h-[180px] overflow-y-auto">
         {wallets && Array.isArray(wallets)
           ? wallets.map((wallet, index) => (
