@@ -1,6 +1,6 @@
 import { checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { getPremiumApiKeyFromHeaders, hasPremiumApiKeyAccess } from 'lib/premium/api-keys';
-import { reconcilePendingPaymentIntents } from 'lib/premium/verify-payment';
+import { reconcilePendingPayments } from 'lib/premium/verify-payment';
 import { type NextRequest, NextResponse } from 'next/server';
 
 interface RequestBody {
@@ -25,15 +25,15 @@ export async function POST(req: NextRequest) {
   const requestedLimit = typeof body.limit === 'number' ? body.limit : 20;
 
   try {
-    const result = await reconcilePendingPaymentIntents(requestedLimit);
+    const result = await reconcilePendingPayments(requestedLimit);
     return NextResponse.json(result, {
       headers: {
         'Cache-Control': 'no-store',
       },
     });
   } catch (error) {
-    console.error('Error reconciling payment intents', error);
+    console.error('Error reconciling payments', error);
 
-    return NextResponse.json({ message: 'Failed to reconcile payment intents' }, { status: 500 });
+    return NextResponse.json({ message: 'Failed to reconcile payments' }, { status: 500 });
   }
 }

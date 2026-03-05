@@ -11,8 +11,8 @@ export interface PaymentConfig {
   treasuryAddress: Address;
 }
 
-export const PREMIUM_INTENT_TTL_MINUTES = 10;
-export const PREMIUM_MAX_PENDING_INTENTS_PER_USER = 10;
+export const PREMIUM_PAYMENT_TTL_MINUTES = 10;
+export const PREMIUM_MAX_PENDING_PAYMENTS_PER_USER = 10;
 
 export const PREMIUM_PAYMENT_CHAIN_IDS = [
   ChainId.EthereumMainnet,

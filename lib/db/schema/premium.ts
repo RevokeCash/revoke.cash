@@ -14,12 +14,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
-export const premiumPaymentIntentStatusEnum = pgEnum('premium_payment_intent_status', [
-  'pending',
-  'confirmed',
-  'expired',
-  'failed',
-]);
+export const premiumPaymentStatusEnum = pgEnum('premium_payment_status', ['pending', 'confirmed', 'expired', 'failed']);
 
 export const premiumApiKeyScopeEnum = pgEnum('premium_api_key_scope', ['reconcile']);
 
@@ -60,19 +55,20 @@ export const premiumPlans = pgTable(
   ],
 );
 
-export const premiumPaymentIntents = pgTable(
-  'premium_payment_intents',
+export const premiumPayments = pgTable(
+  'premium_payments',
   {
     id: uuid('id').primaryKey().defaultRandom(),
     planId: text('plan_id').notNull(),
     planVersion: integer('plan_version').notNull(),
     ownerAddress: text('owner_address').notNull(),
+    subscriptionId: uuid('subscription_id').references(() => premiumSubscriptions.id),
     chainId: integer('chain_id').notNull(),
     tokenAddress: text('token_address').notNull(),
     tokenSymbol: text('token_symbol').notNull(),
     tokenDecimals: integer('token_decimals').notNull(),
     amountUsd: integer('amount_usd').notNull(),
-    status: premiumPaymentIntentStatusEnum('status').notNull(),
+    status: premiumPaymentStatusEnum('status').notNull(),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     scanFromBlock: bigint('scan_from_block', { mode: 'bigint' }).notNull(),
     matchedTxHash: text('matched_tx_hash'),
@@ -84,12 +80,13 @@ export const premiumPaymentIntents = pgTable(
     foreignKey({
       columns: [table.planId, table.planVersion],
       foreignColumns: [premiumPlans.id, premiumPlans.version],
-      name: 'premium_payment_intents_plan_fk',
+      name: 'premium_payments_plan_fk',
     }),
-    index('idx_premium_payment_intents_owner').on(table.ownerAddress),
-    index('idx_premium_payment_intents_status').on(table.status),
-    index('idx_premium_payment_intents_chain_scan_start').on(table.chainId, table.scanFromBlock),
-    uniqueIndex('idx_premium_payment_intents_matched_tx_hash_unique')
+    index('idx_premium_payments_owner').on(table.ownerAddress),
+    index('idx_premium_payments_status').on(table.status),
+    index('idx_premium_payments_chain_scan_start').on(table.chainId, table.scanFromBlock),
+    index('idx_premium_payments_subscription').on(table.subscriptionId),
+    uniqueIndex('idx_premium_payments_matched_tx_hash_unique')
       .on(table.matchedTxHash)
       .where(sql`${table.matchedTxHash} IS NOT NULL`),
   ],
@@ -102,10 +99,6 @@ export const premiumSubscriptions = pgTable(
     planId: text('plan_id').notNull(),
     planVersion: integer('plan_version').notNull(),
     ownerAddress: text('owner_address').notNull(),
-    paymentIntentId: uuid('payment_intent_id')
-      .notNull()
-      .references(() => premiumPaymentIntents.id)
-      .unique(),
     startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
     endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
@@ -140,17 +133,17 @@ export const premiumSubscriptionAddresses = pgTable(
 
 export const premiumPlansRelations = relations(premiumPlans, ({ many }) => ({
   subscriptions: many(premiumSubscriptions),
-  paymentIntents: many(premiumPaymentIntents),
+  payments: many(premiumPayments),
 }));
 
-export const premiumPaymentIntentsRelations = relations(premiumPaymentIntents, ({ one }) => ({
+export const premiumPaymentsRelations = relations(premiumPayments, ({ one }) => ({
   plan: one(premiumPlans, {
-    fields: [premiumPaymentIntents.planId, premiumPaymentIntents.planVersion],
+    fields: [premiumPayments.planId, premiumPayments.planVersion],
     references: [premiumPlans.id, premiumPlans.version],
   }),
   subscription: one(premiumSubscriptions, {
-    fields: [premiumPaymentIntents.id],
-    references: [premiumSubscriptions.paymentIntentId],
+    fields: [premiumPayments.subscriptionId],
+    references: [premiumSubscriptions.id],
   }),
 }));
 
@@ -159,10 +152,7 @@ export const premiumSubscriptionsRelations = relations(premiumSubscriptions, ({ 
     fields: [premiumSubscriptions.planId, premiumSubscriptions.planVersion],
     references: [premiumPlans.id, premiumPlans.version],
   }),
-  paymentIntent: one(premiumPaymentIntents, {
-    fields: [premiumSubscriptions.paymentIntentId],
-    references: [premiumPaymentIntents.id],
-  }),
+  payments: many(premiumPayments),
   addresses: many(premiumSubscriptionAddresses),
 }));
 

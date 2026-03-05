@@ -1,5 +1,5 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { reconcilePaymentIntentByOwner } from 'lib/premium/verify-payment';
+import { reconcilePaymentByOwner } from 'lib/premium/verify-payment';
 import { type NextRequest, NextResponse } from 'next/server';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 interface Params {
-  intentId: string;
+  paymentId: string;
 }
 
 export const runtime = 'nodejs';
@@ -22,15 +22,15 @@ export async function GET(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  const { intentId } = await params;
+  const { paymentId } = await params;
 
-  if (!intentId) {
-    return NextResponse.json({ message: 'Missing intentId' }, { status: 400 });
+  if (!paymentId) {
+    return NextResponse.json({ message: 'Missing paymentId' }, { status: 400 });
   }
 
-  const status = await reconcilePaymentIntentByOwner(intentId, siweAddress);
+  const status = await reconcilePaymentByOwner(paymentId, siweAddress);
   if (!status) {
-    return NextResponse.json({ message: 'Payment intent not found' }, { status: 404 });
+    return NextResponse.json({ message: 'Payment not found' }, { status: 404 });
   }
 
   return NextResponse.json(status);

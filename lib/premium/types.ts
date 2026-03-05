@@ -1,10 +1,11 @@
 import type { Address } from 'viem';
 
+export type { PaymentStatusResponse as PaymentStatus } from './payments';
 export type { PremiumPlan } from './plans';
 export type { PremiumSubscription, SubscriptionPayment } from './subscriptions';
 
-export interface PaymentIntent {
-  intentId: string;
+export interface PendingPayment {
+  paymentId: string;
   planId: string;
   chainId: number;
   token: {
@@ -15,12 +16,6 @@ export interface PaymentIntent {
   recipientAddress: Address;
   amountUsd: number;
   expiresAt: string;
-}
-
-export interface PaymentIntentStatus {
-  intentId: string;
-  status: 'pending' | 'confirmed' | 'expired' | 'failed';
-  matchedTxHash: string | null;
 }
 
 export interface PlanSelectOption {

@@ -5,7 +5,7 @@ import { displayTransactionSubmittedToast } from 'components/common/TransactionS
 import { ERC20_ABI } from 'lib/abis';
 import { useEnsureWalletClient } from 'lib/hooks/ethereum/ensureWalletClient';
 import ky from 'lib/ky';
-import type { PaymentIntent, PaymentIntentStatus } from 'lib/premium/types';
+import type { PaymentStatus, PendingPayment } from 'lib/premium/types';
 import { delay } from 'lib/utils';
 import { parseErrorMessage } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
@@ -20,51 +20,50 @@ interface UseSubscribeParams {
   ownerAddress: Address;
   selectedPlanId: string;
   selectedPaymentChainId: number;
-  activeSubscriptionId?: string;
 }
 
-const PENDING_INTENT_STORAGE_KEY = 'revoke_pending_intent';
+const PENDING_PAYMENT_STORAGE_KEY = 'revoke_pending_payment';
 
-interface PendingIntentData {
-  intentId: string;
+interface PendingPaymentData {
+  paymentId: string;
   expiresAt: number; // unix ms
 }
 
-const savePendingIntent = (intentId: string, expiresAt: string) => {
+const savePendingPayment = (paymentId: string, expiresAt: string) => {
   try {
-    const data: PendingIntentData = { intentId, expiresAt: new Date(expiresAt).getTime() };
-    localStorage.setItem(PENDING_INTENT_STORAGE_KEY, JSON.stringify(data));
+    const data: PendingPaymentData = { paymentId, expiresAt: new Date(expiresAt).getTime() };
+    localStorage.setItem(PENDING_PAYMENT_STORAGE_KEY, JSON.stringify(data));
   } catch {}
 };
 
-const clearPendingIntent = () => {
+const clearPendingPayment = () => {
   try {
-    localStorage.removeItem(PENDING_INTENT_STORAGE_KEY);
+    localStorage.removeItem(PENDING_PAYMENT_STORAGE_KEY);
   } catch {}
 };
 
-const loadPendingIntent = (): string | null => {
+const loadPendingPayment = (): string | null => {
   try {
-    const raw = localStorage.getItem(PENDING_INTENT_STORAGE_KEY);
+    const raw = localStorage.getItem(PENDING_PAYMENT_STORAGE_KEY);
     if (!raw) return null;
 
-    const data: PendingIntentData = JSON.parse(raw);
+    const data: PendingPaymentData = JSON.parse(raw);
 
-    // Don't resume polling for expired intents
+    // Don't resume polling for expired payments
     if (data.expiresAt <= Date.now()) {
-      localStorage.removeItem(PENDING_INTENT_STORAGE_KEY);
+      localStorage.removeItem(PENDING_PAYMENT_STORAGE_KEY);
       return null;
     }
 
-    return data.intentId;
+    return data.paymentId;
   } catch {
     return null;
   }
 };
 
-const pollIntentStatus = async (intentId: string): Promise<PaymentIntentStatus> => {
-  const poll = async (): Promise<PaymentIntentStatus> => {
-    const status = await ky.get(`/api/premium/payment-intents/${intentId}/status`).json<PaymentIntentStatus>();
+const pollPaymentStatus = async (paymentId: string): Promise<PaymentStatus> => {
+  const poll = async (): Promise<PaymentStatus> => {
+    const status = await ky.get(`/api/premium/payments/${paymentId}/status`).json<PaymentStatus>();
 
     if (status.status !== 'pending') return status;
 
@@ -76,26 +75,21 @@ const pollIntentStatus = async (intentId: string): Promise<PaymentIntentStatus> 
   return poll();
 };
 
-export const useSubscribe = ({
-  ownerAddress,
-  selectedPlanId,
-  selectedPaymentChainId,
-  activeSubscriptionId,
-}: UseSubscribeParams) => {
+export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChainId }: UseSubscribeParams) => {
   const queryClient = useQueryClient();
   const { ensureWalletClient } = useEnsureWalletClient();
   const [status, setStatus] = useState<SubscribeStatus>('idle');
 
-  // On mount, resume polling if there's a pending intent from a previous page load
+  // On mount, resume polling if there's a pending payment from a previous page load
   useEffect(() => {
-    const pendingIntentId = loadPendingIntent();
-    if (!pendingIntentId) return;
+    const pendingPaymentId = loadPendingPayment();
+    if (!pendingPaymentId) return;
 
     setStatus('confirming');
 
-    pollIntentStatus(pendingIntentId)
+    pollPaymentStatus(pendingPaymentId)
       .then((finalStatus) => {
-        clearPendingIntent();
+        clearPendingPayment();
 
         if (finalStatus.status === 'confirmed') {
           setStatus('confirmed');
@@ -107,62 +101,49 @@ export const useSubscribe = ({
         }
       })
       .catch(() => {
-        // Network error — leave intent in storage to retry on next load
+        // Network error — leave payment in storage to retry on next load
         setStatus('idle');
       });
   }, [ownerAddress, queryClient]);
 
   const subscribeMutation = useMutation({
     mutationFn: async () => {
-      // Step 1: Create payment intent
+      // Step 1: Create payment
       setStatus('creating');
 
-      const intent = await ky
-        .post('/api/premium/payment-intents', { json: { planId: selectedPlanId, chainId: selectedPaymentChainId } })
-        .json<PaymentIntent>();
+      const payment = await ky
+        .post('/api/premium/payments', { json: { planId: selectedPlanId, chainId: selectedPaymentChainId } })
+        .json<PendingPayment>();
 
       // Step 2: Switch chain and send ERC20 transfer
       setStatus('paying');
 
-      const walletClient = await ensureWalletClient(intent.chainId);
+      const walletClient = await ensureWalletClient(payment.chainId);
 
       const hash = await walletClient.writeContract({
         account: walletClient.account!,
         chain: walletClient.chain,
-        address: intent.token.address,
+        address: payment.token.address,
         abi: ERC20_ABI,
         functionName: 'transfer',
-        args: [intent.recipientAddress, parseUnits(String(intent.amountUsd), intent.token.decimals)],
+        args: [payment.recipientAddress, parseUnits(String(payment.amountUsd), payment.token.decimals)],
         kzg: undefined,
       });
 
-      displayTransactionSubmittedToast(intent.chainId, hash);
+      displayTransactionSubmittedToast(payment.chainId, hash);
 
-      // Persist intent ID so polling can resume after a page refresh or tab reopen
-      savePendingIntent(intent.intentId, intent.expiresAt);
+      // Persist payment ID so polling can resume after a page refresh or tab reopen
+      savePendingPayment(payment.paymentId, payment.expiresAt);
 
       // Step 3: Poll for confirmation
       setStatus('confirming');
 
-      const finalStatus = await pollIntentStatus(intent.intentId);
+      const finalStatus = await pollPaymentStatus(payment.paymentId);
 
-      clearPendingIntent();
+      clearPendingPayment();
 
       if (finalStatus.status !== 'confirmed') {
         throw new Error(`Payment ${finalStatus.status}`);
-      }
-
-      // Step 4: If upgrading an existing subscription, upgrade its plan
-      if (activeSubscriptionId) {
-        try {
-          await ky.put(`/api/premium/subscriptions/${activeSubscriptionId}/upgrade`, {
-            json: { planId: selectedPlanId },
-          });
-        } catch {
-          // Non-critical: the new subscription period is already created on the new plan.
-          // The current period just stays on the old plan if this fails.
-          console.error('Failed to upgrade current subscription plan');
-        }
       }
 
       return finalStatus;
@@ -174,7 +155,7 @@ export const useSubscribe = ({
     },
     onError: (error) => {
       setStatus('failed');
-      clearPendingIntent();
+      clearPendingPayment();
       toast.error(parseErrorMessage(error) || 'Subscription payment failed');
     },
   });

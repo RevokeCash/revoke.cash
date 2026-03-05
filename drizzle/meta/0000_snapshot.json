@@ -1,5 +1,5 @@
 {
-  "id": "4294cd6e-1942-4420-a216-76a0b2ab453d",
+  "id": "cc3808dd-faad-47dc-bfb7-b6a4e238e195",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -101,8 +101,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_payment_intents": {
-      "name": "premium_payment_intents",
+    "public.premium_payments": {
+      "name": "premium_payments",
       "schema": "",
       "columns": {
         "id": {
@@ -129,6 +129,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "subscription_id": {
+          "name": "subscription_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         },
         "chain_id": {
           "name": "chain_id",
@@ -162,7 +168,7 @@
         },
         "status": {
           "name": "status",
-          "type": "premium_payment_intent_status",
+          "type": "premium_payment_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -207,8 +213,8 @@
         }
       },
       "indexes": {
-        "idx_premium_payment_intents_owner": {
-          "name": "idx_premium_payment_intents_owner",
+        "idx_premium_payments_owner": {
+          "name": "idx_premium_payments_owner",
           "columns": [
             {
               "expression": "owner_address",
@@ -222,8 +228,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payment_intents_status": {
-          "name": "idx_premium_payment_intents_status",
+        "idx_premium_payments_status": {
+          "name": "idx_premium_payments_status",
           "columns": [
             {
               "expression": "status",
@@ -237,8 +243,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payment_intents_chain_scan_start": {
-          "name": "idx_premium_payment_intents_chain_scan_start",
+        "idx_premium_payments_chain_scan_start": {
+          "name": "idx_premium_payments_chain_scan_start",
           "columns": [
             {
               "expression": "chain_id",
@@ -258,8 +264,23 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payment_intents_matched_tx_hash_unique": {
-          "name": "idx_premium_payment_intents_matched_tx_hash_unique",
+        "idx_premium_payments_subscription": {
+          "name": "idx_premium_payments_subscription",
+          "columns": [
+            {
+              "expression": "subscription_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_premium_payments_matched_tx_hash_unique": {
+          "name": "idx_premium_payments_matched_tx_hash_unique",
           "columns": [
             {
               "expression": "matched_tx_hash",
@@ -269,16 +290,29 @@
             }
           ],
           "isUnique": true,
-          "where": "\"premium_payment_intents\".\"matched_tx_hash\" IS NOT NULL",
+          "where": "\"premium_payments\".\"matched_tx_hash\" IS NOT NULL",
           "concurrently": false,
           "method": "btree",
           "with": {}
         }
       },
       "foreignKeys": {
-        "premium_payment_intents_plan_fk": {
-          "name": "premium_payment_intents_plan_fk",
-          "tableFrom": "premium_payment_intents",
+        "premium_payments_subscription_id_premium_subscriptions_id_fk": {
+          "name": "premium_payments_subscription_id_premium_subscriptions_id_fk",
+          "tableFrom": "premium_payments",
+          "tableTo": "premium_subscriptions",
+          "columnsFrom": [
+            "subscription_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "premium_payments_plan_fk": {
+          "name": "premium_payments_plan_fk",
+          "tableFrom": "premium_payments",
           "tableTo": "premium_plans",
           "columnsFrom": [
             "plan_id",
@@ -533,12 +567,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "payment_intent_id": {
-          "name": "payment_intent_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "starts_at": {
           "name": "starts_at",
           "type": "timestamp with time zone",
@@ -592,19 +620,6 @@
         }
       },
       "foreignKeys": {
-        "premium_subscriptions_payment_intent_id_premium_payment_intents_id_fk": {
-          "name": "premium_subscriptions_payment_intent_id_premium_payment_intents_id_fk",
-          "tableFrom": "premium_subscriptions",
-          "tableTo": "premium_payment_intents",
-          "columnsFrom": [
-            "payment_intent_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "premium_subscriptions_plan_fk": {
           "name": "premium_subscriptions_plan_fk",
           "tableFrom": "premium_subscriptions",
@@ -622,15 +637,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "premium_subscriptions_payment_intent_id_unique": {
-          "name": "premium_subscriptions_payment_intent_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "payment_intent_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -644,8 +651,8 @@
         "reconcile"
       ]
     },
-    "public.premium_payment_intent_status": {
-      "name": "premium_payment_intent_status",
+    "public.premium_payment_status": {
+      "name": "premium_payment_status",
       "schema": "public",
       "values": [
         "pending",

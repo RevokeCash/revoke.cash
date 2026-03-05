@@ -52,7 +52,6 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
     ownerAddress: account,
     selectedPlanId,
     selectedPaymentChainId,
-    activeSubscriptionId: activeSubscription?.id,
   });
 
   // Auto-select wallet chain as payment chain if it's supported

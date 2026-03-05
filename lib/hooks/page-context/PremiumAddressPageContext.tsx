@@ -1,6 +1,6 @@
 'use client';
 
-import { useQueries } from '@tanstack/react-query';
+import { type UseQueryResult, useQueries } from '@tanstack/react-query';
 import { getTokenEvents } from 'lib/chains/events';
 import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { getTokenPrices } from 'lib/price/utils';
@@ -16,7 +16,7 @@ import {
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
-import { getEventKey } from 'lib/utils/events';
+import { getEventKey, type TokenEvent } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
 import { isErc721Contract } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
@@ -207,14 +207,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
     return ORDERED_CHAINS.map((chainId, index) => {
       const eventQuery = eventQueries[index];
       const allowanceQuery = allowanceQueries[index];
-
-      // Determine status
-      const isError = Boolean(eventQuery?.error || allowanceQuery?.error);
-      const isSuccess = Boolean(allowanceQuery?.isSuccess && !isError);
-
-      let status: ChainLoadingStatus = 'loading';
-      if (isError) status = 'error';
-      else if (isSuccess) status = 'success';
+      const status = getChainAllowanceLoadingStatus(eventQuery, allowanceQuery);
 
       const error = (allowanceQuery?.error ?? eventQuery?.error ?? null) as Error | null;
 
@@ -325,4 +318,14 @@ export const usePremiumAddressPageContext = () => {
     throw new Error('usePremiumAddressPageContext must be used within a PremiumAddressPageContextProvider');
   }
   return context;
+};
+
+const getChainAllowanceLoadingStatus = (
+  eventQuery: UseQueryResult<TokenEvent[], Error>,
+  allowanceQuery: UseQueryResult<TokenAllowanceData[], Error>,
+): ChainLoadingStatus => {
+  if (eventQuery.isLoading || allowanceQuery.isLoading) return 'loading';
+  if (eventQuery.error || allowanceQuery.error) return 'error';
+  if (allowanceQuery.isSuccess) return 'success';
+  return 'loading';
 };

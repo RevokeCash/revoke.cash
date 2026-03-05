@@ -1,30 +1,32 @@
 import { and, eq, gt, ne } from 'drizzle-orm';
 import { ERC20_ABI } from 'lib/abis';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from 'lib/db/client';
-import { premiumPaymentIntents, premiumSubscriptionAddresses, premiumSubscriptions } from 'lib/db/schema/premium';
+import { premiumPayments, premiumSubscriptionAddresses, premiumSubscriptions } from 'lib/db/schema/premium';
 import { getScriptLogsProvider } from 'lib/ScriptLogsProvider';
 import { addressToTopic } from 'lib/utils';
 import { parseTransferLog, TokenEventType } from 'lib/utils/events';
 import { DAY } from 'lib/utils/time';
 import { type Address, getAbiItem, getAddress, parseUnits, toEventSelector } from 'viem';
-import {
-  getPaymentIntentForOwner,
-  type PaymentIntentStatusResponse,
-  type PremiumPaymentIntentRecord,
-  type PremiumPaymentIntentStatus,
-  toPaymentIntentStatusResponse,
-} from './intents';
 import { getPaymentConfig } from './payment-config';
+import {
+  getPaymentForOwner,
+  type PaymentStatusResponse,
+  type PremiumPaymentRecord,
+  type PremiumPaymentStatus,
+  toPaymentStatusResponse,
+} from './payments';
+import type { PremiumSubscriptionRecord } from './subscriptions';
 
-interface SetPaymentIntentStatusParams {
-  intentId: string;
-  status: PremiumPaymentIntentStatus;
+interface SetPaymentStatusParams {
+  paymentId: string;
+  status: PremiumPaymentStatus;
   matchedTxHash?: string | null;
   confirmedAt?: Date | null;
+  subscriptionId?: string;
   updatedAt?: Date;
 }
 
-interface ReconcilePendingPaymentIntentsResult {
+interface ReconcilePendingPaymentsResult {
   processed: number;
   pending: number;
   confirmed: number;
@@ -33,20 +35,20 @@ interface ReconcilePendingPaymentIntentsResult {
   errors: number;
 }
 
-export const reconcilePendingPaymentIntents = async (limit = 20): Promise<ReconcilePendingPaymentIntentsResult> => {
+export const reconcilePendingPayments = async (limit = 20): Promise<ReconcilePendingPaymentsResult> => {
   const db = getDb();
 
   const boundedLimit = Math.min(limit, 100);
 
-  const pendingIntents = await db.query.premiumPaymentIntents.findMany({
-    where: eq(premiumPaymentIntents.status, 'pending'),
-    orderBy: (paymentIntents, { asc }) => [asc(paymentIntents.createdAt)],
+  const pendingPayments = await db.query.premiumPayments.findMany({
+    where: eq(premiumPayments.status, 'pending'),
+    orderBy: (payments, { asc }) => [asc(payments.createdAt)],
     columns: { id: true, ownerAddress: true },
     limit: boundedLimit,
   });
 
-  const result: ReconcilePendingPaymentIntentsResult = {
-    processed: pendingIntents.length,
+  const result: ReconcilePendingPaymentsResult = {
+    processed: pendingPayments.length,
     pending: 0,
     confirmed: 0,
     expired: 0,
@@ -54,14 +56,14 @@ export const reconcilePendingPaymentIntents = async (limit = 20): Promise<Reconc
     errors: 0,
   };
 
-  for (const intent of pendingIntents) {
+  for (const pendingPayment of pendingPayments) {
     try {
-      const ownerAddress = getAddress(intent.ownerAddress);
-      const reconciliationResult = await reconcilePaymentIntentByOwner(intent.id, ownerAddress);
+      const ownerAddress = getAddress(pendingPayment.ownerAddress);
+      const reconciliationResult = await reconcilePaymentByOwner(pendingPayment.id, ownerAddress);
       if (!reconciliationResult) continue;
       result[reconciliationResult.status] += 1;
     } catch (error) {
-      console.error(`Failed to reconcile intent ${intent.id}:`, error);
+      console.error(`Failed to reconcile payment ${pendingPayment.id}:`, error);
       result.errors += 1;
     }
   }
@@ -69,138 +71,170 @@ export const reconcilePendingPaymentIntents = async (limit = 20): Promise<Reconc
   return result;
 };
 
-export const reconcilePaymentIntentByOwner = async (
-  intentId: string,
+export const reconcilePaymentByOwner = async (
+  paymentId: string,
   ownerAddress: Address,
-): Promise<PaymentIntentStatusResponse | null> => {
+): Promise<PaymentStatusResponse | null> => {
   const db = getTransactionalDb();
 
-  const intent = await getPaymentIntentForOwner(intentId, ownerAddress);
-  if (!intent) return null;
+  const payment = await getPaymentForOwner(paymentId, ownerAddress);
+  if (!payment) return null;
 
-  if (intent.status !== 'pending') {
-    return toPaymentIntentStatusResponse(intent);
+  if (payment.status !== 'pending') {
+    return toPaymentStatusResponse(payment);
   }
 
   // Use a transaction for all status updates to prevent TOCTOU races
   return db.transaction(async (trx) => {
-    if (intent.expiresAt.getTime() <= Date.now()) {
-      await setPaymentIntentStatus(trx, { intentId: intent.id, status: 'expired' });
-      return { ...toPaymentIntentStatusResponse(intent), status: 'expired' as const };
+    if (payment.expiresAt.getTime() <= Date.now()) {
+      await setPaymentStatus(trx, { paymentId: payment.id, status: 'expired' });
+      return { ...toPaymentStatusResponse(payment), status: 'expired' as const };
     }
 
-    const paymentConfig = getPaymentConfig(intent.chainId);
+    const paymentConfig = getPaymentConfig(payment.chainId);
     if (!paymentConfig) {
-      await setPaymentIntentStatus(trx, { intentId: intent.id, status: 'failed' });
-      return { ...toPaymentIntentStatusResponse(intent), status: 'failed' as const };
+      await setPaymentStatus(trx, { paymentId: payment.id, status: 'failed' });
+      return { ...toPaymentStatusResponse(payment), status: 'failed' as const };
     }
 
-    const matchedTxHash = await findMatchingTransferTxHash(intent, ownerAddress, paymentConfig.treasuryAddress);
+    const matchedTxHash = await findMatchingTransferTxHash(payment, ownerAddress, paymentConfig.treasuryAddress);
     if (!matchedTxHash) {
-      return toPaymentIntentStatusResponse(intent);
+      return toPaymentStatusResponse(payment);
     }
 
-    await finalizeMatchedIntentInTransaction(trx, { intentId: intent.id, matchedTxHash });
+    await finalizeMatchedPaymentInTransaction(trx, { paymentId: payment.id, matchedTxHash });
 
-    const updatedIntent = await getPaymentIntentForOwner(intent.id, ownerAddress);
-    if (!updatedIntent) return null;
+    const updatedPayment = await getPaymentForOwner(payment.id, ownerAddress);
+    if (!updatedPayment) return null;
 
-    return toPaymentIntentStatusResponse(updatedIntent);
+    return toPaymentStatusResponse(updatedPayment);
   });
 };
 
 const findMatchingTransferTxHash = async (
-  intent: PremiumPaymentIntentRecord,
+  payment: PremiumPaymentRecord,
   ownerAddress: Address,
   recipientAddress: Address,
 ): Promise<string | null> => {
   // We get the script logs provider since this only runs on the backend.
-  const logsProvider = getScriptLogsProvider(intent.chainId);
+  const logsProvider = getScriptLogsProvider(payment.chainId);
   const latestBlock = await logsProvider.getLatestBlock();
 
   const logs = await logsProvider.getLogs({
-    address: getAddress(intent.tokenAddress),
+    address: getAddress(payment.tokenAddress),
     topics: [
       toEventSelector(getAbiItem({ abi: ERC20_ABI, name: 'Transfer' })),
       addressToTopic(ownerAddress),
       addressToTopic(recipientAddress),
     ],
-    fromBlock: Number(intent.scanFromBlock),
+    fromBlock: Number(payment.scanFromBlock),
     toBlock: latestBlock,
   });
 
-  const expectedAmount = getExpectedTokenAmount(intent);
+  const expectedAmount = getExpectedTokenAmount(payment);
 
   // Since sender/receiver are topic-matched, we only need an amount check.
   // We intentionally accept >= expectedAmount to allow overpayments.
   const matchedTransfer = logs
-    .map((log) => parseTransferLog(log, intent.chainId, ownerAddress))
+    .map((log) => parseTransferLog(log, payment.chainId, ownerAddress))
     .find((transfer) => transfer?.type === TokenEventType.TRANSFER_ERC20 && transfer.payload.amount >= expectedAmount);
 
   return matchedTransfer?.rawLog.transactionHash ?? null;
 };
 
-const finalizeMatchedIntentInTransaction = async (
+type LockedPayment = PremiumPaymentRecord & {
+  plan: { durationDays: number; priceUsd: number };
+};
+
+type LockedSubscription = Pick<PremiumSubscriptionRecord, 'id' | 'planId' | 'endsAt'> & {
+  plan: { durationDays: number; priceUsd: number };
+};
+
+const finalizeMatchedPaymentInTransaction = async (
   trx: DatabaseTransaction,
-  { intentId, matchedTxHash }: { intentId: string; matchedTxHash: string },
+  { paymentId, matchedTxHash }: { paymentId: string; matchedTxHash: string },
 ): Promise<void> => {
-  const lockedIntent = await trx.query.premiumPaymentIntents.findFirst({
-    where: eq(premiumPaymentIntents.id, intentId),
-    with: { plan: { columns: { durationDays: true } } },
+  const lockedPayment = await trx.query.premiumPayments.findFirst({
+    where: eq(premiumPayments.id, paymentId),
+    with: { plan: { columns: { durationDays: true, priceUsd: true } } },
   });
 
-  if (!lockedIntent || lockedIntent.status !== 'pending') {
+  if (!lockedPayment || lockedPayment.status !== 'pending') {
     return;
   }
 
-  if (!lockedIntent.plan) {
-    await setPaymentIntentStatus(trx, {
-      intentId: lockedIntent.id,
-      status: 'failed',
-    });
-    return;
-  }
-
-  const existingTxUse = await trx.query.premiumPaymentIntents.findFirst({
-    where: and(eq(premiumPaymentIntents.matchedTxHash, matchedTxHash), ne(premiumPaymentIntents.id, lockedIntent.id)),
+  const existingTxUse = await trx.query.premiumPayments.findFirst({
+    where: and(eq(premiumPayments.matchedTxHash, matchedTxHash), ne(premiumPayments.id, lockedPayment.id)),
     columns: { id: true },
   });
 
   if (existingTxUse) {
-    await setPaymentIntentStatus(trx, {
-      intentId: lockedIntent.id,
-      status: 'failed',
-    });
+    await setPaymentStatus(trx, { paymentId: lockedPayment.id, status: 'failed' });
     return;
   }
 
   const now = new Date();
+  const subscriptionId = await findOrCreateSubscription(trx, lockedPayment, now);
 
-  const latestExistingSubscription = await trx.query.premiumSubscriptions.findFirst({
-    where: and(
-      eq(premiumSubscriptions.ownerAddress, lockedIntent.ownerAddress),
-      eq(premiumSubscriptions.planId, lockedIntent.planId),
-      gt(premiumSubscriptions.endsAt, now),
-    ),
+  await setPaymentStatus(trx, {
+    paymentId: lockedPayment.id,
+    status: 'confirmed',
+    matchedTxHash,
+    confirmedAt: now,
+    updatedAt: now,
+    subscriptionId,
+  });
+};
+
+const findOrCreateSubscription = async (
+  trx: DatabaseTransaction,
+  payment: LockedPayment,
+  now: Date,
+): Promise<string> => {
+  // Look for an existing active subscription for this owner (any plan)
+  const existing = await trx.query.premiumSubscriptions.findFirst({
+    where: and(eq(premiumSubscriptions.ownerAddress, payment.ownerAddress), gt(premiumSubscriptions.endsAt, now)),
     orderBy: (subscriptions, { desc }) => [desc(subscriptions.endsAt)],
-    columns: { endsAt: true },
+    columns: { id: true, endsAt: true, planId: true },
+    with: { plan: { columns: { priceUsd: true, durationDays: true } } },
   });
 
-  const { startsAt, endsAt } = computeSubscriptionWindow(
-    now,
-    latestExistingSubscription?.endsAt ?? null,
-    lockedIntent.plan.durationDays,
-  );
+  if (existing) {
+    return extendExistingSubscription(trx, existing, payment);
+  }
 
+  return createNewSubscription(trx, payment, now);
+};
+
+const extendExistingSubscription = async (
+  trx: DatabaseTransaction,
+  existing: LockedSubscription,
+  payment: LockedPayment,
+): Promise<string> => {
+  const newEndsAt = new Date(existing.endsAt.getTime() + payment.plan.durationDays * DAY);
+
+  const isUpgrade = payment.planId !== existing.planId && payment.plan.priceUsd > existing.plan.priceUsd;
+
+  await trx
+    .update(premiumSubscriptions)
+    .set({
+      endsAt: newEndsAt,
+      ...(isUpgrade ? { planId: payment.planId, planVersion: payment.planVersion } : {}),
+    })
+    .where(eq(premiumSubscriptions.id, existing.id));
+
+  return existing.id;
+};
+
+const createNewSubscription = async (trx: DatabaseTransaction, payment: LockedPayment, now: Date): Promise<string> => {
   const [subscription] = await trx
     .insert(premiumSubscriptions)
     .values({
-      planId: lockedIntent.planId,
-      planVersion: lockedIntent.planVersion,
-      ownerAddress: lockedIntent.ownerAddress,
-      paymentIntentId: lockedIntent.id,
-      startsAt,
-      endsAt,
+      planId: payment.planId,
+      planVersion: payment.planVersion,
+      ownerAddress: payment.ownerAddress,
+      startsAt: now,
+      endsAt: new Date(now.getTime() + payment.plan.durationDays * DAY),
     })
     .returning({ id: premiumSubscriptions.id });
 
@@ -208,45 +242,30 @@ const finalizeMatchedIntentInTransaction = async (
     .insert(premiumSubscriptionAddresses)
     .values({
       subscriptionId: subscription.id,
-      address: lockedIntent.ownerAddress,
-      addedBy: lockedIntent.ownerAddress,
+      address: payment.ownerAddress,
+      addedBy: payment.ownerAddress,
     })
     .onConflictDoNothing();
 
-  await setPaymentIntentStatus(trx, {
-    intentId: lockedIntent.id,
-    status: 'confirmed',
-    matchedTxHash,
-    confirmedAt: now,
-    updatedAt: now,
-  });
+  return subscription.id;
 };
 
-const setPaymentIntentStatus = async (
+const setPaymentStatus = async (
   trx: DatabaseTransaction,
-  { intentId, status, matchedTxHash, confirmedAt, updatedAt = new Date() }: SetPaymentIntentStatusParams,
+  { paymentId, status, matchedTxHash, confirmedAt, subscriptionId, updatedAt = new Date() }: SetPaymentStatusParams,
 ): Promise<void> => {
   await trx
-    .update(premiumPaymentIntents)
+    .update(premiumPayments)
     .set({
       status,
       updatedAt,
       ...(matchedTxHash !== undefined ? { matchedTxHash } : {}),
       ...(confirmedAt !== undefined ? { confirmedAt } : {}),
+      ...(subscriptionId !== undefined ? { subscriptionId } : {}),
     })
-    .where(eq(premiumPaymentIntents.id, intentId));
+    .where(eq(premiumPayments.id, paymentId));
 };
 
-const computeSubscriptionWindow = (
-  now: Date,
-  latestEndsAt: Date | null,
-  durationDays: number,
-): { startsAt: Date; endsAt: Date } => {
-  const startsAt = latestEndsAt && latestEndsAt.getTime() > now.getTime() ? latestEndsAt : now;
-  const endsAt = new Date(startsAt.getTime() + durationDays * DAY);
-  return { startsAt, endsAt };
-};
-
-const getExpectedTokenAmount = (intent: PremiumPaymentIntentRecord): bigint => {
-  return parseUnits(String(intent.amountUsd), intent.tokenDecimals);
+const getExpectedTokenAmount = (payment: PremiumPaymentRecord): bigint => {
+  return parseUnits(String(payment.amountUsd), payment.tokenDecimals);
 };

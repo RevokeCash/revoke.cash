@@ -1,9 +1,10 @@
-import { useQueries } from '@tanstack/react-query';
+import { type UseQueryResult, useQueries } from '@tanstack/react-query';
+import type { ApprovalHistoryEvent } from 'components/history/utils';
 import { getTokenEvents } from 'lib/chains/events';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { isNullish } from 'lib/utils';
 import { ORDERED_CHAINS } from 'lib/utils/chains';
-import { getEventKey } from 'lib/utils/events';
+import { getEventKey, type TokenEvent } from 'lib/utils/events';
 import { HOUR } from 'lib/utils/time';
 import { useMemo } from 'react';
 import { getApprovalHistoryForChain } from '../../utils/approval-history';
@@ -47,15 +48,7 @@ export const usePremiumApprovalHistory = () => {
     return ORDERED_CHAINS.map((chainId, index) => {
       const eventQuery = eventQueries[index];
       const historyQuery = historyQueries[index];
-      const isFetching = Boolean(eventQuery?.isFetching || historyQuery?.isFetching);
-      const isError = Boolean(eventQuery?.error || historyQuery?.error);
-      const isSuccess = Boolean(historyQuery?.isSuccess && !isError);
-
-      let status: ChainHistoryLoadingStatus = 'loading';
-      if (isFetching) status = 'loading';
-      else if (isError) status = 'error';
-      else if (isSuccess) status = 'success';
-
+      const status = getChainHistoryLoadingStatus(eventQuery, historyQuery);
       const error = (historyQuery?.error ?? eventQuery?.error ?? null) as Error | null;
 
       const refetch = async () => {
@@ -92,4 +85,14 @@ export const usePremiumApprovalHistory = () => {
     isLoading,
     error,
   };
+};
+
+const getChainHistoryLoadingStatus = (
+  eventQuery: UseQueryResult<TokenEvent[], Error>,
+  historyQuery: UseQueryResult<ApprovalHistoryEvent[], Error>,
+): ChainHistoryLoadingStatus => {
+  if (eventQuery.isLoading || historyQuery.isLoading) return 'loading';
+  if (eventQuery.error || historyQuery.error) return 'error';
+  if (historyQuery.isSuccess) return 'success';
+  return 'loading';
 };

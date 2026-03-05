@@ -16,9 +16,6 @@ export const hasActivePremiumEntitlement = async (address: Address): Promise<boo
   });
 
   return entitlementRows.some((row) => {
-    const subscription = row.subscription;
-    if (!subscription) return false;
-
-    return subscription.startsAt.getTime() <= now.getTime() && subscription.endsAt.getTime() > now.getTime();
+    return row.subscription.startsAt.getTime() <= now.getTime() && row.subscription.endsAt.getTime() > now.getTime();
   });
 };
