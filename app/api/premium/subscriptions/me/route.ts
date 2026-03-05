@@ -1,4 +1,5 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { getGrantedEntitlements } from 'lib/premium/entitlements';
 import { getOwnerSubscriptions } from 'lib/premium/subscriptions';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -15,9 +16,12 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const subscriptions = await getOwnerSubscriptions(siweAddress);
+    const [subscriptions, entitlements] = await Promise.all([
+      getOwnerSubscriptions(siweAddress),
+      getGrantedEntitlements(siweAddress),
+    ]);
 
-    return NextResponse.json({ subscriptions }, { headers: { 'Cache-Control': 'no-store' } });
+    return NextResponse.json({ subscriptions, entitlements }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error('Error loading premium subscriptions', error);
 

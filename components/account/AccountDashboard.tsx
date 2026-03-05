@@ -8,6 +8,7 @@ import type { Address } from 'viem';
 import { useConnection } from 'wagmi';
 import BillingSection from './BillingSection';
 import ConnectedWalletSection from './ConnectedWalletSection';
+import GrantedEntitlementsSection from './GrantedEntitlementsSection';
 import PremiumAddressesSection from './PremiumAddressesSection';
 import PremiumSubscriptionSection from './PremiumSubscriptionSection';
 import UnauthenticatedView from './UnauthenticatedView';
@@ -20,10 +21,11 @@ const AccountDashboard = () => {
 
   const isAuthenticated = Boolean(account && siweAddress && siweAddress === account);
 
-  const { subscriptions, isLoading: isLoadingSubscriptions } = usePremiumSubscriptions(
-    (account as Address) ?? '0x',
-    isAuthenticated,
-  );
+  const {
+    subscriptions,
+    entitlements,
+    isLoading: isLoadingSubscriptions,
+  } = usePremiumSubscriptions((account as Address) ?? '0x', isAuthenticated);
 
   if (!isAuthenticated) {
     return <UnauthenticatedView account={account} signIn={signIn} isAuthenticating={isAuthenticating} />;
@@ -43,6 +45,7 @@ const AccountDashboard = () => {
       {activeSubscription && (
         <PremiumAddressesSection activeSubscription={activeSubscription} account={account as Address} />
       )}
+      {entitlements.length > 0 && <GrantedEntitlementsSection entitlements={entitlements} />}
       <BillingSection subscriptions={subscriptions} isLoading={isLoadingSubscriptions} />
     </div>
   );
