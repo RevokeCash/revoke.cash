@@ -41,7 +41,9 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
 
   useEffect(() => {
     if (isSelectOpen) {
+      const { scrollX, scrollY } = window;
       selectRef.current?.focus();
+      window.scrollTo(scrollX, scrollY);
     } else {
       selectRef.current?.blur();
     }
@@ -131,7 +133,7 @@ const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: Sele
   );
 
   return (
-    <div className={twMerge('relative shrink-0', selectProps.className)}>
+    <div className={twMerge('relative shrink-0 w-fit', selectProps.className)}>
       {target}
       {isSelectOpen ? (
         // biome-ignore lint/a11y/noStaticElementInteractions: we know this is a hack, it is what it is
@@ -195,11 +197,14 @@ const CustomOption = <O, I extends boolean, G extends GroupBase<O>>(props: Optio
   const ref = useRef<HTMLDivElement | null>(null);
   const customProps = (props.selectProps as any).custom;
 
-  // Scroll to the selected option when the select is opened
+  // Scroll to the selected option when the select is opened, preserving the page
+  // scroll position so only the dropdown's internal menu list scrolls.
   // TODO: There is still an edge case, where the selected option is not *focused* when the select is opened a second time
   useEffect(() => {
-    if (customProps.isSelectOpen && props.isSelected) {
-      ref.current?.scrollIntoView({ behavior: 'instant', block: 'center' });
+    if (customProps.isSelectOpen && props.isSelected && ref.current) {
+      const { scrollX, scrollY } = window;
+      ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
+      window.scrollTo(scrollX, scrollY);
     }
   }, [props.isSelected, customProps.isSelectOpen]);
 
