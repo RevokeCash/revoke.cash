@@ -18,8 +18,3 @@ export interface PendingPayment {
   amountUsd: number;
   expiresAt: string;
 }
-
-export interface PlanSelectOption {
-  value: string;
-  label: string;
-}

@@ -57,7 +57,7 @@ export const getPremiumPlans = async (): Promise<PremiumPlan[]> => {
 
   const planRows = await db.query.premiumPlans.findMany({
     where: eq(premiumPlans.isActive, true),
-    orderBy: (plans, { asc }) => [asc(plans.id)],
+    orderBy: (plans, { asc }) => [asc(plans.priceUsd)],
   });
   return planRows.map(mapPlanRecord);
 };

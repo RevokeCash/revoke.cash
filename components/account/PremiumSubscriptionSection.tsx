@@ -2,13 +2,16 @@
 
 import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
+import CardSelect, { type CardSelectOption } from 'components/common/CardSelect';
+import Label from 'components/common/Label';
 import ChainSelect from 'components/common/select/ChainSelect';
-import Select from 'components/common/select/Select';
+import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
 import { type SubscribeStatus, useSubscribe } from 'lib/hooks/premium/useSubscribe';
 import { PREMIUM_PAYMENT_CHAIN_IDS } from 'lib/premium/payment-config';
-import type { PremiumSubscription } from 'lib/premium/types';
-import { useEffect, useState } from 'react';
+import type { PremiumPlan, PremiumSubscription } from 'lib/premium/types';
+import { shortenAddress } from 'lib/utils/formatting';
+import { useEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { useConnection } from 'wagmi';
 
@@ -36,17 +39,32 @@ const getButtonLabel = (
 
 const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
   const { chainId } = useConnection();
+  const { domainName } = useNameLookup(account);
 
-  const [selectedPlanId, setSelectedPlanId] = useState<string>('individual_annual');
+  const [selectedPlanId, setSelectedPlanId] = useState<string>(activeSubscription?.plan.id ?? 'individual_annual');
   const [selectedPaymentChainId, setSelectedPaymentChainId] = useState<number>(PREMIUM_PAYMENT_CHAIN_IDS[0]);
 
-  const {
-    plans,
-    selectedPlan,
-    planSelectOptions,
-    selectedPlanOption,
-    isLoading: isLoadingPlans,
-  } = usePremiumPlans(selectedPlanId);
+  const { plans, selectedPlan, isLoading: isLoadingPlans } = usePremiumPlans(selectedPlanId);
+
+  const currentPlanId = activeSubscription?.plan.id;
+
+  const planCardOptions = useMemo<CardSelectOption<string>[]>(() => {
+    const freeOption: CardSelectOption<string> = {
+      value: 'free',
+      label: 'Free',
+      description: 'Basic Access',
+      tag: !currentPlanId ? 'Current' : undefined,
+    };
+
+    const premiumOptions = plans.map((plan) => ({
+      value: plan.id,
+      label: plan.name,
+      description: formatPlanDescription(plan),
+      tag: plan.id === currentPlanId ? 'Current' : undefined,
+    }));
+
+    return [freeOption, ...premiumOptions];
+  }, [plans, currentPlanId]);
 
   const { subscribe, isSubscribing, status, error, reset } = useSubscribe({
     ownerAddress: account,
@@ -66,11 +84,12 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
     const firstPlanId = plans[0]?.id;
     if (!firstPlanId) return;
 
-    if (!plans.some((plan) => plan.id === selectedPlanId)) {
+    if (selectedPlanId !== 'free' && !plans.some((plan) => plan.id === selectedPlanId)) {
       setSelectedPlanId(firstPlanId);
     }
   }, [plans, selectedPlanId]);
 
+  const isFreeSelected = selectedPlanId === 'free';
   const isDowngrade = Boolean(
     activeSubscription && selectedPlan && selectedPlan.priceUsd < activeSubscription.plan.priceUsd,
   );
@@ -78,13 +97,17 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
 
   return (
     <Card header={<CardTitle title="My Premium Subscription" />} className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <span className="text-sm text-zinc-600 dark:text-zinc-400">Wallet</span>
+        <span className="font-medium">{domainName ?? shortenAddress(account, 4)}</span>
+        {domainName && <span className="text-sm font-mono break-all text-zinc-600 dark:text-zinc-400">{account}</span>}
+      </div>
+
       {activeSubscription ? (
         <div className="flex flex-col gap-2 rounded-md bg-zinc-100 dark:bg-zinc-800 p-4">
           <div className="flex items-center gap-2">
             <span className="font-medium">{activeSubscription.plan.name}</span>
-            <span className="text-xs px-2 py-0.5 rounded-md bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">
-              Active
-            </span>
+            <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">Active</Label>
           </div>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             Valid until {activeSubscription.endsAt.slice(0, 10)} · {activeSubscription.slots.used}/
@@ -97,73 +120,73 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm text-zinc-600 dark:text-zinc-400">Plan</span>
-          <Select
-            instanceId="premium-plan-select"
-            aria-label="Select plan"
-            classNamePrefix="premium-plan-select"
-            value={selectedPlanOption}
-            options={planSelectOptions}
-            onChange={(option) => {
-              if (!option) return;
-              setSelectedPlanId(option.value);
-              if (status === 'failed' || status === 'confirmed') reset();
-            }}
-            menuPlacement="bottom"
-            isSearchable={false}
-            isMulti={false}
-            isDisabled={isLoadingPlans || isSubscribing}
-          />
-        </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-zinc-600 dark:text-zinc-400">Plan</span>
+        <CardSelect
+          options={planCardOptions}
+          value={selectedPlanId}
+          onChange={(value) => {
+            setSelectedPlanId(value);
+            if (status === 'failed' || status === 'confirmed') reset();
+          }}
+          disabled={isLoadingPlans || isSubscribing}
+        />
+      </div>
 
-        <div className="flex flex-col gap-2">
-          <span className="text-sm text-zinc-600 dark:text-zinc-400">Payment network</span>
-          <div className={isSubscribing ? 'pointer-events-none opacity-60' : undefined}>
-            <ChainSelect
-              instanceId="premium-payment-chain-select"
-              chainIds={[...PREMIUM_PAYMENT_CHAIN_IDS]}
-              selected={selectedPaymentChainId}
-              onSelect={setSelectedPaymentChainId}
-              showNames
-            />
+      {selectedPlan && !isFreeSelected && (
+        <>
+          <div className="flex flex-col gap-2">
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">Payment network</span>
+            <div className={isSubscribing ? 'pointer-events-none opacity-60' : undefined}>
+              <ChainSelect
+                instanceId="premium-payment-chain-select"
+                chainIds={[...PREMIUM_PAYMENT_CHAIN_IDS]}
+                selected={selectedPaymentChainId}
+                onSelect={setSelectedPaymentChainId}
+                showNames
+              />
+            </div>
           </div>
-        </div>
-      </div>
 
-      {selectedPlan && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          You will pay {selectedPlan.priceUsd} {selectedPlan.tokenSymbol} for {selectedPlan.durationDays} days and up to{' '}
-          {selectedPlan.maxAddresses} address
-          {selectedPlan.maxAddresses === 1 ? '' : 'es'}.
-        </p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            You will pay {selectedPlan.priceUsd} {selectedPlan.tokenSymbol} for {selectedPlan.durationDays} days and up
+            to {selectedPlan.maxAddresses} address
+            {selectedPlan.maxAddresses === 1 ? '' : 'es'}.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-3">
+            {status === 'confirmed' ? (
+              <span className="text-sm text-green-700 dark:text-green-300">
+                Payment confirmed! Your premium subscription is now active.
+              </span>
+            ) : (
+              <Button
+                style="primary"
+                size="md"
+                className="w-fit"
+                onClick={status === 'failed' ? reset : subscribe}
+                loading={isSubscribing}
+                disabled={isDowngrade}
+              >
+                {status === 'failed' ? 'Try again' : buttonLabel}
+              </Button>
+            )}
+
+            {isDowngrade && (
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">Downgrading is not supported.</span>
+            )}
+
+            {error && <span className="text-sm text-red-600 dark:text-red-400">{error}</span>}
+          </div>
+        </>
       )}
-
-      <div className="flex flex-wrap items-center gap-3">
-        {status === 'confirmed' ? (
-          <span className="text-sm text-green-700 dark:text-green-300">
-            Payment confirmed! Your premium subscription is now active.
-          </span>
-        ) : (
-          <Button
-            style="primary"
-            size="md"
-            className="w-fit"
-            onClick={status === 'failed' ? reset : subscribe}
-            loading={isSubscribing}
-            disabled={!selectedPlan || isDowngrade}
-          >
-            {status === 'failed' ? 'Try again' : buttonLabel}
-          </Button>
-        )}
-
-        {isDowngrade && <span className="text-sm text-zinc-600 dark:text-zinc-400">Downgrading is not supported.</span>}
-
-        {error && <span className="text-sm text-red-600 dark:text-red-400">{error}</span>}
-      </div>
     </Card>
   );
+};
+
+const formatPlanDescription = (plan: PremiumPlan): string => {
+  const addressLabel = plan.maxAddresses === 1 ? '1 address' : `${plan.maxAddresses} addresses`;
+  return `$${plan.priceUsd}/year · ${addressLabel}`;
 };
 
 export default PremiumSubscriptionSection;

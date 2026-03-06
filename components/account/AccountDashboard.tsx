@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { useConnection } from 'wagmi';
 import BillingSection from './BillingSection';
-import ConnectedWalletSection from './ConnectedWalletSection';
 import GrantedEntitlementsSection from './GrantedEntitlementsSection';
 import PremiumAddressesSection from './PremiumAddressesSection';
 import PremiumSubscriptionSection from './PremiumSubscriptionSection';
@@ -15,7 +14,7 @@ import UnauthenticatedView from './UnauthenticatedView';
 
 const AccountDashboard = () => {
   const t = useTranslations();
-  const { address: account, chainId } = useConnection();
+  const { address: account } = useConnection();
   const { siweAddress } = useAuthSession();
   const { signIn, isLoading: isAuthenticating } = useSiweSignIn();
 
@@ -40,7 +39,6 @@ const AccountDashboard = () => {
         <p className="mt-2 text-zinc-600 dark:text-zinc-400">Manage your premium subscription and address slots.</p>
       </div>
 
-      <ConnectedWalletSection account={account as Address} chainId={chainId} />
       <PremiumSubscriptionSection account={account as Address} activeSubscription={activeSubscription} />
       {activeSubscription && (
         <PremiumAddressesSection activeSubscription={activeSubscription} account={account as Address} />
