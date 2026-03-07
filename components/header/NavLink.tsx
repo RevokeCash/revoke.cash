@@ -14,7 +14,7 @@ interface Props {
 
 const NavLink = ({ to, text, external, className }: Props) => {
   const path = usePathname();
-  const isCurrent = !external && path.startsWith(to) && !(to === '/learn' && path === '/learn/faq');
+  const isCurrent = !external && path.startsWith(to) && !(to === '/premium' && path !== '/premium');
 
   return (
     <Button

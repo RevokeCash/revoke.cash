@@ -56,6 +56,12 @@ const FeeNotice = ({ chainId, feeDollarAmount }: Props) => {
           <InformationCircleIcon className="w-6 h-6 shrink-0" />
         </WithHoverTooltip>
       </div>
+      <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
+        Want unlimited batch revokes?{' '}
+        <Href href="/premium" className="font-medium text-zinc-700 dark:text-zinc-200" router>
+          Upgrade to Premium
+        </Href>
+      </div>
       <Eip5792Notice chainId={chainId} />
     </div>
   );

@@ -1,5 +1,7 @@
 import SharedLayout from 'app/layouts/SharedLayout';
+import AddressNavigation from 'components/address/navigation/AddressNavigation';
 import PremiumAddressHeader from 'components/address/PremiumAddressHeader';
+import PremiumAllowancePageProvider from 'components/address/PremiumAllowancePageProvider';
 import { AddressIdentityContextProvider } from 'lib/hooks/page-context/AddressIdentityContext';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { getAddressAndDomainName } from 'lib/utils/whois';
@@ -33,8 +35,11 @@ const PremiumAddressPageLayout = async ({ params, children }: Props) => {
       <div className="w-full max-w-7xl mx-auto px-4 lg:px-8">
         <AddressIdentityContextProvider address={address} domainName={domainName}>
           <NextIntlClientProvider messages={{ common: messages.common, address: messages.address }}>
-            <PremiumAddressHeader />
-            {children}
+            <PremiumAllowancePageProvider>
+              <PremiumAddressHeader />
+              <AddressNavigation isPremium />
+              {children}
+            </PremiumAllowancePageProvider>
           </NextIntlClientProvider>
         </AddressIdentityContextProvider>
       </div>

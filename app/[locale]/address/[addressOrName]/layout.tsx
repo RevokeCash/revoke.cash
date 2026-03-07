@@ -1,5 +1,6 @@
 import SharedLayout from 'app/layouts/SharedLayout';
 import AddressHeader from 'components/address/AddressHeader';
+import AddressNavigation from 'components/address/navigation/AddressNavigation';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { getAddressAndDomainName } from 'lib/utils/whois';
@@ -32,6 +33,7 @@ const AddressPageLayout = async ({ params, children }: Props) => {
         <AddressPageContextProvider address={address} domainName={domainName}>
           <NextIntlClientProvider messages={{ common: messages.common, address: messages.address }}>
             <AddressHeader />
+            <AddressNavigation />
             {children}
           </NextIntlClientProvider>
         </AddressPageContextProvider>

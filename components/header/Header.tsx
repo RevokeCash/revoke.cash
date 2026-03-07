@@ -19,7 +19,7 @@ const Header = () => {
           <NavLink to={CHROME_EXTENSION_URL} text={t('common.nav.extension')} external />
           <NavLink to="/exploits" text={t('common.nav.exploits')} />
           <NavLink to="/learn" text={t('common.nav.learn')} />
-          <NavLink to="/learn/faq" text={t('common.nav.faq')} />
+          <NavLink to="/premium" text={t('common.nav.premium')} />
           <MoreDropdown />
         </div>
         <div className="hidden lg:flex justify-end gap-2 min-w-48">

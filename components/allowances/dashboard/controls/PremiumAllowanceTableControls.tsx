@@ -6,7 +6,6 @@ import Chevron from 'components/common/Chevron';
 import { useTranslations } from 'next-intl';
 import { Suspense } from 'react';
 import { twMerge } from 'tailwind-merge';
-import WalletHealthSection from '../wallet-health/WalletHealthSection';
 import AllowanceSearchBox from './AllowanceSearchBox';
 import SortSelect from './SortSelect';
 
@@ -25,17 +24,12 @@ const PremiumAllowanceTableControls = ({
 }: Props) => {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col-reverse sm:flex-row justify-start gap-2">
-        <div className="flex flex-col justify-start gap-2 grow">
-          <SortSelect instanceId="premium-sort-select" onSortChange={onSortChange} />
-          <div className="flex flex-row justify-start gap-2">
-            <Suspense>
-              <AllowanceSearchBox id="premium-spender-search" onSearchValuesChange={onSearchValuesChange} />
-            </Suspense>
-            <ExpandAllButton isAllExpanded={isAllExpanded} onToggleExpandAll={onToggleExpandAll} />
-          </div>
-        </div>
-        <WalletHealthSection isPremium />
+      <SortSelect instanceId="premium-sort-select" onSortChange={onSortChange} />
+      <div className="flex flex-row justify-start gap-2">
+        <Suspense>
+          <AllowanceSearchBox id="premium-spender-search" onSearchValuesChange={onSearchValuesChange} />
+        </Suspense>
+        <ExpandAllButton isAllExpanded={isAllExpanded} onToggleExpandAll={onToggleExpandAll} />
       </div>
     </div>
   );

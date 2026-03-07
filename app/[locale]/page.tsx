@@ -2,6 +2,7 @@ import SharedLayout from 'app/layouts/SharedLayout';
 import HeroSection from 'components/landing/HeroSection';
 import HowTo from 'components/landing/HowTo';
 import LandingPageFaq from 'components/landing/LandingPageFaq';
+import PremiumSection from 'components/landing/PremiumSection';
 import WhyRevokeCash from 'components/landing/WhyRevokeCash';
 import type { Metadata, NextPage } from 'next';
 import Script from 'next/script';
@@ -44,6 +45,7 @@ const LandingPage: NextPage<Props> = async ({ params }) => {
           <HeroSection />
           <HowTo />
           <WhyRevokeCash />
+          <PremiumSection />
           <LandingPageFaq />
         </div>
       </SharedLayout>

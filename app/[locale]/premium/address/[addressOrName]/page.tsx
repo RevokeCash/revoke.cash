@@ -1,4 +1,3 @@
-import PremiumAllowancePageProvider from 'components/address/PremiumAllowancePageProvider';
 import PremiumAllowanceDashboard from 'components/allowances/dashboard/PremiumAllowanceDashboard';
 import { shortenAddress } from 'lib/utils/formatting';
 import { getAddressAndDomainName } from 'lib/utils/whois';
@@ -34,11 +33,7 @@ const PremiumAddressPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return (
-    <PremiumAllowancePageProvider>
-      <PremiumAllowanceDashboard />
-    </PremiumAllowancePageProvider>
-  );
+  return <PremiumAllowanceDashboard />;
 };
 
 export default PremiumAddressPage;

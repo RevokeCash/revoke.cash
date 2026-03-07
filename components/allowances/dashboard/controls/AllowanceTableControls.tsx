@@ -3,7 +3,6 @@ import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
 import { Suspense, useCallback } from 'react';
 import { ColumnId } from '../columns';
-import WalletHealthSection from '../wallet-health/WalletHealthSection';
 import AllowanceSearchBox from './AllowanceSearchBox';
 import SortSelect from './SortSelect';
 
@@ -23,15 +22,10 @@ const AllowanceTableControls = ({ table }: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col-reverse sm:flex-row justify-start gap-2">
-        <div className="flex flex-col justify-start gap-2 grow">
-          <SortSelect onSortChange={table.setSorting} />
-          <Suspense>
-            <AllowanceSearchBox onSearchValuesChange={onSearchValuesChange} />
-          </Suspense>
-        </div>
-        <WalletHealthSection />
-      </div>
+      <SortSelect onSortChange={table.setSorting} />
+      <Suspense>
+        <AllowanceSearchBox onSearchValuesChange={onSearchValuesChange} />
+      </Suspense>
     </div>
   );
 };

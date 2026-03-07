@@ -41,7 +41,7 @@ const AddressNavigation = ({ isPremium }: Props) => {
     hasCodeOnAbstract && (isPremium || selectedChainId === ChainId.Abstract || path.endsWith(sessionsPath));
 
   return (
-    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full">
+    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full my-4 border-b border-black dark:border-white">
       <nav className="flex gap-4">
         <AddressNavigationTab name={t('address.navigation.allowances')} href={basePath} />
         <AddressNavigationTab name={t('address.navigation.history')} href={historyPath} />

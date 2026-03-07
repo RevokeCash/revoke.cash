@@ -73,6 +73,7 @@ const MobileMenu = () => {
                 <NavLink to={CHROME_EXTENSION_URL} text={t('common.nav.extension')} external />
                 <NavLink to="/exploits" text={t('common.nav.exploits')} />
                 <NavLink to="/learn" text={t('common.nav.learn')} />
+                <NavLink to="/premium" text={t('common.nav.premium')} />
                 <NavLink to="/blog" text={t('common.nav.blog')} />
                 <NavLink to="/merchandise" text={t('common.nav.merchandise')} />
               </div>
