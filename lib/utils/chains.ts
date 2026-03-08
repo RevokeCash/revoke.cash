@@ -180,7 +180,7 @@ export const CHAINS = {
     chainId: ChainId.Amoy,
     name: 'Polygon Amoy',
     nativeToken: 'POL',
-    nativeTokenCoingeckoId: 'matic-network',
+    nativeTokenCoingeckoId: 'polygon-ecosystem-token',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
       main: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -1209,7 +1209,7 @@ export const CHAINS = {
     type: SupportType.PROVIDER,
     chainId: ChainId.PolygonMainnet,
     name: 'Polygon',
-    nativeTokenCoingeckoId: 'matic-network',
+    nativeTokenCoingeckoId: 'polygon-ecosystem-token',
     coingeckoNetworkId: 'polygon_pos',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {

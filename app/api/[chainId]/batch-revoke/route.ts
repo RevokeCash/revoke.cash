@@ -37,7 +37,7 @@ export async function POST(req: NextRequest, { params }: Props) {
   const transactionHash = body.transactionHash;
   const userAddress = body.userAddress;
   const feePaid = BigInt(((Number(body.feePaid) ?? 0) * 100).toFixed(0));
-  const sponsor = FEE_SPONSORS[chainId] ?? null;
+  const sponsor = FEE_SPONSORS[chainId]?.name ?? null;
   const country = getClientCountryEdge(req);
 
   try {
