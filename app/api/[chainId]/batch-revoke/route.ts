@@ -1,6 +1,6 @@
-import { neon } from '@neondatabase/serverless';
-import { FEE_SPONSORS } from 'components/allowances/controls/batch-revoke/fee';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, getClientCountryEdge, RateLimiters } from 'lib/api/auth';
+import { getDb } from 'lib/db/client';
+import { batchRevokes } from 'lib/db/schema/batch-revokes';
 import { isTestnetChain } from 'lib/utils/chains';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -25,26 +25,22 @@ export async function POST(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  if (!process.env.DATABASE_URL) {
-    return NextResponse.json({ message: 'Cannot record batch revoke' }, { status: 500 });
-  }
-
-  const sql = neon(process.env.DATABASE_URL);
+  const db = getDb();
 
   const chainId = Number(chainIdString);
   const body = await req.json();
 
-  const transactionHash = body.transactionHash;
-  const userAddress = body.userAddress;
-  const feePaid = BigInt(((Number(body.feePaid) ?? 0) * 100).toFixed(0));
-  const sponsor = FEE_SPONSORS[chainId]?.name ?? null;
-  const country = getClientCountryEdge(req);
-
   try {
-    await sql`
-      INSERT INTO batch_revokes (chain_id, fee_transaction_hash, user_address, fee_paid, is_testnet, vat_region, sponsor, timestamp)
-      VALUES (${chainId}, ${transactionHash}, ${userAddress}, ${feePaid}, ${isTestnetChain(chainId)}, ${country}, ${sponsor}, ${new Date().toISOString()})
-    `;
+    await db.insert(batchRevokes).values({
+      chainId,
+      feeTransactionHash: body.transactionHash,
+      userAddress: body.userAddress,
+      feePaid: Math.round((Number(body.feePaid) ?? 0) * 100),
+      isTestnet: isTestnetChain(chainId),
+      vatRegion: getClientCountryEdge(req),
+      sponsor: body.sponsor,
+      timestamp: new Date(),
+    });
 
     return NextResponse.json({});
   } catch (error) {

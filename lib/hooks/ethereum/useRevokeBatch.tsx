@@ -1,6 +1,7 @@
 'use client';
 
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from 'lib/utils/allowances';
 import { walletSupportsEip5792 } from 'lib/utils/eip5792';
 import { isAccountUpgradeRejectionError, parseErrorMessage } from 'lib/utils/errors';
@@ -21,6 +22,7 @@ const REVOKE_QUEUE = new PQueue({ interval: 100, intervalCap: 1, concurrency: 50
 export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
   const chainId = allowances[0]?.chainId ?? 1;
+  const { isPremium } = useAddress();
 
   const { results, getTransaction, updateTransaction } = useTransactionStore();
   const walletCapabilities = useWalletCapabilities(chainId);
@@ -29,7 +31,7 @@ export const useRevokeBatch = (allowances: TokenAllowanceData[], onUpdate: OnUpd
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
   // If we cannot get the native token price, we set the fee to $0 (this will result in no fee payment downstream)
-  const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(chainId, allowances.length).toFixed(2) : '0';
+  const feeDollarAmount = nativeTokenPrice ? getFeeDollarAmount(chainId, allowances.length, isPremium).toFixed(2) : '0';
 
   const { data: walletClient } = useWalletClient();
 

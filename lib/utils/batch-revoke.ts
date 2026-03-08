@@ -13,6 +13,7 @@ export const trackBatchRevoke = (
   allowances: Array<TokenAllowanceData | undefined>,
   feeDollarAmount: string,
   batchType: BatchType,
+  sponsor: string | null,
 ) => {
   analytics.track('Batch Revoked', {
     chainId,
@@ -21,6 +22,7 @@ export const trackBatchRevoke = (
     feeDollarAmount: Number(feeDollarAmount),
     batchType,
     isTestnet: isTestnetChain(chainId),
+    sponsor,
   });
 };
 
@@ -29,6 +31,7 @@ export const recordBatchRevoke = async (
   transactionHash: string | null,
   userAddress: Address,
   feePaid: string,
+  sponsor: string | null,
 ) => {
   await ky.post(`/api/${chainId}/batch-revoke`, {
     json: {
@@ -36,6 +39,7 @@ export const recordBatchRevoke = async (
       transactionHash,
       userAddress,
       feePaid,
+      sponsor,
     },
   });
 };

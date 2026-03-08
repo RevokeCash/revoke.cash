@@ -1,6 +1,6 @@
 'use client';
 
-import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
+import { FEE_SPONSORS, isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
 import { chunkArray, throwIfExcessiveGas } from 'lib/utils';
 import {
@@ -28,7 +28,7 @@ import { useWalletCapabilities } from './useWalletCapabilities';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
   const { getTransaction, updateTransaction } = useTransactionStore();
-  const { address } = useAddress();
+  const { address, isPremium } = useAddress();
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
   const chainId = allowances[0]?.chainId ?? 1;
   const { capabilities } = useWalletCapabilities(chainId);
@@ -181,10 +181,11 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     }
 
     // TODO: This still tracks if all revokes/the full batch gets rejected
-    trackBatchRevoke(chainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792');
+    const sponsor = (isPremium ? 'Revoke Premium' : FEE_SPONSORS[chainId]?.name) ?? null;
+    trackBatchRevoke(chainId, address, allowancesToSubmit, feeDollarAmount, 'eip5792', sponsor);
     // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
     if (isZeroFeeDollarAmount(feeDollarAmount) && allowancesToSubmit.length > 1) {
-      recordBatchRevoke(chainId, null, address, feeDollarAmount);
+      recordBatchRevoke(chainId, null, address, feeDollarAmount, sponsor);
     }
   };
 

@@ -78,7 +78,7 @@ export const useFeePayment = (chainId: number) => {
     dollarAmountStr: string,
     transactionHash: Hash,
   ) => {
-    recordBatchRevoke(chainId, transactionHash, address, dollarAmountStr); // Don't await
+    recordBatchRevoke(chainId, transactionHash, address, dollarAmountStr, null); // Don't await
 
     const dollarAmount = Number(dollarAmountStr);
     if (!dollarAmount) return;
