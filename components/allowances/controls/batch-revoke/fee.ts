@@ -3,7 +3,7 @@ import { ChainId } from '@revoke.cash/chains';
 export const BASE_FEE = 1.5;
 export const PER_ALLOWANCE_FEE = 0.0;
 
-interface FeeSponsor {
+export interface FeeSponsor {
   name: string;
   url?: string;
 }
@@ -19,7 +19,10 @@ export const FEE_SPONSORS: Record<number, FeeSponsor> = {
   },
 };
 
-export const getFeeDollarAmount = (chainId: number, allowancesCount: number) => {
+export const getFeeDollarAmount = (chainId: number, allowancesCount: number, isPremium?: boolean) => {
+  // Premium users get unlimited batch revokes for free
+  if (isPremium) return 0;
+
   // We don't charge a fee if it is sponsored
   if (FEE_SPONSORS[chainId]) return 0;
 

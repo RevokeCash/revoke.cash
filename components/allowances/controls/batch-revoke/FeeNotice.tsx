@@ -4,6 +4,7 @@ import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { useWalletCapabilities } from 'lib/hooks/ethereum/useWalletCapabilities';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
@@ -15,10 +16,12 @@ interface Props {
 }
 
 const FeeNotice = ({ chainId, feeDollarAmount }: Props) => {
+  const { isPremium } = useAddress();
   const t = useTranslations();
   const { nativeTokenPrice } = useNativeTokenPrice(chainId);
 
   if (!nativeTokenPrice) return null;
+  if (isPremium) return null;
 
   const sponsor = FEE_SPONSORS[chainId];
 
