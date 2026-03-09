@@ -1,4 +1,4 @@
-import HistoryDashboard from 'components/history/HistoryDashboard';
+import HistoryPageContent from 'components/history/HistoryPageContent';
 import type { NextPage } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
@@ -18,7 +18,7 @@ const AddressHistoryPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <HistoryDashboard />;
+  return <HistoryPageContent />;
 };
 
 export default AddressHistoryPage;

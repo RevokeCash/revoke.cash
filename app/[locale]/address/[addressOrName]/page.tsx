@@ -1,11 +1,10 @@
-import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
-import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
+import AllowancesPageContent from 'components/allowances/dashboard/AllowancesPageContent';
 import { isNullish } from 'lib/utils';
 import { getChainName, isSupportedChain } from 'lib/utils/chains';
 import { shortenAddress } from 'lib/utils/formatting';
 import { getAddressAndDomainName } from 'lib/utils/whois';
 import type { Metadata, NextPage } from 'next';
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
@@ -48,13 +47,7 @@ const AddressPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const messages = await getMessages({ locale });
-
-  return (
-    <NextIntlClientProvider messages={{ common: messages.common, address: messages.address }}>
-      <AllowanceDashboard />
-    </NextIntlClientProvider>
-  );
+  return <AllowancesPageContent />;
 };
 
 export default AddressPage;

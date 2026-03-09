@@ -2,6 +2,7 @@
 
 import AddressForm from 'components/exploits/AddressForm';
 import PermitsTable from 'components/signatures/permit/PermitsTable';
+import { AddressIdentityContextProvider } from 'lib/hooks/page-context/AddressIdentityContext';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -20,12 +21,14 @@ const PermitSignaturesChecker = ({ chainId }: Props) => {
   );
 
   return (
-    <AddressPageContextProvider address={address!} initialChainId={chainId} queryParams={['address']}>
-      <div className="flex flex-col gap-2 w-full max-w-3xl">
-        <AddressForm address={address} onSubmit={setAddress} placeholder={t('common.nav.search')} />
-        {address && <PermitsTable />}
-      </div>
-    </AddressPageContextProvider>
+    <AddressIdentityContextProvider address={address!}>
+      <AddressPageContextProvider address={address!} initialChainId={chainId} queryParams={['address']}>
+        <div className="flex flex-col gap-2 w-full max-w-3xl">
+          <AddressForm address={address} onSubmit={setAddress} placeholder={t('common.nav.search')} />
+          {address && <PermitsTable />}
+        </div>
+      </AddressPageContextProvider>
+    </AddressIdentityContextProvider>
   );
 };
 

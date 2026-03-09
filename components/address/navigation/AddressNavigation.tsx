@@ -11,20 +11,16 @@ import { useContext } from 'react';
 import { usePublicClient } from 'wagmi';
 import AddressNavigationTab from './AddressNavigationTab';
 
-interface Props {
-  isPremium?: boolean;
-}
-
-const AddressNavigation = ({ isPremium }: Props) => {
+const AddressNavigation = () => {
   const t = useTranslations();
   const { addressOrName } = useParams() as { addressOrName: string };
-  const { address } = useAddress();
+  const { address, isPremium } = useAddress();
   const publicClient = usePublicClient({ chainId: ChainId.Abstract });
   const path = usePathname();
   const context = useContext(AddressPageContext);
   const selectedChainId = context?.selectedChainId;
 
-  const basePath = isPremium ? `/premium/address/${addressOrName}` : `/address/${addressOrName}`;
+  const basePath = `/address/${addressOrName}`;
   const historyPath = `${basePath}/history`;
   const coveragePath = `${basePath}/coverage`;
   const sessionsPath = `${basePath}/sessions`;

@@ -192,6 +192,5 @@ Notes:
 - Do not remove existing comments unless they are clearly outdated.
 - Prefer one component per file unless multiple components are strongly justified.
 - Many App Router pages are static (`dynamic='error'`, `dynamicParams=false`); update static params when adding new dynamic content paths.
-- Premium routes currently have no enforced premium access gate (see TODO in `app/[locale]/premium/address/[addressOrName]/layout.tsx`).
 - Prefer writing code in a way that reads top-down, from the main entry point to the leaves.
 - Prefer `const` assignment and not reassigning variables.

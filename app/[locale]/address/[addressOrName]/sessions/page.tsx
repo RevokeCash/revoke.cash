@@ -1,4 +1,4 @@
-import SessionsDashboard from 'components/sessions/SessionsDashboard';
+import SessionsPageContent from 'components/sessions/SessionsPageContent';
 import type { NextPage } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
@@ -18,7 +18,7 @@ const AddressSessionsPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <SessionsDashboard />;
+  return <SessionsPageContent />;
 };
 
 export default AddressSessionsPage;

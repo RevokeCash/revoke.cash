@@ -7,10 +7,8 @@ import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
 import React, { type ReactNode, useContext, useLayoutEffect, useState } from 'react';
 import type { Address } from 'viem';
-import { useAccount } from 'wagmi';
 import { useEvents } from '../ethereum/events/useEvents';
 import { useAllowances } from '../ethereum/useAllowances';
-import { AddressIdentityContextProvider } from './AddressIdentityContext';
 
 interface AddressContext {
   selectedChainId: number;
@@ -22,7 +20,6 @@ interface AddressContext {
 interface Props {
   children: ReactNode;
   address: Address;
-  domainName?: string | null;
   initialChainId?: number;
   queryParams?: string[];
 }
@@ -33,18 +30,16 @@ export const AddressPageContext = React.createContext<AddressContext>(undefined 
 export const AddressPageContextProvider = ({
   children,
   address,
-  domainName,
   initialChainId,
   queryParams = ['chainId'], // default is only add chainId to the qs, not address
 }: Props) => {
   const searchParams = useSearchParams()!;
   const path = usePathname();
   const router = useCsrRouter();
-  const { chain } = useAccount();
 
   // The default selected chain ID is either the chainId query parameter, the connected chain ID, or 1 (Ethereum)
   const queryChainId = Number(searchParams.get('chainId')) || undefined;
-  const defaultChainId = [initialChainId, queryChainId, chain?.id, 1]
+  const defaultChainId = [initialChainId, queryChainId, 1]
     .filter((chainId) => !isNullish(chainId))
     .find((chainId) => isSupportedChain(chainId)) as number;
   const [selectedChainId, selectChain] = useState<number>(defaultChainId);
@@ -85,18 +80,16 @@ export const AddressPageContextProvider = ({
     !allowanceContext?.error;
 
   return (
-    <AddressIdentityContextProvider address={address} domainName={domainName}>
-      <AddressPageContext.Provider
-        value={{
-          selectedChainId,
-          selectChain,
-          eventContext,
-          allowanceContext,
-        }}
-      >
-        {children}
-      </AddressPageContext.Provider>
-    </AddressIdentityContextProvider>
+    <AddressPageContext.Provider
+      value={{
+        selectedChainId,
+        selectChain,
+        eventContext,
+        allowanceContext,
+      }}
+    >
+      {children}
+    </AddressPageContext.Provider>
   );
 };
 

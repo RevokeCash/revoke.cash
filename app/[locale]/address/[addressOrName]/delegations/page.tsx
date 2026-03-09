@@ -1,4 +1,4 @@
-import DelegationsDashboard from 'components/delegations/DelegationsDashboard';
+import DelegationsPageContent from 'components/delegations/DelegationsPageContent';
 import type { NextPage } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
@@ -18,7 +18,7 @@ const AddressDelegationsPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <DelegationsDashboard />;
+  return <DelegationsPageContent />;
 };
 
 export default AddressDelegationsPage;
