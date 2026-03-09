@@ -29,6 +29,7 @@ const AddressNavigation = ({ isPremium }: Props) => {
   const coveragePath = `${basePath}/coverage`;
   const sessionsPath = `${basePath}/sessions`;
   const delegationsPath = `${basePath}/delegations`;
+  const exploitsPath = `${basePath}/exploits`;
 
   const { data: abstractAccountType } = useQuery({
     queryKey: ['accountType', address, publicClient?.chain?.id],
@@ -47,6 +48,7 @@ const AddressNavigation = ({ isPremium }: Props) => {
         <AddressNavigationTab name={t('address.navigation.history')} href={historyPath} />
         {showSessionsTab && <AddressNavigationTab name={t('address.navigation.sessions')} href={sessionsPath} />}
         <AddressNavigationTab name={t('address.navigation.delegations')} href={delegationsPath} />
+        {isPremium && <AddressNavigationTab name={t('address.navigation.exploits')} href={exploitsPath} />}
         <AddressNavigationTab name={t('address.navigation.coverage')} href={coveragePath} />
       </nav>
     </div>

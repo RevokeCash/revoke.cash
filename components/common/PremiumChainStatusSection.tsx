@@ -6,16 +6,23 @@ import ChainLogoStack from 'components/common/ChainLogoStack';
 import CollapsibleCard from 'components/common/CollapsibleCard';
 import ErrorDisplay from 'components/common/ErrorDisplay';
 import Spinner from 'components/common/Spinner';
-import type { ChainHistoryStatus } from 'lib/hooks/ethereum/usePremiumApprovalHistory';
+import type { ChainLoadingStatus } from 'lib/hooks/page-context/PremiumAddressPageContext';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-interface Props {
-  chainStatuses: ChainHistoryStatus[];
+export interface ChainStatus {
+  chainId: number;
+  status: ChainLoadingStatus;
+  error: Error | null;
+  refetch: () => void;
 }
 
-const PremiumHistoryStatusSection = ({ chainStatuses }: Props) => {
+interface Props {
+  chainStatuses: ChainStatus[];
+}
+
+const PremiumChainStatusSection = ({ chainStatuses }: Props) => {
   const t = useTranslations();
   const [showDetails, setShowDetails] = useState(false);
 
@@ -23,12 +30,13 @@ const PremiumHistoryStatusSection = ({ chainStatuses }: Props) => {
   const loadingChains = chainStatuses.filter((chain) => chain.status === 'loading');
   const loadedChains = chainStatuses.filter((chain) => chain.status === 'success');
 
-  const hasChainFailures = failedChains.length > 0;
-  const showChainStatus = loadingChains.length > 0 || hasChainFailures;
+  const showChainStatus = loadingChains.length > 0 || failedChains.length > 0;
 
-  const refetchFailedChains = async () => {
+  const refetchFailedChains = () => {
     if (failedChains.length === 0) return;
-    await Promise.allSettled(failedChains.map((chain) => chain.refetch()));
+    for (const chain of failedChains) {
+      chain.refetch();
+    }
   };
 
   if (!showChainStatus) return null;
@@ -60,15 +68,7 @@ const PremiumHistoryStatusSection = ({ chainStatuses }: Props) => {
             />
           </div>
           {failedChains.length > 0 && loadingChains.length === 0 ? (
-            <Button
-              size="sm"
-              style="secondary"
-              className="shrink-0"
-              onClick={(event: React.MouseEvent) => {
-                event.stopPropagation();
-                refetchFailedChains();
-              }}
-            >
+            <Button size="sm" style="secondary" className="shrink-0" onClick={refetchFailedChains}>
               {t('common.buttons.try_again')} ({failedChains.length})
             </Button>
           ) : null}
@@ -149,4 +149,4 @@ const StatusPill = ({ label, status, chainIds }: StatusPillProps) => {
   );
 };
 
-export default PremiumHistoryStatusSection;
+export default PremiumChainStatusSection;

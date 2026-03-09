@@ -196,12 +196,17 @@ const TargetButton = forwardRef(
 const CustomOption = <O, I extends boolean, G extends GroupBase<O>>(props: OptionProps<O, I, G>) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const customProps = (props.selectProps as any).custom;
+  const prevIsSelectOpenRef = useRef(false);
 
   // Scroll to the selected option when the select is opened, preserving the page
   // scroll position so only the dropdown's internal menu list scrolls.
+  // Only scrolls on open, not when selection changes (important for multi-select).
   // TODO: There is still an edge case, where the selected option is not *focused* when the select is opened a second time
   useEffect(() => {
-    if (customProps.isSelectOpen && props.isSelected && ref.current) {
+    const justOpened = customProps.isSelectOpen && !prevIsSelectOpenRef.current;
+    prevIsSelectOpenRef.current = customProps.isSelectOpen;
+
+    if (justOpened && props.isSelected && ref.current) {
       const { scrollX, scrollY } = window;
       ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
       window.scrollTo(scrollX, scrollY);

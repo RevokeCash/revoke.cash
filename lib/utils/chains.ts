@@ -1868,3 +1868,11 @@ export const createViemPublicClientForChain = (chainId: DocumentedChainId, url?:
 export const getChainAddEthereumChainParameter = (chainId: DocumentedChainId): AddEthereumChainParameter => {
   return getChainConfig(chainId).getAddEthereumChainParameter();
 };
+
+export const chainIdSorter = (a: number, b: number) => {
+  const indexOfA = CHAIN_SELECT_MAINNETS.indexOf(a);
+  const indexOfB = CHAIN_SELECT_MAINNETS.indexOf(b);
+  if (indexOfA === -1) return 1;
+  if (indexOfB === -1) return -1;
+  return indexOfA - indexOfB;
+};

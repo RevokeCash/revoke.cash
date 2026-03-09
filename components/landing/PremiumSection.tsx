@@ -15,7 +15,7 @@ const PremiumSection = () => {
     <div className="w-full px-4">
       <div className="max-w-3xl mx-auto rounded-xl border border-brand/40 bg-brand/5 dark:bg-brand/10 p-8 flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h2>Revoke.cash Premium</h2>
+          <h2>Revoke Premium</h2>
           <p className="text-zinc-600 dark:text-zinc-400">
             Manage approvals across 100+ networks from a single dashboard. Starting at $99/year.
           </p>

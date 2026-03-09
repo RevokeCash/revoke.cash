@@ -31,6 +31,7 @@ export interface ChainAllowanceData {
   chainId: number;
   status: ChainLoadingStatus;
   error: Error | null;
+  events: TokenEvent[];
   allowances: TokenAllowanceData[];
   totalValueAtRisk: number;
   refetch: () => void;
@@ -242,10 +243,13 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         queryClient.invalidateQueries({ queryKey: ['allowances', address, chainId] });
       };
 
+      const events = eventQueries[index]?.data ?? [];
+
       return {
         chainId,
         status,
         error,
+        events,
         allowances,
         totalValueAtRisk,
         refetch,

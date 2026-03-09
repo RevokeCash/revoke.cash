@@ -34,7 +34,9 @@ const PremiumAddressPageLayout = async ({ params, children }: Props) => {
     <SharedLayout>
       <div className="w-full max-w-7xl mx-auto px-4 lg:px-8">
         <AddressIdentityContextProvider address={address} domainName={domainName}>
-          <NextIntlClientProvider messages={{ common: messages.common, address: messages.address }}>
+          <NextIntlClientProvider
+            messages={{ common: messages.common, address: messages.address, exploits: messages.exploits }}
+          >
             <PremiumAllowancePageProvider>
               <PremiumAddressHeader />
               <AddressNavigation isPremium />

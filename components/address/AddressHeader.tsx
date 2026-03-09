@@ -19,7 +19,13 @@ const AddressHeader = () => {
       <div className="flex lex-row-reverse sm:flex-col items-end sm:items-start gap-3 shrink-0">
         <div className="flex flex-col gap-1">
           <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Viewing address on</span>
-          <ChainSelect instanceId="address-chain-select" selected={selectedChainId} onSelect={selectChain} showNames />
+          <ChainSelect
+            instanceId="address-chain-select"
+            selected={selectedChainId}
+            onSelect={selectChain}
+            showNames
+            menuAlign="right"
+          />
         </div>
         <PremiumBanner />
       </div>

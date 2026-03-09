@@ -1,7 +1,7 @@
 'use client';
 
+import PremiumChainStatusSection from 'components/common/PremiumChainStatusSection';
 import { usePremiumApprovalHistory } from 'lib/hooks/ethereum/usePremiumApprovalHistory';
-import PremiumHistoryStatusSection from './PremiumHistoryStatusSection';
 import SharedHistoryTable from './SharedHistoryTable';
 
 const PremiumHistoryTable = () => {
@@ -11,7 +11,7 @@ const PremiumHistoryTable = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <PremiumHistoryStatusSection chainStatuses={chainStatuses} />
+      <PremiumChainStatusSection chainStatuses={chainStatuses} />
       <SharedHistoryTable approvalHistory={approvalHistory} isLoading={tableLoading} error={error} isPremium />
     </div>
   );
