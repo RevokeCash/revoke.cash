@@ -3,7 +3,10 @@ import AddressHeader from 'components/address/AddressHeader';
 import AddressNavigation from 'components/address/navigation/AddressNavigation';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
+import { redirect } from 'lib/i18n/navigation';
+import { hasActivePremiumEntitlement } from 'lib/premium/entitlements';
 import { getAddressAndDomainName } from 'lib/utils/whois';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
@@ -26,6 +29,14 @@ const AddressPageLayout = async ({ params, children }: Props) => {
 
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
   if (!address) notFound();
+
+  const isPremium = await hasActivePremiumEntitlement(address);
+  if (isPremium) {
+    const path = (await headers()).get('x-url-path');
+    if (!path) notFound();
+    const href = `/premium${path}`;
+    redirect({ href, locale });
+  }
 
   return (
     <SharedLayout>

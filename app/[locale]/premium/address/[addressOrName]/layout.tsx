@@ -4,7 +4,10 @@ import PremiumAddressHeader from 'components/address/PremiumAddressHeader';
 import PremiumAllowancePageProvider from 'components/address/PremiumAllowancePageProvider';
 import { AddressIdentityContextProvider } from 'lib/hooks/page-context/AddressIdentityContext';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
+import { redirect } from 'lib/i18n/navigation';
+import { hasActivePremiumEntitlement } from 'lib/premium/entitlements';
 import { getAddressAndDomainName } from 'lib/utils/whois';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
@@ -28,7 +31,13 @@ const PremiumAddressPageLayout = async ({ params, children }: Props) => {
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
   if (!address) notFound();
 
-  // TODO: Add check if address is premium, if not redirect to non-premium address page
+  const isPremium = await hasActivePremiumEntitlement(address);
+  if (!isPremium) {
+    const path = (await headers()).get('x-url-path');
+    if (!path) notFound();
+    const href = path.slice(8);
+    redirect({ href, locale });
+  }
 
   return (
     <SharedLayout>
