@@ -23,7 +23,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
   const pageSizeOptions = [10, 25, 50, 100];
 
   return (
-    <div className={twMerge('flex items-center justify-between px-4 py-3', className)}>
+    <div className={twMerge('flex flex-wrap items-center justify-between gap-3 px-4 py-3', className)}>
       <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
         <span>
           <RichText>
@@ -39,7 +39,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
         </span>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         {/* Page Size Selector */}
         <div className="flex items-center gap-2 text-sm">
           <span className="text-zinc-600 dark:text-zinc-400">{t('common.pagination.show')}</span>
@@ -78,7 +78,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
             <ChevronLeftIcon className="w-4 h-4" />
           </Button>
 
-          <span className="flex items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400 font-monosans">
+          <span className="flex items-center gap-1 px-3 py-1 text-sm text-zinc-600 dark:text-zinc-400 font-monosans whitespace-nowrap">
             <RichText>
               {(tags) => t.rich('common.pagination.page', { ...tags, page: pageIndex + 1, total: pageCount })}
             </RichText>

@@ -24,7 +24,7 @@ export const usePremiumApprovalHistory = () => {
   const chainStatuses = useMemo<ChainStatus[]>(() => {
     return chainData.map((chain, index) => {
       const historyQuery = historyQueries[index];
-      const status = getChainHistoryLoadingStatus(chain.status, historyQuery);
+      const status = getChainHistoryLoadingStatus(chain.status, historyQuery, chain.events.length > 0);
       const error = (historyQuery?.error ?? chain.error ?? null) as Error | null;
 
       const refetch = () => {
@@ -66,9 +66,11 @@ export const usePremiumApprovalHistory = () => {
 const getChainHistoryLoadingStatus = (
   chainStatus: 'loading' | 'success' | 'error',
   historyQuery: { isLoading: boolean; error: Error | null; isSuccess: boolean },
+  hasEvents: boolean,
 ): ChainHistoryLoadingStatus => {
   if (chainStatus === 'loading' || historyQuery.isLoading) return 'loading';
   if (chainStatus === 'error' || historyQuery.error) return 'error';
-  if (historyQuery.isSuccess) return 'success';
+  // If the chain finished loading but has no events, the history query was never enabled — treat as success
+  if (historyQuery.isSuccess || (chainStatus === 'success' && !hasEvents)) return 'success';
   return 'loading';
 };

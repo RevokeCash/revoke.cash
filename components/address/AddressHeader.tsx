@@ -15,8 +15,8 @@ const AddressHeader = () => {
   const { selectedChainId, selectChain } = useAddressPageContext();
 
   return (
-    <div className="flex flex-col-reverse sm:flex-row gap-6 border border-black dark:border-white rounded-lg p-4">
-      <div className="flex lex-row-reverse sm:flex-col items-end sm:items-start gap-3 shrink-0">
+    <div className="flex flex-col md:flex-row gap-6 border border-black dark:border-white rounded-lg p-4">
+      <div className="order-2 md:order-first flex flex-col gap-3 shrink-0">
         <div className="flex flex-col gap-1">
           <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Viewing address on</span>
           <ChainSelect
@@ -29,22 +29,22 @@ const AddressHeader = () => {
         </div>
         <PremiumBanner />
       </div>
-      <div className="flex flex-col sm:flex-row sm:justify-between gap-6 grow">
-        <div className="flex flex-col gap-3 justify-between">
-          <AddressDisplay
-            address={address}
-            domainName={domainName}
-            className="text-3xl font-bold"
-            copyButtonClassName="text-zinc-500 dark:text-zinc-400"
-            withCopyButton
-            withTooltip
-          />
-          <div className="flex items-center gap-2">
-            <AccountTypeLabel address={address} />
-            <ConnectedLabel address={address} />
-          </div>
-          <AddressExternalLinks address={address} chainId={selectedChainId} />
+      <div className="order-1 md:order-0 flex flex-col gap-3 justify-between grow">
+        <AddressDisplay
+          address={address}
+          domainName={domainName}
+          className="text-3xl font-bold"
+          copyButtonClassName="text-zinc-500 dark:text-zinc-400"
+          withCopyButton
+          withTooltip
+        />
+        <div className="flex items-center gap-2">
+          <AccountTypeLabel address={address} />
+          <ConnectedLabel address={address} />
         </div>
+        <AddressExternalLinks address={address} chainId={selectedChainId} />
+      </div>
+      <div className="order-3 md:order-0 md:self-center">
         <WalletHealthSection />
       </div>
     </div>

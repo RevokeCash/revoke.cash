@@ -12,7 +12,7 @@ const AddressExternalLinks = ({ address, chainId }: Props) => {
   const explorerBaseUrl = explorerUrl.replace('https://', '');
 
   return (
-    <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
+    <div className="flex flex-wrap items-center gap-x-4 text-sm text-zinc-500 dark:text-zinc-400">
       <AddressExternalLink href={`${explorerUrl}/address/${address}`}>{explorerBaseUrl}</AddressExternalLink>
       <AddressExternalLink href={`https://debank.com/profile/${address}`}>debank.com</AddressExternalLink>
       {explorerUrl.includes('blockscout') ? null : (

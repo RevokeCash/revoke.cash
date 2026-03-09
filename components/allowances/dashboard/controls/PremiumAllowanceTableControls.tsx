@@ -25,7 +25,7 @@ const PremiumAllowanceTableControls = ({
   return (
     <div className="flex flex-col gap-2">
       <SortSelect instanceId="premium-sort-select" onSortChange={onSortChange} />
-      <div className="flex flex-row justify-start gap-2">
+      <div className="flex flex-col sm:flex-row justify-start gap-2">
         <Suspense>
           <AllowanceSearchBox id="premium-spender-search" onSearchValuesChange={onSearchValuesChange} />
         </Suspense>

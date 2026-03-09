@@ -1,6 +1,6 @@
-import { and, count, eq } from 'drizzle-orm';
+import { and, count, eq, gt } from 'drizzle-orm';
 import { getDb } from 'lib/db/client';
-import { premiumPayments } from 'lib/db/schema/premium';
+import { premiumPayments, premiumSubscriptions } from 'lib/db/schema/premium';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { MINUTE } from 'lib/utils/time';
 import type { Address } from 'viem';
@@ -56,6 +56,18 @@ export const createPayment = async ({ ownerAddress, planId, chainId }: CreatePay
 
   const db = getDb();
   const normalizedOwner = ownerAddress.toLowerCase();
+
+  // Prevent downgrade: if the user has an active subscription on a more expensive plan,
+  // they must renew at the same tier or upgrade
+  const activeSubscription = await db.query.premiumSubscriptions.findFirst({
+    where: and(eq(premiumSubscriptions.ownerAddress, normalizedOwner), gt(premiumSubscriptions.endsAt, new Date())),
+    columns: { planId: true },
+    with: { plan: { columns: { priceUsd: true } } },
+  });
+
+  if (activeSubscription && plan.priceUsd < activeSubscription.plan.priceUsd) {
+    throw new Error('Cannot renew with a lower-tier plan. Please select the same plan or upgrade.');
+  }
 
   const [{ count: pendingCount }] = await db
     .select({ count: count() })

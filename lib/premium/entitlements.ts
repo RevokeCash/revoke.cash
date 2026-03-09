@@ -10,20 +10,25 @@ export interface GrantedEntitlement {
 }
 
 export const hasActivePremiumEntitlement = async (address: Address): Promise<boolean> => {
-  const db = getDb();
-  const now = new Date();
+  try {
+    const db = getDb();
+    const now = new Date();
 
-  const normalizedAddress = address.toLowerCase();
+    const normalizedAddress = address.toLowerCase();
 
-  const entitlementRows = await db.query.premiumSubscriptionAddresses.findMany({
-    where: eq(premiumSubscriptionAddresses.address, normalizedAddress),
-    columns: { id: true },
-    with: { subscription: { columns: { startsAt: true, endsAt: true } } },
-  });
+    const entitlementRows = await db.query.premiumSubscriptionAddresses.findMany({
+      where: eq(premiumSubscriptionAddresses.address, normalizedAddress),
+      columns: { id: true },
+      with: { subscription: { columns: { startsAt: true, endsAt: true } } },
+    });
 
-  return entitlementRows.some((row) => {
-    return row.subscription.startsAt.getTime() <= now.getTime() && row.subscription.endsAt.getTime() > now.getTime();
-  });
+    return entitlementRows.some((row) => {
+      return row.subscription.startsAt.getTime() <= now.getTime() && row.subscription.endsAt.getTime() > now.getTime();
+    });
+  } catch (e) {
+    console.error('Failed to check premium entitlement, falling back to free experience', e);
+    return false;
+  }
 };
 
 export const getGrantedEntitlements = async (address: Address): Promise<GrantedEntitlement[]> => {

@@ -33,8 +33,9 @@ const accessors = {
     return `${event.metadata?.symbol} ${event.token}`;
   },
   spender: (event: ApprovalHistoryEvent) => {
-    if (isNullish(event.payload.spenderData?.name)) return event.payload.spender;
-    return `${event.payload.spenderData?.name} ${event.payload.spender}`;
+    const spenderAddress = 'oldSpender' in event.payload ? (event.payload.oldSpender as string) : event.payload.spender;
+    if (isNullish(event.payload.spenderData?.name)) return spenderAddress;
+    return `${event.payload.spenderData?.name} ${spenderAddress}`;
   },
   timestamp: (event: ApprovalHistoryEvent) => {
     return event.time.timestamp;

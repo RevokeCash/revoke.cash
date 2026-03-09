@@ -14,7 +14,7 @@ const ComparisonTable = () => {
     <div className="flex flex-col gap-4">
       <h2 className="text-2xl font-semibold text-center">{t('premium.pricing.compare_plans')}</h2>
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-lg text-sm">
           <thead>
             <tr className="border-b border-zinc-200 dark:border-zinc-700">
               <th className="text-left py-3 pr-4 font-medium text-zinc-600 dark:text-zinc-400">

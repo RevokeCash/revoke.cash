@@ -23,5 +23,6 @@ export const usePremiumSubscriptions = (ownerAddress: Address, enabled: boolean)
     subscriptions: query.data?.subscriptions ?? [],
     entitlements: query.data?.entitlements ?? [],
     isLoading: query.isLoading,
+    isError: query.isError,
   };
 };

@@ -1,6 +1,7 @@
 {
   "addresses": {
     "add_address": "Add address",
+    "placeholder": "Address or domain name",
     "remove": "Remove",
     "title": "My Premium Addresses"
   },
@@ -15,6 +16,7 @@
     "title": "Billing"
   },
   "description": "Manage your premium subscription and address slots.",
+  "error": "Something went wrong loading your subscription data. Please try again later.",
   "granted": {
     "active": "Active",
     "granted_by": "Granted by {address} · Valid until {date}",

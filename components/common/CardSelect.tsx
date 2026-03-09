@@ -23,7 +23,7 @@ interface Props<T extends string> {
 
 const CardSelect = <T extends string>({ options, value, onChange, disabled }: Props<T>) => {
   return (
-    <RadioGroup value={value} onChange={onChange} disabled={disabled} className="flex gap-3">
+    <RadioGroup value={value} onChange={onChange} disabled={disabled} className="flex flex-col sm:flex-row gap-3">
       {options.map((option) => (
         <CardSelectOptionItem key={option.value} option={option} />
       ))}
@@ -47,7 +47,7 @@ const CardSelectOptionItem = <T extends string>({ option }: { option: CardSelect
     >
       <span>{option.label}</span>
       {option.description && (
-        <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400 group-data-checked:text-zinc-700">
+        <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400 group-data-checked:text-zinc-700 dark:group-data-checked:text-zinc-700">
           {option.description}
         </span>
       )}
@@ -55,7 +55,7 @@ const CardSelectOptionItem = <T extends string>({ option }: { option: CardSelect
         <Label
           className={twMerge(
             'mt-1 bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300',
-            'group-data-checked:bg-zinc-900/15 group-data-checked:text-zinc-900',
+            'group-data-checked:bg-zinc-900/15 group-data-checked:text-zinc-900 dark:group-data-checked:bg-zinc-900/15 dark:group-data-checked:text-zinc-900',
           )}
         >
           {option.tag}
