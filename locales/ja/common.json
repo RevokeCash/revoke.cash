@@ -6,10 +6,10 @@
   },
   "buttons": {
     "authenticate": "認証する",
-    "authenticated": "Authenticated",
+    "authenticated": "認証済み",
     "authenticating": "認証中",
     "back_to_exploits": "エクスプロイトの項目に戻る",
-    "bulk_delist": "Bulk Delist",
+    "bulk_delist": "一括削除",
     "cancel": "キャンセル",
     "cancel_signatures": "潜在的な署名をキャンセルする",
     "cancelling": "キャンセル中",
@@ -20,7 +20,7 @@
     "collapse_all": "Collapse All",
     "connect": "ウォレットを接続する",
     "connecting": "接続中",
-    "delisting": "Delisting",
+    "delisting": "削除",
     "disconnect": "接続解除",
     "disconnecting": "接続解除中",
     "donate": "寄付する",
@@ -30,10 +30,12 @@
     "explorer_links": "エクスプローラーリンク",
     "get_started": "開始する",
     "increase": "増加",
-    "loading": "Loading",
+    "loading": "読み込み中",
+    "my_account": "My Account",
     "my_allowances": "私の許可一覧",
     "next": "次へ",
     "previous": "前へ",
+    "remove": "Remove",
     "report_exploit": "エクスプロイトを報告する",
     "revoke": "取り消す",
     "revoke_selected": "選択を取り消す",
@@ -41,13 +43,15 @@
     "send": "送信する",
     "sending": "送信中",
     "share_on_x": "Xで共有する",
+    "sign_in_with_ethereum": "Sign In with Ethereum",
     "switch_chain": "ネットワークを切り替える",
     "switching": "切り替え中",
     "translate": "このページの翻訳にご協力ください",
-    "try_again": "Try Again",
+    "try_again": "もう一度お試しください",
     "understand": "理解しました",
     "update": "更新",
-    "updating": "更新中"
+    "updating": "更新中",
+    "upgrade_to_premium": "Upgrade to Premium"
   },
   "chain_select": {
     "mainnets": "メインネット",
@@ -95,14 +99,17 @@
     "faq": "よくある質問",
     "knowledgebase": "ナレッジベース",
     "learn": "学ぶ",
-    "marketplace_bulk_delister": "Marketplace Bulk Delister",
-    "permit_signatures": "Permit Signature Checker",
+    "marketplace_bulk_delister": "マーケットプレイス一括削除",
+    "permit_signatures": "許可署名チェッカー",
     "privacy": "プライバシー ポリシー",
     "product": "製品",
     "terms": "利用規約",
     "token_approval_checker": "トークン承認チェッカー",
     "what_are_token_approvals": "トークン承認とは？",
     "what_to_do_when_scammed": "詐欺に遭った場合の対処方法"
+  },
+  "labels": {
+    "premium": "Premium"
   },
   "meta": {
     "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
@@ -117,6 +124,7 @@
     "learn": "学ぶ",
     "merchandise": "商品",
     "more": "その他",
+    "premium": "Premium",
     "search": "アドレスまたはドメインでアカウントを検索する"
   },
   "pagination": {

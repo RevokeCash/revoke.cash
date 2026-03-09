@@ -33,7 +33,7 @@
         "non_evm": "非EVM",
         "title": "対応ブロックチェーン"
       },
-      "description": "Revoke.cashでは、暗号通貨業界でのリスク管理を支援します。弊社では、資金の流出や損失を防ぐのに役立つツールを提供しています。しかし、それでも詐欺やハッキングは起こります。そこで役立つのがカバレッジです。カバレッジとは、ウォレットが枯渇した場合にウォレットの価値が確実にカバーされるようにする方法です。スマートコントラクトのハッキングからフィッシング攻撃まで、いくつかの種類のカバレッジがあります。<fairside-link>Fairside</fairside-link>と提携して、フィッシングやソーシャルエンジニアリングの流出に備えてカバレッジを提供していますが、<nexus-link>Nexus Mutual</nexus-link>や<bright-union-link>Bright Union</bright-union-link>など、スマートコントラクトハッキング向けのカバレッジ商品は他にもあります。",
+      "description": "Revoke.cashでは、暗号資産分野におけるリスク管理を支援します。資金の流出や損失を防ぐツールを提供していますが、それでも詐欺やハッキングは発生します。そこで保険が役立ちます。保険は、ウォレットの資金が流出した場合にその価値を補償する手段です。スマートコントラクトのハッキングからフィッシング攻撃まで、複数の種類の保険が存在します。当社は<fairside-link>Fairside</fairside-link>と提携し、フィッシングやソーシャルエンジニアリングによる資金流出に対する補償を提供しています。一方、<nexus-link>Nexus Mutual</nexus-link>など、スマートコントラクトハッキング向けの補償商品も存在します。",
       "important": {
         "coverage_amount": "カバレッジは特定のETH金額で購入されます。ポートフォリオの価値がETHで上昇した場合、設定されたETH金額のみがカバーされます。",
         "fee": "支払いには10％の個人責任額があります。",
@@ -154,7 +154,7 @@
     "amount": "金額",
     "asset": "資産",
     "asset_type": "種類",
-    "chain": "Network",
+    "chain": "ネットワーク",
     "date": "日付",
     "event_type": "イベントの種類",
     "expiration": "有効期限",
@@ -197,6 +197,7 @@
     "allowances": "許可",
     "coverage": "カバレッジ",
     "delegations": "委任の対象",
+    "exploits": "Exploits",
     "history": "履歴",
     "more": "その他",
     "sessions": "セッション",
@@ -204,6 +205,12 @@
   },
   "permit2": {
     "expiration": "{inTime}で期限が切れます"
+  },
+  "premium": {
+    "banner": {
+      "cta": "Upgrade to Premium",
+      "description": "Want a unified view across all networks?"
+    }
   },
   "risk_factors": {
     "allowlist": "よく知られている支出者のアドレス",
@@ -227,7 +234,7 @@
   },
   "search": {
     "history": "支出者またはトークンで検索する",
-    "spender": "公認支出者アドレスによる検索"
+    "spender": "支出者で検索"
   },
   "sessions": {
     "info": {

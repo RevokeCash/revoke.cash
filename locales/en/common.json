@@ -4,11 +4,7 @@
     "reading_time": "{readingTime} min read",
     "translator": "Translated by <person-link>{translator}</person-link>"
   },
-  "labels": {
-    "premium": "Premium"
-  },
   "buttons": {
-    "my_account": "My Account",
     "authenticate": "Authenticate",
     "authenticated": "Authenticated",
     "authenticating": "Authenticating",
@@ -35,6 +31,7 @@
     "get_started": "Get Started",
     "increase": "Increase",
     "loading": "Loading",
+    "my_account": "My Account",
     "my_allowances": "My Approvals",
     "next": "Next",
     "previous": "Previous",
@@ -110,6 +107,9 @@
     "token_approval_checker": "Token Approval Checker",
     "what_are_token_approvals": "What Are Token Approvals?",
     "what_to_do_when_scammed": "What to Do When Scammed?"
+  },
+  "labels": {
+    "premium": "Premium"
   },
   "meta": {
     "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 100 other networks.",

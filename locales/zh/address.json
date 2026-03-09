@@ -197,6 +197,7 @@
     "allowances": "授权",
     "coverage": "覆盖范围",
     "delegations": "授权",
+    "exploits": "Exploits",
     "history": "历史",
     "more": "更多",
     "sessions": "会话",
@@ -204,6 +205,12 @@
   },
   "permit2": {
     "expiration": "于 {inTime} 过期"
+  },
+  "premium": {
+    "banner": {
+      "cta": "Upgrade to Premium",
+      "description": "Want a unified view across all networks?"
+    }
   },
   "risk_factors": {
     "allowlist": "知名被授权人（Spender）地址",

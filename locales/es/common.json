@@ -17,7 +17,7 @@
     "check_connected_address": "Comprobar Dirección Conectada",
     "clear_filters": "Quitar Filtros",
     "close": "Cerrar",
-    "collapse_all": "Collapse All",
+    "collapse_all": "Contraer todo",
     "connect": "Conectar Cartera",
     "connecting": "Conectando",
     "delisting": "Exclusión de la lista",
@@ -26,14 +26,16 @@
     "donate": "Donar",
     "donating": "Donando",
     "download": "Descargar",
-    "expand_all": "Expand All",
+    "expand_all": "Expandir todo",
     "explorer_links": "Enlaces del explorador",
     "get_started": "Empezar",
     "increase": "Aumentar",
     "loading": "Cargando",
+    "my_account": "My Account",
     "my_allowances": "Mis Autorizaciones",
     "next": "Siguiente",
     "previous": "Anterior",
+    "remove": "Remove",
     "report_exploit": "Informar de un Hack",
     "revoke": "Revocar",
     "revoke_selected": "Revocar lo seleccionado",
@@ -41,13 +43,15 @@
     "send": "Enviar",
     "sending": "Enviando",
     "share_on_x": "Compartir en X",
+    "sign_in_with_ethereum": "Sign In with Ethereum",
     "switch_chain": "Cambiar de Red",
     "switching": "Cambiando",
     "translate": "Ayúdanos a traducir esta página",
     "try_again": "Inténtalo de nuevo",
     "understand": "Entiendo",
     "update": "Actualizar",
-    "updating": "Actualizando"
+    "updating": "Actualizando",
+    "upgrade_to_premium": "Upgrade to Premium"
   },
   "chain_select": {
     "mainnets": "Redes Principales",
@@ -104,6 +108,9 @@
     "what_are_token_approvals": "¿Qué son las Autorizaciones de Tokens?",
     "what_to_do_when_scammed": "¿Qué hacer cuando es estafado?"
   },
+  "labels": {
+    "premium": "Premium"
+  },
   "meta": {
     "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {chainName} y en 100 redes más.",
     "title": "Revoca las Aprobaciones de Tus Tokens en Más de 100 Redes"
@@ -117,13 +124,14 @@
     "learn": "Aprender",
     "merchandise": "Mercancía",
     "more": "Más",
+    "premium": "Premium",
     "search": "Buscar Cuentas por Dirección o Dominio"
   },
   "pagination": {
     "first": "Primero",
     "last": "Último",
     "page": "Página {page} de {total}",
-    "show": "Show",
+    "show": "Mostrar",
     "showing": "Mostrando {start} a {end} de {total} resultados"
   },
   "quiz": {

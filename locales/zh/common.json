@@ -31,9 +31,11 @@
     "get_started": "开始使用",
     "increase": "增加",
     "loading": "Loading",
+    "my_account": "My Account",
     "my_allowances": "我的授权",
     "next": "下一个",
     "previous": "上一个",
+    "remove": "Remove",
     "report_exploit": "报告漏洞",
     "revoke": "撤销",
     "revoke_selected": "撤销选定",
@@ -41,13 +43,15 @@
     "send": "发送",
     "sending": "发送给",
     "share_on_x": "分享至 X",
+    "sign_in_with_ethereum": "Sign In with Ethereum",
     "switch_chain": "切换区块链",
     "switching": "切换中",
     "translate": "帮助我们翻译这个页面",
     "try_again": "Try Again",
     "understand": "我理解",
     "update": "更新",
-    "updating": "更新中"
+    "updating": "更新中",
+    "upgrade_to_premium": "Upgrade to Premium"
   },
   "chain_select": {
     "mainnets": "主网",
@@ -104,6 +108,9 @@
     "what_are_token_approvals": "什么是代币授权？",
     "what_to_do_when_scammed": "被骗了怎么办？"
   },
+  "labels": {
+    "premium": "Premium"
+  },
   "meta": {
     "description": "撤销在 {chainName} 等 100+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",
     "title": "撤销 100+ 区块链网络上的代币授权"
@@ -117,6 +124,7 @@
     "learn": "学习资源",
     "merchandise": "商品",
     "more": "更多",
+    "premium": "Premium",
     "search": "通过输入地址或域名来搜索账户"
   },
   "pagination": {

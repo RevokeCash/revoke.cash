@@ -1,7 +1,6 @@
 import { useTranslations } from 'next-intl';
 import ComparisonTable from './ComparisonTable';
-import FeatureSection from './FeatureSection';
-import { FEATURE_SECTIONS, TIER_KEYS } from './pricing-data';
+import { TIER_KEYS } from './pricing-data';
 import TierCard from './TierCard';
 
 const PricingPage = () => {

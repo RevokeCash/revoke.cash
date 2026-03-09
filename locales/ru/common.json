@@ -31,9 +31,11 @@
     "get_started": "Начать",
     "increase": "Увеличить",
     "loading": "Loading",
+    "my_account": "My Account",
     "my_allowances": "Мои доступы",
     "next": "Следующее",
     "previous": "Предыдущее",
+    "remove": "Remove",
     "report_exploit": "Сообщить об эксплойте",
     "revoke": "Отозвать",
     "revoke_selected": "Отозвать выбранное",
@@ -41,13 +43,15 @@
     "send": "Отправить",
     "sending": "Отправка…",
     "share_on_x": "Поделиться на X",
+    "sign_in_with_ethereum": "Sign In with Ethereum",
     "switch_chain": "Сменить сеть",
     "switching": "Переключение...",
     "translate": "Помогите перевести эту страницу",
     "try_again": "Try Again",
     "understand": "Понятно",
     "update": "Обновить",
-    "updating": "Обновление…"
+    "updating": "Обновление…",
+    "upgrade_to_premium": "Upgrade to Premium"
   },
   "chain_select": {
     "mainnets": "Основные сети",
@@ -104,6 +108,9 @@
     "what_are_token_approvals": "Что такое одобрение токенов?",
     "what_to_do_when_scammed": "Что делать в случае мошенничества?"
   },
+  "labels": {
+    "premium": "Premium"
+  },
   "meta": {
     "description": "Верните себе контроль над своим кошельком и оставайтесь в безопасности, отменив одобренные токены и разрешения, предоставленные вами в {chainName} и более чем в 100 других сетях.",
     "title": "Отмените доступы к вашим токенам в более чем 100 сетях"
@@ -117,6 +124,7 @@
     "learn": "Учить",
     "merchandise": "Мерч",
     "more": "Больше",
+    "premium": "Premium",
     "search": "Поиск учетных записей по адресу или домену"
   },
   "pagination": {

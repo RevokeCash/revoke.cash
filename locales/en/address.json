@@ -208,8 +208,8 @@
   },
   "premium": {
     "banner": {
-      "description": "Want a unified view across all networks?",
-      "cta": "Upgrade to Premium"
+      "cta": "Upgrade to Premium",
+      "description": "Want a unified view across all networks?"
     }
   },
   "risk_factors": {

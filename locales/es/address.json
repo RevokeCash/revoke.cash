@@ -22,7 +22,7 @@
     },
     "no_tip": "Sin propina",
     "revoked": "Revocado",
-    "select_tip_amount": "Select tip amount",
+    "select_tip_amount": "Seleccione el monto de la propina",
     "title": "Revocación por Lotes",
     "total": "Total"
   },
@@ -94,9 +94,9 @@
       "not_applicable": "N/A"
     },
     "count": "{count, plural, =0 {Sin delegaciones} =1 {# delegación} other {# delegaciones}}",
-    "delegated_to": "Delegated To",
+    "delegated_to": "Delegado a",
     "eip7702_delegations": "Delegaciones EIP7702",
-    "empty_chains_count": "{contador, plural, =0 {No hay redes sin delegaciones} =1 {# red sin delegaciones} other {# redes sin delegaciones}}",
+    "empty_chains_count": "{count, plural, =0 {No hay redes sin delegaciones} =1 {# red sin delegaciones} other {# redes sin delegaciones}}",
     "info_panel": {
       "description": "Las delegaciones son una forma de autorizar a otras direcciones a actuar en su nombre, por ejemplo, al intentar verificar la propiedad de los activos o al reclamar lanzamientos aéreos. Esto puede ser beneficioso para la seguridad, ya que te permite usar un <b>hot wallet</b> para administrar tus activos sin tener que usar tu <b>cold wallet</b> para cada interacción. Sin embargo, en caso de que tu hot wallet se vea comprometida, debes asegurarte de revocar la delegación para que el atacante no pueda usarla para hacerse pasar por ti. Ten en cuenta que estas delegaciones son <b>different</b> de EIP7702 delegaciones, que pueden <i>only</i> ser revocadas dentro de tu aplicación de cartera.",
       "title": "¿Qué son las Delegaciones?"
@@ -197,6 +197,7 @@
     "allowances": "Autorizaciones",
     "coverage": "Cobertura",
     "delegations": "Delegaciones",
+    "exploits": "Exploits",
     "history": "Historial",
     "more": "Más",
     "sessions": "Sesiones",
@@ -204,6 +205,12 @@
   },
   "permit2": {
     "expiration": "Caduca {inTime}"
+  },
+  "premium": {
+    "banner": {
+      "cta": "Upgrade to Premium",
+      "description": "Want a unified view across all networks?"
+    }
   },
   "risk_factors": {
     "allowlist": "Dirección conocida del comprador",

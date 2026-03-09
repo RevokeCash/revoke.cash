@@ -197,6 +197,7 @@
     "allowances": "Доступы",
     "coverage": "Покрытие",
     "delegations": "Делегации",
+    "exploits": "Exploits",
     "history": "История",
     "more": "Больше",
     "sessions": "Сессии",
@@ -204,6 +205,12 @@
   },
   "permit2": {
     "expiration": "Срок действия истекает {inTime}"
+  },
+  "premium": {
+    "banner": {
+      "cta": "Upgrade to Premium",
+      "description": "Want a unified view across all networks?"
+    }
   },
   "risk_factors": {
     "allowlist": "Известный адрес плательщика",

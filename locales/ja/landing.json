@@ -22,6 +22,20 @@
     },
     "title": "許可をリボーク(取消)する方法。"
   },
+  "premium": {
+    "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $99/year.",
+    "highlights": {
+      "address_slots": "Up to 10 address slots",
+      "multichain_dashboard": "Multichain dashboard — all chains at once",
+      "multichain_exploit_checker": "Multichain exploit checker",
+      "multichain_history": "Multichain approval history",
+      "priority_support": "Priority support",
+      "unlimited_batch_revokes": "Unlimited batch revokes"
+    },
+    "subscribe_now": "Subscribe now",
+    "title": "Revoke Premium",
+    "view_pricing": "View pricing"
+  },
   "why_revoke": {
     "paragraph_1": {
       "description": "特にNFTマーケットプレイスにおいて、アプリを積極的に使用していない時は、許可を制限するのが良いでしょう。これにより、ハッキングやエクスプロイトによって資金を失うリスクを低減し、フィッシング詐欺の被害を軽減することができます。",
