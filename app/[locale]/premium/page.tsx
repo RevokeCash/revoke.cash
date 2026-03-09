@@ -1,5 +1,5 @@
 import SharedLayout from 'app/layouts/SharedLayout';
-import PricingPage from 'components/premium/PricingPage';
+import PricingPage from 'components/premium/pricing/PricingPage';
 import type { Metadata, NextPage } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 

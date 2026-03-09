@@ -1,5 +1,4 @@
 import Button from 'components/common/Button';
-import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import { twMerge } from 'tailwind-merge';
 
@@ -9,25 +8,28 @@ interface Props {
 }
 
 const AddressNavigationTab = ({ name, href }: Props) => {
-  const router = useCsrRouter();
   const path = usePathname();
   const isSelected = path?.endsWith(href);
 
   const classes = twMerge(
-    'whitespace-nowrap border-b-2 pb-1 text-sm font-medium border-transparent',
+    'flex whitespace-nowrap border-b-2 pb-1 text-sm font-medium border-transparent',
     'text-zinc-500 visited:text-zinc-500 dark:text-zinc-400 dark:visited:text-zinc-400',
     isSelected &&
       'border-black text-black visited:text-black dark:border-white dark:text-white dark:visited:text-white',
     !isSelected && 'hover:border-zinc-300 hover:text-zinc-700 dark:hover:border-zinc-400 dark:hover:text-zinc-300',
   );
 
-  const onClick = () => {
-    router.replace(`${href}`, { retainSearchParams: ['chainId'] });
-  };
-
   return (
     <div className="relative">
-      <Button id={name} style="none" size="none" onClick={onClick} className={classes}>
+      <Button
+        id={name}
+        style="none"
+        size="none"
+        href={href}
+        router
+        retainSearchParams={['chainId']}
+        className={classes}
+      >
         {name}
       </Button>
     </div>

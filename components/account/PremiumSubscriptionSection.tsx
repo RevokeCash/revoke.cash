@@ -13,6 +13,7 @@ import type { PremiumPlan, PremiumSubscription } from 'lib/premium/types';
 import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 import type { Address } from 'viem';
 import { useConnection } from 'wagmi';
 
@@ -71,7 +72,11 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
       : 'upgrade';
 
   return (
-    <Card header={<CardTitle title={t('account.subscription.title')} />} className="flex flex-col gap-4">
+    <Card
+      header={<CardTitle title={t('account.subscription.title')} />}
+      isLoading={isLoadingPlans}
+      className={twMerge('flex flex-col gap-4', isLoadingPlans && 'h-80')}
+    >
       <WalletInfo account={account} domainName={domainName} />
       <SubscriptionBanner activeSubscription={activeSubscription} />
 

@@ -9,6 +9,7 @@
       "description": "Compare Revoke Premium plans. Get the multichain dashboard, unlimited batch revokes, and more."
     },
     "title": "Pricing",
+    "best_value": "Best Value",
     "description": "Stay safe in web3 with the tools you need. Upgrade to Premium for the full experience.",
     "most_popular": "Most popular",
     "compare_plans": "Compare plans",
@@ -47,6 +48,29 @@
       "unlimited_batch_revokes": "Unlimited batch revokes",
       "one_address_slot": "1 address slot",
       "ten_address_slots": "10 address slots"
+    },
+    "feature_sections": {
+      "title": "What you get with Premium",
+      "multichain_approvals": {
+        "title": "Multichain Approvals",
+        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard. No more switching chains one by one — see everything at a glance and take action instantly."
+      },
+      "multichain_history": {
+        "title": "Multichain History",
+        "description": "Access your full approval history across every supported network in one place. Track every approve, revoke, and permission change across all your wallets over time."
+      },
+      "multichain_exploit_checker": {
+        "title": "Multichain Exploit Checker",
+        "description": "Automatically check all your wallets against known exploits across every supported network. Get alerted if any of your approvals are associated with compromised contracts so you can revoke them immediately."
+      },
+      "unlimited_batch_revokes": {
+        "title": "Unlimited Batch Revokes",
+        "description": "Revoke multiple token approvals in a single transaction at no extra cost. Free users pay a per-batch fee, but Premium subscribers enjoy unlimited batch revokes across all networks."
+      },
+      "priority_support": {
+        "title": "Priority Support",
+        "description": "Get faster responses from the Revoke.cash team when you need help. Premium subscribers are prioritized in our support queue so you never have to wait long for assistance."
+      }
     }
   }
 }

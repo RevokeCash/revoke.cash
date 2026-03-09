@@ -5,6 +5,7 @@ import Card, { CardTitle } from 'components/common/Card';
 import type { PremiumSubscription, SubscriptionPayment } from 'lib/premium/types';
 import type { DocumentedChainId } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   subscriptions: PremiumSubscription[];
@@ -19,7 +20,7 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
     <Card
       header={<CardTitle title={t('account.billing.title')} />}
       isLoading={isLoading}
-      className="flex flex-col gap-4"
+      className={twMerge('flex flex-col gap-4', isLoading && 'h-40')}
     >
       {!isLoading && allPayments.length === 0 && (
         <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.billing.no_payments')}</p>
