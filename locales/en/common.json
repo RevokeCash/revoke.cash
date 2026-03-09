@@ -4,6 +4,9 @@
     "reading_time": "{readingTime} min read",
     "translator": "Translated by <person-link>{translator}</person-link>"
   },
+  "labels": {
+    "premium": "Premium"
+  },
   "buttons": {
     "my_account": "My Account",
     "authenticate": "Authenticate",
@@ -35,6 +38,7 @@
     "my_allowances": "My Approvals",
     "next": "Next",
     "previous": "Previous",
+    "remove": "Remove",
     "report_exploit": "Report Exploit",
     "revoke": "Revoke",
     "revoke_selected": "Revoke Selected",
@@ -42,6 +46,7 @@
     "send": "Send",
     "sending": "Sending",
     "share_on_x": "Share on X",
+    "sign_in_with_ethereum": "Sign In with Ethereum",
     "switch_chain": "Switch Network",
     "switching": "Switching",
     "translate": "Help Us Translate This Page",

@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "title": "My Account",
+    "description": "Manage your account and premium settings."
+  },
+  "description": "Manage your premium subscription and address slots.",
+  "unauthenticated": {
+    "description": "Please sign in with Ethereum to access your account page."
+  },
+  "subscription": {
+    "title": "My Premium Subscription",
+    "wallet": "Wallet",
+    "active": "Active",
+    "valid_until": "Valid until {date}",
+    "slots_summary": "{used}/{max} address {max, plural, =1 {slot} other {slots}} used",
+    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started.",
+    "plan": "Plan",
+    "payment_network": "Payment network",
+    "payment_summary": "You will pay {amount} {token} for {days} days and up to {maxAddresses} {maxAddresses, plural, =1 {address} other {addresses}}.",
+    "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
+    "downgrade_not_supported": "You cannot downgrade an active subscription.",
+    "buttons": {
+      "creating": "Creating payment",
+      "paying": "Confirm in wallet",
+      "confirming": "Confirming payment",
+      "try_again": "Try again",
+      "subscribe": "Subscribe",
+      "extend": "Extend",
+      "upgrade": "Upgrade"
+    },
+    "plan_options": {
+      "free": "Free",
+      "basic_access": "Basic Access",
+      "current": "Current"
+    },
+    "plan_description": "${price}/year · {maxAddresses, plural, =1 {1 address} other {{maxAddresses} addresses}}"
+  },
+  "addresses": {
+    "title": "My Premium Addresses",
+    "remove": "Remove",
+    "add_address": "Add address"
+  },
+  "billing": {
+    "title": "Billing",
+    "no_payments": "No payment history yet.",
+    "columns": {
+      "date": "Date",
+      "plan": "Plan",
+      "amount": "Amount",
+      "transaction": "Transaction"
+    }
+  },
+  "granted": {
+    "title": "Granted Premium Access",
+    "active": "Active",
+    "granted_by": "Granted by {address} · Valid until {date}"
+  }
+}

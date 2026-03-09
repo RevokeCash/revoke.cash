@@ -206,6 +206,12 @@
   "permit2": {
     "expiration": "Expires {inTime}"
   },
+  "premium": {
+    "banner": {
+      "description": "Want a unified view across all networks?",
+      "cta": "Upgrade to Premium"
+    }
+  },
   "risk_factors": {
     "allowlist": "Well-known spender address",
     "blocklist": "Dangerous or malicious",

@@ -1,0 +1,52 @@
+{
+  "banner": {
+    "description": "Want a unified view across all networks?",
+    "cta": "Upgrade to Premium"
+  },
+  "pricing": {
+    "meta": {
+      "title": "Premium Pricing",
+      "description": "Compare Revoke Premium plans. Get the multichain dashboard, unlimited batch revokes, and more."
+    },
+    "title": "Pricing",
+    "description": "Stay safe in web3 with the tools you need. Upgrade to Premium for the full experience.",
+    "most_popular": "Most popular",
+    "compare_plans": "Compare plans",
+    "feature_column": "Feature",
+    "per_year": "/year",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "description": "Essential tools to inspect and revoke token approvals.",
+        "cta": "Get started"
+      },
+      "premium": {
+        "name": "Premium",
+        "description": "Full access to the multichain dashboard, history, and unlimited batch revokes.",
+        "cta": "Subscribe"
+      },
+      "bundle": {
+        "name": "Premium Bundle",
+        "description": "Everything in Premium for up to 10 wallet addresses.",
+        "cta": "Subscribe"
+      }
+    },
+    "features": {
+      "revoke_approvals": "Revoke approvals on 100+ networks",
+      "approval_history": "Approval history",
+      "exploit_checker": "Exploit checker",
+      "batch_revoke": "Batch revoke",
+      "multichain_dashboard": "Multichain dashboard",
+      "multichain_exploit_checker": "Multichain exploit checker",
+      "priority_support": "Priority support",
+      "address_slots": "Address slots",
+      "one_chain": "One chain at a time",
+      "unlimited": "Unlimited",
+      "per_batch": "{price} per batch",
+      "batch_revoke_paid": "Batch revoke ({price}/batch)",
+      "unlimited_batch_revokes": "Unlimited batch revokes",
+      "one_address_slot": "1 address slot",
+      "ten_address_slots": "10 address slots"
+    }
+  }
+}

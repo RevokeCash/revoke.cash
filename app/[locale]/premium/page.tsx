@@ -1,7 +1,7 @@
 import SharedLayout from 'app/layouts/SharedLayout';
 import PricingPage from 'components/premium/PricingPage';
 import type { Metadata, NextPage } from 'next';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
@@ -11,10 +11,13 @@ interface Params {
   locale: string;
 }
 
-export const generateMetadata = async (): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+
   return {
-    title: 'Premium Pricing',
-    description: 'Compare Revoke.cash plans. Get the multichain dashboard, unlimited batch revokes, and more.',
+    title: t('premium.pricing.meta.title'),
+    description: t('premium.pricing.meta.description'),
   };
 };
 

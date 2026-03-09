@@ -4,6 +4,7 @@ import TransactionHashCell from 'components/allowances/dashboard/cells/Transacti
 import Card, { CardTitle } from 'components/common/Card';
 import type { PremiumSubscription, SubscriptionPayment } from 'lib/premium/types';
 import type { DocumentedChainId } from 'lib/utils/chains';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   subscriptions: PremiumSubscription[];
@@ -11,12 +12,17 @@ interface Props {
 }
 
 const BillingSection = ({ subscriptions, isLoading }: Props) => {
+  const t = useTranslations();
   const allPayments: SubscriptionPayment[] = subscriptions.flatMap((sub) => sub.payments);
 
   return (
-    <Card header={<CardTitle title="Billing" />} isLoading={isLoading} className="flex flex-col gap-4">
+    <Card
+      header={<CardTitle title={t('account.billing.title')} />}
+      isLoading={isLoading}
+      className="flex flex-col gap-4"
+    >
       {!isLoading && allPayments.length === 0 && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">No payment history yet.</p>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.billing.no_payments')}</p>
       )}
 
       {allPayments.length > 0 && (
@@ -24,10 +30,10 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-zinc-200 dark:border-zinc-700 text-left text-zinc-600 dark:text-zinc-400">
-                <th className="pb-2 pr-4 font-medium">Date</th>
-                <th className="pb-2 pr-4 font-medium">Plan</th>
-                <th className="pb-2 pr-4 font-medium">Amount</th>
-                <th className="pb-2 font-medium">Transaction</th>
+                <th className="pb-2 pr-4 font-medium">{t('account.billing.columns.date')}</th>
+                <th className="pb-2 pr-4 font-medium">{t('account.billing.columns.plan')}</th>
+                <th className="pb-2 pr-4 font-medium">{t('account.billing.columns.amount')}</th>
+                <th className="pb-2 font-medium">{t('account.billing.columns.transaction')}</th>
               </tr>
             </thead>
             <tbody>

@@ -36,5 +36,19 @@
       "title": "3. Use the Revoke.cash browser extension."
     },
     "title": "Why You Should Use Revoke.cash."
+  },
+  "premium": {
+    "title": "Revoke Premium",
+    "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $99/year.",
+    "highlights": {
+      "multichain_dashboard": "Multichain dashboard — all chains at once",
+      "unlimited_batch_revokes": "Unlimited batch revokes",
+      "multichain_exploit_checker": "Multichain exploit checker",
+      "multichain_history": "Multichain approval history",
+      "priority_support": "Priority support",
+      "address_slots": "Up to 10 address slots"
+    },
+    "view_pricing": "View pricing",
+    "subscribe_now": "Subscribe now"
   }
 }

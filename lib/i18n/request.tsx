@@ -12,6 +12,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale,
     messages: {
       about: (await import(`../../locales/${locale}/about.json`)).default,
+      account: (await import(`../../locales/${locale}/account.json`)).default,
       address: (await import(`../../locales/${locale}/address.json`)).default,
       blog: (await import(`../../locales/${locale}/blog.json`)).default,
       common: (await import(`../../locales/${locale}/common.json`)).default,
@@ -23,6 +24,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
       token_approval_checker: (await import(`../../locales/${locale}/token_approval_checker.json`)).default,
       merchandise: (await import(`../../locales/${locale}/merchandise.json`)).default,
       signatures: (await import(`../../locales/${locale}/signatures.json`)).default,
+      premium: (await import(`../../locales/${locale}/premium.json`)).default,
       pudgy: (await import(`../../locales/${locale}/pudgy.json`)).default,
     },
   };

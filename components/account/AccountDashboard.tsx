@@ -36,7 +36,7 @@ const AccountDashboard = () => {
     <div className="max-w-4xl mx-auto py-8 flex flex-col gap-6">
       <div>
         <h1 className="text-4xl font-semibold leading-tight">{t('common.buttons.my_account')}</h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">Manage your premium subscription and address slots.</p>
+        <p className="mt-2 text-zinc-600 dark:text-zinc-400">{t('account.description')}</p>
       </div>
 
       <PremiumSubscriptionSection account={account as Address} activeSubscription={activeSubscription} />

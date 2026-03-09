@@ -1,5 +1,6 @@
 import { SparklesIcon } from '@heroicons/react/24/solid';
 import Label from 'components/common/Label';
+import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -7,6 +8,8 @@ interface Props {
 }
 
 const PremiumBadge = ({ className }: Props) => {
+  const t = useTranslations();
+
   return (
     <Label
       className={twMerge(
@@ -15,7 +18,7 @@ const PremiumBadge = ({ className }: Props) => {
       )}
     >
       <SparklesIcon className="w-3 h-3" />
-      <span>Premium</span>
+      <span>{t('common.labels.premium')}</span>
     </Label>
   );
 };

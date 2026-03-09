@@ -1,6 +1,7 @@
 import AccountDashboard from 'components/account/AccountDashboard';
+import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
@@ -15,8 +16,8 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const t = await getTranslations({ locale });
 
   return {
-    title: t('common.buttons.my_account'),
-    description: 'Manage your connected wallet account and premium settings.',
+    title: t('account.meta.title'),
+    description: t('account.meta.description'),
   };
 };
 
@@ -24,7 +25,13 @@ const AccountPage: NextPage<Props> = async ({ params }) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <AccountDashboard />;
+  const messages = await getMessages({ locale });
+
+  return (
+    <NextIntlClientProvider messages={{ common: messages.common, account: messages.account }}>
+      <AccountDashboard />
+    </NextIntlClientProvider>
+  );
 };
 
 export default AccountPage;

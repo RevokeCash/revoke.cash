@@ -1,13 +1,16 @@
 'use client';
 
 import Href from 'components/common/Href';
+import { useTranslations } from 'next-intl';
 
 const PremiumBanner = () => {
+  const t = useTranslations();
+
   return (
     <div className="flex flex-col text-sm">
-      <span>Want a unified view across all networks?</span>
+      <span>{t('address.premium.banner.description')}</span>
       <Href href="/premium" className="font-medium text-brand" underline="always" router>
-        Upgrade to Premium
+        {t('address.premium.banner.cta')}
       </Href>
     </div>
   );

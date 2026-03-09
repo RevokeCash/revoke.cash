@@ -4,15 +4,19 @@ import { formatUnits, parseEther } from 'viem';
 import { isNullish } from '.';
 import { fixedPointMultiply } from './math';
 
-export const shortenAddress = (address: Nullable<string>, characters: number = 6): Nullable<string> => {
+export function shortenAddress(address: string, characters?: number): string;
+export function shortenAddress(address: Nullable<string>, characters?: number): Nullable<string>;
+export function shortenAddress(address: Nullable<string>, characters: number = 6): Nullable<string> {
   return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
-};
+}
 
-export const shortenString = (name: Nullable<string>, maxLength: number = 16): Nullable<string> => {
+export function shortenString(name: string, maxLength?: number): string;
+export function shortenString(name: Nullable<string>, maxLength?: number): Nullable<string>;
+export function shortenString(name: Nullable<string>, maxLength: number = 16): Nullable<string> {
   if (!name) return name;
   if (name.length <= maxLength) return name;
   return `${name.substr(0, maxLength - 3).trim()}...`;
-};
+}
 
 export const formatFixedPointBigInt = (
   fixedPointBigInt: bigint,

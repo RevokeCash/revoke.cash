@@ -5,6 +5,7 @@ import Card, { CardHeader } from 'components/common/Card';
 import Input from 'components/common/Input';
 import { useSubscriptionAddresses } from 'lib/hooks/premium/useSubscriptionAddresses';
 import type { PremiumSubscription } from 'lib/premium/types';
+import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 
 interface Props {
@@ -13,15 +14,19 @@ interface Props {
 }
 
 const PremiumAddressesSection = ({ activeSubscription, account }: Props) => {
+  const t = useTranslations();
   const addresses = useSubscriptionAddresses(account);
   const inputValue = addresses.addressInputs[activeSubscription.id] ?? '';
 
   const header = (
     <CardHeader>
       <div className="flex items-center w-full justify-between">
-        <h2 className="text-xl flex gap-2 items-center">My Premium Addresses</h2>
+        <h2 className="text-xl flex gap-2 items-center">{t('account.addresses.title')}</h2>
         <p className="text-xs italic font-normal">
-          {`${activeSubscription.slots.used}/${activeSubscription.slots.max} slot${activeSubscription.slots.max === 1 ? '' : 's'} used`}
+          {t('account.subscription.slots_summary', {
+            used: activeSubscription.slots.used,
+            max: activeSubscription.slots.max,
+          })}
         </p>
       </div>
     </CardHeader>
@@ -46,7 +51,7 @@ const PremiumAddressesSection = ({ activeSubscription, account }: Props) => {
                 }
                 loading={addresses.isRemovingAddress}
               >
-                Remove
+                {t('common.buttons.remove')}
               </Button>
             )}
           </div>
@@ -70,7 +75,7 @@ const PremiumAddressesSection = ({ activeSubscription, account }: Props) => {
             onChange={(event) => addresses.setAddressInput(activeSubscription.id, event.target.value)}
           />
           <Button style="secondary" size="md" loading={addresses.isAddingAddress}>
-            Add address
+            {t('account.addresses.add_address')}
           </Button>
         </form>
       )}
