@@ -9,6 +9,7 @@ import type { PaymentStatus, PendingPayment } from 'lib/premium/types';
 import { delay } from 'lib/utils';
 import { parseErrorMessage } from 'lib/utils/errors';
 import { SECOND } from 'lib/utils/time';
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { type Address, parseUnits } from 'viem';
@@ -86,6 +87,7 @@ const pollPaymentStatus = async (paymentId: string): Promise<PaymentStatus> => {
 };
 
 export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChainId }: UseSubscribeParams) => {
+  const t = useTranslations();
   const queryClient = useQueryClient();
   const { ensureWalletClient } = useEnsureWalletClient();
   const [status, setStatus] = useState<SubscribeStatus>('idle');
@@ -104,7 +106,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
         if (finalStatus.status === 'confirmed') {
           setStatus('confirmed');
           queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryKey(ownerAddress) });
-          toast.success('Payment confirmed! Your premium subscription is now active.');
+          toast.success(t('account.subscription.payment_confirmed'));
         } else {
           // expired or failed — no action needed, user can try again
           setStatus('idle');
@@ -114,7 +116,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
         // Network error — leave payment in storage to retry on next load
         setStatus('idle');
       });
-  }, [ownerAddress, queryClient]);
+  }, [ownerAddress, queryClient, t]);
 
   const subscribeMutation = useMutation({
     mutationFn: async () => {
@@ -166,14 +168,15 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
     onError: (error) => {
       setStatus('failed');
       clearPendingPayment();
-      toast.error(parseErrorMessage(error) || 'Subscription payment failed');
+      toast.error(parseErrorMessage(error) || t('account.subscription.payment_failed'));
     },
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: subscribeMutation.reset is a stable function
   const reset = useCallback(() => {
     setStatus('idle');
     subscribeMutation.reset();
-  }, [subscribeMutation]);
+  }, [subscribeMutation.reset]);
 
   return {
     subscribe: () => subscribeMutation.mutate(),

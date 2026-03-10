@@ -1,4 +1,4 @@
-import { and, eq, gt, ne } from 'drizzle-orm';
+import { and, eq, gt, ne, sql } from 'drizzle-orm';
 import { ERC20_ABI } from 'lib/abis';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from 'lib/db/client';
 import { premiumPayments, premiumSubscriptionAddresses, premiumSubscriptions } from 'lib/db/schema/premium';
@@ -15,7 +15,6 @@ import {
   type PremiumPaymentStatus,
   toPaymentStatusResponse,
 } from './payments';
-import type { PremiumSubscriptionRecord } from './subscriptions';
 
 interface SetPaymentStatusParams {
   paymentId: string;
@@ -146,9 +145,11 @@ type LockedPayment = PremiumPaymentRecord & {
   plan: { durationDays: number; priceUsd: number };
 };
 
-type LockedSubscription = Pick<PremiumSubscriptionRecord, 'id' | 'planId' | 'endsAt'> & {
-  plan: { durationDays: number; priceUsd: number };
-};
+interface ExistingSubscription {
+  id: string;
+  planId: string;
+  plan: { priceUsd: number };
+}
 
 const finalizeMatchedPaymentInTransaction = async (
   trx: DatabaseTransaction,
@@ -174,7 +175,7 @@ const finalizeMatchedPaymentInTransaction = async (
   }
 
   const now = new Date();
-  const subscriptionId = await findOrCreateSubscription(trx, lockedPayment, now);
+  const subscriptionId = await extendOrCreateSubscription(trx, lockedPayment, now);
 
   await setPaymentStatus(trx, {
     paymentId: lockedPayment.id,
@@ -186,17 +187,16 @@ const finalizeMatchedPaymentInTransaction = async (
   });
 };
 
-const findOrCreateSubscription = async (
+const extendOrCreateSubscription = async (
   trx: DatabaseTransaction,
   payment: LockedPayment,
   now: Date,
 ): Promise<string> => {
-  // Look for an existing active subscription for this owner (any plan)
   const existing = await trx.query.premiumSubscriptions.findFirst({
     where: and(eq(premiumSubscriptions.ownerAddress, payment.ownerAddress), gt(premiumSubscriptions.endsAt, now)),
-    orderBy: (subscriptions, { desc }) => [desc(subscriptions.endsAt)],
-    columns: { id: true, endsAt: true, planId: true },
-    with: { plan: { columns: { priceUsd: true, durationDays: true } } },
+    orderBy: (sub, { desc }) => [desc(sub.endsAt)],
+    columns: { id: true, planId: true },
+    with: { plan: { columns: { priceUsd: true } } },
   });
 
   if (existing) {
@@ -208,17 +208,15 @@ const findOrCreateSubscription = async (
 
 const extendExistingSubscription = async (
   trx: DatabaseTransaction,
-  existing: LockedSubscription,
+  existing: ExistingSubscription,
   payment: LockedPayment,
 ): Promise<string> => {
-  const newEndsAt = new Date(existing.endsAt.getTime() + payment.plan.durationDays * DAY);
-
   const isUpgrade = payment.planId !== existing.planId && payment.plan.priceUsd > existing.plan.priceUsd;
 
   await trx
     .update(premiumSubscriptions)
     .set({
-      endsAt: newEndsAt,
+      endsAt: sql`${premiumSubscriptions.endsAt} + make_interval(days => ${payment.plan.durationDays})`,
       ...(isUpgrade ? { planId: payment.planId, planVersion: payment.planVersion } : {}),
     })
     .where(eq(premiumSubscriptions.id, existing.id));

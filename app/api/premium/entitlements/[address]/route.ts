@@ -1,6 +1,7 @@
+import { checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { hasActivePremiumEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAddress } from 'viem';
+import { type Address, getAddress } from 'viem';
 
 interface Props {
   params: Promise<Params>;
@@ -12,11 +13,21 @@ interface Params {
 
 export const runtime = 'edge';
 
-export async function GET(_req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, { params }: Props) {
+  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_READ))) {
+    return NextResponse.json({ message: 'Rate limited' }, { status: 429 });
+  }
+
   const { address } = await params;
 
+  let normalizedAddress: Address;
   try {
-    const normalizedAddress = getAddress(address);
+    normalizedAddress = getAddress(address);
+  } catch {
+    return NextResponse.json({ message: 'Invalid address' }, { status: 400 });
+  }
+
+  try {
     const isPremium = await hasActivePremiumEntitlement(normalizedAddress);
 
     return NextResponse.json(

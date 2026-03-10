@@ -28,7 +28,10 @@ export const premiumPlans = pgTable(
     maxAddresses: integer('max_addresses').notNull(),
     isActive: boolean('is_active').notNull().default(true),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (table) => [
     primaryKey({ name: 'premium_plans_pkey', columns: [table.id, table.version] }),
@@ -57,7 +60,10 @@ export const premiumPayments = pgTable(
     vatRegion: char('vat_region', { length: 2 }),
     confirmedAt: timestamp('confirmed_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (table) => [
     foreignKey({
@@ -72,6 +78,7 @@ export const premiumPayments = pgTable(
     uniqueIndex('idx_premium_payments_matched_tx_hash_unique')
       .on(table.matchedTxHash)
       .where(sql`${table.matchedTxHash} IS NOT NULL`),
+    index('idx_premium_payments_confirmed_at').on(table.confirmedAt),
   ],
 );
 
@@ -85,6 +92,10 @@ export const premiumSubscriptions = pgTable(
     startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
     endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (table) => [
     foreignKey({

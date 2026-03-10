@@ -3,11 +3,9 @@
 import AddressSearchBox from 'components/common/AddressSearchBox';
 import Button from 'components/common/Button';
 import Card, { CardHeader } from 'components/common/Card';
-import CopyButton from 'components/common/CopyButton';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { useSubscriptionAddresses } from 'lib/hooks/premium/useSubscriptionAddresses';
 import type { PremiumSubscription } from 'lib/premium/types';
-import { shortenAddress } from 'lib/utils/formatting';
 import { parseInputAddress } from 'lib/utils/whois';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
@@ -29,12 +27,12 @@ const PremiumAddressesSection = ({ activeSubscription, account }: Props) => {
     try {
       const resolvedAddress = await parseInputAddress(inputValue);
       if (!resolvedAddress) {
-        toast.error('Could not resolve address or name');
+        toast.error(t('account.addresses.resolve_failed'));
         return;
       }
       addresses.addAddress({ subscriptionId: activeSubscription.id, address: resolvedAddress });
     } catch {
-      toast.error('Could not resolve address or name');
+      toast.error(t('account.addresses.resolve_failed'));
     }
   };
 
@@ -63,7 +61,7 @@ const PremiumAddressesSection = ({ activeSubscription, account }: Props) => {
             onRemove={() =>
               addresses.removeAddress({ subscriptionId: activeSubscription.id, address: entitledAddress })
             }
-            isRemoving={addresses.isRemovingAddress}
+            isRemoving={addresses.removingAddress === entitledAddress}
           />
         ))}
       </div>
@@ -105,7 +103,13 @@ const AddressEntryRow = ({ address, isOwner, onRemove, isRemoving }: AddressEntr
       </div>
 
       {!isOwner && (
-        <Button style="tertiary" size="sm" onClick={onRemove} loading={isRemoving}>
+        <Button
+          style="tertiary"
+          size="sm"
+          onClick={onRemove}
+          loading={isRemoving}
+          aria-label={`${t('common.buttons.remove')} ${domainName ?? address}`}
+        >
           {t('common.buttons.remove')}
         </Button>
       )}

@@ -1,12 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
 import { parseErrorMessage } from 'lib/utils/errors';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import type { Address } from 'viem';
 import { getSubscriptionsQueryKey } from './usePremiumSubscriptions';
 
 export const useSubscriptionAddresses = (ownerAddress: Address) => {
+  const t = useTranslations();
   const queryClient = useQueryClient();
   const [addressInputs, setAddressInputs] = useState<Record<string, string>>({});
 
@@ -21,7 +23,7 @@ export const useSubscriptionAddresses = (ownerAddress: Address) => {
       queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryKey(ownerAddress) });
     },
     onError: (error) => {
-      toast.error(parseErrorMessage(error) || 'Failed to add address');
+      toast.error(parseErrorMessage(error) || t('account.addresses.add_failed'));
     },
   });
 
@@ -35,7 +37,7 @@ export const useSubscriptionAddresses = (ownerAddress: Address) => {
       queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryKey(ownerAddress) });
     },
     onError: (error) => {
-      toast.error(parseErrorMessage(error) || 'Failed to remove address');
+      toast.error(parseErrorMessage(error) || t('account.addresses.remove_failed'));
     },
   });
 
@@ -48,5 +50,6 @@ export const useSubscriptionAddresses = (ownerAddress: Address) => {
     isAddingAddress: addAddressMutation.isPending,
     removeAddress: removeAddressMutation.mutate,
     isRemovingAddress: removeAddressMutation.isPending,
+    removingAddress: removeAddressMutation.isPending ? (removeAddressMutation.variables?.address ?? null) : null,
   };
 };

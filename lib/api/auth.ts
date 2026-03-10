@@ -39,22 +39,17 @@ export const SIWE_IRON_OPTIONS: SessionOptions = {
   },
 };
 
-// TODO: Fix rate limiter values when premium is fully implemented
 export const RateLimiters = {
   LOGS: new RateLimiterMemory({
     points: 200,
     duration: 1,
   }),
   PRICE: new RateLimiterMemory({
-    points: 100,
+    points: 50,
     duration: 1,
   }),
   SPENDER: new RateLimiterMemory({
-    points: 1000,
-    duration: 1,
-  }),
-  MERCH_CODES: new RateLimiterMemory({
-    points: 2,
+    points: 500,
     duration: 1,
   }),
   PUDGY: new RateLimiterMemory({
@@ -62,7 +57,7 @@ export const RateLimiters = {
     duration: 1,
   }),
   BATCH_REVOKE: new RateLimiterMemory({
-    points: 10,
+    points: 5,
     duration: 1,
   }),
   PREMIUM_READ: new RateLimiterMemory({

@@ -16,29 +16,6 @@ export interface PremiumPlan {
 
 export type PremiumPlanRecord = typeof premiumPlans.$inferSelect;
 
-export const DEFAULT_PREMIUM_PLANS: PremiumPlan[] = [
-  {
-    id: 'individual_annual',
-    version: 1,
-    name: 'Premium Individual',
-    priceUsd: 99,
-    tokenSymbol: 'USDC',
-    supportedChainIds: PREMIUM_PAYMENT_CHAIN_IDS,
-    durationDays: 365,
-    maxAddresses: 1,
-  },
-  {
-    id: 'bundle10_annual',
-    version: 1,
-    name: 'Premium Bundle (10)',
-    priceUsd: 299,
-    tokenSymbol: 'USDC',
-    supportedChainIds: PREMIUM_PAYMENT_CHAIN_IDS,
-    durationDays: 365,
-    maxAddresses: 10,
-  },
-];
-
 const mapPlanRecord = (plan: PremiumPlanRecord): PremiumPlan => {
   return {
     id: plan.id,

@@ -1,8 +1,11 @@
 {
   "addresses": {
     "add_address": "Add address",
+    "add_failed": "Failed to add address",
     "placeholder": "Address or domain name",
     "remove": "Remove",
+    "remove_failed": "Failed to remove address",
+    "resolve_failed": "Could not resolve address or name",
     "title": "My Premium Addresses"
   },
   "billing": {
@@ -40,6 +43,7 @@
     "downgrade_not_supported": "You cannot downgrade an active subscription.",
     "no_subscription": "You don't have an active premium subscription. Subscribe below to get started.",
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
+    "payment_failed": "Subscription payment failed",
     "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
     "payment_network": "Payment network",
     "payment_summary": "You will pay {amount} {token} for {days} days and up to {maxAddresses} {maxAddresses, plural, =1 {address} other {addresses}}.",

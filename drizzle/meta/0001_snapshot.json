@@ -1,6 +1,6 @@
 {
-  "id": "224f392f-dd3e-4f4b-9010-e97f2e1044ae",
-  "prevId": "522d07d1-d899-4752-b106-86d7c35606fd",
+  "id": "47a4232c-44b0-4832-8a58-277d7b3f693a",
+  "prevId": "8b5b23f4-0467-4612-bd0f-4bdf8fb19178",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -81,7 +81,23 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "idx_batch_revokes_timestamp": {
+          "name": "idx_batch_revokes_timestamp",
+          "columns": [
+            {
+              "expression": "timestamp",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -285,6 +301,21 @@
           ],
           "isUnique": true,
           "where": "\"premium_payments\".\"matched_tx_hash\" IS NOT NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_premium_payments_confirmed_at": {
+          "name": "idx_premium_payments_confirmed_at",
+          "columns": [
+            {
+              "expression": "confirmed_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
           "concurrently": false,
           "method": "btree",
           "with": {}
@@ -575,6 +606,13 @@
         },
         "created_at": {
           "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,

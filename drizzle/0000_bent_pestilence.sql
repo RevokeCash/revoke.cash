@@ -10,3 +10,5 @@ CREATE TABLE "batch_revokes" (
 	"timestamp" timestamp DEFAULT now() NOT NULL,
 	"user_address" varchar(42)
 );
+--> statement-breakpoint
+CREATE INDEX "idx_batch_revokes_timestamp" ON "batch_revokes" USING btree ("timestamp");
