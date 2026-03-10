@@ -2,6 +2,7 @@
 
 import type { ColumnSort } from '@tanstack/react-table';
 import EmptyChainsSection from 'components/common/EmptyChainsSection';
+import PremiumChainStatusSection from 'components/common/PremiumChainStatusSection';
 import { usePremiumAddressPageContext } from 'lib/hooks/page-context/PremiumAddressPageContext';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -21,8 +22,16 @@ const PremiumAllowanceDashboard = () => {
   );
   const emptyChains = chainData.filter((chain) => chain.status === 'success' && chain.allowances.length === 0);
 
+  const chainStatuses = chainData.map((chain) => ({
+    chainId: chain.chainId,
+    status: chain.status,
+    error: chain.error,
+    refetch: chain.refetch,
+  }));
+
   return (
     <div className="flex flex-col gap-2">
+      <PremiumChainStatusSection chainStatuses={chainStatuses} />
       <PremiumAllowanceTableControls
         onSortChange={setSorting}
         onSearchValuesChange={setSpenderFilters}

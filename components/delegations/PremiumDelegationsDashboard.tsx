@@ -1,6 +1,7 @@
 'use client';
 
 import EmptyChainsSection from 'components/common/EmptyChainsSection';
+import PremiumChainStatusSection from 'components/common/PremiumChainStatusSection';
 import { useEip7702Delegations } from 'lib/hooks/ethereum/delegations/useDelegations';
 import { usePremiumDelegations } from 'lib/hooks/ethereum/delegations/usePremiumDelegations';
 import { useTranslations } from 'next-intl';
@@ -22,9 +23,17 @@ const PremiumDelegationsDashboard = () => {
   );
   const emptyChains = chainData.filter((chain) => chain.status === 'success' && chain.delegations.length === 0);
 
+  const chainStatuses = chainData.map((chain) => ({
+    chainId: chain.chainId,
+    status: chain.status,
+    error: chain.error,
+    refetch: chain.refetch,
+  }));
+
   return (
     <div className="flex flex-col gap-2">
       <InfoPanel />
+      <PremiumChainStatusSection chainStatuses={chainStatuses} />
 
       <div className="flex flex-col gap-2">
         <Eip7702DelegationsTable
