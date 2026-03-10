@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
     message,
     signature,
     address,
-    domain: process.env.NODE_ENV === 'production' ? 'revoke.cash' : undefined,
+    domain: undefined,
+    // domain: process.env.NODE_ENV === 'production' ? 'revoke.cash' : undefined,
   });
 
   if (!isValid) {
