@@ -85,11 +85,9 @@
     "ronin": "Ronin 是第 1 层（Layer 1）区块链，由热门 web3 游戏 Axie Infinity 的团队创建。Ronin 是专门为网络上拥有数百万用户的 Web3 游戏提供优化基础设施而创建的。",
     "rootstock": "Rootstock 是比特币的侧链，旨在为比特币生态系统引入 EVM 功能。Rootstock 网络通过一种名为合并挖矿的技术过程保证安全，该过程允许比特币矿工同时使用哈希率进行比特币和 Rootstock 交易。比特币和 Rootstock 之间的桥梁由 9 个知名组织通过 Powpeg 流程进行保护。",
     "rss3-vsl": "RSS3 Value Sublayer（VSL）是以太坊的第 2 层（Layer 2）扩展解决方案。作为 RSS3 网络的一部分，RSS3 VSL 建立在 Optimism 的 OP Stack 之上，与 Optimism 一样，采用了 Optimistic Rollup 技术。RSS3 是去中心化的网络，提供可索引和结构化的开放信息，各类应用程序均可访问。",
-    "sanko": "Sanko 是第 3 层（Layer 3）区块链，专注游戏行业，具备低费用和高吞吐量两大特点。Sanko 采用 Arbitrum 的 Orbit 框架，并在 Arbitrum One（以太坊的第 2 层（Layer 2）扩展解决方案）上进行结算。",
     "scroll": "Scroll 是以太坊的第 2 层（Layer 2）扩展解决方案，目前正在使用创新的 zkEVM 技术构建。与许多其他 L2 解决方案相比，例如 Optimistic Rollup，zkEVM 技术以更低的成本提供更高的吞吐量，同时保证了强大的安全性。",
     "sei": "Sei 是第 1 层（Layer 1）区块链，采用了基于委托权益证明（DPoS）的共识机制。Sei 网络旨在通过聚焦 EVM 执行层的并行化，从而提高吞吐量并降低费用。",
     "shape": "Shape 是以太坊的第 2 层（Layer 2）扩展解决方案，为创作者量身打造而成。创作者可以通过 Shape 独特的汽油费返还激励系统回收通过其智能合约产生的大部分汽油费。Shape 基于 Optimism 的 OP Stack 构建，因此与 Optimism 一样，它也使用 Optimistic Rollup 技术。",
-    "shibarium": "Shibarium 是一个以太坊侧链，旨在为 Shiba Inu 社区引入原生智能合约生态系统。作为侧链，它在去中心化方面做出了妥协，以保证交易速度更快、成本更低。Shibarium 可桥接至以太坊，用户可以将 SHIB 代币和其他流行的以太坊代币转入或转出 Shibarium。",
     "shido": "Shido 是第 1 层（Layer 1）区块链，采用权益证明（PoS）共识机制。它使用 Cosmos SDK 构建，专注于提供高吞吐量和低费用，同时提供 EVM 和非 EVM 链之间的互操作性。",
     "shimmer": "Shimmer EVM 是一个兼容 EVM 的第 2 层（Layer 2）区块链，建立在可互操作的 Shimmer 网络之上。由于是 Shimmer 的第 2 层链，Shimmer EVM 可以轻松地与 Shimmer/IOTA 生态系统中的其他链进行互操作。Shimmer EVM 带来了一些有趣的创新，例如交易的并行处理和协议中的原生随机性。",
     "somnia": "Somnia 是第 1 层（Layer 1）区块链，旨在为大众消费者应用程序提供高吞吐量和低费用。Somnia 使用了 MultiStream Consensens 的共识机制，在该机制中，每个验证者发布自己的区块链，并使用单独的“共识链”来进行不同验证者之间的协调。",
@@ -112,8 +110,7 @@
     "zero": "ZERΘ 是以太坊的第 2 层（Layer 2）扩展解决方案，旨在完全消除用户汽油费。ZERΘ 是使用 zkSync 的 ZK Stack 构建的，具有原生账户抽象功能，因此能够免除所有交易的汽油费。",
     "zetachain": "ZetaChain 是第 1 层（Layer 1）区块链，其共识机制基于权益证明（PoS），目前正在开发中。它旨在为开发人员提供基础设施，以打造可链接到其他 EVM 链和非 EVM 链的跨链应用程序。",
     "zircuit": "Zircuit 是以太坊的第 2 层（Layer 2）扩展解决方案，基于 zk rollup 技术搭建。为了提高安全性，Zircuit 利用 AI 监控网络内存池中的恶意交易，并在上链之前将其阻止。",
-    "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术可在保证非常低成本的同时，利用零知识证明来进行强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。",
-    "zora": "Zora 网络是以太坊的第 2 层（Layer 2）扩展解决方案，采用 Optimism 的开源 OP Stack，与 Optimism 一样，使用了 Optimism Rollup 技术。由于 Zora 网络是由 Zora NFT 交易所开发的，因此主要用于铸造和交易 NFT。"
+    "zksync-era": "zkSync Era 是第 2 层（Layer 2）扩展解决方案，也是最早使用 zkEVM 创新技术的项目之一。这项技术可在保证非常低成本的同时，利用零知识证明来进行强大的安全保障。zkSync 之前创建了 zkSync Lite，这是 zkRollup 技术的早期版本，不兼容 EVM。zkSync Era 是迭代版，全面兼容 EVM。"
   },
   "title": "什么是{chainName}？"
 }

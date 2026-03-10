@@ -84,7 +84,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ChilizChainMainnet,
   ChainId.DogechainMainnet,
   ChainId.Beam,
-  ChainId.Shibarium,
   5031, // Somnia
   ChainId.Viction,
   ChainId.HarmonyMainnetShard0,
@@ -100,14 +99,12 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ElastosSmartChain,
   ChainId.ShimmerEVM,
   ChainId.BitTorrentChainMainnet,
-  ChainId.Sanko,
   ChainId.EthereumClassic,
   ChainId.SubtensorEVM,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.ENULSMainnet,
   ChainId.Shape,
   ChainId.DarwiniaNetwork,
-  ChainId.Zora,
   ChainId.Superposition,
   ChainId.Nahmii3Mainnet,
   ChainId.ShidoNetwork,
@@ -519,7 +516,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/cronos.svg',
     etherscanCompatibleApiUrl: 'https://cronos.org/explorer/api',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=cronos&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/cronos/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -704,7 +701,7 @@ export const CHAINS = {
     explorerUrl: 'https://explorer.fuse.io',
     etherscanCompatibleApiUrl: 'https://explorer.fuse.io/api',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=fuse-mainnet&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/fuse/${DRPC_API_KEY}`,
       free: 'https://fuse.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
@@ -793,7 +790,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/immutable.svg',
     etherscanCompatibleApiUrl: 'https://explorer.immutable.com/api',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=immutable-zkevm&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/immutable-zkevm/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -935,7 +932,7 @@ export const CHAINS = {
     infoUrl: 'https://pacific.manta.network/',
     etherscanCompatibleApiUrl: 'https://manta-pacific.calderaexplorer.xyz/api',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=manta-pacific&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/manta-pacific/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -959,7 +956,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/megaeth.svg',
     explorerUrl: 'https://mega.etherscan.io',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=megaeth&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/megaeth/${DRPC_API_KEY}`,
       free: 'https://mainnet.megaeth.com/rpc',
     },
     deployedContracts: { ...MULTICALL },
@@ -1019,7 +1016,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'glmr',
     logoUrl: '/assets/images/vendor/chains/moonbeam.svg',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=moonbeam&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/moonbeam/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     // TODO: Add Algebra (StellaSwap) strategy to support Moonbeam
@@ -1033,7 +1030,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/moonriver.svg',
     infoUrl: 'https://moonbeam.network/networks/moonriver/',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=moonriver&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/moonriver/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isCanary: true,
@@ -1311,16 +1308,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://scan.rss3.io/api',
     deployedContracts: { ...MULTICALL },
   }),
-  [ChainId.Sanko]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Sanko,
-    name: 'Sanko',
-    nativeTokenCoingeckoId: 'dream-machine-token',
-    coingeckoNetworkId: 'sanko-mainnet',
-    logoUrl: '/assets/images/vendor/chains/sanko.webp',
-    etherscanCompatibleApiUrl: 'https://explorer.sanko.xyz/api',
-    deployedContracts: { ...MULTICALL },
-  }),
   [ChainId.Scroll]: new Chain({
     type: SupportType.HYPERSYNC,
     chainId: ChainId.Scroll,
@@ -1366,16 +1353,6 @@ export const CHAINS = {
     rpc: {
       main: `https://shape-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.Shibarium]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Shibarium,
-    name: 'Shibarium',
-    nativeTokenCoingeckoId: 'bone-shibaswap',
-    coingeckoNetworkId: 'shibarium',
-    logoUrl: '/assets/images/vendor/chains/shibarium.svg',
-    etherscanCompatibleApiUrl: 'https://www.shibariumscan.io/api',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.ShidoNetwork]: new Chain({
@@ -1633,6 +1610,9 @@ export const CHAINS = {
     name: 'ZERϴ',
     coingeckoNetworkId: 'zero-network',
     logoUrl: '/assets/images/vendor/chains/zero.svg',
+    rpc: {
+      main: `https://lb.drpc.live/zero/${DRPC_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.ZetaChainTestnet]: new Chain({
@@ -1644,7 +1624,7 @@ export const CHAINS = {
     explorerUrl: 'https://zetachain-athens-3.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain-athens-3.blockscout.com/api',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=zeta-chain-testnet&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/zeta-chain-testnet/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1660,7 +1640,7 @@ export const CHAINS = {
     explorerUrl: 'https://zetachain.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain.blockscout.com/api',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=zeta-chain-mainnet&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/zeta-chain/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -1686,21 +1666,9 @@ export const CHAINS = {
     coingeckoNetworkId: 'zircuit',
     logoUrl: '/assets/images/vendor/chains/zircuit.svg',
     rpc: {
-      main: `https://lb.drpc.org/ogrpc?network=zircuit-mainnet&dkey=${DRPC_API_KEY}`,
+      main: `https://lb.drpc.live/zircuit/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.Zora]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Zora,
-    name: 'Zora',
-    coingeckoNetworkId: 'zora-network',
-    logoUrl: '/assets/images/vendor/chains/zora.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.zora.energy/api',
-    deployedContracts: { ...MULTICALL },
-    rpc: {
-      main: `https://zora-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
   }),
 } as const;
 
