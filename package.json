@@ -24,8 +24,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:drop": "drizzle-kit drop",
-    "premium:key:create": "yarn tsx scripts/create-premium-api-key.ts"
+    "db:drop": "drizzle-kit drop"
   },
   "private": true,
   "dependencies": {

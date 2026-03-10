@@ -1,15 +1,4 @@
-CREATE TYPE "public"."premium_api_key_scope" AS ENUM('reconcile');--> statement-breakpoint
 CREATE TYPE "public"."premium_payment_status" AS ENUM('pending', 'confirmed', 'expired', 'failed');--> statement-breakpoint
-CREATE TABLE "premium_api_keys" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"name" text NOT NULL,
-	"scope" "premium_api_key_scope" DEFAULT 'reconcile' NOT NULL,
-	"key_hash" text NOT NULL,
-	"is_active" boolean DEFAULT true NOT NULL,
-	"last_used_at" timestamp with time zone,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE "premium_payments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"plan_id" text NOT NULL,
@@ -66,8 +55,6 @@ ALTER TABLE "premium_payments" ADD CONSTRAINT "premium_payments_subscription_id_
 ALTER TABLE "premium_payments" ADD CONSTRAINT "premium_payments_plan_fk" FOREIGN KEY ("plan_id","plan_version") REFERENCES "public"."premium_plans"("id","version") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "premium_subscription_addresses" ADD CONSTRAINT "premium_subscription_addresses_subscription_id_premium_subscriptions_id_fk" FOREIGN KEY ("subscription_id") REFERENCES "public"."premium_subscriptions"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "premium_subscriptions" ADD CONSTRAINT "premium_subscriptions_plan_fk" FOREIGN KEY ("plan_id","plan_version") REFERENCES "public"."premium_plans"("id","version") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "idx_premium_api_keys_key_hash_unique" ON "premium_api_keys" USING btree ("key_hash");--> statement-breakpoint
-CREATE INDEX "idx_premium_api_keys_scope_active" ON "premium_api_keys" USING btree ("scope","is_active");--> statement-breakpoint
 CREATE INDEX "idx_premium_payments_owner" ON "premium_payments" USING btree ("owner_address");--> statement-breakpoint
 CREATE INDEX "idx_premium_payments_status" ON "premium_payments" USING btree ("status");--> statement-breakpoint
 CREATE INDEX "idx_premium_payments_chain_scan_start" ON "premium_payments" USING btree ("chain_id","scan_from_block");--> statement-breakpoint

@@ -17,25 +17,6 @@ import {
 
 export const premiumPaymentStatusEnum = pgEnum('premium_payment_status', ['pending', 'confirmed', 'expired', 'failed']);
 
-export const premiumApiKeyScopeEnum = pgEnum('premium_api_key_scope', ['reconcile']);
-
-export const premiumApiKeys = pgTable(
-  'premium_api_keys',
-  {
-    id: uuid('id').primaryKey().defaultRandom(),
-    name: text('name').notNull(),
-    scope: premiumApiKeyScopeEnum('scope').notNull().default('reconcile'),
-    keyHash: text('key_hash').notNull(),
-    isActive: boolean('is_active').notNull().default(true),
-    lastUsedAt: timestamp('last_used_at', { withTimezone: true }),
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  },
-  (table) => [
-    uniqueIndex('idx_premium_api_keys_key_hash_unique').on(table.keyHash),
-    index('idx_premium_api_keys_scope_active').on(table.scope, table.isActive),
-  ],
-);
-
 export const premiumPlans = pgTable(
   'premium_plans',
   {

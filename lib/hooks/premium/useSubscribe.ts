@@ -26,12 +26,17 @@ const PENDING_PAYMENT_STORAGE_KEY = 'revoke_pending_payment';
 
 interface PendingPaymentData {
   paymentId: string;
+  ownerAddress: string;
   expiresAt: number; // unix ms
 }
 
-const savePendingPayment = (paymentId: string, expiresAt: string) => {
+const savePendingPayment = (paymentId: string, ownerAddress: string, expiresAt: string) => {
   try {
-    const data: PendingPaymentData = { paymentId, expiresAt: new Date(expiresAt).getTime() };
+    const data: PendingPaymentData = {
+      paymentId,
+      ownerAddress: ownerAddress.toLowerCase(),
+      expiresAt: new Date(expiresAt).getTime(),
+    };
     localStorage.setItem(PENDING_PAYMENT_STORAGE_KEY, JSON.stringify(data));
   } catch {}
 };
@@ -42,7 +47,7 @@ const clearPendingPayment = () => {
   } catch {}
 };
 
-const loadPendingPayment = (): string | null => {
+const loadPendingPayment = (ownerAddress: string): string | null => {
   try {
     const raw = localStorage.getItem(PENDING_PAYMENT_STORAGE_KEY);
     if (!raw) return null;
@@ -52,6 +57,11 @@ const loadPendingPayment = (): string | null => {
     // Don't resume polling for expired payments
     if (data.expiresAt <= Date.now()) {
       localStorage.removeItem(PENDING_PAYMENT_STORAGE_KEY);
+      return null;
+    }
+
+    // Don't resume polling for a different wallet's payment
+    if (data.ownerAddress !== ownerAddress.toLowerCase()) {
       return null;
     }
 
@@ -82,7 +92,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
 
   // On mount, resume polling if there's a pending payment from a previous page load
   useEffect(() => {
-    const pendingPaymentId = loadPendingPayment();
+    const pendingPaymentId = loadPendingPayment(ownerAddress);
     if (!pendingPaymentId) return;
 
     setStatus('confirming');
@@ -133,7 +143,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
       displayTransactionSubmittedToast(payment.chainId, hash);
 
       // Persist payment ID so polling can resume after a page refresh or tab reopen
-      savePendingPayment(payment.paymentId, payment.expiresAt);
+      savePendingPayment(payment.paymentId, ownerAddress, payment.expiresAt);
 
       // Step 3: Poll for confirmation
       setStatus('confirming');
