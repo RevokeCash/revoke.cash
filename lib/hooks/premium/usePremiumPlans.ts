@@ -23,5 +23,6 @@ export const usePremiumPlans = (selectedPlanId: string) => {
     plans: plansQuery.data ?? [],
     selectedPlan,
     isLoading: plansQuery.isLoading,
+    isError: plansQuery.isError,
   };
 };

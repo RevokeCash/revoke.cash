@@ -1,5 +1,6 @@
 'use client';
 
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
 import CardSelect, { type CardSelectOption } from 'components/common/CardSelect';
@@ -30,7 +31,7 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
   const [selectedPlanId, setSelectedPlanId] = useState<string>(activeSubscription?.plan.id ?? 'individual_annual');
   const [selectedPaymentChainId, setSelectedPaymentChainId] = useState<number>(PREMIUM_PAYMENT_CHAIN_IDS[0]);
 
-  const { plans, selectedPlan, isLoading: isLoadingPlans } = usePremiumPlans(selectedPlanId);
+  const { plans, selectedPlan, isLoading: isLoadingPlans, isError: isPlansError } = usePremiumPlans(selectedPlanId);
 
   const planCardOptions = usePlanCardOptions(plans, activeSubscription);
 
@@ -80,31 +81,40 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
       <WalletInfo account={account} domainName={domainName} />
       <SubscriptionBanner activeSubscription={activeSubscription} />
 
-      <div className="flex flex-col gap-2">
-        <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plan')}</span>
-        <CardSelect
-          options={planCardOptions}
-          value={selectedPlanId}
-          onChange={(value) => {
-            setSelectedPlanId(value);
-            if (status === 'failed' || status === 'confirmed') reset();
-          }}
-          disabled={isLoadingPlans || isSubscribing}
-        />
-      </div>
+      {isPlansError ? (
+        <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
+          <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plans_unavailable')}</p>
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-col gap-2">
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plan')}</span>
+            <CardSelect
+              options={planCardOptions}
+              value={selectedPlanId}
+              onChange={(value) => {
+                setSelectedPlanId(value);
+                if (status === 'failed' || status === 'confirmed') reset();
+              }}
+              disabled={isLoadingPlans || isSubscribing}
+            />
+          </div>
 
-      {selectedPlan && !isFreeSelected && (
-        <PaymentForm
-          selectedPlan={selectedPlan}
-          selectedPaymentChainId={selectedPaymentChainId}
-          onSelectPaymentChainId={setSelectedPaymentChainId}
-          action={action}
-          status={status}
-          error={error}
-          isSubscribing={isSubscribing}
-          onSubscribe={subscribe}
-          onReset={reset}
-        />
+          {selectedPlan && !isFreeSelected && (
+            <PaymentForm
+              selectedPlan={selectedPlan}
+              selectedPaymentChainId={selectedPaymentChainId}
+              onSelectPaymentChainId={setSelectedPaymentChainId}
+              action={action}
+              status={status}
+              error={error}
+              isSubscribing={isSubscribing}
+              onSubscribe={subscribe}
+              onReset={reset}
+            />
+          )}
+        </>
       )}
     </Card>
   );
@@ -209,7 +219,10 @@ const PaymentForm = ({
             style="primary"
             size="md"
             className="w-fit"
-            onClick={status === 'failed' ? onReset : onSubscribe}
+            onClick={() => {
+              if (status === 'failed') onReset();
+              onSubscribe();
+            }}
             loading={isSubscribing}
           >
             {t(`account.subscription.buttons.${status === 'failed' ? 'try_again' : isSubscribing ? status : action}`)}
