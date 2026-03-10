@@ -1,4 +1,9 @@
-import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import {
+  checkRateLimitAllowedEdge,
+  getAuthenticatedSiweAddress,
+  getClientCountryEdge,
+  RateLimiters,
+} from 'lib/api/auth';
 import { createPayment } from 'lib/premium/payments';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -34,6 +39,7 @@ export async function POST(req: NextRequest) {
       ownerAddress: siweAddress,
       planId: body.planId,
       chainId: body.chainId,
+      vatRegion: getClientCountryEdge(req),
     });
 
     return NextResponse.json(payment);

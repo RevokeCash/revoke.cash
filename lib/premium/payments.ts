@@ -16,6 +16,7 @@ interface CreatePaymentParams {
   ownerAddress: Address;
   planId: string;
   chainId: number;
+  vatRegion: string | null;
 }
 
 export type PremiumPaymentRecord = typeof premiumPayments.$inferSelect;
@@ -47,7 +48,7 @@ export const toPaymentStatusResponse = (payment: PremiumPaymentRecord): PaymentS
   matchedTxHash: payment.matchedTxHash,
 });
 
-export const createPayment = async ({ ownerAddress, planId, chainId }: CreatePaymentParams) => {
+export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }: CreatePaymentParams) => {
   const plan = await getPremiumPlanById(planId);
   if (!plan) throw new Error('Unsupported premium plan');
 
@@ -97,6 +98,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId }: CreatePay
       status: 'pending',
       expiresAt,
       scanFromBlock: currentBlock,
+      vatRegion,
     })
     .returning({
       id: premiumPayments.id,

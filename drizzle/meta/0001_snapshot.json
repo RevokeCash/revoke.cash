@@ -276,6 +276,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "vat_region": {
+          "name": "vat_region",
+          "type": "char(2)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "confirmed_at": {
           "name": "confirmed_at",
           "type": "timestamp with time zone",

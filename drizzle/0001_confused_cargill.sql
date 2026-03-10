@@ -25,6 +25,7 @@ CREATE TABLE "premium_payments" (
 	"expires_at" timestamp with time zone NOT NULL,
 	"scan_from_block" bigint NOT NULL,
 	"matched_tx_hash" text,
+	"vat_region" char(2),
 	"confirmed_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL

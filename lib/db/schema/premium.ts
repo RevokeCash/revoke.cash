@@ -2,6 +2,7 @@ import { relations, sql } from 'drizzle-orm';
 import {
   bigint,
   boolean,
+  char,
   foreignKey,
   index,
   integer,
@@ -72,6 +73,7 @@ export const premiumPayments = pgTable(
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     scanFromBlock: bigint('scan_from_block', { mode: 'bigint' }).notNull(),
     matchedTxHash: text('matched_tx_hash'),
+    vatRegion: char('vat_region', { length: 2 }),
     confirmedAt: timestamp('confirmed_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
