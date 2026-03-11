@@ -1,44 +1,13 @@
 'use client';
 
-import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import type sdk from '@farcaster/miniapp-sdk';
+import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import FarcasterLoadingScreen from './FarcasterLoadingScreen';
 
-interface FarcasterSDK {
-  actions: {
-    ready: (params?: { disableNativeGestures?: boolean }) => Promise<void>;
-    composeCast: (params?: {
-      text?: string;
-      embeds?: [] | [string] | [string, string];
-      channelKey?: string;
-      parent?: string;
-      close?: boolean;
-    }) => Promise<{ cast: { hash: string; channel?: string } | null }>;
-    openMiniApp: (url: string) => Promise<void>;
-    addMiniApp: (url: string) => Promise<void>;
-  };
-  context: {
-    user?: {
-      fid: number;
-      username?: string;
-      displayName?: string;
-      pfpUrl?: string;
-    };
-    location?: {
-      type: string;
-    };
-    client?: {
-      platform: 'web' | 'mobile';
-      fid: number;
-      added: boolean;
-    };
-  };
-  wallet?: {
-    getEthereumProvider: () => any;
-  };
-}
+type FarcasterSdk = typeof sdk;
 
 interface FarcasterContextValue {
-  sdk: any | null;
+  sdk: FarcasterSdk | null;
   isReady: boolean;
 }
 
@@ -49,27 +18,19 @@ const FarcasterContext = createContext<FarcasterContextValue>({
 
 export const useFarcaster = () => useContext(FarcasterContext);
 
-interface FarcasterProviderProps {
-  children: ReactNode;
-}
-
-export const FarcasterProvider = ({ children }: FarcasterProviderProps) => {
-  const [sdk, setSdk] = useState<any | null>(null);
+export const FarcasterProvider = ({ children }: { children: ReactNode }) => {
+  const [sdkInstance, setSdkInstance] = useState<FarcasterSdk | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const initializeSDK = async () => {
       try {
-        // Dynamically import the SDK to avoid SSR issues
         const { sdk: farcasterSdk } = await import('@farcaster/miniapp-sdk');
 
         if (farcasterSdk) {
-          setSdk(farcasterSdk);
-
-          // Call ready to hide the splash screen
+          setSdkInstance(farcasterSdk);
           await farcasterSdk.actions.ready();
           setIsReady(true);
-          console.log('Farcaster SDK initialized');
         }
       } catch (error) {
         console.error('Failed to initialize Farcaster SDK:', error);
@@ -82,7 +43,7 @@ export const FarcasterProvider = ({ children }: FarcasterProviderProps) => {
   }, []);
 
   return (
-    <FarcasterContext.Provider value={{ sdk, isReady }}>
+    <FarcasterContext.Provider value={{ sdk: sdkInstance, isReady }}>
       {!isReady ? <FarcasterLoadingScreen /> : children}
     </FarcasterContext.Provider>
   );
