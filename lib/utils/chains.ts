@@ -133,6 +133,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.PlumeTestnet,
   ChainId.BeamTestnet,
   ChainId.ZenChainTestnet,
+  824642, // ZugChain Testnet
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
@@ -1203,7 +1204,7 @@ export const CHAINS = {
     correspondingMainnetChainId: ChainId.PlumeMainnet,
   }),
   [ChainId.PolygonMainnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.PolygonMainnet,
     name: 'Polygon',
     nativeTokenCoingeckoId: 'polygon-ecosystem-token',
@@ -1669,6 +1670,27 @@ export const CHAINS = {
       main: `https://lb.drpc.live/zircuit/${DRPC_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
+  }),
+  1234567890: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: 1234567890,
+    name: 'ZugChain',
+    logoUrl: '/assets/images/vendor/chains/zugchain.svg',
+  }),
+  824642: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: 824642,
+    name: 'ZugChain Testnet',
+    nativeToken: 'ZUG',
+    infoUrl: 'https://zugchain.org',
+    logoUrl: '/assets/images/vendor/chains/zugchain.svg',
+    explorerUrl: 'https://explorer.zugchain.org',
+    etherscanCompatibleApiUrl: 'https://explorer.zugchain.org/api',
+    rpc: {
+      main: 'https://rpc.zugchain.org',
+    },
+    isTestnet: true,
+    correspondingMainnetChainId: 1234567890,
   }),
 } as const;
 

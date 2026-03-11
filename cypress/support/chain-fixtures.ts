@@ -128,4 +128,5 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.ScrollSepoliaTestnet]: '0xBF1E9dc0f7c2186346544BF985321e179c3d186c',
   [ChainId.ZetaChainTestnet]: '0x9500c80384DCAd166b1DC345eBa0B53dC21F5131',
   [ChainId.ZenChainTestnet]: '0xb98B6373f7f59bdc0bB2DCd11a9fC1e0a43AfBfa',
+  824642: '0x403D04C3755D535FE757300F8da803f75817D9E8', // ZugChain Testnet
 } as const;

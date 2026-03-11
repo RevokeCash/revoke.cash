@@ -2447,10 +2447,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^75.0.0":
-  version: 75.0.0
-  resolution: "@revoke.cash/chains@npm:75.0.0"
-  checksum: 10/2325cdea14c155f6af9427a40658256fd89ce7c66e84307d4c2676b6845365a785961a01f97502663c730d5d948bd5ef686a43914ba28d57c9246fec668660a6
+"@revoke.cash/chains@npm:^75.1.0":
+  version: 75.1.0
+  resolution: "@revoke.cash/chains@npm:75.1.0"
+  checksum: 10/570f393ea5a22e58959ef6978f458b9527570f59a6b88e5ebd9f4a2603fda8e68b5a08bd08b83ef193e96456f306344168c8a283055fb77eade14aafd3d3724f
   languageName: node
   linkType: hard
 
@@ -10872,7 +10872,7 @@ __metadata:
     "@next/bundle-analyzer": "npm:^16.1.6"
     "@privy-io/cross-app-connect": "npm:^0.2.3"
     "@rainbow-me/rainbowkit": "npm:^2.2.10"
-    "@revoke.cash/chains": "npm:^75.0.0"
+    "@revoke.cash/chains": "npm:^75.1.0"
     "@safe-global/safe-apps-provider": "npm:^0.18.6"
     "@safe-global/safe-apps-sdk": "npm:^9.1.0"
     "@tailwindcss/postcss": "npm:^4.1.18"
