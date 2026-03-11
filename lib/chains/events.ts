@@ -1,57 +1,83 @@
 import { ChainId } from '@revoke.cash/chains';
 import { AGW_SESSIONS_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import eventsDB from 'lib/databases/events';
+import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
-import { sortTokenEventsChronologically } from 'lib/utils';
-import { isNullish } from 'lib/utils';
-import { addressToTopic, apiLogin } from 'lib/utils';
-import { type DocumentedChainId, createViemPublicClientForChain, getChainName } from 'lib/utils/chains';
-import { parseApprovalForAllLog, parseApprovalLog, parsePermit2Log, parseTransferLog } from 'lib/utils/events';
-import { type TokenEvent, generatePatchedAllowanceEvents } from 'lib/utils/events';
-import { type SessionCreatedEvent, parseSessionCreatedLog } from 'lib/utils/sessions';
+import { addressToTopic, isNullish, sortTokenEventsChronologically } from 'lib/utils';
+import { createViemPublicClientForChain, type DocumentedChainId, getChainApiUrl, getChainName } from 'lib/utils/chains';
+import {
+  generatePatchedAllowanceEvents,
+  parseApprovalForAllLog,
+  parseApprovalLog,
+  parsePermit2Log,
+  parseTransferLog,
+  type TokenEvent,
+} from 'lib/utils/events';
+import { parseSessionCreatedLog, type SessionCreatedEvent } from 'lib/utils/sessions';
 import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import { type Address, getAbiItem, toEventSelector } from 'viem';
 
-// Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues nd issues with Edge runtime
+// Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues and issues with Edge runtime
 // So we use this separate file instead to configure token event getting per chain.
 
 export const getTokenEvents = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
   const override = ChainOverrides[chainId];
+
+  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
+  // See https://eips.ethereum.org/EIPS/eip-161
+  const chainName = getChainName(chainId);
+  const publicClient = createViemPublicClientForChain(chainId);
+  const nonce = await publicClient.getTransactionCount({ address });
+  if (nonce === 0) {
+    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
+    return [];
+  }
+
   if (override) return override(chainId, address);
   return getTokenEventsDefault(chainId, address);
 };
 
 type TokenEventsGetter = (chainId: DocumentedChainId, address: Address) => Promise<TokenEvent[]>;
 
-const ChainOverrides: Record<number, TokenEventsGetter> = {};
+const ChainOverrides: Record<number, TokenEventsGetter> = {
+  // For pulsechain we want to check whether an account has transacted after the fork timestamp,
+  // since otherwise everyone that used Ethereum before the fork would have to wait to get their events.
+  // Note: this doesn't work 100% for smart contract addresses, but the trade-off is worth it.
+  [ChainId.PulseChain]: async (chainId, address) => {
+    const apiUrl = getChainApiUrl(chainId);
+    const pulsechainForkBlock = 17233000;
+    const url = `${apiUrl}?module=account&action=txlist&address=${address}&start_block=${pulsechainForkBlock}`;
+
+    const { result } = await ky.get(url).json<{ result: any[] | string }>();
+    if (!Array.isArray(result) || result.length === 0) return [];
+
+    return getTokenEventsDefault(chainId, address);
+  },
+};
 
 const getEventPrerequisites = async (chainId: DocumentedChainId, address: Address) => {
-  const chainName = getChainName(chainId);
-  const publicClient = createViemPublicClientForChain(chainId);
   const logsProvider = getLogsProvider(chainId);
+  const publicClient = createViemPublicClientForChain(chainId);
 
-  const isLoggedIn = await apiLogin();
-  if (!isLoggedIn) throw new Error('Failed to create an API session');
-
-  const [openSeaProxy, fromBlock, toBlock, nonce] = await Promise.all([
+  const [openSeaProxy, fromBlock, toBlock, rpcBlock] = await Promise.all([
     getOpenSeaProxyAddress(address),
     0,
     logsProvider.getLatestBlock(),
-    publicClient.getTransactionCount({ address }),
+    publicClient.getBlockNumber(),
   ]);
 
-  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
-  // See https://eips.ethereum.org/EIPS/eip-161
-  if (nonce === 0) {
-    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
+  if (rpcBlock > toBlock + 1000) {
+    console.log(
+      `${getChainName(chainId)}: Events data source is out of sync with the blockchain, please try again later.`,
+    );
+    throw new Error(`Events data source is out of sync with the blockchain, please try again later.`);
   }
 
-  return { logsProvider, openSeaProxy, fromBlock, toBlock, nonce };
+  return { logsProvider, openSeaProxy, fromBlock, toBlock };
 };
 
 const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Address): Promise<TokenEvent[]> => {
-  const { openSeaProxy, logsProvider, fromBlock, toBlock, nonce } = await getEventPrerequisites(chainId, address);
-  if (nonce === 0) return [];
+  const { openSeaProxy, logsProvider, fromBlock, toBlock } = await getEventPrerequisites(chainId, address);
 
   const getErc721EventSelector = (eventName: 'Transfer' | 'Approval' | 'ApprovalForAll') => {
     return toEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
@@ -121,8 +147,17 @@ export const getSessionEvents = async (
     throw new Error('Sessions are only supported on Abstract');
   }
 
-  const { logsProvider, fromBlock, toBlock, nonce } = await getEventPrerequisites(chainId, address);
-  if (nonce === 0) return [];
+  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
+  // See https://eips.ethereum.org/EIPS/eip-161
+  const chainName = getChainName(chainId);
+  const publicClient = createViemPublicClientForChain(chainId);
+  const nonce = await publicClient.getTransactionCount({ address });
+  if (nonce === 0) {
+    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
+    return [];
+  }
+
+  const { logsProvider, fromBlock, toBlock } = await getEventPrerequisites(chainId, address);
 
   const eventSelector = toEventSelector(getAbiItem({ abi: AGW_SESSIONS_ABI, name: 'SessionCreated' }));
   const addressTopic = addressToTopic(address);

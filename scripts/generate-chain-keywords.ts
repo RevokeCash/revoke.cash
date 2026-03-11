@@ -1,4 +1,4 @@
-import { ORDERED_CHAINS, getChainName } from 'lib/utils/chains';
+import { getChainName, ORDERED_CHAINS } from 'lib/utils/chains';
 
 const keywordTemplate = process.argv[2];
 

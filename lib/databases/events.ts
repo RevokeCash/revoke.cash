@@ -23,9 +23,8 @@ class EventsDB {
 
     const logs = await this.getLogsInternal(logsProvider, filter, chainId);
 
-    if (nameTag) {
-      const cacheType = this.cache.constructor.name;
-      console.log(`${getChainName(chainId)}: ${nameTag} logs [${cacheType}]`, logs);
+    if (nameTag && isBrowser()) {
+      console.log(`${getChainName(chainId)}: ${nameTag} logs`, logs);
     }
 
     // We can uncomment this to filter the logs once more by block number after retrieving them from IndexedDB

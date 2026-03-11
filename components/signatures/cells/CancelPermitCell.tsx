@@ -1,14 +1,18 @@
+import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
+import Button from 'components/common/Button';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { waitForTransactionConfirmation } from 'lib/utils';
+import { isNullish, waitForSubmittedTransactionConfirmation, waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { permit } from 'lib/utils/permit';
-import { type PermitTokenData, isErc721Contract } from 'lib/utils/tokens';
+import { HOUR, SECOND } from 'lib/utils/time';
+import { isErc721Contract, type PermitTokenData } from 'lib/utils/tokens';
+import { useTranslations } from 'next-intl';
+import { useAsyncCallback } from 'react-async-hook';
 import { usePublicClient, useWalletClient } from 'wagmi';
-import CancelCell from './CancelCell';
 
 interface Props {
   token: PermitTokenData;
@@ -16,10 +20,16 @@ interface Props {
 }
 
 const CancelPermitCell = ({ token, onCancel }: Props) => {
+  const t = useTranslations();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient()!;
   const { address, selectedChainId } = useAddressPageContext();
   const handleTransaction = useHandleTransaction(selectedChainId);
+
+  const { execute, loading } = useAsyncCallback(() => waitForSubmittedTransactionConfirmation(cancel()));
+
+  const recentlyCancelled =
+    !isNullish(token.lastCancelled?.timestamp) && token.lastCancelled.timestamp * SECOND > Date.now() - 24 * HOUR;
 
   const sendCancelTransaction = async (): Promise<TransactionSubmitted> => {
     if (isErc721Contract(token.contract)) throw new Error('Cannot cancel ERC721 tokens');
@@ -28,7 +38,7 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
     analytics.track('Cancelled Permit Signatures', {
       chainId: selectedChainId,
       account: address,
-      token: token.contract.address,
+      tokenAddress: token.contract.address,
     });
 
     const waitForConfirmation = async () => {
@@ -52,7 +62,25 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
     return handleTransaction(sendCancelTransaction(), TransactionType.OTHER);
   };
 
-  return <CancelCell chainId={selectedChainId} address={address} lastCancelled={token.lastCancelled} cancel={cancel} />;
+  return (
+    <div className="flex justify-end w-32 mr-0 mx-auto">
+      <ControlsWrapper
+        chainId={selectedChainId}
+        address={address}
+        switchChainSize="sm"
+        overrideDisabled={recentlyCancelled}
+        disabledReason={t('signatures.permit.tooltips.recently_cancelled')}
+      >
+        {(disabled) => (
+          <div>
+            <Button loading={loading} disabled={disabled} size="sm" style="secondary" onClick={execute}>
+              {loading ? t('common.buttons.cancelling') : t('common.buttons.cancel_signatures')}
+            </Button>
+          </div>
+        )}
+      </ControlsWrapper>
+    </div>
+  );
 };
 
 export default CancelPermitCell;

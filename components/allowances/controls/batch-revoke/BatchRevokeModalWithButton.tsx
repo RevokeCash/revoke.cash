@@ -20,12 +20,12 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
   const [open, setOpen] = useState(false);
   const { address, selectedChainId } = useAddressPageContext();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: we only want to run this when the modal is opened
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we only want to refresh the selected allowances when the modal is opened/closed
   const selectedAllowances = useMemo(() => {
     return table.getGroupedSelectedRowModel().flatRows.map((row) => row.original);
   }, [open]);
 
-  const { results, revoke, pause, isRevoking, isAllConfirmed } = useRevokeBatch(
+  const { results, revoke, pause, isRevoking, isAllConfirmed, feeDollarAmount } = useRevokeBatch(
     selectedAllowances,
     table.options.meta!.onUpdate,
   );
@@ -44,7 +44,12 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
 
   return (
     <>
-      <ControlsWrapper chainId={selectedChainId} address={address} overrideDisabled={!isSomeRowsSelected}>
+      <ControlsWrapper
+        chainId={selectedChainId}
+        address={address}
+        overrideDisabled={!isSomeRowsSelected}
+        skipSwitchChain
+      >
         {(disabled) => (
           <div className="w-fit">
             <Button style="primary" size="sm" disabled={disabled} onClick={() => setOpen(true)}>
@@ -66,6 +71,7 @@ const BatchRevokeModalWithButton = ({ table }: Props) => {
             </div>
           </div>
           <BatchRevokeControls
+            feeDollarAmount={feeDollarAmount}
             isRevoking={isRevoking}
             isAllConfirmed={isAllConfirmed}
             setOpen={setOpen}

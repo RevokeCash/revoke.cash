@@ -20,12 +20,19 @@ export class CovalentEventGetter implements EventGetter {
   async getLatestBlock(chainId: number): Promise<number> {
     if (!this.apiKey) throw new Error('Covalent API key is not set');
 
-    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/block_v2/latest/`;
+    // Covalent removed their "latest block" API, so now we have to get status for *ALL* chains instead
+
+    const apiUrl = `https://api.covalenthq.com/v1/chains/status/`;
     const headers = this.getHeaders();
     const result = await this.queue.add(() => ky.get(apiUrl, { headers, retry: 3, timeout: false }).json<any>());
 
-    const blockNumber = result?.data?.items[0]?.height;
-    if (!blockNumber) throw new Error('Failed to get latest block number');
+    const chainStatus = result?.data?.items?.find((chain: any) => Number(chain.chain_id) === chainId);
+    const blockNumber = chainStatus?.synced_block_height;
+
+    if (!blockNumber) {
+      console.log('chainStatus:', chainStatus);
+      throw new Error('Failed to get latest block number');
+    }
 
     // Covalent might still have slight delay so we subtract 20 to be safe
     return blockNumber - 20;
@@ -79,7 +86,7 @@ export class CovalentEventGetter implements EventGetter {
 
   private getHeaders(): Record<string, string> {
     return {
-      Authorization: `Basic ${Buffer.from(`${this.apiKey}:`).toString('base64')}`,
+      Authorization: `Bearer ${this.apiKey}`,
     };
   }
 }

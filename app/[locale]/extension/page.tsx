@@ -3,8 +3,8 @@ import DownloadButton from 'components/common/DownloadButton';
 import Logo from 'components/common/Logo';
 import { CHROME_EXTENSION_URL, FIREFOX_EXTENSION_URL } from 'lib/constants';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import ProseLayout from '../../layouts/ProseLayout';
 
 interface Props {

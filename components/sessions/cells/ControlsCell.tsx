@@ -1,7 +1,7 @@
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import RevokeButton from 'components/allowances/controls/RevokeButton';
 import { useRevokeSession } from 'lib/hooks/ethereum/sessions/useRevokeSession';
-import { type OnSessionRevoke, type Session, getSessionKey } from 'lib/utils/sessions';
+import { getSessionKey, type OnSessionRevoke, type Session } from 'lib/utils/sessions';
 
 interface Props {
   session: Session;

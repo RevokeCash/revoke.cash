@@ -2,7 +2,7 @@
 
 import type Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import { type ComponentProps, type ReactElement, type ReactNode, cloneElement, useState } from 'react';
+import { type ComponentProps, cloneElement, type ReactElement, type ReactNode, useState } from 'react';
 
 interface Props {
   button: ReactElement<ComponentProps<typeof Button>>;

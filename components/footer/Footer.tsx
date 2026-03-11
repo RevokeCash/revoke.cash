@@ -11,10 +11,8 @@ const Footer = () => {
   const t = useTranslations();
 
   return (
-    <footer className="bg-black dark:bg-zinc-900 mt-24" aria-labelledby="footer-heading">
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
+    <footer className="bg-black dark:bg-zinc-900 mt-24">
+      <h2 className="sr-only">Footer</h2>
 
       <div className="mx-auto max-w-7xl px-8">
         <div className="my-16 grid grid-cols-2 gap-8 xl:col-span-2">
@@ -29,8 +27,11 @@ const Footer = () => {
               <FooterLink href="/exploits" router>
                 {t('common.footer.exploit_checker')}
               </FooterLink>
-              <FooterLink href="/scanner/domain" router>
-                {t('common.footer.domain_scanner')}
+              <FooterLink href="/permit-signatures/ethereum" router>
+                {t('common.footer.permit_signatures')}
+              </FooterLink>
+              <FooterLink href="/marketplace-bulk-delister/ethereum" router>
+                {t('common.footer.marketplace_bulk_delister')}
               </FooterLink>
             </FooterSection>
             <FooterSection heading={t('common.footer.learn')}>
@@ -82,7 +83,7 @@ const Footer = () => {
         <Divider className="my-16 border-zinc-900 dark:border-zinc-800" />
         <div className="my-16 flex flex-col md:flex-row items-center gap-4 justify-between">
           <div className="flex flex-col gap-px text-center md:text-left">
-            <div className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2025 Revoke.cash</div>
+            <div className="leading-5 text-zinc-100 dark:text-zinc-100">&copy; 2026 Revoke.cash</div>
             <ul className="flex justify-center md:justify-start items-center gap-1">
               <FooterLink href="/acknowledgements">{t('common.footer.acknowledgements')}</FooterLink>
               <span className="text-zinc-400 dark:text-zinc-400 visited:text-zinc-400">•</span>

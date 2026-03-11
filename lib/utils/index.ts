@@ -1,5 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
+import { AUTH_SESSION_QUERY_KEY, type AuthSession } from 'lib/auth/session';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
+import { queryClient } from 'lib/hooks/QueryProvider';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import ky from 'lib/ky';
 import type { getTranslations } from 'next-intl/server';
@@ -7,19 +9,20 @@ import { toast } from 'react-toastify';
 import {
   type Address,
   type EstimateContractGasParameters,
+  getAddress,
   type Hash,
   type Hex,
   type PublicClient,
+  pad,
+  slice,
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
   type WalletClient,
   type WriteContractParameters,
-  getAddress,
-  pad,
-  slice,
 } from 'viem';
 import analytics from './analytics';
 import type { Log } from './events';
+import { MINUTE } from './time';
 
 export const assertFulfilled = <T>(item: PromiseSettledResult<T>): item is PromiseFulfilledResult<T> => {
   return item.status === 'fulfilled';
@@ -135,29 +138,32 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
   return address;
 };
 
-export const throwIfExcessiveGas = (chainId: number, address: Address, estimatedGas: bigint) => {
+export const throwIfExcessiveGas = (chainId: number, estimatedGas: bigint, tokenAddress: Address) => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const gasFactors: Record<number, bigint> = {
-    [ChainId.ArbitrumOne]: 20n,
     [ChainId.ArbitrumNova]: 20n,
     [ChainId.ArbitrumSepolia]: 20n,
     [ChainId.FrameTestnet]: 20n,
     [ChainId.Mantle]: 2_000n,
     [ChainId.MantleTestnet]: 2_000n,
-    [ChainId.ZkSyncMainnet]: 20n,
-    [ChainId.ZkSyncSepoliaTestnet]: 20n,
+    5031: 10n, // Somnia
     [ChainId.ZERONetwork]: 20n,
+    [ChainId.EtherlinkMainnet]: 10n,
   };
 
   const EXCESSIVE_GAS = 500_000n * (gasFactors[chainId] ?? 1n);
 
   // TODO: Translate this error message
   if (estimatedGas > EXCESSIVE_GAS) {
-    console.error(`Gas limit of ${estimatedGas} is excessive`);
+    console.error(`Gas limit of ${estimatedGas} is excessive (token: ${tokenAddress})`);
 
     // Track excessive gas usage so we can blacklist tokens
     // TODO: Use a different tool than analytics for this
-    analytics.track('Excessive gas limit', { chainId, address, estimatedGas: estimatedGas.toString() });
+    analytics.track('Excessive gas limit', {
+      chainId,
+      estimatedGas: estimatedGas.toString(),
+      tokenAddress,
+    });
 
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
@@ -173,7 +179,7 @@ export const writeContractUnlessExcessiveGas = async (
   const estimatedGas =
     transactionRequest.gas ??
     (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
-  throwIfExcessiveGas(transactionRequest.chain!.id, transactionRequest.address, estimatedGas);
+  throwIfExcessiveGas(transactionRequest.chain!.id, estimatedGas, transactionRequest.address);
   return walletClient.writeContract({ ...transactionRequest, gas: estimatedGas });
 };
 
@@ -231,22 +237,50 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 
 export const range = (length: number) => Array.from({ length }, (_, i) => i);
 
-export const apiLogin = async () => {
+export const ensureAuthSession = async () => {
   // In a backend context, we do not need to login
   if (!isBrowser()) return true;
 
-  // Skip login for mini-app context (Vite dev server or specific env var)
-  if (
-    typeof window !== 'undefined' &&
-    (window.location.port === '5173' || process.env.VITE_SKIP_API_LOGIN === 'true')
-  ) {
-    return true;
-  }
+  return queryClient.ensureQueryData({
+    queryKey: ['auth', 'ensure-session'],
+    staleTime: 5 * MINUTE,
+    gcTime: 10 * MINUTE,
+    queryFn: async () => {
+      const authSession = await getAuthSession();
 
+      if (authSession?.hasApiSession) {
+        queryClient.setQueryData(AUTH_SESSION_QUERY_KEY, authSession);
+        return true;
+      }
+
+      const isLoggedIn = await ky
+        .post('/api/auth/login')
+        .json<{ ok?: boolean }>()
+        .then((res) => !!res?.ok)
+        .catch(() => false);
+
+      if (!isLoggedIn) {
+        queryClient.invalidateQueries({ queryKey: AUTH_SESSION_QUERY_KEY, refetchType: 'none' });
+        throw new Error('Failed to create API session');
+      }
+
+      const updatedAuthSession = await getAuthSession();
+      if (updatedAuthSession?.hasApiSession) {
+        queryClient.setQueryData(AUTH_SESSION_QUERY_KEY, updatedAuthSession);
+        return true;
+      }
+
+      queryClient.invalidateQueries({ queryKey: AUTH_SESSION_QUERY_KEY, refetchType: 'none' });
+      throw new Error('Failed to create API session');
+    },
+  });
+};
+
+const getAuthSession = async (): Promise<AuthSession | null> => {
   return ky
-    .post('/api/login')
-    .json<any>()
-    .then((res) => !!res?.ok);
+    .get('/api/auth/session')
+    .json<AuthSession>()
+    .catch(() => null);
 };
 
 export const isBrowser = () => typeof window !== 'undefined';
@@ -259,7 +293,7 @@ export const getAccountType = async (address: Address, publicClient: PublicClien
   return 'Smart Contract';
 };
 
-export const splitArray = <T>(array: T[], chunkSize: number): T[][] => {
+export const chunkArray = <T>(array: T[], chunkSize: number): T[][] => {
   const result: T[][] = [];
 
   for (let i = 0; i < array.length; i += chunkSize) {
@@ -267,4 +301,8 @@ export const splitArray = <T>(array: T[], chunkSize: number): T[][] => {
   }
 
   return result;
+};
+
+export const slugify = (text: string) => {
+  return text.toLowerCase().replace(/ /g, '_');
 };

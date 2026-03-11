@@ -10,12 +10,12 @@ interface Props {
 
 const SwitchChainButton = ({ chainId, size }: Props) => {
   const t = useTranslations();
-  const { switchChainAsync, canSwitchChain } = useSwitchChain();
+  const { switchChainAsync } = useSwitchChain();
 
   const { execute, loading } = useAsyncCallback(() => switchChainAsync(chainId));
 
   const button = (
-    <Button style="secondary" size={size} disabled={!canSwitchChain} loading={loading} onClick={execute}>
+    <Button style="secondary" size={size} loading={loading} onClick={execute}>
       {loading ? t('common.buttons.switching') : t('common.buttons.switch_chain')}
     </Button>
   );

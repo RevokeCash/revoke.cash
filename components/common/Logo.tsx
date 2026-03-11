@@ -30,6 +30,7 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
 
   if (!src.startsWith('/')) {
     return (
+      // biome-ignore lint/performance/noImgElement: we only use this img element when we specifically cannot use the Image component
       <img
         src={src}
         alt={alt}

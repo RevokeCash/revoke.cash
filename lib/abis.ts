@@ -39,6 +39,14 @@ export const ERC721_ABI = parseAbi([
   'event ApprovalForAll(address indexed owner, address indexed spender, bool approved)',
 ]);
 
+export const ERC1155_ABI = parseAbi([
+  'function balanceOf(address account, uint256 id) public view returns (uint256)',
+  'function balanceOfBatch(address[] accounts, uint256[] ids) public view returns (uint256[])',
+  'function setApprovalForAll(address operator, bool approved) public',
+  'function isApprovedForAll(address account, address operator) public view returns (bool)',
+  'function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data) public',
+]);
+
 export const OPENSEA_REGISTRY_ABI = parseAbi([
   'function name() public view returns (string)',
   'function initialAddressSet() public view returns (bool)',

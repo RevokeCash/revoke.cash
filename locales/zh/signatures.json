@@ -1,0 +1,51 @@
+{
+  "marketplace": {
+    "different_chain": "Or bulk delist on a different network",
+    "meta": {
+      "title": "{chainName} Marketplace Bulk Delister"
+    },
+    "table": {
+      "active_approvals": "{count, plural, =1 {1 active approval} other {# active approvals}}",
+      "headers": {
+        "actions": "Actions",
+        "asset": "Asset Name",
+        "last_delisted": "Last Delisted",
+        "marketplace": "Marketplace"
+      },
+      "none_found": "No marketplaces with active approvals found.",
+      "title": "Marketplaces with active approvals"
+    },
+    "title": "{chainName} Marketplace Bulk Delister",
+    "tooltips": {
+      "recently_delisted": "You have recently bulk delisted from this marketplace. It will remain in the list for you to bulk delist again later if needed."
+    },
+    "what_is_bulk_delisting": {
+      "content": "When you list NFTs or other assets for sale on marketplaces like OpenSea, you sign an offchain signature that authorizes the marketplace to transfer your assets. Scam websites can exploit this by tricking you into signing marketplace signatures that create zero-priced listings. Because these signatures are offchain, Revoke.cash cannot know whether you actually signed any.<br></br><br></br><b>Only use this tool if <i>you</i> know that you signed a marketplace signature on a scam website</b>, otherwise you are wasting transaction fees. Bulk delisting cancels <i>all</i> existing listings and offers on a marketplace at once by incrementing its onchain counter.",
+      "title": "What Is Bulk Delisting?"
+    }
+  },
+  "permit": {
+    "different_chain": "Or check your permit signatures on a different network",
+    "meta": {
+      "title": "{chainName} Permit Signature Checker"
+    },
+    "table": {
+      "headers": {
+        "actions": "Actions",
+        "asset": "Asset Name",
+        "balance": "Balance",
+        "last_cancelled": "Last Cancelled"
+      },
+      "none_found": "No tokens with Permit support found.",
+      "title": "Tokens with Permit support"
+    },
+    "title": "{chainName} Permit Signature Checker",
+    "tooltips": {
+      "recently_cancelled": "You have recently cancelled this potential signature. It will remain in the list for you to cancel again later if needed."
+    },
+    "what_are_permit_signatures": {
+      "content": "<i>Permit Signatures</i> are used to grant token approvals without sending a transaction. Because these signatures are not stored on the blockchain, there is no way for Revoke.cash to know if you signed them. This page lists your tokens that support offchain Permit signatures.<br></br><br></br><b>Only if <i>you</i> know that you signed a Permit signature on a scam website, you need to cancel the <i>potential</i> signatures on this page</b>, otherwise you are wasting transaction fees. When you cancel potential signatures for a token, they will remain in the list but cannot be cancelled again for some time.",
+      "title": "What Are Permit Signatures?"
+    }
+  }
+}

@@ -1,14 +1,12 @@
 import Breadcrumb from 'components/common/Breadcrumb';
 import Divider from 'components/common/Divider';
 import PageNavigation from 'components/common/PageNavigation';
-import Prose from 'components/common/Prose';
 import TranslateButton from 'components/common/TranslateButton';
 import ArticleMeta from 'components/learn/ArticleMeta';
 import Sidebar from 'components/learn/Sidebar';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import type { BreadcrumbEntry, ContentMeta, ISidebarEntry } from 'lib/interfaces';
 import { useMessages, useTranslations } from 'next-intl';
-import Image from 'next/image';
 import SharedLayout from './SharedLayout';
 
 interface Props {
@@ -37,19 +35,16 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
     <SharedLayout searchBar={searchBar} padding>
       <div className="max-w-6xl w-full mx-auto grow">
         <div className="flex flex-col min-w-0 lg:flex-row gap-4">
-          <NextIntlClientProvider messages={{ learn: messages.learn }}>
+          <NextIntlClientProvider messages={{ common: messages.common, learn: messages.learn }}>
             <Sidebar entries={sidebarEntries} />
           </NextIntlClientProvider>
           <div className="min-w-0 w-full">
             <div className="pl-2 pt-2">
               <Breadcrumb pages={breadcrumbs} />
-              <TranslateButton language={meta.language} translationUrl={translationUrl} />
+              <NextIntlClientProvider messages={{ common: messages.common, learn: messages.learn }}>
+                <TranslateButton language={meta.language} translationUrl={translationUrl} />
+              </NextIntlClientProvider>
             </div>
-            <Prose className="mb-4">
-              {meta.coverImage ? (
-                <Image src={meta.coverImage} alt={meta.title} width={1200} height={630} priority fetchPriority="high" />
-              ) : null}
-            </Prose>
             {children}
             <Divider className="my-6" />
             <PageNavigation currentPath={`/learn/${slug.join('/')}`} pages={sidebarEntries} />

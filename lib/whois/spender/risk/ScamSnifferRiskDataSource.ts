@@ -11,9 +11,9 @@ export class ScamSnifferRiskDataSource implements SpenderDataSource {
     const identifier = md5(`revokecash:${address.toLowerCase()}`);
 
     try {
-      const time = new Date().getTime();
+      const time = Date.now();
       const riskData = await ky.get(`${WHOIS_BASE_URL}/spenders/scamsniffer/${identifier}.json`).json<any>();
-      const elapsedTime = (new Date().getTime() - time) / 1000;
+      const elapsedTime = (Date.now() - time) / 1000;
 
       console.log(elapsedTime, 'ScamSniffer', address);
 

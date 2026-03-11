@@ -1,12 +1,12 @@
-import { writeFileSync } from 'fs';
-import { join } from 'path';
 import { allChains, getChain } from '@revoke.cash/chains';
+import { writeFileSync } from 'fs';
 import { getChainName } from 'lib/utils/chains';
+import { join } from 'path';
 
 const lookupName = (chainId: number) => {
   try {
     return getChainName(chainId);
-  } catch (error) {
+  } catch {
     return getChain(chainId)?.name;
   }
 };

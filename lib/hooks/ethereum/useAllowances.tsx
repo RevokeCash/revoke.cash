@@ -1,29 +1,25 @@
 'use client';
 
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { getTokenPrice } from 'lib/price/utils';
-import { isNullish } from 'lib/utils';
+import { getTokenPrices } from 'lib/price/utils';
+import { deduplicateArray, isNullish } from 'lib/utils';
 import {
-  type AllowancePayload,
-  AllowanceType,
-  type TokenAllowanceData,
+  type AllowanceUpdateProperties,
+  applyRevokeToAllowances,
+  applyUpdateToAllowances,
   getAllowancesFromEvents,
   stripAllowanceData,
+  type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
-import { type TimeLog, type TokenEvent, getEventKey } from 'lib/utils/events';
+import { getEventKey, type TokenEvent } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
-import { hasZeroBalance } from 'lib/utils/tokens';
+import { hasZeroBalance, isErc721Contract } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
-
-interface AllowanceUpdateProperties {
-  amount?: bigint;
-  lastUpdated?: TimeLog;
-}
 
 export const useAllowances = (address: Address, events: TokenEvent[] | undefined, chainId: number) => {
   const publicClient = usePublicClient({ chainId })!;
@@ -44,21 +40,33 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
 
   const [baseAllowances, setBaseAllowances] = useState<TokenAllowanceData[] | undefined>(undefined);
 
+  // When the chainId changes, we reset the allowances, so it doesn't keep old allowances for the previous chain while loading
+  // biome-ignore lint/correctness/useExhaustiveDependencies(chainId): We want this to re-run when chainId changes
+  useEffect(() => {
+    setBaseAllowances(undefined);
+  }, [chainId]);
+
   useLayoutEffect(() => {
     if (data) {
       setBaseAllowances(data);
     }
   }, [data]);
 
-  // No need to deduplicate duplicate unique tokens/spenders, since TanStack Query will deduplicate the queries for us
-  const priceQueries = useQueries({
-    queries: (baseAllowances ?? []).map((allowance) => ({
-      queryKey: ['tokenPrice', allowance.chainId, allowance.contract.address],
-      queryFn: () => getTokenPrice(allowance.chainId, allowance.contract),
-      staleTime: 5 * MINUTE,
-      refetchOnWindowFocus: false,
-      placeholderData: undefined,
-    })),
+  const uniqueErc20TokenAddresses = useMemo(() => {
+    const erc20Addresses = (baseAllowances ?? [])
+      .filter((allowance) => !isErc721Contract(allowance.contract))
+      .map((allowance) => allowance.contract.address);
+
+    return deduplicateArray(erc20Addresses).sort();
+  }, [baseAllowances]);
+
+  const priceQuery = useQuery<Record<Address, number | null>, Error>({
+    queryKey: ['tokenPrices', chainId, uniqueErc20TokenAddresses],
+    queryFn: () => getTokenPrices(chainId, uniqueErc20TokenAddresses),
+    staleTime: 5 * MINUTE,
+    refetchOnWindowFocus: false,
+    placeholderData: undefined,
+    enabled: uniqueErc20TokenAddresses.length > 0,
   });
 
   const spenderQueries = useQueries({
@@ -73,50 +81,32 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     })),
   });
 
+  // Stable list of all owned tokens (for use by usePermitTokens, independent of approval state)
+  const ownedTokens = useMemo(() => {
+    if (!data) return undefined;
+    return deduplicateArray(data, (a) => a.contract.address)
+      .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals))
+      .map(stripAllowanceData);
+  }, [data]);
+
   const allowances = useMemo(() => {
     if (!baseAllowances) return undefined;
 
-    return baseAllowances.map((allowance, index) => {
-      // Direct indexing for both prices and spenders since the arrays have 1:1 mapping
-      const metadata = { ...allowance.metadata, price: priceQueries[index]?.data };
-      const payload = allowance.payload
-        ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
-        : undefined;
+    return baseAllowances
+      .map((allowance, index) => {
+        const tokenPrice = isErc721Contract(allowance.contract)
+          ? null
+          : (priceQuery.data?.[allowance.contract.address as Address] ?? null);
 
-      return { ...allowance, metadata, payload };
-    });
-  }, [baseAllowances, priceQueries, spenderQueries]);
+        const metadata = { ...allowance.metadata, price: tokenPrice };
+        const payload = allowance.payload
+          ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
+          : undefined;
 
-  const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
-    return a.contract.address === b.contract.address && a.chainId === b.chainId;
-  };
-
-  const allowanceEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
-    if (!contractEquals(a, b)) return false;
-    if (a.payload?.spender !== b.payload?.spender) return false;
-    if (a.payload?.type !== b.payload?.type) return false;
-    if (a.payload?.type === AllowanceType.ERC721_SINGLE && b.payload?.type === AllowanceType.ERC721_SINGLE) {
-      return a.payload.tokenId === b.payload.tokenId;
-    }
-
-    return true;
-  };
-
-  const onRevoke = (allowance: TokenAllowanceData) => {
-    setBaseAllowances((previousAllowances) => {
-      const newAllowances = previousAllowances!.filter((other) => !allowanceEquals(other, allowance));
-
-      // If the token has a balance and we just revoked the last allowance, we need to add the token back to the list
-      // TODO: This is kind of ugly, ideally this should be reactive
-      const hasBalance = !hasZeroBalance(allowance.balance, allowance.metadata.decimals);
-      const wasLastAllowanceForToken = !newAllowances.find((other) => contractEquals(other, allowance));
-      if (hasBalance && wasLastAllowanceForToken) {
-        newAllowances.push(stripAllowanceData(allowance));
-      }
-
-      return newAllowances;
-    });
-  };
+        return { ...allowance, metadata, payload };
+      })
+      .filter((allowance) => !isNullish(allowance.payload));
+  }, [baseAllowances, priceQuery.data, spenderQueries]);
 
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
     console.debug('Reloading data');
@@ -129,24 +119,13 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
       refetchType: 'none',
     });
 
-    await queryClient.invalidateQueries({
-      queryKey: ['walletHealthScore', chainId, allowance.owner],
-      refetchType: 'none',
-    });
-
+    // Update in-memory state immediately
     if (!updatedProperties.amount || updatedProperties.amount === 0n) {
-      return onRevoke(allowance);
+      setBaseAllowances((prev) => (prev ? applyRevokeToAllowances(prev, allowance) : prev));
+    } else {
+      setBaseAllowances((prev) => (prev ? applyUpdateToAllowances(prev, allowance, updatedProperties) : prev));
     }
-
-    setBaseAllowances((previousAllowances) => {
-      return previousAllowances!.map((other) => {
-        if (!allowanceEquals(other, allowance)) return other;
-
-        const newAllowance = { ...other, payload: { ...other.payload, ...updatedProperties } as AllowancePayload };
-        return newAllowance;
-      });
-    });
   };
 
-  return { allowances, isLoading, error, onUpdate };
+  return { allowances, ownedTokens, isLoading, error, onUpdate };
 };

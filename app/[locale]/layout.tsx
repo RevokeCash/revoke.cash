@@ -5,15 +5,17 @@ import ToastifyConfig from 'components/common/ToastifyConfig';
 import TopLoader from 'components/common/TopLoader';
 import Footer from 'components/footer/Footer';
 import Header from 'components/header/Header';
-import { QueryProvider } from 'lib/hooks/QueryProvider';
+import { AuthSessionProvider } from 'lib/hooks/auth/AuthSessionProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
+import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
-import { locales } from 'lib/i18n/config';
+import { locales } from 'lib/i18n/routing';
 import type { Metadata } from 'next';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import '../../styles/index.css';
+import AnnouncementsContainer from 'components/common/AnnouncementsContainer';
 
 interface Props {
   children: React.ReactNode;
@@ -56,24 +58,29 @@ const MainLayout = async ({ children, params }: Props) => {
   return (
     <html lang={locale}>
       <head>
-        <Analytics />
+        <NextIntlClientProvider>
+          <Analytics />
+        </NextIntlClientProvider>
       </head>
       <body>
         <ThemeScript />
         <NextIntlClientProvider messages={{ common: messages.common }}>
           <QueryProvider>
-            <EthereumProvider>
-              <ColorThemeProvider>
-                <div className="flex flex-col mx-auto min-h-screen">
-                  <Header />
-                  <main className="w-full grow">{children}</main>
-                  <div className="flex flex-col justify-end">
-                    <Footer />
+            <AuthSessionProvider>
+              <EthereumProvider>
+                <ColorThemeProvider>
+                  <div className="flex flex-col mx-auto min-h-screen">
+                    <AnnouncementsContainer />
+                    <Header />
+                    <main className="w-full grow">{children}</main>
+                    <div className="flex flex-col justify-end">
+                      <Footer />
+                    </div>
                   </div>
-                </div>
-                <ToastifyConfig />
-              </ColorThemeProvider>
-            </EthereumProvider>
+                  <ToastifyConfig />
+                </ColorThemeProvider>
+              </EthereumProvider>
+            </AuthSessionProvider>
           </QueryProvider>
         </NextIntlClientProvider>
         <TopLoader />

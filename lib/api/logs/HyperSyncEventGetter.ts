@@ -1,25 +1,33 @@
-import type { Event } from '@envio-dev/hypersync-client';
-import { ViemLogsProvider } from 'lib/providers';
+import type { Event, HypersyncClient } from '@envio-dev/hypersync-client';
 import { isNullish } from 'lib/utils';
 import type { Filter, Log } from 'lib/utils/events';
-import { type Hash, type Hex, getAddress } from 'viem';
+import { getAddress, type Hash, type Hex } from 'viem';
 import type { EventGetter } from './EventGetter';
 
 export class HyperSyncEventGetter implements EventGetter {
+  async getClient(chainId: number): Promise<HypersyncClient> {
+    const { HypersyncClient } = await import('@envio-dev/hypersync-client');
+
+    if (!process.env.HYPERSYNC_API_KEY) {
+      throw new Error('HYPERSYNC_API_KEY is not set');
+    }
+
+    const url = `https://${chainId}.hypersync.xyz`;
+    const client = new HypersyncClient({
+      url,
+      apiToken: process.env.HYPERSYNC_API_KEY,
+    });
+
+    return client;
+  }
+
   async getLatestBlock(chainId: number): Promise<number> {
-    const url = `https://${chainId}.rpc.hypersync.xyz`;
-    const logsProvider = new ViemLogsProvider(chainId, url);
-    return logsProvider.getLatestBlock();
+    const client = await this.getClient(chainId);
+    return client.getHeight();
   }
 
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
-    // We run into issues with webpack when importing the hypersync client directly
-    const { BlockField, HypersyncClient, LogField } = await import('@envio-dev/hypersync-client');
-    const url = `https://${chainId}.hypersync.xyz`;
-    const client = HypersyncClient.new({
-      url,
-      bearerToken: process.env.HYPERSYNC_API_KEY,
-    });
+    const client = await this.getClient(chainId);
 
     const eventResponse = await client.collectEvents(
       {
@@ -33,18 +41,18 @@ export class HyperSyncEventGetter implements EventGetter {
         ],
         fieldSelection: {
           log: [
-            LogField.Address,
-            LogField.Data,
-            LogField.Topic0,
-            LogField.Topic1,
-            LogField.Topic2,
-            LogField.Topic3,
-            LogField.BlockNumber,
-            LogField.TransactionHash,
-            LogField.LogIndex,
-            LogField.TransactionIndex,
+            'Address',
+            'Data',
+            'Topic0',
+            'Topic1',
+            'Topic2',
+            'Topic3',
+            'BlockNumber',
+            'TransactionHash',
+            'LogIndex',
+            'TransactionIndex',
           ],
-          block: [BlockField.Timestamp],
+          block: ['Timestamp'],
         },
       },
       {},

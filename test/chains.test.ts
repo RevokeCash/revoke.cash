@@ -1,11 +1,15 @@
 import { ChainId } from '@revoke.cash/chains';
 import { expect } from 'chai';
+import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
+import { ERC20_ABI } from 'lib/abis';
 import { SupportType } from 'lib/chains/Chain';
 import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
+import { getScriptLogsProvider } from 'lib/ScriptLogsProvider';
+import { addressToTopic } from 'lib/utils';
 import {
-  ORDERED_CHAINS,
   createViemPublicClientForChain,
   getChainApiUrl,
+  getChainCoingeckoNetworkId,
   getChainConfig,
   getChainExplorerUrl,
   getChainFreeRpcUrl,
@@ -20,15 +24,45 @@ import {
   getChainSlug,
   getCorrespondingMainnetChainId,
   isTestnetChain,
+  ORDERED_CHAINS,
+  SUPPORTED_CHAINS,
 } from 'lib/utils/chains';
 import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
+import { getAbiItem, toEventSelector } from 'viem';
+import coingeckoNetworks from './coingecko-networks.json' with { type: 'json' };
 
-describe('Chain Support', () => {
+const extended = process.env.EXTENDED !== 'false';
+
+const itExtended = extended ? it : it.skip;
+
+describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
+  it('should have a Mocha and Cypress test for every supported chain', () => {
+    const SORTED_SUPPORTED_CHAINS = [...SUPPORTED_CHAINS].sort();
+    const SORTED_DROPDOWN_CHAINS = [...ORDERED_CHAINS].sort();
+    const SORTED_TEST_CHAINS = Object.keys(TEST_ADDRESSES).map(Number).sort();
+
+    expect(SORTED_SUPPORTED_CHAINS).to.deep.equal(SORTED_DROPDOWN_CHAINS);
+    expect(SORTED_TEST_CHAINS).to.deep.equal(SORTED_DROPDOWN_CHAINS);
+  });
+
+  it('should not have superfluous network descriptions', () => {
+    const descriptionSlugs = Object.keys(networkDescriptions.networks).toSorted();
+
+    const expectedSlugs = ORDERED_CHAINS.map((chainId) => {
+      const correspondingMainnetChainId = getCorrespondingMainnetChainId(chainId);
+      return correspondingMainnetChainId ? getChainSlug(correspondingMainnetChainId) : getChainSlug(chainId);
+    });
+
+    expect(descriptionSlugs).to.deep.equal([...new Set(expectedSlugs)].toSorted());
+  });
+
   ORDERED_CHAINS.forEach((chainId) => {
     const chainName = getChainName(chainId);
+    const chainType = getChainConfig(chainId)?.type;
     const nativeToken = getChainNativeToken(chainId)!;
+    const logsProvider = getScriptLogsProvider(chainId);
 
-    describe(`${chainName} (${nativeToken})`, () => {
+    describe(`${chainName} (${chainId}) -- ${chainType}`, () => {
       it('should have base chain data', () => {
         expect(getChainName(chainId), `${chainName} name`).to.exist;
         expect(getChainLogo(chainId), `${chainName} logo`).to.exist;
@@ -41,10 +75,29 @@ describe('Chain Support', () => {
         expect(getChainIdFromSlug(getChainSlug(chainId)), `${chainName} chain id from slug`).to.equal(chainId);
         expect(nativeToken, `${chainName} native token`).to.exist;
 
-        const NO_PRICING: number[] = [ChainId.CrabNetwork, ChainId.Palm, ChainId.PegoNetwork];
-
-        if (!isTestnetChain(chainId) && !NO_PRICING.includes(chainId)) {
+        const NO_NATIVE_PRICING: number[] = [ChainId.ZenChainTestnet, 824642];
+        if (!NO_NATIVE_PRICING.includes(chainId)) {
           expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;
+        }
+
+        const NO_TOKEN_PRICING: number[] = [
+          ChainId.CoinExSmartChainMainnet,
+          ChainId.DarwiniaNetwork,
+          ChainId.HarmonyMainnetShard0,
+          ChainId.NeoXMainnet,
+          ChainId.OasisEmerald,
+          ChainId.SyscoinMainnet,
+        ];
+
+        const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);
+        const coingeckoNetwork = coingeckoNetworks.data.find((network) => network.id === coingeckoNetworkId);
+
+        if (isTestnetChain(chainId) || NO_TOKEN_PRICING.includes(chainId)) {
+          expect(coingeckoNetworkId, `${chainName} coingecko network id`).not.to.exist;
+          expect(coingeckoNetwork, `${chainName} coingecko network`).not.to.exist;
+        } else {
+          expect(coingeckoNetworkId, `${chainName} coingecko network id`).to.exist;
+          expect(coingeckoNetwork, `${chainName} coingecko network`).to.exist;
         }
       });
 
@@ -82,6 +135,26 @@ describe('Chain Support', () => {
         INFURA_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(INFURA_API_KEY);
         ALCHEMY_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(ALCHEMY_API_KEY);
         DRPC_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(DRPC_API_KEY);
+      });
+
+      itExtended('can retrieve latest block number', async () => {
+        const blockHeight = await logsProvider.getLatestBlock();
+        expect(blockHeight).to.exist;
+      });
+
+      // This test is a simplified version of the Cypress tests, since logs retrieval is the most likely to fail
+      itExtended('can retrieve approval event logs for full blockchain history', async () => {
+        const fixtureAddress = TEST_ADDRESSES[chainId];
+        const blockHeight = await logsProvider.getLatestBlock();
+        const filter = {
+          fromBlock: 0,
+          toBlock: blockHeight,
+          topics: [toEventSelector(getAbiItem({ abi: ERC20_ABI, name: 'Approval' })), addressToTopic(fixtureAddress)],
+        };
+
+        const logs = await logsProvider.getLogs(filter);
+        expect(logs).to.exist;
+        expect(logs.length).to.be.greaterThan(0);
       });
     });
   });

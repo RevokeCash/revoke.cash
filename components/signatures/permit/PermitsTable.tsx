@@ -22,8 +22,6 @@ const PermitsTable = () => {
     getRowId(row) {
       return `${row.contract.address}`;
     },
-
-    // biome-ignore lint/suspicious/noExplicitAny: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
     meta: { onCancel } as any,
     initialState: {
       columnVisibility: {
@@ -34,7 +32,7 @@ const PermitsTable = () => {
 
   const title = (
     <div className="flex items-center gap-2">
-      <div>{t('address.signatures.permit.title')}</div>
+      <div>{t('signatures.permit.table.title')}</div>
     </div>
   );
 
@@ -44,7 +42,7 @@ const PermitsTable = () => {
         table={table}
         loading={isLoading}
         error={error}
-        emptyChildren={t('address.signatures.permit.none_found')}
+        emptyChildren={t('signatures.permit.table.none_found')}
         loaderRows={6}
         className="border-none"
       />

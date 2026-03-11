@@ -29,12 +29,19 @@ interface Props {
   address: Address;
   domainName?: string | null;
   initialChainId?: number;
+  queryParams?: string[];
 }
 
 // We pass in undefined as the default value, since there should always be a provider for this context
-const AddressPageContext = React.createContext<AddressContext>(undefined as any);
+export const AddressPageContext = React.createContext<AddressContext>(undefined as any);
 
-export const AddressPageContextProvider = ({ children, address, domainName, initialChainId }: Props) => {
+export const AddressPageContextProvider = ({
+  children,
+  address,
+  domainName,
+  initialChainId,
+  queryParams = ['chainId'], // default is only add chainId to the qs, not address
+}: Props) => {
   const searchParams = useSearchParams()!;
   const path = usePathname();
   const router = useCsrRouter();
@@ -51,12 +58,30 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   // Note: We use useLayoutEffect here, because this is the only setup that works with the "spenderSearch" query param as well
   // biome-ignore lint/correctness/useExhaustiveDependencies(path): We don't want this to re-run when path changes
   useLayoutEffect(() => {
-    if (selectedChainId && searchParams.get('chainId') !== selectedChainId.toString()) {
-      const newSearchParams = new URLSearchParams(Array.from(searchParams.entries()));
+    const newSearchParams = new URLSearchParams(Array.from(searchParams.entries()));
+
+    const updateChainId = () => {
+      if (!queryParams?.includes('chainId')) return;
+      if (!selectedChainId) return;
+      if (searchParams.get('chainId') === selectedChainId.toString()) return;
       newSearchParams.set('chainId', selectedChainId.toString());
-      router.replace(`${path}?${newSearchParams.toString()}`, { showProgress: false });
-    }
-  }, [selectedChainId, searchParams, router]);
+    };
+
+    const updateAddress = () => {
+      if (!queryParams?.includes('address')) return;
+      if (!address) return;
+      if (searchParams.get('address') === address) return;
+      newSearchParams.set('address', address);
+    };
+
+    updateChainId();
+    updateAddress();
+
+    const qs = newSearchParams.toString();
+    if (qs === searchParams.toString()) return;
+
+    router.replace(`${path}${qs ? `?${qs}` : ''}`, { showProgress: false });
+  }, [selectedChainId, address, searchParams, router, queryParams]);
 
   const eventContext = useEvents(address, selectedChainId);
   const allowanceContext = useAllowances(address, eventContext?.events, selectedChainId);
@@ -86,7 +111,20 @@ export const AddressPageContextProvider = ({ children, address, domainName, init
   );
 };
 
-export const useAddressPageContext = () => useContext(AddressPageContext);
+export const useAddressPageContext = () => {
+  const context = useContext(AddressPageContext);
+  if (!context) {
+    throw new Error('useAddressPageContext must be used within an AddressPageContextProvider');
+  }
+  return context;
+};
 
-export const useAddressEvents = () => useContext(AddressPageContext).eventContext;
-export const useAddressAllowances = () => useContext(AddressPageContext).allowanceContext;
+export const useAddressEvents = () => {
+  const context = useAddressPageContext();
+  return context.eventContext;
+};
+
+export const useAddressAllowances = () => {
+  const context = useAddressPageContext();
+  return context.allowanceContext;
+};

@@ -1,26 +1,23 @@
 'use client';
 
-import { type ReactNode, type Ref, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import Select, { type Props as SelectProps } from 'components/common/select/Select';
+import { useMounted } from 'lib/hooks/useMounted';
+import { forwardRef, type ReactNode, type Ref, useCallback, useEffect, useRef, useState } from 'react';
 import {
   type ActionMeta,
+  components,
+  createFilter,
   type FormatOptionLabelMeta,
   type GroupBase,
   type OnChangeValue,
   type OptionProps,
   type SelectInstance,
-  components,
-  createFilter,
 } from 'react-select';
-
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-
-import Select, { type Props as SelectProps } from 'components/common/select/Select';
-import Button from '../Button';
-import Chevron from '../Chevron';
-
-import { useMounted } from 'lib/hooks/useMounted';
 import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 import { twMerge } from 'tailwind-merge';
+import Button from '../Button';
+import Chevron from '../Chevron';
 
 interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProps<O, I, G> {
   // TODO: Support 'keepMounted' for regular Select component (currently impossible without a wrapper + controlled state)
@@ -68,7 +65,14 @@ const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: P
     <SelectOverlay
       isSelectOpen={isSelectOpen}
       handleSelectClose={handleSelectClose}
-      target={<TargetButton ref={buttonRef} toggleSelectClose={toggleSelectOpen} selectProps={props as any} />}
+      target={
+        <TargetButton
+          ref={buttonRef}
+          toggleSelectClose={toggleSelectOpen}
+          selectProps={props as any}
+          instanceId={props.instanceId ?? 'control-button-wrapper'}
+        />
+      }
       selectProps={props}
     >
       <Select
@@ -128,13 +132,14 @@ const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: Sele
   return (
     <div className={twMerge('relative shrink-0', selectProps.className)}>
       {target}
-      {isSelectOpen && (
+      {isSelectOpen ? (
+        // biome-ignore lint/a11y/noStaticElementInteractions: we know this is a hack, it is what it is
         <div
           className="fixed z-10 inset-0"
           onClick={handleSelectClose}
           onKeyDown={(ev) => ev.key === 'Enter' && handleSelectClose()}
         />
-      )}
+      ) : null}
       {isSelectOpen || selectProps.keepMounted ? <div className={className}>{children}</div> : null}
     </div>
   );
@@ -143,6 +148,7 @@ const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: Sele
 interface TargetButtonProps<O, I extends boolean, G extends GroupBase<O>> {
   toggleSelectClose: () => void;
   selectProps: Props<O, I, G>;
+  instanceId: string | number;
 }
 
 const TargetButton = forwardRef(
@@ -169,7 +175,8 @@ const TargetButton = forwardRef(
         size="none"
         style="secondary"
         onClick={toggleSelectClose}
-        className="flex items-center px-2 h-9 font-normal rounded-lg control-button-wrapper"
+        className="flex items-center gap-2 px-2 h-9 font-normal rounded-lg control-button-wrapper"
+        id={`react-select-${props.instanceId}-target-button`}
       >
         {formatControlOptionLabel(selectProps.value as O)}
         <Chevron className="w-5 h-5 fill-black dark:fill-white" />

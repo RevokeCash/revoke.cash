@@ -19,10 +19,10 @@ async function updateUnstoppableTlds() {
   const udTlds = tlds.filter((tld) => data.meta[tld].namingService === 'UNS');
 
   // Format a ts file with the tlds
-  const tsFile = `export const unstoppableTlds = ${JSON.stringify(udTlds)}`;
+  const tsFile = `export const UNSTOPPABLE_TLDS = ${JSON.stringify(udTlds)}`;
 
   // Write the file
-  const filePath = path.join(process.cwd(), 'lib/utils/unstoppableTlds.ts');
+  const filePath = path.join(process.cwd(), 'lib/utils/unstoppable-tlds.ts');
   fs.writeFileSync(filePath, tsFile);
   console.log(`Wrote ${udTlds.length} tlds to ${filePath}`);
 }

@@ -1,17 +1,16 @@
 import { ChainId, getChain } from '@revoke.cash/chains';
-import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY, RPC_OVERRIDES } from 'lib/constants';
+import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, RPC_OVERRIDES } from 'lib/constants';
 import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
-import type { PriceStrategy } from 'lib/price/PriceStrategy';
 import { isNullish } from 'lib/utils';
 import { SECOND } from 'lib/utils/time';
 import {
-  http,
   type AddEthereumChainParameter,
   type ChainContract,
-  type PublicClient,
-  type Chain as ViemChain,
   createPublicClient,
   defineChain,
+  http,
+  type PublicClient,
+  type Chain as ViemChain,
 } from 'viem';
 
 export interface ChainOptions {
@@ -23,6 +22,7 @@ export interface ChainOptions {
   infoUrl?: string;
   nativeToken?: string;
   nativeTokenCoingeckoId?: string;
+  coingeckoNetworkId?: string;
   explorerUrl?: string;
   etherscanCompatibleApiUrl?: string;
   rpc?: {
@@ -31,8 +31,6 @@ export interface ChainOptions {
     free?: string;
   };
   deployedContracts?: DeployedContracts;
-  priceStrategy?: PriceStrategy;
-  backendPriceStrategy?: PriceStrategy;
   isTestnet?: boolean;
   isCanary?: boolean;
   correspondingMainnetChainId?: number;
@@ -45,6 +43,7 @@ export enum SupportType {
   HYPERSYNC = 'HYPERSYNC',
   ETHERSCAN_COMPATIBLE = 'ETHERSCAN_COMPATIBLE',
   BLOCKSCOUT = 'BLOCKSCOUT', // Note that this is mostly Etherscan Compatible, with slight differences in the API
+  ROUTESCAN = 'ROUTESCAN', // Note that this is fully Etherscan Compatible, just for identification
   COVALENT = 'COVALENT',
   BACKEND_NODE = 'BACKEND_NODE',
   BACKEND_CUSTOM = 'BACKEND_CUSTOM',
@@ -107,8 +106,7 @@ export class Chain {
   }
 
   getRpcUrls(): string[] {
-    const baseRpcUrls =
-      getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', `${INFURA_API_KEY}`)) ?? [];
+    const baseRpcUrls = getChain(this.chainId)?.rpc ?? [];
     const specifiedRpcUrls = [this.options.rpc?.main].flat().filter((url) => !isNullish(url));
     const rpcOverrides = RPC_OVERRIDES[this.chainId] ? [RPC_OVERRIDES[this.chainId]] : [];
     return [...rpcOverrides, ...specifiedRpcUrls, ...baseRpcUrls];
@@ -138,7 +136,14 @@ export class Chain {
     return this.options.nativeTokenCoingeckoId ?? (this.getNativeToken() === 'ETH' ? 'ethereum' : undefined);
   }
 
+  getCoingeckoNetworkId(): string | undefined {
+    return this.options.coingeckoNetworkId;
+  }
+
   getEtherscanCompatibleApiUrl(): string | undefined {
+    if (this.type === SupportType.ROUTESCAN) {
+      return `https://api.routescan.io/v2/network/${this.isTestnet() ? 'testnet' : 'mainnet'}/evm/${this.chainId}/etherscan/api`;
+    }
     return this.options.etherscanCompatibleApiUrl ?? 'https://api.etherscan.io/v2/api';
   }
 
@@ -233,24 +238,26 @@ export class Chain {
 
   createViemPublicClient(overrideUrl?: string): PublicClient {
     // We noticed that certain chains run out of gas when using the default multicall settings
-    const multicallOverrides: Record<number, { batchSize: number }> = {
+    const multicallOverrides: Record<number, boolean | { batchSize: number }> = {
       [ChainId.Mantle]: { batchSize: 256 },
+      [ChainId.OasysMainnet]: false,
     };
 
-    // @ts-ignore TODO: This gives a TypeScript error since Viem v2
+    const transportOverrides: Record<number, any> = {
+      // OctaSpace's RPC does not handle batch requests properly
+      [ChainId.OctaSpace]: { batch: false },
+      // Kasplex's RPC does not handle batch requests properly
+      202555: { batch: false },
+    };
+
+    const multicallConfig = this.getDeployedContracts()?.multicall3 ? true : { deployless: true };
+    const transportConfig = { batch: { wait: 10, batchSize: 10 } };
+
     return createPublicClient({
       pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),
-      transport: http(overrideUrl ?? this.getRpcUrl()),
-      batch: { multicall: multicallOverrides[this.chainId] ?? true },
+      transport: http(overrideUrl ?? this.getRpcUrl(), transportOverrides[this.chainId] ?? transportConfig),
+      batch: { multicall: multicallOverrides[this.chainId] ?? multicallConfig },
     });
-  }
-
-  getPriceStrategy(): PriceStrategy | undefined {
-    return this.options.priceStrategy;
-  }
-
-  getBackendPriceStrategy(): PriceStrategy | undefined {
-    return this.options.backendPriceStrategy;
   }
 }

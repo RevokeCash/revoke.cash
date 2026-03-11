@@ -1,6 +1,6 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import type { Nullable, TransactionSubmitted } from 'lib/interfaces';
-import { type Address, type PublicClient, type WalletClient, getAddress } from 'viem';
+import { type Address, getAddress, type PublicClient, type WalletClient } from 'viem';
 import type { SignAuthorizationParameters } from 'viem/actions';
 import { isNullish, waitForTransactionConfirmation } from '.';
 

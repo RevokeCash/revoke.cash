@@ -2,8 +2,8 @@
 
 import { ChainId } from '@revoke.cash/chains';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { useTranslations } from 'next-intl';
 import { useParams, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import AddressNavigationTab from './AddressNavigationTab';
 
 const AddressNavigation = () => {
@@ -13,16 +13,16 @@ const AddressNavigation = () => {
   const t = useTranslations();
 
   const basePath = `/address/${addressOrName}`;
-  const signaturesPath = `${basePath}/signatures`;
+  const historyPath = `${basePath}/history`;
   const coveragePath = `${basePath}/coverage`;
   const sessionsPath = `${basePath}/sessions`;
   const delegationsPath = `${basePath}/delegations`;
 
   return (
-    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full justify-center sm:justify-start">
+    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full">
       <nav className="flex gap-4">
         <AddressNavigationTab name={t('address.navigation.allowances')} href={basePath} />
-        <AddressNavigationTab name={t('address.navigation.signatures')} href={signaturesPath} />
+        <AddressNavigationTab name={t('address.navigation.history')} href={historyPath} />
         {(selectedChainId === ChainId.Abstract || path.endsWith(sessionsPath)) && (
           <AddressNavigationTab name={t('address.navigation.sessions')} href={sessionsPath} />
         )}

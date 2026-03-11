@@ -1,30 +1,60 @@
 'use client';
 
+import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { TransactionType } from 'lib/interfaces';
 import {
-  type OnUpdate,
-  type TokenAllowanceData,
   getAllowanceKey,
+  type OnUpdate,
   revokeAllowance,
+  type TokenAllowanceData,
   trackRevokeTransaction,
 } from 'lib/utils/allowances';
-import { trackBatchRevoke } from 'lib/utils/batch-revoke';
+import { recordBatchRevoke, trackBatchRevoke } from 'lib/utils/batch-revoke';
+import { isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+import { useTranslations } from 'next-intl';
 import type PQueue from 'p-queue';
+import { toast } from 'react-toastify';
 import { useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddressPageContext } from '../page-context/AddressPageContext';
-import { useDonate } from './useDonate';
+import { useFeePayment } from './useFeePayment';
 
 export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
+  const t = useTranslations();
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, selectedChainId } = useAddressPageContext();
-  const { donate } = useDonate(selectedChainId, 'batch-revoke-tip');
+  const { sendFeePayment } = useFeePayment(selectedChainId);
   const { data: walletClient } = useWalletClient();
 
-  const revoke = async (REVOKE_QUEUE: PQueue, tipDollarAmount: string) => {
+  const revoke = async (REVOKE_QUEUE: PQueue, feeDollarAmount: string) => {
+    // Pay the fee before revoking the allowances
+    if (!isZeroFeeDollarAmount(feeDollarAmount)) {
+      allowances.forEach((allowance) => {
+        updateTransaction(getAllowanceKey(allowance), { status: 'preparing' });
+      });
+
+      try {
+        await sendFeePayment(feeDollarAmount);
+      } catch (error) {
+        if (isUserRejectionError(error)) {
+          toast.error(t('common.toasts.fee_payment_rejected'));
+        } else {
+          toast.error(t('common.toasts.fee_payment_failed', { message: parseErrorMessage(error) }));
+        }
+
+        console.error(error);
+
+        allowances.forEach((allowance) => {
+          updateTransaction(getAllowanceKey(allowance), { status: 'not_started' });
+        });
+
+        return;
+      }
+    }
+
     await Promise.race([
-      Promise.all(
-        allowances.map(async (allowance) => {
+      Promise.all([
+        ...allowances.map(async (allowance) => {
           // Skip if already confirmed or pending
           if (['confirmed', 'pending'].includes(getTransaction(getAllowanceKey(allowance)).status)) return;
 
@@ -33,17 +63,21 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
             transactionType: TransactionType.REVOKE,
             executeTransaction: () => revokeAllowance(walletClient!, allowance, onUpdate),
             updateTransaction,
-            trackTransaction: () => trackRevokeTransaction(allowance),
+            trackTransaction: () => trackRevokeTransaction(allowance, 'queued'),
           });
 
           await REVOKE_QUEUE.add(revoke);
         }),
-      ),
+      ]),
       REVOKE_QUEUE.onIdle(),
     ]);
 
-    trackBatchRevoke(selectedChainId, address, allowances, tipDollarAmount, 'queued');
-    await donate(tipDollarAmount);
+    // TODO: This still tracks if all revokes/the full batch gets rejected
+    trackBatchRevoke(selectedChainId, address, allowances, feeDollarAmount, 'queued');
+    // If the fee payment is zero, we record the batch revoke without a transaction hash, if there is a fee, it gets recorded when the fee payment is submitted
+    if (isZeroFeeDollarAmount(feeDollarAmount) && allowances.length > 1) {
+      recordBatchRevoke(selectedChainId, null, address, feeDollarAmount);
+    }
   };
 
   return revoke;

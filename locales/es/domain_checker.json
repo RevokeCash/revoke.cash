@@ -1,8 +1,0 @@
-{
-  "description": "Al interactuar con sitios web web3, es posible que se encuentre con un dominio que no reconozcas. Para asegurarse de que es seguro interactuar con el dominio, puede utilizar el escáner de dominios para comprobar si el dominio tiene algún problema de seguridad. Para ofrecerle el escáner de dominios, nos hemos asociado con <kerberus-link>Kerberus</kerberus-link>. También puede usar el <extension-link>Revoke extension</extension-link> para tener el escáner de dominio integrado, o el <kerberus-link>Kerberus Sentinel3 extension</kerberus-link> para aún más controles de seguridad en todas las cadenas SOL/EVM y hasta $30k de cobertura de estafas.",
-  "meta": {
-    "description": "Utilice el Escáner de Dominios para comprobar si es seguro interactuar con un dominio web3. Nos hemos asociado con Kerberus para ofrecerle el escáner de dominios.",
-    "title": "Escáner de Dominios: Compruebe si es seguro interactuar con un dominio"
-  },
-  "title": "Escáner de Dominios"
-}

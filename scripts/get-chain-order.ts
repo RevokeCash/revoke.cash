@@ -4,10 +4,10 @@ import {
   CHAIN_SELECT_MAINNETS,
   CHAIN_SELECT_TESTNETS,
   createViemPublicClientForChain,
+  getChainCoingeckoNetworkId,
   getChainDeployedContracts,
   getChainExplorerUrl,
   getChainName,
-  getChainPriceStrategy,
   getCorrespondingMainnetChainId,
 } from 'lib/utils/chains';
 
@@ -29,7 +29,9 @@ const getChainOrder = async () => {
   testnetChains.sort(([, , a], [, , b]) => b - a);
 
   console.log('MAINNETS:');
-  mainnetChains.forEach((entry, index) => logChain(entry, index, CHAIN_SELECT_MAINNETS));
+  mainnetChains.forEach((entry, index) => {
+    logChain(entry, index, CHAIN_SELECT_MAINNETS);
+  });
   console.log();
   console.log('Total mainnet chains:', mainnetChains.length);
 
@@ -37,22 +39,24 @@ const getChainOrder = async () => {
   console.log();
 
   console.log('TESTNETS:');
-  testnetChains.forEach((entry, index) => logChain(entry, index, CHAIN_SELECT_TESTNETS));
+  testnetChains.forEach((entry, index) => {
+    logChain(entry, index, CHAIN_SELECT_TESTNETS);
+  });
   console.log();
   console.log('Total testnet chains:', testnetChains.length);
 };
 
-const logChain = async (
+const logChain = (
   [chainName, chainId, tvl, hasMulticall]: readonly [string, number, number, boolean],
   index: number,
   reference: readonly number[],
 ) => {
-  const hasPriceStrategyIcon = getChainPriceStrategy(chainId) ? '✅' : '❌';
+  const hasTokenPricingIcon = getChainCoingeckoNetworkId(chainId) ? '✅' : '❌';
   const indexDiff = String(index - reference.indexOf(chainId))
     .padStart(3, ' ')
     .padEnd(4, ' ');
 
-  console.log(hasPriceStrategyIcon, indexDiff, chainName.padEnd(22), tvl);
+  console.log(hasTokenPricingIcon, indexDiff, chainName.padEnd(22), tvl);
 
   if (hasMulticall && !getChainDeployedContracts(chainId)) {
     const explorerUrl = getChainExplorerUrl(chainId);
@@ -78,10 +82,12 @@ const hasDeployedMulticall = async (chainId: number, multicallData: readonly any
   const registeredMulticall = multicallData.find((data) => data.chainId === chainId);
   if (registeredMulticall) return true;
 
-  const publicClient = createViemPublicClientForChain(chainId);
-  const unregisteredMulticall = await publicClient.getCode({ address: MULTICALL_ADDRESS });
+  try {
+    const publicClient = createViemPublicClientForChain(chainId);
+    const unregisteredMulticall = await publicClient.getCode({ address: MULTICALL_ADDRESS });
 
-  if (unregisteredMulticall && unregisteredMulticall !== '0x') return true;
+    if (unregisteredMulticall && unregisteredMulticall !== '0x') return true;
+  } catch {}
 
   return false;
 };

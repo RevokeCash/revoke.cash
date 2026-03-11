@@ -1,11 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { OnCancel } from 'lib/interfaces';
-import { deduplicateArray, isNullish } from 'lib/utils';
-import { getAllowanceKey, stripAllowanceData } from 'lib/utils/allowances';
+import { isNullish } from 'lib/utils';
 import type { TimeLog } from 'lib/utils/events';
 import { getLastCancelled } from 'lib/utils/permit';
 import { filterAsync, mapAsync } from 'lib/utils/promises';
-import { type PermitTokenData, hasSupportForPermit, hasZeroBalance } from 'lib/utils/tokens';
+import { hasSupportForPermit, type PermitTokenData } from 'lib/utils/tokens';
 import { useLayoutEffect, useState } from 'react';
 import { useAddressAllowances, useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';
 
@@ -14,7 +13,7 @@ export const usePermitTokens = () => {
   const queryClient = useQueryClient();
 
   const { selectedChainId } = useAddressPageContext();
-  const { allowances, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
+  const { ownedTokens, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
   const { events } = useAddressEvents();
 
   const {
@@ -22,20 +21,16 @@ export const usePermitTokens = () => {
     error: permitsError,
     isLoading: isPermitsLoading,
   } = useQuery({
-    queryKey: ['permitTokens', allowances?.map(getAllowanceKey)],
+    queryKey: ['permitTokens', ownedTokens?.map((t) => t.contract.address)],
     queryFn: async () => {
-      const ownedTokens = deduplicateArray(allowances!, (allowance) => allowance.contract.address)
-        .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals) && token)
-        .map(stripAllowanceData);
-
       const permitTokens = await mapAsync(
-        filterAsync(ownedTokens, (token) => hasSupportForPermit(token.contract)),
+        filterAsync(ownedTokens!, (token) => hasSupportForPermit(token.contract)),
         async (token) => ({ ...token, lastCancelled: await getLastCancelled(events!, token) }),
       );
 
       return permitTokens;
     },
-    enabled: !isNullish(allowances) && !isNullish(events),
+    enabled: !isNullish(ownedTokens) && !isNullish(events),
     staleTime: Number.POSITIVE_INFINITY,
   });
 

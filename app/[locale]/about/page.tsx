@@ -1,9 +1,10 @@
 import ProseLayout from 'app/layouts/ProseLayout';
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
+import RichText from 'components/common/RichText';
 import type { Metadata, NextPage } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
@@ -37,7 +38,9 @@ const AboutPage: NextPage<Props> = async ({ params }) => {
       <h1>{t('about.title')}</h1>
       <Divider className="my-4" />
 
-      <p>{t.rich('about.body.intro')}</p>
+      <p>
+        <RichText>{(tags) => t.rich('about.body.intro', tags)}</RichText>
+      </p>
 
       <div className="mx-auto my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
         <Href href="https://twitter.com/RoscoKalis/status/1183412994375503872" underline="none" external>
@@ -56,7 +59,9 @@ const AboutPage: NextPage<Props> = async ({ params }) => {
         </figcaption>
       </div>
 
-      <p>{t.rich('about.body.growth')}</p>
+      <p>
+        <RichText>{(tags) => t.rich('about.body.growth', tags)}</RichText>
+      </p>
 
       <div className="mx-auto my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
         <Image
@@ -73,7 +78,9 @@ const AboutPage: NextPage<Props> = async ({ params }) => {
 
       <p>{t('about.body.team')}</p>
 
-      <p>{t.rich('about.body.learn_more')}</p>
+      <p>
+        <RichText>{(tags) => t.rich('about.body.learn_more', tags)}</RichText>
+      </p>
     </ProseLayout>
   );
 };

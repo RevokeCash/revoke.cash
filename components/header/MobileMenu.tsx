@@ -8,7 +8,6 @@ import WalletIndicator from 'components/header/WalletIndicator';
 import { usePathname } from 'lib/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import DonateButton from '../common/donate/DonateButton';
 import NavLink from './NavLink';
 
 const MobileMenu = () => {
@@ -48,8 +47,7 @@ const MobileMenu = () => {
             <Dialog.Panel className="absolute inset-0 top-16 z-10 overflow-y-auto bg-white dark:bg-black w-screen h-screen">
               <div className="flex flex-col items-center gap-6 p-12">
                 <FocusTrap ref={focusRef} />
-                <WalletIndicator menuAlign="right" size="none" style="tertiary" className="text-lg" />
-                <DonateButton size="none" style="tertiary" className="text-lg" type="menu-button" />
+                <WalletIndicator size="none" style="tertiary" className="text-lg" />
                 <NavLink to="/extension" text={t('common.nav.extension')} />
                 <NavLink to="/exploits" text={t('common.nav.exploits')} />
                 <NavLink to="/learn" text={t('common.nav.learn')} />

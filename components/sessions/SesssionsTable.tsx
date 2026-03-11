@@ -25,8 +25,6 @@ const SessionsTable = () => {
     getRowId(row) {
       return `${row.payload.sessionHash}`;
     },
-
-    // biome-ignore lint/suspicious/noExplicitAny: Because of declaration merging in @tanstack/table-core we can't have multiple custom fields and need to type as any. See https://github.com/TanStack/table/discussions/4220
     meta: { onSessionRevoke } as any,
   });
 

@@ -17,13 +17,15 @@ const AddNetworkButton = ({ chainId, label }: Props) => {
   const { isConnected } = useAccount();
   const isMounted = useMounted();
 
-  return isConnected && isMounted ? (
-    <Button style="primary" size="md" onClick={() => switchChain(chainId)}>
-      {label}
-    </Button>
-  ) : (
-    <ConnectButton style="primary" size="md" />
-  );
+  if (isConnected && isMounted) {
+    return (
+      <Button style="primary" size="md" onClick={() => switchChain(chainId)}>
+        {label}
+      </Button>
+    );
+  }
+
+  return <ConnectButton style="primary" size="md" />;
 };
 
 export default AddNetworkButton;

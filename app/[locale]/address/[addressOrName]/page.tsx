@@ -28,7 +28,7 @@ export const generateMetadata = async ({ params, searchParams }: Props): Promise
   const t = await getTranslations({ locale });
 
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
-  const addressDisplay = domainName ?? shortenAddress(address);
+  const addressDisplay = domainName ?? shortenAddress(address)!;
 
   const searchChainIdNumber = Number(searchChainId || 1);
   const chainId = isSupportedChain(searchChainIdNumber) ? searchChainIdNumber : 1;

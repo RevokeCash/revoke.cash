@@ -11,10 +11,10 @@ import {
 import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { BackendSpenderDataSource } from 'lib/whois/spender/BackendSpenderDataSource';
-import { type Address, type PublicClient, getAddress, isAddress } from 'viem';
+import { type Address, getAddress, isAddress, type PublicClient } from 'viem';
 import { namehash, normalize } from 'viem/ens';
 import { createViemPublicClientForChain } from './chains';
-import { unstoppableTlds } from './unstoppableTlds';
+import { UNSTOPPABLE_TLDS } from './unstoppable-tlds';
 
 // Note that we do not use the official UD or Avvy resolution libraries below because they are big and use Ethers.js
 
@@ -130,7 +130,7 @@ export const lookupAvvyName = async (address?: Address): Promise<Nullable<string
     });
 
     return name || null;
-  } catch (err) {
+  } catch {
     return null;
   }
 };
@@ -147,7 +147,7 @@ export const resolveAvvyName = async (avvyName?: string): Promise<Address | null
     });
 
     return getAddress(address?.toLowerCase()) || null;
-  } catch (err) {
+  } catch {
     return null;
   }
 };
@@ -189,7 +189,7 @@ export const parseInputAddress = async (inputAddressOrName: string): Promise<Add
     // Avvy Domains
     if (tld === 'avax') return resolveAvvyName(sanitisedInput);
     // Unstoppable Domains
-    if (unstoppableTlds.includes(tld)) return resolveUnsName(sanitisedInput);
+    if (UNSTOPPABLE_TLDS.includes(tld)) return resolveUnsName(sanitisedInput);
     // Treat anything else as a potential ENS name, which include .eth and all DNS domains
     return resolveEnsName(sanitisedInput);
   }

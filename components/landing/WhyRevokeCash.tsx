@@ -1,3 +1,4 @@
+import RichText from 'components/common/RichText';
 import { useTranslations } from 'next-intl';
 import LandingParagraph from './LandingParagraph';
 import LandingSection from './LandingSection';
@@ -11,7 +12,7 @@ const WhyRevokeCash = () => {
         {t('landing.why_revoke.paragraph_1.description')}
       </LandingParagraph>
       <LandingParagraph title={t('landing.why_revoke.paragraph_2.title')}>
-        {t.rich('landing.why_revoke.paragraph_2.description')}
+        <RichText>{(tags) => t.rich('landing.why_revoke.paragraph_2.description', tags)}</RichText>
       </LandingParagraph>
       <LandingParagraph title={t('landing.why_revoke.paragraph_3.title')}>
         {t('landing.why_revoke.paragraph_3.description')}

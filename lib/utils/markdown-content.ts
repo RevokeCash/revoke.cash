@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
 import matter from 'gray-matter';
 import type { ContentFile, ISidebarEntry, Nullable, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
 import { getTranslations } from 'next-intl/server';
+import { join } from 'path';
 import { readingTime } from 'reading-time-estimator';
 import { deduplicateArray } from '.';
 import { getOpenGraphImageUrl } from './og';
@@ -73,7 +73,8 @@ const parsePerson = (person: Nullable<string>): Person | undefined => {
   };
 };
 
-const calculateReadingTime = (content: string): number => Math.round(Math.max(readingTime(content, 200).minutes, 1));
+const calculateReadingTime = (content: string): number =>
+  Math.round(Math.max(readingTime(content, { wordsPerMinute: 200 }).minutes, 1));
 
 export const getSidebar = async (
   locale: string,
@@ -99,6 +100,7 @@ export const getSidebar = async (
         children: [
           getSidebarEntry('approvals/what-are-token-approvals', locale, directory, extended),
           getSidebarEntry('approvals/how-to-revoke-token-approvals', locale, directory, extended),
+          getSidebarEntry('approvals/testnet-token-approvals', locale, directory, extended),
           getSidebarEntry('approvals/what-are-eip2612-permit-signatures', locale, directory, extended),
           getSidebarEntry('approvals/what-is-permit2', locale, directory, extended),
         ],
@@ -109,12 +111,15 @@ export const getSidebar = async (
         children: [
           getSidebarEntry('security/what-to-do-when-scammed', locale, directory, extended),
           getSidebarEntry('security/what-is-address-poisoning', locale, directory, extended),
+          getSidebarEntry('security/what-is-pig-butchering', locale, directory, extended),
         ],
       },
       {
         title: t('learn.sidebar.wallets'),
         path: '/learn/wallets',
         children: [
+          getSidebarEntry('wallets/what-is-eip7702', locale, directory, extended),
+          getSidebarEntry('wallets/what-is-a-cold-wallet', locale, directory, extended),
           {
             title: t('learn.add_network.sidebar_title'),
             description: extended ? t('learn.add_network.description', { chainName: 'Ethereum' }) : undefined,

@@ -1,12 +1,14 @@
 import {
-  FloatingArrow,
-  FloatingPortal,
   arrow,
   autoUpdate,
+  FloatingArrow,
+  FloatingPortal,
   flip,
   offset,
+  type Placement,
   safePolygon,
   shift,
+  size,
   useDismiss,
   useFloating,
   useFocus,
@@ -16,7 +18,6 @@ import {
   useRole,
   useTransitionStyles,
 } from '@floating-ui/react';
-import type { Placement } from '@floating-ui/react';
 import React, {
   type ComponentProps,
   type ForwardedRef,
@@ -58,6 +59,14 @@ const useTooltip = ({
         padding: 8,
       }),
       shift({ padding: 8 }),
+      size({
+        padding: 8,
+        apply({ availableHeight, elements }) {
+          Object.assign(elements.floating.style, {
+            maxHeight: `${availableHeight}px`,
+          });
+        },
+      }),
       arrow({
         element: arrowRef,
         padding: 8,

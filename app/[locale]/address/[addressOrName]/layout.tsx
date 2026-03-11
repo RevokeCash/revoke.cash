@@ -3,8 +3,8 @@ import AddressHeader from 'components/address/AddressHeader';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { getAddressAndDomainName } from 'lib/utils/whois';
-import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 
 interface Props {
