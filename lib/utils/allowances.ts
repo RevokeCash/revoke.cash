@@ -597,16 +597,7 @@ export const applyRevokeToAllowances = (
   allowances: TokenAllowanceData[],
   allowance: TokenAllowanceData,
 ): TokenAllowanceData[] => {
-  const newAllowances = allowances.filter((other) => !allowanceEquals(other, allowance));
-
-  // If the token has a balance and we just revoked the last allowance, add the token back (stripped)
-  const hasBalance = !hasZeroBalance(allowance.balance, allowance.metadata.decimals);
-  const wasLastAllowanceForToken = !newAllowances.find((other) => contractEquals(other, allowance));
-  if (hasBalance && wasLastAllowanceForToken) {
-    newAllowances.push(stripAllowanceData(allowance));
-  }
-
-  return newAllowances;
+  return allowances.filter((other) => !allowanceEquals(other, allowance));
 };
 
 export const applyUpdateToAllowances = (

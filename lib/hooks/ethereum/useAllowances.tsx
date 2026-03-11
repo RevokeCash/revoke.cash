@@ -8,12 +8,13 @@ import {
   applyRevokeToAllowances,
   applyUpdateToAllowances,
   getAllowancesFromEvents,
+  stripAllowanceData,
   type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import { getEventKey, type TokenEvent } from 'lib/utils/events';
 import { MINUTE } from 'lib/utils/time';
-import { isErc721Contract } from 'lib/utils/tokens';
+import { hasZeroBalance, isErc721Contract } from 'lib/utils/tokens';
 import { getSpenderData } from 'lib/utils/whois';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
@@ -80,21 +81,31 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     })),
   });
 
+  // Stable list of all owned tokens (for use by usePermitTokens, independent of approval state)
+  const ownedTokens = useMemo(() => {
+    if (!data) return undefined;
+    return deduplicateArray(data, (a) => a.contract.address)
+      .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals))
+      .map(stripAllowanceData);
+  }, [data]);
+
   const allowances = useMemo(() => {
     if (!baseAllowances) return undefined;
 
-    return baseAllowances.map((allowance, index) => {
-      const tokenPrice = isErc721Contract(allowance.contract)
-        ? null
-        : (priceQuery.data?.[allowance.contract.address as Address] ?? null);
+    return baseAllowances
+      .map((allowance, index) => {
+        const tokenPrice = isErc721Contract(allowance.contract)
+          ? null
+          : (priceQuery.data?.[allowance.contract.address as Address] ?? null);
 
-      const metadata = { ...allowance.metadata, price: tokenPrice };
-      const payload = allowance.payload
-        ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
-        : undefined;
+        const metadata = { ...allowance.metadata, price: tokenPrice };
+        const payload = allowance.payload
+          ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
+          : undefined;
 
-      return { ...allowance, metadata, payload };
-    });
+        return { ...allowance, metadata, payload };
+      })
+      .filter((allowance) => !isNullish(allowance.payload));
   }, [baseAllowances, priceQuery.data, spenderQueries]);
 
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
@@ -116,5 +127,5 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     }
   };
 
-  return { allowances, isLoading, error, onUpdate };
+  return { allowances, ownedTokens, isLoading, error, onUpdate };
 };
