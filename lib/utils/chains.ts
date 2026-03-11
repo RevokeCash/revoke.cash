@@ -132,6 +132,7 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.ZetaChainTestnet,
   ChainId.PlumeTestnet,
   ChainId.BeamTestnet,
+  ChainId.RISETestnet,
   ChainId.ZenChainTestnet,
   824642, // ZugChain Testnet
 ] as const;
@@ -1272,6 +1273,23 @@ export const CHAINS = {
       main: 'https://rpc.rollux.com',
     },
     deployedContracts: { ...MULTICALL },
+  }),
+  [ChainId.RISE]: new Chain({
+    type: SupportType.UNSUPPORTED,
+    chainId: ChainId.RISE,
+    name: 'RISE',
+    logoUrl: '/assets/images/vendor/chains/rise.svg',
+  }),
+  [ChainId.RISETestnet]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.RISETestnet,
+    name: 'RISE Testnet',
+    logoUrl: '/assets/images/vendor/chains/rise.svg',
+    explorerUrl: 'https://explorer.testnet.riselabs.xyz',
+    etherscanCompatibleApiUrl: 'https://explorer.testnet.riselabs.xyz/api',
+    deployedContracts: { ...MULTICALL },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.RISE,
   }),
   [ChainId.RoninMainnet]: new Chain({
     type: SupportType.COVALENT,
