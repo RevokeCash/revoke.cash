@@ -1,25 +1,11 @@
 'use client';
 
-import { useQueries } from '@tanstack/react-query';
-import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlatform';
 import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { delegationEquals, isNullish } from 'lib/utils';
-import analytics from 'lib/utils/analytics';
-import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { Address, PublicClient } from 'viem';
+import { ORDERED_CHAINS } from 'lib/utils/chains';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAddress } from '../../page-context/AddressIdentityContext';
-
-const fetchDelegations = async (
-  publicClient: PublicClient,
-  chainId: number,
-  address: Address,
-): Promise<Delegation[]> => {
-  if (!publicClient || !address) return [];
-
-  const delegationPlatform = new AggregateDelegatePlatform(publicClient, chainId);
-  return delegationPlatform.getDelegations(address);
-};
+import { usePremiumDelegationResults } from './usePremiumDelegationResults';
 
 export type ChainDelegationsLoadingStatus = 'loading' | 'success' | 'error';
 
@@ -41,33 +27,21 @@ export const usePremiumDelegations = () => {
   const syncedQueryDataRef = useRef<Map<number, Delegation[] | undefined>>(new Map());
 
   // Reset in-memory state when switching addresses
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isNullish(address)) return;
 
     setBaseDelegationsMap(new Map());
     syncedQueryDataRef.current.clear();
   }, [address]);
 
-  const delegationQueries = useQueries({
-    queries: ORDERED_CHAINS.map((chainId) => ({
-      queryKey: ['delegations', address, chainId],
-      queryFn: async () => {
-        const publicClient = createViemPublicClientForChain(chainId);
-        const delegations = await fetchDelegations(publicClient, chainId, address as Address);
-        analytics.track('Fetched Delegations', { account: address, chainId });
-        return delegations;
-      },
-      enabled: !isNullish(address),
-      staleTime: Number.POSITIVE_INFINITY,
-    })),
-  });
+  const delegationResults = usePremiumDelegationResults(address);
 
   // Sync query data to in-memory state (only when query data actually changes, not after manual updates)
-  useLayoutEffect(() => {
+  useEffect(() => {
     let hasChanges = false;
 
     ORDERED_CHAINS.forEach((chainId, index) => {
-      const queryData = delegationQueries[index]?.data;
+      const queryData = delegationResults[index]?.data;
       const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
       if (!isNullish(queryData) && queryData !== lastSyncedData) {
@@ -82,7 +56,7 @@ export const usePremiumDelegations = () => {
       const newMap = new Map(prevMap);
 
       ORDERED_CHAINS.forEach((chainId, index) => {
-        const queryData = delegationQueries[index]?.data;
+        const queryData = delegationResults[index]?.data;
         const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
         if (!isNullish(queryData) && queryData === lastSyncedData) {
@@ -92,29 +66,21 @@ export const usePremiumDelegations = () => {
 
       return newMap;
     });
-  }, [delegationQueries]);
+  }, [delegationResults]);
 
   const chainData = useMemo<ChainDelegationsData[]>(() => {
     return ORDERED_CHAINS.map((chainId, index) => {
-      const delegationQuery = delegationQueries[index];
+      const delegationResult = delegationResults[index];
       const delegationsForChain = baseDelegationsMap.get(chainId) ?? [];
-      const hasLoadedData = !isNullish(delegationQuery?.data);
-      const isError = Boolean(delegationQuery?.error);
-      const isSuccess = Boolean(hasLoadedData && !isError);
 
-      let status: ChainDelegationsLoadingStatus = 'loading';
-      if (isError) status = 'error';
-      else if (isSuccess) status = 'success';
-
-      const error = (delegationQuery?.error ?? null) as Error | null;
-
+      const status = delegationResult.error ? 'error' : delegationResult.isSuccess ? 'success' : 'loading';
       const refetch = async () => {
-        await delegationQuery?.refetch();
+        await delegationResult?.refetch();
       };
 
-      return { chainId, status, error, delegations: delegationsForChain, refetch };
+      return { chainId, status, error: delegationResult.error, delegations: delegationsForChain, refetch };
     });
-  }, [delegationQueries, baseDelegationsMap]);
+  }, [delegationResults, baseDelegationsMap]);
 
   const onRevoke = (delegation: Delegation) => {
     setBaseDelegationsMap((previousMap) => {

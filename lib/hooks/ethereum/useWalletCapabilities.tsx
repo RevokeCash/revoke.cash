@@ -21,7 +21,7 @@ export const useWalletCapabilities = (chainId: number) => {
         return null;
       }
     },
-    enabled: !!walletClient,
+    enabled: !isNullish(walletClient),
   });
 
   const supportsEip5792 = useMemo(() => {

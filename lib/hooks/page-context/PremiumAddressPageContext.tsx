@@ -1,28 +1,26 @@
 'use client';
 
-import { type UseQueryResult, useQueries } from '@tanstack/react-query';
-import { getTokenEvents } from 'lib/chains/events';
-import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { getTokenPrices } from 'lib/price/utils';
 import { deduplicateArray, isNullish } from 'lib/utils';
 import {
   type AllowanceUpdateProperties,
   applyRevokeToAllowances,
   applyUpdateToAllowances,
   calculateValueAtRisk,
-  getAllowancesFromEvents,
   type OnUpdate,
   type TokenAllowanceData,
 } from 'lib/utils/allowances';
-import analytics from 'lib/utils/analytics';
-import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
-import { getEventKey, type TokenEvent } from 'lib/utils/events';
-import { MINUTE } from 'lib/utils/time';
+import { ORDERED_CHAINS } from 'lib/utils/chains';
+import type { TokenEvent } from 'lib/utils/events';
 import { isErc721Contract } from 'lib/utils/tokens';
-import { getSpenderData } from 'lib/utils/whois';
-import React, { type ReactNode, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { Address } from 'viem';
+import type { CombinedQueryResult } from '../ethereum/combined-query-result';
+import { useAllowanceSpenderData } from '../ethereum/useAllowanceSpenderData';
 import { useNameLookup } from '../ethereum/useNameLookup';
+import { usePremiumAllowanceResults } from '../ethereum/usePremiumAllowanceResults';
+import { usePremiumEventResults } from '../ethereum/usePremiumEventResults';
+import { getPriceKey, usePriceData } from '../ethereum/usePriceData';
+import { getSpenderKey } from '../ethereum/useSpenderData';
 import { queryClient } from '../QueryProvider';
 
 export type ChainLoadingStatus = 'loading' | 'success' | 'error';
@@ -63,40 +61,15 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
   // Track which query data references we've already synced to avoid overwriting manual updates
   const syncedQueryDataRef = useRef<Map<number, TokenAllowanceData[] | undefined>>(new Map());
 
-  // Fetch events for all chains in parallel using useQueries
-  const eventQueries = useQueries({
-    queries: ORDERED_CHAINS.map((chainId) => ({
-      queryKey: ['events', address, chainId],
-      queryFn: () => getTokenEvents(chainId, address),
-      enabled: !isNullish(address) && !isNullish(chainId),
-      staleTime: Number.POSITIVE_INFINITY,
-    })),
-  });
-
-  // Fetch allowances for all chains in parallel
-  const allowanceQueries = useQueries({
-    queries: ORDERED_CHAINS.map((chainId, index) => {
-      const events = eventQueries[index]?.data;
-      return {
-        queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
-        queryFn: async () => {
-          const publicClient = createViemPublicClientForChain(chainId);
-          const allowances = await getAllowancesFromEvents(address, events!, publicClient, chainId);
-          analytics.track('Fetched Allowances', { account: address, chainId });
-          return allowances;
-        },
-        enabled: !isNullish(address) && !isNullish(chainId) && !isNullish(events),
-        staleTime: Number.POSITIVE_INFINITY,
-      };
-    }),
-  });
+  const eventResults = usePremiumEventResults(address);
+  const allowanceResults = usePremiumAllowanceResults(address, eventResults);
 
   // Sync query data to in-memory state (only when query data actually changes, not after manual updates)
-  useLayoutEffect(() => {
+  useEffect(() => {
     let hasChanges = false;
 
     ORDERED_CHAINS.forEach((chainId, index) => {
-      const queryData = allowanceQueries[index]?.data;
+      const queryData = allowanceResults[index]?.data;
       const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
       // Only sync if the query data reference has changed (new fetch), not if we manually modified the map
@@ -111,7 +84,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         const newMap = new Map(prevMap);
 
         ORDERED_CHAINS.forEach((chainId, index) => {
-          const queryData = allowanceQueries[index]?.data;
+          const queryData = allowanceResults[index]?.data;
           const lastSyncedData = syncedQueryDataRef.current.get(chainId);
 
           // Sync this chain's data if it matches what we just marked as synced
@@ -123,9 +96,9 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         return newMap;
       });
     }
-  }, [allowanceQueries]);
+  }, [allowanceResults]);
 
-  // Flatten all allowances from all chains for price and spender queries
+  // Flatten all allowances from all chains for spender queries
   const allBaseAllowances = useMemo(() => {
     const allowances: TokenAllowanceData[] = [];
     for (const chainAllowances of baseAllowancesMap.values()) {
@@ -145,85 +118,30 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
     });
   }, [baseAllowancesMap]);
 
-  // Fetch token prices in batches per chain
-  const priceQueries = useQueries({
-    queries: uniqueErc20TokenAddressesByChain.map(({ chainId, addresses }) => ({
-      queryKey: ['tokenPrices', chainId, addresses],
-      queryFn: () => getTokenPrices(chainId, addresses),
-      staleTime: 5 * MINUTE,
-      refetchOnWindowFocus: false,
-      placeholderData: undefined,
-      enabled: addresses.length > 0,
-    })),
-  });
-
-  // Fetch spender data for all allowances (TanStack Query deduplicates by queryKey)
-  const spenderQueries = useQueries({
-    queries: allBaseAllowances.map((allowance) => ({
-      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender],
-      queryFn: allowance.payload?.spender
-        ? () => getSpenderData(allowance.payload!.spender, allowance.chainId)
-        : () => null,
-      staleTime: Number.POSITIVE_INFINITY,
-      refetchOnWindowFocus: false,
-      placeholderData: undefined,
-    })),
-  });
-
-  // Create separate maps for prices (per token) and spender data (per spender)
-  const priceMap = useMemo(() => {
-    const map = new Map<string, number | null>();
-
-    uniqueErc20TokenAddressesByChain.forEach(({ chainId, addresses }, index) => {
-      const queryData = priceQueries[index]?.data;
-      if (!queryData) return;
-
-      for (const tokenAddress of addresses) {
-        map.set(`${chainId}-${tokenAddress}`, queryData[tokenAddress] ?? null);
-      }
-    });
-
-    return map;
-  }, [uniqueErc20TokenAddressesByChain, priceQueries]);
-
-  const spenderDataMap = useMemo(() => {
-    const map = new Map<string, SpenderData | SpenderRiskData | null | undefined>();
-
-    allBaseAllowances.forEach((allowance, index) => {
-      const spender = allowance.payload?.spender;
-      if (!spender) return;
-
-      const key = `${allowance.chainId}-${spender}`;
-      // Only set if not already present (all queries for same spender return same data)
-      if (!map.has(key)) {
-        map.set(key, spenderQueries[index]?.data);
-      }
-    });
-
-    return map;
-  }, [allBaseAllowances, spenderQueries]);
+  const priceData = usePriceData(uniqueErc20TokenAddressesByChain);
+  const spenderData = useAllowanceSpenderData(allBaseAllowances);
 
   // Build chainData array with status, allowances (enriched with price/spender), and computed values
   const chainData = useMemo<ChainAllowanceData[]>(() => {
     return ORDERED_CHAINS.map((chainId, index) => {
-      const eventQuery = eventQueries[index];
-      const allowanceQuery = allowanceQueries[index];
-      const status = getChainAllowanceLoadingStatus(eventQuery, allowanceQuery);
+      const eventResult = eventResults[index];
+      const allowanceResult = allowanceResults[index];
+      const status = getChainAllowanceLoadingStatus(eventResult, allowanceResult);
 
-      const error = (allowanceQuery?.error ?? eventQuery?.error ?? null) as Error | null;
+      const error = allowanceResult?.error ?? eventResult?.error ?? null;
 
       // Use in-memory state, filter to only allowances with active approvals, and enrich with price/spender data
       const baseAllowances = baseAllowancesMap.get(chainId) ?? [];
       const allowances = baseAllowances
         .filter((allowance) => !isNullish(allowance.payload))
         .map((allowance) => {
-          const priceKey = `${allowance.chainId}-${allowance.contract.address}`;
-          const spenderKey = `${allowance.chainId}-${allowance.payload?.spender}`;
+          const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
+          const spenderKey = getSpenderKey(allowance.chainId, allowance.payload!.spender);
 
-          const price = isErc721Contract(allowance.contract) ? null : (priceMap.get(priceKey) ?? null);
+          const price = isErc721Contract(allowance.contract) ? null : priceData[priceKey];
           const metadata = { ...allowance.metadata, price };
           const payload = allowance.payload
-            ? { ...allowance.payload, spenderData: spenderDataMap.get(spenderKey) }
+            ? { ...allowance.payload, spenderData: spenderData[spenderKey] }
             : undefined;
 
           return { ...allowance, metadata, payload };
@@ -243,7 +161,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         queryClient.invalidateQueries({ queryKey: ['allowances', address, chainId] });
       };
 
-      const events = eventQueries[index]?.data ?? [];
+      const events = eventResults[index]?.data ?? [];
 
       return {
         chainId,
@@ -255,7 +173,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         refetch,
       };
     });
-  }, [eventQueries, allowanceQueries, baseAllowancesMap, priceMap, spenderDataMap, address]);
+  }, [eventResults, allowanceResults, baseAllowancesMap, priceData, spenderData, address]);
 
   // Overall loading state: true only if all chains are still loading
   const isLoading = useMemo(() => {
@@ -325,11 +243,11 @@ export const usePremiumAddressPageContext = () => {
 };
 
 const getChainAllowanceLoadingStatus = (
-  eventQuery: UseQueryResult<TokenEvent[], Error>,
-  allowanceQuery: UseQueryResult<TokenAllowanceData[], Error>,
+  eventResult: CombinedQueryResult<TokenEvent[]>,
+  allowanceResult: CombinedQueryResult<TokenAllowanceData[]>,
 ): ChainLoadingStatus => {
-  if (eventQuery.isLoading || allowanceQuery.isLoading) return 'loading';
-  if (eventQuery.error || allowanceQuery.error) return 'error';
-  if (allowanceQuery.isSuccess) return 'success';
+  if (eventResult.isLoading || allowanceResult.isLoading) return 'loading';
+  if (eventResult.error || allowanceResult.error) return 'error';
+  if (allowanceResult.isSuccess) return 'success';
   return 'loading';
 };

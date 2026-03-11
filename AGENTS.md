@@ -194,3 +194,4 @@ Notes:
 - Many App Router pages are static (`dynamic='error'`, `dynamicParams=false`); update static params when adding new dynamic content paths.
 - Prefer writing code in a way that reads top-down, from the main entry point to the leaves.
 - Prefer `const` assignment and not reassigning variables.
+- Use descriptive variable names, no single letter variables unless they are very common and well-known (e.g. `i`, `j`, `k`).

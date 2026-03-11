@@ -257,7 +257,7 @@ export const ensureAuthSession = async () => {
       const isLoggedIn = await ky
         .post('/api/auth/login')
         .json<{ ok?: boolean }>()
-        .then((res) => !!res?.ok)
+        .then((res) => Boolean(res?.ok))
         .catch(() => false);
 
       if (!isLoggedIn) {

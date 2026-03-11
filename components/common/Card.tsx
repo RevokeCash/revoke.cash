@@ -1,3 +1,4 @@
+import { isNullish } from 'lib/utils';
 import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Loader from './Loader';
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const Card = ({ header, children, className, image, hover, isLoading }: Props) => {
-  const hasTopContent = !!header || !!image;
+  const hasTopContent = !isNullish(header) || !isNullish(image);
 
   const outerClass = twMerge(
     'h-full w-full border border-black dark:border-white rounded-lg flex flex-col',
@@ -33,7 +34,7 @@ const Card = ({ header, children, className, image, hover, isLoading }: Props) =
           {image}
         </div>
       ) : null}
-      <Loader isLoading={!!isLoading} className={twMerge('border-none', hasTopContent && 'rounded-t-none')}>
+      <Loader isLoading={Boolean(isLoading)} className={twMerge('border-none', hasTopContent && 'rounded-t-none')}>
         <div className={contentClass}>{children}</div>
       </Loader>
     </div>

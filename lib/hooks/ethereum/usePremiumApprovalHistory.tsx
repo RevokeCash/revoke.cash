@@ -1,52 +1,43 @@
-import { useQueries } from '@tanstack/react-query';
 import type { ChainStatus } from 'components/common/PremiumChainStatusSection';
-import { getEventKey } from 'lib/utils/events';
-import { HOUR } from 'lib/utils/time';
+import { logSorterChronological } from 'lib/utils';
 import { useMemo } from 'react';
-import { getApprovalHistoryForChain } from '../../utils/approval-history';
 import { usePremiumAddressPageContext } from '../page-context/PremiumAddressPageContext';
-import { useHistorySpenderData } from './useHistorySpenderData';
+import { useAnnotateHistorySpenderData } from './useHistorySpenderData';
+import { type CombinedHistoryResult, usePremiumHistoryResults } from './usePremiumHistoryResults';
 
 export type ChainHistoryLoadingStatus = 'loading' | 'success' | 'error';
 
 export const usePremiumApprovalHistory = () => {
   const { chainData } = usePremiumAddressPageContext();
 
-  const historyQueries = useQueries({
-    queries: chainData.map((chain) => ({
-      queryKey: ['approvalHistory', chain.chainId, chain.events.map(getEventKey)],
-      queryFn: () => getApprovalHistoryForChain({ chainId: chain.chainId, events: chain.events }),
-      enabled: chain.status !== 'loading' && chain.events.length > 0,
-      staleTime: 1 * HOUR,
-    })),
-  });
+  const historyResults = usePremiumHistoryResults(chainData);
 
   const chainStatuses = useMemo<ChainStatus[]>(() => {
     return chainData.map((chain, index) => {
-      const historyQuery = historyQueries[index];
-      const status = getChainHistoryLoadingStatus(chain.status, historyQuery, chain.events.length > 0);
-      const error = (historyQuery?.error ?? chain.error ?? null) as Error | null;
+      const historyResult = historyResults[index];
+      const status = getChainHistoryLoadingStatus(chain.status, historyResult, chain.events.length > 0);
+      const error = historyResult?.error ?? chain.error ?? null;
 
       const refetch = () => {
         chain.refetch();
-        historyQuery?.refetch();
+        historyResult?.refetch();
       };
 
       return { chainId: chain.chainId, status, error, refetch };
     });
-  }, [chainData, historyQueries]);
+  }, [chainData, historyResults]);
 
   const approvalHistoryBase = useMemo(() => {
-    return historyQueries
-      .map((query) => query.data)
-      .flatMap((queryData) => queryData ?? [])
-      .sort((a, b) => (b.time.timestamp ?? 0) - (a.time.timestamp ?? 0));
-  }, [historyQueries]);
-  const approvalHistory = useHistorySpenderData(approvalHistoryBase);
+    return historyResults
+      .map((result) => result.data)
+      .flatMap((data) => data ?? [])
+      .sort((a, b) => logSorterChronological(a.rawLog, b.rawLog));
+  }, [historyResults]);
+  const approvalHistory = useAnnotateHistorySpenderData(approvalHistoryBase);
 
   const isLoading = useMemo(() => {
-    return chainData.some((chain) => chain.status === 'loading') || historyQueries.some((query) => query.isLoading);
-  }, [chainData, historyQueries]);
+    return chainData.some((chain) => chain.status === 'loading') || historyResults.some((result) => result.isLoading);
+  }, [chainData, historyResults]);
 
   const error = useMemo(() => {
     const allChainsFailed = chainStatuses.every((chain) => chain.status === 'error');
@@ -65,12 +56,12 @@ export const usePremiumApprovalHistory = () => {
 
 const getChainHistoryLoadingStatus = (
   chainStatus: 'loading' | 'success' | 'error',
-  historyQuery: { isLoading: boolean; error: Error | null; isSuccess: boolean },
+  historyResult: CombinedHistoryResult,
   hasEvents: boolean,
 ): ChainHistoryLoadingStatus => {
-  if (chainStatus === 'loading' || historyQuery.isLoading) return 'loading';
-  if (chainStatus === 'error' || historyQuery.error) return 'error';
+  if (chainStatus === 'loading' || historyResult.isLoading) return 'loading';
+  if (chainStatus === 'error' || historyResult.error) return 'error';
   // If the chain finished loading but has no events, the history query was never enabled — treat as success
-  if (historyQuery.isSuccess || (chainStatus === 'success' && !hasEvents)) return 'success';
+  if (historyResult.isSuccess || (chainStatus === 'success' && !hasEvents)) return 'success';
   return 'loading';
 };

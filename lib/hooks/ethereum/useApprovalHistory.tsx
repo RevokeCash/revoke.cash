@@ -7,7 +7,7 @@ import { usePublicClient } from 'wagmi';
 import { getApprovalHistoryForChain } from '../../utils/approval-history';
 import { useAddress } from '../page-context/AddressIdentityContext';
 import { useEvents } from './events/useEvents';
-import { useHistorySpenderData } from './useHistorySpenderData';
+import { useAnnotateHistorySpenderData } from './useHistorySpenderData';
 
 export const useApprovalHistory = () => {
   const { address } = useAddress();
@@ -26,7 +26,7 @@ export const useApprovalHistory = () => {
     enabled: !isNullish(events) && !eventsLoading && !isNullish(publicClient),
     staleTime: 1 * HOUR,
   });
-  const approvalHistory = useHistorySpenderData(approvalHistoryBase);
+  const approvalHistory = useAnnotateHistorySpenderData(approvalHistoryBase);
 
   return {
     approvalHistory,

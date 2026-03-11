@@ -1,7 +1,6 @@
 'use client';
 
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { getTokenPrices } from 'lib/price/utils';
+import { useQuery } from '@tanstack/react-query';
 import { deduplicateArray, isNullish } from 'lib/utils';
 import {
   type AllowanceUpdateProperties,
@@ -13,13 +12,14 @@ import {
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import { getEventKey, type TokenEvent } from 'lib/utils/events';
-import { MINUTE } from 'lib/utils/time';
 import { hasZeroBalance, isErc721Contract } from 'lib/utils/tokens';
-import { getSpenderData } from 'lib/utils/whois';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
+import { useAllowanceSpenderData } from './useAllowanceSpenderData';
+import { getPriceKey, usePriceData } from './usePriceData';
+import { getSpenderKey } from './useSpenderData';
 
 export const useAllowances = (address: Address, events: TokenEvent[] | undefined, chainId: number) => {
   const publicClient = usePublicClient({ chainId })!;
@@ -46,9 +46,9 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     setBaseAllowances(undefined);
   }, [chainId]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (data) {
-      setBaseAllowances(data);
+      setBaseAllowances(data.filter((allowance) => !isNullish(allowance.payload)));
     }
   }, [data]);
 
@@ -57,29 +57,12 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
       .filter((allowance) => !isErc721Contract(allowance.contract))
       .map((allowance) => allowance.contract.address);
 
-    return deduplicateArray(erc20Addresses).sort();
-  }, [baseAllowances]);
+    return [{ chainId, addresses: deduplicateArray(erc20Addresses).sort() }];
+  }, [baseAllowances, chainId]);
 
-  const priceQuery = useQuery<Record<Address, number | null>, Error>({
-    queryKey: ['tokenPrices', chainId, uniqueErc20TokenAddresses],
-    queryFn: () => getTokenPrices(chainId, uniqueErc20TokenAddresses),
-    staleTime: 5 * MINUTE,
-    refetchOnWindowFocus: false,
-    placeholderData: undefined,
-    enabled: uniqueErc20TokenAddresses.length > 0,
-  });
+  const priceData = usePriceData(uniqueErc20TokenAddresses);
 
-  const spenderQueries = useQueries({
-    queries: (baseAllowances ?? []).map((allowance) => ({
-      queryKey: ['spenderData', allowance.chainId, allowance.payload?.spender],
-      queryFn: allowance.payload?.spender
-        ? () => getSpenderData(allowance.payload!.spender, allowance.chainId)
-        : () => null,
-      staleTime: Number.POSITIVE_INFINITY,
-      refetchOnWindowFocus: false,
-      placeholderData: undefined,
-    })),
-  });
+  const spenderData = useAllowanceSpenderData(baseAllowances ?? []);
 
   // Stable list of all owned tokens (for use by usePermitTokens, independent of approval state)
   const ownedTokens = useMemo(() => {
@@ -92,21 +75,17 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
   const allowances = useMemo(() => {
     if (!baseAllowances) return undefined;
 
-    return baseAllowances
-      .map((allowance, index) => {
-        const tokenPrice = isErc721Contract(allowance.contract)
-          ? null
-          : (priceQuery.data?.[allowance.contract.address as Address] ?? null);
+    return baseAllowances.map((allowance) => {
+      const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
+      const tokenPrice = isErc721Contract(allowance.contract) ? null : priceData[priceKey];
+      const metadata = { ...allowance.metadata, price: tokenPrice };
 
-        const metadata = { ...allowance.metadata, price: tokenPrice };
-        const payload = allowance.payload
-          ? { ...allowance.payload, spenderData: spenderQueries[index]?.data }
-          : undefined;
+      const spenderKey = getSpenderKey(allowance.chainId, allowance.payload!.spender);
+      const payload = allowance.payload ? { ...allowance.payload, spenderData: spenderData[spenderKey] } : undefined;
 
-        return { ...allowance, metadata, payload };
-      })
-      .filter((allowance) => !isNullish(allowance.payload));
-  }, [baseAllowances, priceQuery.data, spenderQueries]);
+      return { ...allowance, metadata, payload };
+    });
+  }, [baseAllowances, priceData, spenderData]);
 
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
     console.debug('Reloading data');
