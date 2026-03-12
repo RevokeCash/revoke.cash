@@ -13,13 +13,14 @@ interface ColorThemeContext {
 
 interface Props {
   children: ReactNode;
+  storageKey?: string;
 }
 
 // We pass in undefined as the default value, since there should always be a provider for this context
 const ColorThemeContext = React.createContext<ColorThemeContext>(undefined as any);
 
-export const ColorThemeProvider = ({ children }: Props) => {
-  const [theme, setTheme] = useLocalStorage<Theme>('theme', 'system');
+export const ColorThemeProvider = ({ children, storageKey = 'theme' }: Props) => {
+  const [theme, setTheme] = useLocalStorage<Theme>(storageKey, 'system');
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {

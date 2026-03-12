@@ -1,6 +1,6 @@
-import FarcasterPageContent from 'components/farcaster/FarcasterPageContent';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import EmbedPageContent from '../components/EmbedPageContent';
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const t = await getTranslations({ locale: 'en' });
@@ -17,7 +17,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
           action: {
             type: 'launch_frame',
             name: 'Revoke.cash',
-            url: 'https://revoke.cash/farcaster',
+            url: 'https://revoke.cash/embed/farcaster',
             splashBackgroundColor: '#ffffff',
             splashImageUrl: 'https://revoke.cash/assets/images/splash-image-farcaster.png',
           },
@@ -29,7 +29,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
 const FarcasterPage = () => {
   setRequestLocale('en');
-  return <FarcasterPageContent />;
+  return <EmbedPageContent />;
 };
 
 export default FarcasterPage;

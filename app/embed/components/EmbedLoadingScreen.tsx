@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-const FarcasterLoadingScreen = () => {
+const EmbedLoadingScreen = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black">
       <div className="flex flex-col items-center">
@@ -17,4 +17,4 @@ const FarcasterLoadingScreen = () => {
   );
 };
 
-export default FarcasterLoadingScreen;
+export default EmbedLoadingScreen;

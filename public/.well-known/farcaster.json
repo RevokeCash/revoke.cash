@@ -10,7 +10,7 @@
     "subtitle": "Revoke Your Token Approvals",
     "description": "Take back control of your wallet and stay safe by revoking token approvals you granted on over 100 networks.",
     "iconUrl": "https://revoke.cash/assets/images/revoke-icon-orange-black.png",
-    "homeUrl": "https://revoke.cash/farcaster",
+    "homeUrl": "https://revoke.cash/embed/farcaster",
     "splashImageUrl": "https://revoke.cash/assets/images/splash-image-farcaster.png",
     "splashBackgroundColor": "#ffffff",
     "primaryCategory": "utility",

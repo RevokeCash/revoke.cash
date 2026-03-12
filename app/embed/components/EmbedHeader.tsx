@@ -4,15 +4,17 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAccount } from 'wagmi';
+import { useEmbedConfig } from '../lib/context';
 
-const FarcasterHeader = () => {
+const EmbedHeader = () => {
   const { address } = useAccount();
+  const { routePrefix } = useEmbedConfig();
 
   return (
     <header className="w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-800">
       <div className="flex justify-between items-center px-4 py-3 max-w-7xl mx-auto">
         {/* Logo */}
-        <Link href="/farcaster" className="flex items-center">
+        <Link href={routePrefix} className="flex items-center">
           <Image
             src="/assets/images/revoke-wordmark-black.svg"
             alt="Revoke.cash"
@@ -44,4 +46,4 @@ const FarcasterHeader = () => {
   );
 };
 
-export default FarcasterHeader;
+export default EmbedHeader;
