@@ -78,7 +78,8 @@ const EthereumProviderChild = memo(({ children }: Props) => {
       const farcasterConnector = connectors?.find((c) => c.id === 'farcaster');
       if (!farcasterConnector || connector === farcasterConnector) return;
 
-      connectAsync({ connector: farcasterConnector }).catch(console.error);
+      await connectAsync({ connector: farcasterConnector }).catch(console.error);
+      await farcasterSdk.actions.ready().catch(console.error);
     };
 
     autoConnect();
