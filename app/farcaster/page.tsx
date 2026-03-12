@@ -9,17 +9,17 @@ export const generateMetadata = async (): Promise<Metadata> => {
     title: 'Revoke.cash - Token Approval Manager',
     description: t('common.meta.description', { chainName: 'Ethereum' }),
     other: {
-      'fc:frame': JSON.stringify({
-        version: 'next',
+      'fc:miniapp': JSON.stringify({
+        version: '1',
         imageUrl: 'https://revoke.cash/assets/images/opengraph-image.jpg',
         button: {
-          title: 'Open Revoke.cash',
+          title: 'Check Your Approvals',
           action: {
             type: 'launch_frame',
             name: 'Revoke.cash',
             url: 'https://revoke.cash/farcaster',
             splashBackgroundColor: '#ffffff',
-            splashIconUrl: 'https://revoke.cash/assets/images/revoke-icon-orange-black.png',
+            splashImageUrl: 'https://revoke.cash/assets/images/splash-image-farcaster.png',
           },
         },
       }),

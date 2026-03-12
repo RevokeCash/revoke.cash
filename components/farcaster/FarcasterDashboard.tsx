@@ -41,7 +41,7 @@ const ConnectedDashboard = () => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-8">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-4">
         <AddressDisplay address={address} domainName={domainName} className="text-4xl font-bold" withTooltip />
 
         <div className="flex items-center gap-2">
