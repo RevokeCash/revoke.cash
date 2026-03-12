@@ -11,6 +11,7 @@ import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import '../../styles/index.css';
+import { FarcasterEthereumProvider } from 'lib/hooks/ethereum/FarcasterEthereumProvider';
 
 interface Props {
   children: ReactNode;
@@ -31,7 +32,7 @@ const FarcasterLayout = async ({ children }: Props) => {
         <ThemeScript />
         <NextIntlClientProvider messages={{ common: messages.common, address: messages.address }}>
           <QueryProvider>
-            <EthereumProvider>
+            <FarcasterEthereumProvider>
               <ColorThemeProvider>
                 <div className="min-h-screen">
                   <FarcasterHeader />
@@ -39,7 +40,7 @@ const FarcasterLayout = async ({ children }: Props) => {
                 </div>
                 <ToastifyConfig />
               </ColorThemeProvider>
-            </EthereumProvider>
+            </FarcasterEthereumProvider>
           </QueryProvider>
         </NextIntlClientProvider>
         <TopLoader />

@@ -6,7 +6,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   const t = await getTranslations({ locale: 'en' });
 
   return {
-    title: 'Revoke.cash - Token Approval Manager',
+    title: 'Revoke.cash',
     description: t('common.meta.description', { chainName: 'Ethereum' }),
     other: {
       'fc:miniapp': JSON.stringify({

@@ -1,15 +1,13 @@
 'use client';
 
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
-import farcasterSdk from '@farcaster/miniapp-sdk';
-import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 import { toPrivyWalletConnector } from '@privy-io/cross-app-connect/rainbow-kit';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
 import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { memo, type ReactNode, useEffect } from 'react';
 import type { Chain } from 'viem';
-import { createConfig, useAccount, useConnect, WagmiProvider } from 'wagmi';
+import { createConfig, useConnect, useConnection, useConnectors, WagmiProvider } from 'wagmi';
 import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors';
 
 interface Props {
@@ -23,7 +21,6 @@ const veeFriendsConnector = toPrivyWalletConnector({
 });
 
 export const connectors = [
-  farcasterMiniApp(),
   safe({ debug: false }),
   injected(),
   ...(typeof window !== 'undefined'
@@ -58,32 +55,17 @@ export const wagmiConfig = createConfig({
 export const EthereumProvider = ({ children }: Props) => {
   return (
     <WagmiProvider config={wagmiConfig} reconnectOnMount>
-      <EthereumProviderChild>{children}</EthereumProviderChild>
+      <AutoConnect>{children}</AutoConnect>
     </WagmiProvider>
   );
 };
 
-const EthereumProviderChild = memo(({ children }: Props) => {
-  const { connectAsync, connectors } = useConnect();
-  const { connector, address } = useAccount();
+const AutoConnect = memo(({ children }: Props) => {
+  const { mutateAsync: connectAsync } = useConnect();
+  const connectors = useConnectors();
+  const { connector, address } = useConnection();
   const router = useCsrRouter();
   const pathName = usePathname();
-
-  // Auto-connect to Farcaster connector if inside a Farcaster mini-app
-  // biome-ignore lint/correctness/useExhaustiveDependencies: this hook was checked manually to ensure relevant dependencies are included
-  useEffect(() => {
-    const autoConnect = async () => {
-      if (!(await farcasterSdk.isInMiniApp())) return;
-
-      const farcasterConnector = connectors?.find((c) => c.id === 'farcaster');
-      if (!farcasterConnector || connector === farcasterConnector) return;
-
-      await connectAsync({ connector: farcasterConnector }).catch(console.error);
-      await farcasterSdk.actions.ready().catch(console.error);
-    };
-
-    autoConnect();
-  }, [connectors, connector]);
 
   // If the Safe connector is available, connect to it even if other connectors are available
   // (if another connector auto-connects (or user disconnects), we still override it with the Safe connector)
@@ -142,8 +124,4 @@ const isIframe = () => {
 
 const isLedgerLive = () => {
   return (window as any)?.ethereum?.isLedgerLive;
-};
-
-const isFarcasterMiniApp = () => {
-  return window?.location?.pathname?.startsWith('/farcaster');
 };

@@ -44,17 +44,18 @@ const ConnectedDashboard = () => {
       <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-4">
         <AddressDisplay address={address} domainName={domainName} className="text-4xl font-bold" withTooltip />
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <ChainSelect
             instanceId="farcaster-chain-select"
             selected={selectedChainId}
             onSelect={selectChain}
             showNames
+            menuAlign="right"
           />
           <button
             type="button"
             onClick={handleShare}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 whitespace-nowrap"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 1000 1000" aria-hidden="true">
               <title>Farcaster icon</title>
