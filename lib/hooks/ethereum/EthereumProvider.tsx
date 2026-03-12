@@ -1,6 +1,7 @@
 'use client';
 
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
+import farcasterSdk from '@farcaster/miniapp-sdk';
 import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 import { toPrivyWalletConnector } from '@privy-io/cross-app-connect/rainbow-kit';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
@@ -71,12 +72,16 @@ const EthereumProviderChild = memo(({ children }: Props) => {
   // Auto-connect to Farcaster connector if inside a Farcaster mini-app
   // biome-ignore lint/correctness/useExhaustiveDependencies: this hook was checked manually to ensure relevant dependencies are included
   useEffect(() => {
-    if (!isFarcasterMiniApp()) return;
+    const autoConnect = async () => {
+      if (!(await farcasterSdk.isInMiniApp())) return;
 
-    const farcasterConnector = connectors?.find((c) => c.id === 'farcasterMiniApp');
-    if (!farcasterConnector || connector === farcasterConnector) return;
+      const farcasterConnector = connectors?.find((c) => c.id === 'farcaster');
+      if (!farcasterConnector || connector === farcasterConnector) return;
 
-    connectAsync({ connector: farcasterConnector }).catch(console.error);
+      connectAsync({ connector: farcasterConnector }).catch(console.error);
+    };
+
+    autoConnect();
   }, [connectors, connector]);
 
   // If the Safe connector is available, connect to it even if other connectors are available

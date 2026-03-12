@@ -4,7 +4,6 @@ import ThemeScript from 'app/ThemeScript';
 import ToastifyConfig from 'components/common/ToastifyConfig';
 import TopLoader from 'components/common/TopLoader';
 import FarcasterHeader from 'components/farcaster/FarcasterHeader';
-import { FarcasterProvider } from 'components/farcaster/FarcasterProvider';
 import { EthereumProvider } from 'lib/hooks/ethereum/EthereumProvider';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
@@ -34,12 +33,10 @@ const FarcasterLayout = async ({ children }: Props) => {
           <QueryProvider>
             <EthereumProvider>
               <ColorThemeProvider>
-                <FarcasterProvider>
-                  <div className="min-h-screen">
-                    <FarcasterHeader />
-                    <main className="w-full">{children}</main>
-                  </div>
-                </FarcasterProvider>
+                <div className="min-h-screen">
+                  <FarcasterHeader />
+                  <main className="w-full">{children}</main>
+                </div>
                 <ToastifyConfig />
               </ColorThemeProvider>
             </EthereumProvider>

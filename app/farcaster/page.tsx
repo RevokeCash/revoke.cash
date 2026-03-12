@@ -18,7 +18,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
             type: 'launch_frame',
             name: 'Revoke.cash',
             url: 'https://revoke.cash/farcaster',
-            splashBackgroundColor: '#000000',
+            splashBackgroundColor: '#ffffff',
             splashIconUrl: 'https://revoke.cash/assets/images/revoke-icon-orange-black.png',
           },
         },

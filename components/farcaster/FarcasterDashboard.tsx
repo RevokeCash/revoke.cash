@@ -1,21 +1,20 @@
 'use client';
 
+import farcasterSdk from '@farcaster/miniapp-sdk';
 import AddressDisplay from 'components/address/AddressDisplay';
 import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
 import ChainSelect from 'components/common/select/ChainSelect';
 import ConnectButton from 'components/header/ConnectButton';
 import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useAccount } from 'wagmi';
-import { useFarcaster } from './FarcasterProvider';
 
 // Component that uses the allowances context (only rendered when context is available)
 const ConnectedDashboard = () => {
-  const { sdk } = useFarcaster();
   const { allowances } = useAddressAllowances();
   const { address, domainName, selectedChainId, selectChain } = useAddressPageContext();
 
   const handleShare = async () => {
-    if (!sdk) {
+    if (!(await farcasterSdk.isInMiniApp())) {
       // Fallback to web share
       const text = 'Just checked my wallet security with @revoke! Check yours at https://revoke.cash';
       window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`, '_blank');
@@ -31,7 +30,7 @@ const ConnectedDashboard = () => {
           ? `⚠️ Found ${riskCount} risky token approvals in my wallet! Checking wallet security with @revoke 🔐\n\nCheck yours: https://revoke.cash`
           : '✅ My wallet is secure! No risky token approvals found. Checked with @revoke 🔐\n\nCheck yours: https://revoke.cash';
 
-      await sdk.actions.composeCast({
+      await farcasterSdk.actions.composeCast({
         text,
         embeds: ['https://revoke.cash'],
       });
