@@ -29,6 +29,8 @@
     "@abstract-foundation/agw-react": "^1.10.0",
     "@coinbase/wallet-sdk": "^4.3.7",
     "@envio-dev/hypersync-client": "^1.0.0",
+    "@farcaster/miniapp-sdk": "^0.2.3",
+    "@farcaster/miniapp-wagmi-connector": "^1.1.1",
     "@floating-ui/react": "^0.27.17",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
