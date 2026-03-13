@@ -7,6 +7,11 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   // Turbopack-compatible way to keep native HyperSync bindings external.
   serverExternalPackages: ['@envio-dev/hypersync-client'],
+  turbopack: {
+    resolveAlias: {
+      siwe: './app/embed/world/stubs/siwe.js',
+    },
+  },
   images: {
     qualities: [25, 50, 75, 100],
   },

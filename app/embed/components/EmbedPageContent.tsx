@@ -2,12 +2,13 @@
 
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import { useAccount } from 'wagmi';
-import { useAutoConnectStatus } from '../lib/context';
+import { useAutoConnectStatus, useEmbedConfig } from '../lib/context';
 import EmbedDashboard from './EmbedDashboard';
 import EmbedLoadingScreen from './EmbedLoadingScreen';
 
 const EmbedPageContent = () => {
   const { address } = useAccount();
+  const { defaultChainId } = useEmbedConfig();
   const status = useAutoConnectStatus();
 
   if (status === 'connecting') {
@@ -28,7 +29,7 @@ const EmbedPageContent = () => {
   }
 
   return (
-    <AddressPageContextProvider address={address}>
+    <AddressPageContextProvider address={address} initialChainId={defaultChainId}>
       <EmbedDashboard />
     </AddressPageContextProvider>
   );

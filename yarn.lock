@@ -4655,6 +4655,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@worldcoin/minikit-js@npm:2.0.0-dev.0":
+  version: 2.0.0-dev.0
+  resolution: "@worldcoin/minikit-js@npm:2.0.0-dev.0"
+  dependencies:
+    abitype: "npm:^1.2.3"
+  peerDependencies:
+    react: ^17 || ^18 || ^19
+    siwe: ^3.0.0
+    viem: ^2.21.0
+    wagmi: ^3.0.0
+  peerDependenciesMeta:
+    "@worldcoin/idkit-core":
+      optional: true
+    siwe:
+      optional: true
+    wagmi:
+      optional: true
+  checksum: 10/8bf02b1c8bbac3e2d1d6df973c2d50205275c58766aff7ba11cae26cf78a746568d6720cc0ed51142673c0304bb07d05b9641b903dbc92f4ff9d3b97be51c79e
+  languageName: node
+  linkType: hard
+
 "@xstate/fsm@npm:^1.4.0":
   version: 1.6.5
   resolution: "@xstate/fsm@npm:1.6.5"
@@ -11011,6 +11032,7 @@ __metadata:
     "@upstash/redis": "npm:^1.36.2"
     "@vercel/speed-insights": "npm:^1.3.1"
     "@walletconnect/ethereum-provider": "npm:^2.23.4"
+    "@worldcoin/minikit-js": "npm:2.0.0-dev.0"
     chai: "npm:^6.2.2"
     cypress: "npm:^15.10.0"
     dexie: "npm:^4.3.0"
