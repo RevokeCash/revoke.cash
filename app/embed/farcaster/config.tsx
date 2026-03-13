@@ -2,7 +2,6 @@
 
 import farcasterSdk from '@farcaster/miniapp-sdk';
 import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
-import { ChainId } from '@revoke.cash/chains';
 import type { EmbedConfig } from '../lib/types';
 import FarcasterShareButton from './components/FarcasterShareButton';
 
@@ -18,5 +17,5 @@ export const farcasterEmbedConfig: EmbedConfig = {
   },
   renderShareAction: ({ allowances }) => <FarcasterShareButton allowances={allowances} />,
   routePrefix: '/embed/farcaster',
-  defaultChainId: ChainId.Base,
+  showChainSelect: false,
 };

@@ -1,6 +1,5 @@
 'use client';
 
-import { ChainId } from '@revoke.cash/chains';
 import { MiniKit } from '@worldcoin/minikit-js';
 import { worldApp } from '@worldcoin/minikit-js/wagmi';
 import type { EmbedConfig } from '../lib/types';
@@ -13,5 +12,5 @@ export const worldEmbedConfig: EmbedConfig = {
     return null;
   },
   routePrefix: '/embed/world',
-  defaultChainId: ChainId.WorldChain,
+  showChainSelect: false,
 };

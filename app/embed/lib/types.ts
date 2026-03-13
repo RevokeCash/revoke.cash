@@ -27,6 +27,6 @@ export interface EmbedConfig {
   /** Route path prefix for this embed (e.g. '/embed/farcaster') */
   routePrefix: string;
 
-  /** Optional chain ID to default to. When set, the chain selector is hidden. */
-  defaultChainId?: number;
+  /** Whether to show the chain selector in the dashboard. Defaults to true. */
+  showChainSelect?: boolean;
 }
