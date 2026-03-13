@@ -51,7 +51,7 @@ Attackers trick users into running terminal commands that silently install malwa
 
 Compromised or malicious AI agents with system-level access can silently execute commands and exfiltrate wallet data without any visible prompt. As AI tools become more integrated into developer workflows, this attack vector is growing rapidly.
 
-All of these paths lead to the same destination: Your wallet is compromised. Forever. Fake downloads and malicious terminal commands are increasingly common attack vectors. For a detailed breakdown of how malware works and how to protect your device, see our companion article: [Common Scam: Malware & Fake Downloads](/learn/security/malware-and-fake-downloads)
+All of these paths lead to the same destination: Your wallet is compromised. Forever. Fake downloads and malicious terminal commands are increasingly common attack vectors. For a detailed breakdown of how malware works and how to protect your device, see our companion article: [Common Scam: Malware & Fake Downloads](/learn/security/malware-fake-downloads)
 
 ## How to Prevent Seed Phrase Compromise
 
@@ -65,7 +65,7 @@ The best defense is prevention. These steps focus specifically on how you handle
 
 ## What to Do If You've Been Compromised
 
-If you caught the attack early, before your wallet was drained, see [Common Scam: Malware & Fake Downloads](/learn/security/malware-and-fake-downloads) for immediate device response steps. Act fast because every second counts here. If your wallet is already acting being drained or you suspect your seed phrase has been exposed:
+If you caught the attack early, before your wallet was drained, see [Common Scam: Malware & Fake Downloads](/learn/security/malware-fake-downloads) for immediate device response steps. Act fast because every second counts here. If your wallet is already acting being drained or you suspect your seed phrase has been exposed:
 
 1. Assume your device has been compromised - don't second guess it
 2. Back up your important files and wipe your device completely
