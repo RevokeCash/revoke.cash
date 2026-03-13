@@ -20,7 +20,6 @@ Think of a testnet like a driving simulator. You can use the steering wheel, the
 - Testnet tokens (like Sepolia ETH) are free and have no market value
 - Mainnet tokens (like ETH or USDC) are real assets with real value
 
-
 ## Why Testnet Approvals Stay on Testnets
 
 Each blockchain network is cryptographically isolated through a mechanism called *chain IDs*. When you sign any transaction, whether it's an approval, transfer or Permit signature, your wallet automatically includes the chain ID in the cryptographic signature itself.

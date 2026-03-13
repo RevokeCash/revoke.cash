@@ -110,6 +110,8 @@ export const getSidebar = async (
         path: '/learn/security',
         children: [
           getSidebarEntry('security/what-to-do-when-scammed', locale, directory, extended),
+          getSidebarEntry('security/seed-phrase-compromise', locale, directory, extended),
+          getSidebarEntry('security/malware-fake-downloads', locale, directory, extended),
           getSidebarEntry('security/what-is-address-poisoning', locale, directory, extended),
           getSidebarEntry('security/what-is-pig-butchering', locale, directory, extended),
         ],
