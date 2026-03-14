@@ -70,8 +70,6 @@
     "nahmii": "Nahmii 是以太坊的第 2 层（Layer 2）扩展解决方案，旨在通过低廉、可预测费用提供高交易吞吐量。目前，Nahmii 采用中心化运营商来验证交易，但计划将来会转向更加分散的模式。 ",
     "neo-x": "Neo X 是针对 Neo N3 打造的侧链，兼容以太坊虚拟机（EVM）。它集成了 Neo 独特的 dBFT（授权拜占庭容错）共识机制，并将目前广泛运用的 EVM 引入了 Neo N3 的生态系统。",
     "neon": "Neon EVM 是一个以 Solana 智能合约形式构建的区块链，旨在桥接以太坊和 Solana 生态系统。得益于 Solana 智能合约形式，Neon EVM 具备 Solana 的低汽油费和并行执行两大优点，同时还保留了以太坊的所有 EVM 功能。",
-    "oasis-emerald": "Oasis是第 1 层（Layer 1）区块链，旨在打造可扩展的多功能网络平台。为了实现这一目标，Oasis 将其架构拆分为顶级共识层和较低级别的执行层，因此可以支持多个不同的执行层，其中包括与 EVM 兼容的执行层，Oasis Emerald。",
-    "oasis-sapphire": "Oasis Sapphire 是兼容以太坊虚拟机的（EVM）的 Oasis ParaTime 层网络，类似 Emerald，Saphhire 旨在提供低费率和高吞吐量，不过 Saphhire 还能从非 EVM 的 Cipher 网络上获取机密智能合约并执行。",
     "oasys": "Oasys 是专为游戏行业设计的第 1 层（Layer 1）区块链，采用权益证明（PoS）共识机制，提供快速的免汽油交易。Oasys 的架构使用中央集成链（central hub chain），每个游戏应用可以第 2 层（Layer 2）链并链接到中央集成链，让每个游戏应用都可以独立进行扩展。",
     "octaspace": "OctaSpace 是一个去中心化的计算平台，提供全球节点运营商提供的计算资源。这可以用于云处理或 VPN。节点运营商可以出租闲置资源来获得奖励。",
     "opbnb": "OpBnb 是 BNB 链的第 2 层（Layer 2）扩展解决方案，采用 Optimism 的开源 OP Stack，因此与 Optimism 一样，使用了 Optimistic Rollup 技术。OpBnb 是首个 BNB 链的第 2 层链，旨在提供更低的费用和更高的吞吐量。",

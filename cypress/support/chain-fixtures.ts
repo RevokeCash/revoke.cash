@@ -73,8 +73,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Nahmii3Mainnet]: '0x513ae4015edB9E7d6E8C752CB0253675540A5676',
   [ChainId.NeonEVMMainnet]: '0xb0D9a7286659ae4cE9fFADD66Cd89E0B77cE7cE9',
   [ChainId.NeoXMainnet]: '0x000000866bC0A2D7D1d19E01520fBD2aB1D5dd5b',
-  [ChainId.OasisEmerald]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
-  [ChainId.OasisSapphire]: '0x25D436EB03b79c818ddb94dB3f0e170706Ff638b',
   [ChainId.OasysMainnet]: '0xf04820Bbc0D6B7F7B1f2fE888E5fc60DF6B61262',
   [ChainId.OctaSpace]: '0x8a6681fb319d009d775FdD7b1b15ad4f2Aad003c',
   [ChainId.EtherlinkMainnet]: '0x993894799d8Ae6ED114766a603dD9f0deE1B67A4',

@@ -87,7 +87,6 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
           ChainId.HarmonyMainnetShard0,
           ChainId.IgraNetwork,
           ChainId.NeoXMainnet,
-          ChainId.OasisEmerald,
           ChainId.ReyaNetwork,
           ChainId.StableMainnet,
           ChainId.SyscoinMainnet,
