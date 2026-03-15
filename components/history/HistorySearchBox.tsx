@@ -6,6 +6,7 @@ import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
 import useDebouncedValue from 'lib/hooks/useDebouncedValue';
+import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import {
@@ -19,10 +20,9 @@ import {
 } from 'react';
 import { ColumnId } from './columns';
 import HistoryChainMultiSelect from './HistoryChainMultiSelect';
-import type { ApprovalHistoryEvent } from './utils';
 
 interface Props {
-  table: Table<ApprovalHistoryEvent>;
+  table: Table<Enriched<ApprovalTokenEvent>>;
   isPremium?: boolean;
 }
 

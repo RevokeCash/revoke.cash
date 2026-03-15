@@ -25,6 +25,10 @@
         "description": "Get faster responses from the Revoke.cash team when you need help. Premium subscribers are prioritized in our support queue so you never have to wait long for assistance.",
         "title": "Priority Support"
       },
+      "time_machine": {
+        "description": "Travel back in time to see what your approvals looked like at any point in the past. Use the Time Machine to investigate how your approval state has changed over time across all supported networks.",
+        "title": "Time Machine"
+      },
       "title": "What you get with Premium",
       "unlimited_batch_revokes": {
         "description": "Revoke multiple token approvals in a single transaction at no extra cost. Free users pay a per-batch fee, but Premium subscribers enjoy unlimited batch revokes across all networks.",
@@ -43,6 +47,7 @@
       "one_chain": "One chain at a time",
       "per_batch": "{price} per batch",
       "priority_support": "Priority support",
+      "time_machine": "Time Machine",
       "revoke_approvals": "Revoke approvals on 100+ networks",
       "ten_address_slots": "10 address slots",
       "unlimited": "Unlimited",

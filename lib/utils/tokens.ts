@@ -15,7 +15,14 @@ import {
 } from 'viem';
 import { deduplicateArray } from '.';
 import analytics from './analytics';
-import { isApprovalTokenEvent, isTransferTokenEvent, type TimeLog, type TokenEvent, TokenEventType } from './events';
+import {
+  type EnrichedTokenEvent,
+  isApprovalTokenEvent,
+  isTransferTokenEvent,
+  type ResolvedTimeLog,
+  type TokenEvent,
+  TokenEventType,
+} from './events';
 import { formatFixedPointBigInt } from './formatting';
 import { withFallback } from './promises';
 
@@ -28,7 +35,7 @@ export interface TokenData {
 }
 
 export interface PermitTokenData extends TokenData {
-  lastCancelled?: TimeLog;
+  lastCancelled?: ResolvedTimeLog;
 }
 
 export type TokenContract = Erc20TokenContract | Erc721TokenContract;
@@ -81,29 +88,32 @@ export const isSpamTokenSymbol = (symbol: string) => {
 
 export const getTokenData = async (
   contract: TokenContract,
-  events: TokenEvent[],
+  events: EnrichedTokenEvent[],
   owner: Address,
   chainId: number,
+  blockNumber?: bigint,
 ): Promise<TokenData> => {
   if (isErc721Contract(contract)) {
-    return getErc721TokenData(contract, owner, events, chainId);
+    return getErc721TokenData(contract, owner, events, chainId, blockNumber);
   }
 
-  return getErc20TokenData(contract, owner, events, chainId);
+  return getErc20TokenData(contract, owner, events, chainId, blockNumber);
 };
 
 export const getErc20TokenData = async (
   contract: Erc20TokenContract,
   owner: Address,
-  events: TokenEvent[],
+  events: EnrichedTokenEvent[],
   chainId: number,
+  blockNumber?: bigint,
 ): Promise<TokenData> => {
-  const [metadata, balance] = await Promise.all([
-    getTokenMetadata(contract, chainId),
-    contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
-    // TODO: if getTokenMetadata has a tokenlist entry, then we don't want to throw if spam, since it's likely false positive
-    throwIfSpam(contract, events),
-  ]);
+  const metadata = events[0].metadata;
+  const balance = await contract.publicClient.readContract({
+    ...contract,
+    functionName: 'balanceOf',
+    args: [owner],
+    blockNumber,
+  });
 
   return { contract, metadata, chainId, owner, balance };
 };
@@ -111,9 +121,11 @@ export const getErc20TokenData = async (
 export const getErc721TokenData = async (
   contract: Erc721TokenContract,
   owner: Address,
-  events: TokenEvent[],
+  events: EnrichedTokenEvent[],
   chainId: number,
+  blockNumber?: bigint,
 ): Promise<TokenData> => {
+  const metadata = events[0].metadata;
   const transfers = events.filter((event) => event.type === TokenEventType.TRANSFER_ERC721);
 
   // Since the events are sorted by reverse chronological order, we know that the first event is the latest,
@@ -122,16 +134,17 @@ export const getErc721TokenData = async (
   const calculatedBalance = BigInt(uniqueTokenIdTransfers.filter((event) => event.payload.to === owner).length);
   const shouldFetchBalance = transfers.length === 0;
 
-  const [metadata, balance] = await Promise.all([
-    getTokenMetadata(contract, chainId),
-    shouldFetchBalance
-      ? withFallback<TokenBalance>(
-          contract.publicClient.readContract({ ...contract, functionName: 'balanceOf', args: [owner] }),
-          'ERC1155',
-        )
-      : calculatedBalance,
-    throwIfSpam(contract, events),
-  ]);
+  const balance = shouldFetchBalance
+    ? await withFallback<TokenBalance>(
+        contract.publicClient.readContract({
+          ...contract,
+          functionName: 'balanceOf',
+          args: [owner],
+          blockNumber,
+        }),
+        'ERC1155',
+      )
+    : calculatedBalance;
 
   return { contract, metadata, chainId, owner, balance };
 };
@@ -278,10 +291,7 @@ export const hasZeroBalance = (balance: TokenBalance, decimals?: number) => {
 };
 
 export const createTokenContracts = (events: TokenEvent[], publicClient: PublicClient): TokenContract[] => {
-  // Remove transfer events FROM the owner, because if that is the *only* event, it's likely a spam token
-  const filteredEvents = events.filter((event) => !(isTransferTokenEvent(event) && event.owner === event.payload.from));
-
-  return deduplicateArray(filteredEvents, (event) => event.token)
+  return deduplicateArray(events, (event) => event.token)
     .map((event) => createTokenContract(event, publicClient))
     .filter((contract) => contract !== undefined);
 };

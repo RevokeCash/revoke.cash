@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
   // Get the events and allowances for the user
   const publicClient = createViemPublicClientForChain(chainId);
-  const events = await getTokenEvents(chainId, address);
+  const { events } = await getTokenEvents(chainId, address);
   const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
 
   if (await alreadyOwnsSoulboundToken(address)) {

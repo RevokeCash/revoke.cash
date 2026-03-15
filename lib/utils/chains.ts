@@ -139,12 +139,6 @@ export const CHAIN_SELECT_TESTNETS = [
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
 
-const MULTICALL = {
-  multicall3: {
-    address: MULTICALL_ADDRESS,
-  },
-};
-
 export const CHAINS = {
   [ChainId.Abstract]: new Chain({
     type: SupportType.PROVIDER,
@@ -158,7 +152,7 @@ export const CHAINS = {
       main: `https://abstract-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://api.mainnet.abs.xyz',
     },
-    deployedContracts: { multicall3: { address: '0xAa4De41dba0Ca5dCBb288b7cC6b708F3aaC759E7' } },
+    deployedContracts: { multicall3: { address: '0xAa4De41dba0Ca5dCBb288b7cC6b708F3aaC759E7', blockCreated: 5288 } },
   }),
   [ChainId.AbstractSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -170,7 +164,7 @@ export const CHAINS = {
     rpc: {
       main: `https://abstract-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' } },
+    deployedContracts: { multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963', blockCreated: 358349 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Abstract,
   }),
@@ -184,7 +178,7 @@ export const CHAINS = {
     rpc: {
       main: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3127388 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.PolygonMainnet,
   }),
@@ -202,7 +196,7 @@ export const CHAINS = {
       main: `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://apechain.calderachain.xyz/http',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 20889 } },
   }),
   [ChainId.ArbitrumNova]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -215,7 +209,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/arbitrum-nova/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1746963 } },
   }),
   [ChainId.ArbitrumOne]: new Chain({
     type: SupportType.PROVIDER,
@@ -230,7 +224,7 @@ export const CHAINS = {
       logs: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://arb1.arbitrum.io/rpc',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 7654707 } },
   }),
   [ChainId.ArbitrumSepolia]: new Chain({
     type: SupportType.PROVIDER,
@@ -241,7 +235,7 @@ export const CHAINS = {
     rpc: {
       main: `https://arbitrum-sepolia.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 81930 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ArbitrumOne,
   }),
@@ -257,7 +251,7 @@ export const CHAINS = {
       main: 'https://evm.astar.network',
       free: 'https://evm.astar.network',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 761794 } },
   }),
   [ChainId.AuroraMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -268,7 +262,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/aurora.svg',
     explorerUrl: 'https://explorer.aurora.dev',
     etherscanCompatibleApiUrl: 'https://explorer.mainnet.aurora.dev/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 62907816 } },
   }),
   [ChainId['AvalancheC-Chain']]: new Chain({
     type: SupportType.HYPERSYNC,
@@ -281,7 +275,7 @@ export const CHAINS = {
     rpc: {
       main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 11907934 } },
   }),
   [ChainId.AvalancheFujiTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -293,7 +287,7 @@ export const CHAINS = {
     rpc: {
       main: `https://avalanche-fuji.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 7096959 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId['AvalancheC-Chain'],
   }),
@@ -307,7 +301,7 @@ export const CHAINS = {
       main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       logs: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 5022 } },
   }),
   [ChainId.BaseSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -317,7 +311,7 @@ export const CHAINS = {
     rpc: {
       main: `https://base-sepolia.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1059647 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Base,
   }),
@@ -333,7 +327,7 @@ export const CHAINS = {
       main: 'https://build.onbeam.com/rpc',
     },
     deployedContracts: {
-      multicall3: { address: '0x4956F15eFdc3dC16645e90Cc356eAFA65fFC65Ec' },
+      multicall3: { address: '0x4956F15eFdc3dC16645e90Cc356eAFA65fFC65Ec', blockCreated: 1 },
     },
   }),
   [ChainId.Berachain]: new Chain({
@@ -347,7 +341,7 @@ export const CHAINS = {
     rpc: {
       main: `https://berachain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.BitgertMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -362,7 +356,7 @@ export const CHAINS = {
       main: 'https://rpc-bitgert.icecreamswap.com',
       free: 'https://rpc-bitgert.icecreamswap.com',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2118034 } },
   }),
   [ChainId.BitTorrentChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -372,7 +366,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'bttc',
     logoUrl: '/assets/images/vendor/chains/bttc.svg',
     explorerUrl: 'https://bttcscan.com',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 31078552 } },
   }),
   [ChainId.Blast]: new Chain({
     type: SupportType.HYPERSYNC,
@@ -384,7 +378,7 @@ export const CHAINS = {
     rpc: {
       main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 212929 } },
   }),
   [ChainId.BNBSmartChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -409,7 +403,7 @@ export const CHAINS = {
     rpc: {
       main: `https://bnb-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 17422483 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.BNBSmartChainMainnet,
   }),
@@ -423,7 +417,7 @@ export const CHAINS = {
     rpc: {
       main: `https://bob-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 23131 } },
   }),
   [ChainId.CitreaMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -450,7 +444,7 @@ export const CHAINS = {
     name: 'Boba',
     coingeckoNetworkId: 'boba',
     logoUrl: '/assets/images/vendor/chains/boba.jpg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 446859 } },
   }),
   [ChainId.CeloMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -462,7 +456,7 @@ export const CHAINS = {
     rpc: {
       main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 13112599 } },
   }),
   [ChainId.ChilizChainMainnet]: new Chain({
     type: SupportType.ROUTESCAN,
@@ -471,7 +465,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'chiliz',
     coingeckoNetworkId: 'chiliz-chain',
     logoUrl: '/assets/images/vendor/chains/chiliz.png',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 8080847 } },
   }),
   [ChainId.CoinExSmartChainMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -491,7 +485,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.coredao.org',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 11907934 } },
   }),
   [ChainId.CronosMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -504,7 +498,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/cronos/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1963112 } },
   }),
   [ChainId.CronosTestnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -513,7 +507,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'crypto-com-chain',
     logoUrl: '/assets/images/vendor/chains/cronos.svg',
     etherscanCompatibleApiUrl: 'https://cronos.org/explorer/testnet3/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 10191251 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.CronosMainnet,
   }),
@@ -524,7 +518,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'darwinia-network',
     logoUrl: '/assets/images/vendor/chains/darwinia.svg',
     etherscanCompatibleApiUrl: 'https://explorer.darwinia.network/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 69420 } },
   }),
   [ChainId.DegenChain]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -547,7 +541,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'dogechain',
     logoUrl: '/assets/images/vendor/chains/dogechain.jpg',
     etherscanCompatibleApiUrl: 'https://explorer.dogechain.dog/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 25384031 } },
   }),
   [ChainId.EDUChain]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -561,7 +555,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.edu-chain.raas.gelato.cloud',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 16410660 } },
   }),
   [ChainId.ElastosSmartChain]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -582,7 +576,8 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'tezos',
     coingeckoNetworkId: 'etherlink',
     logoUrl: '/assets/images/vendor/chains/etherlink.svg',
-    deployedContracts: { ...MULTICALL },
+    etherscanCompatibleApiUrl: 'https://explorer.etherlink.com/api',
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 33899 } },
   }),
   [ChainId.EthereumClassic]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -591,7 +586,8 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'ethereum-classic',
     coingeckoNetworkId: 'ethereum_classic',
     logoUrl: '/assets/images/vendor/chains/etc.png',
-    deployedContracts: { ...MULTICALL },
+    etherscanCompatibleApiUrl: 'https://blockscout.com/etc/mainnet/api',
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 18288646 } },
   }),
   [ChainId.EthereumMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -604,7 +600,7 @@ export const CHAINS = {
       free: 'https://eth.llamarpc.com',
     },
     deployedContracts: {
-      ...MULTICALL,
+      multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14353601 },
       ensUniversalResolver: { address: '0xeeeeeeee14d718c2b47d9923deab1335e144eeee' },
     },
   }),
@@ -617,7 +613,7 @@ export const CHAINS = {
       main: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://ethereum-sepolia-rpc.publicnode.com',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 751532 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.EthereumMainnet,
   }),
@@ -644,7 +640,8 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'filecoin',
     coingeckoNetworkId: 'filecoin',
     logoUrl: '/assets/images/vendor/chains/filecoin.svg',
-    deployedContracts: { ...MULTICALL },
+    etherscanCompatibleApiUrl: 'https://filecoin.blockscout.com/api',
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3328594 } },
   }),
   [ChainId.FlareMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -654,7 +651,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'flare',
     logoUrl: '/assets/images/vendor/chains/flare.svg',
     etherscanCompatibleApiUrl: 'https://flare-explorer.flare.network/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3002461 } },
   }),
   [ChainId.FlowEVMMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -667,7 +664,7 @@ export const CHAINS = {
     rpc: {
       main: `https://flow-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 6205 } },
   }),
   [ChainId.Fraxtal]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -676,7 +673,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'frax-ether',
     coingeckoNetworkId: 'fraxtal',
     logoUrl: '/assets/images/vendor/chains/fraxtal.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.FuseMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -690,7 +687,7 @@ export const CHAINS = {
       main: `https://lb.drpc.live/fuse/${DRPC_API_KEY}`,
       free: 'https://fuse.drpc.org',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 16146628 } },
   }),
   [ChainId.Gnosis]: new Chain({
     type: SupportType.HYPERSYNC,
@@ -700,7 +697,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'xdai',
     logoUrl: '/assets/images/vendor/chains/gnosis.svg',
     explorerUrl: 'https://gnosisscan.io',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 21022491 } },
     rpc: {
       main: `https://gnosis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -713,7 +710,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'gravity-alpha',
     logoUrl: '/assets/images/vendor/chains/gravity.svg',
     etherscanCompatibleApiUrl: 'https://api.explorer.gravity.xyz/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 16851 } },
   }),
   [ChainId.HarmonyMainnetShard0]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -722,7 +719,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'harmony',
     logoUrl: '/assets/images/vendor/chains/harmony.svg',
     etherscanCompatibleApiUrl: 'https://explorer.harmony.one/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 24185753 } },
     rpc: {
       main: 'https://api.harmony.one',
     },
@@ -739,7 +736,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://mainnet.hsk.xyz',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.Hemi]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -748,7 +745,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'hemi',
     logoUrl: '/assets/images/vendor/chains/hemi.svg',
     etherscanCompatibleApiUrl: 'https://explorer.hemi.xyz/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.HuobiECOChainMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -770,7 +767,7 @@ export const CHAINS = {
       main: `https://hyperliquid-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.hyperliquid.xyz/evm',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 13051 } },
   }),
   [ChainId.ImmutablezkEVM]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -782,7 +779,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/immutable-zkevm/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 4335972 } },
   }),
   [ChainId.Injective]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -796,7 +793,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://sentry.evm-rpc.injective.network',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 127255206 } },
   }),
   [ChainId.Ink]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -807,7 +804,7 @@ export const CHAINS = {
     rpc: {
       main: `https://ink-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.IOTAEVM]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -816,7 +813,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'iota',
     coingeckoNetworkId: 'iota-evm',
     logoUrl: '/assets/images/vendor/chains/iota.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 25022 } },
   }),
   [ChainId.IoTeXNetworkMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -864,7 +861,7 @@ export const CHAINS = {
     name: 'Katana',
     coingeckoNetworkId: 'katana',
     logoUrl: '/assets/images/vendor/chains/katana.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.KCCMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -873,7 +870,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'kucoin-shares',
     coingeckoNetworkId: 'kcc',
     logoUrl: '/assets/images/vendor/chains/kcc.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 11760430 } },
   }),
   [ChainId.Lens]: new Chain({
     type: SupportType.PROVIDER,
@@ -887,7 +884,7 @@ export const CHAINS = {
       main: `https://lens-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.lens.xyz',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1724216 } },
   }),
   [ChainId.LightlinkPhoenixMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -895,7 +892,7 @@ export const CHAINS = {
     name: 'Lightlink',
     coingeckoNetworkId: 'lightlink-phoenix',
     logoUrl: '/assets/images/vendor/chains/lightlink.jpg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 125499184 } },
   }),
   [ChainId.Linea]: new Chain({
     type: SupportType.PROVIDER,
@@ -907,7 +904,7 @@ export const CHAINS = {
     rpc: {
       main: `https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 42 } },
   }),
   [ChainId.Lisk]: new Chain({
     type: SupportType.HYPERSYNC,
@@ -915,7 +912,7 @@ export const CHAINS = {
     name: 'Lisk',
     coingeckoNetworkId: 'lisk',
     logoUrl: '/assets/images/vendor/chains/lisk.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.MantaPacificMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -928,7 +925,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/manta-pacific/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 332890 } },
   }),
   [ChainId.Mantle]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -940,7 +937,7 @@ export const CHAINS = {
     rpc: {
       main: `https://mantle-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 304717 } },
   }),
   [ChainId.Matchain]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -954,7 +951,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.matchain.io',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.MegaETHMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -967,7 +964,7 @@ export const CHAINS = {
       main: `https://lb.drpc.live/megaeth/${DRPC_API_KEY}`,
       free: 'https://mainnet.megaeth.com/rpc',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.MetisAndromedaMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -980,7 +977,7 @@ export const CHAINS = {
     rpc: {
       main: `https://metis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2338552 } },
   }),
   [ChainId.MintMainnet]: new Chain({
     type: SupportType.ROUTESCAN,
@@ -988,7 +985,7 @@ export const CHAINS = {
     name: 'Mint',
     coingeckoNetworkId: 'mint',
     logoUrl: '/assets/images/vendor/chains/mint.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.Mode]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -999,7 +996,7 @@ export const CHAINS = {
     rpc: {
       main: `https://mode-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2465882 } },
   }),
   [ChainId.Monad]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1013,7 +1010,7 @@ export const CHAINS = {
       main: `https://monad-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.monad.xyz',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 9248132 } },
   }),
   [ChainId.Moonbeam]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1025,7 +1022,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/moonbeam/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 609002 } },
   }),
   [ChainId.Moonriver]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1038,7 +1035,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/moonriver/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1597904 } },
     isCanary: true,
     correspondingMainnetChainId: ChainId.Moonbeam,
   }),
@@ -1052,7 +1049,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.morphl2.io',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3654913 } },
   }),
   [ChainId.Nahmii3Mainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1061,7 +1058,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'nahmii',
     logoUrl: '/assets/images/vendor/chains/nahmii.svg',
     etherscanCompatibleApiUrl: 'https://backend.explorer.n3.nahmii.io/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 29600 } },
   }),
   [ChainId.NeonEVMMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1070,7 +1067,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'neon',
     coingeckoNetworkId: 'neon-evm',
     logoUrl: '/assets/images/vendor/chains/neon.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 206545524 } },
   }),
   [ChainId.NeoXMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1116,7 +1113,7 @@ export const CHAINS = {
     rpc: {
       main: `https://opbnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 512881 } },
   }),
   [ChainId.OPMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1128,7 +1125,7 @@ export const CHAINS = {
       main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       logs: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 4286263 } },
   }),
   [ChainId.OPSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1138,7 +1135,7 @@ export const CHAINS = {
     rpc: {
       main: `https://optimism-sepolia.infura.io/v3/${INFURA_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1620204 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.OPMainnet,
   }),
@@ -1152,7 +1149,7 @@ export const CHAINS = {
     rpc: {
       main: `https://plasma-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.PlumeMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1165,7 +1162,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.plume.org',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 48577 } },
   }),
   [ChainId.PolygonMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1178,7 +1175,7 @@ export const CHAINS = {
       main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://polygon.drpc.org',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 25770160 } },
   }),
   [ChainId.PolygonzkEVM]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -1196,8 +1193,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/pulsechain.png',
     explorerUrl: 'https://scan.pulsechainfoundation.org/#',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
-    // Although multicall is deployed on Pulsechain, it is causing issues
-    // deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14353601 } },
   }),
   [ChainId.RARIChainMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1211,7 +1207,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://mainnet.rpc.rarichain.org/http',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2422957 } },
   }),
   [ChainId.Redstone]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1219,7 +1215,7 @@ export const CHAINS = {
     name: 'Redstone',
     coingeckoNetworkId: 'redstone',
     logoUrl: '/assets/images/vendor/chains/redstone.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.ReyaNetwork]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1230,7 +1226,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.reya.network',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 10458805 } },
   }),
   [ChainId.RolluxMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1242,7 +1238,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.rollux.com',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 119222 } },
   }),
   [ChainId.RISE]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -1257,7 +1253,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/rise.svg',
     explorerUrl: 'https://explorer.testnet.riselabs.xyz',
     etherscanCompatibleApiUrl: 'https://explorer.testnet.riselabs.xyz/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.RISE,
   }),
@@ -1271,7 +1267,7 @@ export const CHAINS = {
     rpc: {
       main: `https://ronin-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 26023535 } },
   }),
   [ChainId.RootstockMainnet]: new Chain({
     type: SupportType.HYPERSYNC,
@@ -1284,7 +1280,7 @@ export const CHAINS = {
     rpc: {
       main: `https://rootstock-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 4249540 } },
   }),
   [ChainId.RSS3VSLMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1294,7 +1290,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'rss3-vsl-mainnet',
     logoUrl: '/assets/images/vendor/chains/rss3.svg',
     etherscanCompatibleApiUrl: 'https://scan.rss3.io/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14193 } },
   }),
   [ChainId.Scroll]: new Chain({
     type: SupportType.HYPERSYNC,
@@ -1306,7 +1302,7 @@ export const CHAINS = {
     rpc: {
       main: `https://scroll-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14 } },
   }),
   [ChainId.SeiNetwork]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1319,7 +1315,7 @@ export const CHAINS = {
     rpc: {
       main: `https://sei-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 79351444 } },
   }),
   [ChainId.Shape]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1330,7 +1326,7 @@ export const CHAINS = {
     rpc: {
       main: `https://shape-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1 } },
   }),
   [ChainId.ShidoNetwork]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1352,7 +1348,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'shimmer',
     coingeckoNetworkId: 'shimmerevm',
     logoUrl: '/assets/images/vendor/chains/shimmer.svg',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1290 } },
   }),
   5031: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1380,7 +1376,7 @@ export const CHAINS = {
       main: `https://soneium-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://rpc.soneium.org',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1 } },
   }),
   [ChainId.SonicMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1393,7 +1389,7 @@ export const CHAINS = {
     rpc: {
       main: `https://sonic-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 60 } },
   }),
   [ChainId['SongbirdCanary-Network']]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1404,7 +1400,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/songbird.svg',
     infoUrl: 'https://flare.network/songbird',
     etherscanCompatibleApiUrl: 'https://songbird-explorer.flare.network/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 13382504 } },
     isCanary: true,
     correspondingMainnetChainId: ChainId.FlareMainnet,
   }),
@@ -1416,7 +1412,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'sophon',
     logoUrl: '/assets/images/vendor/chains/sophon.jpg',
     explorerUrl: 'https://sophscan.xyz',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 116 } },
   }),
   [ChainId.StableMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1429,7 +1425,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.stable.xyz',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2423647 } },
   }),
   [ChainId.Story]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1441,7 +1437,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://mainnet.storyrpc.io',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 340998 } },
   }),
   [ChainId.SubtensorEVM]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1452,7 +1448,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/bittensor.svg',
     explorerUrl: 'https://evm.taostats.io',
     etherscanCompatibleApiUrl: 'https://evm.taostats.io/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 5098260 } },
   }),
   [ChainId.Superposition]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1461,7 +1457,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'superposition',
     logoUrl: '/assets/images/vendor/chains/superposition.svg',
     etherscanCompatibleApiUrl: 'https://explorer-superposition-1v9rjalnat.t.conduit.xyz/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 39 } },
   }),
   [ChainId.Swellchain]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1473,7 +1469,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.ankr.com/swell',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1 } },
   }),
   [ChainId.SyscoinMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1485,7 +1481,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.syscoin.org',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 287139 } },
   }),
   [ChainId.TACMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1499,7 +1495,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.tac.build',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.TaikoAlethia]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1508,7 +1504,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'taiko',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
     explorerUrl: 'https://taikoscan.io',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 11269 } },
   }),
   [ChainId.TelosEVMMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1521,7 +1517,7 @@ export const CHAINS = {
     rpc: {
       main: 'https://rpc.telos.net',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 246530709 } },
   }),
   [ChainId.Unichain]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1534,7 +1530,7 @@ export const CHAINS = {
       main: `https://unichain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://mainnet.unichain.org',
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.Vana]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1553,7 +1549,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'velas',
     logoUrl: '/assets/images/vendor/chains/velas.svg',
     etherscanCompatibleApiUrl: 'https://evmexplorer.velas.com/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 55883577 } },
   }),
   [ChainId.Viction]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1562,8 +1558,9 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'tomochain',
     coingeckoNetworkId: 'tomochain',
     logoUrl: '/assets/images/vendor/chains/viction.svg',
-    explorerUrl: 'https://www.vicscan.xyz',
-    deployedContracts: { ...MULTICALL },
+    explorerUrl: 'https://viction.blockscout.com/',
+    etherscanCompatibleApiUrl: 'https://viction.blockscout.com/api',
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 87169904 } },
   }),
   [ChainId.WorldChain]: new Chain({
     type: SupportType.PROVIDER,
@@ -1575,7 +1572,7 @@ export const CHAINS = {
     rpc: {
       main: `https://worldchain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.XDCNetwork]: new Chain({
     type: SupportType.HYPERSYNC,
@@ -1601,7 +1598,7 @@ export const CHAINS = {
     name: 'ZenChain Testnet',
     logoUrl: '/assets/images/vendor/chains/zenchain.svg',
     etherscanCompatibleApiUrl: 'https://zentrace.io/api',
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 230019 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.ZenChain,
   }),
@@ -1614,7 +1611,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/zero/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.ZetaChainMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1627,7 +1624,7 @@ export const CHAINS = {
     rpc: {
       main: `https://zetachain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1632781 } },
   }),
   [ChainId.ZkSyncMainnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1640,7 +1637,7 @@ export const CHAINS = {
       main: `https://zksync-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: {
-      multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
+      multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963', blockCreated: 3908235 },
     },
   }),
   [ChainId.ZircuitMainnet]: new Chain({
@@ -1652,7 +1649,7 @@ export const CHAINS = {
     rpc: {
       main: `https://lb.drpc.live/zircuit/${DRPC_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
+    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   1234567890: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -1842,8 +1839,12 @@ export const getViemChainConfig = (chainId: DocumentedChainId): ViemChain => {
   return getChainConfig(chainId).getViemChainConfig();
 };
 
-export const createViemPublicClientForChain = (chainId: DocumentedChainId, url?: string): PublicClient => {
-  return getChainConfig(chainId).createViemPublicClient(url);
+export const createViemPublicClientForChain = (
+  chainId: DocumentedChainId,
+  url?: string,
+  blockNumber?: bigint,
+): PublicClient => {
+  return getChainConfig(chainId).createViemPublicClient(url, blockNumber);
 };
 
 export const getChainAddEthereumChainParameter = (chainId: DocumentedChainId): AddEthereumChainParameter => {

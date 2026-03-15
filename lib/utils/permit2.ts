@@ -1,9 +1,14 @@
 import { PERMIT2_ABI } from 'lib/abis';
-import blocksDB from 'lib/databases/blocks';
 import { type Address, type Chain, maxUint160, type WalletClient } from 'viem';
 import { deduplicateArray, getWalletAddress, writeContractUnlessExcessiveGas } from '.';
 import { AllowanceType, type Permit2Erc20Allowance } from './allowances';
-import { hasTransfersFromOwnerAfterEvent, type Permit2Event, type TokenEvent, TokenEventType } from './events';
+import {
+  type Enriched,
+  type EnrichedTokenEvent,
+  hasTransfersFromOwnerAfterEvent,
+  type Permit2Event,
+  TokenEventType,
+} from './events';
 import { SECOND } from './time';
 import type { Erc20TokenContract } from './tokens';
 
@@ -12,7 +17,9 @@ export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78
 export const getPermit2AllowancesFromApprovals = async (
   contract: Erc20TokenContract,
   owner: Address,
-  events: TokenEvent[],
+  events: EnrichedTokenEvent[],
+  blockNumber?: bigint,
+  referenceTime?: number,
 ): Promise<Permit2Erc20Allowance[]> => {
   const permit2ApprovalEvents = events.filter((event) => event.type === TokenEventType.PERMIT2);
 
@@ -23,7 +30,9 @@ export const getPermit2AllowancesFromApprovals = async (
   );
 
   const allowances = await Promise.all(
-    deduplicatedApprovalEvents.map((approval) => getPermit2AllowanceFromApproval(contract, owner, approval, events)),
+    deduplicatedApprovalEvents.map((approval) =>
+      getPermit2AllowanceFromApproval(contract, owner, approval, events, blockNumber, referenceTime),
+    ),
   );
 
   return allowances.filter((allowance) => allowance !== undefined) as Permit2Erc20Allowance[];
@@ -32,22 +41,22 @@ export const getPermit2AllowancesFromApprovals = async (
 const getPermit2AllowanceFromApproval = async (
   tokenContract: Erc20TokenContract,
   owner: Address,
-  approval: Permit2Event,
-  events: TokenEvent[],
+  approval: Enriched<Permit2Event>,
+  events: EnrichedTokenEvent[],
+  blockNumber?: bigint,
+  referenceTime?: number,
 ): Promise<Permit2Erc20Allowance | undefined> => {
   const { spender, amount: lastApprovedAmount, expiration, permit2Address } = approval.payload;
   if (lastApprovedAmount === 0n) return undefined;
-  if (expiration * SECOND <= Date.now()) return undefined;
 
   // Optimisation: if the approval is for the max uint160 value, the allowance is not decreased by transferFrom
   // (per Permit2 convention), so we can use the event value directly without an RPC call
   if (lastApprovedAmount === maxUint160) {
-    const lastUpdated = await blocksDB.getTimeLog(tokenContract.publicClient, approval.time);
     return {
       type: AllowanceType.PERMIT2,
       spender,
       amount: lastApprovedAmount,
-      lastUpdated,
+      lastUpdated: approval.time,
       expiration,
       permit2Address,
     };
@@ -56,26 +65,26 @@ const getPermit2AllowanceFromApproval = async (
   // Optimisation: if there are no transfers from the owner after the approval, the allowance cannot have been
   // partially used, so we can use the event value directly without an RPC call
   if (!hasTransfersFromOwnerAfterEvent(owner, events, approval)) {
-    const lastUpdated = await blocksDB.getTimeLog(tokenContract.publicClient, approval.time);
     return {
       type: AllowanceType.PERMIT2,
       spender,
       amount: lastApprovedAmount,
-      lastUpdated,
+      lastUpdated: approval.time,
       expiration,
       permit2Address,
     };
   }
 
-  const [permit2Allowance, lastUpdated] = await Promise.all([
-    tokenContract.publicClient.readContract({
-      address: permit2Address,
-      abi: PERMIT2_ABI,
-      functionName: 'allowance',
-      args: [owner, tokenContract.address, spender],
-    }),
-    blocksDB.getTimeLog(tokenContract.publicClient, approval.time),
-  ]);
+  const now = referenceTime ? referenceTime * SECOND : Date.now();
+  if (expiration * SECOND <= now) return undefined;
+
+  const permit2Allowance = await tokenContract.publicClient.readContract({
+    address: permit2Address,
+    abi: PERMIT2_ABI,
+    functionName: 'allowance',
+    args: [owner, tokenContract.address, spender],
+    blockNumber,
+  });
 
   const [amount] = permit2Allowance;
 
@@ -83,7 +92,7 @@ const getPermit2AllowanceFromApproval = async (
     type: AllowanceType.PERMIT2,
     spender,
     amount,
-    lastUpdated,
+    lastUpdated: approval.time,
     expiration,
     permit2Address,
   };

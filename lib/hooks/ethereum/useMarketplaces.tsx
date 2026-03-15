@@ -7,7 +7,7 @@ import type { Marketplace, MarketplaceConfig, OnCancel } from 'lib/interfaces';
 import { getLogsProvider } from 'lib/providers';
 import { addressToTopic, getWalletAddress, isNullish, logSorterChronological } from 'lib/utils';
 import { createViemPublicClientForChain } from 'lib/utils/chains';
-import type { TimeLog } from 'lib/utils/events';
+import type { ResolvedTimeLog } from 'lib/utils/events';
 import { mapAsync } from 'lib/utils/promises';
 import { MINUTE } from 'lib/utils/time';
 import { useLayoutEffect, useState } from 'react';
@@ -158,7 +158,7 @@ export const useMarketplaces = () => {
     }
   }, [data]);
 
-  const onCancel: OnCancel<Marketplace> = async (marketplace: Marketplace, lastCancelled: TimeLog) => {
+  const onCancel: OnCancel<Marketplace> = async (marketplace: Marketplace, lastCancelled: ResolvedTimeLog) => {
     await queryClient.invalidateQueries({
       queryKey: ['blockNumber', selectedChainId],
       refetchType: 'none',

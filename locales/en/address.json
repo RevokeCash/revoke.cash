@@ -212,6 +212,14 @@
       "description": "Want a unified view across all networks?"
     }
   },
+  "time_machine": {
+    "apply": "Apply",
+    "description": "Travel back in time to see what your approvals looked like at a specific point in the past. Revoke actions are disabled while viewing historical data.",
+    "exit": "Back to Present",
+    "label": "Time Machine",
+    "now": "Now",
+    "viewing_as_of": "Viewing approvals as of {date}, {time}"
+  },
   "risk_factors": {
     "allowlist": "Well-known spender address",
     "blocklist": "Dangerous or malicious",

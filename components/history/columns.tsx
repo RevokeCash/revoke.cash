@@ -3,13 +3,12 @@ import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
 import { isNullish } from 'lib/utils';
 import { getChainName } from 'lib/utils/chains';
-import type { Address } from 'viem';
+import { type ApprovalTokenEvent, type Enriched, TokenEventType } from 'lib/utils/events';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAmountCell from './cells/HistoryAmountCell';
 import HistoryAssetCell from './cells/HistoryAssetCell';
 import HistoryChainCell from './cells/HistoryChainCell';
 import HistorySpenderCell from './cells/HistorySpenderCell';
-import type { ApprovalHistoryEvent } from './utils';
 
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
@@ -28,19 +27,22 @@ export enum ColumnId {
 }
 
 const accessors = {
-  token: (event: ApprovalHistoryEvent) => {
+  token: (event: Enriched<ApprovalTokenEvent>) => {
     if (isNullish(event.metadata?.symbol)) return event.token;
     return `${event.metadata?.symbol} ${event.token}`;
   },
-  spender: (event: ApprovalHistoryEvent) => {
-    const spenderAddress = 'oldSpender' in event.payload ? (event.payload.oldSpender as string) : event.payload.spender;
+  spender: (event: Enriched<ApprovalTokenEvent>) => {
+    const spenderAddress =
+      event.type === TokenEventType.APPROVAL_ERC721 && event.payload.oldSpender
+        ? event.payload.oldSpender
+        : event.payload.spender;
     if (isNullish(event.payload.spenderData?.name)) return spenderAddress;
     return `${event.payload.spenderData?.name} ${spenderAddress}`;
   },
-  timestamp: (event: ApprovalHistoryEvent) => {
+  timestamp: (event: Enriched<ApprovalTokenEvent>) => {
     return event.time.timestamp;
   },
-  chain: (event: ApprovalHistoryEvent) => {
+  chain: (event: Enriched<ApprovalTokenEvent>) => {
     const chainName = getChainName(event.chainId);
     return `${chainName} ${event.chainId}`;
   },
@@ -48,21 +50,21 @@ const accessors = {
 
 // Custom filter functions for history table
 export const customFilterFns = {
-  includesOneOfStrings: (row: Row<ApprovalHistoryEvent>, columnId: string, filterValues: string[]) => {
+  includesOneOfStrings: (row: Row<Enriched<ApprovalTokenEvent>>, columnId: string, filterValues: string[]) => {
     const results = filterValues.map((filterValue) => {
       return filterFns.includesString(row, columnId, filterValue, () => {});
     });
 
     return results.some((result) => result);
   },
-  tokenOrSpender: (row: Row<ApprovalHistoryEvent>, _columnId: string, filterValues: string[]) => {
+  tokenOrSpender: (row: Row<Enriched<ApprovalTokenEvent>>, _columnId: string, filterValues: string[]) => {
     const spenderMatches = customFilterFns.includesOneOfStrings(row, ColumnId.SPENDER, filterValues);
     const tokenMatches = customFilterFns.includesOneOfStrings(row, ColumnId.ASSET, filterValues);
     return spenderMatches || tokenMatches;
   },
 };
 
-const columnHelper = createColumnHelper<ApprovalHistoryEvent>();
+const columnHelper = createColumnHelper<Enriched<ApprovalTokenEvent>>();
 export const columns = [
   // Virtual column for combined search (not displayed)
   columnHelper.display({
@@ -98,18 +100,22 @@ export const columns = [
   columnHelper.accessor(accessors.spender, {
     id: ColumnId.SPENDER,
     header: () => <HeaderCell i18nKey="address.headers.spender" />,
-    cell: (info) => (
-      <HistorySpenderCell
-        address={
-          'oldSpender' in info.row.original.payload
-            ? (info.row.original.payload.oldSpender as Address)
-            : info.row.original.payload.spender
-        }
-        spenderData={info.row.original.payload.spenderData}
-        chainId={info.row.original.chainId}
-        onFilter={info.table.options.meta!.onFilter}
-      />
-    ),
+    cell: (info) => {
+      const event = info.row.original;
+      const spenderAddress =
+        event.type === TokenEventType.APPROVAL_ERC721 && event.payload.oldSpender
+          ? event.payload.oldSpender
+          : event.payload.spender;
+
+      return (
+        <HistorySpenderCell
+          address={spenderAddress}
+          spenderData={event.payload.spenderData}
+          chainId={event.chainId}
+          onFilter={info.table.options.meta!.onFilter}
+        />
+      );
+    },
     size: 160,
     enableSorting: false,
     enableColumnFilter: true,

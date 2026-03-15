@@ -191,7 +191,7 @@ Notes:
 - Keep checksummed addresses (`getAddress`) rather than lowercase storage.
 - Do not remove existing comments unless they are clearly outdated.
 - Prefer one component per file unless multiple components are strongly justified.
-- Many App Router pages are static (`dynamic='error'`, `dynamicParams=false`); update static params when adding new dynamic content paths.
 - Prefer writing code in a way that reads top-down, from the main entry point to the leaves.
 - Prefer `const` assignment and not reassigning variables.
 - Use descriptive variable names, no single letter variables unless they are very common and well-known (e.g. `i`, `j`, `k`).
+- Prefer array methods over manual loops and avoid nested loops if possible.

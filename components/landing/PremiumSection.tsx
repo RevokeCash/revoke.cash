@@ -17,8 +17,9 @@ const PremiumSection = () => {
           <Highlight i18nKey="landing.premium.highlights.multichain_dashboard" />
           <Highlight i18nKey="landing.premium.highlights.unlimited_batch_revokes" />
           <Highlight i18nKey="landing.premium.highlights.multichain_exploit_checker" />
-          <Highlight i18nKey="landing.premium.highlights.priority_support" />
+          <Highlight i18nKey="landing.premium.highlights.time_machine" />
           <Highlight i18nKey="landing.premium.highlights.multichain_history" />
+          {/* <Highlight i18nKey="landing.premium.highlights.priority_support" /> */}
           <Highlight i18nKey="landing.premium.highlights.address_slots" />
         </ul>
 

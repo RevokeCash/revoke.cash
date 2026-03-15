@@ -26,6 +26,7 @@ export const FEATURES: PricingFeature[] = [
   },
   { labelKey: 'multichain_dashboard', free: false, premium: true, bundle: true },
   { labelKey: 'multichain_exploit_checker', free: false, premium: true, bundle: true },
+  { labelKey: 'time_machine', free: false, premium: true, bundle: true },
   { labelKey: 'priority_support', free: false, premium: true, bundle: true },
   {
     labelKey: 'address_slots',
@@ -40,8 +41,8 @@ export const TIER_KEYS: TierKey[] = ['free', 'premium', 'bundle'];
 
 export const TIER_PRICES: Record<TierKey, string> = {
   free: '$0',
-  premium: '$99',
-  bundle: '$299',
+  premium: '$79',
+  bundle: '$199',
 };
 
 export const FEATURE_SECTIONS = [
@@ -49,6 +50,7 @@ export const FEATURE_SECTIONS = [
   { key: 'multichain_history', image: '/assets/images/opengraph-image.jpg' },
   { key: 'multichain_exploit_checker', image: '/assets/images/opengraph-image.jpg' },
   { key: 'unlimited_batch_revokes', image: '/assets/images/opengraph-image.jpg' },
+  { key: 'time_machine', image: '/assets/images/opengraph-image.jpg' },
   { key: 'priority_support', image: '/assets/images/opengraph-image.jpg' },
 ] as const;
 

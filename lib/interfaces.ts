@@ -1,6 +1,6 @@
 import type { Abi, Address, Hash, PublicClient, TransactionReceipt, WalletClient } from 'viem';
 import type { TokenAllowanceData } from './utils/allowances';
-import type { Filter, TimeLog } from './utils/events';
+import type { Filter, ResolvedTimeLog } from './utils/events';
 
 export interface RateLimit {
   interval: number;
@@ -35,7 +35,7 @@ export interface Marketplace {
   name: string;
   logo: string;
   chainId: number;
-  lastCancelled?: TimeLog;
+  lastCancelled?: ResolvedTimeLog;
   cancelSignatures: (walletClient: WalletClient) => Promise<Hash>;
   allowances: TokenAllowanceData[];
 }
@@ -119,6 +119,6 @@ export interface TransactionSubmitted {
   confirmation: Promise<TransactionReceipt | undefined>;
 }
 
-export type OnCancel<T> = (data: T, lastCancelled: TimeLog) => Promise<void>;
+export type OnCancel<T> = (data: T, lastCancelled: ResolvedTimeLog) => Promise<void>;
 
 export type Nullable<T> = T | null;

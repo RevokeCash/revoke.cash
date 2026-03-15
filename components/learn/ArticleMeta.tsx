@@ -2,7 +2,7 @@ import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
 import type { ContentMeta } from 'lib/interfaces';
 import { isNullish } from 'lib/utils';
-import { formatArticleDate } from 'lib/utils/time';
+import { formatDate } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 
 interface Props {
@@ -52,7 +52,7 @@ const MetaPropertyChild = ({ property, meta }: MetaPropertyProps) => {
   if (!property) return null;
 
   if (property === 'date' && meta.date) {
-    return <div>{formatArticleDate(meta.date)}</div>;
+    return <div>{formatDate(meta.date)}</div>;
   }
 
   if (property === 'author' || property === 'translator') {

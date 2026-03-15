@@ -10,5 +10,5 @@ export const useEvents = (address: Address, chainId: number) => {
     enabled: !isNullish(address) && !isNullish(chainId),
   });
 
-  return { events: data, isLoading, error };
+  return { ...data, isLoading, error };
 };

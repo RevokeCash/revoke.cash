@@ -20,9 +20,10 @@ import ControlsSection from '../../controls/ControlsSection';
 interface Props {
   allowance: TokenAllowanceData;
   onUpdate: OnUpdate;
+  timeMachineTimestamp?: number;
 }
 
-const AllowanceCell = ({ allowance, onUpdate }: Props) => {
+const AllowanceCell = ({ allowance, onUpdate, timeMachineTimestamp }: Props) => {
   const t = useTranslations();
   const locale = useLocale();
   const [editing, setEditing] = useState<boolean>();
@@ -43,10 +44,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
     );
   }
 
-  const inTime =
-    allowance.payload?.type === AllowanceType.PERMIT2
-      ? timeago.format(Math.min(allowance.payload.expiration * SECOND, Date.now() + 1000 * YEAR + 1 * DAY), locale)
-      : null;
+  const inTime = formatPermit2Expiration(allowance, locale, timeMachineTimestamp);
 
   return (
     <div className={classes}>
@@ -60,7 +58,7 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
           </WithHoverTooltip>
         ) : null}
       </div>
-      {isErc20Allowance(allowance.payload) && (
+      {isErc20Allowance(allowance.payload) && timeMachineTimestamp === undefined && (
         <ControlsWrapper chainId={allowance.chainId} address={allowance.owner}>
           {(disabled) => (
             <div>
@@ -82,3 +80,10 @@ const AllowanceCell = ({ allowance, onUpdate }: Props) => {
 };
 
 export default AllowanceCell;
+
+const formatPermit2Expiration = (allowance: TokenAllowanceData, locale: string, relativeTimestamp?: number) => {
+  if (allowance.payload?.type !== AllowanceType.PERMIT2) return null;
+  const now = relativeTimestamp ? relativeTimestamp * SECOND : Date.now();
+  const expiration = Math.min(allowance.payload.expiration * SECOND, now + 1000 * YEAR + 1 * DAY);
+  return timeago.format(expiration, locale, { relativeDate: now });
+};

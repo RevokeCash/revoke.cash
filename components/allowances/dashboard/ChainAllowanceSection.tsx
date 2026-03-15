@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-table';
 import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
-import type { ChainAllowanceData } from 'lib/hooks/page-context/PremiumAddressPageContext';
+import { type ChainAllowanceData, useTimeMachine } from 'lib/hooks/page-context/PremiumAddressPageContext';
 import { isNullish } from 'lib/utils';
 import type { Erc721SingleAllowance, OnUpdate, TokenAllowanceData } from 'lib/utils/allowances';
 import { formatFiatAmount } from 'lib/utils/formatting';
@@ -41,6 +41,7 @@ const ChainAllowanceSection = ({
   allExpanded,
   defaultExpanded,
 }: Props) => {
+  const { timestamp: timeMachineTimestamp } = useTimeMachine();
   const { status, allowances } = chainData;
 
   const [isExpanded, setIsExpanded] = useState(() => {
@@ -82,19 +83,21 @@ const ChainAllowanceSection = ({
       rowSelection,
       sorting,
       columnFilters,
+      columnVisibility: {
+        [ColumnId.BALANCE]: false,
+        [ColumnId.VALUE_AT_RISK]: isNullish(timeMachineTimestamp),
+      },
     },
-    enableRowSelection: (row) => !isNullish(row.original.payload) && isNullish(row.original.payload?.revokeError),
+    enableRowSelection: (row) =>
+      isNullish(timeMachineTimestamp) &&
+      !isNullish(row.original.payload) &&
+      isNullish(row.original.payload?.revokeError),
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel<TokenAllowanceData>(),
     getSortedRowModel: getSortedRowModel<TokenAllowanceData>(),
     getFilteredRowModel: getFilteredRowModel<TokenAllowanceData>(),
     getRowId,
-    meta: { onUpdate } as any,
-    initialState: {
-      columnVisibility: {
-        [ColumnId.BALANCE]: false,
-      },
-    },
+    meta: { onUpdate, timeMachineTimestamp } as any,
   });
 
   const canExpand = status === 'success' && allowances.length > 0;
@@ -108,7 +111,7 @@ const ChainAllowanceSection = ({
 
   return (
     <CollapsibleCard
-      isExpanded={isExpanded}
+      isExpanded={canExpand && isExpanded}
       canExpand={canExpand}
       onToggle={toggleExpanded}
       className={twMerge(

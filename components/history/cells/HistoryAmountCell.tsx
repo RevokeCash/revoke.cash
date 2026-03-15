@@ -1,10 +1,10 @@
 import { getAllowanceI18nValues } from 'lib/utils/allowances';
+import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { eventToAllowance, isRevokeEvent } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
-import type { ApprovalHistoryEvent } from '../utils';
 
 interface Props {
-  event: ApprovalHistoryEvent;
+  event: Enriched<ApprovalTokenEvent>;
 }
 
 const HistoryAmountCell = ({ event }: Props) => {

@@ -1,16 +1,19 @@
 'use client';
 
-import type { ApprovalHistoryEvent } from 'components/history/utils';
 import { deduplicateArray } from 'lib/utils';
+import { type ApprovalTokenEvent, type Enriched, TokenEventType } from 'lib/utils/events';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
 import { getSpenderKey, type SpenderLookup, useSpenderData } from './useSpenderData';
 
-const getSpenderAddress = (event: ApprovalHistoryEvent): Address => {
-  return ('oldSpender' in event.payload ? event.payload.oldSpender : event.payload.spender) as Address;
+const getSpenderAddress = (event: Enriched<ApprovalTokenEvent>): Address => {
+  if (event.type === TokenEventType.APPROVAL_ERC721 && event.payload.oldSpender) {
+    return event.payload.oldSpender;
+  }
+  return event.payload.spender;
 };
 
-export const useAnnotateHistorySpenderData = (approvalHistory: ApprovalHistoryEvent[] | undefined) => {
+export const useAnnotateHistorySpenderData = (approvalHistory: Enriched<ApprovalTokenEvent>[] | undefined) => {
   const uniqueSpenders = useMemo<SpenderLookup[]>(() => {
     if (!approvalHistory || approvalHistory.length === 0) return [];
     const spenderLookups = approvalHistory.map((event) => ({
@@ -31,7 +34,7 @@ export const useAnnotateHistorySpenderData = (approvalHistory: ApprovalHistoryEv
       return {
         ...event,
         payload: { ...event.payload, spenderData: spenderData[spenderKey] },
-      } as ApprovalHistoryEvent;
+      } as Enriched<ApprovalTokenEvent>;
     });
   }, [approvalHistory, spenderData]);
 };

@@ -1,36 +1,91 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { OnCancel } from 'lib/interfaces';
-import { isNullish } from 'lib/utils';
-import type { TimeLog } from 'lib/utils/events';
+import { deduplicateArray, isNullish } from 'lib/utils';
+import { type ResolvedTimeLog, TokenEventType } from 'lib/utils/events';
 import { getLastCancelled } from 'lib/utils/permit';
-import { filterAsync, mapAsync } from 'lib/utils/promises';
-import { hasSupportForPermit, type PermitTokenData } from 'lib/utils/tokens';
-import { useLayoutEffect, useState } from 'react';
-import { useAddressAllowances, useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';
+import {
+  createTokenContract,
+  getTokenMetadata,
+  hasSupportForPermit,
+  hasZeroBalance,
+  isErc721Contract,
+  type PermitTokenData,
+  type TokenData,
+} from 'lib/utils/tokens';
+import { useLayoutEffect, useMemo, useState } from 'react';
+import { usePublicClient } from 'wagmi';
+import { useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';
 
 export const usePermitTokens = () => {
   const [permitTokens, setPermitTokens] = useState<PermitTokenData[]>();
   const queryClient = useQueryClient();
 
   const { selectedChainId } = useAddressPageContext();
-  const { ownedTokens, error: allowancesError, isLoading: isAllowancesLoading } = useAddressAllowances();
-  const { events } = useAddressEvents();
+  const { events, rawEvents } = useAddressEvents();
+  const publicClient = usePublicClient({ chainId: selectedChainId })!;
+
+  const candidateTokenEvents = useMemo(() => {
+    if (!rawEvents) return undefined;
+
+    const filteredEvents = rawEvents.filter((event) => {
+      // Permit only applies to ERC20 tokens
+      if (event.type !== TokenEventType.TRANSFER_ERC20 && event.type !== TokenEventType.APPROVAL_ERC20) return false;
+
+      // Exclude transfer-FROM events since they likely indicate spam if that's the only event type
+      if (event.type === TokenEventType.TRANSFER_ERC20 && event.owner === event.payload.from) return false;
+
+      return true;
+    });
+
+    return deduplicateArray(filteredEvents, (event) => `${event.chainId}-${event.token}`);
+  }, [rawEvents]);
 
   const {
     data,
-    error: permitsError,
-    isLoading: isPermitsLoading,
+    error,
+    isLoading: isQueryLoading,
   } = useQuery({
-    queryKey: ['permitTokens', ownedTokens?.map((t) => t.contract.address)],
+    queryKey: ['permitTokens', selectedChainId, candidateTokenEvents?.map((e) => e.token)],
     queryFn: async () => {
-      const permitTokens = await mapAsync(
-        filterAsync(ownedTokens!, (token) => hasSupportForPermit(token.contract)),
-        async (token) => ({ ...token, lastCancelled: await getLastCancelled(events!, token) }),
+      // Build a metadata map from enriched events (already fetched during enrichment)
+      const enrichedMetadataMap = new Map(events!.map((event) => [event.token, event.metadata]));
+
+      const tokens = await Promise.all(
+        candidateTokenEvents!.map(async (event) => {
+          const contract = createTokenContract(event, publicClient);
+          if (!contract || isErc721Contract(contract)) return undefined;
+
+          try {
+            // 1. balanceOf (1 RPC) — filters zero-balance tokens before costlier checks
+            const balance = await contract.publicClient.readContract({
+              ...contract,
+              functionName: 'balanceOf',
+              args: [event.owner],
+            });
+            if (balance === 0n) return undefined;
+
+            // 2. hasSupportForPermit (2 RPCs) — filters tokens without EIP-2612
+            if (!(await hasSupportForPermit(contract))) return undefined;
+
+            // 3. Metadata (0 RPCs from enriched map, 2-3 RPCs fallback) — only for tokens that pass both checks
+            const metadata =
+              enrichedMetadataMap.get(event.token) ?? (await getTokenMetadata(contract, selectedChainId));
+
+            // Re-check with decimals in case of dust amounts
+            if (hasZeroBalance(balance, metadata.decimals)) return undefined;
+
+            const lastCancelled = await getLastCancelled(rawEvents!, contract);
+
+            return { contract, metadata, chainId: selectedChainId, owner: event.owner, balance, lastCancelled };
+          } catch {
+            return undefined;
+          }
+        }),
       );
 
-      return permitTokens;
+      return tokens.filter((token) => !isNullish(token));
     },
-    enabled: !isNullish(ownedTokens) && !isNullish(events),
+    enabled: !isNullish(candidateTokenEvents) && !isNullish(events) && !isNullish(rawEvents),
     staleTime: Number.POSITIVE_INFINITY,
   });
 
@@ -40,10 +95,9 @@ export const usePermitTokens = () => {
     }
   }, [data]);
 
-  const error = allowancesError || permitsError;
-  const isLoading = (isAllowancesLoading || isPermitsLoading || !permitTokens) && !error;
+  const isLoading = (isQueryLoading || !permitTokens) && !error;
 
-  const onCancel: OnCancel<PermitTokenData> = async (token: PermitTokenData, lastCancelled: TimeLog) => {
+  const onCancel: OnCancel<PermitTokenData> = async (token: PermitTokenData, lastCancelled: ResolvedTimeLog) => {
     await queryClient.invalidateQueries({
       queryKey: ['blockNumber', selectedChainId],
       refetchType: 'none',

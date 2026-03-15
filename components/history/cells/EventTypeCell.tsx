@@ -1,11 +1,11 @@
 import Label from 'components/common/Label';
+import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { isCancelPermitEvent, isRevokeEvent } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
-import type { ApprovalHistoryEvent } from '../utils';
 
 interface Props {
-  approvalEvent: ApprovalHistoryEvent;
+  approvalEvent: Enriched<ApprovalTokenEvent>;
 }
 
 const EventTypeCell = ({ approvalEvent }: Props) => {

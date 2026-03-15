@@ -1,5 +1,4 @@
 import type { ChainStatus } from 'components/common/PremiumChainStatusSection';
-import { logSorterChronological } from 'lib/utils';
 import { useMemo } from 'react';
 import { usePremiumAddressPageContext } from '../page-context/PremiumAddressPageContext';
 import { useAnnotateHistorySpenderData } from './useHistorySpenderData';
@@ -31,7 +30,7 @@ export const usePremiumApprovalHistory = () => {
     return historyResults
       .map((result) => result.data)
       .flatMap((data) => data ?? [])
-      .sort((a, b) => logSorterChronological(a.rawLog, b.rawLog));
+      .sort((a, b) => b.time.timestamp - a.time.timestamp);
   }, [historyResults]);
   const approvalHistory = useAnnotateHistorySpenderData(approvalHistoryBase);
 

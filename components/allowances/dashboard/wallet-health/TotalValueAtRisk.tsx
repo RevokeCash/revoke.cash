@@ -62,8 +62,9 @@ const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number | n
     (allowance) => `${allowance.chainId}-${allowance.contract.address}`,
   );
 
-  return deduplicatedAllowances.reduce<number | null>(
-    (acc, allowance) => (isNullish(acc) ? allowance.valueAtRisk : acc + (allowance.valueAtRisk ?? 0)),
-    null,
-  );
+  // If no allowance has a known price, return null ("Unknown")
+  const hasAnyPrice = deduplicatedAllowances.some((allowance) => !isNullish(allowance.metadata.price));
+  if (!hasAnyPrice) return null;
+
+  return deduplicatedAllowances.reduce((acc, allowance) => acc + (allowance.valueAtRisk ?? 0), 0);
 };

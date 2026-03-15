@@ -7,12 +7,11 @@ import {
   applyRevokeToAllowances,
   applyUpdateToAllowances,
   getAllowancesFromEvents,
-  stripAllowanceData,
   type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
-import { getEventKey, type TokenEvent } from 'lib/utils/events';
-import { hasZeroBalance, isErc721Contract } from 'lib/utils/tokens';
+import { type EnrichedTokenEvent, getEventKey } from 'lib/utils/events';
+import { isErc721Contract } from 'lib/utils/tokens';
 import { useEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
@@ -21,7 +20,7 @@ import { useAllowanceSpenderData } from './useAllowanceSpenderData';
 import { getPriceKey, usePriceData } from './usePriceData';
 import { getSpenderKey } from './useSpenderData';
 
-export const useAllowances = (address: Address, events: TokenEvent[] | undefined, chainId: number) => {
+export const useAllowances = (address: Address, events: EnrichedTokenEvent[] | undefined, chainId: number) => {
   const publicClient = usePublicClient({ chainId })!;
 
   // Core allowances query (non-blocking, pricing set to null)
@@ -64,14 +63,6 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
 
   const spenderData = useAllowanceSpenderData(baseAllowances ?? []);
 
-  // Stable list of all owned tokens (for use by usePermitTokens, independent of approval state)
-  const ownedTokens = useMemo(() => {
-    if (!data) return undefined;
-    return deduplicateArray(data, (a) => a.contract.address)
-      .filter((token) => !hasZeroBalance(token.balance, token.metadata.decimals))
-      .map(stripAllowanceData);
-  }, [data]);
-
   const allowances = useMemo(() => {
     if (!baseAllowances) return undefined;
 
@@ -106,5 +97,5 @@ export const useAllowances = (address: Address, events: TokenEvent[] | undefined
     }
   };
 
-  return { allowances, ownedTokens, isLoading, error, onUpdate };
+  return { allowances, isLoading, error, onUpdate };
 };

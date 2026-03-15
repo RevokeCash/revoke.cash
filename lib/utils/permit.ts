@@ -3,7 +3,7 @@ import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import { type Address, type Hex, parseSignature, type Signature, type TypedDataDomain, type WalletClient } from 'viem';
 import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
-import { type TimeLog, type TokenEvent, TokenEventType } from './events';
+import { type ResolvedTimeLog, type TokenEvent, TokenEventType } from './events';
 import { type Erc20TokenContract, getPermitDomain, type PermitTokenData, type TokenData } from './tokens';
 
 export const permit = async (
@@ -116,14 +116,17 @@ export const signDaiPermit = async (
   return parseSignature(signatureHex);
 };
 
-export const getLastCancelled = async (events: TokenEvent[], token: TokenData): Promise<TimeLog | undefined> => {
+export const getLastCancelled = async (
+  events: TokenEvent[],
+  tokenContract: Erc20TokenContract,
+): Promise<ResolvedTimeLog | undefined> => {
   const [lastCancelledEvent] = events.filter(
-    (event) => event.token === token.contract.address && isCancelPermitEvent(event),
+    (event) => event.token === tokenContract.address && isCancelPermitEvent(event),
   );
 
   if (!lastCancelledEvent) return undefined;
 
-  const lastCancelled = await blocksDB.getTimeLog(token.contract.publicClient, lastCancelledEvent.time);
+  const lastCancelled = await blocksDB.getTimeLog(tokenContract.publicClient, lastCancelledEvent.time);
 
   return lastCancelled;
 };

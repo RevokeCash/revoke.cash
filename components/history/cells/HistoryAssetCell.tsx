@@ -2,11 +2,11 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
+import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
-import type { ApprovalHistoryEvent } from '../utils';
 
 interface Props {
-  event: ApprovalHistoryEvent;
+  event: Enriched<ApprovalTokenEvent>;
   onFilter?: (filterValue: string) => void;
 }
 

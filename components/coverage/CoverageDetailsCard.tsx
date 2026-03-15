@@ -3,7 +3,7 @@ import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
 import { type ActiveMembershipInfo, FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
 import { timeago } from 'lib/i18n/timeago';
-import { DAY, formatArticleDate } from 'lib/utils/time';
+import { DAY, formatDate } from 'lib/utils/time';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -41,7 +41,7 @@ const CoverageDetailsCard = ({ membershipInfo }: CoverageDetailsProps) => {
       <CoverageDetailsItem label={t('address.coverage.membership.labels.timeframe')}>
         <div className="text-right">
           <div className="text-black dark:text-white font-medium flex items-center gap-2">
-            {`${formatArticleDate(membershipInfo.validFrom!)} - ${formatArticleDate(membershipInfo.validUntil!)}`}
+            {`${formatDate(membershipInfo.validFrom!)} - ${formatDate(membershipInfo.validUntil!)}`}
           </div>
           <div className={expiryClass}>{t('address.permit2.expiration', { inTime })}</div>
         </div>

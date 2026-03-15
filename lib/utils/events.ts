@@ -4,6 +4,7 @@ import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { type Address, decodeEventLog, getAbiItem, type Hash, type Hex, toEventSelector } from 'viem';
 import { addressToTopic, isNullish, logSorterChronological } from '.';
 import { type AllowancePayload, AllowanceType } from './allowances';
+import type { TokenMetadata } from './tokens';
 
 export interface Log {
   address: Address;
@@ -17,6 +18,7 @@ export interface Log {
 }
 
 export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
+export type ResolvedTimeLog = TimeLog & { timestamp: number };
 
 export interface Filter {
   address?: Address;
@@ -57,6 +59,7 @@ export interface Erc721ApprovalEvent extends BaseTokenEvent {
   type: TokenEventType.APPROVAL_ERC721;
   payload: {
     spender: Address;
+    oldSpender?: Address;
     spenderData?: Nullable<SpenderRiskData>;
     tokenId: bigint;
   };
@@ -103,6 +106,10 @@ export interface Erc721TransferEvent extends BaseTokenEvent {
 export type ApprovalTokenEvent = Erc20ApprovalEvent | Erc721ApprovalEvent | Erc721ApprovalForAllEvent | Permit2Event;
 export type TransferTokenEvent = Erc20TransferEvent | Erc721TransferEvent;
 export type TokenEvent = ApprovalTokenEvent | TransferTokenEvent;
+
+// Enriched event with guaranteed timestamp and token metadata attached
+export type Enriched<T extends TokenEvent> = T & { metadata: TokenMetadata; time: ResolvedTimeLog };
+export type EnrichedTokenEvent = Enriched<TokenEvent>;
 
 export const isTransferTokenEvent = (event: TokenEvent): event is TransferTokenEvent => {
   return event.type === TokenEventType.TRANSFER_ERC20 || event.type === TokenEventType.TRANSFER_ERC721;

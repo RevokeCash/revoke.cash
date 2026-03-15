@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'lib/i18n/navigation';
 import { deduplicateArray, isNullish } from 'lib/utils';
 import {
   type AllowanceUpdateProperties,
@@ -10,8 +11,9 @@ import {
   type TokenAllowanceData,
 } from 'lib/utils/allowances';
 import { ORDERED_CHAINS } from 'lib/utils/chains';
-import type { TokenEvent } from 'lib/utils/events';
+import type { EnrichedTokenEvent } from 'lib/utils/events';
 import { isErc721Contract } from 'lib/utils/tokens';
+import { useParams } from 'next/navigation';
 import React, { type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { Address } from 'viem';
 import type { CombinedQueryResult } from '../ethereum/combined-query-result';
@@ -21,6 +23,7 @@ import { usePremiumAllowanceResults } from '../ethereum/usePremiumAllowanceResul
 import { usePremiumEventResults } from '../ethereum/usePremiumEventResults';
 import { getPriceKey, usePriceData } from '../ethereum/usePriceData';
 import { getSpenderKey } from '../ethereum/useSpenderData';
+import { useTimeMachineBlocks } from '../ethereum/useTimeMachineBlocks';
 import { queryClient } from '../QueryProvider';
 
 export type ChainLoadingStatus = 'loading' | 'success' | 'error';
@@ -29,10 +32,17 @@ export interface ChainAllowanceData {
   chainId: number;
   status: ChainLoadingStatus;
   error: Error | null;
-  events: TokenEvent[];
+  events: EnrichedTokenEvent[];
   allowances: TokenAllowanceData[];
   totalValueAtRisk: number;
   refetch: () => void;
+}
+
+export interface TimeMachineState {
+  timestamp: number | undefined;
+  setTimestamp: (timestamp: number | undefined) => void;
+  isActive: boolean;
+  oldestEventTimestamp: number | undefined;
 }
 
 interface PremiumAddressContext {
@@ -41,6 +51,7 @@ interface PremiumAddressContext {
   chainData: ChainAllowanceData[];
   isLoading: boolean;
   onUpdate: OnUpdate;
+  timeMachine: TimeMachineState;
 }
 
 interface Props {
@@ -55,6 +66,19 @@ export const PremiumAddressPageContext = React.createContext<PremiumAddressConte
 export const PremiumAddressPageContextProvider = ({ children, address, domainName }: Props) => {
   const { domainName: resolvedDomainName } = useNameLookup(domainName ? undefined : address);
 
+  // Time Machine state
+  const [rawTimeMachineTimestamp, setTimeMachineTimestamp] = useState<number | undefined>(undefined);
+
+  // Auto-disable time machine when navigating away from the allowances tab
+  const { addressOrName } = useParams<{ addressOrName: string }>();
+  const path = usePathname();
+  const isAllowancesTab = path?.endsWith(`/address/${addressOrName}`);
+  const timeMachineTimestamp = isAllowancesTab ? rawTimeMachineTimestamp : undefined;
+  const isTimeMachineActive = timeMachineTimestamp !== undefined;
+  useEffect(() => {
+    if (!isAllowancesTab) setTimeMachineTimestamp(undefined);
+  }, [isAllowancesTab]);
+
   // In-memory state for allowances per chain (keyed by chainId)
   const [baseAllowancesMap, setBaseAllowancesMap] = useState<Map<number, TokenAllowanceData[]>>(new Map());
 
@@ -62,7 +86,44 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
   const syncedQueryDataRef = useRef<Map<number, TokenAllowanceData[] | undefined>>(new Map());
 
   const eventResults = usePremiumEventResults(address);
-  const allowanceResults = usePremiumAllowanceResults(address, eventResults);
+
+  // Only look up blocks for chains that actually have events (skip inactive chains)
+  const activeChainIds = useMemo(() => {
+    return eventResults.flatMap((result, index) =>
+      result.data && result.data.length > 0 ? [ORDERED_CHAINS[index]] : [],
+    );
+  }, [eventResults]);
+
+  const timeMachineBlocks = useTimeMachineBlocks(timeMachineTimestamp, activeChainIds);
+
+  // When time machine is active, filter events to only those at or before the target block
+  const filteredEventResults = useMemo(() => {
+    if (!isTimeMachineActive) return eventResults;
+
+    return eventResults.map((result, index) => {
+      if (!result.data) return result;
+      if (result.data.length === 0) return result;
+
+      const chainId = ORDERED_CHAINS[index];
+      const targetBlock = timeMachineBlocks[chainId];
+
+      // undefined = still loading the block lookup
+      if (targetBlock === undefined) return { ...result, data: undefined, isLoading: true, isSuccess: false };
+
+      // null = chain did not exist at the target timestamp, so no approvals possible
+      if (targetBlock === null) return { ...result, data: [] };
+
+      const filteredEvents = result.data.filter((event) => event.rawLog.blockNumber <= targetBlock);
+      return { ...result, data: filteredEvents };
+    });
+  }, [eventResults, isTimeMachineActive, timeMachineBlocks]);
+
+  const allowanceResults = usePremiumAllowanceResults(
+    address,
+    filteredEventResults,
+    isTimeMachineActive ? timeMachineBlocks : undefined,
+    timeMachineTimestamp,
+  );
 
   // Sync query data to in-memory state (only when query data actually changes, not after manual updates)
   useEffect(() => {
@@ -138,7 +199,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
           const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
           const spenderKey = getSpenderKey(allowance.chainId, allowance.payload!.spender);
 
-          const price = isErc721Contract(allowance.contract) ? null : priceData[priceKey];
+          const price = isTimeMachineActive ? null : isErc721Contract(allowance.contract) ? null : priceData[priceKey];
           const metadata = { ...allowance.metadata, price };
           const payload = allowance.payload
             ? { ...allowance.payload, spenderData: spenderData[spenderKey] }
@@ -173,16 +234,33 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         refetch,
       };
     });
-  }, [eventResults, allowanceResults, baseAllowancesMap, priceData, spenderData, address]);
+  }, [eventResults, allowanceResults, baseAllowancesMap, priceData, spenderData, address, isTimeMachineActive]);
 
   // Overall loading state: true only if all chains are still loading
   const isLoading = useMemo(() => {
     return chainData.every((chain) => chain.status === 'loading');
   }, [chainData]);
 
+  // Compute the oldest event timestamp across all chains (for the time machine slider range)
+  const oldestEventTimestamp = useMemo(() => {
+    const timestamps = eventResults.flatMap((result) => result.data ?? []).map((event) => event.time.timestamp);
+    return timestamps.length > 0 ? Math.min(...timestamps) : undefined;
+  }, [eventResults]);
+
+  const timeMachine = useMemo<TimeMachineState>(
+    () => ({
+      timestamp: timeMachineTimestamp,
+      setTimestamp: setTimeMachineTimestamp,
+      isActive: isTimeMachineActive,
+      oldestEventTimestamp,
+    }),
+    [timeMachineTimestamp, isTimeMachineActive, oldestEventTimestamp],
+  );
+
   // Create onUpdate function that updates in-memory state and invalidates queries
   const onUpdate: OnUpdate = useCallback(
     async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
+      if (isTimeMachineActive) return;
       const chainId = allowance.chainId;
 
       // Invalidate queries for background refetch
@@ -216,7 +294,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         return newMap;
       });
     },
-    [address],
+    [address, isTimeMachineActive],
   );
 
   return (
@@ -227,6 +305,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         chainData,
         isLoading,
         onUpdate,
+        timeMachine,
       }}
     >
       {children}
@@ -242,8 +321,12 @@ export const usePremiumAddressPageContext = () => {
   return context;
 };
 
+export const useTimeMachine = () => {
+  return usePremiumAddressPageContext().timeMachine;
+};
+
 const getChainAllowanceLoadingStatus = (
-  eventResult: CombinedQueryResult<TokenEvent[]>,
+  eventResult: CombinedQueryResult<EnrichedTokenEvent[]>,
   allowanceResult: CombinedQueryResult<TokenAllowanceData[]>,
 ): ChainLoadingStatus => {
   if (eventResult.isLoading || allowanceResult.isLoading) return 'loading';

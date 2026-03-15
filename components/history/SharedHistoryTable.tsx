@@ -9,15 +9,15 @@ import {
 } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
+import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef } from 'react';
 import { ColumnId, columns, customFilterFns } from './columns';
 import HistorySearchBox, { type HistorySearchBoxRef } from './HistorySearchBox';
 import TablePagination from './TablePagination';
-import type { ApprovalHistoryEvent } from './utils';
 
 interface Props {
-  approvalHistory?: ApprovalHistoryEvent[];
+  approvalHistory?: Enriched<ApprovalTokenEvent>[];
   isLoading: boolean;
   error?: Error;
   isPremium?: boolean;
@@ -41,10 +41,10 @@ const SharedHistoryTable = ({ approvalHistory, isLoading, error, isPremium = fal
     data,
     columns,
     autoResetPageIndex: !isPremium,
-    getCoreRowModel: getCoreRowModel<ApprovalHistoryEvent>(),
-    getSortedRowModel: getSortedRowModel<ApprovalHistoryEvent>(),
-    getFilteredRowModel: getFilteredRowModel<ApprovalHistoryEvent>(),
-    getPaginationRowModel: getPaginationRowModel<ApprovalHistoryEvent>(),
+    getCoreRowModel: getCoreRowModel<Enriched<ApprovalTokenEvent>>(),
+    getSortedRowModel: getSortedRowModel<Enriched<ApprovalTokenEvent>>(),
+    getFilteredRowModel: getFilteredRowModel<Enriched<ApprovalTokenEvent>>(),
+    getPaginationRowModel: getPaginationRowModel<Enriched<ApprovalTokenEvent>>(),
     filterFns: customFilterFns,
     initialState: {
       pagination: {

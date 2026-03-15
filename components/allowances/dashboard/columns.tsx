@@ -25,6 +25,7 @@ import ValueAtRiskCell from './cells/ValueAtRiskCell';
 declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> {
     onUpdate: OnUpdate;
+    timeMachineTimestamp?: number;
   }
 }
 
@@ -176,7 +177,13 @@ export const columns = [
   columnHelper.accessor(accessors.allowance, {
     id: ColumnId.ALLOWANCE,
     header: () => <HeaderCell i18nKey="address.headers.allowance" />,
-    cell: (info) => <AllowanceCell allowance={info.row.original} onUpdate={info.table.options.meta!.onUpdate} />,
+    cell: (info) => (
+      <AllowanceCell
+        allowance={info.row.original}
+        onUpdate={info.table.options.meta!.onUpdate}
+        timeMachineTimestamp={info.table.options.meta!.timeMachineTimestamp}
+      />
+    ),
     enableSorting: true,
     sortingFn: customSortingFns.allowance,
     sortUndefined: 'last',
@@ -214,6 +221,12 @@ export const columns = [
   columnHelper.display({
     id: ColumnId.ACTIONS,
     header: () => <HeaderCell i18nKey="address.headers.actions" align="right" />,
-    cell: (info) => <ControlsCell allowance={info.row.original} onUpdate={info.table.options.meta!.onUpdate} />,
+    cell: (info) => (
+      <ControlsCell
+        allowance={info.row.original}
+        onUpdate={info.table.options.meta!.onUpdate}
+        timeMachineTimestamp={info.table.options.meta!.timeMachineTimestamp}
+      />
+    ),
   }),
 ];
