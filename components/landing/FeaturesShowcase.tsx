@@ -34,14 +34,21 @@ const FeaturesShowcase = () => {
 
 export default FeaturesShowcase;
 
-interface FeatureProps {
+export interface FeatureProps {
   featureKey: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   image: string;
   imagePosition: 'left' | 'right';
+  translationPrefix?: string;
 }
 
-const Feature = ({ featureKey, icon: Icon, image, imagePosition }: FeatureProps) => {
+export const Feature = ({
+  featureKey,
+  icon: Icon,
+  image,
+  imagePosition,
+  translationPrefix = 'landing.features',
+}: FeatureProps) => {
   const t = useTranslations();
 
   return (
@@ -54,7 +61,7 @@ const Feature = ({ featureKey, icon: Icon, image, imagePosition }: FeatureProps)
       >
         <Image
           src={image}
-          alt={t(`landing.features.${featureKey}.title`)}
+          alt={t(`${translationPrefix}.${featureKey}.title`)}
           width={1200}
           height={630}
           className="object-cover"
@@ -65,10 +72,10 @@ const Feature = ({ featureKey, icon: Icon, image, imagePosition }: FeatureProps)
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
             <Icon className="h-6 w-6" />
           </div>
-          <h3 className="text-2xl font-semibold">{t(`landing.features.${featureKey}.title`)}</h3>
+          <h3 className="text-2xl font-semibold">{t(`${translationPrefix}.${featureKey}.title`)}</h3>
         </div>
         <p className="text-base leading-7 text-zinc-600 dark:text-zinc-400">
-          {t(`landing.features.${featureKey}.description`)}
+          {t(`${translationPrefix}.${featureKey}.description`)}
         </p>
       </div>
     </div>

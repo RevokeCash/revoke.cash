@@ -3,11 +3,17 @@ import Button from 'components/common/Button';
 import Label from 'components/common/Label';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
-import { FEATURES, TIER_HREFS, TIER_PRICES, type TierKey } from './pricing-data';
+import { FEATURES, type TierKey } from './pricing-data';
 
-const TierCard = ({ tierKey }: { tierKey: TierKey }) => {
+interface Props {
+  tierKey: TierKey;
+  price: string;
+  href: string;
+  highlighted?: boolean;
+}
+
+const TierCard = ({ tierKey, price, href, highlighted }: Props) => {
   const t = useTranslations();
-  const highlighted = tierKey === 'bundle';
 
   return (
     <div
@@ -27,7 +33,7 @@ const TierCard = ({ tierKey }: { tierKey: TierKey }) => {
       <div className="flex flex-col gap-1">
         <h2 className="text-lg font-semibold">{t(`premium.pricing.tiers.${tierKey}.name`)}</h2>
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-bold">{TIER_PRICES[tierKey]}</span>
+          <span className="text-3xl font-bold">{price}</span>
           {tierKey !== 'free' && (
             <span className="text-sm text-zinc-500 dark:text-zinc-400">{t('premium.pricing.per_year')}</span>
           )}
@@ -38,7 +44,7 @@ const TierCard = ({ tierKey }: { tierKey: TierKey }) => {
       </div>
 
       <Button
-        href={TIER_HREFS[tierKey]}
+        href={href}
         router
         style={highlighted ? 'primary' : 'secondary'}
         size="md"

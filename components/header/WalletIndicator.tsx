@@ -15,7 +15,7 @@ interface Props {
 const WalletIndicator = ({ size, style, className }: Props) => {
   const t = useTranslations();
   const isMounted = useMounted();
-  const { address: account, chainId } = useConnection();
+  const { address: account } = useConnection();
 
   if (!isMounted) return null;
 
@@ -26,7 +26,7 @@ const WalletIndicator = ({ size, style, className }: Props) => {
           className="font-normal"
           size={'md'}
           style={'secondary'}
-          href={`/address/${account}?chainId=${chainId}`}
+          href={`/address/${account}`}
           router
           retainSearchParams={['chainId']}
         >

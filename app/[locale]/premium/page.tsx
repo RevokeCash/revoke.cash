@@ -1,5 +1,5 @@
 import SharedLayout from 'app/layouts/SharedLayout';
-import PricingPage from 'components/premium/pricing/PricingPage';
+import PremiumPricingPageContent from 'components/premium/pricing/PremiumPricingPageContent';
 import type { Metadata, NextPage } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
@@ -27,7 +27,7 @@ const PremiumPricingPage: NextPage<Props> = async ({ params }) => {
 
   return (
     <SharedLayout>
-      <PricingPage />
+      <PremiumPricingPageContent />
     </SharedLayout>
   );
 };

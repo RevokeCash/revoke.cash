@@ -14,11 +14,11 @@
         "title": "Multichain Approvals"
       },
       "multichain_exploit_checker": {
-        "description": "Automatically check all your wallets against known exploits across every supported network. Get alerted if any of your approvals are associated with compromised contracts so you can revoke them immediately.",
+        "description": "Check your wallets against all known exploits across every supported network. Get a warning if any of your approvals are associated with compromised contracts so you can revoke them immediately.",
         "title": "Multichain Exploit Checker"
       },
       "multichain_history": {
-        "description": "Access your full approval history across every supported network in one place. Track every approve, revoke, and permission change across all your wallets over time.",
+        "description": "Access your full approval history across every supported network in one place. Track every approve, revoke, and permission change over time.",
         "title": "Multichain History"
       },
       "priority_support": {
@@ -76,6 +76,6 @@
         "name": "Premium"
       }
     },
-    "title": "Pricing"
+    "title": "Premium Pricing"
   }
 }

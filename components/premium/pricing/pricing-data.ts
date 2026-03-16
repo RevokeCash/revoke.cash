@@ -38,24 +38,3 @@ export const FEATURES: PricingFeature[] = [
 ];
 
 export const TIER_KEYS: TierKey[] = ['free', 'premium', 'bundle'];
-
-export const TIER_PRICES: Record<TierKey, string> = {
-  free: '$0',
-  premium: '$79',
-  bundle: '$199',
-};
-
-export const FEATURE_SECTIONS = [
-  { key: 'multichain_approvals', image: '/assets/images/opengraph-image.jpg' },
-  { key: 'multichain_history', image: '/assets/images/opengraph-image.jpg' },
-  { key: 'multichain_exploit_checker', image: '/assets/images/opengraph-image.jpg' },
-  { key: 'unlimited_batch_revokes', image: '/assets/images/opengraph-image.jpg' },
-  { key: 'time_machine', image: '/assets/images/opengraph-image.jpg' },
-  { key: 'priority_support', image: '/assets/images/opengraph-image.jpg' },
-] as const;
-
-export const TIER_HREFS: Record<TierKey, string> = {
-  free: '/token-approval-checker/ethereum',
-  premium: '/account',
-  bundle: '/account',
-};

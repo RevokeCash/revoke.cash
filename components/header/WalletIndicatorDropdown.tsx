@@ -18,7 +18,7 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
   const t = useTranslations();
 
   const queryClient = useQueryClient();
-  const { address: account, chainId } = useConnection();
+  const { address: account } = useConnection();
   const { domainName } = useNameLookup(account);
   const { mutate: disconnect } = useDisconnect();
 
@@ -35,7 +35,7 @@ const WalletIndicatorDropdown = ({ size, style, className }: Props) => {
           <DropdownMenuItem href="/account" router>
             {t('common.buttons.my_account')}
           </DropdownMenuItem>
-          <DropdownMenuItem href={`/address/${account}?chainId=${chainId}`} router retainSearchParams={['chainId']}>
+          <DropdownMenuItem href={`/address/${account}`} router retainSearchParams={['chainId']}>
             {t('common.buttons.my_allowances')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleDisconnect}>{t('common.buttons.disconnect')}</DropdownMenuItem>
