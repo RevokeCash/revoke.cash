@@ -13,7 +13,7 @@ import DateTimeSlider from './DateTimeSlider';
 
 const TimeMachineModalWithButton = () => {
   const t = useTranslations();
-  const { timestamp, setTimestamp, isActive, oldestEventTimestamp } = useTimeMachine();
+  const { timestamp, setTimestamp, isActive, isLoading, oldestEventTimestamp } = useTimeMachine();
   const [open, setOpen] = useState(false);
 
   const hasEvents = !isNullish(oldestEventTimestamp);
@@ -48,7 +48,7 @@ const TimeMachineModalWithButton = () => {
         size="md"
         style="secondary"
         onClick={() => setOpen(true)}
-        disabled={!hasEvents}
+        disabled={isLoading || !hasEvents}
         className="h-9 px-3 text-sm gap-1.5 justify-center w-full sm:w-40"
       >
         <ClockIcon className="w-4 h-4" />

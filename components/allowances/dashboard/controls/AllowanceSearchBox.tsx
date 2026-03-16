@@ -5,6 +5,7 @@ import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
 import useDebouncedValue from 'lib/hooks/useDebouncedValue';
+import { removeSearchParam } from 'lib/i18n/csr-navigation';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { type ChangeEventHandler, useEffect, useState } from 'react';
@@ -25,13 +26,9 @@ const AllowanceSearchBox = ({ onSearchValuesChange, id = 'spender-search' }: Pro
   useEffect(() => {
     const spenderSearch = searchParams.get('spenderSearch');
     if (!spenderSearch) return;
-
     setInputValue(spenderSearch);
 
-    // Clear the query param
-    const newSearchParams = new URLSearchParams(Array.from(searchParams.entries()));
-    newSearchParams.delete('spenderSearch');
-    window.history.replaceState(window.history.state, '', `?${newSearchParams.toString()}`);
+    removeSearchParam('spenderSearch');
   }, [searchParams]);
 
   useEffect(() => {

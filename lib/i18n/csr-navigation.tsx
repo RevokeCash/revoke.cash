@@ -65,3 +65,12 @@ export function useCsrRouter() {
 
   return { ...router, push, replace };
 }
+
+/** Silently remove a query param from the URL without triggering a Next.js navigation */
+export const removeSearchParam = (key: string) => {
+  const searchParams = new URLSearchParams(window.location.search);
+  if (!searchParams.has(key)) return;
+  searchParams.delete(key);
+  const query = searchParams.toString();
+  window.history.replaceState(window.history.state, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
+};

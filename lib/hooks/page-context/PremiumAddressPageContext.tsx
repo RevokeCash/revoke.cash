@@ -42,6 +42,7 @@ export interface TimeMachineState {
   timestamp: number | undefined;
   setTimestamp: (timestamp: number | undefined) => void;
   isActive: boolean;
+  isLoading: boolean;
   oldestEventTimestamp: number | undefined;
 }
 
@@ -236,10 +237,8 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
     });
   }, [eventResults, allowanceResults, baseAllowancesMap, priceData, spenderData, address, isTimeMachineActive]);
 
-  // Overall loading state: true only if all chains are still loading
-  const isLoading = useMemo(() => {
-    return chainData.every((chain) => chain.status === 'loading');
-  }, [chainData]);
+  // Overall loading state: true only if any chain is still loading
+  const isLoading = useMemo(() => chainData.some((chain) => chain.status === 'loading'), [chainData]);
 
   // Compute the oldest event timestamp across all chains (for the time machine slider range)
   const oldestEventTimestamp = useMemo(() => {
@@ -252,9 +251,10 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
       timestamp: timeMachineTimestamp,
       setTimestamp: setTimeMachineTimestamp,
       isActive: isTimeMachineActive,
+      isLoading,
       oldestEventTimestamp,
     }),
-    [timeMachineTimestamp, isTimeMachineActive, oldestEventTimestamp],
+    [timeMachineTimestamp, isTimeMachineActive, isLoading, oldestEventTimestamp],
   );
 
   // Create onUpdate function that updates in-memory state and invalidates queries

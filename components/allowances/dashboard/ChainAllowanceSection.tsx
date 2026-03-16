@@ -109,6 +109,10 @@ const ChainAllowanceSection = ({
 
   const toggleExpanded = () => canExpand && setIsExpanded(!isExpanded);
 
+  if (chainData.status === 'success' && table.getFilteredRowModel().rows.length === 0) {
+    return null;
+  }
+
   return (
     <CollapsibleCard
       isExpanded={canExpand && isExpanded}
