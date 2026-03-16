@@ -3,8 +3,23 @@
     "subtitle": "Здесь находятся самые часто задаваемые вопросы. Чтобы посмотреть полный список перейдите на страницу <faq-link>ЧаВо</faq-link>.",
     "title": "Часто задаваемые вопросы"
   },
+  "features": {
+    "dashboard": {
+      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
+      "title": "Approval Dashboard"
+    },
+    "exploit_checker": {
+      "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
+      "title": "Exploit Checker"
+    },
+    "extension": {
+      "description": "The Revoke.cash browser extension warns you before you sign potentially harmful transactions. Prevention is always better than mitigation.",
+      "title": "Browser Extension"
+    },
+    "title": "Built for Wallet Security"
+  },
   "hero_section": {
-    "paragraph_1": "При использовании децентрализованных приложений, таких как Uniswap или OpenSea, вы должны предоставить им разрешение на использование ваших токенов и NFT. Это называется \"approval\" (доступ). Если вы не отмените эти разрешения, то децентрализованное приложение может потратить ваши токены (например, при взломе смарт-контракта). С помощью этого сервиса, вы можете отменить доступы для ненужных приложений к своему кошельку.",
+    "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
     "title": "Полностью контролируйте свой кошелёк."
   },
   "how_to": {
@@ -23,32 +38,32 @@
     "title": "Как отменить доступы."
   },
   "premium": {
-    "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $99/year.",
+    "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $79/year.",
+    "free_features": {
+      "batch_revoke": "Batch revoke ($1.50/batch)",
+      "browser_extension": "Browser extension warnings",
+      "exploit_checker": "Single-chain exploit checker",
+      "single_chain": "Single-chain approval dashboard"
+    },
+    "free_title": "Free",
     "highlights": {
       "address_slots": "Up to 10 address slots",
       "multichain_dashboard": "Multichain dashboard — all chains at once",
       "multichain_exploit_checker": "Multichain exploit checker",
       "multichain_history": "Multichain approval history",
       "priority_support": "Priority support",
+      "time_machine": "Time Machine for historical approvals",
       "unlimited_batch_revokes": "Unlimited batch revokes"
     },
-    "subscribe_now": "Subscribe now",
+    "premium_title": "Premium",
+    "starting_at": "Starting at $79/year",
     "title": "Revoke Premium",
     "view_pricing": "View pricing"
   },
-  "why_revoke": {
-    "paragraph_1": {
-      "description": "Всегда полезно ограничивать свои доступы, когда вы не используете приложения на постоянной основе, особенно для NTF-площадок. Это снижает риск потери средств из-за взлома или эксплойтов, а также может помочь избежать фишинга.",
-      "title": "1. Периодически проверяйте доступы на Revoke.cash."
-    },
-    "paragraph_2": {
-      "description": "Часто мошенники пытаются завлечь вас в то, чтобы вы предоставили доступ к своим средствам. Отсортируйте свои доступы по самым последним, чтобы выяснить, кто виноват и отмените их, чтобы избежать последующего ущерба. К сожалению, невозможно <i>вернуть</i> средства, которые были украдены.",
-      "title": "2. Используйте Revoke.cash когда заметили пропажу средств."
-    },
-    "paragraph_3": {
-      "description": "Браузерное расширение от Revoke.cash предупредит вас, когда вы захотите подписать что-то потенциально опасное. Это может уберечь от фишинга, заставив дважды подумать о том, что вы делаете.",
-      "title": "3. Используйте наше браузерное расширение."
-    },
-    "title": "Почему вам нужно использовать Revoke.cash."
+  "stats": {
+    "approvals_revoked": "Approvals Revoked",
+    "networks_supported": "Networks Supported",
+    "protected_from_exploits": "Protected from Exploits",
+    "total_users": "Total Users"
   }
 }

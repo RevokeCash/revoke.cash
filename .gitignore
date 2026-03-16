@@ -71,4 +71,4 @@ scripts/exploits/output
 
 !.vscode/settings.json
 
-.claude/settings.local.json
+.claude/

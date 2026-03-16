@@ -3,8 +3,23 @@
     "subtitle": "Estas son algunas de las preguntas más comunes que nos hacen. Para obtener una lista completa de preguntas frecuentes, por favor visita nuestra página de <faq-link>Preguntas Frecuentes</faq-link>.",
     "title": "Preguntas Frecuentes"
   },
+  "features": {
+    "dashboard": {
+      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
+      "title": "Approval Dashboard"
+    },
+    "exploit_checker": {
+      "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
+      "title": "Exploit Checker"
+    },
+    "extension": {
+      "description": "The Revoke.cash browser extension warns you before you sign potentially harmful transactions. Prevention is always better than mitigation.",
+      "title": "Browser Extension"
+    },
+    "title": "Built for Wallet Security"
+  },
   "hero_section": {
-    "paragraph_1": "Cuando utilices dapps como Uniswap u OpenSea, debes darles permiso para gastar tus tokens y NFTs. Esto es llamado una Autorización, si no revocas estas autorizaciones, la app puede gastar tus tokens para siempre. Recupera el control revocando tus autorizaciones.",
+    "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
     "title": "Recupera el Control de Tu Cartera."
   },
   "how_to": {
@@ -23,32 +38,32 @@
     "title": "¿Cómo Revocar Tus Autorizaciones?"
   },
   "premium": {
-    "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $99/year.",
+    "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de $99/año.",
+    "free_features": {
+      "batch_revoke": "Batch revoke ($1.50/batch)",
+      "browser_extension": "Browser extension warnings",
+      "exploit_checker": "Single-chain exploit checker",
+      "single_chain": "Single-chain approval dashboard"
+    },
+    "free_title": "Free",
     "highlights": {
-      "address_slots": "Up to 10 address slots",
-      "multichain_dashboard": "Multichain dashboard — all chains at once",
-      "multichain_exploit_checker": "Multichain exploit checker",
-      "multichain_history": "Multichain approval history",
-      "priority_support": "Priority support",
-      "unlimited_batch_revokes": "Unlimited batch revokes"
+      "address_slots": "Hasta 10 espacios para direcciones.",
+      "multichain_dashboard": "Panel de control multichain — todas las cadenas a la vez.",
+      "multichain_exploit_checker": "Comprobador de exploits multicadena",
+      "multichain_history": "Historial de aprobaciones de multicadena",
+      "priority_support": "Soporte prioritario",
+      "time_machine": "Time Machine for historical approvals",
+      "unlimited_batch_revokes": "Revocaciones de lotes ilimitadas"
     },
-    "subscribe_now": "Subscribe now",
+    "premium_title": "Premium",
+    "starting_at": "Starting at $79/year",
     "title": "Revoke Premium",
-    "view_pricing": "View pricing"
+    "view_pricing": "Ver precios"
   },
-  "why_revoke": {
-    "paragraph_1": {
-      "description": "Siempre es bueno limitar tus autorizaciones cuando no utilices activamente una dapp, especialmente en los mercados de NFTs. Esto reduce el riesgo de perder tus fondos a causa de hackeos y también puede ayudar a mitigar el daño de las estafas de phishing.",
-      "title": "1. Utiliza Revoke.cash periódicamente."
-    },
-    "paragraph_2": {
-      "description": "Muy seguido, los estafadores intentan engañarte para que que les des una autorización para usar tus fondos. Ordena tus autorizaciones por las más recientes para averiguar cuáles son las culpables y revocarlas para evitar mayores daños. Desafortunadamente, no es posible <i>recuperar</i> los fondos que ya han sido robados.",
-      "title": "2. Usa Revoke.cash después de ser estafado."
-    },
-    "paragraph_3": {
-      "description": "Prevenir es mejor que mitigar. La extensión del navegador Revoke.cash te avisa cuando estás a punto de firmar algo potencialmente dañino. Esto puede salvarte de las estafas de phishing al ayudarte a pensar dos veces antes de hacer lo que estás haciendo.",
-      "title": "3. Usa la extensión de navegador Revoke.cash."
-    },
-    "title": "¿Por Qué Deberías Usar Revoke.cash?"
+  "stats": {
+    "approvals_revoked": "Approvals Revoked",
+    "networks_supported": "Networks Supported",
+    "protected_from_exploits": "Protected from Exploits",
+    "total_users": "Total Users"
   }
 }

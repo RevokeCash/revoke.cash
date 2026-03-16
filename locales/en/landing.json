@@ -3,8 +3,23 @@
     "subtitle": "These are some of the most common questions we get asked. For a full list of FAQs please visit our <faq-link>FAQ page</faq-link>.",
     "title": "Frequently Asked Questions"
   },
+  "features": {
+    "dashboard": {
+      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
+      "title": "Approval Dashboard"
+    },
+    "exploit_checker": {
+      "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
+      "title": "Exploit Checker"
+    },
+    "extension": {
+      "description": "The Revoke.cash browser extension warns you before you sign potentially harmful transactions. Prevention is always better than mitigation.",
+      "title": "Browser Extension"
+    },
+    "title": "Built for Wallet Security"
+  },
   "hero_section": {
-    "paragraph_1": "When using dapps like Uniswap or OpenSea you have to grant them permission to spend your tokens and NFTs. This is called a token approval. If you don't revoke these approvals, the dapp can spend your tokens forever. Take back control by revoking your approvals.",
+    "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
     "title": "Take Back Control of Your Wallet."
   },
   "how_to": {
@@ -24,6 +39,13 @@
   },
   "premium": {
     "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $79/year.",
+    "free_features": {
+      "batch_revoke": "Batch revoke ($1.50/batch)",
+      "browser_extension": "Browser extension warnings",
+      "exploit_checker": "Single-chain exploit checker",
+      "single_chain": "Single-chain approval dashboard"
+    },
+    "free_title": "Free",
     "highlights": {
       "address_slots": "Up to 10 address slots",
       "multichain_dashboard": "Multichain dashboard — all chains at once",
@@ -33,23 +55,15 @@
       "time_machine": "Time Machine for historical approvals",
       "unlimited_batch_revokes": "Unlimited batch revokes"
     },
-    "subscribe_now": "Subscribe now",
+    "premium_title": "Premium",
+    "starting_at": "Starting at $79/year",
     "title": "Revoke Premium",
     "view_pricing": "View pricing"
   },
-  "why_revoke": {
-    "paragraph_1": {
-      "description": "It is always good to limit your approvals whenever you are not actively using a dapp, especially for NFT marketplaces. This reduces the risk of losing your funds to hacks or exploits and can also help mitigate the damage of phishing scams.",
-      "title": "1. Use Revoke.cash periodically."
-    },
-    "paragraph_2": {
-      "description": "Very often, scammers try to trick you into granting them an approval to your funds. Sort your approvals by most recent to find out which approvals are to blame and revoke them to prevent further damage. Unfortunately it is not possible to <i>recover</i> funds that have already been stolen.",
-      "title": "2. Use Revoke.cash after getting scammed."
-    },
-    "paragraph_3": {
-      "description": "Prevention is better than mitigation. The Revoke.cash browser extension warns you when you're about to sign something potentially harmful. This can save you from phishing scams by making you think twice about what you're doing.",
-      "title": "3. Use the Revoke.cash browser extension."
-    },
-    "title": "Why You Should Use Revoke.cash."
+  "stats": {
+    "approvals_revoked": "Approvals Revoked",
+    "networks_supported": "Networks Supported",
+    "protected_from_exploits": "Protected from Exploits",
+    "total_users": "Total Users"
   }
 }

@@ -1,14 +1,14 @@
 import Divider from 'components/common/Divider';
 import RichText from 'components/common/RichText';
 import { useTranslations } from 'next-intl';
+import FullWidthLandingSection from './FullWidthLandingSection';
 import LandingPageFaqItem from './LandingPageFaqItem';
-import LandingSection from './LandingSection';
 
 const LandingPageFaq = () => {
   const t = useTranslations();
 
   return (
-    <LandingSection title={t('landing.faq.title')} size="h2">
+    <FullWidthLandingSection title={t('landing.faq.title')} size="md">
       <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
         <LandingPageFaqItem question={t('faq.questions.recover_assets.question')}>
           <RichText>{(tags) => t.rich('faq.questions.recover_assets.answer', tags)}</RichText>
@@ -27,7 +27,7 @@ const LandingPageFaq = () => {
       <p className="text-zinc-700 dark:text-zinc-300">
         <RichText>{(tags) => t.rich('landing.faq.subtitle', tags)}</RichText>
       </p>
-    </LandingSection>
+    </FullWidthLandingSection>
   );
 };
 

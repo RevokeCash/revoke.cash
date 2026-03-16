@@ -3,8 +3,23 @@
     "subtitle": "这些是用户的常见问题。如需查看完整列表，请访问我们的<faq-link>常见问题页面</faq-link>。",
     "title": "常见问题"
   },
+  "features": {
+    "dashboard": {
+      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
+      "title": "Approval Dashboard"
+    },
+    "exploit_checker": {
+      "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
+      "title": "Exploit Checker"
+    },
+    "extension": {
+      "description": "The Revoke.cash browser extension warns you before you sign potentially harmful transactions. Prevention is always better than mitigation.",
+      "title": "Browser Extension"
+    },
+    "title": "Built for Wallet Security"
+  },
   "hero_section": {
-    "paragraph_1": "使用 Uniswap 或 OpenSea 等去中心化应用程序，你必须授予它们花费代币和 NFT的权限。这被称为授权。如果你不撤销这些授权，dapp可以随时花费你的代币。通过撤销授权来夺回控制权吧。",
+    "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
     "title": "掌控自己的钱包。"
   },
   "how_to": {
@@ -23,32 +38,32 @@
     "title": "如何撤销授权。"
   },
   "premium": {
-    "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $99/year.",
+    "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $79/year.",
+    "free_features": {
+      "batch_revoke": "Batch revoke ($1.50/batch)",
+      "browser_extension": "Browser extension warnings",
+      "exploit_checker": "Single-chain exploit checker",
+      "single_chain": "Single-chain approval dashboard"
+    },
+    "free_title": "Free",
     "highlights": {
       "address_slots": "Up to 10 address slots",
       "multichain_dashboard": "Multichain dashboard — all chains at once",
       "multichain_exploit_checker": "Multichain exploit checker",
       "multichain_history": "Multichain approval history",
       "priority_support": "Priority support",
+      "time_machine": "Time Machine for historical approvals",
       "unlimited_batch_revokes": "Unlimited batch revokes"
     },
-    "subscribe_now": "Subscribe now",
+    "premium_title": "Premium",
+    "starting_at": "Starting at $79/year",
     "title": "Revoke Premium",
     "view_pricing": "View pricing"
   },
-  "why_revoke": {
-    "paragraph_1": {
-      "description": "如果你不常使用某个dapp时，限制授权总是件好事，尤其是对于 NFT 市场而言。这降低了因黑客攻击或漏洞利用而导致资金损失的风险，还可以预防网络钓鱼诈骗。",
-      "title": "1。定期使用Revoke.cash。"
-    },
-    "paragraph_2": {
-      "description": "诈骗者经常试图欺骗你授权它们花费许可。你可按照最新授权排序，找出风险所在，然后撤销授权以防止更多损失。不幸的是，我们无法<i>追</i>回已经被盗的资金。",
-      "title": "2。被骗后使用Revoke.cash。"
-    },
-    "paragraph_3": {
-      "description": "预防胜于事后后悔。当你授权可能有风险的操作时，Revoke.cash 浏览器扩展程序会向你发出警告。这可以帮助防止因网络钓鱼诈骗而损失资金。",
-      "title": "3。使用Revoke.cash 浏览器扩展程序。"
-    },
-    "title": "为什么要使用Revoke.cash。"
+  "stats": {
+    "approvals_revoked": "Approvals Revoked",
+    "networks_supported": "Networks Supported",
+    "protected_from_exploits": "Protected from Exploits",
+    "total_users": "Total Users"
   }
 }

@@ -8,8 +8,8 @@ const HowTo = () => {
   const t = useTranslations();
 
   return (
-    <FullWidthLandingSection title={t('landing.how_to.title')} inverted>
-      <div className="flex flex-col md:flex-row gap-4 pt-8">
+    <FullWidthLandingSection title={t('landing.how_to.title')} inverted className="pt-8">
+      <div className="w-full flex flex-col md:flex-row justify-center items-center gap-4">
         <ExplanationBubble title={t('landing.how_to.paragraph_1.title')} icon={<LinkIcon className="w-12 h-12" />}>
           <RichText>{(tags) => t.rich('landing.how_to.paragraph_1.description', tags)}</RichText>
         </ExplanationBubble>

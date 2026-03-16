@@ -1,9 +1,10 @@
 import SharedLayout from 'app/layouts/SharedLayout';
+import FeaturesShowcase from 'components/landing/FeaturesShowcase';
 import HeroSection from 'components/landing/HeroSection';
 import HowTo from 'components/landing/HowTo';
 import LandingPageFaq from 'components/landing/LandingPageFaq';
 import PremiumSection from 'components/landing/PremiumSection';
-import WhyRevokeCash from 'components/landing/WhyRevokeCash';
+import StatsBar from 'components/landing/StatsBar';
 import type { Metadata, NextPage } from 'next';
 import Script from 'next/script';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -43,8 +44,9 @@ const LandingPage: NextPage<Props> = async ({ params }) => {
       <SharedLayout>
         <div className="flex flex-col items-center gap-8">
           <HeroSection />
+          <StatsBar />
+          <FeaturesShowcase />
           <HowTo />
-          <WhyRevokeCash />
           <PremiumSection />
           <LandingPageFaq />
         </div>
