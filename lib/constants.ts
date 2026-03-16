@@ -39,3 +39,5 @@ export const COINGECKO_API_BASE_URL = 'https://pro-api.coingecko.com/api/v3';
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.NODE_ENV === 'production' ? 'https://revoke.cash' : 'http://localhost:3000');
+
+export const CRISP_WEBSITE_ID = process.env.CRISP_WEBSITE_ID ?? process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID;

@@ -1,3 +1,4 @@
+import CrispPremiumPageSync from 'app/CrispPremiumPageSync';
 import SharedLayout from 'app/layouts/SharedLayout';
 import AddressHeader from 'components/address/AddressHeader';
 import AddressNavigation from 'components/address/navigation/AddressNavigation';
@@ -40,6 +41,7 @@ const AddressPageLayout = async ({ params, children }: Props) => {
           <NextIntlClientProvider
             messages={{ common: messages.common, address: messages.address, exploits: messages.exploits }}
           >
+            <CrispPremiumPageSync />
             {isPremium ? (
               <PremiumAllowancePageProvider>
                 <PremiumAddressHeader />

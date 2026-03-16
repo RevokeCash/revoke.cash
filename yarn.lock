@@ -6160,6 +6160,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crisp-sdk-web@npm:^1.0.27":
+  version: 1.0.27
+  resolution: "crisp-sdk-web@npm:1.0.27"
+  checksum: 10/0904ecb9355d51e43fb6b8f3581cacaf08bba04ff7c411cd8e9c55451e8201c89405e7972a72888a4b5984f5242cf3367334ee4ef5304ad6f44b161ed727ebbb
+  languageName: node
+  linkType: hard
+
 "cross-fetch@npm:^3.1.4":
   version: 3.2.0
   resolution: "cross-fetch@npm:3.2.0"
@@ -11688,6 +11695,7 @@ __metadata:
     "@walletconnect/ethereum-provider": "npm:^2.23.4"
     "@worldcoin/minikit-js": "npm:2.0.0-dev.0"
     chai: "npm:^6.2.2"
+    crisp-sdk-web: "npm:^1.0.27"
     cypress: "npm:^15.10.0"
     dexie: "npm:^4.3.0"
     drizzle-kit: "npm:^0.31.7"

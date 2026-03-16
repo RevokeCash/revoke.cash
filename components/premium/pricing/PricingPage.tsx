@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import ComparisonTable from './ComparisonTable';
-import { TIER_KEYS } from './pricing-data';
+import FeatureSection from './FeatureSection';
+import { FEATURE_SECTIONS, TIER_KEYS } from './pricing-data';
 import TierCard from './TierCard';
 
 const PricingPage = () => {
@@ -21,7 +22,7 @@ const PricingPage = () => {
 
       <ComparisonTable />
 
-      {/* <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold text-center">{t('premium.pricing.feature_sections.title')}</h2>
         <div className="flex flex-col gap-12">
           {FEATURE_SECTIONS.map(({ key, image }, index) => (
@@ -33,7 +34,7 @@ const PricingPage = () => {
             />
           ))}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

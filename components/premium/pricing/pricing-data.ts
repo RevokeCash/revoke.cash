@@ -27,7 +27,7 @@ export const FEATURES: PricingFeature[] = [
   { labelKey: 'multichain_dashboard', free: false, premium: true, bundle: true },
   { labelKey: 'multichain_exploit_checker', free: false, premium: true, bundle: true },
   { labelKey: 'time_machine', free: false, premium: true, bundle: true },
-  { labelKey: 'priority_support', free: false, premium: true, bundle: true },
+  // { labelKey: 'priority_support', free: false, premium: true, bundle: true },
   {
     labelKey: 'address_slots',
     free: false,
