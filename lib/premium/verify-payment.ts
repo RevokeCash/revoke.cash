@@ -96,7 +96,7 @@ export const reconcilePaymentByOwner = async (
       return { ...toPaymentStatusResponse(payment), status: 'failed' as const };
     }
 
-    const matchedTxHash = await findMatchingTransferTxHash(payment, ownerAddress, paymentConfig.treasuryAddress);
+    const matchedTxHash = await findMatchingTransferTxHash(payment, ownerAddress, paymentConfig.paymentAddress);
     if (!matchedTxHash) {
       return toPaymentStatusResponse(payment);
     }

@@ -13,10 +13,10 @@ const HeroSection = () => {
   const featuredChainIds = CHAIN_SELECT_MAINNETS.slice(0, 6);
 
   return (
-    <div className="w-full px-4 sm:pt-4">
-      <div className="relative overflow-hidden  bg-white dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="w-full px-4">
+      <div className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0" />
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-14">
+        <div className="relative mx-auto grid max-w-7xl gap-10 p-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <h1 className="text-5xl font-semibold leading-tight tracking-tight sm:text-6xl">

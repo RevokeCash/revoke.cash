@@ -112,7 +112,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
     planId: plan.id,
     chainId: insertedPayment.chainId,
     token: paymentConfig.token,
-    recipientAddress: paymentConfig.treasuryAddress,
+    recipientAddress: paymentConfig.paymentAddress,
     amountUsd: insertedPayment.amountUsd,
     expiresAt: insertedPayment.expiresAt.toISOString(),
   };

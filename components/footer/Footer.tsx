@@ -1,7 +1,14 @@
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import ColorThemeSelect from 'components/footer/ColorThemeSelect';
-import { CHROME_EXTENSION_URL, DISCORD_URL, DONATION_ADDRESS, GITHUB_URL, TWITTER_URL } from 'lib/constants';
+import {
+  CHROME_EXTENSION_URL,
+  DISCORD_URL,
+  DONATION_ADDRESS,
+  GITHUB_URL,
+  TELEGRAM_URL,
+  TWITTER_URL,
+} from 'lib/constants';
 import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
@@ -71,11 +78,11 @@ const Footer = () => {
               <FooterLink href={DISCORD_URL} external>
                 Discord
               </FooterLink>
+              <FooterLink href={TELEGRAM_URL} external>
+                Telegram
+              </FooterLink>
               <FooterLink href={GITHUB_URL} external>
                 GitHub
-              </FooterLink>
-              <FooterLink href={`https://etherscan.io/address/${DONATION_ADDRESS}`} external>
-                {t('common.buttons.donate')}
               </FooterLink>
             </FooterSection>
           </div>

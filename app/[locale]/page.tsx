@@ -1,4 +1,5 @@
 import SharedLayout from 'app/layouts/SharedLayout';
+import Divider from 'components/common/Divider';
 import FeaturesShowcase from 'components/landing/FeaturesShowcase';
 import HeroSection from 'components/landing/HeroSection';
 import HowTo from 'components/landing/HowTo';
@@ -42,12 +43,13 @@ const LandingPage: NextPage<Props> = async ({ params }) => {
   return (
     <>
       <SharedLayout>
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex flex-col items-center gap-12">
           <HeroSection />
           <StatsBar />
           <FeaturesShowcase />
           <HowTo />
           <PremiumSection />
+          <Divider className="my-4" />
           <LandingPageFaq />
         </div>
       </SharedLayout>

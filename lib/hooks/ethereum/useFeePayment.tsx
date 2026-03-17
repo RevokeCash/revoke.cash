@@ -1,7 +1,7 @@
 'use client';
 
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
-import { DONATION_ADDRESS } from 'lib/constants';
+import { FEES_ADDRESS } from 'lib/constants';
 import type { TransactionSubmitted } from 'lib/interfaces';
 import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
@@ -46,7 +46,7 @@ export const useFeePayment = (chainId: number) => {
 
     return {
       account: walletClient.account!,
-      to: DONATION_ADDRESS,
+      to: FEES_ADDRESS,
       value: parseEther(tokenAmount.toString()),
       chain: walletClient.chain,
       kzg: undefined, // TODO: Idk why I need to add this, but since Viem v2 it's required 😅

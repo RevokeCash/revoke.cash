@@ -37,9 +37,9 @@ const BlogPage: NextPage<Props> = async ({ params }) => {
 
   return (
     <>
-      <div className="max-w-3xl mx-auto text-center mb-12">
-        <h1 className="mb-4">{t('blog.meta.title')}.</h1>
-        <p className="md:text-xl">{t('blog.meta.description')}</p>
+      <div className="max-w-5xl mx-auto text-center flex flex-col gap-3 mb-12">
+        <h1 className="text-4xl font-semibold">{t('blog.meta.title')}.</h1>
+        <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">{t('blog.meta.description')}</p>
       </div>
       <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-4">
         {posts.map((entry) => (

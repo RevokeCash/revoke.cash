@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import { DONATION_ADDRESS } from 'lib/constants';
+import { SUBSCRIPTIONS_ADDRESS } from 'lib/constants';
 import { type Address, getAddress } from 'viem';
 
 export interface PaymentConfig {
@@ -8,7 +8,7 @@ export interface PaymentConfig {
     address: Address;
     decimals: 6;
   };
-  treasuryAddress: Address;
+  paymentAddress: Address;
 }
 
 export const PREMIUM_PAYMENT_TTL_MINUTES = 10;
@@ -32,7 +32,7 @@ const withUsdc = (tokenAddress: Address): PaymentConfig => ({
     address: getAddress(tokenAddress),
     decimals: 6,
   },
-  treasuryAddress: DONATION_ADDRESS,
+  paymentAddress: SUBSCRIPTIONS_ADDRESS,
 });
 
 export const PAYMENT_CONFIG_BY_CHAIN_ID: Record<PremiumPaymentChainId, PaymentConfig> = {

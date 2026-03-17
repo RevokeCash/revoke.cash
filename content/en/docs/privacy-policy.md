@@ -90,6 +90,7 @@ Reading this privacy policy will help you understand your privacy rights and cho
    | ----------------- | -------------------- | ----------------------------------- |
    | `revoke_session`  | Session based cookie | Used for backend API authentication |
    | `mp_xxx_mixpanel` | Session based cookie | Used for usage analytics            |
+   | `crisp-client/*`  | Session based cookie | Used for Crisp chat widget          |
 
 6. **DATA RETENTION**
 
