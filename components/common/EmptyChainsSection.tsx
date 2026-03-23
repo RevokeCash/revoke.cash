@@ -21,7 +21,7 @@ const EmptyChainsSection = ({ emptyChains, description, allEmptyMessage }: Props
     <CollapsibleCard
       isExpanded={isExpanded}
       onToggle={() => setIsExpanded((value) => !value)}
-      className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
+      className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950"
       headerClassName="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
       contentClassName="border-zinc-200 dark:border-zinc-700 px-4 pb-3"
       header={
@@ -32,8 +32,8 @@ const EmptyChainsSection = ({ emptyChains, description, allEmptyMessage }: Props
               maxVisible={5}
               logoSize={24}
               overlapClassName="-space-x-2"
-              itemClassName="ring-2"
-              overflowClassName="h-6 min-w-6 text-xs bg-zinc-200 dark:bg-zinc-700 ring-2"
+              itemClassName="ring-2 dark:ring-zinc-950"
+              overflowClassName="h-6 min-w-6 text-xs bg-zinc-200 dark:bg-zinc-700 ring-2 dark:ring-zinc-950"
             />
             <span className="text-sm text-zinc-600 dark:text-zinc-400">{description}</span>
           </div>

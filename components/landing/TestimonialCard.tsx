@@ -10,12 +10,14 @@ interface Props {
 const TestimonialCard = ({ testimonial }: Props) => {
   const className = twMerge(
     'flex h-full flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5',
-    'transition-colors bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800',
+    'transition bg-zinc-50 hover:border-brand/50 dark:hover:border-brand/40 hover:bg-zinc-100/80 dark:bg-zinc-800/50 dark:hover:bg-zinc-900',
   );
 
   return (
     <Href href={testimonial.tweetUrl} external underline="none" className={className}>
-      <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400 italic">"{testimonial.quote}"</p>
+      <p className="border-l-3 border-l-brand/50 pl-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400 italic">
+        "{testimonial.quote}"
+      </p>
       <div className="mt-3 flex items-center gap-3">
         <Image
           src={testimonial.avatar}

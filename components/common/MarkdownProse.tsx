@@ -28,7 +28,7 @@ const MarkdownProse = ({ content, meta, className }: Props) => {
     h1: ({ children }) => {
       return (
         <div className="not-prose mb-8">
-          <h1 className="text-4xl font-semibold">{children}</h1>
+          <h1 className="text-4xl font-semibold font-heading">{children}</h1>
           {meta ? <ArticleMeta meta={meta} /> : null}
         </div>
       );

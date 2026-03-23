@@ -27,10 +27,10 @@ const UnauthenticatedView = ({ account, signIn, isAuthenticating }: Props) => {
             loading={isAuthenticating}
             className="w-full justify-center"
           >
-            {t('common.buttons.sign_in_with_ethereum')}
+            {isAuthenticating ? t('common.buttons.authenticating') : t('common.buttons.authenticate_wallet')}
           </Button>
         ) : (
-          <ConnectButton style="primary" size="md" className="w-full justify-center" />
+          <ConnectButton style="primary" size="md" className="w-full justify-center" onConnect={signIn} />
         )}
 
         <div className="flex flex-col gap-3">

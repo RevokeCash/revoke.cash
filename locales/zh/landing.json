@@ -62,7 +62,7 @@
   },
   "stats": {
     "approvals_revoked": "Approvals Revoked",
-    "networks_supported": "Networks Supported",
+    "networks_supported": "{count} Networks Supported",
     "protected_from_exploits": "Protected from Exploits",
     "total_users": "Total Users"
   }

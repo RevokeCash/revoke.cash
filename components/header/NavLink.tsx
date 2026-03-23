@@ -22,8 +22,8 @@ const NavLink = ({ to, text, external, className }: Props) => {
       size="none"
       style="tertiary"
       className={twMerge(
-        'text-lg shrink-0',
-        isCurrent && 'underline underline-offset-8 decoration-2 decoration-brand',
+        'text-lg shrink-0 underline underline-offset-8 decoration-2 transition-[text-decoration-color] duration-150',
+        isCurrent ? 'decoration-black dark:decoration-white' : 'decoration-transparent hover:decoration-brand',
         className,
       )}
       router={!external}

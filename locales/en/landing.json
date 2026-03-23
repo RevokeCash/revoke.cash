@@ -20,7 +20,7 @@
   },
   "hero_section": {
     "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
-    "title": "Take Back Control of Your Wallet."
+    "title": "Take Back Control of <highlight>Your Wallet.</highlight>"
   },
   "how_to": {
     "paragraph_1": {
@@ -35,7 +35,7 @@
       "description": "Revoke the approvals that you no longer use to prevent unwanted access to your funds.",
       "title": "3. Revoke"
     },
-    "title": "How To Revoke Your Approvals."
+    "title": "How To Revoke Your Approvals"
   },
   "premium": {
     "description": "Manage approvals across 100+ networks from a single dashboard. Starting at $79/year.",
@@ -63,7 +63,7 @@
   },
   "stats": {
     "approvals_revoked": "Approvals Revoked",
-    "networks_supported": "Networks Supported",
+    "networks_supported": "{count} Networks Supported",
     "protected_from_exploits": "Protected from Exploits",
     "total_users": "Total Users"
   }

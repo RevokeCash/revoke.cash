@@ -21,7 +21,7 @@
   }
 
   h1 {
-    @apply text-4xl md:text-5xl font-semibold tracking-tight m-0;
+    @apply text-4xl md:text-5xl font-semibold tracking-tight m-0 font-heading;
   }
 
   h2 {

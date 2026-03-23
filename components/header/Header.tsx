@@ -11,7 +11,7 @@ const Header = () => {
 
   return (
     <header className="flex justify-between items-center gap-8 w-full p-4 lg:px-8 pb-8 relative">
-      <div className="flex shrink-0 h-9">
+      <div className="flex shrink-0">
         <HeaderLogo />
       </div>
       <div className="flex grow justify-end items-center gap-8 shrink-0">

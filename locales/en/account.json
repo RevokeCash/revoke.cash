@@ -52,7 +52,7 @@
       "upgrade": "Upgrade"
     },
     "downgrade_not_supported": "You cannot downgrade an active subscription.",
-    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>",
+    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
     "payment_failed": "Subscription payment failed",
     "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",

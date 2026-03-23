@@ -17,7 +17,7 @@ const AddressNavigationTab = ({ name, href }: Props) => {
     'focus-visible:ring-0 focus-visible:border-zinc-400 dark:focus-visible:border-zinc-500',
     isSelected &&
       'border-black text-black visited:text-black dark:border-white dark:text-white dark:visited:text-white',
-    !isSelected && 'hover:border-zinc-300 hover:text-zinc-700 dark:hover:border-zinc-400 dark:hover:text-zinc-300',
+    !isSelected && 'hover:border-brand hover:text-zinc-700 dark:hover:border-brand dark:hover:text-zinc-300',
   );
 
   return (

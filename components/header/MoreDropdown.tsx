@@ -13,7 +13,12 @@ const MoreDropdown = () => {
   const isCurrent = path.startsWith('/about') || path.startsWith('/blog');
 
   const menuButton = (
-    <div className={twMerge(isCurrent && 'underline underline-offset-8 decoration-2 decoration-brand')}>
+    <div
+      className={twMerge(
+        'underline underline-offset-8 decoration-2 transition-[text-decoration-color] duration-150',
+        isCurrent ? 'decoration-black dark:decoration-white' : 'decoration-transparent hover:decoration-brand',
+      )}
+    >
       {t('common.nav.more')}
     </div>
   );

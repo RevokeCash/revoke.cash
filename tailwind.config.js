@@ -36,12 +36,17 @@ module.exports = {
           'Helvetica Neue',
           'sans-serif',
         ],
+        heading: ['var(--font-heading)', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         monosans: ['Helvetica Neue', 'sans-serif'],
-        code: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
-        monospace: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
+        mono: ['var(--font-mono)', 'source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
+        code: ['var(--font-mono)', 'source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
+        monospace: ['var(--font-mono)', 'source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
       },
       colors: {
         brand: '#fdb952',
+      },
+      transitionTimingFunction: {
+        'expo-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
       typography: (theme) => ({
         zinc: {

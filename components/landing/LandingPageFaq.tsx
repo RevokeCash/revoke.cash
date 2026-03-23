@@ -1,4 +1,5 @@
 import Divider from 'components/common/Divider';
+import FadeIn from 'components/common/FadeIn';
 import RichText from 'components/common/RichText';
 import { useTranslations } from 'next-intl';
 import FullWidthLandingSection from './FullWidthLandingSection';
@@ -9,7 +10,7 @@ const LandingPageFaq = () => {
 
   return (
     <FullWidthLandingSection title={t('landing.faq.title')} size="md">
-      <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
+      <FadeIn stagger className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
         <LandingPageFaqItem question={t('faq.questions.recover_assets.question')}>
           <RichText>{(tags) => t.rich('faq.questions.recover_assets.answer', tags)}</RichText>
         </LandingPageFaqItem>
@@ -22,7 +23,7 @@ const LandingPageFaq = () => {
         <LandingPageFaqItem question={t('faq.questions.enough_to_disconnect.question')}>
           <RichText>{(tags) => t.rich('faq.questions.enough_to_disconnect.answer', tags)}</RichText>
         </LandingPageFaqItem>
-      </dl>
+      </FadeIn>
       <Divider />
       <p className="text-zinc-700 dark:text-zinc-300">
         <RichText>{(tags) => t.rich('landing.faq.subtitle', tags)}</RichText>

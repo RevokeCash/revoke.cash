@@ -17,9 +17,10 @@ interface Props {
   className?: string;
   redirect?: boolean;
   onClick?: () => void;
+  onConnect?: () => void;
 }
 
-const ConnectButton = ({ size, style, className, text, redirect, onClick }: Props) => {
+const ConnectButton = ({ size, style, className, text, redirect, onClick, onConnect }: Props) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
   const router = useCsrRouter();
@@ -48,6 +49,9 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick }: Prop
       } = await connectAsync({ connector });
       if (account && redirect) {
         router.push(`/address/${account}`, { retainSearchParams: ['chainId'] });
+      }
+      if (account) {
+        onConnect?.();
       }
     } catch {
       // ignored

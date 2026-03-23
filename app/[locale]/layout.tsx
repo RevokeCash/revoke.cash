@@ -13,6 +13,7 @@ import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/routing';
 import type { Metadata } from 'next';
+import { JetBrains_Mono, Outfit } from 'next/font/google';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import '../../styles/index.css';
@@ -26,6 +27,9 @@ interface Props {
 interface Params {
   locale: string;
 }
+
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-heading', display: 'swap' });
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
 export const dynamicParams = false;
 
@@ -57,7 +61,7 @@ const MainLayout = async ({ children, params }: Props) => {
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`${outfit.variable} ${jetbrainsMono.variable}`}>
       <head>
         <NextIntlClientProvider>
           <Analytics />

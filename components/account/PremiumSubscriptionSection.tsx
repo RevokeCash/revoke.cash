@@ -153,7 +153,7 @@ const SubscriptionBanner = ({ activeSubscription }: { activeSubscription: Premiu
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded-md bg-zinc-100 dark:bg-zinc-800 p-4">
+    <div className="flex flex-col gap-2 rounded-md bg-zinc-100 dark:bg-zinc-800/50 p-4 border border-transparent dark:border-zinc-700">
       <div className="flex items-center gap-2">
         <span className="font-medium">{activeSubscription.plan.name}</span>
         <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">

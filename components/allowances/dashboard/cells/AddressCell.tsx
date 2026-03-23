@@ -19,10 +19,10 @@ const AddressCell = ({ address, spenderData, chainId }: Props) => {
   return (
     <div className="flex items-center gap-2 max-w-52">
       <div className="flex flex-col justify-start items-start">
-        <WithHoverTooltip tooltip={address}>
+        <WithHoverTooltip tooltip={<span className="font-mono">{address}</span>}>
           <Href href={explorerUrl} underline="hover" external>
             <div className="max-w-40 truncate">{spenderData?.name ?? shortenAddress(address, 6)}</div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
               {spenderData?.name ? shortenAddress(address, 6) : null}
             </div>
           </Href>

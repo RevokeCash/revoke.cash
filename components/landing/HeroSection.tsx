@@ -18,7 +18,9 @@ const HeroSection = () => {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <h1 className="text-5xl font-semibold leading-tight tracking-tight sm:text-6xl">
-                {t('landing.hero_section.title')}
+                {t.rich('landing.hero_section.title', {
+                  highlight: (chunks) => <span className="bg-brand px-2 text-black whitespace-nowrap">{chunks}</span>,
+                })}
               </h1>
               <p className="text-lg text-zinc-600 dark:text-zinc-400">{t('landing.hero_section.subtitle')}</p>
             </div>
@@ -28,24 +30,37 @@ const HeroSection = () => {
                 <ArrowRightIcon className="h-4 w-4" />
               </Button>
             </div>
-            <div className="max-w-xl">
-              <TestimonialCarousel />
-            </div>
-            <div className="flex items-center gap-2">
-              <ChainLogoStack
-                chainIds={featuredChainIds}
-                maxVisible={6}
-                logoSize={24}
-                border={false}
-                itemClassName="ring-2"
-                overlapClassName="-space-x-1.5"
+            {/* Hero image: shown here on mobile, hidden on desktop (shown in separate grid column) */}
+            <div className="lg:hidden flex flex-col justify-center">
+              <Image
+                src="/assets/images/landing/hero.png"
+                alt={t('landing.features.dashboard.title')}
+                width={2000}
+                height={1500}
+                priority
+                fetchPriority="high"
+                className="h-auto w-full"
               />
-              <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                100+ {t('landing.stats.networks_supported').toLowerCase()}
-              </span>
+            </div>
+            <div className="flex flex-col gap-6 max-w-xl mx-auto lg:mx-0">
+              <TestimonialCarousel />
+              <div className="flex items-center gap-2">
+                <ChainLogoStack
+                  chainIds={featuredChainIds}
+                  maxVisible={6}
+                  logoSize={24}
+                  border={false}
+                  itemClassName="ring-2"
+                  overlapClassName="-space-x-1.5"
+                />
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {t('landing.stats.networks_supported', { count: '100+' }).toLowerCase()}
+                </span>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col justify-center">
+          {/* Hero image: shown here on desktop in its own grid column, hidden on mobile */}
+          <div className="hidden lg:flex flex-col justify-center">
             <Image
               src="/assets/images/landing/hero.png"
               alt={t('landing.features.dashboard.title')}
