@@ -1,15 +1,13 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import ChainLogoStack from 'components/common/ChainLogoStack';
-import TestimonialCard from 'components/landing/TestimonialCard';
-import { TESTIMONIALS } from 'components/landing/testimonials-data';
+import TestimonialCarousel from 'components/landing/TestimonialCarousel';
 import { CHAIN_SELECT_MAINNETS } from 'lib/utils/chains';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
 const HeroSection = () => {
   const t = useTranslations();
-  const testimonial = TESTIMONIALS[0];
   const featuredChainIds = CHAIN_SELECT_MAINNETS.slice(0, 6);
 
   return (
@@ -31,7 +29,7 @@ const HeroSection = () => {
               </Button>
             </div>
             <div className="max-w-xl">
-              <TestimonialCard testimonial={testimonial} />
+              <TestimonialCarousel />
             </div>
             <div className="flex items-center gap-2">
               <ChainLogoStack
