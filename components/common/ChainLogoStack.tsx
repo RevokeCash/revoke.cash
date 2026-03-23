@@ -8,6 +8,7 @@ interface Props {
   maxVisible?: number;
   logoSize?: number;
   border?: boolean;
+  tooltip?: boolean;
   className?: string;
   overlapClassName?: string;
   itemClassName?: string;
@@ -19,6 +20,7 @@ const ChainLogoStack = ({
   maxVisible = 3,
   logoSize = 20,
   border = false,
+  tooltip = false,
   className,
   overlapClassName,
   itemClassName,
@@ -39,7 +41,7 @@ const ChainLogoStack = ({
             itemClassName,
           )}
         >
-          <ChainLogo chainId={chainId} size={logoSize} border={border} />
+          <ChainLogo chainId={chainId} size={logoSize} border={border} tooltip={tooltip} />
         </span>
       ))}
       {remainingCount > 0 ? (
