@@ -1,5 +1,5 @@
 import LearnLayout from 'app/layouts/LearnLayout';
-import Divider from 'components/common/Divider';
+import ContentPageHero from 'components/common/ContentPageHero';
 import Prose from 'components/common/Prose';
 import ArticleCardSection from 'components/learn/ArticleCardSection';
 import { locales } from 'lib/i18n/routing';
@@ -56,12 +56,13 @@ const LearnSectionPage: NextPage<Props> = async ({ params }) => {
 
   return (
     <LearnLayout sidebarEntries={sidebar} slug={[category]} meta={meta}>
+      <ContentPageHero
+        title={t(`learn.sections.${category}.title`)}
+        subtitle={`${t('learn.meta.description')} ${t(`learn.sections.${category}.intro_paragraph`)}`}
+        align="left"
+        className="py-0 mb-6"
+      />
       <Prose>
-        <h1>{t(`learn.sections.${category}.title`)}</h1>
-        <Divider className="my-4" />
-        <p>
-          {t('learn.meta.description')} {t(`learn.sections.${category}.intro_paragraph`)}
-        </p>
         {sidebar.map((entry) =>
           entry.path === `/learn/${category}` ? (
             <ArticleCardSection key={entry.title}>{entry.children}</ArticleCardSection>

@@ -18,7 +18,7 @@ const PlaceholderIcon = (
     'aspect-square rounded-full',
     color ?? 'bg-zinc-300 dark:bg-zinc-600',
     square ? 'rounded-lg' : 'rounded-full',
-    border && 'border border-black dark:border-white',
+    border && 'border border-zinc-200 dark:border-zinc-800',
     className,
   );
 

@@ -4,6 +4,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
 import CardSelect, { type CardSelectOption } from 'components/common/CardSelect';
+import Href from 'components/common/Href';
 import Label from 'components/common/Label';
 import ChainSelect from 'components/common/select/ChainSelect';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
@@ -138,7 +139,17 @@ const SubscriptionBanner = ({ activeSubscription }: { activeSubscription: Premiu
   const t = useTranslations();
 
   if (!activeSubscription) {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.no_subscription')}</p>;
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        {t.rich('account.subscription.no_subscription', {
+          'premium-link': (chunks) => (
+            <Href href="/premium" router underline="always">
+              {chunks}
+            </Href>
+          ),
+        })}
+      </p>
+    );
   }
 
   return (

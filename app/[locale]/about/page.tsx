@@ -1,6 +1,7 @@
-import ProseLayout from 'app/layouts/ProseLayout';
-import Divider from 'components/common/Divider';
+import ContentPageLayout from 'app/layouts/ContentPageLayout';
+import ContentPageHero from 'components/common/ContentPageHero';
 import Href from 'components/common/Href';
+import Prose from 'components/common/Prose';
 import RichText from 'components/common/RichText';
 import type { Metadata, NextPage } from 'next';
 import Image from 'next/image';
@@ -34,54 +35,52 @@ const AboutPage: NextPage<Props> = async ({ params }) => {
   const t = await getTranslations({ locale });
 
   return (
-    <ProseLayout>
-      <h1>{t('about.title')}</h1>
-      <Divider className="my-4" />
+    <ContentPageLayout hero={<ContentPageHero title={t('about.title')} />}>
+      <Prose>
+        <p>
+          <RichText>{(tags) => t.rich('about.body.intro', tags)}</RichText>
+        </p>
+      </Prose>
 
-      <p>
-        <RichText>{(tags) => t.rich('about.body.intro', tags)}</RichText>
-      </p>
-
-      <div className="mx-auto my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
+      <div className="mx-auto my-6 flex flex-col items-center gap-2">
         <Href href="https://twitter.com/RoscoKalis/status/1183412994375503872" underline="none" external>
           <Image
             src="/assets/images/about/revoke-tweet.png"
             alt="Initial Revoke.cash Tweet"
             height="1000"
             width="1500"
-            className="rounded-lg border border-black dark:border-white"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800"
             priority
             fetchPriority="high"
           />
         </Href>
-        <figcaption className="text-base leading-none text-zinc-600 dark:text-zinc-400">
-          {t('about.captions.first_tweet')}
-        </figcaption>
+        <figcaption className="text-sm text-zinc-500 dark:text-zinc-400">{t('about.captions.first_tweet')}</figcaption>
       </div>
 
-      <p>
-        <RichText>{(tags) => t.rich('about.body.growth', tags)}</RichText>
-      </p>
+      <Prose>
+        <p>
+          <RichText>{(tags) => t.rich('about.body.growth', tags)}</RichText>
+        </p>
+      </Prose>
 
-      <div className="mx-auto my-2 md:my-4 flex flex-col items-center gap-2 not-prose">
+      <div className="mx-auto my-6 flex flex-col items-center gap-2">
         <Image
           src="/assets/images/about/revoke-team.png"
           alt="Revoke.cash Team"
           height="720"
           width="1280"
-          className="rounded-lg border border-black dark:border-white"
+          className="rounded-xl border border-zinc-200 dark:border-zinc-800"
         />
-        <figcaption className="text-base leading-none text-zinc-600 dark:text-zinc-400">
-          {t('about.captions.team')}
-        </figcaption>
+        <figcaption className="text-sm text-zinc-500 dark:text-zinc-400">{t('about.captions.team')}</figcaption>
       </div>
 
-      <p>{t('about.body.team')}</p>
-
-      <p>
-        <RichText>{(tags) => t.rich('about.body.learn_more', tags)}</RichText>
-      </p>
-    </ProseLayout>
+      <Prose>
+        <p>{t('about.body.team')}</p>
+        <p>
+          <RichText>{(tags) => t.rich('about.body.learn_more', tags)}</RichText>
+        </p>
+      </Prose>
+    </ContentPageLayout>
   );
 };
 

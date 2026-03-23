@@ -1,5 +1,6 @@
-import ProseLayout from 'app/layouts/ProseLayout';
-import Divider from 'components/common/Divider';
+import ContentPageLayout from 'app/layouts/ContentPageLayout';
+import ContentPageHero from 'components/common/ContentPageHero';
+import Prose from 'components/common/Prose';
 import RichText from 'components/common/RichText';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import type { Metadata, NextPage } from 'next';
@@ -34,32 +35,33 @@ const PudgyPage: NextPage<Props> = async ({ params }) => {
   const messages = await getMessages({ locale });
 
   return (
-    <ProseLayout>
-      <h1>
-        Revoke.cash x Pudgy Penguins <br /> Cold Storage SBT
-      </h1>
-      <Divider className="my-4" />
+    <ContentPageLayout hero={<ContentPageHero title="Revoke.cash x Pudgy Penguins Cold Storage SBT" />}>
+      <Prose>
+        <p>
+          <RichText>{(tags) => t.rich('pudgy.landing.paragraph_1', tags)}</RichText>
+        </p>
+      </Prose>
 
-      <p>
-        <RichText>{(tags) => t.rich('pudgy.landing.paragraph_1', tags)}</RichText>
-      </p>
       <video
         src="assets/videos/pudgy-sbt.mp4"
-        className="aspect-square w-full max-w-100 my-0 mx-auto fade-video"
+        className="aspect-square w-full max-w-100 my-6 mx-auto fade-video"
         autoPlay
         muted
         loop
       />
-      <p>
-        <RichText>{(tags) => t.rich('pudgy.landing.paragraph_2', tags)}</RichText>
-      </p>
 
-      <div className="flex flex-col gap-4 not-prose">
+      <Prose>
+        <p>
+          <RichText>{(tags) => t.rich('pudgy.landing.paragraph_2', tags)}</RichText>
+        </p>
+      </Prose>
+
+      <div className="flex flex-col gap-4 mt-6">
         <NextIntlClientProvider messages={{ common: messages.common, pudgy: messages.pudgy }}>
           <PudgyCheckerWrapper />
         </NextIntlClientProvider>
       </div>
-    </ProseLayout>
+    </ContentPageLayout>
   );
 };
 

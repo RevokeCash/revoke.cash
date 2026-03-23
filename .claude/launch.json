@@ -1,0 +1,15 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["dev", "--port", "3001"],
+      "port": 3001,
+      "autoPort": false,
+      "env": {
+        "NEXT_DIST_DIR": ".claude/.next"
+      }
+    }
+  ]
+}

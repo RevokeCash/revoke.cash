@@ -42,7 +42,7 @@ const LandingPage: NextPage<Props> = async ({ params }) => {
 
   return (
     <>
-      <SharedLayout>
+      <SharedLayout searchBar>
         <div className="flex flex-col items-center gap-12">
           <HeroSection />
           <StatsBar />

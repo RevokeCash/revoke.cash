@@ -35,7 +35,7 @@ const AddressPageLayout = async ({ params, children }: Props) => {
   const isPremium = await hasActivePremiumEntitlement(address);
 
   return (
-    <SharedLayout>
+    <SharedLayout searchBar>
       <div className="w-full max-w-7xl mx-auto px-4 lg:px-8">
         <AddressIdentityContextProvider address={address} domainName={domainName} isPremium={isPremium}>
           <NextIntlClientProvider

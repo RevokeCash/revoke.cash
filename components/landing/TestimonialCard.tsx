@@ -9,7 +9,7 @@ interface Props {
 
 const TestimonialCard = ({ testimonial }: Props) => {
   const className = twMerge(
-    'flex h-full flex-col rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5',
+    'flex h-full flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800 p-5',
     'transition-colors bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800',
   );
 

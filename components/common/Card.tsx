@@ -16,21 +16,22 @@ const Card = ({ header, children, className, image, hover, isLoading }: Props) =
   const hasTopContent = !isNullish(header) || !isNullish(image);
 
   const outerClass = twMerge(
-    'h-full w-full border border-black dark:border-white rounded-lg flex flex-col',
+    'h-full w-full border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col',
     hover === 'scale' ? 'hover:scale-105 transition' : null,
   );
 
-  const contentClass = twMerge(
-    'h-full w-full p-4 grow bg-zinc-50 dark:bg-zinc-900 rounded-b-lg',
-    !hasTopContent && 'rounded-t-lg',
-    className,
-  );
+  const contentClass = twMerge('h-full w-full p-4 grow rounded-b-xl', !hasTopContent && 'rounded-t-xl', className);
 
   return (
     <div className={outerClass}>
       {header}
       {image ? (
-        <div className={twMerge('border-b border-black dark:border-white overflow-hidden', !header && 'rounded-t-lg')}>
+        <div
+          className={twMerge(
+            'border-b border-zinc-200 dark:border-zinc-800 overflow-hidden',
+            !header && 'rounded-t-xl',
+          )}
+        >
           {image}
         </div>
       ) : null}
@@ -46,7 +47,7 @@ interface CardHeaderProps {
 }
 
 export const CardHeader = ({ children }: CardHeaderProps) => {
-  return <div className="w-full border-b border-black dark:border-white py-2 px-4">{children}</div>;
+  return <div className="w-full border-b border-zinc-200 dark:border-zinc-800 py-2 px-4">{children}</div>;
 };
 
 interface CardTitleProps {

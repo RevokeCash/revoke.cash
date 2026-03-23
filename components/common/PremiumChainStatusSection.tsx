@@ -45,9 +45,9 @@ const PremiumChainStatusSection = ({ chainStatuses }: Props) => {
     <CollapsibleCard
       isExpanded={showDetails}
       onToggle={() => setShowDetails((value) => !value)}
-      className="border-black dark:border-white bg-white dark:bg-black"
+      className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black"
       headerClassName="px-4 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-      contentClassName="px-4 pb-3 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900"
+      contentClassName="px-4 pb-3 border-zinc-200 dark:border-zinc-800"
       header={
         <div className="w-full flex items-center justify-between gap-3">
           <div className="flex items-center flex-wrap gap-2 text-sm min-w-0">

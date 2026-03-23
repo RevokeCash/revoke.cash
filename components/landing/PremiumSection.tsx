@@ -27,8 +27,8 @@ const PremiumSection = () => {
           >
             <ul className="flex flex-col gap-2">
               <Highlight i18nKey="landing.premium.free_features.single_chain" />
+              <Highlight i18nKey="landing.premium.free_features.history" />
               <Highlight i18nKey="landing.premium.free_features.exploit_checker" />
-              <Highlight i18nKey="landing.premium.free_features.browser_extension" />
               <Highlight i18nKey="landing.premium.free_features.batch_revoke" />
             </ul>
             <div className="mt-auto pt-2">
@@ -44,10 +44,10 @@ const PremiumSection = () => {
           >
             <ul className="flex flex-col gap-2">
               <Highlight i18nKey="landing.premium.highlights.multichain_dashboard" />
-              <Highlight i18nKey="landing.premium.highlights.unlimited_batch_revokes" />
-              <Highlight i18nKey="landing.premium.highlights.multichain_exploit_checker" />
-              <Highlight i18nKey="landing.premium.highlights.time_machine" />
               <Highlight i18nKey="landing.premium.highlights.multichain_history" />
+              <Highlight i18nKey="landing.premium.highlights.multichain_exploit_checker" />
+              <Highlight i18nKey="landing.premium.highlights.unlimited_batch_revokes" />
+              <Highlight i18nKey="landing.premium.highlights.time_machine" />
               <Highlight i18nKey="landing.premium.highlights.address_slots" />
             </ul>
             <div className="mt-auto pt-2">

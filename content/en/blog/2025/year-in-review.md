@@ -1,12 +1,12 @@
 ---
-title: '2025: Year in Review'
+title: 'Year in Review: 2025'
 description: In 2025 we shipped single-transaction batch revoking, which was enabled by the new EIP7702 standards, and we were also able to add some features that had been on our backlog for a long time, such as the history tab and the delegations tab.
 date: 2025-12-31T13:00:00Z
 author: Rosco Kalis
 translator: <Your Name Here (or remove)>
 ---
 
-# 2025: Year in Review
+# Year in Review: 2025
 
 2025 saw big improvements in the user experience of Revoke.cash, the biggest of which was the introduction of single-transaction batch revoking, enabled by the new EIP7702 standard on Ethereum mainnet and several other networks. We were also able to add some features that had been on our backlog for a long time, such as the history tab and the delegations tab.
 

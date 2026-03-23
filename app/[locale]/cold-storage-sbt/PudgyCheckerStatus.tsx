@@ -43,7 +43,7 @@ const PudgyCheckerStatus = ({ address, status }: Props) => {
   } as const;
 
   return (
-    <div className={'rounded-lg border border-black dark:border-white p-4'}>
+    <div className={'rounded-xl border border-zinc-200 dark:border-zinc-800 p-4'}>
       <div className="flex flex-col items-center gap-4">
         <div className="w-full flex items-center gap-4">
           <div className="flex flex-col sm:flex-row gap-2 items-center justify-center w-full">

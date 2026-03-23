@@ -4,7 +4,7 @@ interface Props {
   render?: boolean;
 }
 
-const HeaderAttachedSearchBar = ({ render = true }: Props) => {
+const HeaderAttachedSearchBar = ({ render = false }: Props) => {
   if (!render) return null;
 
   // We add a negative margin so the SearchBar is grouped with the header

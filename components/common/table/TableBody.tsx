@@ -46,9 +46,12 @@ export default TableBody;
 
 const TableBodyRow = <T,>({ row }: { row: Row<T> }) => {
   return (
-    <tr key={row.id} className="border-t border-zinc-300 dark:border-zinc-500">
+    <tr key={row.id} className="border-t border-zinc-200 dark:border-zinc-800">
       {row.getVisibleCells().map((cell) => (
-        <td key={cell.id} className={twMerge('overflow-hidden px-2', cell.column.id === ColumnId.SELECT && 'w-0')}>
+        <td
+          key={cell.id}
+          className={twMerge('overflow-hidden px-2 first:pl-4 last:pr-4', cell.column.id === ColumnId.SELECT && 'w-0')}
+        >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </td>
       ))}

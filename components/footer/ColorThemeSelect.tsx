@@ -35,7 +35,6 @@ const ColorThemeSelect = () => {
       instanceId="color-theme-select"
       aria-label="Select Color Theme"
       className="w-32"
-      theme="dark"
       value={options.find((option) => option.value === theme)}
       options={options}
       onChange={(option) => selectTheme(option!)}

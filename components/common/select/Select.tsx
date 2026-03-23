@@ -39,6 +39,7 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
     lightest: '#e4e4e7', // zinc-200
     light: '#d4d4d8', // zinc-300
     dark: '#52525b', // zinc-600
+    darker: '#3f3f46', // zinc-700
     darkest: '#27272a', // zinc-800
     brand: '#fdb952',
   };
@@ -54,9 +55,9 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
     // neutral0: 'red', // control + menu background color (handled separately above)
     // neutral5: 'red', // ??
     // neutral10: 'red', // ??
-    neutral20: theme === 'dark' ? colors.secondary : colors.primary, // control border + indicator color
+    neutral20: theme === 'dark' ? colors.darker : colors.light, // control border + indicator color
     // neutral30: 'red', // ??
-    neutral40: theme === 'dark' ? colors.secondary : colors.primary, // indicator hover color
+    neutral40: theme === 'dark' ? colors.dark : colors.dark, // indicator hover color
     // neutral50: 'red', // ??
     neutral60: theme === 'dark' ? colors.secondary : colors.primary, // indicator focus color
     // neutral70: 'red', // ??
@@ -80,14 +81,14 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
           twMerge(
             // Attempt to match the browser's focus-visible behaviour for <select> elements
             // (only display the focus ring when the element is focused via the keyboard)
-            state.isFocused && '[&:has(:focus-visible)]:ring-1 [&:has(:focus-visible)]:ring-current',
-            state.menuIsOpen && '[&:has(:focus-visible)]:ring-0',
+            state.isFocused && '[&:has(:focus-visible)]:border-black dark:[&:has(:focus-visible)]:border-white',
+            state.menuIsOpen && '[&:has(:focus-visible)]:border-current',
             'flex items-center box-border ',
             controlClassMapping[props.size || 'md'],
           ),
       }}
       styles={{
-        control: (styles) => ({
+        control: (styles, state) => ({
           ...styles,
           color: resolvedColors.primary,
           backgroundColor: resolvedColors.secondary,
@@ -97,14 +98,17 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
           minHeight: 0,
           minWidth: props.minControlWidth,
           cursor: 'pointer',
+          boxShadow: 'none',
+          borderColor: state.isFocused && !state.menuIsOpen ? resolvedColors.primary : styles.borderColor,
         }),
         menu: (styles) => ({
           ...styles,
           textAlign: 'left', // text-left
           border: '1px solid', // border
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
           color: resolvedColors.primary,
           backgroundColor: resolvedColors.secondary,
-          borderColor: resolvedColors.primary,
+          borderColor: theme === 'dark' ? colors.darkest : colors.lightest,
           overflow: 'hidden', // overflow-hidden
           minWidth: props.minMenuWidth,
           position: 'absolute',
@@ -121,7 +125,11 @@ const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I,
           ...removeSpacing(styles),
           maxHeight: '22rem',
         }),
-        dropdownIndicator: removeSpacing,
+        dropdownIndicator: (styles) => ({
+          ...removeSpacing(styles),
+          color: theme === 'dark' ? colors.dark : colors.dark, // zinc-600
+          ':hover': { color: resolvedColors.primary },
+        }),
         clearIndicator: removeSpacing,
         valueContainer: removeSpacing,
         indicatorsContainer: removeSpacing,

@@ -121,10 +121,10 @@ const ChainAllowanceSection = ({
       className={twMerge(
         chainData.status === 'error'
           ? 'border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-900/10'
-          : 'border-black dark:border-white bg-white dark:bg-black',
+          : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black',
       )}
       headerClassName={twMerge(canExpand && 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50')}
-      contentClassName="border-black dark:border-white bg-zinc-50 dark:bg-zinc-900"
+      contentClassName="border-zinc-200 dark:border-zinc-800"
       header={<Header chainData={chainData} />}
     >
       <Table

@@ -28,8 +28,8 @@ const TotalValueAtRisk = ({ allowances, isLoading, error }: Props) => {
 
   return (
     <Loader isLoading={isLoading}>
-      <div className="flex flex-col items-center gap-0.5">
-        <div className="text-zinc-600 dark:text-zinc-400 text-center">
+      <div className="flex flex-col items-start md:items-center gap-0.5">
+        <div className="text-xs font-semibold tracking-wide text-zinc-600 dark:text-zinc-400 md:text-center uppercase">
           {t('address.wallet_health.total_value_at_risk')}
         </div>
         <div className="font-bold">

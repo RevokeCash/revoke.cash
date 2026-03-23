@@ -15,7 +15,7 @@ const PremiumAllowancesSummary = () => {
   if (allChainsFailed) return null;
 
   return (
-    <div className="flex items-center justify-around gap-4 h-16 only:w-full only:justify-center">
+    <div className="flex justify-start items-start md:items-center md:justify-around gap-4">
       <AllowancesCount allowances={allowances} isLoading={isLoading} />
       <TotalValueAtRisk allowances={allowances} isLoading={isLoading} />
     </div>

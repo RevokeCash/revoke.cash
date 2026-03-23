@@ -1,4 +1,6 @@
+import { CheckIcon } from '@heroicons/react/24/solid';
 import Button from 'components/common/Button';
+import ContentPageHero from 'components/common/ContentPageHero';
 import ConnectButton from 'components/header/ConnectButton';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
@@ -13,23 +15,45 @@ const UnauthenticatedView = ({ account, signIn, isAuthenticating }: Props) => {
   const t = useTranslations();
 
   return (
-    <div className="max-w-3xl mx-auto py-8 flex flex-col gap-6">
-      <div>
-        <h1 className="text-4xl font-semibold leading-tight">{t('common.buttons.my_account')}</h1>
-        <p className="mt-2 text-zinc-600 dark:text-zinc-400">{t('account.unauthenticated.description')}</p>
-      </div>
+    <div className="flex flex-col items-center">
+      <ContentPageHero title={t('common.buttons.my_account')} subtitle={t('account.unauthenticated.description')} />
 
-      <section className="rounded-lg border border-black dark:border-white p-5 md:p-6 flex flex-col gap-4">
+      <div className="w-full max-w-md flex flex-col gap-6">
         {account ? (
-          <Button style="primary" size="md" onClick={() => signIn()} loading={isAuthenticating} className="w-fit">
+          <Button
+            style="primary"
+            size="md"
+            onClick={() => signIn()}
+            loading={isAuthenticating}
+            className="w-full justify-center"
+          >
             {t('common.buttons.sign_in_with_ethereum')}
           </Button>
         ) : (
-          <ConnectButton style="primary" size="md" className="w-fit" redirect />
+          <ConnectButton style="primary" size="md" className="w-full justify-center" />
         )}
-      </section>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
+            {t('account.unauthenticated.benefits.title')}
+          </h3>
+          <ul className="flex flex-col gap-2">
+            <Benefit label={t('account.unauthenticated.benefits.manage_subscription')} />
+            <Benefit label={t('account.unauthenticated.benefits.address_slots')} />
+            <Benefit label={t('account.unauthenticated.benefits.coverage')} />
+            <Benefit label={t('account.unauthenticated.benefits.billing')} />
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
+
+const Benefit = ({ label }: { label: string }) => (
+  <li className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+    <CheckIcon className="w-4 h-4 shrink-0 text-green-600 dark:text-green-400" />
+    {label}
+  </li>
+);
 
 export default UnauthenticatedView;

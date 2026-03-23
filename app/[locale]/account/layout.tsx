@@ -10,7 +10,7 @@ const AccountLayout = async ({ children }: Props) => {
   const session = await getServerAuthSession();
 
   return (
-    <ContentPageLayout>
+    <ContentPageLayout searchBar>
       <AuthSessionProvider initialSession={session}>{children}</AuthSessionProvider>
     </ContentPageLayout>
   );

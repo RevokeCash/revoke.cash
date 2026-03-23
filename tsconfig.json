@@ -32,7 +32,9 @@
     "postcss.config.cjs",
     "next.config.cjs",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    ".claude/.next/types/**/*.ts",
+    ".claude/.next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

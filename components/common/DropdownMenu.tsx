@@ -16,7 +16,7 @@ const DropdownMenu = ({ menuButton, children, style, align, buttonClassName, ite
   const classes = {
     items: twMerge(
       align === 'left' ? 'origin-top-left left-0' : 'origin-top-right right-0',
-      'absolute rounded-lg shadow-lg bg-white border border-black dark:border-white flex flex-col shrink-0',
+      'absolute rounded-xl shadow-lg bg-white border border-zinc-200 dark:border-zinc-800 flex flex-col shrink-0',
       'z-10 mt-2 max-h-88 overflow-x-hidden overflow-y-scroll focus:outline-hidden',
       itemsClassName,
     ),
@@ -30,8 +30,8 @@ const DropdownMenu = ({ menuButton, children, style, align, buttonClassName, ite
     <Menu as="div" className="relative text-left">
       <MenuButton
         className={twMerge(
-          'flex focus-visible:outline-hidden focus-visible:ring-black dark:focus-visible:ring-white',
-          style === 'nav' ? 'focus-visible:ring-2 rounded-sm' : 'focus-visible:ring-1 rounded-lg',
+          'flex focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
+          style === 'nav' ? 'rounded-sm' : 'rounded-lg',
         )}
       >
         <Button

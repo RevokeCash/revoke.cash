@@ -48,7 +48,7 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
                   </td>
                   <td className="py-3 pr-4 whitespace-nowrap">{payment.planName}</td>
                   <td className="py-3 pr-4 whitespace-nowrap">
-                    ${payment.amountUsd} {payment.tokenSymbol}
+                    {payment.amountUsd} {payment.tokenSymbol}
                   </td>
                   <td className="py-3 whitespace-nowrap">
                     <TransactionHashCell

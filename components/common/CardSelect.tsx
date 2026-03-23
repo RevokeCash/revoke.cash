@@ -38,8 +38,8 @@ const CardSelectOptionItem = <T extends string>({ option }: { option: CardSelect
       disabled={option.disabled}
       className={twMerge(
         'group flex flex-1 flex-col items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold cursor-pointer transition',
-        'ring-1 ring-zinc-300 dark:ring-zinc-600',
-        'focus:outline-hidden data-focus:ring-2 data-focus:ring-black dark:data-focus:ring-white',
+        'ring-1 ring-zinc-300 dark:ring-zinc-700',
+        'focus:outline-hidden data-focus:ring-1 data-focus:ring-black dark:data-focus:ring-white',
         'hover:bg-zinc-50 dark:hover:bg-zinc-900',
         'data-checked:text-zinc-900 data-checked:bg-brand dark:data-checked:bg-brand data-checked:ring-0',
         'data-disabled:opacity-50 data-disabled:cursor-not-allowed',

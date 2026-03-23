@@ -3,6 +3,7 @@ const withNextIntl = require('next-intl/plugin')('./lib/i18n/request.tsx');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.NEXT_DIST_DIR,
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
   // Turbopack-compatible way to keep native HyperSync bindings external.

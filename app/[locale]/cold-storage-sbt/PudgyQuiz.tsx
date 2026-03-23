@@ -2,7 +2,7 @@
 
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import Quiz from 'components/coverage/Quiz';
+import Quiz from 'components/common/Quiz';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 

@@ -34,7 +34,7 @@ const LearnLayout = ({ children, searchBar, sidebarEntries, slug, meta, translat
   return (
     <SharedLayout searchBar={searchBar} padding>
       <div className="max-w-6xl w-full mx-auto grow">
-        <div className="flex flex-col min-w-0 lg:flex-row gap-4">
+        <div className="flex flex-col min-w-0 lg:flex-row gap-4 lg:gap-8">
           <NextIntlClientProvider messages={{ common: messages.common, learn: messages.learn }}>
             <Sidebar entries={sidebarEntries} />
           </NextIntlClientProvider>

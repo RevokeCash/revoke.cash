@@ -1,3 +1,4 @@
+import ContentPageHero from 'components/common/ContentPageHero';
 import ArticleCard from 'components/learn/ArticleCard';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
@@ -36,19 +37,14 @@ const BlogPage: NextPage<Props> = async ({ params }) => {
   const posts = await getSidebar(locale, 'blog', true);
 
   return (
-    <>
-      <div className="max-w-5xl mx-auto text-center flex flex-col gap-3 mb-12">
-        <h1 className="text-4xl font-semibold">{t('blog.meta.title')}.</h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">{t('blog.meta.description')}</p>
-      </div>
-      <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-4">
+    <div className="max-w-5xl mx-auto px-4">
+      <ContentPageHero title={t('blog.meta.title')} subtitle={t('blog.meta.description')} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {posts.map((entry) => (
-          <div className="max-w-md md:max-w-xs" key={entry.title}>
-            <ArticleCard {...entry} />
-          </div>
+          <ArticleCard key={entry.title} {...entry} />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

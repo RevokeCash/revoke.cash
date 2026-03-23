@@ -43,7 +43,8 @@
       "batch_revoke": "Batch revoke ($1.50/batch)",
       "browser_extension": "Browser extension warnings",
       "exploit_checker": "Single-chain exploit checker",
-      "single_chain": "Single-chain approval dashboard"
+      "single_chain": "Single-chain approval dashboard",
+      "history": "Single-chain approval history"
     },
     "free_title": "Free",
     "highlights": {

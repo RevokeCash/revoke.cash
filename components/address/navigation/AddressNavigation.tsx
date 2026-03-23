@@ -22,7 +22,6 @@ const AddressNavigation = () => {
 
   const basePath = `/address/${addressOrName}`;
   const historyPath = `${basePath}/history`;
-  const coveragePath = `${basePath}/coverage`;
   const sessionsPath = `${basePath}/sessions`;
   const delegationsPath = `${basePath}/delegations`;
   const exploitsPath = `${basePath}/exploits`;
@@ -38,14 +37,13 @@ const AddressNavigation = () => {
     hasCodeOnAbstract && (isPremium || selectedChainId === ChainId.Abstract || path.endsWith(sessionsPath));
 
   return (
-    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full my-4 border-b border-black dark:border-white">
+    <div className="flex overflow-x-scroll scrollbar-hide overflow-y-hidden w-full my-4 border-b border-zinc-200 dark:border-zinc-800">
       <nav className="flex gap-4">
         <AddressNavigationTab name={t('address.navigation.allowances')} href={basePath} />
         <AddressNavigationTab name={t('address.navigation.history')} href={historyPath} />
         {showSessionsTab && <AddressNavigationTab name={t('address.navigation.sessions')} href={sessionsPath} />}
         <AddressNavigationTab name={t('address.navigation.delegations')} href={delegationsPath} />
         {isPremium && <AddressNavigationTab name={t('address.navigation.exploits')} href={exploitsPath} />}
-        <AddressNavigationTab name={t('address.navigation.coverage')} href={coveragePath} />
       </nav>
     </div>
   );

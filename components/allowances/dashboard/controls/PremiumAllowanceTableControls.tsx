@@ -53,11 +53,14 @@ const ExpandAllButton = ({ isAllExpanded, onToggleExpandAll }: Pick<Props, 'isAl
       size="md"
       style="secondary"
       onClick={onToggleExpandAll}
-      className="h-9 px-3 text-sm gap-1.5 justify-center w-full sm:w-40"
+      className="h-9 px-4 text-sm gap-1.5 justify-between w-full sm:w-40"
     >
       {isAllExpanded ? t('common.buttons.collapse_all') : t('common.buttons.expand_all')}
       <Chevron
-        className={twMerge('w-5 h-5 transition-transform shrink-0', isAllExpanded ? 'rotate-180' : 'rotate-0')}
+        className={twMerge(
+          'w-5 h-5 transition-transform shrink-0 fill-black dark:fill-white',
+          isAllExpanded ? 'rotate-180' : 'rotate-0',
+        )}
       />
     </Button>
   );

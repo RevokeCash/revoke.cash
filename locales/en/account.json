@@ -27,7 +27,7 @@
   },
   "meta": {
     "description": "Manage your account and premium settings.",
-    "title": "My Account"
+    "title": "Account Settings"
   },
   "subscription": {
     "active": "Active",
@@ -41,7 +41,7 @@
       "upgrade": "Upgrade"
     },
     "downgrade_not_supported": "You cannot downgrade an active subscription.",
-    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started.",
+    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>",
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
     "payment_failed": "Subscription payment failed",
     "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
@@ -60,6 +60,13 @@
     "wallet": "Wallet"
   },
   "unauthenticated": {
-    "description": "Please sign in with Ethereum to access your account page."
+    "description": "Sign in to manage your Premium subscription, address slots, and coverage.",
+    "benefits": {
+      "title": "What you can do here",
+      "manage_subscription": "Manage your Premium subscription",
+      "address_slots": "Add or remove address slots",
+      "coverage": "View and manage Fairside coverage",
+      "billing": "View your billing history"
+    }
   }
 }

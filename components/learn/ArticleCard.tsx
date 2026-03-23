@@ -1,4 +1,3 @@
-import Card, { CardTitle } from 'components/common/Card';
 import Href from 'components/common/Href';
 import type { ISidebarEntry } from 'lib/interfaces';
 import { formatDate } from 'lib/utils/time';
@@ -9,19 +8,18 @@ const ArticleCard = ({ title, description, path, date, readingTime, author }: IS
 
   return (
     <Href href={path} router underline="none">
-      <Card header={<CardTitle title={title} />} hover="scale" className="flex flex-col justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <p>{description}</p>
-        </div>
+      <div className="h-full flex flex-col gap-3 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400 grow">{description}</p>
         {date && readingTime ? (
-          <p className="text-sm text-right text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-            {author ? `${author.name?.split(' ')?.[0]} • ` : ''}
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            {author ? `${author.name?.split(' ')?.[0]} · ` : ''}
             {formatDate(date)}
-            {' • '}
+            {' · '}
             {t('common.article_meta.reading_time', { readingTime })}
           </p>
         ) : null}
-      </Card>
+      </div>
     </Href>
   );
 };

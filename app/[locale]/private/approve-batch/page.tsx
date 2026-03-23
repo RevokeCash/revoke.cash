@@ -39,7 +39,7 @@ const ApprovePage = () => {
         <p>For testing purposes only.</p>
         <p>Approval Type, Token Address, Spender Address, (Amount/Token ID), (Expiration), (Permit2 Address)</p>
         <textarea
-          className="border border-black dark:border-white rounded-md p-2"
+          className="border border-zinc-300 dark:border-zinc-700 rounded-md p-2"
           placeholder="ERC20,0x7EA68721984E8E24932E8928106cA9005B3a4786,0xd98B590ebE0a3eD8C144170bA4122D402182976f,1000000000000000000000000000"
           value={allowancesCsv}
           onChange={(e) => setAllowancesCsv(e.target.value)}

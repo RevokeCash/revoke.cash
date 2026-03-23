@@ -11,7 +11,6 @@ import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkDirective from 'remark-directive';
 import remarkDirectiveRehype from 'remark-directive-rehype';
 import remarkGfm from 'remark-gfm';
-import Divider from './Divider';
 import Href from './Href';
 import Prose from './Prose';
 import YouTubeEmbed from './YouTubeEmbed';
@@ -28,11 +27,10 @@ const MarkdownProse = ({ content, meta, className }: Props) => {
   const components: Components & Record<string, any> = {
     h1: ({ children }) => {
       return (
-        <>
-          <h1>{children}</h1>
+        <div className="not-prose mb-8">
+          <h1 className="text-4xl font-semibold">{children}</h1>
           {meta ? <ArticleMeta meta={meta} /> : null}
-          <Divider className="my-4" />
-        </>
+        </div>
       );
     },
     a: ({ href, children, rel }) => {

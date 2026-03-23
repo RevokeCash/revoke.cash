@@ -15,7 +15,7 @@ const AddressHeader = () => {
   const { selectedChainId, selectChain } = useAddressPageContext();
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 border border-black dark:border-white rounded-lg p-4">
+    <div className="flex flex-col md:flex-row gap-6 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
       <div className="order-2 md:order-first flex flex-col gap-3 shrink-0">
         <div className="flex flex-col gap-1">
           <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Viewing address on</span>

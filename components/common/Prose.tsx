@@ -9,7 +9,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 const Prose = ({ children, className, ...props }: Props) => {
   const classes = twMerge(
     'prose prose-zinc dark:prose-invert max-w-none',
-    'prose-h1:text-4xl md:prose-h1:text-5xl prose-h1:font-bold prose-h1:tracking-tight prose-h1:m-0',
+    'prose-h1:text-4xl md:prose-h1:text-5xl prose-h1:font-semibold prose-h1:tracking-tight prose-h1:m-0',
     'prose-h2:text-3xl prose-h2:font-bold prose-h2:m-0 prose-h2:mb-2',
     'prose-h3:text-xl prose-h3:font-bold prose-h3:m-0 prose-h3:mb-1',
     'prose-h4:text-lg prose-h4:font-bold prose-h4:m-0',
@@ -22,8 +22,8 @@ const Prose = ({ children, className, ...props }: Props) => {
     'prose-li:marker:text-zinc-600 dark:prose-li:marker:text-zinc-400',
     'prose-code:rounded-sm prose-code:px-1 prose-code:py-0.5 prose-code:bg-zinc-200 dark:prose-code:bg-zinc-800 prose-code:font-normal',
     'prose-code:before:content-none prose-code:after:content-none',
-    'prose-img:rounded-lg prose-img:border prose-img:border-black dark:prose-img:border-white prose-img:mx-auto prose-img:my-0',
-    'prose-video:rounded-lg prose-video:border prose-video:border-black dark:prose-video:border-white prose-video:mx-0',
+    'prose-img:rounded-xl prose-img:border prose-img:border-zinc-200 dark:prose-img:border-zinc-800 prose-img:mx-auto prose-img:my-0',
+    'prose-video:rounded-xl prose-video:border prose-video:border-zinc-200 dark:prose-video:border-zinc-800 prose-video:mx-0',
     'prose-dd:m-0 prose-dt:m-0 prose-dd:p-0 prose-dt:p-0',
     className,
   );

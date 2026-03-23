@@ -12,7 +12,7 @@ const PremiumAddressHeader = () => {
   const { address, domainName } = useAddress();
 
   return (
-    <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border border-black dark:border-white rounded-lg p-4">
+    <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-2">
           <AddressDisplay

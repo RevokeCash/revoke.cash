@@ -16,7 +16,7 @@ const Sidebar = ({ entries }: Props) => {
   const t = useTranslations();
 
   const sidebarContent = (
-    <ul className="flex flex-col gap-1 text-zinc-600 dark:text-zinc-400">
+    <ul className="flex flex-col gap-1 w-full text-zinc-600 dark:text-zinc-400">
       {entries.map((entry) => (
         <SidebarEntry key={entry.path} {...entry} />
       ))}
@@ -28,7 +28,7 @@ const Sidebar = ({ entries }: Props) => {
       <StickyBox offsetTop={16} offsetBottom={16}>
         <Disclosure
           as="div"
-          className="w-full border border-black dark:border-white rounded-lg bg-white dark:bg-black lg:w-80 px-4 py-2"
+          className="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl lg:w-80 px-4 py-3"
         >
           {({ open }) => {
             return (

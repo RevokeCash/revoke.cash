@@ -49,7 +49,7 @@ const TimeMachineModalWithButton = () => {
         style="secondary"
         onClick={() => setOpen(true)}
         disabled={isLoading || !hasEvents}
-        className="h-9 px-3 text-sm gap-1.5 justify-center w-full sm:w-40"
+        className="h-9 px-4 text-sm gap-1.5 justify-center w-full sm:w-40"
       >
         <ClockIcon className="w-4 h-4" />
         {t('address.time_machine.label')}

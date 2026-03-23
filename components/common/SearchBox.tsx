@@ -13,8 +13,8 @@ interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
 
 const SearchBox = ({ onSubmit, onChange, value, placeholder, children, className, ...props }: Props) => {
   const classes = twMerge(
-    'h-9 flex gap-2 items-center border border-black dark:border-white rounded-lg px-2 font-medium',
-    'focus-within:ring-1 focus-within:ring-black dark:focus-within:ring-white',
+    'h-9 flex gap-2 items-center border border-zinc-300 dark:border-zinc-700 rounded-lg px-2 font-medium',
+    'focus-within:border-black dark:focus-within:border-white',
     className,
   );
 

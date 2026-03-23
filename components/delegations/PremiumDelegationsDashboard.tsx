@@ -47,6 +47,7 @@ const PremiumDelegationsDashboard = () => {
         <EmptyChainsSection
           emptyChains={emptyChains}
           description={t('address.delegations.empty_chains_count', { count: emptyChains.length })}
+          allEmptyMessage={chainsWithContent.length === 0 ? t('address.delegations.none_found_premium') : undefined}
         />
       </div>
     </div>

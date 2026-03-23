@@ -8,9 +8,9 @@ const TableHeader = <T,>({ table }: Props<T>) => {
   return (
     <thead>
       {table.getHeaderGroups().map((headerGroup) => (
-        <tr key={headerGroup.id} className="border-b border-black dark:border-white h-10">
+        <tr key={headerGroup.id} className="border-b border-zinc-200 dark:border-zinc-800 h-10">
           {headerGroup.headers.map((header) => (
-            <th key={header.id} className="text-left px-2 whitespace-nowrap">
+            <th key={header.id} className="text-left px-2 first:pl-4 last:pr-4 whitespace-nowrap">
               {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
             </th>
           ))}

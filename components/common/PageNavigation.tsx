@@ -47,7 +47,7 @@ const PageButton = ({ page, direction }: PageButtonProps) => {
   return (
     <Button size="none" style="secondary" className={buttonClasses} href={page.path} router>
       <div className={contentClasses}>
-        <div className="text-xs md:text-sm">{t(`common.buttons.${direction}`)}</div>
+        <div className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400">{t(`common.buttons.${direction}`)}</div>
         <div className="text-sm md:text-base flex items-center">
           {direction === 'previous' && <ChevronLeftIcon className="w-5 h-5 mr-1 md:mr-2 shrink-0" />}
           <div className={titleClasses}>{page.title}</div>

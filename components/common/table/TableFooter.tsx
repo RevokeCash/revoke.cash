@@ -16,9 +16,9 @@ const TableFooter = <T,>({ table }: Props<T>) => {
   return (
     <tfoot className="table-row-group">
       {table.getFooterGroups().map((footerGroup) => (
-        <tr key={footerGroup.id} className="border-b border-black dark:border-white h-10">
+        <tr key={footerGroup.id} className="border-b border-zinc-200 dark:border-zinc-800 h-10">
           {footerGroup.headers.map((header) => (
-            <th key={header.id} className="text-left px-2 whitespace-nowrap">
+            <th key={header.id} className="text-left px-2 first:pl-4 last:pr-4 whitespace-nowrap">
               {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
             </th>
           ))}

@@ -19,7 +19,7 @@ const Modal = ({ open, setOpen, onlyExplicitClose, children, className }: Props)
   const focusRef = useRef(null);
 
   const panelClasses = twMerge(
-    'border border-black dark:border-white relative transform overflow-hidden rounded-lg bg-white dark:bg-black p-4 text-left shadow-xl transition-all w-full sm:max-w-md',
+    'border border-zinc-200 dark:border-zinc-800 relative transform overflow-hidden rounded-xl bg-white dark:bg-black p-4 text-left shadow-xl transition-all w-full sm:max-w-md',
     className,
   );
 

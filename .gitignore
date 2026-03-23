@@ -59,7 +59,6 @@ cypress/screenshots
 cypress/downloads
 cypress/temp
 
-.vscode/settings.json
 .vscode/launch.json
 
 certificates
@@ -69,6 +68,5 @@ scripts/exploits/data
 scripts/output
 scripts/exploits/output
 
-!.vscode/settings.json
-
-.claude/
+.claude/*
+!.claude/launch.json

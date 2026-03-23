@@ -5,6 +5,7 @@
     "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
     "none": "No approvals",
     "none_found": "No approvals found",
+    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
     "none_found_filtered": "No approvals found for the selected filters",
     "token_id": "Token #{tokenId}",
     "unknown": "Unknown",
@@ -102,6 +103,7 @@
       "title": "What Are Delegations?"
     },
     "no_delegations": "No delegations found",
+    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
     "no_eip7702_delegations": "No EIP7702 delegations found",
     "this_wallet": "This wallet",
     "tooltips": {

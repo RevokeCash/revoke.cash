@@ -40,7 +40,7 @@ const SearchBar = () => {
         onChange={(ev) => setValue(ev.target.value.trim())}
         value={value}
         placeholder={t('common.nav.search')}
-        className="w-full text-base sm:text-lg border-x-0 rounded-none border-zinc-400 dark:border-zinc-600 py-6 focus-within:ring-0 focus-within:border-black dark:focus-within:border-white"
+        className="w-full text-base sm:text-lg border-x-0 rounded-none border-zinc-200 dark:border-zinc-800 py-6 focus-within:ring-0 focus-within:border-black dark:focus-within:border-white"
         onFocus={onFocus}
         onBlur={onBlur}
       />

@@ -16,7 +16,7 @@ const Checkbox = ({ checked, indeterminate, disabled, onChange, className, iconC
   const iconClasses = twMerge('w-4 h-4', iconClassName);
 
   const classes = twMerge(
-    'border border-black dark:border-white flex justify-center rounded-sm items-center cursor-pointer focus:outline-black dark:focus:outline-white',
+    'border border-zinc-300 dark:border-zinc-700 flex justify-center rounded-sm items-center cursor-pointer focus:outline-hidden focus:border-black dark:focus:border-white',
     iconClasses,
     className,
     (checked || indeterminate) && 'bg-brand text-black border-0',
