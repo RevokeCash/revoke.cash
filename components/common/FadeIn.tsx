@@ -34,7 +34,7 @@ const FadeIn = ({ children, stagger = false, staggerDelay = 120, className }: Pr
   }, []);
 
   const fadeClassName = twMerge(
-    'transition-all duration-1000 ease-expo-out',
+    'duration-1000 ease-expo-out',
     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
   );
 
@@ -46,7 +46,10 @@ const FadeIn = ({ children, stagger = false, staggerDelay = 120, className }: Pr
             // biome-ignore lint/suspicious/noArrayIndexKey: stable list
             key={i}
             className={twMerge('*:h-full', fadeClassName)}
-            style={{ transitionDelay: isVisible ? `${i * staggerDelay}ms` : '0ms' }}
+            style={{
+              transitionProperty: 'opacity, transform',
+              transitionDelay: isVisible ? `${i * staggerDelay}ms` : '0ms',
+            }}
           >
             {child}
           </div>
@@ -56,7 +59,7 @@ const FadeIn = ({ children, stagger = false, staggerDelay = 120, className }: Pr
   }
 
   return (
-    <div ref={ref} className={twMerge(fadeClassName, className)}>
+    <div ref={ref} className={twMerge('transition-all', fadeClassName, className)}>
       {children}
     </div>
   );

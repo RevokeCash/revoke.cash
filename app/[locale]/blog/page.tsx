@@ -35,14 +35,18 @@ const BlogPage: NextPage<Props> = async ({ params }) => {
 
   const t = await getTranslations({ locale });
   const posts = await getSidebar(locale, 'blog', true);
+  const [featuredPost, ...restPosts] = posts;
 
   return (
     <div className="max-w-5xl mx-auto px-4">
       <ContentPageHero title={t('blog.meta.title')} subtitle={t('blog.meta.description')} />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {posts.map((entry) => (
-          <ArticleCard key={entry.title} {...entry} />
-        ))}
+      <div className="flex flex-col gap-4">
+        {featuredPost && <ArticleCard key={featuredPost.title} {...featuredPost} featured />}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {restPosts.map((entry) => (
+            <ArticleCard key={entry.title} {...entry} />
+          ))}
+        </div>
       </div>
     </div>
   );
