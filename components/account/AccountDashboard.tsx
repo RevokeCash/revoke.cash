@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { useConnection } from 'wagmi';
 import BillingSection from './BillingSection';
+import CoverageSection from './coverage/CoverageSection';
 import GrantedEntitlementsSection from './GrantedEntitlementsSection';
 import PremiumAddressesSection from './PremiumAddressesSection';
 import PremiumSubscriptionSection from './PremiumSubscriptionSection';
@@ -62,6 +63,7 @@ const AccountDashboard = () => {
       )}
       {entitlements.length > 0 && <GrantedEntitlementsSection entitlements={entitlements} />}
       <BillingSection subscriptions={subscriptions} isLoading={isLoadingSubscriptions} />
+      <CoverageSection account={account as Address} />
     </div>
   );
 };

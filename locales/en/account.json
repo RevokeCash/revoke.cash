@@ -8,6 +8,17 @@
     "resolve_failed": "Could not resolve address or name",
     "title": "My Premium Addresses"
   },
+  "coverage": {
+    "active": "Coverage Active",
+    "covered": "{amount} covered",
+    "covered_wallets": "Covered Wallets",
+    "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+    "get_coverage": "Get Coverage",
+    "manage": "Manage Coverage",
+    "title": "Fairside Coverage",
+    "valid_until": "Valid until {date}",
+    "wallets_description": "Sign an authentication message to view your covered wallets."
+  },
   "billing": {
     "columns": {
       "amount": "Amount",
