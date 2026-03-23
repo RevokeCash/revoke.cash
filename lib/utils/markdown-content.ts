@@ -53,7 +53,6 @@ export const readAndParseContentFile = (
     coverImage: getCoverImage(slug, directory, locale),
     date: data.date?.toISOString() ?? null,
     readingTime: calculateReadingTime(content),
-    overlay: data.overlay ?? true,
   };
 
   return { content, meta };

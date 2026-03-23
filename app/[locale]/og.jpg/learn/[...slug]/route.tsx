@@ -27,7 +27,7 @@ export async function GET(_req: Request, { params }: Props) {
   const { locale, slug } = await params;
   const { meta } = readAndParseContentFile(slug, locale, 'learn')!;
 
-  const title = meta.overlay ? meta.sidebarTitle : undefined;
+  const title = meta.sidebarTitle ?? meta.title;
 
   const background = 'https://revoke.cash/assets/images/cover-template.jpg';
   return await generateOgImage({ title, background });

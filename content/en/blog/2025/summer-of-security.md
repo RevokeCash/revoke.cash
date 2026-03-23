@@ -4,7 +4,6 @@ description: At Revoke.cash, we’ve always encouraged users to make revoking to
 date: 2025-06-03
 author: Rosco Kalis
 translator: <Your Name Here (or remove)>
-overlay: false
 ---
 
 # Summer of Security: Revoke for Free, Every Week
