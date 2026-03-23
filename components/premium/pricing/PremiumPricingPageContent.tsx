@@ -5,6 +5,7 @@ import {
   RectangleStackIcon,
   ShieldExclamationIcon,
 } from '@heroicons/react/24/outline';
+import ContentPageHero from 'components/common/ContentPageHero';
 import { Feature } from 'components/landing/FeaturesShowcase';
 import { useTranslations } from 'next-intl';
 import ComparisonTable from './ComparisonTable';
@@ -16,16 +17,13 @@ const PremiumPricingPageContent = () => {
   const t = useTranslations();
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12 flex flex-col gap-12">
-      <div className="text-center flex flex-col gap-3">
-        <h1 className="text-4xl font-semibold">{t('premium.pricing.title')}</h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">{t('premium.pricing.description')}</p>
-      </div>
+    <div className="max-w-5xl mx-auto px-4 flex flex-col gap-12">
+      <ContentPageHero title={t('premium.pricing.title')} subtitle={t('premium.pricing.description')} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <TierCard tierKey="free" price="$0" href="/token-approval-checker/ethereum" />
         <TierCard tierKey="premium" price="$79" href="/account" />
-        <TierCard tierKey="bundle" price="$199" href="/account" highlighted />
+        <TierCard tierKey="bundle" price="$199" href="/account" highlighted referencesTier="premium" />
       </div>
 
       <ComparisonTable />

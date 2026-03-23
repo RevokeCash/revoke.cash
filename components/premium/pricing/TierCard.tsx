@@ -3,16 +3,17 @@ import Button from 'components/common/Button';
 import Label from 'components/common/Label';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
-import { FEATURES, type TierKey } from './pricing-data';
+import { FEATURES, type PricingFeature, type TierKey } from './pricing-data';
 
 interface Props {
   tierKey: TierKey;
   price: string;
   href: string;
   highlighted?: boolean;
+  referencesTier?: TierKey;
 }
 
-const TierCard = ({ tierKey, price, href, highlighted }: Props) => {
+const TierCard = ({ tierKey, price, href, highlighted, referencesTier }: Props) => {
   const t = useTranslations();
 
   return (
@@ -53,27 +54,81 @@ const TierCard = ({ tierKey, price, href, highlighted }: Props) => {
         {t(`premium.pricing.tiers.${tierKey}.cta`)}
       </Button>
 
-      <ul className="flex flex-col gap-2.5">
-        {FEATURES.map((feature) => {
-          const included = feature[tierKey] !== false;
-          const labelKey = feature.cardLabelKey?.[tierKey] ?? feature.labelKey;
-
-          return (
-            <li key={feature.labelKey} className="flex items-center gap-2 text-sm">
-              {included ? (
-                <CheckIcon className="w-4 h-4 shrink-0 text-green-600 dark:text-green-400" />
-              ) : (
-                <XMarkIcon className="w-4 h-4 shrink-0 text-zinc-300 dark:text-zinc-600" />
-              )}
-              <span className={included ? undefined : 'text-zinc-400 dark:text-zinc-600'}>
-                {t(`premium.pricing.features.${labelKey}`, { price: '$1.50' })}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
+      <FeatureList tierKey={tierKey} referencesTier={referencesTier} />
     </div>
   );
 };
 
 export default TierCard;
+
+interface FeatureListProps {
+  tierKey: TierKey;
+  referencesTier?: TierKey;
+}
+
+const FeatureList = ({ tierKey, referencesTier }: FeatureListProps) => {
+  const t = useTranslations();
+
+  if (!referencesTier) {
+    return (
+      <ul className="flex flex-col gap-2.5">
+        {FEATURES.map((feature) => (
+          <FeatureItem
+            key={feature.labelKey}
+            feature={feature}
+            tierKey={tierKey}
+            included={feature[tierKey] !== false}
+          />
+        ))}
+      </ul>
+    );
+  }
+
+  const uniqueFeatures = FEATURES.filter(
+    (feature) =>
+      feature[tierKey] !== false && (feature[referencesTier] === false || feature.upgradedIn?.includes(tierKey)),
+  );
+
+  return (
+    <div className="flex flex-col gap-4">
+      <ul className="flex flex-col gap-2.5">
+        <li className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          {t('premium.pricing.includes_tier', { tierName: t(`premium.pricing.tiers.${referencesTier}.name`) })}
+        </li>
+        {uniqueFeatures.map((feature) => (
+          <FeatureItem key={feature.labelKey} feature={feature} tierKey={tierKey} included />
+        ))}
+      </ul>
+
+      {t.has(`premium.pricing.tiers.${tierKey}.savings`) && (
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+          {t(`premium.pricing.tiers.${tierKey}.savings`, { price: '$1.66' })}
+        </p>
+      )}
+    </div>
+  );
+};
+
+interface FeatureItemProps {
+  feature: PricingFeature;
+  tierKey: TierKey;
+  included: boolean;
+}
+
+const FeatureItem = ({ feature, tierKey, included }: FeatureItemProps) => {
+  const t = useTranslations();
+  const labelKey = feature.cardLabelKey?.[tierKey] ?? feature.labelKey;
+
+  return (
+    <li className="flex items-center gap-2 text-sm">
+      {included ? (
+        <CheckIcon className="w-4 h-4 shrink-0 text-green-600 dark:text-green-400" />
+      ) : (
+        <XMarkIcon className="w-4 h-4 shrink-0 text-zinc-300 dark:text-zinc-600" />
+      )}
+      <span className={included ? undefined : 'text-zinc-400 dark:text-zinc-600'}>
+        {t(`premium.pricing.features.${labelKey}`, { price: '$1.50' })}
+      </span>
+    </li>
+  );
+};

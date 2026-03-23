@@ -13,11 +13,11 @@ const ComparisonTable = () => {
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-2xl font-semibold text-center">{t('premium.pricing.compare_plans')}</h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
         <table className="w-full min-w-lg text-sm">
           <thead>
-            <tr className="border-b border-zinc-200 dark:border-zinc-700">
-              <th className="text-left py-3 pr-4 font-medium text-zinc-600 dark:text-zinc-400">
+            <tr className="bg-zinc-50 dark:bg-zinc-900">
+              <th className="text-left py-3 pl-5 pr-4 font-medium text-zinc-500 dark:text-zinc-400">
                 {t('premium.pricing.feature_column')}
               </th>
               {TIER_KEYS.map((tierKey) => (
@@ -28,9 +28,9 @@ const ComparisonTable = () => {
             </tr>
           </thead>
           <tbody>
-            {FEATURES.map((feature) => (
-              <tr key={feature.labelKey} className="border-b border-zinc-100 dark:border-zinc-800">
-                <td className="py-3 pr-4 text-zinc-700 dark:text-zinc-300">
+            {FEATURES.map((feature, index) => (
+              <tr key={feature.labelKey} className={index % 2 === 0 ? '' : 'bg-zinc-50/50 dark:bg-zinc-900/50'}>
+                <td className="py-3 pl-5 pr-4 text-zinc-700 dark:text-zinc-300">
                   {t(`premium.pricing.features.${feature.labelKey}`)}
                 </td>
                 {TIER_KEYS.map((tierKey) => (

@@ -8,6 +8,7 @@
     "compare_plans": "Compare plans",
     "description": "Stay safe in web3 with the tools you need. Upgrade to Premium for the full experience.",
     "feature_column": "Feature",
+    "includes_tier": "Everything in {tierName}, plus:",
     "feature_sections": {
       "multichain_approvals": {
         "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard. No more switching chains one by one — see everything at a glance and take action instantly.",
@@ -63,6 +64,7 @@
       "bundle": {
         "cta": "Subscribe",
         "description": "Everything in Premium for up to 10 wallet addresses.",
+        "savings": "That's just {price} per address per month",
         "name": "Premium Bundle"
       },
       "free": {
