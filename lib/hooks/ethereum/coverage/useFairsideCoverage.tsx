@@ -10,11 +10,13 @@ import {
 } from 'lib/coverage/fairside';
 import { isNullish } from 'lib/utils';
 import { isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
-import { useCallback, useState } from 'react';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
+import useLocalStorage from 'use-local-storage';
 import type { Address } from 'viem';
 import { useWalletClient } from 'wagmi';
+
+const FAIRSIDE_TOKEN_KEY = 'fairside_token';
 
 export const useFairsideCoverage = (account: Address) => {
   const { data: walletClient } = useWalletClient();
@@ -24,12 +26,7 @@ export const useFairsideCoverage = (account: Address) => {
     queryFn: () => getMembershipInfo({ walletAddress: account }),
   });
 
-  const [token, setToken] = useState<string | null>(() => getStoredToken(account));
-
-  const clearToken = useCallback(() => {
-    clearStoredToken(account);
-    setToken(null);
-  }, [account]);
+  const [token, setToken] = useLocalStorage<string | null>(`${FAIRSIDE_TOKEN_KEY}_${account}`, null);
 
   const { data: wallets, isLoading: isWalletsLoading } = useQuery({
     queryKey: ['fairsideCoveredWallets', account, token],
@@ -39,7 +36,7 @@ export const useFairsideCoverage = (account: Address) => {
         return coveredWallets?.map((w) => w.walletAddress as Address) ?? [account];
       } catch {
         // Token is likely expired, clear it
-        clearToken();
+        setToken(null);
         return null;
       }
     },
@@ -73,7 +70,6 @@ export const useFairsideCoverage = (account: Address) => {
         return;
       }
 
-      storeToken(account, accessToken);
       setToken(accessToken);
     } catch (error) {
       console.error('Authentication error:', error);
@@ -93,26 +89,4 @@ export const useFairsideCoverage = (account: Address) => {
     authenticate,
     isAuthenticating,
   };
-};
-
-const FAIRSIDE_TOKEN_KEY = 'fairside_token';
-
-const getStoredToken = (account: string): string | null => {
-  try {
-    return localStorage.getItem(`${FAIRSIDE_TOKEN_KEY}_${account}`);
-  } catch {
-    return null;
-  }
-};
-
-const storeToken = (account: string, token: string) => {
-  try {
-    localStorage.setItem(`${FAIRSIDE_TOKEN_KEY}_${account}`, token);
-  } catch {}
-};
-
-const clearStoredToken = (account: string) => {
-  try {
-    localStorage.removeItem(`${FAIRSIDE_TOKEN_KEY}_${account}`);
-  } catch {}
 };

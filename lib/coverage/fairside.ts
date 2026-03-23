@@ -86,7 +86,7 @@ interface GetCoveredWalletsParams {
 
 interface CoveredWallet {
   id: string;
-  memebershipId: number;
+  membershipId: number;
   coverID: number;
   active: boolean;
   walletAddress: Address;
