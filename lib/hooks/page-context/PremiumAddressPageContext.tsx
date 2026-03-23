@@ -91,7 +91,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
   // Only look up blocks for chains that actually have events (skip inactive chains)
   const activeChainIds = useMemo(() => {
     return eventResults.flatMap((result, index) =>
-      result.data && result.data.length > 0 ? [ORDERED_CHAINS[index]] : [],
+      Array.isArray(result.data) && result.data.length > 0 ? [ORDERED_CHAINS[index]] : [],
     );
   }, [eventResults]);
 
@@ -102,7 +102,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
     if (!isTimeMachineActive) return eventResults;
 
     return eventResults.map((result, index) => {
-      if (!result.data) return result;
+      if (!Array.isArray(result.data)) return result;
       if (result.data.length === 0) return result;
 
       const chainId = ORDERED_CHAINS[index];
@@ -223,7 +223,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
         queryClient.invalidateQueries({ queryKey: ['allowances', address, chainId] });
       };
 
-      const events = eventResults[index]?.data ?? [];
+      const events = Array.isArray(eventResults[index]?.data) ? eventResults[index].data : [];
 
       return {
         chainId,
@@ -242,7 +242,9 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
 
   // Compute the oldest event timestamp across all chains (for the time machine slider range)
   const oldestEventTimestamp = useMemo(() => {
-    const timestamps = eventResults.flatMap((result) => result.data ?? []).map((event) => event.time.timestamp);
+    const timestamps = eventResults
+      .flatMap((result) => (Array.isArray(result.data) ? result.data : []))
+      .map((event) => event.time.timestamp);
     return timestamps.length > 0 ? Math.min(...timestamps) : undefined;
   }, [eventResults]);
 

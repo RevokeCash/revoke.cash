@@ -18,7 +18,13 @@ export const usePremiumAllowanceResults = (
       const events = eventResults[index]?.data;
       const targetBlock = timeMachineBlocks?.[chainId];
       return {
-        queryKey: ['allowances', address, chainId, events?.map(getEventKey), targetBlock ?? 'latest'],
+        queryKey: [
+          'allowances',
+          address,
+          chainId,
+          Array.isArray(events) ? events.map(getEventKey) : undefined,
+          targetBlock ?? 'latest',
+        ],
         queryFn: async () => {
           const blockNumber = targetBlock != null ? BigInt(targetBlock) : undefined;
           const publicClient = createViemPublicClientForChain(chainId, undefined, blockNumber);
@@ -33,7 +39,7 @@ export const usePremiumAllowanceResults = (
           analytics.track('Fetched Allowances', { account: address, chainId });
           return allowances;
         },
-        enabled: !isNullish(address) && !isNullish(chainId) && !isNullish(events),
+        enabled: !isNullish(address) && !isNullish(chainId) && Array.isArray(events),
         staleTime: Number.POSITIVE_INFINITY,
       };
     }),
