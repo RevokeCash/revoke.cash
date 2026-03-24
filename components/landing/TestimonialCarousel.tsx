@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 import TestimonialCard from './TestimonialCard';
 import { TESTIMONIALS } from './testimonials-data';
 
@@ -28,9 +29,10 @@ const TestimonialCarousel = () => {
         {TESTIMONIALS.map((testimonial, index) => (
           <div
             key={testimonial.tweetUrl}
-            className={`col-start-1 row-start-1 transition-opacity duration-500 ${
-              index === activeIndex ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
+            className={twMerge(
+              'col-start-1 row-start-1 transition-opacity duration-500',
+              index === activeIndex ? 'opacity-100' : 'opacity-0 pointer-events-none',
+            )}
           >
             <TestimonialCard testimonial={testimonial} />
           </div>
@@ -42,9 +44,10 @@ const TestimonialCarousel = () => {
             key={testimonial.tweetUrl}
             type="button"
             onClick={() => setActiveIndex(index)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              index === activeIndex ? 'w-4 bg-zinc-400 dark:bg-zinc-500' : 'w-1.5 bg-zinc-200 dark:bg-zinc-700'
-            }`}
+            className={twMerge(
+              'h-1.5 rounded-full transition-all duration-300',
+              index === activeIndex ? 'w-4 bg-zinc-400 dark:bg-zinc-500' : 'w-1.5 bg-zinc-200 dark:bg-zinc-700',
+            )}
             aria-label={`Show testimonial ${index + 1}`}
           />
         ))}

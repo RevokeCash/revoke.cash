@@ -16,7 +16,10 @@ const GrantedEntitlementsSection = ({ entitlements }: Props) => {
   return (
     <Card header={<CardTitle title={t('account.granted.title')} />} className="flex flex-col gap-2">
       {entitlements.map((entitlement) => (
-        <div key={entitlement.ownerAddress} className="flex flex-col gap-1 rounded-md bg-zinc-100 dark:bg-zinc-800 p-4">
+        <div
+          key={entitlement.ownerAddress}
+          className="flex flex-col gap-2 rounded-md bg-zinc-100 dark:bg-zinc-800/50 p-4 border border-transparent dark:border-zinc-700"
+        >
           <div className="flex items-center gap-2">
             <span className="font-medium">{entitlement.planName}</span>
             <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">

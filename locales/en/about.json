@@ -1,13 +1,57 @@
 {
-  "body": {
-    "growth": "For several years Rosco maintained Revoke.cash as a side project while he worked for different companies in the web3 space. But in the past years web3 has grown and the need for proper security tools has become more apparent. That is why Rosco decided to focus on Revoke.cash full-time in 2022. Since then he has expanded the Revoke.cash toolset with the <extension-link>Revoke.cash browser extension</extension-link> and launched a completely overhauled version of the approvals dashboard.",
-    "intro": "Revoke.cash was created in 2019 by <rosco-twitter-link>Rosco Kalis</rosco-twitter-link>. Back then DeFi and smart contracts were still in their infancy, but there was a lot of active development in the space. One thing that projects had in common was that they required users to grant an approval to spend their tokens – and often the amount was unlimited. There were no established tools to revoke these approvals, which is how Revoke.cash was born.",
-    "learn_more": "If you want to learn more about Revoke.cash and wallet security, check out our <learn-link>Learn section</learn-link>.",
-    "team": "Today Revoke.cash is maintained and developed by Rosco and a small team of independent contractors and is funded by donations and grants. We see Revoke.cash as a piece of essential web3 infrastructure, which is why our tools are open source and free to use. We also value sustainability and independence, so we are looking to generate sustainable revenue without raising VC funding or launching a token."
-  },
-  "captions": {
-    "first_tweet": "How It All Started",
-    "team": "The Revoke.cash Team"
+  "timeline": {
+    "created": {
+      "title": "Revoke.cash Created",
+      "description": "Inspired by Paul Berg's talk at Devcon 5, Rosco Kalis builds the first token approval management tool, giving users a way to revoke unlimited approvals."
+    },
+    "nft_support": {
+      "title": "NFT Approval Support",
+      "description": "As NFTs rise in popularity, many users are giving approvals to marketplaces like OpenSea. Revoke.cash becomes the first tool to support revoking NFT approvals, expanding beyond ERC20 tokens."
+    },
+    "multichain": {
+      "title": "Multichain Expansion",
+      "description": "The EVM ecosystem is growing rapidly, and Revoke.cash expands beyond Ethereum to support dozens of EVM-compatible networks."
+    },
+    "extension": {
+      "title": "Browser Extension Launch",
+      "description": "The crypto ecosystem sees a large increase in scams and phishing attacks. Rosco releases a browser extension that warns users before signing risky approvals, providing proactive protection."
+    },
+    "full_time": {
+      "title": "Going Full-Time",
+      "description": "After leaving his previous startup, Rosco decides to focus on Revoke.cash full-time, turning it from a side project into a mission."
+    },
+    "redesign": {
+      "title": "Website Redesign",
+      "description": "At this point, Revoke.cash has had the same visual design since 2019. To pave the way for the future, a complete visual overhaul of the Revoke.cash dashboard and website is released."
+    },
+    "learn_section": {
+      "title": "Learn Section",
+      "description": "While tools are an important part of security, it does not replace the need for education. A Learn Section is added to help users understand wallet security."
+    },
+    "team_retropgf": {
+      "title": "Team Growth & RetroPGF",
+      "description": "Optimism RetroPGF provides major funding, enabling the first team expansion. In 2024, the team grows to include Dries and WiiMee as part-time team members."
+    },
+    "batch_revoke": {
+      "title": "Batch Revoking",
+      "description": "A much-requested feature, users can now revoke multiple approvals in a single flow with queued transactions."
+    },
+    "single_tx_batch": {
+      "title": "Single-Transaction Batch Revoke",
+      "description": "EIP7702 enables revoking multiple approvals in a single transaction, massively improving the user experience of batch revoking."
+    },
+    "beyond_approvals": {
+      "title": "Delegations & History Tabs",
+      "description": "Revoke.cash expands beyond approval management with new tabs for managing delegations and viewing approval history."
+    },
+    "extension_overhaul": {
+      "title": "Extension Overhaul",
+      "description": "The threat landscape is constantly evolving, and the browser extension needs to stay ahead. A full overhaul of the browser extension is released with improved detection, UX and risk coverage."
+    },
+    "premium": {
+      "title": "Revoke Premium",
+      "description": "With a decline in public goods funding, Revoke.cash needs to find a sustainable business model. Revoke Premium is launched to generate real revenue — no VC funding, no token."
+    }
   },
   "meta": {
     "description": "Revoke.cash was created in 2019 by Rosco Kalis as a tool to manage your token approvals. Since then it has grown to be a staple in web3 security.",

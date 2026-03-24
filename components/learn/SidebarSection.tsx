@@ -24,8 +24,8 @@ const SidebarSection = ({ title, href, path, children }: Props) => {
         className={twMerge(
           'block text-sm font-semibold uppercase tracking-wide px-2 py-1 rounded-md transition-colors',
           isActive
-            ? 'bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white'
-            : 'text-zinc-500 dark:text-zinc-500 hover:text-black dark:hover:text-white',
+            ? 'bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white border-l-2 border-brand'
+            : 'text-zinc-500 dark:text-zinc-500 hover:text-black dark:hover:text-white border-l-2 border-transparent',
         )}
         underline="none"
         router
