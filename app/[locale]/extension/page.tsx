@@ -44,8 +44,8 @@ const ExtensionPage: NextPage<Props> = async ({ params }) => {
       <p>{t('extension.paragraph_2')}</p>
 
       <Image
-        src="/assets/images/extension/screenshot-1.png"
-        alt="Extension: Token Approval"
+        src="/assets/images/extension/screenshot-1.jpg"
+        alt="Revoke Sidekick: Transaction Simulation"
         height="1000"
         width="1600"
         priority
@@ -54,18 +54,14 @@ const ExtensionPage: NextPage<Props> = async ({ params }) => {
 
       <p>{t('extension.paragraph_3')}</p>
 
-      <p>{t('extension.paragraph_4')}</p>
-
       <Image
-        src="/assets/images/extension/screenshot-2.png"
-        alt="Extension: Marketplace Listing"
+        src="/assets/images/extension/screenshot-2.jpg"
+        alt="Revoke Sidekick: Protection Features"
         height="1000"
         width="1600"
       />
 
-      <p>{t('extension.paragraph_5')}</p>
-
-      <p>{t('extension.paragraph_6')}</p>
+      <p>{t('extension.paragraph_4')}</p>
 
       <div className="flex flex-wrap items-center justify-center gap-4 not-prose">
         <DownloadButton href={CHROME_EXTENSION_URL}>
