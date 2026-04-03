@@ -3,6 +3,7 @@
 import AddressDisplay from 'components/address/AddressDisplay';
 import AllowanceDashboard from 'components/allowances/dashboard/AllowanceDashboard';
 import ChainSelect from 'components/common/select/ChainSelect';
+import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressAllowances, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useEffect } from 'react';
 import { useChainId } from 'wagmi';
@@ -10,7 +11,8 @@ import { useEmbedConfig } from '../lib/context';
 
 const EmbedDashboard = () => {
   const { allowances } = useAddressAllowances();
-  const { address, domainName, selectedChainId, selectChain } = useAddressPageContext();
+  const { selectedChainId, selectChain } = useAddressPageContext();
+  const { address, domainName } = useAddress();
   const { renderShareAction, type, showChainSelect = true } = useEmbedConfig();
   const walletChainId = useChainId();
 

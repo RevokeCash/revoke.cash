@@ -4,7 +4,7 @@ import blocksDB from 'lib/databases/blocks';
 import { type Address, type Hex, parseSignature, type Signature, type TypedDataDomain, type WalletClient } from 'viem';
 import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
 import { type ResolvedTimeLog, type TokenEvent, TokenEventType } from './events';
-import { type Erc20TokenContract, getPermitDomain, type PermitTokenData, type TokenData } from './tokens';
+import { type Erc20TokenContract, getPermitDomain, type PermitTokenData } from './tokens';
 
 export const permit = async (
   walletClient: WalletClient,

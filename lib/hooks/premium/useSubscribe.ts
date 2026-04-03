@@ -172,7 +172,6 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
     },
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: subscribeMutation.reset is a stable function
   const reset = useCallback(() => {
     setStatus('idle');
     subscribeMutation.reset();

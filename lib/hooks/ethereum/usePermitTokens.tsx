@@ -10,7 +10,6 @@ import {
   hasZeroBalance,
   isErc721Contract,
   type PermitTokenData,
-  type TokenData,
 } from 'lib/utils/tokens';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import { usePublicClient } from 'wagmi';
