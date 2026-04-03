@@ -1,13 +1,11 @@
 {
   "meta": {
-    "description": "Protect your Ethereum token balances by getting warnings when you are about to do something potentially harmful with your crypto wallet.",
-    "title": "Revoke.cash Browser Extension"
+    "description": "Protect your crypto wallet with Revoke Sidekick. Get transaction simulation, approval checking, address poisoning detection, ad warnings, and optional theft coverage up to $30,000.",
+    "title": "Revoke Sidekick Browser Extension"
   },
-  "paragraph_1": "In many cases, phishing websites try to make you sign an approval while they pretend to be an NFT mint or other legitimate use cases. When these phishing scams happen, it is recommended to use Revoke.cash to mitigate the damage, but it is even better to prevent the scam in the first place.",
-  "paragraph_2": "This is where the Revoke.cash Browser Extension comes in. The extension pops up whenever you are about to sign an approval and will inform you of the approval details. This can help you prevent signing malicious approvals.",
-  "paragraph_3": "The extension also informs you when you are about to list an item for sale on popular marketplaces such as OpenSea and LooksRare, or when you are about to sign a hash. These hashes are used by certain marketplaces like X2Y2 for listing NFTs.",
-  "paragraph_4": "A common scam is to try to trick you into signing one of these gasless signatures on a phishing website, allowing the scammers to steal your NFTs. The official websites of OpenSea, LooksRare, X2Y2, Uniswap and Blur are allowlisted for these actions, so that the Revoke.cash browser extension does not interrupt your normal flow.",
-  "paragraph_5": "The different categories of warnings can be turned on and off in the extension settings.",
-  "paragraph_6": "The Revoke.cash browser extension works with every EVM-based network including Ethereum, Polygon and Avalanche.",
-  "title": "Revoke.cash Browser Extension"
+  "paragraph_1": "Revoke Sidekick is a browser extension that protects your crypto wallet from scams and threats, developed and operated in partnership with Fairside.",
+  "paragraph_2": "The extension simulates every transaction before you sign it, showing you exactly which tokens will leave your wallet, which will arrive, and what approvals will be granted. You can also check your token approvals directly from the extension for a quick overview on the go.",
+  "paragraph_3": "Beyond transaction simulation, Revoke Sidekick detects address poisoning on block explorers, warns you about sponsored phishing links on Google, flags impersonator accounts on X with Ethos reputation scores, includes a hold-to-confirm slow mode for suspicious transactions, and provides theft coverage of up to $30,000.",
+  "paragraph_4": "Revoke Sidekick works with many EVM-based networks, including Ethereum, BNB Chain and Polygon.",
+  "title": "Revoke Sidekick Browser Extension"
 }
