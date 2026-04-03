@@ -26,7 +26,7 @@ const AnnouncementsContainer = () => {
             size="sm"
             href="/blog/2026/revoke-extension-update"
             router
-            className="bg-brand text-black dark:text-black border-black/10 dark:border-black/40 hover:bg-black/10 dark:hover:bg-black/10"
+            className="border-none bg-brand text-black dark:text-black border-black/10 dark:border-black/40 hover:bg-black/10 dark:hover:bg-black/10"
           >
             Learn More
           </Button>

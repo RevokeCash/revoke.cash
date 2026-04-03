@@ -1,7 +1,14 @@
 import { ADDRESS_ZERO } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
 import type { Nullable, SpenderRiskData, TransactionSubmitted } from 'lib/interfaces';
-import { type Address, formatUnits, type PublicClient, type WalletClient, type WriteContractParameters } from 'viem';
+import {
+  type Address,
+  formatUnits,
+  maxUint256,
+  type PublicClient,
+  type WalletClient,
+  type WriteContractParameters,
+} from 'viem';
 import {
   deduplicateArray,
   isNullish,
@@ -18,6 +25,7 @@ import {
   type Erc721ApprovalEvent,
   type Erc721ApprovalForAllEvent,
   type Erc721TransferEvent,
+  hasTransfersFromOwnerAfterEvent,
   type TimeLog,
   type TokenEvent,
   TokenEventType,
@@ -176,7 +184,7 @@ export const getErc20AllowancesFromApprovals = async (
   );
 
   const allowances = await Promise.all(
-    deduplicatedApprovalEvents.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval)),
+    deduplicatedApprovalEvents.map((approval) => getErc20AllowanceFromApproval(contract, owner, approval, events)),
   );
 
   return allowances.filter((allowance) => !isNullish(allowance));
@@ -186,14 +194,28 @@ const getErc20AllowanceFromApproval = async (
   contract: Erc20TokenContract,
   owner: Address,
   approval: Erc20ApprovalEvent,
+  events: TokenEvent[],
 ): Promise<Erc20Allowance | undefined> => {
   const { spender, amount: lastApprovedAmount } = approval.payload;
 
   // If the most recent approval event was for 0, then we know for sure that the allowance is 0
-  // If not, we need to check the current allowance because we cannot determine the allowance from the event
-  // since it may have been partially used (through transferFrom)
   if (lastApprovedAmount === 0n) return undefined;
 
+  // Optimisation: if the approval is for the max uint256 value, the allowance is not decreased by transferFrom
+  // (per EIP-20 convention), so we can use the event value directly without an RPC call
+  if (lastApprovedAmount === maxUint256) {
+    const lastUpdated = await blocksDB.getTimeLog(contract.publicClient, approval.time);
+    return { type: AllowanceType.ERC20, spender, amount: lastApprovedAmount, lastUpdated };
+  }
+
+  // Optimisation: if there are no transfers from the owner after the approval, the allowance cannot have been
+  // partially used (through transferFrom), so we can use the event value directly without an RPC call
+  if (!hasTransfersFromOwnerAfterEvent(owner, events, approval)) {
+    const lastUpdated = await blocksDB.getTimeLog(contract.publicClient, approval.time);
+    return { type: AllowanceType.ERC20, spender, amount: lastApprovedAmount, lastUpdated };
+  }
+
+  // Otherwise we need to check the current on-chain allowance because it may have been partially used
   const [amount, lastUpdated] = await Promise.all([
     contract.publicClient.readContract({
       ...contract,

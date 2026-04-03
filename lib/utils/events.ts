@@ -2,7 +2,7 @@ import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import { ADDRESS_ZERO, DUMMY_ADDRESS, MOONBIRDS_ADDRESS } from 'lib/constants';
 import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { type Address, decodeEventLog, type Hash, type Hex, toEventSelector } from 'viem';
-import { addressToTopic, isNullish } from '.';
+import { addressToTopic, isNullish, logSorterChronological } from '.';
 import { type AllowancePayload, AllowanceType } from './allowances';
 
 export interface Log {
@@ -276,4 +276,19 @@ export const isCancelPermitEvent = (event: ApprovalTokenEvent): boolean => {
   const hasZeroValue = event.payload.amount === 0n;
 
   return hasDummySpender && hasZeroValue;
+};
+
+// Check if any ERC20 transfers from the owner occurred after a given event, which would indicate
+// that an allowance may have been partially consumed through transferFrom
+export const hasTransfersFromOwnerAfterEvent = (
+  owner: Address,
+  events: TokenEvent[],
+  afterEvent: TokenEvent,
+): boolean => {
+  return events.some(
+    (event) =>
+      event.type === TokenEventType.TRANSFER_ERC20 &&
+      event.payload.from === owner &&
+      logSorterChronological(event.rawLog, afterEvent.rawLog) > 0,
+  );
 };
