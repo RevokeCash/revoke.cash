@@ -13,6 +13,10 @@ export const FEE_SPONSORS: Record<number, FeeSponsor> = {
     name: 'Optimism Foundation',
     url: 'https://www.optimism.io/',
   },
+  [ChainId.Monad]: {
+    name: 'Monad Foundation',
+    url: 'https://www.monad.foundation/',
+  },
 };
 
 export const getFeeDollarAmount = (chainId: number, allowancesCount: number) => {
