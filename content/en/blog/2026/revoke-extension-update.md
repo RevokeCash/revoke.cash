@@ -79,3 +79,5 @@ This is the same reason that antivirus software, browser security features, and 
 ## What's Next for the Extension
 
 With the new partnership, expect a lot of new features and improvements to ship on the extension side. The mission hasn't changed, the extension will continue to evolve with new features that help keep you safe throughout the crypto industry. With Fairside's dedicated resources, the extension can now evolve with the focus and attention it needs.
+
+[Get the extension now](https://chromewebstore.google.com/detail/revokecash-web3-scam-prot/nmniboccheadcclilkfkonokbcoceced).
