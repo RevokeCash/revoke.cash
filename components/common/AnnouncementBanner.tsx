@@ -2,7 +2,9 @@
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useMounted } from 'lib/hooks/useMounted';
+import analytics from 'lib/utils/analytics';
 import { useTranslations } from 'next-intl';
+import { useCallback, useEffect } from 'react';
 import useLocalStorage from 'use-local-storage';
 
 interface Props {
@@ -15,6 +17,15 @@ const AnnouncementBanner = ({ storageKey, children }: Props) => {
   const isMounted = useMounted();
   const [dismissed, setDismissed] = useLocalStorage<boolean>(storageKey, false);
 
+  const dismiss = useCallback(() => {
+    setDismissed(true);
+    analytics.track('Announcement Banner Action', { action: 'dismiss', storageKey });
+  }, [setDismissed, storageKey]);
+
+  useEffect(() => {
+    analytics.track('Announcement Banner Action', { action: 'view', storageKey });
+  }, [storageKey]);
+
   if (!isMounted) return null;
   if (dismissed) return null;
 
@@ -26,7 +37,7 @@ const AnnouncementBanner = ({ storageKey, children }: Props) => {
         <button
           type="button"
           aria-label={t('common.buttons.close')}
-          onClick={() => setDismissed(true)}
+          onClick={dismiss}
           className="text-zinc-800 hover:text-zinc-600"
         >
           <XMarkIcon className="w-5 h-5" />
