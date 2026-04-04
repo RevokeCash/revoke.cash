@@ -13,7 +13,7 @@ const TableBodyLoader = ({ columns, rowCount, ...props }: Props) => {
   return (
     <tbody {...props}>
       {range(rowCount).map((i) => (
-        <tr key={i} className="border-t first:border-0 border-zinc-300 dark:border-zinc-500">
+        <tr key={i} className="border-t first:border-0 border-zinc-200 dark:border-zinc-800">
           {columns.map((column) => (
             <td key={column.id} className={twMerge(column.id === ColumnId.SELECT && 'w-0')}>
               {column.id === ColumnId.SELECT ? null : (

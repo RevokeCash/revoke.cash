@@ -16,8 +16,8 @@ const DropdownMenu = ({ menuButton, children, style, align, buttonClassName, ite
   const classes = {
     items: twMerge(
       align === 'left' ? 'origin-top-left left-0' : 'origin-top-right right-0',
-      'absolute rounded-xl shadow-lg bg-white border border-zinc-200 dark:border-zinc-800 flex flex-col shrink-0',
-      'z-10 mt-2 max-h-88 overflow-x-hidden overflow-y-scroll focus:outline-hidden',
+      'absolute rounded-xl shadow-lg bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 flex flex-col shrink-0',
+      'z-10 mt-2 max-h-88 overflow-hidden overflow-y-auto focus:outline-hidden',
       itemsClassName,
     ),
     button: twMerge(
@@ -61,10 +61,10 @@ export const DropdownMenuItem = (props: Omit<ButtonProps, 'style' | 'size'>) => 
           {...props}
           className={twMerge(
             props.className,
-            'w-full',
+            'w-full border-none',
             active
               ? 'bg-zinc-200 dark:bg-zinc-800'
-              : 'bg-white dark:bg-black hover:bg-white dark:hover:bg-black disabled:bg-zinc-200 dark:disabled:bg-zinc-800',
+              : 'bg-transparent hover:bg-transparent disabled:bg-zinc-200 dark:disabled:bg-zinc-800',
           )}
         />
       )}

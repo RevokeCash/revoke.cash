@@ -23,7 +23,7 @@ const EmptyChainsSection = ({ emptyChains, description, allEmptyMessage }: Props
       onToggle={() => setIsExpanded((value) => !value)}
       className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950"
       headerClassName="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-      contentClassName="border-zinc-200 dark:border-zinc-700 px-4 pb-3"
+      contentClassName="border-zinc-200 dark:border-zinc-800 px-4 pb-3"
       header={
         <div className="w-full flex flex-col gap-1 min-w-0">
           <div className="flex items-center gap-3">

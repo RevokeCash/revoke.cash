@@ -10,7 +10,7 @@ const ManageCoverageButton = () => {
 
   return (
     <Button style="secondary" size="sm" href={FAIRSIDE_APP_URL} external className="w-fit flex items-center gap-1.5">
-      {t('account.coverage.manage')}
+      {t('account.coverage.fairside.manage')}
       <ArrowTopRightOnSquareIcon className="w-4 h-4" />
     </Button>
   );

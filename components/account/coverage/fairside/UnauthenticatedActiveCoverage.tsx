@@ -17,7 +17,9 @@ const UnauthenticatedActiveCoverage = ({ account }: UnauthenticatedActiveCoverag
 
   return (
     <>
-      <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.coverage.wallets_description')}</span>
+      <span className="text-sm text-zinc-600 dark:text-zinc-400">
+        {t('account.coverage.fairside.wallets_description')}
+      </span>
       <div className="flex items-center gap-2">
         {hasWalletClient ? (
           <Button style="secondary" size="sm" onClick={authenticate} loading={isAuthenticating} className="w-fit">

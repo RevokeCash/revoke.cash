@@ -9,15 +9,27 @@
     "title": "My Premium Addresses"
   },
   "coverage": {
-    "active": "Coverage Active",
-    "covered": "{amount} covered",
-    "covered_wallets": "Covered Wallets",
-    "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
-    "get_coverage": "Get Coverage",
-    "manage": "Manage Coverage",
-    "title": "Fairside Coverage",
-    "valid_until": "Valid until {date}",
-    "wallets_description": "Sign an authentication message to view your covered wallets."
+    "active": "Active",
+    "inactive": "Inactive",
+    "title": "Theft Coverage",
+    "extension": {
+      "get_extension": "Get Revoke Sidekick",
+      "lite_description": "Coverage is inactive because the extension is on the Lite tier. Switch to Standard to activate up to $30k in theft coverage.",
+      "not_installed_description": "You are currently not covered by the Revoke Sidekick extension. Install the Revoke Sidekick extension for real-time transaction warnings and up to $30k in theft coverage.",
+      "standard_description": "You are covered for up to $30k in theft protection through the Revoke Sidekick extension.",
+      "title": "Revoke Sidekick Coverage"
+    },
+    "fairside": {
+      "active_description": "You are covered for up to {amount} in theft protection through Fairside.",
+      "covered": "{amount} covered",
+      "covered_wallets": "Covered Wallets",
+      "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+      "get_coverage": "Get Coverage",
+      "manage": "Manage Coverage",
+      "title": "Fairside Coverage",
+      "valid_until": "Valid until {date}.",
+      "wallets_description": "Sign an authentication message to view your covered wallets."
+    }
   },
   "billing": {
     "columns": {

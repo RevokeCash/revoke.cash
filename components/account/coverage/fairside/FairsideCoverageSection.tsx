@@ -2,23 +2,28 @@
 
 import { useFairsideCoverage } from 'lib/hooks/ethereum/coverage/useFairsideCoverage';
 import type { Address } from 'viem';
-import ActiveCoverageHeader from './ActiveCoverageHeader';
 import AuthenticatedActiveCoverage from './AuthenticatedActiveCoverage';
+import CoverageHeader from './CoverageHeader';
+import NoActiveCoverage from './NoActiveCoverage';
 import UnauthenticatedActiveCoverage from './UnauthenticatedActiveCoverage';
 
-interface ActiveCoverageProps {
+interface Props {
   account: Address;
 }
 
-const ActiveCoverage = ({ account }: ActiveCoverageProps) => {
-  const { membershipInfo, isAuthenticated, wallets } = useFairsideCoverage(account);
-
-  if (!membershipInfo || !membershipInfo.coverAmount || !membershipInfo.validUntil) return null;
+const CoverageSection = ({ account }: Props) => {
+  const { isActive, isAuthenticated, membershipInfo, wallets } = useFairsideCoverage(account);
 
   return (
     <div className="flex flex-col gap-4">
-      <ActiveCoverageHeader coverAmount={membershipInfo.coverAmount} validUntil={membershipInfo.validUntil} />
-      {isAuthenticated ? (
+      <CoverageHeader
+        isActive={isActive}
+        coverAmount={membershipInfo?.coverAmount}
+        validUntil={membershipInfo?.validUntil}
+      />
+      {!isActive ? (
+        <NoActiveCoverage />
+      ) : isAuthenticated ? (
         <AuthenticatedActiveCoverage wallets={wallets ?? []} />
       ) : (
         <UnauthenticatedActiveCoverage account={account} />
@@ -27,4 +32,4 @@ const ActiveCoverage = ({ account }: ActiveCoverageProps) => {
   );
 };
 
-export default ActiveCoverage;
+export default CoverageSection;

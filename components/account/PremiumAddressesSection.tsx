@@ -1,9 +1,9 @@
 'use client';
 
+import AddressRow from 'components/account/AddressRow';
 import AddressSearchBox from 'components/common/AddressSearchBox';
 import Button from 'components/common/Button';
 import Card, { CardHeader } from 'components/common/Card';
-import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { useSubscriptionAddresses } from 'lib/hooks/premium/useSubscriptionAddresses';
 import type { PremiumSubscription } from 'lib/premium/types';
 import { parseInputAddress } from 'lib/utils/whois';
@@ -52,17 +52,22 @@ const PremiumAddressesSection = ({ activeSubscription, account }: Props) => {
 
   return (
     <Card header={header} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
         {activeSubscription.addresses.map((entitledAddress) => (
-          <AddressEntryRow
-            key={entitledAddress}
-            address={entitledAddress}
-            isOwner={entitledAddress === activeSubscription.ownerAddress}
-            onRemove={() =>
-              addresses.removeAddress({ subscriptionId: activeSubscription.id, address: entitledAddress })
-            }
-            isRemoving={addresses.removingAddress === entitledAddress}
-          />
+          <AddressRow key={entitledAddress} address={entitledAddress}>
+            {entitledAddress !== activeSubscription.ownerAddress && (
+              <Button
+                style="tertiary"
+                size="sm"
+                onClick={() =>
+                  addresses.removeAddress({ subscriptionId: activeSubscription.id, address: entitledAddress })
+                }
+                loading={addresses.removingAddress === entitledAddress}
+              >
+                {t('common.buttons.remove')}
+              </Button>
+            )}
+          </AddressRow>
         ))}
       </div>
 
@@ -81,39 +86,6 @@ const PremiumAddressesSection = ({ activeSubscription, account }: Props) => {
         </div>
       )}
     </Card>
-  );
-};
-
-interface AddressEntryRowProps {
-  address: Address;
-  isOwner: boolean;
-  onRemove: () => void;
-  isRemoving: boolean;
-}
-
-const AddressEntryRow = ({ address, isOwner, onRemove, isRemoving }: AddressEntryRowProps) => {
-  const t = useTranslations();
-  const { domainName } = useNameLookup(address);
-
-  return (
-    <div className="flex items-center justify-between gap-2 rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-2">
-      <div className="flex items-center gap-1 text-sm min-w-0">
-        {domainName && <span className="font-bold shrink-0">{domainName}</span>}
-        <span className="font-mono text-zinc-500 dark:text-zinc-400 truncate">{address}</span>
-      </div>
-
-      {!isOwner && (
-        <Button
-          style="tertiary"
-          size="sm"
-          onClick={onRemove}
-          loading={isRemoving}
-          aria-label={`${t('common.buttons.remove')} ${domainName ?? address}`}
-        >
-          {t('common.buttons.remove')}
-        </Button>
-      )}
-    </div>
   );
 };
 
