@@ -82,21 +82,35 @@ const Button = (
     if (router) {
       if (retainSearchParams) {
         return (
-          <CsrLink {...props} className={classes} href={href} ref={ref} retainSearchParams={retainSearchParams}>
+          <CsrLink
+            {...props}
+            className={classes}
+            href={href}
+            ref={ref}
+            retainSearchParams={retainSearchParams}
+            onClick={onClick}
+          >
             {children}
           </CsrLink>
         );
       }
 
       return (
-        <Link {...props} className={classes} href={href} ref={ref}>
+        <Link {...props} className={classes} href={href} ref={ref} onClick={onClick}>
           {children}
         </Link>
       );
     }
 
     return (
-      <a {...props} className={classes} href={href} target={external ? '_blank' : undefined} ref={ref}>
+      <a
+        {...props}
+        className={classes}
+        href={href}
+        target={external ? '_blank' : undefined}
+        ref={ref}
+        onClick={onClick}
+      >
         {children}
       </a>
     );
