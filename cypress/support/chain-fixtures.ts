@@ -44,6 +44,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.GravityAlphaMainnet]: '0x7b8af2b20763E971Aa09549DF2d3D73E8C1dF74B',
   [ChainId.HarmonyMainnetShard0]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Hemi]: '0x473eD6129788A9e6cF2da3D326869E277404fBdd',
+  [ChainId.CitreaMainnet]: '0xbDDF138854333CbAE98987FB787c1CA18c6a435B',
   999: '0xdbfc2F881d0A2864b3d247e08C5d93BaF564050e', // Hyperliquid EVM
   [ChainId.ImmutablezkEVM]: '0xEAf9eaE01b153FAec95A666427391BCcBdAACC18',
   [ChainId.Injective]: '0x96FF0691b18254C97Db23da2044e521297716BAD',
@@ -121,6 +122,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.BaseSepoliaTestnet]: '0xF85A57d965aEcD289c625Cae6161d0Ab5141bC66',
   [ChainId.BeamTestnet]: '0xc1447c8c647eF2f564cEAe520E1b65C758A02f9F',
   [ChainId.BNBSmartChainTestnet]: '0x40FE4911704f14f409ebEE40475377720C732803',
+  [ChainId.CitreaTestnet]: '0x6Cf1b069691A7Cc05F02747181947c0Ee5f75150',
   [ChainId.CronosTestnet]: '0x06B2fAe81d5c71F31e3b5266502a779a0D8fC85f',
   [ChainId.EthereumSepolia]: '0x4795680d9c1C108Ccd0EEA27dE9AfbC5cae6C54a',
   [ChainId.OPSepoliaTestnet]: '0xDd3287043493E0a08d2B348397554096728B459c',
