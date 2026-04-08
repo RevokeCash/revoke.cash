@@ -23,6 +23,7 @@
     "boba": "Bobaは、Ethereum、BNBチェーン、Avalancheなどの複数の異なるEVMブロックチェーンの上に構築されたレイヤー2のスケーリングソリューションであり、すべてのブロックチェーンのユニバーサルスケーリングプラットフォームになることを目指しています。これを実現するために、人気のオプティミスティック・ロールアップ・テクノロジーを採用しています。これにより、強力なセキュリティー保証を維持しながら、非常に低い手数料を提供することができます。",
     "btt-chain": "BitTorrent Chain（BTTC）は、Ethereum、トロン、その他のEVMチェーン間のクロスチェーン相互運用性に重点を置いたブロックチェーンです。プルーフ・オブ・ステークに基づくコンセンサスメカニズムを採用しており、バリデーターはBTTをステークして取引を検証します。また、バリデーターは定期的にEthereum、BNBチェーン、トロンのブロックチェーンにチェックポイントを提出します。",
     "celo": "Celoは、モバイル用途やラテンアメリカなどの新興市場向けのデータ効率の高いテクノロジーの開発に焦点を当てたレイヤー1のブロックチェーンです。CeloはEVM互換のレイヤー1のブロックチェーンとして作成されましたが、Celoのガバナンスは最近、OptimismのOPスタックをベースにしたEthereumのレイヤー2のチェーンにチェーンを移行することを決議しました。",
+    "citrea": "Citrea is a rollup that enhances the capabilities of Bitcoin with zero knowledge technology. It is fully EVM compatible, allowing developers to deploy Ethereum smart contracts while using Bitcoin as the settlement and data availability layer. The native token of Citrea is cBTC, a representation of Bitcoin on the Citrea network.",
     "chiliz": "Chilizは、スポーツとエンターテイメントに焦点を当てたレイヤー1のブロックチェーンです。トークン化を通じてスポーツファンのエンゲージメントを高めることに重点を置いており、ファンがお気に入りのスポーツチームやクラブと交流したりできるようにしています。",
     "coinex-smart-chain": "CoinExスマートチェーン（CSC）は、CoinEx取引所によって作成されたレイヤー1のブロックチェーンです。Ethereumよりも低い取引手数料と速い取引時間を提供するために作成されました。プルーフ・オブ・ステークとプルーフ・オブ・オーソリティの機能を統合した、より一元化されたコンセンサスメカニズムを採用することでこれを実現しています。",
     "core": "COREは、ビットコインのハッシュレートを活用し、プルーフ・オブ・ワークと委任型プルーフ・オブ・ステークの機能を組み合わせたSatoshi Plusと呼ばれる新しいコンセンサスメカニズムを使用するレイヤー1のブロックチェーンです。CORE DAOは独自のブロックチェーンネットワークを提供する一方で、Satoshi Plusテクノロジーの使用を他のブロックチェーンにも広めることに重点を置いています。",

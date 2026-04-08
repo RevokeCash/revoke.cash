@@ -23,6 +23,7 @@
     "boba": "Boba 是建立在多个不同的以太坊虚拟机（EVM）区块链之上的第 2 层扩展（Layer 2）解决方案，包括以太坊、BNB 链和 Avalanche，旨在成为所有区块链的通用扩展平台。为了实现这一目标，Boba 使用了流行的 Optimic Rollup 技术，在将成本控制得极低的同时还能提供强大的安全保障。",
     "btt-chain": "BitTorrent 链（BTTC）是一个跨链互操作扩容协议，可兼容以太坊、TRON 和其他 EVM 链。BTTC 采用权益证明（PoS）共识机制，验证者需质押 BTT 代币来验证交易。验证者还需定期向以太坊、BNB 链和 TRON 链提交检查点。",
     "celo": "Celo 是第 1 层（Layer 1）区块链，专注于为移动应用和拉丁美洲等新兴市场开发高效数据技术。虽然 Celo 是作为兼容 EVM 的第 1 层（Layer 1）区块链而创建的，但 Celo 管理层最近投票决定将该链转移到基于 Optimism 的 OP Stack 的以太坊第 2 层（Layer 2）扩展链。",
+    "citrea": "Citrea is a rollup that enhances the capabilities of Bitcoin with zero knowledge technology. It is fully EVM compatible, allowing developers to deploy Ethereum smart contracts while using Bitcoin as the settlement and data availability layer. The native token of Citrea is cBTC, a representation of Bitcoin on the Citrea network.",
     "chiliz": "Chiliz 是专注于体育和娱乐的第 1 层（Layer 1）区块链，通过代币化增强体育粉丝参与度，让粉丝能与喜欢的团队和俱乐部进行互动。",
     "coinex-smart-chain": "CoinEX 智能链（CSC）是 CoinEx 交易所开发的第 1 层（Layer 1）区块链，旨在提供比以太坊更低廉的交易费用和更快捷的交易速度。为达成这一目标，CSC 采用了更为中心化的共识机制，整合了权益证明（PoS）和权威证明（PoA）的特点。",
     "core": "CORE 是第 1 层（Layer 1）区块链，采用了名为中本聪+（Satoshi Plus）的全新共识机制，该机制在利用比特币哈希率的同时还融合了工作量证明（PoW）和委托权益证明（DPoS）的特色。除了提供自己的区块链网络，CORE DAO 还致力于将中本聪+（Satoshi Plus）技术推广至其他区块链。",

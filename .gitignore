@@ -66,6 +66,8 @@ certificates
 
 scripts/data
 scripts/exploits/data
+scripts/output
+scripts/exploits/output
 
 !.vscode/settings.json
 

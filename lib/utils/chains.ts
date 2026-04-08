@@ -129,7 +129,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AbstractSepoliaTestnet,
   ChainId.ScrollSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
-  ChainId.CitreaTestnet,
   ChainId.CronosTestnet,
   ChainId.ZetaChainTestnet,
   ChainId.PlumeTestnet,
@@ -466,7 +465,7 @@ export const CHAINS = {
     nativeToken: 'cBTC',
     nativeTokenCoingeckoId: 'bitcoin',
     infoUrl: 'https://citrea.xyz',
-    logoUrl: '/assets/images/vendor/chains/citrea.png',
+    logoUrl: '/assets/images/vendor/chains/citrea.svg',
     explorerUrl: 'https://explorer.mainnet.citrea.xyz',
     etherscanCompatibleApiUrl: 'https://explorer.mainnet.citrea.xyz/api',
     rpc: {
@@ -476,23 +475,6 @@ export const CHAINS = {
     deployedContracts: {
       multicall3: { address: '0xA738e84fdE890Bc60b99AF7ccE43990E534304de' },
     },
-  }),
-  [ChainId.CitreaTestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.CitreaTestnet,
-    name: 'Citrea Testnet',
-    nativeToken: 'cBTC',
-    nativeTokenCoingeckoId: 'bitcoin',
-    logoUrl: '/assets/images/vendor/chains/citrea.png',
-    explorerUrl: 'https://explorer.testnet.citrea.xyz',
-    etherscanCompatibleApiUrl: 'https://explorer.testnet.citrea.xyz/api',
-    rpc: {
-      main: 'https://rpc.testnet.citrea.xyz',
-      free: 'https://rpc.testnet.citrea.xyz',
-    },
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.CitreaMainnet,
   }),
   [ChainId.BobaNetwork]: new Chain({
     type: SupportType.ROUTESCAN,
