@@ -82,6 +82,7 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
 
         const NO_TOKEN_PRICING: number[] = [
           ChainId.CitreaMainnet,
+          38833, // Igra Network
           ChainId.CoinExSmartChainMainnet,
           ChainId.DarwiniaNetwork,
           ChainId.HarmonyMainnetShard0,

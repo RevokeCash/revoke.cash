@@ -116,6 +116,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RSS3VSLMainnet,
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
+  38833, // Igra Network
   202555, // Kasplex zkEVM
 ] as const;
 
@@ -864,6 +865,24 @@ export const CHAINS = {
     name: 'Kaia',
     coingeckoNetworkId: 'kaia',
     logoUrl: '/assets/images/vendor/chains/kaia.svg',
+  }),
+  38833: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: 38833,
+    name: 'Igra Network',
+    nativeToken: 'iKAS',
+    nativeTokenCoingeckoId: 'kaspa',
+    infoUrl: 'https://igralabs.com',
+    logoUrl: '/assets/images/vendor/chains/igra.svg',
+    explorerUrl: 'https://explorer.igralabs.com',
+    etherscanCompatibleApiUrl: 'https://explorer.igralabs.com/api',
+    rpc: {
+      main: 'https://rpc.igralabs.com:8545',
+      free: 'https://rpc.igralabs.com:8545',
+    },
+    deployedContracts: {
+      multicall3: { address: '0x9397290CaEe43Fd443d7f110247822Cb50878319' },
+    },
   }),
   202555: new Chain({
     type: SupportType.BLOCKSCOUT,
