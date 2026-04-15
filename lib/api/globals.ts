@@ -25,7 +25,7 @@ const EVENT_GETTERS: Record<SupportType, () => EventGetter | undefined> = {
     () => new CovalentEventGetter(process.env.COVALENT_API_KEY, Number(process.env.COVALENT_RATE_LIMIT) || 4),
   ),
   [SupportType.ROUTESCAN]: singleton(() => new RoutescanEventGetter()),
-  [SupportType.ETHERSCAN_COMPATIBLE]: singleton(() => new EtherscanEventGetter()),
+  [SupportType.ETHERSCAN]: singleton(() => new EtherscanEventGetter()),
   [SupportType.BLOCKSCOUT]: singleton(() => new BlockScoutEventGetter()),
   [SupportType.HYPERSYNC]: singleton(() => new HyperSyncEventGetter()),
   [SupportType.BACKEND_NODE]: singleton(() => new NodeEventGetter(JSON.parse(process.env.NODE_URLS ?? '{}'))),

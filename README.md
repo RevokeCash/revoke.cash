@@ -64,7 +64,7 @@ Also make sure that your network is listed in [ethereum-lists/chains](https://gi
 In `lib/utils/chains.ts`:
 
 - Add a network configuration for the network to the `CHAINS` mapping. A network configuration can include the following properties, and need to be filled out accordingly. `name`, `infoUrl`, `nativeToken`, `explorerUrl` and `rpc` only need to be added if the data in `ethereum-lists/chains` is different than what should be used by Revoke.cash
-  - `type`: The type of support, can be `SupportType.PROVIDER` for networks with a public RPC endpoint, `SupportType.COVALENT` for networks supported by CovalentHQ, or `SupportType.ETHERSCAN_COMPATIBLE` for networks with a block explorer API.
+  - `type`: The type of support, can be `SupportType.PROVIDER` for networks with a public RPC endpoint, `SupportType.COVALENT` for networks supported by CovalentHQ, or `SupportType.ETHERSCAN` (or `SupportType.BLOCKSCOUT`, `SupportType.ROUTESCAN`) for networks with a block explorer API.
   - `chainId`: The chain ID of the network.
   - `name`: The name of the network.
   - `logoUrl`: The URL of the network's logo. Add a logo file (preferably svg) to `public/assets/images/vendor/chains` and add the path here.
@@ -72,7 +72,7 @@ In `lib/utils/chains.ts`:
   - `nativeToken` (Optional): The symbol of the network's native token.
   - `nativeTokenCoingeckoId` (Optional): The Coingecko ID of the network's native token.
   - `explorerUrl` (Optional): The URL of the network's block explorer.
-  - `etherscanCompatibleApiUrl` (Only for `SupportType.ETHERSCAN_COMPATIBLE`): The URL of the network's block explorer API.
+  - `etherscanCompatibleApiUrl` (Only for `SupportType.ETHERSCAN` or `SupportType.BLOCKSCOUT`): The URL of the network's block explorer API.
   - `rpc.main` (Optional): The URL of the network's RPC endpoint.
   - `rpc.logs` (Optional): The URL of the network's RPC endpoint for fetching logs (if different from `main`).
   - `rpc.free` (Optional): The URL of the network's free RPC endpoint (will be used when adding the network to a wallet).

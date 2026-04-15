@@ -15,7 +15,11 @@ const AddressExternalLinks = ({ address, chainId }: Props) => {
     <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
       <AddressExternalLink href={`${explorerUrl}/address/${address}`}>{explorerBaseUrl}</AddressExternalLink>
       <AddressExternalLink href={`https://debank.com/profile/${address}`}>debank.com</AddressExternalLink>
-      <AddressExternalLink href={`https://opensea.io/${address}`}>opensea.io</AddressExternalLink>
+      {explorerUrl.includes('blockscout') ? null : (
+        <AddressExternalLink href={`https://explorer.blockscout.com/address/${address}`}>
+          blockscout.com
+        </AddressExternalLink>
+      )}
     </div>
   );
 };

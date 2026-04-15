@@ -155,11 +155,6 @@
       "attributes": { "name": "Godwoken", "coingecko_asset_platform_id": "godwoken" }
     },
     {
-      "id": "songbird",
-      "type": "network",
-      "attributes": { "name": "Songbird", "coingecko_asset_platform_id": "songbird" }
-    },
-    {
       "id": "tomochain",
       "type": "network",
       "attributes": { "name": "Viction", "coingecko_asset_platform_id": "tomochain" }
@@ -190,7 +185,6 @@
       "type": "network",
       "attributes": { "name": "Flare", "coingecko_asset_platform_id": "flare-network" }
     },
-    { "id": "onus", "type": "network", "attributes": { "name": "ONUS", "coingecko_asset_platform_id": "onus" } },
     { "id": "aptos", "type": "network", "attributes": { "name": "Aptos", "coingecko_asset_platform_id": "aptos" } },
     { "id": "core", "type": "network", "attributes": { "name": "Core", "coingecko_asset_platform_id": "core" } },
     {
@@ -230,7 +224,6 @@
       "type": "network",
       "attributes": { "name": "Pulsechain", "coingecko_asset_platform_id": "pulsechain" }
     },
-    { "id": "enuls", "type": "network", "attributes": { "name": "ENULS", "coingecko_asset_platform_id": "enuls" } },
     { "id": "tenet", "type": "network", "attributes": { "name": "Tenet", "coingecko_asset_platform_id": "tenet" } },
     { "id": "rollux", "type": "network", "attributes": { "name": "Rollux", "coingecko_asset_platform_id": "rollux" } },
     {
@@ -317,11 +310,6 @@
       "attributes": { "name": "AlveyChain", "coingecko_asset_platform_id": "alveychain" }
     },
     {
-      "id": "blast-sepolia-testnet",
-      "type": "network",
-      "attributes": { "name": "Blast Sepolia (Testnet)", "coingecko_asset_platform_id": null }
-    },
-    {
       "id": "zetachain",
       "type": "network",
       "attributes": { "name": "ZetaChain", "coingecko_asset_platform_id": "zetachain" }
@@ -374,11 +362,6 @@
       "attributes": { "name": "Zora", "coingecko_asset_platform_id": "zora-network" }
     },
     { "id": "inevm", "type": "network", "attributes": { "name": "inEVM", "coingecko_asset_platform_id": "inevm" } },
-    {
-      "id": "bvm-nakachain",
-      "type": "network",
-      "attributes": { "name": "BVM NakaChain", "coingecko_asset_platform_id": null }
-    },
     {
       "id": "graphlinq-chain",
       "type": "network",
@@ -481,11 +464,6 @@
     },
     { "id": "sei-evm", "type": "network", "attributes": { "name": "Sei V2", "coingecko_asset_platform_id": "sei-v2" } },
     {
-      "id": "saakuru-mainnet",
-      "type": "network",
-      "attributes": { "name": "Saakuru", "coingecko_asset_platform_id": "saakuru" }
-    },
-    {
       "id": "larissa-mainnet",
       "type": "network",
       "attributes": { "name": "Larissa", "coingecko_asset_platform_id": "larissa" }
@@ -567,7 +545,7 @@
       "attributes": { "name": "Flow EVM", "coingecko_asset_platform_id": "flow-evm" }
     },
     { "id": "canxium", "type": "network", "attributes": { "name": "Canxium", "coingecko_asset_platform_id": null } },
-    { "id": "shape", "type": "network", "attributes": { "name": "Shape", "coingecko_asset_platform_id": null } },
+    { "id": "shape", "type": "network", "attributes": { "name": "Shape", "coingecko_asset_platform_id": "shape" } },
     {
       "id": "world-chain",
       "type": "network",
@@ -597,11 +575,6 @@
       "id": "defiverse",
       "type": "network",
       "attributes": { "name": "DefiVerse", "coingecko_asset_platform_id": "defiverse" }
-    },
-    {
-      "id": "planq",
-      "type": "network",
-      "attributes": { "name": "Planq", "coingecko_asset_platform_id": "planq-network" }
     },
     {
       "id": "zero-network",
@@ -760,7 +733,6 @@
       "attributes": { "name": "Bittensor", "coingecko_asset_platform_id": "bittensor" }
     },
     { "id": "tokchain", "type": "network", "attributes": { "name": "Tokchain", "coingecko_asset_platform_id": null } },
-    { "id": "mantra", "type": "network", "attributes": { "name": "Mantra", "coingecko_asset_platform_id": "mantra" } },
     {
       "id": "bitcichain",
       "type": "network",
@@ -868,11 +840,6 @@
       "type": "network",
       "attributes": { "name": "Hydration", "coingecko_asset_platform_id": "hydration" }
     },
-    {
-      "id": "mantra-evm",
-      "type": "network",
-      "attributes": { "name": "Mantra EVM", "coingecko_asset_platform_id": "mantra-evm" }
-    },
     { "id": "eni", "type": "network", "attributes": { "name": "ENI", "coingecko_asset_platform_id": "eni" } },
     {
       "id": "krown-network",
@@ -892,15 +859,29 @@
       "attributes": { "name": "MegaETH", "coingecko_asset_platform_id": "megaeth" }
     },
     {
-      "id": "unit-network",
-      "type": "network",
-      "attributes": { "name": "Unit Network", "coingecko_asset_platform_id": null }
-    },
-    {
       "id": "grx-chain",
       "type": "network",
       "attributes": { "name": "GRX Chain", "coingecko_asset_platform_id": "grx-chain" }
     },
-    { "id": "fogo", "type": "network", "attributes": { "name": "Fogo", "coingecko_asset_platform_id": null } }
+    { "id": "fogo", "type": "network", "attributes": { "name": "Fogo", "coingecko_asset_platform_id": "fogo" } },
+    { "id": "stacks", "type": "network", "attributes": { "name": "Stacks", "coingecko_asset_platform_id": "stacks" } },
+    {
+      "id": "mantra-evm",
+      "type": "network",
+      "attributes": { "name": "Mantra EVM", "coingecko_asset_platform_id": "mantra-evm" }
+    },
+    { "id": "tempo", "type": "network", "attributes": { "name": "Tempo", "coingecko_asset_platform_id": "tempo" } },
+    {
+      "id": "galachain",
+      "type": "network",
+      "attributes": { "name": "GalaChain", "coingecko_asset_platform_id": "galachain" }
+    },
+    { "id": "cross", "type": "network", "attributes": { "name": "Cross", "coingecko_asset_platform_id": null } },
+    { "id": "citrea", "type": "network", "attributes": { "name": "Citrea", "coingecko_asset_platform_id": "citrea" } },
+    {
+      "id": "thorchain",
+      "type": "network",
+      "attributes": { "name": "Thorchain", "coingecko_asset_platform_id": "thorchain" }
+    }
   ]
 }

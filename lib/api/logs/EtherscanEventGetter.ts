@@ -1,3 +1,4 @@
+import type { EtherscanPlatform } from 'lib/interfaces';
 import ky, { retryOn429 } from 'lib/ky';
 import { ViemLogsProvider } from 'lib/providers';
 import { isNullish } from 'lib/utils';
@@ -7,6 +8,7 @@ import {
   getChainApiKey,
   getChainApiRateLimit,
   getChainApiUrl,
+  getChainEtherscanCompatiblePlatformNames,
   getChainLogsRpcUrl,
 } from 'lib/utils/chains';
 import { isLogResponseSizeError } from 'lib/utils/errors';
@@ -53,9 +55,10 @@ export class EtherscanEventGetter implements EventGetter {
   async getLatestBlock(chainId: number): Promise<number> {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
+    const platform = getChainEtherscanCompatiblePlatformNames(chainId);
     const queue = this.queues[chainId]!;
 
-    const searchParams = prepareGetLatestBlockQuery(chainId, apiKey);
+    const searchParams = prepareGetLatestBlockQuery(chainId, apiKey, platform);
 
     const result = await retryOn429(() =>
       queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>()),
@@ -72,9 +75,10 @@ export class EtherscanEventGetter implements EventGetter {
   async getEvents(chainId: number, filter: Filter): Promise<Log[]> {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
+    const platform = getChainEtherscanCompatiblePlatformNames(chainId);
     const queue = this.queues[chainId]!;
 
-    const searchParams = prepareGetLogsQuery(chainId, filter, apiKey);
+    const searchParams = prepareGetLogsQuery(chainId, filter, apiKey, platform);
 
     let data: LogsResponse;
     try {
@@ -137,7 +141,7 @@ export class EtherscanEventGetter implements EventGetter {
   }
 }
 
-const prepareGetLatestBlockQuery = (chainId: number, apiKey?: string) => {
+const prepareGetLatestBlockQuery = (chainId: number, apiKey?: string, platform?: EtherscanPlatform) => {
   const timestamp = Math.floor(Date.now() / 1000);
 
   const query = {
@@ -146,14 +150,16 @@ const prepareGetLatestBlockQuery = (chainId: number, apiKey?: string) => {
     action: 'getblocknobytime',
     timestamp: String(timestamp),
     closest: 'before',
-    apiKey,
+    // The new Blockscout API uses the 'apikey' parameter instead of 'apiKey'
+    apiKey: platform?.domain === 'blockscout' ? undefined : apiKey,
+    apikey: platform?.domain === 'blockscout' ? apiKey : undefined,
   };
 
   // Remove 'undefined' values from the query
   return JSON.parse(JSON.stringify(query));
 };
 
-const prepareGetLogsQuery = (chainId: number, filter: Filter, apiKey?: string) => {
+const prepareGetLogsQuery = (chainId: number, filter: Filter, apiKey?: string, platform?: EtherscanPlatform) => {
   const [topic0, topic1, topic2, topic3] = (filter.topics ?? []).map((topic) =>
     typeof topic === 'string' ? topic.toLowerCase() : topic,
   );
@@ -177,7 +183,9 @@ const prepareGetLogsQuery = (chainId: number, filter: Filter, apiKey?: string) =
     topic2_3_opr: topic2 && topic3 ? 'and' : undefined,
     offset: String(1000),
     page: String(1),
-    apiKey,
+    // The new Blockscout API uses the 'apikey' parameter instead of 'apiKey'
+    apiKey: platform?.domain === 'blockscout' ? undefined : apiKey,
+    apikey: platform?.domain === 'blockscout' ? apiKey : undefined,
   };
 
   // Remove 'undefined' values from the query

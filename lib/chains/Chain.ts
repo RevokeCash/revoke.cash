@@ -41,7 +41,7 @@ export type DeployedContracts = Record<string, ChainContract>;
 export enum SupportType {
   PROVIDER = 'PROVIDER',
   HYPERSYNC = 'HYPERSYNC',
-  ETHERSCAN_COMPATIBLE = 'ETHERSCAN_COMPATIBLE',
+  ETHERSCAN = 'ETHERSCAN',
   BLOCKSCOUT = 'BLOCKSCOUT', // Note that this is mostly Etherscan Compatible, with slight differences in the API
   ROUTESCAN = 'ROUTESCAN', // Note that this is fully Etherscan Compatible, just for identification
   COVALENT = 'COVALENT',
@@ -144,6 +144,11 @@ export class Chain {
     if (this.type === SupportType.ROUTESCAN) {
       return `https://api.routescan.io/v2/network/${this.isTestnet() ? 'testnet' : 'mainnet'}/evm/${this.chainId}/etherscan/api`;
     }
+
+    if (this.type === SupportType.BLOCKSCOUT && isNullish(this.options.etherscanCompatibleApiUrl)) {
+      return `https://api.blockscout.com/${this.chainId}/api`;
+    }
+
     return this.options.etherscanCompatibleApiUrl ?? 'https://api.etherscan.io/v2/api';
   }
 
@@ -179,7 +184,7 @@ export class Chain {
     return `${platform?.domain}:${apiKey}`;
   }
 
-  private getEtherscanCompatiblePlatformNames = (): EtherscanPlatform | undefined => {
+  getEtherscanCompatiblePlatformNames = (): EtherscanPlatform | undefined => {
     const apiUrl = this.getEtherscanCompatibleApiUrl();
     if (!apiUrl) return undefined;
 

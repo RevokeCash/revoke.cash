@@ -82,12 +82,14 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
 
         const NO_TOKEN_PRICING: number[] = [
           ChainId.CitreaMainnet,
-          ChainId.IgraNetwork,
           ChainId.CoinExSmartChainMainnet,
           ChainId.DarwiniaNetwork,
           ChainId.HarmonyMainnetShard0,
+          ChainId.IgraNetwork,
           ChainId.NeoXMainnet,
           ChainId.OasisEmerald,
+          ChainId.ReyaNetwork,
+          ChainId.StableMainnet,
           ChainId.SyscoinMainnet,
         ];
 
@@ -103,7 +105,7 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         }
       });
 
-      if (getChainConfig(chainId)?.type === SupportType.ETHERSCAN_COMPATIBLE) {
+      if (getChainConfig(chainId)?.type === SupportType.ETHERSCAN) {
         it('should have an Etherscan API URL', () => {
           expect(getChainApiUrl(chainId)).to.exist;
         });

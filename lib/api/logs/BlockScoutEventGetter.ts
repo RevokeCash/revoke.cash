@@ -1,3 +1,4 @@
+import type { EtherscanPlatform } from 'lib/interfaces';
 import ky, { retryOn429 } from 'lib/ky';
 import {
   BLOCKSCOUT_SUPPORTED_CHAINS,
@@ -5,6 +6,7 @@ import {
   getChainApiKey,
   getChainApiRateLimit,
   getChainApiUrl,
+  getChainEtherscanCompatiblePlatformNames,
 } from 'lib/utils/chains';
 import type { Hex } from 'viem';
 import { EtherscanEventGetter } from './EtherscanEventGetter';
@@ -39,9 +41,10 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
   async getLatestBlock(chainId: number): Promise<number> {
     const apiUrl = getChainApiUrl(chainId)!;
     const apiKey = getChainApiKey(chainId);
+    const platform = getChainEtherscanCompatiblePlatformNames(chainId);
     const queue = this.queues[chainId]!;
 
-    const searchParams = prepareGetLatestBlockQuery(apiKey);
+    const searchParams = prepareGetLatestBlockQuery(apiKey, platform);
 
     const latestBlockPromise = retryOn429(() =>
       queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>()),
@@ -79,11 +82,13 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
 
 // Note: newer Blockscout instances have an Etherscan-compatible API, but older ones do not
 // which is why we have a separate BlockScoutEventGetter
-const prepareGetLatestBlockQuery = (apiKey?: string) => {
+const prepareGetLatestBlockQuery = (apiKey?: string, platform?: EtherscanPlatform) => {
   const query = {
     module: 'block',
     action: 'eth_block_number',
-    apiKey,
+    // The new Blockscout API uses the 'apikey' parameter instead of 'apiKey'
+    apiKey: platform?.domain === 'blockscout' ? undefined : apiKey,
+    apikey: platform?.domain === 'blockscout' ? apiKey : undefined,
   };
 
   // Remove 'undefined' values from the query

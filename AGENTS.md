@@ -123,7 +123,7 @@ Notes:
 ## Chain Configuration
 
 - Chain definitions and routing logic live in `lib/utils/chains.ts` (source of truth).
-- Support types are defined in `lib/chains/Chain.ts` (`PROVIDER`, `HYPERSYNC`, `ETHERSCAN_COMPATIBLE`, `BLOCKSCOUT`, `ROUTESCAN`, `COVALENT`, `BACKEND_NODE`, `BACKEND_CUSTOM`, `UNSUPPORTED`).
+- Support types are defined in `lib/chains/Chain.ts` (`PROVIDER`, `HYPERSYNC`, `ETHERSCAN`, `BLOCKSCOUT`, `ROUTESCAN`, `COVALENT`, `BACKEND_NODE`, `BACKEND_CUSTOM`, `UNSUPPORTED`).
 - `CHAIN_SELECT_MAINNETS` / `CHAIN_SELECT_TESTNETS` drive UI chain dropdown order.
 - `ORDERED_CHAINS` is used across UI, wagmi config, tests, and fixtures.
 
@@ -184,6 +184,7 @@ Notes:
 
 ## Conventions and Gotchas
 
+- Always use descriptive variable names without abbreviations.
 - Prefer readable, maintainable code over micro-optimizations.
 - Reuse existing utilities before adding new helpers.
 - Keep checksummed addresses (`getAddress`) rather than lowercase storage.
