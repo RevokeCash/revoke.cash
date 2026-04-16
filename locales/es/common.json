@@ -66,10 +66,6 @@
       "go_home": "Volver a la página principal",
       "subtitle": "No se pudo encontrar la página que buscas",
       "suggested_pages": {
-        "extension": {
-          "description": "Descarga la extensión de navegador Revoke.cash.",
-          "title": "Extensión"
-        },
         "faq": {
           "description": "Respuestas a todas tus preguntas.",
           "title": "FAQ"

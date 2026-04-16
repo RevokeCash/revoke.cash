@@ -66,10 +66,6 @@
       "go_home": "返回主页",
       "subtitle": "找不到页面。",
       "suggested_pages": {
-        "extension": {
-          "description": "下载Revoke.cash浏览器扩展程序。",
-          "title": "扩展"
-        },
         "faq": {
           "description": "回答你所有的问题。",
           "title": "常见问题"

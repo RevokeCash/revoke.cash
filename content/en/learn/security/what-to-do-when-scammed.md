@@ -76,7 +76,7 @@ The best way to limit the impact of marketplace signature scams is to revoke app
 
 Besides keeping an eye on your approvals, it is also important to double check URLs of any website you visit, especially when signing transactions or gasless signatures. If there are any crypto websites that you visit regularly, such as OpenSea or Revoke.cash, then it is a good idea to bookmark these websites to ensure that you are always visiting the correct URL.
 
-Finally, using security browser extensions, such as the [Revoke extension](/extension) or [Pocket Universe](https://www.pocketuniverse.app/) can help warn against these kinds of scams and keep you from signing malicious transactions.
+Finally, using security browser extensions, such as the [Revoke extension](https://chrome.google.com/webstore/detail/revokecash/nmniboccheadcclilkfkonokbcoceced) or [Pocket Universe](https://www.pocketuniverse.app/) can help warn against these kinds of scams and keep you from signing malicious transactions.
 
 ## Token Approvals
 

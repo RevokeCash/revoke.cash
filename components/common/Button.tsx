@@ -5,6 +5,7 @@ import { CsrLink } from 'lib/i18n/csr-navigation';
 import { Link } from 'lib/i18n/navigation';
 import { type ForwardedRef, forwardRef, type MouseEventHandler } from 'react';
 import { twMerge } from 'tailwind-merge';
+import Href from './Href';
 import Spinner from './Spinner';
 
 // TODO: Proper extended styles for this component
@@ -103,16 +104,9 @@ const Button = (
     }
 
     return (
-      <a
-        {...props}
-        className={classes}
-        href={href}
-        target={external ? '_blank' : undefined}
-        ref={ref}
-        onClick={onClick}
-      >
+      <Href {...props} unstyled className={classes} href={href} external={external} router={router} onClick={onClick}>
         {children}
-      </a>
+      </Href>
     );
   }
 

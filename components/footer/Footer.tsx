@@ -1,7 +1,7 @@
 import Divider from 'components/common/Divider';
 import Href from 'components/common/Href';
 import ColorThemeSelect from 'components/footer/ColorThemeSelect';
-import { DISCORD_URL, DONATION_ADDRESS, GITHUB_URL, TWITTER_URL } from 'lib/constants';
+import { CHROME_EXTENSION_URL, DISCORD_URL, DONATION_ADDRESS, GITHUB_URL, TWITTER_URL } from 'lib/constants';
 import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
@@ -21,7 +21,7 @@ const Footer = () => {
               <FooterLink href="/token-approval-checker/ethereum" router>
                 {t('common.footer.token_approval_checker')}
               </FooterLink>
-              <FooterLink href="/extension" router>
+              <FooterLink href={CHROME_EXTENSION_URL} external>
                 {t('common.footer.extension')}
               </FooterLink>
               <FooterLink href="/exploits" router>

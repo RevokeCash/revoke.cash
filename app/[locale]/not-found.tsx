@@ -1,4 +1,4 @@
-import { GlobeEuropeAfricaIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import Href from 'components/common/Href';
 import NotFoundLink from 'components/common/NotFoundLink';
@@ -36,12 +36,6 @@ const NotFoundPage: NextPage<Props> = () => {
               href="/learn/faq"
               description={t('common.errors.404.suggested_pages.faq.description')}
               icon={<QuestionMarkCircleIcon className="h-6 w-6" />}
-            />
-            <NotFoundLink
-              title={t('common.errors.404.suggested_pages.extension.title')}
-              href="/extension"
-              description={t('common.errors.404.suggested_pages.extension.description')}
-              icon={<GlobeEuropeAfricaIcon className="h-6 w-6" />}
             />
             <NotFoundLinkMyApprovals />
           </div>

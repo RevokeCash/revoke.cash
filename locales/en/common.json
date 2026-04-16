@@ -66,10 +66,6 @@
       "go_home": "Or go back home",
       "subtitle": "The page you are looking for could not be found.",
       "suggested_pages": {
-        "extension": {
-          "description": "Download the Revoke.cash browser extension.",
-          "title": "Extension"
-        },
         "faq": {
           "description": "Answers to all your questions.",
           "title": "FAQ"

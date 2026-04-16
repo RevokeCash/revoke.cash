@@ -7,13 +7,14 @@ import { twMerge } from 'tailwind-merge';
 interface Props {
   to: string;
   text: string;
+  external?: boolean;
 
   className?: string;
 }
 
-const NavLink = ({ to, text, className }: Props) => {
+const NavLink = ({ to, text, external, className }: Props) => {
   const path = usePathname();
-  const isCurrent = path.startsWith(to) && !(to === '/learn' && path === '/learn/faq');
+  const isCurrent = !external && path.startsWith(to) && !(to === '/learn' && path === '/learn/faq');
 
   return (
     <Button
@@ -25,7 +26,8 @@ const NavLink = ({ to, text, className }: Props) => {
         isCurrent && 'underline underline-offset-8 decoration-2 decoration-brand',
         className,
       )}
-      router
+      router={!external}
+      external={external}
     >
       {text}
     </Button>

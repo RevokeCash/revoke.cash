@@ -66,10 +66,6 @@
       "go_home": "もしくは、ホーム画面に戻る",
       "subtitle": "お探しのページは見つかりませんでした。",
       "suggested_pages": {
-        "extension": {
-          "description": "Revoke.cashブラウザ拡張機能をダウンロードします。",
-          "title": "ブラウザ拡張機能"
-        },
         "faq": {
           "description": "すべての質問にお答えします。",
           "title": "よくある質問"

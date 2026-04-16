@@ -16,7 +16,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
       blog: (await import(`../../locales/${locale}/blog.json`)).default,
       common: (await import(`../../locales/${locale}/common.json`)).default,
       exploits: (await import(`../../locales/${locale}/exploits.json`)).default,
-      extension: (await import(`../../locales/${locale}/extension.json`)).default,
       faq: (await import(`../../locales/${locale}/faq.json`)).default,
       landing: (await import(`../../locales/${locale}/landing.json`)).default,
       learn: (await import(`../../locales/${locale}/learn.json`)).default,

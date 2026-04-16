@@ -1,6 +1,7 @@
 'use client';
 
 import { Link } from 'lib/i18n/navigation';
+import analytics from 'lib/utils/analytics';
 import { type AnchorHTMLAttributes, type ForwardedRef, forwardRef, type ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -12,10 +13,11 @@ interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   router?: boolean;
   html?: boolean;
   underline?: 'always' | 'hover' | 'none';
+  unstyled?: boolean;
 }
 
 const Href = (
-  { href, children, external, className, router, underline, html, ...props }: Props,
+  { href, children, external, className, router, underline, html, unstyled, ...props }: Props,
   ref: ForwardedRef<HTMLAnchorElement>,
 ) => {
   const styleMapping = {
@@ -38,7 +40,7 @@ const Href = (
 
   if (router) {
     return (
-      <Link {...props} className={classes} href={href} ref={ref} popover={undefined}>
+      <Link {...props} className={unstyled ? className : classes} href={href} ref={ref} popover={undefined}>
         {children}
       </Link>
     );
@@ -47,11 +49,15 @@ const Href = (
   return (
     <a
       {...props}
-      className={classes}
+      className={unstyled ? className : classes}
       href={href}
       target={external ? '_blank' : undefined}
       ref={ref}
       referrerPolicy="origin"
+      onClick={(e) => {
+        if (props.onClick) props.onClick(e);
+        analytics.track('Link Clicked', { href });
+      }}
     >
       {children}
     </a>

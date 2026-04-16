@@ -1,4 +1,4 @@
-import { DISCORD_URL, DONATION_ADDRESS, TWITTER_URL } from 'lib/constants';
+import { CHROME_EXTENSION_URL, DISCORD_URL, DONATION_ADDRESS, TWITTER_URL } from 'lib/constants';
 import { FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
 import type { ReactNode } from 'react';
 import Href from './Href';
@@ -22,7 +22,7 @@ const tags = {
     </Href>
   ),
   'extension-link': (children: ReactNode) => (
-    <Href href="/extension" className="font-medium" underline="hover" html router>
+    <Href href={CHROME_EXTENSION_URL} className="font-medium" underline="hover" html external>
       {children}
     </Href>
   ),
