@@ -1,3 +1,4 @@
+import { ChainId } from '@revoke.cash/chains';
 import blocksDB from 'lib/databases/blocks';
 import type { PublicClient } from 'viem';
 
@@ -16,7 +17,21 @@ export const findBlockByTimestamp = async (
   targetTimestamp: number,
   options?: { fromBlock?: number; toBlock?: number },
 ): Promise<BlockAtTimestamp | null> => {
-  const fromBlock = options?.fromBlock ?? 1;
+  const MIN_VALID_BLOCKS: Record<number, number> = {
+    [ChainId.SeiNetwork]: 79123881,
+    [ChainId.DogechainMainnet]: -1,
+    [ChainId['Filecoin-Mainnet']]: -1,
+    [ChainId.Injective]: -1,
+    [ChainId.ShidoNetwork]: -1,
+    [ChainId.SubtensorEVM]: -1,
+    [ChainId.VelasEVMMainnet]: -1,
+    [ChainId.ZetaChainMainnet]: -1,
+  };
+
+  const minValidChainBlock = MIN_VALID_BLOCKS[client.chain!.id] ?? 1;
+  if (minValidChainBlock < 0) return null;
+
+  const fromBlock = Math.max(minValidChainBlock, options?.fromBlock ?? 1);
   const toBlock = options?.toBlock ?? Number(await client.getBlockNumber());
   if (fromBlock > toBlock) return null;
 

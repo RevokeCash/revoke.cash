@@ -1,4 +1,5 @@
 import { isBrowser } from 'lib/utils';
+import { getChainName } from 'lib/utils/chains';
 import type { Log, ResolvedTimeLog, TimeLog } from 'lib/utils/events';
 import type { PublicClient } from 'viem';
 import type { Block } from './cache/BlocksDexie';
@@ -23,7 +24,7 @@ class BlocksDB {
       await this.cache.put([chainId, blockNumber], { chainId, blockNumber, timestamp });
       return timestamp;
     } catch (e) {
-      console.error(e);
+      console.error(`[${getChainName(publicClient.chain!.id)}] ${e}`);
       if (e instanceof CacheError) {
         const block = await publicClient.getBlock({ blockNumber: BigInt(blockNumber) });
         return Number(block?.timestamp);
