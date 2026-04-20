@@ -1,5 +1,7 @@
 import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/cold-storage-sbt/utils';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { addressSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { getTokenEvents } from 'lib/chains/events';
 import ky from 'lib/ky';
 import { isNullish } from 'lib/utils';
@@ -8,6 +10,7 @@ import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { parseErrorMessage } from 'lib/utils/errors';
 import { type NextRequest, NextResponse } from 'next/server';
 import type { Hash } from 'viem';
+import { z } from 'zod';
 import { PUDGY_API_KEY, PUDGY_API_URL } from '../constants';
 
 export const runtime = 'edge';
@@ -15,6 +18,11 @@ interface PudgyApiResponse {
   success: boolean;
   taskId: Hash;
 }
+
+const schemas = {
+  params: z.undefined(),
+  body: z.object({ address: addressSchema }).strict(),
+};
 
 export async function POST(req: NextRequest) {
   if (!(await checkActiveSessionEdge(req))) {
@@ -29,9 +37,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'PUDGY_API_KEY or PUDGY_API_URL is not set' }, { status: 500 });
   }
 
+  const { data, error } = await parseRequest(req, undefined, schemas);
+  if (error) return error;
+
   // We only check Ethereum for now
   const chainId = 1;
-  const { address } = await req.json();
+  const { address } = data.body;
 
   // Get the events and allowances for the user
   const publicClient = createViemPublicClientForChain(chainId);

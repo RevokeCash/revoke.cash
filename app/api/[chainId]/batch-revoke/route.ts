@@ -1,22 +1,31 @@
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, getClientCountryEdge, RateLimiters } from 'lib/api/auth';
+import { addressSchema, supportedChainIdSchema, transactionHashSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { getDb } from 'lib/db/client';
 import { batchRevokes } from 'lib/db/schema/batch-revokes';
 import { isTestnetChain } from 'lib/utils/chains';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ chainId: string }>;
 }
 
-interface Params {
-  chainId: string;
-}
+const schemas = {
+  params: z.object({ chainId: supportedChainIdSchema }),
+  body: z
+    .object({
+      transactionHash: transactionHashSchema.nullable(),
+      userAddress: addressSchema,
+      feePaid: z.number().nonnegative(),
+      sponsor: z.string().nullable(),
+    })
+    .strict(),
+};
 
 export const runtime = 'edge';
 
-export async function POST(req: NextRequest, { params }: Props) {
-  const { chainId: chainIdString } = await params;
-
+export async function POST(req: NextRequest, props: Props) {
   if (!(await checkActiveSessionEdge(req))) {
     return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
@@ -25,18 +34,19 @@ export async function POST(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  const db = getDb();
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { params, body } = data;
 
-  const chainId = Number(chainIdString);
-  const body = await req.json();
+  const db = getDb();
 
   try {
     await db.insert(batchRevokes).values({
-      chainId,
+      chainId: params.chainId,
       feeTransactionHash: body.transactionHash,
       userAddress: body.userAddress,
-      feePaid: Math.round((Number(body.feePaid) ?? 0) * 100),
-      isTestnet: isTestnetChain(chainId),
+      feePaid: Math.round(body.feePaid * 100),
+      isTestnet: isTestnetChain(params.chainId),
       vatRegion: getClientCountryEdge(req),
       sponsor: body.sponsor,
       timestamp: new Date(),

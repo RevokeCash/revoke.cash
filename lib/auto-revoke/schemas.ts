@@ -1,4 +1,4 @@
-import type { Hex } from 'viem';
+import { chainIdSchema, hexStringSchema } from 'lib/api/schemas';
 import { z } from 'zod';
 import {
   isAutoRevokeSupportedChain,
@@ -6,14 +6,12 @@ import {
   STALE_APPROVAL_THRESHOLD_MIN_DAYS,
 } from './config';
 
-const supportedChainId = z.number().int().refine(isAutoRevokeSupportedChain, { message: 'Unsupported chain' });
+export const autoRevokeSupportedChainIdSchema = chainIdSchema.refine(isAutoRevokeSupportedChain, {
+  message: 'Unsupported chain',
+  params: { status: 404 },
+});
 
-const hexString = z
-  .string()
-  .regex(/^0x[0-9a-fA-F]+$/, 'Expected 0x-prefixed hex string')
-  .transform((value) => value as Hex);
-
-export const rulesDataSchema = z
+export const rulesDataBodySchema = z
   .object({
     riskDetectionEnabled: z.boolean(),
     riskSensitivity: z.enum(['exploits_only', 'high', 'medium']),
@@ -29,8 +27,8 @@ export const rulesDataSchema = z
 
 export const grantPermissionBodySchema = z
   .object({
-    chainId: supportedChainId,
-    permissionContext: hexString,
+    chainId: autoRevokeSupportedChainIdSchema,
+    permissionContext: hexStringSchema,
   })
   .strict();
 
@@ -39,19 +37,3 @@ export const syncPermissionsBodySchema = z
     permissions: z.array(grantPermissionBodySchema),
   })
   .strict();
-
-export const rulesConfigBodySchema = z
-  .object({
-    subscriptionId: z.string().uuid().nullable(),
-  })
-  .strict();
-
-// Route param schemas
-
-export const chainIdRouteParamsSchema = z.object({
-  chainId: z.coerce.number().pipe(supportedChainId),
-});
-
-export const subscriptionIdRouteParamsSchema = z.object({
-  id: z.string().uuid(),
-});

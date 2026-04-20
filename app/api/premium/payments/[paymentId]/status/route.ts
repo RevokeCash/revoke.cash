@@ -1,18 +1,22 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { uuidSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { reconcilePaymentByOwner } from 'lib/premium/verify-payment';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ paymentId: string }>;
 }
 
-interface Params {
-  paymentId: string;
-}
+const schemas = {
+  params: z.object({ paymentId: uuidSchema }),
+  body: z.undefined(),
+};
 
 export const runtime = 'nodejs';
 
-export async function GET(req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, props: Props) {
   const siweAddress = await getAuthenticatedSiweAddress(req);
   if (!siweAddress) {
     return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
@@ -22,11 +26,9 @@ export async function GET(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  const { paymentId } = await params;
-
-  if (!paymentId) {
-    return NextResponse.json({ message: 'Missing paymentId' }, { status: 400 });
-  }
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { paymentId } = data.params;
 
   const status = await reconcilePaymentByOwner(paymentId, siweAddress);
   if (!status) {

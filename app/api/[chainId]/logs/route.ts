@@ -1,19 +1,29 @@
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { getEventGetter } from 'lib/api/globals';
+import { addressSchema, backendSupportedChainIdSchema, hexStringSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { parseErrorMessage } from 'lib/utils/errors';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ chainId: string }>;
 }
 
-interface Params {
-  chainId: string;
-}
+const schemas = {
+  params: z.object({ chainId: backendSupportedChainIdSchema }),
+  body: z
+    .object({
+      address: addressSchema.optional(),
+      topics: z.array(hexStringSchema.nullable()),
+      fromBlock: z.number().int().nonnegative(),
+      toBlock: z.number().int().nonnegative(),
+    })
+    .strict()
+    .refine((filter) => filter.fromBlock <= filter.toBlock, { message: 'fromBlock must be <= toBlock' }),
+};
 
-export async function POST(req: NextRequest, { params }: Props) {
-  const { chainId: chainIdString } = await params;
-
+export async function POST(req: NextRequest, props: Props) {
   if (!(await checkActiveSessionEdge(req))) {
     return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
@@ -22,20 +32,16 @@ export async function POST(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  const chainId = Number(chainIdString);
-  const body = await req.json();
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { params, body: filter } = data;
 
   try {
-    const eventGetter = getEventGetter(chainId);
-    const events = await eventGetter.getEvents(chainId, body);
+    const eventGetter = getEventGetter(params.chainId);
+    const events = await eventGetter.getEvents(params.chainId, filter);
     return NextResponse.json(events);
   } catch (e) {
     console.error('Error occurred', parseErrorMessage(e));
-
-    if (e instanceof Error && e.message.includes('Unsupported chain ID')) {
-      return NextResponse.json({ message: e.message }, { status: 404 });
-    }
-
     return NextResponse.json({ message: parseErrorMessage(e) }, { status: 500 });
   }
 }

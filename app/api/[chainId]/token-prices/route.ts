@@ -2,28 +2,29 @@ import { Redis } from '@upstash/redis';
 import ky from 'ky';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { RequestQueue } from 'lib/api/logs/RequestQueue';
+import { addressSchema, supportedChainIdSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { COINGECKO_API_BASE_URL, COINGECKO_API_KEY } from 'lib/constants';
-import { chunkArray, deduplicateArray } from 'lib/utils';
-import { type DocumentedChainId, getChainCoingeckoNetworkId, isSupportedChain } from 'lib/utils/chains';
+import { chunkArray, deduplicateArray, isNullish } from 'lib/utils';
+import { getChainCoingeckoNetworkId } from 'lib/utils/chains';
 import { MINUTE } from 'lib/utils/time';
 import { type NextRequest, NextResponse } from 'next/server';
 import { type Address, getAddress } from 'viem';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ chainId: string }>;
 }
 
-interface Params {
-  chainId: string;
-}
-
-interface RequestBody {
-  addresses: Address[];
-}
-
-// interface Response {
-//   prices: Record<Address, number | null>;
-// }
+const schemas = {
+  params: z.object({
+    chainId: supportedChainIdSchema.refine((chainId) => !isNullish(getChainCoingeckoNetworkId(chainId)), {
+      message: 'Chain has no Coingecko network mapping',
+      params: { status: 404 },
+    }),
+  }),
+  body: z.object({ addresses: z.array(addressSchema) }).strict(),
+};
 
 interface CoinGeckoSimplePriceResponse {
   data: {
@@ -56,9 +57,7 @@ const CACHE_MISS_VALUE = -1;
 const COINGECKO_MAX_ADDRESSES_PER_REQUEST = 100;
 const MIN_TOTAL_RESERVE_USD = 50_000;
 
-export async function POST(req: NextRequest, { params }: Props) {
-  const { chainId: chainIdString } = await params;
-
+export async function POST(req: NextRequest, props: Props) {
   if (!(await checkActiveSessionEdge(req))) {
     return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
@@ -67,20 +66,15 @@ export async function POST(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
   }
 
-  const chainId = Number(chainIdString) as DocumentedChainId;
-  if (!isSupportedChain(chainId)) {
-    return NextResponse.json({ message: `Chain with ID ${chainId} is unsupported` }, { status: 404 });
-  }
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { params, body } = data;
 
-  const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);
-  if (!coingeckoNetworkId) {
-    return NextResponse.json({ message: `Chain with ID ${chainId} has no Coingecko network mapping` }, { status: 404 });
-  }
+  // Schema refinement ensures this is not null
+  const coingeckoNetworkId = getChainCoingeckoNetworkId(params.chainId)!;
 
-  const body = (await req.json()) as RequestBody;
-
-  const uniqueAddresses = deduplicateArray(body.addresses.map((address) => getAddress(address)));
-  const prices = await getTokenPrices(chainId, coingeckoNetworkId, uniqueAddresses);
+  const uniqueAddresses = deduplicateArray(body.addresses);
+  const prices = await getTokenPrices(params.chainId, coingeckoNetworkId, uniqueAddresses);
 
   return NextResponse.json({ prices });
 }

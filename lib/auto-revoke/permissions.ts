@@ -14,7 +14,7 @@ import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { filterAsync } from 'lib/utils/promises';
 import { SECOND } from 'lib/utils/time';
 import { type Address, getAddress, type Hex, recoverTypedDataAddress } from 'viem';
-import { PERMISSION_EXPIRY_SECONDS, REVOKE_SESSION_ACCOUNT_ADDRESS } from './config';
+import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS, REVOKE_SESSION_ACCOUNT_ADDRESS } from './config';
 import type { AutoRevokePermission, WalletPermissionResult } from './types';
 
 export const getAutoRevokePermissionsByAddress = async (address: Address): Promise<AutoRevokePermission[]> => {
@@ -222,7 +222,7 @@ const applyPermissionBatch = async (
 
 export const resolvePermissionRecord = async (
   authenticatedAddress: Address,
-  input: { permissionContext: Hex; chainId: number },
+  input: { permissionContext: Hex; chainId: AutoRevokeSupportedChainId },
 ): Promise<Omit<AutoRevokePermission, 'isActive'>> => {
   const normalizedAddress = authenticatedAddress.toLowerCase();
 

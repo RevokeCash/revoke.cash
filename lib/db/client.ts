@@ -16,13 +16,11 @@ const getDatabaseUrl = () => {
   return databaseUrl;
 };
 
-/** HTTP-based client — lightweight, no persistent connections, ideal for simple queries in serverless/edge. */
 const createDb = () => {
   const sql = neon(getDatabaseUrl());
   return drizzleHttp(sql, { schema });
 };
 
-/** WebSocket Pool-based client — supports transactions, use only where `.transaction()` is needed. */
 const createTransactionalDb = () => {
   const pool = new Pool({ connectionString: getDatabaseUrl() });
   return drizzlePool(pool, { schema });

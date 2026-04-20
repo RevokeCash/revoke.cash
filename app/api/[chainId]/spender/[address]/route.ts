@@ -1,4 +1,6 @@
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { addressSchema, supportedChainIdSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { WEBACY_API_KEY } from 'lib/constants';
 import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
 import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderDataSource';
@@ -6,16 +8,16 @@ import { OnchainSpenderRiskDataSource } from 'lib/whois/spender/risk/OnchainSpen
 import { ScamSnifferRiskDataSource } from 'lib/whois/spender/risk/ScamSnifferRiskDataSource';
 import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpenderRiskDataSource';
 import { type NextRequest, NextResponse } from 'next/server';
-import type { Address } from 'viem';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ chainId: string; address: string }>;
 }
 
-interface Params {
-  chainId: string;
-  address: string;
-}
+const schemas = {
+  params: z.object({ chainId: supportedChainIdSchema, address: addressSchema }),
+  body: z.undefined(),
+};
 
 export const runtime = 'edge';
 export const preferredRegion = ['iad1'];
@@ -30,9 +32,7 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
   ],
 });
 
-export async function GET(req: NextRequest, { params }: Props) {
-  const { chainId: chainIdString, address } = await params;
-
+export async function GET(req: NextRequest, props: Props) {
   if (!(await checkActiveSessionEdge(req))) {
     return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
@@ -41,10 +41,12 @@ export async function GET(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
   }
 
-  const chainId = Number(chainIdString);
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { params } = data;
 
   try {
-    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(address as Address, chainId);
+    const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(params.address, params.chainId);
 
     return NextResponse.json(spenderData, {
       headers: {

@@ -1,9 +1,15 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { parseJsonBody } from 'lib/api/validation';
+import { parseRequest } from 'lib/api/validation';
 import { getAddressRules, upsertAddressRules } from 'lib/auto-revoke/rules';
-import { rulesDataSchema } from 'lib/auto-revoke/schemas';
+import { rulesDataBodySchema } from 'lib/auto-revoke/schemas';
 import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const schemas = {
+  params: z.undefined(),
+  body: rulesDataBodySchema,
+};
 
 export const runtime = 'edge';
 
@@ -49,11 +55,11 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ message: 'Ultimate subscription required' }, { status: 403 });
   }
 
-  const { data, error: validationError } = await parseJsonBody(req, rulesDataSchema);
-  if (validationError) return validationError;
+  const { data, error } = await parseRequest(req, undefined, schemas);
+  if (error) return error;
 
   try {
-    await upsertAddressRules(siweAddress, data);
+    await upsertAddressRules(siweAddress, data.body);
     return NextResponse.json({ ok: true });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to update rules';

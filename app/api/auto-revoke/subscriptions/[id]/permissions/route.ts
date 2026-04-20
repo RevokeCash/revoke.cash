@@ -1,17 +1,23 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { parseRouteParams } from 'lib/api/validation';
+import { uuidSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { getAutoRevokePermissionsBySubscription } from 'lib/auto-revoke/permissions';
-import { subscriptionIdRouteParamsSchema } from 'lib/auto-revoke/schemas';
 import { isActiveUltimateSubscriptionOwnedBy } from 'lib/premium/subscriptions';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
+const schemas = {
+  params: z.object({ id: uuidSchema }),
+  body: z.undefined(),
+};
+
 export const runtime = 'edge';
 
-export async function GET(req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, props: Props) {
   const siweAddress = await getAuthenticatedSiweAddress(req);
   if (!siweAddress) {
     return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
@@ -21,15 +27,16 @@ export async function GET(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  const { data, error: validationError } = parseRouteParams(await params, subscriptionIdRouteParamsSchema);
-  if (validationError) return validationError;
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { id: subscriptionId } = data.params;
 
-  if (!(await isActiveUltimateSubscriptionOwnedBy(data.id, siweAddress))) {
+  if (!(await isActiveUltimateSubscriptionOwnedBy(subscriptionId, siweAddress))) {
     return NextResponse.json({ message: 'Not authorized for this subscription' }, { status: 403 });
   }
 
   try {
-    const permissions = await getAutoRevokePermissionsBySubscription(data.id);
+    const permissions = await getAutoRevokePermissionsBySubscription(subscriptionId);
     return NextResponse.json(permissions);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to fetch permissions';

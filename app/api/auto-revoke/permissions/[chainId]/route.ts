@@ -1,17 +1,23 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { parseRouteParams } from 'lib/api/validation';
+import { parseRequest } from 'lib/api/validation';
 import { revokeAutoRevokePermission } from 'lib/auto-revoke/permissions';
-import { chainIdRouteParamsSchema } from 'lib/auto-revoke/schemas';
+import { autoRevokeSupportedChainIdSchema } from 'lib/auto-revoke/schemas';
 import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 interface Props {
   params: Promise<{ chainId: string }>;
 }
 
+const schemas = {
+  params: z.object({ chainId: autoRevokeSupportedChainIdSchema }),
+  body: z.undefined(),
+};
+
 export const runtime = 'edge';
 
-export async function DELETE(req: NextRequest, { params }: Props) {
+export async function DELETE(req: NextRequest, props: Props) {
   const siweAddress = await getAuthenticatedSiweAddress(req);
   if (!siweAddress) {
     return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
@@ -25,11 +31,12 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Ultimate subscription required' }, { status: 403 });
   }
 
-  const { data, error: validationError } = parseRouteParams(await params, chainIdRouteParamsSchema);
-  if (validationError) return validationError;
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { params } = data;
 
   try {
-    await revokeAutoRevokePermission(siweAddress, data.chainId);
+    await revokeAutoRevokePermission(siweAddress, params.chainId);
     return NextResponse.json({ ok: true });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to revoke permission';

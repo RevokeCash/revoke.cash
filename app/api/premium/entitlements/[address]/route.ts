@@ -1,34 +1,32 @@
 import { checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { addressSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { hasActivePremiumEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
-import { type Address, getAddress } from 'viem';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ address: string }>;
 }
 
-interface Params {
-  address: string;
-}
+const schemas = {
+  params: z.object({ address: addressSchema }),
+  body: z.undefined(),
+};
 
 export const runtime = 'edge';
 
-export async function GET(req: NextRequest, { params }: Props) {
+export async function GET(req: NextRequest, props: Props) {
   if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_READ))) {
     return NextResponse.json({ message: 'Rate limited' }, { status: 429 });
   }
 
-  const { address } = await params;
-
-  let normalizedAddress: Address;
-  try {
-    normalizedAddress = getAddress(address);
-  } catch {
-    return NextResponse.json({ message: 'Invalid address' }, { status: 400 });
-  }
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { address } = data.params;
 
   try {
-    const isPremium = await hasActivePremiumEntitlement(normalizedAddress);
+    const isPremium = await hasActivePremiumEntitlement(address);
 
     return NextResponse.json(
       { isPremium },

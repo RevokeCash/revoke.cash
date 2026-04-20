@@ -5,13 +5,9 @@ export interface PricingFeature {
   free: boolean | string;
   premium: boolean | string;
   ultimate: boolean | string;
-  /** Per-tier override for the card display label (keyed by tier key). */
   cardLabelKey?: Partial<Record<TierKey, string>>;
-  /** Tiers where this feature is a meaningful upgrade from the lower tier (shown as unique in cards). */
   upgradedIn?: TierKey[];
-  /** Translation key for an info tooltip (under `premium.pricing.tooltips`). */
   tooltipKey?: string;
-  /** If true, this feature is only shown in the comparison table, not in tier cards. */
   comparisonOnly?: boolean;
 }
 

@@ -4,13 +4,25 @@ import {
   getClientCountryEdge,
   RateLimiters,
 } from 'lib/api/auth';
+import { chainIdSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
+import { isSupportedPaymentChainId } from 'lib/premium/payment-config';
 import { createPayment } from 'lib/premium/payments';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-interface RequestBody {
-  planId?: string;
-  chainId?: number;
-}
+const schemas = {
+  params: z.undefined(),
+  body: z
+    .object({
+      planId: z.string().min(1),
+      chainId: chainIdSchema.refine(isSupportedPaymentChainId, {
+        message: 'Unsupported payment chain',
+        params: { status: 404 },
+      }),
+    })
+    .strict(),
+};
 
 export const runtime = 'edge';
 
@@ -24,21 +36,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  const body = (await req.json()) as RequestBody;
-
-  if (!body.planId || typeof body.planId !== 'string') {
-    return NextResponse.json({ message: 'Invalid planId' }, { status: 400 });
-  }
-
-  if (!body.chainId || typeof body.chainId !== 'number') {
-    return NextResponse.json({ message: 'Invalid chainId' }, { status: 400 });
-  }
+  const { data, error } = await parseRequest(req, undefined, schemas);
+  if (error) return error;
+  const { planId, chainId } = data.body;
 
   try {
     const payment = await createPayment({
       ownerAddress: siweAddress,
-      planId: body.planId,
-      chainId: body.chainId,
+      planId,
+      chainId,
       vatRegion: getClientCountryEdge(req),
     });
 

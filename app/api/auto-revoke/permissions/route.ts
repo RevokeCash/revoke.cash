@@ -1,5 +1,5 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { parseJsonBody } from 'lib/api/validation';
+import { parseRequest } from 'lib/api/validation';
 import {
   getAutoRevokePermissionsByAddress,
   resolvePermissionRecord,
@@ -8,6 +8,12 @@ import {
 import { grantPermissionBodySchema } from 'lib/auto-revoke/schemas';
 import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const schemas = {
+  params: z.undefined(),
+  body: grantPermissionBodySchema,
+};
 
 export const runtime = 'edge';
 
@@ -44,11 +50,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Ultimate subscription required' }, { status: 403 });
   }
 
-  const { data, error: validationError } = await parseJsonBody(req, grantPermissionBodySchema);
-  if (validationError) return validationError;
+  const { data, error } = await parseRequest(req, undefined, schemas);
+  if (error) return error;
 
   try {
-    const resolvedPermission = await resolvePermissionRecord(siweAddress, data);
+    const resolvedPermission = await resolvePermissionRecord(siweAddress, data.body);
     const result = await saveAutoRevokePermission(resolvedPermission);
     return NextResponse.json(result);
   } catch (error) {

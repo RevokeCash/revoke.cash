@@ -2,19 +2,23 @@ import { Redis } from '@upstash/redis';
 import ky from 'ky';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { RequestQueue } from 'lib/api/logs/RequestQueue';
+import { chainIdSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { COINGECKO_API_BASE_URL, COINGECKO_API_KEY } from 'lib/constants';
 import { isNullish } from 'lib/utils';
 import { getChainNativeTokenCoingeckoId } from 'lib/utils/chains';
 import { MINUTE } from 'lib/utils/time';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ chainId: string }>;
 }
 
-interface Params {
-  chainId: string;
-}
+const schemas = {
+  params: z.object({ chainId: chainIdSchema }),
+  body: z.undefined(),
+};
 
 export const runtime = 'edge';
 export const preferredRegion = ['iad1'];
@@ -34,9 +38,7 @@ const PRICE_QUEUE = new RequestQueue('token-price-native', {
 
 const CACHE_TTL = 1 * 60 * 20; // 20 minutes
 
-export async function GET(req: NextRequest, { params }: Props) {
-  const { chainId: chainIdString } = await params;
-
+export async function GET(req: NextRequest, props: Props) {
   if (!(await checkActiveSessionEdge(req))) {
     return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
   }
@@ -45,8 +47,11 @@ export async function GET(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
   }
 
-  const chainId = Number(chainIdString);
-  const price = await getNativeTokenPrice(chainId);
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { params } = data;
+
+  const price = await getNativeTokenPrice(params.chainId);
 
   return NextResponse.json(
     { price },

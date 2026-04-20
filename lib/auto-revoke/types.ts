@@ -1,7 +1,6 @@
 import type { RequestExecutionPermissionsReturnType } from '@metamask/smart-accounts-kit/actions';
 import type { Address, Hex } from 'viem';
 
-/** A single permission result from MetaMask's ERC-7715 wallet methods */
 export type WalletPermissionResult = RequestExecutionPermissionsReturnType[number];
 export type WalletPermissionRules = WalletPermissionResult['rules'];
 

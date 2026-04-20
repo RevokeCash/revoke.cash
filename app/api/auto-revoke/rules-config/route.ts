@@ -1,9 +1,15 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { parseJsonBody } from 'lib/api/validation';
+import { uuidSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { getAddressRulesConfig, switchAutoRevokeRulesSource } from 'lib/auto-revoke/rules';
-import { rulesConfigBodySchema } from 'lib/auto-revoke/schemas';
 import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const schemas = {
+  params: z.undefined(),
+  body: z.object({ subscriptionId: uuidSchema.nullable() }).strict(),
+};
 
 export const runtime = 'edge';
 
@@ -40,11 +46,12 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ message: 'Ultimate subscription required' }, { status: 403 });
   }
 
-  const { data, error: validationError } = await parseJsonBody(req, rulesConfigBodySchema);
-  if (validationError) return validationError;
+  const { data, error } = await parseRequest(req, undefined, schemas);
+  if (error) return error;
+  const { subscriptionId } = data.body;
 
   try {
-    await switchAutoRevokeRulesSource(siweAddress, { subscriptionId: data.subscriptionId });
+    await switchAutoRevokeRulesSource(siweAddress, { subscriptionId });
 
     return NextResponse.json({ ok: true });
   } catch (error) {

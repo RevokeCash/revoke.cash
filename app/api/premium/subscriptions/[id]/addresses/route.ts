@@ -1,23 +1,22 @@
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { addressSchema, uuidSchema } from 'lib/api/schemas';
+import { parseRequest } from 'lib/api/validation';
 import { addSubscriptionAddress } from 'lib/premium/subscriptions';
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAddress } from 'viem';
+import { z } from 'zod';
 
 interface Props {
-  params: Promise<Params>;
+  params: Promise<{ id: string }>;
 }
 
-interface Params {
-  id: string;
-}
-
-interface RequestBody {
-  address?: string;
-}
+const schemas = {
+  params: z.object({ id: uuidSchema }),
+  body: z.object({ address: addressSchema }).strict(),
+};
 
 export const runtime = 'edge';
 
-export async function POST(req: NextRequest, { params }: Props) {
+export async function POST(req: NextRequest, props: Props) {
   const siweAddress = await getAuthenticatedSiweAddress(req);
   if (!siweAddress) {
     return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
@@ -27,20 +26,16 @@ export async function POST(req: NextRequest, { params }: Props) {
     return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
   }
 
-  const { id: subscriptionId } = await params;
-  const body = (await req.json()) as RequestBody;
-
-  if (!body.address || typeof body.address !== 'string') {
-    return NextResponse.json({ message: 'Invalid address' }, { status: 400 });
-  }
+  const { data, error } = await parseRequest(req, props, schemas);
+  if (error) return error;
+  const { id: subscriptionId } = data.params;
+  const { address } = data.body;
 
   try {
-    const normalizedAddress = getAddress(body.address);
-
     await addSubscriptionAddress({
       ownerAddress: siweAddress,
       subscriptionId,
-      address: normalizedAddress,
+      address,
     });
 
     return NextResponse.json({ ok: true });

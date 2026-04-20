@@ -35,10 +35,9 @@ export const recordBatchRevoke = async (
 ) => {
   await ky.post(`/api/${chainId}/batch-revoke`, {
     json: {
-      chainId,
       transactionHash,
       userAddress,
-      feePaid,
+      feePaid: Number(feePaid),
       sponsor,
     },
   });
