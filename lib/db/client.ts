@@ -2,10 +2,11 @@ import { neon, Pool } from '@neondatabase/serverless';
 import { drizzle as drizzleHttp } from 'drizzle-orm/neon-http';
 import { drizzle as drizzlePool } from 'drizzle-orm/neon-serverless';
 import { singleton } from 'lib/utils';
+import * as autoRevokeSchema from './schema/auto-revoke';
 import * as batchRevokesSchema from './schema/batch-revokes';
 import * as premiumSchema from './schema/premium';
 
-const schema = { ...premiumSchema, ...batchRevokesSchema };
+const schema = { ...premiumSchema, ...batchRevokesSchema, ...autoRevokeSchema };
 
 const getDatabaseUrl = () => {
   const databaseUrl = process.env.DATABASE_URL;

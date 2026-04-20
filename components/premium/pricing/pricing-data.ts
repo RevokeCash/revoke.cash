@@ -1,43 +1,55 @@
-export type TierKey = 'free' | 'premium' | 'bundle';
+export type TierKey = 'free' | 'premium' | 'ultimate';
 
 export interface PricingFeature {
   labelKey: string;
   free: boolean | string;
   premium: boolean | string;
-  bundle: boolean | string;
+  ultimate: boolean | string;
   /** Per-tier override for the card display label (keyed by tier key). */
   cardLabelKey?: Partial<Record<TierKey, string>>;
   /** Tiers where this feature is a meaningful upgrade from the lower tier (shown as unique in cards). */
   upgradedIn?: TierKey[];
+  /** Translation key for an info tooltip (under `premium.pricing.tooltips`). */
+  tooltipKey?: string;
+  /** If true, this feature is only shown in the comparison table, not in tier cards. */
+  comparisonOnly?: boolean;
 }
 
 export const FEATURES: PricingFeature[] = [
-  { labelKey: 'revoke_approvals', free: 'one_chain', premium: true, bundle: true },
-  { labelKey: 'approval_history', free: 'one_chain', premium: true, bundle: true },
-  { labelKey: 'exploit_checker', free: 'one_chain', premium: true, bundle: true },
+  { labelKey: 'revoke_approvals', free: 'one_chain', premium: true, ultimate: true },
+  { labelKey: 'approval_history', free: 'one_chain', premium: true, ultimate: true },
+  { labelKey: 'exploit_checker', free: 'one_chain', premium: true, ultimate: true },
   {
     labelKey: 'batch_revoke',
     free: 'per_batch',
     premium: 'unlimited',
-    bundle: 'unlimited',
+    ultimate: 'unlimited',
     cardLabelKey: {
       free: 'batch_revoke_paid',
       premium: 'unlimited_batch_revokes',
-      bundle: 'unlimited_batch_revokes',
+      ultimate: 'unlimited_batch_revokes',
     },
+    upgradedIn: ['premium'],
   },
-  { labelKey: 'multichain_dashboard', free: false, premium: true, bundle: true },
-  { labelKey: 'multichain_exploit_checker', free: false, premium: true, bundle: true },
-  { labelKey: 'time_machine', free: false, premium: true, bundle: true },
-  // { labelKey: 'priority_support', free: false, premium: true, bundle: true },
+  { labelKey: 'multichain_dashboard', free: false, premium: true, ultimate: true },
+  { labelKey: 'multichain_exploit_checker', free: false, premium: true, ultimate: true },
+  { labelKey: 'time_machine', free: false, premium: true, ultimate: true },
+  { labelKey: 'continuous_monitoring', free: false, premium: false, ultimate: true, upgradedIn: ['ultimate'] },
+  {
+    labelKey: 'automated_revoking',
+    free: false,
+    premium: false,
+    ultimate: true,
+    upgradedIn: ['ultimate'],
+    tooltipKey: 'automated_revoking',
+  },
   {
     labelKey: 'address_slots',
     free: false,
-    premium: 'one_address_slot',
-    bundle: 'ten_address_slots',
-    cardLabelKey: { premium: 'one_address_slot', bundle: 'ten_address_slots' },
-    upgradedIn: ['bundle'],
+    premium: 'ten_address_slots',
+    ultimate: 'ten_address_slots',
+    comparisonOnly: true,
   },
 ];
 
-export const TIER_KEYS: TierKey[] = ['free', 'premium', 'bundle'];
+export const TIER_KEYS: TierKey[] = ['free', 'premium', 'ultimate'];

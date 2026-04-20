@@ -4,12 +4,13 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useAuthSession } from 'lib/hooks/auth/useAuthSession';
 import { useSiweSignIn } from 'lib/hooks/ethereum/siwe/useSiweSignIn';
 import { usePremiumSubscriptions } from 'lib/hooks/premium/usePremiumSubscriptions';
+import { isUltimatePlan } from 'lib/premium/plans';
+import { isSubscriptionActive } from 'lib/premium/subscriptions';
 import { useTranslations } from 'next-intl';
-import type { Address } from 'viem';
 import { useConnection } from 'wagmi';
+import AutoRevokeSection from './auto-revoke/AutoRevokeSection';
 import BillingSection from './BillingSection';
 import CoverageSection from './coverage/CoverageSection';
-import GrantedEntitlementsSection from './GrantedEntitlementsSection';
 import PremiumAddressesSection from './PremiumAddressesSection';
 import PremiumSubscriptionSection from './PremiumSubscriptionSection';
 import UnauthenticatedView from './UnauthenticatedView';
@@ -27,7 +28,7 @@ const AccountDashboard = () => {
     entitlements,
     isLoading: isLoadingSubscriptions,
     isError,
-  } = usePremiumSubscriptions((account as Address) ?? '0x', isAuthenticated);
+  } = usePremiumSubscriptions(account!, isAuthenticated);
 
   if (!isAuthenticated) {
     return <UnauthenticatedView account={account} signIn={signIn} isAuthenticating={isAuthenticating} />;
@@ -48,7 +49,13 @@ const AccountDashboard = () => {
     );
   }
 
-  const activeSubscription = subscriptions.find((sub) => sub.isActive);
+  const activeSubscription = subscriptions.find((subscription) => isSubscriptionActive(subscription));
+  const activeUltimateSubscription = subscriptions.find(
+    (subscription) => isSubscriptionActive(subscription) && isUltimatePlan(subscription.plan),
+  );
+  const ultimateEntitlement = entitlements
+    .filter((entitlement) => isUltimatePlan(entitlement))
+    .sort((a, b) => new Date(b.endsAt).getTime() - new Date(a.endsAt).getTime())[0];
 
   return (
     <div className="max-w-4xl mx-auto py-8 flex flex-col gap-6">
@@ -57,13 +64,17 @@ const AccountDashboard = () => {
         <p className="mt-2 text-zinc-600 dark:text-zinc-400">{t('account.description')}</p>
       </div>
 
-      <PremiumSubscriptionSection account={account as Address} activeSubscription={activeSubscription} />
-      {activeSubscription && (
-        <PremiumAddressesSection activeSubscription={activeSubscription} account={account as Address} />
+      <PremiumSubscriptionSection
+        account={account!}
+        activeSubscription={activeSubscription}
+        entitlements={entitlements}
+      />
+      {activeSubscription && <PremiumAddressesSection activeSubscription={activeSubscription} account={account!} />}
+      {(activeUltimateSubscription || ultimateEntitlement) && (
+        <AutoRevokeSection activeSubscription={activeUltimateSubscription} account={account!} />
       )}
-      {entitlements.length > 0 && <GrantedEntitlementsSection entitlements={entitlements} />}
       <BillingSection subscriptions={subscriptions} isLoading={isLoadingSubscriptions} />
-      <CoverageSection account={account as Address} />
+      <CoverageSection account={account!} />
     </div>
   );
 };

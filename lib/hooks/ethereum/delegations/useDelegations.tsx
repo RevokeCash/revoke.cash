@@ -64,7 +64,7 @@ export const useDelegations = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['delegations', address, selectedChainId],
     queryFn: async () => {
-      const delegations = await fetchDelegations(publicClient, selectedChainId, address as Address);
+      const delegations = await fetchDelegations(publicClient, selectedChainId, address);
       analytics.track('Fetched Delegations', { account: address, chainId: selectedChainId });
       return delegations;
     },
@@ -106,7 +106,7 @@ export const useEip7702Delegations = () => {
   } = useQuery({
     queryKey: ['eip7702-delegations', address],
     queryFn: async () => {
-      const eip7702Delegations = await fetchEip7702Delegations(address as Address);
+      const eip7702Delegations = await fetchEip7702Delegations(address);
       analytics.track('Fetched EIP7702 Delegations', { account: address });
       return eip7702Delegations;
     },

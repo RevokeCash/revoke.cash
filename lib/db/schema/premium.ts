@@ -16,6 +16,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const premiumPaymentStatusEnum = pgEnum('premium_payment_status', ['pending', 'confirmed', 'expired', 'failed']);
+export const premiumPlanTierEnum = pgEnum('premium_plan_tier', ['premium', 'ultimate']);
 
 export const premiumPlans = pgTable(
   'premium_plans',
@@ -26,6 +27,7 @@ export const premiumPlans = pgTable(
     priceUsd: integer('price_usd').notNull(),
     durationDays: integer('duration_days').notNull(),
     maxAddresses: integer('max_addresses').notNull(),
+    tier: premiumPlanTierEnum('tier').notNull().default('premium'),
     isActive: boolean('is_active').notNull().default(true),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })

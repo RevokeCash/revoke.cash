@@ -1,0 +1,59 @@
+import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { parseJsonBody } from 'lib/api/validation';
+import {
+  getAutoRevokePermissionsByAddress,
+  resolvePermissionRecord,
+  saveAutoRevokePermission,
+} from 'lib/auto-revoke/permissions';
+import { grantPermissionBodySchema } from 'lib/auto-revoke/schemas';
+import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
+import { type NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
+
+export async function GET(req: NextRequest) {
+  const siweAddress = await getAuthenticatedSiweAddress(req);
+  if (!siweAddress) {
+    return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
+  }
+
+  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_READ))) {
+    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
+  }
+
+  try {
+    const permissions = await getAutoRevokePermissionsByAddress(siweAddress);
+    return NextResponse.json(permissions);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to fetch permissions';
+    return NextResponse.json({ message }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const siweAddress = await getAuthenticatedSiweAddress(req);
+  if (!siweAddress) {
+    return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
+  }
+
+  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_WRITE))) {
+    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
+  }
+
+  if (!(await hasActiveUltimateEntitlement(siweAddress))) {
+    return NextResponse.json({ message: 'Ultimate subscription required' }, { status: 403 });
+  }
+
+  const { data, error: validationError } = await parseJsonBody(req, grantPermissionBodySchema);
+  if (validationError) return validationError;
+
+  try {
+    const resolvedPermission = await resolvePermissionRecord(siweAddress, data);
+    const result = await saveAutoRevokePermission(resolvedPermission);
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error('Failed to grant permission:', error);
+    const message = error instanceof Error ? error.message : 'Failed to grant permission';
+    return NextResponse.json({ message }, { status: 500 });
+  }
+}

@@ -49,7 +49,7 @@ export async function POST(req: NextRequest, { params }: Props) {
     const status =
       message.includes('Subscription not found') ||
       message.includes('Subscription has expired') ||
-      message.includes('No available address slots') ||
+      message.includes('No available wallet slots') ||
       message.includes('Address already added') ||
       message.includes('Invalid address')
         ? 400

@@ -2,12 +2,12 @@
 
 import Card, { CardTitle } from 'components/common/Card';
 import Label from 'components/common/Label';
-import type { GrantedEntitlement } from 'lib/premium/types';
+import type { PremiumEntitlement } from 'lib/premium/types';
 import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  entitlements: GrantedEntitlement[];
+  entitlements: PremiumEntitlement[];
 }
 
 const GrantedEntitlementsSection = ({ entitlements }: Props) => {

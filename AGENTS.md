@@ -187,7 +187,7 @@ Notes:
 - Always use descriptive variable names without abbreviations.
 - Prefer readable, maintainable code over micro-optimizations.
 - Reuse existing utilities before adding new helpers.
-- Keep checksummed addresses (`getAddress`) rather than lowercase storage.
+- Keep checksummed addresses (`getAddress`) rather than lowercase storage (except in database storage where lowercase addresses are used).
 - Do not remove existing comments unless they are clearly outdated.
 - Prefer one component per file unless multiple components are strongly justified.
 - Prefer writing code in a way that reads top-down, from the main entry point to the leaves.

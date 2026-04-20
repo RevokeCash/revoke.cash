@@ -3,6 +3,8 @@ import { getDb } from 'lib/db/client';
 import { premiumPlans } from 'lib/db/schema/premium';
 import { PREMIUM_PAYMENT_CHAIN_IDS } from './payment-config';
 
+export type PremiumPlanTier = 'premium' | 'ultimate';
+
 export interface PremiumPlan {
   id: string;
   version: number;
@@ -12,6 +14,7 @@ export interface PremiumPlan {
   supportedChainIds: readonly number[];
   maxAddresses: number;
   durationDays: number;
+  tier: PremiumPlanTier;
 }
 
 export type PremiumPlanRecord = typeof premiumPlans.$inferSelect;
@@ -26,6 +29,7 @@ const mapPlanRecord = (plan: PremiumPlanRecord): PremiumPlan => {
     supportedChainIds: PREMIUM_PAYMENT_CHAIN_IDS,
     maxAddresses: plan.maxAddresses,
     durationDays: plan.durationDays,
+    tier: plan.tier,
   };
 };
 
@@ -37,6 +41,10 @@ export const getPremiumPlans = async (): Promise<PremiumPlan[]> => {
     orderBy: (plans, { asc }) => [asc(plans.priceUsd)],
   });
   return planRows.map(mapPlanRecord);
+};
+
+export const isUltimatePlan = (plan: Pick<PremiumPlan, 'tier'>): boolean => {
+  return plan.tier === 'ultimate';
 };
 
 export const getPremiumPlanById = async (planId: string): Promise<PremiumPlan | null> => {

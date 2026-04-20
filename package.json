@@ -23,6 +23,7 @@
     "tsx": "dotenvx run tsx",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:drop": "drizzle-kit drop"
   },
@@ -37,6 +38,7 @@
     "@floating-ui/react": "^0.27.17",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
+    "@metamask/smart-accounts-kit": "^1.0.0",
     "@neondatabase/serverless": "^1.0.2",
     "@privy-io/cross-app-connect": "^0.2.3",
     "@revoke.cash/chains": "^76.0.0",
@@ -83,6 +85,7 @@
     "use-local-storage": "^3.0.0",
     "viem": "^2.45.2",
     "wagmi": "^3.4.2",
+    "zod": "^3.25.76",
     "zustand": "^5.0.11"
   },
   "devDependencies": {

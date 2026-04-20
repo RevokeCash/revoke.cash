@@ -1,5 +1,6 @@
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import Button from 'components/common/Button';
+import InformationIconTooltip from 'components/common/InformationIconTooltip';
 import Label from 'components/common/Label';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
@@ -9,26 +10,34 @@ interface Props {
   tierKey: TierKey;
   price: string;
   href: string;
-  highlighted?: boolean;
+  className?: string;
+  badgeLabel?: string;
+  badgeClassName?: string;
+  buttonStyle?: 'primary' | 'secondary' | 'tertiary' | 'none';
   referencesTier?: TierKey;
 }
 
-const TierCard = ({ tierKey, price, href, highlighted, referencesTier }: Props) => {
+const TierCard = ({
+  tierKey,
+  price,
+  href,
+  className,
+  badgeLabel,
+  badgeClassName,
+  buttonStyle = 'secondary',
+  referencesTier,
+}: Props) => {
   const t = useTranslations();
 
   return (
     <div
       className={twMerge(
-        'relative flex flex-col gap-6 rounded-xl border p-6',
-        highlighted
-          ? 'border-brand bg-brand/5 dark:bg-brand/10 ring-1 ring-brand'
-          : 'border-zinc-200 dark:border-zinc-700',
+        'relative flex flex-col gap-6 rounded-xl border p-6 border-zinc-200 dark:border-zinc-700',
+        className,
       )}
     >
-      {highlighted && (
-        <Label className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand text-zinc-900">
-          {t('premium.pricing.best_value')}
-        </Label>
+      {badgeLabel && (
+        <Label className={twMerge('absolute -top-3 left-1/2 -translate-x-1/2', badgeClassName)}>{badgeLabel}</Label>
       )}
 
       <div className="flex flex-col gap-1">
@@ -44,13 +53,7 @@ const TierCard = ({ tierKey, price, href, highlighted, referencesTier }: Props) 
         </p>
       </div>
 
-      <Button
-        href={href}
-        router
-        style={highlighted ? 'primary' : 'secondary'}
-        size="md"
-        className="w-full justify-center"
-      >
+      <Button href={href} router style={buttonStyle} size="md" className="w-full justify-center">
         {t(`premium.pricing.tiers.${tierKey}.cta`)}
       </Button>
 
@@ -70,15 +73,11 @@ const FeatureList = ({ tierKey, referencesTier }: FeatureListProps) => {
   const t = useTranslations();
 
   if (!referencesTier) {
+    const includedFeatures = FEATURES.filter((feature) => feature[tierKey] !== false && !feature.comparisonOnly);
     return (
       <ul className="flex flex-col gap-2.5">
-        {FEATURES.map((feature) => (
-          <FeatureItem
-            key={feature.labelKey}
-            feature={feature}
-            tierKey={tierKey}
-            included={feature[tierKey] !== false}
-          />
+        {includedFeatures.map((feature) => (
+          <FeatureItem key={feature.labelKey} feature={feature} tierKey={tierKey} included />
         ))}
       </ul>
     );
@@ -86,7 +85,9 @@ const FeatureList = ({ tierKey, referencesTier }: FeatureListProps) => {
 
   const uniqueFeatures = FEATURES.filter(
     (feature) =>
-      feature[tierKey] !== false && (feature[referencesTier] === false || feature.upgradedIn?.includes(tierKey)),
+      !feature.comparisonOnly &&
+      feature[tierKey] !== false &&
+      (feature[referencesTier] === false || feature.upgradedIn?.includes(tierKey)),
   );
 
   return (
@@ -126,8 +127,9 @@ const FeatureItem = ({ feature, tierKey, included }: FeatureItemProps) => {
       ) : (
         <XMarkIcon className="w-4 h-4 shrink-0 text-zinc-300 dark:text-zinc-600" />
       )}
-      <span className={included ? undefined : 'text-zinc-400 dark:text-zinc-600'}>
+      <span className={twMerge('flex items-center gap-1', !included && 'text-zinc-400 dark:text-zinc-600')}>
         {t(`premium.pricing.features.${labelKey}`, { price: '$1.50' })}
+        {feature.tooltipKey && <InformationIconTooltip tooltip={t(`premium.pricing.tooltips.${feature.tooltipKey}`)} />}
       </span>
     </li>
   );

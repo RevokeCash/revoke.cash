@@ -71,8 +71,8 @@ CREATE INDEX "idx_premium_subscriptions_ends" ON "premium_subscriptions" USING b
 
 INSERT INTO "premium_plans" ("id", "version", "name", "price_usd", "duration_days", "max_addresses", "is_active")
 VALUES
-  ('individual_annual', 1, 'Premium Individual', 1, 365, 1, true),
-  ('bundle10_annual', 1, 'Premium Bundle (10)', 3, 365, 10, true)
+  ('individual_annual', 1, 'Premium Individual', 79, 365, 1, true),
+  ('bundle10_annual', 1, 'Premium Bundle (10)', 199, 365, 10, true)
 ON CONFLICT ("id", "version") DO UPDATE SET
   "name" = EXCLUDED."name",
   "price_usd" = EXCLUDED."price_usd",

@@ -1,6 +1,6 @@
 import type { Address } from 'viem';
 
-export type { GrantedEntitlement } from './entitlements';
+export type { PremiumEntitlement } from './entitlements';
 export type { PaymentStatusResponse as PaymentStatus } from './payments';
 export type { PremiumPlan } from './plans';
 export type { PremiumSubscription, SubscriptionPayment } from './subscriptions';

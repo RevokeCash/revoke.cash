@@ -1,12 +1,54 @@
 {
+  "auto_revoke": {
+    "title": "Auto-Revoking",
+    "description": "Automatically revoke dangerous ERC-20 approvals on your behalf.",
+    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
+    "permissions": {
+      "title": "Permissions",
+      "granted": "Granted",
+      "not_granted": "Not Granted",
+      "grant": "Grant",
+      "grant_all": "Grant All",
+      "networks_enabled": "{enabled}/{total} networks enabled",
+      "expires": "Expires {date}",
+      "revoke_permission": "Revoke",
+      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
+      "grant_failed": "Failed to grant auto-revoke permission.",
+      "revoke_failed": "Failed to revoke auto-revoke permission.",
+      "sync": "Sync from wallet",
+      "sync_success": "Auto-revoke permissions synced from wallet.",
+      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
+      "connect_to_manage": "Connect this wallet to manage its permissions."
+    },
+    "rules_source": {
+      "title": "Rules Source",
+      "custom": "Custom rules",
+      "subscription_defaults": "Managed by {owner}",
+      "switch_failed": "Failed to switch rules source."
+    },
+    "rules": {
+      "title": "Rules",
+      "title_defaults": "Default Rules",
+      "risk_detection": "Risky Approval Detection",
+      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
+      "sensitivity_medium": "Medium risk and above",
+      "sensitivity_high": "High risk",
+      "sensitivity_exploits_only": "Exploits only",
+      "stale_approval": "Stale Approval Cleanup",
+      "stale_approval_description": "Revoke approvals older than the specified number of days.",
+      "days": "days",
+      "managed_by": "Managed by {owner}",
+      "save_failed": "Failed to save rules."
+    }
+  },
   "addresses": {
-    "add_address": "Add address",
-    "add_failed": "Failed to add address",
-    "placeholder": "Address or domain name",
+    "add_address": "Add wallet",
+    "add_failed": "Failed to add wallet",
+    "placeholder": "Wallet address or domain name",
     "remove": "Remove",
-    "remove_failed": "Failed to remove address",
-    "resolve_failed": "Could not resolve address or name",
-    "title": "My Premium Addresses"
+    "remove_failed": "Failed to remove wallet",
+    "resolve_failed": "Could not resolve wallet address or name",
+    "title": "My Premium Wallets"
   },
   "coverage": {
     "active": "Active",
@@ -41,7 +83,7 @@
     "no_payments": "No payment history yet.",
     "title": "Billing"
   },
-  "description": "Manage your premium subscription and address slots.",
+  "description": "Manage your premium subscription and account settings.",
   "error": "Something went wrong loading your subscription data. Please try again later.",
   "granted": {
     "active": "Active",
@@ -65,29 +107,31 @@
     },
     "downgrade_not_supported": "You cannot downgrade an active subscription.",
     "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
+    "granted_by": "Granted by {address}",
+    "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
     "payment_failed": "Subscription payment failed",
     "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
     "payment_network": "Payment network",
-    "payment_summary": "You will pay {amount} {token} for {days} days and up to {maxAddresses} {maxAddresses, plural, =1 {address} other {addresses}}.",
+    "payment_summary": "You will pay {amount} {token} for {days} days. Includes up to {maxAddresses} {maxAddresses, plural, =1 {wallet} other {wallets}}.",
     "plan": "Plan",
-    "plan_description": "${price}/year · {maxAddresses, plural, =1 {1 address} other {{maxAddresses} addresses}}",
+    "plan_description": "${price}/year",
     "plan_options": {
       "basic_access": "Basic Access",
       "current": "Current",
       "free": "Free"
     },
-    "slots_summary": "{used}/{max} address {max, plural, =1 {slot} other {slots}} used",
+    "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
     "title": "My Premium Subscription",
     "valid_until": "Valid until {date}",
     "wallet": "Wallet"
   },
   "unauthenticated": {
-    "description": "Sign in to manage your Premium subscription, address slots, and coverage.",
+    "description": "Sign in to manage your Premium subscription, wallet slots, and coverage.",
     "benefits": {
       "title": "What you can do here",
       "manage_subscription": "Manage your Premium subscription",
-      "address_slots": "Add or remove address slots",
+      "address_slots": "Add or remove wallets",
       "coverage": "View and manage Fairside coverage",
       "billing": "View your billing history"
     }

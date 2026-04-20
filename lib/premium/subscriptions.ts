@@ -1,8 +1,9 @@
 import { and, count, eq } from 'drizzle-orm';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from 'lib/db/client';
 import { premiumSubscriptionAddresses, premiumSubscriptions } from 'lib/db/schema/premium';
+import { isNullish } from 'lib/utils';
 import { type Address, getAddress } from 'viem';
-import type { PremiumPlan } from './plans';
+import { isUltimatePlan, type PremiumPlan } from './plans';
 
 export interface SubscriptionPayment {
   amountUsd: number;
@@ -17,7 +18,7 @@ export interface SubscriptionPayment {
 export interface PremiumSubscription {
   id: string;
   ownerAddress: Address;
-  plan: Pick<PremiumPlan, 'id' | 'name' | 'priceUsd' | 'durationDays' | 'maxAddresses'>;
+  plan: Pick<PremiumPlan, 'id' | 'name' | 'priceUsd' | 'durationDays' | 'maxAddresses' | 'tier'>;
   addresses: Address[];
   slots: {
     used: number;
@@ -26,11 +27,35 @@ export interface PremiumSubscription {
   startsAt: string;
   endsAt: string;
   createdAt: string;
-  isActive: boolean;
   payments: SubscriptionPayment[];
 }
 
 export type PremiumSubscriptionRecord = typeof premiumSubscriptions.$inferSelect;
+
+export const isSubscriptionActive = (
+  subscription: { startsAt: Date | string; endsAt: Date | string },
+  now: number = Date.now(),
+): boolean => {
+  const startsAt = new Date(subscription.startsAt);
+  const endsAt = new Date(subscription.endsAt);
+  return startsAt.getTime() <= now && endsAt.getTime() > now;
+};
+
+export const isActiveUltimateSubscriptionOwnedBy = async (
+  subscriptionId: string,
+  ownerAddress: Address,
+): Promise<boolean> => {
+  const db = getDb();
+  const normalizedOwner = ownerAddress.toLowerCase();
+
+  const subscription = await db.query.premiumSubscriptions.findFirst({
+    where: and(eq(premiumSubscriptions.id, subscriptionId), eq(premiumSubscriptions.ownerAddress, normalizedOwner)),
+    columns: { id: true, startsAt: true, endsAt: true },
+    with: { plan: { columns: { tier: true } } },
+  });
+
+  return !isNullish(subscription) && isUltimatePlan(subscription.plan) && isSubscriptionActive(subscription);
+};
 
 export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<PremiumSubscription[]> => {
   const db = getDb();
@@ -40,7 +65,7 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
     where: eq(premiumSubscriptions.ownerAddress, normalizedOwner),
     orderBy: (subscriptions, { desc }) => [desc(subscriptions.createdAt)],
     with: {
-      plan: { columns: { id: true, name: true, priceUsd: true, durationDays: true, maxAddresses: true } },
+      plan: { columns: { id: true, name: true, priceUsd: true, durationDays: true, maxAddresses: true, tier: true } },
       addresses: { columns: { address: true } },
       payments: {
         columns: { amountUsd: true, chainId: true, tokenSymbol: true, matchedTxHash: true, confirmedAt: true },
@@ -76,7 +101,6 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
       startsAt: subscription.startsAt.toISOString(),
       endsAt: subscription.endsAt.toISOString(),
       createdAt: subscription.createdAt.toISOString(),
-      isActive: subscription.startsAt.getTime() <= Date.now() && subscription.endsAt.getTime() > Date.now(),
       payments,
     };
   });
@@ -128,7 +152,7 @@ export const addSubscriptionAddress = async ({
       .where(eq(premiumSubscriptionAddresses.subscriptionId, subscription.id));
 
     if (usedSlots >= subscription.plan.maxAddresses) {
-      throw new Error('No available address slots');
+      throw new Error('No available wallet slots');
     }
 
     const existing = await trx.query.premiumSubscriptionAddresses.findFirst({

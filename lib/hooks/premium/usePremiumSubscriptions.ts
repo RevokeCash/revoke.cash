@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import ky from 'lib/ky';
-import type { GrantedEntitlement, PremiumSubscription } from 'lib/premium/types';
+import type { PremiumEntitlement, PremiumSubscription } from 'lib/premium/types';
 import type { Address } from 'viem';
 
 interface SubscriptionsResponse {
   subscriptions: PremiumSubscription[];
-  entitlements: GrantedEntitlement[];
+  entitlements: PremiumEntitlement[];
 }
 
 export const getSubscriptionsQueryKey = (ownerAddress: Address) => ['premium', 'subscriptions', ownerAddress] as const;

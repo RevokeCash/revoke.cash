@@ -1,4 +1,5 @@
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import InformationIconTooltip from 'components/common/InformationIconTooltip';
 import { useTranslations } from 'next-intl';
 import { FEATURES, TIER_KEYS } from './pricing-data';
 
@@ -31,7 +32,12 @@ const ComparisonTable = () => {
             {FEATURES.map((feature, index) => (
               <tr key={feature.labelKey} className={index % 2 === 0 ? '' : 'bg-zinc-50/50 dark:bg-zinc-900/50'}>
                 <td className="py-3 pl-5 pr-4 text-zinc-700 dark:text-zinc-300">
-                  {t(`premium.pricing.features.${feature.labelKey}`)}
+                  <span className="flex items-center gap-1">
+                    {t(`premium.pricing.features.${feature.labelKey}`)}
+                    {feature.tooltipKey && (
+                      <InformationIconTooltip tooltip={t(`premium.pricing.tooltips.${feature.tooltipKey}`)} />
+                    )}
+                  </span>
                 </td>
                 {TIER_KEYS.map((tierKey) => (
                   <td key={tierKey} className="py-3 px-4 text-center">

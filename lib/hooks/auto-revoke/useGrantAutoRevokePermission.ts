@@ -1,0 +1,52 @@
+import { erc7715ProviderActions } from '@metamask/smart-accounts-kit/actions';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AUTO_REVOKE_SUPPORTED_CHAINS } from 'lib/auto-revoke/config';
+import { buildAutoRevokePermissionRequest, findActivePermission } from 'lib/auto-revoke/permissions';
+import ky from 'lib/ky';
+import { isUserRejectionError } from 'lib/utils/errors';
+import { useConnection, useConnectorClient } from 'wagmi';
+
+export const useGrantAutoRevokePermission = () => {
+  const { connector } = useConnection();
+  const { data: connectorClient } = useConnectorClient();
+  const queryClient = useQueryClient();
+
+  const isMetaMask = connector?.id === 'io.metamask';
+
+  const mutation = useMutation({
+    mutationFn: async (chainId: number) => {
+      if (!connectorClient || !isMetaMask) throw new Error('MetaMask not connected');
+      if (!AUTO_REVOKE_SUPPORTED_CHAINS.includes(chainId)) throw new Error('Unsupported chain');
+
+      const walletClient = connectorClient.extend(erc7715ProviderActions());
+
+      const grantedPermissions = await walletClient.requestExecutionPermissions([
+        buildAutoRevokePermissionRequest(chainId),
+      ]);
+
+      const result = await findActivePermission(grantedPermissions, connectorClient.account.address);
+      if (!result) throw new Error('No active permission returned');
+
+      await ky.post('/api/auto-revoke/permissions', {
+        json: { chainId, permissionContext: result.context },
+      });
+    },
+    onError: (error) => {
+      if (!isUserRejectionError(error)) {
+        console.error('Failed to grant permission:', error);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['auto-revoke'] });
+    },
+  });
+
+  return {
+    grantPermission: async (chainId: number) => {
+      return mutation.mutateAsync(chainId).catch(() => null);
+    },
+    isGranting: mutation.isPending,
+    pendingChainId: mutation.isPending ? mutation.variables : null,
+    isMetaMask,
+  };
+};

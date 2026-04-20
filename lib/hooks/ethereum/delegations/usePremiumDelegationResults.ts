@@ -28,7 +28,7 @@ export const usePremiumDelegationResults = (address: Address | undefined): Combi
       queryKey: ['delegations', address, chainId],
       queryFn: async () => {
         const publicClient = createViemPublicClientForChain(chainId);
-        const delegations = await fetchDelegations(publicClient, chainId, address as Address);
+        const delegations = await fetchDelegations(publicClient, chainId, address!);
         analytics.track('Fetched Delegations', { account: address, chainId });
         return delegations;
       },

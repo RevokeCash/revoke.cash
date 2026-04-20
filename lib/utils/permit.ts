@@ -1,7 +1,7 @@
 import { DAI_PERMIT_ABI } from 'lib/abis';
 import { DUMMY_ADDRESS } from 'lib/constants';
 import blocksDB from 'lib/databases/blocks';
-import { type Address, type Hex, parseSignature, type Signature, type TypedDataDomain, type WalletClient } from 'viem';
+import { type Address, parseSignature, type Signature, type TypedDataDomain, type WalletClient } from 'viem';
 import { getWalletAddress, writeContractUnlessExcessiveGas } from '.';
 import { type ResolvedTimeLog, type TokenEvent, TokenEventType } from './events';
 import { type Erc20TokenContract, getPermitDomain, type PermitTokenData } from './tokens';
@@ -35,7 +35,7 @@ export const permit = async (
       account: address,
       abi: DAI_PERMIT_ABI,
       functionName: 'permit',
-      args: [address, spender, BigInt(nonce), BigInt(deadline), false, Number(v), r as Hex, s as Hex],
+      args: [address, spender, BigInt(nonce), BigInt(deadline), false, Number(v), r, s],
       chain: walletClient.chain,
     });
   }

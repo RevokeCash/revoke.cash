@@ -33,7 +33,7 @@ export const useFairsideCoverage = (account: Address) => {
     queryFn: async () => {
       try {
         const coveredWallets = await getCoveredWallets({ accessToken: token! });
-        return coveredWallets?.map((w) => w.walletAddress as Address) ?? [account];
+        return coveredWallets?.map((w) => w.walletAddress) ?? [account];
       } catch {
         // Token is likely expired, clear it
         setToken(null);

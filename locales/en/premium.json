@@ -4,7 +4,8 @@
     "description": "Want a unified view across all networks?"
   },
   "pricing": {
-    "best_value": "Best Value",
+    "best_protection": "Best Protection",
+    "most_popular_label": "Most Popular",
     "compare_plans": "Compare plans",
     "description": "Stay safe in web3 with the tools you need. Upgrade to Premium for the full experience.",
     "feature_column": "Feature",
@@ -37,22 +38,45 @@
       }
     },
     "features": {
-      "address_slots": "Address slots",
+      "address_slots": "Wallet slots",
+      "automated_revoking": "Automated revoking",
+      "continuous_monitoring": "Continuous monitoring",
       "approval_history": "Approval history",
+      "ten_address_slots": "10 wallets",
       "batch_revoke": "Batch revoke",
       "batch_revoke_paid": "Batch revoke ({price}/batch)",
       "exploit_checker": "Exploit checker",
       "multichain_dashboard": "Multichain dashboard",
       "multichain_exploit_checker": "Multichain exploit checker",
-      "one_address_slot": "1 address slot",
       "one_chain": "One chain at a time",
       "per_batch": "{price} per batch",
       "priority_support": "Priority support",
-      "time_machine": "Time Machine",
+      "time_machine": "Time machine",
       "revoke_approvals": "Revoke approvals on 100+ networks",
-      "ten_address_slots": "10 address slots",
       "unlimited": "Unlimited",
       "unlimited_batch_revokes": "Unlimited batch revokes"
+    },
+    "tooltips": {
+      "automated_revoking": "Supported on select networks and wallets."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "supported_wallets": {
+        "question": "What wallets and networks support automated revoking?",
+        "answer": "Automated revoking is an Ultimate feature that currently works with MetaMask on 13 supported networks including Ethereum, Polygon, Arbitrum, Base, Optimism, and more. Support for additional wallets depends on adoption of the ERC-7715 standard."
+      },
+      "subscription_expiry": {
+        "question": "What happens when my subscription expires?",
+        "answer": "Your multichain dashboard and tools become unavailable until you renew. With Ultimate, automated revoking also stops monitoring your approvals, but your rule configuration is preserved, so everything can pick up where it left off once you resubscribe."
+      },
+      "multiple_wallets": {
+        "question": "Can I use one subscription for multiple wallets?",
+        "answer": "Yes. Both Premium and Ultimate include 10 wallet slots. The subscription owner can add wallet addresses and all wallets get the same features. With Ultimate, each wallet can additionally manage its own auto-revoking configuration independently."
+      },
+      "premium_vs_ultimate": {
+        "question": "What's the difference between Premium and Ultimate?",
+        "answer": "Premium gives you the full multichain dashboard, approval history, exploit checker, batch revokes, and time machine. Ultimate additionally provides set-and-forget protection with continuous monitoring and automatic revocation of risky or stale approvals."
+      }
     },
     "meta": {
       "description": "Compare Revoke Premium plans. Get the multichain dashboard, unlimited batch revokes, and more.",
@@ -61,12 +85,6 @@
     "most_popular": "Most popular",
     "per_year": "/year",
     "tiers": {
-      "bundle": {
-        "cta": "Subscribe",
-        "description": "Everything in Premium for up to 10 wallet addresses.",
-        "savings": "That's just {price} per address per month",
-        "name": "Premium Bundle"
-      },
       "free": {
         "cta": "Get started",
         "description": "Essential tools to inspect and revoke token approvals.",
@@ -74,8 +92,13 @@
       },
       "premium": {
         "cta": "Subscribe",
-        "description": "Full access to the multichain dashboard, history, and unlimited batch revokes.",
+        "description": "Monitor and manage token approvals in a single multichain dashboard.",
         "name": "Premium"
+      },
+      "ultimate": {
+        "cta": "Subscribe",
+        "description": "Set-and-forget protection with automated revoking.",
+        "name": "Ultimate"
       }
     },
     "title": "Premium Pricing"

@@ -1,12 +1,6 @@
-import {
-  ArrowUturnLeftIcon,
-  ClockIcon,
-  GlobeAltIcon,
-  RectangleStackIcon,
-  ShieldExclamationIcon,
-} from '@heroicons/react/24/outline';
 import ContentPageHero from 'components/common/ContentPageHero';
 import { Feature } from 'components/landing/FeaturesShowcase';
+import LandingPageFaqItem from 'components/landing/LandingPageFaqItem';
 import { useTranslations } from 'next-intl';
 import ComparisonTable from './ComparisonTable';
 import TierCard from './TierCard';
@@ -22,8 +16,25 @@ const PremiumPricingPageContent = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <TierCard tierKey="free" price="$0" href="/token-approval-checker/ethereum" />
-        <TierCard tierKey="premium" price="$79" href="/account" />
-        <TierCard tierKey="bundle" price="$199" href="/account" highlighted referencesTier="premium" />
+        <TierCard
+          tierKey="premium"
+          price="$99"
+          href="/account"
+          className="border-2 border-brand/70"
+          badgeLabel={t('premium.pricing.most_popular_label')}
+          badgeClassName="bg-brand text-zinc-900"
+          referencesTier="free"
+        />
+        <TierCard
+          tierKey="ultimate"
+          price="$199"
+          href="/account"
+          className="border-2 border-zinc-900 dark:border-zinc-200"
+          badgeLabel={t('premium.pricing.best_protection')}
+          badgeClassName="bg-zinc-900 text-white dark:bg-zinc-200 dark:text-zinc-900"
+          buttonStyle="primary"
+          referencesTier="premium"
+        />
       </div>
 
       <ComparisonTable />
@@ -33,39 +44,51 @@ const PremiumPricingPageContent = () => {
         <div className="flex flex-col gap-8">
           <Feature
             featureKey="multichain_approvals"
-            icon={GlobeAltIcon}
             image="/assets/images/premium/multichain-approvals.jpg"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="multichain_history"
-            icon={ClockIcon}
             image="/assets/images/premium/multichain-history.jpg"
             imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="multichain_exploit_checker"
-            icon={ShieldExclamationIcon}
             image="/assets/images/premium/multichain-exploit-checker.jpg"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="unlimited_batch_revokes"
-            icon={RectangleStackIcon}
             image="/assets/images/premium/batch-revoke.jpg"
             imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="time_machine"
-            icon={ArrowUturnLeftIcon}
             image="/assets/images/premium/time-machine.jpg"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
           />
+        </div>
+      </div>
+      <div className="flex flex-col gap-6">
+        <h2 className="text-3xl font-bold text-center">{t('premium.pricing.faq.title')}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
+          <LandingPageFaqItem question={t(`premium.pricing.faq.subscription_expiry.question`)}>
+            {t(`premium.pricing.faq.subscription_expiry.answer`)}
+          </LandingPageFaqItem>
+          <LandingPageFaqItem question={t(`premium.pricing.faq.multiple_wallets.question`)}>
+            {t(`premium.pricing.faq.multiple_wallets.answer`)}
+          </LandingPageFaqItem>
+          <LandingPageFaqItem question={t(`premium.pricing.faq.premium_vs_ultimate.question`)}>
+            {t(`premium.pricing.faq.premium_vs_ultimate.answer`)}
+          </LandingPageFaqItem>
+          <LandingPageFaqItem question={t(`premium.pricing.faq.supported_wallets.question`)}>
+            {t(`premium.pricing.faq.supported_wallets.answer`)}
+          </LandingPageFaqItem>
         </div>
       </div>
     </div>

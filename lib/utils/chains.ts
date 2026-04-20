@@ -576,7 +576,6 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'tezos',
     coingeckoNetworkId: 'etherlink',
     logoUrl: '/assets/images/vendor/chains/etherlink.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.etherlink.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 33899 } },
   }),
   [ChainId.EthereumClassic]: new Chain({
@@ -586,7 +585,6 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'ethereum-classic',
     coingeckoNetworkId: 'ethereum_classic',
     logoUrl: '/assets/images/vendor/chains/etc.png',
-    etherscanCompatibleApiUrl: 'https://blockscout.com/etc/mainnet/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 18288646 } },
   }),
   [ChainId.EthereumMainnet]: new Chain({
@@ -640,7 +638,6 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'filecoin',
     coingeckoNetworkId: 'filecoin',
     logoUrl: '/assets/images/vendor/chains/filecoin.svg',
-    etherscanCompatibleApiUrl: 'https://filecoin.blockscout.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3328594 } },
   }),
   [ChainId.FlareMainnet]: new Chain({
@@ -1559,7 +1556,6 @@ export const CHAINS = {
     coingeckoNetworkId: 'tomochain',
     logoUrl: '/assets/images/vendor/chains/viction.svg',
     explorerUrl: 'https://viction.blockscout.com/',
-    etherscanCompatibleApiUrl: 'https://viction.blockscout.com/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 87169904 } },
   }),
   [ChainId.WorldChain]: new Chain({

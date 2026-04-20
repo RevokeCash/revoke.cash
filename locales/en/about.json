@@ -46,11 +46,11 @@
     },
     "extension_overhaul": {
       "title": "Extension Overhaul",
-      "description": "The threat landscape is constantly evolving, and the browser extension needs to stay ahead. A full overhaul of the browser extension is released with improved detection, UX and risk coverage."
+      "description": "The threat landscape is constantly evolving, and the browser extension needs to stay ahead. Revoke.cash partners with Fairside to build a new extension with improved detection, UX and risk coverage."
     },
     "premium": {
       "title": "Revoke Premium",
-      "description": "With a decline in public goods funding, Revoke.cash needs to find a sustainable business model. Revoke Premium is launched to generate real revenue — no VC funding, no token."
+      "description": "With a decline in public goods funding, Revoke.cash needs to find a sustainable business model. Revoke Premium is launched to generate real revenue."
     }
   },
   "meta": {

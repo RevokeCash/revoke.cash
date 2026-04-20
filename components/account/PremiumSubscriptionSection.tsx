@@ -11,7 +11,7 @@ import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
 import { type SubscribeStatus, useSubscribe } from 'lib/hooks/premium/useSubscribe';
 import { PREMIUM_PAYMENT_CHAIN_IDS } from 'lib/premium/payment-config';
-import type { PremiumPlan, PremiumSubscription } from 'lib/premium/types';
+import type { PremiumEntitlement, PremiumPlan, PremiumSubscription } from 'lib/premium/types';
 import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -22,14 +22,15 @@ import { useConnection } from 'wagmi';
 interface Props {
   account: Address;
   activeSubscription: PremiumSubscription | undefined;
+  entitlements: PremiumEntitlement[];
 }
 
-const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
+const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements }: Props) => {
   const t = useTranslations();
   const { chainId } = useConnection();
   const { domainName } = useNameLookup(account);
 
-  const [selectedPlanId, setSelectedPlanId] = useState<string>(activeSubscription?.plan.id ?? 'individual_annual');
+  const [selectedPlanId, setSelectedPlanId] = useState<string>(activeSubscription?.plan.id ?? 'premium_annual');
   const [selectedPaymentChainId, setSelectedPaymentChainId] = useState<number>(PREMIUM_PAYMENT_CHAIN_IDS[0]);
 
   const { plans, selectedPlan, isLoading: isLoadingPlans, isError: isPlansError } = usePremiumPlans(selectedPlanId);
@@ -80,7 +81,7 @@ const PremiumSubscriptionSection = ({ account, activeSubscription }: Props) => {
       className={twMerge('flex flex-col gap-4', isLoadingPlans && 'h-80')}
     >
       <WalletInfo account={account} domainName={domainName} />
-      <SubscriptionBanner activeSubscription={activeSubscription} />
+      <SubscriptionBannerSection activeSubscription={activeSubscription} entitlements={entitlements} />
 
       {isPlansError ? (
         <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
@@ -130,15 +131,24 @@ const WalletInfo = ({ account, domainName }: { account: Address; domainName: str
     <div className="flex flex-col gap-1">
       <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.wallet')}</span>
       <span className="font-medium">{domainName ?? shortenAddress(account, 4)}</span>
-      {domainName && <span className="text-sm font-mono break-all text-zinc-600 dark:text-zinc-400">{account}</span>}
+      <span className="text-sm font-mono break-all text-zinc-600 dark:text-zinc-400">{account}</span>
     </div>
   );
 };
 
-const SubscriptionBanner = ({ activeSubscription }: { activeSubscription: PremiumSubscription | undefined }) => {
+interface SubscriptionBannerSectionProps {
+  activeSubscription: PremiumSubscription | undefined;
+  entitlements: PremiumEntitlement[];
+}
+
+const SubscriptionBannerSection = ({ activeSubscription, entitlements }: SubscriptionBannerSectionProps) => {
   const t = useTranslations();
 
-  if (!activeSubscription) {
+  const grantedEntitlements = entitlements.filter(
+    (entitlement) => entitlement.ownerAddress.toLowerCase() !== activeSubscription?.ownerAddress?.toLowerCase(),
+  );
+
+  if (!activeSubscription && grantedEntitlements.length === 0) {
     return (
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
         {t.rich('account.subscription.no_subscription', {
@@ -153,20 +163,56 @@ const SubscriptionBanner = ({ activeSubscription }: { activeSubscription: Premiu
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded-md bg-zinc-100 dark:bg-zinc-800/50 p-4 border border-transparent dark:border-zinc-700">
+    <div className="flex flex-col gap-2">
+      {activeSubscription && (
+        <SubscriptionBanner
+          planName={activeSubscription.plan.name}
+          endsAt={activeSubscription.endsAt}
+          slots={activeSubscription.slots}
+        />
+      )}
+      {grantedEntitlements.map((entitlement) => (
+        <SubscriptionBanner
+          key={entitlement.ownerAddress}
+          planName={entitlement.planName}
+          endsAt={entitlement.endsAt}
+          grantedBy={entitlement.ownerAddress}
+        />
+      ))}
+      {!activeSubscription && grantedEntitlements.length > 0 && (
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          {t('account.subscription.optional_own_subscription')}
+        </p>
+      )}
+    </div>
+  );
+};
+
+interface SubscriptionBannerProps {
+  planName: string;
+  endsAt: string;
+  grantedBy?: Address;
+  slots?: { used: number; max: number };
+}
+
+const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots }: SubscriptionBannerProps) => {
+  const t = useTranslations();
+
+  const bannerStrings = [
+    grantedBy && t('account.subscription.granted_by', { address: shortenAddress(grantedBy, 4) }),
+    t('account.subscription.valid_until', { date: endsAt.slice(0, 10) }),
+    slots && t('account.subscription.slots_summary', { used: slots.used, max: slots.max }),
+  ];
+
+  return (
+    <div className="flex flex-col gap-2 rounded-md bg-green-50 dark:bg-green-950/20 p-4 border border-green-200 dark:border-green-900">
       <div className="flex items-center gap-2">
-        <span className="font-medium">{activeSubscription.plan.name}</span>
+        <span className="font-medium">{planName}</span>
         <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">
           {t('account.subscription.active')}
         </Label>
       </div>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        {t('account.subscription.valid_until', { date: activeSubscription.endsAt.slice(0, 10) })} ·{' '}
-        {t('account.subscription.slots_summary', {
-          used: activeSubscription.slots.used,
-          max: activeSubscription.slots.max,
-        })}
-      </p>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' · ')}</p>
     </div>
   );
 };
