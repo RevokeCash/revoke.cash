@@ -21,4 +21,4 @@ jobs:
         run: yarn install
 
       - name: Run TypeScript Check
-        run: yarn tsc --noEmit
+        run: yarn typecheck
