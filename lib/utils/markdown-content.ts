@@ -114,6 +114,7 @@ export const getSidebar = async (
           getSidebarEntry('security/malware-fake-downloads', locale, directory, extended),
           getSidebarEntry('security/what-is-address-poisoning', locale, directory, extended),
           getSidebarEntry('security/what-is-pig-butchering', locale, directory, extended),
+          getSidebarEntry('security/crypto-recovery-scams', locale, directory, extended),
         ],
       },
       {
