@@ -1,14 +1,14 @@
 'use client';
 
+import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from '@revoke.cash/core/chains';
+import { FEES_ADDRESS } from '@revoke.cash/core/constants';
+import type { TransactionSubmitted } from '@revoke.cash/core/types';
+import { isNoFeeRequiredError } from '@revoke.cash/core/utils/errors';
+import { HOUR } from '@revoke.cash/core/utils/time';
+import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
-import { FEES_ADDRESS } from 'lib/constants';
-import type { TransactionSubmitted } from 'lib/interfaces';
-import { waitForTransactionConfirmation } from 'lib/utils';
+import { recordBatchRevoke } from 'lib/allowances/batch-revoke';
 import analytics from 'lib/utils/analytics';
-import { recordBatchRevoke } from 'lib/utils/batch-revoke';
-import { type DocumentedChainId, getChainNativeToken, isTestnetChain } from 'lib/utils/chains';
-import { isNoFeeRequiredError } from 'lib/utils/errors';
-import { HOUR } from 'lib/utils/time';
 import useLocalStorage from 'use-local-storage';
 import { type Address, type Hash, parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';

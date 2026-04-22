@@ -1,8 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import type { OnCancel } from 'lib/interfaces';
-import { deduplicateArray, isNullish } from 'lib/utils';
-import { type ResolvedTimeLog, TokenEventType } from 'lib/utils/events';
-import { getLastCancelled } from 'lib/utils/permit';
+import { type ResolvedTimeLog, TokenEventType } from '@revoke.cash/core/events';
 import {
   createTokenContract,
   getTokenMetadata,
@@ -10,7 +6,11 @@ import {
   hasZeroBalance,
   isErc721Contract,
   type PermitTokenData,
-} from 'lib/utils/tokens';
+} from '@revoke.cash/core/tokens';
+import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getLastCancelled } from 'lib/allowances/permit';
+import type { OnCancel } from 'lib/types';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import { usePublicClient } from 'wagmi';
 import { useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';

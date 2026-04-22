@@ -1,11 +1,11 @@
 'use client';
 
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
 import ChainLogoStack from 'components/common/ChainLogoStack';
 import Checkbox from 'components/common/Checkbox';
 import SearchableSelect from 'components/common/select/SearchableSelect';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import type { FormatOptionLabelMeta } from 'react-select';

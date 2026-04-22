@@ -1,7 +1,7 @@
 'use client';
 
+import type { AutoRevokeRules, RiskSensitivity } from '@revoke.cash/core/auto-revoke/types';
 import SegmentedControl, { type SegmentedOption } from 'components/common/SegmentedControl';
-import type { AutoRevokeRules, RiskSensitivity } from 'lib/auto-revoke/types';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import AutoRevokeRuleToggle from './AutoRevokeRuleToggle';

@@ -1,7 +1,7 @@
+import { isNullish } from '@revoke.cash/core/utils';
+import { HOUR } from '@revoke.cash/core/utils/time';
+import { lookupAvvyName, lookupEnsName, lookupUnsName } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
-import { isNullish } from 'lib/utils';
-import { HOUR } from 'lib/utils/time';
-import { lookupAvvyName, lookupEnsName, lookupUnsName } from 'lib/utils/whois';
 import type { Address } from 'viem';
 
 export const useNameLookup = (address?: Address) => {

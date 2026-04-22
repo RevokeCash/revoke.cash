@@ -1,5 +1,5 @@
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { type QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
-import { parseErrorMessage } from 'lib/utils/errors';
 import { toast } from 'react-toastify';
 
 interface Params<TVariables, TData, TCached> {

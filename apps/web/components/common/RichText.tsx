@@ -1,5 +1,5 @@
-import { CHROME_EXTENSION_URL, DISCORD_URL, DONATION_ADDRESS, TWITTER_URL } from 'lib/constants';
-import { FAIRSIDE_APP_URL } from 'lib/coverage/fairside';
+import { CHROME_EXTENSION_URL, DISCORD_URL, DONATION_ADDRESS, TWITTER_URL } from '@revoke.cash/core/constants';
+import { FAIRSIDE_APP_URL } from '@revoke.cash/core/coverage/fairside';
 import type { ReactNode } from 'react';
 import Href from './Href';
 

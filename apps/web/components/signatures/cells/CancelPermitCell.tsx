@@ -1,16 +1,18 @@
+import blocksCache from '@revoke.cash/core/cache/blocks';
+import { DUMMY_ADDRESS } from '@revoke.cash/core/constants';
+import { isErc721Contract, type PermitTokenData } from '@revoke.cash/core/tokens';
+import { type TransactionSubmitted, TransactionType } from '@revoke.cash/core/types';
+import { isNullish } from '@revoke.cash/core/utils';
+import { HOUR, SECOND } from '@revoke.cash/core/utils/time';
+import { waitForSubmittedTransactionConfirmation, waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
-import { DUMMY_ADDRESS } from 'lib/constants';
-import blocksDB from 'lib/databases/blocks';
+import { permit } from 'lib/allowances/permit';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { isNullish, waitForSubmittedTransactionConfirmation, waitForTransactionConfirmation } from 'lib/utils';
+import type { OnCancel } from 'lib/types';
 import analytics from 'lib/utils/analytics';
-import { permit } from 'lib/utils/permit';
-import { HOUR, SECOND } from 'lib/utils/time';
-import { isErc721Contract, type PermitTokenData } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
 import { usePublicClient, useWalletClient } from 'wagmi';
@@ -48,7 +50,7 @@ const CancelPermitCell = ({ token, onCancel }: Props) => {
       const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
       if (!transactionReceipt) return;
 
-      const lastCancelled = await blocksDB.getTimeLog(publicClient, {
+      const lastCancelled = await blocksCache.getTimeLog(publicClient, {
         ...transactionReceipt,
         blockNumber: Number(transactionReceipt.blockNumber),
       });

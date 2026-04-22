@@ -1,8 +1,8 @@
 'use client';
 
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import AddressCellWithRiskData from 'components/allowances/dashboard/cells/AddressCellWithRiskData';
 import Label from 'components/common/Label';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useTranslations } from 'next-intl';
 

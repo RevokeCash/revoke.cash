@@ -1,9 +1,9 @@
 'use client';
 
+import type { DocumentedChainId } from '@revoke.cash/core/chains';
+import type { PremiumSubscription, SubscriptionPayment } from '@revoke.cash/core/premium/types';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
 import Card, { CardTitle } from 'components/common/Card';
-import type { PremiumSubscription, SubscriptionPayment } from 'lib/premium/types';
-import type { DocumentedChainId } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

@@ -1,3 +1,4 @@
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, getChainSlug } from '@revoke.cash/core/chains';
 import LearnLayout from 'app/layouts/LearnLayout';
 import { BASE_FEE, PER_ALLOWANCE_FEE } from 'components/allowances/controls/batch-revoke/fee';
 import ChainLogo from 'components/common/ChainLogo';
@@ -5,7 +6,6 @@ import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
 import Faq from 'components/faq/Faq';
 import FaqItem from 'components/faq/FaqItem';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, getChainSlug } from 'lib/utils/chains';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';

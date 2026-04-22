@@ -1,15 +1,9 @@
 'use client';
 
-import { TransactionType } from 'lib/interfaces';
-import {
-  getAllowanceKey,
-  type OnUpdate,
-  revokeAllowance,
-  type TokenAllowanceData,
-  trackRevokeTransaction,
-  updateErc20Allowance,
-} from 'lib/utils/allowances';
-import { isErc721Contract } from 'lib/utils/tokens';
+import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { TransactionType } from '@revoke.cash/core/types';
+import { revokeAllowance, trackRevokeTransaction, updateErc20Allowance } from 'lib/allowances';
 import { isTransactionStatusLoadingState, useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useEnsureWalletClient } from './ensureWalletClient';
 import { useHandleTransaction } from './useHandleTransaction';

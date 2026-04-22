@@ -1,4 +1,3 @@
-import { isNullish } from 'lib/utils';
 import {
   CHAIN_SELECT_TESTNETS,
   getChainInfoUrl,
@@ -6,7 +5,8 @@ import {
   getChainNativeToken,
   getChainSlug,
   getCorrespondingMainnetChainId,
-} from 'lib/utils/chains';
+} from '@revoke.cash/core/chains';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useTranslations } from 'next-intl';
 import { createElement } from 'react';
 import Href from './Href';

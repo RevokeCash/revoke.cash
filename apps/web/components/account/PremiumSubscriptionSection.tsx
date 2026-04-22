@@ -1,6 +1,9 @@
 'use client';
 
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { PREMIUM_PAYMENT_CHAIN_IDS } from '@revoke.cash/core/premium/payment-config';
+import type { PremiumEntitlement, PremiumPlan, PremiumSubscription } from '@revoke.cash/core/premium/types';
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
 import CardSelect, { type CardSelectOption } from 'components/common/CardSelect';
@@ -10,9 +13,6 @@ import ChainSelect from 'components/common/select/ChainSelect';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
 import { type SubscribeStatus, useSubscribe } from 'lib/hooks/premium/useSubscribe';
-import { PREMIUM_PAYMENT_CHAIN_IDS } from 'lib/premium/payment-config';
-import type { PremiumEntitlement, PremiumPlan, PremiumSubscription } from 'lib/premium/types';
-import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';

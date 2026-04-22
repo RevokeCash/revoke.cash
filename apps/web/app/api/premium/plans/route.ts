@@ -1,4 +1,4 @@
-import { getPremiumPlans } from 'lib/premium/plans';
+import { getPremiumPlans } from '@revoke.cash/core/premium/plans';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';

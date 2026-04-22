@@ -1,9 +1,9 @@
 'use client';
 
+import { isSupportedChain } from '@revoke.cash/core/chains';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
-import { isNullish } from 'lib/utils';
-import { isSupportedChain } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
 import React, { type ReactNode, useContext, useLayoutEffect, useState } from 'react';
 import type { Address } from 'viem';

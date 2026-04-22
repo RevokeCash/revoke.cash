@@ -1,6 +1,6 @@
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
-import { parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'react-toastify';

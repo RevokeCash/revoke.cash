@@ -1,10 +1,10 @@
+import { resolvePermissionRecord, syncAutoRevokePermissions } from '@revoke.cash/core/auto-revoke/permissions';
+import { hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
 import { parseRequest } from 'lib/api/validation';
-import { resolvePermissionRecord, syncAutoRevokePermissions } from 'lib/auto-revoke/permissions';
-import { syncPermissionsBodySchema } from 'lib/auto-revoke/schemas';
-import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { syncPermissionsBodySchema } from '../../schemas';
 
 const schemas = {
   params: z.undefined(),

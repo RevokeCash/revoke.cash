@@ -1,0 +1,31 @@
+{
+  "name": "@revoke.cash/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./allowances": "./lib/allowances/index.ts",
+    "./chains": "./lib/chains/index.ts",
+    "./delegations": "./lib/delegations/index.ts",
+    "./events": "./lib/events/index.ts",
+    "./events/getters": "./lib/events/getters/index.ts",
+    "./events/providers": "./lib/events/providers/index.ts",
+    "./whois": "./lib/whois/index.ts",
+    "./*": "./lib/*.ts"
+  },
+  "scripts": {
+    "env": "dotenvx run -f ../../.env --",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "yarn env drizzle-kit generate",
+    "db:migrate": "yarn env drizzle-kit migrate",
+    "db:push": "yarn env drizzle-kit push",
+    "db:studio": "yarn env drizzle-kit studio",
+    "db:drop": "yarn env drizzle-kit drop"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.52.0",
+    "drizzle-kit": "^0.31.7",
+    "typescript": "^5.9.3"
+  }
+}

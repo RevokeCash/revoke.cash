@@ -1,8 +1,8 @@
+import { revokeAutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
+import { hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { autoRevokeSupportedChainIdSchema } from '@revoke.cash/core/schemas';
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
 import { parseRequest } from 'lib/api/validation';
-import { revokeAutoRevokePermission } from 'lib/auto-revoke/permissions';
-import { autoRevokeSupportedChainIdSchema } from 'lib/auto-revoke/schemas';
-import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

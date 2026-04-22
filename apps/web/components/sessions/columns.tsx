@@ -1,7 +1,7 @@
+import type { Session } from '@revoke.cash/core/sessions';
 import { createColumnHelper, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
-import type { Session } from 'lib/utils/sessions';
 import ControlsCell from './cells/ControlsCell';
 import ExpirationCell from './cells/ExpirationCell';
 import HashCell from './cells/HashCell';

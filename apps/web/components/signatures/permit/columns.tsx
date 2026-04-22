@@ -1,10 +1,10 @@
+import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
+import type { PermitTokenData } from '@revoke.cash/core/tokens';
+import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper, type RowData } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import type { OnCancel } from 'lib/interfaces';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
-import { formatFixedPointBigInt } from 'lib/utils/formatting';
-import type { PermitTokenData } from 'lib/utils/tokens';
+import type { OnCancel } from 'lib/types';
 import CancelPermitCell from '../cells/CancelPermitCell';
 import LastCancelledCell from '../cells/LastCancelledCell';
 

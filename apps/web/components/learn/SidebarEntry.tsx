@@ -1,4 +1,4 @@
-import type { ISidebarEntry } from 'lib/interfaces';
+import type { ISidebarEntry } from 'lib/types';
 import SidebarLink from './SidebarLink';
 import SidebarSection from './SidebarSection';
 

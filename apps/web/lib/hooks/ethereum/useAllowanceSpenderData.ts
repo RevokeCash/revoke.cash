@@ -1,6 +1,7 @@
-import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { deduplicateArray, isNullish } from 'lib/utils';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
+import type { Nullable } from '@revoke.cash/core/types';
+import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
+import type { SpenderData, SpenderRiskData } from '@revoke.cash/core/whois';
 import { useMemo } from 'react';
 import { getSpenderKey, type SpenderLookup, useSpenderData } from './useSpenderData';
 

@@ -1,10 +1,14 @@
 'use client';
 
-import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlatform';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
-import { TransactionType } from 'lib/interfaces';
+import { AggregateDelegatePlatform } from '@revoke.cash/core/delegations/AggregateDelegatePlatform';
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
+import { TransactionType } from '@revoke.cash/core/types';
+import {
+  getWalletAddress,
+  waitForTransactionConfirmation,
+  writeContractUnlessExcessiveGas,
+} from '@revoke.cash/core/wallet';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
-import { getWalletAddress, waitForTransactionConfirmation, writeContractUnlessExcessiveGas } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from '../useHandleTransaction';

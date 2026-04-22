@@ -1,9 +1,9 @@
 'use client';
 
 import { ShieldCheckIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
+import { CHROME_EXTENSION_URL } from '@revoke.cash/core/constants';
 import Button from 'components/common/Button';
 import Label from 'components/common/Label';
-import { CHROME_EXTENSION_URL } from 'lib/constants';
 import { useExtensionConfig } from 'lib/hooks/ethereum/useExtensionConfig';
 import { useTranslations } from 'next-intl';
 

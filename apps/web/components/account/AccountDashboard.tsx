@@ -1,11 +1,11 @@
 'use client';
 
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
+import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
 import { useAuthSession } from 'lib/hooks/auth/useAuthSession';
 import { useSiweSignIn } from 'lib/hooks/ethereum/siwe/useSiweSignIn';
 import { usePremiumSubscriptions } from 'lib/hooks/premium/usePremiumSubscriptions';
-import { isUltimatePlan } from 'lib/premium/plans';
-import { isSubscriptionActive } from 'lib/premium/subscriptions';
 import { useTranslations } from 'next-intl';
 import { useConnection } from 'wagmi';
 import AutoRevokeSection from './auto-revoke/AutoRevokeSection';

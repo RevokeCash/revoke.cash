@@ -1,4 +1,4 @@
-import type { TransactionSubmitted } from 'lib/interfaces';
+import type { TransactionSubmitted } from '@revoke.cash/core/types';
 import { isTransactionStatusLoadingState, useTransactionStore } from 'lib/stores/transaction-store';
 import { useTranslations } from 'next-intl';
 import Button from '../../common/Button';

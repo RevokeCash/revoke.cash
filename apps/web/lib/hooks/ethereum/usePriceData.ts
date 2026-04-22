@@ -1,6 +1,6 @@
+import { MINUTE } from '@revoke.cash/core/utils/time';
 import { useQueries } from '@tanstack/react-query';
-import { getTokenPrices } from 'lib/price/utils';
-import { MINUTE } from 'lib/utils/time';
+import { getTokenPrices } from 'lib/price';
 import type { Address } from 'viem';
 
 export interface ChainTokenAddresses {

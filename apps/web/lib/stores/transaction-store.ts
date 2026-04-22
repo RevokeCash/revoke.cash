@@ -1,11 +1,11 @@
-import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
-import type { TransactionStatus, TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import type { TransactionStatus, TransactionSubmitted, TransactionType } from '@revoke.cash/core/types';
 import {
   isAccountUpgradeRejectionError,
   isBatchSizeError,
   isUserRejectionError,
   parseErrorMessage,
-} from 'lib/utils/errors';
+} from '@revoke.cash/core/utils/errors';
+import type { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import type { Hash } from 'viem';
 import { create } from 'zustand';
 

@@ -1,10 +1,10 @@
 'use client';
 
+import { getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
+import type { TokenData } from '@revoke.cash/core/tokens';
 import ChainOverlayLogo from 'components/common/ChainOverlayLogo';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { getChainExplorerUrl, getChainName } from 'lib/utils/chains';
-import type { TokenData } from 'lib/utils/tokens';
 import { useRef } from 'react';
 import type { Address } from 'viem';
 

@@ -1,13 +1,14 @@
+import { getAllowancesFromEvents } from '@revoke.cash/core/allowances';
+import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { getTokenEvents } from '@revoke.cash/core/chains/events';
+import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
+import { addressSchema } from '@revoke.cash/core/schemas';
+import { isNullish } from '@revoke.cash/core/utils';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/cold-storage-sbt/utils';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
-import { addressSchema } from 'lib/api/schemas';
 import { parseRequest } from 'lib/api/validation';
-import { getTokenEvents } from 'lib/chains/events';
 import ky from 'lib/ky';
-import { isNullish } from 'lib/utils';
-import { getAllowancesFromEvents } from 'lib/utils/allowances';
-import { createViemPublicClientForChain } from 'lib/utils/chains';
-import { parseErrorMessage } from 'lib/utils/errors';
 import { type NextRequest, NextResponse } from 'next/server';
 import type { Hash } from 'viem';
 import { z } from 'zod';
@@ -46,7 +47,8 @@ export async function POST(req: NextRequest) {
 
   // Get the events and allowances for the user
   const publicClient = createViemPublicClientForChain(chainId);
-  const { events } = await getTokenEvents(chainId, address);
+  const logsProvider = getScriptLogsProvider(chainId);
+  const { events } = await getTokenEvents(chainId, address, logsProvider);
   const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
 
   if (await alreadyOwnsSoulboundToken(address)) {

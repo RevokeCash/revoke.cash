@@ -1,5 +1,5 @@
 import Logo from 'components/common/Logo';
-import type { Marketplace } from 'lib/interfaces';
+import type { Marketplace } from 'lib/types';
 import { useTranslations } from 'next-intl';
 
 interface Props {

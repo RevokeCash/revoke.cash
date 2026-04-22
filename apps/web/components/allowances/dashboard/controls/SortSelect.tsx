@@ -1,9 +1,9 @@
+import { normaliseLabel } from '@revoke.cash/core/utils';
 import type { ColumnSort } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
-import { normaliseLabel } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import useLocalStorage from 'use-local-storage';

@@ -1,16 +1,11 @@
 'use client';
 
+import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { TransactionType } from '@revoke.cash/core/types';
+import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { FEE_SPONSORS, isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
-import { TransactionType } from 'lib/interfaces';
-import {
-  getAllowanceKey,
-  type OnUpdate,
-  revokeAllowance,
-  type TokenAllowanceData,
-  trackRevokeTransaction,
-} from 'lib/utils/allowances';
-import { recordBatchRevoke, trackBatchRevoke } from 'lib/utils/batch-revoke';
-import { isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+import { revokeAllowance, trackRevokeTransaction } from 'lib/allowances';
+import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
 import { useTranslations } from 'next-intl';
 import type PQueue from 'p-queue';
 import { toast } from 'react-toastify';

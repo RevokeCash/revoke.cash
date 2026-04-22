@@ -1,6 +1,6 @@
 'use client';
 
-import { formatTimestamp } from 'lib/utils/time';
+import { formatTimestamp } from '@revoke.cash/core/utils/time';
 import { useTranslations } from 'next-intl';
 
 interface Props {

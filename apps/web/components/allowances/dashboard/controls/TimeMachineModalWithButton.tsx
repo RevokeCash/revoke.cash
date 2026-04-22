@@ -2,11 +2,11 @@
 
 import { Dialog } from '@headlessui/react';
 import { ClockIcon } from '@heroicons/react/24/outline';
+import { isNullish } from '@revoke.cash/core/utils';
+import { SECOND } from '@revoke.cash/core/utils/time';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import { useTimeMachine } from 'lib/hooks/page-context/PremiumAddressPageContext';
-import { isNullish } from 'lib/utils';
-import { SECOND } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import DateTimeSlider from './DateTimeSlider';

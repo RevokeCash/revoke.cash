@@ -1,13 +1,15 @@
+import blocksCache from '@revoke.cash/core/cache/blocks';
+import { type TransactionSubmitted, TransactionType } from '@revoke.cash/core/types';
+import { isNullish } from '@revoke.cash/core/utils';
+import { HOUR, SECOND } from '@revoke.cash/core/utils/time';
+import { waitForSubmittedTransactionConfirmation, waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Button from 'components/common/Button';
-import blocksDB from 'lib/databases/blocks';
 import { useHandleTransaction } from 'lib/hooks/ethereum/useHandleTransaction';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { type Marketplace, type OnCancel, type TransactionSubmitted, TransactionType } from 'lib/interfaces';
-import { isNullish, waitForSubmittedTransactionConfirmation, waitForTransactionConfirmation } from 'lib/utils';
+import type { Marketplace, OnCancel } from 'lib/types';
 import analytics from 'lib/utils/analytics';
-import { HOUR, SECOND } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
 import { usePublicClient, useWalletClient } from 'wagmi';
@@ -38,7 +40,7 @@ const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
       // TODO: Deduplicate this with the CancelPermitCell
       const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
       if (!transactionReceipt) return;
-      const lastCancelled = await blocksDB.getTimeLog(publicClient, {
+      const lastCancelled = await blocksCache.getTimeLog(publicClient, {
         ...transactionReceipt,
         blockNumber: Number(transactionReceipt.blockNumber),
       });

@@ -1,5 +1,5 @@
+import { CHROME_EXTENSION_URL } from '@revoke.cash/core/constants';
 import WalletIndicator from 'components/header/WalletIndicator';
-import { CHROME_EXTENSION_URL } from 'lib/constants';
 import { useTranslations } from 'next-intl';
 import HeaderLogo from './HeaderLogo';
 import MobileMenu from './MobileMenu';

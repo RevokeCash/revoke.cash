@@ -1,10 +1,10 @@
 'use client';
 
+import { isNullish } from '@revoke.cash/core/utils';
+import { getSpenderData } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import Loader from 'components/common/Loader';
-import { isNullish } from 'lib/utils';
-import { getSpenderData } from 'lib/utils/whois';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
 

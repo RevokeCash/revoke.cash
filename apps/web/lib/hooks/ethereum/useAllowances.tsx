@@ -1,17 +1,17 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { deduplicateArray, isNullish } from 'lib/utils';
 import {
   type AllowanceUpdateProperties,
   applyRevokeToAllowances,
   applyUpdateToAllowances,
   getAllowancesFromEvents,
   type TokenAllowanceData,
-} from 'lib/utils/allowances';
+} from '@revoke.cash/core/allowances';
+import { type EnrichedTokenEvent, getEventKey } from '@revoke.cash/core/events';
+import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
+import { useQuery } from '@tanstack/react-query';
 import analytics from 'lib/utils/analytics';
-import { type EnrichedTokenEvent, getEventKey } from 'lib/utils/events';
-import { isErc721Contract } from 'lib/utils/tokens';
 import { useEffect, useMemo, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';

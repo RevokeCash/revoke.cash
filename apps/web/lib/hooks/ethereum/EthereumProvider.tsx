@@ -2,9 +2,9 @@
 
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
 import { toPrivyWalletConnector } from '@privy-io/cross-app-connect/rainbow-kit';
+import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { usePathname } from 'lib/i18n/navigation';
-import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
 import { memo, type ReactNode, useEffect } from 'react';
 import type { Chain } from 'viem';
 import { createConfig, useConnect, useConnection, useConnectors, WagmiProvider } from 'wagmi';

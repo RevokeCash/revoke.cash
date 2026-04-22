@@ -1,3 +1,5 @@
+import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { getAddressAndDomainName } from '@revoke.cash/core/whois';
 import CrispPremiumPageSync from 'app/CrispPremiumPageSync';
 import SharedLayout from 'app/layouts/SharedLayout';
 import AddressHeader from 'components/address/AddressHeader';
@@ -7,8 +9,6 @@ import PremiumAllowancePageProvider from 'components/address/PremiumAllowancePag
 import { AddressIdentityContextProvider } from 'lib/hooks/page-context/AddressIdentityContext';
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
-import { hasActivePremiumEntitlement } from 'lib/premium/entitlements';
-import { getAddressAndDomainName } from 'lib/utils/whois';
 import { notFound } from 'next/navigation';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';

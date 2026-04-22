@@ -1,12 +1,12 @@
 'use client';
 
+import type { PremiumSubscription } from '@revoke.cash/core/premium/types';
+import { parseInputAddress } from '@revoke.cash/core/whois';
 import AddressRow from 'components/account/AddressRow';
 import AddressSearchBox from 'components/common/AddressSearchBox';
 import Button from 'components/common/Button';
 import Card, { CardHeader } from 'components/common/Card';
 import { useSubscriptionAddresses } from 'lib/hooks/premium/useSubscriptionAddresses';
-import type { PremiumSubscription } from 'lib/premium/types';
-import { parseInputAddress } from 'lib/utils/whois';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import type { Address } from 'viem';

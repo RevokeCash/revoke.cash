@@ -1,8 +1,8 @@
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
+import { isNullish } from '@revoke.cash/core/utils';
+import { parseInputAddress } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
-import { isNullish } from 'lib/utils';
-import { parseInputAddress } from 'lib/utils/whois';
 import type { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
 import Button from './Button';
 import SearchBox from './SearchBox';

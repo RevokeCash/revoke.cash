@@ -1,6 +1,6 @@
 'use client';
 
-import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from 'lib/utils/chains';
+import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { memo, type ReactNode, useEffect, useMemo, useState } from 'react';
 import type { Chain } from 'viem';
 import { createConfig, useConnect, useConnection, useConnectors, WagmiProvider } from 'wagmi';

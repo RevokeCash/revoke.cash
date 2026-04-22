@@ -1,8 +1,7 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { filterUnknownRiskFactors, getRiskFactorScore, getRiskLevel, type RiskFactor } from '@revoke.cash/core/risk';
+import { deduplicateArray } from '@revoke.cash/core/utils';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { RiskFactor } from 'lib/interfaces';
-import { deduplicateArray } from 'lib/utils';
-import { filterUnknownRiskFactors, getRiskFactorScore, getRiskLevel } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import RiskFactorDisplay from './RiskFactorDisplay';

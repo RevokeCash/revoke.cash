@@ -1,5 +1,3 @@
-import Href from 'components/common/Href';
-import ColorThemeSelect from 'components/footer/ColorThemeSelect';
 import {
   CHROME_EXTENSION_URL,
   DISCORD_URL,
@@ -7,8 +5,10 @@ import {
   GITHUB_URL,
   TELEGRAM_URL,
   TWITTER_URL,
-} from 'lib/constants';
-import { shortenAddress } from 'lib/utils/formatting';
+} from '@revoke.cash/core/constants';
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
+import Href from 'components/common/Href';
+import ColorThemeSelect from 'components/footer/ColorThemeSelect';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import LanguageSelect from './LanguageSelect';

@@ -1,6 +1,6 @@
+import { range } from '@revoke.cash/core/utils';
 import type { Column } from '@tanstack/table-core';
 import { ColumnId } from 'components/allowances/dashboard/columns';
-import { range } from 'lib/utils';
 import { twMerge } from 'tailwind-merge';
 import Loader from './Loader';
 

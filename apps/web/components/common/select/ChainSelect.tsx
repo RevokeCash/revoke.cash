@@ -1,6 +1,6 @@
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
 import { useColorTheme } from 'lib/hooks/useColorTheme';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { memo } from 'react';
 import PlaceholderIcon from '../PlaceholderIcon';

@@ -1,9 +1,9 @@
 'use client';
 
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { useTranslations } from 'next-intl';
 import { eip7702Columns } from './columns';
 

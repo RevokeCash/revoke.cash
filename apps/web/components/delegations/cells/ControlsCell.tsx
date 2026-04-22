@@ -1,6 +1,6 @@
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import RevokeButton from 'components/allowances/controls/RevokeButton';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { getDelegationKey, useRevokeDelegation } from 'lib/hooks/ethereum/delegations/useRevokeDelegation';
 
 interface Props {

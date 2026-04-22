@@ -1,11 +1,11 @@
 'use client';
 
+import type { Erc721SingleAllowance, TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { isNullish } from '@revoke.cash/core/utils';
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import Table from 'components/common/table/Table';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
-import { isNullish } from 'lib/utils';
-import type { Erc721SingleAllowance, TokenAllowanceData } from 'lib/utils/allowances';
 import { useEffect, useMemo, useState } from 'react';
 import AllowanceTableControls from './controls/AllowanceTableControls';
 import NoAllowancesFound from './NoAllowancesFound';

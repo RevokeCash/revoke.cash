@@ -1,6 +1,6 @@
 'use client';
 
-import type { AutoRevokePermission } from 'lib/auto-revoke/types';
+import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/types';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import AutoRevokePermissionRow from './AutoRevokePermissionRow';

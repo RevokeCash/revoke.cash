@@ -1,4 +1,4 @@
-import { getChainAddEthereumChainParameter, getChainName } from 'lib/utils/chains';
+import { getChainAddEthereumChainParameter, getChainName } from '@revoke.cash/core/chains';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';

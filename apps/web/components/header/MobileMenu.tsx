@@ -2,10 +2,10 @@
 
 import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { CHROME_EXTENSION_URL } from '@revoke.cash/core/constants';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import WalletIndicator from 'components/header/WalletIndicator';
-import { CHROME_EXTENSION_URL } from 'lib/constants';
 import { usePathname } from 'lib/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { Fragment, useEffect, useRef, useState } from 'react';

@@ -1,12 +1,12 @@
-import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
-import { type TransactionSubmitted, TransactionType } from 'lib/interfaces';
+import { type TransactionSubmitted, TransactionType } from '@revoke.cash/core/types';
 import {
   isLedgerNanoSError,
   isNoFeeRequiredError,
   isRevertedError,
   isUserRejectionError,
   parseErrorMessage,
-} from 'lib/utils/errors';
+} from '@revoke.cash/core/utils/errors';
+import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { stringify } from 'viem';

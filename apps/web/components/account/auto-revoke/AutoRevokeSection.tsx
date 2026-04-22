@@ -1,5 +1,7 @@
 'use client';
 
+import type { PremiumSubscription } from '@revoke.cash/core/premium/subscriptions';
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Card, { CardTitle } from 'components/common/Card';
 import Divider from 'components/common/Divider';
 import {
@@ -7,8 +9,6 @@ import {
   useSubscriptionAutoRevokePermissions,
 } from 'lib/hooks/auto-revoke/useAutoRevokePermissions';
 import { useAddressAutoRevokeRules, useSubscriptionAutoRevokeRules } from 'lib/hooks/auto-revoke/useAutoRevokeRules';
-import type { PremiumSubscription } from 'lib/premium/subscriptions';
-import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { useConnection } from 'wagmi';

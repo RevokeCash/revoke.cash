@@ -1,9 +1,9 @@
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import Button from 'components/common/Button';
 import Checkbox from 'components/common/Checkbox';
 import RichText from 'components/common/RichText';
 import ky from 'lib/ky';
 import analytics from 'lib/utils/analytics';
-import { parseErrorMessage } from 'lib/utils/errors';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';

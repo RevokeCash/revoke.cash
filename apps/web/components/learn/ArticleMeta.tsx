@@ -1,8 +1,8 @@
+import { isNullish } from '@revoke.cash/core/utils';
+import { formatDate } from '@revoke.cash/core/utils/time';
 import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
-import type { ContentMeta } from 'lib/interfaces';
-import { isNullish } from 'lib/utils';
-import { formatDate } from 'lib/utils/time';
+import type { ContentMeta } from 'lib/types';
 import { useTranslations } from 'next-intl';
 
 interface Props {

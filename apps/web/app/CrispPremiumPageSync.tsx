@@ -1,10 +1,10 @@
 'use client';
 
+import { CRISP_WEBSITE_ID } from '@revoke.cash/core/constants';
+import { isNullish } from '@revoke.cash/core/utils';
 import { Crisp } from 'crisp-sdk-web';
-import { CRISP_WEBSITE_ID } from 'lib/constants';
 import { useAuthSession } from 'lib/hooks/auth/useAuthSession';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
-import { isNullish } from 'lib/utils';
 import { useCallback, useEffect } from 'react';
 import { useConnection } from 'wagmi';
 

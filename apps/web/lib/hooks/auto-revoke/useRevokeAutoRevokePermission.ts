@@ -1,8 +1,8 @@
 import { contracts } from '@metamask/smart-accounts-kit';
 import { decodeDelegations } from '@metamask/smart-accounts-kit/utils';
+import { isUserRejectionError } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
-import { isUserRejectionError } from 'lib/utils/errors';
 import type { Address, Hex } from 'viem';
 import { useConnection } from 'wagmi';
 import { useEnsureWalletClient } from '../ethereum/ensureWalletClient';

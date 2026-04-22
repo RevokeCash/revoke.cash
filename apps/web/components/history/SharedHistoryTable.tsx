@@ -1,5 +1,6 @@
 'use client';
 
+import type { ApprovalTokenEvent, Enriched } from '@revoke.cash/core/events';
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -9,7 +10,6 @@ import {
 } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
-import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef } from 'react';
 import { ColumnId, columns, customFilterFns } from './columns';

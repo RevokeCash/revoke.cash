@@ -1,8 +1,8 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { CHAIN_SELECT_MAINNETS } from '@revoke.cash/core/chains';
 import Button from 'components/common/Button';
 import ChainLogoStack from 'components/common/ChainLogoStack';
 import TestimonialCarousel from 'components/landing/TestimonialCarousel';
-import { CHAIN_SELECT_MAINNETS } from 'lib/utils/chains';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 

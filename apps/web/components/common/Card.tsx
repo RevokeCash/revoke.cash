@@ -1,4 +1,4 @@
-import { isNullish } from 'lib/utils';
+import { isNullish } from '@revoke.cash/core/utils';
 import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Loader from './Loader';

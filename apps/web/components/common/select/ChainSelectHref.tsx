@@ -1,8 +1,8 @@
 'use client';
 
+import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
 import { useCsrRouter } from 'lib/i18n/csr-navigation';
-import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import { memo } from 'react';
 import Button from '../Button';

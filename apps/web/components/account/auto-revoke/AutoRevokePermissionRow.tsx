@@ -1,8 +1,8 @@
 'use client';
 
 import { Disclosure } from '@headlessui/react';
-import { AUTO_REVOKE_SUPPORTED_CHAINS } from 'lib/auto-revoke/config';
-import type { AutoRevokePermission } from 'lib/auto-revoke/types';
+import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
+import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/types';
 import { useGrantAutoRevokePermission } from 'lib/hooks/auto-revoke/useGrantAutoRevokePermission';
 import { useRevokeAutoRevokePermission } from 'lib/hooks/auto-revoke/useRevokeAutoRevokePermission';
 import { useSyncAutoRevokePermissions } from 'lib/hooks/auto-revoke/useSyncAutoRevokePermissions';

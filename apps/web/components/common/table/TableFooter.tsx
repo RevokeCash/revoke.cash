@@ -1,5 +1,5 @@
+import { isNullish } from '@revoke.cash/core/utils';
 import { flexRender, type Table } from '@tanstack/react-table';
-import { isNullish } from 'lib/utils';
 
 interface Props<T> {
   table: Table<T>;

@@ -17,6 +17,10 @@
     "jsx": "react-jsx",
     "incremental": true,
     "baseUrl": ".",
+    "paths": {
+      "lib/*": ["./lib/*"],
+      "@revoke.cash/core/*": ["../../packages/core/lib/*"]
+    },
     "plugins": [
       {
         "name": "next"

@@ -1,6 +1,6 @@
-import { ERC20_ABI, ERC721_ABI } from 'lib/abis';
-import { AllowanceType } from 'lib/utils/allowances';
-import { preparePermit2Approve } from 'lib/utils/permit2';
+import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
+import { AllowanceType } from '@revoke.cash/core/allowances';
+import { preparePermit2Approve } from '@revoke.cash/core/allowances/permit2';
 import { type Address, isAddress, type PublicClient, type WalletClient } from 'viem';
 
 interface ApprovalForm {

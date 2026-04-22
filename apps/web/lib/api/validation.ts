@@ -1,4 +1,4 @@
-import { isNullish } from 'lib/utils';
+import { isNullish } from '@revoke.cash/core/utils';
 import { type NextRequest, NextResponse } from 'next/server';
 import type { z } from 'zod';
 

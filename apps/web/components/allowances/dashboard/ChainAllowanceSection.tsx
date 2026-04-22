@@ -1,5 +1,8 @@
 'use client';
 
+import type { Erc721SingleAllowance, OnUpdate, TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { isNullish } from '@revoke.cash/core/utils';
+import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
 import {
   type ColumnSort,
   getCoreRowModel,
@@ -10,9 +13,6 @@ import {
 import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
 import { type ChainAllowanceData, useTimeMachine } from 'lib/hooks/page-context/PremiumAddressPageContext';
-import { isNullish } from 'lib/utils';
-import type { Erc721SingleAllowance, OnUpdate, TokenAllowanceData } from 'lib/utils/allowances';
-import { formatFiatAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';

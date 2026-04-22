@@ -1,8 +1,8 @@
+import type { PermitTokenData } from '@revoke.cash/core/tokens';
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { usePermitTokens } from 'lib/hooks/ethereum/usePermitTokens';
-import type { PermitTokenData } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { ColumnId, columns } from './columns';

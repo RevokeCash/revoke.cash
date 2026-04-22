@@ -1,9 +1,9 @@
+import type { Session } from '@revoke.cash/core/sessions';
+import { isNullish } from '@revoke.cash/core/utils';
+import { YEAR } from '@revoke.cash/core/utils/time';
+import { getSpenderData } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
-import { isNullish } from 'lib/utils';
-import type { Session } from 'lib/utils/sessions';
-import { YEAR } from 'lib/utils/time';
-import { getSpenderData } from 'lib/utils/whois';
 import { useMemo } from 'react';
 import AddressCell from '../../allowances/dashboard/cells/AddressCell';
 

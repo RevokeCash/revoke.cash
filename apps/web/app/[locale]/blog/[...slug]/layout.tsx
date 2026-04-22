@@ -2,7 +2,7 @@ import Breadcrumb from 'components/common/Breadcrumb';
 import Divider from 'components/common/Divider';
 import PageNavigation from 'components/common/PageNavigation';
 import TranslateButton from 'components/common/TranslateButton';
-import type { BreadcrumbEntry } from 'lib/interfaces';
+import type { BreadcrumbEntry } from 'lib/types';
 import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';

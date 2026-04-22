@@ -1,7 +1,7 @@
 'use client';
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import Label from 'components/common/Label';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

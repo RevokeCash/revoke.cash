@@ -1,8 +1,8 @@
+import type { AutoRevokeAddressRulesConfig, AutoRevokeRules } from '@revoke.cash/core/auto-revoke/types';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
-import type { AutoRevokeAddressRulesConfig, AutoRevokeRules } from 'lib/auto-revoke/types';
 import { useOptimisticMutation } from 'lib/hooks/useOptimisticMutation';
 import ky from 'lib/ky';
-import { isNullish } from 'lib/utils';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 

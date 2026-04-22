@@ -1,4 +1,4 @@
-import { reconcilePendingPayments } from 'lib/premium/verify-payment';
+import { reconcilePendingPayments } from '@revoke.cash/core/premium/verify-payment';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';

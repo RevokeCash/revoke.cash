@@ -1,7 +1,10 @@
 'use client';
 
+import {
+  STALE_APPROVAL_THRESHOLD_MAX_DAYS,
+  STALE_APPROVAL_THRESHOLD_MIN_DAYS,
+} from '@revoke.cash/core/auto-revoke/config';
 import Input from 'components/common/Input';
-import { STALE_APPROVAL_THRESHOLD_MAX_DAYS, STALE_APPROVAL_THRESHOLD_MIN_DAYS } from 'lib/auto-revoke/config';
 import useDebouncedCallback from 'lib/hooks/useDebouncedCallback';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';

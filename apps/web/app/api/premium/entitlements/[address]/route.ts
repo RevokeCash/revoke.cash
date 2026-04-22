@@ -1,7 +1,7 @@
+import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { addressSchema } from '@revoke.cash/core/schemas';
 import { checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
-import { addressSchema } from 'lib/api/schemas';
 import { parseRequest } from 'lib/api/validation';
-import { hasActivePremiumEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

@@ -1,12 +1,12 @@
-import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { parseRequest } from 'lib/api/validation';
 import {
   getAutoRevokePermissionsByAddress,
   resolvePermissionRecord,
   saveAutoRevokePermission,
-} from 'lib/auto-revoke/permissions';
-import { grantPermissionBodySchema } from 'lib/auto-revoke/schemas';
-import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
+} from '@revoke.cash/core/auto-revoke/permissions';
+import { hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { grantPermissionBodySchema } from 'app/api/auto-revoke/schemas';
+import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

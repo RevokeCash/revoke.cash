@@ -1,6 +1,6 @@
+import { calculateValueAtRisk, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
 import Loader from 'components/common/Loader';
-import { calculateValueAtRisk, type TokenAllowanceData } from 'lib/utils/allowances';
-import { formatFiatAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

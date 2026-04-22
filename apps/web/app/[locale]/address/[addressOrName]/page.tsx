@@ -1,8 +1,8 @@
+import { getChainName, isSupportedChain } from '@revoke.cash/core/chains';
+import { isNullish } from '@revoke.cash/core/utils';
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
+import { getAddressAndDomainName } from '@revoke.cash/core/whois';
 import AllowancesPageContent from 'components/allowances/dashboard/AllowancesPageContent';
-import { isNullish } from 'lib/utils';
-import { getChainName, isSupportedChain } from 'lib/utils/chains';
-import { shortenAddress } from 'lib/utils/formatting';
-import { getAddressAndDomainName } from 'lib/utils/whois';
 import type { Metadata, NextPage } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 

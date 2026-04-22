@@ -1,10 +1,10 @@
 'use client';
 
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import { getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
 import Table from 'components/common/table/Table';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import type { ChainDelegationsData } from 'lib/hooks/ethereum/delegations/usePremiumDelegations';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';

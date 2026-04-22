@@ -1,9 +1,9 @@
+import { getAllowancesFromEvents, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { createViemPublicClientForChain, ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { type EnrichedTokenEvent, getEventKey } from '@revoke.cash/core/events';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQueries } from '@tanstack/react-query';
-import { isNullish } from 'lib/utils';
-import { getAllowancesFromEvents, type TokenAllowanceData } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
-import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
-import { type EnrichedTokenEvent, getEventKey } from 'lib/utils/events';
 import type { Address } from 'viem';
 import { type CombinedQueryResult, combineQueryResults } from './combined-query-result';
 

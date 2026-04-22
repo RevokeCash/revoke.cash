@@ -1,9 +1,10 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { DUMMY_ADDRESS } from '@revoke.cash/core/constants';
+import type { Nullable } from '@revoke.cash/core/types';
+import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { DUMMY_ADDRESS } from 'lib/constants';
-import type { Nullable, SpenderRiskData } from 'lib/interfaces';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 

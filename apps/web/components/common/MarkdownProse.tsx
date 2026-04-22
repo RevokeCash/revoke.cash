@@ -1,8 +1,8 @@
+import { slugify } from '@revoke.cash/core/utils';
 import Faq from 'components/faq/Faq';
 import FaqItem from 'components/faq/FaqItem';
 import ArticleMeta from 'components/learn/ArticleMeta';
-import type { ContentMeta } from 'lib/interfaces';
-import { slugify } from 'lib/utils';
+import type { ContentMeta } from 'lib/types';
 import Image from 'next/image';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';

@@ -1,6 +1,6 @@
+import { getChainName } from '@revoke.cash/core/chains';
 import { useQuery } from '@tanstack/react-query';
-import { getNativeTokenPrice } from 'lib/price/utils';
-import { getChainName } from 'lib/utils/chains';
+import { getNativeTokenPrice } from 'lib/price';
 
 export const useNativeTokenPrice = (chainId: number) => {
   const { data: nativeTokenPrice, isLoading } = useQuery({

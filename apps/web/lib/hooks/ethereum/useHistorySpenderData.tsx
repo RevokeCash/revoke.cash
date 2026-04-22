@@ -1,7 +1,7 @@
 'use client';
 
-import { deduplicateArray } from 'lib/utils';
-import { type ApprovalTokenEvent, type Enriched, TokenEventType } from 'lib/utils/events';
+import { type ApprovalTokenEvent, type Enriched, TokenEventType } from '@revoke.cash/core/events';
+import { deduplicateArray } from '@revoke.cash/core/utils';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
 import { getSpenderKey, type SpenderLookup, useSpenderData } from './useSpenderData';

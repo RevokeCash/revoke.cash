@@ -1,8 +1,8 @@
 'use client';
 
+import { formatTimestamp } from '@revoke.cash/core/utils/time';
 import Button from 'components/common/Button';
 import { useTimeMachine } from 'lib/hooks/page-context/PremiumAddressPageContext';
-import { formatTimestamp } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 
 const TimeMachineBanner = () => {

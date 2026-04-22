@@ -1,6 +1,6 @@
+import type { PremiumPlan } from '@revoke.cash/core/premium/types';
 import { useQuery } from '@tanstack/react-query';
 import ky from 'lib/ky';
-import type { PremiumPlan } from 'lib/premium/types';
 import { useMemo } from 'react';
 
 const PLANS_QUERY_KEY = ['premium', 'plans'] as const;

@@ -1,12 +1,12 @@
 'use client';
 
 import { XCircleIcon } from '@heroicons/react/24/outline';
+import type { ApprovalTokenEvent, Enriched } from '@revoke.cash/core/events';
 import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import FocusTrap from 'components/common/FocusTrap';
 import SearchBox from 'components/common/SearchBox';
 import useDebouncedValue from 'lib/hooks/useDebouncedValue';
-import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import {

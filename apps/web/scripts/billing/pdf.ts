@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { type DocumentedChainId, getChainExplorerUrl, getChainName } from 'lib/utils/chains';
+import { type DocumentedChainId, getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
 import PDFDocument from 'pdfkit';
 import {
   EU_VAT_RATES,

@@ -1,6 +1,6 @@
+import type { Session } from '@revoke.cash/core/sessions';
 import Label from 'components/common/Label';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { Session } from 'lib/utils/sessions';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

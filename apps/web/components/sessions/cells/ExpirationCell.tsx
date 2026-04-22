@@ -1,5 +1,5 @@
+import { formatDateNormalised } from '@revoke.cash/core/utils/time';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { formatDateNormalised } from 'lib/utils/time';
 import { useLocale } from 'next-intl';
 import TimeAgo from 'timeago-react';
 

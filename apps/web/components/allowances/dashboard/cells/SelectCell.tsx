@@ -1,9 +1,9 @@
+import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { isRevertedError } from '@revoke.cash/core/utils/errors';
 import type { Row } from '@tanstack/react-table';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import Checkbox from 'components/common/Checkbox';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
-import { isRevertedError } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 
 interface Props {

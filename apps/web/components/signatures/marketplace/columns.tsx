@@ -1,6 +1,6 @@
 import { createColumnHelper, type RowData } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import type { Marketplace, OnCancel } from 'lib/interfaces';
+import type { Marketplace, OnCancel } from 'lib/types';
 import CancelMarketplaceCell from '../cells/CancelMarketplaceCell';
 import LastCancelledCell from '../cells/LastCancelledCell';
 import MarketplaceCell from '../cells/MarketplaceCell';

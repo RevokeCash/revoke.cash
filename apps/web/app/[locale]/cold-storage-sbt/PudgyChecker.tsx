@@ -1,11 +1,11 @@
 'use client';
 
+import { getAllowanceKey, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
-import { isNullish } from 'lib/utils';
-import { getAllowanceKey, type TokenAllowanceData } from 'lib/utils/allowances';
 import analytics from 'lib/utils/analytics';
 import type { Address } from 'viem';
 import PudgyCheckerStatus, { type PudgyCheckerStatusString } from './PudgyCheckerStatus';

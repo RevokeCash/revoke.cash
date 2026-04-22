@@ -1,15 +1,17 @@
 import { ChainId } from '@revoke.cash/chains';
+import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from '@revoke.cash/core/abis';
+import blocksCache from '@revoke.cash/core/cache/blocks';
+import eventsCache from '@revoke.cash/core/cache/events';
+import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import type { ResolvedTimeLog } from '@revoke.cash/core/events';
+import { addressToTopic, logSorterChronological } from '@revoke.cash/core/events/utils';
+import { isNullish } from '@revoke.cash/core/utils';
+import { mapAsync } from '@revoke.cash/core/utils/promises';
+import { MINUTE } from '@revoke.cash/core/utils/time';
+import { getWalletAddress } from '@revoke.cash/core/wallet';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from 'lib/abis';
-import blocksDB from 'lib/databases/blocks';
-import eventsDB from 'lib/databases/events';
-import type { Marketplace, MarketplaceConfig, OnCancel } from 'lib/interfaces';
 import { getLogsProvider } from 'lib/providers';
-import { addressToTopic, getWalletAddress, isNullish, logSorterChronological } from 'lib/utils';
-import { createViemPublicClientForChain } from 'lib/utils/chains';
-import type { ResolvedTimeLog } from 'lib/utils/events';
-import { mapAsync } from 'lib/utils/promises';
-import { MINUTE } from 'lib/utils/time';
+import type { Marketplace, MarketplaceConfig, OnCancel } from 'lib/types';
 import { useLayoutEffect, useState } from 'react';
 import { type Address, getAbiItem, type Hash, toEventSelector, type WalletClient } from 'viem';
 import { useAddress } from '../page-context/AddressIdentityContext';
@@ -127,13 +129,15 @@ export const useMarketplaces = () => {
         const filter = { ...marketplace.getFilter(address), fromBlock: 0, toBlock: blockNumber };
         const logs = await queryClient.ensureQueryData({
           queryKey: ['logs', filter, selectedChainId],
-          queryFn: async () => eventsDB.getLogs(getLogsProvider(selectedChainId), filter, selectedChainId),
+          queryFn: async () => eventsCache.getLogs(getLogsProvider(selectedChainId), filter, selectedChainId),
           // The same filter should always return the same logs
           staleTime: Number.POSITIVE_INFINITY,
         });
 
         const lastCancelledLog = logs?.sort(logSorterChronological)?.at(-1);
-        const lastCancelled = lastCancelledLog ? await blocksDB.getTimeLog(publicClient, lastCancelledLog) : undefined;
+        const lastCancelled = lastCancelledLog
+          ? await blocksCache.getTimeLog(publicClient, lastCancelledLog)
+          : undefined;
 
         return {
           ...marketplace,

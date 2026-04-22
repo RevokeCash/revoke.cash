@@ -1,9 +1,9 @@
 import { erc7715ProviderActions } from '@metamask/smart-accounts-kit/actions';
+import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
+import { buildAutoRevokePermissionRequest, findActivePermission } from '@revoke.cash/core/auto-revoke/permissions';
+import { isUserRejectionError } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AUTO_REVOKE_SUPPORTED_CHAINS } from 'lib/auto-revoke/config';
-import { buildAutoRevokePermissionRequest, findActivePermission } from 'lib/auto-revoke/permissions';
 import ky from 'lib/ky';
-import { isUserRejectionError } from 'lib/utils/errors';
 import { useConnection, useConnectorClient } from 'wagmi';
 
 export const useGrantAutoRevokePermission = () => {

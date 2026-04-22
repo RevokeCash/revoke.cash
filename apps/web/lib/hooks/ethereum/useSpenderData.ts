@@ -1,6 +1,7 @@
+import type { Nullable } from '@revoke.cash/core/types';
+import type { SpenderData, SpenderRiskData } from '@revoke.cash/core/whois';
+import { getSpenderData } from '@revoke.cash/core/whois';
 import { useQueries } from '@tanstack/react-query';
-import type { Nullable, SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { getSpenderData } from 'lib/utils/whois';
 import type { Address } from 'viem';
 
 export interface SpenderLookup {

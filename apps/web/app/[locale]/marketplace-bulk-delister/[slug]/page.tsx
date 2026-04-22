@@ -1,10 +1,10 @@
+import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from '@revoke.cash/core/chains';
 import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
 import Prose from 'components/common/Prose';
 import RichText from 'components/common/RichText';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
 import { locales } from 'lib/i18n/routing';
-import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from 'lib/utils/chains';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
 import type { Metadata, NextPage } from 'next';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';

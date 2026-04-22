@@ -1,7 +1,7 @@
+import { AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { isNullish } from '@revoke.cash/core/utils';
+import { YEAR } from '@revoke.cash/core/utils/time';
 import Loader from 'components/common/Loader';
-import { isNullish } from 'lib/utils';
-import { AllowanceType, type TokenAllowanceData } from 'lib/utils/allowances';
-import { YEAR } from 'lib/utils/time';
 import { useMemo } from 'react';
 import AddressCell from './AddressCell';
 

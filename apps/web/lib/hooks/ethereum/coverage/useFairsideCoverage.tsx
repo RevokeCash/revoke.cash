@@ -1,15 +1,15 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import {
   FAIRSIDE_REFERRAL_CODE,
   getAuthenticationMessage,
   getCoveredWallets,
   getMembershipInfo,
   loginUser,
-} from 'lib/coverage/fairside';
-import { isNullish } from 'lib/utils';
-import { isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
+} from '@revoke.cash/core/coverage/fairside';
+import { isNullish } from '@revoke.cash/core/utils';
+import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { useQuery } from '@tanstack/react-query';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 import useLocalStorage from 'use-local-storage';

@@ -1,6 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
-import { ERC721_ABI, ERC1155_ABI } from 'lib/abis';
-import { createViemPublicClientForChain } from 'lib/utils/chains';
+import { ERC721_ABI, ERC1155_ABI } from '@revoke.cash/core/abis';
+import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import type { Address } from 'viem';
 
 export const canMint = async (address: Address) => {

@@ -1,8 +1,8 @@
+import { getEventGetter } from '@revoke.cash/core/events/getters';
+import { addressSchema, backendSupportedChainIdSchema, hexStringSchema } from '@revoke.cash/core/schemas';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
-import { getEventGetter } from 'lib/api/globals';
-import { addressSchema, backendSupportedChainIdSchema, hexStringSchema } from 'lib/api/schemas';
 import { parseRequest } from 'lib/api/validation';
-import { parseErrorMessage } from 'lib/utils/errors';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

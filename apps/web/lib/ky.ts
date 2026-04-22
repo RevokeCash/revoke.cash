@@ -1,22 +1,10 @@
-import kyBase, { HTTPError, type NormalizedOptions } from 'ky';
-import PQueue from 'p-queue';
-import { SITE_URL } from './constants';
-import { ensureAuthSession } from './utils';
-
-export class KyHttpError extends HTTPError {
-  data?: any;
-
-  constructor(response: Response, request: Request, options: NormalizedOptions, data?: any) {
-    super(response, request, options);
-    this.data = data;
-  }
-}
-
-const kyQueue = new PQueue({ concurrency: 50 });
+import { SITE_URL } from '@revoke.cash/core/constants';
+import kyBase from '@revoke.cash/core/ky';
+import { MINUTE } from '@revoke.cash/core/utils/time';
+import { AUTH_SESSION_QUERY_KEY, type AuthSession } from './auth/session';
+import { queryClient } from './hooks/QueryProvider';
 
 const ky = kyBase.extend({
-  timeout: false,
-  fetch: (input, options) => kyQueue.add(() => fetch(input, options)),
   hooks: {
     beforeRequest: [
       async (request) => {
@@ -31,43 +19,8 @@ const ky = kyBase.extend({
         return request;
       },
     ],
-    beforeError: [
-      async (error) => {
-        try {
-          const data = await error.response.json();
-          return new KyHttpError(error.response, error.request, error.options, data);
-        } catch {
-          return new KyHttpError(error.response, error.request, error.options);
-        }
-      },
-    ],
   },
 });
-
-export const retryOn429 = async <T>(fn: () => Promise<T>, retries = 3): Promise<T> => {
-  try {
-    return await fn();
-  } catch (e) {
-    if (retries <= 0) {
-      throw e;
-    }
-
-    const message = e instanceof Error ? e.message : '';
-
-    if (message.includes('429') || message.includes('rate limited')) {
-      console.warn('Rate limit reached, retrying...');
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return retryOn429(fn, retries - 1);
-    }
-
-    if (message.includes('https://rpc.hypurrscan.io') && message.includes('fetch failed')) {
-      console.warn('Hypurrscan fetch failed, retrying once...');
-      return fn();
-    }
-
-    throw e;
-  }
-};
 
 const isOwnSite = (url: string) => {
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : SITE_URL;
@@ -75,3 +28,49 @@ const isOwnSite = (url: string) => {
 };
 
 export default ky;
+
+const ensureAuthSession = async () => {
+  // In a backend context, we do not need to login
+  if (typeof window === 'undefined') return true;
+
+  return queryClient.ensureQueryData({
+    queryKey: ['auth', 'ensure-session'],
+    staleTime: 5 * MINUTE,
+    gcTime: 10 * MINUTE,
+    queryFn: async () => {
+      const authSession = await getAuthSession();
+
+      if (authSession?.hasApiSession) {
+        queryClient.setQueryData(AUTH_SESSION_QUERY_KEY, authSession);
+        return true;
+      }
+
+      const isLoggedIn = await ky
+        .post('/api/auth/login')
+        .json<{ ok?: boolean }>()
+        .then((res) => Boolean(res?.ok))
+        .catch(() => false);
+
+      if (!isLoggedIn) {
+        queryClient.invalidateQueries({ queryKey: AUTH_SESSION_QUERY_KEY, refetchType: 'none' });
+        throw new Error('Failed to create API session');
+      }
+
+      const updatedAuthSession = await getAuthSession();
+      if (updatedAuthSession?.hasApiSession) {
+        queryClient.setQueryData(AUTH_SESSION_QUERY_KEY, updatedAuthSession);
+        return true;
+      }
+
+      queryClient.invalidateQueries({ queryKey: AUTH_SESSION_QUERY_KEY, refetchType: 'none' });
+      throw new Error('Failed to create API session');
+    },
+  });
+};
+
+const getAuthSession = async (): Promise<AuthSession | null> => {
+  return ky
+    .get('/api/auth/session')
+    .json<AuthSession>()
+    .catch(() => null);
+};

@@ -1,7 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { Children, useEffect, useRef, useState } from 'react';
+import { Children, type ReactNode, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {

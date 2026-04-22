@@ -1,8 +1,9 @@
 'use client';
 
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
-import { delegationEquals, isNullish } from 'lib/utils';
-import { ORDERED_CHAINS } from 'lib/utils/chains';
+import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { delegationEquals } from '@revoke.cash/core/delegations';
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAddress } from '../../page-context/AddressIdentityContext';
 import { usePremiumDelegationResults } from './usePremiumDelegationResults';

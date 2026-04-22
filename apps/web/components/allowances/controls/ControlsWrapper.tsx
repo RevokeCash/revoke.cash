@@ -1,7 +1,7 @@
+import { getChainName } from '@revoke.cash/core/chains';
+import { isNullish } from '@revoke.cash/core/utils';
 import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { isNullish } from 'lib/utils';
-import { getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import type { ReactElement } from 'react';
 import { useAccount } from 'wagmi';

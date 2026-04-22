@@ -1,7 +1,7 @@
+import { getAllowanceI18nValues, getAllowanceKey, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import type { TransactionSubmitted } from '@revoke.cash/core/types';
+import { isRevertedError } from '@revoke.cash/core/utils/errors';
 import RevokeButton from 'components/allowances/controls/RevokeButton';
-import type { TransactionSubmitted } from 'lib/interfaces';
-import { getAllowanceI18nValues, getAllowanceKey, type TokenAllowanceData } from 'lib/utils/allowances';
-import { isRevertedError } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import ControlsWrapper from './ControlsWrapper';
 import UpdateControls from './UpdateControls';

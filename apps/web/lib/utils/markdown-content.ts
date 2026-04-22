@@ -1,11 +1,12 @@
+import type { Nullable } from '@revoke.cash/core/types';
+import { deduplicateArray } from '@revoke.cash/core/utils';
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
-import type { ContentFile, ISidebarEntry, Nullable, Person, RawContentFile } from 'lib/interfaces';
 import ky from 'lib/ky';
+import type { ContentFile, ISidebarEntry, Person, RawContentFile } from 'lib/types';
 import { getTranslations } from 'next-intl/server';
 import { join } from 'path';
 import { readingTime } from 'reading-time-estimator';
-import { deduplicateArray } from '.';
 import { getOpenGraphImageUrl } from './og';
 
 const walk = require('walkdir');

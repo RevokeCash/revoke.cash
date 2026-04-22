@@ -1,7 +1,7 @@
+import { ExclamationCircleIcon, ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import { getRiskFactorScore, type RiskFactor } from '@revoke.cash/core/risk';
 import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
-import type { RiskFactor } from 'lib/interfaces';
-import { getRiskIcon } from 'lib/utils/risk';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -73,3 +73,18 @@ const RiskFactorDisplay = ({ riskFactor }: Props) => {
 };
 
 export default RiskFactorDisplay;
+
+const getRiskIcon = (riskFactor: RiskFactor) => {
+  const score = getRiskFactorScore(riskFactor);
+
+  if (score > 75) {
+    return <ExclamationCircleIcon className=" text-red-500 h-5" />;
+  }
+
+  if (score > 0) {
+    return <ExclamationTriangleIcon className="text-yellow-500 h-5" />;
+  }
+
+  // Green is only used for negative risk factors (e.g. allowlist)
+  return <InformationCircleIcon className="text-green-500 h-5" />;
+};

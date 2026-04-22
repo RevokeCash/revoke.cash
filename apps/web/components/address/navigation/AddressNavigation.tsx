@@ -1,10 +1,11 @@
 'use client';
 
 import { ChainId } from '@revoke.cash/chains';
+import { isNullish } from '@revoke.cash/core/utils';
+import { getAccountType } from '@revoke.cash/core/wallet';
 import { useQuery } from '@tanstack/react-query';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { getAccountType, isNullish } from 'lib/utils';
 import { useParams, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useContext } from 'react';

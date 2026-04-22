@@ -1,7 +1,7 @@
 'use client';
 
+import { getChainSlug } from '@revoke.cash/core/chains';
 import ChainSelectHref from 'components/common/select/ChainSelectHref';
-import { getChainSlug } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 

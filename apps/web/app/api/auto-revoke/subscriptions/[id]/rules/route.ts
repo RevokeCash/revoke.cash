@@ -1,9 +1,9 @@
+import { getSubscriptionRules, upsertSubscriptionRules } from '@revoke.cash/core/auto-revoke/rules';
+import { isActiveUltimateSubscriptionOwnedBy } from '@revoke.cash/core/premium/subscriptions';
+import { uuidSchema } from '@revoke.cash/core/schemas';
+import { rulesDataBodySchema } from 'app/api/auto-revoke/schemas';
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { uuidSchema } from 'lib/api/schemas';
 import { parseRequest } from 'lib/api/validation';
-import { getSubscriptionRules, upsertSubscriptionRules } from 'lib/auto-revoke/rules';
-import { rulesDataBodySchema } from 'lib/auto-revoke/schemas';
-import { isActiveUltimateSubscriptionOwnedBy } from 'lib/premium/subscriptions';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

@@ -1,9 +1,9 @@
+import { createViemPublicClientForChain, ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { AggregateDelegatePlatform } from '@revoke.cash/core/delegations/AggregateDelegatePlatform';
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQueries } from '@tanstack/react-query';
-import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlatform';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
-import { isNullish } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
-import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
 import type { Address, PublicClient } from 'viem';
 import { type CombinedQueryResult, combineQueryResults } from '../combined-query-result';
 

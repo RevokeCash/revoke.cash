@@ -1,5 +1,3 @@
-import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
-import { isNullish } from 'lib/utils';
 import {
   AllowanceType,
   calculateValueAtRisk,
@@ -7,9 +5,11 @@ import {
   isErc20Allowance,
   type OnUpdate,
   type TokenAllowanceData,
-} from 'lib/utils/allowances';
-import { formatFixedPointBigInt } from 'lib/utils/formatting';
-import { isErc721Contract } from 'lib/utils/tokens';
+} from '@revoke.cash/core/allowances';
+import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { isNullish } from '@revoke.cash/core/utils';
+import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
+import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import RevokeSelectedButton from '../controls/batch-revoke/RevokeSelectedButton';
 import AllowanceCell from './cells/AllowanceCell';
 import AssetCell from './cells/AssetCell';

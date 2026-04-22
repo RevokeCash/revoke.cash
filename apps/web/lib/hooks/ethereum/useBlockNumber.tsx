@@ -1,6 +1,6 @@
+import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { MINUTE } from '@revoke.cash/core/utils/time';
 import { useQuery } from '@tanstack/react-query';
-import { createViemPublicClientForChain } from 'lib/utils/chains';
-import { MINUTE } from 'lib/utils/time';
 
 // We add this custom useBlockNumber instead of using wagmi's so that we can easily invalidate the query when needed
 export const useBlockNumber = (chainId: number) => {

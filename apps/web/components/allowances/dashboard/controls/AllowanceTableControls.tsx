@@ -1,5 +1,5 @@
+import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
 import type { Table } from '@tanstack/react-table';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { updateTableFilters } from 'lib/utils/table';
 import { Suspense, useCallback } from 'react';
 import { ColumnId } from '../columns';

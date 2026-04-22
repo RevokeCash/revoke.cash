@@ -1,7 +1,7 @@
 'use client';
 
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import Label from 'components/common/Label';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {

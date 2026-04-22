@@ -1,8 +1,8 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import type { ApprovalTokenEvent, Enriched } from '@revoke.cash/core/events';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
 import Button from 'components/common/Button';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
 
 interface Props {

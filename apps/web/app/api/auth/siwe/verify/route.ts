@@ -1,8 +1,8 @@
 import { ChainId } from '@revoke.cash/chains';
+import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { addressSchema, hexStringSchema } from '@revoke.cash/core/schemas';
 import { storeSessionEdge, storeSiweCookieEdge } from 'lib/api/auth';
-import { addressSchema, hexStringSchema } from 'lib/api/schemas';
 import { parseRequest } from 'lib/api/validation';
-import { createViemPublicClientForChain } from 'lib/utils/chains';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

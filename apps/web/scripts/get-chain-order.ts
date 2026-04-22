@@ -1,5 +1,3 @@
-import { MULTICALL_ADDRESS } from 'lib/constants';
-import ky from 'lib/ky';
 import {
   CHAIN_SELECT_MAINNETS,
   CHAIN_SELECT_TESTNETS,
@@ -9,7 +7,9 @@ import {
   getChainExplorerUrl,
   getChainName,
   getCorrespondingMainnetChainId,
-} from 'lib/utils/chains';
+} from '@revoke.cash/core/chains';
+import { MULTICALL_ADDRESS } from '@revoke.cash/core/constants';
+import ky from 'lib/ky';
 
 const getChainOrder = async () => {
   const multicallData = await ky

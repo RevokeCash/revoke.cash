@@ -1,8 +1,8 @@
 'use client';
 
+import { mapContractTransactionRequestToEip5792Call } from '@revoke.cash/core/eip5792';
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import Button from 'components/common/Button';
-import { mapContractTransactionRequestToEip5792Call } from 'lib/utils/eip5792';
 import { useState } from 'react';
 import { isAddress } from 'viem';
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';

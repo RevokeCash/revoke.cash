@@ -1,13 +1,13 @@
 'use client';
 
+import { AllowanceType } from '@revoke.cash/core/allowances';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { writeContractUnlessExcessiveGas } from '@revoke.cash/core/wallet';
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import Button from 'components/common/Button';
 import Input from 'components/common/Input';
 import Select from 'components/common/select/Select';
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
-import { writeContractUnlessExcessiveGas } from 'lib/utils';
-import { AllowanceType } from 'lib/utils/allowances';
-import { parseErrorMessage } from 'lib/utils/errors';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';

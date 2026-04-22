@@ -1,7 +1,5 @@
 'use client';
 
-import { usePathname } from 'lib/i18n/navigation';
-import { deduplicateArray, isNullish } from 'lib/utils';
 import {
   type AllowanceUpdateProperties,
   applyRevokeToAllowances,
@@ -9,10 +7,12 @@ import {
   calculateValueAtRisk,
   type OnUpdate,
   type TokenAllowanceData,
-} from 'lib/utils/allowances';
-import { ORDERED_CHAINS } from 'lib/utils/chains';
-import type { EnrichedTokenEvent } from 'lib/utils/events';
-import { isErc721Contract } from 'lib/utils/tokens';
+} from '@revoke.cash/core/allowances';
+import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import type { EnrichedTokenEvent } from '@revoke.cash/core/events';
+import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
+import { usePathname } from 'lib/i18n/navigation';
 import { useParams } from 'next/navigation';
 import React, { type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { Address } from 'viem';

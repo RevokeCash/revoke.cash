@@ -3,9 +3,9 @@
 // allowances on these chains. Because these addresses were chosen randomly it is possible that some allowances may
 
 import { ChainId } from '@revoke.cash/chains';
+import { getChainConfig, getChainName, ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import { Selectors, TEST_URL } from 'cypress/support/utils';
-import { getChainConfig, getChainName, ORDERED_CHAINS } from 'lib/utils/chains';
 
 describe(`Chain Support (${TEST_URL})`, () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {

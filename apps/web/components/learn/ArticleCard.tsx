@@ -1,6 +1,6 @@
+import { formatDate } from '@revoke.cash/core/utils/time';
 import Href from 'components/common/Href';
-import type { ISidebarEntry } from 'lib/interfaces';
-import { formatDate } from 'lib/utils/time';
+import type { ISidebarEntry } from 'lib/types';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 

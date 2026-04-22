@@ -1,9 +1,9 @@
+import { getChainName } from '@revoke.cash/core/chains';
+import { type ApprovalTokenEvent, type Enriched, TokenEventType } from '@revoke.cash/core/events';
+import { isNullish } from '@revoke.cash/core/utils';
 import { createColumnHelper, filterFns, type Row, type RowData } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
 import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
-import { isNullish } from 'lib/utils';
-import { getChainName } from 'lib/utils/chains';
-import { type ApprovalTokenEvent, type Enriched, TokenEventType } from 'lib/utils/events';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAmountCell from './cells/HistoryAmountCell';
 import HistoryAssetCell from './cells/HistoryAssetCell';

@@ -1,8 +1,8 @@
-import { TransactionType } from 'lib/interfaces';
+import { getSessionKey, type OnSessionRevoke, revokeSession, type Session } from '@revoke.cash/core/sessions';
+import { TransactionType } from '@revoke.cash/core/types';
+import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { useTransactionStore, wrapTransaction } from 'lib/stores/transaction-store';
-import { waitForTransactionConfirmation } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
-import { getSessionKey, type OnSessionRevoke, revokeSession, type Session } from 'lib/utils/sessions';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useHandleTransaction } from '../useHandleTransaction';
 

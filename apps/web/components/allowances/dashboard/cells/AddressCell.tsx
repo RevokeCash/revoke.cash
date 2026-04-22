@@ -1,9 +1,9 @@
+import { getChainExplorerUrl } from '@revoke.cash/core/chains';
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
+import type { SpenderData, SpenderRiskData } from '@revoke.cash/core/whois';
 import CopyButton from 'components/common/CopyButton';
 import Href from 'components/common/Href';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { SpenderData, SpenderRiskData } from 'lib/interfaces';
-import { getChainExplorerUrl } from 'lib/utils/chains';
-import { shortenAddress } from 'lib/utils/formatting';
 import type { Address } from 'viem';
 import RiskTooltip from '../wallet-health/RiskTooltip';
 

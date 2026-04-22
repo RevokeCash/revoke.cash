@@ -1,6 +1,6 @@
 'use client';
 
-import { parseErrorMessage, stringifyError } from 'lib/utils/errors';
+import { parseErrorMessage, stringifyError } from '@revoke.cash/core/utils/errors';
 
 export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
   return (

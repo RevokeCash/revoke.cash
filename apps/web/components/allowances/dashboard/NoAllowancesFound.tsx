@@ -1,4 +1,4 @@
-import type { TokenAllowanceData } from 'lib/utils/allowances';
+import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { useTranslations } from 'next-intl';
 
 interface Props {

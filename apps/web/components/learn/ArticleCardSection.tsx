@@ -1,4 +1,4 @@
-import type { ISidebarEntry } from 'lib/interfaces';
+import type { ISidebarEntry } from 'lib/types';
 import ArticleCard from './ArticleCard';
 
 const ArticleCardSection = ({ title, children }: Omit<ISidebarEntry, 'title' | 'path'> & Partial<ISidebarEntry>) => {

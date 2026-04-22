@@ -1,9 +1,9 @@
+import { getAllowanceKey, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
 import SpenderCell from 'components/allowances/dashboard/cells/SpenderCell';
 import StatusCell from 'components/allowances/dashboard/cells/StatusCell';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
 import type { TransactionResults } from 'lib/stores/transaction-store';
-import { getAllowanceKey, type TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 
 interface Props {

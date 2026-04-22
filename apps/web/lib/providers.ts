@@ -1,67 +1,12 @@
+import { getChainLogsRpcUrl, isBackendSupportedChain } from '@revoke.cash/core/chains';
+import type { Filter, Log } from '@revoke.cash/core/events';
+import { DivideAndConquerLogsProvider, type LogsProvider, ViemLogsProvider } from '@revoke.cash/core/events/providers';
+import { RequestQueue } from '@revoke.cash/core/request-queue';
 import ky from 'lib/ky';
-import { getAddress, type PublicClient } from 'viem';
-import { RequestQueue } from './api/logs/RequestQueue';
-import { isNullish } from './utils';
-import {
-  createViemPublicClientForChain,
-  getChainLogsRpcUrl,
-  isBackendSupportedChain,
-  isCovalentSupportedChain,
-} from './utils/chains';
-import { isLogResponseSizeError } from './utils/errors';
-import type { Filter, Log } from './utils/events';
 
-// It is important that we get the latest block number from the same source as the logs, otherwise we may get
-// inconsistent results (e.g. if we get the latest block number from node and then request logs from Etherscan,
-// the logs may be from a different blocks)
-export interface LogsProvider {
-  chainId: number;
-  getLatestBlock(): Promise<number>;
-  getLogs(filter: Filter): Promise<Array<Log>>;
-}
-
-export class DivideAndConquerLogsProvider implements LogsProvider {
-  constructor(private underlyingProvider: LogsProvider) {}
-
-  get chainId(): number {
-    return this.underlyingProvider.chainId;
-  }
-
-  async getLatestBlock(): Promise<number> {
-    return this.underlyingProvider.getLatestBlock();
-  }
-
-  async getLogs(filter: Filter): Promise<Log[]> {
-    // We pre-emptively split the requests for Covalent-supported chains, to limit potential downsides when
-    // we potentially need to divide-and-conquer the requests down the line
-    if (isCovalentSupportedChain(this.chainId) && filter.toBlock - filter.fromBlock > 5_000_000) {
-      return this.divideAndConquer(filter, 2);
-    }
-
-    try {
-      const result = await this.underlyingProvider.getLogs(filter);
-      return result;
-    } catch (error) {
-      if (!isLogResponseSizeError(error)) throw error;
-
-      // If the block range is already a single block, we re-throw the error since we can't split it further
-      if (filter.fromBlock === filter.toBlock) throw error;
-
-      return this.divideAndConquer(filter, 2);
-    }
-  }
-
-  async divideAndConquer(filter: Filter, iterations: number): Promise<Log[]> {
-    if (iterations === 1) return this.getLogs(filter);
-
-    const middle = filter.fromBlock + Math.floor((filter.toBlock - filter.fromBlock) / 2);
-    const leftPromise = this.divideAndConquer({ ...filter, toBlock: middle }, iterations - 1);
-    const rightPromise = this.divideAndConquer({ ...filter, fromBlock: middle + 1 }, iterations - 1);
-    const [left, right] = await Promise.all([leftPromise, rightPromise]);
-    return [...left, ...right];
-  }
-}
-
+// Routes log requests through the revoke.cash web backend for chains where that's supported (paid indexer
+// API keys live there, not in the browser). Only usable from the web app; service runtimes should use
+// getScriptLogsProvider instead.
 export class BackendLogsProvider implements LogsProvider {
   queue: RequestQueue;
 
@@ -86,49 +31,6 @@ export class BackendLogsProvider implements LogsProvider {
     } catch (error) {
       throw new Error((error as any).data?.message ?? (error as any).message);
     }
-  }
-}
-
-export class ViemLogsProvider implements LogsProvider {
-  private client: PublicClient;
-  private url: string;
-
-  constructor(
-    public chainId: number,
-    url?: string,
-  ) {
-    this.url = url ?? getChainLogsRpcUrl(chainId);
-    this.client = createViemPublicClientForChain(chainId, this.url);
-  }
-
-  async getLatestBlock(): Promise<number> {
-    return Number(await this.client.getBlockNumber());
-  }
-
-  async getLogs(filter: Filter): Promise<Log[]> {
-    // Hypersync does not allow using `null` as a topic, so we replace it with an empty array
-    if (this.url.includes('hypersync')) {
-      filter.topics = filter.topics?.map((topic) => (isNullish(topic) ? [] : topic)) as Log['topics'];
-    }
-
-    const logs = await this.client.request({
-      method: 'eth_getLogs',
-      params: [
-        { ...filter, fromBlock: `0x${filter.fromBlock.toString(16)}`, toBlock: `0x${filter.toBlock.toString(16)}` },
-      ],
-    });
-
-    return (logs as any[]).map((log) => this.formatEvent(log)) as Log[];
-  }
-
-  private formatEvent(log: any): Log {
-    return {
-      ...log,
-      address: getAddress(log.address),
-      blockNumber: Number(log.blockNumber),
-      logIndex: Number(log.logIndex),
-      transactionIndex: Number(log.transactionIndex),
-    };
   }
 }
 

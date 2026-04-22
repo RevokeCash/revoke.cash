@@ -1,6 +1,6 @@
 'use client';
 
-import type { Nullable } from 'lib/interfaces';
+import type { Nullable } from '@revoke.cash/core/types';
 import { type ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import nProgress from 'nprogress';
 import { type ComponentProps, type ForwardedRef, forwardRef } from 'react';

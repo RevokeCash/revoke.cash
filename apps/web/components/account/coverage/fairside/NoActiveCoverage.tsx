@@ -1,8 +1,8 @@
 'use client';
 
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import { FAIRSIDE_LANDING_URL } from '@revoke.cash/core/coverage/fairside';
 import Button from 'components/common/Button';
-import { FAIRSIDE_LANDING_URL } from 'lib/coverage/fairside';
 import { useTranslations } from 'next-intl';
 
 const NoActiveCoverage = () => {

@@ -1,8 +1,8 @@
+import { getAddressRules, upsertAddressRules } from '@revoke.cash/core/auto-revoke/rules';
+import { hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { rulesDataBodySchema } from 'app/api/auto-revoke/schemas';
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
 import { parseRequest } from 'lib/api/validation';
-import { getAddressRules, upsertAddressRules } from 'lib/auto-revoke/rules';
-import { rulesDataBodySchema } from 'lib/auto-revoke/schemas';
-import { hasActiveUltimateEntitlement } from 'lib/premium/entitlements';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

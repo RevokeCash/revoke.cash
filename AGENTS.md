@@ -104,7 +104,7 @@ Notes:
 
 ### Additional Feature Modules
 
-- Approval history: `lib/hooks/ethereum/useApprovalHistory.tsx`, `lib/utils/approval-history.ts`.
+- Approval history: `lib/hooks/ethereum/useApprovalHistory.tsx`, `lib/utils/history.ts`.
 - Premium multi-chain history/allowances: `lib/hooks/page-context/PremiumAddressPageContext.tsx`, `lib/hooks/ethereum/usePremiumApprovalHistory.tsx`.
 - Permit signatures and marketplace bulk delisting: `lib/hooks/ethereum/usePermitTokens.tsx`, `lib/hooks/ethereum/useMarketplaces.tsx`.
 - Delegations and EIP-7702: `lib/hooks/ethereum/delegations/*`, `lib/utils/eip7702.ts`, `lib/delegations/*`.

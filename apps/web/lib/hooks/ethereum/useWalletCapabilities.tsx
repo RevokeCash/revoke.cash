@@ -1,5 +1,5 @@
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
-import { isNullish } from 'lib/utils';
 import { useMemo } from 'react';
 import type { Capabilities } from 'viem';
 import { useWalletClient } from 'wagmi';

@@ -1,11 +1,11 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { getChainName } from '@revoke.cash/core/chains';
 import Href from 'components/common/Href';
 import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
 import { useWalletCapabilities } from 'lib/hooks/ethereum/useWalletCapabilities';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
-import { getChainName } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { BASE_FEE, FEE_SPONSORS, PER_ALLOWANCE_FEE } from './fee';

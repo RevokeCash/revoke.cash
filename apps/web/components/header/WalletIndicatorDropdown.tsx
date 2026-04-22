@@ -1,9 +1,9 @@
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import { useQueryClient } from '@tanstack/react-query';
 import DropdownMenu, { DropdownMenuItem } from 'components/common/DropdownMenu';
 import { AUTH_SESSION_QUERY_KEY } from 'lib/auth/session';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import ky from 'lib/ky';
-import { shortenAddress } from 'lib/utils/formatting';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useConnection, useDisconnect } from 'wagmi';

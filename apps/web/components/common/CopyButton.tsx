@@ -1,7 +1,7 @@
 'use client';
 
 import { DocumentDuplicateIcon } from '@heroicons/react/24/outline';
-import { writeToClipBoard } from 'lib/utils';
+import { writeToClipBoard } from 'lib/utils/clipboard';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';

@@ -1,12 +1,12 @@
 'use client';
 
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
+import { getTokenMetadataUnknown } from '@revoke.cash/core/tokens';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import AddressCell from 'components/allowances/dashboard/cells/AddressCell';
 import AssetDisplay from 'components/allowances/dashboard/cells/AssetDisplay';
 import Loader from 'components/common/Loader';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
-import { isNullish } from 'lib/utils';
-import { getTokenMetadataUnknown } from 'lib/utils/tokens';
 import { useTranslations } from 'next-intl';
 import { usePublicClient } from 'wagmi';
 

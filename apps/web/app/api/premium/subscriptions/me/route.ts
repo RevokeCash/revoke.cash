@@ -1,6 +1,6 @@
+import { getGrantedEntitlements } from '@revoke.cash/core/premium/entitlements';
+import { getOwnerSubscriptions } from '@revoke.cash/core/premium/subscriptions';
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { getGrantedEntitlements } from 'lib/premium/entitlements';
-import { getOwnerSubscriptions } from 'lib/premium/subscriptions';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';

@@ -1,5 +1,5 @@
+import { getChainName } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
-import { getChainName } from 'lib/utils/chains';
 
 interface Props {
   chainId: number;

@@ -1,6 +1,5 @@
+import { type ApprovalTokenEvent, type Enriched, isCancelPermitEvent, isRevokeEvent } from '@revoke.cash/core/events';
 import Label from 'components/common/Label';
-import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
-import { isCancelPermitEvent, isRevokeEvent } from 'lib/utils/events';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

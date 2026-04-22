@@ -1,12 +1,15 @@
+import { WEBACY_API_KEY } from '@revoke.cash/core/constants';
+import { addressSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
+import {
+  AggregateSpenderDataSource,
+  AggregationType,
+} from '@revoke.cash/core/whois/spender/AggregateSpenderDataSource';
+import { WhoisSpenderDataSource } from '@revoke.cash/core/whois/spender/label/WhoisSpenderDataSource';
+import { OnchainSpenderRiskDataSource } from '@revoke.cash/core/whois/spender/risk/OnchainSpenderRiskDataSource';
+import { ScamSnifferRiskDataSource } from '@revoke.cash/core/whois/spender/risk/ScamSnifferRiskDataSource';
+import { WebacySpenderRiskDataSource } from '@revoke.cash/core/whois/spender/risk/WebacySpenderRiskDataSource';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
-import { addressSchema, supportedChainIdSchema } from 'lib/api/schemas';
 import { parseRequest } from 'lib/api/validation';
-import { WEBACY_API_KEY } from 'lib/constants';
-import { AggregateSpenderDataSource, AggregationType } from 'lib/whois/spender/AggregateSpenderDataSource';
-import { WhoisSpenderDataSource } from 'lib/whois/spender/label/WhoisSpenderDataSource';
-import { OnchainSpenderRiskDataSource } from 'lib/whois/spender/risk/OnchainSpenderRiskDataSource';
-import { ScamSnifferRiskDataSource } from 'lib/whois/spender/risk/ScamSnifferRiskDataSource';
-import { WebacySpenderRiskDataSource } from 'lib/whois/spender/risk/WebacySpenderRiskDataSource';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

@@ -1,7 +1,7 @@
+import { findBlockByTimestamp } from '@revoke.cash/core/blocks';
+import { createViemPublicClientForChain, ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQueries } from '@tanstack/react-query';
-import { isNullish } from 'lib/utils';
-import { findBlockByTimestamp } from 'lib/utils/blocks';
-import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
 
 /**
  * Resolves the closest block at or before a target timestamp for all chains in parallel.

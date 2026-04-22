@@ -1,9 +1,9 @@
 'use client';
 
+import type { PremiumEntitlement } from '@revoke.cash/core/premium/types';
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Card, { CardTitle } from 'components/common/Card';
 import Label from 'components/common/Label';
-import type { PremiumEntitlement } from 'lib/premium/types';
-import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 
 interface Props {

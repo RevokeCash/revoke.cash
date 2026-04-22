@@ -1,6 +1,6 @@
+import type { OnUpdate, TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import { isNullish } from 'lib/utils';
-import type { OnUpdate, TokenAllowanceData } from 'lib/utils/allowances';
 import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {

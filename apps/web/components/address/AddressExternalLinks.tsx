@@ -1,6 +1,6 @@
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
+import { getChainExplorerUrl } from '@revoke.cash/core/chains';
 import Href from 'components/common/Href';
-import { getChainExplorerUrl } from 'lib/utils/chains';
 
 interface Props {
   address: string;

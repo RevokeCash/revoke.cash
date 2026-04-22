@@ -1,7 +1,7 @@
+import { getSessionKey, type OnSessionRevoke, type Session } from '@revoke.cash/core/sessions';
 import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
 import RevokeButton from 'components/allowances/controls/RevokeButton';
 import { useRevokeSession } from 'lib/hooks/ethereum/sessions/useRevokeSession';
-import { getSessionKey, type OnSessionRevoke, type Session } from 'lib/utils/sessions';
 
 interface Props {
   session: Session;

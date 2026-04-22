@@ -1,8 +1,8 @@
 'use client';
 
+import { getChainName } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
 import ChainStatusIndicator from 'components/common/ChainStatusIndicator';
-import { getChainName } from 'lib/utils/chains';
 import type { ReactNode } from 'react';
 
 interface Props {

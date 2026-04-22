@@ -1,9 +1,9 @@
 'use client';
 
 import type { ChainId } from '@revoke.cash/chains';
+import { CHAIN_SELECT_MAINNETS, getChainSlug } from '@revoke.cash/core/chains';
 import ChainSelectHref from 'components/common/select/ChainSelectHref';
 import { OPENSEA_CHAINS } from 'lib/hooks/ethereum/useMarketplaces';
-import { CHAIN_SELECT_MAINNETS, getChainSlug } from 'lib/utils/chains';
 import { useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 

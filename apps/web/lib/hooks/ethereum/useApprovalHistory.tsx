@@ -1,9 +1,9 @@
+import { getApprovalHistoryForChain } from '@revoke.cash/core/allowances/history';
+import { getEventKey } from '@revoke.cash/core/events';
+import { isNullish } from '@revoke.cash/core/utils';
+import { HOUR } from '@revoke.cash/core/utils/time';
 import { useQuery } from '@tanstack/react-query';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { isNullish } from 'lib/utils';
-import { getEventKey } from 'lib/utils/events';
-import { HOUR } from 'lib/utils/time';
-import { getApprovalHistoryForChain } from '../../utils/approval-history';
 import { useAddress } from '../page-context/AddressIdentityContext';
 import { useEvents } from './events/useEvents';
 import { useAnnotateHistorySpenderData } from './useHistorySpenderData';

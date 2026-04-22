@@ -1,11 +1,11 @@
 'use client';
 
 import { erc7715ProviderActions } from '@metamask/smart-accounts-kit/actions';
+import { filterActivePermissions } from '@revoke.cash/core/auto-revoke/permissions';
+import { deduplicateArray } from '@revoke.cash/core/utils';
+import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { filterActivePermissions } from 'lib/auto-revoke/permissions';
 import ky from 'lib/ky';
-import { deduplicateArray } from 'lib/utils';
-import { isUserRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import { useConnection, useConnectorClient } from 'wagmi';

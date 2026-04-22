@@ -1,7 +1,7 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import type { TransactionStatus } from '@revoke.cash/core/types';
 import Spinner from 'components/common/Spinner';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import type { TransactionStatus } from 'lib/interfaces';
 import { isTransactionStatusLoadingState } from 'lib/stores/transaction-store';
 import { useMemo } from 'react';
 

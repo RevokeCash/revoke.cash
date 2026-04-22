@@ -1,9 +1,9 @@
 'use client';
 
+import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
-import { ORDERED_CHAINS } from 'lib/utils/chains';
 import ChainCell from './cells/ChainCell';
 import ContractCell from './cells/ContractCell';
 import ControlsCell from './cells/ControlsCell';

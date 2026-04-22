@@ -1,9 +1,9 @@
 'use client';
 
+import { getChainName } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
 import ChainLogoStack from 'components/common/ChainLogoStack';
 import CollapsibleCard from 'components/common/CollapsibleCard';
-import { getChainName } from 'lib/utils/chains';
 import { useState } from 'react';
 
 interface Props {

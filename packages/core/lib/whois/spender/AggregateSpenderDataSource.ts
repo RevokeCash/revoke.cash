@@ -1,0 +1,60 @@
+import type { Nullable } from '@revoke.cash/core/types';
+import { assertFulfilled, deduplicateArray } from '@revoke.cash/core/utils';
+import type { SpenderData, SpenderRiskData } from '@revoke.cash/core/whois';
+import type { Address } from 'viem';
+import type { SpenderDataSource } from './SpenderDataSource';
+
+export enum AggregationType {
+  SEQUENTIAL_FIRST = 'SEQUENTIAL_FIRST',
+  PARALLEL_COMBINED = 'PARALLEL_COMBINED',
+}
+
+export interface AggregateSpenderDataSourceOptions {
+  aggregationType: AggregationType;
+  sources: SpenderDataSource[];
+}
+
+export class AggregateSpenderDataSource implements SpenderDataSource {
+  aggregationType: AggregationType;
+  sources: SpenderDataSource[];
+
+  constructor(options: AggregateSpenderDataSourceOptions) {
+    this.aggregationType = options.aggregationType;
+    this.sources = options.sources;
+  }
+
+  async getSpenderData(address: Address, chainId: number): Promise<Nullable<SpenderData | SpenderRiskData>> {
+    if (this.aggregationType === AggregationType.SEQUENTIAL_FIRST) {
+      for (const source of this.sources) {
+        const result = await source.getSpenderData(address, chainId);
+        if (result) return result;
+      }
+      return null;
+    }
+
+    if (this.aggregationType === AggregationType.PARALLEL_COMBINED) {
+      const settlements = await Promise.allSettled(
+        this.sources.map((source) => source.getSpenderData(address, chainId)),
+      );
+      const results = settlements.filter(assertFulfilled).map((result) => result.value);
+
+      const aggregatedResults = results.reduce<SpenderData | SpenderRiskData>(
+        (acc, result) =>
+          result
+            ? // biome-ignore lint/performance/noAccumulatingSpread: list is so small that it doesn't matter
+              { ...acc, ...(result ?? {}), riskFactors: [...(acc?.riskFactors ?? []), ...(result?.riskFactors ?? [])] }
+            : acc,
+        {},
+      );
+
+      aggregatedResults.riskFactors = deduplicateArray(
+        aggregatedResults.riskFactors ?? [],
+        (riskFactor) => `${riskFactor.type}-${riskFactor.data}-${riskFactor.source}`,
+      );
+
+      return aggregatedResults;
+    }
+
+    throw new Error('Invalid aggregation type');
+  }
+}

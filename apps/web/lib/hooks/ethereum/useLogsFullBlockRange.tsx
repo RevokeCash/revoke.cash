@@ -1,4 +1,4 @@
-import type { Filter } from 'lib/utils/events';
+import type { Filter } from '@revoke.cash/core/events';
 import { useBlockNumber } from './useBlockNumber';
 import { useLogs } from './useLogs';
 

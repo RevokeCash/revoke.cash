@@ -1,7 +1,7 @@
 'use client';
 
+import { getChainLogo, getChainName, isSupportedChain } from '@revoke.cash/core/chains';
 import { useMounted } from 'lib/hooks/useMounted';
-import { getChainLogo, getChainName, isSupportedChain } from 'lib/utils/chains';
 import { memo } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Logo from './Logo';

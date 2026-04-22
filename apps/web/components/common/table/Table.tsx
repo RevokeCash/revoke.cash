@@ -1,6 +1,6 @@
+import type { Nullable } from '@revoke.cash/core/types';
 import type { Table as ReactTable } from '@tanstack/react-table';
 import ErrorDisplay from 'components/common/ErrorDisplay';
-import type { Nullable } from 'lib/interfaces';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';

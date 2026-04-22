@@ -1,7 +1,7 @@
+import { isNullish } from '@revoke.cash/core/utils';
+import { DAY } from '@revoke.cash/core/utils/time';
+import { getOpenSeaProxyAddress } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
-import { isNullish } from 'lib/utils';
-import { DAY } from 'lib/utils/time';
-import { getOpenSeaProxyAddress } from 'lib/utils/whois';
 import type { Address } from 'viem';
 
 export const useOpenSeaProxyAddress = (address: Address) => {

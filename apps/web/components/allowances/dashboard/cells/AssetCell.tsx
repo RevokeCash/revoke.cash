@@ -1,7 +1,7 @@
 'use client';
 
-import { formatBalance, formatFiatBalance } from 'lib/utils/formatting';
-import type { TokenData } from 'lib/utils/tokens';
+import type { TokenData } from '@revoke.cash/core/tokens';
+import { formatBalance, formatFiatBalance } from '@revoke.cash/core/utils/formatting';
 import AssetDisplay from './AssetDisplay';
 
 interface Props {

@@ -1,8 +1,8 @@
 'use client';
 
+import type { AutoRevokeAddressRulesConfig, AutoRevokeRulesSource } from '@revoke.cash/core/auto-revoke/types';
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Select from 'components/common/select/Select';
-import type { AutoRevokeAddressRulesConfig, AutoRevokeRulesSource } from 'lib/auto-revoke/types';
-import { shortenAddress } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 

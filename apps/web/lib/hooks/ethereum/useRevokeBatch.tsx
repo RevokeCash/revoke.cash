@@ -1,10 +1,10 @@
 'use client';
 
+import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { walletSupportsEip5792 } from '@revoke.cash/core/eip5792';
+import { isAccountUpgradeRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { getFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
-import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from 'lib/utils/allowances';
-import { walletSupportsEip5792 } from 'lib/utils/eip5792';
-import { isAccountUpgradeRejectionError, parseErrorMessage } from 'lib/utils/errors';
 import PQueue from 'p-queue';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useAsyncCallback } from 'react-async-hook';

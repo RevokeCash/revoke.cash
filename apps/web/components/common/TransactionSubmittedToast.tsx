@@ -1,5 +1,5 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
-import { getChainExplorerUrl } from 'lib/utils/chains';
+import { getChainExplorerUrl } from '@revoke.cash/core/chains';
 import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import Href from './Href';

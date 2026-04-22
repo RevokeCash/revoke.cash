@@ -1,6 +1,6 @@
+import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import CopyButton from 'components/common/CopyButton';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { shortenAddress } from 'lib/utils/formatting';
 
 interface Props {
   hash?: string;

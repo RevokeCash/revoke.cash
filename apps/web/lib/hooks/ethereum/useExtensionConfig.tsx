@@ -1,7 +1,7 @@
 'use client';
 
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
-import { isNullish } from 'lib/utils';
 
 interface ExtensionConfig {
   version: string;

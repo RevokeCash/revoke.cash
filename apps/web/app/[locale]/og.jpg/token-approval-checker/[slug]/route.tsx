@@ -1,5 +1,5 @@
+import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from '@revoke.cash/core/chains';
 import { locales } from 'lib/i18n/routing';
-import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from 'lib/utils/chains';
 import { generateOgImage } from 'lib/utils/og';
 import { getTranslations } from 'next-intl/server';
 

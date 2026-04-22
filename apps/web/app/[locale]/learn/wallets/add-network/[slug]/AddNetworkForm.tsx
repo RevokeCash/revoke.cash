@@ -1,6 +1,6 @@
+import { getChainExplorerUrl, getChainFreeRpcUrl, getChainName, getChainNativeToken } from '@revoke.cash/core/chains';
 import CopyButton from 'components/common/CopyButton';
 import RichText from 'components/common/RichText';
-import { getChainExplorerUrl, getChainFreeRpcUrl, getChainName, getChainNativeToken } from 'lib/utils/chains';
 import { useTranslations } from 'next-intl';
 import AddNetworkButton from './AddNetworkButton';
 

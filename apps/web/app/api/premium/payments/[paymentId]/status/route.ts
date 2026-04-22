@@ -1,7 +1,7 @@
+import { reconcilePaymentByOwner } from '@revoke.cash/core/premium/verify-payment';
+import { uuidSchema } from '@revoke.cash/core/schemas';
 import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
-import { uuidSchema } from 'lib/api/schemas';
 import { parseRequest } from 'lib/api/validation';
-import { reconcilePaymentByOwner } from 'lib/premium/verify-payment';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 

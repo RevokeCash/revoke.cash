@@ -1,8 +1,8 @@
 'use client';
 
+import { getChainName } from '@revoke.cash/core/chains';
+import { isCovalentError, isNetworkError, isRateLimitError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { getChainName } from 'lib/utils/chains';
-import { isCovalentError, isNetworkError, isRateLimitError, parseErrorMessage } from 'lib/utils/errors';
 import { useTranslations } from 'next-intl';
 import { useContext, useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';

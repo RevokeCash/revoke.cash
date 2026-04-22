@@ -1,11 +1,12 @@
 'use client';
 
+import { isNullish } from '@revoke.cash/core/utils';
+import { getAccountType } from '@revoke.cash/core/wallet';
 import { useQuery } from '@tanstack/react-query';
 import Label from 'components/common/Label';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
-import { getAccountType, isNullish } from 'lib/utils';
 import { twMerge } from 'tailwind-merge';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';

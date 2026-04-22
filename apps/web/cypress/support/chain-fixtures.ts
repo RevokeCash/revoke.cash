@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { SupportedChainId } from 'lib/utils/chains';
+import type { SupportedChainId } from '@revoke.cash/core/chains';
 import type { Address } from 'viem';
 
 export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {

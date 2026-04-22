@@ -1,6 +1,6 @@
+import type { PremiumEntitlement, PremiumSubscription } from '@revoke.cash/core/premium/types';
 import { useQuery } from '@tanstack/react-query';
 import ky from 'lib/ky';
-import type { PremiumEntitlement, PremiumSubscription } from 'lib/premium/types';
 import type { Address } from 'viem';
 
 interface SubscriptionsResponse {

@@ -1,7 +1,7 @@
+import { MINUTE } from '@revoke.cash/core/utils/time';
 import { useQuery } from '@tanstack/react-query';
 import { AUTH_SESSION_QUERY_KEY, type AuthSession, UNAUTHENTICATED_AUTH_SESSION } from 'lib/auth/session';
 import ky from 'lib/ky';
-import { MINUTE } from 'lib/utils/time';
 import { useInitialAuthSession } from './AuthSessionProvider';
 
 export const useAuthSession = () => {

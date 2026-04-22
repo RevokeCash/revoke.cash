@@ -1,7 +1,7 @@
+import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
+import type { Nullable } from '@revoke.cash/core/types';
+import { isNullish } from '@revoke.cash/core/utils';
 import Loader from 'components/common/Loader';
-import type { Nullable } from 'lib/interfaces';
-import { isNullish } from 'lib/utils';
-import type { TokenAllowanceData } from 'lib/utils/allowances';
 import { useTranslations } from 'next-intl';
 
 interface Props {

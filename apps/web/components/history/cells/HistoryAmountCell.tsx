@@ -1,6 +1,5 @@
-import { getAllowanceI18nValues } from 'lib/utils/allowances';
-import type { ApprovalTokenEvent, Enriched } from 'lib/utils/events';
-import { eventToAllowance, isRevokeEvent } from 'lib/utils/events';
+import { getAllowanceI18nValues } from '@revoke.cash/core/allowances';
+import { type ApprovalTokenEvent, type Enriched, eventToAllowance, isRevokeEvent } from '@revoke.cash/core/events';
 import { useTranslations } from 'next-intl';
 
 interface Props {

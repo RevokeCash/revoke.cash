@@ -1,6 +1,6 @@
 import { allChains, getChain } from '@revoke.cash/chains';
+import { getChainName } from '@revoke.cash/core/chains';
 import { writeFileSync } from 'fs';
-import { getChainName } from 'lib/utils/chains';
 import { join } from 'path';
 
 const lookupName = (chainId: number) => {

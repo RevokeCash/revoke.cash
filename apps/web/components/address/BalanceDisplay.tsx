@@ -1,9 +1,9 @@
+import { getChainNativeToken } from '@revoke.cash/core/chains';
+import type { Nullable } from '@revoke.cash/core/types';
+import { isNullish } from '@revoke.cash/core/utils';
+import { formatFiatBalance, formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import Loader from 'components/common/Loader';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import type { Nullable } from 'lib/interfaces';
-import { isNullish } from 'lib/utils';
-import { getChainNativeToken } from 'lib/utils/chains';
-import { formatFiatBalance, formatFixedPointBigInt } from 'lib/utils/formatting';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {

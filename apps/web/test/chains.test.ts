@@ -1,11 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import { expect } from 'chai';
-import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
-import { ERC20_ABI } from 'lib/abis';
-import { SupportType } from 'lib/chains/Chain';
-import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
-import { getScriptLogsProvider } from 'lib/ScriptLogsProvider';
-import { addressToTopic } from 'lib/utils';
+import { ERC20_ABI } from '@revoke.cash/core/abis';
 import {
   createViemPublicClientForChain,
   getChainApiUrl,
@@ -26,7 +20,13 @@ import {
   isTestnetChain,
   ORDERED_CHAINS,
   SUPPORTED_CHAINS,
-} from 'lib/utils/chains';
+} from '@revoke.cash/core/chains';
+import { SupportType } from '@revoke.cash/core/chains/Chain';
+import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from '@revoke.cash/core/constants';
+import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
+import { addressToTopic } from '@revoke.cash/core/events/utils';
+import { expect } from 'chai';
+import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import networkDescriptions from 'locales/en/networks.json' with { type: 'json' };
 import { getAbiItem, toEventSelector } from 'viem';
 import coingeckoNetworks from './coingecko-networks.json' with { type: 'json' };

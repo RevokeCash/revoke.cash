@@ -2,8 +2,8 @@
 
 import { Radio, RadioGroup } from '@headlessui/react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { formatDonationTokenAmount } from '@revoke.cash/core/utils/formatting';
 import { useNativeTokenPrice } from 'lib/hooks/ethereum/useNativeTokenPrice';
-import { formatDonationTokenAmount } from 'lib/utils/formatting';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';

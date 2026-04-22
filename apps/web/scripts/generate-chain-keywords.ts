@@ -1,4 +1,4 @@
-import { getChainName, ORDERED_CHAINS } from 'lib/utils/chains';
+import { getChainName, ORDERED_CHAINS } from '@revoke.cash/core/chains';
 
 const keywordTemplate = process.argv[2];
 

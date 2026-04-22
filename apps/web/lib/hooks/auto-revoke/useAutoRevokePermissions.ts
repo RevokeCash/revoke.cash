@@ -1,7 +1,7 @@
+import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/types';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
-import type { AutoRevokePermission } from 'lib/auto-revoke/types';
 import ky from 'lib/ky';
-import { isNullish } from 'lib/utils';
 import type { Address } from 'viem';
 
 const getAddressPermissionsQueryKey = (address: Address) => ['auto-revoke', 'permissions', address] as const;

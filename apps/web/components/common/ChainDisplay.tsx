@@ -1,6 +1,6 @@
 'use client';
 
-import { getChainName } from 'lib/utils/chains';
+import { getChainName } from '@revoke.cash/core/chains';
 import { twMerge } from 'tailwind-merge';
 import ChainLogo from './ChainLogo';
 

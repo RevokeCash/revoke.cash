@@ -1,12 +1,12 @@
 'use client';
 
+import { createViemPublicClientForChain, ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { delegationEquals } from '@revoke.cash/core/delegations';
+import { AggregateDelegatePlatform } from '@revoke.cash/core/delegations/AggregateDelegatePlatform';
+import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
+import { getEip7702DelegatedAddress } from '@revoke.cash/core/eip7702';
 import { useQuery } from '@tanstack/react-query';
-import { AggregateDelegatePlatform } from 'lib/delegations/AggregateDelegatePlatform';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
-import { delegationEquals } from 'lib/utils';
 import analytics from 'lib/utils/analytics';
-import { createViemPublicClientForChain, ORDERED_CHAINS } from 'lib/utils/chains';
-import { getEip7702DelegatedAddress } from 'lib/utils/eip7702';
 import { useLayoutEffect, useState } from 'react';
 import type { Address, PublicClient } from 'viem';
 import { usePublicClient } from 'wagmi';

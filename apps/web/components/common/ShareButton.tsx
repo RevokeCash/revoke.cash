@@ -1,5 +1,5 @@
 import { ShareIcon } from '@heroicons/react/24/solid';
-import { writeToClipBoard } from 'lib/utils';
+import { writeToClipBoard } from 'lib/utils/clipboard';
 import { useTranslations } from 'next-intl';
 import Button from './Button';
 

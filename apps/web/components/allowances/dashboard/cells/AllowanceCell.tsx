@@ -1,21 +1,21 @@
 import { PencilIcon } from '@heroicons/react/24/outline';
-import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
-import Button from 'components/common/Button';
-import WithHoverTooltip from 'components/common/WithHoverTooltip';
-import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
-import { timeago } from 'lib/i18n/timeago';
 import {
   AllowanceType,
   getAllowanceI18nValues,
   isErc20Allowance,
   type OnUpdate,
   type TokenAllowanceData,
-} from 'lib/utils/allowances';
-import { DAY, SECOND, YEAR } from 'lib/utils/time';
+} from '@revoke.cash/core/allowances';
+import { DAY, SECOND, YEAR } from '@revoke.cash/core/utils/time';
+import ControlsSection from 'components/allowances/controls/ControlsSection';
+import ControlsWrapper from 'components/allowances/controls/ControlsWrapper';
+import Button from 'components/common/Button';
+import WithHoverTooltip from 'components/common/WithHoverTooltip';
+import { useRevoke } from 'lib/hooks/ethereum/useRevoke';
+import { timeago } from 'lib/i18n/timeago';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import ControlsSection from '../../controls/ControlsSection';
 
 interface Props {
   allowance: TokenAllowanceData;

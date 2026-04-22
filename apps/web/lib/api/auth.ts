@@ -1,7 +1,7 @@
+import type { Nullable } from '@revoke.cash/core/types';
+import { isNullish } from '@revoke.cash/core/utils';
 import { getIronSession, type SessionOptions, unsealData } from 'iron-session';
 import { type AuthSession, UNAUTHENTICATED_AUTH_SESSION } from 'lib/auth/session';
-import type { Nullable } from 'lib/interfaces';
-import { isNullish } from 'lib/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cookies, headers } from 'next/headers';
 import type { NextRequest, NextResponse } from 'next/server';

@@ -1,23 +1,24 @@
 'use client';
 
-import { FEE_SPONSORS, isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
-import { TransactionType } from 'lib/interfaces';
-import { chunkArray, throwIfExcessiveGas } from 'lib/utils';
 import {
   getAllowanceKey,
   type OnUpdate,
   prepareRevokeAllowance,
   type TokenAllowanceData,
-  trackRevokeTransaction,
-} from 'lib/utils/allowances';
-import { recordBatchRevoke, trackBatchRevoke } from 'lib/utils/batch-revoke';
+} from '@revoke.cash/core/allowances';
 import {
   type Eip5792Call,
   mapContractTransactionRequestToEip5792Call,
   mapTransactionRequestToEip5792Call,
   mapWalletCallReceiptToTransactionSubmitted,
-} from 'lib/utils/eip5792';
-import { isBatchSizeError, isNoFeeRequiredError } from 'lib/utils/errors';
+} from '@revoke.cash/core/eip5792';
+import { TransactionType } from '@revoke.cash/core/types';
+import { chunkArray } from '@revoke.cash/core/utils';
+import { isBatchSizeError, isNoFeeRequiredError } from '@revoke.cash/core/utils/errors';
+import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
+import { FEE_SPONSORS, isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
+import { trackRevokeTransaction } from 'lib/allowances';
+import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
 import type PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { useWalletClient } from 'wagmi';

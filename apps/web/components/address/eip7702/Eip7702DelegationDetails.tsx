@@ -1,9 +1,9 @@
 'use client';
 
+import { getEip7702DelegatedAddress } from '@revoke.cash/core/eip7702';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import AddressCellWithRiskData from 'components/allowances/dashboard/cells/AddressCellWithRiskData';
-import { isNullish } from 'lib/utils';
-import { getEip7702DelegatedAddress } from 'lib/utils/eip7702';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';

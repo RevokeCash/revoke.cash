@@ -1,8 +1,8 @@
 'use client';
 
 import { ShieldCheckIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
+import { formatDate } from '@revoke.cash/core/utils/time';
 import Label from 'components/common/Label';
-import { formatDate } from 'lib/utils/time';
 import { useTranslations } from 'next-intl';
 
 interface Props {

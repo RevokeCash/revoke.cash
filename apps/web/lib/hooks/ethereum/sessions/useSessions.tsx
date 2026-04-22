@@ -1,7 +1,8 @@
+import { getSessionEvents } from '@revoke.cash/core/chains/events';
+import { getSessionsFromEvents, type Session } from '@revoke.cash/core/sessions';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
-import { getSessionEvents } from 'lib/chains/events';
-import { isNullish } from 'lib/utils';
-import { getSessionsFromEvents, type Session } from 'lib/utils/sessions';
+import { getLogsProvider } from 'lib/providers';
 import { useLayoutEffect, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
@@ -13,7 +14,7 @@ export const useSessions = (address: Address, chainId: number) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['sessions', chainId, address],
     queryFn: async () => {
-      const events = await getSessionEvents(chainId, address);
+      const events = await getSessionEvents(chainId, address, getLogsProvider(chainId));
       const sessions = await getSessionsFromEvents(events, publicClient);
       return sessions;
     },

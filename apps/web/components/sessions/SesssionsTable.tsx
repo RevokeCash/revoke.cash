@@ -1,4 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
+import type { Session } from '@revoke.cash/core/sessions';
+import { isNullish } from '@revoke.cash/core/utils';
 import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import ChainDisplay from 'components/common/ChainDisplay';
@@ -6,8 +8,6 @@ import Table from 'components/common/table/Table';
 import { useSessions } from 'lib/hooks/ethereum/sessions/useSessions';
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
-import { isNullish } from 'lib/utils';
-import type { Session } from 'lib/utils/sessions';
 import { useTranslations } from 'next-intl';
 import { useContext, useMemo } from 'react';
 import { columns } from './columns';
