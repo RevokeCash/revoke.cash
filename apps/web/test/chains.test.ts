@@ -81,13 +81,13 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         }
 
         const NO_TOKEN_PRICING: number[] = [
-          ChainId.CitreaMainnet,
           ChainId.CoinExSmartChainMainnet,
           ChainId.DarwiniaNetwork,
           ChainId.HarmonyMainnetShard0,
           ChainId.IgraNetwork,
           ChainId.NeoXMainnet,
           ChainId.ReyaNetwork,
+          ChainId['SongbirdCanary-Network'],
           ChainId.StableMainnet,
           ChainId.SyscoinMainnet,
         ];

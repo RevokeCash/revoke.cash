@@ -9,7 +9,7 @@ import { Selectors, TEST_URL } from 'cypress/support/utils';
 
 describe(`Chain Support (${TEST_URL})`, () => {
   it('should have a test for every item in the chain selection dropdown menu', () => {
-    cy.visit(`${TEST_URL}/address/0xe126b3E5d052f1F575828f61fEBA4f4f2603652a`, { timeout: 10_000 });
+    cy.visit(`${TEST_URL}/address/0x08A8494EcA0AaA732B6292c23b8904ea627F156b`, { timeout: 10_000 });
     cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
 
     cy.get(Selectors.CHAIN_SELECT_BUTTON).should('exist').click();

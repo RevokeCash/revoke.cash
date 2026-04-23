@@ -682,7 +682,7 @@ export const CHAINS = {
     explorerUrl: 'https://explorer.fuse.io',
     rpc: {
       main: `https://lb.drpc.live/fuse/${DRPC_API_KEY}`,
-      free: 'https://fuse.drpc.org',
+      free: 'https://rpc.fuse.io',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 16146628 } },
   }),

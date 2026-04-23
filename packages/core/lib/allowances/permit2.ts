@@ -49,6 +49,9 @@ const getPermit2AllowanceFromApproval = async (
   const { spender, amount: lastApprovedAmount, expiration, permit2Address } = approval.payload;
   if (lastApprovedAmount === 0n) return undefined;
 
+  const now = referenceTime ? referenceTime * SECOND : Date.now();
+  if (expiration * SECOND <= now) return undefined;
+
   // Optimisation: if the approval is for the max uint160 value, the allowance is not decreased by transferFrom
   // (per Permit2 convention), so we can use the event value directly without an RPC call
   if (lastApprovedAmount === maxUint160) {
@@ -74,9 +77,6 @@ const getPermit2AllowanceFromApproval = async (
       permit2Address,
     };
   }
-
-  const now = referenceTime ? referenceTime * SECOND : Date.now();
-  if (expiration * SECOND <= now) return undefined;
 
   const permit2Allowance = await tokenContract.publicClient.readContract({
     address: permit2Address,
