@@ -6,21 +6,21 @@
       "idx": 0,
       "version": "7",
       "when": 1772908511117,
-      "tag": "0000_bent_pestilence",
+      "tag": "0000_batch_revokes",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1772908517576,
-      "tag": "0001_confused_cargill",
+      "when": 1777034315732,
+      "tag": "0001_premium",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "7",
-      "when": 1776607990792,
-      "tag": "0002_famous_reptil",
+      "when": 1777034344973,
+      "tag": "0002_auto_revoke",
       "breakpoints": true
     }
   ]

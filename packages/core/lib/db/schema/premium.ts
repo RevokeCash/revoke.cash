@@ -6,8 +6,7 @@ import {
   foreignKey,
   index,
   integer,
-  pgEnum,
-  pgTable,
+  pgSchema,
   primaryKey,
   text,
   timestamp,
@@ -15,11 +14,18 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
-export const premiumPaymentStatusEnum = pgEnum('premium_payment_status', ['pending', 'confirmed', 'expired', 'failed']);
-export const premiumPlanTierEnum = pgEnum('premium_plan_tier', ['premium', 'ultimate']);
+export const premiumSchema = pgSchema('premium');
 
-export const premiumPlans = pgTable(
-  'premium_plans',
+export const premiumPaymentStatusEnum = premiumSchema.enum('payment_status', [
+  'pending',
+  'confirmed',
+  'expired',
+  'failed',
+]);
+export const premiumPlanTierEnum = premiumSchema.enum('plan_tier', ['premium', 'ultimate']);
+
+export const premiumPlans = premiumSchema.table(
+  'plans',
   {
     id: text('id').notNull(),
     version: integer('version').notNull(),
@@ -36,14 +42,14 @@ export const premiumPlans = pgTable(
       .$onUpdate(() => new Date()),
   },
   (table) => [
-    primaryKey({ name: 'premium_plans_pkey', columns: [table.id, table.version] }),
-    index('idx_premium_plans_active').on(table.isActive),
-    uniqueIndex('idx_premium_plans_active_by_id_unique').on(table.id).where(sql`${table.isActive} IS TRUE`),
+    primaryKey({ name: 'plans_pkey', columns: [table.id, table.version] }),
+    index('idx_plans_active').on(table.isActive),
+    uniqueIndex('idx_plans_active_by_id_unique').on(table.id).where(sql`${table.isActive} IS TRUE`),
   ],
 );
 
-export const premiumPayments = pgTable(
-  'premium_payments',
+export const premiumPayments = premiumSchema.table(
+  'payments',
   {
     id: uuid('id').primaryKey().defaultRandom(),
     planId: text('plan_id').notNull(),
@@ -71,21 +77,21 @@ export const premiumPayments = pgTable(
     foreignKey({
       columns: [table.planId, table.planVersion],
       foreignColumns: [premiumPlans.id, premiumPlans.version],
-      name: 'premium_payments_plan_fk',
+      name: 'payments_plan_fk',
     }),
-    index('idx_premium_payments_owner').on(table.ownerAddress),
-    index('idx_premium_payments_status').on(table.status),
-    index('idx_premium_payments_chain_scan_start').on(table.chainId, table.scanFromBlock),
-    index('idx_premium_payments_subscription').on(table.subscriptionId),
-    uniqueIndex('idx_premium_payments_matched_tx_hash_unique')
+    index('idx_payments_owner').on(table.ownerAddress),
+    index('idx_payments_status').on(table.status),
+    index('idx_payments_chain_scan_start').on(table.chainId, table.scanFromBlock),
+    index('idx_payments_subscription').on(table.subscriptionId),
+    uniqueIndex('idx_payments_matched_tx_hash_unique')
       .on(table.matchedTxHash)
       .where(sql`${table.matchedTxHash} IS NOT NULL`),
-    index('idx_premium_payments_confirmed_at').on(table.confirmedAt),
+    index('idx_payments_confirmed_at').on(table.confirmedAt),
   ],
 );
 
-export const premiumSubscriptions = pgTable(
-  'premium_subscriptions',
+export const premiumSubscriptions = premiumSchema.table(
+  'subscriptions',
   {
     id: uuid('id').primaryKey().defaultRandom(),
     planId: text('plan_id').notNull(),
@@ -103,15 +109,15 @@ export const premiumSubscriptions = pgTable(
     foreignKey({
       columns: [table.planId, table.planVersion],
       foreignColumns: [premiumPlans.id, premiumPlans.version],
-      name: 'premium_subscriptions_plan_fk',
+      name: 'subscriptions_plan_fk',
     }),
-    index('idx_premium_subscriptions_owner').on(table.ownerAddress),
-    index('idx_premium_subscriptions_ends').on(table.endsAt),
+    index('idx_subscriptions_owner').on(table.ownerAddress),
+    index('idx_subscriptions_ends').on(table.endsAt),
   ],
 );
 
-export const premiumSubscriptionAddresses = pgTable(
-  'premium_subscription_addresses',
+export const premiumSubscriptionAddresses = premiumSchema.table(
+  'subscription_addresses',
   {
     id: uuid('id').primaryKey().defaultRandom(),
     subscriptionId: uuid('subscription_id')
@@ -122,8 +128,8 @@ export const premiumSubscriptionAddresses = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
-    uniqueIndex('premium_subscription_addresses_subscription_address_unique').on(table.subscriptionId, table.address),
-    index('idx_premium_subscription_addresses_address').on(table.address),
+    uniqueIndex('subscription_addresses_subscription_address_unique').on(table.subscriptionId, table.address),
+    index('idx_subscription_addresses_address').on(table.address),
   ],
 );
 

@@ -1,5 +1,5 @@
 {
-  "id": "47a4232c-44b0-4832-8a58-277d7b3f693a",
+  "id": "ba528067-6320-4add-a1c5-0f531ae9cff6",
   "prevId": "8b5b23f4-0467-4612-bd0f-4bdf8fb19178",
   "version": "7",
   "dialect": "postgresql",
@@ -105,9 +105,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_payments": {
-      "name": "premium_payments",
-      "schema": "",
+    "premium.payments": {
+      "name": "payments",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -172,8 +172,8 @@
         },
         "status": {
           "name": "status",
-          "type": "premium_payment_status",
-          "typeSchema": "public",
+          "type": "payment_status",
+          "typeSchema": "premium",
           "primaryKey": false,
           "notNull": true
         },
@@ -223,8 +223,8 @@
         }
       },
       "indexes": {
-        "idx_premium_payments_owner": {
-          "name": "idx_premium_payments_owner",
+        "idx_payments_owner": {
+          "name": "idx_payments_owner",
           "columns": [
             {
               "expression": "owner_address",
@@ -238,8 +238,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_status": {
-          "name": "idx_premium_payments_status",
+        "idx_payments_status": {
+          "name": "idx_payments_status",
           "columns": [
             {
               "expression": "status",
@@ -253,8 +253,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_chain_scan_start": {
-          "name": "idx_premium_payments_chain_scan_start",
+        "idx_payments_chain_scan_start": {
+          "name": "idx_payments_chain_scan_start",
           "columns": [
             {
               "expression": "chain_id",
@@ -274,8 +274,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_subscription": {
-          "name": "idx_premium_payments_subscription",
+        "idx_payments_subscription": {
+          "name": "idx_payments_subscription",
           "columns": [
             {
               "expression": "subscription_id",
@@ -289,8 +289,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_matched_tx_hash_unique": {
-          "name": "idx_premium_payments_matched_tx_hash_unique",
+        "idx_payments_matched_tx_hash_unique": {
+          "name": "idx_payments_matched_tx_hash_unique",
           "columns": [
             {
               "expression": "matched_tx_hash",
@@ -300,13 +300,13 @@
             }
           ],
           "isUnique": true,
-          "where": "\"premium_payments\".\"matched_tx_hash\" IS NOT NULL",
+          "where": "\"premium\".\"payments\".\"matched_tx_hash\" IS NOT NULL",
           "concurrently": false,
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_confirmed_at": {
-          "name": "idx_premium_payments_confirmed_at",
+        "idx_payments_confirmed_at": {
+          "name": "idx_payments_confirmed_at",
           "columns": [
             {
               "expression": "confirmed_at",
@@ -322,10 +322,11 @@
         }
       },
       "foreignKeys": {
-        "premium_payments_subscription_id_premium_subscriptions_id_fk": {
-          "name": "premium_payments_subscription_id_premium_subscriptions_id_fk",
-          "tableFrom": "premium_payments",
-          "tableTo": "premium_subscriptions",
+        "payments_subscription_id_subscriptions_id_fk": {
+          "name": "payments_subscription_id_subscriptions_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "subscriptions",
+          "schemaTo": "premium",
           "columnsFrom": [
             "subscription_id"
           ],
@@ -335,10 +336,11 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "premium_payments_plan_fk": {
-          "name": "premium_payments_plan_fk",
-          "tableFrom": "premium_payments",
-          "tableTo": "premium_plans",
+        "payments_plan_fk": {
+          "name": "payments_plan_fk",
+          "tableFrom": "payments",
+          "tableTo": "plans",
+          "schemaTo": "premium",
           "columnsFrom": [
             "plan_id",
             "plan_version"
@@ -357,9 +359,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_plans": {
-      "name": "premium_plans",
-      "schema": "",
+    "premium.plans": {
+      "name": "plans",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -397,6 +399,14 @@
           "primaryKey": false,
           "notNull": true
         },
+        "tier": {
+          "name": "tier",
+          "type": "plan_tier",
+          "typeSchema": "premium",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'premium'"
+        },
         "is_active": {
           "name": "is_active",
           "type": "boolean",
@@ -420,8 +430,8 @@
         }
       },
       "indexes": {
-        "idx_premium_plans_active": {
-          "name": "idx_premium_plans_active",
+        "idx_plans_active": {
+          "name": "idx_plans_active",
           "columns": [
             {
               "expression": "is_active",
@@ -435,8 +445,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_plans_active_by_id_unique": {
-          "name": "idx_premium_plans_active_by_id_unique",
+        "idx_plans_active_by_id_unique": {
+          "name": "idx_plans_active_by_id_unique",
           "columns": [
             {
               "expression": "id",
@@ -446,7 +456,7 @@
             }
           ],
           "isUnique": true,
-          "where": "\"premium_plans\".\"is_active\" IS TRUE",
+          "where": "\"premium\".\"plans\".\"is_active\" IS TRUE",
           "concurrently": false,
           "method": "btree",
           "with": {}
@@ -454,8 +464,8 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "premium_plans_pkey": {
-          "name": "premium_plans_pkey",
+        "plans_pkey": {
+          "name": "plans_pkey",
           "columns": [
             "id",
             "version"
@@ -467,9 +477,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_subscription_addresses": {
-      "name": "premium_subscription_addresses",
-      "schema": "",
+    "premium.subscription_addresses": {
+      "name": "subscription_addresses",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -505,8 +515,8 @@
         }
       },
       "indexes": {
-        "premium_subscription_addresses_subscription_address_unique": {
-          "name": "premium_subscription_addresses_subscription_address_unique",
+        "subscription_addresses_subscription_address_unique": {
+          "name": "subscription_addresses_subscription_address_unique",
           "columns": [
             {
               "expression": "subscription_id",
@@ -526,8 +536,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_subscription_addresses_address": {
-          "name": "idx_premium_subscription_addresses_address",
+        "idx_subscription_addresses_address": {
+          "name": "idx_subscription_addresses_address",
           "columns": [
             {
               "expression": "address",
@@ -543,10 +553,11 @@
         }
       },
       "foreignKeys": {
-        "premium_subscription_addresses_subscription_id_premium_subscriptions_id_fk": {
-          "name": "premium_subscription_addresses_subscription_id_premium_subscriptions_id_fk",
-          "tableFrom": "premium_subscription_addresses",
-          "tableTo": "premium_subscriptions",
+        "subscription_addresses_subscription_id_subscriptions_id_fk": {
+          "name": "subscription_addresses_subscription_id_subscriptions_id_fk",
+          "tableFrom": "subscription_addresses",
+          "tableTo": "subscriptions",
+          "schemaTo": "premium",
           "columnsFrom": [
             "subscription_id"
           ],
@@ -563,9 +574,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_subscriptions": {
-      "name": "premium_subscriptions",
-      "schema": "",
+    "premium.subscriptions": {
+      "name": "subscriptions",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -620,8 +631,8 @@
         }
       },
       "indexes": {
-        "idx_premium_subscriptions_owner": {
-          "name": "idx_premium_subscriptions_owner",
+        "idx_subscriptions_owner": {
+          "name": "idx_subscriptions_owner",
           "columns": [
             {
               "expression": "owner_address",
@@ -635,8 +646,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_subscriptions_ends": {
-          "name": "idx_premium_subscriptions_ends",
+        "idx_subscriptions_ends": {
+          "name": "idx_subscriptions_ends",
           "columns": [
             {
               "expression": "ends_at",
@@ -652,10 +663,11 @@
         }
       },
       "foreignKeys": {
-        "premium_subscriptions_plan_fk": {
-          "name": "premium_subscriptions_plan_fk",
-          "tableFrom": "premium_subscriptions",
-          "tableTo": "premium_plans",
+        "subscriptions_plan_fk": {
+          "name": "subscriptions_plan_fk",
+          "tableFrom": "subscriptions",
+          "tableTo": "plans",
+          "schemaTo": "premium",
           "columnsFrom": [
             "plan_id",
             "plan_version"
@@ -676,18 +688,28 @@
     }
   },
   "enums": {
-    "public.premium_payment_status": {
-      "name": "premium_payment_status",
-      "schema": "public",
+    "premium.payment_status": {
+      "name": "payment_status",
+      "schema": "premium",
       "values": [
         "pending",
         "confirmed",
         "expired",
         "failed"
       ]
+    },
+    "premium.plan_tier": {
+      "name": "plan_tier",
+      "schema": "premium",
+      "values": [
+        "premium",
+        "ultimate"
+      ]
     }
   },
-  "schemas": {},
+  "schemas": {
+    "premium": "premium"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},

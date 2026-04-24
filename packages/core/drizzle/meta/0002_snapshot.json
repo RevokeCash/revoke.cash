@@ -1,12 +1,12 @@
 {
-  "id": "9ce43e5f-dca4-4546-924b-e3b894b6668a",
-  "prevId": "47a4232c-44b0-4832-8a58-277d7b3f693a",
+  "id": "19140942-657e-4dce-8aba-a04c2b8f0e46",
+  "prevId": "ba528067-6320-4add-a1c5-0f531ae9cff6",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.auto_revoke_activity_log": {
-      "name": "auto_revoke_activity_log",
-      "schema": "",
+    "auto_revoke.activity_log": {
+      "name": "activity_log",
+      "schema": "auto_revoke",
       "columns": {
         "id": {
           "name": "id",
@@ -29,8 +29,8 @@
         },
         "trigger_type": {
           "name": "trigger_type",
-          "type": "auto_revoke_trigger_type",
-          "typeSchema": "public",
+          "type": "trigger_type",
+          "typeSchema": "auto_revoke",
           "primaryKey": false,
           "notNull": true
         },
@@ -54,8 +54,8 @@
         },
         "status": {
           "name": "status",
-          "type": "auto_revoke_activity_status",
-          "typeSchema": "public",
+          "type": "activity_status",
+          "typeSchema": "auto_revoke",
           "primaryKey": false,
           "notNull": true
         },
@@ -68,8 +68,8 @@
         }
       },
       "indexes": {
-        "idx_auto_revoke_activity_address": {
-          "name": "idx_auto_revoke_activity_address",
+        "idx_activity_log_address": {
+          "name": "idx_activity_log_address",
           "columns": [
             {
               "expression": "address",
@@ -83,8 +83,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_auto_revoke_activity_created": {
-          "name": "idx_auto_revoke_activity_created",
+        "idx_activity_log_created": {
+          "name": "idx_activity_log_created",
           "columns": [
             {
               "expression": "created_at",
@@ -106,9 +106,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.auto_revoke_permissions": {
-      "name": "auto_revoke_permissions",
-      "schema": "",
+    "auto_revoke.permissions": {
+      "name": "permissions",
+      "schema": "auto_revoke",
       "columns": {
         "id": {
           "name": "id",
@@ -169,8 +169,8 @@
         }
       },
       "indexes": {
-        "auto_revoke_permissions_address_chain_unique": {
-          "name": "auto_revoke_permissions_address_chain_unique",
+        "permissions_address_chain_unique": {
+          "name": "permissions_address_chain_unique",
           "columns": [
             {
               "expression": "address",
@@ -186,13 +186,13 @@
             }
           ],
           "isUnique": true,
-          "where": "\"auto_revoke_permissions\".\"revoked_at\" IS NULL",
+          "where": "\"auto_revoke\".\"permissions\".\"revoked_at\" IS NULL",
           "concurrently": false,
           "method": "btree",
           "with": {}
         },
-        "auto_revoke_permissions_permission_context_unique": {
-          "name": "auto_revoke_permissions_permission_context_unique",
+        "permissions_permission_context_unique": {
+          "name": "permissions_permission_context_unique",
           "columns": [
             {
               "expression": "permission_context",
@@ -206,8 +206,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_auto_revoke_permissions_address": {
-          "name": "idx_auto_revoke_permissions_address",
+        "idx_permissions_address": {
+          "name": "idx_permissions_address",
           "columns": [
             {
               "expression": "address",
@@ -229,9 +229,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.auto_revoke_rules": {
-      "name": "auto_revoke_rules",
-      "schema": "",
+    "auto_revoke.rules": {
+      "name": "rules",
+      "schema": "auto_revoke",
       "columns": {
         "id": {
           "name": "id",
@@ -242,8 +242,8 @@
         },
         "type": {
           "name": "type",
-          "type": "auto_revoke_rules_type",
-          "typeSchema": "public",
+          "type": "rules_type",
+          "typeSchema": "auto_revoke",
           "primaryKey": false,
           "notNull": true
         },
@@ -274,8 +274,8 @@
         },
         "risk_sensitivity": {
           "name": "risk_sensitivity",
-          "type": "auto_revoke_risk_sensitivity",
-          "typeSchema": "public",
+          "type": "risk_sensitivity",
+          "typeSchema": "auto_revoke",
           "primaryKey": false,
           "notNull": true,
           "default": "'exploits_only'"
@@ -310,8 +310,8 @@
         }
       },
       "indexes": {
-        "auto_revoke_rules_subscription_unique": {
-          "name": "auto_revoke_rules_subscription_unique",
+        "rules_subscription_unique": {
+          "name": "rules_subscription_unique",
           "columns": [
             {
               "expression": "subscription_id",
@@ -325,8 +325,8 @@
           "method": "btree",
           "with": {}
         },
-        "auto_revoke_rules_address_unique": {
-          "name": "auto_revoke_rules_address_unique",
+        "rules_address_unique": {
+          "name": "rules_address_unique",
           "columns": [
             {
               "expression": "address",
@@ -340,8 +340,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_auto_revoke_rules_active_rules": {
-          "name": "idx_auto_revoke_rules_active_rules",
+        "idx_rules_active_rules": {
+          "name": "idx_rules_active_rules",
           "columns": [
             {
               "expression": "active_rules_id",
@@ -357,10 +357,11 @@
         }
       },
       "foreignKeys": {
-        "auto_revoke_rules_subscription_id_premium_subscriptions_id_fk": {
-          "name": "auto_revoke_rules_subscription_id_premium_subscriptions_id_fk",
-          "tableFrom": "auto_revoke_rules",
-          "tableTo": "premium_subscriptions",
+        "rules_subscription_id_subscriptions_id_fk": {
+          "name": "rules_subscription_id_subscriptions_id_fk",
+          "tableFrom": "rules",
+          "tableTo": "subscriptions",
+          "schemaTo": "premium",
           "columnsFrom": [
             "subscription_id"
           ],
@@ -370,10 +371,11 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "auto_revoke_rules_active_rules_id_auto_revoke_rules_id_fk": {
-          "name": "auto_revoke_rules_active_rules_id_auto_revoke_rules_id_fk",
-          "tableFrom": "auto_revoke_rules",
-          "tableTo": "auto_revoke_rules",
+        "rules_active_rules_id_rules_id_fk": {
+          "name": "rules_active_rules_id_rules_id_fk",
+          "tableFrom": "rules",
+          "tableTo": "rules",
+          "schemaTo": "auto_revoke",
           "columnsFrom": [
             "active_rules_id"
           ],
@@ -388,9 +390,9 @@
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {
-        "auto_revoke_rules_owner_consistency": {
-          "name": "auto_revoke_rules_owner_consistency",
-          "value": "(\"auto_revoke_rules\".\"type\" = 'subscription' AND \"auto_revoke_rules\".\"subscription_id\" IS NOT NULL AND \"auto_revoke_rules\".\"address\" IS NULL)\n        OR (\"auto_revoke_rules\".\"type\" = 'address' AND \"auto_revoke_rules\".\"subscription_id\" IS NULL AND \"auto_revoke_rules\".\"address\" IS NOT NULL)"
+        "rules_owner_consistency": {
+          "name": "rules_owner_consistency",
+          "value": "(\"auto_revoke\".\"rules\".\"type\" = 'subscription' AND \"auto_revoke\".\"rules\".\"subscription_id\" IS NOT NULL AND \"auto_revoke\".\"rules\".\"address\" IS NULL)\n        OR (\"auto_revoke\".\"rules\".\"type\" = 'address' AND \"auto_revoke\".\"rules\".\"subscription_id\" IS NULL AND \"auto_revoke\".\"rules\".\"address\" IS NOT NULL)"
         }
       },
       "isRLSEnabled": false
@@ -496,9 +498,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_payments": {
-      "name": "premium_payments",
-      "schema": "",
+    "premium.payments": {
+      "name": "payments",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -563,8 +565,8 @@
         },
         "status": {
           "name": "status",
-          "type": "premium_payment_status",
-          "typeSchema": "public",
+          "type": "payment_status",
+          "typeSchema": "premium",
           "primaryKey": false,
           "notNull": true
         },
@@ -614,8 +616,8 @@
         }
       },
       "indexes": {
-        "idx_premium_payments_owner": {
-          "name": "idx_premium_payments_owner",
+        "idx_payments_owner": {
+          "name": "idx_payments_owner",
           "columns": [
             {
               "expression": "owner_address",
@@ -629,8 +631,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_status": {
-          "name": "idx_premium_payments_status",
+        "idx_payments_status": {
+          "name": "idx_payments_status",
           "columns": [
             {
               "expression": "status",
@@ -644,8 +646,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_chain_scan_start": {
-          "name": "idx_premium_payments_chain_scan_start",
+        "idx_payments_chain_scan_start": {
+          "name": "idx_payments_chain_scan_start",
           "columns": [
             {
               "expression": "chain_id",
@@ -665,8 +667,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_subscription": {
-          "name": "idx_premium_payments_subscription",
+        "idx_payments_subscription": {
+          "name": "idx_payments_subscription",
           "columns": [
             {
               "expression": "subscription_id",
@@ -680,8 +682,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_matched_tx_hash_unique": {
-          "name": "idx_premium_payments_matched_tx_hash_unique",
+        "idx_payments_matched_tx_hash_unique": {
+          "name": "idx_payments_matched_tx_hash_unique",
           "columns": [
             {
               "expression": "matched_tx_hash",
@@ -691,13 +693,13 @@
             }
           ],
           "isUnique": true,
-          "where": "\"premium_payments\".\"matched_tx_hash\" IS NOT NULL",
+          "where": "\"premium\".\"payments\".\"matched_tx_hash\" IS NOT NULL",
           "concurrently": false,
           "method": "btree",
           "with": {}
         },
-        "idx_premium_payments_confirmed_at": {
-          "name": "idx_premium_payments_confirmed_at",
+        "idx_payments_confirmed_at": {
+          "name": "idx_payments_confirmed_at",
           "columns": [
             {
               "expression": "confirmed_at",
@@ -713,10 +715,11 @@
         }
       },
       "foreignKeys": {
-        "premium_payments_subscription_id_premium_subscriptions_id_fk": {
-          "name": "premium_payments_subscription_id_premium_subscriptions_id_fk",
-          "tableFrom": "premium_payments",
-          "tableTo": "premium_subscriptions",
+        "payments_subscription_id_subscriptions_id_fk": {
+          "name": "payments_subscription_id_subscriptions_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "subscriptions",
+          "schemaTo": "premium",
           "columnsFrom": [
             "subscription_id"
           ],
@@ -726,10 +729,11 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "premium_payments_plan_fk": {
-          "name": "premium_payments_plan_fk",
-          "tableFrom": "premium_payments",
-          "tableTo": "premium_plans",
+        "payments_plan_fk": {
+          "name": "payments_plan_fk",
+          "tableFrom": "payments",
+          "tableTo": "plans",
+          "schemaTo": "premium",
           "columnsFrom": [
             "plan_id",
             "plan_version"
@@ -748,9 +752,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_plans": {
-      "name": "premium_plans",
-      "schema": "",
+    "premium.plans": {
+      "name": "plans",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -790,8 +794,8 @@
         },
         "tier": {
           "name": "tier",
-          "type": "premium_plan_tier",
-          "typeSchema": "public",
+          "type": "plan_tier",
+          "typeSchema": "premium",
           "primaryKey": false,
           "notNull": true,
           "default": "'premium'"
@@ -819,8 +823,8 @@
         }
       },
       "indexes": {
-        "idx_premium_plans_active": {
-          "name": "idx_premium_plans_active",
+        "idx_plans_active": {
+          "name": "idx_plans_active",
           "columns": [
             {
               "expression": "is_active",
@@ -834,8 +838,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_plans_active_by_id_unique": {
-          "name": "idx_premium_plans_active_by_id_unique",
+        "idx_plans_active_by_id_unique": {
+          "name": "idx_plans_active_by_id_unique",
           "columns": [
             {
               "expression": "id",
@@ -845,7 +849,7 @@
             }
           ],
           "isUnique": true,
-          "where": "\"premium_plans\".\"is_active\" IS TRUE",
+          "where": "\"premium\".\"plans\".\"is_active\" IS TRUE",
           "concurrently": false,
           "method": "btree",
           "with": {}
@@ -853,8 +857,8 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "premium_plans_pkey": {
-          "name": "premium_plans_pkey",
+        "plans_pkey": {
+          "name": "plans_pkey",
           "columns": [
             "id",
             "version"
@@ -866,9 +870,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_subscription_addresses": {
-      "name": "premium_subscription_addresses",
-      "schema": "",
+    "premium.subscription_addresses": {
+      "name": "subscription_addresses",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -904,8 +908,8 @@
         }
       },
       "indexes": {
-        "premium_subscription_addresses_subscription_address_unique": {
-          "name": "premium_subscription_addresses_subscription_address_unique",
+        "subscription_addresses_subscription_address_unique": {
+          "name": "subscription_addresses_subscription_address_unique",
           "columns": [
             {
               "expression": "subscription_id",
@@ -925,8 +929,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_subscription_addresses_address": {
-          "name": "idx_premium_subscription_addresses_address",
+        "idx_subscription_addresses_address": {
+          "name": "idx_subscription_addresses_address",
           "columns": [
             {
               "expression": "address",
@@ -942,10 +946,11 @@
         }
       },
       "foreignKeys": {
-        "premium_subscription_addresses_subscription_id_premium_subscriptions_id_fk": {
-          "name": "premium_subscription_addresses_subscription_id_premium_subscriptions_id_fk",
-          "tableFrom": "premium_subscription_addresses",
-          "tableTo": "premium_subscriptions",
+        "subscription_addresses_subscription_id_subscriptions_id_fk": {
+          "name": "subscription_addresses_subscription_id_subscriptions_id_fk",
+          "tableFrom": "subscription_addresses",
+          "tableTo": "subscriptions",
+          "schemaTo": "premium",
           "columnsFrom": [
             "subscription_id"
           ],
@@ -962,9 +967,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.premium_subscriptions": {
-      "name": "premium_subscriptions",
-      "schema": "",
+    "premium.subscriptions": {
+      "name": "subscriptions",
+      "schema": "premium",
       "columns": {
         "id": {
           "name": "id",
@@ -1019,8 +1024,8 @@
         }
       },
       "indexes": {
-        "idx_premium_subscriptions_owner": {
-          "name": "idx_premium_subscriptions_owner",
+        "idx_subscriptions_owner": {
+          "name": "idx_subscriptions_owner",
           "columns": [
             {
               "expression": "owner_address",
@@ -1034,8 +1039,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_premium_subscriptions_ends": {
-          "name": "idx_premium_subscriptions_ends",
+        "idx_subscriptions_ends": {
+          "name": "idx_subscriptions_ends",
           "columns": [
             {
               "expression": "ends_at",
@@ -1051,10 +1056,11 @@
         }
       },
       "foreignKeys": {
-        "premium_subscriptions_plan_fk": {
-          "name": "premium_subscriptions_plan_fk",
-          "tableFrom": "premium_subscriptions",
-          "tableTo": "premium_plans",
+        "subscriptions_plan_fk": {
+          "name": "subscriptions_plan_fk",
+          "tableFrom": "subscriptions",
+          "tableTo": "plans",
+          "schemaTo": "premium",
           "columnsFrom": [
             "plan_id",
             "plan_version"
@@ -1075,44 +1081,44 @@
     }
   },
   "enums": {
-    "public.auto_revoke_activity_status": {
-      "name": "auto_revoke_activity_status",
-      "schema": "public",
+    "auto_revoke.activity_status": {
+      "name": "activity_status",
+      "schema": "auto_revoke",
       "values": [
         "pending",
         "executed",
         "failed"
       ]
     },
-    "public.auto_revoke_risk_sensitivity": {
-      "name": "auto_revoke_risk_sensitivity",
-      "schema": "public",
+    "auto_revoke.risk_sensitivity": {
+      "name": "risk_sensitivity",
+      "schema": "auto_revoke",
       "values": [
         "exploits_only",
         "high",
         "medium"
       ]
     },
-    "public.auto_revoke_rules_type": {
-      "name": "auto_revoke_rules_type",
-      "schema": "public",
+    "auto_revoke.rules_type": {
+      "name": "rules_type",
+      "schema": "auto_revoke",
       "values": [
         "subscription",
         "address"
       ]
     },
-    "public.auto_revoke_trigger_type": {
-      "name": "auto_revoke_trigger_type",
-      "schema": "public",
+    "auto_revoke.trigger_type": {
+      "name": "trigger_type",
+      "schema": "auto_revoke",
       "values": [
         "exploit",
         "stale",
         "risk_score"
       ]
     },
-    "public.premium_payment_status": {
-      "name": "premium_payment_status",
-      "schema": "public",
+    "premium.payment_status": {
+      "name": "payment_status",
+      "schema": "premium",
       "values": [
         "pending",
         "confirmed",
@@ -1120,16 +1126,19 @@
         "failed"
       ]
     },
-    "public.premium_plan_tier": {
-      "name": "premium_plan_tier",
-      "schema": "public",
+    "premium.plan_tier": {
+      "name": "plan_tier",
+      "schema": "premium",
       "values": [
         "premium",
         "ultimate"
       ]
     }
   },
-  "schemas": {},
+  "schemas": {
+    "auto_revoke": "auto_revoke",
+    "premium": "premium"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},
