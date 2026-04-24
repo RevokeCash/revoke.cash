@@ -12,7 +12,6 @@ import { ADDRESS_ZERO, DUMMY_ADDRESS } from '@revoke.cash/core/constants';
 import {
   type ApprovalTokenEvent,
   type EnrichedTokenEvent,
-  generatePatchedAllowanceEvents,
   isApprovalTokenEvent,
   isRevokeEvent,
   parseApprovalForAllLog,
@@ -29,7 +28,6 @@ import { parseSessionCreatedLog, type SessionCreatedEvent } from '@revoke.cash/c
 import { createTokenContract, getTokenMetadata, throwIfSpam } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { isNetworkError, isRateLimitError, stringifyError } from '@revoke.cash/core/utils/errors';
-import { getOpenSeaProxyAddress } from '@revoke.cash/core/whois';
 import { type Address, getAbiItem, type PublicClient, toEventSelector } from 'viem';
 
 // Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues and issues with Edge runtime
@@ -86,11 +84,10 @@ const ChainOverrides: Record<number, TokenEventsGetter> = {
   },
 };
 
-const getEventPrerequisites = async (chainId: DocumentedChainId, address: Address, logsProvider: LogsProvider) => {
+const getEventPrerequisites = async (chainId: DocumentedChainId, logsProvider: LogsProvider) => {
   const publicClient = createViemPublicClientForChain(chainId);
 
-  const [openSeaProxy, fromBlock, toBlock, rpcBlock] = await Promise.all([
-    getOpenSeaProxyAddress(address),
+  const [fromBlock, toBlock, rpcBlock] = await Promise.all([
     0,
     logsProvider.getLatestBlock(),
     publicClient.getBlockNumber(),
@@ -103,7 +100,7 @@ const getEventPrerequisites = async (chainId: DocumentedChainId, address: Addres
     throw new Error(`Events data source is out of sync with the blockchain, please try again later.`);
   }
 
-  return { logsProvider, openSeaProxy, fromBlock, toBlock };
+  return { logsProvider, fromBlock, toBlock };
 };
 
 const getTokenEventsDefault = async (
@@ -111,32 +108,9 @@ const getTokenEventsDefault = async (
   address: Address,
   logsProvider: LogsProvider,
 ): Promise<TokenEvent[]> => {
-  const { openSeaProxy, fromBlock, toBlock } = await getEventPrerequisites(chainId, address, logsProvider);
+  const { fromBlock, toBlock } = await getEventPrerequisites(chainId, logsProvider);
 
-  const getErc721EventSelector = (eventName: 'Transfer' | 'Approval' | 'ApprovalForAll') => {
-    return toEventSelector(getAbiItem({ abi: ERC721_ABI, name: eventName }));
-  };
-
-  const getPermit2EventSelector = (eventName: 'Permit' | 'Approval' | 'Lockdown') => {
-    return toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: eventName }));
-  };
-
-  const addressTopic = addressToTopic(address);
-
-  const transferToFilter = { topics: [getErc721EventSelector('Transfer'), null, addressTopic], fromBlock, toBlock };
-  const transferFromFilter = { topics: [getErc721EventSelector('Transfer'), addressTopic], fromBlock, toBlock };
-  const approvalFilter = { topics: [getErc721EventSelector('Approval'), addressTopic], fromBlock, toBlock };
-  const approvalForAllFilter = {
-    topics: [getErc721EventSelector('ApprovalForAll'), addressTopic],
-    fromBlock,
-    toBlock,
-  };
-
-  const permit2ApprovalFilter = { topics: [getPermit2EventSelector('Approval'), addressTopic], fromBlock, toBlock };
-  const permit2PermitFilter = { topics: [getPermit2EventSelector('Permit'), addressTopic], fromBlock, toBlock };
-  const permit2LockdownFilter = { topics: [getPermit2EventSelector('Lockdown'), addressTopic], fromBlock, toBlock };
-
-  const [transferTo, transferFrom, approval, approvalForAllUnpatched, permit2Approval, permit2Permit, permit2Lockdown] =
+  const [transferTo, transferFrom, approval, approvalForAll, permit2Approval, permit2Permit, permit2Lockdown] =
     await Promise.all([
       eventsCache.getLogs(logsProvider, transferToFilter, chainId, 'Transfer (to)'),
       eventsCache.getLogs(logsProvider, transferFromFilter, chainId, 'Transfer (from)'),
@@ -146,17 +120,6 @@ const getTokenEventsDefault = async (
       eventsCache.getLogs(logsProvider, permit2PermitFilter, chainId, 'Permit2 Permit'),
       eventsCache.getLogs(logsProvider, permit2LockdownFilter, chainId, 'Permit2 Lockdown'),
     ]);
-
-  // Manually patch the ApprovalForAll events
-  const approvalForAll = [
-    ...approvalForAllUnpatched,
-    ...generatePatchedAllowanceEvents(address, openSeaProxy ?? undefined, [
-      ...approval,
-      ...approvalForAllUnpatched,
-      ...transferFrom,
-      ...transferTo,
-    ]),
-  ];
 
   // Parse events. We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
   const parsedEvents = [
@@ -302,7 +265,7 @@ export const getSessionEvents = async (
     return [];
   }
 
-  const { fromBlock, toBlock } = await getEventPrerequisites(chainId, address, logsProvider);
+  const { fromBlock, toBlock } = await getEventPrerequisites(chainId, logsProvider);
 
   const eventSelector = toEventSelector(getAbiItem({ abi: AGW_SESSIONS_ABI, name: 'SessionCreated' }));
   const addressTopic = addressToTopic(address);

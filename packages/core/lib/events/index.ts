@@ -1,12 +1,12 @@
 import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from '@revoke.cash/core/abis';
 import { type AllowancePayload, AllowanceType } from '@revoke.cash/core/allowances';
-import { ADDRESS_ZERO, DUMMY_ADDRESS, MOONBIRDS_ADDRESS } from '@revoke.cash/core/constants';
+import { ADDRESS_ZERO, DUMMY_ADDRESS } from '@revoke.cash/core/constants';
 import type { TokenMetadata } from '@revoke.cash/core/tokens';
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
-import { type Address, decodeEventLog, getAbiItem, type Hash, type Hex, toEventSelector } from 'viem';
-import { addressToTopic, logSorterChronological } from './utils';
+import { type Address, decodeEventLog, type Hash, type Hex } from 'viem';
+import { logSorterChronological } from './utils';
 
 export interface Log {
   address: Address;
@@ -216,37 +216,6 @@ export const parseTransferLog = (
 
 export const getEventKey = (event: TokenEvent) => {
   return JSON.stringify(event.rawLog);
-};
-
-// This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
-// which do not show up normally because of a bug in their contract
-export const generatePatchedAllowanceEvents = (
-  userAddress: Address,
-  openseaProxyAddress?: Address,
-  allEvents: Log[] = [],
-): Log[] => {
-  if (!userAddress || !openseaProxyAddress) return [];
-
-  // Only add the Moonbirds approval event if the account has interacted with Moonbirds at all
-  if (!allEvents.some((ev) => ev.address === MOONBIRDS_ADDRESS)) return [];
-
-  return [
-    {
-      // We use the deployment transaction hash as a placeholder for the approval transaction hash
-      transactionHash: '0xd4547dc336dd4a0655f11267537964d7641f115ef3d5440d71514e3efba9d210',
-      blockNumber: 14591056,
-      transactionIndex: 145,
-      logIndex: 0,
-      address: MOONBIRDS_ADDRESS,
-      topics: [
-        toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'ApprovalForAll' })),
-        addressToTopic(userAddress),
-        addressToTopic(openseaProxyAddress),
-      ],
-      data: '0x0000000000000000000000000000000000000000000000000000000000000001',
-      timestamp: 1649997510,
-    },
-  ];
 };
 
 // This is a utility function to convert an approval event to an allowance payload used to display the allowance amount in the history table

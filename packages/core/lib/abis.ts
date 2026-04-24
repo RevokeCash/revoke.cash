@@ -47,26 +47,6 @@ export const ERC1155_ABI = parseAbi([
   'function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data) public',
 ]);
 
-export const OPENSEA_REGISTRY_ABI = parseAbi([
-  'function name() public view returns (string)',
-  'function initialAddressSet() public view returns (bool)',
-  'function endGrantAuthentication(address addr) public',
-  'function revokeAuthentication(address addr) public',
-  'function pending(address) public view returns (uint256)',
-  'function contracts(address) public view returns (bool)',
-  'function renounceOwnership() public',
-  'function owner() public view returns (address)',
-  'function delegateProxyImplementation() public view returns (address)',
-  'function proxies(address) public view returns (address)',
-  'function startGrantAuthentication(address addr) public',
-  'function registerProxy() public returns (address proxy)',
-  'function DELAY_PERIOD() public view returns (uint256)',
-  'function grantInitialAuthentication(address authAddress) public',
-  'function transferOwnership(address newOwner) public',
-  'event OwnershipRenounced(address indexed previousOwner)',
-  'event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)',
-]);
-
 export const OPENSEA_SEAPORT_ABI = parseAbi([
   'function incrementCounter() public returns (uint256)',
   'event CounterIncremented(uint256, address indexed)',

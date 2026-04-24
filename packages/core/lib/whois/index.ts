@@ -1,11 +1,9 @@
 import { ChainId } from '@revoke.cash/chains';
-import { AVVY_DOMAINS_ABI, OPENSEA_REGISTRY_ABI, UNSTOPPABLE_DOMAINS_ABI } from '@revoke.cash/core/abis';
+import { AVVY_DOMAINS_ABI, UNSTOPPABLE_DOMAINS_ABI } from '@revoke.cash/core/abis';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import {
-  ADDRESS_ZERO,
   ALCHEMY_API_KEY,
   AVVY_DOMAINS_ADDRESS,
-  OPENSEA_REGISTRY_ADDRESS,
   UNSTOPPABLE_DOMAINS_ETH_ADDRESS,
   UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS,
 } from '@revoke.cash/core/constants';
@@ -172,22 +170,6 @@ export const lookupDomainName = async (address: Address) => {
     const avvyNamePromise = lookupAvvyName(address);
     const ensName = await lookupEnsName(address);
     return ensName ?? (await unsNamePromise) ?? (await avvyNamePromise);
-  } catch {
-    return null;
-  }
-};
-
-export const getOpenSeaProxyAddress = async (userAddress: Address): Promise<Address | null> => {
-  try {
-    const proxyAddress = await GlobalClients.ETHEREUM.readContract({
-      address: OPENSEA_REGISTRY_ADDRESS,
-      abi: OPENSEA_REGISTRY_ABI,
-      functionName: 'proxies',
-      args: [userAddress],
-    });
-
-    if (!proxyAddress || proxyAddress === ADDRESS_ZERO) return null;
-    return proxyAddress;
   } catch {
     return null;
   }
