@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "env": "dotenvx run -f ../../.env --",
+    "allow-scripts": "cd ../.. && yarn run allow-scripts",
     "dev": "yarn env next dev",
     "build": "yarn env next build && yarn env next-sitemap",
     "build:preview": "yarn env next build --profile && yarn env next-sitemap",

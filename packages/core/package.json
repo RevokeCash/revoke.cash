@@ -16,6 +16,7 @@
   },
   "scripts": {
     "env": "dotenvx run -f ../../.env --",
+    "allow-scripts": "cd ../.. && yarn run allow-scripts",
     "typecheck": "tsc --noEmit",
     "db:generate": "yarn env drizzle-kit generate",
     "db:migrate": "yarn env drizzle-kit migrate",
