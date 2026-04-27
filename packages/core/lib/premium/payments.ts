@@ -1,6 +1,7 @@
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { getDb } from '@revoke.cash/core/db/client';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { toLowercaseAddress } from '@revoke.cash/core/utils';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { and, count, eq, gt } from 'drizzle-orm';
 import type { Address } from 'viem';
@@ -33,7 +34,7 @@ export const getPaymentForOwner = async (
   ownerAddress: Address,
 ): Promise<PremiumPaymentRecord | null> => {
   const db = getDb();
-  const normalizedOwner = ownerAddress.toLowerCase();
+  const normalizedOwner = toLowercaseAddress(ownerAddress);
 
   const payment = await db.query.premiumPayments.findFirst({
     where: and(eq(premiumPayments.id, paymentId), eq(premiumPayments.ownerAddress, normalizedOwner)),
@@ -56,7 +57,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
   if (!paymentConfig) throw new Error('Unsupported payment chain');
 
   const db = getDb();
-  const normalizedOwner = ownerAddress.toLowerCase();
+  const normalizedOwner = toLowercaseAddress(ownerAddress);
 
   // Prevent downgrade: if the user has an active subscription on a more expensive plan,
   // they must renew at the same tier or upgrade

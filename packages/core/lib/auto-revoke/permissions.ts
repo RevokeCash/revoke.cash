@@ -9,7 +9,7 @@ import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokePermissions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
-import { deduplicateArray } from '@revoke.cash/core/utils';
+import { deduplicateArray, toLowercaseAddress } from '@revoke.cash/core/utils';
 import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'drizzle-orm';
@@ -19,7 +19,7 @@ import type { AutoRevokePermission, WalletPermissionResult } from './types';
 
 export const getAutoRevokePermissionsByAddress = async (address: Address): Promise<AutoRevokePermission[]> => {
   const db = getDb();
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
 
   const rows = await db.query.autoRevokePermissions.findMany({
     where: and(eq(autoRevokePermissions.address, normalizedAddress), isNull(autoRevokePermissions.revokedAt)),
@@ -59,7 +59,7 @@ export const saveAutoRevokePermissionBatch = async (
   if (items.length === 0) return [];
 
   const db = getTransactionalDb();
-  return db.transaction((trx) => applyPermissionBatch(trx, address.toLowerCase(), items));
+  return db.transaction((trx) => applyPermissionBatch(trx, toLowercaseAddress(address), items));
 };
 
 export const syncAutoRevokePermissions = async (
@@ -67,7 +67,7 @@ export const syncAutoRevokePermissions = async (
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
 ): Promise<Array<{ id: string }>> => {
   const db = getTransactionalDb();
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
   const syncedChainIds = items.map((item) => item.chainId);
 
   return db.transaction(async (trx) => {
@@ -91,7 +91,7 @@ export const syncAutoRevokePermissions = async (
 
 export const revokeAutoRevokePermission = async (address: Address, chainId: number): Promise<void> => {
   const db = getDb();
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
 
   await db
     .update(autoRevokePermissions)
@@ -174,7 +174,7 @@ export const isPermissionEnabledOnChain = async (permission: WalletPermissionRes
 
 const applyPermissionBatch = async (
   trx: DatabaseTransaction,
-  normalizedAddress: string,
+  normalizedAddress: Address,
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
 ): Promise<Array<{ id: string }>> => {
   if (items.length === 0) return [];
@@ -224,7 +224,7 @@ export const resolvePermissionRecord = async (
   authenticatedAddress: Address,
   input: { permissionContext: Hex; chainId: AutoRevokeSupportedChainId },
 ): Promise<Omit<AutoRevokePermission, 'isActive'>> => {
-  const normalizedAddress = authenticatedAddress.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(authenticatedAddress);
 
   const decodedPermission = decodeDelegations(input.permissionContext)?.[0];
   if (!decodedPermission) throw new Error('Failed to decode permission context');

@@ -4,6 +4,7 @@ import type { LogsProvider } from './LogsProvider';
 import { ScriptLogsProvider } from './ScriptLogsProvider';
 import { ViemLogsProvider } from './ViemLogsProvider';
 
+export { DatabaseLogsProvider } from './DatabaseLogsProvider';
 export { DivideAndConquerLogsProvider } from './DivideAndConquerLogsProvider';
 export type { LogsProvider } from './LogsProvider';
 export { ScriptLogsProvider } from './ScriptLogsProvider';

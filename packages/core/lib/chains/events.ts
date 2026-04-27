@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import { AGW_SESSIONS_ABI, ERC721_ABI, PERMIT2_ABI } from '@revoke.cash/core/abis';
+import { AGW_SESSIONS_ABI } from '@revoke.cash/core/abis';
 import blocksCache from '@revoke.cash/core/cache/blocks';
 import eventsCache from '@revoke.cash/core/cache/events';
 import {
@@ -14,13 +14,11 @@ import {
   type EnrichedTokenEvent,
   isApprovalTokenEvent,
   isRevokeEvent,
-  parseApprovalForAllLog,
-  parseApprovalLog,
-  parsePermit2Log,
-  parseTransferLog,
+  parseLog,
   type TokenEvent,
   TokenEventType,
 } from '@revoke.cash/core/events';
+import { buildTokenEventFilters } from '@revoke.cash/core/events/filters';
 import type { LogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic, logSorterChronological, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import ky from '@revoke.cash/core/ky';
@@ -28,6 +26,7 @@ import { parseSessionCreatedLog, type SessionCreatedEvent } from '@revoke.cash/c
 import { createTokenContract, getTokenMetadata, throwIfSpam } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { isNetworkError, isRateLimitError, stringifyError } from '@revoke.cash/core/utils/errors';
+import { mapAsync } from '@revoke.cash/core/utils/promises';
 import { type Address, getAbiItem, type PublicClient, toEventSelector } from 'viem';
 
 // Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues and issues with Edge runtime
@@ -110,30 +109,19 @@ const getTokenEventsDefault = async (
 ): Promise<TokenEvent[]> => {
   const { fromBlock, toBlock } = await getEventPrerequisites(chainId, logsProvider);
 
-  const [transferTo, transferFrom, approval, approvalForAll, permit2Approval, permit2Permit, permit2Lockdown] =
-    await Promise.all([
-      eventsCache.getLogs(logsProvider, transferToFilter, chainId, 'Transfer (to)'),
-      eventsCache.getLogs(logsProvider, transferFromFilter, chainId, 'Transfer (from)'),
-      eventsCache.getLogs(logsProvider, approvalFilter, chainId, 'Approval'),
-      eventsCache.getLogs(logsProvider, approvalForAllFilter, chainId, 'ApprovalForAll'),
-      eventsCache.getLogs(logsProvider, permit2ApprovalFilter, chainId, 'Permit2 Approval'),
-      eventsCache.getLogs(logsProvider, permit2PermitFilter, chainId, 'Permit2 Permit'),
-      eventsCache.getLogs(logsProvider, permit2LockdownFilter, chainId, 'Permit2 Lockdown'),
-    ]);
+  const filters = buildTokenEventFilters(address, fromBlock, toBlock);
 
-  // Parse events. We put ApprovalForAll first to ensure that incorrect ERC721 contracts like CryptoStrikers are handled correctly
-  const parsedEvents = [
-    ...approvalForAll.map((log) => parseApprovalForAllLog(log, chainId)),
-    ...approval.map((log) => parseApprovalLog(log, chainId)),
-    ...permit2Approval.map((log) => parsePermit2Log(log, chainId)),
-    ...permit2Permit.map((log) => parsePermit2Log(log, chainId)),
-    ...permit2Lockdown.map((log) => parsePermit2Log(log, chainId)),
-    ...transferFrom.map((log) => parseTransferLog(log, chainId, address)),
-    ...transferTo.map((log) => parseTransferLog(log, chainId, address)),
-  ];
+  const logsResults = await mapAsync(filters, async (filter) =>
+    eventsCache.getLogs(logsProvider, filter, chainId, filter.name),
+  );
+
+  const events = logsResults
+    .flat()
+    .map((log) => parseLog(log, chainId, address))
+    .filter((event) => !isNullish(event));
 
   // We sort the events in reverse chronological order to ensure that the most recent events are processed first
-  return sortTokenEventsChronologically(parsedEvents.filter((event) => !isNullish(event))).reverse();
+  return sortTokenEventsChronologically(events).reverse();
 };
 
 const enrichTokenEvents = async (

@@ -1,10 +1,17 @@
 import { isCovalentSupportedChain } from '@revoke.cash/core/chains';
 import type { Filter, Log } from '@revoke.cash/core/events';
-import { isLogResponseSizeError } from '@revoke.cash/core/utils/errors';
+import { isLogRequestSizeError, isLogResponseSizeError } from '@revoke.cash/core/utils/errors';
 import type { LogsProvider } from './LogsProvider';
 
+export interface DivideAndConquerOptions {
+  splitOnRequestSize?: boolean;
+}
+
 export class DivideAndConquerLogsProvider implements LogsProvider {
-  constructor(private underlyingProvider: LogsProvider) {}
+  constructor(
+    private underlyingProvider: LogsProvider,
+    private options: DivideAndConquerOptions = {},
+  ) {}
 
   get chainId(): number {
     return this.underlyingProvider.chainId;
@@ -25,13 +32,19 @@ export class DivideAndConquerLogsProvider implements LogsProvider {
       const result = await this.underlyingProvider.getLogs(filter);
       return result;
     } catch (error) {
-      if (!isLogResponseSizeError(error)) throw error;
+      if (!this.isSplittableError(error)) throw error;
 
       // If the block range is already a single block, we re-throw the error since we can't split it further
       if (filter.fromBlock === filter.toBlock) throw error;
 
       return this.divideAndConquer(filter, 2);
     }
+  }
+
+  private isSplittableError(error: unknown): boolean {
+    if (isLogResponseSizeError(error)) return true;
+    if (this.options.splitOnRequestSize && isLogRequestSizeError(error)) return true;
+    return false;
   }
 
   async divideAndConquer(filter: Filter, iterations: number): Promise<Log[]> {

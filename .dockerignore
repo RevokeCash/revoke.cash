@@ -1,0 +1,25 @@
+.git
+.github
+.vscode
+.idea
+
+**/node_modules
+**/.next
+**/.turbo
+**/.cache
+**/.vercel
+**/dist
+**/coverage
+
+# Web-specific (not covered by the patterns above)
+apps/web/cypress
+apps/web/test
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+*.swp

@@ -3,6 +3,7 @@ import { autoRevokeRules } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
+import { toLowercaseAddress } from '@revoke.cash/core/utils';
 import { and, eq, gt, lte } from 'drizzle-orm';
 import { type Address, getAddress } from 'viem';
 import type { AutoRevokeAddressRulesConfig, AutoRevokeRules, AutoRevokeRulesSource } from './types';
@@ -39,7 +40,7 @@ export const upsertSubscriptionRules = async (
 };
 
 export const getAddressRulesConfig = async (address: Address): Promise<AutoRevokeAddressRulesConfig> => {
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
 
   const { rules: effectiveRules, rulesSource } = await getEffectiveRules(address);
 
@@ -53,7 +54,7 @@ export const getAddressRulesConfig = async (address: Address): Promise<AutoRevok
 export const getEffectiveRules = async (
   address: Address,
 ): Promise<{ rules: AutoRevokeRules; rulesSource: AutoRevokeRulesSource }> => {
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
   const addressRules = await getAddressRules(address);
 
   const fallbackCustomRules = {
@@ -102,7 +103,7 @@ export const getEffectiveRules = async (
 
 export const getAddressRules = async (address: Address): Promise<RulesRecord | null> => {
   const db = getDb();
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
 
   const rules = await db.query.autoRevokeRules.findFirst({
     where: eq(autoRevokeRules.address, normalizedAddress),
@@ -113,7 +114,7 @@ export const getAddressRules = async (address: Address): Promise<RulesRecord | n
 
 export const upsertAddressRules = async (address: Address, ruleData: Partial<AutoRevokeRules>): Promise<void> => {
   const db = getDb();
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
 
   await db
     .insert(autoRevokeRules)
@@ -133,7 +134,7 @@ export const switchAutoRevokeRulesSource = async (
   { subscriptionId }: { subscriptionId: string | null },
 ): Promise<void> => {
   const db = getTransactionalDb();
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
 
   await db.transaction(async (trx) => {
     const activeRulesId = await resolveActiveRulesId(trx, normalizedAddress, subscriptionId);
@@ -143,7 +144,7 @@ export const switchAutoRevokeRulesSource = async (
 };
 
 const getAvailableSubscriptions = async (
-  normalizedAddress: string,
+  normalizedAddress: Address,
 ): Promise<AutoRevokeAddressRulesConfig['availableSubscriptions']> => {
   const db = getDb();
 
@@ -169,7 +170,7 @@ const getAvailableSubscriptions = async (
 
 const resolveActiveRulesId = async (
   trx: DatabaseTransaction,
-  normalizedAddress: string,
+  normalizedAddress: Address,
   subscriptionId: string | null,
 ): Promise<string | null> => {
   if (subscriptionId === null) return null;
@@ -182,7 +183,7 @@ const resolveActiveRulesId = async (
 
 const isAddressMemberOfActiveUltimateSubscription = async (
   trx: DatabaseTransaction,
-  normalizedAddress: string,
+  normalizedAddress: Address,
   subscriptionId: string,
 ): Promise<boolean> => {
   const now = new Date();
@@ -225,7 +226,7 @@ const ensureSubscriptionRulesId = async (trx: DatabaseTransaction, subscriptionI
 
 const initAddressRules = async (
   trx: DatabaseTransaction,
-  normalizedAddress: string,
+  normalizedAddress: Address,
   copyFromRulesId?: string,
 ): Promise<void> => {
   const sourceRules = copyFromRulesId
@@ -244,7 +245,7 @@ const initAddressRules = async (
 
 const setActiveRules = async (
   trx: DatabaseTransaction,
-  normalizedAddress: string,
+  normalizedAddress: Address,
   rulesId: string | null,
 ): Promise<void> => {
   await trx

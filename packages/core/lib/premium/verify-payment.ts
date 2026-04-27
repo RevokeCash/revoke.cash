@@ -1,16 +1,11 @@
 import { ERC20_ABI } from '@revoke.cash/core/abis';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
-import {
-  premiumPayments,
-  premiumSubscriptionAddresses,
-  premiumSubscriptions,
-} from '@revoke.cash/core/db/schema/premium';
+import { premiumPayments } from '@revoke.cash/core/db/schema/premium';
 import { parseTransferLog, TokenEventType } from '@revoke.cash/core/events';
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
-import { DAY } from '@revoke.cash/core/utils/time';
-import { and, eq, gt, ne, sql } from 'drizzle-orm';
-import { type Address, getAbiItem, getAddress, parseUnits, toEventSelector } from 'viem';
+import { and, eq, ne } from 'drizzle-orm';
+import { type Address, getAbiItem, getAddress, type Hash, parseUnits, toEventSelector } from 'viem';
 import { getPaymentConfig } from './payment-config';
 import {
   getPaymentForOwner,
@@ -19,11 +14,12 @@ import {
   type PremiumPaymentStatus,
   toPaymentStatusResponse,
 } from './payments';
+import { extendOrCreateSubscription } from './subscriptions';
 
 interface SetPaymentStatusParams {
   paymentId: string;
   status: PremiumPaymentStatus;
-  matchedTxHash?: string | null;
+  matchedTxHash?: Hash | null;
   confirmedAt?: Date | null;
   subscriptionId?: string;
   updatedAt?: Date;
@@ -118,7 +114,7 @@ const findMatchingTransferTxHash = async (
   payment: PremiumPaymentRecord,
   ownerAddress: Address,
   recipientAddress: Address,
-): Promise<string | null> => {
+): Promise<Hash | null> => {
   // We get the script logs provider since this only runs on the backend.
   const logsProvider = getScriptLogsProvider(payment.chainId);
   const latestBlock = await logsProvider.getLatestBlock();
@@ -145,19 +141,9 @@ const findMatchingTransferTxHash = async (
   return matchedTransfer?.rawLog.transactionHash ?? null;
 };
 
-type LockedPayment = PremiumPaymentRecord & {
-  plan: { durationDays: number; priceUsd: number };
-};
-
-interface ExistingSubscription {
-  id: string;
-  planId: string;
-  plan: { priceUsd: number };
-}
-
 const finalizeMatchedPaymentInTransaction = async (
   trx: DatabaseTransaction,
-  { paymentId, matchedTxHash }: { paymentId: string; matchedTxHash: string },
+  { paymentId, matchedTxHash }: { paymentId: string; matchedTxHash: Hash },
 ): Promise<void> => {
   const lockedPayment = await trx.query.premiumPayments.findFirst({
     where: eq(premiumPayments.id, paymentId),
@@ -179,7 +165,7 @@ const finalizeMatchedPaymentInTransaction = async (
   }
 
   const now = new Date();
-  const subscriptionId = await extendOrCreateSubscription(trx, lockedPayment, now);
+  const subscriptionId = await extendOrCreateSubscription(trx, { ...lockedPayment, now });
 
   await setPaymentStatus(trx, {
     paymentId: lockedPayment.id,
@@ -189,67 +175,6 @@ const finalizeMatchedPaymentInTransaction = async (
     updatedAt: now,
     subscriptionId,
   });
-};
-
-const extendOrCreateSubscription = async (
-  trx: DatabaseTransaction,
-  payment: LockedPayment,
-  now: Date,
-): Promise<string> => {
-  const existing = await trx.query.premiumSubscriptions.findFirst({
-    where: and(eq(premiumSubscriptions.ownerAddress, payment.ownerAddress), gt(premiumSubscriptions.endsAt, now)),
-    orderBy: (sub, { desc }) => [desc(sub.endsAt)],
-    columns: { id: true, planId: true },
-    with: { plan: { columns: { priceUsd: true } } },
-  });
-
-  if (existing) {
-    return extendExistingSubscription(trx, existing, payment);
-  }
-
-  return createNewSubscription(trx, payment, now);
-};
-
-const extendExistingSubscription = async (
-  trx: DatabaseTransaction,
-  existing: ExistingSubscription,
-  payment: LockedPayment,
-): Promise<string> => {
-  const isUpgrade = payment.planId !== existing.planId && payment.plan.priceUsd > existing.plan.priceUsd;
-
-  await trx
-    .update(premiumSubscriptions)
-    .set({
-      endsAt: sql`${premiumSubscriptions.endsAt} + make_interval(days => ${payment.plan.durationDays})`,
-      ...(isUpgrade ? { planId: payment.planId, planVersion: payment.planVersion } : {}),
-    })
-    .where(eq(premiumSubscriptions.id, existing.id));
-
-  return existing.id;
-};
-
-const createNewSubscription = async (trx: DatabaseTransaction, payment: LockedPayment, now: Date): Promise<string> => {
-  const [subscription] = await trx
-    .insert(premiumSubscriptions)
-    .values({
-      planId: payment.planId,
-      planVersion: payment.planVersion,
-      ownerAddress: payment.ownerAddress,
-      startsAt: now,
-      endsAt: new Date(now.getTime() + payment.plan.durationDays * DAY),
-    })
-    .returning({ id: premiumSubscriptions.id });
-
-  await trx
-    .insert(premiumSubscriptionAddresses)
-    .values({
-      subscriptionId: subscription.id,
-      address: payment.ownerAddress,
-      addedBy: payment.ownerAddress,
-    })
-    .onConflictDoNothing();
-
-  return subscription.id;
 };
 
 const setPaymentStatus = async (

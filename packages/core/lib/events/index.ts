@@ -5,8 +5,16 @@ import type { TokenMetadata } from '@revoke.cash/core/tokens';
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
-import { type Address, decodeEventLog, type Hash, type Hex } from 'viem';
+import { type Address, decodeEventLog, getAbiItem, type Hash, type Hex, toEventSelector } from 'viem';
 import { logSorterChronological } from './utils';
+
+// Topic-0 selectors for every event type we parse. Computed once at import.
+export const ERC721_TRANSFER_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'Transfer' }));
+export const ERC721_APPROVAL_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'Approval' }));
+export const ERC721_APPROVAL_FOR_ALL_TOPIC = toEventSelector(getAbiItem({ abi: ERC721_ABI, name: 'ApprovalForAll' }));
+export const PERMIT2_APPROVAL_TOPIC = toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: 'Approval' }));
+export const PERMIT2_PERMIT_TOPIC = toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: 'Permit' }));
+export const PERMIT2_LOCKDOWN_TOPIC = toEventSelector(getAbiItem({ abi: PERMIT2_ABI, name: 'Lockdown' }));
 
 export interface Log {
   address: Address;
@@ -21,6 +29,10 @@ export interface Log {
 
 export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
 export type ResolvedTimeLog = TimeLog & { timestamp: number };
+
+export interface NamedFilter extends Filter {
+  name: string;
+}
 
 export interface Filter {
   address?: Address;
@@ -124,6 +136,23 @@ export const isApprovalTokenEvent = (event: TokenEvent): event is ApprovalTokenE
     event.type === TokenEventType.APPROVAL_FOR_ALL ||
     event.type === TokenEventType.PERMIT2
   );
+};
+
+export const parseLog = (log: Log, chainId: number, owner: Address): TokenEvent | undefined => {
+  switch (log.topics[0]) {
+    case ERC721_APPROVAL_FOR_ALL_TOPIC:
+      return parseApprovalForAllLog(log, chainId);
+    case ERC721_APPROVAL_TOPIC:
+      return parseApprovalLog(log, chainId);
+    case PERMIT2_APPROVAL_TOPIC:
+    case PERMIT2_PERMIT_TOPIC:
+    case PERMIT2_LOCKDOWN_TOPIC:
+      return parsePermit2Log(log, chainId);
+    case ERC721_TRANSFER_TOPIC:
+      return parseTransferLog(log, chainId, owner);
+    default:
+      return undefined;
+  }
 };
 
 export const parsePermit2Log = (log: Log, chainId: number): Permit2Event | undefined => {

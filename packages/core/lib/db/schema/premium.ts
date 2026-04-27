@@ -13,6 +13,7 @@ import {
   uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core';
+import type { Address, Hash } from 'viem';
 
 export const premiumSchema = pgSchema('premium');
 
@@ -54,17 +55,17 @@ export const premiumPayments = premiumSchema.table(
     id: uuid('id').primaryKey().defaultRandom(),
     planId: text('plan_id').notNull(),
     planVersion: integer('plan_version').notNull(),
-    ownerAddress: text('owner_address').notNull(),
+    ownerAddress: text('owner_address').notNull().$type<Address>(),
     subscriptionId: uuid('subscription_id').references(() => premiumSubscriptions.id),
     chainId: integer('chain_id').notNull(),
-    tokenAddress: text('token_address').notNull(),
+    tokenAddress: text('token_address').notNull().$type<Address>(),
     tokenSymbol: text('token_symbol').notNull(),
     tokenDecimals: integer('token_decimals').notNull(),
     amountUsd: integer('amount_usd').notNull(),
     status: premiumPaymentStatusEnum('status').notNull(),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     scanFromBlock: bigint('scan_from_block', { mode: 'bigint' }).notNull(),
-    matchedTxHash: text('matched_tx_hash'),
+    matchedTxHash: text('matched_tx_hash').$type<Hash>(),
     vatRegion: char('vat_region', { length: 2 }),
     confirmedAt: timestamp('confirmed_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
@@ -96,7 +97,7 @@ export const premiumSubscriptions = premiumSchema.table(
     id: uuid('id').primaryKey().defaultRandom(),
     planId: text('plan_id').notNull(),
     planVersion: integer('plan_version').notNull(),
-    ownerAddress: text('owner_address').notNull(),
+    ownerAddress: text('owner_address').notNull().$type<Address>(),
     startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
     endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
@@ -123,8 +124,8 @@ export const premiumSubscriptionAddresses = premiumSchema.table(
     subscriptionId: uuid('subscription_id')
       .notNull()
       .references(() => premiumSubscriptions.id),
-    address: text('address').notNull(),
-    addedBy: text('added_by').notNull(),
+    address: text('address').notNull().$type<Address>(),
+    addedBy: text('added_by').notNull().$type<Address>(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [

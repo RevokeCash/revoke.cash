@@ -1,5 +1,6 @@
 import { getDb } from '@revoke.cash/core/db/client';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
+import { toLowercaseAddress } from '@revoke.cash/core/utils';
 import { eq } from 'drizzle-orm';
 import { type Address, getAddress } from 'viem';
 import { isUltimatePlan, type PremiumPlanTier } from './plans';
@@ -14,7 +15,7 @@ export interface PremiumEntitlement {
 
 export const getActivePremiumEntitlements = async (address: Address): Promise<PremiumEntitlement[]> => {
   const db = getDb();
-  const normalizedAddress = address.toLowerCase();
+  const normalizedAddress = toLowercaseAddress(address);
 
   const rows = await db.query.premiumSubscriptionAddresses.findMany({
     where: eq(premiumSubscriptionAddresses.address, normalizedAddress),

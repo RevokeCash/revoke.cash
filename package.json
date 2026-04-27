@@ -19,7 +19,7 @@
     "lint:fix": "yarn lint --write",
     "lint:staged": "yarn lint --error-on-warnings --no-errors-on-unmatched --staged .",
     "lint:checksums": "yarn workspace web lint:checksums",
-    "typecheck": "yarn workspace @revoke.cash/core typecheck && yarn workspace web typecheck",
+    "typecheck": "yarn workspace @revoke.cash/core typecheck && yarn workspace web typecheck && yarn workspace @revoke.cash/approval-monitor typecheck",
     "test": "yarn workspace web test",
     "test:mocha": "yarn workspace web test:mocha",
     "test:cypress": "yarn workspace web test:cypress",
@@ -54,6 +54,7 @@
       "$root$": true,
       "@abstract-foundation/agw-react>secp256k1": false,
       "@biomejs/biome": true,
+      "@nestjs/core": false,
       "@tailwindcss/postcss>@tailwindcss/oxide": false,
       "@vercel/speed-insights": false,
       "@walletconnect/ethereum-provider>@reown/appkit": true,
@@ -65,7 +66,9 @@
       "viem>ws>bufferutil": true,
       "viem>ws>utf-8-validate": true,
       "drizzle-kit>@esbuild-kit/esm-loader>@esbuild-kit/core-utils>esbuild": false,
-      "drizzle-kit>esbuild": false
+      "drizzle-kit>esbuild": false,
+      "@nestjs/schedule>cron>@types/luxon": false,
+      "bullmq>msgpackr>msgpackr-extract": false
     }
   },
   "resolutions": {

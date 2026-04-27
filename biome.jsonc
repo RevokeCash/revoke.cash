@@ -80,5 +80,33 @@
     "parser": {
       "tailwindDirectives": true
     }
-  }
+  },
+  "overrides": [
+    {
+      // NestJS DI relies on runtime imports for constructor-parameter types via reflect-metadata.
+      // `useImportType` would convert them to `import type`, erasing the runtime reference and
+      // breaking dependency resolution. Disable it for the approval-monitor service.
+      "includes": ["apps/approval-monitor/**"],
+      "javascript": {
+        "parser": {
+          // NestJS uses parameter decorators (e.g. `@Inject(TOKEN)`) for DI tokens that aren't
+          // class types. Biome flags these as TC39-stage-3-incompatible by default; that's not
+          // a relevant concern here because we run via @swc-node/register with experimental
+          // decorators, which is exactly what NestJS expects.
+          "unsafeParameterDecoratorsEnabled": true
+        }
+      },
+      "linter": {
+        "rules": {
+          "style": {
+            "useImportType": "off"
+          },
+          "complexity": {
+            // NestJS modules are decorated classes; the static `register()` factory pattern is idiomatic
+            "noStaticOnlyClass": "off"
+          }
+        }
+      }
+    }
+  ]
 }

@@ -1,0 +1,53 @@
+# Both manager and worker run the same Docker image; role split is purely env-driven via `IS_MANAGER`.
+# Secrets (DATABASE_URL, REDIS_URL, BULL_BOARD_*) are marked `sync: false` — set them in
+# Render's dashboard rather than committing to this file.
+
+services:
+  - type: pserv
+    name: approval-monitor-manager
+    runtime: docker
+    repo: https://github.com/RevokeCash/revoke-private
+    branch: auto-revoke-executor
+    dockerfilePath: ./apps/approval-monitor/Dockerfile
+    dockerContext: .
+    region: virginia
+    plan: starter
+    numInstances: 1
+    envVars:
+      - key: IS_MANAGER
+        value: 'true'
+      - key: PORT
+        value: '3001'
+      - key: NEON_USE_WEBSOCKET
+        value: 'true'
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: BULL_BOARD_USER
+        sync: false
+      - key: BULL_BOARD_PASSWORD
+        sync: false
+      # Optional tuning knobs (MONITOR_CHAIN_CONCURRENCY, MONITOR_SCHEDULER_BATCH_SIZE) have
+      # code defaults — set them in the Render dashboard if you want to override.
+
+  - type: pserv
+    name: approval-monitor-worker
+    runtime: docker
+    repo: https://github.com/RevokeCash/revoke-private
+    branch: auto-revoke-executor
+    dockerfilePath: ./apps/approval-monitor/Dockerfile
+    dockerContext: .
+    region: virginia
+    plan: starter
+    numInstances: 1
+    envVars:
+      - key: PORT
+        value: '3002'
+      - key: NEON_USE_WEBSOCKET
+        value: 'true'
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      # MONITOR_CHAIN_CONCURRENCY has a code default — set it in the Render dashboard if you want to override.

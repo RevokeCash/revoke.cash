@@ -107,6 +107,22 @@ export const isLogResponseSizeError = (error?: string | any): boolean => {
   return false;
 };
 
+export const isLogRequestSizeError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isLogRequestSizeError(parseErrorMessage(error)) || isLogRequestSizeError(stringifyError(error));
+  }
+
+  const lowercaseMessage = error?.toLowerCase();
+  if (lowercaseMessage?.includes('query must be smaller than')) return true;
+  if (lowercaseMessage?.includes('block range is too large')) return true;
+  if (lowercaseMessage?.includes('block range too wide')) return true;
+  if (lowercaseMessage?.includes('exceeds the maximum block range')) return true;
+  if (lowercaseMessage?.includes('eth_getlogs is limited to')) return true;
+  return false;
+};
+
 export const isRateLimitError = (error?: string | any): boolean => {
   if (!error) return false;
 
