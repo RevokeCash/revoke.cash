@@ -4,12 +4,16 @@ import { type DocumentedChainId, getChainName } from '@revoke.cash/core/chains';
 import { recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/scan';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
+import type { MetricsService } from '../metrics/metrics.service';
 import type { ScanJobData } from '../queue/queue.service';
 
 export abstract class ScanWorker extends WorkerHost {
   protected readonly logger: Logger;
 
-  constructor(public readonly chainId: DocumentedChainId) {
+  constructor(
+    public readonly chainId: DocumentedChainId,
+    protected readonly metrics: MetricsService,
+  ) {
     super();
     this.logger = new Logger(`ScanWorker-${getChainName(chainId)}`);
   }
@@ -18,12 +22,20 @@ export abstract class ScanWorker extends WorkerHost {
     const { scanId, address, reason } = job.data;
     this.logger.debug({ scanId, chainId: this.chainId, address, reason }, 'processing scan');
 
+    const endTimer = this.metrics.scanDuration.startTimer({ chain_id: this.chainId });
     const result = await scanAddressChain(address, this.chainId);
 
     if (result.nonceZeroSkipped) {
+      this.metrics.scansTotal.inc({ chain_id: this.chainId, outcome: 'nonce_zero' });
       this.logger.debug({ scanId, chainId: this.chainId, address }, 'scan skipped (nonce 0)');
       return;
     }
+
+    // Only record the duration of the successful scan.
+    endTimer({ path: result.path });
+
+    this.metrics.scansTotal.inc({ chain_id: this.chainId, outcome: 'ok' });
+    this.metrics.scanLogsFetched.observe({ chain_id: this.chainId, path: result.path }, result.logsFetched);
 
     this.logger.log({ scanId, chainId: this.chainId, address, ...result }, 'scan completed');
   }
@@ -51,6 +63,7 @@ export abstract class ScanWorker extends WorkerHost {
     );
 
     if (!exhausted || !job?.data) return;
+    this.metrics.scansTotal.inc({ chain_id: this.chainId, outcome: 'failed' });
     await recordScanFailure(job.data.address, job.data.chainId, error);
   }
 }

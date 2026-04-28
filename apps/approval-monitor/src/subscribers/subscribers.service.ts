@@ -8,6 +8,7 @@ import type { Address } from 'viem';
 export interface ScanCandidate {
   address: Address;
   chainId: number;
+  nextRunAt: Date;
 }
 
 @Injectable()
@@ -42,6 +43,7 @@ export class SubscribersService {
       .select({
         address: monitorScanState.address,
         chainId: monitorScanState.chainId,
+        nextRunAt: monitorScanState.nextRunAt,
       })
       .from(monitorScanState)
       .where(

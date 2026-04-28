@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { ConfigService } from '../config/config.service';
+import { MetricsService } from '../metrics/metrics.service';
 import { QueueService } from '../queue/queue.service';
 import { SubscribersService } from '../subscribers/subscribers.service';
 
@@ -20,6 +21,7 @@ export class SchedulerService {
     private readonly config: ConfigService,
     private readonly subscribers: SubscribersService,
     private readonly queues: QueueService,
+    private readonly metrics: MetricsService,
   ) {}
 
   @Interval(1000)
@@ -28,7 +30,11 @@ export class SchedulerService {
 
     const batchSize = this.config.schedulerBatchSize;
     const candidates = await this.subscribers.findReadyToScan(batchSize);
-    if (candidates.length === 0) return;
+
+    if (candidates.length === 0) return void this.metrics.schedulerLag.set(0);
+
+    const lagSeconds = Math.max(0, (Date.now() - candidates[0].nextRunAt.getTime()) / 1000);
+    this.metrics.schedulerLag.set(lagSeconds);
 
     const outcomes = await Promise.all(
       candidates.map(({ address, chainId }) => this.queues.enqueueScan(chainId, address)),
@@ -36,7 +42,13 @@ export class SchedulerService {
 
     const added = outcomes.filter((outcome) => outcome === 'added').length;
     const deduped = outcomes.filter((outcome) => outcome === 'deduped').length;
-    this.logger.log({ enqueued: candidates.length, added, deduped }, 'tick enqueued');
+    const noQueue = outcomes.filter((outcome) => outcome === 'no_queue').length;
+
+    this.metrics.schedulerTickOutcomes.inc({ outcome: 'added' }, added);
+    this.metrics.schedulerTickOutcomes.inc({ outcome: 'deduped' }, deduped);
+    this.metrics.schedulerTickOutcomes.inc({ outcome: 'no_queue' }, noQueue);
+
+    this.logger.log({ enqueued: candidates.length, added, deduped, noQueue, lagSeconds }, 'tick enqueued');
 
     if (candidates.length === batchSize) {
       this.logger.warn({ batchSize }, 'scheduler tick saturated batch — backlog likely');

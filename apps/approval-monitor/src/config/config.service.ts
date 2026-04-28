@@ -7,6 +7,14 @@ export class ConfigService {
     return process.env.IS_MANAGER === 'true';
   }
 
+  get role(): 'manager' | 'worker' {
+    return this.isManager ? 'manager' : 'worker';
+  }
+
+  get instanceId(): string {
+    return process.env.RENDER_INSTANCE_ID ?? 'local';
+  }
+
   get isProduction(): boolean {
     return process.env.NODE_ENV === 'production';
   }
@@ -45,6 +53,10 @@ export class ConfigService {
     const password = process.env.BULL_BOARD_PASSWORD;
     if (!password) throw new Error('BULL_BOARD_PASSWORD is not configured');
     return password;
+  }
+
+  get metricsRemoteWriteUrl(): string | undefined {
+    return process.env.METRICS_REMOTE_WRITE_URL;
   }
 }
 

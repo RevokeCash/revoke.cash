@@ -1,7 +1,3 @@
-# Both manager and worker run the same Docker image; role split is purely env-driven via `IS_MANAGER`.
-# Secrets (DATABASE_URL, REDIS_URL, BULL_BOARD_*) are marked `sync: false` — set them in
-# Render's dashboard rather than committing to this file.
-
 services:
   - type: pserv
     name: approval-monitor-manager
@@ -28,8 +24,8 @@ services:
         sync: false
       - key: BULL_BOARD_PASSWORD
         sync: false
-      # Optional tuning knobs (MONITOR_CHAIN_CONCURRENCY, MONITOR_SCHEDULER_BATCH_SIZE) have
-      # code defaults — set them in the Render dashboard if you want to override.
+      - key: METRICS_REMOTE_WRITE_URL
+        sync: false
 
   - type: pserv
     name: approval-monitor-worker
@@ -50,4 +46,5 @@ services:
         sync: false
       - key: REDIS_URL
         sync: false
-      # MONITOR_CHAIN_CONCURRENCY has a code default — set it in the Render dashboard if you want to override.
+      - key: METRICS_REMOTE_WRITE_URL
+        sync: false

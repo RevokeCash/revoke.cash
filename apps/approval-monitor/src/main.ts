@@ -12,10 +12,9 @@ const bootstrap = async (): Promise<void> => {
   app.enableShutdownHooks();
 
   const config = app.get(ConfigService);
-  const role = config.isManager ? 'manager' : 'worker';
 
   await app.listen(config.port);
-  logger.log(`approval-monitor [${role}] listening on :${config.port}`, 'Bootstrap');
+  logger.log(`approval-monitor [${config.role}] listening on :${config.port}`, 'Bootstrap');
 };
 
 bootstrap().catch((error) => {
