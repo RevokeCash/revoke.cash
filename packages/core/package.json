@@ -24,8 +24,24 @@
     "db:studio": "yarn env drizzle-kit studio",
     "db:drop": "yarn env drizzle-kit drop"
   },
+  "dependencies": {
+    "@envio-dev/hypersync-client": "^1.0.0",
+    "@metamask/smart-accounts-kit": "^1.0.0",
+    "@neondatabase/serverless": "^1.0.2",
+    "@revoke.cash/chains": "^76.0.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.36.2",
+    "dexie": "^4.3.0",
+    "drizzle-orm": "^0.45.1",
+    "ky": "^1.14.3",
+    "md5": "^2.3.0",
+    "p-queue": "^9.1.0",
+    "viem": "^2.45.2",
+    "zod": "^3.25.76"
+  },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.52.0",
+    "@types/md5": "^2.3.6",
     "drizzle-kit": "^0.31.7",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

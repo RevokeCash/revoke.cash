@@ -9,11 +9,14 @@ ENV NODE_ENV=production
 ENV NEON_USE_WEBSOCKET=true
 
 # Workspace config + manifests — minimum needed for `yarn install` to resolve.
-COPY package.json yarn.lock .yarnrc.yml ./
+COPY package.json yarn.lock ./
 COPY .yarn ./.yarn
 COPY apps/approval-monitor/package.json ./apps/approval-monitor/
 COPY apps/web/package.json ./apps/web/
 COPY packages/core/package.json ./packages/core/
+
+# Write a minimal .yarnrc.yml for this build , locking down all scripts.
+RUN printf 'enableScripts: false\nnodeLinker: node-modules\nyarnPath: .yarn/releases/yarn-4.6.0.cjs\n' > .yarnrc.yml
 
 # Production deps only — @swc-node/register and @swc/core are runtime deps so they land here.
 RUN yarn workspaces focus @revoke.cash/approval-monitor --production
