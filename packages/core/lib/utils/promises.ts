@@ -23,3 +23,15 @@ export const mapAsync = async <T, U>(arrPromise: T[] | Promise<T[]>, mapper: (en
   const arr = await arrPromise;
   return Promise.all(arr.map(mapper));
 };
+
+export const mapAsyncSequential = async <T, U>(
+  arrPromise: T[] | Promise<T[]>,
+  mapper: (entry: T) => Promise<U>,
+): Promise<U[]> => {
+  const arr = await arrPromise;
+  const results: U[] = [];
+  for (const entry of arr) {
+    results.push(await mapper(entry));
+  }
+  return results;
+};

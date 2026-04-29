@@ -35,8 +35,12 @@ services:
     dockerfilePath: ./apps/approval-monitor/Dockerfile
     dockerContext: .
     region: virginia
-    plan: starter
-    numInstances: 1
+    plan: standard
+    scaling:
+      minInstances: 1
+      maxInstances: 4
+      targetCPUPercent: 75
+      targetMemoryPercent: 75
     envVars:
       - key: PORT
         value: '3002'

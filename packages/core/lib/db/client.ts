@@ -23,13 +23,14 @@ const createHttpDb = () => {
 };
 
 const createPoolDb = () => {
-  const pool = new Pool({ connectionString: getDatabaseUrl() });
+  const pool = new Pool({ connectionString: getDatabaseUrl(), max: 20 });
   return drizzlePool(pool, { schema });
 };
 
 export type DatabaseClient = NeonHttpDatabase<typeof schema>;
 export type TransactionalDatabaseClient = NeonDatabase<typeof schema>;
 export type DatabaseTransaction = Parameters<Parameters<TransactionalDatabaseClient['transaction']>[0]>[0];
+export type DatabaseWriter = DatabaseClient | DatabaseTransaction;
 
 // Long-running services set `NEON_USE_WEBSOCKET=true` to use the pooled WebSocket driver.
 // Serverless contexts leave it unset and use the per-request HTTP driver.

@@ -1,6 +1,6 @@
 import blocksCache from '@revoke.cash/core/cache/blocks';
 import { createViemPublicClientForChain, type DocumentedChainId, getChainLogsRpcUrl } from '@revoke.cash/core/chains';
-import { getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
+import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { monitorEventsCache, monitorScanState } from '@revoke.cash/core/db/schema/monitor';
 import type { Log } from '@revoke.cash/core/events';
 import {
@@ -12,10 +12,11 @@ import {
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import { HOUR, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, gte, lte, or } from 'drizzle-orm';
-import type { Address, PublicClient } from 'viem';
+import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
 import { chunkArray, isNullish } from '../utils';
 import { parseErrorMessage } from '../utils/errors';
+import { mapAsync, mapAsyncSequential } from '../utils/promises';
 
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
 // limit, which gets handled by the DivideAndConquerLogsProvider.
@@ -77,32 +78,54 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
     return buildScanResult({ fromBlock, toBlock });
   }
 
-  // Range-based fetch strategy: narrow → direct viem RPC, wide → event-getter chain
+  // Range-based fetch strategy: narrow → direct viem RPC, wide → event-getter chain.
   const isNarrow = toBlock - fromBlock <= NARROW_RANGE_THRESHOLD;
   const logsProvider = getScanLogsProvider(chainId, isNarrow);
-
   const filters = Object.values(buildTokenEventFilters(address, fromBlock, toBlock));
-  const logs = (await Promise.all(filters.map((filter) => logsProvider.getLogs(filter)))).flat();
+  const addressTopic = addressToTopic(address);
 
-  const logsWithTimestamps = await attachTimestamps(publicClient, logs);
-  const logsWritten = await writeEventsToCache(chainId, address, fromBlock, toBlock, logsWithTimestamps);
-  const lastEventAt = computeLastEventAt(existingState?.lastEventAt, logsWithTimestamps);
+  // Note that we run these getLogs calls + db writes sequentially inside a single transaction,
+  // rather than in parallel, to avoid holding all 7 filters' logs in memory after the loop completes.
+  const results = await getTransactionalDb().transaction(async (trx) => {
+    await deleteAddressEventsInRange(trx, chainId, addressTopic, fromBlock, toBlock);
 
-  await upsertScanState(db, address, chainId, {
-    lastScanAt: new Date(),
-    lastToBlock: toBlock,
-    lastEventAt,
-    nextRunAt: computeNextRunAt(0, lastEventAt),
-    consecutiveFailures: 0,
-    lastError: null,
+    const results = await mapAsyncSequential(filters, async (filter) => {
+      const logs = await logsProvider.getLogs(filter);
+
+      const logsWithTimestamps = await attachTimestamps(publicClient, logs);
+      const rows = logsWithTimestamps.map((log) => toEventsCacheRow(chainId, log));
+
+      return {
+        logsFetched: logs.length,
+        logsWritten: await insertEventRowsChunked(trx, rows),
+        maxTimestamp: getMaxTimestamp(logsWithTimestamps.map((log) => (log.timestamp ? log.timestamp * SECOND : null))),
+      };
+    });
+
+    const maxTimestamp = getMaxTimestamp([
+      existingState?.lastEventAt?.getTime(),
+      ...results.map((r) => r.maxTimestamp),
+    ]);
+    const lastEventAt = maxTimestamp ? new Date(maxTimestamp) : null;
+
+    await upsertScanState(trx, address, chainId, {
+      lastScanAt: new Date(),
+      lastToBlock: toBlock,
+      lastEventAt,
+      nextRunAt: computeNextRunAt(0, lastEventAt),
+      consecutiveFailures: 0,
+      lastError: null,
+    });
+
+    return results;
   });
 
   return buildScanResult({
     fromBlock,
     toBlock,
     path: isNarrow ? 'narrow' : 'wide',
-    logsFetched: logs.length,
-    logsWritten,
+    logsFetched: results.reduce((acc, r) => acc + r.logsFetched, 0),
+    logsWritten: results.reduce((acc, r) => acc + r.logsWritten, 0),
   });
 };
 
@@ -148,25 +171,19 @@ const computeScanRange = async (
   return { fromBlock, toBlock };
 };
 
-const computeLastEventAt = (existingLastEventAt: Date | null | undefined, logs: Log[]): Date | null => {
-  const freshestMs = logs.reduce<number>((max, log) => {
-    if (!log.timestamp) return max;
-    return Math.max(max, log.timestamp * SECOND);
+const getMaxTimestamp = (timestamps: (number | undefined | null)[]): number | null => {
+  const freshestMs = timestamps.reduce<number>((max, timestamp) => {
+    if (!timestamp) return max;
+    return Math.max(max, timestamp);
   }, 0);
 
-  const existingMs = existingLastEventAt?.getTime() ?? 0;
-  const maxMs = Math.max(freshestMs, existingMs);
-  return maxMs > 0 ? new Date(maxMs) : null;
+  return freshestMs > 0 ? freshestMs : null;
 };
 
 type ScanStateUpdate = Partial<typeof monitorScanState.$inferInsert>;
-const upsertScanState = async (
-  db: ReturnType<typeof getDb>,
-  address: Address,
-  chainId: number,
-  update: ScanStateUpdate,
-) => {
-  await db
+
+const upsertScanState = async (writer: DatabaseWriter, address: Address, chainId: number, update: ScanStateUpdate) => {
+  await writer
     .insert(monitorScanState)
     .values({ address, chainId, ...update })
     .onConflictDoUpdate({
@@ -201,46 +218,6 @@ const attachTimestamps = async (publicClient: PublicClient, logs: Log[]): Promis
   return logs.map((log) => ({ ...log, timestamp: log.timestamp ?? blockTimestamps.get(log.blockNumber) }));
 };
 
-// Reorg-safe cache write: delete-then-insert inside one transaction.
-// The delete is scoped to rows topic-matching this wallet (`topic1 = walletTopic OR topic2 = walletTopic`),
-// new logs in the rewind window are added, anything that vanished is dropped, anything unchanged is
-// re-inserted with the same primary key.
-const writeEventsToCache = async (
-  chainId: number,
-  address: Address,
-  fromBlock: number,
-  toBlock: number,
-  logs: Log[],
-): Promise<number> => {
-  const addressTopic = addressToTopic(address);
-  const rows = logs.map((log) => toEventsCacheRow(chainId, log));
-
-  return getTransactionalDb().transaction(async (trx) => {
-    await trx
-      .delete(monitorEventsCache)
-      .where(
-        and(
-          eq(monitorEventsCache.chainId, chainId),
-          gte(monitorEventsCache.blockNumber, fromBlock),
-          lte(monitorEventsCache.blockNumber, toBlock),
-          or(eq(monitorEventsCache.topic1, addressTopic), eq(monitorEventsCache.topic2, addressTopic)),
-        ),
-      );
-
-    if (rows.length === 0) return 0;
-
-    // Chunk the insert to stay under Postgres's 65_535-parameter-per-statement limit.
-    // Atomicity is preserved because every chunk runs inside the same transaction as the delete.
-    const results = await Promise.all(
-      chunkArray(rows, INSERT_CHUNK_SIZE).map(async (chunk) =>
-        trx.insert(monitorEventsCache).values(chunk).onConflictDoNothing(),
-      ),
-    );
-
-    return results.reduce((acc, result) => acc + (result.rowCount ?? 0), 0);
-  });
-};
-
 const toEventsCacheRow = (chainId: number, log: Log) => ({
   chainId,
   address: log.address,
@@ -255,3 +232,38 @@ const toEventsCacheRow = (chainId: number, log: Log) => ({
   data: log.data,
   timestamp: log.timestamp ?? null,
 });
+
+type EventsCacheRow = ReturnType<typeof toEventsCacheRow>;
+
+// Reorg-safe wipe of this address's slice of the cache for the scan range. The OR predicate
+// matches both `to`-direction logs (address in topic2) and `from`-direction logs (address in
+// topic1). Anything missing from the next inserts simply vanishes — that's how reorgs prune.
+const deleteAddressEventsInRange = async (
+  trx: DatabaseTransaction,
+  chainId: number,
+  addressTopic: Hex,
+  fromBlock: number,
+  toBlock: number,
+): Promise<void> => {
+  await trx
+    .delete(monitorEventsCache)
+    .where(
+      and(
+        eq(monitorEventsCache.chainId, chainId),
+        gte(monitorEventsCache.blockNumber, fromBlock),
+        lte(monitorEventsCache.blockNumber, toBlock),
+        or(eq(monitorEventsCache.topic1, addressTopic), eq(monitorEventsCache.topic2, addressTopic)),
+      ),
+    );
+};
+
+// Chunked to stay under Postgres's 65_535-bind-parameter-per-statement limit. Atomicity is the
+// caller's transaction's responsibility — every chunk runs inside the same transaction.
+const insertEventRowsChunked = async (trx: DatabaseTransaction, rows: EventsCacheRow[]): Promise<number> => {
+  if (rows.length === 0) return 0;
+
+  const chunks = chunkArray(rows, INSERT_CHUNK_SIZE);
+  const results = await mapAsync(chunks, (chunk) => trx.insert(monitorEventsCache).values(chunk).onConflictDoNothing());
+
+  return results.reduce((acc, result) => acc + (result.rowCount ?? 0), 0);
+};
