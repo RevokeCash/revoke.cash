@@ -11,6 +11,7 @@ export const monitorScanState = monitorSchema.table(
     chainId: integer('chain_id').notNull(),
     lastScanAt: timestamp('last_scan_at', { withTimezone: true }),
     lastToBlock: bigint('last_to_block', { mode: 'number' }),
+    maxBlockRange: bigint('max_block_range', { mode: 'number' }),
     lastEventAt: timestamp('last_event_at', { withTimezone: true }),
     nextRunAt: timestamp('next_run_at', { withTimezone: true }).notNull().defaultNow(),
     consecutiveFailures: integer('consecutive_failures').notNull().default(0),

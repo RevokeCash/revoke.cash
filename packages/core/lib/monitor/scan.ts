@@ -1,12 +1,17 @@
 import blocksCache from '@revoke.cash/core/cache/blocks';
-import { createViemPublicClientForChain, type DocumentedChainId, getChainLogsRpcUrl } from '@revoke.cash/core/chains';
+import {
+  createViemPublicClientForChain,
+  type DocumentedChainId,
+  getChainLogsRpcUrl,
+  isBackendSupportedChain,
+} from '@revoke.cash/core/chains';
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { monitorEventsCache, monitorScanState } from '@revoke.cash/core/db/schema/monitor';
-import type { Log } from '@revoke.cash/core/events';
+import type { Filter, Log } from '@revoke.cash/core/events';
 import {
   DivideAndConquerLogsProvider,
-  getScriptLogsProvider,
   type LogsProvider,
+  ScriptLogsProvider,
   ViemLogsProvider,
 } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
@@ -15,7 +20,7 @@ import { and, eq, gte, lte, or } from 'drizzle-orm';
 import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
 import { chunkArray, isNullish } from '../utils';
-import { parseErrorMessage } from '../utils/errors';
+import { isLogRequestSizeError, isLogResponseSizeError, parseErrorMessage } from '../utils/errors';
 import { mapAsync, mapAsyncBounded, mapAsyncSequential } from '../utils/promises';
 
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
@@ -24,8 +29,7 @@ const NARROW_RANGE_THRESHOLD = 10_000;
 const REORG_DEPTH = 12;
 const ACTIVE_WINDOW_MS = 7 * 24 * HOUR;
 
-const MAX_BLOCK_RANGE = 1_000_000;
-const CATCHUP_INTERVAL_MS = 10 * SECOND;
+const MIN_BLOCK_RANGE = 1_000;
 
 // Postgres caps a single statement at 65_535 bind parameters. monitorEventsCache rows have 11 columns,
 // so a naive `INSERT … VALUES (…), (…), …` blows up around ~5_950 rows — easy to hit on initial
@@ -40,6 +44,7 @@ export interface ScanResult {
   logsWritten: number;
   nonceZeroSkipped: boolean;
   isCapped: boolean;
+  rangeReductions: number;
 }
 
 const buildScanResult = (overrides: Partial<ScanResult> = {}): ScanResult => ({
@@ -50,12 +55,12 @@ const buildScanResult = (overrides: Partial<ScanResult> = {}): ScanResult => ({
   logsWritten: 0,
   nonceZeroSkipped: false,
   isCapped: false,
+  rangeReductions: 0,
   ...overrides,
 });
 
 export const scanAddressChain = async (address: Address, chainId: DocumentedChainId): Promise<ScanResult> => {
   const db = getDb();
-
   const existingState = await db.query.monitorScanState.findFirst({
     where: and(eq(monitorScanState.address, address), eq(monitorScanState.chainId, chainId)),
   });
@@ -64,93 +69,99 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
 
   // Nonce-0 gate: if the wallet has never transacted on a chain, skip fetching entirely
   const nonce = await publicClient.getTransactionCount({ address });
-  if (nonce === 0) {
-    await upsertScanState(db, address, chainId, {
-      nextRunAt: computeNextRunAt(existingState?.consecutiveFailures ?? 0, existingState?.lastEventAt),
-    });
+  if (nonce === 0) return skipAndReschedule(db, address, chainId, existingState, { nonceZeroSkipped: true });
 
-    return buildScanResult({ nonceZeroSkipped: true });
-  }
-
-  const { fromBlock, toBlock, isCapped } = await computeScanRange(publicClient, existingState?.lastToBlock);
+  const initialMaxBlockRange = existingState?.maxBlockRange ?? Number.POSITIVE_INFINITY;
+  const { fromBlock, toBlock, isCapped } = await computeScanRange(
+    publicClient,
+    existingState?.lastToBlock,
+    initialMaxBlockRange,
+  );
 
   // Chain head is behind our cursor (deep reorg, or briefly stale RPC response)
-  if (toBlock < fromBlock) {
-    await upsertScanState(db, address, chainId, {
-      nextRunAt: computeNextRunAt(existingState?.consecutiveFailures ?? 0, existingState?.lastEventAt),
-    });
+  if (toBlock < fromBlock) return skipAndReschedule(db, address, chainId, existingState, { fromBlock, toBlock });
 
-    return buildScanResult({ fromBlock, toBlock });
-  }
-
-  // Range-based fetch strategy: narrow → direct viem RPC, wide → event-getter chain.
-  const isNarrow = toBlock - fromBlock <= NARROW_RANGE_THRESHOLD;
-  const logsProvider = getScanLogsProvider(chainId, isNarrow);
-  const filters = Object.values(buildTokenEventFilters(address, fromBlock, toBlock));
   const addressTopic = addressToTopic(address);
 
-  // Note that we run these getLogs calls + db writes sequentially inside a single transaction,
-  // rather than in parallel, to avoid holding all 7 filters' logs in memory after the loop completes.
-  const results = await getTransactionalDb().transaction(async (trx) => {
-    await deleteAddressEventsInRange(trx, chainId, addressTopic, fromBlock, toBlock);
+  return runWithRangeReduction(fromBlock, toBlock, async (currentToBlock, rangeReductions) => {
+    const isNarrow = currentToBlock - fromBlock <= NARROW_RANGE_THRESHOLD;
+    const logsProvider = getScanLogsProvider(chainId, isNarrow);
+    const filters = Object.values(buildTokenEventFilters(address, fromBlock, currentToBlock));
 
-    const results = await mapAsyncSequential(filters, async (filter) => {
-      const logs = await logsProvider.getLogs(filter);
+    const filterResults = await getTransactionalDb().transaction(async (trx) => {
+      await deleteAddressEventsInRange(trx, chainId, addressTopic, fromBlock, currentToBlock);
+      const results = await mapAsyncSequential(filters, (filter) =>
+        scanFilter(trx, publicClient, chainId, logsProvider, filter),
+      );
 
-      const logsWithTimestamps = await attachTimestamps(publicClient, logs);
-      const rows = logsWithTimestamps.map((log) => toEventsCacheRow(chainId, log));
-
-      return {
-        logsFetched: logs.length,
-        logsWritten: await insertEventRowsChunked(trx, rows),
-        maxTimestamp: getMaxTimestamp(logsWithTimestamps.map((log) => (log.timestamp ? log.timestamp * SECOND : null))),
-      };
+      await commitScanState(trx, address, chainId, existingState, {
+        fromBlock,
+        currentToBlock,
+        isCapped,
+        rangeReductions,
+        filterResults: results,
+      });
+      return results;
     });
 
-    const maxTimestamp = getMaxTimestamp([
-      existingState?.lastEventAt?.getTime(),
-      ...results.map((r) => r.maxTimestamp),
-    ]);
-    const lastEventAt = maxTimestamp ? new Date(maxTimestamp) : null;
-
-    const hasEventsInBatch = results.some((r) => r.logsFetched > 0);
-    await upsertScanState(trx, address, chainId, {
-      lastScanAt: new Date(),
-      lastToBlock: toBlock,
-      lastEventAt,
-      nextRunAt: computeNextRunAt(0, lastEventAt, isCapped, hasEventsInBatch),
-      consecutiveFailures: 0,
-      lastError: null,
+    return buildScanResult({
+      fromBlock,
+      toBlock: currentToBlock,
+      path: isNarrow ? 'narrow' : 'wide',
+      logsFetched: filterResults.reduce((acc, r) => acc + r.logsFetched, 0),
+      logsWritten: filterResults.reduce((acc, r) => acc + r.logsWritten, 0),
+      isCapped: isCapped || rangeReductions > 0,
+      rangeReductions,
     });
-
-    return results;
-  });
-
-  return buildScanResult({
-    fromBlock,
-    toBlock,
-    path: isNarrow ? 'narrow' : 'wide',
-    logsFetched: results.reduce((acc, r) => acc + r.logsFetched, 0),
-    logsWritten: results.reduce((acc, r) => acc + r.logsWritten, 0),
-    isCapped,
   });
 };
 
 const getScanLogsProvider = (chainId: number, isNarrow: boolean): LogsProvider => {
-  if (!isNarrow) return getScriptLogsProvider(chainId);
-
   const viemLogsProvider = new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId));
-  return new DivideAndConquerLogsProvider(viemLogsProvider, {
-    splitOnRequestSize: true,
-  });
+
+  if (!isNarrow) {
+    if (isBackendSupportedChain(chainId)) return new ScriptLogsProvider(chainId);
+    return viemLogsProvider;
+  }
+
+  return new DivideAndConquerLogsProvider(viemLogsProvider, { splitOnRequestSize: true });
 };
 
-/**
- * Records a definitive scan failure to `monitor.scan_state`. Should only be called by the
- * worker layer **after BullMQ has exhausted all in-process retry attempts** — not on every
- * thrown error from `scanAddressChain`. Otherwise a single transient outage would walk
- * `consecutive_failures` up by N (one per attempt) inside a single retry cycle.
- */
+const isSplittableScanError = (error: unknown): boolean => {
+  return isLogResponseSizeError(error) || isLogRequestSizeError(error);
+};
+
+const runWithRangeReduction = async <T>(
+  fromBlock: number,
+  toBlock: number,
+  attempt: (currentToBlock: number, rangeReductions: number) => Promise<T>,
+  rangeReductions: number = 0,
+): Promise<T> => {
+  try {
+    return await attempt(toBlock, rangeReductions);
+  } catch (error) {
+    if (!isSplittableScanError(error)) throw error;
+    const range = toBlock - fromBlock;
+    if (range <= MIN_BLOCK_RANGE) throw error; // pathological event density; let BullMQ handle it
+
+    const halvedToBlock = fromBlock + Math.floor(range / 2);
+    return runWithRangeReduction(fromBlock, halvedToBlock, attempt, rangeReductions + 1);
+  }
+};
+
+const skipAndReschedule = async (
+  writer: DatabaseWriter,
+  address: Address,
+  chainId: number,
+  existingState: typeof monitorScanState.$inferSelect | undefined,
+  resultOverrides: Partial<ScanResult>,
+): Promise<ScanResult> => {
+  await upsertScanState(writer, address, chainId, {
+    nextRunAt: computeNextRunAt(existingState?.consecutiveFailures ?? 0, existingState?.lastEventAt),
+  });
+  return buildScanResult(resultOverrides);
+};
+
 export const recordScanFailure = async (
   address: Address,
   chainId: DocumentedChainId,
@@ -172,10 +183,11 @@ export const recordScanFailure = async (
 const computeScanRange = async (
   publicClient: PublicClient,
   cursor: number | null | undefined,
+  maxBlockRange: number,
 ): Promise<{ fromBlock: number; toBlock: number; isCapped: boolean }> => {
   const fromBlock = !isNullish(cursor) ? Math.max(0, cursor - REORG_DEPTH + 1) : 0;
   const head = Number(await publicClient.getBlockNumber());
-  const cappedToBlock = fromBlock + MAX_BLOCK_RANGE;
+  const cappedToBlock = fromBlock + maxBlockRange;
   const toBlock = Math.min(head, cappedToBlock);
   return { fromBlock, toBlock, isCapped: toBlock < head };
 };
@@ -187,6 +199,14 @@ const getMaxTimestamp = (timestamps: (number | undefined | null)[]): number | nu
   }, 0);
 
   return freshestMs > 0 ? freshestMs : null;
+};
+
+const mergeLastEventAt = (
+  existing: Date | null | undefined,
+  filterResults: Array<{ maxTimestamp: number | null }>,
+): Date | null => {
+  const maxMs = getMaxTimestamp([existing?.getTime(), ...filterResults.map((r) => r.maxTimestamp)]);
+  return maxMs ? new Date(maxMs) : null;
 };
 
 type ScanStateUpdate = Partial<typeof monitorScanState.$inferInsert>;
@@ -202,19 +222,17 @@ const upsertScanState = async (writer: DatabaseWriter, address: Address, chainId
 };
 
 // failures >= 3 → 24h recovery
-// catchup batch with events → 10s (give the system breathing room between busy chunks)
-// catchup batch with no events → now (skip empty stretches of history fast)
+// catchup batch (more history pending) → next scheduler tick
 // active (events in last 7d) → 5 min
 // otherwise → 1h
 export const computeNextRunAt = (
   failures: number,
   lastEventAt: Date | null | undefined,
   isCatchupBatch = false,
-  hasEventsInBatch = true,
 ): Date => {
   const now = Date.now();
   if (failures >= 3) return new Date(now + 24 * HOUR);
-  if (isCatchupBatch) return new Date(now + (hasEventsInBatch ? CATCHUP_INTERVAL_MS : 0));
+  if (isCatchupBatch) return new Date(now);
   if (lastEventAt && lastEventAt.getTime() > now - ACTIVE_WINDOW_MS) return new Date(now + 5 * MINUTE);
   return new Date(now + 1 * HOUR);
 };
@@ -281,4 +299,61 @@ const insertEventRowsChunked = async (trx: DatabaseTransaction, rows: EventsCach
   const results = await mapAsync(chunks, (chunk) => trx.insert(monitorEventsCache).values(chunk).onConflictDoNothing());
 
   return results.reduce((acc, result) => acc + (result.rowCount ?? 0), 0);
+};
+
+interface FilterScanResult {
+  logsFetched: number;
+  logsWritten: number;
+  maxTimestamp: number | null;
+}
+
+const scanFilter = async (
+  trx: DatabaseTransaction,
+  publicClient: PublicClient,
+  chainId: number,
+  logsProvider: LogsProvider,
+  filter: Filter,
+): Promise<FilterScanResult> => {
+  const logs = await logsProvider.getLogs(filter);
+  const logsWithTimestamps = await attachTimestamps(publicClient, logs);
+  const rows = logsWithTimestamps.map((log) => toEventsCacheRow(chainId, log));
+
+  return {
+    logsFetched: logs.length,
+    logsWritten: await insertEventRowsChunked(trx, rows),
+    maxTimestamp: getMaxTimestamp(logsWithTimestamps.map((log) => (log.timestamp ? log.timestamp * SECOND : null))),
+  };
+};
+
+interface CommitScanStateParams {
+  fromBlock: number;
+  currentToBlock: number;
+  isCapped: boolean;
+  rangeReductions: number;
+  filterResults: FilterScanResult[];
+}
+
+const commitScanState = async (
+  trx: DatabaseTransaction,
+  address: Address,
+  chainId: number,
+  existingState: typeof monitorScanState.$inferSelect | undefined,
+  params: CommitScanStateParams,
+): Promise<void> => {
+  const lastEventAt = mergeLastEventAt(existingState?.lastEventAt, params.filterResults);
+
+  const effectiveIsCapped = params.isCapped || params.rangeReductions > 0;
+
+  const newMaxBlockRange =
+    params.rangeReductions > 0 ? params.currentToBlock - params.fromBlock : (existingState?.maxBlockRange ?? null);
+
+  await upsertScanState(trx, address, chainId, {
+    lastScanAt: new Date(),
+    lastToBlock: params.currentToBlock,
+    maxBlockRange: newMaxBlockRange,
+    lastEventAt,
+    nextRunAt: computeNextRunAt(0, lastEventAt, effectiveIsCapped),
+    consecutiveFailures: 0,
+    lastError: null,
+  });
 };

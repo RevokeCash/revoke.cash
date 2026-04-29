@@ -17,8 +17,8 @@ export const buildTokenEventFilters = (
 ): Record<string, Filter> => {
   const addressTopic = addressToTopic(address);
   return {
-    'Transfer (from)': { topics: [ERC721_TRANSFER_TOPIC, addressTopic], fromBlock, toBlock },
     'Transfer (to)': { topics: [ERC721_TRANSFER_TOPIC, null, addressTopic], fromBlock, toBlock },
+    'Transfer (from)': { topics: [ERC721_TRANSFER_TOPIC, addressTopic], fromBlock, toBlock },
     Approval: { topics: [ERC721_APPROVAL_TOPIC, addressTopic], fromBlock, toBlock },
     ApprovalForAll: { topics: [ERC721_APPROVAL_FOR_ALL_TOPIC, addressTopic], fromBlock, toBlock },
     'Permit2 Approval': { topics: [PERMIT2_APPROVAL_TOPIC, addressTopic], fromBlock, toBlock },
