@@ -5,6 +5,7 @@ import {
   getChainLogsRpcUrl,
   isBackendSupportedChain,
 } from '@revoke.cash/core/chains';
+import { hasChainActivity } from '@revoke.cash/core/chains/events';
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { monitorEventsCache, monitorScanState } from '@revoke.cash/core/db/schema/monitor';
 import type { Filter, Log } from '@revoke.cash/core/events';
@@ -67,9 +68,9 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
 
   const publicClient = createViemPublicClientForChain(chainId);
 
-  // Nonce-0 gate: if the wallet has never transacted on a chain, skip fetching entirely
-  const nonce = await publicClient.getTransactionCount({ address });
-  if (nonce === 0) return skipAndReschedule(db, address, chainId, existingState, { nonceZeroSkipped: true });
+  if (!(await hasChainActivity(chainId, address, publicClient))) {
+    return skipAndReschedule(db, address, chainId, existingState, { nonceZeroSkipped: true });
+  }
 
   const initialMaxBlockRange = existingState?.maxBlockRange ?? Number.POSITIVE_INFINITY;
   const { fromBlock, toBlock, isCapped } = await computeScanRange(

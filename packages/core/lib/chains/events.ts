@@ -42,45 +42,44 @@ export const getTokenEvents = async (
   address: Address,
   logsProvider: LogsProvider,
 ): Promise<TokenEventsResult> => {
-  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
-  // See https://eips.ethereum.org/EIPS/eip-161
   const chainName = getChainName(chainId);
   const publicClient = createViemPublicClientForChain(chainId);
-  const nonce = await publicClient.getTransactionCount({ address });
-  if (nonce === 0) {
-    console.log(`${chainName}: Skipping event fetching for EOA with no transactions (${address})`);
+
+  if (!(await hasChainActivity(chainId, address, publicClient))) {
+    console.log(`${chainName}: Skipping event fetching for address with no relevant activity (${address})`);
     return { events: [], rawEvents: [] };
   }
 
-  const override = ChainOverrides[chainId];
-  const rawEvents = override
-    ? await override(chainId, address, logsProvider)
-    : await getTokenEventsDefault(chainId, address, logsProvider);
+  const rawEvents = await getTokenEventsDefault(chainId, address, logsProvider);
   const events = await enrichTokenEvents(rawEvents, publicClient, chainId);
 
   return { events, rawEvents };
 };
 
-type TokenEventsGetter = (
+export const hasChainActivity = async (
   chainId: DocumentedChainId,
   address: Address,
-  logsProvider: LogsProvider,
-) => Promise<TokenEvent[]>;
+  publicClient?: PublicClient,
+): Promise<boolean> => {
+  if (chainId === ChainId.PulseChain) return hasPulseChainPostForkActivity(address);
 
-const ChainOverrides: Record<number, TokenEventsGetter> = {
-  // For pulsechain we want to check whether an account has transacted after the fork timestamp,
-  // since otherwise everyone that used Ethereum before the fork would have to wait to get their events.
-  // Note: this doesn't work 100% for smart contract addresses, but the trade-off is worth it.
-  [ChainId.PulseChain]: async (chainId, address, logsProvider) => {
-    const apiUrl = getChainApiUrl(chainId);
-    const pulsechainForkBlock = 17233000;
-    const url = `${apiUrl}?module=account&action=txlist&address=${address}&start_block=${pulsechainForkBlock}`;
+  // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
+  // See https://eips.ethereum.org/EIPS/eip-161
+  const client = publicClient ?? createViemPublicClientForChain(chainId);
+  const nonce = await client.getTransactionCount({ address });
+  return nonce > 0;
+};
 
-    const { result } = await ky.get(url).json<{ result: any[] | string }>();
-    if (!Array.isArray(result) || result.length === 0) return [];
+// For pulsechain we want to check whether an account has transacted after the fork timestamp,
+// since otherwise everyone that used Ethereum before the fork would have to wait to get their events.
+// Note: this doesn't work 100% for smart contract addresses, but the trade-off is worth it.
+const hasPulseChainPostForkActivity = async (address: Address): Promise<boolean> => {
+  const PULSECHAIN_FORK_BLOCK = 17_233_000;
 
-    return getTokenEventsDefault(chainId, address, logsProvider);
-  },
+  const apiUrl = getChainApiUrl(ChainId.PulseChain);
+  const url = `${apiUrl}?module=account&action=txlist&address=${address}&start_block=${PULSECHAIN_FORK_BLOCK}`;
+  const { result } = await ky.get(url).json<{ result: any[] | string }>();
+  return Array.isArray(result) && result.length > 0;
 };
 
 const getEventPrerequisites = async (chainId: DocumentedChainId, logsProvider: LogsProvider) => {
