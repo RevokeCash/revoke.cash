@@ -24,6 +24,9 @@ const NARROW_RANGE_THRESHOLD = 10_000;
 const REORG_DEPTH = 12;
 const ACTIVE_WINDOW_MS = 7 * 24 * HOUR;
 
+const MAX_BLOCK_RANGE = 1_000_000;
+const CATCHUP_INTERVAL_MS = 10 * SECOND;
+
 // Postgres caps a single statement at 65_535 bind parameters. monitorEventsCache rows have 11 columns,
 // so a naive `INSERT … VALUES (…), (…), …` blows up around ~5_950 rows — easy to hit on initial
 // genesis→head scans of busy wallets. 1_000 leaves comfortable headroom if a column is added later.
@@ -36,6 +39,7 @@ export interface ScanResult {
   logsFetched: number;
   logsWritten: number;
   nonceZeroSkipped: boolean;
+  isCapped: boolean;
 }
 
 const buildScanResult = (overrides: Partial<ScanResult> = {}): ScanResult => ({
@@ -45,6 +49,7 @@ const buildScanResult = (overrides: Partial<ScanResult> = {}): ScanResult => ({
   logsFetched: 0,
   logsWritten: 0,
   nonceZeroSkipped: false,
+  isCapped: false,
   ...overrides,
 });
 
@@ -67,7 +72,7 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
     return buildScanResult({ nonceZeroSkipped: true });
   }
 
-  const { fromBlock, toBlock } = await computeScanRange(publicClient, existingState?.lastToBlock);
+  const { fromBlock, toBlock, isCapped } = await computeScanRange(publicClient, existingState?.lastToBlock);
 
   // Chain head is behind our cursor (deep reorg, or briefly stale RPC response)
   if (toBlock < fromBlock) {
@@ -108,11 +113,12 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
     ]);
     const lastEventAt = maxTimestamp ? new Date(maxTimestamp) : null;
 
+    const hasEventsInBatch = results.some((r) => r.logsFetched > 0);
     await upsertScanState(trx, address, chainId, {
       lastScanAt: new Date(),
       lastToBlock: toBlock,
       lastEventAt,
-      nextRunAt: computeNextRunAt(0, lastEventAt),
+      nextRunAt: computeNextRunAt(0, lastEventAt, isCapped, hasEventsInBatch),
       consecutiveFailures: 0,
       lastError: null,
     });
@@ -126,6 +132,7 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
     path: isNarrow ? 'narrow' : 'wide',
     logsFetched: results.reduce((acc, r) => acc + r.logsFetched, 0),
     logsWritten: results.reduce((acc, r) => acc + r.logsWritten, 0),
+    isCapped,
   });
 };
 
@@ -165,10 +172,12 @@ export const recordScanFailure = async (
 const computeScanRange = async (
   publicClient: PublicClient,
   cursor: number | null | undefined,
-): Promise<{ fromBlock: number; toBlock: number }> => {
+): Promise<{ fromBlock: number; toBlock: number; isCapped: boolean }> => {
   const fromBlock = !isNullish(cursor) ? Math.max(0, cursor - REORG_DEPTH + 1) : 0;
-  const toBlock = Number(await publicClient.getBlockNumber());
-  return { fromBlock, toBlock };
+  const head = Number(await publicClient.getBlockNumber());
+  const cappedToBlock = fromBlock + MAX_BLOCK_RANGE;
+  const toBlock = Math.min(head, cappedToBlock);
+  return { fromBlock, toBlock, isCapped: toBlock < head };
 };
 
 const getMaxTimestamp = (timestamps: (number | undefined | null)[]): number | null => {
@@ -193,11 +202,19 @@ const upsertScanState = async (writer: DatabaseWriter, address: Address, chainId
 };
 
 // failures >= 3 → 24h recovery
+// catchup batch with events → 10s (give the system breathing room between busy chunks)
+// catchup batch with no events → now (skip empty stretches of history fast)
 // active (events in last 7d) → 5 min
 // otherwise → 1h
-export const computeNextRunAt = (failures: number, lastEventAt: Date | null | undefined): Date => {
+export const computeNextRunAt = (
+  failures: number,
+  lastEventAt: Date | null | undefined,
+  isCatchupBatch = false,
+  hasEventsInBatch = true,
+): Date => {
   const now = Date.now();
   if (failures >= 3) return new Date(now + 24 * HOUR);
+  if (isCatchupBatch) return new Date(now + (hasEventsInBatch ? CATCHUP_INTERVAL_MS : 0));
   if (lastEventAt && lastEventAt.getTime() > now - ACTIVE_WINDOW_MS) return new Date(now + 5 * MINUTE);
   return new Date(now + 1 * HOUR);
 };
