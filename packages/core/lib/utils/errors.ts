@@ -120,6 +120,7 @@ export const isLogRequestSizeError = (error?: string | any): boolean => {
   if (lowercaseMessage?.includes('block range too wide')) return true;
   if (lowercaseMessage?.includes('exceeds the maximum block range')) return true;
   if (lowercaseMessage?.includes('eth_getlogs is limited to')) return true;
+  if (lowercaseMessage?.includes('you can make eth_getLogs requests with up to')) return true;
   return false;
 };
 

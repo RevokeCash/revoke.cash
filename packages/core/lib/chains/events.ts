@@ -109,10 +109,10 @@ const getTokenEventsDefault = async (
 ): Promise<TokenEvent[]> => {
   const { fromBlock, toBlock } = await getEventPrerequisites(chainId, logsProvider);
 
-  const filters = buildTokenEventFilters(address, fromBlock, toBlock);
+  const filters = Object.entries(buildTokenEventFilters(address, fromBlock, toBlock));
 
-  const logsResults = await mapAsync(filters, async (filter) =>
-    eventsCache.getLogs(logsProvider, filter, chainId, filter.name),
+  const logsResults = await mapAsync(filters, async ([name, filter]) =>
+    eventsCache.getLogs(logsProvider, filter, chainId, name),
   );
 
   const events = logsResults

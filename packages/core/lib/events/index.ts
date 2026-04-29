@@ -30,10 +30,6 @@ export interface Log {
 export type TimeLog = Pick<Log, 'transactionHash' | 'blockNumber' | 'timestamp'>;
 export type ResolvedTimeLog = TimeLog & { timestamp: number };
 
-export interface NamedFilter extends Filter {
-  name: string;
-}
-
 export interface Filter {
   address?: Address;
   topics: Array<Hex | null>;

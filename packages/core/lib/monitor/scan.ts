@@ -81,7 +81,7 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
   const isNarrow = toBlock - fromBlock <= NARROW_RANGE_THRESHOLD;
   const logsProvider = getScanLogsProvider(chainId, isNarrow);
 
-  const filters = buildTokenEventFilters(address, fromBlock, toBlock);
+  const filters = Object.values(buildTokenEventFilters(address, fromBlock, toBlock));
   const logs = (await Promise.all(filters.map((filter) => logsProvider.getLogs(filter)))).flat();
 
   const logsWithTimestamps = await attachTimestamps(publicClient, logs);

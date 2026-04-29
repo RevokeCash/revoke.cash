@@ -24,16 +24,9 @@ export class BackendLogsProvider implements LogsProvider {
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
-    const body = {
-      address: filter.address,
-      topics: filter.topics,
-      fromBlock: filter.fromBlock,
-      toBlock: filter.toBlock,
-    };
-
     try {
       return await this.queue.add(() =>
-        ky.post(`/api/${this.chainId}/logs`, { json: body, timeout: false }).json<any>(),
+        ky.post(`/api/${this.chainId}/logs`, { json: filter, timeout: false }).json<any>(),
       );
     } catch (error) {
       throw new Error((error as any).data?.message ?? (error as any).message);
