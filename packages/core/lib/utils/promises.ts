@@ -1,3 +1,5 @@
+import PQueue from 'p-queue';
+
 export const unpackResult = async <T>(promise: Promise<T[]>): Promise<T> => (await promise)[0];
 
 export const withFallback = async <T>(promise: Promise<T>, fallback: T): Promise<T> => {
@@ -34,4 +36,14 @@ export const mapAsyncSequential = async <T, U>(
     results.push(await mapper(entry));
   }
   return results;
+};
+
+export const mapAsyncBounded = async <T, U>(
+  arrPromise: T[] | Promise<T[]>,
+  concurrency: number,
+  mapper: (entry: T) => Promise<U>,
+): Promise<U[]> => {
+  const arr = await arrPromise;
+  const queue = new PQueue({ concurrency });
+  return queue.addAll(arr.map((entry) => () => mapper(entry)));
 };

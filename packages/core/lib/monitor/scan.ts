@@ -16,7 +16,7 @@ import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
 import { chunkArray, isNullish } from '../utils';
 import { parseErrorMessage } from '../utils/errors';
-import { mapAsync, mapAsyncSequential } from '../utils/promises';
+import { mapAsync, mapAsyncBounded, mapAsyncSequential } from '../utils/promises';
 
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
 // limit, which gets handled by the DivideAndConquerLogsProvider.
@@ -225,12 +225,10 @@ const attachTimestamps = async (publicClient: PublicClient, logs: Log[]): Promis
   const uniqueBlockNumbers = [...new Set(logs.map((log) => log.blockNumber))];
   const blockTimestamps = new Map<number, number>();
 
-  await Promise.all(
-    uniqueBlockNumbers.map(async (blockNumber) => {
-      const timestamp = await blocksCache.getBlockTimestamp(publicClient, blockNumber);
-      blockTimestamps.set(blockNumber, timestamp);
-    }),
-  );
+  await mapAsyncBounded(uniqueBlockNumbers, 100, async (blockNumber) => {
+    const timestamp = await blocksCache.getBlockTimestamp(publicClient, blockNumber);
+    blockTimestamps.set(blockNumber, timestamp);
+  });
 
   return logs.map((log) => ({ ...log, timestamp: log.timestamp ?? blockTimestamps.get(log.blockNumber) }));
 };

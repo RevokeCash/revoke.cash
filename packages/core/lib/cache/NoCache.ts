@@ -17,8 +17,4 @@ export default class NoCache<T, K> implements ICache<T, K> {
   async put(_key: K, _data: T): Promise<void> {
     // No-op
   }
-
-  async export(): Promise<T[]> {
-    return [];
-  }
 }

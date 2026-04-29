@@ -5,7 +5,7 @@ import type { PublicClient } from 'viem';
 import type { Block } from './dexie/BlocksDexie';
 import BlocksDexieCache from './dexie/BlocksDexieCache';
 import { CacheError, type ICache } from './ICache';
-import NoCache from './NoCache';
+import BlocksPostgresCache from './postgres/BlocksPostgresCache';
 
 class BlocksCache {
   constructor(private cache: ICache<Block, [number, number]>) {}
@@ -44,7 +44,7 @@ class BlocksCache {
   }
 }
 
-const cache: ICache<Block, [number, number]> = isBrowser() ? new BlocksDexieCache() : new NoCache();
+const cache: ICache<Block, [number, number]> = isBrowser() ? new BlocksDexieCache() : new BlocksPostgresCache();
 const blocksCache = new BlocksCache(cache);
 
 export default blocksCache;

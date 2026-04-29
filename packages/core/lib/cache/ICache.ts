@@ -3,7 +3,6 @@ export interface ICache<T, K = any> {
   put(key: K, data: T): Promise<void>;
   isInitialized(): boolean;
   initialize(): Promise<void>;
-  export(): Promise<T[]>;
 }
 
 export class CacheError extends Error {

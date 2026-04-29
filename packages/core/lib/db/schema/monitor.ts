@@ -27,6 +27,16 @@ export const monitorScanState = monitorSchema.table(
   ],
 );
 
+export const monitorBlockTimestamps = monitorSchema.table(
+  'block_timestamps',
+  {
+    chainId: integer('chain_id').notNull(),
+    blockNumber: bigint('block_number', { mode: 'number' }).notNull(),
+    timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
+  },
+  (table) => [primaryKey({ name: 'block_timestamps_pkey', columns: [table.chainId, table.blockNumber] })],
+);
+
 // Note that this table is partitioned by chain_id (LIST). Child partitions are created via a raw-SQL block in the
 // migration, one per chain in ORDERED_CHAINS. Adding a new chain requires a one-line
 // migration to create a new partition.

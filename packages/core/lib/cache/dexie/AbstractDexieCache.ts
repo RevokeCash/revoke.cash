@@ -45,14 +45,4 @@ export default abstract class AbstractDexieCache<T, K> implements ICache<T, K> {
       throw new CacheError('Could not put data into cache');
     }
   }
-
-  async export(): Promise<T[]> {
-    await this.initialize();
-    if (!this.table) throw new Error('DexieCache not properly initialized');
-    try {
-      return this.table.toArray();
-    } catch {
-      throw new CacheError('Could not export data from cache');
-    }
-  }
 }
