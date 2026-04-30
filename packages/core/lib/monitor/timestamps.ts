@@ -5,7 +5,7 @@ import { monitorEventsCache } from '@revoke.cash/core/db/schema/monitor';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, isNull } from 'drizzle-orm';
 
-const BATCH_SIZE = 500;
+const BATCH_SIZE = 1000;
 const CONCURRENCY = 100;
 
 export interface ResolveTimestampsResult {

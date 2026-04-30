@@ -38,7 +38,7 @@ services:
     plan: standard
     scaling:
       minInstances: 1
-      maxInstances: 4
+      maxInstances: 8
       targetCPUPercent: 75
       targetMemoryPercent: 75
     envVars:

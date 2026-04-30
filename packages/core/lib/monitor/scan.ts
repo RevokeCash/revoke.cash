@@ -22,7 +22,7 @@ import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
 import { chunkArray, isNullish } from '../utils';
 import { isLogRequestSizeError, isLogResponseSizeError, parseErrorMessage } from '../utils/errors';
-import { mapAsync, mapAsyncBounded, mapAsyncSequential } from '../utils/promises';
+import { mapAsync, mapAsyncSequential } from '../utils/promises';
 
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
 // limit, which gets handled by the DivideAndConquerLogsProvider.
@@ -31,6 +31,11 @@ const REORG_DEPTH = 12;
 const ACTIVE_WINDOW_MS = 7 * 24 * HOUR;
 
 const MIN_BLOCK_RANGE = 1_000;
+
+// If a filter returns more than 50k logs, this is an indication that the scan size is too large,
+// and if a filter returns less than 50 logs, this is an indication that the scan size can safely increase.
+const MAX_LOGS_PER_FILTER = 50_000;
+const MIN_LOGS_PER_FILTER = 50;
 
 // Postgres caps a single statement at 65_535 bind parameters. monitorEventsCache rows have 11 columns,
 // so a naive `INSERT … VALUES (…), (…), …` blows up around ~5_950 rows — easy to hit on initial
@@ -46,6 +51,7 @@ export interface ScanResult {
   nonceZeroSkipped: boolean;
   isCapped: boolean;
   rangeReductions: number;
+  durationMs: number;
 }
 
 const buildScanResult = (overrides: Partial<ScanResult> = {}): ScanResult => ({
@@ -57,10 +63,12 @@ const buildScanResult = (overrides: Partial<ScanResult> = {}): ScanResult => ({
   nonceZeroSkipped: false,
   isCapped: false,
   rangeReductions: 0,
+  durationMs: 0,
   ...overrides,
 });
 
 export const scanAddressChain = async (address: Address, chainId: DocumentedChainId): Promise<ScanResult> => {
+  const start = Date.now();
   const db = getDb();
   const existingState = await db.query.monitorScanState.findFirst({
     where: and(eq(monitorScanState.address, address), eq(monitorScanState.chainId, chainId)),
@@ -69,7 +77,10 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
   const publicClient = createViemPublicClientForChain(chainId);
 
   if (!(await hasChainActivity(chainId, address, publicClient))) {
-    return skipAndReschedule(db, address, chainId, existingState, { nonceZeroSkipped: true });
+    return skipAndReschedule(db, address, chainId, existingState, {
+      nonceZeroSkipped: true,
+      durationMs: Date.now() - start,
+    });
   }
 
   const initialMaxBlockRange = existingState?.maxBlockRange ?? Number.POSITIVE_INFINITY;
@@ -80,7 +91,13 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
   );
 
   // Chain head is behind our cursor (deep reorg, or briefly stale RPC response)
-  if (toBlock < fromBlock) return skipAndReschedule(db, address, chainId, existingState, { fromBlock, toBlock });
+  if (toBlock < fromBlock) {
+    return skipAndReschedule(db, address, chainId, existingState, {
+      fromBlock,
+      toBlock,
+      durationMs: Date.now() - start,
+    });
+  }
 
   const addressTopic = addressToTopic(address);
 
@@ -111,6 +128,7 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
       logsWritten: filterResults.reduce((acc, r) => acc + r.logsWritten, 0),
       isCapped: isCapped || rangeReductions > 0,
       rangeReductions,
+      durationMs: Date.now() - start,
     });
   });
 };
@@ -319,8 +337,7 @@ const commitScanState = async (
 
   const effectiveIsCapped = params.isCapped || params.rangeReductions > 0;
 
-  const newMaxBlockRange =
-    params.rangeReductions > 0 ? params.currentToBlock - params.fromBlock : (existingState?.maxBlockRange ?? null);
+  const newMaxBlockRange = computeNewMaxBlockRange(params, existingState?.maxBlockRange);
 
   await upsertScanState(trx, address, chainId, {
     lastScanAt: new Date(),
@@ -331,6 +348,17 @@ const commitScanState = async (
     consecutiveFailures: 0,
     lastError: null,
   });
+};
+
+const computeNewMaxBlockRange = (params: CommitScanStateParams, existing: number | null | undefined): number | null => {
+  const range = params.currentToBlock - params.fromBlock;
+  if (params.rangeReductions > 0) return range;
+
+  const maxFilterLogs = Math.max(0, ...params.filterResults.map((r) => r.logsFetched));
+  if (maxFilterLogs > MAX_LOGS_PER_FILTER) return Math.max(MIN_BLOCK_RANGE, Math.floor(range / 2));
+  if (!isNullish(existing) && maxFilterLogs < MIN_LOGS_PER_FILTER) return existing * 2;
+
+  return existing ?? null;
 };
 
 const resolveLastEventAt = async (
