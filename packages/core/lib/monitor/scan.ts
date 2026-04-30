@@ -17,7 +17,7 @@ import {
 } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import { HOUR, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
-import { and, eq, gte, lte, or } from 'drizzle-orm';
+import { and, eq, gte, lte } from 'drizzle-orm';
 import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
 import { chunkArray, isNullish } from '../utils';
@@ -107,8 +107,9 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
     const filters = Object.values(buildTokenEventFilters(address, fromBlock, currentToBlock));
 
     const filterResults = await getTransactionalDb().transaction(async (trx) => {
-      await deleteAddressEventsInRange(trx, chainId, addressTopic, fromBlock, currentToBlock);
-      const results = await mapAsyncSequential(filters, (filter) => scanFilter(trx, chainId, logsProvider, filter));
+      const results = await mapAsyncSequential(filters, (filter) =>
+        scanFilter(trx, chainId, logsProvider, filter, addressTopic),
+      );
 
       await commitScanState(trx, publicClient, address, chainId, existingState, {
         fromBlock,
@@ -254,24 +255,25 @@ const toEventsCacheRow = (chainId: number, log: Log) => ({
 
 type EventsCacheRow = ReturnType<typeof toEventsCacheRow>;
 
-// Reorg-safe wipe of this address's slice of the cache for the scan range. The OR predicate
-// matches both `to`-direction logs (address in topic2) and `from`-direction logs (address in
-// topic1). Anything missing from the next inserts simply vanishes — that's how reorgs prune.
-const deleteAddressEventsInRange = async (
+// Reorg-safe wipe of the events this filter would re-insert in its block range.
+const deleteFilterEventsInRange = async (
   trx: DatabaseTransaction,
   chainId: number,
+  filter: Filter,
   addressTopic: Hex,
-  fromBlock: number,
-  toBlock: number,
 ): Promise<void> => {
+  const topic0 = filter.topics[0] as Hex;
+  const addressColumn = filter.topics[1] === addressTopic ? monitorEventsCache.topic1 : monitorEventsCache.topic2;
+
   await trx
     .delete(monitorEventsCache)
     .where(
       and(
         eq(monitorEventsCache.chainId, chainId),
-        gte(monitorEventsCache.blockNumber, fromBlock),
-        lte(monitorEventsCache.blockNumber, toBlock),
-        or(eq(monitorEventsCache.topic1, addressTopic), eq(monitorEventsCache.topic2, addressTopic)),
+        gte(monitorEventsCache.blockNumber, filter.fromBlock),
+        lte(monitorEventsCache.blockNumber, filter.toBlock),
+        eq(monitorEventsCache.topic0, topic0),
+        eq(addressColumn, addressTopic),
       ),
     );
 };
@@ -298,7 +300,10 @@ const scanFilter = async (
   chainId: number,
   logsProvider: LogsProvider,
   filter: Filter,
+  addressTopic: Hex,
 ): Promise<FilterScanResult> => {
+  await deleteFilterEventsInRange(trx, chainId, filter, addressTopic);
+
   const logs = await logsProvider.getLogs(filter);
   const rows = logs.map((log) => toEventsCacheRow(chainId, log));
 
