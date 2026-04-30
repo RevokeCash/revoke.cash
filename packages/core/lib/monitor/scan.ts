@@ -91,11 +91,9 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
 
     const filterResults = await getTransactionalDb().transaction(async (trx) => {
       await deleteAddressEventsInRange(trx, chainId, addressTopic, fromBlock, currentToBlock);
-      const results = await mapAsyncSequential(filters, (filter) =>
-        scanFilter(trx, publicClient, chainId, logsProvider, filter),
-      );
+      const results = await mapAsyncSequential(filters, (filter) => scanFilter(trx, chainId, logsProvider, filter));
 
-      await commitScanState(trx, address, chainId, existingState, {
+      await commitScanState(trx, publicClient, address, chainId, existingState, {
         fromBlock,
         currentToBlock,
         isCapped,
@@ -193,23 +191,6 @@ const computeScanRange = async (
   return { fromBlock, toBlock, isCapped: toBlock < head };
 };
 
-const getMaxTimestamp = (timestamps: (number | undefined | null)[]): number | null => {
-  const freshestMs = timestamps.reduce<number>((max, timestamp) => {
-    if (!timestamp) return max;
-    return Math.max(max, timestamp);
-  }, 0);
-
-  return freshestMs > 0 ? freshestMs : null;
-};
-
-const mergeLastEventAt = (
-  existing: Date | null | undefined,
-  filterResults: Array<{ maxTimestamp: number | null }>,
-): Date | null => {
-  const maxMs = getMaxTimestamp([existing?.getTime(), ...filterResults.map((r) => r.maxTimestamp)]);
-  return maxMs ? new Date(maxMs) : null;
-};
-
 type ScanStateUpdate = Partial<typeof monitorScanState.$inferInsert>;
 
 const upsertScanState = async (writer: DatabaseWriter, address: Address, chainId: number, update: ScanStateUpdate) => {
@@ -236,20 +217,6 @@ export const computeNextRunAt = (
   if (isCatchupBatch) return new Date(now);
   if (lastEventAt && lastEventAt.getTime() > now - ACTIVE_WINDOW_MS) return new Date(now + 5 * MINUTE);
   return new Date(now + 1 * HOUR);
-};
-
-const attachTimestamps = async (publicClient: PublicClient, logs: Log[]): Promise<Log[]> => {
-  if (logs.length === 0) return logs;
-
-  const uniqueBlockNumbers = [...new Set(logs.map((log) => log.blockNumber))];
-  const blockTimestamps = new Map<number, number>();
-
-  await mapAsyncBounded(uniqueBlockNumbers, 100, async (blockNumber) => {
-    const timestamp = await blocksCache.getBlockTimestamp(publicClient, blockNumber);
-    blockTimestamps.set(blockNumber, timestamp);
-  });
-
-  return logs.map((log) => ({ ...log, timestamp: log.timestamp ?? blockTimestamps.get(log.blockNumber) }));
 };
 
 const toEventsCacheRow = (chainId: number, log: Log) => ({
@@ -305,25 +272,31 @@ const insertEventRowsChunked = async (trx: DatabaseTransaction, rows: EventsCach
 interface FilterScanResult {
   logsFetched: number;
   logsWritten: number;
-  maxTimestamp: number | null;
+  latestLog: Log | null;
 }
 
 const scanFilter = async (
   trx: DatabaseTransaction,
-  publicClient: PublicClient,
   chainId: number,
   logsProvider: LogsProvider,
   filter: Filter,
 ): Promise<FilterScanResult> => {
   const logs = await logsProvider.getLogs(filter);
-  const logsWithTimestamps = await attachTimestamps(publicClient, logs);
-  const rows = logsWithTimestamps.map((log) => toEventsCacheRow(chainId, log));
+  const rows = logs.map((log) => toEventsCacheRow(chainId, log));
 
   return {
     logsFetched: logs.length,
     logsWritten: await insertEventRowsChunked(trx, rows),
-    maxTimestamp: getMaxTimestamp(logsWithTimestamps.map((log) => (log.timestamp ? log.timestamp * SECOND : null))),
+    latestLog: latestLogByBlock(logs),
   };
+};
+
+const latestLogByBlock = (logs: (Log | null | undefined)[]): Log | null => {
+  return logs.reduce<Log | null>((latest, log) => {
+    if (!log) return latest;
+    if (!latest || log.blockNumber > latest.blockNumber) return log;
+    return latest;
+  }, null);
 };
 
 interface CommitScanStateParams {
@@ -336,12 +309,13 @@ interface CommitScanStateParams {
 
 const commitScanState = async (
   trx: DatabaseTransaction,
+  publicClient: PublicClient,
   address: Address,
   chainId: number,
   existingState: typeof monitorScanState.$inferSelect | undefined,
   params: CommitScanStateParams,
 ): Promise<void> => {
-  const lastEventAt = mergeLastEventAt(existingState?.lastEventAt, params.filterResults);
+  const lastEventAt = await resolveLastEventAt(publicClient, existingState?.lastEventAt, params.filterResults);
 
   const effectiveIsCapped = params.isCapped || params.rangeReductions > 0;
 
@@ -357,4 +331,19 @@ const commitScanState = async (
     consecutiveFailures: 0,
     lastError: null,
   });
+};
+
+const resolveLastEventAt = async (
+  publicClient: PublicClient,
+  existing: Date | null | undefined,
+  filterResults: FilterScanResult[],
+): Promise<Date | null> => {
+  const latestLog = latestLogByBlock(filterResults.map((r) => r.latestLog));
+  if (!latestLog) return existing ?? null;
+
+  const timestampSeconds = await blocksCache.getLogTimestamp(publicClient, latestLog);
+  const candidate = new Date(timestampSeconds * SECOND);
+
+  if (!existing) return candidate;
+  return candidate.getTime() > existing.getTime() ? candidate : existing;
 };

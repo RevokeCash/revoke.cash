@@ -70,5 +70,8 @@ export const monitorEventsCache = monitorSchema.table(
     index('idx_events_cache_topic1').on(table.chainId, table.topic1).where(sql`${table.topic1} IS NOT NULL`),
     index('idx_events_cache_topic2').on(table.chainId, table.topic2).where(sql`${table.topic2} IS NOT NULL`),
     index('idx_events_cache_topic3').on(table.chainId, table.topic3).where(sql`${table.topic3} IS NOT NULL`),
+    index('idx_events_cache_unresolved_timestamps')
+      .on(table.chainId, table.blockNumber)
+      .where(sql`${table.timestamp} IS NULL`),
   ],
 );

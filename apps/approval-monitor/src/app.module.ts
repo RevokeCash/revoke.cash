@@ -6,10 +6,11 @@ import { ConfigService } from './config/config.service';
 import { HealthModule } from './health/health.module';
 import { LoggerModule } from './logger/logger.module';
 import { MetricsModule } from './metrics/metrics.module';
-import { QueueModule } from './queue/queue.module';
 import { RedisModule } from './redis/redis.module';
-import { SchedulerModule } from './scheduler/scheduler.module';
-import { WorkerModule } from './worker/worker.module';
+import { ScanSchedulerModule } from './scan/scan.scheduler.module';
+import { ScanWorkerModule } from './scan/scan.worker.module';
+import { TimestampsSchedulerModule } from './timestamps/timestamps.scheduler.module';
+import { TimestampsWorkerModule } from './timestamps/timestamps.worker.module';
 
 @Module({})
 export class AppModule {
@@ -22,7 +23,9 @@ export class AppModule {
       RedisModule,
       HealthModule,
       MetricsModule,
-      ...(isManager ? [QueueModule, BullBoardModule, SchedulerModule] : [WorkerModule]),
+      ...(isManager
+        ? [ScanSchedulerModule, TimestampsSchedulerModule, BullBoardModule]
+        : [ScanWorkerModule, TimestampsWorkerModule]),
     ];
 
     return {

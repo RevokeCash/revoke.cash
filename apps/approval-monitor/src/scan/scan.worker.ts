@@ -5,7 +5,7 @@ import { recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/s
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
 import type { MetricsService } from '../metrics/metrics.service';
-import type { ScanJobData } from '../queue/queue.service';
+import type { ScanJobData } from './scan.queue';
 
 export abstract class ScanWorker extends WorkerHost {
   protected readonly logger: Logger;

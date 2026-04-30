@@ -43,6 +43,13 @@
       "when": 1777472941818,
       "tag": "0005_confused_squadron_supreme",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1777539085219,
+      "tag": "0006_lucky_patch",
+      "breakpoints": true
     }
   ]
 }

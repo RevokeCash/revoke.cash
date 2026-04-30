@@ -4,8 +4,8 @@ import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import type { Redis } from 'ioredis';
 import { ConfigService } from '../config/config.service';
 import { MetricsService } from '../metrics/metrics.service';
-import { queueNameForChain } from '../queue/queue.service';
 import { REDIS_CONNECTION } from '../redis/redis.module';
+import { scanQueueNameForChain } from './scan.queue';
 import { ScanWorker } from './scan.worker';
 
 @Module({
@@ -14,17 +14,16 @@ import { ScanWorker } from './scan.worker';
       inject: [REDIS_CONNECTION],
       useFactory: (connection: Redis) => ({ connection }),
     }),
-    BullModule.registerQueue(...ORDERED_CHAINS.map((chainId) => ({ name: queueNameForChain(chainId) }))),
+    BullModule.registerQueue(...ORDERED_CHAINS.map((chainId) => ({ name: scanQueueNameForChain(chainId) }))),
   ],
-  // We use a factory to create a new worker for each chain because the @Processor decorator needs the queue name at class-definition time.
   providers: ORDERED_CHAINS.map((chainId) => ({
     provide: `SCAN_WORKER_${chainId}`,
     inject: [ConfigService, MetricsService],
     useFactory: (config: ConfigService, metrics: MetricsService) => {
-      const queueName = queueNameForChain(chainId);
+      const queueName = scanQueueNameForChain(chainId);
       const concurrency = config.getChainConcurrency(chainId);
 
-      @Processor(queueName, { concurrency })
+      @Processor(queueName, { concurrency, lockDuration: 90_000 })
       class ChainScanWorker extends ScanWorker {
         constructor() {
           super(chainId, metrics);
@@ -35,4 +34,4 @@ import { ScanWorker } from './scan.worker';
     },
   })),
 })
-export class WorkerModule {}
+export class ScanWorkerModule {}
