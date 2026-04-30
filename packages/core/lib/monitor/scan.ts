@@ -31,6 +31,7 @@ const REORG_DEPTH = 12;
 const ACTIVE_WINDOW_MS = 7 * 24 * HOUR;
 
 const MIN_BLOCK_RANGE = 1_000;
+const MAX_BLOCK_RANGE = 1_000_000_000;
 
 // If a filter returns more than 50k logs, this is an indication that the scan size is too large,
 // and if a filter returns less than 50 logs, this is an indication that the scan size can safely increase.
@@ -361,7 +362,10 @@ const computeNewMaxBlockRange = (params: CommitScanStateParams, existing: number
 
   const maxFilterLogs = Math.max(0, ...params.filterResults.map((r) => r.logsFetched));
   if (maxFilterLogs > MAX_LOGS_PER_FILTER) return Math.max(MIN_BLOCK_RANGE, Math.floor(range / 2));
-  if (!isNullish(existing) && maxFilterLogs < MIN_LOGS_PER_FILTER) return existing * 2;
+  if (!isNullish(existing) && maxFilterLogs < MIN_LOGS_PER_FILTER) {
+    const next = existing * 2;
+    return next > MAX_BLOCK_RANGE ? null : next;
+  }
 
   return existing ?? null;
 };
