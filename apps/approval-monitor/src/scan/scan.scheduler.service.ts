@@ -71,8 +71,8 @@ export class ScanSchedulerService implements OnModuleInit {
     }
 
     const jobId = jobIdFor(chainId, address);
-    const existing = await queue.getJob(jobId);
-    if (existing) return 'deduped';
+    const client = await queue.client;
+    if (await client.exists(queue.toKey(jobId))) return 'deduped';
 
     const scanId = randomUUID();
     await queue.add('scan', { scanId, address, chainId, reason: 'scheduled', scheduledAt: Date.now() }, { jobId });
