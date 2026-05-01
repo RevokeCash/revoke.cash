@@ -1,5 +1,12 @@
 import { stringify } from 'viem';
 
+// Base class for errors thrown by core that map to a specific HTTP response shape. Subclasses
+// own their HTTP status and response body; route handlers can catch the base class and serialize
+// uniformly without needing to know about each subclass.
+export abstract class ExportableError extends Error {
+  abstract export(): { status: number; body: Record<string, unknown> };
+}
+
 export const isUserRejectionError = (error?: string | any): boolean => {
   if (!error) return false;
 

@@ -26,6 +26,9 @@ export const usePermitTokens = () => {
   const candidateTokenEvents = useMemo(() => {
     if (!rawEvents) return undefined;
 
+    // Note: for premium users on warm chains, we only return transfer events that have at least one approval event
+    // for the token. This means that some tokens do not show up here if they have not been approved.
+    // For now this is ok, but TODO: revisit this in the future.
     const filteredEvents = rawEvents.filter((event) => {
       // Permit only applies to ERC20 tokens
       if (event.type !== TokenEventType.TRANSFER_ERC20 && event.type !== TokenEventType.APPROVAL_ERC20) return false;

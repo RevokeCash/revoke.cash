@@ -1,5 +1,5 @@
-import { getEventGetter } from '@revoke.cash/core/events/getters';
-import { backendSupportedChainIdSchema } from '@revoke.cash/core/schemas';
+import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
+import { supportedChainIdSchema } from '@revoke.cash/core/schemas';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { parseRequest } from 'lib/api/validation';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const schemas = {
-  params: z.object({ chainId: backendSupportedChainIdSchema }),
+  params: z.object({ chainId: supportedChainIdSchema }),
   body: z.undefined(),
 };
 
@@ -29,8 +29,8 @@ export async function GET(req: NextRequest, props: Props) {
   const { params } = data;
 
   try {
-    const eventGetter = getEventGetter(params.chainId);
-    const blockNumber = await eventGetter.getLatestBlock(params.chainId);
+    const scriptLogsProvider = getScriptLogsProvider(params.chainId);
+    const blockNumber = await scriptLogsProvider.getLatestBlock();
     return NextResponse.json({ blockNumber });
   } catch (e) {
     console.error('Error occurred', parseErrorMessage(e));

@@ -8,7 +8,7 @@ import {
 import { hasChainActivity } from '@revoke.cash/core/chains/events';
 import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { monitorEventsCache, monitorScanState } from '@revoke.cash/core/db/schema/monitor';
-import type { Filter, Log } from '@revoke.cash/core/events';
+import { ERC721_TRANSFER_TOPIC, type Filter, type Log } from '@revoke.cash/core/events';
 import {
   DivideAndConquerLogsProvider,
   type LogsProvider,
@@ -315,14 +315,25 @@ const scanFilter = async (
 ): Promise<FilterScanResult> => {
   await deleteFilterEventsInRange(trx, chainId, filter, addressTopic);
 
-  const logs = await logsProvider.getLogs(filter);
-  const rows = logs.map((log) => toEventsCacheRow(chainId, log));
+  const fetchedLogs = await logsProvider.getLogs(filter);
+
+  // For Transfer filters, drop zero-value ERC20 Transfers, since this is spam and carries no information.
+  const meaningfulLogs = filter.topics[0] === ERC721_TRANSFER_TOPIC ? fetchedLogs.filter(isMeaningfulLog) : fetchedLogs;
+  const rows = meaningfulLogs.map((log) => toEventsCacheRow(chainId, log));
 
   return {
-    logsFetched: logs.length,
+    logsFetched: fetchedLogs.length,
     logsWritten: await insertEventRowsChunked(trx, rows),
-    latestLog: latestLogByBlock(logs),
+    latestLog: latestLogByBlock(meaningfulLogs),
   };
+};
+
+const isMeaningfulLog = (log: Log): boolean => {
+  // ERC721 Transfer has 4 topics (signature + from + to + tokenId) and empty `data`. Always keep.
+  if (log.topics.length !== 3) return true;
+  // ERC20 Transfer has 3 topics; data is the value. Drop pure-zero-value spam.
+  const ZERO_VALUE_TRANSFER_DATA = `0x${'0'.repeat(64)}`;
+  return log.data !== ZERO_VALUE_TRANSFER_DATA;
 };
 
 const latestLogByBlock = (logs: (Log | null | undefined)[]): Log | null => {

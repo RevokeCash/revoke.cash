@@ -1,6 +1,6 @@
-import { getEventGetter } from '@revoke.cash/core/events/getters';
-import { addressSchema, backendSupportedChainIdSchema, hexStringSchema } from '@revoke.cash/core/schemas';
-import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { getEventsForFilter } from '@revoke.cash/core/monitor/read';
+import { addressSchema, hexStringSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
+import { ExportableError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const schemas = {
-  params: z.object({ chainId: backendSupportedChainIdSchema }),
+  params: z.object({ chainId: supportedChainIdSchema }),
   body: z
     .object({
       address: addressSchema.optional(),
@@ -37,11 +37,14 @@ export async function POST(req: NextRequest, props: Props) {
   const { params, body: filter } = data;
 
   try {
-    const eventGetter = getEventGetter(params.chainId);
-    const events = await eventGetter.getEvents(params.chainId, filter);
+    const events = await getEventsForFilter(params.chainId, filter);
     return NextResponse.json(events);
   } catch (e) {
-    console.error('Error occurred', parseErrorMessage(e));
+    if (e instanceof ExportableError) {
+      const { status, body } = e.export();
+      return NextResponse.json(body, { status });
+    }
+    console.error('Error occurred', parseErrorMessage(e), e);
     return NextResponse.json({ message: parseErrorMessage(e) }, { status: 500 });
   }
 }

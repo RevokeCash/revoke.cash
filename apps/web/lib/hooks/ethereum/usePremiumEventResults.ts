@@ -12,7 +12,7 @@ export const usePremiumEventResults = (address: Address): CombinedQueryResult<En
     queries: ORDERED_CHAINS.map((chainId) => ({
       queryKey: ['events', address, chainId],
       queryFn: async () => {
-        const { events } = await getTokenEvents(chainId, address, getLogsProvider(chainId));
+        const { events } = await getTokenEvents(chainId, address, getLogsProvider(chainId, true));
         return events;
       },
       enabled: !isNullish(address),
