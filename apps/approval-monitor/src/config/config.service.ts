@@ -37,10 +37,6 @@ export class ConfigService {
     return ORDERED_CHAINS;
   }
 
-  getChainConcurrency(chainId: number): number {
-    return parseConcurrencyOverrides()[String(chainId)] ?? DEFAULT_CHAIN_CONCURRENCY;
-  }
-
   get schedulerBatchSize(): number {
     return Number(process.env.MONITOR_SCHEDULER_BATCH_SIZE ?? 2000);
   }
@@ -59,11 +55,3 @@ export class ConfigService {
     return process.env.METRICS_REMOTE_WRITE_URL;
   }
 }
-
-const DEFAULT_CHAIN_CONCURRENCY = 3;
-
-const parseConcurrencyOverrides = (): Record<string, number> => {
-  const raw = process.env.MONITOR_CHAIN_CONCURRENCY;
-  if (!raw) return {};
-  return JSON.parse(raw);
-};

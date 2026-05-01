@@ -15,19 +15,25 @@ export const withFallback = async <T>(promise: Promise<T>, fallback: T): Promise
 
 export const convertString = async (promise: Promise<any>) => String(await promise);
 
-export const filterAsync = async <T>(arrPromise: T[] | Promise<T[]>, predicate: (entry: T) => Promise<boolean>) => {
+export const filterAsync = async <T>(
+  arrPromise: readonly T[] | Promise<readonly T[]>,
+  predicate: (entry: T) => Promise<boolean>,
+) => {
   const arr = await arrPromise;
   const results = await Promise.all(arr.map(predicate));
   return arr.filter((_v, index) => results[index]);
 };
 
-export const mapAsync = async <T, U>(arrPromise: T[] | Promise<T[]>, mapper: (entry: T) => Promise<U>) => {
+export const mapAsync = async <T, U>(
+  arrPromise: readonly T[] | Promise<readonly T[]>,
+  mapper: (entry: T) => Promise<U>,
+) => {
   const arr = await arrPromise;
   return Promise.all(arr.map(mapper));
 };
 
 export const mapAsyncSequential = async <T, U>(
-  arrPromise: T[] | Promise<T[]>,
+  arrPromise: readonly T[] | Promise<readonly T[]>,
   mapper: (entry: T) => Promise<U>,
 ): Promise<U[]> => {
   const arr = await arrPromise;
@@ -39,7 +45,7 @@ export const mapAsyncSequential = async <T, U>(
 };
 
 export const mapAsyncBounded = async <T, U>(
-  arrPromise: T[] | Promise<T[]>,
+  arrPromise: readonly T[] | Promise<readonly T[]>,
   concurrency: number,
   mapper: (entry: T) => Promise<U>,
 ): Promise<U[]> => {

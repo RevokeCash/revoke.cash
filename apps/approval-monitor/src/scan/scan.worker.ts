@@ -1,43 +1,55 @@
-import { OnWorkerEvent, WorkerHost } from '@nestjs/bullmq';
+import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
-import { type DocumentedChainId, getChainName } from '@revoke.cash/core/chains';
-import { recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/scan';
+import type { DocumentedChainId } from '@revoke.cash/core/chains';
+import { deferScanOnChainBusy, recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/scan';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
-import type { MetricsService } from '../metrics/metrics.service';
-import type { ScanJobData } from './scan.queue';
+import { MetricsService } from '../metrics/metrics.service';
+import { ChainLimiterService } from './chain-limiter.service';
+import { SCAN_QUEUE_NAME, type ScanJobData } from './scan.queue';
 
-export abstract class ScanWorker extends WorkerHost {
-  protected readonly logger: Logger;
+@Processor(SCAN_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
+export class ScanWorker extends WorkerHost {
+  private readonly logger = new Logger(ScanWorker.name);
 
   constructor(
-    public readonly chainId: DocumentedChainId,
-    protected readonly metrics: MetricsService,
+    private readonly metrics: MetricsService,
+    private readonly chainLimiter: ChainLimiterService,
   ) {
     super();
-    this.logger = new Logger(`ScanWorker-${getChainName(chainId)}`);
   }
 
   async process(job: Job<ScanJobData>): Promise<void> {
-    const { scanId, address, reason } = job.data;
-    this.logger.debug({ scanId, chainId: this.chainId, address, reason }, 'processing scan');
+    const { scanId, address, chainId, reason } = job.data;
 
-    const endTimer = this.metrics.scanDuration.startTimer({ chain_id: this.chainId });
-    const result = await scanAddressChain(address, this.chainId);
+    const result = await this.chainLimiter.runWithLimit(chainId, async () => {
+      this.logger.debug({ scanId, chainId, address, reason }, 'processing scan');
+      const endTimer = this.metrics.scanDuration.startTimer({ chain_id: chainId });
+      const scanResult = await scanAddressChain(address, chainId as DocumentedChainId);
+      if (!scanResult.nonceZeroSkipped) endTimer({ path: scanResult.path });
+      return scanResult;
+    });
 
-    if (result.nonceZeroSkipped) {
-      this.metrics.scansTotal.inc({ chain_id: this.chainId, outcome: 'nonce_zero' });
-      this.logger.debug({ scanId, chainId: this.chainId, address }, 'scan skipped (nonce 0)');
+    // If result is null the chain limiter dropped this submission (cap saturated),
+    // so we defer the scan and return.
+    if (result === null) {
+      this.metrics.scansTotal.inc({ chain_id: chainId, outcome: 'chain_busy' });
+      this.logger.debug({ scanId, chainId, address }, 'chain limiter full, deferring');
+      await deferScanOnChainBusy(address, chainId as DocumentedChainId).catch((error) => {
+        this.logger.warn({ scanId, chainId, error: parseErrorMessage(error) }, 'failed to defer chain-busy scan');
+      });
       return;
     }
 
-    // Only record the duration of the successful scan.
-    endTimer({ path: result.path });
+    if (result.nonceZeroSkipped) {
+      this.metrics.scansTotal.inc({ chain_id: chainId, outcome: 'nonce_zero' });
+      this.logger.debug({ scanId, chainId, address }, 'scan skipped (nonce 0)');
+      return;
+    }
 
-    this.metrics.scansTotal.inc({ chain_id: this.chainId, outcome: 'ok' });
-    this.metrics.scanLogsFetched.observe({ chain_id: this.chainId, path: result.path }, result.logsFetched);
-
-    this.logger.log({ scanId, chainId: this.chainId, address, ...result }, 'scan completed');
+    this.metrics.scansTotal.inc({ chain_id: chainId, outcome: 'ok' });
+    this.metrics.scanLogsFetched.observe({ chain_id: chainId, path: result.path }, result.logsFetched);
+    this.logger.log({ scanId, chainId, address, ...result }, 'scan completed');
   }
 
   // BullMQ fires `failed` after every attempt, including in-process retries. We only want to
@@ -52,7 +64,7 @@ export abstract class ScanWorker extends WorkerHost {
     this.logger.error(
       {
         scanId: job?.data?.scanId,
-        chainId: this.chainId,
+        chainId: job?.data?.chainId,
         address: job?.data?.address,
         attempt,
         maxAttempts,
@@ -63,7 +75,7 @@ export abstract class ScanWorker extends WorkerHost {
     );
 
     if (!exhausted || !job?.data) return;
-    this.metrics.scansTotal.inc({ chain_id: this.chainId, outcome: 'failed' });
-    await recordScanFailure(job.data.address, job.data.chainId, error);
+    this.metrics.scansTotal.inc({ chain_id: job.data.chainId, outcome: 'failed' });
+    await recordScanFailure(job.data.address, job.data.chainId as DocumentedChainId, error);
   }
 }

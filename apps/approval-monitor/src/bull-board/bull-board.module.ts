@@ -2,30 +2,13 @@ import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import { BullBoardModule as BullBoardModuleBase } from '@bull-board/nestjs';
 import { type MiddlewareConsumer, Module, type NestModule } from '@nestjs/common';
-import { getChainName, ORDERED_CHAINS } from '@revoke.cash/core/chains';
-import { scanQueueNameForChain } from '../scan/scan.queue';
+import { SCAN_QUEUE_NAME } from '../scan/scan.queue';
 import { ScanSchedulerModule } from '../scan/scan.scheduler.module';
-import { timestampsQueueNameForChain } from '../timestamps/timestamps.queue';
+import { TIMESTAMPS_QUEUE_NAME } from '../timestamps/timestamps.queue';
 import { TimestampsSchedulerModule } from '../timestamps/timestamps.scheduler.module';
 import { BullBoardAuthMiddleware } from './bull-board.middleware';
 
 const BULL_BOARD_ROUTE = '/queues';
-
-const queueFeatures = ORDERED_CHAINS.flatMap((chainId) => {
-  const chainName = getChainName(chainId);
-  return [
-    {
-      name: scanQueueNameForChain(chainId),
-      adapter: BullMQAdapter,
-      options: { displayName: `Scan / ${chainName}` },
-    },
-    {
-      name: timestampsQueueNameForChain(chainId),
-      adapter: BullMQAdapter,
-      options: { displayName: `Timestamps / ${chainName}` },
-    },
-  ];
-});
 
 @Module({
   imports: [
@@ -36,7 +19,10 @@ const queueFeatures = ORDERED_CHAINS.flatMap((chainId) => {
       adapter: ExpressAdapter,
       boardOptions: { uiConfig: { boardTitle: 'approval-monitor' } },
     }),
-    BullBoardModuleBase.forFeature(...queueFeatures),
+    BullBoardModuleBase.forFeature(
+      { name: SCAN_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Scan' } },
+      { name: TIMESTAMPS_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Timestamps' } },
+    ),
   ],
   providers: [BullBoardAuthMiddleware],
 })

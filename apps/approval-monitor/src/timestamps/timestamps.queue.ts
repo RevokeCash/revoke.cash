@@ -1,4 +1,8 @@
-export const timestampsQueueNameForChain = (chainId: number): string => `monitor_timestamps_${chainId}`;
+export const TIMESTAMPS_QUEUE_NAME = 'monitor_timestamps';
+
+export interface TimestampsJobData {
+  chainId: number;
+}
 
 export const TIMESTAMPS_DEFAULT_JOB_OPTIONS = {
   attempts: 3,

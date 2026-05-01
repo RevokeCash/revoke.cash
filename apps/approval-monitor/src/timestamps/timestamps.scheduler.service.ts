@@ -1,33 +1,31 @@
-import { getQueueToken } from '@nestjs/bullmq';
-import { Injectable, Logger, type OnModuleInit } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { mapAsyncSequential } from '@revoke.cash/core/utils/promises';
 import type { Queue } from 'bullmq';
-import { timestampsQueueNameForChain } from './timestamps.queue';
+import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from './timestamps.queue';
 
 @Injectable()
-export class TimestampsSchedulerService implements OnModuleInit {
+export class TimestampsSchedulerService {
   private readonly logger = new Logger(TimestampsSchedulerService.name);
-  private readonly queues = new Map<number, Queue>();
 
-  constructor(private readonly moduleRef: ModuleRef) {}
-
-  onModuleInit(): void {
-    for (const chainId of ORDERED_CHAINS) {
-      const token = getQueueToken(timestampsQueueNameForChain(chainId));
-      const queue = this.moduleRef.get<Queue>(token, { strict: false });
-      this.queues.set(chainId, queue);
-    }
-    this.logger.log({ chainCount: this.queues.size }, 'resolved per-chain timestamps queues');
-  }
+  constructor(@InjectQueue(TIMESTAMPS_QUEUE_NAME) private readonly queue: Queue<TimestampsJobData>) {}
 
   @Interval(10_000)
   async tick(): Promise<void> {
-    await Promise.all(
-      ORDERED_CHAINS.map((chainId) =>
-        this.queues.get(chainId)?.add('timestamps', {}, { jobId: `timestamps-${chainId}` }),
-      ),
-    );
+    // We enqueue these jobs sequentially to spread the EVALSHA calls across the tick window
+    const results = await mapAsyncSequential(ORDERED_CHAINS, async (chainId) => {
+      try {
+        await this.queue.add('timestamps', { chainId }, { jobId: `timestamps-${chainId}` });
+        return true;
+      } catch (error) {
+        this.logger.warn({ chainId, error }, 'failed to enqueue timestamps job');
+        return false;
+      }
+    });
+
+    const enqueued = results.filter(Boolean).length;
+    this.logger.debug({ enqueued, totalChains: ORDERED_CHAINS.length }, 'timestamps tick complete');
   }
 }

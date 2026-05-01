@@ -1,38 +1,26 @@
 import { randomUUID } from 'node:crypto';
-import { getQueueToken } from '@nestjs/bullmq';
-import { Injectable, Logger, type OnModuleInit } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
-import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import type { Queue } from 'bullmq';
 import type { Address } from 'viem';
 import { ConfigService } from '../config/config.service';
 import { MetricsService } from '../metrics/metrics.service';
 import { SubscribersService } from '../subscribers/subscribers.service';
-import { type EnqueueOutcome, type ScanJobData, scanQueueNameForChain } from './scan.queue';
+import { type EnqueueOutcome, SCAN_QUEUE_NAME, type ScanJobData } from './scan.queue';
 
 const jobIdFor = (chainId: number, address: Address): string => `${chainId}-${address}`;
 
 @Injectable()
-export class ScanSchedulerService implements OnModuleInit {
+export class ScanSchedulerService {
   private readonly logger = new Logger(ScanSchedulerService.name);
-  private readonly queues = new Map<number, Queue<ScanJobData>>();
 
   constructor(
+    @InjectQueue(SCAN_QUEUE_NAME) private readonly queue: Queue<ScanJobData>,
     private readonly config: ConfigService,
     private readonly subscribers: SubscribersService,
     private readonly metrics: MetricsService,
-    private readonly moduleRef: ModuleRef,
   ) {}
-
-  onModuleInit(): void {
-    for (const chainId of ORDERED_CHAINS) {
-      const token = getQueueToken(scanQueueNameForChain(chainId));
-      const queue = this.moduleRef.get<Queue<ScanJobData>>(token, { strict: false });
-      this.queues.set(chainId, queue);
-    }
-    this.logger.log({ chainCount: this.queues.size }, 'resolved per-chain scan queues');
-  }
 
   @Interval(1000)
   async tick(): Promise<void> {
@@ -50,13 +38,11 @@ export class ScanSchedulerService implements OnModuleInit {
 
     const added = outcomes.filter((outcome) => outcome === 'added').length;
     const deduped = outcomes.filter((outcome) => outcome === 'deduped').length;
-    const noQueue = outcomes.filter((outcome) => outcome === 'no_queue').length;
 
     this.metrics.schedulerTickOutcomes.inc({ outcome: 'added' }, added);
     this.metrics.schedulerTickOutcomes.inc({ outcome: 'deduped' }, deduped);
-    this.metrics.schedulerTickOutcomes.inc({ outcome: 'no_queue' }, noQueue);
 
-    this.logger.log({ enqueued: candidates.length, added, deduped, noQueue, lagSeconds }, 'tick enqueued');
+    this.logger.log({ enqueued: candidates.length, added, deduped, lagSeconds }, 'tick enqueued');
 
     if (candidates.length === batchSize) {
       this.logger.warn({ batchSize }, 'scheduler tick saturated batch — backlog likely');
@@ -64,18 +50,16 @@ export class ScanSchedulerService implements OnModuleInit {
   }
 
   private async enqueueScan(chainId: number, address: Address): Promise<EnqueueOutcome> {
-    const queue = this.queues.get(chainId);
-    if (!queue) {
-      this.logger.warn({ chainId, address }, 'no queue registered for chain; skipping enqueue');
-      return 'no_queue';
-    }
-
     const jobId = jobIdFor(chainId, address);
-    const client = await queue.client;
-    if (await client.exists(queue.toKey(jobId))) return 'deduped';
+    if (await this.jobExists(jobId)) return 'deduped';
 
     const scanId = randomUUID();
-    await queue.add('scan', { scanId, address, chainId, reason: 'scheduled', scheduledAt: Date.now() }, { jobId });
+    await this.queue.add('scan', { scanId, address, chainId, reason: 'scheduled', scheduledAt: Date.now() }, { jobId });
     return 'added';
+  }
+
+  async jobExists(jobId: string): Promise<boolean> {
+    const client = await this.queue.client;
+    return Boolean(await client.exists(this.queue.toKey(jobId)));
   }
 }

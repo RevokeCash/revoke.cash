@@ -8,12 +8,10 @@ export interface ScanJobData {
   scheduledAt: number;
 }
 
-export type EnqueueOutcome = 'added' | 'deduped' | 'no_queue';
+export type EnqueueOutcome = 'added' | 'deduped';
 
-export const scanQueueNameForChain = (chainId: number): string => `monitor_scan_${chainId}`;
+export const SCAN_QUEUE_NAME = 'monitor_scan';
 
-// Note: both removeOnComplete and removeOnFail must remove immediately (`true`), not after a
-// retention window, because BullMQ's jobId dedup blocks any add for an existing job in *any* state.
 export const SCAN_DEFAULT_JOB_OPTIONS = {
   attempts: 3,
   backoff: { type: 'exponential' as const, delay: 30_000 },

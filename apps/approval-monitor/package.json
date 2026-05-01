@@ -26,6 +26,7 @@
     "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.32",
     "@willsoto/nestjs-prometheus": "^6.0.2",
+    "bottleneck": "^2.19.5",
     "bullmq": "^5.34.0",
     "express-basic-auth": "^1.2.1",
     "ioredis": "^5.4.2",
