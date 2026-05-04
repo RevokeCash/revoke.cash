@@ -40,7 +40,7 @@ const ApprovePage = () => {
         <p>Approval Type, Token Address, Spender Address, (Amount/Token ID), (Expiration), (Permit2 Address)</p>
         <textarea
           className="border border-zinc-300 dark:border-zinc-700 rounded-md p-2"
-          placeholder="ERC20,0x7EA68721984E8E24932E8928106cA9005B3a4786,0xd98B590ebE0a3eD8C144170bA4122D402182976f,1000000000000000000000000000"
+          placeholder="erc20,0x7EA68721984E8E24932E8928106cA9005B3a4786,0xd98B590ebE0a3eD8C144170bA4122D402182976f,1000000000000000000000000000"
           value={allowancesCsv}
           onChange={(e) => setAllowancesCsv(e.target.value)}
         />
@@ -59,48 +59,48 @@ const parseAllowancesCsv = (csv: string) => {
   const allowances = lines.map((line, index) => {
     const [allowanceType, tokenAddress, spenderAddress, amountOrTokenId, expiration, permit2Address] = line.split(',');
     if (
-      !['ERC20', 'ERC721_ALL', 'ERC721_SINGLE', 'PERMIT2'].includes(allowanceType) ||
+      !['erc20', 'erc721_all', 'erc721_single', 'permit2'].includes(allowanceType) ||
       !isAddress(tokenAddress) ||
       !isAddress(spenderAddress)
     ) {
       throw new Error(`Invalid approval type, token address or spender address on line ${index + 1}`);
     }
 
-    if (allowanceType === 'ERC20') {
+    if (allowanceType === 'erc20') {
       if (!Number.isInteger(Number(amountOrTokenId))) {
         throw new Error(`Invalid amount on line ${index + 1}`);
       }
 
       return {
-        allowanceType: 'ERC20',
+        allowanceType: 'erc20',
         tokenAddress,
         spenderAddress,
         amount: BigInt(amountOrTokenId),
       };
     }
 
-    if (allowanceType === 'ERC721_ALL') {
+    if (allowanceType === 'erc721_all') {
       return {
-        allowanceType: 'ERC721_ALL',
+        allowanceType: 'erc721_all',
         tokenAddress,
         spenderAddress,
       };
     }
 
-    if (allowanceType === 'ERC721_SINGLE') {
+    if (allowanceType === 'erc721_single') {
       if (!Number.isInteger(Number(amountOrTokenId))) {
         throw new Error(`Invalid token ID on line ${index + 1}`);
       }
 
       return {
-        allowanceType: 'ERC721_SINGLE',
+        allowanceType: 'erc721_single',
         tokenAddress,
         spenderAddress,
         tokenId: BigInt(amountOrTokenId),
       };
     }
 
-    if (allowanceType === 'PERMIT2') {
+    if (allowanceType === 'permit2') {
       if (
         !isAddress(permit2Address) ||
         !Number.isInteger(Number(amountOrTokenId)) ||
@@ -110,7 +110,7 @@ const parseAllowancesCsv = (csv: string) => {
       }
 
       return {
-        allowanceType: 'PERMIT2',
+        allowanceType: 'permit2',
         tokenAddress,
         spenderAddress,
         amount: BigInt(amountOrTokenId),

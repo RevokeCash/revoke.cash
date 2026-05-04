@@ -1,5 +1,6 @@
 import { type DynamicModule, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AllowancesWorkerModule } from './allowances/allowances.worker.module';
 import { BullBoardModule } from './bull-board/bull-board.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
@@ -23,9 +24,10 @@ export class AppModule {
       RedisModule,
       HealthModule,
       MetricsModule,
+      // Allowances pipeline doesn't have a scheduler — it's triggered by the scan worker on every successful scan
       ...(isManager
         ? [ScanSchedulerModule, TimestampsSchedulerModule, BullBoardModule]
-        : [ScanWorkerModule, TimestampsWorkerModule]),
+        : [ScanWorkerModule, TimestampsWorkerModule, AllowancesWorkerModule]),
     ];
 
     return {

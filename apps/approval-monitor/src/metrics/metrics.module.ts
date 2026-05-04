@@ -23,6 +23,11 @@ const counters = [
     help: 'Per-tick scheduler enqueue outcomes (added, deduped, no_queue)',
     labelNames: ['outcome'],
   }),
+  makeCounterProvider({
+    name: 'monitor_allowances_total',
+    help: 'Total allowance recompute attempts by chain and outcome (ok, skipped, chain_busy, failed)',
+    labelNames: ['chain_id', 'outcome'],
+  }),
 ];
 
 const histograms = [
@@ -37,6 +42,12 @@ const histograms = [
     help: 'Number of logs fetched in a single scan',
     labelNames: ['chain_id', 'path'],
     buckets: [0, 1, 10, 100, 1_000, 10_000, 100_000],
+  }),
+  makeHistogramProvider({
+    name: 'monitor_allowance_recompute_duration_seconds',
+    help: 'Wall-clock duration of a single allowance recompute (signature check + RPC + DB write)',
+    labelNames: ['chain_id'],
+    buckets: [0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30],
   }),
 ];
 

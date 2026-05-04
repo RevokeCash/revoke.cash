@@ -1,8 +1,25 @@
 import { sql } from 'drizzle-orm';
-import { bigint, index, integer, pgSchema, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+  bigint,
+  boolean,
+  index,
+  integer,
+  numeric,
+  pgSchema,
+  primaryKey,
+  text,
+  timestamp,
+  uuid,
+} from 'drizzle-orm/pg-core';
 import type { Address, Hash, Hex } from 'viem';
+import { AllowanceType } from '../../allowances';
 
 export const monitorSchema = pgSchema('monitor');
+
+export const monitorApprovalTypeEnum = monitorSchema.enum(
+  'approval_type',
+  Object.values(AllowanceType) as [AllowanceType, ...AllowanceType[]],
+);
 
 export const monitorScanState = monitorSchema.table(
   'scan_state',
@@ -60,6 +77,7 @@ export const monitorEventsCache = monitorSchema.table(
     data: text('data').notNull().$type<Hex>(),
     timestamp: bigint('timestamp', { mode: 'number' }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    reorged: boolean('reorged').notNull().default(false),
   },
   (table) => [
     primaryKey({
@@ -73,5 +91,50 @@ export const monitorEventsCache = monitorSchema.table(
     index('idx_events_cache_unresolved_timestamps')
       .on(table.chainId, table.blockNumber)
       .where(sql`${table.timestamp} IS NULL`),
+  ],
+);
+
+export const monitorAllowanceState = monitorSchema.table(
+  'allowance_state',
+  {
+    address: text('address').notNull().$type<Address>(),
+    chainId: integer('chain_id').notNull(),
+    computedAt: timestamp('computed_at', { withTimezone: true }),
+    computedToBlock: bigint('computed_to_block', { mode: 'number' }),
+    consecutiveFailures: integer('consecutive_failures').notNull().default(0),
+    lastError: text('last_error'),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [primaryKey({ name: 'allowance_state_pkey', columns: [table.address, table.chainId] })],
+);
+
+export const monitorAllowances = monitorSchema.table(
+  'allowances',
+  {
+    id: uuid('id').notNull().defaultRandom(),
+    chainId: integer('chain_id').notNull(),
+    address: text('address').notNull().$type<Address>(),
+    tokenAddress: text('token_address').notNull().$type<Address>(),
+    spenderAddress: text('spender_address').notNull().$type<Address>(),
+    approvalType: monitorApprovalTypeEnum('approval_type').notNull(),
+    // Type-specific fields. Nullable because each row uses a subset depending on approval_type.
+    amount: numeric('amount', { mode: 'bigint' }), // erc20, permit2
+    tokenId: numeric('token_id', { mode: 'bigint' }), // erc721_single
+    approved: boolean('approved'), // erc721_all
+    permit2Address: text('permit2_address').$type<Address>(), // permit2 (which Permit2 instance)
+    expiration: bigint('expiration', { mode: 'number' }), // permit2 (unix seconds)
+    // `lastUpdated` mirrors the existing `BaseAllowance.lastUpdated` shape (block + tx + timestamp)
+    lastUpdatedBlock: bigint('last_updated_block', { mode: 'number' }).notNull(),
+    lastUpdatedTxHash: text('last_updated_tx_hash').notNull().$type<Hash>(),
+    lastUpdatedTimestamp: bigint('last_updated_timestamp', { mode: 'number' }).notNull(),
+  },
+  (table) => [
+    primaryKey({ name: 'allowances_pkey', columns: [table.id] }),
+    index('idx_allowances_address').on(table.address, table.chainId),
+    index('idx_allowances_spender').on(table.spenderAddress, table.chainId),
+    index('idx_allowances_token').on(table.tokenAddress, table.chainId),
   ],
 );

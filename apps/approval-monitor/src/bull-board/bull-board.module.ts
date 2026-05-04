@@ -2,6 +2,8 @@ import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import { BullBoardModule as BullBoardModuleBase } from '@bull-board/nestjs';
 import { type MiddlewareConsumer, Module, type NestModule } from '@nestjs/common';
+import { ALLOWANCES_QUEUE_NAME } from '../allowances/allowances.queue';
+import { AllowancesSchedulerModule } from '../allowances/allowances.scheduler.module';
 import { SCAN_QUEUE_NAME } from '../scan/scan.queue';
 import { ScanSchedulerModule } from '../scan/scan.scheduler.module';
 import { TIMESTAMPS_QUEUE_NAME } from '../timestamps/timestamps.queue';
@@ -14,6 +16,7 @@ const BULL_BOARD_ROUTE = '/queues';
   imports: [
     ScanSchedulerModule,
     TimestampsSchedulerModule,
+    AllowancesSchedulerModule,
     BullBoardModuleBase.forRoot({
       route: BULL_BOARD_ROUTE,
       adapter: ExpressAdapter,
@@ -22,6 +25,7 @@ const BULL_BOARD_ROUTE = '/queues';
     BullBoardModuleBase.forFeature(
       { name: SCAN_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Scan' } },
       { name: TIMESTAMPS_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Timestamps' } },
+      { name: ALLOWANCES_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Allowances' } },
     ),
   ],
   providers: [BullBoardAuthMiddleware],

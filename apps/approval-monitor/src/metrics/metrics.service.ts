@@ -10,5 +10,8 @@ export class MetricsService {
     @InjectMetric('monitor_scan_logs_fetched') public readonly scanLogsFetched: Histogram<string>,
     @InjectMetric('monitor_scheduler_tick_outcomes_total') public readonly schedulerTickOutcomes: Counter<string>,
     @InjectMetric('monitor_scheduler_lag_seconds') public readonly schedulerLag: Gauge<string>,
+    @InjectMetric('monitor_allowances_total') public readonly allowancesTotal: Counter<string>,
+    @InjectMetric('monitor_allowance_recompute_duration_seconds')
+    public readonly allowanceRecomputeDuration: Histogram<string>,
   ) {}
 }

@@ -45,10 +45,10 @@ export interface TokenAllowanceData extends TokenData {
 export type AllowancePayload = Erc721SingleAllowance | Erc721AllAllowance | Erc20Allowance | Permit2Erc20Allowance;
 
 export enum AllowanceType {
-  ERC721_SINGLE = 'ERC721_SINGLE',
-  ERC721_ALL = 'ERC721_ALL',
-  ERC20 = 'ERC20',
-  PERMIT2 = 'PERMIT2',
+  ERC721_SINGLE = 'erc721_single',
+  ERC721_ALL = 'erc721_all',
+  ERC20 = 'erc20',
+  PERMIT2 = 'permit2',
 }
 
 export interface BaseAllowance {

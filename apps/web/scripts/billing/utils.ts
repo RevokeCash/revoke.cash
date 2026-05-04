@@ -54,56 +54,43 @@ export interface RegionSummary {
 }
 
 export const fetchBatchRevokeFeeRecords = async (from: Date, to: Date): Promise<FeeRecord[]> => {
-  const db = getDb();
   const toExclusive = new Date(to.getTime() + 1);
 
-  const records = await db
-    .select({
-      chainId: batchRevokes.chainId,
-      feeTransactionHash: batchRevokes.feeTransactionHash,
-      feePaid: batchRevokes.feePaid,
-      vatRegion: batchRevokes.vatRegion,
-      timestamp: batchRevokes.timestamp,
-    })
-    .from(batchRevokes)
-    .where(
-      and(
-        gte(batchRevokes.timestamp, from),
-        lt(batchRevokes.timestamp, toExclusive),
-        eq(batchRevokes.isTestnet, false),
-        isNull(batchRevokes.sponsor),
-      ),
-    )
-    .orderBy(asc(batchRevokes.timestamp));
+  const records = await getDb().query.batchRevokes.findMany({
+    where: and(
+      gte(batchRevokes.timestamp, from),
+      lt(batchRevokes.timestamp, toExclusive),
+      eq(batchRevokes.isTestnet, false),
+      isNull(batchRevokes.sponsor),
+    ),
+    orderBy: asc(batchRevokes.timestamp),
+  });
 
   return records.filter((r) => r.feePaid > 0);
 };
 
 export const fetchPremiumFeeRecords = async (from: Date, to: Date): Promise<FeeRecord[]> => {
-  const db = getDb();
   const toExclusive = new Date(to.getTime() + 1);
 
-  const records = await db
-    .select({
-      chainId: premiumPayments.chainId,
-      feeTransactionHash: premiumPayments.matchedTxHash,
-      feePaid: premiumPayments.amountUsd,
-      vatRegion: premiumPayments.vatRegion,
-      timestamp: premiumPayments.confirmedAt,
-    })
-    .from(premiumPayments)
-    .where(
-      and(
-        eq(premiumPayments.status, 'confirmed'),
-        isNotNull(premiumPayments.confirmedAt),
-        gte(premiumPayments.confirmedAt, from),
-        lt(premiumPayments.confirmedAt, toExclusive),
-      ),
-    )
-    .orderBy(asc(premiumPayments.confirmedAt));
+  const records = await getDb().query.premiumPayments.findMany({
+    where: and(
+      eq(premiumPayments.status, 'confirmed'),
+      isNotNull(premiumPayments.confirmedAt),
+      gte(premiumPayments.confirmedAt, from),
+      lt(premiumPayments.confirmedAt, toExclusive),
+    ),
+    orderBy: asc(premiumPayments.confirmedAt),
+  });
 
-  // Filter out any with zero amount and cast confirmedAt (which is nullable in type but filtered above)
-  return records.filter((r) => r.feePaid > 0 && r.timestamp !== null).map((r) => ({ ...r, timestamp: r.timestamp! }));
+  return records
+    .filter((r) => r.amountUsd > 0 && r.confirmedAt !== null)
+    .map((r) => ({
+      chainId: r.chainId,
+      feeTransactionHash: r.matchedTxHash,
+      feePaid: r.amountUsd,
+      vatRegion: r.vatRegion,
+      timestamp: r.confirmedAt!,
+    }));
 };
 
 export const buildVatSummary = (records: FeeRecord[]): RegionSummary[] => {

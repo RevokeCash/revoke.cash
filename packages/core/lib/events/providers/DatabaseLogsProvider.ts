@@ -17,22 +17,35 @@ import type { LogsProvider } from './LogsProvider';
 // Postgres cannot handle a result of larger than 100,000 rows due to the response size limit.
 export const MAX_CACHED_RESULTS = 100_000;
 
-// Reads logs from the `monitor.events_cache` Postgres table. When querying for Transfer events, it automatically
-// restricts to tokens the user has at least one Approval/ApprovalForAll event for. This strips spam-airdrop noise
-// that dominates active wallets (vitalik.eth on Polygon would otherwise return millions of Transfer rows).
+export interface DatabaseLogsProviderOptions {
+  // When `true`, rows flagged `reorged = true` by the scan path are included (default is `false`)
+  includeReorged?: boolean;
+  // when true, Transfer queries (`topic0 = ERC721_TRANSFER_TOPIC`) auto-narrow to tokens the user has at least
+  // one Approval/ApprovalForAll event for (default is `true`)
+  applyApprovedTokensFilter?: boolean;
+}
+
 export class DatabaseLogsProvider implements LogsProvider {
-  constructor(public chainId: number) {}
+  constructor(
+    public chainId: number,
+    private readonly options: DatabaseLogsProviderOptions = {},
+  ) {}
 
   async getLatestBlock(): Promise<number> {
     return Number(await createViemPublicClientForChain(this.chainId).getBlockNumber());
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
+    const includeReorged = this.options.includeReorged ?? false;
+    const applyApprovedTokensFilter = this.options.applyApprovedTokensFilter ?? true;
+
     const conditions: SQL[] = [
       eq(monitorEventsCache.chainId, this.chainId),
       gte(monitorEventsCache.blockNumber, filter.fromBlock),
       lte(monitorEventsCache.blockNumber, filter.toBlock),
     ];
+
+    if (!includeReorged) conditions.push(eq(monitorEventsCache.reorged, false));
 
     if (filter.address) conditions.push(eq(monitorEventsCache.address, filter.address));
     if (filter.topics[0]) conditions.push(eq(monitorEventsCache.topic0, filter.topics[0]));
@@ -40,10 +53,10 @@ export class DatabaseLogsProvider implements LogsProvider {
     if (filter.topics[2]) conditions.push(eq(monitorEventsCache.topic2, filter.topics[2]));
     if (filter.topics[3]) conditions.push(eq(monitorEventsCache.topic3, filter.topics[3]));
 
-    // Transfer events get the approved-tokens-only treatment. The subquery returns *token contract
-    // addresses* where the user has at least one Approval/ApprovalForAll event for.
+    // Transfer events get the approved-tokens-only treatment. The subquery returns *token contract addresses*
+    // where the user has at least one Approval/ApprovalForAll event for.
     const userAddressTopic = extractUserAddressTopic(filter);
-    if (filter.topics[0] === ERC721_TRANSFER_TOPIC && userAddressTopic) {
+    if (applyApprovedTokensFilter && filter.topics[0] === ERC721_TRANSFER_TOPIC && userAddressTopic) {
       conditions.push(
         inArray(
           monitorEventsCache.address,
@@ -55,6 +68,7 @@ export class DatabaseLogsProvider implements LogsProvider {
                 eq(monitorEventsCache.chainId, this.chainId),
                 inArray(monitorEventsCache.topic0, [ERC721_APPROVAL_TOPIC, ERC721_APPROVAL_FOR_ALL_TOPIC]),
                 eq(monitorEventsCache.topic1, userAddressTopic),
+                eq(monitorEventsCache.reorged, false),
               ),
             ),
         ),

@@ -27,7 +27,10 @@ import { mapAsync, mapAsyncSequential } from '../utils/promises';
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
 // limit, which gets handled by the DivideAndConquerLogsProvider.
 const NARROW_RANGE_THRESHOLD = 10_000;
-const REORG_DEPTH = 12;
+
+// Block-rewind depth applied on every scheduled scan and mirrored on every allowance recompute
+export const REORG_DEPTH = 12;
+
 const ACTIVE_WINDOW_MS = 7 * 24 * HOUR;
 
 const MIN_BLOCK_RANGE = 1_000;
@@ -49,6 +52,7 @@ export interface ScanResult {
   path: 'narrow' | 'wide';
   logsFetched: number;
   logsWritten: number;
+  logsReorgedMarked: number;
   nonceZeroSkipped: boolean;
   isCapped: boolean;
   rangeReductions: number;
@@ -61,6 +65,7 @@ const buildScanResult = (overrides: Partial<ScanResult> = {}): ScanResult => ({
   path: 'wide',
   logsFetched: 0,
   logsWritten: 0,
+  logsReorgedMarked: 0,
   nonceZeroSkipped: false,
   isCapped: false,
   rangeReductions: 0,
@@ -128,6 +133,7 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
       path: isNarrow ? 'narrow' : 'wide',
       logsFetched: filterResults.reduce((acc, r) => acc + r.logsFetched, 0),
       logsWritten: filterResults.reduce((acc, r) => acc + r.logsWritten, 0),
+      logsReorgedMarked: filterResults.reduce((acc, r) => acc + r.logsReorgedMarked, 0),
       isCapped: isCapped || rangeReductions > 0,
       rangeReductions,
       durationMs: Date.now() - start,
@@ -266,18 +272,20 @@ const toEventsCacheRow = (chainId: number, log: Log) => ({
 
 type EventsCacheRow = ReturnType<typeof toEventsCacheRow>;
 
-// Reorg-safe wipe of the events this filter would re-insert in its block range.
-const deleteFilterEventsInRange = async (
+// Reorg-safe mark: flag every event in this filter's block range with `reorged = true`
+// This flag will be set to `false` again if the event is re-added in the same scan
+const markFilterEventsAsReorged = async (
   trx: DatabaseTransaction,
   chainId: number,
   filter: Filter,
   addressTopic: Hex,
-): Promise<void> => {
+): Promise<number> => {
   const topic0 = filter.topics[0] as Hex;
   const addressColumn = filter.topics[1] === addressTopic ? monitorEventsCache.topic1 : monitorEventsCache.topic2;
 
-  await trx
-    .delete(monitorEventsCache)
+  const result = await trx
+    .update(monitorEventsCache)
+    .set({ reorged: true })
     .where(
       and(
         eq(monitorEventsCache.chainId, chainId),
@@ -287,6 +295,8 @@ const deleteFilterEventsInRange = async (
         eq(addressColumn, addressTopic),
       ),
     );
+
+  return result.rowCount ?? 0;
 };
 
 // Chunked to stay under Postgres's 65_535-bind-parameter-per-statement limit. Atomicity is the
@@ -295,7 +305,15 @@ const insertEventRowsChunked = async (trx: DatabaseTransaction, rows: EventsCach
   if (rows.length === 0) return 0;
 
   const chunks = chunkArray(rows, INSERT_CHUNK_SIZE);
-  const results = await mapAsync(chunks, (chunk) => trx.insert(monitorEventsCache).values(chunk).onConflictDoNothing());
+  const results = await mapAsync(chunks, (chunk) =>
+    trx
+      .insert(monitorEventsCache)
+      .values(chunk)
+      .onConflictDoUpdate({
+        target: [monitorEventsCache.chainId, monitorEventsCache.transactionHash, monitorEventsCache.logIndex],
+        set: { reorged: false },
+      }),
+  );
 
   return results.reduce((acc, result) => acc + (result.rowCount ?? 0), 0);
 };
@@ -303,6 +321,7 @@ const insertEventRowsChunked = async (trx: DatabaseTransaction, rows: EventsCach
 interface FilterScanResult {
   logsFetched: number;
   logsWritten: number;
+  logsReorgedMarked: number;
   latestLog: Log | null;
 }
 
@@ -313,7 +332,7 @@ const scanFilter = async (
   filter: Filter,
   addressTopic: Hex,
 ): Promise<FilterScanResult> => {
-  await deleteFilterEventsInRange(trx, chainId, filter, addressTopic);
+  const logsReorgedMarked = await markFilterEventsAsReorged(trx, chainId, filter, addressTopic);
 
   const fetchedLogs = await logsProvider.getLogs(filter);
 
@@ -324,6 +343,7 @@ const scanFilter = async (
   return {
     logsFetched: fetchedLogs.length,
     logsWritten: await insertEventRowsChunked(trx, rows),
+    logsReorgedMarked,
     latestLog: latestLogByBlock(meaningfulLogs),
   };
 };

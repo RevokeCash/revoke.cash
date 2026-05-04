@@ -50,6 +50,13 @@
       "when": 1777539085219,
       "tag": "0006_lucky_patch",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1777732912621,
+      "tag": "0007_allowances",
+      "breakpoints": true
     }
   ]
 }
