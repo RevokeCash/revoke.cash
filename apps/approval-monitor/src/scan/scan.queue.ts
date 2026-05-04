@@ -11,10 +11,3 @@ export interface ScanJobData {
 export type EnqueueOutcome = 'added' | 'deduped';
 
 export const SCAN_QUEUE_NAME = 'monitor_scan';
-
-export const SCAN_DEFAULT_JOB_OPTIONS = {
-  attempts: 3,
-  backoff: { type: 'exponential' as const, delay: 30_000 },
-  removeOnComplete: true,
-  removeOnFail: true,
-};

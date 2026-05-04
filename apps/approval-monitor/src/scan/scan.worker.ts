@@ -5,7 +5,7 @@ import { deferScanOnChainBusy, recordScanFailure, scanAddressChain } from '@revo
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
 import { MetricsService } from '../metrics/metrics.service';
-import { ChainLimiterService } from './chain-limiter.service';
+import { GroupLimiterService } from '../queue/group-limiter.service';
 import { SCAN_QUEUE_NAME, type ScanJobData } from './scan.queue';
 
 @Processor(SCAN_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
@@ -14,7 +14,7 @@ export class ScanWorker extends WorkerHost {
 
   constructor(
     private readonly metrics: MetricsService,
-    private readonly chainLimiter: ChainLimiterService,
+    private readonly groupLimiter: GroupLimiterService,
   ) {
     super();
   }
@@ -22,7 +22,7 @@ export class ScanWorker extends WorkerHost {
   async process(job: Job<ScanJobData>): Promise<void> {
     const { scanId, address, chainId, reason } = job.data;
 
-    const result = await this.chainLimiter.runWithLimit(chainId, async () => {
+    const result = await this.groupLimiter.runWithLimit(chainId, async () => {
       this.logger.debug({ scanId, chainId, address, reason }, 'processing scan');
       const endTimer = this.metrics.scanDuration.startTimer({ chain_id: chainId });
       const scanResult = await scanAddressChain(address, chainId as DocumentedChainId);
@@ -30,11 +30,11 @@ export class ScanWorker extends WorkerHost {
       return scanResult;
     });
 
-    // If result is null the chain limiter dropped this submission (cap saturated),
+    // If result is null the group limiter dropped this submission (per-chain cap saturated),
     // so we defer the scan and return.
     if (result === null) {
       this.metrics.scansTotal.inc({ chain_id: chainId, outcome: 'chain_busy' });
-      this.logger.debug({ scanId, chainId, address }, 'chain limiter full, deferring');
+      this.logger.debug({ scanId, chainId, address }, 'group limiter full, deferring');
       await deferScanOnChainBusy(address, chainId as DocumentedChainId).catch((error) => {
         this.logger.warn({ scanId, chainId, error: parseErrorMessage(error) }, 'failed to defer chain-busy scan');
       });

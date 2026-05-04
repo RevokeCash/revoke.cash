@@ -4,16 +4,21 @@ import Bottleneck from 'bottleneck';
 import type { Redis } from 'ioredis';
 import { REDIS_CONNECTION } from '../redis/redis.module';
 
-export type ChainBusyError = Bottleneck.BottleneckError;
-export const isChainBusyError = (error: unknown): boolean =>
+// Module-internal injection token for the per-instance Bottleneck Group id. Wired by
+// `GroupLimiterModule.register(groupId)` — consumers should import that instead of touching
+// this token directly.
+export const GROUP_LIMITER_GROUP_ID = Symbol('GROUP_LIMITER_GROUP_ID');
+
+export type GroupBusyError = Bottleneck.BottleneckError;
+export const isGroupBusyError = (error: unknown): boolean =>
   error instanceof Bottleneck.BottleneckError && /dropped/i.test(error.message);
 
 @Injectable()
-export class ChainLimiterService implements OnModuleDestroy {
-  private readonly logger = new Logger(ChainLimiterService.name);
+export class GroupLimiterService implements OnModuleDestroy {
+  private readonly logger = new Logger(GroupLimiterService.name);
   private readonly group: Bottleneck.Group;
 
-  constructor(@Inject(REDIS_CONNECTION) redis: Redis) {
+  constructor(@Inject(REDIS_CONNECTION) redis: Redis, @Inject(GROUP_LIMITER_GROUP_ID) groupId: string) {
     const connection = new Bottleneck.IORedisConnection({ client: redis });
 
     // highWater: 0 means that jobs over the concurrency limit are dropped (and get re-added later by the scheduler)
@@ -24,26 +29,26 @@ export class ChainLimiterService implements OnModuleDestroy {
       datastore: 'ioredis',
       connection,
       timeout: 10 * MINUTE,
-      id: 'monitor-chain',
+      id: groupId,
     });
 
     this.group.on('error', (error) => {
-      this.logger.error({ error }, 'chain limiter group error');
+      this.logger.error({ error, groupId }, 'group limiter error');
     });
   }
 
-  async runWithLimit<T>(chainId: number, fn: () => Promise<T>): Promise<T | null> {
+  async runWithLimit<T>(groupKey: string | number, fn: () => Promise<T>): Promise<T | null> {
     try {
-      return await this.group.key(String(chainId)).schedule(fn);
+      return await this.group.key(String(groupKey)).schedule(fn);
     } catch (error) {
-      if (isChainBusyError(error)) return null;
+      if (isGroupBusyError(error)) return null;
       throw error;
     }
   }
 
   async onModuleDestroy(): Promise<void> {
     await this.group.disconnect(true).catch((error) => {
-      this.logger.warn({ error }, 'failed to disconnect chain limiter group');
+      this.logger.warn({ error }, 'failed to disconnect group limiter');
     });
   }
 }
