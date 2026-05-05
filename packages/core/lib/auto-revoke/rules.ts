@@ -3,9 +3,8 @@ import { autoRevokeRules } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
-import { toLowercaseAddress } from '@revoke.cash/core/utils';
 import { and, eq, gt, lte } from 'drizzle-orm';
-import { type Address, getAddress } from 'viem';
+import type { Address } from 'viem';
 import type { AutoRevokeAddressRulesConfig, AutoRevokeRules, AutoRevokeRulesSource } from './types';
 
 type RulesRecord = typeof autoRevokeRules.$inferSelect;
@@ -40,13 +39,11 @@ export const upsertSubscriptionRules = async (
 };
 
 export const getAddressRulesConfig = async (address: Address): Promise<AutoRevokeAddressRulesConfig> => {
-  const normalizedAddress = toLowercaseAddress(address);
-
   const { rules: effectiveRules, rulesSource } = await getEffectiveRules(address);
 
   const addressRules = await getAddressRules(address);
   const customRules = addressRules ? mapRules(addressRules) : DEFAULT_RULES;
-  const availableSubscriptions = await getAvailableSubscriptions(normalizedAddress);
+  const availableSubscriptions = await getAvailableSubscriptions(address);
 
   return { rulesSource, effectiveRules, customRules, availableSubscriptions };
 };
@@ -54,7 +51,6 @@ export const getAddressRulesConfig = async (address: Address): Promise<AutoRevok
 export const getEffectiveRules = async (
   address: Address,
 ): Promise<{ rules: AutoRevokeRules; rulesSource: AutoRevokeRulesSource }> => {
-  const normalizedAddress = toLowercaseAddress(address);
   const addressRules = await getAddressRules(address);
 
   const fallbackCustomRules = {
@@ -74,7 +70,7 @@ export const getEffectiveRules = async (
         with: {
           plan: { columns: { name: true, tier: true } },
           addresses: {
-            where: (addresses, { eq }) => eq(addresses.address, normalizedAddress),
+            where: (addresses, { eq }) => eq(addresses.address, address),
             columns: { id: true },
             limit: 1,
           },
@@ -96,17 +92,16 @@ export const getEffectiveRules = async (
       type: 'subscription',
       subscriptionId,
       planName: plan.name,
-      ownerAddress: getAddress(ownerAddress),
+      ownerAddress,
     },
   };
 };
 
 export const getAddressRules = async (address: Address): Promise<RulesRecord | null> => {
   const db = getDb();
-  const normalizedAddress = toLowercaseAddress(address);
 
   const rules = await db.query.autoRevokeRules.findFirst({
-    where: eq(autoRevokeRules.address, normalizedAddress),
+    where: eq(autoRevokeRules.address, address),
   });
 
   return rules ?? null;
@@ -114,13 +109,12 @@ export const getAddressRules = async (address: Address): Promise<RulesRecord | n
 
 export const upsertAddressRules = async (address: Address, ruleData: Partial<AutoRevokeRules>): Promise<void> => {
   const db = getDb();
-  const normalizedAddress = toLowercaseAddress(address);
 
   await db
     .insert(autoRevokeRules)
     .values({
       type: 'address',
-      address: normalizedAddress,
+      address,
       ...ruleData,
     })
     .onConflictDoUpdate({
@@ -134,22 +128,21 @@ export const switchAutoRevokeRulesSource = async (
   { subscriptionId }: { subscriptionId: string | null },
 ): Promise<void> => {
   const db = getTransactionalDb();
-  const normalizedAddress = toLowercaseAddress(address);
 
   await db.transaction(async (trx) => {
-    const activeRulesId = await resolveActiveRulesId(trx, normalizedAddress, subscriptionId);
-    await initAddressRules(trx, normalizedAddress, activeRulesId ?? undefined);
-    await setActiveRules(trx, normalizedAddress, activeRulesId);
+    const activeRulesId = await resolveActiveRulesId(trx, address, subscriptionId);
+    await initAddressRules(trx, address, activeRulesId ?? undefined);
+    await setActiveRules(trx, address, activeRulesId);
   });
 };
 
 const getAvailableSubscriptions = async (
-  normalizedAddress: Address,
+  address: Address,
 ): Promise<AutoRevokeAddressRulesConfig['availableSubscriptions']> => {
   const db = getDb();
 
   const subscriptionEntries = await db.query.premiumSubscriptionAddresses.findMany({
-    where: eq(premiumSubscriptionAddresses.address, normalizedAddress),
+    where: eq(premiumSubscriptionAddresses.address, address),
     with: {
       subscription: {
         columns: { id: true, ownerAddress: true, startsAt: true, endsAt: true },
@@ -164,18 +157,18 @@ const getAvailableSubscriptions = async (
     .map((subscription) => ({
       subscriptionId: subscription.id,
       planName: subscription.plan.name,
-      ownerAddress: getAddress(subscription.ownerAddress),
+      ownerAddress: subscription.ownerAddress,
     }));
 };
 
 const resolveActiveRulesId = async (
   trx: DatabaseTransaction,
-  normalizedAddress: Address,
+  address: Address,
   subscriptionId: string | null,
 ): Promise<string | null> => {
   if (subscriptionId === null) return null;
 
-  const isAuthorized = await isAddressMemberOfActiveUltimateSubscription(trx, normalizedAddress, subscriptionId);
+  const isAuthorized = await isAddressMemberOfActiveUltimateSubscription(trx, address, subscriptionId);
   if (!isAuthorized) throw new Error('Not authorized for this rules source');
 
   return ensureSubscriptionRulesId(trx, subscriptionId);
@@ -183,7 +176,7 @@ const resolveActiveRulesId = async (
 
 const isAddressMemberOfActiveUltimateSubscription = async (
   trx: DatabaseTransaction,
-  normalizedAddress: Address,
+  address: Address,
   subscriptionId: string,
 ): Promise<boolean> => {
   const now = new Date();
@@ -196,7 +189,7 @@ const isAddressMemberOfActiveUltimateSubscription = async (
       premiumSubscriptionAddresses,
       and(
         eq(premiumSubscriptionAddresses.subscriptionId, premiumSubscriptions.id),
-        eq(premiumSubscriptionAddresses.address, normalizedAddress),
+        eq(premiumSubscriptionAddresses.address, address),
       ),
     )
     .where(
@@ -226,7 +219,7 @@ const ensureSubscriptionRulesId = async (trx: DatabaseTransaction, subscriptionI
 
 const initAddressRules = async (
   trx: DatabaseTransaction,
-  normalizedAddress: Address,
+  address: Address,
   copyFromRulesId?: string,
 ): Promise<void> => {
   const sourceRules = copyFromRulesId
@@ -237,21 +230,14 @@ const initAddressRules = async (
     .insert(autoRevokeRules)
     .values({
       type: 'address',
-      address: normalizedAddress,
+      address,
       ...(sourceRules ? mapRules(sourceRules) : {}),
     })
     .onConflictDoNothing();
 };
 
-const setActiveRules = async (
-  trx: DatabaseTransaction,
-  normalizedAddress: Address,
-  rulesId: string | null,
-): Promise<void> => {
-  await trx
-    .update(autoRevokeRules)
-    .set({ activeRulesId: rulesId })
-    .where(eq(autoRevokeRules.address, normalizedAddress));
+const setActiveRules = async (trx: DatabaseTransaction, address: Address, rulesId: string | null): Promise<void> => {
+  await trx.update(autoRevokeRules).set({ activeRulesId: rulesId }).where(eq(autoRevokeRules.address, address));
 };
 
 const mapRules = (row: RulesRecord): AutoRevokeRules => ({

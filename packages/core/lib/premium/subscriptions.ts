@@ -1,10 +1,10 @@
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { registerAddressForMonitoring } from '@revoke.cash/core/monitor/register';
-import { isNullish, toLowercaseAddress } from '@revoke.cash/core/utils';
+import { isNullish } from '@revoke.cash/core/utils';
 import { DAY } from '@revoke.cash/core/utils/time';
 import { and, count, eq, gt, sql } from 'drizzle-orm';
-import { type Address, getAddress } from 'viem';
+import type { Address } from 'viem';
 import { isUltimatePlan, type PremiumPlan } from './plans';
 
 export interface SubscriptionPayment {
@@ -48,10 +48,9 @@ export const isActiveUltimateSubscriptionOwnedBy = async (
   ownerAddress: Address,
 ): Promise<boolean> => {
   const db = getDb();
-  const normalizedOwner = toLowercaseAddress(ownerAddress);
 
   const subscription = await db.query.premiumSubscriptions.findFirst({
-    where: and(eq(premiumSubscriptions.id, subscriptionId), eq(premiumSubscriptions.ownerAddress, normalizedOwner)),
+    where: and(eq(premiumSubscriptions.id, subscriptionId), eq(premiumSubscriptions.ownerAddress, ownerAddress)),
     columns: { id: true, startsAt: true, endsAt: true },
     with: { plan: { columns: { tier: true } } },
   });
@@ -61,10 +60,9 @@ export const isActiveUltimateSubscriptionOwnedBy = async (
 
 export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<PremiumSubscription[]> => {
   const db = getDb();
-  const normalizedOwner = toLowercaseAddress(ownerAddress);
 
   const subscriptions = await db.query.premiumSubscriptions.findMany({
-    where: eq(premiumSubscriptions.ownerAddress, normalizedOwner),
+    where: eq(premiumSubscriptions.ownerAddress, ownerAddress),
     orderBy: (subscriptions, { desc }) => [desc(subscriptions.createdAt)],
     with: {
       plan: { columns: { id: true, name: true, priceUsd: true, durationDays: true, maxAddresses: true, tier: true } },
@@ -79,7 +77,7 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
   });
 
   return subscriptions.map((subscription) => {
-    const addresses = subscription.addresses.map((entry) => getAddress(entry.address));
+    const addresses = subscription.addresses.map((entry) => entry.address);
 
     const payments: SubscriptionPayment[] = subscription.payments.map((payment) => ({
       amountUsd: payment.amountUsd,
@@ -93,7 +91,7 @@ export const getOwnerSubscriptions = async (ownerAddress: Address): Promise<Prem
 
     return {
       id: subscription.id,
-      ownerAddress: getAddress(ownerAddress),
+      ownerAddress: subscription.ownerAddress,
       plan: subscription.plan,
       addresses,
       slots: {
@@ -142,11 +140,9 @@ export const addSubscriptionAddress = async ({
   address,
 }: ModifySubscriptionAddressParams) => {
   const db = getTransactionalDb();
-  const normalizedOwner = toLowercaseAddress(ownerAddress);
-  const normalizedAddress = toLowercaseAddress(address);
 
   return db.transaction(async (trx) => {
-    const subscription = await findActiveSubscriptionForOwner(trx, subscriptionId, normalizedOwner);
+    const subscription = await findActiveSubscriptionForOwner(trx, subscriptionId, ownerAddress);
 
     const [{ count: usedSlots }] = await trx
       .select({ count: count() })
@@ -160,7 +156,7 @@ export const addSubscriptionAddress = async ({
     const existing = await trx.query.premiumSubscriptionAddresses.findFirst({
       where: and(
         eq(premiumSubscriptionAddresses.subscriptionId, subscription.id),
-        eq(premiumSubscriptionAddresses.address, normalizedAddress),
+        eq(premiumSubscriptionAddresses.address, address),
       ),
       columns: { id: true },
     });
@@ -171,11 +167,11 @@ export const addSubscriptionAddress = async ({
 
     await trx.insert(premiumSubscriptionAddresses).values({
       subscriptionId: subscription.id,
-      address: normalizedAddress,
-      addedBy: normalizedOwner,
+      address,
+      addedBy: ownerAddress,
     });
 
-    await registerAddressForMonitoring(trx, normalizedAddress);
+    await registerAddressForMonitoring(trx, address);
 
     return { success: true };
   });
@@ -186,24 +182,21 @@ export const removeSubscriptionAddress = async ({
   subscriptionId,
   address,
 }: ModifySubscriptionAddressParams) => {
-  const normalizedOwner = toLowercaseAddress(ownerAddress);
-  const normalizedAddress = toLowercaseAddress(address);
-
-  if (normalizedAddress === normalizedOwner) {
+  if (address.toLowerCase() === ownerAddress.toLowerCase()) {
     throw new Error('Cannot remove subscription owner address');
   }
 
   const db = getTransactionalDb();
 
   return db.transaction(async (trx) => {
-    const subscription = await findActiveSubscriptionForOwner(trx, subscriptionId, normalizedOwner);
+    const subscription = await findActiveSubscriptionForOwner(trx, subscriptionId, ownerAddress);
 
     await trx
       .delete(premiumSubscriptionAddresses)
       .where(
         and(
           eq(premiumSubscriptionAddresses.subscriptionId, subscription.id),
-          eq(premiumSubscriptionAddresses.address, normalizedAddress),
+          eq(premiumSubscriptionAddresses.address, address),
         ),
       );
 

@@ -12,7 +12,6 @@ import { topicToAddress } from '@revoke.cash/core/events/utils';
 import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
-import { toLowercaseAddress } from '../utils';
 import { MINUTE } from '../utils/time';
 import { StillIndexingError } from './errors';
 
@@ -83,7 +82,7 @@ const fetchFresh = (logsProvider: LogsProvider, filter: Filter, cacheCutoff: num
 const extractUserAddressFromFilter = (filter: Filter): Address | null => {
   const addressTopic = filter.topics[1] ?? filter.topics[2];
   if (!addressTopic) return null;
-  return toLowercaseAddress(topicToAddress(addressTopic));
+  return topicToAddress(addressTopic);
 };
 
 const indexerHasStalled = (lastScanAt: Date): boolean => {

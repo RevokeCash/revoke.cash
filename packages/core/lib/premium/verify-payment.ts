@@ -5,7 +5,7 @@ import { parseTransferLog, TokenEventType } from '@revoke.cash/core/events';
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import { and, eq, ne } from 'drizzle-orm';
-import { type Address, getAbiItem, getAddress, type Hash, parseUnits, toEventSelector } from 'viem';
+import { type Address, getAbiItem, type Hash, parseUnits, toEventSelector } from 'viem';
 import { getPaymentConfig } from './payment-config';
 import {
   getPaymentForOwner,
@@ -57,8 +57,7 @@ export const reconcilePendingPayments = async (limit = 20): Promise<ReconcilePen
 
   for (const pendingPayment of pendingPayments) {
     try {
-      const ownerAddress = getAddress(pendingPayment.ownerAddress);
-      const reconciliationResult = await reconcilePaymentByOwner(pendingPayment.id, ownerAddress);
+      const reconciliationResult = await reconcilePaymentByOwner(pendingPayment.id, pendingPayment.ownerAddress);
       if (!reconciliationResult) continue;
       result[reconciliationResult.status] += 1;
     } catch (error) {
@@ -120,7 +119,7 @@ const findMatchingTransferTxHash = async (
   const latestBlock = await logsProvider.getLatestBlock();
 
   const logs = await logsProvider.getLogs({
-    address: getAddress(payment.tokenAddress),
+    address: payment.tokenAddress,
     topics: [
       toEventSelector(getAbiItem({ abi: ERC20_ABI, name: 'Transfer' })),
       addressToTopic(ownerAddress),

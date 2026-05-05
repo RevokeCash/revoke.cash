@@ -13,16 +13,15 @@ import { deduplicateArray, toLowercaseAddress } from '@revoke.cash/core/utils';
 import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'drizzle-orm';
-import { type Address, getAddress, type Hex, recoverTypedDataAddress } from 'viem';
+import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS, REVOKE_SESSION_ACCOUNT_ADDRESS } from './config';
 import type { AutoRevokePermission, WalletPermissionResult } from './types';
 
 export const getAutoRevokePermissionsByAddress = async (address: Address): Promise<AutoRevokePermission[]> => {
   const db = getDb();
-  const normalizedAddress = toLowercaseAddress(address);
 
   const rows = await db.query.autoRevokePermissions.findMany({
-    where: and(eq(autoRevokePermissions.address, normalizedAddress), isNull(autoRevokePermissions.revokedAt)),
+    where: and(eq(autoRevokePermissions.address, address), isNull(autoRevokePermissions.revokedAt)),
   });
 
   return rows.map(mapPermission);
@@ -59,7 +58,7 @@ export const saveAutoRevokePermissionBatch = async (
   if (items.length === 0) return [];
 
   const db = getTransactionalDb();
-  return db.transaction((trx) => applyPermissionBatch(trx, toLowercaseAddress(address), items));
+  return db.transaction((trx) => applyPermissionBatch(trx, address, items));
 };
 
 export const syncAutoRevokePermissions = async (
@@ -67,11 +66,10 @@ export const syncAutoRevokePermissions = async (
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
 ): Promise<Array<{ id: string }>> => {
   const db = getTransactionalDb();
-  const normalizedAddress = toLowercaseAddress(address);
   const syncedChainIds = items.map((item) => item.chainId);
 
   return db.transaction(async (trx) => {
-    const results = await applyPermissionBatch(trx, normalizedAddress, items);
+    const results = await applyPermissionBatch(trx, address, items);
 
     // Revoke any active DB permissions for chains not present in the synced set.
     await trx
@@ -79,7 +77,7 @@ export const syncAutoRevokePermissions = async (
       .set({ revokedAt: new Date() })
       .where(
         and(
-          eq(autoRevokePermissions.address, normalizedAddress),
+          eq(autoRevokePermissions.address, address),
           isNull(autoRevokePermissions.revokedAt),
           syncedChainIds.length > 0 ? notInArray(autoRevokePermissions.chainId, syncedChainIds) : undefined,
         ),
@@ -91,14 +89,13 @@ export const syncAutoRevokePermissions = async (
 
 export const revokeAutoRevokePermission = async (address: Address, chainId: number): Promise<void> => {
   const db = getDb();
-  const normalizedAddress = toLowercaseAddress(address);
 
   await db
     .update(autoRevokePermissions)
     .set({ revokedAt: new Date() })
     .where(
       and(
-        eq(autoRevokePermissions.address, normalizedAddress),
+        eq(autoRevokePermissions.address, address),
         eq(autoRevokePermissions.chainId, chainId),
         isNull(autoRevokePermissions.revokedAt),
       ),
@@ -174,7 +171,7 @@ export const isPermissionEnabledOnChain = async (permission: WalletPermissionRes
 
 const applyPermissionBatch = async (
   trx: DatabaseTransaction,
-  normalizedAddress: Address,
+  address: Address,
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
 ): Promise<Array<{ id: string }>> => {
   if (items.length === 0) return [];
@@ -194,7 +191,7 @@ const applyPermissionBatch = async (
     .set({ revokedAt: new Date() })
     .where(
       and(
-        eq(autoRevokePermissions.address, normalizedAddress),
+        eq(autoRevokePermissions.address, address),
         isNull(autoRevokePermissions.revokedAt),
         inArray(autoRevokePermissions.chainId, chainIds),
         notInArray(autoRevokePermissions.permissionContext, contexts),
@@ -206,7 +203,7 @@ const applyPermissionBatch = async (
     .insert(autoRevokePermissions)
     .values(
       uniqueItems.map((item) => ({
-        address: normalizedAddress,
+        address,
         chainId: item.chainId,
         permissionContext: item.permissionContext,
         delegationManager: item.delegationManager,
@@ -224,15 +221,15 @@ export const resolvePermissionRecord = async (
   authenticatedAddress: Address,
   input: { permissionContext: Hex; chainId: AutoRevokeSupportedChainId },
 ): Promise<Omit<AutoRevokePermission, 'isActive'>> => {
-  const normalizedAddress = toLowercaseAddress(authenticatedAddress);
+  const lowercasedAddress = toLowercaseAddress(authenticatedAddress);
 
   const decodedPermission = decodeDelegations(input.permissionContext)?.[0];
   if (!decodedPermission) throw new Error('Failed to decode permission context');
 
-  if (decodedPermission.delegator.toLowerCase() !== normalizedAddress) {
+  if (toLowercaseAddress(decodedPermission.delegator) !== toLowercaseAddress(authenticatedAddress)) {
     throw new Error('Permission context does not belong to the authenticated address');
   }
-  if (decodedPermission.delegate.toLowerCase() !== REVOKE_SESSION_ACCOUNT_ADDRESS?.toLowerCase()) {
+  if (toLowercaseAddress(decodedPermission.delegate) !== REVOKE_SESSION_ACCOUNT_ADDRESS?.toLowerCase()) {
     throw new Error('Permission is not granted to the Revoke session account');
   }
 
@@ -253,7 +250,7 @@ export const resolvePermissionRecord = async (
     signature: decodedPermission.signature,
   });
 
-  if (recoveredSigner.toLowerCase() !== normalizedAddress) {
+  if (toLowercaseAddress(recoveredSigner) !== lowercasedAddress) {
     throw new Error('Permission signature does not match the claimed chain');
   }
 
@@ -284,10 +281,10 @@ const extractExpiryFromCaveats = (caveats: ReadonlyArray<{ enforcer: Hex; terms:
 };
 
 const mapPermission = (row: typeof autoRevokePermissions.$inferSelect): AutoRevokePermission => ({
-  address: getAddress(row.address),
+  address: row.address,
   chainId: row.chainId,
   permissionContext: row.permissionContext as Hex,
-  delegationManager: getAddress(row.delegationManager),
+  delegationManager: row.delegationManager,
   expiresAt: row.expiresAt.toISOString(),
   isActive: !row.revokedAt && row.expiresAt.getTime() > Date.now(),
 });

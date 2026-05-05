@@ -1,6 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
 import { boolean, check, index, integer, pgSchema, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
-import type { Address, Hash, Hex } from 'viem';
+import type { Hash, Hex } from 'viem';
+import { lowercaseAddress } from '../types';
 import { premiumSubscriptions } from './premium';
 
 export const autoRevokeSchema = pgSchema('auto_revoke');
@@ -18,10 +19,10 @@ export const autoRevokePermissions = autoRevokeSchema.table(
   'permissions',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    address: text('address').notNull().$type<Address>(),
+    address: lowercaseAddress('address').notNull(),
     chainId: integer('chain_id').notNull(),
     permissionContext: text('permission_context').notNull().$type<Hex>(),
-    delegationManager: text('delegation_manager').notNull().$type<Address>(),
+    delegationManager: lowercaseAddress('delegation_manager').notNull(),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     revokedAt: timestamp('revoked_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
@@ -46,7 +47,7 @@ export const autoRevokeRules = autoRevokeSchema.table(
     type: autoRevokeRulesTypeEnum('type').notNull(),
     // Exactly one of (subscriptionId, address) is non-null per row, matching `type`, enforced by CHECK below.
     subscriptionId: uuid('subscription_id').references(() => premiumSubscriptions.id, { onDelete: 'cascade' }),
-    address: text('address').$type<Address>(),
+    address: lowercaseAddress('address'),
     activeRulesId: uuid('active_rules_id').references((): any => autoRevokeRules.id),
     riskDetectionEnabled: boolean('risk_detection_enabled').notNull().default(true),
     riskSensitivity: autoRevokeRiskSensitivityEnum('risk_sensitivity').notNull().default('exploits_only'),
@@ -81,11 +82,11 @@ export const autoRevokeActivityLog = autoRevokeSchema.table(
   'activity_log',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    address: text('address').notNull().$type<Address>(),
+    address: lowercaseAddress('address').notNull(),
     chainId: integer('chain_id').notNull(),
     triggerType: autoRevokeTriggerTypeEnum('trigger_type').notNull(),
-    spenderAddress: text('spender_address').notNull().$type<Address>(),
-    tokenAddress: text('token_address').notNull().$type<Address>(),
+    spenderAddress: lowercaseAddress('spender_address').notNull(),
+    tokenAddress: lowercaseAddress('token_address').notNull(),
     txHash: text('tx_hash').$type<Hash>(),
     status: autoRevokeActivityStatusEnum('status').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),

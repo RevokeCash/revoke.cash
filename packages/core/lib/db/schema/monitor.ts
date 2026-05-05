@@ -11,8 +11,9 @@ import {
   timestamp,
   uuid,
 } from 'drizzle-orm/pg-core';
-import type { Address, Hash, Hex } from 'viem';
+import type { Hash, Hex } from 'viem';
 import { AllowanceType } from '../../allowances';
+import { lowercaseAddress } from '../types';
 
 export const monitorSchema = pgSchema('monitor');
 
@@ -24,7 +25,7 @@ export const monitorApprovalTypeEnum = monitorSchema.enum(
 export const monitorScanState = monitorSchema.table(
   'scan_state',
   {
-    address: text('address').notNull().$type<Address>(),
+    address: lowercaseAddress('address').notNull(),
     chainId: integer('chain_id').notNull(),
     lastScanAt: timestamp('last_scan_at', { withTimezone: true }),
     lastToBlock: bigint('last_to_block', { mode: 'number' }),
@@ -65,7 +66,7 @@ export const monitorEventsCache = monitorSchema.table(
   'events_cache',
   {
     chainId: integer('chain_id').notNull(),
-    address: text('address').notNull().$type<Address>(),
+    address: lowercaseAddress('address').notNull(),
     transactionHash: text('transaction_hash').notNull().$type<Hash>(),
     transactionIndex: integer('transaction_index').notNull(),
     logIndex: integer('log_index').notNull(),
@@ -97,7 +98,7 @@ export const monitorEventsCache = monitorSchema.table(
 export const monitorAllowanceState = monitorSchema.table(
   'allowance_state',
   {
-    address: text('address').notNull().$type<Address>(),
+    address: lowercaseAddress('address').notNull(),
     chainId: integer('chain_id').notNull(),
     computedAt: timestamp('computed_at', { withTimezone: true }),
     computedToBlock: bigint('computed_to_block', { mode: 'number' }),
@@ -116,15 +117,15 @@ export const monitorAllowances = monitorSchema.table(
   {
     id: uuid('id').notNull().defaultRandom(),
     chainId: integer('chain_id').notNull(),
-    address: text('address').notNull().$type<Address>(),
-    tokenAddress: text('token_address').notNull().$type<Address>(),
-    spenderAddress: text('spender_address').notNull().$type<Address>(),
+    address: lowercaseAddress('address').notNull(),
+    tokenAddress: lowercaseAddress('token_address').notNull(),
+    spenderAddress: lowercaseAddress('spender_address').notNull(),
     approvalType: monitorApprovalTypeEnum('approval_type').notNull(),
     // Type-specific fields. Nullable because each row uses a subset depending on approval_type.
     amount: numeric('amount', { mode: 'bigint' }), // erc20, permit2
     tokenId: numeric('token_id', { mode: 'bigint' }), // erc721_single
     approved: boolean('approved'), // erc721_all
-    permit2Address: text('permit2_address').$type<Address>(), // permit2 (which Permit2 instance)
+    permit2Address: lowercaseAddress('permit2_address'), // permit2 (which Permit2 instance)
     expiration: bigint('expiration', { mode: 'number' }), // permit2 (unix seconds)
     // `lastUpdated` mirrors the existing `BaseAllowance.lastUpdated` shape (block + tx + timestamp)
     lastUpdatedBlock: bigint('last_updated_block', { mode: 'number' }).notNull(),
