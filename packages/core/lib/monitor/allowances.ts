@@ -1,15 +1,27 @@
 import { AllowanceType, getAllowancesFromEvents, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import blocksCache from '@revoke.cash/core/cache/blocks';
 import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
-import { getTokenEvents } from '@revoke.cash/core/chains/events';
 import { type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { monitorAllowanceState, monitorAllowances, monitorScanState } from '@revoke.cash/core/db/schema/monitor';
-import { type Log, parseLog } from '@revoke.cash/core/events';
+import {
+  type EnrichedTokenEvent,
+  ERC721_APPROVAL_FOR_ALL_TOPIC,
+  ERC721_APPROVAL_TOPIC,
+  ERC721_TRANSFER_TOPIC,
+  PERMIT2_APPROVAL_TOPIC,
+  PERMIT2_LOCKDOWN_TOPIC,
+  PERMIT2_PERMIT_TOPIC,
+  parseLog,
+  type TokenEvent,
+} from '@revoke.cash/core/events';
 import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, inArray, sql } from 'drizzle-orm';
-import { type Address, getAddress } from 'viem';
-import { toLowercaseAddress } from '../utils';
+import type { Address } from 'viem';
+import { isNullish } from '../utils';
+import { findAffectedTokens } from './affected-tokens';
 import { REORG_DEPTH } from './scan';
 
 export interface RecomputeAllowancesResult {
@@ -19,8 +31,11 @@ export interface RecomputeAllowancesResult {
   durationMs: number;
 }
 
-// Triggered after successful new event insertions or reorg-induced removals. Only recomputes allowances that
-// might be affected by the new or reorged events
+// Triggered after successful new event insertions or reorg-induced removals. Only recomputes
+// allowances for tokens whose events landed (or got reorged) in the recompute window since the
+// last successful compute. Per-token reads keep every query bounded — no wallet-wide event
+// fetch — so the recompute survives heavy wallets where total event volume exceeds Postgres's
+// 100k-row protocol cap on the libpq response.
 export const recomputeAllowances = async (
   address: Address,
   chainId: DocumentedChainId,
@@ -48,26 +63,24 @@ export const recomputeAllowances = async (
   // take reorg depth into account when reading new logs
   const recomputeFromBlock = Math.max((oldCursor ?? 0) - REORG_DEPTH, -1);
 
-  const newLogs = await readNewLogs(address, chainId, recomputeFromBlock, newCursor);
-  const affectedTokens = extractAffectedTokens(newLogs, address, chainId);
+  const affectedTokens = await findAffectedTokens(address, chainId, recomputeFromBlock + 1, newCursor);
 
-  if (affectedTokens.size === 0) {
-    // No allowance-relevant events (fresh or reorged) in the rewind window. Advance the cursor
-    // anyway — otherwise the rewind window keeps growing on every subsequent scan with no payoff.
+  if (affectedTokens.length === 0) {
+    // No allowance-relevant events (fresh or reorged) in the recompute window. Advance the cursor
+    // anyway — otherwise the recompute window keeps growing on every subsequent scan with no payoff.
     await upsertAllowanceState(db, address, chainId, newCursor);
     return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
   }
 
-  // Fetch all events for the wallet, then scoped to only events on affected tokens to recompute allowances for
-  const publicClient = createViemPublicClientForChain(chainId);
-  const { events: allEvents } = await getTokenEvents(chainId, address, new DatabaseLogsProvider(chainId));
-  const scopedEvents = allEvents.filter((event) => affectedTokens.has(toLowercaseAddress(event.token)));
+  const perTokenEventLists = await mapAsyncBounded(affectedTokens, 10, (token) =>
+    fetchEnrichedEventsForToken(address, chainId, token, newCursor),
+  );
+  const scopedEvents = perTokenEventLists.flat();
 
-  // Recompute allowances ONLY for the affected tokens
+  const publicClient = createViemPublicClientForChain(chainId);
   const allowances = await getAllowancesFromEvents(address, scopedEvents, publicClient, chainId);
   const rows = buildAllowanceRows(address, chainId, allowances);
 
-  // Delete all allowances for the affected tokens, then insert the newly recomputed allowances
   await getTransactionalDb().transaction(async (trx) => {
     await trx
       .delete(monitorAllowances)
@@ -75,7 +88,7 @@ export const recomputeAllowances = async (
         and(
           eq(monitorAllowances.address, address),
           eq(monitorAllowances.chainId, chainId),
-          inArray(monitorAllowances.tokenAddress, [...affectedTokens].map(getAddress)),
+          inArray(monitorAllowances.tokenAddress, affectedTokens),
         ),
       );
 
@@ -83,61 +96,60 @@ export const recomputeAllowances = async (
       await trx.insert(monitorAllowances).values(rows);
     }
 
-    // Advance cursor + clear failure state atomically with the per-token replace above.
     await upsertAllowanceState(trx, address, chainId, newCursor);
   });
 
   return {
     skipped: false,
     computedCount: rows.length,
-    affectedTokenCount: affectedTokens.size,
+    affectedTokenCount: affectedTokens.length,
     durationMs: Date.now() - start,
   };
 };
 
-const readNewLogs = async (address: Address, chainId: DocumentedChainId, rewindFrom: number, toBlock: number) => {
-  const userTopic = addressToTopic(address);
-  const provider = new DatabaseLogsProvider(chainId, { includeReorged: true, applyApprovedTokensFilter: false });
-  // We don't apply a topic0 filter, because the events_cache table only contains allowance-relevant topic0s
-  return provider.getLogs({
-    topics: [null, userTopic],
-    fromBlock: rewindFrom + 1,
-    toBlock,
-  });
-};
-
-const extractAffectedTokens = (logs: Log[], owner: Address, chainId: number): Set<Address> => {
-  const tokens = new Set<Address>();
-  for (const log of logs) {
-    const event = parseLog(log, chainId, owner);
-    // `event` is undefined for malformed logs or for topic0s `parseLog` doesn't recognize.
-    if (event) tokens.add(toLowercaseAddress(event.token));
-  }
-  return tokens;
-};
-
-// Both the skip path and the recompute success path treat "advanced cursor + cleared failure
-// state" as a single atomic write — the only difference is whether a transaction is in flight.
-// Caller passes `getDb()` for the bare skip path or `trx` from inside the recompute transaction.
-const upsertAllowanceState = async (
-  writer: DatabaseWriter,
+const fetchEnrichedEventsForToken = async (
   address: Address,
   chainId: DocumentedChainId,
-  cursor: number,
-): Promise<void> => {
-  const successValues = {
-    computedAt: new Date(),
-    computedToBlock: cursor,
-    consecutiveFailures: 0,
-    lastError: null,
-  };
-  await writer
-    .insert(monitorAllowanceState)
-    .values({ address, chainId, ...successValues })
-    .onConflictDoUpdate({
-      target: [monitorAllowanceState.address, monitorAllowanceState.chainId],
-      set: successValues,
-    });
+  tokenAddress: Address,
+  toBlock: number,
+): Promise<EnrichedTokenEvent[]> => {
+  const provider = new DatabaseLogsProvider(chainId);
+  const userTopic = addressToTopic(address);
+  const tokenTopic = addressToTopic(tokenAddress);
+
+  const TOKEN_EMITTED_TOPICS = [ERC721_APPROVAL_TOPIC, ERC721_APPROVAL_FOR_ALL_TOPIC, ERC721_TRANSFER_TOPIC];
+  const PERMIT2_INDEXED_TOPICS = [PERMIT2_APPROVAL_TOPIC, PERMIT2_PERMIT_TOPIC];
+
+  const logsByFilter = await Promise.all([
+    // Token-emitted: emitter = the token contract, user owns at topic1.
+    ...TOKEN_EMITTED_TOPICS.map((topic0) =>
+      provider.getLogs({ address: tokenAddress, topics: [topic0, userTopic], fromBlock: 0, toBlock }),
+    ),
+    // Permit2-emitted: emitter is any Permit2 deployment, user at topic1, token at topic2.
+    ...PERMIT2_INDEXED_TOPICS.map((topic0) =>
+      provider.getLogs({ topics: [topic0, userTopic, tokenTopic], fromBlock: 0, toBlock }),
+    ),
+    // Permit2 Lockdown — read user-wide, filter to this token after the JS decode below.
+    provider.getLogs({ topics: [PERMIT2_LOCKDOWN_TOPIC, userTopic], fromBlock: 0, toBlock }),
+  ]);
+
+  const matchingEvents = logsByFilter
+    .flat()
+    .map((log) => parseLog(log, chainId, address))
+    .filter((event) => !isNullish(event))
+    .filter((event) => event.token === tokenAddress);
+
+  return enrichEvents(matchingEvents, chainId);
+};
+
+const enrichEvents = async (events: TokenEvent[], chainId: DocumentedChainId): Promise<EnrichedTokenEvent[]> => {
+  const publicClient = createViemPublicClientForChain(chainId);
+  return Promise.all(
+    events.map(async (event) => {
+      const time = await blocksCache.getTimeLog(publicClient, event.time);
+      return { ...event, time, metadata: { symbol: '' } } satisfies EnrichedTokenEvent;
+    }),
+  );
 };
 
 const buildAllowanceRows = (
@@ -184,6 +196,27 @@ const buildAllowanceRow = (
         expiration: payload.expiration,
       };
   }
+};
+
+const upsertAllowanceState = async (
+  writer: DatabaseWriter,
+  address: Address,
+  chainId: DocumentedChainId,
+  cursor: number,
+): Promise<void> => {
+  const successValues = {
+    computedAt: new Date(),
+    computedToBlock: cursor,
+    consecutiveFailures: 0,
+    lastError: null,
+  };
+  await writer
+    .insert(monitorAllowanceState)
+    .values({ address, chainId, ...successValues })
+    .onConflictDoUpdate({
+      target: [monitorAllowanceState.address, monitorAllowanceState.chainId],
+      set: successValues,
+    });
 };
 
 export const recordAllowanceFailure = async (
