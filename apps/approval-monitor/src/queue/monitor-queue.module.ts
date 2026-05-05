@@ -29,9 +29,8 @@ export class MonitorQueueModule {
 
     return {
       module: MonitorQueueModule,
+      global: true,
       imports: [bullRoot, bullQueue, ...limiter],
-      // Re-export the queue + limiter so consumers' DI sees `@InjectQueue(name)` and
-      // `GroupLimiterService`. `bullRoot` doesn't need re-export — its providers are app-wide.
       exports: [bullQueue, ...limiter],
     };
   }

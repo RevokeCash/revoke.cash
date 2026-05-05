@@ -1,4 +1,3 @@
-import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { MonitorQueueModule } from '../queue/monitor-queue.module';
 import { ALLOWANCES_QUEUE_NAME } from './allowances.queue';
@@ -9,6 +8,5 @@ import { ALLOWANCES_QUEUE_NAME } from './allowances.queue';
 // TimestampsSchedulerModule, just without the @Interval ticker.
 @Module({
   imports: [MonitorQueueModule.register({ name: ALLOWANCES_QUEUE_NAME })],
-  exports: [BullModule],
 })
 export class AllowancesSchedulerModule {}

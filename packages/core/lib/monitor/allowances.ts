@@ -15,11 +15,11 @@ import {
   type TokenEvent,
 } from '@revoke.cash/core/events';
 import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
-import { addressToTopic } from '@revoke.cash/core/events/utils';
+import { addressToTopic, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, inArray, sql } from 'drizzle-orm';
-import type { Address } from 'viem';
+import type { Address, PublicClient } from 'viem';
 import { isNullish } from '../utils';
 import { findAffectedTokens } from './affected-tokens';
 import { REORG_DEPTH } from './scan';
@@ -72,12 +72,16 @@ export const recomputeAllowances = async (
     return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
   }
 
-  const perTokenEventLists = await mapAsyncBounded(affectedTokens, 10, (token) =>
-    fetchEnrichedEventsForToken(address, chainId, token, newCursor),
-  );
-  const scopedEvents = perTokenEventLists.flat();
-
   const publicClient = createViemPublicClientForChain(chainId);
+  const perTokenRawEvents = await mapAsyncBounded(affectedTokens, 10, (token) =>
+    fetchRawEventsForToken(address, chainId, token, newCursor),
+  );
+
+  const scopedEvents = await attachTimestampsAndPlaceholderMetadata(
+    sortTokenEventsChronologically(perTokenRawEvents.flat()).reverse(),
+    publicClient,
+  );
+
   const allowances = await getAllowancesFromEvents(address, scopedEvents, publicClient, chainId);
   const rows = buildAllowanceRows(address, chainId, allowances);
 
@@ -107,12 +111,27 @@ export const recomputeAllowances = async (
   };
 };
 
-const fetchEnrichedEventsForToken = async (
+// Indexer-side enrichment is intentionally minimal: resolve the block timestamp (needed for
+// `monitor.allowances.last_updated_timestamp`) and attach an empty metadata placeholder to satisfy
+// the `EnrichedTokenEvent` type. Real metadata + spam filtering happens at read time.
+const attachTimestampsAndPlaceholderMetadata = async (
+  events: TokenEvent[],
+  publicClient: PublicClient,
+): Promise<EnrichedTokenEvent[]> => {
+  return Promise.all(
+    events.map(async (event) => {
+      const time = await blocksCache.getTimeLog(publicClient, event.time);
+      return { ...event, time, metadata: { symbol: '' } } satisfies EnrichedTokenEvent;
+    }),
+  );
+};
+
+const fetchRawEventsForToken = async (
   address: Address,
   chainId: DocumentedChainId,
   tokenAddress: Address,
   toBlock: number,
-): Promise<EnrichedTokenEvent[]> => {
+): Promise<TokenEvent[]> => {
   const provider = new DatabaseLogsProvider(chainId);
   const userTopic = addressToTopic(address);
   const tokenTopic = addressToTopic(tokenAddress);
@@ -133,23 +152,11 @@ const fetchEnrichedEventsForToken = async (
     provider.getLogs({ topics: [PERMIT2_LOCKDOWN_TOPIC, userTopic], fromBlock: 0, toBlock }),
   ]);
 
-  const matchingEvents = logsByFilter
+  return logsByFilter
     .flat()
     .map((log) => parseLog(log, chainId, address))
     .filter((event) => !isNullish(event))
     .filter((event) => event.token === tokenAddress);
-
-  return enrichEvents(matchingEvents, chainId);
-};
-
-const enrichEvents = async (events: TokenEvent[], chainId: DocumentedChainId): Promise<EnrichedTokenEvent[]> => {
-  const publicClient = createViemPublicClientForChain(chainId);
-  return Promise.all(
-    events.map(async (event) => {
-      const time = await blocksCache.getTimeLog(publicClient, event.time);
-      return { ...event, time, metadata: { symbol: '' } } satisfies EnrichedTokenEvent;
-    }),
-  );
 };
 
 const buildAllowanceRows = (
