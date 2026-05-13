@@ -57,6 +57,13 @@
       "when": 1777732912621,
       "tag": "0007_allowances",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1778669859820,
+      "tag": "0008_minor_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }

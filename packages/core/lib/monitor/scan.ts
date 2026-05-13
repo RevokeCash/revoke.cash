@@ -113,9 +113,7 @@ export const scanAddressChain = async (address: Address, chainId: DocumentedChai
     const filters = Object.values(buildTokenEventFilters(address, fromBlock, currentToBlock));
 
     const filterResults = await getTransactionalDb().transaction(async (trx) => {
-      const results = await mapAsyncSequential(filters, (filter) =>
-        scanFilter(trx, chainId, logsProvider, filter, addressTopic),
-      );
+      const results = await scanAllFilters(trx, chainId, logsProvider, filters, addressTopic, isNarrow);
 
       await commitScanState(trx, publicClient, address, chainId, existingState, {
         fromBlock,
@@ -325,24 +323,41 @@ interface FilterScanResult {
   latestLog: Log | null;
 }
 
-const scanFilter = async (
+const scanAllFilters = async (
   trx: DatabaseTransaction,
   chainId: number,
   logsProvider: LogsProvider,
+  filters: readonly Filter[],
+  addressTopic: Hex,
+  parallelFetch: boolean,
+): Promise<FilterScanResult[]> => {
+  const logsByFilter = parallelFetch
+    ? await Promise.all(filters.map((filter) => logsProvider.getLogs(filter)))
+    : await mapAsyncSequential(filters, (filter) => logsProvider.getLogs(filter));
+
+  const filterWithLogs = filters.map((filter, i) => ({ filter, logs: logsByFilter[i] }));
+  return mapAsyncSequential(filterWithLogs, ({ filter, logs }) =>
+    processScanResults(trx, chainId, filter, logs, addressTopic),
+  );
+};
+
+const processScanResults = async (
+  trx: DatabaseTransaction,
+  chainId: number,
   filter: Filter,
+  fetchedLogs: Log[],
   addressTopic: Hex,
 ): Promise<FilterScanResult> => {
   const logsReorgedMarked = await markFilterEventsAsReorged(trx, chainId, filter, addressTopic);
 
-  const fetchedLogs = await logsProvider.getLogs(filter);
-
   // For Transfer filters, drop zero-value ERC20 Transfers, since this is spam and carries no information.
   const meaningfulLogs = filter.topics[0] === ERC721_TRANSFER_TOPIC ? fetchedLogs.filter(isMeaningfulLog) : fetchedLogs;
   const rows = meaningfulLogs.map((log) => toEventsCacheRow(chainId, log));
+  const logsWritten = await insertEventRowsChunked(trx, rows);
 
   return {
     logsFetched: fetchedLogs.length,
-    logsWritten: await insertEventRowsChunked(trx, rows),
+    logsWritten,
     logsReorgedMarked,
     latestLog: latestLogByBlock(meaningfulLogs),
   };

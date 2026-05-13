@@ -24,13 +24,7 @@ import {
 } from '@revoke.cash/core/tokens';
 import type { Nullable } from '@revoke.cash/core/types';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
-import {
-  isNetworkError,
-  isRateLimitError,
-  isRevertedError,
-  parseErrorMessage,
-  stringifyError,
-} from '@revoke.cash/core/utils/errors';
+import { isRevertedError, isTransientError, parseErrorMessage, stringifyError } from '@revoke.cash/core/utils/errors';
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { bigintMin, fixedPointMultiply } from '@revoke.cash/core/utils/math';
 import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
@@ -136,8 +130,7 @@ export const getAllowancesFromEvents = async (
 
         return filteredAllowances;
       } catch (e) {
-        if (isNetworkError(e)) throw e;
-        if (isRateLimitError(e)) throw e;
+        if (isTransientError(e)) throw e;
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
 
         // If the call to getTokenData() fails, the token is not a standard-adhering token so

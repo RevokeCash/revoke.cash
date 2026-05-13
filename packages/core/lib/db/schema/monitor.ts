@@ -112,6 +112,38 @@ export const monitorAllowanceState = monitorSchema.table(
   (table) => [primaryKey({ name: 'allowance_state_pkey', columns: [table.address, table.chainId] })],
 );
 
+export const monitorTokenStandardEnum = monitorSchema.enum('token_standard', ['erc20', 'erc721', 'erc1155', 'unknown']);
+export const monitorSpamReasonEnum = monitorSchema.enum('spam_reason', ['whois', 'symbol', 'bytecode', 'airdrop']);
+
+export const monitorTokenMetadata = monitorSchema.table(
+  'token_metadata',
+  {
+    chainId: integer('chain_id').notNull(),
+    tokenAddress: lowercaseAddress('token_address').notNull(),
+    tokenStandard: monitorTokenStandardEnum('token_standard').notNull().default('unknown'),
+    symbol: text('symbol'),
+    decimals: integer('decimals'),
+    totalSupply: numeric('total_supply', { mode: 'bigint' }),
+    iconUrl: text('icon_url'),
+    spamReason: monitorSpamReasonEnum('spam_reason'),
+    enrichmentError: text('enrichment_error'),
+    enrichedAt: timestamp('enriched_at', { withTimezone: true }),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    primaryKey({ name: 'token_metadata_pkey', columns: [table.chainId, table.tokenAddress] }),
+    // For periodic re-enrichment (find stale entries on a chain).
+    index('idx_token_metadata_enriched_at').on(table.chainId, table.enrichedAt),
+    // For the backstop scheduler (find never-enriched entries cheaply).
+    index('idx_token_metadata_unenriched')
+      .on(table.chainId, table.tokenAddress)
+      .where(sql`${table.enrichedAt} IS NULL`),
+  ],
+);
+
 export const monitorAllowances = monitorSchema.table(
   'allowances',
   {

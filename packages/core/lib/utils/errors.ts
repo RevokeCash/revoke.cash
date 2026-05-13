@@ -179,6 +179,17 @@ export const isCovalentError = (error?: string | any): boolean => {
   return lowercaseMessage?.includes('block not found: chain-height');
 };
 
+// Transient errors are expected to resolve themselves after some time
+export const isTransientError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return isTransientError(parseErrorMessage(error)) || isTransientError(stringifyError(error));
+  }
+
+  return isNetworkError(error) || isRateLimitError(error) || isCovalentError(error);
+};
+
 export const parseErrorMessage = (error: any): string => {
   const errorMessage =
     error?.cause?.details || // Abstract Global Wallet
@@ -202,4 +213,20 @@ export const stringifyError = (error: any, indent?: number): string => {
   } catch {
     return String(error);
   }
+};
+
+export type SpamReason = 'whois' | 'symbol' | 'bytecode' | 'airdrop';
+
+export class SpamError extends Error {
+  readonly reason: SpamReason;
+
+  constructor(reason: SpamReason) {
+    super(`Token classified as spam: ${reason}`);
+    this.name = 'SpamError';
+    this.reason = reason;
+  }
+}
+
+export const isSpamError = (error: unknown): error is SpamError => {
+  return error instanceof Error && error.name === 'SpamError' && 'reason' in error;
 };

@@ -2,6 +2,7 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncSequential } from '@revoke.cash/core/utils/promises';
 import type { Queue } from 'bullmq';
 import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from './timestamps.queue';
@@ -20,7 +21,7 @@ export class TimestampsSchedulerService {
         await this.queue.add('timestamps', { chainId }, { jobId: `timestamps-${chainId}` });
         return true;
       } catch (error) {
-        this.logger.warn({ chainId, error }, 'failed to enqueue timestamps job');
+        this.logger.warn({ chainId, error: parseErrorMessage(error) }, 'failed to enqueue timestamps job');
         return false;
       }
     });

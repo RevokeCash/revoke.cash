@@ -8,6 +8,8 @@ import { SCAN_QUEUE_NAME } from '../scan/scan.queue';
 import { ScanSchedulerModule } from '../scan/scan.scheduler.module';
 import { TIMESTAMPS_QUEUE_NAME } from '../timestamps/timestamps.queue';
 import { TimestampsSchedulerModule } from '../timestamps/timestamps.scheduler.module';
+import { TOKEN_ENRICHMENT_QUEUE_NAME } from '../token-enrichment/token-enrichment.queue';
+import { TokenEnrichmentSchedulerModule } from '../token-enrichment/token-enrichment.scheduler.module';
 import { BullBoardAuthMiddleware } from './bull-board.middleware';
 
 const BULL_BOARD_ROUTE = '/queues';
@@ -17,6 +19,7 @@ const BULL_BOARD_ROUTE = '/queues';
     ScanSchedulerModule,
     TimestampsSchedulerModule,
     AllowancesSchedulerModule,
+    TokenEnrichmentSchedulerModule,
     BullBoardModuleBase.forRoot({
       route: BULL_BOARD_ROUTE,
       adapter: ExpressAdapter,
@@ -26,6 +29,7 @@ const BULL_BOARD_ROUTE = '/queues';
       { name: SCAN_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Scan' } },
       { name: TIMESTAMPS_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Timestamps' } },
       { name: ALLOWANCES_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Allowances' } },
+      { name: TOKEN_ENRICHMENT_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Token Enrichment' } },
     ),
   ],
   providers: [BullBoardAuthMiddleware],

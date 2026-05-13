@@ -28,6 +28,11 @@ const counters = [
     help: 'Total allowance recompute attempts by chain and outcome (ok, skipped, chain_busy, failed)',
     labelNames: ['chain_id', 'outcome'],
   }),
+  makeCounterProvider({
+    name: 'monitor_token_enrichments_total',
+    help: 'Total token-enrichment attempts by chain and outcome (enriched, spam, error, chain_busy, failed)',
+    labelNames: ['chain_id', 'outcome'],
+  }),
 ];
 
 const histograms = [
@@ -48,6 +53,12 @@ const histograms = [
     help: 'Wall-clock duration of a single allowance recompute (signature check + RPC + DB write)',
     labelNames: ['chain_id'],
     buckets: [0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30],
+  }),
+  makeHistogramProvider({
+    name: 'monitor_token_enrichment_duration_seconds',
+    help: 'Wall-clock duration of a single token-enrichment attempt (whois + RPC + DB write)',
+    labelNames: ['chain_id'],
+    buckets: [0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
   }),
 ];
 

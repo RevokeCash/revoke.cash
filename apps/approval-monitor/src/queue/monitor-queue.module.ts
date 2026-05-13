@@ -14,24 +14,27 @@ export const MONITOR_DEFAULT_JOB_OPTIONS = {
 
 interface RegisterOptions {
   name: string;
-  groupId?: string;
+  // Per-chain group limiter — `groupId` chooses the Bottleneck Group namespace, `maxConcurrent`
+  // sizes the per-chain cap. Workloads that hit RPC heavily (scan) stay tight; lighter workloads
+  // (enrichment) can run much higher per chain without overwhelming the underlying providers.
+  limiter?: { groupId: string; maxConcurrent: number };
 }
 
 @Module({})
 export class MonitorQueueModule {
-  static register({ name, groupId }: RegisterOptions): DynamicModule {
+  static register({ name, limiter }: RegisterOptions): DynamicModule {
     const bullRoot = BullModule.forRootAsync({
       inject: [REDIS_CONNECTION],
       useFactory: (connection: Redis) => ({ connection }),
     });
     const bullQueue = BullModule.registerQueue({ name, defaultJobOptions: MONITOR_DEFAULT_JOB_OPTIONS });
-    const limiter = groupId ? [GroupLimiterModule.register(groupId)] : [];
+    const limiterModule = limiter ? [GroupLimiterModule.register(limiter)] : [];
 
     return {
       module: MonitorQueueModule,
       global: true,
-      imports: [bullRoot, bullQueue, ...limiter],
-      exports: [bullQueue, ...limiter],
+      imports: [bullRoot, bullQueue, ...limiterModule],
+      exports: [bullQueue, ...limiterModule],
     };
   }
 }

@@ -1,13 +1,14 @@
 import { Inject, Injectable, Logger, type OnModuleDestroy } from '@nestjs/common';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import Bottleneck from 'bottleneck';
 import type { Redis } from 'ioredis';
 import { REDIS_CONNECTION } from '../redis/redis.module';
 
-// Module-internal injection token for the per-instance Bottleneck Group id. Wired by
-// `GroupLimiterModule.register(groupId)` — consumers should import that instead of touching
-// this token directly.
+// Module-internal injection tokens, wired by `GroupLimiterModule.register({ groupId,
+// maxConcurrent })`. Consumers import that module instead of touching these directly.
 export const GROUP_LIMITER_GROUP_ID = Symbol('GROUP_LIMITER_GROUP_ID');
+export const GROUP_LIMITER_MAX_CONCURRENT = Symbol('GROUP_LIMITER_MAX_CONCURRENT');
 
 export type GroupBusyError = Bottleneck.BottleneckError;
 export const isGroupBusyError = (error: unknown): boolean =>
@@ -18,12 +19,16 @@ export class GroupLimiterService implements OnModuleDestroy {
   private readonly logger = new Logger(GroupLimiterService.name);
   private readonly group: Bottleneck.Group;
 
-  constructor(@Inject(REDIS_CONNECTION) redis: Redis, @Inject(GROUP_LIMITER_GROUP_ID) groupId: string) {
+  constructor(
+    @Inject(REDIS_CONNECTION) redis: Redis,
+    @Inject(GROUP_LIMITER_GROUP_ID) groupId: string,
+    @Inject(GROUP_LIMITER_MAX_CONCURRENT) maxConcurrent: number,
+  ) {
     const connection = new Bottleneck.IORedisConnection({ client: redis });
 
     // highWater: 0 means that jobs over the concurrency limit are dropped (and get re-added later by the scheduler)
     this.group = new Bottleneck.Group({
-      maxConcurrent: 3,
+      maxConcurrent,
       highWater: 0,
       strategy: Bottleneck.strategy.OVERFLOW,
       datastore: 'ioredis',
@@ -33,7 +38,7 @@ export class GroupLimiterService implements OnModuleDestroy {
     });
 
     this.group.on('error', (error) => {
-      this.logger.error({ error, groupId }, 'group limiter error');
+      this.logger.error({ error: parseErrorMessage(error), groupId }, 'group limiter error');
     });
   }
 
@@ -48,7 +53,7 @@ export class GroupLimiterService implements OnModuleDestroy {
 
   async onModuleDestroy(): Promise<void> {
     await this.group.disconnect(true).catch((error) => {
-      this.logger.warn({ error }, 'failed to disconnect group limiter');
+      this.logger.warn({ error: parseErrorMessage(error) }, 'failed to disconnect group limiter');
     });
   }
 }

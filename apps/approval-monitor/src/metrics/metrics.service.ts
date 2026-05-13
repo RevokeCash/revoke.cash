@@ -13,5 +13,8 @@ export class MetricsService {
     @InjectMetric('monitor_allowances_total') public readonly allowancesTotal: Counter<string>,
     @InjectMetric('monitor_allowance_recompute_duration_seconds')
     public readonly allowanceRecomputeDuration: Histogram<string>,
+    @InjectMetric('monitor_token_enrichments_total') public readonly tokenEnrichmentsTotal: Counter<string>,
+    @InjectMetric('monitor_token_enrichment_duration_seconds')
+    public readonly tokenEnrichmentDuration: Histogram<string>,
   ) {}
 }

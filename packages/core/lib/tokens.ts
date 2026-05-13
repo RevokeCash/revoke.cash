@@ -24,6 +24,7 @@ import {
   type TypedDataDomain,
   toHex,
 } from 'viem';
+import { SpamError } from './utils/errors';
 
 export interface TokenData {
   contract: Erc20TokenContract | Erc721TokenContract;
@@ -172,7 +173,9 @@ const getTokenDataFromMapping = async (
 
 export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
   const metadataFromMapping = await getTokenDataFromMapping(contract, chainId);
-  if (metadataFromMapping?.isSpam) throw new Error('Token is marked as spam in metadata');
+  // Whois-flagged spam short-circuits before any RPC — no need to spend reads on a token we'll
+  // throw out anyway.
+  if (metadataFromMapping?.isSpam) throw new SpamError('whois');
 
   if (isErc721Contract(contract)) {
     const [symbol] = await Promise.all([
@@ -181,7 +184,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
       throwIfNotErc721(contract),
     ]);
 
-    if (isSpamTokenSymbol(symbol)) throw new Error('Token symbol looks like spam');
+    if (isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
     return { ...metadataFromMapping, symbol, price: null, decimals: 0 };
   }
 
@@ -195,7 +198,7 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
     metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
   ]);
 
-  if (isSpamTokenSymbol(symbol)) throw new Error('Token symbol looks like spam');
+  if (isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
 
   // Price will be loaded separately via useTokenPrice hook
   return { ...metadataFromMapping, totalSupply, symbol: String(symbol), decimals, price: null };
@@ -248,12 +251,12 @@ export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
 };
 
 // TODO: Improve spam checks
-export const throwIfSpam = async (contract: TokenContract, events: TokenEvent[]) => {
-  await Promise.all([throwIfSpamAirdrop(contract, events), throwIfSpamBytecode(contract)]);
+export const throwIfSpam = async (contract: TokenContract, events: TokenEvent[]): Promise<void> => {
+  await Promise.all([throwIfSpamBytecode(contract), Promise.resolve(throwIfSpamAirdrop(events))]);
 };
 
 // TODO: Investigate other proxy patterns to see if they result in false positives
-export const throwIfSpamBytecode = async (contract: TokenContract) => {
+export const throwIfSpamBytecode = async (contract: TokenContract): Promise<void> => {
   const bytecode = (await contract.publicClient.getCode({ address: contract.address })) ?? '';
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
@@ -267,11 +270,11 @@ export const throwIfSpamBytecode = async (contract: TokenContract) => {
     // TODO: Make this minimal proxy check more robust for those kinds of cases
     // if (bytecode.match(/363d3d373d3d3d363d[0-9a-f]{2}[0-9a-f]{0,40}5af43d82803e903d9160[0-9a-f]{2}57fd5bf3$/i)) return;
 
-    throw new Error('Contract bytecode indicates a "spam" token');
+    throw new SpamError('bytecode');
   }
 };
 
-export const throwIfSpamAirdrop = async (_contract: Contract, events: TokenEvent[]) => {
+export const throwIfSpamAirdrop = (events: TokenEvent[]): void => {
   const transferTransactions = events.filter(isTransferTokenEvent).map((event) => event.time.transactionHash);
   const approvalTransactions = events.filter(isApprovalTokenEvent).map((event) => event.time.transactionHash);
 
@@ -281,7 +284,7 @@ export const throwIfSpamAirdrop = async (_contract: Contract, events: TokenEvent
     transferTransactions.length > 0 &&
     transferTransactions.every((transaction) => approvalTransactions.includes(transaction))
   ) {
-    throw new Error('Contract is a spam airdrop');
+    throw new SpamError('airdrop');
   }
 };
 

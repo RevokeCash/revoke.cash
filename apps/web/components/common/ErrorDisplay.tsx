@@ -1,7 +1,7 @@
 'use client';
 
 import { getChainName } from '@revoke.cash/core/chains';
-import { isCovalentError, isNetworkError, isRateLimitError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { isTransientError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { AddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useTranslations } from 'next-intl';
 import { useContext, useEffect } from 'react';
@@ -37,7 +37,7 @@ const ErrorDisplay = ({ error, chainId, className }: Props) => {
 };
 
 const getErrorMessage = (error: any, selectedChainId: number | undefined, t: ReturnType<typeof useTranslations>) => {
-  if (isNetworkError(error) || isRateLimitError(error) || isCovalentError(error)) {
+  if (isTransientError(error)) {
     if (selectedChainId) {
       const chainName = getChainName(selectedChainId);
       return t('common.errors.messages.chain_could_not_connect', { chainName });

@@ -7,6 +7,11 @@ import type { Job, Queue } from 'bullmq';
 import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '../allowances/allowances.queue';
 import { MetricsService } from '../metrics/metrics.service';
 import { GroupLimiterService } from '../queue/group-limiter.service';
+import {
+  enqueueUnenrichedTokens,
+  TOKEN_ENRICHMENT_QUEUE_NAME,
+  type TokenEnrichmentJobData,
+} from '../token-enrichment/token-enrichment.queue';
 import { SCAN_QUEUE_NAME, type ScanJobData } from './scan.queue';
 
 const allowanceJobIdFor = (chainId: number, address: string): string => `${chainId}-${address}`;
@@ -19,6 +24,8 @@ export class ScanWorker extends WorkerHost {
     private readonly metrics: MetricsService,
     private readonly groupLimiter: GroupLimiterService,
     @InjectQueue(ALLOWANCES_QUEUE_NAME) private readonly allowancesQueue: Queue<AllowancesJobData>,
+    @InjectQueue(TOKEN_ENRICHMENT_QUEUE_NAME)
+    private readonly tokenEnrichmentQueue: Queue<TokenEnrichmentJobData>,
   ) {
     super();
   }
@@ -55,7 +62,7 @@ export class ScanWorker extends WorkerHost {
     this.metrics.scanLogsFetched.observe({ chain_id: chainId, path: result.path }, result.logsFetched);
     this.logger.log({ scanId, chainId, address, ...result }, 'scan completed');
 
-    // If no logs were written or reorged in this scan, we don't have to recompute allowances.
+    // If no logs were written or reorged in this scan, we don't have to recompute allowances
     if (result.logsWritten === 0 && result.logsReorgedMarked === 0) return;
 
     await this.allowancesQueue
@@ -66,6 +73,24 @@ export class ScanWorker extends WorkerHost {
           'failed to enqueue allowance recompute',
         );
       });
+
+    const enqueued = await enqueueUnenrichedTokens(
+      this.tokenEnrichmentQueue,
+      { chainId, fromBlock: result.fromBlock, toBlock: result.toBlock },
+      'scan',
+    ).catch((error) => {
+      this.logger.warn(
+        { scanId, chainId, error: parseErrorMessage(error) },
+        'failed to enqueue token enrichment fan-out',
+      );
+    });
+
+    if (enqueued && enqueued > 0) {
+      this.logger.debug(
+        { scanId, chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, enqueued },
+        'enqueued token enrichment jobs',
+      );
+    }
   }
 
   // BullMQ fires `failed` after every attempt, including in-process retries. We only want to

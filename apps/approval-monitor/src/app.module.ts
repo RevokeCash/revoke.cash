@@ -12,6 +12,8 @@ import { ScanSchedulerModule } from './scan/scan.scheduler.module';
 import { ScanWorkerModule } from './scan/scan.worker.module';
 import { TimestampsSchedulerModule } from './timestamps/timestamps.scheduler.module';
 import { TimestampsWorkerModule } from './timestamps/timestamps.worker.module';
+import { TokenEnrichmentSchedulerModule } from './token-enrichment/token-enrichment.scheduler.module';
+import { TokenEnrichmentWorkerModule } from './token-enrichment/token-enrichment.worker.module';
 
 @Module({})
 export class AppModule {
@@ -24,10 +26,9 @@ export class AppModule {
       RedisModule,
       HealthModule,
       MetricsModule,
-      // Allowances pipeline doesn't have a scheduler — it's triggered by the scan worker on every successful scan
       ...(isManager
-        ? [ScanSchedulerModule, TimestampsSchedulerModule, BullBoardModule]
-        : [ScanWorkerModule, TimestampsWorkerModule, AllowancesWorkerModule]),
+        ? [ScanSchedulerModule, TimestampsSchedulerModule, TokenEnrichmentSchedulerModule, BullBoardModule]
+        : [ScanWorkerModule, TimestampsWorkerModule, AllowancesWorkerModule, TokenEnrichmentWorkerModule]),
     ];
 
     return {

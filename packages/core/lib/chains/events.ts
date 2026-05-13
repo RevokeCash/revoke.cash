@@ -25,7 +25,7 @@ import ky from '@revoke.cash/core/ky';
 import { parseSessionCreatedLog, type SessionCreatedEvent } from '@revoke.cash/core/sessions';
 import { createTokenContract, getTokenMetadata, throwIfSpam } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
-import { isNetworkError, isRateLimitError, stringifyError } from '@revoke.cash/core/utils/errors';
+import { isSpamError, isTransientError, stringifyError } from '@revoke.cash/core/utils/errors';
 import { mapAsync } from '@revoke.cash/core/utils/promises';
 import { type Address, getAbiItem, type PublicClient, toEventSelector } from 'viem';
 
@@ -155,9 +155,10 @@ const enrichTokenEvents = async (
         ]);
         metadataMap.set(event.token, metadata);
       } catch (e) {
+        if (isSpamError(e)) return;
+
         console.warn(`Failed to fetch metadata for token ${event.token} on chain ${chainId}:`, e);
-        if (isNetworkError(e)) throw e;
-        if (isRateLimitError(e)) throw e;
+        if (isTransientError(e)) throw e;
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
       }
     }),
