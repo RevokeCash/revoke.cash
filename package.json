@@ -114,7 +114,10 @@
     "typescript": "^5.9.3",
     "walkdir": "^0.4.1"
   },
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "yarn@4.14.1",
+  "engines": {
+    "node": ">=22"
+  },
   "lint-staged": {
     "*": "biome check --write --no-errors-on-unmatched"
   },
