@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 9
   cacheKey: 10
 
 "@abstract-foundation/agw-client@npm:1.11.0, @abstract-foundation/agw-client@npm:^1.10.0":
