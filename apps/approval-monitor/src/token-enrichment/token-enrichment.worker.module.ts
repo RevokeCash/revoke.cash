@@ -7,7 +7,7 @@ import { TokenEnrichmentWorker } from './token-enrichment.worker';
   imports: [
     MonitorQueueModule.register({
       name: TOKEN_ENRICHMENT_QUEUE_NAME,
-      limiter: { groupId: 'monitor-token-enrichment', maxConcurrent: 20 },
+      limiter: { groupId: 'monitor-token-enrichment', maxConcurrent: 20, overflow: 'delay' },
     }),
   ],
   providers: [TokenEnrichmentWorker],

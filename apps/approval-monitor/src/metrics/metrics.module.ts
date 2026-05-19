@@ -25,12 +25,12 @@ const counters = [
   }),
   makeCounterProvider({
     name: 'monitor_allowances_total',
-    help: 'Total allowance recompute attempts by chain and outcome (ok, skipped, chain_busy, failed)',
+    help: 'Total allowance recompute attempts by chain and outcome (ok, skipped, failed)',
     labelNames: ['chain_id', 'outcome'],
   }),
   makeCounterProvider({
     name: 'monitor_token_enrichments_total',
-    help: 'Total token-enrichment attempts by chain and outcome (enriched, spam, error, chain_busy, failed)',
+    help: 'Total token-enrichment attempts by chain and outcome (enriched, spam, error, failed)',
     labelNames: ['chain_id', 'outcome'],
   }),
 ];

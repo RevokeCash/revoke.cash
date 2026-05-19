@@ -7,7 +7,7 @@ import { AllowancesWorker } from './allowances.worker';
   imports: [
     MonitorQueueModule.register({
       name: ALLOWANCES_QUEUE_NAME,
-      limiter: { groupId: 'monitor-allowance', maxConcurrent: 3 },
+      limiter: { groupId: 'monitor-allowance', maxConcurrent: 3, overflow: 'delay' },
     }),
   ],
   providers: [AllowancesWorker],

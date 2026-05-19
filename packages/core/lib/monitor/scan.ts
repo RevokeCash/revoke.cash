@@ -203,16 +203,6 @@ export const recordScanFailure = async (
   });
 };
 
-export const deferScanOnChainBusy = async (address: Address, chainId: DocumentedChainId): Promise<void> => {
-  const CHAIN_BUSY_DEFER_MIN_MS = 1_000;
-  const CHAIN_BUSY_DEFER_MAX_MS = 10_000;
-
-  const jitterMs = CHAIN_BUSY_DEFER_MIN_MS + Math.random() * (CHAIN_BUSY_DEFER_MAX_MS - CHAIN_BUSY_DEFER_MIN_MS);
-  await upsertScanState(getDb(), address, chainId, {
-    nextRunAt: new Date(Date.now() + jitterMs),
-  });
-};
-
 const computeScanRange = async (
   publicClient: PublicClient,
   cursor: number | null | undefined,

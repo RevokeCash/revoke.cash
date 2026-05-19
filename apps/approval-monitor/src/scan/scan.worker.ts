@@ -1,7 +1,7 @@
 import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
-import { deferScanOnChainBusy, recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/scan';
+import { recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/scan';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job, Queue } from 'bullmq';
 import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '../allowances/allowances.queue';
@@ -30,27 +30,20 @@ export class ScanWorker extends WorkerHost {
     super();
   }
 
-  async process(job: Job<ScanJobData>): Promise<void> {
+  async process(job: Job<ScanJobData>, token?: string): Promise<void> {
     const { scanId, address, chainId, reason } = job.data;
 
-    const result = await this.groupLimiter.runWithLimit(chainId, async () => {
-      this.logger.debug({ scanId, chainId, address, reason }, 'processing scan');
-      const endTimer = this.metrics.scanDuration.startTimer({ chain_id: chainId });
-      const scanResult = await scanAddressChain(address, chainId as DocumentedChainId);
-      if (!scanResult.nonceZeroSkipped) endTimer({ path: scanResult.path });
-      return scanResult;
-    });
-
-    // If result is null the group limiter dropped this submission (per-chain cap saturated),
-    // so we defer the scan and return.
-    if (result === null) {
-      this.metrics.scansTotal.inc({ chain_id: chainId, outcome: 'chain_busy' });
-      this.logger.debug({ scanId, chainId, address }, 'group limiter full, deferring');
-      await deferScanOnChainBusy(address, chainId as DocumentedChainId).catch((error) => {
-        this.logger.warn({ scanId, chainId, error: parseErrorMessage(error) }, 'failed to defer chain-busy scan');
-      });
-      return;
-    }
+    const result = await this.groupLimiter.runWithLimit(
+      chainId,
+      async () => {
+        this.logger.debug({ scanId, chainId, address, reason }, 'processing scan');
+        const endTimer = this.metrics.scanDuration.startTimer({ chain_id: chainId });
+        const scanResult = await scanAddressChain(address, chainId as DocumentedChainId);
+        if (!scanResult.nonceZeroSkipped) endTimer({ path: scanResult.path });
+        return scanResult;
+      },
+      { job, token },
+    );
 
     if (result.nonceZeroSkipped) {
       this.metrics.scansTotal.inc({ chain_id: chainId, outcome: 'nonce_zero' });

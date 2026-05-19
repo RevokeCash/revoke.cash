@@ -19,21 +19,19 @@ export class AllowancesWorker extends WorkerHost {
     super();
   }
 
-  async process(job: Job<AllowancesJobData>): Promise<void> {
+  async process(job: Job<AllowancesJobData>, token?: string): Promise<void> {
     const { address, chainId, scanId } = job.data;
 
-    const result = await this.groupLimiter.runWithLimit(chainId, async () => {
-      const endTimer = this.metrics.allowanceRecomputeDuration.startTimer({ chain_id: chainId });
-      const recompute = await recomputeAllowances(address, chainId);
-      endTimer();
-      return recompute;
-    });
-
-    if (result === null) {
-      this.metrics.allowancesTotal.inc({ chain_id: chainId, outcome: 'chain_busy' });
-      this.logger.debug({ scanId, chainId, address }, 'allowance recompute skipped (group limiter full)');
-      return;
-    }
+    const result = await this.groupLimiter.runWithLimit(
+      chainId,
+      async () => {
+        const endTimer = this.metrics.allowanceRecomputeDuration.startTimer({ chain_id: chainId });
+        const recompute = await recomputeAllowances(address, chainId);
+        endTimer();
+        return recompute;
+      },
+      { job, token },
+    );
 
     if (result.skipped) {
       this.metrics.allowancesTotal.inc({ chain_id: chainId, outcome: 'skipped' });

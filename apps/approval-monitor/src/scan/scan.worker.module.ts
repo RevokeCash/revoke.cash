@@ -9,7 +9,7 @@ import { ScanWorker } from './scan.worker';
   imports: [
     MonitorQueueModule.register({
       name: SCAN_QUEUE_NAME,
-      limiter: { groupId: 'monitor-scan', maxConcurrent: 3 },
+      limiter: { groupId: 'monitor-scan', maxConcurrent: 3, overflow: 'delay' },
     }),
     MonitorQueueModule.register({ name: ALLOWANCES_QUEUE_NAME }),
     MonitorQueueModule.register({ name: TOKEN_ENRICHMENT_QUEUE_NAME }),

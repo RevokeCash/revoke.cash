@@ -18,21 +18,19 @@ export class TokenEnrichmentWorker extends WorkerHost {
     super();
   }
 
-  async process(job: Job<TokenEnrichmentJobData>): Promise<void> {
+  async process(job: Job<TokenEnrichmentJobData>, token?: string): Promise<void> {
     const { chainId, tokenAddress, source } = job.data;
 
-    const result = await this.groupLimiter.runWithLimit(chainId, async () => {
-      const endTimer = this.metrics.tokenEnrichmentDuration.startTimer({ chain_id: chainId });
-      const enrichment = await enrichToken(chainId, tokenAddress);
-      endTimer();
-      return enrichment;
-    });
-
-    if (result === null) {
-      this.metrics.tokenEnrichmentsTotal.inc({ chain_id: chainId, outcome: 'chain_busy' });
-      this.logger.debug({ chainId, tokenAddress, source }, 'token enrichment skipped (group limiter full)');
-      return;
-    }
+    const result = await this.groupLimiter.runWithLimit(
+      chainId,
+      async () => {
+        const endTimer = this.metrics.tokenEnrichmentDuration.startTimer({ chain_id: chainId });
+        const enrichment = await enrichToken(chainId, tokenAddress);
+        endTimer();
+        return enrichment;
+      },
+      { job, token },
+    );
 
     this.metrics.tokenEnrichmentsTotal.inc({ chain_id: chainId, outcome: result.outcome });
     this.logger.debug(
