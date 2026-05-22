@@ -8,52 +8,54 @@ import {
   getChainApiUrl,
   getChainName,
 } from '@revoke.cash/core/chains';
-import { ADDRESS_ZERO, DUMMY_ADDRESS } from '@revoke.cash/core/constants';
-import {
-  type ApprovalTokenEvent,
-  type EnrichedTokenEvent,
-  isApprovalTokenEvent,
-  isRevokeEvent,
-  parseLog,
-  type TokenEvent,
-  TokenEventType,
-} from '@revoke.cash/core/events';
+import { type EnrichedTokenEvent, isApprovalTokenEvent, parseLog, type TokenEvent } from '@revoke.cash/core/events';
 import { buildTokenEventFilters } from '@revoke.cash/core/events/filters';
+import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cash/core/events/processing';
 import type { LogsProvider } from '@revoke.cash/core/events/providers';
-import { addressToTopic, logSorterChronological, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
+import { addressToTopic, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import ky from '@revoke.cash/core/ky';
 import { parseSessionCreatedLog, type SessionCreatedEvent } from '@revoke.cash/core/sessions';
-import { createTokenContract, getTokenMetadata, throwIfSpam } from '@revoke.cash/core/tokens';
+import { createTokenContract, getTokenMetadata, throwIfSpamBytecode } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { isSpamError, isTransientError, stringifyError } from '@revoke.cash/core/utils/errors';
-import { mapAsync } from '@revoke.cash/core/utils/promises';
+import { mapAsync, withTimeout } from '@revoke.cash/core/utils/promises';
 import { type Address, getAbiItem, type PublicClient, toEventSelector } from 'viem';
+import { SECOND } from '../utils/time';
 
 // Note: ideally I would have included this in the 'Chain' class, but this causes circular dependency issues and issues with Edge runtime
 // So we use this separate file instead to configure token event getting per chain.
 
 export interface TokenEventsResult {
+  state: {
+    computedAt: string | null;
+    computedToBlock: number | null;
+  };
   events: EnrichedTokenEvent[];
   rawEvents: TokenEvent[];
+}
+
+export interface TokenEventsOptions {
+  includeTransfers?: boolean;
 }
 
 export const getTokenEvents = async (
   chainId: DocumentedChainId,
   address: Address,
   logsProvider: LogsProvider,
+  options: TokenEventsOptions = {},
 ): Promise<TokenEventsResult> => {
   const chainName = getChainName(chainId);
   const publicClient = createViemPublicClientForChain(chainId);
 
   if (!(await hasChainActivity(chainId, address, publicClient))) {
     console.log(`${chainName}: Skipping event fetching for address with no relevant activity (${address})`);
-    return { events: [], rawEvents: [] };
+    return { state: { computedAt: null, computedToBlock: null }, events: [], rawEvents: [] };
   }
 
-  const rawEvents = await getTokenEventsDefault(chainId, address, logsProvider);
+  const { events: rawEvents, computedToBlock } = await getTokenEventsDefault(chainId, address, logsProvider, options);
   const events = await enrichTokenEvents(rawEvents, publicClient, chainId);
 
-  return { events, rawEvents };
+  return { state: { computedAt: new Date().toISOString(), computedToBlock }, events, rawEvents };
 };
 
 export const hasChainActivity = async (
@@ -66,7 +68,11 @@ export const hasChainActivity = async (
   // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
   // See https://eips.ethereum.org/EIPS/eip-161
   const client = publicClient ?? createViemPublicClientForChain(chainId);
-  const nonce = await client.getTransactionCount({ address });
+  const nonce = await withTimeout(
+    client.getTransactionCount({ address }),
+    10 * SECOND,
+    `${getChainName(chainId)} RPC did not respond to eth_getTransactionCount within 10 seconds`,
+  );
   return nonce > 0;
 };
 
@@ -105,10 +111,11 @@ const getTokenEventsDefault = async (
   chainId: DocumentedChainId,
   address: Address,
   logsProvider: LogsProvider,
-): Promise<TokenEvent[]> => {
+  options: TokenEventsOptions,
+): Promise<{ events: TokenEvent[]; computedToBlock: number }> => {
   const { fromBlock, toBlock } = await getEventPrerequisites(chainId, logsProvider);
 
-  const filters = Object.entries(buildTokenEventFilters(address, fromBlock, toBlock));
+  const filters = Object.entries(buildTokenEventFilters(address, fromBlock, toBlock, options));
 
   const logsResults = await mapAsync(filters, async ([name, filter]) =>
     eventsCache.getLogs(logsProvider, filter, chainId, name),
@@ -120,7 +127,7 @@ const getTokenEventsDefault = async (
     .filter((event) => !isNullish(event));
 
   // We sort the events in reverse chronological order to ensure that the most recent events are processed first
-  return sortTokenEventsChronologically(events).reverse();
+  return { events: sortTokenEventsChronologically(events).reverse(), computedToBlock: toBlock };
 };
 
 const enrichTokenEvents = async (
@@ -145,14 +152,9 @@ const enrichTokenEvents = async (
   const metadataMap = new Map();
   await Promise.all(
     uniqueTokenEvents.map(async (event) => {
-      const allTokenEvents = events.filter((other) => other.token === event.token);
-
       try {
         const contract = createTokenContract(event, publicClient)!;
-        const [metadata] = await Promise.all([
-          getTokenMetadata(contract, chainId),
-          throwIfSpam(contract, allTokenEvents),
-        ]);
+        const [metadata] = await Promise.all([getTokenMetadata(contract, chainId), throwIfSpamBytecode(contract)]);
         metadataMap.set(event.token, metadata);
       } catch (e) {
         if (isSpamError(e)) return;
@@ -177,61 +179,6 @@ const enrichTokenEvents = async (
   );
 
   return sortTokenEventsChronologically(enrichedEvents).reverse();
-};
-
-// ERC721_APPROVAL events are always emitted on token transfers with an ADDRESS_ZERO spender, so we need to look at
-// the spender *before* that event to determine whether an existing approval was revoked in that event.
-// If so, we set the oldSpender on the event so it can be displayed in the history table instead of the
-// "new" spender (which is the zero address).
-// If not, we remove the event, since it is superfluous.
-const processErc721ApprovalEvents = (events: ApprovalTokenEvent[]): ApprovalTokenEvent[] => {
-  const singleNftApprovalLastSpenderMap = new Map<string, Address>();
-
-  return events
-    .sort((a, b) => logSorterChronological(a.rawLog, b.rawLog))
-    .map((event) => {
-      if (event.type !== TokenEventType.APPROVAL_ERC721) return event;
-
-      const spenderKey = `${event.chainId}-${event.token}-${event.payload.tokenId}`;
-      const oldSpender = singleNftApprovalLastSpenderMap.get(spenderKey);
-      singleNftApprovalLastSpenderMap.set(spenderKey, event.payload.spender);
-
-      if (isNullish(oldSpender) || oldSpender === ADDRESS_ZERO) {
-        if (event.payload.spender === ADDRESS_ZERO) return undefined;
-      } else if (event.payload.spender === ADDRESS_ZERO) {
-        return { ...event, payload: { ...event.payload, oldSpender } };
-      }
-
-      return event;
-    })
-    .filter((event) => !isNullish(event));
-};
-
-// If a token/spender pair has only revoke events, this is likely spam and should not be displayed
-const removeLoneRevokeEvents = (events: ApprovalTokenEvent[]): ApprovalTokenEvent[] => {
-  const groupedEvents = groupEventsByTokenAndSpender(events);
-
-  const filterLoneRevokeEvents = (key: string, groupedTokenEvents: ApprovalTokenEvent[]) => {
-    if (key.includes(DUMMY_ADDRESS) || key.includes(ADDRESS_ZERO)) return true;
-    if (groupedTokenEvents.every((event) => isRevokeEvent(event))) return false;
-    return true;
-  };
-
-  return Object.entries(groupedEvents)
-    .filter(([key, groupedTokenEvents]) => filterLoneRevokeEvents(key, groupedTokenEvents))
-    .flatMap(([_, groupedTokenEvents]) => groupedTokenEvents);
-};
-
-const groupEventsByTokenAndSpender = (events: ApprovalTokenEvent[]): Record<string, ApprovalTokenEvent[]> => {
-  return events.reduce<Record<string, ApprovalTokenEvent[]>>((acc, event) => {
-    const spender =
-      event.type === TokenEventType.APPROVAL_ERC721 && event.payload.oldSpender
-        ? event.payload.oldSpender
-        : event.payload.spender;
-    const key = `${event.chainId}-${event.token}-${spender}`;
-    acc[key] = [...(acc[key] || []), event];
-    return acc;
-  }, {});
 };
 
 export const getSessionEvents = async (

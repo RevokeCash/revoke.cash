@@ -60,8 +60,9 @@ export const accessors = {
     return 'Unlimited';
   },
   balance: (allowance: TokenAllowanceData) => {
-    return allowance.balance === 'ERC1155'
-      ? 'ERC1155'
+    if (isNullish(allowance.balance)) return '';
+    return allowance.balance === 'Unknown'
+      ? 'Unknown'
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
   assetType: (allowance: TokenAllowanceData) => {
@@ -72,12 +73,15 @@ export const accessors = {
     // No approvals should be sorted separately through `sortUndefined`
     if (!allowance.payload) return undefined;
 
+    // Balance not yet loaded — sort with the "unknown" group (same bucket as missing price).
+    if (isNullish(allowance.balance)) return 0.01;
+
     // No balance means no risk (even if we don't know the price)
     if (allowance.balance === 0n) return 0;
 
     // If we don't know the price, we can't calculate the value at risk, but we want to it to be sorted
     // before "no approvals" and before the < $0.01 threshold
-    if (allowance.balance === 'ERC1155') return 0.01;
+    if (allowance.balance === 'Unknown') return 0.01;
     if (isNullish(allowance.metadata.price)) return 0.01;
     return calculateValueAtRisk(allowance);
   },

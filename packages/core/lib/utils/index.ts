@@ -8,6 +8,10 @@ export const toLowercaseAddress = (address: Address): Address => address.toLower
 
 export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
+export const timeout = (ms: number, message: string): Promise<never> => {
+  return new Promise<never>((_, reject) => setTimeout(() => reject(new Error(message)), ms));
+};
+
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
 };

@@ -23,7 +23,8 @@ const TotalValueAtRisk = ({ allowances, isLoading, error }: Props) => {
     (allowance) =>
       !isNullish(allowance.payload) &&
       isErc721Contract(allowance.contract) &&
-      (allowance.balance === 'ERC1155' || allowance.balance > 0n),
+      allowance.balance !== undefined &&
+      (allowance.balance === 'Unknown' || allowance.balance > 0n),
   );
 
   return (

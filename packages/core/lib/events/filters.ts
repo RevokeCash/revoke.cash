@@ -10,19 +10,33 @@ import {
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import type { Address } from 'viem';
 
+export interface TokenEventFilterOptions {
+  includeTransfers?: boolean;
+}
+
 export const buildTokenEventFilters = (
   address: Address,
   fromBlock: number,
   toBlock: number,
+  options: TokenEventFilterOptions = {},
 ): Record<string, Filter> => {
+  const { includeTransfers = true } = options;
+
   const addressTopic = addressToTopic(address);
-  return {
-    'Transfer (to)': { topics: [ERC721_TRANSFER_TOPIC, null, addressTopic], fromBlock, toBlock },
-    'Transfer (from)': { topics: [ERC721_TRANSFER_TOPIC, addressTopic], fromBlock, toBlock },
+
+  const approvalFilters = {
     Approval: { topics: [ERC721_APPROVAL_TOPIC, addressTopic], fromBlock, toBlock },
     ApprovalForAll: { topics: [ERC721_APPROVAL_FOR_ALL_TOPIC, addressTopic], fromBlock, toBlock },
     'Permit2 Approval': { topics: [PERMIT2_APPROVAL_TOPIC, addressTopic], fromBlock, toBlock },
     'Permit2 Permit': { topics: [PERMIT2_PERMIT_TOPIC, addressTopic], fromBlock, toBlock },
     'Permit2 Lockdown': { topics: [PERMIT2_LOCKDOWN_TOPIC, addressTopic], fromBlock, toBlock },
+  };
+
+  if (!includeTransfers) return approvalFilters;
+
+  return {
+    'Transfer (to)': { topics: [ERC721_TRANSFER_TOPIC, null, addressTopic], fromBlock, toBlock },
+    'Transfer (from)': { topics: [ERC721_TRANSFER_TOPIC, addressTopic], fromBlock, toBlock },
+    ...approvalFilters,
   };
 };

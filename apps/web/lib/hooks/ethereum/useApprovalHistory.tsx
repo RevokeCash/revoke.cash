@@ -3,15 +3,14 @@ import { getEventKey } from '@revoke.cash/core/events';
 import { isNullish } from '@revoke.cash/core/utils';
 import { HOUR } from '@revoke.cash/core/utils/time';
 import { useQuery } from '@tanstack/react-query';
-import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
+import { useAddressEvents, useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useAddress } from '../page-context/AddressIdentityContext';
-import { useEvents } from './events/useEvents';
 import { useAnnotateHistorySpenderData } from './useHistorySpenderData';
 
 export const useApprovalHistory = () => {
   const { address } = useAddress();
   const { selectedChainId } = useAddressPageContext();
-  const { events, isLoading: eventsLoading, error: eventsError } = useEvents(address, selectedChainId);
+  const { events, isLoading: eventsLoading, error: eventsError } = useAddressEvents();
 
   const {
     data: approvalHistoryBase,

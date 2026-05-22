@@ -24,7 +24,7 @@ const ErrorDisplay = ({ error, chainId, className }: Props) => {
     console.log(error);
   }, [error]);
 
-  const fullMessage = String(error);
+  const fullMessage = parseErrorMessage(error);
   const shortMessage = getErrorMessage(error, selectedChainId, t);
 
   const tooltip = <div className="whitespace-pre-wrap">{fullMessage}</div>;

@@ -16,8 +16,6 @@ import {
   createTokenContracts,
   type Erc20TokenContract,
   type Erc721TokenContract,
-  getTokenData,
-  hasZeroBalance,
   isErc721Contract,
   type TokenContract,
   type TokenData,
@@ -84,35 +82,39 @@ export const isErc721Allowance = (
 ): allowance is Erc721SingleAllowance | Erc721AllAllowance =>
   allowance?.type === AllowanceType.ERC721_SINGLE || allowance?.type === AllowanceType.ERC721_ALL;
 
+export interface AllowanceDerivationOptions {
+  // blockNumber and referenceTime are used for historical snapshots (time machine)
+  blockNumber?: bigint;
+  referenceTime?: number;
+  // When false, ERC721 single-NFT approval clearing falls back to on-chain `getApproved`/`ownerOf`
+  transferEventsAvailable?: boolean;
+}
+
 export const getAllowancesFromEvents = async (
   owner: Address,
   events: EnrichedTokenEvent[],
   publicClient: PublicClient,
   chainId: number,
-  blockNumber?: bigint,
-  referenceTime?: number,
+  options: AllowanceDerivationOptions = {},
 ): Promise<TokenAllowanceData[]> => {
+  const { blockNumber } = options;
   const contracts = createTokenContracts(events.filter(isApprovalTokenEvent), publicClient);
 
-  // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
     contracts.map(async (contract) => {
       const contractEvents = events.filter((event) => event.token === contract.address);
 
       try {
-        const [tokenData, unfilteredAllowances] = await Promise.all([
-          getTokenData(contract, contractEvents, owner, chainId, blockNumber),
-          getAllowancesForToken(contract, contractEvents, owner, blockNumber, referenceTime),
-        ]);
+        const unfilteredAllowances = await getAllowancesForToken(contract, contractEvents, owner, options);
+
+        const metadata = contractEvents[0].metadata;
+        const tokenData = { contract, metadata, chainId, owner };
 
         // Filter out zero-value allowances
         const allowances = unfilteredAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
-
-        if (allowances.length === 0) {
-          return [tokenData as TokenAllowanceData];
-        }
-
         const fullAllowances = allowances.map((allowance) => ({ ...tokenData, payload: allowance }));
+
+        if (fullAllowances.length === 0) return [];
 
         // Skip simulation in time machine mode — it runs against current state and is meaningless for historical snapshots
         if (blockNumber) return fullAllowances;
@@ -133,42 +135,43 @@ export const getAllowancesFromEvents = async (
         if (isTransientError(e)) throw e;
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
 
-        // If the call to getTokenData() fails, the token is not a standard-adhering token so
-        // we do not include it in the token list.
+        // If allowance derivation fails for this token, exclude it from the token list.
+        console.error(`Failed to derive allowances for token ${contract.address} on chain ${chainId}:`, e);
         return [];
       }
     }),
   );
 
-  // Filter out any zero-balance + zero-allowance tokens
-  return allowances
-    .flat()
-    .filter((allowance) => allowance.payload || allowance.balance !== 'ERC1155')
-    .filter((allowance) => allowance.payload || !hasZeroBalance(allowance.balance, allowance.metadata.decimals))
-    .sort((a, b) => a.metadata.symbol.localeCompare(b.metadata.symbol));
+  return allowances.flat().sort((a, b) => a.metadata.symbol.localeCompare(b.metadata.symbol));
 };
 
 export const getAllowancesForToken = async (
   contract: TokenContract,
   events: EnrichedTokenEvent[],
   userAddress: Address,
-  blockNumber?: bigint,
-  referenceTime?: number,
+  options: AllowanceDerivationOptions = {},
 ): Promise<AllowancePayload[]> => {
+  const { blockNumber, referenceTime, transferEventsAvailable = true } = options;
+
   if (isErc721Contract(contract)) {
     const unlimitedAllowances = getUnlimitedErc721AllowancesFromApprovals(events);
-    const limitedAllowances = getLimitedErc721AllowancesFromApprovals(events);
+    const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, events, userAddress, {
+      blockNumber,
+      transferEventsAvailable,
+    });
     return [...limitedAllowances, ...unlimitedAllowances];
   }
 
-  const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events, blockNumber);
-  const permit2Allowances = await getPermit2AllowancesFromApprovals(
-    contract,
-    userAddress,
-    events,
+  const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events, {
+    blockNumber,
+    transferEventsAvailable,
+  });
+  const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events, {
     blockNumber,
     referenceTime,
-  );
+    transferEventsAvailable,
+  });
+
   return [...regularAllowances, ...permit2Allowances];
 };
 
@@ -176,7 +179,7 @@ export const getErc20AllowancesFromApprovals = async (
   contract: Erc20TokenContract,
   owner: Address,
   events: EnrichedTokenEvent[],
-  blockNumber?: bigint,
+  options: AllowanceDerivationOptions = {},
 ): Promise<Erc20Allowance[]> => {
   const approvalEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_ERC20);
   const deduplicatedApprovalEvents = deduplicateArray(
@@ -186,7 +189,7 @@ export const getErc20AllowancesFromApprovals = async (
 
   const allowances = await Promise.all(
     deduplicatedApprovalEvents.map((approval) =>
-      getErc20AllowanceFromApproval(contract, owner, approval, events, blockNumber),
+      getErc20AllowanceFromApproval(contract, owner, approval, events, options),
     ),
   );
 
@@ -198,22 +201,25 @@ const getErc20AllowanceFromApproval = async (
   owner: Address,
   approval: Enriched<Erc20ApprovalEvent>,
   events: EnrichedTokenEvent[],
-  blockNumber?: bigint,
+  options: AllowanceDerivationOptions = {},
 ): Promise<Erc20Allowance | undefined> => {
+  const { blockNumber, transferEventsAvailable = true } = options;
   const { spender, amount: lastApprovedAmount } = approval.payload;
 
   // If the most recent approval event was for 0, then we know for sure that the allowance is 0
   if (lastApprovedAmount === 0n) return undefined;
 
   // Optimisation: if the approval is for the max uint256 value, the allowance is not decreased by transferFrom
-  // (per EIP-20 convention), so we can use the event value directly without an RPC call
+  // (per EIP-20 convention), so we can use the event value directly without an RPC call. This works
+  // regardless of whether we have Transfer events, since maxUint256 doesn't decrement.
   if (lastApprovedAmount === maxUint256) {
     return { type: AllowanceType.ERC20, spender, amount: lastApprovedAmount, lastUpdated: approval.time };
   }
 
   // Optimisation: if there are no transfers from the owner after the approval, the allowance cannot have been
-  // partially used (through transferFrom), so we can use the event value directly without an RPC call
-  if (!hasTransfersFromOwnerAfterEvent(owner, events, approval)) {
+  // partially used (through transferFrom), so we can use the event value directly without an RPC call.
+  // (only holds when we actually have Transfer events to consult)
+  if (transferEventsAvailable && !hasTransfersFromOwnerAfterEvent(owner, events, approval)) {
     return { type: AllowanceType.ERC20, spender, amount: lastApprovedAmount, lastUpdated: approval.time };
   }
 
@@ -228,20 +234,68 @@ const getErc20AllowanceFromApproval = async (
   return { type: AllowanceType.ERC20, spender, amount, lastUpdated: approval.time };
 };
 
-export const getLimitedErc721AllowancesFromApprovals = (events: EnrichedTokenEvent[]): Erc721SingleAllowance[] => {
-  const singeTokenIdEvents = events.filter(
-    (event) => event.type === TokenEventType.APPROVAL_ERC721 || event.type === TokenEventType.TRANSFER_ERC721,
-  );
+export const getLimitedErc721AllowancesFromApprovals = async (
+  contract: Erc721TokenContract,
+  events: EnrichedTokenEvent[],
+  owner: Address,
+  options: AllowanceDerivationOptions = {},
+): Promise<Erc721SingleAllowance[]> => {
+  const { blockNumber, transferEventsAvailable = true } = options;
 
-  // We only look at the tokenId, since a tokenId can only have one *limited* approval at a time
-  const deduplicatedEvents = deduplicateArray(
-    singeTokenIdEvents,
+  if (transferEventsAvailable) {
+    // Event-driven path: a Transfer of a tokenId implicitly clears any limited approval
+    const singleTokenIdEvents = events.filter(
+      (event) => event.type === TokenEventType.APPROVAL_ERC721 || event.type === TokenEventType.TRANSFER_ERC721,
+    );
+
+    // We only look at the tokenId, since a tokenId can only have one *limited* approval at a time
+    const deduplicatedEvents = deduplicateArray(
+      singleTokenIdEvents,
+      (event) => `${event.chainId}-${event.token}-${event.payload.tokenId}`,
+    );
+    return deduplicatedEvents
+      .map((event) => getLimitedErc721AllowanceFromApproval(event))
+      .filter((allowance) => !isNullish(allowance));
+  }
+
+  // On-chain fallback path: approval-only callers need to verify each remaining Approval against chain state
+  const approvalEvents = events.filter(
+    (event): event is Enriched<Erc721ApprovalEvent> => event.type === TokenEventType.APPROVAL_ERC721,
+  );
+  const deduplicatedApprovals = deduplicateArray(
+    approvalEvents,
     (event) => `${event.chainId}-${event.token}-${event.payload.tokenId}`,
   );
 
-  return deduplicatedEvents
-    .map((event) => getLimitedErc721AllowanceFromApproval(event))
-    .filter((allowance) => !isNullish(allowance));
+  const validated = await Promise.all(
+    deduplicatedApprovals.map(async (approval) => {
+      const { tokenId, spender } = approval.payload;
+      // Most recent approval was a revoke (approve(0)) — definitively cleared, no RPC needed.
+      if (spender === ADDRESS_ZERO) return undefined;
+
+      try {
+        const [currentOwner, currentApproved] = await Promise.all([
+          contract.publicClient.readContract({ ...contract, functionName: 'ownerOf', args: [tokenId], blockNumber }),
+          contract.publicClient.readContract({
+            ...contract,
+            functionName: 'getApproved',
+            args: [tokenId],
+            blockNumber,
+          }),
+        ]);
+
+        if (currentOwner !== owner) return undefined;
+        if (currentApproved !== spender) return undefined;
+
+        return { type: AllowanceType.ERC721_SINGLE, spender, tokenId, lastUpdated: approval.time };
+      } catch {
+        // `ownerOf` reverts when the tokenId doesn't exist (e.g. burned). Treat as cleared.
+        return undefined;
+      }
+    }),
+  );
+
+  return validated.filter((allowance): allowance is Erc721SingleAllowance => !isNullish(allowance));
 };
 
 const getLimitedErc721AllowanceFromApproval = (
@@ -466,8 +520,12 @@ export const prepareUpdateErc20Allowance = async (
 };
 
 const calculateMaxAllowanceAmount = (allowance: TokenAllowanceData) => {
-  if (allowance.balance === 'ERC1155') {
-    throw new Error('ERC1155 tokens are not supported');
+  if (allowance.balance === 'Unknown') {
+    throw new Error('Balance is not available for this token');
+  }
+
+  if (allowance.balance === undefined) {
+    throw new Error('Balance not yet loaded');
   }
 
   if (isErc20Allowance(allowance.payload)) return allowance.payload.amount;
@@ -478,7 +536,8 @@ const calculateMaxAllowanceAmount = (allowance: TokenAllowanceData) => {
 
 export const calculateValueAtRisk = (allowance: TokenAllowanceData): number | null => {
   if (!allowance.payload?.spender) return null;
-  if (allowance.balance === 'ERC1155') return null;
+  if (isNullish(allowance.balance)) return null;
+  if (allowance.balance === 'Unknown') return null;
 
   if (allowance.balance === 0n) return 0;
   if (isNullish(allowance.metadata.price)) return null;

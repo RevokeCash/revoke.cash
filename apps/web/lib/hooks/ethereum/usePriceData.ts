@@ -2,27 +2,27 @@ import { MINUTE } from '@revoke.cash/core/utils/time';
 import { useQueries } from '@tanstack/react-query';
 import { getTokenPrices } from 'lib/price';
 import type { Address } from 'viem';
-
-export interface ChainTokenAddresses {
-  chainId: number;
-  addresses: Address[];
-}
+import type { ChainTokenQuery } from './useBalanceData';
 
 export const getPriceKey = (chainId: number, tokenAddress: Address) => `${chainId}-${tokenAddress}`;
 
-export const usePriceData = (tokenAddressesByChain: ChainTokenAddresses[]): Record<string, number | null> => {
+export const usePriceData = (queries: ChainTokenQuery[]): Record<string, number | null> => {
   return useQueries({
-    queries: tokenAddressesByChain.map(({ chainId, addresses }) => ({
-      queryKey: ['tokenPrices', chainId, addresses],
-      queryFn: () => getTokenPrices(chainId, addresses),
-      staleTime: 5 * MINUTE,
-      refetchOnWindowFocus: false,
-      placeholderData: undefined,
-      enabled: addresses.length > 0,
-    })),
+    queries: queries.map(({ chainId, tokens, blockNumber }) => {
+      const addresses = blockNumber === undefined ? getErc20Addresses(tokens) : [];
+      return {
+        queryKey: ['tokenPrices', chainId, addresses],
+        queryFn: () => getTokenPrices(chainId, addresses),
+        staleTime: 5 * MINUTE,
+        refetchOnWindowFocus: false,
+        placeholderData: undefined,
+        enabled: addresses.length > 0,
+      };
+    }),
     combine: (results) => {
       const map: Record<string, number | null> = {};
-      tokenAddressesByChain.forEach(({ chainId, addresses }, index) => {
+      queries.forEach(({ chainId, tokens, blockNumber }, index) => {
+        const addresses = blockNumber === undefined ? getErc20Addresses(tokens) : [];
         const queryData = results[index]?.data;
         for (const tokenAddress of addresses) {
           map[getPriceKey(chainId, tokenAddress)] = queryData?.[tokenAddress] ?? null;
@@ -31,4 +31,11 @@ export const usePriceData = (tokenAddressesByChain: ChainTokenAddresses[]): Reco
       return map;
     },
   });
+};
+
+const getErc20Addresses = (tokens: ChainTokenQuery['tokens']): Address[] => {
+  return tokens
+    .filter((token) => !token.isErc721)
+    .map((token) => token.address)
+    .sort();
 };

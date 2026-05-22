@@ -7,14 +7,12 @@ import { usePathname } from 'lib/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 import React, { type ReactNode, useContext, useLayoutEffect, useState } from 'react';
 import type { Address } from 'viem';
-import { useEvents } from '../ethereum/events/useEvents';
-import { useAllowances } from '../ethereum/useAllowances';
+import { useAddressData } from '../ethereum/useAddressData';
 
 interface AddressContext {
   selectedChainId: number;
   selectChain: (chainId: number) => void;
-  eventContext: ReturnType<typeof useEvents>;
-  allowanceContext: ReturnType<typeof useAllowances>;
+  addressData: ReturnType<typeof useAddressData>;
 }
 
 interface Props {
@@ -72,20 +70,14 @@ export const AddressPageContextProvider = ({
     router.replace(`${path}${qs ? `?${qs}` : ''}`, { showProgress: false });
   }, [selectedChainId, address, searchParams, router, queryParams]);
 
-  const eventContext = useEvents(address, selectedChainId);
-  const allowanceContext = useAllowances(address, eventContext?.events, selectedChainId);
-  allowanceContext.error = allowanceContext?.error || eventContext?.error;
-  allowanceContext.isLoading =
-    (allowanceContext?.isLoading || eventContext?.isLoading || !allowanceContext?.allowances) &&
-    !allowanceContext?.error;
+  const addressData = useAddressData(address, selectedChainId);
 
   return (
     <AddressPageContext.Provider
       value={{
         selectedChainId,
         selectChain,
-        eventContext,
-        allowanceContext,
+        addressData,
       }}
     >
       {children}
@@ -103,10 +95,10 @@ export const useAddressPageContext = () => {
 
 export const useAddressEvents = () => {
   const context = useAddressPageContext();
-  return context.eventContext;
+  return context.addressData.eventContext;
 };
 
 export const useAddressAllowances = () => {
   const context = useAddressPageContext();
-  return context.allowanceContext;
+  return context.addressData.allowanceContext;
 };

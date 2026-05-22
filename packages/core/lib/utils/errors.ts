@@ -163,6 +163,7 @@ export const isNetworkError = (error?: string | any): boolean => {
   if (lowercaseMessage?.includes('request failed')) return true;
   if (lowercaseMessage?.includes('request timed out')) return true;
   if (lowercaseMessage?.includes('request took too long to respond')) return true;
+  if (lowercaseMessage?.includes('did not respond')) return true;
   if (lowercaseMessage?.includes('failed to fetch')) return true;
   if (lowercaseMessage?.includes('service temporarily unavailable')) return true;
   return false;
@@ -215,7 +216,7 @@ export const stringifyError = (error: any, indent?: number): string => {
   }
 };
 
-export type SpamReason = 'whois' | 'symbol' | 'bytecode' | 'airdrop';
+export type SpamReason = 'whois' | 'symbol' | 'bytecode';
 
 export class SpamError extends Error {
   readonly reason: SpamReason;

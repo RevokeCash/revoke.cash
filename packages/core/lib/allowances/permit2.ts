@@ -10,7 +10,7 @@ import type { Erc20TokenContract } from '@revoke.cash/core/tokens';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import { type Address, type Chain, maxUint160 } from 'viem';
-import { AllowanceType, type Permit2Erc20Allowance } from '.';
+import { type AllowanceDerivationOptions, AllowanceType, type Permit2Erc20Allowance } from '.';
 
 export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
 
@@ -18,8 +18,7 @@ export const getPermit2AllowancesFromApprovals = async (
   contract: Erc20TokenContract,
   owner: Address,
   events: EnrichedTokenEvent[],
-  blockNumber?: bigint,
-  referenceTime?: number,
+  options: AllowanceDerivationOptions = {},
 ): Promise<Permit2Erc20Allowance[]> => {
   const permit2ApprovalEvents = events.filter((event) => event.type === TokenEventType.PERMIT2);
 
@@ -31,7 +30,7 @@ export const getPermit2AllowancesFromApprovals = async (
 
   const allowances = await Promise.all(
     deduplicatedApprovalEvents.map((approval) =>
-      getPermit2AllowanceFromApproval(contract, owner, approval, events, blockNumber, referenceTime),
+      getPermit2AllowanceFromApproval(contract, owner, approval, events, options),
     ),
   );
 
@@ -43,9 +42,9 @@ const getPermit2AllowanceFromApproval = async (
   owner: Address,
   approval: Enriched<Permit2Event>,
   events: EnrichedTokenEvent[],
-  blockNumber?: bigint,
-  referenceTime?: number,
+  options: AllowanceDerivationOptions = {},
 ): Promise<Permit2Erc20Allowance | undefined> => {
+  const { blockNumber, referenceTime, transferEventsAvailable = true } = options;
   const { spender, amount: lastApprovedAmount, expiration, permit2Address } = approval.payload;
   if (lastApprovedAmount === 0n) return undefined;
 
@@ -53,7 +52,8 @@ const getPermit2AllowanceFromApproval = async (
   if (expiration * SECOND <= now) return undefined;
 
   // Optimisation: if the approval is for the max uint160 value, the allowance is not decreased by transferFrom
-  // (per Permit2 convention), so we can use the event value directly without an RPC call
+  // (per Permit2 convention), so we can use the event value directly without an RPC call. Works regardless of
+  // whether Transfer events are available — maxUint160 doesn't decrement.
   if (lastApprovedAmount === maxUint160) {
     return {
       type: AllowanceType.PERMIT2,
@@ -66,8 +66,9 @@ const getPermit2AllowanceFromApproval = async (
   }
 
   // Optimisation: if there are no transfers from the owner after the approval, the allowance cannot have been
-  // partially used, so we can use the event value directly without an RPC call
-  if (!hasTransfersFromOwnerAfterEvent(owner, events, approval)) {
+  // partially used, so we can use the event value directly without an RPC call.
+  // (Only valid when Transfer events are available for this caller)
+  if (transferEventsAvailable && !hasTransfersFromOwnerAfterEvent(owner, events, approval)) {
     return {
       type: AllowanceType.PERMIT2,
       spender,

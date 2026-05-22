@@ -17,7 +17,7 @@ const TableBodyLoader = ({ columns, rowCount, ...props }: Props) => {
           {columns.map((column) => (
             <td key={column.id} className={twMerge(column.id === ColumnId.SELECT && 'w-0')}>
               {column.id === ColumnId.SELECT ? null : (
-                <div className="py-2.75 px-2">
+                <div className="py-2.5 px-2">
                   <Loader isLoading>
                     <div className="h-7" />
                   </Loader>

@@ -15,21 +15,25 @@ import { useLayoutEffect, useMemo, useState } from 'react';
 import { usePublicClient } from 'wagmi';
 import { useAddressEvents, useAddressPageContext } from '../page-context/AddressPageContext';
 
+// TODO: this is currently not working great, since we're no longer getting transfer events
+// We should decide to either completely cut this feature, to accept the trade-off of not having all tokens in there,
+// or change the UI into something else so that we don't need to fetch all tokens
 export const usePermitTokens = () => {
   const [permitTokens, setPermitTokens] = useState<PermitTokenData[]>();
   const queryClient = useQueryClient();
 
   const { selectedChainId } = useAddressPageContext();
-  const { events, rawEvents } = useAddressEvents();
+  const { events } = useAddressEvents();
   const publicClient = usePublicClient({ chainId: selectedChainId })!;
 
   const candidateTokenEvents = useMemo(() => {
-    if (!rawEvents) return undefined;
+    if (!events) return undefined;
 
-    // Note: for premium users on warm chains, we only return transfer events that have at least one approval event
-    // for the token. This means that some tokens do not show up here if they have not been approved.
-    // For now this is ok, but TODO: revisit this in the future.
-    const filteredEvents = rawEvents.filter((event) => {
+    // The events array is already narrowed server-side to "approved tokens": Approvals are
+    // returned for every approved (token, spender) pair, and Transfer events only for tokens
+    // the user has at least one approval event for.
+    // TODO: think about a solution for this
+    const filteredEvents = events.filter((event) => {
       // Permit only applies to ERC20 tokens
       if (event.type !== TokenEventType.TRANSFER_ERC20 && event.type !== TokenEventType.APPROVAL_ERC20) return false;
 
@@ -40,7 +44,7 @@ export const usePermitTokens = () => {
     });
 
     return deduplicateArray(filteredEvents, (event) => `${event.chainId}-${event.token}`);
-  }, [rawEvents]);
+  }, [events]);
 
   const {
     data,
@@ -76,7 +80,7 @@ export const usePermitTokens = () => {
             // Re-check with decimals in case of dust amounts
             if (hasZeroBalance(balance, metadata.decimals)) return undefined;
 
-            const lastCancelled = await getLastCancelled(rawEvents!, contract);
+            const lastCancelled = await getLastCancelled(events!, contract);
 
             return { contract, metadata, chainId: selectedChainId, owner: event.owner, balance, lastCancelled };
           } catch {
@@ -87,7 +91,7 @@ export const usePermitTokens = () => {
 
       return tokens.filter((token) => !isNullish(token));
     },
-    enabled: !isNullish(candidateTokenEvents) && !isNullish(events) && !isNullish(rawEvents),
+    enabled: !isNullish(candidateTokenEvents) && !isNullish(events),
     staleTime: Number.POSITIVE_INFINITY,
   });
 

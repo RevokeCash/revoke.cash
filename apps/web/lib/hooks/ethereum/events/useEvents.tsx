@@ -1,13 +1,15 @@
-import { getTokenEvents } from '@revoke.cash/core/chains/events';
+import { getTokenEvents, type TokenEventsResult } from '@revoke.cash/core/chains/events';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getLogsProvider } from 'lib/providers';
 import type { Address } from 'viem';
 
 export const useEvents = (address: Address, chainId: number) => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['events', address, chainId],
-    queryFn: () => getTokenEvents(chainId, address, getLogsProvider(chainId)),
+  const includeTransfers = false;
+
+  const { data, isLoading, error } = useQuery<TokenEventsResult, Error>({
+    queryKey: ['events', address, chainId, { includeTransfers }],
+    queryFn: () => getTokenEvents(chainId, address, getLogsProvider(chainId), { includeTransfers }),
     enabled: !isNullish(address) && !isNullish(chainId),
   });
 

@@ -47,18 +47,20 @@ export const parseFixedPointBigInt = (floatString: string, decimals: number = 0)
   return BigInt(integerPart + fractionalPart.slice(0, decimals).padEnd(decimals, '0'));
 };
 
-export const formatBalance = (symbol: string, balance: TokenBalance, decimals?: number) => {
-  if (balance === 'ERC1155') return '(ERC1155)';
+export const formatBalance = (symbol: string, balance: TokenBalance | undefined, decimals?: number) => {
+  if (balance === undefined) return null;
+  if (balance === 'Unknown') return null;
   return `${formatFixedPointBigInt(balance, decimals)} ${symbol}`;
 };
 
 export const formatFiatBalance = (
-  balance: TokenBalance,
+  balance: TokenBalance | undefined,
   price?: Nullable<number>,
   decimals?: number,
   fiatSign: string = '$',
 ) => {
-  if (balance === 'ERC1155') return null;
+  if (balance === undefined) return null;
+  if (balance === 'Unknown') return null;
   if (isNullish(price)) return null;
   const amount = Number(formatUnits(fixedPointMultiply(balance, price, decimals ?? 18), decimals ?? 18));
   return formatFiatAmount(amount, 2, fiatSign);
@@ -82,7 +84,7 @@ export const formatDonationTokenAmount = (tokenAmount: number | null, nativeToke
   if (exponent >= 6) return `${(tokenAmount / 1e6).toFixed(2)}M ${nativeToken}`;
   if (exponent >= 3) return `${(tokenAmount / 1e3).toFixed(2)}k ${nativeToken}`;
 
-  const formatted = formatBalance(nativeToken, parseEther(tokenAmount.toString()), 18);
+  const formatted = formatBalance(nativeToken, parseEther(tokenAmount.toString()), 18)!;
 
   if (formatted.startsWith('<') || exponent > 0) return formatted;
 

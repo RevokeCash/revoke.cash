@@ -1,4 +1,5 @@
 import PQueue from 'p-queue';
+import { timeout } from '.';
 
 export const unpackResult = async <T>(promise: Promise<T[]>): Promise<T> => (await promise)[0];
 
@@ -52,4 +53,8 @@ export const mapAsyncBounded = async <T, U>(
   const arr = await arrPromise;
   const queue = new PQueue({ concurrency });
   return queue.addAll(arr.map((entry) => () => mapper(entry)));
+};
+
+export const withTimeout = async <T>(promise: Promise<T>, ms: number, timeoutMessage: string): Promise<T> => {
+  return await Promise.race([promise, timeout(ms, timeoutMessage)]);
 };

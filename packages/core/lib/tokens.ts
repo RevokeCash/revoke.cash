@@ -1,14 +1,7 @@
 import { ChainId } from '@revoke.cash/chains';
 import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from '@revoke.cash/core/constants';
-import {
-  type EnrichedTokenEvent,
-  isApprovalTokenEvent,
-  isTransferTokenEvent,
-  type ResolvedTimeLog,
-  type TokenEvent,
-  TokenEventType,
-} from '@revoke.cash/core/events';
+import { type ResolvedTimeLog, type TokenEvent, TokenEventType } from '@revoke.cash/core/events';
 import ky from '@revoke.cash/core/ky';
 import type { Contract, Nullable } from '@revoke.cash/core/types';
 import { deduplicateArray } from '@revoke.cash/core/utils';
@@ -31,7 +24,8 @@ export interface TokenData {
   metadata: TokenMetadata;
   chainId: number;
   owner: Address;
-  balance: TokenBalance;
+  // `undefined` means the balance hasn't been fetched yet
+  balance?: TokenBalance;
 }
 
 export interface PermitTokenData extends TokenData {
@@ -58,7 +52,7 @@ export interface TokenMetadata {
   price?: Nullable<number>;
 }
 
-export type TokenBalance = bigint | 'ERC1155';
+export type TokenBalance = bigint | 'Unknown';
 
 export type TokenStandard = 'ERC20' | 'ERC721';
 
@@ -86,70 +80,7 @@ export const isSpamTokenSymbol = (symbol: string) => {
   return spamRegexes.some((regex) => regex.test(symbol));
 };
 
-export const getTokenData = async (
-  contract: TokenContract,
-  events: EnrichedTokenEvent[],
-  owner: Address,
-  chainId: number,
-  blockNumber?: bigint,
-): Promise<TokenData> => {
-  if (isErc721Contract(contract)) {
-    return getErc721TokenData(contract, owner, events, chainId, blockNumber);
-  }
-
-  return getErc20TokenData(contract, owner, events, chainId, blockNumber);
-};
-
-export const getErc20TokenData = async (
-  contract: Erc20TokenContract,
-  owner: Address,
-  events: EnrichedTokenEvent[],
-  chainId: number,
-  blockNumber?: bigint,
-): Promise<TokenData> => {
-  const metadata = events[0].metadata;
-  const balance = await contract.publicClient.readContract({
-    ...contract,
-    functionName: 'balanceOf',
-    args: [owner],
-    blockNumber,
-  });
-
-  return { contract, metadata, chainId, owner, balance };
-};
-
-export const getErc721TokenData = async (
-  contract: Erc721TokenContract,
-  owner: Address,
-  events: EnrichedTokenEvent[],
-  chainId: number,
-  blockNumber?: bigint,
-): Promise<TokenData> => {
-  const metadata = events[0].metadata;
-  const transfers = events.filter((event) => event.type === TokenEventType.TRANSFER_ERC721);
-
-  // Since the events are sorted by reverse chronological order, we know that the first event is the latest,
-  // if the latest event for a tokenId is a transfer to the owner, then the owner still holds the token
-  const uniqueTokenIdTransfers = deduplicateArray(transfers, (event) => `${event.payload.tokenId}`);
-  const calculatedBalance = BigInt(uniqueTokenIdTransfers.filter((event) => event.payload.to === owner).length);
-  const shouldFetchBalance = transfers.length === 0;
-
-  const balance = shouldFetchBalance
-    ? await withFallback<TokenBalance>(
-        contract.publicClient.readContract({
-          ...contract,
-          functionName: 'balanceOf',
-          args: [owner],
-          blockNumber,
-        }),
-        'ERC1155',
-      )
-    : calculatedBalance;
-
-  return { contract, metadata, chainId, owner, balance };
-};
-
-const getTokenDataFromMapping = async (
+const getTokenMetadataFromMapping = async (
   contract: TokenContract,
   chainId: number,
 ): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
@@ -172,9 +103,8 @@ const getTokenDataFromMapping = async (
 };
 
 export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
-  const metadataFromMapping = await getTokenDataFromMapping(contract, chainId);
-  // Whois-flagged spam short-circuits before any RPC — no need to spend reads on a token we'll
-  // throw out anyway.
+  const metadataFromMapping = await getTokenMetadataFromMapping(contract, chainId);
+  // Whois-flagged spam short-circuits before any RPC — no need to spend reads on a token we'll throw out anyway.
   if (metadataFromMapping?.isSpam) throw new SpamError('whois');
 
   if (isErc721Contract(contract)) {
@@ -251,10 +181,6 @@ export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
 };
 
 // TODO: Improve spam checks
-export const throwIfSpam = async (contract: TokenContract, events: TokenEvent[]): Promise<void> => {
-  await Promise.all([throwIfSpamBytecode(contract), Promise.resolve(throwIfSpamAirdrop(events))]);
-};
-
 // TODO: Investigate other proxy patterns to see if they result in false positives
 export const throwIfSpamBytecode = async (contract: TokenContract): Promise<void> => {
   const bytecode = (await contract.publicClient.getCode({ address: contract.address })) ?? '';
@@ -274,22 +200,8 @@ export const throwIfSpamBytecode = async (contract: TokenContract): Promise<void
   }
 };
 
-export const throwIfSpamAirdrop = (events: TokenEvent[]): void => {
-  const transferTransactions = events.filter(isTransferTokenEvent).map((event) => event.time.transactionHash);
-  const approvalTransactions = events.filter(isApprovalTokenEvent).map((event) => event.time.transactionHash);
-
-  // If the transfers and approvals occur in the same transaction, it's a spam transaction
-  // Note that we only check if that is the case for *all* events to prevent false positives at the cost of false negatives
-  if (
-    transferTransactions.length > 0 &&
-    transferTransactions.every((transaction) => approvalTransactions.includes(transaction))
-  ) {
-    throw new SpamError('airdrop');
-  }
-};
-
 export const hasZeroBalance = (balance: TokenBalance, decimals?: number) => {
-  return balance !== 'ERC1155' && formatFixedPointBigInt(balance, decimals) === '0';
+  return balance !== 'Unknown' && formatFixedPointBigInt(balance, decimals) === '0';
 };
 
 export const createTokenContracts = (events: TokenEvent[], publicClient: PublicClient): TokenContract[] => {

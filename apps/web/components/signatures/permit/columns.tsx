@@ -1,5 +1,6 @@
 import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
 import type { PermitTokenData } from '@revoke.cash/core/tokens';
+import { isNullish } from '@revoke.cash/core/utils';
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper, type RowData } from '@tanstack/react-table';
 import AssetCell from 'components/allowances/dashboard/cells/AssetCell';
@@ -23,8 +24,9 @@ export enum ColumnId {
 
 export const accessors = {
   balance: (allowance: TokenAllowanceData) => {
-    return allowance.balance === 'ERC1155'
-      ? 'ERC1155'
+    if (isNullish(allowance.balance)) return '';
+    return allowance.balance === 'Unknown'
+      ? 'Unknown'
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
 };

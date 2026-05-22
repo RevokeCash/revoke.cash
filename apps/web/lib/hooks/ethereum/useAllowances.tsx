@@ -17,6 +17,7 @@ import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
 import { useAllowanceSpenderData } from './useAllowanceSpenderData';
+import { getBalanceKey, useBalanceData } from './useBalanceData';
 import { getPriceKey, usePriceData } from './usePriceData';
 import { getSpenderKey } from './useSpenderData';
 
@@ -27,7 +28,9 @@ export const useAllowances = (address: Address, events: EnrichedTokenEvent[] | u
   const { data, isLoading, error } = useQuery<TokenAllowanceData[], Error>({
     queryKey: ['allowances', address, chainId, events?.map(getEventKey)],
     queryFn: async () => {
-      const allowances = getAllowancesFromEvents(address, events!, publicClient, chainId);
+      const allowances = await getAllowancesFromEvents(address, events!, publicClient, chainId, {
+        transferEventsAvailable: false,
+      });
       analytics.track('Fetched Allowances', { account: address, chainId });
       return allowances;
     },
@@ -51,32 +54,40 @@ export const useAllowances = (address: Address, events: EnrichedTokenEvent[] | u
     }
   }, [data]);
 
-  const uniqueErc20TokenAddresses = useMemo(() => {
-    const erc20Addresses = (baseAllowances ?? [])
-      .filter((allowance) => !isErc721Contract(allowance.contract))
-      .map((allowance) => allowance.contract.address);
+  const tokenDataQueries = useMemo(() => {
+    const allTokens = (baseAllowances ?? []).map((allowance) => ({
+      address: allowance.contract.address,
+      isErc721: isErc721Contract(allowance.contract),
+    }));
 
-    return [{ chainId, addresses: deduplicateArray(erc20Addresses).sort() }];
-  }, [baseAllowances, chainId]);
+    const tokens = deduplicateArray(allTokens, (token) => token.address).sort((a, b) =>
+      a.address.localeCompare(b.address),
+    );
 
-  const priceData = usePriceData(uniqueErc20TokenAddresses);
+    return [{ chainId, owner: address, tokens }];
+  }, [baseAllowances, address, chainId]);
 
+  const priceData = usePriceData(tokenDataQueries);
+  const balanceData = useBalanceData(tokenDataQueries);
   const spenderData = useAllowanceSpenderData(baseAllowances ?? []);
 
   const allowances = useMemo(() => {
     if (!baseAllowances) return undefined;
 
     return baseAllowances.map((allowance) => {
-      const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
-      const tokenPrice = isErc721Contract(allowance.contract) ? null : priceData[priceKey];
-      const metadata = { ...allowance.metadata, price: tokenPrice };
-
       const spenderKey = getSpenderKey(allowance.chainId, allowance.payload!.spender);
       const payload = allowance.payload ? { ...allowance.payload, spenderData: spenderData[spenderKey] } : undefined;
 
-      return { ...allowance, metadata, payload };
+      const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
+      const tokenPrice = isErc721Contract(allowance.contract) ? null : priceData[priceKey];
+
+      const balanceKey = getBalanceKey(allowance.chainId, allowance.contract.address);
+      const balance = balanceData[balanceKey];
+
+      const metadata = { ...allowance.metadata, price: tokenPrice };
+      return { ...allowance, balance, metadata, payload };
     });
-  }, [baseAllowances, priceData, spenderData]);
+  }, [baseAllowances, priceData, balanceData, spenderData]);
 
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
     console.debug('Reloading data');
