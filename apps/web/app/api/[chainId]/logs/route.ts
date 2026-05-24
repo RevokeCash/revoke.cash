@@ -1,7 +1,7 @@
 import { getEventsForFilter } from '@revoke.cash/core/monitor/read';
 import { addressSchema, hexStringSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
-import { ExportableError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -24,27 +24,15 @@ const schemas = {
 };
 
 export async function POST(req: NextRequest, props: Props) {
-  if (!(await checkActiveSessionEdge(req))) {
-    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.LOGS))) {
-    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { params, body: filter } = data;
-
   try {
+    await authorizeRequest(req, {
+      auth: 'api-session',
+      rateLimiter: RateLimiters.LOGS,
+    });
+    const { params, body: filter } = await parseRequest(req, props, schemas);
     const events = await getEventsForFilter(params.chainId, filter);
     return NextResponse.json(events);
-  } catch (e) {
-    if (e instanceof ExportableError) {
-      const { status, body } = e.export();
-      return NextResponse.json(body, { status });
-    }
-    console.error('Error occurred', parseErrorMessage(e), e);
-    return NextResponse.json({ message: parseErrorMessage(e) }, { status: 500 });
+  } catch (error) {
+    return handleApiRouteError(error, { errorMessage: 'Error fetching logs' });
   }
 }

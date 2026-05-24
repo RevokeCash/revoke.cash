@@ -1,7 +1,7 @@
 import { revokeAutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
-import { hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { autoRevokeSupportedChainIdSchema } from '@revoke.cash/core/schemas';
-import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -18,28 +18,17 @@ const schemas = {
 export const runtime = 'edge';
 
 export async function DELETE(req: NextRequest, props: Props) {
-  const siweAddress = await getAuthenticatedSiweAddress(req);
-  if (!siweAddress) {
-    return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_WRITE))) {
-    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
-  }
-
-  if (!(await hasActiveUltimateEntitlement(siweAddress))) {
-    return NextResponse.json({ message: 'Ultimate subscription required' }, { status: 403 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { params } = data;
-
   try {
+    const { siweAddress } = await authorizeRequest(req, {
+      auth: 'siwe',
+      rateLimiter: RateLimiters.PREMIUM_WRITE,
+      requireUltimateEntitlement: true,
+    });
+    const { params } = await parseRequest(req, props, schemas);
+
     await revokeAutoRevokePermission(siweAddress, params.chainId);
     return NextResponse.json({ ok: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to revoke permission';
-    return NextResponse.json({ message }, { status: 500 });
+    return handleApiRouteError(error, { errorMessage: 'Failed to revoke permission' });
   }
 }

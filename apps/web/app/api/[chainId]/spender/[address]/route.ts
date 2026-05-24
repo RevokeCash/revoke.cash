@@ -8,7 +8,8 @@ import { WhoisSpenderDataSource } from '@revoke.cash/core/whois/spender/label/Wh
 import { OnchainSpenderRiskDataSource } from '@revoke.cash/core/whois/spender/risk/OnchainSpenderRiskDataSource';
 import { ScamSnifferRiskDataSource } from '@revoke.cash/core/whois/spender/risk/ScamSnifferRiskDataSource';
 import { WebacySpenderRiskDataSource } from '@revoke.cash/core/whois/spender/risk/WebacySpenderRiskDataSource';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -36,19 +37,12 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
 });
 
 export async function GET(req: NextRequest, props: Props) {
-  if (!(await checkActiveSessionEdge(req))) {
-    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.SPENDER))) {
-    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { params } = data;
-
   try {
+    await authorizeRequest(req, {
+      auth: 'api-session',
+      rateLimiter: RateLimiters.SPENDER,
+    });
+    const { params } = await parseRequest(req, props, schemas);
     const spenderData = await SPENDER_DATA_SOURCE.getSpenderData(params.address, params.chainId);
 
     return NextResponse.json(spenderData, {
@@ -57,7 +51,7 @@ export async function GET(req: NextRequest, props: Props) {
         'Vercel-CDN-Cache-Control': `s-maxage=${60 * 60 * 24}`, // 1 day (server CDN cache)
       },
     });
-  } catch (e) {
-    return NextResponse.json({ message: (e as any).message }, { status: 500 });
+  } catch (error) {
+    return handleApiRouteError(error, { errorMessage: 'Error fetching spender data' });
   }
 }

@@ -2,7 +2,8 @@ import { getSubscriptionRules, upsertSubscriptionRules } from '@revoke.cash/core
 import { isActiveUltimateSubscriptionOwnedBy } from '@revoke.cash/core/premium/subscriptions';
 import { uuidSchema } from '@revoke.cash/core/schemas';
 import { rulesDataBodySchema } from 'app/api/auto-revoke/schemas';
-import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { ApiError, handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -25,55 +26,41 @@ const schemas = {
 export const runtime = 'edge';
 
 export async function GET(req: NextRequest, props: Props) {
-  const siweAddress = await getAuthenticatedSiweAddress(req);
-  if (!siweAddress) {
-    return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_READ))) {
-    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas.GET);
-  if (error) return error;
-  const { id: subscriptionId } = data.params;
-
-  if (!(await isActiveUltimateSubscriptionOwnedBy(subscriptionId, siweAddress))) {
-    return NextResponse.json({ message: 'Not authorized for this subscription' }, { status: 403 });
-  }
-
   try {
+    const { siweAddress } = await authorizeRequest(req, {
+      auth: 'siwe',
+      rateLimiter: RateLimiters.PREMIUM_READ,
+    });
+    const { params } = await parseRequest(req, props, schemas.GET);
+    const { id: subscriptionId } = params;
+
+    if (!(await isActiveUltimateSubscriptionOwnedBy(subscriptionId, siweAddress))) {
+      throw new ApiError(403, 'Not authorized for this subscription');
+    }
+
     const rules = await getSubscriptionRules(subscriptionId);
     return NextResponse.json(rules);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch rules';
-    return NextResponse.json({ message }, { status: 500 });
+    return handleApiRouteError(error, { errorMessage: 'Failed to fetch rules' });
   }
 }
 
 export async function PUT(req: NextRequest, props: Props) {
-  const siweAddress = await getAuthenticatedSiweAddress(req);
-  if (!siweAddress) {
-    return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_WRITE))) {
-    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas.PUT);
-  if (error) return error;
-  const { id: subscriptionId } = data.params;
-
-  if (!(await isActiveUltimateSubscriptionOwnedBy(subscriptionId, siweAddress))) {
-    return NextResponse.json({ message: 'Not authorized for this subscription' }, { status: 403 });
-  }
-
   try {
-    await upsertSubscriptionRules(subscriptionId, data.body);
+    const { siweAddress } = await authorizeRequest(req, {
+      auth: 'siwe',
+      rateLimiter: RateLimiters.PREMIUM_WRITE,
+    });
+    const { params, body } = await parseRequest(req, props, schemas.PUT);
+    const { id: subscriptionId } = params;
+
+    if (!(await isActiveUltimateSubscriptionOwnedBy(subscriptionId, siweAddress))) {
+      throw new ApiError(403, 'Not authorized for this subscription');
+    }
+
+    await upsertSubscriptionRules(subscriptionId, body);
     return NextResponse.json({ ok: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to update rules';
-    return NextResponse.json({ message }, { status: 500 });
+    return handleApiRouteError(error, { errorMessage: 'Failed to update rules' });
   }
 }

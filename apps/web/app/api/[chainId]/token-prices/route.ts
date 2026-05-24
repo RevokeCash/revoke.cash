@@ -6,7 +6,8 @@ import { chunkArray, deduplicateArray, isNullish } from '@revoke.cash/core/utils
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { Redis } from '@upstash/redis';
 import ky from 'ky';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { ApiError, handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { type Address, getAddress } from 'viem';
@@ -58,25 +59,23 @@ const COINGECKO_MAX_ADDRESSES_PER_REQUEST = 100;
 const MIN_TOTAL_RESERVE_USD = 50_000;
 
 export async function POST(req: NextRequest, props: Props) {
-  if (!(await checkActiveSessionEdge(req))) {
-    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
+  try {
+    await authorizeRequest(req, {
+      auth: 'api-session',
+      rateLimiter: RateLimiters.PRICE,
+    });
+    const { params, body } = await parseRequest(req, props, schemas);
+
+    // Schema refinement ensures this is not null
+    const coingeckoNetworkId = getChainCoingeckoNetworkId(params.chainId)!;
+
+    const uniqueAddresses = deduplicateArray(body.addresses);
+    const prices = await getTokenPrices(params.chainId, coingeckoNetworkId, uniqueAddresses);
+
+    return NextResponse.json({ prices });
+  } catch (error) {
+    return handleApiRouteError(error, { errorMessage: 'Error fetching token prices' });
   }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PRICE))) {
-    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { params, body } = data;
-
-  // Schema refinement ensures this is not null
-  const coingeckoNetworkId = getChainCoingeckoNetworkId(params.chainId)!;
-
-  const uniqueAddresses = deduplicateArray(body.addresses);
-  const prices = await getTokenPrices(params.chainId, coingeckoNetworkId, uniqueAddresses);
-
-  return NextResponse.json({ prices });
 }
 
 const getTokenPrices = async (
@@ -154,7 +153,8 @@ const fetchPricesFromCoinGecko = async (
       }),
     );
   } catch (error) {
-    throw new Error(`Failed to fetch token prices from CoinGecko: ${(error as Error).message}`);
+    console.error('Failed to fetch token prices from CoinGecko', error);
+    throw new ApiError(503, 'Token prices are temporarily unavailable');
   }
 };
 

@@ -1,4 +1,5 @@
 import type { Filter, Log } from '@revoke.cash/core/events';
+import { EventLogsUnavailableError, LatestBlockUnavailableError } from '@revoke.cash/core/events/errors';
 import ky, { retryOn429 } from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import { isNullish } from '@revoke.cash/core/utils';
@@ -40,7 +41,7 @@ export class TeloscanEventGetter implements EventGetter {
     );
 
     const blockNumber = result?.results[0]?.blockNumber;
-    if (!blockNumber) throw new Error('Failed to get latest block number');
+    if (!blockNumber) throw new LatestBlockUnavailableError(_chainId);
 
     return blockNumber;
   }
@@ -56,15 +57,15 @@ export class TeloscanEventGetter implements EventGetter {
     } catch (e) {
       console.log(e);
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
-      throw new Error('Could not retrieve event logs from the blockchain');
+      throw new EventLogsUnavailableError(_chainId);
     }
 
     if (!data.success) {
-      throw new Error(data.message);
+      throw new EventLogsUnavailableError(_chainId, data.message);
     }
 
     if (data.more) {
-      if (page === 25) throw new Error('Could not retrieve event logs from the blockchain');
+      if (page === 25) throw new EventLogsUnavailableError(_chainId);
       return [...data.results.map(formatTeloscanEvent), ...(await this.getEvents(_chainId, filter, page + 1))];
     }
 

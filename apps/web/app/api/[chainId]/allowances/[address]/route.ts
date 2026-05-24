@@ -3,14 +3,14 @@ import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/m
 import { getCachedAddressData } from '@revoke.cash/core/monitor/allowances-read';
 import { recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/scan';
 import { enrichToken, findUnenrichedTokens } from '@revoke.cash/core/monitor/token-enrichment';
-import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { addressSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
-import { ExportableError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters, requirePremiumEntitlement } from 'lib/api/auth';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { dtoJsonResponse } from 'lib/dto';
-import { type NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { z } from 'zod';
 
 interface Props {
@@ -24,25 +24,20 @@ const schemas = {
 
 // Gets indexed address data for premium users.
 export async function GET(req: NextRequest, props: Props) {
-  const parsed = await parseAndAuthorizeRequest(req, props, RateLimiters.PREMIUM_READ);
-  if (parsed instanceof NextResponse) return parsed;
-  const { params } = parsed;
-
   try {
+    const { params } = await parseAndAuthorizePremiumRequest(req, props);
     const result = await getCachedAddressData(params.address, params.chainId);
     return dtoJsonResponse(result);
-  } catch (e) {
-    return handleAllowanceRouteError(e, 'Error fetching cached address data');
+  } catch (error) {
+    return handleApiRouteError(error, { errorMessage: 'Error fetching cached address data' });
   }
 }
 
 // Refreshes indexed address data for premium users.
 export async function POST(req: NextRequest, props: Props) {
-  const parsed = await parseAndAuthorizeRequest(req, props, RateLimiters.PREMIUM_READ);
-  if (parsed instanceof NextResponse) return parsed;
-  const { params } = parsed;
-
   try {
+    const { params } = await parseAndAuthorizePremiumRequest(req, props);
+
     const scanResult = await scanAddressChain(params.address, params.chainId).catch(async (error) => {
       await recordScanFailure(params.address, params.chainId, error);
       throw error;
@@ -62,32 +57,19 @@ export async function POST(req: NextRequest, props: Props) {
       resolveMissingTimestamps: true,
     });
     return dtoJsonResponse(result);
-  } catch (e) {
-    return handleAllowanceRouteError(e, 'Error refreshing cached address data');
+  } catch (error) {
+    return handleApiRouteError(error, { errorMessage: 'Error refreshing cached address data' });
   }
 }
 
-const parseAndAuthorizeRequest = async (
-  req: NextRequest,
-  props: Props,
-  rateLimiter: typeof RateLimiters.PREMIUM_READ,
-): Promise<{ params: z.infer<typeof schemas.params> } | NextResponse> => {
-  if (!(await checkActiveSessionEdge(req))) {
-    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
-  }
+const parseAndAuthorizePremiumRequest = async (req: NextRequest, props: Props) => {
+  await authorizeRequest(req, {
+    auth: 'api-session',
+    rateLimiter: RateLimiters.PREMIUM_READ,
+  });
+  const { params } = await parseRequest(req, props, schemas);
 
-  if (!(await checkRateLimitAllowedEdge(req, rateLimiter))) {
-    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { params } = data;
-
-  const isPremium = await hasActivePremiumEntitlement(params.address);
-  if (!isPremium) {
-    return NextResponse.json({ message: 'Premium is required to access indexed allowance data' }, { status: 403 });
-  }
+  await requirePremiumEntitlement(params.address, 'Premium is required to access indexed allowance data');
 
   return { params };
 };
@@ -102,14 +84,4 @@ const enrichObservedTokens = async (chainId: DocumentedChainId, fromBlock: numbe
       console.warn(`Failed to enrich token ${token} on chain ${chainId}`, parseErrorMessage(error), error);
     }
   });
-};
-
-const handleAllowanceRouteError = (error: unknown, fallbackMessage: string) => {
-  if (error instanceof ExportableError) {
-    const { status, body } = error.export();
-    return NextResponse.json(body, { status });
-  }
-
-  console.error(fallbackMessage, parseErrorMessage(error), error);
-  return NextResponse.json({ message: parseErrorMessage(error) }, { status: 500 });
 };

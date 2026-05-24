@@ -6,6 +6,7 @@ import {
   getChainApiUrl,
   getChainEtherscanCompatiblePlatformNames,
 } from '@revoke.cash/core/chains';
+import { EventDataSourceOutOfSyncError, LatestBlockUnavailableError } from '@revoke.cash/core/events/errors';
 import ky, { retryOn429 } from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import type { EtherscanPlatform } from '@revoke.cash/core/types';
@@ -57,7 +58,7 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
     const [latestBlock, indexingStatus] = await Promise.allSettled([latestBlockPromise, indexingStatusPromise]);
 
     if (latestBlock.status !== 'fulfilled') {
-      throw new Error('Failed to get latest block number');
+      throw new LatestBlockUnavailableError(chainId);
     }
 
     // Note: if the API does not support indexing status, we simply do not apply the check and assume the data is synced
@@ -65,7 +66,7 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
       if (indexingStatus.value.indexed_blocks_ratio < 0.95) {
         console.log(indexingStatus.value);
         console.log(`${apiUrl}/v2/main-page/indexing-status`);
-        throw new Error('Events data source is out of sync with the blockchain, please try again later.');
+        throw new EventDataSourceOutOfSyncError(chainId);
       }
     }
 
@@ -73,7 +74,7 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
     if (!blockNumber) {
       console.log(latestBlock.value);
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
-      throw new Error('Failed to get latest block number');
+      throw new LatestBlockUnavailableError(chainId);
     }
 
     return blockNumber;

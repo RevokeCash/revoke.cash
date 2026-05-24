@@ -1,6 +1,7 @@
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { getDb } from '@revoke.cash/core/db/client';
 import { premiumPayments, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { and, count, eq, gt } from 'drizzle-orm';
 import type { Address } from 'viem';
@@ -21,6 +22,17 @@ interface CreatePaymentParams {
 
 export type PremiumPaymentRecord = typeof premiumPayments.$inferSelect;
 export type PremiumPaymentStatus = PremiumPaymentRecord['status'];
+
+export class PremiumPaymentError extends ExportableError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'PremiumPaymentError';
+  }
+
+  export() {
+    return { status: 400, body: { message: this.message } };
+  }
+}
 
 export interface PaymentStatusResponse {
   paymentId: string;
@@ -49,10 +61,10 @@ export const toPaymentStatusResponse = (payment: PremiumPaymentRecord): PaymentS
 
 export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }: CreatePaymentParams) => {
   const plan = await getPremiumPlanById(planId);
-  if (!plan) throw new Error('Unsupported premium plan');
+  if (!plan) throw new PremiumPaymentError('Unsupported premium plan');
 
   const paymentConfig = getPaymentConfig(chainId);
-  if (!paymentConfig) throw new Error('Unsupported payment chain');
+  if (!paymentConfig) throw new PremiumPaymentError('Unsupported payment chain');
 
   const db = getDb();
 
@@ -65,7 +77,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
   });
 
   if (activeSubscription && plan.priceUsd < activeSubscription.plan.priceUsd) {
-    throw new Error('Cannot renew with a lower-tier plan. Please select the same plan or upgrade.');
+    throw new PremiumPaymentError('Cannot renew with a lower-tier plan. Please select the same plan or upgrade.');
   }
 
   const [{ count: pendingCount }] = await db
@@ -74,7 +86,7 @@ export const createPayment = async ({ ownerAddress, planId, chainId, vatRegion }
     .where(and(eq(premiumPayments.ownerAddress, ownerAddress), eq(premiumPayments.status, 'pending')));
 
   if (pendingCount >= PREMIUM_MAX_PENDING_PAYMENTS_PER_USER) {
-    throw new Error('Too many pending payments. Please wait for existing ones to expire.');
+    throw new PremiumPaymentError('Too many pending payments. Please wait for existing ones to expire.');
   }
 
   const publicClient = createViemPublicClientForChain(chainId as PremiumPaymentChainId);

@@ -1,3 +1,4 @@
+import { hasActivePremiumEntitlement, hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import { getIronSession, type SessionOptions, unsealData } from 'iron-session';
@@ -7,6 +8,7 @@ import { cookies, headers } from 'next/headers';
 import type { NextRequest, NextResponse } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { Address, Hex } from 'viem';
+import { ApiError } from './errors';
 
 export interface SiweFields {
   address: Address;
@@ -198,6 +200,99 @@ export const getAuthenticatedSiweAddress = async (req: NextRequest): Promise<Add
   }
 
   return session.siweAddress;
+};
+
+type ApiAuthMode = 'api-session' | 'siwe';
+
+interface AuthorizeRequestOptions {
+  auth?: ApiAuthMode;
+  rateLimiter?: RateLimiterMemory;
+  requireUltimateEntitlement?: boolean;
+}
+
+export async function authorizeRequest(
+  req: NextRequest,
+  options: AuthorizeRequestOptions & { auth: 'siwe' },
+): Promise<{ siweAddress: Address }>;
+export async function authorizeRequest(
+  req: NextRequest,
+  options?: AuthorizeRequestOptions,
+): Promise<{ siweAddress: Address | null }>;
+export async function authorizeRequest(
+  req: NextRequest,
+  options: AuthorizeRequestOptions = {},
+): Promise<{ siweAddress: Address | null }> {
+  const siweAddress = await getAuthorizedSiweAddress(req, options.auth);
+  if (options.rateLimiter) {
+    await requireRateLimit(req, options.rateLimiter);
+  }
+
+  if (options.requireUltimateEntitlement) {
+    if (!siweAddress) {
+      throw new ApiError(403, 'No SIWE session is active');
+    }
+
+    await requireUltimateEntitlement(siweAddress);
+  }
+
+  return { siweAddress };
+}
+
+export const requireApiSession = async (req: NextRequest) => {
+  if (!(await checkActiveSessionEdge(req))) {
+    throw new ApiError(403, 'No API session is active');
+  }
+};
+
+export const requireSiweSession = async (req: NextRequest): Promise<Address> => {
+  const siweAddress = await getAuthenticatedSiweAddress(req);
+  if (!siweAddress) {
+    throw new ApiError(403, 'No SIWE session is active');
+  }
+
+  return siweAddress;
+};
+
+export const requireRateLimit = async (
+  req: NextRequest,
+  rateLimiter: RateLimiterMemory,
+  message = 'Too many requests, please try again later.',
+) => {
+  if (!(await checkRateLimitAllowedEdge(req, rateLimiter))) {
+    throw new ApiError(429, message);
+  }
+};
+
+export const requirePremiumEntitlement = async (address: Address, message = 'Premium subscription required') => {
+  if (!(await hasActivePremiumEntitlement(address))) {
+    throw new ApiError(403, message);
+  }
+};
+
+export const requireUltimateEntitlement = async (address: Address) => {
+  if (!(await hasActiveUltimateEntitlement(address))) {
+    throw new ApiError(403, 'Ultimate subscription required');
+  }
+};
+
+export const requireCronSecret = (req: NextRequest) => {
+  const authHeader = req.headers.get('authorization');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    throw new ApiError(401, 'Unauthorized');
+  }
+};
+
+const getAuthorizedSiweAddress = async (req: NextRequest, auth: ApiAuthMode | undefined): Promise<Address | null> => {
+  if (auth === 'api-session') {
+    await requireApiSession(req);
+    return null;
+  }
+
+  if (auth === 'siwe') {
+    return requireSiweSession(req);
+  }
+
+  return null;
 };
 
 // Note: if ever moving to a different hosting / reverse proxy, then we need to update this

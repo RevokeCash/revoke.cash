@@ -2,6 +2,7 @@ import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cas
 import { premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { registerAddressForMonitoring } from '@revoke.cash/core/monitor/register';
 import { isNullish } from '@revoke.cash/core/utils';
+import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { DAY } from '@revoke.cash/core/utils/time';
 import { and, count, eq, gt, sql } from 'drizzle-orm';
 import type { Address } from 'viem';
@@ -33,6 +34,17 @@ export interface PremiumSubscription {
 }
 
 export type PremiumSubscriptionRecord = typeof premiumSubscriptions.$inferSelect;
+
+export class PremiumSubscriptionError extends ExportableError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'PremiumSubscriptionError';
+  }
+
+  export() {
+    return { status: 400, body: { message: this.message } };
+  }
+}
 
 export const isSubscriptionActive = (
   subscription: { startsAt: Date | string; endsAt: Date | string },
@@ -124,11 +136,11 @@ const findActiveSubscriptionForOwner = async (
   });
 
   if (!subscription) {
-    throw new Error('Subscription not found');
+    throw new PremiumSubscriptionError('Subscription not found');
   }
 
   if (subscription.endsAt.getTime() <= Date.now()) {
-    throw new Error('Subscription has expired');
+    throw new PremiumSubscriptionError('Subscription has expired');
   }
 
   return subscription;
@@ -150,7 +162,7 @@ export const addSubscriptionAddress = async ({
       .where(eq(premiumSubscriptionAddresses.subscriptionId, subscription.id));
 
     if (usedSlots >= subscription.plan.maxAddresses) {
-      throw new Error('No available wallet slots');
+      throw new PremiumSubscriptionError('No available wallet slots');
     }
 
     const existing = await trx.query.premiumSubscriptionAddresses.findFirst({
@@ -162,7 +174,7 @@ export const addSubscriptionAddress = async ({
     });
 
     if (existing) {
-      throw new Error('Address already added to this subscription');
+      throw new PremiumSubscriptionError('Address already added to this subscription');
     }
 
     await trx.insert(premiumSubscriptionAddresses).values({
@@ -183,7 +195,7 @@ export const removeSubscriptionAddress = async ({
   address,
 }: ModifySubscriptionAddressParams) => {
   if (address.toLowerCase() === ownerAddress.toLowerCase()) {
-    throw new Error('Cannot remove subscription owner address');
+    throw new PremiumSubscriptionError('Cannot remove subscription owner address');
   }
 
   const db = getTransactionalDb();

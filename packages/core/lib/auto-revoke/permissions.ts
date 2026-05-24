@@ -15,6 +15,7 @@ import { SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'drizzle-orm';
 import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS, REVOKE_SESSION_ACCOUNT_ADDRESS } from './config';
+import { AutoRevokeError } from './errors';
 import type { AutoRevokePermission, WalletPermissionResult } from './types';
 
 export const getAutoRevokePermissionsByAddress = async (address: Address): Promise<AutoRevokePermission[]> => {
@@ -224,13 +225,13 @@ export const resolvePermissionRecord = async (
   const lowercasedAddress = toLowercaseAddress(authenticatedAddress);
 
   const decodedPermission = decodeDelegations(input.permissionContext)?.[0];
-  if (!decodedPermission) throw new Error('Failed to decode permission context');
+  if (!decodedPermission) throw new AutoRevokeError(400, 'Failed to decode permission context');
 
   if (toLowercaseAddress(decodedPermission.delegator) !== toLowercaseAddress(authenticatedAddress)) {
-    throw new Error('Permission context does not belong to the authenticated address');
+    throw new AutoRevokeError(403, 'Permission context does not belong to the authenticated address');
   }
   if (toLowercaseAddress(decodedPermission.delegate) !== REVOKE_SESSION_ACCOUNT_ADDRESS?.toLowerCase()) {
-    throw new Error('Permission is not granted to the Revoke session account');
+    throw new AutoRevokeError(400, 'Permission is not granted to the Revoke session account');
   }
 
   const delegationManager = getSmartAccountsEnvironment(input.chainId).DelegationManager;
@@ -251,7 +252,7 @@ export const resolvePermissionRecord = async (
   });
 
   if (toLowercaseAddress(recoveredSigner) !== lowercasedAddress) {
-    throw new Error('Permission signature does not match the claimed chain');
+    throw new AutoRevokeError(400, 'Permission signature does not match the claimed chain');
   }
 
   const expiresAt = extractExpiryFromCaveats(decodedPermission.caveats, input.chainId);

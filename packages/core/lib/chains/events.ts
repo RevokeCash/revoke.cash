@@ -9,6 +9,7 @@ import {
   getChainName,
 } from '@revoke.cash/core/chains';
 import { type EnrichedTokenEvent, isApprovalTokenEvent, parseLog, type TokenEvent } from '@revoke.cash/core/events';
+import { EventDataSourceOutOfSyncError } from '@revoke.cash/core/events/errors';
 import { buildTokenEventFilters } from '@revoke.cash/core/events/filters';
 import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cash/core/events/processing';
 import type { LogsProvider } from '@revoke.cash/core/events/providers';
@@ -102,7 +103,7 @@ const getEventPrerequisites = async (chainId: DocumentedChainId, logsProvider: L
     console.log(
       `${getChainName(chainId)}: Events data source is out of sync with the blockchain, please try again later.`,
     );
-    throw new Error(`Events data source is out of sync with the blockchain, please try again later.`);
+    throw new EventDataSourceOutOfSyncError(chainId);
   }
 
   return { logsProvider, fromBlock, toBlock };

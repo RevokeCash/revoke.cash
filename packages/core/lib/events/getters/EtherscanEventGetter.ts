@@ -8,6 +8,7 @@ import {
   getChainLogsRpcUrl,
 } from '@revoke.cash/core/chains';
 import type { Filter, Log } from '@revoke.cash/core/events';
+import { EventLogsUnavailableError, LatestBlockUnavailableError } from '@revoke.cash/core/events/errors';
 import { ViemLogsProvider } from '@revoke.cash/core/events/providers';
 import ky, { retryOn429 } from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
@@ -67,7 +68,7 @@ export class EtherscanEventGetter implements EventGetter {
     const blockNumber = Number(result.result);
     if (!blockNumber) {
       console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
-      throw new Error('Failed to get latest block number');
+      throw new LatestBlockUnavailableError(chainId);
     }
     return blockNumber;
   }
@@ -91,7 +92,7 @@ export class EtherscanEventGetter implements EventGetter {
 
       if (isLogResponseSizeError(e)) throw new Error('Log response size exceeded');
 
-      throw new Error('Could not retrieve event logs from the blockchain');
+      throw new EventLogsUnavailableError(chainId);
     }
 
     if (typeof data.result === 'string') {
@@ -109,7 +110,7 @@ export class EtherscanEventGetter implements EventGetter {
         throw new Error('Log response size exceeded');
       }
 
-      throw new Error(data.result);
+      throw new EventLogsUnavailableError(chainId, data.result);
     }
 
     if (typeof data.message === 'string') {
@@ -122,7 +123,7 @@ export class EtherscanEventGetter implements EventGetter {
 
     if (!Array.isArray(data.result)) {
       console.log(data);
-      throw new Error('Could not retrieve event logs from the blockchain');
+      throw new EventLogsUnavailableError(chainId);
     }
 
     // Throw an error that is compatible with the recursive getLogs retrying client-side if we hit the result limit

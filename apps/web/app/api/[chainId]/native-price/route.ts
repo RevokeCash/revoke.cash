@@ -6,7 +6,8 @@ import { isNullish } from '@revoke.cash/core/utils';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { Redis } from '@upstash/redis';
 import ky from 'ky';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -39,29 +40,26 @@ const PRICE_QUEUE = new RequestQueue('token-price-native', {
 const CACHE_TTL = 1 * 60 * 20; // 20 minutes
 
 export async function GET(req: NextRequest, props: Props) {
-  if (!(await checkActiveSessionEdge(req))) {
-    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
-  }
+  try {
+    await authorizeRequest(req, {
+      auth: 'api-session',
+      rateLimiter: RateLimiters.PRICE,
+    });
+    const { params } = await parseRequest(req, props, schemas);
+    const price = await getNativeTokenPrice(params.chainId);
 
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PRICE))) {
-    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { params } = data;
-
-  const price = await getNativeTokenPrice(params.chainId);
-
-  return NextResponse.json(
-    { price },
-    {
-      headers: {
-        'Cache-Control': `max-age=${CACHE_TTL}`,
-        'Vercel-CDN-Cache-Control': `s-maxage=${CACHE_TTL}`,
+    return NextResponse.json(
+      { price },
+      {
+        headers: {
+          'Cache-Control': `max-age=${CACHE_TTL}`,
+          'Vercel-CDN-Cache-Control': `s-maxage=${CACHE_TTL}`,
+        },
       },
-    },
-  );
+    );
+  } catch (error) {
+    return handleApiRouteError(error, { errorMessage: 'Error fetching native token price' });
+  }
 }
 
 const getNativeTokenPrice = async (chainId: number) => {

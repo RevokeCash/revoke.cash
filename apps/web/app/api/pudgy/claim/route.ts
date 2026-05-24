@@ -6,7 +6,8 @@ import { addressSchema } from '@revoke.cash/core/schemas';
 import { isNullish } from '@revoke.cash/core/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/cold-storage-sbt/utils';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { ApiError, handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import ky from 'lib/ky';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -26,68 +27,76 @@ const schemas = {
 };
 
 export async function POST(req: NextRequest) {
-  if (!(await checkActiveSessionEdge(req))) {
-    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PUDGY))) {
-    return NextResponse.json({ message: 'Rate limit exceeded' }, { status: 429 });
-  }
-
-  if (!PUDGY_API_KEY || !PUDGY_API_URL) {
-    return NextResponse.json({ message: 'PUDGY_API_KEY or PUDGY_API_URL is not set' }, { status: 500 });
-  }
-
-  const { data, error } = await parseRequest(req, undefined, schemas);
-  if (error) return error;
-
-  // We only check Ethereum for now
-  const chainId = 1;
-  const { address } = data.body;
-
-  // Get the events and allowances for the user
-  const publicClient = createViemPublicClientForChain(chainId);
-  const logsProvider = getScriptLogsProvider(chainId);
-  const { events } = await getTokenEvents(chainId, address, logsProvider);
-  const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
-
-  if (await alreadyOwnsSoulboundToken(address)) {
-    return NextResponse.json({ status: 'already_claimed', message: 'User already owns the SBT' }, { status: 400 });
-  }
-
-  // Check if the user owns any of the tokens that enable them to mint
-  if (!(await canMint(address))) {
-    return NextResponse.json(
-      { status: 'no_tokens', message: 'User does not own any Pudgy-related tokens' },
-      { status: 400 },
-    );
-  }
-
-  // Check if the user has active allowances that can be revoked
-  const activeAllowances = allowances
-    .filter((allowance) => Boolean(allowance.payload))
-    .filter((allowance) => isNullish(allowance.payload?.revokeError));
-  if (activeAllowances.length > 0) {
-    return NextResponse.json({ status: 'has_allowances', message: 'User has active allowances' }, { status: 400 });
-  }
-
-  let response: PudgyApiResponse;
-
   try {
-    response = await ky
-      .post(PUDGY_API_URL, { json: { receiver: address }, headers: { 'x-api-key': PUDGY_API_KEY } })
-      .json<PudgyApiResponse>();
+    await authorizeRequest(req, {
+      auth: 'api-session',
+      rateLimiter: RateLimiters.PUDGY,
+    });
+
+    if (!PUDGY_API_KEY || !PUDGY_API_URL) {
+      throw new ApiError(500, 'PUDGY_API_KEY or PUDGY_API_URL is not set');
+    }
+
+    const { body } = await parseRequest(req, undefined, schemas);
+
+    // We only check Ethereum for now
+    const chainId = 1;
+    const { address } = body;
+
+    // Get the events and allowances for the user
+    const publicClient = createViemPublicClientForChain(chainId);
+    const logsProvider = getScriptLogsProvider(chainId);
+    const { events } = await getTokenEvents(chainId, address, logsProvider);
+    const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
+
+    if (await alreadyOwnsSoulboundToken(address)) {
+      throw new ApiError(400, 'User already owns the SBT', {
+        status: 'already_claimed',
+        message: 'User already owns the SBT',
+      });
+    }
+
+    // Check if the user owns any of the tokens that enable them to mint
+    if (!(await canMint(address))) {
+      throw new ApiError(400, 'User does not own any Pudgy-related tokens', {
+        status: 'no_tokens',
+        message: 'User does not own any Pudgy-related tokens',
+      });
+    }
+
+    // Check if the user has active allowances that can be revoked
+    const activeAllowances = allowances
+      .filter((allowance) => Boolean(allowance.payload))
+      .filter((allowance) => isNullish(allowance.payload?.revokeError));
+    if (activeAllowances.length > 0) {
+      throw new ApiError(400, 'User has active allowances', {
+        status: 'has_allowances',
+        message: 'User has active allowances',
+      });
+    }
+
+    let response: PudgyApiResponse;
+
+    try {
+      response = await ky
+        .post(PUDGY_API_URL, { json: { receiver: address }, headers: { 'x-api-key': PUDGY_API_KEY } })
+        .json<PudgyApiResponse>();
+    } catch (error) {
+      console.error('Pudgy Penguins API error:', error);
+      const message = `Pudgy Penguins API error: ${parseErrorMessage(error)}`;
+      throw new ApiError(500, message, { status: 'failed', message });
+    }
 
     if (!response.success) {
-      return NextResponse.json({ status: 'failed', message: 'Pudgy Penguins API error', ...response }, { status: 500 });
+      throw new ApiError(500, 'Pudgy Penguins API error', {
+        status: 'failed',
+        message: 'Pudgy Penguins API error',
+        ...response,
+      });
     }
-  } catch (error) {
-    console.error('Pudgy Penguins API error:', error);
-    return NextResponse.json(
-      { status: 'failed', message: `Pudgy Penguins API error: ${parseErrorMessage(error)}` },
-      { status: 500 },
-    );
-  }
 
-  return NextResponse.json({ status: 'confirmed', taskId: response.taskId });
+    return NextResponse.json({ status: 'confirmed', taskId: response.taskId });
+  } catch (error) {
+    return handleApiRouteError(error);
+  }
 }

@@ -1,4 +1,5 @@
 import { getPremiumPlans } from '@revoke.cash/core/premium/plans';
+import { handleApiRouteError } from 'lib/api/errors';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
@@ -17,7 +18,6 @@ export async function GET() {
       },
     );
   } catch (error) {
-    console.error('Error loading premium plans', error);
-    return NextResponse.json({ message: 'Failed to load plans' }, { status: 500 });
+    return handleApiRouteError(error, { errorMessage: 'Failed to load plans', exposeErrorMessage: false });
   }
 }

@@ -1,7 +1,8 @@
 import { getAutoRevokePermissionsBySubscription } from '@revoke.cash/core/auto-revoke/permissions';
 import { isActiveUltimateSubscriptionOwnedBy } from '@revoke.cash/core/premium/subscriptions';
 import { uuidSchema } from '@revoke.cash/core/schemas';
-import { checkRateLimitAllowedEdge, getAuthenticatedSiweAddress, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { ApiError, handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -18,28 +19,21 @@ const schemas = {
 export const runtime = 'edge';
 
 export async function GET(req: NextRequest, props: Props) {
-  const siweAddress = await getAuthenticatedSiweAddress(req);
-  if (!siweAddress) {
-    return NextResponse.json({ message: 'No SIWE session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.PREMIUM_READ))) {
-    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { id: subscriptionId } = data.params;
-
-  if (!(await isActiveUltimateSubscriptionOwnedBy(subscriptionId, siweAddress))) {
-    return NextResponse.json({ message: 'Not authorized for this subscription' }, { status: 403 });
-  }
-
   try {
+    const { siweAddress } = await authorizeRequest(req, {
+      auth: 'siwe',
+      rateLimiter: RateLimiters.PREMIUM_READ,
+    });
+    const { params } = await parseRequest(req, props, schemas);
+    const { id: subscriptionId } = params;
+
+    if (!(await isActiveUltimateSubscriptionOwnedBy(subscriptionId, siweAddress))) {
+      throw new ApiError(403, 'Not authorized for this subscription');
+    }
+
     const permissions = await getAutoRevokePermissionsBySubscription(subscriptionId);
     return NextResponse.json(permissions);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch permissions';
-    return NextResponse.json({ message }, { status: 500 });
+    return handleApiRouteError(error, { errorMessage: 'Failed to fetch permissions' });
   }
 }

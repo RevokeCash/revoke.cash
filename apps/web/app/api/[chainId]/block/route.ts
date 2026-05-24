@@ -1,7 +1,7 @@
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { supportedChainIdSchema } from '@revoke.cash/core/schemas';
-import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import { checkActiveSessionEdge, checkRateLimitAllowedEdge, RateLimiters } from 'lib/api/auth';
+import { authorizeRequest, RateLimiters } from 'lib/api/auth';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -16,24 +16,16 @@ const schemas = {
 };
 
 export async function GET(req: NextRequest, props: Props) {
-  if (!(await checkActiveSessionEdge(req))) {
-    return NextResponse.json({ message: 'No API session is active' }, { status: 403 });
-  }
-
-  if (!(await checkRateLimitAllowedEdge(req, RateLimiters.LOGS))) {
-    return NextResponse.json({ message: 'Too many requests, please try again later.' }, { status: 429 });
-  }
-
-  const { data, error } = await parseRequest(req, props, schemas);
-  if (error) return error;
-  const { params } = data;
-
   try {
+    await authorizeRequest(req, {
+      auth: 'api-session',
+      rateLimiter: RateLimiters.LOGS,
+    });
+    const { params } = await parseRequest(req, props, schemas);
     const scriptLogsProvider = getScriptLogsProvider(params.chainId);
     const blockNumber = await scriptLogsProvider.getLatestBlock();
     return NextResponse.json({ blockNumber });
-  } catch (e) {
-    console.error('Error occurred', parseErrorMessage(e));
-    return NextResponse.json({ message: parseErrorMessage(e) }, { status: 500 });
+  } catch (error) {
+    return handleApiRouteError(error, { errorMessage: 'Error fetching latest block' });
   }
 }

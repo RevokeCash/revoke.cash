@@ -1,9 +1,10 @@
 import { splitBlockRangeInChunks } from '@revoke.cash/core/blocks';
 import type { Filter, Log } from '@revoke.cash/core/events';
+import { EventLogsUnavailableError, LatestBlockUnavailableError } from '@revoke.cash/core/events/errors';
 import ky from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import { isNullish } from '@revoke.cash/core/utils';
-import { isRateLimitError } from '@revoke.cash/core/utils/errors';
+import { isRateLimitError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { getAddress } from 'viem';
 import type { EventGetter } from './EventGetter';
 
@@ -32,7 +33,7 @@ export class CovalentEventGetter implements EventGetter {
 
     if (!blockNumber) {
       console.log('chainStatus:', chainStatus);
-      throw new Error('Failed to get latest block number');
+      throw new LatestBlockUnavailableError(chainId);
     }
 
     // Covalent might still have slight delay so we subtract 20 to be safe
@@ -81,7 +82,7 @@ export class CovalentEventGetter implements EventGetter {
         return this.getEventsInChunk(chainId, fromBlock, toBlock, topics);
       }
 
-      throw new Error((e as any).data?.error_message ?? (e as any).message);
+      throw new EventLogsUnavailableError(chainId, parseErrorMessage(e));
     }
   }
 

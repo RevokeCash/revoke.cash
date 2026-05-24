@@ -5,6 +5,7 @@ import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
 import { and, eq, gt, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
+import { AutoRevokeError } from './errors';
 import type { AutoRevokeAddressRulesConfig, AutoRevokeRules, AutoRevokeRulesSource } from './types';
 
 type RulesRecord = typeof autoRevokeRules.$inferSelect;
@@ -169,7 +170,7 @@ const resolveActiveRulesId = async (
   if (subscriptionId === null) return null;
 
   const isAuthorized = await isAddressMemberOfActiveUltimateSubscription(trx, address, subscriptionId);
-  if (!isAuthorized) throw new Error('Not authorized for this rules source');
+  if (!isAuthorized) throw new AutoRevokeError(403, 'Not authorized for this rules source');
 
   return ensureSubscriptionRulesId(trx, subscriptionId);
 };
