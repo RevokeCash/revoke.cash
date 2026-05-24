@@ -22,7 +22,7 @@ export const usePremiumApprovalHistory = () => {
         historyResult?.refetch();
       };
 
-      return { chainId: chain.chainId, status, error, refetch };
+      return { chainId: chain.chainId, status, error, isRefreshing: chain.isRefreshing, refetch };
     });
   }, [chainData, historyResults]);
 
@@ -60,7 +60,6 @@ const getChainHistoryLoadingStatus = (
 ): ChainHistoryLoadingStatus => {
   if (chainStatus === 'loading' || historyResult.isLoading) return 'loading';
   if (chainStatus === 'error' || historyResult.error) return 'error';
-  // If the chain finished loading but has no events, the history query was never enabled — treat as success
   if (historyResult.isSuccess || (chainStatus === 'success' && !hasEvents)) return 'success';
   return 'loading';
 };

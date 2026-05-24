@@ -8,13 +8,14 @@ import ErrorDisplay from 'components/common/ErrorDisplay';
 import Spinner from 'components/common/Spinner';
 import type { ChainLoadingStatus } from 'lib/hooks/page-context/PremiumAddressPageContext';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { type KeyboardEvent, type MouseEvent, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export interface ChainStatus {
   chainId: number;
   status: ChainLoadingStatus;
   error: Error | null;
+  isRefreshing?: boolean;
   refetch: () => void;
 }
 
@@ -29,6 +30,8 @@ const PremiumChainStatusSection = ({ chainStatuses }: Props) => {
   const failedChains = chainStatuses.filter((chain) => chain.status === 'error');
   const loadingChains = chainStatuses.filter((chain) => chain.status === 'loading');
   const loadedChains = chainStatuses.filter((chain) => chain.status === 'success');
+  const isRetryingFailedChains = failedChains.some((chain) => chain.isRefreshing);
+  const retryButtonText = t(isRetryingFailedChains ? 'common.buttons.retrying' : 'common.buttons.try_again');
 
   const showChainStatus = loadingChains.length > 0 || failedChains.length > 0;
 
@@ -68,8 +71,18 @@ const PremiumChainStatusSection = ({ chainStatuses }: Props) => {
             />
           </div>
           {failedChains.length > 0 && loadingChains.length === 0 ? (
-            <Button size="sm" style="secondary" className="shrink-0" onClick={refetchFailedChains}>
-              {t('common.buttons.try_again')} ({failedChains.length})
+            <Button
+              size="sm"
+              style="secondary"
+              className="shrink-0"
+              loading={isRetryingFailedChains}
+              onKeyDown={(event: KeyboardEvent) => event.stopPropagation()}
+              onClick={(event: MouseEvent) => {
+                event.stopPropagation();
+                refetchFailedChains();
+              }}
+            >
+              {retryButtonText} ({failedChains.length})
             </Button>
           ) : null}
         </div>
@@ -82,6 +95,7 @@ const PremiumChainStatusSection = ({ chainStatuses }: Props) => {
             className="flex items-center gap-2 min-w-0 text-sm rounded px-3 py-2 bg-red-100 dark:bg-red-900/25"
           >
             <ChainDisplay chainId={chain.chainId} logoSize={18} className="w-42" />
+            {chain.isRefreshing ? <Spinner className="w-3.5 h-3.5 shrink-0" /> : null}
             <ErrorDisplay chainId={chain.chainId} error={chain.error} />
           </div>
         ))}

@@ -4,6 +4,7 @@ import { getDb } from '@revoke.cash/core/db/client';
 import { monitorEventsCache } from '@revoke.cash/core/db/schema/monitor';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, isNull } from 'drizzle-orm';
+import type { PublicClient } from 'viem';
 
 const BATCH_SIZE = 1000;
 const CONCURRENCY = 100;
@@ -16,7 +17,7 @@ export interface ResolveTimestampsResult {
   saturated: boolean;
 }
 
-export const resolveTimestamps = async (chainId: DocumentedChainId): Promise<ResolveTimestampsResult> => {
+export const resolveAndPersistTimestamps = async (chainId: DocumentedChainId): Promise<ResolveTimestampsResult> => {
   const start = Date.now();
   const db = getDb();
 
@@ -33,28 +34,73 @@ export const resolveTimestamps = async (chainId: DocumentedChainId): Promise<Res
   // Single client → viem batches concurrent getBlock calls into JSON-RPC batches.
   const publicClient = createViemPublicClientForChain(chainId);
 
-  const updateCounts = await mapAsyncBounded(pending, CONCURRENCY, async ({ blockNumber }) => {
-    const timestamp = await blocksCache.getBlockTimestamp(publicClient, blockNumber);
-
-    const result = await db
-      .update(monitorEventsCache)
-      .set({ timestamp })
-      .where(
-        and(
-          eq(monitorEventsCache.chainId, chainId),
-          eq(monitorEventsCache.blockNumber, blockNumber),
-          isNull(monitorEventsCache.timestamp),
-        ),
-      );
-
-    return result.rowCount ?? 0;
-  });
+  const timestampsByBlock = await resolveBlockTimestamps(
+    publicClient,
+    pending.map((row) => row.blockNumber),
+  );
+  const rowsUpdated = await persistResolvedTimestamps(chainId, timestampsByBlock);
 
   return {
     chainId,
     blocksProcessed: pending.length,
-    rowsUpdated: updateCounts.reduce((sum, count) => sum + count, 0),
+    rowsUpdated,
     durationMs: Date.now() - start,
     saturated: pending.length === BATCH_SIZE,
   };
+};
+
+export const resolveAndPersistTimestampsForBlocks = async (
+  chainId: DocumentedChainId,
+  blockNumbers: number[],
+): Promise<Map<number, number>> => {
+  if (blockNumbers.length === 0) return new Map();
+
+  const publicClient = createViemPublicClientForChain(chainId);
+  const timestampsByBlock = await resolveBlockTimestamps(publicClient, blockNumbers);
+  await persistResolvedTimestamps(chainId, timestampsByBlock);
+  return timestampsByBlock;
+};
+
+const resolveBlockTimestamps = async (
+  publicClient: PublicClient,
+  blockNumbers: number[],
+): Promise<Map<number, number>> => {
+  const uniqueBlocks = [...new Set(blockNumbers)];
+  const timestampsByBlock = new Map<number, number>();
+
+  await mapAsyncBounded(uniqueBlocks, CONCURRENCY, async (blockNumber) => {
+    const timestamp = await blocksCache.getBlockTimestamp(publicClient, blockNumber);
+    timestampsByBlock.set(blockNumber, timestamp);
+  });
+
+  return timestampsByBlock;
+};
+
+const persistResolvedTimestamps = async (
+  chainId: DocumentedChainId,
+  timestampsByBlock: Map<number, number>,
+): Promise<number> => {
+  if (timestampsByBlock.size === 0) return 0;
+  const db = getDb();
+
+  const updateCounts = await mapAsyncBounded(
+    [...timestampsByBlock.entries()],
+    CONCURRENCY,
+    async ([blockNumber, timestamp]) => {
+      const result = await db
+        .update(monitorEventsCache)
+        .set({ timestamp })
+        .where(
+          and(
+            eq(monitorEventsCache.chainId, chainId),
+            eq(monitorEventsCache.blockNumber, blockNumber),
+            isNull(monitorEventsCache.timestamp),
+          ),
+        );
+
+      return result.rowCount ?? 0;
+    },
+  );
+
+  return updateCounts.reduce((sum, count) => sum + count, 0);
 };

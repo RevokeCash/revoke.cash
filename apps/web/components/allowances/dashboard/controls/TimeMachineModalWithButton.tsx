@@ -6,7 +6,7 @@ import { isNullish } from '@revoke.cash/core/utils';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
-import { useTimeMachine } from 'lib/hooks/page-context/PremiumAddressPageContext';
+import { useTimeMachine } from 'lib/hooks/page-context/TimeMachineContext';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import DateTimeSlider from './DateTimeSlider';
@@ -22,10 +22,8 @@ const TimeMachineModalWithButton = () => {
   const maxSeconds = useMemo(() => Math.floor(Date.now() / SECOND), [open]);
   const minSeconds = oldestEventTimestamp ?? maxSeconds;
 
-  // Local slider value — only committed on Apply
   const [localValue, setLocalValue] = useState<number>(timestamp ?? maxSeconds);
 
-  // Reset local value each time the modal opens
   useEffect(() => {
     if (open) {
       setLocalValue(timestamp ?? maxSeconds);

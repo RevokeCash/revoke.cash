@@ -15,7 +15,7 @@ export const queryClient = new QueryClient({
       gcTime: 1 * DAY,
       networkMode: 'offlineFirst',
       refetchOnWindowFocus: false,
-      retry: 0,
+      retry: 1,
     },
   },
 });

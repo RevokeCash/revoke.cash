@@ -158,6 +158,7 @@
     "date": "日付",
     "event_type": "イベントの種類",
     "expiration": "有効期限",
+    "last_checked": "最終確認",
     "last_updated": "最終更新日",
     "policy_type": "許可タイプ",
     "session_hash": "セッション識別子",

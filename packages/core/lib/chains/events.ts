@@ -27,7 +27,7 @@ import { SECOND } from '../utils/time';
 
 export interface TokenEventsResult {
   state: {
-    computedAt: string | null;
+    checkedAt: string | null;
     computedToBlock: number | null;
   };
   events: EnrichedTokenEvent[];
@@ -46,16 +46,17 @@ export const getTokenEvents = async (
 ): Promise<TokenEventsResult> => {
   const chainName = getChainName(chainId);
   const publicClient = createViemPublicClientForChain(chainId);
+  const checkedAt = new Date().toISOString();
 
   if (!(await hasChainActivity(chainId, address, publicClient))) {
     console.log(`${chainName}: Skipping event fetching for address with no relevant activity (${address})`);
-    return { state: { computedAt: null, computedToBlock: null }, events: [], rawEvents: [] };
+    return { state: { checkedAt, computedToBlock: null }, events: [], rawEvents: [] };
   }
 
   const { events: rawEvents, computedToBlock } = await getTokenEventsDefault(chainId, address, logsProvider, options);
   const events = await enrichTokenEvents(rawEvents, publicClient, chainId);
 
-  return { state: { computedAt: new Date().toISOString(), computedToBlock }, events, rawEvents };
+  return { state: { checkedAt, computedToBlock }, events, rawEvents };
 };
 
 export const hasChainActivity = async (

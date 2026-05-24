@@ -61,7 +61,7 @@ export const RateLimiters = {
     duration: 1,
   }),
   PREMIUM_READ: new RateLimiterMemory({
-    points: 20,
+    points: 200,
     duration: 1,
   }),
   PREMIUM_WRITE: new RateLimiterMemory({

@@ -4,18 +4,25 @@ import type { z } from 'zod';
 
 type ParseResult<T> = { data: T; error?: never } | { data?: never; error: NextResponse };
 
-export async function parseRequest<ParamsSchema extends z.ZodTypeAny, BodySchema extends z.ZodTypeAny>(
+export async function parseRequest<
+  ParamsSchema extends z.ZodTypeAny,
+  BodySchema extends z.ZodTypeAny,
+  QuerySchema extends z.ZodTypeAny = z.ZodUndefined,
+>(
   req: NextRequest,
   props: { params: Promise<unknown> | unknown } | undefined,
-  schemas: { params: ParamsSchema; body: BodySchema },
-): Promise<ParseResult<{ params: z.infer<ParamsSchema>; body: z.infer<BodySchema> }>> {
+  schemas: { params: ParamsSchema; body: BodySchema; query?: QuerySchema },
+): Promise<ParseResult<{ params: z.infer<ParamsSchema>; body: z.infer<BodySchema>; query: z.infer<QuerySchema> }>> {
   const params = await parseRouteParams(props?.params, schemas.params);
   if (params.error) return params;
 
   const body = await parseJsonBody(req, schemas.body);
   if (body.error) return body;
 
-  return { data: { params: params.data, body: body.data } };
+  const query = parseQueryString(req, schemas.query);
+  if (query.error) return query;
+
+  return { data: { params: params.data, body: body.data, query: query.data } };
 }
 
 async function parseRouteParams<Schema extends z.ZodTypeAny>(
@@ -48,6 +55,22 @@ async function parseJsonBody<Schema extends z.ZodTypeAny>(
     return {
       error: buildValidationErrorResponse(parsed.error, 'Invalid request body'),
     };
+  }
+
+  return { data: parsed.data };
+}
+
+function parseQueryString<Schema extends z.ZodTypeAny>(
+  req: NextRequest,
+  schema: Schema | undefined,
+): ParseResult<z.infer<Schema> | undefined> {
+  if (!schema) return { data: undefined };
+
+  const raw = Object.fromEntries(req.nextUrl.searchParams.entries());
+  const parsed = schema.safeParse(raw);
+
+  if (!parsed.success) {
+    return { error: buildValidationErrorResponse(parsed.error, 'Invalid query string') };
   }
 
   return { data: parsed.data };

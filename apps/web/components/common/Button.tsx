@@ -124,7 +124,7 @@ const Button = (
   return (
     <button {...props} disabled={disabled || loading} onClick={onClick} className={classes} ref={ref}>
       {children}
-      {loading && <Spinner />}
+      {loading && <Spinner className={size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} />}
     </button>
   );
 };

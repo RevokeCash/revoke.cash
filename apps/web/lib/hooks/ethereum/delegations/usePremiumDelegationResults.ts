@@ -25,7 +25,7 @@ export interface CombinedDelegationResult extends CombinedQueryResult<Delegation
 export const usePremiumDelegationResults = (address: Address | undefined): CombinedDelegationResult[] => {
   return useQueries({
     queries: ORDERED_CHAINS.map((chainId) => ({
-      queryKey: ['delegations', address, chainId],
+      queryKey: getPremiumDelegationsQueryKey(address, chainId),
       queryFn: async () => {
         const publicClient = createViemPublicClientForChain(chainId);
         const delegations = await fetchDelegations(publicClient, chainId, address!);
@@ -42,3 +42,6 @@ export const usePremiumDelegationResults = (address: Address | undefined): Combi
       })),
   });
 };
+
+export const getPremiumDelegationsQueryKey = (address: Address | undefined, chainId: number) =>
+  ['delegations', address, chainId] as const;

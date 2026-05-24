@@ -22,6 +22,7 @@ import { and, eq, inArray, sql } from 'drizzle-orm';
 import type { Address, PublicClient } from 'viem';
 import { isNullish } from '../utils';
 import { findAffectedTokens } from './affected-tokens';
+import { ChainUnresponsiveError } from './errors';
 import { REORG_DEPTH } from './scan';
 
 export interface RecomputeAllowancesResult {
@@ -49,15 +50,22 @@ export const recomputeAllowances = async (
     }),
     db.query.monitorScanState.findFirst({
       where: and(eq(monitorScanState.address, address), eq(monitorScanState.chainId, chainId)),
-      columns: { lastToBlock: true },
+      columns: { lastScanAt: true, lastToBlock: true, consecutiveFailures: true, lastError: true },
     }),
   ]);
 
   const oldCursor = allowanceState?.computedToBlock ?? null;
   const newCursor = scanState?.lastToBlock;
+  const consecutiveFailures = scanState?.consecutiveFailures ?? 0;
 
-  if (!newCursor) {
-    throw new Error(`recomputeAllowances called without a scan_state cursor for ${address} on chain ${chainId}`);
+  // If a scan_state exists without a cursor, then this address has nonce 0 on this chain.
+  // Treat it as a clean empty recompute and clear any stale recompute failures.
+  if (isNullish(newCursor)) {
+    if (consecutiveFailures > 3 && !isNullish(scanState?.lastError)) {
+      throw new ChainUnresponsiveError(chainId, scanState?.lastError);
+    }
+
+    return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
   }
 
   // take reorg depth into account when reading new logs
@@ -109,6 +117,34 @@ export const recomputeAllowances = async (
     affectedTokenCount: affectedTokens.length,
     durationMs: Date.now() - start,
   };
+};
+
+export type CachedAllowanceRow = typeof monitorAllowances.$inferSelect;
+
+export interface CachedAllowanceState {
+  computedToBlock: number | null;
+}
+
+export interface CachedAllowancesResult {
+  state: CachedAllowanceState | null;
+  rows: CachedAllowanceRow[];
+}
+
+export const getCachedAllowances = async (
+  address: Address,
+  chainId: DocumentedChainId,
+): Promise<CachedAllowancesResult> => {
+  const db = getDb();
+  const [state, rows] = await Promise.all([
+    db.query.monitorAllowanceState.findFirst({
+      where: and(eq(monitorAllowanceState.address, address), eq(monitorAllowanceState.chainId, chainId)),
+      columns: { computedToBlock: true },
+    }),
+    db.query.monitorAllowances.findMany({
+      where: and(eq(monitorAllowances.address, address), eq(monitorAllowances.chainId, chainId)),
+    }),
+  ]);
+  return { state: state ?? null, rows };
 };
 
 // Indexer-side enrichment is intentionally minimal: resolve the block timestamp (needed for
@@ -209,7 +245,7 @@ const upsertAllowanceState = async (
   writer: DatabaseWriter,
   address: Address,
   chainId: DocumentedChainId,
-  cursor: number,
+  cursor: number | null,
 ): Promise<void> => {
   const successValues = {
     computedAt: new Date(),

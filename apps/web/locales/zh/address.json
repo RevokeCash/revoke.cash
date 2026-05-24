@@ -158,6 +158,7 @@
     "date": "日期",
     "event_type": "事件类型",
     "expiration": "到期",
+    "last_checked": "上次检查",
     "last_updated": "上次更新",
     "policy_type": "权限类型",
     "session_hash": "会话标识符",

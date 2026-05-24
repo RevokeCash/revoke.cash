@@ -28,7 +28,7 @@ Some of these variables are integral to the functioning of Revoke.cash:
   - Alchemy is also used for ENS and UNS name resolutions - if omitted those resolutions will not work.
 - `COVALENT_API_KEY` and `COVALENT_RATE_LIMIT` is used for certain chains such as Harmony.
 - `ETHERSCAN_API_KEYS` and `ETHERSCAN_RATE_LIMITS` are used for many of the other chains such as BNB Chain or Avalanche.
-- `NEXT_PUBLIC_NODE_URLS` is used to override any RPC URLs on the frontend - e.g. if you want to use Alchemy instead of Infura.
+- `NODE_URLS` / `NEXT_PUBLIC_NODE_URLS` are used to override RPC URLs. Use `NODE_URLS` for server-side services and `NEXT_PUBLIC_NODE_URLS` for the frontend.
 - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` is used for WalletConnect - if omitted, WalletConnect will not work.
 
 If you omit any of these variables, Revoke.cash will not work for the chains you omitted.
@@ -38,7 +38,6 @@ Then there are a few less essential variables:
 - `IRON_SESSION_PASSWORD` is used for encrypting session cookies and can be filled with any random 32-character string - if omitted many chains will not work.
 - `NEXT_PUBLIC_MIXPANEL_API_KEY` is used for Analytics - if omitted, no Analytics are collected.
 - `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are used for queueing third-party API calls - these are only necessary when hosting in a serverless environment such as Vercel.
-- `NODE_URLS` is currently unused, but can be used for certain networks in the future.
 - `LOCALAZY_API_KEY` is used for generating "Help Us Translate This Page" links - if omitted, those links will not work.
 
 ## Contributing

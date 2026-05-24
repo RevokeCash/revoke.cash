@@ -61,3 +61,27 @@ export class TooMuchActivityError extends ExportableError {
     };
   }
 }
+
+// Thrown by cached read paths when the background scheduler has repeatedly failed to scan this
+// chain. Surfaces the stored failure instead of returning stale or empty cache data silently.
+export class ChainUnresponsiveError extends ExportableError {
+  readonly chainId: number;
+  readonly lastError: string;
+
+  constructor(chainId: number, lastError: string) {
+    super(`${getChainName(chainId)} is currently unresponsive: ${lastError}`);
+    this.name = 'ChainUnresponsiveError';
+    this.chainId = chainId;
+    this.lastError = lastError;
+  }
+
+  export() {
+    return {
+      status: 503,
+      body: {
+        message: this.message,
+        details: { chainId: this.chainId, lastError: this.lastError },
+      },
+    };
+  }
+}

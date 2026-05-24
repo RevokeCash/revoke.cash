@@ -22,16 +22,9 @@ const PremiumAllowanceDashboard = () => {
   );
   const emptyChains = chainData.filter((chain) => chain.status === 'success' && chain.allowances.length === 0);
 
-  const chainStatuses = chainData.map((chain) => ({
-    chainId: chain.chainId,
-    status: chain.status,
-    error: chain.error,
-    refetch: chain.refetch,
-  }));
-
   return (
     <div className="flex flex-col gap-2">
-      <PremiumChainStatusSection chainStatuses={chainStatuses} />
+      <PremiumChainStatusSection chainStatuses={chainData} />
       <PremiumAllowanceTableControls
         onSortChange={setSorting}
         onSearchValuesChange={setSpenderFilters}

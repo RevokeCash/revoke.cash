@@ -160,6 +160,7 @@
     "date": "Date",
     "event_type": "Event Type",
     "expiration": "Expiration",
+    "last_checked": "Last Checked",
     "last_updated": "Last Updated",
     "policy_type": "Permission Type",
     "session_hash": "Session Identifier",

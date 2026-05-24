@@ -179,8 +179,11 @@ const skipAndReschedule = async (
   existingState: typeof monitorScanState.$inferSelect | undefined,
   resultOverrides: Partial<ScanResult>,
 ): Promise<ScanResult> => {
+  // Clear any failures when skipping a scan, since skipping means that RPC was at least available
   await upsertScanState(writer, address, chainId, {
-    nextRunAt: computeNextRunAt(existingState?.consecutiveFailures ?? 0, existingState?.lastEventAt),
+    nextRunAt: computeNextRunAt(0, existingState?.lastEventAt),
+    consecutiveFailures: 0,
+    lastError: null,
   });
   return buildScanResult(resultOverrides);
 };

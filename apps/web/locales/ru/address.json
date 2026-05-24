@@ -158,6 +158,7 @@
     "date": "Дата",
     "event_type": "Тип события",
     "expiration": "Срок действия",
+    "last_checked": "Посл. проверка",
     "last_updated": "Посл. обнов.",
     "policy_type": "Тип разрешения",
     "session_hash": "Идентификатор сессии",

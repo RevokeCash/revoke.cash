@@ -3,6 +3,7 @@
 import type { Erc721SingleAllowance, OnUpdate, TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { isNullish } from '@revoke.cash/core/utils';
 import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
+import { SECOND } from '@revoke.cash/core/utils/time';
 import {
   type ColumnSort,
   getCoreRowModel,
@@ -12,8 +13,11 @@ import {
 } from '@tanstack/react-table';
 import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
-import { type ChainAllowanceData, useTimeMachine } from 'lib/hooks/page-context/PremiumAddressPageContext';
-import { useTranslations } from 'next-intl';
+import Spinner from 'components/common/Spinner';
+import type { ChainAllowanceData } from 'lib/hooks/page-context/PremiumAddressPageContext';
+import { useTimeMachine } from 'lib/hooks/page-context/TimeMachineContext';
+import { timeago } from 'lib/i18n/timeago';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Table from '../../common/table/Table';
@@ -109,7 +113,7 @@ const ChainAllowanceSection = ({
 
   const toggleExpanded = () => canExpand && setIsExpanded(!isExpanded);
 
-  if (chainData.status === 'success' && table.getFilteredRowModel().rows.length === 0) {
+  if (status === 'success' && table.getFilteredRowModel().rows.length === 0) {
     return null;
   }
 
@@ -119,7 +123,7 @@ const ChainAllowanceSection = ({
       canExpand={canExpand}
       onToggle={toggleExpanded}
       className={twMerge(
-        chainData.status === 'error'
+        status === 'error'
           ? 'border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-900/10'
           : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black',
       )}
@@ -144,8 +148,14 @@ interface HeaderProps {
 
 const Header = ({ chainData }: HeaderProps) => {
   const t = useTranslations();
-  const { chainId, status, error, allowances, totalValueAtRisk, refetch } = chainData;
+  const locale = useLocale();
+  const { chainId, status, error, allowances, totalValueAtRisk } = chainData;
+  const { lastChecked, isRefreshing, refreshError, refetch } = chainData;
   const formattedValue = formatFiatAmount(totalValueAtRisk);
+
+  const lastCheckedText = lastChecked ? timeago.format(new Date(lastChecked), locale) : t('address.allowances.unknown');
+  const lastCheckedAge = lastChecked ? Date.now() - new Date(lastChecked).getTime() : 0;
+  const showLastChecked = isRefreshing || !isNullish(refreshError) || lastCheckedAge < 5 * SECOND;
 
   const totalValueAtRiskIsSignificant = (formattedValue: string | null): boolean => {
     if (!formattedValue) return false;
@@ -160,6 +170,14 @@ const Header = ({ chainData }: HeaderProps) => {
         </span>
         {totalValueAtRiskIsSignificant(formattedValue) && (
           <span className="text-amber-600 dark:text-amber-400 font-medium">{formattedValue}</span>
+        )}
+        {showLastChecked && (
+          <span className="hidden sm:flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+            {isRefreshing ? <Spinner className="w-3 h-3 mx-0" /> : null}
+            <span>
+              {t('address.headers.last_checked')}: {lastCheckedText}
+            </span>
+          </span>
         )}
       </div>
     </ChainSectionHeader>

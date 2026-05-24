@@ -34,12 +34,11 @@ export class BackendLogsProvider implements LogsProvider {
   }
 }
 
-// Premium addresses always route through the backend so they can hit the cache-first read path
-const getUnderlyingLogsProvider = (chainId: number, isPremium: boolean): BackendLogsProvider | ViemLogsProvider => {
-  if (isPremium || isBackendSupportedChain(chainId)) return new BackendLogsProvider(chainId);
+const getUnderlyingLogsProvider = (chainId: number): BackendLogsProvider | ViemLogsProvider => {
+  if (isBackendSupportedChain(chainId)) return new BackendLogsProvider(chainId);
   return new ViemLogsProvider(chainId, getChainLogsRpcUrl(chainId));
 };
 
-export const getLogsProvider = (chainId: number, isPremium: boolean = false): DivideAndConquerLogsProvider => {
-  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId, isPremium));
+export const getLogsProvider = (chainId: number): DivideAndConquerLogsProvider => {
+  return new DivideAndConquerLogsProvider(getUnderlyingLogsProvider(chainId));
 };

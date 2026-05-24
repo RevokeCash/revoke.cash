@@ -251,6 +251,8 @@ export class Chain {
     const transportOverrides: Record<number, any> = {
       // OctaSpace's RPC does not handle batch requests properly
       [ChainId.OctaSpace]: { batch: false },
+      // ZugChain Testnet's RPC does not handle batch requests properly
+      824642: { batch: false },
       // Kasplex's RPC does not handle batch requests properly
       202555: { batch: false },
     };

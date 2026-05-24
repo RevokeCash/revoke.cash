@@ -10,7 +10,7 @@ import { useAllowances } from './useAllowances';
 
 export interface AddressData {
   state: {
-    computedAt: string | null;
+    checkedAt: string | null;
     computedToBlock: number | null;
   };
   allowances: TokenAllowanceData[];
@@ -41,7 +41,7 @@ export const useAddressData = (address: Address, chainId: number): UseAddressDat
     if (isNullish(eventContext.events) || isNullish(allowanceContext.allowances)) return undefined;
 
     return {
-      state: eventContext.state ?? { computedAt: null, computedToBlock: null },
+      state: eventContext.state ?? { checkedAt: null, computedToBlock: null },
       allowances: allowanceContext.allowances,
       events: eventContext.events,
     };

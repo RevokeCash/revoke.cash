@@ -82,7 +82,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.BobaNetwork,
   ChainId.HashKeyChain,
   ChainId.GravityAlphaMainnet,
-  ChainId.MintMainnet,
   ChainId.ChilizChainMainnet,
   ChainId.DogechainMainnet,
   ChainId.Beam,
@@ -115,8 +114,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.RARIChainMainnet,
   ChainId.NeoXMainnet,
   ChainId.BitgertMainnet,
-  ChainId.Redstone,
-  ChainId.RSS3VSLMainnet,
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
   202555, // Kasplex zkEVM
@@ -976,14 +973,6 @@ export const CHAINS = {
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2338552 } },
   }),
-  [ChainId.MintMainnet]: new Chain({
-    type: SupportType.ROUTESCAN,
-    chainId: ChainId.MintMainnet,
-    name: 'Mint',
-    coingeckoNetworkId: 'mint',
-    logoUrl: '/assets/images/vendor/chains/mint.svg',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
-  }),
   [ChainId.Mode]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.Mode,
@@ -1206,14 +1195,6 @@ export const CHAINS = {
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2422957 } },
   }),
-  [ChainId.Redstone]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Redstone,
-    name: 'Redstone',
-    coingeckoNetworkId: 'redstone',
-    logoUrl: '/assets/images/vendor/chains/redstone.svg',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
-  }),
   [ChainId.ReyaNetwork]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ReyaNetwork,
@@ -1278,16 +1259,6 @@ export const CHAINS = {
       main: `https://rootstock-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 4249540 } },
-  }),
-  [ChainId.RSS3VSLMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.RSS3VSLMainnet,
-    name: 'RSS3 VSL',
-    nativeTokenCoingeckoId: 'rss3',
-    coingeckoNetworkId: 'rss3-vsl-mainnet',
-    logoUrl: '/assets/images/vendor/chains/rss3.svg',
-    etherscanCompatibleApiUrl: 'https://scan.rss3.io/api',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 14193 } },
   }),
   [ChainId.Scroll]: new Chain({
     type: SupportType.HYPERSYNC,

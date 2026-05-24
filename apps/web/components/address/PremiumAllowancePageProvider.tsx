@@ -2,6 +2,7 @@
 
 import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { PremiumAddressPageContextProvider } from 'lib/hooks/page-context/PremiumAddressPageContext';
+import { TimeMachineProvider } from 'lib/hooks/page-context/TimeMachineContext';
 import { removeSearchParam } from 'lib/i18n/csr-navigation';
 import { type ReactNode, useEffect } from 'react';
 
@@ -18,9 +19,11 @@ const PremiumAllowancePageProvider = ({ children }: Props) => {
   }, []);
 
   return (
-    <PremiumAddressPageContextProvider address={address} domainName={domainName}>
-      {children}
-    </PremiumAddressPageContextProvider>
+    <TimeMachineProvider>
+      <PremiumAddressPageContextProvider address={address} domainName={domainName}>
+        {children}
+      </PremiumAddressPageContextProvider>
+    </TimeMachineProvider>
   );
 };
 

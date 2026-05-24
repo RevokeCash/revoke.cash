@@ -158,6 +158,7 @@
     "date": "Fecha",
     "event_type": "Tipo de evento",
     "expiration": "Vencimiento",
+    "last_checked": "Última Verificación",
     "last_updated": "Última Actualización",
     "policy_type": "Tipo de Permiso",
     "session_hash": "Identificador de sesión",

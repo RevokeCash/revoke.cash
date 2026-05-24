@@ -2,6 +2,7 @@ import { SITE_URL } from '@revoke.cash/core/constants';
 import kyBase from '@revoke.cash/core/ky';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import { AUTH_SESSION_QUERY_KEY, type AuthSession } from './auth/session';
+import { parseDtoJson, stringifyDtoJson } from './dto';
 import { queryClient } from './hooks/QueryProvider';
 
 const ky = kyBase.extend({
@@ -28,6 +29,11 @@ const isOwnSite = (url: string) => {
 };
 
 export default ky;
+
+export const dtoKy = ky.extend({
+  parseJson: parseDtoJson,
+  stringifyJson: stringifyDtoJson,
+});
 
 const ensureAuthSession = async () => {
   // In a backend context, we do not need to login
