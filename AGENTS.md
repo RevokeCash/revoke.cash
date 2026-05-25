@@ -59,7 +59,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ## Repository Structure
 
 - `apps/web/`: frontend app.
-- `packages/approval-monitor/`: approval monitoring service.
+- `apps/indexer/`: approval-indexing service (events, allowances, token metadata).
 - `packages/core/`: shared core logic.
 
 ### Quick Facts

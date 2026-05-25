@@ -1,8 +1,8 @@
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
-import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/monitor/allowances';
-import { getCachedAddressData } from '@revoke.cash/core/monitor/allowances-read';
-import { recordScanFailure, scanAddressChain } from '@revoke.cash/core/monitor/scan';
-import { enrichToken, findUnenrichedTokens } from '@revoke.cash/core/monitor/token-enrichment';
+import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/indexer/allowances';
+import { getCachedAddressData } from '@revoke.cash/core/indexer/allowances-read';
+import { indexEvents, recordEventsFailure } from '@revoke.cash/core/indexer/events';
+import { enrichToken, findUnenrichedTokens } from '@revoke.cash/core/indexer/token-metadata';
 import { addressSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
@@ -38,13 +38,13 @@ export async function POST(req: NextRequest, props: Props) {
   try {
     const { params } = await parseAndAuthorizePremiumRequest(req, props);
 
-    const scanResult = await scanAddressChain(params.address, params.chainId).catch(async (error) => {
-      await recordScanFailure(params.address, params.chainId, error);
+    const eventsResult = await indexEvents(params.address, params.chainId).catch(async (error) => {
+      await recordEventsFailure(params.address, params.chainId, error);
       throw error;
     });
 
-    if (!scanResult.nonceZeroSkipped) {
-      await enrichObservedTokens(params.chainId, scanResult.fromBlock, scanResult.toBlock);
+    if (!eventsResult.nonceZeroSkipped) {
+      await enrichObservedTokens(params.chainId, eventsResult.fromBlock, eventsResult.toBlock);
     }
 
     await recomputeAllowances(params.address, params.chainId).catch(async (error) => {

@@ -1,4 +1,4 @@
-import { getEventsForFilter } from '@revoke.cash/core/monitor/read';
+import { getEventsForFilter } from '@revoke.cash/core/indexer/read';
 import { addressSchema, hexStringSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';

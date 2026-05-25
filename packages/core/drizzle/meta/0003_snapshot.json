@@ -1,5 +1,5 @@
 {
-  "id": "ca015771-5e62-46eb-ac51-6de3a9e630d5",
+  "id": "05c243a3-7a57-4988-8302-3a79770acb28",
   "prevId": "19140942-657e-4dce-8aba-a04c2b8f0e46",
   "version": "7",
   "dialect": "postgresql",
@@ -498,9 +498,48 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "monitor.events_cache": {
-      "name": "events_cache",
-      "schema": "monitor",
+    "indexer.block_timestamps": {
+      "name": "block_timestamps",
+      "schema": "indexer",
+      "columns": {
+        "chain_id": {
+          "name": "chain_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "block_number": {
+          "name": "block_number",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "block_timestamps_pkey": {
+          "name": "block_timestamps_pkey",
+          "columns": [
+            "chain_id",
+            "block_number"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "indexer.events": {
+      "name": "events",
+      "schema": "indexer",
       "columns": {
         "chain_id": {
           "name": "chain_id",
@@ -580,11 +619,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "reorged": {
+          "name": "reorged",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         }
       },
       "indexes": {
-        "idx_events_cache_topic0": {
-          "name": "idx_events_cache_topic0",
+        "idx_events_topic0": {
+          "name": "idx_events_topic0",
           "columns": [
             {
               "expression": "chain_id",
@@ -604,8 +650,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_events_cache_topic1": {
-          "name": "idx_events_cache_topic1",
+        "idx_events_topic1": {
+          "name": "idx_events_topic1",
           "columns": [
             {
               "expression": "chain_id",
@@ -621,13 +667,13 @@
             }
           ],
           "isUnique": false,
+          "where": "\"indexer\".\"events\".\"topic1\" IS NOT NULL",
           "concurrently": false,
           "method": "btree",
-          "where": "\"monitor\".\"events_cache\".\"topic1\" IS NOT NULL",
           "with": {}
         },
-        "idx_events_cache_topic2": {
-          "name": "idx_events_cache_topic2",
+        "idx_events_topic2": {
+          "name": "idx_events_topic2",
           "columns": [
             {
               "expression": "chain_id",
@@ -643,13 +689,13 @@
             }
           ],
           "isUnique": false,
+          "where": "\"indexer\".\"events\".\"topic2\" IS NOT NULL",
           "concurrently": false,
           "method": "btree",
-          "where": "\"monitor\".\"events_cache\".\"topic2\" IS NOT NULL",
           "with": {}
         },
-        "idx_events_cache_topic3": {
-          "name": "idx_events_cache_topic3",
+        "idx_events_topic3": {
+          "name": "idx_events_topic3",
           "columns": [
             {
               "expression": "chain_id",
@@ -665,16 +711,38 @@
             }
           ],
           "isUnique": false,
+          "where": "\"indexer\".\"events\".\"topic3\" IS NOT NULL",
           "concurrently": false,
           "method": "btree",
-          "where": "\"monitor\".\"events_cache\".\"topic3\" IS NOT NULL",
+          "with": {}
+        },
+        "idx_events_unresolved_timestamps": {
+          "name": "idx_events_unresolved_timestamps",
+          "columns": [
+            {
+              "expression": "chain_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "block_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"indexer\".\"events\".\"timestamp\" IS NULL",
+          "concurrently": false,
+          "method": "btree",
           "with": {}
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "events_cache_pkey": {
-          "name": "events_cache_pkey",
+        "events_pkey": {
+          "name": "events_pkey",
           "columns": [
             "chain_id",
             "transaction_hash",
@@ -687,9 +755,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "monitor.scan_state": {
-      "name": "scan_state",
-      "schema": "monitor",
+    "indexer.events_state": {
+      "name": "events_state",
+      "schema": "indexer",
       "columns": {
         "address": {
           "name": "address",
@@ -711,6 +779,12 @@
         },
         "last_to_block": {
           "name": "last_to_block",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "max_block_range": {
+          "name": "max_block_range",
           "type": "bigint",
           "primaryKey": false,
           "notNull": false
@@ -756,8 +830,8 @@
         }
       },
       "indexes": {
-        "idx_scan_state_next_run": {
-          "name": "idx_scan_state_next_run",
+        "idx_events_state_next_run": {
+          "name": "idx_events_state_next_run",
           "columns": [
             {
               "expression": "next_run_at",
@@ -767,7 +841,7 @@
             }
           ],
           "isUnique": false,
-          "where": "\"monitor\".\"scan_state\".\"disabled_at\" IS NULL",
+          "where": "\"indexer\".\"events_state\".\"disabled_at\" IS NULL",
           "concurrently": false,
           "method": "btree",
           "with": {}
@@ -775,8 +849,8 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "scan_state_pkey": {
-          "name": "scan_state_pkey",
+        "events_state_pkey": {
+          "name": "events_state_pkey",
           "columns": [
             "address",
             "chain_id"
@@ -1427,7 +1501,7 @@
   },
   "schemas": {
     "auto_revoke": "auto_revoke",
-    "monitor": "monitor",
+    "indexer": "indexer",
     "premium": "premium"
   },
   "sequences": {},

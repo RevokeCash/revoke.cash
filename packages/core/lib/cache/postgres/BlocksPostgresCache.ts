@@ -1,5 +1,5 @@
 import { getDb } from '@revoke.cash/core/db/client';
-import { monitorBlockTimestamps } from '@revoke.cash/core/db/schema/monitor';
+import { indexerBlockTimestamps } from '@revoke.cash/core/db/schema/indexer';
 import { and, eq } from 'drizzle-orm';
 import type { Block } from '../dexie/BlocksDexie';
 import { CacheError, type ICache } from '../ICache';
@@ -15,8 +15,8 @@ export default class BlocksPostgresCache implements ICache<Block, [number, numbe
 
   async get([chainId, blockNumber]: [number, number]): Promise<Block | undefined> {
     try {
-      const row = await getDb().query.monitorBlockTimestamps.findFirst({
-        where: and(eq(monitorBlockTimestamps.chainId, chainId), eq(monitorBlockTimestamps.blockNumber, blockNumber)),
+      const row = await getDb().query.indexerBlockTimestamps.findFirst({
+        where: and(eq(indexerBlockTimestamps.chainId, chainId), eq(indexerBlockTimestamps.blockNumber, blockNumber)),
       });
       return row ?? undefined;
     } catch {
@@ -27,7 +27,7 @@ export default class BlocksPostgresCache implements ICache<Block, [number, numbe
   async put(_key: [number, number], data: Block): Promise<void> {
     try {
       await getDb()
-        .insert(monitorBlockTimestamps)
+        .insert(indexerBlockTimestamps)
         .values({ chainId: data.chainId, blockNumber: data.blockNumber, timestamp: data.timestamp })
         .onConflictDoNothing();
     } catch {

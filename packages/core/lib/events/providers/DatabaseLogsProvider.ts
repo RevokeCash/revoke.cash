@@ -1,6 +1,6 @@
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { getDb } from '@revoke.cash/core/db/client';
-import { monitorEventsCache } from '@revoke.cash/core/db/schema/monitor';
+import { indexerEvents } from '@revoke.cash/core/db/schema/indexer';
 import {
   ERC721_APPROVAL_FOR_ALL_TOPIC,
   ERC721_APPROVAL_TOPIC,
@@ -8,7 +8,7 @@ import {
   type Filter,
   type Log,
 } from '@revoke.cash/core/events';
-import { TooMuchActivityError } from '@revoke.cash/core/monitor/errors';
+import { TooMuchActivityError } from '@revoke.cash/core/indexer/errors';
 import { isNullish } from '@revoke.cash/core/utils';
 import { and, eq, gte, inArray, lte, type SQL } from 'drizzle-orm';
 import type { Address, Hash, Hex } from 'viem';
@@ -40,18 +40,18 @@ export class DatabaseLogsProvider implements LogsProvider {
     const applyApprovedTokensFilter = this.options.applyApprovedTokensFilter ?? true;
 
     const conditions: SQL[] = [
-      eq(monitorEventsCache.chainId, this.chainId),
-      gte(monitorEventsCache.blockNumber, filter.fromBlock),
-      lte(monitorEventsCache.blockNumber, filter.toBlock),
+      eq(indexerEvents.chainId, this.chainId),
+      gte(indexerEvents.blockNumber, filter.fromBlock),
+      lte(indexerEvents.blockNumber, filter.toBlock),
     ];
 
-    if (!includeReorged) conditions.push(eq(monitorEventsCache.reorged, false));
+    if (!includeReorged) conditions.push(eq(indexerEvents.reorged, false));
 
-    if (filter.address) conditions.push(eq(monitorEventsCache.address, filter.address));
-    if (filter.topics[0]) conditions.push(eq(monitorEventsCache.topic0, filter.topics[0]));
-    if (filter.topics[1]) conditions.push(eq(monitorEventsCache.topic1, filter.topics[1]));
-    if (filter.topics[2]) conditions.push(eq(monitorEventsCache.topic2, filter.topics[2]));
-    if (filter.topics[3]) conditions.push(eq(monitorEventsCache.topic3, filter.topics[3]));
+    if (filter.address) conditions.push(eq(indexerEvents.address, filter.address));
+    if (filter.topics[0]) conditions.push(eq(indexerEvents.topic0, filter.topics[0]));
+    if (filter.topics[1]) conditions.push(eq(indexerEvents.topic1, filter.topics[1]));
+    if (filter.topics[2]) conditions.push(eq(indexerEvents.topic2, filter.topics[2]));
+    if (filter.topics[3]) conditions.push(eq(indexerEvents.topic3, filter.topics[3]));
 
     // Transfer events get the approved-tokens-only treatment. The subquery returns *token contract addresses*
     // where the user has at least one Approval/ApprovalForAll event for.
@@ -59,16 +59,16 @@ export class DatabaseLogsProvider implements LogsProvider {
     if (applyApprovedTokensFilter && filter.topics[0] === ERC721_TRANSFER_TOPIC && userAddressTopic) {
       conditions.push(
         inArray(
-          monitorEventsCache.address,
+          indexerEvents.address,
           getDb()
-            .selectDistinct({ address: monitorEventsCache.address })
-            .from(monitorEventsCache)
+            .selectDistinct({ address: indexerEvents.address })
+            .from(indexerEvents)
             .where(
               and(
-                eq(monitorEventsCache.chainId, this.chainId),
-                inArray(monitorEventsCache.topic0, [ERC721_APPROVAL_TOPIC, ERC721_APPROVAL_FOR_ALL_TOPIC]),
-                eq(monitorEventsCache.topic1, userAddressTopic),
-                eq(monitorEventsCache.reorged, false),
+                eq(indexerEvents.chainId, this.chainId),
+                inArray(indexerEvents.topic0, [ERC721_APPROVAL_TOPIC, ERC721_APPROVAL_FOR_ALL_TOPIC]),
+                eq(indexerEvents.topic1, userAddressTopic),
+                eq(indexerEvents.reorged, false),
               ),
             ),
         ),
@@ -77,7 +77,7 @@ export class DatabaseLogsProvider implements LogsProvider {
 
     const rows = await getDb()
       .select()
-      .from(monitorEventsCache)
+      .from(indexerEvents)
       .where(and(...conditions))
       .limit(MAX_CACHED_RESULTS);
 
@@ -92,7 +92,7 @@ export class DatabaseLogsProvider implements LogsProvider {
 // The user's address sits in topic1 (Approvals, Transfers-from, Permit2 owner) or topic2 (Transfers-to).
 const extractUserAddressTopic = (filter: Filter): Hex | null => filter.topics[1] ?? filter.topics[2] ?? null;
 
-const formatDatabaseLog = (row: typeof monitorEventsCache.$inferSelect): Log => {
+const formatDatabaseLog = (row: typeof indexerEvents.$inferSelect): Log => {
   return {
     address: row.address as Address,
     topics: [row.topic0, row.topic1, row.topic2, row.topic3].filter((topic) => !isNullish(topic)) as [Hex, ...Hex[]],

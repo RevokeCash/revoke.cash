@@ -1,10 +1,10 @@
 services:
   - type: pserv
-    name: approval-monitor-manager
+    name: indexer-manager
     runtime: docker
     repo: https://github.com/RevokeCash/revoke-private
     branch: auto-revoke-executor
-    dockerfilePath: ./apps/approval-monitor/Dockerfile
+    dockerfilePath: ./apps/indexer/Dockerfile
     dockerContext: .
     region: virginia
     plan: starter
@@ -28,11 +28,11 @@ services:
         sync: false
 
   - type: pserv
-    name: approval-monitor-worker
+    name: indexer-worker
     runtime: docker
     repo: https://github.com/RevokeCash/revoke-private
     branch: auto-revoke-executor
-    dockerfilePath: ./apps/approval-monitor/Dockerfile
+    dockerfilePath: ./apps/indexer/Dockerfile
     dockerContext: .
     region: virginia
     plan: standard

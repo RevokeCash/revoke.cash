@@ -85,8 +85,8 @@
     {
       // NestJS DI relies on runtime imports for constructor-parameter types via reflect-metadata.
       // `useImportType` would convert them to `import type`, erasing the runtime reference and
-      // breaking dependency resolution. Disable it for the approval-monitor service.
-      "includes": ["apps/approval-monitor/**"],
+      // breaking dependency resolution. Disable it for the indexer service.
+      "includes": ["apps/indexer/**"],
       "javascript": {
         "parser": {
           // NestJS uses parameter decorators (e.g. `@Inject(TOKEN)`) for DI tokens that aren't

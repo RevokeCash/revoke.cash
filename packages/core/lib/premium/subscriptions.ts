@@ -1,6 +1,6 @@
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
-import { registerAddressForMonitoring } from '@revoke.cash/core/monitor/register';
+import { registerAddressForIndexing } from '@revoke.cash/core/indexer/register';
 import { isNullish } from '@revoke.cash/core/utils';
 import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { DAY } from '@revoke.cash/core/utils/time';
@@ -183,7 +183,7 @@ export const addSubscriptionAddress = async ({
       addedBy: ownerAddress,
     });
 
-    await registerAddressForMonitoring(trx, address);
+    await registerAddressForIndexing(trx, address);
 
     return { success: true };
   });
@@ -291,7 +291,7 @@ const createSubscription = async (
     })
     .onConflictDoNothing();
 
-  await registerAddressForMonitoring(trx, params.ownerAddress);
+  await registerAddressForIndexing(trx, params.ownerAddress);
 
   return subscription.id;
 };

@@ -1,1 +1,0 @@
-CREATE INDEX "idx_events_cache_unresolved_timestamps" ON "monitor"."events_cache" USING btree ("chain_id","block_number") WHERE "monitor"."events_cache"."timestamp" IS NULL;

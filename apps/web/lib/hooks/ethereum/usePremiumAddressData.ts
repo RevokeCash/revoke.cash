@@ -1,5 +1,5 @@
 import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
-import { type CachedAddressDataDto, deserializeCachedAddressData } from '@revoke.cash/core/monitor/allowances-dto';
+import { type CachedAddressDataDto, deserializeCachedAddressData } from '@revoke.cash/core/indexer/allowances-dto';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQueries } from '@tanstack/react-query';
 import { dtoKy } from 'lib/ky';

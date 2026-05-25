@@ -1,1 +1,0 @@
-ALTER TABLE "monitor"."scan_state" ADD COLUMN "max_block_range" bigint;

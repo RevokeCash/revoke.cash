@@ -1,0 +1,115 @@
+import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
+import { Logger } from '@nestjs/common';
+import type { DocumentedChainId } from '@revoke.cash/core/chains';
+import { indexEvents, recordEventsFailure } from '@revoke.cash/core/indexer/events';
+import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import type { Job, Queue } from 'bullmq';
+import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '../allowances/allowances.queue';
+import { MetricsService } from '../metrics/metrics.service';
+import { GroupLimiterService } from '../queue/group-limiter.service';
+import {
+  enqueueUnenrichedTokens,
+  TOKEN_METADATA_QUEUE_NAME,
+  type TokenMetadataJobData,
+} from '../token-metadata/token-metadata.queue';
+import { EVENTS_QUEUE_NAME, type EventsJobData } from './events.queue';
+
+const allowanceJobIdFor = (chainId: number, address: string): string => `${chainId}-${address}`;
+
+@Processor(EVENTS_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
+export class EventsWorker extends WorkerHost {
+  private readonly logger = new Logger(EventsWorker.name);
+
+  constructor(
+    private readonly metrics: MetricsService,
+    private readonly groupLimiter: GroupLimiterService,
+    @InjectQueue(ALLOWANCES_QUEUE_NAME) private readonly allowancesQueue: Queue<AllowancesJobData>,
+    @InjectQueue(TOKEN_METADATA_QUEUE_NAME)
+    private readonly tokenMetadataQueue: Queue<TokenMetadataJobData>,
+  ) {
+    super();
+  }
+
+  async process(job: Job<EventsJobData>, token?: string): Promise<void> {
+    const { eventsScanId, address, chainId, reason } = job.data;
+
+    const result = await this.groupLimiter.runWithLimit(
+      chainId,
+      async () => {
+        this.logger.debug({ eventsScanId, chainId, address, reason }, 'processing events');
+        const endTimer = this.metrics.eventsScanDuration.startTimer({ chain_id: chainId });
+        const eventsResult = await indexEvents(address, chainId as DocumentedChainId);
+        if (!eventsResult.nonceZeroSkipped) endTimer({ path: eventsResult.path });
+        return eventsResult;
+      },
+      { job, token },
+    );
+
+    if (result.nonceZeroSkipped) {
+      this.metrics.eventsScansTotal.inc({ chain_id: chainId, outcome: 'nonce_zero' });
+      this.logger.debug({ eventsScanId, chainId, address }, 'events skipped (nonce 0)');
+      return;
+    }
+
+    this.metrics.eventsScansTotal.inc({ chain_id: chainId, outcome: 'ok' });
+    this.metrics.eventsScanLogsFetched.observe({ chain_id: chainId, path: result.path }, result.logsFetched);
+    this.logger.log({ eventsScanId, chainId, address, ...result }, 'events indexed');
+
+    // If no logs were written or reorged in this events run, we don't have to recompute allowances
+    if (result.logsWritten === 0 && result.logsReorgedMarked === 0) return;
+
+    await this.allowancesQueue
+      .add('recompute', { address, chainId, eventsScanId }, { jobId: allowanceJobIdFor(chainId, address) })
+      .catch((error) => {
+        this.logger.warn(
+          { eventsScanId, chainId, address, error: parseErrorMessage(error) },
+          'failed to enqueue allowance recompute',
+        );
+      });
+
+    const enqueued = await enqueueUnenrichedTokens(
+      this.tokenMetadataQueue,
+      { chainId, fromBlock: result.fromBlock, toBlock: result.toBlock },
+      'events',
+    ).catch((error) => {
+      this.logger.warn(
+        { eventsScanId, chainId, error: parseErrorMessage(error) },
+        'failed to enqueue token metadata fan-out',
+      );
+    });
+
+    if (enqueued && enqueued > 0) {
+      this.logger.debug(
+        { eventsScanId, chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, enqueued },
+        'enqueued token metadata jobs',
+      );
+    }
+  }
+
+  // BullMQ fires `failed` after every attempt, including in-process retries. We only want to
+  // bump `consecutive_failures` once BullMQ has fully given up — otherwise a single outage
+  // walks the counter up by N within one retry cycle and parks the wallet on the 24h cadence.
+  @OnWorkerEvent('failed')
+  async onFailed(job: Job<EventsJobData> | undefined, error: Error): Promise<void> {
+    const attempt = job?.attemptsMade ?? 0;
+    const maxAttempts = job?.opts?.attempts ?? 1;
+    const exhausted = attempt >= maxAttempts;
+
+    this.logger.error(
+      {
+        eventsScanId: job?.data?.eventsScanId,
+        chainId: job?.data?.chainId,
+        address: job?.data?.address,
+        attempt,
+        maxAttempts,
+        exhausted,
+        error: { message: parseErrorMessage(error), stack: error.stack },
+      },
+      'events indexing failed',
+    );
+
+    if (!exhausted || !job?.data) return;
+    this.metrics.eventsScansTotal.inc({ chain_id: job.data.chainId, outcome: 'failed' });
+    await recordEventsFailure(job.data.address, job.data.chainId as DocumentedChainId, error);
+  }
+}
