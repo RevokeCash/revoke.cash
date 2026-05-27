@@ -2,19 +2,13 @@ import { ChainId } from '@revoke.cash/chains';
 import { AGW_SESSIONS_ABI } from '@revoke.cash/core/abis';
 import blocksCache from '@revoke.cash/core/cache/blocks';
 import eventsCache from '@revoke.cash/core/cache/events';
-import {
-  createViemPublicClientForChain,
-  type DocumentedChainId,
-  getChainApiUrl,
-  getChainName,
-} from '@revoke.cash/core/chains';
+import { createViemPublicClientForChain, type DocumentedChainId, getChainName } from '@revoke.cash/core/chains';
 import { type EnrichedTokenEvent, isApprovalTokenEvent, parseLog, type TokenEvent } from '@revoke.cash/core/events';
 import { EventDataSourceOutOfSyncError } from '@revoke.cash/core/events/errors';
 import { buildTokenEventFilters } from '@revoke.cash/core/events/filters';
 import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cash/core/events/processing';
 import type { LogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic, sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
-import ky from '@revoke.cash/core/ky';
 import { parseSessionCreatedLog, type SessionCreatedEvent } from '@revoke.cash/core/sessions';
 import { createTokenContract, getTokenMetadata, throwIfSpamBytecode } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
@@ -83,11 +77,23 @@ export const hasChainActivity = async (
 // Note: this doesn't work 100% for smart contract addresses, but the trade-off is worth it.
 const hasPulseChainPostForkActivity = async (address: Address): Promise<boolean> => {
   const PULSECHAIN_FORK_BLOCK = 17_233_000;
+  const publicClient = createViemPublicClientForChain(ChainId.PulseChain);
 
-  const apiUrl = getChainApiUrl(ChainId.PulseChain);
-  const url = `${apiUrl}?module=account&action=txlist&address=${address}&start_block=${PULSECHAIN_FORK_BLOCK}`;
-  const { result } = await ky.get(url).json<{ result: any[] | string }>();
-  return Array.isArray(result) && result.length > 0;
+  try {
+    const [nonce, forkNonce, addressCode] = await Promise.all([
+      publicClient.getTransactionCount({ address }),
+      publicClient.getTransactionCount({ address, blockNumber: BigInt(PULSECHAIN_FORK_BLOCK) }),
+      publicClient.getCode({ address }),
+    ]);
+
+    // If the address is a smart contract, we cannot determine if it has activity after the fork, so we assume it does.
+    if (!isNullish(addressCode) || addressCode !== '0x') return true;
+
+    return nonce > forkNonce;
+  } catch {
+    // If we somehow cannot determine if the address has activity, we assume it does to avoid blocking users.
+    return true;
+  }
 };
 
 const getEventPrerequisites = async (chainId: DocumentedChainId, logsProvider: LogsProvider) => {
