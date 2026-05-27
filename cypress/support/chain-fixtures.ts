@@ -83,7 +83,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.PlasmaMainnet]: '0x28bc371c773FDAEA0cCbf9742205f8711d880525',
   [ChainId.PlumeMainnet]: '0x5D2Fec7e07afbb002210760fc8Da9c3335e90826',
   [ChainId.PolygonMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
-  [ChainId.PulseChain]: '0x9c128fFa923B251Fa40F58906034b2DeaE6C3146',
+  [ChainId.PulseChain]: '0xDd97a7F8D7028e75CD87092B986aF48765a2f15F',
   [ChainId.RARIChainMainnet]: '0x3633c7dE0aE55F6387E55824B006b51b7dbd8Dc1',
   [ChainId.Redstone]: '0x37c2DD981aC291015DAD1Cf2d4E1eB524Fc64E08',
   [ChainId.ReyaNetwork]: '0x6E5f7Bd9B940287F6C9AE8A2Ecfb93224A09cba5',

@@ -1,10 +1,9 @@
 import { ChainId } from '@revoke.cash/chains';
 import { AGW_SESSIONS_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
 import eventsDB from 'lib/databases/events';
-import ky from 'lib/ky';
 import { getLogsProvider } from 'lib/providers';
 import { addressToTopic, isNullish, sortTokenEventsChronologically } from 'lib/utils';
-import { createViemPublicClientForChain, type DocumentedChainId, getChainApiUrl, getChainName } from 'lib/utils/chains';
+import { createViemPublicClientForChain, type DocumentedChainId, getChainName } from 'lib/utils/chains';
 import {
   generatePatchedAllowanceEvents,
   parseApprovalForAllLog,
@@ -44,12 +43,24 @@ const ChainOverrides: Record<number, TokenEventsGetter> = {
   // since otherwise everyone that used Ethereum before the fork would have to wait to get their events.
   // Note: this doesn't work 100% for smart contract addresses, but the trade-off is worth it.
   [ChainId.PulseChain]: async (chainId, address) => {
-    const apiUrl = getChainApiUrl(chainId);
-    const pulsechainForkBlock = 17233000;
-    const url = `${apiUrl}?module=account&action=txlist&address=${address}&start_block=${pulsechainForkBlock}`;
+    const publicClient = createViemPublicClientForChain(chainId);
+    const forkBlock = 17233000;
+    const chainName = getChainName(chainId);
+    try {
+      const [currentNonce, forkNonce, addressCode] = await Promise.all([
+        publicClient.getTransactionCount({ address }),
+        publicClient.getTransactionCount({ address, blockNumber: BigInt(forkBlock) }),
+        publicClient.getCode({ address }),
+      ]);
 
-    const { result } = await ky.get(url).json<{ result: any[] | string }>();
-    if (!Array.isArray(result) || result.length === 0) return [];
+      // If the address has no transactions after the fork and is not a contract, we can skip event fetching
+      if (currentNonce === forkNonce && (isNullish(addressCode) || addressCode === '0x')) {
+        console.log(`${chainName}: Skipping event fetching for EOA with no transactions after fork (${address})`);
+        return [];
+      }
+    } catch {
+      console.log(`${chainName}: Historical nonce check failed, falling through to full event fetch`);
+    }
 
     return getTokenEventsDefault(chainId, address);
   },

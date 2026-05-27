@@ -1213,7 +1213,7 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'pulsechain',
     coingeckoNetworkId: 'pulsechain',
     logoUrl: '/assets/images/vendor/chains/pulsechain.png',
-    explorerUrl: 'https://scan.pulsechainfoundation.org/#',
+    explorerUrl: 'https://otherscan.pulsechain.box',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
     // Although multicall is deployed on Pulsechain, it is causing issues
     // deployedContracts: { ...MULTICALL },
@@ -1575,7 +1575,7 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Viction]: new Chain({
-    type: SupportType.BLOCKSCOUT,
+    type: SupportType.COVALENT,
     chainId: ChainId.Viction,
     name: 'Viction',
     nativeTokenCoingeckoId: 'tomochain',
