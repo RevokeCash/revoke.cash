@@ -40,17 +40,23 @@ const TierCard = ({
         <Label className={twMerge('absolute -top-3 left-1/2 -translate-x-1/2', badgeClassName)}>{badgeLabel}</Label>
       )}
 
-      <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold">{t(`premium.pricing.tiers.${tierKey}.name`)}</h2>
-        <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-bold">{price}</span>
-          {tierKey !== 'free' && (
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">{t('premium.pricing.per_year')}</span>
-          )}
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-lg font-semibold">{t(`premium.pricing.tiers.${tierKey}.name`)}</h2>
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <span className="text-3xl font-bold">{price}</span>
+            {tierKey !== 'free' && (
+              <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                {t('premium.pricing.per_year')}
+                {t.has(`premium.pricing.tiers.${tierKey}.price_note`) && (
+                  <> &middot; {t(`premium.pricing.tiers.${tierKey}.price_note`)}</>
+                )}
+              </span>
+            )}
+          </div>
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-          {t(`premium.pricing.tiers.${tierKey}.description`)}
-        </p>
+
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">{t(`premium.pricing.tiers.${tierKey}.description`)}</p>
       </div>
 
       <Button href={href} router style={buttonStyle} size="md" className="w-full justify-center">

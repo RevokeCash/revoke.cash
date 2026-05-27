@@ -93,12 +93,14 @@
       "premium": {
         "cta": "Subscribe",
         "description": "Monitor and manage token approvals in a single multichain dashboard.",
-        "name": "Premium"
+        "name": "Premium",
+        "price_note": "10 wallets included"
       },
       "ultimate": {
         "cta": "Subscribe",
         "description": "Set-and-forget protection with automated revoking.",
-        "name": "Ultimate"
+        "name": "Ultimate",
+        "price_note": "10 wallets included"
       }
     },
     "title": "Premium Pricing"
