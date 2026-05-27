@@ -51,16 +51,18 @@ export const usePremiumAddressData = (
   return chains.map((_chainId, index) => {
     const cachedResult = cachedResults[index];
     const refreshResult = refreshResults[index];
+    const isRefreshing = Boolean(refreshResult?.isFetching);
     const data = refreshResult?.data ?? cachedResult?.data;
-    const error = data ? null : (refreshResult?.error ?? cachedResult?.error ?? null);
+    const refreshError = isRefreshing ? null : (refreshResult?.error ?? null);
+    const error = isRefreshing ? null : (refreshError ?? (data ? null : (cachedResult?.error ?? null)));
 
     return {
       data,
       error,
-      isLoading: !data && Boolean(cachedResult?.isLoading),
-      isSuccess: Boolean(data) || Boolean(cachedResult?.isSuccess),
-      isRefreshing: Boolean(refreshResult?.isFetching),
-      refreshError: refreshResult?.error ?? null,
+      isLoading: !data && (isRefreshing || Boolean(cachedResult?.isLoading)),
+      isSuccess: !error && (Boolean(data) || Boolean(cachedResult?.isSuccess)),
+      isRefreshing,
+      refreshError,
       refresh: () => {
         void refreshResult?.refetch();
       },

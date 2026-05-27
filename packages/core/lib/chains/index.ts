@@ -684,7 +684,7 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 16146628 } },
   }),
   [ChainId.Gnosis]: new Chain({
-    type: SupportType.HYPERSYNC,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.Gnosis,
     name: 'Gnosis Chain',
     nativeTokenCoingeckoId: 'xdai',

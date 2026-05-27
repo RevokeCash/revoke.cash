@@ -104,7 +104,6 @@ export const usePremiumChainAllowanceData = ({
 
       const refetch = () => {
         currentResult?.refresh();
-        queryClient.invalidateQueries({ queryKey: ['time-machine-address-data', address, chainId] });
       };
 
       return {
@@ -127,7 +126,6 @@ export const usePremiumChainAllowanceData = ({
     priceData,
     balanceData,
     spenderData,
-    address,
     chains,
     isHistorical,
   ]);

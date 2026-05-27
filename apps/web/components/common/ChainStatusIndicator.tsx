@@ -10,11 +10,12 @@ interface Props {
   status: 'loading' | 'success' | 'error';
   chainId: number;
   error: Error | null;
+  isRefreshing?: boolean;
   refetch: () => void | Promise<void>;
   children: ReactNode;
 }
 
-const ChainStatusIndicator = ({ status, chainId, error, refetch, children }: Props) => {
+const ChainStatusIndicator = ({ status, chainId, error, isRefreshing, refetch, children }: Props) => {
   const t = useTranslations();
 
   if (status === 'loading') {
@@ -29,19 +30,21 @@ const ChainStatusIndicator = ({ status, chainId, error, refetch, children }: Pro
   if (status === 'error') {
     return (
       <div className="flex items-center gap-3 min-w-0">
-        <div className="text-sm text-red-600 dark:text-red-400 min-w-0">
+        <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 min-w-0">
+          {isRefreshing ? <Spinner className="w-3.5 h-3.5 shrink-0" /> : null}
           <ErrorDisplay error={error} chainId={chainId} />
         </div>
         <Button
           size="sm"
           style="secondary"
           className="shrink-0"
+          loading={isRefreshing}
           onClick={(event: React.MouseEvent) => {
             event.stopPropagation();
             void refetch();
           }}
         >
-          {t('common.buttons.try_again')}
+          {t(isRefreshing ? 'common.buttons.retrying' : 'common.buttons.try_again')}
         </Button>
       </div>
     );

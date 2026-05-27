@@ -12,12 +12,9 @@ import { topicToAddress } from '@revoke.cash/core/events/utils';
 import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
-import { MINUTE } from '../utils/time';
-import { StillIndexingError } from './errors';
+import { assertIndexerIsNotActivelyIndexing, INDEXER_WARM_THRESHOLD, indexerHasStalled } from './progress';
 
-const WARM_THRESHOLD = 100_000;
 const RPC_THRESHOLD = 10_000;
-const INDEXER_STALLED_THRESHOLD = 90 * MINUTE;
 
 export const getEventsForFilter = async (chainId: DocumentedChainId, filter: Filter): Promise<Log[]> => {
   const scriptLogsProvider = getScriptLogsProvider(chainId);
@@ -45,12 +42,16 @@ export const getEventsForFilter = async (chainId: DocumentedChainId, filter: Fil
   // If the indexer has stalled, we fall back to on-the-fly getter.
   // If the indexer has not stalled, we throw an error to surface the indexing progress to the user.
   const blockRange = filter.toBlock - state.lastToBlock;
-  if (blockRange > WARM_THRESHOLD) {
+  if (blockRange > INDEXER_WARM_THRESHOLD) {
     if (indexerHasStalled(state.lastScanAt)) {
       return scriptLogsProvider.getLogs(filter);
     }
 
-    throw new StillIndexingError(state.lastToBlock, filter.toBlock);
+    assertIndexerIsNotActivelyIndexing({
+      lastToBlock: state.lastToBlock,
+      headBlock: filter.toBlock,
+      lastScanAt: state.lastScanAt,
+    });
   }
 
   const freshLogsProvider = blockRange > RPC_THRESHOLD ? scriptLogsProvider : rpcLogsProvider;
@@ -83,8 +84,4 @@ const extractUserAddressFromFilter = (filter: Filter): Address | null => {
   const addressTopic = filter.topics[1] ?? filter.topics[2];
   if (!addressTopic) return null;
   return topicToAddress(addressTopic);
-};
-
-const indexerHasStalled = (lastScanAt: Date): boolean => {
-  return lastScanAt.getTime() < Date.now() - INDEXER_STALLED_THRESHOLD;
 };

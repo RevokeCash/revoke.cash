@@ -44,7 +44,7 @@ export const recomputeAllowances = async (
   const start = Date.now();
   const db = getDb();
 
-  const [allowanceState, scanState] = await Promise.all([
+  const [allowanceState, eventsState] = await Promise.all([
     db.query.indexerAllowanceState.findFirst({
       where: and(eq(indexerAllowanceState.address, address), eq(indexerAllowanceState.chainId, chainId)),
     }),
@@ -55,14 +55,14 @@ export const recomputeAllowances = async (
   ]);
 
   const oldCursor = allowanceState?.computedToBlock ?? null;
-  const newCursor = scanState?.lastToBlock;
-  const consecutiveFailures = scanState?.consecutiveFailures ?? 0;
+  const newCursor = eventsState?.lastToBlock;
+  const consecutiveFailures = eventsState?.consecutiveFailures ?? 0;
 
   // If an events_state exists without a cursor, then this address has nonce 0 on this chain.
   // Treat it as a clean empty recompute and clear any stale recompute failures.
   if (isNullish(newCursor)) {
-    if (consecutiveFailures > 3 && !isNullish(scanState?.lastError)) {
-      throw new ChainUnresponsiveError(chainId, scanState?.lastError);
+    if (consecutiveFailures > 3 && !isNullish(eventsState?.lastError)) {
+      throw new ChainUnresponsiveError(chainId, eventsState?.lastError);
     }
 
     return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };

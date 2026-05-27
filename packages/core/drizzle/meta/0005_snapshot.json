@@ -1018,6 +1018,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "last_observed_head_block": {
+          "name": "last_observed_head_block",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
         "max_block_range": {
           "name": "max_block_range",
           "type": "bigint",

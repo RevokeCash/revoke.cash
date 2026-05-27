@@ -82,27 +82,21 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
 
   const publicClient = createViemPublicClientForChain(chainId);
 
-  if (!(await hasChainActivity(chainId, address, publicClient))) {
-    return skipAndReschedule(db, address, chainId, existingState, {
-      nonceZeroSkipped: true,
-      durationMs: Date.now() - start,
-    });
-  }
-
   const initialMaxBlockRange = existingState?.maxBlockRange ?? Number.POSITIVE_INFINITY;
-  const { fromBlock, toBlock, isCapped } = await computeScanRange(
+  const { fromBlock, toBlock, headBlock, isCapped } = await computeScanRange(
     publicClient,
     existingState?.lastToBlock,
     initialMaxBlockRange,
   );
 
-  // Chain head is behind our cursor (deep reorg, or briefly stale RPC response)
-  if (toBlock < fromBlock) {
-    return skipAndReschedule(db, address, chainId, existingState, {
-      fromBlock,
-      toBlock,
-      durationMs: Date.now() - start,
+  if (!(await hasChainActivity(chainId, address, publicClient))) {
+    await upsertEventsState(db, address, chainId, {
+      nextRunAt: computeNextRunAt(0, existingState?.lastEventAt),
+      consecutiveFailures: 0,
+      lastError: null,
+      lastObservedHeadBlock: headBlock,
     });
+    return buildIndexEventsResult({ nonceZeroSkipped: true, durationMs: Date.now() - start });
   }
 
   const addressTopic = addressToTopic(address);
@@ -118,6 +112,7 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
       await commitEventsState(trx, publicClient, address, chainId, existingState, {
         fromBlock,
         currentToBlock,
+        headBlock,
         isCapped,
         rangeReductions,
         filterResults: results,
@@ -172,22 +167,6 @@ const runWithRangeReduction = async <T>(
   }
 };
 
-const skipAndReschedule = async (
-  writer: DatabaseWriter,
-  address: Address,
-  chainId: number,
-  existingState: typeof indexerEventsState.$inferSelect | undefined,
-  resultOverrides: Partial<IndexEventsResult>,
-): Promise<IndexEventsResult> => {
-  // Clear any failures when skipping a scan, since skipping means that RPC was at least available
-  await upsertEventsState(writer, address, chainId, {
-    nextRunAt: computeNextRunAt(0, existingState?.lastEventAt),
-    consecutiveFailures: 0,
-    lastError: null,
-  });
-  return buildIndexEventsResult(resultOverrides);
-};
-
 export const recordEventsFailure = async (
   address: Address,
   chainId: DocumentedChainId,
@@ -210,12 +189,12 @@ const computeScanRange = async (
   publicClient: PublicClient,
   cursor: number | null | undefined,
   maxBlockRange: number,
-): Promise<{ fromBlock: number; toBlock: number; isCapped: boolean }> => {
+): Promise<{ fromBlock: number; toBlock: number; headBlock: number; isCapped: boolean }> => {
   const fromBlock = !isNullish(cursor) ? Math.max(0, cursor - REORG_DEPTH + 1) : 0;
-  const head = Number(await publicClient.getBlockNumber());
+  const headBlock = Number(await publicClient.getBlockNumber());
   const cappedToBlock = fromBlock + maxBlockRange;
-  const toBlock = Math.min(head, cappedToBlock);
-  return { fromBlock, toBlock, isCapped: toBlock < head };
+  const toBlock = Math.min(headBlock, cappedToBlock);
+  return { fromBlock, toBlock, headBlock, isCapped: toBlock < headBlock };
 };
 
 type EventsStateUpdate = Partial<typeof indexerEventsState.$inferInsert>;
@@ -380,6 +359,7 @@ const latestLogByBlock = (logs: (Log | null | undefined)[]): Log | null => {
 interface CommitEventsStateParams {
   fromBlock: number;
   currentToBlock: number;
+  headBlock: number;
   isCapped: boolean;
   rangeReductions: number;
   filterResults: FilterScanResult[];
@@ -402,6 +382,7 @@ const commitEventsState = async (
   await upsertEventsState(trx, address, chainId, {
     lastScanAt: new Date(),
     lastToBlock: params.currentToBlock,
+    lastObservedHeadBlock: params.headBlock,
     maxBlockRange: newMaxBlockRange,
     lastEventAt,
     nextRunAt: computeNextRunAt(0, lastEventAt, effectiveIsCapped),

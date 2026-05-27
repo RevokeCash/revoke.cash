@@ -21,13 +21,33 @@ import {
   serializeAllowanceFromRow,
   serializeApprovalEvent,
 } from './allowances-dto';
-import { ChainUnresponsiveError } from './errors';
+import { ChainUnresponsiveError, StillIndexingError } from './errors';
+import { assertIndexerIsNotTooFarBehind } from './progress';
 import { resolveAndPersistTimestampsForBlocks } from './timestamps';
 import { getCachedTokenMetadata } from './token-metadata';
 
 type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
-type ScanState = Pick<typeof indexerEventsState.$inferSelect, 'consecutiveFailures' | 'lastError' | 'lastScanAt'>;
-type FailureState = Pick<ScanState, 'consecutiveFailures' | 'lastError'> | null | undefined;
+type EventsState = Pick<
+  typeof indexerEventsState.$inferSelect,
+  'consecutiveFailures' | 'lastError' | 'lastObservedHeadBlock' | 'lastScanAt' | 'lastToBlock'
+>;
+
+type AllowanceState = Pick<
+  typeof indexerAllowanceState.$inferSelect,
+  'computedToBlock' | 'consecutiveFailures' | 'lastError'
+>;
+
+type FailureState =
+  | Pick<EventsState, 'consecutiveFailures' | 'lastError'>
+  | Pick<AllowanceState, 'consecutiveFailures' | 'lastError'>
+  | null
+  | undefined;
+
+interface ReadStates {
+  eventsState: EventsState | undefined;
+  allowanceState: AllowanceState | undefined;
+}
+
 interface CachedAddressDataOptions {
   failFast?: boolean;
   resolveMissingTimestamps?: boolean;
@@ -38,18 +58,32 @@ interface CachedAddressDataOptions {
 // a 24-hour cadence.
 const FAIL_FAST_FAILURE_THRESHOLD = 3;
 
-const getScanState = async (address: Address, chainId: DocumentedChainId): Promise<ScanState | undefined> => {
+const getEventsState = async (address: Address, chainId: DocumentedChainId): Promise<EventsState | undefined> => {
   return getDb().query.indexerEventsState.findFirst({
     where: and(eq(indexerEventsState.address, address), eq(indexerEventsState.chainId, chainId)),
-    columns: { consecutiveFailures: true, lastError: true, lastScanAt: true },
+    columns: {
+      consecutiveFailures: true,
+      lastError: true,
+      lastObservedHeadBlock: true,
+      lastScanAt: true,
+      lastToBlock: true,
+    },
   });
 };
 
-const getAllowanceFailureState = async (address: Address, chainId: DocumentedChainId): Promise<FailureState> => {
+const getAllowanceState = async (address: Address, chainId: DocumentedChainId): Promise<AllowanceState | undefined> => {
   return getDb().query.indexerAllowanceState.findFirst({
     where: and(eq(indexerAllowanceState.address, address), eq(indexerAllowanceState.chainId, chainId)),
-    columns: { consecutiveFailures: true, lastError: true },
+    columns: { computedToBlock: true, consecutiveFailures: true, lastError: true },
   });
+};
+
+const getReadStates = async (address: Address, chainId: DocumentedChainId): Promise<ReadStates> => {
+  const [eventsState, allowanceState] = await Promise.all([
+    getEventsState(address, chainId),
+    getAllowanceState(address, chainId),
+  ]);
+  return { eventsState, allowanceState };
 };
 
 // Throws `ChainUnresponsiveError` (HTTP 503 with the stored `last_error` in the body) when
@@ -64,16 +98,21 @@ const failFastIfIndexingIsFailing = (state: FailureState, chainId: DocumentedCha
 export const failFastIfAddressIndexingIsFailing = async (
   address: Address,
   chainId: DocumentedChainId,
-): Promise<ScanState | undefined> => {
-  const [scanState, allowanceState] = await Promise.all([
-    getScanState(address, chainId),
-    getAllowanceFailureState(address, chainId),
-  ]);
+): Promise<ReadStates> => {
+  const { eventsState, allowanceState } = await getReadStates(address, chainId);
 
-  failFastIfIndexingIsFailing(scanState, chainId);
+  failFastIfIndexingIsFailing(eventsState, chainId);
   failFastIfIndexingIsFailing(allowanceState, chainId);
 
-  return scanState;
+  return { eventsState, allowanceState };
+};
+
+export const failFastIfEventIndexingIsStillIndexing = async (
+  address: Address,
+  chainId: DocumentedChainId,
+): Promise<void> => {
+  const eventsState = await getEventsState(address, chainId);
+  failFastIfEventsStateIsBehind(eventsState);
 };
 
 export const getCachedAddressData = async (
@@ -89,14 +128,19 @@ const readFromIndexedCache = async (
   chainId: DocumentedChainId,
   { failFast = true, resolveMissingTimestamps = false }: CachedAddressDataOptions,
 ): Promise<CachedAddressDataDto> => {
-  const scanState = failFast
+  const { eventsState, allowanceState } = failFast
     ? await failFastIfAddressIndexingIsFailing(address, chainId)
-    : await getScanState(address, chainId);
+    : await getReadStates(address, chainId);
+
+  if (failFast) {
+    failFastIfEventsStateIsBehind(eventsState);
+    failFastIfAllowanceStateIsBehind(eventsState, allowanceState);
+  }
 
   const { state, rows: allowanceRows } = await getCachedAllowances(address, chainId);
 
   const stateDto = {
-    checkedAt: scanState?.lastScanAt?.toISOString() ?? null,
+    checkedAt: eventsState?.lastScanAt?.toISOString() ?? null,
     computedToBlock: state?.computedToBlock ?? null,
   };
 
@@ -112,6 +156,24 @@ const readFromIndexedCache = async (
   return { state: stateDto, allowances, events };
 };
 
+const failFastIfEventsStateIsBehind = (state: EventsState | undefined): void => {
+  if (isNullish(state?.lastToBlock) || isNullish(state.lastObservedHeadBlock)) return;
+
+  assertIndexerIsNotTooFarBehind({ lastToBlock: state.lastToBlock, headBlock: state.lastObservedHeadBlock });
+};
+
+const failFastIfAllowanceStateIsBehind = (
+  eventsState: EventsState | undefined,
+  allowanceState: AllowanceState | undefined,
+): void => {
+  if (isNullish(eventsState?.lastToBlock)) return;
+
+  const computedToBlock = allowanceState?.computedToBlock;
+  if (isNullish(computedToBlock) || computedToBlock < eventsState.lastToBlock) {
+    throw new StillIndexingError(computedToBlock ?? 0, eventsState.lastToBlock);
+  }
+};
+
 const isUsableMetadata = (metadata?: TokenMetadataRow): boolean => {
   if (metadata === undefined) return false;
   if (!isNullish(metadata.spamReason)) return false;
@@ -119,7 +181,7 @@ const isUsableMetadata = (metadata?: TokenMetadataRow): boolean => {
   return true;
 };
 
-// Pull approval/transfer events for this user from the events cache up to `toBlock`. The cached
+// Pull approval events for this user from the events cache up to `toBlock`. The cached
 // GET path stays cache-only so an unresponsive chain cannot make the dashboard hang. The refresh
 // POST path can opt into resolving missing timestamps before serialization, while the final filter
 // still guarantees that every event returned to the client has a timestamp.
@@ -130,7 +192,7 @@ const fetchEventsFromCache = async (
   { resolveMissingTimestamps = false }: Pick<CachedAddressDataOptions, 'resolveMissingTimestamps'> = {},
 ): Promise<TokenEvent[]> => {
   const logsProvider = new DatabaseLogsProvider(chainId);
-  const filters: Filter[] = Object.values(buildTokenEventFilters(address, 0, toBlock));
+  const filters: Filter[] = Object.values(buildTokenEventFilters(address, 0, toBlock, { includeTransfers: false }));
 
   const logsByFilter = await Promise.all(filters.map((filter) => logsProvider.getLogs(filter)));
   const rawLogs = resolveMissingTimestamps

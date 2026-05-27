@@ -41,6 +41,11 @@ interface LatestBlockResponse {
   result: string;
 }
 
+// Some explorer APIs (e.g. PulseChain) sit behind a WAF that returns 502 for requests that lack the
+// browser fetch-metadata headers, since server-side fetch does not send them. Including this header
+// makes the request look like a browser request and is harmless for explorers that do not check it.
+export const EXPLORER_REQUEST_HEADERS = { 'Sec-Fetch-Site': 'none' };
+
 export class EtherscanEventGetter implements EventGetter {
   protected queues: { [chainId: number]: RequestQueue };
 
@@ -62,7 +67,11 @@ export class EtherscanEventGetter implements EventGetter {
     const searchParams = prepareGetLatestBlockQuery(chainId, apiKey, platform);
 
     const result = await retryOn429(() =>
-      queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>()),
+      queue.add(() =>
+        ky
+          .get(apiUrl, { searchParams, headers: EXPLORER_REQUEST_HEADERS, retry: 3, timeout: false })
+          .json<LatestBlockResponse>(),
+      ),
     );
 
     const blockNumber = Number(result.result);
@@ -84,7 +93,11 @@ export class EtherscanEventGetter implements EventGetter {
     let data: LogsResponse;
     try {
       data = await retryOn429(() =>
-        queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LogsResponse>()),
+        queue.add(() =>
+          ky
+            .get(apiUrl, { searchParams, headers: EXPLORER_REQUEST_HEADERS, retry: 3, timeout: false })
+            .json<LogsResponse>(),
+        ),
       );
     } catch (e) {
       console.log(e);

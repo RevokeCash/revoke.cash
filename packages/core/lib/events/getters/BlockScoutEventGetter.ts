@@ -11,7 +11,7 @@ import ky, { retryOn429 } from '@revoke.cash/core/ky';
 import { RequestQueue } from '@revoke.cash/core/request-queue';
 import type { EtherscanPlatform } from '@revoke.cash/core/types';
 import type { Hex } from 'viem';
-import { EtherscanEventGetter } from './EtherscanEventGetter';
+import { EtherscanEventGetter, EXPLORER_REQUEST_HEADERS } from './EtherscanEventGetter';
 import type { EventGetter } from './EventGetter';
 
 interface LatestBlockResponse {
@@ -48,11 +48,19 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
     const searchParams = prepareGetLatestBlockQuery(apiKey, platform);
 
     const latestBlockPromise = retryOn429(() =>
-      queue.add(() => ky.get(apiUrl, { searchParams, retry: 3, timeout: false }).json<LatestBlockResponse>()),
+      queue.add(() =>
+        ky
+          .get(apiUrl, { searchParams, headers: EXPLORER_REQUEST_HEADERS, retry: 3, timeout: false })
+          .json<LatestBlockResponse>(),
+      ),
     );
 
     const indexingStatusPromise = retryOn429(() =>
-      queue.add(() => ky.get(`${apiUrl}/v2/main-page/indexing-status`).json<IndexingStatusResponse>()),
+      queue.add(() =>
+        ky
+          .get(`${apiUrl}/v2/main-page/indexing-status`, { headers: EXPLORER_REQUEST_HEADERS })
+          .json<IndexingStatusResponse>(),
+      ),
     );
 
     const [latestBlock, indexingStatus] = await Promise.allSettled([latestBlockPromise, indexingStatusPromise]);

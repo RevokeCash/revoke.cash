@@ -163,7 +163,7 @@ const Header = ({ chainData }: HeaderProps) => {
   };
 
   return (
-    <ChainSectionHeader chainId={chainId} status={status} error={error} refetch={refetch}>
+    <ChainSectionHeader chainId={chainId} status={status} error={error} isRefreshing={isRefreshing} refetch={refetch}>
       <div className="flex items-center gap-4 text-sm">
         <span className="text-zinc-700 dark:text-zinc-300">
           {t('address.allowances.count', { count: allowances.length })}

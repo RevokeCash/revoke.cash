@@ -30,6 +30,7 @@ CREATE TABLE "indexer"."events_state" (
 	"chain_id" integer NOT NULL,
 	"last_scan_at" timestamp with time zone,
 	"last_to_block" bigint,
+	"last_observed_head_block" bigint,
 	"max_block_range" bigint,
 	"last_event_at" timestamp with time zone,
 	"next_run_at" timestamp with time zone DEFAULT now() NOT NULL,

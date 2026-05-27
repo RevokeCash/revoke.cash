@@ -9,11 +9,12 @@ interface Props {
   chainId: number;
   status: 'loading' | 'success' | 'error';
   error: Error | null;
+  isRefreshing?: boolean;
   refetch: () => void | Promise<void>;
   children: ReactNode;
 }
 
-const ChainSectionHeader = ({ chainId, status, error, refetch, children }: Props) => {
+const ChainSectionHeader = ({ chainId, status, error, isRefreshing, refetch, children }: Props) => {
   const chainName = getChainName(chainId);
 
   return (
@@ -23,7 +24,13 @@ const ChainSectionHeader = ({ chainId, status, error, refetch, children }: Props
         <span className="font-medium text-base truncate">{chainName}</span>
       </div>
       <div className="flex items-center gap-4 min-w-0">
-        <ChainStatusIndicator status={status} chainId={chainId} error={error} refetch={refetch}>
+        <ChainStatusIndicator
+          status={status}
+          chainId={chainId}
+          error={error}
+          isRefreshing={isRefreshing}
+          refetch={refetch}
+        >
           {children}
         </ChainStatusIndicator>
       </div>
