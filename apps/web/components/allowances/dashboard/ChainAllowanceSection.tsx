@@ -46,7 +46,7 @@ const ChainAllowanceSection = ({
   defaultExpanded,
 }: Props) => {
   const { timestamp: timeMachineTimestamp } = useTimeMachine();
-  const { status, allowances } = chainData;
+  const { status, allowances, isRefreshing } = chainData;
 
   const [isExpanded, setIsExpanded] = useState(() => {
     if (!isNullish(defaultExpanded)) return defaultExpanded;
@@ -113,7 +113,7 @@ const ChainAllowanceSection = ({
 
   const toggleExpanded = () => canExpand && setIsExpanded(!isExpanded);
 
-  if (status === 'success' && table.getFilteredRowModel().rows.length === 0) {
+  if (!isRefreshing && status === 'success' && table.getFilteredRowModel().rows.length === 0) {
     return null;
   }
 

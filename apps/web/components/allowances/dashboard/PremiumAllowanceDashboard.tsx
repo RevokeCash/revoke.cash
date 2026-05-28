@@ -18,9 +18,12 @@ const PremiumAllowanceDashboard = () => {
   const [allExpanded, setAllExpanded] = useState(true);
 
   const chainsWithContent = chainData.filter(
-    (chain) => chain.status === 'loading' || chain.status === 'error' || chain.allowances.length > 0,
+    (chain) =>
+      chain.status === 'loading' || chain.status === 'error' || chain.isRefreshing || chain.allowances.length > 0,
   );
-  const emptyChains = chainData.filter((chain) => chain.status === 'success' && chain.allowances.length === 0);
+  const emptyChains = chainData.filter(
+    (chain) => chain.status === 'success' && !chain.isRefreshing && chain.allowances.length === 0,
+  );
 
   return (
     <div className="flex flex-col gap-2">
