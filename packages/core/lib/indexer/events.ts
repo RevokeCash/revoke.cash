@@ -35,6 +35,7 @@ const ACTIVE_WINDOW_MS = 7 * 24 * HOUR;
 
 const MIN_BLOCK_RANGE = 1_000;
 const MAX_BLOCK_RANGE = 1_000_000_000;
+const FALLBACK_MAX_BLOCK_RANGE = 10_000_000;
 
 // If a filter returns more than 50k logs, this is an indication that the scan size is too large,
 // and if a filter returns less than 50 logs, this is an indication that the scan size can safely increase.
@@ -183,6 +184,25 @@ export const recordEventsFailure = async (
     lastError: parseErrorMessage(error),
     nextRunAt: computeNextRunAt(failures, existingState?.lastEventAt),
   });
+};
+
+export const reduceEventsMaxBlockRangeAfterFailure = async (
+  address: Address,
+  chainId: DocumentedChainId,
+): Promise<number> => {
+  const db = getDb();
+  const existingState = await db.query.indexerEventsState.findFirst({
+    where: and(eq(indexerEventsState.address, address), eq(indexerEventsState.chainId, chainId)),
+    columns: { maxBlockRange: true },
+  });
+
+  const currentMaxBlockRange = existingState?.maxBlockRange;
+  const nextMaxBlockRange = isNullish(currentMaxBlockRange)
+    ? FALLBACK_MAX_BLOCK_RANGE
+    : Math.max(MIN_BLOCK_RANGE, Math.floor(currentMaxBlockRange / 2));
+
+  await upsertEventsState(db, address, chainId, { maxBlockRange: nextMaxBlockRange });
+  return nextMaxBlockRange;
 };
 
 const computeScanRange = async (

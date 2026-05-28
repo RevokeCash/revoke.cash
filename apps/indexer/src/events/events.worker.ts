@@ -1,7 +1,11 @@
 import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
-import { indexEvents, recordEventsFailure } from '@revoke.cash/core/indexer/events';
+import {
+  indexEvents,
+  recordEventsFailure,
+  reduceEventsMaxBlockRangeAfterFailure,
+} from '@revoke.cash/core/indexer/events';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job, Queue } from 'bullmq';
 import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '../allowances/allowances.queue';
@@ -108,8 +112,25 @@ export class EventsWorker extends WorkerHost {
       'events indexing failed',
     );
 
-    if (!exhausted || !job?.data) return;
-    this.metrics.eventsScansTotal.inc({ chain_id: job.data.chainId, outcome: 'failed' });
-    await recordEventsFailure(job.data.address, job.data.chainId as DocumentedChainId, error);
+    if (!job?.data) return;
+
+    const { eventsScanId, chainId, address } = job.data;
+
+    try {
+      const nextMaxBlockRange = await reduceEventsMaxBlockRangeAfterFailure(address, chainId as DocumentedChainId);
+      this.logger.warn(
+        { eventsScanId, chainId, address, nextMaxBlockRange },
+        'reduced events max block range after failure',
+      );
+    } catch (rangeError) {
+      this.logger.warn(
+        { eventsScanId, chainId, address, error: parseErrorMessage(rangeError) },
+        'failed to reduce events max block range after failure',
+      );
+    }
+
+    if (!exhausted) return;
+    this.metrics.eventsScansTotal.inc({ chain_id: chainId, outcome: 'failed' });
+    await recordEventsFailure(address, chainId as DocumentedChainId, error);
   }
 }
