@@ -11,6 +11,7 @@ import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cas
 import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
 import { sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
+import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { type CachedAllowanceRow, getCachedAllowances } from './allowances';
@@ -24,7 +25,7 @@ import {
 import { ChainUnresponsiveError, StillIndexingError } from './errors';
 import { assertIndexerIsNotTooFarBehind } from './progress';
 import { resolveAndPersistTimestampsForBlocks } from './timestamps';
-import { getCachedTokenMetadata } from './token-metadata';
+import { enrichToken, getCachedTokenMetadata } from './token-metadata';
 
 type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
 type EventsState = Pick<
@@ -46,11 +47,6 @@ type FailureState =
 interface ReadStates {
   eventsState: EventsState | undefined;
   allowanceState: AllowanceState | undefined;
-}
-
-interface CachedAddressDataOptions {
-  failFast?: boolean;
-  resolveMissingTimestamps?: boolean;
 }
 
 // After this many recorded failures we surface the stored `last_error` to the dashboard instead
@@ -95,18 +91,6 @@ const failFastIfIndexingIsFailing = (state: FailureState, chainId: DocumentedCha
   }
 };
 
-export const failFastIfAddressIndexingIsFailing = async (
-  address: Address,
-  chainId: DocumentedChainId,
-): Promise<ReadStates> => {
-  const { eventsState, allowanceState } = await getReadStates(address, chainId);
-
-  failFastIfIndexingIsFailing(eventsState, chainId);
-  failFastIfIndexingIsFailing(allowanceState, chainId);
-
-  return { eventsState, allowanceState };
-};
-
 export const failFastIfEventIndexingIsStillIndexing = async (
   address: Address,
   chainId: DocumentedChainId,
@@ -118,24 +102,18 @@ export const failFastIfEventIndexingIsStillIndexing = async (
 export const getCachedAddressData = async (
   address: Address,
   chainId: DocumentedChainId,
-  options: CachedAddressDataOptions = {},
 ): Promise<CachedAddressDataDto> => {
-  return readFromIndexedCache(address, chainId, options);
+  return readFromIndexedCache(address, chainId);
 };
 
-const readFromIndexedCache = async (
-  address: Address,
-  chainId: DocumentedChainId,
-  { failFast = true, resolveMissingTimestamps = false }: CachedAddressDataOptions,
-): Promise<CachedAddressDataDto> => {
-  const { eventsState, allowanceState } = failFast
-    ? await failFastIfAddressIndexingIsFailing(address, chainId)
-    : await getReadStates(address, chainId);
+const readFromIndexedCache = async (address: Address, chainId: DocumentedChainId): Promise<CachedAddressDataDto> => {
+  const { eventsState, allowanceState } = await getReadStates(address, chainId);
 
-  if (failFast) {
-    failFastIfEventsStateIsBehind(eventsState);
-    failFastIfAllowanceStateIsBehind(eventsState, allowanceState);
-  }
+  failFastIfIndexingIsFailing(eventsState, chainId);
+  failFastIfIndexingIsFailing(allowanceState, chainId);
+
+  failFastIfEventsStateIsBehind(eventsState);
+  failFastIfAllowanceStateIsBehind(eventsState, allowanceState);
 
   const { state, rows: allowanceRows } = await getCachedAllowances(address, chainId);
 
@@ -145,10 +123,10 @@ const readFromIndexedCache = async (
   };
 
   const toBlock = state?.computedToBlock ?? 0;
-  const rawEvents = await fetchEventsFromCache(address, chainId, toBlock, { resolveMissingTimestamps });
+  const rawEvents = await fetchEventsFromCache(address, chainId, toBlock);
 
   const uniqueTokens = deduplicateArray(rawEvents.map((event) => event.token));
-  const metadataByToken = await getCachedTokenMetadata(chainId, uniqueTokens);
+  const metadataByToken = await getCompleteTokenMetadata(chainId, uniqueTokens);
 
   const allowances = serializeAllowances(allowanceRows, metadataByToken);
   const events = serializeHistoryRelevantEvents(rawEvents, metadataByToken);
@@ -174,35 +152,39 @@ const failFastIfAllowanceStateIsBehind = (
   }
 };
 
+const getCompleteTokenMetadata = async (
+  chainId: DocumentedChainId,
+  tokenAddresses: readonly Address[],
+): Promise<Map<Address, TokenMetadataRow>> => {
+  const metadataByToken = await getCachedTokenMetadata(chainId, tokenAddresses);
+  const missingTokens = tokenAddresses.filter((token) => isNullish(metadataByToken.get(token)?.enrichedAt));
+
+  if (missingTokens.length === 0) return metadataByToken;
+
+  await mapAsyncBounded(missingTokens, 10, (token) => enrichToken(chainId, token));
+  return getCachedTokenMetadata(chainId, tokenAddresses);
+};
+
 const isUsableMetadata = (metadata?: TokenMetadataRow): boolean => {
   if (metadata === undefined) return false;
   if (!isNullish(metadata.spamReason)) return false;
-  if (!isNullish(metadata.enrichmentError)) return false;
   return true;
 };
 
-// Pull approval events for this user from the events cache up to `toBlock`. The cached
-// GET path stays cache-only so an unresponsive chain cannot make the dashboard hang. The refresh
-// POST path can opt into resolving missing timestamps before serialization, while the final filter
-// still guarantees that every event returned to the client has a timestamp.
+// Pull approval events for this user from the events cache up to `toBlock`. Metadata enrichment
+// uses all parsed event tokens, while history serialization still only returns timestamped events.
 const fetchEventsFromCache = async (
   address: Address,
   chainId: DocumentedChainId,
   toBlock: number,
-  { resolveMissingTimestamps = false }: Pick<CachedAddressDataOptions, 'resolveMissingTimestamps'> = {},
 ): Promise<TokenEvent[]> => {
   const logsProvider = new DatabaseLogsProvider(chainId);
   const filters: Filter[] = Object.values(buildTokenEventFilters(address, 0, toBlock, { includeTransfers: false }));
 
   const logsByFilter = await Promise.all(filters.map((filter) => logsProvider.getLogs(filter)));
-  const rawLogs = resolveMissingTimestamps
-    ? await attachMissingTimestamps(chainId, logsByFilter.flat())
-    : logsByFilter.flat();
+  const rawLogs = await attachMissingTimestamps(chainId, logsByFilter.flat());
 
-  return rawLogs
-    .map((log) => parseLog(log, chainId, address))
-    .filter((event): event is TokenEvent => !isNullish(event))
-    .filter((event) => event.time.timestamp !== undefined);
+  return rawLogs.map((log) => parseLog(log, chainId, address)).filter((event) => !isNullish(event));
 };
 
 const attachMissingTimestamps = async (chainId: DocumentedChainId, logs: Log[]): Promise<Log[]> => {

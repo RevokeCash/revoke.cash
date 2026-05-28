@@ -1,14 +1,10 @@
-import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/indexer/allowances';
 import {
   failFastIfEventIndexingIsStillIndexing,
   getCachedAddressData,
 } from '@revoke.cash/core/indexer/allowances-read';
 import { indexEvents, recordEventsFailure } from '@revoke.cash/core/indexer/events';
-import { enrichToken, findUnenrichedTokens } from '@revoke.cash/core/indexer/token-metadata';
 import { addressSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
-import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { authorizeRequest, RateLimiters, requirePremiumEntitlement } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -42,21 +38,17 @@ export async function POST(req: NextRequest, props: Props) {
     const { params } = await parseAndAuthorizePremiumRequest(req, props);
     await failFastIfEventIndexingIsStillIndexing(params.address, params.chainId);
 
-    const eventsResult = await indexEvents(params.address, params.chainId).catch(async (error) => {
+    await indexEvents(params.address, params.chainId).catch(async (error) => {
       await recordEventsFailure(params.address, params.chainId, error);
       throw error;
     });
-
-    if (!eventsResult.nonceZeroSkipped) {
-      await enrichObservedTokens(params.chainId, eventsResult.fromBlock, eventsResult.toBlock);
-    }
 
     await recomputeAllowances(params.address, params.chainId).catch(async (error) => {
       await recordAllowanceFailure(params.address, params.chainId, error);
       throw error;
     });
 
-    const result = await getCachedAddressData(params.address, params.chainId, { resolveMissingTimestamps: true });
+    const result = await getCachedAddressData(params.address, params.chainId);
     return dtoJsonResponse(result);
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Error refreshing cached address data' });
@@ -73,16 +65,4 @@ const parseAndAuthorizePremiumRequest = async (req: NextRequest, props: Props) =
   await requirePremiumEntitlement(params.address, 'Premium is required to access indexed allowance data');
 
   return { params };
-};
-
-const enrichObservedTokens = async (chainId: DocumentedChainId, fromBlock: number, toBlock: number) => {
-  const tokens = await findUnenrichedTokens({ chainId, fromBlock, toBlock });
-
-  await mapAsyncBounded(tokens, 10, async (token) => {
-    try {
-      await enrichToken(chainId, token);
-    } catch (error) {
-      console.warn(`Failed to enrich token ${token} on chain ${chainId}`, parseErrorMessage(error), error);
-    }
-  });
 };

@@ -67,11 +67,12 @@ export interface UnenrichedTokensQuery {
   fromBlock?: number;
   toBlock?: number;
   staleBefore?: Date;
-  limit?: number;
+  limit?: number | null;
 }
 
 export const findUnenrichedTokens = async (params: UnenrichedTokensQuery): Promise<Address[]> => {
-  const { chainId, fromBlock, toBlock, staleBefore, limit = 500 } = params;
+  const { chainId, fromBlock, toBlock, staleBefore } = params;
+  const limit = params.limit === undefined ? 500 : params.limit;
   const db = getDb();
 
   const tokenFromAddress = sql<string>`${indexerEvents.address}`.as('token');
@@ -95,7 +96,7 @@ export const findUnenrichedTokens = async (params: UnenrichedTokensQuery): Promi
     tokensFromSource(tokenFromData, [PERMIT2_LOCKDOWN_TOPIC]),
   ).as('observed');
 
-  const rows = await db
+  const query = db
     .selectDistinct({ token: observed.token })
     .from(observed)
     .leftJoin(
@@ -107,8 +108,9 @@ export const findUnenrichedTokens = async (params: UnenrichedTokensQuery): Promi
         isNull(indexerTokenMetadata.enrichedAt),
         !isNullish(staleBefore) ? lt(indexerTokenMetadata.enrichedAt, staleBefore) : undefined,
       ),
-    )
-    .limit(limit);
+    );
+
+  const rows = isNullish(limit) ? await query : await query.limit(limit);
 
   return rows.map((row) => getAddress(row.token));
 };
