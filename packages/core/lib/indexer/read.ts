@@ -12,7 +12,7 @@ import { topicToAddress } from '@revoke.cash/core/events/utils';
 import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
-import { assertIndexerIsNotActivelyIndexing, INDEXER_WARM_THRESHOLD, indexerHasStalled } from './progress';
+import { assertIndexerIsNotActivelyIndexing, getIndexerWarmThreshold, indexerHasStalled } from './progress';
 
 const RPC_THRESHOLD = 10_000;
 
@@ -42,7 +42,7 @@ export const getEventsForFilter = async (chainId: DocumentedChainId, filter: Fil
   // If the indexer has stalled, we fall back to on-the-fly getter.
   // If the indexer has not stalled, we throw an error to surface the indexing progress to the user.
   const blockRange = filter.toBlock - state.lastToBlock;
-  if (blockRange > INDEXER_WARM_THRESHOLD) {
+  if (blockRange > getIndexerWarmThreshold(state.maxBlockRange)) {
     if (indexerHasStalled(state.lastScanAt)) {
       return scriptLogsProvider.getLogs(filter);
     }
@@ -50,6 +50,7 @@ export const getEventsForFilter = async (chainId: DocumentedChainId, filter: Fil
     assertIndexerIsNotActivelyIndexing({
       lastToBlock: state.lastToBlock,
       headBlock: filter.toBlock,
+      maxBlockRange: state.maxBlockRange,
       lastScanAt: state.lastScanAt,
     });
   }

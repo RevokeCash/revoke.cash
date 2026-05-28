@@ -30,7 +30,7 @@ import { enrichToken, getCachedTokenMetadata } from './token-metadata';
 type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
 type EventsState = Pick<
   typeof indexerEventsState.$inferSelect,
-  'consecutiveFailures' | 'lastError' | 'lastObservedHeadBlock' | 'lastScanAt' | 'lastToBlock'
+  'consecutiveFailures' | 'lastError' | 'lastObservedHeadBlock' | 'lastScanAt' | 'lastToBlock' | 'maxBlockRange'
 >;
 
 type AllowanceState = Pick<
@@ -63,6 +63,7 @@ const getEventsState = async (address: Address, chainId: DocumentedChainId): Pro
       lastObservedHeadBlock: true,
       lastScanAt: true,
       lastToBlock: true,
+      maxBlockRange: true,
     },
   });
 };
@@ -137,7 +138,11 @@ const readFromIndexedCache = async (address: Address, chainId: DocumentedChainId
 const failFastIfEventsStateIsBehind = (state: EventsState | undefined): void => {
   if (isNullish(state?.lastToBlock) || isNullish(state.lastObservedHeadBlock)) return;
 
-  assertIndexerIsNotTooFarBehind({ lastToBlock: state.lastToBlock, headBlock: state.lastObservedHeadBlock });
+  assertIndexerIsNotTooFarBehind({
+    lastToBlock: state.lastToBlock,
+    headBlock: state.lastObservedHeadBlock,
+    maxBlockRange: state.maxBlockRange,
+  });
 };
 
 const failFastIfAllowanceStateIsBehind = (
