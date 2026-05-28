@@ -11,7 +11,7 @@ import { addressToTopic } from '@revoke.cash/core/events/utils';
 import type { Address } from 'viem';
 
 export interface TokenEventFilterOptions {
-  includeTransfers?: boolean;
+  includeTransferFromEvents?: boolean;
 }
 
 export const buildTokenEventFilters = (
@@ -20,7 +20,7 @@ export const buildTokenEventFilters = (
   toBlock: number,
   options: TokenEventFilterOptions = {},
 ): Record<string, Filter> => {
-  const { includeTransfers = true } = options;
+  const { includeTransferFromEvents = true } = options;
 
   const addressTopic = addressToTopic(address);
 
@@ -32,10 +32,9 @@ export const buildTokenEventFilters = (
     'Permit2 Lockdown': { topics: [PERMIT2_LOCKDOWN_TOPIC, addressTopic], fromBlock, toBlock },
   };
 
-  if (!includeTransfers) return approvalFilters;
+  if (!includeTransferFromEvents) return approvalFilters;
 
   return {
-    'Transfer (to)': { topics: [ERC721_TRANSFER_TOPIC, null, addressTopic], fromBlock, toBlock },
     'Transfer (from)': { topics: [ERC721_TRANSFER_TOPIC, addressTopic], fromBlock, toBlock },
     ...approvalFilters,
   };

@@ -179,7 +179,9 @@ const fetchEventsFromCache = async (
   toBlock: number,
 ): Promise<TokenEvent[]> => {
   const logsProvider = new DatabaseLogsProvider(chainId);
-  const filters: Filter[] = Object.values(buildTokenEventFilters(address, 0, toBlock, { includeTransfers: false }));
+  const filters: Filter[] = Object.values(
+    buildTokenEventFilters(address, 0, toBlock, { includeTransferFromEvents: false }),
+  );
 
   const logsByFilter = await Promise.all(filters.map((filter) => logsProvider.getLogs(filter)));
   const rawLogs = await attachMissingTimestamps(chainId, logsByFilter.flat());

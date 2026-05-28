@@ -30,7 +30,7 @@ export interface TokenEventsResult {
 }
 
 export interface TokenEventsOptions {
-  includeTransfers?: boolean;
+  includeTransferFromEvents?: boolean;
 }
 
 export const getTokenEvents = async (
