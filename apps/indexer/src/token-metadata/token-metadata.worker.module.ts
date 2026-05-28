@@ -7,7 +7,7 @@ import { TokenMetadataWorker } from './token-metadata.worker';
   imports: [
     IndexerQueueModule.register({
       name: TOKEN_METADATA_QUEUE_NAME,
-      limiter: { groupId: 'indexer-token-metadata', maxConcurrent: 20, overflow: 'delay' },
+      limiter: { groupId: 'indexer-token-metadata', maxConcurrent: 50, overflow: 'delay' },
     }),
   ],
   providers: [TokenMetadataWorker],

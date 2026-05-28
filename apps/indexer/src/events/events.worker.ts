@@ -11,6 +11,7 @@ import type { Job, Queue } from 'bullmq';
 import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '../allowances/allowances.queue';
 import { MetricsService } from '../metrics/metrics.service';
 import { GroupLimiterService } from '../queue/group-limiter.service';
+import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '../timestamps/timestamps.queue';
 import {
   enqueueUnenrichedTokens,
   TOKEN_METADATA_QUEUE_NAME,
@@ -19,6 +20,7 @@ import {
 import { EVENTS_QUEUE_NAME, type EventsJobData } from './events.queue';
 
 const allowanceJobIdFor = (chainId: number, address: string): string => `${chainId}-${address}`;
+const timestampsJobIdFor = (chainId: number): string => `timestamps-${chainId}`;
 
 @Processor(EVENTS_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
 export class EventsWorker extends WorkerHost {
@@ -28,6 +30,7 @@ export class EventsWorker extends WorkerHost {
     private readonly metrics: MetricsService,
     private readonly groupLimiter: GroupLimiterService,
     @InjectQueue(ALLOWANCES_QUEUE_NAME) private readonly allowancesQueue: Queue<AllowancesJobData>,
+    @InjectQueue(TIMESTAMPS_QUEUE_NAME) private readonly timestampsQueue: Queue<TimestampsJobData>,
     @InjectQueue(TOKEN_METADATA_QUEUE_NAME)
     private readonly tokenMetadataQueue: Queue<TokenMetadataJobData>,
   ) {
@@ -62,6 +65,17 @@ export class EventsWorker extends WorkerHost {
     // If no logs were written or reorged in this events run, we don't have to recompute allowances
     if (result.logsWritten === 0 && result.logsReorgedMarked === 0) return;
 
+    if (result.logsWritten > 0) {
+      await this.timestampsQueue
+        .add('timestamps', { chainId }, { jobId: timestampsJobIdFor(chainId) })
+        .catch((error) => {
+          this.logger.warn(
+            { eventsScanId, chainId, address, error: parseErrorMessage(error) },
+            'failed to enqueue timestamps',
+          );
+        });
+    }
+
     await this.allowancesQueue
       .add('recompute', { address, chainId, eventsScanId }, { jobId: allowanceJobIdFor(chainId, address) })
       .catch((error) => {
@@ -73,7 +87,7 @@ export class EventsWorker extends WorkerHost {
 
     const enqueued = await enqueueUnenrichedTokens(
       this.tokenMetadataQueue,
-      { chainId, fromBlock: result.fromBlock, toBlock: result.toBlock },
+      { chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, limit: null },
       'events',
     ).catch((error) => {
       this.logger.warn(

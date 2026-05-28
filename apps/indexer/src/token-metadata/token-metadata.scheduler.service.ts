@@ -8,7 +8,7 @@ import { DAY, MINUTE } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
 import { enqueueUnenrichedTokens, TOKEN_METADATA_QUEUE_NAME, type TokenMetadataJobData } from './token-metadata.queue';
 
-const TICK_INTERVAL_MS = 5 * MINUTE;
+const TICK_INTERVAL_MS = MINUTE;
 const STALE_AFTER_MS = 1 * DAY;
 
 @Injectable()
