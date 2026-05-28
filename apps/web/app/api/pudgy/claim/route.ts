@@ -1,4 +1,4 @@
-import { getAllowancesFromEvents } from '@revoke.cash/core/allowances';
+import { getAllowancesFromEvents, simulateRevokeAllowance } from '@revoke.cash/core/allowances';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { getTokenEvents } from '@revoke.cash/core/chains/events';
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
     const logsProvider = getScriptLogsProvider(chainId);
     const { events } = await getTokenEvents(chainId, address, logsProvider);
     const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
+    const revokableAllowances = await Promise.all(allowances.map((allowance) => simulateRevokeAllowance(allowance)));
 
     if (await alreadyOwnsSoulboundToken(address)) {
       throw new ApiError(400, 'User already owns the SBT', {
@@ -65,7 +66,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if the user has active allowances that can be revoked
-    const activeAllowances = allowances
+    const activeAllowances = revokableAllowances
       .filter((allowance) => Boolean(allowance.payload))
       .filter((allowance) => isNullish(allowance.payload?.revokeError));
     if (activeAllowances.length > 0) {

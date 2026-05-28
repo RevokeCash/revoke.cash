@@ -1,6 +1,6 @@
 'use client';
 
-import { getAllowanceKey, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { getAllowanceKey, simulateRevokeAllowance, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import Loader from 'components/common/Loader';
@@ -48,8 +48,10 @@ const getPudgyCheckerStatus = async (
     return 'no_tokens';
   }
 
+  const simulatedAllowances = await Promise.all(allowances.map((allowance) => simulateRevokeAllowance(allowance)));
+
   // Filter out allowances that cannot be revoked
-  const filteredAllowances = allowances
+  const filteredAllowances = simulatedAllowances
     .filter((allowance) => Boolean(allowance.payload))
     .filter((allowance) => isNullish(allowance.payload?.revokeError));
 

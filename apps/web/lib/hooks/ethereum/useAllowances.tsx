@@ -8,18 +8,14 @@ import {
   type TokenAllowanceData,
 } from '@revoke.cash/core/allowances';
 import { type EnrichedTokenEvent, getEventKey } from '@revoke.cash/core/events';
-import { isErc721Contract } from '@revoke.cash/core/tokens';
-import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
+import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import analytics from 'lib/utils/analytics';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { queryClient } from '../QueryProvider';
-import { useAllowanceSpenderData } from './useAllowanceSpenderData';
-import { getBalanceKey, useBalanceData } from './useBalanceData';
-import { getPriceKey, usePriceData } from './usePriceData';
-import { getSpenderKey } from './useSpenderData';
+import { useEnrichAllowances } from './useEnrichAllowances';
 
 export const useAllowances = (address: Address, events: EnrichedTokenEvent[] | undefined, chainId: number) => {
   const publicClient = usePublicClient({ chainId })!;
@@ -54,40 +50,11 @@ export const useAllowances = (address: Address, events: EnrichedTokenEvent[] | u
     }
   }, [data]);
 
-  const tokenDataQueries = useMemo(() => {
-    const allTokens = (baseAllowances ?? []).map((allowance) => ({
-      address: allowance.contract.address,
-      isErc721: isErc721Contract(allowance.contract),
-    }));
-
-    const tokens = deduplicateArray(allTokens, (token) => token.address).sort((a, b) =>
-      a.address.localeCompare(b.address),
-    );
-
-    return [{ chainId, owner: address, tokens }];
-  }, [baseAllowances, address, chainId]);
-
-  const priceData = usePriceData(tokenDataQueries);
-  const balanceData = useBalanceData(tokenDataQueries);
-  const spenderData = useAllowanceSpenderData(baseAllowances ?? []);
-
-  const allowances = useMemo(() => {
-    if (!baseAllowances) return undefined;
-
-    return baseAllowances.map((allowance) => {
-      const spenderKey = getSpenderKey(allowance.chainId, allowance.payload!.spender);
-      const payload = allowance.payload ? { ...allowance.payload, spenderData: spenderData[spenderKey] } : undefined;
-
-      const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
-      const tokenPrice = isErc721Contract(allowance.contract) ? null : priceData[priceKey];
-
-      const balanceKey = getBalanceKey(allowance.chainId, allowance.contract.address);
-      const balance = balanceData[balanceKey];
-
-      const metadata = { ...allowance.metadata, price: tokenPrice };
-      return { ...allowance, balance, metadata, payload };
-    });
-  }, [baseAllowances, priceData, balanceData, spenderData]);
+  const [enrichedAllowances = []] = useEnrichAllowances({
+    owner: address,
+    chainAllowances: [{ chainId, allowances: baseAllowances ?? [] }],
+  });
+  const allowances = baseAllowances ? enrichedAllowances : undefined;
 
   const onUpdate = async (allowance: TokenAllowanceData, updatedProperties: AllowanceUpdateProperties = {}) => {
     console.debug('Reloading data');

@@ -10,18 +10,14 @@ import {
 } from '@revoke.cash/core/allowances';
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import type { EnrichedTokenEvent } from '@revoke.cash/core/events';
-import { isErc721Contract } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { useCallback, useMemo } from 'react';
 import type { Address } from 'viem';
 import { queryClient } from '../QueryProvider';
 import type { CombinedQueryResult } from './combined-query-result';
 import type { AddressData } from './useAddressData';
-import { useAllowanceSpenderData } from './useAllowanceSpenderData';
-import { type ChainTokenQuery, getBalanceKey, useBalanceData } from './useBalanceData';
+import { type ChainAllowancesToEnrich, useEnrichAllowances } from './useEnrichAllowances';
 import { type PremiumAddressDataResult, updatePremiumAddressDataCache } from './usePremiumAddressData';
-import { getPriceKey, usePriceData } from './usePriceData';
-import { getSpenderKey } from './useSpenderData';
 
 export type ChainLoadingStatus = 'loading' | 'success' | 'error';
 
@@ -64,42 +60,24 @@ export const usePremiumChainAllowanceData = ({
     });
   }, [addressDataResults, currentResults, chains, isHistorical]);
 
-  const allEffectiveAllowances = useMemo(() => {
-    return allowancesByChain.flat();
-  }, [allowancesByChain]);
-
-  const tokenDataQueries = useMemo<ChainTokenQuery[]>(() => {
+  const chainAllowances = useMemo<ChainAllowancesToEnrich[]>(() => {
     return chains.map((chainId, index) => {
-      const chainAllowances = allowancesByChain[index] ?? [];
-      const tokens = deduplicateArray(
-        chainAllowances.map((allowance) => ({
-          address: allowance.contract.address,
-          isErc721: isErc721Contract(allowance.contract),
-        })),
-        (token) => token.address,
-      ).sort((a, b) => a.address.localeCompare(b.address));
-
-      const blockNumber = getHistoricalBalanceBlock(addressDataResults[index], isHistorical);
-      return { chainId, owner: address, tokens, blockNumber };
+      return {
+        chainId,
+        allowances: allowancesByChain[index] ?? [],
+        blockNumber: getHistoricalBalanceBlock(addressDataResults[index], isHistorical),
+      };
     });
-  }, [addressDataResults, allowancesByChain, address, chains, isHistorical]);
+  }, [addressDataResults, allowancesByChain, chains, isHistorical]);
 
-  const priceData = usePriceData(tokenDataQueries);
-  const balanceData = useBalanceData(tokenDataQueries);
-  const spenderData = useAllowanceSpenderData(allEffectiveAllowances);
+  const enrichedAllowancesByChain = useEnrichAllowances({ owner: address, chainAllowances, isHistorical });
 
   const chainData = useMemo<ChainAllowanceData[]>(() => {
     return chains.map((chainId, index) => {
       const dataResult = addressDataResults[index];
       const currentResult = currentResults[index];
 
-      const baseAllowances = allowancesByChain[index] ?? [];
-      const enrichedAllowances = enrichAllowances(baseAllowances, {
-        isHistorical,
-        priceData,
-        balanceData,
-        spenderData,
-      });
+      const enrichedAllowances = enrichedAllowancesByChain[index] ?? [];
       const totalValueAtRisk = calculateTotalValueAtRisk(enrichedAllowances);
 
       const refetch = () => {
@@ -119,16 +97,7 @@ export const usePremiumChainAllowanceData = ({
         refetch,
       };
     });
-  }, [
-    addressDataResults,
-    currentResults,
-    allowancesByChain,
-    priceData,
-    balanceData,
-    spenderData,
-    chains,
-    isHistorical,
-  ]);
+  }, [addressDataResults, currentResults, enrichedAllowancesByChain, chains, isHistorical]);
 
   const isLoading = useMemo(() => chainData.some((chain) => chain.status === 'loading'), [chainData]);
 
@@ -174,37 +143,6 @@ const getChainDataStatus = (result: CombinedQueryResult<unknown> | undefined): C
   if (result.error) return 'error';
   if (result.isSuccess) return 'success';
   return 'loading';
-};
-
-interface AllowanceEnrichmentData {
-  isHistorical: boolean;
-  priceData: ReturnType<typeof usePriceData>;
-  balanceData: ReturnType<typeof useBalanceData>;
-  spenderData: ReturnType<typeof useAllowanceSpenderData>;
-}
-
-type AllowanceWithPayload = TokenAllowanceData & { payload: NonNullable<TokenAllowanceData['payload']> };
-
-const hasPayload = (allowance: TokenAllowanceData): allowance is AllowanceWithPayload => {
-  return !isNullish(allowance.payload);
-};
-
-const enrichAllowances = (
-  allowances: TokenAllowanceData[],
-  { isHistorical, priceData, balanceData, spenderData }: AllowanceEnrichmentData,
-): TokenAllowanceData[] => {
-  return allowances.filter(hasPayload).map((allowance) => {
-    const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
-    const balanceKey = getBalanceKey(allowance.chainId, allowance.contract.address);
-    const spenderKey = getSpenderKey(allowance.chainId, allowance.payload.spender);
-
-    const price = isHistorical || isErc721Contract(allowance.contract) ? null : priceData[priceKey];
-    const balance = balanceData[balanceKey];
-    const metadata = { ...allowance.metadata, price };
-    const payload = { ...allowance.payload, spenderData: spenderData[spenderKey] };
-
-    return { ...allowance, balance, metadata, payload };
-  });
 };
 
 const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number => {

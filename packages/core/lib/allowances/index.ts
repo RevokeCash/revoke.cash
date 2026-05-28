@@ -97,7 +97,6 @@ export const getAllowancesFromEvents = async (
   chainId: number,
   options: AllowanceDerivationOptions = {},
 ): Promise<TokenAllowanceData[]> => {
-  const { blockNumber } = options;
   const contracts = createTokenContracts(events.filter(isApprovalTokenEvent), publicClient);
 
   const allowances = await Promise.all(
@@ -112,25 +111,7 @@ export const getAllowancesFromEvents = async (
 
         // Filter out zero-value allowances
         const allowances = unfilteredAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
-        const fullAllowances = allowances.map((allowance) => ({ ...tokenData, payload: allowance }));
-
-        if (fullAllowances.length === 0) return [];
-
-        // Skip simulation in time machine mode — it runs against current state and is meaningless for historical snapshots
-        if (blockNumber) return fullAllowances;
-
-        // Simulate the revoke to see if it will revert
-        const simulatedAllowances = await Promise.all(
-          fullAllowances.map((allowance) => simulateRevokeAllowance(allowance)),
-        );
-
-        // Filter out allowances that run into an excessive gas limit error (since these are almost certainly spam tokens)
-        // Note that other simulation revert errors are just passed on in the payload.revokeError
-        const filteredAllowances = simulatedAllowances.filter(
-          (allowance) => !allowance.payload?.revokeError?.includes('Excessive gas limit'),
-        );
-
-        return filteredAllowances;
+        return allowances.map((allowance) => ({ ...tokenData, payload: allowance }));
       } catch (e) {
         if (isTransientError(e)) throw e;
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
