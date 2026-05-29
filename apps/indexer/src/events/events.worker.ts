@@ -62,9 +62,6 @@ export class EventsWorker extends WorkerHost {
     this.metrics.eventsScanLogsFetched.observe({ chain_id: chainId, path: result.path }, result.logsFetched);
     this.logger.log({ eventsScanId, chainId, address, ...result }, 'events indexed');
 
-    // If no logs were written or reorged in this events run, we don't have to recompute allowances
-    if (result.logsWritten === 0 && result.logsReorgedMarked === 0) return;
-
     if (result.logsWritten > 0) {
       await this.timestampsQueue
         .add('timestamps', { chainId }, { jobId: timestampsJobIdFor(chainId) })
@@ -84,6 +81,8 @@ export class EventsWorker extends WorkerHost {
           'failed to enqueue allowance recompute',
         );
       });
+
+    if (result.logsWritten === 0) return;
 
     const enqueued = await enqueueUnenrichedTokens(
       this.tokenMetadataQueue,

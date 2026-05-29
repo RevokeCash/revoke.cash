@@ -1,3 +1,4 @@
+import { AllowanceType } from '@revoke.cash/core/allowances';
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import { getDb } from '@revoke.cash/core/db/client';
 import {
@@ -12,6 +13,7 @@ import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
 import { sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
+import { SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { type CachedAllowanceRow, getCachedAllowances } from './allowances';
@@ -172,6 +174,8 @@ const getCompleteTokenMetadata = async (
 
 const isUsableMetadata = (metadata?: TokenMetadataRow): boolean => {
   if (metadata === undefined) return false;
+  if (isNullish(metadata.enrichedAt)) return false;
+  if (!isNullish(metadata.enrichmentError)) return false;
   if (!isNullish(metadata.spamReason)) return false;
   return true;
 };
@@ -232,6 +236,17 @@ const serializeAllowances = (
   metadataByToken: Map<Address, TokenMetadataRow>,
 ): CachedAllowanceDto[] => {
   return allowanceRows
+    .filter((row) => isCachedAllowanceActive(row))
     .filter((row) => isUsableMetadata(metadataByToken.get(row.tokenAddress)))
     .map((row) => serializeAllowanceFromRow(row, metadataByToken.get(row.tokenAddress)!));
+};
+
+export const isCachedAllowanceActive = (
+  row: Pick<CachedAllowanceRow, 'approvalType' | 'expiration'>,
+  referenceTimestamp = Date.now(),
+): boolean => {
+  if (row.approvalType !== AllowanceType.PERMIT2) return true;
+  if (isNullish(row.expiration)) return false;
+
+  return row.expiration > Math.floor(referenceTimestamp / SECOND);
 };

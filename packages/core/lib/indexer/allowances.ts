@@ -42,58 +42,63 @@ export const recomputeAllowances = async (
   chainId: DocumentedChainId,
 ): Promise<RecomputeAllowancesResult> => {
   const start = Date.now();
-  const db = getDb();
+  return getTransactionalDb().transaction(async (trx) => {
+    // Serialize delete+insert recomputes per wallet/chain while still allowing same-cursor reorg recomputes.
+    await acquireAllowanceRecomputeLock(trx, address, chainId);
 
-  const [allowanceState, eventsState] = await Promise.all([
-    db.query.indexerAllowanceState.findFirst({
+    const allowanceState = await trx.query.indexerAllowanceState.findFirst({
       where: and(eq(indexerAllowanceState.address, address), eq(indexerAllowanceState.chainId, chainId)),
-    }),
-    db.query.indexerEventsState.findFirst({
+      columns: { computedToBlock: true },
+    });
+
+    const eventsState = await trx.query.indexerEventsState.findFirst({
       where: and(eq(indexerEventsState.address, address), eq(indexerEventsState.chainId, chainId)),
       columns: { lastScanAt: true, lastToBlock: true, consecutiveFailures: true, lastError: true },
-    }),
-  ]);
+    });
 
-  const oldCursor = allowanceState?.computedToBlock ?? null;
-  const newCursor = eventsState?.lastToBlock;
-  const consecutiveFailures = eventsState?.consecutiveFailures ?? 0;
+    const oldCursor = allowanceState?.computedToBlock ?? null;
+    const newCursor = eventsState?.lastToBlock;
+    const consecutiveFailures = eventsState?.consecutiveFailures ?? 0;
 
-  // If an events_state exists without a cursor, then this address has nonce 0 on this chain.
-  // Treat it as a clean empty recompute and clear any stale recompute failures.
-  if (isNullish(newCursor)) {
-    if (consecutiveFailures > 3 && !isNullish(eventsState?.lastError)) {
-      throw new ChainUnresponsiveError(chainId, eventsState?.lastError);
+    // If an events_state exists without a cursor, then this address has nonce 0 on this chain.
+    // Treat it as a clean empty recompute and clear any stale recompute failures.
+    if (isNullish(newCursor)) {
+      if (consecutiveFailures > 3 && !isNullish(eventsState?.lastError)) {
+        throw new ChainUnresponsiveError(chainId, eventsState?.lastError);
+      }
+
+      return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
     }
 
-    return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
-  }
+    if (!isNullish(oldCursor) && oldCursor > newCursor) {
+      return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
+    }
 
-  // take reorg depth into account when reading new logs
-  const recomputeFromBlock = Math.max((oldCursor ?? 0) - REORG_DEPTH, -1);
+    // take reorg depth into account when reading new logs
+    const recomputeFromBlock = Math.max((oldCursor ?? 0) - REORG_DEPTH, -1);
 
-  const affectedTokens = await findAffectedTokens(address, chainId, recomputeFromBlock + 1, newCursor);
+    const affectedTokens = await findAffectedTokens(address, chainId, recomputeFromBlock + 1, newCursor);
 
-  if (affectedTokens.length === 0) {
-    // No allowance-relevant events (fresh or reorged) in the recompute window. Advance the cursor
-    // anyway — otherwise the recompute window keeps growing on every subsequent scan with no payoff.
-    await upsertAllowanceState(db, address, chainId, newCursor);
-    return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
-  }
+    if (affectedTokens.length === 0) {
+      // No allowance-relevant events (fresh or reorged) in the recompute window. Advance the cursor
+      // anyway — otherwise the recompute window keeps growing on every subsequent scan with no payoff.
+      await upsertAllowanceState(trx, address, chainId, newCursor);
+      return { skipped: true, computedCount: 0, affectedTokenCount: 0, durationMs: Date.now() - start };
+    }
 
-  const publicClient = createViemPublicClientForChain(chainId);
-  const perTokenRawEvents = await mapAsyncBounded(affectedTokens, 10, (token) =>
-    fetchRawEventsForToken(address, chainId, token, newCursor),
-  );
+    const publicClient = createViemPublicClientForChain(chainId);
+    const perTokenRawEvents = await mapAsyncBounded(affectedTokens, 10, (token) =>
+      fetchRawEventsForToken(address, chainId, token, newCursor),
+    );
 
-  const scopedEvents = await attachTimestampsAndPlaceholderMetadata(
-    sortTokenEventsChronologically(perTokenRawEvents.flat()).reverse(),
-    publicClient,
-  );
+    const scopedEvents = await attachTimestampsAndPlaceholderMetadata(
+      sortTokenEventsChronologically(perTokenRawEvents.flat()).reverse(),
+      publicClient,
+    );
 
-  const allowances = await getAllowancesFromEvents(address, scopedEvents, publicClient, chainId);
-  const rows = buildAllowanceRows(address, chainId, allowances);
+    const allowances = await getAllowancesFromEvents(address, scopedEvents, publicClient, chainId);
+    const rows = buildAllowanceRows(address, chainId, allowances);
 
-  await getTransactionalDb().transaction(async (trx) => {
     await trx
       .delete(indexerAllowances)
       .where(
@@ -109,14 +114,22 @@ export const recomputeAllowances = async (
     }
 
     await upsertAllowanceState(trx, address, chainId, newCursor);
-  });
 
-  return {
-    skipped: false,
-    computedCount: rows.length,
-    affectedTokenCount: affectedTokens.length,
-    durationMs: Date.now() - start,
-  };
+    return {
+      skipped: false,
+      computedCount: rows.length,
+      affectedTokenCount: affectedTokens.length,
+      durationMs: Date.now() - start,
+    };
+  });
+};
+
+const acquireAllowanceRecomputeLock = async (
+  writer: DatabaseWriter,
+  address: Address,
+  chainId: DocumentedChainId,
+): Promise<void> => {
+  await writer.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${`${chainId}:${address}`}, 0::bigint))`);
 };
 
 export type CachedAllowanceRow = typeof indexerAllowances.$inferSelect;

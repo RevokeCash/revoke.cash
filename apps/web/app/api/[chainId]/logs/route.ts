@@ -1,4 +1,4 @@
-import { getEventsForFilter } from '@revoke.cash/core/indexer/read';
+import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressSchema, hexStringSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, props: Props) {
       rateLimiter: RateLimiters.LOGS,
     });
     const { params, body: filter } = await parseRequest(req, props, schemas);
-    const events = await getEventsForFilter(params.chainId, filter);
+    const events = await getScriptLogsProvider(params.chainId).getLogs(filter);
     return NextResponse.json(events);
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Error fetching logs' });

@@ -1,6 +1,6 @@
 import { AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { isNullish } from '@revoke.cash/core/utils';
-import { YEAR } from '@revoke.cash/core/utils/time';
+import { SECOND, YEAR } from '@revoke.cash/core/utils/time';
 import Loader from 'components/common/Loader';
 import { useMemo } from 'react';
 import AddressCell from './AddressCell';
@@ -17,7 +17,10 @@ const SpenderCell = ({ allowance }: Props) => {
   const riskFactors = useMemo(() => {
     const factors = spenderData?.riskFactors ?? [];
 
-    if (allowance?.payload?.type === AllowanceType.PERMIT2 && allowance?.payload?.expiration > Date.now() + 1 * YEAR) {
+    if (
+      allowance?.payload?.type === AllowanceType.PERMIT2 &&
+      allowance.payload.expiration * SECOND > Date.now() + 1 * YEAR
+    ) {
       return [...factors, { type: 'excessive_expiration', source: 'onchain' }];
     }
 

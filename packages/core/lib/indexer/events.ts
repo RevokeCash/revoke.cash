@@ -17,10 +17,11 @@ import {
 } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import { HOUR, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
-import { and, eq, gte, lte } from 'drizzle-orm';
+import { and, eq, gte, lte, sql } from 'drizzle-orm';
+import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
-import { chunkArray, isNullish } from '../utils';
+import { chunkArray, deduplicateArray, isNullish } from '../utils';
 import { isLogRequestSizeError, isLogResponseSizeError, parseErrorMessage } from '../utils/errors';
 import { mapAsync, mapAsyncSequential } from '../utils/promises';
 
@@ -267,6 +268,9 @@ const toEventsCacheRow = (chainId: number, log: Log) => ({
 
 type EventsCacheRow = ReturnType<typeof toEventsCacheRow>;
 
+const excluded = <TColumn extends AnyPgColumn>(column: TColumn) =>
+  sql<TColumn['_']['data']>`excluded.${sql.identifier(column.name)}`;
+
 // Reorg-safe mark: flag every event in this filter's block range with `reorged = true`
 // This flag will be set to `false` again if the event is re-added in the same scan
 const markFilterEventsAsReorged = async (
@@ -299,14 +303,26 @@ const markFilterEventsAsReorged = async (
 const insertEventRowsChunked = async (trx: DatabaseTransaction, rows: EventsCacheRow[]): Promise<number> => {
   if (rows.length === 0) return 0;
 
-  const chunks = chunkArray(rows, INSERT_CHUNK_SIZE);
+  const uniqueRows = deduplicateArray(rows, (row) => `${row.chainId}-${row.transactionHash}-${row.logIndex}`);
+  const chunks = chunkArray(uniqueRows, INSERT_CHUNK_SIZE);
   const results = await mapAsync(chunks, (chunk) =>
     trx
       .insert(indexerEvents)
       .values(chunk)
       .onConflictDoUpdate({
         target: [indexerEvents.chainId, indexerEvents.transactionHash, indexerEvents.logIndex],
-        set: { reorged: false },
+        set: {
+          address: excluded(indexerEvents.address),
+          transactionIndex: excluded(indexerEvents.transactionIndex),
+          blockNumber: excluded(indexerEvents.blockNumber),
+          topic0: excluded(indexerEvents.topic0),
+          topic1: excluded(indexerEvents.topic1),
+          topic2: excluded(indexerEvents.topic2),
+          topic3: excluded(indexerEvents.topic3),
+          data: excluded(indexerEvents.data),
+          timestamp: excluded(indexerEvents.timestamp),
+          reorged: false,
+        },
       }),
   );
 

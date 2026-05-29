@@ -64,7 +64,7 @@ export const DAI_PERMIT_ABI = parseAbi([
 
 export const PERMIT2_ABI = parseAbi([
   'event Approval(address indexed owner, address indexed token, address indexed spender, uint160 amount, uint48 expiration)',
-  'event Lockdown(address indexed owner, address indexed token, address indexed spender)',
+  'event Lockdown(address indexed owner, address token, address spender)',
   'event Permit(address indexed owner, address indexed token, address indexed spender, uint160 amount, uint48 expiration, uint48 nonce)',
   'event NonceInvalidation(address indexed owner, address indexed token, address indexed spender, uint48 newNonce, uint48 oldNonce)',
   'event UnorderedNonceInvalidation(address indexed owner, uint256 word, uint256 mask)',

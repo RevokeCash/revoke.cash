@@ -155,8 +155,10 @@ export const parsePermit2Log = (log: Log, chainId: number): Permit2Event | undef
   try {
     const parsedEvent = decodeEventLog({ abi: PERMIT2_ABI, data: log.data, topics: log.topics, strict: false }) as any;
 
-    const { owner, token, spender, amount: maybeAmount, expiration } = parsedEvent.args;
-    const amount = parsedEvent.eventName === 'Lockdown' ? 0n : maybeAmount;
+    const isLockdownEvent = parsedEvent.eventName === 'Lockdown';
+    const { owner, token, spender } = parsedEvent.args;
+    const amount = isLockdownEvent ? 0n : parsedEvent.args.amount;
+    const expiration = isLockdownEvent ? 0 : parsedEvent.args.expiration;
     const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
 
     if ([owner, token, spender, amount, expiration].some((arg) => isNullish(arg))) return undefined;
