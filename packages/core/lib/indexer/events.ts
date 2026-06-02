@@ -16,7 +16,7 @@ import {
   ViemLogsProvider,
 } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
-import { HOUR, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
+import { HOUR, SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, gte, lte, sql } from 'drizzle-orm';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address, Hex, PublicClient } from 'viem';
@@ -31,8 +31,6 @@ const NARROW_RANGE_THRESHOLD = 10_000;
 
 // Block-rewind depth applied on every scheduled scan and mirrored on every allowance recompute
 export const REORG_DEPTH = 12;
-
-const ACTIVE_WINDOW_MS = 7 * 24 * HOUR;
 
 const MIN_BLOCK_RANGE = 1_000;
 const MAX_BLOCK_RANGE = 1_000_000_000;
@@ -91,9 +89,9 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
     initialMaxBlockRange,
   );
 
-  if (!(await hasChainActivity(chainId, address, publicClient))) {
+  if (isNullish(existingState?.lastToBlock) && !(await hasChainActivity(chainId, address, publicClient))) {
     await upsertEventsState(db, address, chainId, {
-      nextRunAt: computeNextRunAt(0, existingState?.lastEventAt),
+      nextRunAt: computeNextRunAt(0),
       consecutiveFailures: 0,
       lastError: null,
       lastObservedHeadBlock: headBlock,
@@ -107,17 +105,31 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
     const isNarrow = currentToBlock - fromBlock <= NARROW_RANGE_THRESHOLD;
     const logsProvider = getScanLogsProvider(chainId, isNarrow);
     const filters = Object.values(buildTokenEventFilters(address, fromBlock, currentToBlock));
+    const fetchedFilterEvents = await fetchFilterEvents(chainId, logsProvider, filters, isNarrow);
+    const latestEventAt = await resolveLatestEventAt(publicClient, fetchedFilterEvents);
 
-    const filterResults = await getTransactionalDb().transaction(async (trx) => {
-      const results = await scanAllFilters(trx, chainId, logsProvider, filters, addressTopic, isNarrow);
+    const committedFilterEvents = await getTransactionalDb().transaction(async (trx) => {
+      await acquireEventsIndexingLock(trx, address, chainId);
 
-      await commitEventsState(trx, publicClient, address, chainId, existingState, {
+      const currentState = await trx.query.indexerEventsState.findFirst({
+        where: and(eq(indexerEventsState.address, address), eq(indexerEventsState.chainId, chainId)),
+        columns: { lastEventAt: true, lastScanAt: true, lastToBlock: true, maxBlockRange: true },
+      });
+
+      if (eventScanWasSuperseded(start, currentState, currentToBlock)) {
+        return null;
+      }
+
+      const results = await commitFetchedFilterEvents(trx, chainId, fetchedFilterEvents, addressTopic);
+
+      await commitEventsState(trx, address, chainId, currentState, {
         fromBlock,
         currentToBlock,
         headBlock,
         isCapped,
         rangeReductions,
-        filterResults: results,
+        committedFilterEvents: results,
+        latestEventAt,
       });
       return results;
     });
@@ -126,9 +138,9 @@ export const indexEvents = async (address: Address, chainId: DocumentedChainId):
       fromBlock,
       toBlock: currentToBlock,
       path: isNarrow ? 'narrow' : 'wide',
-      logsFetched: filterResults.reduce((acc, r) => acc + r.logsFetched, 0),
-      logsWritten: filterResults.reduce((acc, r) => acc + r.logsWritten, 0),
-      logsReorgedMarked: filterResults.reduce((acc, r) => acc + r.logsReorgedMarked, 0),
+      logsFetched: fetchedFilterEvents.reduce((acc, r) => acc + r.logsFetched, 0),
+      logsWritten: committedFilterEvents?.reduce((acc, r) => acc + r.logsWritten, 0) ?? 0,
+      logsReorgedMarked: committedFilterEvents?.reduce((acc, r) => acc + r.logsReorgedMarked, 0) ?? 0,
       isCapped: isCapped || rangeReductions > 0,
       rangeReductions,
       durationMs: Date.now() - start,
@@ -183,7 +195,7 @@ export const recordEventsFailure = async (
   await upsertEventsState(db, address, chainId, {
     consecutiveFailures: failures,
     lastError: parseErrorMessage(error),
-    nextRunAt: computeNextRunAt(failures, existingState?.lastEventAt),
+    nextRunAt: computeNextRunAt(failures),
   });
 };
 
@@ -235,19 +247,33 @@ const upsertEventsState = async (
     });
 };
 
+const acquireEventsIndexingLock = async (
+  writer: DatabaseWriter,
+  address: Address,
+  chainId: DocumentedChainId,
+): Promise<void> => {
+  await writer.execute(
+    sql`SELECT pg_advisory_xact_lock(hashtextextended(${`events:${chainId}:${address}`}, 0::bigint))`,
+  );
+};
+
+const eventScanWasSuperseded = (
+  scanStartedAtMs: number,
+  currentState: Pick<typeof indexerEventsState.$inferSelect, 'lastScanAt' | 'lastToBlock'> | undefined,
+  currentToBlock: number,
+): boolean => {
+  if (isNullish(currentState?.lastToBlock)) return false;
+  if (currentState.lastToBlock > currentToBlock) return true;
+  return currentState.lastToBlock === currentToBlock && (currentState.lastScanAt?.getTime() ?? 0) > scanStartedAtMs;
+};
+
 // failures >= 3 → 24h recovery
 // catchup batch (more history pending) → next scheduler tick
-// active (events in last 7d) → 5 min
 // otherwise → 1h
-export const computeNextRunAt = (
-  failures: number,
-  lastEventAt: Date | null | undefined,
-  isCatchupBatch = false,
-): Date => {
+export const computeNextRunAt = (failures: number, isCatchupBatch = false): Date => {
   const now = Date.now();
   if (failures >= 3) return new Date(now + 24 * HOUR);
   if (isCatchupBatch) return new Date(now);
-  if (lastEventAt && lastEventAt.getTime() > now - ACTIVE_WINDOW_MS) return new Date(now + 5 * MINUTE);
   return new Date(now + 1 * HOUR);
 };
 
@@ -329,52 +355,64 @@ const insertEventRowsChunked = async (trx: DatabaseTransaction, rows: EventsCach
   return results.reduce((acc, result) => acc + (result.rowCount ?? 0), 0);
 };
 
-interface FilterScanResult {
+interface CommittedFilterEvents {
   logsFetched: number;
   logsWritten: number;
   logsReorgedMarked: number;
   latestLog: Log | null;
 }
 
-const scanAllFilters = async (
-  trx: DatabaseTransaction,
+interface FetchedFilterEvents {
+  filter: Filter;
+  logsFetched: number;
+  latestLog: Log | null;
+  rows: EventsCacheRow[];
+}
+
+const fetchFilterEvents = async (
   chainId: number,
   logsProvider: LogsProvider,
   filters: readonly Filter[],
-  addressTopic: Hex,
   parallelFetch: boolean,
-): Promise<FilterScanResult[]> => {
+): Promise<FetchedFilterEvents[]> => {
   const logsByFilter = parallelFetch
     ? await Promise.all(filters.map((filter) => logsProvider.getLogs(filter)))
     : await mapAsyncSequential(filters, (filter) => logsProvider.getLogs(filter));
 
   const filterWithLogs = filters.map((filter, i) => ({ filter, logs: logsByFilter[i] }));
-  return mapAsyncSequential(filterWithLogs, ({ filter, logs }) =>
-    processScanResults(trx, chainId, filter, logs, addressTopic),
-  );
+  return filterWithLogs.map(({ filter, logs }) => buildFetchedFilterEvents(chainId, filter, logs));
 };
 
-const processScanResults = async (
-  trx: DatabaseTransaction,
-  chainId: number,
-  filter: Filter,
-  fetchedLogs: Log[],
-  addressTopic: Hex,
-): Promise<FilterScanResult> => {
-  const logsReorgedMarked = await markFilterEventsAsReorged(trx, chainId, filter, addressTopic);
-
+const buildFetchedFilterEvents = (chainId: number, filter: Filter, fetchedLogs: Log[]): FetchedFilterEvents => {
   // For Transfer filters, drop zero-value ERC20 Transfers, since this is spam and carries no information.
   const meaningfulLogs = filter.topics[0] === ERC721_TRANSFER_TOPIC ? fetchedLogs.filter(isMeaningfulLog) : fetchedLogs;
   const rows = meaningfulLogs.map((log) => toEventsCacheRow(chainId, log));
-  const logsWritten = await insertEventRowsChunked(trx, rows);
 
   return {
+    filter,
     logsFetched: fetchedLogs.length,
-    logsWritten,
-    logsReorgedMarked,
     latestLog: latestLogByBlock(meaningfulLogs),
+    rows,
   };
 };
+
+const commitFetchedFilterEvents = async (
+  trx: DatabaseTransaction,
+  chainId: number,
+  fetchedFilterEvents: FetchedFilterEvents[],
+  addressTopic: Hex,
+): Promise<CommittedFilterEvents[]> =>
+  mapAsyncSequential(fetchedFilterEvents, async (result) => {
+    const logsReorgedMarked = await markFilterEventsAsReorged(trx, chainId, result.filter, addressTopic);
+    const logsWritten = await insertEventRowsChunked(trx, result.rows);
+
+    return {
+      logsFetched: result.logsFetched,
+      logsWritten,
+      logsReorgedMarked,
+      latestLog: result.latestLog,
+    };
+  });
 
 const isMeaningfulLog = (log: Log): boolean => {
   // ERC721 Transfer has 4 topics (signature + from + to + tokenId) and empty `data`. Always keep.
@@ -398,19 +436,18 @@ interface CommitEventsStateParams {
   headBlock: number;
   isCapped: boolean;
   rangeReductions: number;
-  filterResults: FilterScanResult[];
+  committedFilterEvents: CommittedFilterEvents[];
+  latestEventAt: Date | null;
 }
 
 const commitEventsState = async (
   trx: DatabaseTransaction,
-  publicClient: PublicClient,
   address: Address,
   chainId: number,
-  existingState: typeof indexerEventsState.$inferSelect | undefined,
+  existingState: Pick<typeof indexerEventsState.$inferSelect, 'lastEventAt' | 'maxBlockRange'> | undefined,
   params: CommitEventsStateParams,
 ): Promise<void> => {
-  const lastEventAt = await resolveLastEventAt(publicClient, existingState?.lastEventAt, params.filterResults);
-
+  const lastEventAt = latestDate(existingState?.lastEventAt, params.latestEventAt);
   const effectiveIsCapped = params.isCapped || params.rangeReductions > 0;
 
   const newMaxBlockRange = computeNewMaxBlockRange(params, existingState?.maxBlockRange);
@@ -421,7 +458,7 @@ const commitEventsState = async (
     lastObservedHeadBlock: params.headBlock,
     maxBlockRange: newMaxBlockRange,
     lastEventAt,
-    nextRunAt: computeNextRunAt(0, lastEventAt, effectiveIsCapped),
+    nextRunAt: computeNextRunAt(0, effectiveIsCapped),
     consecutiveFailures: 0,
     lastError: null,
   });
@@ -434,7 +471,7 @@ const computeNewMaxBlockRange = (
   const range = params.currentToBlock - params.fromBlock;
   if (params.rangeReductions > 0) return range;
 
-  const maxFilterLogs = Math.max(0, ...params.filterResults.map((r) => r.logsFetched));
+  const maxFilterLogs = Math.max(0, ...params.committedFilterEvents.map((r) => r.logsFetched));
   if (maxFilterLogs > MAX_LOGS_PER_FILTER) return Math.max(MIN_BLOCK_RANGE, Math.floor(range / 2));
   if (!isNullish(existing) && maxFilterLogs < MIN_LOGS_PER_FILTER) {
     const next = existing * 2;
@@ -444,17 +481,19 @@ const computeNewMaxBlockRange = (
   return existing ?? null;
 };
 
-const resolveLastEventAt = async (
+const resolveLatestEventAt = async (
   publicClient: PublicClient,
-  existing: Date | null | undefined,
-  filterResults: FilterScanResult[],
+  fetchedFilterEvents: FetchedFilterEvents[],
 ): Promise<Date | null> => {
-  const latestLog = latestLogByBlock(filterResults.map((r) => r.latestLog));
-  if (!latestLog) return existing ?? null;
+  const latestLog = latestLogByBlock(fetchedFilterEvents.map((r) => r.latestLog));
+  if (!latestLog) return null;
 
   const timestampSeconds = await blocksCache.getLogTimestamp(publicClient, latestLog);
-  const candidate = new Date(timestampSeconds * SECOND);
+  return new Date(timestampSeconds * SECOND);
+};
 
-  if (!existing) return candidate;
-  return candidate.getTime() > existing.getTime() ? candidate : existing;
+const latestDate = (a: Date | null | undefined, b: Date | null | undefined): Date | null => {
+  if (!a) return b ?? null;
+  if (!b) return a;
+  return a.getTime() > b.getTime() ? a : b;
 };

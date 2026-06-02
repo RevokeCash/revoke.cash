@@ -7,7 +7,7 @@ import { MetricsService } from '../metrics/metrics.service';
 import { GroupLimiterService } from '../queue/group-limiter.service';
 import { TOKEN_METADATA_QUEUE_NAME, type TokenMetadataJobData } from './token-metadata.queue';
 
-@Processor(TOKEN_METADATA_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
+@Processor(TOKEN_METADATA_QUEUE_NAME, { concurrency: 100, lockDuration: 90_000 })
 export class TokenMetadataWorker extends WorkerHost {
   private readonly logger = new Logger(TokenMetadataWorker.name);
 

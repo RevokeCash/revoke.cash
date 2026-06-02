@@ -85,7 +85,7 @@ const getTokenPrices = async (
 ): Promise<Record<Address, number | null>> => {
   if (addresses.length === 0) return {};
 
-  const pricesByAddress = {} as Record<Address, number | null>;
+  const pricesByAddress: Record<Address, number | null> = {};
   const uncachedAddresses: Address[] = [];
 
   const cachedResults = await Promise.all(

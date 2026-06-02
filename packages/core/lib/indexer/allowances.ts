@@ -129,7 +129,9 @@ const acquireAllowanceRecomputeLock = async (
   address: Address,
   chainId: DocumentedChainId,
 ): Promise<void> => {
-  await writer.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${`${chainId}:${address}`}, 0::bigint))`);
+  await writer.execute(
+    sql`SELECT pg_advisory_xact_lock(hashtextextended(${`allowances:${chainId}:${address}`}, 0::bigint))`,
+  );
 };
 
 export type CachedAllowanceRow = typeof indexerAllowances.$inferSelect;

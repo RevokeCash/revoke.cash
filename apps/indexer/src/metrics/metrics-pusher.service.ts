@@ -1,11 +1,12 @@
 import { Injectable, Logger, type OnModuleInit } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { SECOND } from '@revoke.cash/core/utils/time';
 import { type MetricObjectWithValues, type MetricValue, register } from 'prom-client';
 import { pushTimeseries } from 'prometheus-remote-write';
 import { ConfigService } from '../config/config.service';
 
-const PUSH_INTERVAL_MS = 30_000;
+const PUSH_INTERVAL_MS = 30 * SECOND;
 const REMOTE_WRITE_HEADERS = {
   'Content-Encoding': 'snappy',
   'User-Agent': 'revoke-indexer/1.0',

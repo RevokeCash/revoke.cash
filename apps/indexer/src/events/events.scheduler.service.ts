@@ -2,12 +2,15 @@ import { randomUUID } from 'node:crypto';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
+import { MINUTE } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
 import type { Address } from 'viem';
 import { ConfigService } from '../config/config.service';
 import { MetricsService } from '../metrics/metrics.service';
 import { SubscribersService } from '../subscribers/subscribers.service';
 import { type EnqueueOutcome, EVENTS_QUEUE_NAME, type EventsJobData } from './events.queue';
+
+const TICK_INTERVAL_MS = 1 * MINUTE;
 
 const jobIdFor = (chainId: number, address: Address): string => `${chainId}-${address}`;
 
@@ -22,7 +25,7 @@ export class EventsSchedulerService {
     private readonly metrics: MetricsService,
   ) {}
 
-  @Interval(1000)
+  @Interval(TICK_INTERVAL_MS)
   async tick(): Promise<void> {
     if (!this.config.isManager) return;
 

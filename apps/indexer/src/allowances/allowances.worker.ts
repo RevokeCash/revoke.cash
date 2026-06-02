@@ -1,6 +1,5 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
-import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/indexer/allowances';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
@@ -79,7 +78,7 @@ export class AllowancesWorker extends WorkerHost {
 
     if (!exhausted || !job?.data) return;
     this.metrics.allowancesTotal.inc({ chain_id: job.data.chainId, outcome: 'failed' });
-    await recordAllowanceFailure(job.data.address, job.data.chainId as DocumentedChainId, error).catch((err) => {
+    await recordAllowanceFailure(job.data.address, job.data.chainId, error).catch((err) => {
       this.logger.warn(
         { chainId: job.data.chainId, address: job.data.address, error: parseErrorMessage(err) },
         'failed to record allowance failure state',

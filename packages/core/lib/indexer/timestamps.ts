@@ -3,7 +3,7 @@ import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.
 import { getDb } from '@revoke.cash/core/db/client';
 import { indexerEvents } from '@revoke.cash/core/db/schema/indexer';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
-import { and, eq, isNull } from 'drizzle-orm';
+import { and, eq, isNull, sql } from 'drizzle-orm';
 import type { PublicClient } from 'viem';
 
 const BATCH_SIZE = 1000;
@@ -81,26 +81,25 @@ const persistResolvedTimestamps = async (
   timestampsByBlock: Map<number, number>,
 ): Promise<number> => {
   if (timestampsByBlock.size === 0) return 0;
-  const db = getDb();
 
-  const updateCounts = await mapAsyncBounded(
-    [...timestampsByBlock.entries()],
-    CONCURRENCY,
-    async ([blockNumber, timestamp]) => {
-      const result = await db
-        .update(indexerEvents)
-        .set({ timestamp })
-        .where(
-          and(
-            eq(indexerEvents.chainId, chainId),
-            eq(indexerEvents.blockNumber, blockNumber),
-            isNull(indexerEvents.timestamp),
-          ),
-        );
-
-      return result.rowCount ?? 0;
-    },
+  const resolvedTimestampValues = sql.join(
+    [...timestampsByBlock.entries()].map(
+      ([blockNumber, timestamp]) => sql`(${blockNumber}::bigint, ${timestamp}::bigint)`,
+    ),
+    sql`, `,
   );
 
-  return updateCounts.reduce((sum, count) => sum + count, 0);
+  const result = await getDb()
+    .update(indexerEvents)
+    .set({ timestamp: sql`resolved_timestamps.block_timestamp` })
+    .from(sql`(VALUES ${resolvedTimestampValues}) AS resolved_timestamps(block_number, block_timestamp)`)
+    .where(
+      and(
+        eq(indexerEvents.chainId, chainId),
+        eq(indexerEvents.blockNumber, sql`resolved_timestamps.block_number`),
+        isNull(indexerEvents.timestamp),
+      ),
+    );
+
+  return result.rowCount ?? 0;
 };

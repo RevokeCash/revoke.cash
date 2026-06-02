@@ -1,6 +1,5 @@
 import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
-import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import {
   indexEvents,
   recordEventsFailure,
@@ -45,7 +44,7 @@ export class EventsWorker extends WorkerHost {
       async () => {
         this.logger.debug({ eventsScanId, chainId, address, reason }, 'processing events');
         const endTimer = this.metrics.eventsScanDuration.startTimer({ chain_id: chainId });
-        const eventsResult = await indexEvents(address, chainId as DocumentedChainId);
+        const eventsResult = await indexEvents(address, chainId);
         if (!eventsResult.nonceZeroSkipped) endTimer({ path: eventsResult.path });
         return eventsResult;
       },
@@ -130,7 +129,7 @@ export class EventsWorker extends WorkerHost {
     const { eventsScanId, chainId, address } = job.data;
 
     try {
-      const nextMaxBlockRange = await reduceEventsMaxBlockRangeAfterFailure(address, chainId as DocumentedChainId);
+      const nextMaxBlockRange = await reduceEventsMaxBlockRangeAfterFailure(address, chainId);
       this.logger.warn(
         { eventsScanId, chainId, address, nextMaxBlockRange },
         'reduced events max block range after failure',
@@ -144,6 +143,6 @@ export class EventsWorker extends WorkerHost {
 
     if (!exhausted) return;
     this.metrics.eventsScansTotal.inc({ chain_id: chainId, outcome: 'failed' });
-    await recordEventsFailure(address, chainId as DocumentedChainId, error);
+    await recordEventsFailure(address, chainId, error);
   }
 }

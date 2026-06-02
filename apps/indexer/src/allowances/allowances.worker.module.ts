@@ -7,7 +7,7 @@ import { AllowancesWorker } from './allowances.worker';
   imports: [
     IndexerQueueModule.register({
       name: ALLOWANCES_QUEUE_NAME,
-      limiter: { groupId: 'indexer-allowance', maxConcurrent: 3, overflow: 'delay' },
+      limiter: { groupId: 'indexer-allowance', maxConcurrent: 5, overflow: 'delay' },
     }),
   ],
   providers: [AllowancesWorker],

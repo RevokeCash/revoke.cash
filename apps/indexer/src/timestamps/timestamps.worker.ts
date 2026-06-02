@@ -1,6 +1,5 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
-import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import { resolveAndPersistTimestamps } from '@revoke.cash/core/indexer/timestamps';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { DelayedError, type Job } from 'bullmq';
@@ -14,7 +13,7 @@ export class TimestampsWorker extends WorkerHost {
 
   async process(job: Job<TimestampsJobData>, token?: string): Promise<void> {
     const { chainId } = job.data;
-    const result = await resolveAndPersistTimestamps(chainId as DocumentedChainId);
+    const result = await resolveAndPersistTimestamps(chainId);
     if (result.blocksProcessed === 0) return;
 
     if (result.saturated) {

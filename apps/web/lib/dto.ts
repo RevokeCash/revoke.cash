@@ -36,7 +36,7 @@ const isEncodedBigInt = (value: unknown): value is EncodedBigInt => {
   const entries = Object.entries(value);
   if (entries.length !== 2) return false;
 
-  const maybeEncoded = value as Partial<EncodedBigInt>;
+  const maybeEncoded: Partial<EncodedBigInt> = value;
   return (
     maybeEncoded[TYPE_KEY] === BIGINT_TYPE &&
     typeof maybeEncoded.value === 'string' &&

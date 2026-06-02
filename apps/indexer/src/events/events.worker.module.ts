@@ -10,7 +10,7 @@ import { EventsWorker } from './events.worker';
   imports: [
     IndexerQueueModule.register({
       name: EVENTS_QUEUE_NAME,
-      limiter: { groupId: 'indexer-events', maxConcurrent: 3, overflow: 'delay' },
+      limiter: { groupId: 'indexer-events', maxConcurrent: 5, overflow: 'delay' },
     }),
     IndexerQueueModule.register({ name: ALLOWANCES_QUEUE_NAME }),
     IndexerQueueModule.register({ name: TIMESTAMPS_QUEUE_NAME }),

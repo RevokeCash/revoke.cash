@@ -4,11 +4,11 @@ import { Interval } from '@nestjs/schedule';
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncSequential } from '@revoke.cash/core/utils/promises';
-import { DAY, MINUTE } from '@revoke.cash/core/utils/time';
+import { DAY, HOUR } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
 import { enqueueUnenrichedTokens, TOKEN_METADATA_QUEUE_NAME, type TokenMetadataJobData } from './token-metadata.queue';
 
-const TICK_INTERVAL_MS = MINUTE;
+const TICK_INTERVAL_MS = 1 * HOUR;
 const STALE_AFTER_MS = 1 * DAY;
 
 @Injectable()
