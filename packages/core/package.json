@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@envio-dev/hypersync-client": "^1.0.0",
-    "@metamask/smart-accounts-kit": "^1.0.0",
+    "@metamask/smart-accounts-kit": "^1.6.0",
     "@neondatabase/serverless": "^1.0.2",
     "@revoke.cash/chains": "^76.0.0",
     "@upstash/ratelimit": "^2.0.8",

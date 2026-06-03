@@ -2115,10 +2115,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/7715-permission-types@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@metamask/7715-permission-types@npm:0.5.0"
-  checksum: 10/f01dcf7ffc3e39536f7cc4d54c088ea659c392de5bdfcaafb9f4d67bbe6b56010358ed2a2ba3adba4e454af51412a2fd5be377cac5c7ab101b032d30711e0b37
+"@metamask/7715-permission-types@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "@metamask/7715-permission-types@npm:0.7.1"
+  checksum: 10/2cbe7b8d09ae9b11171d2f9c36bf94f1acea17f9541b399bf99caa14e500c0e91d79e69a4846db2c80b18aa0df0215b36be1ea661cc99f4d6b5bc8d9eea5a4dd
   languageName: node
   linkType: hard
 
@@ -2132,44 +2132,45 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/delegation-abis@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@metamask/delegation-abis@npm:1.0.0"
-  checksum: 10/31b58d3080710cd48fbf471a1cb94fc4cae705f2472d392a3daaa7c73603ad6d0b1c9068e3b71b10f9c39bfe19c1fad90ecf3115e20a00b2d39f5c7789c5b932
+"@metamask/delegation-abis@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@metamask/delegation-abis@npm:1.1.0"
+  checksum: 10/fd5cd9cbfbbf725405d2f53de682ab0042959d53486a9b6da32689a8f4f7f0ec1e61bfdc73bbb708055968dd7f71f18ff94cfdcd1c6a8a723bc0a112f6b35f83
   languageName: node
   linkType: hard
 
-"@metamask/delegation-core@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@metamask/delegation-core@npm:1.0.0"
+"@metamask/delegation-core@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@metamask/delegation-core@npm:2.2.1"
   dependencies:
     "@metamask/abi-utils": "npm:^3.0.0"
     "@metamask/utils": "npm:^11.4.0"
     "@noble/hashes": "npm:^1.8.0"
-  checksum: 10/715c818eaf11f0c8ef0bd15dd46ed95ec6f27069df6d315c577a9379ce02ee5510871865ce44ec98bbe84daa8409e24314d2b23644ae5434364c33c68e26d4e6
+  checksum: 10/8cc532e4a5fdc83eddb36fada6283d51629272fcce8b7c7c2d3b4addde5aff7c741365a3bcd701364460fbbcbbe94fccc0460ee3ef9af284a82f84ca708f0e06
   languageName: node
   linkType: hard
 
-"@metamask/delegation-deployments@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@metamask/delegation-deployments@npm:1.0.0"
-  checksum: 10/d81e3e875f6a2506f2e6302ba981a609a311c3a4388033ec7e23e45606f27163c6ee8dcd13b1dde7dd6e0eb0186af8b03616b4ff30b334451b8d60381ef8a108
+"@metamask/delegation-deployments@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@metamask/delegation-deployments@npm:1.4.0"
+  checksum: 10/e5e7b83e27daec5b1b61482647d43d4b685954818ff02687e2dbe8169a4dfe199cc8d2ed444242b60425ac2e7d2cf2a5ca29f3e69936abe6a8391f578ec693bb
   languageName: node
   linkType: hard
 
-"@metamask/smart-accounts-kit@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@metamask/smart-accounts-kit@npm:1.0.0"
+"@metamask/smart-accounts-kit@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@metamask/smart-accounts-kit@npm:1.6.0"
   dependencies:
-    "@metamask/7715-permission-types": "npm:^0.5.0"
-    "@metamask/delegation-abis": "npm:^1.0.0"
-    "@metamask/delegation-core": "npm:^1.0.0"
-    "@metamask/delegation-deployments": "npm:^1.0.0"
-    buffer: "npm:^6.0.3"
+    "@metamask/7715-permission-types": "npm:^0.7.1"
+    "@metamask/delegation-abis": "npm:^1.1.0"
+    "@metamask/delegation-core": "npm:^2.2.1"
+    "@metamask/delegation-deployments": "npm:^1.4.0"
+    "@metamask/utils": "npm:^11.4.0"
+    openapi-fetch: "npm:^0.13.5"
     ox: "npm:0.8.1"
   peerDependencies:
     viem: ^2.31.4
-  checksum: 10/f72fb3683795d110e41c2d71f104d3ee7d4da2801668fd193d4525d6e112c53cb50c7386e55c732aba18c08dfefa07348ca84a9c955fdf7f6d83cf41c40cab88
+  checksum: 10/807713727f6c65a2a4b94c226b4db20128e0dcdf48bc8ec3f1022ac081a058e90a5c2a69c9e99729eb600f955ac52c91dea949fee1e9a9a82585788081924b9a
   languageName: node
   linkType: hard
 
@@ -3494,7 +3495,7 @@ __metadata:
   dependencies:
     "@dotenvx/dotenvx": "npm:^1.52.0"
     "@envio-dev/hypersync-client": "npm:^1.0.0"
-    "@metamask/smart-accounts-kit": "npm:^1.0.0"
+    "@metamask/smart-accounts-kit": "npm:^1.6.0"
     "@neondatabase/serverless": "npm:^1.0.2"
     "@revoke.cash/chains": "npm:^76.0.0"
     "@types/md5": "npm:^2.3.6"
@@ -12520,6 +12521,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openapi-fetch@npm:^0.13.5":
+  version: 0.13.8
+  resolution: "openapi-fetch@npm:0.13.8"
+  dependencies:
+    openapi-typescript-helpers: "npm:^0.0.15"
+  checksum: 10/fed630452ac2d6abc680402651d848b7377b651164ca2be61a8c5e1fc89e41b09c928ba9dc92cf7c7ad2d400b3fbe5af380165303f293501dc08cefa4c0f92fd
+  languageName: node
+  linkType: hard
+
+"openapi-typescript-helpers@npm:^0.0.15":
+  version: 0.0.15
+  resolution: "openapi-typescript-helpers@npm:0.0.15"
+  checksum: 10/63f8f0b8464aed3e5c6910428bd14839bd5c1dd6ddf841bcea9d5f536a6e03e942a028202920da1a8b1ed9e4304c6fca14943d01a8adff2942d1254a229b8c70
+  languageName: node
+  linkType: hard
+
 "opener@npm:^1.5.2":
   version: 1.5.2
   resolution: "opener@npm:1.5.2"
@@ -15875,7 +15892,7 @@ __metadata:
     "@headlessui/react": "npm:^2.2.9"
     "@heroicons/react": "npm:^2.2.0"
     "@localazy/cli": "npm:^2.0.8"
-    "@metamask/smart-accounts-kit": "npm:^1.0.0"
+    "@metamask/smart-accounts-kit": "npm:^1.6.0"
     "@next/bundle-analyzer": "npm:^16.1.6"
     "@privy-io/cross-app-connect": "npm:^0.2.3"
     "@rainbow-me/rainbowkit": "npm:^2.2.10"

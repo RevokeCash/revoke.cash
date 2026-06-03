@@ -2,17 +2,19 @@
 
 import { type ForwardedRef, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
+import Spinner from './Spinner';
 
 interface Props {
   checked: boolean;
   onChange: (checked: boolean) => void;
+  pending?: boolean;
   disabled?: boolean;
   label?: string;
   size?: 'sm' | 'md';
 }
 
 const Toggle = (
-  { checked, onChange, disabled = false, label, size = 'md' }: Props,
+  { checked, onChange, pending = false, disabled = false, label, size = 'md' }: Props,
   ref: ForwardedRef<HTMLButtonElement>,
 ) => {
   const trackClasses = twMerge(
@@ -24,7 +26,7 @@ const Toggle = (
 
   const thumbTranslate = size === 'sm' ? 'translate-x-5' : 'translate-x-6';
   const thumbClasses = twMerge(
-    'pointer-events-none inline-block rounded-full shadow-sm transition-transform duration-200',
+    'pointer-events-none inline-block rounded-full shadow-sm transition-transform duration-200 mx-0',
     'bg-white dark:bg-zinc-900',
     size === 'sm' ? 'size-3' : 'size-4',
     checked ? thumbTranslate : 'translate-x-1',
@@ -41,7 +43,7 @@ const Toggle = (
       className={trackClasses}
       ref={ref}
     >
-      <span className={thumbClasses} />
+      {pending ? <Spinner className={thumbClasses} /> : <span className={thumbClasses} />}
     </button>
   );
 };

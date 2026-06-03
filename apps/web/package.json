@@ -31,7 +31,7 @@
     "@floating-ui/react": "^0.27.17",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
-    "@metamask/smart-accounts-kit": "^1.0.0",
+    "@metamask/smart-accounts-kit": "^1.6.0",
     "@privy-io/cross-app-connect": "^0.2.3",
     "@revoke.cash/chains": "^76.0.0",
     "@revoke.cash/core": "workspace:*",

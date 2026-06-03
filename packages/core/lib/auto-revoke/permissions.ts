@@ -1,4 +1,5 @@
 import { contracts, getSmartAccountsEnvironment } from '@metamask/smart-accounts-kit';
+import type { PermissionRequestParameter } from '@metamask/smart-accounts-kit/actions';
 import {
   decodeDelegations,
   hashDelegation,
@@ -17,6 +18,8 @@ import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS, REVOKE_SESSION_ACCOUNT_ADDRESS } from './config';
 import { AutoRevokeError } from './errors';
 import type { AutoRevokePermission, WalletPermissionResult } from './types';
+
+const AUTO_REVOKE_PERMISSION_TYPE = 'token-approval-revocation';
 
 export const getAutoRevokePermissionsByAddress = async (address: Address): Promise<AutoRevokePermission[]> => {
   const db = getDb();
@@ -103,7 +106,7 @@ export const revokeAutoRevokePermission = async (address: Address, chainId: numb
     );
 };
 
-export const buildAutoRevokePermissionRequest = (chainId: number) => {
+export const buildAutoRevokePermissionRequest = (chainId: number): PermissionRequestParameter => {
   if (!REVOKE_SESSION_ACCOUNT_ADDRESS) throw new Error('Session account address is not configured');
 
   const expiry = Math.floor(Date.now() / 1000) + PERMISSION_EXPIRY_SECONDS;
@@ -113,8 +116,16 @@ export const buildAutoRevokePermissionRequest = (chainId: number) => {
     expiry,
     to: REVOKE_SESSION_ACCOUNT_ADDRESS as Address,
     permission: {
-      type: 'erc20-token-revocation' as const,
-      data: { justification: 'Permission to revoke ERC20 token allowances on your behalf' },
+      type: AUTO_REVOKE_PERMISSION_TYPE,
+      data: {
+        erc20Approve: true,
+        erc721Approve: true,
+        erc721SetApprovalForAll: true,
+        permit2Approve: true,
+        permit2Lockdown: true,
+        permit2InvalidateNonces: true,
+        justification: 'Permission to automatically revoke token approvals based on your settings.',
+      },
       isAdjustmentAllowed: false,
     },
   };
@@ -145,7 +156,11 @@ export const filterActivePermissions = async (
 };
 
 export const isValidAutoRevokePermission = (permission: WalletPermissionResult, delegator: Address): boolean => {
-  if (permission.permission?.type !== 'erc20-token-revocation') return false;
+  if (permission.permission?.type !== AUTO_REVOKE_PERMISSION_TYPE) return false;
+  if (permission.permission.data.erc20Approve !== true) return false;
+  if (permission.permission.data.erc721Approve !== true) return false;
+  if (permission.permission.data.erc721SetApprovalForAll !== true) return false;
+  if (permission.permission.data.permit2Approve !== true) return false;
   if (permission.to?.toLowerCase() !== REVOKE_SESSION_ACCOUNT_ADDRESS?.toLowerCase()) return false;
 
   const decoded = decodeDelegations(permission.context)?.[0];
