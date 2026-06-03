@@ -52,6 +52,7 @@ export const usePremiumAddressData = (
     const cachedResult = cachedResults[index];
     const refreshResult = refreshResults[index];
     const isRefreshing = Boolean(refreshResult?.isFetching);
+    const isRetryingAfterRefreshError = isRefreshing && !isNullish(refreshResult?.error);
     const data = refreshResult?.data ?? cachedResult?.data;
     const refreshError = isRefreshing ? null : (refreshResult?.error ?? null);
     const error = isRefreshing ? null : (refreshError ?? (data ? null : (cachedResult?.error ?? null)));
@@ -59,8 +60,8 @@ export const usePremiumAddressData = (
     return {
       data,
       error,
-      isLoading: !data && (isRefreshing || Boolean(cachedResult?.isLoading)),
-      isSuccess: !error && (Boolean(data) || Boolean(cachedResult?.isSuccess)),
+      isLoading: isRetryingAfterRefreshError || (!data && (isRefreshing || Boolean(cachedResult?.isLoading))),
+      isSuccess: !isRetryingAfterRefreshError && !error && (Boolean(data) || Boolean(cachedResult?.isSuccess)),
       isRefreshing,
       refreshError,
       refresh: () => {
