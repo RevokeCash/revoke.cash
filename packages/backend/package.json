@@ -1,0 +1,36 @@
+{
+  "name": "@revoke.cash/backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": "./lib/*.ts"
+  },
+  "scripts": {
+    "allow-scripts": "cd ../.. && yarn run allow-scripts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nestjs/bullmq": "^10.2.3",
+    "@nestjs/common": "^10.4.15",
+    "@nestjs/core": "^10.4.15",
+    "@nestjs/terminus": "^10.3.0",
+    "@revoke.cash/core": "workspace:*",
+    "bottleneck": "^2.19.5",
+    "bullmq": "^5.34.0",
+    "drizzle-orm": "^0.45.1",
+    "ioredis": "^5.4.2",
+    "nestjs-pino": "^4.4.0",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "viem": "^2.45.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "pino-pretty": "^13.0.0",
+    "typescript": "^5.9.3"
+  }
+}

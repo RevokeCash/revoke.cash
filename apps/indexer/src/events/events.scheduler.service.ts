@@ -2,13 +2,13 @@ import { randomUUID } from 'node:crypto';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
+import { type EnqueueOutcome, EVENTS_QUEUE_NAME, type EventsJobData } from '@revoke.cash/backend/indexer/queues/events';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
 import type { Address } from 'viem';
 import { ConfigService } from '../config/config.service';
 import { MetricsService } from '../metrics/metrics.service';
 import { SubscribersService } from '../subscribers/subscribers.service';
-import { type EnqueueOutcome, EVENTS_QUEUE_NAME, type EventsJobData } from './events.queue';
 
 const TICK_INTERVAL_MS = 1 * MINUTE;
 

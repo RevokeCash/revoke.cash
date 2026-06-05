@@ -1,7 +1,5 @@
-import { getChainCoingeckoNetworkId } from '@revoke.cash/core/chains';
 import { getTokenPricesUsd } from '@revoke.cash/core/prices';
 import { addressSchema, supportedChainIdSchema } from '@revoke.cash/core/schemas';
-import { isNullish } from '@revoke.cash/core/utils';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -13,12 +11,7 @@ interface Props {
 }
 
 const schemas = {
-  params: z.object({
-    chainId: supportedChainIdSchema.refine((chainId) => !isNullish(getChainCoingeckoNetworkId(chainId)), {
-      message: 'Chain has no Coingecko network mapping',
-      params: { status: 404 },
-    }),
-  }),
+  params: z.object({ chainId: supportedChainIdSchema }),
   body: z.object({ addresses: z.array(addressSchema) }).strict(),
 };
 

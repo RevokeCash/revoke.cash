@@ -1,9 +1,9 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
+import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '@revoke.cash/backend/indexer/queues/timestamps';
 import { resolveAndPersistTimestamps } from '@revoke.cash/core/indexer/timestamps';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { DelayedError, type Job } from 'bullmq';
-import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from './timestamps.queue';
 
 const CONTINUATION_DELAY_MS = 500;
 

@@ -22,6 +22,7 @@
     "@nestjs/platform-express": "^10.4.15",
     "@nestjs/schedule": "^4.1.2",
     "@nestjs/terminus": "^10.3.0",
+    "@revoke.cash/backend": "workspace:*",
     "@revoke.cash/core": "workspace:*",
     "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.32",

@@ -1,11 +1,11 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
+import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '@revoke.cash/backend/indexer/queues/allowances';
+import { GroupLimiterService } from '@revoke.cash/backend/queue/group-limiter.service';
 import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/indexer/allowances';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
 import { MetricsService } from '../metrics/metrics.service';
-import { GroupLimiterService } from '../queue/group-limiter.service';
-import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from './allowances.queue';
 
 @Processor(ALLOWANCES_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
 export class AllowancesWorker extends WorkerHost {

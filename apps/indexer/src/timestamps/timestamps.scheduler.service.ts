@@ -1,12 +1,12 @@
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
+import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '@revoke.cash/backend/indexer/queues/timestamps';
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncSequential } from '@revoke.cash/core/utils/promises';
 import { HOUR } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
-import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from './timestamps.queue';
 
 const TICK_INTERVAL_MS = 1 * HOUR;
 

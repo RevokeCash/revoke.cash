@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "target": "es2022",
     "lib": ["es2022"],
@@ -18,11 +18,11 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@revoke.cash/backend/*": ["../../packages/backend/lib/*"],
-      "@revoke.cash/core/*": ["../../packages/core/lib/*"]
+      "@revoke.cash/backend/*": ["./lib/*"],
+      "@revoke.cash/core/*": ["../core/lib/*"]
     },
     "incremental": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["lib/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

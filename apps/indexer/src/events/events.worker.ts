@@ -1,5 +1,14 @@
 import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
+import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '@revoke.cash/backend/indexer/queues/allowances';
+import { EVENTS_QUEUE_NAME, type EventsJobData } from '@revoke.cash/backend/indexer/queues/events';
+import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '@revoke.cash/backend/indexer/queues/timestamps';
+import {
+  enqueueUnenrichedTokens,
+  TOKEN_METADATA_QUEUE_NAME,
+  type TokenMetadataJobData,
+} from '@revoke.cash/backend/indexer/queues/token-metadata';
+import { GroupLimiterService } from '@revoke.cash/backend/queue/group-limiter.service';
 import {
   indexEvents,
   recordEventsFailure,
@@ -7,16 +16,7 @@ import {
 } from '@revoke.cash/core/indexer/events';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job, Queue } from 'bullmq';
-import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '../allowances/allowances.queue';
 import { MetricsService } from '../metrics/metrics.service';
-import { GroupLimiterService } from '../queue/group-limiter.service';
-import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '../timestamps/timestamps.queue';
-import {
-  enqueueUnenrichedTokens,
-  TOKEN_METADATA_QUEUE_NAME,
-  type TokenMetadataJobData,
-} from '../token-metadata/token-metadata.queue';
-import { EVENTS_QUEUE_NAME, type EventsJobData } from './events.queue';
 
 const allowanceJobIdFor = (chainId: number, address: string): string => `${chainId}-${address}`;
 const timestampsJobIdFor = (chainId: number): string => `timestamps-${chainId}`;

@@ -1,11 +1,14 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
+import {
+  TOKEN_METADATA_QUEUE_NAME,
+  type TokenMetadataJobData,
+} from '@revoke.cash/backend/indexer/queues/token-metadata';
+import { GroupLimiterService } from '@revoke.cash/backend/queue/group-limiter.service';
 import { enrichToken } from '@revoke.cash/core/indexer/token-metadata';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
 import { MetricsService } from '../metrics/metrics.service';
-import { GroupLimiterService } from '../queue/group-limiter.service';
-import { TOKEN_METADATA_QUEUE_NAME, type TokenMetadataJobData } from './token-metadata.queue';
 
 @Processor(TOKEN_METADATA_QUEUE_NAME, { concurrency: 100, lockDuration: 90_000 })
 export class TokenMetadataWorker extends WorkerHost {

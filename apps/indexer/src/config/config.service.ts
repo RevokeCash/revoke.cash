@@ -15,20 +15,6 @@ export class ConfigService {
     return process.env.RENDER_INSTANCE_ID ?? 'local';
   }
 
-  get isProduction(): boolean {
-    return process.env.NODE_ENV === 'production';
-  }
-
-  get logLevel(): string {
-    return process.env.LOG_LEVEL ?? 'info';
-  }
-
-  get redisUrl(): string {
-    const url = process.env.REDIS_URL;
-    if (!url) throw new Error('REDIS_URL is not configured');
-    return url;
-  }
-
   get port(): number {
     return Number(process.env.PORT ?? 3001);
   }
