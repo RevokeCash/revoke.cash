@@ -1,4 +1,5 @@
 import { Global, Module } from '@nestjs/common';
+import { INSTANCE_ID } from '@revoke.cash/backend/observability/instance';
 import {
   makeCounterProvider,
   makeGaugeProvider,
@@ -9,7 +10,7 @@ import { ConfigService } from '../config/config.service';
 import { MetricsService } from './metrics.service';
 import { MetricsPusherService } from './metrics-pusher.service';
 
-// We need to instantiate ConfigService here to get the role and instanceId before the module is loaded.
+// We need to instantiate ConfigService here to get the role before the module is loaded.
 const config = new ConfigService();
 
 const counters = [
@@ -31,6 +32,11 @@ const counters = [
   makeCounterProvider({
     name: 'indexer_token_metadata_total',
     help: 'Total token-metadata attempts by chain and outcome (enriched, spam, error, failed)',
+    labelNames: ['chain_id', 'outcome'],
+  }),
+  makeCounterProvider({
+    name: 'indexer_spender_metadata_total',
+    help: 'Total spender-metadata attempts by chain and outcome (enriched, error, failed)',
     labelNames: ['chain_id', 'outcome'],
   }),
 ];
@@ -60,6 +66,12 @@ const histograms = [
     labelNames: ['chain_id'],
     buckets: [0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
   }),
+  makeHistogramProvider({
+    name: 'indexer_spender_metadata_duration_seconds',
+    help: 'Wall-clock duration of a single spender-metadata attempt (whois + risk sources + DB write)',
+    labelNames: ['chain_id'],
+    buckets: [0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
+  }),
 ];
 
 const gauges = [
@@ -74,7 +86,7 @@ const gauges = [
   imports: [
     PrometheusModule.register({
       defaultMetrics: { enabled: true },
-      defaultLabels: { service: 'indexer', role: config.role, instance: config.instanceId },
+      defaultLabels: { service: 'indexer', role: config.role, instance: INSTANCE_ID },
       path: '/metrics',
     }),
   ],

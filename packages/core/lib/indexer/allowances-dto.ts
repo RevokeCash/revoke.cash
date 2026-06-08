@@ -2,6 +2,7 @@ import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
 import type { AllowancePayload, TokenAllowanceData } from '@revoke.cash/core/allowances';
 import type { indexerTokenMetadata } from '@revoke.cash/core/db/schema/indexer';
 import type { ApprovalTokenEvent, Enriched, EnrichedTokenEvent } from '@revoke.cash/core/events';
+import { type SpenderMetadataRow, serializeSpenderMetadata } from '@revoke.cash/core/indexer/spender-metadata';
 import type { TokenMetadata } from '@revoke.cash/core/tokens';
 import type { Address, PublicClient } from 'viem';
 import type { CachedAllowanceRow } from './allowances';
@@ -47,18 +48,28 @@ export const serializeMetadata = (metadata: TokenMetadataRow): TokenMetadata => 
   icon: metadata.iconUrl ?? undefined,
 });
 
-export const serializeAllowanceFromRow = (row: CachedAllowanceRow, metadata: TokenMetadataRow): CachedAllowanceDto => ({
+export const serializeAllowanceFromRow = (
+  row: CachedAllowanceRow,
+  metadata: TokenMetadataRow,
+  spenderMetadata?: SpenderMetadataRow,
+): CachedAllowanceDto => ({
   tokenAddress: row.tokenAddress,
   isErc721: metadata.tokenStandard === 'erc721',
   metadata: serializeMetadata(metadata),
-  payload: serializeAllowancePayloadFromRow(row),
+  payload: serializeAllowancePayloadFromRow(row, spenderMetadata),
 });
 
-export const serializeApprovalEvent = (event: ApprovalTokenEvent, metadata: TokenMetadataRow): CachedTokenEventDto => ({
-  ...event,
-  time: { ...event.time, timestamp: event.time.timestamp! },
-  metadata: serializeMetadata(metadata),
-});
+export const serializeApprovalEvent = (
+  event: ApprovalTokenEvent,
+  metadata: TokenMetadataRow,
+  spenderMetadata?: SpenderMetadataRow,
+): CachedTokenEventDto =>
+  ({
+    ...event,
+    payload: { ...event.payload, spenderData: serializeSpenderMetadata(spenderMetadata) },
+    time: { ...event.time, timestamp: event.time.timestamp! },
+    metadata: serializeMetadata(metadata),
+  }) as CachedTokenEventDto;
 
 export const deserializeCachedAddressData = (
   dto: CachedAddressDataDto,
@@ -69,10 +80,14 @@ export const deserializeCachedAddressData = (
   events: dto.events,
 });
 
-const serializeAllowancePayloadFromRow = (row: CachedAllowanceRow): AllowancePayload => {
+const serializeAllowancePayloadFromRow = (
+  row: CachedAllowanceRow,
+  spenderMetadata?: SpenderMetadataRow,
+): AllowancePayload => {
   return {
     type: row.approvalType,
     spender: row.spenderAddress,
+    spenderData: serializeSpenderMetadata(spenderMetadata),
     amount: row.amount ?? undefined,
     tokenId: row.tokenId ?? undefined,
     permit2Address: row.permit2Address ?? undefined,

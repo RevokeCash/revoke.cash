@@ -4,10 +4,12 @@ import { BullBoardModule as BullBoardModuleBase } from '@bull-board/nestjs';
 import { type MiddlewareConsumer, Module, type NestModule } from '@nestjs/common';
 import { ALLOWANCES_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/allowances';
 import { EVENTS_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/events';
+import { SPENDER_METADATA_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/spender-metadata';
 import { TIMESTAMPS_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/timestamps';
 import { TOKEN_METADATA_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/token-metadata';
 import { AllowancesSchedulerModule } from '../allowances/allowances.scheduler.module';
 import { EventsSchedulerModule } from '../events/events.scheduler.module';
+import { SpenderMetadataSchedulerModule } from '../spender-metadata/spender-metadata.scheduler.module';
 import { TimestampsSchedulerModule } from '../timestamps/timestamps.scheduler.module';
 import { TokenMetadataSchedulerModule } from '../token-metadata/token-metadata.scheduler.module';
 import { BullBoardAuthMiddleware } from './bull-board.middleware';
@@ -20,6 +22,7 @@ const BULL_BOARD_ROUTE = '/queues';
     TimestampsSchedulerModule,
     AllowancesSchedulerModule,
     TokenMetadataSchedulerModule,
+    SpenderMetadataSchedulerModule,
     BullBoardModuleBase.forRoot({
       route: BULL_BOARD_ROUTE,
       adapter: ExpressAdapter,
@@ -30,6 +33,7 @@ const BULL_BOARD_ROUTE = '/queues';
       { name: TIMESTAMPS_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Timestamps' } },
       { name: ALLOWANCES_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Allowances' } },
       { name: TOKEN_METADATA_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Token Metadata' } },
+      { name: SPENDER_METADATA_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Spender Metadata' } },
     ),
   ],
   providers: [BullBoardAuthMiddleware],

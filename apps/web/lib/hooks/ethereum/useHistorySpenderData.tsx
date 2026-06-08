@@ -1,7 +1,6 @@
 'use client';
 
 import { type ApprovalTokenEvent, type Enriched, TokenEventType } from '@revoke.cash/core/events';
-import { deduplicateArray } from '@revoke.cash/core/utils';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
 import { getSpenderKey, type SpenderLookup, useSpenderData } from './useSpenderData';
@@ -14,21 +13,23 @@ const getSpenderAddress = (event: Enriched<ApprovalTokenEvent>): Address => {
 };
 
 export const useAnnotateHistorySpenderData = (approvalHistory: Enriched<ApprovalTokenEvent>[] | undefined) => {
-  const uniqueSpenders = useMemo<SpenderLookup[]>(() => {
+  const spenderLookups = useMemo<SpenderLookup[]>(() => {
     if (!approvalHistory || approvalHistory.length === 0) return [];
-    const spenderLookups = approvalHistory.map((event) => ({
-      chainId: event.chainId,
-      spender: getSpenderAddress(event),
-    }));
-    return deduplicateArray(spenderLookups, (spender) => getSpenderKey(spender.chainId, spender.spender));
+
+    return approvalHistory.map((event) => {
+      const spender = getSpenderAddress(event);
+      return { chainId: event.chainId, spender, initialData: event.payload.spenderData };
+    });
   }, [approvalHistory]);
 
-  const spenderData = useSpenderData(uniqueSpenders);
+  const spenderData = useSpenderData(spenderLookups);
 
   return useMemo(() => {
     if (!approvalHistory) return undefined;
 
     return approvalHistory.map((event) => {
+      if (event.payload.spenderData !== undefined) return event;
+
       const spender = getSpenderAddress(event);
       const spenderKey = getSpenderKey(event.chainId, spender);
       return {

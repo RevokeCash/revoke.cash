@@ -11,6 +11,8 @@ import { ConfigService } from './config/config.service';
 import { EventsSchedulerModule } from './events/events.scheduler.module';
 import { EventsWorkerModule } from './events/events.worker.module';
 import { MetricsModule } from './metrics/metrics.module';
+import { SpenderMetadataSchedulerModule } from './spender-metadata/spender-metadata.scheduler.module';
+import { SpenderMetadataWorkerModule } from './spender-metadata/spender-metadata.worker.module';
 import { TimestampsSchedulerModule } from './timestamps/timestamps.scheduler.module';
 import { TimestampsWorkerModule } from './timestamps/timestamps.worker.module';
 import { TokenMetadataSchedulerModule } from './token-metadata/token-metadata.scheduler.module';
@@ -33,7 +35,7 @@ export class AppModule {
       isManager ? AllowancesSchedulerModule : AllowancesWorkerModule,
       isManager ? TimestampsSchedulerModule : TimestampsWorkerModule,
       isManager ? TokenMetadataSchedulerModule : TokenMetadataWorkerModule,
-      ...(isManager ? [BullBoardModule] : []),
+      isManager ? SpenderMetadataSchedulerModule : SpenderMetadataWorkerModule,
     ];
 
     return {

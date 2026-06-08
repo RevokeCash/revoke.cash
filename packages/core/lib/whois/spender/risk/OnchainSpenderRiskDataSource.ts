@@ -18,7 +18,6 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
     if (!publicClient) return null;
 
     try {
-      const time = Date.now();
       const [bytecode, nonce] = await Promise.all([
         publicClient.getCode({ address }),
         publicClient.getTransactionCount({ address }),
@@ -33,9 +32,6 @@ export class OnchainSpenderRiskDataSource implements SpenderDataSource {
       if (this.hasPhishingRisk(address, bytecode)) riskFactors.push({ type: 'phishing_risk', source: 'onchain' });
       if (this.isSuspiciousAddress(address)) riskFactors.push({ type: 'suspicious_address', source: 'onchain' });
       if (this.isCrimeEnjoyor(bytecode)) riskFactors.push({ type: 'blocklist', source: 'onchain' });
-
-      const elapsedTime = (Date.now() - time) / 1000;
-      console.log(elapsedTime, 'Onchain', address);
 
       if (this.isOpenSeaProxy(bytecode)) {
         return { name: 'OpenSea (old)', riskFactors };

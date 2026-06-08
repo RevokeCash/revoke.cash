@@ -1,5 +1,6 @@
 import { type DynamicModule, Module } from '@nestjs/common';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
+import { INSTANCE_ID } from '../observability/instance';
 
 interface BackendLoggerModuleOptions {
   serviceName: string;
@@ -7,7 +8,6 @@ interface BackendLoggerModuleOptions {
 }
 
 const LOG_LEVEL = process.env.LOG_LEVEL ?? 'info';
-const INSTANCE_ID = process.env.RENDER_INSTANCE_ID ?? 'local';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 @Module({})

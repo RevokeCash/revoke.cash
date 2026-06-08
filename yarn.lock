@@ -3482,6 +3482,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@revoke.cash/backend@workspace:*, @revoke.cash/backend@workspace:packages/backend":
+  version: 0.0.0-use.local
+  resolution: "@revoke.cash/backend@workspace:packages/backend"
+  dependencies:
+    "@nestjs/bullmq": "npm:^10.2.3"
+    "@nestjs/common": "npm:^10.4.15"
+    "@nestjs/core": "npm:^10.4.15"
+    "@nestjs/terminus": "npm:^10.3.0"
+    "@revoke.cash/core": "workspace:*"
+    "@types/node": "npm:^22.10.0"
+    bottleneck: "npm:^2.19.5"
+    bullmq: "npm:^5.34.0"
+    drizzle-orm: "npm:^0.45.1"
+    ioredis: "npm:^5.4.2"
+    nestjs-pino: "npm:^4.4.0"
+    pino: "npm:^9.6.0"
+    pino-http: "npm:^10.4.0"
+    pino-pretty: "npm:^13.0.0"
+    reflect-metadata: "npm:^0.2.2"
+    rxjs: "npm:^7.8.1"
+    typescript: "npm:^5.9.3"
+    viem: "npm:^2.45.2"
+  languageName: unknown
+  linkType: soft
+
 "@revoke.cash/chains@npm:^76.0.0":
   version: 76.0.0
   resolution: "@revoke.cash/chains@npm:76.0.0"
@@ -3528,6 +3553,7 @@ __metadata:
     "@nestjs/platform-express": "npm:^10.4.15"
     "@nestjs/schedule": "npm:^4.1.2"
     "@nestjs/terminus": "npm:^10.3.0"
+    "@revoke.cash/backend": "workspace:*"
     "@revoke.cash/core": "workspace:*"
     "@swc-node/register": "npm:^1.11.1"
     "@swc/core": "npm:^1.15.32"

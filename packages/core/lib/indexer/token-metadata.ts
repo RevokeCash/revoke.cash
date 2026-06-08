@@ -18,6 +18,7 @@ import { type Address, getAddress, type Hex } from 'viem';
 import { isNullish } from '../utils';
 
 export type TokenStandard = (typeof indexerTokenMetadata.tokenStandard.enumValues)[number];
+export type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
 
 export interface TokenEnrichmentResult {
   durationMs: number;
@@ -118,7 +119,7 @@ export const findUnenrichedTokens = async (params: UnenrichedTokensQuery): Promi
 export const getCachedTokenMetadata = async (
   chainId: DocumentedChainId,
   tokenAddresses: readonly Address[],
-): Promise<Map<Address, typeof indexerTokenMetadata.$inferSelect>> => {
+): Promise<Map<Address, TokenMetadataRow>> => {
   if (tokenAddresses.length === 0) return new Map();
   const rows = await getDb().query.indexerTokenMetadata.findMany({
     where: and(
@@ -127,6 +128,14 @@ export const getCachedTokenMetadata = async (
     ),
   });
   return new Map(rows.map((row) => [row.tokenAddress, row]));
+};
+
+export const isUsableTokenMetadata = (metadata?: TokenMetadataRow): boolean => {
+  if (metadata === undefined) return false;
+  if (isNullish(metadata.enrichedAt)) return false;
+  if (!isNullish(metadata.enrichmentError)) return false;
+  if (!isNullish(metadata.spamReason)) return false;
+  return true;
 };
 
 // Check if the token has an ApprovalForAll event OR if its Transfer/Approval events have 4 topic,

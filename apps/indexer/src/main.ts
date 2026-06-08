@@ -1,5 +1,5 @@
-import { Logger as NestLogger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { logBootstrapError } from '@revoke.cash/backend/logger/bootstrap';
 import { Logger } from 'nestjs-pino';
 import 'reflect-metadata';
 import { AppModule } from './app.module';
@@ -18,6 +18,6 @@ const bootstrap = async (): Promise<void> => {
 };
 
 bootstrap().catch((error) => {
-  NestLogger.error('Failed to bootstrap indexer', error instanceof Error ? error.stack : String(error), 'Bootstrap');
+  logBootstrapError('indexer', error);
   process.exit(1);
 });

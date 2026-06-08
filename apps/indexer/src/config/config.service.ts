@@ -11,10 +11,6 @@ export class ConfigService {
     return this.isManager ? 'manager' : 'worker';
   }
 
-  get instanceId(): string {
-    return process.env.RENDER_INSTANCE_ID ?? 'local';
-  }
-
   get port(): number {
     return Number(process.env.PORT ?? 3001);
   }

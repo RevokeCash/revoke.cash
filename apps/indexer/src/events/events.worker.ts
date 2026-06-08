@@ -2,6 +2,11 @@ import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullm
 import { Logger } from '@nestjs/common';
 import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '@revoke.cash/backend/indexer/queues/allowances';
 import { EVENTS_QUEUE_NAME, type EventsJobData } from '@revoke.cash/backend/indexer/queues/events';
+import {
+  enqueueUnenrichedSpenders,
+  SPENDER_METADATA_QUEUE_NAME,
+  type SpenderMetadataJobData,
+} from '@revoke.cash/backend/indexer/queues/spender-metadata';
 import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '@revoke.cash/backend/indexer/queues/timestamps';
 import {
   enqueueUnenrichedTokens,
@@ -32,6 +37,8 @@ export class EventsWorker extends WorkerHost {
     @InjectQueue(TIMESTAMPS_QUEUE_NAME) private readonly timestampsQueue: Queue<TimestampsJobData>,
     @InjectQueue(TOKEN_METADATA_QUEUE_NAME)
     private readonly tokenMetadataQueue: Queue<TokenMetadataJobData>,
+    @InjectQueue(SPENDER_METADATA_QUEUE_NAME)
+    private readonly spenderMetadataQueue: Queue<SpenderMetadataJobData>,
   ) {
     super();
   }
@@ -98,6 +105,30 @@ export class EventsWorker extends WorkerHost {
       this.logger.debug(
         { eventsScanId, chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, enqueued },
         'enqueued token metadata jobs',
+      );
+    }
+
+    const spenderMetadataEnqueued = await enqueueUnenrichedSpenders(
+      this.spenderMetadataQueue,
+      { address, chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, limit: null },
+      'events',
+    ).catch((error) => {
+      this.logger.warn(
+        { eventsScanId, chainId, error: parseErrorMessage(error) },
+        'failed to enqueue spender metadata fan-out',
+      );
+    });
+
+    if (spenderMetadataEnqueued && spenderMetadataEnqueued > 0) {
+      this.logger.debug(
+        {
+          eventsScanId,
+          chainId,
+          fromBlock: result.fromBlock,
+          toBlock: result.toBlock,
+          enqueued: spenderMetadataEnqueued,
+        },
+        'enqueued spender metadata jobs',
       );
     }
   }

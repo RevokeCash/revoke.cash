@@ -16,5 +16,9 @@ export class MetricsService {
     @InjectMetric('indexer_token_metadata_total') public readonly tokenMetadataTotal: Counter<string>,
     @InjectMetric('indexer_token_metadata_duration_seconds')
     public readonly tokenMetadataDuration: Histogram<string>,
+    @InjectMetric('indexer_spender_metadata_total') public readonly spenderMetadataTotal: Counter<string>,
+    @InjectMetric('indexer_spender_metadata_duration_seconds')
+    public readonly spenderMetadataDuration: Histogram<string>,
+    @InjectMetric('auto_revoke_evaluations_total') public readonly autoRevokeEvaluationsTotal: Counter<string>,
   ) {}
 }

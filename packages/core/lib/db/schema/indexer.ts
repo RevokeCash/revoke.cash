@@ -4,6 +4,7 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   numeric,
   pgSchema,
   primaryKey,
@@ -13,6 +14,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { Hash, Hex } from 'viem';
 import { AllowanceType } from '../../allowances';
+import type { RiskFactor } from '../../risk';
 import { lowercaseAddress } from '../types';
 
 export const indexerSchema = pgSchema('indexer');
@@ -141,6 +143,29 @@ export const indexerTokenMetadata = indexerSchema.table(
     // For the backstop scheduler (find never-enriched entries cheaply).
     index('idx_token_metadata_unenriched')
       .on(table.chainId, table.tokenAddress)
+      .where(sql`${table.enrichedAt} IS NULL`),
+  ],
+);
+
+export const indexerSpenderMetadata = indexerSchema.table(
+  'spender_metadata',
+  {
+    chainId: integer('chain_id').notNull(),
+    spenderAddress: lowercaseAddress('spender_address').notNull(),
+    name: text('name'),
+    riskFactors: jsonb('risk_factors').notNull().$type<RiskFactor[]>().default([]),
+    enrichmentError: text('enrichment_error'),
+    enrichedAt: timestamp('enriched_at', { withTimezone: true }),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    primaryKey({ name: 'spender_metadata_pkey', columns: [table.chainId, table.spenderAddress] }),
+    index('idx_spender_metadata_enriched_at').on(table.chainId, table.enrichedAt),
+    index('idx_spender_metadata_unenriched')
+      .on(table.chainId, table.spenderAddress)
       .where(sql`${table.enrichedAt} IS NULL`),
   ],
 );

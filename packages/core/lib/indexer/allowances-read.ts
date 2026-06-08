@@ -1,12 +1,16 @@
 import { AllowanceType } from '@revoke.cash/core/allowances';
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import { getDb } from '@revoke.cash/core/db/client';
+import { indexerAllowanceState, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import {
-  indexerAllowanceState,
-  indexerEventsState,
-  type indexerTokenMetadata,
-} from '@revoke.cash/core/db/schema/indexer';
-import { type Filter, isApprovalTokenEvent, type Log, parseLog, type TokenEvent } from '@revoke.cash/core/events';
+  type ApprovalTokenEvent,
+  type Filter,
+  isApprovalTokenEvent,
+  type Log,
+  parseLog,
+  type TokenEvent,
+  TokenEventType,
+} from '@revoke.cash/core/events';
 import { buildTokenEventFilters } from '@revoke.cash/core/events/filters';
 import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cash/core/events/processing';
 import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
@@ -26,10 +30,10 @@ import {
 } from './allowances-dto';
 import { ChainUnresponsiveError, StillIndexingError } from './errors';
 import { assertIndexerIsNotTooFarBehind } from './progress';
+import { getCachedSpenderMetadata, type SpenderMetadataByAddress } from './spender-metadata';
 import { resolveAndPersistTimestampsForBlocks } from './timestamps';
-import { enrichToken, getCachedTokenMetadata } from './token-metadata';
+import { enrichToken, getCachedTokenMetadata, isUsableTokenMetadata, type TokenMetadataRow } from './token-metadata';
 
-type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
 type EventsState = Pick<
   typeof indexerEventsState.$inferSelect,
   'consecutiveFailures' | 'lastError' | 'lastObservedHeadBlock' | 'lastScanAt' | 'lastToBlock' | 'maxBlockRange'
@@ -130,9 +134,11 @@ const readFromIndexedCache = async (address: Address, chainId: DocumentedChainId
 
   const uniqueTokens = deduplicateArray(rawEvents.map((event) => event.token));
   const metadataByToken = await getCompleteTokenMetadata(chainId, uniqueTokens);
+  const historyEvents = getHistoryRelevantEvents(rawEvents, metadataByToken);
+  const spenderMetadataByAddress = await getCachedSpenderMetadata(chainId, getSpenderAddresses(historyEvents));
 
-  const allowances = serializeAllowances(allowanceRows, metadataByToken);
-  const events = serializeHistoryRelevantEvents(rawEvents, metadataByToken);
+  const allowances = serializeAllowances(allowanceRows, metadataByToken, spenderMetadataByAddress);
+  const events = serializeHistoryRelevantEvents(historyEvents, metadataByToken, spenderMetadataByAddress);
 
   return { state: stateDto, allowances, events };
 };
@@ -170,14 +176,6 @@ const getCompleteTokenMetadata = async (
 
   await mapAsyncBounded(missingTokens, 10, (token) => enrichToken(chainId, token));
   return getCachedTokenMetadata(chainId, tokenAddresses);
-};
-
-const isUsableMetadata = (metadata?: TokenMetadataRow): boolean => {
-  if (metadata === undefined) return false;
-  if (isNullish(metadata.enrichedAt)) return false;
-  if (!isNullish(metadata.enrichmentError)) return false;
-  if (!isNullish(metadata.spamReason)) return false;
-  return true;
 };
 
 // Pull approval events for this user from the events cache up to `toBlock`. Metadata enrichment
@@ -220,25 +218,50 @@ const cleanAndNarrowEvents = (events: TokenEvent[]): TokenEvent[] => {
   return [...cleanedApprovals, ...transferEvents];
 };
 
-const serializeHistoryRelevantEvents = (
+const getHistoryRelevantEvents = (
   events: TokenEvent[],
   metadataByToken: Map<Address, TokenMetadataRow>,
-): CachedTokenEventDto[] => {
+): ApprovalTokenEvent[] => {
   const cleanedEvents = cleanAndNarrowEvents(events);
   const approvalOnly = cleanedEvents.filter(isApprovalTokenEvent);
-  const eligibleEvents = approvalOnly.filter((event) => isUsableMetadata(metadataByToken.get(event.token)));
-  const sorted = sortTokenEventsChronologically(eligibleEvents).reverse();
-  return sorted.map((event) => serializeApprovalEvent(event, metadataByToken.get(event.token)!));
+  return approvalOnly.filter((event) => isUsableTokenMetadata(metadataByToken.get(event.token)));
+};
+
+const getSpenderAddresses = (historyEvents: ApprovalTokenEvent[]): Address[] => {
+  return deduplicateArray(historyEvents.map(getApprovalEventSpenderAddress));
+};
+
+const getApprovalEventSpenderAddress = (event: ApprovalTokenEvent): Address => {
+  if (event.type === TokenEventType.APPROVAL_ERC721 && event.payload.oldSpender) return event.payload.oldSpender;
+  return event.payload.spender;
+};
+
+const serializeHistoryRelevantEvents = (
+  events: ApprovalTokenEvent[],
+  metadataByToken: Map<Address, TokenMetadataRow>,
+  spenderMetadataByAddress: SpenderMetadataByAddress,
+): CachedTokenEventDto[] => {
+  const sorted = sortTokenEventsChronologically(events).reverse();
+  return sorted.map((event) => {
+    const tokenMetadata = metadataByToken.get(event.token)!;
+    const spenderMetadata = spenderMetadataByAddress.get(getApprovalEventSpenderAddress(event));
+    return serializeApprovalEvent(event, tokenMetadata, spenderMetadata);
+  });
 };
 
 const serializeAllowances = (
   allowanceRows: CachedAllowanceRow[],
   metadataByToken: Map<Address, TokenMetadataRow>,
+  spenderMetadataByAddress: SpenderMetadataByAddress,
 ): CachedAllowanceDto[] => {
   return allowanceRows
     .filter((row) => isCachedAllowanceActive(row))
-    .filter((row) => isUsableMetadata(metadataByToken.get(row.tokenAddress)))
-    .map((row) => serializeAllowanceFromRow(row, metadataByToken.get(row.tokenAddress)!));
+    .filter((row) => isUsableTokenMetadata(metadataByToken.get(row.tokenAddress)))
+    .map((row) => {
+      const tokenMetadata = metadataByToken.get(row.tokenAddress)!;
+      const spenderMetadata = spenderMetadataByAddress.get(row.spenderAddress);
+      return serializeAllowanceFromRow(row, tokenMetadata, spenderMetadata);
+    });
 };
 
 export const isCachedAllowanceActive = (
