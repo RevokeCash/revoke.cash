@@ -1,7 +1,11 @@
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
-import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '@revoke.cash/backend/indexer/queues/timestamps';
+import {
+  TIMESTAMPS_QUEUE_NAME,
+  type TimestampsJobData,
+  timestampsJobId,
+} from '@revoke.cash/backend/indexer/queues/timestamps';
 import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncSequential } from '@revoke.cash/core/utils/promises';
@@ -21,15 +25,25 @@ export class TimestampsSchedulerService {
     // We enqueue these jobs sequentially to spread the EVALSHA calls across the tick window
     const results = await mapAsyncSequential(ORDERED_CHAINS, async (chainId) => {
       try {
-        await this.queue.add('timestamps', { chainId }, { jobId: `timestamps-${chainId}` });
+        await this.queue.add('timestamps', { chainId }, { jobId: timestampsJobId(chainId) });
         return true;
       } catch (error) {
-        this.logger.warn({ chainId, error: parseErrorMessage(error) }, 'failed to enqueue timestamps job');
+        this.logger.warn({
+          event: 'timestamps_enqueue_failed',
+          outcome: 'failed',
+          chainId,
+          error: parseErrorMessage(error),
+        });
         return false;
       }
     });
 
     const enqueued = results.filter(Boolean).length;
-    this.logger.debug({ enqueued, totalChains: ORDERED_CHAINS.length }, 'timestamps tick complete');
+    this.logger.debug({
+      event: 'timestamps_scheduler_tick_completed',
+      outcome: 'completed',
+      enqueued,
+      totalChains: ORDERED_CHAINS.length,
+    });
   }
 }

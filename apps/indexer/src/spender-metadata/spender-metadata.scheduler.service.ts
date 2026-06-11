@@ -29,7 +29,12 @@ export class SpenderMetadataSchedulerService {
       try {
         return await enqueueUnenrichedSpenders(this.queue, { chainId, staleBefore }, 'scheduler');
       } catch (error) {
-        this.logger.warn({ chainId, error: parseErrorMessage(error) }, 'failed to enqueue unenriched spenders');
+        this.logger.warn({
+          event: 'spender_metadata_enqueue_failed',
+          outcome: 'failed',
+          chainId,
+          error: parseErrorMessage(error),
+        });
         return 0;
       }
     });
@@ -37,9 +42,18 @@ export class SpenderMetadataSchedulerService {
     const totalEnqueued = results.reduce((sum, count) => sum + count, 0);
 
     if (totalEnqueued > 0) {
-      this.logger.log({ totalEnqueued, totalChains: ORDERED_CHAINS.length }, 'spender metadata tick complete');
+      this.logger.log({
+        event: 'spender_metadata_scheduler_tick_completed',
+        outcome: 'enqueued',
+        totalEnqueued,
+        totalChains: ORDERED_CHAINS.length,
+      });
     } else {
-      this.logger.debug({ totalChains: ORDERED_CHAINS.length }, 'spender metadata tick complete (nothing to enqueue)');
+      this.logger.debug({
+        event: 'spender_metadata_scheduler_tick_completed',
+        outcome: 'empty',
+        totalChains: ORDERED_CHAINS.length,
+      });
     }
   }
 }

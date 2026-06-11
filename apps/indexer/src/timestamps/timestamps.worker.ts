@@ -17,19 +17,27 @@ export class TimestampsWorker extends WorkerHost {
     if (result.blocksProcessed === 0) return;
 
     if (result.saturated) {
-      this.logger.warn(result, 'timestamps batch processed - saturated, requeueing continuation');
+      this.logger.warn({
+        event: 'timestamps_batch_completed',
+        outcome: 'saturated',
+        continuationDelayMs: CONTINUATION_DELAY_MS,
+        ...result,
+      });
       await job.moveToDelayed(Date.now() + CONTINUATION_DELAY_MS, token);
       throw new DelayedError();
     }
 
-    this.logger.log(result, 'timestamps batch processed');
+    this.logger.log({ event: 'timestamps_batch_completed', outcome: 'ok', ...result });
   }
 
   @OnWorkerEvent('failed')
   async onFailed(job: Job<TimestampsJobData> | undefined, error: Error): Promise<void> {
-    this.logger.error(
-      { jobId: job?.id, chainId: job?.data?.chainId, error: parseErrorMessage(error) },
-      'timestamps batch failed',
-    );
+    this.logger.error({
+      event: 'timestamps_batch_failed',
+      outcome: 'failed',
+      jobId: job?.id,
+      chainId: job?.data?.chainId,
+      error: parseErrorMessage(error),
+    });
   }
 }

@@ -19,7 +19,7 @@ interface RegisterOptions {
 }
 
 @Module({})
-export class BackendQueueModule {
+export class QueueModule {
   static register({ name, limiter }: RegisterOptions): DynamicModule {
     const bullRoot = BullModule.forRootAsync({
       inject: [REDIS_CONNECTION],
@@ -29,7 +29,7 @@ export class BackendQueueModule {
     const limiterModule = limiter ? [GroupLimiterModule.register(limiter)] : [];
 
     return {
-      module: BackendQueueModule,
+      module: QueueModule,
       global: true,
       imports: [bullRoot, bullQueue, ...limiterModule],
       exports: [bullQueue, ...limiterModule],

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ALLOWANCES_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/allowances';
-import { BackendQueueModule } from '@revoke.cash/backend/queue/backend-queue.module';
+import { QueueModule } from '@revoke.cash/backend/queue/queue.module';
 import { AllowancesWorker } from './allowances.worker';
 
 @Module({
   imports: [
-    BackendQueueModule.register({
+    QueueModule.register({
       name: ALLOWANCES_QUEUE_NAME,
       limiter: { groupId: 'indexer-allowance', maxConcurrent: 5, overflow: 'delay' },
     }),

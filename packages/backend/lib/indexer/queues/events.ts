@@ -1,3 +1,4 @@
+import { toLowercaseAddress } from '@revoke.cash/core/utils';
 import type { Address } from 'viem';
 
 export interface EventsJobData {
@@ -11,3 +12,9 @@ export interface EventsJobData {
 export type EnqueueOutcome = 'added' | 'deduped';
 
 export const EVENTS_QUEUE_NAME = 'indexer_events';
+
+export const scheduledEventsJobId = (chainId: number, address: Address): string =>
+  `index-events-scheduled-${chainId}-${toLowercaseAddress(address)}`;
+
+export const autoRevokeEventsJobId = (chainId: number, address: Address, actionId: string): string =>
+  `index-events-auto-revoke-${chainId}-${toLowercaseAddress(address)}-${actionId}`;

@@ -32,8 +32,4 @@ export class ConfigService {
     if (!password) throw new Error('BULL_BOARD_PASSWORD is not configured');
     return password;
   }
-
-  get metricsRemoteWriteUrl(): string | undefined {
-    return process.env.METRICS_REMOTE_WRITE_URL;
-  }
 }

@@ -5,14 +5,12 @@ import { GroupLimiterService } from '@revoke.cash/backend/queue/group-limiter.se
 import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/indexer/allowances';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
-import { MetricsService } from '../metrics/metrics.service';
 
 @Processor(ALLOWANCES_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
 export class AllowancesWorker extends WorkerHost {
   private readonly logger = new Logger(AllowancesWorker.name);
 
   constructor(
-    private readonly metrics: MetricsService,
     private readonly groupLimiter: GroupLimiterService,
   ) {
     super();
@@ -21,39 +19,36 @@ export class AllowancesWorker extends WorkerHost {
   async process(job: Job<AllowancesJobData>, token?: string): Promise<void> {
     const { address, chainId, eventsScanId } = job.data;
 
-    const result = await this.groupLimiter.runWithLimit(
-      chainId,
-      async () => {
-        const endTimer = this.metrics.allowanceRecomputeDuration.startTimer({ chain_id: chainId });
-        const recompute = await recomputeAllowances(address, chainId);
-        endTimer();
-        return recompute;
-      },
-      { job, token },
-    );
+    const result = await this.groupLimiter.runWithLimit(chainId, () => recomputeAllowances(address, chainId), {
+      job,
+      token,
+    });
+
 
     if (result.skipped) {
-      this.metrics.allowancesTotal.inc({ chain_id: chainId, outcome: 'skipped' });
-      this.logger.debug(
-        { eventsScanId, chainId, address, durationMs: result.durationMs },
-        'no new allowance-relevant events since cursor',
-      );
-      return;
-    }
-
-    this.metrics.allowancesTotal.inc({ chain_id: chainId, outcome: 'ok' });
-    this.logger.log(
-      {
+      this.logger.debug({
+        event: 'allowance_recompute_completed',
+        outcome: 'skipped',
         eventsScanId,
         chainId,
         address,
-        computedCount: result.computedCount,
-        affectedTokenCount: result.affectedTokenCount,
         durationMs: result.durationMs,
-      },
-      'allowance recompute completed',
-    );
+      });
+      return;
+    }
+
+    this.logger.log({
+      event: 'allowance_recompute_completed',
+      outcome: 'ok',
+      eventsScanId,
+      chainId,
+      address,
+      computedCount: result.computedCount,
+      affectedTokenCount: result.affectedTokenCount,
+      durationMs: result.durationMs,
+    });
   }
+
 
   // BullMQ retries handle transient errors; only count toward the 'failed' metric once retries
   // are exhausted. Same pattern as EventsWorker.
@@ -63,26 +58,27 @@ export class AllowancesWorker extends WorkerHost {
     const maxAttempts = job?.opts?.attempts ?? 1;
     const exhausted = attempt >= maxAttempts;
 
-    this.logger.error(
-      {
-        eventsScanId: job?.data?.eventsScanId,
-        chainId: job?.data?.chainId,
-        address: job?.data?.address,
-        attempt,
-        maxAttempts,
-        exhausted,
-        error: { message: parseErrorMessage(error), stack: error.stack },
-      },
-      'allowance recompute failed',
-    );
+    this.logger.error({
+      event: 'allowance_recompute_failed',
+      outcome: exhausted ? 'failed' : 'retrying',
+      eventsScanId: job?.data?.eventsScanId,
+      chainId: job?.data?.chainId,
+      address: job?.data?.address,
+      attempt,
+      maxAttempts,
+      exhausted,
+      error: { message: parseErrorMessage(error), stack: error.stack },
+    });
 
     if (!exhausted || !job?.data) return;
-    this.metrics.allowancesTotal.inc({ chain_id: job.data.chainId, outcome: 'failed' });
     await recordAllowanceFailure(job.data.address, job.data.chainId, error).catch((err) => {
-      this.logger.warn(
-        { chainId: job.data.chainId, address: job.data.address, error: parseErrorMessage(err) },
-        'failed to record allowance failure state',
-      );
+      this.logger.warn({
+        event: 'allowance_failure_state_update_failed',
+        outcome: 'failed',
+        chainId: job.data.chainId,
+        address: job.data.address,
+        error: parseErrorMessage(err),
+      });
     });
   }
 }

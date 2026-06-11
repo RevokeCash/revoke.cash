@@ -1,7 +1,7 @@
 import { type DynamicModule, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { HealthModule } from '@revoke.cash/backend/health/health.module';
-import { BackendLoggerModule } from '@revoke.cash/backend/logger/logger.module';
+import { LoggerModule } from '@revoke.cash/backend/logger/logger.module';
 import { RedisModule } from '@revoke.cash/backend/redis/redis.module';
 import { AllowancesSchedulerModule } from './allowances/allowances.scheduler.module';
 import { AllowancesWorkerModule } from './allowances/allowances.worker.module';
@@ -10,7 +10,6 @@ import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { EventsSchedulerModule } from './events/events.scheduler.module';
 import { EventsWorkerModule } from './events/events.worker.module';
-import { MetricsModule } from './metrics/metrics.module';
 import { SpenderMetadataSchedulerModule } from './spender-metadata/spender-metadata.scheduler.module';
 import { SpenderMetadataWorkerModule } from './spender-metadata/spender-metadata.worker.module';
 import { TimestampsSchedulerModule } from './timestamps/timestamps.scheduler.module';
@@ -26,16 +25,16 @@ export class AppModule {
 
     const imports = [
       ScheduleModule.forRoot(),
-      BackendLoggerModule.register({ serviceName: 'indexer', role: config.role }),
+      LoggerModule.register({ serviceName: 'indexer', role: config.role }),
       ConfigModule,
       RedisModule,
       HealthModule,
-      MetricsModule,
       isManager ? EventsSchedulerModule : EventsWorkerModule,
       isManager ? AllowancesSchedulerModule : AllowancesWorkerModule,
       isManager ? TimestampsSchedulerModule : TimestampsWorkerModule,
       isManager ? TokenMetadataSchedulerModule : TokenMetadataWorkerModule,
       isManager ? SpenderMetadataSchedulerModule : SpenderMetadataWorkerModule,
+      ...(isManager ? [BullBoardModule] : []),
     ];
 
     return {

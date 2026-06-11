@@ -22,7 +22,7 @@ export const SPENDER_METADATA_QUEUE_NAME = 'indexer_spender_metadata';
 const DEFAULT_SPENDER_METADATA_BATCH_SIZE = 2_000;
 
 export const spenderMetadataJobId = (chainId: number, spenderAddress: Address): string =>
-  `${chainId}-${toLowercaseAddress(spenderAddress)}`;
+  `enrich-spender-metadata-${chainId}-${toLowercaseAddress(spenderAddress)}`;
 
 export const enqueueUnenrichedSpenders = async (
   queue: SpenderMetadataQueue,

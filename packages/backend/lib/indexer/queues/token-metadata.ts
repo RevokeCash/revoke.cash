@@ -22,7 +22,7 @@ export const TOKEN_METADATA_QUEUE_NAME = 'indexer_token_metadata';
 const DEFAULT_TOKEN_METADATA_BATCH_SIZE = 2_000;
 
 export const tokenMetadataJobId = (chainId: number, tokenAddress: Address): string =>
-  `${chainId}-${toLowercaseAddress(tokenAddress)}`;
+  `enrich-token-metadata-${chainId}-${toLowercaseAddress(tokenAddress)}`;
 
 export const enqueueUnenrichedTokens = async (
   queue: TokenMetadataQueue,

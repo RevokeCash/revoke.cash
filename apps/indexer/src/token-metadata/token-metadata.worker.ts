@@ -8,44 +8,31 @@ import { GroupLimiterService } from '@revoke.cash/backend/queue/group-limiter.se
 import { enrichToken } from '@revoke.cash/core/indexer/token-metadata';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job } from 'bullmq';
-import { MetricsService } from '../metrics/metrics.service';
 
 @Processor(TOKEN_METADATA_QUEUE_NAME, { concurrency: 100, lockDuration: 90_000 })
 export class TokenMetadataWorker extends WorkerHost {
   private readonly logger = new Logger(TokenMetadataWorker.name);
 
-  constructor(
-    private readonly metrics: MetricsService,
-    private readonly groupLimiter: GroupLimiterService,
-  ) {
+  constructor(private readonly groupLimiter: GroupLimiterService) {
     super();
   }
 
   async process(job: Job<TokenMetadataJobData>, token?: string): Promise<void> {
     const { chainId, tokenAddress, source } = job.data;
 
-    const result = await this.groupLimiter.runWithLimit(
-      chainId,
-      async () => {
-        const endTimer = this.metrics.tokenMetadataDuration.startTimer({ chain_id: chainId });
-        const enrichment = await enrichToken(chainId, tokenAddress);
-        endTimer();
-        return enrichment;
-      },
-      { job, token },
-    );
+    const result = await this.groupLimiter.runWithLimit(chainId, () => enrichToken(chainId, tokenAddress), {
+      job,
+      token,
+    });
 
-    this.metrics.tokenMetadataTotal.inc({ chain_id: chainId, outcome: result.outcome });
-    this.logger.debug(
-      {
-        chainId,
-        tokenAddress,
-        source,
-        outcome: result.outcome,
-        durationMs: result.durationMs,
-      },
-      'token metadata completed',
-    );
+    this.logger.debug({
+      event: 'token_metadata_completed',
+      chainId,
+      tokenAddress,
+      source,
+      outcome: result.outcome,
+      durationMs: result.durationMs,
+    });
   }
 
   @OnWorkerEvent('failed')
@@ -54,20 +41,16 @@ export class TokenMetadataWorker extends WorkerHost {
     const maxAttempts = job?.opts?.attempts ?? 1;
     const exhausted = attempt >= maxAttempts;
 
-    this.logger.error(
-      {
-        chainId: job?.data?.chainId,
-        tokenAddress: job?.data?.tokenAddress,
-        source: job?.data?.source,
-        attempt,
-        maxAttempts,
-        exhausted,
-        error: { message: parseErrorMessage(error), stack: error.stack },
-      },
-      'token metadata failed',
-    );
-
-    if (!exhausted || !job?.data) return;
-    this.metrics.tokenMetadataTotal.inc({ chain_id: job.data.chainId, outcome: 'failed' });
+    this.logger.error({
+      event: 'token_metadata_failed',
+      outcome: exhausted ? 'failed' : 'retrying',
+      chainId: job?.data?.chainId,
+      tokenAddress: job?.data?.tokenAddress,
+      source: job?.data?.source,
+      attempt,
+      maxAttempts,
+      exhausted,
+      error: { message: parseErrorMessage(error), stack: error.stack },
+    });
   }
 }

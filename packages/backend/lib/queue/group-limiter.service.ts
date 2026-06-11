@@ -51,7 +51,7 @@ export class GroupLimiterService implements OnModuleDestroy {
     });
 
     this.group.on('error', (error) => {
-      this.logger.error({ error: parseErrorMessage(error), groupId }, 'group limiter error');
+      this.logger.error({ event: 'group_limiter_error', outcome: 'failed', error: parseErrorMessage(error), groupId });
     });
   }
 
@@ -82,7 +82,11 @@ export class GroupLimiterService implements OnModuleDestroy {
 
   async onModuleDestroy(): Promise<void> {
     await this.group.disconnect(true).catch((error) => {
-      this.logger.warn({ error: parseErrorMessage(error) }, 'failed to disconnect group limiter');
+      this.logger.warn({
+        event: 'group_limiter_disconnect_failed',
+        outcome: 'failed',
+        error: parseErrorMessage(error),
+      });
     });
   }
 }

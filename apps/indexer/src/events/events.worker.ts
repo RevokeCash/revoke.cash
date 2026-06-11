@@ -1,13 +1,21 @@
 import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
-import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '@revoke.cash/backend/indexer/queues/allowances';
+import {
+  ALLOWANCES_QUEUE_NAME,
+  type AllowancesJobData,
+  allowanceRecomputeJobId,
+} from '@revoke.cash/backend/indexer/queues/allowances';
 import { EVENTS_QUEUE_NAME, type EventsJobData } from '@revoke.cash/backend/indexer/queues/events';
 import {
   enqueueUnenrichedSpenders,
   SPENDER_METADATA_QUEUE_NAME,
   type SpenderMetadataJobData,
 } from '@revoke.cash/backend/indexer/queues/spender-metadata';
-import { TIMESTAMPS_QUEUE_NAME, type TimestampsJobData } from '@revoke.cash/backend/indexer/queues/timestamps';
+import {
+  TIMESTAMPS_QUEUE_NAME,
+  type TimestampsJobData,
+  timestampsJobId,
+} from '@revoke.cash/backend/indexer/queues/timestamps';
 import {
   enqueueUnenrichedTokens,
   TOKEN_METADATA_QUEUE_NAME,
@@ -21,17 +29,12 @@ import {
 } from '@revoke.cash/core/indexer/events';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import type { Job, Queue } from 'bullmq';
-import { MetricsService } from '../metrics/metrics.service';
-
-const allowanceJobIdFor = (chainId: number, address: string): string => `${chainId}-${address}`;
-const timestampsJobIdFor = (chainId: number): string => `timestamps-${chainId}`;
 
 @Processor(EVENTS_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
 export class EventsWorker extends WorkerHost {
   private readonly logger = new Logger(EventsWorker.name);
 
   constructor(
-    private readonly metrics: MetricsService,
     private readonly groupLimiter: GroupLimiterService,
     @InjectQueue(ALLOWANCES_QUEUE_NAME) private readonly allowancesQueue: Queue<AllowancesJobData>,
     @InjectQueue(TIMESTAMPS_QUEUE_NAME) private readonly timestampsQueue: Queue<TimestampsJobData>,
@@ -49,43 +52,57 @@ export class EventsWorker extends WorkerHost {
     const result = await this.groupLimiter.runWithLimit(
       chainId,
       async () => {
-        this.logger.debug({ eventsScanId, chainId, address, reason }, 'processing events');
-        const endTimer = this.metrics.eventsScanDuration.startTimer({ chain_id: chainId });
-        const eventsResult = await indexEvents(address, chainId);
-        if (!eventsResult.nonceZeroSkipped) endTimer({ path: eventsResult.path });
-        return eventsResult;
+        this.logger.debug({
+          event: 'events_indexing_started',
+          outcome: 'started',
+          eventsScanId,
+          chainId,
+          address,
+          reason,
+        });
+        return indexEvents(address, chainId);
       },
       { job, token },
     );
 
     if (result.nonceZeroSkipped) {
-      this.metrics.eventsScansTotal.inc({ chain_id: chainId, outcome: 'nonce_zero' });
-      this.logger.debug({ eventsScanId, chainId, address }, 'events skipped (nonce 0)');
+      this.logger.debug({
+        event: 'events_indexing_completed',
+        outcome: 'nonce_zero',
+        eventsScanId,
+        chainId,
+        address,
+        durationMs: result.durationMs,
+      });
       return;
     }
 
-    this.metrics.eventsScansTotal.inc({ chain_id: chainId, outcome: 'ok' });
-    this.metrics.eventsScanLogsFetched.observe({ chain_id: chainId, path: result.path }, result.logsFetched);
-    this.logger.log({ eventsScanId, chainId, address, ...result }, 'events indexed');
+    this.logger.log({ event: 'events_indexing_completed', outcome: 'ok', eventsScanId, chainId, address, ...result });
 
     if (result.logsWritten > 0) {
-      await this.timestampsQueue
-        .add('timestamps', { chainId }, { jobId: timestampsJobIdFor(chainId) })
-        .catch((error) => {
-          this.logger.warn(
-            { eventsScanId, chainId, address, error: parseErrorMessage(error) },
-            'failed to enqueue timestamps',
-          );
+      await this.timestampsQueue.add('timestamps', { chainId }, { jobId: timestampsJobId(chainId) }).catch((error) => {
+        this.logger.warn({
+          event: 'timestamps_enqueue_failed',
+          outcome: 'failed',
+          eventsScanId,
+          chainId,
+          address,
+          error: parseErrorMessage(error),
         });
+      });
     }
 
     await this.allowancesQueue
-      .add('recompute', { address, chainId, eventsScanId }, { jobId: allowanceJobIdFor(chainId, address) })
+      .add('recompute', { address, chainId, eventsScanId }, { jobId: allowanceRecomputeJobId(chainId, address) })
       .catch((error) => {
-        this.logger.warn(
-          { eventsScanId, chainId, address, error: parseErrorMessage(error) },
-          'failed to enqueue allowance recompute',
-        );
+        this.logger.warn({
+          event: 'allowance_recompute_enqueue_failed',
+          outcome: 'failed',
+          eventsScanId,
+          chainId,
+          address,
+          error: parseErrorMessage(error),
+        });
       });
 
     if (result.logsWritten === 0) return;
@@ -95,17 +112,25 @@ export class EventsWorker extends WorkerHost {
       { chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, limit: null },
       'events',
     ).catch((error) => {
-      this.logger.warn(
-        { eventsScanId, chainId, error: parseErrorMessage(error) },
-        'failed to enqueue token metadata fan-out',
-      );
+      this.logger.warn({
+        event: 'token_metadata_enqueue_failed',
+        outcome: 'failed',
+        eventsScanId,
+        chainId,
+        error: parseErrorMessage(error),
+      });
     });
 
     if (enqueued && enqueued > 0) {
-      this.logger.debug(
-        { eventsScanId, chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, enqueued },
-        'enqueued token metadata jobs',
-      );
+      this.logger.debug({
+        event: 'token_metadata_enqueue_completed',
+        outcome: 'enqueued',
+        eventsScanId,
+        chainId,
+        fromBlock: result.fromBlock,
+        toBlock: result.toBlock,
+        enqueued,
+      });
     }
 
     const spenderMetadataEnqueued = await enqueueUnenrichedSpenders(
@@ -113,23 +138,25 @@ export class EventsWorker extends WorkerHost {
       { address, chainId, fromBlock: result.fromBlock, toBlock: result.toBlock, limit: null },
       'events',
     ).catch((error) => {
-      this.logger.warn(
-        { eventsScanId, chainId, error: parseErrorMessage(error) },
-        'failed to enqueue spender metadata fan-out',
-      );
+      this.logger.warn({
+        event: 'spender_metadata_enqueue_failed',
+        outcome: 'failed',
+        eventsScanId,
+        chainId,
+        error: parseErrorMessage(error),
+      });
     });
 
     if (spenderMetadataEnqueued && spenderMetadataEnqueued > 0) {
-      this.logger.debug(
-        {
-          eventsScanId,
-          chainId,
-          fromBlock: result.fromBlock,
-          toBlock: result.toBlock,
-          enqueued: spenderMetadataEnqueued,
-        },
-        'enqueued spender metadata jobs',
-      );
+      this.logger.debug({
+        event: 'spender_metadata_enqueue_completed',
+        outcome: 'enqueued',
+        eventsScanId,
+        chainId,
+        fromBlock: result.fromBlock,
+        toBlock: result.toBlock,
+        enqueued: spenderMetadataEnqueued,
+      });
     }
   }
 
@@ -142,18 +169,17 @@ export class EventsWorker extends WorkerHost {
     const maxAttempts = job?.opts?.attempts ?? 1;
     const exhausted = attempt >= maxAttempts;
 
-    this.logger.error(
-      {
-        eventsScanId: job?.data?.eventsScanId,
-        chainId: job?.data?.chainId,
-        address: job?.data?.address,
-        attempt,
-        maxAttempts,
-        exhausted,
-        error: { message: parseErrorMessage(error), stack: error.stack },
-      },
-      'events indexing failed',
-    );
+    this.logger.error({
+      event: 'events_indexing_failed',
+      outcome: exhausted ? 'failed' : 'retrying',
+      eventsScanId: job?.data?.eventsScanId,
+      chainId: job?.data?.chainId,
+      address: job?.data?.address,
+      attempt,
+      maxAttempts,
+      exhausted,
+      error: { message: parseErrorMessage(error), stack: error.stack },
+    });
 
     if (!job?.data) return;
 
@@ -161,19 +187,26 @@ export class EventsWorker extends WorkerHost {
 
     try {
       const nextMaxBlockRange = await reduceEventsMaxBlockRangeAfterFailure(address, chainId);
-      this.logger.warn(
-        { eventsScanId, chainId, address, nextMaxBlockRange },
-        'reduced events max block range after failure',
-      );
+      this.logger.warn({
+        event: 'events_max_block_range_reduced',
+        outcome: 'reduced',
+        eventsScanId,
+        chainId,
+        address,
+        nextMaxBlockRange,
+      });
     } catch (rangeError) {
-      this.logger.warn(
-        { eventsScanId, chainId, address, error: parseErrorMessage(rangeError) },
-        'failed to reduce events max block range after failure',
-      );
+      this.logger.warn({
+        event: 'events_max_block_range_reduction_failed',
+        outcome: 'failed',
+        eventsScanId,
+        chainId,
+        address,
+        error: parseErrorMessage(rangeError),
+      });
     }
 
     if (!exhausted) return;
-    this.metrics.eventsScansTotal.inc({ chain_id: chainId, outcome: 'failed' });
     await recordEventsFailure(address, chainId, error);
   }
 }

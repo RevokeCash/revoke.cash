@@ -29,7 +29,12 @@ export class TokenMetadataSchedulerService {
       try {
         return await enqueueUnenrichedTokens(this.queue, { chainId, staleBefore }, 'scheduler');
       } catch (error) {
-        this.logger.warn({ chainId, error: parseErrorMessage(error) }, 'failed to enqueue unenriched tokens');
+        this.logger.warn({
+          event: 'token_metadata_enqueue_failed',
+          outcome: 'failed',
+          chainId,
+          error: parseErrorMessage(error),
+        });
         return 0;
       }
     });
@@ -37,9 +42,18 @@ export class TokenMetadataSchedulerService {
     const totalEnqueued = results.reduce((sum, count) => sum + count, 0);
 
     if (totalEnqueued > 0) {
-      this.logger.log({ totalEnqueued, totalChains: ORDERED_CHAINS.length }, 'token metadata tick complete');
+      this.logger.log({
+        event: 'token_metadata_scheduler_tick_completed',
+        outcome: 'enqueued',
+        totalEnqueued,
+        totalChains: ORDERED_CHAINS.length,
+      });
     } else {
-      this.logger.debug({ totalChains: ORDERED_CHAINS.length }, 'token metadata tick complete (nothing to enqueue)');
+      this.logger.debug({
+        event: 'token_metadata_scheduler_tick_completed',
+        outcome: 'empty',
+        totalChains: ORDERED_CHAINS.length,
+      });
     }
   }
 }

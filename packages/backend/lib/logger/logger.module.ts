@@ -2,7 +2,7 @@ import { type DynamicModule, Module } from '@nestjs/common';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
 import { INSTANCE_ID } from '../observability/instance';
 
-interface BackendLoggerModuleOptions {
+interface LoggerModuleOptions {
   serviceName: string;
   role?: string;
 }
@@ -11,10 +11,10 @@ const LOG_LEVEL = process.env.LOG_LEVEL ?? 'info';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 @Module({})
-export class BackendLoggerModule {
-  static register({ serviceName, role }: BackendLoggerModuleOptions): DynamicModule {
+export class LoggerModule {
+  static register({ serviceName, role }: LoggerModuleOptions): DynamicModule {
     return {
-      module: BackendLoggerModule,
+      module: LoggerModule,
       imports: [
         PinoLoggerModule.forRoot({
           pinoHttp: {
