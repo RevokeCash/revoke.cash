@@ -1,5 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY, MULTICALL_ADDRESS } from 'lib/constants';
+import { ALCHEMY_API_KEY, DRPC_API_KEY, MULTICALL_ADDRESS } from 'lib/constants';
 import type { EtherscanPlatform, RateLimit } from 'lib/interfaces';
 import type { AddEthereumChainParameter, PublicClient, Chain as ViemChain } from 'viem';
 import { Chain, type DeployedContracts, SupportType } from '../chains/Chain';
@@ -34,17 +34,20 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CoreBlockchainMainnet,
   ChainId.SeiNetwork,
   ChainId.PlumeMainnet,
+  ChainId.WorldChain,
+  ChainId.TempoMainnetPresto,
   ChainId.PulseChain,
-  ChainId.Abstract,
   ChainId.Mode,
   ChainId.Blast,
   ChainId.ZkSyncMainnet,
   ChainId['Filecoin-Mainnet'],
   ChainId.Swellchain,
-  ChainId.TaikoAlethia,
+  ChainId.Abstract,
+  ChainId.Taiko,
   ChainId.BOB,
+  ChainId.ImmutablezkEVM,
+  ChainId.RolluxMainnet,
   ChainId.Scroll,
-  ChainId.WorldChain,
   ChainId.ReyaNetwork,
   ChainId.Fraxtal,
   ChainId.Morph,
@@ -52,6 +55,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.CeloMainnet,
   ChainId.EtherlinkMainnet,
   ChainId.Injective,
+  ChainId.RISE,
   ChainId.Story,
   ChainId.FlowEVMMainnet,
   ChainId.TACMainnet,
@@ -62,7 +66,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.OpBNBMainnet,
   ChainId.CitreaMainnet,
   ChainId.XDCNetwork,
-  ChainId.ImmutablezkEVM,
   ChainId.ArbitrumNova,
   ChainId.MetisAndromedaMainnet,
   ChainId.MantaPacificMainnet,
@@ -73,7 +76,6 @@ export const CHAIN_SELECT_MAINNETS = [
   999, // Hyperliquid EVM
   ChainId.TelosEVMMainnet,
   ChainId.Sophon,
-  ChainId.RolluxMainnet,
   ChainId.SyscoinMainnet,
   ChainId.ZetaChainMainnet,
   ChainId.AuroraMainnet,
@@ -84,7 +86,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.GravityAlphaMainnet,
   ChainId.OasisEmerald,
   ChainId.OasisSapphire,
-  ChainId.MintMainnet,
   ChainId.ChilizChainMainnet,
   ChainId.DogechainMainnet,
   ChainId.Beam,
@@ -106,19 +107,17 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.ShimmerEVM,
   ChainId.BitTorrentChainMainnet,
   ChainId.EthereumClassic,
-  ChainId.SubtensorEVM,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.Shape,
   ChainId.DarwiniaNetwork,
   ChainId.Superposition,
+  ChainId.GensynMainnet,
   ChainId.Nahmii3Mainnet,
   ChainId.ShidoNetwork,
   ChainId.Matchain,
   ChainId.RARIChainMainnet,
   ChainId.NeoXMainnet,
   ChainId.BitgertMainnet,
-  ChainId.Redstone,
-  ChainId.RSS3VSLMainnet,
   ChainId.ExosamaNetwork,
   ChainId.OctaSpace,
   202555, // Kasplex zkEVM
@@ -134,7 +133,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AbstractSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
-  ChainId.RISETestnet,
   ChainId.ZenChainTestnet,
   824642, // ZugChain Testnet
 ] as const;
@@ -229,19 +227,18 @@ export const CHAINS = {
     explorerUrl: 'https://arbiscan.io',
     rpc: {
       main: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://arb1.arbitrum.io/rpc',
     },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.ArbitrumSepolia]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.ArbitrumSepolia,
     name: 'Arbitrum Sepolia',
     logoUrl: '/assets/images/vendor/chains/arbitrum.svg',
     explorerUrl: 'https://sepolia.arbiscan.io',
     rpc: {
-      main: `https://arbitrum-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://arb-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -281,19 +278,19 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/avalanche.svg',
     explorerUrl: 'https://snowscan.xyz',
     rpc: {
-      main: `https://avalanche-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://avax-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.AvalancheFujiTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.AvalancheFujiTestnet,
     name: 'Avalanche Fuji',
     nativeTokenCoingeckoId: 'avalanche-2',
     logoUrl: '/assets/images/vendor/chains/avalanche.svg',
     explorerUrl: 'https://testnet.snowscan.xyz',
     rpc: {
-      main: `https://avalanche-fuji.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://avax-fuji.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -307,17 +304,16 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/base.svg',
     rpc: {
       main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.BaseSepoliaTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.BaseSepoliaTestnet,
     name: 'Base Sepolia',
     logoUrl: '/assets/images/vendor/chains/base.svg',
     rpc: {
-      main: `https://base-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://base-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -384,7 +380,7 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/blast.jpg',
     explorerUrl: 'https://blastscan.io',
     rpc: {
-      main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -462,7 +458,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'celo',
     logoUrl: '/assets/images/vendor/chains/celo.svg',
     rpc: {
-      main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://celo-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -574,7 +570,8 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/elastos.jpg',
     etherscanCompatibleApiUrl: 'https://esc.elastos.io/api',
     rpc: {
-      main: 'https://rpc.glidefinance.io',
+      main: 'https://api.elastos.io/esc',
+      free: 'https://api.elastos.io/esc',
     },
   }),
   [ChainId.EtherlinkMainnet]: new Chain({
@@ -602,8 +599,8 @@ export const CHAINS = {
     coingeckoNetworkId: 'eth',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
-      main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
-      free: 'https://eth.llamarpc.com',
+      main: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://eth.drpc.org',
     },
     deployedContracts: {
       ...MULTICALL,
@@ -611,12 +608,12 @@ export const CHAINS = {
     },
   }),
   [ChainId.EthereumSepolia]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.EthereumSepolia,
     name: 'Ethereum Sepolia',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
-      main: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://ethereum-sepolia-rpc.publicnode.com',
     },
     deployedContracts: { ...MULTICALL },
@@ -665,7 +662,6 @@ export const CHAINS = {
     nativeTokenCoingeckoId: 'flow',
     coingeckoNetworkId: 'flow-evm',
     logoUrl: '/assets/images/vendor/chains/flow.png',
-    etherscanCompatibleApiUrl: 'https://evm.flowscan.io/api',
     rpc: {
       main: `https://flow-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
@@ -692,6 +688,15 @@ export const CHAINS = {
       main: `https://lb.drpc.live/fuse/${DRPC_API_KEY}`,
       free: 'https://fuse.drpc.org',
     },
+    deployedContracts: { ...MULTICALL },
+  }),
+  [ChainId.GensynMainnet]: new Chain({
+    type: SupportType.BLOCKSCOUT,
+    chainId: ChainId.GensynMainnet,
+    name: 'Gensyn',
+    nativeTokenCoingeckoId: 'gensyn',
+    coingeckoNetworkId: 'gensyn',
+    logoUrl: '/assets/images/vendor/chains/gensyn.svg',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Gnosis]: new Chain({
@@ -839,6 +844,7 @@ export const CHAINS = {
     chainId: ChainId.IgraNetwork,
     name: 'Igra Network',
     nativeTokenCoingeckoId: 'kaspa',
+    coingeckoNetworkId: 'igra',
     logoUrl: '/assets/images/vendor/chains/igra.svg',
     etherscanCompatibleApiUrl: 'https://explorer.igralabs.com/api',
     deployedContracts: {
@@ -900,14 +906,14 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Linea]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.Linea,
     name: 'Linea',
     coingeckoNetworkId: 'linea',
     logoUrl: '/assets/images/vendor/chains/linea.png',
     explorerUrl: 'https://lineascan.build',
     rpc: {
-      main: `https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://linea-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -982,14 +988,6 @@ export const CHAINS = {
     rpc: {
       main: `https://metis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.MintMainnet]: new Chain({
-    type: SupportType.ROUTESCAN,
-    chainId: ChainId.MintMainnet,
-    name: 'Mint',
-    coingeckoNetworkId: 'mint',
-    logoUrl: '/assets/images/vendor/chains/mint.svg',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Mode]: new Chain({
@@ -1085,6 +1083,7 @@ export const CHAINS = {
       main: 'https://mainnet-1.rpc.banelabs.org',
       free: 'https://mainnet-2.rpc.banelabs.org',
     },
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.OasisEmerald]: new Chain({
     type: SupportType.COVALENT,
@@ -1145,17 +1144,16 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
       main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      logs: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.OPSepoliaTestnet]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN,
     chainId: ChainId.OPSepoliaTestnet,
     name: 'Optimism Sepolia',
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
-      main: `https://optimism-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://opt-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1194,7 +1192,7 @@ export const CHAINS = {
     coingeckoNetworkId: 'polygon_pos',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
-      main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       free: 'https://polygon.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
@@ -1232,14 +1230,6 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
   }),
-  [ChainId.Redstone]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Redstone,
-    name: 'Redstone',
-    coingeckoNetworkId: 'redstone',
-    logoUrl: '/assets/images/vendor/chains/redstone.svg',
-    deployedContracts: { ...MULTICALL },
-  }),
   [ChainId.ReyaNetwork]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.ReyaNetwork,
@@ -1264,21 +1254,13 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.RISE]: new Chain({
-    type: SupportType.UNSUPPORTED,
+    type: SupportType.BLOCKSCOUT,
     chainId: ChainId.RISE,
     name: 'RISE',
     logoUrl: '/assets/images/vendor/chains/rise.svg',
-  }),
-  [ChainId.RISETestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.RISETestnet,
-    name: 'RISE Testnet',
-    logoUrl: '/assets/images/vendor/chains/rise.svg',
-    explorerUrl: 'https://explorer.testnet.riselabs.xyz',
-    etherscanCompatibleApiUrl: 'https://explorer.testnet.riselabs.xyz/api',
+    explorerUrl: 'https://explorer.risechain.com',
+    etherscanCompatibleApiUrl: 'https://explorer.risechain.com/api',
     deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.RISE,
   }),
   [ChainId.RoninMainnet]: new Chain({
     type: SupportType.COVALENT,
@@ -1303,16 +1285,6 @@ export const CHAINS = {
     rpc: {
       main: `https://rootstock-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
-    deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.RSS3VSLMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.RSS3VSLMainnet,
-    name: 'RSS3 VSL',
-    nativeTokenCoingeckoId: 'rss3',
-    coingeckoNetworkId: 'rss3-vsl-mainnet',
-    logoUrl: '/assets/images/vendor/chains/rss3.svg',
-    etherscanCompatibleApiUrl: 'https://scan.rss3.io/api',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Scroll]: new Chain({
@@ -1419,7 +1391,6 @@ export const CHAINS = {
     chainId: ChainId['SongbirdCanary-Network'],
     name: 'Songbird',
     nativeTokenCoingeckoId: 'songbird',
-    coingeckoNetworkId: 'songbird',
     logoUrl: '/assets/images/vendor/chains/songbird.svg',
     infoUrl: 'https://flare.network/songbird',
     etherscanCompatibleApiUrl: 'https://songbird-explorer.flare.network/api',
@@ -1460,17 +1431,6 @@ export const CHAINS = {
     rpc: {
       main: 'https://mainnet.storyrpc.io',
     },
-    deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.SubtensorEVM]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.SubtensorEVM,
-    name: 'Bittensor EVM',
-    nativeTokenCoingeckoId: 'bittensor',
-    coingeckoNetworkId: 'bittensor',
-    logoUrl: '/assets/images/vendor/chains/bittensor.svg',
-    explorerUrl: 'https://evm.taostats.io',
-    etherscanCompatibleApiUrl: 'https://evm.taostats.io/api',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Superposition]: new Chain({
@@ -1520,10 +1480,10 @@ export const CHAINS = {
     },
     deployedContracts: { ...MULTICALL },
   }),
-  [ChainId.TaikoAlethia]: new Chain({
+  [ChainId.Taiko]: new Chain({
     type: SupportType.ETHERSCAN,
-    chainId: ChainId.TaikoAlethia,
-    name: 'Taiko Alethia',
+    chainId: ChainId.Taiko,
+    name: 'Taiko',
     coingeckoNetworkId: 'taiko',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
     explorerUrl: 'https://taikoscan.io',
@@ -1539,6 +1499,18 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://teloscan.io/api',
     rpc: {
       main: 'https://rpc.telos.net',
+    },
+    deployedContracts: { ...MULTICALL },
+  }),
+  [ChainId.TempoMainnetPresto]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.TempoMainnetPresto,
+    name: 'Tempo',
+    nativeTokenCoingeckoId: 'pathusd',
+    coingeckoNetworkId: 'tempo',
+    logoUrl: '/assets/images/vendor/chains/tempo.svg',
+    rpc: {
+      main: `https://tempo-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),

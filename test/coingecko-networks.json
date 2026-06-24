@@ -194,11 +194,6 @@
     },
     { "id": "zksync", "type": "network", "attributes": { "name": "ZkSync", "coingecko_asset_platform_id": "zksync" } },
     {
-      "id": "loopnetwork",
-      "type": "network",
-      "attributes": { "name": "LoopNetwork", "coingecko_asset_platform_id": null }
-    },
-    {
       "id": "multivac",
       "type": "network",
       "attributes": { "name": "MultiVAC", "coingecko_asset_platform_id": "multivac" }
@@ -224,7 +219,6 @@
       "type": "network",
       "attributes": { "name": "Pulsechain", "coingecko_asset_platform_id": "pulsechain" }
     },
-    { "id": "tenet", "type": "network", "attributes": { "name": "Tenet", "coingecko_asset_platform_id": "tenet" } },
     { "id": "rollux", "type": "network", "attributes": { "name": "Rollux", "coingecko_asset_platform_id": "rollux" } },
     {
       "id": "starknet-alpha",
@@ -445,11 +439,6 @@
       "type": "network",
       "attributes": { "name": "Zedxion Smart Chain", "coingecko_asset_platform_id": "zedxion" }
     },
-    {
-      "id": "genesys-network",
-      "type": "network",
-      "attributes": { "name": "Genesys Network", "coingecko_asset_platform_id": "genesys-network" }
-    },
     { "id": "taiko", "type": "network", "attributes": { "name": "Taiko", "coingecko_asset_platform_id": "taiko" } },
     {
       "id": "sanko-mainnet",
@@ -533,7 +522,6 @@
       "attributes": { "name": "Gravity", "coingecko_asset_platform_id": "gravity-alpha" }
     },
     { "id": "tron", "type": "network", "attributes": { "name": "Tron", "coingecko_asset_platform_id": "tron" } },
-    { "id": "mint", "type": "network", "attributes": { "name": "Mint", "coingecko_asset_platform_id": "mint" } },
     {
       "id": "swanchain",
       "type": "network",
@@ -570,11 +558,6 @@
       "id": "icp",
       "type": "network",
       "attributes": { "name": "Internet Computer", "coingecko_asset_platform_id": "internet-computer" }
-    },
-    {
-      "id": "defiverse",
-      "type": "network",
-      "attributes": { "name": "DefiVerse", "coingecko_asset_platform_id": "defiverse" }
     },
     {
       "id": "zero-network",
@@ -658,7 +641,6 @@
       "attributes": { "name": "Berachain", "coingecko_asset_platform_id": "berachain" }
     },
     { "id": "treasure", "type": "network", "attributes": { "name": "Treasure", "coingecko_asset_platform_id": null } },
-    { "id": "taraxa", "type": "network", "attributes": { "name": "Taraxa", "coingecko_asset_platform_id": "taraxa" } },
     {
       "id": "unichain",
       "type": "network",
@@ -676,11 +658,6 @@
       "id": "hyperliquid",
       "type": "network",
       "attributes": { "name": "Hyperliquid", "coingecko_asset_platform_id": "hyperliquid" }
-    },
-    {
-      "id": "pundi-aifx-omnilayer",
-      "type": "network",
-      "attributes": { "name": "Pundi AIFX Omnilayer", "coingecko_asset_platform_id": "pundi-aifx-omnilayer" }
     },
     {
       "id": "movement",
@@ -702,11 +679,6 @@
       "id": "shine-chain",
       "type": "network",
       "attributes": { "name": "Shine Chain", "coingecko_asset_platform_id": null }
-    },
-    {
-      "id": "sx-rollup",
-      "type": "network",
-      "attributes": { "name": "SX Rollup", "coingecko_asset_platform_id": "sx-rollup" }
     },
     { "id": "goat", "type": "network", "attributes": { "name": "Goat", "coingecko_asset_platform_id": "goat" } },
     {
@@ -809,7 +781,11 @@
       "type": "network",
       "attributes": { "name": "Gate Layer", "coingecko_asset_platform_id": null }
     },
-    { "id": "kasplex", "type": "network", "attributes": { "name": "Kasplex", "coingecko_asset_platform_id": null } },
+    {
+      "id": "kasplex",
+      "type": "network",
+      "attributes": { "name": "Kasplex", "coingecko_asset_platform_id": "kasplex-2" }
+    },
     { "id": "chromia", "type": "network", "attributes": { "name": "Chromia", "coingecko_asset_platform_id": null } },
     {
       "id": "injective",
@@ -818,7 +794,6 @@
     },
     { "id": "mova", "type": "network", "attributes": { "name": "Mova", "coingecko_asset_platform_id": null } },
     { "id": "monad", "type": "network", "attributes": { "name": "Monad", "coingecko_asset_platform_id": "monad" } },
-    { "id": "blocx", "type": "network", "attributes": { "name": "BlocX", "coingecko_asset_platform_id": null } },
     {
       "id": "layeronex",
       "type": "network",
@@ -881,7 +856,26 @@
     {
       "id": "thorchain",
       "type": "network",
-      "attributes": { "name": "Thorchain", "coingecko_asset_platform_id": "thorchain" }
-    }
+      "attributes": { "name": "THORChain", "coingecko_asset_platform_id": "thorchain" }
+    },
+    {
+      "id": "zigchain",
+      "type": "network",
+      "attributes": { "name": "ZIGChain", "coingecko_asset_platform_id": "zigchain" }
+    },
+    { "id": "gensyn", "type": "network", "attributes": { "name": "Gensyn", "coingecko_asset_platform_id": "gensyn" } },
+    {
+      "id": "bot-chain",
+      "type": "network",
+      "attributes": { "name": "BOT Chain", "coingecko_asset_platform_id": "bot-chain" }
+    },
+    { "id": "fluent", "type": "network", "attributes": { "name": "Fluent", "coingecko_asset_platform_id": "fluent" } },
+    {
+      "id": "fonchain",
+      "type": "network",
+      "attributes": { "name": "FONChain", "coingecko_asset_platform_id": "fonchain" }
+    },
+    { "id": "igra", "type": "network", "attributes": { "name": "Igra", "coingecko_asset_platform_id": "igra" } },
+    { "id": "anubis", "type": "network", "attributes": { "name": "Anubis", "coingecko_asset_platform_id": null } }
   ]
 }

@@ -246,6 +246,8 @@ export const throwIfSpamBytecode = async (contract: TokenContract) => {
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {
+    if (bytecode === '0xef') return; // Tempo marks precompiles with 0xef
+
     // (Minimal) proxies should not be marked as spam
     if (bytecode.endsWith('57fd5bf3')) return; // EIP1167 minimal proxy
     if (bytecode.includes('360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc')) return; // EIP1967 proxy

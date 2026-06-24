@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { TEST_ADDRESSES } from 'cypress/support/chain-fixtures';
 import { ERC20_ABI } from 'lib/abis';
 import { SupportType } from 'lib/chains/Chain';
-import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from 'lib/constants';
+import { ALCHEMY_API_KEY, DRPC_API_KEY } from 'lib/constants';
 import { getScriptLogsProvider } from 'lib/ScriptLogsProvider';
 import { addressToTopic } from 'lib/utils';
 import {
@@ -81,14 +81,14 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         }
 
         const NO_TOKEN_PRICING: number[] = [
-          ChainId.CitreaMainnet,
           ChainId.CoinExSmartChainMainnet,
           ChainId.DarwiniaNetwork,
           ChainId.HarmonyMainnetShard0,
-          ChainId.IgraNetwork,
           ChainId.NeoXMainnet,
           ChainId.OasisEmerald,
           ChainId.ReyaNetwork,
+          ChainId.RISE,
+          ChainId['SongbirdCanary-Network'],
           ChainId.StableMainnet,
           ChainId.SyscoinMainnet,
         ];
@@ -136,7 +136,6 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
       }
 
       it('should not expose API keys in the free RPC URL', () => {
-        INFURA_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(INFURA_API_KEY);
         ALCHEMY_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(ALCHEMY_API_KEY);
         DRPC_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(DRPC_API_KEY);
       });

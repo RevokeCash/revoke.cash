@@ -30,7 +30,7 @@ describe(`Chain Support (${TEST_URL})`, () => {
     const testName = `${chainName} (chainId: ${chainId}) --- ${supportType} (${TEST_URL}/address/${fixtureAddress}?chainId=${chainId})`;
     describeFunction(testName, () => {
       it('should be able to check approvals', () => {
-        cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 10_000 });
+        cy.visit(`${TEST_URL}/address/${fixtureAddress}`, { timeout: 20_000 });
         cy.wait(1000); // Since App Router we now need this delay before the page is fully loaded -__-
 
         cy.get(Selectors.CHAIN_SELECT_BUTTON).click({ force: true });
