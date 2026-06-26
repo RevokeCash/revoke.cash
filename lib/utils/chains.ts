@@ -384,7 +384,7 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.BNBSmartChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN,
+    type: SupportType.PROVIDER,
     chainId: ChainId.BNBSmartChainMainnet,
     name: 'BNB Chain',
     nativeTokenCoingeckoId: 'binancecoin',
@@ -1184,7 +1184,7 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.PolygonMainnet]: new Chain({
-    type: SupportType.ETHERSCAN,
+    type: SupportType.PROVIDER,
     chainId: ChainId.PolygonMainnet,
     name: 'Polygon',
     nativeTokenCoingeckoId: 'polygon-ecosystem-token',
