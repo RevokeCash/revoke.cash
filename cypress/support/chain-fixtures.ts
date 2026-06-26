@@ -99,7 +99,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Soneium]: '0x351F34efCE7BBF960da2ca61130a89bF41471047',
   [ChainId.SonicMainnet]: '0x793625d47087D55f1F1F29eb94d589C199A1D128',
   [ChainId['SongbirdCanary-Network']]: '0x4E8De52271D3bE18cC972af892198103C1e6AfE8',
-  [ChainId.Sophon]: '0x713AA0891b17DCB54208502518e4665A4affC40b',
   [ChainId.StableMainnet]: '0xa040e31d973463D4207e34E28AA9cD33aaF5e252',
   [ChainId.Story]: '0x4545dFE080ADf461756710e5204ab6d7d4924B8E',
   [ChainId.Superposition]: '0x7A414969b98399f7A1C44E18A0c434dD36d3C137',

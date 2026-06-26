@@ -75,7 +75,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Astar,
   999, // Hyperliquid EVM
   ChainId.TelosEVMMainnet,
-  ChainId.Sophon,
   ChainId.SyscoinMainnet,
   ChainId.ZetaChainMainnet,
   ChainId.AuroraMainnet,
@@ -1397,16 +1396,6 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     isCanary: true,
     correspondingMainnetChainId: ChainId.FlareMainnet,
-  }),
-  [ChainId.Sophon]: new Chain({
-    type: SupportType.HYPERSYNC,
-    chainId: ChainId.Sophon,
-    name: 'Sophon',
-    nativeTokenCoingeckoId: 'sophon',
-    coingeckoNetworkId: 'sophon',
-    logoUrl: '/assets/images/vendor/chains/sophon.jpg',
-    explorerUrl: 'https://sophscan.xyz',
-    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.StableMainnet]: new Chain({
     type: SupportType.ETHERSCAN,

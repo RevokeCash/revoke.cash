@@ -91,7 +91,6 @@
     "somnia": "Somnia 是第 1 层（Layer 1）区块链，旨在为大众消费者应用程序提供高吞吐量和低费用。Somnia 使用了 MultiStream Consensens 的共识机制，在该机制中，每个验证者发布自己的区块链，并使用单独的“共识链”来进行不同验证者之间的协调。",
     "soneium": "Soneium 是建立在以太坊和 Optimism 超级链之上的第 2 层（Layer 2）区块链，使用 Optimism 的开源 OP Stack 构建而成，因此与 Optimism 一样采用了 Optimistic Rollup 技术。它由索尼创立，希望能够创建一个被主流大众广泛采用的网络。",
     "sonic": "Sonic 是第 1 层（Layer 1）区块链，由 Fantom 背后的团队创建，继承了 Fantom 的精神，兼具高吞吐量和低费用两大特点，同时也采用一系列措施以便激励开发人员建设网络。",
-    "sophon": "Sophon 是使用 zkSync 的 ZK Stack 构建的第 2 层（Layer 2）区块链，旨在为大众消费者应用提供高吞吐量和低费用，重点关注游戏、票务等用例。",
     "story": "Story 是第 1 层（Layer 1）区块链，专为链上知识产权提供框架。其目的是让创作者能够更轻松地对作品进行保护、授权和货币化。Story 使用 Cosmos SDK 构建，并完全支持与 EVM 兼容的智能合约。",
     "superposition": "Superposition 是在以太坊和 Arbitrum 基础上构建的第 3 层（Layer 3）区块链，使用 Arbitrum 的 Orbit 框架构建，因此与 Arbitrum 一样，也运用了 Optmistic Rollup 技术。它为桥接的资产提供原生收益，并通过原生协议为开发者提供了将应用程序货币化的途径。",
     "swellchain": "Swellchain 是基于再质押的第 2 层网络，旨在利用 Swell 的再质押证明模型扩展以太坊。Swellchain 垂直集成“restaked rollup”，使用户能够利用流动性质押 (swETH) 和再质押 (rswETH)，同时享受由质押资产带来的快速、低成本交易。",
