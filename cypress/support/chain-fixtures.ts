@@ -102,7 +102,6 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.StableMainnet]: '0xa040e31d973463D4207e34E28AA9cD33aaF5e252',
   [ChainId.Story]: '0x4545dFE080ADf461756710e5204ab6d7d4924B8E',
   [ChainId.Superposition]: '0x7A414969b98399f7A1C44E18A0c434dD36d3C137',
-  [ChainId.Swellchain]: '0xdCCac741a7Cd7d317f05b953D879e4D5262e0d91',
   [ChainId.SyscoinMainnet]: '0xc594AE94f7C98d759Ed4c792F5DbFB7285184044',
   [ChainId.TACMainnet]: '0x51588B1E6D9123E1c14Cd3935A1fE78e5fA69486',
   [ChainId.Taiko]: '0xCC16b73b315d511Dd3D8E4DF2e02aE97bB6b3647',

@@ -93,7 +93,6 @@
     "sonic": "Sonic 是第 1 层（Layer 1）区块链，由 Fantom 背后的团队创建，继承了 Fantom 的精神，兼具高吞吐量和低费用两大特点，同时也采用一系列措施以便激励开发人员建设网络。",
     "story": "Story 是第 1 层（Layer 1）区块链，专为链上知识产权提供框架。其目的是让创作者能够更轻松地对作品进行保护、授权和货币化。Story 使用 Cosmos SDK 构建，并完全支持与 EVM 兼容的智能合约。",
     "superposition": "Superposition 是在以太坊和 Arbitrum 基础上构建的第 3 层（Layer 3）区块链，使用 Arbitrum 的 Orbit 框架构建，因此与 Arbitrum 一样，也运用了 Optmistic Rollup 技术。它为桥接的资产提供原生收益，并通过原生协议为开发者提供了将应用程序货币化的途径。",
-    "swellchain": "Swellchain 是基于再质押的第 2 层网络，旨在利用 Swell 的再质押证明模型扩展以太坊。Swellchain 垂直集成“restaked rollup”，使用户能够利用流动性质押 (swETH) 和再质押 (rswETH)，同时享受由质押资产带来的快速、低成本交易。",
     "syscoin": "Syscoin 创建于 2014 年，是作为比特币的一个分支而创建的第 1 层（Layer 1）区块链。多年来，它演变为双链系统，一部分是比特币分支，另一部分则是兼容 EVM 的区块链。两条链都采用合并挖矿技术保证安全，该技术过程允许比特币矿工同时使用哈希率进行比特币和 Syscoin 交易。",
     "taiko": "Taiko 是以太坊的第 2 层（Layer 2）扩展解决方案，采用了创新的 zkEVM 技术进行构建。与许多其他 L2 解决方案（如 Optimitic Rollups）相比，zkEVM 技术以更低的成本提供更高的吞吐量，同时保证了强大的安全性。",
     "telos-evm": "Telos EVM 是 Telos L1区块链之上的 EVM 兼容层，让开发人员可以将现有的以太坊智能合约无缝集成到 Telos 生态系统中。",

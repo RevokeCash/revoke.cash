@@ -41,7 +41,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Blast,
   ChainId.ZkSyncMainnet,
   ChainId['Filecoin-Mainnet'],
-  ChainId.Swellchain,
   ChainId.Abstract,
   ChainId.Taiko,
   ChainId.BOB,
@@ -1429,18 +1428,6 @@ export const CHAINS = {
     coingeckoNetworkId: 'superposition',
     logoUrl: '/assets/images/vendor/chains/superposition.svg',
     etherscanCompatibleApiUrl: 'https://explorer-superposition-1v9rjalnat.t.conduit.xyz/api',
-    deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.Swellchain]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Swellchain,
-    name: 'Swellchain',
-    coingeckoNetworkId: 'swellchain',
-    logoUrl: '/assets/images/vendor/chains/swellchain.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.swellnetwork.io/api',
-    rpc: {
-      main: 'https://rpc.ankr.com/swell',
-    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.SyscoinMainnet]: new Chain({
