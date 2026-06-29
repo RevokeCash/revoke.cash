@@ -1,6 +1,21 @@
 import { relations, sql } from 'drizzle-orm';
-import { boolean, check, index, integer, pgSchema, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import {
+  bigint,
+  boolean,
+  check,
+  index,
+  integer,
+  jsonb,
+  numeric,
+  pgSchema,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+} from 'drizzle-orm/pg-core';
 import type { Hash, Hex } from 'viem';
+import { AllowanceType } from '../../allowances';
+import type { AutoRevokeRules, AutoRevokeRulesSource } from '../../auto-revoke/types';
 import { lowercaseAddress } from '../types';
 import { premiumSubscriptions } from './premium';
 
@@ -13,7 +28,11 @@ export const autoRevokeRiskSensitivityEnum = autoRevokeSchema.enum('risk_sensiti
   'medium',
 ]);
 export const autoRevokeTriggerTypeEnum = autoRevokeSchema.enum('trigger_type', ['exploit', 'stale', 'risk_score']);
-export const autoRevokeActivityStatusEnum = autoRevokeSchema.enum('activity_status', ['pending', 'executed', 'failed']);
+// Mirrors indexer.allowance_type; kept as a separate type to keep the auto_revoke schema self-contained.
+export const autoRevokeAllowanceTypeEnum = autoRevokeSchema.enum(
+  'allowance_type',
+  Object.values(AllowanceType) as [AllowanceType, ...AllowanceType[]],
+);
 
 export const autoRevokePermissions = autoRevokeSchema.table(
   'permissions',
@@ -78,21 +97,57 @@ export const autoRevokeSubscriptionRulesRelations = relations(autoRevokeRules, (
   }),
 }));
 
-export const autoRevokeActivityLog = autoRevokeSchema.table(
-  'activity_log',
+export interface AutoRevokeTriggerDetails {
+  matchedTriggers: Array<{
+    type: 'exploit' | 'risk_score' | 'stale';
+    riskFactors?: Array<{ type: string; source: string; data?: string }>;
+  }>;
+}
+
+export interface AutoRevokeRuleSnapshot {
+  rules: AutoRevokeRules;
+  rulesSource: AutoRevokeRulesSource;
+}
+
+export const autoRevokeObservations = autoRevokeSchema.table(
+  'observations',
   {
     id: uuid('id').primaryKey().defaultRandom(),
+    subscriptionId: uuid('subscription_id')
+      .notNull()
+      .references(() => premiumSubscriptions.id, { onDelete: 'cascade' }),
     address: lowercaseAddress('address').notNull(),
     chainId: integer('chain_id').notNull(),
     triggerType: autoRevokeTriggerTypeEnum('trigger_type').notNull(),
-    spenderAddress: lowercaseAddress('spender_address').notNull(),
+    triggerDetails: jsonb('trigger_details').notNull().$type<AutoRevokeTriggerDetails>(),
+    ruleSnapshot: jsonb('rule_snapshot').notNull().$type<AutoRevokeRuleSnapshot>(),
+    allowanceFingerprint: text('allowance_fingerprint').notNull(),
+    allowanceType: autoRevokeAllowanceTypeEnum('allowance_type').notNull(),
     tokenAddress: lowercaseAddress('token_address').notNull(),
-    txHash: text('tx_hash').$type<Hash>(),
-    status: autoRevokeActivityStatusEnum('status').notNull(),
+    spenderAddress: lowercaseAddress('spender_address').notNull(),
+    tokenId: numeric('token_id', { mode: 'bigint' }),
+    permit2Address: lowercaseAddress('permit2_address'),
+    expiration: bigint('expiration', { mode: 'number' }),
+    lastUpdatedTxHash: text('last_updated_tx_hash').notNull().$type<Hash>(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
   },
   (table) => [
-    index('idx_activity_log_address').on(table.address),
-    index('idx_activity_log_created').on(table.createdAt),
+    uniqueIndex('observations_subscription_allowance_fingerprint_unique').on(
+      table.subscriptionId,
+      table.allowanceFingerprint,
+    ),
+    index('idx_observations_address_created').on(table.address, table.createdAt),
+    index('idx_observations_subscription').on(table.subscriptionId),
   ],
 );
+
+export const autoRevokeObservationsRelations = relations(autoRevokeObservations, ({ one }) => ({
+  subscription: one(premiumSubscriptions, {
+    fields: [autoRevokeObservations.subscriptionId],
+    references: [premiumSubscriptions.id],
+  }),
+}));

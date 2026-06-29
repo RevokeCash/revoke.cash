@@ -24,7 +24,7 @@ services:
         sync: false
       - key: BULL_BOARD_PASSWORD
         sync: false
-      - key: METRICS_REMOTE_WRITE_URL
+      - key: EXPLOIT_WEBHOOK_TOKEN
         sync: false
 
   - type: pserv
@@ -49,6 +49,4 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: REDIS_URL
-        sync: false
-      - key: METRICS_REMOTE_WRITE_URL
         sync: false

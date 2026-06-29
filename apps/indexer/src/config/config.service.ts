@@ -28,4 +28,8 @@ export class ConfigService {
     if (!password) throw new Error('BULL_BOARD_PASSWORD is not configured');
     return password;
   }
+
+  get optionalExploitWebhookToken(): string | undefined {
+    return process.env.EXPLOIT_WEBHOOK_TOKEN;
+  }
 }

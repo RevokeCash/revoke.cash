@@ -5,7 +5,7 @@ export interface EventsJobData {
   eventsScanId: string;
   address: Address;
   chainId: number;
-  reason: 'scheduled' | 'manual';
+  reason: 'scheduled' | 'manual' | 'auto_revoke';
   scheduledAt: number;
 }
 
@@ -18,3 +18,6 @@ export const scheduledEventsJobId = (chainId: number, address: Address): string 
 
 export const autoRevokeEventsJobId = (chainId: number, address: Address, actionId: string): string =>
   `index-events-auto-revoke-${chainId}-${toLowercaseAddress(address)}-${actionId}`;
+
+export const exploitEventsJobId = (chainId: number, address: Address): string =>
+  `index-events-exploit-${chainId}-${toLowercaseAddress(address)}`;

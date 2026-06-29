@@ -16,7 +16,6 @@ import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'drizzle-orm';
 import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
-import { queueBlockedAutoRevokeActionsForPermission } from './actions';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS } from './config';
 import { AutoRevokeError } from './errors';
 import type { AutoRevokePermission, WalletPermissionResult } from './types';
@@ -243,8 +242,6 @@ const applyPermissionBatch = async (
       address: autoRevokePermissions.address,
       chainId: autoRevokePermissions.chainId,
     });
-
-  await Promise.all(permissions.map((permission) => queueBlockedAutoRevokeActionsForPermission(trx, permission)));
 
   return permissions.map(({ id }) => ({ id }));
 };
