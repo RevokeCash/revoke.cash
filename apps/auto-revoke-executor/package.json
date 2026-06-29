@@ -1,0 +1,48 @@
+{
+  "name": "@revoke.cash/auto-revoke-executor",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "env": "dotenvx run -f ../../.env --",
+    "swc-node": "node --require @swc-node/register",
+    "allow-scripts": "cd ../.. && yarn run allow-scripts",
+    "ceremony": "yarn env tsx scripts/ceremony.ts",
+    "killswitch": "yarn env tsx scripts/killswitch.ts",
+    "dev": "PORT=3003 yarn env yarn swc-node --watch src/main.ts",
+    "start": "yarn env yarn swc-node src/main.ts",
+    "typecheck": "tsc --noEmit && tsc -p scripts/tsconfig.json"
+  },
+  "dependencies": {
+    "@nestjs/bullmq": "^10.2.3",
+    "@nestjs/common": "^10.4.15",
+    "@nestjs/core": "^10.4.15",
+    "@nestjs/platform-express": "^10.4.15",
+    "@nestjs/schedule": "^4.1.2",
+    "@nestjs/terminus": "^10.3.0",
+    "@revoke.cash/backend": "workspace:*",
+    "@revoke.cash/core": "workspace:*",
+    "@swc-node/register": "^1.11.1",
+    "@swc/core": "^1.15.32",
+    "bottleneck": "^2.19.5",
+    "bullmq": "^5.34.0",
+    "ioredis": "^5.4.2",
+    "nestjs-pino": "^4.4.0",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "typescript": "^5.9.3",
+    "viem": "^2.45.2"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.52.0",
+    "@ledgerhq/context-module": "^2.1.0",
+    "@ledgerhq/device-management-kit": "^1.6.0",
+    "@ledgerhq/device-signer-kit-ethereum": "^1.16.0",
+    "@ledgerhq/device-transport-kit-node-hid": "^1.0.1",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "pino-pretty": "^13.0.0",
+    "tsx": "^4.22.4"
+  }
+}

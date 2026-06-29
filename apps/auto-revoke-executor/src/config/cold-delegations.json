@@ -1,0 +1,26 @@
+{
+  "11155111": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0x6a710da369276c56dc88236fee2703584e29facb0d4b5d1bb076c8f4ef5c645e",
+    "signature": "0x123963a2d9a0a93dce6f7e15074a5821b70ac6538e3a96314aff0c7cf03dab54461dddcc7c684ad5fc342c599be67971eb5b262ffdafc574116dd1bc5a926b631c"
+  }
+}

@@ -8,9 +8,10 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEON_USE_WEBSOCKET=true
 
-# Workspace config + manifests — minimum needed for `yarn install` to resolve.
+# Workspace config + all workspace manifests so Yarn can resolve the workspace graph.
 COPY package.json yarn.lock ./
 COPY .yarn ./.yarn
+COPY apps/auto-revoke-executor/package.json ./apps/auto-revoke-executor/
 COPY apps/indexer/package.json ./apps/indexer/
 COPY apps/web/package.json ./apps/web/
 COPY packages/backend/package.json ./packages/backend/

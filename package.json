@@ -19,7 +19,7 @@
     "lint:fix": "yarn lint --write",
     "lint:staged": "yarn lint --error-on-warnings --no-errors-on-unmatched --staged .",
     "lint:checksums": "yarn workspace web lint:checksums",
-    "typecheck": "yarn workspace @revoke.cash/core typecheck && yarn workspace web typecheck && yarn workspace @revoke.cash/indexer typecheck",
+    "typecheck": "yarn workspace @revoke.cash/core typecheck && yarn workspace @revoke.cash/backend typecheck && yarn workspace web typecheck && yarn workspace @revoke.cash/indexer typecheck && yarn workspace @revoke.cash/auto-revoke-executor typecheck",
     "test": "yarn workspace web test",
     "test:mocha": "yarn workspace web test:mocha",
     "test:cypress": "yarn workspace web test:cypress",
