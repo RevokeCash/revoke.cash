@@ -30,7 +30,7 @@ export class EventsSchedulerService {
   async tick(): Promise<void> {
     if (!this.config.isManager) return;
 
-    const batchSize = this.config.schedulerBatchSize;
+    const batchSize = 2000;
     const candidates = await this.subscribers.findReadyToIndex(batchSize);
 
     if (candidates.length === 0) {

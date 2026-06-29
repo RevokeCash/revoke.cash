@@ -85,7 +85,7 @@ const serializeAllowancePayloadFromRow = (
   spenderMetadata?: SpenderMetadataRow,
 ): AllowancePayload => {
   return {
-    type: row.approvalType,
+    type: row.allowanceType,
     spender: row.spenderAddress,
     spenderData: serializeSpenderMetadata(spenderMetadata),
     amount: row.amount ?? undefined,

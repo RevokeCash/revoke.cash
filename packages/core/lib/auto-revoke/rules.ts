@@ -3,7 +3,7 @@ import { autoRevokeRules } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
-import { and, eq, gt, lte } from 'drizzle-orm';
+import { and, asc, eq, gt, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { AutoRevokeError } from './errors';
 import type { AutoRevokeAddressRulesConfig, AutoRevokeRules, AutoRevokeRulesSource } from './types';
@@ -52,6 +52,9 @@ export const getAddressRulesConfig = async (address: Address): Promise<AutoRevok
 export const getEffectiveRules = async (
   address: Address,
 ): Promise<{ rules: AutoRevokeRules; rulesSource: AutoRevokeRulesSource }> => {
+  const ownedSubscriptionRules = await getActiveSubscriptionRules(address, { ownerOnly: true });
+  if (ownedSubscriptionRules) return ownedSubscriptionRules;
+
   const addressRules = await getAddressRules(address);
 
   const fallbackCustomRules = {
@@ -59,7 +62,10 @@ export const getEffectiveRules = async (
     rulesSource: { type: 'custom' as const },
   };
 
-  if (!addressRules || !addressRules.activeRulesId) return fallbackCustomRules;
+  if (!addressRules?.activeRulesId) {
+    const defaultSubscriptionRules = await getActiveSubscriptionRules(address);
+    return defaultSubscriptionRules ?? fallbackCustomRules;
+  }
 
   // Follow the pointer to the subscription rules, eager-loading the subscription + plan + membership.
   const db = getDb();
@@ -94,6 +100,50 @@ export const getEffectiveRules = async (
       subscriptionId,
       planName: plan.name,
       ownerAddress,
+    },
+  };
+};
+
+const getActiveSubscriptionRules = async (
+  address: Address,
+  options?: { ownerOnly?: boolean },
+): Promise<{ rules: AutoRevokeRules; rulesSource: AutoRevokeRulesSource } | null> => {
+  const db = getDb();
+  const now = new Date();
+
+  const [subscription] = await db
+    .select({
+      subscriptionId: premiumSubscriptions.id,
+      planName: premiumPlans.name,
+      ownerAddress: premiumSubscriptions.ownerAddress,
+    })
+    .from(premiumSubscriptionAddresses)
+    .innerJoin(premiumSubscriptions, eq(premiumSubscriptions.id, premiumSubscriptionAddresses.subscriptionId))
+    .innerJoin(
+      premiumPlans,
+      and(eq(premiumPlans.id, premiumSubscriptions.planId), eq(premiumPlans.version, premiumSubscriptions.planVersion)),
+    )
+    .where(
+      and(
+        eq(premiumSubscriptionAddresses.address, address),
+        options?.ownerOnly ? eq(premiumSubscriptions.ownerAddress, address) : undefined,
+        eq(premiumPlans.tier, 'ultimate'),
+        lte(premiumSubscriptions.startsAt, now),
+        gt(premiumSubscriptions.endsAt, now),
+      ),
+    )
+    .orderBy(asc(premiumSubscriptions.startsAt))
+    .limit(1);
+
+  if (!subscription) return null;
+
+  return {
+    rules: await getSubscriptionRules(subscription.subscriptionId),
+    rulesSource: {
+      type: 'subscription',
+      subscriptionId: subscription.subscriptionId,
+      planName: subscription.planName,
+      ownerAddress: subscription.ownerAddress,
     },
   };
 };

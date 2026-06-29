@@ -19,7 +19,6 @@ interface TokenMetadataQueue {
 }
 
 export const TOKEN_METADATA_QUEUE_NAME = 'indexer_token_metadata';
-const DEFAULT_TOKEN_METADATA_BATCH_SIZE = 2_000;
 
 export const tokenMetadataJobId = (chainId: number, tokenAddress: Address): string =>
   `enrich-token-metadata-${chainId}-${toLowercaseAddress(tokenAddress)}`;
@@ -29,7 +28,7 @@ export const enqueueUnenrichedTokens = async (
   query: UnenrichedTokensQuery,
   source: TokenMetadataJobData['source'],
 ): Promise<number> => {
-  const tokens = await findUnenrichedTokens({ limit: DEFAULT_TOKEN_METADATA_BATCH_SIZE, ...query });
+  const tokens = await findUnenrichedTokens({ limit: 2000, ...query });
   if (tokens.length === 0) return 0;
 
   await queue.addBulk(

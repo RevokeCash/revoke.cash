@@ -14,7 +14,7 @@
  *   packages/core $ yarn env tsx scripts/print-indexer-partitions.ts
  */
 import { getChainConfig, ORDERED_CHAINS } from '@revoke.cash/core/chains';
-import { getDb } from '@revoke.cash/core/db/client';
+import { type DatabaseClient, getDb } from '@revoke.cash/core/db/client';
 import { sql } from 'drizzle-orm';
 
 interface ExistingPartitionRow extends Record<string, unknown> {
@@ -25,15 +25,14 @@ const PARTITIONED_TABLES = ['events'] as const;
 
 const getChainName = (chainId: number): string => {
   try {
-    // Cast — the chain may no longer satisfy DocumentedChainId after being removed from config.
-    return getChainConfig(chainId as Parameters<typeof getChainConfig>[0]).getName();
+    return getChainConfig(chainId).getName();
   } catch {
     return '(no longer in config)';
   }
 };
 
 const diffPartitionsForTable = async (
-  db: ReturnType<typeof getDb>,
+  db: DatabaseClient,
   tableName: string,
 ): Promise<{ missing: number[]; orphans: number[]; existingCount: number }> => {
   const prefix = `${tableName}_`;

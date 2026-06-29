@@ -1,7 +1,5 @@
 import { AllowanceType } from '@revoke.cash/core/allowances';
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
-import { getDb } from '@revoke.cash/core/db/client';
-import { indexerAllowanceState, indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import {
   type ApprovalTokenEvent,
   type Filter,
@@ -16,9 +14,7 @@ import { processErc721ApprovalEvents, removeLoneRevokeEvents } from '@revoke.cas
 import { DatabaseLogsProvider } from '@revoke.cash/core/events/providers';
 import { sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
-import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
-import { and, eq } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { type CachedAllowanceRow, getCachedAllowances } from './allowances';
 import {
@@ -28,93 +24,21 @@ import {
   serializeAllowanceFromRow,
   serializeApprovalEvent,
 } from './allowances-dto';
-import { ChainUnresponsiveError, StillIndexingError } from './errors';
-import { assertIndexerIsNotTooFarBehind } from './progress';
+import {
+  failFastIfAllowanceStateIsBehind,
+  failFastIfEventsStateIsBehind,
+  failFastIfIndexingIsFailing,
+  getIndexerReadStates,
+} from './cache-state';
 import { getCachedSpenderMetadata, type SpenderMetadataByAddress } from './spender-metadata';
 import { resolveAndPersistTimestampsForBlocks } from './timestamps';
-import { enrichToken, getCachedTokenMetadata, isUsableTokenMetadata, type TokenMetadataRow } from './token-metadata';
-
-type EventsState = Pick<
-  typeof indexerEventsState.$inferSelect,
-  'consecutiveFailures' | 'lastError' | 'lastObservedHeadBlock' | 'lastScanAt' | 'lastToBlock' | 'maxBlockRange'
->;
-
-type AllowanceState = Pick<
-  typeof indexerAllowanceState.$inferSelect,
-  'computedToBlock' | 'consecutiveFailures' | 'lastError'
->;
-
-type FailureState =
-  | Pick<EventsState, 'consecutiveFailures' | 'lastError'>
-  | Pick<AllowanceState, 'consecutiveFailures' | 'lastError'>
-  | null
-  | undefined;
-
-interface ReadStates {
-  eventsState: EventsState | undefined;
-  allowanceState: AllowanceState | undefined;
-}
-
-// After this many recorded failures we surface the stored `last_error` to the dashboard instead
-// of quietly returning stale cache data. Matches the threshold where the scheduler backs off to
-// a 24-hour cadence.
-const FAIL_FAST_FAILURE_THRESHOLD = 3;
-
-const getEventsState = async (address: Address, chainId: DocumentedChainId): Promise<EventsState | undefined> => {
-  return getDb().query.indexerEventsState.findFirst({
-    where: and(eq(indexerEventsState.address, address), eq(indexerEventsState.chainId, chainId)),
-    columns: {
-      consecutiveFailures: true,
-      lastError: true,
-      lastObservedHeadBlock: true,
-      lastScanAt: true,
-      lastToBlock: true,
-      maxBlockRange: true,
-    },
-  });
-};
-
-const getAllowanceState = async (address: Address, chainId: DocumentedChainId): Promise<AllowanceState | undefined> => {
-  return getDb().query.indexerAllowanceState.findFirst({
-    where: and(eq(indexerAllowanceState.address, address), eq(indexerAllowanceState.chainId, chainId)),
-    columns: { computedToBlock: true, consecutiveFailures: true, lastError: true },
-  });
-};
-
-const getReadStates = async (address: Address, chainId: DocumentedChainId): Promise<ReadStates> => {
-  const [eventsState, allowanceState] = await Promise.all([
-    getEventsState(address, chainId),
-    getAllowanceState(address, chainId),
-  ]);
-  return { eventsState, allowanceState };
-};
-
-// Throws `ChainUnresponsiveError` (HTTP 503 with the stored `last_error` in the body) when
-// the indexer has repeatedly failed for this (address, chain). This avoids returning stale or
-// empty cache data with no indication that updates are broken.
-const failFastIfIndexingIsFailing = (state: FailureState, chainId: DocumentedChainId): void => {
-  if (state && state.consecutiveFailures >= FAIL_FAST_FAILURE_THRESHOLD && state.lastError) {
-    throw new ChainUnresponsiveError(chainId, state.lastError);
-  }
-};
-
-export const failFastIfEventIndexingIsStillIndexing = async (
-  address: Address,
-  chainId: DocumentedChainId,
-): Promise<void> => {
-  const eventsState = await getEventsState(address, chainId);
-  failFastIfEventsStateIsBehind(eventsState);
-};
+import { getCompleteTokenMetadata, isUsableTokenMetadata, type TokenMetadataRow } from './token-metadata';
 
 export const getCachedAddressData = async (
   address: Address,
   chainId: DocumentedChainId,
 ): Promise<CachedAddressDataDto> => {
-  return readFromIndexedCache(address, chainId);
-};
-
-const readFromIndexedCache = async (address: Address, chainId: DocumentedChainId): Promise<CachedAddressDataDto> => {
-  const { eventsState, allowanceState } = await getReadStates(address, chainId);
+  const { eventsState, allowanceState } = await getIndexerReadStates(address, chainId);
 
   failFastIfIndexingIsFailing(eventsState, chainId);
   failFastIfIndexingIsFailing(allowanceState, chainId);
@@ -135,47 +59,15 @@ const readFromIndexedCache = async (address: Address, chainId: DocumentedChainId
   const uniqueTokens = deduplicateArray(rawEvents.map((event) => event.token));
   const metadataByToken = await getCompleteTokenMetadata(chainId, uniqueTokens);
   const historyEvents = getHistoryRelevantEvents(rawEvents, metadataByToken);
-  const spenderMetadataByAddress = await getCachedSpenderMetadata(chainId, getSpenderAddresses(historyEvents));
+  const spenderMetadataByAddress = await getCachedSpenderMetadata(
+    chainId,
+    deduplicateArray(historyEvents.map(getApprovalEventSpenderAddress)),
+  );
 
   const allowances = serializeAllowances(allowanceRows, metadataByToken, spenderMetadataByAddress);
   const events = serializeHistoryRelevantEvents(historyEvents, metadataByToken, spenderMetadataByAddress);
 
   return { state: stateDto, allowances, events };
-};
-
-const failFastIfEventsStateIsBehind = (state: EventsState | undefined): void => {
-  if (isNullish(state?.lastToBlock) || isNullish(state.lastObservedHeadBlock)) return;
-
-  assertIndexerIsNotTooFarBehind({
-    lastToBlock: state.lastToBlock,
-    headBlock: state.lastObservedHeadBlock,
-    maxBlockRange: state.maxBlockRange,
-  });
-};
-
-const failFastIfAllowanceStateIsBehind = (
-  eventsState: EventsState | undefined,
-  allowanceState: AllowanceState | undefined,
-): void => {
-  if (isNullish(eventsState?.lastToBlock)) return;
-
-  const computedToBlock = allowanceState?.computedToBlock;
-  if (isNullish(computedToBlock) || computedToBlock < eventsState.lastToBlock) {
-    throw new StillIndexingError(computedToBlock ?? 0, eventsState.lastToBlock);
-  }
-};
-
-const getCompleteTokenMetadata = async (
-  chainId: DocumentedChainId,
-  tokenAddresses: readonly Address[],
-): Promise<Map<Address, TokenMetadataRow>> => {
-  const metadataByToken = await getCachedTokenMetadata(chainId, tokenAddresses);
-  const missingTokens = tokenAddresses.filter((token) => isNullish(metadataByToken.get(token)?.enrichedAt));
-
-  if (missingTokens.length === 0) return metadataByToken;
-
-  await mapAsyncBounded(missingTokens, 10, (token) => enrichToken(chainId, token));
-  return getCachedTokenMetadata(chainId, tokenAddresses);
 };
 
 // Pull approval events for this user from the events cache up to `toBlock`. Metadata enrichment
@@ -227,10 +119,6 @@ const getHistoryRelevantEvents = (
   return approvalOnly.filter((event) => isUsableTokenMetadata(metadataByToken.get(event.token)));
 };
 
-const getSpenderAddresses = (historyEvents: ApprovalTokenEvent[]): Address[] => {
-  return deduplicateArray(historyEvents.map(getApprovalEventSpenderAddress));
-};
-
 const getApprovalEventSpenderAddress = (event: ApprovalTokenEvent): Address => {
   if (event.type === TokenEventType.APPROVAL_ERC721 && event.payload.oldSpender) return event.payload.oldSpender;
   return event.payload.spender;
@@ -265,10 +153,10 @@ const serializeAllowances = (
 };
 
 export const isCachedAllowanceActive = (
-  row: Pick<CachedAllowanceRow, 'approvalType' | 'expiration'>,
+  row: Pick<CachedAllowanceRow, 'allowanceType' | 'expiration'>,
   referenceTimestamp = Date.now(),
 ): boolean => {
-  if (row.approvalType !== AllowanceType.PERMIT2) return true;
+  if (row.allowanceType !== AllowanceType.PERMIT2) return true;
   if (isNullish(row.expiration)) return false;
 
   return row.expiration > Math.floor(referenceTimestamp / SECOND);

@@ -231,9 +231,7 @@ const buildAllowanceRow = (
     address,
     tokenAddress: data.contract.address,
     spenderAddress: payload.spender,
-    // `payload.type` is the `AllowanceType` enum, whose values are already strings (`'erc20'`,
-    // `'erc721_single'`, etc.). Stored verbatim — no translation needed.
-    approvalType: payload.type,
+    allowanceType: payload.type,
     lastUpdatedBlock: payload.lastUpdated.blockNumber,
     lastUpdatedTxHash: payload.lastUpdated.transactionHash,
     lastUpdatedTimestamp: payload.lastUpdated.timestamp,

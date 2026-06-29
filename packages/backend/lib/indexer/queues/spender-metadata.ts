@@ -19,7 +19,6 @@ interface SpenderMetadataQueue {
 }
 
 export const SPENDER_METADATA_QUEUE_NAME = 'indexer_spender_metadata';
-const DEFAULT_SPENDER_METADATA_BATCH_SIZE = 2_000;
 
 export const spenderMetadataJobId = (chainId: number, spenderAddress: Address): string =>
   `enrich-spender-metadata-${chainId}-${toLowercaseAddress(spenderAddress)}`;
@@ -29,7 +28,7 @@ export const enqueueUnenrichedSpenders = async (
   query: UnenrichedSpendersQuery,
   source: SpenderMetadataJobData['source'],
 ): Promise<number> => {
-  const spenders = await findUnenrichedSpenders({ limit: DEFAULT_SPENDER_METADATA_BATCH_SIZE, ...query });
+  const spenders = await findUnenrichedSpenders({ limit: 2000, ...query });
   if (spenders.length === 0) return 0;
 
   await queue.addBulk(

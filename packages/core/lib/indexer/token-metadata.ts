@@ -12,6 +12,7 @@ import {
 } from '@revoke.cash/core/events';
 import { getTokenMetadata, type TokenContract, throwIfSpamBytecode } from '@revoke.cash/core/tokens';
 import { isSpamError, isTransientError, parseErrorMessage, type SpamReason } from '@revoke.cash/core/utils/errors';
+import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, gte, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
 import { unionAll } from 'drizzle-orm/pg-core';
 import { type Address, getAddress, type Hex } from 'viem';
@@ -19,6 +20,7 @@ import { isNullish } from '../utils';
 
 export type TokenStandard = (typeof indexerTokenMetadata.tokenStandard.enumValues)[number];
 export type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
+export type TokenMetadataByAddress = Map<Address, TokenMetadataRow>;
 
 export interface TokenEnrichmentResult {
   durationMs: number;
@@ -128,6 +130,19 @@ export const getCachedTokenMetadata = async (
     ),
   });
   return new Map(rows.map((row) => [row.tokenAddress, row]));
+};
+
+export const getCompleteTokenMetadata = async (
+  chainId: DocumentedChainId,
+  tokenAddresses: readonly Address[],
+): Promise<TokenMetadataByAddress> => {
+  const metadataByToken = await getCachedTokenMetadata(chainId, tokenAddresses);
+  const missingTokens = tokenAddresses.filter((token) => isNullish(metadataByToken.get(token)?.enrichedAt));
+
+  if (missingTokens.length === 0) return metadataByToken;
+
+  await mapAsyncBounded(missingTokens, 10, (token) => enrichToken(chainId, token));
+  return getCachedTokenMetadata(chainId, tokenAddresses);
 };
 
 export const isUsableTokenMetadata = (metadata?: TokenMetadataRow): boolean => {

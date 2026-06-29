@@ -9,8 +9,11 @@ import {
   PERMIT2_PERMIT_TOPIC,
 } from '@revoke.cash/core/events';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
+import type { ExploitAddress } from '@revoke.cash/core/exploits';
 import type { RiskFactor } from '@revoke.cash/core/risk';
+import { isNullish } from '@revoke.cash/core/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import {
   AggregateSpenderDataSource,
@@ -23,7 +26,6 @@ import { WebacySpenderRiskDataSource } from '@revoke.cash/core/whois/spender/ris
 import { and, eq, gte, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
 import { unionAll } from 'drizzle-orm/pg-core';
 import { type Address, getAddress, type Hex } from 'viem';
-import { isNullish } from '../utils';
 
 const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
   aggregationType: AggregationType.PARALLEL_COMBINED,
@@ -36,7 +38,6 @@ const SPENDER_DATA_SOURCE = new AggregateSpenderDataSource({
 });
 
 export type SpenderMetadataRow = typeof indexerSpenderMetadata.$inferSelect;
-
 export type SpenderMetadataByAddress = Map<Address, SpenderMetadataRow>;
 
 export interface SpenderEnrichmentResult {
@@ -141,6 +142,19 @@ export const getCachedSpenderMetadata = async (
   return new Map(rows.map((row) => [row.spenderAddress, row]));
 };
 
+export const getCompleteSpenderMetadata = async (
+  chainId: number,
+  spenderAddresses: readonly Address[],
+): Promise<SpenderMetadataByAddress> => {
+  const metadataBySpender = await getCachedSpenderMetadata(chainId, spenderAddresses);
+  const missingSpenders = spenderAddresses.filter((spender) => isNullish(metadataBySpender.get(spender)?.enrichedAt));
+
+  if (missingSpenders.length === 0) return metadataBySpender;
+
+  await mapAsyncBounded(missingSpenders, 10, (spender) => enrichSpender(chainId, spender));
+  return getCachedSpenderMetadata(chainId, spenderAddresses);
+};
+
 export const serializeSpenderMetadata = (metadata?: SpenderMetadataRow): SpenderRiskData | undefined => {
   if (isNullish(metadata?.enrichedAt)) return undefined;
 
@@ -148,6 +162,30 @@ export const serializeSpenderMetadata = (metadata?: SpenderMetadataRow): Spender
     name: metadata.name ?? undefined,
     riskFactors: metadata.riskFactors,
   };
+};
+
+export const addSpenderRiskFactor = async (targets: ExploitAddress[], riskFactor: RiskFactor): Promise<void> => {
+  if (targets.length === 0) return;
+
+  const enrichedAt = new Date();
+  const riskFactorJson = JSON.stringify([riskFactor]);
+
+  await getDb()
+    .insert(indexerSpenderMetadata)
+    .values(
+      targets.map(({ chainId, address }) => ({
+        chainId,
+        spenderAddress: address,
+        enrichedAt,
+        riskFactors: [riskFactor],
+      })),
+    )
+    // The set / setWhere SQL statements make sure that the new riskFactor is appended only if it's not already present.
+    .onConflictDoUpdate({
+      target: [indexerSpenderMetadata.chainId, indexerSpenderMetadata.spenderAddress],
+      set: { enrichedAt, riskFactors: sql`${indexerSpenderMetadata.riskFactors} || ${riskFactorJson}::jsonb` },
+      setWhere: sql`not (${indexerSpenderMetadata.riskFactors} @> ${riskFactorJson}::jsonb)`,
+    });
 };
 
 type UpsertValues = Partial<{

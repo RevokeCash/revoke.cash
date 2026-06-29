@@ -598,9 +598,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "approval_type": {
-          "name": "approval_type",
-          "type": "approval_type",
+        "allowance_type": {
+          "name": "allowance_type",
+          "type": "allowance_type",
           "typeSchema": "indexer",
           "primaryKey": false,
           "notNull": true
@@ -1721,8 +1721,8 @@
         "risk_score"
       ]
     },
-    "indexer.approval_type": {
-      "name": "approval_type",
+    "indexer.allowance_type": {
+      "name": "allowance_type",
       "schema": "indexer",
       "values": [
         "erc721_single",

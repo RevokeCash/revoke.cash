@@ -7,6 +7,7 @@ import {
   toDelegationStruct,
 } from '@metamask/smart-accounts-kit/utils';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { AUTO_REVOKE_DELEGATION_ADDRESS } from '@revoke.cash/core/constants';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokePermissions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
@@ -15,7 +16,8 @@ import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'drizzle-orm';
 import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
-import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS, REVOKE_SESSION_ACCOUNT_ADDRESS } from './config';
+import { queueBlockedAutoRevokeActionsForPermission } from './actions';
+import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS } from './config';
 import { AutoRevokeError } from './errors';
 import type { AutoRevokePermission, WalletPermissionResult } from './types';
 
@@ -107,14 +109,12 @@ export const revokeAutoRevokePermission = async (address: Address, chainId: numb
 };
 
 export const buildAutoRevokePermissionRequest = (chainId: number): PermissionRequestParameter => {
-  if (!REVOKE_SESSION_ACCOUNT_ADDRESS) throw new Error('Session account address is not configured');
-
   const expiry = Math.floor(Date.now() / 1000) + PERMISSION_EXPIRY_SECONDS;
 
   return {
     chainId,
     expiry,
-    to: REVOKE_SESSION_ACCOUNT_ADDRESS as Address,
+    to: AUTO_REVOKE_DELEGATION_ADDRESS,
     permission: {
       type: AUTO_REVOKE_PERMISSION_TYPE,
       data: {
@@ -145,10 +145,16 @@ export const filterActivePermissions = async (
 ): Promise<WalletPermissionResult[]> => {
   const validRecentFirstPermissions = permissions
     .filter((permission) => isValidAutoRevokePermission(permission, delegator))
-    .toReversed();
+    .reverse();
 
   try {
-    return await filterAsync(validRecentFirstPermissions, isPermissionEnabledOnChain);
+    return await filterAsync(validRecentFirstPermissions, (permission) =>
+      isPermissionEnabledOnChain({
+        chainId: permission.chainId,
+        delegationManager: permission.delegationManager,
+        permissionContext: permission.context,
+      }),
+    );
   } catch (error) {
     console.error('Failed to verify on-chain permission status, falling back to unverified permissions:', error);
     return validRecentFirstPermissions;
@@ -161,7 +167,7 @@ export const isValidAutoRevokePermission = (permission: WalletPermissionResult, 
   if (permission.permission.data.erc721Approve !== true) return false;
   if (permission.permission.data.erc721SetApprovalForAll !== true) return false;
   if (permission.permission.data.permit2Approve !== true) return false;
-  if (permission.to?.toLowerCase() !== REVOKE_SESSION_ACCOUNT_ADDRESS?.toLowerCase()) return false;
+  if (permission.to?.toLowerCase() !== AUTO_REVOKE_DELEGATION_ADDRESS.toLowerCase()) return false;
 
   const decoded = decodeDelegations(permission.context)?.[0];
   if (!decoded) return false;
@@ -169,8 +175,10 @@ export const isValidAutoRevokePermission = (permission: WalletPermissionResult, 
   return decoded.delegator.toLowerCase() === delegator.toLowerCase();
 };
 
-export const isPermissionEnabledOnChain = async (permission: WalletPermissionResult): Promise<boolean> => {
-  const decodedPermission = decodeDelegations(permission.context)?.[0];
+export const isPermissionEnabledOnChain = async (
+  permission: Pick<AutoRevokePermission, 'chainId' | 'delegationManager' | 'permissionContext'>,
+): Promise<boolean> => {
+  const decodedPermission = decodeDelegations(permission.permissionContext)?.[0];
   if (!decodedPermission) return false;
 
   const publicClient = createViemPublicClientForChain(permission.chainId);
@@ -215,7 +223,7 @@ const applyPermissionBatch = async (
     );
 
   // Insert the batch, or reactivate/refresh any rows we've seen the context for before.
-  return trx
+  const permissions = await trx
     .insert(autoRevokePermissions)
     .values(
       uniqueItems.map((item) => ({
@@ -230,7 +238,15 @@ const applyPermissionBatch = async (
       target: autoRevokePermissions.permissionContext,
       set: { revokedAt: null, expiresAt: sql`excluded.expires_at` },
     })
-    .returning({ id: autoRevokePermissions.id });
+    .returning({
+      id: autoRevokePermissions.id,
+      address: autoRevokePermissions.address,
+      chainId: autoRevokePermissions.chainId,
+    });
+
+  await Promise.all(permissions.map((permission) => queueBlockedAutoRevokeActionsForPermission(trx, permission)));
+
+  return permissions.map(({ id }) => ({ id }));
 };
 
 export const resolvePermissionRecord = async (
@@ -245,7 +261,7 @@ export const resolvePermissionRecord = async (
   if (toLowercaseAddress(decodedPermission.delegator) !== toLowercaseAddress(authenticatedAddress)) {
     throw new AutoRevokeError(403, 'Permission context does not belong to the authenticated address');
   }
-  if (toLowercaseAddress(decodedPermission.delegate) !== REVOKE_SESSION_ACCOUNT_ADDRESS?.toLowerCase()) {
+  if (toLowercaseAddress(decodedPermission.delegate) !== AUTO_REVOKE_DELEGATION_ADDRESS.toLowerCase()) {
     throw new AutoRevokeError(400, 'Permission is not granted to the Revoke session account');
   }
 
@@ -283,16 +299,16 @@ export const resolvePermissionRecord = async (
 
 // We want to extract the expiry from the on-chain permission context so we know it is valid.
 const extractExpiryFromCaveats = (caveats: ReadonlyArray<{ enforcer: Hex; terms: Hex }>, chainId: number): string => {
-  const fallbackExpiry = new Date(Date.now() + PERMISSION_EXPIRY_SECONDS * SECOND).toISOString();
-
   const timestampEnforcer = getSmartAccountsEnvironment(chainId).caveatEnforcers.TimestampEnforcer?.toLowerCase();
-  if (!timestampEnforcer) return fallbackExpiry;
+  if (!timestampEnforcer) throw new AutoRevokeError(400, 'Timestamp enforcer is not configured for this chain');
 
   const timestampCaveat = caveats.find((caveat) => caveat.enforcer.toLowerCase() === timestampEnforcer);
-  if (!timestampCaveat || timestampCaveat.terms.length !== 2 + 64) return fallbackExpiry;
+  if (!timestampCaveat || timestampCaveat.terms.length !== 2 + 64) {
+    throw new AutoRevokeError(400, 'Permission expiry caveat is missing or invalid');
+  }
 
   const beforeThreshold = Number(`0x${timestampCaveat.terms.slice(2 + 32, 2 + 64)}`);
-  if (beforeThreshold === 0) return fallbackExpiry;
+  if (beforeThreshold === 0) throw new AutoRevokeError(400, 'Permission expiry caveat is missing or invalid');
   return new Date(beforeThreshold * SECOND).toISOString();
 };
 

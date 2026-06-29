@@ -19,10 +19,6 @@ export class ConfigService {
     return ORDERED_CHAINS;
   }
 
-  get schedulerBatchSize(): number {
-    return Number(process.env.INDEXER_SCHEDULER_BATCH_SIZE ?? 2000);
-  }
-
   get bullBoardUser(): string {
     return process.env.BULL_BOARD_USER ?? 'admin';
   }

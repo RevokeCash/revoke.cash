@@ -19,8 +19,8 @@ import { lowercaseAddress } from '../types';
 
 export const indexerSchema = pgSchema('indexer');
 
-export const indexerApprovalTypeEnum = indexerSchema.enum(
-  'approval_type',
+export const indexerAllowanceTypeEnum = indexerSchema.enum(
+  'allowance_type',
   Object.values(AllowanceType) as [AllowanceType, ...AllowanceType[]],
 );
 
@@ -178,8 +178,8 @@ export const indexerAllowances = indexerSchema.table(
     address: lowercaseAddress('address').notNull(),
     tokenAddress: lowercaseAddress('token_address').notNull(),
     spenderAddress: lowercaseAddress('spender_address').notNull(),
-    approvalType: indexerApprovalTypeEnum('approval_type').notNull(),
-    // Type-specific fields. Nullable because each row uses a subset depending on approval_type.
+    allowanceType: indexerAllowanceTypeEnum('allowance_type').notNull(),
+    // Type-specific fields. Nullable because each row uses a subset depending on allowance_type.
     amount: numeric('amount', { mode: 'bigint' }), // erc20, permit2
     tokenId: numeric('token_id', { mode: 'bigint' }), // erc721_single
     approved: boolean('approved'), // erc721_all

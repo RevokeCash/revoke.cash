@@ -33,8 +33,6 @@ export const isAutoRevokeSupportedChain = (chainId: number): chainId is AutoRevo
   return AUTO_REVOKE_SUPPORTED_CHAINS.includes(chainId);
 };
 
-export const REVOKE_SESSION_ACCOUNT_ADDRESS = process.env.NEXT_PUBLIC_REVOKE_SESSION_ACCOUNT_ADDRESS;
-
 export const PERMISSION_EXPIRY_SECONDS = 10 * 365 * 24 * 60 * 60; // 10 years
 
 export const STALE_APPROVAL_THRESHOLD_MIN_DAYS = 1;

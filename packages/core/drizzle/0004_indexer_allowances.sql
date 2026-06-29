@@ -1,4 +1,4 @@
-CREATE TYPE "indexer"."approval_type" AS ENUM('erc721_single', 'erc721_all', 'erc20', 'permit2');--> statement-breakpoint
+CREATE TYPE "indexer"."allowance_type" AS ENUM('erc721_single', 'erc721_all', 'erc20', 'permit2');--> statement-breakpoint
 CREATE TABLE "indexer"."allowance_state" (
 	"address" text NOT NULL,
 	"chain_id" integer NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE "indexer"."allowances" (
 	"address" text NOT NULL,
 	"token_address" text NOT NULL,
 	"spender_address" text NOT NULL,
-	"approval_type" "indexer"."approval_type" NOT NULL,
+	"allowance_type" "indexer"."allowance_type" NOT NULL,
 	"amount" numeric,
 	"token_id" numeric,
 	"approved" boolean,
