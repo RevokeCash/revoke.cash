@@ -9,13 +9,13 @@ import { useRef } from 'react';
 import type { Address } from 'viem';
 
 interface Props {
-  asset: Pick<TokenData, 'metadata' | 'chainId'> & { contract: { address: Address } };
+  asset: Pick<TokenData, 'metadata' | 'chainId'> & { token: { address: Address } };
   showChainOverlay?: boolean;
 }
 
 const AssetDisplay = ({ asset, showChainOverlay = false }: Props) => {
   const ref = useRef<HTMLAnchorElement>(null);
-  const explorerUrl = `${getChainExplorerUrl(asset.chainId)}/address/${asset.contract.address}`;
+  const explorerUrl = `${getChainExplorerUrl(asset.chainId)}/address/${asset.token.address}`;
   const tooltip = showChainOverlay
     ? `${asset.metadata.symbol} on ${getChainName(asset.chainId)}`
     : asset.metadata.symbol;

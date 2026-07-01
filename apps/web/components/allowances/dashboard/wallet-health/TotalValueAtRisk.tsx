@@ -1,5 +1,5 @@
 import { calculateValueAtRisk, type TokenAllowanceData } from '@revoke.cash/core/allowances';
-import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { isErc721 } from '@revoke.cash/core/tokens';
 import type { Nullable } from '@revoke.cash/core/types';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
@@ -22,7 +22,7 @@ const TotalValueAtRisk = ({ allowances, isLoading, error }: Props) => {
   const hasNftsAtRisk = allowances?.some(
     (allowance) =>
       !isNullish(allowance.payload) &&
-      isErc721Contract(allowance.contract) &&
+      isErc721(allowance.token) &&
       allowance.balance !== undefined &&
       (allowance.balance === 'Unknown' || allowance.balance > 0n),
   );
@@ -60,7 +60,7 @@ const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number | n
   const sortedAllowances = annotatedAllowances.sort((a, b) => ((a.valueAtRisk ?? 0n) > (b.valueAtRisk ?? 0n) ? -1 : 1));
   const deduplicatedAllowances = deduplicateArray(
     sortedAllowances,
-    (allowance) => `${allowance.chainId}-${allowance.contract.address}`,
+    (allowance) => `${allowance.chainId}-${allowance.token.address}`,
   );
 
   // If no allowance has a known price, return null ("Unknown")

@@ -32,9 +32,6 @@ const Footer = () => {
             <FooterLink href="/exploits" router>
               {t('common.footer.exploit_checker')}
             </FooterLink>
-            <FooterLink href="/permit-signatures/ethereum" router>
-              {t('common.footer.permit_signatures')}
-            </FooterLink>
             <FooterLink href="/marketplace-bulk-delister/ethereum" router>
               {t('common.footer.marketplace_bulk_delister')}
             </FooterLink>

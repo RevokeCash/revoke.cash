@@ -1,5 +1,5 @@
 import { getAllowanceKey, type TokenAllowanceData } from '@revoke.cash/core/allowances';
-import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { isErc721 } from '@revoke.cash/core/tokens';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
@@ -29,8 +29,8 @@ export const useEnrichAllowances = ({
   const tokenDataQueries = useMemo<ChainTokenQuery[]>(() => {
     return chainAllowances.map(({ chainId, allowances, blockNumber }) => {
       const allTokens = allowances.map((allowance) => ({
-        address: allowance.contract.address,
-        isErc721: isErc721Contract(allowance.contract),
+        address: allowance.token.address,
+        isErc721: isErc721(allowance.token),
       }));
 
       const tokens = deduplicateArray(allTokens, (token) => token.address).sort((a, b) =>
@@ -85,12 +85,12 @@ export const enrichAllowances = (
   { isHistorical = false, priceData, balanceData, spenderData, revokePreparationData }: AllowanceEnrichmentData,
 ): TokenAllowanceData[] => {
   return allowances.filter(hasPayload).map((allowance) => {
-    const priceKey = getPriceKey(allowance.chainId, allowance.contract.address);
-    const balanceKey = getBalanceKey(allowance.chainId, allowance.contract.address);
+    const priceKey = getPriceKey(allowance.chainId, allowance.token.address);
+    const balanceKey = getBalanceKey(allowance.chainId, allowance.token.address);
     const spenderKey = getSpenderKey(allowance.chainId, allowance.payload.spender);
     const allowanceKey = getAllowanceKey(allowance);
 
-    const price = isHistorical || isErc721Contract(allowance.contract) ? null : priceData[priceKey];
+    const price = isHistorical || isErc721(allowance.token) ? null : priceData[priceKey];
     const balance = balanceData[balanceKey];
     const metadata = { ...allowance.metadata, price };
     const payload = {

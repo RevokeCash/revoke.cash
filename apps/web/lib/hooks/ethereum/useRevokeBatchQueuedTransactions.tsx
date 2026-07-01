@@ -9,7 +9,7 @@ import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke
 import { useTranslations } from 'next-intl';
 import type PQueue from 'p-queue';
 import { toast } from 'react-toastify';
-import { useWalletClient } from 'wagmi';
+import { usePublicClient, useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddress } from '../page-context/AddressIdentityContext';
 import { useFeePayment } from './useFeePayment';
@@ -22,6 +22,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
   const chainId = allowances[0]?.chainId ?? 1;
   const { sendFeePayment } = useFeePayment(chainId);
   const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient({ chainId })!;
 
   const revoke = async (REVOKE_QUEUE: PQueue, feeDollarAmount: string) => {
     // Pay the fee before revoking the allowances
@@ -58,7 +59,7 @@ export const useRevokeBatchQueuedTransactions = (allowances: TokenAllowanceData[
           const revoke = wrapTransaction({
             transactionKey: getAllowanceKey(allowance),
             transactionType: TransactionType.REVOKE,
-            executeTransaction: () => revokeAllowance(walletClient!, allowance, onUpdate),
+            executeTransaction: () => revokeAllowance(walletClient!, allowance, publicClient, onUpdate),
             updateTransaction,
             trackTransaction: () => trackRevokeTransaction(allowance, 'queued'),
           });

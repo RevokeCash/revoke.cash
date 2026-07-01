@@ -11,7 +11,7 @@ import AllowanceTableControls from './controls/AllowanceTableControls';
 import NoAllowancesFound from './NoAllowancesFound';
 
 const getRowId = (row: TokenAllowanceData) => {
-  return `${row.chainId}-${row.contract.address}-${row.payload?.spender}-${(row.payload as Erc721SingleAllowance)?.tokenId}`;
+  return `${row.chainId}-${row.token.address}-${row.payload?.spender}-${(row.payload as Erc721SingleAllowance)?.tokenId}`;
 };
 
 const AllowanceDashboard = () => {

@@ -21,7 +21,7 @@ import { trackRevokeTransaction } from 'lib/allowances';
 import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
 import type PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
-import { useWalletClient } from 'wagmi';
+import { usePublicClient, useWalletClient } from 'wagmi';
 import { useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useAddress } from '../page-context/AddressIdentityContext';
 import { useFeePayment } from './useFeePayment';
@@ -34,6 +34,9 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
   const chainId = allowances[0]?.chainId ?? 1;
   const { capabilities } = useWalletCapabilities(chainId);
   const { prepareFeePayment, trackFeePaid } = useFeePayment(chainId);
+
+  // All selected allowances share the same chain, so a single client for `chainId` covers them all.
+  const publicClient = usePublicClient({ chainId })!;
 
   const { data: walletClient } = useWalletClient();
 
@@ -61,14 +64,13 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     const callsSettled = await Promise.allSettled(
       allowancesToRevoke.map(async (allowance): Promise<Eip5792Call> => {
-        const transactionRequest = await prepareRevokeAllowance(allowance);
+        const transactionRequest = await prepareRevokeAllowance(allowance, publicClient);
 
-        const publicClient = allowance.contract.publicClient;
         const estimatedGas =
           transactionRequest.gas ??
           (await publicClient.estimateContractGas(transactionRequest as EstimateContractGasParameters));
 
-        throwIfExcessiveGas(chainId, estimatedGas, allowance.contract.address);
+        throwIfExcessiveGas(chainId, estimatedGas, allowance.token.address);
 
         return mapContractTransactionRequestToEip5792Call(transactionRequest);
       }),
@@ -102,7 +104,6 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
     const callChunks = chunkArray(callsToSubmit, maxBatchSize);
     const allowanceChunks = chunkArray(allowancesToSubmit, maxBatchSize);
-    const globalPublicClient = allowancesToRevoke[0].contract.publicClient;
 
     try {
       const walletCapabilities = capabilities ?? ((await walletClient.getCapabilities()) as Capabilities);
@@ -137,12 +138,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                 const { receipts } = await walletClient.waitForCallsStatus({ id: id.id, pollingInterval: 1000 });
 
                 if (receipts?.length === 1) {
-                  return mapWalletCallReceiptToTransactionSubmitted(
-                    receipts[0],
-                    globalPublicClient,
-                    allowance,
-                    onUpdate,
-                  );
+                  return mapWalletCallReceiptToTransactionSubmitted(receipts[0], publicClient, allowance, onUpdate);
                 }
 
                 if (!receipts?.[index]) {
@@ -150,12 +146,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
                   throw new Error('An error occurred related to EIP5792 batch calls');
                 }
 
-                return mapWalletCallReceiptToTransactionSubmitted(
-                  receipts[index],
-                  globalPublicClient,
-                  allowance,
-                  onUpdate,
-                );
+                return mapWalletCallReceiptToTransactionSubmitted(receipts[index], publicClient, allowance, onUpdate);
               };
 
               const executeSingleTransaction = wrapTransaction({

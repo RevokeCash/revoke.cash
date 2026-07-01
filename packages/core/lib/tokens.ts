@@ -1,45 +1,26 @@
 import { ChainId } from '@revoke.cash/chains';
 import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
 import { DUMMY_ADDRESS, DUMMY_ADDRESS_2, WHOIS_BASE_URL } from '@revoke.cash/core/constants';
-import { type ResolvedTimeLog, type TokenEvent, TokenEventType } from '@revoke.cash/core/events';
+import { type TokenEvent, TokenEventType } from '@revoke.cash/core/events';
 import ky from '@revoke.cash/core/ky';
-import type { Contract, Nullable } from '@revoke.cash/core/types';
-import { deduplicateArray } from '@revoke.cash/core/utils';
+import type { Nullable } from '@revoke.cash/core/types';
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { withFallback } from '@revoke.cash/core/utils/promises';
-import {
-  type Address,
-  domainSeparator,
-  getAbiItem,
-  getAddress,
-  type PublicClient,
-  pad,
-  type TypedDataDomain,
-  toHex,
-} from 'viem';
+import { type Address, getAddress, type PublicClient } from 'viem';
 import { SpamError } from './utils/errors';
 
+export interface TokenReference {
+  address: Address;
+  standard: TokenStandard;
+}
+
 export interface TokenData {
-  contract: Erc20TokenContract | Erc721TokenContract;
+  token: TokenReference;
   metadata: TokenMetadata;
   chainId: number;
   owner: Address;
   // `undefined` means the balance hasn't been fetched yet
   balance?: TokenBalance;
-}
-
-export interface PermitTokenData extends TokenData {
-  lastCancelled?: ResolvedTimeLog;
-}
-
-export type TokenContract = Erc20TokenContract | Erc721TokenContract;
-
-export interface Erc20TokenContract extends Contract {
-  abi: typeof ERC20_ABI;
-}
-
-export interface Erc721TokenContract extends Contract {
-  abi: typeof ERC721_ABI;
 }
 
 export interface TokenMetadata {
@@ -54,7 +35,7 @@ export interface TokenMetadata {
 
 export type TokenBalance = bigint | 'Unknown';
 
-export type TokenStandard = 'ERC20' | 'ERC721';
+export type TokenStandard = 'erc20' | 'erc721';
 
 interface TokenFromList {
   symbol: string;
@@ -81,12 +62,12 @@ export const isSpamTokenSymbol = (symbol: string) => {
 };
 
 const getTokenMetadataFromMapping = async (
-  contract: TokenContract,
+  address: Address,
   chainId: number,
 ): Promise<(TokenMetadata & { isSpam?: boolean }) | undefined> => {
   try {
     const metadata = await ky
-      .get(`${WHOIS_BASE_URL}/tokens/${chainId}/${getAddress(contract.address)}.json`)
+      .get(`${WHOIS_BASE_URL}/tokens/${chainId}/${getAddress(address)}.json`)
       .json<TokenFromList>();
 
     if (!metadata || Object.keys(metadata).length === 0) return undefined;
@@ -102,16 +83,23 @@ const getTokenMetadataFromMapping = async (
   }
 };
 
-export const getTokenMetadata = async (contract: TokenContract, chainId: number): Promise<TokenMetadata> => {
-  const metadataFromMapping = await getTokenMetadataFromMapping(contract, chainId);
+export const getTokenMetadata = async (
+  token: TokenReference,
+  publicClient: PublicClient,
+  chainId: number,
+): Promise<TokenMetadata> => {
+  const metadataFromMapping = await getTokenMetadataFromMapping(token.address, chainId);
   // Whois-flagged spam short-circuits before any RPC — no need to spend reads on a token we'll throw out anyway.
   if (metadataFromMapping?.isSpam) throw new SpamError('whois');
 
-  if (isErc721Contract(contract)) {
+  if (isErc721(token)) {
     const [symbol] = await Promise.all([
       metadataFromMapping?.symbol ??
-        withFallback(contract.publicClient.readContract({ ...contract, functionName: 'name' }), contract.address),
-      throwIfNotErc721(contract),
+        withFallback(
+          publicClient.readContract({ address: token.address, abi: ERC721_ABI, functionName: 'name' }),
+          token.address,
+        ),
+      throwIfNotErc721(token.address, publicClient),
     ]);
 
     if (isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
@@ -119,13 +107,17 @@ export const getTokenMetadata = async (contract: TokenContract, chainId: number)
   }
 
   const [totalSupply, symbol, decimals] = await Promise.all([
-    contract.publicClient.readContract({ ...contract, functionName: 'totalSupply' }),
+    publicClient.readContract({ address: token.address, abi: ERC20_ABI, functionName: 'totalSupply' }),
     metadataFromMapping?.symbol ??
-      withFallback(contract.publicClient.readContract({ ...contract, functionName: 'symbol' }), contract.address),
-    metadataFromMapping?.decimals ?? contract.publicClient.readContract({ ...contract, functionName: 'decimals' }),
+      withFallback(
+        publicClient.readContract({ address: token.address, abi: ERC20_ABI, functionName: 'symbol' }),
+        token.address,
+      ),
+    metadataFromMapping?.decimals ??
+      publicClient.readContract({ address: token.address, abi: ERC20_ABI, functionName: 'decimals' }),
     // TODO: I'm temporarily disabling this check because of false positives on Sei network
     // Make sure to add this back when we have a solution for Sei
-    metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(contract), // Don't check if we have metadata from the mapping
+    metadataFromMapping || chainId === ChainId.SeiNetwork ? undefined : throwIfNotErc20(token.address, publicClient), // Don't check if we have metadata from the mapping
   ]);
 
   if (isSpamTokenSymbol(symbol)) throw new SpamError('symbol');
@@ -139,8 +131,8 @@ export const getTokenMetadataUnknown = async (
   publicClient: PublicClient,
 ): Promise<TokenMetadata | undefined> => {
   const results = await Promise.allSettled([
-    getTokenMetadata({ address, abi: ERC20_ABI, publicClient }, publicClient.chain!.id),
-    getTokenMetadata({ address, abi: ERC721_ABI, publicClient }, publicClient.chain!.id),
+    getTokenMetadata({ address, standard: 'erc20' }, publicClient, publicClient.chain!.id),
+    getTokenMetadata({ address, standard: 'erc721' }, publicClient, publicClient.chain!.id),
   ]);
 
   return results.reduce(
@@ -150,10 +142,11 @@ export const getTokenMetadataUnknown = async (
   );
 };
 
-export const throwIfNotErc20 = async (contract: Erc20TokenContract) => {
+export const throwIfNotErc20 = async (address: Address, publicClient: PublicClient) => {
   // If the function allowance does not exist it will throw (and is not ERC20)
-  const allowance = await contract.publicClient.readContract({
-    ...contract,
+  const allowance = await publicClient.readContract({
+    address,
+    abi: ERC20_ABI,
     functionName: 'allowance',
     args: [DUMMY_ADDRESS, DUMMY_ADDRESS_2],
   });
@@ -165,10 +158,11 @@ export const throwIfNotErc20 = async (contract: Erc20TokenContract) => {
   }
 };
 
-export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
+export const throwIfNotErc721 = async (address: Address, publicClient: PublicClient) => {
   // If the function isApprovedForAll does not exist it will throw (and is not ERC721)
-  const isApprovedForAll = await contract.publicClient.readContract({
-    ...contract,
+  const isApprovedForAll = await publicClient.readContract({
+    address,
+    abi: ERC721_ABI,
     functionName: 'isApprovedForAll',
     args: [DUMMY_ADDRESS, DUMMY_ADDRESS_2],
   });
@@ -182,8 +176,8 @@ export const throwIfNotErc721 = async (contract: Erc721TokenContract) => {
 
 // TODO: Improve spam checks
 // TODO: Investigate other proxy patterns to see if they result in false positives
-export const throwIfSpamBytecode = async (contract: TokenContract): Promise<void> => {
-  const bytecode = (await contract.publicClient.getCode({ address: contract.address })) ?? '';
+export const throwIfSpamBytecode = async (address: Address, publicClient: PublicClient): Promise<void> => {
+  const bytecode = (await publicClient.getCode({ address })) ?? '';
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {
@@ -204,137 +198,36 @@ export const hasZeroBalance = (balance: TokenBalance, decimals?: number) => {
   return balance !== 'Unknown' && formatFixedPointBigInt(balance, decimals) === '0';
 };
 
-export const createTokenContracts = (events: TokenEvent[], publicClient: PublicClient): TokenContract[] => {
-  return deduplicateArray(events, (event) => event.token)
-    .map((event) => createTokenContract(event, publicClient))
-    .filter((contract) => contract !== undefined);
+// Derives the canonical token reference (address + standard) from an indexed event. Returns undefined
+// for events that aren't token approval/transfer events. Replaces the old createTokenContract accessor.
+export const getEventTokenReference = (event: TokenEvent): TokenReference | undefined => {
+  const standard = getEventTokenStandard(event);
+  return standard ? { address: event.token, standard } : undefined;
 };
 
-export const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {
-  const abi = getTokenAbi(event);
-  if (!abi) return undefined;
-
-  return { address: event.token, abi, publicClient } as TokenContract;
-};
-
-const getTokenAbi = (event: TokenEvent): typeof ERC20_ABI | typeof ERC721_ABI | undefined => {
+const getEventTokenStandard = (event: TokenEvent): TokenStandard | undefined => {
   switch (event.type) {
     case TokenEventType.TRANSFER_ERC20:
     case TokenEventType.APPROVAL_ERC20:
     case TokenEventType.PERMIT2:
-      return ERC20_ABI;
+      return 'erc20';
     case TokenEventType.TRANSFER_ERC721:
     case TokenEventType.APPROVAL_ERC721:
     case TokenEventType.APPROVAL_FOR_ALL:
-      return ERC721_ABI;
+      return 'erc721';
     default:
       return undefined;
   }
 };
 
-export const isErc721Contract = (contract: TokenContract): contract is Erc721TokenContract => {
-  return getAbiItem<any, string>({ ...contract, name: 'ApprovalForAll' }) !== undefined;
-};
-
-export const isErc20Contract = (contract: TokenContract): contract is Erc20TokenContract => {
-  return !isErc721Contract(contract);
-};
-
-// Some tokens appear to support Permit, but don't actually support it.
-// TODO: Somehow fix this in the RevokeCash/whois repo instead
-const IGNORE_LIST = [
-  '0xb131f4A55907B10d1F0A50d8ab8FA09EC342cd74', // MEME (Ethereum)
-  '0xB4FFEf15daf4C02787bC5332580b838cE39805f5', // z0ETH (Linea)
-  '0x0684FC172a0B8e6A65cF4684eDb2082272fe9050', // z0ezETH (Linea)
-];
-
-export const hasSupportForPermit = async (contract: TokenContract) => {
-  if (isErc721Contract(contract)) return false;
-  if (IGNORE_LIST.includes(contract.address)) return false;
-
-  // If we can properly retrieve the EIP712 domain and nonce, we assume it supports permit
-  try {
-    await Promise.all([
-      getPermitDomain(contract),
-      contract.publicClient.readContract({ ...contract, functionName: 'nonces', args: [DUMMY_ADDRESS] }),
-    ]);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-export const getPermitDomain = async (contract: Erc20TokenContract): Promise<TypedDataDomain> => {
-  const verifyingContract = contract.address;
-  const chainId = contract.publicClient.chain!.id;
-
-  const [version, name, symbol, contractDomainSeparator] = await Promise.all([
-    getPermitDomainVersion(contract),
-    contract.publicClient.readContract({ ...contract, functionName: 'name' }),
-    contract.publicClient.readContract({ ...contract, functionName: 'symbol' }),
-    contract.publicClient.readContract({ ...contract, functionName: 'DOMAIN_SEPARATOR' }),
-  ]);
-
-  const salt = pad(toHex(chainId), { size: 32 });
-
-  // Given the potential fields of a domain, we try to find the one that matches the domain separator
-  const potentialDomains: TypedDataDomain[] = [
-    // Expected domain separators
-    { name, version, chainId, verifyingContract },
-    { name, version, verifyingContract, salt },
-    { name: symbol, version, chainId, verifyingContract },
-    { name: symbol, version, verifyingContract, salt },
-
-    // Without version
-    { name, chainId, verifyingContract },
-    { name, verifyingContract, salt },
-    { name: symbol, chainId, verifyingContract },
-    { name: symbol, verifyingContract, salt },
-
-    // Without name
-    { version, chainId, verifyingContract },
-    { version, verifyingContract, salt },
-
-    // Without name or version
-    { chainId, verifyingContract },
-    { verifyingContract, salt },
-
-    // With both chainId and salt
-    { name, version, chainId, verifyingContract, salt },
-    { name: symbol, version, chainId, verifyingContract, salt },
-  ];
-
-  const domain = potentialDomains.find((domain) => domainSeparator({ domain }) === contractDomainSeparator);
-
-  if (!domain) {
-    // If the domain separator is something else, we cannot generate a valid signature
-    throw new Error('Could not determine Permit Signature data');
-  }
-
-  return domain;
-};
-
-const getPermitDomainVersion = async (contract: Erc20TokenContract) => {
-  const knownDomainVersions: Record<string, string> = {
-    '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': '2', // USDC on Ethereum
-    '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1': '2', // DAI on Arbitrum and Optimism (perhaps other chains too)
-  };
-
-  if (contract.address in knownDomainVersions) {
-    return knownDomainVersions[contract.address];
-  }
-
-  try {
-    return await contract.publicClient.readContract({ ...contract, functionName: 'version' });
-  } catch {
-    return '1';
-  }
+export const isErc721 = (token: TokenReference): boolean => {
+  return token.standard === 'erc721';
 };
 
 export const ownsAnyOf = (ownedOrAllowedTokens: TokenData[], tokens: Address[]) => {
   const tokenIsOwned = (expectedAddress: Address) =>
     ownedOrAllowedTokens.some(
-      (token) => token.contract.address === expectedAddress && typeof token.balance === 'bigint' && token.balance > 0n,
+      (token) => token.token.address === expectedAddress && typeof token.balance === 'bigint' && token.balance > 0n,
     );
 
   return tokens.some(tokenIsOwned);

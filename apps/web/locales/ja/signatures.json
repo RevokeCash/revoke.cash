@@ -22,28 +22,5 @@
       "content": "When you list NFTs or other assets for sale on marketplaces like OpenSea, you sign an offchain signature that authorizes the marketplace to transfer your assets. Scam websites can exploit this by tricking you into signing marketplace signatures that create zero-priced listings. Because these signatures are offchain, Revoke.cash cannot know whether you actually signed any.<br></br><br></br><b>Only use this tool if <i>you</i> know that you signed a marketplace signature on a scam website</b>, otherwise you are wasting transaction fees. Bulk delisting cancels <i>all</i> existing listings and offers on a marketplace at once by incrementing its onchain counter.",
       "title": "What Is Bulk Delisting?"
     }
-  },
-  "permit": {
-    "different_chain": "または別のネットワークで許可署名を確認してください",
-    "meta": {
-      "title": "{chainName} 許可署名チェッカー"
-    },
-    "table": {
-      "headers": {
-        "actions": "アクション",
-        "asset": "資産名",
-        "last_cancelled": "最後にキャンセル"
-      },
-      "none_found": "許可対応トークンが見つかりません。",
-      "title": "許可サポート付きトークン"
-    },
-    "title": "{chainName} 許可署名チェッカー",
-    "tooltips": {
-      "recently_cancelled": "この潜在的な署名は最近キャンセルされました。必要に応じて後で再度キャンセルできるよう、リストに残ります。"
-    },
-    "what_are_permit_signatures": {
-      "content": "<i>許可署名</i>は、トランザクションを送信せずにトークン承認を付与するために使用されます。これらの署名はブロックチェーン上に保存されないため、Revoke.cashが署名を確認する方法はありません。このページには、オフチェーン許可署名に対応するトークンが一覧表示されます。<br></br><br></br><b><i>あなた自身が</i>詐欺サイトで許可署名を実行したと確信している場合のみ、このページで<i>潜在的な</i>署名をキャンセルしてください</b>。そうでない場合、取引手数料を無駄にします。トークンの潜在的な署名をキャンセルすると、リストには残りますが、しばらくの間再度キャンセルできません。",
-      "title": "許可署名とは何ですか？"
-    }
   }
 }

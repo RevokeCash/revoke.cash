@@ -115,7 +115,7 @@ export const indexerAllowanceState = indexerSchema.table(
   (table) => [primaryKey({ name: 'allowance_state_pkey', columns: [table.address, table.chainId] })],
 );
 
-export const indexerTokenStandardEnum = indexerSchema.enum('token_standard', ['erc20', 'erc721', 'erc1155', 'unknown']);
+export const indexerTokenStandardEnum = indexerSchema.enum('token_standard', ['erc20', 'erc721']);
 export const indexerSpamReasonEnum = indexerSchema.enum('spam_reason', ['whois', 'symbol', 'bytecode', 'airdrop']);
 
 export const indexerTokenMetadata = indexerSchema.table(
@@ -123,7 +123,7 @@ export const indexerTokenMetadata = indexerSchema.table(
   {
     chainId: integer('chain_id').notNull(),
     tokenAddress: lowercaseAddress('token_address').notNull(),
-    tokenStandard: indexerTokenStandardEnum('token_standard').notNull().default('unknown'),
+    tokenStandard: indexerTokenStandardEnum('token_standard').notNull(),
     symbol: text('symbol'),
     decimals: integer('decimals'),
     totalSupply: numeric('total_supply', { mode: 'bigint' }),

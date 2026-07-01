@@ -1,21 +1,12 @@
 'use client';
 
-import type { OnUpdate, TokenAllowanceData } from '@revoke.cash/core/allowances';
+import type { AddressData, OnUpdate, TokenAllowanceData } from '@revoke.cash/core/allowances';
 import type { EnrichedTokenEvent, TokenEvent } from '@revoke.cash/core/events';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
 import { useEvents } from './events/useEvents';
 import { useAllowances } from './useAllowances';
-
-export interface AddressData {
-  state: {
-    checkedAt: string | null;
-    computedToBlock: number | null;
-  };
-  allowances: TokenAllowanceData[];
-  events: EnrichedTokenEvent[];
-}
 
 interface UseAddressDataResult {
   data: AddressData | undefined;

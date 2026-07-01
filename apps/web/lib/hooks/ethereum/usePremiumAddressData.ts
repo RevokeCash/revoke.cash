@@ -1,5 +1,5 @@
-import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
-import { type CachedAddressDataDto, deserializeCachedAddressData } from '@revoke.cash/core/indexer/allowances-dto';
+import type { AddressData } from '@revoke.cash/core/allowances';
+import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQueries } from '@tanstack/react-query';
 import { dtoKy } from 'lib/ky';
@@ -7,7 +7,6 @@ import analytics from 'lib/utils/analytics';
 import type { Address } from 'viem';
 import { queryClient } from '../QueryProvider';
 import type { CombinedQueryResult } from './combined-query-result';
-import type { AddressData } from './useAddressData';
 
 export interface PremiumAddressDataResult extends CombinedQueryResult<AddressData> {
   isRefreshing: boolean;
@@ -91,14 +90,13 @@ const fetchAddressData = async (
   chainId: DocumentedChainId,
   method: 'GET' | 'POST',
 ): Promise<AddressData> => {
-  const publicClient = createViemPublicClientForChain(chainId);
   const response = await dtoKy(`/api/${chainId}/allowances/${address}`, {
     method,
     retry: 0,
-  }).json<CachedAddressDataDto>();
+  }).json<AddressData>();
   analytics.track(method === 'GET' ? 'Fetched Cached Address Data' : 'Refreshed Cached Address Data', {
     account: address,
     chainId,
   });
-  return deserializeCachedAddressData(response, { publicClient, chainId, owner: address }) satisfies AddressData;
+  return response;
 };

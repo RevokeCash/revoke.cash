@@ -48,7 +48,9 @@ export async function POST(req: NextRequest) {
     const logsProvider = getScriptLogsProvider(chainId);
     const { events } = await getTokenEvents(chainId, address, logsProvider);
     const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
-    const revokableAllowances = await Promise.all(allowances.map((allowance) => simulateRevokeAllowance(allowance)));
+    const revokableAllowances = await Promise.all(
+      allowances.map((allowance) => simulateRevokeAllowance(allowance, publicClient)),
+    );
 
     if (await alreadyOwnsSoulboundToken(address)) {
       throw new ApiError(400, 'User already owns the SBT', {

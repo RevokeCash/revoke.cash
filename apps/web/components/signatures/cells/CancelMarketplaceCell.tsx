@@ -37,7 +37,6 @@ const CancelMarketplaceCell = ({ marketplace, onCancel }: Props) => {
     });
 
     const waitForConfirmation = async () => {
-      // TODO: Deduplicate this with the CancelPermitCell
       const transactionReceipt = await waitForTransactionConfirmation(hash, publicClient);
       if (!transactionReceipt) return;
       const lastCancelled = await blocksCache.getTimeLog(publicClient, {

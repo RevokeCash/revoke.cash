@@ -1,4 +1,4 @@
-import type { Abi, Address, Hash, PublicClient, TransactionReceipt } from 'viem';
+import type { Hash, TransactionReceipt } from 'viem';
 
 export interface RateLimit {
   interval: number;
@@ -18,12 +18,6 @@ export enum TransactionType {
   SESSION_REVOKE = 'session_revoke',
   FEE = 'fee',
   OTHER = 'other',
-}
-
-export interface Contract {
-  address: Address;
-  abi: Abi;
-  publicClient: PublicClient;
 }
 
 export interface EtherscanPlatform {

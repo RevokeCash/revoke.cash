@@ -1324,8 +1324,7 @@
           "type": "token_standard",
           "typeSchema": "indexer",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'unknown'"
+          "notNull": true
         },
         "symbol": {
           "name": "symbol",
@@ -2082,9 +2081,7 @@
       "schema": "indexer",
       "values": [
         "erc20",
-        "erc721",
-        "erc1155",
-        "unknown"
+        "erc721"
       ]
     },
     "premium.payment_status": {

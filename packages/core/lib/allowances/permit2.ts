@@ -6,18 +6,18 @@ import {
   type Permit2Event,
   TokenEventType,
 } from '@revoke.cash/core/events';
-import type { Erc20TokenContract } from '@revoke.cash/core/tokens';
 import { deduplicateArray } from '@revoke.cash/core/utils';
 import { SECOND } from '@revoke.cash/core/utils/time';
-import { type Address, type Chain, maxUint160 } from 'viem';
+import { type Address, type Chain, maxUint160, type PublicClient } from 'viem';
 import { type AllowanceDerivationOptions, AllowanceType, type Permit2Erc20Allowance } from '.';
 
 export const PERMIT2_ADDRESS: Address = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
 
 export const getPermit2AllowancesFromApprovals = async (
-  contract: Erc20TokenContract,
+  tokenAddress: Address,
   owner: Address,
   events: EnrichedTokenEvent[],
+  publicClient: PublicClient,
   options: AllowanceDerivationOptions = {},
 ): Promise<Permit2Erc20Allowance[]> => {
   const permit2ApprovalEvents = events.filter((event) => event.type === TokenEventType.PERMIT2);
@@ -30,7 +30,7 @@ export const getPermit2AllowancesFromApprovals = async (
 
   const allowances = await Promise.all(
     deduplicatedApprovalEvents.map((approval) =>
-      getPermit2AllowanceFromApproval(contract, owner, approval, events, options),
+      getPermit2AllowanceFromApproval(tokenAddress, owner, approval, events, publicClient, options),
     ),
   );
 
@@ -38,10 +38,11 @@ export const getPermit2AllowancesFromApprovals = async (
 };
 
 const getPermit2AllowanceFromApproval = async (
-  tokenContract: Erc20TokenContract,
+  tokenAddress: Address,
   owner: Address,
   approval: Enriched<Permit2Event>,
   events: EnrichedTokenEvent[],
+  publicClient: PublicClient,
   options: AllowanceDerivationOptions = {},
 ): Promise<Permit2Erc20Allowance | undefined> => {
   const { blockNumber, referenceTime, transferEventsAvailable = true } = options;
@@ -79,11 +80,11 @@ const getPermit2AllowanceFromApproval = async (
     };
   }
 
-  const permit2Allowance = await tokenContract.publicClient.readContract({
+  const permit2Allowance = await publicClient.readContract({
     address: permit2Address,
     abi: PERMIT2_ABI,
     functionName: 'allowance',
-    args: [owner, tokenContract.address, spender],
+    args: [owner, tokenAddress, spender],
     blockNumber,
   });
 
@@ -103,7 +104,8 @@ export const preparePermit2Approve = async (
   permit2Address: Address,
   account: Address,
   chain: Chain | undefined,
-  tokenContract: Erc20TokenContract,
+  tokenAddress: Address,
+  publicClient: PublicClient,
   spender: Address,
   amount: bigint,
   expiration: number,
@@ -112,13 +114,13 @@ export const preparePermit2Approve = async (
     address: permit2Address,
     abi: PERMIT2_ABI,
     functionName: 'approve' as const,
-    args: [tokenContract.address, spender, amount, expiration] as const,
+    args: [tokenAddress, spender, amount, expiration] as const,
     account,
     chain,
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   };
 
-  const gas = await tokenContract.publicClient.estimateContractGas(transactionRequest);
+  const gas = await publicClient.estimateContractGas(transactionRequest);
 
   return { ...transactionRequest, gas };
 };

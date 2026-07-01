@@ -2,7 +2,6 @@ import { ChainId } from '@revoke.cash/chains';
 import { BLUR_ABI, OPENSEA_SEAPORT_ABI } from '@revoke.cash/core/abis';
 import blocksCache from '@revoke.cash/core/cache/blocks';
 import eventsCache from '@revoke.cash/core/cache/events';
-import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import type { ResolvedTimeLog } from '@revoke.cash/core/events';
 import { addressToTopic, logSorterChronological } from '@revoke.cash/core/events/utils';
 import { isNullish } from '@revoke.cash/core/utils';
@@ -14,6 +13,7 @@ import { getLogsProvider } from 'lib/providers';
 import type { Marketplace, MarketplaceConfig, OnCancel } from 'lib/types';
 import { useLayoutEffect, useState } from 'react';
 import { type Address, getAbiItem, type Hash, toEventSelector, type WalletClient } from 'viem';
+import { usePublicClient } from 'wagmi';
 import { useAddress } from '../page-context/AddressIdentityContext';
 import { useAddressAllowances, useAddressPageContext } from '../page-context/AddressPageContext';
 
@@ -57,7 +57,7 @@ export const useMarketplaces = () => {
 
   const queryClient = useQueryClient();
 
-  const publicClient = createViemPublicClientForChain(selectedChainId);
+  const publicClient = usePublicClient({ chainId: selectedChainId })!;
 
   const ALL_MARKETPLACES: MarketplaceConfig[] = [
     {
@@ -119,7 +119,7 @@ export const useMarketplaces = () => {
 
       const blockNumber = await queryClient.ensureQueryData({
         queryKey: ['blockNumber', selectedChainId],
-        queryFn: async () => createViemPublicClientForChain(selectedChainId).getBlockNumber().then(Number),
+        queryFn: async () => publicClient.getBlockNumber().then(Number),
         // Don't refresh the block number too often to avoid refreshing events too often, to avoid backend API rate limiting
         gcTime: 1 * MINUTE,
         staleTime: 1 * MINUTE,

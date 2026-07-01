@@ -8,17 +8,20 @@ import { useAddress } from 'lib/hooks/page-context/AddressIdentityContext';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
 import analytics from 'lib/utils/analytics';
 import type { Address } from 'viem';
+import { type Config, useConfig } from 'wagmi';
+import { getPublicClient } from 'wagmi/actions';
 import PudgyCheckerStatus, { type PudgyCheckerStatusString } from './PudgyCheckerStatus';
 import { alreadyOwnsSoulboundToken, canMint } from './utils';
 
 const PudgyChecker = () => {
   const { address } = useAddress();
   const { allowances, isLoading } = useAddressAllowances();
+  const config = useConfig();
 
   const { data: status, isLoading: isLoadingStatus } = useQuery({
     queryKey: ['pudgy-checker', allowances?.map(getAllowanceKey)],
     queryFn: async () => {
-      const status = await getPudgyCheckerStatus(address, allowances!);
+      const status = await getPudgyCheckerStatus(address, allowances!, config);
       analytics.track('Pudgy Checked', { account: address, status });
       return status;
     },
@@ -39,6 +42,7 @@ export default PudgyChecker;
 const getPudgyCheckerStatus = async (
   address: Address,
   allowances: TokenAllowanceData[],
+  config: Config,
 ): Promise<PudgyCheckerStatusString> => {
   if (await checkAlreadyClaimed(address)) {
     return 'already_claimed';
@@ -48,7 +52,11 @@ const getPudgyCheckerStatus = async (
     return 'no_tokens';
   }
 
-  const simulatedAllowances = await Promise.all(allowances.map((allowance) => simulateRevokeAllowance(allowance)));
+  const simulatedAllowances = await Promise.all(
+    allowances.map((allowance) =>
+      simulateRevokeAllowance(allowance, getPublicClient(config, { chainId: allowance.chainId })!),
+    ),
+  );
 
   // Filter out allowances that cannot be revoked
   const filteredAllowances = simulatedAllowances

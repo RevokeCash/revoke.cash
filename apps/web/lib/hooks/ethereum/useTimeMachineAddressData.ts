@@ -1,16 +1,18 @@
 import {
+  type AddressData,
   type AllowanceDerivationOptions,
   getAllowancesFromEvents,
   type TokenAllowanceData,
 } from '@revoke.cash/core/allowances';
 import { findBlockByTimestamp } from '@revoke.cash/core/blocks';
-import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
+import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import { getEventKey } from '@revoke.cash/core/events';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQueries } from '@tanstack/react-query';
-import type { Address } from 'viem';
+import type { Address, PublicClient } from 'viem';
+import { useConfig } from 'wagmi';
+import { getPublicClient } from 'wagmi/actions';
 import type { CombinedQueryResult } from './combined-query-result';
-import type { AddressData } from './useAddressData';
 
 export const useTimeMachineAddressData = (
   owner: Address,
@@ -18,6 +20,8 @@ export const useTimeMachineAddressData = (
   currentAddressDataResults: CombinedQueryResult<AddressData>[],
   targetTimestamp: number | undefined,
 ): CombinedQueryResult<AddressData>[] => {
+  const config = useConfig();
+
   return useQueries({
     queries: chains.map((chainId, index) => {
       const currentResult = currentAddressDataResults[index];
@@ -35,7 +39,14 @@ export const useTimeMachineAddressData = (
           currentData?.state.computedToBlock,
           events.map(getEventKey),
         ] as const,
-        queryFn: () => getHistoricalAddressData(owner, chainId, currentData!, targetTimestamp!),
+        queryFn: () =>
+          getHistoricalAddressData(
+            owner,
+            chainId,
+            currentData!,
+            targetTimestamp!,
+            getPublicClient(config, { chainId })!,
+          ),
         enabled:
           !isNullish(targetTimestamp) &&
           currentResult?.isSuccess === true &&
@@ -74,8 +85,8 @@ const getHistoricalAddressData = async (
   chainId: DocumentedChainId,
   currentData: AddressData,
   targetTimestamp: number,
+  publicClient: PublicClient,
 ): Promise<AddressData> => {
-  const publicClient = createViemPublicClientForChain(chainId);
   const block = await findBlockByTimestamp(publicClient, targetTimestamp);
 
   if (!block) return toHistoricalAddressData(currentData, [], null);

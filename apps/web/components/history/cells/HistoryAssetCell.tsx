@@ -16,7 +16,7 @@ const HistoryAssetCell = ({ event, onFilter }: Props) => {
   const asset = {
     metadata: event.metadata,
     chainId: event.chainId,
-    contract: {
+    token: {
       address: event.token,
     },
   };

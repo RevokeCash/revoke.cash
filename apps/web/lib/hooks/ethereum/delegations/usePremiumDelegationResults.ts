@@ -1,10 +1,12 @@
-import { createViemPublicClientForChain, ORDERED_CHAINS } from '@revoke.cash/core/chains';
+import { ORDERED_CHAINS } from '@revoke.cash/core/chains';
 import { AggregateDelegatePlatform } from '@revoke.cash/core/delegations/AggregateDelegatePlatform';
 import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQueries } from '@tanstack/react-query';
 import analytics from 'lib/utils/analytics';
 import type { Address, PublicClient } from 'viem';
+import { useConfig } from 'wagmi';
+import { getPublicClient } from 'wagmi/actions';
 import { type CombinedQueryResult, combineQueryResults } from '../combined-query-result';
 
 const fetchDelegations = async (
@@ -23,11 +25,13 @@ export interface CombinedDelegationResult extends CombinedQueryResult<Delegation
 }
 
 export const usePremiumDelegationResults = (address: Address | undefined): CombinedDelegationResult[] => {
+  const config = useConfig();
+
   return useQueries({
     queries: ORDERED_CHAINS.map((chainId) => ({
       queryKey: getPremiumDelegationsQueryKey(address, chainId),
       queryFn: async () => {
-        const publicClient = createViemPublicClientForChain(chainId);
+        const publicClient = getPublicClient(config, { chainId })!;
         const delegations = await fetchDelegations(publicClient, chainId, address!);
         analytics.track('Fetched Delegations', { account: address, chainId });
         return delegations;

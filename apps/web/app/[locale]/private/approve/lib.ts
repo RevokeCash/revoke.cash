@@ -55,17 +55,12 @@ export const prepareApprove = async (
         throw new Error('Amount, expiration, and permit2 address are required');
       }
 
-      const tokenContract = {
-        address: tokenAddress,
-        publicClient,
-        abi: ERC20_ABI,
-      };
-
       return preparePermit2Approve(
         permit2Address,
         account,
         walletClient.chain,
-        tokenContract,
+        tokenAddress,
+        publicClient,
         spenderAddress,
         BigInt(amount),
         Number(expiration),

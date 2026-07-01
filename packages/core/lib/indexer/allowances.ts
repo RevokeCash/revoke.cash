@@ -1,4 +1,9 @@
-import { AllowanceType, getAllowancesFromEvents, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import {
+  type AllowancePayload,
+  AllowanceType,
+  getAllowancesFromEvents,
+  type TokenAllowanceData,
+} from '@revoke.cash/core/allowances';
 import blocksCache from '@revoke.cash/core/cache/blocks';
 import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
 import { type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
@@ -24,6 +29,8 @@ import { isNullish } from '../utils';
 import { findAffectedTokens } from './affected-tokens';
 import { ChainUnresponsiveError } from './errors';
 import { REORG_DEPTH } from './events';
+import { type SpenderMetadataRow, serializeSpenderMetadata } from './spender-metadata';
+import { serializeTokenMetadata, type TokenMetadataRow } from './token-metadata';
 
 export interface RecomputeAllowancesResult {
   skipped: boolean;
@@ -162,6 +169,38 @@ export const getCachedAllowances = async (
   return { state: state ?? null, rows };
 };
 
+export const serializeAllowanceFromRow = (
+  row: CachedAllowanceRow,
+  metadata: TokenMetadataRow,
+  spenderMetadata?: SpenderMetadataRow,
+): TokenAllowanceData => ({
+  token: { address: row.tokenAddress, standard: metadata.tokenStandard },
+  metadata: serializeTokenMetadata(metadata),
+  chainId: row.chainId,
+  owner: row.address,
+  payload: serializeAllowancePayloadFromRow(row, spenderMetadata),
+});
+
+const serializeAllowancePayloadFromRow = (
+  row: CachedAllowanceRow,
+  spenderMetadata?: SpenderMetadataRow,
+): AllowancePayload => {
+  return {
+    type: row.allowanceType,
+    spender: row.spenderAddress,
+    spenderData: serializeSpenderMetadata(spenderMetadata),
+    amount: row.amount ?? undefined,
+    tokenId: row.tokenId ?? undefined,
+    permit2Address: row.permit2Address ?? undefined,
+    expiration: row.expiration ?? undefined,
+    lastUpdated: {
+      blockNumber: row.lastUpdatedBlock,
+      transactionHash: row.lastUpdatedTxHash,
+      timestamp: row.lastUpdatedTimestamp,
+    },
+  } as AllowancePayload;
+};
+
 // Indexer-side enrichment is intentionally minimal: resolve the block timestamp (needed for
 // `indexer.allowances.last_updated_timestamp`) and attach an empty metadata placeholder to satisfy
 // the `EnrichedTokenEvent` type. Real metadata + spam filtering happens at read time.
@@ -229,7 +268,7 @@ const buildAllowanceRow = (
   const common = {
     chainId,
     address,
-    tokenAddress: data.contract.address,
+    tokenAddress: data.token.address,
     spenderAddress: payload.spender,
     allowanceType: payload.type,
     lastUpdatedBlock: payload.lastUpdated.blockNumber,

@@ -1,4 +1,3 @@
-import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
 import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
 import { type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { indexerEvents, indexerTokenMetadata } from '@revoke.cash/core/db/schema/indexer';
@@ -10,7 +9,13 @@ import {
   PERMIT2_LOCKDOWN_TOPIC,
   PERMIT2_PERMIT_TOPIC,
 } from '@revoke.cash/core/events';
-import { getTokenMetadata, type TokenContract, throwIfSpamBytecode } from '@revoke.cash/core/tokens';
+import {
+  getTokenMetadata,
+  type TokenMetadata,
+  type TokenReference,
+  type TokenStandard,
+  throwIfSpamBytecode,
+} from '@revoke.cash/core/tokens';
 import { isSpamError, isTransientError, parseErrorMessage, type SpamReason } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
 import { and, eq, gte, inArray, isNull, lt, lte, or, type SQL, sql } from 'drizzle-orm';
@@ -18,7 +23,6 @@ import { unionAll } from 'drizzle-orm/pg-core';
 import { type Address, getAddress, type Hex } from 'viem';
 import { isNullish } from '../utils';
 
-export type TokenStandard = (typeof indexerTokenMetadata.tokenStandard.enumValues)[number];
 export type TokenMetadataRow = typeof indexerTokenMetadata.$inferSelect;
 export type TokenMetadataByAddress = Map<Address, TokenMetadataRow>;
 
@@ -34,12 +38,14 @@ export const enrichToken = async (
   const start = Date.now();
 
   const standard = await inferTokenStandardFromEvents(chainId, tokenAddress);
-  const abi = standard === 'erc721' ? ERC721_ABI : ERC20_ABI;
   const publicClient = createViemPublicClientForChain(chainId);
-  const contract = { address: tokenAddress, abi, publicClient } as TokenContract;
+  const token: TokenReference = { address: tokenAddress, standard };
 
   try {
-    const [metadata] = await Promise.all([getTokenMetadata(contract, chainId), throwIfSpamBytecode(contract)]);
+    const [metadata] = await Promise.all([
+      getTokenMetadata(token, publicClient, chainId),
+      throwIfSpamBytecode(tokenAddress, publicClient),
+    ]);
 
     await upsertTokenMetadata(getDb(), chainId, tokenAddress, {
       tokenStandard: standard,
@@ -153,6 +159,13 @@ export const isUsableTokenMetadata = (metadata?: TokenMetadataRow): boolean => {
   return true;
 };
 
+export const serializeTokenMetadata = (metadata: TokenMetadataRow): TokenMetadata => ({
+  symbol: metadata.symbol ?? metadata.tokenAddress,
+  decimals: metadata.decimals ?? undefined,
+  totalSupply: metadata.totalSupply ?? undefined,
+  icon: metadata.iconUrl ?? undefined,
+});
+
 // Check if the token has an ApprovalForAll event OR if its Transfer/Approval events have 4 topic,
 // then it is ERC721, otherwise it is ERC20 (note that we don't differentiate between ERC721 and ERC1155 here)
 const inferTokenStandardFromEvents = async (chainId: number, tokenAddress: Address): Promise<TokenStandard> => {
@@ -176,8 +189,7 @@ const inferTokenStandardFromEvents = async (chainId: number, tokenAddress: Addre
   return 'erc20';
 };
 
-type UpsertValues = Partial<{
-  tokenStandard: TokenStandard;
+type UpsertValues = { tokenStandard: TokenStandard } & Partial<{
   symbol: string | null;
   decimals: number | null;
   totalSupply: bigint | null;

@@ -1,9 +1,9 @@
 CREATE TYPE "indexer"."spam_reason" AS ENUM('whois', 'symbol', 'bytecode', 'airdrop');--> statement-breakpoint
-CREATE TYPE "indexer"."token_standard" AS ENUM('erc20', 'erc721', 'erc1155', 'unknown');--> statement-breakpoint
+CREATE TYPE "indexer"."token_standard" AS ENUM('erc20', 'erc721');--> statement-breakpoint
 CREATE TABLE "indexer"."token_metadata" (
 	"chain_id" integer NOT NULL,
 	"token_address" text NOT NULL,
-	"token_standard" "indexer"."token_standard" DEFAULT 'unknown' NOT NULL,
+	"token_standard" "indexer"."token_standard" NOT NULL,
 	"symbol" text,
 	"decimals" integer,
 	"total_supply" numeric,

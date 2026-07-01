@@ -41,7 +41,7 @@ const ContractCell = ({ delegation }: Props) => {
       <AssetDisplay
         asset={{
           metadata: tokenMetadata ?? undefined,
-          contract: { address: delegation.contract },
+          token: { address: delegation.contract },
           chainId: delegation.chainId,
         }}
       />

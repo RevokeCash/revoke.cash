@@ -1,6 +1,6 @@
 'use client';
 
-import { isErc721Contract, type TokenData } from '@revoke.cash/core/tokens';
+import { isErc721, type TokenData } from '@revoke.cash/core/tokens';
 import { isNullish } from '@revoke.cash/core/utils';
 import { formatBalance, formatFiatBalance } from '@revoke.cash/core/utils/formatting';
 import Loader from 'components/common/Loader';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AssetCell = ({ asset }: Props) => {
-  if (isErc721Contract(asset.contract)) {
+  if (isErc721(asset.token)) {
     return (
       <div className="flex items-center gap-1 py-1 w-48 lg:w-56 h-12">
         <AssetDisplay asset={asset} />

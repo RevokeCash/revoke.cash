@@ -6,7 +6,7 @@ import {
   type OnUpdate,
   type TokenAllowanceData,
 } from '@revoke.cash/core/allowances';
-import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { isErc721 } from '@revoke.cash/core/tokens';
 import { isNullish } from '@revoke.cash/core/utils';
 import { formatFixedPointBigInt } from '@revoke.cash/core/utils/formatting';
 import { createColumnHelper, filterFns, type Row, type RowData, sortingFns } from '@tanstack/react-table';
@@ -66,7 +66,7 @@ export const accessors = {
       : formatFixedPointBigInt(allowance.balance, allowance.metadata.decimals);
   },
   assetType: (allowance: TokenAllowanceData) => {
-    if (isErc721Contract(allowance.contract)) return 'NFT';
+    if (isErc721(allowance.token)) return 'NFT';
     return 'Token';
   },
   valueAtRisk: (allowance: TokenAllowanceData) => {

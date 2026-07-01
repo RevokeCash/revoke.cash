@@ -1,9 +1,9 @@
 'use client';
 
+import { wagmiConfig } from 'lib/utils/wagmi';
 import { useAsyncCallback } from 'react-async-hook';
 import type { Account, Chain, Transport, WalletClient } from 'viem';
 import { getWalletClient } from 'wagmi/actions';
-import { wagmiConfig } from './EthereumProvider';
 import { useSwitchChain } from './useSwitchChain';
 
 export type ConnectedWalletClient = WalletClient<Transport, Chain, Account>;

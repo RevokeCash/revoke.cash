@@ -1,3 +1,4 @@
+import { ERC20_ABI, ERC721_ABI } from '@revoke.cash/core/abis';
 import { getViemChainConfig } from '@revoke.cash/core/chains';
 import { ADDRESS_ZERO } from '@revoke.cash/core/constants';
 import {
@@ -12,14 +13,7 @@ import {
   type ResolvedTimeLog,
   TokenEventType,
 } from '@revoke.cash/core/events';
-import {
-  createTokenContracts,
-  type Erc20TokenContract,
-  type Erc721TokenContract,
-  isErc721Contract,
-  type TokenContract,
-  type TokenData,
-} from '@revoke.cash/core/tokens';
+import { getEventTokenReference, isErc721, type TokenData, type TokenReference } from '@revoke.cash/core/tokens';
 import type { Nullable } from '@revoke.cash/core/types';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { isRevertedError, isTransientError, parseErrorMessage, stringifyError } from '@revoke.cash/core/utils/errors';
@@ -29,6 +23,15 @@ import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import { type Address, formatUnits, maxUint256, type PublicClient, type WriteContractParameters } from 'viem';
 import { getPermit2AllowancesFromApprovals, preparePermit2Approve } from './permit2';
+
+export interface AddressData {
+  state: {
+    checkedAt: string | null;
+    computedToBlock: number | null;
+  };
+  allowances: TokenAllowanceData[];
+  events: EnrichedTokenEvent[];
+}
 
 export interface TokenAllowanceData extends TokenData {
   payload?: AllowancePayload;
@@ -97,17 +100,19 @@ export const getAllowancesFromEvents = async (
   chainId: number,
   options: AllowanceDerivationOptions = {},
 ): Promise<TokenAllowanceData[]> => {
-  const contracts = createTokenContracts(events.filter(isApprovalTokenEvent), publicClient);
+  const tokens = deduplicateArray(events.filter(isApprovalTokenEvent), (event) => event.token)
+    .map((event) => getEventTokenReference(event))
+    .filter((token) => !isNullish(token));
 
   const allowances = await Promise.all(
-    contracts.map(async (contract) => {
-      const contractEvents = events.filter((event) => event.token === contract.address);
+    tokens.map(async (token) => {
+      const tokenEvents = events.filter((event) => event.token === token.address);
 
       try {
-        const unfilteredAllowances = await getAllowancesForToken(contract, contractEvents, owner, options);
+        const unfilteredAllowances = await getAllowancesForToken(token, tokenEvents, owner, publicClient, options);
 
-        const metadata = contractEvents[0].metadata;
-        const tokenData = { contract, metadata, chainId, owner };
+        const metadata = tokenEvents[0].metadata;
+        const tokenData = { token, metadata, chainId, owner };
 
         // Filter out zero-value allowances
         const allowances = unfilteredAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
@@ -117,7 +122,7 @@ export const getAllowancesFromEvents = async (
         if (stringifyError(e)?.includes('Cannot decode zero data')) throw e;
 
         // If allowance derivation fails for this token, exclude it from the token list.
-        console.error(`Failed to derive allowances for token ${contract.address} on chain ${chainId}:`, e);
+        console.error(`Failed to derive allowances for token ${token.address} on chain ${chainId}:`, e);
         return [];
       }
     }),
@@ -127,27 +132,31 @@ export const getAllowancesFromEvents = async (
 };
 
 export const getAllowancesForToken = async (
-  contract: TokenContract,
+  token: TokenReference,
   events: EnrichedTokenEvent[],
   userAddress: Address,
+  publicClient: PublicClient,
   options: AllowanceDerivationOptions = {},
 ): Promise<AllowancePayload[]> => {
   const { blockNumber, referenceTime, transferEventsAvailable = true } = options;
 
-  if (isErc721Contract(contract)) {
+  if (isErc721(token)) {
     const unlimitedAllowances = getUnlimitedErc721AllowancesFromApprovals(events);
-    const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(contract, events, userAddress, {
-      blockNumber,
-      transferEventsAvailable,
-    });
+    const limitedAllowances = await getLimitedErc721AllowancesFromApprovals(
+      token.address,
+      events,
+      userAddress,
+      publicClient,
+      { blockNumber, transferEventsAvailable },
+    );
     return [...limitedAllowances, ...unlimitedAllowances];
   }
 
-  const regularAllowances = await getErc20AllowancesFromApprovals(contract, userAddress, events, {
+  const regularAllowances = await getErc20AllowancesFromApprovals(token.address, userAddress, events, publicClient, {
     blockNumber,
     transferEventsAvailable,
   });
-  const permit2Allowances = await getPermit2AllowancesFromApprovals(contract, userAddress, events, {
+  const permit2Allowances = await getPermit2AllowancesFromApprovals(token.address, userAddress, events, publicClient, {
     blockNumber,
     referenceTime,
     transferEventsAvailable,
@@ -157,9 +166,10 @@ export const getAllowancesForToken = async (
 };
 
 export const getErc20AllowancesFromApprovals = async (
-  contract: Erc20TokenContract,
+  tokenAddress: Address,
   owner: Address,
   events: EnrichedTokenEvent[],
+  publicClient: PublicClient,
   options: AllowanceDerivationOptions = {},
 ): Promise<Erc20Allowance[]> => {
   const approvalEvents = events.filter((event) => event.type === TokenEventType.APPROVAL_ERC20);
@@ -170,7 +180,7 @@ export const getErc20AllowancesFromApprovals = async (
 
   const allowances = await Promise.all(
     deduplicatedApprovalEvents.map((approval) =>
-      getErc20AllowanceFromApproval(contract, owner, approval, events, options),
+      getErc20AllowanceFromApproval(tokenAddress, owner, approval, events, publicClient, options),
     ),
   );
 
@@ -178,10 +188,11 @@ export const getErc20AllowancesFromApprovals = async (
 };
 
 const getErc20AllowanceFromApproval = async (
-  contract: Erc20TokenContract,
+  tokenAddress: Address,
   owner: Address,
   approval: Enriched<Erc20ApprovalEvent>,
   events: EnrichedTokenEvent[],
+  publicClient: PublicClient,
   options: AllowanceDerivationOptions = {},
 ): Promise<Erc20Allowance | undefined> => {
   const { blockNumber, transferEventsAvailable = true } = options;
@@ -205,8 +216,9 @@ const getErc20AllowanceFromApproval = async (
   }
 
   // Otherwise we need to check the current on-chain allowance because it may have been partially used
-  const amount = await contract.publicClient.readContract({
-    ...contract,
+  const amount = await publicClient.readContract({
+    address: tokenAddress,
+    abi: ERC20_ABI,
     functionName: 'allowance',
     args: [owner, spender],
     blockNumber,
@@ -216,9 +228,10 @@ const getErc20AllowanceFromApproval = async (
 };
 
 export const getLimitedErc721AllowancesFromApprovals = async (
-  contract: Erc721TokenContract,
+  tokenAddress: Address,
   events: EnrichedTokenEvent[],
   owner: Address,
+  publicClient: PublicClient,
   options: AllowanceDerivationOptions = {},
 ): Promise<Erc721SingleAllowance[]> => {
   const { blockNumber, transferEventsAvailable = true } = options;
@@ -256,9 +269,16 @@ export const getLimitedErc721AllowancesFromApprovals = async (
 
       try {
         const [currentOwner, currentApproved] = await Promise.all([
-          contract.publicClient.readContract({ ...contract, functionName: 'ownerOf', args: [tokenId], blockNumber }),
-          contract.publicClient.readContract({
-            ...contract,
+          publicClient.readContract({
+            address: tokenAddress,
+            abi: ERC721_ABI,
+            functionName: 'ownerOf',
+            args: [tokenId],
+            blockNumber,
+          }),
+          publicClient.readContract({
+            address: tokenAddress,
+            abi: ERC721_ABI,
             functionName: 'getApproved',
             args: [tokenId],
             blockNumber,
@@ -353,7 +373,7 @@ export const getAllowanceI18nValues = (allowance: Pick<TokenAllowanceData, 'payl
 };
 
 export const getAllowanceKey = (allowance: TokenAllowanceData) => {
-  return `allowance-${allowance.chainId}-${allowance.owner}-${allowance.contract.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}`;
+  return `allowance-${allowance.chainId}-${allowance.owner}-${allowance.token.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}`;
 };
 
 export const hasZeroAllowance = (allowance: AllowancePayload, tokenData: TokenAllowanceData) => {
@@ -365,38 +385,48 @@ export const hasZeroAllowance = (allowance: AllowancePayload, tokenData: TokenAl
   );
 };
 
-export const simulateRevokeAllowance = async (allowance: TokenAllowanceData): Promise<TokenAllowanceData> => {
+export const simulateRevokeAllowance = async (
+  allowance: TokenAllowanceData,
+  publicClient: PublicClient,
+): Promise<TokenAllowanceData> => {
   // If there is no allowance, we return the token data as-is
   if (!allowance.payload) return allowance;
 
   try {
-    const preparedRevoke = await prepareRevokeAllowance(allowance);
-    throwIfExcessiveGas(allowance.chainId, preparedRevoke.gas ?? 0n, allowance.contract.address);
+    const preparedRevoke = await prepareRevokeAllowance(allowance, publicClient);
+    throwIfExcessiveGas(allowance.chainId, preparedRevoke.gas ?? 0n, allowance.token.address);
     return { ...allowance, payload: { ...allowance.payload, preparedRevoke } };
   } catch (e) {
     return { ...allowance, payload: { ...allowance.payload, revokeError: parseErrorMessage(e) } };
   }
 };
 
-export const prepareRevokeAllowance = async (allowance: TokenAllowanceData): Promise<WriteContractParameters> => {
+export const prepareRevokeAllowance = async (
+  allowance: TokenAllowanceData,
+  publicClient: PublicClient,
+): Promise<WriteContractParameters> => {
   if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
   if (allowance.payload.preparedRevoke) return allowance.payload.preparedRevoke;
 
-  if (isErc721Contract(allowance.contract)) {
-    return prepareRevokeErc721Allowance(allowance);
+  if (isErc721(allowance.token)) {
+    return prepareRevokeErc721Allowance(allowance, publicClient);
   }
 
-  return prepareRevokeErc20Allowance(allowance);
+  return prepareRevokeErc20Allowance(allowance, publicClient);
 };
 
-export const prepareRevokeErc721Allowance = async (allowance: TokenAllowanceData): Promise<WriteContractParameters> => {
+export const prepareRevokeErc721Allowance = async (
+  allowance: TokenAllowanceData,
+  publicClient: PublicClient,
+): Promise<WriteContractParameters> => {
   if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
 
   const chain = getViemChainConfig(allowance.chainId);
 
   if (allowance.payload.type === AllowanceType.ERC721_SINGLE) {
     const transactionRequest = {
-      ...(allowance.contract as Erc721TokenContract),
+      address: allowance.token.address,
+      abi: ERC721_ABI,
       functionName: 'approve' as const,
       args: [ADDRESS_ZERO, allowance.payload.tokenId] as const,
       account: allowance.owner,
@@ -404,12 +434,13 @@ export const prepareRevokeErc721Allowance = async (allowance: TokenAllowanceData
       value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
     };
 
-    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    const gas = await publicClient.estimateContractGas(transactionRequest);
     return { ...transactionRequest, gas };
   }
 
   const transactionRequest = {
-    ...(allowance.contract as Erc721TokenContract),
+    address: allowance.token.address,
+    abi: ERC721_ABI,
     functionName: 'setApprovalForAll' as const,
     args: [allowance.payload.spender, false] as const,
     account: allowance.owner,
@@ -417,21 +448,25 @@ export const prepareRevokeErc721Allowance = async (allowance: TokenAllowanceData
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
   };
 
-  const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+  const gas = await publicClient.estimateContractGas(transactionRequest);
   return { ...transactionRequest, gas };
 };
 
-export const prepareRevokeErc20Allowance = async (allowance: TokenAllowanceData): Promise<WriteContractParameters> => {
-  return prepareUpdateErc20Allowance(allowance, 0n);
+export const prepareRevokeErc20Allowance = async (
+  allowance: TokenAllowanceData,
+  publicClient: PublicClient,
+): Promise<WriteContractParameters> => {
+  return prepareUpdateErc20Allowance(allowance, 0n, publicClient);
 };
 
 export const prepareUpdateErc20Allowance = async (
   allowance: TokenAllowanceData,
   newAmount: bigint,
+  publicClient: PublicClient,
 ): Promise<WriteContractParameters> => {
   if (!allowance.payload) throw new Error('Cannot update undefined allowance');
 
-  if (isErc721Contract(allowance.contract) || isErc721Allowance(allowance.payload)) {
+  if (isErc721(allowance.token) || isErc721Allowance(allowance.payload)) {
     throw new Error('Cannot update ERC721 allowances');
   }
 
@@ -445,7 +480,8 @@ export const prepareUpdateErc20Allowance = async (
       allowance.payload.permit2Address,
       allowance.owner,
       chain,
-      allowance.contract,
+      allowance.token.address,
+      publicClient,
       allowance.payload.spender,
       newAmount,
       allowance.payload.expiration,
@@ -453,7 +489,8 @@ export const prepareUpdateErc20Allowance = async (
   }
 
   const baseRequest = {
-    ...allowance.contract,
+    address: allowance.token.address,
+    abi: ERC20_ABI,
     account: allowance.owner,
     chain,
     value: 0n as any as never, // Workaround for Gnosis Safe, TODO: remove when fixed
@@ -468,7 +505,7 @@ export const prepareUpdateErc20Allowance = async (
       args: [allowance.payload.spender, newAmount] as const,
     };
 
-    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    const gas = await publicClient.estimateContractGas(transactionRequest);
     return { ...transactionRequest, gas };
   } catch (e) {
     if (!isRevertedError(parseErrorMessage(e))) throw e;
@@ -483,7 +520,7 @@ export const prepareUpdateErc20Allowance = async (
         args: [allowance.payload.spender, differenceAmount] as const,
       };
 
-      const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+      const gas = await publicClient.estimateContractGas(transactionRequest);
       return { ...transactionRequest, gas };
     }
 
@@ -495,7 +532,7 @@ export const prepareUpdateErc20Allowance = async (
       args: [allowance.payload.spender, -differenceAmount] as const,
     };
 
-    const gas = await allowance.contract.publicClient.estimateContractGas(transactionRequest);
+    const gas = await publicClient.estimateContractGas(transactionRequest);
     return { ...transactionRequest, gas };
   }
 };
@@ -558,7 +595,7 @@ export const applyUpdateToAllowances = (
 };
 
 export const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
-  return a.contract.address === b.contract.address && a.chainId === b.chainId;
+  return a.token.address === b.token.address && a.chainId === b.chainId;
 };
 
 export const allowanceEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {

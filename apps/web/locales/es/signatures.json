@@ -22,28 +22,5 @@
       "content": "Al publicar NFT u otros activos para la venta en mercados como OpenSea, firmas una firma fuera de la cadena que autoriza al mercado a transferir tus activos. Los sitios web fraudulentos pueden aprovecharse de esto engañándote para que firmes firmas de mercado que generan listados sin costo. Dado que estas firmas son fuera de la cadena, Revoke.cash no puede saber si realmente firmaste alguna.<br></br><br></br><b> Utilice esta herramienta solo si<i> tú</i> Sepa que firmó una firma de mercado en un sitio web fraudulento</b> De lo contrario, estás desperdiciando comisiones por transacción. La eliminación masiva de la lista cancela<i> todo</i> listados y ofertas existentes en un mercado a la vez incrementando su contador en cadena.",
       "title": "¿Qué es la Eliminación Masiva?"
     }
-  },
-  "permit": {
-    "different_chain": "O verifique sus firmas de permisos en una red diferente",
-    "meta": {
-      "title": "{chainName} Verificador de Firmas de Permisos"
-    },
-    "table": {
-      "headers": {
-        "actions": "Acciones",
-        "asset": "Nombre del Activo",
-        "last_cancelled": "Última Cancelación"
-      },
-      "none_found": "No se encontró ningún token compatible con firmas de permiso.",
-      "title": "Tokens con Soporte de Permisos"
-    },
-    "title": "{chainName} Verificador de Firmas de Permisos",
-    "tooltips": {
-      "recently_cancelled": "Recientemente canceló esta posible firma. Permanecerá en la lista para que pueda cancelarla más adelante si es necesario."
-    },
-    "what_are_permit_signatures": {
-      "content": "<i>Firmas de permisos</i> Se utilizan para otorgar aprobaciones de tokens sin enviar una transacción. Dado que estas firmas no se almacenan en la blockchain, Revoke.cash no puede saber si las firmaste. Esta página enumera los tokens que admiten firmas de permiso fuera de la blockchain.<br></br><br></br><b> Sólo si<i> tú</i> sabe que firmó una firma de Permiso en un sitio web fraudulento, debe cancelar la<i> potencial</i> firmas en esta página</b> De lo contrario, desperdiciará comisiones por transacción. Al cancelar firmas potenciales para un token, estas permanecerán en la lista, pero no podrán cancelarse nuevamente durante un tiempo.",
-      "title": "¿Qué son las Firmas de Permisos?"
-    }
   }
 }

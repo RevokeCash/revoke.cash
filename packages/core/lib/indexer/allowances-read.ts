@@ -1,7 +1,8 @@
-import { AllowanceType } from '@revoke.cash/core/allowances';
+import { type AddressData, AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import {
   type ApprovalTokenEvent,
+  type EnrichedTokenEvent,
   type Filter,
   isApprovalTokenEvent,
   type Log,
@@ -16,28 +17,28 @@ import { sortTokenEventsChronologically } from '@revoke.cash/core/events/utils';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import type { Address } from 'viem';
-import { type CachedAllowanceRow, getCachedAllowances } from './allowances';
-import {
-  type CachedAddressDataDto,
-  type CachedAllowanceDto,
-  type CachedTokenEventDto,
-  serializeAllowanceFromRow,
-  serializeApprovalEvent,
-} from './allowances-dto';
+import { type CachedAllowanceRow, getCachedAllowances, serializeAllowanceFromRow } from './allowances';
 import {
   failFastIfAllowanceStateIsBehind,
   failFastIfEventsStateIsBehind,
   failFastIfIndexingIsFailing,
   getIndexerReadStates,
 } from './cache-state';
-import { getCachedSpenderMetadata, type SpenderMetadataByAddress } from './spender-metadata';
+import {
+  getCompleteSpenderMetadata,
+  type SpenderMetadataByAddress,
+  type SpenderMetadataRow,
+  serializeSpenderMetadata,
+} from './spender-metadata';
 import { resolveAndPersistTimestampsForBlocks } from './timestamps';
-import { getCompleteTokenMetadata, isUsableTokenMetadata, type TokenMetadataRow } from './token-metadata';
+import {
+  getCompleteTokenMetadata,
+  isUsableTokenMetadata,
+  serializeTokenMetadata,
+  type TokenMetadataRow,
+} from './token-metadata';
 
-export const getCachedAddressData = async (
-  address: Address,
-  chainId: DocumentedChainId,
-): Promise<CachedAddressDataDto> => {
+export const getCachedAddressData = async (address: Address, chainId: DocumentedChainId): Promise<AddressData> => {
   const { eventsState, allowanceState } = await getIndexerReadStates(address, chainId);
 
   failFastIfIndexingIsFailing(eventsState, chainId);
@@ -46,28 +47,59 @@ export const getCachedAddressData = async (
   failFastIfEventsStateIsBehind(eventsState);
   failFastIfAllowanceStateIsBehind(eventsState, allowanceState);
 
-  const { state, rows: allowanceRows } = await getCachedAllowances(address, chainId);
-
-  const stateDto = {
+  const state = {
     checkedAt: eventsState?.lastScanAt?.toISOString() ?? null,
-    computedToBlock: state?.computedToBlock ?? null,
+    computedToBlock: allowanceState?.computedToBlock ?? null,
   };
 
-  const toBlock = state?.computedToBlock ?? 0;
-  const rawEvents = await fetchEventsFromCache(address, chainId, toBlock);
+  const allowances = await loadEnrichedAddressAllowances(address, chainId);
+  const events = await loadEnrichedHistoryEvents(address, chainId, allowanceState?.computedToBlock ?? 0);
 
+  return { state, allowances, events };
+};
+
+export const loadEnrichedAddressAllowances = async (
+  address: Address,
+  chainId: DocumentedChainId,
+): Promise<TokenAllowanceData[]> => {
+  const { rows } = await getCachedAllowances(address, chainId);
+
+  const [tokenMetadataByAddress, spenderMetadataByAddress] = await Promise.all([
+    getCompleteTokenMetadata(chainId, deduplicateArray(rows.map((row) => row.tokenAddress))),
+    getCompleteSpenderMetadata(chainId, deduplicateArray(rows.map((row) => row.spenderAddress))),
+  ]);
+
+  return serializeAllowances(rows, tokenMetadataByAddress, spenderMetadataByAddress);
+};
+
+const serializeAllowances = (
+  rows: CachedAllowanceRow[],
+  metadataByToken: Map<Address, TokenMetadataRow>,
+  spenderMetadataByAddress: SpenderMetadataByAddress,
+): TokenAllowanceData[] => {
+  return rows
+    .map((row) => {
+      const tokenMetadata = metadataByToken.get(row.tokenAddress);
+      if (!isCachedAllowanceActive(row) || !tokenMetadata || !isUsableTokenMetadata(tokenMetadata)) return null;
+      return serializeAllowanceFromRow(row, tokenMetadata, spenderMetadataByAddress.get(row.spenderAddress));
+    })
+    .filter((allowance) => !isNullish(allowance));
+};
+
+const loadEnrichedHistoryEvents = async (
+  address: Address,
+  chainId: DocumentedChainId,
+  toBlock: number,
+): Promise<EnrichedTokenEvent[]> => {
+  const rawEvents = await fetchEventsFromCache(address, chainId, toBlock);
   const uniqueTokens = deduplicateArray(rawEvents.map((event) => event.token));
   const metadataByToken = await getCompleteTokenMetadata(chainId, uniqueTokens);
   const historyEvents = getHistoryRelevantEvents(rawEvents, metadataByToken);
-  const spenderMetadataByAddress = await getCachedSpenderMetadata(
+  const spenderMetadataByAddress = await getCompleteSpenderMetadata(
     chainId,
     deduplicateArray(historyEvents.map(getApprovalEventSpenderAddress)),
   );
-
-  const allowances = serializeAllowances(allowanceRows, metadataByToken, spenderMetadataByAddress);
-  const events = serializeHistoryRelevantEvents(historyEvents, metadataByToken, spenderMetadataByAddress);
-
-  return { state: stateDto, allowances, events };
+  return serializeHistoryRelevantEvents(historyEvents, metadataByToken, spenderMetadataByAddress);
 };
 
 // Pull approval events for this user from the events cache up to `toBlock`. Metadata enrichment
@@ -128,7 +160,7 @@ const serializeHistoryRelevantEvents = (
   events: ApprovalTokenEvent[],
   metadataByToken: Map<Address, TokenMetadataRow>,
   spenderMetadataByAddress: SpenderMetadataByAddress,
-): CachedTokenEventDto[] => {
+): EnrichedTokenEvent[] => {
   const sorted = sortTokenEventsChronologically(events).reverse();
   return sorted.map((event) => {
     const tokenMetadata = metadataByToken.get(event.token)!;
@@ -137,20 +169,17 @@ const serializeHistoryRelevantEvents = (
   });
 };
 
-const serializeAllowances = (
-  allowanceRows: CachedAllowanceRow[],
-  metadataByToken: Map<Address, TokenMetadataRow>,
-  spenderMetadataByAddress: SpenderMetadataByAddress,
-): CachedAllowanceDto[] => {
-  return allowanceRows
-    .filter((row) => isCachedAllowanceActive(row))
-    .filter((row) => isUsableTokenMetadata(metadataByToken.get(row.tokenAddress)))
-    .map((row) => {
-      const tokenMetadata = metadataByToken.get(row.tokenAddress)!;
-      const spenderMetadata = spenderMetadataByAddress.get(row.spenderAddress);
-      return serializeAllowanceFromRow(row, tokenMetadata, spenderMetadata);
-    });
-};
+const serializeApprovalEvent = (
+  event: ApprovalTokenEvent,
+  metadata: TokenMetadataRow,
+  spenderMetadata?: SpenderMetadataRow,
+): EnrichedTokenEvent =>
+  ({
+    ...event,
+    payload: { ...event.payload, spenderData: serializeSpenderMetadata(spenderMetadata) },
+    time: { ...event.time, timestamp: event.time.timestamp! },
+    metadata: serializeTokenMetadata(metadata),
+  }) as EnrichedTokenEvent;
 
 export const isCachedAllowanceActive = (
   row: Pick<CachedAllowanceRow, 'allowanceType' | 'expiration'>,

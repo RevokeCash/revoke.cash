@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  type AddressData,
   type AllowanceUpdateProperties,
   applyRevokeToAllowances,
   applyUpdateToAllowances,
@@ -15,7 +16,6 @@ import { useCallback, useMemo } from 'react';
 import type { Address } from 'viem';
 import { queryClient } from '../QueryProvider';
 import type { CombinedQueryResult } from './combined-query-result';
-import type { AddressData } from './useAddressData';
 import { type ChainAllowancesToEnrich, useEnrichAllowances } from './useEnrichAllowances';
 import { type PremiumAddressDataResult, updatePremiumAddressDataCache } from './usePremiumAddressData';
 
@@ -147,6 +147,6 @@ const getChainDataStatus = (result: CombinedQueryResult<unknown> | undefined): C
 
 const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number => {
   const sortedByValue = [...allowances].sort((a, b) => (calculateValueAtRisk(b) ?? 0) - (calculateValueAtRisk(a) ?? 0));
-  const uniqueTokens = deduplicateArray(sortedByValue, (allowance) => allowance.contract.address);
+  const uniqueTokens = deduplicateArray(sortedByValue, (allowance) => allowance.token.address);
   return uniqueTokens.reduce((sum, allowance) => sum + (calculateValueAtRisk(allowance) ?? 0), 0);
 };

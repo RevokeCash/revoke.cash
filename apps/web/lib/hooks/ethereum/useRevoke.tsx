@@ -1,9 +1,10 @@
 'use client';
 
 import { getAllowanceKey, type OnUpdate, type TokenAllowanceData } from '@revoke.cash/core/allowances';
-import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { isErc721 } from '@revoke.cash/core/tokens';
 import { TransactionType } from '@revoke.cash/core/types';
 import { revokeAllowance, trackRevokeTransaction, updateErc20Allowance } from 'lib/allowances';
+import { usePublicClient } from 'wagmi';
 import { isTransactionStatusLoadingState, useTransactionStore, wrapTransaction } from '../../stores/transaction-store';
 import { useEnsureWalletClient } from './ensureWalletClient';
 import { useHandleTransaction } from './useHandleTransaction';
@@ -23,6 +24,7 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
   const isUpdating = isTransactionStatusLoadingState(updateResult?.status);
 
   const { ensureWalletClient } = useEnsureWalletClient();
+  const publicClient = usePublicClient({ chainId: allowance.chainId })!;
   const handleTransaction = useHandleTransaction(allowance.chainId);
 
   if (!allowance.payload) {
@@ -34,7 +36,7 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
     transactionType: TransactionType.REVOKE,
     executeTransaction: async () => {
       const walletClient = await ensureWalletClient(allowance.chainId);
-      return revokeAllowance(walletClient, allowance, onUpdate);
+      return revokeAllowance(walletClient, allowance, publicClient, onUpdate);
     },
     trackTransaction: () => trackRevokeTransaction(allowance),
     updateTransaction,
@@ -47,7 +49,7 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
       transactionType: TransactionType.UPDATE,
       executeTransaction: async () => {
         const walletClient = await ensureWalletClient(allowance.chainId);
-        return updateErc20Allowance(walletClient, allowance, newAmount, onUpdate);
+        return updateErc20Allowance(walletClient, allowance, publicClient, newAmount, onUpdate);
       },
       trackTransaction: () => trackRevokeTransaction(allowance, undefined, newAmount),
       updateTransaction,
@@ -57,7 +59,7 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
     return wrappedUpdate();
   };
 
-  if (isErc721Contract(allowance.contract)) {
+  if (isErc721(allowance.token)) {
     return { revoke };
   }
 

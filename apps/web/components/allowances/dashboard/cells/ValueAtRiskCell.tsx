@@ -1,5 +1,5 @@
 import { calculateValueAtRisk, type TokenAllowanceData } from '@revoke.cash/core/allowances';
-import { isErc721Contract } from '@revoke.cash/core/tokens';
+import { isErc721 } from '@revoke.cash/core/tokens';
 import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
 import Loader from 'components/common/Loader';
 import { useTranslations } from 'next-intl';
@@ -32,7 +32,5 @@ const ValueAtRiskCell = ({ allowance }: Props) => {
 export default ValueAtRiskCell;
 
 const isLoading = (allowance: TokenAllowanceData) => {
-  return (
-    !isErc721Contract(allowance.contract) && (allowance.metadata.price === undefined || allowance.balance === undefined)
-  );
+  return !isErc721(allowance.token) && (allowance.metadata.price === undefined || allowance.balance === undefined);
 };
