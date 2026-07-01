@@ -1,4 +1,4 @@
-import { getAutoRevokePermissionsBySubscription } from '@revoke.cash/core/auto-revoke/permissions';
+import { getPermissionsBySubscription } from '@revoke.cash/core/auto-revoke/permissions';
 import { isActiveUltimateSubscriptionOwnedBy } from '@revoke.cash/core/premium/subscriptions';
 import { uuidSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest, props: Props) {
       throw new ApiError(403, 'Not authorized for this subscription');
     }
 
-    const permissions = await getAutoRevokePermissionsBySubscription(subscriptionId);
+    const permissions = await getPermissionsBySubscription(subscriptionId);
     return NextResponse.json(permissions);
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to fetch permissions' });

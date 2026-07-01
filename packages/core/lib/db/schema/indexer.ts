@@ -15,7 +15,7 @@ import {
 import type { Hash, Hex } from 'viem';
 import { AllowanceType } from '../../allowances';
 import type { RiskFactor } from '../../risk';
-import { lowercaseAddress } from '../types';
+import { lowercaseAddress } from '../types/lowercase-address';
 
 export const indexerSchema = pgSchema('indexer');
 

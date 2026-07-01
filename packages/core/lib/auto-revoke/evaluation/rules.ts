@@ -1,14 +1,55 @@
+import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeRules } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
+import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import { and, asc, eq, gt, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
-import { AutoRevokeError } from './errors';
-import type { AutoRevokeAddressRulesConfig, AutoRevokeRules, AutoRevokeRulesSource } from './types';
+import { filterUnknownRiskFactors, getRiskLevel, type RiskFactor } from '../../risk';
+import { DAY } from '../../utils/time';
+import { AutoRevokeError } from '../errors';
 
 type RulesRecord = typeof autoRevokeRules.$inferSelect;
+
+export type RiskSensitivity = 'exploits_only' | 'high' | 'medium';
+
+export interface AutoRevokeRules {
+  riskDetectionEnabled: boolean;
+  riskSensitivity: RiskSensitivity;
+  staleApprovalEnabled: boolean;
+  staleApprovalThresholdDays: number;
+}
+
+export interface AddressRulesConfig {
+  rulesSource: RulesSource;
+  effectiveRules: AutoRevokeRules;
+  customRules: AutoRevokeRules;
+  availableSubscriptions: Array<{
+    subscriptionId: string;
+    planName: string;
+    ownerAddress: Address;
+  }>;
+}
+
+export interface RuleContext {
+  rules: AutoRevokeRules;
+  rulesSource: RulesSource;
+}
+
+export type RulesSource =
+  | { type: 'custom' }
+  | { type: 'subscription'; subscriptionId: string; planName: string; ownerAddress: Address };
+
+export interface MatchedTrigger {
+  type: 'exploit' | 'risk_score' | 'stale';
+  riskFactors?: RiskFactor[];
+}
+
+export interface TriggerDetails {
+  matchedTriggers: Array<MatchedTrigger>;
+}
 
 export const getSubscriptionRules = async (subscriptionId: string): Promise<AutoRevokeRules> => {
   const db = getDb();
@@ -39,7 +80,33 @@ export const upsertSubscriptionRules = async (
     });
 };
 
-export const getAddressRulesConfig = async (address: Address): Promise<AutoRevokeAddressRulesConfig> => {
+export const getAddressRules = async (address: Address): Promise<RulesRecord | null> => {
+  const db = getDb();
+
+  const rules = await db.query.autoRevokeRules.findFirst({
+    where: eq(autoRevokeRules.address, address),
+  });
+
+  return rules ?? null;
+};
+
+export const upsertAddressRules = async (address: Address, ruleData: Partial<AutoRevokeRules>): Promise<void> => {
+  const db = getDb();
+
+  await db
+    .insert(autoRevokeRules)
+    .values({
+      type: 'address',
+      address,
+      ...ruleData,
+    })
+    .onConflictDoUpdate({
+      target: autoRevokeRules.address,
+      set: ruleData,
+    });
+};
+
+export const getAddressRulesConfig = async (address: Address): Promise<AddressRulesConfig> => {
   const { rules: effectiveRules, rulesSource } = await getEffectiveRules(address);
 
   const addressRules = await getAddressRules(address);
@@ -49,9 +116,7 @@ export const getAddressRulesConfig = async (address: Address): Promise<AutoRevok
   return { rulesSource, effectiveRules, customRules, availableSubscriptions };
 };
 
-export const getEffectiveRules = async (
-  address: Address,
-): Promise<{ rules: AutoRevokeRules; rulesSource: AutoRevokeRulesSource }> => {
+export const getEffectiveRules = async (address: Address): Promise<RuleContext> => {
   const ownedSubscriptionRules = await getActiveSubscriptionRules(address, { ownerOnly: true });
   if (ownedSubscriptionRules) return ownedSubscriptionRules;
 
@@ -107,7 +172,7 @@ export const getEffectiveRules = async (
 const getActiveSubscriptionRules = async (
   address: Address,
   options?: { ownerOnly?: boolean },
-): Promise<{ rules: AutoRevokeRules; rulesSource: AutoRevokeRulesSource } | null> => {
+): Promise<RuleContext | null> => {
   const db = getDb();
   const now = new Date();
 
@@ -148,33 +213,7 @@ const getActiveSubscriptionRules = async (
   };
 };
 
-export const getAddressRules = async (address: Address): Promise<RulesRecord | null> => {
-  const db = getDb();
-
-  const rules = await db.query.autoRevokeRules.findFirst({
-    where: eq(autoRevokeRules.address, address),
-  });
-
-  return rules ?? null;
-};
-
-export const upsertAddressRules = async (address: Address, ruleData: Partial<AutoRevokeRules>): Promise<void> => {
-  const db = getDb();
-
-  await db
-    .insert(autoRevokeRules)
-    .values({
-      type: 'address',
-      address,
-      ...ruleData,
-    })
-    .onConflictDoUpdate({
-      target: autoRevokeRules.address,
-      set: ruleData,
-    });
-};
-
-export const switchAutoRevokeRulesSource = async (
+export const switchRulesSource = async (
   address: Address,
   { subscriptionId }: { subscriptionId: string | null },
 ): Promise<void> => {
@@ -187,9 +226,7 @@ export const switchAutoRevokeRulesSource = async (
   });
 };
 
-const getAvailableSubscriptions = async (
-  address: Address,
-): Promise<AutoRevokeAddressRulesConfig['availableSubscriptions']> => {
+const getAvailableSubscriptions = async (address: Address): Promise<AddressRulesConfig['availableSubscriptions']> => {
   const db = getDb();
 
   const subscriptionEntries = await db.query.premiumSubscriptionAddresses.findMany({
@@ -303,4 +340,45 @@ const DEFAULT_RULES: AutoRevokeRules = {
   riskSensitivity: 'exploits_only',
   staleApprovalEnabled: false,
   staleApprovalThresholdDays: 30,
+};
+
+export const getMatchedTriggers = (allowance: TokenAllowanceData, rules: AutoRevokeRules): MatchedTrigger[] => {
+  const payload = allowance.payload;
+  if (!payload) return [];
+
+  const riskFactors = rules.riskDetectionEnabled ? getRiskFactors(payload.spenderData) : [];
+  const triggers: MatchedTrigger[] = [];
+
+  const exploitFactors = riskFactors.filter((riskFactor) => riskFactor.type === 'exploit');
+  if (rules.riskDetectionEnabled && exploitFactors.length > 0) {
+    triggers.push({ type: 'exploit', riskFactors: exploitFactors });
+  }
+
+  if (rules.riskDetectionEnabled && shouldMatchRiskScore(riskFactors, rules.riskSensitivity)) {
+    triggers.push({ type: 'risk_score', riskFactors });
+  }
+
+  const isStale = Date.now() - payload.lastUpdated.timestamp * 1000 >= rules.staleApprovalThresholdDays * DAY;
+  if (rules.staleApprovalEnabled && isStale) {
+    triggers.push({ type: 'stale' });
+  }
+
+  return triggers;
+};
+
+export const getPrimaryTrigger = (matchedTriggers: MatchedTrigger[]): MatchedTrigger['type'] => {
+  if (matchedTriggers.some((trigger) => trigger.type === 'exploit')) return 'exploit';
+  if (matchedTriggers.some((trigger) => trigger.type === 'risk_score')) return 'risk_score';
+  return 'stale';
+};
+
+const getRiskFactors = (spenderData: SpenderRiskData | null | undefined): RiskFactor[] =>
+  filterUnknownRiskFactors(spenderData?.riskFactors ?? []);
+
+const shouldMatchRiskScore = (riskFactors: RiskFactor[], sensitivity: RiskSensitivity): boolean => {
+  if (sensitivity === 'exploits_only') return false;
+
+  const riskLevel = getRiskLevel(riskFactors);
+  if (sensitivity === 'high') return riskLevel === 'high';
+  return riskLevel === 'medium' || riskLevel === 'high';
 };

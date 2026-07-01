@@ -1,4 +1,4 @@
-import type { AutoRevokeAddressRulesConfig, AutoRevokeRules } from '@revoke.cash/core/auto-revoke/types';
+import type { AddressRulesConfig, AutoRevokeRules } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useOptimisticMutation } from 'lib/hooks/useOptimisticMutation';
@@ -48,49 +48,43 @@ export const useAddressAutoRevokeRules = (address: Address, enabled: boolean) =>
 
   const query = useQuery({
     queryKey,
-    queryFn: async () => ky.get('/api/auto-revoke/rules-config').json<AutoRevokeAddressRulesConfig>(),
+    queryFn: async () => ky.get('/api/auto-revoke/rules-config').json<AddressRulesConfig>(),
     enabled,
   });
 
-  const switchRulesSourceMutation = useOptimisticMutation<
-    SwitchRulesSourceParams,
-    { ok: boolean },
-    AutoRevokeAddressRulesConfig
-  >({
-    queryKey,
-    mutationFn: async (params) => {
-      return ky.put('/api/auto-revoke/rules-config', { json: params }).json();
+  const switchRulesSourceMutation = useOptimisticMutation<SwitchRulesSourceParams, { ok: boolean }, AddressRulesConfig>(
+    {
+      queryKey,
+      mutationFn: async (params) => {
+        return ky.put('/api/auto-revoke/rules-config', { json: params }).json();
+      },
+      applyOptimisticUpdate: (previous, params) => {
+        // Switching to custom: use the address's stored custom rules as effective
+        if (params.subscriptionId === null) {
+          return { ...previous, rulesSource: { type: 'custom' }, effectiveRules: previous.customRules };
+        }
+
+        // Switching to a subscription: look up the target in availableSubscriptions
+        const targetSubscription = previous.availableSubscriptions.find(
+          (subscription) => subscription.subscriptionId === params.subscriptionId,
+        );
+        if (!targetSubscription) return previous;
+
+        return {
+          ...previous,
+          rulesSource: {
+            type: 'subscription',
+            subscriptionId: targetSubscription.subscriptionId,
+            planName: targetSubscription.planName,
+            ownerAddress: targetSubscription.ownerAddress,
+          },
+        };
+      },
+      errorMessage: t('account.auto_revoke.rules_source.switch_failed'),
     },
-    applyOptimisticUpdate: (previous, params) => {
-      // Switching to custom: use the address's stored custom rules as effective
-      if (params.subscriptionId === null) {
-        return { ...previous, rulesSource: { type: 'custom' }, effectiveRules: previous.customRules };
-      }
+  );
 
-      // Switching to a subscription: look up the target in availableSubscriptions
-      const targetSubscription = previous.availableSubscriptions.find(
-        (subscription) => subscription.subscriptionId === params.subscriptionId,
-      );
-      if (!targetSubscription) return previous;
-
-      return {
-        ...previous,
-        rulesSource: {
-          type: 'subscription',
-          subscriptionId: targetSubscription.subscriptionId,
-          planName: targetSubscription.planName,
-          ownerAddress: targetSubscription.ownerAddress,
-        },
-      };
-    },
-    errorMessage: t('account.auto_revoke.rules_source.switch_failed'),
-  });
-
-  const updateRulesMutation = useOptimisticMutation<
-    Partial<AutoRevokeRules>,
-    { ok: boolean },
-    AutoRevokeAddressRulesConfig
-  >({
+  const updateRulesMutation = useOptimisticMutation<Partial<AutoRevokeRules>, { ok: boolean }, AddressRulesConfig>({
     queryKey,
     mutationFn: (ruleData) => ky.put('/api/auto-revoke/rules', { json: ruleData }).json(),
     applyOptimisticUpdate: (previous, ruleData) => ({

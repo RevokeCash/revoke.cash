@@ -1,4 +1,4 @@
-import { resolvePermissionRecord, syncAutoRevokePermissions } from '@revoke.cash/core/auto-revoke/permissions';
+import { resolvePermissionRecord, syncPermissions } from '@revoke.cash/core/auto-revoke/permissions';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const resolvedPermissions = await Promise.all(
       body.permissions.map((item) => resolvePermissionRecord(siweAddress, item)),
     );
-    const results = await syncAutoRevokePermissions(siweAddress, resolvedPermissions);
+    const results = await syncPermissions(siweAddress, resolvedPermissions);
     return NextResponse.json({ results });
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to sync permissions' });

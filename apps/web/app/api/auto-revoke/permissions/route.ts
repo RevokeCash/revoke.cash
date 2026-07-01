@@ -1,7 +1,7 @@
 import {
-  getAutoRevokePermissionsByAddress,
+  getPermissionsByAddress,
   resolvePermissionRecord,
-  saveAutoRevokePermission,
+  savePermission,
 } from '@revoke.cash/core/auto-revoke/permissions';
 import { grantPermissionBodySchema } from 'app/api/auto-revoke/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
       rateLimiter: RateLimiters.PREMIUM_READ,
     });
     await parseRequest(req, undefined, readSchemas);
-    const permissions = await getAutoRevokePermissionsByAddress(siweAddress);
+    const permissions = await getPermissionsByAddress(siweAddress);
     return NextResponse.json(permissions);
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to fetch permissions' });
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const { body } = await parseRequest(req, undefined, grantSchemas);
 
     const resolvedPermission = await resolvePermissionRecord(siweAddress, body);
-    const result = await saveAutoRevokePermission(resolvedPermission);
+    const result = await savePermission(resolvedPermission);
     return NextResponse.json(result);
   } catch (error) {
     return handleApiRouteError(error, { errorMessage: 'Failed to grant permission' });

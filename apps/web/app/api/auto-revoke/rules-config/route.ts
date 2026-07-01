@@ -1,4 +1,4 @@
-import { getAddressRulesConfig, switchAutoRevokeRulesSource } from '@revoke.cash/core/auto-revoke/rules';
+import { getAddressRulesConfig, switchRulesSource } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import { uuidSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
@@ -42,7 +42,7 @@ export async function PUT(req: NextRequest) {
     const { body } = await parseRequest(req, undefined, updateSchemas);
     const { subscriptionId } = body;
 
-    await switchAutoRevokeRulesSource(siweAddress, { subscriptionId });
+    await switchRulesSource(siweAddress, { subscriptionId });
 
     return NextResponse.json({ ok: true });
   } catch (error) {

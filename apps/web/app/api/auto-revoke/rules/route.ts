@@ -1,4 +1,4 @@
-import { getAddressRules, upsertAddressRules } from '@revoke.cash/core/auto-revoke/rules';
+import { getAddressRules, upsertAddressRules } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import { rulesDataBodySchema } from 'app/api/auto-revoke/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { ApiError, handleApiRouteError } from 'lib/api/errors';

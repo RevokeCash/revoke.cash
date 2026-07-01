@@ -1,5 +1,8 @@
 import { contracts, getSmartAccountsEnvironment } from '@metamask/smart-accounts-kit';
-import type { PermissionRequestParameter } from '@metamask/smart-accounts-kit/actions';
+import type {
+  PermissionRequestParameter,
+  RequestExecutionPermissionsReturnType,
+} from '@metamask/smart-accounts-kit/actions';
 import {
   decodeDelegations,
   hashDelegation,
@@ -18,11 +21,21 @@ import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'driz
 import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS } from './config';
 import { AutoRevokeError } from './errors';
-import type { AutoRevokePermission, WalletPermissionResult } from './types';
+
+export interface AutoRevokePermission {
+  address: Address;
+  chainId: number;
+  permissionContext: Hex;
+  delegationManager: Address;
+  expiresAt: string;
+  isActive: boolean;
+}
+
+type WalletPermissionResult = RequestExecutionPermissionsReturnType[number];
 
 const AUTO_REVOKE_PERMISSION_TYPE = 'token-approval-revocation';
 
-export const getAutoRevokePermissionsByAddress = async (address: Address): Promise<AutoRevokePermission[]> => {
+export const getPermissionsByAddress = async (address: Address): Promise<AutoRevokePermission[]> => {
   const db = getDb();
 
   const rows = await db.query.autoRevokePermissions.findMany({
@@ -32,9 +45,7 @@ export const getAutoRevokePermissionsByAddress = async (address: Address): Promi
   return rows.map(mapPermission);
 };
 
-export const getAutoRevokePermissionsBySubscription = async (
-  subscriptionId: string,
-): Promise<AutoRevokePermission[]> => {
+export const getPermissionsBySubscription = async (subscriptionId: string): Promise<AutoRevokePermission[]> => {
   const db = getDb();
 
   const rows = await db
@@ -48,15 +59,13 @@ export const getAutoRevokePermissionsBySubscription = async (
   return rows.map(mapPermission);
 };
 
-export const saveAutoRevokePermission = async (
-  item: Omit<AutoRevokePermission, 'isActive'>,
-): Promise<{ id: string }> => {
+export const savePermission = async (item: Omit<AutoRevokePermission, 'isActive'>): Promise<{ id: string }> => {
   const { address, ...rest } = item;
-  const [result] = await saveAutoRevokePermissionBatch(address, [rest]);
+  const [result] = await savePermissionBatch(address, [rest]);
   return result;
 };
 
-export const saveAutoRevokePermissionBatch = async (
+export const savePermissionBatch = async (
   address: Address,
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
 ): Promise<Array<{ id: string }>> => {
@@ -66,7 +75,7 @@ export const saveAutoRevokePermissionBatch = async (
   return db.transaction((trx) => applyPermissionBatch(trx, address, items));
 };
 
-export const syncAutoRevokePermissions = async (
+export const syncPermissions = async (
   address: Address,
   items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
 ): Promise<Array<{ id: string }>> => {
@@ -92,7 +101,7 @@ export const syncAutoRevokePermissions = async (
   });
 };
 
-export const revokeAutoRevokePermission = async (address: Address, chainId: number): Promise<void> => {
+export const revokePermission = async (address: Address, chainId: number): Promise<void> => {
   const db = getDb();
 
   await db
@@ -107,7 +116,7 @@ export const revokeAutoRevokePermission = async (address: Address, chainId: numb
     );
 };
 
-export const buildAutoRevokePermissionRequest = (chainId: number): PermissionRequestParameter => {
+export const buildPermissionRequest = (chainId: number): PermissionRequestParameter => {
   const expiry = Math.floor(Date.now() / 1000) + PERMISSION_EXPIRY_SECONDS;
 
   return {

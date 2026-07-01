@@ -1,4 +1,4 @@
-import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/types';
+import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
 import { isNullish } from '@revoke.cash/core/utils';
 import { useQuery } from '@tanstack/react-query';
 import ky from 'lib/ky';

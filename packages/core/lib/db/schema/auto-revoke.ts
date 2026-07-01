@@ -15,8 +15,9 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { Hash, Hex } from 'viem';
 import { AllowanceType } from '../../allowances';
-import type { AutoRevokeRules, AutoRevokeRulesSource } from '../../auto-revoke/types';
-import { lowercaseAddress } from '../types';
+import type { RuleContext, TriggerDetails } from '../../auto-revoke/evaluation/rules';
+import { autoRevokeTransaction } from '../types/auto-revoke-transaction';
+import { lowercaseAddress } from '../types/lowercase-address';
 import { premiumSubscriptions } from './premium';
 
 export const autoRevokeSchema = pgSchema('auto_revoke');
@@ -97,18 +98,6 @@ export const autoRevokeSubscriptionRulesRelations = relations(autoRevokeRules, (
   }),
 }));
 
-export interface AutoRevokeTriggerDetails {
-  matchedTriggers: Array<{
-    type: 'exploit' | 'risk_score' | 'stale';
-    riskFactors?: Array<{ type: string; source: string; data?: string }>;
-  }>;
-}
-
-export interface AutoRevokeRuleSnapshot {
-  rules: AutoRevokeRules;
-  rulesSource: AutoRevokeRulesSource;
-}
-
 export const autoRevokeObservations = autoRevokeSchema.table(
   'observations',
   {
@@ -119,8 +108,8 @@ export const autoRevokeObservations = autoRevokeSchema.table(
     address: lowercaseAddress('address').notNull(),
     chainId: integer('chain_id').notNull(),
     triggerType: autoRevokeTriggerTypeEnum('trigger_type').notNull(),
-    triggerDetails: jsonb('trigger_details').notNull().$type<AutoRevokeTriggerDetails>(),
-    ruleSnapshot: jsonb('rule_snapshot').notNull().$type<AutoRevokeRuleSnapshot>(),
+    triggerDetails: jsonb('trigger_details').notNull().$type<TriggerDetails>(),
+    ruleSnapshot: jsonb('rule_snapshot').notNull().$type<RuleContext>(),
     allowanceFingerprint: text('allowance_fingerprint').notNull(),
     allowanceType: autoRevokeAllowanceTypeEnum('allowance_type').notNull(),
     tokenAddress: lowercaseAddress('token_address').notNull(),

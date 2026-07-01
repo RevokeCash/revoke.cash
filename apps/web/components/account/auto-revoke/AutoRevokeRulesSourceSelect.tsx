@@ -1,14 +1,14 @@
 'use client';
 
-import type { AutoRevokeAddressRulesConfig, AutoRevokeRulesSource } from '@revoke.cash/core/auto-revoke/types';
+import type { AddressRulesConfig, RulesSource } from '@revoke.cash/core/auto-revoke/evaluation/rules';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Select from 'components/common/select/Select';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 interface Props {
-  rulesSource: AutoRevokeRulesSource;
-  availableSubscriptions: AutoRevokeAddressRulesConfig['availableSubscriptions'];
+  rulesSource: RulesSource;
+  availableSubscriptions: AddressRulesConfig['availableSubscriptions'];
   onSwitchRulesSource: (params: { subscriptionId: string | null }) => void;
   isSwitching: boolean;
 }

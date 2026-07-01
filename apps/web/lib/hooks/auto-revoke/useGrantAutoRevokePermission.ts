@@ -1,6 +1,6 @@
 import { erc7715ProviderActions } from '@metamask/smart-accounts-kit/actions';
 import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
-import { buildAutoRevokePermissionRequest, findActivePermission } from '@revoke.cash/core/auto-revoke/permissions';
+import { buildPermissionRequest, findActivePermission } from '@revoke.cash/core/auto-revoke/permissions';
 import { isUserRejectionError } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
@@ -20,9 +20,7 @@ export const useGrantAutoRevokePermission = () => {
 
       const walletClient = connectorClient.extend(erc7715ProviderActions());
 
-      const grantedPermissions = await walletClient.requestExecutionPermissions([
-        buildAutoRevokePermissionRequest(chainId),
-      ]);
+      const grantedPermissions = await walletClient.requestExecutionPermissions([buildPermissionRequest(chainId)]);
 
       const result = await findActivePermission(grantedPermissions, connectorClient.account.address);
       if (!result) throw new Error('No active permission returned');

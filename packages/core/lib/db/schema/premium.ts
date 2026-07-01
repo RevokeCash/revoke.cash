@@ -14,7 +14,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import type { Hash } from 'viem';
-import { lowercaseAddress } from '../types';
+import { lowercaseAddress } from '../types/lowercase-address';
 
 export const premiumSchema = pgSchema('premium');
 

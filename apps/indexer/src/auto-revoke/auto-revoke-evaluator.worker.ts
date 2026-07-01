@@ -4,7 +4,7 @@ import {
   AUTO_REVOKE_EVALUATE_QUEUE_NAME,
   type AutoRevokeEvaluateJobData,
 } from '@revoke.cash/backend/auto-revoke/evaluation-queue';
-import { evaluateAddress } from '@revoke.cash/core/auto-revoke/evaluator';
+import { evaluateAddress } from '@revoke.cash/core/auto-revoke/evaluation';
 import type { Job } from 'bullmq';
 
 @Processor(AUTO_REVOKE_EVALUATE_QUEUE_NAME, { concurrency: 25, lockDuration: 90_000 })
