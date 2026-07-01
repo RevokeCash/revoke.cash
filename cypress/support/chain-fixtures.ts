@@ -88,6 +88,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.ReyaNetwork]: '0x6E5f7Bd9B940287F6C9AE8A2Ecfb93224A09cba5',
   [ChainId.RISE]: '0x7Dd7B89c0f754EAE0198D480A28d4f83d486BaF1',
   [ChainId.RolluxMainnet]: '0x75CCD3a10D9325aE2BF7f59d23A892061952fAF3',
+  4663: '0x320656660Ab220725408F6A347768549BF04C650', // Robinhood Chain
   [ChainId.RoninMainnet]: '0x85abC7587044c5b587e6550FC5b048A8DaBb328b',
   [ChainId.RootstockMainnet]: '0xe126b3E5d052f1F575828f61fEBA4f4f2603652a',
   [ChainId.Scroll]: '0x509Ec750cAB3C6ae4989d93E1A14cbcbbF8972C9',
@@ -95,7 +96,7 @@ export const TEST_ADDRESSES: Record<SupportedChainId, Address> = {
   [ChainId.Shape]: '0xDe64A183ff3abcd5f59a30d3ec6300F2496dF6AB',
   [ChainId.ShidoNetwork]: '0x612d5C920AAb4d75349a0F299883be71b1bC060D',
   [ChainId.ShimmerEVM]: '0xAc4682eF9fE8c62980cd8bd8d8a3Bb100FD652e7',
-  5031: '0x8a21a31BEE51A1d0fE075DF7aF6F3Fa549CCB3f0',
+  5031: '0x8a21a31BEE51A1d0fE075DF7aF6F3Fa549CCB3f0', // Somnia
   [ChainId.Soneium]: '0x351F34efCE7BBF960da2ca61130a89bF41471047',
   [ChainId.SonicMainnet]: '0x793625d47087D55f1F1F29eb94d589C199A1D128',
   [ChainId['SongbirdCanary-Network']]: '0x4E8De52271D3bE18cC972af892198103C1e6AfE8',

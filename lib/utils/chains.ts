@@ -36,6 +36,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.PlumeMainnet,
   ChainId.WorldChain,
   ChainId.TempoMainnetPresto,
+  4663, // Robinhood Chain
   ChainId.PulseChain,
   ChainId.Mode,
   ChainId.Blast,
@@ -349,11 +350,11 @@ export const CHAINS = {
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.BitgertMainnet,
     name: 'Bitgert',
+    nativeToken: 'BRISE',
     nativeTokenCoingeckoId: 'bitrise-token',
     coingeckoNetworkId: 'bitgert',
     logoUrl: '/assets/images/vendor/chains/bitgert.svg',
     etherscanCompatibleApiUrl: 'https://brisescan.com/api',
-    nativeToken: 'BRISE',
     rpc: {
       main: 'https://rpc-bitgert.icecreamswap.com',
       free: 'https://rpc-bitgert.icecreamswap.com',
@@ -1258,6 +1259,21 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/rise.svg',
     explorerUrl: 'https://explorer.risechain.com',
     etherscanCompatibleApiUrl: 'https://explorer.risechain.com/api',
+    deployedContracts: { ...MULTICALL },
+  }),
+  4663: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: 4663,
+    name: 'Robinhood Chain',
+    nativeToken: 'ETH',
+    coingeckoNetworkId: 'robinhood',
+    logoUrl: '/assets/images/vendor/chains/robinhood.png',
+    explorerUrl: 'https://robinhoodchain.blockscout.com',
+    infoUrl: 'https://robinhood.com/chain',
+    rpc: {
+      main: `https://robinhood-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://rpc.mainnet.chain.robinhood.com',
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.RoninMainnet]: new Chain({

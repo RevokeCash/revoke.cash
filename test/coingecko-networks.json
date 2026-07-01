@@ -876,6 +876,17 @@
       "attributes": { "name": "FONChain", "coingecko_asset_platform_id": "fonchain" }
     },
     { "id": "igra", "type": "network", "attributes": { "name": "Igra", "coingecko_asset_platform_id": "igra" } },
-    { "id": "anubis", "type": "network", "attributes": { "name": "Anubis", "coingecko_asset_platform_id": null } }
+    { "id": "anubis", "type": "network", "attributes": { "name": "Anubis", "coingecko_asset_platform_id": null } },
+    {
+      "id": "dungeon-chain",
+      "type": "network",
+      "attributes": { "name": "Dungeon Chain", "coingecko_asset_platform_id": "dungeon-chain" }
+    },
+    { "id": "klever", "type": "network", "attributes": { "name": "Klever", "coingecko_asset_platform_id": null } },
+    {
+      "id": "robinhood",
+      "type": "network",
+      "attributes": { "name": "Robinhood", "coingecko_asset_platform_id": "robinhood" }
+    }
   ]
 }
