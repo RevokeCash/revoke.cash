@@ -1,20 +1,5 @@
-import { ExportableError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { ApiError, ExportableError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { NextResponse } from 'next/server';
-
-export class ApiError extends ExportableError {
-  constructor(
-    public readonly status: number,
-    message: string,
-    public readonly body: Record<string, unknown> = { message },
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
-
-  export() {
-    return { status: this.status, body: this.body };
-  }
-}
 
 export class ValidationError extends ApiError {
   constructor(status: number, message: string, issues?: unknown[]) {

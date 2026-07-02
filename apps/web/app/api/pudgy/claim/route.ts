@@ -4,10 +4,10 @@ import { getTokenEvents } from '@revoke.cash/core/chains/events';
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressSchema } from '@revoke.cash/core/schemas';
 import { isNullish } from '@revoke.cash/core/utils';
-import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
+import { ApiError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { alreadyOwnsSoulboundToken, canMint } from 'app/[locale]/cold-storage-sbt/utils';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
-import { ApiError, handleApiRouteError } from 'lib/api/errors';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import ky from 'lib/ky';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -68,9 +68,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if the user has active allowances that can be revoked
-    const activeAllowances = revokableAllowances
-      .filter((allowance) => Boolean(allowance.payload))
-      .filter((allowance) => isNullish(allowance.payload?.revokeError));
+    const activeAllowances = revokableAllowances.filter((allowance) => isNullish(allowance.payload.revokeError));
     if (activeAllowances.length > 0) {
       throw new ApiError(400, 'User has active allowances', {
         status: 'has_allowances',

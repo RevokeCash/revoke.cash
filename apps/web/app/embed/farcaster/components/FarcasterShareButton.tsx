@@ -17,7 +17,7 @@ const FarcasterShareButton = ({ allowances }: Props) => {
 
     try {
       const riskCount =
-        allowances?.filter((a) => a.payload?.spenderData?.riskFactors && a.payload.spenderData.riskFactors.length > 0)
+        allowances?.filter((a) => a.payload.spenderData?.riskFactors && a.payload.spenderData.riskFactors.length > 0)
           .length || 0;
       const text =
         riskCount > 0

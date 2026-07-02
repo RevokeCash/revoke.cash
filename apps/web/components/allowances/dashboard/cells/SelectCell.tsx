@@ -18,11 +18,11 @@ const SelectCell = ({ row }: Props) => {
   const chainId = row.original.chainId;
 
   // If the row is not selectable because of a revoke error, we still want to show the (disabled) checkbox
-  if (!row.getCanSelect() && !row.original.payload?.revokeError) return null;
+  if (!row.getCanSelect() && !row.original.payload.revokeError) return null;
 
-  const tooltip = isRevertedError(row.original.payload?.revokeError)
+  const tooltip = isRevertedError(row.original.payload.revokeError)
     ? t('common.toasts.revoke_failed_revert', { message: row.original.payload!.revokeError! })
-    : row.original.payload?.revokeError;
+    : row.original.payload.revokeError;
 
   return (
     <ControlsWrapper

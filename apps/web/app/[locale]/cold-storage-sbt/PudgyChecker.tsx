@@ -59,9 +59,7 @@ const getPudgyCheckerStatus = async (
   );
 
   // Filter out allowances that cannot be revoked
-  const filteredAllowances = simulatedAllowances
-    .filter((allowance) => Boolean(allowance.payload))
-    .filter((allowance) => isNullish(allowance.payload?.revokeError));
+  const filteredAllowances = simulatedAllowances.filter((allowance) => isNullish(allowance.payload.revokeError));
 
   if (filteredAllowances.length > 0) {
     return 'has_allowances';

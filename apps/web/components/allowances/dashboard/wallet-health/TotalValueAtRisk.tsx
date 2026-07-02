@@ -21,7 +21,6 @@ const TotalValueAtRisk = ({ allowances, isLoading, error }: Props) => {
 
   const hasNftsAtRisk = allowances?.some(
     (allowance) =>
-      !isNullish(allowance.payload) &&
       isErc721(allowance.token) &&
       allowance.balance !== undefined &&
       (allowance.balance === 'Unknown' || allowance.balance > 0n),

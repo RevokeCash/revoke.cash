@@ -1,6 +1,7 @@
 import { hasActivePremiumEntitlement, hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
 import type { Nullable } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
+import { ApiError } from '@revoke.cash/core/utils/errors';
 import { getIronSession, type SessionOptions, unsealData } from 'iron-session';
 import { type AuthSession, UNAUTHENTICATED_AUTH_SESSION } from 'lib/auth/session';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -8,7 +9,6 @@ import { cookies, headers } from 'next/headers';
 import type { NextRequest, NextResponse } from 'next/server';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { Address, Hex } from 'viem';
-import { ApiError } from './errors';
 
 export interface SiweFields {
   address: Address;

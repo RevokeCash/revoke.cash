@@ -3,7 +3,6 @@
     "amount": "{amount} {symbol}",
     "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
     "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
-    "none": "許可がありません",
     "none_found": "許可がされていません",
     "none_found_filtered": "選択したフィルタに対しての許可がありません",
     "token_id": "トークン #{tokenId}",

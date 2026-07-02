@@ -46,7 +46,7 @@ export const useAllowances = (address: Address, events: EnrichedTokenEvent[] | u
 
   useEffect(() => {
     if (data) {
-      setBaseAllowances(data.filter((allowance) => !isNullish(allowance.payload)));
+      setBaseAllowances(data);
     }
   }, [data]);
 

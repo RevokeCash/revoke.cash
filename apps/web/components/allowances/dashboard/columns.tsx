@@ -43,8 +43,6 @@ export enum ColumnId {
 
 export const accessors = {
   allowance: (allowance: TokenAllowanceData) => {
-    if (!allowance.payload) return undefined;
-
     if (isErc20Allowance(allowance.payload)) {
       return formatErc20Allowance(
         allowance.payload.amount,
@@ -70,9 +68,6 @@ export const accessors = {
     return 'Token';
   },
   valueAtRisk: (allowance: TokenAllowanceData) => {
-    // No approvals should be sorted separately through `sortUndefined`
-    if (!allowance.payload) return undefined;
-
     // Balance not yet loaded — sort with the "unknown" group (same bucket as missing price).
     if (isNullish(allowance.balance)) return 0.01;
 
@@ -86,11 +81,11 @@ export const accessors = {
     return calculateValueAtRisk(allowance);
   },
   spender: (allowance: TokenAllowanceData) => {
-    if (isNullish(allowance.payload?.spenderData?.name)) return allowance.payload?.spender;
-    return `${allowance.payload?.spenderData?.name} (${allowance.payload?.spender})`;
+    if (isNullish(allowance.payload.spenderData?.name)) return allowance.payload.spender;
+    return `${allowance.payload.spenderData?.name} (${allowance.payload.spender})`;
   },
   timestamp: (allowance: TokenAllowanceData) => {
-    return allowance.payload?.lastUpdated?.timestamp;
+    return allowance.payload.lastUpdated.timestamp;
   },
 };
 
@@ -105,8 +100,8 @@ export const customSortingFns = {
     return sortingFns.alphanumeric(rowA, rowB, columnId);
   },
   spender: (rowA: Row<TokenAllowanceData>, rowB: Row<TokenAllowanceData>, columnId: string) => {
-    if (!rowA.original.payload?.spenderData?.name) return 1;
-    if (!rowB.original.payload?.spenderData?.name) return -1;
+    if (!rowA.original.payload.spenderData?.name) return 1;
+    if (!rowB.original.payload.spenderData?.name) return -1;
     return sortingFns.text(rowA, rowB, columnId);
   },
 };
@@ -216,7 +211,7 @@ export const columns = [
     id: ColumnId.LAST_UPDATED,
     header: () => <HeaderCell i18nKey="address.headers.last_updated" />,
     cell: (info) => (
-      <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.payload?.lastUpdated} />
+      <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.payload.lastUpdated} />
     ),
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,

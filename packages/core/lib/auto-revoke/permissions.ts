@@ -19,8 +19,8 @@ import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'drizzle-orm';
 import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
+import { ApiError } from '../utils/errors';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS } from './config';
-import { AutoRevokeError } from './errors';
 
 export interface AutoRevokePermission {
   address: Address;
@@ -61,18 +61,8 @@ export const getPermissionsBySubscription = async (subscriptionId: string): Prom
 
 export const savePermission = async (item: Omit<AutoRevokePermission, 'isActive'>): Promise<{ id: string }> => {
   const { address, ...rest } = item;
-  const [result] = await savePermissionBatch(address, [rest]);
+  const [result] = await getTransactionalDb().transaction((trx) => applyPermissionBatch(trx, address, [rest]));
   return result;
-};
-
-export const savePermissionBatch = async (
-  address: Address,
-  items: Array<Omit<AutoRevokePermission, 'address' | 'isActive'>>,
-): Promise<Array<{ id: string }>> => {
-  if (items.length === 0) return [];
-
-  const db = getTransactionalDb();
-  return db.transaction((trx) => applyPermissionBatch(trx, address, items));
 };
 
 export const syncPermissions = async (
@@ -116,6 +106,13 @@ export const revokePermission = async (address: Address, chainId: number): Promi
     );
 };
 
+export const markPermissionRevoked = async (permissionId: string): Promise<void> => {
+  await getDb()
+    .update(autoRevokePermissions)
+    .set({ revokedAt: new Date() })
+    .where(and(eq(autoRevokePermissions.id, permissionId), isNull(autoRevokePermissions.revokedAt)));
+};
+
 export const buildPermissionRequest = (chainId: number): PermissionRequestParameter => {
   const expiry = Math.floor(Date.now() / 1000) + PERMISSION_EXPIRY_SECONDS;
 
@@ -137,14 +134,6 @@ export const buildPermissionRequest = (chainId: number): PermissionRequestParame
       isAdjustmentAllowed: false,
     },
   };
-};
-
-export const findActivePermission = async (
-  permissions: WalletPermissionResult[],
-  delegator: Address,
-): Promise<WalletPermissionResult | null> => {
-  const activePermissions = await filterActivePermissions(permissions, delegator);
-  return activePermissions[0] ?? null;
 };
 
 export const filterActivePermissions = async (
@@ -262,13 +251,13 @@ export const resolvePermissionRecord = async (
   const lowercasedAddress = toLowercaseAddress(authenticatedAddress);
 
   const decodedPermission = decodeDelegations(input.permissionContext)?.[0];
-  if (!decodedPermission) throw new AutoRevokeError(400, 'Failed to decode permission context');
+  if (!decodedPermission) throw new ApiError(400, 'Failed to decode permission context');
 
   if (toLowercaseAddress(decodedPermission.delegator) !== toLowercaseAddress(authenticatedAddress)) {
-    throw new AutoRevokeError(403, 'Permission context does not belong to the authenticated address');
+    throw new ApiError(403, 'Permission context does not belong to the authenticated address');
   }
   if (toLowercaseAddress(decodedPermission.delegate) !== AUTO_REVOKE_DELEGATION_ADDRESS.toLowerCase()) {
-    throw new AutoRevokeError(400, 'Permission is not granted to the Revoke session account');
+    throw new ApiError(400, 'Permission is not granted to the Revoke session account');
   }
 
   const delegationManager = getSmartAccountsEnvironment(input.chainId).DelegationManager;
@@ -289,7 +278,7 @@ export const resolvePermissionRecord = async (
   });
 
   if (toLowercaseAddress(recoveredSigner) !== lowercasedAddress) {
-    throw new AutoRevokeError(400, 'Permission signature does not match the claimed chain');
+    throw new ApiError(400, 'Permission signature does not match the claimed chain');
   }
 
   const expiresAt = extractExpiryFromCaveats(decodedPermission.caveats, input.chainId);
@@ -306,15 +295,15 @@ export const resolvePermissionRecord = async (
 // We want to extract the expiry from the on-chain permission context so we know it is valid.
 const extractExpiryFromCaveats = (caveats: ReadonlyArray<{ enforcer: Hex; terms: Hex }>, chainId: number): string => {
   const timestampEnforcer = getSmartAccountsEnvironment(chainId).caveatEnforcers.TimestampEnforcer?.toLowerCase();
-  if (!timestampEnforcer) throw new AutoRevokeError(400, 'Timestamp enforcer is not configured for this chain');
+  if (!timestampEnforcer) throw new ApiError(400, 'Timestamp enforcer is not configured for this chain');
 
   const timestampCaveat = caveats.find((caveat) => caveat.enforcer.toLowerCase() === timestampEnforcer);
   if (!timestampCaveat || timestampCaveat.terms.length !== 2 + 64) {
-    throw new AutoRevokeError(400, 'Permission expiry caveat is missing or invalid');
+    throw new ApiError(400, 'Permission expiry caveat is missing or invalid');
   }
 
   const beforeThreshold = Number(`0x${timestampCaveat.terms.slice(2 + 32, 2 + 64)}`);
-  if (beforeThreshold === 0) throw new AutoRevokeError(400, 'Permission expiry caveat is missing or invalid');
+  if (beforeThreshold === 0) throw new ApiError(400, 'Permission expiry caveat is missing or invalid');
   return new Date(beforeThreshold * SECOND).toISOString();
 };
 

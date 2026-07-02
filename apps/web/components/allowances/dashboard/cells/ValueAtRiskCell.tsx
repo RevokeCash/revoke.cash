@@ -16,8 +16,6 @@ const ValueAtRiskCell = ({ allowance }: Props) => {
     return <Loader isLoading className="h-6" />;
   }
 
-  if (!allowance.payload) return null;
-
   const valueAtRisk = calculateValueAtRisk(allowance);
   const fiatBalanceText = formatFiatAmount(valueAtRisk);
 

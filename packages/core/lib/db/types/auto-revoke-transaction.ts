@@ -36,7 +36,7 @@ export const autoRevokeTransaction = customType<{ data: AutoRevokeActionTransact
     const data = typeof value === 'string' ? JSON.parse(value) : value;
     return {
       txHash: data.txHash,
-      txHashes: data.txHashes?.length ? data.txHashes : [data.txHash],
+      txHashes: data.txHashes,
       rawTransaction: data.rawTransaction,
       nonce: data.nonce,
       maxFeePerGas: BigInt(data.maxFeePerGas),

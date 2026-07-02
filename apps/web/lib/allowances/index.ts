@@ -21,8 +21,6 @@ export const revokeAllowance = async (
   publicClient: PublicClient,
   onUpdate: OnUpdate,
 ): Promise<TransactionSubmitted> => {
-  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
-
   if (isErc721(allowance.token)) {
     return revokeErc721Allowance(walletClient, allowance, publicClient, onUpdate);
   }
@@ -91,9 +89,9 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, batchType?
     analytics.track('Revoked ERC721 allowance', {
       chainId: allowance.chainId,
       account: allowance.owner,
-      spender: allowance.payload?.spender,
+      spender: allowance.payload.spender,
       tokenAddress: allowance.token.address,
-      tokenId: allowance.payload?.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
+      tokenId: allowance.payload.type === AllowanceType.ERC721_SINGLE ? allowance.payload.tokenId : undefined,
       isTestnet: isTestnetChain(allowance.chainId),
       batchType,
     });
@@ -104,10 +102,10 @@ export const trackRevokeTransaction = (allowance: TokenAllowanceData, batchType?
   analytics.track(isRevoke ? 'Revoked ERC20 allowance' : 'Updated ERC20 allowance', {
     chainId: allowance.chainId,
     account: allowance.owner,
-    spender: allowance.payload?.spender,
+    spender: allowance.payload.spender,
     tokenAddress: allowance.token.address,
     amount: isRevoke ? undefined : newAmount,
-    permit2: allowance.payload?.type === AllowanceType.PERMIT2,
+    permit2: allowance.payload.type === AllowanceType.PERMIT2,
     isTestnet: isTestnetChain(allowance.chainId),
     batchType,
   });

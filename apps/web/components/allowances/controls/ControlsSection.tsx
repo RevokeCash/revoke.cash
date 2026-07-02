@@ -16,13 +16,11 @@ interface Props {
 const ControlsSection = ({ allowance, revoke, update, reset }: Props) => {
   const t = useTranslations();
 
-  if (!allowance.payload) return null;
-
   const { amount } = getAllowanceI18nValues(allowance);
 
-  const tooltip = isRevertedError(allowance.payload?.revokeError)
-    ? t('common.toasts.revoke_failed_revert', { message: allowance.payload!.revokeError! })
-    : allowance.payload?.revokeError;
+  const tooltip = isRevertedError(allowance.payload.revokeError)
+    ? t('common.toasts.revoke_failed_revert', { message: allowance.payload.revokeError! })
+    : allowance.payload.revokeError;
 
   return (
     <ControlsWrapper

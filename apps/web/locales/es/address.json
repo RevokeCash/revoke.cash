@@ -3,7 +3,6 @@
     "amount": "{amount} {symbol}",
     "count": "{count, plural, =0 {Sin aprobaciones} =1 {# aprobación} other {# aprobaciones}}",
     "empty_chains_count": "{count, plural, =0 {No hay redes sin aprobaciones} =1 {# red sin aprobaciones} other {# redes sin aprobaciones}}",
-    "none": "Sin autorizaciones",
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
     "token_id": "Token #{tokenId}",

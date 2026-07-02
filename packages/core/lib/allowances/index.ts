@@ -34,7 +34,7 @@ export interface AddressData {
 }
 
 export interface TokenAllowanceData extends TokenData {
-  payload?: AllowancePayload;
+  payload: AllowancePayload;
 }
 
 export type AllowancePayload = Erc721SingleAllowance | Erc721AllAllowance | Erc20Allowance | Permit2Erc20Allowance;
@@ -346,11 +346,6 @@ export const formatErc20Allowance = (allowance: bigint, decimals?: number, total
 };
 
 export const getAllowanceI18nValues = (allowance: Pick<TokenAllowanceData, 'payload' | 'metadata'>) => {
-  if (!allowance.payload) {
-    const i18nKey = 'address.allowances.none';
-    return { i18nKey };
-  }
-
   if (isErc20Allowance(allowance.payload)) {
     const amount = formatErc20Allowance(
       allowance.payload.amount,
@@ -373,25 +368,19 @@ export const getAllowanceI18nValues = (allowance: Pick<TokenAllowanceData, 'payl
 };
 
 export const getAllowanceKey = (allowance: TokenAllowanceData) => {
-  return `allowance-${allowance.chainId}-${allowance.owner}-${allowance.token.address}-${allowance.payload?.spender}-${(allowance.payload as any)?.tokenId}`;
+  return `allowance-${allowance.chainId}-${allowance.owner}-${allowance.token.address}-${allowance.payload.spender}-${(allowance.payload as any).tokenId}`;
 };
 
-export const hasZeroAllowance = (allowance: AllowancePayload, tokenData: TokenAllowanceData) => {
-  if (!allowance) return true;
+export const hasZeroAllowance = (allowance: AllowancePayload, tokenData: TokenData) => {
   if (!isErc20Allowance(allowance)) return false;
 
-  return (
-    formatErc20Allowance(allowance.amount, tokenData?.metadata?.decimals, tokenData?.metadata?.totalSupply) === '0'
-  );
+  return formatErc20Allowance(allowance.amount, tokenData.metadata.decimals, tokenData.metadata.totalSupply) === '0';
 };
 
 export const simulateRevokeAllowance = async (
   allowance: TokenAllowanceData,
   publicClient: PublicClient,
 ): Promise<TokenAllowanceData> => {
-  // If there is no allowance, we return the token data as-is
-  if (!allowance.payload) return allowance;
-
   try {
     const preparedRevoke = await prepareRevokeAllowance(allowance, publicClient);
     throwIfExcessiveGas(allowance.chainId, preparedRevoke.gas ?? 0n, allowance.token.address);
@@ -405,7 +394,6 @@ export const prepareRevokeAllowance = async (
   allowance: TokenAllowanceData,
   publicClient: PublicClient,
 ): Promise<WriteContractParameters> => {
-  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
   if (allowance.payload.preparedRevoke) return allowance.payload.preparedRevoke;
 
   if (isErc721(allowance.token)) {
@@ -419,8 +407,6 @@ export const prepareRevokeErc721Allowance = async (
   allowance: TokenAllowanceData,
   publicClient: PublicClient,
 ): Promise<WriteContractParameters> => {
-  if (!allowance.payload) throw new Error('Cannot revoke undefined allowance');
-
   const chain = getViemChainConfig(allowance.chainId);
 
   if (allowance.payload.type === AllowanceType.ERC721_SINGLE) {
@@ -464,8 +450,6 @@ export const prepareUpdateErc20Allowance = async (
   newAmount: bigint,
   publicClient: PublicClient,
 ): Promise<WriteContractParameters> => {
-  if (!allowance.payload) throw new Error('Cannot update undefined allowance');
-
   if (isErc721(allowance.token) || isErc721Allowance(allowance.payload)) {
     throw new Error('Cannot update ERC721 allowances');
   }
@@ -547,13 +531,12 @@ const calculateMaxAllowanceAmount = (allowance: TokenAllowanceData) => {
   }
 
   if (isErc20Allowance(allowance.payload)) return allowance.payload.amount;
-  if (allowance.payload?.type === AllowanceType.ERC721_SINGLE) return 1n;
+  if (allowance.payload.type === AllowanceType.ERC721_SINGLE) return 1n;
 
   return allowance.balance;
 };
 
 export const calculateValueAtRisk = (allowance: TokenAllowanceData): number | null => {
-  if (!allowance.payload?.spender) return null;
   if (isNullish(allowance.balance)) return null;
   if (allowance.balance === 'Unknown') return null;
 
@@ -600,9 +583,9 @@ export const contractEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => 
 
 export const allowanceEquals = (a: TokenAllowanceData, b: TokenAllowanceData) => {
   if (!contractEquals(a, b)) return false;
-  if (a.payload?.spender !== b.payload?.spender) return false;
-  if (a.payload?.type !== b.payload?.type) return false;
-  if (a.payload?.type === AllowanceType.ERC721_SINGLE && b.payload?.type === AllowanceType.ERC721_SINGLE) {
+  if (a.payload.spender !== b.payload.spender) return false;
+  if (a.payload.type !== b.payload.type) return false;
+  if (a.payload.type === AllowanceType.ERC721_SINGLE && b.payload.type === AllowanceType.ERC721_SINGLE) {
     return a.payload.tokenId === b.payload.tokenId;
   }
 

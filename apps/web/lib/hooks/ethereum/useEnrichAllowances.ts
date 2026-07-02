@@ -1,6 +1,6 @@
 import { getAllowanceKey, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { isErc721 } from '@revoke.cash/core/tokens';
-import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
+import { deduplicateArray } from '@revoke.cash/core/utils';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
 import { useAllowanceSpenderData } from './useAllowanceSpenderData';
@@ -78,13 +78,11 @@ interface AllowanceEnrichmentData {
   revokePreparationData: ReturnType<typeof useRevokePreparationData>;
 }
 
-type AllowanceWithPayload = TokenAllowanceData & { payload: NonNullable<TokenAllowanceData['payload']> };
-
 export const enrichAllowances = (
   allowances: TokenAllowanceData[],
   { isHistorical = false, priceData, balanceData, spenderData, revokePreparationData }: AllowanceEnrichmentData,
 ): TokenAllowanceData[] => {
-  return allowances.filter(hasPayload).map((allowance) => {
+  return allowances.map((allowance) => {
     const priceKey = getPriceKey(allowance.chainId, allowance.token.address);
     const balanceKey = getBalanceKey(allowance.chainId, allowance.token.address);
     const spenderKey = getSpenderKey(allowance.chainId, allowance.payload.spender);
@@ -101,8 +99,4 @@ export const enrichAllowances = (
 
     return { ...allowance, balance, metadata, payload };
   });
-};
-
-const hasPayload = (allowance: TokenAllowanceData): allowance is AllowanceWithPayload => {
-  return !isNullish(allowance.payload);
 };

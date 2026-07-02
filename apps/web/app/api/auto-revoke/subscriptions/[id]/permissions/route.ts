@@ -1,8 +1,9 @@
 import { getPermissionsBySubscription } from '@revoke.cash/core/auto-revoke/permissions';
 import { isActiveUltimateSubscriptionOwnedBy } from '@revoke.cash/core/premium/subscriptions';
 import { uuidSchema } from '@revoke.cash/core/schemas';
+import { ApiError } from '@revoke.cash/core/utils/errors';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
-import { ApiError, handleApiRouteError } from 'lib/api/errors';
+import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';

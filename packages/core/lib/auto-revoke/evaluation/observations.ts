@@ -1,24 +1,29 @@
-import { AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
+import { type AllowancePayload, AllowanceType, type TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
 import type { indexerAllowances } from '@revoke.cash/core/db/schema/indexer';
-import { and, inArray } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import type { RuleContext, TriggerDetails } from './rules';
 
 export type Observation = typeof autoRevokeObservations.$inferSelect;
 export type IndexedAllowance = typeof indexerAllowances.$inferSelect;
 
 interface ObservationCandidate {
-  subscriptionId: string;
   triggerType: Observation['triggerType'];
   triggerDetails: TriggerDetails;
   ruleSnapshot: RuleContext;
   allowance: TokenAllowanceData;
 }
 
+const flattenPayloadIdentity = (payload: AllowancePayload) => ({
+  tokenId: payload.type === AllowanceType.ERC721_SINGLE ? payload.tokenId : null,
+  permit2Address: payload.type === AllowanceType.PERMIT2 ? payload.permit2Address : null,
+  expiration: payload.type === AllowanceType.PERMIT2 ? payload.expiration : null,
+});
+
 export const buildAllowanceFingerprint = (allowance: TokenAllowanceData): string => {
-  const payload = allowance.payload;
-  if (!payload) throw new Error('Cannot fingerprint an allowance without a payload');
+  const { payload } = allowance;
+  const { tokenId, permit2Address, expiration } = flattenPayloadIdentity(payload);
 
   return [
     allowance.owner,
@@ -26,22 +31,25 @@ export const buildAllowanceFingerprint = (allowance: TokenAllowanceData): string
     payload.type,
     allowance.token.address,
     payload.spender,
-    payload.type === AllowanceType.ERC721_SINGLE ? (payload.tokenId?.toString() ?? '') : '',
-    payload.type === AllowanceType.PERMIT2 ? payload.permit2Address : '',
-    payload.type === AllowanceType.PERMIT2 ? payload.expiration : '',
+    tokenId?.toString() ?? '',
+    permit2Address ?? '',
+    expiration ?? '',
     payload.lastUpdated.transactionHash,
   ].join(':');
 };
 
-export const createObservations = async (candidates: ObservationCandidate[]): Promise<Observation[]> => {
+export const createObservations = async (
+  subscriptionId: string,
+  candidates: ObservationCandidate[],
+): Promise<Observation[]> => {
   if (candidates.length === 0) return [];
 
   const observationValues = candidates.map((candidate) => {
     const payload = candidate.allowance.payload;
-    if (!payload) throw new Error('Cannot create an observation for an allowance without a payload');
+    const { tokenId, permit2Address, expiration } = flattenPayloadIdentity(payload);
 
     return {
-      subscriptionId: candidate.subscriptionId,
+      subscriptionId,
       address: candidate.allowance.owner,
       chainId: candidate.allowance.chainId,
       triggerType: candidate.triggerType,
@@ -51,36 +59,23 @@ export const createObservations = async (candidates: ObservationCandidate[]): Pr
       allowanceType: payload.type,
       tokenAddress: candidate.allowance.token.address,
       spenderAddress: payload.spender,
-      tokenId: payload.type === AllowanceType.ERC721_SINGLE ? payload.tokenId : null,
-      permit2Address: payload.type === AllowanceType.PERMIT2 ? payload.permit2Address : null,
-      expiration: payload.type === AllowanceType.PERMIT2 ? payload.expiration : null,
+      tokenId,
+      permit2Address,
+      expiration,
       lastUpdatedTxHash: payload.lastUpdated.transactionHash,
     };
   });
 
   const allowanceFingerprints = observationValues.map((observation) => observation.allowanceFingerprint);
-  const subscriptionIds = observationValues.map((observation) => observation.subscriptionId);
-  const observationKeys = new Set(
-    observationValues.map((observation) =>
-      getObservationKey(observation.subscriptionId, observation.allowanceFingerprint),
-    ),
-  );
 
   return getTransactionalDb().transaction(async (trx) => {
     await trx.insert(autoRevokeObservations).values(observationValues).onConflictDoNothing();
 
-    const observations = await trx.query.autoRevokeObservations.findMany({
+    return trx.query.autoRevokeObservations.findMany({
       where: and(
-        inArray(autoRevokeObservations.subscriptionId, subscriptionIds),
+        eq(autoRevokeObservations.subscriptionId, subscriptionId),
         inArray(autoRevokeObservations.allowanceFingerprint, allowanceFingerprints),
       ),
     });
-
-    return observations.filter((observation) =>
-      observationKeys.has(getObservationKey(observation.subscriptionId, observation.allowanceFingerprint)),
-    );
   });
 };
-
-const getObservationKey = (subscriptionId: string, allowanceFingerprint: string): string =>
-  `${subscriptionId}:${allowanceFingerprint}`;

@@ -30,11 +30,7 @@ const AllowanceCell = ({ allowance, onUpdate, timeMachineTimestamp }: Props) => 
   const { update } = useRevoke(allowance, onUpdate);
   const { i18nKey, amount, tokenId, symbol } = getAllowanceI18nValues(allowance);
 
-  const classes = twMerge(
-    !allowance.payload && 'text-zinc-500 dark:text-zinc-400',
-    'flex items-center gap-2',
-    ['ru', 'es'].includes(locale) ? 'w-48' : 'w-40',
-  );
+  const classes = twMerge('flex items-center gap-2', ['ru', 'es'].includes(locale) ? 'w-48' : 'w-40');
 
   if (editing) {
     return (
@@ -82,7 +78,7 @@ const AllowanceCell = ({ allowance, onUpdate, timeMachineTimestamp }: Props) => 
 export default AllowanceCell;
 
 const formatPermit2Expiration = (allowance: TokenAllowanceData, locale: string, relativeTimestamp?: number) => {
-  if (allowance.payload?.type !== AllowanceType.PERMIT2) return null;
+  if (allowance.payload.type !== AllowanceType.PERMIT2) return null;
   const now = relativeTimestamp ? relativeTimestamp * SECOND : Date.now();
   const expiration = Math.min(allowance.payload.expiration * SECOND, now + 1000 * YEAR + 1 * DAY);
   return timeago.format(expiration, locale, { relativeDate: now });

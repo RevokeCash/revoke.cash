@@ -7,6 +7,21 @@ export abstract class ExportableError extends Error {
   abstract export(): { status: number; body: Record<string, unknown> };
 }
 
+export class ApiError extends ExportableError {
+  constructor(
+    public readonly status: number,
+    message: string,
+    public readonly body: Record<string, unknown> = { message },
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
+
+  export() {
+    return { status: this.status, body: this.body };
+  }
+}
+
 export const isUserRejectionError = (error?: string | any): boolean => {
   if (!error) return false;
 

@@ -3,7 +3,6 @@
     "amount": "{amount} {symbol}",
     "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
     "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
-    "none": "没有授权",
     "none_found": "没有授权",
     "none_found_filtered": "所选过滤条件下未找到授权",
     "token_id": "代币 #{tokenId}",

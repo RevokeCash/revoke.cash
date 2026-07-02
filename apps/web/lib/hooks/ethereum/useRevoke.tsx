@@ -27,10 +27,6 @@ export const useRevoke = (allowance: TokenAllowanceData, onUpdate: OnUpdate) => 
   const publicClient = usePublicClient({ chainId: allowance.chainId })!;
   const handleTransaction = useHandleTransaction(allowance.chainId);
 
-  if (!allowance.payload) {
-    return { revoke: undefined };
-  }
-
   const revoke = wrapTransaction({
     transactionKey: revokeTransactionKey,
     transactionType: TransactionType.REVOKE,

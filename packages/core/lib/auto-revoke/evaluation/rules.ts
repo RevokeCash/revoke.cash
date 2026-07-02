@@ -8,8 +8,8 @@ import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import { and, asc, eq, gt, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { filterUnknownRiskFactors, getRiskLevel, type RiskFactor } from '../../risk';
+import { ApiError } from '../../utils/errors';
 import { DAY } from '../../utils/time';
-import { AutoRevokeError } from '../errors';
 
 type RulesRecord = typeof autoRevokeRules.$inferSelect;
 
@@ -127,10 +127,16 @@ export const getEffectiveRules = async (address: Address): Promise<RuleContext> 
     rulesSource: { type: 'custom' as const },
   };
 
-  if (!addressRules?.activeRulesId) {
+  // No address row means the user never made an explicit choice: default to a subscription they are a
+  // member of. An existing row with a null pointer is an explicit "custom" choice (switchRulesSource
+  // stores it that way) and must win over member subscriptions — subscription admins can
+  // permissionlessly add members, so members need a way to opt out of the admin's rules.
+  if (!addressRules) {
     const defaultSubscriptionRules = await getActiveSubscriptionRules(address);
     return defaultSubscriptionRules ?? fallbackCustomRules;
   }
+
+  if (!addressRules.activeRulesId) return fallbackCustomRules;
 
   // Follow the pointer to the subscription rules, eager-loading the subscription + plan + membership.
   const db = getDb();
@@ -257,7 +263,7 @@ const resolveActiveRulesId = async (
   if (subscriptionId === null) return null;
 
   const isAuthorized = await isAddressMemberOfActiveUltimateSubscription(trx, address, subscriptionId);
-  if (!isAuthorized) throw new AutoRevokeError(403, 'Not authorized for this rules source');
+  if (!isAuthorized) throw new ApiError(403, 'Not authorized for this rules source');
 
   return ensureSubscriptionRulesId(trx, subscriptionId);
 };
@@ -344,7 +350,6 @@ const DEFAULT_RULES: AutoRevokeRules = {
 
 export const getMatchedTriggers = (allowance: TokenAllowanceData, rules: AutoRevokeRules): MatchedTrigger[] => {
   const payload = allowance.payload;
-  if (!payload) return [];
 
   const riskFactors = rules.riskDetectionEnabled ? getRiskFactors(payload.spenderData) : [];
   const triggers: MatchedTrigger[] = [];

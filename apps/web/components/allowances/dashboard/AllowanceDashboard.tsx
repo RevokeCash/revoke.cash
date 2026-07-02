@@ -11,7 +11,7 @@ import AllowanceTableControls from './controls/AllowanceTableControls';
 import NoAllowancesFound from './NoAllowancesFound';
 
 const getRowId = (row: TokenAllowanceData) => {
-  return `${row.chainId}-${row.token.address}-${row.payload?.spender}-${(row.payload as Erc721SingleAllowance)?.tokenId}`;
+  return `${row.chainId}-${row.token.address}-${row.payload.spender}-${(row.payload as Erc721SingleAllowance).tokenId}`;
 };
 
 const AllowanceDashboard = () => {
@@ -45,7 +45,7 @@ const AllowanceDashboard = () => {
     state: {
       rowSelection,
     },
-    enableRowSelection: (row) => !isNullish(row.original.payload) && isNullish(row.original.payload?.revokeError),
+    enableRowSelection: (row) => isNullish(row.original.payload.revokeError),
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel<TokenAllowanceData>(),
     getSortedRowModel: getSortedRowModel<TokenAllowanceData>(),

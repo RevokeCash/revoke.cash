@@ -144,7 +144,7 @@ export const useMarketplaces = () => {
           chainId: selectedChainId,
           lastCancelled,
           allowances: allowances!.filter(
-            (allowance) => allowance.payload?.spender === marketplace.approvalFilterAddress,
+            (allowance) => allowance.payload.spender === marketplace.approvalFilterAddress,
           ),
         };
       });

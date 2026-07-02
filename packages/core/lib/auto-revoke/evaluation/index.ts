@@ -57,7 +57,6 @@ export const evaluateAddress = async (address: Address, chainId: number): Promis
       if (matchedTriggers.length === 0) return null;
 
       return {
-        subscriptionId,
         triggerType: getPrimaryTrigger(matchedTriggers),
         triggerDetails: { matchedTriggers },
         ruleSnapshot,
@@ -68,7 +67,7 @@ export const evaluateAddress = async (address: Address, chainId: number): Promis
 
   if (candidates.length === 0) return skipWithReason('no_matches');
 
-  const observations = await createObservations(candidates);
+  const observations = await createObservations(subscriptionId, candidates);
   if (observations.length === 0) return skipWithReason('no_observations');
 
   return { skipped: false, observations };

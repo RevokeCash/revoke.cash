@@ -34,7 +34,7 @@ interface Props {
 }
 
 const getRowId = (row: TokenAllowanceData) => {
-  return `${row.chainId}-${row.token.address}-${row.payload?.spender}-${(row.payload as Erc721SingleAllowance)?.tokenId}`;
+  return `${row.chainId}-${row.token.address}-${row.payload.spender}-${(row.payload as Erc721SingleAllowance).tokenId}`;
 };
 
 const ChainAllowanceSection = ({
@@ -95,7 +95,7 @@ const ChainAllowanceSection = ({
     enableRowSelection: (row) =>
       isNullish(timeMachineTimestamp) &&
       !isNullish(row.original.payload) &&
-      isNullish(row.original.payload?.revokeError),
+      isNullish(row.original.payload.revokeError),
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel<TokenAllowanceData>(),
     getSortedRowModel: getSortedRowModel<TokenAllowanceData>(),

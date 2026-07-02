@@ -10,22 +10,13 @@ import StaleApprovalDaysInput from './StaleApprovalDaysInput';
 interface Props {
   rules: AutoRevokeRules;
   onUpdate: (ruleData: Partial<AutoRevokeRules>) => void;
-  disabled?: boolean;
   isAdmin?: boolean;
   readOnly?: boolean;
   managedByLabel?: string;
 }
 
-const AutoRevokeRulesEditor = ({
-  rules,
-  onUpdate,
-  disabled = false,
-  isAdmin = false,
-  readOnly = false,
-  managedByLabel,
-}: Props) => {
+const AutoRevokeRulesEditor = ({ rules, onUpdate, isAdmin = false, readOnly = false, managedByLabel }: Props) => {
   const t = useTranslations();
-  const isDisabled = disabled || readOnly;
 
   const sensitivityOptions = useMemo<SegmentedOption<RiskSensitivity>[]>(
     () => [
@@ -51,13 +42,13 @@ const AutoRevokeRulesEditor = ({
           description={t('account.auto_revoke.rules.risk_detection_description')}
           enabled={rules.riskDetectionEnabled}
           onToggle={(enabled) => onUpdate({ riskDetectionEnabled: enabled })}
-          disabled={isDisabled}
+          disabled={readOnly}
         >
           <SegmentedControl
             options={sensitivityOptions}
             value={rules.riskSensitivity}
             onChange={(riskSensitivity) => onUpdate({ riskSensitivity })}
-            disabled={isDisabled}
+            disabled={readOnly}
           />
         </AutoRevokeRuleToggle>
 
@@ -66,12 +57,12 @@ const AutoRevokeRulesEditor = ({
           description={t('account.auto_revoke.rules.stale_approval_description')}
           enabled={rules.staleApprovalEnabled}
           onToggle={(enabled) => onUpdate({ staleApprovalEnabled: enabled })}
-          disabled={isDisabled}
+          disabled={readOnly}
         >
           <StaleApprovalDaysInput
             value={rules.staleApprovalThresholdDays}
             onChange={(staleApprovalThresholdDays) => onUpdate({ staleApprovalThresholdDays })}
-            disabled={isDisabled}
+            disabled={readOnly}
           />
         </AutoRevokeRuleToggle>
       </div>
