@@ -23,8 +23,7 @@ An `.example.env` file is provided that needs to be copied into a `.env` file an
 
 Some of these variables are integral to the functioning of Revoke.cash:
 
-- `NEXT_PUBLIC_INFURA_API_KEY` is used for reading data from Ethereum + Testnets.
-- `NEXT_PUBLIC_ALCHEMY_API_KEY` is used for reading data from Polygon, Optimism and Arbitrum + Testnets
+- `NEXT_PUBLIC_ALCHEMY_API_KEY` is used for reading data from Ethereum, Polygon, Optimism and many other chains.
   - Alchemy is also used for ENS and UNS name resolutions - if omitted those resolutions will not work.
 - `COVALENT_API_KEY` and `COVALENT_RATE_LIMIT` is used for certain chains such as Harmony.
 - `ETHERSCAN_API_KEYS` and `ETHERSCAN_RATE_LIMITS` are used for many of the other chains such as BNB Chain or Avalanche.

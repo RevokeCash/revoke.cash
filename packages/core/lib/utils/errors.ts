@@ -184,6 +184,18 @@ export const isNetworkError = (error?: string | any): boolean => {
   return false;
 };
 
+export const isSwitchChainNotSupportedError = (error?: string | any): boolean => {
+  if (!error) return false;
+
+  if (typeof error !== 'string') {
+    return (
+      isSwitchChainNotSupportedError(parseErrorMessage(error)) || isSwitchChainNotSupportedError(stringifyError(error))
+    );
+  }
+
+  return error?.toLowerCase()?.includes('does not support programmatic chain switching');
+};
+
 export const isCovalentError = (error?: string | any): boolean => {
   if (!error) return false;
 

@@ -66,6 +66,7 @@ export class BlockScoutEventGetter extends EtherscanEventGetter implements Event
     const [latestBlock, indexingStatus] = await Promise.allSettled([latestBlockPromise, indexingStatusPromise]);
 
     if (latestBlock.status !== 'fulfilled') {
+      console.log(`${apiUrl}?${new URLSearchParams(searchParams).toString()}`);
       throw new LatestBlockUnavailableError(chainId);
     }
 

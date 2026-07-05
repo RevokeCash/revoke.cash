@@ -22,7 +22,7 @@ import {
   SUPPORTED_CHAINS,
 } from '@revoke.cash/core/chains';
 import { SupportType } from '@revoke.cash/core/chains/Chain';
-import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY } from '@revoke.cash/core/constants';
+import { ALCHEMY_API_KEY, DRPC_API_KEY } from '@revoke.cash/core/constants';
 import { getScriptLogsProvider } from '@revoke.cash/core/events/providers';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
 import { expect } from 'chai';
@@ -84,9 +84,9 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
           ChainId.CoinExSmartChainMainnet,
           ChainId.DarwiniaNetwork,
           ChainId.HarmonyMainnetShard0,
-          ChainId.IgraNetwork,
           ChainId.NeoXMainnet,
           ChainId.ReyaNetwork,
+          ChainId.RISE,
           ChainId['SongbirdCanary-Network'],
           ChainId.StableMainnet,
           ChainId.SyscoinMainnet,
@@ -135,7 +135,6 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
       }
 
       it('should not expose API keys in the free RPC URL', () => {
-        INFURA_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(INFURA_API_KEY);
         ALCHEMY_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(ALCHEMY_API_KEY);
         DRPC_API_KEY && expect(getChainFreeRpcUrl(chainId)).to.not.include(DRPC_API_KEY);
       });

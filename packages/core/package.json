@@ -28,7 +28,7 @@
     "@envio-dev/hypersync-client": "^1.0.0",
     "@metamask/smart-accounts-kit": "^1.6.0",
     "@neondatabase/serverless": "^1.0.2",
-    "@revoke.cash/chains": "^76.0.0",
+    "@revoke.cash/chains": "^79.0.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.2",
     "dexie": "^4.3.0",

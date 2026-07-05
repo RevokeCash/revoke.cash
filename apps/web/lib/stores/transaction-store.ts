@@ -2,6 +2,7 @@ import type { TransactionStatus, TransactionSubmitted, TransactionType } from '@
 import {
   isAccountUpgradeRejectionError,
   isBatchSizeError,
+  isSwitchChainNotSupportedError,
   isUserRejectionError,
   parseErrorMessage,
 } from '@revoke.cash/core/utils/errors';
@@ -92,7 +93,7 @@ export const wrapTransaction = ({
       return transactionSubmitted;
     } catch (error) {
       const message = parseErrorMessage(error);
-      if (isUserRejectionError(message)) {
+      if (isUserRejectionError(message) || isSwitchChainNotSupportedError(error)) {
         updateTransaction(transactionKey, { status: 'not_started' });
       } else if (isBatchSizeError(message) || isAccountUpgradeRejectionError(message)) {
         updateTransaction(transactionKey, { status: 'retrying' });
