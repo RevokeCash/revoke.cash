@@ -79,17 +79,20 @@ CREATE TABLE "indexer_partitions"."events_130" PARTITION OF "indexer"."events" F
 CREATE TABLE "indexer_partitions"."events_1116" PARTITION OF "indexer"."events" FOR VALUES IN (1116); -- CORE
 CREATE TABLE "indexer_partitions"."events_1329" PARTITION OF "indexer"."events" FOR VALUES IN (1329); -- Sei
 CREATE TABLE "indexer_partitions"."events_98866" PARTITION OF "indexer"."events" FOR VALUES IN (98866); -- Plume
+CREATE TABLE "indexer_partitions"."events_480" PARTITION OF "indexer"."events" FOR VALUES IN (480); -- World Chain
+CREATE TABLE "indexer_partitions"."events_4217" PARTITION OF "indexer"."events" FOR VALUES IN (4217); -- Tempo
+CREATE TABLE "indexer_partitions"."events_4663" PARTITION OF "indexer"."events" FOR VALUES IN (4663); -- Robinhood Chain
 CREATE TABLE "indexer_partitions"."events_369" PARTITION OF "indexer"."events" FOR VALUES IN (369); -- PulseChain
-CREATE TABLE "indexer_partitions"."events_2741" PARTITION OF "indexer"."events" FOR VALUES IN (2741); -- Abstract
 CREATE TABLE "indexer_partitions"."events_34443" PARTITION OF "indexer"."events" FOR VALUES IN (34443); -- Mode
 CREATE TABLE "indexer_partitions"."events_81457" PARTITION OF "indexer"."events" FOR VALUES IN (81457); -- Blast
 CREATE TABLE "indexer_partitions"."events_324" PARTITION OF "indexer"."events" FOR VALUES IN (324); -- zkSync Era
 CREATE TABLE "indexer_partitions"."events_314" PARTITION OF "indexer"."events" FOR VALUES IN (314); -- Filecoin EVM
-CREATE TABLE "indexer_partitions"."events_1923" PARTITION OF "indexer"."events" FOR VALUES IN (1923); -- Swellchain
-CREATE TABLE "indexer_partitions"."events_167000" PARTITION OF "indexer"."events" FOR VALUES IN (167000); -- Taiko Alethia
+CREATE TABLE "indexer_partitions"."events_2741" PARTITION OF "indexer"."events" FOR VALUES IN (2741); -- Abstract
+CREATE TABLE "indexer_partitions"."events_167000" PARTITION OF "indexer"."events" FOR VALUES IN (167000); -- Taiko
 CREATE TABLE "indexer_partitions"."events_60808" PARTITION OF "indexer"."events" FOR VALUES IN (60808); -- BOB
+CREATE TABLE "indexer_partitions"."events_13371" PARTITION OF "indexer"."events" FOR VALUES IN (13371); -- Immutable zkEVM
+CREATE TABLE "indexer_partitions"."events_570" PARTITION OF "indexer"."events" FOR VALUES IN (570); -- Rollux
 CREATE TABLE "indexer_partitions"."events_534352" PARTITION OF "indexer"."events" FOR VALUES IN (534352); -- Scroll
-CREATE TABLE "indexer_partitions"."events_480" PARTITION OF "indexer"."events" FOR VALUES IN (480); -- World Chain
 CREATE TABLE "indexer_partitions"."events_1729" PARTITION OF "indexer"."events" FOR VALUES IN (1729); -- Reya
 CREATE TABLE "indexer_partitions"."events_252" PARTITION OF "indexer"."events" FOR VALUES IN (252); -- Fraxtal
 CREATE TABLE "indexer_partitions"."events_2818" PARTITION OF "indexer"."events" FOR VALUES IN (2818); -- Morph
@@ -97,6 +100,7 @@ CREATE TABLE "indexer_partitions"."events_1868" PARTITION OF "indexer"."events" 
 CREATE TABLE "indexer_partitions"."events_42220" PARTITION OF "indexer"."events" FOR VALUES IN (42220); -- Celo
 CREATE TABLE "indexer_partitions"."events_42793" PARTITION OF "indexer"."events" FOR VALUES IN (42793); -- Etherlink
 CREATE TABLE "indexer_partitions"."events_1776" PARTITION OF "indexer"."events" FOR VALUES IN (1776); -- Injective
+CREATE TABLE "indexer_partitions"."events_4153" PARTITION OF "indexer"."events" FOR VALUES IN (4153); -- RISE
 CREATE TABLE "indexer_partitions"."events_1514" PARTITION OF "indexer"."events" FOR VALUES IN (1514); -- Story
 CREATE TABLE "indexer_partitions"."events_747" PARTITION OF "indexer"."events" FOR VALUES IN (747); -- Flow EVM
 CREATE TABLE "indexer_partitions"."events_239" PARTITION OF "indexer"."events" FOR VALUES IN (239); -- TAC
@@ -107,7 +111,6 @@ CREATE TABLE "indexer_partitions"."events_232" PARTITION OF "indexer"."events" F
 CREATE TABLE "indexer_partitions"."events_204" PARTITION OF "indexer"."events" FOR VALUES IN (204); -- opBNB
 CREATE TABLE "indexer_partitions"."events_4114" PARTITION OF "indexer"."events" FOR VALUES IN (4114); -- Citrea
 CREATE TABLE "indexer_partitions"."events_50" PARTITION OF "indexer"."events" FOR VALUES IN (50); -- XDC
-CREATE TABLE "indexer_partitions"."events_13371" PARTITION OF "indexer"."events" FOR VALUES IN (13371); -- Immutable zkEVM
 CREATE TABLE "indexer_partitions"."events_42170" PARTITION OF "indexer"."events" FOR VALUES IN (42170); -- Arbitrum Nova
 CREATE TABLE "indexer_partitions"."events_1088" PARTITION OF "indexer"."events" FOR VALUES IN (1088); -- Metis
 CREATE TABLE "indexer_partitions"."events_169" PARTITION OF "indexer"."events" FOR VALUES IN (169); -- Manta Pacific
@@ -117,8 +120,6 @@ CREATE TABLE "indexer_partitions"."events_8822" PARTITION OF "indexer"."events" 
 CREATE TABLE "indexer_partitions"."events_592" PARTITION OF "indexer"."events" FOR VALUES IN (592); -- Astar
 CREATE TABLE "indexer_partitions"."events_999" PARTITION OF "indexer"."events" FOR VALUES IN (999); -- Hyperliquid EVM
 CREATE TABLE "indexer_partitions"."events_40" PARTITION OF "indexer"."events" FOR VALUES IN (40); -- Telos EVM
-CREATE TABLE "indexer_partitions"."events_50104" PARTITION OF "indexer"."events" FOR VALUES IN (50104); -- Sophon
-CREATE TABLE "indexer_partitions"."events_570" PARTITION OF "indexer"."events" FOR VALUES IN (570); -- Rollux
 CREATE TABLE "indexer_partitions"."events_57" PARTITION OF "indexer"."events" FOR VALUES IN (57); -- Syscoin
 CREATE TABLE "indexer_partitions"."events_7000" PARTITION OF "indexer"."events" FOR VALUES IN (7000); -- ZetaChain
 CREATE TABLE "indexer_partitions"."events_1313161554" PARTITION OF "indexer"."events" FOR VALUES IN (1313161554); -- Aurora
@@ -148,12 +149,11 @@ CREATE TABLE "indexer_partitions"."events_20" PARTITION OF "indexer"."events" FO
 CREATE TABLE "indexer_partitions"."events_148" PARTITION OF "indexer"."events" FOR VALUES IN (148); -- Shimmer
 CREATE TABLE "indexer_partitions"."events_199" PARTITION OF "indexer"."events" FOR VALUES IN (199); -- BTT Chain
 CREATE TABLE "indexer_partitions"."events_61" PARTITION OF "indexer"."events" FOR VALUES IN (61); -- Ethereum Classic
-CREATE TABLE "indexer_partitions"."events_964" PARTITION OF "indexer"."events" FOR VALUES IN (964); -- Bittensor EVM
 CREATE TABLE "indexer_partitions"."events_1890" PARTITION OF "indexer"."events" FOR VALUES IN (1890); -- Lightlink
 CREATE TABLE "indexer_partitions"."events_360" PARTITION OF "indexer"."events" FOR VALUES IN (360); -- Shape
 CREATE TABLE "indexer_partitions"."events_46" PARTITION OF "indexer"."events" FOR VALUES IN (46); -- Darwinia
 CREATE TABLE "indexer_partitions"."events_55244" PARTITION OF "indexer"."events" FOR VALUES IN (55244); -- Superposition
-CREATE TABLE "indexer_partitions"."events_4061" PARTITION OF "indexer"."events" FOR VALUES IN (4061); -- Nahmii
+CREATE TABLE "indexer_partitions"."events_685689" PARTITION OF "indexer"."events" FOR VALUES IN (685689); -- Gensyn
 CREATE TABLE "indexer_partitions"."events_9008" PARTITION OF "indexer"."events" FOR VALUES IN (9008); -- Shido
 CREATE TABLE "indexer_partitions"."events_698" PARTITION OF "indexer"."events" FOR VALUES IN (698); -- Matchain
 CREATE TABLE "indexer_partitions"."events_1380012617" PARTITION OF "indexer"."events" FOR VALUES IN (1380012617); -- RARI Chain
@@ -171,6 +171,5 @@ CREATE TABLE "indexer_partitions"."events_84532" PARTITION OF "indexer"."events"
 CREATE TABLE "indexer_partitions"."events_11124" PARTITION OF "indexer"."events" FOR VALUES IN (11124); -- Abstract Testnet
 CREATE TABLE "indexer_partitions"."events_43113" PARTITION OF "indexer"."events" FOR VALUES IN (43113); -- Avalanche Fuji
 CREATE TABLE "indexer_partitions"."events_338" PARTITION OF "indexer"."events" FOR VALUES IN (338); -- Cronos Testnet
-CREATE TABLE "indexer_partitions"."events_11155931" PARTITION OF "indexer"."events" FOR VALUES IN (11155931); -- RISE Testnet
 CREATE TABLE "indexer_partitions"."events_8408" PARTITION OF "indexer"."events" FOR VALUES IN (8408); -- ZenChain Testnet
 CREATE TABLE "indexer_partitions"."events_824642" PARTITION OF "indexer"."events" FOR VALUES IN (824642); -- ZugChain Testnet
