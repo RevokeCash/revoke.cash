@@ -17,7 +17,7 @@ export const getWalletAddress = async (walletClient: WalletClient) => {
   return address;
 };
 
-export const throwIfExcessiveGas = (chainId: number, estimatedGas: bigint, tokenAddress: Address) => {
+export const isExcessiveGas = (chainId: number, estimatedGas: bigint): boolean => {
   // Some networks do weird stuff with gas estimation, so "normal" transactions have much higher gas limits.
   const gasFactors: Record<number, bigint> = {
     [ChainId.ArbitrumNova]: 20n,
@@ -30,12 +30,15 @@ export const throwIfExcessiveGas = (chainId: number, estimatedGas: bigint, token
     [ChainId.EtherlinkMainnet]: 10n,
   };
 
-  const EXCESSIVE_GAS = 500_000n * (gasFactors[chainId] ?? 1n);
+  const EXCESSIVE_GAS = 600_000n * (gasFactors[chainId] ?? 1n);
+  return estimatedGas > EXCESSIVE_GAS;
+};
 
-  // TODO: Translate this error message
-  if (estimatedGas > EXCESSIVE_GAS) {
+export const throwIfExcessiveGas = (chainId: number, estimatedGas: bigint, tokenAddress: Address) => {
+  if (isExcessiveGas(chainId, estimatedGas)) {
     console.error(`Gas limit of ${estimatedGas} is excessive (token: ${tokenAddress})`);
 
+    // TODO: Translate this error message
     throw new Error(
       'This transaction has an excessive gas cost. It is most likely a spam token, so you do not need to revoke this approval.',
     );

@@ -19,64 +19,19 @@
 // It is idempotent: cold delegations already disabled on-chain are skipped (before any signing),
 // so it is safe to re-run (e.g. after topping up gas on a chain that failed).
 import { readFileSync } from 'node:fs';
-import { createExecution, ExecutionMode, getSmartAccountsEnvironment } from '@metamask/smart-accounts-kit';
-import { DelegationManager } from '@metamask/smart-accounts-kit/contracts';
-import { createViemPublicClientForChain, type DocumentedChainId } from '@revoke.cash/core/chains';
 import {
-  type Address,
-  encodeFunctionData,
-  getAddress,
-  type Hash,
-  type Hex,
-  type PublicClient,
-  serializeTransaction,
-} from 'viem';
+  createExecution,
+  type Delegation,
+  ExecutionMode,
+  getSmartAccountsEnvironment,
+} from '@metamask/smart-accounts-kit';
+import { DelegationManager } from '@metamask/smart-accounts-kit/contracts';
+import { hashDelegation } from '@metamask/smart-accounts-kit/utils';
+import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
+import { type Address, getAddress, type Hash, type Hex, type PublicClient, serializeTransaction } from 'viem';
 import { buildColdSmartAccount, DISABLE_DELEGATION_SIGNATURE, signColdDelegation } from './cold-account';
-import { type CeremonyOutput, DEFAULT_DELEGATIONS_PATH, type SignedDelegation } from './delegations';
+import { type CeremonyOutput, DEFAULT_DELEGATIONS_PATH, DEFAULT_DERIVATION_PATH, parseFlags } from './delegations';
 import { connectLedgerColdSigner, type LedgerColdSigner } from './ledger-cold-signer';
-
-const DEFAULT_DERIVATION_PATH = "44'/60'/0'/0/0";
-
-const DELEGATION_COMPONENTS = [
-  { name: 'delegate', type: 'address' },
-  { name: 'delegator', type: 'address' },
-  { name: 'authority', type: 'bytes32' },
-  {
-    name: 'caveats',
-    type: 'tuple[]',
-    components: [
-      { name: 'enforcer', type: 'address' },
-      { name: 'terms', type: 'bytes' },
-      { name: 'args', type: 'bytes' },
-    ],
-  },
-  { name: 'salt', type: 'uint256' },
-  { name: 'signature', type: 'bytes' },
-] as const;
-
-const DELEGATION_MANAGER_ABI = [
-  {
-    type: 'function',
-    name: 'disableDelegation',
-    stateMutability: 'nonpayable',
-    inputs: [{ name: 'delegation', type: 'tuple', components: DELEGATION_COMPONENTS }],
-    outputs: [],
-  },
-  {
-    type: 'function',
-    name: 'getDelegationHash',
-    stateMutability: 'view',
-    inputs: [{ name: 'delegation', type: 'tuple', components: DELEGATION_COMPONENTS }],
-    outputs: [{ name: '', type: 'bytes32' }],
-  },
-  {
-    type: 'function',
-    name: 'disabledDelegations',
-    stateMutability: 'view',
-    inputs: [{ name: 'delegationHash', type: 'bytes32' }],
-    outputs: [{ name: '', type: 'bool' }],
-  },
-] as const;
 
 const main = async (): Promise<void> => {
   const options = parseOptions(process.argv.slice(2));
@@ -101,21 +56,14 @@ const main = async (): Promise<void> => {
 
 const disableColdDelegation = async (
   chainId: number,
-  coldDelegation: SignedDelegation,
+  coldDelegation: Delegation,
   cold: LedgerColdSigner,
 ): Promise<void> => {
   console.log(`- chain ${chainId}: disabling cold delegation`);
   const environment = getSmartAccountsEnvironment(chainId);
   const delegationManager = getAddress(environment.DelegationManager);
-  const publicClient = createViemPublicClientForChain(chainId as DocumentedChainId);
-  const coldDelegationStruct = toDelegationStruct(coldDelegation);
-
-  const delegationHash = await publicClient.readContract({
-    address: delegationManager,
-    abi: DELEGATION_MANAGER_ABI,
-    functionName: 'getDelegationHash',
-    args: [coldDelegationStruct],
-  });
+  const publicClient = createViemPublicClientForChain(chainId);
+  const delegationHash = hashDelegation(coldDelegation);
 
   if (await isDisabled(publicClient, delegationManager, delegationHash)) {
     console.log('    already disabled on-chain, skipping');
@@ -139,11 +87,7 @@ const disableColdDelegation = async (
     environment,
   );
 
-  const disableCalldata = encodeFunctionData({
-    abi: DELEGATION_MANAGER_ABI,
-    functionName: 'disableDelegation',
-    args: [coldDelegationStruct],
-  });
+  const disableCalldata = DelegationManager.encode.disableDelegation({ delegation: coldDelegation });
   const redeemData = DelegationManager.encode.redeemDelegations({
     delegations: [[killswitch]],
     modes: [ExecutionMode.SingleDefault],
@@ -192,21 +136,16 @@ const sendFromLedger = async (
     v: BigInt(signature.v),
   });
 
-  const hash = await publicClient.request({ method: 'eth_sendRawTransaction', params: [serializedTransaction] });
-  return hash as Hash;
+  return publicClient.sendRawTransaction({ serializedTransaction });
 };
 
 const isDisabled = (publicClient: PublicClient, delegationManager: Address, delegationHash: Hex): Promise<boolean> => {
-  return publicClient.readContract({
-    address: delegationManager,
-    abi: DELEGATION_MANAGER_ABI,
-    functionName: 'disabledDelegations',
-    args: [delegationHash],
+  return DelegationManager.read.disabledDelegations({
+    client: publicClient,
+    contractAddress: delegationManager,
+    delegationHash,
   });
 };
-
-// The on-chain Delegation struct takes `salt` as a uint256; the stored form keeps it as a hex string.
-const toDelegationStruct = (delegation: SignedDelegation) => ({ ...delegation, salt: BigInt(delegation.salt) });
 
 interface KillswitchOptions {
   inputPath: string;
@@ -215,12 +154,7 @@ interface KillswitchOptions {
 }
 
 const parseOptions = (args: string[]): KillswitchOptions => {
-  const flags = new Map(
-    args.map((arg) => {
-      const [key, value] = arg.replace(/^--/, '').split('=');
-      return [key, value ?? 'true'] as const;
-    }),
-  );
+  const flags = parseFlags(args);
 
   return {
     inputPath: flags.get('in') ?? DEFAULT_DELEGATIONS_PATH,
@@ -229,7 +163,7 @@ const parseOptions = (args: string[]): KillswitchOptions => {
   };
 };
 
-const readDelegations = (inputPath: string, chainIds?: number[]): Map<number, SignedDelegation> => {
+const readDelegations = (inputPath: string, chainIds?: number[]): Map<number, Delegation> => {
   let file: CeremonyOutput;
   try {
     file = JSON.parse(readFileSync(inputPath, 'utf8'));

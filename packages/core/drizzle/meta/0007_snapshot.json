@@ -15,12 +15,6 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "subscription_id": {
-          "name": "subscription_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "address": {
           "name": "address",
           "type": "text",
@@ -117,27 +111,6 @@
         }
       },
       "indexes": {
-        "observations_subscription_allowance_fingerprint_unique": {
-          "name": "observations_subscription_allowance_fingerprint_unique",
-          "columns": [
-            {
-              "expression": "subscription_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "allowance_fingerprint",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
         "idx_observations_address_created": {
           "name": "idx_observations_address_created",
           "columns": [
@@ -159,38 +132,23 @@
           "method": "btree",
           "with": {}
         },
-        "idx_observations_subscription": {
-          "name": "idx_observations_subscription",
+        "observations_allowance_fingerprint_unique": {
+          "name": "observations_allowance_fingerprint_unique",
           "columns": [
             {
-              "expression": "subscription_id",
+              "expression": "allowance_fingerprint",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
             }
           ],
-          "isUnique": false,
+          "isUnique": true,
           "concurrently": false,
           "method": "btree",
           "with": {}
         }
       },
-      "foreignKeys": {
-        "observations_subscription_id_subscriptions_id_fk": {
-          "name": "observations_subscription_id_subscriptions_id_fk",
-          "tableFrom": "observations",
-          "tableTo": "subscriptions",
-          "schemaTo": "premium",
-          "columnsFrom": [
-            "subscription_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -382,7 +340,7 @@
           "name": "stale_approval_threshold_days",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": 30
         },
         "created_at": {
@@ -473,7 +431,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -484,6 +442,10 @@
         "rules_owner_consistency": {
           "name": "rules_owner_consistency",
           "value": "(\"auto_revoke\".\"rules\".\"type\" = 'subscription' AND \"auto_revoke\".\"rules\".\"subscription_id\" IS NOT NULL AND \"auto_revoke\".\"rules\".\"address\" IS NULL)\n        OR (\"auto_revoke\".\"rules\".\"type\" = 'address' AND \"auto_revoke\".\"rules\".\"subscription_id\" IS NULL AND \"auto_revoke\".\"rules\".\"address\" IS NOT NULL)"
+        },
+        "rules_pointer_scope": {
+          "name": "rules_pointer_scope",
+          "value": "\"auto_revoke\".\"rules\".\"type\" = 'address' OR \"auto_revoke\".\"rules\".\"active_rules_id\" IS NULL"
         }
       },
       "isRLSEnabled": false

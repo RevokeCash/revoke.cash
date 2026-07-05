@@ -10,7 +10,7 @@ import {
 } from 'lib/hooks/auto-revoke/useAutoRevokePermissions';
 import { useAddressAutoRevokeRules, useSubscriptionAutoRevokeRules } from 'lib/hooks/auto-revoke/useAutoRevokeRules';
 import { useTranslations } from 'next-intl';
-import type { Address } from 'viem';
+import { type Address, isAddressEqual } from 'viem';
 import { useConnection } from 'wagmi';
 import AutoRevokePermissions from './AutoRevokePermissions';
 import AutoRevokeRulesEditor from './AutoRevokeRulesEditor';
@@ -26,9 +26,7 @@ const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
   const t = useTranslations();
   const { connector } = useConnection();
   const isMetaMask = connector?.id === 'io.metamask';
-  const isAdmin = Boolean(
-    activeSubscription && account.toLowerCase() === activeSubscription.ownerAddress.toLowerCase(),
-  );
+  const isAdmin = Boolean(activeSubscription && isAddressEqual(account, activeSubscription.ownerAddress));
 
   const subscriptionPermissions = useSubscriptionAutoRevokePermissions(activeSubscription?.id, isAdmin);
   const addressPermissions = useAddressAutoRevokePermissions(account, !isAdmin);

@@ -17,7 +17,7 @@ import {
   DeviceManagementKitBuilder,
   type ExecuteDeviceActionReturnType,
 } from '@ledgerhq/device-management-kit';
-import { SignerEthBuilder } from '@ledgerhq/device-signer-kit-ethereum';
+import { Signature, SignerEthBuilder, TypedData } from '@ledgerhq/device-signer-kit-ethereum';
 import { nodeHidTransportFactory } from '@ledgerhq/device-transport-kit-node-hid';
 import { firstValueFrom } from 'rxjs';
 import { type Address, getAddress, type Hex, hexToBytes, type LocalAccount, serializeSignature } from 'viem';
@@ -26,7 +26,7 @@ import { toAccount } from 'viem/accounts';
 export interface LedgerColdSigner {
   address: Address;
   account: LocalAccount;
-  signTransaction(serializedUnsignedTransaction: Hex): Promise<{ r: Hex; s: Hex; v: number }>;
+  signTransaction(serializedUnsignedTransaction: Hex): Promise<Signature>;
   disconnect(): Promise<void>;
 }
 
@@ -46,10 +46,8 @@ export const connectLedgerColdSigner = async (derivationPath: string): Promise<L
     async signTypedData(typedData) {
       // The smart-accounts-kit calls this with the canonical Delegation EIP-712 payload; the shapes
       // (domain/types/primaryType/message) line up with the DMK `TypedData` model.
-      const signature = await resolveDeviceAction(
-        signer.signTypedData(derivationPath, typedData as Parameters<typeof signer.signTypedData>[1]),
-      );
-      return serializeSignature({ r: signature.r as Hex, s: signature.s as Hex, v: BigInt(signature.v) });
+      const signature = await resolveDeviceAction(signer.signTypedData(derivationPath, typedData as TypedData));
+      return serializeSignature({ r: signature.r, s: signature.s, v: BigInt(signature.v) });
     },
     signMessage() {
       // The MultiSig DeleGator signs delegations via signTypedData; signMessage shouldn't be reached.
@@ -69,9 +67,7 @@ export const connectLedgerColdSigner = async (derivationPath: string): Promise<L
       const signature = await resolveDeviceAction(
         signer.signTransaction(derivationPath, hexToBytes(serializedUnsignedTransaction)),
       );
-      // DEVICE-VERIFY: the caller re-serializes with this {r, s, v}; viem derives yParity for typed
-      // transactions, so 0/1 or 27/28 both work, but confirm the broadcast tx recovers to `address`.
-      return { r: signature.r as Hex, s: signature.s as Hex, v: signature.v };
+      return signature;
     },
     async disconnect() {
       await dmk.disconnect({ sessionId });

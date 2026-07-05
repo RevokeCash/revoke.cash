@@ -127,10 +127,6 @@ export const getEffectiveRules = async (address: Address): Promise<RuleContext> 
     rulesSource: { type: 'custom' as const },
   };
 
-  // No address row means the user never made an explicit choice: default to a subscription they are a
-  // member of. An existing row with a null pointer is an explicit "custom" choice (switchRulesSource
-  // stores it that way) and must win over member subscriptions — subscription admins can
-  // permissionlessly add members, so members need a way to opt out of the admin's rules.
   if (!addressRules) {
     const defaultSubscriptionRules = await getActiveSubscriptionRules(address);
     return defaultSubscriptionRules ?? fallbackCustomRules;
@@ -338,7 +334,7 @@ const mapRules = (row: RulesRecord): AutoRevokeRules => ({
   riskDetectionEnabled: row.riskDetectionEnabled,
   riskSensitivity: row.riskSensitivity,
   staleApprovalEnabled: row.staleApprovalEnabled,
-  staleApprovalThresholdDays: row.staleApprovalThresholdDays ?? 30,
+  staleApprovalThresholdDays: row.staleApprovalThresholdDays,
 });
 
 const DEFAULT_RULES: AutoRevokeRules = {

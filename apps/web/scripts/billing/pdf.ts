@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { type DocumentedChainId, getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
+import { getChainExplorerUrl, getChainName } from '@revoke.cash/core/chains';
 import PDFDocument from 'pdfkit';
 import {
   EU_VAT_RATES,
@@ -117,7 +117,7 @@ export const generatePdf = ({ title, records, summary, from, to, outputPath }: G
 
     const txHash = record.feeTransactionHash ? `${record.feeTransactionHash.slice(0, 22)}...` : '—';
     const chainName = getChainName(record.chainId);
-    const explorerUrl = getChainExplorerUrl(record.chainId as DocumentedChainId);
+    const explorerUrl = getChainExplorerUrl(record.chainId);
     const txUrl = record.feeTransactionHash ? `${explorerUrl}/tx/${record.feeTransactionHash}` : null;
     const region = record.vatRegion?.trim().toUpperCase() ?? '—';
     const vatRate = EU_VAT_RATES[region]?.rate ?? 0;

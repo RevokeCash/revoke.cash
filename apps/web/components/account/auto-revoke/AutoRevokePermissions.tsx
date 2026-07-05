@@ -2,7 +2,7 @@
 
 import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
 import { useTranslations } from 'next-intl';
-import type { Address } from 'viem';
+import { type Address, isAddressEqual } from 'viem';
 import AutoRevokePermissionRow from './AutoRevokePermissionRow';
 
 interface Props {
@@ -17,7 +17,7 @@ const AutoRevokePermissions = ({ addresses, connectedAddress, permissions, isAdm
 
   const displayAddresses = isAdmin
     ? addresses
-    : addresses.filter((address) => address.toLowerCase() === connectedAddress.toLowerCase());
+    : addresses.filter((address) => isAddressEqual(address, connectedAddress));
 
   return (
     <div>
@@ -33,7 +33,7 @@ const AutoRevokePermissions = ({ addresses, connectedAddress, permissions, isAdm
             key={address}
             address={address}
             connectedAddress={connectedAddress}
-            permissions={permissions.filter((permission) => permission.address.toLowerCase() === address.toLowerCase())}
+            permissions={permissions.filter((permission) => isAddressEqual(permission.address, address))}
           />
         ))}
       </div>

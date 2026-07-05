@@ -1,5 +1,5 @@
 import { erc7715ProviderActions } from '@metamask/smart-accounts-kit/actions';
-import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
+import { isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
 import { buildPermissionRequest, isValidAutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
 import { isUserRejectionError } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -16,7 +16,7 @@ export const useGrantAutoRevokePermission = () => {
   const mutation = useMutation({
     mutationFn: async (chainId: number) => {
       if (!connectorClient || !isMetaMask) throw new Error('MetaMask not connected');
-      if (!AUTO_REVOKE_SUPPORTED_CHAINS.includes(chainId)) throw new Error('Unsupported chain');
+      if (!isAutoRevokeSupportedChain(chainId)) throw new Error('Unsupported chain');
 
       const walletClient = connectorClient.extend(erc7715ProviderActions());
 

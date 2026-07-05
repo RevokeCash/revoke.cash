@@ -1,6 +1,5 @@
 'use client';
 
-import type { DocumentedChainId } from '@revoke.cash/core/chains';
 import type { PremiumSubscription, SubscriptionPayment } from '@revoke.cash/core/premium/types';
 import TransactionHashCell from 'components/allowances/dashboard/cells/TransactionHashCell';
 import Card, { CardTitle } from 'components/common/Card';
@@ -51,10 +50,7 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
                     {payment.amountUsd} {payment.tokenSymbol}
                   </td>
                   <td className="py-3 whitespace-nowrap">
-                    <TransactionHashCell
-                      chainId={payment.chainId as DocumentedChainId}
-                      transactionHash={payment.txHash}
-                    />
+                    <TransactionHashCell chainId={payment.chainId} transactionHash={payment.txHash} />
                   </td>
                 </tr>
               ))}

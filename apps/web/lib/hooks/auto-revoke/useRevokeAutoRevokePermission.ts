@@ -1,6 +1,6 @@
 import { contracts } from '@metamask/smart-accounts-kit';
 import { decodeDelegations } from '@metamask/smart-accounts-kit/utils';
-import { isUserRejectionError } from '@revoke.cash/core/utils/errors';
+import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
 import type { Address, Hex } from 'viem';
@@ -36,7 +36,7 @@ export const useRevokeAutoRevokePermission = () => {
           delegation: decodedPermission,
         });
       } catch (error) {
-        const message = error instanceof Error ? error.message : String(error);
+        const message = parseErrorMessage(error);
         if (message.includes('AlreadyDisabled')) {
           console.log('Permission already disabled on-chain, skipping');
         } else {

@@ -291,7 +291,7 @@
           "name": "stale_approval_threshold_days",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": 30
         },
         "created_at": {
@@ -382,7 +382,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -393,6 +393,10 @@
         "rules_owner_consistency": {
           "name": "rules_owner_consistency",
           "value": "(\"auto_revoke\".\"rules\".\"type\" = 'subscription' AND \"auto_revoke\".\"rules\".\"subscription_id\" IS NOT NULL AND \"auto_revoke\".\"rules\".\"address\" IS NULL)\n        OR (\"auto_revoke\".\"rules\".\"type\" = 'address' AND \"auto_revoke\".\"rules\".\"subscription_id\" IS NULL AND \"auto_revoke\".\"rules\".\"address\" IS NOT NULL)"
+        },
+        "rules_pointer_scope": {
+          "name": "rules_pointer_scope",
+          "value": "\"auto_revoke\".\"rules\".\"type\" = 'address' OR \"auto_revoke\".\"rules\".\"active_rules_id\" IS NULL"
         }
       },
       "isRLSEnabled": false

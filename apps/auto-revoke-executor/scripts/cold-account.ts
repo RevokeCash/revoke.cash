@@ -3,6 +3,7 @@
 // CREATE2 address — keeping this in one place prevents drift.
 import {
   createDelegation,
+  type Delegation,
   Implementation,
   ScopeType,
   type SmartAccountsEnvironment,
@@ -11,7 +12,6 @@ import {
 } from '@metamask/smart-accounts-kit';
 import { generateSalt } from '@metamask/smart-accounts-kit/utils';
 import { type Address, getAddress, type PublicClient } from 'viem';
-import type { SignedDelegation } from './delegations';
 import type { LedgerColdSigner } from './ledger-cold-signer';
 
 export type ColdSmartAccount = ToMetaMaskSmartAccountReturnType<Implementation.MultiSig>;
@@ -40,7 +40,7 @@ export const signColdDelegation = async (
   delegate: Address,
   selectorSignature: string,
   environment: SmartAccountsEnvironment,
-): Promise<SignedDelegation> => {
+): Promise<Delegation> => {
   const delegation = createDelegation({
     from: coldSmartAccount.address,
     to: delegate,

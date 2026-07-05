@@ -14,11 +14,11 @@ import { AUTO_REVOKE_DELEGATION_ADDRESS } from '@revoke.cash/core/constants';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokePermissions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
-import { deduplicateArray, toLowercaseAddress } from '@revoke.cash/core/utils';
+import { deduplicateArray } from '@revoke.cash/core/utils';
 import { filterAsync } from '@revoke.cash/core/utils/promises';
 import { SECOND } from '@revoke.cash/core/utils/time';
-import { and, eq, getTableColumns, inArray, isNull, notInArray, sql } from 'drizzle-orm';
-import { type Address, type Hex, recoverTypedDataAddress } from 'viem';
+import { and, eq, getTableColumns, gt, inArray, isNull, notInArray, sql } from 'drizzle-orm';
+import { type Address, type Hex, isAddressEqual, recoverTypedDataAddress } from 'viem';
 import { ApiError } from '../utils/errors';
 import { type AutoRevokeSupportedChainId, PERMISSION_EXPIRY_SECONDS } from './config';
 
@@ -30,6 +30,8 @@ export interface AutoRevokePermission {
   expiresAt: string;
   isActive: boolean;
 }
+
+export type PermissionRecord = typeof autoRevokePermissions.$inferSelect;
 
 type WalletPermissionResult = RequestExecutionPermissionsReturnType[number];
 
@@ -57,6 +59,27 @@ export const getPermissionsBySubscription = async (subscriptionId: string): Prom
     );
 
   return rows.map(mapPermission);
+};
+
+export const findActivePermission = async (address: Address, chainId: number): Promise<PermissionRecord | null> => {
+  const permission = await getDb().query.autoRevokePermissions.findFirst({
+    where: and(
+      eq(autoRevokePermissions.address, address),
+      eq(autoRevokePermissions.chainId, chainId),
+      isNull(autoRevokePermissions.revokedAt),
+      gt(autoRevokePermissions.expiresAt, new Date()),
+    ),
+  });
+
+  return permission ?? null;
+};
+
+export const getPermissionById = async (permissionId: string): Promise<PermissionRecord | null> => {
+  const permission = await getDb().query.autoRevokePermissions.findFirst({
+    where: eq(autoRevokePermissions.id, permissionId),
+  });
+
+  return permission ?? null;
 };
 
 export const savePermission = async (item: Omit<AutoRevokePermission, 'isActive'>): Promise<{ id: string }> => {
@@ -164,12 +187,12 @@ export const isValidAutoRevokePermission = (permission: WalletPermissionResult, 
   if (permission.permission.data.erc721Approve !== true) return false;
   if (permission.permission.data.erc721SetApprovalForAll !== true) return false;
   if (permission.permission.data.permit2Approve !== true) return false;
-  if (permission.to?.toLowerCase() !== AUTO_REVOKE_DELEGATION_ADDRESS.toLowerCase()) return false;
+  if (!permission.to || !isAddressEqual(permission.to, AUTO_REVOKE_DELEGATION_ADDRESS)) return false;
 
   const decoded = decodeDelegations(permission.context)?.[0];
   if (!decoded) return false;
 
-  return decoded.delegator.toLowerCase() === delegator.toLowerCase();
+  return isAddressEqual(decoded.delegator, delegator);
 };
 
 export const isPermissionEnabledOnChain = async (
@@ -197,16 +220,11 @@ const applyPermissionBatch = async (
 ): Promise<Array<{ id: string }>> => {
   if (items.length === 0) return [];
 
-  // Dedupe by chainId. The DB enforces at most one active permission per (address, chainId),
-  // so submitting two items for the same chain would violate the partial unique index.
-  // Deduping by chainId also subsumes context-level dedup because two items with the same
-  // context necessarily share a chainId (the chain is encoded in the delegation caveats).
   const uniqueItems = deduplicateArray(items, (item) => String(item.chainId));
   const chainIds = uniqueItems.map((item) => item.chainId);
   const contexts = uniqueItems.map((item) => item.permissionContext);
 
   // Revoke any OTHER active permissions for this address on the touched chains.
-  // Rows whose context matches one of our batch items are preserved and refreshed by the upsert below.
   await trx
     .update(autoRevokePermissions)
     .set({ revokedAt: new Date() })
@@ -248,22 +266,18 @@ export const resolvePermissionRecord = async (
   authenticatedAddress: Address,
   input: { permissionContext: Hex; chainId: AutoRevokeSupportedChainId },
 ): Promise<Omit<AutoRevokePermission, 'isActive'>> => {
-  const lowercasedAddress = toLowercaseAddress(authenticatedAddress);
-
   const decodedPermission = decodeDelegations(input.permissionContext)?.[0];
   if (!decodedPermission) throw new ApiError(400, 'Failed to decode permission context');
 
-  if (toLowercaseAddress(decodedPermission.delegator) !== toLowercaseAddress(authenticatedAddress)) {
+  if (!isAddressEqual(decodedPermission.delegator, authenticatedAddress)) {
     throw new ApiError(403, 'Permission context does not belong to the authenticated address');
   }
-  if (toLowercaseAddress(decodedPermission.delegate) !== AUTO_REVOKE_DELEGATION_ADDRESS.toLowerCase()) {
+  if (!isAddressEqual(decodedPermission.delegate, AUTO_REVOKE_DELEGATION_ADDRESS)) {
     throw new ApiError(400, 'Permission is not granted to the Revoke session account');
   }
 
   const delegationManager = getSmartAccountsEnvironment(input.chainId).DelegationManager;
 
-  // Cryptographic chain binding: the signature was produced over an EIP-712 domain that includes
-  // chainId + DelegationManager. If either doesn't match, the recovered signer won't equal the delegator.
   const recoveredSigner = await recoverTypedDataAddress({
     domain: {
       name: 'DelegationManager',
@@ -277,7 +291,7 @@ export const resolvePermissionRecord = async (
     signature: decodedPermission.signature,
   });
 
-  if (toLowercaseAddress(recoveredSigner) !== lowercasedAddress) {
+  if (!isAddressEqual(recoveredSigner, authenticatedAddress)) {
     throw new ApiError(400, 'Permission signature does not match the claimed chain');
   }
 
@@ -307,7 +321,7 @@ const extractExpiryFromCaveats = (caveats: ReadonlyArray<{ enforcer: Hex; terms:
   return new Date(beforeThreshold * SECOND).toISOString();
 };
 
-const mapPermission = (row: typeof autoRevokePermissions.$inferSelect): AutoRevokePermission => ({
+const mapPermission = (row: PermissionRecord): AutoRevokePermission => ({
   address: row.address,
   chainId: row.chainId,
   permissionContext: row.permissionContext as Hex,

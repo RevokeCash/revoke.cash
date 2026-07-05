@@ -2,7 +2,8 @@ import { type AllowancePayload, AllowanceType, type TokenAllowanceData } from '@
 import { getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeObservations } from '@revoke.cash/core/db/schema/auto-revoke';
 import type { indexerAllowances } from '@revoke.cash/core/db/schema/indexer';
-import { and, eq, inArray } from 'drizzle-orm';
+import { toLowercaseAddress } from '@revoke.cash/core/utils';
+import { inArray } from 'drizzle-orm';
 import type { RuleContext, TriggerDetails } from './rules';
 
 export type Observation = typeof autoRevokeObservations.$inferSelect;
@@ -26,22 +27,19 @@ export const buildAllowanceFingerprint = (allowance: TokenAllowanceData): string
   const { tokenId, permit2Address, expiration } = flattenPayloadIdentity(payload);
 
   return [
-    allowance.owner,
+    toLowercaseAddress(allowance.owner),
     allowance.chainId,
     payload.type,
-    allowance.token.address,
-    payload.spender,
+    toLowercaseAddress(allowance.token.address),
+    toLowercaseAddress(payload.spender),
     tokenId?.toString() ?? '',
-    permit2Address ?? '',
+    permit2Address ? toLowercaseAddress(permit2Address) : '',
     expiration ?? '',
-    payload.lastUpdated.transactionHash,
+    payload.lastUpdated.transactionHash.toLowerCase(),
   ].join(':');
 };
 
-export const createObservations = async (
-  subscriptionId: string,
-  candidates: ObservationCandidate[],
-): Promise<Observation[]> => {
+export const createObservations = async (candidates: ObservationCandidate[]): Promise<Observation[]> => {
   if (candidates.length === 0) return [];
 
   const observationValues = candidates.map((candidate) => {
@@ -49,7 +47,6 @@ export const createObservations = async (
     const { tokenId, permit2Address, expiration } = flattenPayloadIdentity(payload);
 
     return {
-      subscriptionId,
       address: candidate.allowance.owner,
       chainId: candidate.allowance.chainId,
       triggerType: candidate.triggerType,
@@ -72,10 +69,7 @@ export const createObservations = async (
     await trx.insert(autoRevokeObservations).values(observationValues).onConflictDoNothing();
 
     return trx.query.autoRevokeObservations.findMany({
-      where: and(
-        eq(autoRevokeObservations.subscriptionId, subscriptionId),
-        inArray(autoRevokeObservations.allowanceFingerprint, allowanceFingerprints),
-      ),
+      where: inArray(autoRevokeObservations.allowanceFingerprint, allowanceFingerprints),
     });
   });
 };

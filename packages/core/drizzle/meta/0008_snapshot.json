@@ -1,11 +1,255 @@
 {
-  "id": "07b9556b-13ca-45ff-8574-6fa45855a623",
-  "prevId": "05c243a3-7a57-4988-8302-3a79770acb28",
+  "id": "0e876a0f-f46e-4dba-a87d-aaa8a2ff71e7",
+  "prevId": "7dbe7552-094f-4f1c-9371-664c2977f606",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "auto_revoke.activity_log": {
-      "name": "activity_log",
+    "auto_revoke.actions": {
+      "name": "actions",
+      "schema": "auto_revoke",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "observation_id": {
+          "name": "observation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "permission_id": {
+          "name": "permission_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "billed_subscription_id": {
+          "name": "billed_subscription_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "action_status",
+          "typeSchema": "auto_revoke",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'queued'"
+        },
+        "chain_id": {
+          "name": "chain_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nonce": {
+          "name": "nonce",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "signer_address": {
+          "name": "signer_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "next_retry_at": {
+          "name": "next_retry_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "transaction": {
+          "name": "transaction",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cost_usd": {
+          "name": "cost_usd",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error_code": {
+          "name": "error_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "actions_observation_unique": {
+          "name": "actions_observation_unique",
+          "columns": [
+            {
+              "expression": "observation_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_actions_status_retry": {
+          "name": "idx_actions_status_retry",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "next_retry_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_actions_signer_chain_nonce": {
+          "name": "idx_actions_signer_chain_nonce",
+          "columns": [
+            {
+              "expression": "signer_address",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "chain_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "nonce",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"auto_revoke\".\"actions\".\"nonce\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_actions_billed_subscription": {
+          "name": "idx_actions_billed_subscription",
+          "columns": [
+            {
+              "expression": "billed_subscription_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "submitted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"auto_revoke\".\"actions\".\"billed_subscription_id\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "actions_observation_id_observations_id_fk": {
+          "name": "actions_observation_id_observations_id_fk",
+          "tableFrom": "actions",
+          "tableTo": "observations",
+          "schemaTo": "auto_revoke",
+          "columnsFrom": [
+            "observation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "actions_permission_id_permissions_id_fk": {
+          "name": "actions_permission_id_permissions_id_fk",
+          "tableFrom": "actions",
+          "tableTo": "permissions",
+          "schemaTo": "auto_revoke",
+          "columnsFrom": [
+            "permission_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "actions_billed_subscription_id_subscriptions_id_fk": {
+          "name": "actions_billed_subscription_id_subscriptions_id_fk",
+          "tableFrom": "actions",
+          "tableTo": "subscriptions",
+          "schemaTo": "premium",
+          "columnsFrom": [
+            "billed_subscription_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "auto_revoke.observations": {
+      "name": "observations",
       "schema": "auto_revoke",
       "columns": {
         "id": {
@@ -34,9 +278,28 @@
           "primaryKey": false,
           "notNull": true
         },
-        "spender_address": {
-          "name": "spender_address",
+        "trigger_details": {
+          "name": "trigger_details",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rule_snapshot": {
+          "name": "rule_snapshot",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "allowance_fingerprint": {
+          "name": "allowance_fingerprint",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "allowance_type": {
+          "name": "allowance_type",
+          "type": "allowance_type",
+          "typeSchema": "auto_revoke",
           "primaryKey": false,
           "notNull": true
         },
@@ -46,16 +309,33 @@
           "primaryKey": false,
           "notNull": true
         },
-        "tx_hash": {
-          "name": "tx_hash",
+        "spender_address": {
+          "name": "spender_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_id": {
+          "name": "token_id",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "permit2_address": {
+          "name": "permit2_address",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "status": {
-          "name": "status",
-          "type": "activity_status",
-          "typeSchema": "auto_revoke",
+        "expiration": {
+          "name": "expiration",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_updated_tx_hash": {
+          "name": "last_updated_tx_hash",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -65,27 +345,40 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {
-        "idx_activity_log_address": {
-          "name": "idx_activity_log_address",
+        "observations_allowance_fingerprint_unique": {
+          "name": "observations_allowance_fingerprint_unique",
+          "columns": [
+            {
+              "expression": "allowance_fingerprint",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_observations_address_created": {
+          "name": "idx_observations_address_created",
           "columns": [
             {
               "expression": "address",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "idx_activity_log_created": {
-          "name": "idx_activity_log_created",
-          "columns": [
+            },
             {
               "expression": "created_at",
               "isExpression": false,
@@ -1107,6 +1400,249 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "indexer.spender_metadata": {
+      "name": "spender_metadata",
+      "schema": "indexer",
+      "columns": {
+        "chain_id": {
+          "name": "chain_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "spender_address": {
+          "name": "spender_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "risk_factors": {
+          "name": "risk_factors",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "enrichment_error": {
+          "name": "enrichment_error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "enriched_at": {
+          "name": "enriched_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_spender_metadata_enriched_at": {
+          "name": "idx_spender_metadata_enriched_at",
+          "columns": [
+            {
+              "expression": "chain_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "enriched_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_spender_metadata_unenriched": {
+          "name": "idx_spender_metadata_unenriched",
+          "columns": [
+            {
+              "expression": "chain_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "spender_address",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"indexer\".\"spender_metadata\".\"enriched_at\" IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "spender_metadata_pkey": {
+          "name": "spender_metadata_pkey",
+          "columns": [
+            "chain_id",
+            "spender_address"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "indexer.token_metadata": {
+      "name": "token_metadata",
+      "schema": "indexer",
+      "columns": {
+        "chain_id": {
+          "name": "chain_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_address": {
+          "name": "token_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_standard": {
+          "name": "token_standard",
+          "type": "token_standard",
+          "typeSchema": "indexer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "symbol": {
+          "name": "symbol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "decimals": {
+          "name": "decimals",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_supply": {
+          "name": "total_supply",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "icon_url": {
+          "name": "icon_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "spam_reason": {
+          "name": "spam_reason",
+          "type": "spam_reason",
+          "typeSchema": "indexer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "enrichment_error": {
+          "name": "enrichment_error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "enriched_at": {
+          "name": "enriched_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_token_metadata_enriched_at": {
+          "name": "idx_token_metadata_enriched_at",
+          "columns": [
+            {
+              "expression": "chain_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "enriched_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_token_metadata_unenriched": {
+          "name": "idx_token_metadata_unenriched",
+          "columns": [
+            {
+              "expression": "chain_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "token_address",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"indexer\".\"token_metadata\".\"enriched_at\" IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "token_metadata_pkey": {
+          "name": "token_metadata_pkey",
+          "columns": [
+            "chain_id",
+            "token_address"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "premium.payments": {
       "name": "payments",
       "schema": "premium",
@@ -1690,13 +2226,27 @@
     }
   },
   "enums": {
-    "auto_revoke.activity_status": {
-      "name": "activity_status",
+    "auto_revoke.action_status": {
+      "name": "action_status",
       "schema": "auto_revoke",
       "values": [
-        "pending",
-        "executed",
-        "failed"
+        "queued",
+        "blocked_budget",
+        "blocked_permission",
+        "submitted",
+        "succeeded",
+        "failed",
+        "skipped"
+      ]
+    },
+    "auto_revoke.allowance_type": {
+      "name": "allowance_type",
+      "schema": "auto_revoke",
+      "values": [
+        "erc721_single",
+        "erc721_all",
+        "erc20",
+        "permit2"
       ]
     },
     "auto_revoke.risk_sensitivity": {
@@ -1733,6 +2283,24 @@
         "erc721_all",
         "erc20",
         "permit2"
+      ]
+    },
+    "indexer.spam_reason": {
+      "name": "spam_reason",
+      "schema": "indexer",
+      "values": [
+        "whois",
+        "symbol",
+        "bytecode",
+        "airdrop"
+      ]
+    },
+    "indexer.token_standard": {
+      "name": "token_standard",
+      "schema": "indexer",
+      "values": [
+        "erc20",
+        "erc721"
       ]
     },
     "premium.payment_status": {

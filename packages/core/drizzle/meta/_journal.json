@@ -57,6 +57,13 @@
       "when": 1780912581583,
       "tag": "0007_auto_revoke_observations",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1782837483206,
+      "tag": "0008_auto_revoke_actions",
+      "breakpoints": true
     }
   ]
 }

@@ -6,7 +6,7 @@ import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/permiss
 import { useGrantAutoRevokePermission } from 'lib/hooks/auto-revoke/useGrantAutoRevokePermission';
 import { useRevokeAutoRevokePermission } from 'lib/hooks/auto-revoke/useRevokeAutoRevokePermission';
 import { useSyncAutoRevokePermissions } from 'lib/hooks/auto-revoke/useSyncAutoRevokePermissions';
-import type { Address } from 'viem';
+import { type Address, isAddressEqual } from 'viem';
 import AutoRevokeChainToggle from './AutoRevokeChainToggle';
 import AutoRevokePermissionSummary from './AutoRevokePermissionSummary';
 import SyncPermissionsButton from './SyncPermissionsButton';
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const AutoRevokePermissionRow = ({ address, connectedAddress, permissions }: Props) => {
-  const isConnected = address.toLowerCase() === connectedAddress.toLowerCase();
+  const isConnected = isAddressEqual(address, connectedAddress);
   const activePermissions = permissions.filter((permission) => permission.isActive);
   const grantedCount = activePermissions.length;
   const totalCount = AUTO_REVOKE_SUPPORTED_CHAINS.length;

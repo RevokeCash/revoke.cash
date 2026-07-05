@@ -35,6 +35,8 @@ export const isAutoRevokeSupportedChain = (chainId: number): chainId is AutoRevo
 
 export const PERMISSION_EXPIRY_SECONDS = 10 * 365 * 24 * 60 * 60; // 10 years
 
+export const MAX_PENDING_ACTIONS_PER_CHAIN = 10;
+
 export const STALE_APPROVAL_THRESHOLD_MIN_DAYS = 1;
 export const STALE_APPROVAL_THRESHOLD_MAX_DAYS = 365;
 export const STALE_APPROVAL_THRESHOLD_DEFAULT_DAYS = 30;

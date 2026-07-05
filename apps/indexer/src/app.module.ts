@@ -5,6 +5,7 @@ import { LoggerModule } from '@revoke.cash/backend/logger/logger.module';
 import { RedisModule } from '@revoke.cash/backend/redis/redis.module';
 import { AllowancesSchedulerModule } from './allowances/allowances.scheduler.module';
 import { AllowancesWorkerModule } from './allowances/allowances.worker.module';
+import { AutoRevokeSchedulerModule } from './auto-revoke/auto-revoke.scheduler.module';
 import { AutoRevokeEvaluatorWorkerModule } from './auto-revoke/auto-revoke-evaluator.worker.module';
 import { ExploitWebhookModule } from './auto-revoke/exploit-webhook.module';
 import { BullBoardModule } from './bull-board/bull-board.module';
@@ -36,8 +37,8 @@ export class AppModule {
       isManager ? TimestampsSchedulerModule : TimestampsWorkerModule,
       isManager ? TokenMetadataSchedulerModule : TokenMetadataWorkerModule,
       isManager ? SpenderMetadataSchedulerModule : SpenderMetadataWorkerModule,
-      ...(isManager ? [] : [AutoRevokeEvaluatorWorkerModule]),
-      ...(isManager ? [BullBoardModule, ExploitWebhookModule] : []),
+      isManager ? ExploitWebhookModule : AutoRevokeEvaluatorWorkerModule,
+      ...(isManager ? [AutoRevokeSchedulerModule, BullBoardModule] : []),
     ];
 
     return {

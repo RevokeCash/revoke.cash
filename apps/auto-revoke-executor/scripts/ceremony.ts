@@ -24,7 +24,7 @@
 // Requires AUTO_REVOKE_EXECUTOR_PRIVATE_KEY (the hot wallet, funded on each target chain) in the env.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { getSmartAccountsEnvironment } from '@metamask/smart-accounts-kit';
+import { type Delegation, getSmartAccountsEnvironment } from '@metamask/smart-accounts-kit';
 import { ChainId } from '@revoke.cash/chains';
 import { AUTO_REVOKE_SUPPORTED_CHAINS, isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
 import { createViemPublicClientForChain, getChainRpcUrl, getViemChainConfig } from '@revoke.cash/core/chains';
@@ -37,10 +37,8 @@ import {
   REDEEM_DELEGATIONS_SIGNATURE,
   signColdDelegation,
 } from './cold-account';
-import { type CeremonyOutput, DEFAULT_DELEGATIONS_PATH, type SignedDelegation } from './delegations';
+import { type CeremonyOutput, DEFAULT_DELEGATIONS_PATH, DEFAULT_DERIVATION_PATH, parseFlags } from './delegations';
 import { connectLedgerColdSigner, type LedgerColdSigner } from './ledger-cold-signer';
-
-const DEFAULT_DERIVATION_PATH = "44'/60'/0'/0/0";
 
 interface CeremonyOptions {
   chainIds: number[];
@@ -83,7 +81,7 @@ const provisionChain = async (
   chainId: number,
   cold: LedgerColdSigner,
   hotAccount: PrivateKeyAccount,
-): Promise<SignedDelegation> => {
+): Promise<Delegation> => {
   console.log(`- chain ${chainId}: provisioning`);
   const environment = getSmartAccountsEnvironment(chainId);
   const publicClient = createViemPublicClientForChain(chainId);
@@ -127,12 +125,7 @@ const ensureColdDeployed = async (
 };
 
 const parseOptions = (args: string[]): CeremonyOptions => {
-  const flags = new Map(
-    args.map((arg) => {
-      const [key, value] = arg.replace(/^--/, '').split('=');
-      return [key, value ?? 'true'] as const;
-    }),
-  );
+  const flags = parseFlags(args);
 
   const chainIds = flags.has('all')
     ? [...AUTO_REVOKE_SUPPORTED_CHAINS]

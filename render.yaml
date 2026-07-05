@@ -7,7 +7,7 @@ services:
     dockerfilePath: ./apps/indexer/Dockerfile
     dockerContext: .
     region: virginia
-    plan: starter
+    plan: standard
     numInstances: 1
     envVars:
       - key: IS_MANAGER
@@ -49,4 +49,30 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: REDIS_URL
+        sync: false
+
+  - type: pserv
+    name: auto-revoke-executor
+    runtime: docker
+    repo: https://github.com/RevokeCash/revoke-private
+    branch: auto-revoke-executor
+    dockerfilePath: ./apps/auto-revoke-executor/Dockerfile
+    dockerContext: .
+    region: virginia
+    plan: standard
+    numInstances: 1
+    envVars:
+      - key: PORT
+        value: '3003'
+      - key: NEON_USE_WEBSOCKET
+        value: 'true'
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: AUTO_REVOKE_EXECUTOR_PRIVATE_KEY
+        sync: false
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
         sync: false

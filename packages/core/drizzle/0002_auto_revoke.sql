@@ -37,15 +37,16 @@ CREATE TABLE "auto_revoke"."rules" (
 	"risk_detection_enabled" boolean DEFAULT true NOT NULL,
 	"risk_sensitivity" "auto_revoke"."risk_sensitivity" DEFAULT 'exploits_only' NOT NULL,
 	"stale_approval_enabled" boolean DEFAULT false NOT NULL,
-	"stale_approval_threshold_days" integer DEFAULT 30,
+	"stale_approval_threshold_days" integer DEFAULT 30 NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "rules_owner_consistency" CHECK (("auto_revoke"."rules"."type" = 'subscription' AND "auto_revoke"."rules"."subscription_id" IS NOT NULL AND "auto_revoke"."rules"."address" IS NULL)
-        OR ("auto_revoke"."rules"."type" = 'address' AND "auto_revoke"."rules"."subscription_id" IS NULL AND "auto_revoke"."rules"."address" IS NOT NULL))
+        OR ("auto_revoke"."rules"."type" = 'address' AND "auto_revoke"."rules"."subscription_id" IS NULL AND "auto_revoke"."rules"."address" IS NOT NULL)),
+	CONSTRAINT "rules_pointer_scope" CHECK ("auto_revoke"."rules"."type" = 'address' OR "auto_revoke"."rules"."active_rules_id" IS NULL)
 );
 --> statement-breakpoint
 ALTER TABLE "auto_revoke"."rules" ADD CONSTRAINT "rules_subscription_id_subscriptions_id_fk" FOREIGN KEY ("subscription_id") REFERENCES "premium"."subscriptions"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "auto_revoke"."rules" ADD CONSTRAINT "rules_active_rules_id_rules_id_fk" FOREIGN KEY ("active_rules_id") REFERENCES "auto_revoke"."rules"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "auto_revoke"."rules" ADD CONSTRAINT "rules_active_rules_id_rules_id_fk" FOREIGN KEY ("active_rules_id") REFERENCES "auto_revoke"."rules"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "idx_activity_log_address" ON "auto_revoke"."activity_log" USING btree ("address");--> statement-breakpoint
 CREATE INDEX "idx_activity_log_created" ON "auto_revoke"."activity_log" USING btree ("created_at");--> statement-breakpoint
 CREATE UNIQUE INDEX "permissions_address_chain_unique" ON "auto_revoke"."permissions" USING btree ("address","chain_id") WHERE "auto_revoke"."permissions"."revoked_at" IS NULL;--> statement-breakpoint

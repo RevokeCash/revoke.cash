@@ -6,6 +6,7 @@ import {
   AUTO_REVOKE_EVALUATE_QUEUE_NAME,
   AUTO_REVOKE_EXPLOIT_QUEUE_NAME,
 } from '@revoke.cash/backend/auto-revoke/evaluation-queue';
+import { AUTO_REVOKE_EXECUTE_QUEUE_NAME } from '@revoke.cash/backend/auto-revoke/queue';
 import { ALLOWANCES_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/allowances';
 import { EVENTS_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/events';
 import { SPENDER_METADATA_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/spender-metadata';
@@ -30,6 +31,7 @@ const BULL_BOARD_ROUTE = '/queues';
     SpenderMetadataSchedulerModule,
     QueueModule.register({ name: AUTO_REVOKE_EXPLOIT_QUEUE_NAME }),
     QueueModule.register({ name: AUTO_REVOKE_EVALUATE_QUEUE_NAME }),
+    QueueModule.register({ name: AUTO_REVOKE_EXECUTE_QUEUE_NAME }),
     BullBoardModuleBase.forRoot({
       route: BULL_BOARD_ROUTE,
       adapter: ExpressAdapter,
@@ -47,6 +49,7 @@ const BULL_BOARD_ROUTE = '/queues';
         adapter: BullMQAdapter,
         options: { displayName: 'Auto-Revoke Evaluate' },
       },
+      { name: AUTO_REVOKE_EXECUTE_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Auto-Revoke Execute' } },
     ),
   ],
   providers: [BullBoardAuthMiddleware],

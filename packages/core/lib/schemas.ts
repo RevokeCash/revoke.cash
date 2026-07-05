@@ -1,5 +1,5 @@
 import { isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
-import { type DocumentedChainId, isBackendSupportedChain, isSupportedChain } from '@revoke.cash/core/chains';
+import { isBackendSupportedChain, isSupportedChain } from '@revoke.cash/core/chains';
 import { type Address, getAddress, type Hash, type Hex, isAddress } from 'viem';
 import { z } from 'zod';
 
@@ -25,7 +25,7 @@ export const supportedChainIdSchema = chainIdSchema
     message: 'Unsupported chain',
     params: { status: 404 },
   })
-  .transform((value) => value as DocumentedChainId);
+  .transform((value) => value);
 
 export const backendSupportedChainIdSchema = supportedChainIdSchema.refine(isBackendSupportedChain, {
   message: 'Unsupported chain',

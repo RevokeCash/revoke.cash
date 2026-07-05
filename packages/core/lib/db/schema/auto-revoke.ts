@@ -15,6 +15,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { Hash, Hex } from 'viem';
 import { AllowanceType } from '../../allowances';
+import type { ActionErrorCode } from '../../auto-revoke/actions';
 import type { RuleContext, TriggerDetails } from '../../auto-revoke/evaluation/rules';
 import { autoRevokeTransaction } from '../types/auto-revoke-transaction';
 import { lowercaseAddress } from '../types/lowercase-address';
@@ -34,6 +35,15 @@ export const autoRevokeAllowanceTypeEnum = autoRevokeSchema.enum(
   'allowance_type',
   Object.values(AllowanceType) as [AllowanceType, ...AllowanceType[]],
 );
+export const autoRevokeActionStatusEnum = autoRevokeSchema.enum('action_status', [
+  'queued',
+  'blocked_budget',
+  'blocked_permission',
+  'submitted',
+  'succeeded',
+  'failed',
+  'skipped',
+]);
 
 export const autoRevokePermissions = autoRevokeSchema.table(
   'permissions',
@@ -68,11 +78,11 @@ export const autoRevokeRules = autoRevokeSchema.table(
     // Exactly one of (subscriptionId, address) is non-null per row, matching `type`, enforced by CHECK below.
     subscriptionId: uuid('subscription_id').references(() => premiumSubscriptions.id, { onDelete: 'cascade' }),
     address: lowercaseAddress('address'),
-    activeRulesId: uuid('active_rules_id').references((): any => autoRevokeRules.id),
+    activeRulesId: uuid('active_rules_id').references((): any => autoRevokeRules.id, { onDelete: 'set null' }),
     riskDetectionEnabled: boolean('risk_detection_enabled').notNull().default(true),
     riskSensitivity: autoRevokeRiskSensitivityEnum('risk_sensitivity').notNull().default('exploits_only'),
     staleApprovalEnabled: boolean('stale_approval_enabled').notNull().default(false),
-    staleApprovalThresholdDays: integer('stale_approval_threshold_days').default(30),
+    staleApprovalThresholdDays: integer('stale_approval_threshold_days').notNull().default(30),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
@@ -88,6 +98,8 @@ export const autoRevokeRules = autoRevokeSchema.table(
       sql`(${table.type} = 'subscription' AND ${table.subscriptionId} IS NOT NULL AND ${table.address} IS NULL)
         OR (${table.type} = 'address' AND ${table.subscriptionId} IS NULL AND ${table.address} IS NOT NULL)`,
     ),
+    // The pointer only has meaning on address rows, where NULL is the explicit "custom rules" choice.
+    check('rules_pointer_scope', sql`${table.type} = 'address' OR ${table.activeRulesId} IS NULL`),
   ],
 );
 
@@ -102,9 +114,6 @@ export const autoRevokeObservations = autoRevokeSchema.table(
   'observations',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    subscriptionId: uuid('subscription_id')
-      .notNull()
-      .references(() => premiumSubscriptions.id, { onDelete: 'cascade' }),
     address: lowercaseAddress('address').notNull(),
     chainId: integer('chain_id').notNull(),
     triggerType: autoRevokeTriggerTypeEnum('trigger_type').notNull(),
@@ -125,18 +134,65 @@ export const autoRevokeObservations = autoRevokeSchema.table(
       .$onUpdate(() => new Date()),
   },
   (table) => [
-    uniqueIndex('observations_subscription_allowance_fingerprint_unique').on(
-      table.subscriptionId,
-      table.allowanceFingerprint,
-    ),
+    uniqueIndex('observations_allowance_fingerprint_unique').on(table.allowanceFingerprint),
     index('idx_observations_address_created').on(table.address, table.createdAt),
-    index('idx_observations_subscription').on(table.subscriptionId),
   ],
 );
 
-export const autoRevokeObservationsRelations = relations(autoRevokeObservations, ({ one }) => ({
-  subscription: one(premiumSubscriptions, {
-    fields: [autoRevokeObservations.subscriptionId],
+export const autoRevokeActions = autoRevokeSchema.table(
+  'actions',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    observationId: uuid('observation_id')
+      .notNull()
+      .references(() => autoRevokeObservations.id, { onDelete: 'cascade' }),
+    permissionId: uuid('permission_id').references(() => autoRevokePermissions.id),
+    billedSubscriptionId: uuid('billed_subscription_id').references(() => premiumSubscriptions.id),
+    status: autoRevokeActionStatusEnum('status').notNull().default('queued'),
+    chainId: integer('chain_id').notNull(),
+    // The assigned nonce and signing wallet, write-once at submission. These back the per-signer
+    // per-chain monotone nonce floor, so they survive requeues and are never cleared.
+    nonce: integer('nonce'),
+    signerAddress: lowercaseAddress('signer_address'),
+    nextRetryAt: timestamp('next_retry_at', { withTimezone: true }),
+    submittedAt: timestamp('submitted_at', { withTimezone: true }),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+    transaction: autoRevokeTransaction('transaction'),
+    costUsd: numeric('cost_usd', { mode: 'number' }),
+    errorCode: text('error_code').$type<ActionErrorCode>(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    uniqueIndex('actions_observation_unique').on(table.observationId),
+    index('idx_actions_status_retry').on(table.status, table.nextRetryAt),
+    index('idx_actions_signer_chain_nonce')
+      .on(table.signerAddress, table.chainId, table.nonce)
+      .where(sql`${table.nonce} is not null`),
+    index('idx_actions_billed_subscription')
+      .on(table.billedSubscriptionId, table.submittedAt)
+      .where(sql`${table.billedSubscriptionId} is not null`),
+  ],
+);
+
+export const autoRevokeObservationsRelations = relations(autoRevokeObservations, ({ many }) => ({
+  actions: many(autoRevokeActions),
+}));
+
+export const autoRevokeActionsRelations = relations(autoRevokeActions, ({ one }) => ({
+  observation: one(autoRevokeObservations, {
+    fields: [autoRevokeActions.observationId],
+    references: [autoRevokeObservations.id],
+  }),
+  permission: one(autoRevokePermissions, {
+    fields: [autoRevokeActions.permissionId],
+    references: [autoRevokePermissions.id],
+  }),
+  billedSubscription: one(premiumSubscriptions, {
+    fields: [autoRevokeActions.billedSubscriptionId],
     references: [premiumSubscriptions.id],
   }),
 }));
