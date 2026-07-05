@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dev",
+      "name": "web",
       "runtimeExecutable": "yarn",
-      "runtimeArgs": ["dev", "--port", "3001"],
-      "port": 3001,
+      "runtimeArgs": ["workspace", "web", "run", "dev", "--port", "3030"],
+      "port": 3030,
       "autoPort": false,
       "env": {
         "NEXT_DIST_DIR": ".claude/.next"

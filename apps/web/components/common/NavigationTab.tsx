@@ -5,9 +5,10 @@ import { twMerge } from 'tailwind-merge';
 interface Props {
   name: string;
   href: string;
+  retainSearchParams?: string[];
 }
 
-const AddressNavigationTab = ({ name, href }: Props) => {
+const NavigationTab = ({ name, href, retainSearchParams }: Props) => {
   const path = usePathname();
   const isSelected = path?.endsWith(href);
 
@@ -28,7 +29,7 @@ const AddressNavigationTab = ({ name, href }: Props) => {
         size="none"
         href={href}
         router
-        retainSearchParams={['chainId']}
+        retainSearchParams={retainSearchParams}
         className={classes}
       >
         {name}
@@ -37,4 +38,4 @@ const AddressNavigationTab = ({ name, href }: Props) => {
   );
 };
 
-export default AddressNavigationTab;
+export default NavigationTab;

@@ -2,7 +2,7 @@
   "addresses": {
     "add_address": "Add address",
     "remove": "Remove",
-    "title": "My Premium Addresses"
+    "title": "Premium Wallets"
   },
   "billing": {
     "columns": {
@@ -22,7 +22,7 @@
   },
   "meta": {
     "description": "Manage your account and premium settings.",
-    "title": "My Account"
+    "title": "Account Settings"
   },
   "subscription": {
     "active": "Active",
@@ -48,7 +48,7 @@
       "free": "Free"
     },
     "slots_summary": "{used}/{max} address {max, plural, =1 {slot} other {slots}} used",
-    "title": "My Premium Subscription",
+    "title": "Premium Subscription",
     "valid_until": "Valid until {date}",
     "wallet": "Wallet"
   },

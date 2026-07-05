@@ -39,7 +39,8 @@
       "days": "days",
       "managed_by": "Managed by {owner}",
       "save_failed": "Failed to save rules."
-    }
+    },
+    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
   },
   "addresses": {
     "add_address": "Add wallet",
@@ -48,7 +49,7 @@
     "remove": "Remove",
     "remove_failed": "Failed to remove wallet",
     "resolve_failed": "Could not resolve wallet address or name",
-    "title": "My Premium Wallets"
+    "title": "Premium Wallets"
   },
   "coverage": {
     "active": "Active",
@@ -122,7 +123,7 @@
       "free": "Free"
     },
     "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
-    "title": "My Premium Subscription",
+    "title": "Premium Subscription",
     "valid_until": "Valid until {date}",
     "wallet": "Wallet"
   },
@@ -135,5 +136,11 @@
       "coverage": "View and manage Fairside coverage",
       "billing": "View your billing history"
     }
+  },
+  "tabs": {
+    "subscription": "Subscription",
+    "auto_revoke": "Auto-Revoking",
+    "billing": "Billing",
+    "coverage": "Coverage"
   }
 }

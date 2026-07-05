@@ -2,9 +2,19 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Analytics from 'app/Analytics';
 import TopLoader from 'components/common/TopLoader';
 import NextIntlClientProvider from 'lib/i18n/NextIntlClientProvider';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import type { Metadata } from 'next';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import '../../styles/index.css';
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  const t = await getTranslations({ locale: 'en' });
+
+  return {
+    title: 'Revoke.cash',
+    description: t('common.meta.description', { chainName: 'Ethereum' }),
+  };
+};
 
 interface Props {
   children: ReactNode;
