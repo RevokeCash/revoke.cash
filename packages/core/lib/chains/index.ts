@@ -109,7 +109,6 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.DarwiniaNetwork,
   ChainId.Superposition,
   ChainId.GensynMainnet,
-  ChainId.Nahmii3Mainnet,
   ChainId.ShidoNetwork,
   ChainId.Matchain,
   ChainId.RARIChainMainnet,
@@ -1044,15 +1043,6 @@ export const CHAINS = {
       main: 'https://rpc.morphl2.io',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 3654913 } },
-  }),
-  [ChainId.Nahmii3Mainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.Nahmii3Mainnet,
-    name: 'Nahmii',
-    coingeckoNetworkId: 'nahmii',
-    logoUrl: '/assets/images/vendor/chains/nahmii.svg',
-    etherscanCompatibleApiUrl: 'https://backend.explorer.n3.nahmii.io/api',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 29600 } },
   }),
   [ChainId.NeonEVMMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
