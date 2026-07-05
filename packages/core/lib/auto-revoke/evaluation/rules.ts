@@ -1,15 +1,18 @@
 import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
 import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
 import { autoRevokeRules } from '@revoke.cash/core/db/schema/auto-revoke';
+import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
-import { and, asc, eq, gt, lte } from 'drizzle-orm';
+import { and, asc, eq, gt, inArray, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { filterUnknownRiskFactors, getRiskLevel, type RiskFactor } from '../../risk';
 import { ApiError } from '../../utils/errors';
 import { DAY } from '../../utils/time';
+import { requeueRulesBlockedActions } from '../actions';
+import { AUTO_REVOKE_SUPPORTED_CHAINS } from '../config';
 
 type RulesRecord = typeof autoRevokeRules.$inferSelect;
 
@@ -78,6 +81,8 @@ export const upsertSubscriptionRules = async (
       target: autoRevokeRules.subscriptionId,
       set: ruleData,
     });
+
+  await scheduleReindexForSubscription(subscriptionId);
 };
 
 export const getAddressRules = async (address: Address): Promise<RulesRecord | null> => {
@@ -104,6 +109,8 @@ export const upsertAddressRules = async (address: Address, ruleData: Partial<Aut
       target: autoRevokeRules.address,
       set: ruleData,
     });
+
+  await scheduleReindexForAddresses([address]);
 };
 
 export const getAddressRulesConfig = async (address: Address): Promise<AddressRulesConfig> => {
@@ -226,6 +233,33 @@ export const switchRulesSource = async (
     await initAddressRules(trx, address, activeRulesId ?? undefined);
     await setActiveRules(trx, address, activeRulesId);
   });
+
+  await scheduleReindexForAddresses([address]);
+};
+
+const scheduleReindexForAddresses = async (addresses: Address[]): Promise<void> => {
+  if (addresses.length === 0) return;
+
+  await requeueRulesBlockedActions(addresses);
+
+  await getDb()
+    .update(indexerEventsState)
+    .set({ nextRunAt: new Date() })
+    .where(
+      and(
+        inArray(indexerEventsState.address, addresses),
+        inArray(indexerEventsState.chainId, [...AUTO_REVOKE_SUPPORTED_CHAINS]),
+      ),
+    );
+};
+
+const scheduleReindexForSubscription = async (subscriptionId: string): Promise<void> => {
+  const members = await getDb()
+    .select({ address: premiumSubscriptionAddresses.address })
+    .from(premiumSubscriptionAddresses)
+    .where(eq(premiumSubscriptionAddresses.subscriptionId, subscriptionId));
+
+  await scheduleReindexForAddresses(members.map((member) => member.address));
 };
 
 const getAvailableSubscriptions = async (address: Address): Promise<AddressRulesConfig['availableSubscriptions']> => {
@@ -341,7 +375,7 @@ const DEFAULT_RULES: AutoRevokeRules = {
   riskDetectionEnabled: true,
   riskSensitivity: 'exploits_only',
   staleApprovalEnabled: false,
-  staleApprovalThresholdDays: 30,
+  staleApprovalThresholdDays: 180,
 };
 
 export const getMatchedTriggers = (allowance: TokenAllowanceData, rules: AutoRevokeRules): MatchedTrigger[] => {

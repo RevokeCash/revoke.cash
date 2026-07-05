@@ -39,6 +39,7 @@ export const autoRevokeActionStatusEnum = autoRevokeSchema.enum('action_status',
   'queued',
   'blocked_budget',
   'blocked_permission',
+  'blocked_rules',
   'submitted',
   'succeeded',
   'failed',
@@ -82,7 +83,7 @@ export const autoRevokeRules = autoRevokeSchema.table(
     riskDetectionEnabled: boolean('risk_detection_enabled').notNull().default(true),
     riskSensitivity: autoRevokeRiskSensitivityEnum('risk_sensitivity').notNull().default('exploits_only'),
     staleApprovalEnabled: boolean('stale_approval_enabled').notNull().default(false),
-    staleApprovalThresholdDays: integer('stale_approval_threshold_days').notNull().default(30),
+    staleApprovalThresholdDays: integer('stale_approval_threshold_days').notNull().default(180),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()

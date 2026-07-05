@@ -64,11 +64,7 @@ export const hasChainActivity = async (
   // If the address is an EOA and has no transactions, we can skip fetching events for efficiency. Note that all deployed contracts have a nonce of >= 1
   // See https://eips.ethereum.org/EIPS/eip-161
   const client = publicClient ?? createViemPublicClientForChain(chainId);
-  const nonce = await withTimeout(
-    client.getTransactionCount({ address }),
-    10 * SECOND,
-    `${getChainName(chainId)} RPC did not respond to eth_getTransactionCount within 10 seconds`,
-  );
+  const nonce = await withTimeout(client.getTransactionCount({ address }), 10 * SECOND, 'RPC is unresponsive');
   return nonce > 0;
 };
 
@@ -87,7 +83,7 @@ const hasPulseChainPostForkActivity = async (address: Address): Promise<boolean>
     ]);
 
     // If the address is a smart contract, we cannot determine if it has activity after the fork, so we assume it does.
-    if (!isNullish(addressCode) || addressCode !== '0x') return true;
+    if (!isNullish(addressCode) && addressCode !== '0x') return true;
 
     return nonce > forkNonce;
   } catch {

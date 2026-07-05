@@ -80,6 +80,13 @@ export const failFastIfIndexingIsFailing = (state: FailureState, chainId: number
   }
 };
 
+// This throws an error if the events have not even started to be indexed yet.
+export const failFastIfEventsStateHasNoProgress = (state: EventsState | undefined): void => {
+  if (isNullish(state?.lastToBlock) && isNullish(state?.lastObservedHeadBlock)) {
+    throw new StillIndexingError(0, 0);
+  }
+};
+
 export const failFastIfEventsStateIsBehind = (state: EventsState | undefined): void => {
   if (isNullish(state?.lastToBlock) || isNullish(state.lastObservedHeadBlock)) return;
 

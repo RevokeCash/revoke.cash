@@ -22,8 +22,13 @@ import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address, Hex, PublicClient } from 'viem';
 import { buildTokenEventFilters } from '../events/filters';
 import { chunkArray, deduplicateArray, isNullish } from '../utils';
-import { isLogRequestSizeError, isLogResponseSizeError, parseErrorMessage } from '../utils/errors';
-import { mapAsync, mapAsyncSequential } from '../utils/promises';
+import {
+  isEventGetterTimeoutError,
+  isLogRequestSizeError,
+  isLogResponseSizeError,
+  parseErrorMessage,
+} from '../utils/errors';
+import { mapAsync, mapAsyncSequential, withTimeout } from '../utils/promises';
 
 // Most chains have RPC limits around 10k blocks, so this should be safe. Some chains might have a lower public RPC
 // limit, which gets handled by the DivideAndConquerLogsProvider.
@@ -160,7 +165,7 @@ const getScanLogsProvider = (chainId: number, isNarrow: boolean): LogsProvider =
 };
 
 const isSplittableScanError = (error: unknown): boolean => {
-  return isLogResponseSizeError(error) || isLogRequestSizeError(error);
+  return isLogResponseSizeError(error) || isLogRequestSizeError(error) || isEventGetterTimeoutError(error);
 };
 
 const runWithRangeReduction = async <T>(
@@ -224,7 +229,7 @@ const computeScanRange = async (
   maxBlockRange: number,
 ): Promise<{ fromBlock: number; toBlock: number; headBlock: number; isCapped: boolean }> => {
   const fromBlock = !isNullish(cursor) ? Math.max(0, cursor - REORG_DEPTH + 1) : 0;
-  const headBlock = Number(await publicClient.getBlockNumber());
+  const headBlock = await withTimeout(publicClient.getBlockNumber().then(Number), 10 * SECOND, 'RPC is unresponsive');
   const cappedToBlock = fromBlock + maxBlockRange;
   const toBlock = Math.min(headBlock, cappedToBlock);
   return { fromBlock, toBlock, headBlock, isCapped: toBlock < headBlock };

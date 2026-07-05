@@ -37,7 +37,7 @@ CREATE TABLE "auto_revoke"."rules" (
 	"risk_detection_enabled" boolean DEFAULT true NOT NULL,
 	"risk_sensitivity" "auto_revoke"."risk_sensitivity" DEFAULT 'exploits_only' NOT NULL,
 	"stale_approval_enabled" boolean DEFAULT false NOT NULL,
-	"stale_approval_threshold_days" integer DEFAULT 30 NOT NULL,
+	"stale_approval_threshold_days" integer DEFAULT 180 NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "rules_owner_consistency" CHECK (("auto_revoke"."rules"."type" = 'subscription' AND "auto_revoke"."rules"."subscription_id" IS NOT NULL AND "auto_revoke"."rules"."address" IS NULL)

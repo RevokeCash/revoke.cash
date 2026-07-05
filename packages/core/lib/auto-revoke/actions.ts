@@ -33,7 +33,7 @@ export type ActionErrorCode =
   | 'transaction_reverted';
 
 export interface ActionFailure {
-  status: Extract<ActionStatus, 'blocked_budget' | 'blocked_permission' | 'failed' | 'skipped'>;
+  status: Extract<ActionStatus, 'blocked_budget' | 'blocked_permission' | 'blocked_rules' | 'failed' | 'skipped'>;
   errorCode: ActionErrorCode;
   nextRetryAt?: Date | null;
 }
@@ -287,6 +287,26 @@ const findSubscriptionWithHeadroom = async (
   }
 
   return null;
+};
+
+export const requeueRulesBlockedActions = async (addresses: Address[]): Promise<void> => {
+  if (addresses.length === 0) return;
+
+  const observationIds = getDb()
+    .select({ id: autoRevokeObservations.id })
+    .from(autoRevokeObservations)
+    .where(inArray(autoRevokeObservations.address, addresses));
+
+  await getDb()
+    .update(autoRevokeActions)
+    .set({
+      status: 'queued',
+      nextRetryAt: null,
+      errorCode: null,
+    })
+    .where(
+      and(eq(autoRevokeActions.status, 'blocked_rules'), inArray(autoRevokeActions.observationId, observationIds)),
+    );
 };
 
 export const requeueActionAfterNonceConsumed = async (actionId: string): Promise<boolean> => {

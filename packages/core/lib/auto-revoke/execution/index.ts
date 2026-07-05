@@ -86,11 +86,6 @@ const submitAction = async (action: Action, signer: Signer): Promise<ExecutionRe
 
   const eligibility = await checkExecutionEligibility(action.observation);
 
-  if ('defer' in eligibility) {
-    await deferActionRetry(action.id, eligibility.defer);
-    return { submitted: false, reason: eligibility.defer.errorCode };
-  }
-
   if ('failure' in eligibility) {
     await markActionFailure(action.id, eligibility.failure);
     return { submitted: false, reason: eligibility.failure.errorCode };

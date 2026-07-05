@@ -31,7 +31,7 @@ const MILESTONES = [
   { date: 'May 2025', year: 2025, key: 'single_tx_batch', icon: CubeTransparentIcon },
   { date: 'Sep 2025', year: 2025, key: 'beyond_approvals', icon: ArrowsPointingOutIcon },
   { date: 'Mar 2026', year: 2026, key: 'extension_overhaul', icon: ArrowPathIcon },
-  { date: 'Apr 2026', year: 2026, key: 'premium', icon: CurrencyDollarIcon, highlighted: true },
+  { date: 'Jul 2026', year: 2026, key: 'premium', icon: CurrencyDollarIcon, highlighted: true },
 ] as const;
 
 const Timeline = () => {

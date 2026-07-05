@@ -20,6 +20,7 @@ import type { Address } from 'viem';
 import { type CachedAllowanceRow, getCachedAllowances, serializeAllowanceFromRow } from './allowances';
 import {
   failFastIfAllowanceStateIsBehind,
+  failFastIfEventsStateHasNoProgress,
   failFastIfEventsStateIsBehind,
   failFastIfIndexingIsFailing,
   getIndexerReadStates,
@@ -44,6 +45,7 @@ export const getCachedAddressData = async (address: Address, chainId: Documented
   failFastIfIndexingIsFailing(eventsState, chainId);
   failFastIfIndexingIsFailing(allowanceState, chainId);
 
+  failFastIfEventsStateHasNoProgress(eventsState);
   failFastIfEventsStateIsBehind(eventsState);
   failFastIfAllowanceStateIsBehind(eventsState, allowanceState);
 

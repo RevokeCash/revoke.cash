@@ -13,7 +13,8 @@ export class StillIndexingError extends ExportableError {
   constructor(lastToBlock: number, headBlock: number) {
     const blocksRemaining = Math.max(0, headBlock - lastToBlock);
     const progressPercent = Math.min(100, (lastToBlock / Math.max(1, headBlock)) * 100);
-    super(`Still indexing this wallet. ${blocksRemaining.toLocaleString()} blocks remaining. Try again later.`);
+    const remainingText = headBlock > 0 ? ` ${blocksRemaining.toLocaleString()} blocks remaining.` : '';
+    super(`Still indexing this wallet.${remainingText} Try again later.`);
     this.name = 'StillIndexingError';
     this.lastToBlock = lastToBlock;
     this.headBlock = headBlock;

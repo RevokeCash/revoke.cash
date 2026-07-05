@@ -341,7 +341,7 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "default": 30
+          "default": 180
         },
         "created_at": {
           "name": "created_at",

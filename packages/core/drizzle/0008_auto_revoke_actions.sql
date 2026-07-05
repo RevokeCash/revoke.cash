@@ -1,4 +1,4 @@
-CREATE TYPE "auto_revoke"."action_status" AS ENUM('queued', 'blocked_budget', 'blocked_permission', 'submitted', 'succeeded', 'failed', 'skipped');--> statement-breakpoint
+CREATE TYPE "auto_revoke"."action_status" AS ENUM('queued', 'blocked_budget', 'blocked_permission', 'blocked_rules', 'submitted', 'succeeded', 'failed', 'skipped');--> statement-breakpoint
 CREATE TABLE "auto_revoke"."actions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"observation_id" uuid NOT NULL,

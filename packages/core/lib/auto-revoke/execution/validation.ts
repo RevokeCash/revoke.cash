@@ -6,7 +6,7 @@ import { getCompleteSpenderMetadata } from '@revoke.cash/core/indexer/spender-me
 import { getCompleteTokenMetadata, isUsableTokenMetadata } from '@revoke.cash/core/indexer/token-metadata';
 import { DAY } from '@revoke.cash/core/utils/time';
 import { and, eq } from 'drizzle-orm';
-import type { ActionErrorCode, ActionFailure } from '../actions';
+import type { ActionFailure } from '../actions';
 import type { IndexedAllowance, Observation } from '../evaluation/observations';
 import { getEffectiveRules, getMatchedTriggers } from '../evaluation/rules';
 import {
@@ -17,10 +17,7 @@ import {
 } from '../permissions';
 import { findBillingSubscriptionIds } from './budget';
 
-export type EligibilityResult =
-  | { failure: ActionFailure }
-  | { defer: { errorCode: ActionErrorCode; nextRetryAt: Date } }
-  | { permission: PermissionRecord; isExploit: boolean };
+export type EligibilityResult = { failure: ActionFailure } | { permission: PermissionRecord; isExploit: boolean };
 
 // Returns the permission to execute with, or the failure that parks the action
 export const checkExecutionEligibility = async (observation: Observation): Promise<EligibilityResult> => {
@@ -53,10 +50,9 @@ export const checkExecutionEligibility = async (observation: Observation): Promi
   const spenderMetadata = spenderMetadataByAddress.get(observation.spenderAddress);
   const allowance = serializeAllowanceFromRow(row, tokenMetadata!, spenderMetadata);
 
-  // Rules are user-editable, so not-matching is a waiting state rather than a terminal failure
   const matchedTriggers = getMatchedTriggers(allowance, rules);
   if (matchedTriggers.length === 0) {
-    return { defer: { errorCode: 'rules_no_longer_match', nextRetryAt: new Date(Date.now() + DAY) } };
+    return { failure: { status: 'blocked_rules', errorCode: 'rules_no_longer_match' } };
   }
 
   const permission = await findActivePermission(observation.address, observation.chainId);
