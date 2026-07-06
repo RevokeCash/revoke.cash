@@ -51,10 +51,8 @@ export type MarkActionSubmittedResult =
 
 export type SubmittedTransactionParams = Omit<
   AutoRevokeActionTransaction,
-  'txHashes' | 'finalGasUsed' | 'broadcastedAt'
-> & {
-  estimatedCostUsd: number | null;
-};
+  'txHashes' | 'finalGasUsed' | 'broadcastedAt' | 'minedAt' | 'blockNumber' | 'effectiveGasPrice'
+>;
 
 export interface ActionSettlement {
   actionId: string;
@@ -62,6 +60,9 @@ export interface ActionSettlement {
   txHash: Hash;
   finalGasUsed: bigint;
   finalCostUsd: number;
+  minedAt: Date | null;
+  blockNumber: bigint;
+  effectiveGasPrice: bigint;
   errorCode?: ActionErrorCode;
 }
 
@@ -296,6 +297,9 @@ export const markActionSubmitted = async (
           txHashes: [params.txHash],
           finalGasUsed: null,
           broadcastedAt: null,
+          minedAt: null,
+          blockNumber: null,
+          effectiveGasPrice: null,
         },
         costUsd: params.estimatedCostUsd,
         errorCode: null,
@@ -401,6 +405,9 @@ export const markActionReplacementSubmitted = async (
           txHashes: [...(current.transaction?.txHashes ?? []), params.txHash],
           finalGasUsed: null,
           broadcastedAt: null,
+          minedAt: null,
+          blockNumber: null,
+          effectiveGasPrice: null,
         },
         costUsd: params.estimatedCostUsd,
         errorCode: null,
@@ -441,6 +448,9 @@ export const settleAction = async (settlement: ActionSettlement): Promise<boolea
           || ${JSON.stringify({
             txHash: settlement.txHash,
             finalGasUsed: settlement.finalGasUsed.toString(),
+            minedAt: settlement.minedAt?.toISOString() ?? null,
+            blockNumber: settlement.blockNumber.toString(),
+            effectiveGasPrice: settlement.effectiveGasPrice.toString(),
           })}::jsonb
         `,
         costUsd: settlement.finalCostUsd,

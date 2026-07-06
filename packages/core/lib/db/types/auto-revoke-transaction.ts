@@ -9,8 +9,12 @@ export interface AutoRevokeActionTransaction {
   maxFeePerGas: bigint;
   maxPriorityFeePerGas: bigint;
   estimatedGas: bigint;
+  estimatedCostUsd: number | null;
   finalGasUsed: bigint | null;
   broadcastedAt: Date | null;
+  minedAt: Date | null;
+  blockNumber: bigint | null;
+  effectiveGasPrice: bigint | null;
 }
 
 // Mirrors Drizzle's built-in jsonb round-trip (stringify on write, parse on read), with the
@@ -28,8 +32,12 @@ export const autoRevokeTransaction = customType<{ data: AutoRevokeActionTransact
       maxFeePerGas: value.maxFeePerGas.toString(),
       maxPriorityFeePerGas: value.maxPriorityFeePerGas.toString(),
       estimatedGas: value.estimatedGas.toString(),
+      estimatedCostUsd: value.estimatedCostUsd ?? null,
       finalGasUsed: value.finalGasUsed?.toString() ?? null,
       broadcastedAt: value.broadcastedAt?.toISOString() ?? null,
+      minedAt: value.minedAt?.toISOString() ?? null,
+      blockNumber: value.blockNumber?.toString() ?? null,
+      effectiveGasPrice: value.effectiveGasPrice?.toString() ?? null,
     });
   },
   fromDriver(value) {
@@ -42,8 +50,12 @@ export const autoRevokeTransaction = customType<{ data: AutoRevokeActionTransact
       maxFeePerGas: BigInt(data.maxFeePerGas),
       maxPriorityFeePerGas: BigInt(data.maxPriorityFeePerGas),
       estimatedGas: BigInt(data.estimatedGas),
+      estimatedCostUsd: data.estimatedCostUsd ?? null,
       finalGasUsed: data.finalGasUsed != null ? BigInt(data.finalGasUsed) : null,
       broadcastedAt: data.broadcastedAt ? new Date(data.broadcastedAt) : null,
+      minedAt: data.minedAt ? new Date(data.minedAt) : null,
+      blockNumber: data.blockNumber != null ? BigInt(data.blockNumber) : null,
+      effectiveGasPrice: data.effectiveGasPrice != null ? BigInt(data.effectiveGasPrice) : null,
     };
   },
 });

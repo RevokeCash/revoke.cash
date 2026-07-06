@@ -6,7 +6,7 @@ import { ADDRESS_ZERO } from '@revoke.cash/core/constants';
 import type { AutoRevokeActionTransaction } from '@revoke.cash/core/db/types/auto-revoke-transaction';
 import { getNativeTokenPriceUsd } from '@revoke.cash/core/prices';
 import { isRevertedError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import { DAY, MINUTE } from '@revoke.cash/core/utils/time';
+import { DAY, MINUTE, SECOND } from '@revoke.cash/core/utils/time';
 import { isExcessiveGas } from '@revoke.cash/core/wallet';
 import {
   type Address,
@@ -53,7 +53,6 @@ interface RevokeTransactionPlan {
 }
 
 type SubmittedTransaction = Omit<AutoRevokeActionTransaction, 'finalGasUsed'> & {
-  estimatedCostUsd: number | null;
   submittedAt: Date;
 };
 
@@ -246,6 +245,7 @@ const confirmSubmittedAction = async (action: Action, transaction: SubmittedTran
     try {
       const receipt = await publicClient.getTransactionReceipt({ hash: txHash });
       const finalCostUsd = await getFinalCostUsd(action, transaction, receipt.gasUsed, receipt.effectiveGasPrice);
+      const minedAt = await getMinedAt(publicClient, receipt.blockNumber);
       const succeeded = receipt.status === 'success';
 
       const settled = await settleAction({
@@ -254,6 +254,9 @@ const confirmSubmittedAction = async (action: Action, transaction: SubmittedTran
         txHash,
         finalGasUsed: receipt.gasUsed,
         finalCostUsd,
+        minedAt,
+        blockNumber: receipt.blockNumber,
+        effectiveGasPrice: receipt.effectiveGasPrice,
         errorCode: succeeded ? undefined : 'transaction_reverted',
       });
       if (!settled) return { submitted: false, reason: 'already_settled' };
@@ -548,6 +551,15 @@ const broadcastSignedTransaction = async (
     return { submitted: true };
   } catch (error) {
     return { submitted: false, reason: 'broadcast_failed', detail: parseErrorMessage(error) };
+  }
+};
+
+const getMinedAt = async (publicClient: PublicClient, blockNumber: bigint): Promise<Date | null> => {
+  try {
+    const block = await publicClient.getBlock({ blockNumber });
+    return new Date(Number(block.timestamp) * SECOND);
+  } catch {
+    return null;
   }
 };
 
