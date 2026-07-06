@@ -233,6 +233,11 @@ export const isTransientError = (error?: string | any): boolean => {
 };
 
 export const parseErrorMessage = (error: any): string => {
+  // Drizzle puts the SQL text in message, so we need to parse the cause to get the real error.
+  if (typeof error?.query === 'string' && error?.message?.startsWith('Failed query') && error?.cause) {
+    return parseErrorMessage(error.cause);
+  }
+
   const errorMessage =
     error?.cause?.details || // Abstract Global Wallet
     error?.error?.message ||
