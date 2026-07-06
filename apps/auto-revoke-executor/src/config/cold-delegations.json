@@ -1,4 +1,244 @@
 {
+  "1": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0xc00b411c8717362da9c26b7b977ae750326ce75d14d885dda70c2bb645ead2ed",
+    "signature": "0x1b0f28e3c704fc481631b276ed58d7ec756bc97199b66fdb0a556ffc834f6e2b58d01ee0c7e6e0ba6303d53e772370622f36be74553250a398d65b4b3425578e1b"
+  },
+  "10": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0xf75b4c4ce1c02b4f9cd9e3a2dba40c844b5a012727cec061725ca906bb1d763b",
+    "signature": "0xa478ba57f1043b604d8766ad714322ba74f02ba8b77f61f0665b622610aede4464c5407b1683c93079868baccb1fdae24c8f6b08e231cff3b6d4aa3e2483e83e1b"
+  },
+  "56": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0x6ac8ea299ebbccac5cbbd9ba561f26191111ebdd2d4a968dd4ac3d1e36336758",
+    "signature": "0x4d62852773606fc897b56f452c36249dbccac1994de51e5af9d86c1cbb99c1927ec21d72a278e57ef11205d2d2cf9509599b1f80090432337002a8fc9a28b3dc1b"
+  },
+  "100": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0x43ef86b2f3d67ee561f070526f293e38d6959ad1be01e2f04e503da98a2d2526",
+    "signature": "0x604b1b234ef37e74b6b80a7ded10604631e1ed46f971d64b545a9cd21cc6e5516e442439f351c2447ed15fddb9483514da60c3a15d8bc5c9e6d90d40d90061df1b"
+  },
+  "130": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0x9b9b68f69930064d1695e1f025353b62c6178caa35be1a5e19f580d3a2ab81fc",
+    "signature": "0x2fd5d3c3624d4c67d90dc94015233e424a21c7a3043bbfe73824430a320e12973225f8105f491f5bdff96dc168952f639502191f74dd492725a7a867b43051e71c"
+  },
+  "137": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0x329471b3361cc8b78cb0ff918855c8e9e2c32d9262efce0a3fd4b3327238da3e",
+    "signature": "0x46750c9140d616db325bff9bb204595322b3188a68531f1791da914e6cbe95e228bcb809e3afeaf1cdb0cccd4e72155701744a9a5edd9e2a6f8fb3f3c22197511b"
+  },
+  "143": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0x69145c18da728484aab2ea3889c813fdcdce942ea9a3e8a90133c0cdb178a885",
+    "signature": "0xc4c144d5f88c3cee5dd2cb71292db1a02f3614a63da78fc7e52825d03f52e0a2370fdee7704a876902bce2d25bd09b38fdd6d58f6d9ea0ab59d1be65f4e4cb131b"
+  },
+  "8453": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0xaac6babd35af6350f93bd13693a426e1a1348d3f117c62eeac9101c0cae3e024",
+    "signature": "0xdfc603969e01b6fb207a621427e7f8661ed4d60adb0cde744b927c934cff3b265dbfc257ed92e5b3b6d7571a674cc7ea2a451e85e56cb931065dc3d58a92f7901b"
+  },
+  "42161": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0x258454e1498dbe51821f8c6576c80a0d26839b6112c8fb9fefebad591f719874",
+    "signature": "0xe24302e39198eb8fa209617d2239f95be31e954cde391192cd25e77d8d953bda48a6e82298cf52c413c4e24c309a19a13c948cdfee73c925f12622014ea9947f1c"
+  },
+  "59144": {
+    "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
+    "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
+    "authority": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "caveats": [
+      {
+        "enforcer": "0x7F20f61b1f09b08D970938F6fa563634d65c4EeB",
+        "terms": "0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x2c21fD0Cb9DC8445CB3fb0DC5E7Bb0Aca01842B5",
+        "terms": "0xcef6d209",
+        "args": "0x00"
+      },
+      {
+        "enforcer": "0x92Bf12322527cAA612fd31a0e810472BBB106A8F",
+        "terms": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "args": "0x00"
+      }
+    ],
+    "salt": "0xbc7e93da10156746c80561370754f0ec4b777a1c9f915c5769a20b47454fbf1a",
+    "signature": "0xd213b1841be6911b278e9a1a3edf6e4a60e27a19c3db388c7cb9d8712c78c8a3689bca3422134d0149c22de88d6df504a036c4f21e1cb3c49255a8175f2f88321c"
+  },
   "11155111": {
     "delegate": "0x5862aB2F23C4241D64B99d509d50B2483a23A793",
     "delegator": "0xD08e8BB3D754641BBF6dd2E797b1B52703f00486",
