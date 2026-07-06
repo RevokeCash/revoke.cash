@@ -58,7 +58,7 @@ const AutoRevokePermissionRow = ({ address, connectedAddress, permissions }: Pro
                 <SyncPermissionsButton onSync={syncPermissions} isSyncing={isSyncing} />
               </div>
             )}
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 gap-x-4">
               {AUTO_REVOKE_SUPPORTED_CHAINS.map((chainId) => (
                 <AutoRevokeChainToggle
                   key={chainId}

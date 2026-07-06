@@ -17,9 +17,9 @@ import AssetTypeCell from './cells/AssetTypeCell';
 import ControlsCell from './cells/ControlsCell';
 import GlobalSelectCell from './cells/GlobalSelectCell';
 import HeaderCell from './cells/HeaderCell';
-import LastUpdatedCell from './cells/LastUpdatedCell';
 import SelectCell from './cells/SelectCell';
 import SpenderCell from './cells/SpenderCell';
+import TransactionDateCell from './cells/TransactionDateCell';
 import ValueAtRiskCell from './cells/ValueAtRiskCell';
 
 declare module '@tanstack/table-core' {
@@ -211,7 +211,7 @@ export const columns = [
     id: ColumnId.LAST_UPDATED,
     header: () => <HeaderCell i18nKey="address.headers.last_updated" />,
     cell: (info) => (
-      <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original.payload.lastUpdated} />
+      <TransactionDateCell chainId={info.row.original.chainId} timeLog={info.row.original.payload.lastUpdated} />
     ),
     enableSorting: true,
     sortingFn: customSortingFns.timestamp,

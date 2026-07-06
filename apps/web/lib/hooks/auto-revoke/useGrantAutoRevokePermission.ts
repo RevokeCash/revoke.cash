@@ -1,12 +1,15 @@
 import { erc7715ProviderActions } from '@metamask/smart-accounts-kit/actions';
 import { isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
 import { buildPermissionRequest, isValidAutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
-import { isUserRejectionError } from '@revoke.cash/core/utils/errors';
+import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
+import { useTranslations } from 'next-intl';
+import { toast } from 'react-toastify';
 import { useConnection, useConnectorClient } from 'wagmi';
 
 export const useGrantAutoRevokePermission = () => {
+  const t = useTranslations();
   const { connector } = useConnection();
   const { data: connectorClient } = useConnectorClient();
   const queryClient = useQueryClient();
@@ -32,9 +35,9 @@ export const useGrantAutoRevokePermission = () => {
       });
     },
     onError: (error) => {
-      if (!isUserRejectionError(error)) {
-        console.error('Failed to grant permission:', error);
-      }
+      if (isUserRejectionError(error)) return;
+      console.error('Failed to grant permission:', error);
+      toast.error(parseErrorMessage(error) || t('account.auto_revoke.permissions.grant_failed'));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['auto-revoke'] });

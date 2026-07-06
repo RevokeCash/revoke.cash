@@ -1,27 +1,27 @@
 'use client';
 
-import Button from 'components/common/Button';
-import Card, { CardTitle } from 'components/common/Card';
 import { useAccountSubscriptions } from 'lib/hooks/premium/useAccountSubscriptions';
-import { useTranslations } from 'next-intl';
 import AutoRevokeSection from '../auto-revoke/AutoRevokeSection';
+import AutoRevokeUpsell from '../auto-revoke/AutoRevokeUpsell';
+import AutoRevokeActivitySection from '../auto-revoke/activity/AutoRevokeActivitySection';
 
 const AutoRevokeTab = () => {
-  const t = useTranslations();
   const { account, activeUltimateSubscription, ultimateEntitlement } = useAccountSubscriptions();
 
-  if (!activeUltimateSubscription && !ultimateEntitlement) {
-    return (
-      <Card header={<CardTitle title={t('account.auto_revoke.title')} />} className="flex flex-col items-start gap-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.auto_revoke.upsell')}</p>
-        <Button style="primary" size="md" href="/premium" router>
-          {t('common.buttons.upgrade_to_premium')}
-        </Button>
-      </Card>
-    );
-  }
+  const hasUltimate = Boolean(activeUltimateSubscription || ultimateEntitlement);
 
-  return <AutoRevokeSection activeSubscription={activeUltimateSubscription} account={account!} />;
+  return (
+    <div className="w-full flex flex-col gap-4">
+      {hasUltimate ? (
+        <>
+          <AutoRevokeSection activeSubscription={activeUltimateSubscription} account={account!} />
+          <AutoRevokeActivitySection subscriptionId={activeUltimateSubscription?.id} />
+        </>
+      ) : (
+        <AutoRevokeUpsell />
+      )}
+    </div>
+  );
 };
 
 export default AutoRevokeTab;

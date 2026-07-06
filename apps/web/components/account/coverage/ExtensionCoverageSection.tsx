@@ -14,7 +14,7 @@ const ExtensionCoverageSection = () => {
   const isActive = isInstalled && config?.tier === 'standard';
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 min-w-0">
       <div className="flex flex-col gap-1">
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-2">

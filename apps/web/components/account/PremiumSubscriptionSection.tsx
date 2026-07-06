@@ -80,44 +80,50 @@ const PremiumSubscriptionSection = ({ account, activeSubscription, entitlements 
       isLoading={isLoadingPlans}
       className={twMerge('flex flex-col gap-4', isLoadingPlans && 'h-80')}
     >
-      <WalletInfo account={account} domainName={domainName} />
-      <SubscriptionBannerSection activeSubscription={activeSubscription} entitlements={entitlements} />
-
-      {isPlansError ? (
-        <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
-          <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plans_unavailable')}</p>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="min-w-0 flex flex-col gap-4">
+          <WalletInfo account={account} domainName={domainName} />
+          <SubscriptionBannerSection activeSubscription={activeSubscription} entitlements={entitlements} />
         </div>
-      ) : (
-        <>
-          <div className="flex flex-col gap-2">
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plan')}</span>
-            <CardSelect
-              options={planCardOptions}
-              value={selectedPlanId}
-              onChange={(value) => {
-                setSelectedPlanId(value);
-                if (status === 'failed' || status === 'confirmed') reset();
-              }}
-              disabled={isLoadingPlans || isSubscribing}
-            />
-          </div>
 
-          {selectedPlan && !isFreeSelected && (
-            <PaymentForm
-              selectedPlan={selectedPlan}
-              selectedPaymentChainId={selectedPaymentChainId}
-              onSelectPaymentChainId={setSelectedPaymentChainId}
-              action={action}
-              status={status}
-              error={error}
-              isSubscribing={isSubscribing}
-              onSubscribe={subscribe}
-              onReset={reset}
-            />
+        <div className="min-w-0 flex flex-col gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6">
+          {isPlansError ? (
+            <div className="rounded-lg border border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20 p-4 flex items-center gap-3">
+              <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-yellow-500" />
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plans_unavailable')}</p>
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-col gap-2">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.subscription.plan')}</span>
+                <CardSelect
+                  options={planCardOptions}
+                  value={selectedPlanId}
+                  onChange={(value) => {
+                    setSelectedPlanId(value);
+                    if (status === 'failed' || status === 'confirmed') reset();
+                  }}
+                  disabled={isLoadingPlans || isSubscribing}
+                />
+              </div>
+
+              {selectedPlan && !isFreeSelected && (
+                <PaymentForm
+                  selectedPlan={selectedPlan}
+                  selectedPaymentChainId={selectedPaymentChainId}
+                  onSelectPaymentChainId={setSelectedPaymentChainId}
+                  action={action}
+                  status={status}
+                  error={error}
+                  isSubscribing={isSubscribing}
+                  onSubscribe={subscribe}
+                  onReset={reset}
+                />
+              )}
+            </>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </Card>
   );
 };

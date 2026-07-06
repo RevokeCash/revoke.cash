@@ -1,4 +1,4 @@
-import ContentPageLayout from 'app/layouts/ContentPageLayout';
+import SharedLayout from 'app/layouts/SharedLayout';
 import AccountShell from 'components/account/AccountShell';
 import { getServerAuthSession } from 'lib/api/auth';
 import { AuthSessionProvider } from 'lib/hooks/auth/AuthSessionProvider';
@@ -31,13 +31,17 @@ const AccountLayout = async ({ children, params }: Props) => {
   const messages = await getMessages({ locale });
 
   return (
-    <ContentPageLayout searchBar>
-      <AuthSessionProvider initialSession={session}>
-        <NextIntlClientProvider messages={{ common: messages.common, account: messages.account }}>
-          <AccountShell>{children}</AccountShell>
-        </NextIntlClientProvider>
-      </AuthSessionProvider>
-    </ContentPageLayout>
+    <SharedLayout searchBar padding>
+      <div className="w-full max-w-7xl mx-auto">
+        <AuthSessionProvider initialSession={session}>
+          <NextIntlClientProvider
+            messages={{ common: messages.common, account: messages.account, address: messages.address }}
+          >
+            <AccountShell>{children}</AccountShell>
+          </NextIntlClientProvider>
+        </AuthSessionProvider>
+      </div>
+    </SharedLayout>
   );
 };
 

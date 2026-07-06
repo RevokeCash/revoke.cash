@@ -1,7 +1,7 @@
 import type { Session } from '@revoke.cash/core/sessions';
 import { createColumnHelper, type Row, type RowData, sortingFns } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
+import TransactionDateCell from 'components/allowances/dashboard/cells/TransactionDateCell';
 import ControlsCell from './cells/ControlsCell';
 import ExpirationCell from './cells/ExpirationCell';
 import HashCell from './cells/HashCell';
@@ -91,7 +91,7 @@ export const columns = [
     id: ColumnId.LAST_UPDATED,
     header: () => <HeaderCell i18nKey="address.headers.last_updated" />,
     cell: (info) => (
-      <LastUpdatedCell chainId={info.row.original.chainId} lastUpdated={info.row.original?.lastUpdated} />
+      <TransactionDateCell chainId={info.row.original.chainId} timeLog={info.row.original?.lastUpdated} />
     ),
   }),
   columnHelper.display({

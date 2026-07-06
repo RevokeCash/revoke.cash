@@ -3,7 +3,7 @@ import { type ApprovalTokenEvent, type Enriched, TokenEventType } from '@revoke.
 import { isNullish } from '@revoke.cash/core/utils';
 import { createColumnHelper, filterFns, type Row, type RowData } from '@tanstack/react-table';
 import HeaderCell from 'components/allowances/dashboard/cells/HeaderCell';
-import LastUpdatedCell from 'components/allowances/dashboard/cells/LastUpdatedCell';
+import TransactionDateCell from 'components/allowances/dashboard/cells/TransactionDateCell';
 import EventTypeCell from './cells/EventTypeCell';
 import HistoryAmountCell from './cells/HistoryAmountCell';
 import HistoryAssetCell from './cells/HistoryAssetCell';
@@ -131,7 +131,7 @@ export const columns = [
   columnHelper.accessor(accessors.timestamp, {
     id: ColumnId.DATE,
     header: () => <HeaderCell i18nKey="address.headers.date" />,
-    cell: ({ row }) => <LastUpdatedCell lastUpdated={row.original.time} chainId={row.original.chainId} />,
+    cell: ({ row }) => <TransactionDateCell timeLog={row.original.time} chainId={row.original.chainId} />,
     size: 128,
     enableSorting: true,
     sortingFn: 'basic',

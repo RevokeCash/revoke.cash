@@ -8,7 +8,7 @@ const SubscriptionTab = () => {
   const { account, activeSubscription, entitlements } = useAccountSubscriptions();
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-4">
       <PremiumSubscriptionSection
         account={account!}
         activeSubscription={activeSubscription}

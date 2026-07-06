@@ -57,36 +57,38 @@ const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
       <div className="flex flex-col gap-4">
         {!isMetaMask && <MetaMaskRequiredBanner />}
 
-        <AutoRevokePermissions
-          addresses={addresses}
-          connectedAddress={account}
-          permissions={permissions}
-          isAdmin={isAdmin}
-        />
-
-        <Divider />
-
-        {!isAdmin && addressRules.rulesSource && (
-          <>
-            <AutoRevokeRulesSourceSelect
-              rulesSource={addressRules.rulesSource}
-              availableSubscriptions={addressRules.availableSubscriptions}
-              onSwitchRulesSource={addressRules.switchRulesSource}
-              isSwitching={addressRules.isSwitchingRulesSource}
-            />
-            <Divider />
-          </>
-        )}
-
-        {effectiveRules && (
-          <AutoRevokeRulesEditor
-            rules={effectiveRules}
-            onUpdate={updateRules}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <AutoRevokePermissions
+            addresses={addresses}
+            connectedAddress={account}
+            permissions={permissions}
             isAdmin={isAdmin}
-            readOnly={isUsingSubscriptionDefaults}
-            managedByLabel={managedByLabel}
           />
-        )}
+
+          <div className="min-w-0 flex flex-col gap-4 border-t border-zinc-200 dark:border-zinc-800 pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6">
+            {!isAdmin && addressRules.rulesSource && (
+              <>
+                <AutoRevokeRulesSourceSelect
+                  rulesSource={addressRules.rulesSource}
+                  availableSubscriptions={addressRules.availableSubscriptions}
+                  onSwitchRulesSource={addressRules.switchRulesSource}
+                  isSwitching={addressRules.isSwitchingRulesSource}
+                />
+                <Divider />
+              </>
+            )}
+
+            {effectiveRules && (
+              <AutoRevokeRulesEditor
+                rules={effectiveRules}
+                onUpdate={updateRules}
+                isAdmin={isAdmin}
+                readOnly={isUsingSubscriptionDefaults}
+                managedByLabel={managedByLabel}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </Card>
   );

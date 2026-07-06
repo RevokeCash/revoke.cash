@@ -1,7 +1,6 @@
 'use client';
 
 import Card, { CardTitle } from 'components/common/Card';
-import Divider from 'components/common/Divider';
 import { useFairsideCoverage } from 'lib/hooks/ethereum/coverage/useFairsideCoverage';
 import { useExtensionConfig } from 'lib/hooks/ethereum/useExtensionConfig';
 import { useTranslations } from 'next-intl';
@@ -26,10 +25,11 @@ const CoverageSection = ({ account }: Props) => {
       isLoading={isLoading}
       className={isLoading ? 'h-32' : undefined}
     >
-      <div className="flex flex-col gap-4">
+      <div className="grid gap-6 lg:grid-cols-2">
         <ExtensionCoverageSection />
-        <Divider />
-        <FairsideCoverageSection account={account} />
+        <div className="min-w-0 border-t border-zinc-200 dark:border-zinc-800 pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6">
+          <FairsideCoverageSection account={account} />
+        </div>
       </div>
     </Card>
   );

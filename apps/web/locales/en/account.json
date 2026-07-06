@@ -1,17 +1,11 @@
 {
   "auto_revoke": {
     "title": "Auto-Revoking",
-    "description": "Automatically revoke dangerous ERC-20 approvals on your behalf.",
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
     "permissions": {
       "title": "Permissions",
-      "granted": "Granted",
-      "not_granted": "Not Granted",
       "grant": "Grant",
-      "grant_all": "Grant All",
       "networks_enabled": "{enabled}/{total} networks enabled",
-      "expires": "Expires {date}",
-      "revoke_permission": "Revoke",
       "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
       "grant_failed": "Failed to grant auto-revoke permission.",
       "revoke_failed": "Failed to revoke auto-revoke permission.",
@@ -40,7 +34,53 @@
       "managed_by": "Managed by {owner}",
       "save_failed": "Failed to save rules."
     },
-    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
+    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription.",
+    "activity": {
+      "title": "Activity",
+      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
+      "scope": {
+        "mine": "Your activity",
+        "subscription": "All members"
+      },
+      "columns": {
+        "date": "Date",
+        "wallet": "Wallet",
+        "chain": "Network",
+        "asset": "Asset",
+        "spender": "Spender",
+        "trigger": "Trigger",
+        "status": "Status",
+        "cost": "Cost"
+      },
+      "triggers": {
+        "exploit": "Exploit",
+        "risk_score": "Risky",
+        "stale": "Stale"
+      },
+      "status": {
+        "revoked": "Revoked",
+        "failed": "Failed",
+        "skipped": "Not needed",
+        "submitting": "Submitting",
+        "pending": "Pending"
+      },
+      "reasons": {
+        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
+        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
+        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
+        "monthly_budget": "Waiting because the monthly budget is used up.",
+        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
+        "transient_error": "A temporary error occurred; this will be retried.",
+        "nonce_consumed": "Resubmitting after a transaction conflict.",
+        "execution_failed": "The revoke transaction could not be completed.",
+        "transaction_reverted": "The revoke transaction reverted on-chain."
+      }
+    },
+    "budget": {
+      "used": "{used} of {total} used this month",
+      "resets": "Resets {date}",
+      "per_action_cap": "Each revoke is capped at {cap}."
+    }
   },
   "addresses": {
     "add_address": "Add wallet",

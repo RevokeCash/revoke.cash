@@ -3,6 +3,8 @@ import { decodeDelegations } from '@metamask/smart-accounts-kit/utils';
 import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ky from 'lib/ky';
+import { useTranslations } from 'next-intl';
+import { toast } from 'react-toastify';
 import type { Address, Hex } from 'viem';
 import { useConnection } from 'wagmi';
 import { useEnsureWalletClient } from '../ethereum/ensureWalletClient';
@@ -14,6 +16,7 @@ interface RevokePermissionParams {
 }
 
 export const useRevokeAutoRevokePermission = () => {
+  const t = useTranslations();
   const { connector } = useConnection();
   const { ensureWalletClient } = useEnsureWalletClient();
   const queryClient = useQueryClient();
@@ -47,9 +50,9 @@ export const useRevokeAutoRevokePermission = () => {
       await ky.delete(`/api/auto-revoke/permissions/${chainId}`);
     },
     onError: (error) => {
-      if (!isUserRejectionError(error)) {
-        console.error('Failed to revoke permission:', error);
-      }
+      if (isUserRejectionError(error)) return;
+      console.error('Failed to revoke permission:', error);
+      toast.error(parseErrorMessage(error) || t('account.auto_revoke.permissions.revoke_failed'));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['auto-revoke'] });

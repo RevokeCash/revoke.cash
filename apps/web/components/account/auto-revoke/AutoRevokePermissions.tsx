@@ -20,7 +20,7 @@ const AutoRevokePermissions = ({ addresses, connectedAddress, permissions, isAdm
     : addresses.filter((address) => isAddressEqual(address, connectedAddress));
 
   return (
-    <div>
+    <div className="min-w-0">
       <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
         {t('account.auto_revoke.permissions.title')}
       </h3>
