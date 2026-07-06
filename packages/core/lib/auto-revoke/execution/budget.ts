@@ -1,4 +1,4 @@
-import type { DatabaseTransaction, DatabaseWriter } from '@revoke.cash/core/db/client';
+import { type DatabaseTransaction, type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { HOUR } from '@revoke.cash/core/utils/time';
@@ -12,6 +12,19 @@ const ACTION_COST_RETRY_DELAY_MS = 1 * HOUR;
 export type BudgetDecision =
   | { allowed: true }
   | { allowed: false; reason: 'per_action_cap' | 'monthly_budget'; nextRetryAt: Date };
+
+export interface MonthlyBudget {
+  budgetUsd: number;
+  committedUsd: number;
+  remainingUsd: number;
+  maxActionCostUsd: number;
+  period: BudgetPeriod;
+}
+
+export interface BudgetPeriod {
+  start: Date;
+  end: Date;
+}
 
 export const findBillingSubscriptionIds = async (writer: DatabaseWriter, address: Address): Promise<string[]> => {
   const subscriptions = await writer
@@ -43,7 +56,7 @@ export const checkActionCost = (estimatedCostUsd: number): BudgetDecision => {
   return { allowed: true };
 };
 
-export const getUtcMonthPeriod = (date = new Date()): { start: Date; end: Date } => {
+export const getUtcMonthPeriod = (date = new Date()): BudgetPeriod => {
   const start = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
   const end = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 1));
   return { start, end };
@@ -53,33 +66,26 @@ export const getNextBudgetRetryAt = (date = new Date()): Date => {
   return getUtcMonthPeriod(date).end;
 };
 
-interface MonthlyBudget {
-  budgetUsd: number;
-  committedUsd: number;
-  remainingUsd: number;
-}
-
-const getMonthlyBudget = async (writer: DatabaseWriter, subscriptionId: string): Promise<MonthlyBudget> => {
-  const { start, end } = getUtcMonthPeriod();
+export const getMonthlyBudget = async (
+  subscriptionId: string,
+  writer: DatabaseWriter = getDb(),
+): Promise<MonthlyBudget> => {
+  const period = getUtcMonthPeriod();
 
   const budgetUsd = MONTHLY_BUDGET_USD;
-  const committedUsd = await getCommittedBudgetUsd(writer, subscriptionId, start, end);
+  const committedUsd = await getCommittedBudgetUsd(writer, subscriptionId, period);
   const remainingUsd = Math.max(0, budgetUsd - committedUsd);
 
-  return { budgetUsd, committedUsd, remainingUsd };
+  return { budgetUsd, committedUsd, remainingUsd, maxActionCostUsd: MAX_ACTION_COST_USD, period };
 };
 
-export const lockAndCheckBudget = async (
-  trx: DatabaseTransaction,
-  subscriptionId: string,
-  estimatedCostUsd: number,
-): Promise<BudgetDecision> => {
+export const lockAndCheckBudget = async (trx: DatabaseTransaction, subscriptionId: string): Promise<BudgetDecision> => {
   await trx.execute(
     sql`SELECT pg_advisory_xact_lock(hashtextextended(${`auto_revoke_budget:${subscriptionId}`}, 0::bigint))`,
   );
 
-  const monthlyBudget = await getMonthlyBudget(trx, subscriptionId);
-  if (estimatedCostUsd > monthlyBudget.remainingUsd) {
+  const monthlyBudget = await getMonthlyBudget(subscriptionId, trx);
+  if (monthlyBudget.remainingUsd <= 0) {
     return { allowed: false, reason: 'monthly_budget', nextRetryAt: getNextBudgetRetryAt() };
   }
 
@@ -89,8 +95,7 @@ export const lockAndCheckBudget = async (
 const getCommittedBudgetUsd = async (
   writer: DatabaseWriter,
   subscriptionId: string,
-  start: Date,
-  end: Date,
+  period: BudgetPeriod,
 ): Promise<number> => {
   const [row] = await writer
     .select({ committedUsd: sql<string>`coalesce(sum(${autoRevokeActions.costUsd}), 0)` })
@@ -99,8 +104,8 @@ const getCommittedBudgetUsd = async (
       and(
         eq(autoRevokeActions.billedSubscriptionId, subscriptionId),
         inArray(autoRevokeActions.status, ['submitted', 'succeeded', 'failed']),
-        gte(autoRevokeActions.submittedAt, start),
-        lt(autoRevokeActions.submittedAt, end),
+        gte(autoRevokeActions.submittedAt, period.start),
+        lt(autoRevokeActions.submittedAt, period.end),
       ),
     );
 

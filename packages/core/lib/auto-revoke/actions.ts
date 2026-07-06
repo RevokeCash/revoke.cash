@@ -4,6 +4,7 @@ import {
   autoRevokeObservations,
   autoRevokePermissions,
 } from '@revoke.cash/core/db/schema/auto-revoke';
+import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
 import type { AutoRevokeActionTransaction } from '@revoke.cash/core/db/types/auto-revoke-transaction';
 import { and, asc, eq, getTableColumns, gt, inArray, isNotNull, isNull, lte, or, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
@@ -218,13 +219,33 @@ export const getChainPipelineState = async (
   return state ?? { count: 0, minNonce: null, maxAssignedNonce: null };
 };
 
+export const hasPendingExploitAction = async (chainId: number, signerAddress: Address): Promise<boolean> => {
+  const [pendingExploitAction] = await getDb()
+    .select({ id: autoRevokeActions.id })
+    .from(autoRevokeActions)
+    .innerJoin(autoRevokeObservations, eq(autoRevokeObservations.id, autoRevokeActions.observationId))
+    .where(
+      and(
+        eq(autoRevokeActions.chainId, chainId),
+        eq(autoRevokeObservations.triggerType, 'exploit'),
+        or(
+          and(eq(autoRevokeActions.status, 'submitted'), eq(autoRevokeActions.signerAddress, signerAddress)),
+          eq(autoRevokeActions.status, 'queued'),
+        ),
+      ),
+    )
+    .limit(1);
+
+  return Boolean(pendingExploitAction);
+};
+
 // Locks the action row and performs final authoritative checks before marking it submitted
 export const markActionSubmitted = async (
   actionId: string,
   chainId: number,
   signerAddress: Address,
   params: SubmittedTransactionParams & { permissionId: string },
-  billing: { address: Address; estimatedCostUsd: number; enforceBudget: boolean },
+  billing: { address: Address; enforceBudget: boolean },
 ): Promise<MarkActionSubmittedResult> => {
   return getTransactionalDb().transaction(async (trx) => {
     await trx.execute(
@@ -237,12 +258,12 @@ export const markActionSubmitted = async (
     // Race condition: if a concurrent action claimed the nonce in the meantime, the caller must first get a new nonce.
     if (pipeline.maxAssignedNonce !== null && params.nonce <= pipeline.maxAssignedNonce) return 'nonce_conflict';
 
-    // The action is charged to the oldest billable subscription that still has budget for it
+    // The action is charged to the oldest billable subscription that still has budget remaining
     const billingCandidates = await findBillingSubscriptionIds(trx, billing.address);
     if (billingCandidates.length === 0) return 'no_billable_subscription';
 
     const billedSubscriptionId = billing.enforceBudget
-      ? await findSubscriptionWithHeadroom(trx, billingCandidates, billing.estimatedCostUsd)
+      ? await findSubscriptionWithRemainingBudget(trx, billingCandidates)
       : billingCandidates[0];
 
     if (!billedSubscriptionId) return 'budget_exceeded';
@@ -276,13 +297,12 @@ export const markActionSubmitted = async (
   });
 };
 
-const findSubscriptionWithHeadroom = async (
+const findSubscriptionWithRemainingBudget = async (
   trx: DatabaseTransaction,
   candidates: string[],
-  estimatedCostUsd: number,
 ): Promise<string | null> => {
   for (const candidate of candidates) {
-    const decision = await lockAndCheckBudget(trx, candidate, estimatedCostUsd);
+    const decision = await lockAndCheckBudget(trx, candidate);
     if (decision.allowed) return candidate;
   }
 
@@ -310,21 +330,36 @@ export const requeueRulesBlockedActions = async (addresses: Address[]): Promise<
 };
 
 export const requeueActionAfterNonceConsumed = async (actionId: string): Promise<boolean> => {
-  const [updatedAction] = await getTransactionalDb()
-    .update(autoRevokeActions)
-    .set({
-      status: 'queued',
-      nextRetryAt: null,
-      submittedAt: null,
-      completedAt: null,
-      costUsd: null,
-      billedSubscriptionId: null,
-      errorCode: 'nonce_consumed',
-    })
-    .where(and(eq(autoRevokeActions.id, actionId), eq(autoRevokeActions.status, 'submitted')))
-    .returning({ id: autoRevokeActions.id });
+  return getTransactionalDb().transaction(async (trx) => {
+    // Locks the row and captures the billed subscription before it is cleared below.
+    const [current] = await trx
+      .select({ billedSubscriptionId: autoRevokeActions.billedSubscriptionId })
+      .from(autoRevokeActions)
+      .where(and(eq(autoRevokeActions.id, actionId), eq(autoRevokeActions.status, 'submitted')))
+      .for('update');
 
-  return Boolean(updatedAction);
+    if (!current) return false;
+
+    await trx
+      .update(autoRevokeActions)
+      .set({
+        status: 'queued',
+        nextRetryAt: null,
+        submittedAt: null,
+        completedAt: null,
+        costUsd: null,
+        billedSubscriptionId: null,
+        errorCode: 'nonce_consumed',
+      })
+      .where(eq(autoRevokeActions.id, actionId));
+
+    // Clearing the committed cost increases the remaining budget, just like a settlement does.
+    if (current.billedSubscriptionId) {
+      await wakeBudgetBlockedActions(trx, current.billedSubscriptionId);
+    }
+
+    return true;
+  });
 };
 
 export const markActionReplacementSubmitted = async (
@@ -378,26 +413,57 @@ export const markActionBroadcasted = async (actionId: string): Promise<void> => 
 
 // After a transaction is mined, updates the action row with the final gas used and cost
 export const settleAction = async (settlement: ActionSettlement): Promise<boolean> => {
-  const [updatedAction] = await getTransactionalDb()
-    .update(autoRevokeActions)
-    .set({
-      status: settlement.actionStatus,
-      nextRetryAt: null,
-      completedAt: new Date(),
-      transaction: sql`
+  return getTransactionalDb().transaction(async (trx) => {
+    const [updatedAction] = await trx
+      .update(autoRevokeActions)
+      .set({
+        status: settlement.actionStatus,
+        nextRetryAt: null,
+        completedAt: new Date(),
+        transaction: sql`
           ${autoRevokeActions.transaction}
           || ${JSON.stringify({
             txHash: settlement.txHash,
             finalGasUsed: settlement.finalGasUsed.toString(),
           })}::jsonb
         `,
-      costUsd: settlement.finalCostUsd,
-      errorCode: settlement.errorCode ?? null,
-    })
-    .where(and(eq(autoRevokeActions.id, settlement.actionId), eq(autoRevokeActions.status, 'submitted')))
-    .returning({ id: autoRevokeActions.id });
+        costUsd: settlement.finalCostUsd,
+        errorCode: settlement.errorCode ?? null,
+      })
+      .where(and(eq(autoRevokeActions.id, settlement.actionId), eq(autoRevokeActions.status, 'submitted')))
+      .returning({ billedSubscriptionId: autoRevokeActions.billedSubscriptionId });
 
-  return Boolean(updatedAction);
+    if (!updatedAction) return false;
+
+    // Settlement reconciles the committed estimate down to the realized cost, which can increase the
+    // remaining budget mid-month, so the subscription's budget-blocked actions get to retry right away.
+    if (updatedAction.billedSubscriptionId) {
+      await wakeBudgetBlockedActions(trx, updatedAction.billedSubscriptionId);
+    }
+
+    return true;
+  });
+};
+
+// Wakes the subscription's actions that are parked until the month rollover, letting them retry
+// against the remaining budget immediately
+const wakeBudgetBlockedActions = async (writer: DatabaseWriter, subscriptionId: string): Promise<void> => {
+  const memberObservationIds = writer
+    .select({ id: autoRevokeObservations.id })
+    .from(autoRevokeObservations)
+    .innerJoin(premiumSubscriptionAddresses, eq(premiumSubscriptionAddresses.address, autoRevokeObservations.address))
+    .where(eq(premiumSubscriptionAddresses.subscriptionId, subscriptionId));
+
+  await writer
+    .update(autoRevokeActions)
+    .set({ nextRetryAt: new Date() })
+    .where(
+      and(
+        eq(autoRevokeActions.status, 'blocked_budget'),
+        eq(autoRevokeActions.errorCode, 'monthly_budget'),
+        inArray(autoRevokeActions.observationId, memberObservationIds),
+      ),
+    );
 };
 
 // Keeps the action retryable after a transient error: only the retry time and error context are

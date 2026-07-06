@@ -17,7 +17,7 @@ import {
 } from '../permissions';
 import { findBillingSubscriptionIds } from './budget';
 
-export type EligibilityResult = { failure: ActionFailure } | { permission: PermissionRecord; isExploit: boolean };
+export type EligibilityResult = { failure: ActionFailure } | { permission: PermissionRecord; isUrgent: boolean };
 
 // Returns the permission to execute with, or the failure that parks the action
 export const checkExecutionEligibility = async (observation: Observation): Promise<EligibilityResult> => {
@@ -65,7 +65,8 @@ export const checkExecutionEligibility = async (observation: Observation): Promi
     return { failure: { status: 'blocked_permission', errorCode: 'permission_disabled' } };
   }
 
-  return { permission, isExploit: matchedTriggers.some((trigger) => trigger.type === 'exploit') };
+  const isUrgent = matchedTriggers.some((trigger) => trigger.type === 'exploit');
+  return { permission, isUrgent };
 };
 
 const getObservationAllowanceRow = async (observation: Observation): Promise<IndexedAllowance | null> => {

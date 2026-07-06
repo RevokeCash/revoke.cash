@@ -6,7 +6,6 @@ import { ADDRESS_ZERO } from '@revoke.cash/core/constants';
 import type { AutoRevokeActionTransaction } from '@revoke.cash/core/db/types/auto-revoke-transaction';
 import { getNativeTokenPriceUsd } from '@revoke.cash/core/prices';
 import { isRevertedError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import { bigintMax } from '@revoke.cash/core/utils/math';
 import { DAY, MINUTE } from '@revoke.cash/core/utils/time';
 import { isExcessiveGas } from '@revoke.cash/core/wallet';
 import {
@@ -23,6 +22,7 @@ import {
   deferActionRetry,
   getActionById,
   getChainPipelineState,
+  hasPendingExploitAction,
   markActionBroadcasted,
   markActionFailure,
   markActionReplacementSubmitted,
@@ -33,6 +33,7 @@ import {
 import { MAX_PENDING_ACTIONS_PER_CHAIN } from '../config';
 import { getPermissionById, type PermissionRecord } from '../permissions';
 import { checkActionCost, getNextBudgetRetryAt } from './budget';
+import { getTransactionFees, type TransactionFees } from './fees';
 import type { SignedTransaction, Signer, UnsignedTransaction } from './signer';
 import { checkExecutionEligibility } from './validation';
 
@@ -51,14 +52,14 @@ interface RevokeTransactionPlan {
   transaction: UnsignedTransaction;
 }
 
-type TransactionFees = Pick<UnsignedTransaction, 'maxFeePerGas' | 'maxPriorityFeePerGas'>;
-
 type SubmittedTransaction = Omit<AutoRevokeActionTransaction, 'finalGasUsed'> & {
   estimatedCostUsd: number | null;
   submittedAt: Date;
 };
 
 const SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS = 5 * MINUTE;
+const URGENT_SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS = 1 * MINUTE;
+
 const TRANSIENT_ERROR_RETRY_DELAY_MS = 5 * MINUTE;
 const PIPELINE_FULL_RETRY_DELAY_MS = 1 * MINUTE;
 
@@ -92,7 +93,7 @@ const submitAction = async (action: Action, signer: Signer): Promise<ExecutionRe
   }
 
   try {
-    const plan = await planRevokeTransaction(eligibility.permission, action, signer);
+    const plan = await planRevokeTransaction(eligibility.permission, action, signer, eligibility.isUrgent);
 
     if (isExcessiveGas(action.observation.chainId, plan.transaction.gas)) {
       await markActionFailure(action.id, { status: 'skipped', errorCode: 'excessive_gas' });
@@ -101,7 +102,7 @@ const submitAction = async (action: Action, signer: Signer): Promise<ExecutionRe
 
     if (plan.estimatedCostUsd === null) return { submitted: false, reason: 'native_price_unavailable' };
 
-    if (!eligibility.isExploit) {
+    if (!eligibility.isUrgent) {
       const actionCostDecision = checkActionCost(plan.estimatedCostUsd);
       if (!actionCostDecision.allowed) {
         await blockForBudget(action, actionCostDecision.reason, actionCostDecision.nextRetryAt);
@@ -127,8 +128,7 @@ const submitAction = async (action: Action, signer: Signer): Promise<ExecutionRe
       },
       {
         address: action.observation.address,
-        estimatedCostUsd: plan.estimatedCostUsd,
-        enforceBudget: !eligibility.isExploit,
+        enforceBudget: !eligibility.isUrgent,
       },
     );
 
@@ -185,7 +185,9 @@ const maintainSubmittedAction = async (action: Action, signer: Signer): Promise<
   const confirmation = await confirmSubmittedAction(action, transaction);
   if (confirmation.completed || confirmation.reason !== 'receipt_not_found') return confirmation;
 
-  const nonceConsumed = await wasNonceConsumed(action, transaction, signer);
+  const isUrgent = await isUrgentAction(action, signer);
+  const nonceConsumed = await wasNonceConsumed(action, transaction, signer, isUrgent);
+
   if (nonceConsumed) {
     const requeued = await requeueActionAfterNonceConsumed(action.id);
     return { submitted: false, reason: requeued ? 'nonce_consumed_requeued' : 'action_state_changed' };
@@ -195,19 +197,27 @@ const maintainSubmittedAction = async (action: Action, signer: Signer): Promise<
   const pipeline = await getChainPipelineState(action.observation.chainId, signer.address);
   const isPipelineHead = pipeline.minNonce === null || transaction.nonce <= pipeline.minNonce;
 
-  if (!isPipelineHead || !isTransactionReadyForReplacement(transaction)) {
+  if (!isPipelineHead || !isTransactionReadyForReplacement(transaction, isUrgent)) {
     return rebroadcastAction(action, transaction, signer);
   }
 
-  return replaceAction(action, transaction, signer);
+  return replaceAction(action, transaction, signer, isUrgent);
+};
+
+// The whole pipeline inherits exploit urgency: nonce ordering means an exploit action can only
+// move once everything ahead of it clears, so a stale head in front of one escalates just as fast.
+const isUrgentAction = async (action: Action, signer: Signer): Promise<boolean> => {
+  if (action.observation.triggerType === 'exploit') return true;
+  return await hasPendingExploitAction(action.observation.chainId, signer.address);
 };
 
 const wasNonceConsumed = async (
   action: Action,
   transaction: SubmittedTransaction,
   signer: Signer,
+  isUrgent: boolean,
 ): Promise<boolean> => {
-  if (!isTransactionReadyForReplacement(transaction)) return false;
+  if (!isTransactionReadyForReplacement(transaction, isUrgent)) return false;
 
   const publicClient = createViemPublicClientForChain(action.observation.chainId);
   const minedNonceCount = await publicClient.getTransactionCount({ address: signer.address, blockTag: 'latest' });
@@ -292,9 +302,10 @@ const replaceAction = async (
   action: Action,
   transaction: SubmittedTransaction,
   signer: Signer,
+  isUrgent: boolean,
 ): Promise<ExecutionResult> => {
   try {
-    const replacement = await planSameNonceReplacement(action, transaction, signer);
+    const replacement = await planSameNonceReplacement(action, transaction, signer, isUrgent);
     const signedTransaction = await signer.signTransaction(replacement.transaction);
     const submitted = await markActionReplacementSubmitted(action.id, {
       txHash: signedTransaction.txHash,
@@ -325,13 +336,18 @@ const planSameNonceReplacement = async (
   action: Action,
   transaction: SubmittedTransaction,
   signer: Signer,
+  isUrgent: boolean,
 ): Promise<RevokeTransactionPlan> => {
-  const publicClient = createViemPublicClientForChain(action.observation.chainId);
   const permission = await getStoredPermission(action);
   const calldata = buildDelegatedRevokeCalldata(permission, action, signer);
 
   const [transactionFees, nativeTokenPriceUsd] = await Promise.all([
-    getTransactionFees(publicClient, transaction),
+    getTransactionFees({
+      chainId: action.observation.chainId,
+      isUrgent,
+      replacementCount: transaction.txHashes.length,
+      previousFees: transaction,
+    }),
     getNativeTokenPriceUsd(action.observation.chainId),
   ]);
 
@@ -434,6 +450,7 @@ const planRevokeTransaction = async (
   permission: PermissionRecord,
   action: Action,
   signer: Signer,
+  isUrgent: boolean,
 ): Promise<RevokeTransactionPlan> => {
   const publicClient = createViemPublicClientForChain(action.observation.chainId);
   const calldata = buildDelegatedRevokeCalldata(permission, action, signer);
@@ -444,7 +461,11 @@ const planRevokeTransaction = async (
       to: permission.delegationManager,
       data: calldata,
     }),
-    getTransactionFees(publicClient),
+    getTransactionFees({
+      chainId: action.observation.chainId,
+      isUrgent,
+      replacementCount: 0,
+    }),
     getNativeTokenPriceUsd(action.observation.chainId),
     deriveNextNonce(publicClient, action.observation.chainId, signer.address),
   ]);
@@ -476,7 +497,7 @@ const buildRevokeTransactionPlan = (
   const decimals = getViemChainConfig(action.observation.chainId).nativeCurrency.decimals;
   const calculatedCostUsd = calculateGasCostUsd(
     inputs.gas,
-    inputs.transactionFees.maxFeePerGas,
+    inputs.transactionFees.expectedFeePerGas,
     inputs.nativeTokenPriceUsd,
     decimals,
   );
@@ -518,25 +539,6 @@ const deriveNextNonce = async (
   return nonce;
 };
 
-const getTransactionFees = async (
-  publicClient: PublicClient,
-  previousFees?: TransactionFees,
-): Promise<TransactionFees> => {
-  const estimatedFees = await publicClient.estimateFeesPerGas();
-  if (estimatedFees.maxFeePerGas === undefined || estimatedFees.maxPriorityFeePerGas === undefined) {
-    throw new Error('Auto-revoke chain did not return EIP-1559 fee data');
-  }
-
-  const maxFeePerGas = previousFees
-    ? bigintMax(estimatedFees.maxFeePerGas, bumpFee(previousFees.maxFeePerGas))
-    : estimatedFees.maxFeePerGas;
-  const maxPriorityFeePerGas = previousFees
-    ? bigintMax(estimatedFees.maxPriorityFeePerGas, bumpFee(previousFees.maxPriorityFeePerGas))
-    : estimatedFees.maxPriorityFeePerGas;
-
-  return { maxFeePerGas, maxPriorityFeePerGas };
-};
-
 const broadcastSignedTransaction = async (
   signer: Signer,
   transaction: SignedTransaction,
@@ -563,13 +565,14 @@ const getFinalCostUsd = async (
   return costUsd ?? transaction.estimatedCostUsd ?? 0;
 };
 
-const isTransactionReadyForReplacement = (transaction: SubmittedTransaction): boolean => {
-  const referenceTime = transaction.broadcastedAt ?? transaction.submittedAt;
-  return Date.now() - referenceTime.getTime() >= SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS;
-};
+const isTransactionReadyForReplacement = (transaction: SubmittedTransaction, isUrgent: boolean): boolean => {
+  const replacementDelayMs = isUrgent
+    ? URGENT_SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS
+    : SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS;
 
-// +12.5% +1 wei (above the ~10% minimum replacement increment most nodes enforce).
-const bumpFee = (fee: bigint): bigint => (fee * 1125n) / 1000n + 1n;
+  const referenceTime = transaction.broadcastedAt ?? transaction.submittedAt;
+  return Date.now() - referenceTime.getTime() >= replacementDelayMs;
+};
 
 const addGasLimitBuffer = (gas: bigint): bigint => {
   return (gas * 120n) / 100n;
