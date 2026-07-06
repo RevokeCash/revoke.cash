@@ -49,20 +49,14 @@ export class AutoRevokeExecutorWorker extends WorkerHost {
       return;
     }
 
-    const logPayload = {
+    this.logger.log({
       event: 'auto_revoke_action_processed',
       outcome: result.submitted ? 'submitted' : (result.reason ?? 'not_submitted'),
       actionId,
       chainId,
       txHash: result.txHash,
       detail: result.detail,
-    };
-
-    if (result.submitted) {
-      this.logger.log(logPayload);
-    } else {
-      this.logger.debug(logPayload);
-    }
+    });
   }
 
   private async enqueueReindex(actionId: string, address: Address, chainId: number): Promise<void> {

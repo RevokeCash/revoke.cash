@@ -95,6 +95,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "cost_deferred_at": {
+          "name": "cost_deferred_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",

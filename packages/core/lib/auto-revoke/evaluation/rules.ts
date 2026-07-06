@@ -10,7 +10,7 @@ import { and, asc, eq, gt, inArray, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { filterUnknownRiskFactors, getRiskLevel, type RiskFactor } from '../../risk';
 import { ApiError } from '../../utils/errors';
-import { DAY } from '../../utils/time';
+import { DAY, MINUTE } from '../../utils/time';
 import { requeueRulesBlockedActions } from '../actions';
 import { AUTO_REVOKE_SUPPORTED_CHAINS } from '../config';
 
@@ -237,6 +237,10 @@ export const switchRulesSource = async (
   await scheduleReindexForAddresses([address]);
 };
 
+// Auto-save fires on every rules change, so the reindex nudge waits out a short grace period to
+// let mid-edit saves settle before anything re-evaluates; each subsequent save pushes it further.
+const RULES_CHANGE_REINDEX_GRACE_MS = 2 * MINUTE;
+
 const scheduleReindexForAddresses = async (addresses: Address[]): Promise<void> => {
   if (addresses.length === 0) return;
 
@@ -244,7 +248,7 @@ const scheduleReindexForAddresses = async (addresses: Address[]): Promise<void> 
 
   await getDb()
     .update(indexerEventsState)
-    .set({ nextRunAt: new Date() })
+    .set({ nextRunAt: new Date(Date.now() + RULES_CHANGE_REINDEX_GRACE_MS) })
     .where(
       and(
         inArray(indexerEventsState.address, addresses),

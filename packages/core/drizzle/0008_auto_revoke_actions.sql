@@ -14,6 +14,7 @@ CREATE TABLE "auto_revoke"."actions" (
 	"transaction" jsonb,
 	"cost_usd" numeric,
 	"error_code" text,
+	"cost_deferred_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );

@@ -6,6 +6,7 @@ import {
 } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumSubscriptionAddresses } from '@revoke.cash/core/db/schema/premium';
 import type { AutoRevokeActionTransaction } from '@revoke.cash/core/db/types/auto-revoke-transaction';
+import { MINUTE } from '@revoke.cash/core/utils/time';
 import { and, asc, eq, getTableColumns, gt, inArray, isNotNull, isNull, lte, or, sql } from 'drizzle-orm';
 import type { Address, Hash } from 'viem';
 import { MAX_PENDING_ACTIONS_PER_CHAIN } from './config';
@@ -26,6 +27,7 @@ export type ActionErrorCode =
   | 'rules_no_longer_match'
   | 'excessive_gas'
   | 'per_action_cap'
+  | 'awaiting_cheap_gas'
   | 'monthly_budget'
   | 'chain_pipeline_full'
   | 'transient_error'
@@ -63,6 +65,12 @@ export interface ActionSettlement {
   errorCode?: ActionErrorCode;
 }
 
+const NON_URGENT_ACTION_COOLING_MS = 10 * MINUTE;
+const getActionCoolingRetryAt = (triggerType: Observation['triggerType']): Date | null => {
+  if (triggerType === 'exploit') return null;
+  return new Date(Date.now() + NON_URGENT_ACTION_COOLING_MS);
+};
+
 // Creates one action per observation that doesn't have one yet
 export const createMissingActions = async (limit: number): Promise<Array<{ id: string }>> => {
   const db = getDb();
@@ -72,6 +80,7 @@ export const createMissingActions = async (limit: number): Promise<Array<{ id: s
       observationId: autoRevokeObservations.id,
       permissionId: autoRevokePermissions.id,
       chainId: autoRevokeObservations.chainId,
+      triggerType: autoRevokeObservations.triggerType,
     })
     .from(autoRevokeObservations)
     .leftJoin(autoRevokeActions, eq(autoRevokeActions.observationId, autoRevokeObservations.id))
@@ -94,9 +103,11 @@ export const createMissingActions = async (limit: number): Promise<Array<{ id: s
   if (missingObservations.length === 0) return [];
 
   const actionValues: ActionInsert[] = missingObservations.map((observation) => ({
-    ...observation,
+    observationId: observation.observationId,
+    permissionId: observation.permissionId,
+    chainId: observation.chainId,
     ...(observation.permissionId
-      ? { status: 'queued' }
+      ? { status: 'queued', nextRetryAt: getActionCoolingRetryAt(observation.triggerType) }
       : {
           status: 'blocked_permission',
           errorCode: 'missing_permission',
@@ -181,6 +192,7 @@ export const unblockActions = async (limit: number): Promise<Array<{ id: string 
       costUsd: null,
       billedSubscriptionId: null,
       errorCode: null,
+      costDeferredAt: null,
     })
     .from(unblockable)
     .where(and(eq(autoRevokeActions.id, unblockable.actionId), eq(autoRevokeActions.status, 'blocked_permission')))
@@ -287,6 +299,7 @@ export const markActionSubmitted = async (
         },
         costUsd: params.estimatedCostUsd,
         errorCode: null,
+        costDeferredAt: null,
       })
       .where(and(eq(autoRevokeActions.id, actionId), inArray(autoRevokeActions.status, ['queued', 'blocked_budget'])))
       .returning({ id: autoRevokeActions.id });
@@ -312,20 +325,23 @@ const findSubscriptionWithRemainingBudget = async (
 export const requeueRulesBlockedActions = async (addresses: Address[]): Promise<void> => {
   if (addresses.length === 0) return;
 
-  const observationIds = getDb()
-    .select({ id: autoRevokeObservations.id })
-    .from(autoRevokeObservations)
-    .where(inArray(autoRevokeObservations.address, addresses));
+  const coolingRetryAt = new Date(Date.now() + NON_URGENT_ACTION_COOLING_MS);
 
   await getDb()
     .update(autoRevokeActions)
     .set({
       status: 'queued',
-      nextRetryAt: null,
+      nextRetryAt: sql`case when ${autoRevokeObservations.triggerType} = 'exploit' then null else ${coolingRetryAt}::timestamptz end`,
       errorCode: null,
+      costDeferredAt: null,
     })
+    .from(autoRevokeObservations)
     .where(
-      and(eq(autoRevokeActions.status, 'blocked_rules'), inArray(autoRevokeActions.observationId, observationIds)),
+      and(
+        eq(autoRevokeActions.status, 'blocked_rules'),
+        eq(autoRevokeObservations.id, autoRevokeActions.observationId),
+        inArray(autoRevokeObservations.address, addresses),
+      ),
     );
 };
 
@@ -479,6 +495,8 @@ export const deferActionRetry = async (
 };
 
 export const markActionFailure = async (actionId: string, failure: ActionFailure): Promise<void> => {
+  const isCostDeferral = failure.errorCode === 'per_action_cap' || failure.errorCode === 'awaiting_cheap_gas';
+
   await getTransactionalDb()
     .update(autoRevokeActions)
     .set({
@@ -486,6 +504,7 @@ export const markActionFailure = async (actionId: string, failure: ActionFailure
       nextRetryAt: failure.nextRetryAt ?? null,
       completedAt: failure.status === 'failed' || failure.status === 'skipped' ? new Date() : null,
       errorCode: failure.errorCode,
+      costDeferredAt: isCostDeferral ? sql`coalesce(${autoRevokeActions.costDeferredAt}, now())` : undefined,
     })
     .where(
       and(

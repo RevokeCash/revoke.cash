@@ -161,6 +161,7 @@ export const autoRevokeActions = autoRevokeSchema.table(
     transaction: autoRevokeTransaction('transaction'),
     costUsd: numeric('cost_usd', { mode: 'number' }),
     errorCode: text('error_code').$type<ActionErrorCode>(),
+    costDeferredAt: timestamp('cost_deferred_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()

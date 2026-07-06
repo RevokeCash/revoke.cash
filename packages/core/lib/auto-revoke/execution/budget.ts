@@ -1,17 +1,22 @@
 import { type DatabaseTransaction, type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
-import { HOUR } from '@revoke.cash/core/utils/time';
+import { HOUR, MINUTE } from '@revoke.cash/core/utils/time';
 import { and, asc, eq, gt, gte, inArray, lt, lte, sql } from 'drizzle-orm';
 import type { Address } from 'viem';
 
 const MONTHLY_BUDGET_USD = 5;
 const MAX_ACTION_COST_USD = 2;
+
+const SOFT_ACTION_COST_USD = 0.2;
+const SOFT_CAP_PATIENCE_MS = 24 * HOUR;
+
 const ACTION_COST_RETRY_DELAY_MS = 1 * HOUR;
+const URGENT_ACTION_COST_RETRY_DELAY_MS = 5 * MINUTE;
 
 export type BudgetDecision =
   | { allowed: true }
-  | { allowed: false; reason: 'per_action_cap' | 'monthly_budget'; nextRetryAt: Date };
+  | { allowed: false; reason: 'per_action_cap' | 'awaiting_cheap_gas' | 'monthly_budget'; nextRetryAt: Date };
 
 export interface MonthlyBudget {
   budgetUsd: number;
@@ -48,9 +53,25 @@ export const findBillingSubscriptionIds = async (writer: DatabaseWriter, address
   return subscriptions.map((subscription) => subscription.id);
 };
 
-export const checkActionCost = (estimatedCostUsd: number): BudgetDecision => {
+export const checkActionCost = (
+  estimatedCostUsd: number,
+  isUrgent: boolean,
+  costDeferredAt: Date | null,
+): BudgetDecision => {
   if (estimatedCostUsd > MAX_ACTION_COST_USD) {
-    return { allowed: false, reason: 'per_action_cap', nextRetryAt: new Date(Date.now() + ACTION_COST_RETRY_DELAY_MS) };
+    const retryDelayMs = isUrgent ? URGENT_ACTION_COST_RETRY_DELAY_MS : ACTION_COST_RETRY_DELAY_MS;
+    return { allowed: false, reason: 'per_action_cap', nextRetryAt: new Date(Date.now() + retryDelayMs) };
+  }
+
+  if (isUrgent) return { allowed: true };
+
+  const patienceWindowActive = costDeferredAt === null || Date.now() - costDeferredAt.getTime() < SOFT_CAP_PATIENCE_MS;
+  if (estimatedCostUsd > SOFT_ACTION_COST_USD && patienceWindowActive) {
+    return {
+      allowed: false,
+      reason: 'awaiting_cheap_gas',
+      nextRetryAt: new Date(Date.now() + ACTION_COST_RETRY_DELAY_MS),
+    };
   }
 
   return { allowed: true };

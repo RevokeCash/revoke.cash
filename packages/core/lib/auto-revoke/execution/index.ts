@@ -102,12 +102,10 @@ const submitAction = async (action: Action, signer: Signer): Promise<ExecutionRe
 
     if (plan.estimatedCostUsd === null) return { submitted: false, reason: 'native_price_unavailable' };
 
-    if (!eligibility.isUrgent) {
-      const actionCostDecision = checkActionCost(plan.estimatedCostUsd);
-      if (!actionCostDecision.allowed) {
-        await blockForBudget(action, actionCostDecision.reason, actionCostDecision.nextRetryAt);
-        return { submitted: false, reason: actionCostDecision.reason };
-      }
+    const actionCostDecision = checkActionCost(plan.estimatedCostUsd, eligibility.isUrgent, action.costDeferredAt);
+    if (!actionCostDecision.allowed) {
+      await blockForBudget(action, actionCostDecision.reason, actionCostDecision.nextRetryAt);
+      return { submitted: false, reason: actionCostDecision.reason };
     }
 
     const signedTransaction = await signer.signTransaction(plan.transaction);
