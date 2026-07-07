@@ -78,15 +78,11 @@ describe(extended ? 'Chain Support (Extended)' : 'Chain Support', () => {
         expect(getChainNativeTokenCoingeckoId(chainId), `${chainName} native token coingecko id`).to.exist;
 
         const NO_TOKEN_PRICING: number[] = [
-          ChainId.CoinExSmartChainMainnet,
-          ChainId.DarwiniaNetwork,
           ChainId.HarmonyMainnetShard0,
-          ChainId.NeoXMainnet,
           ChainId.ReyaNetwork,
           ChainId.RISE,
           ChainId['SongbirdCanary-Network'],
           ChainId.StableMainnet,
-          ChainId.SyscoinMainnet,
         ];
 
         const coingeckoNetworkId = getChainCoingeckoNetworkId(chainId);

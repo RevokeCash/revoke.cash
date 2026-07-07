@@ -23,8 +23,6 @@ export const findBlockByTimestamp = async (
     [ChainId['Filecoin-Mainnet']]: -1,
     [ChainId.Injective]: -1,
     [ChainId.ShidoNetwork]: -1,
-    [ChainId.SubtensorEVM]: -1,
-    [ChainId.VelasEVMMainnet]: -1,
     [ChainId.ZetaChainMainnet]: -1,
   };
 

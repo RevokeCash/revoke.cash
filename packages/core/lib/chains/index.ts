@@ -75,13 +75,11 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Astar,
   999, // Hyperliquid EVM
   ChainId.TelosEVMMainnet,
-  ChainId.SyscoinMainnet,
   ChainId.ZetaChainMainnet,
   ChainId.AuroraMainnet,
   ChainId.Moonbeam,
   ChainId.Moonriver,
   ChainId.BobaNetwork,
-  ChainId.HashKeyChain,
   ChainId.GravityAlphaMainnet,
   ChainId.ChilizChainMainnet,
   ChainId.DogechainMainnet,
@@ -96,26 +94,18 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Vana,
   ChainId.KCCMainnet,
   ChainId.FuseMainnet,
-  ChainId.CoinExSmartChainMainnet,
   ChainId.ZERONetwork,
   ChainId.NeonEVMMainnet,
-  ChainId.VelasEVMMainnet,
-  ChainId.ElastosSmartChain,
   ChainId.ShimmerEVM,
-  ChainId.BitTorrentChainMainnet,
   ChainId.EthereumClassic,
   ChainId.LightlinkPhoenixMainnet,
   ChainId.Shape,
-  ChainId.DarwiniaNetwork,
   ChainId.Superposition,
   ChainId.GensynMainnet,
   ChainId.ShidoNetwork,
   ChainId.Matchain,
   ChainId.RARIChainMainnet,
-  ChainId.NeoXMainnet,
   ChainId.BitgertMainnet,
-  ChainId.ExosamaNetwork,
-  ChainId.OctaSpace,
   202555, // Kasplex zkEVM
 ] as const;
 
@@ -128,7 +118,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.BaseSepoliaTestnet,
   ChainId.AbstractSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
-  ChainId.CronosTestnet,
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
@@ -350,16 +339,6 @@ export const CHAINS = {
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 2118034 } },
   }),
-  [ChainId.BitTorrentChainMainnet]: new Chain({
-    type: SupportType.ETHERSCAN,
-    chainId: ChainId.BitTorrentChainMainnet,
-    name: 'BTT Chain',
-    nativeTokenCoingeckoId: 'bittorrent',
-    coingeckoNetworkId: 'bttc',
-    logoUrl: '/assets/images/vendor/chains/bttc.svg',
-    explorerUrl: 'https://bttcscan.com',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 31078552 } },
-  }),
   [ChainId.Blast]: new Chain({
     type: SupportType.HYPERSYNC,
     chainId: ChainId.Blast,
@@ -459,14 +438,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/chiliz.png',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 8080847 } },
   }),
-  [ChainId.CoinExSmartChainMainnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.CoinExSmartChainMainnet,
-    name: 'CoinEx Smart Chain',
-    nativeToken: 'CET',
-    nativeTokenCoingeckoId: 'coinex-token',
-    logoUrl: '/assets/images/vendor/chains/coinex.svg',
-  }),
   [ChainId.CoreBlockchainMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.CoreBlockchainMainnet,
@@ -491,26 +462,6 @@ export const CHAINS = {
       main: `https://lb.drpc.live/cronos/${DRPC_API_KEY}`,
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 1963112 } },
-  }),
-  [ChainId.CronosTestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.CronosTestnet,
-    name: 'Cronos Testnet',
-    nativeTokenCoingeckoId: 'crypto-com-chain',
-    logoUrl: '/assets/images/vendor/chains/cronos.svg',
-    etherscanCompatibleApiUrl: 'https://cronos.org/explorer/testnet3/api',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 10191251 } },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.CronosMainnet,
-  }),
-  [ChainId.DarwiniaNetwork]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.DarwiniaNetwork,
-    name: 'Darwinia',
-    nativeTokenCoingeckoId: 'darwinia-network',
-    logoUrl: '/assets/images/vendor/chains/darwinia.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.darwinia.network/api',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 69420 } },
   }),
   [ChainId.DegenChain]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -548,19 +499,6 @@ export const CHAINS = {
       main: 'https://rpc.edu-chain.raas.gelato.cloud',
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 16410660 } },
-  }),
-  [ChainId.ElastosSmartChain]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.ElastosSmartChain,
-    name: 'Elastos',
-    nativeTokenCoingeckoId: 'elastos',
-    coingeckoNetworkId: 'ela',
-    logoUrl: '/assets/images/vendor/chains/elastos.jpg',
-    etherscanCompatibleApiUrl: 'https://esc.elastos.io/api',
-    rpc: {
-      main: 'https://api.elastos.io/esc',
-      free: 'https://api.elastos.io/esc',
-    },
   }),
   [ChainId.EtherlinkMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -607,14 +545,6 @@ export const CHAINS = {
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 751532 } },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.EthereumMainnet,
-  }),
-  [ChainId.ExosamaNetwork]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.ExosamaNetwork,
-    name: 'Exosama',
-    nativeTokenCoingeckoId: 'exosama-network',
-    coingeckoNetworkId: 'exosama',
-    logoUrl: '/assets/images/vendor/chains/exosama.png',
   }),
   [ChainId.FantomOpera]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -721,20 +651,6 @@ export const CHAINS = {
     rpc: {
       main: 'https://api.harmony.one',
     },
-  }),
-  [ChainId.HashKeyChain]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.HashKeyChain,
-    name: 'HashKey Chain',
-    nativeToken: 'HSK',
-    nativeTokenCoingeckoId: 'hashkey-ecopoints',
-    coingeckoNetworkId: 'hashkey',
-    logoUrl: '/assets/images/vendor/chains/hashkey.svg',
-    explorerUrl: 'https://hashkey.blockscout.com',
-    rpc: {
-      main: 'https://mainnet.hsk.xyz',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
   }),
   [ChainId.Hemi]: new Chain({
     type: SupportType.BLOCKSCOUT,
@@ -1051,19 +967,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/neon.svg',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 206545524 } },
   }),
-  [ChainId.NeoXMainnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.NeoXMainnet,
-    name: 'Neo X',
-    nativeTokenCoingeckoId: 'gas',
-    infoUrl: 'https://x.neo.org',
-    logoUrl: '/assets/images/vendor/chains/neo-x.svg',
-    rpc: {
-      main: 'https://mainnet-1.rpc.banelabs.org',
-      free: 'https://mainnet-2.rpc.banelabs.org',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
-  }),
   [ChainId.OasysMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.OasysMainnet,
@@ -1073,18 +976,6 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/oasys.svg',
     explorerUrl: 'https://scan.oasys.games',
     etherscanCompatibleApiUrl: 'https://scan.oasys.games/api',
-  }),
-  [ChainId.OctaSpace]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.OctaSpace,
-    name: 'OctaSpace',
-    nativeTokenCoingeckoId: 'octaspace',
-    coingeckoNetworkId: 'octaspace',
-    logoUrl: '/assets/images/vendor/chains/octaspace.png',
-    etherscanCompatibleApiUrl: 'https://explorer.octa.space/api',
-    rpc: {
-      main: 'https://rpc.octa.space',
-    },
   }),
   [ChainId.OpBNBMainnet]: new Chain({
     type: SupportType.ETHERSCAN,
@@ -1408,18 +1299,6 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://explorer-superposition-1v9rjalnat.t.conduit.xyz/api',
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 39 } },
   }),
-  [ChainId.SyscoinMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.SyscoinMainnet,
-    name: 'Syscoin',
-    nativeTokenCoingeckoId: 'syscoin',
-    logoUrl: '/assets/images/vendor/chains/syscoin.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.syscoin.org/api',
-    rpc: {
-      main: 'https://rpc.syscoin.org',
-    },
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 287139 } },
-  }),
   [ChainId.TACMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.TACMainnet,
@@ -1489,16 +1368,6 @@ export const CHAINS = {
     coingeckoNetworkId: 'vana',
     logoUrl: '/assets/images/vendor/chains/vana.png',
     etherscanCompatibleApiUrl: 'https://vanascan.io/api',
-  }),
-  [ChainId.VelasEVMMainnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.VelasEVMMainnet,
-    name: 'Velas',
-    nativeTokenCoingeckoId: 'velas',
-    coingeckoNetworkId: 'velas',
-    logoUrl: '/assets/images/vendor/chains/velas.svg',
-    etherscanCompatibleApiUrl: 'https://evmexplorer.velas.com/api',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 55883577 } },
   }),
   [ChainId.Viction]: new Chain({
     type: SupportType.COVALENT,
