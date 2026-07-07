@@ -1,4 +1,4 @@
-import { hasActivePremiumEntitlement } from '@revoke.cash/core/premium/entitlements';
+import { hasActivePremiumEntitlement, hasActiveUltimateEntitlement } from '@revoke.cash/core/premium/entitlements';
 import { getAddressAndDomainName } from '@revoke.cash/core/whois';
 import CrispPremiumPageSync from 'app/CrispPremiumPageSync';
 import SharedLayout from 'app/layouts/SharedLayout';
@@ -32,12 +32,20 @@ const AddressPageLayout = async ({ params, children }: Props) => {
   const { address, domainName } = await getAddressAndDomainName(addressOrName);
   if (!address) notFound();
 
-  const isPremium = await hasActivePremiumEntitlement(address);
+  const [isPremium, isUltimate] = await Promise.all([
+    hasActivePremiumEntitlement(address),
+    hasActiveUltimateEntitlement(address),
+  ]);
 
   return (
     <SharedLayout searchBar>
       <div className="w-full max-w-7xl mx-auto px-4 lg:px-8">
-        <AddressIdentityContextProvider address={address} domainName={domainName} isPremium={isPremium}>
+        <AddressIdentityContextProvider
+          address={address}
+          domainName={domainName}
+          isPremium={isPremium}
+          isUltimate={isUltimate}
+        >
           <NextIntlClientProvider
             messages={{ common: messages.common, address: messages.address, exploits: messages.exploits }}
           >

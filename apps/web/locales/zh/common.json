@@ -109,7 +109,8 @@
     "what_to_do_when_scammed": "被骗了怎么办？"
   },
   "labels": {
-    "premium": "Premium"
+    "premium": "Premium",
+    "ultimate": "Ultimate"
   },
   "meta": {
     "description": "撤销在 {chainName} 等 100+ 区块链上的代币授权，重新掌控自己的钱包，确保资金安全。",

@@ -109,7 +109,8 @@
     "what_to_do_when_scammed": "¿Qué hacer cuando es estafado?"
   },
   "labels": {
-    "premium": "Premium"
+    "premium": "Premium",
+    "ultimate": "Ultimate"
   },
   "meta": {
     "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {chainName} y en 100 redes más.",

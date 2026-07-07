@@ -110,7 +110,8 @@
     "what_to_do_when_scammed": "What to Do When Scammed?"
   },
   "labels": {
-    "premium": "Premium"
+    "premium": "Premium",
+    "ultimate": "Ultimate"
   },
   "meta": {
     "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 100 other networks.",

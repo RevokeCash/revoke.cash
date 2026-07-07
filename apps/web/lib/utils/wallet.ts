@@ -6,7 +6,7 @@ export const getWalletIcon = (connector: Connector): string | undefined => {
 
   // Take logos from rainbowkit
   const BASE_URL =
-    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/9dd23d9e350c430622e15a629bab78d7cc89c566/packages/rainbowkit/src/wallets/walletConnectors';
+    'https://raw.githubusercontent.com/rainbow-me/rainbowkit/03360ee924cfa6af13ff1d623b356bf5a170348e/packages/rainbowkit/src/wallets/walletConnectors';
   const walletNameLowerCase = walletName.toLowerCase();
 
   const mapping: Record<string, string> = {

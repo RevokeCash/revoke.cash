@@ -7,9 +7,10 @@ import AddressDisplay from './AddressDisplay';
 import AddressExternalLinks from './AddressExternalLinks';
 import ConnectedLabel from './ConnectedLabel';
 import PremiumBadge from './PremiumBadge';
+import UltimateBadge from './UltimateBadge';
 
 const PremiumAddressHeader = () => {
-  const { address, domainName } = useAddress();
+  const { address, domainName, isUltimate } = useAddress();
 
   return (
     <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
@@ -25,7 +26,7 @@ const PremiumAddressHeader = () => {
           />
           <div className="flex items-center gap-2">
             <ConnectedLabel address={address} />
-            <PremiumBadge />
+            {isUltimate ? <UltimateBadge /> : <PremiumBadge />}
           </div>
         </div>
         <AddressExternalLinks address={address} chainId={ChainId.EthereumMainnet} />

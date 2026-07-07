@@ -109,7 +109,8 @@
     "what_to_do_when_scammed": "詐欺に遭った場合の対処方法"
   },
   "labels": {
-    "premium": "Premium"
+    "premium": "Premium",
+    "ultimate": "Ultimate"
   },
   "meta": {
     "description": "{chainName}とその他100以上のネットワークで、過去に付与したトークン承認や許可を取り消すことにより、ウォレットのコントロールを取り戻して、安全でいましょう。",
