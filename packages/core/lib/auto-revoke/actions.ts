@@ -258,7 +258,7 @@ export const markActionSubmitted = async (
   chainId: number,
   signerAddress: Address,
   params: SubmittedTransactionParams & { permissionId: string },
-  billing: { address: Address; enforceBudget: boolean },
+  billing: { address: Address; isUrgent: boolean },
 ): Promise<MarkActionSubmittedResult> => {
   return getTransactionalDb().transaction(async (trx) => {
     await trx.execute(
@@ -271,13 +271,16 @@ export const markActionSubmitted = async (
     // Race condition: if a concurrent action claimed the nonce in the meantime, the caller must first get a new nonce.
     if (pipeline.maxAssignedNonce !== null && params.nonce <= pipeline.maxAssignedNonce) return 'nonce_conflict';
 
-    // The action is charged to the oldest billable subscription that still has budget remaining
+    // The action is charged to the oldest billable subscription whose budget admits it
     const billingCandidates = await findBillingSubscriptionIds(trx, billing.address);
     if (billingCandidates.length === 0) return 'no_billable_subscription';
 
-    const billedSubscriptionId = billing.enforceBudget
-      ? await findSubscriptionWithRemainingBudget(trx, billingCandidates)
-      : billingCandidates[0];
+    const billedSubscriptionId = await findSubscriptionWithRemainingBudget(
+      trx,
+      billingCandidates,
+      params.estimatedCostUsd,
+      billing.isUrgent,
+    );
 
     if (!billedSubscriptionId) return 'budget_exceeded';
 
@@ -317,9 +320,11 @@ export const markActionSubmitted = async (
 const findSubscriptionWithRemainingBudget = async (
   trx: DatabaseTransaction,
   candidates: string[],
+  estimatedCostUsd: number | null,
+  isUrgent: boolean,
 ): Promise<string | null> => {
   for (const candidate of candidates) {
-    const decision = await lockAndCheckBudget(trx, candidate);
+    const decision = await lockAndCheckBudget(trx, candidate, estimatedCostUsd, isUrgent);
     if (decision.allowed) return candidate;
   }
 

@@ -125,7 +125,7 @@ const submitAction = async (action: Action, signer: Signer): Promise<ExecutionRe
       },
       {
         address: action.observation.address,
-        enforceBudget: !eligibility.isUrgent,
+        isUrgent: eligibility.isUrgent,
       },
     );
 

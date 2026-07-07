@@ -8,6 +8,12 @@ import type { Address } from 'viem';
 const MONTHLY_BUDGET_USD = 5;
 const MAX_ACTION_COST_USD = 2;
 
+// Dust-cheap revokes are still admitted even with the monthly budget used up (e.g. sub-cent L2 revokes)
+const DUST_ACTION_COST_USD = 0.005;
+
+// Even budget-exempt revokes (dust and exploit protection) are bounded by a fixed multiple of the budget
+const BUDGET_CEILING_MULTIPLIER = 2;
+
 const SOFT_ACTION_COST_USD = 0.2;
 const SOFT_CAP_PATIENCE_MS = 24 * HOUR;
 
@@ -100,14 +106,28 @@ export const getMonthlyBudget = async (
   return { budgetUsd, committedUsd, remainingUsd, maxActionCostUsd: MAX_ACTION_COST_USD, period };
 };
 
-export const lockAndCheckBudget = async (trx: DatabaseTransaction, subscriptionId: string): Promise<BudgetDecision> => {
+export const lockAndCheckBudget = async (
+  trx: DatabaseTransaction,
+  subscriptionId: string,
+  estimatedCostUsd: number | null,
+  isUrgent: boolean,
+): Promise<BudgetDecision> => {
   await trx.execute(
     sql`SELECT pg_advisory_xact_lock(hashtextextended(${`auto_revoke_budget:${subscriptionId}`}, 0::bigint))`,
   );
 
   const monthlyBudget = await getMonthlyBudget(subscriptionId, trx);
+  const withinCeiling = monthlyBudget.committedUsd < monthlyBudget.budgetUsd * BUDGET_CEILING_MULTIPLIER;
+  const blocked: BudgetDecision = { allowed: false, reason: 'monthly_budget', nextRetryAt: getNextBudgetRetryAt() };
+
+  if (isUrgent) {
+    return withinCeiling ? { allowed: true } : blocked;
+  }
+
   if (monthlyBudget.remainingUsd <= 0) {
-    return { allowed: false, reason: 'monthly_budget', nextRetryAt: getNextBudgetRetryAt() };
+    const withinDustAllowance = estimatedCostUsd !== null && estimatedCostUsd < DUST_ACTION_COST_USD && withinCeiling;
+
+    if (!withinDustAllowance) return blocked;
   }
 
   return { allowed: true };
