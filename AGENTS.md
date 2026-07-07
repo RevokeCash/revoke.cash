@@ -13,7 +13,7 @@ NEVER stage changes, just leave them in the working directory.
 - App type: Next.js 16 App Router dApp for inspecting/revoking approvals and related wallet permissions.
 - Stack: React 19, TypeScript (strict), Tailwind v4, wagmi + viem, TanStack Query, Zustand.
 - i18n: `next-intl`, locales `en`, `es`, `ja`, `ru`, `zh`.
-- Chain coverage: very large multichain surface (110+ mainnets and 15 testnets in chain selector).
+- Chain coverage: very large multichain surface (100+ networks).
 - Package manager: Yarn 4 (`nodeLinker: node-modules`, scripts locked down via `@lavamoat/allow-scripts`).
 
 ### Conventions and Gotchas
@@ -28,3 +28,4 @@ NEVER stage changes, just leave them in the working directory.
 - Prefer `const` assignment and not reassigning variables.
 - Use descriptive variable names, no single letter variables unless they are very common and well-known (e.g. `i`, `j`, `k`).
 - Prefer array methods over manual loops and avoid nested loops if possible.
+- Don't use em-dashes in content.
