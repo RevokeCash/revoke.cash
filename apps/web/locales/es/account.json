@@ -1,58 +1,188 @@
 {
   "addresses": {
-    "add_address": "Add address",
-    "remove": "Remove",
-    "title": "Premium Wallets"
+    "add_address": "Agregar dirección",
+    "add_failed": "No se pudo agregar la dirección",
+    "placeholder": "Dirección o nombre de dominio",
+    "remove": "Eliminar",
+    "remove_failed": "No se pudo eliminar la dirección",
+    "resolve_failed": "No se pudo resolver la dirección o el nombre.",
+    "title": "Mis Direcciones Premium"
+  },
+  "auto_revoke": {
+    "activity": {
+      "columns": {
+        "asset": "Asset",
+        "chain": "Network",
+        "cost": "Cost",
+        "date": "Date",
+        "spender": "Spender",
+        "status": "Status",
+        "trigger": "Trigger",
+        "wallet": "Wallet"
+      },
+      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
+      "reasons": {
+        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
+        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
+        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
+        "execution_failed": "The revoke transaction could not be completed.",
+        "monthly_budget": "Waiting because the monthly budget is used up.",
+        "nonce_consumed": "Resubmitting after a transaction conflict.",
+        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
+        "queued": "Waiting to be executed.",
+        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
+        "transaction_reverted": "The revoke transaction reverted on-chain.",
+        "transient_error": "A temporary error occurred; this will be retried."
+      },
+      "scope": {
+        "mine": "Your activity",
+        "subscription": "All members"
+      },
+      "status": {
+        "failed": "Failed",
+        "pending": "Pending",
+        "revoked": "Revoked",
+        "skipped": "Not needed",
+        "submitting": "Submitting"
+      },
+      "title": "Activity",
+      "triggers": {
+        "exploit": "Exploit",
+        "risk_score": "Risky",
+        "stale": "Stale"
+      }
+    },
+    "budget": {
+      "per_action_cap": "Each revoke is capped at {cap}.",
+      "resets": "Resets {date}",
+      "used": "{used} of {total} used this month"
+    },
+    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
+    "permissions": {
+      "connect_to_manage": "Connect this wallet to manage its permissions.",
+      "grant": "Grant",
+      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
+      "grant_failed": "Failed to grant auto-revoke permission.",
+      "networks_enabled": "{enabled}/{total} networks enabled",
+      "revoke_failed": "Failed to revoke auto-revoke permission.",
+      "sync": "Sync from wallet",
+      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
+      "sync_success": "Auto-revoke permissions synced from wallet.",
+      "title": "Permissions"
+    },
+    "rules": {
+      "days": "days",
+      "managed_by": "Managed by {owner}",
+      "risk_detection": "Risky Approval Detection",
+      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
+      "save_failed": "Failed to save rules.",
+      "sensitivity_exploits_only": "Exploits only",
+      "sensitivity_high": "High risk",
+      "sensitivity_medium": "Medium risk and above",
+      "stale_approval": "Stale Approval Cleanup",
+      "stale_approval_description": "Revoke approvals older than the specified number of days.",
+      "title": "Rules",
+      "title_defaults": "Default Rules"
+    },
+    "rules_source": {
+      "custom": "Custom rules",
+      "subscription_defaults": "Managed by {owner}",
+      "switch_failed": "Failed to switch rules source.",
+      "title": "Rules Source"
+    },
+    "title": "Auto-Revoking",
+    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
   },
   "billing": {
     "columns": {
-      "amount": "Amount",
-      "date": "Date",
+      "amount": "Monto",
+      "date": "Fecha",
       "plan": "Plan",
-      "transaction": "Transaction"
+      "transaction": "Transacción"
     },
-    "no_payments": "No payment history yet.",
-    "title": "Billing"
+    "no_payments": "Aún no hay historial de pagos.",
+    "title": "Facturación"
   },
-  "description": "Manage your premium subscription and address slots.",
-  "granted": {
+  "coverage": {
     "active": "Active",
-    "granted_by": "Granted by {address} · Valid until {date}",
-    "title": "Granted Premium Access"
+    "extension": {
+      "get_extension": "Get Revoke Sidekick",
+      "lite_description": "Coverage is inactive because the extension is on the Lite tier. Switch to Standard to activate up to $30k in theft coverage.",
+      "not_installed_description": "You are currently not covered by the Revoke Sidekick extension. Install the Revoke Sidekick extension for real-time transaction warnings and up to $30k in theft coverage.",
+      "standard_description": "You are covered for up to $30k in theft protection through the Revoke Sidekick extension.",
+      "title": "Revoke Sidekick Coverage"
+    },
+    "fairside": {
+      "active_description": "You are covered for up to {amount} in theft protection through Fairside.",
+      "covered": "{amount} covered",
+      "covered_wallets": "Covered Wallets",
+      "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+      "get_coverage": "Get Coverage",
+      "manage": "Manage Coverage",
+      "title": "Fairside Coverage",
+      "valid_until": "Valid until {date}.",
+      "wallets_description": "Sign an authentication message to view your covered wallets."
+    },
+    "inactive": "Inactive",
+    "title": "Theft Coverage"
+  },
+  "description": "Gestiona tu suscripción premium y tus espacios de direcciones.",
+  "error": "Se produjo un error al cargar los datos de tu suscripción. Por favor inténtalo de nuevo más tarde.",
+  "granted": {
+    "active": "Activo",
+    "granted_by": "Concedido por {address} · Válido hasta {date}",
+    "title": "Acceso Premium Concedido"
   },
   "meta": {
-    "description": "Manage your account and premium settings.",
-    "title": "Account Settings"
+    "description": "Gestiona tu cuenta y la configuración premium.",
+    "title": "Mi Cuenta"
   },
   "subscription": {
-    "active": "Active",
+    "active": "Activo",
     "buttons": {
-      "confirming": "Confirming payment",
-      "creating": "Creating payment",
-      "extend": "Extend",
-      "paying": "Confirm in wallet",
-      "subscribe": "Subscribe",
-      "try_again": "Try again",
-      "upgrade": "Upgrade"
+      "confirming": "Confirmando pago",
+      "creating": "Creando pago",
+      "extend": "Extender",
+      "paying": "Confirmar en la cartera",
+      "subscribe": "Suscribirse",
+      "try_again": "Intentar otra vez",
+      "upgrade": "Actualizar"
     },
-    "downgrade_not_supported": "You cannot downgrade an active subscription.",
-    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started.",
-    "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
-    "payment_network": "Payment network",
-    "payment_summary": "You will pay {amount} {token} for {days} days and up to {maxAddresses} {maxAddresses, plural, =1 {address} other {addresses}}.",
+    "downgrade_not_supported": "No puedes bajar de categoría una suscripción activa.",
+    "granted_by": "Granted by {address}",
+    "no_subscription": "No tienes una suscripción premium activa. Suscríbete a continuación para empezar.",
+    "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
+    "payment_confirmed": "¡Pago confirmado! Tu suscripción premium ya está activa.",
+    "payment_failed": "El pago de la suscripción ha fallado",
+    "payment_network": "Red de pago",
+    "payment_summary": "Pagarás {amount} {token} por {days} días y hasta {maxAddresses} {maxAddresses, plural, =1 {dirección} other {direcciones}}.",
     "plan": "Plan",
-    "plan_description": "${price}/year · {maxAddresses, plural, =1 {1 address} other {{maxAddresses} addresses}}",
+    "plan_description": "${price}/año ·{maxAddresses, plural, =1 {1 dirección} other {{maxAddresses} direcciones}}",
     "plan_options": {
-      "basic_access": "Basic Access",
-      "current": "Current",
-      "free": "Free"
+      "basic_access": "Acceso Básico",
+      "current": "Actual",
+      "free": "Gratis"
     },
-    "slots_summary": "{used}/{max} address {max, plural, =1 {slot} other {slots}} used",
-    "title": "Premium Subscription",
-    "valid_until": "Valid until {date}",
-    "wallet": "Wallet"
+    "plans_unavailable": "El proceso de pago no está disponible temporalmente. Por favor inténtalo de nuevo más tarde.",
+    "slots_summary": "{used}/{max} dirección {max, plural, =1 {espacio} other {espacios}} utilizados",
+    "title": "Mi Suscripción Premium",
+    "valid_until": "Válido hasta {date}",
+    "wallet": "Cartera"
+  },
+  "tabs": {
+    "auto_revoke": "Auto-Revoking",
+    "billing": "Billing",
+    "coverage": "Coverage",
+    "subscription": "Subscription"
   },
   "unauthenticated": {
-    "description": "Please sign in with Ethereum to access your account page."
+    "benefits": {
+      "address_slots": "Add or remove wallets",
+      "billing": "View your billing history",
+      "coverage": "View and manage Fairside coverage",
+      "manage_subscription": "Manage your Premium subscription",
+      "title": "What you can do here"
+    },
+    "description": "Por favor inicia sesión con Ethereum para acceder a la página de tu cuenta."
   }
 }

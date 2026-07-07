@@ -43,8 +43,8 @@
       "batch_revoke": "Batch revoke ($1.50/batch)",
       "browser_extension": "Browser extension warnings",
       "exploit_checker": "Single-chain exploit checker",
-      "single_chain": "Single-chain approval dashboard",
-      "history": "Single-chain approval history"
+      "history": "Single-chain approval history",
+      "single_chain": "Single-chain approval dashboard"
     },
     "free_title": "Free",
     "highlights": {
@@ -55,17 +55,17 @@
       "time_machine": "Time machine for historical approvals",
       "unlimited_batch_revokes": "Unlimited batch revokes"
     },
-    "premium_title": "Premium",
     "premium_price": "$99/year",
-    "ultimate_title": "Ultimate",
-    "ultimate_price": "$199/year",
-    "ultimate_features": {
-      "set_and_forget_protection": "Set-and-forget protection",
-      "continuous_monitoring": "Continuous monitoring",
-      "automated_revoking": "Automated revoking",
-      "automated_revoking_tooltip": "Supported on select networks and wallets."
-    },
+    "premium_title": "Premium",
     "title": "Revoke Premium",
+    "ultimate_features": {
+      "automated_revoking": "Automated revoking",
+      "automated_revoking_tooltip": "Supported on select networks and wallets.",
+      "continuous_monitoring": "Continuous monitoring",
+      "set_and_forget_protection": "Set-and-forget protection"
+    },
+    "ultimate_price": "$199/year",
+    "ultimate_title": "Ultimate",
     "view_pricing": "View pricing"
   },
   "stats": {

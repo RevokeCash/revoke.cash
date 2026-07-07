@@ -1,89 +1,4 @@
 {
-  "auto_revoke": {
-    "title": "Auto-Revoking",
-    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
-    "permissions": {
-      "title": "Permissions",
-      "grant": "Grant",
-      "networks_enabled": "{enabled}/{total} networks enabled",
-      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
-      "grant_failed": "Failed to grant auto-revoke permission.",
-      "revoke_failed": "Failed to revoke auto-revoke permission.",
-      "sync": "Sync from wallet",
-      "sync_success": "Auto-revoke permissions synced from wallet.",
-      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
-      "connect_to_manage": "Connect this wallet to manage its permissions."
-    },
-    "rules_source": {
-      "title": "Rules Source",
-      "custom": "Custom rules",
-      "subscription_defaults": "Managed by {owner}",
-      "switch_failed": "Failed to switch rules source."
-    },
-    "rules": {
-      "title": "Rules",
-      "title_defaults": "Default Rules",
-      "risk_detection": "Risky Approval Detection",
-      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
-      "sensitivity_medium": "Medium risk and above",
-      "sensitivity_high": "High risk",
-      "sensitivity_exploits_only": "Exploits only",
-      "stale_approval": "Stale Approval Cleanup",
-      "stale_approval_description": "Revoke approvals older than the specified number of days.",
-      "days": "days",
-      "managed_by": "Managed by {owner}",
-      "save_failed": "Failed to save rules."
-    },
-    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription.",
-    "activity": {
-      "title": "Activity",
-      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
-      "scope": {
-        "mine": "Your activity",
-        "subscription": "All members"
-      },
-      "columns": {
-        "date": "Date",
-        "wallet": "Wallet",
-        "chain": "Network",
-        "asset": "Asset",
-        "spender": "Spender",
-        "trigger": "Trigger",
-        "status": "Status",
-        "cost": "Cost"
-      },
-      "triggers": {
-        "exploit": "Exploit",
-        "risk_score": "Risky",
-        "stale": "Stale"
-      },
-      "status": {
-        "revoked": "Revoked",
-        "failed": "Failed",
-        "skipped": "Not needed",
-        "submitting": "Submitting",
-        "pending": "Pending"
-      },
-      "reasons": {
-        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
-        "queued": "Waiting to be executed.",
-        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
-        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
-        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
-        "monthly_budget": "Waiting because the monthly budget is used up.",
-        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
-        "transient_error": "A temporary error occurred; this will be retried.",
-        "nonce_consumed": "Resubmitting after a transaction conflict.",
-        "execution_failed": "The revoke transaction could not be completed.",
-        "transaction_reverted": "The revoke transaction reverted on-chain."
-      }
-    },
-    "budget": {
-      "used": "{used} of {total} used this month",
-      "resets": "Resets {date}",
-      "per_action_cap": "Each revoke is capped at {cap}."
-    }
-  },
   "addresses": {
     "add_address": "Add wallet",
     "add_failed": "Failed to add wallet",
@@ -93,10 +8,103 @@
     "resolve_failed": "Could not resolve wallet address or name",
     "title": "Premium Wallets"
   },
+  "auto_revoke": {
+    "activity": {
+      "columns": {
+        "asset": "Asset",
+        "chain": "Network",
+        "cost": "Cost",
+        "date": "Date",
+        "spender": "Spender",
+        "status": "Status",
+        "trigger": "Trigger",
+        "wallet": "Wallet"
+      },
+      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
+      "reasons": {
+        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
+        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
+        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
+        "execution_failed": "The revoke transaction could not be completed.",
+        "monthly_budget": "Waiting because the monthly budget is used up.",
+        "nonce_consumed": "Resubmitting after a transaction conflict.",
+        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
+        "queued": "Waiting to be executed.",
+        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
+        "transaction_reverted": "The revoke transaction reverted on-chain.",
+        "transient_error": "A temporary error occurred; this will be retried."
+      },
+      "scope": {
+        "mine": "Your activity",
+        "subscription": "All members"
+      },
+      "status": {
+        "failed": "Failed",
+        "pending": "Pending",
+        "revoked": "Revoked",
+        "skipped": "Not needed",
+        "submitting": "Submitting"
+      },
+      "title": "Activity",
+      "triggers": {
+        "exploit": "Exploit",
+        "risk_score": "Risky",
+        "stale": "Stale"
+      }
+    },
+    "budget": {
+      "per_action_cap": "Each revoke is capped at {cap}.",
+      "resets": "Resets {date}",
+      "used": "{used} of {total} used this month"
+    },
+    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
+    "permissions": {
+      "connect_to_manage": "Connect this wallet to manage its permissions.",
+      "grant": "Grant",
+      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
+      "grant_failed": "Failed to grant auto-revoke permission.",
+      "networks_enabled": "{enabled}/{total} networks enabled",
+      "revoke_failed": "Failed to revoke auto-revoke permission.",
+      "sync": "Sync from wallet",
+      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
+      "sync_success": "Auto-revoke permissions synced from wallet.",
+      "title": "Permissions"
+    },
+    "rules": {
+      "days": "days",
+      "managed_by": "Managed by {owner}",
+      "risk_detection": "Risky Approval Detection",
+      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
+      "save_failed": "Failed to save rules.",
+      "sensitivity_exploits_only": "Exploits only",
+      "sensitivity_high": "High risk",
+      "sensitivity_medium": "Medium risk and above",
+      "stale_approval": "Stale Approval Cleanup",
+      "stale_approval_description": "Revoke approvals older than the specified number of days.",
+      "title": "Rules",
+      "title_defaults": "Default Rules"
+    },
+    "rules_source": {
+      "custom": "Custom rules",
+      "subscription_defaults": "Managed by {owner}",
+      "switch_failed": "Failed to switch rules source.",
+      "title": "Rules Source"
+    },
+    "title": "Auto-Revoking",
+    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
+  },
+  "billing": {
+    "columns": {
+      "amount": "Amount",
+      "date": "Date",
+      "plan": "Plan",
+      "transaction": "Transaction"
+    },
+    "no_payments": "No payment history yet.",
+    "title": "Billing"
+  },
   "coverage": {
     "active": "Active",
-    "inactive": "Inactive",
-    "title": "Theft Coverage",
     "extension": {
       "get_extension": "Get Revoke Sidekick",
       "lite_description": "Coverage is inactive because the extension is on the Lite tier. Switch to Standard to activate up to $30k in theft coverage.",
@@ -114,17 +122,9 @@
       "title": "Fairside Coverage",
       "valid_until": "Valid until {date}.",
       "wallets_description": "Sign an authentication message to view your covered wallets."
-    }
-  },
-  "billing": {
-    "columns": {
-      "amount": "Amount",
-      "date": "Date",
-      "plan": "Plan",
-      "transaction": "Transaction"
     },
-    "no_payments": "No payment history yet.",
-    "title": "Billing"
+    "inactive": "Inactive",
+    "title": "Theft Coverage"
   },
   "description": "Manage your premium subscription and account settings.",
   "error": "Something went wrong loading your subscription data. Please try again later.",
@@ -149,12 +149,11 @@
       "upgrade": "Upgrade"
     },
     "downgrade_not_supported": "You cannot downgrade an active subscription.",
-    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
     "granted_by": "Granted by {address}",
+    "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
     "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
     "payment_failed": "Subscription payment failed",
-    "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
     "payment_network": "Payment network",
     "payment_summary": "You will pay {amount} {token} for {days} days. Includes up to {maxAddresses} {maxAddresses, plural, =1 {wallet} other {wallets}}.",
     "plan": "Plan",
@@ -164,25 +163,26 @@
       "current": "Current",
       "free": "Free"
     },
+    "plans_unavailable": "Checkout is temporarily unavailable. Please try again later.",
     "slots_summary": "{used}/{max} wallet {max, plural, =1 {slot} other {slots}} used",
     "title": "Premium Subscription",
     "valid_until": "Valid until {date}",
     "wallet": "Wallet"
   },
-  "unauthenticated": {
-    "description": "Sign in to manage your Premium subscription, wallet slots, and coverage.",
-    "benefits": {
-      "title": "What you can do here",
-      "manage_subscription": "Manage your Premium subscription",
-      "address_slots": "Add or remove wallets",
-      "coverage": "View and manage Fairside coverage",
-      "billing": "View your billing history"
-    }
-  },
   "tabs": {
-    "subscription": "Subscription",
     "auto_revoke": "Auto-Revoking",
     "billing": "Billing",
-    "coverage": "Coverage"
+    "coverage": "Coverage",
+    "subscription": "Subscription"
+  },
+  "unauthenticated": {
+    "benefits": {
+      "address_slots": "Add or remove wallets",
+      "billing": "View your billing history",
+      "coverage": "View and manage Fairside coverage",
+      "manage_subscription": "Manage your Premium subscription",
+      "title": "What you can do here"
+    },
+    "description": "Sign in to manage your Premium subscription, wallet slots, and coverage."
   }
 }

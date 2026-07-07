@@ -5,6 +5,7 @@
     "empty_chains_count": "{count, plural, =0 {No hay redes sin aprobaciones} =1 {# red sin aprobaciones} other {# redes sin aprobaciones}}",
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
+    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
     "token_id": "Token #{tokenId}",
     "unknown": "Desconocido",
     "unlimited": "Ilimitada"
@@ -102,6 +103,7 @@
     },
     "no_delegations": "No se encontraron delegaciones",
     "no_eip7702_delegations": "No se encontraron delegaciones EIP7702",
+    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
     "this_wallet": "Esta cartera",
     "tooltips": {
       "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para actuar en su nombre en las plataformas compatibles para un contrato específico.",
@@ -157,7 +159,7 @@
     "date": "Fecha",
     "event_type": "Tipo de evento",
     "expiration": "Vencimiento",
-    "last_checked": "Última Verificación",
+    "last_checked": "Last Checked",
     "last_updated": "Última Actualización",
     "policy_type": "Tipo de Permiso",
     "session_hash": "Identificador de sesión",
@@ -208,8 +210,8 @@
   },
   "premium": {
     "banner": {
-      "cta": "Upgrade to Premium",
-      "description": "Want a unified view across all networks?"
+      "cta": "Actualizar a Premium",
+      "description": "¿Quieres tener una visión unificada de todas las redes?"
     }
   },
   "risk_factors": {
@@ -277,6 +279,14 @@
       }
     },
     "label": "Ordenar"
+  },
+  "time_machine": {
+    "apply": "Aplicar",
+    "description": "Viaja al pasado para ver cómo eran tus autorizaciones en un momento concreto. Las acciones de revocación están desactivadas mientras se consultan los datos históricos.",
+    "exit": "Volver al presente",
+    "label": "Time Machine",
+    "now": "Ahora",
+    "viewing_as_of": "Viendo aprobaciones a partir de {date}, {time}"
   },
   "tooltips": {
     "connect_wallet": "Por favor conecta tu cartera para continuar",

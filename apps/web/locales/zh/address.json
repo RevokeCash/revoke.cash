@@ -5,6 +5,7 @@
     "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
     "none_found": "没有授权",
     "none_found_filtered": "所选过滤条件下未找到授权",
+    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
     "token_id": "代币 #{tokenId}",
     "unknown": "未知",
     "unlimited": "无限"
@@ -102,6 +103,7 @@
     },
     "no_delegations": "No delegations found",
     "no_eip7702_delegations": "未找到 EIP7702 授权",
+    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
     "this_wallet": "This wallet",
     "tooltips": {
       "contract": "合约级别的授权允许被授权人代表您在特定支持的合约平台上代表您行事。",
@@ -157,7 +159,7 @@
     "date": "日期",
     "event_type": "事件类型",
     "expiration": "到期",
-    "last_checked": "上次检查",
+    "last_checked": "Last Checked",
     "last_updated": "上次更新",
     "policy_type": "权限类型",
     "session_hash": "会话标识符",
@@ -277,6 +279,14 @@
       }
     },
     "label": "排序"
+  },
+  "time_machine": {
+    "apply": "Apply",
+    "description": "Travel back in time to see what your approvals looked like at a specific point in the past. Revoke actions are disabled while viewing historical data.",
+    "exit": "Back to Present",
+    "label": "Time Machine",
+    "now": "Now",
+    "viewing_as_of": "Viewing approvals as of {date}, {time}"
   },
   "tooltips": {
     "connect_wallet": "请连接钱包继续下一步",

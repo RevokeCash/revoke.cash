@@ -5,6 +5,7 @@
     "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
     "none_found": "Доступы не найдены",
     "none_found_filtered": "Для выбранных фильтров не найдено доступов.",
+    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
     "token_id": "Токен #{tokenId}",
     "unknown": "Неизвестно",
     "unlimited": "Неограниченный"
@@ -102,6 +103,7 @@
     },
     "no_delegations": "No delegations found",
     "no_eip7702_delegations": "Делегации EIP7702 не найдены",
+    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
     "this_wallet": "This wallet",
     "tooltips": {
       "contract": "Делегирование на уровне контракта дает делегату разрешение действовать от вашего имени на поддерживаемых платформах по конкретному контракту.",
@@ -157,7 +159,7 @@
     "date": "Дата",
     "event_type": "Тип события",
     "expiration": "Срок действия",
-    "last_checked": "Посл. проверка",
+    "last_checked": "Last Checked",
     "last_updated": "Посл. обнов.",
     "policy_type": "Тип разрешения",
     "session_hash": "Идентификатор сессии",
@@ -277,6 +279,14 @@
       }
     },
     "label": "Сортировать"
+  },
+  "time_machine": {
+    "apply": "Apply",
+    "description": "Travel back in time to see what your approvals looked like at a specific point in the past. Revoke actions are disabled while viewing historical data.",
+    "exit": "Back to Present",
+    "label": "Time Machine",
+    "now": "Now",
+    "viewing_as_of": "Viewing approvals as of {date}, {time}"
   },
   "tooltips": {
     "connect_wallet": "Пожалуйста, подключите свой кошелек, чтобы продолжить",

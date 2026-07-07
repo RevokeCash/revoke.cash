@@ -6,9 +6,10 @@
   },
   "buttons": {
     "authenticate": "Autenticar",
+    "authenticate_wallet": "Authenticate Wallet",
     "authenticated": "Autenticado",
     "authenticating": "Autenticando",
-    "back_to_exploits": "Volver a Hacks",
+    "back_to_exploits": "Volver a Exploits",
     "bulk_delist": "Eliminación Masiva",
     "cancel": "Cancelar",
     "cancel_signatures": "Cancelar Firmas Potenciales",
@@ -31,20 +32,20 @@
     "get_started": "Empezar",
     "increase": "Aumentar",
     "loading": "Cargando",
-    "my_account": "My Account",
+    "my_account": "Mi Cuenta",
     "my_allowances": "Mis Autorizaciones",
     "next": "Siguiente",
     "previous": "Anterior",
-    "remove": "Remove",
-    "report_exploit": "Informar de un Hack",
+    "remove": "Eliminar",
+    "report_exploit": "Informar de un Exploit",
+    "retrying": "Retrying",
     "revoke": "Revocar",
     "revoke_selected": "Revocar lo seleccionado",
     "revoking": "Revocando",
-    "retrying": "Reintentando",
     "send": "Enviar",
     "sending": "Enviando",
     "share_on_x": "Compartir en X",
-    "sign_in_with_ethereum": "Sign In with Ethereum",
+    "sign_in_with_ethereum": "Iniciar sesión con Ethereum",
     "switch_chain": "Cambiar de Red",
     "switching": "Cambiando",
     "translate": "Ayúdanos a traducir esta página",
@@ -52,7 +53,7 @@
     "understand": "Entiendo",
     "update": "Actualizar",
     "updating": "Actualizando",
-    "upgrade_to_premium": "Upgrade to Premium"
+    "upgrade_to_premium": "Actualizar a Premium"
   },
   "chain_select": {
     "mainnets": "Redes Principales",
@@ -109,7 +110,7 @@
     "what_to_do_when_scammed": "¿Qué hacer cuando es estafado?"
   },
   "labels": {
-    "premium": "Premium",
+    "premium": "Prémium",
     "ultimate": "Ultimate"
   },
   "meta": {
@@ -119,13 +120,13 @@
   "nav": {
     "about": "Sobre nosotros",
     "blog": "Blog",
-    "exploits": "Hacks",
+    "exploits": "Exploits",
     "extension": "Extensión",
     "faq": "FAQ",
     "learn": "Aprender",
     "merchandise": "Mercancía",
     "more": "Más",
-    "premium": "Premium",
+    "premium": "Prémium",
     "search": "Buscar Cuentas por Dirección o Dominio"
   },
   "pagination": {

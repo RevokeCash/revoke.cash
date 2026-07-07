@@ -1,10 +1,11 @@
 {
   "allowances": {
     "amount": "{amount} {symbol}",
-    "count": "{count, plural, =0 {No approvals} =1 {# approval} other {# approvals}}",
-    "empty_chains_count": "{count, plural, =0 {No networks without approvals} =1 {# network without approvals} other {# networks without approvals}}",
+    "count": "{count, plural, =0 {承認なし} =1 {# 承認} other {# 承認}}",
+    "empty_chains_count": "{count, plural, =0 {承認のないネットワークなし} =1 {# 承認のないネットワーク} other {# 承認のないネットワーク}}",
     "none_found": "許可がされていません",
     "none_found_filtered": "選択したフィルタに対しての許可がありません",
+    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
     "token_id": "トークン #{tokenId}",
     "unknown": "不明",
     "unlimited": "無制限"
@@ -21,7 +22,7 @@
     },
     "no_tip": "チップなし",
     "revoked": "取り消された",
-    "select_tip_amount": "Select tip amount",
+    "select_tip_amount": "チップの金額を選択",
     "title": "一括取り消し",
     "total": "合計"
   },
@@ -82,7 +83,7 @@
   },
   "delegations": {
     "columns": {
-      "chain": "Network",
+      "chain": "ネットワーク",
       "contract": "資産/契約",
       "delegate": "委任者",
       "delegator": "委任させる者",
@@ -92,17 +93,18 @@
     "contract": {
       "not_applicable": "該当なし"
     },
-    "count": "{count, plural, =0 {No delegations} =1 {# delegation} other {# delegations}}",
-    "delegated_to": "Delegated To",
+    "count": "{count, plural, =0 {委任なし} =1 {# 委任} other {# 委任}}",
+    "delegated_to": "委任先",
     "eip7702_delegations": "EIP7702委任",
-    "empty_chains_count": "{count, plural, =0 {No networks without delegations} =1 {# network without delegations} other {# networks without delegations}}",
+    "empty_chains_count": "{count, plural, =0 {委任のないネットワークなし} =1 {# 委任のないネットワーク} other {# 委任のないネットワーク}}",
     "info_panel": {
       "description": "委任とは、他のアドレスにあなたの代わりに行動することを承認する方法です。例えば、資産の所有権を確認したり、エアドロップを請求したりする場合などです。これは、セキュリティー上有益であり、<b>ホットウォレット</b>を使って資産を管理できるため、<b>コールドウォレット</b>を毎回のやり取りに対して使用する必要がなくなります。ただし、ホットウォレットが侵害された場合、攻撃者がそれを悪用してなりすまさないよう、委任を必ず取り消す必要があります。これらの委任は<b>異なる</b>ものであり、EIP7702委任とは異なり、ウォレットアプリケーション内で<i>のみ</i>取り消すことができます。",
       "title": "委任とは何ですか。"
     },
-    "no_delegations": "No delegations found",
+    "no_delegations": "委任は見つかりませんでした",
     "no_eip7702_delegations": "EIP7702委任は見つかりませんでした",
-    "this_wallet": "This wallet",
+    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
+    "this_wallet": "このウォレット",
     "tooltips": {
       "contract": "契約レベルの委任は、特定の契約でサポートされているプラットフォーム上でユーザーに代わって行動する許可を委任者に与えます。",
       "eip7702": "EIP7702委任は、ウォレットにスマートコントラクト機能を追加します。",
@@ -157,7 +159,7 @@
     "date": "日付",
     "event_type": "イベントの種類",
     "expiration": "有効期限",
-    "last_checked": "最終確認",
+    "last_checked": "Last Checked",
     "last_updated": "最終更新日",
     "policy_type": "許可タイプ",
     "session_hash": "セッション識別子",
@@ -172,9 +174,9 @@
     "cancelled_signatures": "取り消された署名",
     "none_found": "承認履歴が見つかりません",
     "revoked": "取り消されました",
-    "status_failed": "failed",
-    "status_loaded": "loaded",
-    "status_loading": "loading",
+    "status_failed": "失敗",
+    "status_loaded": "ロード済み",
+    "status_loading": "ロード中",
     "title": "承認履歴"
   },
   "labels": {
@@ -197,7 +199,7 @@
     "allowances": "許可",
     "coverage": "カバレッジ",
     "delegations": "委任の対象",
-    "exploits": "Exploits",
+    "exploits": "エクスプロイト",
     "history": "履歴",
     "more": "その他",
     "sessions": "セッション",
@@ -208,8 +210,8 @@
   },
   "premium": {
     "banner": {
-      "cta": "Upgrade to Premium",
-      "description": "Want a unified view across all networks?"
+      "cta": "プレミアムにアップグレード",
+      "description": "すべてのネットワークを統合的に把握したいですか？"
     }
   },
   "risk_factors": {
@@ -277,6 +279,14 @@
       }
     },
     "label": "並べ替え"
+  },
+  "time_machine": {
+    "apply": "申し込む",
+    "description": "過去のある時点での承認状況を確認するために、履歴をさかのぼることができます。履歴データを閲覧中は、承認の取り消し操作は利用できません。",
+    "exit": "現在に戻る",
+    "label": "タイムマシン",
+    "now": "今",
+    "viewing_as_of": "{date}、{time} 時点での承認状況"
   },
   "tooltips": {
     "connect_wallet": "続けるにはウォレットを接続してください",

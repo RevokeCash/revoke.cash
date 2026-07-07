@@ -5,21 +5,21 @@
   },
   "features": {
     "dashboard": {
-      "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
-      "title": "Approval Dashboard"
+      "description": "Obtén una visión general clara de todas las autorizaciones de tokens que hayas concedido. Ordena, filtra y revoca las que ya no necesites, todo desde un sencillo panel de control.",
+      "title": "Panel de aprobación"
     },
     "exploit_checker": {
-      "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
-      "title": "Exploit Checker"
+      "description": "Comprueba automáticamente tus autorizaciones con una base de datos de vulnerabilidades y estafas conocidas. Recibe una alerta si alguna de tus autorizaciones está en riesgo.",
+      "title": "Comprobador de Exploits"
     },
     "extension": {
-      "description": "The Revoke.cash browser extension warns you before you sign potentially harmful transactions. Prevention is always better than mitigation.",
-      "title": "Browser Extension"
+      "description": "La extensión del navegador Revoke.cash te avisa antes de que firmes transacciones potencialmente peligrosas. Más vale prevenir que curar.",
+      "title": "Extensión del Navegador"
     },
-    "title": "Built for Wallet Security"
+    "title": "Diseñado para la Seguridad de la Cartera"
   },
   "hero_section": {
-    "subtitle": "Inspect and revoke token approvals to protect your wallet from exploits and scams.",
+    "subtitle": "Revisa y revoca las autorizaciones de tokens para proteger tu cartera de exploits y estafas.",
     "title": "Recupera el Control de Tu Cartera."
   },
   "how_to": {
@@ -38,32 +38,40 @@
     "title": "¿Cómo Revocar Tus Autorizaciones?"
   },
   "premium": {
-    "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de $99/año.",
+    "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de $79/año.",
     "free_features": {
-      "batch_revoke": "Batch revoke ($1.50/batch)",
-      "browser_extension": "Browser extension warnings",
-      "exploit_checker": "Single-chain exploit checker",
-      "single_chain": "Single-chain approval dashboard"
+      "batch_revoke": "Revocación por lotes ($1,50/lote)",
+      "browser_extension": "Advertencias de la extensión del navegador",
+      "exploit_checker": "Comprobador de vulnerabilidades de cadena única",
+      "history": "Single-chain approval history",
+      "single_chain": "Panel de aprobación de cadena única"
     },
-    "free_title": "Free",
+    "free_title": "Gratis",
     "highlights": {
-      "address_slots": "Hasta 10 espacios para direcciones.",
       "multichain_dashboard": "Panel de control multichain — todas las cadenas a la vez.",
       "multichain_exploit_checker": "Comprobador de exploits multicadena",
       "multichain_history": "Historial de aprobaciones de multicadena",
       "priority_support": "Soporte prioritario",
-      "time_machine": "Time Machine for historical approvals",
+      "time_machine": "Time Machine para ver el historial de aprobaciones",
       "unlimited_batch_revokes": "Revocaciones de lotes ilimitadas"
     },
-    "premium_title": "Premium",
-    "starting_at": "Starting at $79/year",
+    "premium_price": "$99/year",
+    "premium_title": "Prémium",
     "title": "Revoke Premium",
+    "ultimate_features": {
+      "automated_revoking": "Automated revoking",
+      "automated_revoking_tooltip": "Supported on select networks and wallets.",
+      "continuous_monitoring": "Continuous monitoring",
+      "set_and_forget_protection": "Set-and-forget protection"
+    },
+    "ultimate_price": "$199/year",
+    "ultimate_title": "Ultimate",
     "view_pricing": "Ver precios"
   },
   "stats": {
-    "approvals_revoked": "Approvals Revoked",
-    "networks_supported": "{count} Networks Supported",
-    "protected_from_exploits": "Protected from Exploits",
-    "total_users": "Total Users"
+    "approvals_revoked": "Autorizaciones Revocadas",
+    "networks_supported": "Redes compatibles",
+    "protected_from_exploits": "Protegido contra Exploits",
+    "total_users": "Total de Usuarios"
   }
 }

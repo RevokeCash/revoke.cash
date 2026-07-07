@@ -1,26 +1,26 @@
 {
   "marketplace": {
-    "different_chain": "Or bulk delist on a different network",
+    "different_chain": "または、別のネットワークでの一括出品解除",
     "meta": {
-      "title": "{chainName} Marketplace Bulk Delister"
+      "title": "{chainName} マーケットプレイス一括削除ツール"
     },
     "table": {
-      "active_approvals": "{count, plural, =1 {1 active approval} other {# active approvals}}",
+      "active_approvals": "{count, plural, =1 {1 有効な承認} other {# 有効な承認}}",
       "headers": {
-        "actions": "Actions",
-        "last_delisted": "Last Delisted",
-        "marketplace": "Marketplace"
+        "actions": "アクション",
+        "last_delisted": "最終削除",
+        "marketplace": "マーケットプレイス"
       },
-      "none_found": "No marketplaces with active approvals found.",
-      "title": "Marketplaces with active approvals"
+      "none_found": "有効な承認を持つマーケットプレイスは見つかりませんでした。",
+      "title": "承認が有効なマーケットプレイス"
     },
-    "title": "{chainName} Marketplace Bulk Delister",
+    "title": "{chainName} マーケットプレイス一括削除ツール",
     "tooltips": {
-      "recently_delisted": "You have recently bulk delisted from this marketplace. It will remain in the list for you to bulk delist again later if needed."
+      "recently_delisted": "最近、このマーケットプレイスから一括出品を解除しました。必要に応じて後で再度一括出品を解除できるよう、リストには残ったままになります。"
     },
     "what_is_bulk_delisting": {
-      "content": "When you list NFTs or other assets for sale on marketplaces like OpenSea, you sign an offchain signature that authorizes the marketplace to transfer your assets. Scam websites can exploit this by tricking you into signing marketplace signatures that create zero-priced listings. Because these signatures are offchain, Revoke.cash cannot know whether you actually signed any.<br></br><br></br><b>Only use this tool if <i>you</i> know that you signed a marketplace signature on a scam website</b>, otherwise you are wasting transaction fees. Bulk delisting cancels <i>all</i> existing listings and offers on a marketplace at once by incrementing its onchain counter.",
-      "title": "What Is Bulk Delisting?"
+      "content": "OpenSeaなどのマーケットプレイスでNFTやその他の資産を出品する際、ユーザーはオフチェーン署名を行い、マーケットプレイスに対して資産の譲渡を許可します。詐欺サイトは、この仕組みを悪用し、価格0円の出品を作成するマーケットプレイスの署名に、ユーザーを騙して署名させることがあります。これらの署名はオフチェーンであるため、Revoke.cashでは実際に署名したかどうかを判別できません。<br></br><br></br><b><i></i>詐欺サイトでマーケットプレイスの署名を行ったと確信している場合のみ、このツールを使用してください。</b>そうでない場合は、取引手数料を無駄にすることになります。一括削除は、オンチェーンのカウンターをインクリメントすることで、マーケットプレイス上の既存の出品およびオファーを<i>すべて</i>一度にキャンセルします。",
+      "title": "一括削除とは何ですか？"
     }
   }
 }

@@ -25,7 +25,7 @@
       "question": "Mi pregunta no está aquí."
     },
     "recover_assets": {
-      "answer": "No. Revoke.cash es una herramienta <i>preventiva</i> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuye las posibilidades de convertirte en una víctima de hacks de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro.",
+      "answer": "No. Revoke.cash es una herramienta <i>preventiva</i> que te ayuda a practicar una higiene adecuada a tu cartera. Al regularmente revocar autorizaciones activas, disminuye las posibilidades de convertirte en una víctima de exploits de autorización. Pero desafortunadamente no puede ser usada para recuperar fondos robados. De todas formas, debes asegurarte de revocar todas las autorizaciones que fueron usadas para robar tus fondos para que ya no pueden robar más en el futuro.",
       "question": "¿Puedo usar Revoke.cash para recuperar activos robados?"
     },
     "sweeper_bot": {

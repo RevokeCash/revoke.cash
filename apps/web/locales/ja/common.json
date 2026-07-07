@@ -6,6 +6,7 @@
   },
   "buttons": {
     "authenticate": "認証する",
+    "authenticate_wallet": "Authenticate Wallet",
     "authenticated": "認証済み",
     "authenticating": "認証中",
     "back_to_exploits": "エクスプロイトの項目に戻る",
@@ -17,7 +18,7 @@
     "check_connected_address": "接続したアドレスの確認",
     "clear_filters": "フィルターをクリア",
     "close": "閉じる",
-    "collapse_all": "Collapse All",
+    "collapse_all": "すべて折りたたむ",
     "connect": "ウォレットを接続する",
     "connecting": "接続中",
     "delisting": "削除",
@@ -26,25 +27,25 @@
     "donate": "寄付する",
     "donating": "寄付をしています",
     "download": "ダウンロードする",
-    "expand_all": "Expand All",
+    "expand_all": "すべて展開",
     "explorer_links": "エクスプローラーリンク",
     "get_started": "開始する",
     "increase": "増加",
     "loading": "読み込み中",
-    "my_account": "My Account",
+    "my_account": "マイアカウント",
     "my_allowances": "私の許可一覧",
     "next": "次へ",
     "previous": "前へ",
-    "remove": "Remove",
+    "remove": "削除",
     "report_exploit": "エクスプロイトを報告する",
+    "retrying": "Retrying",
     "revoke": "取り消す",
     "revoke_selected": "選択を取り消す",
     "revoking": "取り消中",
-    "retrying": "再試行中",
     "send": "送信する",
     "sending": "送信中",
     "share_on_x": "Xで共有する",
-    "sign_in_with_ethereum": "Sign In with Ethereum",
+    "sign_in_with_ethereum": "Ethereumでログイン",
     "switch_chain": "ネットワークを切り替える",
     "switching": "切り替え中",
     "translate": "このページの翻訳にご協力ください",
@@ -52,7 +53,7 @@
     "understand": "理解しました",
     "update": "更新",
     "updating": "更新中",
-    "upgrade_to_premium": "Upgrade to Premium"
+    "upgrade_to_premium": "プレミアムにアップグレード"
   },
   "chain_select": {
     "mainnets": "メインネット",
@@ -109,7 +110,7 @@
     "what_to_do_when_scammed": "詐欺に遭った場合の対処方法"
   },
   "labels": {
-    "premium": "Premium",
+    "premium": "プレミアム",
     "ultimate": "Ultimate"
   },
   "meta": {
@@ -125,14 +126,14 @@
     "learn": "学ぶ",
     "merchandise": "商品",
     "more": "その他",
-    "premium": "Premium",
+    "premium": "プレミアム",
     "search": "アドレスまたはドメインでアカウントを検索する"
   },
   "pagination": {
     "first": "最初",
     "last": "最後",
     "page": "{total}ページ中{page}ページ目",
-    "show": "Show",
+    "show": "表示",
     "showing": "{total}件中{start}件目から{end}件目までを表示中"
   },
   "quiz": {

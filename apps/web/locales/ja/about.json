@@ -1,17 +1,61 @@
 {
-  "body": {
-    "growth": "Roscoは数年間、Web3分野の様々な企業で働いている間、サイドプロジェクトとしてRevoke.cashをメンテナンスしておりました。しかし、ここ数年でweb3分野は急成長し、適切なセキュリティツールを利用する必要性がますます明確になってきました。その為、Roscoは2022年にフルタイムでRevoke.cashに注力することを決めました。それ以来、<extension-link>Revoke.cashのブラウザ拡張機能</extension-link>でRevoke.cashツールセットを拡張し、全面的に刷新した承認のダッシュボードをリリース致しました。",
-    "intro": "Revoke.cashは、<rosco-twitter-link>Rosco Kalis</rosco-twitter-link>氏によって2019年に開発されました。当時、DeFiとスマートコントラクトはまだ黎明期でしたが、積極的に多くの開発が行われていました。プロジェクトに共通していることの1つは、トークンを使用するにはユーザー側で承認をする必要があるということでした。多くの場合、その承認する値は無制限となっていました。当時、一度行われた承認を取り消すツールは確立されておらず、それがRevoke.cash誕生のきっかけとなりました。",
-    "learn_more": "Revoke.cashとウォレットセキュリティについてより詳しく知りたい場合は、<learn-link>学習</learn-link>セクションをご覧ください。",
-    "team": "現在、Revoke.cashはRoscoと独立請負業者の小さなチームによって管理および開発されており、寄付、助成金、スポンサーシップによって資金提供されています。Revoke.cashは不可欠なweb3インフラストラクチャの一部と見なしています。そのため、当社のツールはオープンソースで無料で使用できます。また、持続可能性と独立性も重視しているため、VCの資金調達やトークンの立ち上げを行わずに、持続可能な収益を生み出すことを目指しています。"
-  },
-  "captions": {
-    "first_tweet": "はじまりの経緯",
-    "team": "Revoke.cashチーム"
-  },
   "meta": {
     "description": "Revoke.cashは、2019年にトークンの承認を管理するためのツールとしてRosco Kalis氏によって開発されました。それ以来、Revoke.cashはweb3セキュリティの定番ツールとなっています。",
     "title": "私たちについて"
+  },
+  "timeline": {
+    "batch_revoke": {
+      "description": "A much-requested feature, users can now revoke multiple approvals in a single flow with queued transactions.",
+      "title": "Batch Revoking"
+    },
+    "beyond_approvals": {
+      "description": "Revoke.cash expands beyond approval management with new tabs for managing delegations and viewing approval history.",
+      "title": "Delegations & History Tabs"
+    },
+    "created": {
+      "description": "Inspired by Paul Berg's talk at Devcon 5, Rosco Kalis builds the first token approval management tool, giving users a way to revoke unlimited approvals.",
+      "title": "Revoke.cash Created"
+    },
+    "extension": {
+      "description": "The crypto ecosystem sees a large increase in scams and phishing attacks. Rosco releases a browser extension that warns users before signing risky approvals, providing proactive protection.",
+      "title": "Browser Extension Launch"
+    },
+    "extension_overhaul": {
+      "description": "The threat landscape is constantly evolving, and the browser extension needs to stay ahead. Revoke.cash partners with Fairside to build a new extension with improved detection, UX and risk coverage.",
+      "title": "Extension Overhaul"
+    },
+    "full_time": {
+      "description": "After leaving his previous startup, Rosco decides to focus on Revoke.cash full-time, turning it from a side project into a mission.",
+      "title": "Going Full-Time"
+    },
+    "learn_section": {
+      "description": "While tools are an important part of security, it does not replace the need for education. A Learn Section is added to help users understand wallet security.",
+      "title": "Learn Section"
+    },
+    "multichain": {
+      "description": "The EVM ecosystem is growing rapidly, and Revoke.cash expands beyond Ethereum to support dozens of EVM-compatible networks.",
+      "title": "Multichain Expansion"
+    },
+    "nft_support": {
+      "description": "As NFTs rise in popularity, many users are giving approvals to marketplaces like OpenSea. Revoke.cash becomes the first tool to support revoking NFT approvals, expanding beyond ERC20 tokens.",
+      "title": "NFT Approval Support"
+    },
+    "premium": {
+      "description": "With a decline in public goods funding, Revoke.cash needs to find a sustainable business model. Revoke Premium is launched to generate real revenue.",
+      "title": "Revoke Premium"
+    },
+    "redesign": {
+      "description": "At this point, Revoke.cash has had the same visual design since 2019. To pave the way for the future, a complete visual overhaul of the Revoke.cash dashboard and website is released.",
+      "title": "Website Redesign"
+    },
+    "single_tx_batch": {
+      "description": "EIP7702 enables revoking multiple approvals in a single transaction, massively improving the user experience of batch revoking.",
+      "title": "Single-Transaction Batch Revoke"
+    },
+    "team_retropgf": {
+      "description": "Optimism RetroPGF provides major funding, enabling the first team expansion. In 2024, the team grows to include Dries and WiiMee as part-time team members.",
+      "title": "Team Growth & RetroPGF"
+    }
   },
   "title": "私たちについて"
 }
