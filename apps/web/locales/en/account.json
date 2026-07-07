@@ -65,6 +65,8 @@
         "pending": "Pending"
       },
       "reasons": {
+        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
+        "queued": "Waiting to be executed.",
         "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
         "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
         "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",

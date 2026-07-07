@@ -39,9 +39,7 @@ export const useGrantAutoRevokePermission = () => {
       console.error('Failed to grant permission:', error);
       toast.error(parseErrorMessage(error) || t('account.auto_revoke.permissions.grant_failed'));
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['auto-revoke'] });
-    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['auto-revoke'] }),
   });
 
   return {

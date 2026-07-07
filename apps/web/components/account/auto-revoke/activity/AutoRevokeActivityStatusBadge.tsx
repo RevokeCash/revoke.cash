@@ -7,6 +7,7 @@ import { twMerge } from 'tailwind-merge';
 interface Props {
   status: AutoRevokeActivityItem['status'];
   errorCode: AutoRevokeActivityItem['errorCode'];
+  nextRetryAt: AutoRevokeActivityItem['nextRetryAt'];
 }
 
 const STATUS_STYLES: Record<AutoRevokeActivityItem['status'], { key: string; className: string }> = {
@@ -20,7 +21,7 @@ const STATUS_STYLES: Record<AutoRevokeActivityItem['status'], { key: string; cla
   blocked_rules: { key: 'pending', className: 'bg-yellow-300' },
 };
 
-const AutoRevokeActivityStatusBadge = ({ status, errorCode }: Props) => {
+const AutoRevokeActivityStatusBadge = ({ status, errorCode, nextRetryAt }: Props) => {
   const t = useTranslations();
   const style = STATUS_STYLES[status];
   const label = (
@@ -29,9 +30,21 @@ const AutoRevokeActivityStatusBadge = ({ status, errorCode }: Props) => {
     </Label>
   );
 
-  if (!errorCode) return label;
+  const reason = getTooltipReason(status, errorCode, nextRetryAt);
+  if (!reason) return label;
 
-  return <WithHoverTooltip tooltip={t(`account.auto_revoke.activity.reasons.${errorCode}`)}>{label}</WithHoverTooltip>;
+  return <WithHoverTooltip tooltip={t(`account.auto_revoke.activity.reasons.${reason}`)}>{label}</WithHoverTooltip>;
+};
+
+const getTooltipReason = (
+  status: AutoRevokeActivityItem['status'],
+  errorCode: AutoRevokeActivityItem['errorCode'],
+  nextRetryAt: AutoRevokeActivityItem['nextRetryAt'],
+): string | null => {
+  if (errorCode) return errorCode;
+  if (status !== 'queued') return null;
+  if (nextRetryAt && new Date(nextRetryAt) > new Date()) return 'cooling';
+  return 'queued';
 };
 
 export default AutoRevokeActivityStatusBadge;

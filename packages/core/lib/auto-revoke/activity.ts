@@ -34,6 +34,7 @@ export interface AutoRevokeActivityItem {
   triggerType: Observation['triggerType'];
   status: ActionStatus;
   errorCode: ActionErrorCode | null;
+  nextRetryAt: string | null;
   costUsd: number | null;
   txHash: Hash | null;
 }
@@ -122,6 +123,7 @@ const mapActivityItem = (action: Action, metadata: ChainMetadata | undefined): A
     triggerType: action.observation.triggerType,
     status: action.status,
     errorCode: action.errorCode,
+    nextRetryAt: action.nextRetryAt?.toISOString() ?? null,
     costUsd: action.costUsd,
     txHash: action.transaction?.txHash ?? null,
   };

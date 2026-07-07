@@ -54,9 +54,7 @@ export const useRevokeAutoRevokePermission = () => {
       console.error('Failed to revoke permission:', error);
       toast.error(parseErrorMessage(error) || t('account.auto_revoke.permissions.revoke_failed'));
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['auto-revoke'] });
-    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['auto-revoke'] }),
   });
 
   return {

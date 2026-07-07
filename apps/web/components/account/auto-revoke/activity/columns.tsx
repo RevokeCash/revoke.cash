@@ -64,7 +64,13 @@ export const columns = [
   columnHelper.accessor('status', {
     id: ColumnId.STATUS,
     header: () => <HeaderCell i18nKey="account.auto_revoke.activity.columns.status" />,
-    cell: (info) => <AutoRevokeActivityStatusBadge status={info.getValue()} errorCode={info.row.original.errorCode} />,
+    cell: (info) => (
+      <AutoRevokeActivityStatusBadge
+        status={info.getValue()}
+        errorCode={info.row.original.errorCode}
+        nextRetryAt={info.row.original.nextRetryAt}
+      />
+    ),
   }),
   columnHelper.accessor('costUsd', {
     id: ColumnId.COST,

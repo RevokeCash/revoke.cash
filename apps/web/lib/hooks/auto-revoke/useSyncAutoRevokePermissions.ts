@@ -50,9 +50,7 @@ export const useSyncAutoRevokePermissions = () => {
       console.error('Failed to sync permissions:', error);
       toast.error(parseErrorMessage(error) || t('account.auto_revoke.permissions.sync_failed'));
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['auto-revoke'] });
-    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['auto-revoke'] }),
   });
 
   return {

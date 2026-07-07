@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger, type OnModuleDestroy } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { MINUTE } from '@revoke.cash/core/utils/time';
 import Bottleneck from 'bottleneck';
@@ -26,7 +26,7 @@ interface JobContext {
 }
 
 @Injectable()
-export class GroupLimiterService implements OnModuleDestroy {
+export class GroupLimiterService {
   private readonly logger = new Logger(GroupLimiterService.name);
   private readonly group: Bottleneck.Group;
   private readonly overflow: OverflowBehavior;
@@ -78,15 +78,5 @@ export class GroupLimiterService implements OnModuleDestroy {
 
       return null;
     }
-  }
-
-  async onModuleDestroy(): Promise<void> {
-    await this.group.disconnect(true).catch((error) => {
-      this.logger.warn({
-        event: 'group_limiter_disconnect_failed',
-        outcome: 'failed',
-        error: parseErrorMessage(error),
-      });
-    });
   }
 }
