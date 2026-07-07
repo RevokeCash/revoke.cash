@@ -1,5 +1,5 @@
 import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
-import { popIn, riseIn } from '../motion';
+import { popIn, riseIn } from '../../motion';
 
 export const CtaScene = () => {
   const frame = useCurrentFrame();

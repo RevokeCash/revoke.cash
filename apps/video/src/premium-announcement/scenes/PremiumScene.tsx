@@ -1,8 +1,8 @@
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
-import { ApprovalsTable } from '../components/ApprovalsTable';
-import { TimeMachinePanel } from '../components/TimeMachinePanel';
-import { MOCK_APPROVALS, MOCK_CHAIN_LOGOS } from '../data/mock-data';
-import { popIn, riseIn } from '../motion';
+import { ApprovalsTable } from '../../components/ApprovalsTable';
+import { TimeMachinePanel } from '../../components/TimeMachinePanel';
+import { MOCK_APPROVALS, MOCK_CHAIN_LOGOS } from '../../data/mock-data';
+import { popIn, riseIn } from '../../motion';
 
 // Beat 1: the multichain dashboard assembles. Beat 2: the time machine scrubs it back in time,
 // and the exploit marker disappears — the approval was still "safe" back then.

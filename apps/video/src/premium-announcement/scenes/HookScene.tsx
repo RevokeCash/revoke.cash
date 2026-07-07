@@ -1,5 +1,5 @@
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { riseIn } from '../motion';
+import { riseIn } from '../../motion';
 
 const STATS = [
   { value: '$140M+', label: 'protected from exploits' },

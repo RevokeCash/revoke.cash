@@ -1,10 +1,10 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
-import { Panel } from '../components/Panel';
-import { type ActivityStatus, StatusPill } from '../components/StatusPill';
-import { ToggleSwitch } from '../components/ToggleSwitch';
-import { TokenIcon } from '../components/TokenIcon';
-import { TriggerPill } from '../components/TriggerPill';
-import { riseIn } from '../motion';
+import { Panel } from '../../components/Panel';
+import { type ActivityStatus, StatusPill } from '../../components/StatusPill';
+import { ToggleSwitch } from '../../components/ToggleSwitch';
+import { TokenIcon } from '../../components/TokenIcon';
+import { TriggerPill } from '../../components/TriggerPill';
+import { riseIn } from '../../motion';
 
 // The flagship beat: rules flip on, then the activity feed shows revokes happening on their own —
 // the USDT exploit goes Pending -> Submitting -> Revoked while you watch.

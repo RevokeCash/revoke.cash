@@ -1,7 +1,7 @@
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
-import { ApprovalsTable } from '../components/ApprovalsTable';
-import { MOCK_APPROVALS } from '../data/mock-data';
-import { riseIn } from '../motion';
+import { ApprovalsTable } from '../../components/ApprovalsTable';
+import { MOCK_APPROVALS } from '../../data/mock-data';
+import { riseIn } from '../../motion';
 
 export const ProblemScene = () => {
   const frame = useCurrentFrame();

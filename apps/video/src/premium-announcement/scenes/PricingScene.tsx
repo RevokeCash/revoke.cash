@@ -1,6 +1,6 @@
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import { PlanCard } from '../components/PlanCard';
-import { riseIn } from '../motion';
+import { PlanCard } from '../../components/PlanCard';
+import { riseIn } from '../../motion';
 
 // Simplified for video: plan, price, one differentiator. Ultimate carries the brand treatment as
 // the announcement's flagship; the full feature matrix lives on the pricing page.

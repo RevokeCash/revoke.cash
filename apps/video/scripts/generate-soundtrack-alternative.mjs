@@ -15,7 +15,7 @@ const TOTAL_FRAMES = 1272;
 const DURATION_SECONDS = TOTAL_FRAMES / FPS;
 const TOTAL_SAMPLES = Math.ceil(DURATION_SECONDS * SAMPLE_RATE);
 
-// Scene start times from Main.tsx (each scene starts 8 transition frames before the previous ends).
+// Scene start times from premium-announcement/Main.tsx (each scene starts 8 transition frames before the previous ends).
 const REVEAL_AT = 254 / FPS;
 const PREMIUM_AT = 346 / FPS;
 const REVOKED_CHIME_AT = (608 + 175) / FPS;

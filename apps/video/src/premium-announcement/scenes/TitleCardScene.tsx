@@ -1,5 +1,5 @@
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
-import { bodyFontFamily, headingFontFamily } from '../fonts';
+import { bodyFontFamily, headingFontFamily } from '../../fonts';
 
 // The brand-reveal beat: lands after the problem scenes as the payoff, not as a cold open.
 export const TitleCardScene = () => {
