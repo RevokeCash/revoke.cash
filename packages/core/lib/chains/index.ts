@@ -129,8 +129,6 @@ export const CHAIN_SELECT_TESTNETS = [
   ChainId.AbstractSepoliaTestnet,
   ChainId.AvalancheFujiTestnet,
   ChainId.CronosTestnet,
-  ChainId.ZenChainTestnet,
-  824642, // ZugChain Testnet
 ] as const;
 
 export const ORDERED_CHAINS = [...CHAIN_SELECT_MAINNETS, ...CHAIN_SELECT_TESTNETS] as const;
@@ -1536,22 +1534,6 @@ export const CHAINS = {
       free: 'https://rpc.ankr.com/xdc',
     },
   }),
-  [ChainId.ZenChain]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: ChainId.ZenChain,
-    name: 'ZenChain',
-    logoUrl: '/assets/images/vendor/chains/zenchain.svg',
-  }),
-  [ChainId.ZenChainTestnet]: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: ChainId.ZenChainTestnet,
-    name: 'ZenChain Testnet',
-    logoUrl: '/assets/images/vendor/chains/zenchain.svg',
-    etherscanCompatibleApiUrl: 'https://zentrace.io/api',
-    deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 230019 } },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.ZenChain,
-  }),
   [ChainId.ZERONetwork]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.ZERONetwork,
@@ -1600,27 +1582,6 @@ export const CHAINS = {
       main: `https://lb.drpc.live/zircuit/${DRPC_API_KEY}`,
     },
     deployedContracts: { multicall3: { address: MULTICALL_ADDRESS, blockCreated: 0 } },
-  }),
-  1234567890: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 1234567890,
-    name: 'ZugChain',
-    logoUrl: '/assets/images/vendor/chains/zugchain.svg',
-  }),
-  824642: new Chain({
-    type: SupportType.BLOCKSCOUT,
-    chainId: 824642,
-    name: 'ZugChain Testnet',
-    nativeToken: 'ZUG',
-    infoUrl: 'https://zugchain.org',
-    logoUrl: '/assets/images/vendor/chains/zugchain.svg',
-    explorerUrl: 'https://explorer.zugchain.org',
-    etherscanCompatibleApiUrl: 'https://explorer.zugchain.org/api',
-    rpc: {
-      main: 'https://rpc.zugchain.org',
-    },
-    isTestnet: true,
-    correspondingMainnetChainId: 1234567890,
   }),
 } as const;
 

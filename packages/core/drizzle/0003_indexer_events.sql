@@ -171,5 +171,3 @@ CREATE TABLE "indexer_partitions"."events_84532" PARTITION OF "indexer"."events"
 CREATE TABLE "indexer_partitions"."events_11124" PARTITION OF "indexer"."events" FOR VALUES IN (11124); -- Abstract Testnet
 CREATE TABLE "indexer_partitions"."events_43113" PARTITION OF "indexer"."events" FOR VALUES IN (43113); -- Avalanche Fuji
 CREATE TABLE "indexer_partitions"."events_338" PARTITION OF "indexer"."events" FOR VALUES IN (338); -- Cronos Testnet
-CREATE TABLE "indexer_partitions"."events_8408" PARTITION OF "indexer"."events" FOR VALUES IN (8408); -- ZenChain Testnet
-CREATE TABLE "indexer_partitions"."events_824642" PARTITION OF "indexer"."events" FOR VALUES IN (824642); -- ZugChain Testnet
