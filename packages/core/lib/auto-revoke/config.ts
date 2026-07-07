@@ -33,6 +33,9 @@ export const isAutoRevokeSupportedChain = (chainId: number): chainId is AutoRevo
   return AUTO_REVOKE_SUPPORTED_CHAINS.includes(chainId);
 };
 
+export const AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD = 5;
+export const AUTO_REVOKE_MAX_ACTION_COST_USD = 2;
+
 export const PERMISSION_EXPIRY_SECONDS = 10 * 365 * 24 * 60 * 60; // 10 years
 
 export const MAX_PENDING_ACTIONS_PER_CHAIN = 10;

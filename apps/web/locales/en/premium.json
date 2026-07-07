@@ -1,4 +1,47 @@
 {
+  "automated_revoking": {
+    "meta": {
+      "description": "How Auto-Revoking protects your wallet: rules, supported networks, gas allowance, and its limits.",
+      "title": "How Auto-Revoking Works"
+    },
+    "title": "How Auto-Revoking Works",
+    "description": "Everything you should know about Auto-Revoking before you subscribe — how it protects you, what it needs, and where its limits are.",
+    "steps": {
+      "title": "From setup to protection",
+      "permission": {
+        "title": "Grant a revoke-only permission",
+        "description": "Connect with MetaMask and grant Revoke.cash an ERC-7715 permission that can only be used to revoke approvals. It cannot transfer funds, sign messages, or do anything else, and you can withdraw it at any time."
+      },
+      "rules": {
+        "title": "Set your rules",
+        "description": "Choose what should be revoked automatically: approvals to exploited or risky spenders, approvals older than your staleness threshold, or both. Every wallet on your subscription can tune its own rules."
+      },
+      "monitoring": {
+        "title": "We keep watch",
+        "description": "Revoke.cash continuously monitors your approvals across all supported networks and checks them against your rules and our exploit database, around the clock."
+      },
+      "execution": {
+        "title": "Dangerous approvals get revoked",
+        "description": "When an approval matches your rules, a revoke transaction is sent on your behalf and appears in your activity log. Exploit-triggered revokes are treated with higher urgency."
+      }
+    },
+    "networks": {
+      "title": "Supported wallets & networks",
+      "description": "Auto-Revoking currently requires MetaMask, the first wallet to support ERC-7715 permissions. Support for more wallets and networks will follow as the standard gets adopted. It currently works on {count} networks:"
+    },
+    "gas": {
+      "title": "Gas fees are included",
+      "description": "Your subscription includes a {budget} monthly gas allowance that pays for automated revoke transactions. When the allowance is used up, remaining revokes wait for the next monthly cycle, with exploit-triggered revokes still prioritized. To spend your allowance efficiently, individual revokes are capped at {cap} and may be deferred temporarily during gas spikes."
+    },
+    "limitations": {
+      "title": "What Auto-Revoking is not",
+      "description": "Auto-Revoking is best-effort protection: it meaningfully reduces your risk, but it cannot guarantee that losses are prevented. Detection can lag since an exploit must be identified before it can trigger a revoke, and an attacker may act first. On-chain execution depends on conditions outside anyone's control, such as network congestion and gas prices. See our <terms-link>Terms and Conditions</terms-link> for details."
+    },
+    "cta": {
+      "title": "Ready for set-and-forget protection?",
+      "button": "View plans"
+    }
+  },
   "banner": {
     "cta": "Upgrade to Premium",
     "description": "Want a unified view across all networks?"
@@ -11,17 +54,18 @@
     "feature_column": "Feature",
     "includes_tier": "Everything in {tierName}, plus:",
     "feature_sections": {
-      "multichain_approvals": {
-        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard. No more switching chains one by one — see everything at a glance and take action instantly.",
-        "title": "Multichain Approvals"
+      "automated_revoking": {
+        "description": "Set your rules and Revoke.cash watches your approvals around the clock. When an approval matches your rules, it gets revoked automatically on your behalf, even while you sleep.",
+        "link_label": "See how Auto-Revoking works",
+        "title": "Automated Revoking"
+      },
+      "multichain_dashboard": {
+        "description": "View and manage all your token approvals across 100+ networks from a single unified dashboard — including your full approval history. No more switching chains one by one.",
+        "title": "Multichain Dashboard"
       },
       "multichain_exploit_checker": {
         "description": "Check your wallets against all known exploits across every supported network. Get a warning if any of your approvals are associated with compromised contracts so you can revoke them immediately.",
         "title": "Multichain Exploit Checker"
-      },
-      "multichain_history": {
-        "description": "Access your full approval history across every supported network in one place. Track every approve, revoke, and permission change over time.",
-        "title": "Multichain History"
       },
       "priority_support": {
         "description": "Get faster responses from the Revoke.cash team when you need help. Premium subscribers are prioritized in our support queue so you never have to wait long for assistance.",
@@ -31,7 +75,7 @@
         "description": "Travel back in time to see what your approvals looked like at any point in the past. Use the Time Machine to investigate how your approval state has changed over time across all supported networks.",
         "title": "Time Machine"
       },
-      "title": "What you get with Premium",
+      "title": "What you get with Premium & Ultimate",
       "unlimited_batch_revokes": {
         "description": "Revoke multiple token approvals in a single transaction at no extra cost. Free users pay a per-batch fee, but Premium subscribers enjoy unlimited batch revokes across all networks.",
         "title": "Unlimited Batch Revokes"
@@ -57,13 +101,13 @@
       "unlimited_batch_revokes": "Unlimited batch revokes"
     },
     "tooltips": {
-      "automated_revoking": "Supported on select networks and wallets."
+      "automated_revoking": "Supported on select networks and wallets. Automated revoking is best-effort and cannot guarantee that losses are prevented."
     },
     "faq": {
       "title": "Frequently Asked Questions",
       "supported_wallets": {
-        "question": "What wallets and networks support automated revoking?",
-        "answer": "Automated revoking is an Ultimate feature that currently works with MetaMask on 13 supported networks including Ethereum, Polygon, Arbitrum, Base, Optimism, and more. Support for additional wallets depends on adoption of the ERC-7715 standard."
+        "question": "What wallets and networks support auto-revoking?",
+        "answer": "Automated revoking is an Ultimate feature that currently works with MetaMask on {count} supported networks including Ethereum, Polygon, Base, and more. Support for additional wallets depends on adoption of the ERC-7715 standard. <link>See the full list of supported networks</link>."
       },
       "subscription_expiry": {
         "question": "What happens when my subscription expires?",
@@ -73,9 +117,9 @@
         "question": "Can I use one subscription for multiple wallets?",
         "answer": "Yes. Both Premium and Ultimate include 10 wallet slots. The subscription owner can add wallet addresses and all wallets get the same features. With Ultimate, each wallet can additionally manage its own auto-revoking configuration independently."
       },
-      "premium_vs_ultimate": {
-        "question": "What's the difference between Premium and Ultimate?",
-        "answer": "Premium gives you the full multichain dashboard, approval history, exploit checker, batch revokes, and time machine. Ultimate additionally provides set-and-forget protection with continuous monitoring and automatic revocation of risky or stale approvals."
+      "best_effort": {
+        "question": "Is auto-revoking guaranteed to protect my funds?",
+        "answer": "No. Automated revoking is best-effort: it monitors and automatically revokes your approvals, which meaningfully reduces your risk. But detection can lag and networks can be congested, so it can never guarantee that losses are prevented."
       }
     },
     "meta": {

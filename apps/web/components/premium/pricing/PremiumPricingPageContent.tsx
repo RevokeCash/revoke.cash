@@ -1,4 +1,6 @@
+import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
 import ContentPageHero from 'components/common/ContentPageHero';
+import Href from 'components/common/Href';
 import { Feature } from 'components/landing/FeaturesShowcase';
 import LandingPageFaqItem from 'components/landing/LandingPageFaqItem';
 import { useTranslations } from 'next-intl';
@@ -43,51 +45,63 @@ const PremiumPricingPageContent = () => {
         <h2 className="text-3xl font-bold text-center">{t('premium.pricing.feature_sections.title')}</h2>
         <div className="flex flex-col gap-8">
           <Feature
-            featureKey="multichain_approvals"
-            image="/assets/images/premium/multichain-approvals.jpg"
+            featureKey="multichain_dashboard"
+            image="/assets/images/premium/multichain-dashboard.jpg"
             imagePosition="left"
-            translationPrefix={TRANSLATION_PREFIX}
-          />
-          <Feature
-            featureKey="multichain_history"
-            image="/assets/images/premium/multichain-history.jpg"
-            imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="multichain_exploit_checker"
             image="/assets/images/premium/multichain-exploit-checker.jpg"
-            imagePosition="left"
+            imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="unlimited_batch_revokes"
             image="/assets/images/premium/batch-revoke.jpg"
-            imagePosition="right"
+            imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="time_machine"
             image="/assets/images/premium/time-machine.jpg"
+            imagePosition="right"
+            translationPrefix={TRANSLATION_PREFIX}
+          />
+          <Feature
+            featureKey="automated_revoking"
+            image="/assets/images/premium/auto-revoke.jpg"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
+            badge={t('premium.pricing.tiers.ultimate.name')}
+            link={{
+              href: '/premium/automated-revoking',
+              label: t('premium.pricing.feature_sections.automated_revoking.link_label'),
+            }}
           />
         </div>
       </div>
       <div className="flex flex-col gap-6">
         <h2 className="text-3xl font-bold text-center">{t('premium.pricing.faq.title')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-6 md:gap-y-8">
-          <LandingPageFaqItem question={t(`premium.pricing.faq.subscription_expiry.question`)}>
-            {t(`premium.pricing.faq.subscription_expiry.answer`)}
-          </LandingPageFaqItem>
           <LandingPageFaqItem question={t(`premium.pricing.faq.multiple_wallets.question`)}>
             {t(`premium.pricing.faq.multiple_wallets.answer`)}
           </LandingPageFaqItem>
-          <LandingPageFaqItem question={t(`premium.pricing.faq.premium_vs_ultimate.question`)}>
-            {t(`premium.pricing.faq.premium_vs_ultimate.answer`)}
+          <LandingPageFaqItem question={t(`premium.pricing.faq.subscription_expiry.question`)}>
+            {t(`premium.pricing.faq.subscription_expiry.answer`)}
           </LandingPageFaqItem>
           <LandingPageFaqItem question={t(`premium.pricing.faq.supported_wallets.question`)}>
-            {t(`premium.pricing.faq.supported_wallets.answer`)}
+            {t.rich(`premium.pricing.faq.supported_wallets.answer`, {
+              count: AUTO_REVOKE_SUPPORTED_CHAINS.length,
+              link: (children) => (
+                <Href href="/premium/automated-revoking" router underline="always">
+                  {children}
+                </Href>
+              ),
+            })}
+          </LandingPageFaqItem>
+          <LandingPageFaqItem question={t(`premium.pricing.faq.best_effort.question`)}>
+            {t(`premium.pricing.faq.best_effort.answer`)}
           </LandingPageFaqItem>
         </div>
       </div>

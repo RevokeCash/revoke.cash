@@ -15,6 +15,7 @@ const nextConfig = {
   },
   images: {
     qualities: [25, 50, 75, 100],
+    unoptimized: process.env.NODE_ENV === 'development',
   },
   redirects: async () => {
     return [

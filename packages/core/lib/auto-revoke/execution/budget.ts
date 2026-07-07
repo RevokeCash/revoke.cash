@@ -4,9 +4,10 @@ import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from
 import { HOUR, MINUTE } from '@revoke.cash/core/utils/time';
 import { and, asc, eq, gt, gte, inArray, lt, lte, sql } from 'drizzle-orm';
 import type { Address } from 'viem';
-
-const MONTHLY_BUDGET_USD = 5;
-const MAX_ACTION_COST_USD = 2;
+import {
+  AUTO_REVOKE_MAX_ACTION_COST_USD as MAX_ACTION_COST_USD,
+  AUTO_REVOKE_MONTHLY_GAS_BUDGET_USD as MONTHLY_BUDGET_USD,
+} from '../config';
 
 // Dust-cheap revokes are still admitted even with the monthly budget used up (e.g. sub-cent L2 revokes)
 const DUST_ACTION_COST_USD = 0.005;
