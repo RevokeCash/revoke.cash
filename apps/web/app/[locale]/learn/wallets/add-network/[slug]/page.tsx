@@ -6,6 +6,7 @@ import Prose from 'components/common/Prose';
 import { locales } from 'lib/i18n/routing';
 import { getSidebar } from 'lib/utils/markdown-content';
 import { getOpenGraphImageUrl } from 'lib/utils/og';
+import { rdfaTypeof } from 'lib/utils/rdfa';
 import type { Metadata, NextPage } from 'next';
 import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -66,7 +67,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
 
   return (
     <LearnLayout sidebarEntries={sidebar} slug={breadcrumbs} meta={meta}>
-      <Prose vocab="https://schema.org/" typeof="HowTo">
+      <Prose vocab="https://schema.org/" {...rdfaTypeof('HowTo')}>
         <h1 property="name">{meta.title}</h1>
         <Divider className="my-4" />
         <div hidden className="hidden" property="description" content={meta.description} />
@@ -79,7 +80,7 @@ const AddNewChainPage: NextPage<Props> = async ({ params }) => {
         <ChainDescription chainId={chainId} headingElement="h2" />
         <h2>{t('learn.add_network.steps_heading', { chainName })}</h2>
         <p>{t('learn.add_network.intro_paragraph', { chainName })}</p>
-        <div property="step" typeof="HowToStep">
+        <div property="step" {...rdfaTypeof('HowToStep')}>
           <h3 property="name">{t('learn.add_network.step_1.title')}</h3>
           <div hidden className="hidden" property="text" content={t('learn.add_network.step_1.title')} />
           <div className="flex flex-col sm:flex-row gap-x-4 max-sm:max-w-sm">

@@ -1,3 +1,4 @@
+import { rdfaTypeof } from 'lib/utils/rdfa';
 import type { ReactNode } from 'react';
 
 interface Props {
@@ -9,7 +10,7 @@ const Faq = ({ children }: Props) => {
     <dl
       className="w-full divide-y divide-zinc-200 dark:divide-zinc-800 pr-6 lg:pr-4"
       vocab="https://schema.org/"
-      typeof="FAQPage"
+      {...rdfaTypeof('FAQPage')}
     >
       {children}
     </dl>

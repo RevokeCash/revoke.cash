@@ -2,6 +2,7 @@ import LearnLayout from 'app/layouts/LearnLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { locales } from 'lib/i18n/routing';
 import { getAllContentSlugs, getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
+import { rdfaTypeof } from 'lib/utils/rdfa';
 import type { Metadata, NextPage } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
@@ -46,7 +47,7 @@ const LearnDocumentPage: NextPage<Props> = async ({ params }) => {
 
   return (
     <>
-      <div vocab="https://schema.org/" typeof="Article">
+      <div vocab="https://schema.org/" {...rdfaTypeof('Article')}>
         <div hidden className="hidden" property="headline" content={meta.title} />
         {meta.coverImage && (
           <div hidden className="hidden" property="image" content={`https://revoke.cash${meta.coverImage}`} />

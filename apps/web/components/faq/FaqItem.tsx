@@ -5,6 +5,7 @@ import { ChevronDownIcon, HashtagIcon } from '@heroicons/react/24/outline';
 import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
 import { useMounted } from 'lib/hooks/useMounted';
+import { rdfaTypeof } from 'lib/utils/rdfa';
 import React, { type ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -24,7 +25,7 @@ const FaqItem = ({ question, slug, children, wrapper, heading = 'h2' }: Props) =
       as="div"
       className="py-4 w-full relative group"
       property="mainEntity"
-      typeof="Question"
+      {...rdfaTypeof('Question')}
       id={slug}
       // We're using this "key" hack to force a re-mount of the component when the page loads, this allows us to
       // automatically open the FAQ item if the URL contains the question in its hash, while also having full SSR.
@@ -53,7 +54,13 @@ const FaqItem = ({ question, slug, children, wrapper, heading = 'h2' }: Props) =
               </Href>
             </div>
           </dt>
-          <Disclosure.Panel as="dd" className="mt-2" unmount={false} property="acceptedAnswer" typeof="Answer">
+          <Disclosure.Panel
+            as="dd"
+            className="mt-2"
+            unmount={false}
+            property="acceptedAnswer"
+            {...rdfaTypeof('Answer')}
+          >
             <Prose>{React.createElement(wrapper ?? 'p', { property: 'text' }, children)}</Prose>
           </Disclosure.Panel>
           {/* Add this absolute positioned div to align the "group" position with the hash link */}

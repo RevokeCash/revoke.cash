@@ -1,6 +1,7 @@
 import { getChainExplorerUrl, getChainFreeRpcUrl, getChainName, getChainNativeToken } from '@revoke.cash/core/chains';
 import CopyButton from 'components/common/CopyButton';
 import RichText from 'components/common/RichText';
+import { rdfaTypeof } from 'lib/utils/rdfa';
 import { useTranslations } from 'next-intl';
 import AddNetworkButton from './AddNetworkButton';
 
@@ -13,7 +14,7 @@ const AddNetworkForm = ({ chainId }: Props) => {
   const t = useTranslations();
 
   return (
-    <div property="step" typeof="HowToStep">
+    <div property="step" {...rdfaTypeof('HowToStep')}>
       <h3 property="name">{t('learn.add_network.step_2.title')}</h3>
       <div property="text">
         <p>{t('learn.add_network.step_2.paragraph_1', { chainName })}</p>

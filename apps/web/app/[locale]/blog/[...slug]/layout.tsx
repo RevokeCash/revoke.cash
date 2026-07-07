@@ -4,6 +4,7 @@ import PageNavigation from 'components/common/PageNavigation';
 import TranslateButton from 'components/common/TranslateButton';
 import type { BreadcrumbEntry } from 'lib/types';
 import { getSidebar, getTranslationUrl, readAndParseContentFile } from 'lib/utils/markdown-content';
+import { rdfaTypeof } from 'lib/utils/rdfa';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 
@@ -31,10 +32,10 @@ const BlogLayout = async ({ params, children }: Props) => {
 
   return (
     <>
-      <div vocab="https://schema.org/" typeof="Article">
+      <div vocab="https://schema.org/" {...rdfaTypeof('Article')}>
         <div hidden className="hidden" property="headline" content={meta.title} />
         {meta.author && (
-          <div property="author" typeof="Person">
+          <div property="author" {...rdfaTypeof('Person')}>
             <div hidden className="hidden" property="name" content={meta.author.name} />
           </div>
         )}
