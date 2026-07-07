@@ -1,18 +1,18 @@
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { bodyFontFamily, headingFontFamily } from '../fonts';
 
+// The brand-reveal beat: lands after the problem scenes as the payoff, not as a cold open.
 export const TitleCardScene = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const wordmarkEntrance = spring({ frame, fps, config: { damping: 200 }, durationInFrames: 30 });
-  const taglineEntrance = spring({ frame: frame - 20, fps, config: { damping: 200 }, durationInFrames: 30 });
-  const subtitleEntrance = spring({ frame: frame - 35, fps, config: { damping: 200 }, durationInFrames: 30 });
-  const underlineSweep = spring({ frame: frame - 30, fps, config: { damping: 200 }, durationInFrames: 40 });
-  const sceneFadeOut = interpolate(frame, [130, 150], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const taglineEntrance = spring({ frame: frame - 15, fps, config: { damping: 200 }, durationInFrames: 30 });
+  const subtitleEntrance = spring({ frame: frame - 30, fps, config: { damping: 200 }, durationInFrames: 30 });
+  const underlineSweep = spring({ frame: frame - 25, fps, config: { damping: 200 }, durationInFrames: 40 });
 
   return (
-    <AbsoluteFill className="items-center justify-center bg-black" style={{ opacity: sceneFadeOut }}>
+    <AbsoluteFill className="items-center justify-center bg-black">
       <div className="flex flex-col items-center gap-12">
         <Img
           src={staticFile('images/revoke-wordmark-orange.svg')}
@@ -47,7 +47,7 @@ export const TitleCardScene = () => {
             transform: `translateY(${interpolate(subtitleEntrance, [0, 1], [40, 0])}px)`,
           }}
         >
-          Set-and-forget protection for your wallet
+          Wallet protection, upgraded.
         </p>
       </div>
     </AbsoluteFill>
