@@ -1,6 +1,5 @@
 import { CHAIN_SELECT_MAINNETS, CHAIN_SELECT_TESTNETS, getChainName, isSupportedChain } from '@revoke.cash/core/chains';
 import ChainLogo from 'components/common/ChainLogo';
-import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useTranslations } from 'next-intl';
 import { memo } from 'react';
 import PlaceholderIcon from '../PlaceholderIcon';
@@ -22,7 +21,6 @@ interface Props {
 
 const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, showNames }: Props) => {
   const t = useTranslations();
-  const { darkMode } = useColorTheme();
 
   const mainnetOptions = (chainIds ?? CHAIN_SELECT_MAINNETS).map((chainId) => ({
     value: getChainName(chainId),
@@ -49,7 +47,7 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
     onSelect?.(chainId);
   };
 
-  const displayOption = ({ chainId }: ChainOption, { context }: any) => {
+  const displayOption = ({ chainId }: ChainOption, context: 'menu' | 'value') => {
     const chainName = getChainName(chainId);
 
     return (
@@ -63,15 +61,12 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
   return (
     <SearchableSelect
       instanceId={instanceId ?? 'chain-select'}
-      classNamePrefix="chain-select"
       aria-label="Select Network"
-      size="md"
       className="shrink-0"
-      theme={darkMode ? 'dark' : 'light'}
       value={groupedOptions.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={chainIds ? mainnetOptions : groupedOptions}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
-      onChange={(option) => onChange(option!)}
+      onChange={onChange}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       minMenuWidth="14.5rem"
@@ -79,7 +74,6 @@ const ChainSelect = ({ onSelect, selected, menuAlign, chainIds, instanceId, show
       menuAlign={menuAlign}
       // Note: when searching, option do get unmounted, so there's still some optimization to be done here
       keepMounted
-      isMulti={false}
     />
   );
 };

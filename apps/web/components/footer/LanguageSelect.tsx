@@ -56,11 +56,9 @@ const LanguageSelect = () => {
       className="w-32"
       value={options.find((option) => option.value === locale)}
       options={options}
-      onChange={(option) => selectLanguage(option!)}
+      onChange={selectLanguage}
       formatOptionLabel={displayOption}
       menuPlacement="top"
-      isSearchable={false}
-      isMulti={false}
     />
   );
 };

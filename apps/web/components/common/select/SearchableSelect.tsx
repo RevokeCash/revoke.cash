@@ -1,226 +1,211 @@
 'use client';
 
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Button as HeadlessButton } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import Select, { type Props as SelectProps } from 'components/common/select/Select';
-import { useMounted } from 'lib/hooks/useMounted';
-import { forwardRef, type ReactNode, type Ref, useCallback, useEffect, useRef, useState } from 'react';
-import {
-  type ActionMeta,
-  components,
-  createFilter,
-  type FormatOptionLabelMeta,
-  type GroupBase,
-  type OnChangeValue,
-  type OptionProps,
-  type SelectInstance,
-} from 'react-select';
-import type { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
+import { type KeyboardEvent as ReactKeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Button from '../Button';
 import Chevron from '../Chevron';
+import {
+  type CommonSelectProps,
+  compareOptions,
+  createOptionDisplay,
+  getMenuClassName,
+  getTriggerChevronClassName,
+  getTriggerClassName,
+  normaliseSearchText,
+  type SelectOption,
+  toOptionGroups,
+  triggerFocusClassName,
+} from './common';
+import SelectOptionsList from './SelectOptionsList';
 
-interface Props<O, I extends boolean, G extends GroupBase<O>> extends SelectProps<O, I, G> {
-  // TODO: Support 'keepMounted' for regular Select component (currently impossible without a wrapper + controlled state)
+export interface Props<O extends SelectOption, I extends boolean = false> extends CommonSelectProps<O> {
+  isMulti?: I;
+  value?: (I extends true ? readonly O[] : O) | null;
+  onChange?: (option: I extends true ? O[] : O) => void;
+  // Keep the dropdown mounted (hidden) while closed, to avoid re-rendering large option lists on open
   keepMounted?: boolean;
   targetClassName?: string;
 }
 
-const SearchableSelect = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
-  const selectRef = useRef<SelectInstance<O, I, G> | null>(null);
+// A searchable select built on Headless UI's Combobox: a regular button trigger that opens a dropdown
+// panel with an attached search box. Single-selects close on selection and render the selected option in
+// the trigger; multi-selects stay open and render the trigger through `placeholder`.
+//
+// Architectural notes (learned the hard way):
+// - We own the trigger button and open state ourselves: Headless UI's ComboboxButton is hardcoded to
+//   tabIndex={-1} (it expects the input to be the tab target), which would break keyboard focus.
+// - The panel is positioned with plain absolute CSS. Headless UI's `anchor` prop anchors floating panels
+//   to the ComboboxInput, which lives *inside* this panel, so floating-ui would drift around the page.
+// - `modal={false}` is required: the default modal behaviour marks the options list itself inert
+//   (unclickable/unscrollable by mouse) because our search input lives inside the panel.
+const SearchableSelect = <O extends SelectOption, I extends boolean = false>(props: Props<O, I>) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState('');
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const isMounted = useMounted();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Track whether the React Select is open or not
-  const [isSelectOpen, setSelectOpen] = useState<boolean>(false);
-  const handleSelectClose = useCallback(() => {
-    buttonRef.current?.focus();
-    setSelectOpen(false);
+  const displayOption = createOptionDisplay(props.formatOptionLabel);
+  const optionGroups = toOptionGroups(props.options);
+
+  const matchesQuery = (option: O) => {
+    // The 'ZERϴ' replacement makes the ZERϴ chain also findable by searching for "zero"
+    const searchableText = option.value.replace('ZERϴ', 'ZERO | ZERϴ');
+    return normaliseSearchText(searchableText).includes(normaliseSearchText(query));
+  };
+
+  const visibleGroups = optionGroups
+    .map((group) => ({ ...group, options: group.options.filter(matchesQuery) }))
+    .filter((group) => group.options.length > 0);
+
+  // Focus the search input when opening. An effect (rather than autoFocus) also covers reopening a
+  // keepMounted select, and focusing the input opens the Combobox machine through `immediate`.
+  useEffect(() => {
+    if (isOpen) inputRef.current?.focus();
+  }, [isOpen]);
+
+  const clearQuery = useCallback(() => {
+    setQuery('');
+    // The input is uncontrolled (Headless UI manages it), so the DOM value is cleared separately
+    if (inputRef.current) inputRef.current.value = '';
   }, []);
 
-  const toggleSelectOpen = () => setSelectOpen((prev) => !prev);
+  const closeMenu = useCallback(() => {
+    clearQuery();
+    setIsOpen(false);
+  }, [clearQuery]);
 
+  const closeMenuAndRefocusTrigger = useCallback(() => {
+    closeMenu();
+    setTimeout(() => buttonRef.current?.focus(), 0);
+  }, [closeMenu]);
+
+  // Close on Escape ourselves (capture phase, so it also works when focus is outside the search input),
+  // returning focus to the trigger
   useEffect(() => {
-    if (isSelectOpen) {
-      const { scrollX, scrollY } = window;
-      selectRef.current?.focus();
-      window.scrollTo(scrollX, scrollY);
-    } else {
-      selectRef.current?.blur();
-    }
-  }, [isSelectOpen]);
-
-  const onChange = (option: OnChangeValue<O, I>, actionMeta: ActionMeta<O>) => {
-    props?.onChange?.(option, actionMeta);
-    if (props.closeMenuOnSelect ?? !props.isMulti) handleSelectClose();
-  };
-
-  const filterOption = createFilter({
-    stringify: (option: FilterOptionOption<O>) => option.value.replace('ZERϴ', 'ZERO | ZERϴ'),
-  });
-
-  const formatOptionLabel = (option: O, formatOptionLabelMeta: FormatOptionLabelMeta<O>) => {
-    // 'value' context is handled separately in TargetButton
-    if (formatOptionLabelMeta.context !== 'menu') return null;
-    return props.formatOptionLabel?.(option, formatOptionLabelMeta);
-  };
-
-  return (
-    <SelectOverlay
-      isSelectOpen={isSelectOpen}
-      handleSelectClose={handleSelectClose}
-      target={
-        <TargetButton
-          ref={buttonRef}
-          toggleSelectClose={toggleSelectOpen}
-          selectProps={props as any}
-          instanceId={props.instanceId ?? 'control-button-wrapper'}
-        />
-      }
-      selectProps={props}
-    >
-      <Select
-        {...props}
-        selectRef={selectRef}
-        size="md"
-        autoFocus
-        onChange={onChange}
-        className="shrink-0"
-        menuIsOpen={isMounted ? (props.keepMounted ? true : isSelectOpen) : undefined}
-        filterOption={filterOption}
-        minControlWidth={props.minMenuWidth}
-        formatOptionLabel={props.formatOptionLabel ? formatOptionLabel : undefined}
-        components={{ DropdownIndicator: CustomDropdownIndicator, Option: CustomOption, ...props.components }}
-        placeholder={null}
-        isSearchable
-        // We're passing custom props so that the CustomOption can scroll to the selected option
-        custom={{ isSelectOpen }}
-      />
-    </SelectOverlay>
-  );
-};
-
-export default SearchableSelect;
-
-const CustomDropdownIndicator = () => {
-  return <MagnifyingGlassIcon className="w-5 h-5 text-black dark:text-white" />;
-};
-
-interface SelectOverlayProps<O, I extends boolean, G extends GroupBase<O>> {
-  isSelectOpen: boolean;
-  target: ReactNode;
-  children: ReactNode;
-  handleSelectClose: () => void;
-  selectProps: Props<O, I, G>;
-}
-
-// Overlay component to wrap React select to achieve text filtering on dropdown
-const SelectOverlay = <O, I extends boolean, G extends GroupBase<O>>(props: SelectOverlayProps<O, I, G>) => {
-  const { isSelectOpen, target, children, handleSelectClose, selectProps } = props;
-
-  useEffect(() => {
+    if (!isOpen) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') handleSelectClose();
+      if (event.key === 'Escape') closeMenuAndRefocusTrigger();
     };
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [isOpen, closeMenuAndRefocusTrigger]);
 
-    if (isSelectOpen) window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSelectOpen, handleSelectClose]);
+  const onChange = (newValue: O | O[] | null) => {
+    if (newValue === null) return;
+    props.onChange?.(newValue as I extends true ? O[] : O);
 
-  const className = twMerge(
-    'absolute z-20 mt-2',
-    selectProps.menuAlign === 'right' ? undefined : 'right-0',
-    !isSelectOpen && 'hidden',
-  );
+    if (props.isMulti) {
+      clearQuery();
+    } else {
+      closeMenuAndRefocusTrigger();
+    }
+  };
+
+  // In multi-select mode, Space toggles the highlighted option like a checkbox, but only while the
+  // search box is empty: with a query present, Space needs to remain typeable (e.g. "Gnosis Chain")
+  const toggleActiveOptionOnSpace = (event: ReactKeyboardEvent<HTMLInputElement>, activeOption: O | null) => {
+    if (event.key !== ' ' || !props.isMulti || event.currentTarget.value !== '') return;
+    if (!activeOption || props.isOptionDisabled?.(activeOption)) return;
+    event.preventDefault();
+
+    const currentValue = (props.value as readonly O[] | null | undefined) ?? [];
+    const isSelected = currentValue.some((option) => compareOptions(option, activeOption));
+    const newValue = isSelected
+      ? currentValue.filter((option) => !compareOptions(option, activeOption))
+      : [...currentValue, activeOption];
+    onChange(newValue);
+  };
+
+  const renderTargetContent = () => {
+    // Multi-selects render their selection through the placeholder (e.g. a stack of selected chain logos)
+    if (props.isMulti) return props.placeholder ?? null;
+
+    const selectedOption = props.value as O | null | undefined;
+    if (!selectedOption) return props.placeholder ?? null;
+    return displayOption(selectedOption, 'value');
+  };
+
+  const comboboxValue = props.isMulti
+    ? ((props.value as readonly O[] | null | undefined) ?? [])
+    : ((props.value as O | null | undefined) ?? null);
 
   return (
-    <div className={twMerge('relative shrink-0 w-fit', selectProps.className)}>
-      {target}
-      {isSelectOpen ? (
+    <div className={twMerge('relative shrink-0 w-fit', props.className)}>
+      <HeadlessButton
+        as={Button}
+        ref={buttonRef}
+        style="secondary"
+        size="none"
+        focusRing={false}
+        disabled={props.isDisabled}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-label={props['aria-label']}
+        onClick={() => setIsOpen(true)}
+        id={props.instanceId ? `${props.instanceId}-button` : undefined}
+        className={twMerge(getTriggerClassName(props.size), triggerFocusClassName, props.targetClassName)}
+      >
+        {renderTargetContent()}
+        <Chevron className={twMerge(getTriggerChevronClassName(props.size), 'fill-black dark:fill-white')} />
+      </HeadlessButton>
+
+      {isOpen ? (
+        // Backdrop that closes the select when clicking anywhere outside the panel (incl. the trigger).
+        // Closes on pointerdown (not click): Headless UI's own outside-click handling also closes on
+        // pointerdown, which unmounts this backdrop before a click event would ever fire on it.
         // biome-ignore lint/a11y/noStaticElementInteractions: we know this is a hack, it is what it is
         <div
           className="fixed z-10 inset-0"
-          onClick={handleSelectClose}
-          onKeyDown={(ev) => ev.key === 'Enter' && handleSelectClose()}
+          onPointerDown={closeMenuAndRefocusTrigger}
+          onKeyDown={(event) => event.key === 'Enter' && closeMenuAndRefocusTrigger()}
         />
       ) : null}
-      {isSelectOpen || selectProps.keepMounted ? <div className={className}>{children}</div> : null}
+
+      {isOpen || props.keepMounted ? (
+        <Combobox
+          multiple={props.isMulti as I}
+          immediate
+          value={comboboxValue as any}
+          by={compareOptions}
+          onChange={onChange}
+          onClose={closeMenu}
+        >
+          {({ activeOption }) => (
+            <ComboboxOptions
+              static
+              modal={false}
+              id={props.instanceId ? `${props.instanceId}-options` : undefined}
+              className={twMerge(getMenuClassName(props.menuPlacement, props.menuAlign), !isOpen && 'hidden')}
+              style={{ minWidth: props.minMenuWidth }}
+            >
+              <div className="flex items-center gap-2 px-2 h-9 border-b border-zinc-300 dark:border-zinc-700">
+                <ComboboxInput
+                  ref={inputRef}
+                  aria-label={props['aria-label']}
+                  displayValue={() => ''}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onKeyDown={(event) => toggleActiveOptionOnSpace(event, activeOption as O | null)}
+                  className="w-full bg-transparent outline-none"
+                />
+                <MagnifyingGlassIcon className="w-5 h-5 shrink-0 text-black dark:text-white" />
+              </div>
+
+              <SelectOptionsList
+                optionComponent={ComboboxOption}
+                optionGroups={visibleGroups}
+                isMulti={props.isMulti}
+                size={props.size}
+                isOptionDisabled={props.isOptionDisabled}
+                renderOption={(option) => displayOption(option, 'menu')}
+              />
+            </ComboboxOptions>
+          )}
+        </Combobox>
+      ) : null}
     </div>
   );
 };
 
-interface TargetButtonProps<O, I extends boolean, G extends GroupBase<O>> {
-  toggleSelectClose: () => void;
-  selectProps: Props<O, I, G>;
-  instanceId: string | number;
-}
-
-const TargetButton = forwardRef(
-  <O, I extends boolean, G extends GroupBase<O>>(props: TargetButtonProps<O, I, G>, ref: Ref<HTMLButtonElement>) => {
-    const { toggleSelectClose, selectProps } = props;
-
-    const formatControlOptionLabel = (option: O) => {
-      if (!option || selectProps.controlShouldRenderValue === false) {
-        return selectProps.placeholder ?? null;
-      }
-
-      if (typeof selectProps.formatOptionLabel === 'undefined') {
-        return ((option as any).label as string) ?? ((option as any).value as string);
-      }
-
-      return selectProps.formatOptionLabel(option, {
-        context: 'value',
-        inputValue: (option as any)?.label as string,
-        selectValue: [option],
-      });
-    };
-
-    return (
-      <Button
-        ref={ref}
-        size="none"
-        style="secondary"
-        onClick={toggleSelectClose}
-        className={twMerge(
-          'flex items-center justify-between gap-2 px-2 h-9 font-normal rounded-lg control-button-wrapper',
-          selectProps.targetClassName,
-        )}
-        id={`react-select-${props.instanceId}-target-button`}
-      >
-        {formatControlOptionLabel(selectProps.value as O)}
-        <Chevron className="w-5 h-5 fill-black dark:fill-white" />
-      </Button>
-    );
-  },
-);
-
-const CustomOption = <O, I extends boolean, G extends GroupBase<O>>(props: OptionProps<O, I, G>) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const customProps = (props.selectProps as any).custom;
-  const prevIsSelectOpenRef = useRef(false);
-
-  // Scroll to the selected option when the select is opened, preserving the page
-  // scroll position so only the dropdown's internal menu list scrolls.
-  // Only scrolls on open, not when selection changes (important for multi-select).
-  // TODO: There is still an edge case, where the selected option is not *focused* when the select is opened a second time
-  useEffect(() => {
-    const justOpened = customProps.isSelectOpen && !prevIsSelectOpenRef.current;
-    prevIsSelectOpenRef.current = customProps.isSelectOpen;
-
-    if (justOpened && props.isSelected && ref.current) {
-      const { scrollX, scrollY } = window;
-      ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
-      window.scrollTo(scrollX, scrollY);
-    }
-  }, [props.isSelected, customProps.isSelectOpen]);
-
-  return (
-    <components.Option
-      {...props}
-      // This keeps existing innerRef functionality, but also allows us to scroll to the selected option
-      innerRef={(el) => {
-        props.innerRef?.(el);
-        ref.current = el;
-      }}
-    />
-  );
-};
+export default SearchableSelect;

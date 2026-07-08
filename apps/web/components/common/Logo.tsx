@@ -22,7 +22,7 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
   }
 
   const classes = twMerge(
-    'aspect-square object-cover bg-white shrink-0',
+    'aspect-square object-cover bg-zinc-200 dark:bg-zinc-800 shrink-0',
     square ? 'rounded-lg' : 'rounded-full',
     border && 'border border-zinc-200 dark:border-zinc-800',
     className,

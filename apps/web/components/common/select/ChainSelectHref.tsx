@@ -49,7 +49,7 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
     },
   ];
 
-  const displayOption = ({ chainId }: ChainOption, { context }: any) => {
+  const displayOption = ({ chainId }: ChainOption, context: 'menu' | 'value') => {
     const chainName = getChainName(chainId);
 
     return (
@@ -71,20 +71,17 @@ const ChainSelectHref = ({ selected, chainIds, getUrl, instanceId, menuAlign, sh
   return (
     <SearchableSelect
       instanceId={instanceId ?? 'chain-select'}
-      classNamePrefix="chain-select"
       aria-label="Select Network"
-      size="md"
       className="shrink-0"
       value={groupedOptions.flatMap((group) => group.options).find((option) => option.chainId === selected)}
       options={chainIds ? mainnetOptions : groupedOptions}
       isOptionDisabled={(option) => !isSupportedChain(option.chainId)}
-      onChange={(option) => router.push(getUrl((option as any).chainId))}
+      onChange={(option) => router.push(getUrl(option.chainId))}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       minMenuWidth="14.5rem"
       placeholder={<PlaceholderIcon size={24} border />} // TODO: Add full placeholder
       menuAlign={menuAlign}
-      isMulti={false}
       keepMounted
     />
   );

@@ -61,9 +61,7 @@ const ApprovePage = () => {
               aria-label="Select Approval Type"
               options={options}
               value={options.find((option) => option.value === allowanceType)}
-              onChange={(value) => setAllowanceType(value?.value as AllowanceType)}
-              isMulti={false}
-              isSearchable={false}
+              onChange={(option) => setAllowanceType(option.value as AllowanceType)}
             />
           </div>
           <div className="flex flex-col gap-1">

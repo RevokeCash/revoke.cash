@@ -2,6 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { Table } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import RichText from 'components/common/RichText';
+import Select from 'components/common/select/Select';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -20,7 +21,7 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
   const pageSize = table.getState().pagination.pageSize;
   const totalRows = table.getFilteredRowModel().rows.length;
 
-  const pageSizeOptions = [10, 25, 50, 100];
+  const pageSizeOptions = [10, 25, 50, 100].map((size) => ({ value: String(size) }));
 
   return (
     <div className={twMerge('flex flex-wrap items-center justify-between gap-3 px-4 py-3', className)}>
@@ -43,17 +44,13 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
         {/* Page Size Selector */}
         <div className="flex items-center gap-2 text-sm">
           <span className="text-zinc-600 dark:text-zinc-400">{t('common.pagination.show')}</span>
-          <select
-            value={pageSize}
-            onChange={(e) => table.setPageSize(Number(e.target.value))}
-            className="px-2 py-1 text-sm border border-zinc-300 dark:border-zinc-600 rounded bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-black dark:focus:outline-white"
-          >
-            {pageSizeOptions.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
+          <Select
+            aria-label="Select Page Size"
+            size="sm"
+            value={{ value: String(pageSize) }}
+            options={pageSizeOptions}
+            onChange={(option) => table.setPageSize(Number(option.value))}
+          />
         </div>
 
         {/* Navigation Controls */}

@@ -1,6 +1,5 @@
 'use client';
 
-import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { CsrLink } from 'lib/i18n/csr-navigation';
 import { Link } from 'lib/i18n/navigation';
 import { type ForwardedRef, forwardRef, type MouseEventHandler } from 'react';
@@ -23,6 +22,7 @@ export interface Props extends Record<string, any> {
   asDiv?: boolean;
   align?: 'left' | 'center' | 'right';
   retainSearchParams?: boolean | string[];
+  focusRing?: boolean;
 }
 
 const Button = (
@@ -40,20 +40,18 @@ const Button = (
     asDiv,
     align,
     retainSearchParams,
+    focusRing = true,
     ...props
   }: Props,
   ref: ForwardedRef<any>,
 ) => {
-  const { darkMode } = useColorTheme();
-
-  // In dark mode, we swap the primary and secondary styles
-  const variant = style === 'secondary' && darkMode ? 'primary' : style === 'primary' && darkMode ? 'secondary' : style;
-
   const classMapping = {
     common:
       'flex items-center border border-zinc-300 dark:border-zinc-700 duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium shrink-0 whitespace-nowrap',
-    primary: 'bg-black text-white visited:text-white hover:bg-zinc-800 disabled:bg-zinc-600',
-    secondary: 'bg-white text-black visited:text-black hover:bg-zinc-200 disabled:bg-zinc-300',
+    primary:
+      'bg-black text-white visited:text-white hover:bg-zinc-800 disabled:bg-zinc-600 dark:bg-white dark:text-black dark:visited:text-black dark:hover:bg-zinc-200 dark:disabled:bg-zinc-300',
+    secondary:
+      'bg-white text-black visited:text-black hover:bg-zinc-200 disabled:bg-zinc-300 dark:bg-black dark:text-white dark:visited:text-white dark:hover:bg-zinc-800 dark:disabled:bg-zinc-600',
     tertiary:
       'text-black visited:text-black dark:text-white dark:visited:text-white disabled:text-zinc-600 dark:disabled:text-zinc-400 border-none',
     menu: 'h-9 px-4 rounded-none border-none font-normal text-base justify-start',
@@ -67,12 +65,13 @@ const Button = (
 
   const classes = twMerge(
     'focus-visible:outline-hidden',
-    style === 'primary' && 'focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
-    style === 'secondary' && 'focus-visible:border-black dark:focus-visible:border-white',
-    (style === 'none' || style === 'tertiary') &&
+    focusRing && style === 'primary' && 'focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
+    focusRing && style === 'secondary' && 'focus-visible:border-black dark:focus-visible:border-white',
+    focusRing &&
+      (style === 'none' || style === 'tertiary') &&
       'focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-current focus-visible:rounded-sm',
     style !== 'none' && classMapping.common,
-    variant !== 'none' && classMapping[variant],
+    style !== 'none' && classMapping[style],
     classMapping[align ?? 'center'],
     size !== 'none' && classMapping[size],
     loading && 'flex gap-1',

@@ -5,10 +5,8 @@ import ChainLogo from 'components/common/ChainLogo';
 import ChainLogoStack from 'components/common/ChainLogoStack';
 import Checkbox from 'components/common/Checkbox';
 import SearchableSelect from 'components/common/select/SearchableSelect';
-import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import type { FormatOptionLabelMeta } from 'react-select';
 
 interface ChainOption {
   value: string;
@@ -24,7 +22,6 @@ const normalise = (value: string) => value.trim().toLowerCase();
 
 const HistoryChainMultiSelect = ({ chainTerms, onChainTermsChange }: Props) => {
   const t = useTranslations();
-  const { darkMode } = useColorTheme();
 
   const mainnetOptions = useMemo<ChainOption[]>(
     () =>
@@ -79,7 +76,7 @@ const HistoryChainMultiSelect = ({ chainTerms, onChainTermsChange }: Props) => {
   const displayChainIds = selectedChainIds.length > 0 ? selectedChainIds : allChainIds;
   const selectValue = selectedOptions;
 
-  const displayOption = (option: ChainOption, { context }: FormatOptionLabelMeta<ChainOption>) => {
+  const displayOption = (option: ChainOption, context: 'menu' | 'value') => {
     if (context !== 'menu') return option.value;
 
     const isOptionSelected = selectedChainIdsSet.has(option.chainId);
@@ -115,26 +112,20 @@ const HistoryChainMultiSelect = ({ chainTerms, onChainTermsChange }: Props) => {
   return (
     <SearchableSelect
       instanceId="history-chain-multi-select"
-      classNamePrefix="history-chain-multi-select"
       aria-label={t('address.headers.chain')}
       className="w-full sm:w-40 shrink-0"
       targetClassName="w-full sm:w-40 shrink-0"
-      theme={darkMode ? 'dark' : 'light'}
       value={selectValue}
       options={groupedOptions}
       onChange={(options) => {
-        onChainTermsChange((options ?? []).map((option) => option.value));
+        onChainTermsChange(options.map((option) => option.value));
       }}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
       minMenuWidth="14.5rem"
       placeholder={controlPlaceholder}
-      controlShouldRenderValue={false}
-      closeMenuOnSelect={false}
-      hideSelectedOptions={false}
       keepMounted
       isMulti
-      isSearchable
     />
   );
 };

@@ -1,8 +1,8 @@
 export const TEST_URL = Cypress.expose('TEST_URL') ?? 'http://localhost:3000';
 
 export const Selectors = {
-  CHAIN_SELECT_BUTTON: '#react-select-address-chain-select-target-button',
-  CHAIN_SELECT_OPTION: '*[id^="react-select-address-chain-select-option"]',
+  CHAIN_SELECT_BUTTON: '#address-chain-select-button',
+  CHAIN_SELECT_OPTION: '#address-chain-select-options [role="option"]',
   ALLOWANCES_TABLE: '.allowances-table',
   ALLOWANCES_LOADER: '.allowances-loader',
   CONTROLS_SECTION: '.controls-section',

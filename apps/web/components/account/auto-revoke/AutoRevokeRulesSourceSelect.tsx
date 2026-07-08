@@ -46,8 +46,7 @@ const AutoRevokeRulesSourceSelect = ({
 
   const selectedOption = options.find((option) => option.value === currentValue) ?? options[0];
 
-  const handleChange = (option: RulesSourceOption | null) => {
-    if (!option) return;
+  const handleChange = (option: RulesSourceOption) => {
     onSwitchRulesSource({ subscriptionId: option.value === 'custom' ? null : option.value });
   };
 
@@ -56,15 +55,7 @@ const AutoRevokeRulesSourceSelect = ({
       <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
         {t('account.auto_revoke.rules_source.title')}
       </h3>
-      <Select<RulesSourceOption, false, never>
-        options={options}
-        value={selectedOption}
-        onChange={handleChange}
-        isDisabled={isSwitching}
-        isSearchable={false}
-        getOptionValue={(option) => option.value}
-        getOptionLabel={(option) => option.label}
-      />
+      <Select options={options} value={selectedOption} onChange={handleChange} isDisabled={isSwitching} />
     </div>
   );
 };

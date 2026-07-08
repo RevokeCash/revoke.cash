@@ -26,7 +26,7 @@ const TipSection = ({ chainId, nativeToken, onSelect }: Props) => {
     onSelect(dollarAmount);
   };
 
-  // React Select does not support pure string values, so we need to use an object
+  // Select options must be objects carrying a string `value`, not pure strings
   const options = [{ value: '0' }, { value: '3' }, { value: '5' }, { value: '10' }];
 
   // If we cannot get the native token price, we should not show the tip section
@@ -73,12 +73,10 @@ const TipSection = ({ chainId, nativeToken, onSelect }: Props) => {
       <Select
         options={options}
         value={selectedTip ? { value: selectedTip } : null}
-        onChange={(option) => onChange(option!.value)}
+        onChange={(option) => onChange(option.value)}
         placeholder={t('address.batch_revoke.select_tip_amount')}
         formatOptionLabel={formatOptionLabel}
         className="w-full sm:hidden"
-        isMulti={false}
-        isSearchable={false}
         menuPlacement="top"
       />
     </div>

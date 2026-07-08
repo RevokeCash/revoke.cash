@@ -2,7 +2,6 @@ import { normaliseLabel } from '@revoke.cash/core/utils';
 import type { ColumnSort } from '@tanstack/react-table';
 import Label from 'components/common/Label';
 import Select from 'components/common/select/Select';
-import { useColorTheme } from 'lib/hooks/useColorTheme';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
@@ -40,7 +39,6 @@ const SortSelect = ({
 }: Props) => {
   const t = useTranslations();
   const isMounted = useMounted();
-  const { darkMode } = useColorTheme();
   const [selectedSort, setSelectedSort] = useLocalStorage<ColumnSort>('allowances-table.sorting', {
     id: ColumnId.LAST_UPDATED,
     desc: true,
@@ -58,7 +56,7 @@ const SortSelect = ({
     ]);
   }, [sortableColumns]);
 
-  const displayOption = ({ id, sortType, desc }: Option, { context }: { context: 'menu' | 'value' }) => {
+  const displayOption = ({ id, sortType, desc }: Option, context: 'menu' | 'value') => {
     const sortingFnDisplays = {
       number: {
         asc: t('address.sorting.fns.number.asc'),
@@ -95,17 +93,13 @@ const SortSelect = ({
       instanceId={instanceId}
       aria-label="Sort By"
       className="w-full shrink-0"
-      classNamePrefix="sort-select"
-      theme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => {
         return option.id === selectedSort.id && option.desc === selectedSort.desc;
       })}
       options={options}
-      onChange={(option) => setSelectedSort({ id: option!.id, desc: option!.desc })}
+      onChange={(option) => setSelectedSort({ id: option.id, desc: option.desc })}
       formatOptionLabel={displayOption}
       menuPlacement="bottom"
-      isSearchable={false}
-      isMulti={false}
     />
   );
 };
