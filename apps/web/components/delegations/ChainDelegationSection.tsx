@@ -1,7 +1,7 @@
 'use client';
 
 import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
-import { getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import ChainSectionHeader from 'components/common/ChainSectionHeader';
 import CollapsibleCard from 'components/common/CollapsibleCard';
 import Table from 'components/common/table/Table';
@@ -44,10 +44,15 @@ const ChainDelegationSection = ({ chainData, onRevoke, defaultExpanded }: Props)
     columns,
     getCoreRowModel: getCoreRowModel<Delegation>(),
     getSortedRowModel: getSortedRowModel<Delegation>(),
+    getPaginationRowModel: getPaginationRowModel<Delegation>(),
+    autoResetPageIndex: false,
     getRowId: getDelegationRowId,
     initialState: {
       columnVisibility: {
         [ColumnId.CHAIN]: false,
+      },
+      pagination: {
+        pageSize: 25,
       },
     },
     meta: { onRevoke } as any,

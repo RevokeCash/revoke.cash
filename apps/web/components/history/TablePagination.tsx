@@ -11,6 +11,9 @@ interface Props<T> {
   className?: string;
 }
 
+// Tables at or below this size don't benefit from pagination, so the bar is hidden for them
+const PAGINATION_ROW_THRESHOLD = 20;
+
 const TablePagination = <T,>({ table, className }: Props<T>) => {
   const t = useTranslations();
 
@@ -20,6 +23,8 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
   const pageCount = table.getPageCount();
   const pageSize = table.getState().pagination.pageSize;
   const totalRows = table.getFilteredRowModel().rows.length;
+
+  if (totalRows <= PAGINATION_ROW_THRESHOLD && pageCount <= 1) return null;
 
   const pageSizeOptions = [10, 25, 50, 100].map((size) => ({ value: String(size) }));
 
@@ -41,7 +46,6 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
-        {/* Page Size Selector */}
         <div className="flex items-center gap-2 text-sm">
           <span className="text-zinc-600 dark:text-zinc-400">{t('common.pagination.show')}</span>
           <Select
@@ -53,7 +57,6 @@ const TablePagination = <T,>({ table, className }: Props<T>) => {
           />
         </div>
 
-        {/* Navigation Controls */}
         <div className="flex items-center gap-1">
           <Button
             style="tertiary"

@@ -8,6 +8,7 @@ import {
   type ColumnSort,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
@@ -100,8 +101,15 @@ const ChainAllowanceSection = ({
     getCoreRowModel: getCoreRowModel<TokenAllowanceData>(),
     getSortedRowModel: getSortedRowModel<TokenAllowanceData>(),
     getFilteredRowModel: getFilteredRowModel<TokenAllowanceData>(),
+    getPaginationRowModel: getPaginationRowModel<TokenAllowanceData>(),
+    autoResetPageIndex: false,
     getRowId,
     meta: { onUpdate, timeMachineTimestamp } as any,
+    initialState: {
+      pagination: {
+        pageSize: 25,
+      },
+    },
   });
 
   const canExpand = status === 'success' && allowances.length > 0;

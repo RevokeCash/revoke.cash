@@ -1,5 +1,6 @@
 'use client';
 
+import { autoUpdate, FloatingPortal, flip, offset, shift, size, useFloating, useMergeRefs } from '@floating-ui/react';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Button as HeadlessButton } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { type KeyboardEvent as ReactKeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
@@ -10,7 +11,8 @@ import {
   type CommonSelectProps,
   compareOptions,
   createOptionDisplay,
-  getMenuClassName,
+  getAnchoredMenuClassName,
+  getMenuFloatingPlacement,
   getTriggerChevronClassName,
   getTriggerClassName,
   normaliseSearchText,
@@ -36,8 +38,9 @@ export interface Props<O extends SelectOption, I extends boolean = false> extend
 // Architectural notes (learned the hard way):
 // - We own the trigger button and open state ourselves: Headless UI's ComboboxButton is hardcoded to
 //   tabIndex={-1} (it expects the input to be the tab target), which would break keyboard focus.
-// - The panel is positioned with plain absolute CSS. Headless UI's `anchor` prop anchors floating panels
-//   to the ComboboxInput, which lives *inside* this panel, so floating-ui would drift around the page.
+// - The panel is portaled and positioned with floating-ui directly (like Tooltip), anchored to our
+//   trigger button. We cannot use Headless UI's `anchor` prop because it anchors floating panels to
+//   the ComboboxInput, which lives *inside* this panel, so floating-ui would drift around the page.
 // - `modal={false}` is required: the default modal behaviour marks the options list itself inert
 //   (unclickable/unscrollable by mouse) because our search input lives inside the panel.
 const SearchableSelect = <O extends SelectOption, I extends boolean = false>(props: Props<O, I>) => {
@@ -45,6 +48,29 @@ const SearchableSelect = <O extends SelectOption, I extends boolean = false>(pro
   const [query, setQuery] = useState('');
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const { refs, floatingStyles, update } = useFloating({
+    placement: getMenuFloatingPlacement(props.menuPlacement, props.menuAlign),
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(8),
+      flip({ padding: 8 }),
+      shift({ padding: 8 }),
+      // Mirrors the --button-width variable that Headless UI sets for the anchored Listbox in Select,
+      // so both menu types share getAnchoredMenuClassName
+      size({
+        apply({ rects, elements }) {
+          elements.floating.style.setProperty('--button-width', `${rects.reference.width}px`);
+        },
+      }),
+    ],
+  });
+  const triggerRef = useMergeRefs([refs.setReference, buttonRef]);
+
+  // keepMounted panels stay mounted (hidden) while closed, so reposition explicitly on every open
+  useEffect(() => {
+    if (isOpen) update();
+  }, [isOpen, update]);
 
   const displayOption = createOptionDisplay(props.formatOptionLabel);
   const optionGroups = toOptionGroups(props.options);
@@ -132,10 +158,10 @@ const SearchableSelect = <O extends SelectOption, I extends boolean = false>(pro
     : ((props.value as O | null | undefined) ?? null);
 
   return (
-    <div className={twMerge('relative shrink-0 w-fit', props.className)}>
+    <div className={twMerge('shrink-0 w-fit', props.className)}>
       <HeadlessButton
         as={Button}
-        ref={buttonRef}
+        ref={triggerRef}
         style="secondary"
         size="none"
         focusRing={false}
@@ -164,45 +190,48 @@ const SearchableSelect = <O extends SelectOption, I extends boolean = false>(pro
       ) : null}
 
       {isOpen || props.keepMounted ? (
-        <Combobox
-          multiple={props.isMulti as I}
-          immediate
-          value={comboboxValue as any}
-          by={compareOptions}
-          onChange={onChange}
-          onClose={closeMenu}
-        >
-          {({ activeOption }) => (
-            <ComboboxOptions
-              static
-              modal={false}
-              id={props.instanceId ? `${props.instanceId}-options` : undefined}
-              className={twMerge(getMenuClassName(props.menuPlacement, props.menuAlign), !isOpen && 'hidden')}
-              style={{ minWidth: props.minMenuWidth }}
-            >
-              <div className="flex items-center gap-2 px-2 h-9 border-b border-zinc-300 dark:border-zinc-700">
-                <ComboboxInput
-                  ref={inputRef}
-                  aria-label={props['aria-label']}
-                  displayValue={() => ''}
-                  onChange={(event) => setQuery(event.target.value)}
-                  onKeyDown={(event) => toggleActiveOptionOnSpace(event, activeOption as O | null)}
-                  className="w-full bg-transparent outline-none"
-                />
-                <MagnifyingGlassIcon className="w-5 h-5 shrink-0 text-black dark:text-white" />
-              </div>
+        <FloatingPortal>
+          <Combobox
+            multiple={props.isMulti as I}
+            immediate
+            value={comboboxValue as any}
+            by={compareOptions}
+            onChange={onChange}
+            onClose={closeMenu}
+          >
+            {({ activeOption }) => (
+              <ComboboxOptions
+                static
+                modal={false}
+                ref={refs.setFloating}
+                id={props.instanceId ? `${props.instanceId}-options` : undefined}
+                className={twMerge(getAnchoredMenuClassName(), !isOpen && 'hidden')}
+                style={{ ...floatingStyles, minWidth: props.minMenuWidth }}
+              >
+                <div className="flex items-center gap-2 px-2 h-9 border-b border-zinc-300 dark:border-zinc-700">
+                  <ComboboxInput
+                    ref={inputRef}
+                    aria-label={props['aria-label']}
+                    displayValue={() => ''}
+                    onChange={(event) => setQuery(event.target.value)}
+                    onKeyDown={(event) => toggleActiveOptionOnSpace(event, activeOption as O | null)}
+                    className="w-full bg-transparent outline-none"
+                  />
+                  <MagnifyingGlassIcon className="w-5 h-5 shrink-0 text-black dark:text-white" />
+                </div>
 
-              <SelectOptionsList
-                optionComponent={ComboboxOption}
-                optionGroups={visibleGroups}
-                isMulti={props.isMulti}
-                size={props.size}
-                isOptionDisabled={props.isOptionDisabled}
-                renderOption={(option) => displayOption(option, 'menu')}
-              />
-            </ComboboxOptions>
-          )}
-        </Combobox>
+                <SelectOptionsList
+                  optionComponent={ComboboxOption}
+                  optionGroups={visibleGroups}
+                  isMulti={props.isMulti}
+                  size={props.size}
+                  isOptionDisabled={props.isOptionDisabled}
+                  renderOption={(option) => displayOption(option, 'menu')}
+                />
+              </ComboboxOptions>
+            )}
+          </Combobox>
+        </FloatingPortal>
       ) : null}
     </div>
   );

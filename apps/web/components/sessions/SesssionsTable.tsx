@@ -1,7 +1,13 @@
 import { ChainId } from '@revoke.cash/chains';
 import type { Session } from '@revoke.cash/core/sessions';
 import { isNullish } from '@revoke.cash/core/utils';
-import { getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import ChainDisplay from 'components/common/ChainDisplay';
 import Table from 'components/common/table/Table';
@@ -31,6 +37,12 @@ const SessionsTable = ({ chainId }: Props) => {
     getCoreRowModel: getCoreRowModel<Session>(),
     getSortedRowModel: getSortedRowModel<Session>(),
     getFilteredRowModel: getFilteredRowModel<Session>(),
+    getPaginationRowModel: getPaginationRowModel<Session>(),
+    initialState: {
+      pagination: {
+        pageSize: 25,
+      },
+    },
     getRowId(row) {
       return `${row.payload.sessionHash}`;
     },
@@ -48,7 +60,7 @@ const SessionsTable = ({ chainId }: Props) => {
   );
 
   return (
-    <Card header={header} className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+    <Card header={header} className="p-0">
       <Table
         table={table}
         loading={isLoading}

@@ -1,6 +1,7 @@
 import type { Nullable } from '@revoke.cash/core/types';
 import type { Table as ReactTable } from '@tanstack/react-table';
 import ErrorDisplay from 'components/common/ErrorDisplay';
+import TablePagination from 'components/history/TablePagination';
 import { twMerge } from 'tailwind-merge';
 import TableBody from './TableBody';
 import TableFooter from './TableFooter';
@@ -25,24 +26,28 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, partialLo
   };
 
   return (
-    <div className={twMerge(classes.container, className)}>
-      <table className={classes.table}>
-        <TableHeader table={table} />
-        <TableFooter table={table} />
-        {!error && (
-          <TableBody
-            table={table}
-            isLoading={loading}
-            loaderRows={loaderRows}
-            partialLoadingRows={partialLoadingRows}
-          />
-        )}
-      </table>
-      <div className={classes.label}>
-        {!loading && !error && table?.getRowModel()?.rows?.length === 0 && emptyChildren}
-        {!loading && error && <ErrorDisplay error={error} />}
+    <>
+      <TablePagination table={table} className="border-b border-zinc-200 dark:border-zinc-700" />
+      <div className={twMerge(classes.container, className)}>
+        <table className={classes.table}>
+          <TableHeader table={table} />
+          <TableFooter table={table} />
+          {!error && (
+            <TableBody
+              table={table}
+              isLoading={loading}
+              loaderRows={loaderRows}
+              partialLoadingRows={partialLoadingRows}
+            />
+          )}
+        </table>
+        <div className={classes.label}>
+          {!loading && !error && table?.getRowModel()?.rows?.length === 0 && emptyChildren}
+          {!loading && error && <ErrorDisplay error={error} />}
+        </div>
       </div>
-    </div>
+      <TablePagination table={table} className="border-t border-zinc-200 dark:border-zinc-700" />
+    </>
   );
 };
 

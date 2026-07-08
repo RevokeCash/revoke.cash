@@ -14,7 +14,6 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef } from 'react';
 import { ColumnId, columns, customFilterFns } from './columns';
 import HistorySearchBox, { type HistorySearchBoxRef } from './HistorySearchBox';
-import TablePagination from './TablePagination';
 
 interface Props {
   approvalHistory?: Enriched<ApprovalTokenEvent>[];
@@ -64,7 +63,6 @@ const SharedHistoryTable = ({ approvalHistory, isLoading, error, isPremium = fal
   return (
     <Card header={<CardTitle title={t('address.history.title')} />} className="p-0">
       <HistorySearchBox ref={searchBoxRef} table={table} isPremium={isPremium} />
-      <TablePagination table={table} className="border-y border-zinc-200 dark:border-zinc-700" />
       <Table
         table={table}
         loading={isLoading}
@@ -74,7 +72,6 @@ const SharedHistoryTable = ({ approvalHistory, isLoading, error, isPremium = fal
         partialLoadingRows={isPremium ? 3 : 0}
         className="border-none rounded-none"
       />
-      <TablePagination table={table} className="border-t border-zinc-200 dark:border-zinc-700" />
     </Card>
   );
 };

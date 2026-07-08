@@ -53,8 +53,10 @@ export const normaliseSearchText = (text: string): string =>
     .trim()
     .toLowerCase();
 
+// Text sizes are set explicitly (rather than inherited) because the menu is rendered in a portal,
+// so it does not inherit the text size of the trigger's surroundings
 const triggerSizeClassMapping = {
-  sm: 'h-6 px-1.5',
+  sm: 'h-6 pl-2 pr-1.5 text-sm',
   md: 'h-9 px-2',
 } as const;
 
@@ -68,15 +70,32 @@ export const getTriggerChevronClassName = (size: 'sm' | 'md' = 'md'): string =>
 // apply when the trigger is programmatically refocused after closing the menu)
 export const triggerFocusClassName = 'data-focus:border-black dark:data-focus:border-white';
 
-export const getMenuClassName = (menuPlacement?: 'top' | 'bottom', menuAlign?: 'left' | 'right'): string =>
+// Anchored menus are rendered in a portal, so they cannot be clipped by ancestors with overflow
+// styles (such as CollapsibleCard) and automatically flip when out of viewport space. The
+// --button-width variable is set by Headless UI for anchored Listbox menus and by SearchableSelect's
+// floating-ui size middleware, so both menu types can match their trigger's width.
+export const getAnchoredMenuClassName = (): string =>
   twMerge(
-    'absolute z-20 min-w-full w-max rounded-lg overflow-hidden text-left',
+    'z-20 w-max min-w-(--button-width) rounded-lg overflow-hidden text-left',
     'focus:outline-hidden',
     'bg-white dark:bg-black text-black dark:text-white',
     'border border-zinc-200 dark:border-zinc-800 shadow-[0_4px_12px_rgba(0,0,0,0.08)]',
-    menuPlacement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2',
-    menuAlign === 'right' ? 'left-0' : 'right-0',
   );
+
+const getMenuPlacementParts = (menuPlacement?: 'top' | 'bottom', menuAlign?: 'left' | 'right') =>
+  ({ side: menuPlacement ?? 'bottom', align: menuAlign === 'right' ? 'start' : 'end' }) as const;
+
+// Headless UI anchor format ('bottom end'), used by the Listbox-based Select
+export const getMenuAnchor = (menuPlacement?: 'top' | 'bottom', menuAlign?: 'left' | 'right') => {
+  const { side, align } = getMenuPlacementParts(menuPlacement, menuAlign);
+  return { to: `${side} ${align}` as const, gap: 8 };
+};
+
+// floating-ui placement format ('bottom-end'), used by the Combobox-based SearchableSelect
+export const getMenuFloatingPlacement = (menuPlacement?: 'top' | 'bottom', menuAlign?: 'left' | 'right') => {
+  const { side, align } = getMenuPlacementParts(menuPlacement, menuAlign);
+  return `${side}-${align}` as const;
+};
 
 export const groupHeadingClassName = 'px-3 pt-3 pb-2 text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400';
 
@@ -92,7 +111,7 @@ interface OptionClassNameState {
 // checkbox); single-select options get the filled background + brand accent border.
 export const getOptionClassName = ({ focus, selected, disabled, isMulti, size }: OptionClassNameState): string =>
   twMerge(
-    size === 'sm' ? 'px-1.5 py-1' : 'p-2',
+    size === 'sm' ? 'px-2 py-1 text-sm' : 'p-2',
     'cursor-pointer text-black dark:text-white',
     focus && 'bg-zinc-200 dark:bg-zinc-800',
     selected && !isMulti && 'bg-zinc-300 dark:bg-zinc-600 border-l-4 border-brand',

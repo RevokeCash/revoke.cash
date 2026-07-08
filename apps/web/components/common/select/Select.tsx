@@ -8,7 +8,8 @@ import {
   type CommonSelectProps,
   compareOptions,
   createOptionDisplay,
-  getMenuClassName,
+  getAnchoredMenuClassName,
+  getMenuAnchor,
   getTriggerChevronClassName,
   getTriggerClassName,
   type SelectOption,
@@ -55,8 +56,9 @@ const Select = <O extends SelectOption>(props: Props<O>) => {
 
         <ListboxOptions
           modal={false}
+          anchor={getMenuAnchor(props.menuPlacement, props.menuAlign)}
           id={props.instanceId ? `${props.instanceId}-options` : undefined}
-          className={getMenuClassName(props.menuPlacement, props.menuAlign)}
+          className={getAnchoredMenuClassName()}
           style={{ minWidth: props.minMenuWidth }}
         >
           <SelectOptionsList

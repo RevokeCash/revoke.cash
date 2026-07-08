@@ -5,7 +5,6 @@ import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack
 import Card, { CardTitle } from 'components/common/Card';
 import SegmentedControl from 'components/common/SegmentedControl';
 import Table from 'components/common/table/Table';
-import TablePagination from 'components/history/TablePagination';
 import { type ActivityScope, useAutoRevokeActivity } from 'lib/hooks/auto-revoke/useAutoRevokeActivity';
 import { useAutoRevokeBudget } from 'lib/hooks/auto-revoke/useAutoRevokeBudget';
 import { useTranslations } from 'next-intl';
@@ -61,7 +60,6 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
           {budget && <AutoRevokeBudgetSummary budget={budget} />}
         </div>
       )}
-      <TablePagination table={table} className="border-y border-zinc-200 dark:border-zinc-700" />
       <Table
         table={table}
         loading={isLoading}
@@ -70,7 +68,6 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
         emptyChildren={t('account.auto_revoke.activity.empty')}
         className="border-none rounded-none"
       />
-      <TablePagination table={table} className="border-t border-zinc-200 dark:border-zinc-700" />
     </Card>
   );
 };

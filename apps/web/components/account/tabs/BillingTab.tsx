@@ -1,7 +1,7 @@
 'use client';
 
 import { useAccountSubscriptions } from 'lib/hooks/premium/useAccountSubscriptions';
-import BillingSection from '../BillingSection';
+import BillingSection from '../billing/BillingSection';
 
 const BillingTab = () => {
   const { subscriptions, isLoading } = useAccountSubscriptions();

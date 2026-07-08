@@ -1,7 +1,7 @@
 'use client';
 
 import type { Delegation } from '@revoke.cash/core/delegations/DelegatePlatform';
-import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import Card, { CardTitle } from 'components/common/Card';
 import Table from 'components/common/table/Table';
 import { useTranslations } from 'next-intl';
@@ -24,14 +24,17 @@ const DelegationsTable = ({ delegations, isLoading, error, onRevoke }: Props) =>
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 25,
+      },
+    },
     meta: { onRevoke } as any,
   });
 
   return (
-    <Card
-      header={<CardTitle title={t('address.navigation.delegations')} />}
-      className="p-0 overflow-x-scroll whitespace-nowrap scrollbar-hide"
-    >
+    <Card header={<CardTitle title={t('address.navigation.delegations')} />} className="p-0">
       <Table
         table={table}
         loading={isLoading}
