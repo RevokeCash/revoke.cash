@@ -13,7 +13,9 @@ interface Props {
 
 const BillingSection = ({ subscriptions, isLoading }: Props) => {
   const t = useTranslations();
-  const allPayments: SubscriptionPayment[] = subscriptions.flatMap((sub) => sub.payments);
+  const allPayments: SubscriptionPayment[] = subscriptions
+    .flatMap((sub) => sub.payments)
+    .sort((a, b) => (b.paidAt ?? '').localeCompare(a.paidAt ?? ''));
 
   return (
     <Card

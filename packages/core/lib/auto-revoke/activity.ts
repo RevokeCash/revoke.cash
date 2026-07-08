@@ -73,7 +73,8 @@ const queryActivity = async (scopeFilter: SQL, joinMembership = false): Promise<
   const actions = rows as Action[];
   const metadataByChain = await loadMetadataByChain(actions);
 
-  return actions.map((action) => mapActivityItem(action, metadataByChain.get(action.observation.chainId)));
+  const items = actions.map((action) => mapActivityItem(action, metadataByChain.get(action.observation.chainId)));
+  return items.sort((a, b) => b.date.localeCompare(a.date));
 };
 
 interface ChainMetadata {
