@@ -22,7 +22,6 @@ import {
   deferActionRetry,
   getActionById,
   getChainPipelineState,
-  hasPendingExploitAction,
   markActionBroadcasted,
   markActionFailure,
   markActionReplacementSubmitted,
@@ -34,7 +33,13 @@ import { MAX_PENDING_ACTIONS_PER_CHAIN } from '../config';
 import { getPermissionById, type PermissionRecord } from '../permissions';
 import { checkActionCost, getNextBudgetRetryAt } from './budget';
 import { getTransactionFees, type TransactionFees } from './fees';
-import type { SignedTransaction, Signer, UnsignedTransaction } from './signer';
+import {
+  type ExecutorSigners,
+  findSignerByAddress,
+  type SignedTransaction,
+  type Signer,
+  type UnsignedTransaction,
+} from './signer';
 import { checkExecutionEligibility } from './validation';
 
 export interface ExecutionResult {
@@ -62,33 +67,36 @@ const URGENT_SUBMITTED_ATTEMPT_REPLACEMENT_DELAY_MS = 1 * MINUTE;
 const TRANSIENT_ERROR_RETRY_DELAY_MS = 5 * MINUTE;
 const PIPELINE_FULL_RETRY_DELAY_MS = 1 * MINUTE;
 
-export const processAction = async (actionId: string, signer: Signer): Promise<ExecutionResult> => {
+export const processAction = async (actionId: string, signers: ExecutorSigners): Promise<ExecutionResult> => {
   const action = await getActionById(actionId);
   if (!action) return { submitted: false, reason: 'action_not_found' };
 
   if (action.status === 'queued' || action.status === 'blocked_budget') {
-    return submitAction(action, signer);
+    return submitAction(action, signers);
   }
 
   if (action.status === 'submitted') {
-    return maintainSubmittedAction(action, signer);
+    return maintainSubmittedAction(action, signers);
   }
 
   return { submitted: false, reason: `not_processable:${action.status}` };
 };
 
-const submitAction = async (action: Action, signer: Signer): Promise<ExecutionResult> => {
-  // Advisory early exit; the authoritative depth check runs under the chain lock in markActionSubmitted.
-  const pipeline = await getChainPipelineState(action.observation.chainId, signer.address);
-  if (pipeline.count >= MAX_PENDING_ACTIONS_PER_CHAIN) {
-    return deferForFullPipeline(action);
-  }
-
+const submitAction = async (action: Action, signers: ExecutorSigners): Promise<ExecutionResult> => {
   const eligibility = await checkExecutionEligibility(action.observation);
 
   if ('failure' in eligibility) {
     await markActionFailure(action.id, eligibility.failure);
     return { submitted: false, reason: eligibility.failure.errorCode };
+  }
+
+  // Urgent revokes run on their own hot wallet, so they never queue behind normal revokes' nonces
+  const signer = eligibility.isUrgent ? signers.urgent : signers.normal;
+
+  // Advisory early exit; the authoritative depth check runs under the pipeline lock in markActionSubmitted.
+  const pipeline = await getChainPipelineState(action.observation.chainId, signer.address);
+  if (pipeline.count >= MAX_PENDING_ACTIONS_PER_CHAIN) {
+    return deferForFullPipeline(action);
   }
 
   try {
@@ -175,14 +183,18 @@ const submitAction = async (action: Action, signer: Signer): Promise<ExecutionRe
   }
 };
 
-const maintainSubmittedAction = async (action: Action, signer: Signer): Promise<ExecutionResult> => {
+const maintainSubmittedAction = async (action: Action, signers: ExecutorSigners): Promise<ExecutionResult> => {
   const transaction = getSubmittedTransaction(action);
   if (!transaction) return { submitted: false, reason: 'submitted_action_missing_transaction' };
 
   const confirmation = await confirmSubmittedAction(action, transaction);
   if (confirmation.completed || confirmation.reason !== 'receipt_not_found') return confirmation;
 
-  const isUrgent = await isUrgentAction(action, signer);
+  const signer = action.signerAddress ? findSignerByAddress(signers, action.signerAddress) : null;
+  if (!signer) return { submitted: false, reason: 'unknown_signer_address' };
+
+  const isUrgent = signer === signers.urgent;
+
   const nonceConsumed = await wasNonceConsumed(action, transaction, signer, isUrgent);
 
   if (nonceConsumed) {
@@ -199,13 +211,6 @@ const maintainSubmittedAction = async (action: Action, signer: Signer): Promise<
   }
 
   return replaceAction(action, transaction, signer, isUrgent);
-};
-
-// The whole pipeline inherits exploit urgency: nonce ordering means an exploit action can only
-// move once everything ahead of it clears, so a stale head in front of one escalates just as fast.
-const isUrgentAction = async (action: Action, signer: Signer): Promise<boolean> => {
-  if (action.observation.triggerType === 'exploit') return true;
-  return await hasPendingExploitAction(action.observation.chainId, signer.address);
 };
 
 const wasNonceConsumed = async (

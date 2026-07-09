@@ -38,6 +38,7 @@ export const AUTO_REVOKE_MAX_ACTION_COST_USD = 2;
 
 export const PERMISSION_EXPIRY_SECONDS = 10 * 365 * 24 * 60 * 60; // 10 years
 
+// Per signing wallet: the urgent and normal lanes each have their own pipeline of this depth
 export const MAX_PENDING_ACTIONS_PER_CHAIN = 10;
 
 export const STALE_APPROVAL_THRESHOLD_MIN_DAYS = 1;

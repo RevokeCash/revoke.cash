@@ -232,26 +232,6 @@ export const getChainPipelineState = async (
   return state ?? { count: 0, minNonce: null, maxAssignedNonce: null };
 };
 
-export const hasPendingExploitAction = async (chainId: number, signerAddress: Address): Promise<boolean> => {
-  const [pendingExploitAction] = await getDb()
-    .select({ id: autoRevokeActions.id })
-    .from(autoRevokeActions)
-    .innerJoin(autoRevokeObservations, eq(autoRevokeObservations.id, autoRevokeActions.observationId))
-    .where(
-      and(
-        eq(autoRevokeActions.chainId, chainId),
-        eq(autoRevokeObservations.triggerType, 'exploit'),
-        or(
-          and(eq(autoRevokeActions.status, 'submitted'), eq(autoRevokeActions.signerAddress, signerAddress)),
-          eq(autoRevokeActions.status, 'queued'),
-        ),
-      ),
-    )
-    .limit(1);
-
-  return Boolean(pendingExploitAction);
-};
-
 // Locks the action row and performs final authoritative checks before marking it submitted
 export const markActionSubmitted = async (
   actionId: string,
@@ -261,8 +241,10 @@ export const markActionSubmitted = async (
   billing: { address: Address; isUrgent: boolean },
 ): Promise<MarkActionSubmittedResult> => {
   return getTransactionalDb().transaction(async (trx) => {
+    // The pipeline (depth + nonce sequence) is per signing wallet, so the lock is too: the urgent
+    // and normal lanes submit on the same chain without serializing against each other.
     await trx.execute(
-      sql`SELECT pg_advisory_xact_lock(hashtextextended(${`auto_revoke_chain:${chainId}`}, 0::bigint))`,
+      sql`SELECT pg_advisory_xact_lock(hashtextextended(${`auto_revoke_chain:${chainId}:${signerAddress.toLowerCase()}`}, 0::bigint))`,
     );
 
     const pipeline = await getChainPipelineState(chainId, signerAddress, trx);

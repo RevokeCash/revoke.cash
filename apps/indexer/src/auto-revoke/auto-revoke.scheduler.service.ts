@@ -12,6 +12,7 @@ import {
   findProcessableActions,
   unblockActions,
 } from '@revoke.cash/core/auto-revoke/actions';
+import type { ExecutionLane } from '@revoke.cash/core/auto-revoke/execution/signer';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { SECOND } from '@revoke.cash/core/utils/time';
 import type { Queue } from 'bullmq';
@@ -55,7 +56,7 @@ export class AutoRevokeSchedulerService {
     return this.executeQueue
       .add(
         'execute',
-        { actionId: action.id, chainId: action.observation.chainId },
+        { actionId: action.id, chainId: action.observation.chainId, lane: getExecutionLaneHint(action) },
         { jobId: autoRevokeExecuteJobId(action.id) },
       )
       .then(() => 'added' as const)
@@ -76,3 +77,8 @@ const countOutcomes = (outcomes: EnqueueOutcome[]) => ({
   added: outcomes.filter((outcome) => outcome === 'added').length,
   failed: outcomes.filter((outcome) => outcome === 'failed').length,
 });
+
+// The frozen trigger type is only a hint for lane-scoped serialization in the executor; the
+// authoritative lane is picked at execution time from freshly re-derived urgency.
+const getExecutionLaneHint = (action: Action): ExecutionLane =>
+  action.observation.triggerType === 'exploit' ? 'urgent' : 'normal';

@@ -1,7 +1,9 @@
 // Emergency kill switch for the auto-revoke executor. Disables every cold delegation listed in
-// the ceremony output file on-chain, which instantly neuters the hot wallet: once a delegation is
+// the delegation registry on-chain, which instantly neuters the hot wallets: once a delegation is
 // disabled, the hot wallet can no longer redeem it, so a leaked/compromised hot key becomes useless
-// without having to rotate AUTO_REVOKE_DELEGATION_ADDRESS or move user funds.
+// without having to rotate AUTO_REVOKE_DELEGATION_ADDRESS or move user funds. By default EVERY
+// hot wallet in the registry is neutered (both lanes, plus any retired wallets whose delegations
+// are still listed); use --delegate to restrict to one wallet.
 //
 // The cold wallet is a deployed MultiSig DeleGator (a contract), so `disableDelegation` must originate
 // from the cold smart account. We avoid 4337/bundlers: with the Ledger connected, the cold account
@@ -11,7 +13,8 @@
 // separately). The hot wallet is deliberately not used — it may be the thing being revoked.
 //
 // Run (from apps/auto-revoke-executor):
-//   `yarn killswitch`                 disable every chain in the file
+//   `yarn killswitch`                 disable every delegation in the registry
+//   `yarn killswitch --delegate=0x…`  disable a single hot wallet's delegations
 //   `yarn killswitch --chains=1,8453` disable specific chains
 //   `yarn killswitch --in=path.json`  input file (default src/config/cold-delegations.json)
 //   `yarn killswitch --path="44'/60'/0'/0/0"` Ledger derivation path
@@ -27,25 +30,32 @@ import {
 } from '@metamask/smart-accounts-kit';
 import { DelegationManager } from '@metamask/smart-accounts-kit/contracts';
 import { hashDelegation } from '@metamask/smart-accounts-kit/utils';
+import type { ColdDelegationRegistry } from '@revoke.cash/core/auto-revoke/execution/signer';
 import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
 import { type Address, getAddress, type Hash, type Hex, type PublicClient, serializeTransaction } from 'viem';
 import { buildColdSmartAccount, DISABLE_DELEGATION_SIGNATURE, signColdDelegation } from './cold-account';
-import { type CeremonyOutput, DEFAULT_DELEGATIONS_PATH, DEFAULT_DERIVATION_PATH, parseFlags } from './delegations';
+import { DEFAULT_DELEGATIONS_PATH, DEFAULT_DERIVATION_PATH, describeChain, parseFlags } from './delegations';
 import { connectLedgerColdSigner, type LedgerColdSigner } from './ledger-cold-signer';
+
+interface ColdDelegationEntry {
+  chainId: number;
+  coldDelegation: Delegation;
+  delegate: Address;
+}
 
 const main = async (): Promise<void> => {
   const options = parseOptions(process.argv.slice(2));
-  const coldDelegationsByChain = readDelegations(options.inputPath, options.chainIds);
+  const entries = readDelegationEntries(options);
 
-  console.log(`Disabling cold delegations on chains: ${[...coldDelegationsByChain.keys()].join(', ')}`);
+  console.log(`Disabling ${entries.length} cold delegation(s) from ${options.inputPath}`);
   console.log('Connect your Ledger, open the Ethereum app, and confirm prompts as they appear.\n');
 
   const cold = await connectLedgerColdSigner(options.derivationPath);
   console.log(`Ledger EOA (kill-switch delegate): ${cold.address}\n`);
 
   try {
-    for (const [chainId, coldDelegation] of coldDelegationsByChain) {
-      await disableColdDelegation(chainId, coldDelegation, cold);
+    for (const entry of entries) {
+      await disableColdDelegation(entry.chainId, entry.coldDelegation, cold);
     }
   } finally {
     await cold.disconnect();
@@ -59,7 +69,9 @@ const disableColdDelegation = async (
   coldDelegation: Delegation,
   cold: LedgerColdSigner,
 ): Promise<void> => {
-  console.log(`- chain ${chainId}: disabling cold delegation`);
+  console.log(
+    `- ${describeChain(chainId)}: disabling cold delegation (delegate ${getAddress(coldDelegation.delegate)})`,
+  );
   const environment = getSmartAccountsEnvironment(chainId);
   const delegationManager = getAddress(environment.DelegationManager);
   const publicClient = createViemPublicClientForChain(chainId);
@@ -72,7 +84,7 @@ const disableColdDelegation = async (
 
   const balance = await publicClient.getBalance({ address: cold.address });
   if (balance === 0n) {
-    console.warn(`    Ledger EOA has no gas on chain ${chainId}; fund ${cold.address} and re-run. Skipping.`);
+    console.warn(`    Ledger EOA has no gas on ${describeChain(chainId)}; fund ${cold.address} and re-run. Skipping.`);
     return;
   }
 
@@ -98,7 +110,7 @@ const disableColdDelegation = async (
   await publicClient.waitForTransactionReceipt({ hash });
 
   if (!(await isDisabled(publicClient, delegationManager, delegationHash))) {
-    throw new Error(`disable tx ${hash} mined but the cold delegation is still enabled on chain ${chainId}`);
+    throw new Error(`disable tx ${hash} mined but the cold delegation is still enabled on ${describeChain(chainId)}`);
   }
   console.log(`    disabled (tx ${hash})`);
 };
@@ -151,6 +163,7 @@ interface KillswitchOptions {
   inputPath: string;
   derivationPath: string;
   chainIds?: number[];
+  delegate?: Address;
 }
 
 const parseOptions = (args: string[]): KillswitchOptions => {
@@ -160,23 +173,31 @@ const parseOptions = (args: string[]): KillswitchOptions => {
     inputPath: flags.get('in') ?? DEFAULT_DELEGATIONS_PATH,
     derivationPath: flags.get('path') ?? DEFAULT_DERIVATION_PATH,
     chainIds: flags.has('chains') ? flags.get('chains')!.split(',').map(Number) : undefined,
+    delegate: flags.has('delegate') ? getAddress(flags.get('delegate')!) : undefined,
   };
 };
 
-const readDelegations = (inputPath: string, chainIds?: number[]): Map<number, Delegation> => {
-  let file: CeremonyOutput;
+const readDelegationEntries = (options: KillswitchOptions): ColdDelegationEntry[] => {
+  let registry: ColdDelegationRegistry;
   try {
-    file = JSON.parse(readFileSync(inputPath, 'utf8'));
+    registry = JSON.parse(readFileSync(options.inputPath, 'utf8'));
   } catch {
-    throw new Error(`Could not read delegations file at ${inputPath} (run the ceremony first)`);
+    throw new Error(`Could not read delegation registry at ${options.inputPath} (run the ceremony first)`);
   }
 
-  const entries = Object.entries(file)
-    .map(([chainId, coldDelegation]) => [Number(chainId), coldDelegation] as const)
-    .filter(([chainId]) => !chainIds || chainIds.includes(chainId));
+  const entries = Object.entries(registry)
+    .flatMap(([delegate, walletDelegations]) =>
+      Object.entries(walletDelegations).map(([chainId, coldDelegation]) => ({
+        chainId: Number(chainId),
+        coldDelegation,
+        delegate: getAddress(delegate),
+      })),
+    )
+    .filter((entry) => !options.chainIds || options.chainIds.includes(entry.chainId))
+    .filter((entry) => !options.delegate || entry.delegate === options.delegate);
 
-  if (entries.length === 0) throw new Error('No matching delegations to disable');
-  return new Map(entries);
+  if (entries.length === 0) throw new Error('No matching delegations to disable (run the ceremony first)');
+  return entries;
 };
 
 main().catch((error) => {

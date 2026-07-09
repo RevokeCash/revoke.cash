@@ -1,85 +1,45 @@
-import type { Delegation } from '@metamask/smart-accounts-kit';
 import { Injectable } from '@nestjs/common';
-import {
-  type ColdDelegations,
-  type SignedTransaction,
-  type Signer,
-  type UnsignedTransaction,
-} from '@revoke.cash/core/auto-revoke/execution/signer';
-import { createViemPublicClientForChain } from '@revoke.cash/core/chains';
-import { AUTO_REVOKE_DELEGATION_ADDRESS } from '@revoke.cash/core/constants';
-import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import { type Address, getAddress, type Hash, keccak256 } from 'viem';
-import { type PrivateKeyAccount, privateKeyToAccount } from 'viem/accounts';
+import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
+import type { ExecutionLane, ExecutorSigners } from '@revoke.cash/core/auto-revoke/execution/signer';
+import { isAddressEqual } from 'viem';
 import { ConfigService } from '../config/config.service';
+import { HotWalletSigner } from './hot-wallet-signer';
 
+// Holds one hot wallet per execution lane. Urgent (exploit) revokes run on their own wallet and
+// thus their own per-chain nonce pipeline, so they are never stuck behind queued normal revokes.
 @Injectable()
-export class SignerService implements Signer {
-  private readonly account: PrivateKeyAccount;
-  private readonly coldDelegations: ColdDelegations;
-
-  readonly address: Address;
+export class SignerService implements ExecutorSigners {
+  readonly normal: HotWalletSigner;
+  readonly urgent: HotWalletSigner;
 
   constructor(config: ConfigService) {
-    this.coldDelegations = config.coldDelegations;
-    this.account = privateKeyToAccount(config.autoRevokeExecutorPrivateKey);
-    this.address = this.account.address;
+    this.normal = new HotWalletSigner(config.autoRevokeExecutorPrivateKey, config.coldDelegationRegistry);
+    this.urgent = new HotWalletSigner(config.autoRevokeUrgentExecutorPrivateKey, config.coldDelegationRegistry);
 
-    this.assertDelegationsAreConsistent();
+    this.assertLaneWalletsAreDistinct();
+    this.assertLaneCoversSupportedChains('normal', this.normal);
+    this.assertLaneCoversSupportedChains('urgent', this.urgent);
   }
 
-  getColdDelegation(chainId: number): Delegation {
-    const delegation = this.coldDelegations[chainId];
-    if (!delegation) {
-      throw new Error(`No cold delegation configured for chain ${chainId} (run the ceremony for it)`);
-    }
-    return delegation;
-  }
-
-  async signTransaction(transaction: UnsignedTransaction): Promise<SignedTransaction> {
-    const signedTransaction = await this.account.signTransaction({ ...transaction, type: 'eip1559' });
-    return {
-      chainId: transaction.chainId,
-      txHash: keccak256(signedTransaction),
-      rawTransaction: signedTransaction,
-    };
-  }
-
-  async submitSignedTransaction(transaction: SignedTransaction): Promise<Hash> {
-    const publicClient = createViemPublicClientForChain(transaction.chainId);
-
-    try {
-      return await publicClient.sendRawTransaction({ serializedTransaction: transaction.rawTransaction });
-    } catch (error) {
-      if (isIdempotentBroadcastError(error)) return transaction.txHash;
-      throw error;
+  private assertLaneWalletsAreDistinct(): void {
+    if (isAddressEqual(this.normal.address, this.urgent.address)) {
+      throw new Error(
+        'The normal and urgent executor wallets must be distinct accounts so each lane has its own nonce pipeline',
+      );
     }
   }
 
-  private assertDelegationsAreConsistent(): void {
-    const coldRoot = getAddress(AUTO_REVOKE_DELEGATION_ADDRESS);
-    for (const [chainId, delegation] of Object.entries(this.coldDelegations)) {
-      if (getAddress(delegation.delegator) !== coldRoot) {
-        throw new Error(
-          `Chain ${chainId} cold delegation delegator ${delegation.delegator} does not match AUTO_REVOKE_DELEGATION_ADDRESS ${coldRoot}`,
-        );
-      }
-      if (getAddress(delegation.delegate) !== this.address) {
-        throw new Error(
-          `Chain ${chainId} cold delegation delegate ${delegation.delegate} does not match the hot wallet ${this.address}`,
-        );
-      }
-    }
+  // Every supported chain must have a delegation in both lanes before boot: a missing delegation
+  // would otherwise only surface as that chain's revokes looping transient_error — for the urgent
+  // lane during an exploit, the worst possible moment to discover a skipped ceremony.
+  private assertLaneCoversSupportedChains(lane: ExecutionLane, signer: HotWalletSigner): void {
+    const delegatedChainIds = new Set(signer.getDelegatedChainIds());
+    const missingChainIds = AUTO_REVOKE_SUPPORTED_CHAINS.filter((chainId) => !delegatedChainIds.has(chainId));
+    if (missingChainIds.length === 0) return;
+
+    throw new Error(
+      `The ${lane} hot wallet ${signer.address} is missing cold delegations for chain(s) ${missingChainIds.join(', ')} ` +
+        `(run \`yarn ceremony --lane=${lane} --chains=${missingChainIds.join(',')}\`)`,
+    );
   }
 }
-
-const isIdempotentBroadcastError = (error: unknown): boolean => {
-  const message = parseErrorMessage(error).toLowerCase();
-  return (
-    message.includes('already known') ||
-    message.includes('already imported') ||
-    message.includes('known transaction') ||
-    message.includes('transaction already exists') ||
-    message.includes('nonce too low')
-  );
-};

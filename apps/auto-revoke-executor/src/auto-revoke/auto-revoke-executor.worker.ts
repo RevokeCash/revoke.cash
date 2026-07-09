@@ -19,7 +19,7 @@ export class AutoRevokeExecutorWorker extends WorkerHost {
   private readonly logger = new Logger(AutoRevokeExecutorWorker.name);
 
   constructor(
-    private readonly signer: SignerService,
+    private readonly signers: SignerService,
     private readonly groupLimiter: GroupLimiterService,
     @InjectQueue(EVENTS_QUEUE_NAME) private readonly eventsQueue: Queue<EventsJobData>,
   ) {
@@ -27,12 +27,13 @@ export class AutoRevokeExecutorWorker extends WorkerHost {
   }
 
   async process(job: Job<AutoRevokeExecuteJobData>, token?: string): Promise<void> {
-    const { actionId, chainId } = job.data;
+    const { actionId, chainId, lane } = job.data;
 
-    const result = await this.groupLimiter.runWithLimit(chainId, () => processAction(actionId, this.signer), {
-      job,
-      token,
-    });
+    const result = await this.groupLimiter.runWithLimit(
+      `${chainId}:${lane}`,
+      () => processAction(actionId, this.signers),
+      { job, token },
+    );
 
     if (result.completed) {
       this.logger.log({
