@@ -10,9 +10,10 @@ interface Props {
   allowances?: TokenAllowanceData[];
   isLoading: boolean;
   error?: Nullable<Error>;
+  multichain?: boolean;
 }
 
-const TotalValueAtRisk = ({ allowances, isLoading, error }: Props) => {
+const TotalValueAtRisk = ({ allowances, isLoading, error, multichain }: Props) => {
   const t = useTranslations();
 
   if (error) return null;
@@ -30,7 +31,7 @@ const TotalValueAtRisk = ({ allowances, isLoading, error }: Props) => {
     <Loader isLoading={isLoading}>
       <div className="flex flex-col items-start md:items-center gap-0.5">
         <div className="text-xs font-semibold tracking-wide text-zinc-600 dark:text-zinc-400 md:text-center uppercase">
-          {t('address.wallet_health.total_value_at_risk')}
+          {t(multichain ? 'address.wallet_health.total_value_at_risk' : 'address.wallet_health.value_at_risk')}
         </div>
         <div className="font-bold">
           {isLoading ? (

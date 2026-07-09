@@ -5,6 +5,7 @@ import Select from 'components/common/select/Select';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
+import { twMerge } from 'tailwind-merge';
 import useLocalStorage from 'use-local-storage';
 import { ColumnId } from '../columns';
 
@@ -23,6 +24,7 @@ interface Props {
   onSortChange: (sort: ColumnSort[]) => void;
   sortableColumns?: SortableColumn[];
   instanceId?: string;
+  className?: string;
 }
 
 const DEFAULT_SORTABLE_COLUMNS: SortableColumn[] = [
@@ -36,6 +38,7 @@ const SortSelect = ({
   onSortChange,
   sortableColumns = DEFAULT_SORTABLE_COLUMNS,
   instanceId = 'sort-select',
+  className,
 }: Props) => {
   const t = useTranslations();
   const isMounted = useMounted();
@@ -92,7 +95,7 @@ const SortSelect = ({
     <Select
       instanceId={instanceId}
       aria-label="Sort By"
-      className="w-full shrink-0"
+      className={twMerge('w-full shrink-0', className)}
       value={options.find((option) => {
         return option.id === selectedSort.id && option.desc === selectedSort.desc;
       })}

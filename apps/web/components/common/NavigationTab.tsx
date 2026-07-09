@@ -14,12 +14,14 @@ const NavigationTab = ({ name, href, retainSearchParams, attention }: Props) => 
   const isSelected = path?.endsWith(href);
 
   const classes = twMerge(
-    'flex whitespace-nowrap border-b-2 pb-1 text-sm font-medium border-transparent',
-    'text-zinc-500 visited:text-zinc-500 dark:text-zinc-400 dark:visited:text-zinc-400',
-    'focus-visible:ring-0 focus-visible:border-zinc-400 dark:focus-visible:border-zinc-500',
-    isSelected &&
-      'border-black text-black visited:text-black dark:border-white dark:text-white dark:visited:text-white',
-    !isSelected && 'hover:border-brand hover:text-zinc-700 dark:hover:border-brand dark:hover:text-zinc-300',
+    'flex whitespace-nowrap items-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+    'focus-visible:rounded-md',
+    isSelected
+      ? 'bg-zinc-900 text-white visited:text-white dark:bg-zinc-100 dark:text-zinc-900 dark:visited:text-zinc-900'
+      : twMerge(
+          'text-zinc-600 visited:text-zinc-600 dark:text-zinc-400 dark:visited:text-zinc-400',
+          'hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100',
+        ),
   );
 
   return (
@@ -35,7 +37,7 @@ const NavigationTab = ({ name, href, retainSearchParams, attention }: Props) => 
       >
         {name}
       </Button>
-      {attention && <span className="absolute top-0 -right-2 h-1.5 w-1.5 rounded-full bg-brand" />}
+      {attention && <span className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 rounded-full bg-brand" />}
     </div>
   );
 };

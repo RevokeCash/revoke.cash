@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import TestimonialCard from './TestimonialCard';
 import { TESTIMONIALS } from './testimonials-data';
@@ -9,21 +9,27 @@ const INTERVAL_MS = 6000;
 
 const TestimonialCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
-  const advance = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+  const restartTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+    }, INTERVAL_MS);
   }, []);
 
   useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(advance, INTERVAL_MS);
-    return () => clearInterval(timer);
-  }, [isPaused, advance]);
+    restartTimer();
+    return () => clearInterval(timerRef.current);
+  }, [restartTimer]);
+
+  const selectTestimonial = (index: number) => {
+    setActiveIndex(index);
+    restartTimer();
+  };
 
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: we're using a div, but we want to pause the carousel on hover
-    <div className="flex flex-col gap-3" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+    <div className="flex flex-col gap-3">
       {/* Grid trick: all cards occupy the same cell, so the container sizes to the tallest */}
       <div className="grid">
         {TESTIMONIALS.map((testimonial, index) => (
@@ -43,7 +49,7 @@ const TestimonialCarousel = () => {
           <button
             key={testimonial.tweetUrl}
             type="button"
-            onClick={() => setActiveIndex(index)}
+            onClick={() => selectTestimonial(index)}
             className={twMerge(
               'h-1.5 rounded-full transition-all duration-300',
               index === activeIndex ? 'w-4 bg-zinc-400 dark:bg-zinc-500' : 'w-1.5 bg-zinc-200 dark:bg-zinc-700',

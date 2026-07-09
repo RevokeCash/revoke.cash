@@ -211,7 +211,7 @@
   "premium": {
     "banner": {
       "cta": "Upgrade to Premium",
-      "description": "Want a unified view across all networks?"
+      "description": "Multichain dashboard?"
     }
   },
   "risk_factors": {
@@ -302,8 +302,11 @@
       "title": "Why add a tip?"
     }
   },
+  "viewing_on": "Viewing address on",
   "wallet_health": {
+    "allowances": "Approvals",
     "total_allowances": "Total Approvals",
-    "total_value_at_risk": "Total Value at Risk"
+    "total_value_at_risk": "Total Value at Risk",
+    "value_at_risk": "Value at Risk"
   }
 }

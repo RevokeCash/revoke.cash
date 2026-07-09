@@ -21,11 +21,11 @@ const AllowanceTableControls = ({ table }: Props) => {
   );
 
   return (
-    <div className="flex flex-col gap-2">
-      <SortSelect onSortChange={table.setSorting} />
+    <div className="flex flex-col-reverse md:flex-row gap-2">
       <Suspense>
         <AllowanceSearchBox onSearchValuesChange={onSearchValuesChange} />
       </Suspense>
+      <SortSelect onSortChange={table.setSorting} className="md:w-auto" />
     </div>
   );
 };

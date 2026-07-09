@@ -16,8 +16,8 @@ const PremiumAllowancesSummary = () => {
 
   return (
     <div className="flex justify-start items-start md:items-center md:justify-around gap-4">
-      <AllowancesCount allowances={allowances} isLoading={isLoading} />
-      <TotalValueAtRisk allowances={allowances} isLoading={isLoading} />
+      <AllowancesCount allowances={allowances} isLoading={isLoading} multichain />
+      <TotalValueAtRisk allowances={allowances} isLoading={isLoading} multichain />
     </div>
   );
 };
