@@ -55,6 +55,7 @@
     "budget": {
       "per_action_cap": "Each revoke is capped at {cap}.",
       "resets": "Resets {date}",
+      "shared": "The gas budget is shared by all wallets in the subscription.",
       "used": "{used} of {total} used this month"
     },
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",

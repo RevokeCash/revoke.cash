@@ -107,6 +107,25 @@ export const getMonthlyBudget = async (
   return { budgetUsd, committedUsd, remainingUsd, maxActionCostUsd: MAX_ACTION_COST_USD, period };
 };
 
+// This aggregates the budget of all subscriptions that cover the address.
+export const getAddressMonthlyBudget = async (
+  address: Address,
+  writer: DatabaseWriter = getDb(),
+): Promise<MonthlyBudget | null> => {
+  const subscriptionIds = await findBillingSubscriptionIds(writer, address);
+  if (subscriptionIds.length === 0) return null;
+
+  const budgets = await Promise.all(subscriptionIds.map((subscriptionId) => getMonthlyBudget(subscriptionId, writer)));
+
+  return {
+    budgetUsd: budgets.reduce((total, budget) => total + budget.budgetUsd, 0),
+    committedUsd: budgets.reduce((total, budget) => total + budget.committedUsd, 0),
+    remainingUsd: budgets.reduce((total, budget) => total + budget.remainingUsd, 0),
+    maxActionCostUsd: MAX_ACTION_COST_USD,
+    period: getUtcMonthPeriod(),
+  };
+};
+
 export const lockAndCheckBudget = async (
   trx: DatabaseTransaction,
   subscriptionId: string,

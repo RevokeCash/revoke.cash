@@ -6,7 +6,7 @@ import Card, { CardTitle } from 'components/common/Card';
 import SegmentedControl from 'components/common/SegmentedControl';
 import Table from 'components/common/table/Table';
 import { type ActivityScope, useAutoRevokeActivity } from 'lib/hooks/auto-revoke/useAutoRevokeActivity';
-import { useAutoRevokeBudget } from 'lib/hooks/auto-revoke/useAutoRevokeBudget';
+import { useAddressAutoRevokeBudget, useSubscriptionAutoRevokeBudget } from 'lib/hooks/auto-revoke/useAutoRevokeBudget';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import AutoRevokeBudgetSummary from './AutoRevokeBudgetSummary';
@@ -27,7 +27,10 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
     scopeType === 'subscription' && subscriptionId ? { type: 'subscription', subscriptionId } : { type: 'address' };
 
   const { items, isLoading, error } = useAutoRevokeActivity(scope, true);
-  const { budget } = useAutoRevokeBudget(subscriptionId, isOwner);
+
+  const { budget: addressBudget } = useAddressAutoRevokeBudget(scope.type === 'address');
+  const { budget: subscriptionBudget } = useSubscriptionAutoRevokeBudget(subscriptionId, scope.type === 'subscription');
+  const budget = scope.type === 'subscription' ? subscriptionBudget : addressBudget;
 
   const table = useReactTable({
     data: items,
@@ -57,7 +60,11 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
               onChange={setScopeType}
             />
           )}
-          {budget && <AutoRevokeBudgetSummary budget={budget} />}
+          {budget && (
+            <div className="sm:ml-auto">
+              <AutoRevokeBudgetSummary budget={budget} />
+            </div>
+          )}
         </div>
       )}
       <Table

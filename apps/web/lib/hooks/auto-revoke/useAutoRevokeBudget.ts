@@ -6,13 +6,26 @@ import ky from 'lib/ky';
 // The wire shape of MonthlyBudget: JSON serialization turns the period dates into ISO strings.
 export type SerializedMonthlyBudget = Omit<MonthlyBudget, 'period'> & { period: { start: string; end: string } };
 
-export const useAutoRevokeBudget = (subscriptionId: string | undefined, enabled: boolean) => {
+// The budget of a single subscription, viewable by its owner only
+export const useSubscriptionAutoRevokeBudget = (subscriptionId: string | undefined, enabled: boolean) => {
   const query = useQuery({
-    queryKey: ['auto-revoke', 'budget', subscriptionId],
+    queryKey: ['auto-revoke', 'budget', 'subscription', subscriptionId],
     queryFn: () => ky.get(`/api/auto-revoke/subscriptions/${subscriptionId}/budget`).json<SerializedMonthlyBudget>(),
     staleTime: MINUTE,
     enabled: enabled && Boolean(subscriptionId),
   });
 
   return { budget: query.data, isLoading: query.isLoading };
+};
+
+// The aggregate budget available to the connected address across all subscriptions that cover it
+export const useAddressAutoRevokeBudget = (enabled: boolean) => {
+  const query = useQuery({
+    queryKey: ['auto-revoke', 'budget', 'address'],
+    queryFn: () => ky.get('/api/auto-revoke/budget').json<SerializedMonthlyBudget | null>(),
+    staleTime: MINUTE,
+    enabled,
+  });
+
+  return { budget: query.data ?? undefined, isLoading: query.isLoading };
 };

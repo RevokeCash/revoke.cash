@@ -24,7 +24,7 @@ const AutoRevokeBudgetSummary = ({ budget }: Props) => {
           })}
         </span>
         <WithHoverTooltip
-          tooltip={t('account.auto_revoke.budget.per_action_cap', { cap: `$${budget.maxActionCostUsd.toFixed(2)}` })}
+          tooltip={`${t('account.auto_revoke.budget.shared')} ${t('account.auto_revoke.budget.per_action_cap', { cap: `$${budget.maxActionCostUsd.toFixed(2)}` })}`}
         >
           <InformationCircleIcon className="h-4 w-4 text-zinc-400" />
         </WithHoverTooltip>
