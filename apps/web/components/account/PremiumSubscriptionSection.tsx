@@ -2,6 +2,7 @@
 
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { PREMIUM_PAYMENT_CHAIN_IDS } from '@revoke.cash/core/premium/payment-config';
+import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
 import type { PremiumEntitlement, PremiumPlan, PremiumSubscription } from '@revoke.cash/core/premium/types';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Button from 'components/common/Button';
@@ -274,9 +275,16 @@ const PaymentForm = ({
 
       <div className="flex flex-wrap items-center gap-3">
         {status === 'confirmed' ? (
-          <span className="text-sm text-green-700 dark:text-green-300">
-            {t('account.subscription.payment_confirmed')}
-          </span>
+          <>
+            <span className="text-sm text-green-700 dark:text-green-300">
+              {t('account.subscription.payment_confirmed')}
+            </span>
+            {isUltimatePlan(selectedPlan) && (
+              <Href href="/account/auto-revoke" router underline="always" className="text-sm">
+                {t('account.subscription.next_setup_auto_revoke')} →
+              </Href>
+            )}
+          </>
         ) : (
           <Button
             style="primary"

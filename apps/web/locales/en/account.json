@@ -92,6 +92,11 @@
       "switch_failed": "Failed to switch rules source.",
       "title": "Rules Source"
     },
+    "setup": {
+      "banner": "Auto-Revoking is not protecting this wallet yet.",
+      "banner_cta": "Set it up",
+      "get_started": "Auto-Revoking is not active for this wallet yet. Toggle the networks you want protected below. Every wallet in the subscription needs to do this once, using MetaMask."
+    },
     "title": "Auto-Revoking",
     "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
   },
@@ -152,6 +157,7 @@
     },
     "downgrade_not_supported": "You cannot downgrade an active subscription.",
     "granted_by": "Granted by {address}",
+    "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "You don't have an active premium subscription. Subscribe below to get started. <premium-link>Learn more about Premium</premium-link>.",
     "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
@@ -179,12 +185,12 @@
   },
   "unauthenticated": {
     "benefits": {
-      "address_slots": "Add or remove wallets",
+      "auto_revoke": "Set up and monitor Auto-Revoking",
       "billing": "View your billing history",
       "coverage": "View and manage Fairside coverage",
       "manage_subscription": "Manage your Premium subscription",
       "title": "What you can do here"
     },
-    "description": "Sign in to manage your Premium subscription, wallet slots, and coverage."
+    "description": "Sign in to manage your Premium subscription, Auto-Revoking, wallet slots, and coverage."
   }
 }

@@ -39,7 +39,7 @@ const UnauthenticatedView = ({ account, signIn, isAuthenticating }: Props) => {
           </h3>
           <ul className="flex flex-col gap-2">
             <Benefit label={t('account.unauthenticated.benefits.manage_subscription')} />
-            <Benefit label={t('account.unauthenticated.benefits.address_slots')} />
+            <Benefit label={t('account.unauthenticated.benefits.auto_revoke')} />
             <Benefit label={t('account.unauthenticated.benefits.coverage')} />
             <Benefit label={t('account.unauthenticated.benefits.billing')} />
           </ul>

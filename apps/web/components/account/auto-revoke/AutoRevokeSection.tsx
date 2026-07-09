@@ -1,5 +1,6 @@
 'use client';
 
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import type { PremiumSubscription } from '@revoke.cash/core/premium/subscriptions';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Card, { CardTitle } from 'components/common/Card';
@@ -48,6 +49,10 @@ const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
       ? t('account.auto_revoke.rules.managed_by', { owner: shortenAddress(addressRules.rulesSource.ownerAddress, 4) })
       : undefined;
 
+  const connectedWalletNeedsSetup = !permissions.some(
+    (permission) => isAddressEqual(permission.address, account) && permission.isActive,
+  );
+
   return (
     <Card
       header={<CardTitle title={t('account.auto_revoke.title')} />}
@@ -56,6 +61,13 @@ const AutoRevokeSection = ({ activeSubscription, account }: Props) => {
     >
       <div className="flex flex-col gap-4">
         {!isMetaMask && <MetaMaskRequiredBanner />}
+
+        {connectedWalletNeedsSetup && (
+          <div className="rounded-lg border border-brand/50 bg-brand/5 p-4 flex items-center gap-3">
+            <InformationCircleIcon className="h-6 w-6 shrink-0 text-brand" />
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">{t('account.auto_revoke.setup.get_started')}</p>
+          </div>
+        )}
 
         <div className="grid gap-6 lg:grid-cols-2">
           <AutoRevokePermissions

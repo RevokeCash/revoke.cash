@@ -6,9 +6,10 @@ interface Props {
   name: string;
   href: string;
   retainSearchParams?: string[];
+  attention?: boolean;
 }
 
-const NavigationTab = ({ name, href, retainSearchParams }: Props) => {
+const NavigationTab = ({ name, href, retainSearchParams, attention }: Props) => {
   const path = usePathname();
   const isSelected = path?.endsWith(href);
 
@@ -34,6 +35,7 @@ const NavigationTab = ({ name, href, retainSearchParams }: Props) => {
       >
         {name}
       </Button>
+      {attention && <span className="absolute top-0 -right-2 h-1.5 w-1.5 rounded-full bg-brand" />}
     </div>
   );
 };
