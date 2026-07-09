@@ -15,9 +15,8 @@ interface Props {
 const AutoRevokePermissions = ({ addresses, connectedAddress, permissions, isAdmin }: Props) => {
   const t = useTranslations();
 
-  const displayAddresses = isAdmin
-    ? addresses
-    : addresses.filter((address) => isAddressEqual(address, connectedAddress));
+  const otherAddresses = addresses.filter((address) => !isAddressEqual(address, connectedAddress));
+  const displayAddresses = isAdmin ? [connectedAddress, ...otherAddresses] : [connectedAddress];
 
   return (
     <div className="min-w-0">

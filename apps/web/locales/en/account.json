@@ -72,6 +72,7 @@
     },
     "rules": {
       "days": "days",
+      "defaults_description": "These rules apply to all wallets in this subscription by default, but each wallet can override them.",
       "managed_by": "Managed by {owner}",
       "risk_detection": "Risky Approval Detection",
       "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",

@@ -4,6 +4,7 @@ import type { AutoRevokeRules, RiskSensitivity } from '@revoke.cash/core/auto-re
 import SegmentedControl, { type SegmentedOption } from 'components/common/SegmentedControl';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { twMerge } from 'tailwind-merge';
 import AutoRevokeRuleToggle from './AutoRevokeRuleToggle';
 import StaleApprovalDaysInput from './StaleApprovalDaysInput';
 
@@ -29,12 +30,17 @@ const AutoRevokeRulesEditor = ({ rules, onUpdate, isAdmin = false, readOnly = fa
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
+      <div className={twMerge('flex items-center justify-between', isAdmin ? 'mb-2' : 'mb-3')}>
         <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
           {isAdmin ? t('account.auto_revoke.rules.title_defaults') : t('account.auto_revoke.rules.title')}
         </h3>
         {managedByLabel && <span className="text-xs text-zinc-400 dark:text-zinc-500">{managedByLabel}</span>}
       </div>
+      {isAdmin && (
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-3">
+          {t('account.auto_revoke.rules.defaults_description')}
+        </p>
+      )}
 
       <div className="flex flex-col gap-4">
         <AutoRevokeRuleToggle

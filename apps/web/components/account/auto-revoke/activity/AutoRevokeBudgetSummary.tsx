@@ -1,4 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import GasPump from 'components/common/icons/GasPump';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import type { SerializedMonthlyBudget } from 'lib/hooks/auto-revoke/useAutoRevokeBudget';
 import { useTranslations } from 'next-intl';
@@ -15,7 +16,8 @@ const AutoRevokeBudgetSummary = ({ budget }: Props) => {
   return (
     <div className="flex flex-col gap-1.5 min-w-52">
       <div className="flex items-center justify-between gap-2 text-sm">
-        <span className="text-zinc-600 dark:text-zinc-400">
+        <span className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-400">
+          <GasPump className="h-4 w-4 shrink-0" />
           {t('account.auto_revoke.budget.used', {
             used: `$${budget.committedUsd.toFixed(2)}`,
             total: `$${budget.budgetUsd.toFixed(2)}`,

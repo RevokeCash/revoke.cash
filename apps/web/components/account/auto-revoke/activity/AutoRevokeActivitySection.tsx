@@ -46,7 +46,7 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
   return (
     <Card header={<CardTitle title={t('account.auto_revoke.activity.title')} />} className="p-0">
       {(isOwner || budget) && (
-        <div className="flex flex-col-reverse gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col-reverse gap-3 p-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 dark:border-zinc-700">
           {isOwner && (
             <SegmentedControl
               options={[

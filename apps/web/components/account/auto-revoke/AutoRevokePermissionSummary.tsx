@@ -1,6 +1,5 @@
 'use client';
 
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import AddressRow from 'components/account/AddressRow';
 import Label from 'components/common/Label';
 import { useTranslations } from 'next-intl';
@@ -11,10 +10,9 @@ interface Props {
   address: Address;
   grantedCount: number;
   totalCount: number;
-  open: boolean;
 }
 
-const AutoRevokePermissionSummary = ({ address, grantedCount, totalCount, open }: Props) => {
+const AutoRevokePermissionSummary = ({ address, grantedCount, totalCount }: Props) => {
   const t = useTranslations();
 
   const summaryLabel = t('account.auto_revoke.permissions.networks_enabled', {
@@ -32,17 +30,12 @@ const AutoRevokePermissionSummary = ({ address, grantedCount, totalCount, open }
   return (
     <div className="min-w-0 flex-1">
       <AddressRow address={address}>
-        <div className="flex items-center gap-2">
-          <Label className={labelClassName}>
-            <span className="sm:hidden">
-              {grantedCount}/{totalCount}
-            </span>
-            <span className="hidden sm:inline">{summaryLabel}</span>
-          </Label>
-          <ChevronDownIcon
-            className={twMerge('h-4 w-4 shrink-0 text-zinc-400 transition-transform', open && 'rotate-180')}
-          />
-        </div>
+        <Label className={labelClassName}>
+          <span className="sm:hidden">
+            {grantedCount}/{totalCount}
+          </span>
+          <span className="hidden sm:inline">{summaryLabel}</span>
+        </Label>
       </AddressRow>
     </div>
   );
