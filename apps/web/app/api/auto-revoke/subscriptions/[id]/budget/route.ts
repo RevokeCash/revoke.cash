@@ -1,6 +1,5 @@
 import { getMonthlyBudget } from '@revoke.cash/core/auto-revoke/execution/budget';
 import { isActiveUltimateSubscriptionOwnedBy } from '@revoke.cash/core/premium/subscriptions';
-import { uuidSchema } from '@revoke.cash/core/schemas';
 import { ApiError } from '@revoke.cash/core/utils/errors';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
@@ -13,7 +12,7 @@ interface Props {
 }
 
 const schemas = {
-  params: z.object({ id: uuidSchema }),
+  params: z.object({ id: z.uuid() }),
   body: z.undefined(),
 };
 

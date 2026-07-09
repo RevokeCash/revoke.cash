@@ -19,16 +19,6 @@ export class ConfigService {
     return ORDERED_CHAINS;
   }
 
-  get bullBoardUser(): string {
-    return process.env.BULL_BOARD_USER ?? 'admin';
-  }
-
-  get bullBoardPassword(): string {
-    const password = process.env.BULL_BOARD_PASSWORD;
-    if (!password) throw new Error('BULL_BOARD_PASSWORD is not configured');
-    return password;
-  }
-
   get optionalExploitWebhookToken(): string | undefined {
     return process.env.EXPLOIT_WEBHOOK_TOKEN;
   }

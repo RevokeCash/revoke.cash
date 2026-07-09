@@ -1,5 +1,4 @@
 import { getAddressRulesConfig, switchRulesSource } from '@revoke.cash/core/auto-revoke/evaluation/rules';
-import { uuidSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -13,7 +12,7 @@ const readSchemas = {
 
 const updateSchemas = {
   params: z.undefined(),
-  body: z.object({ subscriptionId: uuidSchema.nullable() }).strict(),
+  body: z.strictObject({ subscriptionId: z.uuid().nullable() }),
 };
 
 export const runtime = 'edge';

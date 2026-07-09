@@ -6,7 +6,7 @@ import { autoRevokeSupportedChainIdSchema, hexStringSchema } from '@revoke.cash/
 import { z } from 'zod';
 
 export const rulesDataBodySchema = z
-  .object({
+  .strictObject({
     riskDetectionEnabled: z.boolean(),
     riskSensitivity: z.enum(['exploits_only', 'high', 'medium']),
     staleApprovalEnabled: z.boolean(),
@@ -16,18 +16,13 @@ export const rulesDataBodySchema = z
       .min(STALE_APPROVAL_THRESHOLD_MIN_DAYS)
       .max(STALE_APPROVAL_THRESHOLD_MAX_DAYS),
   })
-  .strict()
   .partial();
 
-export const grantPermissionBodySchema = z
-  .object({
-    chainId: autoRevokeSupportedChainIdSchema,
-    permissionContext: hexStringSchema,
-  })
-  .strict();
+export const grantPermissionBodySchema = z.strictObject({
+  chainId: autoRevokeSupportedChainIdSchema,
+  permissionContext: hexStringSchema,
+});
 
-export const syncPermissionsBodySchema = z
-  .object({
-    permissions: z.array(grantPermissionBodySchema),
-  })
-  .strict();
+export const syncPermissionsBodySchema = z.strictObject({
+  permissions: z.array(grantPermissionBodySchema),
+});

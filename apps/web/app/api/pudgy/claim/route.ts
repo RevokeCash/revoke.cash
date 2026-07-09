@@ -23,7 +23,7 @@ interface PudgyApiResponse {
 
 const schemas = {
   params: z.undefined(),
-  body: z.object({ address: addressSchema }).strict(),
+  body: z.strictObject({ address: addressSchema }),
 };
 
 export async function POST(req: NextRequest) {

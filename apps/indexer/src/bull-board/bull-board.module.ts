@@ -1,7 +1,7 @@
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import { BullBoardModule as BullBoardModuleBase } from '@bull-board/nestjs';
-import { type MiddlewareConsumer, Module, type NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import {
   AUTO_REVOKE_EVALUATE_QUEUE_NAME,
   AUTO_REVOKE_EXPLOIT_QUEUE_NAME,
@@ -13,12 +13,12 @@ import { SPENDER_METADATA_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues
 import { TIMESTAMPS_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/timestamps';
 import { TOKEN_METADATA_QUEUE_NAME } from '@revoke.cash/backend/indexer/queues/token-metadata';
 import { QueueModule } from '@revoke.cash/backend/queue/queue.module';
+import expressBasicAuth from 'express-basic-auth';
 import { AllowancesSchedulerModule } from '../allowances/allowances.scheduler.module';
 import { EventsSchedulerModule } from '../events/events.scheduler.module';
 import { SpenderMetadataSchedulerModule } from '../spender-metadata/spender-metadata.scheduler.module';
 import { TimestampsSchedulerModule } from '../timestamps/timestamps.scheduler.module';
 import { TokenMetadataSchedulerModule } from '../token-metadata/token-metadata.scheduler.module';
-import { BullBoardAuthMiddleware } from './bull-board.middleware';
 
 const BULL_BOARD_ROUTE = '/queues';
 
@@ -35,6 +35,10 @@ const BULL_BOARD_ROUTE = '/queues';
     BullBoardModuleBase.forRoot({
       route: BULL_BOARD_ROUTE,
       adapter: ExpressAdapter,
+      middleware: expressBasicAuth({
+        users: { [process.env.BULL_BOARD_USER!]: process.env.BULL_BOARD_PASSWORD! },
+        challenge: true,
+      }),
       boardOptions: { uiConfig: { boardTitle: 'indexer' } },
     }),
     BullBoardModuleBase.forFeature(
@@ -52,10 +56,5 @@ const BULL_BOARD_ROUTE = '/queues';
       { name: AUTO_REVOKE_EXECUTE_QUEUE_NAME, adapter: BullMQAdapter, options: { displayName: 'Auto-Revoke Execute' } },
     ),
   ],
-  providers: [BullBoardAuthMiddleware],
 })
-export class BullBoardModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(BullBoardAuthMiddleware).forRoutes(BULL_BOARD_ROUTE);
-  }
-}
+export class BullBoardModule {}

@@ -1,5 +1,6 @@
 import type { TransactionSubmitted } from '@revoke.cash/core/types';
 import type {
+  Call,
   Capabilities,
   PublicClient,
   SendTransactionParameters,
@@ -7,7 +8,6 @@ import type {
   WalletClient,
   WriteContractParameters,
 } from 'viem';
-import type { Call } from 'viem/_types/types/calls';
 import type { OnUpdate, TokenAllowanceData } from './allowances';
 
 export type Eip5792Call = Call;

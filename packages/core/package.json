@@ -25,25 +25,34 @@
     "db:drop": "yarn env drizzle-kit drop"
   },
   "dependencies": {
-    "@envio-dev/hypersync-client": "^1.0.0",
+    "@envio-dev/hypersync-client": "^1.4.0",
     "@metamask/smart-accounts-kit": "^1.6.0",
-    "@neondatabase/serverless": "^1.0.2",
+    "@neondatabase/serverless": "^1.1.0",
     "@revoke.cash/chains": "^79.0.0",
     "@upstash/ratelimit": "^2.0.8",
-    "@upstash/redis": "^1.36.2",
-    "dexie": "^4.3.0",
-    "drizzle-orm": "^0.45.1",
-    "ky": "^1.14.3",
+    "@upstash/redis": "^1.38.0",
+    "dexie": "^4.4.4",
+    "drizzle-orm": "^0.45.2",
+    "ky": "^2.0.2",
     "md5": "^2.3.0",
-    "p-queue": "^9.1.0",
-    "viem": "^2.45.2",
-    "zod": "^3.25.76"
+    "p-queue": "^9.3.0",
+    "viem": "^2.54.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@dotenvx/dotenvx": "^1.52.0",
+    "@dotenvx/dotenvx": "^2.0.0",
     "@types/md5": "^2.3.6",
-    "drizzle-kit": "^0.31.7",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "drizzle-kit": "^0.31.10",
+    "tsx": "^4.22.5",
+    "typescript": "^6.0.3"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "drizzle-kit>@esbuild-kit/esm-loader>@esbuild-kit/core-utils>esbuild#0.18.20": false,
+      "drizzle-kit>esbuild#0.25.12": false,
+      "tsx>esbuild#0.28.1": true,
+      "viem>ws>bufferutil#4.0.9": true,
+      "viem>ws>utf-8-validate#5.0.10": true
+    }
   }
 }

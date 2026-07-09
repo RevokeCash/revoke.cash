@@ -149,7 +149,7 @@ const finalizeMatchedPaymentInTransaction = async (
     with: { plan: { columns: { durationDays: true, priceUsd: true } } },
   });
 
-  if (!lockedPayment || lockedPayment.status !== 'pending') {
+  if (lockedPayment?.status !== 'pending') {
     return;
   }
 

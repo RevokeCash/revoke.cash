@@ -9,8 +9,6 @@ export interface EventsJobData {
   scheduledAt: number;
 }
 
-export type EnqueueOutcome = 'added' | 'deduped';
-
 export const EVENTS_QUEUE_NAME = 'indexer_events';
 
 export const scheduledEventsJobId = (chainId: number, address: Address): string =>

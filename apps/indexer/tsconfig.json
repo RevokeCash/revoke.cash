@@ -15,8 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "outDir": "./dist",
-    "baseUrl": ".",
+    "noEmit": true,
     "paths": {
       "@revoke.cash/backend/*": ["../../packages/backend/lib/*"],
       "@revoke.cash/core/*": ["../../packages/core/lib/*"]

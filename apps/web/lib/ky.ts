@@ -8,7 +8,7 @@ import { queryClient } from './hooks/QueryProvider';
 const ky = kyBase.extend({
   hooks: {
     beforeRequest: [
-      async (request) => {
+      async ({ request }) => {
         if (!isOwnSite(request.url)) return request;
 
         const path = new URL(request.url).pathname;

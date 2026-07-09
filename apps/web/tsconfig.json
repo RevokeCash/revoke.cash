@@ -8,17 +8,19 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "baseUrl": ".",
     "paths": {
+      "app/*": ["./app/*"],
+      "components/*": ["./components/*"],
+      "cypress/*": ["./cypress/*"],
       "lib/*": ["./lib/*"],
+      "locales/*": ["./locales/*"],
       "@revoke.cash/core/*": ["../../packages/core/lib/*"]
     },
     "plugins": [

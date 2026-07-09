@@ -54,7 +54,7 @@ const LandingPage: NextPage<Props> = async ({ params }) => {
         </div>
       </SharedLayout>
       {/* biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD needs to be injected using dangerouslySetInnerHTML */}
-      <Script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Script id="json-ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
   );
 };

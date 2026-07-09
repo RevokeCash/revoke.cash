@@ -12,7 +12,7 @@ interface Props {
 
 const schemas = {
   params: z.object({ chainId: supportedChainIdSchema }),
-  body: z.object({ addresses: z.array(addressSchema) }).strict(),
+  body: z.strictObject({ addresses: z.array(addressSchema) }),
 };
 
 export const runtime = 'edge';

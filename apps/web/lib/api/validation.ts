@@ -3,20 +3,16 @@ import type { NextRequest } from 'next/server';
 import type { z } from 'zod';
 import { ValidationError } from './errors';
 
-type ParsedRequest<
-  ParamsSchema extends z.ZodTypeAny,
-  BodySchema extends z.ZodTypeAny,
-  QuerySchema extends z.ZodTypeAny,
-> = {
+type ParsedRequest<ParamsSchema extends z.ZodType, BodySchema extends z.ZodType, QuerySchema extends z.ZodType> = {
   params: z.infer<ParamsSchema>;
   body: z.infer<BodySchema>;
   query: z.infer<QuerySchema>;
 };
 
 export async function parseRequest<
-  ParamsSchema extends z.ZodTypeAny,
-  BodySchema extends z.ZodTypeAny,
-  QuerySchema extends z.ZodTypeAny = z.ZodUndefined,
+  ParamsSchema extends z.ZodType,
+  BodySchema extends z.ZodType,
+  QuerySchema extends z.ZodType = z.ZodUndefined,
 >(
   req: NextRequest,
   props: { params: Promise<unknown> | unknown } | undefined,
@@ -29,7 +25,7 @@ export async function parseRequest<
   return { params, body, query };
 }
 
-async function parseRouteParams<Schema extends z.ZodTypeAny>(
+async function parseRouteParams<Schema extends z.ZodType>(
   params: Promise<unknown> | unknown,
   schema: Schema,
 ): Promise<z.infer<Schema>> {
@@ -43,7 +39,7 @@ async function parseRouteParams<Schema extends z.ZodTypeAny>(
   return parsed.data;
 }
 
-async function parseJsonBody<Schema extends z.ZodTypeAny>(req: NextRequest, schema: Schema): Promise<z.infer<Schema>> {
+async function parseJsonBody<Schema extends z.ZodType>(req: NextRequest, schema: Schema): Promise<z.infer<Schema>> {
   const bodyText = await req.text();
   const body = parseBodyText(bodyText);
   const parsed = schema.safeParse(body);
@@ -55,7 +51,7 @@ async function parseJsonBody<Schema extends z.ZodTypeAny>(req: NextRequest, sche
   return parsed.data;
 }
 
-function parseQueryString<Schema extends z.ZodTypeAny>(req: NextRequest, schema: Schema | undefined): z.infer<Schema> {
+function parseQueryString<Schema extends z.ZodType>(req: NextRequest, schema: Schema | undefined): z.infer<Schema> {
   if (!schema) return undefined as z.infer<Schema>;
 
   const raw = Object.fromEntries(req.nextUrl.searchParams.entries());
@@ -86,8 +82,8 @@ const buildValidationError = (error: z.ZodError, fallbackMessage: string): Valid
 };
 
 // Schemas can attach `params: { status: <code> }` to a `.refine()` to signal a specific HTTP status
-const getIssueStatusCode = (issue: z.ZodIssue): number | undefined => {
+const getIssueStatusCode = (issue: z.core.$ZodIssue): number | undefined => {
   if (issue.code !== 'custom') return undefined;
-  const status = (issue as z.ZodCustomIssue).params?.status;
+  const status = (issue as { params?: { status?: unknown } }).params?.status;
   return typeof status === 'number' ? status : undefined;
 };

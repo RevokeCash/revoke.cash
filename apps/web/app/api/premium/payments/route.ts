@@ -9,15 +9,13 @@ import { z } from 'zod';
 
 const schemas = {
   params: z.undefined(),
-  body: z
-    .object({
-      planId: z.string().min(1),
-      chainId: chainIdSchema.refine(isSupportedPaymentChainId, {
-        message: 'Unsupported payment chain',
-        params: { status: 404 },
-      }),
-    })
-    .strict(),
+  body: z.strictObject({
+    planId: z.string().min(1),
+    chainId: chainIdSchema.refine(isSupportedPaymentChainId, {
+      error: 'Unsupported payment chain',
+      params: { status: 404 },
+    }),
+  }),
 };
 
 export const runtime = 'edge';

@@ -14,14 +14,12 @@ interface Props {
 
 const schemas = {
   params: z.object({ chainId: supportedChainIdSchema }),
-  body: z
-    .object({
-      transactionHash: transactionHashSchema.nullable(),
-      userAddress: addressSchema,
-      feePaid: z.number().nonnegative(),
-      sponsor: z.string().nullable(),
-    })
-    .strict(),
+  body: z.strictObject({
+    transactionHash: transactionHashSchema.nullable(),
+    userAddress: addressSchema,
+    feePaid: z.number().nonnegative(),
+    sponsor: z.string().nullable(),
+  }),
 };
 
 export const runtime = 'edge';

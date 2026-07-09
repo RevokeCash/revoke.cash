@@ -13,14 +13,13 @@ interface Props {
 const schemas = {
   params: z.object({ chainId: supportedChainIdSchema }),
   body: z
-    .object({
+    .strictObject({
       address: addressSchema.optional(),
       topics: z.array(hexStringSchema.nullable()),
       fromBlock: z.number().int().nonnegative(),
       toBlock: z.number().int().nonnegative(),
     })
-    .strict()
-    .refine((filter) => filter.fromBlock <= filter.toBlock, { message: 'fromBlock must be <= toBlock' }),
+    .refine((filter) => filter.fromBlock <= filter.toBlock, { error: 'fromBlock must be <= toBlock' }),
 };
 
 export async function POST(req: NextRequest, props: Props) {

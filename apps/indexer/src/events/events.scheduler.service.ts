@@ -3,7 +3,6 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import {
-  type EnqueueOutcome,
   EVENTS_QUEUE_NAME,
   type EventsJobData,
   scheduledEventsJobId,
@@ -40,17 +39,12 @@ export class EventsSchedulerService {
 
     const lagSeconds = Math.max(0, (Date.now() - candidates[0].nextRunAt.getTime()) / 1000);
 
-    const outcomes = await Promise.all(candidates.map(({ address, chainId }) => this.enqueueEvents(chainId, address)));
-
-    const added = outcomes.filter((outcome) => outcome === 'added').length;
-    const deduped = outcomes.filter((outcome) => outcome === 'deduped').length;
+    await Promise.all(candidates.map(({ address, chainId }) => this.enqueueEvents(chainId, address)));
 
     this.logger.log({
       event: 'events_scheduler_tick_completed',
       outcome: 'enqueued',
       enqueued: candidates.length,
-      added,
-      deduped,
       lagSeconds,
     });
 
@@ -59,21 +53,14 @@ export class EventsSchedulerService {
     }
   }
 
-  private async enqueueEvents(chainId: number, address: Address): Promise<EnqueueOutcome> {
-    const jobId = scheduledEventsJobId(chainId, address);
-    if (await this.jobExists(jobId)) return 'deduped';
-
+  // Adding a job whose jobId is already queued is a no-op in BullMQ, so pairs that are still
+  // pending from a previous tick are deduplicated without a separate existence check
+  private async enqueueEvents(chainId: number, address: Address): Promise<void> {
     const eventsScanId = randomUUID();
     await this.queue.add(
       'events',
       { eventsScanId, address, chainId, reason: 'scheduled', scheduledAt: Date.now() },
-      { jobId },
+      { jobId: scheduledEventsJobId(chainId, address) },
     );
-    return 'added';
-  }
-
-  async jobExists(jobId: string): Promise<boolean> {
-    const client = await this.queue.client;
-    return Boolean(await client.exists(this.queue.toKey(jobId)));
   }
 }

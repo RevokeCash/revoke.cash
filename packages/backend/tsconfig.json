@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "target": "es2022",
     "lib": ["es2022"],
     "declaration": false,
@@ -15,8 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "outDir": "./dist",
-    "baseUrl": ".",
+    "noEmit": true,
     "paths": {
       "@revoke.cash/backend/*": ["./lib/*"],
       "@revoke.cash/core/*": ["../core/lib/*"]

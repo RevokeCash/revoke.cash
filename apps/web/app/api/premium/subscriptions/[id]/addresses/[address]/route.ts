@@ -1,5 +1,5 @@
 import { removeSubscriptionAddress } from '@revoke.cash/core/premium/subscriptions';
-import { addressSchema, uuidSchema } from '@revoke.cash/core/schemas';
+import { addressSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const schemas = {
-  params: z.object({ id: uuidSchema, address: addressSchema }),
+  params: z.object({ id: z.uuid(), address: addressSchema }),
   body: z.undefined(),
 };
 

@@ -11,13 +11,11 @@ export const runtime = 'edge';
 
 const schemas = {
   params: z.undefined(),
-  body: z
-    .object({
-      address: addressSchema,
-      message: z.string().min(1),
-      signature: hexStringSchema,
-    })
-    .strict(),
+  body: z.strictObject({
+    address: addressSchema,
+    message: z.string().min(1),
+    signature: hexStringSchema,
+  }),
 };
 
 export async function POST(req: NextRequest) {

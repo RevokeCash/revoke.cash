@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.2/schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
@@ -15,7 +15,8 @@
       "!**/.vercel",
       "!**/package.json",
       "!**/next-env.d.ts",
-      "!**/drizzle"
+      "!**/drizzle",
+      "!apps/video/public" // static render assets for videos, not user-facing markup
     ]
   },
   "formatter": {
@@ -33,7 +34,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "complexity": {
         "noForEach": "off" // I prefer to use array methods
       },

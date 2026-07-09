@@ -1,5 +1,4 @@
 import { reconcilePaymentByOwner } from '@revoke.cash/core/premium/verify-payment';
-import { uuidSchema } from '@revoke.cash/core/schemas';
 import { authorizeRequest, RateLimiters } from 'lib/api/auth';
 import { handleApiRouteError } from 'lib/api/errors';
 import { parseRequest } from 'lib/api/validation';
@@ -11,7 +10,7 @@ interface Props {
 }
 
 const schemas = {
-  params: z.object({ paymentId: uuidSchema }),
+  params: z.object({ paymentId: z.uuid() }),
   body: z.undefined(),
 };
 
