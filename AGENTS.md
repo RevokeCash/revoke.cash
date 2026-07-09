@@ -2,6 +2,12 @@
 
 NEVER stage changes, just leave them in the working directory.
 
+## Dev Server
+
+- NEVER start a dev server or production server yourself (no `yarn dev`, no `next dev`, no `preview_start`, not in the background, not in worktrees).
+- A dev server is always already running at http://localhost:3000. To verify changes, use the claude-in-chrome browser tools (navigate, read_page, computer, read_console_messages) against that URL.
+- If http://localhost:3000 is not responding, tell the user and ask them to start it. Do not start one yourself.
+
 ## Repository Structure
 
 - `apps/web/`: frontend app.
