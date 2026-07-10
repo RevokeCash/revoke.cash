@@ -2,10 +2,12 @@ import { Pill } from './Pill';
 
 export type ActivityTrigger = 'exploit' | 'risky' | 'stale';
 
+// Colors follow the real trigger badge mapping (AutoRevokeActivityTriggerBadge.tsx): exploit is
+// danger, risky is warning (shared with Pending) and stale is neutral, in StatusLabel dark variants.
 const TRIGGER_STYLES: Record<ActivityTrigger, { label: string; className: string }> = {
-  exploit: { label: 'Exploit', className: 'bg-red-400 text-zinc-900' },
-  risky: { label: 'Risky', className: 'bg-orange-300 text-zinc-900' },
-  stale: { label: 'Stale', className: 'bg-zinc-300 text-zinc-900' },
+  exploit: { label: 'Exploit', className: 'bg-red-900/40 text-red-400' },
+  risky: { label: 'Risky', className: 'bg-yellow-900/40 text-yellow-400' },
+  stale: { label: 'Stale', className: 'bg-zinc-800 text-zinc-400' },
 };
 
 export const TriggerPill = ({ trigger }: { trigger: ActivityTrigger }) => {

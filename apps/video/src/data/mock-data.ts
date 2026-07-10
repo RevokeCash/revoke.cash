@@ -11,8 +11,9 @@ export const MOCK_APPROVALS: MockApproval[] = [
   { symbol: 'USDC', spender: 'Uniswap Permit2', amount: 'Unlimited', lastUpdated: '3 years ago', monthsAgo: 36 },
   { symbol: 'WETH', spender: 'Seaport 1.5 (OpenSea)', amount: 'Unlimited', lastUpdated: '2 years ago', monthsAgo: 24 },
   {
+    // Shortened like the real dashboard's shortenAddress(address, 6): 0x + 6 chars ... 6 chars.
     symbol: 'UNI',
-    spender: '0x7a16fF82...61c3AB9d',
+    spender: '0x7a16fF...c3AB9d',
     amount: 'Unlimited',
     lastUpdated: '4 years ago',
     monthsAgo: 48,
@@ -20,7 +21,7 @@ export const MOCK_APPROVALS: MockApproval[] = [
   },
   { symbol: 'PEPE', spender: 'SushiSwap Router', amount: 'Unlimited', lastUpdated: '2 years ago', monthsAgo: 24 },
   { symbol: 'LINK', spender: '1inch Router v4', amount: 'Unlimited', lastUpdated: '3 years ago', monthsAgo: 36 },
-  { symbol: 'ARB', spender: 'Arbitrum Bridge', amount: '50,000', lastUpdated: '1 year ago', monthsAgo: 12 },
+  { symbol: 'ARB', spender: 'Arbitrum Bridge', amount: '50,000 ARB', lastUpdated: '1 year ago', monthsAgo: 12 },
 ];
 
 export const MOCK_CHAIN_LOGOS = [

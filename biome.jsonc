@@ -36,7 +36,8 @@
     "rules": {
       "preset": "recommended",
       "complexity": {
-        "noForEach": "off" // I prefer to use array methods
+        "noForEach": "off", // I prefer to use array methods
+        "noImportantStyles": "off" // We have to use !important for prefers-reduced-motion handling
       },
       "correctness": {
         "useExhaustiveDependencies": {

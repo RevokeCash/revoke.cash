@@ -1,6 +1,6 @@
 ---
 title: 'How Auto-Revoking Works Under the Hood'
-description: Revoke Ultimate can revoke dangerous approvals on your behalf without ever holding your keys or your funds. This technical deep dive covers the ERC-7715 permissions, the cold and hot delegation chain, the two-lane execution pipeline and the gas accounting that power Auto-Revoking.
+description: Revoke Ultimate can revoke approvals on your behalf without ever holding your keys or your funds. This technical deep dive covers the ERC-7715 permissions and the full technical architecture that makes it possible.
 date: 2026-07-10
 author: Rosco Kalis
 translator: <Your Name Here (or remove)>

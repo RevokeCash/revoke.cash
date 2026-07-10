@@ -15,3 +15,9 @@ export const popIn = (frame: number, fps: number, delay: number): CSSProperties 
     transform: `scale(${progress})`,
   };
 };
+
+// Single scale pulse to draw attention to a button after the state around it has settled.
+export const pulseOnce = (frame: number, fps: number, at: number): CSSProperties => {
+  const progress = spring({ frame: frame - at, fps, config: { damping: 200 }, durationInFrames: 24 });
+  return { transform: `scale(${1 + Math.sin(progress * Math.PI) * 0.06})` };
+};

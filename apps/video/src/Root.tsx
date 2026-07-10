@@ -1,4 +1,6 @@
 import { Composition, Folder } from 'remotion';
+import { ApprovalDashboardShowcase } from './landing-showcase/ApprovalDashboardShowcase';
+import { SingleExploitCheckerShowcase } from './landing-showcase/SingleExploitCheckerShowcase';
 import { MAIN_DURATION_IN_FRAMES, Main } from './premium-announcement/Main';
 import { AutoRevokeScene } from './premium-announcement/scenes/AutoRevokeScene';
 import { CtaScene } from './premium-announcement/scenes/CtaScene';
@@ -7,11 +9,11 @@ import { PremiumScene } from './premium-announcement/scenes/PremiumScene';
 import { PricingScene } from './premium-announcement/scenes/PricingScene';
 import { ProblemScene } from './premium-announcement/scenes/ProblemScene';
 import { TitleCardScene } from './premium-announcement/scenes/TitleCardScene';
-import { AutoRevokeShowcaseStill } from './premium-showcase/AutoRevokeShowcaseStill';
-import { BatchRevokeStill } from './premium-showcase/BatchRevokeStill';
-import { ExploitCheckerStill } from './premium-showcase/ExploitCheckerStill';
-import { MultichainDashboardStill } from './premium-showcase/MultichainDashboardStill';
-import { TimeMachineStill } from './premium-showcase/TimeMachineStill';
+import { AutoRevokeShowcase } from './premium-showcase/AutoRevokeShowcase';
+import { BatchRevokeShowcase } from './premium-showcase/BatchRevokeShowcase';
+import { ExploitCheckerShowcase } from './premium-showcase/ExploitCheckerShowcase';
+import { MultichainDashboardShowcase } from './premium-showcase/MultichainDashboardShowcase';
+import { TimeMachineShowcase } from './premium-showcase/TimeMachineShowcase';
 import './fonts';
 import './style.css';
 
@@ -28,13 +30,21 @@ const ANNOUNCEMENT_SCENES = [
   { id: 'Cta', component: CtaScene, durationInFrames: 140 },
 ] as const;
 
-// Still images for the premium pricing page's feature showcase.
-const SHOWCASE_STILLS = [
-  { id: 'AutoRevokeShowcase', component: AutoRevokeShowcaseStill },
-  { id: 'MultichainDashboardShowcase', component: MultichainDashboardStill },
-  { id: 'ExploitCheckerShowcase', component: ExploitCheckerStill },
-  { id: 'BatchRevokeShowcase', component: BatchRevokeStill },
-  { id: 'TimeMachineShowcase', component: TimeMachineStill },
+// Animated mockups for the premium pricing page's feature showcase; the pricing page plays them
+// as looping videos, and representative frames double as their poster images.
+const SHOWCASE_ANIMATIONS = [
+  { id: 'AutoRevokeShowcase', component: AutoRevokeShowcase, durationInFrames: 240 },
+  { id: 'MultichainDashboardShowcase', component: MultichainDashboardShowcase, durationInFrames: 180 },
+  { id: 'ExploitCheckerShowcase', component: ExploitCheckerShowcase, durationInFrames: 240 },
+  { id: 'BatchRevokeShowcase', component: BatchRevokeShowcase, durationInFrames: 210 },
+  { id: 'TimeMachineShowcase', component: TimeMachineShowcase, durationInFrames: 240 },
+] as const;
+
+// Animated mockups for the landing page's feature showcase, in the same style; the landing page's
+// auto-revoke card reuses the AutoRevokeShowcase render from the premium set.
+const LANDING_SHOWCASE_ANIMATIONS = [
+  { id: 'ApprovalDashboardShowcase', component: ApprovalDashboardShowcase, durationInFrames: 210 },
+  { id: 'SingleExploitCheckerShowcase', component: SingleExploitCheckerShowcase, durationInFrames: 240 },
 ] as const;
 
 export const Root = () => {
@@ -72,12 +82,25 @@ export const Root = () => {
         ))}
       </Folder>
       <Folder name="premium-showcase">
-        {SHOWCASE_STILLS.map((still) => (
+        {SHOWCASE_ANIMATIONS.map((showcase) => (
           <Composition
-            key={still.id}
-            id={still.id}
-            component={still.component}
-            durationInFrames={1}
+            key={showcase.id}
+            id={showcase.id}
+            component={showcase.component}
+            durationInFrames={showcase.durationInFrames}
+            fps={FPS}
+            width={1200}
+            height={630}
+          />
+        ))}
+      </Folder>
+      <Folder name="landing-showcase">
+        {LANDING_SHOWCASE_ANIMATIONS.map((showcase) => (
+          <Composition
+            key={showcase.id}
+            id={showcase.id}
+            component={showcase.component}
+            durationInFrames={showcase.durationInFrames}
             fps={FPS}
             width={1200}
             height={630}

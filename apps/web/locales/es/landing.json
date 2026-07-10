@@ -4,6 +4,10 @@
     "title": "Preguntas Frecuentes"
   },
   "features": {
+    "auto_revoke": {
+      "description": "Let Revoke.cash watch your approvals around the clock and revoke risky ones automatically on your behalf. Set-and-forget protection for your wallet, even while you sleep.",
+      "title": "Automated Revoking"
+    },
     "dashboard": {
       "description": "Obtén una visión general clara de todas las autorizaciones de tokens que hayas concedido. Ordena, filtra y revoca las que ya no necesites, todo desde un sencillo panel de control.",
       "title": "Panel de aprobación"
@@ -11,10 +15,6 @@
     "exploit_checker": {
       "description": "Comprueba automáticamente tus autorizaciones con una base de datos de vulnerabilidades y estafas conocidas. Recibe una alerta si alguna de tus autorizaciones está en riesgo.",
       "title": "Comprobador de Exploits"
-    },
-    "extension": {
-      "description": "La extensión del navegador Revoke.cash te avisa antes de que firmes transacciones potencialmente peligrosas. Más vale prevenir que curar.",
-      "title": "Extensión del Navegador"
     },
     "title": "Diseñado para la Seguridad de la Cartera"
   },
@@ -41,7 +41,6 @@
     "description": "Gestiona las aprobaciones en más de 100 redes desde un único panel de control. A partir de $79/año.",
     "free_features": {
       "batch_revoke": "Revocación por lotes ($1,50/lote)",
-      "browser_extension": "Advertencias de la extensión del navegador",
       "exploit_checker": "Comprobador de vulnerabilidades de cadena única",
       "history": "Single-chain approval history",
       "single_chain": "Panel de aprobación de cadena única"

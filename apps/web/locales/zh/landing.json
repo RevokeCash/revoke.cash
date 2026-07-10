@@ -4,6 +4,10 @@
     "title": "常见问题"
   },
   "features": {
+    "auto_revoke": {
+      "description": "Let Revoke.cash watch your approvals around the clock and revoke risky ones automatically on your behalf. Set-and-forget protection for your wallet, even while you sleep.",
+      "title": "Automated Revoking"
+    },
     "dashboard": {
       "description": "Get a clear overview of every token approval you've ever granted. Sort, filter, and revoke the ones you no longer need — all from one simple dashboard.",
       "title": "Approval Dashboard"
@@ -11,10 +15,6 @@
     "exploit_checker": {
       "description": "Automatically check your approvals against a database of known exploits and scams. Get a warning if any of your approvals are at risk.",
       "title": "Exploit Checker"
-    },
-    "extension": {
-      "description": "The Revoke.cash browser extension warns you before you sign potentially harmful transactions. Prevention is always better than mitigation.",
-      "title": "Browser Extension"
     },
     "title": "Built for Wallet Security"
   },
@@ -41,7 +41,6 @@
     "description": "Monitor and protect your token approvals across 100+ networks. Starting at $99/year.",
     "free_features": {
       "batch_revoke": "Batch revoke ($1.50/batch)",
-      "browser_extension": "Browser extension warnings",
       "exploit_checker": "Single-chain exploit checker",
       "history": "Single-chain approval history",
       "single_chain": "Single-chain approval dashboard"

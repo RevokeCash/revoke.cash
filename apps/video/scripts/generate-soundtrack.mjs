@@ -91,21 +91,6 @@ const mixHat = (startSeconds, gain) => {
   }
 };
 
-// Dark noise swell building into the brand-reveal impact.
-const mixNoiseRiser = (startSeconds, durationSeconds, peakGain) => {
-  const startSample = Math.floor(startSeconds * SAMPLE_RATE);
-  const sampleCount = Math.min(Math.floor(durationSeconds * SAMPLE_RATE), TOTAL_SAMPLES - startSample);
-  let smoothed = 0;
-  for (let i = 0; i < sampleCount; i++) {
-    const progress = i / sampleCount;
-    const noise = Math.random() * 2 - 1;
-    smoothed += (noise - smoothed) * 0.08;
-    const sample = smoothed * peakGain * progress * progress;
-    leftChannel[startSample + i] += sample;
-    rightChannel[startSample + i] += sample;
-  }
-};
-
 const NOTE = {
   A1: 55.0,
   C2: 65.41,
@@ -135,26 +120,9 @@ const mixPadChord = (startSeconds, durationSeconds, frequencies, { attackSeconds
   });
 };
 
-// --- Intro (hook + problem): dark Am drone with a slow heartbeat and a riser into the reveal ---
-mixPadChord(0, REVEAL_AT + 0.4, [NOTE.A2, NOTE.A3, NOTE.E4], { attackSeconds: 2.0, releaseSeconds: 1.2 });
-for (let beat = 1.0; beat < REVEAL_AT - 0.6; beat += 2.0) {
-  mixTone({
-    startSeconds: beat,
-    durationSeconds: 0.35,
-    frequency: NOTE.A1,
-    gain: 0.09,
-    attackSeconds: 0.02,
-    releaseSeconds: 0.3,
-    detune: 0,
-  });
-}
-mixNoiseRiser(REVEAL_AT - 2.2, 2.2, 0.09);
-
-// --- Brand-reveal impact ---
-mixKick(REVEAL_AT, 0.5);
-mixBell({ startSeconds: REVEAL_AT, frequency: NOTE.A1, gain: 0.22, decayRate: 3 });
-
-// --- Body (reveal through pricing): F C G Am progression with a soft four-on-the-floor pulse ---
+// --- Bed (whole track through pricing): F C G Am progression from the very top, so the open is
+// energetic rather than eerie. The intro plays the cycle once, stretched so that its last chord
+// ends exactly when the title card starts; the body restarts the progression on that downbeat. ---
 const PROGRESSION = [
   [NOTE.F2, NOTE.F3, NOTE.A3, NOTE.C4],
   [NOTE.C3, NOTE.G3, NOTE.C4, NOTE.E4],
@@ -162,18 +130,48 @@ const PROGRESSION = [
   [NOTE.A2, NOTE.A3, NOTE.C4, NOTE.E4],
 ];
 const CHORD_SECONDS = 2.0;
-for (let index = 0; REVEAL_AT + index * CHORD_SECONDS < CTA_AT; index++) {
-  const chordStart = REVEAL_AT + index * CHORD_SECONDS;
-  const chord = PROGRESSION[index % PROGRESSION.length];
-  mixPadChord(chordStart, Math.min(CHORD_SECONDS + 0.3, CTA_AT - chordStart + 0.3), chord, {
-    attackSeconds: 0.35,
+const INTRO_CHORD_SECONDS = REVEAL_AT / PROGRESSION.length;
+
+const mixChordWithBassPulses = (chordStart, chordSeconds, chord, attackSeconds) => {
+  mixPadChord(chordStart, Math.min(chordSeconds + 0.3, CTA_AT - chordStart + 0.3), chord, {
+    attackSeconds,
     releaseSeconds: 0.5,
   });
+  // Root-note bass pulses on the half notes keep the low end moving between kicks.
+  [0, chordSeconds / 2].forEach((offset, pulseIndex) => {
+    mixTone({
+      startSeconds: chordStart + offset,
+      durationSeconds: 0.45,
+      frequency: chord[0],
+      gain: pulseIndex === 0 ? 0.07 : 0.06,
+      attackSeconds: 0.02,
+      releaseSeconds: 0.35,
+      detune: 0,
+    });
+  });
+};
+
+PROGRESSION.forEach((chord, index) => {
+  // The very first chord fades in over a bar so the track doesn't click on, but still arrives fast.
+  mixChordWithBassPulses(index * INTRO_CHORD_SECONDS, INTRO_CHORD_SECONDS, chord, index === 0 ? 0.8 : 0.35);
+});
+for (let index = 0; REVEAL_AT + index * CHORD_SECONDS < CTA_AT; index++) {
+  const chordStart = REVEAL_AT + index * CHORD_SECONDS;
+  mixChordWithBassPulses(chordStart, CHORD_SECONDS, PROGRESSION[index % PROGRESSION.length], 0.35);
 }
-for (let kickTime = PREMIUM_AT; kickTime < CTA_AT - 0.2; kickTime += 0.5) {
-  mixKick(kickTime, kickTime >= PRICING_AT ? 0.4 : 0.32);
-  if (kickTime + 0.25 < CTA_AT - 0.2 && kickTime >= AUTO_REVOKE_AT) {
-    mixHat(kickTime + 0.25, kickTime >= PRICING_AT ? 0.05 : 0.03);
+
+// --- Brand-reveal impact ---
+mixKick(REVEAL_AT, 0.5);
+mixBell({ startSeconds: REVEAL_AT, frequency: NOTE.A1, gain: 0.22, decayRate: 3 });
+
+// --- Drums: four-on-the-floor with offbeat hats from the title-card reveal, stepping up per scene ---
+for (let kickTime = REVEAL_AT; kickTime < CTA_AT - 0.2; kickTime += 0.5) {
+  // The reveal impact owns its own downbeat; skip the grid kick that would flam against it.
+  if (Math.abs(kickTime - REVEAL_AT) > 0.3) {
+    mixKick(kickTime, kickTime >= PRICING_AT ? 0.4 : kickTime >= PREMIUM_AT ? 0.32 : 0.26);
+  }
+  if (kickTime + 0.25 < CTA_AT - 0.2) {
+    mixHat(kickTime + 0.25, kickTime >= PRICING_AT ? 0.05 : kickTime >= AUTO_REVOKE_AT ? 0.04 : 0.025);
   }
 }
 
@@ -221,5 +219,6 @@ writeFileSync(outputPath, wavData);
 
 console.log(`Wrote ${outputPath} (${DURATION_SECONDS.toFixed(1)}s, peak normalized to 0.72)`);
 console.log(
-  'Encode with: yarn remotion ffmpeg -i public/audio/soundtrack.wav -c:a aac -b:a 192k public/audio/soundtrack.m4a -y',
+  // Remotion's bundled ffmpeg does not infer the container from the .m4a extension, hence -f mp4.
+  'Encode with: yarn remotion ffmpeg -y -i public/audio/soundtrack.wav -c:a aac -b:a 192k -f mp4 public/audio/soundtrack.m4a',
 );

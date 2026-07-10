@@ -37,12 +37,12 @@ export const ApprovalsTable = ({
 }: Props) => {
   return (
     <div className={twMerge('overflow-hidden rounded-xl border border-zinc-800 bg-black', className)}>
-      <div className={twMerge(TABLE_GRID, 'border-b border-zinc-800 px-4 py-3 text-sm font-semibold text-zinc-400')}>
+      <div className={twMerge(TABLE_GRID, 'border-b border-zinc-800 px-4 py-3 text-sm font-bold text-zinc-100')}>
         <div>Asset</div>
         <div>Approved Amount</div>
         <div>Approved Spender</div>
         <div>Last Updated</div>
-        <div className="text-center">Actions</div>
+        <div className="text-right">Actions</div>
       </div>
       {approvals.map((approval, index) => (
         <ApprovalRow
@@ -84,18 +84,18 @@ const ApprovalRow = ({ approval, exploitedHighlightOpacity, presence, entranceSt
         <TokenIcon symbol={approval.symbol} />
         {approval.symbol}
       </div>
-      <div className="text-zinc-400">{approval.amount}</div>
+      <div className="text-zinc-100">{approval.amount}</div>
       <div className="flex items-center gap-2 text-zinc-100">
         {approval.spender}
         {approval.exploited && (
           <div style={{ opacity: exploitedHighlightOpacity }}>
-            <Pill className="bg-red-400 text-zinc-900">Exploited</Pill>
+            <Pill className="bg-red-900/40 text-red-400">Exploited</Pill>
           </div>
         )}
       </div>
-      <div className="text-zinc-400">{approval.lastUpdated}</div>
-      <div className="flex items-center justify-center rounded-lg border border-white py-1.5 font-medium text-white">
-        Revoke
+      <div className="text-zinc-100">{approval.lastUpdated}</div>
+      <div className="flex justify-end">
+        <div className="rounded-lg border border-zinc-700 px-4 py-1.5 font-medium text-white">Revoke</div>
       </div>
     </div>
   );

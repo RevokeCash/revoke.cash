@@ -12,9 +12,29 @@ const FeaturesShowcase = () => {
 
   return (
     <FullWidthLandingSection title={t('landing.features.title')}>
-      <Feature featureKey="dashboard" image="/assets/images/landing/dashboard.jpg" imagePosition="left" />
-      <Feature featureKey="extension" image="/assets/images/landing/browser-extension.jpg" imagePosition="right" />
-      <Feature featureKey="exploit_checker" image="/assets/images/landing/exploit-checker.jpg" imagePosition="left" />
+      <Feature
+        featureKey="dashboard"
+        image="/assets/images/landing/dashboard.jpg"
+        video="/assets/videos/landing/dashboard.mp4"
+        imagePosition="left"
+      />
+      <Feature
+        featureKey="exploit_checker"
+        image="/assets/images/landing/exploit-checker.jpg"
+        video="/assets/videos/landing/exploit-checker.mp4"
+        imagePosition="right"
+      />
+      <Feature
+        featureKey="auto_revoke"
+        image="/assets/images/premium/auto-revoke.jpg"
+        video="/assets/videos/premium/auto-revoke.mp4"
+        imagePosition="left"
+        badge={t('premium.pricing.tiers.ultimate.name')}
+        link={{
+          href: '/premium/automated-revoking',
+          label: t('premium.pricing.feature_sections.automated_revoking.link_label'),
+        }}
+      />
     </FullWidthLandingSection>
   );
 };
@@ -25,6 +45,7 @@ export interface FeatureProps {
   featureKey: string;
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   image: string;
+  video?: string;
   imagePosition: 'left' | 'right';
   translationPrefix?: string;
   badge?: string;
@@ -34,6 +55,7 @@ export interface FeatureProps {
 export const Feature = ({
   featureKey,
   image,
+  video,
   imagePosition,
   translationPrefix = 'landing.features',
   badge,
@@ -42,7 +64,7 @@ export const Feature = ({
   const t = useTranslations();
 
   return (
-    <FadeIn className="overflow-hidden rounded-[1.75rem] border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 md:grid md:grid-cols-[1.05fr_0.95fr]">
+    <FadeIn className="overflow-hidden rounded-3xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 md:grid md:grid-cols-[1.05fr_0.95fr]">
       <div
         className={twMerge(
           'relative w-full aspect-1200/630 md:aspect-auto overflow-hidden bg-zinc-50 dark:bg-zinc-900 border-b md:border-b-0 border-zinc-200 dark:border-zinc-800',
@@ -50,12 +72,24 @@ export const Feature = ({
           imagePosition === 'right' && 'md:order-2 md:border-l',
         )}
       >
+        {video && (
+          <video
+            src={video}
+            poster={image}
+            aria-label={t(`${translationPrefix}.${featureKey}.title`)}
+            className="object-cover w-full h-full motion-reduce:hidden"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        )}
         <Image
           src={image}
           alt={t(`${translationPrefix}.${featureKey}.title`)}
           width={1200}
           height={630}
-          className="object-cover w-full h-full"
+          className={twMerge('object-cover w-full h-full', video && 'hidden motion-reduce:block')}
         />
       </div>
       <div className="flex flex-col justify-center gap-4 p-6 md:p-8">

@@ -4,6 +4,10 @@
     "title": "よくある質問"
   },
   "features": {
+    "auto_revoke": {
+      "description": "Let Revoke.cash watch your approvals around the clock and revoke risky ones automatically on your behalf. Set-and-forget protection for your wallet, even while you sleep.",
+      "title": "Automated Revoking"
+    },
     "dashboard": {
       "description": "これまでに付与したすべてのトークン承認を明確に把握できます。不要になった承認を並べ替え、フィルタリングし、取り消すことができます。これらすべてを、シンプルなダッシュボードから行えます。",
       "title": "承認ダッシュボード"
@@ -11,10 +15,6 @@
     "exploit_checker": {
       "description": "既知の悪用や詐欺のデータベースと照合して、承認を自動的にチェックします。承認にリスクがある場合は警告が表示されます。",
       "title": "エクスプロイトチェッカー"
-    },
-    "extension": {
-      "description": "Revoke.cashのブラウザ拡張機能は、潜在的に有害な取引に署名する前に警告を表示します。事後の対応よりも、予防が常に重要です。",
-      "title": "ブラウザ拡張機能"
     },
     "title": "ウォレットのセキュリティのために構築"
   },
@@ -41,7 +41,6 @@
     "description": "1つのダッシュボードから100以上のネットワークの承認を一元管理できます。年間79ドルからご利用いただけます。",
     "free_features": {
       "batch_revoke": "バッチ取り消し（1.50ドル/バッチ）",
-      "browser_extension": "ブラウザ拡張に関する警告",
       "exploit_checker": "シングルチェーンエクスプロイトチェッカー",
       "history": "Single-chain approval history",
       "single_chain": "シングルチェーン承認ダッシュボード"

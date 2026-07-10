@@ -54,7 +54,7 @@ interface SceneClock {
 
 const RulesPanel = ({ frame, fps }: SceneClock) => {
   return (
-    <Panel title="Auto-Revoke Rules" className="h-full w-[440px]">
+    <Panel title="Rules" className="h-full w-[440px]">
       <div className="flex flex-col gap-4">
         <RuleRow
           frame={frame}
@@ -116,7 +116,7 @@ interface ActivityEntry {
 const ACTIVITY_ENTRIES: ActivityEntry[] = [
   {
     symbol: 'USDT',
-    spender: '0xd00d...Feed',
+    spender: '0xd00dfa...C0Ffee',
     trigger: 'exploit',
     appearAt: 80,
     statusTimeline: [
@@ -137,7 +137,7 @@ const ACTIVITY_ENTRIES: ActivityEntry[] = [
   },
   {
     symbol: 'PEPE',
-    spender: '0x1337...Beef',
+    spender: '0x1337de...aDBeef',
     trigger: 'risky',
     appearAt: 104,
     statusTimeline: [{ at: 0, status: 'pending' }],
