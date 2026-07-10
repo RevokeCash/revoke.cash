@@ -1,27 +1,16 @@
-import { InjectQueue, OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
+import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
-import {
-  AUTO_REVOKE_EVALUATE_QUEUE_NAME,
-  type AutoRevokeEvaluateJobData,
-  autoRevokeEvaluateJobId,
-} from '@revoke.cash/backend/auto-revoke/evaluation-queue';
 import { ALLOWANCES_QUEUE_NAME, type AllowancesJobData } from '@revoke.cash/backend/indexer/queues/allowances';
 import { GroupLimiterService } from '@revoke.cash/backend/queue/group-limiter.service';
-import { isAutoRevokeSupportedChain } from '@revoke.cash/core/auto-revoke/config';
 import { recomputeAllowances, recordAllowanceFailure } from '@revoke.cash/core/indexer/allowances';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import type { Job, Queue } from 'bullmq';
-import type { Address } from 'viem';
+import type { Job } from 'bullmq';
 
 @Processor(ALLOWANCES_QUEUE_NAME, { concurrency: 50, lockDuration: 90_000 })
 export class AllowancesWorker extends WorkerHost {
   private readonly logger = new Logger(AllowancesWorker.name);
 
-  constructor(
-    private readonly groupLimiter: GroupLimiterService,
-    @InjectQueue(AUTO_REVOKE_EVALUATE_QUEUE_NAME)
-    private readonly autoRevokeEvaluateQueue: Queue<AutoRevokeEvaluateJobData>,
-  ) {
+  constructor(private readonly groupLimiter: GroupLimiterService) {
     super();
   }
 
@@ -32,9 +21,6 @@ export class AllowancesWorker extends WorkerHost {
       job,
       token,
     });
-
-    // Enqueue auto-revoke evaluation even if the allowance recompute was skipped to have a periodic check
-    await this.enqueueAutoRevokeEvaluation(address, chainId, eventsScanId);
 
     if (result.skipped) {
       this.logger.debug({
@@ -58,27 +44,6 @@ export class AllowancesWorker extends WorkerHost {
       affectedTokenCount: result.affectedTokenCount,
       durationMs: result.durationMs,
     });
-  }
-
-  private async enqueueAutoRevokeEvaluation(address: Address, chainId: number, eventsScanId?: string): Promise<void> {
-    if (!isAutoRevokeSupportedChain(chainId)) return;
-
-    await this.autoRevokeEvaluateQueue
-      .add(
-        'evaluate',
-        { address, chainId, eventsScanId, reason: 'allowance_recompute' },
-        { jobId: autoRevokeEvaluateJobId(chainId, address) },
-      )
-      .catch((error) => {
-        this.logger.warn({
-          event: 'auto_revoke_evaluation_enqueue_failed',
-          outcome: 'failed',
-          eventsScanId,
-          chainId,
-          address,
-          error: parseErrorMessage(error),
-        });
-      });
   }
 
   // BullMQ retries handle transient errors; only record failure state once retries are exhausted.

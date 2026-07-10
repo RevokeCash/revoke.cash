@@ -4,8 +4,7 @@ import type { Address } from 'viem';
 export interface AutoRevokeEvaluateJobData {
   address: Address;
   chainId: number;
-  reason: 'allowance_recompute';
-  eventsScanId?: string;
+  reason: 'allowance_state_behind';
 }
 
 export interface AutoRevokeExploitJobData {

@@ -1,4 +1,9 @@
-import type { Hash, TransactionReceipt } from 'viem';
+import type { Address, Hash, TransactionReceipt } from 'viem';
+
+export interface AddressOnChain {
+  address: Address;
+  chainId: number;
+}
 
 export interface RateLimit {
   interval: number;

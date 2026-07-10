@@ -1,10 +1,11 @@
-import { type DatabaseTransaction, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
-import { premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { type DatabaseTransaction, type DatabaseWriter, getDb, getTransactionalDb } from '@revoke.cash/core/db/client';
+import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { registerAddressForIndexing } from '@revoke.cash/core/indexer/register';
 import { isNullish } from '@revoke.cash/core/utils';
 import { ExportableError } from '@revoke.cash/core/utils/errors';
 import { DAY } from '@revoke.cash/core/utils/time';
-import { and, count, eq, gt, sql } from 'drizzle-orm';
+import { and, count, eq, gt, lte, sql } from 'drizzle-orm';
+import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import type { Address } from 'viem';
 import { isUltimatePlan, type PremiumPlan } from './plans';
 
@@ -54,6 +55,30 @@ export const isSubscriptionActive = (
   const endsAt = new Date(subscription.endsAt);
   return startsAt.getTime() <= now && endsAt.getTime() > now;
 };
+
+// SQL counterpart of `isSubscriptionActive`: the ids of currently-active subscriptions covering
+// `address`, which is either a literal address or a correlated column (for use inside `exists`).
+export const activeSubscriptionsQuery = (
+  db: DatabaseWriter,
+  address: Address | AnyPgColumn,
+  tier?: PremiumPlan['tier'],
+) =>
+  db
+    .select({ id: premiumSubscriptions.id })
+    .from(premiumSubscriptionAddresses)
+    .innerJoin(premiumSubscriptions, eq(premiumSubscriptions.id, premiumSubscriptionAddresses.subscriptionId))
+    .innerJoin(
+      premiumPlans,
+      and(eq(premiumPlans.id, premiumSubscriptions.planId), eq(premiumPlans.version, premiumSubscriptions.planVersion)),
+    )
+    .where(
+      and(
+        eq(premiumSubscriptionAddresses.address, address),
+        tier ? eq(premiumPlans.tier, tier) : undefined,
+        lte(premiumSubscriptions.startsAt, sql`now()`),
+        gt(premiumSubscriptions.endsAt, sql`now()`),
+      ),
+    );
 
 export const isActiveUltimateSubscriptionOwnedBy = async (
   subscriptionId: string,

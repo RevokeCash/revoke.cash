@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { getDb } from '@revoke.cash/core/db/client';
 import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
-import { premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
-import { and, asc, eq, exists, gte, isNull, lte, sql } from 'drizzle-orm';
+import { activeSubscriptionsQuery } from '@revoke.cash/core/premium/subscriptions';
+import { and, asc, exists, isNull, lte, sql } from 'drizzle-orm';
 import type { Address } from 'viem';
 
 export interface EventsCandidate {
@@ -27,18 +27,6 @@ export class SubscribersService {
   async findReadyToIndex(limit: number): Promise<EventsCandidate[]> {
     const db = getDb();
 
-    const activeMembershipQuery = db
-      .select({ one: sql<number>`1` })
-      .from(premiumSubscriptionAddresses)
-      .innerJoin(premiumSubscriptions, eq(premiumSubscriptions.id, premiumSubscriptionAddresses.subscriptionId))
-      .where(
-        and(
-          eq(premiumSubscriptionAddresses.address, indexerEventsState.address),
-          lte(premiumSubscriptions.startsAt, sql`now()`),
-          gte(premiumSubscriptions.endsAt, sql`now()`),
-        ),
-      );
-
     return db
       .select({
         address: indexerEventsState.address,
@@ -50,7 +38,7 @@ export class SubscribersService {
         and(
           lte(indexerEventsState.nextRunAt, sql`now()`),
           isNull(indexerEventsState.disabledAt),
-          exists(activeMembershipQuery),
+          exists(activeSubscriptionsQuery(db, indexerEventsState.address)),
         ),
       )
       .orderBy(asc(indexerEventsState.nextRunAt))

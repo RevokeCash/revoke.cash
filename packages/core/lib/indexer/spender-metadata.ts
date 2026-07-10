@@ -9,8 +9,8 @@ import {
   PERMIT2_PERMIT_TOPIC,
 } from '@revoke.cash/core/events';
 import { addressToTopic } from '@revoke.cash/core/events/utils';
-import type { ExploitAddress } from '@revoke.cash/core/exploits';
 import type { RiskFactor } from '@revoke.cash/core/risk';
+import type { AddressOnChain } from '@revoke.cash/core/types';
 import { isNullish } from '@revoke.cash/core/utils';
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { mapAsyncBounded } from '@revoke.cash/core/utils/promises';
@@ -164,7 +164,7 @@ export const serializeSpenderMetadata = (metadata?: SpenderMetadataRow): Spender
   };
 };
 
-export const addSpenderRiskFactor = async (targets: ExploitAddress[], riskFactor: RiskFactor): Promise<void> => {
+export const addSpenderRiskFactor = async (targets: AddressOnChain[], riskFactor: RiskFactor): Promise<void> => {
   if (targets.length === 0) return;
 
   const enrichedAt = new Date();

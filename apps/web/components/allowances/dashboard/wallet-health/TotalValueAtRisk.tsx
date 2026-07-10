@@ -66,7 +66,9 @@ const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number | n
   );
 
   // If no allowance has a balance, return 0
-  const hasAnyBalance = deduplicatedAllowances.some((allowance) => !isNullish(allowance.balance) && allowance.balance !== 'Unknown' && allowance.balance > 0n);
+  const hasAnyBalance = deduplicatedAllowances.some(
+    (allowance) => !isNullish(allowance.balance) && allowance.balance !== 'Unknown' && allowance.balance > 0n,
+  );
   if (!hasAnyBalance) return 0;
 
   // If no allowance has a known price, return null ("Unknown")

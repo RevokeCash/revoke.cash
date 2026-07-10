@@ -1,8 +1,9 @@
 import { type DatabaseTransaction, type DatabaseWriter, getDb } from '@revoke.cash/core/db/client';
 import { autoRevokeActions } from '@revoke.cash/core/db/schema/auto-revoke';
-import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
+import { activeSubscriptionsQuery } from '@revoke.cash/core/premium/subscriptions';
 import { HOUR, MINUTE } from '@revoke.cash/core/utils/time';
-import { and, asc, eq, gt, gte, inArray, lt, lte, sql } from 'drizzle-orm';
+import { and, asc, eq, gte, inArray, lt, sql } from 'drizzle-orm';
 import type { Address } from 'viem';
 import {
   AUTO_REVOKE_MAX_ACTION_COST_USD as MAX_ACTION_COST_USD,
@@ -39,23 +40,10 @@ export interface BudgetPeriod {
 }
 
 export const findBillingSubscriptionIds = async (writer: DatabaseWriter, address: Address): Promise<string[]> => {
-  const subscriptions = await writer
-    .select({ id: premiumSubscriptions.id })
-    .from(premiumSubscriptionAddresses)
-    .innerJoin(premiumSubscriptions, eq(premiumSubscriptions.id, premiumSubscriptionAddresses.subscriptionId))
-    .innerJoin(
-      premiumPlans,
-      and(eq(premiumPlans.id, premiumSubscriptions.planId), eq(premiumPlans.version, premiumSubscriptions.planVersion)),
-    )
-    .where(
-      and(
-        eq(premiumSubscriptionAddresses.address, address),
-        eq(premiumPlans.tier, 'ultimate'),
-        lte(premiumSubscriptions.startsAt, sql`now()`),
-        gt(premiumSubscriptions.endsAt, sql`now()`),
-      ),
-    )
-    .orderBy(asc(premiumSubscriptions.startsAt), asc(premiumSubscriptions.id));
+  const subscriptions = await activeSubscriptionsQuery(writer, address, 'ultimate').orderBy(
+    asc(premiumSubscriptions.startsAt),
+    asc(premiumSubscriptions.id),
+  );
 
   return subscriptions.map((subscription) => subscription.id);
 };

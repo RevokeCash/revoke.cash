@@ -12,7 +12,7 @@ export class AutoRevokeEvaluatorWorker extends WorkerHost {
   private readonly logger = new Logger(AutoRevokeEvaluatorWorker.name);
 
   async process(job: Job<AutoRevokeEvaluateJobData>): Promise<void> {
-    const { address, chainId, reason, eventsScanId } = job.data;
+    const { address, chainId, reason } = job.data;
     const result = await evaluateAddress(address, chainId);
 
     if (result.skipped) {
@@ -23,7 +23,6 @@ export class AutoRevokeEvaluatorWorker extends WorkerHost {
         address,
         chainId,
         reason,
-        eventsScanId,
         skipReason,
       });
       return;
@@ -35,7 +34,6 @@ export class AutoRevokeEvaluatorWorker extends WorkerHost {
       address,
       chainId,
       reason,
-      eventsScanId,
       observations: result.observations.length,
     });
   }

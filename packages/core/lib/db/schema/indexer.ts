@@ -107,6 +107,7 @@ export const indexerAllowanceState = indexerSchema.table(
     computedToBlock: bigint('computed_to_block', { mode: 'number' }),
     consecutiveFailures: integer('consecutive_failures').notNull().default(0),
     lastError: text('last_error'),
+    lastEvaluatedAt: timestamp('last_evaluated_at', { withTimezone: true }),
     updatedAt: timestamp('updated_at', { withTimezone: true })
       .notNull()
       .defaultNow()

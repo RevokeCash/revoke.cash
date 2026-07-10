@@ -4,7 +4,7 @@ import { autoRevokeRules } from '@revoke.cash/core/db/schema/auto-revoke';
 import { indexerEventsState } from '@revoke.cash/core/db/schema/indexer';
 import { premiumPlans, premiumSubscriptionAddresses, premiumSubscriptions } from '@revoke.cash/core/db/schema/premium';
 import { isUltimatePlan } from '@revoke.cash/core/premium/plans';
-import { isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
+import { activeSubscriptionsQuery, isSubscriptionActive } from '@revoke.cash/core/premium/subscriptions';
 import type { SpenderRiskData } from '@revoke.cash/core/whois';
 import { and, asc, eq, gt, inArray, lte } from 'drizzle-orm';
 import type { Address } from 'viem';
@@ -307,30 +307,8 @@ const isAddressMemberOfActiveUltimateSubscription = async (
   address: Address,
   subscriptionId: string,
 ): Promise<boolean> => {
-  const now = new Date();
-
-  const rows = await trx
-    .select({ id: premiumSubscriptions.id })
-    .from(premiumSubscriptions)
-    .innerJoin(premiumPlans, eq(premiumPlans.id, premiumSubscriptions.planId))
-    .innerJoin(
-      premiumSubscriptionAddresses,
-      and(
-        eq(premiumSubscriptionAddresses.subscriptionId, premiumSubscriptions.id),
-        eq(premiumSubscriptionAddresses.address, address),
-      ),
-    )
-    .where(
-      and(
-        eq(premiumSubscriptions.id, subscriptionId),
-        eq(premiumPlans.tier, 'ultimate'),
-        lte(premiumSubscriptions.startsAt, now),
-        gt(premiumSubscriptions.endsAt, now),
-      ),
-    )
-    .limit(1);
-
-  return rows.length > 0;
+  const activeSubscriptions = await activeSubscriptionsQuery(trx, address, 'ultimate');
+  return activeSubscriptions.some((subscription) => subscription.id === subscriptionId);
 };
 
 const ensureSubscriptionRulesId = async (trx: DatabaseTransaction, subscriptionId: string): Promise<string> => {

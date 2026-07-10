@@ -64,6 +64,13 @@
       "when": 1782837483206,
       "tag": "0008_auto_revoke_actions",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1783703566221,
+      "tag": "0009_allowance_state_last_evaluated_at",
+      "breakpoints": true
     }
   ]
 }
