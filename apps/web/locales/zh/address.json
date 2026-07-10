@@ -11,18 +11,16 @@
     "unlimited": "无限"
   },
   "batch_revoke": {
-    "add_tip": "您想要添加小费吗？",
     "failed": "失败",
     "fee": {
       "eip5792_notice": "注意：您的钱包不支持原子批量撤销，即便使用付费批量撤销服务，也需要发送多笔交易。",
       "eip5792_notice_chain": "注意：您的钱包不支持{chainName}上的原子批量撤销。因此，即便使用付费批量撤销功能，也需要发送多笔交易。",
       "notice": "进行批量撤销，您需要支付<m>${feeDollarAmount}</m>的少量费用来支持 Revoke.cash 的持续发展。",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>将赞助<m>{chainName}</m>的批量撤销费用。🥳",
-      "tooltip": "每次批量操作收取<m>${BASE_FEE}</m>的固定费用用于支持基础设施成本及持续开发。您也可免费逐笔撤销授权。"
+      "tooltip": "每次批量操作收取<m>${BASE_FEE}</m>的固定费用用于支持基础设施成本及持续开发。您也可免费逐笔撤销授权。",
+      "upgrade_prompt": "Want unlimited batch revokes?"
     },
-    "no_tip": "没有小费",
     "revoked": "撤销",
-    "select_tip_amount": "Select tip amount",
     "title": "批量撤销",
     "total": "总计"
   },
@@ -180,6 +178,11 @@
     "title": "授权历史"
   },
   "labels": {
+    "account_types": {
+      "eip7702": "EIP7702 Account",
+      "eoa": "EOA",
+      "smart_contract": "Smart Contract"
+    },
     "connected": "已连接",
     "nft": "NFT",
     "not_connected": "未连接",
@@ -211,7 +214,7 @@
   "premium": {
     "banner": {
       "cta": "Upgrade to Premium",
-      "description": "Want a unified view across all networks?"
+      "description": "Multichain dashboard?"
     }
   },
   "risk_factors": {
@@ -295,15 +298,11 @@
     "filter_by_token": "按此代币筛选",
     "permit2_expiration": "这是 Permit2 授权，将于 {inTime} 到期。",
     "risk_factors": "此代币授权为{riskLevel}，原因如下：",
-    "select_tip": "请选择小费金额",
-    "switch_chain": "请在钱包内将区块链切换为 <b>{chainName}</b> 以继续操作",
-    "why_tip": {
-      "description": "Revoke.cash 是一款 100% 免费且开源的公共产品。我们需要捐款来维持这种状态。非常感谢您的支持！🙏",
-      "title": "为什么要添加小费？"
-    }
+    "switch_chain": "请在钱包内将区块链切换为 <b>{chainName}</b> 以继续操作"
   },
+  "viewing_on": "Viewing address on",
   "wallet_health": {
-    "total_allowances": "全部授权",
-    "total_value_at_risk": "全部存在风险金额"
+    "allowances": "Approvals",
+    "value_at_risk": "Value at Risk"
   }
 }

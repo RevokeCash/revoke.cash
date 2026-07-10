@@ -35,7 +35,7 @@ const PudgyPage: NextPage<Props> = async ({ params }) => {
   const messages = await getMessages({ locale });
 
   return (
-    <ContentPageLayout hero={<ContentPageHero title="Revoke.cash x Pudgy Penguins Cold Storage SBT" />}>
+    <ContentPageLayout hero={<ContentPageHero title="Revoke.cash x Pudgy Penguins SBT" />}>
       <Prose>
         <p>
           <RichText>{(tags) => t.rich('pudgy.landing.paragraph_1', tags)}</RichText>

@@ -5,7 +5,7 @@
     "empty_chains_count": "{count, plural, =0 {No hay redes sin aprobaciones} =1 {# red sin aprobaciones} other {# redes sin aprobaciones}}",
     "none_found": "No se han encontrado autorizaciones",
     "none_found_filtered": "No se han encontrado autorizaciones para los filtros seleccionados",
-    "none_found_premium": "No approvals found on any of the supported networks. You're all clear!",
+    "none_found_premium": "No se han encontrado aprobaciones en ninguna de las redes compatibles. ¡Todo en orden!",
     "token_id": "Token #{tokenId}",
     "unknown": "Desconocido",
     "unlimited": "Ilimitada"
@@ -17,7 +17,8 @@
       "eip5792_notice_chain": "Nota: tu cartera no admite revocaciones atómicas por lotes para {chainName}, por lo que, incluso cuando utilices nuestra revocación por lotes de pago, tendrás que enviar varias transacciones.",
       "notice": "Al revocar por lotes, pagas una pequeña tarifa de <m>${feeDollarAmount}</m> que contribuye al desarrollo continuo de Revoke.cash.",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> ¡Patrocina la tarifa de revocación por lotes en la red <m>{chainName}</m>! 🥳",
-      "tooltip": "La tarifa fija de <m>${BASE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita."
+      "tooltip": "La tarifa fija de <m>${BASE_FEE}</m> por lote cubre los costes de infraestructura y el desarrollo continuo. También puedes revocar las aprobaciones una por una de forma gratuita.",
+      "upgrade_prompt": "Want unlimited batch revokes?"
     },
     "revoked": "Revocado",
     "title": "Revocación por Lotes",
@@ -30,7 +31,7 @@
         "non_evm": "No EVM",
         "title": "Blockchains compatibles"
       },
-      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el mundo de las criptomonedas. Ofrecemos herramientas que te ayudan a evitar el vaciado o la pérdida de fondos. Pero aun así, las estafas y los hackeos ocurren. Ahí es donde entra en juego la cobertura. La cobertura es una forma de asegurar que el valor de tu cartera esté cubierto en caso de vaciado. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes hasta ataques de phishing. Nos hemos asociado con<fairside-link> Fairside</fairside-link> para ofrecerle cobertura en caso de algunos ataques de phishing e ingeniería social, pero existen otros productos de cobertura para hackeos de contratos inteligentes, como<nexus-link> Nexus Mutual</nexus-link> .",
+      "description": "Con Revoke.cash, te ayudamos a gestionar tu riesgo en el ámbito de las criptomonedas. Ofrecemos herramientas que te ayudan a evitar que te vacíen la cartera o pierdas fondos. Pero, aun así, las estafas y los hackeos siguen ocurriendo. Ahí es donde entra en juego la cobertura. La cobertura es una forma de garantizar que el valor de tu cartera esté protegido en caso de que te la vacíen. Existen varios tipos de cobertura, desde hackeos de contratos inteligentes hasta ataques de phishing. Nos hemos asociado con <fairside-link>Fairside</fairside-link> para ofrecerte cobertura en caso de algunos vaciamientos por phishing e ingeniería social, pero existen otros productos de cobertura para hackeos de contratos inteligentes, como <nexus-link>Nexus Mutual</nexus-link>.",
       "important": {
         "coverage_amount": "La cobertura se compra por una cierta cantidad de ETH - si el valor de su cartera aumenta en ETH, solo estará cubierto por la cantidad de ETH configurada.",
         "fee": "Hay un monto de responsabilidad personal del 10% sobre los pagos.",
@@ -100,7 +101,7 @@
     },
     "no_delegations": "No se encontraron delegaciones",
     "no_eip7702_delegations": "No se encontraron delegaciones EIP7702",
-    "none_found_premium": "No delegations found on any of the supported networks. You're all clear!",
+    "none_found_premium": "No se han encontrado delegaciones en ninguna de las redes compatibles. ¡Todo en orden!",
     "this_wallet": "Esta cartera",
     "tooltips": {
       "contract": "Una delegación a nivel de contrato otorga al delegado el permiso para actuar en su nombre en las plataformas compatibles para un contrato específico.",
@@ -156,7 +157,7 @@
     "date": "Fecha",
     "event_type": "Tipo de evento",
     "expiration": "Vencimiento",
-    "last_checked": "Last Checked",
+    "last_checked": "Última comprobación",
     "last_updated": "Última Actualización",
     "policy_type": "Tipo de Permiso",
     "session_hash": "Identificador de sesión",
@@ -177,6 +178,11 @@
     "title": "Historial de aprobaciones"
   },
   "labels": {
+    "account_types": {
+      "eip7702": "EIP7702 Account",
+      "eoa": "EOA",
+      "smart_contract": "Smart Contract"
+    },
     "connected": "Conectado",
     "nft": "NFT",
     "not_connected": "No Conectado",
@@ -294,8 +300,9 @@
     "risk_factors": "Esto es {riskLevel} por estas razones:",
     "switch_chain": "Por favor cambia tu red conectada a <b>{chainName}</b> dentro de tu cartera para continuar"
   },
+  "viewing_on": "Viewing address on",
   "wallet_health": {
-    "total_allowances": "Total de Autorizaciones",
-    "total_value_at_risk": "Valor Total en Riesgo"
+    "allowances": "Approvals",
+    "value_at_risk": "Value at Risk"
   }
 }

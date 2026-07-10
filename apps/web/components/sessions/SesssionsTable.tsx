@@ -66,7 +66,6 @@ const SessionsTable = ({ chainId }: Props) => {
         loading={isLoading}
         error={error}
         emptyChildren={t('address.sessions.table.none_found')}
-        loaderRows={2}
         className="border-none"
       />
     </Card>

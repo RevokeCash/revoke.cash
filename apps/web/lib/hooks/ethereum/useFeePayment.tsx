@@ -9,12 +9,14 @@ import { waitForTransactionConfirmation } from '@revoke.cash/core/wallet';
 import { isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { recordBatchRevoke } from 'lib/allowances/batch-revoke';
 import analytics from 'lib/utils/analytics';
+import { useTranslations } from 'next-intl';
 import useLocalStorage from 'use-local-storage';
 import { type Address, type Hash, parseEther, type SendTransactionParameters } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 import { useNativeTokenPrice } from './useNativeTokenPrice';
 
 export const useFeePayment = (chainId: number) => {
+  const t = useTranslations();
   const nativeToken = getChainNativeToken(chainId)!;
   const { data: walletClient } = useWalletClient({ chainId });
   const publicClient = usePublicClient({ chainId })!;
@@ -25,7 +27,7 @@ export const useFeePayment = (chainId: number) => {
 
   const prepareFeePayment = (dollarAmount: string): SendTransactionParameters => {
     if (!walletClient) {
-      throw new Error('Please connect your web3 wallet to a supported network');
+      throw new Error(t('common.errors.messages.connect_wallet_to_supported_network'));
     }
 
     const feePaymentKey = `${chainId}-${walletClient.account.address}`;
@@ -58,7 +60,7 @@ export const useFeePayment = (chainId: number) => {
 
     try {
       if (!walletClient) {
-        throw new Error('Please connect your web3 wallet to a supported network');
+        throw new Error(t('common.errors.messages.connect_wallet_to_supported_network'));
       }
 
       const hash = await walletClient.sendTransaction(prepareFeePayment(dollarAmount));

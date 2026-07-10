@@ -1,4 +1,5 @@
 import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from '@revoke.cash/core/chains';
+import SharedLayout from 'app/layouts/SharedLayout';
 import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
 import Prose from 'components/common/Prose';
@@ -56,36 +57,40 @@ const MarketplaceBulkDelisterPage: NextPage<Props> = async ({ params }) => {
   const chainName = getChainName(chainId);
 
   return (
-    <div className="flex flex-col items-center m-auto gap-4 px-4">
-      <div className="flex flex-col items-center w-full">
-        <h1 className="text-4xl md:text-5xl not-prose items-center gap-2 text-center">
-          <ChainLogo chainId={chainId} size={56} className="inline align-middle" />{' '}
-          <div className="inline align-middle">{t('signatures.marketplace.title', { chainName })}</div>
-        </h1>
-      </div>
-      <Prose className="max-w-3xl mb-4">
-        <ChainDescription chainId={chainId} headingElement="h2" />
-        <h2 className="text-left">{t('signatures.marketplace.what_is_bulk_delisting.title', { chainName })}</h2>
-        <p>
-          <RichText>{(tags) => t.rich('signatures.marketplace.what_is_bulk_delisting.content', { ...tags })}</RichText>
-        </p>
-      </Prose>
-      <div className="flex flex-col items-center w-full">
-        <Suspense>
-          <NextIntlClientProvider
-            messages={{ common: messages.common, signatures: messages.signatures, address: messages.address }}
-          >
-            <MarketplaceBulkDelisterChecker chainId={chainId} />
-          </NextIntlClientProvider>
-          <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
-            <p className="m-0">{t('signatures.marketplace.different_chain')}:</p>
-            <div className="not-prose shrink-0">
-              <MarketplaceBulkDelisterChainSelect chainId={chainId} />
+    <SharedLayout padding>
+      <div className="flex flex-col items-center m-auto gap-4">
+        <div className="flex flex-col items-center w-full">
+          <h1 className="text-4xl md:text-5xl not-prose items-center gap-2 text-center">
+            <ChainLogo chainId={chainId} size={56} className="inline align-middle" />{' '}
+            <div className="inline align-middle">{t('signatures.marketplace.title', { chainName })}</div>
+          </h1>
+        </div>
+        <Prose className="max-w-3xl mb-4">
+          <ChainDescription chainId={chainId} headingElement="h2" />
+          <h2 className="text-left">{t('signatures.marketplace.what_is_bulk_delisting.title', { chainName })}</h2>
+          <p>
+            <RichText>
+              {(tags) => t.rich('signatures.marketplace.what_is_bulk_delisting.content', { ...tags })}
+            </RichText>
+          </p>
+        </Prose>
+        <div className="flex flex-col items-center w-full">
+          <Suspense>
+            <NextIntlClientProvider
+              messages={{ common: messages.common, signatures: messages.signatures, address: messages.address }}
+            >
+              <MarketplaceBulkDelisterChecker chainId={chainId} />
+            </NextIntlClientProvider>
+            <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
+              <p className="m-0">{t('signatures.marketplace.different_chain')}:</p>
+              <div className="not-prose shrink-0">
+                <MarketplaceBulkDelisterChainSelect chainId={chainId} />
+              </div>
             </div>
-          </div>
-        </Suspense>
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </SharedLayout>
   );
 };
 

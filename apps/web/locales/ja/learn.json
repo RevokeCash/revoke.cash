@@ -8,6 +8,13 @@
       "title": "1. ウォレットを開き、「ネットワークの追加」ページに移動します。"
     },
     "step_2": {
+      "form": {
+        "block_explorer_url": "Block explorer URL (Optional)",
+        "chain_id": "Chain ID",
+        "currency_symbol": "Currency symbol",
+        "network_name": "Network name",
+        "new_rpc_url": "New RPC URL"
+      },
       "paragraph_1": "必要な情報をすべて入力したら、「保存」をクリックすることで MetaMaskに{chainName}を追加できます。",
       "paragraph_2": "また、ワンクリックボタンを使用できるので、必要な詳細情報を手入力する必要がありません。",
       "title": "2. 必要な情報を入力し、「保存」をクリックします。"

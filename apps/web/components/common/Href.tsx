@@ -19,7 +19,7 @@ interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
 
 const Href = ({ href, children, external, className, router, underline, html, unstyled, ref, ...props }: Props) => {
   const styleMapping = {
-    html: 'text-blue-700 visited:text-fuchsia-800 dark:text-blue-400 dark:visited:text-fuchsia-600',
+    html: 'text-amber-700 dark:text-brand',
     inherit: 'text-current visited:text-current',
   };
 

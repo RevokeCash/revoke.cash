@@ -6,7 +6,7 @@
   },
   "buttons": {
     "authenticate": "Autenticar",
-    "authenticate_wallet": "Authenticate Wallet",
+    "authenticate_wallet": "Autenticar Cartera",
     "authenticated": "Autenticado",
     "authenticating": "Autenticando",
     "back_to_exploits": "Volver a Exploits",
@@ -32,13 +32,13 @@
     "get_started": "Empezar",
     "increase": "Aumentar",
     "loading": "Cargando",
-    "my_account": "Mi Cuenta",
-    "my_allowances": "Mis Autorizaciones",
+    "my_account": "Configuración de la Cuenta",
+    "my_allowances": "Mi Panel",
     "next": "Siguiente",
     "previous": "Anterior",
     "remove": "Eliminar",
     "report_exploit": "Informar de un Exploit",
-    "retrying": "Retrying",
+    "retrying": "Reintentando",
     "revoke": "Revocar",
     "revoke_selected": "Revocar lo seleccionado",
     "revoking": "Revocando",
@@ -85,7 +85,9 @@
       "title": "Esta página no existe."
     },
     "messages": {
-      "chain_could_not_connect": "No se ha podido conectar a {chainName}, por favor inténtalo de nuevo más tarde."
+      "chain_could_not_connect": "No se ha podido conectar a {chainName}, por favor inténtalo de nuevo más tarde.",
+      "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
+      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls"
     }
   },
   "footer": {
@@ -111,10 +113,26 @@
   },
   "labels": {
     "premium": "Prémium",
-    "ultimate": "Ultimate"
+    "ultimate": "Lo mejor"
   },
   "meta": {
+    "acknowledgements": {
+      "description": "Revoke.cash depends on several third-party tools and services. This page lists them.",
+      "title": "Acknowledgements"
+    },
     "description": "Recupera el control de tu cartera y mantente a salvo revocando las autorizaciones y permisos en {chainName} y en 100 redes más.",
+    "disclaimer": {
+      "description": "Disclaimer for Revoke.cash",
+      "title": "Disclaimer"
+    },
+    "privacy_policy": {
+      "description": "Privacy Policy for Revoke.cash",
+      "title": "Privacy Policy"
+    },
+    "terms": {
+      "description": "Terms and Conditions for Revoke.cash",
+      "title": "Terms and Conditions"
+    },
     "title": "Revoca las Aprobaciones de Tus Tokens en Más de 100 Redes"
   },
   "nav": {
@@ -147,6 +165,9 @@
     "select_correct_answer": "Selecciona la respuesta correcta",
     "wait_and_read": "Espera y lee"
   },
+  "select": {
+    "no_options": "No options"
+  },
   "toasts": {
     "clipboard_failed": "❌ No se pudo copiar al portapapeles",
     "clipboard_success": "✅ Copiado al portapapeles",
@@ -155,7 +176,7 @@
     "revoke_failed": "❌ No se pudo revocar la autorización: {message}",
     "revoke_failed_ledger_nano_s": "❌ Ledger Nano S fue obsoleto por Ledger y ya no admite la revocación de las aprobaciones de NFT. Se recomienda actualizar a un dispositivo Ledger más nuevo.",
     "revoke_failed_revert": "❌ El creador de este token ha deshabilitado o pausado la aprobación y revocación de aprobaciones ({message})",
-    "switch_chain_failed": "❌ Error al cambiar de cadena, cambia manualmente a {chainName} en tu cartera.",
+    "switch_chain_failed": "❌ Error al cambiar de cadena, por favor cambia manualmente a {chainName} en tu cartera.",
     "transaction_failed": "❌ Transacción fallida: {message}",
     "transaction_submitted": "✅ ¡Transacción enviada!",
     "update_failed": "❌ Este token no admite la actualización de aprobaciones, por favor revócala en su lugar."

@@ -26,7 +26,7 @@ interface StatsBarItemProps {
 
 const StatsBarItem = ({ value, label }: StatsBarItemProps) => {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 px-4 py-5 text-center">
+    <div className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-5 text-center">
       <div className="text-3xl font-semibold text-brand md:text-4xl">{value}</div>
       <span className="mt-2 text-sm text-zinc-400">{label}</span>
     </div>

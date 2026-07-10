@@ -1,97 +1,107 @@
 {
   "addresses": {
-    "add_address": "Agregar dirección",
-    "add_failed": "No se pudo agregar la dirección",
-    "placeholder": "Dirección o nombre de dominio",
+    "add_address": "Agregar cartera",
+    "add_failed": "No se pudo agregar la cartera",
+    "placeholder": "Dirección de cartera o nombre de dominio",
     "remove": "Eliminar",
-    "remove_failed": "No se pudo eliminar la dirección",
-    "resolve_failed": "No se pudo resolver la dirección o el nombre.",
-    "title": "Mis Direcciones Premium"
+    "remove_failed": "No se pudo eliminar la cartera",
+    "resolve_failed": "No se pudo resolver la dirección o el nombre de la cartera",
+    "title": "Carteras Premium"
   },
   "auto_revoke": {
     "activity": {
       "columns": {
-        "asset": "Asset",
-        "chain": "Network",
-        "cost": "Cost",
-        "date": "Date",
-        "spender": "Spender",
-        "status": "Status",
-        "trigger": "Trigger",
-        "wallet": "Wallet"
+        "asset": "Activo",
+        "chain": "Red",
+        "cost": "Coste",
+        "date": "Fecha",
+        "spender": "Gastador",
+        "status": "Estatus",
+        "trigger": "Activador",
+        "wallet": "Cartera"
       },
-      "empty": "No auto-revoke activity yet. Approvals matching your rules will appear here as they are revoked.",
+      "empty": "Todavía no hay ninguna actividad de revocación automática. Las aprobaciones que cumplan tus reglas aparecerán aquí a medida que se vayan revocando.",
       "reasons": {
-        "awaiting_cheap_gas": "Waiting for lower gas prices to stretch your monthly budget.",
-        "chain_pipeline_full": "Waiting for other revokes on this chain to confirm.",
-        "cooling": "Waiting out a short safety delay before executing, so rule changes can still cancel it.",
-        "execution_failed": "The revoke transaction could not be completed.",
-        "monthly_budget": "Waiting because the monthly budget is used up.",
-        "nonce_consumed": "Resubmitting after a transaction conflict.",
-        "per_action_cap": "Waiting because the estimated cost exceeds the per-revoke limit.",
-        "queued": "Waiting to be executed.",
-        "subscription_inactive": "Waiting for an active subscription to cover this wallet.",
-        "transaction_reverted": "The revoke transaction reverted on-chain.",
-        "transient_error": "A temporary error occurred; this will be retried."
+        "awaiting_cheap_gas": "A la espera de que bajen los precios del gas para estirar tu presupuesto mensual.",
+        "chain_pipeline_full": "A la espera de que se confirmen otras revocaciones en esta cadena.",
+        "cooling": "Se espera un breve retraso de seguridad antes de ejecutarse, para que los cambios en las reglas aún puedan cancelarlo.",
+        "execution_failed": "No se ha podido completar la transacción de Revoke.",
+        "monthly_budget": "A la espera porque se ha agotado el presupuesto mensual.",
+        "nonce_consumed": "Volver a enviar tras un conflicto de transacciones.",
+        "per_action_cap": "En espera porque el coste estimado supera el límite por Revoke.",
+        "queued": "A la espera de que se ejecute.",
+        "subscription_inactive": "A la espera de una suscripción activa que cubra esta cartera.",
+        "transaction_reverted": "La transacción de Revoke se ha revertido en la cadena de bloques.",
+        "transient_error": "Se ha producido un error temporal; se volverá a intentar."
       },
       "scope": {
-        "mine": "Your activity",
-        "subscription": "All members"
+        "mine": "Tu actividad",
+        "subscription": "Todos los miembros"
       },
       "status": {
-        "failed": "Failed",
-        "pending": "Pending",
-        "revoked": "Revoked",
-        "skipped": "Not needed",
-        "submitting": "Submitting"
+        "failed": "Fallido",
+        "pending": "Pendiente",
+        "revoked": "Revocado",
+        "skipped": "No es necesario",
+        "submitting": "Enviar"
       },
-      "title": "Activity",
+      "title": "Actividad",
       "triggers": {
-        "exploit": "Exploit",
-        "risk_score": "Risky",
-        "stale": "Stale"
+        "exploit": "Vulnerabilidad",
+        "risk_score": "Arriesgado",
+        "stale": "Obsoleto"
       }
     },
     "budget": {
-      "per_action_cap": "Each revoke is capped at {cap}.",
-      "resets": "Resets {date}",
-      "used": "{used} of {total} used this month"
+      "per_action_cap": "Cada revoke tiene un límite de {cap}.",
+      "resets": "Restablece {date}",
+      "shared": "The gas budget is shared by all wallets in the subscription.",
+      "used": "{used} de {total} utilizados este mes"
     },
-    "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
+    "metamask_not_connected": "MetaMask not connected",
+    "metamask_required": "La revocación automática requiere MetaMask. Por favor, conéctate con MetaMask para usar esta función.",
     "permissions": {
-      "connect_to_manage": "Connect this wallet to manage its permissions.",
-      "grant": "Grant",
-      "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
-      "grant_failed": "Failed to grant auto-revoke permission.",
-      "networks_enabled": "{enabled}/{total} networks enabled",
-      "revoke_failed": "Failed to revoke auto-revoke permission.",
-      "sync": "Sync from wallet",
-      "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
-      "sync_success": "Auto-revoke permissions synced from wallet.",
-      "title": "Permissions"
+      "connect_to_manage": "Conecta esta cartera para gestionar sus permisos.",
+      "decode_failed": "Failed to decode permission",
+      "grant": "Conceder",
+      "grant_description": "Cada dirección debe conceder individualmente el permiso de Revoke automático a través de MetaMask.",
+      "grant_failed": "No se ha podido conceder el permiso de revocación automática.",
+      "networks_enabled": "{enabled}/{total} redes habilitadas",
+      "no_active_permission_returned": "No active permission returned",
+      "revoke_failed": "No se ha podido revocar el permiso de revocación automática.",
+      "sync": "Sincronizar desde la cartera",
+      "sync_failed": "No se han podido sincronizar los permisos de revocación automática desde la cartera.",
+      "sync_success": "Revoke automáticamente los permisos sincronizados desde la cartera.",
+      "title": "Permisos"
     },
     "rules": {
-      "days": "days",
-      "managed_by": "Managed by {owner}",
-      "risk_detection": "Risky Approval Detection",
-      "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
-      "save_failed": "Failed to save rules.",
-      "sensitivity_exploits_only": "Exploits only",
-      "sensitivity_high": "High risk",
-      "sensitivity_medium": "Medium risk and above",
-      "stale_approval": "Stale Approval Cleanup",
-      "stale_approval_description": "Revoke approvals older than the specified number of days.",
-      "title": "Rules",
-      "title_defaults": "Default Rules"
+      "days": "días",
+      "defaults_description": "These rules apply to all wallets in this subscription by default, but each wallet can override them.",
+      "managed_by": "Gestionado por {owner}",
+      "risk_detection": "Detección de Aprobaciones de Riesgo",
+      "risk_detection_description": "Revoke automáticamente las aprobaciones de los usuarios que realizan gastos de riesgo o que han sido víctimas de exploits.",
+      "save_failed": "No se han podido guardar las reglas.",
+      "sensitivity_exploits_only": "Solo exploits",
+      "sensitivity_high": "Alto riesgo",
+      "sensitivity_medium": "Riesgo medio y superior",
+      "stale_approval": "Limpieza de aprobaciones caducadas",
+      "stale_approval_description": "Revoca las aprobaciones anteriores al número de días especificado.",
+      "title": "Normas",
+      "title_defaults": "Reglas Predeterminadas"
     },
     "rules_source": {
-      "custom": "Custom rules",
-      "subscription_defaults": "Managed by {owner}",
-      "switch_failed": "Failed to switch rules source.",
-      "title": "Rules Source"
+      "custom": "Reglas personalizadas",
+      "subscription_defaults": "Gestionado por {owner}",
+      "switch_failed": "No se ha podido cambiar la fuente de las reglas.",
+      "title": "Fuente de las Normas"
     },
-    "title": "Auto-Revoking",
-    "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
+    "setup": {
+      "banner": "Auto-Revoking is not active for this wallet yet.",
+      "banner_cta": "Set it up",
+      "get_started": "Auto-Revoking is not active for this wallet yet. Toggle the networks you want protected below. Every wallet in the subscription needs to do this once, using MetaMask."
+    },
+    "title": "Revocación automática",
+    "upsell": "La función Revocación automática revoca automáticamente, en tu nombre, las aprobaciones peligrosas o caducadas. Requiere una suscripción Ultimate."
   },
   "billing": {
     "columns": {
@@ -104,29 +114,35 @@
     "title": "Facturación"
   },
   "coverage": {
-    "active": "Active",
+    "active": "Activo",
     "extension": {
-      "get_extension": "Get Revoke Sidekick",
-      "lite_description": "Coverage is inactive because the extension is on the Lite tier. Switch to Standard to activate up to $30k in theft coverage.",
-      "not_installed_description": "You are currently not covered by the Revoke Sidekick extension. Install the Revoke Sidekick extension for real-time transaction warnings and up to $30k in theft coverage.",
-      "standard_description": "You are covered for up to $30k in theft protection through the Revoke Sidekick extension.",
-      "title": "Revoke Sidekick Coverage"
+      "get_extension": "Consigue Revoke Sidekick",
+      "lite_description": "La cobertura está inactiva porque la extensión está en el plan Lite. Cambia al plan Estándar para activar una cobertura por robo de hasta $30k.",
+      "not_installed_description": "Ahora mismo no estás protegido por la extensión Revoke Sidekick. Instala la extensión Revoke Sidekick para recibir alertas de transacciones en tiempo real y una cobertura por robo de hasta $30k.",
+      "standard_description": "Tienes una cobertura de hasta $30k en protección contra robos gracias a la extensión Revoke Sidekick.",
+      "title": "Cobertura de Revoke Sidekick"
     },
     "fairside": {
-      "active_description": "You are covered for up to {amount} in theft protection through Fairside.",
-      "covered": "{amount} covered",
-      "covered_wallets": "Covered Wallets",
-      "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
-      "get_coverage": "Get Coverage",
-      "manage": "Manage Coverage",
-      "title": "Fairside Coverage",
-      "valid_until": "Valid until {date}.",
-      "wallets_description": "Sign an authentication message to view your covered wallets."
+      "active_description": "Tienes cobertura de hasta {amount} en protección contra robos a través de Fairside.",
+      "covered": "{amount} cubierto",
+      "covered_wallets": "Carteras Compatibles",
+      "description": "Protege tu cartera contra el phishing y las estafas de ingeniería social con la cobertura de Fairside.",
+      "errors": {
+        "authentication_failed": "Failed to authenticate",
+        "authentication_failed_fairside": "Failed to authenticate with Fairside",
+        "connect_wallet": "Please connect your wallet to authenticate",
+        "generate_message_failed": "Could not generate authentication message"
+      },
+      "get_coverage": "Obtén Cobertura",
+      "manage": "Gestionar la cobertura",
+      "title": "Cobertura de Fairside",
+      "valid_until": "Válido hasta {date}.",
+      "wallets_description": "Firma un mensaje de autenticación para ver tus carteras protegidas."
     },
-    "inactive": "Inactive",
-    "title": "Theft Coverage"
+    "inactive": "Inactivo",
+    "title": "Cobertura contra robos"
   },
-  "description": "Gestiona tu suscripción premium y tus espacios de direcciones.",
+  "description": "Gestiona tu suscripción premium y la configuración de tu cuenta.",
   "error": "Se produjo un error al cargar los datos de tu suscripción. Por favor inténtalo de nuevo más tarde.",
   "granted": {
     "active": "Activo",
@@ -135,7 +151,7 @@
   },
   "meta": {
     "description": "Gestiona tu cuenta y la configuración premium.",
-    "title": "Mi Cuenta"
+    "title": "Configuración de la Cuenta"
   },
   "subscription": {
     "active": "Activo",
@@ -149,40 +165,42 @@
       "upgrade": "Actualizar"
     },
     "downgrade_not_supported": "No puedes bajar de categoría una suscripción activa.",
-    "granted_by": "Granted by {address}",
-    "no_subscription": "No tienes una suscripción premium activa. Suscríbete a continuación para empezar.",
-    "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
+    "granted_by": "Concedido por {address}",
+    "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
+    "no_subscription": "No tienes una suscripción premium activa. Suscríbete a continuación para empezar. <premium-link>Más información sobre Premium</premium-link>.",
+    "optional_own_subscription": "Ya tienes acceso gracias a una suscripción que te han concedido. Si quieres, aún puedes suscribirte a tu propio plan.",
     "payment_confirmed": "¡Pago confirmado! Tu suscripción premium ya está activa.",
     "payment_failed": "El pago de la suscripción ha fallado",
     "payment_network": "Red de pago",
-    "payment_summary": "Pagarás {amount} {token} por {days} días y hasta {maxAddresses} {maxAddresses, plural, =1 {dirección} other {direcciones}}.",
+    "payment_status_error": "Payment {status}",
+    "payment_summary": "Pagarás {amount} {token} por {days} días. Incluye hasta {maxAddresses} {maxAddresses, plural, =1 {cartera} other {carteras}}.",
     "plan": "Plan",
-    "plan_description": "${price}/año ·{maxAddresses, plural, =1 {1 dirección} other {{maxAddresses} direcciones}}",
+    "plan_description": "${price}/año",
     "plan_options": {
       "basic_access": "Acceso Básico",
       "current": "Actual",
       "free": "Gratis"
     },
     "plans_unavailable": "El proceso de pago no está disponible temporalmente. Por favor inténtalo de nuevo más tarde.",
-    "slots_summary": "{used}/{max} dirección {max, plural, =1 {espacio} other {espacios}} utilizados",
-    "title": "Mi Suscripción Premium",
+    "slots_summary": "{usado}/{max} {max, plural, =1 {espacio} other {espacios}} de cartera usado(s)",
+    "title": "Suscripción Premium",
     "valid_until": "Válido hasta {date}",
     "wallet": "Cartera"
   },
   "tabs": {
-    "auto_revoke": "Auto-Revoking",
-    "billing": "Billing",
-    "coverage": "Coverage",
-    "subscription": "Subscription"
+    "auto_revoke": "Revocación automática",
+    "billing": "Facturación",
+    "coverage": "Cobertura",
+    "subscription": "Suscripción"
   },
   "unauthenticated": {
     "benefits": {
-      "address_slots": "Add or remove wallets",
-      "billing": "View your billing history",
-      "coverage": "View and manage Fairside coverage",
-      "manage_subscription": "Manage your Premium subscription",
-      "title": "What you can do here"
+      "auto_revoke": "Set up and monitor Auto-Revoking",
+      "billing": "Consulta tu historial de facturación",
+      "coverage": "Ver y gestionar la cobertura de Fairside",
+      "manage_subscription": "Gestiona tu suscripción Premium",
+      "title": "Qué puedes hacer aquí"
     },
-    "description": "Por favor inicia sesión con Ethereum para acceder a la página de tu cuenta."
+    "description": "Inicia sesión para gestionar tu suscripción Premium, tus espacios de cartera y tu cobertura."
   }
 }

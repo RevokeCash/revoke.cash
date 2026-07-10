@@ -1,5 +1,5 @@
 import { type ApprovalTokenEvent, type Enriched, isCancelPermitEvent, isRevokeEvent } from '@revoke.cash/core/events';
-import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -19,14 +19,14 @@ const EventTypeCell = ({ approvalEvent }: Props) => {
       ? t('address.history.revoked')
       : t('address.history.approved');
 
-  const className = twMerge(
-    'w-18 py-0.75 text-zinc-900',
-    'bg-green-400',
-    isRevoked && 'bg-red-400',
-    isCancelPermit && 'w-35 bg-yellow-300',
-  );
+  const status = isCancelPermit ? 'warning' : isRevoked ? 'danger' : 'success';
+  const className = twMerge('w-18 py-0.75', isCancelPermit && 'w-35');
 
-  return <Label className={className}>{eventType}</Label>;
+  return (
+    <StatusLabel status={status} className={className}>
+      {eventType}
+    </StatusLabel>
+  );
 };
 
 export default EventTypeCell;

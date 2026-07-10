@@ -55,15 +55,19 @@
     "budget": {
       "per_action_cap": "Each revoke is capped at {cap}.",
       "resets": "Resets {date}",
+      "shared": "The gas budget is shared by all wallets in the subscription.",
       "used": "{used} of {total} used this month"
     },
+    "metamask_not_connected": "MetaMask not connected",
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
     "permissions": {
       "connect_to_manage": "Connect this wallet to manage its permissions.",
+      "decode_failed": "Failed to decode permission",
       "grant": "Grant",
       "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
       "grant_failed": "Failed to grant auto-revoke permission.",
       "networks_enabled": "{enabled}/{total} networks enabled",
+      "no_active_permission_returned": "No active permission returned",
       "revoke_failed": "Failed to revoke auto-revoke permission.",
       "sync": "Sync from wallet",
       "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
@@ -72,6 +76,7 @@
     },
     "rules": {
       "days": "days",
+      "defaults_description": "These rules apply to all wallets in this subscription by default, but each wallet can override them.",
       "managed_by": "Managed by {owner}",
       "risk_detection": "Risky Approval Detection",
       "risk_detection_description": "Auto-revoke approvals to risky or exploited spenders.",
@@ -89,6 +94,11 @@
       "subscription_defaults": "Managed by {owner}",
       "switch_failed": "Failed to switch rules source.",
       "title": "Rules Source"
+    },
+    "setup": {
+      "banner": "Auto-Revoking is not active for this wallet yet.",
+      "banner_cta": "Set it up",
+      "get_started": "Auto-Revoking is not active for this wallet yet. Toggle the networks you want protected below. Every wallet in the subscription needs to do this once, using MetaMask."
     },
     "title": "Auto-Revoking",
     "upsell": "Auto-Revoking automatically revokes dangerous or stale approvals on your behalf. It requires an Ultimate subscription."
@@ -117,6 +127,12 @@
       "covered": "{amount} covered",
       "covered_wallets": "Covered Wallets",
       "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+      "errors": {
+        "authentication_failed": "Failed to authenticate",
+        "authentication_failed_fairside": "Failed to authenticate with Fairside",
+        "connect_wallet": "Please connect your wallet to authenticate",
+        "generate_message_failed": "Could not generate authentication message"
+      },
       "get_coverage": "Get Coverage",
       "manage": "Manage Coverage",
       "title": "Fairside Coverage",
@@ -150,11 +166,13 @@
     },
     "downgrade_not_supported": "有効なサブスクリプションをダウングレードすることはできません。",
     "granted_by": "Granted by {address}",
+    "next_setup_auto_revoke": "Next step: set up Auto-Revoking",
     "no_subscription": "有効なプレミアムサブスクリプションはありません。以下から購読して始めましょう。",
     "optional_own_subscription": "You already have access through a granted subscription. You can still subscribe for your own plan if you'd like.",
     "payment_confirmed": "支払いが確認されました！プレミアムサブスクリプションが有効になりました。",
     "payment_failed": "サブスクリプションの支払いが失敗した",
     "payment_network": "決済ネットワーク",
+    "payment_status_error": "Payment {status}",
     "payment_summary": "{days} 日間、{amount} {token} をお支払いいただき、{maxAddresses} {maxAddresses, plural, =1 {アドレス} other {アドレス}} までとなります。",
     "plan": "プラン",
     "plan_description": "${price}/年 · {maxAddresses, plural, =1 {1 address} その他の {{maxAddresses} アドレス}}",
@@ -177,7 +195,7 @@
   },
   "unauthenticated": {
     "benefits": {
-      "address_slots": "Add or remove wallets",
+      "auto_revoke": "Set up and monitor Auto-Revoking",
       "billing": "View your billing history",
       "coverage": "View and manage Fairside coverage",
       "manage_subscription": "Manage your Premium subscription",

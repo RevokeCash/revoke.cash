@@ -9,7 +9,7 @@ import Button from 'components/common/Button';
 import Card, { CardTitle } from 'components/common/Card';
 import CardSelect, { type CardSelectOption } from 'components/common/CardSelect';
 import Href from 'components/common/Href';
-import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import ChainSelect from 'components/common/select/ChainSelect';
 import { useNameLookup } from 'lib/hooks/ethereum/useNameLookup';
 import { usePremiumPlans } from 'lib/hooks/premium/usePremiumPlans';
@@ -215,9 +215,7 @@ const SubscriptionBanner = ({ planName, endsAt, grantedBy, slots }: Subscription
     <div className="flex flex-col gap-2 rounded-md bg-green-50 dark:bg-green-950/20 p-4 border border-green-200 dark:border-green-900">
       <div className="flex items-center gap-2">
         <span className="font-medium">{planName}</span>
-        <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">
-          {t('account.subscription.active')}
-        </Label>
+        <StatusLabel status="success">{t('account.subscription.active')}</StatusLabel>
       </div>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">{bannerStrings.filter(Boolean).join(' · ')}</p>
     </div>

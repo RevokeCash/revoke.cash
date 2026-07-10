@@ -4,16 +4,17 @@ import type { Nullable } from '@revoke.cash/core/types';
 import { deduplicateArray, isNullish } from '@revoke.cash/core/utils';
 import { formatFiatAmount } from '@revoke.cash/core/utils/formatting';
 import Loader from 'components/common/Loader';
+import Spinner from 'components/common/Spinner';
 import { useTranslations } from 'next-intl';
 
 interface Props {
   allowances?: TokenAllowanceData[];
   isLoading: boolean;
+  isCounting?: boolean;
   error?: Nullable<Error>;
-  multichain?: boolean;
 }
 
-const TotalValueAtRisk = ({ allowances, isLoading, error, multichain }: Props) => {
+const TotalValueAtRisk = ({ allowances, isLoading, isCounting, error }: Props) => {
   const t = useTranslations();
 
   if (error) return null;
@@ -31,18 +32,19 @@ const TotalValueAtRisk = ({ allowances, isLoading, error, multichain }: Props) =
     <Loader isLoading={isLoading}>
       <div className="flex flex-col items-start md:items-center gap-0.5">
         <div className="text-xs font-semibold tracking-wide text-zinc-600 dark:text-zinc-400 md:text-center uppercase">
-          {t(multichain ? 'address.wallet_health.total_value_at_risk' : 'address.wallet_health.value_at_risk')}
+          {t('address.wallet_health.value_at_risk')}
         </div>
-        <div className="font-bold">
+        <div className="font-bold flex items-center gap-1.5">
           {isLoading ? (
             '$0,000'
-          ) : isNullish(totalValueAtRisk) ? (
+          ) : isNullish(totalValueAtRisk) && !isCounting ? (
             t('address.allowances.unknown')
           ) : (
             <>
-              {formatFiatAmount(totalValueAtRisk, 0)} {hasNftsAtRisk ? '+ NFTs' : null}
+              {formatFiatAmount(totalValueAtRisk ?? 0, 0)} {hasNftsAtRisk ? '+ NFTs' : null}
             </>
           )}
+          {isCounting && <Spinner className="w-3 h-3 mx-0" />}
         </div>
       </div>
     </Loader>
@@ -62,6 +64,10 @@ const calculateTotalValueAtRisk = (allowances: TokenAllowanceData[]): number | n
     sortedAllowances,
     (allowance) => `${allowance.chainId}-${allowance.token.address}`,
   );
+
+  // If no allowance has a balance, return 0
+  const hasAnyBalance = deduplicatedAllowances.some((allowance) => !isNullish(allowance.balance) && allowance.balance !== 'Unknown' && allowance.balance > 0n);
+  if (!hasAnyBalance) return 0;
 
   // If no allowance has a known price, return null ("Unknown")
   const hasAnyPrice = deduplicatedAllowances.some((allowance) => !isNullish(allowance.metadata.price));

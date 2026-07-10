@@ -7,12 +7,12 @@ export const writeToClipBoard = (
   displayToast: boolean = true,
 ) => {
   if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
-    toast.info(t('common.toasts.clipboard_failed'), { autoClose: 1000 });
+    return void toast.error(t('common.toasts.clipboard_failed'), { autoClose: 1000 });
   }
 
   navigator.clipboard.writeText(text);
 
   if (displayToast) {
-    toast.info(t('common.toasts.clipboard_success'), { autoClose: 1000 });
+    toast.success(t('common.toasts.clipboard_success'), { autoClose: 1000 });
   }
 };

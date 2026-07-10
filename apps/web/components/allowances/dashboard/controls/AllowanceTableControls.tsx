@@ -1,31 +1,24 @@
-import type { TokenAllowanceData } from '@revoke.cash/core/allowances';
-import type { Table } from '@tanstack/react-table';
-import { updateTableFilters } from 'lib/utils/table';
-import { Suspense, useCallback } from 'react';
-import { ColumnId } from '../columns';
+import type { ColumnSort } from '@tanstack/react-table';
+import { type ReactNode, Suspense } from 'react';
 import AllowanceSearchBox from './AllowanceSearchBox';
 import SortSelect from './SortSelect';
 
 interface Props {
-  table: Table<TokenAllowanceData>;
+  onSearchValuesChange: (values: string[]) => void;
+  onSortChange: (sort: ColumnSort[]) => void;
+  children?: ReactNode;
 }
 
-const AllowanceTableControls = ({ table }: Props) => {
-  const onSearchValuesChange = useCallback(
-    (values: string[]) => {
-      const tableFilters = values.length > 0 ? [{ id: ColumnId.SPENDER, value: values }] : [];
-      const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
-      updateTableFilters(table, tableFilters, ignoreIds);
-    },
-    [table],
-  );
-
+const AllowanceTableControls = ({ onSearchValuesChange, onSortChange, children }: Props) => {
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-2">
-      <Suspense>
-        <AllowanceSearchBox onSearchValuesChange={onSearchValuesChange} />
-      </Suspense>
-      <SortSelect onSortChange={table.setSorting} className="md:w-auto" />
+    <div className="flex flex-wrap gap-2">
+      <div className="w-full min-w-0 xl:w-auto xl:flex-1">
+        <Suspense>
+          <AllowanceSearchBox onSearchValuesChange={onSearchValuesChange} />
+        </Suspense>
+      </div>
+      <SortSelect onSortChange={onSortChange} className="sm:w-auto grow xl:grow-0" />
+      {children}
     </div>
   );
 };

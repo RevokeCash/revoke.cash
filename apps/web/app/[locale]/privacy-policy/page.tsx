@@ -1,8 +1,8 @@
 import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { readAndParseContentFile } from 'lib/utils/markdown-content';
-import type { NextPage } from 'next';
-import { setRequestLocale } from 'next-intl/server';
+import type { Metadata, NextPage } from 'next';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
@@ -14,9 +14,15 @@ interface Params {
 
 export const dynamic = 'error';
 
-export const metadata = {
-  title: 'Privacy Policy',
-  description: 'Privacy Policy for Revoke.cash',
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+
+  const t = await getTranslations({ locale });
+
+  return {
+    title: t('common.meta.privacy_policy.title'),
+    description: t('common.meta.privacy_policy.description'),
+  };
 };
 
 const PrivacyPolicyPage: NextPage<Props> = async ({ params }) => {

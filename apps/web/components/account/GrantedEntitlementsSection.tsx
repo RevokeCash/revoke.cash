@@ -3,7 +3,7 @@
 import type { PremiumEntitlement } from '@revoke.cash/core/premium/types';
 import { shortenAddress } from '@revoke.cash/core/utils/formatting';
 import Card, { CardTitle } from 'components/common/Card';
-import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import { useTranslations } from 'next-intl';
 
 interface Props {
@@ -22,9 +22,7 @@ const GrantedEntitlementsSection = ({ entitlements }: Props) => {
         >
           <div className="flex items-center gap-2">
             <span className="font-medium">{entitlement.planName}</span>
-            <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">
-              {t('account.granted.active')}
-            </Label>
+            <StatusLabel status="success">{t('account.granted.active')}</StatusLabel>
           </div>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             {t('account.granted.granted_by', {

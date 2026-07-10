@@ -68,7 +68,6 @@ const SharedHistoryTable = ({ approvalHistory, isLoading, error, isPremium = fal
         loading={isLoading}
         error={error}
         emptyChildren={t('address.history.none_found')}
-        loaderRows={table.getState().pagination.pageSize}
         partialLoadingRows={isPremium ? 3 : 0}
         className="border-none rounded-none"
       />

@@ -18,7 +18,7 @@ const TableBody = <T,>({ table, isLoading, loaderRows, partialLoadingRows = 0 }:
     return (
       <TableBodyLoader
         columns={table.getVisibleFlatColumns()}
-        rowCount={loaderRows ?? 10}
+        rowCount={loaderRows ?? 5}
         className="allowances-loader"
       />
     );

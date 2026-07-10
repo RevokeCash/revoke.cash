@@ -34,7 +34,7 @@ const AddressNavigation = () => {
     enabled: !isNullish(address) && !isNullish(publicClient?.chain),
   });
 
-  const hasCodeOnAbstract = !isNullish(abstractAccountType) && abstractAccountType !== 'EOA';
+  const hasCodeOnAbstract = !isNullish(abstractAccountType) && abstractAccountType !== 'eoa';
   const showSessionsTab =
     hasCodeOnAbstract && (isPremium || selectedChainId === ChainId.Abstract || path.endsWith(sessionsPath));
 

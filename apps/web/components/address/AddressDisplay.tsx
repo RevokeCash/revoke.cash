@@ -10,6 +10,7 @@ interface Props {
   copyButtonClassName?: string;
   withCopyButton?: boolean;
   withTooltip?: boolean;
+  as?: 'h1' | 'div';
 }
 
 const AddressDisplay = ({
@@ -19,11 +20,14 @@ const AddressDisplay = ({
   copyButtonClassName,
   withCopyButton,
   withTooltip,
+  as: Component = 'div',
 }: Props) => {
-  const classes = twMerge('flex gap-1 items-center', className, 'leading-none');
+  // Undo the base layer's h1 font styles so the heading semantics don't change the appearance
+  const headingResetClasses = Component === 'h1' ? 'font-sans tracking-normal' : undefined;
+  const classes = twMerge('flex gap-1 items-center', headingResetClasses, className, 'leading-none');
 
   return (
-    <div className={classes}>
+    <Component className={classes}>
       {withTooltip ? (
         <WithHoverTooltip tooltip={address}>
           <span>{domainName ?? shortenAddress(address, 6)}</span>
@@ -32,7 +36,7 @@ const AddressDisplay = ({
         (domainName ?? shortenAddress(address, 6))
       )}
       {withCopyButton && <CopyButton content={address} className={copyButtonClassName} />}
-    </div>
+    </Component>
   );
 };
 

@@ -35,7 +35,6 @@ const MarketplaceTable = () => {
         loading={isLoading}
         error={error}
         emptyChildren={t('signatures.marketplace.table.none_found')}
-        loaderRows={2}
         className="border-none"
       />
     </Card>

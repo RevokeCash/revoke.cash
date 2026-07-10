@@ -10,6 +10,7 @@ import {
 import { isNullish } from '@revoke.cash/core/utils';
 import { isUserRejectionError, parseErrorMessage } from '@revoke.cash/core/utils/errors';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
 import { toast } from 'react-toastify';
 import useLocalStorage from 'use-local-storage';
@@ -19,6 +20,7 @@ import { useWalletClient } from 'wagmi';
 const FAIRSIDE_TOKEN_KEY = 'fairside_token';
 
 export const useFairsideCoverage = (account: Address) => {
+  const t = useTranslations();
   const { data: walletClient } = useWalletClient();
 
   const { data: membershipInfo, isLoading: isMembershipLoading } = useQuery({
@@ -45,14 +47,14 @@ export const useFairsideCoverage = (account: Address) => {
 
   const { execute: authenticate, loading: isAuthenticating } = useAsyncCallback(async () => {
     if (!walletClient) {
-      toast.error('Please connect your wallet to authenticate');
+      toast.error(t('account.coverage.fairside.errors.connect_wallet'));
       return;
     }
 
     try {
       const messageData = await getAuthenticationMessage({ walletAddress: account });
       if (!messageData) {
-        toast.error('Could not generate authentication message');
+        toast.error(t('account.coverage.fairside.errors.generate_message_failed'));
         return;
       }
 
@@ -66,7 +68,7 @@ export const useFairsideCoverage = (account: Address) => {
       });
 
       if (!accessToken) {
-        toast.error('Failed to authenticate');
+        toast.error(t('account.coverage.fairside.errors.authentication_failed'));
         return;
       }
 
@@ -74,7 +76,7 @@ export const useFairsideCoverage = (account: Address) => {
     } catch (error) {
       console.error('Authentication error:', error);
       if (isUserRejectionError(parseErrorMessage(error))) return;
-      toast.error('Failed to authenticate with Fairside');
+      toast.error(t('account.coverage.fairside.errors.authentication_failed_fairside'));
     }
   });
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import Button from 'components/common/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useConnection } from 'wagmi';
@@ -13,7 +14,6 @@ const EmbedHeader = () => {
   return (
     <header className="w-full bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-800">
       <div className="flex justify-between items-center px-4 py-3 max-w-7xl mx-auto">
-        {/* Logo */}
         <Link href={routePrefix} className="flex items-center">
           <Image
             src="/assets/images/revoke-wordmark-black.svg"
@@ -31,16 +31,17 @@ const EmbedHeader = () => {
           />
         </Link>
 
-        {/* Open Full App Button */}
-        <Link
+        <Button
+          style="secondary"
+          size="md"
           href={address ? `/address/${address}` : '/'}
-          target="_blank"
+          external
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-300 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+          className="gap-2 text-sm"
         >
           <span>Open Full App</span>
           <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-        </Link>
+        </Button>
       </div>
     </header>
   );

@@ -29,22 +29,22 @@ export const useHandleTransaction = (chainId: number) => {
     // so we tell the user to revoke instead if the contract doesn't allow the simple use
     // of contract.approve(0)
     if (type === TransactionType.UPDATE) {
-      return void toast.info(t('common.toasts.update_failed'));
+      return void toast.error(t('common.toasts.update_failed'));
     }
 
     if (type === TransactionType.REVOKE) {
       if (isLedgerNanoSError(message)) {
-        return void toast.info(t('common.toasts.revoke_failed_ledger_nano_s'));
+        return void toast.error(t('common.toasts.revoke_failed_ledger_nano_s'));
       }
 
       if (isRevertedError(message)) {
-        return void toast.info(t('common.toasts.revoke_failed_revert', { message }));
+        return void toast.error(t('common.toasts.revoke_failed_revert', { message }));
       }
 
-      return void toast.info(t('common.toasts.revoke_failed', { message }));
+      return void toast.error(t('common.toasts.revoke_failed', { message }));
     }
 
-    return void toast.info(t('common.toasts.transaction_failed', { message }));
+    return void toast.error(t('common.toasts.transaction_failed', { message }));
   };
 
   const handleTransaction = async (transactionPromise: Promise<TransactionSubmitted>, type: TransactionType) => {

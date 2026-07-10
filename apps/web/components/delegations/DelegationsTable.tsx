@@ -39,7 +39,6 @@ const DelegationsTable = ({ delegations, isLoading, error, onRevoke }: Props) =>
         table={table}
         loading={isLoading}
         emptyChildren={t('address.delegations.no_delegations')}
-        loaderRows={2}
         error={error}
         className="border-none"
       />

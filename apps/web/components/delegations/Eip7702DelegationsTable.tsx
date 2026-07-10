@@ -34,7 +34,6 @@ const Eip7702DelegationsTable = ({ delegations, isLoading, error }: Props) => {
         table={table}
         loading={isLoading}
         emptyChildren={t('address.delegations.no_eip7702_delegations')}
-        loaderRows={2}
         error={error}
         className="border-none"
       />

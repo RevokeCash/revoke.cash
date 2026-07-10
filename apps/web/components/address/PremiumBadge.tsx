@@ -11,12 +11,7 @@ const PremiumBadge = ({ className }: Props) => {
   const t = useTranslations();
 
   return (
-    <Label
-      className={twMerge(
-        'gap-1 bg-linear-to-r from-amber-300 to-brand text-zinc-900 dark:from-brand dark:to-amber-500 dark:text-zinc-900',
-        className,
-      )}
-    >
+    <Label className={twMerge('gap-1 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-brand', className)}>
       <SparklesIcon className="w-3 h-3" />
       <span>{t('common.labels.premium')}</span>
     </Label>

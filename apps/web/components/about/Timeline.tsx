@@ -61,7 +61,7 @@ const Timeline = () => {
           );
         })}
 
-        <YearMarker label="Today" />
+        <YearMarker label={t('about.timeline.today')} />
       </div>
     </div>
   );
@@ -72,7 +72,7 @@ export default Timeline;
 const YearMarker = ({ label }: { label?: string | number }) => {
   return (
     <div className="relative flex sm:justify-center mb-4">
-      <div className="relative z-10 -translate-x-1/2 left-[20px] sm:left-auto sm:translate-x-0 rounded-full bg-brand px-3 py-0.5 text-xs font-bold text-black">
+      <div className="relative z-10 -translate-x-1/2 left-5 sm:left-auto sm:translate-x-0 rounded-full bg-brand px-3 py-0.5 text-xs font-bold text-black">
         {label}
       </div>
     </div>
@@ -85,7 +85,7 @@ const TimelineLine = () => {
   return (
     <>
       <div className={twMerge(sharedClassName, 'hidden sm:block left-1/2')} />
-      <div className={twMerge(sharedClassName, 'sm:hidden left-[20px]')} />
+      <div className={twMerge(sharedClassName, 'sm:hidden left-5')} />
     </>
   );
 };
@@ -124,7 +124,7 @@ const TimelineCard = ({ date, title, description, icon: Icon, side, highlighted 
       </div>
 
       <div className={cardClassName}>
-        <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">{date}</span>
+        <span className="text-xs font-medium text-zinc-500 dark:text-zinc-500">{date}</span>
         <h3 className="text-sm font-semibold mt-1">{title}</h3>
         <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">{description}</p>
       </div>

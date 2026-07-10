@@ -12,9 +12,10 @@ interface Props {
   error: any;
   chainId?: number;
   className?: string;
+  withIcon?: boolean;
 }
 
-const ErrorDisplay = ({ error, chainId, className }: Props) => {
+const ErrorDisplay = ({ error, chainId, className, withIcon = true }: Props) => {
   const t = useTranslations();
   // Try to get the context, but don't fail if it's not available (e.g., in premium context)
   const context = useContext(AddressPageContext);
@@ -31,7 +32,10 @@ const ErrorDisplay = ({ error, chainId, className }: Props) => {
 
   return (
     <WithHoverTooltip tooltip={tooltip}>
-      <div className={twMerge('min-w-0 truncate', className)}>⚠ {shortMessage}</div>
+      <div className={twMerge('min-w-0 truncate', className)}>
+        {withIcon && '⚠ '}
+        {shortMessage}
+      </div>
     </WithHoverTooltip>
   );
 };

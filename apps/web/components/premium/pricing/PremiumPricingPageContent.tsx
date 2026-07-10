@@ -13,7 +13,7 @@ const PremiumPricingPageContent = () => {
   const t = useTranslations();
 
   return (
-    <div className="max-w-5xl mx-auto px-4 flex flex-col gap-12">
+    <div className="max-w-5xl mx-auto flex flex-col gap-12">
       <ContentPageHero title={t('premium.pricing.title')} subtitle={t('premium.pricing.description')} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -47,30 +47,35 @@ const PremiumPricingPageContent = () => {
           <Feature
             featureKey="multichain_dashboard"
             image="/assets/images/premium/multichain-dashboard.jpg"
+            video="/assets/videos/premium/multichain-dashboard.mp4"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="multichain_exploit_checker"
             image="/assets/images/premium/multichain-exploit-checker.jpg"
+            video="/assets/videos/premium/multichain-exploit-checker.mp4"
             imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="unlimited_batch_revokes"
             image="/assets/images/premium/batch-revoke.jpg"
+            video="/assets/videos/premium/batch-revoke.mp4"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="time_machine"
             image="/assets/images/premium/time-machine.jpg"
+            video="/assets/videos/premium/time-machine.mp4"
             imagePosition="right"
             translationPrefix={TRANSLATION_PREFIX}
           />
           <Feature
             featureKey="automated_revoking"
             image="/assets/images/premium/auto-revoke.jpg"
+            video="/assets/videos/premium/auto-revoke.mp4"
             imagePosition="left"
             translationPrefix={TRANSLATION_PREFIX}
             badge={t('premium.pricing.tiers.ultimate.name')}

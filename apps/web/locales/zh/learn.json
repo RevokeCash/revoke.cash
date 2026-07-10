@@ -8,6 +8,13 @@
       "title": "1.打开你的钱包，进入 \"添加区块链 \"页面。"
     },
     "step_2": {
+      "form": {
+        "block_explorer_url": "Block explorer URL (Optional)",
+        "chain_id": "Chain ID",
+        "currency_symbol": "Currency symbol",
+        "network_name": "Network name",
+        "new_rpc_url": "New RPC URL"
+      },
       "paragraph_1": "输入所需细节后，您可以点击 \"保存\"，将{chainName}添加到MetaMask。",
       "paragraph_2": "或者，你可以使用我们的一键式按钮，这样你就不需要手动输入所需的细节。",
       "title": "2.输入所需的细节并点击 \"保存\"。"

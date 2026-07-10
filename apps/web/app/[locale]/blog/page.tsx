@@ -39,7 +39,7 @@ const BlogPage: NextPage<Props> = async ({ params }) => {
   const [featuredPost, ...restPosts] = posts;
 
   return (
-    <div className="max-w-5xl mx-auto px-4">
+    <div className="max-w-5xl mx-auto">
       <ContentPageHero title={t('blog.meta.title')} subtitle={t('blog.meta.description')} />
       <div className="flex flex-col gap-4">
         {featuredPost && (

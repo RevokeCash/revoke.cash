@@ -2,9 +2,9 @@ import { getChainExplorerUrl } from '@revoke.cash/core/chains';
 import type { TimeLog } from '@revoke.cash/core/events';
 import { formatDateNormalised, SECOND } from '@revoke.cash/core/utils/time';
 import Href from 'components/common/Href';
+import TimeAgo from 'components/common/TimeAgo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useLocale } from 'next-intl';
-import TimeAgo from 'timeago-react';
 
 interface Props {
   chainId: number;
@@ -28,7 +28,7 @@ const TransactionDateCell = ({ chainId, timeLog }: Props) => {
             {formattedDate}
           </Href>
         ) : (
-          <span className="text-zinc-600 dark:text-zinc-400">{formattedDate}</span>
+          <span className="text-zinc-500 dark:text-zinc-400">{formattedDate}</span>
         )}
       </WithHoverTooltip>
     </div>

@@ -34,7 +34,7 @@ const AboutPage: NextPage<Props> = async ({ params }) => {
   return (
     <SharedLayout padding>
       <ContentPageHero title={t('about.title')} />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <Timeline />
       </div>
     </SharedLayout>

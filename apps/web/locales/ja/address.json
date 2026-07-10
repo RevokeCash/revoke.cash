@@ -11,18 +11,16 @@
     "unlimited": "無制限"
   },
   "batch_revoke": {
-    "add_tip": "チップを追加しますか。",
     "failed": "失敗",
     "fee": {
       "eip5792_notice": "注意：ウォレットはアトミックバッチ取り消しをサポートしていないため、有料のバッチ取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
       "eip5792_notice_chain": "注意：ウォレットは{chainName}のアトミックバッチ取り消しをサポートしていないため、有料のバッチ取り消しを使用する場合でも、複数のトランザクションを送信する必要があります。",
       "notice": "一括取り消しには、Revoke.cashの継続的な開発のサポートとなる<m>${feeDollarAmount}</m>の少額の手数料がかかります。",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link>は<m>{chainName}</m>ネットワークで一括取り消し手数料を負担しています！🥳",
-      "tooltip": "バッチごとの<m>${BASE_FEE}</m>の定額料金は、インフラコストと継続的な開発をサポートします。また、承認を1つずつ無料で取り消すこともできます。"
+      "tooltip": "バッチごとの<m>${BASE_FEE}</m>の定額料金は、インフラコストと継続的な開発をサポートします。また、承認を1つずつ無料で取り消すこともできます。",
+      "upgrade_prompt": "Want unlimited batch revokes?"
     },
-    "no_tip": "チップなし",
     "revoked": "取り消された",
-    "select_tip_amount": "チップの金額を選択",
     "title": "一括取り消し",
     "total": "合計"
   },
@@ -180,6 +178,11 @@
     "title": "承認履歴"
   },
   "labels": {
+    "account_types": {
+      "eip7702": "EIP7702 Account",
+      "eoa": "EOA",
+      "smart_contract": "Smart Contract"
+    },
     "connected": "接続中",
     "nft": "NFT",
     "not_connected": "未接続",
@@ -295,15 +298,11 @@
     "filter_by_token": "このトークンでフィルタリングする",
     "permit2_expiration": "これは{inTime}で期限が切れる許可2の承認です。",
     "risk_factors": "これは下記の理由により{riskLevel}です：",
-    "select_tip": "チップの金額を選択してください",
-    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください",
-    "why_tip": {
-      "description": "Revoke.cashは100％無料のオープンソースの公共財です。それを維持するために、私たちは皆さんの寄付に頼っています。皆さんのご支援に大変感謝しています！🙏",
-      "title": "なぜチップを追加すればいいですか。"
-    }
+    "switch_chain": "続行するには、ウォレット内の接続ネットワークを <b>{chainName}</b>に切り替えてください"
   },
+  "viewing_on": "Viewing address on",
   "wallet_health": {
-    "total_allowances": "承認総数",
-    "total_value_at_risk": "リスクがある総価値"
+    "allowances": "Approvals",
+    "value_at_risk": "Value at Risk"
   }
 }

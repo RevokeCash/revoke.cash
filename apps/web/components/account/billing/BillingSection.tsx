@@ -42,7 +42,6 @@ const BillingSection = ({ subscriptions, isLoading }: Props) => {
         loading={isLoading}
         error={null}
         emptyChildren={t('account.billing.no_payments')}
-        loaderRows={3}
         className="border-none"
       />
     </Card>

@@ -2,7 +2,7 @@ import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import MarkdownProse from 'components/common/MarkdownProse';
 import { readAndParseContentFile } from 'lib/utils/markdown-content';
 import type { Metadata, NextPage } from 'next';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface Props {
   params: Promise<Params>;
@@ -14,9 +14,15 @@ interface Params {
 
 export const dynamic = 'error';
 
-export const metadata: Metadata = {
-  title: 'Acknowledgements',
-  description: 'Revoke.cash depends on several third-party tools and services. This page lists them.',
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const { locale } = await params;
+
+  const t = await getTranslations({ locale });
+
+  return {
+    title: t('common.meta.acknowledgements.title'),
+    description: t('common.meta.acknowledgements.description'),
+  };
 };
 
 const AcknowledgementsPage: NextPage<Props> = async ({ params }) => {

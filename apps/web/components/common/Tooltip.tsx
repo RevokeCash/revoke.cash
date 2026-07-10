@@ -194,10 +194,3 @@ export default {
   Content,
   Arrow,
 };
-
-// const CustomArrow = React.forwardRef((props: React.SVGProps<SVGSVGElement>, ref: React.Ref<SVGSVGElement>) => (
-//   <svg viewBox="0 0 24 12" xmlns="http://www.w3.org/2000/svg" {...props} ref={ref}>
-//     <title>Arrow</title>
-//     <path d="M0 0L12 8L24 0" vectorEffect="non-scaling-stroke" />
-//   </svg>
-// ));

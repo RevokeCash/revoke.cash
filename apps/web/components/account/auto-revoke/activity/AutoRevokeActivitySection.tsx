@@ -71,7 +71,6 @@ const AutoRevokeActivitySection = ({ subscriptionId }: Props) => {
         table={table}
         loading={isLoading}
         error={error}
-        loaderRows={5}
         emptyChildren={t('account.auto_revoke.activity.empty')}
         className="border-none rounded-none"
       />

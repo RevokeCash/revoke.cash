@@ -26,7 +26,7 @@ const AutomatedRevokingPage: NextPage<Props> = async ({ params }) => {
   setRequestLocale(locale);
 
   return (
-    <SharedLayout>
+    <SharedLayout padding>
       <AutomatedRevokingPageContent />
     </SharedLayout>
   );

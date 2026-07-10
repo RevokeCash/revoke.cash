@@ -12,7 +12,8 @@ import {
 import { ColumnId, columns } from 'components/allowances/dashboard/columns';
 import Table from 'components/common/table/Table';
 import { useAddressAllowances } from 'lib/hooks/page-context/AddressPageContext';
-import { useEffect, useMemo, useState } from 'react';
+import { updateTableFilters } from 'lib/utils/table';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import AllowanceTableControls from './controls/AllowanceTableControls';
 import NoAllowancesFound from './NoAllowancesFound';
 
@@ -71,9 +72,18 @@ const AllowanceDashboard = () => {
     },
   });
 
+  const onSearchValuesChange = useCallback(
+    (values: string[]) => {
+      const tableFilters = values.length > 0 ? [{ id: ColumnId.SPENDER, value: values }] : [];
+      const ignoreIds = Object.values(ColumnId).filter((id) => id !== ColumnId.SPENDER);
+      updateTableFilters(table, tableFilters, ignoreIds);
+    },
+    [table],
+  );
+
   return (
     <div className="flex flex-col justify-start mx-auto gap-2">
-      <AllowanceTableControls table={table} />
+      <AllowanceTableControls onSearchValuesChange={onSearchValuesChange} onSortChange={table.setSorting} />
       <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl">
         <Table
           table={table}

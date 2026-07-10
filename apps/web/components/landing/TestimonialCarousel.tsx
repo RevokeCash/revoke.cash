@@ -13,6 +13,7 @@ const TestimonialCarousel = () => {
 
   const restartTimer = useCallback(() => {
     clearInterval(timerRef.current);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     timerRef.current = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
     }, INTERVAL_MS);

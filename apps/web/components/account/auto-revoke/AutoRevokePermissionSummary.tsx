@@ -1,9 +1,8 @@
 'use client';
 
 import AddressRow from 'components/account/AddressRow';
-import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import { useTranslations } from 'next-intl';
-import { twMerge } from 'tailwind-merge';
 import type { Address } from 'viem';
 
 interface Props {
@@ -20,22 +19,17 @@ const AutoRevokePermissionSummary = ({ address, grantedCount, totalCount }: Prop
     total: totalCount,
   });
 
-  const labelClassName = twMerge(
-    'whitespace-nowrap',
-    'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-    grantedCount === 0 && 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400',
-    grantedCount === totalCount && 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  );
+  const status = grantedCount === 0 ? 'neutral' : grantedCount === totalCount ? 'success' : 'warning';
 
   return (
     <div className="min-w-0 flex-1">
       <AddressRow address={address}>
-        <Label className={labelClassName}>
+        <StatusLabel status={status} className="whitespace-nowrap">
           <span className="sm:hidden">
             {grantedCount}/{totalCount}
           </span>
           <span className="hidden sm:inline">{summaryLabel}</span>
-        </Label>
+        </StatusLabel>
       </AddressRow>
     </div>
   );

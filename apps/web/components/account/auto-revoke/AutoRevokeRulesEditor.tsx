@@ -34,7 +34,7 @@ const AutoRevokeRulesEditor = ({ rules, onUpdate, isAdmin = false, readOnly = fa
         <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
           {isAdmin ? t('account.auto_revoke.rules.title_defaults') : t('account.auto_revoke.rules.title')}
         </h3>
-        {managedByLabel && <span className="text-xs text-zinc-400 dark:text-zinc-500">{managedByLabel}</span>}
+        {managedByLabel && <span className="text-xs text-zinc-500 dark:text-zinc-500">{managedByLabel}</span>}
       </div>
       {isAdmin && (
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-3">

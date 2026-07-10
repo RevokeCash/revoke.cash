@@ -3,11 +3,11 @@
 import { isNullish } from '@revoke.cash/core/utils';
 import { getAccountType } from '@revoke.cash/core/wallet';
 import { useQuery } from '@tanstack/react-query';
-import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useAddressPageContext } from 'lib/hooks/page-context/AddressPageContext';
 import { useMounted } from 'lib/hooks/useMounted';
-import { twMerge } from 'tailwind-merge';
+import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { usePublicClient } from 'wagmi';
 import { Eip7702DelegationDetails } from './eip7702/Eip7702DelegationDetails';
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const AccountTypeLabel = ({ address }: Props) => {
+  const t = useTranslations();
   const isMounted = useMounted();
   const { selectedChainId } = useAddressPageContext();
   const publicClient = usePublicClient({ chainId: selectedChainId })!;
@@ -29,17 +30,15 @@ const AccountTypeLabel = ({ address }: Props) => {
 
   if (!isMounted || isLoading || !accountType) return null;
 
-  const classes = twMerge('bg-zinc-300 text-zinc-900 dark:bg-zinc-600 dark:text-zinc-100');
-
-  if (accountType === 'EIP7702 Account') {
+  if (accountType === 'eip7702') {
     return (
       <WithHoverTooltip tooltip={<Eip7702DelegationDetails address={address} chainId={selectedChainId} />}>
-        <Label className={classes}>{accountType}</Label>
+        <StatusLabel status="neutral">{t('address.labels.account_types.eip7702')}</StatusLabel>
       </WithHoverTooltip>
     );
   }
 
-  return <Label className={classes}>{accountType}</Label>;
+  return <StatusLabel status="neutral">{t(`address.labels.account_types.${accountType}`)}</StatusLabel>;
 };
 
 export default AccountTypeLabel;

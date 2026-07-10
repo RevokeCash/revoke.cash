@@ -25,7 +25,7 @@ const ContractCell = ({ delegation }: Props) => {
   });
 
   if (!delegation.contract) {
-    return <span className="text-gray-500 dark:text-gray-400">{t('address.delegations.contract.not_applicable')}</span>;
+    return <span className="text-zinc-500 dark:text-zinc-400">{t('address.delegations.contract.not_applicable')}</span>;
   }
 
   if (isLoading) {
@@ -46,7 +46,7 @@ const ContractCell = ({ delegation }: Props) => {
         }}
       />
       {delegation.tokenId ? (
-        <span className="text-gray-500 dark:text-gray-400">#{delegation.tokenId.toString()}</span>
+        <span className="text-zinc-500 dark:text-zinc-400">#{delegation.tokenId.toString()}</span>
       ) : null}
     </div>
   );

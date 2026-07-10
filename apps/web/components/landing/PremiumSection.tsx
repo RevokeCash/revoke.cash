@@ -15,14 +15,7 @@ const PremiumSection = () => {
     <FullWidthLandingSection title={t('landing.premium.title')} size="lg">
       <p className="-mt-4 text-center text-lg text-zinc-600 dark:text-zinc-400">{t('landing.premium.description')}</p>
       <FadeIn stagger className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <PremiumSectionCard
-          title={t('landing.premium.free_title')}
-          badge={
-            <Label className="border border-zinc-300 px-3 py-1 font-medium text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
-              {t('common.buttons.get_started')}
-            </Label>
-          }
-        >
+        <PremiumSectionCard title={t('landing.premium.free_title')}>
           <ul className="flex flex-col gap-2">
             <Highlight i18nKey="landing.premium.free_features.single_chain" />
             <Highlight i18nKey="landing.premium.free_features.history" />
@@ -85,7 +78,7 @@ export default PremiumSection;
 
 interface PremiumSectionCardProps {
   title: string;
-  badge: ReactNode;
+  badge?: ReactNode;
   className?: string;
   children: ReactNode;
 }
@@ -94,7 +87,7 @@ const PremiumSectionCard = ({ title, badge, className, children }: PremiumSectio
   return (
     <div
       className={twMerge(
-        'flex flex-col gap-5 rounded-3xl p-6 border border-zinc-200/70 dark:border-zinc-800/70',
+        'flex flex-col gap-5 rounded-xl p-6 border border-zinc-200/70 dark:border-zinc-800/70',
         className,
       )}
     >

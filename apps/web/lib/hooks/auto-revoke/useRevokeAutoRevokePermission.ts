@@ -25,12 +25,12 @@ export const useRevokeAutoRevokePermission = () => {
 
   const mutation = useMutation({
     mutationFn: async ({ permissionContext, delegationManagerAddress, chainId }: RevokePermissionParams) => {
-      if (!isMetaMask) throw new Error('MetaMask not connected');
+      if (!isMetaMask) throw new Error(t('account.auto_revoke.metamask_not_connected'));
 
       const walletClient = await ensureWalletClient(chainId);
 
       const decodedPermission = decodeDelegations(permissionContext)?.[0];
-      if (!decodedPermission) throw new Error('Failed to decode permission');
+      if (!decodedPermission) throw new Error(t('account.auto_revoke.permissions.decode_failed'));
 
       try {
         await contracts.DelegationManager.execute.disableDelegation({

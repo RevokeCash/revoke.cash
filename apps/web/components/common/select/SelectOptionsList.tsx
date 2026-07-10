@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import type { ElementType, ReactNode } from 'react';
 import { getOptionClassName, groupHeadingClassName, type OptionGroup, type SelectOption } from './common';
 
@@ -17,6 +18,7 @@ interface Props<O extends SelectOption> {
 // The scrollable (grouped) option list shared by Select and SearchableSelect, so their dropdown rendering
 // and option styling cannot drift apart
 const SelectOptionsList = <O extends SelectOption>(props: Props<O>) => {
+  const t = useTranslations();
   const { optionComponent: OptionComponent } = props;
 
   const isEmpty = props.optionGroups.every((group) => group.options.length === 0);
@@ -40,7 +42,7 @@ const SelectOptionsList = <O extends SelectOption>(props: Props<O>) => {
           ))}
         </div>
       ))}
-      {isEmpty ? <div className="p-2 text-zinc-500 dark:text-zinc-400">No options</div> : null}
+      {isEmpty ? <div className="p-2 text-zinc-500 dark:text-zinc-400">{t('common.select.no_options')}</div> : null}
     </div>
   );
 };

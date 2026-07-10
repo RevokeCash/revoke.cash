@@ -15,11 +15,7 @@ const BlogPageLayout = async ({ params, children }: Props) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return (
-    <SharedLayout padding>
-      <div className="w-full max-w-7xl mx-auto">{children}</div>
-    </SharedLayout>
-  );
+  return <SharedLayout padding>{children}</SharedLayout>;
 };
 
 export default BlogPageLayout;

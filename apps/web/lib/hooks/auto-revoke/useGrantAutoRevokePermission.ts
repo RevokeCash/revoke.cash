@@ -18,7 +18,7 @@ export const useGrantAutoRevokePermission = () => {
 
   const mutation = useMutation({
     mutationFn: async (chainId: number) => {
-      if (!connectorClient || !isMetaMask) throw new Error('MetaMask not connected');
+      if (!connectorClient || !isMetaMask) throw new Error(t('account.auto_revoke.metamask_not_connected'));
       if (!isAutoRevokeSupportedChain(chainId)) throw new Error('Unsupported chain');
 
       const walletClient = connectorClient.extend(erc7715ProviderActions());
@@ -28,7 +28,7 @@ export const useGrantAutoRevokePermission = () => {
       const grantedPermission = grantedPermissions.find((permission) =>
         isValidAutoRevokePermission(permission, connectorClient.account.address),
       );
-      if (!grantedPermission) throw new Error('No active permission returned');
+      if (!grantedPermission) throw new Error(t('account.auto_revoke.permissions.no_active_permission_returned'));
 
       await ky.post('/api/auto-revoke/permissions', {
         json: { chainId, permissionContext: grantedPermission.context },

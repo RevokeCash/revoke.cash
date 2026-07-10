@@ -1,6 +1,7 @@
 'use client';
 
 import { wagmiConfig } from 'lib/utils/wagmi';
+import { useTranslations } from 'next-intl';
 import { useAsyncCallback } from 'react-async-hook';
 import type { Account, Chain, Transport, WalletClient } from 'viem';
 import { useConnection } from 'wagmi';
@@ -11,6 +12,7 @@ export type ConnectedWalletClient = WalletClient<Transport, Chain, Account>;
 
 // Ensures the connected wallet is on target chain, then returns a fresh WalletClient for that chain
 export const useEnsureWalletClient = () => {
+  const t = useTranslations();
   const { switchChainAsync } = useSwitchChain();
   const { chainId: currentChainId } = useConnection();
 
@@ -23,7 +25,7 @@ export const useEnsureWalletClient = () => {
       }
 
       const client = await getWalletClient(wagmiConfig, { chainId });
-      if (!client) throw new Error('Please connect your web3 wallet to a supported network');
+      if (!client) throw new Error(t('common.errors.messages.connect_wallet_to_supported_network'));
 
       return client as ConnectedWalletClient;
     },

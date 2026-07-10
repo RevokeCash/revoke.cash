@@ -4,10 +4,8 @@ import type { ColumnSort } from '@tanstack/react-table';
 import Button from 'components/common/Button';
 import Chevron from 'components/common/Chevron';
 import { useTranslations } from 'next-intl';
-import { Suspense } from 'react';
 import { twMerge } from 'tailwind-merge';
-import AllowanceSearchBox from './AllowanceSearchBox';
-import SortSelect from './SortSelect';
+import AllowanceTableControls from './AllowanceTableControls';
 import TimeMachineBanner from './TimeMachineBanner';
 import TimeMachineModalWithButton from './TimeMachineModalWithButton';
 
@@ -27,18 +25,12 @@ const PremiumAllowanceTableControls = ({
   return (
     <div className="flex flex-col gap-2">
       <TimeMachineBanner />
-      <div className="flex flex-col sm:flex-row gap-2">
-        <div className="flex flex-col gap-2 grow">
-          <SortSelect instanceId="premium-sort-select" onSortChange={onSortChange} />
-          <Suspense>
-            <AllowanceSearchBox id="premium-spender-search" onSearchValuesChange={onSearchValuesChange} />
-          </Suspense>
-        </div>
-        <div className="flex flex-col gap-2 shrink-0">
+      <AllowanceTableControls onSearchValuesChange={onSearchValuesChange} onSortChange={onSortChange}>
+        <div className="flex flex-wrap w-full gap-2 sm:w-auto">
           <TimeMachineModalWithButton />
           <ExpandAllButton isAllExpanded={isAllExpanded} onToggleExpandAll={onToggleExpandAll} />
         </div>
-      </div>
+      </AllowanceTableControls>
     </div>
   );
 };
@@ -53,7 +45,7 @@ const ExpandAllButton = ({ isAllExpanded, onToggleExpandAll }: Pick<Props, 'isAl
       size="md"
       style="secondary"
       onClick={onToggleExpandAll}
-      className="h-9 px-4 text-sm gap-1.5 justify-between w-full sm:w-40"
+      className="h-9 px-4 text-sm gap-1.5 justify-between grow basis-36 sm:grow-0 sm:basis-auto sm:w-40"
     >
       {isAllExpanded ? t('common.buttons.collapse_all') : t('common.buttons.expand_all')}
       <Chevron

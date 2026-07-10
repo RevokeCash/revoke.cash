@@ -8,6 +8,13 @@
       "title": "1. Open your wallet and go to the \"Add network\" page."
     },
     "step_2": {
+      "form": {
+        "block_explorer_url": "Block explorer URL (Optional)",
+        "chain_id": "Chain ID",
+        "currency_symbol": "Currency symbol",
+        "network_name": "Network name",
+        "new_rpc_url": "New RPC URL"
+      },
       "paragraph_1": "After entering all the required details, you can click \"Save\" to add {chainName} to MetaMask.",
       "paragraph_2": "Alternatively, you can use our one-click button so you don't need to enter the required details manually.",
       "title": "2. Enter the required details and click \"Save\"."

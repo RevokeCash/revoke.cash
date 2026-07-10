@@ -20,7 +20,7 @@ export const useSyncAutoRevokePermissions = () => {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      if (!connectorClient || !isMetaMask) throw new Error('MetaMask not connected');
+      if (!connectorClient || !isMetaMask) throw new Error(t('account.auto_revoke.metamask_not_connected'));
 
       const walletClient = connectorClient.extend(erc7715ProviderActions());
 

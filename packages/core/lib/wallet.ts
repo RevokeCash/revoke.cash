@@ -74,10 +74,10 @@ export const waitForSubmittedTransactionConfirmation = async (
   return transaction?.confirmation ?? null;
 };
 
-export type AccountType = 'EOA' | 'EIP7702 Account' | 'Smart Contract';
+export type AccountType = 'eoa' | 'eip7702' | 'smart_contract';
 export const getAccountType = async (address: Address, publicClient: PublicClient): Promise<AccountType> => {
   const code = await publicClient.getCode({ address });
-  if (isNullish(code) || code === '0x') return 'EOA';
-  if (code.startsWith('0xef0100')) return 'EIP7702 Account';
-  return 'Smart Contract';
+  if (isNullish(code) || code === '0x') return 'eoa';
+  if (code.startsWith('0xef0100')) return 'eip7702';
+  return 'smart_contract';
 };

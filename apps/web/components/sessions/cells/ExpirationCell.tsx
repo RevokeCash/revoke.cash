@@ -1,7 +1,7 @@
 import { formatDateNormalised } from '@revoke.cash/core/utils/time';
+import TimeAgo from 'components/common/TimeAgo';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useLocale } from 'next-intl';
-import TimeAgo from 'timeago-react';
 
 interface Props {
   expiration: bigint;

@@ -23,6 +23,7 @@ const PremiumAddressHeader = () => {
             copyButtonClassName="text-zinc-500 dark:text-zinc-400"
             withCopyButton
             withTooltip
+            as="h1"
           />
           <div className="flex items-center gap-2">
             <ConnectedLabel address={address} />

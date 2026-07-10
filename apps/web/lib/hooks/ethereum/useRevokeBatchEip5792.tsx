@@ -19,6 +19,7 @@ import { throwIfExcessiveGas } from '@revoke.cash/core/wallet';
 import { FEE_SPONSORS, isZeroFeeDollarAmount } from 'components/allowances/controls/batch-revoke/fee';
 import { trackRevokeTransaction } from 'lib/allowances';
 import { recordBatchRevoke, trackBatchRevoke } from 'lib/allowances/batch-revoke';
+import { useTranslations } from 'next-intl';
 import type PQueue from 'p-queue';
 import type { Capabilities, EstimateContractGasParameters, Hash } from 'viem'; // viem has an issue with typing the capability. Until they fix it, we are manually importing it.
 import { usePublicClient, useWalletClient } from 'wagmi';
@@ -28,6 +29,7 @@ import { useFeePayment } from './useFeePayment';
 import { useWalletCapabilities } from './useWalletCapabilities';
 
 export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate: OnUpdate) => {
+  const t = useTranslations();
   const { getTransaction, updateTransaction } = useTransactionStore();
   const { address, isPremium } = useAddress();
   // Get chainId from the first allowance (all selected allowances should be from the same chain)
@@ -46,7 +48,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
     maxBatchSize: number = Number.POSITIVE_INFINITY,
   ) => {
     if (!walletClient) {
-      throw new Error('Please connect your web3 wallet to a supported network');
+      throw new Error(t('common.errors.messages.connect_wallet_to_supported_network'));
     }
 
     // Do not revoke allowances that are already confirmed, or that are already pending
@@ -143,7 +145,7 @@ export const useRevokeBatchEip5792 = (allowances: TokenAllowanceData[], onUpdate
 
                 if (!receipts?.[index]) {
                   console.log('receipts', receipts);
-                  throw new Error('An error occurred related to EIP5792 batch calls');
+                  throw new Error(t('common.errors.messages.eip5792_batch_call_failed'));
                 }
 
                 return mapWalletCallReceiptToTransactionSubmitted(receipts[index], publicClient, allowance, onUpdate);

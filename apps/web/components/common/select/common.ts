@@ -79,7 +79,7 @@ export const getAnchoredMenuClassName = (): string =>
     'z-20 w-max min-w-(--button-width) rounded-lg overflow-hidden text-left',
     'focus:outline-hidden',
     'bg-white dark:bg-black text-black dark:text-white',
-    'border border-zinc-200 dark:border-zinc-800 shadow-[0_4px_12px_rgba(0,0,0,0.08)]',
+    'border border-zinc-200 dark:border-zinc-800 shadow-lg',
   );
 
 const getMenuPlacementParts = (menuPlacement?: 'top' | 'bottom', menuAlign?: 'left' | 'right') =>

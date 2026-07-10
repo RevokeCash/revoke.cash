@@ -60,9 +60,9 @@ const FeeNotice = ({ chainId, feeDollarAmount }: Props) => {
         </WithHoverTooltip>
       </div>
       <div className="text-center text-xs text-zinc-500 dark:text-zinc-400">
-        Want unlimited batch revokes?{' '}
+        {t('address.batch_revoke.fee.upgrade_prompt')}{' '}
         <Href href="/premium" className="font-medium text-zinc-700 dark:text-zinc-200" router>
-          Upgrade to Premium
+          {t('common.buttons.upgrade_to_premium')}
         </Href>
       </div>
       <Eip5792Notice chainId={chainId} />

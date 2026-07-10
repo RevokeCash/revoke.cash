@@ -155,7 +155,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
       clearPendingPayment();
 
       if (finalStatus.status !== 'confirmed') {
-        throw new Error(`Payment ${finalStatus.status}`);
+        throw new Error(t('account.subscription.payment_status_error', { status: finalStatus.status }));
       }
 
       return finalStatus;
@@ -163,7 +163,7 @@ export const useSubscribe = ({ ownerAddress, selectedPlanId, selectedPaymentChai
     onSuccess: () => {
       setStatus('confirmed');
       queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryKey(ownerAddress) });
-      toast.success('Payment confirmed! Your premium subscription is now active.');
+      toast.success(t('account.subscription.payment_confirmed'));
     },
     onError: (error) => {
       setStatus('failed');

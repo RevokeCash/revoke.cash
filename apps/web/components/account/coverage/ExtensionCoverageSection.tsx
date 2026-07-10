@@ -3,7 +3,7 @@
 import { ShieldCheckIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
 import { CHROME_EXTENSION_URL } from '@revoke.cash/core/constants';
 import Button from 'components/common/Button';
-import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import { useExtensionConfig } from 'lib/hooks/ethereum/useExtensionConfig';
 import { useTranslations } from 'next-intl';
 
@@ -27,19 +27,11 @@ const ExtensionCoverageSection = () => {
           </div>
           <div className="flex items-center gap-2">
             {isActive ? (
-              <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">
-                {t('account.coverage.active')}
-              </Label>
+              <StatusLabel status="success">{t('account.coverage.active')}</StatusLabel>
             ) : (
-              <Label className="bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                {t('account.coverage.inactive')}
-              </Label>
+              <StatusLabel status="neutral">{t('account.coverage.inactive')}</StatusLabel>
             )}
-            {isInstalled && (
-              <Label className="bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                v{config!.version}
-              </Label>
-            )}
+            {isInstalled && <StatusLabel status="neutral">v{config!.version}</StatusLabel>}
           </div>
         </div>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">

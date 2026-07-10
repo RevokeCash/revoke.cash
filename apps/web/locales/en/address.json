@@ -11,18 +11,16 @@
     "unlimited": "Unlimited"
   },
   "batch_revoke": {
-    "add_tip": "Would you like to add a tip?",
     "failed": "Failed",
     "fee": {
       "eip5792_notice": "Note: your wallet does not support atomic batch revokes, so even when you use our paid batch revoke, you need to send multiple transactions.",
       "eip5792_notice_chain": "Note: your wallet does not support atomic batch revokes for {chainName}, so even when you use our paid batch revoke, you need to send multiple transactions.",
       "notice": "By batch revoking, you pay a small fee of <m>${feeDollarAmount}</m> that supports the continued development of Revoke.cash.",
       "sponsored_notice": "<sponsor-link>{sponsor}</sponsor-link> is sponsoring the batch revoke fee on the <m>{chainName}</m> network! 🥳",
-      "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals one by one for free."
+      "tooltip": "The flat fee of <m>${BASE_FEE}</m> per batch supports infrastructure costs and ongoing development. You can also revoke approvals one by one for free.",
+      "upgrade_prompt": "Want unlimited batch revokes?"
     },
-    "no_tip": "No tip",
     "revoked": "Revoked",
-    "select_tip_amount": "Select tip amount",
     "title": "Batch Revoke",
     "total": "Total"
   },
@@ -180,6 +178,11 @@
     "title": "Approval History"
   },
   "labels": {
+    "account_types": {
+      "eip7702": "EIP7702 Account",
+      "eoa": "EOA",
+      "smart_contract": "Smart Contract"
+    },
     "connected": "Connected",
     "nft": "NFT",
     "not_connected": "Not Connected",
@@ -295,18 +298,11 @@
     "filter_by_token": "Filter by this token",
     "permit2_expiration": "This is a Permit2 approval that will expire {inTime}",
     "risk_factors": "This is {riskLevel} for these reasons:",
-    "select_tip": "Please select a tip amount",
-    "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue",
-    "why_tip": {
-      "description": "Revoke.cash is a 100% free and open source public good. To keep it that way, we rely on your donations. We are very grateful for your support! 🙏",
-      "title": "Why add a tip?"
-    }
+    "switch_chain": "Please switch your connected network to <b>{chainName}</b> inside your wallet to continue"
   },
   "viewing_on": "Viewing address on",
   "wallet_health": {
     "allowances": "Approvals",
-    "total_allowances": "Total Approvals",
-    "total_value_at_risk": "Total Value at Risk",
     "value_at_risk": "Value at Risk"
   }
 }

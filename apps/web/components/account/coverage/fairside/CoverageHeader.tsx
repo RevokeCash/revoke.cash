@@ -2,7 +2,7 @@
 
 import { ShieldCheckIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
 import { formatDate } from '@revoke.cash/core/utils/time';
-import Label from 'components/common/Label';
+import StatusLabel from 'components/common/StatusLabel';
 import { useTranslations } from 'next-intl';
 
 interface Props {
@@ -28,17 +28,13 @@ const CoverageHeader = ({ isActive, coverAmount, validUntil }: Props) => {
         <div className="flex items-center gap-2">
           {isActive ? (
             <>
-              <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">
-                {t('account.coverage.active')}
-              </Label>
-              <Label className="bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100">
+              <StatusLabel status="success">{t('account.coverage.active')}</StatusLabel>
+              <StatusLabel status="success">
                 {t('account.coverage.fairside.covered', { amount: `${coverAmount} ETH` })}
-              </Label>
+              </StatusLabel>
             </>
           ) : (
-            <Label className="bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-              {t('account.coverage.inactive')}
-            </Label>
+            <StatusLabel status="neutral">{t('account.coverage.inactive')}</StatusLabel>
           )}
         </div>
       </div>

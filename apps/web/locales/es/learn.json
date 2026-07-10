@@ -8,6 +8,13 @@
       "title": "1. Abre tu cartera y ve a la página \"Añadir red\"."
     },
     "step_2": {
+      "form": {
+        "block_explorer_url": "Block explorer URL (Optional)",
+        "chain_id": "Chain ID",
+        "currency_symbol": "Currency symbol",
+        "network_name": "Network name",
+        "new_rpc_url": "New RPC URL"
+      },
       "paragraph_1": "Después de introducir todos los datos necesarios, haz clic en \"Guardar\" para añadir {chainName} a MetaMask.",
       "paragraph_2": "Como alternativa, puedes utilizar nuestro botón de un solo clic para no tener que introducir los detalles requeridos manualmente.",
       "title": "2. Introduce los datos necesarios y haz clic en \"Guardar\"."

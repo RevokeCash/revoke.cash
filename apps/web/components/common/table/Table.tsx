@@ -1,5 +1,8 @@
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import type { Nullable } from '@revoke.cash/core/types';
+import { isNullish } from '@revoke.cash/core/utils';
 import type { Table as ReactTable } from '@tanstack/react-table';
+import EmptyState from 'components/common/EmptyState';
 import ErrorDisplay from 'components/common/ErrorDisplay';
 import TablePagination from 'components/history/TablePagination';
 import { twMerge } from 'tailwind-merge';
@@ -22,7 +25,7 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, partialLo
     container:
       'border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-x-scroll whitespace-nowrap scrollbar-hide',
     table: 'w-full border-collapse allowances-table',
-    label: 'flex flex-col justify-center items-center p-3 gap-2 w-full h-12 empty:hidden',
+    label: 'flex flex-col justify-center items-center w-full empty:hidden',
   };
 
   return (
@@ -42,8 +45,14 @@ const Table = <T,>({ loading, error, table, emptyChildren, loaderRows, partialLo
           )}
         </table>
         <div className={classes.label}>
-          {!loading && !error && table?.getRowModel()?.rows?.length === 0 && emptyChildren}
-          {!loading && error && <ErrorDisplay error={error} />}
+          {!loading && !error && table?.getRowModel()?.rows?.length === 0 && !isNullish(emptyChildren) && (
+            <EmptyState>{emptyChildren}</EmptyState>
+          )}
+          {!loading && error && (
+            <EmptyState icon={ExclamationTriangleIcon} iconClassName="text-red-500 dark:text-red-400">
+              <ErrorDisplay error={error} withIcon={false} />
+            </EmptyState>
+          )}
         </div>
       </div>
       <TablePagination table={table} className="border-t border-zinc-200 dark:border-zinc-700" />

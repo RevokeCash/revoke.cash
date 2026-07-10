@@ -5,57 +5,58 @@
   },
   "timeline": {
     "batch_revoke": {
-      "description": "A much-requested feature, users can now revoke multiple approvals in a single flow with queued transactions.",
-      "title": "Batch Revoking"
+      "description": "Una función muy solicitada: ahora los usuarios pueden revocar varias aprobaciones de una sola vez mediante transacciones en cola.",
+      "title": "Revocación por lotes"
     },
     "beyond_approvals": {
-      "description": "Revoke.cash expands beyond approval management with new tabs for managing delegations and viewing approval history.",
-      "title": "Delegations & History Tabs"
+      "description": "Revoke.cash va más allá de la gestión de aprobaciones con nuevas pestañas para gestionar las delegaciones y consultar el historial de aprobaciones.",
+      "title": "Pestañas de Delegaciones e Historial"
     },
     "created": {
-      "description": "Inspired by Paul Berg's talk at Devcon 5, Rosco Kalis builds the first token approval management tool, giving users a way to revoke unlimited approvals.",
-      "title": "Revoke.cash Created"
+      "description": "Inspirándose en la charla de Paul Berg en Devcon 5, Rosco Kalis ha creado la primera herramienta de gestión de aprobaciones de Tokens, que te permite revocar todas las aprobaciones que quieras.",
+      "title": "Revoke.cash creado"
     },
     "extension": {
-      "description": "The crypto ecosystem sees a large increase in scams and phishing attacks. Rosco releases a browser extension that warns users before signing risky approvals, providing proactive protection.",
-      "title": "Browser Extension Launch"
+      "description": "El ecosistema de las criptomonedas está viendo un gran aumento de estafas y ataques de phishing. Rosco lanza una extensión para el navegador que avisa a los usuarios antes de que firmen aprobaciones arriesgadas, ofreciendo así una protección proactiva.",
+      "title": "Lanzamiento de la extensión para el navegador"
     },
     "extension_overhaul": {
-      "description": "The threat landscape is constantly evolving, and the browser extension needs to stay ahead. Revoke.cash partners with Fairside to build a new extension with improved detection, UX and risk coverage.",
-      "title": "Extension Overhaul"
+      "description": "El panorama de amenazas cambia constantemente, y la extensión del navegador tiene que ir un paso por delante. Revoke.cash se ha asociado con Fairside para crear una nueva extensión con detección mejorada, una mejor experiencia de usuario y mayor cobertura de riesgos.",
+      "title": "Revisión de la extensión"
     },
     "full_time": {
-      "description": "After leaving his previous startup, Rosco decides to focus on Revoke.cash full-time, turning it from a side project into a mission.",
-      "title": "Going Full-Time"
+      "description": "Tras dejar su anterior startup, Rosco decide dedicarse a Revoke.cash a tiempo completo, convirtiendo lo que era un proyecto paralelo en toda una misión.",
+      "title": "Trabajando a tiempo completo"
     },
     "learn_section": {
-      "description": "While tools are an important part of security, it does not replace the need for education. A Learn Section is added to help users understand wallet security.",
-      "title": "Learn Section"
+      "description": "Aunque las herramientas son una parte importante de la seguridad, no sustituyen a la necesidad de formarse. Se ha añadido una sección de aprendizaje para ayudar a los usuarios a entender la seguridad de las carteras.",
+      "title": "Sección Aprender"
     },
     "multichain": {
-      "description": "The EVM ecosystem is growing rapidly, and Revoke.cash expands beyond Ethereum to support dozens of EVM-compatible networks.",
-      "title": "Multichain Expansion"
+      "description": "El ecosistema EVM está creciendo a toda velocidad, y Revoke.cash va más allá de Ethereum para dar soporte a docenas de redes compatibles con EVM.",
+      "title": "Expansión a múltiples cadenas"
     },
     "nft_support": {
-      "description": "As NFTs rise in popularity, many users are giving approvals to marketplaces like OpenSea. Revoke.cash becomes the first tool to support revoking NFT approvals, expanding beyond ERC20 tokens.",
-      "title": "NFT Approval Support"
+      "description": "A medida que los NFT ganan popularidad, muchos usuarios están dando su autorización a mercados como OpenSea. Revoke.cash se convierte en la primera herramienta que permite revocar las aprobaciones de NFT, yendo más allá de los Tokens ERC20.",
+      "title": "Compatibilidad con la aprobación de NFT"
     },
     "premium": {
-      "description": "With a decline in public goods funding, Revoke.cash needs to find a sustainable business model. Revoke Premium is launched to generate real revenue.",
+      "description": "Con la reducción de la financiación de los bienes públicos, Revoke.cash necesita encontrar un modelo de negocio sostenible. Se ha lanzado Revoke Premium para generar ingresos reales.",
       "title": "Revoke Premium"
     },
     "redesign": {
-      "description": "At this point, Revoke.cash has had the same visual design since 2019. To pave the way for the future, a complete visual overhaul of the Revoke.cash dashboard and website is released.",
-      "title": "Website Redesign"
+      "description": "Hasta ahora, Revoke.cash llevaba con el mismo diseño visual desde 2019. Para allanar el camino hacia el futuro, se ha lanzado una renovación visual completa del panel de control y la página web de Revoke.cash.",
+      "title": "Rediseño del sitio web"
     },
     "single_tx_batch": {
-      "description": "EIP7702 enables revoking multiple approvals in a single transaction, massively improving the user experience of batch revoking.",
-      "title": "Single-Transaction Batch Revoke"
+      "description": "La EIP-7702 permite revocar varias aprobaciones en una sola transacción, lo que mejora muchísimo la experiencia del usuario a la hora de revocar aprobaciones por lotes.",
+      "title": "Revoke por lotes en una sola transacción"
     },
     "team_retropgf": {
-      "description": "Optimism RetroPGF provides major funding, enabling the first team expansion. In 2024, the team grows to include Dries and WiiMee as part-time team members.",
-      "title": "Team Growth & RetroPGF"
-    }
+      "description": "Optimism RetroPGF aporta una importante financiación, lo que permite la primera ampliación del equipo. En 2024, el equipo crece con la incorporación de Dries y WiiMee como miembros a tiempo parcial.",
+      "title": "Crecimiento del equipo y RetroPGF"
+    },
+    "today": "Today"
   },
   "title": "Sobre nosotros"
 }

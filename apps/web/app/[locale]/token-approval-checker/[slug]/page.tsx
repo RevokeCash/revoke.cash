@@ -1,4 +1,5 @@
 import { getChainIdFromSlug, getChainName, getChainSlug, SUPPORTED_CHAINS } from '@revoke.cash/core/chains';
+import SharedLayout from 'app/layouts/SharedLayout';
 import ChainDescription from 'components/common/ChainDescription';
 import ChainLogo from 'components/common/ChainLogo';
 import Href from 'components/common/Href';
@@ -54,51 +55,53 @@ const TokenApprovalCheckerPage: NextPage<Props> = async ({ params }) => {
   const chainName = getChainName(chainId);
 
   return (
-    <div className="flex flex-col items-center m-auto gap-4 px-4">
-      <div className="flex flex-col items-center w-full">
-        <h1 className="text-4xl md:text-5xl not-prose items-center gap-2 mb-12 text-center">
-          <ChainLogo chainId={chainId} size={56} className="inline align-middle" />{' '}
-          <div className="inline align-middle">{t('token_approval_checker.title', { chainName })}</div>
-        </h1>
-        <TokenApprovalCheckerSearchBox chainId={chainId} placeholder={t('common.nav.search')} />
-        <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
-          <p className="m-0">{t('token_approval_checker.different_chain')}:</p>
-          <div className="not-prose shrink-0">
-            <TokenApprovalCheckerChainSelect chainId={chainId} />
+    <SharedLayout padding>
+      <div className="flex flex-col items-center m-auto gap-4">
+        <div className="flex flex-col items-center w-full">
+          <h1 className="text-4xl md:text-5xl not-prose items-center gap-2 mb-12 text-center">
+            <ChainLogo chainId={chainId} size={56} className="inline align-middle" />{' '}
+            <div className="inline align-middle">{t('token_approval_checker.title', { chainName })}</div>
+          </h1>
+          <TokenApprovalCheckerSearchBox chainId={chainId} placeholder={t('common.nav.search')} />
+          <div className="flex flex-col sm:flex-row items-center gap-2 my-4">
+            <p className="m-0">{t('token_approval_checker.different_chain')}:</p>
+            <div className="not-prose shrink-0">
+              <TokenApprovalCheckerChainSelect chainId={chainId} />
+            </div>
           </div>
         </div>
+        <Prose className="max-w-3xl">
+          <ChainDescription chainId={chainId} headingElement="h2" />
+          <p>
+            <RichText>
+              {(tags) =>
+                t.rich('networks.learn_how_to_add_to_wallet', {
+                  ...tags,
+                  chainName,
+                  'add-network-link': (children) => (
+                    <Href href={`/learn/wallets/add-network/${getChainSlug(chainId)}`} underline="hover" html router>
+                      {children}
+                    </Href>
+                  ),
+                })
+              }
+            </RichText>
+          </p>
+          <h2 className="text-left">{t('token_approval_checker.what_are_token_approvals.title', { chainName })}</h2>
+          <p>
+            <RichText>
+              {(tags) => t.rich('token_approval_checker.what_are_token_approvals.content', { ...tags, chainName })}
+            </RichText>
+          </p>
+          <h2>{t('token_approval_checker.how_to_revoke.title', { chainName })}</h2>
+          <p>
+            <RichText>
+              {(tags) => t.rich('token_approval_checker.how_to_revoke.content', { ...tags, chainName })}
+            </RichText>
+          </p>
+        </Prose>
       </div>
-      <Prose className="max-w-3xl">
-        <ChainDescription chainId={chainId} headingElement="h2" />
-        <p>
-          <RichText>
-            {(tags) =>
-              t.rich('networks.learn_how_to_add_to_wallet', {
-                ...tags,
-                chainName,
-                'add-network-link': (children) => (
-                  <Href href={`/learn/wallets/add-network/${getChainSlug(chainId)}`} underline="hover" html router>
-                    {children}
-                  </Href>
-                ),
-              })
-            }
-          </RichText>
-        </p>
-        <h2 className="text-left">{t('token_approval_checker.what_are_token_approvals.title', { chainName })}</h2>
-        <p>
-          <RichText>
-            {(tags) => t.rich('token_approval_checker.what_are_token_approvals.content', { ...tags, chainName })}
-          </RichText>
-        </p>
-        <h2>{t('token_approval_checker.how_to_revoke.title', { chainName })}</h2>
-        <p>
-          <RichText>
-            {(tags) => t.rich('token_approval_checker.how_to_revoke.content', { ...tags, chainName })}
-          </RichText>
-        </p>
-      </Prose>
-    </div>
+    </SharedLayout>
   );
 };
 

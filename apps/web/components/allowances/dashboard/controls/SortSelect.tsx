@@ -23,7 +23,6 @@ type SortableColumn = Pick<Option, 'id' | 'sortType'>;
 interface Props {
   onSortChange: (sort: ColumnSort[]) => void;
   sortableColumns?: SortableColumn[];
-  instanceId?: string;
   className?: string;
 }
 
@@ -34,12 +33,7 @@ const DEFAULT_SORTABLE_COLUMNS: SortableColumn[] = [
   { id: ColumnId.SPENDER, sortType: 'text' },
 ];
 
-const SortSelect = ({
-  onSortChange,
-  sortableColumns = DEFAULT_SORTABLE_COLUMNS,
-  instanceId = 'sort-select',
-  className,
-}: Props) => {
+const SortSelect = ({ onSortChange, sortableColumns = DEFAULT_SORTABLE_COLUMNS, className }: Props) => {
   const t = useTranslations();
   const isMounted = useMounted();
   const [selectedSort, setSelectedSort] = useLocalStorage<ColumnSort>('allowances-table.sorting', {
@@ -86,16 +80,19 @@ const SortSelect = ({
     return (
       <div className="flex items-center gap-2">
         <div>{t('address.sorting.label')}</div>
-        {isMounted && <Label className="flex items-center gap-1 bg-zinc-300 dark:bg-zinc-600">{sortDisplay}</Label>}
+        {isMounted && (
+          <Label className="flex items-center gap-1 bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200">
+            {sortDisplay}
+          </Label>
+        )}
       </div>
     );
   };
 
   return (
     <Select
-      instanceId={instanceId}
       aria-label="Sort By"
-      className={twMerge('w-full shrink-0', className)}
+      className={twMerge('w-full min-w-72 shrink-0', className)}
       value={options.find((option) => {
         return option.id === selectedSort.id && option.desc === selectedSort.desc;
       })}

@@ -26,7 +26,7 @@ const PremiumPricingPage: NextPage<Props> = async ({ params }) => {
   setRequestLocale(locale);
 
   return (
-    <SharedLayout>
+    <SharedLayout padding>
       <PremiumPricingPageContent />
     </SharedLayout>
   );

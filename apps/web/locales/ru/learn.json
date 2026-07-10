@@ -8,6 +8,13 @@
       "title": "1. Откройте кошелек и перейдите на страницу «Добавить сеть»."
     },
     "step_2": {
+      "form": {
+        "block_explorer_url": "Block explorer URL (Optional)",
+        "chain_id": "Chain ID",
+        "currency_symbol": "Currency symbol",
+        "network_name": "Network name",
+        "new_rpc_url": "New RPC URL"
+      },
       "paragraph_1": "После ввода всех необходимых данных нажмите «Сохранить», чтобы добавить {chainName} в MetaMask.",
       "paragraph_2": "Вы можете подставить всё в один клик и не вводить данные вручную.",
       "title": "2. Введите необходимые данные и нажмите «Сохранить»."

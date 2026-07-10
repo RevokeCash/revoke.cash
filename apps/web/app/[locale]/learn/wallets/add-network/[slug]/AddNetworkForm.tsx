@@ -19,11 +19,17 @@ const AddNetworkForm = ({ chainId }: Props) => {
       <div property="text">
         <p>{t('learn.add_network.step_2.paragraph_1', { chainName })}</p>
         <div className="flex flex-col gap-1 my-4">
-          <FormElement label="Network name" content={chainName} />
-          <FormElement label="New RPC URL" content={getChainFreeRpcUrl(chainId)} />
-          <FormElement label="Chain ID" content={String(chainId)} />
-          <FormElement label="Currency symbol" content={getChainNativeToken(chainId)!} />
-          <FormElement label="Block explorer URL (Optional)" content={getChainExplorerUrl(chainId)} />
+          <FormElement label={t('learn.add_network.step_2.form.network_name')} content={chainName} />
+          <FormElement label={t('learn.add_network.step_2.form.new_rpc_url')} content={getChainFreeRpcUrl(chainId)} />
+          <FormElement label={t('learn.add_network.step_2.form.chain_id')} content={String(chainId)} />
+          <FormElement
+            label={t('learn.add_network.step_2.form.currency_symbol')}
+            content={getChainNativeToken(chainId)!}
+          />
+          <FormElement
+            label={t('learn.add_network.step_2.form.block_explorer_url')}
+            content={getChainExplorerUrl(chainId)}
+          />
         </div>
         <p>{t('learn.add_network.step_2.paragraph_2')}</p>
         <AddNetworkButton

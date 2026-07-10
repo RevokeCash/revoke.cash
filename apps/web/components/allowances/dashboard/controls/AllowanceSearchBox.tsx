@@ -12,10 +12,9 @@ import { type ChangeEventHandler, useEffect, useState } from 'react';
 
 interface Props {
   onSearchValuesChange: (values: string[]) => void;
-  id?: string;
 }
 
-const AllowanceSearchBox = ({ onSearchValuesChange, id = 'spender-search' }: Props) => {
+const AllowanceSearchBox = ({ onSearchValuesChange }: Props) => {
   const searchParams = useSearchParams()!;
   const t = useTranslations();
   const [inputValue, setInputValue] = useState<string>('');
@@ -59,7 +58,6 @@ const AllowanceSearchBox = ({ onSearchValuesChange, id = 'spender-search' }: Pro
 
   return (
     <SearchBox
-      id={id}
       onSubmit={(event) => event.preventDefault()}
       onChange={handleChange}
       value={inputValue}

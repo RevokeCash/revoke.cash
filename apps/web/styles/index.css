@@ -46,12 +46,8 @@
   }
 
   a {
-    color: blue;
+    color: inherit;
     text-decoration: none;
-  }
-
-  a:visited {
-    color: purple;
   }
 
   button:not(:disabled),
@@ -70,6 +66,14 @@
 
 #nprogress .bar {
   @apply bg-brand dark:bg-brand;
+}
+
+.Toastify__toast--error {
+  @apply border-red-500;
+}
+
+.Toastify__toast--success {
+  @apply border-green-500;
 }
 
 .animate-spin-fast {
@@ -152,5 +156,38 @@
   }
   to {
     opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The toast progress bar is excluded because react-toastify implements its autoClose timer
+     as that bar's animation (inline animation-duration + onAnimationEnd), so shortening it
+     would dismiss toasts after milliseconds; we hide the bar's shrink motion below instead */
+  *:not(.Toastify__progress-bar),
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .Toastify__progress-bar {
+    opacity: 0 !important;
+  }
+
+  /* Keep loading spinners animating; a frozen spinner reads as a hung app */
+  .animate-spin,
+  .animate-spin-fast {
+    animation-duration: 1.5s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  /* These scroll-driven fades indicate scroll position rather than playing motion,
+     and freezing them at their initial state would hide the nav tab overflow fades */
+  .nav-tabs-fade {
+    animation-duration: auto !important;
   }
 }

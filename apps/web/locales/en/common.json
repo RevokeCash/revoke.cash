@@ -85,7 +85,9 @@
       "title": "This page does not exist."
     },
     "messages": {
-      "chain_could_not_connect": "Could not connect to {chainName}, please try again later."
+      "chain_could_not_connect": "Could not connect to {chainName}, please try again later.",
+      "connect_wallet_to_supported_network": "Please connect your web3 wallet to a supported network",
+      "eip5792_batch_call_failed": "An error occurred related to EIP5792 batch calls"
     }
   },
   "footer": {
@@ -114,7 +116,23 @@
     "ultimate": "Ultimate"
   },
   "meta": {
+    "acknowledgements": {
+      "description": "Revoke.cash depends on several third-party tools and services. This page lists them.",
+      "title": "Acknowledgements"
+    },
     "description": "Take back control of your wallet and stay safe by revoking token approvals and permissions you granted on {chainName} and over 100 other networks.",
+    "disclaimer": {
+      "description": "Disclaimer for Revoke.cash",
+      "title": "Disclaimer"
+    },
+    "privacy_policy": {
+      "description": "Privacy Policy for Revoke.cash",
+      "title": "Privacy Policy"
+    },
+    "terms": {
+      "description": "Terms and Conditions for Revoke.cash",
+      "title": "Terms and Conditions"
+    },
     "title": "Revoke Your Token Approvals on Over 100 Networks"
   },
   "nav": {
@@ -146,6 +164,9 @@
     "select_all_that_apply": "Select all that apply",
     "select_correct_answer": "Select the correct answer",
     "wait_and_read": "Wait and Read"
+  },
+  "select": {
+    "no_options": "No options"
   },
   "toasts": {
     "clipboard_failed": "❌ Couldn't copy to clipboard",

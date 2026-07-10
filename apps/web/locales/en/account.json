@@ -58,13 +58,16 @@
       "shared": "The gas budget is shared by all wallets in the subscription.",
       "used": "{used} of {total} used this month"
     },
+    "metamask_not_connected": "MetaMask not connected",
     "metamask_required": "Auto-Revoking requires MetaMask. Please connect with MetaMask to use this feature.",
     "permissions": {
       "connect_to_manage": "Connect this wallet to manage its permissions.",
+      "decode_failed": "Failed to decode permission",
       "grant": "Grant",
       "grant_description": "Each address must individually grant auto-revoke permission via MetaMask.",
       "grant_failed": "Failed to grant auto-revoke permission.",
       "networks_enabled": "{enabled}/{total} networks enabled",
+      "no_active_permission_returned": "No active permission returned",
       "revoke_failed": "Failed to revoke auto-revoke permission.",
       "sync": "Sync from wallet",
       "sync_failed": "Failed to sync auto-revoke permissions from wallet.",
@@ -93,7 +96,7 @@
       "title": "Rules Source"
     },
     "setup": {
-      "banner": "Auto-Revoking is not protecting this wallet yet.",
+      "banner": "Auto-Revoking is not active for this wallet yet.",
       "banner_cta": "Set it up",
       "get_started": "Auto-Revoking is not active for this wallet yet. Toggle the networks you want protected below. Every wallet in the subscription needs to do this once, using MetaMask."
     },
@@ -124,6 +127,12 @@
       "covered": "{amount} covered",
       "covered_wallets": "Covered Wallets",
       "description": "Protect your wallet against phishing and social engineering drains with Fairside coverage.",
+      "errors": {
+        "authentication_failed": "Failed to authenticate",
+        "authentication_failed_fairside": "Failed to authenticate with Fairside",
+        "connect_wallet": "Please connect your wallet to authenticate",
+        "generate_message_failed": "Could not generate authentication message"
+      },
       "get_coverage": "Get Coverage",
       "manage": "Manage Coverage",
       "title": "Fairside Coverage",
@@ -163,6 +172,7 @@
     "payment_confirmed": "Payment confirmed! Your premium subscription is now active.",
     "payment_failed": "Subscription payment failed",
     "payment_network": "Payment network",
+    "payment_status_error": "Payment {status}",
     "payment_summary": "You will pay {amount} {token} for {days} days. Includes up to {maxAddresses} {maxAddresses, plural, =1 {wallet} other {wallets}}.",
     "plan": "Plan",
     "plan_description": "${price}/year",
