@@ -11,7 +11,7 @@ import { updateTableFilters } from 'lib/utils/table';
 import { useTranslations } from 'next-intl';
 import {
   type ChangeEventHandler,
-  forwardRef,
+  type Ref,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -24,6 +24,7 @@ import HistoryChainMultiSelect from './HistoryChainMultiSelect';
 interface Props {
   table: Table<Enriched<ApprovalTokenEvent>>;
   isPremium?: boolean;
+  ref?: Ref<HistorySearchBoxRef>;
 }
 
 export interface HistorySearchBoxRef {
@@ -70,7 +71,7 @@ const parseSearchTerms = (searchTerm: string): CategorisedTerms => {
     );
 };
 
-const HistorySearchBox = forwardRef<HistorySearchBoxRef, Props>(({ table, isPremium = false }, ref) => {
+const HistorySearchBox = ({ table, isPremium = false, ref }: Props) => {
   const t = useTranslations();
   const [inputValue, setInputValue] = useState<string>('');
   const [searchValue, { flushWith }] = useDebouncedValue(inputValue, 200);
@@ -161,8 +162,6 @@ const HistorySearchBox = forwardRef<HistorySearchBoxRef, Props>(({ table, isPrem
       ) : null}
     </div>
   );
-});
-
-HistorySearchBox.displayName = 'HistorySearchBox';
+};
 
 export default HistorySearchBox;

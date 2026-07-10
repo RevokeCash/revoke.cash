@@ -3,12 +3,11 @@
 import type { Nullable } from '@revoke.cash/core/types';
 import { type ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import nProgress from 'nprogress';
-import { type ComponentProps, type ForwardedRef, forwardRef } from 'react';
-import type { UrlObject } from 'url';
+import type { ComponentProps } from 'react';
 import { Link, useRouter } from './navigation';
 
 const getHrefRetainingCurrentSearchParams = (
-  href: string | UrlObject,
+  href: ComponentProps<typeof Link>['href'],
   currentSearchParams?: Nullable<ReadonlyURLSearchParams | URLSearchParams>,
   retainSearchParams?: boolean | string[],
 ) => {
@@ -29,13 +28,11 @@ const getHrefRetainingCurrentSearchParams = (
 
 type CsrLinkProps = ComponentProps<typeof Link> & { retainSearchParams?: boolean | string[] };
 
-export const CsrLink = forwardRef(
-  ({ retainSearchParams, ...props }: CsrLinkProps, ref: ForwardedRef<HTMLAnchorElement>) => {
-    const searchParams = useSearchParams();
-    const resolvedHref = getHrefRetainingCurrentSearchParams(props.href, searchParams, retainSearchParams);
-    return <Link {...props} href={resolvedHref} ref={ref} />;
-  },
-);
+export const CsrLink = ({ retainSearchParams, ...props }: CsrLinkProps) => {
+  const searchParams = useSearchParams();
+  const resolvedHref = getHrefRetainingCurrentSearchParams(props.href, searchParams, retainSearchParams);
+  return <Link {...props} href={resolvedHref} />;
+};
 
 export function useCsrRouter() {
   const router = useRouter();

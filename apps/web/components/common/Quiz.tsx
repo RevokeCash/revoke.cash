@@ -166,7 +166,7 @@ const QuizOption = ({ option, isSelected, isCorrect, showExplanation, onSelect }
   );
 
   return (
-    <Button style="none" onClick={onSelect} className={classes}>
+    <Button style="none" size="none" onClick={onSelect} className={classes}>
       <QuizCheckmark isCorrect={isCorrect} isSelected={isSelected} showExplanation={showExplanation} />
       <span
         className={twMerge(
@@ -187,7 +187,7 @@ interface QuizCheckmarkProps {
 
 const QuizCheckmark = ({ isCorrect, isSelected, showExplanation }: QuizCheckmarkProps) => {
   const classes = twMerge(
-    'w-5 h-5 border rounded flex items-center justify-center transition-colors shrink-0',
+    'w-5 h-5 border rounded-sm flex items-center justify-center transition-colors shrink-0',
     showExplanation && isCorrect && 'border-green-500 bg-green-500',
     showExplanation && !isCorrect && isSelected && 'border-red-500 bg-red-500',
     showExplanation && !isCorrect && !isSelected && 'border-zinc-300 dark:border-zinc-700',

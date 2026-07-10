@@ -92,7 +92,7 @@ const PremiumChainStatusSection = ({ chainStatuses }: Props) => {
         {failedChains.map((chain) => (
           <div
             key={chain.chainId}
-            className="flex items-center gap-2 min-w-0 text-sm rounded px-3 py-2 bg-red-100 dark:bg-red-900/25"
+            className="flex items-center gap-2 min-w-0 text-sm rounded-sm px-3 py-2 bg-red-100 dark:bg-red-900/25"
           >
             <ChainDisplay chainId={chain.chainId} logoSize={18} className="w-42" />
             {chain.isRefreshing ? <Spinner className="w-3.5 h-3.5 shrink-0" /> : null}
@@ -102,7 +102,7 @@ const PremiumChainStatusSection = ({ chainStatuses }: Props) => {
         {loadingChains.map((chain) => (
           <div
             key={chain.chainId}
-            className="flex items-center gap-2 min-w-0 text-sm rounded px-3 py-2 bg-zinc-100/80 dark:bg-zinc-800/50"
+            className="flex items-center gap-2 min-w-0 text-sm rounded-sm px-3 py-2 bg-zinc-100/80 dark:bg-zinc-800/50"
           >
             <ChainDisplay chainId={chain.chainId} logoSize={18} className="w-42" />
             <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-300">

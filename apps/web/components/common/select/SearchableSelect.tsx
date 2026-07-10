@@ -215,7 +215,7 @@ const SearchableSelect = <O extends SelectOption, I extends boolean = false>(pro
                     displayValue={() => ''}
                     onChange={(event) => setQuery(event.target.value)}
                     onKeyDown={(event) => toggleActiveOptionOnSpace(event, activeOption as O | null)}
-                    className="w-full bg-transparent outline-none"
+                    className="w-full bg-transparent outline-hidden"
                   />
                   <MagnifyingGlassIcon className="w-5 h-5 shrink-0 text-black dark:text-white" />
                 </div>

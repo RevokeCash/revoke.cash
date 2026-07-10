@@ -11,7 +11,7 @@ interface Props {
 const AuthSessionContext = createContext<AuthSession | null>(null);
 
 export const AuthSessionProvider = ({ children, initialSession }: Props) => {
-  return <AuthSessionContext.Provider value={initialSession ?? null}>{children}</AuthSessionContext.Provider>;
+  return <AuthSessionContext value={initialSession ?? null}>{children}</AuthSessionContext>;
 };
 
 export const useInitialAuthSession = () => {

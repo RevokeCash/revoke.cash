@@ -2,7 +2,7 @@
 
 import { Link } from 'lib/i18n/navigation';
 import analytics from 'lib/utils/analytics';
-import { type AnchorHTMLAttributes, type ForwardedRef, forwardRef, type ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ReactNode, Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -14,12 +14,10 @@ interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   html?: boolean;
   underline?: 'always' | 'hover' | 'none';
   unstyled?: boolean;
+  ref?: Ref<HTMLAnchorElement>;
 }
 
-const Href = (
-  { href, children, external, className, router, underline, html, unstyled, ...props }: Props,
-  ref: ForwardedRef<HTMLAnchorElement>,
-) => {
+const Href = ({ href, children, external, className, router, underline, html, unstyled, ref, ...props }: Props) => {
   const styleMapping = {
     html: 'text-blue-700 visited:text-fuchsia-800 dark:text-blue-400 dark:visited:text-fuchsia-600',
     inherit: 'text-current visited:text-current',
@@ -64,4 +62,4 @@ const Href = (
   );
 };
 
-export default forwardRef(Href);
+export default Href;

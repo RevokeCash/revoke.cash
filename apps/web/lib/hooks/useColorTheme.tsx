@@ -39,7 +39,7 @@ export const ColorThemeProvider = ({ children, storageKey = 'theme' }: Props) =>
     }
   }, [darkMode]);
 
-  return <ColorThemeContext.Provider value={{ darkMode, theme, setTheme }}>{children}</ColorThemeContext.Provider>;
+  return <ColorThemeContext value={{ darkMode, theme, setTheme }}>{children}</ColorThemeContext>;
 };
 
 export const useColorTheme = () => {

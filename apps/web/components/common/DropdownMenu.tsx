@@ -54,7 +54,7 @@ const DropdownMenu = ({ menuButton, children, style, align, buttonClassName, ite
 export const DropdownMenuItem = (props: Omit<ButtonProps, 'style' | 'size'>) => {
   return (
     <MenuItem>
-      {({ active }) => (
+      {({ focus }) => (
         <Button
           style="secondary"
           size="menu"
@@ -62,7 +62,7 @@ export const DropdownMenuItem = (props: Omit<ButtonProps, 'style' | 'size'>) => 
           className={twMerge(
             props.className,
             'w-full border-none',
-            active
+            focus
               ? 'bg-zinc-200 dark:bg-zinc-800'
               : 'bg-transparent hover:bg-transparent disabled:bg-zinc-200 dark:disabled:bg-zinc-800',
           )}

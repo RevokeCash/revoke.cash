@@ -1,6 +1,6 @@
 'use client';
 
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { AUTO_REVOKE_SUPPORTED_CHAINS } from '@revoke.cash/core/auto-revoke/config';
 import type { AutoRevokePermission } from '@revoke.cash/core/auto-revoke/permissions';
@@ -82,18 +82,18 @@ const AutoRevokePermissionRow = ({ address, connectedAddress, permissions }: Pro
     <Disclosure as="div" className="py-2">
       {({ open }) => (
         <>
-          <Disclosure.Button className="flex items-center justify-between gap-2 w-full cursor-pointer">
+          <DisclosureButton className="flex items-center justify-between gap-2 w-full cursor-pointer">
             <AutoRevokePermissionSummary address={address} grantedCount={grantedCount} totalCount={totalCount} />
             <ChevronDownIcon
               className={twMerge('h-4 w-4 shrink-0 text-zinc-400 transition-transform', open && 'rotate-180')}
             />
-          </Disclosure.Button>
-          <Disclosure.Panel className="mt-1">
+          </DisclosureButton>
+          <DisclosurePanel className="mt-1">
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">
               {t('account.auto_revoke.permissions.connect_to_manage')}
             </p>
             {chainToggles}
-          </Disclosure.Panel>
+          </DisclosurePanel>
         </>
       )}
     </Disclosure>

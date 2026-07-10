@@ -6,14 +6,14 @@ import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { useTranslations } from 'next-intl';
 import { useCallback, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { useAccount } from 'wagmi';
+import { useConnection } from 'wagmi';
 
 const SearchBar = () => {
   const t = useTranslations();
   const router = useCsrRouter();
   const [value, setValue] = useState<string>('');
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const { address } = useAccount();
+  const { address } = useConnection();
   const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const onFocus = useCallback(() => {

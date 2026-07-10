@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { CHROME_EXTENSION_URL } from '@revoke.cash/core/constants';
 import Button from 'components/common/Button';
@@ -52,9 +52,9 @@ const MobileMenu = () => {
           <Bars3Icon className="h-8 w-8" />
         </Button>
       )}
-      <Transition.Root show={open} as={Fragment}>
+      <Transition show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" initialFocus={focusRef} onClose={setOpen}>
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -63,7 +63,7 @@ const MobileMenu = () => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <Dialog.Panel
+            <DialogPanel
               className="fixed inset-x-0 bottom-0 z-10 overflow-y-auto bg-white dark:bg-black"
               style={{ top: headerBottom }}
             >
@@ -77,10 +77,10 @@ const MobileMenu = () => {
                 <NavLink to="/blog" text={t('common.nav.blog')} />
                 <NavLink to="/merchandise" text={t('common.nav.merchandise')} />
               </div>
-            </Dialog.Panel>
-          </Transition.Child>
+            </DialogPanel>
+          </TransitionChild>
         </Dialog>
-      </Transition.Root>
+      </Transition>
     </div>
   );
 };

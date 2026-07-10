@@ -43,7 +43,7 @@ const CollapsibleCard = ({
         className={twMerge(
           'w-full flex items-center justify-between gap-3 px-4 py-3 transition-colors',
           isExpanded ? 'rounded-t-[0.425rem]' : 'rounded-[0.425rem]',
-          'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-black dark:focus-visible:ring-white',
+          'focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-black dark:focus-visible:ring-white',
           canExpand && 'cursor-pointer',
           headerClassName,
         )}

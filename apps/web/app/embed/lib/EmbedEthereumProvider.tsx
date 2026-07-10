@@ -4,7 +4,7 @@ import { createViemPublicClientForChain, getViemChainConfig, ORDERED_CHAINS } fr
 import { memo, type ReactNode, useEffect, useMemo, useState } from 'react';
 import type { Chain } from 'viem';
 import { createConfig, useConnect, useConnection, useConnectors, WagmiProvider } from 'wagmi';
-import { AutoConnectStatusProvider, useEmbedConfig } from './context';
+import { AutoConnectStatusContext, useEmbedConfig } from './context';
 import type { AutoConnectStatus } from './types';
 
 interface Props {
@@ -77,5 +77,5 @@ const AutoConnect = memo(({ children }: Props) => {
     autoConnect();
   }, [connectors, connector]);
 
-  return <AutoConnectStatusProvider value={status}>{children}</AutoConnectStatusProvider>;
+  return <AutoConnectStatusContext value={status}>{children}</AutoConnectStatusContext>;
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { type ForwardedRef, forwardRef } from 'react';
+import type { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Spinner from './Spinner';
 
@@ -11,14 +11,12 @@ interface Props {
   disabled?: boolean;
   label?: string;
   size?: 'sm' | 'md';
+  ref?: Ref<HTMLButtonElement>;
 }
 
-const Toggle = (
-  { checked, onChange, pending = false, disabled = false, label, size = 'md' }: Props,
-  ref: ForwardedRef<HTMLButtonElement>,
-) => {
+const Toggle = ({ checked, onChange, pending = false, disabled = false, label, size = 'md', ref }: Props) => {
   const trackClasses = twMerge(
-    'relative inline-flex items-center shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none',
+    'relative inline-flex items-center shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-hidden',
     size === 'sm' ? 'h-5 w-9' : 'h-6 w-11',
     checked ? 'bg-zinc-900 dark:bg-white' : 'bg-zinc-300 dark:bg-zinc-500',
     disabled && 'cursor-not-allowed opacity-50',
@@ -48,4 +46,4 @@ const Toggle = (
   );
 };
 
-export default forwardRef(Toggle);
+export default Toggle;

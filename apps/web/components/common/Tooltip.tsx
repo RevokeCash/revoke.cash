@@ -18,16 +18,7 @@ import {
   useRole,
   useTransitionStyles,
 } from '@floating-ui/react';
-import React, {
-  type ComponentProps,
-  type ForwardedRef,
-  forwardRef,
-  type HTMLProps,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { type ComponentProps, type HTMLProps, useContext, useMemo, useRef, useState } from 'react';
 
 export interface TooltipOptions {
   placement?: Placement;
@@ -117,15 +108,19 @@ const useTooltipContext = () => {
 
 const Root = ({ children, ...options }: { children: React.ReactNode } & TooltipOptions) => {
   const tooltip = useTooltip(options);
-  return <TooltipContext.Provider value={tooltip}>{children}</TooltipContext.Provider>;
+  return <TooltipContext value={tooltip}>{children}</TooltipContext>;
 };
 
-const Trigger = (
-  { children, asChild = false, ...props }: HTMLProps<HTMLElement> & { asChild?: boolean },
-  propRef: ForwardedRef<HTMLElement>,
-) => {
+const Trigger = ({
+  children,
+  asChild = false,
+  ref: propRef,
+  ...props
+}: HTMLProps<HTMLElement> & { asChild?: boolean }) => {
   const context = useTooltipContext();
-  const childrenRef = (children as any).props.ref;
+  // In React 19 the child's own `ref` is part of its props, so we separate it out and merge it,
+  // rather than letting it override the merged ref when spreading the child's props below
+  const { ref: childrenRef, ...childrenProps } = (children as any)?.props ?? {};
   const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
   // `asChild` allows the user to pass any element as the anchor
@@ -135,7 +130,7 @@ const Trigger = (
       context.getReferenceProps({
         ref,
         ...props,
-        ...(children as any).props,
+        ...childrenProps,
         'data-state': context.open ? 'open' : 'closed',
       }),
     );
@@ -148,10 +143,7 @@ const Trigger = (
   );
 };
 
-const Content = (
-  { style, children, ...props }: React.HTMLProps<HTMLDivElement>,
-  propRef: React.Ref<HTMLDivElement>,
-) => {
+const Content = ({ style, children, ref: propRef, ...props }: React.HTMLProps<HTMLDivElement>) => {
   const context = useTooltipContext();
   const ref = useMergeRefs([context.refs.setFloating, propRef]);
 
@@ -198,8 +190,8 @@ const Arrow = (props: Partial<ComponentProps<typeof FloatingArrow>>) => {
 
 export default {
   Root,
-  Trigger: forwardRef(Trigger),
-  Content: forwardRef(Content),
+  Trigger,
+  Content,
   Arrow,
 };
 

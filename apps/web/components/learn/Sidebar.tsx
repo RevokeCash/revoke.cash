@@ -1,6 +1,6 @@
 'use client';
 
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import type { ISidebarEntry } from 'lib/types';
 import { useTranslations } from 'next-intl';
@@ -33,16 +33,16 @@ const Sidebar = ({ entries }: Props) => {
           {({ open }) => {
             return (
               <>
-                <Disclosure.Button className="flex gap-2 w-full items-center justify-between text-left lg:hidden">
+                <DisclosureButton className="flex gap-2 w-full items-center justify-between text-left lg:hidden">
                   <div className={twMerge('font-bold', open && 'invisible')}>{t('learn.sidebar.mobile_header')}</div>
                   <ChevronDownIcon
                     className={twMerge(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform shrink-0')}
                   />
-                </Disclosure.Button>
-                <Disclosure.Panel className="lg:hidden">{sidebarContent}</Disclosure.Panel>
-                <Disclosure.Panel className="hidden lg:flex" static>
+                </DisclosureButton>
+                <DisclosurePanel className="lg:hidden">{sidebarContent}</DisclosurePanel>
+                <DisclosurePanel className="hidden lg:flex" static>
                   {sidebarContent}
-                </Disclosure.Panel>
+                </DisclosurePanel>
               </>
             );
           }}

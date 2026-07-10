@@ -38,7 +38,7 @@ export const TimeMachineProvider = ({ children }: { children: ReactNode }) => {
   }, [isAllowancesTab]);
 
   return (
-    <TimeMachineContext.Provider
+    <TimeMachineContext
       value={{
         timestamp,
         setTimestamp,
@@ -48,7 +48,7 @@ export const TimeMachineProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </TimeMachineContext.Provider>
+    </TimeMachineContext>
   );
 };
 

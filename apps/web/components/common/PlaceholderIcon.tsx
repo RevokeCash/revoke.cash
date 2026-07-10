@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, type ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -8,12 +8,10 @@ interface Props {
   border?: boolean;
   square?: boolean;
   children?: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 }
 
-const PlaceholderIcon = (
-  { size, className, color, border, square, children }: Props,
-  ref: ForwardedRef<HTMLDivElement>,
-) => {
+const PlaceholderIcon = ({ size, className, color, border, square, children, ref }: Props) => {
   const classes = twMerge(
     'aspect-square rounded-full',
     color ?? 'bg-zinc-300 dark:bg-zinc-600',
@@ -29,4 +27,4 @@ const PlaceholderIcon = (
   );
 };
 
-export default forwardRef(PlaceholderIcon);
+export default PlaceholderIcon;

@@ -33,9 +33,7 @@ export const AddressIdentityContextProvider = ({
   const domainName = initialDomainName ?? resolvedDomainName ?? undefined;
 
   return (
-    <AddressIdentityContext.Provider value={{ address, domainName, isPremium, isUltimate }}>
-      {children}
-    </AddressIdentityContext.Provider>
+    <AddressIdentityContext value={{ address, domainName, isPremium, isUltimate }}>{children}</AddressIdentityContext>
   );
 };
 

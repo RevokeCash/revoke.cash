@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { Fragment, type ReactNode, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -24,7 +24,7 @@ const Modal = ({ open, setOpen, onlyExplicitClose, children, className }: Props)
   );
 
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
@@ -32,7 +32,7 @@ const Modal = ({ open, setOpen, onlyExplicitClose, children, className }: Props)
         onClose={onlyExplicitClose ? () => {} : setOpen}
         unmount
       >
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -42,11 +42,11 @@ const Modal = ({ open, setOpen, onlyExplicitClose, children, className }: Props)
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-all" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
           <div className="flex min-h-full items-end justify-center py-8 sm:py-32 px-4 text-center sm:items-start">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -55,7 +55,7 @@ const Modal = ({ open, setOpen, onlyExplicitClose, children, className }: Props)
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className={panelClasses}>
+              <DialogPanel className={panelClasses}>
                 <div className="absolute top-0 right-0 pt-4 pr-4">
                   <FocusTrap ref={focusRef} />
                   <Button
@@ -69,12 +69,12 @@ const Modal = ({ open, setOpen, onlyExplicitClose, children, className }: Props)
                   </Button>
                 </div>
                 <div>{children}</div>
-              </Dialog.Panel>
-            </Transition.Child>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 };
 

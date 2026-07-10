@@ -4,7 +4,7 @@ import RichText from 'components/common/RichText';
 import WithHoverTooltip from 'components/common/WithHoverTooltip';
 import { useTranslations } from 'next-intl';
 import type { ReactElement } from 'react';
-import { useAccount } from 'wagmi';
+import { useConnection } from 'wagmi';
 import SwitchChainButton from './SwitchChainButton';
 
 interface Props {
@@ -27,7 +27,7 @@ const ControlsWrapper = ({
   skipSwitchChain,
 }: Props) => {
   const t = useTranslations();
-  const { address: account, chain } = useAccount();
+  const { address: account, chain } = useConnection();
 
   const chainName = getChainName(chainId);
 

@@ -4,11 +4,11 @@ import { UserCircleIcon } from '@heroicons/react/24/outline';
 import NotFoundLink from 'components/common/NotFoundLink';
 import { useMounted } from 'lib/hooks/useMounted';
 import { useTranslations } from 'next-intl';
-import { useAccount } from 'wagmi';
+import { useConnection } from 'wagmi';
 
 const NotFoundLinkMyApprovals = () => {
   const t = useTranslations();
-  const { address: account } = useAccount();
+  const { address: account } = useConnection();
   const isMounted = useMounted();
 
   if (!isMounted || !account) return null;

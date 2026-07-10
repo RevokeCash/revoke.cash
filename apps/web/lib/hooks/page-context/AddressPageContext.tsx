@@ -73,7 +73,7 @@ export const AddressPageContextProvider = ({
   const addressData = useAddressData(address, selectedChainId);
 
   return (
-    <AddressPageContext.Provider
+    <AddressPageContext
       value={{
         selectedChainId,
         selectChain,
@@ -81,7 +81,7 @@ export const AddressPageContextProvider = ({
       }}
     >
       {children}
-    </AddressPageContext.Provider>
+    </AddressPageContext>
   );
 };
 

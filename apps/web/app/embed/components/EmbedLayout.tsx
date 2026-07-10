@@ -4,7 +4,7 @@ import ToastifyConfig from 'components/common/ToastifyConfig';
 import { QueryProvider } from 'lib/hooks/QueryProvider';
 import { ColorThemeProvider } from 'lib/hooks/useColorTheme';
 import type { ReactNode } from 'react';
-import { EmbedConfigProvider } from '../lib/context';
+import { EmbedConfigContext } from '../lib/context';
 import { EmbedEthereumProvider } from '../lib/EmbedEthereumProvider';
 import type { EmbedConfig } from '../lib/types';
 import EmbedHeader from './EmbedHeader';
@@ -16,7 +16,7 @@ interface Props {
 
 const EmbedLayout = ({ children, config }: Props) => {
   return (
-    <EmbedConfigProvider value={config}>
+    <EmbedConfigContext value={config}>
       <QueryProvider>
         <EmbedEthereumProvider>
           <ColorThemeProvider storageKey="embed-theme">
@@ -28,7 +28,7 @@ const EmbedLayout = ({ children, config }: Props) => {
           </ColorThemeProvider>
         </EmbedEthereumProvider>
       </QueryProvider>
-    </EmbedConfigProvider>
+    </EmbedConfigContext>
   );
 };
 

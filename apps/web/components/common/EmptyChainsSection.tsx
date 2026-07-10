@@ -45,7 +45,7 @@ const EmptyChainsSection = ({ emptyChains, description, allEmptyMessage }: Props
         {emptyChains.map((chain) => (
           <div
             key={chain.chainId}
-            className="flex items-center gap-1.5 px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs text-zinc-600 dark:text-zinc-400"
+            className="flex items-center gap-1.5 px-2 py-1 rounded-sm bg-zinc-100 dark:bg-zinc-800 text-xs text-zinc-600 dark:text-zinc-400"
           >
             <ChainLogo chainId={chain.chainId} size={14} />
             <span>{getChainName(chain.chainId)}</span>

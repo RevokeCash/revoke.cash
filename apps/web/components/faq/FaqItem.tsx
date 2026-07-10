@@ -1,6 +1,6 @@
 'use client';
 
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon, HashtagIcon } from '@heroicons/react/24/outline';
 import Href from 'components/common/Href';
 import Prose from 'components/common/Prose';
@@ -35,34 +35,28 @@ const FaqItem = ({ question, slug, children, wrapper, heading = 'h2' }: Props) =
       {({ open }) => (
         <>
           <dt className="relative">
-            <Disclosure.Button className="flex gap-2 w-full items-center justify-between text-left">
+            <DisclosureButton className="flex gap-2 w-full items-center justify-between text-left">
               {React.createElement(heading, { className: 'text-lg not-prose', property: 'name' }, question)}
               <ChevronDownIcon
                 className={twMerge(open ? 'rotate-180' : 'rotate-0', 'h-6 w-6 transition-transform shrink-0')}
               />
-            </Disclosure.Button>
+            </DisclosureButton>
             <div className="absolute top-0 -right-8 h-full w-8 z-10">
               <Href href={`#${slug}`} underline="none" router className="flex h-full items-center">
                 {open ? (
                   <HashtagIcon className={twMerge('h-6 w-6 ml-2 shrink-0 hidden group-hover:flex')} />
                 ) : (
                   // We add this disclosure button to make the link also open the FAQ item (but only when it's closed)
-                  <Disclosure.Button>
+                  <DisclosureButton>
                     <HashtagIcon className={twMerge('h-6 w-6 ml-2 shrink-0 hidden group-hover:flex')} />
-                  </Disclosure.Button>
+                  </DisclosureButton>
                 )}
               </Href>
             </div>
           </dt>
-          <Disclosure.Panel
-            as="dd"
-            className="mt-2"
-            unmount={false}
-            property="acceptedAnswer"
-            {...rdfaTypeof('Answer')}
-          >
+          <DisclosurePanel as="dd" className="mt-2" unmount={false} property="acceptedAnswer" {...rdfaTypeof('Answer')}>
             <Prose>{React.createElement(wrapper ?? 'p', { property: 'text' }, children)}</Prose>
-          </Disclosure.Panel>
+          </DisclosurePanel>
           {/* Add this absolute positioned div to align the "group" position with the hash link */}
           <div className="absolute top-0 -right-8 h-full w-8" />
         </>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog } from '@headlessui/react';
+import { DialogTitle } from '@headlessui/react';
 import Button from 'components/common/Button';
 import Logo from 'components/common/Logo';
 import Modal from 'components/common/Modal';
@@ -8,7 +8,7 @@ import { useCsrRouter } from 'lib/i18n/csr-navigation';
 import { filterAndSortConnectors, getConnectorName, getWalletIcon } from 'lib/utils/wallet';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { type Connector, useAccount, useConnect } from 'wagmi';
+import { type Connector, useConnect, useConnection, useConnectors } from 'wagmi';
 
 interface Props {
   text?: string;
@@ -25,8 +25,9 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
   const t = useTranslations();
   const router = useCsrRouter();
 
-  const { address } = useAccount();
-  const { connectAsync, connectors } = useConnect();
+  const { address } = useConnection();
+  const { mutateAsync: connectAsync } = useConnect();
+  const connectors = useConnectors();
 
   const handleClick = () => {
     onClick?.();
@@ -69,9 +70,9 @@ const ConnectButton = ({ size, style, className, text, redirect, onClick, onConn
       <Modal open={open} setOpen={(open) => (open ? handleOpen() : handleClose())}>
         <div className="sm:flex sm:items-start">
           <div className="text-center sm:text-left w-full flex flex-col gap-2">
-            <Dialog.Title as="h2" className="text-2xl text-center">
+            <DialogTitle as="h2" className="text-2xl text-center">
               {t('common.connect_wallet.title')}
-            </Dialog.Title>
+            </DialogTitle>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center">
               {sortedConnectors.map((connector) => (

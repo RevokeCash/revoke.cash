@@ -43,8 +43,8 @@ const BlurredPageBackdrop = () => {
           {[0, 1, 2, 3, 4].map((row) => (
             <div key={row} className="flex items-center gap-8">
               <div className="h-6 w-6 rounded-full bg-zinc-700" />
-              <div className="h-4 w-40 rounded bg-zinc-800" />
-              <div className="h-4 w-64 rounded bg-zinc-800" />
+              <div className="h-4 w-40 rounded-sm bg-zinc-800" />
+              <div className="h-4 w-64 rounded-sm bg-zinc-800" />
               <div className="ml-auto h-8 w-28 rounded-lg border border-zinc-700" />
             </div>
           ))}

@@ -7,7 +7,7 @@ import { fixedPointMultiply } from './math';
 export function shortenAddress(address: string, characters?: number): string;
 export function shortenAddress(address: Nullable<string>, characters?: number): Nullable<string>;
 export function shortenAddress(address: Nullable<string>, characters: number = 6): Nullable<string> {
-  return address && `${address.substr(0, 2 + characters)}...${address.substr(address.length - characters, characters)}`;
+  return address && `${address.slice(0, 2 + characters)}...${address.slice(address.length - characters)}`;
 }
 
 export function shortenString(name: string, maxLength?: number): string;
@@ -15,7 +15,7 @@ export function shortenString(name: Nullable<string>, maxLength?: number): Nulla
 export function shortenString(name: Nullable<string>, maxLength: number = 16): Nullable<string> {
   if (!name) return name;
   if (name.length <= maxLength) return name;
-  return `${name.substr(0, maxLength - 3).trim()}...`;
+  return `${name.slice(0, maxLength - 3).trim()}...`;
 }
 
 export const formatFixedPointBigInt = (

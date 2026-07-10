@@ -3,13 +3,13 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 import { isNullish } from '@revoke.cash/core/utils';
 import { parseInputAddress } from '@revoke.cash/core/whois';
 import { useQuery } from '@tanstack/react-query';
-import type { ChangeEventHandler, FormEventHandler, HTMLAttributes } from 'react';
+import type { ChangeEventHandler, HTMLAttributes, SubmitEventHandler } from 'react';
 import Button from './Button';
 import SearchBox from './SearchBox';
 import Spinner from './Spinner';
 
 interface Props extends Omit<HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
-  onSubmit: FormEventHandler<HTMLFormElement>;
+  onSubmit: SubmitEventHandler<HTMLFormElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
   value: string;
   placeholder: string;
@@ -29,7 +29,7 @@ const AddressSearchBox = ({ onSubmit, onChange, value, placeholder, className, .
     staleTime: Number.POSITIVE_INFINITY,
   });
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
     // If the validation is still loading, then we await it so that the submit happens immediately after validation

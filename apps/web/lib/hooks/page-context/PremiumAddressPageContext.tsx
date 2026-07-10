@@ -59,7 +59,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
   }, [isLoading, oldestEventTimestamp, timeMachine.setMetadata]);
 
   return (
-    <PremiumAddressPageContext.Provider
+    <PremiumAddressPageContext
       value={{
         address,
         domainName: domainName ?? resolvedDomainName ?? undefined,
@@ -69,7 +69,7 @@ export const PremiumAddressPageContextProvider = ({ children, address, domainNam
       }}
     >
       {children}
-    </PremiumAddressPageContext.Provider>
+    </PremiumAddressPageContext>
   );
 };
 

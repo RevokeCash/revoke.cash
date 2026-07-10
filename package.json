@@ -33,7 +33,7 @@
     "db:drop": "yarn workspace @revoke.cash/core db:drop",
     "allow-scripts": "yarn workspaces foreach --all exec allow-scripts run",
     "allow-scripts:check": "yarn workspaces foreach --all exec allow-scripts check",
-    "postinstall": "husky install"
+    "postinstall": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",

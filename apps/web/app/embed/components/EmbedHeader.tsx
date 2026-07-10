@@ -3,11 +3,11 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAccount } from 'wagmi';
+import { useConnection } from 'wagmi';
 import { useEmbedConfig } from '../lib/context';
 
 const EmbedHeader = () => {
-  const { address } = useAccount();
+  const { address } = useConnection();
   const { routePrefix } = useEmbedConfig();
 
   return (

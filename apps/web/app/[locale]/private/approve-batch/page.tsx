@@ -5,12 +5,12 @@ import ContentPageLayout from 'app/layouts/ContentPageLayout';
 import Button from 'components/common/Button';
 import { useState } from 'react';
 import { isAddress } from 'viem';
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
+import { useConnection, usePublicClient, useWalletClient } from 'wagmi';
 import { prepareApprove } from '../approve/lib';
 
 const ApprovePage = () => {
   const { data: walletClient } = useWalletClient();
-  const { address: account } = useAccount();
+  const { address: account } = useConnection();
   const publicClient = usePublicClient()!;
   const [allowancesCsv, setAllowancesCsv] = useState<string>('');
 

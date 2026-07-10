@@ -13,9 +13,7 @@ export const usePremiumEntitlements = (address: Address | undefined, enabled: bo
   const query = useQuery({
     queryKey: getPremiumEntitlementsQueryKey(address),
     queryFn: async () => {
-      const res = await ky.get(`/api/premium/entitlements/${address}`).json<EntitlementResponse>();
-      console.log('res', res);
-      return res;
+      return await ky.get(`/api/premium/entitlements/${address}`).json<EntitlementResponse>();
     },
     enabled: enabled && !isNullish(address),
   });

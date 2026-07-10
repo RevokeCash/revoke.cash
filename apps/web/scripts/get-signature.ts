@@ -1,4 +1,4 @@
-import { getFunctionSelector } from 'viem';
+import { toFunctionSelector } from 'viem';
 
 const fragment = process.argv[2];
-console.log(getFunctionSelector(fragment));
+console.log(toFunctionSelector(fragment));

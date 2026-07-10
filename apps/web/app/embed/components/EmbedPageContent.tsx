@@ -1,13 +1,13 @@
 'use client';
 
 import { AddressPageContextProvider } from 'lib/hooks/page-context/AddressPageContext';
-import { useAccount, useChainId } from 'wagmi';
+import { useChainId, useConnection } from 'wagmi';
 import { useAutoConnectStatus } from '../lib/context';
 import EmbedDashboard from './EmbedDashboard';
 import EmbedLoadingScreen from './EmbedLoadingScreen';
 
 const EmbedPageContent = () => {
-  const { address } = useAccount();
+  const { address } = useConnection();
   const walletChainId = useChainId();
   const status = useAutoConnectStatus();
 

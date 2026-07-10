@@ -2,7 +2,7 @@
 
 import { CsrLink } from 'lib/i18n/csr-navigation';
 import { Link } from 'lib/i18n/navigation';
-import { type ForwardedRef, forwardRef, type MouseEventHandler } from 'react';
+import type { MouseEventHandler, Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Href from './Href';
 import Spinner from './Spinner';
@@ -14,7 +14,7 @@ export interface Props extends Record<string, any> {
   size: 'sm' | 'md' | 'lg' | 'none' | 'menu';
   onClick?: MouseEventHandler;
   href?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   external?: boolean;
   router?: boolean;
@@ -23,28 +23,27 @@ export interface Props extends Record<string, any> {
   align?: 'left' | 'center' | 'right';
   retainSearchParams?: boolean | string[];
   focusRing?: boolean;
+  ref?: Ref<any>;
 }
 
-const Button = (
-  {
-    disabled,
-    style,
-    size,
-    onClick,
-    href,
-    external,
-    router,
-    children,
-    className,
-    loading,
-    asDiv,
-    align,
-    retainSearchParams,
-    focusRing = true,
-    ...props
-  }: Props,
-  ref: ForwardedRef<any>,
-) => {
+const Button = ({
+  disabled,
+  style,
+  size,
+  onClick,
+  href,
+  external,
+  router,
+  children,
+  className,
+  loading,
+  asDiv,
+  align,
+  retainSearchParams,
+  focusRing = true,
+  ref,
+  ...props
+}: Props) => {
   const classMapping = {
     common:
       'flex items-center border border-zinc-300 dark:border-zinc-700 duration-150 cursor-pointer disabled:cursor-not-allowed leading-none font-medium shrink-0 whitespace-nowrap',
@@ -128,4 +127,4 @@ const Button = (
   );
 };
 
-export default forwardRef<HTMLElement, Props>(Button as any);
+export default Button;

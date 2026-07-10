@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog } from '@headlessui/react';
+import { DialogTitle } from '@headlessui/react';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import { isNullish } from '@revoke.cash/core/utils';
 import { SECOND } from '@revoke.cash/core/utils/time';
@@ -55,7 +55,7 @@ const TimeMachineModalWithButton = () => {
       <Modal open={open} setOpen={setOpen} className="sm:max-w-lg">
         <div className="flex flex-col gap-4">
           <div>
-            <Dialog.Title className="text-lg font-bold">{t('address.time_machine.label')}</Dialog.Title>
+            <DialogTitle className="text-lg font-bold">{t('address.time_machine.label')}</DialogTitle>
             <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{t('address.time_machine.description')}</p>
           </div>
           <DateTimeSlider value={localValue} onChange={setLocalValue} min={minSeconds} max={maxSeconds} />

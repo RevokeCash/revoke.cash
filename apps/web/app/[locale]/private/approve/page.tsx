@@ -10,12 +10,12 @@ import Select from 'components/common/select/Select';
 import { displayTransactionSubmittedToast } from 'components/common/TransactionSubmittedToast';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
+import { useConnection, usePublicClient, useWalletClient } from 'wagmi';
 import { prepareApprove } from './lib';
 
 const ApprovePage = () => {
   const { data: walletClient } = useWalletClient();
-  const { address: account } = useAccount();
+  const { address: account } = useConnection();
   const publicClient = usePublicClient()!;
   const [allowanceType, setAllowanceType] = useState<AllowanceType>(AllowanceType.ERC20);
   const [tokenAddress, setTokenAddress] = useState<string>('');
