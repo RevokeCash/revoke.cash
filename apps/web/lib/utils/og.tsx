@@ -25,7 +25,7 @@ export const generateOgImage = async ({ title, readingTime, author, background }
       <img tw="absolute" height={height} width={width} src={background} alt="Background" style={{ opacity: 0.9 }} />
       <div tw="flex flex-col justify-between h-full" style={{ padding: '64px 64px 64px 120px' }}>
         {/* biome-ignore lint/performance/noImgElement: this rule does not apply in OG image generation */}
-        <img height="32" src={wordmark} alt="Revoke" />
+        <img height={32} width={139} src={wordmark} alt="Revoke" />
         {title ? (
           <div
             style={{

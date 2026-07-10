@@ -17,8 +17,8 @@ COPY apps/web/package.json ./apps/web/
 COPY packages/backend/package.json ./packages/backend/
 COPY packages/core/package.json ./packages/core/
 
-# Write a minimal .yarnrc.yml for this build, locking down all scripts.
-RUN printf 'enableScripts: false\nnodeLinker: node-modules\nyarnPath: .yarn/releases/yarn-4.15.0.cjs\n' > .yarnrc.yml
+# Write a minimal .yarnrc.yml for this build, locking down all scripts
+RUN printf 'enableScripts: false\nnodeLinker: node-modules\n' > .yarnrc.yml
 
 RUN yarn workspaces focus @revoke.cash/auto-revoke-executor --production
 

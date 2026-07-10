@@ -23,3 +23,7 @@ apps/web/test
 # OS / editor
 .DS_Store
 *.swp
+
+# Yarn local state that must never reach the image (the cache alone is hundreds of MB)
+.yarn/cache
+.yarn/install-state.gz
