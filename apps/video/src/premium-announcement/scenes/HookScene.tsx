@@ -16,12 +16,12 @@ export const HookScene = () => {
   return (
     <AbsoluteFill className="items-center justify-center bg-black">
       <div className="flex max-w-[1400px] flex-col items-center gap-24 text-center">
-        <h1 className="font-heading text-9xl font-semibold tracking-tight text-white">
+        <h1 className="font-heading text-[112px] font-semibold leading-[1.05] tracking-tight text-white">
           <span className="block" style={riseIn(frame, fps, 0)}>
-            Your old token approvals
+            Token approvals
           </span>
           <span className="block text-brand" style={riseIn(frame, fps, 12)}>
-            never expire.
+            do not expire on their own.
           </span>
         </h1>
         <div className="flex items-center gap-20">

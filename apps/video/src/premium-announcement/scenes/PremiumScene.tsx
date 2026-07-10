@@ -5,11 +5,16 @@ import { MOCK_APPROVALS, MOCK_CHAIN_LOGOS } from '../../data/mock-data';
 import { popIn, riseIn } from '../../motion';
 
 // Beat 1: the multichain dashboard assembles. Beat 2: the time machine scrubs it back in time,
-// and the exploit marker disappears — the approval was still "safe" back then.
+// and the exploit marker disappears — the approval was still "safe" back then. The headline hands
+// off to a dedicated Time Machine title as the panel slides in, so the feature gets its own beat.
 export const PremiumScene = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  const historyBeatProgress = interpolate(frame, [118, 138], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
   const scrubProgress = interpolate(frame, [150, 240], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const scrubMonthsBack = scrubProgress * 36;
   const exploitedHighlightOpacity =
@@ -23,15 +28,29 @@ export const PremiumScene = () => {
 
   return (
     <AbsoluteFill className="items-center justify-center gap-16 bg-black">
-      <div className="flex flex-col items-center gap-6">
-        <h1 className="font-heading text-8xl font-semibold tracking-tight text-white" style={riseIn(frame, fps, 0)}>
-          All your chains. <span className="text-brand">One dashboard.</span>
-        </h1>
-        <p className="text-4xl text-zinc-400" style={riseIn(frame, fps, 10)}>
-          Premium — $99/yr · 10 wallets · 100+ networks
-        </p>
+      <div className="relative h-[150px] w-[1500px] text-center">
+        <div className="absolute inset-0 flex flex-col items-center gap-6" style={{ opacity: 1 - historyBeatProgress }}>
+          <h1 className="font-heading text-8xl font-semibold tracking-tight text-white" style={riseIn(frame, fps, 0)}>
+            All your chains. <span className="text-brand">One dashboard.</span>
+          </h1>
+          <p className="text-4xl text-zinc-400" style={riseIn(frame, fps, 10)}>
+            Premium — $99/yr · 10 wallets · 100+ networks
+          </p>
+        </div>
+        <div
+          className="absolute inset-0 flex flex-col items-center gap-6"
+          style={{ opacity: historyBeatProgress, transform: `translateY(${(1 - historyBeatProgress) * 28}px)` }}
+        >
+          <h1 className="whitespace-nowrap font-heading text-8xl font-semibold tracking-tight text-white">
+            Travel back through <span className="text-brand">approval history.</span>
+          </h1>
+          <p className="text-4xl text-zinc-400">Time Machine · Included with Premium</p>
+        </div>
       </div>
-      <div className="flex items-center gap-8">
+      <div
+        className="flex items-center gap-8"
+        style={{ opacity: 1 - historyBeatProgress, transform: `translateY(${historyBeatProgress * 55}px)` }}
+      >
         {MOCK_CHAIN_LOGOS.map((logo, index) => (
           <Img
             key={logo}

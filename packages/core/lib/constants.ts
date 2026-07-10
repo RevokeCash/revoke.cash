@@ -18,12 +18,12 @@ export const DUMMY_ADDRESS_2 = '0x0000000000000000000000000000000000000002' as c
 export const MULTICALL_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11' as const;
 
 export const DONATION_ADDRESS = '0xfcBf17200C64E860F6639aa12B525015d115F863' as const; // revoke.eth
-export const FEES_ADDRESS = '0xEe826eDbf34f4f33DAd062405d7FbFDFdf405205' as const; // fees.revoke.cash
-export const SUBSCRIPTIONS_ADDRESS = '0x92bA92FD6A20EAf141F7AF1483e196Bbc0513EaF' as const; // subscriptions.revoke.cash
-export const AUTO_REVOKE_DELEGATION_ADDRESS = '0xD08e8BB3D754641BBF6dd2E797b1B52703f00486' as const; // delegations.revoke.cash
-export const AUTO_REVOKE_COLD_ADDRESS = '0x6caD02D9D75660FbF237394ec8463c616E7e26E7' as const; // cold.delegations.revoke.cash
-export const AUTO_REVOKE_EXECUTOR_HOT_ADDRESS = '0x5862aB2F23C4241D64B99d509d50B2483a23A793' as const; // hot_1.delegations.revoke.cash
-export const AUTO_REVOKE_URGENT_EXECUTOR_HOT_ADDRESS = '0xe27418d01359a632fEDE71710D3091bEA98a4958' as const; // hot_2.delegations.revoke.cash
+export const FEES_ADDRESS = '0xEe826eDbf34f4f33DAd062405d7FbFDFdf405205' as const; // fees.revoke.eth
+export const SUBSCRIPTIONS_ADDRESS = '0x92bA92FD6A20EAf141F7AF1483e196Bbc0513EaF' as const; // subscriptions.revoke.eth
+export const AUTO_REVOKE_DELEGATION_ADDRESS = '0xD08e8BB3D754641BBF6dd2E797b1B52703f00486' as const; // delegations.revoke.eth
+export const AUTO_REVOKE_COLD_ADDRESS = '0x6caD02D9D75660FbF237394ec8463c616E7e26E7' as const; // cold.delegations.revoke.eth
+export const AUTO_REVOKE_EXECUTOR_HOT_ADDRESS = '0x5862aB2F23C4241D64B99d509d50B2483a23A793' as const; // hot_1.delegations.revoke.eth
+export const AUTO_REVOKE_URGENT_EXECUTOR_HOT_ADDRESS = '0xe27418d01359a632fEDE71710D3091bEA98a4958' as const; // hot_2.delegations.revoke.eth
 
 export const UNSTOPPABLE_DOMAINS_ETH_ADDRESS = '0x578853aa776Eef10CeE6c4dd2B5862bdcE767A8B' as const;
 export const UNSTOPPABLE_DOMAINS_POLYGON_ADDRESS = '0x91EDd8708062bd4233f4Dd0FCE15A7cb4d500091' as const;

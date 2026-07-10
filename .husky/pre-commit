@@ -1,2 +1,2 @@
-yarn lint --error-on-warnings
+yarn lint --staged --error-on-warnings
 yarn typecheck

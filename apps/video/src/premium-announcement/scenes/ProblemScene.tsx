@@ -17,10 +17,10 @@ export const ProblemScene = () => {
     <AbsoluteFill className="items-center justify-center gap-24 bg-black">
       <h1 className="text-center font-heading text-8xl font-semibold tracking-tight text-white">
         <span className="block" style={riseIn(frame, fps, 0)}>
-          One forgotten approval
+          Yesterday&apos;s trusted approval
         </span>
         <span className="block text-red-400" style={riseIn(frame, fps, 10)}>
-          is all it takes.
+          can become today&apos;s threat.
         </span>
       </h1>
       <div style={{ ...riseIn(frame, fps, 25), transform: 'scale(1.4)', transformOrigin: 'center' }}>
