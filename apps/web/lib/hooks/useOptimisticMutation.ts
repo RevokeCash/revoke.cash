@@ -1,5 +1,5 @@
 import { parseErrorMessage } from '@revoke.cash/core/utils/errors';
-import { type QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
+import { hashKey, type QueryKey, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 interface Params<TVariables, TData, TCached> {
@@ -13,8 +13,12 @@ interface Params<TVariables, TData, TCached> {
  * Wraps `useMutation` with the optimistic-update + rollback pattern:
  * - `onMutate` cancels in-flight refetches, snapshots the cached value,
  *   and applies `applyOptimisticUpdate` to the cache
+ * - the mutation scope serializes the requests: the optimistic update still applies immediately,
+ *   but each request waits for the previous one, so rapid edits cannot land out of order and an
+ *   older response can never overwrite a newer value
  * - `onError` restores the snapshot and shows a toast with `errorMessage`
- * - `onSettled` invalidates the query so the server's authoritative value refetches
+ * - once the last mutation of a burst settles, the query is invalidated so the server's
+ *   authoritative value refetches
  */
 export const useOptimisticMutation = <TVariables, TData, TCached>({
   queryKey,
@@ -26,6 +30,8 @@ export const useOptimisticMutation = <TVariables, TData, TCached>({
 
   return useMutation({
     mutationFn,
+    mutationKey: queryKey,
+    scope: { id: hashKey(queryKey) },
     onMutate: async (variables) => {
       await queryClient.cancelQueries({ queryKey });
       const previous = queryClient.getQueryData<TCached>(queryKey);
@@ -41,7 +47,10 @@ export const useOptimisticMutation = <TVariables, TData, TCached>({
       toast.error(parseErrorMessage(error) || errorMessage);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey });
+      // Skip intermediate refetches while more edits of the same burst are still in flight
+      if (queryClient.isMutating({ mutationKey: queryKey }) === 1) {
+        queryClient.invalidateQueries({ queryKey });
+      }
     },
   });
 };
